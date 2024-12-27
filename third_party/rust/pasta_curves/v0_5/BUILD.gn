@@ -59,4 +59,7 @@ cargo_crate("lib") {
     "lazy_static",
     "sqrt-table",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

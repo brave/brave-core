@@ -42,4 +42,7 @@ cargo_crate("lib") {
   ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/pin-project-internal-0.4.30/build.rs" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

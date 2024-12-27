@@ -52,4 +52,7 @@ cargo_crate("lib") {
     deps += [ "//brave/third_party/rust/windows/v0_46:lib" ]
   }
   features = [ "fallback" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

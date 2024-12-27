@@ -58,4 +58,7 @@ cargo_crate("lib") {
   features = [ "std" ]
   build_root = "//brave/third_party/rust/chromium_crates_io/vendor/getrandom-0.1.16/build.rs"
   build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/getrandom-0.1.16/build.rs" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }
