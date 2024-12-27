@@ -100,6 +100,7 @@ function getChromiumGnArgs() {
     is_official_build: true,
     ffmpeg_branding: 'Chrome',
     enable_widevine: true,
+    proprietary_codecs: true,
     ignore_missing_widevine_signing_cert: true,
     skip_secondary_abi_for_cq: true,
     ...config.extraGnArgs,
