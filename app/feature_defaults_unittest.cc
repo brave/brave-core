@@ -86,7 +86,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
       &base::features::kCollectAndroidFrameTimelineMetrics,
 #endif
-      &blink::features::kAdAuctionReportingWithMacroApi,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAllowURNsInIframes,
       &blink::features::kAttributionReportingInBrowserMigration,
