@@ -541,7 +541,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedEvmTransaction) {
   // Known non-Eip1559 chain.
   {
     auto params = mojom::NewEvmTransactionParams::New(
-        mojom::kAuroraMainnetChainId, from(),
+        mojom::kBnbSmartChainMainnetChainId, from(),
         "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c", "0x016345785d8a0000",
         "0x0974", data_);
     EXPECT_FALSE(*network_manager_->IsEip1559Chain(params->chain_id));
