@@ -110,7 +110,7 @@ OrchardStorage::AccountMeta& OrchardStorage::AccountMeta::operator=(
 
 OrchardStorage::OrchardStorage(const base::FilePath& path_to_database)
     : db_file_path_(path_to_database),
-      database_(/*tag=*/"OrchardStorageDatabase") {}
+      database_(sql::Database::Tag("OrchardStorageDatabase")) {}
 
 OrchardStorage::~OrchardStorage() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

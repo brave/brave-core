@@ -96,7 +96,7 @@ mojom::DBRecordPtr CreateRecord(
 }  // namespace
 
 RewardsDatabase::RewardsDatabase(const base::FilePath& path)
-    : db_path_(path), db_(/*tag=*/"RewardsDatabase") {
+    : db_path_(path), db_(sql::Database::Tag("RewardsDatabase")) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
