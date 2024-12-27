@@ -19,6 +19,7 @@ source_set("url_sanitizer") {
     "//components/keyed_service/ios:ios",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
+    "//ios/web/public",
   ]
   frameworks = [ "Foundation.framework" ]
 }
