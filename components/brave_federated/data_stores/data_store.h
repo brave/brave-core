@@ -21,7 +21,7 @@ using TrainingData = base::flat_map<int, std::vector<mojom::CovariateInfoPtr>>;
 
 struct DataStoreTask {
   int id = 0;
-  const std::string name;
+  sql::Database::Tag name;
   int max_number_of_records = 0;
   base::TimeDelta max_retention_days;
 };

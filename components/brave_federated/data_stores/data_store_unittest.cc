@@ -61,7 +61,7 @@ void DataStoreTest::SetUp() {
   ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   base::FilePath db_path(
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("test_data_store")));
-  DataStoreTask data_store_task({0, "test_federated_task",
+  DataStoreTask data_store_task({0, sql::Database::Tag("test_federated_task"),
                                  /* max_number_of_records */ 50,
                                  base::Days(30)});
   data_store_ =
