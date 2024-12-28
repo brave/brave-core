@@ -502,6 +502,13 @@
           FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget),                 \
       },                                                                       \
       {                                                                        \
+          "brave-screenshots",                                                 \
+          "Screenshot Context Menu Options",                                   \
+          "Enables various screenshot options in the context menu.",           \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveScreenshots),                     \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
           "Enable CNAME uncloaking",                                           \
           "Take DNS CNAME records into account when making network request "   \
