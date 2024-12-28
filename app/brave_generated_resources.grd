@@ -356,7 +356,38 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         Check details
       </message>
 
-      <!-- Adblock contenxt menu -->
+      <!-- Context Menu › Screenshot Tools -->
+      <if expr="use_titlecase">
+        <message name="IDS_IDC_BRAVE_UTILS_SCREENSHOT_TOOLS" desc="Title for the screenshot submenu">
+          Screenshot Tools
+        </message>
+        <message name="IDS_IDC_BRAVE_UTILS_START_SCREENSHOT_SELECTION_TO_CLIPBOARD" desc="Title for option to screenshot a region and copy to clipboard">
+          Screenshot Selection to Clipboard
+        </message>
+        <message name="IDS_IDC_BRAVE_UTILS_SCREENSHOT_VIEWPORT_TO_CLIPBOARD" desc="Title for option to screenshot the viewport and copy to clipboard">
+          Screenshot Viewport to Clipboard
+        </message>
+        <message name="IDS_IDC_BRAVE_UTILS_SCREENSHOT_FULLPAGE_TO_CLIPBOARD" desc="Title for option to screenshot the full page and copy to clipboard">
+          Screenshot Full Page to Clipboard
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_IDC_BRAVE_UTILS_SCREENSHOT_TOOLS" desc="Title for the screenshot submenu">
+          Screenshot tools
+        </message>
+        <message name="IDS_IDC_BRAVE_UTILS_START_SCREENSHOT_SELECTION_TO_CLIPBOARD" desc="Title for option to screenshot a region and copy to clipboard">
+          Screenshot selection to clipboard
+        </message>
+        <message name="IDS_IDC_BRAVE_UTILS_SCREENSHOT_VIEWPORT_TO_CLIPBOARD" desc="Title for option to screenshot the viewport and copy to clipboard">
+          Screenshot viewport to clipboard
+        </message>
+        <message name="IDS_IDC_BRAVE_UTILS_SCREENSHOT_FULLPAGE_TO_CLIPBOARD" desc="Title for option to screenshot the full page and copy to clipboard">
+          Screenshot full page to clipboard
+        </message>
+      </if>
+
+
+      <!-- Adblock context menu -->
       <message name="IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS" desc="Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page">
         Block elements
       </message>
