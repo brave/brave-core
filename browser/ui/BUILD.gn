@@ -112,6 +112,15 @@ source_set("ui") {
     "webui/untrusted_sanitized_image_source.h",
   ]
 
+  # Screenshot tools via Context Menu and Commander
+  if (is_win || is_mac || is_linux) {
+    sources += [
+      "screenshots/brave_screenshots_utils.cc",
+      "screenshots/brave_screenshots_utils.h",
+    ]
+    deps += [ "//chrome/browser/image_editor:image_editor" ]
+  }
+
   # It doesn't make sense to view the webcompat webui on iOS & Android.
   if (!is_android && !is_ios) {
     sources += [
