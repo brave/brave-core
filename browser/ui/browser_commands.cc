@@ -24,6 +24,7 @@
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/screenshots/brave_screenshots_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
@@ -1160,6 +1161,32 @@ void SwapTabsInTile(Browser* browser) {
   model->MoveWebContentsAt(model->GetIndexOfTab(tile.second.Get()),
                            model->GetIndexOfTab(tile.first.Get()),
                            /*select_after_move*/ false);
+}
+
+void ScreenshotSelectionToClipboard(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  brave_utils::ScreenshotSelectionToClipboard(browser->AsWeakPtr());
+}
+
+void ScreenshotViewportToClipboard(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  brave_utils::ScreenshotViewportToClipboard(
+      browser->tab_strip_model()->GetActiveWebContents()->GetWeakPtr());
+}
+
+void ScreenshotFullPageToClipboard(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  brave_utils::ScreenshotFullPageToClipboard(
+      browser->tab_strip_model()->GetActiveWebContents()->GetWeakPtr());
 }
 
 }  // namespace brave
