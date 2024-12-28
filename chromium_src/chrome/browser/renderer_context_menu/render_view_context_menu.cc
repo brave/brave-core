@@ -18,6 +18,7 @@
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
+#include "brave/browser/ui/screenshots/brave_screenshots_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -47,6 +48,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -372,7 +374,8 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
       ai_chat_submenu_model_(this),
       ai_chat_change_tone_submenu_model_(this),
       ai_chat_change_length_submenu_model_(this),
-      ai_chat_social_media_post_submenu_model_(this) {}
+      ai_chat_social_media_post_submenu_model_(this),
+      screenshots_submenu_model_(this) {}
 
 BraveRenderViewContextMenu::~BraveRenderViewContextMenu() = default;
 
@@ -427,6 +430,11 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #endif
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
       return CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr());
+    case IDC_BRAVE_UTILS_SCREENSHOT_TOOLS:
+    case IDC_BRAVE_UTILS_START_SCREENSHOT_SELECTION_TO_CLIPBOARD:
+    case IDC_BRAVE_UTILS_SCREENSHOT_VIEWPORT_TO_CLIPBOARD:
+    case IDC_BRAVE_UTILS_SCREENSHOT_FULLPAGE_TO_CLIPBOARD:
+      return features::BraveScreenshotsEnabled();
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
     default:
@@ -496,6 +504,17 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
 #endif
     case IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW:
       OpenLinkInSplitView(source_web_contents_->GetWeakPtr(), params_.link_url);
+      break;
+    case IDC_BRAVE_UTILS_START_SCREENSHOT_SELECTION_TO_CLIPBOARD:
+      brave_utils::ScreenshotSelectionToClipboard(GetBrowser()->AsWeakPtr());
+      break;
+    case IDC_BRAVE_UTILS_SCREENSHOT_VIEWPORT_TO_CLIPBOARD:
+      brave_utils::ScreenshotViewportToClipboard(
+          source_web_contents_->GetWeakPtr());
+      break;
+    case IDC_BRAVE_UTILS_SCREENSHOT_FULLPAGE_TO_CLIPBOARD:
+      brave_utils::ScreenshotFullPageToClipboard(
+          source_web_contents_->GetWeakPtr());
       break;
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(
@@ -682,6 +701,43 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
       IDS_AI_CHAT_CONTEXT_LEO_TOOLS, &ai_chat_submenu_model_);
 }
 
+void BraveRenderViewContextMenu::BuildScreenshotsMenu() {
+  if (!features::BraveScreenshotsEnabled()) {
+    return;
+  }
+  // Selection Screenshots
+  screenshots_submenu_model_.AddItemWithStringId(
+      IDC_BRAVE_UTILS_START_SCREENSHOT_SELECTION_TO_CLIPBOARD,
+      IDS_IDC_BRAVE_UTILS_START_SCREENSHOT_SELECTION_TO_CLIPBOARD);
+
+  // Viewport Screenshots
+  screenshots_submenu_model_.AddItemWithStringId(
+      IDC_BRAVE_UTILS_SCREENSHOT_VIEWPORT_TO_CLIPBOARD,
+      IDS_IDC_BRAVE_UTILS_SCREENSHOT_VIEWPORT_TO_CLIPBOARD);
+
+  // Fullpage Screenshots
+  screenshots_submenu_model_.AddItemWithStringId(
+      IDC_BRAVE_UTILS_SCREENSHOT_FULLPAGE_TO_CLIPBOARD,
+      IDS_IDC_BRAVE_UTILS_SCREENSHOT_FULLPAGE_TO_CLIPBOARD);
+
+  // Preferably insert the screenshots submenu after the inspect element
+  std::optional<size_t> inspect_index =
+      menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
+
+  if (inspect_index.has_value()) {
+    // Add screenshot submenu to the context menu
+    menu_model_.InsertSubMenuWithStringIdAt(
+        inspect_index.value(), IDC_BRAVE_UTILS_SCREENSHOT_TOOLS,
+        IDS_IDC_BRAVE_UTILS_SCREENSHOT_TOOLS, &screenshots_submenu_model_);
+    return;
+  }
+
+  // Otherwise, add it to the end of the context menu
+  menu_model_.AddSubMenuWithStringId(IDC_BRAVE_UTILS_SCREENSHOT_TOOLS,
+                                     IDS_IDC_BRAVE_UTILS_SCREENSHOT_TOOLS,
+                                     &screenshots_submenu_model_);
+}
+
 void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
   // Call our implementation, not the one in the base class.
   // Assumption:
@@ -823,6 +879,8 @@ void BraveRenderViewContextMenu::InitMenu() {
         index.value(), IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW,
         IDS_CONTENT_CONTEXT_SPLIT_VIEW);
   }
+
+  BuildScreenshotsMenu();
 }
 
 void BraveRenderViewContextMenu::NotifyMenuShown() {
