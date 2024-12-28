@@ -14,6 +14,7 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -315,6 +316,16 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandEnabled(IDC_READING_LIST_MENU, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
+  }
+
+  if (features::BraveScreenshotsEnabled()) {
+    UpdateCommandEnabled(IDC_BRAVE_UTILS_SCREENSHOT_TOOLS, true);
+    UpdateCommandEnabled(
+        IDC_BRAVE_UTILS_START_SCREENSHOT_SELECTION_TO_CLIPBOARD, true);
+    UpdateCommandEnabled(IDC_BRAVE_UTILS_SCREENSHOT_VIEWPORT_TO_CLIPBOARD,
+                         true);
+    UpdateCommandEnabled(IDC_BRAVE_UTILS_SCREENSHOT_FULLPAGE_TO_CLIPBOARD,
+                         true);
   }
 }
 
@@ -698,6 +709,15 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SWAP_SPLIT_VIEW:
       brave::SwapTabsInTile(&*browser_);
+      break;
+    case IDC_BRAVE_UTILS_START_SCREENSHOT_SELECTION_TO_CLIPBOARD:
+      brave::ScreenshotSelectionToClipboard(&*browser_);
+      break;
+    case IDC_BRAVE_UTILS_SCREENSHOT_VIEWPORT_TO_CLIPBOARD:
+      brave::ScreenshotViewportToClipboard(&*browser_);
+      break;
+    case IDC_BRAVE_UTILS_SCREENSHOT_FULLPAGE_TO_CLIPBOARD:
+      brave::ScreenshotFullPageToClipboard(&*browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
