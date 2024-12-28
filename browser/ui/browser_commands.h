@@ -129,6 +129,10 @@ bool IsTabsTiled(Browser* browser, const std::vector<int>& indices = {});
 bool CanTileTabs(Browser* browser, const std::vector<int>& indices = {});
 void SwapTabsInTile(Browser* browser);
 
+void ScreenshotSelectionToClipboard(Browser* browser);
+void ScreenshotViewportToClipboard(Browser* browser);
+void ScreenshotFullPageToClipboard(Browser* browser);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
