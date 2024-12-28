@@ -71,6 +71,12 @@ CommandSource::CommandResults SimpleCommandSource::GetCommands(
     ui::Accelerator accelerator;
     ui::AcceleratorProvider* provider =
         chrome::AcceleratorProviderForBrowser(browser);
+
+    // Provider may be nullptr during unit tests.
+    if (!provider) {
+      continue;
+    }
+
     if (provider->GetAcceleratorForCommandId(command_id, &accelerator)) {
       item->annotation = accelerator.GetShortcutText();
     }
