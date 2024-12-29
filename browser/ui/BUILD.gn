@@ -1499,6 +1499,15 @@ source_set("unit_tests") {
         "//third_party/abseil-cpp:absl",
       ]
     }
+
+    # Screenshot tools via Context Menu and Commander
+    if (is_win || is_mac || is_linux) {
+      sources += [ "screenshots/brave_screenshots_utils_unittests.cc" ]
+      deps += [
+        "//brave/app:generate_command_metadata",
+        "//chrome/browser/search_engines",
+      ]
+    }
   }
 }
 
