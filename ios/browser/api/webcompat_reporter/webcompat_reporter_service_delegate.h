@@ -17,8 +17,7 @@ class WebcompatReporterServiceDelegateImpl
     : public WebcompatReporterServiceDelegateBase {
  public:
   explicit WebcompatReporterServiceDelegateImpl(
-      component_updater::ComponentUpdateService* cus, HostContentSettingsMap* host_content_settings_map,
-    scoped_refptr<content_settings::CookieSettings> content_settings);
+      component_updater::ComponentUpdateService* cus);
   WebcompatReporterServiceDelegateImpl(
       const WebcompatReporterServiceDelegateImpl&) = delete;
   WebcompatReporterServiceDelegateImpl& operator=(
@@ -28,6 +27,7 @@ class WebcompatReporterServiceDelegateImpl
   std::optional<std::vector<std::string>> GetAdblockFilterListNames()
       const override;
   std::optional<std::string> GetChannelName() const override;
+  std::optional<std::string> GetCookiePolicy() const override;
 };
 
 }  // namespace webcompat_reporter

@@ -6,12 +6,9 @@
 #ifndef BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_DELEGATE_BASE_H_
 #define BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_DELEGATE_BASE_H_
 
-#include <string>
 #include <vector>
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
-#include "components/content_settings/core/browser/cookie_settings.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -30,8 +27,7 @@ using ComponentInfo = WebcompatReporterService::Delegate::ComponentInfo;
 class WebcompatReporterServiceDelegateBase : public WebCompatServiceDelegate {
  public:
   explicit WebcompatReporterServiceDelegateBase(
-      component_updater::ComponentUpdateService* component_update_service, HostContentSettingsMap* host_content_settings_map,
-    scoped_refptr<content_settings::CookieSettings> content_settings);
+      component_updater::ComponentUpdateService* component_update_service);
   WebcompatReporterServiceDelegateBase(
       const WebcompatReporterServiceDelegateBase&) = delete;
   WebcompatReporterServiceDelegateBase& operator=(
@@ -39,14 +35,10 @@ class WebcompatReporterServiceDelegateBase : public WebCompatServiceDelegate {
   ~WebcompatReporterServiceDelegateBase() override;
 
   std::optional<std::vector<ComponentInfo>> GetComponentInfos() const override;
-  std::optional<std::string> GetCookiePolicy() const override;
 
  private:
   const raw_ptr<component_updater::ComponentUpdateService>
       component_update_service_;
-  const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
-  scoped_refptr<content_settings::CookieSettings> cookie_settings_;
-
 };
 
 }  // namespace webcompat_reporter

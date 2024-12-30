@@ -12,9 +12,8 @@
 namespace webcompat_reporter {
 
 WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
-    component_updater::ComponentUpdateService* cus, HostContentSettingsMap* host_content_settings_map,
-    scoped_refptr<content_settings::CookieSettings> content_settings)
-    : WebcompatReporterServiceDelegateBase(cus, host_content_settings_map, content_settings) {}
+    component_updater::ComponentUpdateService* cus)
+    : WebcompatReporterServiceDelegateBase(cus) {}
 
 WebcompatReporterServiceDelegateImpl::~WebcompatReporterServiceDelegateImpl() =
     default;
@@ -27,6 +26,12 @@ WebcompatReporterServiceDelegateImpl::GetAdblockFilterListNames() const {
 
 std::optional<std::string>
 WebcompatReporterServiceDelegateImpl::GetChannelName() const {
+  // we don't need to implement it for iOS, as we get it from the front-end part
+  return std::nullopt;
+}
+
+std::optional<std::string>
+WebcompatReporterServiceDelegateImpl::GetCookiePolicy() const {
   // we don't need to implement it for iOS, as we get it from the front-end part
   return std::nullopt;
 }

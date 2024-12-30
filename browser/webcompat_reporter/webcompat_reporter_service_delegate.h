@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service_delegate_base.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 
 namespace brave_shields {
 class AdBlockService;
@@ -33,9 +35,12 @@ class WebcompatReporterServiceDelegateImpl
   std::optional<std::vector<std::string>> GetAdblockFilterListNames()
       const override;
   std::optional<std::string> GetChannelName() const override;
+  std::optional<std::string> GetCookiePolicy() const override;
 
  private:
   const raw_ptr<brave_shields::AdBlockService> adblock_service_;
+  const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 };
 
 }  // namespace webcompat_reporter
