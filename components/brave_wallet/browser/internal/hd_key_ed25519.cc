@@ -22,6 +22,10 @@ namespace brave_wallet {
 namespace {
 
 inline constexpr char kMasterSecret[] = "ed25519 seed";
+
+// Equivalent to 2^31 to make sure we're not below this.
+// If the index is below this we'll use the soft path
+// which is susceptible to key attacks on the Ed25519 curve.
 inline constexpr uint32_t kHardenedOffset = 0x80000000;
 
 // OpenSSL has it's own definition of private key which in fact is key pair.
@@ -80,6 +84,9 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromPrivateKey(
 // https://github.com/satoshilabs/slips/blob/master/slip-0010.md#private-parent-key--private-child-key
 std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveHardenedChild(
     uint32_t index) {
+  // This check is necessary to make sure that public parent -> public child
+  // derivation paths are eliminated. This is necessary to prevent
+  // key recovery attacks. Additionally, it's a requirement of SLIP-10.
   if (index >= kHardenedOffset) {
     return nullptr;
   }
