@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.browser.customtabs.CustomTabsIntent;
 
 import org.chromium.base.IntentUtils;
@@ -65,15 +64,15 @@ public class RewardsPageActivity extends CustomTabActivity {
                 });
         parentView.addView(closeImg, layoutParams);
 
-        OnBackPressedCallback callback =
-                new OnBackPressedCallback(true /* enabled by default */) {
-                    @Override
-                    public void handleOnBackPressed() {
-                        // Handle the back button event
-                    }
-                };
+        // OnBackPressedCallback callback =
+        //         new OnBackPressedCallback(true /* enabled by default */) {
+        //             @Override
+        //             public void handleOnBackPressed() {
+        //                 // Handle the back button event
+        //             }
+        //         };
 
-        getOnBackPressedDispatcher().addCallback(RewardsPageActivity.this, callback);
+        // getOnBackPressedDispatcher().addCallback(RewardsPageActivity.this, callback);
     }
 
     public static void showPage(Context context, String url) {
