@@ -29,7 +29,7 @@ For reference, here are a few pull requests where we've pulled in new language f
 * Open the Terminal application
 * Type ```sudo easy_install pip```
 * Type ```sudo -H pip install tornado```
-* Type ```sudo -H pip install lxml```
+* Type ```sudo -H pip install defusedxml```
 
 Besides providing the actual translations themselves, it's important that the code tokenizes all strings shown to the user.
 
