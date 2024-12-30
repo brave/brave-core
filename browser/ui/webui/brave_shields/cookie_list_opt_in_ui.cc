@@ -15,7 +15,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -24,6 +23,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "ui/base/webui/web_ui_util.h"
+#include "ui/webui/webui_util.h"
 
 namespace {
 

@@ -11,13 +11,13 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/line_chart_display/resources/grit/line_chart_display_generated_map.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/grit/browser_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/resources/grit/webui_resources.h"
+#include "ui/webui/webui_util.h"
 
 namespace line_chart {
 

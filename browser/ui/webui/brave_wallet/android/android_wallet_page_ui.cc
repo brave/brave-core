@@ -27,13 +27,13 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
+#include "ui/webui/webui_util.h"
 
 AndroidWalletPageUI::AndroidWalletPageUI(content::WebUI* web_ui,
                                          const GURL& url)
