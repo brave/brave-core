@@ -213,8 +213,8 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
     // gives us the exact same behaviour as Safari.
-
-    if ["sms", "tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
+    // tel:, facetime:, facetime-audio:, already has its own native alert displayed by the OS!f
+    if ["sms", "mailto"].contains(requestURL.scheme) {
       let shouldOpen = await handleExternalURL(
         requestURL,
         tab: tab,
@@ -254,16 +254,6 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if isStoreURL(requestURL) {
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        navigationAction: navigationAction
-      )
-      return (shouldOpen ? .allow : .cancel, preferences)
-    }
-
-    // Handles custom mailto URL schemes.
-    if requestURL.scheme == "mailto" {
       let shouldOpen = await handleExternalURL(
         requestURL,
         tab: tab,
