@@ -1228,7 +1228,11 @@ extension BrowserViewController {
 
     var alertTitle = Strings.openExternalAppURLGenericTitle
 
-    if let displayHost = tab?.url?.withoutWWW.host {
+    if navigationAction.sourceFrame != nil {
+      let displayHost =
+        "\(navigationAction.sourceFrame.securityOrigin.protocol)://\(navigationAction.sourceFrame.securityOrigin.host):\(navigationAction.sourceFrame.securityOrigin.port)"
+      alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
+    } else if let displayHost = tab?.url?.withoutWWW.host {
       alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
     }
 
