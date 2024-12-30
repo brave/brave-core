@@ -171,7 +171,10 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
             len(GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
         brave_strings_string_ids = remove_google_chrome_strings(
             grd_strings, GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
-    assert len(grd_strings) == len(chromium_grd_strings)
+    assert len(grd_strings) == len(chromium_grd_strings), (
+        f'String count in {grd_file_path} and in {chromium_grd_file_path} do' +
+        f'not match: {len(grd_strings)} vs {len(chromium_grd_strings)}.')
+
     # Verify that string names match
     for idx, grd_string in enumerate(grd_strings):
         assert chromium_grd_strings[idx][0] == grd_string[0]
