@@ -10,9 +10,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -39,8 +37,8 @@ class BraveWalletServiceDelegateIos : public BraveWalletServiceDelegate {
 // static
 BraveWalletService* BraveWalletServiceFactory::GetServiceForState(
     ProfileIOS* profile) {
-  return static_cast<BraveWalletService*>(
-      GetInstance()->GetServiceForBrowserState(profile, true));
+  return GetInstance()->GetServiceForProfileAs<BraveWalletService>(profile,
+                                                                   true);
 }
 
 // static
@@ -50,9 +48,10 @@ BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
 }
 
 BraveWalletServiceFactory::BraveWalletServiceFactory()
-    : BrowserStateKeyedServiceFactory(
-          "BraveWalletService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("BraveWalletService",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kNoServiceForTests) {}
 
 BraveWalletServiceFactory::~BraveWalletServiceFactory() = default;
 
@@ -65,15 +64,6 @@ BraveWalletServiceFactory::BuildServiceInstanceFor(
       std::make_unique<BraveWalletServiceDelegateIos>(profile),
       profile->GetPrefs(), GetApplicationContext()->GetLocalState()));
   return service;
-}
-
-bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
-}
-
-web::BrowserState* BraveWalletServiceFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return GetBrowserStateRedirectedInIncognito(context);
 }
 
 }  // namespace brave_wallet

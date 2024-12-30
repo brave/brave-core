@@ -48,8 +48,7 @@ FaviconLoaderSize const FaviconLoaderSizeDesiredLargest =
 - (instancetype)initWithBrowserState:(ProfileIOS*)profile {
   if ((self = [super init])) {
     favicon_loader_ =
-        brave_favicon::BraveIOSFaviconLoaderFactory::GetForBrowserState(
-            profile);
+        brave_favicon::BraveIOSFaviconLoaderFactory::GetForProfile(profile);
     DCHECK(favicon_loader_);
   }
   return self;
