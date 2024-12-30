@@ -17,7 +17,8 @@ class WebcompatReporterServiceDelegateImpl
     : public WebcompatReporterServiceDelegateBase {
  public:
   explicit WebcompatReporterServiceDelegateImpl(
-      component_updater::ComponentUpdateService* cus);
+      component_updater::ComponentUpdateService* cus, HostContentSettingsMap* host_content_settings_map,
+    scoped_refptr<content_settings::CookieSettings> content_settings);
   WebcompatReporterServiceDelegateImpl(
       const WebcompatReporterServiceDelegateImpl&) = delete;
   WebcompatReporterServiceDelegateImpl& operator=(

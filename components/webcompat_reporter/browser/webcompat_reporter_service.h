@@ -42,6 +42,7 @@ class WebcompatReporterService : public KeyedService,
     virtual std::optional<std::string> GetChannelName() const = 0;
     virtual std::optional<std::vector<ComponentInfo>> GetComponentInfos()
         const = 0;
+    virtual std::optional<std::string> GetCookiePolicy() const = 0;
   };
 
   WebcompatReporterService(

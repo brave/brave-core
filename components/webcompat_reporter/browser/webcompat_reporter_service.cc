@@ -82,6 +82,13 @@ struct ReportFiller {
     return *this;
   }
 
+  ReportFiller& FillCookiePolicy() {
+    if (!(*report_info)->cookie_policy) {
+      (*report_info)->cookie_policy = service_delegate->GetCookiePolicy();
+    }
+    return *this;
+  }
+
   raw_ref<webcompat_reporter::mojom::ReportInfoPtr> report_info;
   const raw_ptr<webcompat_reporter::WebcompatReporterService::Delegate>
       service_delegate;
@@ -137,7 +144,8 @@ void WebcompatReporterService::SubmitWebcompatReport(
       .FillChannel()
       .FillVersion()
       .FillReportWithComponetsInfo()
-      .FillReportWithAdblockListNames();
+      .FillReportWithAdblockListNames()
+      .FillCookiePolicy();
 
   ProcessContactInfo(profile_prefs_, report_info);
 

@@ -22,7 +22,8 @@ class WebcompatReporterServiceDelegateImpl
  public:
   explicit WebcompatReporterServiceDelegateImpl(
       component_updater::ComponentUpdateService* component_update_service,
-      brave_shields::AdBlockService* adblock_service);
+      brave_shields::AdBlockService* adblock_service, HostContentSettingsMap* host_content_settings_map,
+    scoped_refptr<content_settings::CookieSettings> content_settings);
   WebcompatReporterServiceDelegateImpl(
       const WebcompatReporterServiceDelegateImpl&) = delete;
   WebcompatReporterServiceDelegateImpl& operator=(

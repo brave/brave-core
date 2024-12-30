@@ -17,8 +17,9 @@ namespace webcompat_reporter {
 
 WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
     component_updater::ComponentUpdateService* component_update_service,
-    brave_shields::AdBlockService* adblock_service)
-    : WebcompatReporterServiceDelegateBase(component_update_service),
+    brave_shields::AdBlockService* adblock_service, HostContentSettingsMap* host_content_settings_map,
+    scoped_refptr<content_settings::CookieSettings> content_settings)
+    : WebcompatReporterServiceDelegateBase(component_update_service, host_content_settings_map, content_settings),
       adblock_service_(adblock_service) {}
 
 WebcompatReporterServiceDelegateImpl::~WebcompatReporterServiceDelegateImpl() =
@@ -52,5 +53,6 @@ std::optional<std::string>
 WebcompatReporterServiceDelegateImpl::GetChannelName() const {
   return brave::GetChannelName();
 }
+
 
 }  // namespace webcompat_reporter

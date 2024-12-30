@@ -12,8 +12,9 @@
 namespace webcompat_reporter {
 
 WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
-    component_updater::ComponentUpdateService* cus)
-    : WebcompatReporterServiceDelegateBase(cus) {}
+    component_updater::ComponentUpdateService* cus, HostContentSettingsMap* host_content_settings_map,
+    scoped_refptr<content_settings::CookieSettings> content_settings)
+    : WebcompatReporterServiceDelegateBase(cus, host_content_settings_map, content_settings) {}
 
 WebcompatReporterServiceDelegateImpl::~WebcompatReporterServiceDelegateImpl() =
     default;
