@@ -1,23 +1,23 @@
-Total size 132042K
+Total size 131586K
 
-GROUP Adblock [8707K total]
-   149K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.276 [adcocjohghhfpidemphmcmlmhnfgikei]
-    55K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.10312 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1403K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.11372 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [8720K total]
+   149K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.278 [adcocjohghhfpidemphmcmlmhnfgikei]
+    55K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.10410 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1404K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.11523 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    145K Brave Ad Block Updater (Regional Catalog) 1.0.68 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5768K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.9682 [iodkpdagapdfkphljnddpjlldadblomo]
+  5779K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.9802 [iodkpdagapdfkphljnddpjlldadblomo]
   1184K Brave Ad Block Updater (Resources) 1.0.104 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22973K total]
     70K Brave Ads Resources 1.0.106 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [13327K total]
+GROUP Ntp [12872K total]
  12360K Brave NTP background images 1.0.15 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   967K Brave NTP sponsored images 1.0.1827 [gccbbckogglekeggclmmekihdgdpdgoe]
+   511K Brave NTP sponsored images 1.0.1834 [gccbbckogglekeggclmmekihdgdpdgoe]
 
 GROUP Other [171K total]
-   171K Brave Local Data Files Updater 1.0.1008 [afalakplffnnnlkncjhbmahjfjhmlkal]
+   171K Brave Local Data Files Updater 1.0.1014 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
 GROUP large_files [76376K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
