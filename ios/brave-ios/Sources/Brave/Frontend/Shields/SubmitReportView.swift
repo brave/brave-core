@@ -154,7 +154,7 @@ struct SubmitReportView: View {
         details: additionalDetails,
         contact: contactDetails,
         cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : "",
-        blockScripts: String(Preferences.Shields.blockScripts),
+        blockScripts: String(Preferences.Shields.blockScripts.value),
         adBlockComponentsVersion: nil,
         screenshotPng: nil
       )

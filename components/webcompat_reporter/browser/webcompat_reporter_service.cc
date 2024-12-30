@@ -90,7 +90,7 @@ struct ReportFiller {
   }
 
   ReportFiller& FillScriptBlockingFlag() {
-    if (!(*report_info)->cookie_policy) {
+    if (!(*report_info)->block_scripts) {
       (*report_info)->block_scripts = service_delegate->GetScriptBlockingFlag();
     }
     return *this;
