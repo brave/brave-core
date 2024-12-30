@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
+#include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "components/component_updater/component_updater_service.h"
 
 namespace webcompat_reporter {
@@ -67,6 +68,18 @@ WebcompatReporterServiceDelegateImpl::GetCookiePolicy() const {
 
   return brave_shields::ControlTypeToString(brave_shields::GetCookieControlType(
       host_content_settings_map_, cookie_settings_.get(), GURL()));
+}
+
+std::optional<std::string>
+WebcompatReporterServiceDelegateImpl::GetScriptBlockingFlag() const {
+  DCHECK(host_content_settings_map_);
+  DCHECK(cookie_settings_);
+  if (!host_content_settings_map_ || !cookie_settings_) {
+    return std::nullopt;
+  }
+
+  return BoolToString(brave_shields::GetNoScriptControlType(
+      host_content_settings_map_,GURL()) == brave_shields::ControlType::BLOCK);
 }
 
 }  // namespace webcompat_reporter

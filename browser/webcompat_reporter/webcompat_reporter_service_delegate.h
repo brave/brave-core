@@ -36,6 +36,7 @@ class WebcompatReporterServiceDelegateImpl
       const override;
   std::optional<std::string> GetChannelName() const override;
   std::optional<std::string> GetCookiePolicy() const override;
+  std::optional<std::string> GetScriptBlockingFlag() const override;
 
  private:
   const raw_ptr<brave_shields::AdBlockService> adblock_service_;

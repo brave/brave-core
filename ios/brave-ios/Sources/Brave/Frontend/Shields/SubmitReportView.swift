@@ -9,6 +9,7 @@ import BraveUI
 import BraveVPN
 import Data
 import DesignSystem
+import Preferences
 import Shared
 import Strings
 import SwiftUI
@@ -152,6 +153,8 @@ struct SubmitReportView: View {
         braveVpnConnected: String(BraveVPN.isConnected),
         details: additionalDetails,
         contact: contactDetails,
+        cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : "",
+        blockScripts: String(Preferences.Shields.blockScripts),
         adBlockComponentsVersion: nil,
         screenshotPng: nil
       )

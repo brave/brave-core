@@ -13,8 +13,7 @@
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
-#include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
-#include "chrome/browser/content_settings/cookie_settings_factory.h"
+
 namespace webcompat_reporter {
 
 // static
@@ -57,9 +56,7 @@ WebcompatReporterServiceFactory::BuildServiceInstanceFor(
       GetApplicationContext()->GetComponentUpdateService();
   return std::make_unique<WebcompatReporterService>(
       !profile || profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
-      std::make_unique<WebcompatReporterServiceDelegateImpl>(cus,
-      ios::HostContentSettingsMapFactory::GetForProfile(profile),
-      CookieSettingsFactory::GetForProfile(profile)),
+      std::make_unique<WebcompatReporterServiceDelegateImpl>(cus),
       std::move(report_uploader));
 }
 

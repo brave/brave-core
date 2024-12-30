@@ -36,4 +36,9 @@ WebcompatReporterServiceDelegateImpl::GetCookiePolicy() const {
   return std::nullopt;
 }
 
+std::optional<std::string>
+WebcompatReporterServiceDelegateImpl::GetScriptBlockingFlag() const {
+  // we don't need to implement it for iOS, as we get it from the front-end part
+  return std::nullopt;
+}
 }  // namespace webcompat_reporter

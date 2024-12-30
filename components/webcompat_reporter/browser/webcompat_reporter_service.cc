@@ -89,6 +89,13 @@ struct ReportFiller {
     return *this;
   }
 
+  ReportFiller& FillScriptBlockingFlag() {
+    if (!(*report_info)->cookie_policy) {
+      (*report_info)->block_scripts = service_delegate->GetScriptBlockingFlag();
+    }
+    return *this;
+  }
+
   raw_ref<webcompat_reporter::mojom::ReportInfoPtr> report_info;
   const raw_ptr<webcompat_reporter::WebcompatReporterService::Delegate>
       service_delegate;
@@ -145,7 +152,8 @@ void WebcompatReporterService::SubmitWebcompatReport(
       .FillVersion()
       .FillReportWithComponetsInfo()
       .FillReportWithAdblockListNames()
-      .FillCookiePolicy();
+      .FillCookiePolicy()
+      .FillScriptBlockingFlag();
 
   ProcessContactInfo(profile_prefs_, report_info);
 
