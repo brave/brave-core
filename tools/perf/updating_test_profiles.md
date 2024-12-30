@@ -39,7 +39,7 @@ The recommended update interval is once a month.
 
 * The `./profiles/*.sha1` should be updated during the upload. Stage and commit changes in `.sha1` and `.size` files.
 * DO NOT commit zip files.
-* Make a PR to to `brave-core`.
+* Make a PR to `brave-core`.
 
 ## Testing before merge
 

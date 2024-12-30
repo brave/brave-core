@@ -30,7 +30,7 @@ the script will produce `.sha1` automatically.
 Use `npm run perf_tests -- --mode record-wpr` instead of chromium `update_wpr` or `record_wpr`. It:
 
 * downloads and runs both Brave and Chromium, combine .wpr files (to capture all browser-specific requests);
-* adds pre-initialied profiles and Griffin/Finch experiments;
+* adds pre-initialised profiles and Griffin/Finch experiments;
 * does some pre runs to ensure that everything is initialized (aka online profile rebase)
 * removes unwanted URLs from the final .wpr file.
 

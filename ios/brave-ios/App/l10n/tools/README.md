@@ -59,7 +59,7 @@ cd l10n/
 USERNAME=<username> PASSWORD=<password> ./push-strings-to-transifex.sh
 ```
 
-If there any issues pushing strings to Transifex then these issues are logged to ```output.log```
+If there are any issues pushing strings to Transifex then these issues are logged to ```output.log```
 
 ### How Transifex handles updates
 
@@ -83,7 +83,7 @@ cd l10n/
 USERNAME=<username> PASSWORD=<password> ./pull-translations-into-project.sh
 ```
 
-If there any issues pulling translations into the Xcode project then these issues are logged to ```output.log```
+If there are any issues pulling translations into the Xcode project then these issues are logged to ```output.log```
 
 **IMPORTANT:** Before importing the latest translations, please take a moment to look at [How does translated text get back into the GitHub repository?](#how-does-translated-text-get-back-into-the-github-repository?)
 
