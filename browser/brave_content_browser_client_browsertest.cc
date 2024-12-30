@@ -268,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
     content::WebContents* contents =
         browser()->tab_strip_model()->GetActiveWebContents();
     NavigateToURLAndWaitForRewrites(contents,
-                                    GURL(scheme + chrome::kChromeUISyncHost),
+                                    GURL(scheme + chrome::kBraveUISyncHost),
                                     GURL("chrome://sync"));
 
     EXPECT_STREQ(base::UTF16ToUTF8(

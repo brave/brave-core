@@ -1134,7 +1134,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
   }
 
   // brave://sync => brave://settings/braveSync
-  if (url->host() == chrome::kChromeUISyncHost) {
+  if (url->host() == chrome::kBraveUISyncHost) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kChromeUIScheme);
     replacements.SetHostStr(chrome::kChromeUISettingsHost);
