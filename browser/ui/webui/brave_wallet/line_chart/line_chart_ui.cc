@@ -16,7 +16,6 @@
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "ui/resources/grit/webui_resources.h"
 #include "ui/webui/webui_util.h"
 
 namespace line_chart {
