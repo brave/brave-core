@@ -13,9 +13,7 @@
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "brave/ios/browser/url_sanitizer/url_sanitizer_service_factory+private.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
 
@@ -37,8 +35,8 @@ namespace brave {
 // static
 brave::URLSanitizerService* URLSanitizerServiceFactory::GetServiceForState(
     ProfileIOS* profile) {
-  return static_cast<brave::URLSanitizerService*>(
-      GetInstance()->GetServiceForBrowserState(profile, true));
+  return GetInstance()->GetServiceForProfileAs<brave::URLSanitizerService>(
+      profile, true);
 }
 
 // static
@@ -48,9 +46,10 @@ URLSanitizerServiceFactory* URLSanitizerServiceFactory::GetInstance() {
 }
 
 URLSanitizerServiceFactory::URLSanitizerServiceFactory()
-    : BrowserStateKeyedServiceFactory(
-          "URLSanitizerService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("URLSanitizerService",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {}
 
 URLSanitizerServiceFactory::~URLSanitizerServiceFactory() = default;
 
@@ -63,19 +62,6 @@ URLSanitizerServiceFactory::BuildServiceInstanceFor(
       static_cast<BraveApplicationContextImpl*>(GetApplicationContext());
   braveContext->url_sanitizer_component_installer()->AddObserver(service.get());
   return service;
-}
-
-bool URLSanitizerServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
-}
-
-bool URLSanitizerServiceFactory::ServiceIsCreatedWithBrowserState() const {
-  return true;
-}
-
-web::BrowserState* URLSanitizerServiceFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return GetBrowserStateRedirectedInIncognito(context);
 }
 
 }  // namespace brave
