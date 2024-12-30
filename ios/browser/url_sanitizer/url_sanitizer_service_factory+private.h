@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h"
-#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 namespace base {
 template <typename T>
@@ -26,14 +26,11 @@ class ProfileIOS;
 namespace brave {
 class URLSanitizerService;
 
-class URLSanitizerServiceFactory : public BrowserStateKeyedServiceFactory {
+class URLSanitizerServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   static brave::URLSanitizerService* GetServiceForState(ProfileIOS* profile);
 
   static URLSanitizerServiceFactory* GetInstance();
-
- protected:
-  bool ServiceIsCreatedWithBrowserState() const override;
 
  private:
   friend base::NoDestructor<URLSanitizerServiceFactory>;
@@ -41,11 +38,8 @@ class URLSanitizerServiceFactory : public BrowserStateKeyedServiceFactory {
   URLSanitizerServiceFactory();
   ~URLSanitizerServiceFactory() override;
 
-  // BrowserStateKeyedServiceFactory implementation.
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
-  bool ServiceIsNULLWhileTesting() const override;
-  web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 };
 

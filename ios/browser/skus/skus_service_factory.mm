@@ -11,10 +11,8 @@
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/features.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -22,13 +20,14 @@
 namespace skus {
 
 // static
-mojo::PendingRemote<mojom::SkusService> SkusServiceFactory::GetForBrowserState(
+mojo::PendingRemote<mojom::SkusService> SkusServiceFactory::GetForProfile(
     ProfileIOS* profile) {
-  auto* service = GetInstance()->GetServiceForBrowserState(profile, true);
+  auto* service = GetInstance()->GetServiceForProfileAs<skus::SkusServiceImpl>(
+      profile, true);
   if (!service) {
     return mojo::PendingRemote<mojom::SkusService>();
   }
-  return static_cast<skus::SkusServiceImpl*>(service)->MakeRemote();
+  return service->MakeRemote();
 }
 
 // static
@@ -38,9 +37,8 @@ SkusServiceFactory* SkusServiceFactory::GetInstance() {
 }
 
 SkusServiceFactory::SkusServiceFactory()
-    : BrowserStateKeyedServiceFactory(
-          "SkusService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("SkusService",
+                                    TestingCreation::kNoServiceForTests) {}
 
 SkusServiceFactory::~SkusServiceFactory() = default;
 
@@ -66,10 +64,6 @@ std::unique_ptr<KeyedService> SkusServiceFactory::BuildServiceInstanceFor(
 void SkusServiceFactory::RegisterBrowserStatePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   skus::RegisterProfilePrefsForMigration(registry);
-}
-
-bool SkusServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
 }
 
 }  // namespace skus

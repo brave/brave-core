@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 class ProfileIOS;
@@ -28,10 +28,10 @@ namespace brave_wallet {
 
 class AssetRatioService;
 
-class AssetRatioServiceFactory : public BrowserStateKeyedServiceFactory {
+class AssetRatioServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   // Creates the service if it doesn't exist already for |profile|.
-  static mojo::PendingRemote<mojom::AssetRatioService> GetForBrowserState(
+  static mojo::PendingRemote<mojom::AssetRatioService> GetForProfile(
       ProfileIOS* profile);
   static AssetRatioService* GetServiceForState(ProfileIOS* profile);
 
@@ -43,12 +43,8 @@ class AssetRatioServiceFactory : public BrowserStateKeyedServiceFactory {
   AssetRatioServiceFactory();
   ~AssetRatioServiceFactory() override;
 
-  // BrowserContextKeyedServiceFactory:
-  // BrowserStateKeyedServiceFactory implementation.
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
-  bool ServiceIsNULLWhileTesting() const override;
-  web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 
   AssetRatioServiceFactory(const AssetRatioServiceFactory&) = delete;

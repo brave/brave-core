@@ -25,8 +25,7 @@
 
 @implementation BraveWalletAssetRatioServiceFactory
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {
-  auto service =
-      brave_wallet::AssetRatioServiceFactory::GetForBrowserState(profile);
+  auto service = brave_wallet::AssetRatioServiceFactory::GetForProfile(profile);
   if (!service) {
     return nil;
   }
@@ -123,7 +122,7 @@
 @implementation BraveWalletMeldIntegrationServiceFactory
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {
   auto service =
-      brave_wallet::MeldIntegrationServiceFactory::GetForBrowserState(profile);
+      brave_wallet::MeldIntegrationServiceFactory::GetForProfile(profile);
   if (!service) {
     return nil;
   }
@@ -148,7 +147,7 @@
 
 @implementation BraveWalletSwapServiceFactory
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {
-  auto service = brave_wallet::SwapServiceFactory::GetForBrowserState(profile);
+  auto service = brave_wallet::SwapServiceFactory::GetForProfile(profile);
   if (!service) {
     return nil;
   }
@@ -160,7 +159,7 @@
 @implementation BraveWalletIpfsServiceFactory
 + (nullable id)serviceForProfile:(ProfileIOS*)profile {
   auto service =
-      brave_wallet::BraveWalletIpfsServiceFactory::GetForBrowserState(profile);
+      brave_wallet::BraveWalletIpfsServiceFactory::GetForProfile(profile);
   if (!service) {
     return nil;
   }

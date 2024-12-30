@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "base/no_destructor.h"
-#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
@@ -23,10 +23,10 @@ namespace ai_chat {
 
 class ModelService;
 
-class ModelServiceFactory : public BrowserStateKeyedServiceFactory {
+class ModelServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
-  static ModelService* GetForBrowserState(ProfileIOS* profile);
-  static ModelService* GetForBrowserStateIfExists(ProfileIOS* profile);
+  static ModelService* GetForProfile(ProfileIOS* profile);
+  static ModelService* GetForProfileIfExists(ProfileIOS* profile);
   static ModelServiceFactory* GetInstance();
 
   ModelServiceFactory(const ModelServiceFactory&) = delete;
@@ -38,12 +38,9 @@ class ModelServiceFactory : public BrowserStateKeyedServiceFactory {
   ModelServiceFactory();
   ~ModelServiceFactory() override;
 
-  // BrowserStateKeyedServiceFactory implementation.
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       web::BrowserState* context) const override;
-  web::BrowserState* GetBrowserStateToUse(
-      web::BrowserState* context) const override;
-  bool ServiceIsNULLWhileTesting() const override;
 };
 }  // namespace ai_chat
 

@@ -10,7 +10,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
@@ -25,9 +25,9 @@ namespace ai_chat {
 class AIChatMetrics;
 class AIChatService;
 
-class AIChatServiceFactory : public BrowserStateKeyedServiceFactory {
+class AIChatServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
-  static AIChatService* GetForBrowserState(ProfileIOS* profile);
+  static AIChatService* GetForProfile(ProfileIOS* profile);
   static AIChatServiceFactory* GetInstance();
 
   AIChatServiceFactory(const AIChatServiceFactory&) = delete;
@@ -39,12 +39,9 @@ class AIChatServiceFactory : public BrowserStateKeyedServiceFactory {
   AIChatServiceFactory();
   ~AIChatServiceFactory() override;
 
-  // BrowserStateKeyedServiceFactory implementation.
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       web::BrowserState* context) const override;
-  web::BrowserState* GetBrowserStateToUse(
-      web::BrowserState* context) const override;
-  bool ServiceIsNULLWhileTesting() const override;
 
   std::unique_ptr<AIChatMetrics> ai_chat_metrics_;
 };

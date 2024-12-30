@@ -8,9 +8,8 @@
 
 #include <memory>
 
-#include "base/no_destructor.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom.h"
-#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 
@@ -21,7 +20,7 @@ class NoDestructor;
 
 namespace webcompat_reporter {
 
-class WebcompatReporterServiceFactory : public BrowserStateKeyedServiceFactory {
+class WebcompatReporterServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   static mojo::PendingRemote<mojom::WebcompatReporterHandler>
   GetHandlerForContext(ProfileIOS* profile);
@@ -40,10 +39,8 @@ class WebcompatReporterServiceFactory : public BrowserStateKeyedServiceFactory {
   WebcompatReporterServiceFactory();
   ~WebcompatReporterServiceFactory() override;
 
-  // BrowserStateKeyedServiceFactory implementation.
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
-      web::BrowserState* context) const override;
-  web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
 };
 

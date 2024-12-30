@@ -8,10 +8,8 @@
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"
 #include "brave/ios/browser/api/webcompat_reporter/webcompat_reporter_service_delegate.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace webcompat_reporter {
@@ -19,11 +17,13 @@ namespace webcompat_reporter {
 // static
 mojo::PendingRemote<mojom::WebcompatReporterHandler>
 WebcompatReporterServiceFactory::GetHandlerForContext(ProfileIOS* profile) {
-  auto* service = GetInstance()->GetServiceForBrowserState(profile, true);
+  auto* service =
+      GetInstance()->GetServiceForProfileAs<WebcompatReporterService>(profile,
+                                                                      true);
   if (!service) {
     return mojo::PendingRemote<mojom::WebcompatReporterHandler>();
   }
-  return static_cast<WebcompatReporterService*>(service)->MakeRemote();
+  return service->MakeRemote();
 }
 
 // static
@@ -34,9 +34,10 @@ WebcompatReporterServiceFactory::GetInstance() {
 }
 
 WebcompatReporterServiceFactory::WebcompatReporterServiceFactory()
-    : BrowserStateKeyedServiceFactory(
-          "WebcompatReporterService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("WebcompatReporterService",
+                                    ProfileSelection::kOwnInstanceInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kCreateService) {}
 
 WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() {}
 
@@ -58,11 +59,6 @@ WebcompatReporterServiceFactory::BuildServiceInstanceFor(
       !profile || profile->IsOffTheRecord() ? nullptr : profile->GetPrefs(),
       std::make_unique<WebcompatReporterServiceDelegateImpl>(cus),
       std::move(report_uploader));
-}
-
-web::BrowserState* WebcompatReporterServiceFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return GetBrowserStateOwnInstanceInIncognito(context);
 }
 
 }  // namespace webcompat_reporter
