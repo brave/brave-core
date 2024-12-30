@@ -71,7 +71,13 @@ const txListItemSkeletonProps: LoadingSkeletonStyleProps = {
   enableAnimation: true
 }
 
-export const TransactionsScreen: React.FC = () => {
+interface Props {
+  isPortfolio?: boolean
+}
+
+export const TransactionsScreen = (props: Props) => {
+  const { isPortfolio } = props
+
   // routing
   const history = useHistory()
   const { hash: selectedTransactionIdHash } = useLocation()
@@ -217,7 +223,7 @@ export const TransactionsScreen: React.FC = () => {
   const transactionsView = React.useMemo(() => {
     return (
       <>
-        {isPanel && (
+        {isPortfolio && (
           <Column
             flex={1}
             style={{ minWidth: '100%' }}
@@ -270,6 +276,7 @@ export const TransactionsScreen: React.FC = () => {
                 fullWidth={true}
                 fullHeight={true}
                 justifyContent='flex-start'
+                gap='16px'
               >
                 {filteredTransactions.map((tx) => (
                   <PortfolioTransactionItem
@@ -301,6 +308,7 @@ export const TransactionsScreen: React.FC = () => {
     filteredTransactions,
     isLoadingTxsList,
     isPanel,
+    isPortfolio,
     onClickTransaction,
     searchValue,
     txsForSelectedChain,
@@ -308,7 +316,7 @@ export const TransactionsScreen: React.FC = () => {
   ])
 
   // render
-  if (isPanel) {
+  if (isPortfolio) {
     return (
       <>
         {transactionsView}
