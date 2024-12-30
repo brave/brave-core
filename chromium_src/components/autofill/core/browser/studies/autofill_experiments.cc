@@ -14,7 +14,7 @@ class SyncService;
 
 namespace autofill {
 class LogManager;
-class PersonalDataManager;
+class PaymentsDataManager;
 bool IsCreditCardUploadEnabled(
     const syncer::SyncService* sync_service,
     const PrefService& pref_service,
@@ -23,11 +23,12 @@ bool IsCreditCardUploadEnabled(
     LogManager* log_manager) {
   return false;
 }
-bool IsCreditCardMigrationEnabled(PersonalDataManager& personal_data_manager,
-                                  syncer::SyncService* sync_service,
-                                  const PrefService& pref_service,
-                                  bool is_test_mode,
-                                  LogManager* log_manager) {
+bool IsCreditCardMigrationEnabled(
+    const PaymentsDataManager& payments_data_manager,
+    const syncer::SyncService* sync_service,
+    const PrefService& pref_service,
+    bool is_test_mode,
+    LogManager* log_manager) {
   return false;
 }
 }  // namespace autofill
