@@ -9,7 +9,8 @@ from shutil import copyfile
 
 import os
 import tempfile
-import lxml.etree  # pylint: disable=import-error
+from defusedxml import ElementTree
+from xml.etree.ElementTree import Element, SubElement, tostring
 
 from lib.l10n.grd_utils import (get_grd_strings, get_xtb_files, textify)
 from lib.l10n.crowdin.common import (
@@ -139,8 +140,8 @@ def upload_grd_translations_to_crowdin(channel,
         print(
             f'Processing language {crowdin_lang} ({lang}) from {xtb_full_path}'
         )
-        xtb_tree = lxml.etree.parse(xtb_full_path)
-        xtb_strings = xtb_tree.xpath('//translation')
+        xtb_tree = ElementTree.parse(xtb_full_path)
+        xtb_strings = xtb_tree.findall('.//translation')
         for xtb_string in xtb_strings:
             string_fp = xtb_string.attrib['id']
             matches = [tup for tup in grd_strings if tup[2] == string_fp]
@@ -185,7 +186,7 @@ def upload_translation_strings_xml_for_grd(channel,
             print(f'Skipping language {crowdin_lang} ({lang}).')
             continue
         # Prepare output xml and file
-        resources_tag = lxml.etree.Element('resources')
+        resources_tag = Element('resources')
         output_xml_file_path = os.path.join(
             tempdir, resource_name + f'_{crowdin_lang}.xml')
         if os.path.exists(output_xml_file_path):
@@ -198,8 +199,8 @@ def upload_translation_strings_xml_for_grd(channel,
         print(
             f'Processing language {crowdin_lang} ({lang}) from {xtb_full_path}'
         )
-        xtb_tree = lxml.etree.parse(xtb_full_path)
-        xtb_strings = xtb_tree.xpath('//translation')
+        xtb_tree = ElementTree.parse(xtb_full_path)
+        xtb_strings = xtb_tree.findall('.//translation')
         # print(f'Loaded {len(xtb_strings)} translations')
 
         for xtb_string in xtb_strings:
@@ -208,7 +209,7 @@ def upload_translation_strings_xml_for_grd(channel,
             # XTB files may have translations for string that are no longer in
             # the GRD, so only upload those that are needed for the GRD.
             if len(matches):
-                # Revert escaping of & because lxml.etree.tostring will do
+                # Revert escaping of & because ElementTree.tostring will do
                 # it again and we'll end up with &amp;amp;
                 value = textify(xtb_string).replace('&amp;', '&')
                 for match in matches:
@@ -220,9 +221,9 @@ def upload_translation_strings_xml_for_grd(channel,
                                                          value,
                                                          string_desc=""))
 
-        xml_string = lxml.etree.tostring(resources_tag,
-                                         xml_declaration=True,
-                                         encoding='utf-8')
+        xml_string = tostring(resources_tag,
+                             encoding='utf-8',
+                             xml_declaration=True)
         with open(output_xml_file_path, mode='wb') as f:
             f.write(xml_string)
         print(f'Uploading l10n for {resource_name}: {crowdin_lang}')
@@ -238,46 +239,45 @@ def upload_translation_strings_xml_for_grd(channel,
 
 def generate_source_strings_xml_from_grd(output_xml_file_path, grd_file_path):
     """Generates a source string xml file from a GRD file"""
-    resources_tag = lxml.etree.Element('resources')
+    resources_tag = Element('resources')
     all_strings = get_grd_strings(grd_file_path)
     assert len(all_strings) > 0, f'GRD {grd_file_path} appears to be empty'
     for (string_name, string_value, _, string_desc) in all_strings:
         (string_value,
          string_desc) = process_source_string_value(string_value, string_desc)
-        # Revert escaping of & because lxml.etree.tostring will do it again
-        # and we'll end up with &amp;amp;
+        # Revert escaping of & because ElementTree.tostring will do it again
         resources_tag.append(
             create_android_format_string_tag(
                 string_name, string_value.replace('&amp;', '&'), string_desc))
     print(f'Generating {len(all_strings)} strings for GRD: {grd_file_path}')
-    xml_string = lxml.etree.tostring(resources_tag,
-                                     xml_declaration=True,
-                                     encoding='utf-8')
+    xml_string = tostring(resources_tag,
+                         encoding='utf-8',
+                         xml_declaration=True)
     with open(output_xml_file_path, mode='wb') as f:
         f.write(xml_string)
 
 
 def process_source_string_value(string_value, string_desc):
-    """Empty everything out from placeholders. The content of placeholders
-       doesn't need to be localized and only confuses localizers. Plus, it
-       gets stripped out anyway when we download the translations. The only
-       useful parts of the placeholders are the example values which we can
-       extract here and add to the comment."""
-    value_xml = lxml.etree.fromstring('<string>' + string_value + '</string>')
-    phs = value_xml.findall('.//ph')
+    """Process string value and extract placeholder examples"""
+    root = ElementTree.fromstring('<string>' + string_value + '</string>')
+    phs = root.findall('.//ph')
     examples = []
     for ph in phs:
         name = ph.get('name')
-        example = ph.findtext('ex')
+        example = None
+        for ex in ph.findall('ex'):
+            example = ex.text
+            ex.clear()
         if example is not None:
             examples.append((name, example))
-        lxml.etree.strip_elements(ph, '*')
+        for child in ph:
+            ph.remove(child)
         if ph.text is not None:
             ph.text = ''
     string_desc = add_placeholders_examples_to_description(
         string_desc, examples)
-    string_value = lxml.etree.tostring(
-        value_xml, encoding='utf-8').decode('utf-8').replace('></ph>', '/>')
+    string_value = tostring(
+        root, encoding='utf-8').decode('utf-8').replace('></ph>', '/>')
     return (string_value[8:-9], string_desc)
 
 
@@ -293,13 +293,12 @@ def add_placeholders_examples_to_description(string_desc, examples):
 
 
 def create_android_format_string_tag(string_name, string_value, string_desc):
-    """Creates intermediate Android format child tag for each translation
-       string"""
-    string_tag = lxml.etree.Element('string')
+    """Creates intermediate Android format child tag for each translation string"""
+    string_tag = Element('string')
     string_tag.set('name', string_name)
     string_tag.set('comment', string_desc)
     string_tag.text = string_value
-    string_tag.tail = '\n'
+    # Note: ElementTree doesn't support tail text directly
     return string_tag
 
 

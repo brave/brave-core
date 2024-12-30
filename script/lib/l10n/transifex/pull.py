@@ -9,7 +9,7 @@ import html
 import json
 import os
 import re
-import lxml.etree  # pylint: disable=import-error
+from defusedxml import ElementTree
 
 from lib.l10n.grd_utils import (get_grd_strings,
                                 get_override_file_path,
@@ -83,19 +83,19 @@ def combine_override_xtb_into_original(source_string_path):
         (override_lang, override_xtb_path) = override_xtb_files[idx]
         assert lang == override_lang
 
-        xtb_tree = lxml.etree.parse(os.path.join(source_base_path, xtb_path))
-        override_xtb_tree = lxml.etree.parse(
+        xtb_tree = ElementTree.parse(os.path.join(source_base_path, xtb_path))
+        override_xtb_tree = ElementTree.parse(
             os.path.join(override_base_path, override_xtb_path))
-        translationbundle = xtb_tree.xpath('//translationbundle')[0]
-        override_translations = override_xtb_tree.xpath('//translation')
-        translations = xtb_tree.xpath('//translation')
+        translationbundle = xtb_tree.find('.//translationbundle')
+        override_translations = override_xtb_tree.findall('.//translation')
+        translations = xtb_tree.findall('.//translation')
 
         override_translation_fps = [t.attrib['id']
                                     for t in override_translations]
         translation_fps = [t.attrib['id'] for t in translations]
 
         # Remove translations that we have a matching FP for
-        for translation in xtb_tree.xpath('//translation'):
+        for translation in xtb_tree.findall('.//translation'):
             if translation.attrib['id'] in override_translation_fps:
                 translation.getparent().remove(translation)
             elif translation_fps.count(translation.attrib['id']) > 1:
@@ -107,8 +107,7 @@ def combine_override_xtb_into_original(source_string_path):
             translationbundle.append(translation)
 
         xtb_content = (b'<?xml version="1.0" ?>\n' +
-            lxml.etree.tostring(xtb_tree, pretty_print=True,
-                xml_declaration=False, encoding='utf-8').strip())
+            ElementTree.tostring(xtb_tree.getroot(), encoding='utf-8'))
         with open(os.path.join(source_base_path, xtb_path), mode='wb') as f:
             f.write(xtb_content)
         # Delete the override xtb for this lang
@@ -160,11 +159,9 @@ def fix_transifex_translation_file_content(content, file_ext):
 def verify_transifex_translation_file_content(content, file_ext):
     """Verifies that Transifex translation file content is parse-able"""
     if file_ext == '.json':
-        # Make sure it's parseable
         json.loads(content)
     elif file_ext == '.grd':
-        # Make sure it's parseable
-        lxml.etree.fromstring(content)
+        ElementTree.fromstring(content)
 
 
 def fixup_bad_ph_tags_from_raw_transifex_string(xml_content):
@@ -212,13 +209,13 @@ def process_bad_ph_tags_for_one_string(val):
 
 def trim_ph_tags_in_xtb_file_content(xml_content):
     """Removes all children of <ph> tags including text inside ph tag"""
-    xml = lxml.etree.fromstring(xml_content)
-    phs = xml.findall('.//ph')
+    tree = ElementTree.fromstring(xml_content)
+    phs = tree.findall('.//ph')
     for ph in phs:
-        lxml.etree.strip_elements(ph, '*')
-        if ph.text is not None:
-            ph.text = ''
-    return lxml.etree.tostring(xml, encoding='utf-8')
+        for child in list(ph):
+            ph.remove(child)
+        ph.text = ''
+    return ElementTree.tostring(tree, encoding='utf-8')
 
 
 def generate_xtb_content(lang_code, grd_strings, translations):
@@ -241,7 +238,7 @@ def generate_xtb_content(lang_code, grd_strings, translations):
                     create_xtb_format_translation_tag(
                         fingerprint, translation))
 
-    xml_string = lxml.etree.tostring(translationbundle_tag, encoding='utf-8')
+    xml_string = ElementTree.tostring(translationbundle_tag, encoding='utf-8')
     xml_string = html.unescape(xml_string.decode('utf-8'))
     xml_string = (
         '<?xml version="1.0" ?>\n<!DOCTYPE translationbundle>\n' + xml_string)
@@ -250,11 +247,9 @@ def generate_xtb_content(lang_code, grd_strings, translations):
 
 def create_xtb_format_translationbundle_tag(lang):
     """Creates the root XTB XML element"""
-    translationbundle_tag = lxml.etree.Element('translationbundle')
+    translationbundle_tag = ElementTree.Element('translationbundle')
     lang = transifex_lang_to_xtb_lang(lang)
     translationbundle_tag.set('lang', lang)
-    # Adds a newline so the first translation isn't glued to the
-    # translationbundle element for us weak humans.
     translationbundle_tag.text = '\n'
     return translationbundle_tag
 
@@ -294,7 +289,7 @@ def check_plural_string_formatting(grd_string_content, translation_content):
 
 def create_xtb_format_translation_tag(fingerprint, string_value):
     """Creates child XTB elements for each translation tag"""
-    string_tag = lxml.etree.Element('translation')
+    string_tag = ElementTree.Element('translation')
     string_tag.set('id', str(fingerprint))
     if string_value.count('<') != string_value.count('>'):
         assert False, \
@@ -307,9 +302,8 @@ def create_xtb_format_translation_tag(fingerprint, string_value):
 
 def validate_tags_in_transifex_strings(xml_content):
     """Validates that all child elements of all <string>s are allowed"""
-    xml = lxml.etree.fromstring(xml_content)
+    xml = ElementTree.fromstring(xml_content)
     string_tags = xml.findall('.//string')
-    # print(f'Validating HTML tags in {len(string_tags)} strings')
     errors = None
     for string_tag in string_tags:
         error = validate_tags_in_one_string(string_tag, textify_from_transifex)

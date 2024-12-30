@@ -11,7 +11,8 @@ import io
 import json
 import os
 import tempfile
-import lxml.etree  # pylint: disable=import-error
+import defusedxml.ElementTree as ET
+from defusedxml.ElementTree import Element, SubElement, tostring
 
 from lib.l10n.grd_utils import (get_grd_languages,
                                 get_grd_strings,
@@ -149,15 +150,13 @@ def upload_grd_translations_to_transifex(source_string_path, filename,
         if is_override:
             xtb_full_path = xtb_full_path.replace('_override', '')
         print(f'Processing language {transifex_lang} ({lang})')
-        xtb_tree = lxml.etree.parse(xtb_full_path)
-        xtb_strings = xtb_tree.xpath('//translation')
+        xtb_tree = ET.parse(xtb_full_path)
+        xtb_strings = xtb_tree.findall('.//translation')
         for xtb_string in xtb_strings:
-            string_fp = xtb_string.attrib['id']
+            string_fp = xtb_string.get('id')
             matches = [tup for tup in grd_strings if tup[2] == string_fp]
-            # XTB files may have translations for string that are no longer in
-            # the GRD, so only upload those that are needed for the GRD.
             if len(matches):
-                value = textify(xtb_string)
+                value = ''.join(xtb_string.itertext())
                 upload_translation_to_transifex(source_string_path,
                                                 transifex_lang, resource_name,
                                                 matches[0][0], value,
@@ -176,23 +175,22 @@ def generate_source_strings_xml_from_grd(output_xml_file_handle, grd_file_path):
         resources_tag.append(
             create_android_format_string_tag(string_name, string_value))
     print(f'Generating {len(all_strings)} strings for GRD: {grd_file_path}')
-    xml_string = lxml.etree.tostring(resources_tag, encoding='utf-8')
+    xml_string = tostring(resources_tag, encoding='utf-8')
     os.write(output_xml_file_handle, xml_string)
     return xml_string
 
 
 def create_android_format_resources_tag():
     """Creates intermediate Android format root tag"""
-    return lxml.etree.Element('resources')
+    return Element('resources')
 
 
 def create_android_format_string_tag(string_name, string_value):
     """Creates intermediate Android format child tag for each translation
        string"""
-    string_tag = lxml.etree.Element('string')
+    string_tag = Element('string')
     string_tag.set('name', string_name)
     string_tag.text = string_value
-    string_tag.tail = '\n'
     return string_tag
 
 

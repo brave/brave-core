@@ -5,7 +5,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import lxml.etree  # pylint: disable=import-error
+import defusedxml.ElementTree as ET  # pylint: disable=import-error
 
 
 # This module contains functionality to validate XML content of strings
@@ -33,14 +33,13 @@ def validate_elements_tags(elements):
 def validate_tags_in_one_string(string_tag, textify_callback):
     """Validates that all child elements of the |string_tag|'s content XML are
        allowed"""
-    lxml.etree.strip_elements(string_tag, 'ph', with_tail=False)
     string_text = textify_callback(string_tag)
+    string_text = string_text.replace('<ph>', '').replace('</ph>', '')
     string_text = string_text.replace('&lt;', '<').replace('&gt;', '>')
-    # print(f'Validating: {string_text.encode('utf-8')}')
+    
     try:
-        string_xml = lxml.etree.fromstring(
-            '<string>' + string_text + '</string>')
-    except lxml.etree.XMLSyntaxError as e:
+        string_xml = ET.fromstring('<string>' + string_text + '</string>')
+    except ET.ParseError as e:
         errors = '\n--------------------\n' \
             f"{string_text.encode('utf-8')}\nERROR: {str(e)}\n"
         print(errors)
@@ -49,9 +48,10 @@ def validate_tags_in_one_string(string_tag, textify_callback):
         if cont in ('C', 'c'):
             return None
         return errors
+    
     errors = validate_elements_tags(list(string_xml))
     if errors is not None:
-        tag_text = lxml.etree.tostring(
-            string_tag, method='xml', encoding='utf-8', pretty_print=True)
-        errors = f'--------------------\n{tag_text}\n' + errors
+        tag_text = ET.tostring(
+            string_tag, encoding='utf-8', method='xml')
+        errors = f'--------------------\n{tag_text.decode("utf-8")}\n' + errors
     return errors

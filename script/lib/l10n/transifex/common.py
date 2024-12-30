@@ -8,7 +8,7 @@
 
 import re
 import os
-import lxml.etree  # pylint: disable=import-error
+from defusedxml import ElementTree  # Replace lxml.etree
 
 from lib.l10n.grd_utils import textify
 
@@ -76,7 +76,7 @@ def xtb_lang_to_transifex_lang(lang):
 def get_strings_dict_from_xml_content(xml_content):
     """Obtains a dictionary mapping the string name to text from Android xml
        content"""
-    strings = lxml.etree.fromstring(xml_content).findall('string')
+    strings = ElementTree.fromstring(xml_content).findall('string')
     return {string_tag.get('name'): textify_from_transifex(string_tag)
             for string_tag in strings}
 
