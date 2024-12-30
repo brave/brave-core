@@ -153,7 +153,7 @@ struct SubmitReportView: View {
         braveVpnConnected: String(BraveVPN.isConnected),
         details: additionalDetails,
         contact: contactDetails,
-        cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : "",
+        cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : nil,
         blockScripts: String(Preferences.Shields.blockScripts.value),
         adBlockComponentsVersion: nil,
         screenshotPng: nil

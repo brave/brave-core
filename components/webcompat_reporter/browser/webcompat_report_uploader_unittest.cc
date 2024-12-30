@@ -107,7 +107,8 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   auto report = webcompat_reporter::mojom::ReportInfo::New(
       "dev", "1.231.45", "https://abc.url/p1/p2", "true", "ad_block_setting",
       "fp_block_setting", "ad_block_list_names", "languages", "true", "true",
-      "details", "contact", std::move(components), std::nullopt);
+      "details", "contact", "block", "true", std::move(components),
+      std::nullopt);
 
   auto report_copy = report->Clone();
 
@@ -120,9 +121,11 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
   "adBlockSetting": "%s",
   "additionalDetails": "%s",
   "api_key": "%s",
+  "block_scripts": "%s",
   "braveVPNEnabled": "%s",
   "channel": "%s",
   "contactInfo": "%s",
+  "cookie_policy": "%s",
   "domain": "%s",
   "fpBlockSetting": "%s",
   "languageFarblingEnabled": "%s",
@@ -134,9 +137,10 @@ TEST_F(WebcompatReportUploaderUnitTest, GenerateReport) {
           R"([{"id": "id", "name": "name", "version": "version"}])",
           report_copy->ad_block_list_names->c_str(),
           report_copy->ad_block_setting->c_str(), report_copy->details->c_str(),
-          brave_stats::GetAPIKey().c_str(),
+          brave_stats::GetAPIKey().c_str(), report_copy->block_scripts->c_str(),
           report_copy->brave_vpn_connected ? "true" : "false",
           report_copy->channel->c_str(), report_copy->contact->c_str(),
+          report_copy->cookie_policy->c_str(),
           url::Origin::Create(GURL(report_copy->report_url.value()))
               .Serialize()
               .c_str(),

@@ -14,12 +14,6 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-class Profile;
-
-namespace content {
-    class BrowserContext;
-}  // namespace content
-
 namespace webcompat_reporter {
 
 using WebCompatServiceDelegate = WebcompatReporterService::Delegate;

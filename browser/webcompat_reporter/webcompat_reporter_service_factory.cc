@@ -13,12 +13,12 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/storage_partition.h"
-#include "chrome/browser/content_settings/cookie_settings_factory.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 
 namespace webcompat_reporter {
 
@@ -73,7 +73,7 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
           g_brave_browser_process->ad_block_service(),
           HostContentSettingsMapFactory::GetForProfile(context),
           CookieSettingsFactory::GetForProfile(
-          Profile::FromBrowserContext(context))),
+              Profile::FromBrowserContext(context))),
       std::move(report_uploader));
 }
 

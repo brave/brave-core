@@ -19,7 +19,8 @@ namespace webcompat_reporter {
 
 WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
     component_updater::ComponentUpdateService* component_update_service,
-    brave_shields::AdBlockService* adblock_service, HostContentSettingsMap* host_content_settings_map,
+    brave_shields::AdBlockService* adblock_service,
+    HostContentSettingsMap* host_content_settings_map,
     scoped_refptr<content_settings::CookieSettings> content_settings)
     : WebcompatReporterServiceDelegateBase(component_update_service),
       adblock_service_(adblock_service),
@@ -79,7 +80,8 @@ WebcompatReporterServiceDelegateImpl::GetScriptBlockingFlag() const {
   }
 
   return BoolToString(brave_shields::GetNoScriptControlType(
-      host_content_settings_map_,GURL()) == brave_shields::ControlType::BLOCK);
+                          host_content_settings_map_, GURL()) ==
+                      brave_shields::ControlType::BLOCK);
 }
 
 }  // namespace webcompat_reporter
