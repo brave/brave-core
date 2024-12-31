@@ -113,18 +113,12 @@ license_files = ['LICENCE']
 [crate.arrayref]
 license_files = ['LICENSE']
 
-[crate.base64ct]
-extra_input_roots = [ "../README.md" ]
-
 [crate.bitvec]
 extra_input_roots = ['../doc', '../README.md' ]
 license_files = ['LICENSE.txt']
 
 [crate.cid]
 license_files = ['LICENSE']
-
-[crate.const-oid]
-extra_input_roots = [ "../README.md" ]
 
 [crate.cbor4ii]
 extra_input_roots = [ "../README.md" ]
@@ -181,20 +175,8 @@ extra_input_roots = [ "../README.md" ]
 [crate.deranged]
 license_files = ['LICENSE-Apache']
 
-[crate.der]
-extra_input_roots = [ "../README.md" ]
-
-[crate.derivation-path]
-license_files = ['../../../../../common/licenses/Apache-2.0']
-
 [crate.dtoa-short]
 license_files = ['LICENSE']
-
-[crate.ed25519]
-extra_input_roots = [ "../README.md" ]
-
-[crate.ed25519-dalek-bip32]
-license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.encoding_rs]
 license_files = ['LICENSE-APACHE']
@@ -316,9 +298,6 @@ license_files = ['LICENSE-Apache']
 [crate.num-traits]
 extra_kv = { rustflags = [ "--cfg", "has_i128", "--cfg", "has_to_int_unchecked", "--cfg", "has_reverse_bits", "--cfg", "has_leading_trailing_ones", "--cfg", "has_int_assignop_ref", "--cfg", "has_div_euclid", "--cfg", "has_copysign" ] }
 
-[crate.pkcs8]
-extra_input_roots = [ "../README.md" ]
-
 [crate.powerfmt]
 license_files = ['LICENSE-Apache']
 
@@ -361,14 +340,8 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.servo_arc]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
-[crate.signature]
-extra_input_roots = [ "../README.md" ]
-
 [crate.siphasher]
 license_files = ['../../../../../common/licenses/Apache-2.0']
-
-[crate.spki]
-extra_input_roots = [ "../README.md" ]
 
 [crate.sta-rs]
 license_files = ['LICENSE']

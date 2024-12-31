@@ -15,6 +15,5 @@ rust_static_library("rust_lib") {
   deps = [
     "//brave/third_party/rust/bech32/v0_9:lib",
     "//brave/third_party/rust/curve25519_dalek/v4:lib",
-    "//brave/third_party/rust/ed25519_dalek_bip32/v0_3:lib",
   ]
 }
