@@ -28,7 +28,6 @@ source_set("hd_key") {
     "//third_party/boringssl",
   ]
 
-  public_deps = [ "//brave/components/brave_wallet/rust:rust_lib" ]
   if (enable_orchard) {
     sources += [
       "hd_key_zip32.cc",

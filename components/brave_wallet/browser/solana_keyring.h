@@ -26,8 +26,7 @@ class SolanaKeyring : public HDKeyring {
   SolanaKeyring& operator=(const SolanaKeyring&) = delete;
 
   static std::unique_ptr<HDKeyEd25519> ConstructRootHDKey(
-      base::span<const uint8_t> seed,
-      const std::string& hd_path);
+      base::span<const uint8_t> seed);
 
   std::optional<AddedAccountInfo> AddNewHDAccount() override;
   void RemoveLastHDAccount() override;
