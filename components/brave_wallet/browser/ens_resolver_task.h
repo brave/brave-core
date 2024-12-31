@@ -55,7 +55,7 @@ struct OffchainLookupData {
   EthAddress sender;
   std::vector<std::string> urls;
   std::vector<uint8_t> call_data;
-  std::vector<uint8_t> callback_function;
+  eth_abi::Bytes4 callback_function;
   std::vector<uint8_t> extra_data;
 };
 
