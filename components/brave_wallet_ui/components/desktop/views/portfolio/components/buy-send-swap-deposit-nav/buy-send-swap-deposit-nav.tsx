@@ -33,9 +33,9 @@ import {
   ButtonIcon,
   ButtonText,
   ButtonWrapper,
-  ButtonsRow,
   MoreMenuWrapper
 } from './buy-send-swap-deposit-nav.style'
+import { Row } from '../../../../../shared/style'
 
 export const BuySendSwapDepositNav = () => {
   // Routing
@@ -59,7 +59,7 @@ export const BuySendSwapDepositNav = () => {
   )
 
   return (
-    <ButtonsRow width='unset'>
+    <Row width='unset'>
       {BuySendSwapDepositOptions.slice(0, 3).map((option) => (
         <ButtonWrapper key={option.id}>
           <Button onClick={() => onClick(option)}>
@@ -75,7 +75,7 @@ export const BuySendSwapDepositNav = () => {
         <ButtonText>{getLocale('braveWalletButtonMore')}</ButtonText>
         {showMoreMenu && <PortfolioAccountMenu onClick={onClick} />}
       </MoreMenuWrapper>
-    </ButtonsRow>
+    </Row>
   )
 }
 

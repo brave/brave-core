@@ -196,8 +196,10 @@ export const BalanceAndButtonsWrapper = styled(Column)`
 
 export const BalanceAndChangeWrapper = styled(Column)`
   position: relative;
+  margin-bottom: 24px;
   @media screen and (max-width: ${layoutSmallWidth}px) {
     align-items: flex-start;
+    margin-bottom: 0px;
   }
   @media screen and (max-width: ${layoutPanelWidth}px) {
     flex-direction: column;
