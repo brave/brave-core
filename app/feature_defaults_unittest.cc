@@ -236,7 +236,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &translate::kTFLiteLanguageDetectionEnabled,
 #endif
-      &user_education::features::kWhatsNewVersion2,
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 
