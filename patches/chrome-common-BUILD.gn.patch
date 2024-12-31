@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index d8aae1b4cb41444828721172b9df75cf878b1ccf..2e5a8c333de6242ae2e22b287acd2026e75fa72e 100644
+index 5e14246f968d7466be0fefd2f3a17943bae2177e..e1d02eadc5983b4f2311a971de856f680f008c40 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -100,6 +100,7 @@ source_set("channel_info") {
+@@ -101,6 +101,7 @@ source_set("channel_info") {
    } else if (is_posix) {
      sources += [ "channel_info_posix.cc" ]
    }

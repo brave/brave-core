@@ -2,8 +2,8 @@ Name: halo2_legacy_pdqsort
 URL: https://crates.io/crates/halo2_legacy_pdqsort
 Version: 0.1.0
 Revision: c3b69083adcc5ab63d02ffbbc716ee19bdcdc81f
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/halo2_legacy_pdqsort-0.1.0/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

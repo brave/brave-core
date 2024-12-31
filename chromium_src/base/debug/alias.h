@@ -32,7 +32,7 @@ class StackObjectCopy {
       //
       // Can't use `byte_span_from_ref` because `T` might be an abstract class.
       auto original_object_memory = UNSAFE_BUFFERS(
-          make_span(reinterpret_cast<const uint8_t*>(original), kSize));
+          span(reinterpret_cast<const uint8_t*>(original), kSize));
       span(buffer_).copy_from(std::move(original_object_memory));
     } else {
       ranges::fill(buffer_, 0);

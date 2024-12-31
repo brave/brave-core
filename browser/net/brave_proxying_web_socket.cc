@@ -26,14 +26,12 @@ BraveProxyingWebSocket::BraveProxyingWebSocket(
     const network::ResourceRequest& request,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
-    int process_id,
     content::FrameTreeNodeId frame_tree_node_id,
     content::BrowserContext* browser_context,
     scoped_refptr<RequestIDGenerator> request_id_generator,
     BraveRequestHandler& handler,
     DisconnectCallback on_disconnect)
     : request_handler_(handler),
-      process_id_(process_id),
       frame_tree_node_id_(frame_tree_node_id),
       factory_(std::move(factory)),
       browser_context_(browser_context),
@@ -73,8 +71,8 @@ BraveProxyingWebSocket* BraveProxyingWebSocket::ProxyWebSocket(
   return ResourceContextData::StartProxyingWebSocket(
       std::move(factory), url, site_for_cookies, user_agent,
       std::move(handshake_client), frame->GetProcess()->GetBrowserContext(),
-      frame->GetProcess()->GetID(), frame->GetRoutingID(),
-      frame->GetFrameTreeNodeId(), frame->GetLastCommittedOrigin());
+      frame->GetRoutingID(), frame->GetFrameTreeNodeId(),
+      frame->GetLastCommittedOrigin());
 }
 
 void BraveProxyingWebSocket::Start() {
@@ -93,9 +91,8 @@ void BraveProxyingWebSocket::Start() {
         weak_factory_.GetWeakPtr());
   }
 
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, process_id_,
-                                          frame_tree_node_id_, request_id_,
-                                          browser_context_, ctx_);
+  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, frame_tree_node_id_,
+                                          request_id_, browser_context_, ctx_);
   int result = request_handler_->OnBeforeURLRequest(
       ctx_, continuation, &redirect_url_);
   // TODO(bridiver) - need to handle general case for redirect_url
@@ -166,9 +163,8 @@ void BraveProxyingWebSocket::ContinueToHeadersReceived() {
   auto continuation = base::BindRepeating(
       &BraveProxyingWebSocket::OnHeadersReceivedComplete,
       weak_factory_.GetWeakPtr());
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, process_id_,
-                                          frame_tree_node_id_, request_id_,
-                                          browser_context_, ctx_);
+  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, frame_tree_node_id_,
+                                          request_id_, browser_context_, ctx_);
   int result = request_handler_->OnHeadersReceived(
       ctx_, continuation, response_.headers.get(),
       &override_headers_, &redirect_url_);
@@ -280,9 +276,8 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy(
       &BraveProxyingWebSocket::OnBeforeSendHeadersComplete,
       weak_factory_.GetWeakPtr());
 
-  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, process_id_,
-                                          frame_tree_node_id_, request_id_,
-                                          browser_context_, ctx_);
+  ctx_ = brave::BraveRequestInfo::MakeCTX(request_, frame_tree_node_id_,
+                                          request_id_, browser_context_, ctx_);
   int result = request_handler_->OnBeforeStartTransaction(
       ctx_, continuation, &request_.headers);
 

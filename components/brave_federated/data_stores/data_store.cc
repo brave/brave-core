@@ -60,7 +60,8 @@ namespace brave_federated {
 DataStore::DataStore(const DataStoreTask data_store_task,
                      const base::FilePath& db_file_path)
     : database_(
-          {.exclusive_locking = true, .page_size = 4096, .cache_size = 500}),
+          {.exclusive_locking = true, .page_size = 4096, .cache_size = 500},
+          /*tag=*/data_store_task.name),
       db_file_path_(db_file_path),
       data_store_task_(data_store_task) {}
 
@@ -68,7 +69,6 @@ DataStore::~DataStore() = default;
 
 bool DataStore::InitializeDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  database_.set_histogram_tag(data_store_task_.name);
 
   // To recover from corruption.
   database_.set_error_callback(

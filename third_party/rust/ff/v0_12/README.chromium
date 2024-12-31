@@ -2,8 +2,8 @@ Name: ff
 URL: https://crates.io/crates/ff
 Version: 0.12.1
 Revision: a35b5eb59b2026e1442b8a19dae08d4217ac23ed
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/ff-0.12.1/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

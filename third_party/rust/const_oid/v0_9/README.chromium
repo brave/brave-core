@@ -2,8 +2,8 @@ Name: const-oid
 URL: https://crates.io/crates/const-oid
 Version: 0.9.6
 Revision: 4432bcc0b2b721865740517e609e166e01726ccc
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/const-oid-0.9.6/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

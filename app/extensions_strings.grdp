@@ -65,6 +65,9 @@
   <message name="IDS_EXTENSIONS_REPAIR_CORRUPTED" desc="The link for repairing corrupted extensions.">
     Repair
   </message>
+  <message name="IDS_EXTENSIONS_MOVE_TO_ACCOUNT_ICON_TOOLTIP" desc="The tooltip displayed when the user hovers the button to move the extension to their account.">
+    Save in your Brave sync chain
+  </message>
   <message name="IDS_EXTENSIONS_VIEW_IFRAME" desc="Text that signifies that the extension view is an iframe.">
     (iframe)
   </message>
@@ -614,8 +617,8 @@
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_WARNING_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation panel for the warning stage.">
     {NUM_EXTENSIONS, plural,
-      =1 {Remove or replace it with similar extensions from the <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>.}
-      other {Remove or replace them with similar extensions from the <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>}
+      =1 {Remove or replace it with similar extensions from the <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>.}
+      other {Remove or replace them with similar extensions from the <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>}
     }
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_DISABLED_HEADER" desc="Header text displayed in the manifest v2 deprecation panel for the disabled stage.">
@@ -628,7 +631,7 @@
     This extension may soon no longer be supported
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_MESSAGE_WARNING_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation message for a specific extension during the warning stage.">
-    Remove or replace it with similar extensions from the <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>
+    Remove or replace it with similar extensions from the <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_MESSAGE_DISABLED_HEADER" desc="Header text displayed in the manifest v2 deprecation message for a specific extension during the disabled stage.">
     This extension was turned off because it is no longer supported
@@ -653,6 +656,9 @@
   </message>
   <message name="IDS_EXTENSIONS_MV2_DEPRECATION_UNSUPPORTED_EXTENSION_OFF_TEXT" desc="The text that informs the user the extension was turned off because it's no longer supported.">
     This extension was turned off because it is no longer supported
+  </message>
+  <message name="IDS_EXTENSIONS_CANT_INSTALL_MV2_EXTENSION" desc="The text shown to a user when they try to install an extension that is no longer supported by the browser.">
+    Cannot install extension because it uses an unsupported manifest version.
   </message>
 <if expr="is_macosx">
   <message name="IDS_EXTENSIONS_INCLUDE_START_MODIFIER" desc="Error message explaining that shortcuts must start with either the Control, Alt, or Command key.">

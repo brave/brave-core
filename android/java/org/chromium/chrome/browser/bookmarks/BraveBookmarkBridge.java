@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.jni_zero.CalledByNative;
 import org.jni_zero.NativeMethods;
 
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.base.WindowAndroid;
 
 class BraveBookmarkBridge extends BookmarkBridge {
@@ -18,8 +19,8 @@ class BraveBookmarkBridge extends BookmarkBridge {
     private WindowAndroid mWindowAndroid;
     private String mExportFilePath;
 
-    BraveBookmarkBridge(long nativeBookmarkBridge) {
-        super(nativeBookmarkBridge);
+    BraveBookmarkBridge(long nativeBookmarkBridge, Profile profile) {
+        super(nativeBookmarkBridge, profile);
     }
 
     @CalledByNative

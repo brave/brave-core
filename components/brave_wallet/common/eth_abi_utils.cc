@@ -375,7 +375,7 @@ size_t AppendRow(std::vector<uint8_t>& destination, uint256_t value) {
   // Append 32 bytes.
   destination.resize(destination.size() + kRowLength, 0);
   // Pick last 32 bytes and copy value to it.
-  Uint256ToBytes(value, base::make_span(destination).last(kRowLength));
+  Uint256ToBytes(value, base::span(destination).last(kRowLength));
   return kRowLength;
 }
 
@@ -384,16 +384,14 @@ size_t AppendRow(std::vector<uint8_t>& destination, Span32 value) {
   // Append 32 bytes.
   destination.resize(destination.size() + kRowLength, 0);
   // Pick last 32 bytes and copy value to it.
-  base::ranges::copy(value,
-                     base::make_span(destination).last(kRowLength).begin());
+  base::ranges::copy(value, base::span(destination).last(kRowLength).begin());
   return kRowLength;
 }
 
 size_t AppendBytesWithPadding(std::vector<uint8_t>& destination, Span bytes) {
   auto padded_size = PaddedSize(bytes.size());
   destination.resize(destination.size() + padded_size);
-  base::ranges::copy(bytes,
-                     base::make_span(destination).last(padded_size).begin());
+  base::ranges::copy(bytes, base::span(destination).last(padded_size).begin());
   return padded_size;
 }
 
@@ -415,7 +413,7 @@ void EncodeTuple(std::vector<uint8_t>& destination,
 
   // fill bytes_0 offset placeholder
   Uint256ToBytes(uint256_t(bytes_added),
-                 base::make_span(destination)
+                 base::span(destination)
                      .subspan(tuple_base)
                      .subspan(0 * kRowLength, kRowLength));
 
@@ -423,7 +421,7 @@ void EncodeTuple(std::vector<uint8_t>& destination,
 
   // fill bytes_1 offset placeholder
   Uint256ToBytes(uint256_t(bytes_added),
-                 base::make_span(destination)
+                 base::span(destination)
                      .subspan(tuple_base)
                      .subspan(1 * kRowLength, kRowLength));
 
@@ -463,7 +461,7 @@ TupleEncoder& TupleEncoder::AddAddress(const EthAddress& address) {
   DCHECK_GE(element.head.size(), address_size);
   // Address is uint160 which should be right aligned in 32 bytes row.
   base::ranges::copy(address.bytes(),
-                     base::make_span(element.head).last(address_size).begin());
+                     base::span(element.head).last(address_size).begin());
   return *this;
 }
 
@@ -491,7 +489,7 @@ TupleEncoder& TupleEncoder::AddBytes(Span bytes) {
 
 TupleEncoder& TupleEncoder::AddString(const std::string& string) {
   auto& element = AppendElement();
-  AppendBytes(element.tail, base::as_bytes(base::make_span(string)));
+  AppendBytes(element.tail, base::as_bytes(base::span(string)));
   return *this;
 }
 
@@ -543,7 +541,7 @@ void TupleEncoder::EncodeTo(std::vector<uint8_t>& destination) const {
 
     // Fills offset placeholder with current bytes offset.
     Uint256ToBytes(uint256_t(bytes_added),
-                   base::make_span(destination)
+                   base::span(destination)
                        .subspan(tuple_base)
                        .subspan(i * kRowLength, kRowLength));
 

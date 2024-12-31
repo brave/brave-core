@@ -2,8 +2,8 @@ Name: stable_deref_trait
 URL: https://crates.io/crates/stable_deref_trait
 Version: 1.2.0
 Revision: 66f9d8a15b7209c45f58edee6c1b6bb497b7bd31
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/stable_deref_trait-1.2.0/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

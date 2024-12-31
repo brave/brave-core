@@ -72,6 +72,7 @@ public class TokenUtils {
      *
      * <p>See `refreshVisibleTokenInfo` in components/brave_wallet_ui/common/async/lib.ts.
      */
+    @SuppressWarnings("NoStreams")
     private static BlockchainToken[] filterTokens(
             NetworkInfo selectedNetwork,
             BlockchainToken[] tokens,

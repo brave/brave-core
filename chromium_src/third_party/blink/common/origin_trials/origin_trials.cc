@@ -51,7 +51,6 @@ bool IsTrialDisabledInBrave(blink::mojom::OriginTrialFeature feature) {
           blink::mojom::OriginTrialFeature::kAdInterestGroupAPI,
           blink::mojom::OriginTrialFeature::kDigitalGoods,
           blink::mojom::OriginTrialFeature::kParakeet,
-          blink::mojom::OriginTrialFeature::kPrivateStateTokens,
       };
 
   return base::Contains(kBraveDisabledTrialFeatures, feature);

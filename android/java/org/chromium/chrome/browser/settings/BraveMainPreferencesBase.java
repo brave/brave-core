@@ -6,12 +6,10 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
 
 import androidx.preference.Preference;
 
@@ -453,14 +451,6 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                         }
                     });
         }
-    }
-
-    // TODO(simonhong): Make this static public with proper class.
-    private int dp2px(int dp) {
-        final float dpPerInchMdpi = 160f;
-        DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / dpPerInchMdpi);
-        return Math.round(px);
     }
 
     @Override

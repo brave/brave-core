@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1de5139832 100755
+index e08b07fe5de0b33f0acf1fde64e05fdefc6644aa..540cd47d58bab9c40aef3cab95aea89759ab07e2 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
-@@ -21,7 +21,7 @@ gen_changelog() {
+@@ -22,7 +22,7 @@ gen_changelog() {
    process_template "${SCRIPTDIR}/changelog.template" "${DEB_CHANGELOG}"
    debchange -a --nomultimaint -m --changelog "${DEB_CHANGELOG}" \
      "Release Notes: ${RELEASENOTES}"
@@ -11,7 +11,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
    mkdir -p "$(dirname "${GZLOG}")"
    gzip -9 -c "${DEB_CHANGELOG}" > "${GZLOG}"
    chmod 644 "${GZLOG}"
-@@ -30,7 +30,7 @@ gen_changelog() {
+@@ -31,7 +31,7 @@ gen_changelog() {
  # Create the Debian control file needed by dpkg-deb.
  gen_control() {
    dpkg-gencontrol -v"${VERSIONFULL}" -c"${DEB_CONTROL}" -l"${DEB_CHANGELOG}" \
@@ -20,7 +20,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
    -O > "${STAGEDIR}/DEBIAN/control"
    rm -f "${DEB_CONTROL}"
  }
-@@ -41,7 +41,7 @@ prep_staging_debian() {
+@@ -42,7 +42,7 @@ prep_staging_debian() {
    install -m 755 -d "${STAGEDIR}/DEBIAN" \
      "${STAGEDIR}/etc/cron.daily" \
      "${STAGEDIR}/usr/share/menu" \
@@ -29,7 +29,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
  }
  
  # Put the package contents in the staging area.
-@@ -85,6 +85,7 @@ stage_install_debian() {
+@@ -86,6 +86,7 @@ stage_install_debian() {
    process_template "${OUTPUTDIR}/installer/debian/postrm" \
      "${STAGEDIR}/DEBIAN/postrm"
    chmod 755 "${STAGEDIR}/DEBIAN/postrm"
@@ -37,7 +37,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
  }
  
  verify_package() {
-@@ -92,7 +93,7 @@ verify_package() {
+@@ -93,7 +94,7 @@ verify_package() {
    local EXPECTED_DEPENDS="${TMPFILEDIR}/expected_deb_depends"
    local ACTUAL_DEPENDS="${TMPFILEDIR}/actual_deb_depends"
    echo ${DEPENDS} | sed 's/, /\n/g' | LANG=C sort > "${EXPECTED_DEPENDS}"
@@ -46,7 +46,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -118,7 +119,7 @@ do_package() {
+@@ -119,7 +120,7 @@ do_package() {
      gen_control
    fi
    log_cmd fakeroot dpkg-deb -Znone -b "${STAGEDIR}" "${TMPFILEDIR}"
@@ -55,7 +55,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
    if [ ${IS_OFFICIAL_BUILD} -ne 0 ]; then
      (cd "${TMPFILEDIR}" && ar -x "${TMPFILEDIR}/${PACKAGEFILE}")
      xz -z9 -T0 --lzma2='dict=256MiB' "${TMPFILEDIR}/data.tar"
-@@ -164,8 +165,11 @@ verify_channel() {
+@@ -165,8 +166,11 @@ verify_channel() {
        ;;
      dev|unstable|alpha )
        CHANNEL=unstable
@@ -67,7 +67,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
      # Canary is released twice a day automatically, so no release notes
      # attached.
      canary )
-@@ -179,6 +183,7 @@ verify_channel() {
+@@ -180,6 +184,7 @@ verify_channel() {
        exit 1
        ;;
    esac
@@ -75,7 +75,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
  }
  
  process_opts() {
-@@ -258,6 +263,17 @@ fi
+@@ -259,6 +264,17 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${OUTPUTDIR}/installer/theme/BRANDING")
  
@@ -93,7 +93,7 @@ index 851755cbd219dc477d0d4f8c3fdfd997402f9e72..dc0ae090baf2abb7c688c14711169b1d
  verify_channel
  
  # Some Debian packaging tools want these set.
-@@ -268,6 +284,8 @@ export ARCHITECTURE="${ARCHITECTURE}"
+@@ -269,6 +285,8 @@ export ARCHITECTURE="${ARCHITECTURE}"
  DEB_COMMON_DEPS="${OUTPUTDIR}/deb_common.deps"
  COMMON_DEPS=$(sed ':a;N;$!ba;s/\n/, /g' "${DEB_COMMON_DEPS}")
  COMMON_PREDEPS="dpkg (>= 1.14.0)"

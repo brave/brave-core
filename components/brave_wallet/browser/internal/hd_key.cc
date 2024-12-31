@@ -146,7 +146,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
   DCHECK(out_len == kSHA512Length);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
-  auto hmac_span = base::make_span(hmac);
+  auto hmac_span = base::span(hmac);
   auto IL = hmac_span.first(kSHA512Length / 2);
   auto IR = hmac_span.last(kSHA512Length / 2);
   hdkey->SetPrivateKey(IL);
@@ -194,7 +194,7 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
 
   if (*ptr == 0x00) {
     // Skip first zero byte which is not part of private key.
-    hdkey->SetPrivateKey(base::make_span(ptr + 1, ptr + 33));
+    hdkey->SetPrivateKey(base::span(ptr + 1, ptr + 33));
   } else {
     hdkey->SetPublicKey(*base::span(ptr, ptr + kSecp256k1PubkeySize)
                              .to_fixed_extent<kSecp256k1PubkeySize>());
@@ -558,7 +558,7 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
   }
   DCHECK(out_len == kSHA512Length);
 
-  auto hmac_span = base::make_span(hmac);
+  auto hmac_span = base::span(hmac);
   auto IL = hmac_span.first(kSHA512Length / 2);
   auto IR = hmac_span.last(kSHA512Length / 2);
 

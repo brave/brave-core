@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/BUILD.gn b/content/public/browser/BUILD.gn
-index e99381f657747424be4c02a862596188f57f4426..3d2a620e43ab9eaacb07239c65bd7216759839ed 100644
+index e57212ca2187bfa2b2a50fd85e77b49a43d84a83..83b14f6df686654609b1d584b647a035bb0eb7cb 100644
 --- a/content/public/browser/BUILD.gn
 +++ b/content/public/browser/BUILD.gn
-@@ -743,6 +743,7 @@ source_set("browser_sources") {
-   if (is_chromeos_lacros) {
-     deps += [ "//chromeos/startup" ]
+@@ -746,6 +746,7 @@ source_set("browser_sources") {
+   if (enable_video_effects) {
+     public_deps += [ "//services/video_effects/public/mojom:mojom" ]
    }
 +  import("//brave/content/public/browser/sources.gni") sources += brave_content_public_browser_sources
  }

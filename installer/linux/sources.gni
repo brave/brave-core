@@ -13,8 +13,8 @@ common_packaging_files_sources = [
 
 common_packaging_files_excluded_sources = [
   "//chrome/app/resources/manpage.1.in",
-  "common/chromium-browser/chromium-browser.appdata.xml",
-  "common/chromium-browser/chromium-browser.info",
+  "common/appdata.xml.template",
+  "common/chromium-browser.info",
 ]
 
 brave_packaging_files_executables = [

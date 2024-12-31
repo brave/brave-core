@@ -231,10 +231,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private boolean shouldForceDefaultBrowserPrompt() {
-        return isNewOnboardingEnabled() && !isDefaultBrowser();
-    }
-
     private boolean isNewOnboardingEnabled() {
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEW_ANDROID_ONBOARDING);
     }

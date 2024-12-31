@@ -92,15 +92,15 @@ IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
 
   browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
                                                brave_tabs::TabHoverMode::CARD);
-  EXPECT_EQ(u"", active_tab()->GetTooltipText(gfx::Point()));
+  EXPECT_EQ(u"", active_tab()->GetCachedTooltipText());
 
   browser()->profile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
-  EXPECT_EQ(u"", active_tab()->GetTooltipText(gfx::Point()));
+  EXPECT_EQ(u"", active_tab()->GetCachedTooltipText());
 
   browser()->profile()->GetPrefs()->SetInteger(
       brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
-  EXPECT_EQ(u"Hello World", active_tab()->GetTooltipText(gfx::Point()));
+  EXPECT_EQ(u"Hello World", active_tab()->GetCachedTooltipText());
 }
 
 // The ThumbnailTabHelper needs to be attached in all |TabHoverModes| so that

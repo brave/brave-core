@@ -2,7 +2,7 @@ Name: deranged
 URL: https://crates.io/crates/deranged
 Version: 0.3.11
 Revision: c25ef2cefe36d92ebf3de6df2faaf293881f7349
-License: Apache 2.0
+License: Apache-2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/deranged-0.3.11/LICENSE-Apache
 Shipped: yes
 Security Critical: yes

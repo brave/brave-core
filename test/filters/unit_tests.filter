@@ -11,6 +11,9 @@
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
+-AutofillBubbleSignInPromoControllerTest.DoesNotMovePasswordUponSignInWithExistingAccountAndPasswordsDisabled
+-AutofillBubbleSignInPromoControllerTest.DoesNotMovePasswordWhenSyncServiceIsInactive
+-AutofillBubbleSignInPromoControllerTest.MovesPasswordUponSignInWithExistingAccountAndPasswordsEnabled
 -AutofillBubbleSignInPromoControllerTest.RunsCallbackUponSignInWithExistingAccount
 -AutofillBubbleSignInPromoControllerTest.DoesNotMovePasswordUponSignInWithExistingAccountAndPasswordsDisabled
 -AutofillBubbleSignInPromoControllerTest.DoesNotMovePasswordWhenSyncServiceIsInactive
@@ -189,7 +192,7 @@
 -All/SiteSettingsHandlerTest.ZoomLevels/*
 -DownloadItemModelTailoredWarningTest.GetBubbleUIInfoForTailoredWarning_SuspiciousArchive
 
-# These tests fail because we've disabled the commerce::kCommercePriceTracking
+# These tests fail because we've disabled the commerce::kPriceAnnotations
 # feature
 -PriceTrackingIconViewIntegrationTest.*
 
@@ -230,6 +233,8 @@
 -PrerendererNavigationPredictorPrefetchHoldbackDisabledTest.*
 -PrerenderGWSPrefetchHoldbackOffTest.*
 -PrerenderManagerTest.DestroyedOnNavigateAway
+-PrerenderManagerTest.DisallowSearchUrlBookmarkBar
+-PrerenderManagerTest.DisallowSearchUrlNewTabPage
 -PrerenderManagerTest.StartCleanPrerenderDirectUrlInput
 -PrerenderManagerTest.StartCleanSearchSuggestionPrerender
 -PrerenderManagerTest.StartNewPrerenderDirectUrlInput
@@ -365,6 +370,8 @@
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUserWithMlDisabled
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUserWithMlEnabled
 -EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable
+-EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailableForSignedInUsers
+-EnclaveAuthenticatorRequestDelegateTest.BrowserProvidedPasskeysAvailable_NoAccount
 -EnclaveManagerTest.PrimaryUserChange
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
@@ -433,6 +440,10 @@
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/3
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/6
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/7
+-All/ClientSideDetectionServiceTest.TestOnDeviceModelFetchFailureCall/1
+-All/ClientSideDetectionServiceTest.TestOnDeviceModelFetchFailureCall/3
+-All/ClientSideDetectionServiceTest.TestOnDeviceModelFetchSuccessCall/1
+-All/ClientSideDetectionServiceTest.TestOnDeviceModelFetchSuccessCall/3
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/0
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/1
 -All/ClientSideDetectionServiceTest.TestReceivingImageEmbedderUpdatesAfterResubscription/2
@@ -465,6 +476,8 @@
 -ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
 -SafeBrowsingResultTest.GetState_EnabledEnhanced
+-SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains
+-SafeBrowsingServiceTest.TestMinAllowedTimeForReferrerChains_EsbEnabledOnStartup
 -SafeBrowsingServiceTest.WhenUserIsInEPNormallyReturnsFalse
 -SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
 -SafetyHubHandlerTest.HandleGetSafeBrowsingState_EnabledEnhanced
@@ -641,10 +654,6 @@
 
 # This test fails because our badge doesn't match the upstream badge
 -IconBadgingTest.VerifyFromDisk
-
-# This test fails because it no longer modifies its expectations now that the
-# kForYouFre feature flag was removed
--StartupBrowserCreatorImplTest.DetermineStartupTabs_NewFeaturesPage
 
 # These tests fail because we stub signin::ShouldShowSyncPromo to always return
 # false

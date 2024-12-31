@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/bindings/idl_member_installer.h b/third_party/blink/renderer/platform/bindings/idl_member_installer.h
-index c3281685de0cfe7249eb7f160946e45928ddf869..6033440552906642b315450f79ebfcff1a7ce8db 100644
+index b9bff532235ecb48867e2efeca504a0264974a33..6868c1274bb7f75925e42180660c3a40dd902321 100644
 --- a/third_party/blink/renderer/platform/bindings/idl_member_installer.h
 +++ b/third_party/blink/renderer/platform/bindings/idl_member_installer.h
-@@ -187,6 +187,7 @@ class PLATFORM_EXPORT IDLMemberInstaller final {
+@@ -212,6 +212,7 @@ class PLATFORM_EXPORT IDLMemberInstaller final {
        v8::Local<v8::Object> interface_object,
        v8::Local<v8::Signature> signature,
        base::span<const ExposedConstructConfig> configs);

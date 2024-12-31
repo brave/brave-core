@@ -2,8 +2,8 @@ Name: ahash
 URL: https://crates.io/crates/ahash
 Version: 0.7.7
 Revision: 6d1e8368b19bbc1d7ddbe8210affde5c237223d2
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/ahash-0.7.7/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

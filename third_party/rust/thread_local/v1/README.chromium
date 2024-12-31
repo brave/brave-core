@@ -2,8 +2,8 @@ Name: thread_local
 URL: https://crates.io/crates/thread_local
 Version: 1.1.7
 Revision: d9c6ff3e751408c3f2e58b15dcc047e3669b9292
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/thread_local-1.1.7/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

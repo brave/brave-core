@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/BUILD.gn b/ios/chrome/browser/flags/BUILD.gn
-index 430ea6ab77e23c05aa6fcb04e14fa0734d0e2c6a..55ad4d8e5e18ac18a6eede3cbb6b187aa919d4b3 100644
+index a42d48bfa7781c7575cb41be61b790799f5c8e3a..aa47c4a258f34c2c1406f8effec70b302490fdef 100644
 --- a/ios/chrome/browser/flags/BUILD.gn
 +++ b/ios/chrome/browser/flags/BUILD.gn
-@@ -109,6 +109,7 @@ source_set("flags") {
+@@ -112,6 +112,7 @@ source_set("flags") {
    if (ios_enable_screen_time) {
      deps += [ "//ios/chrome/browser/screen_time/model:feature_flags" ]
    }

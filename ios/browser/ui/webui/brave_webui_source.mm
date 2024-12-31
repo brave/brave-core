@@ -41,7 +41,7 @@ web::WebUIIOSDataSource* CreateWebUIDataSource(
 
   source->UseStringsJs();
   source->AddResourcePaths(
-      UNSAFE_TODO(base::make_span(resource_map, resource_map_size)));
+      UNSAFE_TODO(base::span(resource_map, resource_map_size)));
   source->SetDefaultResource(html_resource_id);
   CustomizeWebUIHTMLSource(web_ui, name, source);
   return source;

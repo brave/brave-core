@@ -2,8 +2,8 @@ Name: tendril
 URL: https://crates.io/crates/tendril
 Version: 0.4.3
 Revision: f882b602039a56dd00927461ed9631c6259ed67f
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/tendril-0.4.3/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

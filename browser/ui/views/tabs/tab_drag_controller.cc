@@ -174,9 +174,7 @@ TabDragController::Liveness TabDragController::GetLocalProcessWindow(
 
 void TabDragController::DetachAndAttachToNewContext(
     ReleaseCapture release_capture,
-    TabDragContext* target_context,
-    const gfx::Point& point_in_screen,
-    bool set_capture) {
+    TabDragContext* target_context) {
   auto* browser_widget = GetAttachedBrowserWidget();
   auto* browser = BrowserView::GetBrowserViewForNativeWindow(
                       browser_widget->GetNativeWindow())
@@ -190,15 +188,17 @@ void TabDragController::DetachAndAttachToNewContext(
     auto drag_data =
         base::span(drag_data_).subspan(static_cast<size_t>(first_tab_index()));
     for (const auto& data : drag_data) {
-      tabs.push_back(tab_strip_model->GetTabHandleAt(
-          tab_strip_model->GetIndexOfWebContents(data.contents)));
+      tabs.push_back(tab_strip_model
+                         ->GetTabAtIndex(tab_strip_model->GetIndexOfWebContents(
+                             data.contents))
+                         ->GetHandle());
     }
     old_split_view_browser_data->TabsWillBeAttachedToNewBrowser(tabs);
   }
 
   if (!is_showing_vertical_tabs_) {
-    TabDragControllerChromium::DetachAndAttachToNewContext(
-        release_capture, target_context, point_in_screen, set_capture);
+    TabDragControllerChromium::DetachAndAttachToNewContext(release_capture,
+                                                           target_context);
 
     if (old_split_view_browser_data) {
       auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(
@@ -234,8 +234,8 @@ void TabDragController::DetachAndAttachToNewContext(
     vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
   }
 
-  TabDragControllerChromium::DetachAndAttachToNewContext(
-      release_capture, target_context, point_in_screen, set_capture);
+  TabDragControllerChromium::DetachAndAttachToNewContext(release_capture,
+                                                         target_context);
 
   auto* region_view = get_region_view();
 
@@ -250,8 +250,8 @@ void TabDragController::DetachAndAttachToNewContext(
   }
 
   attached_context_->LayoutDraggedViewsAt(
-      std::move(views), source_view_drag_data()->attached_view, point_in_screen,
-      initial_move_);
+      std::move(views), source_view_drag_data()->attached_view,
+      GetCursorScreenPoint(), initial_move_);
 
   if (old_split_view_browser_data) {
     auto* new_browser = BrowserView::GetBrowserViewForNativeWindow(

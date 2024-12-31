@@ -38,6 +38,7 @@ public class TouchDelegateComposite extends TouchDelegate {
     }
 
     /** Add a delegate by bounds and view. */
+    @SuppressWarnings("NoStreams")
     public void addDelegate(Rect bounds, View view) {
         mDelegates =
                 mDelegates.stream()

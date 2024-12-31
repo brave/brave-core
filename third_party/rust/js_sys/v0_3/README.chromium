@@ -1,8 +1,8 @@
 Name: js-sys
 URL: https://crates.io/crates/js-sys
 Version: 0.3.67
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/js-sys-0.3.67/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

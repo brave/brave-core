@@ -2,8 +2,8 @@ Name: winapi
 URL: https://crates.io/crates/winapi
 Version: 0.3.9
 Revision: 796a8e6c2971dc2ff1bcff166e6671284f9b5b6b
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/winapi-0.3.9/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

@@ -13,10 +13,14 @@
     return *ephemeral_storage_token;                               \
   }
 
+#define BRAVE_RENDER_FRAME_HOST_IMPL_CREATE_NEW_WINDOW \
+  params->no_javascript_access = no_javascript_access;
+
 #include "src/content/browser/renderer_host/render_frame_host_impl.cc"
 
-#undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_ISOLATION_INFO_INTERNAL
+#undef BRAVE_RENDER_FRAME_HOST_IMPL_CREATE_NEW_WINDOW
 #undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_NONCE
+#undef BRAVE_RENDER_FRAME_HOST_IMPL_COMPUTE_ISOLATION_INFO_INTERNAL
 
 namespace content {
 

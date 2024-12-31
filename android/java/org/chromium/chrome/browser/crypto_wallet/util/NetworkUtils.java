@@ -72,6 +72,7 @@ public class NetworkUtils {
         return networkInfo.chainId.equals("all");
     }
 
+    @SuppressWarnings("NoStreams")
     public static List<NetworkInfo> nonTestNetwork(List<NetworkInfo> networkInfos) {
         if (networkInfos == null) return Collections.emptyList();
         return networkInfos.stream()

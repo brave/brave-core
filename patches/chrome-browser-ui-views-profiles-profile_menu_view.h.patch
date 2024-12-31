@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.h b/chrome/browser/ui/views/profiles/profile_menu_view.h
-index 72fc068897c6fe12623fa446866425d96b585d7a..031597e67eb0d3316cc070a04bbaefad754f3f1c 100644
+index 8538c6daff6508141edbea60b28a1f3fc8c7a3b9..601462eeca5a7cb2071a4132f19b256b0c661c65 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view.h
-@@ -56,6 +56,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
+@@ -51,6 +51,7 @@ class ProfileMenuView : public ProfileMenuViewBase {
    gfx::ImageSkia GetSyncIcon() const override;
  
   private:

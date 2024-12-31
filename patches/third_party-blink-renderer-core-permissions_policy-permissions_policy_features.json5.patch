@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5 b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-index 6505d66a8ec35b2dc6270d73c1186d7353246868..19cd6447195215a021726fc78cdedfd7ea668e82 100644
+index 12e02828bf6f102656ca95721b4ca47ce8c0a8c7..66a683726a624e1ab175dcdd073def64788f8328 100644
 --- a/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
 +++ b/third_party/blink/renderer/core/permissions_policy/permissions_policy_features.json5
-@@ -522,5 +522,13 @@
+@@ -529,5 +529,13 @@
        name: "WindowManagement",
        permissions_policy_name: "window-management",
      },

@@ -448,7 +448,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
   </if>
   <if expr="is_chromeos">
     <message name="IDS_SMART_CARD_PERMISSION_PROMPT" desc="Text on dialog that asks the user for permission to access a smart card reader device and the card inserted in it (or presented to it, if contactless).">
-      Control <ph name="ReaderName">$1<ex>HID Omnikey</ex></ph> and gain access to the smart card accessible to it.
+      Control readers named <ph name="ReaderName">$1<ex>HID Omnikey</ex></ph> and smart cards used with them
     </message>
     <message name="IDS_SMART_CARD_PERMISSION_ALWAYS_ALLOW" desc="Label on button to always allow access to this smart card reader and any card inserted in (or presented to) it.">
       Always allow, with any card
@@ -517,6 +517,9 @@ This will otherwise be blocked by your privacy settings. This will allow the con
   </message>
   <message name="IDS_WINDOWS_NAME_FRAGMENT" desc="Text fragment identifying the Windows">
     Windows
+  </message>
+  <message name="IDS_CHROMEOS_NAME_FRAGMENT" desc="Text fragment identifying the ChromeOS">
+    ChromeOS
   </message>
   <!--Embedded permission prompts: button labels-->
   <message name="IDS_EMBEDDED_PROMPT_OK_LABEL" desc="Label used on a button that allows the user to acknowledge and close an informational dialog">

@@ -57,10 +57,7 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
         autofill::ContentAutofillDriver::GetForRenderFrameHost(
             active_contents->GetPrimaryMainFrame());
     ASSERT_TRUE(cross_driver);
-    EXPECT_EQ(static_cast<autofill::BrowserAutofillManager*>(
-                  &cross_driver->GetAutofillManager())
-                  ->IsAutofillEnabled(),
-              enabled);
+    EXPECT_EQ(cross_driver->GetAutofillClient().IsAutofillEnabled(), enabled);
   }
 };
 

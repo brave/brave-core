@@ -19,8 +19,6 @@
   <message name="IDS_SETTINGS_ACCESSIBILITY_WEB_STORE" desc="Text for an external link explaining that additional accessibility features are found on the Web Store.">
     Open Web Store
   </message>
-  <if expr="chromeos_ash">
-    </if>
   <if expr="not chromeos_ash">
     </if>
   <if expr="chromeos_ash">

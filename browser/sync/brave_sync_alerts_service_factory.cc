@@ -52,3 +52,7 @@ content::BrowserContext* BraveSyncAlertsServiceFactory::GetBrowserContextToUse(
 bool BraveSyncAlertsServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
 }
+
+bool BraveSyncAlertsServiceFactory::ServiceIsNULLWhileTesting() const {
+  return true;
+}

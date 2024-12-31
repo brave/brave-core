@@ -17,6 +17,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
@@ -152,7 +153,7 @@ class BraveContentBrowserClientTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
   std::vector<std::string> pages{
-      chrome::kChromeUIWelcomeHost,
+      kWelcomeHost,
   };
 
   std::vector<std::string> schemes{

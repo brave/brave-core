@@ -2,8 +2,8 @@ Name: ipld-core
 URL: https://crates.io/crates/ipld-core
 Version: 0.4.1
 Revision: a094e09534a243a4f39eaacf2a7b59e5e9368d30
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/ipld-core-0.4.1/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

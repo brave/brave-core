@@ -661,9 +661,6 @@
       <message name="IDS_TAB_GROUP_CREATION_DIALOG_DESCRIPTION_TEXT_SYNC_OFF" desc="A subtitle on the dialog for new tab group creations. Explains the group automatically saves.">
         Your tab groups automatically save
       </message>
-      <message name="IDS_TAB_GROUP_CREATION_DIALOG_SHOW_SETTING_TEXT" desc="Content description for the switch in tabs settings to toggle showing the new tab group creation dialog. ">
-        Show dialog on new tab group creation
-      </message>
 
       <!-- Tab Group Pane and Sync Strings -->
       <message name="IDS_ACCESSIBILITY_TAB_GROUPS" desc="Content description for the button to show tab groups UI.">
@@ -759,6 +756,9 @@
       <message name="IDS_SHARE_TAB_GROUP_CONTEXT_MENU_ITEM" desc="Menu item text which will be display for tab group context menu on strip to allow sharing a tab group.">
         Share group
       </message>
+      <message name="IDS_SHARE_TAB_GROUP_MENU_ITEM" desc="Menu item text which will be displayed for the tab group context menu in the grid tab switcher to share the tab group. Intentionally shorter than IDS_SHARE_TAB_GROUP_CONTEXT_MENU_ITEM.">
+        Share
+      </message>
       <message name="IDS_TAB_GROUP_RENAME_DIALOG_TITLE" desc="When users edit an existing tab group, a dialog will pop up and this text is the title of that dialog. [CHAR_LIMIT=24]">
         Rename tab group
       </message>
@@ -827,6 +827,9 @@ If you leave, you will immediately lose access to the "<ph name="TITLE_OF_GROUP"
       </message>
       <message name="IDS_REMOVE_LAST_TAB_ACTION" desc="The text shown on the bottom bar when the user is dragging the last tab of a group around. Indicates removing this tab will also delete the group.">
         Remove tab and delete group
+      </message>
+      <message name="IDS_REMOVE_LAST_TAB_ACTION_MEMBER" desc="The text shown on the bottom bar when the user is dragging the last tab of a group around and they are a member of a shared tab group. Indicates removing this tab will also trigger the leave shared group flow (with a confirmation dialog).">
+        Remove tab and leave group
       </message>
       <message name="IDS_TAB_GROUP_CREATION_DIALOG_SYNC_DESCRIPTION" desc="Description of tab group sync functionality shown for syncing users in the tab group creation dialog.">
         Your tab groups automatically save and update across all your signed-in devices
@@ -918,6 +921,12 @@ If you leave, you will immediately lose access to the "<ph name="TITLE_OF_GROUP"
           =1 {Close after 1 day}
           other {Close after <ph name="DAY_COUNT_MANY">%1$d<ex>15</ex></ph> days}
         }
+      </message>
+      <message name="IDS_ARCHIVE_SETTINGS_ARCHIVE_DUPLICATE_TABS_SUMMARY" desc="The summary for toggle to allow duplicate tabs to be archived.">
+        All duplicate tabs will now also be archived, with the exception of the most recently used copy.
+      </message>
+      <message name="IDS_ARCHIVE_SETTINGS_ARCHIVE_DUPLICATE_TABS_TITLE" desc="The title for toggle to allow duplicate tabs to be archived.">
+        Archive duplicate tabs
       </message>
       <message name="IDS_ARCHIVE_SETTINGS_ALLOW_AUTODELETE_SUMMARY" desc="The summary for toggle to allow tabs to be deleted automatically.">
         Inactive tabs will automatically be closed. You can always find them in History.

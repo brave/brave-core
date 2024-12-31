@@ -2,8 +2,8 @@ Name: sha2
 URL: https://crates.io/crates/sha2
 Version: 0.9.9
 Revision: e942f6f13a820a58716587f508fa50b6582cf34f
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/sha2-0.9.9/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

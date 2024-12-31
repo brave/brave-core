@@ -2,8 +2,8 @@ Name: serde_repr
 URL: https://crates.io/crates/serde_repr
 Version: 0.1.7
 Revision: 9445b8940aa032bf5606854fbcd4d838acbb0a63
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/serde_repr-0.1.7/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

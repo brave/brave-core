@@ -1,7 +1,7 @@
 Name: log
 URL: https://crates.io/crates/log
 Version: 0.4.22
-License: Apache 2.0
+License: Apache-2.0
 License File:
 Shipped: yes
 Security Critical: yes

@@ -2,8 +2,8 @@ Name: pin-project
 URL: https://crates.io/crates/pin-project
 Version: 0.4.30
 Revision: ff44458eb0f754a3187f482b1720e2946ddfb4ce
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/pin-project-0.4.30/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

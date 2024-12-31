@@ -2,8 +2,8 @@ Name: cipher
 URL: https://crates.io/crates/cipher
 Version: 0.4.4
 Revision: 0af93f6076a76757c65cb2ef6f6abd9756440478
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/cipher-0.4.4/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

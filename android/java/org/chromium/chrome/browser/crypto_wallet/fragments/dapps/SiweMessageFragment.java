@@ -236,6 +236,7 @@ public class SiweMessageFragment extends WalletBottomSheetDialogFragment {
         mTwoLineAdapter.notifyItemRangeChanged(0, items.size());
     }
 
+    @SuppressWarnings("NoStreams")
     private String getSiweResources(Url[] urls) {
         if (urls == null || urls.length == 0) return "";
         return Arrays.stream(urls)

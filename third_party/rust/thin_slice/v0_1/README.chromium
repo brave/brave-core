@@ -1,7 +1,7 @@
 Name: thin-slice
 URL: https://crates.io/crates/thin-slice
 Version: 0.1.1
-License: Mozilla Public License 2.0
+License: Mozilla-Public-License-2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/thin-slice-0.1.1/../../../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes

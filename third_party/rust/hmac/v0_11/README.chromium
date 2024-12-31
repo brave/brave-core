@@ -2,8 +2,8 @@ Name: hmac
 URL: https://crates.io/crates/hmac
 Version: 0.11.0
 Revision: 82d93cae1c24f833a4c4e1312d58d0f624b9415d
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/hmac-0.11.0/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

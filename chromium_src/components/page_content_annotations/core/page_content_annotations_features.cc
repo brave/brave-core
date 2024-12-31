@@ -11,7 +11,6 @@ namespace page_content_annotations::features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPageContentAnnotations, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPageVisibilityBatchAnnotations, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPageVisibilityPageContentAnnotations, base::FEATURE_DISABLED_BY_DEFAULT},
     {kRemotePageMetadata, base::FEATURE_DISABLED_BY_DEFAULT},
 }});

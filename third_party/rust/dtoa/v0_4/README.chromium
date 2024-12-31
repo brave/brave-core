@@ -2,8 +2,8 @@ Name: dtoa
 URL: https://crates.io/crates/dtoa
 Version: 0.4.8
 Revision: 74dfce1c414cd264ab269528ecb5c908bb780ca4
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/dtoa-0.4.8/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

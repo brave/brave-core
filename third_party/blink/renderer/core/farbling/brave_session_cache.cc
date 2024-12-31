@@ -294,10 +294,10 @@ BraveSessionCache::GetAudioFarblingHelper() {
   return audio_farbling_helper_;
 }
 
-void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
+void BraveSessionCache::FarbleAudioChannel(base::span<float> dst) {
   const auto& audio_farbling_helper = GetAudioFarblingHelper();
   if (audio_farbling_helper) {
-    audio_farbling_helper->FarbleAudioChannel(dst, count);
+    audio_farbling_helper->FarbleAudioChannel(dst);
   }
 }
 

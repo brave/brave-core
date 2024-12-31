@@ -2,8 +2,8 @@ Name: der
 URL: https://crates.io/crates/der
 Version: 0.7.9
 Revision: 9bf880934c350a5af67df17ba12bf8636486f7f9
-License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/der-0.7.9/LICENSE-APACHE
+License: Apache-2.0
+License File:
 Shipped: yes
 Security Critical: yes
 

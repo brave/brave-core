@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
@@ -32,16 +33,18 @@ import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelega
 import org.chromium.components.commerce.core.ShoppingService;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
-class BraveBookmarkManagerMediator
-        extends BookmarkManagerMediator implements BraveBookmarkDelegate {
+class BraveBookmarkManagerMediator extends BookmarkManagerMediator
+        implements BraveBookmarkDelegate {
     private ActivityWindowAndroid mWindowAndroid;
 
     // Overridden Chromium's BookmarkManagerMediator.mBookmarkModel
@@ -53,7 +56,9 @@ class BraveBookmarkManagerMediator
     private static final String IMPORTED_BOOKMARKS_TEMP_FILENAME = "ImportedBookmarks";
 
     BraveBookmarkManagerMediator(
-            Context context,
+            Activity activity,
+            LifecycleOwner lifecycleOwner,
+            ModalDialogManager modalDialogManager,
             BookmarkModel bookmarkModel,
             BookmarkOpener bookmarkOpener,
             SelectableListLayout<BookmarkId> selectableListLayout,
@@ -70,10 +75,13 @@ class BraveBookmarkManagerMediator
             BookmarkImageFetcher bookmarkImageFetcher,
             ShoppingService shoppingService,
             SnackbarManager snackbarManager,
+            BooleanSupplier canShowSigninPromo,
             Consumer<OnScrollListener> onScrollListenerConsumer,
             BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager) {
         super(
-                context,
+                activity,
+                lifecycleOwner,
+                modalDialogManager,
                 bookmarkModel,
                 bookmarkOpener,
                 selectableListLayout,
@@ -90,6 +98,7 @@ class BraveBookmarkManagerMediator
                 bookmarkImageFetcher,
                 shoppingService,
                 snackbarManager,
+                canShowSigninPromo,
                 onScrollListenerConsumer,
                 bookmarkMoveSnackbarManager);
     }

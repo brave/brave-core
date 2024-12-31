@@ -516,7 +516,6 @@
 }
 
 -keep class org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController {
-    *** wrapDialogDismissalCallback(...);
     public <init>(...);
 }
 

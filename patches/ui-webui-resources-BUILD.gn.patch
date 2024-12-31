@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index 3b36a05f63521f486288eecd6b32646030307075..e910e4bf459c0c78fc25cba02a5d70dc92abfdbb 100644
+index 6b8d0527bb8863dd211ab165be533e7fe8d7dba1..ec077e1137595be793949f5b92ff3839cc106d46 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -129,6 +129,7 @@ generate_grd("build_grd") {
+@@ -127,6 +127,7 @@ generate_grd("build_grd") {
        "$root_gen_dir/ui/webui/resources/cr_components/page_image_service/resources.grdp",
      ]
    }

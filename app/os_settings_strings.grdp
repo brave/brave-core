@@ -200,7 +200,7 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_SHOW_RELEASE_NOTES" desc="Text of the button which shows user the release notes.">
     See what's new
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_ABOUT_PAGE_SHOW_RELEASE_NOTES_DESCRIPTION" desc="Sublabel description shown for See What's New button.">
+  <message name="IDS_OS_SETTINGS_ABOUT_PAGE_SHOW_RELEASE_NOTES_DESCRIPTION" desc="Sublabel description shown for See What's New button.">
     Automatic updates provide you with the latest features. Explore highlights from recent updates.
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_EDIT_DEVICE_NAME" desc="The title of the dialog that allows the user to edit the device hostname.">
@@ -263,25 +263,25 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS" desc="Text of the button which allows the user to diagnose their device.">
     Diagnostics
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_DIAGNOSTICS_DESCRIPTION" desc="Sublabel description shown for Diagnostics button.">
+  <message name="IDS_OS_SETTINGS_DIAGNOSTICS_DESCRIPTION" desc="Sublabel description shown for Diagnostics button.">
     Test your battery, CPU, memory, connectivity, and more
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_FIRMWARE_UPDATES" desc="Text of the button for the surface which allows users to update all their peripheral firmwares in one place.">
     Firmware updates
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_FIRMWARE_UP_TO_DATE_DESCRIPTION" desc="Sublabel shown when no firmware updates are available.">
+  <message name="IDS_OS_SETTINGS_FIRMWARE_UP_TO_DATE_DESCRIPTION" desc="Sublabel shown when no firmware updates are available.">
     Firmware is up to date
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_FIRMWARE_UPDATE_AVAILABLE_DESCRIPTION" desc="Sublabel shown when firmware updates are available.">
+  <message name="IDS_OS_SETTINGS_FIRMWARE_UPDATE_AVAILABLE_DESCRIPTION" desc="Sublabel shown when firmware updates are available.">
     Update available
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_SEND_FEEDBACK_DESCRIPTION" desc="Sublabel description shown for Send Feedback button.">
+  <message name="IDS_OS_SETTINGS_SEND_FEEDBACK_DESCRIPTION" desc="Sublabel description shown for Send Feedback button.">
     Share feedback or report an issue
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_GET_HELP_USING_CHROME_OS" desc="Text of the button which takes the user to the Brave help page.">
+  <message name="IDS_OS_SETTINGS_GET_HELP_USING_CHROME_OS" desc="Text of the button which takes the user to the Brave help page.">
     Get help
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_GET_HELP_USING_CHROME_OS_DESCRIPTION" desc="Sublabel description shown for Get Help button.">
+  <message name="IDS_OS_SETTINGS_GET_HELP_USING_CHROME_OS_DESCRIPTION" desc="Sublabel description shown for Get Help button.">
     View help articles or find device support
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CONSUMER_AUTO_UPDATE_TOGGLE_TITLE" desc="Text of the auto update toggle feature.">
@@ -418,9 +418,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE" desc="A page under “Languages and inputs” section in the OS settings page that users can add, remove and manage input methods.">
     Inputs
-  </message>
-  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE_V2" desc="A page under “Languages and inputs” section in the OS settings page that users can add, remove and manage input methods.">
-    Inputs and keyboards
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_DEVICE_LANGUAGE_TITLE" desc="The label for the section where users can see their device language. This language will be used for system surfaces (launcher, shelf, and notifications etc.).">
     Device language
@@ -948,9 +945,6 @@
   </message>
 
   <!-- Device Page (OS Settings) -->
-  <message name="IDS_OS_SETTINGS_TOUCHPAD_REVERSE_SCROLL_LABEL">
-    Enable reverse scrolling. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_TOUCHPAD_REVERSE_SCROLL_LABEL">
     Reverse scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
@@ -978,9 +972,6 @@
 
   <!-- Personalization Page (OS settings) -->
   <message name="IDS_OS_SETTINGS_PERSONALIZATION" desc="Name of the OS settings page which displays personalization preferences.">
-    Personalization
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_PERSONALIZATION" desc="Name of the OS settings page which displays personalization preferences.">
     Wallpaper and style
   </message>
   <message name="IDS_OS_SETTINGS_PERSONALIZATION_MENU_ITEM_DESCRIPTION" desc="Description for the Personalization menu item in the left menu.">
@@ -993,20 +984,14 @@
     Set your wallpaper &amp; style
   </message>
   <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB_SUBTITLE" desc="Description for the link to open personalization hub.">
-    Personalize wallpaper, screen saver, accent colors, and more
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_PERSONALIZATION_HUB_SUBTITLE" desc="Description for the link to open personalization hub.">
     Personalize wallpaper, screen saver, dark theme, and more
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_PERSONALIZATION_HUB_SUBTITLE_GUEST_MODE" desc="Description for the link to open personalization hub in guest mode.">
+  <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB_SUBTITLE_GUEST_MODE" desc="Description for the link to open personalization hub in guest mode.">
     Personalize wallpaper, dark theme, and more
   </message>
 
   <!-- Search and Assistant section. -->
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
-    Preferred search engine
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
     Set search engine in Brave browser settings
   </message>
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Brave browser and the ChromeOS app launcher.">
@@ -1014,12 +999,6 @@
   </message>
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT" desc="Label for the Brave Assistant button.">
     Brave Assistant
-  </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ENABLED" desc="Sub label for the Brave Assistant button when Assistant is enabled.">
-    Enabled
-  </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_DISABLED" desc="Sub label for the Brave Assistant button when Assistant is disabled.">
-    Disabled
   </message>
   <message name="IDS_OS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Google Assistant is on.">
     On
@@ -1202,7 +1181,7 @@
   <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB shares setting section.">
     Network file shares
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_DOWNLOADS_SMB_SHARES_DESCRIPTION" desc="In Files Settings, the description of the SMB shares setting section.">
+  <message name="IDS_OS_SETTINGS_DOWNLOADS_SMB_SHARES_DESCRIPTION" desc="In Files Settings, the description of the SMB shares setting section.">
     Access shared files, folders, or drives on a local network. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to setup SMB shares.">
@@ -1338,7 +1317,7 @@
     Assign a gesture
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_ASSIGNED_GESTURE_ALERT" desc="Spoken feedback for when a user has assigned a gesture to an action in the action settings." is_accessibility_with_no_ui="true">
-    Assigned gesture <ph name="GESTURE">$1<ex>Blink both eyes</ex></ph> to <ph name="ACTION">$2<ex>Click a mouse button</ex></ph>
+    Assigned gesture <ph name="GESTURE">$1<ex>Raise eyebrows</ex></ph> to <ph name="ACTION">$2<ex>Click a mouse button</ex></ph>
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_ACTIONS_REMOVED_ACTION_ALERT" desc="Spoken description when a user has removed a specific action in the action settings." is_accessibility_with_no_ui="true">
     Removed action <ph name="REMOVED_ACTION">$1<ex>Click a mouse button</ex></ph>
@@ -1469,8 +1448,8 @@
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_GESTURE_LABEL_EYE_SQUINT_RIGHT" desc="This text describes a gesture, or movement, that a user will make with their face. This gesture is used by an accessibility feature to take a certain action (such as a mouse click), so a user can control their computer using facial gestures. For this gesture, the user should partly close their right eye. See go/face-gestures-loc for illustrations of the gestures.">
     Squint right eye
   </message>
-  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_GESTURE_LABEL_EYES_BLINK" desc="This text describes a gesture, or movement, that a user will make with their face. This gesture is used by an accessibility feature to take a certain action (such as a mouse click), so a user can control their computer using facial gestures. For this gesture, the user should shut and open both eyes quickly. See go/face-gestures-loc for illustrations of the gestures.">
-    Blink both eyes
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_GESTURE_LABEL_EYES_BLINK" desc="This text describes a gesture, or movement, that a user will make with their face. This gesture is used by an accessibility feature to take a certain action (such as a mouse click), so a user can control their computer using facial gestures. For this gesture, the user should briefly close then open both eyes. See go/face-gestures-loc for illustrations of the gestures.">
+    Briefly close both eyes
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_GESTURE_LABEL_EYES_LOOK_DOWN" desc="This text describes a gesture, or movement, that a user will make with their face. This gesture is used by an accessibility feature to take a certain action (such as a mouse click), so a user can control their computer using facial gestures. For this gesture, the user should move their eyes down. See go/face-gestures-loc for illustrations of the gestures.">
     Look down
@@ -1597,6 +1576,15 @@
   </message>
   <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_WARNING_COMBINED_LABEL" desc="Label that is shown when the user is attempting to bind a gesture that is already assigned and conflicts with other gestures.">
     <ph name="ALREADY_ASSIGNED_MESSAGE">$1<ex>Selecting an already assigned gesture will remove it from its original action.</ex></ph> <ph name="CONFLICTING_GESTURES_MESSAGE">$2<ex>Smile may overlap with squint left eye. If possible, try picking a different gesture.</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_PRECISION_CLICK_LABEL" desc="A label for a button on the FaceGaze settings page that enables precision click.">
+    Precision click
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_PRECISION_CLICK_DESCRIPTION" desc="A sub label explaining in further detail what 'precision click' means for FaceGaze.">
+    When you perform a gesture to click, the mouse speed will decrease to provide more control. Perform the gesture again to complete the click.
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_FACEGAZE_PRECISION_CLICK_FACTORS_LABEL" desc="A label for a drop down menu that allows users to choose how much to dampen their mouse speed by when using FaceGaze.">
+    Reduce mouse speed by
   </message>
   <message name="IDS_SETTINGS_FLASH_NOTIFICATIONS_LABEL" desc="The label of a setting that flashes the screen in a color when a notification is received.">
     Flash notifications
@@ -2023,13 +2011,10 @@ Use Ctrl + Alt + Brightness down to zoom out.
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_ZOOM_20_X" desc="Desription of a 20x zoom level">
     20x
   </message>
-  <message name="IDS_SETTINGS_TAP_DRAGGING_LABEL" desc="Label for checkbox which enables tap dragging.">
-    Enable tap dragging
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_TAP_DRAGGING_LABEL" desc="Label for checkbox which enables tap dragging.">
+  <message name="IDS_OS_SETTINGS_TAP_DRAGGING_LABEL" desc="Label for checkbox which enables tap dragging.">
     Tap and drag to move items
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_TAP_DRAGGING_DESCRIPTION" desc="Description for checkbox which enables tap dragging.">
+  <message name="IDS_OS_SETTINGS_TAP_DRAGGING_DESCRIPTION" desc="Description for checkbox which enables tap dragging.">
     Double-tap an item, hold down on the second tap, and then drag the item to move it
   </message>
   <message name="IDS_SETTINGS_CLICK_ON_STOP_LABEL" desc="Label for checkbox which enables automatically do a mouse action when the mouse cursor stops.">
@@ -2079,6 +2064,21 @@ Use Ctrl + Alt + Brightness down to zoom out.
   </message>
   <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_EXTRA_LARGE" desc="Description of an extra large mouse movement threshold for autoclick mouse movements">
     Extra large
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_BOUNCE_KEYS_LABEL" desc="Label for the bounce keys setting toggle.">
+    Bounce keys
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_BOUNCE_KEYS_DESCRIPTION" desc="Description for the bounce keys setting toggle.">
+    Ignores quickly repeated presses of the same keyboard key
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_BOUNCE_KEYS_DELAY_LABEL" desc="Label for the bounce keys delay slider.">
+    Delay before activating the same key again
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_BOUNCE_KEYS_DELAY_SLIDER_SHORT" desc="Label for the minimum value on the bounce keys delay slider.">
+    Short
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_BOUNCE_KEYS_DELAY_SLIDER_LONG" desc="Label for the maximum value on the bounce keys delay slider.">
+    Long
   </message>
   <message name="IDS_SETTINGS_OVERSCROLL_HISTORY_NAVIGATION_TITLE" desc="Title for the overscroll history navigation setting, which allows you to navigate back and forward by swiping left or right with a touch device.">
     Use a swipe gesture to navigate between pages
@@ -2326,6 +2326,21 @@ Use Ctrl + Alt + Brightness down to zoom out.
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_OPTIONS_LABEL" desc="In the settings tab, the label for the button that opens the Options page for the Select-to-Speak feature.">
     Open select-to-speak settings
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_SLOW_KEYS_LABEL" desc="Label for the slow keys setting toggle.">
+    Slow keys
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_SLOW_KEYS_DESCRIPTION" desc="Description for the slow keys setting toggle.">
+    Adds a delay between when you press a key and when it activates
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_SLOW_KEYS_DELAY_LABEL" desc="Label for the slow keys delay slider.">
+    Delay before activating key
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_SLOW_KEYS_DELAY_SLIDER_SHORT" desc="Label for the minimum value on the slow keys delay slider.">
+    Short
+  </message>
+  <message name="IDS_OS_SETTINGS_ACCESSIBILITY_SLOW_KEYS_DELAY_SLIDER_LONG" desc="Label for the maximum value on the slow keys delay slider.">
+    Long
   </message>
   <message name="IDS_SETTINGS_ACCESSIBILITY_SWITCH_ACCESS_DESCRIPTION" desc="In the settings tab, the text next to the checkbox to enable Switch Access (for users with limited motor control).">
     Switch Access
@@ -3151,9 +3166,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_MESSAGE_DISABLE" desc="Describes what will happen if the user disables ADB Sideloading.">
     Disabling ADB debugging will reset this <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> to factory settings. All user accounts and local data will be erased.
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
-    Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
     Run developer tools, IDEs, and editors. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
@@ -3216,38 +3228,23 @@ Press an assigned switch or key to remove assignment.
   </message>
 
   <!-- Android apps page (OS settings) -->
-  <message name="IDS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
-    Google Play Store
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
+  <message name="IDS_OS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
     Manage Google Play preferences
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_ENABLE_BUTTON_ROLE" desc="Role description of the button which starts the Google Play Store Terms of Service screen. Spoken aloud by screen readers when the Turn On button is focused">
     Turn on Google Play Store
   </message>
-  <message name="IDS_SETTINGS_ANDROID_APPS_MANAGE_APPS" desc="Label for launching Android apps settings.">
-    Manage Android preferences
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_MANAGE_APPS" desc="Label for launching Android apps settings.">
+  <message name="IDS_OS_SETTINGS_ANDROID_APPS_MANAGE_APPS" desc="Label for launching Android apps settings.">
     Android Settings
   </message>
-  <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Google Play Store.">
-    Remove Google Play Store
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Google Play Store.">
+  <message name="IDS_OS_SETTINGS_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Google Play Store.">
     Remove Google Play and Android apps
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE_BUTTON" desc="Label for the button for the removal of the Google Play Store">
     Remove
   </message>
-  <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_TITLE" desc="Title of the confirmation dialog for disabling android apps.">
-    Remove Android apps?
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_DISABLE_DIALOG_TITLE" desc="Title of the confirmation dialog for disabling android apps.">
+  <message name="IDS_OS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_TITLE" desc="Title of the confirmation dialog for disabling android apps.">
     Remove Google Play and Android apps?
-  </message>
-  <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_REMOVE" desc="Label for confirmation button in the disable android apps dialog.">
-    Remove Android apps
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_MANAGE_APP_LINKS" desc="Label for accessing app preferrences on ARC side.">
     Manage Play app links
@@ -3255,7 +3252,7 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_APPS_ARC_VM_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices. Do not translate 'ARCVM'.">
     Let Android apps access USB devices on this Chromebook. Permission will be requested each time you plug in a USB device. Individual Android apps will ask for additional permissions.
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_GOOGLE_PLAY" desc="Label for launching Google Play Store.">
+  <message name="IDS_OS_SETTINGS_OPEN_GOOGLE_PLAY" desc="Label for launching Google Play Store.">
     Open Google Play
   </message>
 
@@ -3278,14 +3275,8 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_STYLUS_NOTE_TAKING_APP_LABEL" desc="Label describing a dropdown that lets the user pick their default note-taking applications. The dropdown contains a list of all available choices. The user can install additional apps, so the contents of the dropdown is dynamic.">
     Note-taking app
   </message>
-  <message name="IDS_SETTINGS_STYLUS_NOTE_TAKING_APP_LOCK_SCREEN_CHECKBOX" desc="Label for a check box that enables note-taking by selected note-taking application when user session is locked (i.e. when lock screen is shown).">
-    Enable note-taking from lock screen
-  </message>
   <message name="IDS_SETTINGS_STYLUS_NOTE_TAKING_APP_KEEP_LATEST_NOTE" desc="Label for a check box that, when checked, indicates that the note-taking app should keep the latest note the user took while on the lock screen available to the user whenever the app is launched on the lock screen (i.e. if the active app window is closed, the note should be visible the next time the app is launched).">
     Keep latest note on lock screen
-  </message>
-  <message name="IDS_SETTINGS_STYLUS_LOCK_SCREEN_NOTES_TITLE" desc="In stylus settings, title of a section that contains settings for controlling note taking on the lock screen.">
-    Lock screen notes
   </message>
   <message name="IDS_SETTINGS_STYLUS_NOTE_TAKING_APP_NONE_AVAILABLE" desc="Secondary label used when there are no note-taking applications available.">
     None available
@@ -3829,9 +3820,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_TOUCHPAD_TITLE" desc="In Device Settings, the title of the touchpad settings subpage.">
     Touchpad
   </message>
-  <message name="IDS_SETTINGS_TOUCHPAD_TAP_TO_CLICK_ENABLED_LABEL" desc="In Device Settings, the text next to the checkbox that allows tapping the touchpad to work as a click.">
-    Enable tap-to-click
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_TOUCHPAD_TAP_TO_CLICK_LABEL" desc="In Device Settings, the text next to the checkbox that allows tapping the touchpad to work as a click.">
     Tap to click
   </message>
@@ -3874,17 +3862,11 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PRIMARY_MOUSE_BUTTON_RIGHT_LABEL" desc="In Device Settings, the text labelling the dropdown menu item for the right mouse button.">
     Right button
   </message>
-  <message name="IDS_SETTINGS_MOUSE_REVERSE_SCROLL_LABEL" desc="In Device Settings, the text next to the checkbox to set reverse scrolling.">
-    Enable reverse scrolling. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_MOUSE_REVERSE_SCROLL_LABEL" desc="In Device Settings, the text next to the checkbox to set reverse scrolling.">
     Reverse scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_MOUSE_REVERSE_SCROLL_DESCRIPTION" desc="In Device Settings, the description for the label to set mouse reverse scrolling.">
     Scroll up to move the page down
-  </message>
-  <message name="IDS_SETTINGS_MOUSE_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to enable mouse acceleration.">
-    Enable mouse acceleration
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_MOUSE_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to enable mouse acceleration.">
     Mouse acceleration
@@ -3906,9 +3888,6 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_POINTING_STICK_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable pointing stick (a.k.a. TrackPoint) acceleration. (TrackPoint is a trademark that's not translated.)">
     Enable TrackPoint acceleration
-  </message>
-  <message name="IDS_SETTINGS_TOUCHPAD_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable touchpad acceleration.">
-    Enable touchpad acceleration
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_TOUCHPAD_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable touchpad acceleration.">
     Touchpad acceleration
@@ -4140,13 +4119,10 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINT_SERVER" desc="Label for button that allows the user to access the add print server dialog.">
     Print server
   </message>
-  <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS" desc="In Printing Settings, the title of the CUPS printers setting section.">
-    Printers
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_PRINTING_CUPS_PRINT_TITLE" desc="In Printing Settings, the label of the CUPS print setting section.">
+  <message name="IDS_OS_SETTINGS_PRINTING_CUPS_PRINT_TITLE" desc="In Printing Settings, the label of the CUPS print setting section.">
     Print
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_PRINTING_CUPS_PRINT_DESCRIPTION" desc="In Printing Settings, the description of the CUPS print setting section.">
+  <message name="IDS_OS_SETTINGS_PRINTING_CUPS_PRINT_DESCRIPTION" desc="In Printing Settings, the description of the CUPS print setting section.">
     View or add printers and see active print jobs
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to use CUPS printing.">
@@ -4712,9 +4688,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_BUTTON" desc="Text for button that opens the known networks subpage.">
     Known networks
   </message>
-  <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MESSAGE" desc="Message describing the behavior of the known networks page.">
-    Preferred networks will be preferred over other known networks if more than one is available
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_INTERNET_KNOWN_NETWORKS_MESSAGE" desc="Message describing the behavior of the known networks page.">
     Preferred networks will be used if more than one previous network is available
   </message>
@@ -4955,9 +4928,6 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared.">
     Other users of this device can use this network
   </message>
-  <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED_OWNER" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared and was configured by the current user.">
-    You are sharing this network with other users of this device
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_INTERNET_NETWORK_SHARED_OWNER" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared and was configured by the current user.">
     Other users on this device can also use this network
   </message>
@@ -5176,22 +5146,16 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_USERS_MANAGED_LABEL" desc="Label saying settings is managed by enterprise and thus can't be modified.">
     These settings are controlled by enterprise policy. Please contact your administrator for more information.
   </message>
-  <message name="IDS_SETTINGS_USERS_GUEST_BROWSING_LABEL" desc="Label for the guest browsing setting.">
-    Enable Guest browsing
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_USERS_GUEST_BROWSING_LABEL" desc="Label for the guest browsing setting.">
+  <message name="IDS_OS_SETTINGS_USERS_GUEST_BROWSING_LABEL" desc="Label for the guest browsing setting.">
     Guest browsing
   </message>
   <message name="IDS_SETTINGS_USERS_SHOW_ON_SIGNIN_LABEL" desc="Label for the 'show users on sign-in screen' setting.">
     Show usernames and photos on the sign-in screen
   </message>
-  <message name="IDS_SETTINGS_USERS_RESTRICT_SIGNIN_LABEL" desc="Label for the setting for restricting sign in to specific users.">
-    Restrict sign-in to the following users:
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_USERS_RESTRICT_SIGNIN_LABEL" desc="Label for the setting for restricting sign in to specific users.">
+  <message name="IDS_OS_SETTINGS_USERS_RESTRICT_SIGNIN_LABEL" desc="Label for the setting for restricting sign in to specific users.">
     Limit who can sign in
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_USERS_RESTRICT_SIGNIN_DESCRIPTION" desc="Description for the setting for restricting sign in to specific users.">
+  <message name="IDS_OS_SETTINGS_USERS_RESTRICT_SIGNIN_DESCRIPTION" desc="Description for the setting for restricting sign in to specific users.">
     You can limit sign-in to certain users. This removes the "Add person" option on the sign-in screen. You can also remove current users.
   </message>
   <message name="IDS_SETTINGS_USERS_DEVICE_OWNER_LABEL" desc="Label for a user who is the device owner.">
@@ -5271,7 +5235,7 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_OS_SETTINGS_MULTIDEVICE_NEARBY_SHARE_DESCRIPTION_OFF" desc="Description for the nearby share settings row when nearby share setting is disabled.">
     Share files and more with nearby devices. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_MULTIDEVICE_TOGGLE_LABEL" desc="Label for the top level toggle button on the Connected Devices details subpage">
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_TOGGLE_LABEL" desc="Label for the top level toggle button on the Connected Devices details subpage">
     Connect to your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_SUITE_TOGGLE_A11Y_LABEL" desc="Accessibility label for toggle button that enables/disables connected phone features.">
@@ -5602,10 +5566,7 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_SUMMARY" desc="Tells the user to connect their Chromebook to their phone.">
     Connect your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NO_ELIGIBLE_HOSTS" desc="Tells the user that there is no phone with their account on it that can connect to their Chromebook.">
-    No eligible devices. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_MULTIDEVICE_NO_ELIGIBLE_HOSTS" desc="Tells the user that there is no phone with their account on it that can connect to their Chromebook.">
+  <message name="IDS_OS_SETTINGS_MULTIDEVICE_NO_ELIGIBLE_HOSTS" desc="Tells the user that there is no phone with their account on it that can connect to their Chromebook.">
     No available devices. Add your Brave sync chain to your phone to connect it to this <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_VERIFICATION_TEXT" desc="Text to tell user that their Chromebook needs to verify that it can connect with their phone.">
@@ -6028,9 +5989,6 @@ Press an assigned switch or key to remove assignment.
   </message>
 
   <!-- Device display (OS settings) -->
-  <message name="IDS_SETTINGS_DISPLAY_TITLE" desc="In Device Settings, the title for display settings.">
-    Displays
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_TITLE" desc="In Device Settings, the title for display settings.">
     Display
   </message>
@@ -6142,14 +6100,8 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_ONLY_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display resolution drop down menu, when Resolution and Refresh Rate are displayed separately.">
     <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_TITLE" desc="In Device Settings &gt; Displays, the label for the section for changing a display's refresh rate.">
-    Refresh Rate
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_REFRESH_RATE_TITLE" desc="In Device Settings &gt; Displays, the label for the section for changing a display's refresh rate.">
     Refresh rate
-  </message>
-  <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_SUBLABEL" desc="In Device Settings &gt; Displays, the text describing the drop down menu to select the desired refresh rate of the selected external display.">
-    Determines the frequency that the screen updates
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_REFRESH_RATE_DESCRIPTION" desc="In Device Settings &gt; Displays, the text describing the drop down menu to select the desired refresh rate of the selected external display.">
     With a higher refresh rate, you'll have a smoother display with more details. Increased refresh rate may impact battery life.
@@ -6160,14 +6112,8 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_INTERLACED_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display refresh rate drop down menu, when Resolution and Refresh Rate are displayed separately and the display mode is interlaced (which means the display's odd and even lines are scanned alternately in two interwoven rasterized lines). Hz is the SI unit Hertz">
     <ph name="REFRESH_RATE">$1<ex>60</ex></ph> Hz - interlaced
   </message>
-  <message name="IDS_SETTINGS_DISPLAY_ZOOM_TITLE" desc="In Device Settings &gt; Displays, the title for the section for changing the display's zoom.">
-    Display size
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_ZOOM_LABEL" desc="In Device Settings &gt; Displays, the label for the section for changing the display's zoom.">
     Display and text size
-  </message>
-  <message name="IDS_SETTINGS_DISPLAY_ZOOM_SUBLABEL" desc="In Device Settings &gt; Displays, the text describing the display's zoom.">
-    Make items on your screen smaller or larger
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_ZOOM_DESCRIPTION" desc="In Device Settings &gt; Displays, the description for the display's zoom.">
     Make items on your screen, including text, smaller or larger
@@ -6211,14 +6157,8 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_TEXT" desc="Text explaining that this setting is used to adjust the boundaries of the selected display.">
     Adjust the boundaries of your desktop within the display
   </message>
-  <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_TITLE" desc="Title of the settings subpage which adjusts display overscan.">
-    Overscan
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_BOUNDARIES_TITLE" desc="Title of the settings subpage which adjusts display boundaries.">
     Display boundaries
-  </message>
-  <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_SUBTITLE" desc="Subtitle for the display overscan settings subpage.">
-    Adjust the boundaries of your display
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_DISPLAY_BOUNDARIES_DESCRIPTION" desc="Description for the display boundaries settings subpage.">
     Press the arrow keys to shrink or expand the display area. To move the display area around, press shift and +, then use the arrow keys.
@@ -6473,6 +6413,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_DISABLED" desc="In keyboard remap keys subpage, the dropdown list item for a disabled key.">
     Disabled
   </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_ACTION_ROW_DESCRIPTION" desc="In keyboard remap keys subpage, the dropdown list label for each key.">
+    Select an action for <ph name="KEY_NAME">$1<ex>launch</ex></ph> key
+  </message>
+  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_SHORTCUT_ROW_DESCRIPTION" desc="In keyboard remap keys subpage, the dropdown list item for each shortcut.">
+    Select a shortcut for <ph name="ACTION_NAME">$1<ex>delete</ex></ph> action
+  </message>
   <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_KEY_FUNCTION" desc="In keyboard remap keys subpage, the dropdown list item for a function key.">
     fn
   </message>
@@ -6511,9 +6457,6 @@ Press an assigned switch or key to remove assignment.
   </message>
 
   <!-- Device Keyboard page (OS settings) -->
-  <message name="IDS_SETTINGS_KEYBOARD_TITLE" desc="In Device Settings, the title of the keyboard settings subpage.">
-    Keyboard
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_KEYBOARD_AND_INPUTS_TITLE" desc="In Device Settings, the title of the keyboard and input settings subpage.">
     Keyboard and inputs
   </message>
@@ -6598,11 +6541,11 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_KEYBOARD_SHOW_LANGUAGE_AND_INPUT" desc="The link to navigate to the language and input method settings.">
     Change language and input settings
   </message>
-  <message name="IDS_SETTINGS_KEYBOARD_SHOW_INPUT_SETTINGS" desc="The link to navigate to input method settings.">
-    Change input settings
-  </message>
   <message name="IDS_OS_SETTINGS_REVAMP_KEYBOARD_SHOW_INPUT_SETTINGS" desc="The link to navigate to input method settings.">
     Input settings
+  </message>
+  <message name="IDS_OS_SETTINGS_KEYBOARD_SHOW_A11Y_KEYBOARD_SETTINGS" desc="The link to navigate to accessibility keyboard settings.">
+    Accessibility keyboard settings
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_KEY_LAUNCHER" desc="In Device Settings, the label and dropdown list item for the Search key on keyboard layouts of newer Chromebooks.">
     Launcher
@@ -6643,19 +6586,19 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_APPS_LINK_TEXT" desc="The label for the button which links to the App Management page.">
     Manage your apps
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_APP_NOTIFICATIONS_TITLE" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
+  <message name="IDS_OS_SETTINGS_APP_NOTIFICATIONS_TITLE" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
     Allow notifications
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_APP_PERMISSIONS_TITLE_ANDROID" desc="Label for a link to more settings and permissions for an app with type Android.">
+  <message name="IDS_OS_SETTINGS_APP_PERMISSIONS_TITLE_ANDROID" desc="Label for a link to more settings and permissions for an app with type Android.">
     More Android settings and permissions
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_APP_PERMISSIONS_TITLE_WEB_APP" desc="Label for a link to more settings and permissions for an app with type web app.">
+  <message name="IDS_OS_SETTINGS_APP_PERMISSIONS_TITLE_WEB_APP" desc="Label for a link to more settings and permissions for an app with type web app.">
     More web app settings and permissions
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_APP_PERMISSIONS_TITLE_CHROME_APP" desc="Label for a link to more settings and permissions for an app with type Brave app.">
+  <message name="IDS_OS_SETTINGS_APP_PERMISSIONS_TITLE_CHROME_APP" desc="Label for a link to more settings and permissions for an app with type Brave app.">
     More Brave app settings and permissions
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_OPEN_IN_APP_TITLE" desc="Label for the intent sharing option to open in a specified app.">
+  <message name="IDS_OS_SETTINGS_OPEN_IN_APP_TITLE" desc="Label for the intent sharing option to open in a specified app.">
     Open in <ph name="APP_NAME">$1<ex>Calculator</ex></ph> app
   </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TEXT" desc="The label for the settings row button in the App section of OS Settings which links to the App Notifications page.">
@@ -6670,7 +6613,7 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_ISOLATED_WEB_APPS_DESCRIPTION" desc="A short description for Isolated Web Apps and a link for additional information.">
     Packaged web applications with enhanced capabilities. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_APP_NOTIFICATIONS_LINK_DESCRIPTION" desc="The description for the settings row button in the App section of OS Settings which links to the App Notifications page.">
+  <message name="IDS_OS_SETTINGS_APP_NOTIFICATIONS_LINK_DESCRIPTION" desc="The description for the settings row button in the App section of OS Settings which links to the App Notifications page.">
     Manage app notifications, Do Not Disturb, and app badging
   </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_SUBLABEL_TEXT" desc="The sublabel for the settings row button in the App section of OS Settings which links to the App Notifications page indicating the number of ChromeOS apps installed.">
@@ -6734,11 +6677,8 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_OS_SETTINGS_APP_PARENTAL_CONTROLS_PIN_NUMERIC_ERROR_TEXT" desc="The text displayed under the PIN input section that notifies the user that the PIN should only consist of digits">
     PIN must use numbers only
   </message>
-   <message name="IDS_OS_SETTINGS_REVAMP_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_DESCRIPTION" desc="The text description of the Do Not Disturb toggle within help icon tooltip.">
+   <message name="IDS_OS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_DESCRIPTION" desc="The text description of the Do Not Disturb toggle within help icon tooltip.">
     Notifications won't pop up on the screen. You can still see notifications by clicking the Do Not Disturb icon on the bottom right of your screen.
-  </message>
-   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_DESCRIPTION" desc="The text description of the DoNotDisturb toggle within help icon tooltip.">
-    When turned on, all notifications will be silenced
   </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_LINK_TO_BROWSER_SETTINGS_DESCRIPTION" desc="In notifications OS Settings subpage, explanatory text for website notifications link.">
     For browser notifications, go to <ph name="LINK_BEGIN">&lt;a href="#"&gt;</ph>Brave browser Settings<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -6749,10 +6689,10 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_APP_BADGING_TOGGLE_SUBLABEL" desc="The sublabel for the app badging toggle in the App Notifications page of OS Settings.">
     Show dot on app icon for app alerts
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_NOTIFICATIONS_MANAGER_LABEL" desc="The label for the settings row button in the App Notifications section of OS Settings which links to the Manage App Notifications page.">
+  <message name="IDS_OS_SETTINGS_NOTIFICATIONS_MANAGER_LABEL" desc="The label for the settings row button in the App Notifications section of OS Settings which links to the Manage App Notifications page.">
     Manage app notifications
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_NOTIFICATIONS_MANAGER_LINK_DESCRIPTION" desc="The sublabel for the settings row button in the App Notifications section of OS Settings which links to the Manage App Notifications page.">
+  <message name="IDS_OS_SETTINGS_NOTIFICATIONS_MANAGER_LINK_DESCRIPTION" desc="The sublabel for the settings row button in the App Notifications section of OS Settings which links to the Manage App Notifications page.">
     <ph name="NUM_ALLOWED_APPS">$1<ex>1</ex></ph> of <ph name="TOTAL_NUM_APPS">$2<ex>2</ex></ph> apps can send notifications
   </message>
   <message name="IDS_SETTINGS_ENABLE_ISOLATED_WEB_APPS_LABEL" desc="The label for the enable Isolated Web Apps toggle in the Manage Isolated Web Apps page of OS Settings.">
@@ -6770,22 +6710,15 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT_DESCRIPTION" desc="Accessibility description for the section for enabling and managing Google Play Store (Android) apps." is_accessibility_with_no_ui="true">
     Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>.
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
+  <message name="IDS_OS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
     You can download Android apps and games through the Play Store. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_SUBTEXT_DESCRIPTION" desc="Accessibility description for the section for enabling and managing Google Play Store (Android) apps." is_accessibility_with_no_ui="true">
+  <message name="IDS_OS_SETTINGS_ANDROID_APPS_SUBTEXT_DESCRIPTION" desc="Accessibility description for the section for enabling and managing Google Play Store (Android) apps." is_accessibility_with_no_ui="true">
     You can download Android apps and games through the Play Store.
   </message>
   <!-- TODO(jamescook): Use device type instead of "Chromebook", which may
         require changing ArcPlayTermsOfServiceConsent resource id handling. -->
-  <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
-    Apps you’ve downloaded from Google Play will be deleted from this Chromebook.
-    <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
-    Content you’ve purchased such as movies, TV shows, music, books, or other in-app purchases may also be deleted.
-    <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
-    This doesn’t affect apps or content on other devices.
-  </message>
-  <message name="IDS_OS_SETTINGS_REVAMP_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
+  <message name="IDS_OS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
     Google Play and apps you've downloaded from Google Play will be deleted from this Chromebook.
     <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
     Content you've purchased through Google Play such as movies, TV shows, music, books, as well as purchases from other apps may also be deleted.
@@ -7061,12 +6994,6 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_CAMERA_TOGGLE_TITLE" desc="The title of the toggle to enable/disable camera from the privacy hub.">
     Camera access
   </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_CAMERA_TOGGLE_SUBTEXT" desc="Sub-label for the camera access toggle button in the Privacy controls (aka Privacy Hub) os-settings page.">
-    Allow access for apps and websites with the camera permission
-  </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_FALLBACK_CAMERA_TOGGLE_SUBTEXT" desc="Sub-label for the camera access toggle button in the Privacy controls (aka Privacy Hub) os-settings page when the camera led fallback mechanism is enabled.">
-    Allow access for apps and websites with the camera permission. To use the camera, you may need to restart the app or refresh the page.
-  </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_PAGE_CAMERA_ROW_SUBTEXT" desc="Sub-label for the camera access row in the Privacy controls (aka Privacy Hub) os-settings page when camera access is allowed.">
     Apps and websites with the camera permission, as well as system services, can use your camera
   </message>
@@ -7084,9 +7011,6 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_TOGGLE_TITLE" desc="The title of the toggle to enable/disable microphone from the privacy hub.">
     Microphone access
-  </message>
-  <message name="IDS_OS_SETTINGS_PRIVACY_HUB_MICROPHONE_TOGGLE_SUBTEXT" desc="Sub-label for the microphone access toggle button in the Privacy controls (aka Privacy Hub) os-settings page.">
-    Allow access for apps and websites with the microphone permission
   </message>
   <message name="IDS_OS_SETTINGS_PRIVACY_HUB_PAGE_MICROPHONE_ROW_SUBTEXT" desc="Sub-label for the microphone access row in the Privacy controls (aka Privacy Hub) os-settings page when microphone access is allowed.">
     Apps and websites with the microphone permission, as well as system services, can use your microphone
@@ -7317,9 +7241,6 @@ Press &amp; hold keyboard keys to see accent marks and special characters. This 
   <!-- Startup (OS settings) -->
   <message name="IDS_OS_SETTINGS_ON_STARTUP_SETTINGS_CARD_TITLE" desc="The title of the settings card that allows the user to configure the restore apps and pages options on startup.">
     Startup
-  </message>
-  <message name="IDS_OS_SETTINGS_ON_STARTUP_TITLE" desc="The title of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">
-    Restore apps on startup
   </message>
   <message name="IDS_OS_SETTINGS_REVAMP_ON_STARTUP_TITLE" desc="The title of the dropdown menu that allows the user to configure the restore apps and pages options on startup.">
     Welcome Recap

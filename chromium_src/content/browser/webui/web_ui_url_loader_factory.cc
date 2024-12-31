@@ -7,6 +7,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/timer/elapsed_timer.h"
+#include "base/types/optional_util.h"
 #include "content/browser/loader/keep_alive_url_loader_service.h"
 #include "content/browser/service_worker/service_worker_single_script_update_checker.h"
 #include "content/browser/service_worker/service_worker_updated_script_loader.h"
@@ -15,7 +16,6 @@
 #include "net/http/http_byte_range.h"
 #include "services/network/public/cpp/parsed_headers.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace content {
 namespace {
@@ -31,40 +31,27 @@ void RangeDataAvailable(
     base::ElapsedTimer url_request_elapsed_timer,
     URLDataSource::RangeDataResult result);
 
-network::mojom::URLResponseHeadPtr UseContentLengthFromHeaders(
-    network::mojom::URLResponseHeadPtr headers) {
-  if (auto content_length = headers->headers->GetContentLength();
-      content_length != -1) {
-    headers->content_length = content_length;
-  }
-  return headers;
-}
-
 }  // namespace
 }  // namespace content
 
-#define OnReceiveResponse(headers, ...) \
-  OnReceiveResponse(UseContentLengthFromHeaders(headers), __VA_ARGS__)
-
-#define GotDataCallback                                                     \
-  GotDataCallback unused_callback;                                          \
-  if (range.has_value() &&                                                  \
-      source->source()->SupportsRangeRequests(request.url)) {               \
-    URLDataSource::GotRangeDataCallback callback = base::BindOnce(          \
-        RangeDataAvailable, request.url, std::move(resource_response),      \
-        replacements, replace_in_js, base::RetainedRef(source),             \
-        std::move(client_remote), range,                                    \
-        std::move(url_request_elapsed_timer));                              \
-    source->source()->StartRangeDataRequest(request.url, wc_getter, *range, \
-                                            std::move(callback));           \
-    return;                                                                 \
-  }                                                                         \
+#define GotDataCallback                                                       \
+  GotDataCallback unused_callback;                                            \
+  if (range_or_error.has_value() &&                                           \
+      source->source()->SupportsRangeRequests(request.url)) {                 \
+    URLDataSource::GotRangeDataCallback callback = base::BindOnce(            \
+        RangeDataAvailable, request.url, std::move(resource_response),        \
+        replacements, replace_in_js, base::RetainedRef(source),               \
+        std::move(client_remote), base::OptionalFromExpected(range_or_error), \
+        std::move(url_request_elapsed_timer));                                \
+    source->source()->StartRangeDataRequest(                                  \
+        request.url, wc_getter, range_or_error.value(), std::move(callback)); \
+    return;                                                                   \
+  }                                                                           \
   URLDataSource::GotDataCallback
 
 #include "src/content/browser/webui/web_ui_url_loader_factory.cc"
 
 #undef GotDataCallback
-#undef OnReceiveResponse
 
 namespace content {
 namespace {

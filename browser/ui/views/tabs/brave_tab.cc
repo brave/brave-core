@@ -51,7 +51,7 @@ std::u16string BraveTab::GetTooltipText(const gfx::Point& p) const {
     return Tab::GetTooltipText(data_.title,
                                GetAlertStateToShow(data_.alert_state));
   }
-  return Tab::GetTooltipText(p);
+  return Tab::GetCachedTooltipText();
 }
 
 int BraveTab::GetWidthOfLargestSelectableRegion() const {
@@ -208,6 +208,6 @@ void BraveTab::SetData(TabRendererData data) {
   if (data_changed &&
       tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
       data_.pinned) {
-    set_group(std::nullopt);
+    SetGroup(std::nullopt);
   }
 }

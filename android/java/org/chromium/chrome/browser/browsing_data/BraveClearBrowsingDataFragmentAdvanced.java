@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ClickableSpansTextMessagePreference;
 import org.chromium.components.browser_ui.settings.SpinnerPreference;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
@@ -55,7 +55,7 @@ public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFra
                         new SpanInfo(
                                 "<link1>",
                                 "</link1>",
-                                new NoUnderlineClickableSpan(
+                                new ChromeClickableSpan(
                                         requireContext(), resetBraveRewardsDataCallback())));
 
         ClickableSpansTextMessagePreference resetBraveRewardsDataPref =
@@ -71,7 +71,7 @@ public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFra
                         new SpanInfo(
                                 "<link1>",
                                 "</link1>",
-                                new NoUnderlineClickableSpan(
+                                new ChromeClickableSpan(
                                         requireContext(), clearBraveAdsDataCallback())));
 
         ClickableSpansTextMessagePreference clearBraveAdsDataPref =

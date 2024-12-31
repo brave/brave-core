@@ -13,12 +13,16 @@
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
+#include "base/time/default_clock.h"
+#include "base/time/default_tick_clock.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
+#include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/history/core/browser/sync/brave_history_data_type_controller.h"
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_data_type_controller.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "brave/components/sync/test/brave_mock_sync_engine.h"
 #include "build/build_config.h"
+#include "components/network_time/network_time_tracker.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -37,6 +41,7 @@
 #include "components/sync/test/test_data_type_store_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using testing::_;
@@ -104,9 +109,21 @@ class BraveSyncServiceImplTest : public testing::Test {
         ->SetAutomaticIssueOfAccessTokens(true);
     brave_sync::Prefs::RegisterProfilePrefs(
         sync_service_impl_bundle_.pref_service()->registry());
+    network_time::NetworkTimeTracker::RegisterPrefs(local_state_.registry());
   }
 
   ~BraveSyncServiceImplTest() override { sync_service_impl_->Shutdown(); }
+
+  void SetUp() override {
+    testing::Test::SetUp();
+    network_time_tracker_ = std::make_unique<network_time::NetworkTimeTracker>(
+        std::unique_ptr<base::Clock>(new base::DefaultClock()),
+        std::unique_ptr<base::TickClock>(new base::DefaultTickClock()),
+        &local_state_, nullptr, std::nullopt);
+    brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
+        network_time_tracker_.get(),
+        base::SingleThreadTaskRunner::GetCurrentDefault());
+  }
 
   void CreateSyncService(
       DataTypeSet registered_types = DataTypeSet({BOOKMARKS})) {
@@ -160,8 +177,10 @@ class BraveSyncServiceImplTest : public testing::Test {
   SyncServiceImplBundle sync_service_impl_bundle_;
   brave_sync::Prefs brave_sync_prefs_;
   SyncPrefs sync_prefs_;
+  std::unique_ptr<network_time::NetworkTimeTracker> network_time_tracker_;
   std::unique_ptr<BraveSyncServiceImpl> sync_service_impl_;
   raw_ptr<SyncServiceImplDelegateMock> sync_service_delegate_;
+  TestingPrefServiceSimple local_state_;
 };
 
 #if !BUILDFLAG(IS_ANDROID)
