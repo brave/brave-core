@@ -6,30 +6,37 @@
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 
 #include <algorithm>
-#include <utility>
+
+#include "base/containers/extend.h"
+#include "base/containers/span.h"
+#include "base/numerics/checked_math.h"
 
 namespace {
 
-std::string RLPToBinary(size_t x) {
+constexpr uint8_t kStringOffset = 0x80;
+constexpr uint8_t kListOffset = 0xc0;
+constexpr uint8_t kSingleByteLengthLimit = 55;
+
+std::vector<uint8_t> RLPToBinary(size_t x) {
   if (x == 0) {
-    return "";
+    return {};
   }
-  std::string ret = RLPToBinary(x / 256);
+  std::vector<uint8_t> ret = RLPToBinary(x / 256);
   ret.push_back(x % 256);
   return ret;
 }
 
-std::string RLPEncodeLength(size_t length, size_t offset) {
-  char sz[2] = {0};
-  if (length < 56) {
-    sz[0] = length + offset;
-    return sz;
+std::vector<uint8_t> RLPEncodeLength(size_t length, uint8_t offset) {
+  if (length <= kSingleByteLengthLimit) {
+    return std::vector<uint8_t>(1, length + offset);
   }
-  std::string BL = RLPToBinary(length);
-  sz[0] = BL.length() + offset + 55;
-  std::string ret(sz);
-  ret.append(BL);
-  return ret;
+  std::vector<uint8_t> length_encoded = RLPToBinary(length);
+  std::vector<uint8_t> result(length_encoded.size() + 1);
+  result[0] =
+      base::CheckAdd(length_encoded.size(), offset, kSingleByteLengthLimit)
+          .ValueOrDie<uint8_t>();
+  base::span(result).subspan(1).copy_from(length_encoded);
+  return result;
 }
 
 }  // namespace
@@ -38,9 +45,8 @@ namespace brave_wallet {
 
 base::Value::BlobStorage RLPUint256ToBlob(uint256_t input) {
   base::Value::BlobStorage output;
-  while (input > static_cast<uint256_t>(0)) {
-    uint8_t i = static_cast<uint8_t>(input & static_cast<uint256_t>(0xFF));
-    output.push_back(static_cast<char>(i));
+  while (input > 0) {
+    output.push_back(static_cast<uint8_t>(input & 0xFF));
     input >>= 8;
   }
   // Return the vector reversed (big endian)
@@ -48,28 +54,40 @@ base::Value::BlobStorage RLPUint256ToBlob(uint256_t input) {
   return output;
 }
 
-std::string RLPEncode(base::Value val) {
+std::vector<uint8_t> RLPEncode(const base::Value& val) {
   if (val.is_int()) {
-    int i = val.GetInt();
-    return RLPEncode(base::Value(RLPUint256ToBlob((uint256_t)i)));
-  } else if (val.is_blob()) {
-    base::Value::BlobStorage blob = val.GetBlob();
-    std::string s(blob.begin(), blob.end());
-    if (blob.size() == 1 && static_cast<uint8_t>(blob[0]) < 0x80) {
-      return s;
-    }
-    return RLPEncodeLength(blob.size(), 0x80) + s;
-  } else if (val.is_string()) {
-    std::string s = val.GetString();
-    return RLPEncode(base::Value(base::Value::BlobStorage(s.begin(), s.end())));
-  } else if (val.is_list()) {
-    std::string output;
-    for (auto& item : val.GetList()) {
-      output += RLPEncode(std::move(item));
-    }
-    return RLPEncodeLength(output.length(), 0xc0) + output;
+    return RLPEncode(base::Value(RLPUint256ToBlob(val.GetInt())));
   }
-  return "";
+
+  if (val.is_blob()) {
+    base::Value::BlobStorage blob = val.GetBlob();
+    if (blob.size() == 1 && blob[0] < kStringOffset) {
+      return blob;
+    }
+    auto result = RLPEncodeLength(blob.size(), kStringOffset);
+    base::Extend(result, blob);
+    return result;
+  }
+
+  if (val.is_string()) {
+    return RLPEncode(base::Value(base::as_byte_span(val.GetString())));
+  }
+
+  if (val.is_list()) {
+    return RLPEncode(val.GetList());
+  }
+
+  return {};
+}
+
+std::vector<uint8_t> RLPEncode(const base::Value::List& val) {
+  std::vector<uint8_t> items_encoded;
+  for (auto& item : val) {
+    base::Extend(items_encoded, RLPEncode(item));
+  }
+  auto result = RLPEncodeLength(items_encoded.size(), kListOffset);
+  base::Extend(result, items_encoded);
+  return result;
 }
 
 }  // namespace brave_wallet

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_RLP_ENCODE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_RLP_ENCODE_H_
 
-#include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -18,7 +18,9 @@ base::Value::BlobStorage RLPUint256ToBlob(uint256_t input);
 
 // Recursive Length Prefix (RLP) encoding of base::Values consisting of string,
 // blob, or int data
-std::string RLPEncode(base::Value val);
+// https://ethereum.org/en/developers/docs/data-structures-and-encoding/rlp/
+std::vector<uint8_t> RLPEncode(const base::Value& val);
+std::vector<uint8_t> RLPEncode(const base::Value::List& val);
 
 }  // namespace brave_wallet
 

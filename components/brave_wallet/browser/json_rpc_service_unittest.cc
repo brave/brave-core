@@ -330,7 +330,7 @@ class EthCallHandler {
     }
 
     auto [selector, _] =
-        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
     for (const auto& s : selectors_) {
       if (base::ranges::equal(s, selector)) {
@@ -3149,9 +3149,10 @@ class UDGetManyCallHandler : public EthCallHandler {
   ~UDGetManyCallHandler() override = default;
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
-    auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto [_, args] =
+        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
     auto keys_array = eth_abi::ExtractStringArrayFromTuple(args, 0);
-    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple(args, 32, 1);
+    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 1);
     EXPECT_TRUE(keys_array);
     EXPECT_TRUE(namehash_bytes);
 
@@ -5510,8 +5511,9 @@ class EnsGetResolverHandler : public EthCallHandler {
   ~EnsGetResolverHandler() override = default;
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
-    auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
-    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple(args, 32, 0);
+    auto [_, args] =
+        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
     EXPECT_TRUE(namehash_bytes);
 
     if (!base::ranges::equal(*namehash_bytes, Namehash(host_name_))) {
@@ -5536,9 +5538,10 @@ class Ensip10SupportHandler : public EthCallHandler {
   ~Ensip10SupportHandler() override = default;
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
-    auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto [_, args] =
+        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
-    auto arg_selector = eth_abi::ExtractFixedBytesFromTuple(args, 4, 0);
+    auto arg_selector = eth_abi::ExtractFixedBytesFromTuple<4>(args, 0);
     EXPECT_TRUE(arg_selector);
     EXPECT_TRUE(base::ranges::equal(*arg_selector, kResolveBytesBytesSelector));
 
@@ -5588,9 +5591,9 @@ class EnsGetRecordHandler : public EthCallHandler {
     }
 
     auto [selector, args] =
-        eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
-    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple(args, 32, 0);
+    auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
     EXPECT_TRUE(namehash_bytes);
     bool host_matches =
         base::ranges::equal(*namehash_bytes, Namehash(host_name_));
@@ -5675,7 +5678,8 @@ class OffchainCallbackHandler : public EthCallHandler {
   ~OffchainCallbackHandler() override = default;
 
   std::optional<std::string> HandleEthCall(eth_abi::Span call_data) override {
-    auto [_, args] = eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
+    auto [_, args] =
+        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
     auto extra_data_bytes = eth_abi::ExtractBytesFromTuple(args, 1);
     EXPECT_EQ("extra data",
@@ -5728,7 +5732,7 @@ class OffchainGatewayHandler {
     }
 
     auto [selector, args] =
-        eth_abi::ExtractFunctionSelectorAndArgsFromCall(*bytes);
+        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(*bytes);
 
     bool ensip10_resolve = false;
     std::optional<std::vector<uint8_t>> encoded_call;
@@ -5745,10 +5749,10 @@ class OffchainGatewayHandler {
     }
 
     auto [encoded_call_selector, enconed_call_args] =
-        eth_abi::ExtractFunctionSelectorAndArgsFromCall(*encoded_call);
+        *eth_abi::ExtractFunctionSelectorAndArgsFromCall(*encoded_call);
 
     auto domain_namehash =
-        eth_abi::ExtractFixedBytesFromTuple(enconed_call_args, 32, 0);
+        eth_abi::ExtractFixedBytesFromTuple<32>(enconed_call_args, 0);
     EXPECT_TRUE(domain_namehash);
 
     std::vector<uint8_t> data_value;
