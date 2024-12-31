@@ -10,11 +10,6 @@
 # expects.
 -TabStripBrowsertest.TabGroupHeaderAccessibleProperties
 
-# These tests crash because we disable
-# user_education::features::kWhatsNewVersion2
--WhatsNewFetcherMultipleCustomizationsBrowserTest.GetV2ServerURLForRender
--WhatsNewFetcherOneCustomizationBrowserTest.GetV2ServerURLForRender
-
 # These tests are flakey upstream (see: https://issues.chromium.org/issues/343089415)
 -ProductSpecificationsEntryPointControllerBrowserTest.ExecuteEntryPoint_IgnoreClosedTab
 -ProductSpecificationsEntryPointControllerBrowserTest.InvalidEntryPointWithClosure
@@ -2002,11 +1997,6 @@
 -SavedTabGroupV2Promo/SavedTabGroupV2PromoTest.*
 -ShowPromoInPageBrowserTest.*
 -StartTutorialInPageBrowserTest.*
-
-# These tests crash because we disable
-# user_education::features::kWhatsNewVersion2
--WhatsNewFetcherMultipleCustomizationsBrowserTest.GetV2ServerURLForRender
--WhatsNewFetcherOneCustomizationBrowserTest.GetV2ServerURLForRender
 
 # This test fails because we stub out NetworkService::UpdateKeysPinList
 -PKIMetadataComponentInstallerTest.InstallComponentUpdatesPinningConfig
