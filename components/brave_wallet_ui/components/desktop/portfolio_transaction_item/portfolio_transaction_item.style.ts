@@ -26,7 +26,6 @@ export const PortfolioTransactionItemWrapper = styled.div<{
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  margin-bottom: 16px;
   position: relative;
   transition: background-color 300ms ease-out;
   background-color: ${(p) =>

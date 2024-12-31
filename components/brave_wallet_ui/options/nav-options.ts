@@ -151,15 +151,11 @@ export const PortfolioNavOptions: NavOption[] = [
     name: 'braveWalletTopNavNFTS',
     icon: 'grid04',
     route: WalletRoutes.PortfolioNFTs
-  }
-]
-
-export const PortfolioPanelNavOptions: NavOption[] = [
-  ...PortfolioNavOptions,
+  },
   PortfolioActivityNavOption
 ]
 
-export const PortfolioPanelNavOptionsNoNFTsTab: NavOption[] = [
+export const PortfolioNavOptionsNoNFTsTab: NavOption[] = [
   AssetsNavOption,
   PortfolioActivityNavOption
 ]

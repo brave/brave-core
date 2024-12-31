@@ -575,7 +575,10 @@ export const Account = () => {
       {selectedTab === AccountPageTabs.AccountTransactionsSub && (
         <>
           {transactionList.length !== 0 ? (
-            <TransactionsWrapper fullWidth={true}>
+            <TransactionsWrapper
+              fullWidth={true}
+              gap='16px'
+            >
               {transactionList.map((transaction) => (
                 <PortfolioTransactionItem
                   key={transaction?.id}

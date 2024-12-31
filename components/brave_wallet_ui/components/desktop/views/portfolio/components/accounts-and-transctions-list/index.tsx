@@ -422,14 +422,19 @@ export const AccountsAndTransactionsList = ({
           {hash === WalletRoutes.TransactionsHash && (
             <>
               {nonRejectedTransactions.length !== 0 ? (
-                <>
+                <Column
+                  fullWidth={true}
+                  alignItems='flex-start'
+                  justifyContent='flex-start'
+                  gap='16px'
+                >
                   {nonRejectedTransactions.map((transaction) => (
                     <PortfolioTransactionItem
                       key={transaction.id}
                       transaction={transaction}
                     />
                   ))}
-                </>
+                </Column>
               ) : (
                 <Column
                   margin='20px 0px 40px 0px'

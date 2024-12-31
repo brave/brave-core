@@ -63,8 +63,7 @@ import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
 // Options
 import {
   PortfolioNavOptions,
-  PortfolioPanelNavOptions,
-  PortfolioPanelNavOptionsNoNFTsTab
+  PortfolioNavOptionsNoNFTsTab
 } from '../../../../options/nav-options'
 import {
   AccountsGroupByOption, //
@@ -594,19 +593,15 @@ export const PortfolioOverview = () => {
               />
             </ColumnReveal>
           </BalanceAndLineChartWrapper>
-          <ControlsRow controlsHidden={!isPanel && hidePortfolioNFTsTab}>
-            {!isPanel && hidePortfolioNFTsTab ? null : (
-              <SegmentedControl
-                navOptions={
-                  isPanel && hidePortfolioNFTsTab
-                    ? PortfolioPanelNavOptionsNoNFTsTab
-                    : isPanel
-                    ? PortfolioPanelNavOptions
-                    : PortfolioNavOptions
-                }
-                maxWidth='384px'
-              />
-            )}
+          <ControlsRow>
+            <SegmentedControl
+              navOptions={
+                hidePortfolioNFTsTab
+                  ? PortfolioNavOptionsNoNFTsTab
+                  : PortfolioNavOptions
+              }
+              maxWidth='384px'
+            />
           </ControlsRow>
         </>
       )}
@@ -645,9 +640,9 @@ export const PortfolioOverview = () => {
             fullWidth={true}
             fullHeight={true}
             justifyContent='flex-start'
-            padding='0px 16px'
+            isPanel={isPanel}
           >
-            <TransactionsScreen />
+            <TransactionsScreen isPortfolio={true} />
           </ActivityWrapper>
         </Route>
 
