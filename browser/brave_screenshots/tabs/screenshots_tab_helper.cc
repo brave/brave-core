@@ -5,6 +5,9 @@
 
 #include "brave/browser/brave_screenshots/tabs/screenshots_tab_helper.h"
 
+#include <memory>
+#include <string>
+
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
