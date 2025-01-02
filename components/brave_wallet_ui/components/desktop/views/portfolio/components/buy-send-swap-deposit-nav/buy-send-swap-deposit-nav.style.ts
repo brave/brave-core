@@ -6,15 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton, Column, Row } from '../../../../../shared/style'
-import { layoutSmallWidth } from '../../../../wallet-page-wrapper/wallet-page-wrapper.style'
-
-export const ButtonsRow = styled(Row)`
-  display: none;
-  @media screen and (max-width: ${layoutSmallWidth}px) {
-    display: flex;
-  }
-`
+import { WalletButton, Column } from '../../../../../shared/style'
 
 export const ButtonWrapper = styled(Column)`
   margin-right: 28px;
