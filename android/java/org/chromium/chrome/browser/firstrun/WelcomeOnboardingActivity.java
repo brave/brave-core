@@ -292,7 +292,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             FirstRunUtils.setEulaAccepted();
 
             finish();
-            sendFirstRunCompletePendingIntent();
+            sendFirstRunCompleteIntent();
         }
     }
 
