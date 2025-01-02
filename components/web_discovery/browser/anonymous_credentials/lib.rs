@@ -52,7 +52,7 @@ pub enum CredentialError {
 
 pub type Result<T> = std::result::Result<T, CredentialError>;
 
-#[cxx::bridge(namespace = "anonymous_credentials")]
+#[cxx::bridge(namespace = "web_discovery")]
 mod ffi {
     struct StartJoinResult {
         gsk: Vec<u8>,
@@ -80,7 +80,7 @@ mod ffi {
     }
 
     extern "Rust" {
-        type CredentialManager;
+        type AnonymousCredentialsManager;
         type GroupPublicKey;
         type CredentialBIG;
         type JoinResponse;
@@ -91,21 +91,22 @@ mod ffi {
         fn load_join_response(data: &[u8]) -> JoinResponseResult;
         fn load_user_credentials(data: &[u8]) -> UserCredentialsResult;
 
-        fn new_credential_manager() -> Box<CredentialManager>;
-        fn new_credential_manager_with_fixed_seed() -> Box<CredentialManager>;
-        fn start_join(self: &mut CredentialManager, challenge: &[u8]) -> StartJoinResult;
+        fn new_anonymous_credentials_manager() -> Box<AnonymousCredentialsManager>;
+        fn new_anonymous_credentials_with_fixed_seed() -> Box<AnonymousCredentialsManager>;
+        fn start_join(self: &mut AnonymousCredentialsManager, challenge: &[u8]) -> StartJoinResult;
         fn finish_join(
-            self: &mut CredentialManager,
+            self: &mut AnonymousCredentialsManager,
             public_key: &GroupPublicKey,
             gsk: &CredentialBIG,
             join_resp: Box<JoinResponse>,
         ) -> VecU8Result;
         fn set_gsk_and_credentials(
-            self: &mut CredentialManager,
+            self: &mut AnonymousCredentialsManager,
             gsk: Box<CredentialBIG>,
             credentials: Box<UserCredentials>,
         );
-        fn sign(self: &mut CredentialManager, msg: &[u8], basename: &[u8]) -> VecU8Result;
+        fn sign(self: &mut AnonymousCredentialsManager, msg: &[u8], basename: &[u8])
+            -> VecU8Result;
     }
 }
 
@@ -152,17 +153,17 @@ wrapper_with_loader!(
 );
 
 #[allow(dead_code)]
-struct CredentialManager(InternalCredentialManager);
+struct AnonymousCredentialsManager(InternalCredentialManager);
 
-fn new_credential_manager() -> Box<CredentialManager> {
-    Box::new(CredentialManager(InternalCredentialManager::new()))
+fn new_anonymous_credentials_manager() -> Box<AnonymousCredentialsManager> {
+    Box::new(AnonymousCredentialsManager(InternalCredentialManager::new()))
 }
 
-fn new_credential_manager_with_fixed_seed() -> Box<CredentialManager> {
-    Box::new(CredentialManager(InternalCredentialManager::new_with_seed(&[0u8; 1])))
+fn new_anonymous_credentials_with_fixed_seed() -> Box<AnonymousCredentialsManager> {
+    Box::new(AnonymousCredentialsManager(InternalCredentialManager::new_with_seed(&[0u8; 1])))
 }
 
-impl CredentialManager {
+impl AnonymousCredentialsManager {
     fn start_join(&mut self, challenge: &[u8]) -> StartJoinResult {
         let result = self.0.start_join(challenge);
         StartJoinResult {

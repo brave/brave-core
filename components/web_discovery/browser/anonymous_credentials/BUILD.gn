@@ -5,24 +5,24 @@
 
 import("//build/rust/rust_static_library.gni")
 
-rust_static_library("rust_lib") {
+rust_static_library("anonymous_credentials") {
   crate_name = "anonymous_credentials"
-  crate_root = "src/lib.rs"
+  crate_root = "lib.rs"
   allow_unsafe = true
 
   edition = "2021"
   sources = [
-    "src/data.rs",
-    "src/join.rs",
-    "src/lib.rs",
-    "src/manager.rs",
-    "src/sign.rs",
-    "src/util.rs",
+    "data.rs",
+    "join.rs",
+    "lib.rs",
+    "manager.rs",
+    "sign.rs",
+    "util.rs",
   ]
 
   visibility = [ "//brave/components/web_discovery/browser:*" ]
 
-  cxx_bindings = [ "src/lib.rs" ]
+  cxx_bindings = [ "lib.rs" ]
 
   deps = [
     "//brave/third_party/rust/brave_miracl/v0_1:lib",
