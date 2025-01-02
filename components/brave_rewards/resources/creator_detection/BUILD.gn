@@ -8,10 +8,6 @@ import("//brave/components/common/typescript.gni")
 transpile_web_ui("creator_detection") {
   entry_points = [
     [
-      "github",
-      rebase_path("github.ts"),
-    ],
-    [
       "reddit",
       rebase_path("reddit.ts"),
     ],

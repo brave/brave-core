@@ -359,8 +359,6 @@ static_library("engine") {
     "notifications/notification_keys.h",
     "parameters/rewards_parameters_provider.cc",
     "parameters/rewards_parameters_provider.h",
-    "publisher/media/github.cc",
-    "publisher/media/github.h",
     "publisher/media/helper.cc",
     "publisher/media/helper.h",
     "publisher/media/media.cc",

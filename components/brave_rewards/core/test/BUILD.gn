@@ -63,7 +63,6 @@ source_set("test") {
     "//brave/components/brave_rewards/core/legacy/report_balance_state_unittest.cc",
     "//brave/components/brave_rewards/core/legacy/wallet_info_state_unittest.cc",
     "//brave/components/brave_rewards/core/parameters/rewards_parameters_provider_unittest.cc",
-    "//brave/components/brave_rewards/core/publisher/media/github_unittest.cc",
     "//brave/components/brave_rewards/core/publisher/media/helper_unittest.cc",
     "//brave/components/brave_rewards/core/publisher/media/youtube_unittest.cc",
     "//brave/components/brave_rewards/core/publisher/prefix_list_reader_unittest.cc",

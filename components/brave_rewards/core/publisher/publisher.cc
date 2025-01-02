@@ -120,8 +120,6 @@ std::string getProviderName(const std::string& publisher_id) {
   // TODO(anyone) this is for the media stuff
   if (publisher_id.find(YOUTUBE_MEDIA_TYPE) != std::string::npos) {
     return YOUTUBE_MEDIA_TYPE;
-  } else if (publisher_id.find(GITHUB_MEDIA_TYPE) != std::string::npos) {
-    return GITHUB_MEDIA_TYPE;
   }
 
   return "";
@@ -551,14 +549,10 @@ void Publisher::GetPublisherActivityFromUrl(uint64_t windowId,
 
   const bool is_media = !base::FeatureList::IsEnabled(
                             features::kPlatformCreatorDetectionFeature) &&
-                        (visit_data->domain == YOUTUBE_DOMAIN ||
-                         visit_data->domain == GITHUB_DOMAIN);
+                        visit_data->domain == YOUTUBE_DOMAIN;
 
   if (is_media && visit_data->path != "" && visit_data->path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
-    if (visit_data->domain == GITHUB_DOMAIN) {
-      type = GITHUB_MEDIA_TYPE;
-    }
 
     if (!visit_data->url.empty()) {
       visit_data->url.pop_back();

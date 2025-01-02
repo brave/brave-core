@@ -39,11 +39,12 @@ TEST(RewardsPublisherUtilsTest, IsMediaPlatformURL) {
   EXPECT_TRUE(IsMediaPlatformURL(GURL("https://www.twitter.com/foo")));
   EXPECT_TRUE(IsMediaPlatformURL(GURL("https://x.com/foo")));
   EXPECT_TRUE(IsMediaPlatformURL(GURL("https://www.x.com/foo")));
-  EXPECT_TRUE(IsMediaPlatformURL(GURL("https://github.com/foo")));
   EXPECT_TRUE(IsMediaPlatformURL(GURL("https://reddit.com/foo")));
   EXPECT_TRUE(IsMediaPlatformURL(GURL("https://youtube.com/foo")));
   EXPECT_TRUE(IsMediaPlatformURL(GURL("https://vimeo.com/foo")));
   EXPECT_TRUE(IsMediaPlatformURL(GURL("https://twitch.tv/foo")));
+
+  EXPECT_FALSE(IsMediaPlatformURL(GURL("https://github.com/foo")));
 }
 
 TEST(RewardsPublisherUtilsTest, GetMediaPlatformFromPublisherId) {
@@ -51,8 +52,6 @@ TEST(RewardsPublisherUtilsTest, GetMediaPlatformFromPublisherId) {
             "youtube");
   EXPECT_EQ(GetMediaPlatformFromPublisherId("reddit#channel:123").value(),
             "reddit");
-  EXPECT_EQ(GetMediaPlatformFromPublisherId("github#channel:123").value(),
-            "github");
   EXPECT_EQ(GetMediaPlatformFromPublisherId("twitch#author:123").value(),
             "twitch");
   EXPECT_EQ(GetMediaPlatformFromPublisherId("vimeo#channel:123").value(),
@@ -60,6 +59,8 @@ TEST(RewardsPublisherUtilsTest, GetMediaPlatformFromPublisherId) {
   EXPECT_EQ(GetMediaPlatformFromPublisherId("twitter#channel:123").value(),
             "twitter");
   EXPECT_EQ(GetMediaPlatformFromPublisherId("example.com"), std::nullopt);
+  EXPECT_EQ(GetMediaPlatformFromPublisherId("github#channel:123"),
+            std::nullopt);
 }
 
 TEST(RewardsPublisherUtilsTest, GetPublisherIdFromURL) {
@@ -70,12 +71,12 @@ TEST(RewardsPublisherUtilsTest, GetPublisherIdFromURL) {
 
   EXPECT_EQ(GetPublisherId("https://brave.co.uk"), "brave.co.uk");
   EXPECT_EQ(GetPublisherId("https://www.brave.co.uk"), "brave.co.uk");
+  EXPECT_EQ(GetPublisherId("https://github.com/foo"), "github.com");
 
   EXPECT_EQ(GetPublisherId("file:///a/b/c/"), std::nullopt);
   EXPECT_EQ(GetPublisherId("invalid-url"), std::nullopt);
 
   EXPECT_EQ(GetPublisherId("https://twitter.com/foo"), std::nullopt);
-  EXPECT_EQ(GetPublisherId("https://github.com/foo"), std::nullopt);
   EXPECT_EQ(GetPublisherId("https://reddit.com/foo"), std::nullopt);
   EXPECT_EQ(GetPublisherId("https://youtube.com/foo"), std::nullopt);
   EXPECT_EQ(GetPublisherId("https://vimeo.com/foo"), std::nullopt);
