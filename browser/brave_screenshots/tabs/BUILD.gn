@@ -1,0 +1,27 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_screenshots/common/buildflags/buildflags.gni")
+
+assert(enable_brave_screenshots)
+
+source_set("tabs") {
+  sources = [
+    "screenshots_tab_helper.cc",
+    "screenshots_tab_helper.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//content/public/browser",
+  ]
+
+  deps = [
+    "//brave/app:generate_command_metadata",
+    "//brave/browser/ui/views/brave_screenshots:brave_screenshots",
+    "//chrome/browser/image_editor:image_editor",
+    "//chrome/browser/ui",
+  ]
+}
