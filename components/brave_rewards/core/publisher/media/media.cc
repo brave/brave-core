@@ -17,8 +17,7 @@
 
 namespace brave_rewards::internal {
 
-Media::Media(RewardsEngine& engine)
-    : engine_(engine), media_youtube_(engine), media_github_(engine) {}
+Media::Media(RewardsEngine& engine) : engine_(engine), media_youtube_(engine) {}
 
 Media::~Media() = default;
 
@@ -31,13 +30,7 @@ std::string Media::GetLinkType(const std::string& url,
     return "";
   }
 
-  std::string type = YouTube::GetLinkType(url);
-
-  if (type.empty()) {
-    type = GitHub::GetLinkType(url);
-  }
-
-  return type;
+  return YouTube::GetLinkType(url);
 }
 
 void Media::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
@@ -51,11 +44,6 @@ void Media::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
     media_youtube_.ProcessMedia(parts, *visit_data);
     return;
   }
-
-  if (type == GITHUB_MEDIA_TYPE) {
-    media_github_.ProcessMedia(parts, *visit_data);
-    return;
-  }
 }
 
 void Media::GetMediaActivityFromUrl(uint64_t window_id,
@@ -64,8 +52,6 @@ void Media::GetMediaActivityFromUrl(uint64_t window_id,
                                     const std::string& publisher_blob) {
   if (type == YOUTUBE_MEDIA_TYPE) {
     media_youtube_.ProcessActivityFromUrl(window_id, *visit_data);
-  } else if (type == GITHUB_MEDIA_TYPE) {
-    media_github_.ProcessActivityFromUrl(window_id, *visit_data);
   } else {
     OnMediaActivityError(std::move(visit_data), type, window_id);
   }
@@ -98,11 +84,6 @@ void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
 
 void Media::SaveMediaInfo(const std::string& type,
                           const base::flat_map<std::string, std::string>& data,
-                          PublisherInfoCallback callback) {
-  if (type == GITHUB_MEDIA_TYPE) {
-    media_github_.SaveMediaInfo(data, std::move(callback));
-    return;
-  }
-}
+                          PublisherInfoCallback callback) {}
 
 }  // namespace brave_rewards::internal

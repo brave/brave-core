@@ -16,12 +16,12 @@ namespace brave_rewards {
 
 namespace {
 
-constexpr auto kMediaPlatformDomains = std::to_array<std::string_view>(
-    {"github.com", "reddit.com", "twitch.tv", "twitter.com", "vimeo.com",
-     "x.com", "youtube.com"});
+constexpr auto kMediaPlatformDomains =
+    std::to_array<std::string_view>({"reddit.com", "twitch.tv", "twitter.com",
+                                     "vimeo.com", "x.com", "youtube.com"});
 
 constexpr auto kMediaPlatformPrefixes = std::to_array<std::string_view>(
-    {"github#", "reddit#", "twitch#", "twitter#", "vimeo#", "youtube#"});
+    {"reddit#", "twitch#", "twitter#", "vimeo#", "youtube#"});
 
 }  // namespace
 

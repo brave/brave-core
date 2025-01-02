@@ -7,10 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_STATIC_VALUES_H_
 
 #define YOUTUBE_MEDIA_TYPE "youtube"
-#define GITHUB_MEDIA_TYPE "github"
 #define YOUTUBE_PROVIDER_URL "https://www.youtube.com/oembed"
 #define YOUTUBE_DOMAIN "youtube.com"
-#define GITHUB_DOMAIN "github.com"
 #define MEDIA_DELIMITER "_"
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_STATIC_VALUES_H_

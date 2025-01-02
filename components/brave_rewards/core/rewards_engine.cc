@@ -174,13 +174,6 @@ void RewardsEngine::OnHide(uint32_t tab_id, uint64_t current_time) {
   uint64_t duration = current_time - last_tab_active_time_;
   last_tab_active_time_ = 0;
 
-  if (type == GITHUB_MEDIA_TYPE) {
-    base::flat_map<std::string, std::string> parts;
-    parts["duration"] = base::NumberToString(duration);
-    media()->ProcessMedia(parts, type, iter->second.Clone());
-    return;
-  }
-
   publisher()->SaveVisit(iter->second.domain, iter->second, duration, true, 0,
                          base::DoNothing());
 }

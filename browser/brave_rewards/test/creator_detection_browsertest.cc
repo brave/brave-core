@@ -55,9 +55,8 @@ class CreatorDetectionBrowserTest : public PlatformBrowserTest {
 
     host_resolver()->AddRule("*", "127.0.0.1");
     embedded_https_test_server().SetCertHostnames(
-        {"twitter.com", "github.com", "api.github.com", "reddit.com",
-         "www.twitch.tv", "vimeo.com", "www.youtube.com", "abc.youtube.com",
-         "example-creator.com"});
+        {"twitter.com", "reddit.com", "www.twitch.tv", "vimeo.com",
+         "www.youtube.com", "abc.youtube.com", "example-creator.com"});
     embedded_https_test_server().RegisterRequestHandler(base::BindRepeating(
         &CreatorDetectionBrowserTest::HandleRequest, base::Unretained(this)));
     CHECK(embedded_https_test_server().Start());
@@ -185,27 +184,6 @@ IN_PROC_BROWSER_TEST_F(CreatorDetectionBrowserTest, NonPlatformSite) {
   ASSERT_TRUE(NavigateTo("example-creator.com", "/"));
   EXPECT_EQ(id_future.Get(), "example-creator.com");
   EXPECT_TRUE(WaitForPublisherInfo("example-creator.com"));
-}
-
-IN_PROC_BROWSER_TEST_F(CreatorDetectionBrowserTest, GithubDetection) {
-  EnableRewards();
-
-  SetRequestCallback([](std::string_view path, BasicHttpResponse& response) {
-    if (path == "/users/testuser") {
-      response.AddCustomHeader("Access-Control-Allow-Origin", "*");
-      response.set_content_type("application/json");
-      response.set_content(R"(
-          {"id": "1234567",
-           "avatar_url": "https://github.com/user-avatar"} )");
-      return;
-    }
-  });
-
-  AddBlankTabAndShow(browser());
-  TestFuture<std::string> future;
-  TabHelperObserver observer(GetRewardsTabHelper(), future.GetCallback());
-  ASSERT_TRUE(NavigateTo("github.com", "/testuser"));
-  EXPECT_EQ(future.Get(), "github#channel:1234567");
 }
 
 IN_PROC_BROWSER_TEST_F(CreatorDetectionBrowserTest, RedditDetection) {

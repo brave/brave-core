@@ -10,7 +10,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/publisher/media/github.h"
 #include "brave/components/brave_rewards/core/publisher/media/youtube.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
@@ -52,7 +51,6 @@ class Media {
 
   const raw_ref<RewardsEngine> engine_;
   YouTube media_youtube_;
-  GitHub media_github_;
 };
 
 }  // namespace brave_rewards::internal
