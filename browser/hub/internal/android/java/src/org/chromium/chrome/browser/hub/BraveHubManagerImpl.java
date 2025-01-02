@@ -21,7 +21,6 @@ import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
-import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
@@ -47,7 +46,6 @@ public class BraveHubManagerImpl extends HubManagerImpl {
             @NonNull ObservableSupplier<Tab> tabSupplier,
             @NonNull MenuButtonCoordinator menuButtonCoordinator,
             @NonNull HubShowPaneHelper hubShowPaneHelper,
-            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
             @NonNull SearchActivityClient searchActivityClient) {
         super(
                 activity,
@@ -59,7 +57,6 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                 tabSupplier,
                 menuButtonCoordinator,
                 hubShowPaneHelper,
-                edgeToEdgeSupplier,
                 searchActivityClient);
 
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(activity);
