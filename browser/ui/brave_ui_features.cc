@@ -13,14 +13,6 @@ BASE_FEATURE(kBraveNtpSearchWidget,
              "BraveNtpSearchWidget",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kBraveScreenshots,
-             "BraveScreenshots",
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
-bool BraveScreenshotsEnabled() {
-  return base::FeatureList::IsEnabled(kBraveScreenshots);
-}
-
 #if BUILDFLAG(IS_WIN)
 // Enables window cloaking on window creation to prevent a white flash.
 BASE_FEATURE(kBraveWorkaroundNewWindowFlash,

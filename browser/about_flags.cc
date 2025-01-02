@@ -23,6 +23,7 @@
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_screenshots/common/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -506,7 +507,7 @@
           "Screenshot Context Menu Options",                                   \
           "Enables various screenshot options in the context menu.",           \
           kOsDesktop,                                                          \
-          FEATURE_VALUE_TYPE(features::kBraveScreenshots),                     \
+          FEATURE_VALUE_TYPE(brave_screenshots::features::kBraveScreenshots),  \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \

@@ -1,0 +1,23 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_SCREENSHOTS_SCREENSHOT_UTILS_H_
+#define BRAVE_BROWSER_UI_VIEWS_BRAVE_SCREENSHOTS_SCREENSHOT_UTILS_H_
+
+#include "base/memory/weak_ptr.h"
+#include "content/public/browser/web_contents.h"
+
+namespace image_editor {
+struct ScreenshotCaptureResult;
+}  // namespace image_editor
+
+namespace brave_screenshots::utils {
+
+void NotifyUserOfScreenshot(const image_editor::ScreenshotCaptureResult& result,
+                            base::WeakPtr<content::WebContents> web_contents);
+
+}  // namespace brave_screenshots::utils
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_SCREENSHOTS_SCREENSHOT_UTILS_H_
