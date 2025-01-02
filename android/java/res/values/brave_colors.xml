@@ -116,9 +116,9 @@
 
     <!-- Sync informer icon colors -->
     <color name="brave_informer_dark_theme_icon_color">@color/baseline_neutral_90</color>
-    <color name="brave_informer_light_theme_icon_color">@color/modern_grey_700</color>
+    <color name="brave_informer_light_theme_icon_color">@color/baseline_neutral_30</color>
 
-    <color name="brave_set_default_dialog_text_color">@color/modern_grey_700</color>
+    <color name="brave_set_default_dialog_text_color">@color/baseline_neutral_30</color>
 
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
@@ -166,7 +166,7 @@
     <color name="find_in_page_query_incognito_hint_color">@color/white_alpha_70</color>
 
     <color name="new_tab_menu_text_dark_color">@android:color/white</color>
-    <color name="new_tab_menu_bg_dark_color">@color/modern_grey_800</color>
+    <color name="new_tab_menu_bg_dark_color">@color/baseline_neutral_20</color>
     <color name="translucent_activity_background_color">#AA3B3B3B</color>
     <color name="user_wallet_background">#F1F3F5</color>
     <color name="user_wallet_status">#49CC69</color>

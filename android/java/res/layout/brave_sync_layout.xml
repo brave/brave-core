@@ -64,7 +64,7 @@
                android:text="@string/brave_sync_start_new_chain"
                style="@style/BraveSyncBottomButton"
                android:background="@android:color/transparent"
-               android:textColor="@color/modern_grey_600" />
+               android:textColor="@color/baseline_neutral_40" />
 
         </LinearLayout>
     </ScrollView>
@@ -129,7 +129,7 @@
                android:text="@string/enter_code_words_sync"
                style="@style/BraveSyncBottomButton"
                android:background="@android:color/transparent"
-               android:textColor="@color/modern_grey_600" />
+               android:textColor="@color/baseline_neutral_40" />
 
         </LinearLayout>
     </ScrollView>
@@ -271,7 +271,7 @@
                 android:text="@string/brave_sync_use_camera_text"
                 style="@style/BraveSyncBottomButton"
                 android:background="@android:color/transparent"
-                android:textColor="@color/modern_grey_600" />
+                android:textColor="@color/baseline_neutral_40" />
 
         </LinearLayout>
 

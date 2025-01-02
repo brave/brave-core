@@ -243,7 +243,7 @@ public class SignSolTransactionsFragment extends BaseDAppsBottomSheetDialogFragm
         } else {
             mBtSign.setBackgroundTintList(
                     ColorStateList.valueOf(
-                            ContextCompat.getColor(requireContext(), R.color.modern_grey_700)));
+                            ContextCompat.getColor(requireContext(), R.color.baseline_neutral_30)));
         }
     }
 
