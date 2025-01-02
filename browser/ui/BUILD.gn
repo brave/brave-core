@@ -9,6 +9,7 @@ import("//brave/browser/ui/config.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_screenshots/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
@@ -112,11 +113,10 @@ source_set("ui") {
     "webui/untrusted_sanitized_image_source.h",
   ]
 
-  # Screenshot tools via Context Menu and Commander
-  if (is_win || is_mac || is_linux) {
+  if (enable_brave_screenshots) {
     sources += [
-      "screenshots/brave_screenshots_utils.cc",
-      "screenshots/brave_screenshots_utils.h",
+      "//brave/browser/brave_screenshots/tabs/screenshots_tab_helper.h",
+      "//brave/components/brave_screenshots/common/features.h",
     ]
     deps += [ "//chrome/browser/image_editor:image_editor" ]
   }
@@ -1497,15 +1497,6 @@ source_set("unit_tests") {
         "//chrome/test:test_support",
         "//skia",
         "//third_party/abseil-cpp:absl",
-      ]
-    }
-
-    # Screenshot tools via Context Menu and Commander
-    if (is_win || is_mac || is_linux) {
-      sources += [ "screenshots/brave_screenshots_utils_unittests.cc" ]
-      deps += [
-        "//brave/app:generate_command_metadata",
-        "//chrome/browser/search_engines",
       ]
     }
   }

@@ -24,6 +24,7 @@
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
+#include "brave/components/brave_screenshots/common/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
@@ -541,6 +542,13 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "Enables the refreshed version of the New Tab Page",                 \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(features::kBraveNewTabPageRefreshEnabled),        \
+      },                                                                       \
+      {                                                                        \
+          "brave-screenshots",                                                 \
+          "Screenshot Context Menu Options",                                   \
+          "Enables various screenshot options in the context menu.",           \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(brave_screenshots::features::kBraveScreenshots),  \
       },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
