@@ -95,7 +95,14 @@ MULTIPROCESS_TEST_MAIN(FastSleepyChildProcess) {
   return 0;
 }
 
-TEST_F(ChildProcessMonitorTest, ChildExit) {
+// Timeout frequently on MacOS arm64, see
+// https://github.com/brave/brave-browser/issues/41749
+#if BUILDFLAG(IS_MAC) && defined(ARCH_CPU_ARM64)
+#define MAYBE_ChildExit DISABLED_ChildExit
+#else
+#define MAYBE_ChildExit ChildExit
+#endif
+TEST_F(ChildProcessMonitorTest, MAYBE_ChildExit) {
   std::unique_ptr<ChildProcessMonitor> monitor =
       std::make_unique<ChildProcessMonitor>();
 
