@@ -77,13 +77,7 @@ struct PrivateTabsView: View {
               if newValue {
                 tabManager?.saveAllTabs()
               } else {
-                if let tabs = tabManager?.allTabs.filter({ $0.isPrivate }) {
-                  SessionTab.deleteAll(tabIds: tabs.map({ $0.id }))
-                }
-
-                if tabManager?.privateBrowsingManager.isPrivateBrowsing == true {
-                  tabManager?.willSwitchTabMode(leavingPBM: true)
-                }
+                tabManager?.removeAllForCurrentMode(isActiveTabIncluded: true)
               }
             }
           }
