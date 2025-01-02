@@ -25,9 +25,9 @@ import {getTemplate} from './default_brave_shields_page.html.js'
 const BraveShieldsPageBase = WebUiListenerMixin(I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement))))
 
 /**
-* 'settings-default-brave-shields-page' is the settings page containing brave's
-* default shields.
-*/
+ * 'settings-default-brave-shields-page' is the settings page containing brave's
+ * default shields.
+ */
 class BraveShieldsPage extends BraveShieldsPageBase {
   static get is () {
     return 'settings-default-brave-shields-page'
@@ -44,9 +44,18 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         type: Array,
         value: function () {
           return [
-              { value: 'block', name: loadTimeData.getString('blockAdsTrackersAggressive') },
-              { value: 'block_third_party', name: loadTimeData.getString('blockAdsTrackersStandard') },
-              { value: 'allow', name: loadTimeData.getString('allowAdsTrackers') }
+            {
+              value: 'block',
+              name: loadTimeData.getString('blockAdsTrackersAggressive'),
+            },
+            {
+              value: 'block_third_party',
+              name: loadTimeData.getString('blockAdsTrackersStandard'),
+            },
+            {
+              value: 'allow',
+              name: loadTimeData.getString('allowAdsTrackers'),
+            }
           ]
         }
       },
@@ -55,9 +64,18 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           type: Array,
           value: function () {
             return [
-                { value: 'block', name: loadTimeData.getString('strictFingerprinting') },
-                { value: 'default', name: loadTimeData.getString('standardFingerprinting') },
-                { value: 'allow', name: loadTimeData.getString('allowAllFingerprinting') }
+              {
+                value: 'block',
+                name: loadTimeData.getString('strictFingerprinting'),
+              },
+              {
+                value: 'default',
+                name: loadTimeData.getString('standardFingerprinting'),
+              },
+              {
+                value: 'allow',
+                name: loadTimeData.getString('allowAllFingerprinting'),
+              }
             ]
           }
       },
@@ -220,11 +238,13 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   onFingerprintingSelectControlChange_ () {
-    this.browserProxy_.setFingerprintingControlType(this.$.fingerprintingSelectControlType.value)
+    this.browserProxy_.
+      setFingerprintingControlType(this.$.fingerprintingSelectControlType.value)
   }
 
   onFingerprintingToggleControlChange_ () {
-    this.browserProxy_.setFingerprintingBlockEnabled(this.$.fingerprintingToggleControlType.checked)
+    this.browserProxy_.setFingerprintingBlockEnabled(
+      this.$.fingerprintingToggleControlType.checked)
   }
 
   onHttpsUpgradeControlChange_ () {
@@ -233,7 +253,8 @@ class BraveShieldsPage extends BraveShieldsPageBase {
   }
 
   onNoScriptControlChange_ () {
-    this.browserProxy_.setNoScriptControlType(this.$.noScriptControlType.checked)
+    this.browserProxy_.
+      setNoScriptControlType(this.$.noScriptControlType.checked)
   }
 
   onForgetFirstPartyStorageToggleChange_ () {

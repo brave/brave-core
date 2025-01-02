@@ -107,11 +107,11 @@ const BraveClearSettingsMenuHighlightBehavior = {
       }
     }
     window.addEventListener('showing-section', ({ detail: section }) => {
-      // Currently showing or about to scroll to `section`.
-      // If we're getting further away from section top
-      // then section is no longer 'selected'.
-      // TODO(petemill): If this wasn't a chromium module, we'd simply add a handler
-      // for scrolling away, or have the menu change selection as we scroll.
+      // Currently showing or about to scroll to `section`. If we're getting
+      // further away from section top then section is no longer 'selected'.
+      // TODO(petemill): If this wasn't a chromium module, we'd simply add a
+      // handler for scrolling away, or have the menu change selection as we
+      // scroll.
       stopObservingScroll()
       function calcDistance() {
         const sectionScrollTop = section.offsetTop

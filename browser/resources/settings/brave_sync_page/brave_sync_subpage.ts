@@ -312,7 +312,7 @@ class SettingBraveSyncSubpage extends SettingBraveSyncSubpageBase {
       return
     }
     this.pageStatus_ = 'spinner'
-    await this.braveSyncBrowserProxy_.resetSyncChain();
+    await this.braveSyncBrowserProxy_.resetSyncChain()
 
     this.syncCode = undefined;
     this.syncCodeDialogType = 'input'

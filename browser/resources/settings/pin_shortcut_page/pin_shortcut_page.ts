@@ -49,4 +49,4 @@ class SettingsPinShortcutPage extends SettingsPinShortcutPageBase {
   }
 }
 
-customElements.define(SettingsPinShortcutPage.is, SettingsPinShortcutPage);
+customElements.define(SettingsPinShortcutPage.is, SettingsPinShortcutPage)

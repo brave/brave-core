@@ -29,6 +29,7 @@ RegisterPolymerTemplateModifications({
       if (!version) {
         console.error('[Brave Settings Overrides] Could not find version div')
       }
+
       // Remove the class from the version, so we take the link styling.
       version.removeAttribute('class')
 
@@ -46,11 +47,13 @@ RegisterPolymerTemplateModifications({
     const updateStatusMessageLink = section.querySelector('#updateStatusMessage a')
     if (updateStatusMessageLink) {
       // <if expr="is_win">
-      updateStatusMessageLink.href = 'https://support.brave.com/hc/en-us/articles/360042816611-Why-isn-t-Brave-updating-automatically-on-Windows-'
+      updateStatusMessageLink.href =
+        'https://support.brave.com/hc/en-us/articles/360042816611-Why-isn-t-Brave-updating-automatically-on-Windows-'
       // </if>
 
       // <if expr="not is_win">
-      updateStatusMessageLink.href = 'https://community.brave.com?p=update_error'
+        updateStatusMessageLink.href =
+          'https://community.brave.com?p=update_error'
       // </if>
     }
   }

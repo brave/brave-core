@@ -13,7 +13,7 @@ import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import { BaseMixin } from '../base_mixin.js';
 import {getTemplate} from './wallet_networks_list.html.js'
-import {loadTimeData} from '../i18n_setup.js';
+import {loadTimeData} from '../i18n_setup.js'
 
 const SettingsWalletNetworksListBase = I18nMixin(BaseMixin(PolymerElement))
 
@@ -43,13 +43,13 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
       networks: {
         type: Array,
         value() {
-          return [];
+          return []
         },
       },
       knownNetworks: {
         type: Array,
         value() {
-          return [];
+          return []
         },
       },
       customNetworks: {
@@ -230,8 +230,9 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
 
   updateNetworks() {
     this.browserProxy_.getNetworksList(this.coin).then(payload => {
-      if (!payload)
+      if (!payload) {
         return
+      }
       this.defaultNetwork = payload.defaultNetwork
       this.networks = payload.networks
       this.knownNetworks = payload.knownNetworks
@@ -262,7 +263,8 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
 
   onNetworkMenuTapped_(event) {
     this.selectedNetwork = event.model.item
-    this.isDefaultNetwork = this.checkIsDefaultNetwork(this.selectedNetwork.chainId)
+    this.isDefaultNetwork =
+      this.checkIsDefaultNetwork(this.selectedNetwork.chainId)
     this.canRemoveNetwork = this.canRemoveNetwork_(this.selectedNetwork)
     this.canResetNetwork = this.canResetNetwork_(this.selectedNetwork)
     const actionMenu =

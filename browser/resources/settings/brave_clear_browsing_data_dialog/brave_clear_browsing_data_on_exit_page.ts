@@ -65,9 +65,9 @@ Polymer({
       if (checkbox.checked != this.get(checkbox.pref.key, this.prefs).value) {
         changed.push({key:checkbox.pref.key, value:checkbox.checked});
       }
-    });
-    return changed;
-  },
+    })
+    return changed
+  }
 
   updateModified_: function () {
     let modified = false;

@@ -10,7 +10,8 @@ import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
 RegisterPolymerTemplateModifications({
   'settings-import-data-dialog': (templateContent) => {
-    let checkBoxesParent = templateContent.querySelector('#browserSelect').parentElement;
+    let checkBoxesParent =
+      templateContent.querySelector('#browserSelect').parentElement
     checkBoxesParent.appendChild(html`
       <settings-checkbox id="importDialogExtensions"
         hidden="[[!selected_.extensions]]"

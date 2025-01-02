@@ -7,7 +7,7 @@
 
 const BraveResetProfileDialogBehaviorImpl = {
   ready: function() {
-    this.fixSendSettingsCheckbox();
+    this.fixSendSettingsCheckbox()
   },
 
   /**
@@ -21,7 +21,7 @@ const BraveResetProfileDialogBehaviorImpl = {
     this.$.sendSettings.disabled = true;
     this.$.sendSettings.parentNode.hidden = true;
   }
-};
+}
 
 export const BraveResetProfileDialogBehavior = [
   BraveResetProfileDialogBehaviorImpl

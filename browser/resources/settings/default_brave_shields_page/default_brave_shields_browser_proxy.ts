@@ -182,8 +182,6 @@ export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsB
   static getInstance(): DefaultBraveShieldsBrowserProxy {
     return instance || (instance = new DefaultBraveShieldsBrowserProxyImpl())
   }
-
-
 }
 
 let instance: DefaultBraveShieldsBrowserProxy|null = null

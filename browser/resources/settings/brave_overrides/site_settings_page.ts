@@ -30,7 +30,7 @@ RegisterPolymerTemplateModifications({
   'settings-site-settings-page': (templateContent) => {
     const allSites = templateContent.querySelector('#allSites')
     if (!allSites) {
-      console.error('[Brave Settings Overrides] Could not find all sites list')
+      console.error('[Settings] Could not find all sites list')
       return
     }
     allSites.insertAdjacentHTML(
@@ -47,7 +47,7 @@ RegisterPolymerTemplateModifications({
     const siteSettingsShieldsTitle =
       templateContent.getElementById('siteSettingsShields')
     if (!siteSettingsShieldsTitle) {
-      console.error('[Brave Settings Overrides] Couldn\'t find shields title')
+      console.error('[Settings] Couldn\'t find shields title')
     } else {
       siteSettingsShieldsTitle.textContent =
           loadTimeData.getString('siteSettingsShields')
@@ -108,7 +108,8 @@ RegisterPolymerComponentReplacement(
             }
             lists_.permissionsAdvanced.splice(indexForAutoplay, 0, autoplayItem)
             let currentIndex = indexForAutoplay
-            const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+            const isGoogleSignInFeatureEnabled =
+              loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
             if (isGoogleSignInFeatureEnabled) {
               currentIndex++
               const googleSignInItem = {
@@ -152,7 +153,8 @@ RegisterPolymerComponentReplacement(
               lists_.permissionsAdvanced.splice(currentIndex, 0,
                 AIChatItem)
             }
-            const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+            const isNativeBraveWalletEnabled =
+              loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
             if (isNativeBraveWalletEnabled) {
               currentIndex++
               const ethereumItem = {

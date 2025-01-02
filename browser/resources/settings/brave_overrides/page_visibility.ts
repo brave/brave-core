@@ -72,8 +72,9 @@ function getPageVisibility () {
     }
   })
 }
-// Provide an export in case our overrides want to explicitly import this override
-// Even though we are modifying chromium's override, the es module eval timing may
-// result in the unoverriden value being obtained.
+
+// Provide an export in case our overrides want to explicitly import this
+// override. Even though we are modifying chromium's override, the es module
+// eval timing may result in the unoverridden value being obtained.
 export const pageVisibility = getPageVisibility()
 resetPageVisibilityForTesting(pageVisibility)

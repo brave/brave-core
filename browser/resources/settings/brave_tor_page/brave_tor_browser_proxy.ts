@@ -7,17 +7,18 @@
 
 import { sendWithPromise } from 'chrome://resources/js/cr.js';
 
+// TODO(petemill): Define the expected types instead of using any
 export interface BraveTorBrowserProxy {
-  getBridgesConfig(): Promise<any> // TODO(petemill): Define the expected type
-  setBridgesConfig(config: any) // TODO(petemill): Define the expected type
-  requestBridgesCaptcha(): Promise<any> // TODO(petemill): Define the expected type
-  resolveBridgesCaptcha(captcha: any) // TODO(petemill): Define the expected type
-  setTorEnabled(value: boolean)
-  isTorEnabled(): Promise<boolean>
-  isTorManaged(): Promise<boolean>
-  isSnowflakeExtensionAllowed(): Promise<boolean>
-  isSnowflakeExtensionEnabled(): Promise<boolean>
-  enableSnowflakeExtension(enable: boolean): Promise<boolean>
+  getBridgesConfig: () => Promise<any>
+  setBridgesConfig: (config: any) => void
+  requestBridgesCaptcha: () => Promise<any>
+  resolveBridgesCaptcha: (captcha: any) => Promise<any>
+  setTorEnabled: (value: boolean) => void
+  isTorEnabled: () => Promise<boolean>
+  isTorManaged: () => Promise<boolean>
+  isSnowflakeExtensionAllowed: () => Promise<boolean>
+  isSnowflakeExtensionEnabled: () => Promise<boolean>
+  enableSnowflakeExtension: (enable: boolean) => Promise<boolean>
 }
 
 export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {

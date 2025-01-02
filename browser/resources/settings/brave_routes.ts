@@ -12,12 +12,12 @@ import {SettingsRoutes} from 'chrome://settings/settings.js'
 export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   const isGuest = loadTimeData.getBoolean('isGuest')
   if (!r.BASIC) {
-    console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
+    console.error('[Settings] Routes: could not find BASIC page')
     return
   }
   if (pageVisibility.getStarted) {
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
-    // bring back people's /manageProfile (now in getStarted)
+    // Bring back people's /manageProfile (now in getStarted)
     r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
     // We re-section people page into getStarted section (see people_page Brave
     // override), so we need to adjust the route accordingly in order for the
@@ -32,7 +32,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     if (r.SYSTEM) {
       r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
     } else if (!isGuest) {
-      console.error('[Brave Settings Overrides] Routes: could not find SYSTEM page')
+      console.error('[Settings] Routes: could not find SYSTEM page')
     }
   }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
@@ -65,9 +65,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
-    const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+    const isGoogleSignInFeatureEnabled =
+      loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
     if (isGoogleSignInFeatureEnabled) {
-      r.SITE_SETTINGS_GOOGLE_SIGN_IN = r.SITE_SETTINGS.createChild('googleSignIn')
+      r.SITE_SETTINGS_GOOGLE_SIGN_IN =
+        r.SITE_SETTINGS.createChild('googleSignIn')
     }
     const isLocalhostAccessFeatureEnabled =
       loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
@@ -75,11 +77,14 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       r.SITE_SETTINGS_LOCALHOST_ACCESS = r.SITE_SETTINGS
         .createChild('localhostAccess')
     }
-    const isOpenAIChatFromBraveSearchEnabled = loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
+    const isOpenAIChatFromBraveSearchEnabled =
+      loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
     if (isOpenAIChatFromBraveSearchEnabled) {
-      r.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT = r.SITE_SETTINGS.createChild('braveOpenAIChat')
+      r.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT =
+        r.SITE_SETTINGS.createChild('braveOpenAIChat')
     }
-    const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+    const isNativeBraveWalletFeatureEnabled =
+      loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     if (isNativeBraveWalletFeatureEnabled) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
       r.SITE_SETTINGS_SOLANA = r.SITE_SETTINGS.createChild('solana')
@@ -88,17 +93,19 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     if (r.SITE_SETTINGS_ADS) {
       delete r.SITE_SETTINGS_ADS
     } else {
-      console.error('[Brave Settings Overrides] could not find expected route site_settings_ads')
+      console.error(
+        '[Settings] could not find expected route site_settings_ads')
     }
   } else if (!isGuest) {
-    console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
+    console.error('[Settings] Routes: could not find SITE_SETTINGS page')
   }
   // Autofill route is moved to advanced,
   // otherwise its sections won't show up when opened.
   if (r.AUTOFILL && r.ADVANCED) {
     r.AUTOFILL.parent = r.ADVANCED
   } else if (!isGuest) {
-    console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
+    console.error(
+      '[Settings] Could not move autofill route to advanced route', r)
   }
   // Delete performance menu - system menu includes it instead.
   if (r.PERFORMANCE) {

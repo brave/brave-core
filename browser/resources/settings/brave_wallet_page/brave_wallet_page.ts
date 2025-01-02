@@ -21,10 +21,6 @@ import {getTemplate} from './brave_wallet_page.html.js'
 const SettingsBraveWalletPageBase =
   WebUiListenerMixin(PrefsMixin(I18nMixin(RouteObserverMixin(PolymerElement))))
 
-/**
- * 'settings-brave-default-extensions-page' is the settings page containing
- * brave's default extensions.
- */
 class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   static get is() {
     return 'settings-brave-wallet-page'
@@ -229,19 +225,19 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
       } else {
         this.showRestartToast_ = false
       }
-    });
+    })
   }
 
   applyPrefChangesAndRestart(e) {
     this.browserProxy_.setWalletInPrivateWindowsEnabled(
       this.isPrivateWindowsEnabled_.value
     ).then(() => {
-        e.stopPropagation();
-        window.open("chrome://restart", "_self");
+        e.stopPropagation()
+        window.open("chrome://restart", "_self")
       })
       .catch((error) => {
-        console.error('Error setting Wallet in Private Windows:', error);
-      });
+        console.error('Error setting Wallet in Private Windows:', error)
+      })
   }
 }
 
