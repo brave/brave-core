@@ -36,6 +36,7 @@ class FilterListService : public KeyedService,
   void GetSubscriptions(GetSubscriptionsCallback callback) override;
   void CreateSubscription(const GURL& subscription_url) override;
   void EnableSubscription(const GURL& sub_url, bool enabled) override;
+  void RefreshSubscription(const GURL& sub_url, bool from_ui) override;
   void DeleteSubscription(const GURL& sub_url) override;
   void GetFilterLists(GetFilterListsCallback callback) override;
   void GetCustomFilters(GetCustomFiltersCallback callback) override;
