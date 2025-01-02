@@ -1620,7 +1620,8 @@ public class BytecodeTest {
                         boolean.class,
                         SnackbarManager.class,
                         Profile.class,
-                        BookmarkUiPrefs.class));
+                        BookmarkUiPrefs.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
