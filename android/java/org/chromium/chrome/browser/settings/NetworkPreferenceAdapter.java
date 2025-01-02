@@ -33,7 +33,7 @@ import org.chromium.chrome.R;
 import org.chromium.ui.listmenu.BasicListMenu;
 import org.chromium.ui.listmenu.ListMenu;
 import org.chromium.ui.listmenu.ListMenuButton;
-import org.chromium.ui.listmenu.ListMenuButtonDelegate;
+import org.chromium.ui.listmenu.ListMenuDelegate;
 import org.chromium.ui.listmenu.ListMenuItemProperties;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
@@ -461,9 +461,9 @@ public class NetworkPreferenceAdapter extends RecyclerView.Adapter<ViewHolder> {
         /**
          * Sets up the menu button at the end of this row with a given delegate.
          *
-         * @param delegate A {@link ListMenuButtonDelegate}.
+         * @param delegate A {@link ListMenuDelegate}.
          */
-        void setMenuButtonDelegate(@NonNull final ListMenuButtonDelegate delegate) {
+        void setMenuButtonDelegate(@NonNull final ListMenuDelegate delegate) {
             mMoreButton.setVisibility(View.VISIBLE);
             mMoreButton.setDelegate(delegate);
         }
