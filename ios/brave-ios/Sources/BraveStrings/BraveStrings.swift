@@ -3637,15 +3637,15 @@ extension Strings {
     "OpenTextCalendarAlertTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Calendar available",
-    comment: "Title of the alert when a calendar is available for download"
+    value: "Calendar Event available",
+    comment: "Title of the alert when a calendar event is available for download"
   )
   public static let openTextCalendarAlertDescription = NSLocalizedString(
     "OpenTextCalendarAlertDescription",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Continue download a calendar from %@",
-    comment: "Title of the alert when a calendar is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from"
+    value: "Continue download a calendar event from %@",
+    comment: "Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from"
   )
   public static let requestCameraPermissionPrompt = NSLocalizedString(
     "requestCameraPermissionPrompt",
