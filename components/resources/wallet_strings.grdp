@@ -106,6 +106,7 @@
   <message name="IDS_BRAVE_WALLET_USER_UNDERSTANDS_LABEL" desc="Message for use to acknowledge a decision">I understand</message>
   <message name="IDS_BRAVE_WALLET_CHOOSE_RECIPIENT" desc="Select address modal title">Choose recipient</message>
   <message name="IDS_BRAVE_WALLET_MY_ADDRESSES" desc="Select address modal my addresses label">My addresses</message>
+  <message name="IDS_BRAVE_WALLET_RECENT_ADDRESSES" desc="Select address modal recent addresses label">Recent addresses</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_OR_DOMAIN_PLACEHOLDER" desc="Seach address or domain input placeholder">Enter public address or domain.</message>
   <message name="IDS_BRAVE_WALLET_SEND_TO" desc="Send screen send to label">Send to</message>
   <message name="IDS_BRAVE_WALLET_INVALID_DOMAIN_EXTENSION" desc="Send screen invalid domain extension error">Invalid domain extension.</message>
@@ -995,6 +996,9 @@
   <message name="IDS_BRAVE_WALLET_FROM_TOKEN" desc="Swap from token label">From token</message>
   <message name="IDS_BRAVE_WALLET_TO_TOKEN" desc="Swap to token label">To token</message>
   <message name="IDS_BRAVE_WALLET_NEW_QUOTE_IN" desc="Swap new quote in label">New quote in <ph name="COUNTDOWN_BEFORE">$1</ph><ph name="COUNTDOWN">$3<ex>00:05</ex></ph><ph name="COUNTDOWN_AFTER">$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_ADDRESS_HISTORY_ENABLED_DISCLAIMER" desc="Disclaimer text shown when address history is enabled.">Recent addresses are displayed and saved locally.</message>
+  <message name="IDS_BRAVE_WALLET_ADDRESS_HISTORY_DISABLED_DISCLAIMER" desc="Disclaimer text shown when address history is disabled.">Recent addresses used for sending assets/tokens are not being saved.</message>
+  <message name="IDS_BRAVE_WALLET_DISABLE_ADDRESS_HISTORY" desc="Button label text to disable address history.">Disable and hide</message>
   <message name="IDS_BRAVE_SWAP_BALANCE" desc="Text indicating account balance">Balance:</message>
   <message name="IDS_BRAVE_SWAP_SELECT_A_TOKEN" desc="Text prompting to select a token to swap">Select a token to swap</message>
   <message name="IDS_BRAVE_SWAP_SHOW_TOKENS_WITH_ZERO_BALANCES" desc="Button text to show tokens with zero balance">Show tokens with no balance</message>

@@ -110,6 +110,11 @@ provideStrings({
   braveWalletFromToken: 'From token',
   braveWalletToToken: 'To token',
   braveWalletNewQuoteIn: 'New quote in $1$3$2',
+  braveWalletAddressHistoryEnabledDisclaimer:
+    'Recent addresses are displayed and saved locally.',
+  braveWalletAddressHistoryDisabledDisclaimer:
+    'Recent addresses used for sending assets/tokens are not being saved.',
+  braveWalletDisableAddressHistory: 'Disable and hide',
 
   // Send Tab
   braveWalletChooseAssetToSend: 'Choose asset to send',
@@ -128,6 +133,7 @@ provideStrings({
   braveWalletUserUnderstandsLabel: 'I understand',
   braveWalletChooseRecipient: 'Choose recipient',
   braveWalletMyAddresses: 'My addresses',
+  braveWalletRecentAddresses: 'Recent addresses',
   braveWalletAddressOrDomainPlaceholder: 'Enter public address or domain.',
   braveWalletSendTo: 'Send to',
   braveWalletInvalidDomainExtension: 'Invalid domain extension.',

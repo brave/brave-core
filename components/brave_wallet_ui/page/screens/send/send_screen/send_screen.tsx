@@ -22,11 +22,15 @@ import {
   CoinTypesMap,
   BraveWallet,
   BaseTransactionParams,
-  AmountValidationErrorType
+  AmountValidationErrorType,
+  AddressHistory
 } from '../../../../constants/types'
 
 // Constants
 import { MAX_ZCASH_MEMO_LENGTH } from '../constants/magics'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
@@ -40,6 +44,9 @@ import {
 import {
   getDominantColorFromImageURL //
 } from '../../../../utils/style.utils'
+import {
+  getAddressHistoryIdentifier //
+} from '../../../../utils/local-storage-utils'
 
 // Hooks
 import {
@@ -64,6 +71,9 @@ import {
 import {
   useAccountFromAddressQuery //
 } from '../../../../common/slices/api.slice.extra'
+import {
+  useLocalStorage //
+} from '../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import { InputRow, ToText, ToRow } from './send.style'
@@ -101,6 +111,17 @@ interface Props {
 
 export const SendScreen = React.memo((props: Props) => {
   const { isAndroid = false } = props
+
+  // Local Storage
+  const [addressHistory, setAddressHistory] = useLocalStorage<AddressHistory>(
+    LOCAL_STORAGE_KEYS.RECENTLY_INTERACTED_WITH_ADDRESS_HISTORY,
+    {}
+  )
+
+  const [isAddressHistoryDisabled] = useLocalStorage<boolean>(
+    LOCAL_STORAGE_KEYS.RECENTLY_INTERACTED_WITH_ADDRESS_HISTORY_IS_DISABLED,
+    false
+  )
 
   // routing
   const query = useQuery()
@@ -265,6 +286,24 @@ export const SendScreen = React.memo((props: Props) => {
     contractOrSymbolFromParams !== undefined &&
     chainIdFromParams !== undefined
 
+  const addressHistoryIdentifier =
+    getAddressHistoryIdentifier(networkFromParams)
+
+  const toAddress =
+    resolvedDomainAddress !== '' ? resolvedDomainAddress : toAddressOrUrl
+
+  // Gets the list of recently used addresses for the selected network or coin.
+  const addressHistoryByNetworkOrCoin = React.useMemo(() => {
+    if (!addressHistoryIdentifier) {
+      return []
+    }
+    return addressHistory[addressHistoryIdentifier] ?? []
+  }, [addressHistoryIdentifier, addressHistory])
+
+  const { account: toAccount } = useAccountFromAddressQuery(
+    toAddress ?? undefined
+  )
+
   // Methods
   const selectSendAsset = React.useCallback(
     (asset: BraveWallet.BlockchainToken, account?: BraveWallet.AccountInfo) => {
@@ -318,8 +357,26 @@ export const SendScreen = React.memo((props: Props) => {
       hardware: accountFromParams.hardware
     }
 
-    const toAddress =
-      resolvedDomainAddress !== '' ? resolvedDomainAddress : toAddressOrUrl
+    // Checks to see if the toAddress is not already in history and
+    // that the toAddress is not one of the users own accounts.
+    if (
+      !isAddressHistoryDisabled &&
+      !addressHistoryByNetworkOrCoin.includes(toAddress) &&
+      addressHistoryIdentifier &&
+      !toAccount
+    ) {
+      // Ensures that we only keep history of up to 5 addresses
+      // for a network at a time.
+      const addressesToKeep =
+        addressHistoryByNetworkOrCoin.length > 4
+          ? addressHistoryByNetworkOrCoin.slice(0, 4)
+          : addressHistoryByNetworkOrCoin
+
+      // Updates address history.
+      let history = addressHistory
+      history[addressHistoryIdentifier] = [toAddress, ...addressesToKeep]
+      setAddressHistory(history)
+    }
 
     switch (fromAccount.accountId.coin) {
       case BraveWallet.CoinType.BTC: {
@@ -468,12 +525,15 @@ export const SendScreen = React.memo((props: Props) => {
     tokenFromParams,
     accountFromParams,
     networkFromParams,
-    toAddressOrUrl,
     sendBtcTransaction,
     sendingMaxAmount,
     sendAmount,
-    resolvedDomainAddress,
     memoText,
+    addressHistory,
+    addressHistoryByNetworkOrCoin,
+    addressHistoryIdentifier,
+    toAddress,
+    toAccount,
     resetSendFields,
     sendEvmTransaction,
     sendERC20Transfer,
@@ -482,7 +542,9 @@ export const SendScreen = React.memo((props: Props) => {
     sendFilTransaction,
     sendSolTransaction,
     sendSPLTransfer,
-    sendZecTransaction
+    sendZecTransaction,
+    setAddressHistory,
+    isAddressHistoryDisabled
   ])
 
   const handleFromAssetValueChange = React.useCallback(
