@@ -3633,6 +3633,20 @@ extension Strings {
     value: "Continue download a configuration profile from %@",
     comment: "Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from"
   )
+  public static let openTextCalendarAlertTitle = NSLocalizedString(
+    "OpenTextCalendarAlertTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Calendar available",
+    comment: "Title of the alert when a calendar is available for download"
+  )
+  public static let openTextCalendarAlertDescription = NSLocalizedString(
+    "OpenTextCalendarAlertDescription",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Continue download a calendar from %@",
+    comment: "Title of the alert when a calendar is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from"
+  )
   public static let requestCameraPermissionPrompt = NSLocalizedString(
     "requestCameraPermissionPrompt",
     tableName: "BraveShared",
