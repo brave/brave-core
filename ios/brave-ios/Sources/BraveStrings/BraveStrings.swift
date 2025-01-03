@@ -3627,7 +3627,7 @@ extension Strings {
     comment: "Title of the alert when a mobile configuration profile is available for download"
   )
   public static let openMobileConfigurationAlertDescription = NSLocalizedString(
-    "OpenMobileConfigurationAlertTitle",
+    "OpenMobileConfigurationAlertDescription",
     tableName: "BraveShared",
     bundle: .module,
     value: "Continue download a configuration profile from %@",
