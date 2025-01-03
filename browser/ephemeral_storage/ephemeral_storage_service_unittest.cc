@@ -301,7 +301,8 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
         1u);
   }
 
-  // No cleanup should happen at the restart when the profile has no browser window associated with it.
+  // No cleanup should happen at the restart when the profile has no browser
+  // window associated with it.
   {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
@@ -309,9 +310,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
     EXPECT_EQ(
         profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
         1u);
-    EXPECT_EQ(
-        mock_delegate_->DoesProfileHaveAnyBrowserWindow(),
-        false);
+    EXPECT_EQ(mock_delegate_->DoesProfileHaveAnyBrowserWindow(), false);
   }
 }
 
