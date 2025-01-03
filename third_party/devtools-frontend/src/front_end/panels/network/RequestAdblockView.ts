@@ -14,7 +14,7 @@ const coordinator = Coordinator.RenderCoordinator.RenderCoordinator.instance()
 
 export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
   .WrappableComponent {
-  static readonly litTagName = LitHtml.literal`devtools-request-adblock-info`
+  static readonly litTagName = LitHtml.StaticHtml.literal`devtools-request-adblock-info`
   readonly #shadow = this.attachShadow({ mode: 'open' })
   readonly #request: SDK.NetworkRequest.NetworkRequest
   #manager: SDK.NetworkManager.NetworkManager | null
