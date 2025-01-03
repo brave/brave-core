@@ -91,11 +91,7 @@ class Authenticator {
         }
       }
 
-      origin += protectionSpace.host
-
-      if protectionSpace.port != 80 && protectionSpace.port != 443 {
-        origin += ":\(protectionSpace.port)"
-      }
+      origin += "\(protectionSpace.host):\(protectionSpace.port)"
 
       let formatted = String(format: Strings.authPromptAlertMessageText, origin)
       let alert = AlertController(
