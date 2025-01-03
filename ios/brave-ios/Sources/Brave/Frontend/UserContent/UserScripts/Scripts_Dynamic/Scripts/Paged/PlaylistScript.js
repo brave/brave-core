@@ -293,38 +293,45 @@ window.__firefox__.includeOnce("Playlist", function($) {
         });
 
         var descriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'src');
-        Object.defineProperty(HTMLMediaElement.prototype, 'src', {
-          enumerable: descriptor.enumerable,
-          configurable: descriptor.configurable,
-          get: function() {
-            return this.getAttribute('src')
-          },
-          set: function(value) {
-            this.setAttribute('src', value);
-          }
-        });
+        if (descriptor) {
+          Object.defineProperty(HTMLMediaElement.prototype, 'src', {
+            enumerable: descriptor.enumerable,
+            configurable: descriptor.configurable,
+            get: function() {
+              return descriptor.get.call(this);
+            },
+            set: function(value) {
+              descriptor.set.call(this, value);
+              
+              if (this instanceof HTMLVideoElement) {
+                notifyNode(this, 'video', true, false);
+              } else if (this instanceof HTMLAudioElement) {
+                notifyNode(this, 'audio', true, false);
+                setTimeout(() => checkPageForVideos(false), 100);
+              }
+            }
+          });
+        }
 
         var setVideoAttribute = HTMLVideoElement.prototype.setAttribute;
-        HTMLVideoElement.prototype.setAttribute = $(function(key, value) {
+        HTMLVideoElement.prototype.setAttribute = function(key, value) {
           setVideoAttribute.call(this, key, value);
           if (key.toLowerCase() == 'src') {
             notifyNode(this, 'video', true, false);
           }
-        });
+        };
 
         var setAudioAttribute = HTMLAudioElement.prototype.setAttribute;
-        HTMLAudioElement.prototype.setAttribute = $(function(key, value) {
+        HTMLAudioElement.prototype.setAttribute = function(key, value) {
           setAudioAttribute.call(this, key, value);
           if (key.toLowerCase() == 'src') {
             notifyNode(this, 'audio', true, false);
             
             // Instead of using an interval and polling,
             // we can check the page after a short period when an audio source has been setup.
-            setTimeout(function() {
-              checkPageForVideos(false);
-            }, 100);
+            setTimeout(() => checkPageForVideos(false), 100);
           }
-        });
+        };
       }
 
       /*var documentCreateElement = document.createElement;
