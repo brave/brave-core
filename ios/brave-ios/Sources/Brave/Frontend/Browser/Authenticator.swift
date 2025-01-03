@@ -82,28 +82,23 @@ class Authenticator {
     }
 
     return try await withCheckedThrowingContinuation { continuation in
-      let alert: AlertController
-
-      if !(protectionSpace.realm?.isEmpty ?? true) {
-        let formatted = String(
-          format: Strings.authPromptAlertFormatRealmMessageText,
-          protectionSpace.host,
-          protectionSpace.realm ?? ""
-        )
-        alert = AlertController(
-          title: Strings.authPromptAlertTitle,
-          message: formatted,
-          preferredStyle: .alert
-        )
-      } else {
-
-        let formatted = String(format: Strings.authPromptAlertMessageText, protectionSpace.host)
-        alert = AlertController(
-          title: Strings.authPromptAlertTitle,
-          message: formatted,
-          preferredStyle: .alert
-        )
+      var origin = ""
+      if let scheme = protectionSpace.protocol {
+        if scheme == "http" || scheme == "https" {
+          origin += "\(scheme)://"
+        } else {
+          origin += "\(scheme):"
+        }
       }
+
+      origin += "\(protectionSpace.host):\(protectionSpace.port)"
+
+      let formatted = String(format: Strings.authPromptAlertMessageText, origin)
+      let alert = AlertController(
+        title: Strings.authPromptAlertTitle,
+        message: formatted,
+        preferredStyle: .alert
+      )
 
       // Add a button to log in.
       let action = UIAlertAction(title: Strings.authPromptAlertLogInButtonTitle, style: .default) {

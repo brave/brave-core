@@ -425,14 +425,6 @@ extension Strings {
     value: "Authentication required",
     comment: "Authentication prompt title"
   )
-  public static let authPromptAlertFormatRealmMessageText = NSLocalizedString(
-    "AuthPromptAlertFormatRealmMessageText",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "A username and password are being requested by %@. The site says: %@",
-    comment:
-      "Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string"
-  )
   public static let authPromptAlertMessageText = NSLocalizedString(
     "AuthPromptAlertMessageText",
     tableName: "BraveShared",
