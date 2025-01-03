@@ -366,7 +366,7 @@ class TabTrayController: AuthenticationController {
 
     shredButton.addTarget(self, action: #selector(shredButtonPressed), for: .touchUpInside)
     becomeFirstResponder()
-    
+
     NotificationCenter.default.do {
       $0.addObserver(
         self,
