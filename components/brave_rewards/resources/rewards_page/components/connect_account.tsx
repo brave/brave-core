@@ -21,7 +21,8 @@ import {
   ExternalWalletProvider,
   isSelfCustodyProvider,
   getExternalWalletProviderName,
-  isExternalWalletProviderAllowed
+  isExternalWalletProviderAllowed,
+  isExternalWalletProviderDisabled
 } from '../../shared/lib/external_wallet'
 
 import * as routes from '../lib/app_routes'
@@ -37,7 +38,7 @@ export function ConnectAccount() {
   const { getString } = useLocaleContext()
   const wrapCallback = useCallbackWrapper()
 
-  const [
+  let [
     countryCode,
     regions,
     providers,
@@ -64,6 +65,10 @@ export function ConnectAccount() {
       }
     }
   }, [])
+
+  providers = providers.filter((name) => {
+    return !isExternalWalletProviderDisabled(regions && regions[name] || null)
+  })
 
   function onBack() {
     router.setRoute(routes.home)
@@ -160,10 +165,6 @@ export function ConnectAccount() {
   }
 
   function renderCustodialSection() {
-    if (!providers) {
-      return null
-    }
-
     const entries = providers.filter((name) => !isSelfCustodyProvider(name))
     if (entries.length === 0) {
       return null
@@ -193,10 +194,6 @@ export function ConnectAccount() {
   }
 
   function renderSelfCustodySection() {
-    if (!providers) {
-      return null
-    }
-
     const entries = providers.filter(isSelfCustodyProvider)
     if (entries.length === 0) {
       return null
