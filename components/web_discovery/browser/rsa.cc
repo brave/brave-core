@@ -44,7 +44,7 @@ std::unique_ptr<RSAKeyInfo> GenerateRSAKeyPair() {
 
   auto info = std::make_unique<RSAKeyInfo>();
 
-  info->key_pair = std::move(key_pair);
+  info->private_key = std::move(key_pair);
   info->public_key_b64 = base::Base64Encode(encoded_public_key);
   info->private_key_b64 = base::Base64Encode(encoded_private_key);
 
@@ -70,7 +70,7 @@ std::unique_ptr<RSAKeyInfo> ImportRSAKeyPair(
 
   auto info = std::make_unique<RSAKeyInfo>();
 
-  info->key_pair = std::move(key_pair);
+  info->private_key = std::move(key_pair);
   info->public_key_b64 = base::Base64Encode(encoded_public_key);
 
   return info;

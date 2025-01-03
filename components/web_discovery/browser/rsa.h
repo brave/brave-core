@@ -18,7 +18,7 @@ namespace web_discovery {
 struct RSAKeyInfo {
   RSAKeyInfo();
   ~RSAKeyInfo();
-  std::unique_ptr<crypto::RSAPrivateKey> key_pair;
+  std::unique_ptr<crypto::RSAPrivateKey> private_key;
   std::optional<std::string> private_key_b64;
   std::string public_key_b64;
 };

@@ -15,15 +15,28 @@
 
 namespace web_discovery {
 
+GenerateJoinRequestResult::GenerateJoinRequestResult(
+    std::string join_request_b64,
+    std::vector<uint8_t> join_gsk,
+    std::string signature)
+    : join_request_b64(std::move(join_request_b64)),
+      join_gsk(std::move(join_gsk)),
+      signature(std::move(signature)) {}
+
+GenerateJoinRequestResult::~GenerateJoinRequestResult() = default;
+
+GenerateJoinRequestResult::GenerateJoinRequestResult(
+    const GenerateJoinRequestResult&) = default;
+GenerateJoinRequestResult& GenerateJoinRequestResult::operator=(
+    const GenerateJoinRequestResult&) = default;
+
 BackgroundCredentialHelper::BackgroundCredentialHelper()
-    : anonymous_credential_manager_(
-          anonymous_credentials::new_credential_manager()) {}
+    : anonymous_credentials_manager_(new_anonymous_credentials_manager()) {}
 
 BackgroundCredentialHelper::~BackgroundCredentialHelper() = default;
 
 void BackgroundCredentialHelper::UseFixedSeedForTesting() {
-  anonymous_credential_manager_ =
-      anonymous_credentials::new_credential_manager_with_fixed_seed();
+  anonymous_credentials_manager_ = new_anonymous_credentials_with_fixed_seed();
 }
 
 std::unique_ptr<RSAKeyInfo> BackgroundCredentialHelper::GenerateRSAKey() {
@@ -31,7 +44,7 @@ std::unique_ptr<RSAKeyInfo> BackgroundCredentialHelper::GenerateRSAKey() {
   if (!key_pair) {
     return nullptr;
   }
-  rsa_private_key_ = std::move(key_pair->key_pair);
+  rsa_private_key_ = std::move(key_pair->private_key);
   return key_pair;
 }
 
@@ -46,18 +59,20 @@ BackgroundCredentialHelper::GenerateJoinRequest(std::string pre_challenge) {
   CHECK(rsa_private_key_);
   auto challenge = crypto::SHA256Hash(base::as_byte_span(pre_challenge));
 
-  auto join_request = anonymous_credential_manager_->start_join(
+  auto join_result = anonymous_credentials_manager_->start_join(
       base::SpanToRustSlice(challenge));
 
-  auto signature = RSASign(rsa_private_key_.get(), join_request.join_request);
+  auto signature = RSASign(rsa_private_key_.get(), join_result.join_request);
 
   if (!signature) {
     VLOG(1) << "RSA signature failed";
     return std::nullopt;
   }
 
-  return GenerateJoinRequestResult{.start_join_result = join_request,
-                                   .signature = *signature};
+  return GenerateJoinRequestResult(
+      base::Base64Encode(join_result.join_request),
+      std::vector<uint8_t>(join_result.gsk.begin(), join_result.gsk.end()),
+      *signature);
 }
 
 std::optional<std::string> BackgroundCredentialHelper::FinishJoin(
@@ -66,12 +81,11 @@ std::optional<std::string> BackgroundCredentialHelper::FinishJoin(
     std::vector<uint8_t> gsk,
     std::vector<uint8_t> join_resp_bytes) {
   base::AssertLongCPUWorkAllowed();
-  auto pub_key_result = anonymous_credentials::load_group_public_key(
-      base::SpanToRustSlice(group_pub_key));
-  auto gsk_result =
-      anonymous_credentials::load_credential_big(base::SpanToRustSlice(gsk));
-  auto join_resp_result = anonymous_credentials::load_join_response(
-      base::SpanToRustSlice(join_resp_bytes));
+  auto pub_key_result =
+      load_group_public_key(base::SpanToRustSlice(group_pub_key));
+  auto gsk_result = load_credential_big(base::SpanToRustSlice(gsk));
+  auto join_resp_result =
+      load_join_response(base::SpanToRustSlice(join_resp_bytes));
   if (!pub_key_result.error_message.empty() ||
       !gsk_result.error_message.empty() ||
       !join_resp_result.error_message.empty()) {
@@ -82,7 +96,7 @@ std::optional<std::string> BackgroundCredentialHelper::FinishJoin(
             << join_resp_result.error_message.c_str();
     return std::nullopt;
   }
-  auto finish_res = anonymous_credential_manager_->finish_join(
+  auto finish_res = anonymous_credentials_manager_->finish_join(
       *pub_key_result.value, *gsk_result.value,
       std::move(join_resp_result.value));
   if (!finish_res.error_message.empty()) {
@@ -100,10 +114,9 @@ std::optional<std::vector<uint8_t>> BackgroundCredentialHelper::PerformSign(
     std::optional<std::vector<uint8_t>> credential_bytes) {
   base::AssertLongCPUWorkAllowed();
   if (gsk_bytes && credential_bytes) {
-    auto gsk_result = anonymous_credentials::load_credential_big(
-        base::SpanToRustSlice(*gsk_bytes));
-    auto credential_result = anonymous_credentials::load_user_credentials(
-        base::SpanToRustSlice(*credential_bytes));
+    auto gsk_result = load_credential_big(base::SpanToRustSlice(*gsk_bytes));
+    auto credential_result =
+        load_user_credentials(base::SpanToRustSlice(*credential_bytes));
     if (!gsk_result.error_message.empty() ||
         !credential_result.error_message.empty()) {
       VLOG(1) << "Failed to sign due to deserialization error with gsk, or "
@@ -112,10 +125,10 @@ std::optional<std::vector<uint8_t>> BackgroundCredentialHelper::PerformSign(
               << credential_result.error_message.c_str();
       return std::nullopt;
     }
-    anonymous_credential_manager_->set_gsk_and_credentials(
+    anonymous_credentials_manager_->set_gsk_and_credentials(
         std::move(gsk_result.value), std::move(credential_result.value));
   }
-  auto sig_res = anonymous_credential_manager_->sign(
+  auto sig_res = anonymous_credentials_manager_->sign(
       base::SpanToRustSlice(msg), base::SpanToRustSlice(basename));
   if (!sig_res.error_message.empty()) {
     VLOG(1) << "Failed to sign: " << sig_res.error_message.c_str();

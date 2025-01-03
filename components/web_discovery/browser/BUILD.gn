@@ -7,8 +7,7 @@ import("//brave/components/web_discovery/buildflags/buildflags.gni")
 
 assert(enable_web_discovery_native)
 
-component("browser") {
-  output_name = "web_discovery_browser"
+static_library("browser") {
   sources = [
     "background_credential_helper.cc",
     "background_credential_helper.h",
@@ -28,7 +27,7 @@ component("browser") {
     "web_discovery_service.h",
   ]
   deps = [
-    "anonymous_credentials:rust_lib",
+    "anonymous_credentials",
     "//base",
     "//brave/brave_domains",
     "//brave/components/constants",

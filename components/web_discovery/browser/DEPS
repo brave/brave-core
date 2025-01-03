@@ -5,5 +5,6 @@ include_rules = [
   "+services/network/test",
   "+services/service_manager/public/cpp",
   "+third_party/re2",
+  "+third_party/rust/cxx",
   "+third_party/zlib",
 ]

@@ -89,11 +89,11 @@ bool CredentialManager::LoadRSAKey() {
     return false;
   }
 
-  CHECK(key_info->key_pair);
+  CHECK(key_info->private_key);
   rsa_public_key_b64_ = std::move(key_info->public_key_b64);
   background_credential_helper_
       .AsyncCall(&BackgroundCredentialHelper::SetRSAKey)
-      .WithArgs(std::move(key_info->key_pair));
+      .WithArgs(std::move(key_info->private_key));
 
   return true;
 }
@@ -169,9 +169,7 @@ void CredentialManager::OnJoinRequestReady(
   base::Value::Dict body_fields;
 
   body_fields.Set(kJoinDateField, date);
-  body_fields.Set(
-      kJoinMessageField,
-      base::Base64Encode(generate_join_result->start_join_result.join_request));
+  body_fields.Set(kJoinMessageField, generate_join_result->join_request_b64);
   body_fields.Set(kJoinRSAPublicKeyField, *rsa_public_key_b64_);
   body_fields.Set(kJoinRSASignatureField, generate_join_result->signature);
 
@@ -180,10 +178,6 @@ void CredentialManager::OnJoinRequestReady(
     VLOG(1) << "Join body serialization failed";
     return;
   }
-
-  auto gsk =
-      std::vector<uint8_t>(generate_join_result->start_join_result.gsk.begin(),
-                           generate_join_result->start_join_result.gsk.end());
 
   auto resource_request = CreateResourceRequest(join_url_);
   resource_request->headers.SetHeader(kVersionHeader,
@@ -199,7 +193,7 @@ void CredentialManager::OnJoinRequestReady(
   url_loader->DownloadToString(
       shared_url_loader_factory_.get(),
       base::BindOnce(&CredentialManager::OnJoinResponse, base::Unretained(this),
-                     date, group_pub_key, gsk),
+                     date, group_pub_key, generate_join_result->join_gsk),
       kMaxResponseSize);
 }
 

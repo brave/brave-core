@@ -11,14 +11,25 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/web_discovery/browser/anonymous_credentials/rust/src/lib.rs.h"
+#include "brave/components/web_discovery/browser/anonymous_credentials/lib.rs.h"
 #include "brave/components/web_discovery/browser/rsa.h"
 #include "crypto/rsa_private_key.h"
+#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace web_discovery {
 
 struct GenerateJoinRequestResult {
-  anonymous_credentials::StartJoinResult start_join_result;
+  GenerateJoinRequestResult(std::string join_request_b64,
+                            std::vector<uint8_t> join_gsk,
+                            std::string signature);
+
+  ~GenerateJoinRequestResult();
+
+  GenerateJoinRequestResult(const GenerateJoinRequestResult&);
+  GenerateJoinRequestResult& operator=(const GenerateJoinRequestResult&);
+
+  std::string join_request_b64;
+  std::vector<uint8_t> join_gsk;
   std::string signature;
 };
 
@@ -48,8 +59,7 @@ class BackgroundCredentialHelper {
       std::optional<std::vector<uint8_t>> credential_bytes);
 
  private:
-  rust::Box<anonymous_credentials::CredentialManager>
-      anonymous_credential_manager_;
+  rust::Box<AnonymousCredentialsManager> anonymous_credentials_manager_;
   std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key_;
 };
 
