@@ -3619,6 +3619,20 @@ extension Strings {
     value: "Don't Allow",
     comment: "Don't allow Brave to open the external app URL"
   )
+  public static let openMobileConfigurationAlertTitle = NSLocalizedString(
+    "OpenMobileConfigurationAlertTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Configuration profile available",
+    comment: "Title of the alert when a mobile configuration profile is available for download"
+  )
+  public static let openMobileConfigurationAlertDescription = NSLocalizedString(
+    "OpenMobileConfigurationAlertTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Continue download a configuration profile from %@",
+    comment: "Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from"
+  )
   public static let requestCameraPermissionPrompt = NSLocalizedString(
     "requestCameraPermissionPrompt",
     tableName: "BraveShared",
