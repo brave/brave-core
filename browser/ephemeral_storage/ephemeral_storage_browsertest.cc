@@ -308,12 +308,13 @@ content::EvalJsResult EphemeralStorageBrowserTest::GetCookiesInFrame(
   return content::EvalJs(host, "document.cookie");
 }
 
-size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(Browser* b) {
-  if (!b) {
-    b = browser();
+size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(
+    Profile* profile) {
+  if (!profile) {
+    profile = browser()->profile();
   }
   const size_t fired_cnt = EphemeralStorageServiceFactory::GetInstance()
-                               ->GetForContext(b->profile())
+                               ->GetForContext(profile)
                                ->FireCleanupTimersForTesting();
 
   // NetworkService closes existing connections when a data removal action
@@ -321,8 +322,7 @@ size_t EphemeralStorageBrowserTest::WaitForCleanupAfterKeepAlive(Browser* b) {
   // failures when the timing is "just right". Do a no-op removal here to make
   // sure the queued Ephemeral Storage cleanup was complete.
   BrowsingDataRemoverObserver data_remover_observer;
-  content::BrowsingDataRemover* remover =
-      b->profile()->GetBrowsingDataRemover();
+  content::BrowsingDataRemover* remover = profile->GetBrowsingDataRemover();
   remover->AddObserver(&data_remover_observer);
   remover->RemoveAndReply(base::Time(), base::Time::Max(), 0, 0,
                           &data_remover_observer);

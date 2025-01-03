@@ -301,16 +301,17 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, CleanupOnRestart) {
         1u);
   }
 
-  // Cleanup should happen in 5 seconds after the startup.
+  // No cleanup should happen at the restart when the profile has no browser window associated with it.
   {
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
-    EXPECT_CALL(*mock_delegate_,
-                CleanupFirstPartyStorageArea(ephemeral_domain));
     task_environment_.FastForwardBy(base::Seconds(5));
     EXPECT_EQ(
         profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
-        0u);
+        1u);
+    EXPECT_EQ(
+        mock_delegate_->DoesProfileHaveAnyBrowserWindow(),
+        false);
   }
 }
 

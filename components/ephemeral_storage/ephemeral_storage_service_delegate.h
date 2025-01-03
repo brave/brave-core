@@ -24,6 +24,7 @@ class EphemeralStorageServiceDelegate {
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
   virtual void CleanupFirstPartyStorageArea(
       const std::string& registerable_domain) {}
+  virtual bool DoesProfileHaveAnyBrowserWindow() const;
 };
 
 }  // namespace ephemeral_storage

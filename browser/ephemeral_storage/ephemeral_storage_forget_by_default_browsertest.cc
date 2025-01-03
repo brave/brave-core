@@ -10,6 +10,7 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -206,7 +207,7 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultBrowserTest,
   // After keepalive values should be cleared.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(incognito_browser,
                                            b_site_ephemeral_storage_url_));
-  WaitForCleanupAfterKeepAlive(incognito_browser);
+  WaitForCleanupAfterKeepAlive(incognito_browser->profile());
   ASSERT_TRUE(ui_test_utils::NavigateToURL(incognito_browser,
                                            a_site_ephemeral_storage_url_));
 
@@ -570,4 +571,57 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultDisabledBrowserTest,
   EXPECT_EQ(1u, GetAllCookies().size());
 }
 
+class EphemeralStorageForgetByDefaultIncognitoBrowserTest
+    : public EphemeralStorageForgetByDefaultBrowserTest {
+ public:
+  EphemeralStorageForgetByDefaultIncognitoBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        net::features::kBraveForgetFirstPartyStorage);
+  }
+  ~EphemeralStorageForgetByDefaultIncognitoBrowserTest() override = default;
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    EphemeralStorageForgetByDefaultBrowserTest::SetUpCommandLine(command_line);
+    if (IsPreTestToEnableIncognito()) {
+      command_line->AppendSwitch(switches::kIncognito);
+    }
+  }
+
+  static bool IsPreTestToEnableIncognito() {
+    const testing::TestInfo* const test_info =
+        testing::UnitTest::GetInstance()->current_test_info();
+    return base::StartsWith(test_info->name(), "PRE_DontForgetFirstParty");
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
+                       PRE_PRE_DontForgetFirstPartyIfNoBrowserWindowIsActive) {
+  const GURL a_site_set_cookie_url(
+      "https://a.com/set-cookie?name=acom;path=/"
+      ";SameSite=None;Secure;Max-Age=600");
+  brave_shields::SetForgetFirstPartyStorageEnabled(content_settings(), true,
+                                                   a_site_set_cookie_url);
+
+  // Cookies should NOT exist for a.com.
+  EXPECT_EQ(0u, GetAllCookies().size());
+
+  EXPECT_TRUE(LoadURLInNewTab(a_site_set_cookie_url));
+
+  // Cookies SHOULD exist for a.com.
+  EXPECT_EQ(1u, GetAllCookies().size());
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
+                       PRE_DontForgetFirstPartyIfNoBrowserWindowIsActive) {
+  EXPECT_TRUE(browser()->profile()->IsOffTheRecord());
+  WaitForCleanupAfterKeepAlive(browser()->profile()->GetOriginalProfile());
+}
+
+IN_PROC_BROWSER_TEST_F(EphemeralStorageForgetByDefaultIncognitoBrowserTest,
+                       DontForgetFirstPartyIfNoBrowserWindowIsActive) {
+  EXPECT_EQ(1u, GetAllCookies().size());
+}
 }  // namespace ephemeral_storage
