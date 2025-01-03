@@ -516,9 +516,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
                     @Override
                     public void onPageLoadStarted(Tab tab, GURL url) {
-                        if (mBraveRewardsNativeWorker != null) {
-                            mBraveRewardsNativeWorker.triggerOnNotifyFrontTabUrlChanged();
-                        }
                         showWalletIcon(false, tab);
                         if (getToolbarDataProvider().getTab() == tab) {
                             updateBraveShieldsButtonState(tab);
@@ -557,6 +554,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onDidFinishNavigationInPrimaryMainFrame(
                             Tab tab, NavigationHandle navigation) {
+                        if (mBraveRewardsNativeWorker != null) {
+                            mBraveRewardsNativeWorker.triggerOnNotifyFrontTabUrlChanged();
+                        }
                         if (getToolbarDataProvider().getTab() == tab
                                 && mBraveRewardsNativeWorker != null
                                 && !tab.isIncognito()) {
@@ -1220,11 +1220,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public void showRewardsPage() {
         String rewardsUrl = BraveActivity.BRAVE_REWARDS_SETTINGS_URL;
-        if (!mPublisherId.isEmpty()) {
+        if (mPublisherId != null && !mPublisherId.isEmpty()) {
             rewardsUrl += "?creator=" + mPublisherId;
         }
-
-        Log.e("brave_rewards", rewardsUrl);
         RewardsPageActivity.showPage(getContext(), rewardsUrl);
     }
 
