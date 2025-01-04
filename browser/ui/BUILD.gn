@@ -3,13 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/browser/brave_screenshots/buildflags/buildflags.gni")
 import("//brave/browser/ethereum_remote_client/buildflags/buildflags.gni")
 import("//brave/browser/shell_integrations/buildflags/buildflags.gni")
 import("//brave/browser/ui/config.gni")
 import("//brave/build/config.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
-import("//brave/browser/brave_screenshots/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/commander/common/buildflags/buildflags.gni")
@@ -115,8 +115,8 @@ source_set("ui") {
 
   if (enable_brave_screenshots) {
     sources += [
-      "//brave/browser/brave_screenshots/screenshots_tab_helper.h",
       "//brave/browser/brave_screenshots/features.h",
+      "//brave/browser/brave_screenshots/screenshots_tab_helper.h",
     ]
     deps += [ "//chrome/browser/image_editor:image_editor" ]
   }

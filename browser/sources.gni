@@ -8,6 +8,7 @@ import("//brave/browser/autocomplete/sources.gni")
 import("//brave/browser/brave_news/sources.gni")
 import("//brave/browser/brave_referrals/sources.gni")
 import("//brave/browser/brave_rewards/android/sources.gni")
+import("//brave/browser/brave_screenshots/buildflags/buildflags.gni")
 import("//brave/browser/brave_shields/sources.gni")
 import("//brave/browser/brave_vpn/sources.gni")
 import("//brave/browser/brave_wallet/android/sources.gni")
@@ -44,7 +45,6 @@ import("//brave/chromium_src/chrome/browser/prefs/sources.gni")
 import("//brave/chromium_src/chrome/browser/sources.gni")
 import("//brave/components/ai_rewriter/common/buildflags/buildflags.gni")
 import("//brave/components/brave_education/buildflags.gni")
-import("//brave/browser/brave_screenshots/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -327,8 +327,8 @@ if (enable_commander) {
 
 if (enable_brave_screenshots) {
   brave_chrome_browser_deps += [
-    "//brave/browser/brave_screenshots:tabs",
     "//brave/browser/brave_screenshots:features",
+    "//brave/browser/brave_screenshots:tabs",
   ]
 }
 
