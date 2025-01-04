@@ -24,7 +24,7 @@
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
-#include "brave/components/brave_screenshots/common/features.h"
+#include "brave/browser/brave_screenshots/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
