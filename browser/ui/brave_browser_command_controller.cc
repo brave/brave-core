@@ -16,7 +16,6 @@
 #include "brave/browser/brave_screenshots/screenshots_tab_helper.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
