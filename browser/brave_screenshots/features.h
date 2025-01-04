@@ -8,10 +8,12 @@
 
 #include "base/feature_list.h"
 
-namespace brave_screenshots::features {
 
+namespace brave_screenshots {
+namespace features {
 BASE_DECLARE_FEATURE(kBraveScreenshots);
 
-}  // namespace brave_screenshots::features
+}  // namespace features
+}  // namespace brave_screenshots
 
 #endif  // BRAVE_BROWSER_BRAVE_SCREENSHOTS_FEATURES_H_
