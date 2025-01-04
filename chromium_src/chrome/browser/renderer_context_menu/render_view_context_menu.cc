@@ -434,8 +434,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD:
     case IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD:
     case IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD:
-      return base::FeatureList::IsEnabled(
-          brave_screenshots::features::kBraveScreenshots);
+      return brave_screenshots::features::IsBraveScreenshotsEnabled();
     case IDC_ADBLOCK_CONTEXT_BLOCK_ELEMENTS:
       return true;
     default:
@@ -697,8 +696,7 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
 }
 
 void BraveRenderViewContextMenu::BuildBraveScreenshotsMenu() {
-  if (!base::FeatureList::IsEnabled(
-          brave_screenshots::features::kBraveScreenshots)) {
+  if (!brave_screenshots::features::IsBraveScreenshotsEnabled()) {
     return;
   }
   // Selection Screenshots
