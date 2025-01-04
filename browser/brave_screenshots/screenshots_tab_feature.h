@@ -3,15 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_HELPER_H_
-#define BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_HELPER_H_
+#ifndef BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_FEATURE_H_
+#define BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_FEATURE_H_
 
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
 class DevToolsAgentHost;
@@ -24,27 +22,21 @@ namespace brave_screenshots {
 // helper until the first request for a screenshot has been received.
 void TakeScreenshot(base::WeakPtr<content::WebContents>, int);
 
-class BraveScreenshotsTabHelper
-    : public image_editor::ScreenshotFlow,
-      public content::WebContentsUserData<BraveScreenshotsTabHelper> {
+class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
  public:
+  explicit BraveScreenshotsTabFeature(content::WebContents*);
   void Start();
   void StartFullscreenCapture();
   void StartScreenshotFullPageToClipboard();
   void OnCaptureComplete(const image_editor::ScreenshotCaptureResult&);
 
   // Delete the copy constructor and assignment operator
-  BraveScreenshotsTabHelper(const BraveScreenshotsTabHelper&) = delete;
-  BraveScreenshotsTabHelper& operator=(const BraveScreenshotsTabHelper&) =
+  BraveScreenshotsTabFeature(const BraveScreenshotsTabFeature&) = delete;
+  BraveScreenshotsTabFeature& operator=(const BraveScreenshotsTabFeature&) =
       delete;
-  ~BraveScreenshotsTabHelper() override;
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
+  ~BraveScreenshotsTabFeature() override;
 
  private:
-  friend class content::WebContentsUserData<BraveScreenshotsTabHelper>;
-  explicit BraveScreenshotsTabHelper(content::WebContents*);
-
   // DevToolsAgentHost/Client used to capture full page screenshots
   bool InitializeDevToolsAgentHost();
   void SendCaptureFullscreenCommand();
@@ -52,11 +44,11 @@ class BraveScreenshotsTabHelper
   scoped_refptr<content::DevToolsAgentHost> devtools_agent_host_ = nullptr;
   std::unique_ptr<content::DevToolsAgentHostClient>
       devtools_agent_host_client_ = nullptr;
-  base::WeakPtr<BraveScreenshotsTabHelper> weak_this_ = nullptr;
-  base::WeakPtrFactory<BraveScreenshotsTabHelper> weak_factory_{this};
+  base::WeakPtr<BraveScreenshotsTabFeature> weak_this_ = nullptr;
+  base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
 
-};  // class BraveScreenshotsTabHelper
+};  // class BraveScreenshotsTabFeature
 
 }  // namespace brave_screenshots
 
-#endif  // BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_HELPER_H_
+#endif  // BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_FEATURE_H_

@@ -13,7 +13,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/brave_screenshots/features.h"
-#include "brave/browser/brave_screenshots/screenshots_tab_helper.h"
+#include "brave/browser/brave_screenshots/screenshots_tab_feature.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
