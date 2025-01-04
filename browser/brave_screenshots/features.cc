@@ -12,5 +12,8 @@ BASE_FEATURE(kBraveScreenshots,
              "BraveScreenshots",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+bool IsBraveScreenshotsEnabled() {
+  return base::FeatureList::IsEnabled(kBraveScreenshots);
+}
 }  // namespace features
 }  // namespace brave_screenshots
