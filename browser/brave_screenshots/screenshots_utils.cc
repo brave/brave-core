@@ -11,7 +11,6 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
-
 namespace brave_screenshots {
 namespace utils {
 void NotifyUserOfScreenshot(const image_editor::ScreenshotCaptureResult& result,
