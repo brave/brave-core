@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_PUBLIC_TAB_FEATURES_H_
 
 #include "base/callback_list.h"
+#include "brave/browser/brave_screenshots/screenshots_tab_feature.h"
 
 #define TabFeatures TabFeatures_Chromium
 
