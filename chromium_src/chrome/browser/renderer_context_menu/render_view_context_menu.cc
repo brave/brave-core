@@ -49,7 +49,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -376,7 +375,7 @@ BraveRenderViewContextMenu::BraveRenderViewContextMenu(
       ai_chat_change_tone_submenu_model_(this),
       ai_chat_change_length_submenu_model_(this),
       ai_chat_social_media_post_submenu_model_(this),
-      screenshots_submenu_model_(this) {}
+      brave_screenshots_submenu_model_(this) {}
 
 BraveRenderViewContextMenu::~BraveRenderViewContextMenu() = default;
 
@@ -697,23 +696,23 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
       IDS_AI_CHAT_CONTEXT_LEO_TOOLS, &ai_chat_submenu_model_);
 }
 
-void BraveRenderViewContextMenu::BuildScreenshotsMenu() {
+void BraveRenderViewContextMenu::BuildBraveScreenshotsMenu() {
   if (!base::FeatureList::IsEnabled(
           brave_screenshots::features::kBraveScreenshots)) {
     return;
   }
   // Selection Screenshots
-  screenshots_submenu_model_.AddItemWithStringId(
+  brave_screenshots_submenu_model_.AddItemWithStringId(
       IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD,
       IDS_IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD);
 
   // Viewport Screenshots
-  screenshots_submenu_model_.AddItemWithStringId(
+  brave_screenshots_submenu_model_.AddItemWithStringId(
       IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD,
       IDS_IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD);
 
   // Fullpage Screenshots
-  screenshots_submenu_model_.AddItemWithStringId(
+  brave_screenshots_submenu_model_.AddItemWithStringId(
       IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD,
       IDS_IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD);
 
@@ -725,14 +724,14 @@ void BraveRenderViewContextMenu::BuildScreenshotsMenu() {
     // Add screenshot submenu to the context menu
     menu_model_.InsertSubMenuWithStringIdAt(
         inspect_index.value(), IDC_BRAVE_SCREENSHOT_TOOLS,
-        IDS_IDC_BRAVE_SCREENSHOT_TOOLS, &screenshots_submenu_model_);
+        IDS_IDC_BRAVE_SCREENSHOT_TOOLS, &brave_screenshots_submenu_model_);
     return;
   }
 
   // Otherwise, add it to the end of the context menu
   menu_model_.AddSubMenuWithStringId(IDC_BRAVE_SCREENSHOT_TOOLS,
                                      IDS_IDC_BRAVE_SCREENSHOT_TOOLS,
-                                     &screenshots_submenu_model_);
+                                     &brave_screenshots_submenu_model_);
 }
 
 void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {
@@ -877,7 +876,7 @@ void BraveRenderViewContextMenu::InitMenu() {
         IDS_CONTENT_CONTEXT_SPLIT_VIEW);
   }
 
-  BuildScreenshotsMenu();
+  BuildBraveScreenshotsMenu();
 }
 
 void BraveRenderViewContextMenu::NotifyMenuShown() {
