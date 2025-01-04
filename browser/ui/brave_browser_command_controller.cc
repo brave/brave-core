@@ -23,7 +23,7 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
-#include "brave/components/brave_screenshots/common/features.h"
+#include "brave/browser/brave_screenshots/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
