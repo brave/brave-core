@@ -12,7 +12,6 @@
 namespace features {
 
 BASE_DECLARE_FEATURE(kBraveNtpSearchWidget);
-
 #if BUILDFLAG(IS_WIN)
 BASE_DECLARE_FEATURE(kBraveWorkaroundNewWindowFlash);
 #endif  // BUILDFLAG(IS_WIN)
