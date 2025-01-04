@@ -12,7 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/ui/views/brave_screenshots/screenshots_utils.h"
+#include "brave/browser/brave_screenshots/screenshots_utils.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "content/public/browser/devtools_agent_host.h"
 #include "content/public/browser/devtools_agent_host_client.h"
