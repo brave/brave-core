@@ -13,6 +13,7 @@ namespace brave_screenshots {
 namespace features {
 BASE_DECLARE_FEATURE(kBraveScreenshots);
 
+bool IsBraveScreenshotsEnabled();
 }  // namespace features
 }  // namespace brave_screenshots
 

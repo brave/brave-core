@@ -319,8 +319,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
   }
 
-  if (base::FeatureList::IsEnabled(
-          brave_screenshots::features::kBraveScreenshots)) {
+  if (brave_screenshots::features::IsBraveScreenshotsEnabled()) {
     UpdateCommandEnabled(IDC_BRAVE_SCREENSHOT_TOOLS, true);
     UpdateCommandEnabled(IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD,
                          true);
