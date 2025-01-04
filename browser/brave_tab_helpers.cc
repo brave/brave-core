@@ -28,7 +28,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#include "brave/components/brave_screenshots/common/features.h"
+#include "brave/browser/brave_screenshots/features.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/psst/browser/content/psst_tab_helper.h"
