@@ -13,7 +13,6 @@ namespace image_editor {
 struct ScreenshotCaptureResult;
 }  // namespace image_editor
 
-
 namespace brave_screenshots {
 namespace utils {
 void NotifyUserOfScreenshot(const image_editor::ScreenshotCaptureResult& result,
