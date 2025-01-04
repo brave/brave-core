@@ -7,8 +7,9 @@
 
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 namespace brave_screenshots {
@@ -24,22 +25,14 @@ void NotifyUserOfScreenshot(const image_editor::ScreenshotCaptureResult& result,
       .WriteImage(*result.image.ToSkBitmap());
 
   // Notify the user that the screenshot has been taken
-  auto* browser = chrome::FindBrowserWithTab(web_contents.get());
-
-  if (!browser) {
-    VLOG(1) << "Failed to find browser for web contents";
-    return;
-  }
-
-  auto* window = browser->window();
-
-  if (!window) {
-    VLOG(1) << "Failed to find window for browser";
-    return;
-  }
+  tabs::TabInterface* tab =
+      tabs::TabInterface::GetFromContents(web_contents.get());
 
   // Leverage the screenshot bubble to show the user the screenshot
-  window->ShowScreenshotCapturedBubble(web_contents.get(), result.image);
+  tab->GetBrowserWindowInterface()
+      ->GetBrowserForMigrationOnly()
+      ->window()
+      ->ShowScreenshotCapturedBubble(web_contents.get(), result.image);
 }
 
 }  // namespace utils
