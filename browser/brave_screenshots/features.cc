@@ -5,10 +5,12 @@
 
 #include "brave/browser/brave_screenshots/features.h"
 
-namespace brave_screenshots::features {
+namespace brave_screenshots {
+namespace features {
 
 BASE_FEATURE(kBraveScreenshots,
              "BraveScreenshots",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-}  // namespace brave_screenshots::features
+}  // namespace features
+}  // namespace brave_screenshots
