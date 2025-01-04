@@ -17,8 +17,6 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
-#include "brave/browser/brave_screenshots/features.h"
-#include "brave/browser/brave_screenshots/screenshots_tab_helper.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
