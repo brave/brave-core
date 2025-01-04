@@ -12,7 +12,7 @@
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
-#include "brave/browser/brave_screenshots/tabs/screenshots_tab_helper.h"
+#include "brave/browser/brave_screenshots/screenshots_tab_helper.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/brave_ui_features.h"
