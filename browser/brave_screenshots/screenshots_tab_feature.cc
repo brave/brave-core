@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/brave_screenshots/screenshots_tab_helper.h"
+#include "brave/browser/brave_screenshots/screenshots_tab_feature.h"
 
 #include <memory>
 #include <string>
@@ -14,10 +14,11 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_screenshots/screenshots_utils.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
+#include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "content/public/browser/devtools_agent_host.h"
 #include "content/public/browser/devtools_agent_host_client.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_user_data.h"
 
 namespace {
 
@@ -73,8 +74,20 @@ void TakeScreenshot(base::WeakPtr<content::WebContents> web_contents,
     return;
   }
 
-  BraveScreenshotsTabHelper::CreateForWebContents(web_contents.get());
-  auto* helper = BraveScreenshotsTabHelper::FromWebContents(web_contents.get());
+  tabs::TabInterface* tab =
+      tabs::TabInterface::GetFromContents(web_contents.get());
+
+  if (!tab) {
+    return;
+  }
+
+  tabs::TabFeatures* features = tab->GetTabFeatures();
+
+  if (!features) {
+    return;
+  }
+
+  auto* helper = features->brave_screenshots_tab_feature();
 
   if (!helper) {
     return;
@@ -95,36 +108,45 @@ void TakeScreenshot(base::WeakPtr<content::WebContents> web_contents,
   }
 }
 
-BraveScreenshotsTabHelper::BraveScreenshotsTabHelper(
+BraveScreenshotsTabFeature::BraveScreenshotsTabFeature(
     content::WebContents* web_contents)
-    : image_editor::ScreenshotFlow(web_contents),
-      content::WebContentsUserData<BraveScreenshotsTabHelper>(*web_contents) {
+    : image_editor::ScreenshotFlow(web_contents) {
   weak_this_ = weak_factory_.GetWeakPtr();
 }
 
-BraveScreenshotsTabHelper::~BraveScreenshotsTabHelper() {
+BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
   if (devtools_agent_host_) {
     devtools_agent_host_->DetachClient(devtools_agent_host_client_.get());
     devtools_agent_host_client_.reset();
   }
 }
 
-void BraveScreenshotsTabHelper::Start() {
+void BraveScreenshotsTabFeature::Start() {
   image_editor::ScreenshotFlow::Start(base::BindOnce(
-      &BraveScreenshotsTabHelper::OnCaptureComplete, weak_this_));
+      &BraveScreenshotsTabFeature::OnCaptureComplete, weak_this_));
 }
 
-void BraveScreenshotsTabHelper::StartFullscreenCapture() {
+void BraveScreenshotsTabFeature::StartFullscreenCapture() {
   image_editor::ScreenshotFlow::StartFullscreenCapture(base::BindOnce(
-      &BraveScreenshotsTabHelper::OnCaptureComplete, weak_this_));
+      &BraveScreenshotsTabFeature::OnCaptureComplete, weak_this_));
 }
 
-void BraveScreenshotsTabHelper::StartScreenshotFullPageToClipboard() {
-  InitializeDevToolsAgentHost();
+void BraveScreenshotsTabFeature::StartScreenshotFullPageToClipboard() {
+  if (!InitializeDevToolsAgentHost()) {
+    // Need to plan what to do if this fails. Ideally we would know when the
+    // browser is launched whether or not this feature is available. This would
+    // enable us to dim it in the context menu, or not include it at all.
+    return;
+  }
+
   SendCaptureFullscreenCommand();
 }
 
-bool BraveScreenshotsTabHelper::InitializeDevToolsAgentHost() {
+bool BraveScreenshotsTabFeature::InitializeDevToolsAgentHost() {
+  if (devtools_agent_host_) {
+    return true;
+  }
+
   devtools_agent_host_ =
       content::DevToolsAgentHost::GetOrCreateFor(web_contents());
 
@@ -141,7 +163,7 @@ bool BraveScreenshotsTabHelper::InitializeDevToolsAgentHost() {
   return true;
 }
 
-void BraveScreenshotsTabHelper::SendCaptureFullscreenCommand() {
+void BraveScreenshotsTabFeature::SendCaptureFullscreenCommand() {
   if (!devtools_agent_host_ || !devtools_agent_host_client_) {
     return;
   }
@@ -162,12 +184,10 @@ void BraveScreenshotsTabHelper::SendCaptureFullscreenCommand() {
       base::as_bytes(base::make_span(json_command)));
 }
 
-void BraveScreenshotsTabHelper::OnCaptureComplete(
+void BraveScreenshotsTabFeature::OnCaptureComplete(
     const image_editor::ScreenshotCaptureResult& result) {
   brave_screenshots::utils::NotifyUserOfScreenshot(
       result, web_contents()->GetWeakPtr());
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveScreenshotsTabHelper);
 
 }  // namespace brave_screenshots
