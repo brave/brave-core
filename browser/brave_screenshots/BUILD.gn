@@ -18,6 +18,7 @@ source_set("brave_screenshots") {
   deps = [
     "//chrome/browser/image_editor:image_editor",
     "//chrome/browser/ui:ui",
+    "//chrome/browser/ui/browser_window:browser_window",
     "//ui/base/clipboard:clipboard",
   ]
 }
