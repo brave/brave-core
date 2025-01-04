@@ -7,6 +7,21 @@ import("//brave/components/brave_screenshots/common/buildflags/buildflags.gni")
 
 assert(enable_brave_screenshots)
 
+source_set("brave_screenshots") {
+  sources = [
+    "screenshots_utils.cc",
+    "screenshots_utils.h",
+  ]
+
+  public_deps = [ "//content/public/browser" ]
+
+  deps = [
+    "//chrome/browser/image_editor:image_editor",
+    "//chrome/browser/ui:ui",
+    "//ui/base/clipboard:clipboard",
+  ]
+}
+
 source_set("tabs") {
   sources = [
     "screenshots_tab_helper.cc",
@@ -19,8 +34,8 @@ source_set("tabs") {
   ]
 
   deps = [
+    ":brave_screenshots",
     "//brave/app:generate_command_metadata",
-    "//brave/browser/ui/views/brave_screenshots:brave_screenshots",
     "//chrome/browser/image_editor:image_editor",
     "//chrome/browser/ui",
   ]
