@@ -115,7 +115,7 @@ source_set("ui") {
 
   if (enable_brave_screenshots) {
     sources += [
-      "//brave/browser/brave_screenshots/tabs/screenshots_tab_helper.h",
+      "//brave/browser/brave_screenshots/screenshots_tab_helper.h",
       "//brave/components/brave_screenshots/common/features.h",
     ]
     deps += [ "//chrome/browser/image_editor:image_editor" ]
