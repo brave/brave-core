@@ -11,8 +11,9 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
-namespace brave_screenshots::utils {
 
+namespace brave_screenshots {
+namespace utils {
 void NotifyUserOfScreenshot(const image_editor::ScreenshotCaptureResult& result,
                             base::WeakPtr<content::WebContents> web_contents) {
   if (!web_contents || result.image.IsEmpty()) {
@@ -42,4 +43,5 @@ void NotifyUserOfScreenshot(const image_editor::ScreenshotCaptureResult& result,
   window->ShowScreenshotCapturedBubble(web_contents.get(), result.image);
 }
 
-}  // namespace brave_screenshots::utils
+}  // namespace utils
+}  // namespace brave_screenshots
