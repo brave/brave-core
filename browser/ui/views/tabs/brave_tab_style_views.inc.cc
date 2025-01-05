@@ -13,6 +13,8 @@ namespace {
 
 using tabs::features::HorizontalTabsUpdateEnabled;
 
+constexpr auto kPaddingForVerticalTabInTile = 4;
+
 // Returns a value indicating if the browser frame view is "condensed", i.e.
 // that its frame border is somehow collapsed, as in fullscreen or when
 // maximized, or in Linux when caption buttons and the title bar are not
@@ -215,22 +217,25 @@ SkPath BraveVerticalTabStyle::GetPath(
     }
   }
 
-  if (IsTabTiled(tab()) && path_type != TabStyle::PathType::kHitTest) {
+  if (!is_pinned && IsTabTiled(tab()) &&
+      path_type != TabStyle::PathType::kHitTest) {
     if (ShouldShowVerticalTabs()) {
-      constexpr auto kPaddingForVerticalTab = 4;
-      tab_top += scale * kPaddingForVerticalTab;
-      tab_bottom -= scale * kPaddingForVerticalTab;
-      tab_left += scale * kPaddingForVerticalTab;
-      tab_right -= scale * kPaddingForVerticalTab;
-    } else {
-      // As the horizontal tab has padding already we only gives 1 dip padding.
-      // Accumulative padding will be 4 dips.
-      constexpr auto kPaddingForHorizontalTab = 1;
-      tab_top += scale * kPaddingForHorizontalTab;
-      tab_bottom -= scale * kPaddingForHorizontalTab;
       tab()->controller()->IsFirstTabInTile(tab())
-          ? tab_left += scale* kPaddingForHorizontalTab
-          : tab_right -= scale * kPaddingForHorizontalTab;
+          ? tab_top += scale* kPaddingForVerticalTabInTile
+          : tab_bottom -= scale * kPaddingForVerticalTabInTile;
+      tab_left += scale * kPaddingForVerticalTabInTile;
+      tab_right -= scale * kPaddingForVerticalTabInTile;
+    } else {
+      constexpr int kAdditionalVerticalPadding =
+          brave_tabs::kHorizontalSplitViewTabVerticalSpacing -
+          brave_tabs::kHorizontalTabGap;
+      tab_top += scale * kAdditionalVerticalPadding;
+      tab_bottom -= scale * kAdditionalVerticalPadding;
+
+      constexpr int kAdditionalHorizontalPadding = 4;
+      tab()->controller()->IsFirstTabInTile(tab())
+          ? tab_left += scale* kAdditionalHorizontalPadding
+          : tab_right -= scale * kAdditionalHorizontalPadding;
     }
   }
 
@@ -252,20 +257,30 @@ SkPath BraveVerticalTabStyle::GetPath(
 }
 
 gfx::Insets BraveVerticalTabStyle::GetContentsInsets() const {
-  if (!HorizontalTabsUpdateEnabled()) {
-    return BraveTabStyleViews::GetContentsInsets();
+  const bool is_pinned = tab()->data().pinned;
+  auto insets = tab_style()->GetContentsInsets();
+
+  if (!is_pinned && ShouldShowVerticalTabs() && IsTabTiled(tab())) {
+    const bool is_first_tab = tab()->controller()->IsFirstTabInTile(tab());
+    return insets + gfx::Insets::TLBR(
+                        is_first_tab ? kPaddingForVerticalTabInTile : 0, 0,
+                        is_first_tab ? 0 : kPaddingForVerticalTabInTile, 0);
   }
 
-  // Ignore any stroke widths when determining the horizontal contents insets.
-  // To make contents vertically align evenly regardless of overlap in non
-  // vertical tab, use it as bottom inset in a tab as it's hidden by
-  // overlapping.
-  const int bottom_inset = ShouldShowVerticalTabs()
-                               ? 0
-                               : GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
+  if (HorizontalTabsUpdateEnabled()) {
+    // Ignore any stroke widths when determining the horizontal contents insets.
+    // To make contents vertically align evenly regardless of overlap in non
+    // vertical tab, use it as bottom inset in a tab as it's hidden by
+    // overlapping.
+    return insets +
+           gfx::Insets::TLBR(0, 0,
+                             ShouldShowVerticalTabs()
+                                 ? 0
+                                 : GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
+                             0);
+  }
 
-  return tab_style()->GetContentsInsets() +
-         gfx::Insets::TLBR(0, 0, bottom_inset, 0);
+  return BraveTabStyleViews::GetContentsInsets();
 }
 
 TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(

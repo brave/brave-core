@@ -28,6 +28,8 @@ inline constexpr int kHorizontalTabStripLeftMargin = 3;
 // occupied by tab group underlines.
 inline constexpr int kHorizontalTabVerticalSpacing = 4;
 
+inline constexpr int kHorizontalSplitViewTabVerticalSpacing = 6;
+
 // The height of the tab strip in horizontal mode.
 int GetHorizontalTabStripHeight();
 

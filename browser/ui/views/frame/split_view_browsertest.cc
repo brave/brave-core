@@ -7,16 +7,25 @@
 
 #include "base/run_loop.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/common/javascript_dialog_type.h"
 #include "content/public/test/browser_test.h"
+#include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkRegion.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/skia_conversions.h"
 
 class SplitViewBrowserTest : public InProcessBrowserTest {
  public:
@@ -226,4 +235,30 @@ IN_PROC_BROWSER_TEST_F(
   views::View::ConvertRectToScreen(&contents_web_view(), &web_view_bounds);
 
   EXPECT_EQ(web_view_bounds.CenterPoint().x(), dialog_bounds.CenterPoint().x());
+}
+
+IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewTabPathTest) {
+  brave::NewSplitViewForTab(browser());
+  int active_index = tab_strip_model().active_index();
+  ASSERT_NE(TabStripModel::kNoTab, active_index);
+
+  TabStrip* tab_strip = browser_view().tabstrip();
+  Tab* tab = tab_strip->tab_at(active_index);
+
+  SkPath mask = tab->tab_style_views()->GetPath(TabStyle::PathType::kFill,
+                                                /* scale */ 1.0,
+                                                /* force_active */ false,
+                                                TabStyle::RenderUnits::kDips);
+  SkRegion clip_region;
+  clip_region.setRect({0, 0, 200, 200});
+  SkRegion mask_region;
+  ASSERT_TRUE(mask_region.setPath(mask, clip_region));
+
+  EXPECT_EQ(brave_tabs::kHorizontalSplitViewTabVerticalSpacing,
+            mask_region.getBounds().top());
+  EXPECT_EQ(brave_tabs::kHorizontalTabInset, mask_region.getBounds().left());
+  EXPECT_EQ(GetLayoutConstant(TAB_STRIP_HEIGHT) -
+                GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP) -
+                (brave_tabs::kHorizontalSplitViewTabVerticalSpacing * 2),
+            mask_region.getBounds().height());
 }

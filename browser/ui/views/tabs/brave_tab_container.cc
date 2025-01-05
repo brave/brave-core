@@ -15,6 +15,7 @@
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
@@ -309,10 +310,8 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   // implementations in compound_tab_container.cc implementation. Thus, we need
   // to add pinned tab count.
   auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
-  const bool is_pinned_tab_container =
-      tabs_view_model_.view_at(0)->data().pinned;
   const int offset =
-      is_pinned_tab_container ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
+      IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
 
   auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first) - offset;
   auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second) - offset;
@@ -331,8 +330,14 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   const bool is_vertical_tab =
       tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser());
   if (!is_vertical_tab) {
-    // In order to make gap between the bounding box and toolbar.
-    bounding_rects.Inset(gfx::Insets::VH(1, 0));
+    // In order to make margin between the bounding box and tab strip.
+    // Need to compensate the amount of overlap because it's hidden by overlap
+    // at bottom.
+    int vertical_margin = GetTabAtModelIndex(tab1_index)->data().pinned ? 4 : 2;
+    bounding_rects.Inset(gfx::Insets::TLBR(
+        vertical_margin, brave_tabs::kHorizontalTabInset,
+        vertical_margin + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP),
+        brave_tabs::kHorizontalTabInset));
   }
 
   constexpr auto kRadius = 12.f;  // same value with --leo-radius-l
@@ -464,7 +469,6 @@ std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
         continue;
       }
 
-
       const bool is_tab_pinned = tab->data().pinned;
 
       // When dropping text or links onto pinned tabs, we need to take the
@@ -595,10 +599,12 @@ void BraveTabContainer::HandleDragExited() {
 }
 
 void BraveTabContainer::OnTileTabs(const TabTile& tile) {
+  UpdateTabsBorderInTile(tile);
   SchedulePaint();
 }
 
 void BraveTabContainer::OnDidBreakTile(const TabTile& tile) {
+  UpdateTabsBorderInTile(tile);
   SchedulePaint();
 }
 
@@ -749,6 +755,38 @@ void BraveTabContainer::SetDropArrow(
 
   // Reposition the window.
   drop_arrow_->SetWindowBounds(drop_bounds);
+}
+
+bool BraveTabContainer::IsPinnedTabContainer() const {
+  return tabs_view_model_.view_size() > 0 &&
+         tabs_view_model_.view_at(0)->data().pinned;
+}
+
+void BraveTabContainer::UpdateTabsBorderInTile(const TabTile& tile) {
+  auto* tab_strip_model = tab_slot_controller_->GetBrowser()->tab_strip_model();
+  const int offset =
+      IsPinnedTabContainer() ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
+
+  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first) - offset;
+  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second) - offset;
+
+  if (!controller_->IsValidModelIndex(tab1_index) ||
+      !controller_->IsValidModelIndex(tab2_index)) {
+    // In case the tiled tab is not in this container, this can happen.
+    // For instance, this container is for pinned tabs but tabs in the tile
+    // are unpinned.
+    return;
+  }
+
+  auto* tab1 = GetTabAtModelIndex(tab1_index);
+  auto* tab2 = GetTabAtModelIndex(tab2_index);
+
+  // Tab's border varies per split view state.
+  // See BraveVerticalTabStyle::GetContentsInsets().
+  tab1->SetBorder(
+      views::CreateEmptyBorder(tab1->tab_style_views()->GetContentsInsets()));
+  tab2->SetBorder(
+      views::CreateEmptyBorder(tab2->tab_style_views()->GetContentsInsets()));
 }
 
 BEGIN_METADATA(BraveTabContainer)

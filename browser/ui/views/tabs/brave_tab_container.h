@@ -121,6 +121,9 @@ class BraveTabContainer : public TabContainerImpl,
                           bool drop_in_group,
                           bool* is_beneath);
 
+  bool IsPinnedTabContainer() const;
+  void UpdateTabsBorderInTile(const TabTile& tile);
+
   base::flat_set<Tab*> closing_tabs_;
 
   raw_ptr<TabDragContextBase> drag_context_;
