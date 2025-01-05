@@ -783,7 +783,6 @@ void SolanaProviderImpl::OnConnect(
         l10n_util::GetStringUTF8(
             IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR),
         "");
-    delegate_->ShowPanel();
     return;
   }
 

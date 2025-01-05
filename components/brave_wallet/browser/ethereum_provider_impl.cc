@@ -1174,7 +1174,6 @@ void EthereumProviderImpl::OnRequestEthereumPermissions(
         formed_response = GetProviderErrorDictionary(
             mojom::ProviderError::kUserRejectedRequest,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
-        delegate_->ShowPanel();
         break;
       case RequestPermissionsError::kInternal:
         formed_response = GetProviderErrorDictionary(
