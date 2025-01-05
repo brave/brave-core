@@ -9,18 +9,16 @@
 #include "base/callback_list.h"
 #include "brave/browser/brave_screenshots/screenshots_tab_feature.h"
 
-#define Init(...)                                                            \
-  Init_ChromiumImpl(__VA_ARGS__);                                            \
-                                                                             \
-  /* Brave feature controllers are currently public members (unlike Chromium \
-   * feature controllers in the base class) until macros are improved */     \
-  std::unique_ptr<brave_screenshots::BraveScreenshotsTabFeature>             \
-      brave_screenshots_tab_feature_;                                        \
-  brave_screenshots::BraveScreenshotsTabFeature*                             \
-  brave_screenshots_tab_feature() {                                          \
-    return brave_screenshots_tab_feature_.get();                             \
-  }                                                                          \
-                                                                             \
+#define Init(...)                                                \
+  Init_ChromiumImpl(__VA_ARGS__);                                \
+                                                                 \
+  std::unique_ptr<brave_screenshots::BraveScreenshotsTabFeature> \
+      brave_screenshots_tab_feature_;                            \
+  brave_screenshots::BraveScreenshotsTabFeature*                 \
+  brave_screenshots_tab_feature() {                              \
+    return brave_screenshots_tab_feature_.get();                 \
+  }                                                              \
+                                                                 \
   virtual void Init(__VA_ARGS__)
 
 #include "src/chrome/browser/ui/tabs/public/tab_features.h"  // IWYU pragma: export
