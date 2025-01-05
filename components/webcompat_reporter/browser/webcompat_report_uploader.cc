@@ -154,7 +154,7 @@ void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
 
   if (report_info->block_scripts) {
     report_details_dict.Set(kBlockScriptsField,
-                            report_info->block_scripts.value());
+                            report_info->block_scripts.value() == kStringTrue);
   }
 
   report_details_dict.Set(kApiKeyField, base::Value(api_key));
