@@ -1,5 +1,10 @@
-#ifndef THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_BRAVE_DEVTOOLS_SINK_H_
-#define THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_BRAVE_DEVTOOLS_SINK_H_
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_EXPORTED_WEB_BRAVE_DEVTOOLS_SINK_H_
+#define BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_EXPORTED_WEB_BRAVE_DEVTOOLS_SINK_H_
 
 #include "brave/third_party/blink/public/web/web_brave_devtools.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
@@ -34,4 +39,4 @@ class WebBraveDevtoolsSink final
 
 }  // namespace blink
 
-#endif  // THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_BRAVE_DEVTOOLS_SINK_H_
+#endif  // BRAVE_THIRD_PARTY_BLINK_RENDERER_CORE_EXPORTED_WEB_BRAVE_DEVTOOLS_SINK_H_
