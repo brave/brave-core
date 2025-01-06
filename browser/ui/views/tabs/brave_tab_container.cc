@@ -366,9 +366,8 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
     separator_top.Offset(0, gap);
     auto separator_bottom = separator_top;
     separator_bottom.Offset(0, kSplitViewSeparatorHeight);
-    canvas.DrawLine(
-        separator_top, separator_bottom,
-        cp->GetColor(nala::kColorDesktopbrowserTabbarSplitViewDivider));
+    canvas.DrawLine(separator_top, separator_bottom,
+                    cp->GetColor(kColorBraveSplitViewTileDivider));
   }
 }
 
