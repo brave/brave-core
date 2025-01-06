@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+  <if expr="use_titlecase">
+    <message name="IDS_IDC_BRAVE_SCREENSHOT_TOOLS" desc="Title for the screenshot submenu">
+      Screenshot Tools
+    </message>
+    <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD" desc="Title for option to screenshot a region and copy to clipboard">
+      Screenshot Selection to Clipboard
+    </message>
+    <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD" desc="Title for option to screenshot the viewport and copy to clipboard">
+      Screenshot Viewport to Clipboard
+    </message>
+    <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD" desc="Title for option to screenshot the full page and copy to clipboard">
+      Screenshot Full Page to Clipboard
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_IDC_BRAVE_SCREENSHOT_TOOLS" desc="Title for the screenshot submenu">
+      Screenshot tools
+    </message>
+    <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD" desc="Title for option to screenshot a region and copy to clipboard">
+      Screenshot selection to clipboard
+    </message>
+    <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD" desc="Title for option to screenshot the viewport and copy to clipboard">
+      Screenshot viewport to clipboard
+    </message>
+    <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD" desc="Title for option to screenshot the full page and copy to clipboard">
+      Screenshot full page to clipboard
+    </message>
+  </if>
+</grit-part>
