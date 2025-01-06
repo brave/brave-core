@@ -6,12 +6,16 @@
 #import "brave/ios/browser/brave_web_client.h"
 
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
+#include "base/strings/sys_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/ios/browser/brave_web_main_parts.h"
 #include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
 #include "ios/components/webui/web_ui_url_constants.h"
 #import "ios/public/provider/chrome/browser/url_rewriters/url_rewriters_api.h"
 #import "ios/web/public/navigation/browser_url_rewriter.h"
+#include "ios/web/public/thread/web_thread.h"
+#include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
