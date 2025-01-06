@@ -19,6 +19,7 @@ class DerivationIndex {
  public:
   static DerivationIndex Normal(uint32_t index);
   static DerivationIndex Hardened(uint32_t index);
+  static DerivationIndex FromRawValueForTesting(uint32_t index);
 
   bool IsValid() const;
 
