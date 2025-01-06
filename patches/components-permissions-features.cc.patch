@@ -1,0 +1,13 @@
+diff --git a/components/permissions/features.cc b/components/permissions/features.cc
+index fca3eddfcaca2cd193906140e4a9b88611526155..4d6e688e11bdf2730ff473053db91a836a1beaa3 100644
+--- a/components/permissions/features.cc
++++ b/components/permissions/features.cc
+@@ -23,7 +23,7 @@ BASE_FEATURE(kOneTimePermission,
+ #if !BUILDFLAG(IS_ANDROID)
+ BASE_FEATURE(kKeyboardAndPointerLockPrompt,
+              "KeyboardAndPointerLockPrompt",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ #endif  // !BUILDFLAG(IS_ANDROID)
+ 
+ // Enables different positioning of the permission dialog, so that it's placed
