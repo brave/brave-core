@@ -20,21 +20,13 @@ interface ShortenedUrlState {
 class ShortenedUrl
     extends React.PureComponent<ShortenedUrlProps, ShortenedUrlState> {
     static defaultProps: Partial<ShortenedUrlProps> = {
-        maxLength: 100,
-        interactive: false
+        maxLength: 100
     }
 
     constructor(props: ShortenedUrlProps) {
         super(props)
         this.state = {
             shortenedUrl: this.shortenUrl(props.url, props.maxLength),
-        }
-    }
-
-    handleOnInteractiveClick =
-        async (ev: React.MouseEvent<HTMLParagraphElement>) => {
-        if (this.props.interactive) {
-            window.open(this.props.url, '_blank', 'noopener')
         }
     }
 
@@ -63,9 +55,10 @@ class ShortenedUrl
     render() {
         const { shortenedUrl } = this.state
         return (
-            <NonInteractiveURL onClick={this.handleOnInteractiveClick}>
+            <NonInteractiveURL>
                 {shortenedUrl}
-            </NonInteractiveURL>)
+            </NonInteractiveURL>
+        )
     }
 }
 
