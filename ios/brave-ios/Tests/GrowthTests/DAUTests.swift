@@ -262,14 +262,14 @@ class DAUTests: XCTestCase {
   }
 
   func testMondayOfCurrentWeekFormatted() {
+    // Jan 6th, 2025
+    let dateForTest = Date(timeIntervalSince1970: 1_736_139_600)
+
     // Making sure gregorian year is showing
     let yearString = Date().mondayOfCurrentWeekFormatted?.truncate(length: 4, trailing: "")
     let year = Int(yearString!)!
 
-    // Verify the year in `mondayOfCurrentWeekFormatted` matches current gregorian calendar year.
-    let gregorianCalendar = Calendar(identifier: .gregorian)
-    let gregorianCalendarYear = gregorianCalendar.dateComponents([.year], from: Date()).year
-    XCTAssertEqual(gregorianCalendarYear, year)
+    XCTAssertEqual(year, 2025)
   }
 
   func testNonDefaultWoiExplicitDate() {
