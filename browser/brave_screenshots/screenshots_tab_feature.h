@@ -20,16 +20,17 @@ class DevToolsAgentHostClient;
 
 namespace brave_screenshots {
 
-void TakeScreenshot(Browser* browser, int command_id);
+enum ScreenshotType {
+  kSelection,
+  kViewport,
+  kFullPage,
+};
 
 class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
  public:
   explicit BraveScreenshotsTabFeature(content::WebContents* web_contents);
-  void Start();
-  void StartFullscreenCapture();
-  void StartScreenshotFullPageToClipboard();
+  void StartScreenshot(Browser* browser, ScreenshotType type);
   void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
-  void SetBrowser(base::WeakPtr<Browser> browser);
 
   // Delete the copy constructor and assignment operator
   BraveScreenshotsTabFeature(const BraveScreenshotsTabFeature&) = delete;
@@ -39,12 +40,11 @@ class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
 
  private:
   // DevToolsAgentHost/Client used to capture full page screenshots
-  bool InitializeDevToolsAgentHost();
+  bool InitDevToolsHelper(image_editor::ScreenshotCaptureCallback callback);
   void SendCaptureFullscreenCommand();
 
-  scoped_refptr<content::DevToolsAgentHost> devtools_agent_host_ = nullptr;
-  std::unique_ptr<content::DevToolsAgentHostClient>
-      devtools_agent_host_client_ = nullptr;
+  scoped_refptr<content::DevToolsAgentHost> devtools_host_ = nullptr;
+  std::unique_ptr<content::DevToolsAgentHostClient> devtools_client_ = nullptr;
   base::WeakPtr<Browser> browser_ = nullptr;
   base::WeakPtr<BraveScreenshotsTabFeature> weak_this_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
