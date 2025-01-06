@@ -7,7 +7,8 @@
 #define BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_UTILS_H_
 
 #include "base/memory/weak_ptr.h"
-#include "content/public/browser/web_contents.h"
+
+class Browser;
 
 namespace image_editor {
 struct ScreenshotCaptureResult;
@@ -18,7 +19,7 @@ namespace utils {
 void CopyImageToClipboard(const image_editor::ScreenshotCaptureResult& result);
 void DisplayScreenshotBubble(
     const image_editor::ScreenshotCaptureResult& result,
-    base::WeakPtr<content::WebContents> web_contents);
+    base::WeakPtr<Browser> browser);
 }  // namespace utils
 }  // namespace brave_screenshots
 
