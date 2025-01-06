@@ -1,0 +1,26 @@
+diff --git a/front_end/panels/network/network.ts b/front_end/panels/network/network.ts
+index ad9ab691b16735b38614adfdacf63f40898f3069..80749eb6c9533fd49d5d4eebb217f03153af63fd 100644
+--- a/front_end/panels/network/network.ts
++++ b/front_end/panels/network/network.ts
+@@ -50,6 +50,11 @@ import * as RequestResponseView from './RequestResponseView.js';
+ import * as RequestTimingView from './RequestTimingView.js';
+ import * as ResourceWebSocketFrameView from './ResourceWebSocketFrameView.js';
+ import * as SignedExchangeInfoView from './SignedExchangeInfoView.js';
++import * as BraveModel from './BraveModel.js'
++import * as BraveShieldsView from './BraveShieldsView.js'
++import * as BraveShieldsModel from "./BraveShieldsModel.js";
++import * as BraveShieldsCosmeticFiltersView from "./BraveShieldsCosmeticFiltersView.js";
++import * as BraveShieldsScriptletsView from "./BraveShieldsScriptletsView.js";
+ 
+ export {
+   BinaryResourceView,
+@@ -76,4 +81,9 @@ export {
+   RequestTimingView,
+   ResourceWebSocketFrameView,
+   SignedExchangeInfoView,
++  BraveModel,
++  BraveShieldsView,
++  BraveShieldsModel,
++  BraveShieldsCosmeticFiltersView,
++  BraveShieldsScriptletsView
+ };

@@ -39,6 +39,7 @@ def parse_args(_self, original_method, *args, **kwargs):
 
         elif source.find("/brave/") != -1:
             dest_file = source.replace("/brave/", "/", 1)
+            os.makedirs(os.path.dirname(dest_file), exist_ok=True)
             shutil.copy2(source, dest_file)
             sources.append(dest_file)
             copied_sources.append(dest_file)

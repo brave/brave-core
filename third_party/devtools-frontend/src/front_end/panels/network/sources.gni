@@ -3,4 +3,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_devtools_front_end_panels_network_source = [ "//brave/third_party/devtools-frontend/src/front_end/panels/network/RequestAdblockView.ts" ]
+brave_devtools_front_end_panels_network_source = []
+brave_devtools_front_end_panels_network_deps = []
+
+# Adblock view in the network panel.
+brave_devtools_front_end_panels_network_source += [ "//brave/third_party/devtools-frontend/src/front_end/panels/network/RequestAdblockView.ts" ]
+
+# Brave model.
+brave_devtools_front_end_panels_network_source += [ "//brave/third_party/devtools-frontend/src/front_end/panels/network/BraveModel.ts" ]
+
+# Shields view in the elements panel.
+brave_devtools_front_end_panels_network_source += [
+  "//brave/third_party/devtools-frontend/src/front_end/panels/network/BraveShieldsView.ts",
+  "//brave/third_party/devtools-frontend/src/front_end/panels/network/BraveShieldsModel.ts",
+  "//brave/third_party/devtools-frontend/src/front_end/panels/network/BraveShieldsScriptletsView.ts",
+  "//brave/third_party/devtools-frontend/src/front_end/panels/network/BraveShieldsCosmeticFiltersView.ts",
+]
+
+brave_devtools_front_end_panels_network_deps += [ "//third_party/devtools-frontend/src/front_end/ui/components/split_view:bundle" ]

@@ -6,7 +6,7 @@ index 0b4eaf94d6027923177c59d72945d49495e74a87..e9f45db956c02273b9d417e70ac6107b
      "./components:bundle",
      "./forward:bundle",
    ]
-+  import("//brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni")  sources += brave_devtools_front_end_panels_network_source
++  import("//brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni")  sources += brave_devtools_front_end_panels_network_source deps += brave_devtools_front_end_panels_network_deps
  }
  
  devtools_entrypoint("bundle") {
