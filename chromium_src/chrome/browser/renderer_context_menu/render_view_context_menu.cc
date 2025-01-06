@@ -695,7 +695,7 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
       IDS_AI_CHAT_CONTEXT_LEO_TOOLS, &ai_chat_submenu_model_);
 }
 
-void BraveRenderViewContextMenu::BuildBraveScreenshotsMenu() {
+void BraveRenderViewContextMenu::MaybeBuildBraveScreenshotsMenu() {
   if (!brave_screenshots::features::IsBraveScreenshotsEnabled()) {
     return;
   }
@@ -874,7 +874,7 @@ void BraveRenderViewContextMenu::InitMenu() {
         IDS_CONTENT_CONTEXT_SPLIT_VIEW);
   }
 
-  BuildBraveScreenshotsMenu();
+  MaybeBuildBraveScreenshotsMenu();
 }
 
 void BraveRenderViewContextMenu::NotifyMenuShown() {
