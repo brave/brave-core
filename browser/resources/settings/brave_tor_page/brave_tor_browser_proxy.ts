@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import { sendWithPromise } from 'chrome://resources/js/cr.js';
 
 // TODO(petemill): Define the expected types instead of using any
@@ -30,7 +28,7 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
     return sendWithPromise('brave_tor.getBridgesConfig')
   }
 
-  setBridgesConfig(config) {
+  setBridgesConfig(config: any) {
     chrome.send('brave_tor.setBridgesConfig', [config])
   }
 
@@ -38,11 +36,11 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
     return sendWithPromise('brave_tor.requestBridgesCaptcha')
   }
 
-  resolveBridgesCaptcha(captcha) {
+  resolveBridgesCaptcha(captcha: any) {
     return sendWithPromise('brave_tor.resolveBridgesCaptcha', captcha)
   }
 
-  setTorEnabled(value) {
+  setTorEnabled(value: boolean) {
     chrome.send('brave_tor.setTorEnabled', [value])
   }
 
@@ -58,11 +56,11 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
     return sendWithPromise('brave_tor.isSnowflakeExtensionAllowed')
   }
 
-  isSnowflakeExtensionEnabled(): Promise<boolean> {
+  isSnowflakeExtensionEnabled() {
     return sendWithPromise('brave_tor.isSnowflakeExtensionEnabled')
   }
 
-  enableSnowflakeExtension(enable): Promise<boolean> {
+  enableSnowflakeExtension(enable: boolean) {
     return sendWithPromise('brave_tor.enableSnowflakeExtension', enable)
   }
 }

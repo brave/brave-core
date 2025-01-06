@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 const BraveResetProfileDialogBehaviorImpl = {
   ready: function() {
     this.fixSendSettingsCheckbox()
@@ -16,10 +14,11 @@ const BraveResetProfileDialogBehaviorImpl = {
    * @private
    */
   fixSendSettingsCheckbox: function() {
-    this.$.sendSettings.checked = false;
-    this.$.sendSettings.hidden = true;
-    this.$.sendSettings.disabled = true;
-    this.$.sendSettings.parentNode.hidden = true;
+    const sendSettings = (this as any).shadowRoot!.getElementById('sendSettings')
+    sendSettings.checked = false
+    sendSettings.hidden = true
+    sendSettings.disabled = true
+    sendSettings.parentNode.hidden = true
   }
 }
 

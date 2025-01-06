@@ -23,7 +23,11 @@ import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
 import '../brave_leo_assistant_page/model_list_section.js'
 
-import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
+import {
+  html,
+  RegisterPolymerTemplateModifications,
+  RegisterStyleOverride
+} from 'chrome://resources/brave/polymer_overriding.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 

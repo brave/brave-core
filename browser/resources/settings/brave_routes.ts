@@ -3,11 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import {pageVisibility} from './brave_overrides/page_visibility.js'
 import {loadTimeData} from './i18n_setup.js'
-import {SettingsRoutes} from 'chrome://settings/settings.js'
+import {SettingsRoutes} from './router.js'
 
 export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   const isGuest = loadTimeData.getBoolean('isGuest')
@@ -44,10 +42,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (pageVisibility.braveWeb3) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
-  }
-  if (pageVisibility.braveWallet) {
-    r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
-    r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
+    if (pageVisibility.braveWallet) {
+      r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
+      r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
+    }
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
 

@@ -3,15 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import 'chrome://resources/cr_elements/cr_button/cr_button.js'
+import './add_wallet_network_dialog.js'
 
-import 'chrome://resources/cr_elements/cr_button/cr_button.js';
-import './add_wallet_network_dialog.js';
+import {
+  BraveWalletBrowserProxyImpl,
+  type NetworkInfo,
+} from './brave_wallet_browser_proxy.js'
 
-import { BraveWalletBrowserProxyImpl } from './brave_wallet_browser_proxy.js';
-import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { BaseMixin } from '../base_mixin.js';
+import type {CrActionMenuElement} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js'
+import type {CrLazyRenderElement} from 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.js'
+import type {IronListElement} from 'chrome://resources/polymer/v3_0/iron-list/iron-list.js'
+
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import {BaseMixin} from '../base_mixin.js'
 import {getTemplate} from './wallet_networks_list.html.js'
 import {loadTimeData} from '../i18n_setup.js'
 
@@ -55,7 +61,13 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
       customNetworks: {
         type: Array,
         value() {
-          return [];
+          return []
+        },
+      },
+      hiddenNetworks: {
+        type: Array,
+        value() {
+          return []
         },
       },
       showAddWalletNetworkDialog_: {
@@ -85,73 +97,85 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     }
   }
 
+  private addNewAllowed: boolean
+  private coin: number
+  private listTitle: string
+  private networks: NetworkInfo[]
+  private knownNetworks: string[]
+  private customNetworks: string[]
+  private hiddenNetworks: string[]
+  private showAddWalletNetworkDialog_: boolean
+  private selectedNetwork: NetworkInfo | Record<string, never>
+  private defaultNetwork: string
+  private isDefaultNetwork: boolean
+  private canRemoveNetwork: boolean
+  private canResetNetwork: boolean
+
   browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
 
-  notifyKeylist() {
-    const keysList =
-    /** @type {IronListElement} */ (this.$$('#networksList'))
-    if (keysList) {
-      keysList.notifyResize()
-    }
-  }
-
-  /*++++++
-  * @override */
-  ready() {
+  override ready() {
     super.ready()
     this.updateNetworks()
   }
 
-  /** @override */
-  connectedCallback() {
-    super.connectedCallback();
+  override connectedCallback() {
+    super.connectedCallback()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       window.testing = window.testing || {}
       window.testing[`walletNetworks${this.coin}`] = this.shadowRoot
     }
   }
 
-  /** @override */
-  disconnectedCallback() {
-    super.disconnectedCallback();
+  override disconnectedCallback() {
+    super.disconnectedCallback()
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
       delete window.testing[`walletNetworks${this.coin}`]
     }
   }
 
-  getNetworkItemClass(item) {
+  private notifyKeylist() {
+    const keysList = this.$$<IronListElement>('#networksList')
+    if (keysList) {
+      keysList.notifyResize()
+    }
+  }
+
+  private getNetworkItemClass(item: NetworkInfo) {
     if (this.checkIsDefaultNetwork(item.chainId)) {
       return "flex cr-padded-text default-network"
     }
     return "flex cr-padded-text"
   }
 
-  getHideButtonClass(hiddenNetworks, item) {
-    if (!this.checkIsDefaultNetwork(item.chainId) && hiddenNetworks.indexOf(item.chainId) > -1) {
+  private getHideButtonClass(hiddenNetworks: string[], item: NetworkInfo) {
+    if (!this.checkIsDefaultNetwork(item.chainId) &&
+        hiddenNetworks.includes(item.chainId)) {
       return "hide-network-button icon-visibility-off"
     }
     return "hide-network-button icon-visibility"
   }
 
-  getDataTestId(item) {
+  private getDataTestId(item: NetworkInfo) {
     return 'chain-' + item.chainId
   }
 
-  checkIsDefaultNetwork(chainId) {
+  private checkIsDefaultNetwork(chainId: string) {
     return chainId === this.defaultNetwork
   }
 
-  canRemoveNetwork_(item) {
-    if (this.checkIsDefaultNetwork(item.chainId)) return false
+  private canRemoveNetwork_(item: NetworkInfo) {
+    if (this.checkIsDefaultNetwork(item.chainId)) {
+      return false
+    }
 
-    return this.knownNetworks.indexOf(item.chainId) == -1
+    return !this.knownNetworks.includes(item.chainId)
   }
 
-  canHideNetwork_(item) {
-    return !this.checkIsDefaultNetwork(item.chainId);
+  private canHideNetwork_(item: NetworkInfo) {
+    return !this.checkIsDefaultNetwork(item.chainId)
   }
 
-  eyeButtonTitle_(item) {
+  private eyeButtonTitle_(item: NetworkInfo) {
     if (this.checkIsDefaultNetwork(item.chainId)) {
       return this.i18n('walletDefaultNetworkIsAlwaysVisible')
     }
@@ -159,76 +183,92 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     return this.i18n('walletShowHideNetwork')
   }
 
-  canResetNetwork_(item) {
+  private canResetNetwork_(item: NetworkInfo) {
     return (
-      this.knownNetworks.indexOf(item.chainId) > -1 &&
-      this.customNetworks.indexOf(item.chainId) > -1
+      this.knownNetworks.includes(item.chainId) &&
+      this.customNetworks.includes(item.chainId)
     )
   }
 
-  hideNativeCurrencyInfo(item) {
+  private hideNativeCurrencyInfo(item: NetworkInfo) {
     return !item.nativeCurrency || item.nativeCurrency.name.trim() === ''
   }
 
-  getItemDescritionText(item) {
+  private getItemDescritionText(item: NetworkInfo) {
     const url = (item.rpcUrls && item.rpcUrls[item.activeRpcEndpointIndex])
       ? item.rpcUrls[item.activeRpcEndpointIndex]
       : ''
     return item.chainId + ' ' + url
   }
 
-  onSetAsDefaultActionTapped_(event) {
+  private onSetAsDefaultActionTapped_(_event: Event) {
+    if (!this.selectedNetwork) {
+      return
+    }
     const chainId = this.selectedNetwork.chainId
     this.selectedNetwork = {}
     this.browserProxy_.setDefaultNetwork(chainId, this.coin).
-      then(success => { this.updateNetworks() })
-    this.$$('cr-action-menu').close();
+      then((_success) => {
+        this.updateNetworks()
+      })
+    this.$$<CrActionMenuElement>('cr-action-menu')!.close()
   }
 
-  onDeleteActionTapped_(event) {
+  private onDeleteActionTapped_(_event: Event) {
+    if (!this.selectedNetwork) {
+      return
+    }
     const chainId = this.selectedNetwork.chainId
     const chainName = this.selectedNetwork.chainName
     this.selectedNetwork = {}
-    this.$$('cr-action-menu').close();
+    this.$$<CrActionMenuElement>('cr-action-menu')!.close()
     if (this.checkIsDefaultNetwork(chainId)) {
       this.updateNetworks()
       return
     }
-    var message = this.i18n('walletDeleteNetworkConfirmation', chainName)
-    if (!window.confirm(message))
+    const message = this.i18n('walletDeleteNetworkConfirmation', chainName)
+    if (!window.confirm(message)) {
       return
+    }
 
     this.browserProxy_.removeChain(chainId, this.coin).
-      then(success => { this.updateNetworks() })
+      then((_success) => {
+        this.updateNetworks()
+      })
   }
 
-  onResetActionTapped_(event) {
+  private onResetActionTapped_(_event: Event) {
+    if (!this.selectedNetwork) {
+      return
+    }
     const chainId = this.selectedNetwork.chainId
     const chainName = this.selectedNetwork.chainName
     this.selectedNetwork = {}
-    this.$$("cr-action-menu").close()
-    var message = this.i18n("walletResetNetworkConfirmation", chainName)
-    if (!window.confirm(message)) return
+    this.$$<CrActionMenuElement>("cr-action-menu")!.close()
+    const message = this.i18n("walletResetNetworkConfirmation", chainName)
+    if (!window.confirm(message)) {
+      return
+    }
 
-    this.browserProxy_.resetChain(chainId, this.coin).then((success) => {
+    this.browserProxy_.resetChain(chainId, this.coin).then((_success) => {
       this.updateNetworks()
     })
   }
 
-  onAddNetworkTap_(item) {
+  private onAddNetworkTap_(_item: NetworkInfo) {
     this.showAddWalletNetworkDialog_ = true
   }
 
-  onItemDoubleClick(event) {
+  private onItemDoubleClick(event: Event&{model: {item: NetworkInfo}}) {
     this.selectedNetwork = event.model.item
     this.showAddWalletNetworkDialog_ = true
   }
 
-  onEmptyDoubleClick(event) {
-    event.stopPropagation();
+  private onEmptyDoubleClick(event: Event) {
+    event.stopPropagation()
   }
 
-  updateNetworks() {
+  private updateNetworks() {
     this.browserProxy_.getNetworksList(this.coin).then(payload => {
       if (!payload) {
         return
@@ -242,42 +282,43 @@ class SettingsWalletNetworksList extends SettingsWalletNetworksListBase {
     })
   }
 
-  onAddNetworkDialogClosed_() {
+  private onAddNetworkDialogClosed_() {
     this.showAddWalletNetworkDialog_ = false
     this.selectedNetwork = {}
     this.updateNetworks()
   }
 
-  onHideButtonClicked_(event) {
+  private onHideButtonClicked_(event: Event&{model: {item: NetworkInfo}}) {
     const chainId = event.model.item.chainId
-    if (this.hiddenNetworks.indexOf(event.model.item.chainId) > -1) {
-      this.browserProxy_.removeHiddenNetwork(chainId, this.coin).then((success) => {
-        this.updateNetworks()
-      })
+    if (this.hiddenNetworks.includes(event.model.item.chainId)) {
+      this.browserProxy_.
+        removeHiddenNetwork(chainId, this.coin).then((_success) => {
+          this.updateNetworks()
+        })
     } else {
-      this.browserProxy_.addHiddenNetwork(chainId, this.coin).then((success) => {
-        this.updateNetworks()
+      this.browserProxy_.
+        addHiddenNetwork(chainId, this.coin).then((_success) => {
+          this.updateNetworks()
       })
     }
   }
 
-  onNetworkMenuTapped_(event) {
+  private onNetworkMenuTapped_(event: Event&{model: {item: NetworkInfo}}) {
     this.selectedNetwork = event.model.item
     this.isDefaultNetwork =
       this.checkIsDefaultNetwork(this.selectedNetwork.chainId)
     this.canRemoveNetwork = this.canRemoveNetwork_(this.selectedNetwork)
     this.canResetNetwork = this.canResetNetwork_(this.selectedNetwork)
-    const actionMenu =
-        /** @type {!CrActionMenuElement} */ (this.$$('#network-menu').get());
-    actionMenu.showAt(event.target);
+    this.$$<CrLazyRenderElement<CrActionMenuElement>>('#network-menu')!.get()
+      .showAt(event.target as HTMLElement)
   }
 
-  onEditTap_() {
-    this.$$('cr-action-menu').close();
+  private onEditTap_() {
+    this.$$<CrActionMenuElement>('cr-action-menu')!.close()
     this.showAddWalletNetworkDialog_ = true
   }
 
-  onNetworkActionTapped_(event) {
+  private onNetworkActionTapped_(_event: Event) {
     this.showAddWalletNetworkDialog_ = true
   }
 }

@@ -3,15 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import {RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 import 'chrome://resources/brave/leo.bundle.js'
 
-function createMenuElement(title, href, iconName, pageVisibilitySection) {
+function createMenuElement(
+  title: string,
+  href: string,
+  iconName: string,
+  pageVisibilitySection: string) {
   const menuEl = document.createElement('a')
   if (pageVisibilitySection) {
     menuEl.setAttribute('hidden', `[[!pageVisibility.${pageVisibilitySection}]]`)
@@ -31,7 +33,9 @@ function createMenuElement(title, href, iconName, pageVisibilitySection) {
   return menuEl
 }
 
-function getMenuElement(templateContent, href) {
+function getMenuElement(
+  templateContent: HTMLTemplateElement,
+  href: string) {
   let menuEl = templateContent.querySelector(`a[href="${href}"]`)
   if (!menuEl) {
     // Search templates
@@ -219,27 +223,29 @@ RegisterPolymerTemplateModifications({
     }
 
     // Add 'Get Started' item
-    const peopleEl = getMenuElement(templateContent, '/people')
     const getStartedEl = createMenuElement(
       loadTimeData.getString('braveGetStartedTitle'),
       '/getStarted',
       'rocket',
       'getStarted'
     )
-    peopleEl.insertAdjacentElement('afterend', getStartedEl)
+    const peopleEl = getMenuElement(templateContent, '/people')
+    if (peopleEl) {
+      peopleEl.insertAdjacentElement('afterend', getStartedEl)
+    }
 
     // Move Appearance item
-    const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
-    getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
-
-    // Add Content item
     const contentEl = createMenuElement(
       loadTimeData.getString('contentSettingsContentSection'),
       '/braveContent',
       'window-content',
       'content',
     )
-    appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
+    const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
+    if (appearanceBrowserEl && contentEl) {
+      getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
+      appearanceBrowserEl.insertAdjacentElement('afterend', contentEl)
+    }
 
     // Add Shields item
     const shieldsEl = createMenuElement(
@@ -252,7 +258,9 @@ RegisterPolymerTemplateModifications({
 
     // Add privacy item
     const privacyEl = getMenuElement(templateContent, '/privacy')
-    shieldsEl.insertAdjacentElement('afterend', privacyEl)
+    if (privacyEl && shieldsEl) {
+      shieldsEl.insertAdjacentElement('afterend', privacyEl)
+    }
 
     // Add web3 item
     const web3El = createMenuElement(
@@ -261,7 +269,9 @@ RegisterPolymerTemplateModifications({
       'product-brave-wallet',
       'wallet',
     )
-    privacyEl.insertAdjacentElement('afterend', web3El)
+    if (privacyEl && web3El) {
+      privacyEl.insertAdjacentElement('afterend', web3El)
+    }
 
     // Add leo item
     const leoAssistantEl = createMenuElement(
@@ -283,7 +293,9 @@ RegisterPolymerTemplateModifications({
 
     // Add search item
     const searchEl = getMenuElement(templateContent, '/search')
-    syncEl.insertAdjacentElement('afterend', searchEl)
+    if (searchEl && syncEl) {
+      syncEl.insertAdjacentElement('afterend', searchEl)
+    }
 
     // Add Extensions item
     const extensionEl = createMenuElement(
@@ -292,19 +304,26 @@ RegisterPolymerTemplateModifications({
       'browser-extensions',
       'extensions',
     )
-    searchEl.insertAdjacentElement('afterend', extensionEl)
+    if (extensionEl && searchEl) {
+      searchEl.insertAdjacentElement('afterend', extensionEl)
+    }
 
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
-    languagesEl.insertAdjacentElement('beforebegin', autofillEl)
+    if (autofillEl && languagesEl) {
+      languagesEl.insertAdjacentElement('beforebegin', autofillEl)
+    }
     // Allow Accessibility to be removed :-(
     const a11yEl = getMenuElement(templateContent, '/accessibility')
-    a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
+    if (a11yEl) {
+      a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')
+    }
     // Remove extensions link
     const extensionsLinkEl = templateContent.querySelector('#extensionsLink')
     if (!extensionsLinkEl) {
-      console.error('[Brave Settings Overrides] Could not find extensionsLinkEl to remove')
+      console.error('[Settings] Could not find extensionsLinkEl to remove')
+      return
     }
     extensionsLinkEl.remove()
     // Add version number to 'about' link

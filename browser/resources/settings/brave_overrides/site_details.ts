@@ -3,11 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import type {SiteDetailsPermissionElement} from '../site_settings/site_details_permission.js'
 
 import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 import 'chrome://resources/brave/leo.bundle.js'
@@ -20,14 +19,18 @@ RegisterPolymerTemplateModifications({
         content)
 
     if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
-      const idleDetectionItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.IDLE_DETECTION]]"]')
+      const idleDetectionItem =
+        templateContent.querySelector<SiteDetailsPermissionElement>(
+          '[category="[[contentSettingsTypesEnum_.IDLE_DETECTION]]"]')
       if (!idleDetectionItem) {
         console.error('[Settings] Couldn\'t find idle detection item')
       } else {
         idleDetectionItem.hidden = true
       }
     }
-    const adsItem = templateContent.querySelector('[category="[[contentSettingsTypesEnum_.ADS]]"]')
+    const adsItem =
+      templateContent.querySelector<SiteDetailsPermissionElement>(
+        '[category="[[contentSettingsTypesEnum_.ADS]]"]')
     if (!adsItem) {
       console.error('[Settings] Couldn\'t find ads item')
     } else {
@@ -40,12 +43,10 @@ RegisterPolymerTemplateModifications({
     } else {
       firstPermissionItem.insertAdjacentHTML(
         'beforebegin',
-        getTrustedHTML`
-          <site-details-permission
-            category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-            icon="autoplay-on">
-          </site-details-permission>
-        `)
+        `<site-details-permission
+           category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
+           icon="autoplay-on">
+         </site-details-permission>`)
       let curChild = 1
       const autoplaySettings = templateContent.querySelector(
         `div.list-frame > site-details-permission:nth-child(${curChild})`)
@@ -63,14 +64,12 @@ RegisterPolymerTemplateModifications({
       if (isGoogleSignInFeatureEnabled) {
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
-          getTrustedHTML`
-            <site-details-permission
-              category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
-              icon="user">
-            </site-details-permission>
-          `)
-        const googleSignInSettings = templateContent.
-          querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
+          `<site-details-permission
+             category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
+             icon="user">
+           </site-details-permission>`)
+        const googleSignInSettings = templateContent.querySelector(
+          `div.list-frame > site-details-permission:nth-child(${curChild})`)
         if (!googleSignInSettings) {
           console.error('[Settings] Couldn\'t find Google signin settings')
         }
@@ -86,12 +85,10 @@ RegisterPolymerTemplateModifications({
       if (isLocalhostAccessFeatureEnabled) {
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
-          getTrustedHTML`
-            <site-details-permission
-              category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
-              icon="smartphone-desktop">
-            </site-details-permission>
-          `)
+          `<site-details-permission
+             category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
+             icon="smartphone-desktop">
+           </site-details-permission>`)
         const localhostAccessSettings = templateContent.querySelector(
           `div.list-frame > site-details-permission:nth-child(${curChild})`)
         if (!localhostAccessSettings) {
@@ -108,14 +105,12 @@ RegisterPolymerTemplateModifications({
       if (isOpenAIChatFromBraveSearchEnabled) {
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
-          getTrustedHTML`
-            <site-details-permission
-              category="[[contentSettingsTypesEnum_.BRAVE_OPEN_AI_CHAT]]"
-              icon="user">
-            </site-details-permission>
-          `)
-        const braveAIChatSettings = templateContent.
-          querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
+          `<site-details-permission
+             category="[[contentSettingsTypesEnum_.BRAVE_OPEN_AI_CHAT]]"
+             icon="user">
+           </site-details-permission>`)
+        const braveAIChatSettings = templateContent.querySelector(
+          `div.list-frame > site-details-permission:nth-child(${curChild})`)
         if (!braveAIChatSettings) {
           console.error('[Settings] Couldn\'t find Brave AI chat settings')
         } else {
@@ -129,14 +124,12 @@ RegisterPolymerTemplateModifications({
       if (isNativeBraveWalletEnabled) {
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
-          getTrustedHTML`
-            <site-details-permission
-              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
-              icon="ethereum-on">
-            </site-details-permission>
-          `)
-        const ethereumSettings = templateContent.
-          querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
+          `<site-details-permission
+             category="[[contentSettingsTypesEnum_.ETHEREUM]]"
+             icon="ethereum-on">
+           </site-details-permission>`)
+        const ethereumSettings = templateContent.querySelector(
+          `div.list-frame > site-details-permission:nth-child(${curChild})`)
         if (!ethereumSettings) {
           console.error('[Settings] Couldn\'t find Ethereum settings')
         } else {
@@ -146,14 +139,12 @@ RegisterPolymerTemplateModifications({
         curChild++
         firstPermissionItem.insertAdjacentHTML(
           'beforebegin',
-          getTrustedHTML`
-            <site-details-permission
-              category="[[contentSettingsTypesEnum_.SOLANA]]"
-              icon="solana-on">
-            </site-details-permission>
-          `)
-        const solanaSettings = templateContent.
-          querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
+          `<site-details-permission
+             category="[[contentSettingsTypesEnum_.SOLANA]]"
+             icon="solana-on">
+           </site-details-permission>`)
+        const solanaSettings = templateContent.querySelector(
+          `div.list-frame > site-details-permission:nth-child(${curChild})`)
         if (!solanaSettings) {
           console.error('[Settings] Couldn\'t find Solana settings')
         } else {

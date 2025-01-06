@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import './brave_adblock_subpage.js'
 import '//resources/cr_elements/md_select.css.js'
 
@@ -12,17 +10,38 @@ import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.m
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
-import {assertNotReached} from 'chrome://resources/js/assert.js'
 
 import {loadTimeData} from '../i18n_setup.js'
 import {RouteObserverMixin, Router} from '../router.js'
-import {routes} from '../route.js'
-import {CookieControlsMode} from '../site_settings/constants.js'
+import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js'
 
-import {DefaultBraveShieldsBrowserProxyImpl, DefaultBraveShieldsBrowserProxyImpl} from './default_brave_shields_browser_proxy.js'
+import {
+  DefaultBraveShieldsBrowserProxy,
+  DefaultBraveShieldsBrowserProxyImpl
+} from './default_brave_shields_browser_proxy.js'
+
 import {getTemplate} from './default_brave_shields_page.html.js'
 
-const BraveShieldsPageBase = WebUiListenerMixin(I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement))))
+interface BraveShieldsPage {
+  $: {
+    adControlType: HTMLSelectElement,
+    cookieControlType: HTMLSelectElement,
+    fingerprintingToggleControlType: SettingsToggleButtonElement,
+    fingerprintingSelectControlType: HTMLSelectElement,
+    forgetFirstPartyStorageControlType: SettingsToggleButtonElement,
+    httpsUpgradeControlType: HTMLSelectElement,
+    noScriptControlType: SettingsToggleButtonElement,
+    setContactInfoSaveFlagToggle: SettingsToggleButtonElement,
+  }
+}
+
+type ControlType = {
+  name: string
+  value: string
+}
+
+const BraveShieldsPageBase =
+  WebUiListenerMixin(I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement))))
 
 /**
  * 'settings-default-brave-shields-page' is the settings page containing brave's
@@ -141,7 +160,22 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     }
   }
 
-  browserProxy_ = DefaultBraveShieldsBrowserProxyImpl.getInstance()
+  private adControlTypes_: ControlType[]
+  private adControlType_: 'allow' | 'block' | 'block_third_party'
+  private isAdBlockRoute_: boolean
+  private cookieControlTypes_: ControlType[]
+  private cookieControlType_: string
+  private httpsUpgradeControlType_: string
+  private isForgetFirstPartyStorageEnabled_: chrome.settingsPrivate.
+    PrefObject<boolean>
+  private isFingerprintingEnabled_: chrome.settingsPrivate.PrefObject<boolean>
+  private isContactInfoSaveFlagEnabled_: chrome.settingsPrivate.
+    PrefObject<boolean>
+  private fingerprintingControlTypes_: ControlType[]
+  private fingerprintingControlType_: string
+
+  private browserProxy_: DefaultBraveShieldsBrowserProxy =
+    DefaultBraveShieldsBrowserProxyImpl.getInstance()
 
   override ready () {
     super.ready()
@@ -152,10 +186,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       () => { this.onShieldsSettingsChanged_() })
   }
 
-  /** @protected */
   override currentRouteChanged () {
     const router = Router.getInstance()
-    this.isAdBlockRoute_ = (router.getCurrentRoute() == router.getRoutes().SHIELDS_ADBLOCK)
+    this.isAdBlockRoute_ =
+      (router.getCurrentRoute() === router.getRoutes().SHIELDS_ADBLOCK)
   }
 
   onAdblockPageClick_() {
@@ -163,18 +197,19 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK)
   }
 
-  controlEqual_ (val1, val2) {
+  controlEqual_ (val1: any, val2: any) {
     return val1 === val2
   }
 
   onShieldsSettingsChanged_ () {
-    Promise.all([this.browserProxy_.isAdControlEnabled(), this.browserProxy_.isFirstPartyCosmeticFilteringEnabled()])
-      .then(([adControlEnabled, hide1pContent]) => {
+    Promise.all([
+      this.browserProxy_.isAdControlEnabled(),
+      this.browserProxy_.isFirstPartyCosmeticFilteringEnabled()
+    ]).then(([adControlEnabled, hide1pContent]) => {
       if (adControlEnabled) {
-          this.adControlType_ = hide1pContent ? 'block' : 'block_third_party'
-      }
-      else {
-          this.adControlType_ = 'allow'
+        this.adControlType_ = hide1pContent ? 'block' : 'block_third_party'
+      } else {
+        this.adControlType_ = 'allow'
       }
     })
 
@@ -202,7 +237,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       this.isFingerprintingEnabled_ = {
         key: '',
         type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: value != 'allow',
+        value: value !== 'allow',
       }
     })
 
