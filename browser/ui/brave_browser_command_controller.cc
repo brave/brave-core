@@ -714,7 +714,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD:
     case IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD:
     case IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD:
-      brave_screenshots::TakeScreenshot(&*browser_, id);
+      brave::TakeScreenshot(&*browser_, id);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
