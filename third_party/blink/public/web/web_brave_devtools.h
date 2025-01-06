@@ -1,9 +1,10 @@
-// Copyright 2018 The Chromium Authors
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_BRAVE_DEVTOOLS_H_
-#define THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_BRAVE_DEVTOOLS_H_
+#ifndef BRAVE_THIRD_PARTY_BLINK_PUBLIC_WEB_WEB_BRAVE_DEVTOOLS_H_
+#define BRAVE_THIRD_PARTY_BLINK_PUBLIC_WEB_WEB_BRAVE_DEVTOOLS_H_
 
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
@@ -39,4 +40,4 @@ class BLINK_EXPORT WebBraveDevtoolsClient {
 
 }  // namespace blink
 
-#endif  // THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_BRAVE_DEVTOOLS_H_
+#endif  // BRAVE_THIRD_PARTY_BLINK_PUBLIC_WEB_WEB_BRAVE_DEVTOOLS_H_
