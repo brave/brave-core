@@ -696,9 +696,16 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
 }
 
 void BraveRenderViewContextMenu::MaybeBuildBraveScreenshotsMenu() {
+
   if (!brave_screenshots::features::IsBraveScreenshotsEnabled()) {
     return;
   }
+
+  // Don't show the screenshots submenu on devtools (for now)
+  if (IsDevToolsURL(params_.page_url)) {
+    return;
+  }
+
   // Selection Screenshots
   brave_screenshots_submenu_model_.AddItemWithStringId(
       IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD,
