@@ -171,6 +171,8 @@
     <messages fallback_to_english="true">
       <!-- Brave Settings WebUI strings -->
       <part file="brave_settings_strings.grdp" />
+      <!-- Brave Screenshots context-menu/settings strings -->
+      <part file="brave_screenshots_strings.grdp" />
 
       <!--Add new items to the appropriate sections below -->
 
@@ -355,37 +357,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_SYNC_CANNOT_RUN_INFOBAR_CHECK_DETAILS_BUTTON" desc="Button text on Sync is not running informer. This button opens Sync settings">
         Check details
       </message>
-
-      <!-- Context Menu › Screenshot Tools -->
-      <if expr="use_titlecase">
-        <message name="IDS_IDC_BRAVE_SCREENSHOT_TOOLS" desc="Title for the screenshot submenu">
-          Screenshot Tools
-        </message>
-        <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD" desc="Title for option to screenshot a region and copy to clipboard">
-          Screenshot Selection to Clipboard
-        </message>
-        <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD" desc="Title for option to screenshot the viewport and copy to clipboard">
-          Screenshot Viewport to Clipboard
-        </message>
-        <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD" desc="Title for option to screenshot the full page and copy to clipboard">
-          Screenshot Full Page to Clipboard
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_IDC_BRAVE_SCREENSHOT_TOOLS" desc="Title for the screenshot submenu">
-          Screenshot tools
-        </message>
-        <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD" desc="Title for option to screenshot a region and copy to clipboard">
-          Screenshot selection to clipboard
-        </message>
-        <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD" desc="Title for option to screenshot the viewport and copy to clipboard">
-          Screenshot viewport to clipboard
-        </message>
-        <message name="IDS_IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD" desc="Title for option to screenshot the full page and copy to clipboard">
-          Screenshot full page to clipboard
-        </message>
-      </if>
-
 
       <!-- Adblock context menu -->
       <message name="IDS_ADBLOCK_CONTEXT_BLOCK_ELEMENTS" desc="Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page">
