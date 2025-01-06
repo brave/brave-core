@@ -68,7 +68,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   bool IsAIChatEnabled() const;
   void ExecuteAIChatCommand(int command);
   void BuildAIChatMenu();
-  void BuildBraveScreenshotsMenu();
+  void MaybeBuildBraveScreenshotsMenu();
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   void CopyTextFromImage();
