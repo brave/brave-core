@@ -6,7 +6,7 @@ index c8c8bb5a202987051ef9b2bcb8c9a3bfab409c28..ad636a7683075942a1c1648d0829c38c
    "front_end/ui/visual_logging/LoggingState.js",
    "front_end/ui/visual_logging/NonDomState.js",
  ]
-+import("//brave/third_party/devtools-frontend/src/config/gni/sources.gni") grd_files_debug_sources += brave_grd_files_debug_sources
++import("//brave/third_party/devtools-frontend/src/config/gni/sources.gni") grd_files_debug_sources += brave_grd_files_debug_sources grd_files_release_sources += brave_grd_files_release_sources
  
  # Confirm that there is no overlap between the two lists.
  _grd_files_release_sources =
