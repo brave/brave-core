@@ -167,15 +167,20 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
     if (statement.GetColumnType(index) != sql::ColumnType::kNull) {
       DVLOG(1) << __func__ << " got associated content";
 
+      // TODO(fallaciousreasoning): Support multiple associated content
       conversation->associated_content->uuid = statement.ColumnString(index++);
-      conversation->associated_content->title =
-          DecryptOptionalColumnToString(statement, index++);
+
+      auto detail = mojom::SiteInfoDetail::New();
+      detail->title =
+          DecryptOptionalColumnToString(statement, index++).value_or("");
       auto url_raw = DecryptOptionalColumnToString(statement, index++);
       if (url_raw.has_value()) {
-        conversation->associated_content->url = GURL(url_raw.value());
+        detail->url = GURL(url_raw.value());
       }
-      conversation->associated_content->content_type =
+      detail->content_type =
           static_cast<mojom::ContentType>(statement.ColumnInt(index++));
+      conversation->associated_content->details.push_back(std::move(detail));
+
       conversation->associated_content->content_used_percentage =
           statement.ColumnInt(index++);
       conversation->associated_content->is_content_refined =
@@ -394,7 +399,7 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
   if (conversation->associated_content->is_content_association_possible) {
     DVLOG(2) << "Adding associated content for conversation "
              << conversation->uuid << " with url "
-             << conversation->associated_content->url->spec();
+             << conversation->associated_content->details[0]->url.spec();
     if (!AddOrUpdateAssociatedContent(
             conversation->uuid, std::move(conversation->associated_content),
             contents)) {
@@ -465,11 +470,11 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
   }
   CHECK(statement.is_valid());
   int index = 0;
-  BindAndEncryptOptionalString(statement, index++, associated_content->title);
-  BindAndEncryptOptionalString(statement, index++,
-                               associated_content->url->spec());
-  statement.BindInt(index++,
-                    base::to_underlying(associated_content->content_type));
+
+  auto& detail = associated_content->details[0];
+  BindAndEncryptOptionalString(statement, index++, detail->title);
+  BindAndEncryptOptionalString(statement, index++, detail->url.spec());
+  statement.BindInt(index++, base::to_underlying(detail->content_type));
   BindAndEncryptOptionalString(statement, index++, contents);
   statement.BindInt(index++, associated_content->content_used_percentage);
   statement.BindBool(index++, associated_content->is_content_refined);

@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import { loadTimeData } from '$web-common/loadTimeData'
- import API from '../../common/api'
- import * as Mojom from '../../common/mojom'
+import { loadTimeData } from '$web-common/loadTimeData'
+import API from '../../common/api'
+import * as Mojom from '../../common/mojom'
 
 // State that is owned by this class because it is global to the UI
 // (loadTimeData / Service / UIHandler).
@@ -19,6 +19,7 @@ export type State = Mojom.ServiceState & {
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
   allActions: Mojom.ActionGroup[]
+  tabs: Mojom.AvailableTab[]
 }
 
 export const defaultUIState: State = {
@@ -33,6 +34,7 @@ export const defaultUIState: State = {
   canShowPremiumPrompt: false,
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
+  tabs: [],
   allActions: [],
 }
 
@@ -77,6 +79,17 @@ class PageAPI extends API<State> {
       this.service.getActionMenuList(),
       this.getCurrentPremiumStatus()
     ])
+
+    // We do this asynchronously because we only want to fetch them in standalone mode
+    // and the data it returns isn't critical to the UI.
+    if (isStandalone) {
+      this.uiHandler.getAvailableTabs().then(({ tabs }) => {
+        this.setPartialState({
+          tabs
+        })
+      })
+    }
+
     this.setPartialState({
       ...state,
       ...premiumStatus,

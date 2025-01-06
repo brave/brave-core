@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -92,6 +93,7 @@ bool IsConversationUpdatedTimeWithinRange(
 AIChatService::AIChatService(
     ModelService* model_service,
     std::unique_ptr<AIChatCredentialManager> ai_chat_credential_manager,
+    std::unique_ptr<AssociatedTabDelegate> associated_tab_delegate,
     PrefService* profile_prefs,
     AIChatMetrics* ai_chat_metrics,
     os_crypt_async::OSCryptAsync* os_crypt_async,
@@ -107,6 +109,7 @@ AIChatService::AIChatService(
           std::make_unique<AIChatFeedbackAPI>(url_loader_factory_,
                                               std::string(channel_string))),
       credential_manager_(std::move(ai_chat_credential_manager)),
+      associated_tab_delegate_(std::move(associated_tab_delegate)),
       profile_path_(profile_path) {
   DCHECK(profile_prefs_);
   pref_change_registrar_.Init(profile_prefs_);
@@ -159,8 +162,8 @@ ConversationHandler* AIChatService::CreateConversation() {
     mojom::ConversationPtr conversation = mojom::Conversation::New(
         conversation_uuid, "", base::Time::Now(), false, std::nullopt,
         mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
-                             mojom::ContentType::PageContent, std::nullopt,
-                             std::nullopt, std::nullopt, 0, false, false));
+                             std::vector<mojom::SiteInfoDetailPtr>(), 0, false,
+                             false));
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -946,6 +949,15 @@ void AIChatService::OpenConversationWithStagedEntries(
   // Open AI Chat and trigger a fetch of staged conversations from Brave Search.
   std::move(open_ai_chat).Run();
   conversation->MaybeFetchOrClearContentStagedConversation();
+}
+
+AssociatedContentDriver* AIChatService::GetAssociatedContent(
+    const mojom::AvailableTabPtr& tab) {
+  // Can be null in tests
+  if (!associated_tab_delegate_) {
+    return nullptr;
+  }
+  return associated_tab_delegate_->GetAssociatedContent(tab);
 }
 
 }  // namespace ai_chat

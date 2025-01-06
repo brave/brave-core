@@ -208,8 +208,7 @@ class ConversationHandlerUnitTest : public testing::Test {
         temp_directory_.GetPath());
 
     mojom::SiteInfoPtr non_content = mojom::SiteInfo::New(
-        std::nullopt, mojom::ContentType::PageContent, std::nullopt,
-        std::nullopt, std::nullopt, 0, false, false);
+        std::nullopt, std::vector<mojom::SiteInfoDetailPtr>(), 0, false, false);
     conversation_ =
         mojom::Conversation::New("uuid", "title", base::Time::Now(), false,
                                  std::nullopt, std::move(non_content));
@@ -505,7 +504,8 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
         EXPECT_TRUE(site_info->is_content_association_possible);
-        EXPECT_EQ(site_info->url->spec(), "https://www.brave.com/");
+        ASSERT_EQ(site_info->details.size(), 1u);
+        EXPECT_EQ(site_info->details[0]->url, GURL("https://www.brave.com/"));
       }));
 
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
@@ -532,7 +532,8 @@ TEST_F(ConversationHandlerUnitTest, SubmitSelectedText_WithAssociatedContent) {
       [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
         EXPECT_TRUE(should_send_page_contents);
         EXPECT_TRUE(site_info->is_content_association_possible);
-        EXPECT_EQ(site_info->url->spec(), "https://www.brave.com/");
+        ASSERT_EQ(site_info->details.size(), 1u);
+        EXPECT_EQ(site_info->details[0]->url, GURL("https://www.brave.com/"));
       }));
 
   // Should not be any LLM-generated suggested questions yet because they

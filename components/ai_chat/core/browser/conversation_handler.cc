@@ -48,6 +48,7 @@
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/multi_associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -226,8 +227,10 @@ ConversationHandler::ConversationHandler(
       CHECK(metadata_->associated_content->uuid.has_value());
       CHECK_EQ(conversation_data->associated_content[0]->content_uuid,
                metadata_->associated_content->uuid.value());
-      bool is_video = (metadata_->associated_content->content_type ==
-                       mojom::ContentType::VideoTranscript);
+      CHECK(!metadata_->associated_content->details.empty());
+      bool is_video =
+          (metadata_->associated_content->details[0]->content_type ==
+           mojom::ContentType::VideoTranscript);
       SetArchiveContent(conversation_data->associated_content[0]->content,
                         is_video);
     }
@@ -285,12 +288,17 @@ void ConversationHandler::BindUntrustedConversationUI(
 void ConversationHandler::OnConversationMetadataUpdated() {
   // Pass the updated data to archive content
   if (archive_content_) {
-    archive_content_->SetMetadata(
-        metadata_->associated_content->url.value_or(GURL()),
-        base::UTF8ToUTF16(metadata_->associated_content->title.value_or("")),
-        metadata_->associated_content->content_type ==
-            mojom::ContentType::VideoTranscript);
+    if (metadata_->associated_content->details.empty()) {
+      archive_content_->SetMetadata(GURL(), u"", false);
+    } else {
+      // TODO(fallaciousreasoning): Support multiple associated content
+      auto& detail = metadata_->associated_content->details[0];
+      archive_content_->SetMetadata(
+          detail->url, base::UTF8ToUTF16(detail->title),
+          detail->content_type == mojom::ContentType::VideoTranscript);
+    }
   }
+
   // Notify UI. If we have live content then the metadata will be updated
   // again from that live data.
   OnAssociatedContentInfoChanged();
@@ -424,11 +432,18 @@ void ConversationHandler::SetArchiveContent(std::string text_content,
                                             bool is_video) {
   // Construct a "content archive" implementation of AssociatedContentDelegate
   // with a duplicate of the article text.
-  auto archive_content = std::make_unique<AssociatedArchiveContent>(
-      metadata_->associated_content->url.value_or(GURL()),
-      std::move(text_content),
-      base::UTF8ToUTF16(metadata_->associated_content->title.value_or("")),
-      is_video);
+  // TODO(fallaciousreasoning): Support multiple associated content
+  auto archive_content =
+      metadata_->associated_content->details.empty()
+          ? std::make_unique<AssociatedArchiveContent>(
+                GURL(), std::move(text_content), u"", is_video)
+          : std::make_unique<AssociatedArchiveContent>(
+                metadata_->associated_content->details[0]->url,
+                std::move(text_content),
+                base::UTF8ToUTF16(
+                    metadata_->associated_content->details[0]->title),
+                is_video);
+
   associated_content_delegate_ = archive_content->GetWeakPtr();
   archive_content_ = std::move(archive_content);
   should_send_page_contents_ = features::IsPageContextEnabledInitially();
@@ -470,6 +485,12 @@ void ConversationHandler::SetAssociatedContentDelegate(
   MaybeSeedOrClearSuggestions();
   MaybeFetchOrClearContentStagedConversation();
   OnAssociatedContentInfoChanged();
+}
+
+void ConversationHandler::SetMultiAssociatedContentDelegate(
+    std::unique_ptr<MultiAssociatedContentDriver> multi_content) {
+  multi_content_ = std::move(multi_content);
+  SetAssociatedContentDelegate(multi_content_->GetWeakPtr());
 }
 
 const mojom::Model& ConversationHandler::GetCurrentModel() {
@@ -518,6 +539,55 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       current_error_);
 
   std::move(callback).Run(std::move(state));
+}
+
+void ConversationHandler::AddAssociatedTab(mojom::AvailableTabPtr tab) {
+  if (HasAnyHistory()) {
+    return;
+  }
+
+  auto* tab_delegate = ai_chat_service_->GetAssociatedContent(tab);
+  if (!tab_delegate) {
+    return;
+  }
+
+  if (!multi_content_ && associated_content_delegate_) {
+    NOTREACHED() << "Should not be able to add a tab to a conversation that "
+                    "already has an associated content";
+  }
+
+  if (!multi_content_) {
+    std::vector<AssociatedContentDriver*> drivers{tab_delegate};
+    auto driver =
+        std::make_unique<MultiAssociatedContentDriver>(std::move(drivers));
+    SetMultiAssociatedContentDelegate(std::move(driver));
+  } else {
+    multi_content_->AddContent(tab_delegate);
+  }
+
+  OnAssociatedContentInfoChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
+}
+
+void ConversationHandler::RemoveAssociatedTab(mojom::AvailableTabPtr tab) {
+  if (HasAnyHistory()) {
+    return;
+  }
+
+  if (!multi_content_ && associated_content_delegate_) {
+    NOTREACHED() << "Should not be able to remove an associated content "
+                    "when there is only one associated content";
+  }
+
+  if (multi_content_) {
+    auto* tab_delegate = ai_chat_service_->GetAssociatedContent(tab);
+    multi_content_->RemoveContent(tab_delegate);
+  }
+
+  OnAssociatedContentInfoChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
@@ -1381,9 +1451,11 @@ void ConversationHandler::OnGeneratePageContentComplete(
   is_content_different_ =
       is_content_different_ || contents_text != previous_content;
 
-  metadata_->associated_content->content_type =
-      is_video ? mojom::ContentType::VideoTranscript
-               : mojom::ContentType::PageContent;
+  if (!metadata_->associated_content->details.empty()) {
+    metadata_->associated_content->details[0]->content_type =
+        is_video ? mojom::ContentType::VideoTranscript
+                 : mojom::ContentType::PageContent;
+  }
 
   std::move(callback).Run(contents_text, is_video, invalidation_token);
 
@@ -1624,19 +1696,18 @@ bool ConversationHandler::IsContentAssociationPossible() {
 void ConversationHandler::BuildAssociatedContentInfo() {
   // Only modify associated content metadata here
   if (associated_content_delegate_) {
-    metadata_->associated_content->title =
-        base::UTF16ToUTF8(associated_content_delegate_->GetTitle());
+    metadata_->associated_content->details.clear();
     const GURL url = associated_content_delegate_->GetURL();
-    metadata_->associated_content->hostname = url.host();
-    metadata_->associated_content->url = url;
+
+    metadata_->associated_content->details =
+        associated_content_delegate_->GetSiteInfoDetail();
+
     metadata_->associated_content->content_used_percentage =
         GetContentUsedPercentage();
     metadata_->associated_content->is_content_refined = is_content_refined_;
     metadata_->associated_content->is_content_association_possible = true;
   } else {
-    metadata_->associated_content->title = std::nullopt;
-    metadata_->associated_content->hostname = std::nullopt;
-    metadata_->associated_content->url = std::nullopt;
+    metadata_->associated_content->details.clear();
     metadata_->associated_content->is_content_association_possible = false;
   }
 }

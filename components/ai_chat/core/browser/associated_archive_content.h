@@ -8,6 +8,7 @@
 
 #include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -46,6 +47,7 @@ class AssociatedArchiveContent
   int GetContentId() const override;
   GURL GetURL() const override;
   std::u16string GetTitle() const override;
+  std::vector<mojom::SiteInfoDetailPtr> GetSiteInfoDetail() const override;
 
   void GetContent(
       ConversationHandler::GetPageContentCallback callback) override;

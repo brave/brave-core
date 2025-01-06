@@ -5,11 +5,13 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
@@ -21,8 +23,11 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/favicon/core/favicon_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
@@ -153,6 +158,36 @@ void AIChatUIPageHandler::OpenStorageSupportUrl() {
   OpenURL(GURL(kURLLearnMoreAboutStorage));
 }
 
+void AIChatUIPageHandler::GetAvailableTabs(GetAvailableTabsCallback callback) {
+  const BrowserList* browser_list = BrowserList::GetInstance();
+  std::vector<mojom::AvailableTabPtr> tabs;
+  for (const auto& browser : *browser_list) {
+    // TODO(fallaciousreasoning): Maybe we should consider other types of
+    // browsers as well?
+    if (!browser->is_type_normal()) {
+      continue;
+    }
+    if (browser->profile() != owner_web_contents_->GetBrowserContext()) {
+      continue;
+    }
+
+    for (int i = 0; i < browser->tab_strip_model()->count(); ++i) {
+      content::WebContents* contents =
+          browser->tab_strip_model()->GetWebContentsAt(i);
+      if (contents == owner_web_contents_.get()) {
+        continue;
+      }
+
+      auto id = static_cast<int>(
+          contents->GetPrimaryMainFrame()->GetFrameTreeNodeId());
+      tabs.push_back(
+          mojom::AvailableTab::New(id, contents->GetVisibleURL(),
+                                   base::UTF16ToUTF8(contents->GetTitle())));
+    }
+  }
+  std::move(callback).Run(std::move(tabs));
+}
+
 void AIChatUIPageHandler::GoPremium() {
 #if !BUILDFLAG(IS_ANDROID)
   OpenURL(GURL(kURLGoPremium));
@@ -276,8 +311,10 @@ void AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent(
     GetFaviconImageDataCallback callback,
     mojom::SiteInfoPtr content_info,
     bool should_send_page_contents) {
+  // TODO(fallaciousreasoning): We should look this up from the hostname
   if (!content_info->is_content_association_possible ||
-      !content_info->url.has_value() || !content_info->url->is_valid()) {
+      content_info->details.empty() ||
+      !content_info->details[0]->url.is_valid()) {
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -297,8 +334,9 @@ void AIChatUIPageHandler::GetFaviconImageDataForAssociatedContent(
         std::move(callback).Run(std::move(bytes));
       };
 
+  auto url = content_info->details[0]->url;
   favicon_service_->GetRawFaviconForPageURL(
-      content_info->url.value(), icon_types, kDesiredFaviconSizePixels, true,
+      url, icon_types, kDesiredFaviconSizePixels, true,
       base::BindOnce(on_favicon_available, std::move(callback)),
       &favicon_task_tracker_);
 }

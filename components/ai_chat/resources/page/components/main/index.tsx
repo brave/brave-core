@@ -28,7 +28,7 @@ import ModelIntro from '../model_intro'
 import PageContextToggle from '../page_context_toggle'
 import PremiumSuggestion from '../premium_suggestion'
 import PrivacyMessage from '../privacy_message'
-import SiteTitle from '../site_title'
+import SiteTitles from '../site_titles'
 import { GenerateSuggestionsButton, SuggestedQuestion } from '../suggested_question'
 import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
@@ -119,7 +119,7 @@ function Main() {
       const el = e.currentTarget
       const idealScrollFromBottom = (el.scrollHeight -
         (scrollAnchor.current.offsetTop +
-        scrollAnchor.current.offsetHeight)
+          scrollAnchor.current.offsetHeight)
       )
       const scrollBottom = el.scrollHeight - (el.clientHeight + el.scrollTop)
       scrollIsAtBottom.current = scrollBottom <= (idealScrollFromBottom + SCROLL_BOTTOM_THRESHOLD)
@@ -129,7 +129,7 @@ function Main() {
 
   const handleConversationEntriesHeightChanged = () => {
     if (!conversationContext.isGenerating || !scrollElement.current ||
-        !scrollIsAtBottom.current || !scrollAnchor.current) {
+      !scrollIsAtBottom.current || !scrollAnchor.current) {
       return
     }
     scrollElement.current.scrollTop = (
@@ -200,20 +200,20 @@ function Main() {
       {isConversationListOpen && !aiChatContext.isStandalone && (
         <div className={styles.conversationsList}>
           <div
-        className={classnames({
-          [styles.conversationsListHeader]: true,
-        })}
-      >
-        <Button
-          kind='plain-faint'
-          fab
-          onClick={() => {
-            setIsConversationsListOpen?.(false)
-          }}
-        >
-          <Icon name='arrow-left' />
-        </Button>
-      </div>
+            className={classnames({
+              [styles.conversationsListHeader]: true,
+            })}
+          >
+            <Button
+              kind='plain-faint'
+              fab
+              onClick={() => {
+                setIsConversationsListOpen?.(false)
+              }}
+            >
+              <Icon name='arrow-left' />
+            </Button>
+          </div>
           <ConversationsList
             setIsConversationsListOpen={setIsConversationsListOpen}
           />
@@ -244,16 +244,16 @@ function Main() {
 
               {conversationContext.associatedContentInfo?.isContentAssociationPossible && conversationContext.shouldSendPageContents && (
                 <div className={styles.siteTitleContainer}>
-                  <SiteTitle size='default' />
+                  <SiteTitles size='default' />
                 </div>
               )}
 
               <div ref={scrollAnchor}>
-              {!!conversationContext.conversationUuid &&
-                <aiChatContext.conversationEntriesComponent
-                  onIsContentReady={setIsContentReady}
-                  onHeightChanged={handleConversationEntriesHeightChanged}
-                />
+                {!!conversationContext.conversationUuid &&
+                  <aiChatContext.conversationEntriesComponent
+                    onIsContentReady={setIsContentReady}
+                    onHeightChanged={handleConversationEntriesHeightChanged}
+                  />
                 }
               </div>
 
@@ -264,17 +264,17 @@ function Main() {
               }
 
               {showSuggestions && (
-              <div className={styles.suggestionsContainer}>
-                <div className={styles.questionsList}>
-                  {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
-                  {SUGGESTION_STATUS_SHOW_BUTTON.has(
-                    conversationContext.suggestionStatus
-                  ) && conversationContext.shouldSendPageContents && (
-                      <GenerateSuggestionsButton />
-                    )}
+                <div className={styles.suggestionsContainer}>
+                  <div className={styles.questionsList}>
+                    {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
+                    {SUGGESTION_STATUS_SHOW_BUTTON.has(
+                      conversationContext.suggestionStatus
+                    ) && conversationContext.shouldSendPageContents && (
+                        <GenerateSuggestionsButton />
+                      )}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             </>
           )}
           {currentErrorElement && (

@@ -10,8 +10,8 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { getLocale } from '$web-common/locale'
 import { useConversation } from '../../state/conversation_context'
-import SiteTitle from '../site_title'
 import styles from './style.module.scss'
+import SiteTitles from '../site_titles'
 
 function PageContextToggle() {
   const conversationContext = useConversation()
@@ -49,7 +49,7 @@ function PageContextToggle() {
             <div
               slot='content'
               className={styles.tooltipContent}
-              onClick={(e: any) => {
+              onClick={(e) => {
                 // inner content click/tap shouldn't change parent's toggle
                 e.preventDefault()
               }}
@@ -58,7 +58,7 @@ function PageContextToggle() {
                 {getLocale('contextToggleTooltipInfo')}
               </div>
               <div className={styles.tooltipSiteTitle}>
-                <SiteTitle size='small' />
+                <SiteTitles size='small' />
               </div>
             </div>
             <Button

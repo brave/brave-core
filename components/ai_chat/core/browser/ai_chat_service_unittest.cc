@@ -113,7 +113,6 @@ class MockConversationHandlerClient : public mojom::ConversationUI {
     conversation_ui_receiver_.reset();
   }
 
-
   MOCK_METHOD(void, OnConversationHistoryUpdate, (), (override));
 
   MOCK_METHOD(void, OnAPIRequestInProgress, (bool), (override));
@@ -498,8 +497,8 @@ TEST_P(AIChatServiceUnitTest, GetOrCreateConversationHandlerForContent) {
       base::BindLambdaForTesting(
           [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
             EXPECT_TRUE(site_info->is_content_association_possible);
-            EXPECT_TRUE(site_info->url.has_value());
-            EXPECT_EQ(site_info->url.value(), GURL("https://example.com"));
+            ASSERT_EQ(site_info->details.size(), 1u);
+            EXPECT_EQ(site_info->details[0]->url, GURL("https://example.com"));
             run_loop.Quit();
           }));
   run_loop.Run();
@@ -561,7 +560,7 @@ TEST_P(AIChatServiceUnitTest,
           [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
             EXPECT_FALSE(should_send_page_contents);
             EXPECT_FALSE(site_info->is_content_association_possible);
-            EXPECT_FALSE(site_info->url.has_value());
+            ASSERT_EQ(site_info->details.size(), 0u);
             run_loop.Quit();
           }));
   run_loop.Run();
@@ -814,15 +813,16 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
     // Verify associated are initially correct
     base::RunLoop run_loop;
     data[i].conversation_handler->GetAssociatedContentInfo(
-        base::BindLambdaForTesting([&](mojom::SiteInfoPtr site_info,
-                                       bool should_send_page_contents) {
-          SCOPED_TRACE(testing::Message() << "data index: " << i);
-          EXPECT_TRUE(site_info->is_content_association_possible);
-          EXPECT_TRUE(site_info->url.has_value());
-          EXPECT_EQ(site_info->url.value(), content_url);
-          EXPECT_EQ(site_info->title.value(), base::UTF16ToUTF8(page_title));
-          run_loop.Quit();
-        }));
+        base::BindLambdaForTesting(
+            [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
+              SCOPED_TRACE(testing::Message() << "data index: " << i);
+              EXPECT_TRUE(site_info->is_content_association_possible);
+              ASSERT_EQ(site_info->details.size(), 1u);
+              EXPECT_EQ(site_info->details[0]->url, content_url);
+              EXPECT_EQ(site_info->details[0]->title,
+                        base::UTF16ToUTF8(page_title));
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -849,21 +849,20 @@ TEST_P(AIChatServiceUnitTest, DeleteAssociatedWebContent) {
   for (int i = 0; i < 3; i++) {
     base::RunLoop run_loop;
     data[i].conversation_handler->GetAssociatedContentInfo(
-        base::BindLambdaForTesting([&](mojom::SiteInfoPtr site_info,
-                                       bool should_send_page_contents) {
-          SCOPED_TRACE(testing::Message() << "data index: " << i);
-          EXPECT_TRUE(site_info->is_content_association_possible);
-          EXPECT_TRUE(site_info->url.has_value());
-          EXPECT_TRUE(site_info->title.has_value());
-          if (i == 1) {
-            EXPECT_TRUE(site_info->url->is_empty());
-            EXPECT_TRUE(site_info->title->empty());
-          } else {
-            EXPECT_EQ(site_info->url.value(), content_url);
-            EXPECT_EQ(site_info->title.value(), base::UTF16ToUTF8(page_title));
-          }
-          run_loop.Quit();
-        }));
+        base::BindLambdaForTesting(
+            [&](mojom::SiteInfoPtr site_info, bool should_send_page_contents) {
+              SCOPED_TRACE(testing::Message() << "data index: " << i);
+              EXPECT_TRUE(site_info->is_content_association_possible);
+              if (i == 1) {
+                EXPECT_TRUE(site_info->details[0]->url.is_empty());
+              } else {
+                ASSERT_EQ(site_info->details.size(), 1u);
+                EXPECT_EQ(site_info->details[0]->url, content_url);
+                EXPECT_EQ(site_info->details[0]->title,
+                          base::UTF16ToUTF8(page_title));
+              }
+              run_loop.Quit();
+            }));
     run_loop.Run();
 
     base::RunLoop run_loop_2;

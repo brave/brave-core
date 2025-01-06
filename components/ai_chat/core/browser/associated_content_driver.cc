@@ -22,6 +22,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/strings/strcat.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
 #include "brave/components/ai_chat/core/browser/brave_search_responses.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -67,6 +68,9 @@ AssociatedContentDriver::AssociatedContentDriver(
     : url_loader_factory_(url_loader_factory) {}
 
 AssociatedContentDriver::~AssociatedContentDriver() {
+  for (auto& observer : observers_) {
+    observer.OnAssociatedContentDestroyed(this);
+  }
   DisassociateWithConversations();
 }
 
@@ -98,6 +102,16 @@ GURL AssociatedContentDriver::GetURL() const {
 
 std::u16string AssociatedContentDriver::GetTitle() const {
   return GetPageTitle();
+}
+
+std::vector<mojom::SiteInfoDetailPtr>
+AssociatedContentDriver::GetSiteInfoDetail() const {
+  std::vector<mojom::SiteInfoDetailPtr> details;
+  details.push_back(mojom::SiteInfoDetail::New(
+      GetPageURL(), base::UTF16ToUTF8(GetPageTitle()), GetPageURL().host(),
+      is_video_ ? mojom::ContentType::VideoTranscript
+                : mojom::ContentType::PageContent));
+  return details;
 }
 
 void AssociatedContentDriver::GetContent(

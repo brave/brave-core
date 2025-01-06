@@ -15,6 +15,7 @@
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/utf_ostream_operators.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 
 namespace ai_chat {
@@ -55,6 +56,16 @@ GURL AssociatedArchiveContent::GetURL() const {
 
 std::u16string AssociatedArchiveContent::GetTitle() const {
   return title_;
+}
+
+std::vector<mojom::SiteInfoDetailPtr>
+AssociatedArchiveContent::GetSiteInfoDetail() const {
+  std::vector<mojom::SiteInfoDetailPtr> details;
+  details.push_back(
+      mojom::SiteInfoDetail::New(url_, base::UTF16ToUTF8(title_), url_.host(),
+                                 is_video_ ? mojom::ContentType::VideoTranscript
+                                           : mojom::ContentType::PageContent));
+  return details;
 }
 
 void AssociatedArchiveContent::GetContent(

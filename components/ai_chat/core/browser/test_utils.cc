@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/test_utils.h"
 
+#include <cstddef>
 #include <string>
 #include <utility>
 
@@ -81,9 +82,13 @@ void ExpectAssociatedContentEquals(base::Location location,
     return;
   }
   EXPECT_EQ(a->uuid, b->uuid);
-  EXPECT_EQ(a->title, b->title);
-  EXPECT_EQ(a->url, b->url);
-  EXPECT_EQ(a->content_type, b->content_type);
+  ASSERT_EQ(a->details.size(), b->details.size());
+  for (size_t i = 0; i < a->details.size(); i++) {
+    EXPECT_EQ(a->details[i]->title, b->details[i]->title);
+    EXPECT_EQ(a->details[i]->url, b->details[i]->url);
+    EXPECT_EQ(a->details[i]->content_type, b->details[i]->content_type);
+  }
+
   EXPECT_EQ(a->content_used_percentage, b->content_used_percentage);
   EXPECT_EQ(a->is_content_refined, b->is_content_refined);
   EXPECT_EQ(a->is_content_association_possible,

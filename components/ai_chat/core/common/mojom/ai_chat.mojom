@@ -77,17 +77,30 @@ enum ContentType {
   VideoTranscript,
 };
 
+struct SiteInfoDetail {
+  url.mojom.Url url;
+  string title;
+  string hostname;
+  ContentType content_type;
+};
+
+struct AvailableTab {
+  // An ID that uniquely refers to the tab.
+  int32 frame_tree_node_id;
+
+  url.mojom.Url url;
+  string title;
+};
+
 // A piece of content associated with a conversation.
 // TODO(petemill): Rename to AssociatedContent and have hostname/url/title be
 // part of a detail property (which would have different structure possibilities
 // depending on content type.
 struct SiteInfo {
   string? uuid;
-  ContentType content_type;
+
   // Web page specific fields, if available and allowed
-  string? title;
-  string? hostname;
-  url.mojom.Url? url;
+  array<SiteInfoDetail> details;
 
   // Percentage of the content that has been utilized by remote LLM (0-100)
   int32 content_used_percentage;
@@ -362,6 +375,8 @@ interface AIChatUIHandler {
   OpenURL(url.mojom.Url url);
   OpenStorageSupportUrl();
 
+  GetAvailableTabs() => (array<AvailableTab> tabs);
+
   OpenModelSupportUrl();
   GoPremium();
   RefreshPremiumSession();
@@ -434,6 +449,8 @@ struct ConversationEntriesState {
 // Browser-side handler for a Conversation
 interface ConversationHandler {
   GetState() => (ConversationState conversation_state);
+  AddAssociatedTab(AvailableTab tab);
+  RemoveAssociatedTab(AvailableTab tab);
 
   GetConversationUuid() => (string conversation_uuid);
 
