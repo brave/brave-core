@@ -445,11 +445,11 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
   }
 
   if (tab()->IsActive()) {
-    return cp->GetColor(nala::kColorDesktopbrowserTabbarActiveTabVertical);
+    return cp->GetColor(kColorBraveVerticalTabActiveBackground);
   }
 
   if (hovered) {
-    return cp->GetColor(nala::kColorDesktopbrowserTabbarHoverTabVertical);
+    return cp->GetColor(kColorBraveVerticalTabHoveredBackground);
   }
 
   if (selection_state == TabStyle::TabSelectionState::kSelected) {

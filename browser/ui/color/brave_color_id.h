@@ -112,6 +112,7 @@
 #define BRAVE_VERTICAL_TAB_COLOR_IDS                        \
     E_CPONLY(kColorBraveVerticalTabSeparator)               \
     E_CPONLY(kColorBraveVerticalTabActiveBackground)        \
+    E_CPONLY(kColorBraveVerticalTabHoveredBackground)       \
     E_CPONLY(kColorBraveVerticalTabInactiveBackground)      \
     E_CPONLY(kColorBraveVerticalTabNTBIconColor)            \
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)            \
