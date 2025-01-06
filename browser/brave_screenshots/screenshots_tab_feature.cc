@@ -15,6 +15,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_screenshots/screenshots_utils.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 #include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "content/public/browser/devtools_agent_host.h"
@@ -76,30 +77,21 @@ class DevToolsAgentHostClientImpl : public content::DevToolsAgentHostClient {
 
 namespace brave_screenshots {
 
-void TakeScreenshot(base::WeakPtr<content::WebContents> web_contents,
-                    int command_id) {
-  if (!web_contents) {
+void TakeScreenshot(Browser* browser, int command_id) {
+  if (!browser) {
     return;
   }
 
-  tabs::TabInterface* tab =
-      tabs::TabInterface::GetFromContents(web_contents.get());
-
-  if (!tab) {
-    return;
-  }
-
-  tabs::TabFeatures* features = tab->GetTabFeatures();
-
-  if (!features) {
-    return;
-  }
-
-  auto* helper = features->brave_screenshots_tab_feature();
+  auto* helper = tabs::TabInterface::GetFromContents(
+                     browser->tab_strip_model()->GetActiveWebContents())
+                     ->GetTabFeatures()
+                     ->brave_screenshots_tab_feature();
 
   if (!helper) {
     return;
   }
+
+  helper->SetBrowser(browser->AsWeakPtr());
 
   switch (command_id) {
     case IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD:
@@ -150,6 +142,10 @@ void BraveScreenshotsTabFeature::StartScreenshotFullPageToClipboard() {
   SendCaptureFullscreenCommand();
 }
 
+void BraveScreenshotsTabFeature::SetBrowser(base::WeakPtr<Browser> browser) {
+  browser_ = browser;
+}
+
 bool BraveScreenshotsTabFeature::InitializeDevToolsAgentHost() {
   devtools_agent_host_ =
       content::DevToolsAgentHost::GetOrCreateFor(web_contents());
@@ -193,8 +189,7 @@ void BraveScreenshotsTabFeature::SendCaptureFullscreenCommand() {
 void BraveScreenshotsTabFeature::OnCaptureComplete(
     const image_editor::ScreenshotCaptureResult& result) {
   brave_screenshots::utils::CopyImageToClipboard(result);
-  brave_screenshots::utils::DisplayScreenshotBubble(
-      result, web_contents()->GetWeakPtr());
+  brave_screenshots::utils::DisplayScreenshotBubble(result, browser_);
 }
 
 }  // namespace brave_screenshots
