@@ -545,8 +545,8 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
       },                                                                       \
       {                                                                        \
           "brave-screenshots",                                                 \
-          "Screenshot Context Menu Options",                                   \
-          "Enables various screenshot options in the context menu.",           \
+          "Screenshot Options",                                                \
+          "Enables screenshot support via browser commands and context menu.", \
           kOsDesktop,                                                          \
           FEATURE_VALUE_TYPE(brave_screenshots::features::kBraveScreenshots),  \
       },                                                                       \
