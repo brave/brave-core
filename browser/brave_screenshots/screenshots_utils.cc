@@ -8,13 +8,14 @@
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
 namespace brave_screenshots {
 namespace utils {
-void CopyImageToClipboard(const image_editor::ScreenshotCaptureResult& result) {
+
+using image_editor::ScreenshotCaptureResult;
+
+void CopyImageToClipboard(const ScreenshotCaptureResult& result) {
   if (result.image.IsEmpty()) {
     return;
   }
@@ -24,22 +25,15 @@ void CopyImageToClipboard(const image_editor::ScreenshotCaptureResult& result) {
       .WriteImage(*result.image.ToSkBitmap());
 }
 
-void DisplayScreenshotBubble(
-    const image_editor::ScreenshotCaptureResult& result,
-    base::WeakPtr<content::WebContents> web_contents) {
-  if (!web_contents || result.image.IsEmpty()) {
+void DisplayScreenshotBubble(const ScreenshotCaptureResult& result,
+                             base::WeakPtr<Browser> browser) {
+  if (!browser || result.image.IsEmpty()) {
     return;
   }
 
-  // Notify the user that the screenshot has been taken
-  tabs::TabInterface* tab =
-      tabs::TabInterface::GetFromContents(web_contents.get());
-
   // Leverage the screenshot bubble to show the user the screenshot
-  tab->GetBrowserWindowInterface()
-      ->GetBrowserForMigrationOnly()
-      ->window()
-      ->ShowScreenshotCapturedBubble(web_contents.get(), result.image);
+  browser->window()->ShowScreenshotCapturedBubble(
+      browser->tab_strip_model()->GetActiveWebContents(), result.image);
 }
 
 }  // namespace utils

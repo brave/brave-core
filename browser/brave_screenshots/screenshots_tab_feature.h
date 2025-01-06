@@ -11,6 +11,8 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 
+class Browser;
+
 namespace content {
 class DevToolsAgentHost;
 class DevToolsAgentHostClient;
@@ -18,10 +20,7 @@ class DevToolsAgentHostClient;
 
 namespace brave_screenshots {
 
-// This is a convenience method which enables us to defer attaching the tab
-// helper until the first request for a screenshot has been received.
-void TakeScreenshot(base::WeakPtr<content::WebContents> web_contents,
-                    int command_id);
+void TakeScreenshot(Browser* browser, int command_id);
 
 class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
  public:
@@ -30,6 +29,7 @@ class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
   void StartFullscreenCapture();
   void StartScreenshotFullPageToClipboard();
   void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
+  void SetBrowser(base::WeakPtr<Browser> browser);
 
   // Delete the copy constructor and assignment operator
   BraveScreenshotsTabFeature(const BraveScreenshotsTabFeature&) = delete;
@@ -45,6 +45,7 @@ class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
   scoped_refptr<content::DevToolsAgentHost> devtools_agent_host_ = nullptr;
   std::unique_ptr<content::DevToolsAgentHostClient>
       devtools_agent_host_client_ = nullptr;
+  base::WeakPtr<Browser> browser_ = nullptr;
   base::WeakPtr<BraveScreenshotsTabFeature> weak_this_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
 
