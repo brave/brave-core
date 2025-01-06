@@ -48,7 +48,6 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleDeleteDevice(const base::Value::List& args);
   void HandlePermanentlyDeleteAccount(const base::Value::List& args);
   void HandleSyncGetWordsCount(const base::Value::List& args);
-  void HandleValidateCustomSyncUrl(const base::Value::List& args);
 
   void OnResetDone(base::Value callback_id);
   void OnAccountPermanentlyDeleted(base::Value callback_id,

@@ -254,9 +254,7 @@ RegisterPolymerTemplateModifications({
         'braveSync',
         'braveSync',
         'settings-brave-sync-page',
-        {
-          prefs: '{{prefs}}'
-        }
+        {}
       ))
       const sectionShields = document.createElement('template')
       sectionShields.setAttribute('is', 'dom-if')
