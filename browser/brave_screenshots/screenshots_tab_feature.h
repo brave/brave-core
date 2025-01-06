@@ -20,15 +20,16 @@ namespace brave_screenshots {
 
 // This is a convenience method which enables us to defer attaching the tab
 // helper until the first request for a screenshot has been received.
-void TakeScreenshot(base::WeakPtr<content::WebContents>, int);
+void TakeScreenshot(base::WeakPtr<content::WebContents> web_contents,
+                    int command_id);
 
 class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
  public:
-  explicit BraveScreenshotsTabFeature(content::WebContents*);
+  explicit BraveScreenshotsTabFeature(content::WebContents* web_contents);
   void Start();
   void StartFullscreenCapture();
   void StartScreenshotFullPageToClipboard();
-  void OnCaptureComplete(const image_editor::ScreenshotCaptureResult&);
+  void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
 
   // Delete the copy constructor and assignment operator
   BraveScreenshotsTabFeature(const BraveScreenshotsTabFeature&) = delete;
