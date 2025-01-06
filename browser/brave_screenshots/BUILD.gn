@@ -25,6 +25,8 @@ source_set("brave_screenshots") {
 
 source_set("tabs") {
   sources = [
+    "devtools_helper.cc",
+    "devtools_helper.h",
     "screenshots_tab_feature.cc",
     "screenshots_tab_feature.h",
   ]
