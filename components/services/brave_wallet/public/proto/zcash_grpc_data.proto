@@ -110,3 +110,21 @@ message CompactBlock {
   repeated CompactTx vtx = 7;
   ChainMetadata chainMetadata = 8;
 }
+
+message LightdInfo {
+  string version = 1;
+  string vendor = 2;
+  bool taddrSupport = 3;               // true
+  string chainName = 4;                // either "main" or "test"
+  uint64 saplingActivationHeight = 5;  // depends on mainnet or testnet
+  string consensusBranchId =
+      6;                   // protocol identifier, see consensus/upgrades.cpp
+  uint64 blockHeight = 7;  // latest block on the best chain
+  string gitCommit = 8;
+  string branch = 9;
+  string buildDate = 10;
+  string buildUser = 11;
+  uint64 estimatedHeight = 12;   // less than tip height if zcashd is syncing
+  string zcashdBuild = 13;       // example: "v4.1.1-877212414"
+  string zcashdSubversion = 14;  // example: "/MagicBean:4.1.1/"
+};

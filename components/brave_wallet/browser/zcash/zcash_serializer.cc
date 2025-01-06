@@ -5,11 +5,14 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 
+#include <map>
 #include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/big_endian.h"
 #include "base/containers/span.h"
+#include "base/containers/span_writer.h"
 #include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -28,21 +31,6 @@ constexpr char kTxHashPersonalizerPrefix[] = "ZcashTxHash_";
 constexpr uint32_t kV5TxVersion = 5 | 1 << 31 /* overwintered bit */;
 // https://zips.z.cash/protocol/protocol.pdf#txnconsensus
 constexpr uint32_t kV5VersionGroupId = 0x26A7270A;
-constexpr uint32_t kConsensusBranchId = 0xC2D6D0B4;
-
-// https://zips.z.cash/zip-0244#txid-digest-1
-std::string GetTxHashPersonalizer() {
-  std::string personalizer(kTxHashPersonalizerPrefix);
-
-  personalizer.append(sizeof(kConsensusBranchId), '\0');
-  base::as_writable_byte_span(personalizer)
-      .subspan<std::string(kTxHashPersonalizerPrefix).size(),
-               sizeof(kConsensusBranchId)>()
-      .copy_from(base::byte_span_from_ref(base::numerics::U32FromLittleEndian(
-          base::byte_span_from_ref(kConsensusBranchId))));
-
-  return personalizer;
-}
 
 std::array<uint8_t, kZCashDigestSize> blake2b256(
     const std::vector<uint8_t>& payload,
@@ -79,7 +67,7 @@ std::array<uint8_t, kZCashDigestSize> blake2b256(
 void PushHeader(const ZCashTransaction& tx, BtcLikeSerializerStream& stream) {
   stream.Push32AsLE(kV5TxVersion);
   stream.Push32AsLE(kV5VersionGroupId);
-  stream.Push32AsLE(kConsensusBranchId);
+  stream.Push32AsLE(tx.consensus_brach_id());
   stream.Push32AsLE(tx.locktime());
   stream.Push32AsLE(tx.expiry_height());
 }
@@ -114,6 +102,19 @@ std::array<uint8_t, 32> HashScriptPubKeys(const ZCashTransaction& tx) {
     stream.PushSizeAndBytes(input.script_pub_key);
   }
   return blake2b256(data, "ZTxTrScriptsHash");
+}
+
+std::string GetHashPersonalizer(const ZCashTransaction& tx) {
+  std::string personalizer(kTxHashPersonalizerPrefix);
+
+  personalizer.append(sizeof(tx.consensus_brach_id()), '\0');
+  base::as_writable_byte_span(personalizer)
+      .subspan<std::string(kTxHashPersonalizerPrefix).size(),
+               sizeof(tx.consensus_brach_id())>()
+      .copy_from(base::byte_span_from_ref(base::numerics::U32FromLittleEndian(
+          base::byte_span_from_ref(tx.consensus_brach_id()))));
+
+  return personalizer;
 }
 
 }  // namespace
@@ -278,7 +279,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
     stream.PushBytes(sapling_hash);
     stream.PushBytes(orchard_hash);
 
-    digest_hash = blake2b256(data, GetTxHashPersonalizer());
+    digest_hash = blake2b256(data, GetHashPersonalizer(zcash_transaction));
   }
 
   std::reverse(digest_hash.begin(), digest_hash.end());
@@ -328,7 +329,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
     stream.PushBytes(sapling_hash);
     stream.PushBytes(orchard_hash);
 
-    digest_hash = blake2b256(data, GetTxHashPersonalizer());
+    digest_hash = blake2b256(data, GetHashPersonalizer(zcash_transaction));
   }
 
   return digest_hash;
