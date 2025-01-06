@@ -1,12 +1,11 @@
 diff --git a/third_party/inspector_protocol/code_generator.py b/third_party/inspector_protocol/code_generator.py
-index b23a189ab3d8806966197e21d2cc355da04b2c02..799e5d216d58cba1415e923c6f637d1da52f6451 100755
+index b23a189ab3d8806966197e21d2cc355da04b2c02..91578c2bf6314c28925255827b81957fa1640f0c 100755
 --- a/third_party/inspector_protocol/code_generator.py
 +++ b/third_party/inspector_protocol/code_generator.py
-@@ -728,6 +728,6 @@ def main():
-     out_file.write(content)
+@@ -729,5 +729,6 @@ def main():
      out_file.close()
  
--
+ 
 +from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
  if __name__ == "__main__":
    main()

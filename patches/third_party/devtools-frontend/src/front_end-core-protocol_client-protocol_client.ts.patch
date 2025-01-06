@@ -1,27 +1,17 @@
 diff --git a/front_end/core/protocol_client/protocol_client.ts b/front_end/core/protocol_client/protocol_client.ts
-index 6cc8a12337304550a27f467ca2ffc67fe7eeb057..47b0900e4284158f2995de8856776bcbf2a8bdc3 100644
+index 6cc8a12337304550a27f467ca2ffc67fe7eeb057..ab7400bc08372ce1818bd15adb1a4c0179857232 100644
 --- a/front_end/core/protocol_client/protocol_client.ts
 +++ b/front_end/core/protocol_client/protocol_client.ts
-@@ -2,14 +2,11 @@
- // Use of this source code is governed by a BSD-style license that can be
- // found in the LICENSE file.
+@@ -8,7 +8,7 @@ import * as NodeURL from './NodeURL.js';
  
--import * as InspectorBackendCommands from '../../generated/InspectorBackendCommands.js';
--import * as InspectorBackend from './InspectorBackend.js';
--import * as NodeURL from './NodeURL.js';
-+import * as InspectorBackendCommands from "../../generated/InspectorBackendCommands.js";
-+import * as InspectorBackend from "./InspectorBackend.js";
-+import * as NodeURL from "./NodeURL.js";
- 
--export {
--  InspectorBackend,
+ export {
+   InspectorBackend,
 -  NodeURL,
--};
-+export { InspectorBackend, NodeURL };
++  NodeURL
+ };
  
  // Create the global here because registering commands will involve putting
- // items onto the global.
-@@ -18,3 +15,28 @@ self.Protocol = self.Protocol || {};
+@@ -18,3 +18,28 @@ self.Protocol = self.Protocol || {};
  
  // FIXME: This instance of InspectorBackend should not be a side effect of importing this module.
  InspectorBackendCommands.registerCommands(InspectorBackend.inspectorBackend);
