@@ -273,6 +273,7 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/api",
+    "//brave/components/brave_wallet/browser/internal:hd_key_common",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",
@@ -426,9 +427,9 @@ source_set("hd_keyring") {
 
   deps = [
     ":transaction",
-    "internal:hd_key",
     "//base",
     "//brave/components/brave_wallet/browser:utils",
+    "//brave/components/brave_wallet/browser/internal:hd_key",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",

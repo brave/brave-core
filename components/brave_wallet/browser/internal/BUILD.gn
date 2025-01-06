@@ -5,12 +5,17 @@
 
 import("//brave/components/brave_wallet/common/config.gni")
 
+source_set("hd_key_common") {
+  sources = [
+    "hd_key_common.cc",
+    "hd_key_common.h",
+  ]
+}
+
 source_set("hd_key") {
   sources = [
     "hd_key.cc",
     "hd_key.h",
-    "hd_key_common.cc",
-    "hd_key_common.h",
     "hd_key_ed25519.cc",
     "hd_key_ed25519.h",
   ]
@@ -29,6 +34,8 @@ source_set("hd_key") {
     "//crypto",
     "//third_party/boringssl",
   ]
+
+  public_deps = [ ":hd_key_common" ]
 
   if (enable_orchard) {
     sources += [
