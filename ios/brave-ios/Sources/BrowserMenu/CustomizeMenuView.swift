@@ -37,6 +37,7 @@ struct CustomizeMenuView: View {
                   .foregroundStyle(Color(braveSystemName: .iconDefault))
               }
             }
+            .id("Visible-\(id.id)")
           }
           .onMove { indexSet, offset in
             guard let index = indexSet.first, let action = model.visibleActions[safe: index] else {
@@ -77,6 +78,7 @@ struct CustomizeMenuView: View {
                   .foregroundStyle(Color(braveSystemName: .iconDefault))
               }
             }
+            .id("Hidden-\(id.id)")
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
