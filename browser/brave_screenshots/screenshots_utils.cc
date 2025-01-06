@@ -14,15 +14,22 @@
 
 namespace brave_screenshots {
 namespace utils {
-void NotifyUserOfScreenshot(const image_editor::ScreenshotCaptureResult& result,
-                            base::WeakPtr<content::WebContents> web_contents) {
-  if (!web_contents || result.image.IsEmpty()) {
+void CopyImageToClipboard(const image_editor::ScreenshotCaptureResult& result) {
+  if (result.image.IsEmpty()) {
     return;
   }
 
   // Copy the image to the user's clipboard
   ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
       .WriteImage(*result.image.ToSkBitmap());
+}
+
+void DisplayScreenshotBubble(
+    const image_editor::ScreenshotCaptureResult& result,
+    base::WeakPtr<content::WebContents> web_contents) {
+  if (!web_contents || result.image.IsEmpty()) {
+    return;
+  }
 
   // Notify the user that the screenshot has been taken
   tabs::TabInterface* tab =
