@@ -15,9 +15,10 @@ struct ScreenshotCaptureResult;
 
 namespace brave_screenshots {
 namespace utils {
-void NotifyUserOfScreenshot(const image_editor::ScreenshotCaptureResult& result,
-                            base::WeakPtr<content::WebContents> web_contents);
-
+void CopyImageToClipboard(const image_editor::ScreenshotCaptureResult& result);
+void DisplayScreenshotBubble(
+    const image_editor::ScreenshotCaptureResult& result,
+    base::WeakPtr<content::WebContents> web_contents);
 }  // namespace utils
 }  // namespace brave_screenshots
 

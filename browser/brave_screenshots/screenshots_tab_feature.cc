@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/base64.h"
 #include "base/json/json_reader.h"
@@ -22,11 +23,15 @@
 
 namespace {
 
+using FullscreenCaptureCallback =
+    base::OnceCallback<void(const image_editor::ScreenshotCaptureResult&)>;
+
 class DevToolsAgentHostClientImpl : public content::DevToolsAgentHostClient {
  public:
   explicit DevToolsAgentHostClientImpl(
-      base::WeakPtr<content::WebContents> web_contents)
-      : web_contents_(web_contents) {}
+      base::WeakPtr<content::WebContents> web_contents,
+      FullscreenCaptureCallback callback)
+      : callback_(std::move(callback)), web_contents_(web_contents) {}
 
   void DispatchProtocolMessage(content::DevToolsAgentHost* host,
                                base::span<const uint8_t> message) override {
@@ -53,7 +58,9 @@ class DevToolsAgentHostClientImpl : public content::DevToolsAgentHostClient {
     result.image = gfx::Image::CreateFrom1xPNGBytes(
         base::as_bytes(base::make_span(decoded_png)));
 
-    brave_screenshots::utils::NotifyUserOfScreenshot(result, web_contents_);
+    if (callback_) {
+      std::move(callback_).Run(result);
+    }
   }
 
   void AgentHostClosed(content::DevToolsAgentHost* host) override {
@@ -61,6 +68,7 @@ class DevToolsAgentHostClientImpl : public content::DevToolsAgentHostClient {
   }
 
  private:
+  FullscreenCaptureCallback callback_;
   base::WeakPtr<content::WebContents> web_contents_ = nullptr;
 };
 
@@ -143,15 +151,13 @@ void BraveScreenshotsTabFeature::StartScreenshotFullPageToClipboard() {
 }
 
 bool BraveScreenshotsTabFeature::InitializeDevToolsAgentHost() {
-  if (devtools_agent_host_) {
-    return true;
-  }
-
   devtools_agent_host_ =
       content::DevToolsAgentHost::GetOrCreateFor(web_contents());
 
   devtools_agent_host_client_ = std::make_unique<DevToolsAgentHostClientImpl>(
-      web_contents()->GetWeakPtr());
+      web_contents()->GetWeakPtr(),
+      base::BindOnce(&BraveScreenshotsTabFeature::OnCaptureComplete,
+                     weak_this_));
 
   if (!devtools_agent_host_ ||
       !devtools_agent_host_->AttachClient(devtools_agent_host_client_.get())) {
@@ -186,7 +192,8 @@ void BraveScreenshotsTabFeature::SendCaptureFullscreenCommand() {
 
 void BraveScreenshotsTabFeature::OnCaptureComplete(
     const image_editor::ScreenshotCaptureResult& result) {
-  brave_screenshots::utils::NotifyUserOfScreenshot(
+  brave_screenshots::utils::CopyImageToClipboard(result);
+  brave_screenshots::utils::DisplayScreenshotBubble(
       result, web_contents()->GetWeakPtr());
 }
 
