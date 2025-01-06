@@ -737,14 +737,42 @@ extension BrowserViewController: WKNavigationDelegate {
       .mobileConfiguration,
     ]
 
+    let mimeTypesThatRequireSFSafariViewControllerHandlingTexts: [UTType: (String, String)] = [
+      .textCalendar: (Strings.openTextCalendarAlertTitle, Strings.openTextCalendarAlertDescription),
+      .mobileConfiguration: (
+        Strings.openMobileConfigurationAlertTitle, Strings.openMobileConfigurationAlertDescription
+      ),
+    ]
+
     // SFSafariViewController only supports http/https links
     if navigationResponse.isForMainFrame, let url = responseURL,
       url.isWebPage(includeDataURIs: false),
       let tab, tab === tabManager.selectedTab,
       let mimeType = response.mimeType.flatMap({ UTType(mimeType: $0) }),
-      mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType)
+      mimeTypesThatRequireSFSafariViewControllerHandling.contains(mimeType),
+      let (alertTitle, alertMessage) = mimeTypesThatRequireSFSafariViewControllerHandlingTexts[
+        mimeType
+      ]
     {
-      handleLinkWithSafariViewController(url, tab: tab)
+      // Do what Chromium does: https://source.chromium.org/chromium/chromium/src/+/main:ios/chrome/browser/download/ui_bundled/safari_download_coordinator.mm;l=100;bpv=1;bpt=1?q=presentMobileConfigAlertFromURL&ss=chromium%2Fchromium%2Fsrc
+      // and present an alert before showing the Safari View Controller
+      let alert = UIAlertController(
+        title: alertTitle,
+        message: String.init(
+          format: alertMessage,
+          url.absoluteString
+        ),
+        preferredStyle: .alert
+      )
+      alert.addAction(
+        UIAlertAction(title: Strings.OBContinueButton, style: .default) { [weak self] _ in
+          self?.handleLinkWithSafariViewController(url, tab: tab)
+        }
+      )
+
+      alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
+      present(alert, animated: true)
+
       return .cancel
     }
 
