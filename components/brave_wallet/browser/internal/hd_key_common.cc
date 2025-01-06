@@ -23,6 +23,11 @@ DerivationIndex DerivationIndex::Hardened(uint32_t index) {
   return DerivationIndex(index, true);
 }
 
+// static
+DerivationIndex DerivationIndex::FromRawValueForTesting(uint32_t index) {
+  return DerivationIndex(index % kHardenedOffset, index / kHardenedOffset);
+}
+
 bool DerivationIndex::IsValid() const {
   return index_ < kHardenedOffset;
 }
