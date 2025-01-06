@@ -12,7 +12,6 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_screenshots/screenshots_utils.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "chrome/browser/ui/browser.h"
@@ -22,19 +21,22 @@
 #include "content/public/browser/devtools_agent_host_client.h"
 #include "content/public/browser/web_contents.h"
 
+using content::DevToolsAgentHost;
+using content::DevToolsAgentHostClient;
+using content::WebContents;
+
+using image_editor::ScreenshotCaptureCallback;
+using image_editor::ScreenshotCaptureResult;
+using image_editor::ScreenshotFlow;
+
 namespace {
-
-using FullscreenCaptureCallback =
-    base::OnceCallback<void(const image_editor::ScreenshotCaptureResult&)>;
-
-class DevToolsAgentHostClientImpl : public content::DevToolsAgentHostClient {
+class DevToolsAgentHostClientImpl : public DevToolsAgentHostClient {
  public:
-  explicit DevToolsAgentHostClientImpl(
-      base::WeakPtr<content::WebContents> web_contents,
-      FullscreenCaptureCallback callback)
+  explicit DevToolsAgentHostClientImpl(base::WeakPtr<WebContents> web_contents,
+                                       ScreenshotCaptureCallback callback)
       : callback_(std::move(callback)), web_contents_(web_contents) {}
 
-  void DispatchProtocolMessage(content::DevToolsAgentHost* host,
+  void DispatchProtocolMessage(DevToolsAgentHost* host,
                                base::span<const uint8_t> message) override {
     if (!web_contents_) {
       return;
@@ -55,7 +57,7 @@ class DevToolsAgentHostClientImpl : public content::DevToolsAgentHostClient {
       return;
     }
 
-    image_editor::ScreenshotCaptureResult result;
+    ScreenshotCaptureResult result;
     result.image = gfx::Image::CreateFrom1xPNGBytes(
         base::as_bytes(base::make_span(decoded_png)));
 
@@ -64,112 +66,83 @@ class DevToolsAgentHostClientImpl : public content::DevToolsAgentHostClient {
     }
   }
 
-  void AgentHostClosed(content::DevToolsAgentHost* host) override {
+  void AgentHostClosed(DevToolsAgentHost* host) override {
     web_contents_ = nullptr;
   }
 
  private:
-  FullscreenCaptureCallback callback_;
-  base::WeakPtr<content::WebContents> web_contents_ = nullptr;
+  ScreenshotCaptureCallback callback_;
+  base::WeakPtr<WebContents> web_contents_ = nullptr;
 };
 
 }  // namespace
 
 namespace brave_screenshots {
 
-void TakeScreenshot(Browser* browser, int command_id) {
+BraveScreenshotsTabFeature::BraveScreenshotsTabFeature(
+    WebContents* web_contents)
+    : ScreenshotFlow(web_contents) {
+  weak_this_ = weak_factory_.GetWeakPtr();
+}
+
+BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
+  if (devtools_host_) {
+    devtools_host_->DetachAllClients();
+    devtools_client_.reset();
+  }
+}
+
+void BraveScreenshotsTabFeature::StartScreenshot(Browser* browser,
+                                                 ScreenshotType type) {
   if (!browser) {
     return;
   }
 
-  auto* helper = tabs::TabInterface::GetFromContents(
-                     browser->tab_strip_model()->GetActiveWebContents())
-                     ->GetTabFeatures()
-                     ->brave_screenshots_tab_feature();
+  browser_ = browser->AsWeakPtr();
 
-  if (!helper) {
-    return;
-  }
+  ScreenshotCaptureCallback callback = base::BindOnce(
+      &BraveScreenshotsTabFeature::OnCaptureComplete, weak_this_);
 
-  helper->SetBrowser(browser->AsWeakPtr());
+  switch (type) {
+    case ScreenshotType::kSelection:
+      ScreenshotFlow::Start(std::move(callback));
+      break;
+    case ScreenshotType::kViewport:
+      ScreenshotFlow::StartFullscreenCapture(std::move(callback));
+      break;
+    case ScreenshotType::kFullPage: {
+      if (!InitDevToolsHelper(std::move(callback))) {
+        // Need to plan what to do if this fails. Ideally we would know when the
+        // browser is launched whether or not this feature is available. This
+        // would enable us to dim it in the context menu, or not include it at
+        // all.
+        return;
+      }
 
-  switch (command_id) {
-    case IDC_BRAVE_SCREENSHOTS_START_SELECTION_TO_CLIPBOARD:
-      helper->Start();
+      SendCaptureFullscreenCommand();
       break;
-    case IDC_BRAVE_SCREENSHOTS_START_VIEWPORT_TO_CLIPBOARD:
-      helper->StartFullscreenCapture();
-      break;
-    case IDC_BRAVE_SCREENSHOTS_START_FULLPAGE_TO_CLIPBOARD:
-      helper->StartScreenshotFullPageToClipboard();
-      break;
+    }
     default:
       NOTREACHED();
   }
 }
 
-BraveScreenshotsTabFeature::BraveScreenshotsTabFeature(
-    content::WebContents* web_contents)
-    : image_editor::ScreenshotFlow(web_contents) {
-  weak_this_ = weak_factory_.GetWeakPtr();
-}
+bool BraveScreenshotsTabFeature::InitDevToolsHelper(
+    ScreenshotCaptureCallback callback) {
+  devtools_host_ = DevToolsAgentHost::GetOrCreateFor(web_contents());
+  devtools_client_ = std::make_unique<DevToolsAgentHostClientImpl>(
+      web_contents()->GetWeakPtr(), std::move(callback));
 
-BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
-  if (devtools_agent_host_) {
-    devtools_agent_host_->DetachClient(devtools_agent_host_client_.get());
-    devtools_agent_host_client_.reset();
-  }
-}
-
-void BraveScreenshotsTabFeature::Start() {
-  image_editor::ScreenshotFlow::Start(base::BindOnce(
-      &BraveScreenshotsTabFeature::OnCaptureComplete, weak_this_));
-}
-
-void BraveScreenshotsTabFeature::StartFullscreenCapture() {
-  image_editor::ScreenshotFlow::StartFullscreenCapture(base::BindOnce(
-      &BraveScreenshotsTabFeature::OnCaptureComplete, weak_this_));
-}
-
-void BraveScreenshotsTabFeature::StartScreenshotFullPageToClipboard() {
-  if (!InitializeDevToolsAgentHost()) {
-    // Need to plan what to do if this fails. Ideally we would know when the
-    // browser is launched whether or not this feature is available. This would
-    // enable us to dim it in the context menu, or not include it at all.
-    return;
+  if (devtools_host_->AttachClient(devtools_client_.get())) {
+    return true;
   }
 
-  SendCaptureFullscreenCommand();
-}
-
-void BraveScreenshotsTabFeature::SetBrowser(base::WeakPtr<Browser> browser) {
-  browser_ = browser;
-}
-
-bool BraveScreenshotsTabFeature::InitializeDevToolsAgentHost() {
-  devtools_agent_host_ =
-      content::DevToolsAgentHost::GetOrCreateFor(web_contents());
-
-  devtools_agent_host_client_ = std::make_unique<DevToolsAgentHostClientImpl>(
-      web_contents()->GetWeakPtr(),
-      base::BindOnce(&BraveScreenshotsTabFeature::OnCaptureComplete,
-                     weak_this_));
-
-  if (!devtools_agent_host_ ||
-      !devtools_agent_host_->AttachClient(devtools_agent_host_client_.get())) {
-    // This may not succeed (e.g. if restricted by a policy).
-    devtools_agent_host_client_.reset();
-    return false;
-  }
-
-  return true;
+  devtools_host_ = nullptr;
+  devtools_client_.reset();
+  return false;
 }
 
 void BraveScreenshotsTabFeature::SendCaptureFullscreenCommand() {
-  if (!devtools_agent_host_ || !devtools_agent_host_client_) {
-    return;
-  }
-
   // Construct a JSON command to capture the full page screenshot
   // https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-captureScreenshot
   std::string json_command;
@@ -181,15 +154,14 @@ void BraveScreenshotsTabFeature::SendCaptureFullscreenCommand() {
 
   base::JSONWriter::Write(command, &json_command);
 
-  devtools_agent_host_->DispatchProtocolMessage(
-      devtools_agent_host_client_.get(),
-      base::as_bytes(base::make_span(json_command)));
+  devtools_host_->DispatchProtocolMessage(
+      devtools_client_.get(), base::as_bytes(base::make_span(json_command)));
 }
 
 void BraveScreenshotsTabFeature::OnCaptureComplete(
-    const image_editor::ScreenshotCaptureResult& result) {
-  brave_screenshots::utils::CopyImageToClipboard(result);
-  brave_screenshots::utils::DisplayScreenshotBubble(result, browser_);
+    const ScreenshotCaptureResult& result) {
+  utils::CopyImageToClipboard(result);
+  utils::DisplayScreenshotBubble(result, browser_);
 }
 
 }  // namespace brave_screenshots
