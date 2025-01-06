@@ -96,6 +96,10 @@ class MockZCashRPC : public ZCashRpc {
                void(const std::string& chain_id,
                     zcash::mojom::BlockIDPtr block_id,
                     GetTreeStateCallback callback));
+
+  MOCK_METHOD2(GetLightdInfo,
+               void(const std::string& chain_id,
+                    GetLightdInfoCallback callback));
 };
 
 }  // namespace
@@ -114,13 +118,21 @@ class ZCashWalletServiceUnitTest : public testing::Test {
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());
     keyring_service_ =
         std::make_unique<KeyringService>(nullptr, &prefs_, &local_state_);
-    auto zcash_rpc = std::make_unique<testing::NiceMock<MockZCashRPC>>();
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
-        keyring_service_.get(), std::move(zcash_rpc));
+        keyring_service_.get(),
+        std::make_unique<testing::NiceMock<MockZCashRPC>>());
     GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
     zcash_account_ =
         GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
     ASSERT_TRUE(zcash_account_);
+
+    ON_CALL(*zcash_rpc(), GetLightdInfo(_, _))
+        .WillByDefault(
+            ::testing::Invoke([&](const std::string& chain_id,
+                                  ZCashRpc::GetLightdInfoCallback callback) {
+              auto response = zcash::mojom::LightdInfo::New("c2d6d0b4");
+              std::move(callback).Run(std::move(response));
+            }));
   }
 
   AccountUtils GetAccountUtils() {

@@ -493,4 +493,49 @@ TEST_F(ZCashDecoderUnitTest, ParseCompactBlock) {
   }
 }
 
+TEST_F(ZCashDecoderUnitTest, ParseLightdInfo) {
+  ::zcash::LightdInfo response;
+  response.set_consensusbranchid("5");
+
+  // Correct input
+  {
+    base::MockCallback<ZCashDecoder::ParseLightdInfoCallback> callback;
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::LightdInfo::New("5"))));
+    decoder()->ParseLightdInfo(
+        GetPrefixedProtobuf(response.SerializeAsString()), callback.Get());
+  }
+  // Missed protobuf prefix is incorrect
+  {
+    base::MockCallback<ZCashDecoder::ParseLightdInfoCallback> callback;
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::LightdInfoPtr())));
+    decoder()->ParseLightdInfo(response.SerializeAsString(), callback.Get());
+  }
+  // Protobuf prefix exists but data format is wrong
+  {
+    base::MockCallback<ZCashDecoder::ParseLightdInfoCallback> callback;
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::LightdInfoPtr())));
+    decoder()->ParseLightdInfo(GetPrefixedProtobuf(""), callback.Get());
+  }
+  // Corrupted input
+  {
+    base::MockCallback<ZCashDecoder::ParseLightdInfoCallback> callback;
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::LightdInfoPtr())));
+    decoder()->ParseLightdInfo(
+        GetPrefixedProtobuf(response.SerializeAsString()).substr(0, 5),
+        callback.Get());
+  }
+  // Random string as input
+  {
+    base::MockCallback<ZCashDecoder::ParseLightdInfoCallback> callback;
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::LightdInfoPtr())));
+    decoder()->ParseLightdInfo("123", callback.Get());
+  }
+  // Empty input
+  {
+    base::MockCallback<ZCashDecoder::ParseLightdInfoCallback> callback;
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::LightdInfoPtr())));
+    decoder()->ParseLightdInfo("", callback.Get());
+  }
+}
+
 }  // namespace brave_wallet

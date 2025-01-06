@@ -54,9 +54,9 @@ void ZCashTransactionCompleteManager::CompleteTransaction(
     const ZCashTransaction& transaction,
     const mojom::AccountIdPtr& account_id,
     CompleteTransactionCallback callback) {
-  zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
+  zcash_wallet_service_->zcash_rpc()->GetLightdInfo(
       chain_id,
-      base::BindOnce(&ZCashTransactionCompleteManager::OnGetLatestBlockHeight,
+      base::BindOnce(&ZCashTransactionCompleteManager::OnGetLightdInfo,
                      weak_ptr_factory_.GetWeakPtr(),
                      ParamsBundle{chain_id, transaction, account_id.Clone(),
                                   std::move(callback)}));
@@ -154,6 +154,31 @@ void ZCashTransactionCompleteManager::OnSignOrchardPartComplete(
 }
 
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
+
+void ZCashTransactionCompleteManager::OnGetLightdInfo(
+    ParamsBundle params,
+    base::expected<zcash::mojom::LightdInfoPtr, std::string> result) {
+  if (!result.has_value()) {
+    std::move(params.callback).Run(base::unexpected("get lightd info error"));
+    return;
+  }
+
+  uint32_t consensus_branch_id;
+  if (!base::HexStringToUInt(result.value()->consensusBranchId,
+                             &consensus_branch_id)) {
+    std::move(params.callback)
+        .Run(base::unexpected("wrong consensus branch format"));
+    return;
+  }
+
+  params.transaction.set_consensus_brach_id(consensus_branch_id);
+  std::string chain_id = params.chain_id;
+
+  zcash_wallet_service_->zcash_rpc()->GetLatestBlock(
+      chain_id,
+      base::BindOnce(&ZCashTransactionCompleteManager::OnGetLatestBlockHeight,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(params)));
+}
 
 void ZCashTransactionCompleteManager::SignTransparentPart(ParamsBundle params) {
   // Sign transparent part
