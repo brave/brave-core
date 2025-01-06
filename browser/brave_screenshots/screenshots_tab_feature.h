@@ -15,10 +15,11 @@ class Browser;
 
 namespace content {
 class DevToolsAgentHost;
-class DevToolsAgentHostClient;
 }  // namespace content
 
 namespace brave_screenshots {
+
+class DevToolsHelper;
 
 enum ScreenshotType {
   kSelection,
@@ -44,7 +45,7 @@ class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
   void SendCaptureFullscreenCommand();
 
   scoped_refptr<content::DevToolsAgentHost> devtools_host_ = nullptr;
-  std::unique_ptr<content::DevToolsAgentHostClient> devtools_client_ = nullptr;
+  std::unique_ptr<DevToolsHelper> devtools_helper_ = nullptr;
   base::WeakPtr<Browser> browser_ = nullptr;
   base::WeakPtr<BraveScreenshotsTabFeature> weak_this_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
