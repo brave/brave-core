@@ -22,7 +22,9 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
   auto& mixer = provider->AddMixer();
 
   mixer[kColorBraveVerticalTabActiveBackground] = {
-      kColorTabBackgroundInactiveFrameActive};
+      nala::kColorDesktopbrowserTabbarActiveTabVertical};
+  mixer[kColorBraveVerticalTabHoveredBackground] = {
+      nala::kColorDesktopbrowserTabbarHoverTabVertical};
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
   mixer[kColorBraveVerticalTabSeparator] = {kColorToolbarContentAreaSeparator};
   mixer[kColorBraveVerticalTabNTBIconColor] = {
@@ -61,13 +63,17 @@ void AddBraveTabPrivateThemeColorMixer(ui::ColorProvider* provider,
                                        const ui::ColorProviderKey& key) {
   auto& mixer = provider->AddMixer();
   mixer[kColorBraveVerticalTabActiveBackground] = {
-      mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)};
+      nala::kColorPrimitivePrivateWindow30};
   mixer[kColorBraveVerticalTabInactiveBackground] = {
       mixer.GetResultColor(kColorToolbar)};
+  mixer[kColorBraveVerticalTabHoveredBackground] = {
+      ui::AlphaBlend(kColorBraveVerticalTabActiveBackground,
+                     kColorBraveVerticalTabInactiveBackground,
+                     /* 40% opacity */ 0.4 * SK_AlphaOPAQUE)};
   mixer[kColorBraveSplitViewTileBackgroundHorizontal] = {
       nala::kColorPrimitivePrivateWindow10};
   mixer[kColorBraveSplitViewTileBackgroundVertical] = {
-      kColorBraveSplitViewTileBackgroundHorizontal};
+      nala::kColorPrimitivePrivateWindow5};
   mixer[kColorBraveSplitViewTileDivider] = {
       nala::kColorPrimitivePrivateWindow20};
 }
@@ -76,13 +82,17 @@ void AddBraveTabTorThemeColorMixer(ui::ColorProvider* provider,
                                    const ui::ColorProviderKey& key) {
   auto& mixer = provider->AddMixer();
   mixer[kColorBraveVerticalTabActiveBackground] = {
-      mixer.GetResultColor(kColorTabBackgroundActiveFrameActive)};
+      nala::kColorPrimitiveTorWindow30};
   mixer[kColorBraveVerticalTabInactiveBackground] = {
       mixer.GetResultColor(kColorToolbar)};
+  mixer[kColorBraveVerticalTabHoveredBackground] = {
+      ui::AlphaBlend(kColorBraveVerticalTabActiveBackground,
+                     kColorBraveVerticalTabInactiveBackground,
+                     /* 40% opacity */ 0.4 * SK_AlphaOPAQUE)};
   mixer[kColorBraveSplitViewTileBackgroundHorizontal] = {
       nala::kColorPrimitiveTorWindow10};
   mixer[kColorBraveSplitViewTileBackgroundVertical] = {
-      kColorBraveSplitViewTileBackgroundHorizontal};
+      nala::kColorPrimitiveTorWindow5};
   mixer[kColorBraveSplitViewTileDivider] = {nala::kColorPrimitiveTorWindow20};
 }
 
