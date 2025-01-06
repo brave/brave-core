@@ -1,5 +1,5 @@
 diff --git a/front_end/panels/network/network-meta.ts b/front_end/panels/network/network-meta.ts
-index 1470173bdd5d5f9796907db9205ec0cd4ec646bd..60bfcbec2d72d4de45b67cf88dbc343e97c9934e 100644
+index a605ae0ae5fd55df1a5d52b8a87e2dc5f2611e7b..fd16c1a184dbb93426488bfb1e345b608b41a322 100644
 --- a/front_end/panels/network/network-meta.ts
 +++ b/front_end/panels/network/network-meta.ts
 @@ -494,3 +494,23 @@ Common.Revealer.registerRevealer({

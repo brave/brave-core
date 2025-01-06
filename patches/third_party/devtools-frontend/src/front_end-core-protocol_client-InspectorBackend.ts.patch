@@ -1,8 +1,8 @@
 diff --git a/front_end/core/protocol_client/InspectorBackend.ts b/front_end/core/protocol_client/InspectorBackend.ts
-index 07ad25cdacb7b977c41c322f8f10f8e79c393a4d..afa090e8dfbc6307a3f817d515b81e1c420b1ecc 100644
+index ad2d1fe3572be9b69e14544ac0722bcb85172f13..a6baad23c3b26ada56245b719b91f77645b3b634 100644
 --- a/front_end/core/protocol_client/InspectorBackend.ts
 +++ b/front_end/core/protocol_client/InspectorBackend.ts
-@@ -920,6 +920,7 @@ export class TargetBase {
+@@ -924,6 +924,7 @@ export class TargetBase {
      return this.needsNodeJSPatching;
    }
  }

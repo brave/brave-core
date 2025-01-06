@@ -1,5 +1,5 @@
 diff --git a/third_party/inspector_protocol/code_generator.py b/third_party/inspector_protocol/code_generator.py
-index 53beb861259af59caad902bd839e00e5ebc3cba8..f09f3ff31547af9e50b60cfb7524a9c97a954593 100755
+index b23a189ab3d8806966197e21d2cc355da04b2c02..799e5d216d58cba1415e923c6f637d1da52f6451 100755
 --- a/third_party/inspector_protocol/code_generator.py
 +++ b/third_party/inspector_protocol/code_generator.py
 @@ -728,6 +728,6 @@ def main():
