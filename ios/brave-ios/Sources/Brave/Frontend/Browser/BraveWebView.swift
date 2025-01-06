@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import DesignSystem
 import Foundation
 import Shared
 import UserAgent
@@ -42,6 +43,12 @@ class BraveWebView: WKWebView {
     if #available(iOS 16.4, *) {
       isInspectable = true
     }
+
+    backgroundColor = UIColor(braveSystemName: .containerBackground)
+    scrollView.backgroundColor = UIColor(braveSystemName: .containerBackground)
+    // WKWebView flashes white screen on load regardless of background colour assignments without
+    // setting `isOpaque` to false
+    isOpaque = false
   }
 
   static func removeNonPersistentStore() {
