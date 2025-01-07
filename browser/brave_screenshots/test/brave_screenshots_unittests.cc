@@ -8,41 +8,18 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_screenshots/features.h"
-#include "chrome/browser/autocomplete/autocomplete_classifier_factory.h"
-#include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
-#include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
-#include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/custom_handlers/protocol_handler_registry.h"
-#include "components/custom_handlers/test_protocol_handler_registry_delegate.h"
-#include "components/search_engines/template_url_service.h"
 #include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/clipboard.h"
-
-namespace {
-
-content::ContextMenuParams CreateNormalPageParams() {
-  content::ContextMenuParams rv;
-  rv.page_url = GURL("http://test.page/");
-  return rv;
-}
-
-content::ContextMenuParams CreateDevToolsPageParams() {
-  content::ContextMenuParams rv;
-  rv.page_url = GURL("devtools://devtools/bundled/inspector.html");
-  return rv;
-}
-
-}  // namespace
 
 class BraveRenderViewContextMenuMock : public BraveRenderViewContextMenu {
  public:
@@ -76,7 +53,6 @@ class BraveScreenshotsContextMenuTest : public testing::Test {
       bool is_pwa_browser = false) {
     auto menu = std::make_unique<BraveRenderViewContextMenuMock>(
         *web_contents->GetPrimaryMainFrame(), params);
-
     Browser::CreateParams create_params(
         is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
         profile_.get(), true);
@@ -84,7 +60,6 @@ class BraveScreenshotsContextMenuTest : public testing::Test {
     create_params.window = test_window.get();
     browser_.reset(Browser::Create(create_params));
     menu->SetBrowser(browser_.get());
-
     menu->Init();
     return menu;
   }
@@ -126,7 +101,8 @@ class BraveScreenshotsContextMenuTest : public testing::Test {
 
 // We expect screenshot menu items to be present only when enabled
 TEST_F(BraveScreenshotsContextMenuTest, MenuForWebPage) {
-  content::ContextMenuParams params = CreateNormalPageParams();
+  content::ContextMenuParams params;
+  params.page_url = GURL("https://example.com");
 
   for (auto enabled : {true, false}) {
     SetBraveScreenshotsFeatureState(enabled);
@@ -150,7 +126,10 @@ TEST_F(BraveScreenshotsContextMenuTest, MenuForWebPage) {
 // We expect all menu items to be absent within developer tools' context menu
 TEST_F(BraveScreenshotsContextMenuTest, MenuForDevTools) {
   SetBraveScreenshotsFeatureState(true);
-  content::ContextMenuParams params = CreateDevToolsPageParams();
+
+  content::ContextMenuParams params;
+  params.page_url = GURL("devtools://devtools");
+
   auto context_menu = CreateContextMenu(GetWebContents(), params, true);
   EXPECT_TRUE(context_menu);
   EXPECT_FALSE(context_menu->menu_model()
