@@ -12,11 +12,8 @@
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-<<<<<<< HEAD
 #include "brave/browser/brave_browser_process.h"
-=======
 #include "brave/browser/brave_browser_features.h"
->>>>>>> 8dfca9089f7 (Email aliases implementation)
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
