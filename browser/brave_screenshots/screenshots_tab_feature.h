@@ -9,17 +9,12 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/brave_screenshots/devtools_helper.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
-
-class Browser;
-
-namespace content {
-class DevToolsAgentHost;
-}  // namespace content
+#include "chrome/browser/ui/browser.h"
+#include "content/public/browser/devtools_agent_host.h"
 
 namespace brave_screenshots {
-
-class DevToolsHelper;
 
 enum ScreenshotType {
   kSelection,

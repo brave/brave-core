@@ -11,10 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "content/public/browser/devtools_agent_host.h"
-
-namespace content {
-class WebContents;
-}  // namespace content
+#include "content/public/browser/web_contents.h"
 
 namespace brave_screenshots {
 

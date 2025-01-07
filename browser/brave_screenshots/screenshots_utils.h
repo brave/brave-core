@@ -7,12 +7,8 @@
 #define BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_UTILS_H_
 
 #include "base/memory/weak_ptr.h"
-
-class Browser;
-
-namespace image_editor {
-struct ScreenshotCaptureResult;
-}  // namespace image_editor
+#include "chrome/browser/image_editor/screenshot_flow.h"
+#include "chrome/browser/ui/browser.h"
 
 namespace brave_screenshots {
 namespace utils {
