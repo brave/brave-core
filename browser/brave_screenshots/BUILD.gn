@@ -56,8 +56,8 @@ source_set("unit_tests") {
   assert(enable_brave_screenshots)
   sources = [ "test/brave_screenshots_unittests.cc" ]
   deps = [
-    ":features",
     ":brave_screenshots",
+    ":features",
     "//base",
     "//brave/app:command_ids",
     "//chrome/browser",
