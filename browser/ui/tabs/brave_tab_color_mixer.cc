@@ -29,6 +29,12 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
     mixer[kColorBraveSplitViewTileBackgroundBorder] = {
         SkColorSetARGB(0x34, 0xFF, 0xFF, 0xFF)};
     mixer[kColorBraveSplitViewTileDivider] = {kColorTabDividerFrameActive};
+    mixer[kColorBraveVerticalTabActiveBackground] = {
+        kColorTabBackgroundInactiveFrameActive};
+    mixer[kColorBraveVerticalTabHoveredBackground] = {
+        ui::AlphaBlend(kColorBraveVerticalTabActiveBackground,
+                       kColorBraveVerticalTabInactiveBackground,
+                       /* 40% opacity */ 0.4 * SK_AlphaOPAQUE)};
   } else {
     mixer[kColorBraveSplitViewTileBackgroundHorizontal] = {
         nala::kColorDesktopbrowserTabbarSplitViewBackgroundHorizontal};
@@ -37,12 +43,12 @@ void AddBraveTabThemeColorMixer(ui::ColorProvider* provider,
     mixer[kColorBraveSplitViewTileBackgroundBorder] = {SK_ColorTRANSPARENT};
     mixer[kColorBraveSplitViewTileDivider] = {
         nala::kColorDesktopbrowserTabbarSplitViewDivider};
+    mixer[kColorBraveVerticalTabActiveBackground] = {
+        nala::kColorDesktopbrowserTabbarActiveTabVertical};
+    mixer[kColorBraveVerticalTabHoveredBackground] = {
+        nala::kColorDesktopbrowserTabbarHoverTabVertical};
   }
 
-  mixer[kColorBraveVerticalTabActiveBackground] = {
-      nala::kColorDesktopbrowserTabbarActiveTabVertical};
-  mixer[kColorBraveVerticalTabHoveredBackground] = {
-      nala::kColorDesktopbrowserTabbarHoverTabVertical};
   mixer[kColorBraveVerticalTabInactiveBackground] = {kColorToolbar};
   mixer[kColorBraveVerticalTabSeparator] = {kColorToolbarContentAreaSeparator};
   mixer[kColorBraveVerticalTabNTBIconColor] = {
