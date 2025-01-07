@@ -32,7 +32,7 @@ const Container = styled.a`
   overflow: hidden;
 
   &[aria-selected=true], &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: color-mix(in srgb, ${color.text.primary} 10%, transparent 90%);
   }
 `
 
@@ -61,7 +61,7 @@ const IconContainer = styled.div`
 `
 
 const SearchIcon = styled.span<{ url: string }>`
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, ${color.icon.default} 50%, transparent 50%);
   mask-image: url(${p => p.url});
   mask-size: contain;
 `
@@ -74,13 +74,13 @@ const FavIcon = styled.span<{ url: string }>`
 const Content = styled.span`
   font: ${font.large.regular};
   line-height: 24px;
-  color: ${color.white};
+  color: ${color.text.primary};
 `
 
 const Description = styled.span`
   font: ${font.small.regular};
   line-height: 18px;
-  color: rgba(255,255,255,0.7);
+  color: ${color.text.secondary};
 `
 
 const LeoIcon = styled(Icon)`
