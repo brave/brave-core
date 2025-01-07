@@ -5,6 +5,10 @@
 
 #include "brave/browser/brave_screenshots/devtools_helper.h"
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
