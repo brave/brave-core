@@ -74,8 +74,6 @@ source_set("ui") {
   sources = [
     "brave_ui_features.cc",
     "brave_ui_features.h",
-    "views/email_aliases_bubble_view.cc",
-    "views/email_aliases_bubble_view.h",
     "webui/ai_chat/ai_chat_ui.cc",
     "webui/ai_chat/ai_chat_ui.h",
     "webui/ai_chat/ai_chat_ui_page_handler.cc",
@@ -115,8 +113,13 @@ source_set("ui") {
   ]
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
+  # Also, for now email aliases is only available on desktop.
   if (!is_android && !is_ios) {
     sources += [
+      "views/email_aliases_bubble_view.cc",
+      "views/email_aliases_bubble_view.h",
+      "webui/settings/brave_email_aliases_handler.cc",
+      "webui/settings/brave_email_aliases_handler.h",
       "webui/webcompat_reporter/webcompat_reporter_ui.cc",
       "webui/webcompat_reporter/webcompat_reporter_ui.h",
     ]
@@ -317,8 +320,6 @@ source_set("ui") {
       "webui/settings/brave_appearance_handler.h",
       "webui/settings/brave_clear_browsing_data_handler.cc",
       "webui/settings/brave_clear_browsing_data_handler.h",
-      "webui/settings/brave_email_aliases_handler.cc",
-      "webui/settings/brave_email_aliases_handler.h",
       "webui/settings/brave_import_bulk_data_handler.cc",
       "webui/settings/brave_import_bulk_data_handler.h",
       "webui/settings/brave_import_data_handler.cc",
