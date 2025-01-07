@@ -58,26 +58,6 @@ mod ffi {
         gsk: Vec<u8>,
         join_request: Vec<u8>,
     }
-    struct VecU8Result {
-        data: Vec<u8>,
-        error_message: String,
-    }
-    struct GroupPublicKeyResult {
-        value: Box<GroupPublicKey>,
-        error_message: String,
-    }
-    struct CredentialBIGResult {
-        value: Box<CredentialBIG>,
-        error_message: String,
-    }
-    struct JoinResponseResult {
-        value: Box<JoinResponse>,
-        error_message: String,
-    }
-    struct UserCredentialsResult {
-        value: Box<UserCredentials>,
-        error_message: String,
-    }
 
     extern "Rust" {
         type AnonymousCredentialsManager;
@@ -86,10 +66,36 @@ mod ffi {
         type JoinResponse;
         type UserCredentials;
 
-        fn load_group_public_key(data: &[u8]) -> GroupPublicKeyResult;
-        fn load_credential_big(data: &[u8]) -> CredentialBIGResult;
-        fn load_join_response(data: &[u8]) -> JoinResponseResult;
-        fn load_user_credentials(data: &[u8]) -> UserCredentialsResult;
+        type VecU8Result;
+        type GroupPublicKeyResult;
+        type CredentialBIGResult;
+        type JoinResponseResult;
+        type UserCredentialsResult;
+
+        fn error_message(self: &VecU8Result) -> String;
+        fn is_ok(self: &VecU8Result) -> bool;
+        fn unwrap(self: &mut VecU8Result) -> Vec<u8>;
+
+        fn error_message(self: &GroupPublicKeyResult) -> String;
+        fn is_ok(self: &GroupPublicKeyResult) -> bool;
+        fn unwrap(self: &mut GroupPublicKeyResult) -> Box<GroupPublicKey>;
+
+        fn error_message(self: &CredentialBIGResult) -> String;
+        fn is_ok(self: &CredentialBIGResult) -> bool;
+        fn unwrap(self: &mut CredentialBIGResult) -> Box<CredentialBIG>;
+
+        fn error_message(self: &JoinResponseResult) -> String;
+        fn is_ok(self: &JoinResponseResult) -> bool;
+        fn unwrap(self: &mut JoinResponseResult) -> Box<JoinResponse>;
+
+        fn error_message(self: &UserCredentialsResult) -> String;
+        fn is_ok(self: &UserCredentialsResult) -> bool;
+        fn unwrap(self: &mut UserCredentialsResult) -> Box<UserCredentials>;
+
+        fn load_group_public_key(data: &[u8]) -> Box<GroupPublicKeyResult>;
+        fn load_credential_big(data: &[u8]) -> Box<CredentialBIGResult>;
+        fn load_join_response(data: &[u8]) -> Box<JoinResponseResult>;
+        fn load_user_credentials(data: &[u8]) -> Box<UserCredentialsResult>;
 
         fn new_anonymous_credentials_manager() -> Box<AnonymousCredentialsManager>;
         fn new_anonymous_credentials_with_fixed_seed() -> Box<AnonymousCredentialsManager>;
@@ -99,38 +105,81 @@ mod ffi {
             public_key: &GroupPublicKey,
             gsk: &CredentialBIG,
             join_resp: Box<JoinResponse>,
-        ) -> VecU8Result;
+        ) -> Box<VecU8Result>;
         fn set_gsk_and_credentials(
             self: &mut AnonymousCredentialsManager,
             gsk: Box<CredentialBIG>,
             credentials: Box<UserCredentials>,
         );
-        fn sign(self: &mut AnonymousCredentialsManager, msg: &[u8], basename: &[u8])
-            -> VecU8Result;
+        fn sign(
+            self: &mut AnonymousCredentialsManager,
+            msg: &[u8],
+            basename: &[u8],
+        ) -> Box<VecU8Result>;
     }
 }
 
 use ffi::*;
+
+macro_rules! result_wrapper {
+    ($inner_type:ident, $result_type:ident) => {
+        struct $result_type(Option<Result<$inner_type>>);
+
+        impl $result_type {
+            fn error_message(self: &$result_type) -> String {
+                self.0
+                    .as_ref()
+                    .and_then(|r| r.as_ref().err())
+                    .map(|e| e.to_string())
+                    .unwrap_or_default()
+            }
+
+            fn is_ok(self: &$result_type) -> bool {
+                self.0.as_ref().map(|r| r.as_ref().is_ok()).unwrap_or_default()
+            }
+        }
+
+        impl From<Result<$inner_type>> for $result_type {
+            fn from(value: Result<$inner_type>) -> Self {
+                Self(Some(value))
+            }
+        }
+    };
+}
+
+macro_rules! result_wrapper_box_unwrap {
+    ($inner_type:ident, $result_type:ident) => {
+        impl $result_type {
+            fn unwrap(self: &mut $result_type) -> Box<$inner_type> {
+                Box::new(self.0.take().unwrap().unwrap())
+            }
+        }
+    };
+}
 
 macro_rules! wrapper_with_loader {
     ($internal_type:ident, $wrapped_type:ident, $result_type:ident, $loader_func_name:ident) => {
         #[derive(Default)]
         struct $wrapped_type($internal_type);
 
-        fn $loader_func_name(data: &[u8]) -> $result_type {
-            match $internal_type::try_from(data) {
-                Ok(value) => $result_type {
-                    value: Box::new($wrapped_type(value)),
-                    error_message: String::new(),
-                },
-                Err(e) => $result_type {
-                    value: Box::new(Default::default()),
-                    error_message: e.to_string(),
-                },
-            }
+        fn $loader_func_name(data: &[u8]) -> Box<$result_type> {
+            Box::new($internal_type::try_from(data).map(|v| $wrapped_type(v)).into())
         }
     };
 }
+
+type VecU8 = Vec<u8>;
+
+result_wrapper!(GroupPublicKey, GroupPublicKeyResult);
+result_wrapper!(CredentialBIG, CredentialBIGResult);
+result_wrapper!(JoinResponse, JoinResponseResult);
+result_wrapper!(UserCredentials, UserCredentialsResult);
+result_wrapper!(VecU8, VecU8Result);
+
+result_wrapper_box_unwrap!(GroupPublicKey, GroupPublicKeyResult);
+result_wrapper_box_unwrap!(CredentialBIG, CredentialBIGResult);
+result_wrapper_box_unwrap!(JoinResponse, JoinResponseResult);
+result_wrapper_box_unwrap!(UserCredentials, UserCredentialsResult);
 
 wrapper_with_loader!(
     InternalGroupPublicKey,
@@ -151,6 +200,12 @@ wrapper_with_loader!(
     UserCredentialsResult,
     load_user_credentials
 );
+
+impl VecU8Result {
+    fn unwrap(&mut self) -> Vec<u8> {
+        self.0.take().unwrap().unwrap()
+    }
+}
 
 #[allow(dead_code)]
 struct AnonymousCredentialsManager(InternalCredentialManager);
@@ -178,13 +233,15 @@ impl AnonymousCredentialsManager {
         public_key: &GroupPublicKey,
         gsk: &CredentialBIG,
         join_resp: Box<JoinResponse>,
-    ) -> VecU8Result {
-        || -> Result<Vec<u8>> {
-            self.0
-                .finish_join(&public_key.0, &gsk.0, join_resp.0)
-                .map(|creds| creds.to_bytes().to_vec())
-        }()
-        .into()
+    ) -> Box<VecU8Result> {
+        Box::new(
+            || -> Result<Vec<u8>> {
+                self.0
+                    .finish_join(&public_key.0, &gsk.0, join_resp.0)
+                    .map(|creds| creds.to_bytes().to_vec())
+            }()
+            .into(),
+        )
     }
 
     fn set_gsk_and_credentials(
@@ -195,16 +252,7 @@ impl AnonymousCredentialsManager {
         self.0.set_gsk_and_credentials(gsk.0, credentials.0);
     }
 
-    fn sign(&mut self, msg: &[u8], basename: &[u8]) -> VecU8Result {
-        self.0.sign(msg, basename).map(|sig| sig.to_bytes().to_vec()).into()
-    }
-}
-
-impl From<Result<Vec<u8>>> for VecU8Result {
-    fn from(value: Result<Vec<u8>>) -> Self {
-        match value {
-            Ok(data) => VecU8Result { data, error_message: String::new() },
-            Err(e) => VecU8Result { data: Vec::new(), error_message: e.to_string() },
-        }
+    fn sign(&mut self, msg: &[u8], basename: &[u8]) -> Box<VecU8Result> {
+        Box::new(self.0.sign(msg, basename).map(|sig| sig.to_bytes().to_vec()).into())
     }
 }
