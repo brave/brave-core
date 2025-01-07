@@ -42,7 +42,6 @@ static_library("browser") {
       "//brave/common",
       "//brave/components/brave_referrals/browser",
       "//brave/components/brave_shields/content/browser",
-      "//content/public/browser",
     ]
   }
 }
