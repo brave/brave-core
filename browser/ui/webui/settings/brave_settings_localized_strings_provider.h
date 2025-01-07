@@ -15,6 +15,7 @@ class WebUIDataSource;
 namespace settings {
 
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
+void BraveAddEmailAliasesStrings(content::WebUIDataSource*);
 
 }  // namespace settings
 
