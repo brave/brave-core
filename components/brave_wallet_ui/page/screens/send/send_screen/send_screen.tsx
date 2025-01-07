@@ -107,20 +107,17 @@ export const SendScreen = React.memo((props: Props) => {
   const history = useHistory()
   const { hash } = useLocation()
   const selectedSendOption = (hash as SendPageTabHashes) || '#token'
+  const accountIdFromParams = query.get('account') ?? undefined
+  const chainIdFromParams = query.get('chainId') ?? undefined
+  const contractOrSymbolFromParams = query.get('token') ?? undefined
 
-  const { account: accountFromParams } = useAccountFromAddressQuery(
-    query.get('account') ?? undefined
-  )
+  const { account: accountFromParams } =
+    useAccountFromAddressQuery(accountIdFromParams)
 
   const { data: networks = [] } = useGetVisibleNetworksQuery()
   const networkFromParams = React.useMemo(
-    () =>
-      networks.find(
-        (network) =>
-          network.chainId === query.get('chainId') &&
-          network.coin === accountFromParams?.accountId.coin
-      ),
-    [networks, accountFromParams, query]
+    () => networks.find((network) => network.chainId === chainIdFromParams),
+    [networks, chainIdFromParams]
   )
 
   // State
@@ -178,8 +175,7 @@ export const SendScreen = React.memo((props: Props) => {
       return
     }
 
-    const contractOrSymbol = query.get('token')
-    if (!contractOrSymbol) {
+    if (!contractOrSymbolFromParams) {
       return
     }
 
@@ -191,18 +187,24 @@ export const SendScreen = React.memo((props: Props) => {
       tokenId
         ? token.chainId === networkFromParams.chainId &&
           token.contractAddress.toLowerCase() ===
-            contractOrSymbol.toLowerCase() &&
+            contractOrSymbolFromParams.toLowerCase() &&
           token.tokenId === tokenId &&
           token.isShielded === isShielded
         : (token.chainId === networkFromParams.chainId &&
             token.contractAddress.toLowerCase() ===
-              contractOrSymbol.toLowerCase()) ||
+              contractOrSymbolFromParams.toLowerCase()) ||
           (token.chainId === networkFromParams.chainId &&
             token.contractAddress === '' &&
-            token.symbol.toLowerCase() === contractOrSymbol.toLowerCase()) &&
-          token.isShielded === isShielded
+            token.symbol.toLowerCase() ===
+              contractOrSymbolFromParams.toLowerCase() &&
+            token.isShielded === isShielded)
     )
-  }, [userVisibleTokensInfo, query, networkFromParams])
+  }, [
+    userVisibleTokensInfo,
+    query,
+    networkFromParams,
+    contractOrSymbolFromParams
+  ])
 
   const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
     useScopedBalanceUpdater(
@@ -257,6 +259,11 @@ export const SendScreen = React.memo((props: Props) => {
   const tokenColor = React.useMemo(() => {
     return getDominantColorFromImageURL(tokenFromParams?.logo ?? '')
   }, [tokenFromParams?.logo])
+
+  const needsAccountSelected =
+    accountIdFromParams === undefined &&
+    contractOrSymbolFromParams !== undefined &&
+    chainIdFromParams !== undefined
 
   // Methods
   const selectSendAsset = React.useCallback(
@@ -508,6 +515,13 @@ export const SendScreen = React.memo((props: Props) => {
     isModalShown: showSelectAddressModal
   } = useModal()
 
+  // Effects
+  React.useEffect(() => {
+    if (needsAccountSelected) {
+      openSelectTokenModal()
+    }
+  }, [needsAccountSelected, openSelectTokenModal])
+
   // render
   return (
     <>
@@ -644,6 +658,8 @@ export const SendScreen = React.memo((props: Props) => {
           ref={selectTokenModalRef}
           onSelectAsset={selectSendAsset}
           onSelectSendOption={onSelectSendOption}
+          selectedFromToken={needsAccountSelected ? tokenFromParams : undefined}
+          needsAccount={needsAccountSelected}
           selectingFromOrTo='from'
           modalType='send'
         />

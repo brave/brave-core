@@ -226,22 +226,25 @@ export const makeDepositFundsAccountRoute = (assetId: string) => {
 
 export const makeSendRoute = (
   asset: BraveWallet.BlockchainToken,
-  account: BraveWallet.AccountInfo
+  account?: BraveWallet.AccountInfo
 ) => {
   const isNftTab = asset.isErc721 || asset.isNft
   const baseQueryParams = {
     chainId: asset.chainId,
-    token: asset.contractAddress || asset.symbol.toUpperCase(),
-    account: account.accountId.uniqueKey
+    token: asset.contractAddress || asset.symbol.toUpperCase()
   }
 
-  const tokenIdQueryParams = asset.tokenId
-    ? { ...baseQueryParams, tokenId: asset.tokenId }
+  const accountIdQueryParams = account
+    ? { ...baseQueryParams, account: account.accountId.uniqueKey }
     : baseQueryParams
+
+  const tokenIdQueryParams = asset.tokenId
+    ? { ...accountIdQueryParams, tokenId: asset.tokenId }
+    : accountIdQueryParams
 
   const params = new URLSearchParams(
     asset.isShielded
-      ? {...tokenIdQueryParams, isShielded: 'true'}
+      ? { ...tokenIdQueryParams, isShielded: 'true' }
       : tokenIdQueryParams
   )
 
