@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/webui/settings/brave_email_aliases_handler.h"
 
-#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
