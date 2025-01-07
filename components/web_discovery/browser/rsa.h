@@ -15,17 +15,30 @@
 
 namespace web_discovery {
 
-struct RSAKeyInfo {
-  RSAKeyInfo();
-  ~RSAKeyInfo();
-  std::unique_ptr<crypto::RSAPrivateKey> private_key;
-  std::optional<std::string> private_key_b64;
+struct EncodedRSAKeyPair {
+  EncodedRSAKeyPair();
+  ~EncodedRSAKeyPair();
+  std::string private_key_b64;
   std::string public_key_b64;
 };
 
-std::unique_ptr<RSAKeyInfo> GenerateRSAKeyPair();
+struct GeneratedRSAKey {
+  GeneratedRSAKey();
+  ~GeneratedRSAKey();
+  std::unique_ptr<crypto::RSAPrivateKey> private_key;
+  std::unique_ptr<EncodedRSAKeyPair> encoded_rsa_key_pair;
+};
 
-std::unique_ptr<RSAKeyInfo> ImportRSAKeyPair(
+struct ImportedRSAKey {
+  ImportedRSAKey();
+  ~ImportedRSAKey();
+  std::unique_ptr<crypto::RSAPrivateKey> private_key;
+  std::string public_key_b64;
+};
+
+std::unique_ptr<GeneratedRSAKey> GenerateRSAKey();
+
+std::unique_ptr<ImportedRSAKey> ImportRSAKey(
     const std::string& private_key_b64);
 
 std::optional<std::string> RSASign(crypto::RSAPrivateKey* key,

@@ -17,6 +17,7 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/browser/background_credential_helper.h"
 #include "brave/components/web_discovery/browser/credential_signer.h"
+#include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "net/base/backoff_entry.h"
 
@@ -68,7 +69,7 @@ class CredentialManager : public CredentialSigner {
  private:
   bool LoadRSAKey();
   bool GenerateRSAKey();
-  void OnNewRSAKey(std::unique_ptr<RSAKeyInfo> key_info);
+  void OnNewRSAKey(std::unique_ptr<EncodedRSAKeyPair> encoded_rsa_key_pair);
 
   void StartJoinGroup(const std::string& date,
                       const std::vector<uint8_t>& group_pub_key);
@@ -104,8 +105,6 @@ class CredentialManager : public CredentialSigner {
       join_url_loaders_;
   net::BackoffEntry backoff_entry_;
   base::WallClockTimer retry_timer_;
-
-  scoped_refptr<base::SequencedTaskRunner> background_task_runner_;
 
   base::SequenceBound<std::unique_ptr<BackgroundCredentialHelper>>
       background_credential_helper_;

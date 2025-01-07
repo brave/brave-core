@@ -9,6 +9,20 @@ assert(enable_web_discovery_native)
 
 static_library("browser") {
   sources = [
+    "web_discovery_service.cc",
+    "web_discovery_service.h",
+  ]
+  deps = [
+    ":internal",
+    "//base",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//services/network/public/cpp",
+  ]
+}
+
+source_set("internal") {
+  sources = [
     "background_credential_helper.cc",
     "background_credential_helper.h",
     "background_credential_helper_impl.cc",
@@ -25,16 +39,19 @@ static_library("browser") {
     "server_config_loader.h",
     "util.cc",
     "util.h",
-    "web_discovery_service.cc",
-    "web_discovery_service.h",
   ]
+
+  visibility = [
+    "//brave/components/web_discovery/browser",
+    "//brave/components/web_discovery/browser:unit_tests",
+  ]
+
   deps = [
     "anonymous_credentials",
     "//base",
     "//brave/brave_domains",
     "//brave/components/constants",
     "//brave/components/web_discovery/common",
-    "//components/keyed_service/core",
     "//components/prefs",
     "//crypto",
     "//extensions/buildflags",
@@ -56,6 +73,7 @@ source_set("unit_tests") {
   ]
   deps = [
     ":browser",
+    ":internal",
     "//base/test:test_support",
     "//brave/components/constants",
     "//components/prefs:test_support",

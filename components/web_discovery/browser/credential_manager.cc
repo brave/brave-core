@@ -71,9 +71,9 @@ CredentialManager::CredentialManager(
       server_config_loader_(server_config_loader),
       join_url_(GetDirectHPNHost() + kJoinPath),
       backoff_entry_(&kBackoffPolicy),
-      background_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
-      background_credential_helper_(background_task_runner_,
-                                    BackgroundCredentialHelper::Create()) {}
+      background_credential_helper_(
+          base::ThreadPool::CreateSequencedTaskRunner({}),
+          BackgroundCredentialHelper::Create()) {}
 
 CredentialManager::~CredentialManager() = default;
 
@@ -85,32 +85,32 @@ bool CredentialManager::LoadRSAKey() {
     return true;
   }
 
-  auto key_info = ImportRSAKeyPair(private_key_b64);
-  if (!key_info) {
+  auto key = ImportRSAKey(private_key_b64);
+  if (!key) {
     VLOG(1) << "Failed to import stored RSA key";
     return false;
   }
 
-  CHECK(key_info->private_key);
-  rsa_public_key_b64_ = std::move(key_info->public_key_b64);
+  CHECK(key->private_key);
+  rsa_public_key_b64_ = std::move(key->public_key_b64);
   background_credential_helper_
       .AsyncCall(&BackgroundCredentialHelper::SetRSAKey)
-      .WithArgs(std::move(key_info->private_key));
+      .WithArgs(std::move(key->private_key));
 
   return true;
 }
 
-void CredentialManager::OnNewRSAKey(std::unique_ptr<RSAKeyInfo> key_info) {
-  if (!key_info) {
+void CredentialManager::OnNewRSAKey(
+    std::unique_ptr<EncodedRSAKeyPair> encoded_rsa_key_pair) {
+  if (!encoded_rsa_key_pair) {
     VLOG(1) << "RSA key generation failed";
     return;
   }
 
-  rsa_public_key_b64_ = key_info->public_key_b64;
-  CHECK(key_info->private_key_b64);
+  rsa_public_key_b64_ = encoded_rsa_key_pair->public_key_b64;
 
   profile_prefs_->SetString(kCredentialRSAPrivateKey,
-                            *key_info->private_key_b64);
+                            encoded_rsa_key_pair->private_key_b64);
 
   JoinGroups();
 }

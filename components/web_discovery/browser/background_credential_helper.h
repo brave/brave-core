@@ -39,7 +39,7 @@ class BackgroundCredentialHelper {
 
   virtual void UseFixedSeedForTesting() = 0;
 
-  virtual std::unique_ptr<RSAKeyInfo> GenerateRSAKey() = 0;
+  virtual std::unique_ptr<EncodedRSAKeyPair> GenerateRSAKey() = 0;
   virtual void SetRSAKey(
       std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key) = 0;
   virtual std::optional<GenerateJoinRequestResult> GenerateJoinRequest(

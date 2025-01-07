@@ -11,6 +11,7 @@
 #include "base/containers/span_rust.h"
 #include "base/logging.h"
 #include "base/threading/thread_restrictions.h"
+#include "brave/components/web_discovery/browser/rsa.h"
 #include "crypto/sha2.h"
 
 namespace web_discovery {
@@ -24,13 +25,14 @@ void BackgroundCredentialHelperImpl::UseFixedSeedForTesting() {
   anonymous_credentials_manager_ = new_anonymous_credentials_with_fixed_seed();
 }
 
-std::unique_ptr<RSAKeyInfo> BackgroundCredentialHelperImpl::GenerateRSAKey() {
-  auto key_pair = GenerateRSAKeyPair();
-  if (!key_pair) {
+std::unique_ptr<EncodedRSAKeyPair>
+BackgroundCredentialHelperImpl::GenerateRSAKey() {
+  auto key = web_discovery::GenerateRSAKey();
+  if (!key) {
     return nullptr;
   }
-  rsa_private_key_ = std::move(key_pair->private_key);
-  return key_pair;
+  rsa_private_key_ = std::move(key->private_key);
+  return std::move(key->encoded_rsa_key_pair);
 }
 
 void BackgroundCredentialHelperImpl::SetRSAKey(

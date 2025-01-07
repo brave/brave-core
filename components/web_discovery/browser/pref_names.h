@@ -21,6 +21,9 @@ inline constexpr char kAnonymousCredentialsDict[] =
     "brave.web_discovery.anon_creds";
 
 // Local state
+
+// Stores the last retrieval time of patterns.json from the
+// Web Discovery server, in order to schedule the next retrieval/update.
 inline constexpr char kPatternsRetrievalTime[] =
     "brave.web_discovery.patterns_retrieval_time";
 

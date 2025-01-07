@@ -31,7 +31,7 @@ class BackgroundCredentialHelperImpl : public BackgroundCredentialHelper {
 
   void UseFixedSeedForTesting() override;
 
-  std::unique_ptr<RSAKeyInfo> GenerateRSAKey() override;
+  std::unique_ptr<EncodedRSAKeyPair> GenerateRSAKey() override;
   void SetRSAKey(
       std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key) override;
   std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
