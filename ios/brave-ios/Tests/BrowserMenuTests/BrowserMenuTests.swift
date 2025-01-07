@@ -41,7 +41,6 @@ class BrowserMenuTests: XCTestCase {
     key: "visibilities",
     default: [:]
   )
-  private var cancellables: Set<AnyCancellable> = .init()
 
   override func tearDown() {
     super.tearDown()
@@ -298,8 +297,8 @@ class BrowserMenuTests: XCTestCase {
     XCTAssertEqual(model.visibleActions, Array(actions[0..<3]))
   }
 
-  @MainActor func testVPNRegionPublishing() {
-    let vpnStatusPublisher = CurrentValueSubject<VPNStatus, Never>(.disconnected)
+  @MainActor func testVPNRegionPublishing() async throws {
+    let vpnStatusPublisher = PassthroughSubject<VPNStatus, Never>()
     let model = BrowserMenuModel(
       actions: [],
       vpnStatusPublisher: vpnStatusPublisher.eraseToAnyPublisher(),
@@ -307,21 +306,23 @@ class BrowserMenuTests: XCTestCase {
       actionRanks: actionRanks
     )
     XCTAssertEqual(model.vpnStatus, .disconnected)
-    // CurrentValueSubject vends its current value immediately to the stream so we want to ignore
-    // it as we already asserted the state of that before
-    model.$vpnStatus
-      .dropFirst()
-      .sink { vpnStatus in
-        switch vpnStatus {
-        case .connected(let region):
-          XCTAssertEqual(region.flag, "🇨🇦")
-          XCTAssertEqual(region.displayName, "ca-east")
-        case .disconnected:
-          XCTFail("VPN Region is wrong")
-        }
-      }.store(in: &cancellables)
+    let e = expectation(description: "VPN Status Publisher")
+    Task {
+      for await _ in model.$vpnStatus.values {
+        break
+      }
+      e.fulfill()
+    }
     vpnStatusPublisher.send(
       .connected(activeRegion: .init(countryCode: "CA", displayName: "ca-east"))
     )
+    await fulfillment(of: [e], timeout: 1)
+    switch model.vpnStatus {
+    case .connected(let region):
+      XCTAssertEqual(region.flag, "🇨🇦")
+      XCTAssertEqual(region.displayName, "ca-east")
+    case .disconnected:
+      XCTFail("VPN Region is wrong")
+    }
   }
 }
