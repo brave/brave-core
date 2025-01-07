@@ -11,13 +11,13 @@
 
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_email_aliases_handler.h"
+#include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/browser/resources/grit/email_aliases_bubble_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/common/url_constants.h"
-#include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 
 namespace email_aliases {
 
