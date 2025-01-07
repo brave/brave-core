@@ -20,7 +20,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/views/email_aliases_bubble_view.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -38,6 +37,10 @@
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "url/origin.h"
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#include "brave/browser/ui/views/email_aliases_bubble_view.h"
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
@@ -741,6 +744,7 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
     }
   }
 
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   if (base::FeatureList::IsEnabled(features::kBraveEmailAliases) &&
       params_.form_control_type &&
       params_.form_control_type.value() ==
@@ -748,6 +752,7 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
     menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
     menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS, IDS_NEW_EMAIL_ALIAS);
   }
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
 void BraveRenderViewContextMenu::SetAIEngineForTesting(
