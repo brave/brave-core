@@ -154,6 +154,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     // BraveNewTabUI configs in RegisterChromeWebUIConfigs because they use the
     // same origin (content::kChromeUIScheme + chrome::kChromeUINewTabHost).
     return new BraveNewTabUI(web_ui, url.host());
+  } else if (host == kEmailAliasesHost &&
+             base::FeatureList::IsEnabled(features::kBraveEmailAliases)) {
+    return new email_aliases::EmailAliasesBubbleUI(web_ui);
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {
@@ -168,11 +171,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     if (ai_rewriter::features::IsAIRewriterEnabled()) {
       return new ai_rewriter::AIRewriterUI(web_ui);
     }
-#endif
-  } else if (host == kEmailAliasesHost &&
-             base::FeatureList::IsEnabled(features::kBraveEmailAliases)) {
-    return new email_aliases::EmailAliasesBubbleUI(web_ui);
   }
+#endif
   return nullptr;
 }
 
