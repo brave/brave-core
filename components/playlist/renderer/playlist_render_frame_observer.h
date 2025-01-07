@@ -78,7 +78,9 @@ class PlaylistRenderFrameObserver final
   void OnMediaDetected(base::Value::List media);
 
   IsPlaylistEnabledCallback is_playlist_enabled_callback_;
+#if !BUILDFLAG(IS_ANDROID)
   int32_t isolated_world_id_;
+#endif  // !BUILDFLAG(IS_ANDROID)
   mojo::AssociatedReceiver<mojom::PlaylistRenderFrameObserverConfigurator>
       configurator_receiver_{this};
   mojo::AssociatedRemote<mojom::PlaylistMediaResponder> media_responder_;
