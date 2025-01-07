@@ -46,7 +46,7 @@ type ViewState = {
   alias?: Alias
 }
 
-const onEnterKey = (onSubmit: Function) => 
+const onEnterKey = (onSubmit: Function) =>
   (e: InputEventDetail) => {
     const innerEvent = e.innerEvent as unknown as KeyboardEvent
     if (innerEvent.key === 'Enter') {
