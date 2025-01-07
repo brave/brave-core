@@ -30,30 +30,39 @@ export class BraveSyncBrowserProxy {
   getSyncCode(): Promise<string> {
     return sendWithPromise('SyncSetupGetSyncCode');
   }
+
   getPureSyncCode(): Promise<string> {
     return sendWithPromise('SyncSetupGetPureSyncCode');
   }
+
   getQRCode(syncCode: string): Promise<string> {
     return sendWithPromise('SyncGetQRCode', syncCode);
   }
+
   getDeviceList(): Promise<BraveDeviceInfo[]> {
     return sendWithPromise('SyncGetDeviceList');
   }
+
   setSyncCode(syncCode: string): Promise<boolean> {
     return sendWithPromise('SyncSetupSetSyncCode', syncCode);
   }
+
   resetSyncChain(): Promise<boolean> {
     return sendWithPromise('SyncSetupReset');
   }
+
   deleteDevice(deviceId: string): Promise<boolean> {
     return sendWithPromise('SyncDeleteDevice', deviceId);
   }
+
   getSyncStatus(): Promise<BraveSyncStatus> {
     return sendWithPromise('SyncSetupGetSyncStatus');
   }
+
   permanentlyDeleteSyncAccount(): Promise<boolean> {
     return sendWithPromise('SyncPermanentlyDeleteAccount');
   }
+
   getWordsCount(syncCode: string): Promise<number> {
     return sendWithPromise('SyncGetWordsCount', syncCode);
   }

@@ -3,21 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js'
+import 'chrome://resources/cr_elements/icons.html.js'
 
-import 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js';
-import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
-import 'chrome://resources/cr_elements/icons.html.js';
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-
-import {BaseMixin} from '../../base_mixin.js';
+import {BaseMixin} from '../../base_mixin.js'
 
 import {getTemplate} from './brave_adblock_subscribe_dropdown.html.js'
 
-const AdblockSubscribeDropDownBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
+import type {
+  CrActionMenuElement
+} from 'chrome://resources/cr_elements/cr_action_menu/cr_action_menu.js'
+
+interface AdBlockSubscribeDropDown {
+  $: {
+    menu: CrActionMenuElement
+  }
+}
+
+const AdblockSubscribeDropDownBase =
+  PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
 class AdBlockSubscribeDropDown extends AdblockSubscribeDropDownBase {
   static get is() {
@@ -28,12 +36,8 @@ class AdBlockSubscribeDropDown extends AdblockSubscribeDropDownBase {
     return getTemplate()
   }
 
-  ready() {
-    super.ready()
-  }
-
-  handleDropdownClick_(e) {
-    this.$.menu.showAt(e.target)
+  handleDropdownClick_(e: Event) {
+    this.$.menu.showAt(e.target as HTMLElement)
   }
 
   updateSubscription_() {

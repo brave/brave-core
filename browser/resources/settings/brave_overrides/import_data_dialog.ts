@@ -3,14 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import {
+  html,
+  RegisterPolymerTemplateModifications
+} from 'chrome://resources/brave/polymer_overriding.js'
 
-import {html, RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
 RegisterPolymerTemplateModifications({
   'settings-import-data-dialog': (templateContent) => {
-    let checkBoxesParent = templateContent.querySelector('#browserSelect').parentElement;
+    const checkBoxesParent =
+      templateContent.querySelector('#browserSelect')!.parentElement
     checkBoxesParent.appendChild(html`
       <settings-checkbox id="importDialogExtensions"
         hidden="[[!selected_.extensions]]"

@@ -3,21 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import { sendWithPromise } from 'chrome://resources/js/cr.js';
 
+// TODO(petemill): Define the expected types instead of using any
 export interface BraveTorBrowserProxy {
-  getBridgesConfig(): Promise<any> // TODO(petemill): Define the expected type
-  setBridgesConfig(config: any) // TODO(petemill): Define the expected type
-  requestBridgesCaptcha(): Promise<any> // TODO(petemill): Define the expected type
-  resolveBridgesCaptcha(captcha: any) // TODO(petemill): Define the expected type
-  setTorEnabled(value: boolean)
-  isTorEnabled(): Promise<boolean>
-  isTorManaged(): Promise<boolean>
-  isSnowflakeExtensionAllowed(): Promise<boolean>
-  isSnowflakeExtensionEnabled(): Promise<boolean>
-  enableSnowflakeExtension(enable: boolean): Promise<boolean>
+  getBridgesConfig: () => Promise<any>
+  setBridgesConfig: (config: any) => void
+  requestBridgesCaptcha: () => Promise<any>
+  resolveBridgesCaptcha: (captcha: any) => Promise<any>
+  setTorEnabled: (value: boolean) => void
+  isTorEnabled: () => Promise<boolean>
+  isTorManaged: () => Promise<boolean>
+  isSnowflakeExtensionAllowed: () => Promise<boolean>
+  isSnowflakeExtensionEnabled: () => Promise<boolean>
+  enableSnowflakeExtension: (enable: boolean) => Promise<boolean>
 }
 
 export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
@@ -29,7 +28,7 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
     return sendWithPromise('brave_tor.getBridgesConfig')
   }
 
-  setBridgesConfig(config) {
+  setBridgesConfig(config: any) {
     chrome.send('brave_tor.setBridgesConfig', [config])
   }
 
@@ -37,11 +36,11 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
     return sendWithPromise('brave_tor.requestBridgesCaptcha')
   }
 
-  resolveBridgesCaptcha(captcha) {
+  resolveBridgesCaptcha(captcha: any) {
     return sendWithPromise('brave_tor.resolveBridgesCaptcha', captcha)
   }
 
-  setTorEnabled(value) {
+  setTorEnabled(value: boolean) {
     chrome.send('brave_tor.setTorEnabled', [value])
   }
 
@@ -57,11 +56,11 @@ export class BraveTorBrowserProxyImpl implements BraveTorBrowserProxy {
     return sendWithPromise('brave_tor.isSnowflakeExtensionAllowed')
   }
 
-  isSnowflakeExtensionEnabled(): Promise<boolean> {
+  isSnowflakeExtensionEnabled() {
     return sendWithPromise('brave_tor.isSnowflakeExtensionEnabled')
   }
 
-  enableSnowflakeExtension(enable): Promise<boolean> {
+  enableSnowflakeExtension(enable: boolean) {
     return sendWithPromise('brave_tor.enableSnowflakeExtension', enable)
   }
 }

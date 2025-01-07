@@ -3,21 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import {pageVisibility} from './brave_overrides/page_visibility.js'
 import {loadTimeData} from './i18n_setup.js'
-import {SettingsRoutes} from 'chrome://settings/settings.js'
+import {SettingsRoutes} from './router.js'
 
 export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   const isGuest = loadTimeData.getBoolean('isGuest')
   if (!r.BASIC) {
-    console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
+    console.error('[Settings] Routes: could not find BASIC page')
     return
   }
   if (pageVisibility.getStarted) {
     r.GET_STARTED = r.BASIC.createSection('/getStarted', 'getStarted')
-    // bring back people's /manageProfile (now in getStarted)
+    // Bring back people's /manageProfile (now in getStarted)
     r.MANAGE_PROFILE = r.GET_STARTED.createChild('/manageProfile')
     // We re-section people page into getStarted section (see people_page Brave
     // override), so we need to adjust the route accordingly in order for the
@@ -32,7 +30,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     if (r.SYSTEM) {
       r.SHORTCUTS = r.SYSTEM.createChild('/system/shortcuts')
     } else if (!isGuest) {
-      console.error('[Brave Settings Overrides] Routes: could not find SYSTEM page')
+      console.error('[Settings] Routes: could not find SYSTEM page')
     }
   }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
@@ -44,10 +42,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (pageVisibility.braveWeb3) {
     r.BRAVE_WEB3 = r.BASIC.createSection('/web3', 'web3')
-  }
-  if (pageVisibility.braveWallet) {
-    r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
-    r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
+    if (pageVisibility.braveWallet) {
+      r.BRAVE_WALLET = r.BRAVE_WEB3.createSection('/wallet', 'wallet')
+      r.BRAVE_WALLET_NETWORKS = r.BRAVE_WALLET.createChild('/wallet/networks')
+    }
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
 
@@ -65,9 +63,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
-    const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
+    const isGoogleSignInFeatureEnabled =
+      loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
     if (isGoogleSignInFeatureEnabled) {
-      r.SITE_SETTINGS_GOOGLE_SIGN_IN = r.SITE_SETTINGS.createChild('googleSignIn')
+      r.SITE_SETTINGS_GOOGLE_SIGN_IN =
+        r.SITE_SETTINGS.createChild('googleSignIn')
     }
     const isLocalhostAccessFeatureEnabled =
       loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
@@ -75,11 +75,14 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
       r.SITE_SETTINGS_LOCALHOST_ACCESS = r.SITE_SETTINGS
         .createChild('localhostAccess')
     }
-    const isOpenAIChatFromBraveSearchEnabled = loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
+    const isOpenAIChatFromBraveSearchEnabled =
+      loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
     if (isOpenAIChatFromBraveSearchEnabled) {
-      r.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT = r.SITE_SETTINGS.createChild('braveOpenAIChat')
+      r.SITE_SETTINGS_BRAVE_OPEN_AI_CHAT =
+        r.SITE_SETTINGS.createChild('braveOpenAIChat')
     }
-    const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+    const isNativeBraveWalletFeatureEnabled =
+      loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     if (isNativeBraveWalletFeatureEnabled) {
       r.SITE_SETTINGS_ETHEREUM = r.SITE_SETTINGS.createChild('ethereum')
       r.SITE_SETTINGS_SOLANA = r.SITE_SETTINGS.createChild('solana')
@@ -88,17 +91,19 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     if (r.SITE_SETTINGS_ADS) {
       delete r.SITE_SETTINGS_ADS
     } else {
-      console.error('[Brave Settings Overrides] could not find expected route site_settings_ads')
+      console.error(
+        '[Settings] could not find expected route site_settings_ads')
     }
   } else if (!isGuest) {
-    console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
+    console.error('[Settings] Routes: could not find SITE_SETTINGS page')
   }
   // Autofill route is moved to advanced,
   // otherwise its sections won't show up when opened.
   if (r.AUTOFILL && r.ADVANCED) {
     r.AUTOFILL.parent = r.ADVANCED
   } else if (!isGuest) {
-    console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
+    console.error(
+      '[Settings] Could not move autofill route to advanced route', r)
   }
   // Delete performance menu - system menu includes it instead.
   if (r.PERFORMANCE) {

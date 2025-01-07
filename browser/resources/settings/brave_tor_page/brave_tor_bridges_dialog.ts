@@ -3,23 +3,32 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import 'chrome://resources/cr_elements/cr_button/cr_button.js'
+import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
+import 'chrome://resources/cr_elements/cr_input/cr_input.js'
+import '../settings_shared.css.js'
 
-import 'chrome://resources/cr_elements/cr_button/cr_button.js';
-import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/cr_input/cr_input.js';
-import '../settings_shared.css.js';
-
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import type {CrDialogElement} from 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js'
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import {getTemplate} from './brave_tor_bridges_dialog.html.js'
-import {BraveTorBrowserProxyImpl} from './brave_tor_browser_proxy.js'
+
+import {
+  BraveTorBrowserProxy,
+  BraveTorBrowserProxyImpl
+} from './brave_tor_browser_proxy.js'
+
+export interface RequestBridgesDialog {
+  $: {
+    dialog: CrDialogElement,
+  }
+}
 
 const RequestBridgesDialogBase = I18nMixin(PrefsMixin(PolymerElement))
 
-class RequestBridgesDialog extends RequestBridgesDialogBase {
+export class RequestBridgesDialog extends RequestBridgesDialogBase {
   static get is() {
     return 'request-bridges-dialog'
   }
@@ -39,20 +48,28 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
     }
   }
 
-  browserProxy_ = BraveTorBrowserProxyImpl.getInstance()
+  private status_: string
+  private captcha_: string
+  private captchaResolve_: string
+  private renewDisabled_: boolean
+  private submitDisabled_: boolean
+  public bridges_: Object[]
 
-  ready() {
+  private browserProxy_: BraveTorBrowserProxy =
+    BraveTorBrowserProxyImpl.getInstance()
+
+  override ready() {
     super.ready()
 
     this.status_ = this.i18n('torRequestBridgeDialogWaiting')
-    this.bridges_ = null
+    this.bridges_ = []
     this.requestCaptcha_()
   }
 
-  submitClicked_() {
+  private submitClicked_() {
     this.enableSubmit_(false)
     this.browserProxy_.resolveBridgesCaptcha(this.captchaResolve_).then(
-      (response) => {
+      (response: { bridges: Object[] }) => {
         this.bridges_ = response.bridges
         this.$.dialog.close()
       },
@@ -61,11 +78,11 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
       })
   }
 
-  cancelClicked_() {
+  private cancelClicked_() {
     this.$.dialog.cancel()
   }
 
-  requestCaptcha_() {
+  private requestCaptcha_() {
     this.captchaResolve_ = ''
     this.status_ = this.i18n('torRequestBridgeDialogWaiting')
     this.captcha_ = ''
@@ -80,9 +97,15 @@ class RequestBridgesDialog extends RequestBridgesDialogBase {
     })
   }
 
-  enableSubmit_(enabled) {
+  private enableSubmit_(enabled: boolean) {
     this.renewDisabled_ = !enabled
     this.submitDisabled_ = !enabled
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'request-bridges-dialog': RequestBridgesDialog
   }
 }
 
