@@ -696,7 +696,6 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
 }
 
 void BraveRenderViewContextMenu::MaybeBuildBraveScreenshotsMenu() {
-
   if (!brave_screenshots::features::IsBraveScreenshotsEnabled()) {
     return;
   }
