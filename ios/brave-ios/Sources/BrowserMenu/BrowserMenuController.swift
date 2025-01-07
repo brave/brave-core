@@ -27,6 +27,17 @@ public class BrowserMenuController: UIHostingController<BrowserMenu> {
         handlePresentation: handlePresentation
       )
     )
+    rootView.onShowAllActions = { [weak self] in
+      guard let self else { return }
+      if let controller = sheetPresentationController
+        ?? popoverPresentationController?.adaptiveSheetPresentationController
+      {
+        controller.animateChanges {
+          controller.selectedDetentIdentifier = .large
+        }
+      }
+      preferredContentSize.height = view.intrinsicContentSize.height
+    }
   }
 
   required init?(coder: NSCoder) {
@@ -37,6 +48,7 @@ public class BrowserMenuController: UIHostingController<BrowserMenu> {
     super.viewDidLoad()
 
     view.backgroundColor = .clear
+    popoverPresentationController?.backgroundColor = .clear
   }
 
   public override func viewIsAppearing(_ animated: Bool) {
@@ -53,5 +65,7 @@ public class BrowserMenuController: UIHostingController<BrowserMenu> {
       ]
       controller.prefersGrabberVisible = true
     }
+
+    preferredContentSize = CGSize(width: 375, height: size.height)
   }
 }
