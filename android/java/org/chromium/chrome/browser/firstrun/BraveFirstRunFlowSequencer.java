@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.firstrun;
 
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
+import org.chromium.chrome.browser.signin.AppRestrictionSupplier;
+import org.chromium.chrome.browser.signin.ChildAccountStatusSupplier;
 import org.chromium.components.signin.AccountManagerFacadeProvider;
 
 public abstract class BraveFirstRunFlowSequencer extends FirstRunFlowSequencer {
@@ -15,7 +17,7 @@ public abstract class BraveFirstRunFlowSequencer extends FirstRunFlowSequencer {
                 profileSupplier,
                 new ChildAccountStatusSupplier(
                         AccountManagerFacadeProvider.getInstance(),
-                        FirstRunAppRestrictionInfo.takeMaybeInitialized()));
+                        AppRestrictionSupplier.takeMaybeInitialized()));
     }
 
     @Override
