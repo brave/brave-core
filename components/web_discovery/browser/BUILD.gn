@@ -11,6 +11,8 @@ static_library("browser") {
   sources = [
     "background_credential_helper.cc",
     "background_credential_helper.h",
+    "background_credential_helper_impl.cc",
+    "background_credential_helper_impl.h",
     "credential_manager.cc",
     "credential_manager.h",
     "credential_signer.h",

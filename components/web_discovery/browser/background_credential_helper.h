@@ -11,10 +11,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/web_discovery/browser/anonymous_credentials/lib.rs.h"
 #include "brave/components/web_discovery/browser/rsa.h"
 #include "crypto/rsa_private_key.h"
-#include "third_party/rust/cxx/v1/cxx.h"
 
 namespace web_discovery {
 
@@ -35,32 +33,27 @@ struct GenerateJoinRequestResult {
 
 class BackgroundCredentialHelper {
  public:
-  BackgroundCredentialHelper();
-  ~BackgroundCredentialHelper();
+  static std::unique_ptr<BackgroundCredentialHelper> Create();
 
-  BackgroundCredentialHelper(const BackgroundCredentialHelper&) = delete;
-  BackgroundCredentialHelper& operator=(const BackgroundCredentialHelper&) =
-      delete;
+  virtual ~BackgroundCredentialHelper() = default;
 
-  void UseFixedSeedForTesting();
+  virtual void UseFixedSeedForTesting() = 0;
 
-  std::unique_ptr<RSAKeyInfo> GenerateRSAKey();
-  void SetRSAKey(std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key);
-  std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
-      std::string pre_challenge);
-  std::optional<std::string> FinishJoin(std::string date,
-                                        std::vector<uint8_t> group_pub_key,
-                                        std::vector<uint8_t> gsk,
-                                        std::vector<uint8_t> join_resp_bytes);
-  std::optional<std::vector<uint8_t>> PerformSign(
+  virtual std::unique_ptr<RSAKeyInfo> GenerateRSAKey() = 0;
+  virtual void SetRSAKey(
+      std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key) = 0;
+  virtual std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
+      std::string pre_challenge) = 0;
+  virtual std::optional<std::string> FinishJoin(
+      std::string date,
+      std::vector<uint8_t> group_pub_key,
+      std::vector<uint8_t> gsk,
+      std::vector<uint8_t> join_resp_bytes) = 0;
+  virtual std::optional<std::vector<uint8_t>> PerformSign(
       std::vector<uint8_t> msg,
       std::vector<uint8_t> basename,
       std::optional<std::vector<uint8_t>> gsk_bytes,
-      std::optional<std::vector<uint8_t>> credential_bytes);
-
- private:
-  rust::Box<AnonymousCredentialsManager> anonymous_credentials_manager_;
-  std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key_;
+      std::optional<std::vector<uint8_t>> credential_bytes) = 0;
 };
 
 }  // namespace web_discovery

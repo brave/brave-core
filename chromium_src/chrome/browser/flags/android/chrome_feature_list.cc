@@ -59,8 +59,7 @@
     &brave_shields::features::kBraveLocalhostAccessPermission,          \
     &brave_shields::features::kBlockAllCookiesToggle,                   \
     &brave_shields::features::kBraveShieldsElementPicker,               \
-    &features::kNewAndroidOnboarding,                                   \
-    &web_discovery::features::kWebDiscoveryNative
+    &features::kNewAndroidOnboarding
 
 // clang-format on
 

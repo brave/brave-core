@@ -14,6 +14,7 @@
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/web_discovery/browser/background_credential_helper.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/util.h"
@@ -71,7 +72,8 @@ CredentialManager::CredentialManager(
       join_url_(GetDirectHPNHost() + kJoinPath),
       backoff_entry_(&kBackoffPolicy),
       background_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
-      background_credential_helper_(background_task_runner_) {}
+      background_credential_helper_(background_task_runner_,
+                                    BackgroundCredentialHelper::Create()) {}
 
 CredentialManager::~CredentialManager() = default;
 

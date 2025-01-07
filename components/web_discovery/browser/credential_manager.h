@@ -107,7 +107,8 @@ class CredentialManager : public CredentialSigner {
 
   scoped_refptr<base::SequencedTaskRunner> background_task_runner_;
 
-  base::SequenceBound<BackgroundCredentialHelper> background_credential_helper_;
+  base::SequenceBound<std::unique_ptr<BackgroundCredentialHelper>>
+      background_credential_helper_;
   std::optional<std::string> rsa_public_key_b64_;
 
   std::optional<std::string> loaded_credential_date_;
