@@ -197,18 +197,18 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost) ||
 #else
-      (base::FeatureList::IsEnabled(
-           brave_news::features::kBraveNewsFeedUpdate) &&
-       url.host_piece() == kBraveNewsInternalsHost) ||
-      (url.host_piece() == kWalletPageHost &&
-       brave_wallet::IsAllowedForContext(profile)) ||
-      // On Android New Tab is a native page implemented in Java, so no need
-      // in WebUI.
-      url.host_piece() == chrome::kChromeUINewTabHost ||
-      url.host_piece() == chrome::kChromeUISettingsHost ||
-      ((url.host_piece() == kWelcomeHost ||
-        url.host_piece() == chrome::kChromeUIWelcomeURL) &&
-       !profile->IsGuestSession()) ||
+        (base::FeatureList::IsEnabled(
+             brave_news::features::kBraveNewsFeedUpdate) &&
+         url.host_piece() == kBraveNewsInternalsHost) ||
+        (url.host_piece() == kWalletPageHost &&
+         brave_wallet::IsAllowedForContext(profile)) ||
+        // On Android New Tab is a native page implemented in Java, so no need
+        // in WebUI.
+        url.host_piece() == chrome::kChromeUINewTabHost ||
+        url.host_piece() == chrome::kChromeUISettingsHost ||
+        ((url.host_piece() == kWelcomeHost ||
+          url.host_piece() == chrome::kChromeUIWelcomeURL) &&
+         !profile->IsGuestSession()) ||
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
