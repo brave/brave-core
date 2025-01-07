@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/common/url_constants.h"
+#include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 
 namespace email_aliases {
 
@@ -26,6 +27,7 @@ EmailAliasesBubbleUI::EmailAliasesBubbleUI(content::WebUI* web_ui)
       web_ui, kEmailAliasesBubbleHost, kEmailAliasesBubbleGenerated,
       kEmailAliasesBubbleGeneratedSize, IDR_EMAIL_ALIASES_BUBBLE_HTML);
   web_ui->AddMessageHandler(std::make_unique<BraveEmailAliasesHandler>());
+  settings::BraveAddEmailAliasesStrings(source);
   DCHECK(source);
 }
 
