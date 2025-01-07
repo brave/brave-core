@@ -16,7 +16,6 @@
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "brave/components/webcompat_reporter/buildflags/buildflags.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/load_flags.h"
 #include "net/base/mime_util.h"
 #include "services/network/public/cpp/resource_request.h"
