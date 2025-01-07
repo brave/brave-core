@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/tpcd/heuristics/redirect_heuristic_tab_helper.h"
+#include "content/browser/tpcd_heuristics/redirect_heuristic_tab_helper.h"
 
 #define RedirectHeuristicTabHelper RedirectHeuristicTabHelper_ChromiumImpl
-#include "src/chrome/browser/tpcd/heuristics/redirect_heuristic_tab_helper.cc"
+#include "src/content/browser/tpcd_heuristics/redirect_heuristic_tab_helper.cc"
 #undef RedirectHeuristicTabHelper
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(RedirectHeuristicTabHelper);
