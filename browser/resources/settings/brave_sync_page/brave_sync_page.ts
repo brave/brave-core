@@ -91,7 +91,8 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
   onSyncTap_() {
     // Users can go to sync subpage regardless of sync status.
     const router = Router.getInstance();
-    router.navigateTo((router.getRoutes() as {BRAVE_SYNC_SETUP: Route}).BRAVE_SYNC_SETUP);
+    router.navigateTo(
+      (router.getRoutes() as {BRAVE_SYNC_SETUP: Route}).BRAVE_SYNC_SETUP);
   }
 
   /**

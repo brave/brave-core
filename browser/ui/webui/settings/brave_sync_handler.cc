@@ -118,8 +118,9 @@ void BraveSyncHandler::OnJavascriptDisallowed() {
 }
 
 void BraveSyncHandler::OnDeviceInfoChange() {
-  if (IsJavascriptAllowed())
+  if (IsJavascriptAllowed()) {
     FireWebUIListener("device-info-changed", GetSyncDeviceList());
+  }
 }
 
 void BraveSyncHandler::HandleGetDeviceList(const base::Value::List& args) {
@@ -134,8 +135,9 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
 
   auto* sync_service = GetSyncService();
   std::string sync_code;
-  if (sync_service)
+  if (sync_service) {
     sync_code = sync_service->GetOrCreateSyncCode();
+  }
 
   auto time_limited_sync_code = TimeLimitedWords::GenerateForNow(sync_code);
   if (time_limited_sync_code.has_value()) {
@@ -155,8 +157,9 @@ void BraveSyncHandler::HandleGetPureSyncCode(const base::Value::List& args) {
 
   auto* sync_service = GetSyncService();
   std::string sync_code;
-  if (sync_service)
+  if (sync_service) {
     sync_code = sync_service->GetOrCreateSyncCode();
+  }
 
   ResolveJavascriptCallback(args[0], base::Value(sync_code));
 }
