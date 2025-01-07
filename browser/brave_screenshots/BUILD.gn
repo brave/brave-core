@@ -53,22 +53,13 @@ source_set("features") {
 
 source_set("unit_tests") {
   testonly = true
-  assert(enable_brave_screenshots)
   sources = [ "test/brave_screenshots_unittests.cc" ]
   deps = [
-    ":brave_screenshots",
     ":features",
     "//base",
     "//brave/app:command_ids",
-    "//chrome/browser",
-    "//chrome/browser/search_engines",
     "//chrome/test:test_support",
-    "//components/custom_handlers",
-    "//components/custom_handlers:test_support",
-    "//components/search_engines",
-    "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
-    "//third_party/abseil-cpp:absl",
   ]
 }
