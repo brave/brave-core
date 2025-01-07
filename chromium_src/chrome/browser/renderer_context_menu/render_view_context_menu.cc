@@ -847,7 +847,8 @@ void BraveRenderViewContextMenu::InitMenu() {
           link_index.value() + 1, IDC_COPY_CLEAN_LINK, IDS_COPY_CLEAN_LINK);
     }
   }
-  if (GetSelectedURL(GetProfile(), params_.selection_text).has_value()) {
+  if (!params_.selection_text.empty() &&
+      GetSelectedURL(GetProfile(), params_.selection_text).has_value()) {
     std::optional<size_t> copy_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPY);
     if (copy_index.has_value() &&
