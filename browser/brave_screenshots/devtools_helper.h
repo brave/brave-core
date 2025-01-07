@@ -6,13 +6,15 @@
 #ifndef BRAVE_BROWSER_BRAVE_SCREENSHOTS_DEVTOOLS_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_SCREENSHOTS_DEVTOOLS_HELPER_H_
 
+#include <memory>
+
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "content/public/browser/devtools_agent_host.h"
 
 namespace content {
 class WebContents;
-} // namespace content
+}  // namespace content
 
 namespace brave_screenshots {
 
@@ -31,6 +33,6 @@ class DevToolsHelper {
   std::unique_ptr<content::DevToolsAgentHostClient> devtools_client_ = nullptr;
 };
 
-} // namespace brave_screenshots
+}  // namespace brave_screenshots
 
 #endif  // BRAVE_BROWSER_BRAVE_SCREENSHOTS_DEVTOOLS_HELPER_H_
