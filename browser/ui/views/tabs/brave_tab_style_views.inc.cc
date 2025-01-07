@@ -434,9 +434,7 @@ SkColor BraveVerticalTabStyle::GetTargetTabBackgroundColor(
   // dragging here. As having selected tab state in a tile is not a
   // common state, I think it's fine to not have that state in a tile.
   if (IsTabTiled(tab()) && !tab()->IsActive() && !hovered) {
-    return cp->GetColor(ShouldShowVerticalTabs()
-                            ? kColorBraveSplitViewTileBackgroundVertical
-                            : kColorBraveSplitViewTileBackgroundHorizontal);
+    return SK_ColorTRANSPARENT;
   }
 
   if (!ShouldShowVerticalTabs()) {
