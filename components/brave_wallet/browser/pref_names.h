@@ -105,6 +105,9 @@ inline constexpr char kBraveWalletEip1559ForCustomNetworksMigrated[] =
 // 06/2024 to mark existing compressed Solana NFTs as compressed.
 inline constexpr char kBraveWalletIsCompressedNftMigrated[] =
     "brave.wallet.is_compressed_nft_migrated";
+// Added 11/2024 to mark Aurora mainnet as migrated.
+inline constexpr char kBraveWalletAuroraMainnetMigrated[] =
+    "brave.wallet.aurora_mainnet_migrated";
 
 // 08/2024 to mark fix existign SPL tokens marked as unsupported
 inline constexpr char kBraveWalletIsSPLTokenProgramMigrated[] =

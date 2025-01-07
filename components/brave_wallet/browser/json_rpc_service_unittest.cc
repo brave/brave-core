@@ -2116,7 +2116,7 @@ TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   UpdateCustomNetworks(prefs(), &values);
 
   EXPECT_CALL(callback,
-              Run(ElementsAreArray({"0x1", "0x4e454152", "0x89", "0x38", "0xa",
+              Run(ElementsAreArray({"0x1", "0x2105", "0x89", "0x38", "0xa",
                                     "0xa86a", "0x13a", "0xe9ac0d6", "0xaa36a7",
                                     "0x4cb2f", "0x539"})));
   json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
