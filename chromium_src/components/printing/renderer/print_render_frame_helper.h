@@ -43,9 +43,9 @@ class PrintRenderFrameHelper : public PrintRenderFrameHelper_ChromiumImpl {
 #endif
       bool has_selection) override;
   void SetIsPrintPreviewExtraction(bool value) override;
-#endif
 
   bool is_print_preview_extraction_ = false;
+#endif
 };
 }  // namespace printing
 
