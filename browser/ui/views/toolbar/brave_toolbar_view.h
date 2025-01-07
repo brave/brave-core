@@ -63,9 +63,6 @@ class BraveToolbarView : public ToolbarView,
   void ResetButtonBounds();
   void UpdateBookmarkVisibility();
 
-  // ToolbarButtonProvider:
-  views::View* GetAnchorView(std::optional<PageActionIconType> type) override;
-
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
