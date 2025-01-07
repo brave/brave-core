@@ -220,7 +220,8 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   if (base::FeatureList::IsEnabled(
-          web_discovery::features::kBraveWebDiscoveryNative)) {
+          web_discovery::features::kBraveWebDiscoveryNative) &&
+      !IsIncognitoProcess()) {
     new web_discovery::BlinkDocumentExtractor(render_frame, registry);
   }
 #endif

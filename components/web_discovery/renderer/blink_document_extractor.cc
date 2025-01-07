@@ -60,6 +60,9 @@ BlinkDocumentExtractor::BlinkDocumentExtractor(
     content::RenderFrame* render_frame,
     service_manager::BinderRegistry* registry)
     : content::RenderFrameObserver(render_frame), render_frame_(render_frame) {
+  if (!render_frame->IsMainFrame()) {
+    return;
+  }
   registry->AddInterface<mojom::DocumentExtractor>(base::BindRepeating(
       &BlinkDocumentExtractor::BindReceiver, base::Unretained(this)));
 }

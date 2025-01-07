@@ -15,6 +15,7 @@ static_library("browser") {
   deps = [
     ":internal",
     "//base",
+    "//brave/components/web_discovery/common:mojom",
     "//components/keyed_service/core",
     "//components/prefs",
     "//services/network/public/cpp",

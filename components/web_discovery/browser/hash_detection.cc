@@ -35,6 +35,10 @@ constexpr double kClassifierThreshold = 0.015;
 bool IsHashLikely(std::string value, double threshold_multiplier) {
   TransformToAlphanumeric(value);
 
+  if (value.empty()) {
+    return false;
+  }
+
   double log_prob_sum = 0.0;
   size_t add_count = 0;
   for (size_t i = 0; i < value.length() - 1; i++) {

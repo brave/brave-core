@@ -13,7 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/values.h"
-#include "brave/components/web_discovery/browser/document_extractor/src/lib.rs.h"
+#include "brave/components/web_discovery/browser/document_extractor/lib.rs.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
