@@ -19,7 +19,6 @@ export class BraveShieldsCosmeticFiltersView
   extends LegacyWrapper.LegacyWrapper.WrappableComponent
   implements SDK.TargetManager.Observer
 {
-  static readonly litTagName = LitHtml.literal`devtools-brave-shields-cosmetic-filters-view`
   readonly #shadow = this.attachShadow({ mode: 'open' })
   readonly #renderBound = this.#render.bind(this)
   private shieldsModel?: BraveShieldsModel.BraveShieldsModel | null
@@ -164,14 +163,14 @@ export class BraveShieldsCosmeticFiltersView
     })
 
     return LitHtml.html`
-        <${DataGrid.DataGridController.DataGridController.litTagName}
+        <devtools-data-grid-controller
           style=${style}
           .data=${
             gridData as DataGrid.DataGridController.DataGridControllerData
           }
           @cellfocused=${this.#onFilterFocused}
         >
-        </${DataGrid.DataGridController.DataGridController.litTagName}>
+        </devtools-data-grid-controller>
     `
   }
 
@@ -229,14 +228,14 @@ export class BraveShieldsCosmeticFiltersView
     })
 
     return LitHtml.html`
-        <${DataGrid.DataGridController.DataGridController.litTagName}
+        <devtools-data-grid-controller
           style=${style}
           .data=${
             gridData as DataGrid.DataGridController.DataGridControllerData
           }
           @cellfocused=${this.#onNodeFocused}
         >
-        </${DataGrid.DataGridController.DataGridController.litTagName}>
+        <devtools-data-grid-controller>
     `
   }
 
@@ -265,14 +264,14 @@ export class BraveShieldsCosmeticFiltersView
   async #render(): Promise<void> {
     LitHtml.render(
       LitHtml.html`
-      <${SplitView.SplitView.SplitView.litTagName}>
+      <devtools-split-view>
         <div slot="main">
           ${this.#renderFilters()}
         </div>
         <div slot="sidebar">
           ${this.#renderNodes()}
         </div>
-      </${SplitView.SplitView.SplitView.litTagName}>
+      </devtools-split-view>
     `,
       this.#shadow,
       { host: this }

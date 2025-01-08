@@ -15,7 +15,6 @@ export class BraveShieldsScriptletsView
   extends LegacyWrapper.LegacyWrapper.WrappableComponent
   implements SDK.TargetManager.Observer
 {
-  static readonly litTagName = LitHtml.literal`devtools-brave-shields-scriptlets-view`
   readonly #shadow = this.attachShadow({ mode: 'open' })
   readonly #renderBound = this.#render.bind(this)
   #model?: BraveShieldsModel.BraveShieldsModel
