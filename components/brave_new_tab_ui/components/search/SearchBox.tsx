@@ -18,15 +18,14 @@ const searchBoxClass = 'ntp-search-box'
 const SearchInput = styled(Input)`
   --leo-control-focus-effect: none;
   --leo-control-padding: 12px 10px;
-  --leo-control-color: rgba(255, 255, 255, 0.1);
-  --leo-control-text-color: ${color.white};
+  --leo-control-text-color: ${color.text.primary};
   --leo-control-font: ${font.large.regular};
 
   display: inline-block;
   width: 540px;
 
   leo-icon {
-    --leo-icon-color: rgba(255, 255, 255, 0.5);
+    --leo-icon-color: ${color.icon.default};
   }
 `
 
@@ -45,14 +44,6 @@ const Container = styled.div`
   }
 
   border-radius: var(--leo-control-radius);
-`
-
-export const Backdrop = styled.div`
-  z-index: -1;
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(64px);
-  border-radius: ${searchBoxRadius};
 `
 
 export default function SearchBox() {

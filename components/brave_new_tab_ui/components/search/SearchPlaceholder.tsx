@@ -5,14 +5,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { useNewTabPref } from '../../hooks/usePref';
-import SearchBox, { Backdrop } from './SearchBox';
+import SearchBox from './SearchBox';
 import { SearchContext, useSearchContext } from './SearchContext';
 import SearchDialog from './SearchDialog';
 import { searchBoxRadius } from './config';
 import Button from '@brave/leo/react/button';
 import Icon from '@brave/leo/react/icon';
 import ButtonMenu from '@brave/leo/react/buttonMenu';
-import { spacing } from '@brave/leo/tokens/css/variables';
+import { color, spacing } from '@brave/leo/tokens/css/variables';
 import { getLocale } from '$web-common/locale';
 import getNTPBrowserAPI from '../../api/background';
 
@@ -38,7 +38,7 @@ const MenuContainer = styled(ButtonMenu).attrs({
 `
 
 const MenuButton = styled(Button)`
-  color: white;
+  color: ${color.container.background};
 `
 
 const PlaceholderContainer = styled.div`
@@ -69,7 +69,6 @@ function Swapper() {
       setOpen(true)
       setBoxPos(e.currentTarget.getBoundingClientRect().y)
     }}>
-      <Backdrop />
       <SearchBox />
       <div data-theme="light">
         <MenuContainer>
