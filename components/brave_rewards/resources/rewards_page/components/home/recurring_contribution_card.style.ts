@@ -77,6 +77,7 @@ export const style = scoped.css`
     .amount {
       color: ${color.text.secondary};
       text-align: right;
+      text-wrap: nowrap;
     }
 
     .exchange-amount {

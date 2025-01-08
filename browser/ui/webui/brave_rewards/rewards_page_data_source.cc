@@ -266,7 +266,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"tosUpdateLink", IDS_REWARDS_TOS_UPDATE_LINK_TEXT},
     {"tosUpdateRequiredText", IDS_REWARDS_TOS_UPDATE_TEXT},
     {"tosUpdateRequiredTitle", IDS_REWARDS_TOS_UPDATE_HEADING},
-    {"viewAllLink", IDS_REWARDS_VIEW_ALL_LINK},
     {"viewStoreLink", IDS_REWARDS_VIEW_STORE_LINK},
     {"wdpCheckboxLabel", IDS_REWARDS_WDP_CHECKBOX_LABEL},
     {"wdpOptInText", IDS_REWARDS_WDP_OPT_IN_TEXT},

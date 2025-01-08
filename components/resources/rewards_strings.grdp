@@ -946,9 +946,6 @@
   <message name="IDS_REWARDS_MERCH_STORE_TITLE" desc="">
     Brave merch store
   </message>
-  <message name="IDS_REWARDS_VIEW_ALL_LINK" desc="">
-    View all
-  </message>
   <message name="IDS_REWARDS_VIEW_STORE_LINK" desc="">
     View Store
   </message>

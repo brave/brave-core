@@ -80,7 +80,7 @@ export function createModel(): AppModel {
           url: 'https://brave.com',
           platform: 'youtube'
         },
-        amount: 1.5,
+        amount: 0.025,
         nextContributionDate: Date.now()
       }
     ],

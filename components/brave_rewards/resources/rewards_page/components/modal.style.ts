@@ -8,7 +8,7 @@ import { scoped } from '../lib/scoped_css'
 
 export const modalStyle = scoped.css`
   & {
-    --self-animation-duration: 250ms;
+    --self-animation-duration: 120ms;
     --modal-header-padding-bottom: 32px;
     --modal-padding: 32px;
 
