@@ -120,4 +120,7 @@ provideStrings({
   goBackToActiveConversationButton: 'Go back to the active conversation',
   conversationListUntitled: 'New conversation',
   stopGenerationButtonLabel: 'Stop answering',
+  deleteButtonLabel: 'Delete',
+  deleteConversationWarning: 'Are you sure you want to delete this conversation? This action cannot be undone.',
+  menuDeleteConversation: 'Delete conversation'
 })

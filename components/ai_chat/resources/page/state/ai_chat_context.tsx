@@ -32,6 +32,8 @@ type AIChatContextInternal = AIChatContextProps & {
 
   editingConversationId: string | null
   setEditingConversationId: (uuid: string | null) => void,
+  deletingConversationId: string | null
+  setDeletingConversationId: (uuid: string | null) => void
 
   showSidebar: boolean,
   toggleSidebar: () => void
@@ -52,6 +54,8 @@ const defaultContext: AIChatContext = {
 
   editingConversationId: null,
   setEditingConversationId: () => { },
+  deletingConversationId: null,
+  setDeletingConversationId: () => { },
 
   showSidebar: false,
   toggleSidebar: () => { },
@@ -71,6 +75,8 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
   const context = useAPIState(api, defaultContext)
   const [editingConversationId, setEditingConversationId] =
     React.useState<string | null>(null)
+  const [deletingConversationId, setDeletingConversationId] =
+    React.useState<string | null>(null)
   const isSmall = useIsSmall()
   const [showSidebar, setShowSidebar] = React.useState(isSmall)
 
@@ -87,6 +93,8 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
     service: api.service,
     editingConversationId,
     setEditingConversationId,
+    deletingConversationId,
+    setDeletingConversationId,
     showSidebar,
     toggleSidebar: () => setShowSidebar(s => !s),
     conversationEntriesComponent: props.conversationEntriesComponent

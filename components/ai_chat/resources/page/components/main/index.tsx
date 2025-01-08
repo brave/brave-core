@@ -23,6 +23,7 @@ import LongConversationInfo from '../alerts/long_conversation_info'
 import NoticeConversationStorage from '../notices/notice_conversation_storage'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import ConversationsList from '../conversations_list'
+import DeleteConversationModal from '../delete_conversation_modal'
 import FeedbackForm from '../feedback_form'
 import { ConversationHeader } from '../header'
 import InputBox from '../input_box'
@@ -353,6 +354,7 @@ function Main() {
           />
         </ToolsButtonMenu>
       </div>
+      <DeleteConversationModal />
     </main>
   )
 }
