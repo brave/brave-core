@@ -36,6 +36,7 @@ std::unique_ptr<HDKey> ConstructAccountsRootKey(base::span<const uint8_t> seed,
   }
 }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
 std::unique_ptr<HDKeyZip32> ConstructOrchardAccountsRootKey(
     base::span<const uint8_t> seed,
     bool testnet) {
@@ -50,6 +51,7 @@ std::unique_ptr<HDKeyZip32> ConstructOrchardAccountsRootKey(
   return orchard_key->DeriveHardenedChild(
       testnet ? kTestnetCoinType : static_cast<uint32_t>(mojom::CoinType::ZEC));
 }
+#endif
 
 }  // namespace
 
