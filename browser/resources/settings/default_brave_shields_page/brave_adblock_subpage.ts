@@ -3,26 +3,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import './components/brave_adblock_editor.js'
+import './components/brave_adblock_scriptlet_list.js'
+import './components/brave_adblock_subscribe_dropdown.js'
 
-import 'chrome://resources/cr_elements/cr_button/cr_button.js';
-import 'chrome://resources/cr_elements/icons.html.js';
-import './components/brave_adblock_subscribe_dropdown.js';
-import './components/brave_adblock_editor.js';
-import './components/brave_adblock_scriptlet_list.js';
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {
+  type DomRepeatEvent,
+  PolymerElement
+} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {BaseMixin} from '../base_mixin.js'
 
-import {BaseMixin} from '../base_mixin.js';
+import {
+  BraveAdblockBrowserProxy,
+  BraveAdblockBrowserProxyImpl,
+  FilterList,
+  SubscriptionInfo
+} from './brave_adblock_browser_proxy.js'
 
-import {BraveAdblockBrowserProxyImpl} from './brave_adblock_browser_proxy.js'
 import {getTemplate} from './brave_adblock_subpage.html.js'
 
-import { loadTimeData } from '../i18n_setup.js'
-
-import type {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js';
+import {loadTimeData} from '../i18n_setup.js'
 
 const AdBlockSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
 
@@ -55,9 +58,18 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     }
   }
 
-  browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
+  private filterList_: FilterList[]
+  private subscriptionList_: SubscriptionInfo[]
+  private customFilters_: string
+  private subscribeUrl_: string
+  private listsUpdatingState_: string
+  private hasListExpanded_: boolean
+  private cosmeticFilteringCustomScriptletsEnabled_: boolean
 
-  ready() {
+  private browserProxy_: BraveAdblockBrowserProxy =
+    BraveAdblockBrowserProxyImpl.getInstance()
+
+  override ready() {
     super.ready()
 
     this.listsUpdatingState_ = ''
@@ -75,18 +87,18 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     })
 
     this.browserProxy_.addWebUiListener(
-      'brave_adblock.onGetListSubscriptions', (value) => {
+      'brave_adblock.onGetListSubscriptions', (value: SubscriptionInfo[]) => {
         this.subscriptionList_ = value
     })
   }
 
-  handleShowList_() {
+  private handleShowList_() {
     if (!this.hasListExpanded_) {
       this.hasListExpanded_ = true
     }
   }
 
-  handleUpdateLists_() {
+  private handleUpdateLists_() {
     if (this.listsUpdatingState_ === 'updating') {
       return
     }
@@ -100,72 +112,85 @@ class AdBlockSubpage extends AdBlockSubpageBase {
     })
   }
 
-  searchListBy_(title) {
+  private searchListBy_(title: string) {
     if (!title) {
       this.hasListExpanded_ = false
       return null
     }
 
-    return (item) => {
+    return (item: SubscriptionInfo) => {
       this.hasListExpanded_ = true
       title = title.toLowerCase()
-      return (item.title.toLowerCase().includes(title))
+      return (item.title?.toLowerCase().includes(title))
     }
   }
 
-  handleFilterListItemToggle_(e) {
-    this.browserProxy_.enableFilterList(e.model.get('item.uuid'), e.model.get('item.enabled'))
+  private handleFilterListItemToggle_(e: DomRepeatEvent<FilterList>) {
+    const filterList = e.model.item
+    this.browserProxy_.enableFilterList(filterList.uuid, filterList.enabled)
   }
 
-  handleSubscribeUrlItemItemToggle_(e) {
-    this.browserProxy_.setSubscriptionEnabled(e.model.get('item.subscription_url'), e.model.get('item.enabled'))
+  private handleSubscribeUrlItemItemToggle_(
+    e: DomRepeatEvent<SubscriptionInfo>)
+  {
+    const subscriptionInfo = e.model.item
+    this.browserProxy_.setSubscriptionEnabled(
+      subscriptionInfo.subscription_url, subscriptionInfo.enabled)
   }
 
-  onKeyUp_(e) {
+  private onKeyUp_(e: KeyboardEvent) {
     if (e.keyCode === 13) {
       this.handleSubmitUrl_()
     }
   }
 
-  handleSubmitUrl_() {
+  private handleSubmitUrl_() {
     const url = this.subscribeUrl_.trim()
     if (!url) return
 
     this.browserProxy_.addSubscription(url)
-    this.subscribeUrl_ = null
+    this.subscribeUrl_ = ''
   }
 
-  handleSave_(e) {
+  private handleSave_(e: CustomEvent) {
     const value = e.detail.value
     this.browserProxy_.updateCustomFilters(value)
   }
 
-  handleUpdateSubscription_(e) {
-    this.browserProxy_.updateSubscription(e.model.get('item.subscription_url'))
+  private handleUpdateSubscription_(
+    e: Event&{model: {item: SubscriptionInfo}})
+  {
+    this.browserProxy_.updateSubscription(e.model.item.subscription_url)
   }
 
-  handleDeleteSubscription_(e) {
-    this.browserProxy_.deleteSubscription(e.model.get('item.subscription_url'))
+  private handleDeleteSubscription_(
+    e: Event&{model: {item: SubscriptionInfo}})
+  {
+    this.browserProxy_.deleteSubscription(e.model.item.subscription_url)
   }
 
-  handleViewSubscription_(e) {
-    this.browserProxy_.viewSubscription(e.model.get('item.subscription_url'))
+  private handleViewSubscription_(
+    e: Event&{model: {item: SubscriptionInfo}})
+  {
+    this.browserProxy_.viewSubscription(e.model.item.subscription_url)
   }
 
-  getStringHtml_(id, link) {
+  private getStringHtml_(id: string, link: string) {
     return this.i18nAdvanced(id, { substitutions: [ link ]})
   }
 
-  isEqual_(lhs, rhs) {
+  private isEqual_(lhs: any, rhs: any) {
     return lhs === rhs
   }
 
-  isFailedUpdate_(item) {
-    return item.last_successful_update_attempt !== 0 && item.last_successful_update_attempt !== item.last_update_attempt
+  private isFailedUpdate_(item: SubscriptionInfo) {
+    return item.last_successful_update_attempt !== 0 &&
+           item.last_successful_update_attempt !== item.last_update_attempt
   }
 
-  isLastAttemptFailed_(item) {
-    return item.last_successful_update_attempt !== 0 && item.last_successful_update_attempt === item.last_update_attempt
+  private isLastAttemptFailed_(item: SubscriptionInfo) {
+    return item.last_successful_update_attempt !== 0 &&
+           item.last_successful_update_attempt === item.last_update_attempt
   }
 }
 

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/router.ts b/chrome/browser/resources/settings/router.ts
-index afe6eb3c611c80833e7ceaa32368a45cf8f2dcad..9e2ae5933cb523c0cf5ab48f5bb4218abd251c42 100644
+index afe6eb3c611c80833e7ceaa32368a45cf8f2dcad..f714d77dd58abb5aafa3495c7e48ff9f71431a98 100644
 --- a/chrome/browser/resources/settings/router.ts
 +++ b/chrome/browser/resources/settings/router.ts
 @@ -121,6 +121,7 @@ export interface SettingsRoutes {
    IMPORT_DATA: Route;
    SIGN_OUT: Route;
    // </if>
-+  GET_STARTED: Route; SHIELDS: Route; SOCIAL_BLOCKING: Route; EXTENSIONS: Route; EXTENSIONS_V2: Route; BRAVE_SYNC: Route; BRAVE_SYNC_SETUP: Route; BRAVE_WALLET: Route; BRAVE_WEB3: Route; BRAVE_NEW_TAB: Route; THEMES: Route;
++  GET_STARTED: Route; SHIELDS: Route; SOCIAL_BLOCKING: Route; EXTENSIONS: Route; EXTENSIONS_V2: Route; BRAVE_SYNC: Route; BRAVE_SYNC_SETUP: Route; BRAVE_WALLET: Route; BRAVE_WEB3: Route; BRAVE_NEW_TAB: Route; THEMES: Route; SITE_SETTINGS_AUTOPLAY: Route; SITE_SETTINGS_GOOGLE_SIGN_IN: Route; SITE_SETTINGS_LOCALHOST_ACCESS: Route; SITE_SETTINGS_BRAVE_OPEN_AI_CHAT: Route; SITE_SETTINGS_ETHEREUM: Route; SITE_SETTINGS_SOLANA: Route; SITE_SETTINGS_SHIELDS_STATUS: Route; SHIELDS_ADBLOCK: Route; SHORTCUTS: Route; BRAVE_WALLET_NETWORKS: Route; BRAVE_LEO_ASSISTANT: Route; BRAVE_CONTENT: Route;
  }
  
  /** Class for navigable routes. */

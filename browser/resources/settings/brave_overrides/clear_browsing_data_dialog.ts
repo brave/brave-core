@@ -3,13 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import {
+  RegisterPolymerComponentReplacement,
+  RegisterPolymerTemplateModifications,
+  RegisterStyleOverride
+} from 'chrome://resources/brave/polymer_overriding.js'
 
-import {RegisterPolymerComponentReplacement, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-import {BraveSettingsClearBrowsingDataDialogElement} from '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js'
+import {
+  BraveSettingsClearBrowsingDataDialogElement
+} from '../brave_clear_browsing_data_dialog/brave_clear_browsing_data_dialog_behavior.js'
+
 import {loadTimeData} from '../i18n_setup.js'
 
 RegisterStyleOverride(
@@ -33,7 +39,7 @@ RegisterPolymerComponentReplacement(
 )
 
 RegisterPolymerTemplateModifications({
-  'settings-clear-browsing-data-dialog': (templateContent: HTMLTemplateElement) => {
+  'settings-clear-browsing-data-dialog': (templateContent) => {
     // Append On exit tab page.
     const pagesElement = templateContent.querySelector('#pages')
     if (!pagesElement) {

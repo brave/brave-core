@@ -35,7 +35,7 @@ function checkReadability() {
     }
     
     if(!isProbablyReaderable(document)) {
-      webkit.messageHandlers.readerModeMessageHandler.postMessage({Type: "ReaderModeStateChange", Value: "Unavailable"});
+      webkit.messageHandlers.readerModeMessageHandler.postMessage({"securityToken": SECURITY_TOKEN, "data": {Type: "ReaderModeStateChange", Value: "Unavailable"}});
       return;
     }
 

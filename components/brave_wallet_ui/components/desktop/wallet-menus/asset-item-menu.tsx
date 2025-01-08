@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // Types
-import { BraveWallet, WalletRoutes } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Queries
 import {
@@ -106,11 +106,7 @@ export const AssetItemMenu = (props: Props) => {
   }, [foundMeldBuyToken, history, account, foundAndroidBuyToken, asset])
 
   const onClickSend = React.useCallback(() => {
-    if (account) {
-      history.push(makeSendRoute(asset, account))
-    } else {
-      history.push(WalletRoutes.Send)
-    }
+    history.push(makeSendRoute(asset, account))
   }, [account, history, asset])
 
   const onClickSwap = React.useCallback(() => {

@@ -112,6 +112,7 @@
 #define BRAVE_VERTICAL_TAB_COLOR_IDS                        \
     E_CPONLY(kColorBraveVerticalTabSeparator)               \
     E_CPONLY(kColorBraveVerticalTabActiveBackground)        \
+    E_CPONLY(kColorBraveVerticalTabHoveredBackground)       \
     E_CPONLY(kColorBraveVerticalTabInactiveBackground)      \
     E_CPONLY(kColorBraveVerticalTabNTBIconColor)            \
     E_CPONLY(kColorBraveVerticalTabNTBTextColor)            \
@@ -127,6 +128,7 @@
 #define BRAVE_SPLIT_VIEW_COLOR_IDS \
     E_CPONLY(kColorBraveSplitViewTileBackgroundHorizontal) \
     E_CPONLY(kColorBraveSplitViewTileBackgroundVertical)   \
+    E_CPONLY(kColorBraveSplitViewTileBackgroundBorder)     \
     E_CPONLY(kColorBraveSplitViewTileDivider)              \
     E_CPONLY(kColorBraveSplitViewActiveWebViewBorder)      \
     E_CPONLY(kColorBraveSplitViewInactiveWebViewBorder)    \

@@ -3,22 +3,26 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
+import {
+  RegisterPolymerComponentBehaviors,
+  RegisterStyleOverride
+} from 'chrome://resources/brave/polymer_overriding.js'
 
-import {RegisterPolymerComponentBehaviors, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 import {html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
+import {SettingsUiElement} from '../settings_ui/settings_ui.js'
+
 // TODO: move throttle utility to a chrome://resources module
-function throttle (callback, maxWaitTime = 30) {
+function throttle (callback: () => void, maxWaitTime: number = 30) {
   // Call on first invocation
-  let shouldWait = false;
-  return function (...args) {
+  let shouldWait = false
+  return function (this: unknown, ...args: []) {
     if (!shouldWait) {
-      callback.apply(this, args);
-      shouldWait = true;
+      callback.apply(this, args)
+      shouldWait = true
       setTimeout(function () {
-        shouldWait = false;
-      }, maxWaitTime);
+        shouldWait = false
+      }, maxWaitTime)
     }
   }
 }
@@ -87,42 +91,49 @@ RegisterStyleOverride(
 )
 
 const BraveClearSettingsMenuHighlightBehavior = {
-  ready: function() {
+  ready: function(this: SettingsUiElement) {
     // Clear menu selection after scrolling away.
     // Chromium's menu is not persistant, so does not have
     // this issue.
-    const container = this.$.container
+    const container = this.shadowRoot!.getElementById('container')
     if (!container) {
       console.error('Could not find #container in settings-ui module')
+      return
     }
-    const menu = this.$$('settings-menu')
+    const menu = this.shadowRoot!.querySelector('settings-menu')
     if (!menu) {
       console.error('Could not find settings-menu in settings-ui module')
+      return
     }
-    let onScroll
+    let onScroll: ((event: Event) => void) | null = null
     function stopObservingScroll() {
       if (onScroll) {
-        container.removeEventListener('scroll', onScroll)
+        if (container) {
+          container.removeEventListener('scroll', onScroll)
+        }
         onScroll = null
       }
     }
+    // @ts-expect-error
     window.addEventListener('showing-section', ({ detail: section }) => {
-      // Currently showing or about to scroll to `section`.
-      // If we're getting further away from section top
-      // then section is no longer 'selected'.
-      // TODO(petemill): If this wasn't a chromium module, we'd simply add a handler
-      // for scrolling away, or have the menu change selection as we scroll.
+      // Currently showing or about to scroll to `section`. If we're getting
+      // further away from section top then section is no longer 'selected'.
+      // TODO(petemill): If this wasn't a chromium module, we'd simply add a
+      // handler for scrolling away, or have the menu change selection as we
+      // scroll.
       stopObservingScroll()
       function calcDistance() {
         const sectionScrollTop = section.offsetTop
-        const currentScrollTop = container.scrollTop
+        const currentScrollTop = container?.scrollTop || 0
         return Math.abs(sectionScrollTop - currentScrollTop)
       }
       let distance = calcDistance()
       onScroll = throttle(() => {
         const latestDistance = calcDistance()
         if (latestDistance > distance) {
-          menu.setSelectedUrl_('')
+          if (menu) {
+            (menu as any).setSelectedPath_('')
+          }
           stopObservingScroll()
         } else {
           distance = latestDistance

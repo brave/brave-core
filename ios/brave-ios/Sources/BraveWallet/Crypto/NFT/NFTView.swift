@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveUI
 import DesignSystem
 import Preferences
 import SwiftUI
@@ -70,7 +71,19 @@ struct NFTView: View {
     Group {
       if let urlString = nftViewModel.nftMetadata?.image {
         NFTImageView(urlString: urlString) {
-          LoadingNFTView(shimmer: false)
+          if let url = URL(string: nftViewModel.token.logo) {
+            WebImageReader(url: url) { image in
+              if let image = image {
+                Image(uiImage: image)
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+              } else {
+                LoadingNFTView(shimmer: false)
+              }
+            }
+          } else {
+            LoadingNFTView(shimmer: false)
+          }
         }
       } else {
         LoadingNFTView(shimmer: false)

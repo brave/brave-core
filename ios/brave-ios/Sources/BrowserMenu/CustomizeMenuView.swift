@@ -37,20 +37,10 @@ struct CustomizeMenuView: View {
                   .foregroundStyle(Color(braveSystemName: .iconDefault))
               }
             }
+            .id("Visible-\(id.id)")
           }
-          .onMove { indexSet, offset in
-            guard let index = indexSet.first, let action = model.visibleActions[safe: index] else {
-              return
-            }
-            // SwiftUI's move offset logic is a bit strange where the destination can be the
-            // count instead of the final valid index, so its safer to use SwiftUI's Collection
-            // API to handle it then get the valid destination index of that mutated array.
-            var ids = model.visibleActions.map(\.id)
-            ids.move(fromOffsets: indexSet, toOffset: offset)
-            guard let destination = ids.firstIndex(of: action.id) else {
-              return
-            }
-            model.reorderVisibleAction(action, to: destination)
+          .onMove { source, destination in
+            model.moveVisibleActions(fromOffsets: source, toOffset: destination)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
@@ -77,6 +67,7 @@ struct CustomizeMenuView: View {
                   .foregroundStyle(Color(braveSystemName: .iconDefault))
               }
             }
+            .id("Hidden-\(id.id)")
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
