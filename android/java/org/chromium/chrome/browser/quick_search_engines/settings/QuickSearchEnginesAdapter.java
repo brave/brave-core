@@ -54,7 +54,10 @@ public class QuickSearchEnginesAdapter
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        quickSearchEnginesModel.setEnabled(isChecked);
+                        // Update enabled state of search engine at current adapter position
+                        int position = quickSearchEnginesSettingsViewHolder.getAdapterPosition();
+                        QuickSearchEnginesModel searchEngine = mSearchEngines.get(position);
+                        searchEngine.setEnabled(isChecked);
                         onSearchEngineClick(
                                 quickSearchEnginesSettingsViewHolder.getAdapterPosition(),
                                 quickSearchEnginesModel);
