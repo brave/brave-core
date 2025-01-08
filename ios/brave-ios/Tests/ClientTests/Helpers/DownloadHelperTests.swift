@@ -18,8 +18,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: response,
       cookieStore: cookieStore(),
-      canShowInWebView: true,
-      forceDownload: false
+      canShowInWebView: true
     )
     XCTAssertNotNil(sut)
 
@@ -27,8 +26,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: response,
       cookieStore: cookieStore(),
-      canShowInWebView: false,
-      forceDownload: true
+      canShowInWebView: false
     )
     XCTAssertNotNil(sut)
 
@@ -36,8 +34,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: response,
       cookieStore: cookieStore(),
-      canShowInWebView: false,
-      forceDownload: false
+      canShowInWebView: false
     )
     XCTAssertNotNil(sut)
 
@@ -45,8 +42,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: response,
       cookieStore: cookieStore(),
-      canShowInWebView: true,
-      forceDownload: true
+      canShowInWebView: true
     )
     XCTAssertNotNil(sut)
   }
@@ -61,8 +57,7 @@ class DownloadHelperTests: XCTestCase {
         request: anyRequest(),
         response: response,
         cookieStore: cookieStore(),
-        canShowInWebView: true,
-        forceDownload: false
+        canShowInWebView: true
       )
       XCTAssertNil(sut)
 
@@ -70,8 +65,7 @@ class DownloadHelperTests: XCTestCase {
         request: anyRequest(),
         response: response,
         cookieStore: cookieStore(),
-        canShowInWebView: false,
-        forceDownload: true
+        canShowInWebView: false
       )
       XCTAssertNotNil(sut)
 
@@ -79,17 +73,7 @@ class DownloadHelperTests: XCTestCase {
         request: anyRequest(),
         response: response,
         cookieStore: cookieStore(),
-        canShowInWebView: false,
-        forceDownload: false
-      )
-      XCTAssertNotNil(sut)
-
-      sut = DownloadHelper(
-        request: anyRequest(),
-        response: response,
-        cookieStore: cookieStore(),
-        canShowInWebView: true,
-        forceDownload: true
+        canShowInWebView: false
       )
       XCTAssertNotNil(sut)
     }
@@ -102,8 +86,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: response,
       cookieStore: cookieStore(),
-      canShowInWebView: true,
-      forceDownload: false
+      canShowInWebView: true
     )
     XCTAssertNotNil(sut)
 
@@ -111,8 +94,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: response,
       cookieStore: cookieStore(),
-      canShowInWebView: false,
-      forceDownload: true
+      canShowInWebView: false
     )
     XCTAssertNotNil(sut)
 
@@ -120,8 +102,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: response,
       cookieStore: cookieStore(),
-      canShowInWebView: true,
-      forceDownload: true
+      canShowInWebView: true
     )
     XCTAssertNotNil(sut)
 
@@ -129,8 +110,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: response,
       cookieStore: cookieStore(),
-      canShowInWebView: false,
-      forceDownload: false
+      canShowInWebView: false
     )
     XCTAssertNotNil(sut)
   }
@@ -141,8 +121,7 @@ class DownloadHelperTests: XCTestCase {
       request: request,
       response: anyResponse(mimeType: nil),
       cookieStore: cookieStore(),
-      canShowInWebView: true,
-      forceDownload: false
+      canShowInWebView: true
     )
 
     let downloadAlert = sut?.downloadAlert(from: UIView(), okAction: { _ in })
@@ -156,8 +135,7 @@ class DownloadHelperTests: XCTestCase {
       request: request,
       response: anyResponse(mimeType: nil),
       cookieStore: cookieStore(),
-      canShowInWebView: true,
-      forceDownload: false
+      canShowInWebView: true
     )
 
     let downloadAlert = sut?.downloadAlert(from: UIView(), okAction: { _ in })
@@ -171,8 +149,7 @@ class DownloadHelperTests: XCTestCase {
       request: request,
       response: anyResponse(mimeType: nil),
       cookieStore: cookieStore(),
-      canShowInWebView: true,
-      forceDownload: false
+      canShowInWebView: true
     )
     let okActionIndex = 0
 
@@ -191,8 +168,7 @@ class DownloadHelperTests: XCTestCase {
       request: anyRequest(),
       response: anyResponse(mimeType: nil),
       cookieStore: cookieStore(),
-      canShowInWebView: true,
-      forceDownload: false
+      canShowInWebView: true
     )
 
     let downloadAlert = sut?.downloadAlert(from: UIView(), okAction: { _ in })

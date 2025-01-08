@@ -17,10 +17,10 @@ extension ErrorPageHelper: TabContentScript {
   static let scriptSandbox: WKContentWorld = .page
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 

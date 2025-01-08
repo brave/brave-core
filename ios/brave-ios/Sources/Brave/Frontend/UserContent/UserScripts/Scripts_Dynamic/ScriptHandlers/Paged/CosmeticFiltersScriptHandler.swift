@@ -30,15 +30,9 @@ class CosmeticFiltersScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = nil
 
-  private weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
@@ -59,7 +53,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       Task { @MainActor in
         let domain = Domain.getOrCreate(
           forUrl: frameURL,
-          persistent: self.tab?.isPrivate == true ? false : true
+          persistent: !tab.isPrivate
         )
         let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(for: domain)
 
@@ -76,7 +70,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
               return nil
             }
 
-            return (selectors, cachedEngine.type.isAlwaysAggressive)
+            return await (selectors, cachedEngine.type.isAlwaysAggressive)
           } catch {
             Logger.module.error("\(error.localizedDescription)")
             return nil

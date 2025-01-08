@@ -44,18 +44,12 @@ class RequestBlockingContentScriptHandler: TabContentScript {
     )
   }()
 
-  private weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
-
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    guard let tab = tab, let currentTabURL = tab.webView?.url else {
+    guard let currentTabURL = tab.webView?.url else {
       assertionFailure("Should have a tab set")
       return
     }
@@ -93,7 +87,7 @@ class RequestBlockingContentScriptHandler: TabContentScript {
         // We simply check the known subframeURLs on this page.
         guard
           tab.url?.baseDomain == windowOriginURL.baseDomain
-            || self.tab?.currentPageData?.allSubframeURLs.contains(windowOriginURL) == true
+            || tab.currentPageData?.allSubframeURLs.contains(windowOriginURL) == true
         else {
           replyHandler(shouldBlock, nil)
           return

@@ -10,11 +10,9 @@ import os.log
 
 class AdsMediaReportingScriptHandler: TabContentScript {
   let rewards: BraveRewards
-  weak var tab: Tab?
 
-  init(rewards: BraveRewards, tab: Tab) {
+  init(rewards: BraveRewards) {
     self.rewards = rewards
-    self.tab = tab
   }
 
   static let scriptName = "AdsMediaReportingScript"
@@ -23,10 +21,10 @@ class AdsMediaReportingScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 
@@ -40,7 +38,6 @@ class AdsMediaReportingScriptHandler: TabContentScript {
     }
 
     if let isPlaying = body["data"] as? Bool {
-      guard let tab = tab else { return }
       if isPlaying {
         rewards.reportMediaStarted(tabId: Int(tab.rewardsId))
       } else {

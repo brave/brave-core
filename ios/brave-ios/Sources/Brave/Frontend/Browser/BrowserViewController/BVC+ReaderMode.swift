@@ -54,7 +54,7 @@ extension BrowserViewController: ReaderModeStyleViewControllerDelegate {
           as? ReaderModeScriptHandler
         {
           if readerMode.state == ReaderModeState.active {
-            readerMode.style = style
+            readerMode.setStyle(style, in: tab)
           }
         }
       }

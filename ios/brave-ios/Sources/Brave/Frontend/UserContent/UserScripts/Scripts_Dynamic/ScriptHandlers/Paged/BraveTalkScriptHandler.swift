@@ -14,23 +14,16 @@ import os.log
 import BraveTalk
 
 class BraveTalkScriptHandler: TabContentScript {
-  private weak var tab: Tab?
   private weak var rewards: BraveRewards?
   private var rewardsEnabledReplyHandler: ((Any?, String?) -> Void)?
   private let launchNativeBraveTalk: (_ tab: Tab?, _ room: String, _ token: String) -> Void
 
   required init(
-    tab: Tab,
     rewards: BraveRewards,
     launchNativeBraveTalk: @escaping (_ tab: Tab?, _ room: String, _ token: String) -> Void
   ) {
-    self.tab = tab
     self.rewards = rewards
     self.launchNativeBraveTalk = launchNativeBraveTalk
-
-    tab.rewardsEnabledCallback = { [weak self] success in
-      self?.rewardsEnabledReplyHandler?(success, nil)
-    }
   }
 
   static let scriptName = "BraveTalkScript"
@@ -85,9 +78,9 @@ class BraveTalkScriptHandler: TabContentScript {
     }
   }
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
@@ -114,7 +107,7 @@ class BraveTalkScriptHandler: TabContentScript {
 
     switch payload.kind {
     case .braveRequestAdsEnabled:
-      handleBraveRequestAdsEnabled(replyHandler)
+      handleBraveRequestAdsEnabled(tab: tab, replyHandler)
     case .launchNativeBraveTalk(let url):
       guard let components = URLComponents(string: url),
         case let room = String(components.path.dropFirst(1)),
@@ -127,8 +120,11 @@ class BraveTalkScriptHandler: TabContentScript {
     }
   }
 
-  private func handleBraveRequestAdsEnabled(_ replyHandler: @escaping (Any?, String?) -> Void) {
-    guard let rewards = rewards, tab?.isPrivate != true else {
+  private func handleBraveRequestAdsEnabled(
+    tab: Tab,
+    _ replyHandler: @escaping (Any?, String?) -> Void
+  ) {
+    guard let rewards = rewards, tab.isPrivate != true else {
       replyHandler(false, nil)
       return
     }
@@ -140,10 +136,11 @@ class BraveTalkScriptHandler: TabContentScript {
 
     // If rewards are disabled we show a Rewards panel,
     // The `rewardsEnabledReplyHandler` will be called from other place.
-    if let tab = tab {
-      rewardsEnabledReplyHandler = replyHandler
-      tab.tabDelegate?.showRequestRewardsPanel(tab)
+    rewardsEnabledReplyHandler = replyHandler
+    tab.rewardsEnabledCallback = { [weak self] success in
+      self?.rewardsEnabledReplyHandler?(success, nil)
     }
+    tab.tabDelegate?.showRequestRewardsPanel(tab)
   }
 }
 

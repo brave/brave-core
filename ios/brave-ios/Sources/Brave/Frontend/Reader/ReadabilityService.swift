@@ -38,7 +38,7 @@ class ReadabilityOperation: Operation {
       self.tab.createWebview()
       self.tab.navigationDelegate = self
 
-      let readerMode = ReaderModeScriptHandler(tab: self.tab)
+      let readerMode = ReaderModeScriptHandler()
       readerMode.delegate = self
       self.tab.addContentScript(
         readerMode,

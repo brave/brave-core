@@ -54,14 +54,14 @@ extension ContentBlockerHelper: TabContentScript {
     blockedRequests.removeAll()
   }
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 
-    guard let currentTabURL = tab?.webView?.url else {
+    guard let currentTabURL = tab.webView?.url else {
       assertionFailure("Missing tab or webView")
       return
     }
@@ -128,7 +128,7 @@ extension ContentBlockerHelper: TabContentScript {
           if blockedType == .ad, Preferences.PrivacyReports.captureShieldsData.value,
             let domainURL = URL(string: domainURLString),
             let blockedResourceHost = requestURL.baseDomain,
-            tab?.isPrivate != true
+            !tab.isPrivate
           {
             PrivacyReportsManager.pendingBlockedRequests.append(
               (blockedResourceHost, domainURL, Date())

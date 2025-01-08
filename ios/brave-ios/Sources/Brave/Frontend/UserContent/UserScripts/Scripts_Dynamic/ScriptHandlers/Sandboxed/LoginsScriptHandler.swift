@@ -12,14 +12,12 @@ import WebKit
 import os.log
 
 class LoginsScriptHandler: TabContentScript {
-  private weak var tab: Tab?
   private let profile: Profile
   private let passwordAPI: BravePasswordAPI
 
   private var snackBar: SnackBar?
 
-  required init(tab: Tab, profile: Profile, passwordAPI: BravePasswordAPI) {
-    self.tab = tab
+  required init(profile: Profile, passwordAPI: BravePasswordAPI) {
     self.profile = profile
     self.passwordAPI = passwordAPI
   }
@@ -30,10 +28,10 @@ class LoginsScriptHandler: TabContentScript {
   static let messageHandlerName = "loginsScriptMessageHandler"
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
@@ -71,19 +69,20 @@ class LoginsScriptHandler: TabContentScript {
               formSubmitURL: res["formSubmitURL"] as? String ?? "",
               logins: logins,
               requestId: requestId,
-              frameInfo: message.frameInfo
+              frameInfo: message.frameInfo,
+              tab: tab
             )
           }
         }
       } else if type == "submit" {
         if Preferences.General.saveLogins.value {
-          updateORSaveCredentials(for: url, script: res)
+          updateORSaveCredentials(for: url, script: res, tab: tab)
         }
       }
     }
   }
 
-  private func updateORSaveCredentials(for url: URL, script: [String: Any]) {
+  private func updateORSaveCredentials(for url: URL, script: [String: Any], tab: Tab) {
     guard let scriptCredentials = passwordAPI.fetchFromScript(url, script: script),
       let username = scriptCredentials.usernameValue,
       scriptCredentials.usernameElement != nil,
@@ -112,20 +111,20 @@ class LoginsScriptHandler: TabContentScript {
             return
           }
 
-          self.showUpdatePrompt(from: login, to: scriptCredentials)
+          self.showUpdatePrompt(from: login, to: scriptCredentials, tab: tab)
           return
         } else {
-          self.showAddPrompt(for: scriptCredentials)
+          self.showAddPrompt(for: scriptCredentials, tab: tab)
           return
         }
       }
 
-      self.showAddPrompt(for: scriptCredentials)
+      self.showAddPrompt(for: scriptCredentials, tab: tab)
     }
   }
 
-  private func showAddPrompt(for login: PasswordForm) {
-    addSnackBarForPrompt(for: login, isUpdating: false) { [weak self] in
+  private func showAddPrompt(for login: PasswordForm, tab: Tab) {
+    addSnackBarForPrompt(for: login, tab: tab, isUpdating: false) { [weak self] in
       guard let self = self else { return }
 
       DispatchQueue.main.async {
@@ -134,8 +133,8 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func showUpdatePrompt(from old: PasswordForm, to new: PasswordForm) {
-    addSnackBarForPrompt(for: new, isUpdating: true) { [weak self] in
+  private func showUpdatePrompt(from old: PasswordForm, to new: PasswordForm, tab: Tab) {
+    addSnackBarForPrompt(for: new, tab: tab, isUpdating: true) { [weak self] in
       guard let self = self else { return }
 
       self.passwordAPI.updateLogin(new, oldPasswordForm: old)
@@ -144,6 +143,7 @@ class LoginsScriptHandler: TabContentScript {
 
   private func addSnackBarForPrompt(
     for login: PasswordForm,
+    tab: Tab,
     isUpdating: Bool,
     _ completion: @escaping () -> Void
   ) {
@@ -153,7 +153,7 @@ class LoginsScriptHandler: TabContentScript {
 
     // Remove the existing prompt
     if let existingPrompt = self.snackBar {
-      tab?.removeSnackbar(existingPrompt)
+      tab.removeSnackbar(existingPrompt)
     }
 
     let promptMessage = String(
@@ -174,7 +174,7 @@ class LoginsScriptHandler: TabContentScript {
         ? Strings.loginsHelperDontUpdateButtonTitle : Strings.loginsHelperDontSaveButtonTitle,
       accessibilityIdentifier: "UpdateLoginPrompt.dontSaveUpdateButton"
     ) { [unowned self] bar in
-      self.tab?.removeSnackbar(bar)
+      tab.removeSnackbar(bar)
       self.snackBar = nil
       return
     }
@@ -184,7 +184,7 @@ class LoginsScriptHandler: TabContentScript {
         ? Strings.loginsHelperUpdateButtonTitle : Strings.loginsHelperSaveLoginButtonTitle,
       accessibilityIdentifier: "UpdateLoginPrompt.saveUpdateButton"
     ) { [unowned self] bar in
-      self.tab?.removeSnackbar(bar)
+      tab.removeSnackbar(bar)
       self.snackBar = nil
 
       completion()
@@ -194,7 +194,7 @@ class LoginsScriptHandler: TabContentScript {
     snackBar?.addButton(saveORUpdate)
 
     if let bar = snackBar {
-      tab?.addSnackbar(bar)
+      tab.addSnackbar(bar)
     }
   }
 
@@ -202,7 +202,8 @@ class LoginsScriptHandler: TabContentScript {
     formSubmitURL: String,
     logins: [PasswordForm],
     requestId: String,
-    frameInfo: WKFrameInfo
+    frameInfo: WKFrameInfo,
+    tab: Tab
   ) {
     let securityOrigin = frameInfo.securityOrigin
 
@@ -216,7 +217,7 @@ class LoginsScriptHandler: TabContentScript {
 
       // Check for current tab has a url to begin with
       // and the frame is not modified
-      guard let currentURL = tab?.webView?.url,
+      guard let currentURL = tab.webView?.url,
         LoginsScriptHandler.checkIsSameFrame(
           url: currentURL,
           frameScheme: securityOrigin.protocol,
@@ -244,7 +245,7 @@ class LoginsScriptHandler: TabContentScript {
       return
     }
 
-    self.tab?.webView?.evaluateSafeJavaScript(
+    tab.webView?.evaluateSafeJavaScript(
       functionName: "window.__firefox__.logins.inject",
       args: [jsonString],
       contentWorld: LoginsScriptHandler.scriptSandbox,
