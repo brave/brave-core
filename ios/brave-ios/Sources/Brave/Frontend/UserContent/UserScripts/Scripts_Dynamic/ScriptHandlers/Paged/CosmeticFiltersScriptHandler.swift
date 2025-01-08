@@ -87,6 +87,10 @@ class CosmeticFiltersScriptHandler: TabContentScript {
           }
         }
 
+        // cache blocked selectors
+        tab.contentBlocker.hiddenStandardSelectors.formUnion(standardSelectors)
+        tab.contentBlocker.hiddenAggressiveSelectors.formUnion(aggressiveSelectors)
+
         replyHandler(
           [
             "aggressiveSelectors": Array(aggressiveSelectors),

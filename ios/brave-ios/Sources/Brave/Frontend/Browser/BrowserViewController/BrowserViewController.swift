@@ -3256,6 +3256,10 @@ extension BrowserViewController: PreferencesObserver {
     case ShieldPreferences.blockAdsAndTrackingLevelRaw.key:
       tabManager.reloadSelectedTab()
       recordGlobalAdBlockShieldsP3A()
+      // Global shield setting changed, reset selectors cache.
+      tabManager.allTabs.forEach({
+        $0.contentBlocker.resetSelectorsCache()
+      })
     case Preferences.Shields.fingerprintingProtection.key:
       tabManager.reloadSelectedTab()
       recordGlobalFingerprintingShieldsP3A()

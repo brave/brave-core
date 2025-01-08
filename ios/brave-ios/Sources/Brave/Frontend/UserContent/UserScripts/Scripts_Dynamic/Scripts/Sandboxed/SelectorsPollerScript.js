@@ -1062,7 +1062,6 @@ window.__firefox__.execute(function($) {
    * Rewrite the stylesheet body with the hidden rules and style rules
    */
   const setRulesOnStylesheet = () => {
-    console.log('LOG: setRulesOnStylesheet()');
     const hideRules = Array.from(CC.hiddenSelectors).map(selector => {
       return selector + '{display:none !important;}'
     })
