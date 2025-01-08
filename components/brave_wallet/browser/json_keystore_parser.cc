@@ -5,7 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/json_keystore_parser.h"
 
+#include <optional>
+#include <string_view>
+
 #include "base/containers/extend.h"
+#include "base/numerics/safe_math.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "crypto/encryptor.h"
 #include "crypto/kdf.h"
@@ -51,6 +55,17 @@ std::optional<std::vector<uint8_t>> UTCDecryptPrivateKey(
   }
 
   return private_key;
+}
+
+template <class T>
+std::optional<T> FindCheckedNumeric(const base::Value::Dict& dict,
+                                    std::string_view key) {
+  auto value = dict.FindInt(key);
+  if (!value || !base::CheckedNumeric<T>(*value).IsValid()) {
+    return std::nullopt;
+  }
+
+  return *value;
 }
 
 }  // namespace
@@ -102,7 +117,7 @@ std::optional<std::vector<uint8_t>> DecryptPrivateKeyFromJsonKeystore(
   std::array<uint8_t, kDerivedKeySize> derived_key = {};
 
   if (*kdf == "pbkdf2") {
-    auto c = kdfparams->FindInt("c");
+    auto c = FindCheckedNumeric<uint32_t>(*kdfparams, "c");
     if (!c) {
       return std::nullopt;
     }
@@ -115,7 +130,7 @@ std::optional<std::vector<uint8_t>> DecryptPrivateKeyFromJsonKeystore(
     }
 
     crypto::kdf::Pbkdf2HmacSha256Params params = {
-        .iterations = base::checked_cast<decltype(params.iterations)>(*c),
+        .iterations = *c,
     };
     if (!crypto::kdf::DeriveKeyPbkdf2HmacSha256(
             params, base::as_byte_span(password),
@@ -123,22 +138,22 @@ std::optional<std::vector<uint8_t>> DecryptPrivateKeyFromJsonKeystore(
       return std::nullopt;
     }
   } else if (*kdf == "scrypt") {
-    auto n = kdfparams->FindInt("n");
+    auto n = FindCheckedNumeric<uint64_t>(*kdfparams, "n");
     if (!n) {
       return std::nullopt;
     }
-    auto r = kdfparams->FindInt("r");
+    auto r = FindCheckedNumeric<uint64_t>(*kdfparams, "r");
     if (!r) {
       return std::nullopt;
     }
-    auto p = kdfparams->FindInt("p");
+    auto p = FindCheckedNumeric<uint64_t>(*kdfparams, "p");
     if (!p) {
       return std::nullopt;
     }
     crypto::kdf::ScryptParams params = {
-        .cost = (size_t)*n,
-        .block_size = (size_t)*r,
-        .parallelization = (size_t)*p,
+        .cost = *n,
+        .block_size = *r,
+        .parallelization = *p,
         .max_memory_bytes = 512 * 1024 * 1024,
     };
     if (!crypto::kdf::DeriveKeyScryptNoCheck(

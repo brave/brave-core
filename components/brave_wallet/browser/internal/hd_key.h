@@ -27,7 +27,7 @@ inline constexpr size_t kSecp256k1FingerprintSize = 4;
 
 using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
-enum class ExtendedKeyVersion {
+enum class ExtendedKeyVersion : uint32_t {
   // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
   kXprv = 0x0488ade4,
   kXpub = 0x0488b21e,
@@ -54,7 +54,7 @@ class HDKey {
   struct ParsedExtendedKey {
     ParsedExtendedKey();
     ~ParsedExtendedKey();
-    ExtendedKeyVersion version;
+    uint32_t version = 0;
     std::unique_ptr<HDKey> hdkey;
   };
 

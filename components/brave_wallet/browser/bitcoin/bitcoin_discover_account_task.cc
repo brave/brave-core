@@ -16,6 +16,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_task_utils.h"
@@ -240,10 +241,12 @@ DiscoverExtendedKeyAccountTask::DiscoverExtendedKeyAccountTask(
     return;
   }
 
-  if (testnet_ && parsed_key->version != ExtendedKeyVersion::kTpub) {
+  if (testnet_ &&
+      parsed_key->version != base::to_underlying(ExtendedKeyVersion::kTpub)) {
     return;
   }
-  if (!testnet_ && parsed_key->version != ExtendedKeyVersion::kXpub) {
+  if (!testnet_ &&
+      parsed_key->version != base::to_underlying(ExtendedKeyVersion::kXpub)) {
     return;
   }
   account_key_ = std::move(parsed_key->hdkey);

@@ -110,7 +110,7 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
   auto result = std::make_unique<ParsedExtendedKey>();
   result->hdkey = std::make_unique<HDKey>();
 
-  reader.ReadU32BigEndian(reinterpret_cast<uint32_t&>(result->version));
+  reader.ReadU32BigEndian(result->version);
   reader.ReadU8BigEndian(result->hdkey->depth_);
   reader.ReadCopy(result->hdkey->parent_fingerprint_);
   reader.ReadU32BigEndian(result->hdkey->index_);
