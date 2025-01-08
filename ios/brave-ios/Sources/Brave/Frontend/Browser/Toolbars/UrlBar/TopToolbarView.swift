@@ -36,6 +36,7 @@ protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
   func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
   func topToolbarDidPressVoiceSearchButton(_ urlBar: TopToolbarView)
+  func topToolbarDidPressPasteAndGoButton(_ urlBar: TopToolbarView)
   func topToolbarDidPressStop(_ urlBar: TopToolbarView)
   func topToolbarDidPressReload(_ urlBar: TopToolbarView)
   func topToolbarDidPressQrCodeButton(_ urlBar: TopToolbarView)
@@ -256,7 +257,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.quickActionScanQRCode
     $0.setImage(UIImage(braveSystemNamed: "leo.qr.code", compatibleWith: nil), for: .normal)
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .iconDefault)
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
@@ -269,7 +270,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.isAccessibilityElement = true
     $0.accessibilityLabel = Strings.tabToolbarVoiceSearchButtonAccessibilityLabel
     $0.setImage(UIImage(braveSystemNamed: "leo.microphone", compatibleWith: nil), for: .normal)
-    $0.tintColor = .braveLabel
+    $0.tintColor = UIColor(braveSystemName: .iconDefault)
     $0.isHidden = !isVoiceSearchAvailable
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -297,12 +298,36 @@ class TopToolbarView: UIView, ToolbarProtocol {
     return button
   }()
 
+  private lazy var pasteAndGoButton = ToolbarButton().then {
+    $0.accessibilityIdentifier = "TabToolbar.pasteAndGoButton"
+    $0.isAccessibilityElement = true
+    $0.accessibilityLabel = Strings.tabToolbarPasteAndGoButtonAccessibilityLabel
+    $0.setImage(UIImage(braveSystemNamed: "leo.clipboard", compatibleWith: nil), for: .normal)
+    $0.tintColor = UIColor(braveSystemName: .iconDefault)
+    $0.isHidden = !UIPasteboard.general.hasStrings && !UIPasteboard.general.hasURLs
+    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
+  }
+
   private lazy var locationBarOptionsStackView = UIStackView().then {
     $0.alignment = .center
     $0.isHidden = true
     $0.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)
     $0.isLayoutMarginsRelativeArrangement = true
     $0.insetsLayoutMarginsFromSafeArea = false
+  }
+
+  private lazy var searchImageView = UIImageView().then {
+    $0.image = UIImage(braveSystemNamed: "leo.search", compatibleWith: nil)
+    $0.contentMode = .scaleAspectFit
+    $0.tintColor = UIColor(braveSystemName: .iconDefault)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
 
   lazy var locationContainer = UIView().then {
@@ -437,6 +462,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
       action: #selector(topToolbarDidPressVoiceSearchButton),
       for: .touchUpInside
     )
+    pasteAndGoButton.addTarget(
+      self,
+      action: #selector(topToolbarDidPressPasteAndGoButton),
+      for: .touchUpInside
+    )
 
     updateColors()
   }
@@ -541,7 +571,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationTextField?.backgroundColor = browserColors.containerBackground
     locationTextField?.textColor = browserColors.textPrimary
     locationTextField?.attributedPlaceholder = makePlaceholder(colors: browserColors)
-    for button in [qrCodeButton, voiceSearchButton] {
+    for button in [qrCodeButton, voiceSearchButton, pasteAndGoButton] {
       button.primaryTintColor = browserColors.iconDefault
       button.disabledTintColor = browserColors.iconDisabled
       button.selectedTintColor = browserColors.iconActive
@@ -580,6 +610,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       }
     }
 
+    locationBarOptionsStackView.addArrangedSubview(pasteAndGoButton)
     if RecentSearchQRCodeScannerController.hasCameraSupport {
       locationBarOptionsStackView.addArrangedSubview(qrCodeButton)
     }
@@ -587,7 +618,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       locationBarOptionsStackView.addArrangedSubview(voiceSearchButton)
     }
 
-    let subviews = [locationTextField, locationBarOptionsStackView]
+    let subviews = [searchImageView, locationTextField, locationBarOptionsStackView]
     locationTextContentView = UIStackView(arrangedSubviews: subviews).then {
       $0.layoutMargins = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 0)
       $0.isLayoutMarginsRelativeArrangement = true
@@ -824,6 +855,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     } else {
       voiceSearchButton.isHidden = true
     }
+
+    pasteAndGoButton.isHidden = !UIPasteboard.general.hasStrings && !UIPasteboard.general.hasURLs
   }
 
   /// Update the shields icon based on whether or not shields are enabled for this site
@@ -873,6 +906,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
   @objc func topToolbarDidPressVoiceSearchButton() {
     leaveOverlayMode(didCancel: true)
     delegate?.topToolbarDidPressVoiceSearchButton(self)
+  }
+
+  @objc func topToolbarDidPressPasteAndGoButton() {
+    delegate?.topToolbarDidPressPasteAndGoButton(self)
+    leaveOverlayMode(didCancel: true)
   }
 
   @objc private func swipedLocationView() {

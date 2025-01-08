@@ -21,8 +21,6 @@ extension FavoritesViewController {
     }
 
     switch section {
-    case .pasteboard:
-      break
     case .favorites:
       guard let bookmark = favoritesFRC.fetchedObjects?[indexPath.item] else { return nil }
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {

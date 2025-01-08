@@ -1066,7 +1066,14 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Voice Search",
-    comment: "Accessibility Label for the tab toolbar Reload button"
+    comment: "Accessibility Label for the tab toolbar voice search button"
+  )
+  public static let tabToolbarPasteAndGoButtonAccessibilityLabel = NSLocalizedString(
+    "tabToolbarPasteAndGoButtonAccessibilityLabel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Paste and Go",
+    comment: "Accessibility Label for the tab toolbar paste and go button"
   )
   public static let tabToolbarSearchAddressPlaceholderText = NSLocalizedString(
     "TabToolbarSearchAddressPlaceholderText",
@@ -8287,26 +8294,25 @@ extension Strings {
     value: "Favorites",
     comment: "Recent Search Favorites Section Title"
   )
-  public static let recentSearchPasteAndGo = NSLocalizedString(
-    "RecentSearchPasteAndGo",
+  public static let recentSearchSectionHeaderTitle = NSLocalizedString(
+    "recentSearchSectionHeaderTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Paste & Go",
-    comment: "Recent Search Paste & Go Button Title"
+    value: "Recent Searches",
+    comment: "Recent Search Section Header Title"
   )
   public static let recentSearchSectionTitle = NSLocalizedString(
     "RecentSearchSectionTitle",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Recent Searches",
+    value: "Recent Searches allow you to privately access past searches.",
     comment: "Recent Search Section Title"
   )
   public static let recentSearchSectionDescription = NSLocalizedString(
     "RecentSearchSectionDescription",
     tableName: "BraveShared",
     bundle: .module,
-    value:
-      "Recent Searches allow you to privately access past searches. Would you like to enable Recent Searches?",
+    value: "Would you like to enable Recent Searches?",
     comment: "Recent Search Section Description"
   )
   public static let recentSearchClear = NSLocalizedString(

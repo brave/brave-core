@@ -55,9 +55,6 @@ class FavoritesViewController: UIViewController {
 
   var availableSections: [FavoritesSection] {
     var sections = [FavoritesSection]()
-    if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
-      sections.append(.pasteboard)
-    }
 
     if let favoritesObjects = favoritesFRC.fetchedObjects, !favoritesObjects.isEmpty {
       sections.append(.favorites)
@@ -93,11 +90,6 @@ class FavoritesViewController: UIViewController {
     super.init(nibName: nil, bundle: nil)
 
     collectionView.do {
-      $0.register(
-        FavoritesRecentSearchClipboardHeaderView.self,
-        forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-        withReuseIdentifier: "pasteboard_header"
-      )
       $0.register(FavoritesCell.self)
       $0.register(FavoritesRecentSearchCell.self)
       $0.register(
@@ -269,7 +261,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     }
 
     switch section {
-    case .pasteboard, .recentSearchesOptIn:
+    case .recentSearchesOptIn:
       break
     case .favorites:
       guard let bookmark = favoritesFRC.fetchedObjects?[safe: indexPath.item] else {
@@ -282,7 +274,6 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
       }
       recentSearchAction(searchItem, true)
     }
-
   }
 
   func collectionView(
@@ -304,14 +295,10 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     }
 
     switch section {
-    case .pasteboard:
-      return CGSize(width: collectionView.bounds.width, height: 40.0)
-    case .favorites:
+    case .favorites, .recentSearches:
       return CGSize(width: collectionView.bounds.width, height: 32.0)
-    case .recentSearches:
-      return CGSize(width: collectionView.bounds.width, height: 22.0)
     case .recentSearchesOptIn:
-      return CGSize(width: collectionView.bounds.width, height: 150.0)
+      return CGSize(width: collectionView.bounds.width, height: 324.0)
     }
   }
 
@@ -330,13 +317,13 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
       - (collectionView.contentInset.left + collectionView.contentInset.right)
 
     switch section {
-    case .pasteboard, .recentSearchesOptIn:
-      assertionFailure("Pasteboard/Recent Search Opt-In section should have no items")
-      return .zero
     case .favorites:
       return favoriteGridSize
     case .recentSearches:
       return CGSize(width: collectionViewWidth, height: 28.0)
+    case .recentSearchesOptIn:
+      assertionFailure("No item for recent searches opt-in")
+      return .zero
     }
   }
 }
@@ -346,11 +333,6 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 extension FavoritesViewController {
   func onOpenRecentSearch(_ recentSearch: RecentSearch) {
     recentSearchAction(recentSearch, false)
-  }
-
-  @objc
-  func onPasteboardAction() {
-    recentSearchAction(nil, true)
   }
 
   @objc
@@ -559,6 +541,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
         cell.imageView.cancelLoading()
       }
       cell.accessibilityLabel = cell.textLabel.text
+      cell.backgroundColor = .red
 
       return cell
     case .recentSearch(let objectID):
@@ -624,8 +607,9 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
       }
 
       return cell
+    case .recentSearchOptIn:
+      return nil
     }
-
   }
 
   private func supplementaryViewProvider(
@@ -640,16 +624,6 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
     if kind == UICollectionView.elementKindSectionHeader {
       switch section {
-      case .pasteboard:
-        if let header = collectionView.dequeueReusableSupplementaryView(
-          ofKind: kind,
-          withReuseIdentifier: "pasteboard_header",
-          for: indexPath
-        ) as? FavoritesRecentSearchClipboardHeaderView {
-          header.button.removeTarget(self, action: nil, for: .touchUpInside)
-          header.button.addTarget(self, action: #selector(onPasteboardAction), for: .touchUpInside)
-          return header
-        }
       case .favorites:
         return
           collectionView
@@ -695,7 +669,6 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
           withReuseIdentifier: "recent_searches_opt-in_header",
           for: indexPath
         ) as? FavoritesRecentSearchOptInHeaderView {
-
           header.showButton.addTarget(
             self,
             action: #selector(onRecentSearchShowPressed),
@@ -706,7 +679,6 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
             action: #selector(onRecentSearchHidePressed(_:)),
             for: .touchUpInside
           )
-
           return header
         }
       }

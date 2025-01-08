@@ -11,7 +11,7 @@ import UIKit
 class FavoritesRecentSearchHeaderView: UICollectionReusableView {
 
   private let titleLabel = UILabel().then {
-    $0.text = Strings.recentSearchSectionTitle
+    $0.text = Strings.recentSearchSectionHeaderTitle
     $0.font = .systemFont(ofSize: 15.0, weight: .semibold)
     $0.textColor = .braveLabel
     $0.setContentHuggingPriority(.required, for: .horizontal)
