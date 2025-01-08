@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index 0d928ba9d55fbe798dd286823f4a8195d1be830f..50ea030bfc149ea2b3cbe49ac6bb79b394066cab 100644
+index 1bd1c82d491a932d7b73f05798e493e57f384a40..dfddd449fd651dd8a28214f9fb1c0ca534d611e9 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -65,6 +65,7 @@ source_set("configs") {
-       "//chromeos/constants",
-     ]
+@@ -70,6 +70,7 @@ source_set("configs") {
+   if (enable_glic) {
+     deps += [ "//chrome/browser/glic" ]
    }
 +  import("//brave/browser/ui/webui/sources.gni") deps += brave_browser_ui_webui_configs_deps
  }

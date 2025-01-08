@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/prefs/chrome_pref_service_factory.cc b/chrome/browser/prefs/chrome_pref_service_factory.cc
-index f0372ed6fe8f0afe10e55c16c459fe61039cbdae..d5cc9bceedfa0a47015a292fb506e630f7c5461a 100644
+index fec39b0ff4819effebe6e5e5fc0a2814ad2e4bb5..79e4c17e079fbc66de24b0abac76a9bbff6d7e76 100644
 --- a/chrome/browser/prefs/chrome_pref_service_factory.cc
 +++ b/chrome/browser/prefs/chrome_pref_service_factory.cc
-@@ -189,6 +189,7 @@ const prefs::TrackedPreferenceMetadata kTrackedPrefs[] = {
+@@ -186,6 +186,7 @@ const auto kTrackedPrefs = std::to_array<prefs::TrackedPreferenceMetadata>({
  
      // See note at top, new items added here also need to be added to
      // histograms.xml's TrackedPreference enum.
 +    BRAVE_TRACKED_PREFS_EXTEND
- };
+ });
  
  // One more than the last tracked preferences ID above.

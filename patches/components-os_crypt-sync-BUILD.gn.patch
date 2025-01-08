@@ -1,10 +1,10 @@
 diff --git a/components/os_crypt/sync/BUILD.gn b/components/os_crypt/sync/BUILD.gn
-index c85da95a847384311429febab48fd10c8f8e68f4..0adff77e3902304e95ee9b5ae298c926a209d241 100644
+index bfb0d2f208170f77df96fb9f14c8525e9dec6e11..362cf1c0a0b66fd64c394ba9cd1e2ae88a2a6316 100644
 --- a/components/os_crypt/sync/BUILD.gn
 +++ b/components/os_crypt/sync/BUILD.gn
-@@ -88,6 +88,7 @@ component("os_crypt") {
-       defines += [ "USE_KWALLET" ]
-     }
+@@ -82,6 +82,7 @@ component("os_crypt") {
+   } else if (is_posix || is_fuchsia) {
+     sources += [ "os_crypt_posix.cc" ]
    }
 +  import("//brave/components/os_crypt/sources.gni") deps += brave_components_os_crypt_deps
  }
