@@ -172,6 +172,8 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 value={contact}
                 id='contact-info'
               />
+            </FieldCtr>
+            <FieldCtr>
               <InputLabel>
                 {getLocale('reportContactPopupInfoLabel')}
               </InputLabel>

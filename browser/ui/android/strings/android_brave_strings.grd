@@ -1658,7 +1658,7 @@ Are you sure you want to do this?
         Let Brave's developers know that this site doesn't work properly with Shields:
       </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT_2" desc="Shields text for broken text warning message.">
-        Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site. If you provide contact info it will be stored for future reports. <ph name="LEARN_MORE">%1$s</ph>
+        Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site. <ph name="LEARN_MORE">%1$s</ph>
       </message>
       <message name="IDS_REPORT_BROKEN_SITE_TEXT_LINK" desc="Text for link to webcompat report wiki page.">
         Learn more.
