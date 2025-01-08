@@ -171,8 +171,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     if (ai_rewriter::features::IsAIRewriterEnabled()) {
       return new ai_rewriter::AIRewriterUI(web_ui);
     }
-  }
 #endif
+  }
   return nullptr;
 }
 
