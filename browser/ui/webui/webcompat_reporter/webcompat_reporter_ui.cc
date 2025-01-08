@@ -322,6 +322,13 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
     pending_report_->contact = contact_arg->GetString();
   }
 
+  // if (contact_arg != nullptr && contact_arg->is_string() &&
+  //     !contact_arg->GetString().empty()) {
+  //   pending_report_->contact = contact_arg->GetString();
+  // } else {
+  //   reporter_service_->SetContactInfoSaveFlag(false);
+  // }
+
   if (reporter_service_) {
     reporter_service_->SubmitWebcompatReport(pending_report_->Clone());
   }

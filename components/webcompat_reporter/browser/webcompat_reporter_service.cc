@@ -108,8 +108,10 @@ void ProcessContactInfo(
     return;
   }
   if (!report_info->contact || report_info->contact->empty()) {
+    profile_prefs->ClearPref(webcompat_reporter::prefs::kContactInfoPrefs);
     return;
   }
+
   profile_prefs->SetString(
       webcompat_reporter::prefs::kContactInfoPrefs,
       profile_prefs->GetBooleanOr(

@@ -994,6 +994,8 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                    IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER},
                   {"reportContactLabel",
                    IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL},
+                  {"reportContactPopupInfoLabel",
+                   IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_INFO_APOPUP_EXPL},
                   {"attachScreenshotLabel",
                    IDS_BRAVE_WEBCOMPATREPORTER_ATTACH_SCREENSHOT_LABEL},
                   {"viewScreenshotLabel",

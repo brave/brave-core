@@ -52,6 +52,8 @@ interface State {
 const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web-compatibility-reports'
 
 export default class ReportView extends React.PureComponent<Props, State> {
+  private handleKeyPress: (e: KeyboardEvent) => void;
+
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -59,6 +61,17 @@ export default class ReportView extends React.PureComponent<Props, State> {
       contact: props.contactInfo,
       attachScreenshot: false,
       screenshotObjectUrl: null
+    }
+    this.handleKeyPress = this._handleKeyPress.bind(this);
+  }
+
+  private _handleKeyPress(e: KeyboardEvent) {
+    const { onClose, onSubmitReport } = this.props;
+    const { details, contact, attachScreenshot } = this.state
+    if (e.key === 'Escape') {
+      onClose();
+    } else if (e.key === 'Enter') {
+      onSubmitReport(details, contact, attachScreenshot);
     }
   }
 
@@ -95,6 +108,14 @@ export default class ReportView extends React.PureComponent<Props, State> {
     this.setState({ screenshotObjectUrl })
 
     window.open(screenshotObjectUrl, '_blank', 'noopener')
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress);
   }
 
   render () {
@@ -151,6 +172,9 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 value={contact}
                 id='contact-info'
               />
+              <InputLabel>
+                {getLocale('reportContactPopupInfoLabel')}
+              </InputLabel>
             </FieldCtr>
             <FieldCtr>
               <Checkbox
