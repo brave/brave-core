@@ -69,8 +69,9 @@ base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncCodeWords(
     JNIEnv* env) {
   auto* sync_service = GetSyncService();
   std::string sync_code;
-  if (sync_service)
+  if (sync_service) {
     sync_code = sync_service->GetOrCreateSyncCode();
+  }
 
   CHECK(brave_sync::crypto::IsPassphraseValid(sync_code));
 
@@ -85,10 +86,9 @@ void BraveSyncWorker::SaveCodeWords(
 
   auto* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(str_passphrase)) {
-    const std::string error_msg =
-      sync_service
-      ? "invalid sync code:" + str_passphrase
-      : "sync service is not available";
+    const std::string error_msg = sync_service
+                                      ? "invalid sync code:" + str_passphrase
+                                      : "sync service is not available";
     LOG(ERROR) << error_msg;
     return;
   }
@@ -133,8 +133,9 @@ void BraveSyncWorker::MarkFirstSetupComplete() {
   syncer::SyncService* service = GetSyncService();
 
   // The sync service may be nullptr if it has been just disabled by policy.
-  if (!service)
+  if (!service) {
     return;
+  }
 
   service->SetSyncFeatureRequested();
 
@@ -165,8 +166,9 @@ bool BraveSyncWorker::IsInitialSyncFeatureSetupComplete(JNIEnv* env) {
 void BraveSyncWorker::ResetSync(JNIEnv* env) {
   auto* sync_service = GetSyncService();
 
-  if (!sync_service)
+  if (!sync_service) {
     return;
+  }
 
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
@@ -230,6 +232,51 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   } else {
     SetEncryptionPassphrase(service);
   }
+}
+
+base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncServiceURL(
+    JNIEnv* env) {
+  auto* sync_service = GetSyncService();
+  std::string sync_url;
+  if (sync_service) {
+    sync_url = sync_service->GetBraveSyncServiceURL().spec();
+  }
+
+  return ConvertUTF8ToJavaString(env, sync_url);
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+BraveSyncWorker::GetDefaultSyncServiceURL(JNIEnv* env) {
+  auto* sync_service = GetSyncService();
+  std::string sync_url;
+  if (sync_service) {
+    sync_url = sync_service->GetBraveDefaultSyncServiceURL().spec();
+  }
+
+  return ConvertUTF8ToJavaString(env, sync_url);
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+BraveSyncWorker::GetCustomSyncServiceURL(JNIEnv* env) {
+  auto* sync_service = GetSyncService();
+  std::string custom_sync_url;
+  if (sync_service) {
+    custom_sync_url = sync_service->GetCustomSyncServiceURL();
+  }
+
+  return ConvertUTF8ToJavaString(env, custom_sync_url);
+}
+
+bool BraveSyncWorker::SetCustomSyncServiceURL(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& custom_sync_url) {
+  std::string str_custom_sync_url =
+      base::android::ConvertJavaStringToUTF8(custom_sync_url);
+
+  auto* sync_service = GetSyncService();
+
+  return sync_service &&
+         sync_service->SetCustomSyncServiceURL(str_custom_sync_url);
 }
 
 namespace {

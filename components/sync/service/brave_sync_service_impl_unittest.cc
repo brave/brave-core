@@ -714,6 +714,31 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
 }
 
+TEST_F(BraveSyncServiceImplTest, SetsAndResetsCustomSyncServiceUrl) {
+  CreateSyncService();
+
+  // Ensure the default sync service URL is set
+  GURL default_service_url =
+      brave_sync_service_impl()->GetBraveSyncServiceURL();
+  EXPECT_FALSE(default_service_url.is_empty());
+
+  // Set a custom sync service URL
+  GURL custom_sync_url("https://sync.example.com/v2");
+  EXPECT_TRUE(brave_sync_service_impl()->SetCustomSyncServiceURL(
+      custom_sync_url.spec()));
+
+  // Verify that the custom URL is set correctly
+  EXPECT_EQ(brave_sync_service_impl()->GetBraveSyncServiceURL(),
+            custom_sync_url);
+
+  // Reset to the default sync service URL
+  EXPECT_TRUE(brave_sync_service_impl()->SetCustomSyncServiceURL(""));
+
+  // Verify that the sync service URL is reset to the default
+  EXPECT_EQ(brave_sync_service_impl()->GetBraveSyncServiceURL(),
+            default_service_url);
+}
+
 namespace {
 enum class GACookiesMethodType {
   kOnAccountsCookieDeletedByUserAction,

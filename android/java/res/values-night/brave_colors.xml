@@ -37,7 +37,7 @@
 
     <color name="scan_qr_code_text_color">#F0F2FF</color>
     <color name="scan_qr_code_bg_color">#1E2029</color>
-    
+
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_onboarding_item_background_color">#A1ABBA</color>
     <color name="brave_wallet_day_night_toolbar_icon_color">@android:color/white</color>
@@ -111,7 +111,7 @@
 
     <color name="shield_toggle_button_tint">#F0F2FF</color>
     <color name="shield_toggle_bg_color">#1E2029</color>
-    
+
     <color name="shield_thank_you_icon_color">#F0F2FF</color>
 
     <color name="filter_title_color">#EDEEF1</color>
@@ -263,7 +263,7 @@
     <color name="text_secondary">#BECAD0</color>
     <color name="text_tertiary">#a1b2ba</color>
     <color name="primary_20">#2A118E</color>
-    <color name="button_background">#3f39e8</color>
+    <color name="button_background">#C1C4FF</color>
     <color name="systemfeedback_error_text">#ffb1b0</color>
 
     <color name="location_bar_background_color_for_ntp">#383839</color>
@@ -273,8 +273,13 @@
     <color name="schemes_on_surface_variant">#c7c7cc</color>
     <color name="schemes_outline_variant">#3b3b3f</color>
     <color name="schemes_primary">#c1c4ff</color>
+    <color name="schemes_surface_container">#1b1b1f</color>
     <color name="schemes_surface_container_highest">#303034</color>
     <color name="text_interactive">#7c91ff</color>
+    <color name="leo_color_text_interactive">#C1C4FF</color>
+    <color name="leo_color_text_tertiary">#909094</color>
+    <color name="leo_color_button_disabled_20">#33EBEEF0</color>
+    <color name="leo_color_text_disabled_50">#80EBEEF0</color>
 
     <color name="open_yt_dialog_bg">#000000</color>
 </resources>

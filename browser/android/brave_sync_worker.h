@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_ANDROID_BRAVE_SYNC_WORKER_H_
 
 #include <jni.h>
+
 #include <string>
 
 #include "base/android/jni_weak_ref.h"
@@ -26,8 +27,7 @@ namespace android {
 
 class BraveSyncWorker : public syncer::SyncServiceObserver {
  public:
-  BraveSyncWorker(JNIEnv* env,
-                  const base::android::JavaRef<jobject>& obj);
+  BraveSyncWorker(JNIEnv* env, const base::android::JavaRef<jobject>& obj);
   BraveSyncWorker(const BraveSyncWorker&) = delete;
   BraveSyncWorker& operator=(const BraveSyncWorker&) = delete;
   ~BraveSyncWorker() override;
@@ -35,6 +35,18 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   void Destroy(JNIEnv* env);
 
   base::android::ScopedJavaLocalRef<jstring> GetSyncCodeWords(JNIEnv* env);
+
+  base::android::ScopedJavaLocalRef<jstring> GetSyncServiceURL(JNIEnv* env);
+
+  base::android::ScopedJavaLocalRef<jstring> GetDefaultSyncServiceURL(
+      JNIEnv* env);
+
+  base::android::ScopedJavaLocalRef<jstring> GetCustomSyncServiceURL(
+      JNIEnv* env);
+
+  bool SetCustomSyncServiceURL(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jstring>& custom_sync_url);
 
   void SaveCodeWords(JNIEnv* env,
                      const base::android::JavaParamRef<jstring>& passphrase);
