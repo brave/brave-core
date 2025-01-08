@@ -856,14 +856,12 @@ void BraveBrowserView::OnTileTabs(const TabTile& tile) {
   UpdateContentsWebViewVisual();
 }
 
-void BraveBrowserView::OnWillBreakTile(const TabTile& tile) {
+void BraveBrowserView::OnDidBreakTile(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }
 
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&BraveBrowserView::UpdateContentsWebViewVisual,
-                                weak_ptr_.GetWeakPtr()));
+  UpdateContentsWebViewVisual();
 }
 
 void BraveBrowserView::OnSwapTabsInTile(const TabTile& tile) {

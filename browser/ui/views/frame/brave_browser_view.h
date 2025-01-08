@@ -131,7 +131,7 @@ class BraveBrowserView : public BrowserView,
 
   // SplitViewBrowserDataObserver:
   void OnTileTabs(const TabTile& tile) override;
-  void OnWillBreakTile(const TabTile& tile) override;
+  void OnDidBreakTile(const TabTile& tile) override;
   void OnSwapTabsInTile(const TabTile& tile) override;
 
   views::WebView* secondary_contents_web_view() {
