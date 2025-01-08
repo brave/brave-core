@@ -7,9 +7,7 @@ package org.chromium.chrome.browser.privacy.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 
 import androidx.preference.Preference;
@@ -298,17 +296,15 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mBlockCrosssiteCookiesLearnMore =
                 (TextMessagePreference) findPreference(BLOCK_CROSS_SITE_COOKIES_LEARN_MORE);
         if (mBlockCrosssiteCookiesLearnMore != null) {
-            SpannableString blockAllCookiesDeprecatedWarning =
-                    new SpannableString(getString(R.string.block_cookies_deprecated_label));
-            blockAllCookiesDeprecatedWarning.setSpan(
-                    new ForegroundColorSpan(getContext().getColor(R.color.wallet_error_text_color)),
-                    0,
-                    blockAllCookiesDeprecatedWarning.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             SpannableString learnMoreDesc =
                     SpanApplier.applySpans(
-                            getString(R.string.block_cookies_deprecated_link_label),
+                            getString(R.string.block_cookies_deprecated_label),
+                            new SpanApplier.SpanInfo(
+                                    "<LINK_0>",
+                                    "</LINK_0>",
+                                    new ForegroundColorSpan(
+                                            getContext()
+                                                    .getColor(R.color.wallet_error_text_color))),
                             new SpanApplier.SpanInfo(
                                     "<LINK_1>",
                                     "</LINK_1>",
@@ -320,10 +316,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                                                         requireContext(),
                                                         BLOCK_ALL_COOKIES_LEARN_MORE_LINK);
                                             })));
-            SpannableStringBuilder spannableBuilder = new SpannableStringBuilder();
-            spannableBuilder.append(blockAllCookiesDeprecatedWarning);
-            spannableBuilder.append(learnMoreDesc);
-            mBlockCrosssiteCookiesLearnMore.setSummary(spannableBuilder);
+            mBlockCrosssiteCookiesLearnMore.setSummary(learnMoreDesc);
         }
 
         mBlockScriptsPref = (ChromeSwitchPreference) findPreference(PREF_BLOCK_SCRIPTS);
