@@ -54,7 +54,12 @@ source_set("browser_tests") {
     testonly = true
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-    sources = [ "web_discovery_browsertest.cc" ]
+    sources = []
+
+    if (!is_android) {
+      sources += [ "web_discovery_browsertest.cc" ]
+    }
+
     deps = [
       "//brave/components/search_engines",
       "//chrome/browser",

@@ -15,6 +15,9 @@
 
 namespace web_discovery {
 
+// Holds a base64 encoded RSA key pair. The private key
+// should be persisted for future loading, and the public key
+// should be included in future Web Discovery requests.
 struct EncodedRSAKeyPair {
   EncodedRSAKeyPair();
   ~EncodedRSAKeyPair();
@@ -22,6 +25,9 @@ struct EncodedRSAKeyPair {
   std::string public_key_b64;
 };
 
+// Holds a newly generated RSA key. It includes a private key
+// for signing future Web Discovery requests, and the base64 encoded
+// components of the key pair for persistence and sharing.
 struct GeneratedRSAKey {
   GeneratedRSAKey();
   ~GeneratedRSAKey();
@@ -29,6 +35,9 @@ struct GeneratedRSAKey {
   std::unique_ptr<EncodedRSAKeyPair> encoded_rsa_key_pair;
 };
 
+// Holds an imported RSA key that was loaded from storage. It includes
+// a private key for signing future Web Discovery requests, and the base64
+// encoded public key to be shared with the Web Discovery server.
 struct ImportedRSAKey {
   ImportedRSAKey();
   ~ImportedRSAKey();
