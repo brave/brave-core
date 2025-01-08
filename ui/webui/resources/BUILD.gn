@@ -139,7 +139,6 @@ leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
 leo_icons = [
   "accessibility.svg",
   "activity.svg",
-  "attachment.svg",
   "appearance.svg",
   "arrow-diagonal-down-right.svg",
   "arrow-diagonal-up-right.svg",
@@ -151,6 +150,7 @@ leo_icons = [
   "arrow-small-right.svg",
   "arrow-small-up.svg",
   "arrow-undo.svg",
+  "attachment.svg",
   "autoplay-off.svg",
   "autoplay-on.svg",
   "backward.svg",

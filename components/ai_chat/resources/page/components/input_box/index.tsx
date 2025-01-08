@@ -12,6 +12,7 @@ import ActionTypeLabel from '../../../common/components/action_type_label'
 import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
+import AttachmentButtonMenu from '../attachment_button_menu'
 
 type Props = Pick<
   ConversationContext,
@@ -155,6 +156,7 @@ function InputBox(props: InputBoxProps) {
               <Icon name='microphone' />
             </Button>
           )}
+          <AttachmentButtonMenu />
         </div>
         <div>
           {props.context.isGenerating ? (
