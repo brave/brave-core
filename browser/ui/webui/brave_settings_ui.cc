@@ -19,6 +19,7 @@
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
+#include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/resources/settings/shortcuts_page/grit/commands_generated_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
@@ -36,7 +37,6 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -49,7 +49,6 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "build/build_config.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
 #include "components/sync/base/command_line_switches.h"
@@ -213,9 +212,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isSharedPinnedTabsEnabled",
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs));
-  html_source->AddString(
-      "customSyncUrlAtStartup",
-      profile->GetPrefs()->GetString(brave_sync::kCustomSyncServiceUrl));
 }
 
 // static

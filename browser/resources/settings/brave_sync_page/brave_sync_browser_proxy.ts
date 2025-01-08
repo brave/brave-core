@@ -3,9 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { sendWithPromise } from 'chrome://resources/js/cr.js';
-import { loadTimeData } from '../i18n_setup.js';
-import { SyncStatus } from '/shared/settings/people_page/sync_browser_proxy.js';
+import {SyncStatus} from '/shared/settings/people_page/sync_browser_proxy.js';
+import {sendWithPromise} from 'chrome://resources/js/cr.js';
 
 export type BraveDeviceInfo = {
   name: string
@@ -66,18 +65,9 @@ export class BraveSyncBrowserProxy {
   getWordsCount(syncCode: string): Promise<number> {
     return sendWithPromise('SyncGetWordsCount', syncCode);
   }
-
-  getCustomSyncUrlAtStartup(): string {
-    return loadTimeData.getString('customSyncUrlAtStartup');
-  }
-
-  validateCustomSyncUrl(url: string) {
-    return sendWithPromise('validateCustomSyncUrl', url);
-  }
-
   static getInstance() {
     return instance || (instance = new BraveSyncBrowserProxy())
   }
 }
 
-let instance: BraveSyncBrowserProxy | null = null
+let instance: BraveSyncBrowserProxy|null = null

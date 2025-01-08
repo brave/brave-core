@@ -1,41 +1,22 @@
-<style include="settings-shared iron-flex"></style>
-<settings-animated-pages
-  id="pages"
-  section="braveSync"
->
+<style include="settings-shared iron-flex">
+</style>
+<settings-animated-pages id="pages" section="braveSync">
   <div route-path="default">
-    <cr-link-row
-      id="brave-sync-setup"
+    <cr-link-row id="brave-sync-setup"
       label$="[[syncLabel_]]"
       on-click="onSyncTap_"
-      role-description="$i18n{subpageArrowRoleDescription}"
-    >
+      role-description="$i18n{subpageArrowRoleDescription}">
     </cr-link-row>
-
-    <template
-      is="dom-if"
-      if="[[shouldShowCustomSyncInput_]]"
-    >
-      <div class="hr"></div>
-      <sync-url-input
-        id="customSyncUrl"
-        pref="{{prefs.brave_sync.sync_service_url}}"
-        disabled="[[shouldDisableCustomSyncInput_]]"
-      >
-      </sync-url-input>
-    </template>
   </div>
 
-  <template
-    is="dom-if"
-    route-path="/braveSync/setup"
-  >
+  <template is="dom-if" route-path="/braveSync/setup">
     <settings-subpage
       associated-control="[[$$('#brave-sync-setup')]]"
-      page-title="[[syncLabel_]]"
-    >
-      <settings-brave-sync-subpage sync-status="[[syncStatus_]]">
+      page-title="[[syncLabel_]]">
+      <settings-brave-sync-subpage
+          sync-status="[[syncStatus_]]">
       </settings-brave-sync-subpage>
     </settings-subpage>
+
   </template>
 </settings-animated-pages>

@@ -916,15 +916,6 @@
   <message name="IDS_SETTINGS_BRAVE_SYNC_COULD_NOT_SYNC_ACTION_LABEL" desc="Could not sync devices action label. It is displayed in the case when Brave Sync could not decrypt code words and start work">
     Could not sync Brave on your devices
   </message>
-  <message name="IDS_SETTINGS_BRAVE_CUSTOM_SYNC_URL_TITLE" desc="Title for custom sync url">
-    Custom sync URL
-  </message>
-  <message name="IDS_SETTINGS_ENTER_CUSTOM_SYNC_URL" desc="Input label for a custom sync url">
-    Enter custom sync URL
-  </message>
-  <message name="IDS_SETTINGS_POLICY_INDICATOR" desc="Tooltip text for policy indicator(building) icon">
-    This setting is managed by your organization
-  </message>
   <message name="IDS_SETTINGS_BRAVE_SYNC_MANAGER_TITLE" desc="Brave Sync manager title">
     Sync Manager
   </message>

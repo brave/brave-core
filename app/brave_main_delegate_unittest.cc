@@ -24,6 +24,9 @@ TEST(BraveMainDelegateUnitTest, DefaultCommandLineOverrides) {
   BraveMainDelegate::AppendCommandLineOptions();
 
   ASSERT_STREQ(
+      BUILDFLAG(BRAVE_SYNC_ENDPOINT),
+      command_line.GetSwitchValueASCII(syncer::kSyncServiceURL).c_str());
+  ASSERT_STREQ(
       kBraveOriginTrialsPublicKey,
       command_line.GetSwitchValueASCII(embedder_support::kOriginTrialPublicKey)
           .c_str());

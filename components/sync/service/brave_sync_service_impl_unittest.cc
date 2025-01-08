@@ -164,7 +164,6 @@ class BraveSyncServiceImplTest : public testing::Test {
   raw_ptr<SyncServiceImplDelegateMock> sync_service_delegate_;
 };
 
-#if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveSyncServiceImplTest, GroupPolicyOverride) {
   pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
                                  base::Value("https://sync.example.com/v2"));
@@ -185,7 +184,6 @@ TEST_F(BraveSyncServiceImplTest, GroupPolicyOverride) {
   pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,
                                  base::Value(""));
 }
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 TEST_F(BraveSyncServiceImplTest, GroupPolicyNonHttpsOverride) {
   pref_service()->SetManagedPref(brave_sync::kCustomSyncServiceUrl,

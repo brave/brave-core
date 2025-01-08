@@ -10,7 +10,6 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -214,11 +213,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kAlwaysShowBookmarkBarOnNTP] =
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kMRUCyclingEnabled] = settings_api::PrefType::kBoolean;
-
-  // Sync prefs
-  (*s_brave_allowlist)[brave_sync::kCustomSyncServiceUrl] =
-      settings_api::PrefType::kUrl;
-
   // WebTorrent pref
   (*s_brave_allowlist)[kWebTorrentEnabled] = settings_api::PrefType::kBoolean;
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
