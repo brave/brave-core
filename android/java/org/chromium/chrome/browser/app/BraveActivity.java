@@ -232,6 +232,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardUtils;
 import org.chromium.ui.widget.Toast;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -293,6 +294,8 @@ public abstract class BraveActivity extends ChromeActivity
     public static final String BRAVE_SEARCH_ENGINE_KEYWORD = ":br";
     public static final String BING_SEARCH_ENGINE_KEYWORD = ":b";
     public static final String STARTPAGE_SEARCH_ENGINE_KEYWORD = ":sp";
+
+    private static final String PLAYLIST_DB_NAME = "playlist.db";
 
     private static final boolean ENABLE_IN_APP_UPDATE =
             Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
@@ -1027,6 +1030,33 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        // Check and remove legacy playlist database if needed
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    // Only attempt removal if we haven't done it before
+                    boolean shouldRemoveDb =
+                            ChromeSharedPreferences.getInstance()
+                                    .readBoolean(BravePreferenceKeys.PLAYLIST_DB_REMOVAL, true);
+
+                    if (shouldRemoveDb) {
+                        // Get path to playlist database
+                        File playlistDatabasePath =
+                                ContextUtils.getApplicationContext()
+                                        .getDatabasePath(PLAYLIST_DB_NAME);
+
+                        // Delete the database file if it exists
+                        if (playlistDatabasePath.exists()) {
+                            ContextUtils.getApplicationContext().deleteDatabase(PLAYLIST_DB_NAME);
+                        }
+
+                        // Mark database removal as completed
+                        ChromeSharedPreferences.getInstance()
+                                .writeBoolean(BravePreferenceKeys.PLAYLIST_DB_REMOVAL, false);
+                    }
+                });
+
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
