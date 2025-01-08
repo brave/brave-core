@@ -25,8 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.URLUtil;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,7 +32,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -173,7 +170,6 @@ public class BraveRewardsPanel
     private LinearLayout mBtnSummary;
     private ImageView mImgSummary;
     private TextView mTextSummary;
-    private SwitchCompat mSwitchAutoContribute;
 
     private Timer mPublisherFetcher;
     private int mPublisherFetchesCount;
@@ -395,10 +391,10 @@ public class BraveRewardsPanel
         mBtnSummary = mPopupView.findViewById(R.id.summary_btn);
         mImgSummary = mPopupView.findViewById(R.id.summary_img);
         mTextSummary = mPopupView.findViewById(R.id.summary_text);
-        mBtnSummary.setOnClickListener(view -> { showSummarySection(); });
-
-        mSwitchAutoContribute = mPopupView.findViewById(R.id.auto_contribution_switch);
-        mSwitchAutoContribute.setOnCheckedChangeListener(mAutoContributeSwitchListener);
+        mBtnSummary.setOnClickListener(
+                view -> {
+                    showSummarySection();
+                });
 
         showSummarySection();
         mBtnTip.setEnabled(false);
@@ -1208,14 +1204,6 @@ public class BraveRewardsPanel
     }
 
     // Generic UI changes
-    OnCheckedChangeListener mAutoContributeSwitchListener =
-            new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                }
-            };
-
     View.OnClickListener mBraveRewardsOnboardingClickListener =
             new View.OnClickListener() {
                 @Override
@@ -1992,12 +1980,6 @@ public class BraveRewardsPanel
                 Integer.toString(mBraveRewardsNativeWorker.getPublisherPercent(mCurrentTabId))
                         + "%";
         mPublisherAttention.setText(percent);
-        if (mSwitchAutoContribute != null) {
-            mSwitchAutoContribute.setOnCheckedChangeListener(null);
-            mSwitchAutoContribute.setChecked(
-                    !mBraveRewardsNativeWorker.getPublisherExcluded(mCurrentTabId));
-            mSwitchAutoContribute.setOnCheckedChangeListener(mAutoContributeSwitchListener);
-        }
         updatePublisherStatus(mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId));
     }
 

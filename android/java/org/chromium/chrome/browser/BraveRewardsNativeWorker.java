@@ -739,20 +739,33 @@ public class BraveRewardsNativeWorker {
         double[] getTipChoices(long nativeBraveRewardsNativeWorker);
 
         double getWalletRate(long nativeBraveRewardsNativeWorker);
+
         void getPublisherInfo(long nativeBraveRewardsNativeWorker, int tabId, String host);
+
         String getPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);
+
         String getCaptchaSolutionURL(
                 long nativeBraveRewardsNativeWorker, String paymentId, String captchaId);
+
         String getAttestationURL(long nativeBraveRewardsNativeWorker);
+
         String getAttestationURLWithPaymentId(
                 long nativeBraveRewardsNativeWorker, String paymentId);
+
         String getPublisherFavIconURL(long nativeBraveRewardsNativeWorker, int tabId);
+
         String getPublisherName(long nativeBraveRewardsNativeWorker, int tabId);
+
         String getPublisherId(long nativeBraveRewardsNativeWorker, int tabId);
+
         int getPublisherPercent(long nativeBraveRewardsNativeWorker, int tabId);
+
         boolean getPublisherExcluded(long nativeBraveRewardsNativeWorker, int tabId);
+
         int getPublisherStatus(long nativeBraveRewardsNativeWorker, int tabId);
+
         void removePublisherFromMap(long nativeBraveRewardsNativeWorker, int tabId);
+
         void getCurrentBalanceReport(long nativeBraveRewardsNativeWorker);
 
         void donate(
@@ -797,11 +810,17 @@ public class BraveRewardsNativeWorker {
         void recordPanelTrigger(long nativeBraveRewardsNativeWorker);
 
         void createRewardsWallet(long nativeBraveRewardsNativeWorker, String countryCode);
+
         void getRewardsParameters(long nativeBraveRewardsNativeWorker);
+
         double getVbatDeadline(long nativeBraveRewardsNativeWorker);
+
         void getUserType(long nativeBraveRewardsNativeWorker);
+
         void fetchBalance(long nativeBraveRewardsNativeWorker);
+
         void getAdsAccountStatement(long nativeBraveRewardsNativeWorker);
+
         String getPayoutStatus(long nativeBraveRewardsNativeWorker);
     }
 }

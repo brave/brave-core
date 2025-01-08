@@ -2815,9 +2815,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_TIP" desc="Text for `Tip` button in Brave rewards panel">
       Contribute
     </message>
-    <message name="IDS_INCLUDE_AUTO_CONTRIBUTE" desc="Title text for `Include in Auto-Contribute` switch in Brave rewards panel">
-      Include in Auto-Contribute
-    </message>
     <message name="IDS_SET" desc="Brave rewards panel text">
       Set
     </message>

@@ -69,33 +69,6 @@
             android:background="@color/rewards_divider_color" />
 
         <LinearLayout
-            android:id="@+id/auto_contribution_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:visibility="gone"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/auto_contribution_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:text="@string/include_auto_contribute"
-                android:fontFamily="sans-serif-medium"
-                android:textColor="@color/rewards_panel_secondary_text_color"
-                android:textSize="16sp" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/auto_contribution_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:theme="@style/BraveRewardsSwitchTheme" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/monthly_contribution_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
