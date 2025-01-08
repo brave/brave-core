@@ -44,6 +44,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/debounce/core/browser/debounce_service.h"
+#include "brave/components/email_aliases/browser/email_aliases_prefs.h"
 #include "brave/components/ipfs/ipfs_prefs.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
@@ -493,6 +494,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(false));
 
   webcompat_reporter::prefs::RegisterProfilePrefs(registry);
+
+  email_aliases::RegisterProfilePrefs(registry);
 }
 
 }  // namespace brave

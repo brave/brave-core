@@ -12,6 +12,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -44,6 +45,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_bubble_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_news/common/features.h"
@@ -152,6 +154,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     // BraveNewTabUI configs in RegisterChromeWebUIConfigs because they use the
     // same origin (content::kChromeUIScheme + chrome::kChromeUINewTabHost).
     return new BraveNewTabUI(web_ui, url.host());
+  } else if (host == kEmailAliasesHost &&
+             base::FeatureList::IsEnabled(features::kBraveEmailAliases)) {
+    return new email_aliases::EmailAliasesBubbleUI(web_ui);
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {
@@ -192,18 +197,18 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost) ||
 #else
-      (base::FeatureList::IsEnabled(
-           brave_news::features::kBraveNewsFeedUpdate) &&
-       url.host_piece() == kBraveNewsInternalsHost) ||
-      (url.host_piece() == kWalletPageHost &&
-       brave_wallet::IsAllowedForContext(profile)) ||
-      // On Android New Tab is a native page implemented in Java, so no need
-      // in WebUI.
-      url.host_piece() == chrome::kChromeUINewTabHost ||
-      url.host_piece() == chrome::kChromeUISettingsHost ||
-      ((url.host_piece() == kWelcomeHost ||
-        url.host_piece() == chrome::kChromeUIWelcomeURL) &&
-       !profile->IsGuestSession()) ||
+        (base::FeatureList::IsEnabled(
+             brave_news::features::kBraveNewsFeedUpdate) &&
+         url.host_piece() == kBraveNewsInternalsHost) ||
+        (url.host_piece() == kWalletPageHost &&
+         brave_wallet::IsAllowedForContext(profile)) ||
+        // On Android New Tab is a native page implemented in Java, so no need
+        // in WebUI.
+        url.host_piece() == chrome::kChromeUINewTabHost ||
+        url.host_piece() == chrome::kChromeUISettingsHost ||
+        ((url.host_piece() == kWelcomeHost ||
+          url.host_piece() == chrome::kChromeUIWelcomeURL) &&
+         !profile->IsGuestSession()) ||
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||

@@ -104,8 +104,13 @@ source_set("ui") {
   ]
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
+  # Also, for now email aliases is only available on desktop.
   if (!is_android && !is_ios) {
     sources += [
+      "views/email_aliases_bubble_view.cc",
+      "views/email_aliases_bubble_view.h",
+      "webui/settings/brave_email_aliases_handler.cc",
+      "webui/settings/brave_email_aliases_handler.h",
       "webui/webcompat_reporter/webcompat_reporter_ui.cc",
       "webui/webcompat_reporter/webcompat_reporter_ui.h",
     ]
@@ -338,6 +343,7 @@ source_set("ui") {
       "//brave/browser/profiles:util",
       "//brave/common",
       "//brave/components/constants",
+      "//brave/components/email_aliases/browser",
       "//brave/components/misc_metrics",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
@@ -361,6 +367,7 @@ source_set("ui") {
       "//chrome/browser/ui/webui/settings",
       "//chrome/browser/ui/webui/side_panel/reading_list:mojo_bindings",
       "//chrome/common:channel_info",
+      "//components/autofill/content/browser",
       "//components/bookmarks/common",
       "//components/google/core/common",
       "//components/keyed_service/content",
@@ -957,6 +964,7 @@ source_set("ui") {
       "//brave/app/theme:brave_theme_resources",
       "//brave/app/theme:brave_unscaled_resources",
       "//brave/components/brave_webtorrent:static_resources",
+      "//brave/components/email_aliases/browser/resources:generated_resources",
       "//brave/components/webcompat_reporter/browser",
       "//brave/components/webcompat_reporter/ui:generated_resources",
     ]
@@ -1270,9 +1278,12 @@ source_set("ui") {
       "webui/brave_wallet/wallet_page_ui.h",
       "webui/brave_wallet/wallet_panel_ui.cc",
       "webui/brave_wallet/wallet_panel_ui.h",
+      "webui/email_aliases/email_aliases_bubble_ui.cc",
+      "webui/email_aliases/email_aliases_bubble_ui.h",
     ]
     deps += [
       "//brave/browser/brave_wallet:tab_helper",
+      "//brave/browser/resources/settings/email_aliases_page:generated_resources",
       "//brave/browser/resources/settings/shortcuts_page:generated_resources",
       "//brave/browser/ui/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
