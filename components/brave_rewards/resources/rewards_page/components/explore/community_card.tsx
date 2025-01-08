@@ -7,9 +7,6 @@ import * as React from 'react'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { useAppState } from '../../lib/app_model_context'
 import { CardItemView } from './card_item_view'
-import { NewTabLink } from '../../../shared/components/new_tab_link'
-
-import * as urls from '../../../shared/lib/rewards_urls'
 
 export function CommunityCard() {
   const { getString } = useLocaleContext()
@@ -28,9 +25,6 @@ export function CommunityCard() {
     <div className='content-card'>
       <h4>
         {getString('communityTitle')}
-        <NewTabLink href={urls.contactSupportURL}>
-          {getString('viewAllLink')}
-        </NewTabLink>
       </h4>
       <section>
         {card.items.map((item, i) => <CardItemView key={i} item={item} />)}

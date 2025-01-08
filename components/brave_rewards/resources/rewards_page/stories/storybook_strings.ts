@@ -190,7 +190,6 @@ export const localeStrings: { [K in StringKey]: string }  = {
   tosUpdateRequiredText: 'We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can $1reset$2 Brave Rewards, which will disable the feature.',
   tosUpdateRequiredTitle: 'Updated Terms of Service',
   unconnectedAdsViewedText: 'You\'ve seen $1# Ads$2 this month',
-  viewAllLink: 'View all',
   viewStoreLink: 'View Store',
   wdpCheckboxLabel: 'Yes, I’d also like to contribute to Brave Search and opt in to $1Web Discovery Project$2.',
   wdpOptInText: 'Contribute some anonymous search and browsing data to refine Brave Search with Web Discovery Project. It’s completely open-source.',

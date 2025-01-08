@@ -192,7 +192,6 @@ export type StringKey =
   'tosUpdateRequiredText' |
   'tosUpdateRequiredTitle' |
   'unconnectedAdsViewedText' |
-  'viewAllLink' |
   'viewStoreLink' |
   'wdpCheckboxLabel' |
   'wdpOptInText' |
