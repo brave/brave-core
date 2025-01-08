@@ -59,37 +59,40 @@ public class AddCustomFilterListsFragment extends BravePreferenceFragment
         Button addBtn = getView().findViewById(R.id.btn_add);
         TextInputEditText urlEditText = getView().findViewById(R.id.enter_url_edittext);
         urlEditText.requestFocus();
-        urlEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {}
+        urlEditText.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {}
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                addBtn.setEnabled(s.toString().trim().length() > 0 ? true : false);
-            }
-        });
-
-        addBtn.setOnClickListener(view -> {
-            if (urlEditText.getText().toString().length() > 0) {
-                String url = urlEditText.getText().toString().trim();
-                if (Patterns.WEB_URL.matcher(url).matches()) {
-                    if (mFilterListAndroidHandler != null) {
-                        Url filterUrl = new Url();
-                        filterUrl.url = url;
-                        mFilterListAndroidHandler.createSubscription(filterUrl);
-                        Intent intent = new Intent();
-                        getActivity().setResult(Activity.RESULT_OK, intent);
-                        getActivity().finish();
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        addBtn.setEnabled(s.toString().trim().length() > 0 ? true : false);
                     }
-                } else {
-                    urlEditText.setError(getActivity().getResources().getString(
-                            R.string.custom_filter_invalid_url));
-                }
-            }
-        });
+                });
+
+        addBtn.setOnClickListener(
+                view -> {
+                    if (urlEditText.getText().toString().length() > 0) {
+                        String url = urlEditText.getText().toString().trim();
+                        if (Patterns.WEB_URL.matcher(url).matches()) {
+                            if (mFilterListAndroidHandler != null) {
+                                Url filterUrl = new Url();
+                                filterUrl.url = url;
+                                mFilterListAndroidHandler.createSubscription(filterUrl);
+                                Intent intent = new Intent();
+                                getActivity().setResult(Activity.RESULT_OK, intent);
+                                getActivity().finish();
+                            }
+                        } else {
+                            urlEditText.setError(
+                                    getActivity().getResources().getString(R.string.invalid_url));
+                        }
+                    }
+                });
     }
 
     @Override

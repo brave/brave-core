@@ -161,6 +161,23 @@ public class BraveSyncWorker {
         return BraveSyncWorkerJni.get().getWordsCount(words);
     }
 
+    public String getSyncServiceURL() {
+        return BraveSyncWorkerJni.get().getSyncServiceURL(mNativeBraveSyncWorker);
+    }
+
+    public String getDefaultSyncServiceURL() {
+        return BraveSyncWorkerJni.get().getDefaultSyncServiceURL(mNativeBraveSyncWorker);
+    }
+
+    public String getCustomSyncServiceURL() {
+        return BraveSyncWorkerJni.get().getCustomSyncServiceURL(mNativeBraveSyncWorker);
+    }
+
+    public boolean setCustomSyncServiceURL(String customSyncUrl) {
+        return BraveSyncWorkerJni.get()
+                .setCustomSyncServiceURL(mNativeBraveSyncWorker, customSyncUrl);
+    }
+
     @NativeMethods
     interface Natives {
         void init(BraveSyncWorker caller);
@@ -195,6 +212,14 @@ public class BraveSyncWorker {
 
         int getWordsCount(String words);
 
+        String getSyncServiceURL(long nativeBraveSyncWorker);
+
+        String getDefaultSyncServiceURL(long nativeBraveSyncWorker);
+
+        String getCustomSyncServiceURL(long nativeBraveSyncWorker);
+
+        boolean setCustomSyncServiceURL(long nativeBraveSyncWorker, String customSyncUrl);
+
         void finalizeSyncSetup(long nativeBraveSyncWorker);
 
         boolean isInitialSyncFeatureSetupComplete(long nativeBraveSyncWorker);
@@ -202,8 +227,11 @@ public class BraveSyncWorker {
         void resetSync(long nativeBraveSyncWorker);
 
         void permanentlyDeleteAccount(long nativeBraveSyncWorker, Callback<String> callback);
+
         void clearAccountDeletedNoticePending(long nativeBraveSyncWorker);
+
         boolean isAccountDeletedNoticePending(long nativeBraveSyncWorker);
+
         void setJoinSyncChainCallback(long nativeBraveSyncWorker, Callback<Boolean> callback);
     }
 }
