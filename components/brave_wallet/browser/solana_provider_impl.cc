@@ -780,7 +780,6 @@ void SolanaProviderImpl::OnConnect(
         l10n_util::GetStringUTF8(
             IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR),
         "");
-    delegate_->ShowPanel();
   } else if (error == RequestPermissionsError::kNone) {
     CHECK(allowed_accounts);
     if (allowed_accounts->size()) {
