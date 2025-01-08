@@ -1550,10 +1550,10 @@ Are you sure you want to do this?
         Allow all trackers &amp; ads
       </message>
       <message name="IDS_BLOCK_COOKIES_DEPRECATED_LABEL" desc="Block all cookies deprecation warning">
-        Block all cookies option is deprecated. To force-enable,
+        The "Block all Cookies" option has been deprecated. To learn how to force-enable this option, visit
       </message>
       <message name="IDS_BLOCK_COOKIES_DEPRECATED_LINK_LABEL" desc="Block all cookies deprecation warning link">
-        <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph> learn more<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph>
+        <ph name="BEGIN_LINK_1">&lt;LINK_1&gt;</ph> our help page<ph name="END_LINK_1">&lt;/LINK_1&gt;</ph>
       </message>
       <message name="IDS_BLOCK_COOKIES" desc="Title for shields option.">
         Block Cookies
