@@ -6,6 +6,7 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import { useHistory } from 'react-router'
 
 // Selectors
 import {
@@ -19,7 +20,11 @@ import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
 import { UISelectors } from '../../../../common/selectors'
 
 // Types
-import { BraveWallet, SendPageTabHashes } from '../../../../constants/types'
+import {
+  BraveWallet,
+  SendPageTabHashes,
+  WalletRoutes
+} from '../../../../constants/types'
 import {
   TokenBalancesRegistry //
 } from '../../../../common/slices/entities/token-balance.entity'
@@ -172,6 +177,7 @@ interface Props {
   onSelectSendOption?: (sendOption: SendPageTabHashes) => void
   selectedNetwork?: BraveWallet.NetworkInfo
   modalType: 'send' | 'swap' | 'bridge'
+  needsAccount?: boolean
 }
 
 export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
@@ -185,8 +191,12 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       onSelectAsset,
       onSelectSendOption,
       selectedNetwork,
-      modalType
+      modalType,
+      needsAccount
     } = props
+
+    // Routing
+    const history = useHistory()
 
     // State
     const [searchValue, setSearchValue] = React.useState<string>('')
@@ -196,12 +206,16 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       )
     const [selectedAccountFilter, setSelectedAccountFilter] =
       React.useState<BraveWallet.AccountInfo>(AllAccountsOption)
-    const [pendingSelectedAsset, setPendingSelectedAsset] = React.useState<
-      BraveWallet.BlockchainToken | undefined
-    >(undefined)
+    const [pendingSelectedAssetState, setPendingSelectedAssetState] =
+      React.useState<BraveWallet.BlockchainToken | undefined>(undefined)
     const [tokenDetails, setTokenDetails] = React.useState<
       BraveWallet.BlockchainToken | undefined
     >(undefined)
+
+    // Computed
+    const pendingSelectedAsset = needsAccount
+      ? selectedFromToken
+      : pendingSelectedAssetState
 
     // Selectors
     const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -502,7 +516,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           return
         }
 
-        setPendingSelectedAsset(token)
+        setPendingSelectedAssetState(token)
       },
       [onSelectAsset, onClose, selectingFromOrTo, modalType]
     )
@@ -618,6 +632,24 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       [accounts, checkIsAccountOptionDisabled]
     )
 
+    const handleOnClose = React.useCallback(() => {
+      // Ensure we clear route params if an account is not selected
+      // to prevent a broken state.
+      if (needsAccount && modalType === 'send') {
+        history.replace(WalletRoutes.Send)
+      }
+      onClose()
+    }, [modalType, needsAccount, history, onClose])
+
+    const handleOnBack = React.useCallback(() => {
+      // Clears route params if an account is not selected
+      // and user clicks back.
+      if (needsAccount && modalType === 'send') {
+        history.replace(WalletRoutes.Send)
+      }
+      setPendingSelectedAssetState(undefined)
+    }, [modalType, needsAccount, history])
+
     // Computed & Memos
     const emptyTokensList =
       !isLoadingBalances && tokensBySearchValue.length === 0
@@ -688,8 +720,8 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return (
         <PopupModal
           title=''
-          onClose={onClose}
-          onBack={() => setPendingSelectedAsset(undefined)}
+          onClose={handleOnClose}
+          onBack={handleOnBack}
           width='560px'
           showDivider={false}
         >
@@ -715,7 +747,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return (
         <PopupModal
           title=''
-          onClose={onClose}
+          onClose={handleOnClose}
           onBack={() => setTokenDetails(undefined)}
           width='560px'
           showDivider={false}
@@ -728,7 +760,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     return (
       <>
         <PopupModal
-          onClose={onClose}
+          onClose={handleOnClose}
           title={getLocale(
             modalType === 'swap'
               ? 'braveWalletChooseAssetToSwap'
@@ -804,7 +836,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         </PopupModal>
         {isPanel && (
           <BottomSheet
-            onClose={() => setPendingSelectedAsset(undefined)}
+            onClose={handleOnBack}
             isOpen={pendingSelectedAsset !== undefined}
           >
             {pendingSelectedAsset && (
