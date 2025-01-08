@@ -399,10 +399,6 @@ int BraveRewardsNativeWorker::GetPublisherStatus(JNIEnv* env, uint64_t tabId) {
   return res;
 }
 
-void BraveRewardsNativeWorker::IncludeInAutoContribution(JNIEnv* env,
-                                                         uint64_t tabId,
-                                                         bool exclude) {}
-
 void BraveRewardsNativeWorker::RemovePublisherFromMap(JNIEnv* env,
                                                       uint64_t tabId) {
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
@@ -598,15 +594,6 @@ bool BraveRewardsNativeWorker::IsCurrentPublisherInRecurrentDonations(
       map_recurrent_publishers_.end();
 }
 
-void BraveRewardsNativeWorker::GetAutoContributeProperties(JNIEnv* env) {
-  Java_BraveRewardsNativeWorker_onGetAutoContributeProperties(
-      env, weak_java_brave_rewards_native_worker_.get(env));
-}
-
-bool BraveRewardsNativeWorker::IsAutoContributeEnabled(JNIEnv* env) {
-  return false;
-}
-
 void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetReconcileStamp(
@@ -742,14 +729,6 @@ void BraveRewardsNativeWorker::SetAdsPerHour(JNIEnv* env, jint value) {
       ->GetPrefs()
       ->SetInt64(brave_ads::prefs::kMaximumNotificationAdsPerHour,
                  static_cast<int64_t>(value));
-}
-
-void BraveRewardsNativeWorker::SetAutoContributionAmount(JNIEnv* env,
-                                                         jdouble value) {}
-
-void BraveRewardsNativeWorker::GetAutoContributionAmount(JNIEnv* env) {
-  Java_BraveRewardsNativeWorker_onGetAutoContributionAmount(
-      env, weak_java_brave_rewards_native_worker_.get(env), 0);
 }
 
 void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
@@ -944,10 +923,6 @@ void BraveRewardsNativeWorker::OnRefreshPublisher(
       static_cast<int>(status),
       base::android::ConvertUTF8ToJavaString(env, publisher_key));
 }
-
-void BraveRewardsNativeWorker::SetAutoContributeEnabled(
-    JNIEnv* env,
-    bool isAutoContributeEnabled) {}
 
 void BraveRewardsNativeWorker::RecordPanelTrigger(JNIEnv* env) {
   if (brave_rewards_service_) {

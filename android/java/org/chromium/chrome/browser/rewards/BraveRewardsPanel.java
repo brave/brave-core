@@ -1212,7 +1212,7 @@ public class BraveRewardsPanel
             new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mBraveRewardsNativeWorker.includeInAutoContribution(mCurrentTabId, !isChecked);
+
                 }
             };
 
@@ -1999,29 +1999,6 @@ public class BraveRewardsPanel
             mSwitchAutoContribute.setOnCheckedChangeListener(mAutoContributeSwitchListener);
         }
         updatePublisherStatus(mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId));
-        mBraveRewardsNativeWorker.getAutoContributeProperties();
-    }
-
-    @Override
-    public void onGetAutoContributeProperties() {
-        if (mBraveRewardsNativeWorker != null) {
-            int publisherStatus = mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId);
-            boolean shouldShow =
-                    (mBraveRewardsNativeWorker.isAutoContributeEnabled()
-                            && publisherStatus != PublisherStatus.NOT_VERIFIED
-                            && publisherStatus != PublisherStatus.WEB3_ENABLED);
-            setAutoContributionvisibility(shouldShow);
-        }
-    }
-
-    private void setAutoContributionvisibility(boolean shouldShow) {
-        int visibility = shouldShow ? View.VISIBLE : View.GONE;
-        mPopupView.findViewById(R.id.attention_layout).setVisibility(visibility);
-        mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(visibility);
-        mPopupView.findViewById(R.id.divider_line).setVisibility(visibility);
-        mPopupView.findViewById(R.id.divider_line2).setVisibility(visibility);
-        mPopupView.findViewById(R.id.auto_contribute_summary_seperator).setVisibility(visibility);
-        mPopupView.findViewById(R.id.auto_contribute_summary_layout).setVisibility(visibility);
     }
 
     @Override
@@ -2106,10 +2083,6 @@ public class BraveRewardsPanel
             SpannableString spannableLearnMore = learnMoreSpannableString(notVerifiedText);
             infoCreatorNotVerified.setMovementMethod(LinkMovementMethod.getInstance());
             infoCreatorNotVerified.setText(spannableLearnMore);
-        }
-        if (pubStatus == PublisherStatus.NOT_VERIFIED
-                || pubStatus == PublisherStatus.WEB3_ENABLED) {
-            setAutoContributionvisibility(false);
         }
     }
 
