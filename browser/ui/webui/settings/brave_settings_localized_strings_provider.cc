@@ -80,6 +80,9 @@ constexpr char16_t kDebounceLearnMoreUrl[] =
 constexpr char16_t kEnableNftDiscoveryLearnMoreUrl[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"NFT-Discovery";
+constexpr char16_t kBlockAllCookiesLearnMoreUrl[] =
+    u"https://github.com/brave/brave-browser/wiki/"
+    u"Block-all-cookies-global-Shields-setting";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -344,10 +347,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"advancedView", IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_ADVANCED_VIEW_LABEL},
       {"adControlLabel", IDS_SETTINGS_BRAVE_SHIELDS_AD_CONTROL_LABEL},
       {"cookieControlLabel", IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL},
-      {"blockAllCookiesDeprecatedLabel",
-       IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_BLOCK_ALL_DEPRECATED_LABEL},
-      {"blockAllCookiesDeprecatedLinkLabel",
-       IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_BLOCK_ALL_DEPRECATED_LINK_LABEL},
       {"fingerprintingControlLabel",
        IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL},
       {"httpsUpgradeControlLabel",
@@ -972,6 +971,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "ensOffchainLookupDesc",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_ENABLE_ENS_OFFCHAIN_LOOKUP_DESC,
                                  kEnsOffchainLookupLearnMoreURL));
+
+  html_source->AddString(
+      "blockAllCookiesDeprecatedLabel",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_BLOCK_ALL_DEPRECATED_LABEL,
+          kBlockAllCookiesLearnMoreUrl));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,

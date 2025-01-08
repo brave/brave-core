@@ -477,10 +477,7 @@
     Block cookies
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_BLOCK_ALL_DEPRECATED_LABEL" desc="Block all cookies deprecation warning">
-    The "Block all Cookies" option has been deprecated. To learn how to force-enable this option, visit 
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_BLOCK_ALL_DEPRECATED_LINK_LABEL" desc="Block all cookies learn more link text">
-    our help page
+    The "Block all Cookies" option has been deprecated. To learn how to force-enable this option, visit <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>our help page<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
     Block third-party cookies
