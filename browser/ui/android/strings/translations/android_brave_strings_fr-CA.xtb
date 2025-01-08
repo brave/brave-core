@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr-CA">
-<translation id="8631427463833030968">Gérer les publicités</translation>
 <translation id="7630214457764713113">Copier le lien propre</translation>
-<translation id="885805571521218129">Ceci reflète votre plage de revenus estimée pour les publicités Brave ce mois-ci.</translation>
 <translation id="3478449063771497234">Les notifications sont désactivées</translation>
 <translation id="2862978891748913252">Sélectionnez votre pays</translation>
 <translation id="3970520675790340955">Sélectionnez votre pays pour que nous puissions vous afficher les bonnes options et publicités pour votre région.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Afficher les meilleurs sites dans les suggestions</translation>
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
 <translation id="919715748352669592">Indexe automatiquement les sites Web qui suivent les caractéristiques OpenSearch.</translation>
+<translation id="412411722208944922">Moteurs de recherches rapides</translation>
+<translation id="2836969042340015500">Moteurs de recherches rapides</translation>
+<translation id="9120455214794270250">Afficher la barre de recherche rapide</translation>
+<translation id="1052991798173010693">Moteurs de recherches actuellement utilisés</translation>
+<translation id="335303688425891752">Appuyez longuement pour modifier l'ordre</translation>
 <translation id="9148058034647219655">Quitter</translation>
 <translation id="8047754398610073499">Bloquer les avis de consentement aux témoins</translation>
 <translation id="2621893359845808115">Bloquer les fenêtres surgissantes de sites Web qui vous demandent d'accepter ou de refuser les témoins sur leur site</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Bienvenue dans Brave</translation>
 <translation id="4117451092682672487">Protégez votre vie privée en toute facilité.</translation>
 <translation id="7909375417585209817">En définissant Brave comme navigateur par défaut, chaque lien s'ouvrira avec les protections de confidentialité de Brave.</translation>
-<translation id="3737878115109582442">Ajouter le gadget logiciel de recherche</translation>
-<translation id="6199413390010319240">Gardez Brave à portée de main pour explorer le Web plus rapidement.</translation>
-<translation id="4338600611020922010">Ajouter à l'écran d'accueil</translation>
 <translation id="7370959926683925817">Bloquez les publicités. Économisez des données. Chaque jour.</translation>
 <translation id="7281027579943912834">Avec Brave comme valeur par défaut, chaque lien sur lequel vous appuyez bénéficie de la protection de blocage des publicités de Brave. Chaque page, chaque vidéo, chaque diffusion.</translation>
 <translation id="5148943178722443958">Aidez-nous à améliorer Brave.</translation>
@@ -408,8 +408,13 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="6925081665778864449">Pour synchroniser les mots de passe, veuillez activer l'authentification biométrique ou par code d'accès sur votre appareil Android. Cette mesure de sécurité supplémentaire permet d'assurer la sécurité de vos mots de passe.</translation>
 <translation id="597993392929850353">Licence Brave</translation>
 <translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
-<translation id="6199596294742117349">Ceci est un onglet privé</translation>
-<translation id="5858455511731621847">Même si les sites que vous visitez dans des onglets privés ne sont pas enregistrés localement, ils ne vous rendent pas anonyme ou invisible pour votre FAI, votre employeur ou les sites que vous visitez.</translation>
+<translation id="3110967157686007724">Onglet de navigation privée</translation>
+<translation id="944340256927461196">Ne laissez aucune trace sur votre appareil</translation>
+<translation id="2063044449012253966">Les sites que vous consultez dans une fenêtre de navigation privée n'apparaissent pas dans votre historique. Les témoins, les données de formulaire et les données de site sont effacées lorsque vous fermez la fenêtre.</translation>
+<translation id="7395764193745523646">Activité de navigation</translation>
+<translation id="8735363371744702779">Notez que même dans des fenêtres privées, votre activité de navigation peut toujours être visible par votre FAI, les observateurs du réseau ou votre employeur (si vous utilisez un réseau ou un appareil professionnel).</translation>
+<translation id="1413177583895309156">Brave VPN crypte et protège tout ce que vous faites en ligne, même en dehors du navigateur Brave.</translation>
+<translation id="3974348661685061050">Essayez gratuitement pendant 7 jours</translation>
 <translation id="5789441016350810005">Publicités de Brave envoyées lorsque le navigateur est en arrière-plan</translation>
 <translation id="4973347371961481083">Contributions</translation>
 <translation id="7047578174221019462">Vos contributions mensuelles ont été traitées.</translation>
@@ -710,9 +715,10 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="1532536259167115948">Abonnement mensuel <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Abonnement annuel <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Renouvellement mensuel</translation>
+<translation id="112929124115834557">Renouvellement annuel</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/mois</translation>
 <translation id="1163809943099641131">Un an</translation>
-<translation id="727385358513272220">Renouvellement annuel (<ph name="DISCOUNT_TEXT_START"/>économisez <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>Économisez <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/an</translation>
 <translation id="2786538705804257030">Les abonnements seront facturés via votre compte Google. Toute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les Paramètres.\n\nEn utilisant Brave, vous acceptez les Conditions d’utilisation et la Politique de confidentialité.</translation>
 <translation id="5035172357624830412">Vous avez déjà acheté sur brave.com?</translation>
@@ -842,7 +848,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4351811224047421378">Décimales de précision</translation>
 <translation id="3494964159182650590">Résumé des récompenses</translation>
 <translation id="590733288489975971">Rewards d'Ads</translation>
-<translation id="1886682615222609631">Gains jusqu'à présent</translation>
+<translation id="1450735350187803276">Publicités vues ce mois-ci</translation>
 <translation id="1767561995429774671">Contribuer</translation>
 <translation id="7335371657242627509">Inclure dans l'auto-contribution</translation>
 <translation id="6727102863431372879">Définir</translation>
@@ -1228,5 +1234,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="2728518864712716830">La mise à jour a été téléchargée.</translation>
 <translation id="8403338849301491865">La liste des filtres a bien été mise à jour</translation>
 <translation id="4650851936784160359">La liste des filtres n'a pas pu être mise à jour. Veuillez réessayer.</translation>
-<translation id="1450735350187803276">Publicités vues ce mois</translation>
+<translation id="3098054327870766317">Afficher le bouton Rétablir lorsque les onglets sont fermés</translation>
+<translation id="1336494649091412226">Voulez-vous vraiment fermer Brave?</translation>
 </translationbundle>

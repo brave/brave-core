@@ -307,11 +307,11 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="6155018868740116868">Recupera</translation>
 <translation id="2521960050170773751">Aggiungi elementi multimediali dalla pagina</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> vuole aprire</translation>
-<translation id="7128982309566342232">Una pagina incorporata su <ph name="SITE"/> vuole aprire</translation>
+<translation id="4828353184750597953">Una pagina incorporata su <ph name="SITE"/> vuole aprire</translation>
 <translation id="1175012181261953767">Questa pagina vuole aprire</translation>
 <translation id="7459546222322124545">Una pagina incorporata su questa pagina vuole aprire</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> vuole salvare</translation>
-<translation id="5936788906460687941">Una pagina incorporata su <ph name="SITE"/> vuole salvare</translation>
+<translation id="8813509417421129632">Una pagina incorporata su <ph name="SITE"/> vuole salvare</translation>
 <translation id="7700010743463174379">Questa pagina vuole salvare</translation>
 <translation id="6774238875569752630">Una pagina incorporata su questa pagina vuole salvare</translation>
 <translation id="9156965752763025780">Le modifiche verranno applicate al prossimo riavvio di Brave.</translation>
@@ -573,6 +573,7 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="4094590686212463338">Impossibile partecipare a questa catena di sincronizzazione. La catena è stata eliminata.</translation>
 <translation id="4908081302669157000">Numeri di telefono, email e indirizzi</translation>
 <translation id="294985549514492876">App web (PWA)</translation>
+<translation id="7029809446516969842">Passwords</translation>
 <translation id="924029461438529367">Mostra suggerimenti di ricerca</translation>
 <translation id="3128251601544028053">Quando digiti qualcosa nella barra degli indirizzi o nella casella di ricerca, Brave invia il testo digitato al tuo motore di ricerca predefinito per ottenere suggerimenti migliori. Questa opzione non è disponibile nelle finestre private.</translation>
 <translation id="6285118765755298263">Indicizza altri motori di ricerca</translation>
@@ -715,6 +716,8 @@ Leo. Questa azione non può essere annullata.</translation>
 <translation id="1355326130503900056">Il nome del modello come dovrebbe apparire nella richiesta al framework di servizio, per esempio phi-3 (attenzione: se questo nome non è identico a quello previsto dal framework di servizio, l’integrazione non funzionerà).</translation>
 <translation id="3286410514484292784">L’URL in cui il framework di servizio è in ascolto per le richieste. Se hai dubbi, controlla la documentazione del framework di servizio. Ad esempio per Ollama, questa è sempre http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Alcuni framework di servizio possono richiedere credenziali di autenticazione, come una chiave API o un token di accesso. Queste saranno aggiunte all’intestazione della richiesta.</translation>
+<translation id="4335128003329183586">Dimensioni del contesto</translation>
+<translation id="8794525422794607973">Il numero massimo di token che il modello può elaborare in una singola interazione. Ogni token rappresenta circa 3⁄4 di una parola. Un limite più alto per i token consente al modello di gestire conversazioni più lunghe. La dimensione massima del contesto varia a seconda del modello utilizzato.</translation>
 <translation id="217141195370578385">Brave non filtra queste richieste. Leggi le condizioni di privacy del fornitore scelto.</translation>
 <translation id="2645532768679870478">Gli endpoint non locali devono utilizzare il protocollo HTTPS per la trasmissione sicura dei dati.</translation>
 <translation id="8177205483022887785">Hai inserito un URL non valido. Inserisci un URL valido.</translation>
@@ -724,6 +727,9 @@ Leo. Questa azione non può essere annullata.</translation>
 <translation id="7435587476558117990">Collega il tuo LLM self-hosted o ospitato da terzi a Leo e utilizzalo nel browser.</translation>
 <translation id="1381050642750209119">Utilizza un framework compatibile con il protocollo per le chat di OpenAI come Ollama.</translation>
 <translation id="2642905648178380593">Salva modello</translation>
+<translation id="6304169450064541679">Prompt di sistema</translation>
+<translation id="3081947790648024460">Istruzioni personalizzate e/o un contesto specifico forniti al modello per orientare le sue risposte verso una determinata direzione o stile. Inserisci %datetime% quando desideri includere la data e l'ora correnti.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> token</translation>
 <translation id="349846214503465941">Abilita la playlist</translation>
 <translation id="7903608716704052878">Aggiungi file automaticamente per la visualizzazione offline</translation>
 <translation id="4193768184502613558">Questa opzione salverà automaticamente i file multimediali nella cache, in modo da poterli riprodurre senza connessione internet.</translation>

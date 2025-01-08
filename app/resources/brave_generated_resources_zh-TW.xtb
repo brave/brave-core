@@ -307,11 +307,11 @@
 <translation id="6155018868740116868">復原</translation>
 <translation id="2521960050170773751">從頁面新增媒體</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> 要求開啟</translation>
-<translation id="7128982309566342232"><ph name="SITE"/> 的嵌入頁面要求開啟</translation>
+<translation id="4828353184750597953">在 <ph name="SITE"/> 頁面中的嵌入頁面要求開啟</translation>
 <translation id="1175012181261953767">此頁面要求開啟</translation>
 <translation id="7459546222322124545">此頁面中的嵌入頁面要求開啟</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> 要求儲存</translation>
-<translation id="5936788906460687941"><ph name="SITE"/> 的嵌入頁面要求儲存</translation>
+<translation id="8813509417421129632">在 <ph name="SITE"/> 頁面中的嵌入頁面要求儲存</translation>
 <translation id="7700010743463174379">此頁面要求儲存</translation>
 <translation id="6774238875569752630">此頁面中的嵌入頁面要求儲存</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
@@ -574,6 +574,7 @@
 <translation id="4094590686212463338">無法加入此同步鏈。同步鏈已被刪除。</translation>
 <translation id="4908081302669157000">電話號碼、電子郵件和地址</translation>
 <translation id="294985549514492876">Web 應用程式 (PWA)</translation>
+<translation id="7029809446516969842">密碼</translation>
 <translation id="924029461438529367">顯示搜尋建議</translation>
 <translation id="3128251601544028053">您在網址列或搜尋方塊輸入內容時，Brave 會將您輸入的內容傳送至您的預設搜尋引擎，以取得更好的建議。私密瀏覽視窗不支援此功能。</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
@@ -715,6 +716,8 @@
 <translation id="1355326130503900056">模型名稱，這應顯示於傳給服務架構 (如 phi-3) 的要求 (請注意，如果此名稱與服務架構預期的名稱不符，就無法整合)</translation>
 <translation id="3286410514484292784">您的服務架構會在這個 URL 聆聽要求。如果不確定，請查看服務架構文件，舉例而言 Ollama 的 URL 一律為 http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">部分服務架構可能須要驗證認證，例如 API 金鑰或存取權杖。這些認證會新增至要求標頭。</translation>
+<translation id="4335128003329183586">內容大小</translation>
+<translation id="8794525422794607973">模型在單次互動中可處理的最大指標數。每個指標大約是一個單字的 3/4。較大的內容大小可讓模型處理較長的對話。不同的模型支援不同的最大內容大小。</translation>
 <translation id="217141195370578385">Brave 不會通過 Proxy 處理這些要求，請詳閱所選提供者的隱私權條款。</translation>
 <translation id="2645532768679870478">非本機端點應採用 HTTPS 通訊協定以安全傳輸資料。</translation>
 <translation id="8177205483022887785">您輸入了無效的 URL，請輸入有效的 URL。</translation>
@@ -724,6 +727,9 @@
 <translation id="7435587476558117990">將自我裝載或第三方託管大型語言模型 (LLM) 與 Leo 連結，並在瀏覽器中使用。</translation>
 <translation id="1381050642750209119">請使用與 OpenAI 聊天通訊協定相容的架構，例如 Ollama。</translation>
 <translation id="2642905648178380593">儲存模型</translation>
+<translation id="6304169450064541679">系統提示</translation>
+<translation id="3081947790648024460">提供給模型的自訂指示和/或內容，以引導其朝特定方向或風格做出回應。使用 %datetime% 來插入目前的日期和時間。</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> 代幣</translation>
 <translation id="349846214503465941">啟用播放清單</translation>
 <translation id="7903608716704052878">自動加入檔案以供離線檢視</translation>
 <translation id="4193768184502613558">此選項將自動快取媒體檔，以讓您在沒有網路連線的情況下播放媒體檔。</translation>

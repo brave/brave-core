@@ -114,7 +114,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2370739752330685659">Mungkin kemudian</translation>
 <translation id="5100490448228945668">Singkirkan penukaran carian Brave, tekan Enter untuk mengalih keluar cadangan ini</translation>
 <translation id="6213208892248046484">Tukar kepada Brave Search</translation>
-<translation id="9194637241566114638">Bantu tingkatkan <ph name="SEARCH_NAME"/> dengan menghantar data penggunaan awanama.  <ph name="MORE_INFO"/></translation>
+<translation id="9194637241566114638">Bantu tingkatkan <ph name="SEARCH_NAME"/> dengan menghantar data penggunaan awanama. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Carian Brave</translation>
 <translation id="8184318863960255706">Maklumat lanjut</translation>
 <translation id="780301667611848630">Tidak, terima kasih</translation>
@@ -307,11 +307,11 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Dapatkan kembali</translation>
 <translation id="2521960050170773751">Tambah media daripada halaman</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> ingin dibuka</translation>
-<translation id="7128982309566342232">Halaman terbenam pada <ph name="SITE"/> ingin dibuka</translation>
+<translation id="4828353184750597953">Halaman terbenam di <ph name="SITE"/> ingin dibuka</translation>
 <translation id="1175012181261953767">Halaman ini ingin dibuka</translation>
 <translation id="7459546222322124545">Halaman terbenam pada halaman ini ingin dibuka</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> ingin disimpan</translation>
-<translation id="5936788906460687941">Halaman terbenam pada <ph name="SITE"/> ingin disimpan</translation>
+<translation id="8813509417421129632">Halaman terbenam di <ph name="SITE"/> ingin menyimpan</translation>
 <translation id="7700010743463174379">Halaman ini ingin disimpan</translation>
 <translation id="6774238875569752630">Halaman terbenam pada halaman ini ingin disimpan</translation>
 <translation id="9156965752763025780">Perubahan anda akan dilaksanakan apabila anda melancarkan semula Brave pada masa hadapan.</translation>
@@ -573,6 +573,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4094590686212463338">Tidak dapat menyertai rantaian segerak ini. Rantaian segerak telah dipadamkan.</translation>
 <translation id="4908081302669157000">Nombor telefon, e-mel dan alamat</translation>
 <translation id="294985549514492876">Apl web (PWA)</translation>
+<translation id="7029809446516969842">Kata laluan</translation>
 <translation id="924029461438529367">Tunjukkan cadangan carian</translation>
 <translation id="3128251601544028053">Apabila anda menaip dalam bar alamat atau kotak carian, Brave akan menghantar perkara yang anda taip ke enjin carian piawai anda untuk mendapatkan cadangan yang lebih baik. Ciri ini tidak tersedia dalam tetingkap peribadi.</translation>
 <translation id="6285118765755298263">Indeks enjin carian lain</translation>
@@ -715,6 +716,8 @@ Leo. Tindakan ini tidak dapat dibuat asal.</translation>
 <translation id="1355326130503900056">Nama model sebagaimana yang sepatutnya dipaparkan dalam permintaan kepada rangka kerja penyediaan, contohnya, phi-3 (harap maklum bahawa jika nama ini tidak betul-betul sepadan dengan nama yang dijangkakan oleh rangka kerja penyediaan, penyepaduan tidak akan berfungsi)</translation>
 <translation id="3286410514484292784">Url tempat rangka kerja pelayan anda mendengar permintaan. Jika anda tidak pasti, semak dokumentasi rangkai kerja pelayan. Cth. untuk Ollama, url ini sentiasa http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Sesetengah rangkai kerja pelayan mungkin mengehendaki bukti kelayakan pengesahan, seperti kunci API atau token akses. Keperluan ini akan ditambahkan pada pengepala permintaan.</translation>
+<translation id="4335128003329183586">Saiz konteks</translation>
+<translation id="8794525422794607973">Jumlah maksimum token yang dapat diproses oleh model dalam satu interaksi. Setiap token bersamaan lebih kurang 3/4 daripada satu perkataan. Saiz konteks yang lebih besar membolehkan model menguruskan perbualan yang lebih panjang. Model yang berbeza menyokong saiz konteks maksimum yang berbeza.</translation>
 <translation id="217141195370578385">Brave tidak menjadi perantara untuk permintaan ini, sila baca terma privasi penyedia yang dipilih.</translation>
 <translation id="2645532768679870478">Titik akhir bukan setempat hendaklah menggunakan protokol HTTPS untuk penghantaran data yang selamat.</translation>
 <translation id="8177205483022887785">Anda telah memasukkan URL tidak sah. Sila masukkan URL yang sah.</translation>
@@ -724,6 +727,9 @@ Leo. Tindakan ini tidak dapat dibuat asal.</translation>
 <translation id="7435587476558117990">Sambungkan LLM yang dihoskan sendiri atau dihoskan oleh pihak ketiga kepada Leo dan gunakan LLM tersebut dalam pelayar.</translation>
 <translation id="1381050642750209119">Gunakan mana-mana rangkai kerja yang serasi dengan Protokol Sembang OpenAI seperti Ollama.</translation>
 <translation id="2642905648178380593">Simpan model</translation>
+<translation id="6304169450064541679">Arahan Sistem</translation>
+<translation id="3081947790648024460">Arahan dan/atau konteks tersuai yang diberikan kepada model untuk menghasilkan respons dengan arah atau gaya tertentu. Gunakan %ddatetime% untuk memasukkan tarikh dan masa semasa.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> token</translation>
 <translation id="349846214503465941">Dayakan Senarai Main</translation>
 <translation id="7903608716704052878">Tambah fail secara automatik untuk pemaparan luar talian</translation>
 <translation id="4193768184502613558">Pilihan ini akan mengcache fail media secara automatik supaya anda boleh memainkannya tanpa sambungan Internet.</translation>

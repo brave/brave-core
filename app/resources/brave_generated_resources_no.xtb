@@ -307,11 +307,11 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Gjenopprett</translation>
 <translation id="2521960050170773751">Legg til medier fra side</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> ønsker å åpne</translation>
-<translation id="7128982309566342232">En innebygd side på <ph name="SITE"/> ønsker å åpne</translation>
+<translation id="4828353184750597953">Nettleseren ønsker å åpne en innebygd side fra <ph name="SITE"/></translation>
 <translation id="1175012181261953767">Denne siden ønsker å åpne</translation>
 <translation id="7459546222322124545">En innebygd side på denne siden ønsker å åpne</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> ønsker å lagre</translation>
-<translation id="5936788906460687941">En innebygd side på <ph name="SITE"/> ønsker å lagre</translation>
+<translation id="8813509417421129632">Nettleseren ønsker å lagre en innebygd side fra <ph name="SITE"/></translation>
 <translation id="7700010743463174379">Denne siden ønsker å lagre</translation>
 <translation id="6774238875569752630">En innebygd side på denne siden ønsker å lagre</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
@@ -573,6 +573,7 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="4094590686212463338">Kunne ikke bli med på denne synkroniseringskjeden. Kjeden er slettet.</translation>
 <translation id="4908081302669157000">Telefonnumre, e-postadresser og adresser</translation>
 <translation id="294985549514492876">Webapper (PWA-er)</translation>
+<translation id="7029809446516969842">Passord</translation>
 <translation id="924029461438529367">Vis søkeforslag</translation>
 <translation id="3128251601544028053">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver til din standard søkemotor for å få bedre forslag. Dette er ikke tilgjengelig i private vinduer.</translation>
 <translation id="6285118765755298263">Indekser andre søkemotorer</translation>
@@ -715,6 +716,8 @@ Leo. Handlingen kan ikke angres.</translation>
 <translation id="1355326130503900056">Navnet på modellen slik det skal vises i forespørselen til serveringsrammeverket, dvs. phi-3 (merk at hvis dette navnet ikke samsvarer nøyaktig med det som forventes av server-rammeverket, vil ikke integrasjonen fungere)</translation>
 <translation id="3286410514484292784">Nettadressen der serveringsrammeverket ditt lytter etter forespørsler. Hvis du ikke er sikker, sjekk dokumentasjonen for serveringsrammeverket. F.eks. for Ollama er dette alltid http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Noen serveringsrammeverk kan kreve autentiseringslegitimasjon, for eksempel en API-nøkkel eller et tilgangstoken. Disse vil bli lagt til forespørselsoverskriften.</translation>
+<translation id="4335128003329183586">Størrelse på kontekst</translation>
+<translation id="8794525422794607973">Dette bestemmer hvor mange tokener modellen kan behandle i en samtale. Et token er cirka tre fjerdedeler av et ord. Jo større kontekst, jo lengre samtaler kan modellen ha. Ulike modeller takler ulike størrelser på kontekst.</translation>
 <translation id="217141195370578385">Brave fullfører ikke disse forespørslene. Les personvernvilkårene til den valgte leverandøren.</translation>
 <translation id="2645532768679870478">Ikke-lokale endepunkter bør bruke HTTPS-protokollen for sikker dataoverføring.</translation>
 <translation id="8177205483022887785">Du har angitt en ugyldig URL. Skriv inn en gyldig URL.</translation>
@@ -724,6 +727,9 @@ Leo. Handlingen kan ikke angres.</translation>
 <translation id="7435587476558117990">Koble din egenvertsbaserte eller tredjepartsvertsbaserte LLM til Leo og bruk dem i nettleseren.</translation>
 <translation id="1381050642750209119">Bruk et hvilket som helst OpenAI Chat Protocol-kompatibelt rammeverk som Ollama.</translation>
 <translation id="2642905648178380593">Lagre modell</translation>
+<translation id="6304169450064541679">Systemledetekst</translation>
+<translation id="3081947790648024460">Du kan skrive instruksjoner og/eller kontekst som veiledning for å få et bestemt tema eller en bestemt stil på svarene fra modellen. Lim inn %datetime% der du ønsker å sette inn nåværende dato og tidspunkt.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokener</translation>
 <translation id="349846214503465941">Aktiver spillelisten</translation>
 <translation id="7903608716704052878">Legg automatisk til filer for offlinetilgang</translation>
 <translation id="4193768184502613558">Dette alternativet bufrer automatisk mediefiler, slik at du kan spille dem av uten å være koblet til internett.</translation>

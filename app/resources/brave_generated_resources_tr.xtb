@@ -115,7 +115,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="2370739752330685659">Belki daha sonra</translation>
 <translation id="5100490448228945668">Brave arama dönüşümünü kapatın, bu öneriyi kaldırmak için Enter'a basın</translation>
 <translation id="6213208892248046484">Brave Arama'ya geçin</translation>
-<translation id="9194637241566114638">Anonim kullanım verilerini göndererek <ph name="SEARCH_NAME"/> özelliğini gelişmemize yardımcı olun.  <ph name="MORE_INFO"/></translation>
+<translation id="9194637241566114638">Anonim kullanım verilerini göndererek <ph name="SEARCH_NAME"/> özelliğini gelişmemize yardımcı olun. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Arama</translation>
 <translation id="8184318863960255706">Daha fazla bilgi</translation>
 <translation id="780301667611848630">Hayır, teşekkürler</translation>
@@ -189,7 +189,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="8010675257566903381">Wayback Machine bu sitenin kayıtlı bir versiyonunu bulamadı.</translation>
 <translation id="1207694258341311738">Kayıtlı versiyonu kontrol et</translation>
 <translation id="191143826155037518">Brave'i <ph name="BEGIN_LINK_MPL"/>Mozilla Kamu Lisansı 2.0<ph name="END_LINK_MPL"/> (MPL) altında ve <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılım<ph name="END_LINK_OSS"/> dahil çeşitli diğer lisanslar altında kullanabilirsiniz.
-        <ph name="BEGIN_LINK_SOURCE_CODE"/>Bu kopyayı oluşturmak için kullanılan kaynak kodunu <ph name="END_LINK_SOURCE_CODE"/> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS"/> okuyabilirsiniz.</translation>
+       <ph name="BEGIN_LINK_SOURCE_CODE"/>Bu kopyayı oluşturmak için kullanılan kaynak kodunu <ph name="END_LINK_SOURCE_CODE"/> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS"/> okuyabilirsiniz.</translation>
 <translation id="4474155171896946103">Tüm sekmelere yer işareti koy...</translation>
 <translation id="3987546108749866209">Dikey sekmeleri kullan</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{Sekmenin sesini kapat}other{Sekmelerin sesini kapat}}</translation>
@@ -308,11 +308,11 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="6155018868740116868">Kurtar</translation>
 <translation id="2521960050170773751">Sayfadan medya ekle</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> açılmak istiyor</translation>
-<translation id="7128982309566342232"><ph name="SITE"/> sitesinde gömülü bir sayfa açılmak istiyor</translation>
+<translation id="4828353184750597953"><ph name="SITE"/> adresindeki gömülü bir sayfa açılmak istiyor</translation>
 <translation id="1175012181261953767">Bu sayfa açılmak istiyor</translation>
 <translation id="7459546222322124545">Bu sayfada gömülü bir sayfa açılmak istiyor</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> kaydetmek istiyor</translation>
-<translation id="5936788906460687941"><ph name="SITE"/> sitesinde gömülü bir sayfa kaydetmek istiyor</translation>
+<translation id="8813509417421129632"><ph name="SITE"/> adresindeki gömülü bir sayfa kaydetmek istiyor</translation>
 <translation id="7700010743463174379">Bu sayfa kaydetmek istiyor</translation>
 <translation id="6774238875569752630">Bu sayfada gömülü bir sayfa kaydetmek istiyor</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
@@ -574,6 +574,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="4094590686212463338">Bu senkronizasyon zincirine katılınamadı. Senkronizasyon zinciri silindi.</translation>
 <translation id="4908081302669157000">Telefon numaraları, e-postalar ve adresler</translation>
 <translation id="294985549514492876">Web uygulamaları (PWA'lar)</translation>
+<translation id="7029809446516969842">Şifreler</translation>
 <translation id="924029461438529367">Arama önerilerini göster</translation>
 <translation id="3128251601544028053">Bir adres çubuğuna veya arama kutusuna yazdığınız zaman, Brave daha iyi öneriler almanız için yazdığınız şeyi varsayılan arama motorunuza gönderir. Bu, gizli pencerelerde kullanılamaz.</translation>
 <translation id="6285118765755298263">Diğer arama motorlarını indeksle</translation>
@@ -716,6 +717,8 @@ tümünü silecektir. Bu eylem geri alınamaz.</translation>
 <translation id="1355326130503900056">Hizmet veren çerçeveye giden talepte yazıldığı şekliyle modelin adı, örn. phi-3 (bu ismin hizmet veren çerçevenin beklediği formatla uyuşmaması halinde entegrasyonun çalışmayacağını unutmayın)</translation>
 <translation id="3286410514484292784">Hizmet veren çerçevenizin talepleri dinlediği URL. Emin değilseniz, hizmet veren çerçeve dokümantasyonunu kontrol edin. Örn. Ollama için, bu her zaman http://localhost:11434/v1/chat/completions şeklindedir</translation>
 <translation id="1058790648388035953">Hizmet veren çerçevelerin bazıları, bir API anahtarı veya bir erişim belirteci gibi kimlik doğrulama bilgileri gerektirebilir. Bunlar talep başlığına eklenecektir.</translation>
+<translation id="4335128003329183586">Bağlam boyutu</translation>
+<translation id="8794525422794607973">Bağlam boyutu, modelin tek bir etkileşimde işleyebileceği maksimum token sayısıdır. Her token kabaca bir kelimenin 3/4'üne denk gelir. Daha büyük bir bağlam boyutu, modelin daha uzun konuşmaları işlemesini sağlar. Farklı modeller farklı maksimum bağlam boyutlarını destekler.</translation>
 <translation id="217141195370578385">Brave, bu talepleri proxy üzerinden aktarmaz, lütfen seçtiğiniz sağlayıcının gizlilik hükümlerini okuyun.</translation>
 <translation id="2645532768679870478">Yerel olmayan uç noktalar, güvenli veri aktarımı için HTTPS prokolünü kullanmalıdır.</translation>
 <translation id="8177205483022887785">Geçersiz bir URL girdiniz. Lütfen geçerli bir URL girin.</translation>
@@ -725,6 +728,9 @@ tümünü silecektir. Bu eylem geri alınamaz.</translation>
 <translation id="7435587476558117990">Kendi barındırdığınız veya bir üçüncü tarafın barındırdığı LLM'yi Leo'ya bağlayın ve tarayıcı içinden kullanın.</translation>
 <translation id="1381050642750209119">Ollama gibi, OpenAI Sohbet Protokolü ile uyumlu herhangi bir çerçeve kullanabilirsiniz.</translation>
 <translation id="2642905648178380593">Modeli kaydet</translation>
+<translation id="6304169450064541679">Sistem İstemi</translation>
+<translation id="3081947790648024460">Modelin yanıtlarını belirli bir yönde veya tarzda yönlendirmek için verilen özel talimatlar ve/veya bağlam. Güncel tarih ve saatin eklenmesini istediğiniz yerde %datetime% ifadesini kullanın.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> token</translation>
 <translation id="349846214503465941">Oynatma Listesini etkinleştir</translation>
 <translation id="7903608716704052878">Dosyaları çevrimdışı görüntüleme için otomatik olarak ekle</translation>
 <translation id="4193768184502613558">Bu seçenek, medya dosyalarını otomatik olarak önbelleğe alır, böylece bunları internet bağlantısı olmadan oynatabilirsiniz.</translation>

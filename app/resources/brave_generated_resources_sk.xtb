@@ -114,7 +114,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="2370739752330685659">Možno neskôr</translation>
 <translation id="5100490448228945668">Zrušiť vyhľadávané prevedenie Brave, toto odporúčanie odstránite stlačením tlačidla Enter</translation>
 <translation id="6213208892248046484">Prepnúť na vyhľadávač Brave</translation>
-<translation id="9194637241566114638">Pomôžte zlepšiť internetový vyhľadávač <ph name="SEARCH_NAME"/> odosielaním anonymných údajov o používaní.  <ph name="MORE_INFO"/></translation>
+<translation id="9194637241566114638">Pomôžte zlepšiť internetový vyhľadávač <ph name="SEARCH_NAME"/> odosielaním anonymných údajov o používaní. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">Ďalšie informácie</translation>
 <translation id="780301667611848630">Nie, ďakujem</translation>
@@ -307,11 +307,11 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6155018868740116868">Obnoviť</translation>
 <translation id="2521960050170773751">Pridať médium zo stránky</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> žiada o otvorenie</translation>
-<translation id="7128982309566342232">Vložená stránka v <ph name="SITE"/> žiada o otvorenie</translation>
+<translation id="4828353184750597953">Vložená stránka na adrese <ph name="SITE"/> sa chce otvoriť</translation>
 <translation id="1175012181261953767">Táto stránka žiada o otvorenie</translation>
 <translation id="7459546222322124545">Vložená stránka na tejto stránke žiada o otvorenie</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> žiada o uloženie</translation>
-<translation id="5936788906460687941">Vložená stránka v<ph name="SITE"/> žiada o uloženie</translation>
+<translation id="8813509417421129632">Vložená stránka na adrese <ph name="SITE"/> sa chce uložiť</translation>
 <translation id="7700010743463174379">Táto stránka žiada o uloženie</translation>
 <translation id="6774238875569752630">Vložená stránka v tejto stránke žiada o uloženie</translation>
 <translation id="9156965752763025780">Zmeny sa prejavia pri nasledujúcom reštartovaní prehliadača Brave.</translation>
@@ -572,6 +572,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4094590686212463338">Nedá sa pripojiť na tento synchronizačný reťazec. Synchronizačný reťazec bol vymazaný.</translation>
 <translation id="4908081302669157000">Telefónne čísla, e-maily a adresy</translation>
 <translation id="294985549514492876">Webové aplikácie (PWA)</translation>
+<translation id="7029809446516969842">Heslá</translation>
 <translation id="924029461438529367">Zobraziť návrhy vyhľadávania</translation>
 <translation id="3128251601544028053">Pri písaní do adresného riadka alebo vyhľadávacieho poľa posiela Brave vložený text vášmu predvolenému vyhľadávaču, čím získate lepšie návrhy. Táto možnosť nie je dostupná v súkromnom režime.</translation>
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
@@ -715,6 +716,8 @@ Leo. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="1355326130503900056">Názov modelu tak, ako by sa mal objaviť v požiadavke na obslužný rámec, napr. phi-3 (upozorňujeme, že ak sa tento názov presne nezhoduje s tým, ktorý očakáva obslužný rámec, integrácia nebude fungovať)</translation>
 <translation id="3286410514484292784">Adresa url, na ktorej váš obslužný rámec prijíma požiadavky. Ak si nie ste istí, pozrite si dokumentáciu k obslužnému rámcu. Napr. pre Ollama je to vždy http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Niektoré obslužné rámce môžu vyžadovať overovacie údaje, napríklad kľúč API alebo prístupový token. Tieto údaje sa pridajú do hlavičky požiadavky.</translation>
+<translation id="4335128003329183586">Veľkosť kontextu</translation>
+<translation id="8794525422794607973">Maximálny počet tokenov, ktoré môže model spracovať v rámci jednej interakcie. Každý token predstavuje približne 3/4 slova. Väčšia veľkosť kontextu umožňuje modelu spracovať dlhšie konverzácie. Rôzne modely podporujú rôzne maximálne veľkosti kontextu.</translation>
 <translation id="217141195370578385">Brave tieto žiadosti nesprostredkúva, prečítajte si Zásady ochrany osobných údajov vybraného poskytovateľa.</translation>
 <translation id="2645532768679870478">Nelokálne koncové body by mali používať protokol HTTPS na bezpečný prenos údajov.</translation>
 <translation id="8177205483022887785">Zadali ste neplatnú adresu URL. Zadajte platnú adresu URL.</translation>
@@ -724,6 +727,9 @@ Leo. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="7435587476558117990">Pripojte svoj vlastný model LLM alebo model LLM tretej strany k Leo a používajte ich v prehliadači.</translation>
 <translation id="1381050642750209119">Použite akýkoľvek rámec kompatibilný s protokolom OpenAI Chat, napríklad Ollama.</translation>
 <translation id="2642905648178380593">Uložiť model</translation>
+<translation id="6304169450064541679">Systémová výzva</translation>
+<translation id="3081947790648024460">Vlastné inštrukcie a/alebo kontext, ktoré sú dané modelu na usmernenie jeho odpovedí alebo dodanie špecifického štýlu. Použite %datetime% tam, kde chcete, aby sa vložil aktuálny dátum a čas.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokenov</translation>
 <translation id="349846214503465941">Zapnúť zoznam skladieb</translation>
 <translation id="7903608716704052878">Automaticky pridávať súbory na prezeranie v režime offline</translation>
 <translation id="4193768184502613558">Táto možnosť automaticky ukladá mediálne súbory do vyrovnávacej pamäte, aby ste ich mohli prehrávať bez pripojenia na internet.</translation>

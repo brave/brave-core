@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
-<translation id="8631427463833030968">管理广告</translation>
 <translation id="7630214457764713113">复制干净的链接</translation>
-<translation id="885805571521218129">这反映了你对本月Brave 广告的预期收益范围。</translation>
 <translation id="3478449063771497234">通知被禁用</translation>
 <translation id="2862978891748913252">选择国家/地点</translation>
 <translation id="3970520675790340955">请选择您所在的国家/地区，以便我们为您提供适合您所在地区的正确选项和广告。</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">显示顶级网站建议</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
 <translation id="919715748352669592">自动对遵循 OpenSearch 规范的网站构建索引</translation>
+<translation id="412411722208944922">快速搜索引擎</translation>
+<translation id="2836969042340015500">快速搜索引擎</translation>
+<translation id="9120455214794270250">显示快速搜索栏</translation>
+<translation id="1052991798173010693">当前使用的搜索引擎</translation>
+<translation id="335303688425891752">长按可更改顺序</translation>
 <translation id="9148058034647219655">退出</translation>
 <translation id="8047754398610073499">阻止 cookie 同意通知</translation>
 <translation id="2621893359845808115">阻止要求您接受或拒绝其网站上 cookie 的网页弹出窗口</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">欢迎使用 Brave</translation>
 <translation id="4117451092682672487">轻松保护个人隐私。</translation>
 <translation id="7909375417585209817">只要将 Brave 作为默认设置，您轻击的每个链接都会在 Brave 的隐私保护下打开。</translation>
-<translation id="3737878115109582442">添加搜索小工具</translation>
-<translation id="6199413390010319240">让 Brave 触手可及，让你更快探索网络。</translation>
-<translation id="4338600611020922010">添加到主屏幕</translation>
 <translation id="7370959926683925817">每一天都屏蔽广告、保存数据。</translation>
 <translation id="7281027579943912834">如果将 Brave 设置为默认，您点击的每个链接都会受到 Brave 的广告屏蔽保护。每个页面、每个视频和每个流都会受到保护。</translation>
 <translation id="5148943178722443958">帮助让 Brave 变得更好。</translation>
@@ -408,8 +408,13 @@
 <translation id="6925081665778864449">如需同步密码，请先在您的 Android 设备上启用生物辨识功能/密码。采用这项额外的安全措施有助于确保密码安全。</translation>
 <translation id="597993392929850353">Brave 执照</translation>
 <translation id="6336451774241870485">新的私有标签页</translation>
-<translation id="6199596294742117349">这是一个私人标签页</translation>
-<translation id="5858455511731621847">即使您在私有标签页上访问的网站没有保存在本地，它们也不会让您匿名或让 ISP、您的雇主或您正在访问的站点看不见您。</translation>
+<translation id="3110967157686007724">私有标签页</translation>
+<translation id="944340256927461196">在设备上不留痕迹</translation>
+<translation id="2063044449012253966">您在无痕窗口中访问的网站不会出现在您的历史记录中。在关闭无痕窗口时，cookie、表单数据和网站数据会消失。</translation>
+<translation id="7395764193745523646">浏览可见性</translation>
+<translation id="8735363371744702779">请注意，即使在无痕窗口中，您的浏览活动仍可能被 ISP、网络观察员或您的雇主（如果您使用的是工作设备/网络）看到。</translation>
+<translation id="1413177583895309156">Brave VPN 可加密并保护您在网络上所做的所有活动，甚至在 Brave 浏览器之外亦不例外。</translation>
+<translation id="3974348661685061050">免费试用 7 天</translation>
 <translation id="5789441016350810005">浏览器在后台运行时发送 Brave 广告</translation>
 <translation id="4973347371961481083">贡献</translation>
 <translation id="7047578174221019462">您的每月供款已处理完毕。</translation>
@@ -710,9 +715,10 @@
 <translation id="1532536259167115948">按月订阅 <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">按年订阅 <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">每月续订</translation>
+<translation id="112929124115834557">1. 每年续期</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /月</translation>
 <translation id="1163809943099641131">一年</translation>
-<translation id="727385358513272220">每年续订 (<ph name="DISCOUNT_TEXT_START"/>节省 <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">（<ph name="DISCOUNT_TEXT_START"/>省 <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>）</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /年</translation>
 <translation id="2786538705804257030">我们会通过您的 Google 账户收取订阅费用。购买订阅后，免费试用的任何未使用部分（如已提供）会被没收。您的订阅会自动更新，除非在当前订阅期结束前至少 24 小时以前取消该订阅。您可以在设置中管理您的订阅。使用 Brave，即表示您同意使用条款和隐私政策。</translation>
 <translation id="5035172357624830412">已在  brave.com 上购买？</translation>
@@ -842,7 +848,7 @@
 <translation id="4351811224047421378">精确小数点</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
 <translation id="590733288489975971">广告奖励</translation>
-<translation id="1886682615222609631">截止目前的收益</translation>
+<translation id="1450735350187803276">本月看过的广告</translation>
 <translation id="1767561995429774671">贡献</translation>
 <translation id="7335371657242627509">包含在自动贡献中</translation>
 <translation id="6727102863431372879">设定</translation>
@@ -963,7 +969,7 @@
 <translation id="168154537623654021">正在更新 VPN 配置文件...</translation>
 <translation id="4784306439879850873">请注意，Brave 无法验证您签名后会发生什么。签名可以授权他人进行账户的几乎任何操作，包括（但不限于）将您的账户和加密资产的完全控制权交给提出此请求的网站。因此只有在您确定要执行此操作并信任提出请求的网站时才能签名。</translation>
 <translation id="3474375934783434676">签名风险自担</translation>
-<translation id="7134370164002095282"><ph name="CURRENT"/> 个交易（共  <ph name="SIZE"/> 个交易)</translation>
+<translation id="7134370164002095282"><ph name="CURRENT"/> 个交易（共 <ph name="SIZE"/> 个交易)</translation>
 <translation id="756701799684433105">核准交易</translation>
 <translation id="6450792191436242818">系统程序</translation>
 <translation id="5318067544026930166">通过生物识别身份验证解锁 Brave 钱包</translation>
@@ -1228,5 +1234,6 @@
 <translation id="2728518864712716830">已下载更新。</translation>
 <translation id="8403338849301491865">筛选器列表更新成功</translation>
 <translation id="4650851936784160359">无法更新筛选器列表。请重试</translation>
-<translation id="1450735350187803276">本月看到的广告</translation>
+<translation id="3098054327870766317">关闭标签页时显示撤消按钮</translation>
+<translation id="1336494649091412226">确定要退出 Brave 吗？</translation>
 </translationbundle>

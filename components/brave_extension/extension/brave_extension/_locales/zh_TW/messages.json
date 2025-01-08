@@ -4,15 +4,15 @@
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "屏蔽",
+    "message": "盾牌",
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "開啟",
+    "message": "上",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "關閉",
+    "message": "下",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
@@ -20,11 +20,11 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "如果某個網站出現故障，請嘗試關閉屏蔽",
+    "message": "如果某個網站出現故障，請嘗試關閉盾牌",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "您瀏覽此網站時沒有 Brave 的隱私與安全保護。Shields 開啟時無法正常運作嗎？",
+    "message": "您瀏覽此網站時沒有 Brave 的隱私與安全保護。盾牌開啟時無法正常運作嗎？",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -56,7 +56,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "追蹤裝置和廣告封鎖了",
+    "message": "追蹤裝置和廣告已封鎖",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
@@ -84,19 +84,19 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "已封鎖跨站 cookies",
+    "message": "已封鎖跨站 Cookie",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "被封鎖的 cookies",
+    "message": "被封鎖的 Cookie",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "允許所有 cookies.",
+    "message": "允許所有 Cookie",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "採集指紋封鎖了",
+    "message": "指紋已封鎖",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
@@ -116,15 +116,15 @@
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "此網站的 scripts",
+    "message": "此網站的 Script",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "封鎖 scripts",
+    "message": "封鎖 Script",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "允許 scripts",
+    "message": "允許 Script",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {

@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fa">
-<translation id="8631427463833030968">مدیریت تبلیغات</translation>
 <translation id="7630214457764713113">کپی کردن پیوند تمیز</translation>
-<translation id="885805571521218129">محدوده درآمد تخمینی شما را برای آگهی‌های Brave در این ماه نشان می‌دهد.</translation>
 <translation id="3478449063771497234">اعلان‌ها غیرفعال شده‌اند</translation>
 <translation id="2862978891748913252">کشور خود را انتخاب کنید</translation>
 <translation id="3970520675790340955">کشور خود را انتخاب کنید تا به شما گزینه‌های صحیح و آگهی‌های مربوط به منطقه‌تان را نشان دهیم.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">نمایش پیشنهادهای سایت‌های برتر</translation>
 <translation id="6285118765755298263">فهرست‌بندی سایر موتورهای جستجو</translation>
 <translation id="919715748352669592">فهرست‌بندی خودکار وبسایت‌هایی که از مشخصات OpenSearch پیروی می‌کنند.</translation>
+<translation id="412411722208944922">موتورهای جستجوی سریع</translation>
+<translation id="2836969042340015500">موتورهای جستجو-سریع</translation>
+<translation id="9120455214794270250">نمایش نوار جستجوی سریع</translation>
+<translation id="1052991798173010693">موتورهای جستجوی فعلی</translation>
+<translation id="335303688425891752">برای تغییر ترتیب، نگه دارید</translation>
 <translation id="9148058034647219655">خروج</translation>
 <translation id="8047754398610073499">اعلامیه‌های رضایت کوکی را مسدود کنید</translation>
 <translation id="2621893359845808115">پاپ-آپ های وب‌سایت را که از شما می‌خواهند تا کوکی‌های وب‌سایتشان را قبول / رد کنید، مسدود کنید.</translation>
@@ -235,9 +238,6 @@
 <translation id="7207456302801184289">‏به Brave خوش آمدید</translation>
 <translation id="4117451092682672487">حریم خصوصی. ساده شده است.</translation>
 <translation id="7909375417585209817">با استفاده از Brave به‌عنوان مرورگر پیش‌فرض، همه پیوندهایی که روی آن‌ها ضربه می‌زنید با محافظت‌های حریم خصوصی Brave باز می‌شوند.</translation>
-<translation id="3737878115109582442">افزودن ابزارک جستجو</translation>
-<translation id="6199413390010319240">برای کاوش سریع‌تر وب، Brave را در دسترس داشته باشید.</translation>
-<translation id="4338600611020922010">افزودن به صفحه اصلی</translation>
 <translation id="7370959926683925817">مسدود کردن تبلیغات. ذخیره داده ها. هر روز</translation>
 <translation id="7281027579943912834">با Brave به‌عنوان پیش‌فرض، هر پیوندی که روی آن ضربه می‌زنید از محافظت از بلوک آگهی Brave برخوردار می‌شود. هر صفحه، ویدیو، و جریان.</translation>
 <translation id="5148943178722443958">به بهبود Brave کمک کنید.</translation>
@@ -410,8 +410,13 @@
 <translation id="6925081665778864449">برای همگام‌سازی رمزهای عبور، لطفاً احراز هویت زیست‌سنجی/رمز عبور را در دستگاه Android خود فعال کنید. این اقدام امنیتی اضافی به حفظ امنیت رمزهای عبور شما کمک می‌کند.</translation>
 <translation id="597993392929850353">مجوز Brave</translation>
 <translation id="6336451774241870485">برگه خصوصی جدید</translation>
-<translation id="6199596294742117349">این برگه خصوصی است</translation>
-<translation id="5858455511731621847">با اینکه سایت‌های بازدیدشده شما در برگه‌های خصوصی به‌صورت محلی ذخیره نمی‌شوند، اما این برگه‌ها باعث نمی‌شود تا شما برای ISP، کارفرما یا سایت‌های بازدیدشده ناشناس یا غیرقابل مشاهده باشید.</translation>
+<translation id="3110967157686007724">سرلوح محرمانه</translation>
+<translation id="944340256927461196">هیچ ردی روی دستگاه باقی نگذارید</translation>
+<translation id="2063044449012253966">سایت‌هایی که در پنجره‌های خصوصی بازدید می‌کنید در تاریخچه شما نمایان نخواهند شد. کوکی‌ها، داده‌های فرم‌ها و اطلاعات سایت‌ها پس از بسته شدن تمام پنجره‌های خصوصی ناپدید می‌شوند.</translation>
+<translation id="7395764193745523646">رؤیت‌پذیری مرور</translation>
+<translation id="8735363371744702779">توجه کنید که -حتی در پنجره‌های خصوصی- فعالیت مرور شما همچنان ممکن است برای ISP، ناظران شبکه، یا کارفرمای شما (در صورت استفاده از دستگاه/شبکه محل کار) رؤیت‌پذیر باشد.</translation>
+<translation id="1413177583895309156">Brave VPN تمام فعالیت‌های آنلاین شما را، حتی خارج از مرورگر Brave، رمزنگاری و محافظت می‌کند.</translation>
+<translation id="3974348661685061050">به‌مدت ۷ روز رایگان امتحان کنید</translation>
 <translation id="5789441016350810005">وقتی مرورگر در پس‌زمینه بود، «آگهی‌های Brave» ارسال شد</translation>
 <translation id="4973347371961481083">کمک‌ها</translation>
 <translation id="7047578174221019462">کمک‌های ماهانه شما پردازش شده است!</translation>
@@ -712,9 +717,10 @@
 <translation id="1532536259167115948">اشتراک ماهانه <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">اشتراک سالانه <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">ماهانه تمدید می‌شود</translation>
+<translation id="112929124115834557">تمدید سالیانه</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /ماه</translation>
 <translation id="1163809943099641131">یک سال</translation>
-<translation id="727385358513272220">با تمدید سالانه (<ph name="DISCOUNT_TEXT_START"/>صرفه‌جوی کنید <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>‏%%<ph name="PERCENTAGE_AMOUNT"/> ذخیره کنید<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /سال</translation>
 <translation id="2786538705804257030">هزینه اشتراک‌ها از طریق حساب Google شما محاسبه می‌شود. هر بخش استفاده نشده از دوره آزمایشی رایگان، در صورت ارائه، با خرید اشتراک از بین می‌رود.\n\nاشتراک شما به‌طور خودکار تمدید می‌شود مگر این که حداقل 24 ساعت قبل از پایان دوره فعلی لغو شود.\n\nشما می‌توانید اشتراک‌های خود را از طریق بخش تنظیمات مدیریت کنید.\n\nهنگام استفاده از Brave، شما با «شرایط استفاده» و «سیاست حفظ حریم خصوصی» موافقت می‌کنید.</translation>
 <translation id="5035172357624830412">قبلاً در brave.com خریدی انجام داده‌اید؟</translation>
@@ -844,7 +850,7 @@
 <translation id="4351811224047421378">اعشاریه‌های دقت</translation>
 <translation id="3494964159182650590">خلاصه پاداش‌ها</translation>
 <translation id="590733288489975971">پاداش‌های حاصل از آگهی‌ها</translation>
-<translation id="1886682615222609631">درآمد تاکنون</translation>
+<translation id="1450735350187803276">تبلیغ‌های مشاهده‌شده در این ماه</translation>
 <translation id="1767561995429774671">کمک</translation>
 <translation id="7335371657242627509">لحاظ کردن در کمک خودکار</translation>
 <translation id="6727102863431372879">تنظیم</translation>
@@ -1230,5 +1236,6 @@
 <translation id="2728518864712716830">به‌روزرسانی دانلود می‌شود.</translation>
 <translation id="8403338849301491865">فهرست فیلتر با موفقیت به‌روز شد</translation>
 <translation id="4650851936784160359">فهرست فیلتر به‌روزرسانی نشد. لطفاً دوباره تلاش کنید</translation>
-<translation id="1450735350187803276">تبلیغاتی که این ماه مشاهده شده‌اند</translation>
+<translation id="3098054327870766317">نمایش دکمه واگرد هنگام بستن زبانه‌ها</translation>
+<translation id="1336494649091412226">مطمئنید می‌خواهید از Brave خارج شوید؟</translation>
 </translationbundle>
