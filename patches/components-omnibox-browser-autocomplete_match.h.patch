@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_match.h b/components/omnibox/browser/autocomplete_match.h
-index 804afdcf39427df21c501b3d20ccf455886a2876..97b0cb227db751c359eaf0e1abcbaefd078c4b19 100644
+index 24d7f2cef4bd40cc5792ffc54cc3fb108d6769c5..dc9c4b05ad32e2c4bf48fac1140e891971d1201d 100644
 --- a/components/omnibox/browser/autocomplete_match.h
 +++ b/components/omnibox/browser/autocomplete_match.h
 @@ -717,7 +717,7 @@ struct AutocompleteMatch {
