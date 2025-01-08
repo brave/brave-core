@@ -22,8 +22,6 @@ extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionVie
     }
 
     switch section {
-    case .pasteboard:
-      break
     case .favorites:
       // Fetch results controller indexpath is independent from our collection view.
       // All results of it are stored in first section.

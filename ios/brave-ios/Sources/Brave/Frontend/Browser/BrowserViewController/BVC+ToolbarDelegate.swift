@@ -665,6 +665,23 @@ extension BrowserViewController: TopToolbarDelegate {
     }
   }
 
+  func topToolbarDidPressPasteAndGoButton(_ urlBar: TopToolbarView) {
+    if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs,
+      let searchQuery = UIPasteboard.general.string
+        ?? UIPasteboard.general.url?.absoluteString
+    {
+      self.topToolbar.setLocation(searchQuery, search: false)
+      self.topToolbar(self.topToolbar, didEnterText: searchQuery)
+
+      if let fixupURL = URIFixup.getURL(searchQuery) {
+        finishEditingAndSubmit(fixupURL)
+        return
+      }
+
+      self.submitSearchText(searchQuery)
+    }
+  }
+
   func stopVoiceSearch(searchQuery: String? = nil) {
     voiceSearchViewController?.dismiss(animated: true) {
       if let query = searchQuery {
@@ -806,17 +823,6 @@ extension BrowserViewController: TopToolbarDelegate {
                   submitSearch(websiteUrl)
                 }
               }
-            }
-          } else if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs,
-            let searchQuery = UIPasteboard.general.string
-              ?? UIPasteboard.general.url?.absoluteString
-          {
-
-            self.topToolbar.setLocation(searchQuery, search: false)
-            self.topToolbar(self.topToolbar, didEnterText: searchQuery)
-
-            if shouldSubmitSearch {
-              submitSearch(searchQuery)
             }
           }
         }
