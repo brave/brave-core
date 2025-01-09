@@ -715,10 +715,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
       // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
       request.addValue("bytes=0-", forHTTPHeaderField: "Range")
       request.addValue(UUID().uuidString, forHTTPHeaderField: "X-Playback-Session-Id")
-      request.addValue(
-        UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile,
-        forHTTPHeaderField: "User-Agent"
-      )
+      request.addValue(UserAgent.userAgentForIdiom(), forHTTPHeaderField: "User-Agent")
       return request
     }()
 
@@ -1036,10 +1033,7 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
       // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
       request.addValue("bytes=0-", forHTTPHeaderField: "Range")
       request.addValue(UUID().uuidString, forHTTPHeaderField: "X-Playback-Session-Id")
-      request.addValue(
-        UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile,
-        forHTTPHeaderField: "User-Agent"
-      )
+      request.addValue(UserAgent.userAgentForIdiom(), forHTTPHeaderField: "User-Agent")
       return request
     }()
 
