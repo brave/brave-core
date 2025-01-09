@@ -5,7 +5,7 @@
 
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
-#include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
 #define TabDragController TabDragControllerChromium
 #include "src/chrome/browser/ui/tabs/tab_strip_model.cc"  // IWYU pragma: export

@@ -12,8 +12,8 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
-#include "chrome/browser/ui/views/tabs/tab_drag_context.h"
 #include "ui/gfx/canvas.h"
 
 class BraveTabContainer : public TabContainerImpl,
