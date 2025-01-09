@@ -7,8 +7,6 @@ import("//printing/buildflags/buildflags.gni")
 
 static_library("ai_chat") {
   sources = [
-    "ai_chat_associated_tab_provider.cc",
-    "ai_chat_associated_tab_provider.h",
     "ai_chat_service_factory.cc",
     "ai_chat_service_factory.h",
     "ai_chat_settings_helper.cc",

@@ -383,6 +383,10 @@ interface AIChatUIHandler {
   ManagePremium();
   HandleVoiceRecognition(string conversation_uuid);
 
+  // Methods for managing multi-tab content association
+  AssociateTab(AvailableTab tab, string conversation_uuid);
+  DisassociateTab(AvailableTab tab, string conversation_uuid);
+
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 
@@ -449,9 +453,6 @@ struct ConversationEntriesState {
 // Browser-side handler for a Conversation
 interface ConversationHandler {
   GetState() => (ConversationState conversation_state);
-  AddAssociatedTab(AvailableTab tab);
-  RemoveAssociatedTab(AvailableTab tab);
-
   GetConversationUuid() => (string conversation_uuid);
 
   // Get all the possible models for any conversation

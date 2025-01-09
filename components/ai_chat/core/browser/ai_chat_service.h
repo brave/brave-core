@@ -29,7 +29,6 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
-#include "brave/components/ai_chat/core/browser/associated_tab_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -56,7 +55,6 @@ namespace ai_chat {
 
 class ModelService;
 class AIChatMetrics;
-class AvailableTabDelegate;
 class AssociatedContentDriver;
 
 // Main entry point for creating and consuming AI Chat conversations
@@ -70,7 +68,6 @@ class AIChatService : public KeyedService,
   AIChatService(
       ModelService* model_service,
       std::unique_ptr<AIChatCredentialManager> ai_chat_credential_manager,
-      std::unique_ptr<AssociatedTabDelegate> associated_tab_delegate,
       PrefService* profile_prefs,
       AIChatMetrics* ai_chat_metrics,
       os_crypt_async::OSCryptAsync* os_crypt_async,
@@ -126,6 +123,11 @@ class AIChatService : public KeyedService,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
 
+  void AssociateContent(AssociatedContentDriver* associated_content,
+                        const std::string& conversation_uuid);
+  void DisassociateContent(AssociatedContentDriver* associated_content,
+                           const std::string& conversation_uuid);
+
   // Removes all in-memory and persisted data for all conversations
   void DeleteConversations(std::optional<base::Time> begin_time = std::nullopt,
                            std::optional<base::Time> end_time = std::nullopt);
@@ -140,9 +142,6 @@ class AIChatService : public KeyedService,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content,
       base::OnceClosure open_ai_chat);
-
-  AssociatedContentDriver* GetAssociatedContent(
-      const mojom::AvailableTabPtr& tab);
 
   // mojom::Service
   void MarkAgreementAccepted() override;
@@ -237,7 +236,6 @@ class AIChatService : public KeyedService,
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
-  std::unique_ptr<AssociatedTabDelegate> associated_tab_delegate_;
 
   base::FilePath profile_path_;
 

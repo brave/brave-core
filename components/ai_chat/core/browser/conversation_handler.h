@@ -58,6 +58,7 @@ class AIChatService;
 class AssociatedArchiveContent;
 class AIChatCredentialManager;
 class MultiAssociatedContentDriver;
+class AssociatedContentDriver;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning
@@ -238,10 +239,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 
+  void AddAssociation(AssociatedContentDriver* delegate);
+  void RemoveAssociation(AssociatedContentDriver* delegate);
+
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
-  void AddAssociatedTab(mojom::AvailableTabPtr tab) override;
-  void RemoveAssociatedTab(mojom::AvailableTabPtr tab) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void RateMessage(bool is_liked,
                    const std::string& turn_uuid,

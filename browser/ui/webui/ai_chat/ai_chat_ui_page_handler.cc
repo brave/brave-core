@@ -99,6 +99,44 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
 #endif
 }
 
+void AIChatUIPageHandler::AssociateTab(mojom::AvailableTabPtr tab,
+                                       const std::string& conversation_uuid) {
+  auto* content = content::WebContents::FromFrameTreeNodeId(
+      static_cast<content::FrameTreeNodeId>(tab->frame_tree_node_id));
+  if (!content) {
+    return;
+  }
+
+  // Ensure the content is loaded before associating
+  content->GetController().LoadIfNecessary();
+
+  auto* tab_helper = ai_chat::AIChatTabHelper::FromWebContents(content);
+  if (!tab_helper) {
+    return;
+  }
+
+  AIChatServiceFactory::GetForBrowserContext(profile_)->AssociateContent(
+      tab_helper, conversation_uuid);
+}
+
+void AIChatUIPageHandler::DisassociateTab(
+    mojom::AvailableTabPtr tab,
+    const std::string& conversation_uuid) {
+  auto* content = content::WebContents::FromFrameTreeNodeId(
+      static_cast<content::FrameTreeNodeId>(tab->frame_tree_node_id));
+  if (!content) {
+    return;
+  }
+
+  auto* tab_helper = ai_chat::AIChatTabHelper::FromWebContents(content);
+  if (!tab_helper) {
+    return;
+  }
+
+  AIChatServiceFactory::GetForBrowserContext(profile_)->DisassociateContent(
+      tab_helper, conversation_uuid);
+}
+
 void AIChatUIPageHandler::OpenAIChatSettings() {
   content::WebContents* contents_to_navigate =
       (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()

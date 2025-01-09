@@ -22,7 +22,6 @@ static_library("browser") {
     "associated_archive_content.h",
     "associated_content_driver.cc",
     "associated_content_driver.h",
-    "associated_tab_delegate.h",
     "constants.cc",
     "constants.h",
     "conversation_handler.cc",

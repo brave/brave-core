@@ -58,7 +58,7 @@ function SiteTitle(props: SiteTitleProps) {
           {props.detail.title}
         </p>
       </div>
-      {removable && <Button fab kind='plain-faint' onClick={() => conversation.conversationHandler?.removeAssociatedTab(tab)}>
+      {removable && <Button fab kind='plain-faint' onClick={() => aiChat.uiHandler?.disassociateTab(tab, conversation.conversationUuid!)}>
         <Icon name='trash' />
       </Button>}
     </div>

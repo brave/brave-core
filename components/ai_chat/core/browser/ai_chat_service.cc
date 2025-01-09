@@ -93,7 +93,6 @@ bool IsConversationUpdatedTimeWithinRange(
 AIChatService::AIChatService(
     ModelService* model_service,
     std::unique_ptr<AIChatCredentialManager> ai_chat_credential_manager,
-    std::unique_ptr<AssociatedTabDelegate> associated_tab_delegate,
     PrefService* profile_prefs,
     AIChatMetrics* ai_chat_metrics,
     os_crypt_async::OSCryptAsync* os_crypt_async,
@@ -109,7 +108,6 @@ AIChatService::AIChatService(
           std::make_unique<AIChatFeedbackAPI>(url_loader_factory_,
                                               std::string(channel_string))),
       credential_manager_(std::move(ai_chat_credential_manager)),
-      associated_tab_delegate_(std::move(associated_tab_delegate)),
       profile_path_(profile_path) {
   DCHECK(profile_prefs_);
   pref_change_registrar_.Init(profile_prefs_);
@@ -295,6 +293,18 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
                                         associated_content);
 
   return conversation;
+}
+
+void AIChatService::AssociateContent(AssociatedContentDriver* driver,
+                                     const std::string& conversation_uuid) {
+  DCHECK(base::Contains(conversation_handlers_, conversation_uuid));
+  conversation_handlers_.at(conversation_uuid)->AddAssociation(driver);
+}
+
+void AIChatService::DisassociateContent(AssociatedContentDriver* driver,
+                                        const std::string& conversation_uuid) {
+  DCHECK(base::Contains(conversation_handlers_, conversation_uuid));
+  conversation_handlers_.at(conversation_uuid)->RemoveAssociation(driver);
 }
 
 void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
@@ -949,15 +959,6 @@ void AIChatService::OpenConversationWithStagedEntries(
   // Open AI Chat and trigger a fetch of staged conversations from Brave Search.
   std::move(open_ai_chat).Run();
   conversation->MaybeFetchOrClearContentStagedConversation();
-}
-
-AssociatedContentDriver* AIChatService::GetAssociatedContent(
-    const mojom::AvailableTabPtr& tab) {
-  // Can be null in tests
-  if (!associated_tab_delegate_) {
-    return nullptr;
-  }
-  return associated_tab_delegate_->GetAssociatedContent(tab);
 }
 
 }  // namespace ai_chat

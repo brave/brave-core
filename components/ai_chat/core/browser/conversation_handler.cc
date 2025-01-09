@@ -45,6 +45,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
@@ -541,13 +542,12 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::move(callback).Run(std::move(state));
 }
 
-void ConversationHandler::AddAssociatedTab(mojom::AvailableTabPtr tab) {
-  if (HasAnyHistory()) {
+void ConversationHandler::AddAssociation(AssociatedContentDriver* delegate) {
+  if (!delegate) {
     return;
   }
 
-  auto* tab_delegate = ai_chat_service_->GetAssociatedContent(tab);
-  if (!tab_delegate) {
+  if (HasAnyHistory()) {
     return;
   }
 
@@ -557,12 +557,12 @@ void ConversationHandler::AddAssociatedTab(mojom::AvailableTabPtr tab) {
   }
 
   if (!multi_content_) {
-    std::vector<AssociatedContentDriver*> drivers{tab_delegate};
+    std::vector<AssociatedContentDriver*> drivers{delegate};
     auto driver =
         std::make_unique<MultiAssociatedContentDriver>(std::move(drivers));
     SetMultiAssociatedContentDelegate(std::move(driver));
   } else {
-    multi_content_->AddContent(tab_delegate);
+    multi_content_->AddContent(delegate);
   }
 
   OnAssociatedContentInfoChanged();
@@ -570,7 +570,7 @@ void ConversationHandler::AddAssociatedTab(mojom::AvailableTabPtr tab) {
   MaybeFetchOrClearContentStagedConversation();
 }
 
-void ConversationHandler::RemoveAssociatedTab(mojom::AvailableTabPtr tab) {
+void ConversationHandler::RemoveAssociation(AssociatedContentDriver* delegate) {
   if (HasAnyHistory()) {
     return;
   }
@@ -581,8 +581,7 @@ void ConversationHandler::RemoveAssociatedTab(mojom::AvailableTabPtr tab) {
   }
 
   if (multi_content_) {
-    auto* tab_delegate = ai_chat_service_->GetAssociatedContent(tab);
-    multi_content_->RemoveContent(tab_delegate);
+    multi_content_->RemoveContent(delegate);
   }
 
   OnAssociatedContentInfoChanged();

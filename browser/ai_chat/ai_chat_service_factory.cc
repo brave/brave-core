@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/no_destructor.h"
-#include "brave/browser/ai_chat/ai_chat_associated_tab_provider.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -75,9 +74,7 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
 
-      std::move(credential_manager),
-      std::make_unique<AIChatAssociatedTabProvider>(),
-      user_prefs::UserPrefs::Get(context),
+      std::move(credential_manager), user_prefs::UserPrefs::Get(context),
       (g_brave_browser_process->process_misc_metrics())
           ? g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()
           : nullptr,
