@@ -155,7 +155,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest, DragOnCurrentTab) {
 }
 
 // Flaky on Mac.
-#if BUILDFLAG(IS_MAC)
+// System menu is used on Windows.
+#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 #define MAYBE_ContextMenuInUnobscuredRegion \
   DISABLED_ContextMenuInUnobscuredRegion
 #else

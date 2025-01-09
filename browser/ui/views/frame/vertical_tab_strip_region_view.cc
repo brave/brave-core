@@ -61,6 +61,10 @@
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_utils.h"
 
+#if BUILDFLAG(IS_WIN)
+#include "ui/views/win/hwnd_util.h"
+#endif
+
 #if !BUILDFLAG(IS_MAC)
 #include "chrome/app/chrome_command_ids.h"
 #endif
@@ -1422,6 +1426,11 @@ void VerticalTabStripRegionView::ShowContextMenuForViewImpl(
     views::View* source,
     const gfx::Point& p,
     ui::mojom::MenuSourceType source_type) {
+#if BUILDFLAG(IS_WIN)
+  // Use same context menu of horizontal tab's titlebar.
+  views::ShowSystemMenuAtScreenPixelLocation(views::HWNDForView(browser_view_),
+                                             p);
+#else
   if (IsMenuShowing()) {
     return;
   }
@@ -1434,6 +1443,7 @@ void VerticalTabStripRegionView::ShowContextMenuForViewImpl(
   menu_runner_->RunMenuAt(source->GetWidget(), nullptr,
                           gfx::Rect(p, gfx::Size(0, 0)),
                           views::MenuAnchorPosition::kTopLeft, source_type);
+#endif
 }
 
 void VerticalTabStripRegionView::OnMenuClosed() {
