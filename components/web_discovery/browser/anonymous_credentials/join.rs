@@ -15,8 +15,8 @@ use brave_miracl::{
 };
 
 use super::data::{
-    ecp2_to_compat_bytes, CredentialBIG, ECPProof, GroupPublicKey, JoinRequest, JoinResponse,
-    StartJoinResult, UserCredentials, BIG_SIZE, ECP2_COMPAT_SIZE, ECP_SIZE,
+    ecp2_to_compat_bytes, CredentialBIG, ECPProof, GroupPublicKey, JoinInitialization, JoinRequest,
+    JoinResponse, UserCredentials, BIG_SIZE, ECP2_COMPAT_SIZE, ECP_SIZE,
 };
 use super::util::{
     ecp_challenge_equals, hash256, pair_normalized_triple_ate, random_mod_curve_order,
@@ -104,7 +104,7 @@ fn verify_aux_fast(a: &ECP, b: &ECP, c: &ECP, d: &ECP, x: &ECP2, y: &ECP2, rng: 
     w.equals(&fp12_one)
 }
 
-pub fn start_join(rng: &mut RAND, challenge: &[u8]) -> StartJoinResult {
+pub fn start_join(rng: &mut RAND, challenge: &[u8]) -> JoinInitialization {
     let gsk = random_mod_curve_order(rng);
     let q = g1mul(&G1_ECP, &gsk);
 
@@ -112,7 +112,7 @@ pub fn start_join(rng: &mut RAND, challenge: &[u8]) -> StartJoinResult {
 
     let proof = make_ecp_proof(rng, &q, &gsk, &challenge_hash);
 
-    StartJoinResult { gsk: CredentialBIG(gsk), join_msg: JoinRequest { q, proof } }
+    JoinInitialization { gsk: CredentialBIG(gsk), join_msg: JoinRequest { q, proof } }
 }
 
 pub fn finish_join(

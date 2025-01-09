@@ -54,7 +54,7 @@ pub type Result<T> = std::result::Result<T, CredentialError>;
 
 #[cxx::bridge(namespace = "web_discovery")]
 mod ffi {
-    struct StartJoinResult {
+    struct JoinInitialization {
         gsk: Vec<u8>,
         join_request: Vec<u8>,
     }
@@ -99,7 +99,10 @@ mod ffi {
 
         fn new_anonymous_credentials_manager() -> Box<AnonymousCredentialsManager>;
         fn new_anonymous_credentials_with_fixed_seed() -> Box<AnonymousCredentialsManager>;
-        fn start_join(self: &mut AnonymousCredentialsManager, challenge: &[u8]) -> StartJoinResult;
+        fn start_join(
+            self: &mut AnonymousCredentialsManager,
+            challenge: &[u8],
+        ) -> JoinInitialization;
         fn finish_join(
             self: &mut AnonymousCredentialsManager,
             public_key: &GroupPublicKey,
@@ -219,9 +222,9 @@ fn new_anonymous_credentials_with_fixed_seed() -> Box<AnonymousCredentialsManage
 }
 
 impl AnonymousCredentialsManager {
-    fn start_join(&mut self, challenge: &[u8]) -> StartJoinResult {
+    fn start_join(&mut self, challenge: &[u8]) -> JoinInitialization {
         let result = self.0.start_join(challenge);
-        StartJoinResult {
+        JoinInitialization {
             gsk: result.gsk.to_bytes().to_vec(),
             join_request: result.join_msg.to_bytes().to_vec(),
         }

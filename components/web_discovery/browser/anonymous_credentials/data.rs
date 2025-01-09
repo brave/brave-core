@@ -79,7 +79,7 @@ pub(crate) struct ECPProof {
 pub struct CredentialBIG(pub(crate) BIG);
 
 /// A result of starting the "join" process to acquire credentials.
-pub struct StartJoinResult {
+pub struct JoinInitialization {
     /// Private key which should be persisted for finishing the "join"
     /// process and future signing requests.
     pub gsk: CredentialBIG,

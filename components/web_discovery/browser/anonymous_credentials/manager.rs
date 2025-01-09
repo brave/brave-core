@@ -37,7 +37,7 @@ impl CredentialManager {
 
     /// Creates a "join" requests to be sent to the credential issuer,
     /// for a given challenge.
-    pub fn start_join(&mut self, challenge: &[u8]) -> StartJoinResult {
+    pub fn start_join(&mut self, challenge: &[u8]) -> JoinInitialization {
         start_join(&mut self.rng, challenge)
     }
 
