@@ -266,6 +266,13 @@ void BraveBrowserViewLayout::UpdateContentsContainerInsets(
   // Control contents's margin with sidebar & vertical tab state.
   gfx::Insets contents_margins = GetContentsMargins();
 
+  // Don't need to have additional contents margin for rounded corners
+  // in tab-initiated fullscreen. Web contents occupies whole screen.
+  if (IsFullscreenForTab()) {
+    contents_container_bounds.Inset(contents_margins);
+    return;
+  }
+
   // In rounded corners mode, we need to include a little margin so we have
   // somewhere to draw the shadow.
   int contents_margin_for_rounded_corners =
