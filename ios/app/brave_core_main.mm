@@ -10,6 +10,8 @@
 
 #include "base/apple/bundle_locations.h"
 #include "base/apple/foundation_util.h"
+#include "base/at_exit.h"
+#include "base/command_line.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/i18n/icu_util.h"
@@ -77,6 +79,8 @@
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "ui/base/ui_base_paths.h"
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
 #include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
@@ -514,6 +518,35 @@ static bool CustomLogHandler(int severity,
   base::apple::SetOverrideOuterBundle(bundle);
   base::apple::SetOverrideFrameworkBundle(bundle);
   return base::i18n::InitializeICU();
+}
+
++ (void)initializeResourceBundleForTesting {
+  @autoreleasepool {
+    ios::RegisterPathProvider();
+    ui::RegisterPathProvider();
+  }
+
+  base::AtExitManager exit_manager;
+  base::CommandLine::Init(0, nullptr);
+
+  [BraveCoreMain initializeICUForTesting];
+
+  NSBundle* baseBundle = base::apple::OuterBundle();
+  base::apple::SetBaseBundleID(
+      base::SysNSStringToUTF8([baseBundle bundleIdentifier]).c_str());
+
+  // Register all providers before calling any Chromium code.
+  [ProviderRegistration registerProviders];
+
+  ui::ResourceBundle::InitSharedInstanceWithLocale(
+      "en-US", nullptr, ui::ResourceBundle::LOAD_COMMON_RESOURCES);
+
+  // Add Brave Resource Pack
+  base::FilePath brave_pack_path;
+  base::PathService::Get(base::DIR_ASSETS, &brave_pack_path);
+  brave_pack_path = brave_pack_path.AppendASCII("brave_resources.pak");
+  ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
+      brave_pack_path, ui::kScaleFactorNone);
 }
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)

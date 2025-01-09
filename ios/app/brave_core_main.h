@@ -111,6 +111,8 @@ OBJC_EXPORT
 /// Should only be called in unit tests
 + (bool)initializeICUForTesting;
 
++ (void)initializeResourceBundleForTesting;
+
 @end
 
 NS_ASSUME_NONNULL_END

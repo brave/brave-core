@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Preferences
 import Shared
 import Storage
@@ -118,6 +119,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   var manager: TabManager!
   private let privateBrowsingManager = PrivateBrowsingManager()
   private let testWindowId = UUID()
+
+  override class func setUp() {
+    BraveCoreMain.initializeResourceBundleForTesting()
+  }
 
   override func setUp() {
     super.setUp()
