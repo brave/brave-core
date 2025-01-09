@@ -136,11 +136,7 @@ BASE_FEATURE(kBlockAllCookiesToggle,
 // when enabled, allow to select and block HTML elements
 BASE_FEATURE(kBraveShieldsElementPicker,
              "BraveShieldsElementPicker",
-#if BUILDFLAG(IS_ANDROID)
-             base::FEATURE_DISABLED_BY_DEFAULT);
-#else
              base::FEATURE_ENABLED_BY_DEFAULT);
-#endif
 
 // Enables extra TRACE_EVENTs in content filter js. The feature is
 // primary designed for local debugging.
