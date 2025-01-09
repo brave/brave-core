@@ -41,9 +41,9 @@ RegisterPolymerTemplateModifications({
     if (!firstPermissionItem) {
       console.error('[Settings] Couldn\'t find first permission item')
     } else {
-      firstPermissionItem.insertAdjacentHTML(
+      firstPermissionItem.insertAdjacentElement(
         'beforebegin',
-        `<site-details-permission
+        html`<site-details-permission
            category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
            icon="autoplay-on">
          </site-details-permission>`)
@@ -62,9 +62,9 @@ RegisterPolymerTemplateModifications({
       const isGoogleSignInFeatureEnabled =
         loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
       if (isGoogleSignInFeatureEnabled) {
-        firstPermissionItem.insertAdjacentHTML(
+        firstPermissionItem.insertAdjacentElement(
           'beforebegin',
-          `<site-details-permission
+          html`<site-details-permission
              category="[[contentSettingsTypesEnum_.GOOGLE_SIGN_IN]]"
              icon="user">
            </site-details-permission>`)
@@ -83,9 +83,9 @@ RegisterPolymerTemplateModifications({
       const isLocalhostAccessFeatureEnabled =
         loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
       if (isLocalhostAccessFeatureEnabled) {
-        firstPermissionItem.insertAdjacentHTML(
+        firstPermissionItem.insertAdjacentElement(
           'beforebegin',
-          `<site-details-permission
+          html`<site-details-permission
              category="[[contentSettingsTypesEnum_.LOCALHOST_ACCESS]]"
              icon="smartphone-desktop">
            </site-details-permission>`)
@@ -103,9 +103,9 @@ RegisterPolymerTemplateModifications({
       const isOpenAIChatFromBraveSearchEnabled =
         loadTimeData.getBoolean('isOpenAIChatFromBraveSearchEnabled')
       if (isOpenAIChatFromBraveSearchEnabled) {
-        firstPermissionItem.insertAdjacentHTML(
+        firstPermissionItem.insertAdjacentElement(
           'beforebegin',
-          `<site-details-permission
+          html`<site-details-permission
              category="[[contentSettingsTypesEnum_.BRAVE_OPEN_AI_CHAT]]"
              icon="user">
            </site-details-permission>`)
@@ -122,9 +122,9 @@ RegisterPolymerTemplateModifications({
       const isNativeBraveWalletEnabled =
         loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
-        firstPermissionItem.insertAdjacentHTML(
+        firstPermissionItem.insertAdjacentElement(
           'beforebegin',
-          `<site-details-permission
+          html`<site-details-permission
              category="[[contentSettingsTypesEnum_.ETHEREUM]]"
              icon="ethereum-on">
            </site-details-permission>`)
@@ -137,9 +137,9 @@ RegisterPolymerTemplateModifications({
             'label', loadTimeData.getString('siteSettingsEthereum'))
         }
         curChild++
-        firstPermissionItem.insertAdjacentHTML(
+        firstPermissionItem.insertAdjacentElement(
           'beforebegin',
-          `<site-details-permission
+          html`<site-details-permission
              category="[[contentSettingsTypesEnum_.SOLANA]]"
              icon="solana-on">
            </site-details-permission>`)
