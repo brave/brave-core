@@ -11,7 +11,7 @@ source_set("browser_tests") {
 
   sources = [
     "//brave/browser/ui/views/tabs/brave_tab_hover_browsertest.cc",
-    "//brave/browser/ui/views/tabs/tab_drag_controller_browsertest.cc",
+    "//brave/browser/ui/views/tabs/dragging/tab_drag_controller_browsertest.cc",
   ]
 
   deps = [

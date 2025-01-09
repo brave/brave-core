@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/tabs/tab_drag_controller.h"
+#include "brave/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
 #include <algorithm>
 #include <optional>
@@ -21,7 +21,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_group.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
-#include "chrome/browser/ui/views/tabs/tab_drag_context.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_context.h"
 #include "chrome/browser/ui/views/tabs/window_finder.h"
 #include "components/prefs/pref_service.h"
 #include "ui/views/view_utils.h"

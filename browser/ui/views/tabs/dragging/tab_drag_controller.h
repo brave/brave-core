@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_
-#define BRAVE_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_DRAGGING_TAB_DRAG_CONTROLLER_H_
+#define BRAVE_BROWSER_UI_VIEWS_TABS_DRAGGING_TAB_DRAG_CONTROLLER_H_
 
 #include <optional>
 #include <vector>
 
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
-#include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
 class TabDragController : public TabDragControllerChromium {
  public:
@@ -66,4 +66,4 @@ class TabDragController : public TabDragControllerChromium {
   base::WeakPtrFactory<TabDragController> weak_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_TAB_DRAG_CONTROLLER_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_DRAGGING_TAB_DRAG_CONTROLLER_H_
