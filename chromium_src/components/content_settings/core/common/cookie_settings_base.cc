@@ -18,7 +18,6 @@
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
-#include "third_party/abseil-cpp/absl/base/attributes.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 

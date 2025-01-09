@@ -1,4 +1,6 @@
 include_rules = [
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/ai_chat/renderer",
   "+brave/components/body_sniffer",
   "+brave/components/brave_shields/core/common",
   "+brave/components/content_settings/renderer",
