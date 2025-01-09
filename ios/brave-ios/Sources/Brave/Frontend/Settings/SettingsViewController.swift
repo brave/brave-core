@@ -10,6 +10,7 @@ import BraveStore
 import BraveUI
 import BraveVPN
 import BraveWallet
+import Combine
 import Data
 import Growth
 import LocalAuthentication
@@ -67,9 +68,15 @@ class SettingsViewController: TableViewController {
   private let cryptoStore: CryptoStore?
   private let windowProtection: WindowProtection?
   private let ipfsAPI: IpfsAPI
+  private let altIconsModel = AltIconsModel()
 
   private let featureSectionUUID: UUID = .init()
+  private let displaySectionUUID: UUID = .init()
+
   private let walletRowUUID: UUID = .init()
+  private let appIconRowUUID: UUID = .init()
+
+  private var cancellables: Set<AnyCancellable> = []
 
   init(
     profile: Profile,
@@ -136,6 +143,23 @@ class SettingsViewController: TableViewController {
       name: .NEVPNStatusDidChange,
       object: nil
     )
+
+    self.altIconsModel.$selectedAltAppIcon
+      .dropFirst()
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        guard let self,
+          let indexPath = self.dataSource.indexPath(
+            rowUUID: appIconRowUUID.uuidString,
+            sectionUUID: displaySectionUUID.uuidString
+          )
+        else {
+          return
+        }
+        dataSource.sections[indexPath.section].rows[indexPath.row].image = selectedAppIcon
+        self.tableView.reloadData()
+      }
+      .store(in: &cancellables)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -623,10 +647,18 @@ class SettingsViewController: TableViewController {
     return tabs
   }()
 
+  private var selectedAppIcon: UIImage? {
+    if let altIcon = altIconsModel.selectedAltAppIcon {
+      return UIImage(named: altIcon, in: .module, with: nil)
+    }
+    return Bundle.main.primaryIconName.flatMap { UIImage(named: $0) }
+  }
+
   private lazy var displaySection: Static.Section = {
     var display = Static.Section(
       header: .title(Strings.displaySettingsSection),
-      rows: []
+      rows: [],
+      uuid: displaySectionUUID.uuidString
     )
 
     display.rows.append(
@@ -684,6 +716,20 @@ class SettingsViewController: TableViewController {
       self.navigationController?.pushViewController(optionsViewController, animated: true)
     }
     display.rows.append(row)
+    display.rows.append(
+      Row(
+        text: Strings.AltAppIcon.changeAppIcon,
+        selection: { [unowned self] in
+          let controller = UIHostingController(rootView: AltIconsView(model: altIconsModel))
+          controller.title = Strings.AltAppIcon.changeAppIcon
+          navigationController?.pushViewController(controller, animated: true)
+        },
+        image: selectedAppIcon,
+        accessory: .disclosureIndicator,
+        cellClass: AppIconCell.self,
+        uuid: appIconRowUUID.uuidString
+      )
+    )
     display.rows.append(
       Row(
         text: Strings.NTP.settingsTitle,
@@ -1385,5 +1431,29 @@ class SettingsViewController: TableViewController {
     if dataSource.sections.isEmpty { return }
     dataSource.sections[0] = Static.Section()
     Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
+  }
+}
+
+private class AppIconCell: UITableViewCell, Cell {
+  func configure(row: Row) {
+    var content = defaultContentConfiguration()
+    content.image = row.image
+    content.text = row.text
+    content.imageProperties.cornerRadius = 6
+    let scaledValue = UIFontMetrics.default.scaledValue(for: 24)
+    content.imageProperties.maximumSize = .init(width: scaledValue, height: scaledValue)
+    if #available(iOS 18, *) {
+      content.imageProperties.strokeColor = UIColor(white: 0, alpha: 0.1)
+      content.imageProperties.strokeWidth = 1
+    }
+    contentConfiguration = content
+    if #unavailable(iOS 18) {
+      // Have to grab the image view from the UIListContentView as the standard `imageView` is nil
+      // when using the content configuration API
+      let imageView = contentView.subviews.compactMap({ $0 as? UIImageView }).first
+      imageView?.layer.borderColor = UIColor(white: 0, alpha: 0.1).cgColor
+      imageView?.layer.borderWidth = 1
+    }
+    accessoryType = .disclosureIndicator
   }
 }

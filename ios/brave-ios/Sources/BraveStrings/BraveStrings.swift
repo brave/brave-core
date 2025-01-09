@@ -9539,6 +9539,35 @@ extension Strings {
 }
 
 extension Strings {
+  public struct AltAppIcon {
+    public static let changeAppIcon = NSLocalizedString(
+      "altAppIcon.changeAppIcon",
+      bundle: .module,
+      value: "Change App Icon",
+      comment: "The title for the screen that lets the user select a custom app icon"
+    )
+    public static let defaultAppIcon = NSLocalizedString(
+      "altAppIcon.defaultAppIcon",
+      bundle: .module,
+      value: "Default",
+      comment: "A label shown next to the default Brave app icon"
+    )
+    public static let braveIconsHeader = NSLocalizedString(
+      "altAppIcon.braveIconsHeader",
+      bundle: .module,
+      value: "Brave Icons",
+      comment: "A label shown above a list of icons designed by Brave"
+    )
+    public static let errorTitle = NSLocalizedString(
+      "altAppIcon.errorTitle",
+      bundle: .module,
+      value: "Failed to Change App Icon",
+      comment: "A title shown if some sort of error occurs while changing the app icon"
+    )
+  }
+}
+
+extension Strings {
   public struct BraveTranslate {
     public static let languageSelectionButtonTitle = NSLocalizedString(
       "BraveTranslate.languageSelectionButtonTitle",
