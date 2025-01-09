@@ -16,10 +16,13 @@ namespace utils {
 using image_editor::ScreenshotCaptureResult;
 
 void CopyImageToClipboard(const ScreenshotCaptureResult& result) {
+  DVLOG(2) << __func__;
   if (result.image.IsEmpty()) {
+    DVLOG(2) << "Image is empty";
     return;
   }
 
+  DVLOG(2) << "Writing image to clipboard";
   // Copy the image to the user's clipboard
   ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
       .WriteImage(*result.image.ToSkBitmap());
@@ -27,10 +30,13 @@ void CopyImageToClipboard(const ScreenshotCaptureResult& result) {
 
 void DisplayScreenshotBubble(const ScreenshotCaptureResult& result,
                              base::WeakPtr<Browser> browser) {
+  DVLOG(2) << __func__;
   if (!browser || result.image.IsEmpty()) {
+    DVLOG(2) << "Browser is null or image is empty";
     return;
   }
 
+  DVLOG(2) << "Displaying screenshot bubble";
   // Leverage the screenshot bubble to show the user the screenshot
   browser->window()->ShowScreenshotCapturedBubble(
       browser->tab_strip_model()->GetActiveWebContents(), result.image);
