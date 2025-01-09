@@ -34,6 +34,7 @@ brave_common_web_compile_inputs = [
   rebase_path("../webpack/gen-webpack-grd.js"),
   rebase_path("../webpack/path-map.js"),
   rebase_path("../webpack/webpack-plugin-depfile.js"),
+  rebase_path("../webpack/xhr_compile_async_wasm_plugin.js"),
 
   # typescript config changes warrant a re-build of all typescript builds
   "//brave/tsconfig.json",
@@ -169,6 +170,12 @@ template("transpile_web_ui") {
       inputs += [ entry_point[1] ]
     }
 
+    if (defined(invoker.crates)) {
+      foreach(crate, invoker.crates) {
+        args += [ "--crate=" + crate[0] + "=" + crate[1] ]
+      }
+    }
+
     if (defined(invoker.extra_modules)) {
       # support multiple web pack aliases
       foreach(alias, invoker.extra_modules) {
@@ -178,6 +185,10 @@ template("transpile_web_ui") {
 
     if (defined(invoker.public_asset_path)) {
       args += [ "--public_asset_path=" + invoker.public_asset_path ]
+    }
+
+    if (defined(invoker.wasm_pack_path)) {
+      args += [ "--wasm_pack_path=" + invoker.wasm_pack_path ]
     }
 
     if (defined(invoker.resource_path_prefix)) {
@@ -190,6 +201,14 @@ template("transpile_web_ui") {
 
     if (is_official_build) {
       args += [ "--production" ]
+    }
+
+    if (defined(invoker.xhr_wasm_loading) && invoker.xhr_wasm_loading) {
+      args += [ "--xhr_wasm_loading" ]
+    }
+
+    if (defined(invoker.module_library_type) && invoker.module_library_type) {
+      args += [ "--module_library_type" ]
     }
 
     forward_variables_from(invoker,

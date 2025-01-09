@@ -67,4 +67,4 @@ class XHRCompileAsyncWasmPlugin {
   }
 }
 
-module.exports = { XHRCompileAsyncWasmPlugin };
+module.exports = XHRCompileAsyncWasmPlugin;

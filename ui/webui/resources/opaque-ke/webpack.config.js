@@ -1,6 +1,6 @@
 const path = require('path');
 const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
-const { XHRCompileAsyncWasmPlugin } = require('./xhr_compile_async_wasm_plugin.js');
+const XHRCompileAsyncWasmPlugin = require('./xhr_compile_async_wasm_plugin.js');
 
 module.exports = (env, argv) => {
   // WasmPackPlugin expects wasm-pack to be in $PATH,
@@ -18,12 +18,10 @@ module.exports = (env, argv) => {
       },
     },
     output: {
-      clean: true,
       filename: '[name].bundle.js',
       library: {
         type: 'module',
       },
-      module: true,
       path: path.resolve(env.output_path, 'dist'),
       webassemblyModuleFilename: 'opaque_ke.module.wasm',
       enabledWasmLoadingTypes: [ "xhr" ],
