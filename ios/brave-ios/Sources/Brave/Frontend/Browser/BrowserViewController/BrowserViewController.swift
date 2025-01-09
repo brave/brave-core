@@ -25,6 +25,7 @@ import SpeechRecognition
 import Storage
 import StoreKit
 import SwiftUI
+import Translation
 import UIKit
 import WebKit
 import os.log
@@ -150,6 +151,11 @@ public class BrowserViewController: UIViewController {
   private var appReviewCancelable: AnyCancellable?
   private var adFeatureLinkageCancelable: AnyCancellable?
   var onPendingRequestUpdatedCancellable: AnyCancellable?
+
+  // Translation
+  let translationHostingController: UIHostingController<AnyView> = .init(
+    rootView: AnyView(EmptyView())
+  )
 
   /// Voice Search
   var voiceSearchViewController: PopupViewController<SpeechToTextInputView>?
@@ -484,6 +490,7 @@ public class BrowserViewController: UIViewController {
     Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
     ShieldPreferences.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
+    Preferences.Translate.translateEnabled.observe(from: self)
 
     pageZoomListener = NotificationCenter.default.addObserver(
       forName: PageZoomView.notificationName,
@@ -868,6 +875,10 @@ public class BrowserViewController: UIViewController {
 
     addChild(tabsBar)
     tabsBar.didMove(toParent: self)
+
+    addChild(translationHostingController)
+    view.addSubview(translationHostingController.view)
+    translationHostingController.didMove(toParent: self)
 
     view.addSubview(alertStackView)
     view.addSubview(bottomTouchArea)
@@ -1326,6 +1337,9 @@ public class BrowserViewController: UIViewController {
 
   /// Whether or not to show the playlist onboarding callout this session
   var shouldShowPlaylistOnboardingThisSession = true
+
+  /// Wheter or not to show the translate onboarding callout this session
+  var shouldShowTranslationOnboardingThisSession = true
 
   public func showQueuedAlertIfAvailable() {
     if let queuedAlertInfo = tabManager.selectedTab?.dequeueJavascriptAlertPrompt() {
@@ -2641,10 +2655,12 @@ extension BrowserViewController: TabDelegate {
       Web3NameServiceScriptHandler(tab: tab),
       YoutubeQualityScriptHandler(tab: tab),
       BraveLeoScriptHandler(tab: tab),
-
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
     ]
+
+    injectedScripts.append(BraveTranslateScriptLanguageDetectionHandler(tab: tab))
+    injectedScripts.append(BraveTranslateScriptHandler(tab: tab))
 
     #if canImport(BraveTalk)
     injectedScripts.append(
@@ -2694,6 +2710,9 @@ extension BrowserViewController: TabDelegate {
       as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName)
       as? Web3NameServiceScriptHandler)?.delegate = self
+
+    // Translate Helper
+    tab.translateHelper = BraveTranslateTabHelper(tab: tab, delegate: self)
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -3357,6 +3376,11 @@ extension BrowserViewController: PreferencesObserver {
         screenTimeViewController?.suppressUsageRecording = true
         screenTimeViewController = nil
       }
+    case Preferences.Translate.translateEnabled.key:
+      tabManager.selectedTab?.setScripts(scripts: [
+        .braveTranslate: Preferences.Translate.translateEnabled.value
+      ])
+      tabManager.reloadSelectedTab()
     default:
       Logger.module.debug(
         "Received a preference change for an unknown key: \(key, privacy: .public) on \(type(of: self), privacy: .public)"

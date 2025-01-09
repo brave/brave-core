@@ -11,37 +11,6 @@ import Shared
 import SnapKit
 import UIKit
 
-private class ToastShadowView: UIView {
-  private var shadowLayer: CAShapeLayer?
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    let path = UIBezierPath(
-      roundedRect: bounds,
-      cornerRadius: ButtonToastUX.toastButtonBorderRadius
-    ).cgPath
-    if let shadowLayer = shadowLayer {
-      shadowLayer.path = path
-      shadowLayer.shadowPath = path
-    } else {
-      shadowLayer = CAShapeLayer().then {
-        $0.path = path
-        $0.fillColor = UIColor.clear.cgColor
-        $0.shadowColor = UIColor.black.cgColor
-        $0.shadowPath = path
-        $0.shadowOffset = .zero
-        $0.shadowOpacity = 0.5
-        $0.shadowRadius = ButtonToastUX.toastButtonBorderRadius
-      }
-
-      shadowLayer?.do {
-        layer.insertSublayer($0, at: 0)
-      }
-    }
-  }
-}
-
 private class HighlightableButton: UIButton {
   private var shadowLayer: CAShapeLayer?
 

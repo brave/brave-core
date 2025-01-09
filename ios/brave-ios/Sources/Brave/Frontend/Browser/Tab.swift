@@ -320,6 +320,7 @@ class Tab: NSObject {
   var isEditing = false
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
+  var translationState: TranslateURLBarButton.TranslateState = .unavailable
 
   /// The rewards reporting state which is filled during a page navigation.
   // It is reset to initial values when the page navigation is finished.
@@ -427,6 +428,8 @@ class Tab: NSObject {
       self.setScript(script: .nightMode, enabled: isNightModeEnabled)
     }
   }
+
+  var translateHelper: BraveTranslateTabHelper?
 
   /// Boolean tracking custom url-scheme alert presented
   var isExternalAppAlertPresented = false
@@ -539,6 +542,7 @@ class Tab: NSObject {
         .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
         .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
         .nightMode: Preferences.General.nightModeEnabled.value,
+        .braveTranslate: Preferences.Translate.translateEnabled.value,
       ]
 
       userScripts = Set(scriptPreferences.filter({ $0.value }).map({ $0.key }))
@@ -626,6 +630,7 @@ class Tab: NSObject {
 
   func deleteWebView() {
     contentScriptManager.uninstall(from: self)
+    translateHelper = nil
 
     if let webView = webView {
       webView.removeObserver(self, forKeyPath: KVOConstants.url.keyPath)

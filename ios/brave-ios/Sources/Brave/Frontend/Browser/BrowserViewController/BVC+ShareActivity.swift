@@ -96,6 +96,30 @@ extension BrowserViewController {
       // Any other buttons on the leading side of the location view should be added here as well
     }
 
+    // Translate Activity
+    if let translationState = tab?.translationState, translationState != .unavailable,
+      Preferences.Translate.translateEnabled.value
+    {
+      activities.append(
+        BasicMenuActivity(
+          activityType: .translatePage,
+          callback: { [weak self] in
+            guard let self = self, let tab = tab else { return }
+
+            if let translateHelper = tab.translateHelper {
+              translateHelper.presentUI(on: self)
+
+              if tab.translationState == .active {
+                translateHelper.revertTranslation()
+              } else if tab.translationState != .active {
+                translateHelper.startTranslation(canShowToast: true)
+              }
+            }
+          }
+        )
+      )
+    }
+
     // Find In Page Activity
     activities.append(
       BasicMenuActivity(

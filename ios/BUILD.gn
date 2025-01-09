@@ -34,6 +34,7 @@ import("//brave/ios/browser/api/query_filter/headers.gni")
 import("//brave/ios/browser/api/session_restore/headers.gni")
 import("//brave/ios/browser/api/skus/headers.gni")
 import("//brave/ios/browser/api/storekit_receipt/headers.gni")
+import("//brave/ios/browser/api/translate/headers.gni")
 import("//brave/ios/browser/api/unicode/headers.gni")
 import("//brave/ios/browser/api/url/headers.gni")
 import("//brave/ios/browser/api/url_sanitizer/headers.gni")
@@ -128,6 +129,7 @@ brave_core_public_headers += credential_provider_public_headers
 brave_core_public_headers += developer_options_code_public_headers
 brave_core_public_headers += browser_api_storekit_receipt_public_headers
 brave_core_public_headers += webcompat_reporter_public_headers
+brave_core_public_headers += browser_api_translate_public_headers
 brave_core_public_headers += browser_api_unicode_public_headers
 
 action("brave_core_umbrella_header") {

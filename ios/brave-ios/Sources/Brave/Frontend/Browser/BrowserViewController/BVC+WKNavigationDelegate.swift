@@ -92,13 +92,15 @@ extension BrowserViewController: WKNavigationDelegate {
     // (orange color) as soon as the page has loaded.
     if let url = webView.url {
       if !url.isInternalURL(for: .readermode) {
-        topToolbar.updateReaderModeState(ReaderModeState.unavailable)
+        topToolbar.updateReaderModeState(.unavailable)
         hideReaderModeBar(animated: false)
       }
     }
 
     hideToastsOnNavigationStartIfNeeded(tabManager)
 
+    // If we are going to navigate to a new page, hide the translate button.
+    topToolbar.updateTranslateButtonState(.unavailable)
     resetRedirectChain(webView)
 
     // Append source URL to redirect chain

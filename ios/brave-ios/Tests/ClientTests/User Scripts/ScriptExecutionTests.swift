@@ -5,6 +5,7 @@
 
 import BraveCore
 import CryptoKit
+import Preferences
 import SnapKit
 import WebKit
 import XCTest
@@ -33,6 +34,10 @@ final class ScriptExecutionTests: XCTestCase {
     let upwardInt: Bool
     let upwardSelector: Bool
     let localFrameElement: Bool
+  }
+
+  override class func setUp() {
+    Preferences.UserScript.translate.value = false
   }
 
   @MainActor func testSiteStateListenerScript() async throws {

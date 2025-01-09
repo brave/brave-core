@@ -40,6 +40,7 @@ source_set("browser") {
     "api/session_restore",
     "api/storekit_receipt",
     "api/sync",
+    "api/translate",
     "api/unicode",
     "api/url",
     "api/version_info",

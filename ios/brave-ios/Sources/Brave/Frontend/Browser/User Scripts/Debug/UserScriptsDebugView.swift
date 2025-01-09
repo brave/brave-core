@@ -52,6 +52,9 @@ struct UserScriptsDebugView: View {
   @ObservedObject
   private var leo = Preferences.UserScript.leo
 
+  @ObservedObject
+  private var translate = Preferences.UserScript.translate
+
   var body: some View {
     List {
       Section {
@@ -89,6 +92,8 @@ struct UserScriptsDebugView: View {
         Toggle("Youtube Quality", isOn: $youtubeQuality.value)
 
         Toggle("Leo/AI-Chat", isOn: $leo.value)
+
+        Toggle("Brave Translate", isOn: $translate.value)
       }
       .font(.callout)
       .tint(Color(braveSystemName: .primary60))

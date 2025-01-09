@@ -79,6 +79,11 @@ extension BasicMenuActivity.ActivityType {
     title: Strings.toggleReaderMode,
     braveSystemImage: "leo.product.speedreader"
   )
+  static let translatePage: Self = .init(
+    id: "TranslatePage",
+    title: Strings.translatePage,
+    braveSystemImage: "leo.product.translate"
+  )
   static let findInPage: Self = .init(
     id: "FindInPage",
     title: Strings.findInPage,

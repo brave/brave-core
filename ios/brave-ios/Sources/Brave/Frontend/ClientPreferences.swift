@@ -356,3 +356,15 @@ extension Preferences {
     static let npr = Option<Bool>(key: "website-redirect.npr", default: false)
   }
 }
+
+extension Preferences {
+  final public class Translate {
+    /// Determines whether Brave Translate is enabled
+    public static let translateEnabled =
+      Option<Bool>(key: "brave-translate.enabled", default: true)
+
+    /// Determines whether to show Brave Translate onboarding.
+    public static let translateURLBarOnboardingCount =
+      Option<Int>(key: "brave-translate.url-bar-onboarding-count", default: 0)
+  }
+}

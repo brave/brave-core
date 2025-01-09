@@ -91,5 +91,11 @@ extension Preferences {
         key: "userscript.preferences.\(UserScriptManager.ScriptType.braveLeoAIChat.rawValue)",
         default: true
       )
+
+    public static let translate =
+      Option<Bool>(
+        key: "userscript.preferences.\(UserScriptManager.ScriptType.braveTranslate.rawValue)",
+        default: true
+      )
   }
 }

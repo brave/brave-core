@@ -119,6 +119,10 @@ open class MockTabManagerDelegate: TabManagerDelegate {
   private let privateBrowsingManager = PrivateBrowsingManager()
   private let testWindowId = UUID()
 
+  override class func setUp() {
+    Preferences.UserScript.translate.value = false
+  }
+
   override func setUp() {
     super.setUp()
 
