@@ -15,7 +15,6 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_fallback_js_handler.h"
 #include "content/public/renderer/worker_thread.h"
-#include "third_party/abseil-cpp/absl/base/attributes.h"
 #include "url/gurl.h"
 
 namespace brave_search {
@@ -25,7 +24,7 @@ namespace {
 class JsHandlersForCurrentThread;
 
 // A thread local pointer for the js handlers available.
-ABSL_CONST_INIT thread_local JsHandlersForCurrentThread* current_js_handlers =
+constinit thread_local JsHandlersForCurrentThread* current_js_handlers =
     nullptr;
 
 // A scoping class to create a local thread storage for the JS handlers, storing

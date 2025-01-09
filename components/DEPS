@@ -10,3 +10,82 @@ include_rules = [
   # these dependencies; see /components/README.
   "-ipc",
 ]
+
+specific_include_rules = {
+  # IMPORTANT: Do not add new browser tests that depend on //chrome or
+  # //brave/browser/ to //brave/components.
+  #
+  # This is an exclusion list for browser tests written before proper dependency
+  # checking was implemented. These tests should be migrated out of
+  # //brave/components into //brave/browser eventually.
+  "android_page_appearing_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "brave_content_settings_agent_impl_browsertest\.cc": [
+    "+chrome",
+    "+content",
+  ],
+  "brave_wayback_machine_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "de_amp_browsertest\.cc": [
+    "+chrome",
+    "+content",
+  ],
+  "perf_predictor_tab_helper_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_browsertest_context_helper\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_browsertest_context_helper\.h": [
+    "+chrome",
+  ],
+  "rewards_browsertest_contribution\.cc": [
+    "+chrome",
+  ],
+  "rewards_browsertest_response\.cc": [
+    "+chrome",
+  ],
+  "rewards_browsertest_util\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_contribution_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_flag_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_notification_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_p3a_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_publisher_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "rewards_state_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "webcompat_exceptions_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+    "+content",
+  ],
+}
