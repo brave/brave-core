@@ -81,7 +81,7 @@ void LeoProvider::Start(const AutocompleteInput& input, bool minimal_changes) {
 
   auto text = input.text();
   if (input.InKeywordMode()) {
-    KeywordProvider::SplitKeywordFromInput(
+    AutocompleteInput::SplitKeywordFromInput(
         text, /*trim_leading_whitespace=*/true, &text);
   }
   match.keyword = text;
