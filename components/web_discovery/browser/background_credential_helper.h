@@ -11,23 +11,25 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/web_discovery/browser/rsa.h"
 #include "crypto/rsa_private_key.h"
 
 namespace web_discovery {
 
-struct GenerateJoinRequestResult {
-  GenerateJoinRequestResult(std::string join_request_b64,
-                            std::vector<uint8_t> join_gsk,
-                            std::string signature);
+struct StartJoinInitialization {
+  StartJoinInitialization(std::string request_b64,
+                          std::vector<uint8_t> gsk,
+                          std::string signature);
 
-  ~GenerateJoinRequestResult();
+  ~StartJoinInitialization();
 
-  GenerateJoinRequestResult(const GenerateJoinRequestResult&);
-  GenerateJoinRequestResult& operator=(const GenerateJoinRequestResult&);
+  StartJoinInitialization(const StartJoinInitialization&);
+  StartJoinInitialization& operator=(const StartJoinInitialization&);
 
-  std::string join_request_b64;
-  std::vector<uint8_t> join_gsk;
+  // The encoded join request to be sent to the Web Discovery server.
+  std::string request_b64;
+  // The generated secret key for the credential.
+  std::vector<uint8_t> gsk;
+  // The signature of the join request.
   std::string signature;
 };
 
@@ -37,18 +39,31 @@ class BackgroundCredentialHelper {
 
   virtual ~BackgroundCredentialHelper() = default;
 
+  // Use a fixed seed for cryptographic operations
   virtual void UseFixedSeedForTesting() = 0;
 
-  virtual std::unique_ptr<EncodedRSAKeyPair> GenerateRSAKey() = 0;
+  // Generate a new RSA key, store the key internally for future operations
+  // and return the new key
+  virtual std::unique_ptr<crypto::RSAPrivateKey> GenerateAndSetRSAKey() = 0;
+
+  // Store an imported key for future operations
   virtual void SetRSAKey(
       std::unique_ptr<crypto::RSAPrivateKey> rsa_private_key) = 0;
-  virtual std::optional<GenerateJoinRequestResult> GenerateJoinRequest(
+
+  // Generate a join request to be sent to the Web Discovery server.
+  virtual std::optional<StartJoinInitialization> GenerateJoinRequest(
       std::string pre_challenge) = 0;
+
+  // Process a response from the server for a join request to finish
+  // the join process. Messages can be signed once complete.
   virtual std::optional<std::string> FinishJoin(
       std::string date,
       std::vector<uint8_t> group_pub_key,
       std::vector<uint8_t> gsk,
       std::vector<uint8_t> join_resp_bytes) = 0;
+
+  // Sign a message given the group secret key and credential, for transmission
+  // to the Web Discovery server.
   virtual std::optional<std::vector<uint8_t>> PerformSign(
       std::vector<uint8_t> msg,
       std::vector<uint8_t> basename,

@@ -17,8 +17,8 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/web_discovery/browser/background_credential_helper.h"
 #include "brave/components/web_discovery/browser/credential_signer.h"
-#include "brave/components/web_discovery/browser/rsa.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
+#include "crypto/rsa_private_key.h"
 #include "net/base/backoff_entry.h"
 
 class PrefService;
@@ -69,7 +69,7 @@ class CredentialManager : public CredentialSigner {
  private:
   bool LoadRSAKey();
   bool GenerateRSAKey();
-  void OnNewRSAKey(std::unique_ptr<EncodedRSAKeyPair> encoded_rsa_key_pair);
+  void OnNewRSAKey(std::unique_ptr<crypto::RSAPrivateKey> key);
 
   void StartJoinGroup(const std::string& date,
                       const std::vector<uint8_t>& group_pub_key);
@@ -77,7 +77,7 @@ class CredentialManager : public CredentialSigner {
   void OnJoinRequestReady(
       std::string date,
       std::vector<uint8_t> group_pub_key,
-      std::optional<GenerateJoinRequestResult> generate_join_result);
+      std::optional<StartJoinInitialization> generate_join_result);
 
   void OnJoinResponse(std::string date,
                       std::vector<uint8_t> group_pub_key,

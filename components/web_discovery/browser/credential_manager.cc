@@ -101,16 +101,26 @@ bool CredentialManager::LoadRSAKey() {
 }
 
 void CredentialManager::OnNewRSAKey(
-    std::unique_ptr<EncodedRSAKeyPair> encoded_rsa_key_pair) {
-  if (!encoded_rsa_key_pair) {
-    VLOG(1) << "RSA key generation failed";
+    std::unique_ptr<crypto::RSAPrivateKey> key) {
+  if (!key) {
+    // This most likely failure for key generation is invalid generation
+    // inputs i.e. invalid key size, or invalid inputs provided by the
+    // underlying crypto::RSAPrivateKey implementation. This is considered
+    // highly unlikely.
+    DVLOG(1) << "RSA key generation failed";
     return;
   }
 
-  rsa_public_key_b64_ = encoded_rsa_key_pair->public_key_b64;
+  auto encoded_key_pair = ExportRSAKey(*key);
+  if (!encoded_key_pair) {
+    DVLOG(1) << "RSA key export failed";
+    return;
+  }
+
+  rsa_public_key_b64_ = encoded_key_pair->public_key_b64;
 
   profile_prefs_->SetString(kCredentialRSAPrivateKey,
-                            encoded_rsa_key_pair->private_key_b64);
+                            encoded_key_pair->private_key_b64);
 
   JoinGroups();
 }
@@ -132,7 +142,7 @@ void CredentialManager::JoinGroups() {
       }
       if (!rsa_public_key_b64_) {
         background_credential_helper_
-            .AsyncCall(&BackgroundCredentialHelper::GenerateRSAKey)
+            .AsyncCall(&BackgroundCredentialHelper::GenerateAndSetRSAKey)
             .Then(base::BindOnce(&CredentialManager::OnNewRSAKey,
                                  weak_ptr_factory_.GetWeakPtr()));
         return;
@@ -164,20 +174,20 @@ void CredentialManager::StartJoinGroup(
 void CredentialManager::OnJoinRequestReady(
     std::string date,
     std::vector<uint8_t> group_pub_key,
-    std::optional<GenerateJoinRequestResult> generate_join_result) {
+    std::optional<StartJoinInitialization> generate_join_result) {
   if (!generate_join_result) {
     return;
   }
   base::Value::Dict body_fields;
 
   body_fields.Set(kJoinDateField, date);
-  body_fields.Set(kJoinMessageField, generate_join_result->join_request_b64);
+  body_fields.Set(kJoinMessageField, generate_join_result->request_b64);
   body_fields.Set(kJoinRSAPublicKeyField, *rsa_public_key_b64_);
   body_fields.Set(kJoinRSASignatureField, generate_join_result->signature);
 
   std::string json_body;
   if (!base::JSONWriter::Write(body_fields, &json_body)) {
-    VLOG(1) << "Join body serialization failed";
+    DVLOG(1) << "Join body serialization failed";
     return;
   }
 
@@ -195,7 +205,7 @@ void CredentialManager::OnJoinRequestReady(
   url_loader->DownloadToString(
       shared_url_loader_factory_.get(),
       base::BindOnce(&CredentialManager::OnJoinResponse, base::Unretained(this),
-                     date, group_pub_key, generate_join_result->join_gsk),
+                     date, group_pub_key, generate_join_result->gsk),
       kMaxResponseSize);
 }
 

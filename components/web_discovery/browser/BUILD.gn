@@ -25,8 +25,6 @@ source_set("internal") {
   sources = [
     "background_credential_helper.cc",
     "background_credential_helper.h",
-    "background_credential_helper_impl.cc",
-    "background_credential_helper_impl.h",
     "credential_manager.cc",
     "credential_manager.h",
     "credential_signer.h",
@@ -41,10 +39,7 @@ source_set("internal") {
     "util.h",
   ]
 
-  visibility = [
-    "//brave/components/web_discovery/browser",
-    "//brave/components/web_discovery/browser:unit_tests",
-  ]
+  visibility = [ ":*" ]
 
   deps = [
     "anonymous_credentials",

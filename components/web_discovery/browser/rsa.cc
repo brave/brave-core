@@ -21,44 +21,33 @@ constexpr size_t kRsaKeySize = 2048;
 
 }  // namespace
 
-GeneratedRSAKey::GeneratedRSAKey() = default;
-GeneratedRSAKey::~GeneratedRSAKey() = default;
-
-EncodedRSAKeyPair::EncodedRSAKeyPair() = default;
+EncodedRSAKeyPair::EncodedRSAKeyPair(std::string private_key_b64,
+                                     std::string public_key_b64)
+    : private_key_b64(std::move(private_key_b64)),
+      public_key_b64(std::move(public_key_b64)) {}
 EncodedRSAKeyPair::~EncodedRSAKeyPair() = default;
 
 ImportedRSAKey::ImportedRSAKey() = default;
 ImportedRSAKey::~ImportedRSAKey() = default;
 
-std::unique_ptr<GeneratedRSAKey> GenerateRSAKey() {
+std::unique_ptr<crypto::RSAPrivateKey> GenerateRSAKey() {
   base::AssertLongCPUWorkAllowed();
+  return crypto::RSAPrivateKey::Create(kRsaKeySize);
+}
 
-  auto private_key = crypto::RSAPrivateKey::Create(kRsaKeySize);
-  if (!private_key) {
-    return nullptr;
-  }
-
-  auto key_pair = std::move(private_key);
-
+std::unique_ptr<EncodedRSAKeyPair> ExportRSAKey(
+    const crypto::RSAPrivateKey& private_key) {
   std::vector<uint8_t> encoded_public_key;
   std::vector<uint8_t> encoded_private_key;
 
-  if (!key_pair->ExportPrivateKey(&encoded_private_key) ||
-      !key_pair->ExportPublicKey(&encoded_public_key)) {
+  if (!private_key.ExportPrivateKey(&encoded_private_key) ||
+      !private_key.ExportPublicKey(&encoded_public_key)) {
     return nullptr;
   }
 
-  auto result = std::make_unique<GeneratedRSAKey>();
-
-  result->private_key = std::move(key_pair);
-
-  result->encoded_rsa_key_pair = std::make_unique<EncodedRSAKeyPair>();
-  result->encoded_rsa_key_pair->public_key_b64 =
-      base::Base64Encode(encoded_public_key);
-  result->encoded_rsa_key_pair->private_key_b64 =
-      base::Base64Encode(encoded_private_key);
-
-  return result;
+  return std::make_unique<EncodedRSAKeyPair>(
+      base::Base64Encode(encoded_private_key),
+      base::Base64Encode(encoded_public_key));
 }
 
 std::unique_ptr<ImportedRSAKey> ImportRSAKey(
