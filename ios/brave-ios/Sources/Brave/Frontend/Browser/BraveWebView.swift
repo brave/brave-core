@@ -38,7 +38,7 @@ class BraveWebView: WKWebView {
 
     isFindInteractionEnabled = true
 
-    customUserAgent = UserAgent.userAgentForDesktopMode
+    customUserAgent = UserAgent.userAgentForIdiom()
     if #available(iOS 16.4, *) {
       isInspectable = true
     }
