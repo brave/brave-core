@@ -14,6 +14,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
@@ -30,10 +31,25 @@ std::vector<uint8_t> GetMessageHash(base::span<const uint8_t> message) {
   return base::ToVector(KeccakHash(hash_input));
 }
 
+std::unique_ptr<HDKey> ConstructAccountsRootKey(
+    base::span<const uint8_t> seed) {
+  auto result = HDKey::GenerateFromSeed(seed);
+  if (!result) {
+    return nullptr;
+  }
+
+  // m/44'/60'/0'/0
+  return result->DeriveChildFromPath({DerivationIndex::Hardened(44),  //
+                                      DerivationIndex::Hardened(60),
+                                      DerivationIndex::Hardened(0),
+                                      DerivationIndex::Normal(0)});
+}
+
 }  // namespace
 
-EthereumKeyring::EthereumKeyring(base::span<const uint8_t> seed)
-    : Secp256k1HDKeyring(seed, GetRootPath(mojom::KeyringId::kDefault)) {}
+EthereumKeyring::EthereumKeyring(base::span<const uint8_t> seed) {
+  accounts_root_ = ConstructAccountsRootKey(seed);
+}
 
 // static
 std::optional<std::string> EthereumKeyring::RecoverAddress(
@@ -179,7 +195,7 @@ std::string EthereumKeyring::EncodePrivateKeyForExport(
 
 std::unique_ptr<HDKey> EthereumKeyring::DeriveAccount(uint32_t index) const {
   // m/44'/60'/0'/0/{index}
-  return root_->DeriveNormalChild(index);
+  return accounts_root_->DeriveChild(DerivationIndex::Normal(index));
 }
 
 }  // namespace brave_wallet

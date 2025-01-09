@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/notimplemented.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
@@ -31,10 +32,12 @@ bool BitcoinHardwareKeyring::AddAccount(uint32_t account,
     return false;
   }
 
-  if (testnet_ && parsed_key->version != ExtendedKeyVersion::kTpub) {
+  if (testnet_ &&
+      parsed_key->version != base::to_underlying(ExtendedKeyVersion::kTpub)) {
     return false;
   }
-  if (!testnet_ && parsed_key->version != ExtendedKeyVersion::kXpub) {
+  if (!testnet_ &&
+      parsed_key->version != base::to_underlying(ExtendedKeyVersion::kXpub)) {
     return false;
   }
 
@@ -95,12 +98,9 @@ std::unique_ptr<HDKey> BitcoinHardwareKeyring::DeriveKey(
 
   DCHECK(key_id.change == 0 || key_id.change == 1);
 
-  auto key = account_key->DeriveNormalChild(key_id.change);
-  if (!key) {
-    return nullptr;
-  }
-
-  return key->DeriveNormalChild(key_id.index);
+  return account_key->DeriveChildFromPath(
+      std::array{DerivationIndex::Normal(key_id.change),
+                 DerivationIndex::Normal(key_id.index)});
 }
 
 }  // namespace brave_wallet

@@ -37,6 +37,7 @@ class ZCashKeyring : public Secp256k1HDKeyring {
 
 // TODO(cypt4): move Orchard to the separate keyring
 #if BUILDFLAG(ENABLE_ORCHARD)
+  std::unique_ptr<HDKeyZip32> DeriveOrchardAccount(uint32_t index) const;
   std::optional<std::string> GetUnifiedAddress(
       const mojom::ZCashKeyId& transparent_key_id,
       const mojom::ZCashKeyId& orchard_key_id);
@@ -52,13 +53,14 @@ class ZCashKeyring : public Secp256k1HDKeyring {
       base::span<const uint8_t, 32> message);
 
   std::string EncodePrivateKeyForExport(const std::string& address) override;
+
  private:
   std::string GetAddressInternal(const HDKey& hd_key) const override;
   std::unique_ptr<HDKey> DeriveAccount(uint32_t index) const override;
   std::unique_ptr<HDKey> DeriveKey(const mojom::ZCashKeyId& key_id);
 
 #if BUILDFLAG(ENABLE_ORCHARD)
-  std::unique_ptr<HDKeyZip32> orchard_key_;
+  std::unique_ptr<HDKeyZip32> orchard_accounts_root_;
 #endif
 
   bool testnet_ = false;

@@ -16,6 +16,7 @@
 #include "base/command_line.h"
 #include "base/containers/span.h"
 #include "base/functional/callback_helpers.h"
+#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
@@ -34,6 +35,7 @@
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "brave/components/brave_wallet/browser/json_keystore_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
@@ -1107,16 +1109,24 @@ void KeyringService::ImportAccountFromJson(const std::string& account_name,
     std::move(callback).Run({});
     return;
   }
+
+  auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json);
+  if (!parsed_json.has_value() || !parsed_json->is_dict()) {
+    std::move(callback).Run({});
+    return;
+  }
+
   CHECK(encryptor_);
-  std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromV3UTC(password, json);
-  if (!hd_key) {
+  auto private_key =
+      DecryptPrivateKeyFromJsonKeystore(password, parsed_json->GetDict());
+  if (!private_key) {
     std::move(callback).Run({});
     return;
   }
 
   auto account =
       ImportAccountForKeyring(mojom::CoinType::ETH, mojom::kDefaultKeyringId,
-                              account_name, hd_key->GetPrivateKeyBytes());
+                              account_name, *private_key);
   std::move(callback).Run(std::move(account));
 }
 

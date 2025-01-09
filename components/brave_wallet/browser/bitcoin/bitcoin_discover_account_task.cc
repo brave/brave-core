@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 
+#include <array>
 #include <optional>
 #include <utility>
 
@@ -15,10 +16,12 @@
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/types/cxx23_to_underlying.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_task_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -238,10 +241,12 @@ DiscoverExtendedKeyAccountTask::DiscoverExtendedKeyAccountTask(
     return;
   }
 
-  if (testnet_ && parsed_key->version != ExtendedKeyVersion::kTpub) {
+  if (testnet_ &&
+      parsed_key->version != base::to_underlying(ExtendedKeyVersion::kTpub)) {
     return;
   }
-  if (!testnet_ && parsed_key->version != ExtendedKeyVersion::kXpub) {
+  if (!testnet_ &&
+      parsed_key->version != base::to_underlying(ExtendedKeyVersion::kXpub)) {
     return;
   }
   account_key_ = std::move(parsed_key->hdkey);
@@ -254,15 +259,9 @@ mojom::BitcoinAddressPtr DiscoverExtendedKeyAccountTask::GetAddressById(
     return nullptr;
   }
 
-  auto key = account_key_->DeriveNormalChild(key_id->change);
-  if (!key) {
-    return nullptr;
-  }
-
-  key = key->DeriveNormalChild(key_id->index);
-  if (!key) {
-    return nullptr;
-  }
+  auto key = account_key_->DeriveChildFromPath(
+      std::array{DerivationIndex::Normal(key_id->change),
+                 DerivationIndex::Normal(key_id->index)});
 
   return mojom::BitcoinAddress::New(
       PubkeyToSegwitAddress(key->GetPublicKeyBytes(), testnet_),

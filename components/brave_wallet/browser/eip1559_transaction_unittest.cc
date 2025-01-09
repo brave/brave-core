@@ -125,10 +125,10 @@ TEST(Eip1559TransactionUnitTest, GetSignedTransactionAndHash) {
        "0x863c02549182b91f1764714b93d7e882f010539c0907adaf4de761f7b06a713c"}};
   for (const auto& entry : cases) {
     SCOPED_TRACE(entry.signed_tx);
-    std::vector<uint8_t> private_key;
-    EXPECT_TRUE(base::HexStringToBytes(
+    std::array<uint8_t, 32> private_key;
+    EXPECT_TRUE(base::HexStringToSpan(
         "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
-        &private_key));
+        private_key));
 
     HDKey key;
     key.SetPrivateKey(private_key);

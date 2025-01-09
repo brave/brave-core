@@ -12,16 +12,37 @@
 #include "base/check.h"
 #include "base/containers/span.h"
 #include "base/notimplemented.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
 namespace brave_wallet {
 
+namespace {
+
+std::unique_ptr<HDKey> ConstructAccountsRootKey(base::span<const uint8_t> seed,
+                                                bool testnet) {
+  auto result = HDKey::GenerateFromSeed(seed);
+  if (!result) {
+    return nullptr;
+  }
+
+  if (testnet) {
+    // Testnet: m/84'/1'
+    return result->DeriveChildFromPath({DerivationIndex::Hardened(84),  //
+                                        DerivationIndex::Hardened(1)});
+  } else {
+    // Mainnet: m/84'/0'
+    return result->DeriveChildFromPath({DerivationIndex::Hardened(84),  //
+                                        DerivationIndex::Hardened(0)});
+  }
+}
+
+}  // namespace
+
 BitcoinHDKeyring::BitcoinHDKeyring(base::span<const uint8_t> seed, bool testnet)
-    : Secp256k1HDKeyring(
-          seed,
-          GetRootPath(testnet ? mojom::KeyringId::kBitcoin84Testnet
-                              : mojom::KeyringId::kBitcoin84)),
-      testnet_(testnet) {}
+    : testnet_(testnet) {
+  accounts_root_ = ConstructAccountsRootKey(seed, testnet);
+}
 
 mojom::BitcoinAddressPtr BitcoinHDKeyring::GetAddress(
     uint32_t account,
@@ -94,7 +115,7 @@ std::string BitcoinHDKeyring::GetAddressInternal(const HDKey& hd_key) const {
 std::unique_ptr<HDKey> BitcoinHDKeyring::DeriveAccount(uint32_t index) const {
   // Mainnet - m/84'/0'/{index}'
   // Testnet - m/84'/1'/{index}'
-  return root_->DeriveHardenedChild(index);
+  return accounts_root_->DeriveChild(DerivationIndex::Hardened(index));
 }
 
 std::unique_ptr<HDKey> BitcoinHDKeyring::DeriveKey(
@@ -109,14 +130,11 @@ std::unique_ptr<HDKey> BitcoinHDKeyring::DeriveKey(
   // TODO(apaymyshev): think if |key_id.change| should be a boolean.
   DCHECK(key_id.change == 0 || key_id.change == 1);
 
-  auto key = account_key->DeriveNormalChild(key_id.change);
-  if (!key) {
-    return nullptr;
-  }
-
   // Mainnet - m/84'/0'/{account}'/{key_id.change}/{key_id.index}
   // Testnet - m/84'/1'/{account}'/{key_id.change}/{key_id.index}
-  return key->DeriveNormalChild(key_id.index);
+  return account_key->DeriveChildFromPath(
+      std::array{DerivationIndex::Normal(key_id.change),
+                 DerivationIndex::Normal(key_id.index)});
 }
 
 }  // namespace brave_wallet

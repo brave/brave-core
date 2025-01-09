@@ -22,13 +22,8 @@ namespace brave_wallet {
 // Base class for ECDSA over the Secp256k1 types of HD keyrings.
 class Secp256k1HDKeyring : public HDKeyring {
  public:
-  Secp256k1HDKeyring(base::span<const uint8_t> seed,
-                     const std::string& hd_path);
+  Secp256k1HDKeyring();
   ~Secp256k1HDKeyring() override;
-
-  static std::unique_ptr<HDKey> ConstructRootHDKey(
-      base::span<const uint8_t> seed,
-      const std::string& hd_path);
 
   std::optional<AddedAccountInfo> AddNewHDAccount() override;
   void RemoveLastHDAccount() override;
@@ -49,7 +44,7 @@ class Secp256k1HDKeyring : public HDKeyring {
 
   HDKey* GetHDKeyFromAddress(const std::string& address);
 
-  std::unique_ptr<HDKey> root_;
+  std::unique_ptr<HDKey> accounts_root_;
   std::vector<std::unique_ptr<HDKey>> accounts_;
 
   // TODO(apaymyshev): make separate abstraction for imported keys as they are
