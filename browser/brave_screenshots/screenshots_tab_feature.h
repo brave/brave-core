@@ -9,10 +9,10 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_screenshots/devtools_helper.h"
+#include "brave/browser/brave_screenshots/strategies/screenshot_strategy.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "chrome/browser/ui/browser.h"
-#include "content/public/browser/devtools_agent_host.h"
+#include "content/public/browser/web_contents.h"
 
 namespace brave_screenshots {
 
@@ -22,27 +22,22 @@ enum ScreenshotType {
   kFullPage,
 };
 
-class BraveScreenshotsTabFeature : public image_editor::ScreenshotFlow {
+class BraveScreenshotsTabFeature {
  public:
-  explicit BraveScreenshotsTabFeature(content::WebContents* web_contents);
-  void StartScreenshot(Browser* browser, ScreenshotType type);
-  void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
-
-  // Delete the copy constructor and assignment operator
+  BraveScreenshotsTabFeature();
   BraveScreenshotsTabFeature(const BraveScreenshotsTabFeature&) = delete;
   BraveScreenshotsTabFeature& operator=(const BraveScreenshotsTabFeature&) =
       delete;
-  ~BraveScreenshotsTabFeature() override;
+  ~BraveScreenshotsTabFeature();
+
+  void StartScreenshot(Browser* browser, ScreenshotType type);
+  void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
 
  private:
-  // DevToolsAgentHost/Client used to capture full page screenshots
-  bool InitDevToolsHelper(image_editor::ScreenshotCaptureCallback callback);
-  void SendCaptureFullscreenCommand();
-
-  scoped_refptr<content::DevToolsAgentHost> devtools_host_ = nullptr;
-  std::unique_ptr<DevToolsHelper> devtools_helper_ = nullptr;
+  std::unique_ptr<BraveScreenshotStrategy> CreateStrategy(ScreenshotType type);
   base::WeakPtr<Browser> browser_ = nullptr;
-  base::WeakPtr<BraveScreenshotsTabFeature> weak_this_ = nullptr;
+  std::unique_ptr<BraveScreenshotStrategy> strategy_ = nullptr;
+  base::WeakPtr<content::WebContents> web_contents_ = nullptr;
   base::WeakPtrFactory<BraveScreenshotsTabFeature> weak_factory_{this};
 
 };  // class BraveScreenshotsTabFeature
