@@ -592,12 +592,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
 name = "cxx"
-version = "1.0.135"
+version = "1.0.136"
 dependencies = [
  "cc",
  "cxxbridge-cmd",
@@ -609,27 +609,27 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.135"
+version = "1.0.136"
 dependencies = [
  "clap",
  "codespan-reporting",
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.135"
+version = "1.0.136"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.135"
+version = "1.0.136"
 dependencies = [
  "proc-macro2",
  "quote",
  "rustversion",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
@@ -1536,7 +1536,7 @@ dependencies = [
  "proc-macro-crate",
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
  "synstructure 0.13.1",
 ]
 
@@ -1597,7 +1597,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
@@ -1878,7 +1878,7 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.37"
+version = "1.0.38"
 dependencies = [
  "proc-macro2",
 ]
@@ -2050,7 +2050,7 @@ dependencies = [
 
 [[package]]
 name = "rustversion"
-version = "1.0.18"
+version = "1.0.19"
 
 [[package]]
 name = "ryu"
@@ -2113,7 +2113,7 @@ version = "1.0.24"
 
 [[package]]
 name = "serde"
-version = "1.0.216"
+version = "1.0.217"
 dependencies = [
  "serde_derive",
 ]
@@ -2128,11 +2128,11 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.216"
+version = "1.0.217"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
@@ -2424,7 +2424,7 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.91"
+version = "2.0.95"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2449,7 +2449,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
@@ -2494,7 +2494,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
@@ -2579,7 +2579,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
@@ -2725,7 +2725,7 @@ dependencies = [
  "once_cell",
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
  "wasm-bindgen-shared",
 ]
 
@@ -2745,7 +2745,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
@@ -2998,7 +2998,7 @@ version = "0.7.35"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.91",
+ "syn 2.0.95",
 ]
 
 [[package]]
