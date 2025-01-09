@@ -23,10 +23,28 @@ source_set("brave_screenshots") {
   ]
 }
 
+source_set("strategies") {
+  sources = [
+    "strategies/fullpage_strategy.cc",
+    "strategies/fullpage_strategy.h",
+    "strategies/screenshot_strategy.h",
+    "strategies/selection_strategy.cc",
+    "strategies/selection_strategy.h",
+    "strategies/viewport_strategy.cc",
+    "strategies/viewport_strategy.h",
+  ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    ":brave_screenshots",
+    "//chrome/browser/image_editor:image_editor",
+    "//chrome/browser/ui",
+  ]
+}
+
 source_set("tabs") {
   sources = [
-    "devtools_helper.cc",
-    "devtools_helper.h",
     "screenshots_tab_feature.cc",
     "screenshots_tab_feature.h",
   ]
@@ -38,6 +56,7 @@ source_set("tabs") {
 
   deps = [
     ":brave_screenshots",
+    ":strategies",
     "//chrome/browser/image_editor:image_editor",
     "//chrome/browser/ui",
   ]
