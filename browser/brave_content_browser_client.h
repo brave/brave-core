@@ -170,10 +170,12 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   bool OverrideWebPreferencesAfterNavigation(
       content::WebContents* web_contents,
+      content::SiteInstance& main_frame_site,
       blink::web_pref::WebPreferences* prefs) override;
 
-  void OverrideWebkitPrefs(content::WebContents* web_contents,
-                           blink::web_pref::WebPreferences* prefs) override;
+  void OverrideWebPreferences(content::WebContents* web_contents,
+                              content::SiteInstance& main_frame_site,
+                              blink::web_pref::WebPreferences* prefs) override;
   blink::UserAgentMetadata GetUserAgentMetadata() override;
 
   std::optional<GURL> SanitizeURL(content::RenderFrameHost* render_frame_host,
