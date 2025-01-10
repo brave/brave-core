@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/trace_event/trace_event.h"
+#include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
@@ -26,6 +28,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
@@ -112,16 +115,26 @@ void InlineContentAdServing::GetUserModel(
     int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetUserModel",
+      TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id));
+
   BuildUserModel(base::BindOnce(&InlineContentAdServing::GetUserModelCallback,
                                 weak_factory_.GetWeakPtr(), tab_id, dimensions,
-                                std::move(callback)));
+                                std::move(callback), trace_id));
 }
 
 void InlineContentAdServing::GetUserModelCallback(
     int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
+    uint64_t trace_id,
     UserModelInfo user_model) const {
+  TRACE_EVENT_NESTABLE_ASYNC_END0(
+      kTraceEventCategory, "GetUserModel",
+      TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id));
+
   NotifyOpportunityAroseToServeInlineContentAd();
 
   GetEligibleAds(tab_id, dimensions, std::move(callback),
@@ -133,18 +146,29 @@ void InlineContentAdServing::GetEligibleAds(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
     UserModelInfo user_model) const {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetEligibleAds",
+      TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id));
+
   eligible_ads_->GetForUserModel(
       std::move(user_model), dimensions,
       base::BindOnce(&InlineContentAdServing::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), tab_id, dimensions,
-                     std::move(callback)));
+                     std::move(callback), trace_id));
 }
 
 void InlineContentAdServing::GetEligibleAdsCallback(
     int32_t tab_id,
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback,
+    uint64_t trace_id,
     const CreativeInlineContentAdList& creative_ads) const {
+  TRACE_EVENT_NESTABLE_ASYNC_END1(
+      kTraceEventCategory, "GetEligibleAds",
+      TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id), "creative_ads",
+      creative_ads.size());
+
   if (creative_ads.empty()) {
     BLOG(1, "Inline content ad not served: No eligible ads found");
     return FailedToServeAd(dimensions, std::move(callback));

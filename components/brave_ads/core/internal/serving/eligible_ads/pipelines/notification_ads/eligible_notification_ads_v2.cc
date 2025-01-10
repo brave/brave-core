@@ -9,6 +9,8 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/trace_event/trace_event.h"
+#include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
@@ -22,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
@@ -40,15 +43,14 @@ void EligibleNotificationAdsV2::GetForUserModel(
 
   ad_events_database_table_.GetUnexpired(
       mojom::AdType::kNotificationAd,
-      base::BindOnce(
-          &EligibleNotificationAdsV2::GetEligibleAdsForUserModelCallback,
-          weak_factory_.GetWeakPtr(), std::move(user_model),
-          std::move(callback)));
+      base::BindOnce(&EligibleNotificationAdsV2::GetForUserModelCallback,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleNotificationAdsV2::GetEligibleAdsForUserModelCallback(
+void EligibleNotificationAdsV2::GetForUserModelCallback(
     UserModelInfo user_model,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
     bool success,
@@ -58,18 +60,45 @@ void EligibleNotificationAdsV2::GetEligibleAdsForUserModelCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
+  GetSiteHistory(std::move(user_model), ad_events, std::move(callback));
+}
+
+void EligibleNotificationAdsV2::GetSiteHistory(
+    UserModelInfo user_model,
+    const AdEventList& ad_events,
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetSiteHistory",
+      TRACE_ID_WITH_SCOPE("EligibleNotificationAds", trace_id));
+
   GetAdsClient().GetSiteHistory(
       kSiteHistoryMaxCount.Get(), kSiteHistoryRecentDayRange.Get(),
-      base::BindOnce(&EligibleNotificationAdsV2::GetEligibleAds,
+      base::BindOnce(&EligibleNotificationAdsV2::GetSiteHistoryCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
-                     ad_events, std::move(callback)));
+                     ad_events, std::move(callback), trace_id));
+}
+
+void EligibleNotificationAdsV2::GetSiteHistoryCallback(
+    UserModelInfo user_model,
+    const AdEventList& ad_events,
+    EligibleAdsCallback<CreativeNotificationAdList> callback,
+    uint64_t trace_id,
+    const SiteHistoryList& site_history) {
+  TRACE_EVENT_NESTABLE_ASYNC_END1(
+      kTraceEventCategory, "GetSiteHistory",
+      TRACE_ID_WITH_SCOPE("EligibleNotificationAds", trace_id), "site_history",
+      site_history.size());
+
+  GetEligibleAds(std::move(user_model), ad_events, site_history,
+                 std::move(callback));
 }
 
 void EligibleNotificationAdsV2::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    EligibleAdsCallback<CreativeNotificationAdList> callback,
-    const SiteHistoryList& site_history) {
+    const SiteHistoryList& site_history,
+    EligibleAdsCallback<CreativeNotificationAdList> callback) {
   creative_ads_database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNotificationAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
@@ -99,6 +128,11 @@ void EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd(
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeNotificationAdList> callback) {
+  TRACE_EVENT(kTraceEventCategory,
+              "EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd",
+              "creative_ads", creative_ads.size(), "ad_events",
+              ad_events.size(), "site_history", site_history.size());
+
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
     return std::move(callback).Run(/*eligible_ads=*/{});

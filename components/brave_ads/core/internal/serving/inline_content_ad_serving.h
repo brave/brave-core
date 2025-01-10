@@ -64,6 +64,7 @@ class InlineContentAdServing final {
   void GetUserModelCallback(int32_t tab_id,
                             const std::string& dimensions,
                             MaybeServeInlineContentAdCallback callback,
+                            uint64_t trace_id,
                             UserModelInfo user_model) const;
 
   void GetEligibleAds(int32_t tab_id,
@@ -74,6 +75,7 @@ class InlineContentAdServing final {
       int32_t tab_id,
       const std::string& dimensions,
       MaybeServeInlineContentAdCallback callback,
+      uint64_t trace_id,
       const CreativeInlineContentAdList& creative_ads) const;
 
   void ServeAd(int32_t tab_id,

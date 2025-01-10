@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_NEW_TAB_PAGE_AD_SERVING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_NEW_TAB_PAGE_AD_SERVING_H_
 
+#include <cstdint>
 #include <memory>
 
 #include "base/check_op.h"
@@ -53,12 +54,14 @@ class NewTabPageAdServing final {
 
   void GetUserModel(MaybeServeNewTabPageAdCallback callback);
   void GetUserModelCallback(MaybeServeNewTabPageAdCallback callback,
+                            uint64_t trace_id,
                             UserModelInfo user_model) const;
 
   void GetEligibleAds(MaybeServeNewTabPageAdCallback callback,
                       UserModelInfo user_model) const;
   void GetEligibleAdsCallback(
       MaybeServeNewTabPageAdCallback callback,
+      uint64_t trace_id,
       const CreativeNewTabPageAdList& creative_ads) const;
 
   void ServeAd(const NewTabPageAdInfo& ad,

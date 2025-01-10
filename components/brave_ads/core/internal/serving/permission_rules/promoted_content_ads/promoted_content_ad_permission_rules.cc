@@ -7,17 +7,22 @@
 
 #include <vector>
 
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/ad_units/promoted_content_ad/promoted_content_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_day_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_hour_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_util.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
 // static
 bool PromotedContentAdPermissionRules::HasPermission(
     const AdEventList& ad_events) {
+  TRACE_EVENT(kTraceEventCategory,
+              "PromotedContentAdPermissionRules::HasPermission");
+
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_NOTIFICATION_AD_SERVING_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_NOTIFICATION_AD_SERVING_H_
 
+#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -61,10 +62,11 @@ class NotificationAdServing final : public AdsClientNotifierObserver {
   void GetAdEventsCallback(bool success, const AdEventList& ad_events);
 
   void GetUserModel();
-  void GetUserModelCallback(UserModelInfo user_model);
+  void GetUserModelCallback(uint64_t trace_id, UserModelInfo user_model);
 
   void GetEligibleAds(UserModelInfo user_model);
-  void GetEligibleAdsCallback(const CreativeNotificationAdList& creative_ads);
+  void GetEligibleAdsCallback(uint64_t trace_id,
+                              const CreativeNotificationAdList& creative_ads);
 
   void UpdateMaximumAdsPerHour();
 
