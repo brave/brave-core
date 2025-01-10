@@ -112,8 +112,6 @@ class BraveRewardsNativeWorker
 
   void GetCurrentBalanceReport(JNIEnv* env);
 
-  void IncludeInAutoContribution(JNIEnv* env, uint64_t tabId, bool exclude);
-
   void RemovePublisherFromMap(JNIEnv* env, uint64_t tabId);
 
   void Donate(JNIEnv* env,
@@ -133,10 +131,6 @@ class BraveRewardsNativeWorker
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& publisher);
 
-  void GetAutoContributeProperties(JNIEnv* env);
-
-  bool IsAutoContributeEnabled(JNIEnv* env);
-
   void GetReconcileStamp(JNIEnv* env);
 
   void ResetTheWholeState(JNIEnv* env);
@@ -151,10 +145,6 @@ class BraveRewardsNativeWorker
   int GetAdsPerHour(JNIEnv* env);
 
   void SetAdsPerHour(JNIEnv* env, jint value);
-
-  void SetAutoContributionAmount(JNIEnv* env, jdouble value);
-
-  void GetAutoContributionAmount(JNIEnv* env);
 
   void GetExternalWallet(JNIEnv* env);
 
@@ -249,7 +239,6 @@ class BraveRewardsNativeWorker
 
   void OnRefreshPublisher(const brave_rewards::mojom::PublisherStatus status,
                           const std::string& publisher_key);
-  void SetAutoContributeEnabled(JNIEnv* env, bool isAutoContributeEnabled);
 
  private:
   std::string StdStrStrMapToJsonString(
