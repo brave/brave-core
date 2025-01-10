@@ -83,7 +83,7 @@ void FullPageStrategy::OnLayoutMetricsReceived(int width, int height) {
 }
 
 bool FullPageStrategy::DidClipScreenshot() const {
-  return screenshot_was_clipped_.value_or(false);
+  return screenshot_was_clipped_;
 }
 
 void FullPageStrategy::RequestFullPageScreenshot(int width, int height) {
