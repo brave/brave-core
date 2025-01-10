@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
@@ -133,7 +134,8 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
 
   Insert(mojom_db_transaction, deposit);
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void Deposits::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
@@ -186,7 +188,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetForCreativeInstanceIdCallback,
                                   creative_instance_id, std::move(callback)));
 }
@@ -201,7 +203,8 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
               $2 >= expire_at;)",
           {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 std::string Deposits::GetTableName() const {

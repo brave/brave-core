@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/location.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
@@ -136,7 +137,8 @@ void MigrateFromVersion(int from_version, ResultCallback callback) {
   mojom_db_action->type = mojom::DBActionInfo::Type::kMigrate;
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 }  // namespace brave_ads::database

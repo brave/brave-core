@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/location.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -65,7 +66,8 @@ void Dayparts::Delete(ResultCallback callback) const {
 
   DeleteTable(mojom_db_transaction, GetTableName());
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 std::string Dayparts::GetTableName() const {

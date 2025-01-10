@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/debug/dump_without_crashing.h"
+#include "base/location.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/containers/container_util.h"
@@ -225,7 +226,8 @@ void AdHistory::Save(const AdHistoryList& ad_history,
     Insert(mojom_db_transaction, batch);
   }
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void AdHistory::GetForDateRange(base::Time from_time,
@@ -262,7 +264,7 @@ void AdHistory::GetForDateRange(base::Time from_time,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -365,7 +367,7 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -399,7 +401,7 @@ void AdHistory::GetForCreativeInstanceId(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -415,7 +417,8 @@ void AdHistory::PurgeExpired(ResultCallback callback) const {
            TimeToSqlValueAsString(base::Time::Now() -
                                   kAdHistoryRetentionPeriod.Get())});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 std::string AdHistory::GetTableName() const {

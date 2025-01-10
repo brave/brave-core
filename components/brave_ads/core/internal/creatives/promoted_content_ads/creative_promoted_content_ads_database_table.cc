@@ -11,6 +11,7 @@
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -257,7 +258,8 @@ void CreativePromotedContentAds::Save(
     segments_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
   }
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void CreativePromotedContentAds::Delete(ResultCallback callback) const {
@@ -266,7 +268,8 @@ void CreativePromotedContentAds::Delete(ResultCallback callback) const {
 
   DeleteTable(mojom_db_transaction, GetTableName());
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void CreativePromotedContentAds::GetForCreativeInstanceId(
@@ -320,7 +323,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetForCreativeInstanceIdCallback,
                                   creative_instance_id, std::move(callback)));
 }
@@ -388,7 +391,7 @@ void CreativePromotedContentAds::GetForSegments(
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
   RunDBTransaction(
-      std::move(mojom_db_transaction),
+      FROM_HERE, std::move(mojom_db_transaction),
       base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
 
@@ -437,7 +440,7 @@ void CreativePromotedContentAds::GetForActiveCampaigns(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 

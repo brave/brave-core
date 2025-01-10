@@ -16,10 +16,12 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_row_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "sql/meta_table.h"
 #include "sql/recovery.h"
 #include "sql/sqlite_result_code.h"
@@ -38,10 +40,14 @@ Database::Database(base::FilePath path) : db_path_(std::move(path)) {
 Database::~Database() = default;
 
 mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
-    mojom::DBTransactionInfoPtr mojom_db_transaction) {
+    mojom::DBTransactionInfoPtr mojom_db_transaction,
+    uint64_t trace_id) {
   CHECK(mojom_db_transaction);
 
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  TRACE_EVENT(kTraceEventCategory, "Database::RunDBTransaction", "trace_id",
+              trace_id);
 
   mojom::DBTransactionResultInfoPtr mojom_db_transaction_result =
       mojom::DBTransactionResultInfo::New();
@@ -56,7 +62,8 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // Maybe raze the database. This must be done before any other database
   // actions are run. All tables must be recreated after the raze action has
   // completed.
-  mojom_db_transaction_result->status_code = MaybeRaze(mojom_db_transaction);
+  mojom_db_transaction_result->status_code =
+      MaybeRaze(mojom_db_transaction, trace_id);
   if (database::IsError(mojom_db_transaction_result)) {
     VLOG(0) << "Failed to raze database";
     return mojom_db_transaction_result;
@@ -65,7 +72,7 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // Run any actions within the transaction, such as creating or opening the
   // database, executing a statement, or migrating the database.
   mojom_db_transaction_result->status_code =
-      RunDBActions(mojom_db_transaction, mojom_db_transaction_result);
+      RunDBActions(mojom_db_transaction, mojom_db_transaction_result, trace_id);
   if (database::IsError(mojom_db_transaction_result)) {
     VLOG(0) << "Failed run database actions";
     return mojom_db_transaction_result;
@@ -74,7 +81,8 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // Maybe vacuum the database. This must be done after any other actions are
   // run. The database is configured to auto-vacuum with some limitations, but
   // it is good practice to run this action manually.
-  mojom_db_transaction_result->status_code = MaybeVacuum(mojom_db_transaction);
+  mojom_db_transaction_result->status_code =
+      MaybeVacuum(mojom_db_transaction, trace_id);
   if (database::IsError(mojom_db_transaction_result)) {
     VLOG(0) << "Failed to vacuum database";
     return mojom_db_transaction_result;
@@ -87,11 +95,15 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
 
 mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
+    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result,
+    uint64_t trace_id) {
   CHECK(mojom_db_transaction);
   CHECK(mojom_db_transaction_result);
 
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  TRACE_EVENT(kTraceEventCategory, "Database::RunDBActions", "trace_id",
+              trace_id);
 
   sql::Transaction transaction(&db_);
   if (!transaction.Begin()) {
@@ -101,6 +113,9 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
   for (const auto& mojom_db_action : mojom_db_transaction->actions) {
     mojom::DBTransactionResultInfo::StatusCode result_code =
         mojom::DBTransactionResultInfo::StatusCode::kSuccess;
+
+    TRACE_EVENT(kTraceEventCategory, "Database::RunDBAction", "type",
+                mojom_db_action->type, "trace_id", trace_id);
 
     switch (mojom_db_action->type) {
       case mojom::DBActionInfo::Type::kInitialize: {
@@ -146,10 +161,17 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
 }
 
 mojom::DBTransactionResultInfo::StatusCode Database::MaybeRaze(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+    uint64_t trace_id) {
   CHECK(mojom_db_transaction);
 
-  if (mojom_db_transaction->should_raze && !db_.Raze()) {
+  if (!mojom_db_transaction->should_raze) {
+    return mojom::DBTransactionResultInfo::StatusCode::kSuccess;
+  }
+
+  TRACE_EVENT(kTraceEventCategory, "Database::Raze", "trace_id", trace_id);
+
+  if (!db_.Raze()) {
     return mojom::DBTransactionResultInfo::StatusCode::kFailedToRazeDatabase;
   }
 
@@ -319,10 +341,17 @@ mojom::DBTransactionResultInfo::StatusCode Database::Migrate() {
 }
 
 mojom::DBTransactionResultInfo::StatusCode Database::MaybeVacuum(
-    const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+    const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+    uint64_t trace_id) {
   CHECK(mojom_db_transaction);
 
-  if (mojom_db_transaction->should_vacuum && !db_.Execute("VACUUM;")) {
+  if (!mojom_db_transaction->should_vacuum) {
+    return mojom::DBTransactionResultInfo::StatusCode::kSuccess;
+  }
+
+  TRACE_EVENT(kTraceEventCategory, "Database::Vacuum", "trace_id", trace_id);
+
+  if (!db_.Execute("VACUUM;")) {
     // Log the error and continue. The vacuum action is not critical.
     VLOG(0) << "Failed to vacuum database";
   }

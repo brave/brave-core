@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_H_
 
+#include <cstdint>
 #include <memory>
 
 #include "base/files/file_path.h"
@@ -29,15 +30,18 @@ class ADS_EXPORT Database final {
   ~Database();
 
   mojom::DBTransactionResultInfoPtr RunDBTransaction(
-      mojom::DBTransactionInfoPtr mojom_db_transaction);
+      mojom::DBTransactionInfoPtr mojom_db_transaction,
+      uint64_t trace_id);
 
  private:
   mojom::DBTransactionResultInfo::StatusCode RunDBActions(
       const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-      const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
+      const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result,
+      uint64_t trace_id);
 
   mojom::DBTransactionResultInfo::StatusCode MaybeRaze(
-      const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+      const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+      uint64_t trace_id);
 
   bool InitializeMetaTable();
 
@@ -58,7 +62,8 @@ class ADS_EXPORT Database final {
   mojom::DBTransactionResultInfo::StatusCode Migrate();
 
   mojom::DBTransactionResultInfo::StatusCode MaybeVacuum(
-      const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+      const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+      uint64_t trace_id);
 
   void ErrorCallback(int error, sql::Statement* statement);
 

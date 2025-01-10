@@ -12,6 +12,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/location.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -96,7 +97,8 @@ void CreativeNewTabPageAdWallpapers::Delete(ResultCallback callback) const {
 
   DeleteTable(mojom_db_transaction, GetTableName());
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 std::string CreativeNewTabPageAdWallpapers::GetTableName() const {

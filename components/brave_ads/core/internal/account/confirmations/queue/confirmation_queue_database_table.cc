@@ -12,6 +12,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/location.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
@@ -303,7 +304,8 @@ void ConfirmationQueue::Save(
     Insert(mojom_db_transaction, batch);
   }
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void ConfirmationQueue::DeleteAll(ResultCallback callback) const {
@@ -312,7 +314,8 @@ void ConfirmationQueue::DeleteAll(ResultCallback callback) const {
 
   DeleteTable(mojom_db_transaction, GetTableName());
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void ConfirmationQueue::Delete(const std::string& transaction_id,
@@ -327,7 +330,8 @@ void ConfirmationQueue::Delete(const std::string& transaction_id,
             )",
           {GetTableName(), transaction_id});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void ConfirmationQueue::Retry(const std::string& transaction_id,
@@ -360,7 +364,8 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now()), retry_after,
        max_retry_delay, retry_after, max_retry_delay, transaction_id});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void ConfirmationQueue::GetAll(GetConfirmationQueueCallback callback) const {
@@ -393,7 +398,7 @@ void ConfirmationQueue::GetAll(GetConfirmationQueueCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -429,7 +434,7 @@ void ConfirmationQueue::GetNext(GetConfirmationQueueCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 

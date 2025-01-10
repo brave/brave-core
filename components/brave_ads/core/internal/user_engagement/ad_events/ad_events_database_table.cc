@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
@@ -177,7 +178,8 @@ void AdEvents::RecordEvent(const AdEventInfo& ad_event,
 
   Insert(mojom_db_transaction, {ad_event});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void AdEvents::GetAll(GetAdEventsCallback callback) const {
@@ -203,7 +205,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -242,7 +244,7 @@ void AdEvents::Get(mojom::AdType mojom_ad_type,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -281,7 +283,7 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -324,7 +326,7 @@ void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -347,7 +349,8 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
           {GetTableName(),
            TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
@@ -372,7 +375,8 @@ void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
           AND type = '$3';)",
           {GetTableName(), GetTableName(), ToString(mojom_ad_type)});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void AdEvents::PurgeOrphaned(const std::vector<std::string>& placement_ids,
@@ -409,7 +413,8 @@ void AdEvents::PurgeOrphaned(const std::vector<std::string>& placement_ids,
           {GetTableName(), GetTableName(),
            base::JoinString(quoted_placement_ids, ", ")});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void AdEvents::PurgeAllOrphaned(ResultCallback callback) const {
@@ -432,7 +437,8 @@ void AdEvents::PurgeAllOrphaned(ResultCallback callback) const {
               AND confirmation_type = 'served';)",
           {GetTableName(), GetTableName()});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 std::string AdEvents::GetTableName() const {

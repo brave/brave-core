@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/location.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -17,7 +18,8 @@ void Raze(ResultCallback callback) {
       mojom::DBTransactionInfo::New();
   database::Raze(mojom_db_transaction);
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 }  // namespace brave_ads::database
