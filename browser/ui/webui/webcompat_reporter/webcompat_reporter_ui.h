@@ -6,11 +6,12 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_WEBCOMPAT_REPORTER_UI_H_
 
-#include <memory>
-#include <string>
+#include <optional>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/scoped_multi_source_observation.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/common/webcompat_reporter.mojom-forward.h"
@@ -19,11 +20,14 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/views/widget/widget.h"
+#include "ui/views/widget/widget_observer.h"
 
 namespace content {
 class RenderWidgetHostView;
 class WebUI;
-}
+}  // namespace content
 
 namespace webcompat_reporter {
 
@@ -45,6 +49,9 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
       delete;
   ~WebcompatReporterDOMHandler() override;
 
+  void OnWindowResize(const int& height);
+  base::WeakPtr<WebcompatReporterDOMHandler> AsWeekPtr();
+
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
 
@@ -61,10 +68,10 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
   void HandleClearScreenshot(const base::Value::List& args);
 
   void HandleSubmitReport(const base::Value::List& args);
+  void HandleInit(const base::Value::List& args);
 
   raw_ptr<WebcompatReporterService> reporter_service_ = nullptr;
   raw_ptr<PrefService> pref_service_ = nullptr;
-  raw_ptr<content::RenderWidgetHostView> render_widget_host_view_;
   scoped_refptr<base::SequencedTaskRunner> ui_task_runner_;
 
   mojom::ReportInfoPtr pending_report_;
@@ -72,12 +79,22 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
   base::WeakPtrFactory<WebcompatReporterDOMHandler> weak_ptr_factory_{this};
 };
 
-class WebcompatReporterUI : public ConstrainedWebDialogUI {
+class WebcompatReporterUI : public ConstrainedWebDialogUI,
+                            public views::WidgetObserver {
  public:
   explicit WebcompatReporterUI(content::WebUI* web_ui);
   WebcompatReporterUI(const WebcompatReporterUI&) = delete;
   WebcompatReporterUI& operator=(const WebcompatReporterUI&) = delete;
   ~WebcompatReporterUI() override;
+
+  // views::WidgetObserver
+  void OnWidgetBoundsChanged(views::Widget* widget,
+                             const gfx::Rect& new_bounds) override;
+
+ private:
+  base::WeakPtr<WebcompatReporterDOMHandler> webcompat_reporter_handler_;
+  base::ScopedMultiSourceObservation<views::Widget, views::WidgetObserver>
+      observed_windows_{this};
 };
 
 }  // namespace webcompat_reporter
