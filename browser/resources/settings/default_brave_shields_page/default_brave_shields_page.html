@@ -28,6 +28,10 @@
     cursor: pointer;
     margin: 0 20px;
   }
+  .block-all-cookies-warn {
+    cursor: pointer;
+    color: red;
+  }
 </style>
 <div hidden="[[isAdBlockRoute_]]">
   <div class="settings-box first">
@@ -94,7 +98,12 @@
     on-settings-boolean-control-change="onFingerprintingToggleControlChange_">
   </settings-toggle-button>
   <div class="settings-box">
-    <div class="start">$i18n{cookieControlLabel}</div>
+    <div class="start">
+      <div class="label">$i18n{cookieControlLabel}</div>
+      <div class="cr-secondary-text label block-all-cookies-warn" hidden="[[!controlEqual_('block', cookieControlType_)]]">
+        <span>$i18nRaw{blockAllCookiesDeprecatedLabel}</span>
+      </div>
+    </div>
     <select id="cookieControlType" class="md-select"
         on-change="onCookieControlChange_">
       <template is="dom-repeat" items="[[cookieControlTypes_]]">

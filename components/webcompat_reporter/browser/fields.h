@@ -21,6 +21,8 @@ inline constexpr char kLanguageFarblingField[] = "languageFarblingEnabled";
 inline constexpr char kBraveVPNEnabledField[] = "braveVPNEnabled";
 inline constexpr char kChannelField[] = "channel";
 inline constexpr char kVersionField[] = "version";
+inline constexpr char kCookiePolicyField[] = "cookie_policy";
+inline constexpr char kBlockScriptsField[] = "block_scripts";
 
 inline constexpr char kSiteURLField[] = "url";
 inline constexpr char kDomainField[] = "domain";

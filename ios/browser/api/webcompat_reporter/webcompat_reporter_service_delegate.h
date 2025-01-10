@@ -27,6 +27,8 @@ class WebcompatReporterServiceDelegateImpl
   std::optional<std::vector<std::string>> GetAdblockFilterListNames()
       const override;
   std::optional<std::string> GetChannelName() const override;
+  std::optional<std::string> GetCookiePolicy() const override;
+  std::optional<std::string> GetScriptBlockingFlag() const override;
 };
 
 }  // namespace webcompat_reporter

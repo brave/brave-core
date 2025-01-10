@@ -24,6 +24,8 @@ struct ReportInfo {
   string? brave_vpn_connected;
   string? details;
   string? contact;
+  string? cookie_policy;
+  string? block_scripts;
   array<ComponentInfo>? ad_block_components_version;
   array<uint8>? screenshot_png;
 };

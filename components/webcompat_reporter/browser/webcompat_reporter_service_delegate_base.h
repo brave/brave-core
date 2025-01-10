@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_DELEGATE_BASE_H_
 #define BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_WEBCOMPAT_REPORTER_SERVICE_DELEGATE_BASE_H_
 
-#include <string>
 #include <vector>
 
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"

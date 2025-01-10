@@ -34,6 +34,11 @@
             app:dialog_subtitle="@string/block_cookies_text"
             app:dialog_entries="@array/blockCookiesTexts"
             app:dialog_default_index="1" />
+        <!-- A description with hyperlink to explain more about block cross site cookies settings. -->
+        <org.chromium.components.browser_ui.settings.TextMessagePreference
+            app:icon="@drawable/ic_warning"
+            android:key="block_all_cross_site_cookies_learn_more"
+            app:iconTint="@color/wallet_error_text_color"/>
         <org.chromium.chrome.browser.settings.BraveDialogPreference
             android:key="fingerprinting_protection"
             android:title="@string/block_fingerprinting"

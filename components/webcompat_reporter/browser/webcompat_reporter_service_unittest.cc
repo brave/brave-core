@@ -26,6 +26,9 @@ using testing::_;
 namespace {
 
 constexpr char kChannelMockedValue[] = "MockedChannelValue";
+constexpr char kCookiePolicyMockedValue[] = "MockedCookiePolicyValue";
+constexpr char kGetScriptBlockingFlagMockedValue[] =
+    "MockedScriptBlockingFlagValue";
 
 class MockWebcompatReportUploader
     : public webcompat_reporter::WebcompatReportUploader {
@@ -55,6 +58,8 @@ class MockWebCompatServiceDelegate : public WebCompatServiceDelegate {
               GetComponentInfos,
               (),
               (const));
+  MOCK_METHOD(std::optional<std::string>, GetCookiePolicy, (), (const));
+  MOCK_METHOD(std::optional<std::string>, GetScriptBlockingFlag, (), (const));
 };
 }  // namespace
 
@@ -96,8 +101,8 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     auto report_info = webcompat_reporter::mojom::ReportInfo::New(
         "channel", "brave_version", "https://abc.url/p1/p2", "true",
         "ad_block_setting", "fp_block_setting", "ad_block_list_names",
-        "languages", "true", "true", "details", contact, std::move(components),
-        screenshot);
+        "languages", "true", "true", "details", contact, "block", "true",
+        std::move(components), screenshot);
     EXPECT_CALL(*GetMockWebcompatReportUploader(), SubmitReport(_))
         .Times(1)
         .WillOnce([&](webcompat_reporter::mojom::ReportInfoPtr report) {
@@ -111,6 +116,8 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
           EXPECT_EQ(report->languages, "languages");
           EXPECT_EQ(report->language_farbling, "true");
           EXPECT_EQ(report->brave_vpn_connected, "true");
+          EXPECT_EQ(report->cookie_policy, "block");
+          EXPECT_EQ(report->block_scripts, "true");
 
           EXPECT_EQ(report->details, "details");
           EXPECT_EQ(report->contact, contact);
@@ -129,6 +136,8 @@ class WebcompatReporterServiceUnitTest : public testing::Test {
     EXPECT_CALL(*delegate_, GetChannelName).Times(0);
     EXPECT_CALL(*delegate_, GetAdblockFilterListNames).Times(0);
     EXPECT_CALL(*delegate_, GetComponentInfos).Times(0);
+    EXPECT_CALL(*delegate_, GetCookiePolicy).Times(0);
+    EXPECT_CALL(*delegate_, GetScriptBlockingFlag).Times(0);
 
     webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
   }
@@ -190,6 +199,9 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
         EXPECT_FALSE(report->shields_enabled);
         EXPECT_FALSE(report->details);
         EXPECT_FALSE(report->contact);
+        EXPECT_EQ(report->cookie_policy.value(), kCookiePolicyMockedValue);
+        EXPECT_EQ(report->block_scripts.value(),
+                  kGetScriptBlockingFlagMockedValue);
         EXPECT_FALSE(report->fp_block_setting);
         EXPECT_FALSE(report->ad_block_setting);
         EXPECT_FALSE(report->language_farbling);
@@ -205,6 +217,12 @@ TEST_F(WebcompatReporterServiceUnitTest, SubmitReportWithNoPropsOverride) {
   EXPECT_CALL(*delegate_, GetAdblockFilterListNames)
       .Times(1)
       .WillOnce(testing::Return(get_adblock_list_names_ret_value));
+  EXPECT_CALL(*delegate_, GetCookiePolicy)
+      .Times(1)
+      .WillOnce(testing::Return(kCookiePolicyMockedValue));
+  EXPECT_CALL(*delegate_, GetScriptBlockingFlag)
+      .Times(1)
+      .WillOnce(testing::Return(kGetScriptBlockingFlagMockedValue));
 
   webcompat_reporter_service_->SubmitWebcompatReport(std::move(report_info));
 }

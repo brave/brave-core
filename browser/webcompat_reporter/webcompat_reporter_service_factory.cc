@@ -13,6 +13,8 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -53,6 +55,7 @@ WebcompatReporterServiceFactory::~WebcompatReporterServiceFactory() = default;
 std::unique_ptr<KeyedService>
 WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
     content::BrowserContext* context) const {
+  DCHECK(context);
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   if (!default_storage_partition) {
     return nullptr;
@@ -62,11 +65,15 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
       !profile || profile->IsOffTheRecord() ? nullptr : profile->GetPrefs();
   auto report_uploader = std::make_unique<WebcompatReportUploader>(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
+
   return std::make_unique<WebcompatReporterService>(
       prefs,
       std::make_unique<WebcompatReporterServiceDelegateImpl>(
           g_browser_process->component_updater(),
-          g_brave_browser_process->ad_block_service()),
+          g_brave_browser_process->ad_block_service(),
+          HostContentSettingsMapFactory::GetForProfile(context),
+          CookieSettingsFactory::GetForProfile(
+              Profile::FromBrowserContext(context))),
       std::move(report_uploader));
 }
 

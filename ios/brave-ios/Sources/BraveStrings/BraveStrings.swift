@@ -3085,7 +3085,7 @@ extension Strings {
     "BlockCookiesDescription",
     tableName: "BraveShared",
     bundle: .module,
-    value: "Prevents websites from storing information about your previous visits.",
+    value: "Prevents websites from storing information about your previous visits.\nThe \"Block all Cookies\" option has been deprecated. To learn how to force-enable this option, visit [our help page](https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting)",
     comment: ""
   )
   public static let fingerprintingProtection = NSLocalizedString(

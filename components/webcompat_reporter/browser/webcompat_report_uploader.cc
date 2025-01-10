@@ -147,6 +147,16 @@ void WebcompatReportUploader::SubmitReport(mojom::ReportInfoPtr report_info) {
         report_info->brave_vpn_connected.value() == kStringTrue);
   }
 
+  if (report_info->cookie_policy) {
+    report_details_dict.Set(kCookiePolicyField,
+                            report_info->cookie_policy.value());
+  }
+
+  if (report_info->block_scripts) {
+    report_details_dict.Set(kBlockScriptsField,
+                            report_info->block_scripts.value() == kStringTrue);
+  }
+
   report_details_dict.Set(kApiKeyField, base::Value(api_key));
 
   std::string report_details_json;

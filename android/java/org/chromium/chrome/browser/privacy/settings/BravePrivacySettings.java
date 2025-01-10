@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.privacy.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -33,18 +35,25 @@ import org.chromium.chrome.browser.settings.BraveDialogPreference;
 import org.chromium.chrome.browser.settings.BravePreferenceDialogFragment;
 import org.chromium.chrome.browser.settings.BraveWebrtcPolicyPreference;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.SpanApplier;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
 /** Fragment to keep track of the all the brave privacy related preferences. */
 public class BravePrivacySettings extends PrivacySettings implements ConnectionErrorHandler {
+    private static final String BLOCK_ALL_COOKIES_LEARN_MORE_LINK =
+            "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";
+
     // Chromium Prefs
     private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
     private static final String PREF_NETWORK_PREDICTIONS = "preload_pages";
@@ -102,6 +111,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
 
     public static final String PREF_BLOCK_TRACKERS_ADS = "block_trackers_ads";
     private static final String PREF_BLOCK_CROSS_SITE_COOKIES = "block_cross_site_cookies";
+    private static final String BLOCK_CROSS_SITE_COOKIES_LEARN_MORE =
+            "block_all_cross_site_cookies_learn_more";
     private static final String PREF_SHIELDS_SUMMARY = "shields_summary";
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
@@ -117,6 +128,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         PREF_HTTPS_FIRST_MODE,
         PREF_BLOCK_SCRIPTS,
         PREF_BLOCK_CROSS_SITE_COOKIES,
+        BLOCK_CROSS_SITE_COOKIES_LEARN_MORE,
         PREF_FINGERPRINTING_PROTECTION,
         PREF_FINGERPRINTING_PROTECTION2,
         PREF_FINGERPRINT_LANGUAGE,
@@ -163,6 +175,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private ChromeSwitchPreference mCanMakePayment;
     private BraveDialogPreference mAdsTrakersBlockPref;
     private BraveDialogPreference mBlockCrosssiteCookies;
+    private TextMessagePreference mBlockCrosssiteCookiesLearnMore;
     private ChromeSwitchPreference mDeAmpPref;
     private ChromeSwitchPreference mDebouncePref;
     private ChromeSwitchPreference mHttpsFirstModePref;
@@ -279,6 +292,32 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mBlockCrosssiteCookies =
                 (BraveDialogPreference) findPreference(PREF_BLOCK_CROSS_SITE_COOKIES);
         mBlockCrosssiteCookies.setOnPreferenceChangeListener(this);
+
+        mBlockCrosssiteCookiesLearnMore =
+                (TextMessagePreference) findPreference(BLOCK_CROSS_SITE_COOKIES_LEARN_MORE);
+        if (mBlockCrosssiteCookiesLearnMore != null) {
+            SpannableString learnMoreDesc =
+                    SpanApplier.applySpans(
+                            getString(R.string.block_cookies_deprecated_label),
+                            new SpanApplier.SpanInfo(
+                                    "<LINK_0>",
+                                    "</LINK_0>",
+                                    new ForegroundColorSpan(
+                                            getContext()
+                                                    .getColor(R.color.wallet_error_text_color))),
+                            new SpanApplier.SpanInfo(
+                                    "<LINK_1>",
+                                    "</LINK_1>",
+                                    new NoUnderlineClickableSpan(
+                                            requireContext(),
+                                            R.color.brave_link,
+                                            result -> {
+                                                TabUtils.openUrlInCustomTab(
+                                                        requireContext(),
+                                                        BLOCK_ALL_COOKIES_LEARN_MORE_LINK);
+                                            })));
+            mBlockCrosssiteCookiesLearnMore.setSummary(learnMoreDesc);
+        }
 
         mBlockScriptsPref = (ChromeSwitchPreference) findPreference(PREF_BLOCK_SCRIPTS);
         mBlockScriptsPref.setOnPreferenceChangeListener(this);
@@ -511,6 +550,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     0,
                     ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE)
                             || (int) newValue == STRICT);
+            mBlockCrosssiteCookiesLearnMore.setVisible(STRICT == (int) newValue);
+            mBlockCrosssiteCookiesLearnMore.setDividerAllowedAbove(false);
             switch ((int) newValue) {
                 case STRICT:
                     BraveShieldsContentSettings.setCookiesPref(
@@ -642,6 +683,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 0,
                 ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BLOCK_ALL_COOKIES_TOGGLE)
                         || cookiesBlockPref == STRICT);
+        mBlockCrosssiteCookiesLearnMore.setVisible(STRICT == (int) cookiesBlockPref);
+        mBlockCrosssiteCookiesLearnMore.setDividerAllowedAbove(false);
         if (cookiesBlockPref == STRICT) {
             mBlockCrosssiteCookies.setCheckedIndex(0);
             mBlockCrosssiteCookies.setSummary(
