@@ -90,13 +90,13 @@ const std::optional<YouTubeJson>& YouTubeTabHelper::GetJson() const {
 }
 
 void YouTubeTabHelper::PrimaryMainDocumentElementAvailable() {
-  const std::optional<YouTubeJson>& json = youtube_registry_->GetJson();
-  if (!json) {
+  auto url = web_contents()->GetLastCommittedURL();
+  if (!youtube_registry_->IsYouTubeDomain(url)) {
     return;
   }
 
-  auto url = web_contents()->GetLastCommittedURL();
-  if (!youtube_registry_->IsYouTubeDomain(url)) {
+  const std::optional<YouTubeJson>& json = youtube_registry_->GetJson();
+  if (!json) {
     return;
   }
 
