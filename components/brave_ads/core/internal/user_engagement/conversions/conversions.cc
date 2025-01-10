@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/containers/adapters.h"
 #include "base/functional/bind.h"
+#include "base/trace_event/trace_event.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -28,6 +29,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -115,6 +117,11 @@ void Conversions::CheckForConversions(
     const std::string& html,
     const CreativeSetConversionList& creative_set_conversions,
     const AdEventList& ad_events) {
+  TRACE_EVENT(kTraceEventCategory, "Conversions::CheckForConversions",
+              "redirect_chain", redirect_chain.size(), "html", html.size(),
+              "creative_set_conversions", creative_set_conversions.size(),
+              "ad_events", ad_events.size());
+
   const CreativeSetConversionList matching_creative_set_conversions =
       GetMatchingCreativeSetConversions(creative_set_conversions,
                                         redirect_chain);
