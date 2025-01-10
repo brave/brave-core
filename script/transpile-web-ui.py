@@ -41,10 +41,19 @@ def main():
                              webpack_aliases=args.webpack_alias,
                              output_module=args.output_module,
                              extra_modules=args.extra_modules,
-                             public_asset_path=args.public_asset_path)
+                             public_asset_path=args.public_asset_path,
+                             crates=args.crate,
+                             module_library_type=args.module_library_type,
+                             sync_wasm=args.sync_wasm,
+                             wasm_pack_path=args.wasm_pack_path,
+                             xhr_wasm_loading=args.xhr_wasm_loading)
     transpile_web_uis(transpile_options)
+    excluded_directories = [
+        os.path.join(output_path_absolute,
+                     crate.split("=")[0]) for crate in (args.crate or [])
+    ]
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
-                 resource_path_prefix)
+                 resource_path_prefix, excluded_directories)
 
 
 def parse_args():
@@ -77,6 +86,14 @@ def parse_args():
                         help='Extra paths to find modules',
                         required=False,
                         default=[])
+    parser.add_argument('--crate',
+                        action='append',
+                        help='Rust crates',
+                        required=False)
+    parser.add_argument('--module_library_type', action='store_true')
+    parser.add_argument('--sync_wasm', action='store_true')
+    parser.add_argument('--wasm_pack_path', nargs='?')
+    parser.add_argument('--xhr_wasm_loading', action='store_true')
 
     args = parser.parse_args()
     # validate args
@@ -126,6 +143,21 @@ def transpile_web_uis(options):
     # "[name]=[path]" syntax.
     args.append("--env=brave_entries=" + ",".join(options['entry_points']))
 
+    if options['crates']:
+        args.append("--env=crates=" + ",".join(options['crates']))
+
+    if options['module_library_type']:
+        args.append("--env=module_library_type")
+
+    if options['sync_wasm']:
+        args.append("--env=sync_wasm")
+
+    if options['wasm_pack_path'] is not None:
+        args.append("--env=wasm_pack_path=" + options['wasm_pack_path'])
+
+    if options['xhr_wasm_loading']:
+        args.append("--env=xhr_wasm_loading")
+
     # We should use webpack-cli env param to not pollute environment
     env["ROOT_GEN_DIR"] = options['root_gen_dir']
     env["TARGET_GEN_DIR"] = options['target_gen_dir']
@@ -138,10 +170,15 @@ def transpile_web_uis(options):
 
 
 def generate_grd(target_include_dir, grd_name, resource_name,
-                 resource_path_prefix):
+                 resource_path_prefix, excluded_directories):
     env = os.environ.copy()
 
     args = [NPM, 'run', 'web-ui-gen-grd']
+
+    if excluded_directories:
+        args.append("--")
+        args.append("--excluded_directories")
+        args.append(",".join(excluded_directories))
 
     env["RESOURCE_NAME"] = resource_name
     env["GRD_NAME"] = grd_name
