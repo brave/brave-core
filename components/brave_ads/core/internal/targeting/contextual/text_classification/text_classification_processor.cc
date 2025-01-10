@@ -8,12 +8,15 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
+#include "base/trace_event/trace_event.h"
+#include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/resource/text_classification_resource.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -46,14 +49,24 @@ TextClassificationProcessor::~TextClassificationProcessor() {
 
 void TextClassificationProcessor::Process(const std::string& text) {
   if (resource_->IsLoaded()) {
+    const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+    TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+        kTraceEventCategory, "Process",
+        TRACE_ID_WITH_SCOPE("TextClassificationProcessor", trace_id));
+
     resource_->ClassifyPage(
         text, base::BindOnce(&TextClassificationProcessor::ClassifyPageCallback,
-                             weak_factory_.GetWeakPtr()));
+                             weak_factory_.GetWeakPtr(), trace_id));
   }
 }
 
 void TextClassificationProcessor::ClassifyPageCallback(
+    uint64_t trace_id,
     base::optional_ref<const TextClassificationProbabilityMap> probabilities) {
+  TRACE_EVENT_NESTABLE_ASYNC_END0(
+      kTraceEventCategory, "Process",
+      TRACE_ID_WITH_SCOPE("TextClassificationProcessor", trace_id));
+
   if (!probabilities) {
     return BLOG(0, "Text classification failed due to an invalid model");
   }

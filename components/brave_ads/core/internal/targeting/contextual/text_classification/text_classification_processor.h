@@ -36,6 +36,7 @@ class TextClassificationProcessor final : public TabManagerObserver {
 
  private:
   void ClassifyPageCallback(
+      uint64_t trace_id,
       base::optional_ref<const TextClassificationProbabilityMap> probabilities);
 
   // TabManagerObserver:
