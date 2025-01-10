@@ -1586,7 +1586,7 @@ Leo AI. This action can't be undone.
     Context size
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_INPUT_CONTEXT_SIZE_TOOLTIP_INFO" desc="A brief description for context size, as well as a concise explanation for how it relates to the the user's experience.">
-    The maximum number of tokens the model can process in a single interaction. Each token is roughly 3/4 of a word. A larger context size allows the model to handle longer conversations. Different models support different maximum context sizes.
+    The maximum number of tokens the model can process in a single interaction. A larger context size allows the model to handle longer conversations. Different models support different maximum context sizes.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_CLOSE_BUTTON_LABEL" desc="A label for a button that closes configuration UI">
     Close
