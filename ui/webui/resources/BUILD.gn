@@ -27,6 +27,7 @@ group("grdp") {
     ":fonts_grdp",
     ":icons_grdp",
     ":leo_web_components",
+    ":some_resource",
     ":static_grdp",
   ]
   if (!is_android && !is_ios) {
@@ -99,6 +100,27 @@ transpile_web_ui("leo_web_components") {
       ] ]
 
   resource_name = "leo"
+}
+
+transpile_web_ui("some_resource") {
+  resource_name = "some_resource"
+  generate_grdp = true
+  resource_path_prefix = "brave"
+
+  entry_points = [ [
+        "some_resource",
+        rebase_path("some_resource/index.js"),
+      ] ]
+
+  rust_packages = [
+    rebase_path("some_resource/rust_package_1/Cargo.toml"),
+    rebase_path("some_resource/rust_package_2/Cargo.toml"),
+  ]
+
+  module_library_type = true
+  output_module = true
+  public_asset_path = "chrome://resources/brave/"
+  xhr_wasm_loading = true
 }
 
 # Create a grdp that //ui/webui/resources can include in its main resources GRD
