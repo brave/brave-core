@@ -96,6 +96,7 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
       content::BrowsingDataRemover::DATA_TYPE_ATTRIBUTION_REPORTING |
       content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX |
       content::BrowsingDataRemover::DATA_TYPE_PRIVACY_SANDBOX_INTERNAL |
+      content::BrowsingDataRemover::DATA_TYPE_AVOID_CLOSING_CONNECTIONS |
       chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
 
   content::BrowsingDataRemover::OriginType origin_type =
