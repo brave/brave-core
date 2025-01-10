@@ -54,13 +54,32 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
   YouTubeTabHelper(content::WebContents*, const int32_t world_id);
   friend class content::WebContentsUserData<YouTubeTabHelper>;
 
+  // content::WebContentsObserver overrides
+
+  // This method is invoked once the window.document element of the primary main
+  // frame's current document (i.e., |render_frame_host|) is ready. This happens
+  // when the document's main HTML resource has finished parsing. Here
+  // document element refers to DOMDocument, which is different from browser
+  // implementation of blink::Document in DocumentUserData/DocumentService which
+  // are typically created when navigation commits.
+  //
+  // Note that PrimaryMainDocumentElementAvailable should be used when the
+  // observers which send IPCs to the renderer want to ensure that
+  // window.document is non-null. For for the comment cases like observing
+  // primary document/URL changes in the omnibox due to navigation
+  // WebContentsObserver::PrimaryPageChanged should be used and to observe fully
+  // loaded signal WebContentsObserver::DidFinishLoad can be used.
+  //
+  // This event is dispatched once in the document's lifetime, which means it's
+  // not dispatched after navigation that restores a Back/Forward Cache page.
+  // For prerendering, this signal is dispatched when the main document element
+  // is available and the document is shown to the user (i.e., after the
+  // activation).
+  void PrimaryMainDocumentElementAvailable() override;
+
   // Override fullscreen toggle notification.
   void DidToggleFullscreenModeForTab(bool entered_fullscreen,
-                                     bool /*is_user_initiated*/) override;
-
-  // content::WebContentsObserver overrides
-  void DidFinishNavigation(
-      content::NavigationHandle* navigation_handle) override;
+                                       bool /*is_user_initiated*/) override;
 
   void MediaStartedPlaying(const MediaPlayerInfo& video_type,
                            const content::MediaPlayerId& id) override;
