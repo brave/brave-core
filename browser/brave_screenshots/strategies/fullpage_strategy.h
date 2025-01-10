@@ -50,7 +50,7 @@ class FullPageStrategy : public BraveScreenshotStrategy,
   image_editor::ScreenshotCaptureCallback callback_;
   base::WeakPtr<content::WebContents> web_contents_;
   scoped_refptr<content::DevToolsAgentHost> devtools_host_;
-  std::optional<bool> screenshot_was_clipped_;
+  bool screenshot_was_clipped_ = false;
   int next_id_ = 1;
 };
 
