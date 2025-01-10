@@ -19,7 +19,8 @@ static std::string JNI_AboutSettingsBridge_GetApplicationVersion(JNIEnv* env) {
       base::android::BuildInfo::GetInstance();
   std::string application(android_build_info->host_package_label());
   application.append(" ");
-  application.append(android_build_info->package_version_name());
+  application.append(
+      version_info::GetBraveVersionWithoutChromiumMajorVersion());
   application.append(", Chromium ");
   application.append(version_info::GetBraveChromiumVersionNumber());
 
