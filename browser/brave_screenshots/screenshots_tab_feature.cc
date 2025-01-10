@@ -16,24 +16,10 @@
 
 namespace {
 
+// Some screenshots may need to be clipped to avoid the GPU limit.
+// https://crbug.com/1260828
 void DisplayScreenshotClippedNotification(base::WeakPtr<Browser> browser) {
   NOTIMPLEMENTED();
-  // message_center::RichNotificationData notification_data;
-
-  // const std::unique_ptr<message_center::Notification> notification =
-  //     std::make_unique<message_center::Notification>(
-  //         message_center::NOTIFICATION_TYPE_SIMPLE,
-  //         "brave_screenshots_clipped", u"Clipped", u"Sorries",
-  //         ui::ImageModel(), std::u16string(), GURL(),
-  //         message_center::NotifierId(
-  //             message_center::NotifierType::SYSTEM_COMPONENT,
-  //             "feature.brave_screenshots"),
-  //         notification_data, nullptr);
-
-  // // Note: Notifications cannot be both TRANSIENT and have a nullptr delegate
-  // NotificationDisplayServiceFactory::GetForProfile(browser->GetProfile())
-  //     ->Display(NotificationHandler::Type::ANNOUNCEMENT, *notification,
-  //               nullptr);
 }
 
 }  // namespace
@@ -54,6 +40,7 @@ void BraveScreenshotsTabFeature::StartScreenshot(Browser* browser,
                                                  ScreenshotType type) {
   VLOG(1) << "Starting screenshot capture";
   CHECK(browser);
+
   browser_ = browser->AsWeakPtr();
   web_contents_ =
       browser_->tab_strip_model()->GetActiveWebContents()->GetWeakPtr();
@@ -63,6 +50,7 @@ void BraveScreenshotsTabFeature::StartScreenshot(Browser* browser,
     strategy_.reset();
   }
 
+  // We've determined the appropriate strategy to use
   strategy_ = CreateStrategy(type);
 
   if (!strategy_) {
@@ -71,6 +59,7 @@ void BraveScreenshotsTabFeature::StartScreenshot(Browser* browser,
   }
 
   DVLOG(2) << "Starting capture";
+
   strategy_->Capture(
       web_contents_.get(),
       base::BindOnce(&BraveScreenshotsTabFeature::OnCaptureComplete,
@@ -99,6 +88,7 @@ BraveScreenshotsTabFeature::CreateStrategy(ScreenshotType type) {
 void BraveScreenshotsTabFeature::OnCaptureComplete(
     const image_editor::ScreenshotCaptureResult& result) {
   DVLOG(2) << __func__;
+
   if (result.image.IsEmpty()) {
     LOG(ERROR) << "Screenshot capture failed";
     return;
@@ -108,8 +98,6 @@ void BraveScreenshotsTabFeature::OnCaptureComplete(
     DisplayScreenshotClippedNotification(browser_);
   }
 
-  // While the image will be written to the clipboard, depending on its size it
-  // may not be displayed within Windows' clipboard history (Win+V)
   if (browser_) {
     utils::CopyImageToClipboard(result);
     utils::DisplayScreenshotBubble(result, browser_);
