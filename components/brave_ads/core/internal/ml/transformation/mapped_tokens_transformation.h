@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 
 namespace brave_ads {
+
 namespace neural_text_classification::flat {
 struct MappedTokenTransformation;
 }  // namespace neural_text_classification::flat
@@ -43,6 +44,7 @@ class MappedTokensTransformation final : public Transformation {
 };
 
 }  // namespace ml
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_MAPPED_TOKENS_TRANSFORMATION_H_

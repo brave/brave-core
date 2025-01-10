@@ -53,6 +53,7 @@ class NeuralModel final {
 };
 
 }  // namespace ml
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_NEURAL_NEURAL_H_

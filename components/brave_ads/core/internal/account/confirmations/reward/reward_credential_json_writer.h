@@ -22,6 +22,7 @@ std::optional<std::string> WriteRewardCredential(
     const std::string& payload);
 
 }  // namespace json::writer
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_REWARD_REWARD_CREDENTIAL_JSON_WRITER_H_
