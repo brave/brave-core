@@ -86,6 +86,9 @@ bool FullPageStrategy::DidClipScreenshot() const {
   return screenshot_was_clipped_;
 }
 
+// We pass explicit dimensions to avoid hitting the GPU limit. If the page is
+// small enough, the dimensions we pass will be the same as the document itself.
+// If the page is too large, we'll cap either value to 16384.
 void FullPageStrategy::RequestFullPageScreenshot(int width, int height) {
   DVLOG(2) << "Requesting full page screenshot with dimensions: " << width
            << "x" << height;
