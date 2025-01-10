@@ -110,8 +110,10 @@ void BraveScreenshotsTabFeature::OnCaptureComplete(
 
   // While the image will be written to the clipboard, depending on its size it
   // may not be displayed within Windows' clipboard history (Win+V)
-  utils::CopyImageToClipboard(result);
-  utils::DisplayScreenshotBubble(result, browser_);
+  if (browser_) {
+    utils::CopyImageToClipboard(result);
+    utils::DisplayScreenshotBubble(result, browser_);
+  }
 }
 
 }  // namespace brave_screenshots
