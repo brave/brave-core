@@ -100,48 +100,44 @@ TEST_F(WebDiscoveryPrivacyGuardTest, GeneratePrivateSearchURL) {
       "https://example.com/find?testquery=special+chars+%40%23%24%25%5E%26%3D");
 }
 
-TEST_F(WebDiscoveryPrivacyGuardTest, ShouldDropLongURL) {
-  EXPECT_FALSE(
-      ShouldDropLongURL(GURL("https://www.search1.com/search?q=test")));
-  EXPECT_FALSE(ShouldDropLongURL(
+TEST_F(WebDiscoveryPrivacyGuardTest, ShouldMaskURL) {
+  EXPECT_FALSE(ShouldMaskURL(GURL("https://www.search1.com/search?q=test")));
+  EXPECT_FALSE(ShouldMaskURL(
 
       GURL("https://search2.com/search?query=testing+a+nice+query")));
-  EXPECT_FALSE(ShouldDropLongURL(
+  EXPECT_FALSE(ShouldMaskURL(
 
       GURL("https://search2.com/search?query=quick+fox&country=us&d=1")));
-  EXPECT_FALSE(ShouldDropLongURL(GURL("https://www.website.com/page/test")));
+  EXPECT_FALSE(ShouldMaskURL(GURL("https://www.website.com/page/test")));
 
-  EXPECT_TRUE(ShouldDropLongURL(
+  EXPECT_TRUE(ShouldMaskURL(
 
       GURL("https://www.website.com/page/test?id=12823871923991")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      GURL("https://www.website.com/page/test1283192831292")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      GURL("https://www.website.com/page/1283192831292?q=1")));
-  EXPECT_TRUE(ShouldDropLongURL(
+  EXPECT_TRUE(
+      ShouldMaskURL(GURL("https://www.website.com/page/test1283192831292")));
+  EXPECT_TRUE(
+      ShouldMaskURL(GURL("https://www.website.com/page/1283192831292?q=1")));
+  EXPECT_TRUE(ShouldMaskURL(
 
       GURL("https://www.website.com/page/test?a=1&b=2&c=3&d=4&e=5")));
-  EXPECT_TRUE(ShouldDropLongURL(
+  EXPECT_TRUE(ShouldMaskURL(
 
       GURL("https://www.website.com/page/"
            "test?query=a+super+long+query+string+that+is+too+long")));
   EXPECT_TRUE(
-      ShouldDropLongURL(GURL("https://www.website.com/page/ayLxezLhK1Lh1H1")));
-  EXPECT_TRUE(ShouldDropLongURL(GURL("https://www.website.com/page/WebLogic")));
-  EXPECT_TRUE(ShouldDropLongURL(GURL("https://www.website.com/page/admin")));
-  EXPECT_TRUE(ShouldDropLongURL(GURL("https://www.website.com/page/edit/")));
+      ShouldMaskURL(GURL("https://www.website.com/page/ayLxezLhK1Lh1H1")));
+  EXPECT_TRUE(ShouldMaskURL(GURL("https://www.website.com/page/WebLogic")));
+  EXPECT_TRUE(ShouldMaskURL(GURL("https://www.website.com/page/admin")));
+  EXPECT_TRUE(ShouldMaskURL(GURL("https://www.website.com/page/edit/")));
+  EXPECT_TRUE(ShouldMaskURL(GURL("https://www.website.com/page/doc?share=1")));
+  EXPECT_TRUE(ShouldMaskURL(GURL("https://www.website.com/page/doc?user=abc")));
+  EXPECT_TRUE(ShouldMaskURL(GURL("https://www.website.com/page/doc#logout")));
   EXPECT_TRUE(
-      ShouldDropLongURL(GURL("https://www.website.com/page/doc?share=1")));
+      ShouldMaskURL(GURL("https://www.website.com/page/doc?password=abc")));
   EXPECT_TRUE(
-      ShouldDropLongURL(GURL("https://www.website.com/page/doc?user=abc")));
+      ShouldMaskURL(GURL("https://user:pass@www.website.com/page/test")));
   EXPECT_TRUE(
-      ShouldDropLongURL(GURL("https://www.website.com/page/doc#logout")));
-  EXPECT_TRUE(
-      ShouldDropLongURL(GURL("https://www.website.com/page/doc?password=abc")));
-  EXPECT_TRUE(
-      ShouldDropLongURL(GURL("https://user:pass@www.website.com/page/test")));
-  EXPECT_TRUE(ShouldDropLongURL(
-      GURL("https://www.website.com/page/test?e=test@test.com")));
+      ShouldMaskURL(GURL("https://www.website.com/page/test?e=test@test.com")));
 }
 
 TEST_F(WebDiscoveryPrivacyGuardTest, MaskURL) {

@@ -12,12 +12,14 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/no_destructor.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace web_discovery {
 
 // Lazily creates and caches pre-compiled regexes, mainly used for
 // privacy risk assessment of page URLs/contents.
+// This class is not thread safe.
 class RegexUtil {
  public:
   RegexUtil();
@@ -26,11 +28,11 @@ class RegexUtil {
   RegexUtil(const RegexUtil&) = delete;
   RegexUtil& operator=(const RegexUtil&) = delete;
 
-  bool CheckForEmail(const std::string_view str);
-  bool CheckForLongNumber(const std::string_view str, size_t max_length);
-  bool CheckPathAndQueryStringKeywords(const std::string_view path_and_query);
-  bool CheckQueryStringOrRefKeywords(const std::string_view str);
-  bool CheckQueryHTTPCredentials(const std::string_view str);
+  bool CheckForEmail(std::string_view str);
+  bool CheckForLongNumber(std::string_view str, size_t max_length);
+  bool CheckPathAndQueryStringKeywords(std::string_view path_and_query);
+  bool CheckQueryStringOrRefKeywords(std::string_view str);
+  bool CheckQueryHTTPCredentials(std::string_view str);
 
  private:
   std::optional<re2::RE2> email_regex_;
@@ -42,7 +44,7 @@ class RegexUtil {
   std::optional<re2::RE2> non_alphanumeric_regex_;
 };
 
-static RegexUtil g_regex_util;
+static base::NoDestructor<RegexUtil> g_regex_util;
 
 }  // namespace web_discovery
 

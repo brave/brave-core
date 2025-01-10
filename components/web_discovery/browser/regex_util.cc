@@ -48,15 +48,14 @@ namespace web_discovery {
 RegexUtil::RegexUtil() = default;
 RegexUtil::~RegexUtil() = default;
 
-bool RegexUtil::CheckForEmail(const std::string_view str) {
+bool RegexUtil::CheckForEmail(std::string_view str) {
   if (!email_regex_) {
     email_regex_.emplace(kEmailRegex);
   }
   return re2::RE2::PartialMatch(str, *email_regex_);
 }
 
-bool RegexUtil::CheckForLongNumber(const std::string_view str,
-                                   size_t max_length) {
+bool RegexUtil::CheckForLongNumber(std::string_view str, size_t max_length) {
   if (!long_number_regexes_.contains(max_length)) {
     auto regex_str = base::StrCat({kLongNumberRegexPrefix,
                                    base::NumberToString(max_length + 1),
@@ -67,7 +66,7 @@ bool RegexUtil::CheckForLongNumber(const std::string_view str,
 }
 
 bool RegexUtil::CheckPathAndQueryStringKeywords(
-    const std::string_view path_and_query) {
+    std::string_view path_and_query) {
   if (path_and_query_string_keyword_regexes_.empty()) {
     for (const auto& regex_str : kPathAndQueryStringCheckRegexes) {
       path_and_query_string_keyword_regexes_.emplace_back(regex_str);
@@ -81,7 +80,7 @@ bool RegexUtil::CheckPathAndQueryStringKeywords(
   return false;
 }
 
-bool RegexUtil::CheckQueryStringOrRefKeywords(const std::string_view str) {
+bool RegexUtil::CheckQueryStringOrRefKeywords(std::string_view str) {
   if (query_string_and_ref_keyword_regexes_.empty()) {
     for (const auto& regex_str : kQueryStringAndRefCheckRegexes) {
       query_string_and_ref_keyword_regexes_.emplace_back(regex_str);
@@ -95,7 +94,7 @@ bool RegexUtil::CheckQueryStringOrRefKeywords(const std::string_view str) {
   return false;
 }
 
-bool RegexUtil::CheckQueryHTTPCredentials(const std::string_view str) {
+bool RegexUtil::CheckQueryHTTPCredentials(std::string_view str) {
   if (!http_password_regex_) {
     http_password_regex_.emplace(kHttpPasswordRegex);
   }

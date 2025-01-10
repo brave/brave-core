@@ -13,6 +13,7 @@
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
@@ -199,24 +200,17 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RendererScrape) {
 
               ASSERT_EQ(fields->size(), 2u);
 
-              const auto* href_value = (*fields)[0].FindString("href");
-              const auto* text_value = (*fields)[0].FindString("text");
-              const auto* query_value_str = (*fields)[0].FindString("q");
-              ASSERT_TRUE(href_value);
-              ASSERT_TRUE(text_value);
-              ASSERT_TRUE(query_value_str);
-              EXPECT_EQ(*href_value, "https://example.com/foo1");
-              EXPECT_EQ(*text_value, "Foo1");
-              EXPECT_EQ(*query_value_str, "A query");
+              base::ExpectDictStringValue("https://example.com/foo1",
+                                          (*fields)[0], "href");
+              base::ExpectDictStringValue("Foo1", (*fields)[0], "text");
+              base::ExpectDictStringValue("A query", (*fields)[0], "q");
 
-              href_value = (*fields)[1].FindString("href");
-              text_value = (*fields)[1].FindString("text");
+              base::ExpectDictStringValue("https://example.com/foo2",
+                                          (*fields)[1], "href");
+              base::ExpectDictStringValue("Foo2", (*fields)[1], "text");
+
               const auto* query_value = (*fields)[1].Find("q");
-              ASSERT_TRUE(href_value);
-              ASSERT_TRUE(text_value);
               ASSERT_TRUE(query_value);
-              EXPECT_EQ(*href_value, "https://example.com/foo2");
-              EXPECT_EQ(*text_value, "Foo2");
               EXPECT_TRUE(query_value->is_none());
 
               field_map_it = scrape_result->fields.find("dont>match");
@@ -224,9 +218,7 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RendererScrape) {
               fields = &field_map_it->second;
 
               ASSERT_EQ(fields->size(), 1u);
-              const auto* url_query_value = (*fields)[0].FindString("q2");
-              ASSERT_TRUE(url_query_value);
-              EXPECT_EQ(*url_query_value, "testquery");
+              base::ExpectDictStringValue("testquery", (*fields)[0], "q2");
             }();
             run_loop_->Quit();
           }));
@@ -255,12 +247,8 @@ IN_PROC_BROWSER_TEST_F(WebDiscoveryContentScraperTest, RustParseAndScrape) {
 
               ASSERT_EQ(fields->size(), 1u);
 
-              const auto* text_value = (*fields)[0].FindString("text");
-              const auto* input_value = (*fields)[0].FindString("input");
-              ASSERT_TRUE(text_value);
-              ASSERT_TRUE(input_value);
-              EXPECT_EQ(*text_value, "Foo3");
-              EXPECT_EQ(*input_value, "Foo4");
+              base::ExpectDictStringValue("Foo3", (*fields)[0], "text");
+              base::ExpectDictStringValue("Foo4", (*fields)[0], "input");
 
               field_map_it = scrape_result->fields.find("dont>match");
               ASSERT_TRUE(field_map_it != scrape_result->fields.end());

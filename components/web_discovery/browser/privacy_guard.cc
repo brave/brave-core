@@ -51,28 +51,28 @@ constexpr char kMaskedURLSuffix[] = "/ (PROTECTED)";
 bool ContainsForbiddenKeywords(const GURL& url) {
   auto path_and_query =
       base::StrCat({url.path_piece(), "?", url.query_piece()});
-  if (g_regex_util.CheckPathAndQueryStringKeywords(path_and_query)) {
+  if (g_regex_util->CheckPathAndQueryStringKeywords(path_and_query)) {
     return true;
   }
   if (!url.ref_piece().empty() &&
-      g_regex_util.CheckQueryStringOrRefKeywords("#" + url.ref())) {
+      g_regex_util->CheckQueryStringOrRefKeywords("#" + url.ref())) {
     return true;
   }
   if (!url.query_piece().empty() &&
-      g_regex_util.CheckQueryStringOrRefKeywords("?" + url.query())) {
+      g_regex_util->CheckQueryStringOrRefKeywords("?" + url.query())) {
     return true;
   }
   return false;
 }
 
-bool IsPrivateDomainLikely(const std::string_view host) {
+bool IsPrivateDomainLikely(std::string_view host) {
   auto dot_split =
       base::SplitString(host, ".", base::WhitespaceHandling::KEEP_WHITESPACE,
                         base::SPLIT_WANT_ALL);
   if (dot_split.size() > kMaxDotSplitDomainSize) {
     return true;
   }
-  if (g_regex_util.CheckForLongNumber(host, kMaxDomainNumberLength)) {
+  if (g_regex_util->CheckForLongNumber(host, kMaxDomainNumberLength)) {
     return true;
   }
   auto hyphen_split =
@@ -135,15 +135,15 @@ bool IsPrivateQueryLikely(const std::string& query) {
     VLOG(1) << "Ignoring query due to long split length";
     return true;
   }
-  if (g_regex_util.CheckForLongNumber(query, kMaxQueryNumberLength)) {
+  if (g_regex_util->CheckForLongNumber(query, kMaxQueryNumberLength)) {
     VLOG(1) << "Ignoring query due to long number";
     return true;
   }
-  if (g_regex_util.CheckForEmail(query)) {
+  if (g_regex_util->CheckForEmail(query)) {
     VLOG(1) << "Ignoring query due to inclusion of email";
     return true;
   }
-  if (g_regex_util.CheckQueryHTTPCredentials(query)) {
+  if (g_regex_util->CheckQueryHTTPCredentials(query)) {
     VLOG(1) << "Ignoring query due to potential inclusion of HTTP credentials";
     return true;
   }
@@ -178,8 +178,8 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
                     query_encoded_str}));
 }
 
-bool ShouldDropLongURL(const GURL& url) {
-  if (g_regex_util.CheckForEmail(url.spec())) {
+bool ShouldMaskURL(const GURL& url) {
+  if (g_regex_util->CheckForEmail(url.spec())) {
     return true;
   }
   if (!url.query_piece().empty()) {
@@ -192,14 +192,14 @@ bool ShouldDropLongURL(const GURL& url) {
     if (query_parts.size() > kMaxQueryStringParts) {
       return true;
     }
-    if (g_regex_util.CheckForLongNumber(url.query_piece(),
-                                        kMaxQueryStringOrPathNumberLength)) {
+    if (g_regex_util->CheckForLongNumber(url.query_piece(),
+                                         kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }
   if (!url.path_piece().empty()) {
-    if (g_regex_util.CheckForLongNumber(url.path_piece(),
-                                        kMaxQueryStringOrPathNumberLength)) {
+    if (g_regex_util->CheckForLongNumber(url.path_piece(),
+                                         kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }
@@ -234,7 +234,7 @@ std::optional<std::string> MaskURL(const GURL& url) {
     return std::nullopt;
   }
 
-  if (!ShouldDropLongURL(url)) {
+  if (!ShouldMaskURL(url)) {
     return url.spec();
   }
 

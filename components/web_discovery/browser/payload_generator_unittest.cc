@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/test/values_test_util.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -69,30 +70,21 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
   auto scrape_result = std::make_unique<PageScrapeResult>(test_url, "test_id");
 
   std::vector<base::Value::Dict> single_dicts;
-  base::Value::Dict single_dict1;
-  single_dict1.Set("ab", "value1");
-  single_dict1.Set("cd", "value2");
-  single_dicts.push_back(std::move(single_dict1));
-  base::Value::Dict single_dict2;
-  single_dict2.Set("ef", "value3");
-  single_dict2.Set("gh", "value4");
-  single_dicts.push_back(std::move(single_dict2));
+  single_dicts.push_back(
+      base::Value::Dict().Set("ab", "value1").Set("cd", "value2"));
+  single_dicts.push_back(
+      base::Value::Dict().Set("ef", "value3").Set("gh", "value4"));
   scrape_result->fields[".single-element"] = std::move(single_dicts);
 
   std::vector<base::Value::Dict> result_dicts1;
-  base::Value::Dict result_dict1, result_dict2, result_dict3, result_dict4,
-      result_dict5;
-  result_dict1.Set("njk", "joinvalue1");
-  result_dict2.Set("abc", "joinvalue2");
-  result_dict3.Set("njk", "joinvalue3");
-  result_dict4.Set("abc", "joinvalue4");
-  result_dicts1.push_back(std::move(result_dict1));
-  result_dicts1.push_back(std::move(result_dict2));
-  result_dicts1.push_back(std::move(result_dict3));
-  result_dicts1.push_back(std::move(result_dict4));
+  result_dicts1.push_back(base::Value::Dict().Set("njk", "joinvalue1"));
+  result_dicts1.push_back(base::Value::Dict().Set("abc", "joinvalue2"));
+  result_dicts1.push_back(base::Value::Dict().Set("njk", "joinvalue3"));
+  result_dicts1.push_back(base::Value::Dict().Set("abc", "joinvalue4"));
+
   std::vector<base::Value::Dict> result_dicts2;
-  result_dict5.Set("qurl", "https://example.com/test1");
-  result_dicts2.push_back(std::move(result_dict5));
+  result_dicts2.push_back(
+      base::Value::Dict().Set("qurl", "https://example.com/test1"));
   scrape_result->fields["#results"] = std::move(result_dicts1);
   scrape_result->fields["qurl"] = std::move(result_dicts2);
 
@@ -100,50 +92,40 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
   ASSERT_EQ(payloads.size(), 3u);
 
   const auto* payload = &payloads[0];
-  const auto* action = payload->FindString(kActionKey);
   const auto* inner_payload = payload->FindDict(kInnerPayloadKey);
-  ASSERT_TRUE(action && inner_payload);
-  EXPECT_EQ(*action, "single_action");
+  ASSERT_TRUE(inner_payload);
+  base::ExpectDictStringValue("single_action", *payload, kActionKey);
 
   EXPECT_EQ(inner_payload->size(), 3u);
 
-  const auto* ctry = inner_payload->FindString("ctry");
-  const auto* val1 = inner_payload->FindString("ab");
-  const auto* val2 = inner_payload->FindString("cd");
-  ASSERT_TRUE(ctry && val1 && val2);
-  EXPECT_EQ(*ctry, "us");
-  EXPECT_EQ(*val1, "value1");
-  EXPECT_EQ(*val2, "value2");
+  base::ExpectDictStringValue("us", *inner_payload, "ctry");
+  base::ExpectDictStringValue("value1", *inner_payload, "ab");
+  base::ExpectDictStringValue("value2", *inner_payload, "cd");
 
   payload = &payloads[1];
-  action = payload->FindString(kActionKey);
   inner_payload = payload->FindDict(kInnerPayloadKey);
-  ASSERT_TRUE(action && inner_payload);
-  EXPECT_EQ(*action, "single_action");
+  ASSERT_TRUE(inner_payload);
+  base::ExpectDictStringValue("single_action", *payload, kActionKey);
 
   EXPECT_EQ(inner_payload->size(), 3u);
 
-  ctry = inner_payload->FindString("ctry");
-  val1 = inner_payload->FindString("ef");
-  val2 = inner_payload->FindString("gh");
-  ASSERT_TRUE(ctry && val1 && val2);
-  EXPECT_EQ(*ctry, "us");
-  EXPECT_EQ(*val1, "value3");
-  EXPECT_EQ(*val2, "value4");
+  base::ExpectDictStringValue("us", *inner_payload, "ctry");
+  base::ExpectDictStringValue("value3", *inner_payload, "ef");
+  base::ExpectDictStringValue("value4", *inner_payload, "gh");
 
   payload = &payloads[2];
-  action = payload->FindString(kActionKey);
   inner_payload = payload->FindDict(kInnerPayloadKey);
-  ASSERT_TRUE(action && inner_payload);
-  EXPECT_EQ(*action, "query");
+  ASSERT_TRUE(inner_payload);
+  base::ExpectDictStringValue("query", *payload, kActionKey);
 
   EXPECT_EQ(inner_payload->size(), 2u);
 
-  const auto* qurl = inner_payload->FindString("qurl");
   const auto* r_dict = inner_payload->FindDict("r");
-  ASSERT_TRUE(qurl && r_dict);
-  EXPECT_EQ(*qurl, "https://example.com/test1");
+  ASSERT_TRUE(r_dict);
   EXPECT_EQ(r_dict->size(), 4u);
+  base::ExpectDictStringValue("https://example.com/test1", *inner_payload,
+                              "qurl");
+
   const auto* r0_dict = r_dict->FindDict("0");
   const auto* r1_dict = r_dict->FindDict("1");
   const auto* r2_dict = r_dict->FindDict("2");
@@ -153,15 +135,10 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateQueryPayloads) {
   EXPECT_EQ(r1_dict->size(), 1u);
   EXPECT_EQ(r2_dict->size(), 1u);
   EXPECT_EQ(r3_dict->size(), 1u);
-  const auto* r0_val = r0_dict->FindString("njk");
-  const auto* r1_val = r1_dict->FindString("abc");
-  const auto* r2_val = r2_dict->FindString("njk");
-  const auto* r3_val = r3_dict->FindString("abc");
-  ASSERT_TRUE(r0_val && r1_val && r2_val && r2_val);
-  EXPECT_EQ(*r0_val, "joinvalue1");
-  EXPECT_EQ(*r1_val, "joinvalue2");
-  EXPECT_EQ(*r2_val, "joinvalue3");
-  EXPECT_EQ(*r3_val, "joinvalue4");
+  base::ExpectDictStringValue("joinvalue1", *r0_dict, "njk");
+  base::ExpectDictStringValue("joinvalue2", *r1_dict, "abc");
+  base::ExpectDictStringValue("joinvalue3", *r2_dict, "njk");
+  base::ExpectDictStringValue("joinvalue4", *r3_dict, "abc");
 }
 
 TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateAlivePayload) {
@@ -169,20 +146,15 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, GenerateAlivePayload) {
 
   auto alive_payload = GenerateAlivePayload(*server_config_.get(), date_hour);
 
-  const auto* action = alive_payload.FindString("action");
+  base::ExpectDictStringValue("alive", alive_payload, "action");
+
   const auto* inner_payload = alive_payload.FindDict("payload");
 
-  ASSERT_TRUE(action && inner_payload);
+  ASSERT_TRUE(inner_payload);
 
-  EXPECT_EQ(*action, "alive");
-  const auto* ctry = inner_payload->FindString("ctry");
-  const auto* ts = inner_payload->FindString("t");
-  const auto status = inner_payload->FindBool("status");
-
-  ASSERT_TRUE(ctry && ts && status);
-  EXPECT_EQ(*ctry, "us");
-  EXPECT_EQ(*ts, date_hour);
-  EXPECT_EQ(*status, true);
+  base::ExpectDictStringValue("us", *inner_payload, "ctry");
+  base::ExpectDictStringValue(date_hour, *inner_payload, "t");
+  base::ExpectDictBooleanValue(true, *inner_payload, "status");
 }
 
 TEST_F(WebDiscoveryPayloadGeneratorTest, ExcludePrivateResult) {
@@ -222,10 +194,8 @@ TEST_F(WebDiscoveryPayloadGeneratorTest, ExcludePrivateResult) {
     const auto* ri_dict = r_dict->FindDict(base::NumberToString(i));
     ASSERT_TRUE(ri_dict);
 
-    const auto* url = ri_dict->FindString("u");
-    ASSERT_TRUE(url);
-
-    EXPECT_EQ(*url, "https://example.com/result" + base::NumberToString(i));
+    base::ExpectDictStringValue(
+        "https://example.com/result" + base::NumberToString(i), *ri_dict, "u");
   }
 }
 

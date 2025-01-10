@@ -32,7 +32,7 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
 // Checks if a URL should be dropped due to its length or content.
 // Currently only used for determining whether to mask a URL
 // in the function below.
-bool ShouldDropLongURL(const GURL& url);
+bool ShouldMaskURL(const GURL& url);
 
 // Masks a URL to protect privacy. Returns nullopt if URL is invalid.
 std::optional<std::string> MaskURL(const GURL& url);

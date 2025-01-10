@@ -190,13 +190,13 @@ std::vector<base::Value::Dict> GenerateQueryPayloads(
 
 base::Value::Dict GenerateAlivePayload(const ServerConfig& server_config,
                                        std::string date_hour) {
-  base::Value::Dict payload;
-  payload.Set(kActionKey, kAliveAction);
-  base::Value::Dict inner_payload;
-  inner_payload.Set(kStatusFieldName, true);
-  inner_payload.Set(kTimestampFieldName, date_hour);
-  inner_payload.Set(kCountryCodeFieldName, server_config.location);
-  payload.Set(kInnerPayloadKey, std::move(inner_payload));
+  auto inner_payload = base::Value::Dict()
+                           .Set(kStatusFieldName, true)
+                           .Set(kTimestampFieldName, date_hour)
+                           .Set(kCountryCodeFieldName, server_config.location);
+  auto payload = base::Value::Dict()
+                     .Set(kActionKey, kAliveAction)
+                     .Set(kInnerPayloadKey, std::move(inner_payload));
   return payload;
 }
 

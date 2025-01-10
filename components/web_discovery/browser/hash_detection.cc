@@ -9,7 +9,6 @@
 
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/web_discovery/browser/hash_detection_matrix.h"
-#include "brave/components/web_discovery/browser/util.h"
 
 namespace web_discovery {
 
@@ -32,9 +31,7 @@ constexpr double kClassifierThreshold = 0.015;
 
 }  // namespace
 
-bool IsHashLikely(std::string value, double threshold_multiplier) {
-  TransformToAlphanumeric(value);
-
+bool IsHashLikely(std::string_view value, double threshold_multiplier) {
   if (value.empty()) {
     return false;
   }
@@ -42,8 +39,19 @@ bool IsHashLikely(std::string value, double threshold_multiplier) {
   double log_prob_sum = 0.0;
   size_t add_count = 0;
   for (size_t i = 0; i < value.length() - 1; i++) {
+    if (!std::isalnum(value[i])) {
+      continue;
+    }
+    size_t next_char_i;
+    for (next_char_i = i + 1;
+         next_char_i < value.length() && !std::isalnum(value[next_char_i]);
+         next_char_i++) {
+    }
+    if (!std::isalnum(value[next_char_i])) {
+      break;
+    }
     auto matrix_pos_a = kTokenMap.find(value[i]);
-    auto matrix_pos_b = kTokenMap.find(value[i + 1]);
+    auto matrix_pos_b = kTokenMap.find(value[next_char_i]);
     if (matrix_pos_a == kTokenMap.end() || matrix_pos_b == kTokenMap.end()) {
       continue;
     }
