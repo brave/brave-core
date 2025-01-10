@@ -20,10 +20,10 @@ import XCTest
       completion(.internalError, Strings.Wallet.internalErrorMessage, "")
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (publicKey, error) = await solProviderHelper.connect(args: nil)
+    let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: nil)
     XCTAssertNil(publicKey)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -44,10 +44,10 @@ import XCTest
       completion(.success, "", kTestPublicKey)
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (publicKey, error) = await solProviderHelper.connect(args: nil)
+    let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: nil)
     XCTAssertNil(error)
     guard let publicKey = publicKey as? String else {
       XCTFail("Unexpected result for publickey")
@@ -70,10 +70,10 @@ import XCTest
       completion(.success, "", kTestPublicKey)
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (publicKey, error) = await solProviderHelper.connect(args: args)
+    let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: args)
     XCTAssertNil(error)
     guard let publicKey = publicKey as? String else {
       XCTFail("Unexpected result for publickey")
@@ -101,10 +101,10 @@ import XCTest
       completion(.internalError, Strings.Wallet.internalErrorMessage, [:])
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAndSendTransaction(args: args)
+    let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -144,10 +144,10 @@ import XCTest
       )
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAndSendTransaction(args: args)
+    let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [String: String] else {
       XCTFail("Unexpected result to signAndSendTransaction request")
@@ -186,10 +186,10 @@ import XCTest
       )
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAndSendTransaction(args: args)
+    let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [String: String] else {
       XCTFail("Unexpected result to signAndSendTransaction request")
@@ -215,10 +215,10 @@ import XCTest
       completion(.internalError, Strings.Wallet.internalErrorMessage, [:])
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signMessage(args: args)
+    let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -255,10 +255,10 @@ import XCTest
       )
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signMessage(args: args)
+    let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = MojoBase.Value(jsonString: (result as? String) ?? "")?.dictionaryValue else {
       XCTFail("Unexpected result to signMessage request")
@@ -300,10 +300,10 @@ import XCTest
       )
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signMessage(args: args)
+    let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = MojoBase.Value(jsonString: (result as? String) ?? "")?.dictionaryValue else {
       XCTFail("Unexpected result to signMessage request")
@@ -341,10 +341,10 @@ import XCTest
       completion(.internalError, Strings.Wallet.internalErrorMessage, [], .legacy)
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signTransaction(args: args)
+    let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -380,10 +380,10 @@ import XCTest
       completion(.success, "", kSerializedTx.map(NSNumber.init(value:)), .legacy)
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signTransaction(args: args)
+    let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [String: Any] else {
       XCTFail("Unexpected result to signTransaction request")
@@ -419,10 +419,10 @@ import XCTest
       completion(.success, "", kSerializedTx.map(NSNumber.init(value:)), .V0)
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signTransaction(args: args)
+    let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [String: Any] else {
       XCTFail("Unexpected result to signTransaction request")
@@ -458,10 +458,10 @@ import XCTest
       completion(.internalError, Strings.Wallet.internalErrorMessage, [], [])
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAllTransactions(args: args)
+    let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(result)
     guard let error = error,  // dictionary's are unordered, need to check each value
       let errorDict = MojoBase.Value(jsonString: error)?.dictionaryValue,
@@ -502,10 +502,10 @@ import XCTest
       )
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAllTransactions(args: args)
+    let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [[String: Any]] else {
       XCTFail("Unexpected result to signAllTransactions request")
@@ -548,10 +548,10 @@ import XCTest
       )
     }
     let tab = Tab(configuration: .init())
-    let solProviderHelper = SolanaProviderScriptHandler(tab: tab)
+    let solProviderHelper = SolanaProviderScriptHandler()
     tab.walletSolProvider = provider
 
-    let (result, error) = await solProviderHelper.signAllTransactions(args: args)
+    let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(error)
     guard let result = result as? [[String: Any]] else {
       XCTFail("Unexpected result to signAllTransactions request")

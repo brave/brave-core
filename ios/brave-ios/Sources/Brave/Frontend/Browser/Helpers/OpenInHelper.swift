@@ -57,8 +57,7 @@ class DownloadHelper: NSObject {
     request: URLRequest?,
     response: URLResponse,
     cookieStore: WKHTTPCookieStore,
-    canShowInWebView: Bool,
-    forceDownload: Bool
+    canShowInWebView: Bool
   ) {
     guard let request = request else {
       return nil
@@ -71,7 +70,7 @@ class DownloadHelper: NSObject {
     let isAttachment =
       contentDisposition?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
 
-    guard isAttachment || !canShowInWebView || forceDownload else {
+    guard isAttachment || !canShowInWebView else {
       return nil
     }
 

@@ -9,13 +9,6 @@ import WebKit
 import os.log
 
 class BraveLeoScriptHandler: NSObject, TabContentScript {
-  fileprivate weak var tab: Tab?
-
-  init(tab: Tab) {
-    self.tab = tab
-    super.init()
-  }
-
   static let getMainArticle = "getMainArticle\(uniqueID)"
   static let getPDFDocument = "getPDFDocument\(uniqueID)"
 
@@ -44,10 +37,10 @@ class BraveLeoScriptHandler: NSObject, TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 

@@ -45,12 +45,7 @@ struct ReadyState: Codable {
 }
 
 class ReadyStateScriptHandler: TabContentScript {
-  private weak var tab: Tab?
   private var debounceTimer: Timer?
-
-  required init(tab: Tab) {
-    self.tab = tab
-  }
 
   static let scriptName = "ReadyStateScript"
   static let scriptId = UUID().uuidString
@@ -72,12 +67,11 @@ class ReadyStateScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
-
     defer { replyHandler(nil, nil) }
 
     if !verifyMessage(message: message) {
@@ -90,6 +84,6 @@ class ReadyStateScriptHandler: TabContentScript {
       return
     }
 
-    tab?.onPageReadyStateChanged?(readyState.state)
+    tab.onPageReadyStateChanged?(readyState.state)
   }
 }

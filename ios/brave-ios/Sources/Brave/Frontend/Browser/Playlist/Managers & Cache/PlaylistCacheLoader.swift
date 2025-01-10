@@ -153,10 +153,10 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     static let userScript: WKUserScript? = nil
     static let playlistProcessDocumentLoad = PlaylistScriptHandler.playlistProcessDocumentLoad
 
-    func userContentController(
-      _ userContentController: WKUserContentController,
-      didReceiveScriptMessage message: WKScriptMessage,
-      replyHandler: (Any?, String?) -> Void
+    func tab(
+      _ tab: Tab,
+      receivedScriptMessage message: WKScriptMessage,
+      replyHandler: @escaping (Any?, String?) -> Void
     ) {
       if !verifyMessage(message: message) {
         assertionFailure("Missing required security token.")

@@ -18,13 +18,7 @@ protocol BraveTranslateScriptHandlerDelegate: NSObject {
 }
 
 class BraveTranslateScriptHandler: NSObject, TabContentScript {
-  private weak var tab: Tab?
   private static var elementScriptTask: Task<String, Error> = downloadElementScript()
-
-  init(tab: Tab) {
-    self.tab = tab
-    super.init()
-  }
 
   static let namespace = "translate_\(uniqueID)"
   static let scriptName = "BraveTranslateScript"
@@ -55,12 +49,11 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-
     // Setup
 
     guard let webView = message.webView else {
@@ -171,13 +164,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
 }
 
 class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
-  private weak var tab: Tab?
   private static let namespace = "translate_\(uniqueID)"
-
-  init(tab: Tab) {
-    self.tab = tab
-    super.init()
-  }
 
   static let scriptName = "BraveTranslateLanguageDetectionScript"
   static let scriptId = UUID().uuidString
@@ -185,12 +172,11 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
   static let scriptSandbox = WKContentWorld.world(name: "BraveTranslateContentWorld")
   static let userScript: WKUserScript? = nil
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-
     // In the future we'd get this from: components/language/ios/browser/language_detection_java_script_feature.mm
 
     guard let body = message.body as? [String: Any] else {
@@ -199,7 +185,7 @@ class BraveTranslateScriptLanguageDetectionHandler: NSObject, TabContentScript {
     }
 
     guard
-      let translateHelper = tab?.translateHelper
+      let translateHelper = tab.translateHelper
     else {
       return
     }

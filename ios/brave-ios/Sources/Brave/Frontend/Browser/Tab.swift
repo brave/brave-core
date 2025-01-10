@@ -38,9 +38,9 @@ protocol TabContentScript: TabContentScriptLoader {
   func verifyMessage(message: WKScriptMessage) -> Bool
   func verifyMessage(message: WKScriptMessage, securityToken: String) -> Bool
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  @MainActor func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   )
 }
@@ -359,7 +359,7 @@ class Tab: NSObject {
 
   // There is no 'available macro' on props, we currently just need to store ownership.
   lazy var contentBlocker = ContentBlockerHelper(tab: self)
-  lazy var requestBlockingContentHelper = RequestBlockingContentScriptHandler(tab: self)
+  let requestBlockingContentHelper = RequestBlockingContentScriptHandler()
 
   /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
   var lastTitle: String?
@@ -399,7 +399,7 @@ class Tab: NSObject {
   // If this tab has been opened from another, its parent will point to the tab from which it was opened
   weak var parent: Tab?
 
-  fileprivate var contentScriptManager = TabContentScriptManager()
+  fileprivate let contentScriptManager = TabContentScriptManager()
   private var userScripts = Set<UserScriptManager.ScriptType>()
   private var customUserScripts = Set<UserScriptType>()
 
@@ -453,8 +453,10 @@ class Tab: NSObject {
     tabGeneratorAPI: BraveTabGeneratorAPI? = nil
   ) {
     self.configuration = configuration
-    self.favicon = Favicon.default
     self.id = id
+    self.type = type
+
+    self.favicon = Favicon.default
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
     _syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
@@ -468,7 +470,8 @@ class Tab: NSObject {
     }
 
     super.init()
-    self.type = type
+
+    self.contentScriptManager.tab = self
   }
 
   weak var navigationDelegate: WKNavigationDelegate? {
@@ -1058,6 +1061,7 @@ extension Tab: TabWebViewDelegate {
 
 private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
   fileprivate var helpers = [String: TabContentScript]()
+  weak var tab: Tab?
 
   func uninstall(from tab: Tab) {
     helpers.forEach {
@@ -1066,22 +1070,20 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
     }
   }
 
-  @objc func userContentController(
+  func userContentController(
     _ userContentController: WKUserContentController,
     didReceive message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
-    for helper in helpers.values {
-      let scriptMessageHandlerName = type(of: helper).messageHandlerName
-      if scriptMessageHandlerName == message.name {
-        helper.userContentController(
-          userContentController,
-          didReceiveScriptMessage: message,
-          replyHandler: replyHandler
-        )
-        return
-      }
+    guard let tab,
+      let helper = helpers.values.first(where: {
+        type(of: $0).messageHandlerName == message.name
+      })
+    else {
+      replyHandler(nil, nil)
+      return
     }
+    helper.tab(tab, receivedScriptMessage: message, replyHandler: replyHandler)
   }
 
   func addContentScript(

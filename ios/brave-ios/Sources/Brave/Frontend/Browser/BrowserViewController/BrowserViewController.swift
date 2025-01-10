@@ -233,10 +233,6 @@ public class BrowserViewController: UIViewController {
   // allow us to re-trigger the `URLRequest` if the user requests a file to be downloaded.
   var pendingRequests = [String: URLRequest]()
 
-  // This is set when the user taps "Download Link" from the context menu. We then force a
-  // download of the next request through the `WKNavigationDelegate` that matches this web view.
-  weak var pendingDownloadWebView: WKWebView?
-
   let downloadQueue = DownloadQueue()
 
   private var cancellables: Set<AnyCancellable> = []
@@ -2629,43 +2625,44 @@ extension BrowserViewController: TabDelegate {
     webView.uiDelegate = self
 
     var injectedScripts: [TabContentScript] = [
-      ReaderModeScriptHandler(tab: tab),
+      ReaderModeScriptHandler(),
       ErrorPageHelper(certStore: profile.certStore),
-      SessionRestoreScriptHandler(tab: tab),
-      BlockedDomainScriptHandler(tab: tab),
-      HTTPBlockedScriptHandler(tab: tab, tabManager: tabManager),
-      PrintScriptHandler(browserController: self, tab: tab),
-      CustomSearchScriptHandler(tab: tab),
-      DarkReaderScriptHandler(tab: tab),
-      FocusScriptHandler(tab: tab),
-      BraveGetUA(tab: tab),
-      BraveSearchScriptHandler(tab: tab, profile: profile, rewards: rewards),
-      ResourceDownloadScriptHandler(tab: tab),
-      DownloadContentScriptHandler(browserController: self, tab: tab),
+      SessionRestoreScriptHandler(),
+      BlockedDomainScriptHandler(),
+      HTTPBlockedScriptHandler(tabManager: tabManager),
+      PrintScriptHandler(browserController: self),
+      CustomSearchScriptHandler(),
+      DarkReaderScriptHandler(),
+      FocusScriptHandler(),
+      BraveGetUA(),
+      BraveSearchScriptHandler(profile: profile, rewards: rewards),
+      ResourceDownloadScriptHandler(),
+      DownloadContentScriptHandler(browserController: self),
       PlaylistScriptHandler(tab: tab),
-      PlaylistFolderSharingScriptHandler(tab: tab),
-      RewardsReportingScriptHandler(rewards: rewards, tab: tab),
-      AdsMediaReportingScriptHandler(rewards: rewards, tab: tab),
-      ReadyStateScriptHandler(tab: tab),
-      DeAmpScriptHandler(tab: tab),
-      SiteStateListenerScriptHandler(tab: tab),
-      CosmeticFiltersScriptHandler(tab: tab),
-      URLPartinessScriptHandler(tab: tab),
-      FaviconScriptHandler(tab: tab),
-      Web3NameServiceScriptHandler(tab: tab),
+      PlaylistFolderSharingScriptHandler(),
+      RewardsReportingScriptHandler(rewards: rewards),
+      AdsMediaReportingScriptHandler(rewards: rewards),
+      ReadyStateScriptHandler(),
+      DeAmpScriptHandler(),
+      SiteStateListenerScriptHandler(),
+      CosmeticFiltersScriptHandler(),
+      URLPartinessScriptHandler(),
+      FaviconScriptHandler(),
+      Web3NameServiceScriptHandler(),
       YoutubeQualityScriptHandler(tab: tab),
-      BraveLeoScriptHandler(tab: tab),
+      BraveLeoScriptHandler(),
+      BraveSkusScriptHandler(),
+
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
-    ]
 
-    injectedScripts.append(BraveTranslateScriptLanguageDetectionHandler(tab: tab))
-    injectedScripts.append(BraveTranslateScriptHandler(tab: tab))
+      BraveTranslateScriptLanguageDetectionHandler(),
+      BraveTranslateScriptHandler(),
+    ]
 
     #if canImport(BraveTalk)
     injectedScripts.append(
       BraveTalkScriptHandler(
-        tab: tab,
         rewards: rewards,
         launchNativeBraveTalk: { [weak self] tab, room, token in
           self?.launchNativeBraveTalk(tab: tab, room: room, token: token)
@@ -2674,17 +2671,13 @@ extension BrowserViewController: TabDelegate {
     )
     #endif
 
-    if let braveSkusHandler = BraveSkusScriptHandler(tab: tab) {
-      injectedScripts.append(braveSkusHandler)
-    }
-
     // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
     if !tab.isPrivate {
       injectedScripts += [
-        LoginsScriptHandler(tab: tab, profile: profile, passwordAPI: braveCore.passwordAPI),
-        EthereumProviderScriptHandler(tab: tab),
-        SolanaProviderScriptHandler(tab: tab),
-        BraveSearchResultAdScriptHandler(tab: tab),
+        LoginsScriptHandler(profile: profile, passwordAPI: braveCore.passwordAPI),
+        EthereumProviderScriptHandler(),
+        SolanaProviderScriptHandler(),
+        BraveSearchResultAdScriptHandler(),
       ]
     }
 

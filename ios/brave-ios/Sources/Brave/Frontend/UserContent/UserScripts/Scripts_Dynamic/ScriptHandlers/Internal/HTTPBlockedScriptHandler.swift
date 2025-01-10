@@ -9,11 +9,9 @@ import Shared
 import WebKit
 
 class HTTPBlockedScriptHandler: TabContentScript {
-  private weak var tab: Tab?
   private weak var tabManager: TabManager?
 
-  required init(tab: Tab, tabManager: TabManager) {
-    self.tab = tab
+  required init(tabManager: TabManager) {
     self.tabManager = tabManager
   }
 
@@ -23,10 +21,10 @@ class HTTPBlockedScriptHandler: TabContentScript {
   static let scriptSandbox: WKContentWorld = .page
   static let userScript: WKUserScript? = nil
 
-  @MainActor func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
-    replyHandler: (Any?, String?) -> Void
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
 
@@ -44,16 +42,16 @@ class HTTPBlockedScriptHandler: TabContentScript {
 
     switch action {
     case "didProceed":
-      didProceed()
+      didProceed(tab: tab)
     case "didGoBack":
-      didGoBack()
+      didGoBack(tab: tab)
     default:
       assertionFailure("Unhandled action `\(action)`")
     }
   }
 
-  private func didProceed() {
-    guard let tab, let url = tab.upgradedHTTPSRequest?.url ?? tab.url?.strippedInternalURL else {
+  private func didProceed(tab: Tab) {
+    guard let url = tab.upgradedHTTPSRequest?.url ?? tab.url?.strippedInternalURL else {
       //      assertionFailure(
       //        "There should be no way this method can be triggered if the tab is not on an internal url"
       //      )
@@ -71,8 +69,7 @@ class HTTPBlockedScriptHandler: TabContentScript {
     tab.loadRequest(request)
   }
 
-  @MainActor private func didGoBack() {
-    guard let tab else { return }
+  @MainActor private func didGoBack(tab: Tab) {
     tab.upgradedHTTPSRequest = nil
     if tab.backList?.isEmpty == true {
       // interstitial was opened in a new tab

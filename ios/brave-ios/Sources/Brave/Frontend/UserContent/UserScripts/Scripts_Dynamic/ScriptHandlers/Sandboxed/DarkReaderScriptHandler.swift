@@ -9,9 +9,6 @@ import Shared
 import WebKit
 
 public class DarkReaderScriptHandler: TabContentScript {
-
-  private weak var tab: Tab?
-
   #if USE_NIGHTMODE_COLOURS
   private static let configuration = [
     "brightness": 100,
@@ -21,10 +18,6 @@ public class DarkReaderScriptHandler: TabContentScript {
   #else
   private static let configuration: [String: Int] = [:]
   #endif
-
-  init(tab: Tab) {
-    self.tab = tab
-  }
 
   static let scriptName = "DarkReaderScript"
   static let scriptId = UUID().uuidString
@@ -46,9 +39,9 @@ public class DarkReaderScriptHandler: TabContentScript {
     )
   }()
 
-  func userContentController(
-    _ userContentController: WKUserContentController,
-    didReceiveScriptMessage message: WKScriptMessage,
+  func tab(
+    _ tab: Tab,
+    receivedScriptMessage message: WKScriptMessage,
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     // Do nothing. There's no message handling for Dark-Reader

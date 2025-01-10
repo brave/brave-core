@@ -721,8 +721,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // We can only show this content in the web view if this web view is not pending
     // download via the context menu.
-    let canShowInWebView = navigationResponse.canShowMIMEType && (webView != pendingDownloadWebView)
-    let forceDownload = webView == pendingDownloadWebView
+    let canShowInWebView = navigationResponse.canShowMIMEType
 
     let mimeTypesThatRequireSFSafariViewControllerHandling: [UTType] = [
       .textCalendar,
@@ -815,13 +814,8 @@ extension BrowserViewController: WKNavigationDelegate {
       request: request,
       response: response,
       cookieStore: cookieStore,
-      canShowInWebView: canShowInWebView,
-      forceDownload: forceDownload
+      canShowInWebView: canShowInWebView
     ) {
-      // Clear the pending download web view so that subsequent navigations from the same
-      // web view don't invoke another download.
-      pendingDownloadWebView = nil
-
       let downloadAlertAction: (HTTPDownload) -> Void = { [weak self] download in
         self?.downloadQueue.enqueue(download)
       }
