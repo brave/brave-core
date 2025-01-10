@@ -74,6 +74,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::RenderFrameHost* render_frame_host,
       const url::Origin& origin) override;
 
+  bool CanThirdPartyStoragePartitioningBeDisabled(
+      content::BrowserContext* browser_context,
+      const url::Origin& origin) override;
+
   bool AllowWorkerFingerprinting(
       const GURL& url,
       content::BrowserContext* browser_context) override;

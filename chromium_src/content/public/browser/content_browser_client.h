@@ -24,6 +24,8 @@
                                             const GURL& url);                \
   virtual std::optional<base::UnguessableToken> GetEphemeralStorageToken(    \
       RenderFrameHost* render_frame_host, const url::Origin& origin);        \
+  virtual bool CanThirdPartyStoragePartitioningBeDisabled(                   \
+      BrowserContext* browser_context, const url::Origin& origin);           \
   virtual bool AllowWorkerFingerprinting(const GURL& url,                    \
                                          BrowserContext* browser_context);   \
   virtual brave_shields::mojom::ShieldsSettingsPtr                           \
