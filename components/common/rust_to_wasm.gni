@@ -1,0 +1,46 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/tools/crates/sources.gni")
+
+template("rust_to_wasm") {
+  assert(defined(invoker.rust_packages),
+         "Need rust_packages in $target_name listing the Config.toml files.")
+
+  action_foreach(target_name) {
+    deps = [ "//brave/tools/crates:build_wasm_pack" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    inputs = [ wasm_pack_exe ]
+    sources = invoker.rust_packages
+    inputs += sources
+
+    script = "//build/gn_run_binary.py"
+
+    args = [
+      rebase_path(wasm_pack_exe),
+      "build",
+      "{{source_dir}}",
+      "--out-dir",
+      rebase_path("$root_out_dir/{{source_gen_dir}}/pkg"),
+      "--out-name",
+      "index",
+      "--",
+      "--target-dir",
+      rebase_path("$root_out_dir/{{source_gen_dir}}/target"),
+    ]
+
+    outputs = [
+      "{{source_gen_dir}}/pkg/index_bg.js",
+      "{{source_gen_dir}}/pkg/index_bg.wasm",
+      "{{source_gen_dir}}/pkg/index_bg.wasm.d.ts",
+      "{{source_gen_dir}}/pkg/index.d.ts",
+      "{{source_gen_dir}}/pkg/index.js",
+      "{{source_gen_dir}}/pkg/package.json",
+    ]
+  }
+}

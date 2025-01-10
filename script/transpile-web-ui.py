@@ -41,7 +41,10 @@ def main():
                              webpack_aliases=args.webpack_alias,
                              output_module=args.output_module,
                              extra_modules=args.extra_modules,
-                             public_asset_path=args.public_asset_path)
+                             public_asset_path=args.public_asset_path,
+                             module_library_type=args.module_library_type,
+                             sync_wasm=args.sync_wasm,
+                             xhr_wasm_loading=args.xhr_wasm_loading)
     transpile_web_uis(transpile_options)
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
                  resource_path_prefix)
@@ -77,6 +80,9 @@ def parse_args():
                         help='Extra paths to find modules',
                         required=False,
                         default=[])
+    parser.add_argument('--module_library_type', action='store_true')
+    parser.add_argument('--sync_wasm', action='store_true')
+    parser.add_argument('--xhr_wasm_loading', action='store_true')
 
     args = parser.parse_args()
     # validate args
@@ -125,6 +131,15 @@ def transpile_web_uis(options):
     # via in a custom variable, comma-separated and with
     # "[name]=[path]" syntax.
     args.append("--env=brave_entries=" + ",".join(options['entry_points']))
+
+    if options['module_library_type']:
+        args.append("--env=module_library_type")
+
+    if options['sync_wasm']:
+        args.append("--env=sync_wasm")
+
+    if options['xhr_wasm_loading']:
+        args.append("--env=xhr_wasm_loading")
 
     # We should use webpack-cli env param to not pollute environment
     env["ROOT_GEN_DIR"] = options['root_gen_dir']
