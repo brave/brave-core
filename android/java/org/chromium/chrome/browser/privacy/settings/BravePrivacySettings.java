@@ -45,7 +45,7 @@ import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.gms.ChromiumPlayServicesAvailability;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 
@@ -319,7 +319,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                             new SpanApplier.SpanInfo(
                                     "<LINK_1>",
                                     "</LINK_1>",
-                                    new NoUnderlineClickableSpan(
+                                    new ChromeClickableSpan(
                                             requireContext(),
                                             R.color.brave_link,
                                             result -> {
