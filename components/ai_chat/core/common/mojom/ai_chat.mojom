@@ -6,6 +6,7 @@
 module ai_chat.mojom;
 
 import "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom";
+import "brave/components/ai_chat/core/common/mojom/tab_informer.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "url/mojom/url.mojom";
 
@@ -89,6 +90,11 @@ struct SiteInfo {
   // Web page specific fields, if available and allowed
   string? title;
   string? hostname;
+
+  // Note: iOS doesn't support optional int32s un mojom, so we use -1 to
+  // indicate that the content id is not set.
+  int32 content_id;
+
   url.mojom.Url? url;
 
   // Percentage of the content that has been utilized by remote LLM (0-100)
@@ -383,6 +389,9 @@ interface AIChatUIHandler {
   BindRelatedConversation(
       pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
+
+  // Associates an open tab with a conversation.
+  AssociateTab(Tab tab, string conversation_uuid);
 
   // Make a completely new conversation, which may
   // be bound to the associated conversation, if this UI has a target

@@ -1,0 +1,24 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "url/mojom/url.mojom";
+
+struct Tab {
+    int32 id;
+    int32 content_id;
+    string title;
+    url.mojom.Url url;
+};
+
+interface TabListener {
+    // If we find we need it, we can make this more granular
+    TabsChanged(array<Tab> windows);
+};
+
+interface TabInformer {
+    AddListener(pending_remote<TabListener> listener);
+};

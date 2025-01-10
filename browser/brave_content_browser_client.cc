@@ -51,6 +51,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_informer.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
@@ -624,7 +625,8 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   if (ai_chat::features::IsAIChatEnabled()) {
     registry.ForWebUI<AIChatUI>()
         .Add<ai_chat::mojom::AIChatUIHandler>()
-        .Add<ai_chat::mojom::Service>();
+        .Add<ai_chat::mojom::Service>()
+        .Add<ai_chat::mojom::TabInformer>();
     registry.ForWebUI<AIChatUntrustedConversationUI>()
         .Add<ai_chat::mojom::UntrustedUIHandler>()
         .Add<ai_chat::mojom::UntrustedConversationHandler>();
