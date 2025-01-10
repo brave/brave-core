@@ -38,6 +38,11 @@ class FullPageStrategy : public BraveScreenshotStrategy,
 
   // Steps:
   void RequestPageLayoutMetrics();
+
+  // Some screenshots may need to be clipped to avoid the GPU limit. See
+  // https://crbug.com/1260828 for more information. The developer tools also
+  // have an explicit limit in place (see
+  // front_end/panels/emulation/DeviceModeView.ts)
   void OnLayoutMetricsReceived(int width, int height);
   void RequestFullPageScreenshot(int width, int height);
 
@@ -45,6 +50,8 @@ class FullPageStrategy : public BraveScreenshotStrategy,
   void SendDevToolsCommand(const std::string& command,
                            base::Value::Dict params,
                            int command_id);
+
+  // Called on success and failure
   void RunCallback(const image_editor::ScreenshotCaptureResult& result);
 
   image_editor::ScreenshotCaptureCallback callback_;

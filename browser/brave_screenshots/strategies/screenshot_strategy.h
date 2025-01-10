@@ -16,6 +16,7 @@ class BraveScreenshotStrategy {
  public:
   virtual ~BraveScreenshotStrategy() = default;
 
+  // Did the strategy clip/resize the screenshot?
   virtual bool DidClipScreenshot() const = 0;
 
   virtual void Capture(
