@@ -89,12 +89,9 @@ const std::optional<YouTubeJson>& YouTubeTabHelper::GetJson() const {
   return youtube_registry_->GetJson();
 }
 
-void YouTubeTabHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
+void YouTubeTabHelper::PrimaryMainDocumentElementAvailable() {
   const std::optional<YouTubeJson>& json = youtube_registry_->GetJson();
-  if (!navigation_handle->IsInPrimaryMainFrame() ||
-      !navigation_handle->HasCommitted() ||
-      navigation_handle->IsSameDocument() || !json) {
+  if (!json) {
     return;
   }
 
