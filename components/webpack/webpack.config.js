@@ -6,6 +6,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
+const XHRCompileAsyncWasmPlugin = require('./xhr-compile-async-wasm-plugin.js')
 const { fallback, provideNodeGlobals } = require('./polyfill')
 const pathMap = require('./path-map')(process.env.ROOT_GEN_DIR)
 
@@ -73,8 +74,24 @@ module.exports = async function (env, argv) {
     chunkFilename: '[name].chunk.js',
     publicPath: '/'
   }
+  if (env.module_library_type) {
+    output.library = { type: 'module' }
+  }
   if (env.output_public_path) {
     output.publicPath = env.output_public_path
+  }
+  if (env.xhr_wasm_loading) {
+    output.enabledWasmLoadingTypes = [ 'xhr' ]
+    output.wasmLoading = 'xhr'
+  }
+
+  const experiments = {
+    outputModule: Boolean(env.output_module)
+  }
+  if (env.sync_wasm) {
+    experiments.syncWebAssembly = true
+  } else {
+    experiments.asyncWebAssembly = true
   }
 
   return {
@@ -89,10 +106,7 @@ module.exports = async function (env, argv) {
       // Define NO_CONCATENATE for analyzing module size.
       concatenateModules: !process.env.NO_CONCATENATE
     },
-    experiments: {
-      syncWebAssembly: true,
-      outputModule: Boolean(env.output_module)
-    },
+    experiments,
     externals: [
       function ({ context, request }, callback) {
         if (env.output_module) {
@@ -133,6 +147,7 @@ module.exports = async function (env, argv) {
       ...Object.keys(pathMap)
         .filter(p => p.startsWith('chrome://'))
         .map(p => prefixReplacer(p, pathMap[p])),
+      env.xhr_wasm_loading && new XHRCompileAsyncWasmPlugin(),
     ],
     module: {
       rules: [
