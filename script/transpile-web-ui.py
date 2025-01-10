@@ -36,15 +36,20 @@ def main():
                              target_gen_dir=webpack_gen_dir,
                              root_gen_dir=root_gen_dir,
                              entry_points=args.entry,
+                             crates=args.crate,
+                             excluded_directories=args.excluded_directory,
                              depfile_path=depfile_path,
                              depfile_sourcename=grd_path,
                              webpack_aliases=args.webpack_alias,
                              output_module=args.output_module,
+                             xhr_wasm_loading=args.xhr_wasm_loading,
+                             module_library_type=args.module_library_type,
                              extra_modules=args.extra_modules,
-                             public_asset_path=args.public_asset_path)
+                             public_asset_path=args.public_asset_path,
+                             wasm_pack_path=args.wasm_pack_path)
     transpile_web_uis(transpile_options)
-    generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
-                 resource_path_prefix)
+    generate_grd(transpile_options, output_path_absolute, args.grd_name[0],
+                 args.resource_name[0], resource_path_prefix)
 
 
 def parse_args():
@@ -56,18 +61,29 @@ def parse_args():
                         action='append',
                         help='Entry points',
                         required=True)
+    parser.add_argument('--crate',
+                        action='append',
+                        help='Rust crates',
+                        required=False)
+    parser.add_argument('--excluded_directory',
+                        action='append',
+                        help='Excluded directories',
+                        required=False)
     parser.add_argument('--output_path', nargs=1)
     parser.add_argument('--root_gen_dir', nargs=1)
     parser.add_argument('--depfile_path', nargs=1)
     parser.add_argument('--grd_name', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--public_asset_path', nargs='?')
+    parser.add_argument('--wasm_pack_path', nargs='?')
     parser.add_argument('--webpack_alias',
                         action='append',
                         help='Webpack alias',
                         required=False,
                         default=[])
     parser.add_argument('--output_module', action='store_true')
+    parser.add_argument('--xhr_wasm_loading', action='store_true')
+    parser.add_argument('--module_library_type', action='store_true')
     parser.add_argument(
         "--resource_path_prefix",
         nargs='?',
@@ -108,6 +124,9 @@ def transpile_web_uis(options):
     if options['public_asset_path'] is not None:
         args.append("--env=output_public_path=" + options['public_asset_path'])
 
+    if options['wasm_pack_path'] is not None:
+        args.append("--env=wasm_pack_path=" + options['wasm_pack_path'])
+
     # web pack aliases
     if options['webpack_aliases']:
         args.append("--env=webpack_aliases=" +
@@ -115,6 +134,12 @@ def transpile_web_uis(options):
 
     if options['output_module']:
         args.append("--env=output_module")
+
+    if options['xhr_wasm_loading']:
+        args.append("--env=xhr_wasm_loading")
+
+    if options['module_library_type']:
+        args.append("--env=module_library_type")
 
     # extra module locations
     if options['extra_modules']:
@@ -125,6 +150,9 @@ def transpile_web_uis(options):
     # via in a custom variable, comma-separated and with
     # "[name]=[path]" syntax.
     args.append("--env=brave_entries=" + ",".join(options['entry_points']))
+
+    if options['crates']:
+        args.append("--env=brave_crates=" + ",".join(options['crates']))
 
     # We should use webpack-cli env param to not pollute environment
     env["ROOT_GEN_DIR"] = options['root_gen_dir']
@@ -137,11 +165,16 @@ def transpile_web_uis(options):
         execute_stdout(args, env)
 
 
-def generate_grd(target_include_dir, grd_name, resource_name,
+def generate_grd(options, target_include_dir, grd_name, resource_name,
                  resource_path_prefix):
     env = os.environ.copy()
 
     args = [NPM, 'run', 'web-ui-gen-grd']
+
+    if options['excluded_directories']:
+        args.append("--")
+        args.append("--excluded_directories")
+        args.append(",".join(options['excluded_directories']))
 
     env["RESOURCE_NAME"] = resource_name
     env["GRD_NAME"] = grd_name

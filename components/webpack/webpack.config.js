@@ -6,6 +6,8 @@
 const path = require('path')
 const webpack = require('webpack')
 const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
+const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin")
+const XHRCompileAsyncWasmPlugin = require('./xhr-compile-async-wasm-plugin.js')
 const { fallback, provideNodeGlobals } = require('./polyfill')
 const pathMap = require('./path-map')(process.env.ROOT_GEN_DIR)
 
@@ -46,6 +48,32 @@ module.exports = async function (env, argv) {
     entry[entryInputItemParts[0]] = entryInputItemParts[1]
   }
 
+  const crate = {}
+  if (env.brave_crates) {
+    if (!env.wasm_pack_path) {
+      throw new Error(
+        "Since env.brave_crates is being used, " +
+        "wasm-pack's path must be provided via the env.wasm_pack_path param."
+      )
+    }
+
+    // WasmPackPlugin expects wasm-pack to be in $PATH,
+    // so prepend ours to process.env.PATH (so that it's found first).
+    process.env.PATH = env.wasm_pack_path + path.delimiter + process.env.PATH
+
+    const crateInput = env.brave_crates.split(',').sort()
+    for (const crateInputItem of crateInput) {
+      const crateInputItemParts = crateInputItem.split('=')
+      if (crateInputItemParts.length !== 2) {
+        throw new Error(
+          'Brave Webpack config could not parse crate env param item: ' +
+          crateInputItem
+        )
+      }
+      crate[crateInputItemParts[0]] = crateInputItemParts[1]
+    }
+  }
+
   // Webpack config object
   const resolve = {
     extensions: ['.js', '.tsx', '.ts', '.json'],
@@ -73,8 +101,17 @@ module.exports = async function (env, argv) {
     chunkFilename: '[name].chunk.js',
     publicPath: '/'
   }
+  if (env.module_library_type) {
+    output.library = {
+      type: 'module'
+    }
+  }
   if (env.output_public_path) {
     output.publicPath = env.output_public_path
+  }
+  if (env.xhr_wasm_loading) {
+    output.enabledWasmLoadingTypes = [ "xhr" ]
+    output.wasmLoading = "xhr"
   }
 
   return {
@@ -90,7 +127,9 @@ module.exports = async function (env, argv) {
       concatenateModules: !process.env.NO_CONCATENATE
     },
     experiments: {
-      syncWebAssembly: true,
+      // TODO(sszaloki): IIRC, only brave-extension => web-discovery-project uses syncWebAssembly,
+      // which doesn't import the WASM directly, so asyncWebAssembly should also work.
+      asyncWebAssembly: true,
       outputModule: Boolean(env.output_module)
     },
     externals: [
@@ -133,6 +172,17 @@ module.exports = async function (env, argv) {
       ...Object.keys(pathMap)
         .filter(p => p.startsWith('chrome://'))
         .map(p => prefixReplacer(p, pathMap[p])),
+      ...Object.entries(crate).map(([name, directory]) =>
+        new WasmPackPlugin({
+          crateDirectory: directory,
+          // TODO(sszaloki): ideally, both target and pkg could remain under process.env.TARGET_GEN_DIR.
+          // Currently, if they're there, gen-webpack-grd.js picks them up.
+          extraArgs: `--target-dir ${path.join(process.env.TARGET_GEN_DIR, 'target', name)}`,
+          forceMode: argv.mode,
+          outDir: path.join(process.env.TARGET_GEN_DIR, 'pkg', name),
+        })
+      ),
+      env.xhr_wasm_loading && new XHRCompileAsyncWasmPlugin(),
     ],
     module: {
       rules: [
