@@ -14,6 +14,7 @@
 #include "base/debug/dump_without_crashing.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/logging.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_row_util.h"

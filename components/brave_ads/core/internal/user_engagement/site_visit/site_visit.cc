@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

@@ -14,7 +14,6 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -24,7 +23,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database::table {
 

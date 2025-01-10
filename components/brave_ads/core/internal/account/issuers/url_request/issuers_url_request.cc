@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/url_request/issuers_url_request_builder.h"

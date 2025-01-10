@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_util.h"

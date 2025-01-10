@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
