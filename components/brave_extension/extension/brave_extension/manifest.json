@@ -46,6 +46,7 @@
     "webRequest",
     "*://*/*",
     "chrome://favicon/*",
+    "webDiscovery",
     "webRequestBlocking",
     "unlimitedStorage",
     "<all_urls>"

@@ -38,4 +38,5 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_FALLBACK_DOH_PROVIDER = "BraveFallbackDoHProvider";
     public static final String BRAVE_BLOCK_ALL_COOKIES_TOGGLE = "BlockAllCookiesToggle";
     public static final String BRAVE_SHIELDS_ELEMENT_PICKER = "BraveShieldsElementPicker";
+    public static final String BRAVE_WEB_DISCOVERY_NATIVE = "BraveWebDiscoveryNative";
 }

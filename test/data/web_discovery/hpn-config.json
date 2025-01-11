@@ -1,0 +1,146 @@
+{
+  "minVersion": 1,
+  "groupPubKeys": {
+    "20240624": "ITmwC7dQpF5vcMFbe8U/k7hdg7ZSWXsOswfkcxm7nJoBsx1c6O+kJcyiXIZR08t5Nf64tUOwptEDqxWkIWLToQ0S2G21Yfh9Vif0+zAb45f1m3+9plm9sKncHFNuoeJZI/f/vQfeo8yd/jpqCKMXNY6VWWlEMESYIeIsLZtUxPUOx6lQG09iRtrvHUHVGlaN5VGAKNoTVFfiCgNl373iZR1k0ZvW0wdA7OkJiTVj3+osawlfpeYhZSmdWo7qsZ3UDkoy9faYFBGsTScQJsLsgQh72gQBa3VgIWPWt/lLn38QbqymAMc/OZsf11hjkXP59t9V/9Ugv7vYFsAxRT9SLQR8eB8sATtrQ1DmqCesvhdCpOIftZOfn70u4S8pYrXGHTyXNZBSYo6CG0nj0cJOfXK9wrm/PeSXB5wdLQSLzqoHrzR8cEuJEbWW1D/4lAVGMGQTMOLLOcxo0n9nH+QG6iNoT1aIaPjmn2QwAx/ohIEH53YKkxp0DNmTDQOETI/k",
+    "20240625": "DSoyIdA3VA6CjOhWEBh7ZCreAI2nOYD2JUUynaP+prUgM/GOl68av5u+3KFRhrrITKwGDOLzPV3wCM/FRkG1HxINxQRHFNOgcE9qKbc75LAmjIYuoAE+VqBdmvlYXzzsFyKCFhytVsiZ7DLAPX9fmRdkxJidA5KEF8k5EzOKtXkLp/PzWaFqDsif3zSsm/yXkQOtjfd7XhpJ0kmYEuhS0BY9FeuCGvkIhvW1zEf7WDVaty06yAr2QlpsPDHd604fGlrzNh/41PiXsiWtWLgKG1MLRvt6yV0jnfhF2Okawl4ecdl0CkSvxiusZyKgLSKVSiEP00fY2BR1fYyH/DL3fQXrAZo+MhY91V3M55oxsnliSxLRtcU559rNokQuTKFXAHiVTnDPI40Def11OLLPp/ZQgICtUa/azW4cu6sEkY0KE8ebJDplsqM5ehsMh5RZeVm7NJZEret4z6hFtm45jhgyEDoQMyv5Mn86X0q8QtAdM6wKpVRU2ymy9S2DdqKt",
+    "20240626": "FuqBHl3PCRXlhHSqFSrQBhCOzgmZQDCZLR27U/a+AlUj6H+XXoN5jroQTKJ091Rb7W360aIgS+I4CLCQgZS+ERCEikPh5WNlvLV1UpQ6pDtpCFZagrirsLQLx+CEqEojC436N9vC+OOM9Gg/gZWuBliAQRkDwzlwhJ+at/qFZeojH+NSvCDdgUVIgkw60BxDNFrOFoJknfxXf7B6m9pjYQ+ZDGppdvJMrhMiARX1jMce72QbzSlSxbzRE1PK951gJIKICdDjY51hP7aQM9WqSswd8LNEp741yAVyFd3n4aEVSaYUgzykpzzTIGf7pVOt8CQXqBzJZzTc6/+1WuUyfhDNFEnO3Ep4yAb3H03Mv9SXBSwGaoucaL8kGRZfSyMUC2idJUQKbg6VOPXAEE2LMfSQQzz5Zgl6GSROv45QgRIMhXqDLdiSknFfmUQUKFkMi7oBN2JYesemz8QIIyw0px90wMchsF23n7EdtVVBj0E7HVj/uMISTIxeQY7mv27n",
+    "20240627": "DTwg0yh8wrUSKWVXlhp879+E64ART4w5Drt47ezgCdIb0HgZeU3iE2pc8kMb+UarK0XWA5uC0jA6vrkXJlcNVAY1sEl7NO/V8eDI5EavwbXiTJzBlCJabHeeanE7yLMTGXofjgxYUvGjAiompViQsaQH+6hAh96LNxBmL8lnGscRjn6t12/YeaiYui/fvmGfjf+05bnz4gcKl8U+3k2lQg+t9jY8qzzNJZOwk4FutovPBWwDcu8Mms2Z2K1+MErJAkGjP2wrNDBqgQm2s0hdQDNhOPGKqLv1CnPsLf+5EZEF6FYvU3e71n0fX9y8pGBMVRvSW0zlqbF9l/W7+oM4+g3WHQrPirJq4v7D7OZ4pjgpLTHjxGms7qhOqJHrEbCzBBtgR1MjKvPj2lIjGld+TE2JznLavqJ9aKhxc5EfoZAczdWSIR+qbFpt7RcyeTpNIdZWQkDG2sEavlFXWfzb7gn5GZwg8YPL4XKoSyErqKl1TvIuGws/oehTzNe4Nz/B"
+  },
+  "pubKeys": {
+    "20240624": "BECQDFoOR0DE3wLaDidGAC/2Mpgjasf9QgJDGGLTkTdll+pW2S/RgX0pkFyDjQZc6efyX3RGQKJ2cq8HOB8vZOo=",
+    "20240625": "BEURJ7UWSqV/OsxhCDyoQtAX2F5Vm/CKh6NS8SjIvz5RWtVOkyfEnR+XkdcldmyQk2AwOhLMEV/ZIwbThVmvmrQ=",
+    "20240626": "BDjEnHSmPhNywOIvDo2kWAzz7S/Cf2xDZEjZTTOp0FCb/Qk6uoSb8R7PF8Ne2RAMkCifeKIUtR1mF/Enmb+VFBM=",
+    "20240627": "BO7isKljTTltnCBtM4hRUV0fcxlH4kjvWVVummU2irqq6i/jLSgF+lR+/qOL4fqrzCsBJnIn8lTvsEOAfzg9XDM="
+  },
+  "sourceMap": {
+    "actions": {
+      "alive": {
+        "keys": [
+          "t->url"
+        ]
+      },
+      "page": {
+        "keys": [
+          "url->url"
+        ]
+      },
+      "query": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "query0": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "query-am": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "img": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "img-p": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "video-p": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "videos-p": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "place": {
+        "keys": [
+          "->obj"
+        ]
+      },
+      "places": {
+        "keys": [
+          "->obj"
+        ]
+      },
+      "places2": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "category-am": {
+        "keys": [
+          "curl"
+        ]
+      },
+      "ads_A": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "ads_B": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "ads_C": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "snippet": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "snippet2": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "snippet3": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "linkedin": {
+        "keys": [
+          "profileLink->url"
+        ]
+      },
+      "hw.telemetry.actionstats": {},
+      "locdata": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "ads_D": {
+        "keys": [
+          "q->url"
+        ]
+      },
+      "usercontext": {
+        "limit": 0
+      },
+      "sq": {
+        "keys": [
+          "oq->url"
+        ]
+      },
+      "ad-ctr": {
+        "limit": 0
+      },
+      "top-stories": {
+        "keys": [
+          "q->url"
+        ]
+      }
+    }
+  }
+}

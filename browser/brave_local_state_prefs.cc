@@ -37,6 +37,7 @@
 #include "brave/components/p3a/star_randomness_meta.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/common/pref_names.h"
 #include "components/metrics/metrics_pref_names.h"
@@ -67,6 +68,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -171,6 +176,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
 
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  web_discovery::WebDiscoveryService::RegisterLocalStatePrefs(registry);
+#endif
 }
 
 }  // namespace brave

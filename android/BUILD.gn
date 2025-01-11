@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/p3a/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/components/webcompat_reporter/buildflags/buildflags.gni")
 import("//build/config/android/rules.gni")
 
@@ -24,5 +25,6 @@ java_cpp_template("brave_config_java") {
     "BRAVE_ANDROID_DEVELOPER_OPTIONS_CODE=\"$brave_android_developer_options_code\"",
     "BRAVE_ANDROID_P3A_ENABLED=$brave_p3a_enabled",
     "BRAVE_ANDROID_WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\"",
+    "BRAVE_ANDROID_WEB_DISCOVERY_ENABLED=$enable_web_discovery_native",
   ]
 }
