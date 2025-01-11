@@ -15,8 +15,8 @@ namespace utils {
 
 // While the image will be written to the clipboard, depending on its size it
 // may not be displayed within Windows' clipboard history (Win+V). The limit is
-// 4MB. Larger screenshots will be written to the clipboard, but will not be
-// displayed in the clipboard history.
+// (reportedly) 4MB. Larger screenshots will be written to the clipboard, but
+// will not be displayed in the clipboard history.
 void CopyImageToClipboard(const image_editor::ScreenshotCaptureResult& result);
 
 void DisplayScreenshotBubble(
