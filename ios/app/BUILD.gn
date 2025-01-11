@@ -65,6 +65,7 @@ source_set("app") {
     "//brave/ios/browser/api/webcompat_reporter:webcompat_reporter_mojom_wrappers",
     "//brave/ios/browser/skus",
     "//brave/ios/browser/ui/webui",
+    "//build:blink_buildflags",
     "//components/browser_sync",
     "//components/component_updater",
     "//components/history/core/browser",
