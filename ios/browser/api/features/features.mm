@@ -27,7 +27,6 @@
 #include "brave/ios/browser/ui/browser_menu/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
-#include "ios/components/security_interstitials/https_only_mode/feature.h"
 #include "net/base/features.h"
 
 @interface Feature () {
@@ -312,11 +311,6 @@
 
 + (Feature*)kBraveHttpsByDefault {
   return [[Feature alloc] initWithFeature:&net::features::kBraveHttpsByDefault];
-}
-
-+ (Feature*)kHttpsOnlyMode {
-  return [[Feature alloc]
-      initWithFeature:&security_interstitials::features::kHttpsOnlyMode];
 }
 
 + (Feature*)kBlockAllCookiesToggle {
