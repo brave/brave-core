@@ -21,7 +21,6 @@
 #include "build/build_config.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
-#include "ios/components/security_interstitials/https_only_mode/feature.h"
 #include "net/base/features.h"
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -105,15 +104,6 @@
           "If the feature flag is on, we show the Block all Cookies toggle",   \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_shields::features::kBlockAllCookiesToggle), \
-      },                                                                       \
-      {                                                                        \
-          "https-only-mode",                                                   \
-          "Enable HTTPS By Default Strict Mode",                               \
-          "Connect to all websites using HTTPS and display an intersitital "   \
-          "to fallback to HTTP",                                               \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(                                                  \
-              security_interstitials::features::kHttpsOnlyMode),               \
       },                                                                       \
       {                                                                        \
           "ios-debug-adblock",                                                 \
