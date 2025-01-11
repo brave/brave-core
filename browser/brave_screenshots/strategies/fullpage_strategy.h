@@ -41,8 +41,8 @@ class FullPageStrategy : public BraveScreenshotStrategy,
 
   // Some screenshots may need to be clipped to avoid the GPU limit. See
   // https://crbug.com/1260828 for more information. The developer tools also
-  // have an explicit limit in place (see
-  // front_end/panels/emulation/DeviceModeView.ts)
+  // have an explicit limit in place (see src/third_party/devtools-frontend/
+  // src/front_end/panels/emulation/DeviceModeView.ts)
   void OnLayoutMetricsReceived(int width, int height);
   void RequestFullPageScreenshot(int width, int height);
 
