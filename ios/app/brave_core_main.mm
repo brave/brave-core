@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "base/allocator/partition_alloc_support.h"
 #include "base/apple/bundle_locations.h"
 #include "base/apple/foundation_util.h"
 #include "base/at_exit.h"
@@ -47,6 +48,7 @@
 #include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/ui/webui/brave_web_ui_controller_factory.h"
+#import "build/blink_buildflags.h"
 #include "components/component_updater/component_updater_paths.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
@@ -165,6 +167,11 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
       component_updater::RegisterPathProvider(
           ios::DIR_USER_DATA, ios::DIR_USER_DATA, ios::DIR_USER_DATA);
     }
+
+#if PA_BUILDFLAG(USE_PARTITION_ALLOC) && !BUILDFLAG(USE_BLINK)
+    // ContentMainRunnerImpl::Initialize calls this when USE_BLINK is true.
+    base::allocator::PartitionAllocSupport::Get()->ReconfigureEarlyish("");
+#endif  // PA_BUILDFLAG(USE_PARTITION_ALLOC) && !BUILDFLAG(USE_BLINK)
 
     NSBundle* baseBundle = base::apple::OuterBundle();
     base::apple::SetBaseBundleID(
