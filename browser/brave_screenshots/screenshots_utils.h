@@ -10,8 +10,7 @@
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "chrome/browser/ui/browser.h"
 
-namespace brave_screenshots {
-namespace utils {
+namespace brave_screenshots::utils {
 
 // While the image will be written to the clipboard, depending on its size it
 // may not be displayed within Windows' clipboard history (Win+V). The limit is
@@ -23,7 +22,6 @@ void DisplayScreenshotBubble(
     const image_editor::ScreenshotCaptureResult& result,
     base::WeakPtr<Browser> browser);
 
-}  // namespace utils
-}  // namespace brave_screenshots
+}  // namespace brave_screenshots::utils
 
 #endif  // BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_UTILS_H_
