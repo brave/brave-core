@@ -2,9 +2,16 @@ include_rules = [
   "+brave/components/version_info",
   "+content/public/browser",
   "+content/public/test",
+  "+crypto",
   "+ios/web/public/thread",
   "+services/network/public",
   "+services/network/test",
   "+third_party/boringssl",
   "+third_party/metrics_proto",
 ]
+
+specific_include_rules = {
+  "scheduler.cc": [
+    "+brave/vendor/brave_base/random.h",
+  ]
+}

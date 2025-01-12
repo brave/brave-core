@@ -1,20 +1,96 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file('//chrome/renderer/DEPS', globals(), locals())
+
+include_rules += [
   "+brave/common",
-  "+chrome/common",
   "+chrome/renderer",
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/ai_chat/renderer",
+  "+brave/components/ai_rewriter/common",
+  "+brave/components/brave_search/common",
+  "+brave/components/brave_search/renderer",
+  "+brave/components/brave_shields/core/common",
+  "+brave/components/brave_vpn/common/buildflags/buildflags.h",
+  "+brave/components/brave_wallet/common",
+  "+brave/components/cosmetic_filters/renderer",
+  "+brave/components/playlist/common",
+  "+brave/components/safe_builtins/renderer/safe_builtins.h",
+  "+brave/components/script_injector/renderer",
+  "+brave/components/skus/common",
+  "+brave/components/skus/renderer",
+  "+brave/components/speedreader/common",
+  "+brave/components/ai_rewriter/common",
+  "+brave/components/ai_rewriter/renderer",
+  "+brave/components/speedreader/common",
+  "+brave/components/speedreader/renderer",
+  "+brave/components/brave_vpn/common",
+  "!brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h",
+  "+brave/components/playlist/common",
+  "+brave/components/playlist/renderer",
+
+  # copied from chrome/DEPS
+  # TODO(bridiver) use inline_file to append these instead of copying them
+  "+crypto",
+  "+gpu",
+  "+net",
+  "+pdf/buildflags.h",
+  "+printing",
+  "+sandbox",
+  "+sandbox/policy",
+  "+sql",
+  # Browser, renderer, common and tests access V8 for various purposes.
+  "-v8",
+  "+v8/include",
+
+  # Limit what we include from nacl.
+  "-native_client",
+
+  # Individual subdirectories of chrome/ must explicitly declare their
+  # dependencies on other subdirectories of chrome/.
+  # "-chrome",
+
+  "+chrome/common",
   "+chrome/test",
+  "+components/content_settings/common",
+  "+components/content_settings/core/common",
+  "+components/embedder_support/switches.h",
+  "+components/error_page/common",
+  "+components/media_router/common",
+  "+components/omnibox/common",
+  "+components/services/heap_profiling/public",
+  "+components/url_formatter",
+  "+components/variations",
   "+content/public/common",
-  "+content/public/renderer",
   "+content/public/test",
-  "+components/feed/content/renderer",
-  "+media/base",
-  "+mojo/public/cpp/bindings",
-  "+services/network/public/cpp",
-  "+services/service_manager/public/cpp",
+  "+media/media_buildflags.h",
+  "+mojo/public",
+  "+ppapi/buildflags",
+
+  # Don't allow inclusion of these other libs we shouldn't be calling directly.
+  "-webkit",
+  "-tools",
+
+  # Required for process launching.
+  "+services/service_manager",
+
+  # Allow inclusion of WebKit API files.
   "+third_party/blink/public/common",
   "+third_party/blink/public/platform",
   "+third_party/blink/public/public_buildflags.h",
   "+third_party/blink/public/web",
-  "+third_party/widevine/cdm",
-  "+v8/include",
+
+  # Allow inclusion of third-party code:
+  "+third_party/hunspell",
+  "+third_party/skia",
+
+  "+ui",
 ]
+
+specific_include_rules = {
+  ".*browsertest\.cc": [
+    "+chrome/test",
+    "+chrome/app/chrome_command_ids.h",
+    "+content/public/test",
+    "+net",
+  ]
+}

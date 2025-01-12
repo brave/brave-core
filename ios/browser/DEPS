@@ -1,14 +1,13 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file('//ios/chrome/browser/DEPS', globals(), locals())
+
+include_rules += [
   "+brave/ios/browser",
-  "+components",
-  "+mojo/public/cpp/bindings",
+  "+brave/components/constants",
+  "+brave/components/ai_chat/core/browser",
+  "+brave/components/brave_component_updater/browser",
+  "+brave/components/brave_wallet/browser",
+  "+brave/components/p3a",
   "+ios/chrome/browser",
-  "+ios/chrome/browser/web",
-  "+ios/components",
-  "+ios/web/public",
-  "+ios/web/js_messaging",
   "+ios/web/web_state",
-  "+ios/web/webui",
-  "+ios/public/provider/chrome/browser/url_rewriters",
-  "+services/network/public/cpp",
 ]

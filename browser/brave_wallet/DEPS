@@ -1,3 +1,22 @@
 include_rules = [
-  "+brave/third_party/argon2/src/include/argon2.h",
+  "+brave/components/api_request_helper",
+  "+brave/components/permissions",
+  "+brave/components/version_info",
+  "+brave/components/content_settings/core/browser",
+  "+brave/components/brave_shields/content/test",
+  "+brave/components/ephemeral_storage",
 ]
+
+specific_include_rules = {
+  "external_wallets_importer\.cc": [
+    "+third_party/boringssl/src/include/openssl/digest.h",
+    "+third_party/boringssl/src/include/openssl/hkdf.h",
+    "+brave/third_party/argon2/src/include/argon2.h",
+  ],
+  "solana_provider_browsertest\.cc": [
+    "!brave/components/brave_wallet/renderer/resource_helper.h",
+  ],
+  "solana_provider_renderer_browsertest\.cc": [
+    "!brave/components/brave_wallet/renderer/resource_helper.h",
+  ],
+}

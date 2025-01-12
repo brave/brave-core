@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/third_party/bip39wally-core-native",
   "+content/public/browser",
   "+third_party/boringssl",
   "+ios/web/public",

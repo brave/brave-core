@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/debounce/core/browser",
+  "+brave/components/debounce/core/common",
+]

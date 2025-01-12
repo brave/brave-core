@@ -9,8 +9,6 @@
 #include <optional>
 #include <string>
 
-#include "absl/types/optional.h"
-
 namespace brave_l10n {
 
 // IMPORTANT: When the locale should match the application locale or an eligible

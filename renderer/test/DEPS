@@ -1,13 +1,14 @@
 specific_include_rules = {
   # browser tests should not be in renderer
   "digital_goods_api_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
     "!chrome/browser/ui/browser.h",
     "!chrome/browser/ui/tabs/tab_strip_model.h",
     "!content/public/browser/render_frame_host.h",
     "!content/public/browser/web_contents.h",
-    "!content/public/common/content_switches.h",
   ],
   "file_system_access_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
     "!chrome/browser/ui/browser.h",
     "!chrome/browser/ui/tabs/tab_strip_model.h",
     "!content/public/browser/render_frame_host.h",
@@ -25,8 +26,14 @@ specific_include_rules = {
     "!extensions/browser/extension_system.h",
     "!extensions/common/extension.h",
     "!extensions/common/extension_builder.h",
+    "!brave/components/brave_wallet/browser/brave_wallet_service.h",
+    "!brave/components/brave_wallet/browser/brave_wallet_utils.h",
+    "!brave/components/brave_wallet/browser/json_rpc_service.h",
+    "!brave/components/brave_wallet/browser/keyring_service.h",
+    "!brave/components/constants/brave_paths.h",
   ],
   "navigator_connection_attribute_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
     "!chrome/browser/ui/browser.h",
     "!chrome/browser/ui/tabs/tab_strip_model.h",
     "!content/public/browser/render_frame_host.h",
@@ -38,5 +45,8 @@ specific_include_rules = {
     "!components/web_package/web_bundle_builder.h",
     "!content/public/browser/render_frame_host.h",
     "!content/public/browser/web_contents.h",
-  ]
+  ],
+  "font_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+  ],
 }

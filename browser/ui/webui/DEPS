@@ -1,4 +1,46 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file('//chrome/browser/ui/webui/DEPS', globals(), locals())
+
+include_rules += [
+  "+brave/components/brave_adblock/resources",
+  "+brave/components/brave_shields/core/browser",
+  "+brave/components/brave_ads/core/browser/service",
+  "+brave/components/brave_ads/core/mojom",
+  "+brave/components/brave_rewards/resources",
+  "+brave/components/ntp_background_images/common",
+  "+brave/components/version_info",
+  "+brave/components/webui",
   "+chrome/services/qrcode_generator/public/mojom",
   "+chrome/services/qrcode_generator/public/cpp",
+
+  # TODO(bridiver) Move these to appropriate DEPS files
+  # browser/ui/webui/ai_chat
+  "+brave/components/ai_chat/resources",
+  # browser/ui/webui/ai_rewriter
+  "+brave/components/ai_rewriter/resources",
+  # browser/ui/webui/brave_shields
+  "+brave/components/brave_shields/resources",
+  # browser/ui/webui/brave_vpn
+  "+brave/components/brave_vpn/resources",
+  # browser/ui/webui/brave_wallet
+  "+brave/components/brave_wallet_page/resources",
+  "+brave/components/brave_wallet_panel/resources",
+  # browser/ui/webui/brave_wallet/ledger
+  "+brave/components/ledger_bridge/resources",
+  # browser/ui/webui/brave_wallet/line_chart
+  "+brave/components/line_chart_display/resources",
+  # browser/ui/webui/brave_wallet/market
+  "+brave/components/market_display/resources",
+  # browser/ui/webui/brave_wallet/nft
+  "+brave/components/nft_display/resources",
+  # browser/ui/webui/brave_wallet/trezor
+  "+brave/components/trezor_bridge/resources",
+  # browser/ui/webui/ethereum_remote_client
+  "+brave/components/ethereum_remote_client_page/resources",
 ]
+
+specific_include_rules = {
+  "brave_adblock_internals_ui\.cc": [
+    "+brave/components/brave_adblock/adblock_internals/resources/grit/brave_adblock_internals_generated_map.h",
+  ],
+}

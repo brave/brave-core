@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/content_settings/core/browser",
+  "+brave/components/ntp_background_images/common",
+  "+brave/components/sync/service",
+]

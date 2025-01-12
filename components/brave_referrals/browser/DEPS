@@ -4,3 +4,9 @@ include_rules = [
   "+content/public/common",
   "+services/network/public",
 ]
+
+specific_include_rules = {
+  "brave_referrals_service\.cc": [
+    "+brave/vendor/brave_base/random.h",
+  ]
+}

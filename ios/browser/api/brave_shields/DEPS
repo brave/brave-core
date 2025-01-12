@@ -1,0 +1,10 @@
+include_rules = [
+  "+brave/components/brave_shields/core/browser",
+  "+brave/components/brave_component_updater/browser",
+]
+
+specific_include_rules = {
+  "adblock_engine.mm": [
+    "+brave/components/brave_shields/adblock/rs/src/lib.rs.h",
+  ]
+}

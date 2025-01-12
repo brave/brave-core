@@ -1,5 +1,11 @@
+include_rules = [
+  "+brave/components/brave_shields/core/browser",
+  "+brave/components/brave_shields/content/test",
+  "+services/network/host_resolver.h",
+]
+
 specific_include_rules = {
   "brave_timestamp_rounding_browsertest\.cc": [
-    "+content/public/renderer/render_frame.h",
+    "!content/public/renderer/render_frame.h",
   ],
 }

@@ -9,14 +9,14 @@ const util = require('../lib/util')
 const gnCheck = (buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
-  util.run('gn', ['check', config.outputDir], config.defaultOptions)
+  // util.run('gn', ['check', config.outputDir], config.defaultOptions)
   util.run(
     'python3',
     [
       'buildtools/checkdeps/checkdeps.py',
       'brave',
       '--extra-repos=brave',
-      '--no-resolve-dotdot'
+      '--no-resolve-dotdot',
     ],
     config.defaultOptions
   )

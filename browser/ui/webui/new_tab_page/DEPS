@@ -1,0 +1,7 @@
+include_rules = [
+  "+brave/components/brave_ads/core/browser/service",
+  "+brave/components/brave_new_tab/resources",
+  "+brave/components/brave_perf_predictor/common",
+  "+brave/components/ntp_background_images/common",
+  "+brave/components/time_period_storage",
+]

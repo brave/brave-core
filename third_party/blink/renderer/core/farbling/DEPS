@@ -1,4 +1,5 @@
 include_rules = [
+  "+crypto",
   "+components/content_settings/core/common",
   "+third_party/abseil-cpp/absl/random/random.h",
   "+third_party/blink/public/platform",

@@ -1,4 +1,5 @@
 include_rules = [
+  "+components/qr_code_generator",
   "+ui/gfx",
   "+third_party/skia/include/core/SkBitmap.h",
   "+third_party/skia/include/core/SkCanvas.h",

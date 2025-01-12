@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/brave_rewards/core",
+  "+brave/components/brave_rewards/resources",
+  "+brave/components/script_injector/common",
+]

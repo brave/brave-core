@@ -1,5 +1,6 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file('//chrome/common/importer/DEPS', globals(), locals())
+
+include_rules += [
   "+components/webdata/common",
-  "+extensions/buildflags/buildflags.h",
-  "+extensions/common",
 ]

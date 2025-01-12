@@ -1,0 +1,12 @@
+include_rules = [
+  "+brave/components/ai_chat/core/common/features.h",
+  "+brave/components/brave_ads/core/public/ads_feature.h",
+  "+brave/components/brave_component_updater/browser/features.h",
+  "+brave/components/brave_rewards/common/features.h",
+  "+brave/components/brave_shields/core/common/features.h",
+  "+brave/components/brave_wallet/common/features.h",
+  "+brave/components/de_amp/common/features.h",
+  "+brave/components/debounce/core/common/features.h",
+  "+brave/components/ntp_background_images/browser/features.h",
+  "+brave/components/skus/common/features.h",
+]

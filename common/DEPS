@@ -1,18 +1,74 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file('//chrome/common/DEPS', globals(), locals())
+
+include_rules += [
+  "+chrome/common",
+  "+components/grit",
+  "+brave/components/constants",
+
+  # copied from chrome/DEPS
+  # TODO(bridiver) use inline_file to append these instead of copying them
+  "+crypto",
+  "+gpu",
+  "+net",
+  "+pdf/buildflags.h",
+  "+printing",
+  "+sandbox",
+  "+sandbox/policy",
+  "+sql",
+  # Browser, renderer, common and tests access V8 for various purposes.
+  "-v8",
+  "+v8/include",
+
+  # Limit what we include from nacl.
+  "-native_client",
+
+  # Individual subdirectories of chrome/ must explicitly declare their
+  # dependencies on other subdirectories of chrome/.
+  # "-chrome",
+
   "+chrome/common",
   "+chrome/test",
+  "+components/content_settings/common",
+  "+components/content_settings/core/common",
+  "+components/embedder_support/switches.h",
+  "+components/error_page/common",
+  "+components/media_router/common",
+  "+components/omnibox/common",
+  "+components/services/heap_profiling/public",
+  "+components/url_formatter",
+  "+components/variations",
   "+content/public/common",
   "+content/public/test",
-  "+components/gcm_driver/gcm_buildflags.h",
-  "+components/grit/brave_components_resources.h",
-  "+components/grit/flags_ui_resources.h",
-  "+components/version_info",
-  "+extensions/buildflags",
-  "+extensions/common/url_pattern.h",
-  "+third_party/widevine/cdm/buildflags.h",
+  "+media/media_buildflags.h",
+  "+mojo/public",
+  "+ppapi/buildflags",
+
+  # Don't allow inclusion of these other libs we shouldn't be calling directly.
+  "-webkit",
+  "-tools",
+
+  # Required for process launching.
+  "+services/service_manager",
+
+  # Allow inclusion of WebKit API files.
+  "+third_party/blink/public/common",
+  "+third_party/blink/public/platform",
+  "+third_party/blink/public/public_buildflags.h",
+  "+third_party/blink/public/web",
+
+  # Allow inclusion of third-party code:
+  "+third_party/hunspell",
+  "+third_party/skia",
+
+  "+ui",
 ]
 
 specific_include_rules = {
+  ".*browsertest\.cc": [
+    "+chrome/test",
+    "+content/public/test",
+  ],
   "brave_content_client_unittest\.cc": [
     "+content/common/url_schemes.h",
   ],
