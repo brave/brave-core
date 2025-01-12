@@ -1,27 +1,27 @@
-Total size 131519K
+Total size 132732K
 
-GROUP Adblock [8728K total]
-   150K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.281 [adcocjohghhfpidemphmcmlmhnfgikei]
-    55K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.10515 [bfpgedeaaibpoidldhjcknekahbikncb]
-  1410K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.11672 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
+GROUP Adblock [8722K total]
+   152K Brave Ad Block Updater (Brave Ad Block First Party Filters (plaintext)) 1.0.287 [adcocjohghhfpidemphmcmlmhnfgikei]
+    55K Brave Ad Block Updater (Fanboy's Mobile Notifications (plaintext)) 1.0.10620 [bfpgedeaaibpoidldhjcknekahbikncb]
+  1411K Brave Ad Block Updater (EasyList Cookie (plaintext)) 1.0.11825 [cdbbhgbmjhfnhnmgeddbliobbofkgdhe]
    146K Brave Ad Block Updater (Regional Catalog) 1.0.69 [gkboaolpopklhgplhaaiboijnklogmbc]
-  5781K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.9919 [iodkpdagapdfkphljnddpjlldadblomo]
+  5771K Brave Ad Block Updater (Brave Ad Block Updater (plaintext)) 1.0.10055 [iodkpdagapdfkphljnddpjlldadblomo]
   1184K Brave Ad Block Updater (Resources) 1.0.104 [mfddibmblmbccpadfndgakiopmmhebop]
 
 GROUP Ads [22973K total]
     70K Brave Ads Resources 1.0.106 [iblokdlgekdjophgeonmanpnjihcjkjj]
  22903K Brave Ads Resources 1.0.67 [ocilmpijebaopmdifcomolmpigakocmo]
 
-GROUP Ntp [12872K total]
+GROUP Ntp [14072K total]
  12360K Brave NTP background images 1.0.15 [aoojcmojmmcbpfgoecoadbdpnagfchel]
-   511K Brave NTP sponsored images 1.0.1841 [gccbbckogglekeggclmmekihdgdpdgoe]
+  1712K Brave NTP sponsored images 1.0.1848 [gccbbckogglekeggclmmekihdgdpdgoe]
 
-GROUP Other [171K total]
-   171K Brave Local Data Files Updater 1.0.1021 [afalakplffnnnlkncjhbmahjfjhmlkal]
+GROUP Other [172K total]
+   172K Brave Local Data Files Updater 1.0.1030 [afalakplffnnnlkncjhbmahjfjhmlkal]
 
-GROUP large_files [76376K total]
+GROUP large_files [76408K total]
   3262K Default/Local Extension Settings/mnojpmjdmbbfmejpflffifhffcmidifd/000003.log
- 44256K Default/publisher_info_db
+ 44288K Default/publisher_info_db
   1636K Safe Browsing/ChromeExtMalware.store.32_13357750397781780
   1054K Safe Browsing/UrlMalBin.store.4_13357750397776940
  26166K Safe Browsing/UrlSoceng.store.4_13357750397723129
