@@ -12,31 +12,6 @@ include_rules += [
   "+brave/components/webui",
   "+chrome/services/qrcode_generator/public/mojom",
   "+chrome/services/qrcode_generator/public/cpp",
-
-  # TODO(bridiver) Move these to appropriate DEPS files
-  # browser/ui/webui/ai_chat
-  "+brave/components/ai_chat/resources",
-  # browser/ui/webui/ai_rewriter
-  "+brave/components/ai_rewriter/resources",
-  # browser/ui/webui/brave_shields
-  "+brave/components/brave_shields/resources",
-  # browser/ui/webui/brave_vpn
-  "+brave/components/brave_vpn/resources",
-  # browser/ui/webui/brave_wallet
-  "+brave/components/brave_wallet_page/resources",
-  "+brave/components/brave_wallet_panel/resources",
-  # browser/ui/webui/brave_wallet/ledger
-  "+brave/components/ledger_bridge/resources",
-  # browser/ui/webui/brave_wallet/line_chart
-  "+brave/components/line_chart_display/resources",
-  # browser/ui/webui/brave_wallet/market
-  "+brave/components/market_display/resources",
-  # browser/ui/webui/brave_wallet/nft
-  "+brave/components/nft_display/resources",
-  # browser/ui/webui/brave_wallet/trezor
-  "+brave/components/trezor_bridge/resources",
-  # browser/ui/webui/ethereum_remote_client
-  "+brave/components/ethereum_remote_client_page/resources",
 ]
 
 specific_include_rules = {

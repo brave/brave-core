@@ -1,0 +1,15 @@
+include_rules = [
+  "+brave/components/brave_wallet_page/resources",
+  "+brave/components/brave_wallet_panel/resources",
+  # TODO(bridiver) move to appropriate DEPS file
+  # ledger
+  "+brave/components/ledger_bridge/resources",
+  # line_chart
+  "+brave/components/line_chart_display/resources",
+  # market
+  "+brave/components/market_display/resources",
+  # nft
+  "+brave/components/nft_display/resources",
+  # trezor
+  "+brave/components/trezor_bridge/resources",
+]
