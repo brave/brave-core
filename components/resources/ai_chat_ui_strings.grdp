@@ -51,6 +51,15 @@
   <message name="IDS_CHAT_UI_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit">
     You've reached the premium rate limit. Please try again in a few hours.
   </message>
+  <message name="IDS_CHAT_UI_ERROR_OAI_RATE_LIMIT" desc="An error presented when the BYOM user has exhausted the API request limit">
+    You've reached the rate limit for this model or are out of credits. Please try again later.
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_INVALID_API_KEY" desc="An error presented when the configured API key is invalid">
+    The API key configured for this model is invalid. Please check your configuration and try again.
+  </message>
+  <message name="IDS_CHAT_UI_ERROR_SERVICE_OVERLOADED" desc="An error presented when the API service is overloaded">
+    The endpoint is currently overloaded. Please try again later.
+  </message>
   <message name="IDS_CHAT_UI_RETRY_BUTTON_LABEL" desc="A button label to retry API again">
      Retry
   </message>

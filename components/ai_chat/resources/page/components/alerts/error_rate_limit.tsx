@@ -12,10 +12,30 @@ import { useConversation } from '../../state/conversation_context'
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
-function ErrorRateLimit() {
+interface TestProps {
+  _testIsCurrentModelLeo?: boolean
+}
+
+function ErrorRateLimit(props: TestProps) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
+  // Respond to BYOM scenarios
+  if (!conversationContext.isCurrentModelLeo || props._testIsCurrentModelLeo === false) {
+    return (
+      <div className={styles.alert}>
+        <Alert type='warning'>
+          {getLocale('errorOAIRateLimit')}
+          <Button slot='actions' kind='filled'
+            onClick={conversationContext.retryAPIRequest}>
+              {getLocale('retryButtonLabel')}
+          </Button>
+        </Alert>
+      </div>
+    )
+  }
+
+  // Respond to Leo (i.e., non-BYOM) scenarios
   if (!aiChatContext.isPremiumUser) {
     return (
       <PremiumSuggestion
