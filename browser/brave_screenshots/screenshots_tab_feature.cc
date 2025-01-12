@@ -17,7 +17,8 @@
 namespace {
 
 // Some screenshots may need to be clipped to avoid the GPU limit.
-// https://crbug.com/1260828
+// See https://crbug.com/1260828. When this happens, we may wish to notify the
+// user that only a portion of their page could be captured.
 void DisplayScreenshotClippedNotification(base::WeakPtr<Browser> browser) {
   NOTIMPLEMENTED();
 }
