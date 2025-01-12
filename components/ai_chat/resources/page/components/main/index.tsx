@@ -97,7 +97,7 @@ function Main() {
         break
       case Mojom.APIError.InvalidAPIKey:
         currentErrorElement = <ErrorInvalidAPIKey
-        onRetry={conversationContext.retryAPIRequest} />
+          onRetry={conversationContext.retryAPIRequest} />
         break
       case Mojom.APIError.ServiceOverloaded:
         currentErrorElement = <ErrorServiceOverloaded
