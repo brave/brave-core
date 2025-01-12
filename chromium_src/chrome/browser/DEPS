@@ -11,6 +11,10 @@ include_rules += [
   "+brave/components/l10n/common",
   "+brave/components/playlist/common/buildflags",
   "+brave/components/version_info",
+  # Make sure renderer directories are not included for components with
+  # incorrect directory structures
+  "-brave/components/tor/renderer",
+  "-brave/components/speedreader/renderer",
 ]
 
 specific_include_rules = {
