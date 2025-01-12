@@ -7,7 +7,6 @@ import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
 import { sendWithPromise } from 'chrome://resources/js/cr.js'
-import type { CrInputElement } from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
@@ -174,7 +173,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
   }
 
   onModelSystemPromptChange_(e: any) {
-    this.modelSystemPrompt = e.target.value
+    this.modelSystemPrompt = e.value;
   }
 
   onContextSizeChange_(e: any) {
@@ -190,13 +189,13 @@ export class ModelConfigUI extends ModelConfigUIBase {
     this.apiKey = e.target.value
   }
 
-  constructTokenEstimateString_( e?: any ) {
+  constructTokenEstimateString_(e?: any) {
     let charsLength = 0;
     let tokensLength = 0;
 
-    if ( e?.target?.value ) {
-      charsLength = e.target.value.length;
-    } else if ( this.modelSystemPrompt ) {
+    if (e?.value) {
+      charsLength = e.value.length;
+    } else if (this.modelSystemPrompt) {
       charsLength = this.modelSystemPrompt.length;
     }
 
