@@ -1,12 +1,9 @@
-include_rules = [
-  "+brave/browser/brave_vpn/win/brave_vpn_helper",
-  "+brave/browser/brave_vpn/win/brave_vpn_wireguard_service",
-  "+brave/browser/brave_vpn/win/service_details.h",
-  "+brave/browser/brave_vpn/win/wireguard_utils_win.h",
+from brave_chromium_utils import inline_file
+inline_file("//chrome/installer/DEPS", globals(), locals())
+
+include_rules += [
+  "+brave/browser/brave_vpn/win",
   "+brave/components/brave_vpn/browser/connection/ikev2/win",
   "+brave/components/brave_vpn/common/buildflags",
   "+brave/installer",
-  "+chrome/common",
-  "+chrome/install_static",
-  "+components/version_info",
 ]

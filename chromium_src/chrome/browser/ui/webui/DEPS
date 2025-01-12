@@ -1,4 +1,11 @@
 include_rules = [
-  "+brave/components/webui/about_ui.h",
+  "+brave/components/webui",
+  "+brave/components/version_info",
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/brave_vpn/common",
+  "+brave/components/playlist/common",
+  "+brave/components/brave_vpn/common",
+  "+brave/components/playlist/common",
+  "+brave/components/ai_chat/core/common",
   "+third_party/re2",
 ]

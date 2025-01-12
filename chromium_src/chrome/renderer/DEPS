@@ -1,4 +1,7 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file("//chrome/renderer/DEPS", globals(), locals())
+
+include_rules += [
   "+brave/components/ai_chat/core/common",
   "+brave/components/ai_chat/renderer",
   "+brave/components/body_sniffer",
@@ -7,8 +10,4 @@ include_rules = [
   "+brave/components/tor/buildflags",
   "+brave/components/tor/renderer",
   "+brave/renderer",
-  "+media/base/key_system_info.h",
-  "+services/network/public/cpp",
-  "+third_party/blink/public",
-  "+third_party/widevine/cdm/buildflags.h",
 ]

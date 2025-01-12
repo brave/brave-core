@@ -1,0 +1,15 @@
+include_rules = [
+  "+brave/components/ai_chat/core/common/features.h",
+  "+brave/components/brave_news/common/features.h",
+  "+brave/components/brave_rewards/common/features.h",
+  "+brave/components/brave_search_conversion/features.h",
+  "+brave/components/brave_shields/core/common/features.h",
+  "+brave/components/brave_vpn/common/features.h",
+  "+brave/components/brave_wallet/common/features.h",
+  "+brave/components/debounce/core/common/features.h",
+  "+brave/components/google_sign_in_permission/features.h",
+  "+brave/components/playlist/common/features.h",
+  "+brave/components/request_otr/common/features.h",
+  "+brave/components/speedreader/common/features.h",
+  "+brave/components/webcompat/core/common/features.h",
+]

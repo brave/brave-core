@@ -1,0 +1,6 @@
+include_rules = [
+  "+brave/components/brave_component_updater/browser",
+  "+brave/components/ai_chat/core/browser",
+  "+brave/components/brave_wallet/browser",
+  "+brave/components/psst/browser/core",
+]
