@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_screenshots/strategies/selection_strategy.h"
 
-#include <string>
 #include <utility>
 
 #include "base/logging.h"

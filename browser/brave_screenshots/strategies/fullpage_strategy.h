@@ -28,12 +28,14 @@ class FullPageStrategy : public BraveScreenshotStrategy,
   void Capture(content::WebContents* web_contents,
                image_editor::ScreenshotCaptureCallback callback) override;
 
+  // DevToolsAgentHostClient overrides
+  void DispatchProtocolMessage(content::DevToolsAgentHost* host,
+                               base::span<const uint8_t> message) override;
+
   bool DidClipScreenshot() const override;
 
  private:
   // DevToolsAgentHostClient overrides
-  void DispatchProtocolMessage(content::DevToolsAgentHost* host,
-                               base::span<const uint8_t> message) override;
   void AgentHostClosed(content::DevToolsAgentHost* host) override;
 
   // Steps:

@@ -10,8 +10,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 
-namespace brave_screenshots {
-namespace utils {
+namespace brave_screenshots::utils {
 
 using image_editor::ScreenshotCaptureResult;
 
@@ -42,5 +41,4 @@ void DisplayScreenshotBubble(const ScreenshotCaptureResult& result,
       browser->tab_strip_model()->GetActiveWebContents(), result.image);
 }
 
-}  // namespace utils
-}  // namespace brave_screenshots
+}  // namespace brave_screenshots::utils

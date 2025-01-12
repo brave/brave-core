@@ -8,7 +8,6 @@
 
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "content/public/browser/web_contents.h"
-#include "ui/gfx/image/image.h"
 
 namespace brave_screenshots {
 
