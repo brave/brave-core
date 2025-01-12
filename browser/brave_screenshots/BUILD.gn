@@ -37,7 +37,6 @@ source_set("strategies") {
   public_deps = [ "//base" ]
 
   deps = [
-    ":brave_screenshots",
     "//chrome/browser/image_editor:image_editor",
     "//chrome/browser/ui",
   ]
@@ -78,7 +77,6 @@ source_set("unit_tests") {
     "//base",
     "//brave/app:command_ids",
     "//chrome/test:test_support",
-    "//testing/gmock",
     "//testing/gtest",
   ]
 }

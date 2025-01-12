@@ -5,8 +5,7 @@
 
 #include "brave/browser/brave_screenshots/features.h"
 
-namespace brave_screenshots {
-namespace features {
+namespace brave_screenshots::features {
 
 BASE_FEATURE(kBraveScreenshots,
              "BraveScreenshots",
@@ -15,5 +14,4 @@ BASE_FEATURE(kBraveScreenshots,
 bool IsBraveScreenshotsEnabled() {
   return base::FeatureList::IsEnabled(kBraveScreenshots);
 }
-}  // namespace features
-}  // namespace brave_screenshots
+}  // namespace brave_screenshots::features
