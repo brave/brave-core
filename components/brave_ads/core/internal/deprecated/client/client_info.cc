@@ -15,9 +15,11 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_feature.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_signal_history_value_util.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
@@ -142,12 +144,16 @@ bool ClientInfo::FromValue(const base::Value::Dict& dict) {
 }
 
 std::string ClientInfo::ToJson() const {
+  TRACE_EVENT(kTraceEventCategory, "ClientInfo::ToJson");
+
   std::string json;
   CHECK(base::JSONWriter::Write(ToValue(), &json));
   return json;
 }
 
 bool ClientInfo::FromJson(const std::string& json) {
+  TRACE_EVENT(kTraceEventCategory, "ClientInfo::FromJson");
+
   const std::optional<base::Value::Dict> dict = base::JSONReader::ReadDict(
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
