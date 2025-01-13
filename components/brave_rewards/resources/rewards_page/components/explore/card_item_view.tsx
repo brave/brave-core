@@ -23,7 +23,7 @@ function faviconURL(item: UICardItem) {
 function thumbnailURL(url: string) {
   url = sanitizeURL(url)
   try {
-    if (/(^|\.)brave\.com$/i.test(new URL(url).hostname)) {
+    if (/(^|\.)brave(software)?\.com$/i.test(new URL(url).hostname)) {
       return `chrome://rewards-image/${url}`
     }
     return ''
