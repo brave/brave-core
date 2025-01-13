@@ -230,14 +230,11 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
     SetNotifyEnterExitOnChild(true);
 
-    // In figma, all interior margin uses 10 but left one is
-    // adjusted to align with tab's icon position.
-    // TODO(simonhong): Use 10 for left margin and adjust
-    // tab's layout together.
+    constexpr int kNewTabPadding = 8;
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
         .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
-        .SetInteriorMargin(gfx::Insets::TLBR(10, 8, 10, 10));
+        .SetInteriorMargin(gfx::Insets(kNewTabPadding));
 
     plus_icon_ = AddChildView(std::make_unique<views::ImageView>());
     plus_icon_->SetHorizontalAlignment(views::ImageView::Alignment::kCenter);
