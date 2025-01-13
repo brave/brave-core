@@ -23,6 +23,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -72,6 +73,7 @@
 namespace {
 
 constexpr int kHeaderInset = tabs::kMarginForVerticalTabContainers;
+constexpr int kSeparatorHeight = 1;
 
 // Use toolbar button's ink drop effect.
 class ToggleButton : public ToolbarButton {
@@ -610,7 +612,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       AddChildView(std::make_unique<VerticalTabStripScrollContentsView>(
           this, original_region_view_->tab_strip_));
   header_view_->toggle_button()->SetHighlighted(state_ == State::kExpanded);
-
+  separator_ = AddChildView(std::make_unique<views::View>());
+  separator_->SetBackground(
+      views::CreateThemedSolidBackground(nala::kColorDividerSubtle));
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
       original_region_view_->tab_strip_,
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
@@ -920,11 +924,16 @@ void VerticalTabStripRegionView::Layout(PassKey) {
           contents_bounds.width(),
           std::min(contents_view_max_height, contents_view_preferred_height))));
 
-  gfx::Rect new_tab_button_bounds(
+  gfx::Rect separator_bounds(
       contents_view_->bounds().bottom_left(),
-      gfx::Size(contents_bounds.width(), kNewTabButtonHeight));
-  new_tab_button_bounds.Inset(
+      gfx::Size(contents_bounds.width(), kSeparatorHeight));
+  separator_bounds.Inset(
       gfx::Insets::VH(0, tabs::kMarginForVerticalTabContainers));
+  separator_->SetBoundsRect(separator_bounds);
+  gfx::Rect new_tab_button_bounds(
+      separator_->bounds().bottom_left(),
+      gfx::Size(separator_bounds.width(), kNewTabButtonHeight));
+  new_tab_button_bounds.Offset(0, tabs::kMarginForVerticalTabContainers);
   new_tab_button_->SetBoundsRect(new_tab_button_bounds);
 
   UpdateOriginalTabSearchButtonVisibility();
@@ -1175,6 +1184,7 @@ void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   auto* original_ntb = original_region_view_->new_tab_button();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
+  separator_->SetVisible(is_vertical_tabs);
 }
 
 TabSearchBubbleHost* VerticalTabStripRegionView::GetTabSearchBubbleHost() {
@@ -1185,6 +1195,7 @@ int VerticalTabStripRegionView::GetTabStripViewportHeight() const {
   // Don't depend on |contents_view_|'s current height. It could be bigger than
   // the actual viewport height.
   return GetContentsBounds().height() - header_view_->height() -
+         (separator_->height() + tabs::kMarginForVerticalTabContainers) -
          new_tab_button_->height();
 }
 
