@@ -215,7 +215,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
     // gives us the exact same behaviour as Safari.
-    // tel:, facetime:, facetime-audio:, already has its own native alert displayed by the OS!f
+    // tel:, facetime:, facetime-audio:, already has its own native alert displayed by the OS!
     if ["sms", "mailto"].contains(requestURL.scheme) {
       let shouldOpen = await handleExternalURL(
         requestURL,
@@ -223,6 +223,12 @@ extension BrowserViewController: WKNavigationDelegate {
         navigationAction: navigationAction
       )
       return (shouldOpen ? .allow : .cancel, preferences)
+    }
+
+    // Let the system's prompt handle these. We can't let these cases fall-through, as the last check in this file will
+    // assume it's an external app prompt
+    if ["tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
+      return (.allow, preferences)
     }
 
     // Second special case are a set of URLs that look like regular http links, but should be handed over to iOS
