@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
-<translation id="8631427463833030968">広告を管理</translation>
 <translation id="7630214457764713113">クリーンリンクをコピー</translation>
-<translation id="885805571521218129">これは、今月のBrave広告の推定収益範囲を反映しています。</translation>
 <translation id="3478449063771497234">通知は無効です</translation>
 <translation id="2862978891748913252">国を選択</translation>
 <translation id="3970520675790340955">お住まいの国を選択すると、その地域に合ったオプションや広告が表示されます。</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">トップサイトのサジェスチョンを表示</translation>
 <translation id="6285118765755298263">他の検索エンジンインデックス</translation>
 <translation id="919715748352669592">OpenSearchの仕様に従うウェブサイトのインデックスを自動的に作成します。</translation>
+<translation id="412411722208944922">クイック検索エンジン</translation>
+<translation id="2836969042340015500">クイック検索エンジン</translation>
+<translation id="9120455214794270250">クイック検索バーを表示する</translation>
+<translation id="1052991798173010693">現在使用中の検索エンジン</translation>
+<translation id="335303688425891752">長押しで順番を変更</translation>
 <translation id="9148058034647219655">終了</translation>
 <translation id="8047754398610073499">Cookieの同意通知をブロック</translation>
 <translation id="2621893359845808115">サイト上でCookieの承認 / 拒否を求めるポップアップをブロックします</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Braveへようこそ</translation>
 <translation id="4117451092682672487">シンプルに、プライバシーを保護。</translation>
 <translation id="7909375417585209817">Braveをデフォルトで使用すると、タップしたすべてのリンクがBrave流のプライバシー保護モードで開かれます。</translation>
-<translation id="3737878115109582442">検索ウィジェットを追加</translation>
-<translation id="6199413390010319240">Braveを活用してWebをより速く検索しましょう。</translation>
-<translation id="4338600611020922010">ホーム画面に追加</translation>
 <translation id="7370959926683925817">広告をブロックする。データを節約する。毎日、毎日。</translation>
 <translation id="7281027579943912834">Braveをデフォルトで使用すると、タップしたすべてのリンクにBraveの広告ブロックが適用されます。すべてのページ、ビデオ、ストリームにです。</translation>
 <translation id="5148943178722443958">Braveの品質向上にご協力ください。</translation>
@@ -408,8 +408,13 @@
 <translation id="6925081665778864449">パスワードを同期するには、Androidデバイスで生体認証/パスコード認証を有効にしてください。これはパスワードを安全に保つための追加のセキュリティ対策です。</translation>
 <translation id="597993392929850353">Braveライセンス</translation>
 <translation id="6336451774241870485">新しいプライベートタブ</translation>
-<translation id="6199596294742117349">これはプライベートタブです</translation>
-<translation id="5858455511731621847">プライベートタブで訪問したサイトがローカルに保存されないとしても、プライベートタブは匿名化したり、ISPや雇用主や訪問サイトにあなたの閲覧内容が見られないようにしたりするわけではありません。</translation>
+<translation id="3110967157686007724">プライベートタブ</translation>
+<translation id="944340256927461196">デバイスに痕跡を残さない</translation>
+<translation id="2063044449012253966">プライベートウィンドウから訪問したサイトは履歴に表示されません。プライベートウィンドウをすべて閉じると、クッキー、フォームデータ、サイトデータは消去されます。</translation>
+<translation id="7395764193745523646">閲覧情報の可視性</translation>
+<translation id="8735363371744702779">プライベートウィンドウを使用しても、あなたのISP、ネットワーク監視者、または雇用主（仕事用のデバイス/ネットワークを使用している場合）には、あなたのアクティビティが見える可能性があることにご留意ください。</translation>
+<translation id="1413177583895309156">Brave VPN はBrave ブラウザを使用していてもいなくても、オンラインで行うすべての操作を暗号化して保護します。</translation>
+<translation id="3974348661685061050">7日間無料で試す</translation>
 <translation id="5789441016350810005">ブラウザがバックグラウンドにあるときに送信されるBrave広告</translation>
 <translation id="4973347371961481083">支援</translation>
 <translation id="7047578174221019462">毎月の定期支援が処理されました。</translation>
@@ -710,9 +715,10 @@
 <translation id="1532536259167115948">月間サブスクリプション <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">年間サブスクリプション <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">毎月更新</translation>
+<translation id="112929124115834557">年間更新</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> / 月</translation>
 <translation id="1163809943099641131">1 年</translation>
-<translation id="727385358513272220">年額支払い (<ph name="DISCOUNT_TEXT_START"/>、<ph name="PERCENTAGE_AMOUNT"/>%%お得<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/> <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>お得)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> / 年</translation>
 <translation id="2786538705804257030">サブスクリプションはGoogleアカウントを通じて課金されます。無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\n\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\n\nサブスクリプションは「設定」で管理できます。\n\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。</translation>
 <translation id="5035172357624830412">brave.comで購入済みですか？</translation>
@@ -842,7 +848,7 @@
 <translation id="4351811224047421378">小数点桁数</translation>
 <translation id="3494964159182650590">リワードの概要</translation>
 <translation id="590733288489975971">Adsによる報酬</translation>
-<translation id="1886682615222609631">これまでの収益</translation>
+<translation id="1450735350187803276">今月表示された広告数</translation>
 <translation id="1767561995429774671">寄付</translation>
 <translation id="7335371657242627509">自動支援の対象に含める</translation>
 <translation id="6727102863431372879">設定</translation>
@@ -1228,5 +1234,6 @@
 <translation id="2728518864712716830">アップデートをダウンロードしました。</translation>
 <translation id="8403338849301491865">フィルターリストを更新しました</translation>
 <translation id="4650851936784160359">フィルターリストを更新できませんでした。もう一度お試しください</translation>
-<translation id="1450735350187803276">今月見た広告</translation>
+<translation id="3098054327870766317">タブを閉じるときに元に戻すボタンを表示する</translation>
+<translation id="1336494649091412226">Braveを 終了しますか？</translation>
 </translationbundle>

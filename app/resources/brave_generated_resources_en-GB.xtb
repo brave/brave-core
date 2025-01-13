@@ -307,11 +307,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Recover</translation>
 <translation id="2521960050170773751">Add media from page</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> wants to open</translation>
-<translation id="7128982309566342232">An embedded page on <ph name="SITE"/> wants to open</translation>
 <translation id="1175012181261953767">This page wants to open</translation>
 <translation id="7459546222322124545">An embedded page on this page wants to open</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> wants to save</translation>
-<translation id="5936788906460687941">An embedded page on <ph name="SITE"/> wants to save</translation>
 <translation id="7700010743463174379">This page wants to save</translation>
 <translation id="6774238875569752630">An embedded page on this page wants to save</translation>
 <translation id="9156965752763025780">Your changes will take effect the next time you relaunch Brave.</translation>
@@ -573,6 +571,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4094590686212463338">Could not join this sync chain. The sync chain was deleted.</translation>
 <translation id="4908081302669157000">Phone numbers, emails and addresses</translation>
 <translation id="294985549514492876">Web apps (PWAs)</translation>
+<translation id="7029809446516969842">Passwords</translation>
 <translation id="924029461438529367">Show search suggestions</translation>
 <translation id="3128251601544028053">When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is not available in private windows.</translation>
 <translation id="6285118765755298263">Index other search engines</translation>

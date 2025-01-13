@@ -306,11 +306,11 @@
 <translation id="6155018868740116868">恢复</translation>
 <translation id="2521960050170773751">从网页添加媒体</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> 试图打开</translation>
-<translation id="7128982309566342232"><ph name="SITE"/>上的嵌入式页面试图打开</translation>
+<translation id="4828353184750597953"><ph name="SITE"/> 上的一个内嵌页面需要打开</translation>
 <translation id="1175012181261953767">此页面试图打开</translation>
 <translation id="7459546222322124545">此页面上的嵌入式页面试图打开</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> 试图保存</translation>
-<translation id="5936788906460687941"><ph name="SITE"/>上的嵌入式页面试图打开</translation>
+<translation id="8813509417421129632"><ph name="SITE"/> 上的一个内嵌页面需要保存</translation>
 <translation id="7700010743463174379">此页面试图保存</translation>
 <translation id="6774238875569752630">此页面上的嵌入式页面试图保存</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
@@ -572,6 +572,7 @@
 <translation id="4094590686212463338">无法加入此同步链。同步链已删除。</translation>
 <translation id="4908081302669157000">电话号码、电子邮件和地址</translation>
 <translation id="294985549514492876">Web 应用程序（PWA）</translation>
+<translation id="7029809446516969842">密码</translation>
 <translation id="924029461438529367">显示搜索建议</translation>
 <translation id="3128251601544028053">当您在地址栏或搜索框中输入时，Brave 会将你输入的内容发送到你的默认搜索引擎，以获得更好的建议。私密窗口无法使用。</translation>
 <translation id="6285118765755298263">对其他搜索引擎构建索引</translation>
@@ -714,6 +715,8 @@ Leo 的所有对话。此操作无法撤销。</translation>
 <translation id="1355326130503900056">该型号的名称应该出现在服务框架的请求中，如 phi-3（请注意，如果该名称与服务框架期望的不完全匹配，集成将无法运行）</translation>
 <translation id="3286410514484292784">服务框架正在监听申请的网址。如果不确定，请查阅服务框架文档。例如，对于 Ollama 来说，这始终是 http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">某些服务框架可能需要认证凭证，如 API 密钥或访问令牌。这些凭证将添加到申请标题中。</translation>
+<translation id="4335128003329183586">上下文大小</translation>
+<translation id="8794525422794607973">模型在单次交互中可处理的最大字符数。每个字符约为一个单词的 3/4。上下文大小越大，模型就越能处理较长的对话。不同的模型支持不同的最大上下文大小。</translation>
 <translation id="217141195370578385">Brave不代理这些请求，请阅读所选供应商的隐私条款。</translation>
 <translation id="2645532768679870478">非本地端点应使用 HTTPS 协议进行安全数据传输。</translation>
 <translation id="8177205483022887785">您输入的网址无效。请输入有效的网址。</translation>
@@ -723,6 +726,9 @@ Leo 的所有对话。此操作无法撤销。</translation>
 <translation id="7435587476558117990">将您的自托管或第三方托管 LLM 连接到 Leo，并在浏览器中使用它们。</translation>
 <translation id="1381050642750209119">使用任何兼容 OpenAI 聊天协议的框架，如 Ollama。</translation>
 <translation id="2642905648178380593">保存型号</translation>
+<translation id="6304169450064541679">系统提示</translation>
+<translation id="3081947790648024460">给模型提供的自定义指令和/或上下文，以指导其按特定方向或风格作出响应。在您想要插入当前日期和时间的位置使用 %datetime%。</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> 个字符</translation>
 <translation id="349846214503465941">启用播放列表</translation>
 <translation id="7903608716704052878">自动添加文件，以便离线查看</translation>
 <translation id="4193768184502613558">该选项会自动缓存媒体文件，这样您就可以在没有互联网连接的情况下播放这些文件。</translation>

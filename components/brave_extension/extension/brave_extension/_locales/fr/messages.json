@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Protections",
+    "message": "Boucliers",
     "description": "The Shields feature name"
   },
   "up": {
@@ -20,11 +20,11 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Si le site semble ne pas fonctionner, essayez de désactiver les protections",
+    "message": "Si le site semble ne pas fonctionner, essayez de désactiver les boucliers.",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Vous naviguez sur ce site sans la protection de la vie privée et de la sécurité de Brave. Est-ce qu'il ne fonctionne pas bien avec les boucliers en place ?",
+    "message": "Votre navigation sur ce site n’est pas protégée par Brave. Avez-vous rencontré des problèmes en utilisant les boucliers sur ce site ?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {

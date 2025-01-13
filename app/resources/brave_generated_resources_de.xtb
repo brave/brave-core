@@ -113,6 +113,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8722651357687610395">Brave als Standard einrichten</translation>
 <translation id="2370739752330685659">Vielleicht später</translation>
 <translation id="5100490448228945668">Vorschlag zur Verwendung der Brave-Suche verwerfen. Eingabetaste drücken, um diesen Vorschlag zu entfernen.</translation>
+<translation id="6213208892248046484">Wechsle zur Brave Suche</translation>
 <translation id="9194637241566114638">Helfen Sie uns bei der Verbesserung der <ph name="SEARCH_NAME"/>, indem Sie anonyme Nutzungsdaten senden.<ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave-Suche</translation>
 <translation id="8184318863960255706">Weitere Informationen</translation>
@@ -187,7 +188,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8010675257566903381">Die Wayback Machine konnte keine gespeicherte Version dieser Seite finden.</translation>
 <translation id="1207694258341311738">Gespeicherte Version überprüfen</translation>
 <translation id="191143826155037518">Brave wird Ihnen unter der <ph name="BEGIN_LINK_MPL"/>Mozilla Public License 2.0<ph name="END_LINK_MPL"/> (MPL) und verwendet weitere <ph name="BEGIN_LINK_OSS"/>Open Source Software<ph name="END_LINK_OSS"/> die unter verschiedenen anderen Lizenzen veröffentlicht wurden.
-        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/>, wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
+        Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS"/>, wie man das Brave-Projekt herunterlädt und selbst aus dem <ph name="BEGIN_LINK_SOURCE_CODE"/>Quellcode<ph name="END_LINK_SOURCE_CODE"/> zu erstellen.</translation>
 <translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
 <translation id="3987546108749866209">Vertikale Tabs verwenden</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{Tab stummschalten}other{Tabs stummschalten}}</translation>
@@ -306,11 +307,11 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Wiederherstellen</translation>
 <translation id="2521960050170773751">Medien von der Seite hinzufügen</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> möchten Folgendes öffnen:</translation>
-<translation id="7128982309566342232">Eine eingebettete Seite auf <ph name="SITE"/> möchte Folgendes öffnen:</translation>
+<translation id="4828353184750597953">Eine eingebettete Seite unter <ph name="SITE"/> möchte sich öffnen</translation>
 <translation id="1175012181261953767">Diese Seite möchte Folgendes öffnen:</translation>
 <translation id="7459546222322124545">Eine eingebettete Seite auf dieser Seite möchte Folgendes öffnen:</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> möchte Folgendes speichern:</translation>
-<translation id="5936788906460687941">Eine eingebettete Seite auf <ph name="SITE"/> möchte Folgendes speichern:</translation>
+<translation id="8813509417421129632">Eine eingebettete Seite unter <ph name="SITE"/> will speichern</translation>
 <translation id="7700010743463174379">Diese Seite möchte Folgendes speichern:</translation>
 <translation id="6774238875569752630">Eine eingebettete Seite auf dieser Seite möchte Folgendes speichern:</translation>
 <translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
@@ -501,6 +502,9 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7181706637590665047">Zugriff auf Localhost-Ressourcen nicht erlauben</translation>
 <translation id="1336116824874668514">Zugriff auf Localhost-Ressourcen nicht erlaubt</translation>
 <translation id="1485435696620658073">Zugriff auf Localhost-Ressourcen erlaubt</translation>
+<translation id="5794692721727586076">Leo AI-Chat</translation>
+<translation id="8115153008662981040">Websites können darum bitten, den Leo AI-Chat zu öffnen</translation>
+<translation id="1145070115730668595">Website nicht zum Öffnen des Leo AI Chats zulassen</translation>
 <translation id="6414370348346025511">Standardschutz ist aktiviert.</translation>
 <translation id="5565355416171743213">Synchronisierung starten</translation>
 <translation id="4332558599726753990">Sync-Einrichtung</translation>
@@ -569,6 +573,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4094590686212463338">Konnte sich nicht mit dieser Synchronisationskette verbinden. Die Synchronisationskette wurde gelöscht.</translation>
 <translation id="4908081302669157000">Telefonnummern, E-Mail-Adressen und Anschriften</translation>
 <translation id="294985549514492876">Webanwendungen (PWA)</translation>
+<translation id="7029809446516969842">Passwörter</translation>
 <translation id="924029461438529367">Suchvorschläge anzeigen</translation>
 <translation id="3128251601544028053">Wenn Sie etwas in die Adressleiste oder das Suchfeld eingeben, sendet Brave Ihre Eingabe an Ihre Standardsuchmaschine, um bessere Vorschläge zu erhalten. Dies ist im Privatmodus nicht verfügbar.</translation>
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
@@ -712,6 +717,8 @@ rückgängig gemacht werden.</translation>
 <translation id="1355326130503900056">Der Name des Modells, wie er in der Anfrage an das Serving-Framework erscheinen soll, z. B. phi-3 (beachten Sie, dass die Integration nicht funktioniert, wenn dieser Name nicht genau dem entspricht, was das Serving-Framework erwartet)</translation>
 <translation id="3286410514484292784">Die URL, unter der Ihr Serving-Framework auf Anfragen wartet. Wenn Sie sich nicht sicher sind, sehen Sie in der Dokumentation des Serving-Frameworks nach. Für Ollama ist dies z.B. immer http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Einige Serving-Frameworks können Authentifizierungsdaten wie einen API-Schlüssel oder ein Zugriffstoken erfordern. Diese werden dem Request-Header hinzugefügt.</translation>
+<translation id="4335128003329183586">Kontextgröße</translation>
+<translation id="8794525422794607973">Die maximale Anzahl von Token, die das Modell in einer einzigen Interaktion verarbeiten kann. Jedes Token ist etwa 3/4 eines Wortes. Eine größere Kontextgröße ermöglicht es dem Modell, längere Unterhaltungen zu verarbeiten. Verschiedene Modelle unterstützen unterschiedliche maximale Kontextgrößen.</translation>
 <translation id="217141195370578385">Brave fungiert nicht als Proxy für diese Anfragen. Bitte lesen Sie die Datenschutzbestimmungen des gewählten Anbieters.</translation>
 <translation id="2645532768679870478">Nicht-lokale Endpunkte sollten das HTTPS-Protokoll für die sichere Datenübertragung verwenden.</translation>
 <translation id="8177205483022887785">Sie haben eine ungültige URL eingegeben. Bitte geben Sie eine gültige URL ein.</translation>
@@ -721,6 +728,9 @@ rückgängig gemacht werden.</translation>
 <translation id="7435587476558117990">Verbinden Sie Ihr selbst oder von Dritten gehostetes LLM mit Leo und nutzen Sie es im Browser.</translation>
 <translation id="1381050642750209119">Verwenden Sie ein beliebiges mit dem OpenAI-Chat-Protokoll kompatibles Framework wie Ollama.</translation>
 <translation id="2642905648178380593">Modell speichern</translation>
+<translation id="6304169450064541679">System-Eingabeaufforderung</translation>
+<translation id="3081947790648024460">Benutzerdefinierte Anweisungen und/oder Kontext, die dem Modell gegeben werden, um seine Antworten in eine bestimmte Richtung oder einen bestimmten Stil zu lenken. Verwende %datetime%, wenn du das aktuelle Datum und die Uhrzeit einfügen möchtest.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> Token</translation>
 <translation id="349846214503465941">Playlist aktivieren</translation>
 <translation id="7903608716704052878">Dateien automatisch zur Offline-Ansicht hinzufügen</translation>
 <translation id="4193768184502613558">Mit dieser Option werden Mediendateien automatisch zwischengespeichert, sodass Sie sie auch ohne Internetverbindung wiedergeben können.</translation>

@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="vi">
-<translation id="8631427463833030968">Quản lý quảng cáo</translation>
 <translation id="7630214457764713113">Sao chép liên kết sạch</translation>
-<translation id="885805571521218129">Điều này phản ánh phạm vi thu nhập ước tính của bạn cho Brave Quảng cáo trong tháng này.</translation>
 <translation id="3478449063771497234">Đã tắt thông báo</translation>
 <translation id="2862978891748913252">Chọn quốc gia của bạn</translation>
 <translation id="3970520675790340955">Chọn quốc gia của bạn để chúng tôi có thể hiển thị cho bạn các tùy chọn và quảng cáo phù hợp cho khu vực của bạn.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Hiển thị các đề xuất trang web hàng đầu</translation>
 <translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
 <translation id="919715748352669592">Tự động lập chỉ mục các trang web tuân theo thông số OpenSearch.</translation>
+<translation id="412411722208944922">Tìm nhanh công cụ tìm kiếm</translation>
+<translation id="2836969042340015500">Tìm nhanh công cụ tìm kiếm</translation>
+<translation id="9120455214794270250">Hiển thị thanh tìm kiếm nhanh</translation>
+<translation id="1052991798173010693">Công cụ tìm kiếm hiện sử dụng</translation>
+<translation id="335303688425891752">Nhấn và giữ để đổi thứ tự</translation>
 <translation id="9148058034647219655">Thoát</translation>
 <translation id="8047754398610073499">Chặn thông báo chấp thuận cookie</translation>
 <translation id="2621893359845808115">Chặn cửa sổ bật lên của trang web yêu cầu bạn chấp nhận / từ chối cookie trên trang web của họ</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="4117451092682672487">Bảo mật. Đơn giản.</translation>
 <translation id="7909375417585209817">Với việc đặt Brave làm mặc định, mọi liên kết bạn chạm vào sẽ mở ra với các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
-<translation id="3737878115109582442">Thêm tiện ích tìm kiếm</translation>
-<translation id="6199413390010319240">Hãy đặt Brave trong tầm tay để khám phá web nhanh hơn.</translation>
-<translation id="4338600611020922010">Thêm vào Màn hình chính</translation>
 <translation id="7370959926683925817">Chặn quảng cáo. Lưu dữ liệu. Mỗi ngày.</translation>
 <translation id="7281027579943912834">Với Brave làm mặc định, mọi liên kết bạn nhấn vào đều được bảo vệ chặn quảng cáo của Brave. Mọi trang, video và luồng.</translation>
 <translation id="5148943178722443958">Giúp cải thiện Brave.</translation>
@@ -408,8 +408,13 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6925081665778864449">Để đồng bộ hóa mật khẩu, vui lòng bật xác thực sinh trắc học/mật mã trên thiết bị Android của bạn. Biện pháp bảo mật bổ sung này giúp giữ mật khẩu của bạn an toàn.</translation>
 <translation id="597993392929850353">Giấy phép Brave</translation>
 <translation id="6336451774241870485">Tab riêng tư mới</translation>
-<translation id="6199596294742117349">Đây là Tab riêng tư</translation>
-<translation id="5858455511731621847">Mặc dù các trang web bạn truy cập trong những tab riêng tư không được lưu cục bộ, những trang web này không giúp bạn ẩn danh hoặc ẩn đối với ISP, chủ lao động hoặc những trang web bạn đang truy cập.</translation>
+<translation id="3110967157686007724">Tab riêng tư</translation>
+<translation id="944340256927461196">Không để lại dấu vết trên thiết bị của bạn</translation>
+<translation id="2063044449012253966">Các trang web bạn truy cập trong cửa sổ riêng tư sẽ không xuất hiện trong lịch sử của bạn. Cookie, dữ liệu biểu mẫu và dữ liệu trang web sẽ biến mất sau khi tất cả các cửa sổ riêng tư được đóng.</translation>
+<translation id="7395764193745523646">Độ hiển thị khi duyệt</translation>
+<translation id="8735363371744702779">Lưu ý rằng, ngay cả trong cửa sổ riêng tư, hoạt động duyệt web của bạn vẫn có thể bị ISP, người quan sát hệ thống mạng hoặc người thuê bạn làm việc (nếu bạn đang sử dụng thiết bị/mạng công ty) nhìn thấy.</translation>
+<translation id="1413177583895309156">Brave VPN mã hóa và bảo vệ mọi hoạt động trực tuyến của bạn, ngay cả khi không sử dụng trình duyệt Brave.</translation>
+<translation id="3974348661685061050">Dùng thử 7 ngày miễn phí</translation>
 <translation id="5789441016350810005">Brave Ads được gửi khi trình duyệt đang chạy nền</translation>
 <translation id="4973347371961481083">Đóng góp</translation>
 <translation id="7047578174221019462">Các khoản đóng góp hàng tháng của bạn đã được xử lý.</translation>
@@ -710,9 +715,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1532536259167115948">Đăng ký hàng tháng <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Đăng ký hàng năm <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Gia hạn mỗi tháng</translation>
+<translation id="112929124115834557">Gia hạn hằng năm</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /tháng</translation>
 <translation id="1163809943099641131">Một năm</translation>
-<translation id="727385358513272220">Gia hạn hàng năm (<ph name="DISCOUNT_TEXT_START"/>tiết kiệm <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>tiết kiệm <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /năm</translation>
 <translation id="2786538705804257030">Đăng ký sẽ được tính phí thông qua tài khoản Google của bạn. Mọi phần chưa sử dụng của bản dùng thử miễn phí, nếu được cung cấp, sẽ bị mất khi bạn mua đăng ký.\n\nĐăng ký của bạn sẽ tự động gia hạn trừ khi bị hủy ít nhất 24 giờ trước khi kết thúc giai đoạn hiện tại.\n\nBạn có thể quản lý đăng ký của mình trong Cài đặt.\n\nBằng cách sử dụng Brave, bạn đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư.</translation>
 <translation id="5035172357624830412">Đã mua trên brave.com?</translation>
@@ -842,7 +848,7 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="4351811224047421378">Số thập phân chính xác</translation>
 <translation id="3494964159182650590">Tóm tắt Tiền thưởng</translation>
 <translation id="590733288489975971">Rewards từ Ads</translation>
-<translation id="1886682615222609631">Tiền kiếm được cho đến nay</translation>
+<translation id="1450735350187803276">Quảng cáo đã xem tháng này</translation>
 <translation id="1767561995429774671">Đóng góp</translation>
 <translation id="7335371657242627509">Bao gồm trong Tự động Đóng góp</translation>
 <translation id="6727102863431372879">Đặt</translation>
@@ -1228,5 +1234,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2728518864712716830">Bản cập nhật được tải xuống.</translation>
 <translation id="8403338849301491865">Danh sách bộ lọc được cập nhật thành công</translation>
 <translation id="4650851936784160359">Không thể cập nhật danh sách bộ lọc. Vui lòng thử lại</translation>
-<translation id="1450735350187803276">Quảng cáo đã xem trong tháng này</translation>
+<translation id="3098054327870766317">Hiển thị nút hoàn tác khi tab đã đóng</translation>
+<translation id="1336494649091412226">Bạn có chắc là bạn muốn thoát Brave?</translation>
 </translationbundle>

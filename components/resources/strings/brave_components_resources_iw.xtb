@@ -106,7 +106,6 @@
 <translation id="4541978218358617681">פרסומות</translation>
 <translation id="1776831331757823105">שעון</translation>
 <translation id="7791543448312431591">הוספה</translation>
-<translation id="7679334366167089823">הרוויחו טוקנים עבור צפייה בפרסומות השומרות על הפרטיות.</translation>
 <translation id="7191394989411626168">על ידי כיבוי כרטיסים, כל הכרטיסים שכרגע גלויים יוסתרו. עם זאת, ייתכן שעדיין תקבלו הודעה על כרטיסים חדשים.</translation>
 <translation id="6820526586005233839">Brave Ads הושהו</translation>
 <translation id="5190407395832551012">כדי להגן על Brave Rewards מפני שימוש לרעה, אנו מבקשים באופן אקראי ממשתמשים לפתור captcha. לחץ על 'פתור' כדי לחדש את הפרסומות.</translation>
@@ -546,7 +545,6 @@
 <translation id="2529827670795983639">נראה כי אפשרות זו אינה פועלת, פרסומות Brave יישארו מושהות. צור אתנו קשר אם אתה זקוק לעזרה עם ה-captcha.</translation>
 <translation id="261607053214862521">חריגה ממספר הניסיונות המרבי המותר</translation>
 <translation id="2323171459178104277">נפתר!</translation>
-<translation id="1512837998731269583">פרסומות ורווחים לא יחודשו. תודה שעזרת לנו להגן על Brave Rewards ועל פרסומות מבוססות פרטיות.</translation>
 <translation id="3247549836099021862">פנה לתמיכה</translation>
 <translation id="5234764350956374838">סגור</translation>
 <translation id="7859066142771796818">השתמש באסימונים כדי לקנות כרטיסי מתנה, להחליף למטבעות אחרים, לתמוך ביוצרי תוכן ועוד.</translation>
@@ -573,7 +571,6 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>לפרטים נוספים<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">אל דאגה.</translation>
 <translation id="5027616819996705541">אתם עדיין יכולים לגלוש בפרטיות!</translation>
-<translation id="1886682615222609631">רווחים עד כה</translation>
 <translation id="7649070708921625228">עזרה</translation>
 <translation id="6042308850641462728">עוד</translation>
 <translation id="6245259297588415877">יוצרים</translation>
@@ -719,7 +716,6 @@
 <translation id="7160424977552599351">השתמש בארנק Web3</translation>
 <translation id="6369571967625114920">מודעות אישיות ב-Brave אינן זמינות עדיין באזורך.</translation>
 <translation id="5309155375926073606">כן, בנוסף הייתי רוצה לתרום לחיפוש Brave ולהצטרף אל <ph name="LINK_BEGIN"/>פרויקט גילוי Web<ph name="LINK_END"/>.</translation>
-<translation id="7285849890826812669">ניתן לתרום נתוני חיפוש וגלישה באופן אנונימי כדי ללטש את חיפוש Brave באמצעות פרויקט גילוי Web. זהו מקור פתוח לחלוטין.</translation>
 <translation id="4174337572777167894">פרויקט גילוי אתרים</translation>
 <translation id="7090992647511817643">חֶשְׁבּוֹן</translation>
 <translation id="4822132585477111396">מזהה שרשרת</translation>
@@ -1006,7 +1002,6 @@
 <translation id="453788800165937690">אזהרה: לעולם אל תשתף את המפתח הפרטי שלך. כל מי שיש לו מפתח פרטי זה יוכל לקחת את הנכסים שלך באופן תמידי.</translation>
 <translation id="2416098547200943834">הערה: מפתח פרטי מסופק בתור JSON בקידוד הקסדצימלי המכיל מפתח פרטי ומידע פרוטוקול. <ph name="LINK_START"/>פרטים נוספים<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">הערה: יש לספק מפתח פרטי בתור JSON בקידוד הקסדצימלי המכיל מפתח פרטי ומידע פרוטוקול.<ph name="LINK_START"/>פרטים נוספים<ph name="LINK_END"/>.</translation>
-<translation id="1505724566145200403">שימו לב: רק מקשים מורחבים  zprv או vprv for Testnet)( נתמכים.</translation>
 <translation id="42126664696688958">ייצא</translation>
 <translation id="1366855498335432549">הפקדה</translation>
 <translation id="790104325876206743">הגדרות חשבון</translation>
@@ -1028,7 +1023,7 @@
 <translation id="3792938779249970121">בחר חשבון</translation>
 <translation id="6797737193502014008">חפש חשבונות</translation>
 <translation id="3505920073976671674">בחר רשת</translation>
-<translation id="6857856707736769720">בחירת מתוך</translation>
+<translation id="2556155338676955870">בחר נכס</translation>
 <translation id="6323024765179772761">חפש מטבעות</translation>
 <translation id="6998989275928107238">אל</translation>
 <translation id="1506421160138798546">הערכה</translation>
@@ -1265,6 +1260,8 @@
 <translation id="6153197326949684688">מכור עם<ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">קנה עם Sardine</translation>
 <translation id="3301984548406568819">הנתונים הפיננסיים והעסקאות מעובדים על ידי השותפים שלנו ב-onramp.  ואילו Brave  אינה אוספת או בעלת גישה לנתונים כאלה.</translation>
+<translation id="2803778066587058297">נכס</translation>
+<translation id="3067168166931605141">שם החשבון</translation>
 <translation id="6534275647567011533">רכישה עם Transak</translation>
 <translation id="5973390321030037823">רכישה עם Link</translation>
 <translation id="1932640759496708012">קנה עם Coinbase Pay</translation>
@@ -1783,7 +1780,6 @@ CoinGecko</translation>
 <translation id="1498364270401875204">ערוצים</translation>
 <translation id="6401776069326703655">צפייה בהכל</translation>
 <translation id="8032569120109842252">במעקב</translation>
-<translation id="3790976909891317760">{FEED_COUNT, plural, =1 {# source} אחר {# sources} }</translation>
 <translation id="6143382357119101833">קבל עדכונים מ-<ph name="URL"/></translation>
 <translation id="4515121482885046194">לא נמצאו עדכונים ב-<ph name="URL"/></translation>
 <translation id="8535964427132833909">אין כאן כלום :'(</translation>
@@ -2002,6 +1998,7 @@ CoinGecko</translation>
 <translation id="8571323456914890254">פתח בתצוגה מפוצלת</translation>
 <translation id="5329136173514538969">לא לפצל כרטיסיות</translation>
 <translation id="7595612919377246359">החליפו מיקום טאב</translation>
+<translation id="2367972762794486313">הצג יישומים</translation>
 <translation id="8591883849678260674">צפה במקור</translation>
 <translation id="1969654232209826429">קריאה מינימלית</translation>
 <translation id="4101707289420716287">כבה את Speedreader</translation>
@@ -2094,7 +2091,6 @@ CoinGecko</translation>
 <translation id="2313959174679245365">לא ניתן היה לשלוח את הדירוג שלך, אנא בדוק את חיבור הרשת ונסה שוב</translation>
 <translation id="98413980871833152">לא ניתן היה לשלוח את המשוב שלך, אנא בדוק את חיבור הרשת ונסה שוב</translation>
 <translation id="8742658901413346500">השיחה הזו ארוכה וליאו עלול להתחיל לשכוח דברים בקרוב. אתה יכול לקבל שיחות ארוכות יותר על ידי מעבר לדגם פרימיום, או שאתה יכול לנקות את הצ'אט כדי לאפס אותו.</translation>
-<translation id="7550152963854770123">ניקוי צ'אט</translation>
 <translation id="7494736170250048402">שלח הודעה לליאו</translation>
 <translation id="8712637175834984815">הבנתי</translation>
 <translation id="1093419424466417703">הדף ארוך מדי עבור ליאו. ייתכן שחלק מההקשר חסר מהשיחה. ליאו הצליח לקרוא <ph name="PERCENTAGE"/> מתוכן הדף.</translation>
@@ -2229,8 +2225,8 @@ CoinGecko</translation>
 <translation id="6821108091726602352">עזור לנו לתקן את הרשת על ידי השתתפות בפרויקט גילוי הרשת של Brave. על ידי שיתוף אותות חיפוש אנונימיים לחלוטין, תוכל לעזור ל-Brave לגדול את מפתח החיפוש.</translation>
 <translation id="6764845498618413165">למד עוד.</translation>
 <translation id="7818938154803162778">בטח, אעזור</translation>
-<translation id="7821773512278295352">Brave Firewall + VPN: מחובר</translation>
-<translation id="6019088868713395120">Brave Firewall + VPN: לא מחובר</translation>
+<translation id="958268166261124668">Brave VPN: מחובר</translation>
+<translation id="6021669293402055982">Brave VPN: מנותק</translation>
 <translation id="3541307549916475335">Brave VPN Panel UI</translation>
 <translation id="7143207342074048698">מתחבר</translation>
 <translation id="1202549130170287307">מתנתק</translation>
@@ -2242,7 +2238,6 @@ CoinGecko</translation>
 <translation id="3357036723290257445">כבר רכשת VPN של Brave?</translation>
 <translation id="8814357473522731680">מופעל באמצעות</translation>
 <translation id="8652175077544655965">סגור הגדרות</translation>
-<translation id="3099126540952997993">חומת אש + VPN</translation>
 <translation id="5908163815855240493">עבור לדף הראשי</translation>
 <translation id="7805768142964895445">סטטוס</translation>
 <translation id="5747552184818312860">מועד תפוגה</translation>
@@ -2313,9 +2308,7 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 <translation id="9061845622728745852">אזור זמן:</translation>
 <translation id="8295393906499561642">פג תוקף ההפעלה</translation>
 <translation id="3312623558576021182">התחבר לחשבון <ph name="BRAVE_ACCOUNT_BEGIN"/>האמיץ<ph name="BRAVE_ACCOUNT_END"/> שלך כדי לרענן את הפעלת ה-VPN שלך.</translation>
-<translation id="6021669293402055982">Brave VPN: מנותק</translation>
 <translation id="7861195049821776142">Brave VPN: מתנתק</translation>
-<translation id="958268166261124668">Brave VPN: מחובר</translation>
 <translation id="2061807837510296780">Brave VPN: מתחבר</translation>
 <translation id="1313124107969703758">Brave VPN: שגיאה</translation>
 <translation id="8273420301954598554">סטטוס: מחובר</translation>
@@ -2324,6 +2317,10 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 <translation id="8048263175525832621">Brave VPN: מנותק</translation>
 <translation id="1498770726476841108">נהל חשבון</translation>
 <translation id="6825718953004242472">הסר סמל</translation>
+<translation id="6819278685469225453">הגנו על כל האפליקציות במכשיר שלכם</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8425213833346101688">שנה</translation>
+<translation id="8703188411226330709">התחל ניסיון חינם</translation>
 <translation id="3287942014983548982">פתח כאן</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, פתוח כרגע,
 הקש על Tab ואז על Enter כדי לעבור ללשונית הפתוחה</translation>
@@ -2331,7 +2328,4 @@ Brave יש שירות עוזר שמגן עליך מפני חשיפה זו על �
 הכרטיסייה הקיימת</translation>
 <translation id="451189393813405346">תשאל את ליאו</translation>
 <translation id="8525248723479742219">נגן מאוחר יותר</translation>
-<translation id="1450735350187803276">מודעות שנצפו החודש</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="8425213833346101688">שינוי</translation>
 </translationbundle>

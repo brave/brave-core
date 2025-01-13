@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pl">
-<translation id="8631427463833030968">Zarządzaj reklamami</translation>
 <translation id="7630214457764713113">Skopiuj wyczyszczone łącze</translation>
-<translation id="885805571521218129">Oto Twoje szacunkowe zarobki z reklam Brave w tym miesiącu</translation>
 <translation id="3478449063771497234">Powiadomienia są wyłączone</translation>
 <translation id="2862978891748913252">Wybierz kraj</translation>
 <translation id="3970520675790340955">Wybierz kraj, żebyśmy mogli pokazać Ci opcje i reklamy właściwe dla Twojego regionu.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Pokaż sugestie dotyczące najpopularniejszych stron</translation>
 <translation id="6285118765755298263">Indeksowanie innych wyszukiwarek</translation>
 <translation id="919715748352669592">Automatycznie indeksuje strony internetowe, które są zgodne ze specyfikacją OpenSearch.</translation>
+<translation id="412411722208944922">Szybkie wyszukiwarki</translation>
+<translation id="2836969042340015500">Szybkie wyszukiwarki</translation>
+<translation id="9120455214794270250">Pokaż pasek szybkiego wyszukiwania</translation>
+<translation id="1052991798173010693">Obecnie używane silniki wyszukiwania</translation>
+<translation id="335303688425891752">Naciśnij i przytrzymaj, by zmienić kolejność</translation>
 <translation id="9148058034647219655">Wyjście</translation>
 <translation id="8047754398610073499">Blokuj powiadomienia o wyrażeniu zgody na pliki cookie</translation>
 <translation id="2621893359845808115">Blokuj okna pop-up na stronie internetowej, które wymagają potwierdzenia/odrzucenia plików cookie</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Witamy w przeglądarce Brave</translation>
 <translation id="4117451092682672487">Prosta ochrona prywatności.</translation>
 <translation id="7909375417585209817">Gdy Brave jest domyślną przeglądarką, każdy otwarty link otwiera się z ochroną prywatności Brave.</translation>
-<translation id="3737878115109582442">Dodaj widżet wyszukiwania</translation>
-<translation id="6199413390010319240">Miej Brave pod ręką, aby szybciej przeglądać sieć.</translation>
-<translation id="4338600611020922010">Dodaj do ekranu głównego</translation>
 <translation id="7370959926683925817">Blokuj reklamy. Chroń dane. Każdego dnia.</translation>
 <translation id="7281027579943912834">Z Brave jako domyślną przeglądarką każdy link, który klikniesz, zostanie objęty ochroną Brave przed reklamami. Każda strona i transmisja. Każdy film.</translation>
 <translation id="5148943178722443958">Pomóż ulepszyć Brave.</translation>
@@ -408,8 +408,13 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="6925081665778864449">Aby zsynchronizować hasła, włącz uwierzytelnianie biometryczne/kodem na swoim urządzeniu z Androidem. Ten dodatkowy środek bezpieczeństwa pomaga chronić hasła.</translation>
 <translation id="597993392929850353">Licencja Brave</translation>
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
-<translation id="6199596294742117349">To jest karta prywatna</translation>
-<translation id="5858455511731621847">Mimo że strony otwierane w prywatnych kartach nie są zapisywane lokalnie. Taki sposób przeglądania treści nie zapewnia użytkownikowi anonimowości, ani nie czyni go niewidocznym dla dostawcy Internetu, pracodawcy bądź dla odwiedzanych przez niego stron.</translation>
+<translation id="3110967157686007724">Karta prywatna</translation>
+<translation id="944340256927461196">Nie pozostawiaj śladów na swoim urządzeniu</translation>
+<translation id="2063044449012253966">Witryny odwiedzane w oknach prywatnych nie będą wyświetlane w Twojej historii. Pliki cookie, dane formularzy i dane witryn znikają po zamknięciu wszystkich okien prywatnych.</translation>
+<translation id="7395764193745523646">Widoczność przeglądania</translation>
+<translation id="8735363371744702779">Pamiętaj, że nawet w oknach prywatnych twoja aktywność przeglądania może być widoczna dla dostawcy usług internetowych, obserwatorów sieci lub pracodawcy (jeśli korzystasz z urządzenia/sieci służbowej).</translation>
+<translation id="1413177583895309156">Brave VPN szyfruje i chroni wszystko, co robisz online, nawet poza przeglądarką Brave.</translation>
+<translation id="3974348661685061050">Wypróbuj za darmo przez 7 dni</translation>
 <translation id="5789441016350810005">Reklamy Brave przesyłane, gdy przeglądarka znajduje się w tle</translation>
 <translation id="4973347371961481083">Datki</translation>
 <translation id="7047578174221019462">Twoje miesięczne wsparcie zostało przetworzone.</translation>
@@ -447,7 +452,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1275213816424141989">Może później</translation>
 <translation id="4406937629441301400">Zyskaj tokeny za obejrzenie tego obrazu i przekaż dalej twórcom. <ph name="LEARN_MORE"/></translation>
 <translation id="6632345639591919543">Zyskujesz tokeny za oglądanie tego obrazu.\n<ph name="LEARN_MORE"/></translation>
-<translation id="8164992819127316581">Przetwarzanie wypłaty nagród za miesiąc  <ph name="CURRENT_MONTH"/> rozpocznie się do <ph name="PAYOUT_DATE"/>.</translation>
+<translation id="8164992819127316581">Przetwarzanie wypłaty nagród za miesiąc <ph name="CURRENT_MONTH"/> rozpocznie się do <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Przetwarzanie wypłaty nagród za miesiąc <ph name="CURRENT_MONTH"/> w toku. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Przetwarzanie wypłaty nagród za miesiąc <ph name="CURRENT_MONTH"/> zostało zakończone. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Sprawdź status</translation>
@@ -711,9 +716,10 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1532536259167115948">Subskrypcja miesięczna <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Subskrypcja roczna <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Subskrypcja odnawialna miesięcznie</translation>
+<translation id="112929124115834557">Odnawia się co roku</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> / mies.</translation>
 <translation id="1163809943099641131">Jeden rok</translation>
-<translation id="727385358513272220">Odnowienie roczne (<ph name="DISCOUNT_TEXT_START"/>pozwala zaoszczędzić <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>zaoszczędź <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> / rok</translation>
 <translation id="2786538705804257030">Subskrypcje będą naliczane przez Twoje konto Google. Wszelka niewykorzystana część okresu próbnego, jeśli taki posiadasz, przepadnie w momencie wykupienia subskrypcji.\n\nTwoja subskrypcja zostanie odnowiona automatycznie, chyba że zostanie anulowana na co najmniej 24 godziny przed końcem bieżącego okresu.\n\nMożesz zarządzać subskrypcjami w Ustawieniach.\nKorzystając z Brave, wyrażasz zgodę na Warunki świadczenia usług i Politykę prywatności.</translation>
 <translation id="5035172357624830412">Masz już wykupioną subskrypcję na brave.com?</translation>
@@ -843,7 +849,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="4351811224047421378">Dokładność liczb po przecinku</translation>
 <translation id="3494964159182650590">Podsumowanie nagród</translation>
 <translation id="590733288489975971">Nagrody z reklam</translation>
-<translation id="1886682615222609631">Dochody dotychczas</translation>
+<translation id="1450735350187803276">Reklamy obejrzane w tym miesiącu</translation>
 <translation id="1767561995429774671">Wspieraj</translation>
 <translation id="7335371657242627509">Włącz automatyczną dotację</translation>
 <translation id="6727102863431372879">Ustal</translation>
@@ -1229,5 +1235,6 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="2728518864712716830">Aktualizacja została pobrana.</translation>
 <translation id="8403338849301491865">Lista filtru została pomyślnie zaktualizowana</translation>
 <translation id="4650851936784160359">Nie można zaktualizować listy filtru. Spróbuj ponownie</translation>
-<translation id="1450735350187803276">Reklamy wyświetlone w tym miesiącu</translation>
+<translation id="3098054327870766317">Pokaż przycisk cofania, gdy karty są zamknięte</translation>
+<translation id="1336494649091412226">Czy na pewno chcesz opuścić Brave?</translation>
 </translationbundle>

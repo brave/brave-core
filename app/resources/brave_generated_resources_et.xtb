@@ -307,11 +307,11 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="6155018868740116868">Taasta</translation>
 <translation id="2521960050170773751">Lisa meedia lehelt</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> soovib avada</translation>
-<translation id="7128982309566342232">Manustatud leht <ph name="SITE"/> soovib avada</translation>
+<translation id="4828353184750597953">Lehel <ph name="SITE"/> olev manustatud leht soovib avada</translation>
 <translation id="1175012181261953767">See leht soovib avada</translation>
 <translation id="7459546222322124545">Sellel lehel olev manustatud leht soovib avada</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> soovib salvestada</translation>
-<translation id="5936788906460687941">Manustatud leht <ph name="SITE"/> soovib salvestada</translation>
+<translation id="8813509417421129632">Lehel <ph name="SITE"/> olev manustatud leht soovib salvestada</translation>
 <translation id="7700010743463174379">See leht soovib salvestada</translation>
 <translation id="6774238875569752630">Sellel lehel olev manustatud leht soovib salvestada</translation>
 <translation id="9156965752763025780">Teie muudatused jõustuvad järgmine kord, kui Bravei taaskäivitate.</translation>
@@ -573,6 +573,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="4094590686212463338">Selle sünkroonimisahelaga liitumine ei õnnestunud. Sünkroonimisahel kustutati.</translation>
 <translation id="4908081302669157000">Telefoninumbrid, e-posti aadressid ja aadressid</translation>
 <translation id="294985549514492876">Veebirakendused (PWA-d)</translation>
+<translation id="7029809446516969842">Paroolid</translation>
 <translation id="924029461438529367">Näita otsingusoovitusi</translation>
 <translation id="3128251601544028053">Kui sisestate midagi aadressiribale või otsingukasti, saadab Brave sisestatava teie vaikeotsingumootorile, et saada paremaid soovitusi. Privaatsetes akendes ei ole see võimalik.</translation>
 <translation id="6285118765755298263">Indekseeri muid otsimootoreid</translation>
@@ -715,6 +716,8 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="1355326130503900056">Mudeli nimi sellisena, nagu see peaks olema teenindavale raamistikule esitatavas päringus, nt phi-3 (arvestage, et kui see nimi ei ole täpselt selline, nagu teenindav raamistik ootab, siis integratsioon ei toimi).</translation>
 <translation id="3286410514484292784">URL, kus teie teenindav raamistik ootab taotluseid. Kui te ei ole kindel, vaadake teenindava raamistiku dokumentatsiooni. Näiteks Ollama puhul on see alati http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Mõned teenindavad raamistikud võivad nõuda autentimisandmeid, näiteks API-võtit või juurdepääsutunnust. Need lisatakse taotluse päisesse.</translation>
+<translation id="4335128003329183586">Konteksti suurus</translation>
+<translation id="8794525422794607973">Maksimaalne tokenite arv, mida mudel saab ühe interaktsiooni jooksul töödelda. Iga token on umbes 3/4 sõnast. Suurem konteksti suurus võimaldab mudelil käsitleda pikemaid vestlusi. Erinevad mudelid toetavad erinevaid maksimaalseid konteksti suurusi.</translation>
 <translation id="217141195370578385">Brave ei ole nende taotluste volitatud esindaja, tutvuge valitud teenusepakkuja privaatsustingimustega.</translation>
 <translation id="2645532768679870478">Mitte-lokaalsed lõpp-punktid peaksid kasutama turvaliseks andmeedastuseks HTTPS-protokolli.</translation>
 <translation id="8177205483022887785">Sisestasite vale URL-i. Sisestage kehtiv URL.</translation>
@@ -724,6 +727,9 @@ Seda tegevust ei saa tagasi võtta.</translation>
 <translation id="7435587476558117990">Ühendage oma ise majutatud või kolmanda osapoole majutatud LLM Leoga ja kasutage neid brauseris.</translation>
 <translation id="1381050642750209119">Kasutage mis tahes OpenAI vestlusprotokolliga ühilduvat raamistikku, näiteks Ollamat.</translation>
 <translation id="2642905648178380593">Salvesta mudel</translation>
+<translation id="6304169450064541679">Süsteemiviip</translation>
+<translation id="3081947790648024460">Mudelile antud kohandatud juhised ja/või kontekst selle vastuste konkreetses suunas või stiilis juhtimiseks. Praeguse kuupäeva ja kellaaja kasutamiseks lisage %datetime%.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokenit</translation>
 <translation id="349846214503465941">Luba esitusloend</translation>
 <translation id="7903608716704052878">Lisa failid automaatselt ühenduseta vaatamiseks</translation>
 <translation id="4193768184502613558">See suvand salvestab meediumifailid automaatselt vahemällu, et saaksite neid esitada ilma internetiühenduseta.</translation>

@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
-<translation id="8631427463833030968">Administrer reklamer</translation>
 <translation id="7630214457764713113">Kopier ren link</translation>
-<translation id="885805571521218129">Dette gjenspeiler den beregnede inntjeningen for Brave-annonser denne måneden.</translation>
 <translation id="3478449063771497234">Varslinger er deaktivert</translation>
 <translation id="2862978891748913252">Velg landet ditt</translation>
 <translation id="3970520675790340955">Velg landet du er i, slik at vi kan vise de riktige valgmulighetene og annonsene for din region.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Vis forslag til de beste nettstedene</translation>
 <translation id="6285118765755298263">Indekser andre søkemotorer</translation>
 <translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
+<translation id="412411722208944922">Raske søkemotorer</translation>
+<translation id="2836969042340015500">Raske søkemotorer</translation>
+<translation id="9120455214794270250">Vis hurtigsøk-feltet</translation>
+<translation id="1052991798173010693">Søkemotorer i bruk</translation>
+<translation id="335303688425891752">Trykk og hold for å endre rekkefølgen</translation>
 <translation id="9148058034647219655">Avslutt</translation>
 <translation id="8047754398610073499">Blokker varsler om informasjonskapselinnstillinger</translation>
 <translation id="2621893359845808115">Blokkerer popuper fra nettsider som ber deg om å godta eller avslå bruk av informasjonskapsler</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Velkommen til Brave</translation>
 <translation id="4117451092682672487">Personvern. Helt enkelt.</translation>
 <translation id="7909375417585209817">Med Brave som standard åpnes alle linker du trykker på, med Braves personvernbeskyttelser.</translation>
-<translation id="3737878115109582442">Legg til søkewidgeten</translation>
-<translation id="6199413390010319240">Ha Brave for hånden for å utforske nettet raskere.</translation>
-<translation id="4338600611020922010">Legg til på Hjem-skjermen</translation>
 <translation id="7370959926683925817">Blokker reklame. Spar data. Hver dag.</translation>
 <translation id="7281027579943912834">Med Brave som standard, vil hver lenke du trykker på få Braves reklameblokkering. Alle sider, videoer og strømminger.</translation>
 <translation id="5148943178722443958">Bidra til å gjøre Brave bedre.</translation>
@@ -408,8 +408,13 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="6925081665778864449">For å synkronisere passord må du aktivere autentisering via biometri/passord på Android-enheten din. Dette ekstra sikkerhetstiltaket bidrar til å holde passordene dine trygge.</translation>
 <translation id="597993392929850353">Brave-lisens</translation>
 <translation id="6336451774241870485">Ny privat fane</translation>
-<translation id="6199596294742117349">Dette er en privat fane</translation>
-<translation id="5858455511731621847">Selv om nettsteder du besøker i private faner, ikke lagres lokalt, er du ikke anonym eller usynlig overfor internettleverandøren, arbeidsgiveren eller nettstedene du besøker.</translation>
+<translation id="3110967157686007724">Privat fane</translation>
+<translation id="944340256927461196">Uten et eneste spor på enheten</translation>
+<translation id="2063044449012253966">Nettsidene du besøker i private vinduer dukker ikke opp i loggen din. Alle informasjonskapsler, inndata og sidedata forsvinner når du lukker vinduet.</translation>
+<translation id="7395764193745523646">Synlig surfing</translation>
+<translation id="8735363371744702779">Vær oppmerksom på at aktiviteten din kan være synlig for ISP-leverandøren, nettverksleverandøren og arbeidsgiveren din (dersom du bruker en jobbenhet/-nettverk), selv om du bruker private vinduer.</translation>
+<translation id="1413177583895309156">Brave VPN krypterer og beskytter alt du gjør på nett, også det du gjør i andre nettlesere.</translation>
+<translation id="3974348661685061050">Prøv det gratis i syv dager</translation>
 <translation id="5789441016350810005">Brave Ads blir sendt når nettleseren er i bakgrunnen</translation>
 <translation id="4973347371961481083">Bidrag</translation>
 <translation id="7047578174221019462">De månedlige bidragene dine er behandlet.</translation>
@@ -710,9 +715,10 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1532536259167115948">Månedsabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Årsabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Fornyes månedlig</translation>
+<translation id="112929124115834557">Fornyes årlig</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /måned</translation>
 <translation id="1163809943099641131">Ett år</translation>
-<translation id="727385358513272220">Fornyes årlig (<ph name="DISCOUNT_TEXT_START"/>spar <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>du sparer <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /år</translation>
 <translation id="2786538705804257030">Abonnementer belastes via Google-kontoen din. Det som eventuelt forblir ubrukt av den gratis prøveperioden, bortfaller hvis du kjøper et abonnement.\n\nAbonnementet fornyes automatisk, med mindre det kanselleres minst 24 timer før den inneværende perioden er omme.\n\nDu kan administrere abonnementene dine i Innstillingene.\n\nVed å bruke Brave samtykker du i bruksvilkårene og personvernerklæringen.</translation>
 <translation id="5035172357624830412">Har du allerede kjøpt på brave.com?</translation>
@@ -842,7 +848,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="4351811224047421378">Presisjonsdesimaler</translation>
 <translation id="3494964159182650590">Sammendrag av belønninger</translation>
 <translation id="590733288489975971">Rewards fra Ads</translation>
-<translation id="1886682615222609631">Inntjening så langt</translation>
+<translation id="1450735350187803276">Annonser du har sett denne måneden</translation>
 <translation id="1767561995429774671">Bidra</translation>
 <translation id="7335371657242627509">Inkluder i Auto-bidrag</translation>
 <translation id="6727102863431372879">Angi</translation>
@@ -1228,5 +1234,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="2728518864712716830">Oppdatering lastet ned.</translation>
 <translation id="8403338849301491865">Filterlisten er oppdatert</translation>
 <translation id="4650851936784160359">Filterlisten kunne ikke oppdateres. Prøv igjen</translation>
-<translation id="1450735350187803276">Annonser sett denne måneden</translation>
+<translation id="3098054327870766317">Vis angreknappen når faner lukkes</translation>
+<translation id="1336494649091412226">Er du sikker på at du vil avslutte Brave?</translation>
 </translationbundle>

@@ -7,7 +7,6 @@
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{<ph name="NUM_YEARS_ONE"/> jaar geleden gemaakt}other{<ph name="NUM_YEARS_MANY"/> jaar geleden gemaakt}}</translation>
 <translation id="1173894706177603556">Naam wijzigen</translation>
 <translation id="1197088940767939838">Oranje</translation>
-<translation id="125153950246128346">Tik om nog een tabblad te bekijken</translation>
 <translation id="1273910660700874265">Opties voor tabbladgroep <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="1293272072740285747">Behoud deze groep om later tabbladen toe te voegen of verwijder de groep als je deze niet meer nodig hebt.
 
@@ -27,7 +26,6 @@ Als je de groep verwijdert, raakt iedereen meteen de toegang tot de tabbladgroep
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> tabblad}other{<ph name="TABS_COUNT_MANY"/> tabbladen}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> geselecteerd tabblad bookmarken}other{<ph name="TABS_COUNT_MANY"/> geselecteerde tabbladen bookmarken}}</translation>
 <translation id="2118649612461486615">Winkelinformatie</translation>
-<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{Je kunt je gesloten tabbladen en groepen opnieuw openen via het gedeelte Recente tabbladen en het gedeelte Tabbladgroepen. Je incognitotabblad is niet beschikbaar.}other{Je kunt je gesloten tabbladen en groepen opnieuw openen via het gedeelte Recente tabbladen en het gedeelte Tabbladgroepen. Je # incognitotabbladen zijn niet beschikbaar.}}</translation>
 <translation id="2162620598375156287">Nu <ph name="CURRENT_PRICE"/> op <ph name="SOURCE_WEBSITE"/></translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Tab uit groep verwijderen}other{Tabs uit groep verwijderen}}</translation>
 <translation id="2271452184061378400">Je tabbladgroepen worden hier opgeslagen</translation>
@@ -62,6 +60,7 @@ Als je de groep verwijdert, raakt iedereen meteen de toegang tot de tabbladgroep
 <translation id="3613492231657284463">Dialoogvenster Inactieve tabbladen verbergen</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">Thumbnail voor voorbeeld van blad delen.</translation>
+<translation id="3810973564298564668">Beheren</translation>
 <translation id="381219490185664296">Groepering van tabbladen ongedaan maken?</translation>
 <translation id="3940195383040445971">Prijzen volgen op tabbladen</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{Tabblad groeperen}other{Tabbladen groeperen}}</translation>
@@ -72,7 +71,6 @@ Als je de groep verwijdert, raakt iedereen meteen de toegang tot de tabbladgroep
 <translation id="4139634748112164403">De tabbladen blijven open op dit apparaat, maar de groep wordt definitief verwijderd</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{Groep <ph name="TITLE_OF_GROUP"/> met <ph name="TABS_COUNT_ONE"/> tabblad sluiten, kleur <ph name="COLOR_NAME"/>.}other{Groep <ph name="TITLE_OF_GROUP"/> met <ph name="TABS_COUNT_MANY"/> tabbladen sluiten, kleur <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="4159784952369912983">Paars</translation>
-<translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{Tabbladgroep <ph name="TITLE_OF_GROUP"/> met <ph name="TABS_COUNT_ONE"/> tabblad uitvouwen.}other{Tabbladgroep <ph name="TITLE_OF_GROUP"/> met <ph name="TABS_COUNT_MANY"/> tabbladen uitvouwen.}}</translation>
 <translation id="427987768447457592">Nieuwe tabbladgroep</translation>
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> tabblad gewijzigd, <ph name="ANY_CLOSED"/> gesloten}other{<ph name="MANY_CHANGED"/> tabbladen gewijzigd, <ph name="ANY_CLOSED"/> gesloten}}</translation>
 <translation id="4371591986692297148">Inactief</translation>
@@ -94,11 +92,9 @@ Als je de groep verwijdert, raakt iedereen meteen de toegang tot de tabbladgroep
 <translation id="5007392906805964215">Bekijken</translation>
 <translation id="5073204694187207510">Raster op volledig scherm verbergen</translation>
 <translation id="5076161749301278626">Winkelreviews bekijken?</translation>
-<translation id="5082793167783849073">Vergelijk pagina's snel door een groep te maken. Tik op een link en houd deze vast om te beginnen.</translation>
 <translation id="5094423602314093681">Tabblad(en) verwijderen en groep verwijderen?</translation>
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> tabblad toegevoegd}other{<ph name="MANY_ADDED"/> tabbladen toegevoegd}}</translation>
 <translation id="5161254044473106830">Titel is vereist</translation>
-<translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{Tabbladgroep met <ph name="TABS_COUNT_ONE"/> tabblad sluiten.}other{Tabbladgroep met <ph name="TABS_COUNT_MANY"/> tabbladen sluiten.}}</translation>
 <translation id="5339733443032484186">Je laatste tabblad</translation>
 <translation id="5400836586163650660">Grijs</translation>
 <translation id="5490235265819901748">Tabbladgroep uitgevouwen</translation>
@@ -140,7 +136,6 @@ Als je de groep verlaat, raak je meteen de toegang tot de tabbladgroep <ph name=
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{Gedeelde tabbladgroep <ph name="TITLE_OF_GROUP"/> met <ph name="TABS_COUNT_ONE"/> tabblad uitvouwen, kleur <ph name="COLOR_NAME"/>.}other{Gedeelde tabbladgroep <ph name="TITLE_OF_GROUP"/> met <ph name="TABS_COUNT_MANY"/> tabbladen uitvouwen, kleur <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Tabblad delen}other{Tabbladen delen}}</translation>
 <translation id="7129458170538955174">Informatie over deze winkel is op halve hoogte geopend</translation>
-<translation id="7200189319044305940">{NUMBER_OF_TABS,plural, =1{Groep <ph name="TITLE_OF_GROUP"/> met <ph name="TABS_COUNT_ONE"/> tabblad sluiten.}other{Groep <ph name="TITLE_OF_GROUP"/> met <ph name="TABS_COUNT_MANY"/> tabbladen sluiten.}}</translation>
 <translation id="7204204600596740190">Optie om meerdere tabbladen te selecteren</translation>
 <translation id="7211038039686180558">Je tabbladgroepen worden automatisch opgeslagen en geüpdatet op al je ingelogde apparaten</translation>
 <translation id="731648547091221002"><ph name="COLOR_NAME"/> is geselecteerd</translation>
@@ -189,16 +184,14 @@ Als je de groep verlaat, raak je meteen de toegang tot de tabbladgroep <ph name=
 <translation id="8820741577754260431">Prijsdalingen bekijken op je tabbladen</translation>
 <translation id="8887921976452567404">Je kunt je gesloten tabbladen en groepen opnieuw openen via het gedeelte Recente tabbladen en het gedeelte Tabbladgroepen.</translation>
 <translation id="8915916167043355778">Alles sluiten</translation>
-<translation id="8926389886865778422">Niet meer vragen</translation>
-<translation id="8993967613304721520">{NUMBER_OF_TABS,plural, =1{Tabbladgroep met <ph name="TABS_COUNT_ONE"/> tabblad uitvouwen.}other{Tabbladgroep met <ph name="TABS_COUNT_MANY"/> tabbladen uitvouwen.}}</translation>
 <translation id="9090098097337832354">Informatie over deze winkel gesloten</translation>
 <translation id="9111228330448174435">Dialoogvenster tonen bij het maken van een nieuwe tabbladgroep</translation>
 <translation id="9114502155681725011">Het actiemenu van de tabbladgroep openen voor de tabbladgroep <ph name="TITLE_OF_GROUP"/>, kleur <ph name="COLOR_NAME"/>.</translation>
-<translation id="9150694013019234766">Je kunt onderaan het scherm schakelen tussen tabbladen in je tabbladgroep</translation>
 <translation id="9169594135889675189">Nieuw tabblad aan groep toevoegen</translation>
 <translation id="9216898458513705996">De tabbladen blijven geopend op dit apparaat, maar de groep wordt verwijderd van alle apparaten die zijn ingelogd bij <ph name="USER_EMAIL"/></translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Tabbladgroep met <ph name="TABS_COUNT_ONE"/> tabblad uitvouwen, kleur <ph name="COLOR_NAME"/>.}other{Tabbladgroep met <ph name="TABS_COUNT_MANY"/> tabbladen uitvouwen, kleur <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="992256792861109788">Roze</translation>
 <translation id="3228718275011575753">Alle privétabbladen sluiten?</translation>
 <translation id="6687920250729800417">Uw activiteit in deze Private-tabbladen wordt van dit apparaat verwijderd</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{Je kunt je gesloten tabbladen en groepen opnieuw openen via het gedeelte Recente tabbladen en het gedeelte Tabbladgroepen. Je incognitotabblad is niet beschikbaar.}other{Je kunt je gesloten tabbladen en groepen opnieuw openen via het gedeelte Recente tabbladen en het gedeelte Tabbladgroepen. Je # incognitotabbladen zijn niet beschikbaar.}}</translation>
 </translationbundle>
