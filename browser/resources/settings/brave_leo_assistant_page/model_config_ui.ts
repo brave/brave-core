@@ -165,11 +165,11 @@ export class ModelConfigUI extends ModelConfigUIBase {
   }
 
   onModelLabelChange_(e: any) {
-    this.label = e.target.value
+    this.label = e.value
   }
 
   onModelRequestNameChange_(e: any) {
-    this.modelRequestName = e.target.value
+    this.modelRequestName = e.value
   }
 
   onModelSystemPromptChange_(e: any) {
@@ -177,16 +177,16 @@ export class ModelConfigUI extends ModelConfigUIBase {
   }
 
   onContextSizeChange_(e: any) {
-    this.contextSize = parseInt(e.target.value, 10);
+    this.contextSize = parseInt(e.value, 10);
   }
 
   onModelServerEndpointChange_(e: any) {
-    this.endpointUrl = e.target.value
+    this.endpointUrl = e.value
     this.checkEndpointValidity_()
   }
 
   onModelApiKeyChange_(e: any) {
-    this.apiKey = e.target.value
+    this.apiKey = e.value
   }
 
   constructTokenEstimateString_(e?: any) {
