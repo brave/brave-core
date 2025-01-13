@@ -2,9 +2,6 @@ include_rules = [
   "+brave/components/api_request_helper",
   "+brave/components/permissions",
   "+brave/components/version_info",
-  "+brave/components/content_settings/core/browser",
-  "+brave/components/brave_shields/content/test",
-  "+brave/components/ephemeral_storage",
 ]
 
 specific_include_rules = {
