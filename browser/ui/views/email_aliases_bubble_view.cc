@@ -67,13 +67,6 @@ EmailAliasesBubbleView::EmailAliasesBubbleView(views::View* anchor_view,
 
 EmailAliasesBubbleView::~EmailAliasesBubbleView() {}
 
-void EmailAliasesBubbleView::OnWidgetVisibilityChanged(views::Widget* widget,
-                                                       bool visible) {
-  std::cout << "OnWidgetVisibilityChanged" << std::endl;
-  BubbleDialogDelegateView::OnWidgetVisibilityChanged(widget, visible);
-  Close();
-}
-
 void EmailAliasesBubbleView::FillField(const std::string& alias_address) {
   if (!browser_) {
     return;
