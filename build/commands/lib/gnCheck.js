@@ -16,7 +16,7 @@ const gnCheck = (buildConfig = config.defaultBuildConfig, options = {}) => {
       'buildtools/checkdeps/checkdeps.py',
       'brave',
       '--extra-repos=brave',
-      '--no-resolve-dotdot',
+      '--no-resolve-dotdot'
     ],
     config.defaultOptions
   )
