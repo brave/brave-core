@@ -1,0 +1,37 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_education/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+source_set("brave_browser_command") {
+  sources = [
+    "brave_browser_command_handler.cc",
+    "brave_browser_command_handler.h",
+  ]
+
+  deps = [
+    "//brave/browser/ai_chat",
+    "//brave/browser/brave_rewards",
+    "//brave/browser/brave_wallet",
+    "//brave/components/brave_education:brave_education",
+    "//brave/components/brave_education/resources:generated_resources",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/ui/webui/resources/js/brave_browser_command:mojom",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/side_panel",
+    "//chrome/browser/ui/webui:webui_util",
+    "//components/language/core/browser",
+    "//ui/webui",
+  ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/browser/brave_vpn" ]
+  }
+
+  public_deps = [ "//brave/components/brave_education" ]
+}

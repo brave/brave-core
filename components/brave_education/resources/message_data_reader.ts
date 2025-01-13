@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Command } from 'gen/brave/components/brave_education/education_page.mojom.m.js'
+import { Command } from 'gen/brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom.m.js'
 
 const commandNames = new Map<string, Command>(Object.entries({
   'open-rewards-onboarding': Command.kOpenRewardsOnboarding,

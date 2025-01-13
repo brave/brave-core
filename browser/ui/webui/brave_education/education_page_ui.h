@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_education/education_page.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom.h"
 #include "content/public/browser/webui_config.h"
 #include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -26,8 +26,9 @@ namespace brave_education {
 
 // The Web UI controller for the Brave product education page, which displays
 // production education website content in an iframe.
-class EducationPageUI : public ui::MojoWebUIController,
-                        public mojom::EducationPageHandlerFactory {
+class EducationPageUI
+    : public ui::MojoWebUIController,
+      public brave_browser_command::mojom::BraveBrowserCommandHandlerFactory {
  public:
   EducationPageUI(content::WebUI* web_ui, const GURL& url);
   ~EducationPageUI() override;
@@ -35,16 +36,20 @@ class EducationPageUI : public ui::MojoWebUIController,
   EducationPageUI(const EducationPageUI&) = delete;
   EducationPageUI& operator=(const EducationPageUI&) = delete;
 
-  void BindInterface(
-      mojo::PendingReceiver<EducationPageHandlerFactory> pending_receiver);
+  void BindInterface(mojo::PendingReceiver<BraveBrowserCommandHandlerFactory>
+                         pending_receiver);
 
-  // mojom::EducationPageHandlerFactory:
+  // brave_browser_command::mojom::BraveBrowserCommandHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingReceiver<mojom::EducationPageHandler> handler) override;
+      mojo::PendingReceiver<
+          brave_browser_command::mojom::BraveBrowserCommandHandler> handler)
+      override;
 
  private:
-  mojo::Receiver<EducationPageHandlerFactory> page_factory_receiver_{this};
-  std::unique_ptr<mojom::EducationPageHandler> page_handler_;
+  mojo::Receiver<BraveBrowserCommandHandlerFactory> page_factory_receiver_{
+      this};
+  std::unique_ptr<brave_browser_command::mojom::BraveBrowserCommandHandler>
+      page_handler_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };

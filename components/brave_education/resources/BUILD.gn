@@ -13,7 +13,7 @@ transpile_web_ui("brave_education") {
       ] ]
   resource_name = "brave_education"
   output_module = true
-  deps = [ "//brave/components/brave_education:mojom_js" ]
+  deps = [ "//brave/ui/webui/resources/js/brave_browser_command:mojom_js" ]
 }
 
 pack_web_resources("generated_resources") {

@@ -10,7 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
-#include "brave/browser/ui/webui/brave_education/education_page_handler.h"
+#include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -21,7 +21,7 @@
 
 namespace brave_education {
 
-class TestDelegate : public EducationPageHandler::Delegate {
+class TestDelegate : public BraveBrowserCommandHandler::Delegate {
  public:
   using AddActionCallback = base::RepeatingCallback<void(std::string)>;
 
@@ -49,9 +49,8 @@ class EducationPageHandlerTest : public testing::Test {
     profile_ = builder.Build();
   }
 
-  mojo::Remote<mojom::EducationPageHandler>& CreateHandler(
-      EducationPageType page_type,
-      Profile* profile = nullptr) {
+  mojo::Remote<brave_browser_command::mojom::BraveBrowserCommandHandler>&
+  CreateHandler(EducationPageType page_type, Profile* profile = nullptr) {
     auto delegate = std::make_unique<TestDelegate>(base::BindLambdaForTesting(
         [this](std::string action) { actions_.push_back(std::move(action)); }));
 
@@ -59,7 +58,7 @@ class EducationPageHandlerTest : public testing::Test {
       profile = profile_.get();
     }
 
-    page_handler_ = std::make_unique<EducationPageHandler>(
+    page_handler_ = std::make_unique<BraveBrowserCommandHandler>(
         remote_.BindNewPipeAndPassReceiver(), profile, page_type,
         std::move(delegate));
 
@@ -73,9 +72,10 @@ class EducationPageHandlerTest : public testing::Test {
  private:
   content::BrowserTaskEnvironment task_environment_;
   ScopedTestingLocalState local_state_{TestingBrowserProcess::GetGlobal()};
-  mojo::Remote<mojom::EducationPageHandler> remote_;
+  mojo::Remote<brave_browser_command::mojom::BraveBrowserCommandHandler>
+      remote_;
   std::unique_ptr<Profile> profile_;
-  std::unique_ptr<EducationPageHandler> page_handler_;
+  std::unique_ptr<BraveBrowserCommandHandler> page_handler_;
   std::vector<std::string> actions_;
 };
 
@@ -84,10 +84,12 @@ TEST_F(EducationPageHandlerTest, BasicCommandsExecuted) {
 
   base::test::TestFuture<bool> future;
 
-  handler->ExecuteCommand(mojom::Command::kOpenWalletOnboarding,
-                          base::DoNothing());
-  handler->ExecuteCommand(mojom::Command::kOpenRewardsOnboarding,
-                          future.GetCallback());
+  handler->ExecuteCommand(
+      brave_browser_command::mojom::Command::kOpenWalletOnboarding,
+      base::DoNothing());
+  handler->ExecuteCommand(
+      brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
+      future.GetCallback());
 
   ASSERT_TRUE(future.Get());
   EXPECT_EQ(actions()[0], "open-url: chrome://wallet/");
@@ -98,8 +100,9 @@ TEST_F(EducationPageHandlerTest, VPNCommandsExecuted) {
   auto& handler = CreateHandler(EducationPageType::kGettingStarted);
   base::test::TestFuture<bool> future;
 
-  handler->ExecuteCommand(mojom::Command::kOpenVPNOnboarding,
-                          future.GetCallback());
+  handler->ExecuteCommand(
+      brave_browser_command::mojom::Command::kOpenVPNOnboarding,
+      future.GetCallback());
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   ASSERT_TRUE(future.Get());
@@ -114,7 +117,8 @@ TEST_F(EducationPageHandlerTest, ChatCommandsExecuted) {
   auto& handler = CreateHandler(EducationPageType::kGettingStarted);
   base::test::TestFuture<bool> future;
 
-  handler->ExecuteCommand(mojom::Command::kOpenAIChat, future.GetCallback());
+  handler->ExecuteCommand(brave_browser_command::mojom::Command::kOpenAIChat,
+                          future.GetCallback());
 
   ASSERT_TRUE(future.Get());
   EXPECT_EQ(actions()[0], "open-ai-chat");
@@ -130,13 +134,17 @@ TEST_F(EducationPageHandlerTest, OffTheRecordProfile) {
 
   base::test::TestFuture<bool> future;
 
-  handler->ExecuteCommand(mojom::Command::kOpenWalletOnboarding,
-                          base::DoNothing());
-  handler->ExecuteCommand(mojom::Command::kOpenRewardsOnboarding,
-                          base::DoNothing());
-  handler->ExecuteCommand(mojom::Command::kOpenVPNOnboarding,
-                          base::DoNothing());
-  handler->ExecuteCommand(mojom::Command::kOpenAIChat, future.GetCallback());
+  handler->ExecuteCommand(
+      brave_browser_command::mojom::Command::kOpenWalletOnboarding,
+      base::DoNothing());
+  handler->ExecuteCommand(
+      brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
+      base::DoNothing());
+  handler->ExecuteCommand(
+      brave_browser_command::mojom::Command::kOpenVPNOnboarding,
+      base::DoNothing());
+  handler->ExecuteCommand(brave_browser_command::mojom::Command::kOpenAIChat,
+                          future.GetCallback());
 
   ASSERT_FALSE(future.Get());
   EXPECT_TRUE(actions().empty());

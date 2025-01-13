@@ -28,9 +28,9 @@ void EducationPageDelegateDesktop::OpenURL(const GURL& url,
 }
 
 void EducationPageDelegateDesktop::OpenRewardsPanel() {
-  // TODO(https://github.com/brave/brave-browser/issues/42179): Instead of using
-  // a `Browser` pointer, expose Rewards panel functionality via
-  // `BrowserWindowFeatures`.
+  // TODO(zenparsing): Instead of using a `Browser` pointer,
+  // expose Rewards panel functionality via `BrowserWindowFeatures`.
+  // See https://github.com/brave/brave-browser/issues/42179.
   auto* browser =
       tab_->GetBrowserWindowInterface()->GetBrowserForMigrationOnly();
   CHECK(browser);

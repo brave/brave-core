@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/brave_education/education_page_handler.h"
+#include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 
 #include "base/containers/fixed_flat_set.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -18,18 +18,19 @@
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #endif
 
-namespace brave_education {
-
 namespace {
 
-bool IsCommandSupportedForPageType(mojom::Command command,
-                                   EducationPageType page_type) {
+bool IsCommandSupportedForPageType(
+    brave_browser_command::mojom::Command command,
+    brave_education::EducationPageType page_type) {
   switch (page_type) {
-    case EducationPageType::kGettingStarted: {
-      static constexpr auto kCommands = base::MakeFixedFlatSet<mojom::Command>(
-          {mojom::Command::kOpenRewardsOnboarding,
-           mojom::Command::kOpenWalletOnboarding,
-           mojom::Command::kOpenVPNOnboarding, mojom::Command::kOpenAIChat});
+    case brave_education::EducationPageType::kGettingStarted: {
+      static constexpr auto kCommands =
+          base::MakeFixedFlatSet<brave_browser_command::mojom::Command>(
+              {brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
+               brave_browser_command::mojom::Command::kOpenWalletOnboarding,
+               brave_browser_command::mojom::Command::kOpenVPNOnboarding,
+               brave_browser_command::mojom::Command::kOpenAIChat});
       return kCommands.contains(command);
     }
   }
@@ -61,41 +62,43 @@ bool CanShowAIChat(Profile* profile) {
 
 }  // namespace
 
-EducationPageHandler::EducationPageHandler(
-    mojo::PendingReceiver<mojom::EducationPageHandler> receiver,
+BraveBrowserCommandHandler::BraveBrowserCommandHandler(
+    mojo::PendingReceiver<
+        brave_browser_command::mojom::BraveBrowserCommandHandler> receiver,
     Profile* profile,
-    EducationPageType page_type,
+    brave_education::EducationPageType page_type,
     std::unique_ptr<Delegate> delegate)
     : receiver_(this, std::move(receiver)),
       profile_(profile),
       page_type_(page_type),
       delegate_(std::move(delegate)) {}
 
-EducationPageHandler::~EducationPageHandler() = default;
+BraveBrowserCommandHandler::~BraveBrowserCommandHandler() = default;
 
-void EducationPageHandler::GetServerUrl(GetServerUrlCallback callback) {
+void BraveBrowserCommandHandler::GetServerUrl(GetServerUrlCallback callback) {
   std::move(callback).Run(GetEducationPageServerURL(page_type_).spec());
 }
 
-void EducationPageHandler::ExecuteCommand(mojom::Command command,
-                                          ExecuteCommandCallback callback) {
+void BraveBrowserCommandHandler::ExecuteCommand(
+    brave_browser_command::mojom::Command command,
+    ExecuteCommandCallback callback) {
   if (!CanExecute(command)) {
     std::move(callback).Run(false);
     return;
   }
 
   switch (command) {
-    case mojom::Command::kOpenWalletOnboarding:
+    case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
       delegate_->OpenURL(GURL(kBraveUIWalletURL),
                          WindowOpenDisposition::NEW_FOREGROUND_TAB);
       break;
-    case mojom::Command::kOpenRewardsOnboarding:
+    case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
       delegate_->OpenRewardsPanel();
       break;
-    case mojom::Command::kOpenVPNOnboarding:
+    case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
       delegate_->OpenVPNPanel();
       break;
-    case mojom::Command::kOpenAIChat:
+    case brave_browser_command::mojom::Command::kOpenAIChat:
       delegate_->OpenAIChat();
       break;
   }
@@ -103,20 +106,19 @@ void EducationPageHandler::ExecuteCommand(mojom::Command command,
   std::move(callback).Run(true);
 }
 
-bool EducationPageHandler::CanExecute(mojom::Command command) {
+bool BraveBrowserCommandHandler::CanExecute(
+    brave_browser_command::mojom::Command command) {
   if (!IsCommandSupportedForPageType(command, page_type_)) {
     return false;
   }
   switch (command) {
-    case mojom::Command::kOpenWalletOnboarding:
+    case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
       return CanShowWalletOnboarding(profile_);
-    case mojom::Command::kOpenRewardsOnboarding:
+    case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
       return CanShowRewardsOnboarding(profile_);
-    case mojom::Command::kOpenVPNOnboarding:
+    case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
       return CanShowVPNBubble(profile_);
-    case mojom::Command::kOpenAIChat:
+    case brave_browser_command::mojom::Command::kOpenAIChat:
       return CanShowAIChat(profile_);
   }
 }
-
-}  // namespace brave_education
