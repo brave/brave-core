@@ -7,6 +7,45 @@ import * as React from 'react'
 import { ManagePage, EmailAliasModal } from '../../../../../../../browser/resources/settings/email_aliases_page/email_aliases'
 import { AccountState, Alias, MappingService, ViewMode } from '../../../../../../../browser/resources/settings/email_aliases_page/types'
 
+import { provideStrings } from '../../../../../../../.storybook/locale'
+
+provideStrings({
+  emailAliasesShortDescription: 'Email Aliases',
+  emailAliasesDescription: 'Create unique, random addresses that forward to your Brave account email and can be deleted at any time. Keep your actual email address from being disclosed or used by advertisers.',
+  emailAliasesLearnMore: 'Learn More',
+  emailAliasesSignOut: 'Sign Out',
+  emailAliasesSignOutTitle: 'Sign Out of Email Aliases',
+  emailAliasesConnectingToBraveAccount: 'Connecting to Brave Account...',
+  emailAliasesBraveAccount: 'Brave Account',
+  emailAliasesCopiedToClipboard: 'Copied to clipboard',
+  emailAliasesClickToCopyAlias: 'Click to copy alias',
+  emailAliasesUsedBy: 'Used by $1',
+  emailAliasesEdit: 'Edit',
+  emailAliasesDelete: 'Delete',
+  emailAliasesCreateDescription: 'Create up to 5 free email aliases to protect your real email address.',
+  emailAliasesListTitle: 'Your email aliases',
+  emailAliasesCreateAliasTitle: 'Create a new alias email',
+  emailAliasesCreateAliasLabel: 'New alias',
+  emailAliasesRefreshButtonTitle: 'Suggest another email alias',
+  emailAliasesNoteLabel: 'Note',
+  emailAliasesEditNotePlaceholder: 'Enter a note for your address (optional)',
+  emailAliasesCancelButton: 'Cancel',
+  emailAliasesAliasLabel: 'Email alias',
+  emailAliasesEmailsWillBeForwardedTo: 'Emails will be forwarded to $1',
+  emailAliasesEditAliasTitle: 'Edit email alias',
+  emailAliasesCreateAliasButton: 'Create',
+  emailAliasesSaveAliasButton: 'Save',
+  emailAliasesSignInOrCreateAccount: 'To get started, sign in or create a Brave account',
+  emailAliasesEnterEmailToGetLoginLink: 'Enter your email address to get a secure login link sent to your email. Clicking this link will either create or access a Brave Account and let you use the free Email Aliases service.',
+  emailAliasesGetLoginLinkButton: 'Get login link',
+  emailAliasesEmailAddressPlaceholder: 'Email address',
+  emailAliasesLoginEmailOnTheWay: 'A login email is on the way to $1',
+  emailAliasesClickOnSecureLogin: 'Click on the secure login link in the email to access your account.',
+  emailAliasesDontSeeEmail: 'Don\'t see the email? Check your spam folder or',
+  emailAliasesTryAgain: 'try again.',
+  emailAliasesBubbleDescription: 'Create a random email address that forwards to your inbox while keeping your personal email private.'
+})
+
 export default {
   title: 'Email Aliases',
 }
@@ -99,6 +138,14 @@ class MockMappingService implements MappingService {
 
   async logout (): Promise<void> {
     this.accountState_ = AccountState.NoAccount
+  }
+
+  async closeBubble (): Promise<void> {
+    console.log("closeBubble")
+  }
+
+  async fillField (fieldValue: string): Promise<void> {
+    console.log("fillField", fieldValue)
   }
 }
 
