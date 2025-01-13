@@ -43,6 +43,7 @@ TEST_F(MultichainCallsUnitTest, ManyCallbacks) {
   chain_calls().AddCallback(domain(), cb2.Get());
 
   chain_calls().SetResult(domain(), mojom::kPolygonMainnetChainId, "polygon");
+  chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&cb1);
   testing::Mock::VerifyAndClearExpectations(&cb2);
@@ -50,6 +51,7 @@ TEST_F(MultichainCallsUnitTest, ManyCallbacks) {
   EXPECT_CALL(cb1, Run("polygon", mojom::ProviderError::kSuccess, ""));
   EXPECT_CALL(cb2, Run("polygon", mojom::ProviderError::kSuccess, ""));
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
+  chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
   EXPECT_FALSE(chain_calls().HasCall(domain()));
 
   base::RunLoop().RunUntilIdle();
@@ -64,6 +66,38 @@ TEST_F(MultichainCallsUnitTest, PolygonResult) {
   chain_calls().AddCallback(domain(), cb1.Get());
 
   chain_calls().SetResult(domain(), mojom::kPolygonMainnetChainId, "polygon");
+  chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
+  chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
+
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(MultichainCallsUnitTest, BaseError) {
+  EXPECT_FALSE(chain_calls().HasCall(domain()));
+
+  base::MockCallback<CallbackType> cb1;
+  EXPECT_CALL(cb1, Run("", mojom::ProviderError::kInternalError, "some error"));
+
+  chain_calls().AddCallback(domain(), cb1.Get());
+
+  chain_calls().SetError(domain(), mojom::kBaseMainnetChainId,
+                         mojom::ProviderError::kInternalError, "some error");
+  chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
+  chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
+
+  base::RunLoop().RunUntilIdle();
+}
+
+TEST_F(MultichainCallsUnitTest, BaseResult) {
+  EXPECT_FALSE(chain_calls().HasCall(domain()));
+
+  base::MockCallback<CallbackType> cb1;
+  EXPECT_CALL(cb1, Run("base", mojom::ProviderError::kSuccess, ""));
+
+  chain_calls().AddCallback(domain(), cb1.Get());
+
+  chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
+  chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
 
   base::RunLoop().RunUntilIdle();
@@ -79,6 +113,7 @@ TEST_F(MultichainCallsUnitTest, PolygonError) {
 
   chain_calls().SetError(domain(), mojom::kPolygonMainnetChainId,
                          mojom::ProviderError::kInternalError, "some error");
+  chain_calls().SetResult(domain(), mojom::kBaseMainnetChainId, "base");
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
 
   base::RunLoop().RunUntilIdle();
@@ -93,6 +128,7 @@ TEST_F(MultichainCallsUnitTest, MainnetResult) {
   chain_calls().AddCallback(domain(), cb1.Get());
 
   chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
+  chain_calls().SetNoResult(domain(), mojom::kBaseMainnetChainId);
   chain_calls().SetResult(domain(), mojom::kMainnetChainId, "mainnet");
 
   base::RunLoop().RunUntilIdle();
@@ -107,6 +143,7 @@ TEST_F(MultichainCallsUnitTest, MainnetError) {
   chain_calls().AddCallback(domain(), cb1.Get());
 
   chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
+  chain_calls().SetNoResult(domain(), mojom::kBaseMainnetChainId);
   chain_calls().SetError(domain(), mojom::kMainnetChainId,
                          mojom::ProviderError::kInternalError, "some error");
 
@@ -122,6 +159,7 @@ TEST_F(MultichainCallsUnitTest, NoResult) {
   chain_calls().AddCallback(domain(), cb1.Get());
 
   chain_calls().SetNoResult(domain(), mojom::kPolygonMainnetChainId);
+  chain_calls().SetNoResult(domain(), mojom::kBaseMainnetChainId);
   chain_calls().SetNoResult(domain(), mojom::kMainnetChainId);
 
   base::RunLoop().RunUntilIdle();

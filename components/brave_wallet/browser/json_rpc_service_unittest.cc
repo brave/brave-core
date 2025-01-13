@@ -3233,6 +3233,14 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
     polygon_endpoint_handler_->AddEthCallHandler(
         polygon_getmany_call_handler_.get());
 
+    base_endpoint_handler_ = std::make_unique<JsonRpcEndpointHandler>(
+        NetworkManager::GetUnstoppableDomainsRpcUrl(
+            mojom::kBaseMainnetChainId));
+    base_getmany_call_handler_ = std::make_unique<UDGetManyCallHandler>(
+        EthAddress::FromHex(GetUnstoppableDomainsProxyReaderContractAddress(
+            mojom::kBaseMainnetChainId)));
+    base_endpoint_handler_->AddEthCallHandler(base_getmany_call_handler_.get());
+
     url_loader_factory_.SetInterceptor(base::BindRepeating(
         &UnstoppableDomainsUnitTest::HandleRequest, base::Unretained(this)));
   }
@@ -3244,6 +3252,10 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
   // Polygon: javajobs.crypto -> 0x3a2f3f7aab82d69036763cfd3f755975f84496e6
   static constexpr char k0x3a2f3fAddr[] =
       "0x3a2f3f7aab82d69036763cfd3f755975f84496e6";
+
+  // Base: test.bald -> 0x1111111111111111111111111111111111111111
+  static constexpr char k0x111111Addr[] =
+      "0x1111111111111111111111111111111111111111";
 
   void SetEthResponse(const std::string& domain, const std::string& response) {
     eth_mainnet_getmany_call_handler_->Reset();
@@ -3272,6 +3284,18 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
     polygon_getmany_call_handler_->Reset();
     polygon_getmany_call_handler_->SetRawResponse("timeout");
   }
+  void SetBaseResponse(const std::string& domain, const std::string& response) {
+    base_getmany_call_handler_->Reset();
+    base_getmany_call_handler_->AddItem(domain, "crypto.ETH.address", response);
+  }
+  void SetBaseRawResponse(const std::string& response) {
+    base_getmany_call_handler_->Reset();
+    base_getmany_call_handler_->SetRawResponse(response);
+  }
+  void SetBaseTimeoutResponse() {
+    base_getmany_call_handler_->Reset();
+    base_getmany_call_handler_->SetRawResponse("timeout");
+  }
 
   std::string DnsIpfsResponse() const {
     return MakeJsonRpcStringArrayResponse(
@@ -3299,9 +3323,11 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
  protected:
   std::unique_ptr<JsonRpcEndpointHandler> eth_mainnet_endpoint_handler_;
   std::unique_ptr<JsonRpcEndpointHandler> polygon_endpoint_handler_;
+  std::unique_ptr<JsonRpcEndpointHandler> base_endpoint_handler_;
 
   std::unique_ptr<UDGetManyCallHandler> eth_mainnet_getmany_call_handler_;
   std::unique_ptr<UDGetManyCallHandler> polygon_getmany_call_handler_;
+  std::unique_ptr<UDGetManyCallHandler> base_getmany_call_handler_;
 
   void HandleRequest(const network::ResourceRequest& request) {
     url_loader_factory_.ClearResponses();
@@ -3314,6 +3340,13 @@ class UnstoppableDomainsUnitTest : public JsonRpcServiceUnitTest {
         url_loader_factory_.AddResponse(request.url.spec(), *response);
       }
     } else if ((response = polygon_endpoint_handler_->HandleRequest(request))) {
+      if (response == "timeout") {
+        url_loader_factory_.AddResponse(request.url.spec(), "",
+                                        net::HTTP_REQUEST_TIMEOUT);
+      } else {
+        url_loader_factory_.AddResponse(request.url.spec(), *response);
+      }
+    } else if ((response = base_endpoint_handler_->HandleRequest(request))) {
       if (response == "timeout") {
         url_loader_factory_.AddResponse(request.url.spec(), "",
                                         net::HTTP_REQUEST_TIMEOUT);
@@ -3387,6 +3420,25 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "javajobs.crypto", MakeToken(), callback.Get());
   task_environment_.RunUntilIdle();
+}
+
+TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_BaseResult) {
+  base::MockCallback<GetWalletAddrCallback> callback;
+  EXPECT_CALL(callback, Run(k0x111111Addr, mojom::ProviderError::kSuccess, ""));
+  SetEthResponse("javajobs.crypto", "");
+  SetPolygonResponse("javajobs.crypto", "");
+  SetBaseResponse("javajobs.crypto", k0x111111Addr);
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "javajobs.crypto", MakeToken(), callback.Get());
+  WaitAndVerify(&callback);
+
+  EXPECT_CALL(callback, Run(k0x111111Addr, mojom::ProviderError::kSuccess, ""));
+  SetEthResponse("javajobs.crypto", k0x8aaD44Addr);
+  SetPolygonResponse("javajobs.crypto", "");
+  SetBaseResponse("javajobs.crypto", k0x111111Addr);
+  json_rpc_service_->UnstoppableDomainsGetWalletAddr(
+      "javajobs.crypto", MakeToken(), callback.Get());
+  WaitAndVerify(&callback);
 }
 
 TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnet) {
@@ -3566,6 +3618,36 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
                             mojom::ProviderError::kSuccess, ""));
   SetEthRawResponse(DnsEmptyResponse());
   SetPolygonRawResponse(DnsBraveResponse());
+  json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
+                                                  callback.Get());
+  WaitAndVerify(&callback);
+}
+
+TEST_F(UnstoppableDomainsUnitTest, ResolveDns_BaseResult) {
+  base::MockCallback<ResolveDnsCallback> callback;
+  EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
+                            mojom::ProviderError::kSuccess, ""));
+  SetEthTimeoutResponse();
+  SetPolygonRawResponse(DnsEmptyResponse());
+  SetBaseRawResponse(DnsBraveResponse());
+  json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
+                                                  callback.Get());
+  WaitAndVerify(&callback);
+
+  EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
+                            mojom::ProviderError::kSuccess, ""));
+  SetEthRawResponse(DnsIpfsResponse());
+  SetPolygonRawResponse(DnsEmptyResponse());
+  SetBaseRawResponse(DnsBraveResponse());
+  json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
+                                                  callback.Get());
+  WaitAndVerify(&callback);
+
+  EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
+                            mojom::ProviderError::kSuccess, ""));
+  SetEthRawResponse(DnsEmptyResponse());
+  SetPolygonRawResponse(DnsEmptyResponse());
+  SetBaseRawResponse(DnsBraveResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
   WaitAndVerify(&callback);
