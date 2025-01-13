@@ -1,5 +1,9 @@
 .cache/clangd
-/vendor/*
+vendor/python-patch
+vendor/sparkle
+vendor/bat-native-tweetnacl
+vendor/gn-project-generators
+vendor/web-discovery-project
 .DS_Store
 .brave_gclient_*
 .gclient_*

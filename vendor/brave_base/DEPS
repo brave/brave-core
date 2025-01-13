@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/vendor/brave_base",
+  "+crypto",
+]
