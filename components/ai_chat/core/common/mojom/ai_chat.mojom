@@ -383,6 +383,7 @@ interface AIChatUIHandler {
   ManagePremium();
   HandleVoiceRecognition(string conversation_uuid);
   ShowSoftKeyboard();
+  UploadImage() => (array<uint8>? image_data);
 
   // This might be a no-op if the UI isn't closeable
   CloseUI();

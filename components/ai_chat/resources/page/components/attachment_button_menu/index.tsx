@@ -7,6 +7,7 @@ import * as React from 'react'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
+import { ConversationContext } from '../../state/conversation_context'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -14,7 +15,12 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-export default function AttachmentButtonMenu() {
+type Props = Pick<
+  ConversationContext,
+  'uploadImage'
+>
+
+export default function AttachmentButtonMenu(props: Props) {
   // State
   const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false)
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
@@ -26,12 +32,6 @@ export default function AttachmentButtonMenu() {
   }, [file])
 
   // Methods
-  const handleUploadFileClick = React.useCallback(() => {
-    if (inputRef.current) {
-      inputRef.current.click()
-    }
-  }, [])
-
   const handleFileChange = React.useCallback(
     (file: React.ChangeEvent<HTMLInputElement>) => {
       if (file.target.files) {
@@ -65,6 +65,15 @@ export default function AttachmentButtonMenu() {
         >
           <Icon name='attachment' />
         </Button>
+        <Button
+          fab
+          kind='plain-faint'
+          title={getLocale('attachmentMenuButtonLabel')}
+          slot='anchor-content'
+          onClick={props.uploadImage}
+        >
+        <Icon name='attachment' />
+        </Button>
         <div className={styles.section}>
           <Icon
             className={styles.attachIcon}
@@ -72,7 +81,7 @@ export default function AttachmentButtonMenu() {
           />
           {getLocale('attachMenuTitle')}
         </div>
-        <leo-menu-item key='upload' onClick={handleUploadFileClick}>
+        <leo-menu-item key='upload' onClick={props.uploadImage}>
           {getLocale('uploadFileButtonLabel')}
         </leo-menu-item>
         <leo-menu-item
