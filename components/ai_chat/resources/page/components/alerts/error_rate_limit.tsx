@@ -12,17 +12,46 @@ import { useConversation } from '../../state/conversation_context'
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
-function ErrorRateLimit() {
+interface Props {
+  _testIsCurrentModelLeo?: boolean
+}
+
+function ErrorRateLimit(props: Props) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
+  // Respond to BYOM scenarios
+  if (
+    !conversationContext.isCurrentModelLeo ||
+    props._testIsCurrentModelLeo === false
+  ) {
+    return (
+      <div className={styles.alert}>
+        <Alert type='warning'>
+          {getLocale('errorOAIRateLimit')}
+          <Button
+            slot='actions'
+            kind='filled'
+            onClick={conversationContext.retryAPIRequest}
+          >
+            {getLocale('retryButtonLabel')}
+          </Button>
+        </Alert>
+      </div>
+    )
+  }
+
+  // Respond to Leo (i.e., non-BYOM) scenarios
   if (!aiChatContext.isPremiumUser) {
     return (
       <PremiumSuggestion
         title={getLocale('rateLimitReachedTitle')}
         description={getLocale('rateLimitReachedDesc')}
         secondaryActionButton={
-          <Button kind='plain-faint' onClick={conversationContext.handleResetError}>
+          <Button
+            kind='plain-faint'
+            onClick={conversationContext.handleResetError}
+          >
             {getLocale('maybeLaterLabel')}
           </Button>
         }
@@ -32,16 +61,14 @@ function ErrorRateLimit() {
 
   return (
     <div className={styles.alert}>
-      <Alert
-        type='warning'
-      >
+      <Alert type='warning'>
         {getLocale('errorRateLimit')}
         <Button
           slot='actions'
           kind='filled'
           onClick={conversationContext.retryAPIRequest}
         >
-            {getLocale('retryButtonLabel')}
+          {getLocale('retryButtonLabel')}
         </Button>
       </Alert>
     </div>

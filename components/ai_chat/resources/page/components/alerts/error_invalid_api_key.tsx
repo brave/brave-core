@@ -10,7 +10,11 @@ import { getLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
 import styles from './alerts.module.scss'
 
-export default function ErrorInvalidEndpointURL() {
+interface ElementProps {
+  onRetry?: () => void
+}
+
+export default function ErrorInvalidAPIKey(props: ElementProps) {
   const aiChatContext = useAIChat()
 
   const handleConfigureClick = () => {
@@ -19,14 +23,21 @@ export default function ErrorInvalidEndpointURL() {
 
   return (
     <div className={styles.alert}>
-      <Alert type='error'>
-        {getLocale('customModelInvalidEndpoint')}
+      <Alert type='warning'>
+        {getLocale('errorInvalidAPIKey')}
         <Button
           slot='actions'
           kind='filled'
           onClick={handleConfigureClick}
         >
           {getLocale('customModelModifyConfigurationLabel')}
+        </Button>
+        <Button
+          slot='actions'
+          kind='filled'
+          onClick={props.onRetry}
+        >
+          {getLocale('retryButtonLabel')}
         </Button>
       </Alert>
     </div>

@@ -23,6 +23,14 @@ import ACTIONS_LIST from './story_utils/actions'
 import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
 import { UntrustedConversationContext, UntrustedConversationReactContext } from '../../untrusted_conversation_frame/untrusted_conversation_context'
+import ErrorConnection from '../components/alerts/error_connection'
+import ErrorConversationEnd from '../components/alerts/error_conversation_end'
+import ErrorInvalidAPIKey from '../components/alerts/error_invalid_api_key'
+import ErrorInvalidEndpointURL from '../components/alerts/error_invalid_endpoint_url'
+import ErrorRateLimit from '../components/alerts/error_rate_limit'
+import ErrorServiceOverloaded from '../components/alerts/error_service_overloaded'
+import LongConversationInfo from '../components/alerts/long_conversation_info'
+import WarningPremiumDisconnected from '../components/alerts/warning_premium_disconnected'
 
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   return {
@@ -630,6 +638,24 @@ export const _Panel: Story = {
     return (
       <div className={styles.container}>
         <Main />
+      </div>
+    )
+  }
+}
+
+export const _Alerts = {
+  render: () => {
+    return (
+      <div className={`${styles.container} ${styles.containerAlerts}`}>
+        <ErrorConnection />
+        <ErrorConversationEnd />
+        <ErrorInvalidAPIKey />
+        <ErrorInvalidEndpointURL />
+        <ErrorRateLimit />
+        <ErrorRateLimit _testIsCurrentModelLeo={false} />
+        <ErrorServiceOverloaded />
+        <LongConversationInfo />
+        <WarningPremiumDisconnected />
       </div>
     )
   }

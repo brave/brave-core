@@ -7,26 +7,23 @@ import * as React from 'react'
 import Alert from '@brave/leo/react/alert'
 import Button from '@brave/leo/react/button'
 import { getLocale } from '$web-common/locale'
-import { useAIChat } from '../../state/ai_chat_context'
 import styles from './alerts.module.scss'
 
-export default function ErrorInvalidEndpointURL() {
-  const aiChatContext = useAIChat()
+interface ElementProps {
+  onRetry?: () => void
+}
 
-  const handleConfigureClick = () => {
-    aiChatContext.uiHandler?.openAIChatSettings()
-  }
-
+export default function ErrorServiceOverloaded(props: ElementProps) {
   return (
     <div className={styles.alert}>
       <Alert type='error'>
-        {getLocale('customModelInvalidEndpoint')}
+        {getLocale('errorServiceOverloaded')}
         <Button
           slot='actions'
           kind='filled'
-          onClick={handleConfigureClick}
+          onClick={props.onRetry}
         >
-          {getLocale('customModelModifyConfigurationLabel')}
+          {getLocale('retryButtonLabel')}
         </Button>
       </Alert>
     </div>

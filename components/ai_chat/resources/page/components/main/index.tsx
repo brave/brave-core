@@ -15,8 +15,10 @@ import { useAIChat } from '../../state/ai_chat_context'
 import { isLeoModel } from '../../model_utils'
 import ErrorConnection from '../alerts/error_connection'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
+import ErrorInvalidAPIKey from '../alerts/error_invalid_api_key'
 import ErrorInvalidEndpointURL from '../alerts/error_invalid_endpoint_url'
 import ErrorRateLimit from '../alerts/error_rate_limit'
+import ErrorServiceOverloaded from '../alerts/error_service_overloaded'
 import LongConversationInfo from '../alerts/long_conversation_info'
 import NoticeConversationStorage from '../notices/notice_conversation_storage'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
@@ -91,6 +93,14 @@ function Main() {
     switch (conversationContext.currentError) {
       case Mojom.APIError.ConnectionIssue:
         currentErrorElement = <ErrorConnection
+          onRetry={conversationContext.retryAPIRequest} />
+        break
+      case Mojom.APIError.InvalidAPIKey:
+        currentErrorElement = <ErrorInvalidAPIKey
+          onRetry={conversationContext.retryAPIRequest} />
+        break
+      case Mojom.APIError.ServiceOverloaded:
+        currentErrorElement = <ErrorServiceOverloaded
           onRetry={conversationContext.retryAPIRequest} />
         break
       case Mojom.APIError.RateLimitReached:

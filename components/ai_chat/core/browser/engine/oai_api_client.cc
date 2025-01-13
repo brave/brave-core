@@ -158,8 +158,28 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
     return;
   }
 
+  // Determine which type of error occurred.
+  // https://platform.openai.com/docs/guides/error-codes
+  // https://docs.anthropic.com/en/api/errors
+  mojom::APIError error;
+
+  switch (result.response_code()) {
+    case 401:  // Incorrect API key provided
+      error = mojom::APIError::InvalidAPIKey;
+      break;
+    case 429:  // Rate limit reached or out of credits
+      error = mojom::APIError::RateLimitReached;
+      break;
+    case 529:  // Temporary server overload
+      error = mojom::APIError::ServiceOverloaded;
+      break;
+    default:
+      error = mojom::APIError::ConnectionIssue;
+      break;
+  }
+
   // Handle error
-  std::move(callback).Run(base::unexpected(mojom::APIError::ConnectionIssue));
+  std::move(callback).Run(base::unexpected(error));
 }
 
 void OAIAPIClient::OnQueryDataReceived(
