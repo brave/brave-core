@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/brave_component_updater/browser",
+  "+brave/components/brave_shields/adblock/rs/src/lib.rs.h",
+]

@@ -1,4 +1,5 @@
 include_rules = [
+  "!brave/components/constants/brave_paths.h",
   "+cc/test",
   "+ui/compositor",
   "+ui/gfx/image",

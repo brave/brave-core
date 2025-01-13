@@ -179,21 +179,11 @@ hooks = [
 ]
 
 include_rules = [
-  #Everybody can use some things.
-  "+brave_base",
-  "+brave_domains",
-  "+crypto",
-  "+net",
-  "+sql",
-  "+ui/base",
-
   "-chrome",
-  "-brave/app",
-  "-brave/browser",
-  "-brave/common",
-  "-brave/renderer",
-  "-brave/services",
-  "-ios",
-  "-brave/third_party/bitcoin-core",
-  "-brave/third_party/argon2",
+  "-brave",
+  "-third_party/rust",
+
+  # Everybody can use some things.
+  "+brave/base",
+  "+brave/brave_domains",
 ]

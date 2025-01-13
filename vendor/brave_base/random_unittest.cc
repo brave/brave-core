@@ -5,9 +5,10 @@
 
 #define _USE_MATH_DEFINES  // Microsoft, please define M_LN2 in <cmath>.
 
+#include "brave/vendor/brave_base/random.h"
+
 #include <math.h>
 
-#include "brave_base/random.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class BraveRandomDeterministicTest : public testing::Test {

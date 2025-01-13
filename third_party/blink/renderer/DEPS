@@ -1,3 +1,7 @@
 # Inline upstream rules.
 from brave_chromium_utils import inline_file
 inline_file('//third_party/blink/renderer/DEPS', globals(), locals())
+
+include_rules += [
+  "!brave/components/brave_shields/core/common/shields_settings.mojom.h"
+]

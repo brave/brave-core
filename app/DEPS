@@ -1,17 +1,22 @@
-include_rules = [
-  "+android_webview/common",
+from brave_chromium_utils import inline_file
+inline_file('//chrome/app/DEPS', globals(), locals())
+
+include_rules += [
+  "+chrome/app",
+  "+chrome/common",
   "+brave/browser",
   "+brave/common",
   "+brave/renderer/brave_content_renderer_client.h",
-  "+chrome/app",
-  "+chrome/browser",
-  "+chrome/common",
-  "+chrome/child",
-  "+chrome/test",
-  "+content/public/app",
-  "+content/public/browser",
-  "+content/public/common",
-  "+content/public/test",
+  "+brave/components/brave_component_updater/browser/features.h",
+  "+brave/components/brave_component_updater/browser/switches.h",
+  "+brave/components/brave_sync/buildflags.h",
+  "+brave/components/constants/brave_switches.h",
+  "+brave/components/variations/buildflags.h",
+  "+brave/components/commands/common/features.h",
+  "+brave/components/speedreader/common/buildflags/buildflags.h",
+  "+brave/components/update_client/buildflags.h",
+  "+brave/components/variations/command_line_utils.h",
+  "+brave/utility/brave_content_utility_client.h",
   "+components/component_updater/component_updater_switches.h",
   "+components/dom_distiller/core/dom_distiller_switches.h",
   "+components/embedder_support/switches.h",
@@ -56,19 +61,25 @@ include_rules = [
   "+components/password_manager/core/common/password_manager_features.h",
   "+components/device_signals/core/common/signals_features.h",
   "+components/translate/core/common/translate_util.h",
-  "+extensions/common",
-  "+google_apis/gaia",
-  "+gpu/config",
-  "+media/base/media_switches.h",
-  "+services/device/public",
-  "+services/network",
-  "+third_party/blink/public/common",
-  "+ui/accessibility",
+  "+google_apis/gaia/gaia_switches.h",
 ]
 
 specific_include_rules = {
+  ".*test\.cc": [
+    "+chrome/test/base",
+    "+content/public/test",
+  ],
   "feature_defaults_unittest\.cc": [
+    "+gpu/config/gpu_finch_features.h",
+    "+net/base/features.h",
+    "+services/network/public/cpp/features.h",
+    "+third_party/blink/public/common/features.h",
+    "+ui/accessibility/accessibility_features.h",
+    "+ui/base/ui_base_features.h",
+    "+android_webview/common/aw_features.h",
+    "+extensions/common/extension_features.h",
+    "+services/device/public/cpp/device_features.h",
     # code outside of content should not access content/common
     "!content/common",
-  ]
+  ],
 }

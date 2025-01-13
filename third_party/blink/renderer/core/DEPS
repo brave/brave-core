@@ -2,3 +2,9 @@
 from brave_chromium_utils import inline_file
 inline_file('//third_party/blink/renderer/core/DEPS', globals(), locals())
 include_rules += [ "+third_party/blink/renderer/bindings/modules" ]
+
+include_rules += [
+  "!brave/components/brave_page_graph/common/features.h",
+  "!brave/components/brave_shields/core/common/brave_shield_constants.h",
+  "+brave/v8/include/v8-isolate-page-graph-utils.h",
+]

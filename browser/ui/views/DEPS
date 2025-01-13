@@ -5,5 +5,7 @@
 
 include_rules = [
   "+brave/browser/ui/views",
+  "+chrome/app/vector_icons/vector_icons.h",
   "+chrome/browser/ui/views",
+  "+brave/components/text_recognition/browser",
 ]

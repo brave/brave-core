@@ -1,4 +1,9 @@
 include_rules = [
-  "+printing/buildflags",
-  "+services/screen_ai",
+  "+brave/components/text_recognition/common",
 ]
+
+specific_include_rules = {
+ "brave_open_ai_chat_permission_context_unittest\.cc": [
+    "+brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h",
+ ]
+}

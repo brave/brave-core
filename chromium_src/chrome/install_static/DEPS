@@ -1,8 +1,7 @@
+from brave_chromium_utils import inline_file
+inline_file("//chrome/install_static/DEPS", globals(), locals())
+
+
 include_rules = [
-  "+chrome/app/chrome_dll_resource.h",
-  "+chrome/chrome_elf/nt_registry/nt_registry.h",
-  "+chrome/common/chrome_icon_resources_win.h",
-  "+components/nacl/common/buildflags.h",
-  "+components/version_info/channel.h",
-  "+components/version_info/version_info_values.h",
+  "+components/version_info",
 ]

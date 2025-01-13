@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/time_period_storage",
+  "+brave/android/java/org/chromium/chrome/browser/search_engines/jni_headers",
+]

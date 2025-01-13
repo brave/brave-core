@@ -1,3 +1,17 @@
 include_rules = [
-  "+chrome/browser",
+  "+brave/content/public/browser",
+  "+brave/components/brave_shields/core/browser",
+  "+brave/components/brave_shields/content/test",
+  "+brave/components/update_client/buildflags.h",
+  "+brave/components/query_filter",
+  "+brave/components/brave_service_keys",
+  "+brave/components/speech_to_text/buildflags.h",
+  "+brave/components/speech_to_text/features.h",
+  "+services/network/host_resolver.h",
 ]
+
+specific_include_rules = {
+  "brave_ad_block_tp_network_delegate_helper\.cc": [
+    "+brave/components/brave_shields/adblock/rs/src/lib.rs.h",
+  ]
+}

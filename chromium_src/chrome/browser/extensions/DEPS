@@ -1,3 +1,5 @@
 include_rules = [
   "+brave/components/brave_extension",
+  "+brave/components/brave_webtorrent/browser/buildflags",
+  "+brave/components/brave_webtorrent/grit",
 ]

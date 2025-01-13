@@ -1,0 +1,7 @@
+include_rules = [
+  "+brave/components/sync/service",
+  "+brave/components/brave_vpn/common/buildflags",
+  "+brave/net/dns",
+  "+brave/components/brave_vpn/common",
+  "+brave/components/brave_shields/core/common",
+]

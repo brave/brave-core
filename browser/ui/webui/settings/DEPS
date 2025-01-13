@@ -1,0 +1,11 @@
+include_rules = [
+  "+brave/components/brave_adblock/resources",
+  "+brave/components/brave_shields/core/browser",
+  "+brave/components/ntp_background_images/common",
+  "+brave/components/brave_ads/core/browser/service",
+  "+brave/components/brave_webtorrent/grit",
+  "+brave/components/version_info",
+  "+brave/components/sync/service",
+  "+brave/components/sync_device_info",
+  "+brave/components/webcompat_reporter/browser",
+]

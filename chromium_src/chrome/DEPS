@@ -1,0 +1,2 @@
+from brave_chromium_utils import inline_file
+inline_file("//chrome/DEPS", globals(), locals())

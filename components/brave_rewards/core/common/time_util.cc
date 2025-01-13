@@ -6,7 +6,8 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 
 #include <algorithm>
-#include "brave_base/random.h"
+
+#include "brave/vendor/brave_base/random.h"
 
 namespace brave_rewards::internal::util {
 

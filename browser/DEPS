@@ -1,127 +1,100 @@
-include_rules = [
-  "+cc/metrics",
-  "+cc/paint",
-  "+cc/test",
+from brave_chromium_utils import inline_file
+inline_file("//chrome/DEPS", globals(), locals())
 
+chrome_browser_deps = {}
+inline_file("//chrome/browser/DEPS", {}, chrome_browser_deps)
+include_rules += chrome_browser_deps["include_rules"]
+
+include_rules += [
+  "+brave/grit",
   "+brave/app",
+  "!brave/build/android",
   "+brave/common",
   "+brave/services/network/public",
-  "+chrome/app",
+  "+brave/test/base",
+  "+brave/ui",
+  "!brave/third_party/blink/renderer/brave_farbling_constants.h",
+  "+brave/net",
+  "+brave/components/constants",
   "+chrome/browser",
-  "+chrome/common",
-  "+chrome/grit",
-  "+chrome/installer/util",
-  "+chrome/install_static",
-  "+chrome/test",
-  "+content/public/browser",
-  "+content/public/common",
-  "+content/public/test",
-  "+content/test",
-  # TODO(bridiver) - narrow this down
-  "+components",
-  "+device",
-  "+extensions/browser",
-  "+extensions/common",
-  "+extensions/buildflags",
-  "+extensions/grit",
-  "+extensions/test",
-  "+google_apis",
-  "+media/media_buildflags.h",
-  "+media/audio",  # For media audio hang monitor.
-  "+media/base",  # For media switches
-  "+media/capabilities",  # For InMemoryVideoDecodeStatsDB
-  "+media/cdm/cdm_paths.h",
-  "+media/capture",
-  "+media/midi",  # For midi switches
-  "+media/mojo",  # For mojo media services.
-  "+media/renderers",
-  "+media/webrtc",  # For webrtc media switches.
-  "+mojo/public",
-  "+net",
-  "+printing/buildflags/buildflags.h",
-  "+sandbox/mac",
-  "+sandbox/policy",
-  "+services/audio/public",
-  "+services/cert_verifier",
-  "+services/data_decoder/public",
-  "+services/device/public",
-  "+services/image_annotation/public",
-  "+services/media_session/public",
-  "+services/metrics/public",
-  "+services/network/host_resolver.h",
-  "+services/network/network_context.h",
-  "+services/network/network_service.h",
-  "+services/network/public",
-  "+services/network/test",
-  "+services/preferences/public/cpp",
-  "+services/preferences/public/mojom",
-  "+services/proxy_resolver",
-  "+services/proxy_resolver/public/mojom",
-  "+services/resource_coordinator/public/cpp",
-  "+services/resource_coordinator/public/mojom",
-  "+services/service_manager/public/cpp",
-  "+services/strings",
-  "+third_party/boringssl/src/include",
-  "+third_party/crashpad",
-  "+third_party/widevine/cdm/buildflags.h",
-  "+third_party/widevine/cdm/widevine_cdm_common.h",
-  "+ui",
 
-  # Code under //ash should be accessed via its public API. See //ash/README.md.
-  "-ash",
-  "+ash/public",
-  "+ash/keyboard/ui/grit",
-  "+ash/keyboard/ui/resources",
-  "+ash/components/shortcut_viewer",
+  # TODO(bridiver) code outside of content should only dependon content/public
+  "!content/test",
 
-  # The message center should only be accessed through
-  # //chrome/browser/notifications.
-  "-ui/message_center",
-  "+ui/message_center/public",
-
-  # chrome only needs switches and features flags from cc. All usage of the
-  # compositor is from content. Definitely don't include generic stuff from
-  # cc/base here, if this is needed these files need to move to base/
-  "+cc/base/features.h",
-  "+cc/base/switches.h",
-
-  # Unsafe to use from //chrome, see http://goo.gl/QQG5wo
-  "-content/public/test/test_browser_context.h",
-
-  "+storage/browser",
-  "+storage/common",
-
-  # Explicitly disallow using SyncMessageFilter to prevent browser from
-  # sending synchronous IPC messages on non-UI threads.
-  "-ipc/ipc_sync_message_filter.h",
-
-  # Allows in-process use of NetworkService for URLRequestContext configuration.
-  # Should be removed once the actual network service ships.
-  "+content/public/network",
-
-  # Other libraries.
-  "+third_party/google_toolbox_for_mac/src",
-  "+third_party/icu/source/common/unicode",
-  "+third_party/icu/source/i18n/unicode",
-  "+third_party/leveldatabase",
-  "+third_party/libxml/chromium/xml_writer.h",
-  "+third_party/mozilla",  # Mozilla interface headers.
-  "+third_party/ocmock/gtest_support.h",
-  "+third_party/protobuf/src/google/protobuf",
-  "+third_party/re2",
-  "+third_party/skia",
-  "+third_party/smhasher",
-  "+third_party/sqlite",
-  "+third_party/zlib",
-
-  # No inclusion of WebKit from the browser, other than the ones in
-  # WebKit/public/{mojom,common}.
-  # TODO(crbug.com/1008303) clarify dependency and remove or move these individual headers
-  # into public/common.
-  "-third_party/blink",
-  "+third_party/blink/public/common",
-  "+third_party/blink/public/mojom",
-  "+third_party/blink/public/public_buildflags.h",
+  "+brave/components/p3a",
+  "+brave/components/p3a_utils",
+  "+brave/components/ai_chat/content/browser",
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/ai_chat/core/browser",
+  "+brave/components/ai_rewriter/common",
+  "+brave/components/brave_ads/browser",
+  "+brave/components/brave_ads/core/public",
+  "+brave/components/brave_component_updater/browser",
+  "+brave/components/brave_news/browser",
+  "+brave/components/brave_news/common",
+  "+brave/components/brave_rewards/browser",
+  "+brave/components/brave_rewards/common",
+  "+brave/components/brave_shields/content/browser",
+  "+brave/components/brave_shields/core/common",
+  "+brave/components/brave_wallet/browser",
+  "+brave/components/brave_wallet/common",
+  "+brave/components/de_amp/common",
+  "+brave/components/de_amp/browser",
+  "+brave/components/debounce/content/browser",
+  "+brave/components/debounce/core/browser",
+  "+brave/components/debounce/core/common",
+  "+brave/components/google_sign_in_permission",
+  "+brave/components/ntp_background_images/browser",
+  "+brave/components/ntp_background_images/buildflags",
+  "+brave/components/playlist/browser",
+  "+brave/components/playlist/common",
+  "+brave/components/psst/browser/content",
+  "+brave/components/psst/common",
+  "+brave/components/skus/browser",
+  "+brave/components/skus/common",
+  "+brave/components/speedreader",
+  "-brave/components/speedreader/renderer",
+  "+brave/components/webcompat/content/browser",
+  "+brave/components/webcompat/core/common",
+  "+brave/components/brave_vpn/browser",
+  "+brave/components/brave_vpn/common",
+  "+brave/components/request_otr/browser",
+  "+brave/components/request_otr/common",
+  "+brave/components/commander/common",
+  "+brave/components/commands/common",
+  "+brave/components/brave_sync",
+  "+brave/components/ipfs",
+  "+brave/components/tor",
+  "-brave/components/tor/renderer",
+  "+brave/components/brave_referrals/browser",
+  "+brave/components/https_upgrade_exceptions/browser",
+  "+brave/components/localhost_permission",
+  "+brave/components/url_sanitizer/browser",
+  "+brave/components/body_sniffer",
+  "+brave/components/brave_federated",
+  "+brave/components/brave_search/browser",
+  "+brave/components/brave_search/common",
+  "+brave/components/brave_webtorrent/browser",
+  "+brave/components/cosmetic_filters/browser",
+  "+brave/components/cosmetic_filters/common",
+  "+brave/components/decentralized_dns/content",
+  "+brave/components/decentralized_dns/core",
+  "+brave/components/services/bat_ads/public",
+  "+brave/components/translate/core/common",
+  "+brave/components/brave_new_tab_ui",
+  "+brave/components/brave_private_new_tab_ui/common",
+  "+brave/components/widevine/constants.h",
+  "+brave/components/brave_drm",
+  "+brave/components/brave_search_conversion",
+  "+brave/components/misc_metrics",
+  "+brave/components/brave_wayback_machine",
+  "+brave/components/brave_adaptive_captcha",
+  "+brave/components/brave_perf_predictor/browser",
+  "+brave/components/omnibox/browser",
+  "+brave/components/search_engines",
+  "+brave/components/webcompat_reporter/common",
+  "+brave/components/sidebar/browser",
+  "+brave/components/l10n/common",
 ]
 
 specific_include_rules = {

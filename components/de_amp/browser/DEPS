@@ -4,4 +4,5 @@ include_rules = [
   "+services/network/public/cpp",
   "+services/network/public/mojom",
   "+third_party/re2",
+  "+ui/base",
 ]

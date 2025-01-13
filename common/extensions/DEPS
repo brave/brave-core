@@ -1,4 +1,4 @@
 include_rules = [
-  "+components/component_updater",
+  "+components/component_updater/component_updater_switches.h",
   "+extensions/common",
 ]

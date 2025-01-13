@@ -1,18 +1,21 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file("//chrome/DEPS", globals(), locals())
+
+chrome_common_deps = {}
+inline_file("//chrome/common/DEPS", {}, chrome_common_deps)
+include_rules += chrome_common_deps["include_rules"]
+
+include_rules += [
   "+chrome/common",
-  "+chrome/test",
-  "+content/public/common",
-  "+content/public/test",
-  "+components/gcm_driver/gcm_buildflags.h",
-  "+components/grit/brave_components_resources.h",
-  "+components/grit/flags_ui_resources.h",
-  "+components/version_info",
-  "+extensions/buildflags",
-  "+extensions/common/url_pattern.h",
-  "+third_party/widevine/cdm/buildflags.h",
+  "+components/grit",
+  "+brave/components/constants",
 ]
 
 specific_include_rules = {
+  ".*browsertest\.cc": [
+    "+chrome/test",
+    "+content/public/test",
+  ],
   "brave_content_client_unittest\.cc": [
     "+content/common/url_schemes.h",
   ],

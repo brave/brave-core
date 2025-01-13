@@ -1,7 +1,9 @@
 include_rules = [
+  "+brave/net/base",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",
+  "+crypto",
   "+services/data_decoder/public/cpp",
   "+services/network/public/cpp",
   "+services/network/public/mojom",
@@ -12,4 +14,11 @@ include_rules = [
   "+brave/components/constants",
   "+brave/components/version_info",
   "+tools/json_schema_compiler",
+  "+ui/base",
 ]
+
+specific_include_rules = {
+  "brave_wallet_utils\.cc": [
+    "+brave/third_party/bip39wally-core-native/include",
+  ]
+}

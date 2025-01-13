@@ -1,8 +1,19 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file("//chrome/DEPS", globals(), locals())
+
+chrome_utility_deps = {}
+inline_file("//chrome/utility/DEPS", {}, chrome_utility_deps)
+include_rules += chrome_utility_deps["include_rules"]
+
+include_rules += [
   "+brave/common",
-  "+chrome/common",
-  "+chrome/grit",
+  "+brave/grit",
   "+chrome/utility",
-  "+content/public/utility",
-  "+mojo/public/cpp",
+  "+brave/components/constants",
+  "+brave/components/constants",
+  "+brave/components/services/bat_ads",
+  "+brave/components/services/bat_rewards",
+  "+brave/components/services/brave_wallet",
+  "+brave/components/services/tor",
+  "+brave/components/tor/buildflags",
 ]

@@ -6,3 +6,9 @@ include_rules = [
   "+brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h",
   "+brave/third_party/bitcoin-core/src/src/util/strencodings.h",
 ]
+
+specific_include_rules = {
+  "hd_key\.cc": [
+    "+brave/vendor/bat-native-tweetnacl/tweetnacl.h",
+  ]
+}

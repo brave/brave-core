@@ -1,0 +1,6 @@
+include_rules = [
+  "+brave/components/brave_referrals/common",
+  "+brave/components/brave_stats/browser",
+  "+brave/components/rpill/common",
+  "+brave/components/version_info",
+]

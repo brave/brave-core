@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/ephemeral_storage",
+  "+brave/components/brave_shields/content/test",
+]

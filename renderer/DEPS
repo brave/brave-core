@@ -1,20 +1,43 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file("//chrome/DEPS", globals(), locals())
+
+chrome_renderer_deps = {}
+inline_file("//chrome/renderer/DEPS", {}, chrome_renderer_deps)
+include_rules += chrome_renderer_deps["include_rules"]
+
+include_rules += [
   "+brave/common",
-  "+chrome/common",
   "+chrome/renderer",
-  "+chrome/test",
-  "+content/public/common",
-  "+content/public/renderer",
-  "+content/public/test",
-  "+components/feed/content/renderer",
-  "+media/base",
-  "+mojo/public/cpp/bindings",
-  "+services/network/public/cpp",
-  "+services/service_manager/public/cpp",
-  "+third_party/blink/public/common",
-  "+third_party/blink/public/platform",
-  "+third_party/blink/public/public_buildflags.h",
-  "+third_party/blink/public/web",
-  "+third_party/widevine/cdm",
-  "+v8/include",
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/ai_chat/renderer",
+  "+brave/components/ai_rewriter/common",
+  "+brave/components/brave_search/common",
+  "+brave/components/brave_search/renderer",
+  "+brave/components/brave_shields/core/common",
+  "+brave/components/brave_vpn/common/buildflags/buildflags.h",
+  "+brave/components/brave_wallet/common",
+  "+brave/components/cosmetic_filters/renderer",
+  "+brave/components/playlist/common",
+  "+brave/components/safe_builtins/renderer/safe_builtins.h",
+  "+brave/components/script_injector/renderer",
+  "+brave/components/skus/common",
+  "+brave/components/skus/renderer",
+  "+brave/components/speedreader/common",
+  "+brave/components/ai_rewriter/common",
+  "+brave/components/ai_rewriter/renderer",
+  "+brave/components/speedreader/common",
+  "+brave/components/speedreader/renderer",
+  "+brave/components/brave_vpn/common",
+  "!brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h",
+  "+brave/components/playlist/common",
+  "+brave/components/playlist/renderer",
 ]
+
+specific_include_rules = {
+  ".*browsertest\.cc": [
+    "+chrome/test",
+    "+chrome/app/chrome_command_ids.h",
+    "+content/public/test",
+    "+net",
+  ]
+}

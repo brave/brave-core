@@ -7,9 +7,11 @@ include_rules = [
   "+components/user_prefs",
   "+content/public/browser",
   "+content/public/common",
+  "+crypto",
   "+services/network/public/cpp",
   "+services/preferences/public/cpp",
   "+third_party/blink/public/common",
   "+third_party/re2",
+  "+ui/base",
   "+ui/gfx",
 ]

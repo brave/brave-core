@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/brave_welcome/common",
+  "+brave/components/brave_welcome/resources",
+]

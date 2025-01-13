@@ -1,26 +1,20 @@
-include_rules = [
+
+from brave_chromium_utils import inline_file
+inline_file('//ios/chrome/app/DEPS', globals(), locals())
+
+include_rules += [
   "+ios/chrome/app",
-  "+ios/chrome/browser",
-  "+ios/chrome/common",
   "+brave/ios/app",
   "+brave/ios/browser",
+
+  "+brave/components/brave_component_updater",
+  "+brave/components/brave_sync/buildflags.h",
+  "+brave/components/ntp_background_images/browser",
+  "+brave/components/p3a",
+  "+brave/components/update_client/buildflags.h",
+  "+brave/components/variations",
+
   "+components/browser_sync",
-  "+components/component_updater/component_updater_paths.h",
-  "+components/component_updater/component_updater_service.h",
-  "+components/component_updater/component_updater_switches.h",
-  "+components/component_updater/installer_policies",
-  "+components/history/core/browser",
-  "+components/keyed_service/core",
-  "+components/prefs",
-  "+components/password_manager/core",
-  "+components/safe_browsing/core/common/safe_browsing_prefs.h",
-  "+components/send_tab_to_self",
+  "+components/safe_browsing/core/common",
   "+components/sync/base",
-  "+components/sync/service",
-  "+components/variations/variations_switches.h",
-  "+ios/public/provider/chrome/browser/chrome_browser_provider.h",
-  "+ios/public/provider/chrome/browser/overrides/overrides_api.h",
-  "+ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h",
-  "+ios/web/public/init/web_main.h",
-  "+services/network/public/cpp/shared_url_loader_factory.h",
 ]

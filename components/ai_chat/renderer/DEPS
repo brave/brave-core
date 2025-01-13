@@ -12,4 +12,5 @@ include_rules = [
   "+services/network/test",
   "+services/service_manager/public/cpp",
   "+third_party/abseil-cpp/absl/types",
+  "+ui/base/resource/resource_bundle.h",
 ]

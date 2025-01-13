@@ -17,7 +17,6 @@
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave_base/random.h"
 
 namespace brave_rewards::internal::publisher {
 

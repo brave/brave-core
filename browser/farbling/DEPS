@@ -1,6 +1,11 @@
+include_rules = [
+  "+brave/third_party/blink/renderer/brave_font_whitelist.h",
+]
+
 specific_include_rules = {
-  # this test belongs in renderer
-  "brave_font_whitelist_browsertest.cc": [
+  # TODO(bridiver) this test belongs in renderer
+  "brave_font_whitelist_browsertest\.cc": [
+    "!brave/components/content_settings/renderer/brave_content_settings_agent_impl.h",
     "+content/public/renderer/render_frame.h",
     "+third_party/blink/public",
   ],

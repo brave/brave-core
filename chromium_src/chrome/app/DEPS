@@ -1,7 +1,7 @@
-include_rules = [
+from brave_chromium_utils import inline_file
+inline_file("//chrome/app/DEPS", globals(), locals())
+
+include_rules += [
   "+brave/app",
-  "+brave/browser",
   "+brave/common",
-  "+chrome/browser",
-  "+chrome/common",
 ]

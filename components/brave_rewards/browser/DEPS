@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/grit/brave_generated_resources.h",
   "+content/public/browser",
   "+content/public/common",
   "+content/public/test",

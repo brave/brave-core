@@ -1,0 +1,7 @@
+include_rules = [
+  "+brave/components/sync/service",
+  "+brave/components/constants",
+  "+brave/components/tor",
+  "+brave/components/l10n/common",
+  "+brave/components/constants",
+]

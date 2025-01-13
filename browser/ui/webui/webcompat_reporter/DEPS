@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/webcompat_reporter/browser",
+  "+brave/components/brave_shields/core/browser",
+  "+brave/components/webcompat_reporter/resources",
+]

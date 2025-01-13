@@ -1,13 +1,16 @@
 include_rules = [
   "+brave/components/constants",
+  "+brave/content/public/browser/devtools",
   "+components/content_settings/core",
   "+content/public/browser",
   "+content/public/common",
+  "+crypto",
   "+services/network/public",
   "+storage/browser/blob",
   "+third_party/blink/public/mojom",
   "+third_party/re2",
   "+third_party/zlib",
+  "+ui/base",
 ]
 
 specific_include_rules = {
