@@ -207,6 +207,10 @@ template("transpile_web_ui") {
       args += [ "--module_library_type" ]
     }
 
+    if (defined(invoker.sync_wasm) && invoker.sync_wasm) {
+      args += [ "--sync_wasm" ]
+    }
+
     if (defined(invoker.xhr_wasm_loading) && invoker.xhr_wasm_loading) {
       args += [ "--xhr_wasm_loading" ]
     }

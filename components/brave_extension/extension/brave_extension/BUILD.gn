@@ -36,6 +36,8 @@ transpile_web_ui("brave_extension") {
 
   public_asset_path = "/out/"
 
+  sync_wasm = true
+
   deps =
       [ "//brave/components/brave_extension:web_discovery_project_resources" ]
 }

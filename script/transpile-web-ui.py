@@ -44,6 +44,7 @@ def main():
                              public_asset_path=args.public_asset_path,
                              crates=args.crate,
                              module_library_type=args.module_library_type,
+                             sync_wasm=args.sync_wasm,
                              wasm_pack_path=args.wasm_pack_path,
                              xhr_wasm_loading=args.xhr_wasm_loading)
     transpile_web_uis(transpile_options)
@@ -90,6 +91,8 @@ def parse_args():
                         help='Rust crates',
                         required=False)
     parser.add_argument('--module_library_type',
+                        action='store_true')
+    parser.add_argument('--sync_wasm',
                         action='store_true')
     parser.add_argument('--wasm_pack_path',
                         nargs='?')
@@ -149,6 +152,9 @@ def transpile_web_uis(options):
 
     if options['module_library_type']:
         args.append("--env=module_library_type")
+
+    if options['sync_wasm']:
+        args.append("--env=sync_wasm")
 
     if options['wasm_pack_path'] is not None:
         args.append("--env=wasm_pack_path=" + options['wasm_pack_path'])

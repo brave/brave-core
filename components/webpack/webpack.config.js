@@ -109,6 +109,16 @@ module.exports = async function (env, argv) {
     output.wasmLoading = 'xhr'
   }
 
+  const experiments = {
+    outputModule: Boolean(env.output_module)
+  }
+
+  if (env.sync_wasm) {
+    experiments.syncWebAssembly = true
+  } else {
+    experiments.asyncWebAssembly = true
+  }
+
   return {
     entry,
     devtool: isDevMode ? 'inline-source-map' : false,
@@ -121,10 +131,7 @@ module.exports = async function (env, argv) {
       // Define NO_CONCATENATE for analyzing module size.
       concatenateModules: !process.env.NO_CONCATENATE
     },
-    experiments: {
-      asyncWebAssembly: true,
-      outputModule: Boolean(env.output_module)
-    },
+    experiments,
     externals: [
       function ({ context, request }, callback) {
         if (env.output_module) {
