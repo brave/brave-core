@@ -664,7 +664,7 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
             blink::BackForwardCacheAware::kAllow);
     if (!v8_stylesheet.IsEmpty() && v8_stylesheet->IsString()) {
       v8::Local<v8::String> v8_str = v8_stylesheet.As<v8::String>();
-      int length = v8_str->Utf8Length(isolate);
+      int length = v8_str->Utf8LengthV2(isolate);
       if (length > 0) {
         std::string str;
         gin::Converter<std::string>::FromV8(isolate, v8_str, &str);
