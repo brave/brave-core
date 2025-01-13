@@ -48,6 +48,7 @@
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -78,6 +79,86 @@ using AssociatedContentDelegate =
 
 constexpr size_t kDefaultSuggestionsCount = 4;
 
+// ai_chat component-level tools
+// TODO(petemill): move
+class PageContentTool : public Tool {
+ public:
+  // static name
+  inline static const std::string_view kName =
+      "active_web_page_content_fetcher";
+
+  ~PageContentTool() override = default;
+
+  std::string_view name() const override { return kName; }
+  std::string_view description() const override {
+    return "Fetches the text content of the active Tab in the user's current "
+           "browser session that is open alongside this conversation. This "
+           "web page may or may not be relevant to the user's question. The "
+           "assistant will call this function when determining that the "
+           "user's question could be related to the content they are looking "
+           "at is not a standalone question.  The assistant should only "
+           "query this when it is at last 80\% sure the user's query is "
+           "related to the web page content.";
+  }
+
+  std::optional<std::string> GetInputSchemaJson() const override {
+    return R"({
+        "type": "object",
+        "properties": {
+          "confidence_percent": {
+            "type": "number",
+            "description": "How confident the assistant is that it needs to content of the active web page to answer the user's query, where 100 is that the user's query is definitely related to the content and 0 is that it is definitely not related to the query."
+          }
+        }
+      })";
+  }
+
+  bool IsContentAssociationRequired() const override { return true; }
+
+  bool RequiresUserInteractionBeforeHandling() const override { return true; }
+};
+
+class UserChoiceTool : public Tool {
+ public:
+  // static name
+  inline static const std::string_view kName =
+      "user_choice_tool";
+
+  ~UserChoiceTool() override = default;
+
+  std::string_view name() const override { return kName; }
+  std::string_view description() const override {
+    return "Presents a list of text choices to the user and returns the user's "
+           "selection. The assistant will call this function when it needs "
+           "the user to make a choice between a list of options in order to "
+           "move forward with a task. Prefer this over asking open-ended "
+           "questions, unless the task is complete or almost complete.";
+  }
+
+  std::optional<std::string> GetInputSchemaJson() const override {
+    return R"({
+        "type": "object",
+        "properties": {
+          "choices": {
+            "type": "array",
+            "description": "A list of choices for the user to select from",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      })";
+  }
+
+  std::optional<std::vector<std::string>> required_properties() const override {
+    return std::optional<std::vector<std::string>>({"choices"});
+  }
+
+  bool IsContentAssociationRequired() const override { return false; }
+
+  bool RequiresUserInteractionBeforeHandling() const override { return true; }
+};
+
 }  // namespace
 
 AssociatedContentDelegate::AssociatedContentDelegate()
@@ -100,6 +181,10 @@ void AssociatedContentDelegate::GetStagedEntriesFromContent(
 
 bool AssociatedContentDelegate::HasOpenAIChatPermission() const {
   return false;
+}
+
+std::vector<Tool*> AssociatedContentDelegate::GetTools() {
+  return {};
 }
 
 void AssociatedContentDelegate::GetTopSimilarityWithPromptTilContextLimit(
@@ -205,6 +290,14 @@ ConversationHandler::ConversationHandler(
       credential_manager_(credential_manager),
       feedback_api_(feedback_api),
       url_loader_factory_(url_loader_factory) {
+  // Build tools list
+  if (features::IsAIChatToolsEnabled()) {
+    if (features::kIsSmartPageContentEnabled.Get()) {
+      tools_.push_back(std::make_unique<PageContentTool>());
+    }
+    tools_.push_back(std::make_unique<UserChoiceTool>());
+  }
+
   // When a client disconnects, let observers know
   receivers_.set_disconnect_handler(
       base::BindRepeating(&ConversationHandler::OnClientConnectionChanged,
@@ -728,20 +821,27 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
+
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
-  if (is_page_associated) {
+
+  if (is_page_associated &&
+      !(features::kIsAgentEnabled.Get() && features::IsAIChatToolsEnabled()) &&
+      (!features::kIsSmartPageContentEnabled.Get() ||
+       !features::IsAIChatToolsEnabled())) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
         base::BindOnce(&ConversationHandler::PerformAssistantGeneration,
                        weak_ptr_factory_.GetWeakPtr(), question_part));
   } else {
-    // Now the conversation is committed, we can remove some unneccessary data
-    // if we're not associated with a page.
-    suggestions_.clear();
-    DisassociateContentDelegate();
-    OnSuggestedQuestionsChanged();
-    // Perform generation immediately
+    if (!is_page_associated) {
+      // Now the conversation is committed, we can remove some unneccessary data
+      // if we're not associated with a page.
+      suggestions_.clear();
+      DisassociateContentDelegate();
+      OnSuggestedQuestionsChanged();
+    }
+
     PerformAssistantGeneration(question_part);
   }
 }
@@ -851,6 +951,180 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
   }
 
   SubmitHumanConversationEntry(std::move(new_turn));
+}
+
+mojom::ToolUseEvent* ConversationHandler::GetToolUseEventForLastResponse(
+      std::string_view tool_id) {
+   if (!chat_history_.empty()) {
+    auto& last_entry = chat_history_.back();
+    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
+        last_entry->events->size() > 0) {
+      for (auto& event : *last_entry->events) {
+        if (event->is_tool_use_event()) {
+          auto& tool_use_event = event->get_tool_use_event();
+          if (tool_use_event->tool_id != tool_id) {
+            continue;
+          }
+          return tool_use_event.get();
+        }
+      }
+    }
+  }
+  return nullptr;
+}
+
+void ConversationHandler::MaybeRespondToNextToolUseRequest() {
+  // Handle tool use requests that do not require user feedback
+  if (!chat_history_.empty()) {
+    auto& last_entry = chat_history_.back();
+    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
+        last_entry->events->size() > 0) {
+      bool is_handling_tool = false;
+      for (auto& event : *last_entry->events) {
+        if (event->is_tool_use_event()) {
+          auto& tool_use_event = event->get_tool_use_event();
+          if (tool_use_event->output_json != std::nullopt) {
+            // already handled
+            continue;
+          }
+          for (auto& tool : tools_) {
+            if (tool->name() == tool_use_event->tool_name &&
+                !tool->RequiresUserInteractionBeforeHandling()) {
+              is_handling_tool = true;
+              RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
+              break;
+            }
+          }
+          if (!is_handling_tool && associated_content_delegate_ && should_send_page_contents_) {
+            for (auto& tool : associated_content_delegate_->GetTools()) {
+              if (tool->name() == tool_use_event->tool_name &&
+                  !tool->RequiresUserInteractionBeforeHandling()) {
+                is_handling_tool = true;
+                RespondToToolUseRequest(tool_use_event->tool_id, std::nullopt);
+                break;
+              }
+            }
+          }
+          if (is_handling_tool) {
+            break;
+          }
+        }
+      }
+    }
+  }
+}
+
+void ConversationHandler::RespondToToolUseRequest(const std::string& tool_id,
+                                const std::optional<std::string>& output_json) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_id);
+  if (!tool_use) {
+    return;
+  }
+  LOG(ERROR) << __func__;
+  LOG(ERROR) << __func__ << ": " << tool_id << ", " << tool_use->tool_id
+              << ", " << tool_use->tool_name;
+  // Some calls to this function are tools that user is giving
+  // permission to use, some are users's giving the answer, and some are to be
+  // run immediately after the tool is requested by the assistant.
+
+  // Some tools are handled by the Tool, some by the UI and some are handled by
+  // this class.
+  if (output_json.has_value()) {
+    // Already handled by the UI
+    OnToolUseComplete(tool_id, output_json, 0);
+    return;
+  }
+  else if (tool_use->tool_name == PageContentTool::kName) {
+    // Handled by this class
+    LOG(ERROR) << __func__;
+    GeneratePageContent(base::BindOnce(
+        &ConversationHandler::OnActiveWebPageContentFetcherResponseReady,
+        weak_ptr_factory_.GetWeakPtr(), tool_id));
+    return;
+  }
+  // Handled by the tool itself
+  LOG(ERROR) << __func__;
+  // Get tool
+  Tool* tool = nullptr;
+  auto tool_it = base::ranges::find_if(
+      tools_, [&tool_use](const std::unique_ptr<Tool>& tool) {
+        return tool->name() == tool_use->tool_name;
+      });
+  if (tool_it != tools_.end()) {
+    tool = tool_it->get();
+  } else {
+    // Check content tools
+    if (associated_content_delegate_) {
+      auto content_tools = associated_content_delegate_->GetTools();
+      auto a_tool_it =
+          base::ranges::find_if(content_tools,
+                                [&tool_use](const Tool* tool) {
+                                  LOG(ERROR) << __func__ << ": " << tool->name() << ", " << tool_use->tool_name;
+                                  return tool->name() == tool_use->tool_name;
+                                });
+      if (a_tool_it != content_tools.end()) {
+        tool = *a_tool_it;
+      }
+    }
+  }
+  if (!tool) {
+    DLOG(ERROR) << "Tool not found: " << tool_use->tool_name;
+    return;
+  }
+  LOG(ERROR) << __func__ << ": " << tool->name();
+  tool->UseTool(tool_use->input_json,
+                base::BindOnce(&ConversationHandler::OnToolUseComplete,
+                                weak_ptr_factory_.GetWeakPtr(), tool_id));
+}
+
+void ConversationHandler::OnToolUseComplete(
+    const std::string& tool_use_id,
+    std::optional<std::string_view> output_json,
+    int delay_ms) {
+  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
+  if (!tool_use) {
+    DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
+    return;
+  }
+
+  // If there's no output, we don't need to send to the assistant
+  if (!output_json) {
+    return;
+  }
+
+  tool_use->output_json = output_json.value();
+  OnHistoryUpdate();
+  // Only perform generation if there are no pending tools left to run from
+  // the last entry
+  if (base::ranges::all_of(
+          *chat_history_.back()->events,
+          [](const mojom::ConversationEntryEventPtr& event) {
+            return !event->is_tool_use_event() ||
+                   event->get_tool_use_event()->output_json.has_value();
+          })) {
+    is_request_in_progress_ = true;
+    OnAPIRequestInProgressChanged();
+    PerformAssistantGeneration("");
+  } else {
+    // Still have more tool use requests to handle. Wait for the asked-for delay
+    // and then handle the next tool use request.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE,
+        base::BindOnce(&ConversationHandler::MaybeRespondToNextToolUseRequest,
+                       weak_ptr_factory_.GetWeakPtr()),
+        base::Milliseconds(delay_ms));
+  }
+}
+
+void ConversationHandler::OnActiveWebPageContentFetcherResponseReady(
+    const std::string& tool_id,
+    std::string content,
+    bool is_video,
+    std::string invalidation_token) {
+  OnToolUseComplete(tool_id, R"({
+    "web_page_content": ")" + content +
+                                 R"(",
+  })", 0);
 }
 
 void ConversationHandler::SubmitSummarizationRequest() {
@@ -1100,6 +1374,7 @@ void ConversationHandler::PerformAssistantGeneration(
     std::string page_content /* = "" */,
     bool is_video /* = false */,
     std::string invalidation_token /* = "" */) {
+
   auto data_received_callback =
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr());
@@ -1142,9 +1417,31 @@ void ConversationHandler::PerformAssistantGeneration(
     OnAssociatedContentInfoChanged();
   }
 
+  // TODO(petemill): Decide when to send tools
+  std::vector<Tool*> tools;
+  bool is_sending_page_contents =
+      IsContentAssociationPossible() && should_send_page_contents_;
+
+  for (const auto& tool : tools_) {
+    if (!tool->IsContentAssociationRequired() || is_sending_page_contents) {
+      tools.push_back(tool.get());
+    }
+  }
+
+  if (is_sending_page_contents) {
+    for (const auto& tool : associated_content_delegate_->GetTools()) {
+      tools.push_back(tool);
+    }
+  }
+
+  // Always start new entry for assistant response, even if it's a
+  // "continuation" from a tool use request.
+  needs_new_entry_ = true;
+
   engine_->GenerateAssistantResponse(
       is_video, page_content, chat_history_, input, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+      std::move(tools), std::nullopt, std::move(data_received_callback),
+      std::move(data_completed_callback));
 }
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
@@ -1157,7 +1454,8 @@ void ConversationHandler::SetAPIError(const mojom::APIError& error) {
 
 void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     mojom::ConversationEntryEventPtr event) {
-  if (chat_history_.empty() ||
+  LOG(ERROR) << __func__;
+  if (needs_new_entry_ || chat_history_.empty() ||
       chat_history_.back()->character_type != CharacterType::ASSISTANT) {
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
@@ -1165,6 +1463,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         mojom::ConversationTurnVisibility::VISIBLE, "", std::nullopt,
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
         std::nullopt, false);
+    needs_new_entry_ = false;
     chat_history_.push_back(std::move(entry));
   }
 
@@ -1199,6 +1498,27 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
     // TODO(petemill): Remove ConversationTurn.text backwards compatibility when
     // all UI is updated to instead use ConversationEntryEvent items.
     entry->text = event->get_completion_event()->completion;
+  }
+
+  if (event->is_tool_use_event() && entry->events->size() > 0) {
+    // Tool use events can be partial and may need to be combined with the
+    // previous event.
+    auto& last_event = entry->events->back();
+    auto& tool_use_event = event->get_tool_use_event();
+
+    LOG(ERROR) << __func__ << " Got event for tool use: "
+               << tool_use_event->tool_name
+               << " is empty? " << tool_use_event->tool_name.empty()
+                << " with input: " << tool_use_event->input_json
+                << " is last event tool use? " << last_event->is_tool_use_event();
+
+    if (last_event->is_tool_use_event() && tool_use_event->tool_name.empty()) {
+      last_event->get_tool_use_event()->input_json = base::StrCat(
+          {last_event->get_tool_use_event()->input_json,
+           tool_use_event->input_json});
+      OnHistoryUpdate();
+      return;
+    }
   }
 
   if (event->is_conversation_title_event()) {
@@ -1423,7 +1743,7 @@ void ConversationHandler::OnGetRefinedPageContent(
   }
   engine_->GenerateAssistantResponse(
       is_video, page_content_to_use, chat_history_, input, selected_language_,
-      std::move(data_received_callback), std::move(data_completed_callback));
+      {}, std::nullopt, std::move(data_received_callback), std::move(data_completed_callback));
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(
@@ -1469,6 +1789,9 @@ void ConversationHandler::OnEngineCompletionComplete(
       }
     }
   }
+
+  MaybeRespondToNextToolUseRequest();
+
 
   OnAPIRequestInProgressChanged();
 }

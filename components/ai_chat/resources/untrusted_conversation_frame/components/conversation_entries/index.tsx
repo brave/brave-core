@@ -72,10 +72,28 @@ function ConversationEntries() {
     return event?.completionEvent?.completion ?? ''
   }
 
+  // Combine entry events if there are multiple assistant character types in a row.
+  // If we stopped to handle a tool, it should still look like the Assistant did it.
+  const combinedEntries = React.useMemo<Mojom.ConversationTurn[]>(() => {
+    const combinedEntries: Mojom.ConversationTurn[] = []
+    for (const entry of conversationContext.conversationHistory) {
+      const lastEntry = combinedEntries[combinedEntries.length - 1]
+      if (combinedEntries.length === 0 || entry.characterType !== Mojom.CharacterType.ASSISTANT || lastEntry.characterType !== Mojom.CharacterType.ASSISTANT) {
+        combinedEntries.push(entry)
+        continue
+      }
+      if (entry.characterType === Mojom.CharacterType.ASSISTANT && lastEntry.characterType === Mojom.CharacterType.ASSISTANT) {
+        lastEntry.events = [...(lastEntry.events ?? []), ...(entry.events ?? [])]
+        continue
+      }
+    }
+    return combinedEntries
+  }, [conversationContext.conversationHistory])
+
   return (
     <>
-      <div>
-        {conversationContext.conversationHistory.map((turn, id) => {
+      <div className={styles.conversationEntries}>
+        {combinedEntries.map((turn, id) => {
           const isLastEntry = id === lastAssistantId
           const isAIAssistant =
             turn.characterType === Mojom.CharacterType.ASSISTANT

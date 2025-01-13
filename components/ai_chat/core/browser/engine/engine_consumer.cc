@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/containers/flat_tree.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 
 namespace ai_chat {
@@ -25,7 +26,20 @@ bool EngineConsumer::CanPerformCompletionRequest(
   }
 
   const auto& last_turn = conversation_history.back();
-  if (last_turn->character_type != mojom::CharacterType::HUMAN) {
+
+  if (last_turn->character_type == mojom::CharacterType::ASSISTANT) {
+    // If we don't have a human entry to submit then we might have
+    // tool use responses to submit and continue the assistant response with.
+    if (last_turn->events.has_value() && !last_turn->events->empty()) {
+      if (base::ranges::any_of(
+              *last_turn->events,
+              [](const mojom::ConversationEntryEventPtr& event) {
+                return event->is_tool_use_event() &&
+                       event->get_tool_use_event()->output_json.has_value();
+              })) {
+        return true;
+      }
+    }
     return false;
   }
 

@@ -11,8 +11,9 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/containers/adapters.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
+#include "base/json/json_reader.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/time_formatting.h"
 #include "base/memory/scoped_refptr.h"
@@ -91,11 +92,79 @@ base::Value::List BuildMessages(
     messages.Append(std::move(message));
   }
 
-  for (const mojom::ConversationTurnPtr& turn : conversation_history) {
+  auto conversation_message_insertion_it = messages.end();
+
+  // Keep count of large tool results to limit the number of large results,
+  // (mainly screenshots), but keep the ones at the end by iterating in reverse.
+  int large_event_count = 0;
+  for (const mojom::ConversationTurnPtr& turn :
+       base::Reversed(conversation_history)) {
     base::Value::Dict message;
     message.Set("role", turn->character_type == CharacterType::HUMAN
                             ? "user"
                             : "assistant");
+    base::Value::List tool_results;
+    // Construct tool calls and responses for each turn
+    if (turn->character_type == CharacterType::ASSISTANT &&
+        turn->events.has_value() && !turn->events->empty()) {
+      base::Value::List tool_calls;
+      std::vector<mojom::ConversationEntryEventPtr>& events = turn->events.value();
+
+      for (auto & event : base::Reversed(events)) {
+         if (!event->is_tool_use_event()) {
+          continue;
+        }
+
+        // Reconstruct tool call from assistant
+        const auto& tool_event = event->get_tool_use_event();
+        base::Value::Dict tool_call;
+        tool_call.Set("id", tool_event->tool_id);
+        tool_call.Set("type", "function");
+
+        base::Value::Dict function;
+        function.Set("name", tool_event->tool_name);
+        function.Set("arguments", tool_event->input_json);
+        tool_call.Set("function", std::move(function));
+
+        tool_calls.Insert(tool_calls.begin(), base::Value(std::move(tool_call)));
+
+        // Tool result
+        if (tool_event->output_json.has_value()) {
+          base::Value::Dict tool_result;
+          tool_result.Set("role", "tool");
+          tool_result.Set("tool_call_id", tool_event->tool_id);
+          // Only send the large results (images) in the last 2x tool result
+          // events, otherwise the context gets filled.
+          if (!tool_event->output_json->empty() &&
+              (large_event_count < 2 ||
+               tool_event->output_json.value().size() < 1000)) {
+            if (tool_event->output_json.value().size() >= 1000) {
+              large_event_count++;
+            }
+            auto possible_content = base::JSONReader::Read(tool_event->output_json.value());
+            if (!possible_content.has_value()) {
+              DLOG(ERROR) << "Failed to parse tool output JSON: "
+                         << tool_event->output_json.value();
+              tool_result.Set("content", tool_event->output_json.value());
+            } else if (possible_content->is_list()) {
+              base::Value::List& list = possible_content.value().GetList();
+              tool_result.Set("content", std::move(list));
+            } else if (possible_content->is_dict()) {
+              base::Value::Dict& list = possible_content.value().GetDict();
+              tool_result.Set("content", std::move(list));
+            } else {
+              tool_result.Set("content", possible_content.value().GetString());
+            }
+          } else {
+            tool_result.Set("content", "");
+          }
+          tool_results.Append(std::move(tool_result));
+        }
+      }
+      if (!tool_calls.empty()) {
+        message.Set("tool_calls", std::move(tool_calls));
+      }
+    }
     const std::string& text = (turn->edits && !turn->edits->empty())
                                   ? turn->edits->back()->text
                                   : turn->text;
@@ -104,12 +173,23 @@ base::Value::List BuildMessages(
         turn->selected_text
             ? base::StrCat(
                   {base::ReplaceStringPlaceholders(
-                       l10n_util::GetStringUTF8(
-                           IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
-                       {*turn->selected_text}, nullptr),
-                   "\n\n", text})
+                      l10n_util::GetStringUTF8(
+                          IDS_AI_CHAT_LLAMA2_SELECTED_TEXT_PROMPT_SEGMENT),
+                      {*turn->selected_text}, nullptr),
+                  "\n\n", text})
             : text);
-    messages.Append(std::move(message));
+
+    // Tool result should be inserted after the message
+    if (!tool_results.empty()) {
+      for (auto& tool_result : tool_results) {
+        conversation_message_insertion_it =
+            messages.Insert(conversation_message_insertion_it,
+                            base::Value(std::move(tool_result)));
+      }
+    }
+
+    conversation_message_insertion_it = messages.Insert(
+    conversation_message_insertion_it, base::Value(std::move(message)));
   }
 
   return messages;
@@ -168,7 +248,7 @@ void EngineConsumerOAIRemote::GenerateRewriteSuggestion(
     messages.Append(std::move(message));
   }
 
-  api_->PerformRequest(model_options_, std::move(messages),
+  api_->PerformRequest(model_options_, std::move(messages), {}, std::nullopt,
                        std::move(received_callback),
                        std::move(completed_callback));
 }
@@ -205,7 +285,8 @@ void EngineConsumerOAIRemote::GenerateQuestionSuggestions(
   }
 
   api_->PerformRequest(
-      model_options_, std::move(messages), base::NullCallback(),
+      model_options_, std::move(messages), {}, std::nullopt,
+      base::NullCallback(),
       base::BindOnce(
           &EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -248,6 +329,8 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
     const ConversationHistory& conversation_history,
     const std::string& human_input,
     const std::string& selected_language,
+    Tools tools,
+    std::optional<std::string_view> preferred_tool_name,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
   if (!CanPerformCompletionRequest(conversation_history)) {
@@ -269,8 +352,8 @@ void EngineConsumerOAIRemote::GenerateAssistantResponse(
   base::Value::List messages =
       BuildMessages(model_options_, truncated_page_content, selected_text,
                     is_video, conversation_history);
-  api_->PerformRequest(model_options_, std::move(messages),
-                       std::move(data_received_callback),
+  api_->PerformRequest(model_options_, std::move(messages), tools,
+                       preferred_tool_name, std::move(data_received_callback),
                        std::move(completed_callback));
 }
 
