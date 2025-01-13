@@ -6,7 +6,6 @@ script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
 /README.md @bsclifton
 Jenkinsfile @brave/devops-team
-DEPS @brave/deps-reviewers
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 
@@ -25,37 +24,6 @@ components/brave_component_updater/browser/local_data_files_observer.h @bridiver
 
 # BravePrefServiceBridge is deprecated
 browser/android/preferences/brave_pref_service_bridge.cc @bridiver
-
-# sources.gni - see docs/gni_sources.md
-**/sources.gni @brave/sources-gni-reviewers
-**/*_sources.gni @brave/sources-gni-reviewers
-docs/gni_sources.md @brave/sources-gni-reviewers
-
-# Renderer code
-**/renderer/**/* @brave/renderer-reviewers
-
-# Rust deps
-**/Cargo.* @brave/rust-deps-reviewers
-third_party/rust @bridiver
-
-# Rust code
-**/*.rs @brave/rust-reviewers
-
-# Third-party binaries
-**/*.aar @bridiver
-**/*.jar @bridiver
-**/*.apk @bridiver
-**/*.dex @bridiver
-**/*.lib @bridiver
-**/*.so @bridiver
-**/*.o @bridiver
-**/*.dll @bridiver
-**/*.dylib @bridiver
-
-# Strings
-**/*.grd @brave/string-reviewers-team
-**/*.grdp @brave/string-reviewers-team
-components/brave_extension/extension/brave_extension/_locales/en_US/messages.json @brave/string-reviewers-team
 
 # Rewards
 browser/brave_rewards/ @brave/rewards-client
@@ -205,3 +173,40 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 
 # Semgrep configuration
 /.semgrepignore @thypon
+
+# These rules are last to take precedence over directory rules.Do not add any
+# new rules below this line without checking with @bridiver
+
+# include_rules
+DEPS @brave/deps-reviewers
+
+# sources.gni - see docs/gni_sources.md
+**/sources.gni @brave/sources-gni-reviewers
+**/*_sources.gni @brave/sources-gni-reviewers
+docs/gni_sources.md @brave/sources-gni-reviewers
+
+# Renderer code
+**/renderer/**/* @brave/renderer-reviewers
+
+# Rust deps
+**/Cargo.* @brave/rust-deps-reviewers
+third_party/rust @bridiver
+
+# Rust code
+**/*.rs @brave/rust-reviewers
+
+# Third-party binaries
+**/*.aar @bridiver
+**/*.jar @bridiver
+**/*.apk @bridiver
+**/*.dex @bridiver
+**/*.lib @bridiver
+**/*.so @bridiver
+**/*.o @bridiver
+**/*.dll @bridiver
+**/*.dylib @bridiver
+
+# Strings
+**/*.grd @brave/string-reviewers-team
+**/*.grdp @brave/string-reviewers-team
+components/brave_extension/extension/brave_extension/_locales/en_US/messages.json @brave/string-reviewers-team
