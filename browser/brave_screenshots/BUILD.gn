@@ -13,8 +13,6 @@ source_set("brave_screenshots") {
     "screenshots_utils.h",
   ]
 
-  public_deps = [ "//content/public/browser" ]
-
   deps = [
     "//chrome/browser/image_editor:image_editor",
     "//chrome/browser/ui:ui",
@@ -34,8 +32,6 @@ source_set("strategies") {
     "strategies/viewport_strategy.h",
   ]
 
-  public_deps = [ "//base" ]
-
   deps = [
     "//chrome/browser/image_editor:image_editor",
     "//chrome/browser/ui",
@@ -46,11 +42,6 @@ source_set("tabs") {
   sources = [
     "screenshots_tab_feature.cc",
     "screenshots_tab_feature.h",
-  ]
-
-  public_deps = [
-    "//base",
-    "//content/public/browser",
   ]
 
   deps = [
@@ -66,7 +57,8 @@ source_set("features") {
     "features.cc",
     "features.h",
   ]
-  public_deps = [ "//base" ]
+
+  deps = [ "//base"]
 }
 
 source_set("unit_tests") {
