@@ -30,6 +30,7 @@ type Props = Pick<
   | 'handleVoiceRecognition'
   | 'isGenerating'
   | 'handleStopGenerating'
+  | 'uploadImage'
 > &
   Pick<
     AIChatContext,
@@ -157,7 +158,7 @@ function InputBox(props: InputBoxProps) {
               <Icon name='microphone' />
             </Button>
           )}
-          <AttachmentButtonMenu />
+          <AttachmentButtonMenu uploadImage = { props.context.uploadImage } />
         </div>
         <div>
           {props.context.isGenerating ? (
