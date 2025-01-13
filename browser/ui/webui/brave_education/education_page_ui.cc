@@ -8,8 +8,8 @@
 #include <string>
 #include <utility>
 
+#include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 #include "brave/browser/ui/webui/brave_education/education_page_delegate_desktop.h"
-#include "brave/browser/ui/webui/brave_education/education_page_handler.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_education/resources/grit/brave_education_generated_map.h"
@@ -42,13 +42,13 @@ EducationPageUI::EducationPageUI(content::WebUI* web_ui, const GURL& url)
   // Allow embedding of iframe content from allowed domains.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
-      std::string(EducationPageHandler::kChildSrcDirective));
+      std::string(BraveBrowserCommandHandler::kChildSrcDirective));
 }
 
 EducationPageUI::~EducationPageUI() = default;
 
 void EducationPageUI::BindInterface(
-    mojo::PendingReceiver<EducationPageHandlerFactory> pending_receiver) {
+    mojo::PendingReceiver<BraveBrowserCommandHandlerFactory> pending_receiver) {
   if (page_factory_receiver_.is_bound()) {
     page_factory_receiver_.reset();
   }
@@ -56,7 +56,8 @@ void EducationPageUI::BindInterface(
 }
 
 void EducationPageUI::CreatePageHandler(
-    mojo::PendingReceiver<mojom::EducationPageHandler> handler) {
+    mojo::PendingReceiver<
+        brave_browser_command::mojom::BraveBrowserCommandHandler> handler) {
   auto* web_contents = web_ui()->GetWebContents();
   auto* tab = tabs::TabInterface::GetFromContents(web_contents);
   CHECK(tab);
@@ -66,7 +67,7 @@ void EducationPageUI::CreatePageHandler(
 
   CHECK(education_page_type) << "Unrecognized education page URL";
 
-  page_handler_ = std::make_unique<EducationPageHandler>(
+  page_handler_ = std::make_unique<BraveBrowserCommandHandler>(
       std::move(handler), Profile::FromWebUI(web_ui()), *education_page_type,
       std::make_unique<EducationPageDelegateDesktop>(*tab));
 }

@@ -901,7 +901,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_education::mojom::EducationPageHandlerFactory,
+      brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
       brave_education::EducationPageUI>(map);
 #endif
 }

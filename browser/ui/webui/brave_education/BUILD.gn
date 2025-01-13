@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_education/buildflags.gni")
-import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 
 assert(enable_brave_education)
 
@@ -12,8 +11,6 @@ source_set("brave_education") {
   sources = [
     "education_page_delegate_desktop.cc",
     "education_page_delegate_desktop.h",
-    "education_page_handler.cc",
-    "education_page_handler.h",
     "education_page_ui.cc",
     "education_page_ui.h",
     "education_server_checker.cc",
@@ -21,12 +18,11 @@ source_set("brave_education") {
   ]
 
   deps = [
-    "//brave/browser/ai_chat",
-    "//brave/browser/brave_rewards",
-    "//brave/browser/brave_wallet",
-    "//brave/components/brave_education:mojom",
+    "//brave/browser/ui/webui/brave_browser_command:brave_browser_command",
+    "//brave/components/brave_education:brave_education",
     "//brave/components/brave_education/resources:generated_resources",
     "//brave/components/brave_vpn/common/buildflags",
+    "//brave/ui/webui/resources/js/brave_browser_command:mojom",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
@@ -35,10 +31,6 @@ source_set("brave_education") {
     "//components/language/core/browser",
     "//ui/webui",
   ]
-
-  if (enable_brave_vpn) {
-    deps += [ "//brave/browser/brave_vpn" ]
-  }
 
   public_deps = [ "//brave/components/brave_education" ]
 }
@@ -51,6 +43,7 @@ source_set("browser_tests") {
   deps = [
     ":brave_education",
     "//base/test:test_support",
+    "//brave/browser/ui/webui/brave_browser_command:brave_browser_command",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",
@@ -75,6 +68,7 @@ source_set("unit_tests") {
   deps = [
     ":brave_education",
     "//base/test:test_support",
+    "//brave/browser/ui/webui/brave_browser_command:brave_browser_command",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
     "//chrome/browser/ui",

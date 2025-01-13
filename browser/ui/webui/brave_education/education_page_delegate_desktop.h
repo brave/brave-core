@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_PAGE_DELEGATE_DESKTOP_H_
 
 #include "base/memory/raw_ref.h"
-#include "brave/browser/ui/webui/brave_education/education_page_handler.h"
+#include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
@@ -18,7 +18,8 @@ class TabInterface;
 namespace brave_education {
 
 // Handles browser-level requests from the Brave Education WebUI.
-class EducationPageDelegateDesktop : public EducationPageHandler::Delegate {
+class EducationPageDelegateDesktop
+    : public BraveBrowserCommandHandler::Delegate {
  public:
   explicit EducationPageDelegateDesktop(tabs::TabInterface& tab);
   ~EducationPageDelegateDesktop() override;

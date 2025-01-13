@@ -23,11 +23,7 @@ source_set("brave_education") {
   deps = [
     "//base",
     "//brave/components/constants:constants",
+    "//brave/ui/webui/resources/js/brave_browser_command:mojom",
     "//url",
   ]
-}
-
-mojom("mojom") {
-  sources = [ "education_page.mojom" ]
-  public_deps = [ "//mojo/public/mojom/base" ]
 }

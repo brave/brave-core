@@ -3,24 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_PAGE_HANDLER_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_PAGE_HANDLER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_BROWSER_COMMAND_BRAVE_BROWSER_COMMAND_HANDLER_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_BROWSER_COMMAND_BRAVE_BROWSER_COMMAND_HANDLER_H_
 
 #include <memory>
 #include <string_view>
 #include <utility>
 
-#include "brave/components/brave_education/education_page.mojom.h"
 #include "brave/components/brave_education/education_urls.h"
+#include "brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/base/window_open_disposition.h"
 
 class Profile;
 
-namespace brave_education {
-
-class EducationPageHandler : public mojom::EducationPageHandler {
+class BraveBrowserCommandHandler
+    : public brave_browser_command::mojom::BraveBrowserCommandHandler {
  public:
   // Handles platform-specific browser-level education tasks.
   class Delegate {
@@ -33,32 +32,32 @@ class EducationPageHandler : public mojom::EducationPageHandler {
     virtual void OpenAIChat() = 0;
   };
 
-  EducationPageHandler(
-      mojo::PendingReceiver<mojom::EducationPageHandler> receiver,
+  BraveBrowserCommandHandler(
+      mojo::PendingReceiver<
+          brave_browser_command::mojom::BraveBrowserCommandHandler> receiver,
       Profile* profile,
-      EducationPageType page_type,
+      brave_education::EducationPageType page_type,
       std::unique_ptr<Delegate> delegate);
 
-  ~EducationPageHandler() override;
+  ~BraveBrowserCommandHandler() override;
 
   static constexpr std::string_view kChildSrcDirective =
       "child-src chrome://webui-test https://brave.com/;";
 
-  // mojom::EducationPageHandler:
+  // brave_browser_command::mojom::BraveBrowserCommandHandler:
   void GetServerUrl(GetServerUrlCallback callback) override;
 
-  void ExecuteCommand(mojom::Command command,
+  void ExecuteCommand(brave_browser_command::mojom::Command command,
                       ExecuteCommandCallback callback) override;
 
  private:
-  bool CanExecute(mojom::Command command);
+  bool CanExecute(brave_browser_command::mojom::Command command);
 
-  mojo::Receiver<mojom::EducationPageHandler> receiver_;
+  mojo::Receiver<brave_browser_command::mojom::BraveBrowserCommandHandler>
+      receiver_;
   raw_ptr<Profile> profile_;
-  EducationPageType page_type_;
+  brave_education::EducationPageType page_type_;
   std::unique_ptr<Delegate> delegate_;
 };
 
-}  // namespace brave_education
-
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_PAGE_HANDLER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_BROWSER_COMMAND_BRAVE_BROWSER_COMMAND_HANDLER_H_

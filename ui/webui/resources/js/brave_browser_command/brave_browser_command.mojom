@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-module brave_education.mojom;
+module brave_browser_command.mojom;
 
 // The set of browser commands sent by brave.com content, and understood by the
 // browser. They may trigger actions in the browser such as navigating to a
@@ -16,13 +16,14 @@ enum Command {
   kOpenAIChat = 4
 };
 
-// Initializes messaging between the browser and the page.
-interface EducationPageHandlerFactory {
-  CreatePageHandler(pending_receiver<EducationPageHandler> receiver);
+// Initializes messaging between the browser and a webui page which can execute
+// Brave Browser Commands.
+interface BraveBrowserCommandHandlerFactory {
+  CreatePageHandler(pending_receiver<BraveBrowserCommandHandler> receiver);
 };
 
 // Browser-side handler for requests from the WebUI page.
-interface EducationPageHandler {
+interface BraveBrowserCommandHandler {
 
   // Returns the education content server URL that corresponds to the current
   // WebUI URL.
