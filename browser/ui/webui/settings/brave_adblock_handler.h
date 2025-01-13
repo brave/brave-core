@@ -8,13 +8,13 @@
 
 #include <string>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class Profile;
 using brave_shields::AdBlockSubscriptionServiceManager;
@@ -60,16 +60,17 @@ class BraveAdBlockHandler : public settings::SettingsPageUIHandler,
       brave_shields::AdBlockCustomResourceProvider::ErrorCode error_code);
 
   void RefreshSubscriptionsList();
+  void RefreshCustomFilters();
 
   base::Value::List GetSubscriptions();
 
   void OnFilterListsUpdated(std::string callback_id, bool success);
 
-  raw_ptr<Profile> profile_ = nullptr;
-
   base::ScopedObservation<AdBlockSubscriptionServiceManager,
                           AdBlockSubscriptionServiceManagerObserver>
       service_observer_{this};
+
+  PrefChangeRegistrar pref_change_registrar_;
 
   base::WeakPtrFactory<BraveAdBlockHandler> weak_factory_{this};
 };
