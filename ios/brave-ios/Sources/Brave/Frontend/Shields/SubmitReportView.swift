@@ -25,7 +25,7 @@ struct SubmitReportView: View {
   @State private var isSubmittingReport = false
   @State private var isSubmitted = false
   @State private var isContactInfoDescVisible: Bool = false
-    
+
   private var scrollContent: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 16) {
@@ -59,13 +59,13 @@ struct SubmitReportView: View {
               return
             }
             Task { @MainActor in
-                let contactInfo = await webcompatReporterAPI.contactInfo();
-                self.contactDetails = contactInfo.0 ?? ""
-                self.isContactInfoDescVisible = contactInfo.1
+              let contactInfo = await webcompatReporterAPI.contactInfo()
+              self.contactDetails = contactInfo.0 ?? ""
+              self.isContactInfoDescVisible = contactInfo.1
             }
           }
           if self.isContactInfoDescVisible {
-              Text(Strings.Shields.reportBrokenContactMeDescription).font(.caption)
+            Text(Strings.Shields.reportBrokenContactMeDescription).font(.caption)
           }
         }
       }
