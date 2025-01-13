@@ -115,21 +115,22 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
   return false;
 }
 
-void PrepareParamsAndShowDialog(
-    content::WebContents* initiator,
-    const std::string report_url,
-    bool shields_enabled,
-    const std::string_view adblock_mode,
-    const std::string_view fingerprint_mode,
-    const int source,
-    const bool is_error_page,
-    const std::optional<std::string>& contact_info) {
+void PrepareParamsAndShowDialog(content::WebContents* initiator,
+                                const std::string report_url,
+                                bool shields_enabled,
+                                const std::string_view adblock_mode,
+                                const std::string_view fingerprint_mode,
+                                const int source,
+                                const bool is_error_page,
+                                const std::optional<std::string>& contact_info,
+                                const bool contact_info_save_flag) {
   base::Value::Dict params_dict;
   params_dict.Set(kSiteURLField, report_url);
   params_dict.Set(kShieldsEnabledField, shields_enabled);
   params_dict.Set(kAdBlockSettingField, adblock_mode);
   params_dict.Set(kFPBlockSettingField, fingerprint_mode);
   params_dict.Set(kContactField, contact_info.value_or(""));
+  params_dict.Set(kContactInfoSaveFlagField, contact_info_save_flag);
   params_dict.Set(kUISourceField, source);
   params_dict.Set(kIsErrorPage, static_cast<int>(is_error_page));
 
@@ -184,7 +185,7 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
                              GetAdBlockModeString(ad_block_mode),
                              GetFingerprintModeString(fp_block_mode),
                              static_cast<int>(source), is_error_page,
-                             std::nullopt);
+                             std::nullopt, false);
 }
 
 }  // namespace webcompat_reporter

@@ -15,6 +15,7 @@ declare namespace WebcompatReporter {
     fpBlockSetting: string
     shieldsEnabled: string
     contactInfo: string
+    contactInfoSaveFlag: boolean
   }
 
   export interface State {

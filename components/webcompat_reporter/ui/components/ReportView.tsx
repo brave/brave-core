@@ -35,6 +35,7 @@ import {
 interface Props {
   siteUrl: string
   contactInfo: string
+  contactInfoSaveFlag: boolean
   isErrorPage: boolean
   isHttpPage: boolean
   isLocalPage: boolean
@@ -121,6 +122,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
   render () {
     const {
       siteUrl,
+      contactInfoSaveFlag,
       isErrorPage,
       isHttpPage,
       isLocalPage,
@@ -173,11 +175,13 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 id='contact-info'
               />
             </FieldCtr>
-            <FieldCtr>
-              <InputLabel>
-                {getLocale('reportContactPopupInfoLabel')}
-              </InputLabel>
-            </FieldCtr>
+            {contactInfoSaveFlag &&
+              <FieldCtr>
+                <InputLabel>
+                  {getLocale('reportContactPopupInfoLabel')}
+                </InputLabel>
+              </FieldCtr>
+            }
             <FieldCtr>
               <Checkbox
                 onChange={this.handleScreenshotChange}

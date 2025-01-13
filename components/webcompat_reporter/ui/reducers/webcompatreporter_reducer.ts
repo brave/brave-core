@@ -16,7 +16,8 @@ const defaultState: WebcompatReporter.State = {
     adBlockSetting: '',
     fpBlockSetting: '',
     shieldsEnabled: '',
-    contactInfo: ''
+    contactInfo: '',
+    contactInfoSaveFlag: false
   },
   submitted: false
 }

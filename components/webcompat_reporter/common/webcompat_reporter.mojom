@@ -34,5 +34,5 @@ interface WebcompatReporterHandler {
   SubmitWebcompatReport(ReportInfo report_info);
   GetContactInfoSaveFlag() => (bool val);
   SetContactInfoSaveFlag(bool value);
-  GetContactInfo() => (string? val);
+  GetContactInfo() => (string? val, bool contact_info_save_flag);
 };

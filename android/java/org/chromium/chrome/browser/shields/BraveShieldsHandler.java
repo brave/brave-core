@@ -130,6 +130,7 @@ public class BraveShieldsHandler
     private CheckBox mCheckBoxScreenshot;
     private EditText mEditTextDetails;
     private EditText mEditTextContact;
+    private TextView mTextContactInfoApopup;
     private View mDialogView;
     private Dialog mDialog;
     private ImageView mImageView;
@@ -855,6 +856,8 @@ public class BraveShieldsHandler
                 });
         mEditTextDetails = mReportBrokenSiteLayout.findViewById(R.id.details_info_text);
         mEditTextContact = mReportBrokenSiteLayout.findViewById(R.id.contact_info_text);
+        mTextContactInfoApopup =
+                mReportBrokenSiteLayout.findViewById(R.id.contact_info_apopup_label);
 
         Button mSubmitButton = mReportBrokenSiteLayout.findViewById(R.id.btn_submit);
         mSubmitButton.setOnClickListener(
@@ -869,10 +872,12 @@ public class BraveShieldsHandler
                     }
                 });
         mWebcompatReporterHandler.getContactInfo(
-                contactInfo -> {
+                (contactInfo, contactInfoSaveFlag) -> {
                     if (contactInfo != null && !contactInfo.isEmpty()) {
                         mEditTextContact.setText(contactInfo);
                     }
+                    mTextContactInfoApopup.setVisibility(
+                            contactInfoSaveFlag ? View.VISIBLE : View.GONE);
                 });
     }
 
