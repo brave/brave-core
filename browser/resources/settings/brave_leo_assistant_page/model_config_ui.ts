@@ -177,7 +177,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
   }
 
   onContextSizeChange_(e: any) {
-    this.contextSize = parseInt(e.value, 10);
+    this.contextSize = e.valueAsNumber
   }
 
   onModelServerEndpointChange_(e: any) {
@@ -190,13 +190,13 @@ export class ModelConfigUI extends ModelConfigUIBase {
   }
 
   constructTokenEstimateString_(e?: any) {
-    let charsLength = 0;
-    let tokensLength = 0;
+    let charsLength = 0
+    let tokensLength = 0
 
     if (e?.value) {
-      charsLength = e.value.length;
+      charsLength = e.value.length
     } else if (this.modelSystemPrompt) {
-      charsLength = this.modelSystemPrompt.length;
+      charsLength = this.modelSystemPrompt.length
     }
 
     tokensLength = charsLength > 0 ? Math.ceil(charsLength/4) : 0;
