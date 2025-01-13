@@ -1337,7 +1337,8 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         ShareDelegateImpl.ShareSheetDelegate.class,
-                        boolean.class));
+                        boolean.class,
+                        DataSharingTabManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
