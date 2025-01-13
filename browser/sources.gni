@@ -387,8 +387,6 @@ if (is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
-    "//brave/browser/android/background_video",
-    "//brave/browser/android/background_video:features",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing:buildflags",
     "//brave/browser/brave_ads/android",
@@ -396,6 +394,9 @@ if (is_android) {
     "//brave/browser/ntp_background/android",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
+    "//brave/components/youtube_script_injector/browser/content",
+    "//brave/components/youtube_script_injector/browser/core",
+    "//brave/components/youtube_script_injector/common",
     "//chrome/android:jni_headers",
     "//components/sync_device_info",
   ]

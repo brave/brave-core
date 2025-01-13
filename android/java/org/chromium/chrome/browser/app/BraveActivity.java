@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,6 +63,12 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
+import org.chromium.chrome.browser.compositor.layouts.Layout;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
+import org.chromium.chrome.browser.layouts.LayoutManager;
+import org.chromium.chrome.browser.layouts.LayoutType;
+import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.chrome.browser.youtube.YouTubeFeaturesLayout;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -92,6 +100,7 @@ import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BackgroundVideoPlaybackTabHelper;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
@@ -307,6 +316,8 @@ public abstract class BraveActivity extends ChromeActivity
     private static final List<String> sYandexRegions =
             Arrays.asList("AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "UZ");
 
+    private static final String TAG = "BraveActivity";
+
     private boolean mIsVerification;
     private boolean mIsDefaultCheckOnResume;
     private boolean mIsSetDefaultBrowserNotification;
@@ -510,6 +521,23 @@ public abstract class BraveActivity extends ChromeActivity
         cleanUpBraveNewsController();
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
+    }
+    @Override
+    public void performOnConfigurationChanged(Configuration newConfig) {
+        super.performOnConfigurationChanged(newConfig);
+
+        YouTubeFeaturesLayout youtubeFeaturesLayout = findViewById(R.id.youtube_features_layout);
+        if (youtubeFeaturesLayout != null && youtubeFeaturesLayout.getLayoutParams() instanceof FrameLayout.LayoutParams params) {
+            params.bottomMargin = (int) getResources().getDimension(R.dimen.youtube_features_layout_margin_bottom);
+            params.rightMargin = (int) getResources().getDimension(R.dimen.youtube_features_layout_margin_right);
+        }
+
+        Tab currentTab = getActivityTab();
+        if (TabUtils.isYouTubeVideo(currentTab)
+                && !isInPictureInPictureMode()
+                && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
+        }
     }
 
     /**
@@ -2680,5 +2708,31 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void onKeyboardClosed() {
         removeQuickActionSearchEnginesView();
+    }
+
+    public void showYouTubeFeaturesLayout(final boolean show) {
+        YouTubeFeaturesLayout youtubeFeaturesLayout = findViewById(R.id.youtube_features_layout);
+        if (youtubeFeaturesLayout != null) {
+            youtubeFeaturesLayout.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+
+        Tab currentTab = getActivityTab();
+        if (TabUtils.isYouTubeVideo(currentTab) &&
+                !getFullscreenManager().getPersistentFullscreenMode() &&
+                !isInPictureInPictureMode()) {
+
+            LayoutManagerImpl layoutManager = (LayoutManagerImpl) getLayoutManagerSupplier().get();
+            int activeLayoutType = LayoutType.NONE;
+            if (layoutManager != null && layoutManager.getActiveLayout() != null) {
+                activeLayoutType = layoutManager.getActiveLayout().getLayoutType();
+            }
+
+            showYouTubeFeaturesLayout(activeLayoutType == LayoutType.BROWSING);
+        }
     }
 }

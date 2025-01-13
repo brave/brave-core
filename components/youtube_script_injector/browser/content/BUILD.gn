@@ -1,0 +1,26 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("content") {
+  output_name = "youtube_script_injector_browser_content"
+
+  defines = [ "IS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_IMPL" ]
+
+  sources = [
+    "youtube_tab_helper.cc",
+    "youtube_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/build/android:jni_headers",
+    "//brave/components/script_injector/common/mojom",
+    "//brave/components/youtube_script_injector/browser/core",
+    "//brave/components/youtube_script_injector/common",
+    "//components/sessions",
+    "//content/public/browser",
+    "//url",
+  ]
+}

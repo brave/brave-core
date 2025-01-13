@@ -21,6 +21,7 @@ import("//brave/components/safetynet/java_sources.gni")
 import("//brave/components/signin/public/android/java_sources.gni")
 
 brave_java_sources = [
+  "../../brave/android/java/org/chromium/chrome/browser/BackgroundVideoPlaybackTabHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
@@ -463,6 +464,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/KeyboardVisibilityHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/LiveDataUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/PictureInPictureUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/SharedPreferencesHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TouchDelegateComposite.java",
@@ -515,6 +517,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/QuickActionSearchAndBookmarkWidgetProvider.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/promo/SearchWidgetPromoPanel.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/quickactionsearchandbookmark/utils/BraveSearchWidgetUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/youtube/YouTubeFeaturesLayout.java",
 ]
 
 brave_java_sources += brave_ads_java_sources
