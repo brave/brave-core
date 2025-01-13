@@ -60,6 +60,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   handleActionTypeClick: (actionType: Mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
   handleVoiceRecognition?: () => void
+  uploadImage?: () => void
   conversationHandler?: Mojom.ConversationHandlerRemote
 }
 
@@ -498,6 +499,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     aiChatContext.uiHandler?.handleVoiceRecognition(context.conversationUuid)
   }
 
+  const uploadImage = () => {
+    aiChatContext.uiHandler?.uploadImage()
+    .then(({imageData}) => {
+      console.log(imageData)
+    })
+  }
+
   const store: ConversationContext = {
     ...context,
     ...sendFeedbackState,
@@ -526,6 +534,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     switchToBasicModel,
     setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
     handleVoiceRecognition,
+    uploadImage,
     conversationHandler
   }
 

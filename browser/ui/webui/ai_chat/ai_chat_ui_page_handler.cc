@@ -10,6 +10,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/file_util.h"
+#include "base/location.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
@@ -22,6 +25,7 @@
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/favicon/core/favicon_service.h"
 #include "content/public/browser/browser_context.h"
@@ -30,6 +34,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
 #include "ui/base/page_transition_types.h"
+#include "ui/shell_dialogs/selected_file_info.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
@@ -97,6 +102,39 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #if BUILDFLAG(IS_ANDROID)
   ai_chat::HandleShowSoftKeyboard(owner_web_contents_.get());
 #endif
+}
+
+void AIChatUIPageHandler::UploadImage(UploadImageCallback callback) {
+  select_file_dialog_ = ui::SelectFileDialog::Create(
+      this, std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_));
+  ui::SelectFileDialog::FileTypeInfo info;
+  info.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
+  info.extensions = {{"png", "jpeg"}};
+  select_file_dialog_->SelectFile(
+      ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(),
+      profile_->last_selected_directory(), &info, 0,
+      base::FilePath::StringType(),
+      owner_web_contents_->GetTopLevelNativeWindow(), nullptr);
+  upload_image_callback_ = std::move(callback);
+}
+
+void AIChatUIPageHandler::FileSelected(const ui::SelectedFileInfo& file,
+                                       int index) {
+  profile_->set_last_selected_directory(file.path().DirName());
+  auto read_image = base::BindOnce(
+      [](const base::FilePath& path) -> std::optional<std::vector<uint8_t>> {
+        return base::ReadFileToBytes(path);
+      },
+      file.path());
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()}, std::move(read_image),
+      std::move(upload_image_callback_));
+}
+
+void AIChatUIPageHandler::FileSelectionCanceled() {
+  if (upload_image_callback_) {
+    std::move(upload_image_callback_).Run(std::nullopt);
+  }
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
