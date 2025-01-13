@@ -11,15 +11,11 @@
 #include "base/functional/callback.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 namespace component_updater {
 class ComponentUpdateService;
+class ComponentContentsAccessor;
 }  // namespace component_updater
-
-namespace base {
-class FilePath;
-}
 
 namespace brave_shields {
 
@@ -46,9 +42,11 @@ class AdBlockFilterListCatalogProvider {
 
  private:
   void OnFilterListCatalogLoaded(const std::string& catalog_json);
-  void OnComponentReady(const base::FilePath&);
+  void OnComponentReady(
+      scoped_refptr<component_updater::ComponentContentsAccessor> accessor);
 
-  base::FilePath component_path_;
+  scoped_refptr<component_updater::ComponentContentsAccessor>
+      component_accessor_;
 
   base::ObserverList<Observer> observers_;
 

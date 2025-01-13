@@ -3,14 +3,19 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//extensions/buildflags/buildflags.gni")
+
 source_set("component_updater") {
   sources = [
+    "brave_component_contents_verifier.cc",
+    "brave_component_contents_verifier.h",
     "brave_component_updater_configurator.cc",
     "brave_component_updater_configurator.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/constants",
     "//chrome/common",
     "//components/component_updater",
@@ -24,6 +29,10 @@ source_set("component_updater") {
     "//content/public/browser",
     "//services/network/public/cpp",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/browser" ]
+  }
 
   if (is_win) {
     deps += [ "//chrome/installer/util:with_no_strings" ]

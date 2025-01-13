@@ -152,8 +152,6 @@ class AdBlockService {
   friend class brave_shields::CosmeticResourceMergeTest;
   friend class brave_shields::StripProceduralFiltersTest;
 
-  static std::string g_ad_block_dat_file_version_;
-
   AdBlockDefaultResourceProvider* default_resource_provider();
   AdBlockComponentFiltersProvider* default_filters_provider() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

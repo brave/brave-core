@@ -13,6 +13,7 @@
 
 namespace component_updater {
 class ComponentUpdateService;
+class ComponentContentsAccessor;
 }  // namespace component_updater
 
 namespace base {
@@ -42,9 +43,11 @@ class AdBlockDefaultResourceProvider : public AdBlockResourceProvider {
  private:
   friend class ::AdBlockServiceTest;
 
-  void OnComponentReady(const base::FilePath&);
+  void OnComponentReady(
+      scoped_refptr<component_updater::ComponentContentsAccessor> accessor);
 
-  base::FilePath component_path_;
+  scoped_refptr<component_updater::ComponentContentsAccessor>
+      component_accessor_;
 
   base::WeakPtrFactory<AdBlockDefaultResourceProvider> weak_factory_{this};
 };

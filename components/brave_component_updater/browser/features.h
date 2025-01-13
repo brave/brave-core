@@ -11,6 +11,7 @@
 namespace brave_component_updater {
 
 BASE_DECLARE_FEATURE(kUseDevUpdaterUrl);
+BASE_DECLARE_FEATURE(kComponentContentsVerifier);
 
 }  // namespace brave_component_updater
 

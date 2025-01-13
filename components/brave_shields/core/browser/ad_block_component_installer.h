@@ -8,17 +8,17 @@
 
 #include <string>
 
-#include "base/files/file_path.h"
 #include "base/functional/callback.h"
 
 namespace component_updater {
 class ComponentUpdateService;
+class ComponentContentsAccessor;
 }  // namespace component_updater
 
 namespace brave_shields {
 
-using OnComponentReadyCallback =
-    base::RepeatingCallback<void(const base::FilePath& install_path)>;
+using OnComponentReadyCallback = base::RepeatingCallback<void(
+    scoped_refptr<component_updater::ComponentContentsAccessor>)>;
 
 void RegisterAdBlockDefaultResourceComponent(
     component_updater::ComponentUpdateService* cus,

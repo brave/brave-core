@@ -11,6 +11,7 @@
 #include "base/command_line.h"
 #include "base/path_service.h"
 #include "brave/browser/browsing_data/brave_clear_browsing_data.h"
+#include "brave/browser/component_updater/brave_component_contents_verifier.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
@@ -81,6 +82,7 @@ ChromeBrowserMainParts::ChromeBrowserMainParts(bool is_integration_test,
 ChromeBrowserMainParts::~ChromeBrowserMainParts() = default;
 
 int ChromeBrowserMainParts::PreMainMessageLoopRun() {
+  component_updater::SetupComponentContentsVerifier();
   brave_component_updater::BraveOnDemandUpdater::GetInstance()
       ->RegisterOnDemandUpdater(
           &g_browser_process->component_updater()->GetOnDemandUpdater());
