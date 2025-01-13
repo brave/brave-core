@@ -221,11 +221,14 @@ extension BrowserViewController: TopToolbarDelegate {
     } else {
       showSearchController()
 
+      let locationLastReplacement = topToolbar.locationLastReplacement
+      let isPasting = topToolbar.isPastingInURLBar
       Task {
         await searchController?.setSearchQuery(
           query: text,
           showSearchSuggestions: URLBarHelper.shared.shouldShowSearchSuggestions(
-            using: topToolbar.locationLastReplacement
+            using: locationLastReplacement,
+            isPasting: isPasting
           )
         )
       }

@@ -10,27 +10,11 @@ class URLBarHelper {
 
   static let shared = URLBarHelper()
 
-  func shouldShowSearchSuggestions(using lastReplacement: String) async -> Bool {
-    // Check if last entry to url textfield needs to be checked as suspicious.
-    // The reason of checking count is bigger than 1 is the single character
-    // entries will always be safe and only way to achieve multi character entry is
-    // using paste board.
-    // This check also allow us to handle paste permission case
-    guard lastReplacement.count > 1 else {
-      return true
-    }
-
-    // Check if paste board has any text to guarantee the case
-    guard UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs else {
-      return true
-    }
-
-    // Perform check on pasted text
-    if let pasteboardContents = UIPasteboard.general.string {
-      let isSuspicious = await isSuspiciousQuery(pasteboardContents)
+  func shouldShowSearchSuggestions(using lastReplacement: String, isPasting: Bool) async -> Bool {
+    if isPasting {
+      let isSuspicious = await isSuspiciousQuery(lastReplacement)
       return !isSuspicious
     }
-
     return true
   }
 
