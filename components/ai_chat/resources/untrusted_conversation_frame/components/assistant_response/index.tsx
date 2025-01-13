@@ -11,6 +11,7 @@ import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import MarkdownRenderer from '../markdown_renderer'
+import WebSourcesEvent from './web_sources_event'
 import styles from './style.module.scss'
 
 function SearchSummary (props: { searchQueries: string[] }) {
@@ -79,7 +80,10 @@ function AssistantEvent(props: { event: Mojom.ConversationEntryEvent, hasComplet
 }
 
 export default function AssistantResponse(props: { entry: Mojom.ConversationTurn, isEntryInProgress: boolean }) {
+  // Extract certain events which need to render at specific locations (e.g. end of the events)
   const searchQueriesEvent = props.entry.events?.find(event => event.searchQueriesEvent)?.searchQueriesEvent
+  const sourcesEvent = props.entry.events?.find(event => !!event.sourcesEvent)?.sourcesEvent
+
   const hasCompletionStarted = !props.isEntryInProgress ||
     (props.entry.events?.some(event => event.completionEvent) ?? false)
 
@@ -94,8 +98,13 @@ export default function AssistantResponse(props: { entry: Mojom.ConversationTurn
       />
     )
   }
-  { !props.isEntryInProgress && searchQueriesEvent &&
-    <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />
+
+  {
+    !props.isEntryInProgress &&
+    <>
+      {searchQueriesEvent && <SearchSummary searchQueries={searchQueriesEvent.searchQueries} />}
+      {sourcesEvent && <WebSourcesEvent sources={sourcesEvent.sources} />}
+    </>
   }
   </>)
 }

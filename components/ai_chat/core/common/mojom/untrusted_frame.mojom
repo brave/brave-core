@@ -5,6 +5,8 @@
 
 module ai_chat.mojom;
 
+import "url/mojom/url.mojom";
+
 // Interfaces for communication between the untrusted content frame and both
 // the Browser and the parent trusted UI frame.
 
@@ -25,7 +27,14 @@ interface ParentUIFrame {
 // Browser-side handler for untrusted frame that handles rendering of
 // conversation entries.
 interface UntrustedUIHandler {
+  // Open a URL for the web search query the assistant used for a response
   OpenSearchURL(string query);
+
   OpenLearnMoreAboutBraveSearchWithLeo();
+
+  // Opens a URL linked from an assistant response or web search event in the
+  // response. Could be any http/https destination.
+  OpenURLFromResponse(url.mojom.Url url);
+
   BindParentPage(pending_receiver<ParentUIFrame> parent_frame);
 };

@@ -24,47 +24,48 @@ import styles from './style.module.scss'
 import StorybookConversationEntries from './story_utils/ConversationEntries'
 import { UntrustedConversationContext, UntrustedConversationReactContext } from '../../untrusted_conversation_frame/untrusted_conversation_context'
 
+const eventTemplate: Mojom.ConversationEntryEvent = {
+  completionEvent: undefined,
+  pageContentRefineEvent: undefined,
+  searchQueriesEvent: undefined,
+  searchStatusEvent: undefined,
+  selectedLanguageEvent: undefined,
+  conversationTitleEvent: undefined,
+  sourcesEvent: undefined
+}
+
 function getCompletionEvent(text: string): Mojom.ConversationEntryEvent {
   return {
-    completionEvent: { completion: text },
-    pageContentRefineEvent: undefined,
-    searchQueriesEvent: undefined,
-    searchStatusEvent: undefined,
-    conversationTitleEvent: undefined,
-    selectedLanguageEvent: undefined
+    ...eventTemplate,
+    completionEvent: { completion: text }
   }
 }
 
 function getSearchEvent(queries: string[]): Mojom.ConversationEntryEvent {
   return {
-    completionEvent: undefined,
-    pageContentRefineEvent: undefined,
-    searchQueriesEvent: { searchQueries: queries },
-    searchStatusEvent: undefined,
-    conversationTitleEvent: undefined,
-    selectedLanguageEvent: undefined
+    ...eventTemplate,
+    searchQueriesEvent: { searchQueries: queries }
   }
 }
 
 function getSearchStatusEvent(): Mojom.ConversationEntryEvent {
   return {
-    completionEvent: undefined,
-    pageContentRefineEvent: undefined,
-    searchQueriesEvent: undefined,
-    searchStatusEvent: { isSearching: true },
-    selectedLanguageEvent: undefined,
-    conversationTitleEvent: undefined
+    ...eventTemplate,
+    searchStatusEvent: { isSearching: true }
+  }
+}
+
+function getWebSourcesEvent(sources: Mojom.WebSource[]): Mojom.ConversationEntryEvent {
+  return {
+    ...eventTemplate,
+    sourcesEvent: { sources }
   }
 }
 
 function getPageContentRefineEvent(): Mojom.ConversationEntryEvent {
   return {
-    completionEvent: undefined,
-    pageContentRefineEvent: { isRefining: true },
-    searchQueriesEvent: undefined,
-    searchStatusEvent: undefined,
-    selectedLanguageEvent: undefined,
-    conversationTitleEvent: undefined
+    ...eventTemplate,
+    pageContentRefineEvent: { isRefining: true }
   }
 }
 
@@ -260,7 +261,16 @@ const HISTORY: Mojom.ConversationTurn[] = [
     selectedText: undefined,
     edits: [],
     createdTime: { internalValue: BigInt('13278618001000000') },
-    events: [getSearchStatusEvent(), getSearchEvent(['pointer compression', 'c++ language specification']), getCompletionEvent('Pointer compression is a memory optimization technique.')],
+    events: [
+      getSearchStatusEvent(),
+      getSearchEvent(['pointer compression', 'c++ language specification']),
+      getCompletionEvent('Pointer compression is a memory optimization technique.'),
+      getWebSourcesEvent([
+        { url: { url: 'https://www.example.com' }, title: 'Pointer Compression', faviconUrl: { url: 'https://www.example.com/favicon.ico' } },
+        { title: 'LTT Store', faviconUrl: { url: 'https://lttstore.com/favicon.ico' }, url: { url: 'https://lttstore.com' } },
+        { title: 'Tesla Model Y', faviconUrl: { url: 'https://www.tesla.com/favicon.ico' }, url: { url: 'https://www.tesla.com/modely' } }
+      ])
+    ],
     fromBraveSearchSERP: false
   },
   {

@@ -77,6 +77,10 @@ const pathMap = {
     // place to look.
     path.resolve(__dirname, 'chrome-resources-mock'),
     basePathMap['chrome://resources']
+  ],
+  '$web-common': [
+    path.resolve(__dirname, 'web-common-mock'),
+    basePathMap['$web-common']
   ]
 }
 
