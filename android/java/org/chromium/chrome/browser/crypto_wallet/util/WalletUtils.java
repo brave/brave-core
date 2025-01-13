@@ -85,7 +85,12 @@ public class WalletUtils {
         return left.uniqueKey.equals(right.uniqueKey);
     }
 
-    public static boolean accountIdsEqual(AccountInfo left, AccountInfo right) {
+    public static boolean accountIdsEqual(@Nullable AccountInfo left, @Nullable AccountInfo right) {
+        // Return false if either account is null since we can't compare null accounts
+        // This is a fix to avoid https://github.com/brave/brave-browser/issues/43261
+        if (left == null || right == null) {
+            return false;
+        }
         return accountIdsEqual(left.accountId, right.accountId);
     }
 
