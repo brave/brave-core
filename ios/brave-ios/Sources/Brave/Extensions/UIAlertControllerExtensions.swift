@@ -204,28 +204,33 @@ extension UIAlertController {
 
   class func shredDataAlert(
     url: URL,
-    confirmationHandler: @escaping (UIAlertAction) -> Void
-  ) -> UIAlertController {
-    let alert = UIAlertController(
+    confirmationHandler: @escaping (BrowserAlertController.BrowserAlertAction) -> Void
+  ) -> BrowserAlertController {
+    let etldP1 = url.baseDomain ?? url.absoluteDisplayString
+    let message = String.localizedStringWithFormat(
+      Strings.Shields.shredSiteDataConfirmationMessage,
+      etldP1
+    )
+    let alertController = BrowserAlertController(
       title: Strings.Shields.shredSiteDataConfirmationTitle,
-      message: Strings.Shields.shredSiteDataConfirmationMessage,
+      message: message,
       preferredStyle: .alert
     )
-    alert.addAction(
-      UIAlertAction(
+    alertController.addAction(
+      .init(
         title: Strings.Shields.shredDataButtonTitle,
-        style: .destructive,
+        style: .default,
         handler: confirmationHandler
       )
     )
-    alert.addAction(
-      UIAlertAction(
+    alertController.addAction(
+      .init(
         title: Strings.cancelButtonTitle,
         style: .cancel
       )
     )
 
-    return alert
+    return alertController
   }
 }
 

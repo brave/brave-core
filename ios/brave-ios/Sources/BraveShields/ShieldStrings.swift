@@ -420,7 +420,7 @@ extension Strings.Shields {
     tableName: "BraveShared",
     bundle: .module,
     value:
-      "Shredding will close all tabs open to this site, and delete all site data. This cannot be undone.",
+      "Shredding will delete site data and close all tabs for %@. This cannot be undone.",
     comment: """
       A message for a confirmation window that appears when a user clicks on 'Shred Data'.
       """
