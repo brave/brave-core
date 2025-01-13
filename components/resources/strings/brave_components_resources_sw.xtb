@@ -106,7 +106,6 @@
 <translation id="4541978218358617681">Tangazo</translation>
 <translation id="1776831331757823105">Saa</translation>
 <translation id="7791543448312431591">Ongeza</translation>
-<translation id="7679334366167089823">Pata tokeni kwa kutazama matangazo yanayoheshimu faragha.</translation>
 <translation id="7191394989411626168">Kwa kuzima Kadi, kadi zote zinazoonekana sasa zitafichwa. Hata hivyo, bado unaweza kuarifiwa kuhusu kadi mpya.</translation>
 <translation id="6820526586005233839">Brave Ads imesitishwa!</translation>
 <translation id="5190407395832551012">Ili kuendelea kulinda Brave Rewards dhidi ya dhuluma, tutawaomba watumiaji wasuluhishe kapcha. Bofya “Suluhisha” ili uendelee na matangazo.</translation>
@@ -540,7 +539,6 @@
 <translation id="2529827670795983639">Inaonekana kama hii haifanyi kazi, matangazo ya Brave yataendelea kusitishwa. Wasiliana nasi ikiwa unahitaji usaidizi wa kapcha.</translation>
 <translation id="261607053214862521">Majaribio ya juu zaidi</translation>
 <translation id="2323171459178104277">Imesuluhishwa!</translation>
-<translation id="1512837998731269583">Matangazo na mapato yataendelea sasa. Asante kwa kutusaidia kulinda Brave Rewards na matangazo ya faragha.</translation>
 <translation id="3247549836099021862">Wasiliana na usaidizi</translation>
 <translation id="5234764350956374838">Ondoa</translation>
 <translation id="7859066142771796818">Tumia tokeni kununua kadi za zawadi, kubadilishana sarafu nyingine, kusaidia watayarishi wa maudhui na zaidi.</translation>
@@ -567,7 +565,6 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Jifunze zaidi<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Usiwe na wasiwasi.</translation>
 <translation id="5027616819996705541">Bado unaweza kuvinjari kwa faragha!</translation>
-<translation id="1886682615222609631">Mapato kufikia sasa</translation>
 <translation id="7649070708921625228">Usaidizi</translation>
 <translation id="6042308850641462728">Zaidi</translation>
 <translation id="6245259297588415877">Watayarishi</translation>
@@ -713,7 +710,6 @@
 <translation id="7160424977552599351">Tumia pochi yako ya Web3</translation>
 <translation id="6369571967625114920">Matangazo ya Faragha ya Brave bado hayapatikani katika eneo lako.</translation>
 <translation id="5309155375926073606">Ndiyo, pia ningependa kuchangia kwenye Utafutaji wa Brave na kushiriki katika <ph name="LINK_BEGIN"/>Mradi wa Web Discovery<ph name="LINK_END"/>.</translation>
-<translation id="7285849890826812669">Changia baadhi ya data isiyotambulisha ya utafutaji na kuvinjari ili kuboresha Utafutaji wa Brave kwa Mradi wa Web Discovery. Ni mradi unaodhibitiwa na umma kikamilifu.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="7090992647511817643">akaunti</translation>
 <translation id="4822132585477111396">Kitambulisho cha Mnyororo</translation>
@@ -1000,7 +996,6 @@
 <translation id="453788800165937690">ONYO: Kamwe usiwahi kushiriki ufunguo wako wa siri. Yeyote aliye na ufunguo huu wa siri anaweza kuchukua mali yako milele.</translation>
 <translation id="2416098547200943834">KUMBUKA: Ufunguo wa faragha hutolewa kama JSON iliyosimbwa kwa hex ambayo ina ufunguo wa faragha na maelezo ya itifaki. <ph name="LINK_START"/>Jifunze zaidi <ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">KUMBUKA: Ufunguo wa faragha lazima utolewe kama JSON iliyosimbwa kwa hex ambayo ina ufunguo wa faragha na maelezo ya itifaki. <ph name="LINK_START"/>Jifunze zaidi <ph name="LINK_END"/>.</translation>
-<translation id="1505724566145200403">KUMBUKA: Ni funguo zilizochimbuka kutoka kwa zprv(au vprv kwa Testnet) pekee zinazotumika.</translation>
 <translation id="42126664696688958">Hamisha</translation>
 <translation id="1366855498335432549">Weka Pesa</translation>
 <translation id="790104325876206743">Mipangilio ya akaunti</translation>
@@ -1022,7 +1017,7 @@
 <translation id="3792938779249970121">Teua akaunti</translation>
 <translation id="6797737193502014008">Tafuta akaunti</translation>
 <translation id="3505920073976671674">Teua mtandao</translation>
-<translation id="6857856707736769720">Teua kutoka</translation>
+<translation id="2556155338676955870">Chagua rasilimali</translation>
 <translation id="6323024765179772761">Tafuta sarafu</translation>
 <translation id="6998989275928107238">Kwenda</translation>
 <translation id="1506421160138798546">kadiria</translation>
@@ -1259,6 +1254,8 @@
 <translation id="6153197326949684688">Uza kwa <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Nunua na Sardini</translation>
 <translation id="3301984548406568819">Data ya fedha na miamala huchakatwa na washirika wetu wa Onramp. Brave haikusanyi wala kufikia data kama hiyo.</translation>
+<translation id="2803778066587058297">Rasilimali</translation>
+<translation id="3067168166931605141">Jina la akaunti</translation>
 <translation id="6534275647567011533">Nunua kwa Transak</translation>
 <translation id="5973390321030037823">Nunua kwa Kiungo</translation>
 <translation id="1932640759496708012">Nunua kwa Malipo ya Coinbase</translation>
@@ -1991,6 +1988,7 @@
 <translation id="8571323456914890254">Funga kwenye mwonekano wa mgawanyiko</translation>
 <translation id="5329136173514538969">Acha kutenganisha vichupo</translation>
 <translation id="7595612919377246359">Badilisha nafasi za vichupo</translation>
+<translation id="2367972762794486313">Onyesha programu</translation>
 <translation id="8591883849678260674">Tazama asili</translation>
 <translation id="1969654232209826429">usomaji wa dakika</translation>
 <translation id="4101707289420716287">Zima Speedreader</translation>
@@ -2083,7 +2081,6 @@
 <translation id="2313959174679245365">Ukadiriaji wako haukuweza kuwasilishwa, tafadhali angalia muunganisho wa mtandao na ujaribu tena</translation>
 <translation id="98413980871833152">Maoni yako hayakuweza kuwasilishwa, tafadhali angalia muunganisho wa mtandao na ujaribu tena</translation>
 <translation id="8742658901413346500">Mazungumzo haya ni marefu na Leo anaweza kuanza kusahau mambo karibuni. Unaweza kupata mazungumzo marefu kwa kubadili hadi muundo unaolipiwa, au unaweza kufuta gumzo ili kuweka upya.</translation>
-<translation id="7550152963854770123">Futa Gumzo</translation>
 <translation id="7494736170250048402">Tumia Leo ujumbe</translation>
 <translation id="8712637175834984815">Nimeelewa</translation>
 <translation id="1093419424466417703">Ukurasa ni mrefu sana kwa Leo. Huenda muktadha fulani haupo kwenye mazungumzo. Leo iliweza kusoma<ph name="PERCENTAGE"/> ya maudhui ya ukurasa.</translation>
@@ -2217,8 +2214,8 @@
 <translation id="6821108091726602352">Tusaidie kurekebisha wavuti kwa kushiriki katika Mradi wa Web Discovery wa Brave. Kwa kushiriki vidokezi vya utafutaji visivyokutambulisha hata kidogo, unaweza kusaidia Brave kukuza faharasa ya utafutaji.</translation>
 <translation id="6764845498618413165">Pata Maelezo Zaidi.</translation>
 <translation id="7818938154803162778">Sawa, nitashiriki</translation>
-<translation id="7821773512278295352">Brave Firewall + VPN: Vimeunganishwa</translation>
-<translation id="6019088868713395120">Brave Firewall + VPN: Havijaunganishwa</translation>
+<translation id="958268166261124668">Brave VPN: Imeunganishwa</translation>
+<translation id="6021669293402055982">Brave VPN: Haijaunganishwa</translation>
 <translation id="3541307549916475335">UI ya Paneli ya VPN ya Brave</translation>
 <translation id="7143207342074048698">Inaunganisha</translation>
 <translation id="1202549130170287307">Inaondolewa</translation>
@@ -2230,7 +2227,6 @@
 <translation id="3357036723290257445">Tayari umenunua Brave VPN?</translation>
 <translation id="8814357473522731680">Inaendeshwa na</translation>
 <translation id="8652175077544655965">Funga mipangilio</translation>
-<translation id="3099126540952997993">Firewall na VPN</translation>
 <translation id="5908163815855240493">Nenda kwenye kuu</translation>
 <translation id="7805768142964895445">Hali</translation>
 <translation id="5747552184818312860">Muda wake unakwisha</translation>
@@ -2301,9 +2297,7 @@ Turuhusu tukuunganishe!</translation>
 <translation id="9061845622728745852">Saa za eneo:</translation>
 <translation id="8295393906499561642">Muda wa kikao umeisha</translation>
 <translation id="3312623558576021182">Tafadhali ingia katika <ph name="BRAVE_ACCOUNT_BEGIN"/>Akaunti yako ya Brave<ph name="BRAVE_ACCOUNT_END"/> ili kufungua upya kika chako cha VPN.</translation>
-<translation id="6021669293402055982">Brave VPN: Haijaunganishwa</translation>
 <translation id="7861195049821776142">Brave VPN: Inatenganisha</translation>
-<translation id="958268166261124668">Brave VPN: Imeunganishwa</translation>
 <translation id="2061807837510296780">Brave VPN: Inaunganisha</translation>
 <translation id="1313124107969703758">Brave VPN: Hitilafu</translation>
 <translation id="8273420301954598554">Hali: Imeunganishwa</translation>
@@ -2312,6 +2306,9 @@ Turuhusu tukuunganishe!</translation>
 <translation id="8048263175525832621">Brave VPN - Imetenganishwa</translation>
 <translation id="1498770726476841108">Dhibiti Akaunti</translation>
 <translation id="6825718953004242472">Ondoa ikoni</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8425213833346101688">Badilisha</translation>
+<translation id="8703188411226330709">Anza kutumia jaribio lisilolipishwa</translation>
 <translation id="3287942014983548982">Fungua hapa</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, imefunguliwa kwa sasa,
     bonyeza Kichupo kisha Ingiza ili kubadili hadi kichupo ambacho kimefunguliwa</translation>
@@ -2319,7 +2316,4 @@ Turuhusu tukuunganishe!</translation>
     kichupo kilichopo</translation>
 <translation id="451189393813405346">Uliza Leo</translation>
 <translation id="8525248723479742219">Cheza Baadaye</translation>
-<translation id="1450735350187803276">Matangazo yaliyoonekana mwezi huu</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="8425213833346101688">Badilisha</translation>
 </translationbundle>

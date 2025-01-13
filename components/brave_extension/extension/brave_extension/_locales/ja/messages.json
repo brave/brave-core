@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "Braveの拡張機能",
+    "message": "Brave Extension",
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Shieldsはこのサイトに対して",
+    "message": "シールドはこのサイトに対して",
     "description": "The Shields feature name"
   },
   "up": {
@@ -20,11 +20,11 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "ウェブサイトが正常に動作していないように見える場合は、Shieldsを無効にしてみてください。",
+    "message": "ウェブサイトが正常に動作していないように見える場合は、シールドを無効にしてみてください。",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Braveのプライバシーおよびセキュリティー保護なく、このサイトを閲覧しています。シールドを有効にすると、正しく機能しませんか？",
+    "message": "Braveのプライバシーおよびセキュリティー保護が無効のまま、このサイトを閲覧しています。シールドを有効にすると、正しく機能しませんか？",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -60,15 +60,15 @@
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "トラッカーと広告をブロックしました（強力モード）",
+    "message": "トラッカーと広告がブロックされました（強化モード）",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "トラッカーと広告がブロックされました（スタンダード）",
+    "message": "トラッカーと広告がブロックされました（標準）",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "全てのトラッカーと広告を許可",
+    "message": "すべてのトラッカーと広告を許可",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -84,7 +84,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "クロスサイト・クッキーをブロック",
+    "message": "クロスサイトクッキーをブロック",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -100,15 +100,15 @@
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "フィンガープリントをブロック済み（標準）",
+    "message": "フィンガープリントがブロックされました（標準）",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "フィンガープリントがブロックされました（強、サイトの表示が崩れる可能性）",
+    "message": "フィンガープリントがブロックされました（強化モード、サイトの表示が崩れる可能性）",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "全てのフィンガープリントを許可する",
+    "message": "すべてのフィンガープリントを許可する",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
@@ -168,7 +168,7 @@
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Shieldのデフォルト設定を変更する",
+    "message": "シールドのデフォルト設定を変更する",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
@@ -184,19 +184,19 @@
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "シンプルビュー",
+    "message": "簡略表示",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "大抵の場合、ウェブサイトはCookieとスクリプトを使用しています（広告に組み込まれることが多いです）が、これらはユーザーとデバイスを識別しようとしています。Cookieとスクリプトはユーザーが誰なのかを把握し、ウェブ全体でユーザーを追跡しようとします。すなわちあらゆるサイトでユーザーの行動を追跡するのです。BraveはこれらのCookieやスクリプトをブロックするので、ユーザーは行動を追跡されることなくインターネットを閲覧できます。",
+    "message": "通常、ウェブサイトはユーザーとデバイスの識別のためにクッキーとスクリプト（広告に組み込まれることがほとんどです）を使用します。ユーザーが誰なのかを把握し、ウェブ全体、あらゆるサイトでの行動を追跡しようとします。Brave はこれらのクッキーやスクリプトをブロックするため、ユーザーは行動を追跡されることなくインターネットを閲覧することが可能です。",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "クロスサイト・トラッカーおよびその他の不審な通信をブロックしました",
+    "message": "クロスサイトトラッカーおよびその他の不審な通信をブロックしました",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "この表示でシールドの設定を変更すると、このサイトのWeb互換性に影響を及ぼす場合があります。",
+    "message": "この表示でシールドの設定を変更すると、サイトのウェブ互換性に影響を与える可能性があります。",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {

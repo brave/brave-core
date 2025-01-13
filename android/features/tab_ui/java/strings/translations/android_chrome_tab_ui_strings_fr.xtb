@@ -7,7 +7,6 @@
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Créé il y a <ph name="NUM_YEARS_ONE"/> an}one{Créé il y a <ph name="NUM_YEARS_MANY"/> an}other{Créé il y a <ph name="NUM_YEARS_MANY"/> ans}}</translation>
 <translation id="1173894706177603556">Renommer</translation>
 <translation id="1197088940767939838">Orange</translation>
-<translation id="125153950246128346">Appuyer pour afficher un autre onglet</translation>
 <translation id="1273910660700874265">Options du groupe d'onglets <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="1293272072740285747">Conservez ce groupe pour y ajouter des onglets plus tard, ou supprimez-le si vous n'en avez plus besoin.
 
@@ -61,6 +60,7 @@ Si vous le supprimez, tout le monde perdra immédiatement l'accès au groupe d'o
 <translation id="3613492231657284463">Masquer la boîte de dialogue des onglets inactifs</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">Vignette de la feuille de partage.</translation>
+<translation id="3810973564298564668">Gérer</translation>
 <translation id="381219490185664296">Dégrouper le groupe d'onglets ?</translation>
 <translation id="3940195383040445971">Suivi des prix dans les onglets</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{Ajouter l'onglet au groupe}one{Ajouter l'onglet au groupe}other{Regrouper les onglets}}</translation>
@@ -71,7 +71,6 @@ Si vous le supprimez, tout le monde perdra immédiatement l'accès au groupe d'o
 <translation id="4139634748112164403">Les onglets resteront ouverts sur cet appareil, mais le groupe sera définitivement supprimé</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{Fermer le groupe d'onglets <ph name="TITLE_OF_GROUP"/> de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_ONE"/> onglet.}one{Fermer le groupe d'onglets <ph name="TITLE_OF_GROUP"/> de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglet.}other{Fermer le groupe d'onglets <ph name="TITLE_OF_GROUP"/> de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="4159784952369912983">Violet</translation>
-<translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{Développer le groupe d'onglets <ph name="TITLE_OF_GROUP"/> qui contient <ph name="TABS_COUNT_ONE"/> onglet.}one{Développer le groupe d'onglets <ph name="TITLE_OF_GROUP"/> qui contient <ph name="TABS_COUNT_MANY"/> onglet.}other{Développer le groupe d'onglets <ph name="TITLE_OF_GROUP"/> qui contient <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="427987768447457592">Nouveau groupe d'onglets</translation>
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> onglet modifié, <ph name="ANY_CLOSED"/> fermé(s)}one{<ph name="MANY_CHANGED"/> onglet modifié, <ph name="ANY_CLOSED"/> fermé(s)}other{<ph name="MANY_CHANGED"/> onglets modifiés, <ph name="ANY_CLOSED"/> fermé(s)}}</translation>
 <translation id="4371591986692297148">Inactive</translation>
@@ -93,11 +92,9 @@ Si vous le supprimez, tout le monde perdra immédiatement l'accès au groupe d'o
 <translation id="5007392906805964215">Afficher</translation>
 <translation id="5073204694187207510">Masquer la grille en plein écran</translation>
 <translation id="5076161749301278626">Afficher les avis sur le magasin ?</translation>
-<translation id="5082793167783849073">Comparez rapidement des pages en créant un groupe. Commencez par appuyer de manière prolongée sur un lien.</translation>
 <translation id="5094423602314093681">Supprimer l'onglet ou les onglets et supprimer le groupe ?</translation>
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> onglet ajouté}one{<ph name="MANY_ADDED"/> onglet ajouté}other{<ph name="MANY_ADDED"/> onglets ajoutés}}</translation>
 <translation id="5161254044473106830">Veuillez saisir un titre.</translation>
-<translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{Fermer le groupe d'onglets qui contient <ph name="TABS_COUNT_ONE"/> onglet.}one{Fermer le groupe d'onglets qui contient <ph name="TABS_COUNT_MANY"/> onglet.}other{Fermer le groupe d'onglets qui contient <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="5339733443032484186">Votre dernier onglet</translation>
 <translation id="5400836586163650660">Gris</translation>
 <translation id="5490235265819901748">Groupe d'onglets développé</translation>
@@ -139,7 +136,6 @@ Si vous le quittez, vous perdrez immédiatement l'accès au groupe d'onglets "<p
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{Développer le groupe d'onglets partagé <ph name="TITLE_OF_GROUP"/> de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_ONE"/> onglet.}one{Développer le groupe d'onglets partagé <ph name="TITLE_OF_GROUP"/> de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglet.}other{Développer le groupe d'onglets partagé <ph name="TITLE_OF_GROUP"/> de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Partager l'onglet}one{Partager l'onglet}other{Partager les onglets}}</translation>
 <translation id="7129458170538955174">Fiche d'infos sur ce magasin ouverte à mi-hauteur</translation>
-<translation id="7200189319044305940">{NUMBER_OF_TABS,plural, =1{Fermer le groupe <ph name="TITLE_OF_GROUP"/> qui contient <ph name="TABS_COUNT_ONE"/> onglet.}one{Fermer le groupe <ph name="TITLE_OF_GROUP"/> qui contient <ph name="TABS_COUNT_MANY"/> onglet.}other{Fermer le groupe <ph name="TITLE_OF_GROUP"/> qui contient <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="7204204600596740190">Mode multi-sélection</translation>
 <translation id="7211038039686180558">Vos groupes d'onglets sont enregistrés et mis à jour automatiquement sur tous les appareils connectés à votre compte</translation>
 <translation id="731648547091221002"><ph name="COLOR_NAME"/> sélectionné</translation>
@@ -188,19 +184,16 @@ Si vous le quittez, vous perdrez immédiatement l'accès au groupe d'onglets "<p
 <translation id="8820741577754260431">Consultez les baisses de prix dans les onglets</translation>
 <translation id="8887921976452567404">Vous pouvez rouvrir vos onglets et groupes fermés depuis les sections "Onglets récents" et "Groupes d'onglets".</translation>
 <translation id="8915916167043355778">Tout fermer</translation>
-<translation id="8926389886865778422">Ne plus afficher ce message</translation>
-<translation id="8993967613304721520">{NUMBER_OF_TABS,plural, =1{Développer le groupe d'onglets qui contient <ph name="TABS_COUNT_ONE"/> onglet.}one{Développer le groupe d'onglets qui contient <ph name="TABS_COUNT_MANY"/> onglet.}other{Développer le groupe d'onglets qui contient <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="9090098097337832354">Fiche d'infos sur ce magasin fermée</translation>
 <translation id="9111228330448174435">Afficher la boîte de dialogue lors de la création d'un groupe d'onglets</translation>
 <translation id="9114502155681725011">Ouvrir le menu d'actions du groupe d'onglets <ph name="TITLE_OF_GROUP"/>, couleur <ph name="COLOR_NAME"/>.</translation>
-<translation id="9150694013019234766">Passer d'un onglet à l'autre depuis votre groupe d'onglets dans la partie inférieure de l'écran</translation>
 <translation id="9169594135889675189">Ajouter un nouvel onglet au groupe</translation>
 <translation id="9216898458513705996">Les onglets resteront ouverts sur cet appareil, mais le groupe sera supprimé de tous les appareils connectés à <ph name="USER_EMAIL"/></translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Développer le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_ONE"/> onglet.}one{Développer le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglet.}other{Développer le groupe d'onglets de couleur <ph name="COLOR_NAME"/> comprenant <ph name="TABS_COUNT_MANY"/> onglets.}}</translation>
 <translation id="992256792861109788">Rose</translation>
-<translation id="3228718275011575753">Fermer tous les onglets privés ?</translation>
-<translation id="6687920250729800417">Votre activité dans ces onglets privés sera supprimée de cet appareil</translation>
+<translation id="3228718275011575753">Fermer tous les onglets de navigation privée ?</translation>
+<translation id="6687920250729800417">Votre activité dans ces onglets de navigation privée sera supprimée de cet appareil</translation>
 <translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
-        =1 {Vos onglets et vos groupes fermés peuvent être rouverts dans la section des onglets récents et dans la section des groupes d'onglets. Votre onglet Privé ne sera pas disponible.}
-        other {Vos onglets et vos groupes fermés peuvent être rouverts dans la section des onglets récents et dans la section des groupes d'onglets. Vos # onglets Privés ne seront pas disponibles.}}</translation>
+        =1 {Vos onglets et vos groupes fermés peuvent être rouverts dans la section des onglets récents et dans la section des groupes d'onglets. Votre onglet de navigation privée ne sera pas disponible.}
+        other {Vos onglets et vos groupes fermés peuvent être rouverts dans la section des onglets récents et dans la section des groupes d'onglets. Vos # onglets de navigation privée ne seront pas disponibles.}}</translation>
 </translationbundle>

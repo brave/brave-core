@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fi">
-<translation id="8631427463833030968">Hallitse mainoksia</translation>
 <translation id="7630214457764713113">Kopioi puhdas linkki</translation>
-<translation id="885805571521218129">Tämä kuvastaa Brave-mainosten arvioituja tulojasi tässä kuussa.</translation>
 <translation id="3478449063771497234">Ilmoitukset on poistettu käytöstä</translation>
 <translation id="2862978891748913252">Valitse maa</translation>
 <translation id="3970520675790340955">Valitse maasi, jotta voimme näyttää alueesi mukaisia vaihtoehtoja ja mainoksia.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Näytä suosituimmat selainehdotukset</translation>
 <translation id="6285118765755298263">Indeksoi muut hakukoneet</translation>
 <translation id="919715748352669592">Automaattisesti indeksoi sivustot, jotka seuraavat OpenSearch-määritystä.</translation>
+<translation id="412411722208944922">Pikahakukoneet</translation>
+<translation id="2836969042340015500">Pikahakukoneet</translation>
+<translation id="9120455214794270250">Näytä pikahakupalkki</translation>
+<translation id="1052991798173010693">Tällä hetkellä käytössä olevat hakukoneet</translation>
+<translation id="335303688425891752">Muuta järjestystä painamalla pitkään</translation>
 <translation id="9148058034647219655">Poistu</translation>
 <translation id="8047754398610073499">Estä evästeitä koskevat suostumusilmoitukset</translation>
 <translation id="2621893359845808115">Estä verkkosivustojen ponnahdusikkunat, joissa sinua pyydetään hyväksymään/hylkäämään sivuston käyttämät evästeet</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Tervetuloa Braveiin</translation>
 <translation id="4117451092682672487">Yksinkertainen tietosuoja.</translation>
 <translation id="7909375417585209817">Kun Brave on käytössä oletuksena, jokainen napsauttamasi linkki avautuu Braven tietosuoja-asetusten suojaamana.</translation>
-<translation id="3737878115109582442">Lisää hakupienoisohjelma</translation>
-<translation id="6199413390010319240">Voit tutustua verkkoon nopeammin käyttämällä Bravea.</translation>
-<translation id="4338600611020922010">Lisää aloitusnäyttöön</translation>
 <translation id="7370959926683925817">Estä mainokset. Tallenna tiedot. Joka ikinen päivä.</translation>
 <translation id="7281027579943912834">Kun Brave on oletusselain, jokaisen napsauttamasi linkin kohdalla käytetään Brave-mainosestosuojausta. Jokaisen sivun, videon ja suoratoistoistunton kohdalla.</translation>
 <translation id="5148943178722443958">Auta parantamaan Bravea.</translation>
@@ -408,8 +408,13 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="6925081665778864449">Jos haluat synkronoida salasanat, ota biometriikka/salasanatodennus käyttöön Android-laitteellasi. Tämä ylimääräinen turvatoimi auttaa suojaamaan salasanoja.</translation>
 <translation id="597993392929850353">Brave License</translation>
 <translation id="6336451774241870485">Uusi yksityinen välilehti</translation>
-<translation id="6199596294742117349">Tämä on yksityinen välilehti</translation>
-<translation id="5858455511731621847">Vaikka yksityisillä välilehdillä vierailemasi sivustot eivät tallennu paikallisesti, ne eivät tee sinusta anonyymia tai näkymätöntä Internet-palveluntarjoajallesi, työnantajallesi tai vierailemillesi sivustoille.</translation>
+<translation id="3110967157686007724">Yksityinen välilehti</translation>
+<translation id="944340256927461196">Älä jätä jälkiä laitteellesi</translation>
+<translation id="2063044449012253966">Sivustot, joilla vierailet yksityisissä ikkunoissa, eivät näy historiassasi. Evästeet, lomaketiedot ja sivuston tiedot häviävät, kun kaikki yksityiset ikkunat suljetaan.</translation>
+<translation id="7395764193745523646">Selauksen näkyvyys</translation>
+<translation id="8735363371744702779">Huomaa, että jopa yksityisissä ikkunoissa selaamisesi voi silti näkyä Internet-palveluntarjoajallesi, verkon tarkkailijoille tai työnantajallesi (jos käytät työlaitetta tai -verkkoa).</translation>
+<translation id="1413177583895309156">Brave VPN salaa ja suojaa kaiken, mitä teet verkossa –myös Brave-selaimen ulkopuolella.</translation>
+<translation id="3974348661685061050">Kokeile ilmaiseksi 7 päivän ajan</translation>
 <translation id="5789441016350810005">Brave Ads lähetetty selaimen ollessa taustalla</translation>
 <translation id="4973347371961481083">Lahjoitukset</translation>
 <translation id="7047578174221019462">Kuukausittaiset avustuksesi on käsitelty.</translation>
@@ -550,7 +555,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2731539192954672606">Ansaitse maksutunnuksia katsomalla tietosuojaasi kunnioittavia mainoksia sekä tukemalla suosikkisivustojasi ja -kehittäjiäsi automaattisesti.</translation>
 <translation id="631124996535890460">Jatkamalla ilmaiset hyväksyväsi <ph name="TERMS_OF_SERVICE"/> sekä <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Tietosuojakäytäntö</translation>
-<translation id="8363792084628930008">Ottamalla palkinnot käyttöön, hyväksyt käyttöehdot  <ph name="TERMS_OF_SERVICE"/> ja tietosuojakäytännön <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="8363792084628930008">Ottamalla palkinnot käyttöön, hyväksyt käyttöehdot <ph name="TERMS_OF_SERVICE"/> ja tietosuojakäytännön <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Käydäänpä pikakierroksella</translation>
 <translation id="7930505144430343145">Tervetuloa Brave-palkintoihin!</translation>
 <translation id="3477340970981564961">Braven yksityismainokset palkitsevat sinut maksutunnuksilla, joiden avulla voit tukea sisällönkehittäjiä perinteisistä mainoksista poiketen, sillä henkilökohtaiset tietosi pidetään yksityisenä.</translation>
@@ -710,9 +715,10 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1532536259167115948">Kuukausitilaus <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Vuositilaus <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Uusiutuu kuukausittain</translation>
+<translation id="112929124115834557">Uusiutuu vuosittain</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/kuukaudessa</translation>
 <translation id="1163809943099641131">Yksi vuosi</translation>
-<translation id="727385358513272220">Uusiutuu vuosittain (<ph name="DISCOUNT_TEXT_START"/>säästä <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>säästä <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/vuodessa</translation>
 <translation id="2786538705804257030">Tilaukset veloitetaan Google-tilisi kautta. Kaikki käyttämättömät ilmaisen kokeilujakson osat, jos sellainen on tarjottu, menetetään, kun ostat tilauksen.\n\nTilauksesi uusitaan automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä.\n\nVoit hallita tilauksiasi asetuksissa.\n\nKäyttämällä Bravea hyväksyt käyttöehdot ja tietosuojakäytännön.</translation>
 <translation id="5035172357624830412">Oletko jo ostanut brave.comista?</translation>
@@ -842,7 +848,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4351811224047421378">Desimaalitarkkuus</translation>
 <translation id="3494964159182650590">Palkkioiden yhteenveto</translation>
 <translation id="590733288489975971">Palkinnot Ads-mainoksista</translation>
-<translation id="1886682615222609631">Ansiot tähän mennessä</translation>
+<translation id="1450735350187803276">Tässä kuussa nähdyt mainokset</translation>
 <translation id="1767561995429774671">Lahjoita</translation>
 <translation id="7335371657242627509">Sisällytä automaattiseen lahjoitukseen</translation>
 <translation id="6727102863431372879">Aseta</translation>
@@ -1228,5 +1234,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="2728518864712716830">Päivitys on ladattu.</translation>
 <translation id="8403338849301491865">Suodatinluettelon päivitys onnistui</translation>
 <translation id="4650851936784160359">Suodatinluettelon päivitys ei onnistunut. Yritä uudellen.</translation>
-<translation id="1450735350187803276">Tässä kuussa nähdyt mainokset</translation>
+<translation id="3098054327870766317">Näytä peruutuspainike, kun välilehdet suljetaan</translation>
+<translation id="1336494649091412226">Haluatko varmasti poistua Bravesta?</translation>
 </translationbundle>

@@ -307,11 +307,11 @@
 <translation id="6155018868740116868">復元する</translation>
 <translation id="2521960050170773751">ページからメディアを追加</translation>
 <translation id="2301087142998134097"><ph name="SITE"/>が次へのアクセスを要求しています:</translation>
-<translation id="7128982309566342232"><ph name="SITE"/>に埋め込まれたページが次へのアクセスを要求しています:</translation>
+<translation id="4828353184750597953"><ph name="SITE"/> に埋め込まれたページを開こうとしています</translation>
 <translation id="1175012181261953767">このページが次へのアクセスを要求しています:</translation>
 <translation id="7459546222322124545">このページに埋め込まれたページが次へのアクセスを要求しています:</translation>
 <translation id="5836261838911560851"><ph name="SITE"/>が次の保存を要求しています:</translation>
-<translation id="5936788906460687941"><ph name="SITE"/>に埋め込まれたページが次の保存を要求しています</translation>
+<translation id="8813509417421129632"><ph name="SITE"/> に埋め込まれたページが保存を要求しています</translation>
 <translation id="7700010743463174379">このページが次の保存を要求しています:</translation>
 <translation id="6774238875569752630">このページに埋め込まれたページが次の保存を要求しています</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
@@ -573,6 +573,7 @@
 <translation id="4094590686212463338">この同期チェーンに参加できません。同期チェーンが削除されています。</translation>
 <translation id="4908081302669157000">電話番号、メールアドレス、住所</translation>
 <translation id="294985549514492876">ウェブアプリ（PWA）</translation>
+<translation id="7029809446516969842">パスワード</translation>
 <translation id="924029461438529367">検索候補を表示</translation>
 <translation id="3128251601544028053">アドレスバーや検索ボックスに文字を入力すると、Braveは入力した文字をデフォルトの検索エンジンに送信し、より良い候補を取得します。これはプライベートウィンドウでは利用できません。</translation>
 <translation id="6285118765755298263">他の検索エンジンのインデックス</translation>
@@ -715,6 +716,8 @@ Leoとの会話がすべて削除されます。この操作を元に戻すこ�
 <translation id="1355326130503900056">サービングフレームワークへのリクエストで表示されるモデル名。例: phi-3 (この名前がサービングフレームワークでの想定値と正確に一致しない場合、統合が機能しないためご注意ください)</translation>
 <translation id="3286410514484292784">サービングフレームワークがリクエストをリッスンする URL。不明点がある場合は、サービングフレームワークのドキュメントを確認してください。英: Ollama の場合は、常に「http://localhost:11434/v1/chat/completions」となります。</translation>
 <translation id="1058790648388035953">サービングフレームワークによっては、APIキーやアクセストークンなどの認証情報を必要とする場合があります。これらはリクエストヘッダーに追加されます。</translation>
+<translation id="4335128003329183586">コンテキストサイズ</translation>
+<translation id="8794525422794607973">モデルが1つのインタラクションで処理できるトークンの最大値です。各トークンはおよそ1単語の3/4です。 コンテキストサイズが大きいほど、モデルは長い会話を処理することが可能になります。コンテキストサイズの最大値はモデルにより異なります。</translation>
 <translation id="217141195370578385">Braveはこれらのリクエストのプロキシを行いません。選択したプロバイダーのプライバシー規約をお読みください。</translation>
 <translation id="2645532768679870478">非ローカルのエンドポイントには、安全なデータ伝送のためにHTTPSプロトコルを採用してください。</translation>
 <translation id="8177205483022887785">入力されたURLが無効です。有効なURLを入力してください。</translation>
@@ -724,6 +727,9 @@ Leoとの会話がすべて削除されます。この操作を元に戻すこ�
 <translation id="7435587476558117990">セルフまたはサードパーティによりホストされたLLMをLeoに接続し、ブラウザ内で使用します。</translation>
 <translation id="1381050642750209119">OllamaのようなOpenAI Chat Protocol互換のフレームワークを使用してください。</translation>
 <translation id="2642905648178380593">モデルを保存</translation>
+<translation id="6304169450064541679">システムプロンプト</translation>
+<translation id="3081947790648024460">モデルに特定の方向やスタイルで応答させるためのカスタム指示やコンテキストです。現在の日付や時刻を挿入したい場合は、%datetime%を使用してください。</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> トークン</translation>
 <translation id="349846214503465941">プレイリストを有効にする</translation>
 <translation id="7903608716704052878">オフラインでの閲覧用に自動でファイルを追加</translation>
 <translation id="4193768184502613558">このオプションは、メディアファイルを自動的にキャッシュし、インターネット接続がなくても再生できるようにします。</translation>

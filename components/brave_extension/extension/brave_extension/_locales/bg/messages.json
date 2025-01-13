@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Разширението Brave",
+    "message": "Brave разширение",
     "description": "The name of the extension."
   },
   "shields": {
@@ -8,31 +8,31 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "нагоре",
+    "message": "Нагоре",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "надолу",
+    "message": "Надолу",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "за този сайт",
+    "message": "За този сайт",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Ако даден сайт изглежда прекъснат, опитайте щитовете по-долу",
+    "message": "Ако даден сайт не работи, опитайте да свалите защитата",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Разглеждате този сайт без защитата на личните данни и сигурността на Brave. Не работи ли правилно с включени Щитове?",
+    "message": "Разглеждате този сайт без Brave защита на личните ви данни и сигурност. Не работи ли добре страницата при включена защита?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Докладвайте нефункциониращ сайт",
+    "message": "Докладвайте неработещ сайт",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Блокирани елементи",
+    "message": "Елементите са блокирани",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
@@ -44,43 +44,43 @@
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "актуализирани връзки",
+    "message": "връзките са актуализирани",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "връзката е надградена",
+    "message": "връзката е актуализирана",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Блокирани са тракери между сайтове",
+    "message": "Кръстосаните тракери за сайтове са блокирани",
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Блокирани проследяващи елементи и реклами",
+    "message": "Проследяващите елементи и реклами са блокирани",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Проследяването и рекламите са блокирани (агресивно)",
+    "message": "Тракерите и рекламите са блокирани (агресивно)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Проследяването и рекламите са блокирани (стандартно)",
+    "message": "Тракерите и рекламите са блокирани (стандартно)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Разрешаване на всички проследявания и реклами",
+    "message": "Разрешаване на всички тракери и реклами",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Връзките надградени към HTTPS",
+    "message": "Връзките са надградени с HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Връзката надградена към HTTPS",
+    "message": "Връзката е надградена с HTTPS",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Блокирани скриптове",
+    "message": "Скриптовете са блокирани",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
@@ -88,11 +88,11 @@
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Блокирани бисквитки",
+    "message": "Бисквитките са блокирани",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Всички „бисквитки“ са разрешени",
+    "message": "Всички бисквитки са разрешени",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
@@ -108,11 +108,11 @@
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Разрешаване на всички пръстови отпечатъци",
+    "message": "Разрешаване на всички цифрови отпечатъци",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Опити за снемане на пръстови отпечатъци",
+    "message": "Опити за снемане на цифрови отпечатъци",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
@@ -180,7 +180,7 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Допълнителен изглед",
+    "message": "Разширен изглед",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
@@ -188,7 +188,7 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Сайтовете често включват бисквитки и скриптове, които се опитват да идентифицират вас и вашето устройство (често са вградени в рекламите). Те искат да разберат кой сте и да ви следват из нета, проследявайки какво правите на всеки сайт. Brave блокира тези неща, така че да браузвате без да ви следват.",
+    "message": "Сайтовете често включват бисквитки и скриптове, които се опитват да идентифицират вас и вашето устройство (често са вградени в рекламите). Те искат да разберат кой сте и да ви следват из нета, проследявайки какво правите във всеки сайт. Brave блокира тези неща, така че да браузвате без да ви следват.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {

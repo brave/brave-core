@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
-<translation id="8631427463833030968">Kelola iklan</translation>
 <translation id="7630214457764713113">Salin tautan yang bersih</translation>
-<translation id="885805571521218129">Ini menggambarkan perkiraan rentang pendapatan Anda untuk Iklan Brave bulan ini.</translation>
 <translation id="3478449063771497234">Notifikasi dinonaktifkan</translation>
 <translation id="2862978891748913252">Pilih negara Anda</translation>
 <translation id="3970520675790340955">Pilih negara Anda sehingga kami dapat menunjukkan kepada Anda opsi dan iklan yang tepat untuk wilayah Anda.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Tampilkan saran situs teratas</translation>
 <translation id="6285118765755298263">Masukkan mesin pencarian lain ke dalam daftar</translation>
 <translation id="919715748352669592">Susun indeks situs web yang mengikuti spesifikasi OpenSearch secara otomatis.</translation>
+<translation id="412411722208944922">Mesin pencarian cepat</translation>
+<translation id="2836969042340015500">Mesin Pencarian Cepat</translation>
+<translation id="9120455214794270250">Tampilkan bilah pencarian cepat</translation>
+<translation id="1052991798173010693">Mesin pencarian yang digunakan saat ini</translation>
+<translation id="335303688425891752">Tekan lama untuk mengubah urutan</translation>
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="8047754398610073499">Pemberitahuan izin pemblokiran kuki</translation>
 <translation id="2621893359845808115">Memblokir pesan timbul situs web yang meminta Anda untuk menerima/menolak kuki di situs mereka</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
 <translation id="4117451092682672487">Privasi. Dapatkan dengan mudah.</translation>
 <translation id="7909375417585209817">Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk akan terbuka dengan perlindungan privasi Brave.</translation>
-<translation id="3737878115109582442">Tambahkan widget pencarian</translation>
-<translation id="6199413390010319240">Miliki Brave di ujung jari Anda untuk menjelajahi web dengan lebih cepat.</translation>
-<translation id="4338600611020922010">Tambahkan ke layar beranda</translation>
 <translation id="7370959926683925817">Memblokir iklan. Menyimpan data. Setiap hari.</translation>
 <translation id="7281027579943912834">Dengan Brave sebagai bawaan, setiap tautan yang Anda ketuk mendapat perlindungan pemblokiran iklan Brave. Setiap halaman, video, dan aliran.</translation>
 <translation id="5148943178722443958">Bantulah membuat Brave lebih baik.</translation>
@@ -408,8 +408,13 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6925081665778864449">Untuk menyinkronkan kata sandi, harap aktifkan autentikasi biometrik/kode sandi pada perangkat Android Anda. Langkah keamanan tambahan ini membantu menjaga agar kata sandi Anda tetap aman.</translation>
 <translation id="597993392929850353">Lisensi Brave</translation>
 <translation id="6336451774241870485">Tab pribadi baru</translation>
-<translation id="6199596294742117349">Ini adalah Tab Pribadi</translation>
-<translation id="5858455511731621847">Sekali pun situs yang Anda kunjungi dalam tab pribadi tidak disimpan secara lokal, hal itu tidak membuat Anda menjadi anonim terhadap ISP Anda, tempat kerja Anda, atau terhadap situs yang Anda kunjungi.</translation>
+<translation id="3110967157686007724">Tab pribadi</translation>
+<translation id="944340256927461196">Tidak meninggalkan jejak pada perangkat Anda</translation>
+<translation id="2063044449012253966">Situs yang Anda kunjungi di jendela pribadi tidak akan muncul di riwayat Anda. Kuki, data formulir, dan data situs akan hilang setelah semua jendela pribadi ditutup.</translation>
+<translation id="7395764193745523646">Visibilitas penelusuran</translation>
+<translation id="8735363371744702779">Ingat, meskipun di jendela pribadi, aktivitas penelusuran Anda mungkin masih dapat dilihat oleh ISP, pengamat jaringan, atau atasan Anda (jika Anda menggunakan perangkat/jaringan kerja).</translation>
+<translation id="1413177583895309156">Brave VPN mengenkripsi dan melindungi apa pun yang Anda lakukan secara daring, bahkan di luar browser Brave.</translation>
+<translation id="3974348661685061050">Coba gratis selama 7 hari</translation>
 <translation id="5789441016350810005">Iklan Brave dikirim ketika peramban sedang di latar belakang</translation>
 <translation id="4973347371961481083">Kontribusi</translation>
 <translation id="7047578174221019462">Kontribusi bulanan Anda telah diproses.</translation>
@@ -448,7 +453,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="4406937629441301400">Dapatkan token dengan melihat gambar ini dan berikan kebaikan pada kreator. <ph name="LEARN_MORE"/></translation>
 <translation id="6632345639591919543">Anda memperoleh token karena melihat gambar ini.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">Pembayaran imbalan <ph name="CURRENT_MONTH"/> akan mulai diproses sebelum <ph name="PAYOUT_DATE"/>.</translation>
-<translation id="33967210973550414">Pembayaran imbalan  <ph name="CURRENT_MONTH"/> sedang diproses. <ph name="CHECK_STATUS"/></translation>
+<translation id="33967210973550414">Pembayaran imbalan <ph name="CURRENT_MONTH"/> sedang diproses. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Pembayaran imbalan <ph name="CURRENT_MONTH"/> telah selesai. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">Periksa status</translation>
 <translation id="3624048886326677117">Memblokir pelacak &amp; iklan (Agresif)</translation>
@@ -700,7 +705,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="3510283489391432976">Memilih lokasi geografis/negara Anda</translation>
 <translation id="7695158478627528928">Brave tidak pernah mencatat aktivitas Anda</translation>
 <translation id="4575683170451975058">Melindungi 5 perangkat dengan 1 paket berlangganan</translation>
-<translation id="755045397420611731">Privasi &amp;; Keamanan Ekstra saat daring</translation>
+<translation id="755045397420611731">Privasi &amp; Keamanan Ekstra saat daring</translation>
 <translation id="4520128772974831415">Menyembunyikan IP Anda &amp; mengubah lokasi</translation>
 <translation id="2044418816479192294">Ratusan peladen di seluruh dunia</translation>
 <translation id="7410504850864021600">Koneksi secepat kilat</translation>
@@ -710,9 +715,10 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1532536259167115948">Langganan bulanan <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Langganan tahunan <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Perpanjang setiap bulan</translation>
+<translation id="112929124115834557">Diperpanjang setiap tahun</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /bulan</translation>
 <translation id="1163809943099641131">Satu Tahun</translation>
-<translation id="727385358513272220">Perpanjangan setiap tahun (<ph name="DISCOUNT_TEXT_START"/>hemat <ph name="PERCENTAGE_AMOUNT"/>%% <ph name="DISCOUNT_TEXT_END"/> )</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>hemat <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /tahun</translation>
 <translation id="2786538705804257030">Biaya langganan akan ditagih melalui akun Google Anda. Bagian uji coba gratis yang tidak terpakai, jika ditawarkan, akan hangus saat Anda membeli paket berlangganan.\n\nPaket berlangganan Anda akan diperpanjang secara otomatis kecuali jika dibatalkan setidaknya 24 jam sebelum akhir periode saat ini.\n\nAnda dapat mengelola paket berlangganan Anda di Pengaturan.\n\nDengan menggunakan Brave, Anda menyetujui Syarat Penggunaan dan Kebijakan Privasi.</translation>
 <translation id="5035172357624830412">Sudah membeli di brave.com?</translation>
@@ -842,7 +848,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="4351811224047421378">Desimal presisi</translation>
 <translation id="3494964159182650590">Ringkasan Rewards</translation>
 <translation id="590733288489975971">Imbalan dari Ads</translation>
-<translation id="1886682615222609631">Pendapatan sejauh ini</translation>
+<translation id="1450735350187803276">Iklan yang dilihat bulan ini</translation>
 <translation id="1767561995429774671">Kontribusi</translation>
 <translation id="7335371657242627509">Sertakan di Konribusi Otomatis</translation>
 <translation id="6727102863431372879">Set</translation>
@@ -1229,5 +1235,6 @@ riwayat obrolan Anda akan menghapus semua percakapan Anda sebelumnya dengan Leo.
 <translation id="2728518864712716830">Pembaruan diunduh.</translation>
 <translation id="8403338849301491865">Daftar filter telah berhasil diperbarui</translation>
 <translation id="4650851936784160359">Daftar filter tidak dapat diperbarui. Silakan coba lagi.</translation>
-<translation id="1450735350187803276">Iklan yang dilihat bulan ini</translation>
+<translation id="3098054327870766317">Tampilkan tombol urungkan saat tab ditutup</translation>
+<translation id="1336494649091412226">Apakah Anda yakin ingin keluar dari Brave?</translation>
 </translationbundle>

@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "Oppe",
+    "message": "opp",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "nede",
+    "message": "ned",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
@@ -20,7 +20,7 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Hvis en side ikke virker, prøv å deaktivere skjold.",
+    "message": "Hvis siden ikke virker, kan du legge ned skjoldet",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {

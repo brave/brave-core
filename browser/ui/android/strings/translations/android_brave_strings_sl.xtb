@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
-<translation id="8631427463833030968">Upravljanje oglasov</translation>
 <translation id="7630214457764713113">Kopirajte čisto povezavo</translation>
-<translation id="885805571521218129">To odraža vaš predvideni razpon zaslužka za Brave Oglase ta mesec.</translation>
 <translation id="3478449063771497234">Obvestila so izključena</translation>
 <translation id="2862978891748913252">Izberite svojo državo</translation>
 <translation id="3970520675790340955">Izberite svojo državo, da vam lahko pokažemo prave možnosti in oglase za vašo regijo.</translation>
@@ -115,6 +113,11 @@
 <translation id="1571106259128580884">Prikaži najbolj priljubljena spletna mesta</translation>
 <translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
 <translation id="919715748352669592">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch.</translation>
+<translation id="412411722208944922">Hitri spletni iskalniki</translation>
+<translation id="2836969042340015500">Hitri spletni iskalniki</translation>
+<translation id="9120455214794270250">Prikaži vrstico za hitro iskanje</translation>
+<translation id="1052991798173010693">Trenutno uporabljeni spletni iskalniki</translation>
+<translation id="335303688425891752">Z dolgim pritiskom spremenite vrstni red</translation>
 <translation id="9148058034647219655">Zapri</translation>
 <translation id="8047754398610073499">Blokiraj obvestila o soglasju za piškotke</translation>
 <translation id="2621893359845808115">Blokira pojavna okna spletnega mesta, ki vas prosijo, da sprejmete/zavrnete piškotke na njihovem spletnem mestu</translation>
@@ -235,9 +238,6 @@
 <translation id="7207456302801184289">Dobrodošli v Brave</translation>
 <translation id="4117451092682672487">Zasebnost. Enostavno preprosto.</translation>
 <translation id="7909375417585209817">Če je privzeta možnost Brave, se vsaka povezava, ki jo tapnete, odpre z zaščito zasebnosti Brave.</translation>
-<translation id="3737878115109582442">Dodajte iskalni pripomoček</translation>
-<translation id="6199413390010319240">Imejte Brave na dosegu roke in še hitreje raziskujte splet.</translation>
-<translation id="4338600611020922010">Dodajanje na začetni zaslon</translation>
 <translation id="7370959926683925817">Blokirajte oglase. Shranite podatke. Vsak dan.</translation>
 <translation id="7281027579943912834">S privzeto funkcijo Brave vsaka povezava, ki se je dotaknete, prejme Braveovo zaščito za blokiranje oglasov. Vsaka stran, videoposnetek in prenos.</translation>
 <translation id="5148943178722443958">Pomagajte izboljšati Brave.</translation>
@@ -410,8 +410,13 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6925081665778864449">Če želite sinhronizirati gesla, omogočite biometrijo/preverjanje pristnosti z geslom v napravi Android. Ta dodatni varnostni ukrep pomaga varovati vaša gesla.</translation>
 <translation id="597993392929850353">Licenca Brave</translation>
 <translation id="6336451774241870485">Novi zavihek brez beleženja zgodovine</translation>
-<translation id="6199596294742117349">To je zavihek brez beleženja zgodovine</translation>
-<translation id="5858455511731621847">Čeprav se spletna mesta, ki jih obiščete v zavihkih brez beleženja zgodovine, ne shranijo lokalno, za vašega ponudnika internetnih storitev, delodajalca ali strani, ki jih obiščete, ne ostanejo anonimna ali nevidna.</translation>
+<translation id="3110967157686007724">Zavihek brez beleženja zgodovine</translation>
+<translation id="944340256927461196">V napravi ne puščajte sledi</translation>
+<translation id="2063044449012253966">Spletna mesta, ki jih obiščete v zasebnih oknih, ne bodo prikazana v vaši zgodovini. Piškotki, podatki iz obrazcev in podatki o spletnem mestu izginejo, ko zaprete vsa zasebna okna.</translation>
+<translation id="7395764193745523646">Vidnost brskanja</translation>
+<translation id="8735363371744702779">Upoštevajte, da je vaša dejavnost brskanja – tudi v zasebnih oknih – lahko še vedno vidna ponudniku internetnih storitev, opazovalcem omrežja ali delodajalcu (če uporabljate službeno napravo/omrežje).</translation>
+<translation id="1413177583895309156">Brave VPN šifrira in ščiti vse, kar počnete na spletu, tudi zunaj brskalnika Brave.</translation>
+<translation id="3974348661685061050">Poskusite brezplačno za 7 dni</translation>
 <translation id="5789441016350810005">Oglasi Brave se pošljejo, ko je brskalnik v ozadju.</translation>
 <translation id="4973347371961481083">Donacije</translation>
 <translation id="7047578174221019462">Vaši mesečni prispevki so bili obdelani.</translation>
@@ -650,7 +655,7 @@ je v teku.
 <translation id="4204268048253692928">Omrežja lahko kadar koli dodate v Nastavitve.</translation>
 <translation id="2523174693142405417">Išči v omrežjih</translation>
 <translation id="1164748583090434571">Prikaži testna omrežja</translation>
-<translation id="935220650946301698">Nadaljuj z <ph name="NUMBER"/>   omrežji</translation>
+<translation id="935220650946301698">Nadaljuj z <ph name="NUMBER"/>  omrežji</translation>
 <translation id="4052668782430384783">Beseda št. <ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Ustvarjanje gesla</translation>
 <translation id="2789310860394340571">To geslo boste uporabili za dostop do denarnice.</translation>
@@ -717,9 +722,10 @@ je v teku.
 <translation id="1532536259167115948">Mesečna naročnina <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Letna naročnina <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Obnavlja se mesečno</translation>
+<translation id="112929124115834557">Obnovi se vsako leto</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /mesec</translation>
 <translation id="1163809943099641131">Eno leto</translation>
-<translation id="727385358513272220">Letna obnovitev (<ph name="DISCOUNT_TEXT_START"/>prihranek <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /leto</translation>
 <translation id="2786538705804257030">Naročnine bodo zaračunane prek vašega Google računa. Vsak morebitni neizkoriščen del brezplačnega preizkusa se ob nakupu naročnine izgubi.\n\nVaša naročnina se bo samodejno obnovila, razen če je preklicana vsaj 24 ur pred koncem trenutnega obdobja.\n\nNaročnine lahko upravljate v nastavitvah.\nZ uporabo brskalnika Brave se strinjate s pogoji uporabe in politiko zasebnosti.</translation>
 <translation id="5035172357624830412">Ste že nakupovali na brave.com?</translation>
@@ -849,7 +855,7 @@ je v teku.
 <translation id="4351811224047421378">Decimalke natančnosti</translation>
 <translation id="3494964159182650590">Povzetek nagrad</translation>
 <translation id="590733288489975971">Nagrade z oglaševanjem</translation>
-<translation id="1886682615222609631">Dosedanji zaslužek</translation>
+<translation id="1450735350187803276">Oglasi, ki ste si jih ogledali v tem mesecu</translation>
 <translation id="1767561995429774671">Doniraj</translation>
 <translation id="7335371657242627509">Vključi v samodejno doniranje</translation>
 <translation id="6727102863431372879">Nastavi</translation>
@@ -1235,5 +1241,6 @@ je v teku.
 <translation id="2728518864712716830">Posodobitev je prenesena.</translation>
 <translation id="8403338849301491865">Seznam filtrov je bil uspešno posodobljen</translation>
 <translation id="4650851936784160359">Seznama filtrov ni bilo mogoče posodobiti. Prosimo, poskusite znova</translation>
-<translation id="1450735350187803276">Oglasi, ogledani ta mesec</translation>
+<translation id="3098054327870766317">Prikaži gumb za razveljavitev, ko so zavihki zaprti</translation>
+<translation id="1336494649091412226">Ste prepričani, da želite zapustiti Brave?</translation>
 </translationbundle>

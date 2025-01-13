@@ -106,7 +106,7 @@
 <translation id="4541978218358617681">Реклама</translation>
 <translation id="1776831331757823105">Часовник</translation>
 <translation id="7791543448312431591">Добавяне</translation>
-<translation id="7679334366167089823">Печелете токени за гледане на реклами, зачитащи поверителността.</translation>
+<translation id="6216996674668969227">Спечелете токени при гледане на реклами, спазващи правилата за поверителност.</translation>
 <translation id="7191394989411626168">Изключвайки Карти, всички видими в момента карти ще бъдат скрити. Все пак може да бъдете уведомени за нови карти.</translation>
 <translation id="6820526586005233839">Brave Ads са поставени на пауза</translation>
 <translation id="5190407395832551012">За да предпазим Brave награди от злоупотреба, на случаен принцип ще молим потребители да разрешат Captcha. Щракнете върху “Разрешаване”, за да възобновите рекламите.</translation>
@@ -471,6 +471,7 @@
 <translation id="3349204812119681938">Нулиране на награди в Brave</translation>
 <translation id="4915997950539925115">При нулиране Вашият настоящ профил в Brave Награди ще бъде изтрит и опцията вече няма да бъде активна. Ако впоследствие активирате Brave Награди отново ще започнете с нов профил. Прочетете нашата <ph name="LINK_BEGIN"/>помощна статия относно нулирането<ph name="LINK_END"/> за повече подробности.</translation>
 <translation id="4806029412510565611">Разбирам, че настоящият ми профил в Brave Награди и данните за Brave Награди ще бъдат изтрити от моето устройство и прочетох <ph name="LINK_BEGIN"/>помощната информация относно нулирането<ph name="LINK_END"/>.</translation>
+<translation id="8835777704176513489">Деактивиране и рестартиране на Награди</translation>
 <translation id="7717357606512850995">Проверка на състоянието</translation>
 <translation id="6473937687348632190">Изплащането на наградите за <ph name="MONTH"/> е завършено.</translation>
 <translation id="1711367267038576241">Изплащането на наградите за <ph name="MONTH"/> ще започне да се обработва от <ph name="DATE"/>.</translation>
@@ -540,7 +541,7 @@
 <translation id="2529827670795983639">Изглежда, че това не работи, рекламите на Brave ще останат поставени на пауза. Свържете се с нас, ако се нуждаете от помощ с captcha.</translation>
 <translation id="261607053214862521">Максималните опити са превишени</translation>
 <translation id="2323171459178104277">Разрешено!</translation>
-<translation id="1512837998731269583">Рекламите и печалбите вече ще се възобновят. Благодарим ви, че ни помогнахте да защитим Brave награди и поверителните реклами.</translation>
+<translation id="1565888393553870503">Рекламите Brave ще бъдат възобновени. Благодарим ви, че ни помагате да поддържаме Brave Награди.</translation>
 <translation id="3247549836099021862">Свързване с поддръжката</translation>
 <translation id="5234764350956374838">Отхвърляне</translation>
 <translation id="7859066142771796818">Използвайте токени, за да купувате карти за подарък, да обменяте за други валути, да поддържате създателите на съдържание и много други.</translation>
@@ -567,7 +568,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Научете повече<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Не се тревожете.</translation>
 <translation id="5027616819996705541">Все още можете да сърфирате частно</translation>
-<translation id="1886682615222609631">Печалба до момента</translation>
+<translation id="1450735350187803276">Реклами, видени през този месец</translation>
 <translation id="7649070708921625228">Помощ</translation>
 <translation id="6042308850641462728">Още</translation>
 <translation id="6245259297588415877">Създатели</translation>
@@ -713,7 +714,7 @@
 <translation id="7160424977552599351">Използвайте Вашия Web3 портфейл</translation>
 <translation id="6369571967625114920">Brave Private Ads не са достъпни за Вашия регион.</translation>
 <translation id="5309155375926073606">Да, бих искал да допринеса към Brave Търсене и да се включа към <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
-<translation id="7285849890826812669">Можете да допринесете с анонимни данни за търсене и сърфиране, с цел подобряване на Brave Търсене с Web Discovery Project, което е софтуер с напълно отворен код.</translation>
+<translation id="4622826307953794521">Помогнете с анонимни данни от търсения и сърфиране, за да се усъвършенства Brave търсенето с проекта Web Discovery. Всичко това е с изцяло отворен код.</translation>
 <translation id="4174337572777167894">Проект за откриване в уеб</translation>
 <translation id="7090992647511817643">акаунт</translation>
 <translation id="4822132585477111396">Идентификатор на веригата</translation>
@@ -942,8 +943,11 @@
 <translation id="7080614857771109950">Поддържа съвместими активи с EVM в блокчейна на Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Поддържа съвместими активи с SPL в блокчейна на Solana</translation>
 <translation id="4541295941776129088">Съхраняване на активи на FIL</translation>
+<translation id="6030958132571544682">Актив на FIL Testnet магазин</translation>
 <translation id="29759539656432505">Съхранение на активи BTC</translation>
+<translation id="2399555431746923964">Активи на BTC Testnet магазин</translation>
 <translation id="8749751940551938347">Съхранение на ZEC активи</translation>
+<translation id="3451958544919449297">Активи на ZEC Testnet магазин</translation>
 <translation id="8500387257977999003">Поверителен ключ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Импортиране</translation>
 <translation id="232925166623833246">Импортиране от хардуерен портфейл</translation>
@@ -1000,7 +1004,7 @@
 <translation id="453788800165937690">ПРЕДУПРЕЖДЕНИЕ: Никога не споделяйте частния си ключ. Всеки, който разполага с този частен ключ, може да вземе активите ви завинаги.</translation>
 <translation id="2416098547200943834">ЗАБЕЛЕЖКА: Частният ключ се предоставя като шестнадесетично кодиран JSON, който съдържа информация за частния ключ и протокола. <ph name="LINK_START"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ЗАБЕЛЕЖКА: Частният ключ трябва да бъде предоставен като шестнадесетично кодиран JSON, който съдържа информация за частния ключ и протокола. <ph name="LINK_START"/>Научете повече<ph name="LINK_END"/>.</translation>
-<translation id="1505724566145200403">ЗАБЕЛЕЖКА: Поддържат се разширени ключове само за zpr v(или vprv за Testnet).</translation>
+<translation id="4482913669726886926">ЗАБЕЛЕЖКА: Поддържат се само <ph name="FORMAT"/> разширени ключове.</translation>
 <translation id="42126664696688958">Експортиране</translation>
 <translation id="1366855498335432549">Депозиране</translation>
 <translation id="790104325876206743">Настройки на акаунт</translation>
@@ -1022,7 +1026,7 @@
 <translation id="3792938779249970121">Избиране на акаунт</translation>
 <translation id="6797737193502014008">Търсене на акаунти</translation>
 <translation id="3505920073976671674">Избиране на мрежа</translation>
-<translation id="6857856707736769720">Избор от</translation>
+<translation id="2556155338676955870">Изберете актив</translation>
 <translation id="6323024765179772761">Търсене на монети</translation>
 <translation id="6998989275928107238">На</translation>
 <translation id="1506421160138798546">приблизително</translation>
@@ -1259,6 +1263,26 @@
 <translation id="6153197326949684688">Продай с <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Купете със Sardine</translation>
 <translation id="3301984548406568819">Финансовите и трансакционните данни се обработват от нашите доверени партньори. Brave не събира такива данни и няма достъп до тях.</translation>
+<translation id="5795821518596541838">Страна в трансакциите</translation>
+<translation id="1916136859742693273">Brave Wallet използва Meld.io, за да събере и покаже различни доставчици на криптовалути във вашия регион. За да завършим трансакцията, ние ще споделим данни с Meld.io, включително за адреса на портфейла ви и кода на страната. За повече информация, моля, прочетете условията за ползване на Meld.</translation>
+<translation id="245827814248186739">Прочетох и съм съгласен с <ph name="LINK_BEFORE"/>Условията за ползване на Meld<ph name="LINK_AFTER"/></translation>
+<translation id="2050829168433446009">Най-добър вариант</translation>
+<translation id="2803020719327054687">Обменен курс с такси</translation>
+<translation id="27867052127960599">Такси</translation>
+<translation id="5914491493054850112">Цена <ph name="CURRENCY"/></translation>
+<translation id="638391338232902087">Купете с <ph name="PROVIDER"/></translation>
+<translation id="2803778066587058297">Актив</translation>
+<translation id="1275718070701477396">Избрани</translation>
+<translation id="7509108671781225188">Няма налични валути</translation>
+<translation id="3799031411423890455">Получаване на най-добрите цени...</translation>
+<translation id="8544603592370093978">Купи <ph name="ASSET"/></translation>
+<translation id="7463545687475534731">Не са намерени доставчици за <ph name="ASSET"/></translation>
+<translation id="3372351687823322070">Опитайте да потърсите друг актив.</translation>
+<translation id="2619949734919284401">Не са намерени резултати за <ph name="PROVIDER"/></translation>
+<translation id="3319146983769202287">Опитайте да използвате друга ключова дума или проверете правописа си.</translation>
+<translation id="4196022627437957774">Искате ли да създадете <ph name="ACCOUNT_TYPE"/> акаунт?</translation>
+<translation id="5982914754413312620">За да получите <ph name="TOKEN_SYMBOL"/> ще ви е необходим <ph name="ACCOUNT_TYPE"/> акаунт.</translation>
+<translation id="3067168166931605141">Име на акаунта</translation>
 <translation id="6534275647567011533">Купуване с Transak</translation>
 <translation id="5973390321030037823">Купете с връзка</translation>
 <translation id="1932640759496708012">Купете с Coinbase Pay</translation>
@@ -1312,6 +1336,10 @@
 <translation id="6990756606864308319">Възникна грешка при опита <ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> да се прехвърли към <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
 <translation id="6449575669814542383">Одобряване на прехвърлянето на <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> към <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
 <translation id="8036159955043245753">Ще бъде създадена нова трансакция, за да се откаже Вашата съществуваща трансакция.</translation>
+<translation id="4056435949094149644">Размяна</translation>
+<translation id="7694836973509310467">Свързване</translation>
+<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> в <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="6934057383578424432">Възникна грешка при опита за <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> на <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
 =1 {{PENDING_TRANSACTIONS} more transaction pending.}
 other {{PENDING_TRANSACTIONS} more transactions pending.}
@@ -1706,6 +1734,11 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="803703704549420287">Изчистване на филтрите</translation>
 <translation id="1472675084647422956">Показване на още</translation>
 <translation id="4522570452068850558">Подробности</translation>
+<translation id="8713438253026855351">Преминаване към защитен акаунт</translation>
+<translation id="3526789880090101085">Защитен акаунт</translation>
+<translation id="2298396008562701154">В момента този акаунт поддържа прозрачни трансакции, което означава, че те са видими за всички в блокчейна.</translation>
+<translation id="3987095760757102811">Надграждането към защитен акаунт означава, че трансакциите няма да показват подател, получател и данни за сумата.</translation>
+<translation id="3819528427777765709">Защитено</translation>
 <translation id="7144878232160441200">Нов опит</translation>
 <translation id="9094621390791852268">Прегледът на трансакцията е неуспешен.</translation>
 <translation id="4982713341035600933">Предполагаема промяна в баланса</translation>
@@ -1902,6 +1935,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8652827551752428289">Показване на историята</translation>
 <translation id="5030659775136592441">Показване на мениджъра на отметки</translation>
 <translation id="6919203766034706175">Импортиране на настройки</translation>
+<translation id="6159704524780747483">Отваряне на AI чат</translation>
 <translation id="1199430163665775722">Редактиране на търсачките</translation>
 <translation id="4276265845501430443">Показване на помощ</translation>
 <translation id="8104889575691864804">Показване на менюто на приложението</translation>
@@ -1986,11 +2020,13 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="1130188644637295274">Отваряне в разделен изглед</translation>
 <translation id="6459036216700972269">Освобождаване на разделите</translation>
 <translation id="4235382917338421035">Размяна на позиции на раздел</translation>
+<translation id="4288085058450834672">Показване на приложения</translation>
 <translation id="4144468798716165316">Бързи команди</translation>
 <translation id="3617523374417810198">Нов разделен изглед</translation>
 <translation id="8571323456914890254">Отваряне в разделен изглед</translation>
 <translation id="5329136173514538969">Освобождаване на разделите</translation>
 <translation id="7595612919377246359">Размяна на позиции на раздел</translation>
+<translation id="2367972762794486313">Показване на приложенията</translation>
 <translation id="8591883849678260674">Вижте оригинала</translation>
 <translation id="1969654232209826429">мин. четене</translation>
 <translation id="4101707289420716287">Изключване на Speedreader</translation>
@@ -2044,9 +2080,11 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> от <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Чат</translation>
+<translation id="4685048769603134644">Зареждане на цялата страница</translation>
 <translation id="2961040541145689181">Нов чат</translation>
 <translation id="7557539689487606886">Абонирайте се за Premium</translation>
 <translation id="1691256669639196606">Управление на абонамент</translation>
+<translation id="3840096463915153852">История на разговорите</translation>
 <translation id="2304783958703511257">Разширени настройки</translation>
 <translation id="3037594989275592390">Езикови модели</translation>
 <translation id="5543505256451301851">Опитайте 7 дни безплатно</translation>
@@ -2083,7 +2121,10 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2313959174679245365">Вашата оценка не може да бъде подадена, моля, проверете мрежовата връзка и опитайте отново</translation>
 <translation id="98413980871833152">Вашата обратна връзка не може да бъде изпратена, моля, проверете мрежовата връзка и опитайте отново</translation>
 <translation id="8742658901413346500">Този разговор е дълъг и Leo може да започне да забравя неща скоро. Можете да получите по-дълги разговори, като преминете към модел от абонамент Premium, или можете да изчистите чата, за да го нулирате.</translation>
-<translation id="7550152963854770123">Изчистване на чата</translation>
+<translation id="6495402307502950726">Изчистване на разговора</translation>
+<translation id="903201991022343217">Започване на нов разговор</translation>
+<translation id="8171760814579050200">Преименуване на разговора</translation>
+<translation id="7754678742055438573">Изтриване на разговора</translation>
 <translation id="7494736170250048402">Изпращане на съобщение на Leo</translation>
 <translation id="8712637175834984815">Разбрах</translation>
 <translation id="1093419424466417703">Страницата е прекалено дълга за Лео. Възможно е в разговора да липсва част от контекста. Лео успя да прочете<ph name="PERCENTAGE"/> от съдържанието на страницата.</translation>
@@ -2135,6 +2176,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="49269513399674318">Използване на микрофон</translation>
 <translation id="3895031624234442305">Персонализирани модели</translation>
 <translation id="4572010449071015143">Начало на нов разговор</translation>
+<translation id="6287023598025162715">Нов разговор</translation>
 <translation id="6303294677342628402">Щитове</translation>
 <translation id="8458987127502506209">Активиране на щитове на Brave</translation>
 <translation id="7509914170164691086">Щитовете са ВДИГНАТИ <ph name="LINK_BEFORE"/>за<ph name="LINK_AFTER"/></translation>
@@ -2217,8 +2259,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6821108091726602352">Помогнете ни да подобрим мрежата, като участвате в Web Discovery Project на Brave. Споделяйки напълно анонимни сигнали от търсения, можете да помогнете на Brave да повиши индекса за търсене.</translation>
 <translation id="6764845498618413165">Научете повече.</translation>
 <translation id="7818938154803162778">Разбира се, ще помогна</translation>
-<translation id="7821773512278295352">Защитна стена на Brave + VPN: Свързани</translation>
-<translation id="6019088868713395120">Защитна стена на Brave + VPN: Прекъсната връзка</translation>
+<translation id="958268166261124668">Brave VPN: свързан</translation>
+<translation id="6021669293402055982">Brave VPN: прекъсната връзка</translation>
 <translation id="3541307549916475335">Потребителски интерфейс на VPN панела на Brave</translation>
 <translation id="7143207342074048698">Свързва се</translation>
 <translation id="1202549130170287307">Връзката се прекратява</translation>
@@ -2230,7 +2272,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="3357036723290257445">Вече закупихте Brave VPN?</translation>
 <translation id="8814357473522731680">Предоставено от</translation>
 <translation id="8652175077544655965">Затваряне на настройки</translation>
-<translation id="3099126540952997993">Защитна стена + VPN</translation>
 <translation id="5908163815855240493">Към главната страница</translation>
 <translation id="7805768142964895445">Състояние</translation>
 <translation id="5747552184818312860">Изтича на</translation>
@@ -2254,6 +2295,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2542131205769293399">Не е възможно да се провери статусът на покупката. Това вероятно е мрежов проблем. Опитайте отново или се свържете с отдела за поддръжка.</translation>
 <translation id="4613076894734402086">Редактиране на начин на плащане</translation>
 <translation id="427718751211990320">Изтекла дата на изтичане на валидността на идентификационните данни.</translation>
+<translation id="3323234188356372126">Brave VPN среща трудности при удостоверяване автентичността на VPN сървъра. Моля, свържете се с Поддръжка или опитайте отново по-късно.</translation>
 <translation id="8670619630771851260">Не е възможно да се заредят идентификационните данни.</translation>
 <translation id="1594643509610625766">Жетонът вече не е валиден.</translation>
 <translation id="8373427068383038263">Изглежда, че последното ви плащане за <ph name="VALUE"/> не е преминало. Достъпът до този абонамент ще бъде поставен на пауза, докато се разреши проблемът с плащането. Опитайте се да редактирате начина си на плащане или се свържете с отдела по поддръжка на Brave.</translation>
@@ -2300,10 +2342,9 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="7423206764347669977">Променете настройките</translation>
 <translation id="9061845622728745852">Часова зона:</translation>
 <translation id="8295393906499561642">Сесията е изтекла</translation>
+<translation id="7070578590391442755">Не може да удостовери за VPN</translation>
 <translation id="3312623558576021182">Моля, впишете се във Вашия <ph name="BRAVE_ACCOUNT_BEGIN"/>профил в Brave<ph name="BRAVE_ACCOUNT_END"/>, за да опресните Вашата VPN сесия.</translation>
-<translation id="6021669293402055982">Brave VPN: прекъсната връзка</translation>
 <translation id="7861195049821776142">Brave VPN: прекъсване на връзката</translation>
-<translation id="958268166261124668">Brave VPN: свързан</translation>
 <translation id="2061807837510296780">Brave VPN: свързване</translation>
 <translation id="1313124107969703758">Brave VPN: грешка</translation>
 <translation id="8273420301954598554">Статус: свързан</translation>
@@ -2312,6 +2353,11 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="8048263175525832621">Brave VPN – прекъсната връзка</translation>
 <translation id="1498770726476841108">Управление на акаунта</translation>
 <translation id="6825718953004242472">Премахване на иконата</translation>
+<translation id="6819278685469225453">Защитете всяко прил. на устройството си</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">Допълнителна поверителност &amp; онлайн сигурност.</translation>
+<translation id="8425213833346101688">Промяна</translation>
+<translation id="8703188411226330709">Започнете безплатен пробен период</translation>
 <translation id="3287942014983548982">Отваряне тук</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, е отворено понастоящем,
   натиснете Раздел и след това Enter, за да превключите към отворения раздел</translation>
@@ -2319,7 +2365,4 @@ Brave има помощна услуга, която Ви защитава от 
 съществуващия раздел</translation>
 <translation id="451189393813405346">Попитайте Leo</translation>
 <translation id="8525248723479742219">Възпроизвеждане по-късно</translation>
-<translation id="1450735350187803276">Реклами, видени този месец</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="8425213833346101688">Промяна</translation>
 </translationbundle>

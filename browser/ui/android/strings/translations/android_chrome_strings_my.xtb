@@ -80,6 +80,7 @@
 <translation id="3169981355900570544">Brave ဝန်ဆောင်မှု ဖြတ်လမ်းလင့်ခ်များ</translation>
 <translation id="1333491156693005331">လတ်တလော စစ်ဆေးထားသည်</translation>
 <translation id="1336996151357442890"><ph name="SITE_NAME"/> မှ မှာယူမှု ရပ်ဆိုင်းလိုက်သည်။ နောက်တစ်ကြိမ် သင်ဝင်ကြည့်သောအခါ ထပ်မေးပါမည်။</translation>
+<translation id="873343310451048603">ကျိုးပေါက်ထားသည့် စကားဝှက်များကို စစ်ရန် Brave Password Manager သို့သွားပါ</translation>
 <translation id="1344653310988386453">မြင်သာအောင်လုပ်ထားသော စာသားသို့ လင့်ခ်ကို ထည့်သွင်းပါ</translation>
 <translation id="1347468774581902829">လုပ်ဆောင်ချက်ကို စီမံခန့်ခွဲရန်</translation>
 <translation id="1355088659320425659">မှတ်တမ်းနှင့် တဘ်များ</translation>
@@ -115,8 +116,8 @@
 <translation id="1460751212339734034">အချိန်ကုန်သက်သာခြင်း၊ စာရိုက်ရသက်သာခြင်း</translation>
 <translation id="5598889255595678761">Brave ၏ ဘာသာစကား ရွေးပါ</translation>
 <translation id="1477626028522505441"><ph name="FILE_NAME"/> ဒေါင်းလုဒ်မှာ အကြောင်း အမျိုးမျိုးကြောင့် မအောင်မြင်ခဲ့ပါ။</translation>
+<translation id="147982357559798527">ပြောင်းထားသည်</translation>
 <translation id="5970766554644855317">သင်၏ မှတ်တမ်းအချို့ကို ဤနေရာတွင် ပြမည်မဟုတ်ပါ။ သင့် Brave မှတ်တမ်းအားလုံးကြည့်ရန် Brave မှတ်တမ်းအပြည့်အစုံကို ဖွင့်ပါ။</translation>
-<translation id="148482509007564431">လိပ်စာသိမ်းရန် လုပ်ငန်းစဉ်</translation>
 <translation id="1492417797159476138">ယခုဝဘ်ဆိုက်အတွက် ဤအသုံးပြုသူအမည်ကို သိမ်းပြီးဖြစ်သည်</translation>
 <translation id="1493287004536771723"><ph name="SITE_NAME"/> ကို လိုက်ကြည့်နေသည်</translation>
 <translation id="1502010315804028179">စကားဝှက်များစီမံရန် Google Play ဝန်ဆောင်မှုများကို အပ်ဒိတ်လုပ်ပါ</translation>
@@ -126,20 +127,23 @@
 <translation id="1513858653616922153">စကားဝှက်ကို ဖျက်ရန်</translation>
 <translation id="1521774566618522728">ယနေ့ အသုံးပြုထားသည်</translation>
 <translation id="5840742727909553422">Brave ဗားရှင်းအသစ် ရနိုင်ပါပြီ</translation>
+<translation id="6656719574110770130">{BOOKMARKS_COUNT,plural, =1{ဝဘ်လိပ်စာ ၁ ခုကို ဤစက်တွင်သာ သိမ်းသည်။ အခြားစက်များ၌သုံးရန် ၎င်းကို သင့် Brave sync chain <ph name="ACCOUNT_EMAIL"/> တွင် သိမ်းနိုင်သည်။}other{ဝဘ်လိပ်စာ # ခုကို ဤစက်တွင်သာ သိမ်းသည်။ အခြားစက်များ၌သုံးရန် ၎င်းတို့ကို သင့် Brave sync chain <ph name="ACCOUNT_EMAIL"/> တွင် သိမ်းနိုင်သည်။}}</translation>
 <translation id="3748360913454941567">ငွေပေးချေနည်းလမ်းနှင့် လိပ်စာများကို အသွင်ဝှက်မည်မဟုတ်ပါ။ Brave ရှိ ကြည့်ရှုမှုမှတ်တမ်းကို စင့်ခ်လုပ်မည်မဟုတ်ပါ။
 သင်၏ စကားဝှက်စာသိသူသာ အသွင်ဝှက်ထားသော ဒေတာကို ဖတ်နိုင်သည်။ စကားဝှက်စာကို Brave ထံ မပို့ပါ (သို့) Brave က မသိမ်းပါ။ သင့်စကားဝှက်စာ မေ့သွားပါက (သို့) ဤဆက်တင်ကို ပြောင်းလဲလိုပါက <ph name="BEGIN_LINK"/>သင့်အကောင့်ရှိ Brave ဒေတာကို ရှင်းပါ<ph name="END_LINK"/>။</translation>
 <translation id="8090895580117672212">သင့် Brave အကောင့်ကို စီမံခန့်ခွဲရန် "အကောင့် စီမံခန့်ခွဲရန်" ခလုတ်ကို တို့ပါ</translation>
 <translation id="154513667535157406">ဤအကျဉ်းချုပ်ကို သင်နှစ်သက်ကြောင်း ‘လက်မထောင်’ ပေးပို့ပြီး တုံ့ပြန်နိုင်သည်</translation>
 <translation id="1549000191223877751">အခြားဝင်းဒိုးသို့ ရွှေ့ပါ</translation>
 <translation id="1705567146636171298">Update Brave</translation>
-<translation id="3763131702135887799">သင့်ကဲ့သို့အသုံးပြုသူများအတွက် Brave ကို ပိုမိုကောင်းမွန်စေရန် ကူညီနိုင်သည်</translation>
+<translation id="2509230690562869141">သင့်ကဲ့သို့အသုံးပြုသူများအတွက် Brave ကို ပိုမိုကောင်းမွန်စေရန် ကူညီနိုင်သည်</translation>
 <translation id="1568636008098739136">ဤစာမျက်နှာကို နားထောင်ရန်။ ဤဖြတ်လမ်းလင့်ခ်ကို ပြင်ရန် ထိ၍ဖိထားပါ။</translation>
+<translation id="1571041387761170095">လုံခြုံမှုလျော့နည်းသည့် (သို့) ပြန်သုံးထားသည့် စကားဝှက်များ မရှိပါ</translation>
 <translation id="1571304935088121812">အသုံးပြုသူအမည်ကို ကူးယူပါ</translation>
 <translation id="1668445593689059872">ဤစက်တွင် သိမ်းထားသော စကားဝှက်များကို Brave ချန်နယ်များတွင် ယခု မသုံးနိုင်ပါ။ Brave 125 နောက်ပိုင်းတွင် Brave နှင့် <ph name="CHROME_CHANNEL"/> အတွက် သင့်စက်တွင် သိမ်းထားသော စကားဝှက်များကို ပေါင်းစည်းမည်ဖြစ်ပြီး အက်ပ်နှစ်ခုစလုံးတွင် သုံးနိုင်မည်။</translation>
 <translation id="1594635596540195766">အောက်ပါစာရင်းတွင် အကြံပြုအရာ<ph name="SUGGESTIONS_COUNT"/> ခု ရှိသည်။</translation>
 <translation id="1598163867407640634"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ဖြင့် <ph name="SITE_ETLD_PLUS_ONE"/> ကို အသုံးပြုပါ</translation>
 <translation id="1851107663393500801">ဖွင့်ထားချိန်၌ ဒေတာကို သင့် Brave sync chain တွင် သုံးပြီး သိမ်းပါသည်။ ပိတ်ထားချိန်၌ ဒေတာကို ဤစက်တွင်သာ သိမ်းပါသည်။</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{ရွေးချယ်ထားသည့် အကြောင်းအရာ ၁ ခုကို ဖယ်ရှားရန်}other{ရွေးချယ်ထားသည့် အကြောင်းအရာ # ခုကို ဖယ်ရှားရန်}}</translation>
+<translation id="9102838806351154392">{BOOKMARKS_COUNT,plural, =1{ဝဘ်လိပ်စာ ၁ ခုနှင့် အခြားအချက်အလက်များကို ဤစက်တွင်သာ သိမ်းသည်။ အခြားစက်များ၌သုံးရန် ၎င်းတို့ကို သင့် Brave sync chain <ph name="ACCOUNT_EMAIL"/> တွင် သိမ်းနိုင်သည်။}other{ဝဘ်လိပ်စာ # ခုနှင့် အခြားအချက်အလက်များကို ဤစက်တွင်သာ သိမ်းသည်။ အခြားစက်များ၌သုံးရန် ၎င်းတို့ကို သင့် Brave sync chain <ph name="ACCOUNT_EMAIL"/> တွင် သိမ်းနိုင်သည်။}}</translation>
 <translation id="1641113438599504367">လုံခြုံစွာ ရှာကြည့်မှု</translation>
 <translation id="164269334534774161">ဤစာမျက်နှာ၏ အော့ဖ်လိုင်းမိတ္တူကို <ph name="CREATION_TIME"/> မှသင်ကြည့်ရှုနေခြင်းဖြစ်သည်</translation>
 <translation id="1644574205037202324">မှတ်တမ်း</translation>
@@ -218,7 +222,6 @@
 <translation id="2021896219286479412">မျက်နှာပြင်အပြည့် ထိန်းချုပ်မှု</translation>
 <translation id="2038563949887743358">ဆိုဒ်ကြီး တောင်းဆိုမှု ဖွင့်မည်</translation>
 <translation id="7675869148432102528"><ph name="APP_NAME"/> သည် Brave တွင်လည်း ဒေတာများရှိသည်</translation>
-<translation id="2046634576464120978">မှတ်ပုံတင်၍ မရပါ</translation>
 <translation id="7096147642287317420">‘ရုပ်ဖျက်’ မှ ထွက်ရန် ထိပြီး ဖိထားပါ</translation>
 <translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="2051669996101374349">ရနိုင်ချိန်တိုင်း HTTPS ကိုသုံးပြီး ၎င်းက ပံ့ပိုးမထားသော ဝဘ်ဆိုက်များကို မဖွင့်မီ သတိပေးချက်ရယူပါ။ သင့်တွင် ‘အဆင့်မြင့်ကာကွယ်ရေး’ ဖွင့်ထားသောကြောင့် ဤဆက်တင်ကို ပြောင်း၍မရပါ။</translation>
@@ -242,7 +245,6 @@
 <translation id="2141396931810938595">သင့်အသုံးပြုမှုကို အခြေခံသည်</translation>
 <translation id="5905359144499324202">သင့်ဘရောင်ဇာတွင် အလုံခြုံဆုံး ဆက်တင်များ ရှိနေကြောင်း သေချာစေရန် Brave က ပုံမှန်စစ်ဆေးသည်။ စစ်ဆေးရန် လိုအပ်ပါက ကျွန်ုပ်တို့ အသိပေးပါမည်။</translation>
 <translation id="2149973817440762519">စာညှပ် တည်းဖြတ်ရန်</translation>
-<translation id="2155214902713132423">ဤစိစစ်မှုနည်းလမ်းကို ယခုစက်အတွက် မရနိုင်ပါ။ သင်၏အခြားစက်တွင် နည်းလမ်းနောက်တစ်ခု ရွေးနိုင်သည်။</translation>
 <translation id="4162910516440006395">Brave က စကားဝှက်အားလုံးကို စစ်ဆေး၍မရပါ</translation>
 <translation id="526235294307144732">သင်၏ Brave sync chain ရှိ Brave ဒေတာ သုံးရန်၊ သိမ်းရန် သင့်စကားဝှက်စာ ထည့်ပါ</translation>
 <translation id="2166228530126694506">ဗားရှင်း <ph name="VERSION_NUMBER"/></translation>
@@ -250,6 +252,7 @@
 <translation id="2172905120685242547">ဝင်ဒိုး ပိတ်မလား။</translation>
 <translation id="2173302385160625112">သင့်အင်တာနက် ချိတ်ဆက်မှုကို စစ်ဆေးပါ</translation>
 <translation id="2175927920773552910">QR ကုဒ်</translation>
+<translation id="2184272387334793084">သင့်စက်အားလုံးတွင် စကားဝှက်နှင့် အခြားအရာများ ရယူရန် လက်မှတ်ထိုးဝင်ပါ</translation>
 <translation id="218608176142494674">မျှဝေခြင်း</translation>
 <translation id="2194856509914051091">စဉ်းစားရန် အချက်များ</translation>
 <translation id="22091350895006575">အသုံးပြုသူအမည် ထည့်ရန်</translation>
@@ -262,6 +265,7 @@
 <translation id="2247789808226901522">ကတ် သက်တမ်းကုန်နေသည်</translation>
 <translation id="4808014761134300692">စကားဝှက်များကို ‘Brave စကားဝှက်မန်နေဂျာ’ သို့ မသိမ်းမီ သင်၏စက်၌ အသွင်ဝှက်ပြီးပါပြီ</translation>
 <translation id="2249635629516220541">သင့်ကိုကြော်ငြာပြရန် ဝဘ်ဆိုက်များ အသုံးပြုသည့် အချက်အလက်ကို စိတ်ကြိုက်ပြင်ဆင်နိုင်သည်</translation>
+<translation id="2253927598983295051"><ph name="APP_NAME"/> ဖြင့် မျှဝေလိုသည်များကို ရွေးပါ</translation>
 <translation id="2259659629660284697">စကားဝှက်များကို တင်ပို့ခြင်း…</translation>
 <translation id="781982477617612877">သင့်စကားဝှက်များကိုစစ်ရန် သင့် Brave အကောင့်သို့ လက်မှတ်ထိုးဝင်ပါ</translation>
 <translation id="2278052315791335171">ဤစကားဝှက်ကို ဖျက်ခြင်းဖြင့် <ph name="SITE"/> ရှိ သင့်အကောင့်ကို ဖျက်မည်မဟုတ်ပါ</translation>
@@ -282,6 +286,7 @@
 <translation id="2767094839186957509">Brave ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ</translation>
 <translation id="2359808026110333948">ဆက်လုပ်ရန်</translation>
 <translation id="2362083820973145409"><ph name="USER_NAME"/> အဖြစ် လက်မှတ်ထိုးဝင်ထားသည်။ <ph name="USER_EMAIL"/>။ ဆက်တင်များ ဖွင့်ပေးသည်။</translation>
+<translation id="351551888962017708">နောက်ထပ်စာမျက်နှာများကို ကြိုဖွင့်ထားသည်။ အခြားဝဘ်ဆိုက် (သို့) အက်ပ်များက တောင်းဆိုသောအခါ Brave ဆာဗာများမှတစ်ဆင့် စာမျက်နှာများကို ကြိုဖွင့်ထားနိုင်သည်။</translation>
 <translation id="2366554533468315977">ဤရွေးစရာအတွက် ဝဘ်ပေါ်ရှိ ဈေးနှုန်းမှတ်တမ်း</translation>
 <translation id="2385605401818128172">အကြောင်းကြားချက်များစွာ ပို့သည့် ဝဘ်ဆိုက်များကို စစ်ဆေးနိုင်ပြီး နောက်ထပ်အကြောင်းကြားချက်များပို့ခြင်းမှ ၎င်းတို့ကိုရပ်နိုင်သည်</translation>
 <translation id="2386938421315164605">အကြောင်းအရာများ ဖျောက်ပြီး ပြန်ပြနိုင်သည်</translation>
@@ -295,6 +300,7 @@
 <translation id="2433507940547922241">ပုံပန်း</translation>
 <translation id="2435457462613246316">စကားဝှက်ကို ပြပါ</translation>
 <translation id="2439153523196674349"><ph name="SITE_NAME"/> အစမ်းကြည့်ခြင်း</translation>
+<translation id="6209052069534739007">Brave ဝဘ်ဆိုက် (သို့) အက်ပ်က ၎င်း၏စာမျက်နှာရှိ လင့်ခ်များကို သီးသန့်ကြိုဖွင့်ရန် တောင်းဆိုသောအခါ Brave သည် Brave ဆာဗာများမှတစ်ဆင့် ကွတ်ကီးများမပါဘဲ စာမျက်နှာများကို အသွင်ဝှက်ပြီး ကြိုဖွင့်သည်။ ၎င်းက ကြိုဖွင့်ထားသော ဝဘ်ဆိုက်မှ သင့်အထောက်အထားကို ဖျောက်ပေးသည်။</translation>
 <translation id="2450083983707403292"><ph name="FILE_NAME"/> ကို ထပ်မံ ဒေါင်းလုဒ်လုပ်လိုပါသလား။</translation>
 <translation id="2451607499823206582">စောင့်ကြည့်ခြင်း</translation>
 <translation id="2453860139492968684">ပြီးပြီ</translation>
@@ -319,6 +325,7 @@
 <translation id="2527779675047087889">ကလစ်ဘုတ်အကြောင်းအရာများကို ဖျောက်ရန်</translation>
 <translation id="2532336938189706096">ဝဘ် မြင်ကွင်း</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> ခုဖျက်ပြီးပြီ</translation>
+<translation id="253498598929009420">ဤဝဘ်ဆိုက်သည် သင့်ဖန်သားပြင်ပေါ်ရှိ အကြောင်းအရာများကို မြင်နိုင်ပါမည်</translation>
 <translation id="2536728043171574184">ဤစာမျက်နှာ၏ အော့ဖ်လိုင်း မိတ္တူကို ကြည့်ရှုနေ</translation>
 <translation id="2546283357679194313">ကူကီးများ နှင့် ဆိုက် ဒေတာ</translation>
 <translation id="1272534541032649011">ပရိုဖိုင်လော့ခ်သည် သင်၏ Brave sync chain တွင် သိမ်းထားသော စကားဝှက်၊ ငွေပေးချေမှု စသည်တို့အပါအဝင် သင့်အချက်အလက်များကို ကားထဲတွင် လုံခြုံစေသည်။</translation>
@@ -374,6 +381,7 @@
 <translation id="2779651927720337254">ဒေါင်းလုဒ် မပြီးဆုံးပါ</translation>
 <translation id="2781151931089541271">၁ စက္ကန့် ကျန်သည်</translation>
 <translation id="2789486458103222910">OK</translation>
+<translation id="7717639919252237580">{NUM_PASSWORDS,plural, =1{ပိုကောင်းအောင်လုပ်သင့်သော ပြန်သုံးထားသည့် စကားဝှက်ကို Brave က တွေ့ထားသည်}other{ပိုကောင်းအောင်လုပ်သင့်သော ပြန်သုံးထားသည့် စကားဝှက် # ခုကို Brave က တွေ့ထားသည်}}</translation>
 <translation id="2800066122460699237"><ph name="TAB_TITLE"/> တဘ်ကို ပိတ်ပါမည်</translation>
 <translation id="2805756323405976993">အက်ပ်များ</translation>
 <translation id="7068873021383263704">သိမ်းဆည်းထားသည့် စကားဝှက်များကို သင်၏ <ph name="BEGIN_LINK"/>Brave အကောင့်<ph name="END_LINK"/> တွင် ကြည့်ရှုစီမံပါ</translation>
@@ -386,10 +394,8 @@
 <translation id="1982350477927404142">{TAB_COUNT,plural, =1{ရုပ်ဖျက်တဘ် <ph name="TAB_COUNT_ONE"/> ခုကို ပိတ်ပါမည်}other{ရုပ်ဖျက်တဘ် <ph name="TAB_COUNT_MANY"/> ခုကို ပိတ်ပါမည်}}</translation>
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{လွန်ခဲ့သော ၁ ရက်က စစ်ဆေးခဲ့သည်}other{လွန်ခဲ့သော # ရက်က စစ်ဆေးခဲ့သည်}}</translation>
 <translation id="2842985007712546952">မူရင်း ဖိုင်တွဲ</translation>
-<translation id="6324134303015966238">သင်ဝင်ကြည့်နိုင်ဖွယ်ရှိသည့် စာမျက်နှာများသို့ ဝင်ကြည့်အခါ ပိုမိုလျင်မြန်စွာ ပွင့်စေရန် Brave သည် ၎င်းတို့ကို ကြိုဖွင့်သည်</translation>
 <translation id="4362959348993021460">‘ရုပ်ဖျက်’ သို့ ပြောင်းရန် ထိပြီး ဖိထားပါ</translation>
 <translation id="2855243985454069333">စင့်ခ်လုပ်ထားသော စက်အားလုံးမှ မှတ်တမ်းကို ဖျက်သည်</translation>
-<translation id="2856503607207334158">လက်မှတ်ထိုးဝင်၍ မရပါ</translation>
 <translation id="2860954141821109167">ဤကိရိယာတွင် ဖုန်းအက်ပ်ဖွင့်ထားခြင်း ရှိမရှိ စစ်ဆေးပါ</translation>
 <translation id="6518254564747115579">အချို့ Brave ဝန်ဆောင်မှုများကို ရနိုင်တော့မည်မဟုတ်ပါ</translation>
 <translation id="2869430948265924908">ကားတွင် သင်၏သတိထားရမည့် အကြောင်းအရာကိုကာကွယ်ရန် ကားပရိုဖိုင်လော့ခ်ကို ပြုလုပ်ရမည်။  ပင်နံပါတ်၊ ကုဒ် (သို့) စကားဝှက်ဖြင့် ပြုလုပ်နိုင်သည်။</translation>
@@ -417,7 +423,6 @@
 <translation id="6537665929855787038">Brave အကြောင်းကြားချက်များက ကိစ္စများကို ပိုမိုလွယ်ကူစေသည်</translation>
 <translation id="2940075786175545812">ဝဘ်ဆိုက်တစ်ခုကို ခွင့်ပြု၊ မပြု ရွေးချယ်မှု</translation>
 <translation id="2942036813789421260">အစမ်းကြည့်ရှုမှုတဘ်ကို ပိတ်ထားသည်</translation>
-<translation id="4700262879698141140">အခြားစက်များကို ချိတ်ဆက်ရန် Brave ကို အပ်ဒိတ်လုပ်နေသည်</translation>
 <translation id="2951071800649516099">နောင်အတွက် သင်၏ဖတ်ရန် စာရင်းတွင် စာမျက်နှာများထည့်ပါ</translation>
 <translation id="2954586176076923855">လိပ်စာဘားကို အပေါ်သို့ရွှေ့ရန်</translation>
 <translation id="2956070106555335453">စုစုပေါင်း</translation>
@@ -431,12 +436,11 @@
 <translation id="2981364137500752533">ဝင်းဒိုး ၅ ခုအထိ ဖွင့်နိုင်သည်။</translation>
 <translation id="2983102365694924129">ဝဘ်ဆိုက်ရှိ သင့်လုပ်ဆောင်ချက်ပေါ် အခြေခံထားသည်။ ဤဆက်တင်ကို ပိတ်ထားသည်။</translation>
 <translation id="5948666439178419683">Brave ရှာဖွေမှုများတွင် ဝန်းကျင်ရှိစာသားကို ထည့်သွင်းရန်</translation>
+<translation id="2988638966064514052">သင့်စကားဝှက်များကို အားကောင်းအောင်လုပ်ပါ</translation>
 <translation id="2989523299700148168">လောလောလတ်လတ် ကြည့်ရှုခဲ့သော ဆိုက်များ</translation>
 <translation id="2992473221983447149">ပုံရှင်းလင်းချက်များ</translation>
 <translation id="2996291259634659425">စကားဝှက်ဖန်တီးပါ</translation>
 <translation id="2996809686854298943">URL လိုအပ်သည်။</translation>
-<translation id="2019027298133375428">Brave ဝဘ်ဆိုက်က ၎င်းတို့၏ စာမျက်နှာတွင် လင့်ခ်များကို သီးသန့် ကြိုဖွင့်ရန် မေးပါက Brave သည် Brave ဆာဗာများမှတစ်ဆင့် ကွတ်ကီးများ မပါဘဲ စာမျက်နှာများကို အသွင်ဝှက်ပြီး ကြိုဖွင့်ပေးပါသည်။ ၎င်းက ကြိုဖွင့်ထားသော ဝဘ်ဆိုက်မှ သင့်အထောက်အထားကို ဖျောက်ပေးသည်။</translation>
-<translation id="5730179015008010982">နောက်တစ်ကြိမ် သင်ဝင်ကြည့်မည့် ဝဘ်ဆိုက်များကို ခန့်မှန်းရန် သင်ကြည့်ထားသော URL များကို Brave သို့ ပို့ပြီး သင်ပြန်ကြည့်မည့် စာမျက်နှာအကြောင်း ထပ်ဆောင်းအချက်အလက်များကို ပြပေးသည်</translation>
 <translation id="3026955690410463085">လင့်ခ်ထည့်သွင်းပါ</translation>
 <translation id="3027644380269727216">ဝဘ်ဆိုက်ရှိ သင့်လုပ်ဆောင်ချက်ပေါ် အခြေခံထားသည်။ ဤဆက်တင်ကို ဖွင့်ထားသည်။</translation>
 <translation id="3027950907978057636"><ph name="APP_LABEL"/> မှ</translation>
@@ -459,6 +463,7 @@
 <translation id="3091010850649238832">ကလစ်ဘုတ်အကြောင်းအရာများကို ပြရန်</translation>
 <translation id="821565628224723530">သင့်အတွက် ရှင်းလင်းချက်များ ပိုကောင်းမွန်စေရန် ပုံအချို့ကို Brave သို့ ပို့သည်</translation>
 <translation id="3114507951000454849">ယနေ့သတင်းများကို ဖတ်ရန် <ph name="NEWS_ICON"/></translation>
+<translation id="3122883569442693641">နောက်ထပ်အသေးစိတ်</translation>
 <translation id="3123734510202723619">ကြေညာချက်များ</translation>
 <translation id="3131961580615093332"><ph name="GIVEN_NAME"/> က “<ph name="TAB_NAME"/>” တဘ်ကို ပြောင်းလိုက်သည်</translation>
 <translation id="3148237711805373460">ထိုနေရာသို့ သွားရန်</translation>
@@ -475,8 +480,6 @@
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> ကို ဖျက်လိုက်ပါပြီ</translation>
 <translation id="1892217432793359605">သင်လက်မှတ်ထိုးဝင်သောအခါ <ph name="BEGIN_LINK1"/>ရှာဖွေမှတ်တမ်း<ph name="END_LINK1"/> နှင့် <ph name="BEGIN_LINK2"/>အခြားသော လုပ်ဆောင်ချက်<ph name="END_LINK2"/> တို့ကို သင်၏ Brave sync chain တွင် သိမ်းထားနိုင်သည်။ ၎င်းတို့ကို အချိန်မရွေး ဖျက်နိုင်သည်။</translation>
 <translation id="3220943972464248773">သင့်စကားဝှက်များကို စင့်ခ်လုပ်ရန် သင်ဖြစ်ကြောင်း အတည်ပြုပါ</translation>
-<translation id="9210457680074341078">သင့် Brave sync chain တွင် လိပ်စာများလည်း သိမ်းထားပါက Brave တွင် ထုတ်ကုန်ဈေးများကို ခြေရာခံနိုင်ပြီး ဈေးကျသွားပါက အကြောင်းကြားချက် ရယူနိုင်ပါသည်</translation>
-<translation id="9047551989591319903">Brave ကို 'လုံခြုံရေးကီး' အဖြစ်</translation>
 <translation id="3232293466644486101">ဖွင့်ကြည့်ထားသည့်မှတ်တမ်းဒေတာကို ဖျက်ရန်…</translation>
 <translation id="3232754137068452469">ဝဘ် အက်ပ်</translation>
 <translation id="3236059992281584593">၁ မိနစ် ကျန်သည်</translation>
@@ -486,7 +489,6 @@
 <translation id="3250563604907490871">Wi-Fi သို့ ချိတ်ဆက်လိုက်သောအခါ ပုံအကြောင်းအရာများကို ဆက်ပြပါမည်</translation>
 <translation id="3254409185687681395">ဒီစာမျက်နှာကို စာညှပ်ပေးရန်</translation>
 <translation id="3259831549858767975">စာမျက်နှာပေါ်ရှိ အရာအားလုံးကို ပိုသေးအောင် လုပ်ရန်</translation>
-<translation id="3264259168916048410">သင့်ကွန်ပျူတာသည် ဝဘ်ဆိုက်တစ်ခုသို့ လက်မှတ်ထိုးဝင်ရန် ဤစက်ကို သုံးလိုသည်</translation>
 <translation id="3265093782546847662"><ph name="DOMAIN"/> ၏ စာမျက်နှာအားလုံး</translation>
 <translation id="3269093882174072735">ပုံကူးတင်ရန်</translation>
 <translation id="327204079441056603">ဤစက်တွင် စကားဝှက်များ သိမ်းပုံကို ကျွန်ုပ်တို့ပြောင်းလဲထားသည်</translation>
@@ -509,7 +511,6 @@
 <translation id="3384347053049321195">ပုံကို ဝေမျှပါ</translation>
 <translation id="3387650086002190359"><ph name="FILE_NAME"/> ဒေါင်းလုဒ်မှာ စနစ် အမှားများကြောင့် မအောင်မြင်ခဲ့ပါ။</translation>
 <translation id="3398320232533725830">စာညှပ်စီမံခန့်ခွဲမှုစနစ်ကို ဖွင့်ရန်</translation>
-<translation id="1081508498128395141">နောက်ထပ်စာမျက်နှာများကို ကြိုဖွင့်ထားသည်။ အခြားဝဘ်ဆိုက်များမှ တောင်းဆိုသည့်အခါ Brave ဆာဗာများမှတစ်ဆင့် စာမျက်နှာများကို ကြိုဖွင့်ထားနိုင်ပါသည်။</translation>
 <translation id="3414952576877147120">အရွယ်အစား:</translation>
 <translation id="3421726884497337397">ပြင်ပကုမ္ပဏီကွတ်ကီးများကို ပိတ်ဆို့ရမည့်အချိန် ရွေးခြင်း</translation>
 <translation id="342220687432920852">{HOURS,plural, =1{ပြီးခဲ့သော # နာရီ}other{ပြီးခဲ့သော # နာရီ}}</translation>
@@ -541,6 +542,7 @@
 <translation id="3524334353996115845">သင်ဖြစ်ကြောင်းအတည်ပြုရန် <ph name="ORIGIN"/> ကို ခွင့်ပြုပါ</translation>
 <translation id="3527085408025491307">ဖိုင်တွဲ</translation>
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> KB ရနိုင်သည်</translation>
+<translation id="719175600387583059">ကြိုဖွင့်ထားသည့် စာမျက်နှာများကို အသွင်ဝှက်ထားပြီး စာမျက်နှာများနှင့် လင့်ခ်ချိတ်ထားသော ဝဘ်ဆိုက် (သို့) အက်ပ်သည် Brave ဝဘ်ဆိုက် (သို့) အက်ပ်ဖြစ်သောကြောင့် ဤစာမျက်နှာများကို သီးသန့်ကြိုဖွင့်သည့်အခါ Brave ဆာဗာများသည် အချက်အလက်အသစ်များ မရရှိပါ။</translation>
 <translation id="3549657413697417275">သင့်မှတ်တမ်းကို ရှာရန်</translation>
 <translation id="3557336313807607643">အဆက်အသွယ်များသို့ ထည့်ရန်</translation>
 <translation id="3563767357928833671">ကလစ်ဘုတ်အကြောင်းအရာများကို ပြထားသည်</translation>
@@ -569,9 +571,9 @@
 <translation id="3692944402865947621">သိုလှောင်ခန်းနေရာသို့ ချိတ်ဆက်၍မရသောကြောင့် <ph name="FILE_NAME"/> ကို ဒေါင်းလုဒ်လုပ်၍မရပါ။</translation>
 <translation id="3697705478071004188">ဝဘ်ဆိုက်အလိုက် စီရန်</translation>
 <translation id="3699022356773522638">ဖိုင်ဒေါင်းလုဒ်လုပ်မလား။</translation>
-<translation id="3700759344784597882">ဖွင့်ထားသည့်အခါ စကားဝှက်များကို သင့်အကောင့်တွင် သိမ်းသည်။ ပိတ်ထားသည့်အခါ စကားဝှက်များကို ဤစက်တွင်သာ သိမ်းသည်။</translation>
 <translation id="3701167022068948696">ယခု ပြင်ဆင်ရန်</translation>
 <translation id="3701515417135397388">ဒေတာကျိုးပေါက်မှုတွင် စကားဝှက် ပါဝင်နေပါက သတိပေးရန်</translation>
+<translation id="3703166520839776970">ဤပြဿနာဆက်ဖြစ်နေပါက <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ထံမှ နောက်ထပ်အချက်အလက်များ ရယူရန်အတွက် “နောက်ထပ်အသေးစိတ်” ကိုရွေးပါ။</translation>
 <translation id="3710501561113687889">ရှေ့ဆက်ရန် <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> က သင့် <ph name="FIELDS_STRING"/> ကို ဤဝဘ်ဆိုက်နှင့် မျှဝေမည်။</translation>
 <translation id="3714981814255182093">ရှာဖွေမှုဘားတန်းကို ဖွင့်ရန်</translation>
 <translation id="5805364706385912897">ဤစာမျက်နှာက မှတ်ဉာဏ်အများအပြား အသုံးပြုနေသောကြောင့် Brave က ၎င်းကို ခေတ္တရပ်ထားပါသည်။</translation>
@@ -579,7 +581,6 @@
 <translation id="3720422586473670527">မလိုပါ</translation>
 <translation id="8397843425685839889">သင်နှင့် Brave</translation>
 <translation id="3737319253362202215">ဘာသာပြန်ဆက်တင်များ</translation>
-<translation id="3737402728074743863">ဤစက်ကို လုံခြုံရေးကီးအဖြစ်သုံးရန် ဖန်သားပြင်လော့ခ် သတ်မှတ်နိုင်သည်</translation>
 <translation id="3738139272394829648">ရှာရန် ထိပါ</translation>
 <translation id="3739899004075612870"><ph name="PRODUCT_NAME"/> တွင် လိပ်စာအဖြစ် သိမ်းဆည်းပါ</translation>
 <translation id="3740525748616366977">ဤစက်တွင် အသံဖြင့်ရှာဖွေမှု မရနိုင်ပါ</translation>
@@ -599,12 +600,15 @@
 <translation id="3819183753496523827">သင် အော့ဖ်လိုင်းဖြစ်နေသည်။ အင်တာနက်ချိတ်ဆက်မှုကို စစ်ဆေးပြီး ထပ်စမ်းကြည့်ပါ။</translation>
 <translation id="3823019343150397277">အိုင်ဘီအေအန် (IBAN)</translation>
 <translation id="38243391581572867">Lens ကို ဤအကောင့်တွင် မရနိုင်ပါ။</translation>
+<translation id="38258275871320156">ဝင်းဒိုးငယ်များအတွက်သာ ရနိုင်သည်</translation>
 <translation id="3830886834687455630">စကားဝှက်များစစ်ရန် Google Play ဝန်ဆောင်မှုများကို အပ်ဒိတ်လုပ်ပါ</translation>
 <translation id="3843603704176567761">ဤစက်တွင် စကားဝှက်များကို မကြာမီ သုံးနိုင်တော့မည် မဟုတ်ပါ။ သင့်စကားဝှက်များ ဆက်သုံးရန် Google Play ဝန်ဆောင်မှုများကို အပ်ဒိတ်လုပ်ပါ။</translation>
 <translation id="8810805383611013660">ရုပ်ဖျက်တဘ်တွင် ဖွင့်ရန်</translation>
 <translation id="3847319713229060696">လူတိုင်းအတွက် ဝဘ်ပေါ်တွင် လုံခြုံရေးပိုမိုကောင်းမွန်လာအောင် ကူညီပါ</translation>
+<translation id="385051799172605136">နောက်သို့</translation>
 <translation id="3856096718352044181">မှန်ကန်သည့် ဝန်ဆောင်မှုပေးသူ ဟုတ်မဟုတ် အတည်ပြုပါ သို့မဟုတ် နောက်မှ ထပ်စမ်းကြည့်ပါ</translation>
 <translation id="3858860766373142691">အမည်</translation>
+<translation id="3863527519275151528">စီမံဆောင်ရွက်မှု အကြောင်းကြားချက်</translation>
 <translation id="3873174561423636563">ရှေ့ဆက်ရန် <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> က သင့် <ph name="FIELDS_STRING"/> ကို ဤဝဘ်ဆိုက်နှင့် မျှဝေမည်။ ဤဝဘ်ဆိုက်၏ <ph name="BEGIN_LINK1"/>ဝန်ဆောင်မှုစည်းမျဉ်းများ<ph name="END_LINK1"/> ကိုကြည့်ပါ။</translation>
 <translation id="3892148308691398805">စာသား မိတ္တူကူးရန်</translation>
 <translation id="5248610748197335423">ရုပ်ဖျက်တဘ်အားလုံး ပိတ်ရန်</translation>
@@ -612,6 +616,7 @@
 <translation id="3902562446536395999">A မှ Z သို့ စီနေသည်</translation>
 <translation id="3908308510347173149"><ph name="PRODUCT_NAME"/> ကို အပ်ဒိတ်လုပ်ပါ</translation>
 <translation id="3911609878849982353">Z မှ A သို့ စီနေသည်</translation>
+<translation id="3918415141610210050">တဘ်</translation>
 <translation id="3924911262913579434"><ph name="SAFE_BROWSING_MODE"/> ကို ဖွင့်ထားသည်</translation>
 <translation id="3927692899758076493">Sans Serif</translation>
 <translation id="3928666092801078803">ကျွန်ုပ်၏ ဒေတာများကို ပေါင်းပါ</translation>
@@ -634,7 +639,6 @@
 <translation id="4016425174436051808">လိုက်ကြည့်၍ မရပါ။ တစ်ခုခုမှားသွားသည်။</translation>
 <translation id="4024768890073681126">သင့်ဘရောင်ဇာကို သင့်မိဘက စီမံခန့်ခွဲသည်</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# နာရီ}other{# နာရီ}}</translation>
-<translation id="4035877632587724847">ခွင့်မပြုပါ</translation>
 <translation id="4042941173059740150"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ဖြင့် <ph name="SITE_ETLD_PLUS_ONE"/> ကို ရှေ့ဆက်ပါ</translation>
 <translation id="404352903042073578">အမည်ပေးမထားသော အုပ်စု</translation>
 <translation id="4044708993631234325">အောက်ခြေအပိုဆောင်း စာမျက်နှာ</translation>
@@ -648,12 +652,9 @@
 <translation id="4072805772816336153">နောက်မှ ထပ်စမ်းကြည့်ပါ</translation>
 <translation id="4084682180776658562">စာညှပ်</translation>
 <translation id="4521874409998847950"><ph name="PUBLISHER_ORIGIN"/> မှ – <ph name="BEGIN_DEEMPHASIZED"/>Brave က ဖြန့်ချိပေးခြင်းဖြစ်သည်<ph name="END_DEEMPHASIZED"/></translation>
-<translation id="409109920254068737">ဤ QR ကုဒ် ပြထားသောစက်တွင် လက်မှတ်ထိုးဝင်ရန် ဤတက်ဘလက်ကို သုံးနိုင်သည်။</translation>
 <translation id="7268155614575494857">သင်၏လက်မှတ်ထိုးဝင်သည့် အချက်အလက်ကို Brave Password Manager ကသိမ်းပေးနိုင်ရန် ဤဝဘ်ဆိုက်အတွက် သင့်အသုံးပြုသူအမည် ထည့်ပါ</translation>
 <translation id="4095146165863963773">အက်ပ်ဒေတာကို ဖျက်မလား။</translation>
-<translation id="4095425503313512126">ကြည့်ရှုခြင်းနှင့် ရှာဖွေခြင်းတို့က ပိုမိုမြန်ဆန်သည်</translation>
 <translation id="4096227151372679484">လိပ်စာသိမ်းရန် လုပ်ငန်းစဉ်ကို မြင်ကွင်းတစ်ဝက်ဖွင့်ထားသည်</translation>
-<translation id="4101475238162928417">သင်၏အခြားစက်များမှ စကားဝှက်၊ လိပ်စာ စသည်တို့ ရယူရန် စင့်လုပ်ပါ</translation>
 <translation id="1523634703470981382">Brave Password Manager အပ်ဒိတ်လုပ်ခြင်း ဖွင့်ထားသည်</translation>
 <translation id="4108314971463891922">လိုက်ကြည့်ရန်</translation>
 <translation id="4113030288477039509">သင်၏ ကြီးကြပ်သူက စီမံသည်</translation>
@@ -682,6 +683,7 @@
 <translation id="4248098802131000011">ဒေတာပေါက်ကြားမှုများနှင့် အခြားသော လုံခြုံရေးပြဿနာများမရှိစေရန် သင့်စကားဝှက်ကို လုံခြုံအောင် ထိန်းသိမ်းပါ</translation>
 <translation id="7445061995866044926">Brave မှထွက်မလား။</translation>
 <translation id="4249955472157341256">နောက်ဆုံးရရှိမှုအလိုက် စီရန်</translation>
+<translation id="4847510842720497216">Brave သို့ ပို့ထားသော သင်၏ ဖွင့်ကြည့်ထားသည့်မှတ်တမ်းဒေတာပေါ် အခြေခံ၍ အန္တရာယ်ရှိသော ဝဘ်ဆိုက်၊ ဒေါင်းလုဒ်နှင့် နောက်ဆက်တွဲများရန်မှ AI ဖြင့် ပံ့ပိုးထားသော အချိန်နှင့်တစ်ပြေးညီ အကာအကွယ်</translation>
 <translation id="4256782883801055595">လွပ်လွပ်လပ်လပ်ဖွင့်ပေးထားသော ရင်းမြစ် လိုင်စင်များ</translation>
 <translation id="7404502124231907662">Brave Password Manager မှ စကားဝှက်များကို ဖျက်မလား။</translation>
 <translation id="426652736638196239">ဤ IBAN ကို ယခုစက်တွင်သာ သိမ်းပါမည်</translation>
@@ -701,6 +703,7 @@
 <translation id="433213510553688132">လိုက်ကြည့်နေသည်...</translation>
 <translation id="4335835283689002019">ဘေးကင်းစွာဖွင့်ကြည့်ခြင်းကို ပိတ်ထားသည်</translation>
 <translation id="4351244548802238354">ဒိုင်ယာလော့ ပိတ်ရန်</translation>
+<translation id="4352287748243729941">သင့် <ph name="PROVIDER"/> စကားဝှက် သုံးမလား။</translation>
 <translation id="4355272626458588338">သင့်အတွက်အရေးကြီးသော စာမျက်နှာသို့ လိပ်စာမှတ်ပြီး ပြန်သွားနိုင်သည်</translation>
 <translation id="4357206670025518404">+<ph name="COUNT_NUMBER"/></translation>
 <translation id="4359809482106103048">လုံခြုံမှု အကျဉ်းချုပ်</translation>
@@ -745,10 +748,8 @@
 <translation id="4543131175509360848">လျှို့ဝှက်ကီးစာမျက်နှာများ မရှိပါ</translation>
 <translation id="40716919553748435">{TAB_COUNT,plural, =1{တဘ် <ph name="TAB_COUNT_ONE"/> ခု}other{တဘ် <ph name="TAB_COUNT_MANY"/> ခု, ရုပ်ဖျက်တဘ်<ph name="TAB_COUNT_INCOGNITO"/> ခု}}</translation>
 <translation id="4558311620361989323">ဝဘ်စာမျက်နှာ ဖြတ်လမ်းလင့်ခ်များ</translation>
-<translation id="4561730552726921821">မှတ်ပုံတင်ပြီးပြီ</translation>
 <translation id="4565377596337484307">စကားဝှက်ကို ဖျောက်ရန်</translation>
 <translation id="4572422548854449519">စီမံခန့်ခွဲထားသည့်အကောင့်သို့ လက်မှတ်ထိုးဝင်ပါ</translation>
-<translation id="4576892426230499203">စိစစ်ရေးနည်းလမ်း နောက်တစ်ခု သုံးပါ</translation>
 <translation id="4577115723294378384">A မှ Z သို့ စီရန်</translation>
 <translation id="4578289292431526768">စကြစို့</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{လွန်ခဲ့သည့် # မိနစ်က}other{ လွန်ခဲ့သည့် # မိနစ်က}}</translation>
@@ -756,6 +757,7 @@
 <translation id="4594952190837476234">ဤအော့ဖ်လိုင်း စာမျက်နှာသည် <ph name="CREATION_TIME"/> က ဖြစ်ပြီး အွန်လိုင်းဗားရှင်းနှင့် ကွဲပြားနိုင်ပါသည်။</translation>
 <translation id="2724914440849807699">Brave sync chain အမှားအယွင်း</translation>
 <translation id="4601095002996233687">သံသယဖြစ်ဖွယ် ဒေါင်းလုဒ်များအတွက် အသေးစိတ် စကင်ဖတ်ခြင်း။</translation>
+<translation id="3047078595137661468">ဝဘ်ဆိုက် (သို့) အက်ပ်က ၎င်း၏စာမျက်နှာရှိ လင့်ခ်များကို သီးသန့်ကြိုဖွင့်ရန် တောင်းဆိုသောအခါ Brave သည် Brave ဆာဗာများမှတစ်ဆင့် ကွတ်ကီးများမပါဘဲ စာမျက်နှာများကို အသွင်ဝှက်ပြီး ကြိုဖွင့်သည်။ ၎င်းက ကြိုဖွင့်ထားသော ဝဘ်ဆိုက်မှ သင့်အထောက်အထားကို ဖျောက်ပေးသည်။</translation>
 <translation id="2782276843156939908">Brave နှင့် <ph name="CHROME_CHANNEL"/> တို့အတွက် သိမ်းထားသော စကားဝှက်စာရင်းကို ပေါင်းစည်းလိုက်သည်။ သင်၏ သိမ်းထားသော စကားဝှက်အားလုံးကို အက်ပ်နှစ်ခုစလုံးတွင် အော်တိုဖြည့်နိုင်ပါသေးသည်။</translation>
 <translation id="4616150815774728855"><ph name="WEBAPK_NAME"/> ကို ဖွင့်ပါ</translation>
 <translation id="4619564267100705184">သင်ဖြစ်ကြောင်း အတည်ပြုရန်</translation>
@@ -803,6 +805,7 @@
 <translation id="4769632191812288342">ပုံမှန်ကာကွယ်မှုကို ရရှိပါမည်</translation>
 <translation id="4775646243557794597"><ph name="TIME_PERIOD"/> ကို ဖျက်ပြီး</translation>
 <translation id="4778653490315793244">ပြစရာ မရှိသေးပါ</translation>
+<translation id="4782929588435725897"><ph name="SEARCH_ENGINE"/> သည် သင့်မူရင်း ရှာဖွေရေး အင်ဂျင်ဖြစ်သွားပြီ</translation>
 <translation id="4787736314074622408"><ph name="ITEM_TITLE"/> ကို ဖျက်လိုပါသလား။</translation>
 <translation id="4194619960643453552">Brave က သင်ဘေးကင်းစေရန် လုပ်ဆောင်ပုံကို လေ့လာခြင်း</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
@@ -824,7 +827,6 @@
 <translation id="4864369630010738180">လက်မှတ်ထိုးဝင်နေသည်...</translation>
 <translation id="5131234170665854056">Brave အတွက် <ph name="MODULE"/> ကို စနစ်ထည့်သွင်း၍ မရပါ</translation>
 <translation id="4871568871368204250">စင့်ခ်လုပ်ခြင်းကို ပိတ်ရန်</translation>
-<translation id="2875466387677348954">ပိတ်ထားပါက Brave ကပေးသော ဒေသတွင်း အကြံပြုချက်များကို တွေ့နိုင်ပါသေးသည်</translation>
 <translation id="4875775213178255010">အကြောင်းအရာ အကြံပြုချက်များ</translation>
 <translation id="8448127664493413656">ရုပ်ဖျက်မုဒ်သို့ ဝင်ရန်</translation>
 <translation id="4878404682131129617">ပရောက်စီဆာဗာမှ လမ်းကြောင်းတစ်ခု စတင်မှု မအောင်မြင်ပါ</translation>
@@ -863,18 +865,18 @@
 <translation id="5005498671520578047">စကားဝှက်ကို ကူးယူပါ</translation>
 <translation id="5010886807652684893">ရုပ်မြင်ပြသခြင်း</translation>
 <translation id="5011311129201317034"><ph name="SITE"/> သည် ချိတ်ဆက်လိုပါသည်</translation>
+<translation id="5012253429094023177"><ph name="BEGIN_BOLD1"/><ph name="PROVIDER1"/><ph name="END_BOLD1"/> နှင့် <ph name="BEGIN_BOLD2"/><ph name="PROVIDER2"/><ph name="END_BOLD2"/> တို့ ဆက်စပ်ပုံရှိသည်။ ဤစကားဝှက်မသုံးမီ <ph name="BEGIN_BOLD3"/><ph name="PROVIDER2"/><ph name="END_BOLD3"/> ကို ယုံကြည်ကြောင်း သေချာပါစေ။</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="5017529052065664584">ပြီးခဲ့သော ၁၅ မိနစ်</translation>
 <translation id="5032430150487044192">QR ကုဒ် ပြုလုပ်၍မရပါ</translation>
+<translation id="5035846135112863536"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ထံမှ နောက်ထပ်အချက်အလက်များ ရယူရန် “နောက်ထပ်အသေးစိတ်” ကိုရွေးပါ။</translation>
 <translation id="5039678609803776426">{TAB_COUNT,plural, =1{တဘ် <ph name="TAB_COUNT_ONE"/> ခု - <ph name="URL_LIST"/>}other{တဘ် <ph name="TAB_COUNT_MANY"/> ခု - <ph name="URL_LIST"/>}}</translation>
-<translation id="5039804452771397117">ခွင့်ပြုရန်</translation>
 <translation id="5040262127954254034">ကိုယ်ရေးအချက်အလက်လုံခြုံမှု</translation>
 <translation id="504456571576643789">စဉ်းစားရန် အချက်များ</translation>
 <translation id="4858031288914533863">သင်လက်မှတ်ထိုးဝင်သောအခါ <ph name="BEGIN_LINK1"/>အခြားသော လုပ်ဆောင်ချက်များ<ph name="END_LINK1"/> ကို သင်၏ Brave sync chain တွင် သိမ်းထားနိုင်သည်။ ၎င်းတို့ကို အချိန်မရွေး ဖျက်နိုင်သည်။</translation>
 <translation id="506254248375231072">တဘ် မရှိပါ</translation>
 <translation id="5062960805900435602">စကားဝှက်ပေါင်းစည်းခြင်းအကြောင်း အပ်ဒိတ်ကို ပိတ်လိုက်သည်</translation>
 <translation id="5075939510584558547">အသွင်မဝှက်ဘဲ သိမ်းခြင်း</translation>
-<translation id="5081960376148623587">စာမျက်နှာများ ကြိုဖွင့်၊ မဖွင့် ရွေးခြင်း</translation>
 <translation id="6518666204737985156">သင့်စက်အားလုံးတွင် လိပ်စာနှင့် အခြားအရာများ ရယူရန် ဤဝဘ်ဆိုက်နှင့် Brave သို့ လက်မှတ်ထိုးဝင်ပါ</translation>
 <translation id="4744980273298156620">တဘ်အသစ်ဖွင့်သောအခါ <ph name="SITE_NAME"/> မှ သတင်းဆောင်းပါးများကို မကြာမီ ကြည့်နိုင်ပါမည်။ သင် လိုက်ကြည့်ထားသည့် ဝဘ်ဆိုက်များကို Brave sync chain ထဲတွင် သိမ်းထားသည်။ ၎င်းတို့ကို ကြည့်ရှုစရာဆက်တင်များထဲတွင် စီမံနိုင်သည်။</translation>
 <translation id="509429900233858213">အမှား တစ်ခု ကြုံခဲ့ရသည်။</translation>
@@ -885,9 +887,9 @@
 <translation id="7143053178237996319">မက်ဆေ့ဂျ်၊ မှတ်တမ်းနှင့် အခြားအက်ပ်များတွင် အချိန်မရွေး လင့်ခ်များကို တို့ပြီး Brave သုံးနိုင်သည်</translation>
 <translation id="5122378528687922675">အကူအညီလိုပါက သင့်မိဘ (<ph name="PARENT_NAME_1"/> သို့မဟုတ်<ph name="PARENT_NAME_2"/>) ကိုတောင်းပါ</translation>
 <translation id="3110967157686007724">ရုပ်ဖျက်တဘ်</translation>
-<translation id="5132942445612118989">စက်ပစ္စည်းအားလုံးတွင် သင်၏ စကားဝှက်၊ မှတ်တမ်းနှင့် အခြားအရာများ စင့်ခ်လုပ်ပါ</translation>
 <translation id="5139940364318403933">Google Drive အသုံးပြုပုံကို လေ့လာရန်</translation>
 <translation id="5142281402488957685">ဝဘ်ပို့စ်အသစ်များ ပြန်လည် စတင်ရန် အောက်သို့ဆွဲချပါ</translation>
+<translation id="8164849572238219995">သင်ဝင်ကြည့်သော စာမျက်နှာအချို့ကို ကြိုဖွင့်ထားသည်။ Brave ဝဘ်ဆိုက် (သို့) အက်ပ်မှ လင့်ခ်ချိတ်ထားသောအခါ Brave ဆာဗာများမှတစ်ဆင့် စာမျက်နှာများကို ကြိုဖွင့်ထားနိုင်သည်။</translation>
 <translation id="5152843274749979095">ပံ့ပိုးသည့်အက်ပ်များကို ထည့်သွင်းမထားပါ</translation>
 <translation id="5161254044473106830">ခေါင်းစီးလိုအပ်သည်</translation>
 <translation id="5161262286013276579">လျှို့ဝှက်ကီးအတည်ပြုခြင်း စာမျက်နှာကို ဖွင့်ထားသည်</translation>
@@ -919,11 +921,10 @@
 <translation id="5304593522240415983">ဒီအကွက် ပလာ မဖြစ်နိုင်ပါ</translation>
 <translation id="5306014156308790439">စုစည်းမှုတွင် ‘ထည့်ရန်’ ကို ပိတ်ထားသည်</translation>
 <translation id="5308380583665731573">ချိတ်ဆက်ရန်</translation>
+<translation id="5310963254742922113">စကားဝှက် သုံးထားသည်။</translation>
 <translation id="5316947901395241499">စကားဝှက်သိမ်းခြင်းကို သင့်စီမံခန့်ခွဲသူက ပိတ်ထားသည်</translation>
 <translation id="5317780077021120954">သိမ်းရန်</translation>
 <translation id="989239400026154074">Brave က Brave ကို အသုံးပြုရန် အကြံပြုထားပါသည်</translation>
-<translation id="7815000350132166985">ကွတ်ကီးများကို ခွင့်ပြုပါက ကြိုဖွင့်သောအခါ Brave က ၎င်းတို့ကို သုံးနိုင်သည်</translation>
-<translation id="1681635711794313507">ကြိုဖွင့်ထားသည့် စာမျက်နှာများကို အသွင်ဝှက်ထားပြီး စာမျက်နှာများနှင့် လင့်ခ်ချိတ်ထားသော ဝဘ်ဆိုက်သည် Brave ဝဘ်ဆိုက်ဖြစ်သောကြောင့် ဤစာမျက်နှာများကို သီးသန့် ကြိုဖွင့်သည့်အခါ Brave ဆာဗာများသည် အချက်အလက်အသစ်များ မရရှိပါ။</translation>
 <translation id="5328542107300944283"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ဖြင့် အသုံးပြုပါ</translation>
 <translation id="5342314432463739672">ခွင့်ပြုချက် တောင်းဆိုမှုများ</translation>
 <translation id="534580735623577507"><ph name="TIME_PERIOD"/> အတွင်း ဝဘ်ဆိုက်များမရှိပါ</translation>
@@ -971,7 +972,6 @@
 <translation id="557018954714092179">ဖိုင်တွဲအသစ်ကို လုပ်ရန်</translation>
 <translation id="5578795271662203820"><ph name="SEARCH_ENGINE"/> က ဒီပုံအတွက် ရှာဖွေနေ</translation>
 <translation id="5581519193887989363">စင့်ခ်လုပ်မည့်အရာကို <ph name="BEGIN_LINK1"/>ဆက်တင်များ<ph name="END_LINK1"/>တွင် အချိန်မရွေး ရွေးချယ်နိုင်သည်။</translation>
-<translation id="5590372121997663538">ဤကွန်ပျူတာကို မှတ်ထားရန်</translation>
 <translation id="5596627076506792578">ပိုမို ရွေးချယ်စရာများ</translation>
 <translation id="4968908871398201967">ရုပ်ဖျက် မုဒ်</translation>
 <translation id="6894318537270274409">သင်၏ Brave အသုံးပြုမှု ပိုကောင်းစေရန် ဒေတာအသုံးပြုသော နောက်ထပ်ဆက်တင်များအတွက် <ph name="BEGIN_LINK"/>Brave ဝန်ဆောင်မှုများ<ph name="END_LINK"/> သို့သွားပါ။</translation>
@@ -1044,6 +1044,7 @@
 <translation id="2496394743292988533">အကြောင်းကြားချက်များ <ph name="SEPARATOR"/> ဤဝဘ်ဆိုက်သည် အန္တရာယ်ရှိသဖြင့် Brave က ဤခွင့်ပြုချက်များကို ဖယ်ရှားလိုက်သည်</translation>
 <translation id="5895834791314695851">ဤစက်တွင် စကားဝှက်များကို မကြာမီ သုံးနိုင်တော့မည် မဟုတ်ပါ။ သင့်စကားဝှက်များ ဆက်သုံးရန် Google Play ဝန်ဆောင်မှုများကို အပ်ဒိတ်လုပ်ပါ။ <ph name="BEGIN_LINK"/>ပိုမိုလေ့လာရန်<ph name="END_LINK"/></translation>
 <translation id="5899667542927581604">ပိတ်ထားသော လျှို့ဝှက်ကီးစာမျက်နှာများ မရှိပါ</translation>
+<translation id="5907542076239273525">လိပ်စာကို <ph name="FOLDER_NAME"/> တွင် သိမ်းလိုက်သည်</translation>
 <translation id="5916664084637901428">ဖွင့်ရန်</translation>
 <translation id="5919204609460789179">စင့်ခ်လုပ်ရန် <ph name="PRODUCT_NAME"/> ကို အပ်ဒိတ်လုပ်ပါ</translation>
 <translation id="5938820472109305350"><ph name="INTEREST"/> ထည့်ရန်</translation>
@@ -1071,7 +1072,6 @@
 <translation id="6026538407078977628">ဖန်သားပြင်အပြည့် ချဲ့ရန်</translation>
 <translation id="6030719887161080597">ကြော်ငြာစွမ်းဆောင်ရည်ကို တိုင်းတာရန်အတွက် ဝဘ်ဆိုက်များမှ သုံးသော အချက်အလက်ကို စီမံရန်</translation>
 <translation id="6039379616847168523">နောက်တဘ်သို့ သွားရန်</translation>
-<translation id="6040143037577758943">ပိတ်ရန်</translation>
 <translation id="6040939430773295212">ထပ်နေသည်</translation>
 <translation id="604124094241169006">အလိုအလျောက်</translation>
 <translation id="6042308850641462728">နောက်ထပ်</translation>
@@ -1133,7 +1133,6 @@
 <translation id="6316139424528454185">Android ဗားရှင်းကို ပံ့ပိုးမထားပါ</translation>
 <translation id="6324916366299863871">ဖြတ်လမ်းလင့်ခ်ကို တည်းဖြတ်ခြင်း</translation>
 <translation id="6324977638108296054">မြင်သာအောင်လုပ်ထားသော စာသားသို့ လင့်ခ်ကို ပြုလုပ်၍မရပါ</translation>
-<translation id="6324997754869598316">(အမှား <ph name="ERROR_CODE"/>)</translation>
 <translation id="6333140779060797560"><ph name="APPLICATION"/> မှတစ်ဆင့် မျှဝေရန်</translation>
 <translation id="6337234675334993532">လျှို့ဝှက်ကုဒ်သွင်းခြင်း</translation>
 <translation id="6340526405444716530">ပုဂ္ဂိုလ်ရေးသီးသန့်ပြုလုပ်ခြင်း</translation>
@@ -1143,7 +1142,6 @@
 <translation id="6344622098450209924">ခြေရာခံခြင်းဆိုင်ရာ ကာကွယ်မှု</translation>
 <translation id="6345878117466430440">ဖတ်ပြီးဟု မှတ်သားရန်</translation>
 <translation id="6356893102071098867">မှန်ကန်သည့်အကောင့်ကို ရွေးထားခြင်းရှိ၊ မရှိ ကြည့်ပါ</translation>
-<translation id="6357653805084533597">ဤ QR ကုဒ် ပြထားသောစက်တွင် လက်မှတ်ထိုးဝင်ရန် ဤဖုန်းကို သုံးနိုင်သည်။</translation>
 <translation id="6363990818884053551">စင့်ခ်စတင်ရန် သင်ဖြစ်ကြောင်းအတည်ပြုပါ</translation>
 <translation id="6364438453358674297">အကြံပေးချက်ကို မှတ်တမ်း ထဲမှ ဖယ်ရှားမလား?</translation>
 <translation id="806493401838431801">Brave က သင်ဝင်ကြည့်လိုသည်ဟု ထင်သည့် စာမျက်နှာများကို မကြာခဏ ကြိုဖွင့်ပေးသည်။ ဤဆက်တင်သည် ဒေတာအသုံးပြုမှု များသွားစေနိုင်ပါသည်။</translation>
@@ -1154,7 +1152,6 @@
 <translation id="8789425457808164956">အခြားစက်သို့ ဤတဘ်ကို ပို့ရန် ထိုနေရာတွင် Brave သို့ လက်မှတ်ထိုးဝင်ပါ</translation>
 <translation id="6404511346730675251">စာညှပ် တည်းဖြတ်ရန်</translation>
 <translation id="6406506848690869874">ထပ်တူပြုမည်</translation>
-<translation id="6407224748847589805">သင့်ကွန်ပျူတာကို ချိတ်ဆက်၍မရပါ။ စိစစ်ရေးနည်းလမ်း နောက်တစ်ခု သုံးပါ။</translation>
 <translation id="6410883413783534063">စာမျက်နှာအမျိုးမျိုး တစ်ပြိုင်နက်ဝင်ကြည့်ရန် တဘ်များကိုဖွင့်ပါ</translation>
 <translation id="6411219469806822692">အပေါ်သို့ထပ်မြှင့်၍ မရပါ။ စာမျက်နှာ၏ အပေါ်ဘက်ခပ်ဝေးဝေးမှ စကြည့်ပါ။</translation>
 <translation id="641643625718530986">ပရင့်…</translation>
@@ -1165,6 +1162,7 @@
 <translation id="6440291723980579689">စာမျက်နှာများသည် သင်ဖွင့်ပြီးမှသာ ပွင့်ပါသည်</translation>
 <translation id="6441734959916820584">အမည် ရှည်လွန်းသည်</translation>
 <translation id="6444291413624515012"><ph name="TAB_GROUP_TITLE"/> တဘ်အုပ်စုကို ပိတ်လိုက်သည်</translation>
+<translation id="6452534462676960500">လုပ်ဆောင်ချက်အသစ်</translation>
 <translation id="6459045781120991510">စစ်တမ်းများ</translation>
 <translation id="6461962085415701688">ဖိုင်ကို ဖွင့်၍မရပါ</translation>
 <translation id="9055113864158719823">Brave တွင် သင်ဖွင့်ကြည့်ထားသည့် ဝဘ်ဆိုက်များကို သင်မြင်ရမည်ဖြစ်ပြီး ၎င်းတို့အတွက် တိုင်မာများ သတ်မှတ်နိုင်ပါမည်။\n\nသင်တိုင်မာပေးထားသည့် ဝဘ်ဆိုက်များအကြောင်းနှင့် ၎င်းတို့ကို မည်မျှကြာကြာသင်ဖွင့်ကြည့်ကြောင်း အချက်အလက်များကို Brave က ရယူပါသည်။ 'ဒစ်ဂျစ်တယ် အာရောဂျံ' ပိုမိုကောင်းမွန်လာစေရန်အတွက် ဤအချက်အလက်များကို အသုံးပြုပါသည်။</translation>
@@ -1203,7 +1201,6 @@
 <translation id="6593061639179217415">ဒက်စ်တော့ဝဘ်ဆိုက်</translation>
 <translation id="6594347733515723558">ရွေးစရာများ စီပြီးကြည့်ရန်</translation>
 <translation id="2466982615210189224">သင့်အတွက် ရှင်းလင်းချက်များပိုကောင်းမွန်စေရန် ပုံများကို Brave သို့ ပို့သည်။</translation>
-<translation id="6595634543029443878">{TAB_COUNT,plural, =1{တဘ် <ph name="TAB_COUNT_ONE"/> ခုပါသော တဘ်အုပ်စုကို နောက်ခံတဘ်အုပ်စုအသစ်အဖြစ် ပြန်ပြောင်းနိုင်သည်။}other{တဘ် <ph name="TAB_COUNT_MANY"/> ခုပါသော တဘ်အုပ်စုကို နောက်ခံတဘ်အုပ်စုအသစ်အဖြစ် ပြန်ပြောင်းနိုင်သည်။}}</translation>
 <translation id="6904452514635238551">Brave တွင် လက်မှတ်ထိုးဝင်ထားသောအခါ သင်သိမ်းထားသော စကားဝှက်များကို သင့် Brave sync chain သို့ပို့မည်။ ၎င်းကိုပိတ်ရန် <ph name="BEGIN_LINK"/>ဆက်တင်များသို့ သွားပါ<ph name="END_LINK"/>။</translation>
 <translation id="661266467055912436">သင်နှင့် ဝဘ်ပေါ်ရှိ လူအားလုံးအတွက် လုံခြုံရေးကို တိုးမြှင့်ထားသည်။</translation>
 <translation id="8127050479140582768">အခြားစက်သို့ ဤတဘ်ကို ပို့ရန် နှစ်စက်လုံးတွင် Brave သို့ လက်မှတ်ထိုးဝင်ပါ</translation>
@@ -1220,7 +1217,6 @@
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/>\u2026 နှင့် နောက်ထပ် <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> ခု}other{<ph name="CONTACT_PREVIEW"/>\u2026 နှင့် နောက်ထပ် <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> ခု}}</translation>
 <translation id="6649642165559792194">ပုံအစမ်းကြည့်ရန် <ph name="BEGIN_NEW"/>အသစ်<ph name="END_NEW"/></translation>
 <translation id="6657585470893396449">စကားဝှက်</translation>
-<translation id="6659594942844771486">တဘ်</translation>
 <translation id="666731172850799929"><ph name="APP_NAME"/> တွင်ဖွင့်မည်</translation>
 <translation id="6671495933530132209">ပုံကို ကူးယူရန်</translation>
 <translation id="6672697278890207089">သင့်စကားဝှက်စာ ထည့်ပါ</translation>
@@ -1235,7 +1231,6 @@
 <translation id="671481426037969117">သင်၏ <ph name="FQDN"/> တိုင်မာ အချိန်ကုန်သွားပါပြီ။ မနက်ဖြန် ထပ်မံစတင်ပါမည်။</translation>
 <translation id="6715020873764921614">မည်သို့ဖြစ်စေ <ph name="FILE_NAME"/> (<ph name="FILE_SIZE"/>) ကို ဒေါင်းလုဒ်လုပ်လိုပါသလား။</translation>
 <translation id="671928215901716392">လော့ခ်မျက်နှာပြင်</translation>
-<translation id="6719634564325948108">QR ကုဒ်ဖြင့် ချိတ်ဆက်မလား။</translation>
 <translation id="7499197548870160669">သင့် Brave အကောင့်တွင်-</translation>
 <translation id="6734310707649923383">သင်ဝင်ကြည့်ထားသော စာမျက်နှာများကို ကြည့်နိုင်သည် (သို့) ၎င်းတို့ကို သင့်မှတ်တမ်းမှ ဖျက်နိုင်သည်</translation>
 <translation id="6738867403308150051">ဒေါင်းလုဒ် လုပ်နေ…</translation>
@@ -1246,7 +1241,6 @@
 <translation id="6762511428368667596"><ph name="NAME"/>၊ <ph name="EMAIL"/>။</translation>
 <translation id="676305334223455055">သင့်စိတ်ဝင်စားမှုများပေါ် အခြေခံပြီး အကြောင်းအရာများ ရယူရန် လက်မှတ်ထိုးဝင်ပါ</translation>
 <translation id="6767294960381293877">တဘ်မျှဝေရန် စက်ပစ္စည်းစာရင်း၏ အမြင့်ကို တစ်ဝက်ဖွင့်ထားသည်။</translation>
-<translation id="2213938739750509524">လိပ်စာဘား (သို့) ရှာဖွေစာလုံးဖြည့်ကွက်လပ်တွင် တို့/စာရိုက်သောအခါ မူရင်းရှာဖွေရေး အင်ဂျင်မှ အကြံပြုချက်များကို တွေ့ပါမည်။ ‘ရုပ်ဖျက်’ တွင် ၎င်းသည် ပိတ်နေမည်။</translation>
 <translation id="8174975477247159780">Brave နှင့် ChromeOS ထပ်တိုး ဝန်ဆောင်မှုစည်းမျဉ်းများ</translation>
 <translation id="6795633245022906657">တဘ်အသစ် အမြန်ဖွင့်ပါ။ ဤဖြတ်လမ်းလင့်ခ်ကို ပြင်ဆင်ရန် ‘ဆက်တင်များ’ သို့ သွားပါ။</translation>
 <translation id="4757665660890677272">Brave ကို သင့်မူရင်းအဖြစ် သတ်မှတ်ပါ</translation>
@@ -1259,13 +1253,9 @@
 <translation id="6817747507826986771">ဤစာမျက်နှာကို အမြန်မျှဝေပါ။ ဤဖြတ်လမ်းလင့်ခ်ကို ပြင်ဆင်ရန် တို့ထိ၍ဖိထားပါ။</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="2909289633148417535">Brave Password Manager အပ်ဒိတ်လုပ်ခြင်း ပိတ်ထားသည်</translation>
-<translation id="6822587385560699678">ဖွင့်ထားသည့်အခါ စကားဝှက်များကို <ph name="ACCOUNT"/> တွင် သိမ်းသည်။ ပိတ်ထားသည့်အခါ စကားဝှက်များကို ဤစက်တွင်သာ သိမ်းသည်။</translation>
-<translation id="6823561724060793716">သင်ကြည့်နေသော စာမျက်နှာအကြောင်း ထပ်ဆောင်းအချက်အလက်ကို ကြည့်ရန် လိပ်စာဘားမှ စာမျက်နှာအချက်အလက်ကို ဖွင့်နိုင်သည်</translation>
 <translation id="6828070228333235514">ဈေးနှုန်းစောင့်ကြည့်ခြင်း ရပ်ရန်</translation>
 <translation id="6830728435402077660">လုံခြုံမှုမရှိပါ</translation>
 <translation id="6831043979455480757">ဘာသာပြန်ရန်</translation>
-<translation id="6836206421467243968">နောက်ခံတဘ်အုပ်စုအသစ်အဖြစ် <ph name="TITLE_OF_GROUP"/> တဘ်အုပ်စုကို ပြန်ယူနိုင်ပါသည်။</translation>
-<translation id="5177927663996571732">သင့် Brave sync chain တွင် စကားဝှက်များ သုံးရန်နှင့် သိမ်းရန်</translation>
 <translation id="6846298663435243399">တင်ပေးနေ…</translation>
 <translation id="6850409657436465440">သင်၏ ဒေါင်းလုဒ်ကို လုပ်နေဆဲဖြစ်သည်</translation>
 <translation id="6850830437481525139">တဘ် <ph name="TAB_COUNT"/> ခု ပိတ်လိုက်သည်</translation>
@@ -1337,7 +1327,6 @@
 <translation id="5499149312981370855">Brave ဝန်ဆောင်မှုများရှိ ပုဂ္ဂိုလ်ရေးသီးသန့် အတွေ့အကြုံများ ပိုရရှိရန်အတွက် Brave မှတ်တမ်းကို ထည့်၊ မထည့် ရွေးနိုင်သည်</translation>
 <translation id="8208853227947884571">Brave က အပ်ဒိတ်ဖြစ်နေပြီ</translation>
 <translation id="7094933634769755999">မမှန်ကန်ပါ</translation>
-<translation id="7105047059074518658">စက်များကြား လွယ်ကူစွာကြည့်ရှုနိုင်ရန် လက်မှတ်ထိုးဝင်ပါ</translation>
 <translation id="7106762743910369165">သင့်ဘရောင်ဇာကို သင့်အဖွဲ့အစည်းက စီမံခန့်ခွဲသည်</translation>
 <translation id="144902786838571419">Brave သည် သင်မြင်ရသည့် ကြော်ငြာများကို ပိုမိုထိန်းချုပ်ခွင့်ပေးပြီး ဝဘ်ဆိုက်များက သင့်အား ပုဂ္ဂိုလ်ရေးသီးသန့် ကြော်ငြာများ ပြသောအခါ သင့်အကြောင်း လေ့လာနိုင်သည့် ဝဘ်ဆိုက်များကို ကန့်သတ်သည်။</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{ဝဘ်ဆိုက် ၁ ခုအတွက် ခွင့်ပြုချက်များကို စိစစ်ထားသည်}other{ဝဘ်ဆိုက် # ခုအတွက် ခွင့်ပြုချက်များကို စိစစ်ထားသည်}}</translation>
@@ -1371,11 +1360,9 @@
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{ဒေါင်းလုဒ် ၁ ခုကို စောင့်နေသည်}other{ဒေါင်းလုဒ် # ခုကို စောင့်နေသည်}}</translation>
 <translation id="1988906120194081364">‘ရုပ်ဖျက်’ သို့ ပြောင်းရန်</translation>
 <translation id="72415438529550637">စကားဝှက် အကြံပြုချက်ကို ပိတ်လိုက်သည်။</translation>
-<translation id="7252076891734325316">သင့်ဖုန်းကို ကွန်ပျူတာအနီးတွင် ထားပါ</translation>
 <translation id="4957342254208357193">သင့် Android စက်တွင် အလားတူဆက်တင် ပါဝင်နိုင်သည်။ Brave နှင့် သင့် Android စက်တွင် ‘ကြော်ငြာတိုင်းတာခြင်း’ ကို ဖွင့်ထားပါက ကုမ္ပဏီသည် သင်ဝင်ရောက်ကြည့်ရှုသည့် ဝဘ်ဆိုက်များနှင့် သင်အသုံးပြုသည့် အက်ပ်များတွင် ကြော်ငြာတစ်ခု၏ထိရောက်မှုကို တိုင်းတာနိုင်သည်။</translation>
 <translation id="727288900855680735"><ph name="ORIGIN"/> သို့ <ph name="ONE_TIME_CODE"/> ပို့မလား။</translation>
 <translation id="7274013316676448362">ပိတ်ထားသည့်ဆိုက်</translation>
-<translation id="4561646469134805137">သင်စာရိုက်နေစဉ် Brave သည် လိပ်စာဘား (သို့) ရှာဖွေစာလုံးဖြည့်ကွက်လပ်၏ အကြောင်းအရာကို သင်၏ပုံမှန် ရှာဖွေရေး အင်ဂျင်သို့ ပို့သည်</translation>
 <translation id="2700309900785251885">Brave ၏ အမြင့်ဆုံးလုံခြုံရေးစနစ် သင့်တွင်ရှိသည်</translation>
 <translation id="7289303553784750393">သင်အွန်လိုင်းဖြစ်သော်လည်း ဤပြဿနာဆက်ဖြစ်နေပါက <ph name="SITE_ETLD_PLUS_ONE"/> တွင် အခြားနည်းလမ်းများကို စမ်းကြည့်နိုင်သည်။</translation>
 <translation id="7290209999329137901">အမည်ပြောင်း၍ မရပါ</translation>
@@ -1387,7 +1374,6 @@
 <translation id="1382596880054356475">အော့ဖ်လိုင်း။ Brave က သင့်စကားဝှက်များကို စစ်ဆေး၍မရပါ။</translation>
 <translation id="7313188324932846546">စင့်ခ်လုပ်ခြင်းကို စနစ်ထည့်သွင်းရန် တို့ပါ</translation>
 <translation id="7324354302972299151">“Do Not Track” တောင်းဆိုမှု ပို့ရန်</translation>
-<translation id="7332075081379534664">လက်မှတ်ထိုးဝင်၍ ရပါပြီ</translation>
 <translation id="7333041109965360609">အကြောင်းကြားချက်များ မှာယူမှု ရပ်ဆိုင်းထားသည်</translation>
 <translation id="8716243540027092298">Brave မှ သက်ဆိုင်မှုအရှိဆုံး အကြောင်းအရာများရယူရန် စင့်ခ်လုပ်နိုင်သည်</translation>
 <translation id="7336259382292148213">အကြောင်းကြားချက်များ အဆင်ပြေပုံပေါ်သည်</translation>
@@ -1467,7 +1453,6 @@
 <translation id="7638584964844754484">စကားဝှက် မမှန်</translation>
 <translation id="7646772052135772216">စကားဝှက်စင့်ခ်လုပ်ခြင်းကို အသုံးပြု၍မရပါ</translation>
 <translation id="7655240423373329753">ပြီးခဲ့သော ၇ ရက်</translation>
-<translation id="7655900163790317559">ဘလူးတုသ် ဖွင့်နေသည်…</translation>
 <translation id="7656721520530864426">ဝဘ်ဆိုက်များ မရှိပါ</translation>
 <translation id="5278260521317049275">‘ရုပ်ဖျက်လော့ခ်’ ဖွင့်ရန်</translation>
 <translation id="7658239707568436148">မလုပ်တော့</translation>
@@ -1477,7 +1462,6 @@
 <translation id="7666185984446444960"><ph name="TAB_GROUPS_AND_TABS_PART"/> ကို ပိတ်လိုက်သည်</translation>
 <translation id="7682724950699840886">အောက်ပါအကြံပြုချက်များကို စမ်းကြည့်ပါ− သင့်စက်ပစ္စည်းပေါ်တွင် နေရာအလုံအလောက်ရှိ မရှိ စစ်ဆေးပြီး ထပ်မံ၍ တင်ပို့ကြည့်ပါ</translation>
 <translation id="7686086654630106285">ဝဘ်ဆိုက်က အကြံပြုထားသည့် ကြော်ငြာဆိုင်ရာ နောက်ထပ်အချက်အလက်</translation>
-<translation id="2667018639405889513">သင်ဝင်ကြည့်သော စာမျက်နှာတစ်ချို့ကို ကြိုဖွင့်ထားသည်။ Brave ဝဘ်ဆိုက်တစ်ခုမှ လင့်ခ်ချိတ်သည့်အခါ Brave ဆာဗာများမှတစ်ဆင့် စာမျက်နှာများကို ကြိုဖွင့်ထားနိုင်ပါသည်။</translation>
 <translation id="7795837497684113327">သင့်စက်က Brave ကို ဖွင့်၍မရပါ။ ပြဿနာဖြေရှင်းရန် အက်ပ်စတိုးမှ Brave နောက်ဆုံးအပ်ဒိတ်ကို ဒေါင်းလုဒ်လုပ်ပါ။</translation>
 <translation id="7691043218961417207">လိုက်ကြည့်မည့် အကြောင်းအရာကို စူးစမ်းလေ့လာရန်</translation>
 <translation id="7697383401610880082">ဖိဆွဲအထိန်း</translation>
@@ -1508,7 +1492,6 @@
 <translation id="7821130663268546430">ဖွင့်ထားသောတဘ်အားလုံးကို တဘ်ပြောင်းခလုတ်တွင် ရှာနိုင်သည်</translation>
 <translation id="8439902729344548970">သင်လက်မှတ်ထိုးဝင်ထားချိန်၌ Brave ဝန်ဆောင်မှုများတွင် သင့်ကိုကာကွယ်ပေးရန် (ဥပမာ လုံခြုံရေးဆိုင်ရာ ဖြစ်ရပ်တစ်ခု ဖြစ်ပေါ်ပြီးနောက် Gmail တွင် ကာကွယ်မှု တိုးမြှင့်ခြင်း) ဤဒေတာကို သင့် Brave sync chain တွင် လင့်ခ်ချိတ်ပါသည်။</translation>
 <translation id="7824665136384946951">သင့်အဖွဲ့အစည်းက ‘လုံခြုံစွာ ဖွင့်ကြည့်ခြင်း’ ကိုပိတ်ထားသည်</translation>
-<translation id="78270725016672455">သင့်ကွန်ပျူတာသည် ဝဘ်ဆိုက်တစ်ခုသို့ လက်မှတ်ထိုးဝင်ရန် ဤစက်ကို မှတ်ပုံတင်လိုသည်</translation>
 <translation id="7844171778363018843">စင့်ခ်လုပ်ရန် ဒေတာ ရွေးမထားပါ</translation>
 <translation id="7846161022626028328">အမှားတစ်ခု ဖြစ်သွားသည်။ ထပ်စမ်းကြည့်ပါ။</translation>
 <translation id="7068829570137757602">Brave ဝန်ဆောင်မှုများ</translation>
@@ -1517,13 +1500,11 @@
 <translation id="7853202427316060426">လုပ်ဆောင်ချက်</translation>
 <translation id="7859988229622350291">ဘယ်တော့မှ ဘာသာမပြန်ပါနှင့်</translation>
 <translation id="7866213166286285359">ဤနေရာမှတစ်ဆင့် စာမျက်နှာများ ဘာသာပြန်နိုင်သည်</translation>
-<translation id="78707286264420418"><ph name="PRODUCT_NAME"/> သည် သင့်စက်ပစ္စည်းကို ချိတ်ဆက်ရန်အတွက် ‘အနီးတစ်ဝိုက်ရှိ စက်များ’ ခွင့်ပြုချက်ကို ပေးရန်လိုအပ်သည်</translation>
 <translation id="7875915731392087153">အီးမေးလ်ရေးပါ</translation>
 <translation id="7876243839304621966">အားလုံး ဖယ်ရှား</translation>
 <translation id="6143689084714664628">Brave တွင် ဖွင့်ထားသည်</translation>
 <translation id="7887174313503389866">အဓိကကျသော ကိုယ်ရေးအချက်အလက်နှင့် လုံခြုံရေး ထိန်းချုပ်မှုများ လမ်းညွှန်ပြသမှုကို ကြည့်ရှုပါ။ အခြားရွေးချယ်စရာများအတွက် သီးခြားဆက်တင်များသို့ သွားပါ။</translation>
 <translation id="7896724475402191389">ငယ်ရွယ်သူများအတွက် အကြောင်းအရာ - ပိတ်</translation>
-<translation id="7903184275147100332">တစ်မိနစ်ခန့် ကြာနိုင်သည်</translation>
 <translation id="7907478394153853634">အဓိပ္ပာယ်မဲ့ စာသား</translation>
 <translation id="7913993612870913335">{FILE_COUNT,plural, =1{၁ ခုကို သင့်အဖွဲ့အစည်းက ပိတ်ထားသည်}other{# ခုကို သင့်အဖွဲ့အစည်းက ပိတ်ထားသည်}}</translation>
 <translation id="7914399737746719723">အက်ပ်ထည့်သွင်းပြီးပြီ</translation>
@@ -1573,8 +1554,7 @@
 <translation id="8084114998886531721">သိမ်းဆည်းထားသော စကားဝှက်</translation>
 <translation id="1718138320251931534">သင့် Brave sync chain ဒေတာကို ထိန်းချုပ်နိုင်သည်</translation>
 <translation id="6213630783726251371">သင်၏ မှတ်တမ်းအချို့ကို ဤနေရာတွင် ပြမည်မဟုတ်ပါ။ သင့် Brave မှတ်တမ်းအားလုံးကြည့်ရန် Brave မှတ်တမ်းအပြည့်အစုံကို ဖွင့်ပါ။ ထို့ပြင် သင့် Brave sync chain သည် <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> တွင် အခြားပုံစံဖြင့် ကြည့်ရှုမှုမှတ်တမ်းများ ရှိနေနိုင်သည်။</translation>
-<translation id="808747664143081553">စက်ပစ္စည်းနှင့် ချိတ်ဆက်ပြီးပြီ</translation>
-<translation id="1998933850996224665">အနီးရှိလူများနှင့် မျှဝေရန် ၎င်းတို့အား ဤ QR ကုဒ်ကို စကင်ဖတ်ခိုင်းပါ</translation>
+<translation id="8088176524274673045">အနီးရှိလူများနှင့် မျှဝေရန် ၎င်းတို့အား ဤ QR ကုဒ်ကို စကင်ဖတ်ခိုင်းပါ</translation>
 <translation id="8090732854597034573">အကူအညီလိုပါက သင့်မိဘကိုတောင်းပါ</translation>
 <translation id="8101414242770404289"><ph name="TIME_PERIOD"/> မှ တဘ်များ မရှိပါ</translation>
 <translation id="3377025655491224618">ကိုယ်ဖျောက်တဘ်</translation>
@@ -1612,6 +1592,7 @@
 <translation id="8243077599929149377">သင့်အသုံးပြုသူအမည်ကို ထည့်ခြင်း</translation>
 <translation id="8250920743982581267">စာရွက်စာတမ်းများ</translation>
 <translation id="8255617931166444521">ဝဘ်ဆိုက်များသည် ၎င်းတို့ပေါ်ရှိ သင်၏ကြည့်ရှုခြင်းများကို မြင်ရရန်အတွက်သာ သင့်ကွတ်ကီးများကို သုံးနိုင်သည်</translation>
+<translation id="8258999165172757081">ထည့်ပြီးပါပြီ</translation>
 <translation id="2876689296031086375">ကြိုဖွင့်ထားသည့် စာမျက်နှာများကို အသွင်ဝှက်ထားသောကြောင့် Brave က ကြိုဖွင့်ထားသော မည်သည့် စာမျက်နှာအကြောင်းအရာကိုမျှ လေ့လာသွားမည်မဟုတ်ပါ။ Brave ဆာဗာများက မည်သည့် ဝဘ်ဆိုက်များကို သီးသန့် ကြိုဖွင့်ထားကြောင်း လေ့လာသွားပါမည်။ ဤအချက်အလက်ကို စာမျက်နှာများ ကြိုဖွင့်ရန်အတွက်သာ သုံးပြီး သင့် Brave sync chain မှ အခြားအချက်အလက်များနှင့် လင့်ခ်ချိတ်မထားပါ။</translation>
 <translation id="8260126382462817229">ထပ်မံ၍ လက်မှတ်ထိုးဝင်ကြည့်ပါ</translation>
 <translation id="8261506727792406068">ဖျက်ရန်</translation>
@@ -1623,7 +1604,6 @@
 <translation id="8281886186245836920">ကျော်ရန်</translation>
 <translation id="8282297628636750033">ဝဘ်ဆိုက်ကိုဖြစ်နိုင်ပါက အမှောင်နောက်ခံပြောင်းခြင်း</translation>
 <translation id="8282950411412455249">လုံခြုံရေးဆက်တင်များသို့ သွားရန်</translation>
-<translation id="829672787777123339">သင့်စက်ပစ္စည်းသို့ ချိတ်ဆက်နေသည်…</translation>
 <translation id="8306751933352925837">ဤစက်တွင် စကားဝှက်များကို မကြာမီ သုံးနိုင်တော့မည် မဟုတ်ပါ။ သင့်စကားဝှက်များ ဆက်သုံးရန် Google Play ဝန်ဆောင်မှုများကို အပ်ဒိတ်လုပ်ပါ။ <ph name="BEGIN_LINK"/>ပိုမိုလေ့လာရန်<ph name="END_LINK"/></translation>
 <translation id="8307517230426267469"><ph name="GIVEN_NAME"/> က “<ph name="TAB_NAME"/>” တဘ်ကို ဖယ်ရှားလိုက်သည်</translation>
 <translation id="8310451567823644042">စကားဝှက်များကို မကြာမီ သုံးနိုင်တော့မည် မဟုတ်ပါ</translation>
@@ -1721,8 +1701,8 @@
 <translation id="8754448020583829686">လင့်ခ်မပါဘဲ မိတ္တူကူးရန်</translation>
 <translation id="8756969031206844760">စကားဝှက်ကို အပ်ဒိတ်လုပ်လိုပါသလား။</translation>
 <translation id="79269250264141507">လိပ်စာဘား (သို့) ရှာဖွေစာလုံးဖြည့်ကွက်လပ်တွင် စာရိုက်သောအခါ ပိုမိုကောင်းမွန်သော အကြံပြုချက်များ ရယူရန်အတွက် Brave သည် သင်ရိုက်ထည့်သောအရာကို သင့်မူလရှာဖွေရေးအင်ဂျင်သို့ ပို့သည်။ ၎င်းသည် ‘ရုပ်ဖျက်’ တွင် ပိတ်နေမည်။</translation>
+<translation id="5237925635961014228">{NUM_PASSWORDS,plural, =1{ပိုကောင်းအောင်လုပ်သင့်သော အားနည်းသည့် စကားဝှက်ကို Brave က တွေ့ထားသည်}other{ပိုကောင်းအောင်လုပ်သင့်သော အားနည်းသည့် စကားဝှက် # ခုကို Brave က တွေ့ထားသည်}}</translation>
 <translation id="8766529642647037772">ဤတစ်ခုကဲ့သို့ မြင်သာသည့်လင့်ခ် ပြုလုပ်လိုပါသလား။</translation>
-<translation id="8773160212632396039">တောင်းဆိုချက်ကို လုပ်ဆောင်နေသည်</translation>
 <translation id="8788265440806329501">လမ်းညွှန်မှု မှတ်တမ်း ပိတ်ထားသည်</translation>
 <translation id="8788968922598763114">နောက်ဆုံးပိတ်လိုက်သည့် တဘ်ကို ပြန်ဖွင့်ရန်</translation>
 <translation id="8790193082819560975">ကုန်ပစ္စည်းအတွက် ဝယ်ယူခြင်းရွေးစရာများကို တဘ်အသစ်တွင်ရှာရန် တို့ပါ။</translation>
@@ -1756,7 +1736,6 @@
 <translation id="8924575305646776101"><ph name="BEGIN_LINK"/>ပိုမိုလေ့လာရန်<ph name="END_LINK"/></translation>
 <translation id="892496902842311796"><ph name="LANG"/> အသင့်ဖြစ်ပါပြီ</translation>
 <translation id="1174893863889683998">'ဒစ်ဂျစ်တယ် အာရောဂျံ' မှနေ၍ သင်၏ Brave လုပ်ဆောင်ချက်ကို ‌ဖယ်ရှားလိုပါသလား။</translation>
-<translation id="179413535815682755">သင့်ဆက်တင်များအပေါ် မူတည်ပြီး Brave က ကွတ်ကီးများ၊ သင်၏လက်ရှိ URL နှင့် သင့်တည်နေရာကိုလည်း ပို့နိုင်သည်</translation>
 <translation id="8942627711005830162">အခြားဝင်းဒိုးတွင် ဖွင့်ရန်</translation>
 <translation id="8945143127965743188"><ph name="LANG"/> - ဤဘာသာစကားကို ဒေါင်းလုဒ်လုပ်၍ မရပါ။ နောက်မှ ထပ်စမ်းပါ။</translation>
 <translation id="8963117664422609631">ဝဘ်ဆိုက်ဆက်တင်များသို့ သွားရန်</translation>
@@ -1802,7 +1781,6 @@
 <translation id="9104217018994036254">တဘ်မျှဝေရန် စက်ပစ္စည်းစာရင်း။</translation>
 <translation id="9104858485806491627">{INACTIVE_TIME_DAYS,plural, =1{၁ ရက်နှင့်အထက်ကြာ အသုံးမပြုပါ}other{# ရက်နှင့်အထက်ကြာ အသုံးမပြုပါ}}</translation>
 <translation id="9106148373857059373">လိပ်စာသိမ်းရန် လုပ်ငန်းစဉ် ပိတ်ထားသည်</translation>
-<translation id="9108312223223904744">ဖုန်းကို 'လုံခြုံရေးကီး အကူအညီ' အဖြစ်</translation>
 <translation id="9108808586816295166">လုံခြုံသော DNS ကို အမြဲမရနိုင်ပါ</translation>
 <translation id="910908805481542201">ပြင်ဆင်နိုင်ရန် ကူညီပေးပါ</translation>
 <translation id="9130135798965366513">ရှေ့ဆက်ရန် <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> က သင့် <ph name="FIELDS_STRING"/> ကို ဤဝဘ်ဆိုက်နှင့် မျှဝေမည်။ ဤဝဘ်ဆိုက်၏ <ph name="BEGIN_LINK1"/>ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ<ph name="END_LINK1"/> နှင့် <ph name="BEGIN_LINK2"/>ဝန်ဆောင်မှုစည်းမျဉ်းများ<ph name="END_LINK2"/> ကိုကြည့်ပါ။</translation>
@@ -1826,7 +1804,6 @@
 <translation id="9212845824145208577">အောက်သို့ထပ်နှိမ့်၍ မရပါ။ စာမျက်နှာ၏ အောက်ဘက်ခပ်ဝေးဝေးမှ စကြည့်ပါ။</translation>
 <translation id="9218430445555521422">မူရင်းအဖြစ် သတ်မှတ်ရန်</translation>
 <translation id="9219103736887031265">ပုံများ</translation>
-<translation id="6946179564366058239">ဝဘ်ဆိုက်က ၎င်းတို့၏ စာမျက်နှာတွင် လင့်ခ်များကို သီးသန့် ကြိုဖွင့်ရန် မေးပါက Brave သည် Brave ဆာဗာများမှတစ်ဆင့် ကွတ်ကီးများ မပါဘဲ စာမျက်နှာများကို အသွင်ဝှက်ပြီး ကြိုဖွင့်ပေးပါသည်။ ၎င်းက ကြိုဖွင့်ထားသော ဝဘ်ဆိုက်မှ သင့်အထောက်အထားကို ဖျောက်ပေးသည်။</translation>
 <translation id="7625138338483121345">Brave ကို သင့်မူရင်းဘရောင်ဇာအဖြစ် ပြုလုပ်ပါ</translation>
 <translation id="4596514158372210596">'ဒစ်ဂျစ်တယ် အာရောဂျံ' မှနေ၍ သင်၏ Brave လုပ်ဆောင်ချက်ကို ဖယ်ရှားခြင်း</translation>
 <translation id="2830145431802238213">Brave တွင် အပေါ့စားမုဒ် သုံးရန်</translation>

@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hr">
-<translation id="8631427463833030968">Upravljaj oglasima</translation>
 <translation id="7630214457764713113">Kopiraj čistu poveznicu</translation>
-<translation id="885805571521218129">To odražava procijenjeni raspon vaše zarade od oglasa Brave ovoga mjeseca.</translation>
 <translation id="3478449063771497234">Obavijesti su onemogućene</translation>
 <translation id="2862978891748913252">Odaberi svoju zemlju</translation>
 <translation id="3970520675790340955">Odaberite svoju zemlju da bismo vam mogli prikazati točne mogućnosti i oglase za vašu regiju.</translation>
@@ -114,6 +112,10 @@
 <translation id="1571106259128580884">Pokaži prijedloge najpopularnijih mrežnih mjesta</translation>
 <translation id="6285118765755298263">Indeksiraj ostale tražilice</translation>
 <translation id="919715748352669592">Automatski se indeksiraju mrežna mjesta kojima se zadovoljavaju spec. OpenSearch.</translation>
+<translation id="412411722208944922">Brze tražilice</translation>
+<translation id="2836969042340015500">Brze tražilice</translation>
+<translation id="9120455214794270250">Pokaži traku za brzu pretragu</translation>
+<translation id="1052991798173010693">Trenutačno upotrebljavane tražilice</translation>
 <translation id="9148058034647219655">Izlaz</translation>
 <translation id="8047754398610073499">Blokiraj obavijesti o davanju privole za kolačiće</translation>
 <translation id="2621893359845808115">Blokiraju se skočni prozori mrežnog mjesta od kojih se traži prihvaćanje/odbijanja kolačića na tom mrežnom mjestu</translation>
@@ -233,9 +235,6 @@
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
 <translation id="4117451092682672487">Pojednostavljena zaštita privatnosti.</translation>
 <translation id="7909375417585209817">Kad je Brave postavljen kao zadani preglednik, svaka veza koju dodirnete otvara se uz zaštite privatnosti preglednika Brave.</translation>
-<translation id="3737878115109582442">Dodavanje miniaplikacije za pretraživanje</translation>
-<translation id="6199413390010319240">Imajte Brave na dohvat ruke za brže mrežno istraživanje.</translation>
-<translation id="4338600611020922010">Dodaj na početni zaslon</translation>
 <translation id="7370959926683925817">Blokirajte oglase. Uštedite podatke. Svaki dan.</translation>
 <translation id="7281027579943912834">Kad je Brave zadani preglednik, svaka poveznica koju dodirnete dobiva zaštitu od blokiranja oglasa preglednika Brave. Svaka stranica, videozapis i strujanje.</translation>
 <translation id="5148943178722443958">Pomognite poboljšati Brave.</translation>
@@ -408,8 +407,13 @@ Sigurno želite to napraviti?</translation>
 <translation id="6925081665778864449">Kako biste sinkronizirali lozinke, morate omogućiti provjeru autentičnosti biometrijom/ključem na svom uređaju s operativnim sustavom Android. Tom se dodatnom sigurnosnom mjerom čuvaju vaše lozinke.</translation>
 <translation id="597993392929850353">Licenca Brave</translation>
 <translation id="6336451774241870485">Nova privatna kartica</translation>
-<translation id="6199596294742117349">Ovo je privatna kartica</translation>
-<translation id="5858455511731621847">Iako se mrežna mjesta koja posjećujete korištenjem privatnim karticama ne spremaju lokalno, niste anonimni ili nevidljivim svom pružatelju internetskih usluga, svom poslodavcu ili mrežnim mjestima koje posjećujete.</translation>
+<translation id="3110967157686007724">Kartica Privatno</translation>
+<translation id="944340256927461196">Ne ostavljajte tragove na svom uređaju</translation>
+<translation id="2063044449012253966">Stranice koje posjetite u privatnom prozoru neće se pojaviti u vašoj povijesti. Kolačići, podaci iz obrazaca i podaci sa stranica nestat će nakon što se zatvori privatni prozor.</translation>
+<translation id="7395764193745523646">Vidljivost pregledavanja</translation>
+<translation id="8735363371744702779">Držite na umu da – čak i kod privatnih prozora – vaša aktivnost pregledavanja može biti vidljiva vašem pružatelju internetskih usluga ili vašem poslodavcu (koristite li poslovni uređaj/mrežu).</translation>
+<translation id="1413177583895309156">Brave VPN kriptira i štiti sve što radite online, čak i izvan preglednika Brave.</translation>
+<translation id="3974348661685061050">Isprobajte 7 dana besplatno</translation>
 <translation id="5789441016350810005">Poslani su oglas Brave kada je preglednik u pozadini</translation>
 <translation id="4973347371961481083">Doprinosi</translation>
 <translation id="7047578174221019462">Obrađeni su vaši mjesečni doprinosi.</translation>
@@ -712,9 +716,10 @@ Račun
 <translation id="1532536259167115948">Mjesečna pretplata <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Godišnja pretplata <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Mjesečno obnavljanje</translation>
+<translation id="112929124115834557">Obnavlja se svake godine</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /mjesečno</translation>
 <translation id="1163809943099641131">Jedna godina</translation>
-<translation id="727385358513272220">Obnavlja se svake godine (<ph name="DISCOUNT_TEXT_START"/>uštedite<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>uštedite <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /godišnje</translation>
 <translation id="2786538705804257030">Pretplate će se naplaćivati ​​putem vašeg računa Google. Svaki neiskorišteni dio besplatnog probnog razdoblja, ako je ponuđeno, gubi se kada kupite pretplatu.\n\nVaša će se pretplata automatski obnoviti osim ako se ne otkaže najmanje 24 sata prije kraja trenutačnog razdoblja.\n\nMožete upravljati svojim pretplatama u Postavkama.\n\nUpotrebom Bravea prihvaćate Uvjete upoabe i Pravilnik o zaštiti privatnosti.</translation>
 <translation id="5035172357624830412">Već ste kupili putem mrežnog mjesta brave.com?</translation>
@@ -844,7 +849,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="4351811224047421378">Precizni decimalni brojevi</translation>
 <translation id="3494964159182650590">Sažetak o nagradama</translation>
 <translation id="590733288489975971">Nagrade od značajke Ads</translation>
-<translation id="1886682615222609631">Dosadašnja zarada</translation>
+<translation id="1450735350187803276">Oglasi pregledani ovog mjeseca</translation>
 <translation id="1767561995429774671">Daj doprinos</translation>
 <translation id="7335371657242627509">Uključi u sustav automatskog doprinosa</translation>
 <translation id="6727102863431372879">Postavi</translation>
@@ -1233,5 +1238,6 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="2728518864712716830">Preuzeto je ažuriranje.</translation>
 <translation id="8403338849301491865">Uspješno je ažuriran popis filtara</translation>
 <translation id="4650851936784160359">Nije se moglo ažurirati popis filtara. Pokušajte ponovno.</translation>
-<translation id="1450735350187803276">Oglasi viđeni ovaj mjesec</translation>
+<translation id="3098054327870766317">Pokaži dugme za poništavanje kad su kartice zatvorene</translation>
+<translation id="1336494649091412226">Jeste li sigurni da želite izaći iz Bravea?</translation>
 </translationbundle>

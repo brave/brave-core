@@ -106,7 +106,7 @@
 <translation id="4541978218358617681">ಜಾಹೀರಾತು</translation>
 <translation id="1776831331757823105">ಗಡಿಯಾರ</translation>
 <translation id="7791543448312431591">ಸೇರಿಸು</translation>
-<translation id="7679334366167089823">ಗೌಪ್ಯತೆ ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿದ್ದಕ್ಕಾಗಿ ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸಿ.</translation>
+<translation id="6216996674668969227">ಗೌಪ್ಯತೆಯನ್ನು ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಟೋಕನ್‌ಗಳನ್ನು ಗಳಿಸಿ.</translation>
 <translation id="7191394989411626168">ಕಾರ್ಡ್‌ಗಳನ್ನು ಆಫ್ ಮಾಡುವ ಮೂಲಕ, ಪ್ರಸ್ತುತವಾಗಿ ಗೋಚರಿಸುವ ಎಲ್ಲಾ ಕಾರ್ಡ್‌ಗಳನ್ನು ಮರೆಮಾಡಲಾಗುತ್ತದೆ. ಆದಾಗ್ಯೂ, ಹೊಸ ಕಾರ್ಡ್‌ಗಳ ಕುರಿತು ನಿಮಗೆ ಇನ್ನೂ ಸೂಚಿಸಬಹುದು.</translation>
 <translation id="6820526586005233839">Brave Ads ವಿರಾಮಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="5190407395832551012">ದುರ್ಬಳಕೆಯಿಂದ Brave Rewards ಅನ್ನು ಸುರಕ್ಷಿತವಾಗಿ ಇರಿಸಲು, ಕ್ಯಾಪ್ಚಾ ಪರಿಹರಿಸುವಂತೆ ನಾವು ಬಳಕೆದಾರರನ್ನು ಯಾದೃಚ್ಛಿಕವಾಗಿ ಕೇಳುತ್ತೇವೆ. ಜಾಹೀರಾತುಗಳನ್ನು ಪುನಾರಂಭಿಸಲು “ಪರಿಹರಿಸು” ಅನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ.</translation>
@@ -471,6 +471,7 @@
 <translation id="3349204812119681938">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ರಿಸೆಟ್‌ ಮಾಡಿ</translation>
 <translation id="4915997950539925115">ಮರುಹೊಂದಿಸುವ ಮೂಲಕ, ನಿಮ್ಮ ಪ್ರಸ್ತುತ Brave ರಿವಾರ್ಡ್ಸ್ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಅಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ಇನ್ನು ಮುಂದೆ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ. ನೀವು ನಂತರದಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ Brave ರಿವಾರ್ಡ್ಸ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ನೀವು ಹೊಸ ಪ್ರೊಫೈಲ್‌ನೊಂದಿಗೆ ಆರಂಭಿಸುತ್ತೀರಿ. ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗೆ ನಮ್ಮ<ph name="LINK_BEGIN"/>ಮರುಹೊಂದಿಸುವ ಕುರಿತಾಗಿನ ಬೆಂಬಲ ಲೇಖನ<ph name="LINK_END"/> ಅನ್ನು ನೋಡಿ.</translation>
 <translation id="4806029412510565611">ನನ್ನ ಪ್ರಸ್ತುತ Brave ರಿವಾರ್ಡ್ಸ್ ಪ್ರೊಫೈಲ್ ಮತ್ತು Brave ರಿವಾರ್ಡ್ಸ್ ಡೇಟಾವನ್ನು ನನ್ನ ಸಾಧನದಿಂದ ಅಳಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ನಾನು <ph name="LINK_BEGIN"/>ಮರುಹೊಂದಿಸುವ ಕುರಿತು ಬೆಂಬಲ ಲೇಖನ<ph name="LINK_END"/> ಅನ್ನು ಓದಿದ್ದೇನೆಂದು ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತೇನೆ.</translation>
+<translation id="8835777704176513489">ರಿವಾರ್ಡ್‌ಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ ಮತ್ತು ಮರುಹೊಂದಿಸಿ</translation>
 <translation id="7717357606512850995">ಸ್ಥಿತಿ ಪರಿಶೀಲಿಸಿ</translation>
 <translation id="6473937687348632190"><ph name="MONTH"/> ರಿವಾರ್ಡ್‌ಗಳಿಗಾಗಿ ಪೇಔಟ್ ಪೂರ್ಣಗೊಂಡಿದೆ.</translation>
 <translation id="1711367267038576241"><ph name="MONTH"/> ರಿವಾರ್ಡ್‌ಗಳಿಗಾಗಿ ಪೇಔಟ್ <ph name="DATE"/> ಒಳಗೆ ಪ್ರಕ್ರಿಯೆಗೊಳ್ಳುವುದು ಆರಂಭಗೊಳ್ಳುತ್ತದೆ.</translation>
@@ -540,7 +541,7 @@
 <translation id="2529827670795983639">ಇದು ಕಾರ್ಯನಿರ್ವಹಿಸದೇ ಇರುವಂತೆ ಕಂಡುಬರುತ್ತಿದೆ, Brave ads ವಿರಾಮಗೊಂಡಿರುವ ಸ್ಥಿತಿಯಲ್ಲಿಯೇ ಇರುತ್ತದೆ. ಕ್ಯಾಪ್ಚಾ ಜೊತೆಗೆ ನಿಮಗೆ ಸಹಾಯ ಬೇಕಿದ್ದರೆ ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ.</translation>
 <translation id="261607053214862521">ಗರಿಷ್ಠ ಪ್ರಯತ್ನಗಳನ್ನು ಮೀರಿದೆ</translation>
 <translation id="2323171459178104277">ಪರಿಹರಿಸಲಾಗಿದೆ!</translation>
-<translation id="1512837998731269583">ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಗಳಿಕೆಗಳು ಇದೀಗ ಪುನಾರಂಭಗೊಳ್ಳುತ್ತವೆ. Brave Rewards ಮತ್ತು ಗೌಪ್ಯತೆ-ಆಧಾರಿತ ಜಾಹೀರಾತುಗಳನ್ನು ರಕ್ಷಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು.</translation>
+<translation id="1565888393553870503">ಬ್ರೇವ್ ಜಾಹೀರಾತುಗಳು ಪುನರಾರಂಭಗೊಳ್ಳುತ್ತವೆ. ಬ್ರೇವ್ ರಿವಾರ್ಡ್‌ಗಳನ್ನು ರಕ್ಷಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು.</translation>
 <translation id="3247549836099021862">ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ</translation>
 <translation id="5234764350956374838">ವಜಾಗೊಳಿಸಿ</translation>
 <translation id="7859066142771796818">ಉಡುಗೊರೆ ಕಾರ್ಡ್ ಗಳನ್ನು ಖರೀದಿಸಲು, ಇತರ ಕರೆನ್ಸಿಗಳಿಗೆ ವಿನಿಮಯ ಮಾಡಿಕೊಳ್ಳಲು, ವಿಷಯ ಸೃಷ್ಟಿಕರ್ತರನ್ನು ಬೆಂಬಲಿಸಲು ಮತ್ತು ಹೆಚ್ಚಿನವುಗಳಿಗೆ ಟೋಕನ್ ಗಳನ್ನು ಬಳಸಬಹುದು.</translation>
@@ -567,7 +568,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">ಚಿಂತಿಸಬೇಡಿ.</translation>
 <translation id="5027616819996705541">ನೀವು ಇನ್ನೂ ಸಹ ಖಾಸಗಿಯಾಗಿ ಬ್ರೌಸ್ ಮಾಡಬಹುದು!</translation>
-<translation id="1886682615222609631">ಇಲ್ಲಿಯ ತನಕ ಗಳಿಕೆಗಳು</translation>
+<translation id="1450735350187803276">ಈ ತಿಂಗಳು ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡಲಾಗಿದೆ</translation>
 <translation id="7649070708921625228">ಸಹಾಯ</translation>
 <translation id="6042308850641462728">ಇನ್ನಷ್ಟು</translation>
 <translation id="6245259297588415877">ರಚನೆಕಾರರು</translation>
@@ -713,7 +714,7 @@
 <translation id="7160424977552599351">ನಿಮ್ಮ Web3 ವ್ಯಾಲೆಟ್ ಬಳಸಿ</translation>
 <translation id="6369571967625114920">ನಿಮ್ಮ ಪ್ರದೇಶದಲ್ಲಿ ಇನ್ನೂ Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳು ಲಭ್ಯವಿಲ್ಲ.</translation>
 <translation id="5309155375926073606">ಹೌದು, Brave ಸರ್ಚ್‌ಗೆ ಕೊಡುಗೆ ನೀಡಲು ಮತ್ತು <ph name="LINK_BEGIN"/>ವೆಬ್ ಡಿಸ್ಕವರಿ ಪ್ರಾಜೆಕ್ಟ್‌ಗೆ<ph name="LINK_END"/> ಸೇರಲು ಕೂಡಾ ನಾನು ಬಯಸುತ್ತೇನೆ.</translation>
-<translation id="7285849890826812669">ವೆಬ್ ಡಿಸ್ಕವರಿ ಪ್ರಾಜೆಕ್ಟ್ನೊಂದಿಗೆ Brave ಅನ್ನು ಸಂಸ್ಕರಿಸಲು&amp;ಕೆಲವು ಅನಾಮಿಕ ಹುಡುಕಾಟ ಮತ್ತು ಬ್ರೌಸಿಂಗ್ ಡೇಟಾ ಕೊಡುಗೆ ನೀಡಿ. ಇದು ಸಂಪೂರ್ಣವಾಗಿ ಮುಕ್ತ ಮೂಲವಾಗಿದೆ.</translation>
+<translation id="4622826307953794521">ಬ್ರೇವ್ ಹುಡುಕಾಟವನ್ನು ಪರಿಷ್ಕರಿಸಲು ವೆಬ್ ಡಿಸ್ಕವರಿ ಪ್ರಾಜೆಕ್ಟ್‌ನೊಂದಿಗೆ ಕೆಲವು ಅನಾಮಧೇಯ ಸರ್ಚ್‌ ಮತ್ತು ಬ್ರೌಸಿಂಗ್ ಡೇಟಾವನ್ನು ಕೊಡುಗೆ ನೀಡಿ. ಇದು ಸಂಪೂರ್ಣವಾಗಿ ಮುಕ್ತ ಮೂಲವಾಗಿದೆ.</translation>
 <translation id="4174337572777167894">ವೆಬ್ ಅನ್ವೇಷಣೆ ಪ್ರಾಜೆಕ್ಟ್</translation>
 <translation id="7090992647511817643">ಖಾತೆ</translation>
 <translation id="4822132585477111396">ಚೈನ್ ID</translation>
@@ -942,8 +943,11 @@
 <translation id="7080614857771109950">Ethereum ಬ್ಲಾಕ್‌ಚೈನ್‌ನಲ್ಲಿ EVM ಹೊಂದಾಣಿಕೆಯ ಅಸೆಟ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Solana ಬ್ಲಾಕ್‌ಚೈನ್‌ನಲ್ಲಿ SPL ಹೊಂದಾಣಿಕೆಯ ಅಸೆಟ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ</translation>
 <translation id="4541295941776129088">FIL ಅಸೆಟ್ ಸಂಗ್ರಹಿಸಿ</translation>
+<translation id="6030958132571544682">FIL ಟೆಸ್ಟ್‌ನೆಟ್‌ ಆಸ್ತಿಯನ್ನು ಸ್ಟೋರ್‌ ಮಾಡಿ</translation>
 <translation id="29759539656432505">BTC ಅಸೆಟ್‌ಗಳನ್ನು ಸಂಗ್ರಹಿಸಿ</translation>
+<translation id="2399555431746923964">BTC ಟೆಸ್ಟ್‌ನೆಟ್ ಅಸೆಟ್‌ ಸ್ಟೋರ್‌ ಮಾಡಿ</translation>
 <translation id="8749751940551938347">ZEC ಅಸೆಟ್‌ಗಳನ್ನು ಸಂಗ್ರಹಿಸಿ</translation>
+<translation id="3451958544919449297">ZEC ಟೆಸ್ಟ್‌ನೆಟ್ ಅಸೆಟ್‌ ಸ್ಟೋರ್‌ ಮಾಡಿ</translation>
 <translation id="8500387257977999003">ಖಾಸಗಿ ಕೀ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">ಆಮದು</translation>
 <translation id="232925166623833246">ಹಾರ್ಡ್‌ವೇರ್ ವ್ಯಾಲೆಟ್‌ನಿಂದ ಆಮದು ಮಾಡಿ</translation>
@@ -1000,7 +1004,7 @@
 <translation id="453788800165937690">ಎಚ್ಚರಿಕೆ: ನಿಮ್ಮ ಖಾಸಗಿ ಕೀ ಅನ್ನು ಎಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ. ಈ ಖಾಸಗಿ ಕೀ ಹೊಂದಿರುವ ಯಾರಾದರೂ ನಿಮ್ಮ ಅಸೆಟ್‌ಗಳನ್ನು ಶಾಶ್ವತವಾಗಿ ತೆಗೆದುಕೊಳ್ಳಬಹುದು.</translation>
 <translation id="2416098547200943834">ಗಮನಿಸಿ: ಖಾಸಗಿ ಕೀ ಅನ್ನು ಹೆಕ್ಸ್-ಕೋಡ್ ಮಾಡಲಾದ JSON ಎಂಬುದಾಗಿ ಒದಗಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಅದು ಖಾಸಗಿ ಕೀ ಮತ್ತು ಪ್ರೋಟೋಕಾಲ್ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ. <ph name="LINK_START"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ಗಮನಿಸಿ: ಖಾಸಗಿ ಕೀ ಅನ್ನು ಖಾಸಗಿ ಕೀ ಮತ್ತು ಪ್ರೋಟೋಕಾಲ್ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರುವ ಹೆಕ್ಸ್-ಕೋಡ್ ಮಾಡಲಾದ JSON ಎಂಬುದಾಗಿ ಒದಗಿಸಬೇಕು. <ph name="LINK_START"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_END"/>.</translation>
-<translation id="1505724566145200403">ಗಮನಿಸಿ: ಕೇವಲ zprv(ಅಥವಾ Testnet ಗಾಗಿ vprv) ವಿಸ್ತರಿತ ಕೀಗಳನ್ನು ಮಾತ್ರ ಬೆಂಬಲಿಸಲಾಗಿದೆ.</translation>
+<translation id="4482913669726886926">ಸೂಚನೆ: ಕೇವಲ <ph name="FORMAT"/> ವಿಸ್ತೃತ ಕೀಲಿಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ಸತದೆ.</translation>
 <translation id="42126664696688958">ರಫ್ತು</translation>
 <translation id="1366855498335432549">ಠೇವಣಿ</translation>
 <translation id="790104325876206743">ಖಾತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
@@ -1022,7 +1026,7 @@
 <translation id="3792938779249970121">ಖಾತೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="6797737193502014008">ಖಾತೆಗಳನ್ನು ಹುಡುಕಿ</translation>
 <translation id="3505920073976671674">ನೆಟ್‌ವರ್ಕ್ ಆಯ್ಕೆಮಾಡಿ</translation>
-<translation id="6857856707736769720">ಇದರಿಂದ ಆಯ್ಕೆಮಾಡಿ</translation>
+<translation id="2556155338676955870">ಸ್ವತ್ತನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="6323024765179772761">ಕುಕೀಗಳನ್ನು ಹುಡುಕಿ</translation>
 <translation id="6998989275928107238">ವರೆಗೆ</translation>
 <translation id="1506421160138798546">ಅಂದಾಜು</translation>
@@ -1259,6 +1263,26 @@
 <translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/> ಮೂಲಕ ಮಾರಾಟ ಮಾಡಿ</translation>
 <translation id="7902920577183739843">Sardine ಮೂಲಕ ಖರೀದಿಸಿ</translation>
 <translation id="3301984548406568819">ಹಣಕಾಸು ಮತ್ತು ವಹಿವಾಟು ಡೇಟಾವನ್ನು ನಮ್ಮ ಆನ್‌ರಾಂಪ್ ಪಾಲುದಾರರು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುತ್ತಾರೆ. Brave ಅಂತಹ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ ಅಥವಾ ಅದಕ್ಕೆ ಆಕ್ಸೆಸ್ ಹೊಂದಿರುವುದಿಲ್ಲ.</translation>
+<translation id="5795821518596541838">ವಹಿವಾಟು ಪಾಲುದಾರ</translation>
+<translation id="1916136859742693273">ಮ್ಮ ವ್ಯಾಲೆಟ್ ವಿಳಾಸ ಮತ್ತು ದೇಶದ ಕೋಡ್ ಸೇರಿದಂತೆ ವಹಿವಾಟನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ನಾವು Meld.io ಜೊತೆಗೆ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳುತ್ತೇವೆ. ನಿಮ್ಮ ಪ್ರದೇಶಕ್ಕಾಗಿ ವಿವಿಧ ಕ್ರಿಪ್ಟೋ ಪೂರೈಕೆದಾರರನ್ನು ಒಟ್ಟುಗೂಡಿಸಲು ಮತ್ತು ಸಹಾಯ ಮಾಡಲು ಬ್ರೇವ್ ವಾಲೆಟ್ Meld.io ಅನ್ನು ಬಳಸುತ್ತದೆ. ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ ದಯವಿಟ್ಟು Meldನ ಬಳಕೆಯ ನಿಯಮಗಳನ್ನು ಓದಿ.</translation>
+<translation id="245827814248186739">ನಾನು <ph name="LINK_BEFORE"/>Meld ನ ಬಳಕೆಯ ನಿಯಮಗಳು<ph name="LINK_AFTER"/> ಅನ್ನು ಓದಿದ್ದೇನೆ ಮತ್ತು ಒಪ್ಪುತ್ತೇನೆ</translation>
+<translation id="2050829168433446009">ಅತ್ಯುತ್ತಮ ಆಯ್ಕೆ</translation>
+<translation id="2803020719327054687">ಶುಲ್ಕದೊಂದಿಗೆ ವಿನಿಮಯ ದರ</translation>
+<translation id="27867052127960599">ದರ</translation>
+<translation id="5914491493054850112">ಬೆಲೆ <ph name="CURRENCY"/></translation>
+<translation id="638391338232902087">ಜೊತೆಗೆ ಖರೀದಿಸಿ <ph name="PROVIDER"/></translation>
+<translation id="2803778066587058297">ಆಸ್ತಿ</translation>
+<translation id="1275718070701477396">ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="7509108671781225188">ಯಾವುದೇ ಕರೆನ್ಸಿಗಳು ಲಭ್ಯವಿಲ್ಲ</translation>
+<translation id="3799031411423890455">ಉತ್ತಮ ಬೆಲೆಗಳನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ...</translation>
+<translation id="8544603592370093978">ಖರೀದಿಸಿ <ph name="ASSET"/></translation>
+<translation id="7463545687475534731">ಯಾವುದೇ ಪೂರೈಕೆದಾರರು ಕಂಡುಬಂದಿಲ್ಲ <ph name="ASSET"/></translation>
+<translation id="3372351687823322070">ಬೇರೆ ಅಸೆಟ್‌ ಹುಡುಕಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="2619949734919284401">ಯಾವುದೇ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ<ph name="PROVIDER"/></translation>
+<translation id="3319146983769202287">.</translation>
+<translation id="4196022627437957774">ನೀವು <ph name="ACCOUNT_TYPE"/> ಅನ್ನು ರಚಿಸಲು ಬಯಸುವಿರಾ; ಖಾತೆ?</translation>
+<translation id="5982914754413312620">ಸ್ವೀಕರಿಸುವುದಕ್ಕಾಗಿ <ph name="TOKEN_SYMBOL"/> ನಿಮಗೆ <ph name="ACCOUNT_TYPE"/> ಖಾತೆ.</translation>
+<translation id="3067168166931605141">ಖಾತೆಯ ಹೆಸರು</translation>
 <translation id="6534275647567011533">Transak ಮೂಲಕ ಖರೀದಿಸಿ</translation>
 <translation id="5973390321030037823">ಲಿಂಕ್ ಮೂಲಕ ಖರೀದಿಸಿ</translation>
 <translation id="1932640759496708012">Coinbase Pay ಮೂಲಕ ಖರೀದಿಸಿ</translation>
@@ -1312,6 +1336,10 @@
 <translation id="6990756606864308319"><ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> ಗೆ ಪ್ರಯತ್ನಿಸುವಲ್ಲಿ ಒಂದು ದೋಷವಿದೆ</translation>
 <translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> ಇಂದ <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/> ಗೆ ಅನುಮೋದಿಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="8036159955043245753">ನಿಮ್ಮ ಪ್ರಸ್ತುತ ವಹಿವಾಟನ್ನು ರದ್ದುಗೊಳಿಸಲು ಹೊಸ ವಹಿವಾಟನ್ನು ರಚಿಸಲಾಗುತ್ತದೆ.</translation>
+<translation id="4056435949094149644">ವಿನಿಮಯ</translation>
+<translation id="7694836973509310467">ಬ್ರಿಡ್ಜಿಂಗ್</translation>
+<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> ಮೇಲೆ‌ <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="6934057383578424432">ಪ್ರಯತ್ನದಲ್ಲಿ ದೋಷ ಕಂಡು ಬಂದಿದೆ <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> on <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {ಇನ್ನೂ {PENDING_TRANSACTIONS} ವಹಿವಾಟು ಬಾಕಿ ಇದೆ.}
       other {ಇನ್ನೂ {PENDING_TRANSACTIONS} ವಹಿವಾಟುಗಳು ಬಾಕಿ ಇವೆ.}
@@ -1706,6 +1734,10 @@
 <translation id="803703704549420287">ಫಿಲ್ಟರ್‌ಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="1472675084647422956">ಇನ್ನಷ್ಟು ತೋರಿಸಿ</translation>
 <translation id="4522570452068850558">ವಿವರಗಳು</translation>
+<translation id="3526789880090101085">ಸುರಕ್ಷಿತ ಖಾತೆ</translation>
+<translation id="2298396008562701154">ಈ ಖಾತೆಯು ಪ್ರಸ್ತುತ ಪಾರದರ್ಶಕ ವಹಿವಾಟುಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ ಅಂದರೆ ಬ್ಲಾಕ್‌ಚೈನ್‌ನಲ್ಲಿ ಎಲ್ಲರಿಗೂ ಗೋಚರಿಸುತ್ತದೆ.</translation>
+<translation id="3987095760757102811">ರಕ್ಷಿತ ಖಾತೆಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡುವುದು ಎಂದರೆ ಈ ವಹಿವಾಟುಗಳನ್ನು ಕಳುಹಿಸುವವರು, ಸ್ವೀಕರಿಸುವವರು ಮತ್ತು ಮೊತ್ತದ ವಿವರಗಳನ್ನು ಮರೆಮಾಡುವುದು ಎಂದರ್ಥ.</translation>
+<translation id="3819528427777765709">ರಕ್ಷಾಕವಚ</translation>
 <translation id="7144878232160441200">ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="9094621390791852268">ವಹಿವಾಟು ಪೂರ್ವವೀಕ್ಷಣೆ ವಿಫಲವಾಗಿದೆ.</translation>
 <translation id="4982713341035600933">ಅಂದಾಜು ಮಾಡಲಾದ ಬ್ಯಾಲೆನ್ಸ್ ಚೇಂಜ್</translation>
@@ -1902,6 +1934,7 @@
 <translation id="8652827551752428289">ಇತಿಹಾಸ ತೋರಿಸಿ</translation>
 <translation id="5030659775136592441">ಬುಕ್‌ಮಾರ್ಕ್ ಮ್ಯಾನೇಜರ್ ತೋರಿಸಿ</translation>
 <translation id="6919203766034706175">ಇಂಪೋರ್ಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
+<translation id="6159704524780747483">AI ಚಾಟ್ ತೆರೆಯಿರಿ</translation>
 <translation id="1199430163665775722">ಹುಡುಕಾಟ ಇಂಜಿನ್‌ಗಳನ್ನು ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="4276265845501430443">ಸಹಾಯ ತೋರಿಸಿ</translation>
 <translation id="8104889575691864804">ಆ್ಯಪ್ ಮೆನು ತೋರಿಸಿ</translation>
@@ -1986,11 +2019,13 @@
 <translation id="1130188644637295274">ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆಯಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="6459036216700972269">ವಿಭಜಿಸದಿರುವ ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="4235382917338421035">ಟ್ಯಾಬ್ ಸ್ಥಾನಗಳನ್ನು ಸ್ವ್ಯಾಪ್ ಮಾಡಿ</translation>
+<translation id="4288085058450834672">ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="4144468798716165316">ತ್ವರಿತ ಕಮ್ಯಾಂಡ್‌ಗಳು</translation>
 <translation id="3617523374417810198">ಹೊಸ ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆ</translation>
 <translation id="8571323456914890254">ಸ್ಲ್ಲಿಟ್ ವೀಕ್ಷಣೆಯಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="5329136173514538969">ವಿಭಜಿಸದಿರುವ ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="7595612919377246359">ಟ್ಯಾಬ್ ಸ್ಥಾನಗಳನ್ನು ಸ್ವ್ಯಾಪ್ ಮಾಡಿ</translation>
+<translation id="2367972762794486313">ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ತೋರಿಸು</translation>
 <translation id="8591883849678260674">ಮೂಲವನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="1969654232209826429">ಕನಿಷ್ಠ. ಓದುವಿಕೆ</translation>
 <translation id="4101707289420716287">ಸ್ಪೀಡ್‌ರೀಡರ್ ಆಫ್ ಮಾಡಿ</translation>
@@ -2044,9 +2079,11 @@
 <translation id="6206029817087805290"><ph name="COMPANY_NAME"/> ಸಂಚಾಲಿತ <ph name="MODEL_NAME"/></translation>
 <translation id="963346402440669081">ಪ್ರೀಮಿಯಂ</translation>
 <translation id="6187065185557150870">ಚಾಟ್</translation>
+<translation id="4685048769603134644">ಪೂರ್ಣ ಪುಟವನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="2961040541145689181">ಹೊಸ ಚಾಟ್</translation>
 <translation id="7557539689487606886">ಪ್ರೀಮಿಯಂಗೆ ಹೋಗಿ</translation>
 <translation id="1691256669639196606">ಚಂದಾದಾರಿಕೆ ನಿರ್ವಹಿಸಿ</translation>
+<translation id="3840096463915153852">ಸಂವಾದದಇತಿಹಾಸ</translation>
 <translation id="2304783958703511257">ಸುಧಾರಿತ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="3037594989275592390">ಭಾಷಾ ಮಾಡೆಲ್‌ಗಳು</translation>
 <translation id="5543505256451301851">7 ದಿನಗಳ ತನಕ ಉಚಿತವಾಗಿ ಪ್ರಯತ್ನಿಸಿ</translation>
@@ -2083,7 +2120,10 @@
 <translation id="2313959174679245365">ನಿಮ್ಮ ರೇಟಿಂಗ್ ಅನ್ನು ಸಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ, ದಯವಿಟ್ಟು ನೆಟ್‌ವರ್ಕ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="98413980871833152">ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ಸಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ, ದಯವಿಟ್ಟು ನೆಟ್‌ವರ್ಕ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="8742658901413346500">ಈ ಸಂಭಾಷಣೆಯು ದೀರ್ಘವಾಗಿದೆ ಮತ್ತು Leo ಶೀಘ್ರದಲ್ಲೇ ವಿಷಯಗಳನ್ನು ಮರೆಯಲು ಪ್ರಾರಂಭಿಸಬಹುದು. ಪ್ರೀಮಿಯಂ ಮಾಡೆಲ್‌ಗೆ ಬದಲಾಯಿಸುವ ಮೂಲಕ ನೀವು ದೀರ್ಘ ಸಂಭಾಷಣೆಗಳನ್ನು ಪಡೆಯಬಹುದು ಅಥವಾ ಅದನ್ನು ಮರುಹೊಂದಿಸಲು ನೀವು ಚಾಟ್ ಅನ್ನು ಕ್ಲಿಯರ್ ಮಾಡಬಹುದು.</translation>
-<translation id="7550152963854770123">ಚಾಟ್ ಅನ್ನು ಕ್ಲಿಯರ್ ಮಾಡಿ</translation>
+<translation id="6495402307502950726">ಸಂವಾದವನ್ನು ಅಳಿಸಿ</translation>
+<translation id="903201991022343217">ಹೊಸ ಸಂವಾದವನ್ನು ಪ್ರಾರಂಭಿಸಿ</translation>
+<translation id="8171760814579050200">ಸಂವಾದಕ್ಕೆ ಹೊಸ ಹೆಸರು ನೀಡಿ</translation>
+<translation id="7754678742055438573">ಸಂವಾದವನ್ನು ಅಳಿಸಿ</translation>
 <translation id="7494736170250048402">Leo ಗೆ ಸಂದೇಶವನ್ನು ಕಳುಹಿಸಿ</translation>
 <translation id="8712637175834984815">ಅರ್ಥವಾಯಿತು</translation>
 <translation id="1093419424466417703">ಪುಟವು Leo ಗಾಗಿ ತೀರಾ ಉದ್ದವಾಗಿದೆ. ಕೆಲವು ಸಂದರ್ಭವು ಸಂಭಾಷಣೆಯಿಂದ ಕಾಣೆಯಾಗಿರಬಹುದು. ಪುಟದ <ph name="PERCENTAGE"/> ರಷ್ಟು ವಿಷಯಗಳನ್ನು ಓದಲು Leo ಗೆ ಸಾಧ್ಯವಾಗಿದೆ.</translation>
@@ -2135,12 +2175,13 @@
 <translation id="49269513399674318">ಮೈಕ್ರೊಫೋನ್ ಬಳಸಿ</translation>
 <translation id="3895031624234442305">ಕಸ್ಟಮ್ ಮಾದರಿಗಳು</translation>
 <translation id="4572010449071015143">ಹೊಸ ಸಂಭಾಷಣೆ ಆರಂಭಿಸಿ</translation>
+<translation id="6287023598025162715">ಹೊಸ ಸಂವಾದ</translation>
 <translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
 <translation id="8458987127502506209">Brave ಶೀಲ್ಡ್ಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="7509914170164691086">ಶೀಲ್ಡ್ಸ್‌ ಅನ್ನು <ph name="LINK_BEFORE"/>ಇದಕ್ಕೆ<ph name="LINK_AFTER"/> ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="260764436039299868">ಶೀಲ್ಡ್ಸ್‌ ಅನ್ನು <ph name="LINK_BEFORE"/>ಇದಕ್ಕೆ<ph name="LINK_AFTER"/> ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="3907405056878805220">ಈ ಸೈಟ್ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿಲ್ಲ ಎಂದು ತೋರುತ್ತಿದ್ದರೆ, ಶೀಲ್ಡ್ಸ್ ಡೌನ್ ಅನ್ನು ಪ್ರಯತ್ನಿಸಿ.
-   <ph name="LINK_BEFORE"/>ಗಮನಿಸಿ: ಇದು Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಯನ್ನು ಕಡಿಮೆ ಮಾಡಬಹುದು.<ph name="LINK_AFTER"/></translation>
+  <ph name="LINK_BEFORE"/>ಗಮನಿಸಿ: ಇದು Brave ನ ಗೌಪ್ಯತೆ ರಕ್ಷಣೆಯನ್ನು ಕಡಿಮೆ ಮಾಡಬಹುದು.<ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">ಟ್ರ್ಯಾಕರ್‌ಗಳು, ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಹೆಚ್ಚು ನಿರ್ಬಂಧಿತವಾದವುಗಳು <ph name="LINK_BEFORE"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">Brave ಶೀಲ್ಡ್ಸ್‌ನಿಂದ ರಕ್ಷಿತವಾಗಿಲ್ಲ <ph name="LINK_BEFORE"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">ಸುಧಾರಿತ ನಿಯಂತ್ರಣಗಳು</translation>
@@ -2217,8 +2258,8 @@
 <translation id="6821108091726602352">Brave ನ ವೆಬ್ ಡಿಸ್ಕವರಿ ಪ್ರಾಜೆಕ್ಟ್‌ನಲ್ಲಿ ಭಾಗವಹಿಸುವ ಮೂಲಕ ವೆಬ್ ಸರಿಪಡಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡಿ. ಸಂಪೂರ್ಣವಾಗಿ ಅನಾಮಧೇಯ ಹುಡುಕಾಟ ಸಂಕೇತಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳುವ ಮೂಲಕ, ಹುಡುಕಾಟ ಇಂಡೆಕ್ಸ್‌ನ ಬೆಳವಣಿಗೆ ಮಾಡಲು Brave ಗೆ ನೀವು ಸಹಾಯ ಮಾಡಬಹುದು.</translation>
 <translation id="6764845498618413165">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ.</translation>
 <translation id="7818938154803162778">ಖಂಡಿತ, ನಾನು ಸಹಾಯ ಮಾಡುತ್ತೇನೆ</translation>
-<translation id="7821773512278295352">Brave ಫೈರ್‌ವಾಲ್ + VPN: ಸಂಪರ್ಕಿತವಾಗಿದೆ</translation>
-<translation id="6019088868713395120">Brave ಫೈರ್‌ವಾಲ್ + VPN: ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
+<translation id="958268166261124668">Brave VPN: ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
+<translation id="6021669293402055982">Brave VPN: ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="3541307549916475335">Brave VPN ಪ್ಯಾನೆಲ್ UI</translation>
 <translation id="7143207342074048698">ಸಂಪರ್ಕಿಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="1202549130170287307">ಸಂಪರ್ಕಕಡಿತಗೊಳ್ಳುತ್ತಿದೆ</translation>
@@ -2230,7 +2271,6 @@
 <translation id="3357036723290257445">ಈಗಾಗಲೇ Brave VPN ಖರೀದಿಸಿದ್ದೀರಾ?</translation>
 <translation id="8814357473522731680">ಇದರಿಂದ ಸಾಮರ್ಥ್ಯ ಪಡೆದಿದೆ</translation>
 <translation id="8652175077544655965">ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
-<translation id="3099126540952997993">ಫೈರ್‌ವಾಲ್ + VPN</translation>
 <translation id="5908163815855240493">ಮುಖ್ಯಪುಟಕ್ಕೆ ಹೋಗಿ</translation>
 <translation id="7805768142964895445">ಸ್ಥಿತಿ</translation>
 <translation id="5747552184818312860">ಅವಧಿ ಮೀರುವುದು</translation>
@@ -2254,6 +2294,7 @@
 <translation id="2542131205769293399">ನಿಮ್ಮ ಖರೀದಿಯ ಸ್ಥಿತಿಯನ್ನು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ. ಇದು ಸಂಭಾವ್ಯವಾಗಿ ನೆಟ್‌ವರ್ಕ್ ಸಮಸ್ಯೆ ಆಗಿರಬಹುದು. ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ.</translation>
 <translation id="4613076894734402086">ಪಾವತಿ ವಿಧಾನವನ್ನು ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="427718751211990320">ರುಜುವಾತುಗಳ ವಾಯಿದೆ ದಿನಾಂಕ ಮೀರಿದೆ.</translation>
+<translation id="3323234188356372126">VPN ಸರ್ವರ್ ಅನ್ನು ದೃಢೀಕರಿಸುವಲ್ಲಿ ಬ್ರೇವ್‌ VPN ಸಮಸ್ಯೆ ಎದುರಿಸುತ್ತಿದೆ. ದಯವಿಟ್ಟು ಸಪೋರ್ಟ್‌ನ್ನು ಸಂಪರ್ಕಿಸಿ ಅಥವಾ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="8670619630771851260">ರುಜುವಾತುಗಳನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
 <translation id="1594643509610625766">ಟೋಕನ್ ಇನ್ನು ಮುಂದೆ ಮಾನ್ಯವಾಗಿಲ್ಲ.</translation>
 <translation id="8373427068383038263"><ph name="VALUE"/>ಗಾಗಿ ನಿಮ್ಮ ಹೆಚ್ಚು ಇತ್ತೀಚಿನ ಪಾವತಿ ಯಶಸ್ವಿಯಾಗದೇ ಇರುವಂತೆ ಕಂಡುಬರುತ್ತಿದೆ. ಪಾವತಿ ಸಮಸ್ಯೆಯನ್ನು ಪರಿಹರಿಸುವ ತನಕ ಈ ಚಂದಾದಾರಿಕೆಗೆ ಪ್ರವೇಶ ಸ್ಥಗಿತಗೊಳ್ಳುತ್ತದೆ. ನಿಮ್ಮ ಪಾವತಿ ವಿಧಾನ ಎಡಿಟ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ Brave ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ.</translation>
@@ -2300,10 +2341,9 @@
 <translation id="7423206764347669977">ಸೆಟ್ಟಿಂಗ್‌‌ಗಳನ್ನು ಬದಲಾಯಿಸಿ</translation>
 <translation id="9061845622728745852">ಸಮಯವಲಯ:</translation>
 <translation id="8295393906499561642">ಸೆಷನ್ ಅವಧಿ ಮೀರಿದೆ</translation>
+<translation id="7070578590391442755">VPN ಗೆ ಪ್ರಮಾಣೀಕರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ</translation>
 <translation id="3312623558576021182">ನಿಮ್ಮ VPN ಸೆಷನ್ ರಿಫ್ರೆಶ್ ಮಾಡಲು ನಿಮ್ಮ <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave ಖಾತೆ<ph name="BRAVE_ACCOUNT_END"/>ಗೆ ದಯವಿಟ್ಟು ಲಾಗ್ ಇನ್ ಮಾಡಿ.</translation>
-<translation id="6021669293402055982">Brave VPN: ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="7861195049821776142">Brave VPN: ಸಂಪರ್ಕ ಕಡಿತಗೊಳ್ಳುತ್ತಿದೆ</translation>
-<translation id="958268166261124668">Brave VPN: ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
 <translation id="2061807837510296780">Brave VPN: ಸಂಪರ್ಕಗೊಳ್ಳುತ್ತಿದೆ</translation>
 <translation id="1313124107969703758">Brave VPN: ದೋಷ</translation>
 <translation id="8273420301954598554">ಸ್ಥಿತಿ: ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
@@ -2312,6 +2352,11 @@
 <translation id="8048263175525832621">Brave VPN - ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ</translation>
 <translation id="1498770726476841108">ಖಾತೆಯನ್ನು ನಿರ್ವಹಿಸಿ</translation>
 <translation id="6825718953004242472">ಐಕಾನ್ ತೆಗೆದುಹಾಕಿ</translation>
+<translation id="6819278685469225453">ನಿಮ್ಮ ಸಾಧನದಲ್ಲಿರುವ ಪ್ರತಿ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ರಕ್ಷಿಸಿ</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">ಹೆಚ್ಚುವರಿ ಗೌಪ್ಯತೆ &amp; ಭದ್ರತೆ ಆನ್‌ಲೈನ್.</translation>
+<translation id="8425213833346101688">ಬದಲಿಸಿ</translation>
+<translation id="8703188411226330709">ಉಚಿತ ಪ್ರಯೋಗ ಆರಂಭಿಸಿ</translation>
 <translation id="3287942014983548982">ಇಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/> ಪ್ರಸ್ತುತ ತೆರೆಯಿರಿ,
     ತೆರೆದ ಟ್ಯಾಬ್‌ಗೆ ಬದಲಾಯಿಸಲು ಟ್ಯಾಬ್ ಒತ್ತಿ ನಂತರ ಎಂಟರ್ ಒತ್ತಿರಿ</translation>
@@ -2319,7 +2364,4 @@
     ಎಂಟರ್ ಒತ್ತಿರಿ</translation>
 <translation id="451189393813405346">Leo ಗೆ ಕೇಳಿ</translation>
 <translation id="8525248723479742219">ನಂತರ ಪ್ಲೇ ಮಾಡಿ</translation>
-<translation id="1450735350187803276">ಈ ತಿಂಗಳಲ್ಲಿ ನೋಡಿ ಜಾಹೀರಾತುಗಳು</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="8425213833346101688">ಬದಲಿಸಿ</translation>
 </translationbundle>

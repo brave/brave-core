@@ -87,7 +87,7 @@
 <translation id="1679356339067548863">עזור לשפר את יציבות המוצר של Brave על ידי שליחת דוחות אבחון אוטומטית כאשר הדפדפן Brave קורס או קופא.</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> quit unexpectedly.</translation>
 <translation id="1324417023773393937">דפדפן Brave</translation>
-<translation id="7276554663454265692">ניתן לשנות  <ph name="SETTING_TEXT"/> שוב בכל עת דרך הגדרות הדפדפן.</translation>
+<translation id="7276554663454265692">ניתן לשנות <ph name="SETTING_TEXT"/> שוב בכל עת דרך הגדרות הדפדפן.</translation>
 <translation id="6873781976650514089">הגדרה זו</translation>
 <translation id="4684633335323013758">האתר הזה ביקש את ה<ph name="PART_ONE"/>מיקום הכללי שלך<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>למד עוד<ph name="PART_TWO_END"/></translation>
 <translation id="8117247596084706514">אתר זה ביקש שלך <ph name="PART_ONE"/>מיקום מדויק<ph name="PART_ONE_END"/>. <ph name="PART_TWO"/>למד עוד<ph name="PART_TWO_END"/></translation>
@@ -306,11 +306,11 @@
 <translation id="6155018868740116868">שחזר</translation>
 <translation id="2521960050170773751">הוסף מדיה מהדף</translation>
 <translation id="2301087142998134097">נעשה ניסיון לפתוח את <ph name="SITE"/></translation>
-<translation id="7128982309566342232">נעשה ניסיון לפתוח את הדף המוטמע ב-<ph name="SITE"/></translation>
+<translation id="4828353184750597953">דף שמוטמע ב-<ph name="SITE"/> מעוניין להיפתח</translation>
 <translation id="1175012181261953767">נעשה ניסיון לפתוח דף זה</translation>
 <translation id="7459546222322124545">נעשה ניסיון לפתוח דף המוטמע בדף זה</translation>
 <translation id="5836261838911560851">נעשה ניסיון לשמור את <ph name="SITE"/></translation>
-<translation id="5936788906460687941">נעשה ניסיון לשמור את הדף המוטמע ב-<ph name="SITE"/></translation>
+<translation id="8813509417421129632">דף שמוטמע ב-<ph name="SITE"/> מעוניין להישמר</translation>
 <translation id="7700010743463174379">נעשה ניסיון לשמור דף זה</translation>
 <translation id="6774238875569752630">נעשה ניסיון לשמור דף המוטמע בדף זה</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
@@ -571,6 +571,7 @@
 <translation id="4094590686212463338">לא ניתן היה להצטרף לשרשרת הסנכרון הזו. שרשרת הסנכרון נמחקה.</translation>
 <translation id="4908081302669157000">מספרי טלפון, דוא"ל וכתובות</translation>
 <translation id="294985549514492876">Web apps (PWAs)</translation>
+<translation id="7029809446516969842">סיסמאות</translation>
 <translation id="924029461438529367">הצג הצעות חיפוש</translation>
 <translation id="3128251601544028053">כשאתה מקליד בשורת הכתובות או בתיבת החיפוש, Brave שולח את הטקסט שאתה מקליד אל ברירת המחדל של מנוע החיפוש שלך על מנת לקבל הצעות טובות יותר. תכונה זאת לא זמינה בחלונות פרטיים.</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
@@ -714,6 +715,8 @@ Brave. לא ניתן לבטל פעולה זאת.</translation>
 <translation id="1355326130503900056">שם הדגם כפי שהוא אמור להופיע בבקשה למסגרת השירות, למשל, phi-3 (שים לב שאם השם לא תואם בדיוק למה שמצופה על ידי מסגרת השירות, השילוב לא יפעל)</translation>
 <translation id="3286410514484292784">כתובת ה-URL שבה נמצאת מסגרת השירות שלכם מאזינה לבקשות. אם אינכם בטוחים, בדקו את מסמכי מסגרת השירות. למשל עבור Ollama, הכתובת תמיד תהיה http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">מסגרות שירות מסוימות עשויות לדרוש סיסמאות אימות, כגון מפתח API או אסימון גישה. הם יתווספו לכותרת הבקשה.</translation>
+<translation id="4335128003329183586">אורך ההקשר</translation>
+<translation id="8794525422794607973">מספר האסימונים המרבי שהמודל יכול לעבד באינטראקציה בודדת. כל אסימון שווה בערך 3/4 מילה. הקשר ארוך יותר מאפשר למודל להתמודד עם שיחות ארוכות יותר. מודלים שונים תומכים באורכי מקסימום שונים עבור הקשר.</translation>
 <translation id="217141195370578385">Brave לא מייצגת בקשות אלה. יש לקרוא את תנאי הפרטיות של הספק שנבחר.</translation>
 <translation id="2645532768679870478">נקודות קצה לא מקומיות צריכות להפעיל פרוטוקול HTTPS לצורך שידור נתונים מאובטח</translation>
 <translation id="8177205483022887785">הזנתם כתובת URL לא חוקית. יש להזין כתובת URL חוקית.</translation>
@@ -723,6 +726,9 @@ Brave. לא ניתן לבטל פעולה זאת.</translation>
 <translation id="7435587476558117990">חברו את ה-LLM עם מארח עצמי או מארח של צד שלישי ל-Leo והשתמשו בהם בדפדפן.</translation>
 <translation id="1381050642750209119">השתמש בכל פרוטוקול צ'ט OpenAI המתאים למסגרת כגון Ollama.</translation>
 <translation id="2642905648178380593">שמור מודל</translation>
+<translation id="6304169450064541679">פרומפט מערכת</translation>
+<translation id="3081947790648024460">הוראות ו/או הקשר שניתנים למודל כדי להדריך את התגובות שלו בכיוון או סגנון ספציפי. אפשר להשתמש ב-%datetime% היכן שברצונך להכניס את התאריך והשעה.</translation>
+<translation id="5688878061573389791"><ph name="TOKENS_COUNT"/> אסימונים</translation>
 <translation id="349846214503465941">אפשר רשימת השמעה</translation>
 <translation id="7903608716704052878">הוסף אוטומטית קבצים לצפייה במצב לא מקוון</translation>
 <translation id="4193768184502613558">אפשרות זו תשמור באופן אוטומטי קבצי מדיה במטמון כך שניתן יהיה לנגן אותם ללא חיבור לאינטרנט.</translation>

@@ -66,6 +66,7 @@
 <translation id="1104409666019087579">Չլրացված պարտադիր դաշտեր կան։ Պահելուց առաջ լրացրեք դրանք։</translation>
 <translation id="8424280348953443220">«Կառավարել գաղտնաբառերը» կոճակ․ ակտիվացրեք՝ Brave-ի կարգավորումներում գաղտնաբառերը դիտելու և կառավարելու համար</translation>
 <translation id="1108464073729874771">A3x4</translation>
+<translation id="1110809716549020493">Վիրտուալ քարտի տվյալները չե՞ն լրացվել։ Սեղմեք վիրտուալ քարտի մանրամասների վրա՝ սեղմատախտակին պատճենելու համար։ <ph name="IDS_AUTOFILL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL_VIRTUAL_CARD"/></translation>
 <translation id="1110994991967754504"><ph name="PERMISSION_NAME"/>՝ ընտրեք թույլտվություն</translation>
 <translation id="1113000785583998331">Պահե՞լ IBAN-ը</translation>
 <translation id="1113869188872983271">&amp;Հետարկել վերադասավորումը</translation>
@@ -170,7 +171,6 @@
 <translation id="1292571435393770077">Դարակ 16</translation>
 <translation id="1209478311331937175">«Համակարգչում տեղադրված ծրագիրը Brave-ին թույլ չի տալիս անվտանգ միանալ համացանցին» (միայն Windows համակարգիչներում)</translation>
 <translation id="1293797321964802402">Envelope 9 x 11 դյմ</translation>
-<translation id="1294154142200295408">Հրամանատողի տարբերակներ</translation>
 <translation id="129553762522093515">Վերջերս փակված</translation>
 <translation id="1296930489679394997">Զեղչեր</translation>
 <translation id="1297814096526086484">Կողպե՞լ ստեղնաշարն ու մկնիկը</translation>
@@ -215,6 +215,7 @@
 <translation id="1357195169723583938">Ով է վերջերս օգտագործել սարքը և երբ</translation>
 <translation id="1358187717814494928">Ստեղծել աղյուսակ</translation>
 <translation id="1359836962251219822">Խոհանոց և ճաշասենյակ</translation>
+<translation id="5497977785983089120">Բացեք նոր ինկոգնիտո պատուհան, որպեսզի այցելությունների պատմությունը չպահվի</translation>
 <translation id="1361528602584216624">Սահմանաչափը յուրաքանչյուր Pix-ի համար՝ <ph name="TRANSACTION_LIMIT"/> R$</translation>
 <translation id="1363015776076529485">Վճարման հասանելի եղանակները, որոնք պետք է ընտրվեն վճարումը շարունակելու համար, ցուցադրված են ամբողջ էկրանով։</translation>
 <translation id="1363028406613469049">Կատարում</translation>
@@ -266,7 +267,6 @@
 <translation id="1446396933673057385">Ճշգրտության ստուգում</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
 <translation id="1448166547804028941">«<ph name="DATA_CONTROLS_FIRST_KEY_SET"/>» բանալիները հնարավոր չէ ավելացնել նույն բառարանում, ինչ «<ph name="DATA_CONTROLS_SECOND_KEY_SET"/>» բանալիները</translation>
-<translation id="1452803302401719440">Ձեր ծնողի ընտրած կարգավորումների շնորհիվ դուք այժմ ավելի ապահով եք համացանցում</translation>
 <translation id="1455413310270022028">Ռետին</translation>
 <translation id="1458059624921545588">Մարդիկ և հասարակություն</translation>
 <translation id="1458140305240870199">Ներքնազգեստ</translation>
@@ -427,7 +427,7 @@
 <translation id="1727613060316725209">Հավաստագիրը վավեր է</translation>
 <translation id="1728677426644403582">Դուք դիտում եք վեբ էջի կոդը</translation>
 <translation id="173080396488393970">Քարտի այս տեսակը չի աջակցվում</translation>
-<translation id="317153861231603077">Հարցնել անձամբ</translation>
+<translation id="1732445923934584865">Հարցնել անձամբ</translation>
 <translation id="1733064249834771892">տառատեսակներ</translation>
 <translation id="1733631169686303142">Աուդիոտեխնիկա</translation>
 <translation id="1733762317901693627">Երբեմն հաքերները կարող են կոտրել անգամ անվտանգ կայքերը։ Այցելեք <ph name="BEGIN_LINK"/>այս ոչ անվտանգ կայք<ph name="END_LINK"/>, միայն եթե վստահ եք, որ գիտակցում եք վտանգները։</translation>
@@ -546,6 +546,7 @@
 <translation id="1947454675006758438">Ամրակ վերևի աջ կողմում</translation>
 <translation id="1953729392594614704">Եթե արգելափակեք «<ph name="TOPIC"/>» թեման, կարգելափակվեն նաև բոլոր առնչվող թեմաները, նույնիսկ եթե դրանք ակտիվ են</translation>
 <translation id="1954847915560574887">A3x3</translation>
+<translation id="1955773397805078763">Ավելացնել վճարման եղանակ</translation>
 <translation id="1956486093533522234">Գտնել և պաշտպանել սարքը, ինչպես նաև ջնջել դրա տվյալները</translation>
 <translation id="1957274554973357626">Հումորային ներկայացումներ</translation>
 <translation id="1958218078413065209">Ձեր լավագույն արդյունքը՝ <ph name="SCORE"/>։</translation>
@@ -868,10 +869,12 @@
 <translation id="2530042584066815841">Մկնիկի կողպում և օգտագործում</translation>
 <translation id="2533649878691950253">Ձեր ճշգրիտ տեղադրության տվյալների հասանելիությունն արգելափակված է այս կայքի համար, քանի որ դուք սովորաբար ընտրում եք նման կարգավորումներ։</translation>
 <translation id="253493526287553278">Տեսնել պրոմոկոդի մանրամասները</translation>
+<translation id="40442660395682483">Բացեք նոր ինկոգնիտո ներդիր, որպեսզի այցելությունների պատմությունը չպահվի</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{ու ևս 1 տիրույթ}one{ու ևս # տիրույթ}other{ու ևս # տիրույթ}}</translation>
 <translation id="2536110899380797252">Ավելացնել հասցե</translation>
 <translation id="3140033400151786080">Այս սարքի մյուս օգտատերերը չեն տեսնի ձեր գործողությունները, այնպես որ կարող եք ավելի ապահով դիտարկել։ Սա չի ազդի ձեր այցելած կայքերի և դրանց օգտագործած ծառայությունների (այդ թվում՝ Brave-ի) կողմից տվյալների հավաքման եղանակի վրա։ Ներբեռնումներն ու էջանիշները կպահվեն։</translation>
 <translation id="2539524384386349900">Ճանաչել</translation>
+<translation id="375424491626359494">Բոլոր ինկոգնիտո ներդիրները փակելուց հետո դիտված էջերը չեն պահվում ձեր դիտարկիչի պատմության, քուքիների պահոցի կամ որոնման պատմության մեջ։ Ներբեռնումները կամ ստեղծած էջանիշները կպահպանվեն։</translation>
 <translation id="2542106216580219892">Սերֆինգ</translation>
 <translation id="2544546346215446551">Ադմինիստրատորը վերագործարկել է ձեր սարքը</translation>
 <translation id="2544644783021658368">Մեկ փաստաթուղթ</translation>
@@ -911,6 +914,7 @@
 <translation id="2622754869869445457">Ձեր վերջերս բացած ներդիրները</translation>
 <translation id="2625385379895617796">Ձեր ժամացույցը առաջ է ընկել</translation>
 <translation id="262745152991669301">Կարող է հայցել USB սարքերին միանալու թույլտվություն</translation>
+<translation id="2627847595568876492">Տեքստի արտահանում PDF-ից...</translation>
 <translation id="2628224721443278970">Մուտք գործել Microsoft OneDrive</translation>
 <translation id="2634124572758952069">Չհաջողվեց գտնել <ph name="HOST_NAME"/> տիրույթի սերվերի IP հասցեն։</translation>
 <translation id="2639739919103226564">Կարգավիճակ`</translation>
@@ -1014,6 +1018,7 @@
 <translation id="2859806420264540918">Այս կայքը հոգնեցնող կամ մոլորեցնող գովազդ է ցուցադրում։</translation>
 <translation id="28618371182701850">Էլեկտրական և հիբրիդային ավտոմեքենաներ</translation>
 <translation id="28761159517501904">Ֆիլմեր</translation>
+<translation id="6934396344327597525">Դուք դուրս կգաք ինկոգնիտո ռեժիմից՝ արտաքին հավելվածում վճարում կատարելու համար։ Շարունակե՞լ։</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Brave-ի կարգավորումներում Ապահով դիտարկումը և այլ պարամետրեր կառավարելու համար սեղմեք Tab, ապա՝ Enter։</translation>
 <translation id="2878197950673342043">Կրկնակի ուղղաձիգ ծալում</translation>
 <translation id="2878424575911748999">A1</translation>
@@ -1029,7 +1034,6 @@
 <translation id="290376772003165898">Էջը <ph name="LANGUAGE"/> չէ՞</translation>
 <translation id="2904165004205947971">Կառավարեք ձեր տեղեկությունները</translation>
 <translation id="2905107382358353958">Վճարումների նոր կարգավորման մասին ծանուցում</translation>
-<translation id="2909120679423833511">Ձեր կազմակերպության (<ph name="MANAGER"/>) կանոնների համաձայն՝ դուք պետք է մուտք գործեք՝ օգտագործելով որոշակի պրոֆիլ</translation>
 <translation id="2909946352844186028">Ցանցը փոփվել է:</translation>
 <translation id="2911255567212929079">Մեքենայական ուսուցում և արհեստական բանականություն</translation>
 <translation id="2911973620368911614">Աշխատանքային հաշվի օգտատիրոջ ID</translation>
@@ -1062,6 +1066,7 @@
 <translation id="2948083400971632585">Դուք կարող եք անջատել կապակցման համար օգտագործվող պրոքսի-սերվերները ները կարգավորումների էջից:</translation>
 <translation id="3955566820843143766">Անտեսված է, քանի որ սարքը գրանցված չէ Brave դիտարկիչի ամպային կառավարման համակարգում։</translation>
 <translation id="2951588413176968965">Իմ փոստարկղը</translation>
+<translation id="4920329334239571966">Փակել բոլոր ինկոգնիտո պատուհանները</translation>
 <translation id="2952904171810469095">A2x5</translation>
 <translation id="2954624054936281172">Վճարման պահված եղանակների աղյուսակ</translation>
 <translation id="295526156371527179">Զգուշացում. այս կանոնը չի միավորվել որպես բառարան, ինչպես նշված է կանոնում, քանի որ այն բառարան չէ:</translation>
@@ -1081,6 +1086,7 @@
 <translation id="2978824962390592855">Օպերա</translation>
 <translation id="2979424420072875974">Գրողների ռեսուրսներ</translation>
 <translation id="6172169316494799304">Այս քարտի CVC կոդը կգաղտնագրվի և կպահվի ձեր Brave հաշվում՝ ավելի արագ վճարման համար</translation>
+<translation id="1536541482996273580">Բացել ինկոգնիտո ներդիր</translation>
 <translation id="2985398929374701810">Մուտքագրեք վավեր հասցե</translation>
 <translation id="2987034854559945715">Համընկնող գործառույթներ չկան</translation>
 <translation id="714850411804317247">Brave-ը սահմանափակում է այն տվյալների քանակը, որոնց միջոցով կայքերը կարող են հետագծել ձեր գործողությունները համացանցում։ Դուք միշտ կարող եք կարգավորել պաշտպանության ձեզ անհրաժեշտ մակարդակը։</translation>
@@ -1352,6 +1358,7 @@
 <translation id="346601286295919445">Քիմիա</translation>
 <translation id="3467081767799433066">Գովազդի արդյունավետությունը գնահատելու համար կայքերը փոխանակում են որոշակի տվյալներ, օրինակ՝ արդյոք դուք գնում եք կատարել կայք այցելելուց հետո։</translation>
 <translation id="3468054117417088249">Բացված է <ph name="TAB_SWITCH_SUFFIX"/> ներդիրը։ Այս ներդիրին անցնելու համար սեղմեք «Tab», ապա՝ «Enter»։</translation>
+<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Ընթացիկ բացված բոլոր ինկոգնիտո պատուհանները փակելու համար սեղմեք Tab, ապա՝ Enter։</translation>
 <translation id="3807334561457710885">«Կարգավորել տառատեսակները Brave-ում» կոճակ․ ակտիվացրեք՝ Brave-ում տառատեսակները և դրանց չափերը կարգավորելու համար</translation>
 <translation id="3478033058537426179">Ըստ խմբի</translation>
 <translation id="3479552764303398839">Հիմա չէ</translation>
@@ -1390,6 +1397,7 @@
 <translation id="353816159217417898">Էկրան (էջակալված)</translation>
 <translation id="3542628208405253498">Քարտի պատկեր</translation>
 <translation id="3542768452570884558">Բացել հղումը նոր պատուհանում</translation>
+<translation id="3543935938072367282">Ինքնալրացման շնորհիվ վճարեք ավելի արագ</translation>
 <translation id="3547442767634383572">Աշխատանքային պրոֆիլի մասին ընդհանուր տեղեկություններ</translation>
 <translation id="3547746132308051926">20 x 24 դյույմ</translation>
 <translation id="3550325450190222557">Կարծիք ուղարկեք «Ինքնալրացում ԱԲ-ի օգնությամբ» գործառույթի մասին։</translation>
@@ -1403,6 +1411,7 @@
 <translation id="3566021033012934673">Ձեր կապակցումը պաշտպանված չէ</translation>
 <translation id="3566336457819493938">215 x 315 մմ</translation>
 <translation id="3566649245868131295">Աշխատանք առողջապահության ոլորտում</translation>
+<translation id="3566681680543111735">Պատճենել տարատեսակների տողը</translation>
 <translation id="3567778190852720481">Հնարավոր չէ գրանցվել կորպորատիվ հաշվով։</translation>
 <translation id="3567901620846335314">100 x 150 մմ</translation>
 <translation id="3568886473829759308">Անցնել կայք՝ ընկերության տրամադրած տեղեկությունները, ռեսուրսները կամ ծառայությունները տեսնելու համար։</translation>
@@ -1481,6 +1490,7 @@
 <translation id="3676592649209844519">Սարքի ID-ն՝</translation>
 <translation id="3677008721441257057">Գուցե նկատի ունեիք &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;:</translation>
 <translation id="3678029195006412963">Չհաջողվեց ստորագրել հարցումը</translation>
+<translation id="2388886110302389394">Բացել էջը նոր ինկոգնիտո պատուհանում (Ctrl+Shift+N)</translation>
 <translation id="3678914302246317895">Մուտքագրեք <ph name="OTP_LENGTH"/> թվանշանից բաղկացած հաստատման կոդը</translation>
 <translation id="3681007416295224113">Վկայագրի տեղեկություններ</translation>
 <translation id="2659564324969662497">Brave-ը որոշում է ձեզ հետաքրքրող թեմաները ձեր վերջին այցելությունների պատմության հիման վրա։</translation>
@@ -1554,6 +1564,7 @@
 <translation id="3801297763951514916">Հաճախ եք այցելում</translation>
 <translation id="380329542618494757">Անուն</translation>
 <translation id="3803801106042434208">Այս որոնողական համակարգերը տարածված են ձեր տարածաշրջանում</translation>
+<translation id="9139904989334087578">Ձեր Brave հաշվում պահեք վճարման եղանակ՝ Brave-ում արվող գնումների ժամանակ այն ավտոմատ լրացնելու համար</translation>
 <translation id="3807366285948165054">Պատկերի տեղաշարժ X առանցքով</translation>
 <translation id="3807709094043295184">Դասական ռոք և հին հայտնի երգեր</translation>
 <translation id="3807873520724684969">Վնասաբեր բովանդակությունն արգելափակված է։</translation>
@@ -1610,6 +1621,7 @@
 <translation id="3905894480064208252">{0,plural, =1{Ֆայլի փոխանցումն արգելափակված է}one{<ph name="FILE_COUNT"/> ֆայլի փոխանցումն արգելափակված է}other{<ph name="FILE_COUNT"/> ֆայլի փոխանցումն արգելափակված է}}</translation>
 <translation id="3906954721959377182">Պլանշետ</translation>
 <translation id="3909695131102177774"><ph name="LABEL"/> <ph name="ERROR"/></translation>
+<translation id="2432806109793094400">Պահված տեղեկությունները և <ph name="WEBSITE"/> կայքի էջը կուղարկվեն Brave-ին։ Մեր մասնագետները կարող են ստուգել այդ տվյալները՝ այս գործառույթը բարելավելու նպատակով։</translation>
 <translation id="3910231615117880630">Իմանալ ավելին ներկառուցված բովանդակության մասին</translation>
 <translation id="7721467022912831148">Brave-ին չհաջողվեց ստանալ ձեր տվյալները</translation>
 <translation id="3117446487153407265"><ph name="BEGIN_BOLD"/>Ինչպես կարող եք կառավարել ձեր տվյալները․<ph name="END_BOLD"/> Brave-ը ավտոմատ ջնջում է այն կայքերը, որոնք ավելացվել են առնվազն 30 օր առաջ։ Եթե դուք նորից այցելեք որոշակի կայք, այն կրկին կարող է հայտնվել ցանկում։ Դուք նաև ցանկացած ժամանակ Brave-ի կարգավորումներում կարող եք արգելել կայքին գովազդ առաջարկել կամ ընդհանրապես անջատել կայքերի կողմից առաջարկվող գովազդների ցուցադրումը։</translation>
@@ -1709,6 +1721,7 @@
 <translation id="4102567721634170493">Տեղական նորություններ</translation>
 <translation id="4103249731201008433">Սարքի սերիական համարը սխալ է</translation>
 <translation id="4103592298805904008">Ստվարաթուղթ (միաշերտ)</translation>
+<translation id="4104702906064390950">IBAN-ի մասին տեղեկությունները պահվում են</translation>
 <translation id="4106887816571530227">Զետեղված բովանդակությունն արգելված է</translation>
 <translation id="4110652170750985508">Դիտեք վճարումը</translation>
 <translation id="4111546256784973544">Փեյնթբոլ</translation>
@@ -1771,6 +1784,23 @@
 <translation id="4214357935346142455">մուտքի էկրանի պրոֆիլ</translation>
 <translation id="4219596572397833317">Դիտեք գների փոփոխությունների պատմությունը և այլ տեղեկություններ, որպեսզի ավելի խելամիտ գնումներ կատարեք։</translation>
 <translation id="4220128509585149162">Խափանումներ</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Քայլ 1. մուտք գործեք պորտալ&lt;/h4&gt;
+    &lt;p&gt;Որոշ հանրային վայրերում, օրինակ՝ սրճարաններում և օդանավակայաններում, Wi-Fi ցանցին միանալու համար անհրաժեշտ է մտնել հատուկ վեբ պորտալ։ Մուտքի էջը տեսնելու համար բացեք &lt;code&gt;http://&lt;/code&gt;-ով սկսվող որևէ կայք։&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Այցելեք ցանկացած կայք, որի հասցեն սկսվում է &lt;code&gt;http://&lt;/code&gt;-ով, օրինակ՝ &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;։&lt;/li&gt;
+    &lt;li&gt;Բացվող էջում մուտք գործեք՝ ինտերնետից օգտվելու համար։&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Քայլ 2. բացեք էջը ինկոգնիտո ռեժիմում (միայն համակարգչում)&lt;/h4&gt;
+    &lt;p&gt;Էջը բացեք ինկոգնիտո պատուհանում։&lt;/p&gt;
+    &lt;p&gt;Եթե էջը բացվի, ապա սխալի պատճառը Brave-ի ընդլայնումն է։ Խնդիրը լուծելու համար անջատեք ընդլայնումը։&lt;/p&gt;
+    &lt;h4&gt;Քայլ 3. թարմացրեք ձեր օպերացիոն համակարգը&lt;/h4&gt;
+    &lt;p&gt;Համոզվեք, որ ձեր սարքը թարմացված է։&lt;/p&gt;
+    &lt;h4&gt;Քայլ 4. ժամանակավորապես անջատեք ձեր հակավիրուսային ծրագիրը&lt;/h4&gt;
+    &lt;p&gt;Ձեզ կցուցադրվի այս սխալը, եթե ձեր օգտագործած հակավիրուսային ծրագիրը ներառում է «HTTPS պաշտպանություն» կամ «HTTPS սկանավորում»։ Հակավիրուսային ծրագիրը Brave-ին թույլ չի տալիս անվտանգություն ապահովել։&lt;/p&gt;
+    &lt;p&gt;Խնդիրը լուծելու համար անջատեք ձեր հակավիրուսային ծրագիրը։ Եթե դրանից հետո էջը բացվի, ապա անվտանգ կայքեր այցելելիս անջատեք այս ծրագիրը։&lt;/p&gt;
+    &lt;p&gt;Ավարտելուց հետո մի՛ մոռացեք կրկին միացնել հակավիրուսային ծրագիրը։&lt;/p&gt;
+    &lt;h4&gt;Քայլ 5. ստացեք լրացուցիչ օգնություն&lt;/h4&gt;
+    &lt;p&gt;Եթե շարունակում եք տեսնել սխալը, կապվեք կայքի սեփականատիրոջ հետ։&lt;/p&gt;</translation>
 <translation id="4223404254440398437">Խոսափողի օգտագործումն արգելված է</translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Գործարկել ցանցի ախտորոշումը<ph name="END_LINK"/>:</translation>
 <translation id="422722221769396062">Ռեստորաններից առաքման ծառայություն</translation>
@@ -2031,6 +2061,7 @@
 <translation id="4744514002166662487">Ստեղծել ներկայացում</translation>
 <translation id="4744603770635761495">Մշակվող ֆայլի ուղին</translation>
 <translation id="4744816391336495134">Դուք կարող եք մատնահետքի միջոցով հաստատել ձեր ինքնությունն ամեն անգամ, երբ պահված գաղտնաբառ եք օգտագործում</translation>
+<translation id="6417973700199526943">Դուք ինկոգնիտո ռեժիմում եք</translation>
 <translation id="4750394297954878236">Առաջարկներ</translation>
 <translation id="4750671009706599284">այս հեռախոսը</translation>
 <translation id="4750917950439032686">Այս կայքի միջոցով ուղարկվող տեղեկությունները (օր.` գաղտնաբառերը կամ վարկային քարտի տվյալները) պաշտպանված են:</translation>
@@ -2222,6 +2253,7 @@
 <translation id="5087286274860437796">Սերվերի վկայագիրն այս անգամ վավեր չէ:</translation>
 <translation id="5087580092889165836">Ավելացնել քարտ</translation>
 <translation id="5088142053160410913">Հաղորդագրություն օպերատորին</translation>
+<translation id="5089791650329866127">Այս գործառույթն օգտագործում է այն տեղեկությունները, որոնք արդեն պահել եք ինքնալրացման միջոցով, օրինակ՝ ձեր հասցեն</translation>
 <translation id="5090647584136241764">Ավելացրեք նմանատիպ ապրանքներով ներդիրներ, որպեսզի համեմատեք ձեզ համար կարևոր մանրամասները</translation>
 <translation id="5093232627742069661">Երկծալք զիգզագաձև ծալում</translation>
 <translation id="4906192414477726331">Այս սերվերը չի կարող ապացուցել, որ <ph name="DOMAIN"/> է: Brave-ը չի վստահում դրա անվտանգության վկայականին: Պատճառը կարող է լինել սխալ կազմաձևումը կամ կապակցման խափանումը հարձակվողի կողմից:</translation>
@@ -2263,6 +2295,7 @@
 <translation id="5148889558173091794">Ձեր կազմակերպությունն արգելափակել է <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> կայքը, քանի որ այն կանոն է խախտում։ <ph name="BEGIN_LEARN_MORE_LINK"/>Իմանալ ավելին այս նախազգուշացման մասին<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="5157504274688344097">Առևտրի կետեր և հանրախանութներ</translation>
 <translation id="5158275234811857234">Շապիկ</translation>
+<translation id="4075123085690634698">Բացել էջը նոր ինկոգնիտո պատուհանում (⇧⌘N)</translation>
 <translation id="5161334686036120870">Վերնագիր՝</translation>
 <translation id="5161506081086828129">Շեղջիչ 9</translation>
 <translation id="5164798890604758545">Տեքստի մուտքագրում</translation>
@@ -2404,6 +2437,7 @@
 <translation id="5425082381151187189">Տան կահավորում և ներքին հարդարանք</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> կայքն ուզում է ձեզ ծանուցումներ ուղարկել</translation>
 <translation id="5430298929874300616">Հեռացնել էջանիշը</translation>
+<translation id="5433756542371550806">Հրամանատողի տարատեսակներ</translation>
 <translation id="8517215617486022589">Brave-ում <ph name="BEGIN_EMPHASIS"/>չեն պահվի<ph name="END_EMPHASIS"/>՝
           <ph name="BEGIN_LIST"/>
             <ph name="LIST_ITEM"/>ձեր այցելությունների պատմությունը,
@@ -2482,6 +2516,7 @@
 <translation id="5560088892362098740">Գործողության ժամկետի սպառման ամսաթիվը</translation>
 <translation id="55635442646131152">Փաստաթղթի կառուցվածքը</translation>
 <translation id="1702142849385752335">Ձեր տեղադրության տվյալներն օգտագործելու համար անցեք <ph name="LINK"/> և Brave-ին թույլտվություն տրամադրեք։</translation>
+<translation id="5395368798429603306">Բացել ինկոգնիտո ներդիր</translation>
 <translation id="5565735124758917034">Ակտիվ է</translation>
 <translation id="5569030697349375295">Հաշվապահական և ֆինանսական ծրագրեր</translation>
 <translation id="5570825185877910964">Պաշտպանել հաշիվը</translation>
@@ -2589,7 +2624,6 @@
 <translation id="57689295674415555">Վիրտուալ քարտի համարը չի՞ լրացվել</translation>
 <translation id="5772086939108830423">Օգտագործել մուտքի բանալի մեկ այլ սարքում</translation>
 <translation id="5776313857861697733">Առաջնահերթություն</translation>
-<translation id="5776574724412881956">Քարտի տվյալները չե՞ն լրացվել։ Սեղմեք վիրտուալ քարտի մանրամասների վրա՝ սեղմատախտակին պատճենելու համար։ <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="577804500166306874">Արդյունքների բեռնում</translation>
 <translation id="5781136890105823427">Փորձարկումը միացված է</translation>
 <translation id="578305955206182703">Սաթ</translation>
@@ -2884,7 +2918,6 @@
 <translation id="6311642842034740437">Անվանված վայր</translation>
 <translation id="6312113039770857350">Կայքէջն անհասանելի է</translation>
 <translation id="6316110367871394043">Ֆայլերի վերբեռնումը <ph name="CLOUD_PROVIDER"/> դադարեցվել է</translation>
-<translation id="1413891145337537586">Նորույթ․ այստեղ կիրառվում են Family Link-ում Brave-ի համար ընտրված պարամետրերը</translation>
 <translation id="63172326633386613">Կառավարել հատուկ գործառույթների կարգավորումները</translation>
 <translation id="6321917430147971392">Ստուգեք ձեր DNS կարգավորումները</translation>
 <translation id="6322182122604171028">Չհաջողվեց օգտագործել Windows Hello-ն</translation>
@@ -2997,11 +3030,11 @@
 <translation id="6499038740797743453">Վերակայե՞լ գաղտնաբառը</translation>
 <translation id="6502510275417601303">Վճարումների նոր կարգավորման մասին ծանուցումը փակված է</translation>
 <translation id="6502991525169604759">Առանց ձեր կատարած փոփոխությունների</translation>
+<translation id="6505072878288254563">Թարգմանվում է</translation>
 <translation id="6506959208958864820">Ծրար</translation>
 <translation id="6507117483253822672">Վստահ գրեք տեքստեր ցանկացած կայքում</translation>
 <translation id="3960299545138990065">Վերագործարկեք Brave-ը</translation>
 <translation id="6513005815064132016">Թույլատրվում է հետագծել տեսախցիկի դիրքը</translation>
-<translation id="6514932395202175590">Շարունակելու համար մտեք <ph name="EMAIL"/> հաշիվ, ապա ստեղծեք նոր պրոֆիլ</translation>
 <translation id="6517596291481585650">Ուշադրություն: Այս կանոնը չի միավորվել որպես ցուցակ, ինչպես նշված է կանոնում, քանի որ այն ցուցակ չէ:</translation>
 <translation id="6518133107902771759">Ստուգել</translation>
 <translation id="6519885440226079262">Կարող է հայցել ձեր ձեռքերի շարժումների հետագծման թույլտվություն</translation>
@@ -3112,6 +3145,7 @@
 <translation id="6710648923880003133">Ստեղծել հուսալի գաղտնաբառ</translation>
 <translation id="671076103358959139">Գրանցման թոքեն՝</translation>
 <translation id="6711464428925977395">Պրոքսի սերվերի հետ ինչ-որ բան այն չէ, կամ հասցեն սխալ է:</translation>
+<translation id="6711700233707023861">Տարատեսակների տողը պատճենվեց սեղմատախտակին</translation>
 <translation id="6716039223770814796">Համեմատել՝ <ph name="COMPARE_SET_NAME"/> · <ph name="ITEMS"/> տարր</translation>
 <translation id="6716672519412350405"><ph name="URL"/> կայքն ուզում է ստեղծել ձեր շրջակայքի եռաչափ քարտեզը և հետագծել տեսախցիկի դիրքը</translation>
 <translation id="6717692133381953670">Այս սարքից (<ph name="DEVICE_NAME"/>) ուղարկված ներդիր</translation>
@@ -3172,6 +3206,7 @@
 <translation id="6831043979455480757">Թարգմանել</translation>
 <translation id="683108308100148227">Թաքցնել տարրը</translation>
 <translation id="6832753933931306326">Ձևն ինքնալրացվել է</translation>
+<translation id="6837361937093656245">Պահանջվում է մուտք գործել</translation>
 <translation id="6841864657731852591">Գրավյուրային գլան</translation>
 <translation id="6842196666980060516">184 x 260 մմ</translation>
 <translation id="6844998850832008753">Ձեռքերի շարժումների հետագծումն այս պահին թույլատրված է</translation>
@@ -3222,7 +3257,6 @@
 <translation id="6936976777388162184">Այս սարքում ներկառուցված է լիցենզիայի փաթեթ, և սարքը հնարավոր չէ գրանցել կրպակի և ցուցանակի ռեժիմում։</translation>
 <translation id="6944557544071529399">Ռազմավարական խաղեր</translation>
 <translation id="6944692733090228304">Դուք մուտքագրել եք գաղտնաբառը մի կայքում, որը չի կառավարվում <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>-ի կողմից: Ձեր հաշիվը պաշտպանելու համար խորհուրդ ենք տալիս չօգտագործել այդ գաղտնաբառն այլ հավելվածներում և կայքերում:</translation>
-<translation id="6945221475159498467">Ընտրել</translation>
 <translation id="9000864348890316168">Որոնեք համացանցում Brave-ի միջոցով</translation>
 <translation id="6948051842255602737">Խաղն ավարտված է։ Ձեր արդյունքն է <ph name="SCORE"/>։</translation>
 <translation id="6948701128805548767">Ընդունման եղանակներն ու պայմանները տեսնելու համար ընտրեք հասցե</translation>
@@ -3356,6 +3390,7 @@
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> և ուղարկման ևս <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> տարբերակ}one{<ph name="SHIPPING_OPTION_PREVIEW"/> և ուղարկման ևս <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> տարբերակ}other{<ph name="SHIPPING_OPTION_PREVIEW"/> և ուղարկման ևս <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> տարբերակ}}</translation>
 <translation id="7179323680825933600">Պահել և ինքնալրացնել վճարային տվյալները</translation>
 <translation id="7180611975245234373">Թարմացնել</translation>
+<translation id="5549245478906381817">Բացել ինկոգնիտո պատուհան</translation>
 <translation id="7182878459783632708">Կանոններ տրված չեն</translation>
 <translation id="7184379626380324540">Տան կահավորանք</translation>
 <translation id="7186833457841277072">Ծրար (թանաքաշիթային տպիչների)</translation>
@@ -3370,6 +3405,7 @@
 <translation id="7195432682252510959">Կոդն օգտագործեք վճարման ժամանակ։ Գործում է մինչև <ph name="DATE"/>։</translation>
 <translation id="7195852673246414183">Այս կարգավորումը միացնելուց հետո վերադարձեք ընթացիկ ներդիր, որպեսզի սկսեք գրել</translation>
 <translation id="7199278868241956094">Oficio</translation>
+<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Նոր ինկոգնիտո ներդիր բացելու համար սեղմեք Tab, ապա՝ Enter։</translation>
 <translation id="2540471381262404386">Դարձնել Brave-ը համակարգի կանխադրված դիտարկիչ</translation>
 <translation id="7210863904660874423"><ph name="HOST_NAME"/>-ը չի հետևում անվտանգության չափորոշիչներին:</translation>
 <translation id="7210993021468939304">Տեսնում է Լինուքսի գործողությունները կոնտեյներում և կարող է տեղադրել ու գործարկել Լինուքսի հավելվածներ կոնտեյներից</translation>
@@ -3380,6 +3416,7 @@
 <translation id="7220786058474068424">Մշակվում է</translation>
 <translation id="7221855153210829124">Ցույց տալ ծանուցումները</translation>
 <translation id="7221857374443660083">Ձեր բանկն ուզում է համոզվել, որ դա իսկապես դուք եք</translation>
+<translation id="8326104954595890674">Նոր ինկոգնիտո ներդիր</translation>
 <translation id="7227293336683593977">Գների փոփոխությունների պատմություն</translation>
 <translation id="7232352818707016189">Համեմատության աղյուսակի այլ գործողություններ</translation>
 <translation id="7233592378249864828">Տպել հաստատման թերթը</translation>
@@ -3418,6 +3455,7 @@
 <translation id="244157907932852817">Կառավարել Brave հաշվի գաղտնիության կարգավորումները</translation>
 <translation id="7305756307268530424">Գործարկել ավելի դանդաղ</translation>
 <translation id="7308436126008021607">ֆոնային համաժամացում</translation>
+<translation id="3765631529724190482">Իմանալ ավելին Brave-ում գովազդի գաղտնիությունը կառավարելու մասին։</translation>
 <translation id="7310392214323165548">Սարքը շուտով կվերագործարկվի</translation>
 <translation id="7311244614769792472">Ոչինչ չի գտնվել</translation>
 <translation id="7313107491291103073">Ձեր կազմակերպությունը նշել է այս կայքը, քանի որ այն հավանաբար խախտում է կանոնները։</translation>
@@ -3441,6 +3479,7 @@
 <translation id="7356678400607112844">Վերջին այցելությունը</translation>
 <translation id="7359588939039777303">Գովազդն արգելափակված է։</translation>
 <translation id="7308957539693927108">Եթե Brave-ը հասանելի զեղչեր գտնի, դրանք կարտացոլվեն ձեր վճարման մեջ</translation>
+<translation id="8794378783472961468">Այնուամենայնիվ դուք անտեսանելի չեք։ Ինկոգնիտո ռեժիմը չի թաքցնում դիտված էջերը ձեր գործատուից, ինտերնետ ծառայությունների մատակարարից կամ ձեր այցելած կայքերից։</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Հասցեներ ավելացնելու և դրանք Brave-ի կարգավորումներում կառավարելու համար սեղմեք Tab, ապա՝ Enter։</translation>
 <translation id="7365849542400970216">Հաղորդե՞լ կայքերին, երբ օգտագործում եք այս սարքը</translation>
 <translation id="736592699917579616">Սնունդ</translation>
@@ -3459,6 +3498,7 @@
 <translation id="7378594059915113390">Մեդիա կարգավորումներ</translation>
 <translation id="7378810950367401542">/</translation>
 <translation id="7380398842872229465">10 x 15 դյույմ</translation>
+<translation id="7381551826960739226">Վճարման եղանակների ինքնալրացումն անջատված է, քանի որ այս ձևն ապահով միացում չի օգտագործում։</translation>
 <translation id="7388380253839603603">Բենզինի գներ և տրանսպորտային միջոցների լիցքավորում</translation>
 <translation id="7388594495505979117">{0,plural, =1{Սարքը կվերագործարկվի 1 րոպեից}one{Սարքը կվերագործարկվի # րոպեից}other{Սարքը կվերագործարկվի # րոպեից}}</translation>
 <translation id="7392089738299859607">Թարմացնել հասցեն</translation>
@@ -3496,6 +3536,7 @@
 <translation id="7424421098814895617">Ընտրվել է հասցեի ջնջման տարբերակը</translation>
 <translation id="7425037327577270384">Օգնիր ինձ գրել</translation>
 <translation id="7425878584435172632">Կերպարվեստ և դիզայն</translation>
+<translation id="7426745633088095666">Ընդհանուր ներդիրներ</translation>
 <translation id="7427079287360774240">Օտար լեզուների ուսուցում</translation>
 <translation id="7429429656042611765">Executive</translation>
 <translation id="288933326661929857">Հաստատեք ձեր ինքնությունը, որպեսզի Brave-ը կարողանա լրացնել ձեր վճարային տեղեկությունները։</translation>
@@ -3556,11 +3597,11 @@
 <translation id="7525804896095537619">Անվանման դաշտը չի կարող դատարկ լինել</translation>
 <translation id="7526934274050461096">Կայքին կապակցումը պաշտպանված չէ</translation>
 <translation id="7529884293139707752">Կրթություն տանը</translation>
+<translation id="7531464389616946220">Սկանավորել քարտը</translation>
 <translation id="7534987659046836932">Envelope C7</translation>
 <translation id="7535087603100972091">Արժեք</translation>
 <translation id="796823723482603597">Brave-ի տեխնոլոգիա</translation>
 <translation id="7537536606612762813">Պարտադիր</translation>
-<translation id="7542995811387359312">Վարկային քարտի ինքնալրացումն անջատված է, քանի որ այս ձևն ապահով կապակցում չի օգտագործում:</translation>
 <translation id="7543525346216957623">Հարցրեք ձեր ծնողին</translation>
 <translation id="7546409722674205727">«<ph name="APP_NAME"/>» հավելվածը գործարկվում է</translation>
 <translation id="7548892272833184391">Ինչպես շտկել կապի սխալները</translation>
@@ -3635,6 +3676,7 @@
 <translation id="7661591871037163355">Ձեր համեմատման աղյուսակը լցված է։ Նոր սյունակներ ավելացնելու համար հեռացրեք եղածները։</translation>
 <translation id="7662298039739062396">Կարգավորումը կառավարվում է ընդլայնման կողմից</translation>
 <translation id="7663736086183791259">Հավաստագիր <ph name="CERTIFICATE_VALIDITY"/></translation>
+<translation id="1090109565956608696">Արգելված է ինկոգնիտո ռեժիմում</translation>
 <translation id="7667346355482952095">Վերադարձված թոքենը դատարկ է կամ չի համապատասխանում եղածին</translation>
 <translation id="7668654391829183341">Անհայտ սարք</translation>
 <translation id="7669320311687290322"><ph name="ITEM_LABEL"/>, <ph name="ITEM_POSITION"/>՝ <ph name="ITEMS_TOTAL"/>-ից։</translation>
@@ -3791,6 +3833,7 @@
 <translation id="7952327717479677595">«Կառավարել որոնողական համակարգերը» կոճակ․ ակտիվացրեք՝ ձեր կանխադրված որոնողական համակարգը և կայքերում որոնումը կառավարելու համար</translation>
 <translation id="7953236668995583915">Վերաբեռնեք էջը՝ այս կայքում ձեր թարմացված կարգավորումները կիրառելու համար</translation>
 <translation id="7953569069500808819">Եզրակար վերևում</translation>
+<translation id="7955105108888461311">Հարցնել անձամբ</translation>
 <translation id="7956713633345437162">Բջջային էջանիշներ</translation>
 <translation id="7961015016161918242">Երբեք</translation>
 <translation id="7962467575542381659">Հարթակի սարք</translation>
@@ -3916,7 +3959,6 @@
 <translation id="8194412401381329820">Դուք չեք կարող այս էջն օգտագործել կառավարվող հաշվից այս չկառավարվող սարքում։ Եթե օգտագործեք այս էջը, բոլոր կառավարվող հաշիվները կկողպվեն՝ բացի հաշիվներից, որոնք կառավարվում են նույն կազմակերպության կողմից, ինչ այս սարքը (գործընկերոջ հաշիվներ)։</translation>
 <translation id="8194797478851900357">&amp;Հետարկել տեղափոխումը</translation>
 <translation id="8194956568907463262">Հրաձգային խաղեր</translation>
-<translation id="819931074683918462">Ձեր կազմակերպության կանոնների համաձայն՝ դուք պետք է մուտք գործեք՝ օգտագործելով որոշակի պրոֆիլ։</translation>
 <translation id="8199437620497683918">Օպտիկական սկավառակ (փայլուն)</translation>
 <translation id="8199730148066603000">Առանց HTTPS-ի URL-ի նախադիտումը արգելված է։</translation>
 <translation id="8200772114523450471">Շարունակել</translation>
@@ -3939,6 +3981,7 @@
 <translation id="8232343881378637145">Հարթակի ջերմաստիճանը</translation>
 <translation id="8233773197406738106">Ֆայլի նախապատրաստում</translation>
 <translation id="8238188918340945316">28 x 40 դյմ</translation>
+<translation id="6957624206566198865">Բացել էջը նոր ինկոգնիտո ներդիրում</translation>
 <translation id="8241707690549784388">Ձեր փնտրած էջում օգտագործվեցին ձեր մուտքագրած տեղեկությունները: Եթե վերադառնաք այդ էջ, կարող է պահանջվել, որ կրկնեք ձեր կատարած բոլոր գործողությունները: Ուզո՞ւմ եք շարունակել:</translation>
 <translation id="8241712895048303527">Արգելափակել այս կայքում</translation>
 <translation id="8242426110754782860">Շարունակել</translation>
@@ -4076,7 +4119,6 @@
 <translation id="8460854335417802511">Միացնել</translation>
 <translation id="8461694314515752532">Գաղտնագրել համաժամացված տվյալները սեփական համաժամացման անցաբառով</translation>
 <translation id="8461973047386722744">Գաղտնաբառեր չեն գտնվել</translation>
-<translation id="8466379296835108687">{COUNT,plural, =1{1 վարկային քարտ}one{# վարկային քարտ}other{# վարկային քարտ}}</translation>
 <translation id="1912557825937556898">Անցնել Brave-ի անվտանգության ստուգման էջ կարգավորումներում</translation>
 <translation id="8468358362970107653">Envelope C3</translation>
 <translation id="8469428721212363950">Մանրածախ առևտուր</translation>
@@ -4213,6 +4255,7 @@
 <translation id="2184048523283917559">Դուք կարող եք արգելափակել թեմաները, որոնցով չեք ցանկանում կիսվել կայքերի հետ։ Brave-ը նաև ավտոմատ կերպով ջնջում է 4 շաբաթից հին ձեր թեմաները։ Իմանալ ավելին</translation>
 <translation id="8734529307927223492">Ձեր <ph name="DEVICE_TYPE"/> սարքը կառավարվում է <ph name="MANAGER"/>-ի կողմից</translation>
 <translation id="8736059027199600831">30 x 40 դյույմ</translation>
+<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Նոր ինկոգնիտո պատուհան բացելու համար սեղմեք Tab, ապա՝ Enter։</translation>
 <translation id="8737685506611670901">Բացել <ph name="PROTOCOL"/> -ի հղումները <ph name="REPLACED_HANDLER_TITLE"/>-ի փոխարեն</translation>
 <translation id="6326805297893828864">Անվտանգ կապակցում հաստատելու համար ձեր ժամացույցը պետք է ճիշտ կարգավորված լինի: Պատճառն այն է, որ վկայագրերը, որոնք կայքերն օգտագործում են իրենց նույնականացնելու համար, վավեր են լինում միայն որոշակի ժամանակահատվածի ընթացքում: Քանի որ ձեր սարքի ժամացույցը սխալ է, Brave-ը չի կարող ստուգել այս վկայագրերը:</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/>-ի &lt;abbr id="dnsDefinition"&gt;DNS հասցեն&lt;/abbr&gt; չհաջողվեց գտնել: Կատարվում է խնդրի ախտորոշում:</translation>
@@ -4227,8 +4270,10 @@
 <translation id="8759274551635299824">Քարտի ժամկետը սպառվել է</translation>
 <translation id="87601671197631245">Այս կայքն օգտագործում է անվտանգության հնացած կազմաձևում, ինչի հետևանքով ձեր տեղեկությունները (օր.` գաղտնաբառերը, հաղորդագրությունները կամ վարկային քարտի տվյալները) այս կայքում լրացնելիս կարող են բացահայտվել։</translation>
 <translation id="8763927697961133303">USB սարք</translation>
+<translation id="7736544743887840328">Փակել ընթացիկ բացված բոլոր ինկոգնիտո պատուհանները</translation>
 <translation id="8766943070169463815">Պաշտպանված վճարումների մուտքային տվյալների նույնականացման էկրանը բացված է</translation>
 <translation id="8767765348545497220">Փակել հուշման ամպիկը</translation>
+<translation id="8767881944435256294">{COUNT,plural, =1{վճարման 1 եղանակ}one{վճարման # եղանակ}other{վճարման # եղանակ}}</translation>
 <translation id="7113746389006214608">«Ստեղծել ներկայացում» կոճակ․ ակտիվացրեք՝ սլայդներում Brave ներկայացում արագ ստեղծելու համար</translation>
 <translation id="8770286973007342895">Խոտհնձիչներ</translation>
 <translation id="8772387130037509473">Յոգա և պիլատես</translation>
@@ -4255,6 +4300,7 @@
 <translation id="8814547618907885931">Տեսնել բոլոր համեմատական աղյուսակները</translation>
 <translation id="8814707942599948500">Envelope C8</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Brave-ը թարմացելու համար սեղմեք Tab, ապա՝ Enter։</translation>
+<translation id="8820817407110198400">Էջանիշներ</translation>
 <translation id="882338992931677877">Ձեռքով զետեղման դարակ</translation>
 <translation id="8830320733681313421">Hagaki բացիկ</translation>
 <translation id="8830565333350631528">Դիտել ֆայլերը <ph name="CLOUD_PROVIDER"/>-ում</translation>
@@ -4467,6 +4513,7 @@
 <translation id="9211461151375991073">Մուտքագրեք @ նշանը՝ <ph name="FEATURED_SEARCH_LIST"/> կայքերում որոնելու համար</translation>
 <translation id="9213433120051936369">Անհատականացրեք արտաքին տեսքը</translation>
 <translation id="2206050430829841793">Ծրագրերից մեկը Brave-ին թույլ չի տալիս անվտանգ միանալ այս կայքին</translation>
+<translation id="921738974253889319">Այս գործառույթն օգտագործում է այն տեղեկությունները, որոնք արդեն պահել եք ինքնալրացման միջոցով, օրինակ՝ ձեր հասցեն։ Դուք կարող եք դիտել և կառավարել այդ տվյալներն այս էջում։</translation>
 <translation id="92178312226016010">Դուք հետագծում եք այս ապրանքը։</translation>
 <translation id="9218430445555521422">Սահմանել որպես կանխադրված</translation>
 <translation id="9219103736887031265">Պատկերներ</translation>
@@ -4527,43 +4574,4 @@
 <translation id="995755448277384931">IBAN-ի ավելացում</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="997986563973421916">Google Pay-ից</translation>
-<translation id="8820817407110198400">Էջանիշներ</translation>
-<translation id="8362995731815961365">Անձն, ով կարգավորել է այս համակարգիչը, նշել է, որպեսզի այս կայքն արգելափակվի:</translation>
-<translation id="4075123085690634698">Բացել էջը նոր ինկոգնիտո պատուհանում (⇧⌘N)</translation>
-<translation id="2388886110302389394">Բացել էջը նոր ինկոգնիտո պատուհանում (Ctrl+Shift+N)</translation>
-<translation id="6957624206566198865">Բացել էջը նոր ինկոգնիտո ներդիրում</translation>
-<translation id="8326104954595890674">Նոր ինկոգնիտո ներդիր</translation>
-<translation id="6417973700199526943">Դուք ինկոգնիտո ռեժիմում եք</translation>
-<translation id="375424491626359494">Բոլոր ինկոգնիտո ներդիրները փակելուց հետո դիտված էջերը չեն պահվում ձեր դիտարկիչի պատմության, քուքիների պահոցի կամ որոնման պատմության մեջ։ Ներբեռնումները կամ ստեղծած էջանիշները կպահպանվեն։</translation>
-<translation id="8794378783472961468">Այնուամենայնիվ դուք անտեսանելի չեք։ Ինկոգնիտո ռեժիմը չի թաքցնում դիտված էջերը ձեր գործատուից, ինտերնետ ծառայությունների մատակարարից կամ ձեր այցելած կայքերից։</translation>
-<translation id="5549245478906381817">Բացել ինկոգնիտո պատուհան</translation>
-<translation id="5497977785983089120">Բացեք նոր ինկոգնիտո պատուհան, որպեսզի այցելությունների պատմությունը չպահվի</translation>
-<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Նոր ինկոգնիտո պատուհան բացելու համար սեղմեք Tab, ապա՝ Enter։</translation>
-<translation id="4920329334239571966">Փակել բոլոր ինկոգնիտո պատուհանները</translation>
-<translation id="7736544743887840328">Փակել ընթացիկ բացված բոլոր ինկոգնիտո պատուհանները</translation>
-<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Ընթացիկ բացված բոլոր ինկոգնիտո պատուհանները փակելու համար սեղմեք Tab, ապա՝ Enter։</translation>
-<translation id="5395368798429603306">Բացել ինկոգնիտո ներդիր</translation>
-<translation id="40442660395682483">Բացեք նոր ինկոգնիտո ներդիր, որպեսզի այցելությունների պատմությունը չպահվի</translation>
-<translation id="7627159832789643445"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>։ Նոր ինկոգնիտո ներդիր բացելու համար սեղմեք Tab, ապա՝ Enter։</translation>
-<translation id="1536541482996273580">Բացել ինկոգնիտո ներդիր</translation>
-<translation id="1090109565956608696">Արգելված է ինկոգնիտո ռեժիմում</translation>
-<translation id="6934396344327597525">Դուք դուրս կգաք ինկոգնիտո ռեժիմից՝ արտաքին հավելվածում վճարում կատարելու համար։ Շարունակե՞լ։</translation>
-<translation id="1426112902089905810">&lt;h4&gt;Քայլ 1. մուտք գործեք պորտալ&lt;/h4&gt;
-    &lt;p&gt;Որոշ հանրային վայրերում, օրինակ՝ սրճարաններում և օդանավակայաններում, Wi-Fi ցանցին միանալու համար անհրաժեշտ է մտնել հատուկ վեբ պորտալ։ Մուտքի էջը տեսնելու համար բացեք &lt;code&gt;http://&lt;/code&gt;-ով սկսվող որևէ կայք։&lt;/p&gt;
-    &lt;ol&gt;
-    &lt;li&gt;Այցելեք ցանկացած կայք, որի հասցեն սկսվում է &lt;code&gt;http://&lt;/code&gt;-ով, օրինակ՝ &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;։&lt;/li&gt;
-    &lt;li&gt;Բացվող էջում մուտք գործեք՝ ինտերնետից օգտվելու համար։&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;h4&gt;Քայլ 2. բացեք էջը ինկոգնիտո ռեժիմում (միայն համակարգչում)&lt;/h4&gt;
-    &lt;p&gt;Էջը բացեք ինկոգնիտո պատուհանում։&lt;/p&gt;
-    &lt;p&gt;Եթե էջը բացվի, ապա սխալի պատճառը Brave-ի ընդլայնումն է։ Խնդիրը լուծելու համար անջատեք ընդլայնումը։&lt;/p&gt;
-    &lt;h4&gt;Քայլ 3. թարմացրեք ձեր օպերացիոն համակարգը&lt;/h4&gt;
-    &lt;p&gt;Համոզվեք, որ ձեր սարքը թարմացված է։&lt;/p&gt;
-    &lt;h4&gt;Քայլ 4. ժամանակավորապես անջատեք ձեր հակավիրուսային ծրագիրը&lt;/h4&gt;
-    &lt;p&gt;Ձեզ կցուցադրվի այս սխալը, եթե ձեր օգտագործած հակավիրուսային ծրագիրը ներառում է «HTTPS պաշտպանություն» կամ «HTTPS սկանավորում»։ Հակավիրուսային ծրագիրը Brave-ին թույլ չի տալիս անվտանգություն ապահովել։&lt;/p&gt;
-    &lt;p&gt;Խնդիրը լուծելու համար անջատեք ձեր հակավիրուսային ծրագիրը։ Եթե դրանից հետո էջը բացվի, ապա անվտանգ կայքեր այցելելիս անջատեք այս ծրագիրը։&lt;/p&gt;
-    &lt;p&gt;Ավարտելուց հետո մի՛ մոռացեք կրկին միացնել հակավիրուսային ծրագիրը։&lt;/p&gt;
-    &lt;h4&gt;Քայլ 5. ստացեք լրացուցիչ օգնություն&lt;/h4&gt;
-    &lt;p&gt;Եթե շարունակում եք տեսնել սխալը, կապվեք կայքի սեփականատիրոջ հետ։&lt;/p&gt;</translation>
-<translation id="8108906085747235166">Հարցնել անձամբ</translation>
 </translationbundle>
