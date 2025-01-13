@@ -7,7 +7,7 @@ import("//brave/browser/brave_screenshots/buildflags/buildflags.gni")
 
 assert(enable_brave_screenshots)
 
-source_set("brave_screenshots") {
+source_set("utils") {
   sources = [
     "screenshots_utils.cc",
     "screenshots_utils.h",
@@ -34,7 +34,7 @@ source_set("strategies") {
 
   deps = [
     "//chrome/browser/image_editor:image_editor",
-    "//chrome/browser/ui",
+    "//chrome/browser/ui:ui",
   ]
 }
 
@@ -45,10 +45,10 @@ source_set("tabs") {
   ]
 
   deps = [
-    ":brave_screenshots",
     ":strategies",
+    ":utils",
     "//chrome/browser/image_editor:image_editor",
-    "//chrome/browser/ui",
+    "//chrome/browser/ui:ui",
   ]
 }
 
@@ -58,7 +58,7 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [ "//base"]
+  deps = [ "//base:base" ]
 }
 
 source_set("unit_tests") {
@@ -66,9 +66,9 @@ source_set("unit_tests") {
   sources = [ "test/brave_screenshots_unittests.cc" ]
   deps = [
     ":features",
-    "//base",
+    "//base:base",
     "//brave/app:command_ids",
     "//chrome/test:test_support",
-    "//testing/gtest",
+    "//testing/gtest:gtest",
   ]
 }
