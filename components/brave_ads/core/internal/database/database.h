@@ -51,11 +51,9 @@ class ADS_EXPORT Database final {
 
   mojom::DBTransactionResultInfo::StatusCode Execute(
       const mojom::DBActionInfoPtr& mojom_db_action);
-
-  mojom::DBTransactionResultInfo::StatusCode RunStatement(
+  mojom::DBTransactionResultInfo::StatusCode ExecuteWithBindings(
       const mojom::DBActionInfoPtr& mojom_db_action);
-
-  mojom::DBTransactionResultInfo::StatusCode StepStatement(
+  mojom::DBTransactionResultInfo::StatusCode ExecuteQueryWithBindings(
       const mojom::DBActionInfoPtr& mojom_db_action,
       const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
 

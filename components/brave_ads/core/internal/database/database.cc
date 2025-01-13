@@ -128,14 +128,14 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
         break;
       }
 
-      case mojom::DBActionInfo::Type::kRunStatement: {
-        result_code = RunStatement(mojom_db_action);
+      case mojom::DBActionInfo::Type::kExecuteWithBindings: {
+        result_code = ExecuteWithBindings(mojom_db_action);
         break;
       }
 
-      case mojom::DBActionInfo::Type::kStepStatement: {
-        result_code =
-            StepStatement(mojom_db_action, mojom_db_transaction_result);
+      case mojom::DBActionInfo::Type::kExecuteQueryWithBindings: {
+        result_code = ExecuteQueryWithBindings(mojom_db_action,
+                                               mojom_db_transaction_result);
         break;
       }
 
@@ -259,7 +259,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::Execute(
   return mojom::DBTransactionResultInfo::StatusCode::kSuccess;
 }
 
-mojom::DBTransactionResultInfo::StatusCode Database::RunStatement(
+mojom::DBTransactionResultInfo::StatusCode Database::ExecuteWithBindings(
     const mojom::DBActionInfoPtr& mojom_db_action) {
   CHECK(mojom_db_action);
   CHECK(mojom_db_action->sql);
@@ -288,7 +288,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunStatement(
   return mojom::DBTransactionResultInfo::StatusCode::kSuccess;
 }
 
-mojom::DBTransactionResultInfo::StatusCode Database::StepStatement(
+mojom::DBTransactionResultInfo::StatusCode Database::ExecuteQueryWithBindings(
     const mojom::DBActionInfoPtr& mojom_db_action,
     const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
   CHECK(mojom_db_action);

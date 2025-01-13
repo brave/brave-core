@@ -86,7 +86,7 @@ void CreativeNewTabPageAdWallpapers::Insert(
   }
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
   mojom_db_action->sql = BuildInsertSql(mojom_db_action, filtered_creative_ads);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
