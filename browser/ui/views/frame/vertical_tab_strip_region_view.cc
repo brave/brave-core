@@ -259,14 +259,20 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     text_->SetProperty(views::kFlexBehaviorKey,
                        views::FlexSpecification(
                            views::MinimumFlexSizeRule::kPreferredSnapToZero,
-                           views::MaximumFlexSizeRule::kUnbounded)
-                           .WithOrder(3)
-                           .WithWeight(0));
+                           views::MaximumFlexSizeRule::kPreferred)
+                           .WithOrder(3));
 
     constexpr int kFontSize = 12;
     const auto text_font = text_->font_list();
     text_->SetFontList(
         text_font.DeriveWithSizeDelta(kFontSize - text_font.GetFontSize()));
+
+    auto* spacer = AddChildView(std::make_unique<views::View>());
+    spacer->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                                 views::MaximumFlexSizeRule::kUnbounded)
+            .WithOrder(4));
 
     shortcut_text_ = AddChildView(std::make_unique<views::Label>());
     shortcut_text_->SetHorizontalAlignment(
@@ -279,9 +285,8 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
         views::kMarginsKey, gfx::Insets::TLBR(0, kGapBetweenIconAndText, 0, 0));
     shortcut_text_->SetProperty(
         views::kFlexBehaviorKey,
-        views::FlexSpecification(
-            views::MinimumFlexSizeRule::kPreferredSnapToZero,
-            views::MaximumFlexSizeRule::kPreferred)
+        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                                 views::MaximumFlexSizeRule::kPreferred)
             .WithOrder(2));
 
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
