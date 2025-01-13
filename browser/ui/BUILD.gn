@@ -108,6 +108,8 @@ source_set("ui") {
     "webui/brave_webui_source.h",
     "webui/skus_internals_ui.cc",
     "webui/skus_internals_ui.h",
+    "webui/untrusted_sanitized_image_source.cc",
+    "webui/untrusted_sanitized_image_source.h",
   ]
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.

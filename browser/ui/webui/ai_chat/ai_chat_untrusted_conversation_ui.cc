@@ -13,6 +13,7 @@
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/browser/ui/webui/untrusted_sanitized_image_source.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
@@ -21,13 +22,16 @@
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "ui/webui/webui_util.h"
+#include "url/url_constants.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
@@ -65,6 +69,16 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     }
     OpenURL(GURL("https://search.brave.com/search?q=" +
                  base::EscapeQueryParamValue(search_query, true)));
+  }
+
+  void OpenURLFromResponse(const GURL& url) override {
+    if (!web_ui_->GetRenderFrameHost()->HasTransientUserActivation()) {
+      return;
+    }
+    if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
+      return;
+    }
+    OpenURL(url);
   }
 
   void BindParentPage(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
@@ -159,7 +173,8 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
-      "img-src 'self' blob: chrome-untrusted://resources;");
+      "img-src 'self' blob: chrome-untrusted://resources "
+      "chrome-untrusted://image;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FontSrc,
       "font-src 'self' chrome-untrusted://resources;");
@@ -168,6 +183,10 @@ AIChatUntrustedConversationUI::AIChatUntrustedConversationUI(
       base::StringPrintf("frame-ancestors %s;", kAIChatUIURL));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
+
+  Profile* profile = Profile::FromWebUI(web_ui);
+  content::URLDataSource::Add(
+      profile, std::make_unique<UntrustedSanitizedImageSource>(profile));
 }
 
 AIChatUntrustedConversationUI::~AIChatUntrustedConversationUI() = default;
