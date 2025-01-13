@@ -4,6 +4,7 @@ vendor/sparkle
 vendor/bat-native-tweetnacl
 vendor/gn-project-generators
 vendor/web-discovery-project
+vendor/depot_tools
 .DS_Store
 .brave_gclient_*
 .gclient_*
