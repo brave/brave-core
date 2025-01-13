@@ -26,9 +26,6 @@ class EmailAliasesBubbleView : public views::BubbleDialogDelegateView {
                          uint64_t field_renderer_id);
   ~EmailAliasesBubbleView() override;
 
-  // views::BubbleDialogDelegateView override;
-  void OnWidgetVisibilityChanged(views::Widget* widget, bool visible) override;
-
   void FillField(const std::string& value);
 
  private:
