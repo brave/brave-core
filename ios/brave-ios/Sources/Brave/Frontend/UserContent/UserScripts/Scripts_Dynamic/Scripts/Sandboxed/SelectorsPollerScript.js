@@ -1027,6 +1027,13 @@ window.__firefox__.execute(function($) {
       if (styleElm.nextElementSibling === null || styleElm.parentElement !== targetElm) {
         return
       }
+      // `darkreader` (from our night mode) fights with us to be last element
+      // in `document.body`. Repeatedly moving our stylesheet can cause
+      // unwanted animations to repeat every time we move the stylesheet
+      const nextElementClass = styleElm.getAttribute("class");
+      if (nextElementClass.includes("darkreader")) {
+        return;
+      }
       moveStyle()
     }, 1000)
   }
