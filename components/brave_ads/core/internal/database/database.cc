@@ -321,6 +321,11 @@ mojom::DBTransactionResultInfo::StatusCode Database::ExecuteQueryWithBindings(
     rows.push_back(std::move(row));
   }
 
+  if (!statement.Succeeded()) {
+    VLOG(0) << "Failed to run SQL statement: " << *mojom_db_action->sql;
+    return mojom::DBTransactionResultInfo::StatusCode::kStatementError;
+  }
+
   return mojom::DBTransactionResultInfo::StatusCode::kSuccess;
 }
 
