@@ -18,7 +18,7 @@ export interface ExternalWallet {
 }
 
 // Returns the external wallet provider name for the specified provider.
-export function getExternalWalletProviderName (
+export function getExternalWalletProviderName(
   provider: ExternalWalletProvider
 ) {
   switch (provider) {
@@ -34,7 +34,7 @@ export function getExternalWalletProviderName (
 // |null| if the key is invalid. This function is provided for backward
 // compatibility with code that does not yet use the |ExternalWalletProvider|
 // type.
-export function externalWalletProviderFromString (
+export function externalWalletProviderFromString(
   key: string
 ): ExternalWalletProvider | null {
   switch (key) {
@@ -53,7 +53,7 @@ export function externalWalletProviderFromString (
 // provider key, or the empty string if the key is not recognized. This function
 // is provided for backward compatibility with code that does not yet use the
 // |ExternalWalletProvider| type. Prefer |getExternalWalletProviderName|.
-export function lookupExternalWalletProviderName (providerKey: string) {
+export function lookupExternalWalletProviderName(providerKey: string) {
   const provider = externalWalletProviderFromString(providerKey)
   return provider ? getExternalWalletProviderName(provider) : ''
 }
@@ -61,7 +61,7 @@ export function lookupExternalWalletProviderName (providerKey: string) {
 // Converts external wallet information returned from the `chrome.braveRewards`
 // extension API into an |ExternalWallet| object, or |null| if the specified
 // object cannot be converted.
-export function externalWalletFromExtensionData (
+export function externalWalletFromExtensionData(
   data: any
 ): ExternalWallet | null {
   if (!data || typeof data !== 'object') {
@@ -88,7 +88,7 @@ export interface ExternalWalletProviderRegionInfo {
 
 // Returns a value indicating whether a wallet provider is allowed for the
 // specified country code, given the supplied allow/block list.
-export function isExternalWalletProviderAllowed (
+export function isExternalWalletProviderAllowed(
   countryCode: string,
   regionInfo: ExternalWalletProviderRegionInfo | null
 ) {
@@ -109,8 +109,22 @@ export function isExternalWalletProviderAllowed (
   return true
 }
 
+// Returns a value indicating if new connections for the wallet provider have
+// been disabled.
+export function isExternalWalletProviderDisabled(
+  regionInfo: ExternalWalletProviderRegionInfo | null
+) {
+  if (!regionInfo) {
+    return false
+  }
+  // The provider is considered disabled if the server returns an allow list
+  // with the single element "disabled".
+  const { allow } = regionInfo
+  return allow.length === 1 && regionInfo.allow[0] === 'disabled'
+}
+
 // Returns true if the specified wallet provider is a self-custody provider.
-export function isSelfCustodyProvider (provider: ExternalWalletProvider) {
+export function isSelfCustodyProvider(provider: ExternalWalletProvider) {
   switch (provider) {
     case 'bitflyer': return false
     case 'gemini': return false
