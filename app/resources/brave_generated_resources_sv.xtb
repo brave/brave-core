@@ -114,7 +114,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2370739752330685659">Kanske senare</translation>
 <translation id="5100490448228945668">Avvisa Brave-sökkonvertering, tryck på Retur för att ta bort detta förslag</translation>
 <translation id="6213208892248046484">Byt till Brave Sök</translation>
-<translation id="9194637241566114638">Hjälp till att förbättra <ph name="SEARCH_NAME"/> genom att skicka anonyma användningsdata.  <ph name="MORE_INFO"/></translation>
+<translation id="9194637241566114638">Hjälp till att förbättra <ph name="SEARCH_NAME"/> genom att skicka anonyma användningsdata. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">Mer info</translation>
 <translation id="780301667611848630">Nej tack</translation>
@@ -307,11 +307,11 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Återställ</translation>
 <translation id="2521960050170773751">Lägg till media från sidan</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> vill öppna</translation>
-<translation id="7128982309566342232">En inbäddad sida på <ph name="SITE"/> vill öppna</translation>
+<translation id="4828353184750597953">En inbäddad sida på <ph name="SITE"/> vill öppna</translation>
 <translation id="1175012181261953767">Denna sida vill öppna</translation>
 <translation id="7459546222322124545">En inbäddad sida på den här sidan vill öppna</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> vill spara</translation>
-<translation id="5936788906460687941">En inbäddad sida på <ph name="SITE"/> vill spara</translation>
+<translation id="8813509417421129632">En inbäddad sida på <ph name="SITE"/> vill spara</translation>
 <translation id="7700010743463174379">Denna sida vill spara</translation>
 <translation id="6774238875569752630">En inbäddad sida på den här sidan vill spara</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
@@ -573,6 +573,7 @@ börja använda Sync igen måste du skapa ett nytt konto och lägga till varje e
 <translation id="4094590686212463338">Det gick inte att gå med i den här synkroniseringskedjan. Synkroniseringskedjan har tagits bort.</translation>
 <translation id="4908081302669157000">Telefonnummer, e-postadresser och adresser</translation>
 <translation id="294985549514492876">Webbappar (PWA:er)</translation>
+<translation id="7029809446516969842">Lösenord</translation>
 <translation id="924029461438529367">Visa sökförslag</translation>
 <translation id="3128251601544028053">När du skriver i adressfältet eller sökrutan skickar Brave det du skriver till din standardsökmotor för att få bättre förslag. Detta är inte tillgängligt i privata fönster.</translation>
 <translation id="6285118765755298263">Indexera andra sökmotorer</translation>
@@ -715,6 +716,8 @@ Leo. Det går inte att ångra den här åtgärden.</translation>
 <translation id="1355326130503900056">Namnet på modellen så som det ska visas i begäran till serverramverket, t.ex. phi-3 (observera att om detta namn inte matchar exakt vad som förväntas av serverramverket kommer integrationen inte att fungera)</translation>
 <translation id="3286410514484292784">Webbadress där ditt serverramverk lyssnar efter förfrågningar. Om du är osäker kan du kontrollera dokumentationen för serverramverket. För Ollama är detta t.ex. alltid http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Vissa serverramverk kan kräva autentiseringsuppgifter, t.ex. en API-nyckel eller en åtkomsttoken. Dessa kommer att läggas till i förfrågans rubrik.</translation>
+<translation id="4335128003329183586">Kontextstorlek</translation>
+<translation id="8794525422794607973">Det maximala antalet tokens modellen kan bearbeta i en enda interaktion. Varje token är ungefär 3/4 av ett ord. En större kontextstorlek gör det möjligt för modellen att hantera längre konversationer. Olika modeller stödjer olika maximala kontextstorlekar.</translation>
 <translation id="217141195370578385">Brave använder inte proxy för dessa förfrågningar, läs integritetsvillkoren för den valda leverantören.</translation>
 <translation id="2645532768679870478">Icke-lokala slutpunkter bör använda HTTPS-protokoll för säker överföring av data.</translation>
 <translation id="8177205483022887785">Du har angett en ogiltig URL. Vänligen ange en giltig URL.</translation>
@@ -724,6 +727,9 @@ Leo. Det går inte att ångra den här åtgärden.</translation>
 <translation id="7435587476558117990">Anslut din egenhostade eller tredjepartshostade LLM med Leo och använd dem i webbläsaren.</translation>
 <translation id="1381050642750209119">Använd valfritt ramverk som är kompatibelt med OpenAI-chattprotokoll, t.ex. Ollama.</translation>
 <translation id="2642905648178380593">Spara modell</translation>
+<translation id="6304169450064541679">Systemuppmaning</translation>
+<translation id="3081947790648024460">Anpassade instruktioner och/eller kontext som ges till modellen för att vägleda dess svar i en specifik riktning eller stil. Använd %datetime% där du vill att aktuellt datum och tid ska infogas.</translation>
+<translation id="5688878061573389791">≥<ph name="TOKENS_COUNT"/> tokens</translation>
 <translation id="349846214503465941">Aktivera spellista</translation>
 <translation id="7903608716704052878">Lägg automatiskt till filer för offlinevisning</translation>
 <translation id="4193768184502613558">Med det här alternativet cachas mediefiler automatiskt så att du kan spela upp dem utan Internetanslutning.</translation>

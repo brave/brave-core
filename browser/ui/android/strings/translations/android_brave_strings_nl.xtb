@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
-<translation id="8631427463833030968">Advertenties beheren</translation>
 <translation id="7630214457764713113">Clean link kopiëren</translation>
-<translation id="885805571521218129">Dit toont uw geschatte inkomstenvoor Brave-advertenties deze maand.</translation>
 <translation id="3478449063771497234">Meldingen zijn uitgeschakeld</translation>
 <translation id="2862978891748913252">Uw land selecteren</translation>
 <translation id="3970520675790340955">Selecteer uw land, zodat we u de juiste opties en advertenties kunnen laten zien voor uw regio.</translation>
@@ -108,9 +106,17 @@
 <translation id="4692623383562244444">Zoekmachines</translation>
 <translation id="1468415711258933398">Standaard Tab</translation>
 <translation id="3377025655491224618">Privétabblad</translation>
+<translation id="7304425663107214334">Browsersuggesties weergeven</translation>
 <translation id="8982438328166986164">Hiermee worden websitesuggesties weergegeven op basis van uw bladwijzers en browsegeschiedenis.</translation>
+<translation id="924029461438529367">Zoeksuggesties weergeven</translation>
+<translation id="1571106259128580884">Suggesties voor topsites weergeven</translation>
 <translation id="6285118765755298263">Overzicht van andere zoekmachines</translation>
 <translation id="919715748352669592">Indexeert automatisch websites die de OpenSearch spec volgen.</translation>
+<translation id="412411722208944922">Snelle zoekmachines</translation>
+<translation id="2836969042340015500">Snelzoekmachines</translation>
+<translation id="9120455214794270250">Snelle zoekbalk weergeven</translation>
+<translation id="1052991798173010693">Momenteel gebruikte zoekmachines</translation>
+<translation id="335303688425891752">Druk lang om de volgorde te wijzigen</translation>
 <translation id="9148058034647219655">Sluiten</translation>
 <translation id="8047754398610073499">Kennisgevingen over cookietoestemming blokkeren</translation>
 <translation id="2621893359845808115">Websites die pop-ups geven die vragen om cookies op hun site te accepteren/weigeren worden geblokkeerd</translation>
@@ -143,7 +149,9 @@
 <translation id="2356070529366658676">Vragen</translation>
 <translation id="4176463684765177261">Uitgeschakeld</translation>
 <translation id="59174027418879706">Ingeschakeld</translation>
+<translation id="6920492760024499150">Het hoofdnieuws van vandaag in een persoonlijke feed, speciaal voor jou.</translation>
 <translation id="8300751939969131609">Schakel Brave Nieuws in en mis nooit een verhaal</translation>
+<translation id="7627131190984957214">Brave News wordt mogelijk gemaakt door privé- en geanonimiseerde advertenties die aan je apparaat zijn aangepast.</translation>
 <translation id="7699565323725789472">Volg uw favoriete bronnen in één feed. Open een tabblad in Brave, scrol omlaag en… voilà!\nBrave News maakt gebruik van privé- en geanonimiseerde advertenties.</translation>
 <translation id="1765217911817124376">Brave-nieuws inschakelen</translation>
 <translation id="8981973962043893066">Zoek naar sites, onderwerpen of RSS-feeds</translation>
@@ -232,6 +240,7 @@
 <translation id="7281027579943912834">Met Brave als standaardbrowser, krijgt elke link die u aanklikt ad block-bescherming. Elke pagina, video en stream.</translation>
 <translation id="5148943178722443958">Help ons Brave beter te maken.</translation>
 <translation id="6718362830686703942">Verzend diagnostische rapporten als uw systeem crasht of vastloopt.</translation>
+<translation id="8616157231067364693">Deel anonieme productinzichten over welke functies worden gebruikt door de gebruikers van Brave.</translation>
 <translation id="2877653791257935258">Typ de naam of URL van een website</translation>
 <translation id="5329830149661250028">Brave maakt het verschil: geen advertenties, geen trackers, veel kortere laadtijden.</translation>
 <translation id="3941792073703079607">Zie het verschil met Brava: Blokkeer advertenties. Bespaar data. Stream sneller.</translation>
@@ -276,6 +285,7 @@
 <translation id="1938402585819943124">Kies Brave op het volgende scherm</translation>
 <translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="745974920645827035">Onafhankelijk zoeken met betere privacy</translation>
+<translation id="2773167297815493692">Brave Search maakt geen profiel van jou.</translation>
 <translation id="5240031343741051161">Brave Zoeken proberen</translation>
 <translation id="5234764350956374838">Sluiten</translation>
 <translation id="6639570430554986719">JANUARI</translation>
@@ -314,11 +324,13 @@
 <translation id="3132642509209154999">Deze code is verlopen. Genereer een nieuwe code op je andere apparaat en probeer het opnieuw.</translation>
 <translation id="2859229680945501779">Deze code is ongeldig. Controleer of de tijd en tijdzone correct zijn ingesteld op uw apparaat.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
+<translation id="348794064910142198">Met Brave Sync kun je bladwijzergegevens van Brave Browser privé synchroniseren tussen je verschillende apparaten.\n\nScan gewoon de code van je synchronisatieketen die je op een ander apparaat hebt gemaakt. Of maak een nieuwe synchronisatieketen.</translation>
 <translation id="2614069607859982576">Open met een bestaand gesynchroniseerd apparaat de Brave-instellingen en nafigeer naar Instellingen &gt; Sync. Kies 'Nieuw apparaat toevoegen' en scan de QR-code die op het scherm verschijnt.</translation>
 <translation id="5241263629636958324">Gekopieerd naar het klembord</translation>
 <translation id="5817918615728894473">Koppelen</translation>
 <translation id="3429575397891106447">Synchronisatieopties</translation>
 <translation id="1680065323266179640">Sync-account verwijderen</translation>
+<translation id="8397325856045820212">Als je je account verwijdert, worden je versleutelde gegevens verwijderd van de Brave-servers en wordt Sync op al je verbonden apparaten uitgeschakeld. De gegevens die lokaal op die apparaten zijn opgeslagen, worden echter niet verwijderd.\n\nDeze verwijdering is definitief en de gegevens kunnen niet worden teruggezet. Mocht je Sync weer willen gebruiken, dan moet je een nieuw account maken en elk apparaat één voor één opnieuw toevoegen.</translation>
 <translation id="9064376100690171155">Account permanent verwijderen</translation>
 <translation id="2740516568641790390">Gesynchroniseerd account is verwijderd</translation>
 <translation id="7006136453627651236">Gesynchroniseerd account verwijderen is mislukt</translation>
@@ -328,6 +340,8 @@
 <translation id="1602067095281698985">Een nieuwe synchronisatieketen starten</translation>
 <translation id="1475223680121592371">Voeg een mobiel apparaat toe</translation>
 <translation id="2965377893636908578">Voeg een computer toe</translation>
+<translation id="4701589725270449523">Open Brave op een andere telefoon of tablet en ga naar Instellingen &gt; Sync &gt; Scannen.\n\nGa dan op je mobiele apparaat naar Brave Sync in Instellingen en klik op de knop 'Synchronisatiecode scannen'. Gebruik je camera om de QR-code hieronder te scannen.</translation>
+<translation id="67114562351518315">Open Brave op je computer en ga naar Instellingen &gt; Synchronisatie. Kies 'Voer een synchronisatiecode in'.\n\nGa dan op je doelcomputer naar Brave Sync in Instellingen en klik op de knop 'Ik heb een synchronisatiecode'.\nVoer de woorden van de synchronisatieketen in zoals hieronder weergegeven.</translation>
 <translation id="65315202420929965">Scan deze synchronisatiecode</translation>
 <translation id="6764016175302339802">Behandel deze code als een wachtwoord. Als iemand deze te pakken krijgt, kunnen ze je gesynchroniseerde gegevens lezen en wijzigen.</translation>
 <translation id="2731921493694251495">Voer de sync-chaincode in</translation>
@@ -343,6 +357,9 @@
 <translation id="8131740175452115882">Bevestigen</translation>
 <translation id="4973653569293835178">Ik gebruik mijn camera...</translation>
 <translation id="326454632686131209">Synchroniseer apparaat</translation>
+<translation id="3122158728238634723">Nieuwe code genereren</translation>
+<translation id="4358805443781965194">Code is verlopen. Genereer een nieuwe door op de knop hieronder te klikken.</translation>
+<translation id="318164877797885563">Deze tijdelijke code is de komende <ph name="TIME_AMOUNT"/> geldig</translation>
 <translation id="327726072512457161">Instellingen afsluiten</translation>
 <translation id="8050847734948770789">Brave Beloningen inschakelen</translation>
 <translation id="9187185473011056079">Ik doe mee!</translation>
@@ -352,6 +369,8 @@
 <translation id="6417420737057016607">Brave Advertenties</translation>
 <translation id="5611966874859284786">Melding van advertenties weergeven wanneer Brave niet in gebruik is</translation>
 <translation id="6606319453795180219">Hierdoor worden uw Brave-beloningen verwijderd en al uw gegevens van Brave-beloningen gereset</translation>
+<translation id="5717636703619499822"><ph name="BEGIN_LINK1"/>Brave Rewards-gegevens resetten…<ph name="END_LINK1"/></translation>
+<translation id="1830919318137227284"><ph name="BEGIN_LINK1"/>Brave Ads-gegevens wissen…<ph name="END_LINK1"/></translation>
 <translation id="8293206222192510085">Voeg Bladwijzer toe</translation>
 <translation id="340492034650766959">Bladwijzer verwijderen</translation>
 <translation id="2149973817440762519">Bladwijzer bewerken</translation>
@@ -389,8 +408,13 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="6925081665778864449">Voor de synchronisatie van wachtwoorden, moet u biometrische gegevens/wachtwoorden op uw Android-apparaat inschakelen. Met deze extra beveiligingsmaatregel kunt u uw wachtwoorden veilig bewaren.</translation>
 <translation id="597993392929850353">Brave Licentie</translation>
 <translation id="6336451774241870485">Nieuw privétabblad</translation>
-<translation id="6199596294742117349">Dit is een privaat tabblad</translation>
-<translation id="5858455511731621847">Ook al worden websites die je bezoekt in privétabbladen niet lokaal opgeslagen, ze maken je niet anoniem of onzichtbaar voor je ISP, je werkgever of de websites die je bezoekt.</translation>
+<translation id="3110967157686007724">Privétabblad</translation>
+<translation id="944340256927461196">Laat geen sporen achter op je apparaat</translation>
+<translation id="2063044449012253966">Sites die je bezoekt in privévensters worden niet in je geschiedenis weergegeven. Cookies, formuliergegevens en sitegegevens verdwijnen zodra alle privévensters zijn gesloten.</translation>
+<translation id="7395764193745523646">Zichtbaarheid tijdens browsen</translation>
+<translation id="8735363371744702779">Zelfs in privévensters is je browseactiviteit mogelijk nog steeds zichtbaar voor je ISP, netwerkwaarnemers of je werkgever (als je een apparaat of het netwerk van je werk gebruikt).</translation>
+<translation id="1413177583895309156">Brave VPN versleutelt en beschermt alles wat je online doet, zelfs buiten de Brave Browser.</translation>
+<translation id="3974348661685061050">Probeer 7 dagen gratis</translation>
 <translation id="5789441016350810005">Brave Ads die worden verzonden wanneer de browser op de achtergrond draait</translation>
 <translation id="4973347371961481083">Bijdragen</translation>
 <translation id="7047578174221019462">Je maandelijkse bijdragen zijn verwerkt.</translation>
@@ -455,6 +479,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5582686930349810484">Vingerafdrukken geblokkeerd (standaard)</translation>
 <translation id="769702552748212954">Sta alle vingerafdrukken toe</translation>
 <translation id="876424292214881779">Advertenties en andere griezelige dingen zijn geblokkeerd</translation>
+<translation id="6849027612978668678">Sites gebruiken vaak cookies en scripts die jou en je apparaat proberen te identificeren. Ze willen achterhalen wie je bent, je volgen op het web en bijhouden wat je op elke site doet.\n\nBrave blokkeert deze acties zodat je kunt browsen zonder dat iemand je volgt.</translation>
 <translation id="8553998445606452168">Over Brave Shields</translation>
 <translation id="8912304686498704084">BOVEN</translation>
 <translation id="4963218453264888510">BENEDEN</translation>
@@ -466,7 +491,9 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="9055546041146396417">Als deze site niet lijkt te werken, probeer dan Shields uit te zetten.</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
+<translation id="1653405824851871276">Bedankt voor je hulp om Brave beter te maken voor iedereen. Dit rapport zal alleen informatie bevatten die we nodig hebben om deze site te herstellen. <ph name="LEARN_MORE"/></translation>
 <translation id="8759753423332885148">Learn more.</translation>
+<translation id="8740275226259417070">Dit is een foutpagina die niet als een defecte site kan worden gemeld.</translation>
 <translation id="721949491455392748">Voeg een schermafbeelding van de huidige pagina toe</translation>
 <translation id="8459191579769999214">Schermafbeelding bekijken</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
@@ -551,6 +578,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7889432931837317731">Indien mogelijk automatisch openen</translation>
 <translation id="1029304566263314007">Meldingen van voortgang van download weergeven</translation>
 <translation id="2910433761530295035">Vragen waar bestanden moeten worden opgeslagen (als SD-kaart is gedetecteerd)</translation>
+<translation id="2977501775944575564">Parallel downloaden</translation>
+<translation id="6224180438946945617">Schakel parallel downloaden in voor een hogere downloadsnelheid</translation>
 <translation id="8967385052772844086">Volledig privacyrapport weergeven</translation>
 <translation id="6864343534748973390">Populairste</translation>
 <translation id="4608192160278975831">Particulier en geen tracking</translation>
@@ -589,6 +618,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1645800479814134195">Ik begrijp dat dit een eigen wallet is, en dat ik persoonlijk verantwoordelijk ben voor alle bijbehorende fondsen, activa of rekeningen, en voor het nemen van gepaste maatregelen om mijn wallet te beveiligen, beschermen en back-uppen. Ik begrijp dat Brave geen toegang heeft tot mijn wallet of transacties namens mij kan terugdraaien, en dat mijn herstelzin de ENIGE manier is om weer toegang te krijgen in het geval van een verloren wachtwoord, gestolen apparaat, of soortgelijke omstandigheden.</translation>
 <translation id="4565891212173086999">Ik heb de <ph name="CLICK_START"/>gebruiksvoorwaarden<ph name="CLICK_END"/> gelezen en ga hiermee akkoord.</translation>
 <translation id="3259102562570606417">Bewaar uw herstelzin</translation>
+<translation id="4339981001593889376">Je herstelzin is de sleutel om toegang te krijgen tot je wallet als je je wachtwoord vergeet of je apparaat verliest.</translation>
 <translation id="426648489149930289">Bewaar het op een veilige plek waar anderen geen toegang toe hebben en deel het niet met anderen.</translation>
 <translation id="3726490322412361740">Wachtwoord invoeren</translation>
 <translation id="1566412704591731844">Uw wallet wordt aangemaakt...</translation>
@@ -596,9 +626,11 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1577948178257477049"><ph name="ACCOUNT_NAME"/>-account <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Account toevoegen</translation>
 <translation id="3448492834076427715">Account bijwerken</translation>
+<translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
 <translation id="1537175937716697987">Bekijk mijn herstelzin</translation>
 <translation id="5303015959766064022">Ik maak later een reservekopie</translation>
 <translation id="7345730059518887993">Controleren</translation>
+<translation id="7640406249038879146">Voer het <ph name="WORD_POSITION"/>e woord van de herstelzin in.</translation>
 <translation id="2598171223363459366">Je kunt deze stap nu overslaan, maar je moet wel een reservekopie van je herstelzin maken om je account veilig te houden.</translation>
 <translation id="8100001366858145406">Ontgrendelen met vingerafdruk inschakelen?</translation>
 <translation id="5493402808936397665">Schakel biometrische gegevens in om snel zonder wachtwoord je wallet te ontgrendelen.</translation>
@@ -617,6 +649,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2523174693142405417">Netwerken zoeken</translation>
 <translation id="1164748583090434571">Testnetwerken weergeven</translation>
 <translation id="935220650946301698">Doorgaan met <ph name="NUMBER"/> netwerken</translation>
+<translation id="4052668782430384783">Woord #<ph name="NUMBER"/></translation>
 <translation id="8248460961680233459">Een wachtwoord maken</translation>
 <translation id="2789310860394340571">Je gebruikt dit wachtwoord om toegang tot je wallet te krijgen.</translation>
 <translation id="2136372518715274136">Nieuw wachtwoord invoeren</translation>
@@ -635,11 +668,14 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="9195657745688986798">Wallet ontgrendelen</translation>
 <translation id="5168349973342709369">Voer het wachtwoord in om de wallet te ontgrendelen</translation>
 <translation id="1144810021918451336">Beschermt u niet tegen gevaarlijke websites, downloads en extensies.</translation>
+<translation id="9085712756417277119">Herstelzin komt niet overeen</translation>
 <translation id="2360588547830602174">Accountherstel mislukt; probeer het opnieuw.</translation>
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="6284218950354553099">Dagelijks automatisch gebruiksping verzenden naar Brave</translation>
 <translation id="2181060149810222381">Met deze privéping kan Brave het aantal actieve gebruikers inschatten.</translation>
 <translation id="6725413948756358325">Accountnaam</translation>
+<translation id="3240773103344793224">Wijziging in eigenaarschap van account aangevraagd</translation>
+<translation id="8041423758956015568">Door deze transactie wordt het eigendom van het account toegewezen aan een nieuw programma. Deze actie kan niet ongedaan worden gemaakt en kan leiden tot verlies van geld.</translation>
 <translation id="6062431965141524986">Je kunt een tweede account aanmaken door je privésleutel te importeren.</translation>
 <translation id="3952797765659730604">Typ, plak of importeer je stringbestand met privésleutel of JSON-bestand.</translation>
 <translation id="569068482611873351">Importeren...</translation>
@@ -669,12 +705,24 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3510283489391432976">Kies je geo-locatie of land</translation>
 <translation id="7695158478627528928">Brave legt uw activiteit nooit vast</translation>
 <translation id="4575683170451975058">Bescherm 5 apparaten met 1 abonnement</translation>
+<translation id="755045397420611731">Extra privacy en beveiliging online</translation>
+<translation id="4520128772974831415">Verberg je IP en wijzig je locatie</translation>
+<translation id="2044418816479192294">Honderden servers over de hele wereld</translation>
+<translation id="7410504850864021600">Bliksemsnelle verbindingssnelheden</translation>
+<translation id="2422309687188612485">Bescherm tot 10 apparaten met één abonnement</translation>
 <translation id="4882693590083943563">Alle abonnementen zijn inclusief een <ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">gratis proefperiode van 7 dagen!</translation>
 <translation id="1532536259167115948">Maandabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Jaarabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Wordt maandelijks verlengd</translation>
+<translation id="112929124115834557">Jaarlijks verlengd</translation>
+<translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/maand</translation>
 <translation id="1163809943099641131">Eén jaar</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>bespaar <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/jaar</translation>
+<translation id="2786538705804257030">Abonnementen worden in rekening gebracht via je Google-account. Wanneer je een abonnement koopt, gaat het resterende deel van de eventuele gratis proefperiode verloren.\n\nJe abonnement wordt automatisch verlengd, tenzij je het ten minste 24 uur vóór het einde van de huidige periode opzegt.\n\nJe kunt je abonnementen beheren in Instellingen.\n\nDoor Brave te gebruiken, ga je akkoord met de Gebruiksvoorwaarden en het Privacybeleid.</translation>
+<translation id="5035172357624830412">Al gekocht op brave.com?</translation>
+<translation id="713136183174551885">Vernieuw je inloggegevens</translation>
 <translation id="6053992191006521518">Probeer GRATIS uit</translation>
 <translation id="5903391101107992067">Probeer 7 dagen gratis</translation>
 <translation id="721747358270435486">VPN installeren</translation>
@@ -708,7 +756,21 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="755448900483975096">Mobiele provider</translation>
 <translation id="1279441577056010362">Doorgaan naar e-mail</translation>
 <translation id="7125582363614011660">Ondersteuning met de hulp van het Guardian-team.\n\nSelecteer de informatie die u met ons wilt delen.\n\nHoe meer informatie u met ons deelt, hoe gemakkelijker het voor ons ondersteunend personeel is om u te helpen bij het oplossen van uw probleem.</translation>
+<translation id="8813171284214934811">Selecteer automatisch de dichtstbijzijnde VPN-server op basis van je tijdzone. Deze optie wordt aanbevolen voor een maximale browsesnelheid.</translation>
+<translation id="4636153103822002055">{CITY_COUNT, plural,
+          =1 {<ph name="CITY_COUNT_ONE"/> stad - }
+          other {<ph name="CITY_COUNT_MANY"/> steden - }
+        }</translation>
+<translation id="2509734936997119836">{SERVER_COUNT, plural,
+          =1 {<ph name="SERVER_COUNT_ONE"/> server}
+          other {<ph name="SERVER_COUNT_MANY"/> servers}
+        }</translation>
+<translation id="3199127022143353223">Servers</translation>
 <translation id="5431902940483264007">Optimaal</translation>
+<translation id="6527596624419285047">Gebruik de beste beschikbare server</translation>
+<translation id="6789157560111825412">Beschikbare servers</translation>
+<translation id="5823953367746119927">Regio van server</translation>
+<translation id="6991535320595227154">Server in <ph name="REGION_NAME"/></translation>
 <translation id="4397083831618200686">Probleem selecteren</translation>
 <translation id="6687228121145903051">Kan geen verbinding maken met de VPN (andere fout)</translation>
 <translation id="9184988385244077767">Geen internet bij verbinding</translation>
@@ -734,7 +796,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2304783958703511257">Geavanceerde instellingen</translation>
 <translation id="4220062530885628403">Nonce</translation>
 <translation id="1924965034964265193">Aangepaste nonce-waarde invoeren</translation>
-<translation id="5317780077021120954">Opslaan</translation>
+<translation id="5317780077021120954">Save</translation>
 <translation id="4979796155378508955">Transactie wordt mogelijk niet aan het netwerk doorgegeven indien aangepaste nonce-waarde niet-sequentieel is of andere fouten bevat.</translation>
 <translation id="750843150060816463">Gasprijs (Gwei)</translation>
 <translation id="1426320910664514906">Gaslimiet</translation>
@@ -786,7 +848,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4351811224047421378">Zichtbare decimalen</translation>
 <translation id="3494964159182650590">Overzicht van de beloningen</translation>
 <translation id="590733288489975971">Beloningen uit advertenties</translation>
-<translation id="1886682615222609631">Inkomsten tot nu toe</translation>
+<translation id="1450735350187803276">Advertenties die je deze maand hebt gezien</translation>
 <translation id="1767561995429774671">Draag bij</translation>
 <translation id="7335371657242627509">Deelname aan Auto-Contribute</translation>
 <translation id="6727102863431372879">Instellen</translation>
@@ -910,9 +972,14 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7134370164002095282"><ph name="CURRENT"/> of <ph name="SIZE"/></translation>
 <translation id="756701799684433105">Transactie goedkeuren</translation>
 <translation id="6450792191436242818">Systeemprogramma</translation>
+<translation id="5318067544026930166">Brave Wallet ontgrendelen met biometrische authenticatie</translation>
+<translation id="2629767022373384291">Wil je biometrische authenticatie gebruiken om Brave Wallet te ontgrendelen?</translation>
+<translation id="4782919977106118997">Ontgrendelen met vingerafdruk</translation>
+<translation id="2054995875643283428">Sla dit voorlopig over</translation>
 <translation id="2610561535971892504">Klikken om te kopiëren</translation>
 <translation id="2522605225061484799">Ga naar mijn portfolio</translation>
 <translation id="1148624853678088576">Alles is klaar!</translation>
+<translation id="4131445988101719379">Je Brave Wallet is klaar voor gebruik</translation>
 <translation id="6252742184395380448">Configuratieprogramma</translation>
 <translation id="5358970666412490132">Aandelenprogramma</translation>
 <translation id="346636227344244984">Stemprogramma</translation>
@@ -992,6 +1059,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6610899852831463073">Kan veilig browsen niet inschakelen</translation>
 <translation id="7954263306665462056">Veilig browsen is uitgeschakeld op uw apparaat. Zorg ervoor dat Google Play Services is geïnstalleerd om veilig browsen in te schakelen en houd het up-to-date.</translation>
 <translation id="6605147707233193230">Inschakelen om contentontwikkelaars te helpen ondersteunen</translation>
+<translation id="5899814466108868020">Je steunt Brave en de BAT-community</translation>
 <translation id="6067959437127691361">Brave Rewards helpt contentontwikkelaars te ondersteunen en u kunt er BAT mee verdienen.</translation>
 <translation id="3264975266761862670">Klaar om te beginnen met verdienen?</translation>
 <translation id="265337947574975838">Koppel uw bestaande account of maak een nieuwe aan bij een van onze partners.</translation>
@@ -1042,6 +1110,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="3692772534525889713">Koppel uw Play Store-aankoop aan uw Brave-account om Brave Leo op andere apparaten te gebruiken.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Eén jaar</translation>
+<translation id="2985392169397572983">BESTE OPTIE</translation>
 <translation id="1166682575529520472">Maandelijks</translation>
 <translation id="451189393813405346">Vraag het Leo</translation>
 <translation id="7322560193401221004">Afspeelpositie van bestand onthouden</translation>
@@ -1165,5 +1234,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2728518864712716830">Update is gedownload.</translation>
 <translation id="8403338849301491865">Filterlijst is bijgewerkt</translation>
 <translation id="4650851936784160359">Filterlijst kon niet worden bijgewerkt. Probeer het opnieuw.</translation>
-<translation id="1450735350187803276">Advertenties bekeken deze maand</translation>
+<translation id="3098054327870766317">Knop voor ongedaan maken tonen wanneer tabbladen worden gesloten</translation>
+<translation id="1336494649091412226">Weet je zeker dat je Brave wilt afsluiten?</translation>
 </translationbundle>

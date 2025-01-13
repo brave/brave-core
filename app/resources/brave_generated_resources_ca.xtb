@@ -307,11 +307,11 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="6155018868740116868">Recupera</translation>
 <translation id="2521960050170773751">Afegeix contingut multimèdia de la pàgina</translation>
 <translation id="2301087142998134097">es vol obrir <ph name="SITE"/></translation>
-<translation id="7128982309566342232">Es vol obrir una pàgina incrustada a <ph name="SITE"/></translation>
+<translation id="4828353184750597953">Es vol obrir una pàgina incrustada a <ph name="SITE"/></translation>
 <translation id="1175012181261953767">Es vol obrir aquesta pàgina</translation>
 <translation id="7459546222322124545">Es vol obrir una pàgina incrustada en aquesta pàgina</translation>
 <translation id="5836261838911560851">Es vol desar <ph name="SITE"/></translation>
-<translation id="5936788906460687941">Es vol desar una pàgina incrustada a <ph name="SITE"/></translation>
+<translation id="8813509417421129632">Es vol desar una pàgina incrustada a <ph name="SITE"/></translation>
 <translation id="7700010743463174379">Es vol desar aquesta pàgina</translation>
 <translation id="6774238875569752630">Es vol desar una pàgina incrustada en aquesta pàgina</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la pròxima vegada que reiniciïs Brave.</translation>
@@ -573,6 +573,7 @@ Segur que vols continuar?</translation>
 <translation id="4094590686212463338">No s'ha pogut unir a aquesta cadena de sincronització. S'ha suprimit la cadena de sincronització.</translation>
 <translation id="4908081302669157000">Números de telèfon, correus electrònics i adreces</translation>
 <translation id="294985549514492876">Aplicacions web (PWA)</translation>
+<translation id="7029809446516969842">Contrasenyes</translation>
 <translation id="924029461438529367">Mostra suggeriments de cerca</translation>
 <translation id="3128251601544028053">Quan escrius a la barra d'adreces o al quadre de cerca, Brave envia el que escrius al motor de cerca predeterminat per obtenir els millors suggeriments. Això no està disponible a les finestres d'incògnit.</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
@@ -715,6 +716,8 @@ Leo. Aquesta acció no es pot desfer.</translation>
 <translation id="1355326130503900056">El nom del model tal com hauria d'aparèixer a la sol·licitud a l'entorn del servidor, p. ex., phi-3 (tingueu en compte que si aquest nom no coincideix exactament amb el que espera l'entorn del servidor, la integració no funcionarà)</translation>
 <translation id="3286410514484292784">L'URL en què l'entorn del servidor escolta sol·licituds. Si no ho sabeu del cert, comproveu la documentació de l'entorn del servidor. Per exemple, per a Ollama sempre és http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Alguns entorns de servidor poden requerir credencials d'autenticació, com una clau API o un token d'accés. S'afegiran a l'encapçalament de la sol·licitud.</translation>
+<translation id="4335128003329183586">Mida de context</translation>
+<translation id="8794525422794607973">El nombre màxim de tokens que pot processar el model durant una sola interacció. Cada token correspon, aproximadament, a 3/4 de paraula. Una mida de context més alta permet al model processar converses més llargues. Cada model és compatible amb diferents mides de context màximes.</translation>
 <translation id="217141195370578385">El servidor de Brave no admet aquestes sol·licituds, llegiu els termes de privacitat del proveïdor triat.</translation>
 <translation id="2645532768679870478">Els punts finals no locals han de fer servir el protocol d'HTTPS per a la transmissió segura de dades.</translation>
 <translation id="8177205483022887785">Heu introduït un URL no vàlid. Introduïu-ne un de vàlid.</translation>
@@ -724,6 +727,9 @@ Leo. Aquesta acció no es pot desfer.</translation>
 <translation id="7435587476558117990">Connecteu el vostre LLM propi o allotjat per un tercer a Leo i feu-los servir en el navegador.</translation>
 <translation id="1381050642750209119">Utilitzeu qualsevol marc compatible de protocol de xat d'OpenAI com ara Ollama.</translation>
 <translation id="2642905648178380593">Desa el model</translation>
+<translation id="6304169450064541679">Guies del sistema</translation>
+<translation id="3081947790648024460">Les instruccions i/o el context personalitzats que se li donen al model per guiar les seves respostes cap a una direcció o estil determinats. Allà on t'agradaria insertar la data i hora actuals, utilitza %datetime%.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
 <translation id="349846214503465941">Activa la llista de reproducció</translation>
 <translation id="7903608716704052878">Afegeix automàticament arxius per a veure'ls sense connexió</translation>
 <translation id="4193768184502613558">Aquesta opció emmagatzemarà automàticament a la memòria cau els arxius multimèdia perquè puguis reproduir-los sense connexió a Internet.</translation>

@@ -166,7 +166,7 @@
 <translation id="4552520379838695057">ይቅርታ፣ ይህ ገጽ ይጎድላል።</translation>
 <translation id="2609895996619941644">የተቀመጠ ስሪት በ Wayback ማሽን ላይ መኖሩን ለማጣራት ይፈልጋሉ?</translation>
 <translation id="191143826155037518">Brave ለእርስዎ ዝግጁ የተደረገው በ <ph name="BEGIN_LINK_MPL"/>Mozilla ሕዝባዊ ፈቃድ 2.0<ph name="END_LINK_MPL"/> (MPL) ሲሆን በውስጡም <ph name="BEGIN_LINK_OSS"/>ምንጫቸው ክፍት የሆኑ ሶፍትዌር<ph name="END_LINK_OSS"/> በሌሎች የተለያዩ ፈቃዶች ስር ያካትታል።
-        <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ይህን ኮፒ ለመፍጠር የዋለውን የተወሰነ f<ph name="END_LINK_BUILD_INSTRUCTIONS"/>  መነሻ ኮድን  <ph name="BEGIN_LINK_SOURCE_CODE"/> እንዴት ማውረድና ለራስዎ እንዴት መገንባት እንደሚችሉ መመሪያዎችን ማንበብ ይችላሉ<ph name="END_LINK_SOURCE_CODE"/>።</translation>
+       <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>ይህን ኮፒ ለመፍጠር የዋለውን የተወሰነ f<ph name="END_LINK_BUILD_INSTRUCTIONS"/> መነሻ ኮድን <ph name="BEGIN_LINK_SOURCE_CODE"/> እንዴት ማውረድና ለራስዎ እንዴት መገንባት እንደሚችሉ መመሪያዎችን ማንበብ ይችላሉ<ph name="END_LINK_SOURCE_CODE"/>።</translation>
 <translation id="4474155171896946103">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="3987546108749866209">አቀባዊ ትሮችን ተጠቀም</translation>
 <translation id="1904394285866191268">{NUM_TABS,plural, =1{ትር ላይ ድምጸ-ከል አድርግ}one{ትሮች ላይ ድምጸ-ከል አድርግ}other{ትሮች ላይ ድምጸ-ከል አድርግ}}</translation>
@@ -523,6 +523,7 @@
 <translation id="4094590686212463338">ይህን የማመሳሰል ሰንሰለት መቀላቀል አልተቻለም። የማመሳሰል ሰንሰለት ተሰርዟል።</translation>
 <translation id="4908081302669157000">የስልክ ቁጥሮች፣ ኢሜይሎች እና አድራሻዎች</translation>
 <translation id="294985549514492876">የድር መተግበሪያዎች (PWAs)</translation>
+<translation id="7029809446516969842">የይለፍ ቃላት</translation>
 <translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
 <translation id="919715748352669592">የ OpenSearch ዝርዝርን የሚከተሉ ድር ጣቢያዎችን በራስ-ሰር ይጠቁማል።</translation>
 <translation id="5324939009884545145">የግል መስኮት - በአድራሻ ማስገቢያው ውስጥ ጥቅም ላይ የዋለው የፍለጋ ኤንጅን</translation>

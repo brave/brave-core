@@ -114,7 +114,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2370739752330685659">Labda baadaye</translation>
 <translation id="5100490448228945668">Ondoasha ubadilishaji wa utafutaji wa Brave, bonyeza Enter ili kuondoa pendekezo hili</translation>
 <translation id="6213208892248046484">Badili kwenda Utafutaji wa Brave</translation>
-<translation id="9194637241566114638">Saidia kuboresha <ph name="SEARCH_NAME"/> kwa kutuma data isiyobainisha utambulisho ya matumizi.  <ph name="MORE_INFO"/></translation>
+<translation id="9194637241566114638">Saidia kuboresha <ph name="SEARCH_NAME"/> kwa kutuma data isiyobainisha utambulisho ya matumizi. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Utafutaji wa Brave</translation>
 <translation id="8184318863960255706">Maelezo zaidi</translation>
 <translation id="780301667611848630">Hapana, asante</translation>
@@ -307,11 +307,9 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Rejesha</translation>
 <translation id="2521960050170773751">Weka maudhui kutoka kwenye ukurasa</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> inataka kufungua</translation>
-<translation id="7128982309566342232">Ukurasa uliopachikwa kwenye <ph name="SITE"/> unataka kufunguka</translation>
 <translation id="1175012181261953767">Ukurasa huu unataka kufunguka</translation>
 <translation id="7459546222322124545">Ukurasa uliopachikwa kwenye ukurasa huu unataka kufunguka</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> inataka kuhifadhi</translation>
-<translation id="5936788906460687941">Ukurasa uliopachikwa kwenye <ph name="SITE"/> unataka kuhifadhi</translation>
 <translation id="7700010743463174379">Ukurasa huu unataka kuhifadhi</translation>
 <translation id="6774238875569752630">Ukurasa uliopachikwa kwenye ukurasa huu unataka kuhifadhi</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
@@ -573,6 +571,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4094590686212463338">Haikuweza kujiunga na mnyororo huu wa usawazishaji. Mnyororo wa usawazishaji ulifutwa.</translation>
 <translation id="4908081302669157000">Nambari za simu, anwani za barua pepe na anwani halisi za eneo</translation>
 <translation id="294985549514492876">Programu za wavuti (PWAs)</translation>
+<translation id="7029809446516969842">Manenosiri</translation>
 <translation id="924029461438529367">Onyesha mapendekezo ya utafutaji</translation>
 <translation id="3128251601544028053">Unapoandika kwenye upau wa anwani au kisanduku cha utafutaji, Brave hutuma unachoandika kwenye injini yako chaguomsingi ya utafutaji ili kupata mapendekezo bora zaidi. Huduma hii haipatikani kwenye madirisha ya faragha.</translation>
 <translation id="6285118765755298263">Orodhesha mitambo mingine ya kutafuta</translation>

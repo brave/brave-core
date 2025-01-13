@@ -308,11 +308,11 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="6155018868740116868">Recuperar</translation>
 <translation id="2521960050170773751">Engadir ficheiros multimedia desde a páxina</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> quere abrirse</translation>
-<translation id="7128982309566342232">Unha páxina inserida en<ph name="SITE"/> quere abrirse</translation>
+<translation id="4828353184750597953">Unha páxina incrustada en <ph name="SITE"/> quere abrirse</translation>
 <translation id="1175012181261953767">Esta páxina quere abrirse</translation>
 <translation id="7459546222322124545">Unha páxina inserida nesta páxina quere abrirse</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> quere gardarse</translation>
-<translation id="5936788906460687941">Unha páxina inserida en<ph name="SITE"/> quere gardarse</translation>
+<translation id="8813509417421129632">Unha páxina incrustada en <ph name="SITE"/> quere gardarse</translation>
 <translation id="7700010743463174379">Esta páxina quere gardarse</translation>
 <translation id="6774238875569752630">Unha páxina inserida nesta páxina quere gardarse</translation>
 <translation id="9156965752763025780">Os cambios aplicaranse a próxima vez que reinicies Brave.</translation>
@@ -574,6 +574,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="4094590686212463338">Non foi posible unirse a esta cadea de sincronización. Eliminouse a cadea de sincronización.</translation>
 <translation id="4908081302669157000">Números de teléfono, correos electrónicos e enderezos</translation>
 <translation id="294985549514492876">Aplicacións web (PWA)</translation>
+<translation id="7029809446516969842">Contrasinais</translation>
 <translation id="924029461438529367">Mostrar suxestións de busca</translation>
 <translation id="3128251601544028053">Cando escribes na barra de enderezos ou na caixa de busca, Brave envía o que escribes ao teu motor de busca predeterminado para obter mellores suxestións. Isto non está dispoñible nas ventás privadas.</translation>
 <translation id="6285118765755298263">Indexar outros motores de busca</translation>
@@ -716,6 +717,8 @@ Leo. Esta acción non se pode desfacer.</translation>
 <translation id="1355326130503900056">O nome do modelo tal e como debería aparecer na solicitude ao marco de servizo, é dicir, phi-3 (ten en conta que se este nome non coincide exactamente co que se espera do marco de servizo, a integración non funcionará)</translation>
 <translation id="3286410514484292784">O URL onde o marco de servizo está a escoitar as solicitudes. Se non estás seguro, consulta a documentación do marco de servizo; por exemplo,  para Ollama, sempre é http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Algúns marcos de servizo poden requirir credenciais de autenticación, como unha clave API ou un token de acceso. Estes engadiranse á cabeceira da solicitude.</translation>
+<translation id="4335128003329183586">Tamaño do contexto</translation>
+<translation id="8794525422794607973">O número máximo de tokens que o modelo pode procesar nunha única interacción. Cada token equivale ao redor de tres cuartas partes dunha palabra. Un tamaño de contexto maior permite ao modelo xestionar conversas máis extensas. Cada modelo ten un tamaño de contexto máximo diferente.</translation>
 <translation id="217141195370578385">Brave non actúa como proxy destas solicitudes, le as condicións de privacidade do provedor elixido.</translation>
 <translation id="2645532768679870478">Os puntos finais non locais deben empregar o protocolo HTTPS para a transmisión segura de datos.</translation>
 <translation id="8177205483022887785">Introduciches un URL non válido. Indica un URL válido.</translation>
@@ -725,6 +728,9 @@ Leo. Esta acción non se pode desfacer.</translation>
 <translation id="7435587476558117990">Conecta o teu LLM autoaloxado ou aloxado por terceiros a Leo e utilízaos no navegador.</translation>
 <translation id="1381050642750209119">Usa calquera marco compatible co protocolo de OpenAI Chat, como Ollama.</translation>
 <translation id="2642905648178380593">Gardar modelo</translation>
+<translation id="6304169450064541679">Indicador do sistema</translation>
+<translation id="3081947790648024460">Instruccións ou contexto específicos dados ao modelo para guiar as súas respostas nun estilo ou dirección particular. Emprega %datetime% onde desexes que se insira a data e hora actuais.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
 <translation id="349846214503465941">Activar Lista de reprodución</translation>
 <translation id="7903608716704052878">Engadir automaticamente ficheiros para visualizalos sen conexión</translation>
 <translation id="4193768184502613558">Esta opción almacenará automaticamente na memoria caché os ficheiros multimedia para que poidas reproducilos sen conexión a Internet.</translation>

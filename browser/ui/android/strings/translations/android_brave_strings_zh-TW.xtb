@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-TW">
-<translation id="8631427463833030968">管理廣告</translation>
 <translation id="7630214457764713113">複製潔淨連結</translation>
-<translation id="885805571521218129">此範圍反映了您本月 Brave Ads 的預計收入。</translation>
 <translation id="3478449063771497234">通知已停用</translation>
 <translation id="2862978891748913252">選擇您的國家/地區</translation>
 <translation id="3970520675790340955">選擇您的國家/地區，我們將向您展示合適的選項和廣告。</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">顯示熱門網站建議</translation>
 <translation id="6285118765755298263">為其他搜尋引擎編製索引</translation>
 <translation id="919715748352669592">為遵循 OpenSearch 規範的網站自動編製索引。</translation>
+<translation id="412411722208944922">快速搜尋引擎</translation>
+<translation id="2836969042340015500">快速搜尋引擎</translation>
+<translation id="9120455214794270250">顯示快速搜尋列</translation>
+<translation id="1052991798173010693">目前使用的搜尋引擎</translation>
+<translation id="335303688425891752">長按可變更順序</translation>
 <translation id="9148058034647219655">結束</translation>
 <translation id="8047754398610073499">攔截 cookie 同意通知</translation>
 <translation id="2621893359845808115">攔截要求您接受/拒絕網站 cookie 的彈出式視窗</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="4117451092682672487">輕鬆捍衛個人隱私。</translation>
 <translation id="7909375417585209817">只要將 Brave 設為預設瀏覽器，您輕觸的每個連結都會在 Brave 的隱私保護功能下開啟。</translation>
-<translation id="3737878115109582442">新增搜尋小工具</translation>
-<translation id="6199413390010319240">隨時使用 Brave，輕鬆加速您的網路探索。</translation>
-<translation id="4338600611020922010">新增至主畫面</translation>
 <translation id="7370959926683925817">封鎖廣告，節省數據，全年無休。</translation>
 <translation id="7281027579943912834">將 Brave 設為預設瀏覽器，您點按的每個連結都會受到 Brave 的廣告封鎖保護。所有頁面、影片和串流都能受益。</translation>
 <translation id="5148943178722443958">協助提升 Brave 品質。</translation>
@@ -408,8 +408,13 @@
 <translation id="6925081665778864449">如要同步密碼，請先在您的 Android 裝置上啟用生物辨識功能/密碼。採用這項額外的安全措施有助於確保密碼安全。</translation>
 <translation id="597993392929850353">Brave 授權條款</translation>
 <translation id="6336451774241870485">新隱私分頁</translation>
-<translation id="6199596294742117349">這是私人標籤</translation>
-<translation id="5858455511731621847">雖然您在私人標籤中瀏覽的網站沒有儲存在本機，但那並不會讓您匿名或使您的 ISP、雇主或瀏覽的網站看不到您。</translation>
+<translation id="3110967157686007724">隱私分頁</translation>
+<translation id="944340256927461196">不在裝置上留下任何痕跡</translation>
+<translation id="2063044449012253966">您在隱私視窗中瀏覽的網站不會出現在您的歷史紀錄中。一旦關閉所有隱私視窗，Cookie、表單資料和網站資料就會消失。</translation>
+<translation id="7395764193745523646">瀏覽可見度</translation>
+<translation id="8735363371744702779">請注意，即使在隱私視窗中，您的瀏覽活動仍可能會被 ISP、網路觀察員或您的雇主 (如果您使用工作裝置/網路) 看到。</translation>
+<translation id="1413177583895309156">Brave VPN 會加密並保護您在線上所做的任何事情，即使並未使用 Brave 瀏覽器。</translation>
+<translation id="3974348661685061050">免費試用７天</translation>
 <translation id="5789441016350810005">Brave Ads 會在瀏覽器於背景執行時發送</translation>
 <translation id="4973347371961481083">捐款</translation>
 <translation id="7047578174221019462">您的每月捐款已處理。</translation>
@@ -710,9 +715,10 @@
 <translation id="1532536259167115948">月繳訂閱 <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">年繳訂閱 <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">每月續訂</translation>
+<translation id="112929124115834557">每年續訂</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/月</translation>
 <translation id="1163809943099641131">一年</translation>
-<translation id="727385358513272220">每年續訂 (<ph name="DISCOUNT_TEXT_START"/>省下 <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">（<ph name="DISCOUNT_TEXT_START"/> 可省 <ph name="PERCENTAGE_AMOUNT"/> %% <ph name="DISCOUNT_TEXT_END"/>）</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/年</translation>
 <translation id="2786538705804257030">我們會透過您的 Google 帳戶收取訂閱費用。如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n若未在當前約期結束前至少 24 小時內取消訂閱，系統會自動為您續訂。\n\n您可以前往「設定」管理訂閱方案。\n\n使用 Brave 即表示您同意《使用條款》及《隱私權政策》。</translation>
 <translation id="5035172357624830412">已在 brave.com 上購買嗎？</translation>
@@ -842,7 +848,7 @@
 <translation id="4351811224047421378">小數點精度</translation>
 <translation id="3494964159182650590">獎勵摘要</translation>
 <translation id="590733288489975971">廣告獎勵</translation>
-<translation id="1886682615222609631">迄今為止的收益</translation>
+<translation id="1450735350187803276">本月看到的廣告</translation>
 <translation id="1767561995429774671">捐獻</translation>
 <translation id="7335371657242627509">加入自動贊助</translation>
 <translation id="6727102863431372879">設定</translation>
@@ -1228,5 +1234,6 @@
 <translation id="2728518864712716830">已下載更新。</translation>
 <translation id="8403338849301491865">已成功更新篩選清單</translation>
 <translation id="4650851936784160359">無法更新篩選清單。請再試一次</translation>
-<translation id="1450735350187803276">本月看到的廣告</translation>
+<translation id="3098054327870766317">關閉標籤頁時顯示撤銷按鈕</translation>
+<translation id="1336494649091412226">您確定要退出 Brave 嗎？</translation>
 </translationbundle>

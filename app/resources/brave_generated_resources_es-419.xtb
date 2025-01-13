@@ -308,11 +308,11 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="6155018868740116868">Recuperar</translation>
 <translation id="2521960050170773751">Añadir contenido multimedia de la página</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> desea abrir</translation>
-<translation id="7128982309566342232">Una página incrustada en <ph name="SITE"/> desea abrir</translation>
+<translation id="4828353184750597953">Una página incrustada en <ph name="SITE"/> desea abrirse</translation>
 <translation id="1175012181261953767">Esta página desea abrir</translation>
 <translation id="7459546222322124545">Una página incrustada en esta página desea abrir</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> desea guardar</translation>
-<translation id="5936788906460687941">Una página incrustada en <ph name="SITE"/> desea guardar</translation>
+<translation id="8813509417421129632">Una página incrustada en <ph name="SITE"/> desea guardar</translation>
 <translation id="7700010743463174379">Esta página desea guardar</translation>
 <translation id="6774238875569752630">Una página incrustada en esta página desea guardar</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
@@ -574,6 +574,7 @@ volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada 
 <translation id="4094590686212463338">No se pudo unir esta cadena de sincronización y se ha eliminado.</translation>
 <translation id="4908081302669157000">Números de teléfono, correos electrónicos y direcciones</translation>
 <translation id="294985549514492876">Apps web (PWA)</translation>
+<translation id="7029809446516969842">Claves</translation>
 <translation id="924029461438529367">Mostrar sugerencias de búsqueda</translation>
 <translation id="3128251601544028053">Cuando escribe en la barra de direcciones o en el cuadro de búsqueda, Brave envía lo escrito a su motor de búsqueda predeterminado para obtener mejores sugerencias. Esta función no está disponible en las ventanas privadas.</translation>
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
@@ -716,6 +717,8 @@ de forma irreversible.</translation>
 <translation id="1355326130503900056">El nombre del modelo tal y como debe aparecer en la solicitud al marco de servicio, por ejemplo, phi-3. Ten en cuenta que si este nombre no coincide exactamente con el que espera el marco de servicio, la integración no se llevará a cabo.</translation>
 <translation id="3286410514484292784">La URL en la que su marco de servicio atiende peticiones. Si no la sabe con certeza, consulte la documentación al respecto. Por ejemplo, en el caso de Ollama, se trata siempre de http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Existe la posibilidad de que algunos marcos de servicio exijan credenciales de autenticación a modo de clave de API o token de acceso. En ese caso, se añadirán al encabezado de la solicitud.</translation>
+<translation id="4335128003329183586">Tamaño del contexto</translation>
+<translation id="8794525422794607973">La cantidad máxima de tokens que el modelo puede procesar en una sola interacción. Cada token es aproximadamente 3/4 de una palabra. Un tamaño de contexto mayor permite al modelo manejar conversaciones más largas. Los distintos modelos admiten distintos tamaños de contexto máximos.</translation>
 <translation id="217141195370578385">Brave no hace de proxy para estas solicitudes. Consulte los términos de privacidad del proveedor elegido.</translation>
 <translation id="2645532768679870478">Los terminales no locales deben emplear el protocolo HTTPS para llevar a cabo una transmisión segura de los datos.</translation>
 <translation id="8177205483022887785">Ha introducido una URL no válida. Introduzca una que sí lo sea.</translation>
@@ -725,6 +728,9 @@ de forma irreversible.</translation>
 <translation id="7435587476558117990">Vincule con Leo su LLM autohospedado u hospedado en un tercero y úselo en el mismo navegador.</translation>
 <translation id="1381050642750209119">Use cualquier marco compatible con los protocolos de chat de OpenAI (como, por ejemplo, Ollama).</translation>
 <translation id="2642905648178380593">Guardar modelo</translation>
+<translation id="6304169450064541679">Indicación del sistema</translation>
+<translation id="3081947790648024460">Instrucciones personalizadas y/o contexto dado al modelo para guiar sus respuestas en una dirección o estilo en particular. Utiliza %datetime% donde quieras que se inserte la fecha y hora actuales.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
 <translation id="349846214503465941">Activar Lista de reproducción</translation>
 <translation id="7903608716704052878">Añadir automáticamente archivos para verlos sin conexión</translation>
 <translation id="4193768184502613558">Esta opción guardará automáticamente en caché los archivos multimedia para que puedas reproducirlos sin conexión.</translation>

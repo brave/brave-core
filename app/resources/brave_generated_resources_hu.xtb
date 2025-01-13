@@ -307,11 +307,11 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="6155018868740116868">Visszaállítás</translation>
 <translation id="2521960050170773751">Média hozzáadása egy oldalról</translation>
 <translation id="2301087142998134097">A(z) <ph name="SITE"/> meg szeretne nyílni</translation>
-<translation id="7128982309566342232">A(z) <ph name="SITE"/> webhelyen beágyazott oldal meg szeretne nyílni</translation>
+<translation id="4828353184750597953">A <ph name="SITE"/> oldalon lévő beágyazott oldal meg akar nyílni</translation>
 <translation id="1175012181261953767">Ez az oldal meg szeretne nyílni</translation>
 <translation id="7459546222322124545">Az ezen az oldalon beágyazott oldal meg szeretne nyílni</translation>
 <translation id="5836261838911560851">A(z) <ph name="SITE"/> menteni szeretne</translation>
-<translation id="5936788906460687941">A(z) <ph name="SITE"/> webhelyen beágyazott oldal menteni szeretne</translation>
+<translation id="8813509417421129632">A <ph name="SITE"/> oldalon lévő beágyazott oldal menteni szeretne</translation>
 <translation id="7700010743463174379">Ez az oldal menteni szeretne</translation>
 <translation id="6774238875569752630">Az ezen az oldalon beágyazott oldal menteni szeretne</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
@@ -573,6 +573,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="4094590686212463338">Nem sikerült csatlakozni ehhez a szinkronizálási lánchoz, mert a lánc törölve lett.</translation>
 <translation id="4908081302669157000">Telefonszámok, címek és e-mail-címek</translation>
 <translation id="294985549514492876">Webes alkalmazások (PWA-k)</translation>
+<translation id="7029809446516969842">Jelszavak</translation>
 <translation id="924029461438529367">Keresési javaslatok megjelenítése</translation>
 <translation id="3128251601544028053">Amikor szöveget ír a címsávba vagy keresőmezőbe, a Brave elküldi a beírt szöveget az alapértelmezett keresőmotornak a javaslatok fejlesztése érdekében. Ez a privát ablakokban nem érhető el.</translation>
 <translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
@@ -715,6 +716,8 @@ Leóval. Ezt a műveletet nem lehet visszavonni.</translation>
 <translation id="1355326130503900056">A modell neve abban a formában, ahogyan a kiszolgáló keretrendszerhez küldött kérésben meg kell jelennie, pl. phi-3 (vegye figyelembe, hogy ha ez a név nem egyezik meg pontosan azzal, amit a kiszolgáló keretrendszer elvár, az integráció nem fog működni).</translation>
 <translation id="3286410514484292784">Az az url, ahol az Ön kiszolgáló keretrendszere figyeli a kéréseket. Ha nem biztos benne, nézze meg a kiszolgáló keretrendszer dokumentációját. Például az Ollama esetében ez mindig a http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Egyes kiszolgáló keretrendszerek hitelesítő adatokat, például API-kulcsot vagy hozzáférési tokent igényelhetnek. Ezek bekerülnek a kérés fejlécébe.</translation>
+<translation id="4335128003329183586">Szövegméret</translation>
+<translation id="8794525422794607973">A maximális tokenek száma, amit a modell egy interakcióval fel tud dolgozni. Minden token nagyjából 3/4 szót ér. Nagyobb szöveg esetén a modell hosszabb beszélgetésre is képes. Különböző modellek, különböző méretű szövegek előállítására képesek.</translation>
 <translation id="217141195370578385">A Brave nem kezeli proxyként ezeket a kéréseket, kérjük, olvassa el a kiválasztott szolgáltató adatvédelmi feltételeit.</translation>
 <translation id="2645532768679870478">A nem helyi végpontoknak a HTTPS protokollt kell használniuk a biztonságos adatátvitelhez.</translation>
 <translation id="8177205483022887785">Érvénytelen URL-t adott meg. Kérjük, adjon meg egy érvényes URL-t.</translation>
@@ -724,6 +727,9 @@ Leóval. Ezt a műveletet nem lehet visszavonni.</translation>
 <translation id="7435587476558117990">Csatlakoztassa a saját vagy harmadik fél által biztosított LLM-et (nagy nyelvi modellt) a Leóhoz, és használja a böngészőjében.</translation>
 <translation id="1381050642750209119">Bármilyen OpenAI Chat Protocollal kompatibilis keretrendszert használhat, például az Ollamát.</translation>
 <translation id="2642905648178380593">Modell mentése</translation>
+<translation id="6304169450064541679">Rendszerüzenet</translation>
+<translation id="3081947790648024460">Szabja személyre az utasításokat és/vagy a szöveget a modell számára, hogy válaszait egy adott irányba terelje vagy egy adott stílust adjon a beszélgetésnek. A %datetime% használatával beillesztheti az aktuális dátumot és időt.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokenek</translation>
 <translation id="349846214503465941">Lejátszási lista engedélyezése</translation>
 <translation id="7903608716704052878">Fájlok automatikus hozzáadása offline megtekintéshez</translation>
 <translation id="4193768184502613558">Ez a lehetőség automatikusan gyorsítótárazza a médiafájlokat, így azokat internetkapcsolat nélkül is lejátszhatja.</translation>

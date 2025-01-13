@@ -307,11 +307,11 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Khôi phục</translation>
 <translation id="2521960050170773751">Thêm phương tiện từ trang</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> muốn mở</translation>
-<translation id="7128982309566342232">Một trang nhúng trên <ph name="SITE"/> muốn mở</translation>
+<translation id="4828353184750597953">Một trang nhúng tại <ph name="SITE"/> muốn mở</translation>
 <translation id="1175012181261953767">Trang này muốn mở</translation>
 <translation id="7459546222322124545">Một trang nhúng trên trang này muốn mở</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> muốn lưu</translation>
-<translation id="5936788906460687941">Một trang nhúng trên <ph name="SITE"/> muốn lưu</translation>
+<translation id="8813509417421129632">Một trang nhúng tại <ph name="SITE"/> muốn lưu</translation>
 <translation id="7700010743463174379">Trang này muốn lưu</translation>
 <translation id="6774238875569752630">Một trang nhúng trên trang này muốn lưu</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
@@ -573,6 +573,7 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4094590686212463338">Không thể tham gia chuỗi đồng bộ hóa này. Chuỗi đồng bộ hóa đã bị xóa.</translation>
 <translation id="4908081302669157000">Số điện thoại, email và địa chỉ</translation>
 <translation id="294985549514492876">Ứng dụng web (PWA)</translation>
+<translation id="7029809446516969842">Mật khẩu</translation>
 <translation id="924029461438529367">Hiển thị gợi ý tìm kiếm</translation>
 <translation id="3128251601544028053">Khi bạn nhập vào thanh địa chỉ hoặc hộp tìm kiếm, Brave sẽ gửi những gì bạn nhập đến công cụ tìm kiếm mặc định của bạn để có được những gợi ý tốt hơn. Tính năng này không khả dụng trong cửa sổ riêng tư.</translation>
 <translation id="6285118765755298263">Lập chỉ mục các công cụ tìm kiếm khác</translation>
@@ -715,6 +716,8 @@ Leo. Hành động này không thể được hoàn tác.</translation>
 <translation id="1355326130503900056">Tên của mô hình khi sẽ xuất hiện trong yêu cầu tới khung phục vụ, ví dụ phi-3 (lưu ý rằng nếu tên này không khớp chính xác với những gì khung phục vụ mong đợi thì sẽ không tích hợp được)</translation>
 <translation id="3286410514484292784">URL nơi khung phục vụ của bạn đang lắng nghe các yêu cầu. Nếu bạn không chắc chắn thì hãy kiểm tra tài liệu về khung phục vụ. Ví dụ: đối với Ollama, đây luôn là http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Một số khung phục vụ có thể yêu cầu thông tin xác thực, chẳng hạn như khóa API hoặc mã thông báo truy cập. Những thông tin này sẽ được thêm vào tiêu đề yêu cầu.</translation>
+<translation id="4335128003329183586">Kích thước ngữ cảnh</translation>
+<translation id="8794525422794607973">Số token tối đa mô hình có thể xử lý trong một tương tác duy nhất. Mỗi token xấp xỉ bằng 3/4 từ. Kích thước ngữ cảnh lớn hơn cho phép mô hình xử lý các cuộc hội thoại dài hơn. Các mô hình khác nhau hỗ trợ các kích thước ngữ cảnh tối đa khác nhau.</translation>
 <translation id="217141195370578385">Brave không ủy quyền cho những yêu cầu này, vui lòng đọc điều khoản bảo mật của nhà cung cấp đã chọn.</translation>
 <translation id="2645532768679870478">Các điểm cuối không phải cục bộ nên sử dụng giao thức HTTPS để truyền dữ liệu an toàn.</translation>
 <translation id="8177205483022887785">Bạn đã nhập URL không hợp lệ. Vui lòng nhập URL hợp lệ.</translation>
@@ -724,6 +727,9 @@ Leo. Hành động này không thể được hoàn tác.</translation>
 <translation id="7435587476558117990">Kết nối LLM do bạn tự lưu trữ hoặc do bên thứ ba lưu trữ với Leo và sử dụng chúng trong trình duyệt.</translation>
 <translation id="1381050642750209119">Sử dụng bất kỳ nền tảng nào tương thích với Giao thức trò chuyện OpenAI như Ollama.</translation>
 <translation id="2642905648178380593">Lưu mô hình</translation>
+<translation id="6304169450064541679">Prompt hệ thống</translation>
+<translation id="3081947790648024460">Hướng dẫn tùy chỉnh và/hoặc ngữ cảnh được cung cấp cho mô hình để hướng dẫn phản hồi của mô hình theo một hướng hoặc phong cách cụ thể. Sử dụng %datetime% khi bạn muốn chèn ngày và giờ hiện tại.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> token</translation>
 <translation id="349846214503465941">Bật Danh sách phát</translation>
 <translation id="7903608716704052878">Tự động thêm tệp để xem ngoại tuyến</translation>
 <translation id="4193768184502613558">Tùy chọn này sẽ tự động lưu vào bộ đệm các tệp phương tiện để bạn có thể phát chúng mà không cần kết nối Internet.</translation>
