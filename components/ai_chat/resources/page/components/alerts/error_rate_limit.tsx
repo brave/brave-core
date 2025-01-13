@@ -12,23 +12,29 @@ import { useConversation } from '../../state/conversation_context'
 import PremiumSuggestion from '../premium_suggestion'
 import styles from './alerts.module.scss'
 
-interface TestProps {
+interface Props {
   _testIsCurrentModelLeo?: boolean
 }
 
-function ErrorRateLimit(props: TestProps) {
+function ErrorRateLimit(props: Props) {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
   // Respond to BYOM scenarios
-  if (!conversationContext.isCurrentModelLeo || props._testIsCurrentModelLeo === false) {
+  if (
+    !conversationContext.isCurrentModelLeo ||
+    props._testIsCurrentModelLeo === false
+  ) {
     return (
       <div className={styles.alert}>
         <Alert type='warning'>
           {getLocale('errorOAIRateLimit')}
-          <Button slot='actions' kind='filled'
-            onClick={conversationContext.retryAPIRequest}>
-              {getLocale('retryButtonLabel')}
+          <Button
+            slot='actions'
+            kind='filled'
+            onClick={conversationContext.retryAPIRequest}
+          >
+            {getLocale('retryButtonLabel')}
           </Button>
         </Alert>
       </div>
@@ -42,7 +48,10 @@ function ErrorRateLimit(props: TestProps) {
         title={getLocale('rateLimitReachedTitle')}
         description={getLocale('rateLimitReachedDesc')}
         secondaryActionButton={
-          <Button kind='plain-faint' onClick={conversationContext.handleResetError}>
+          <Button
+            kind='plain-faint'
+            onClick={conversationContext.handleResetError}
+          >
             {getLocale('maybeLaterLabel')}
           </Button>
         }
@@ -52,16 +61,14 @@ function ErrorRateLimit(props: TestProps) {
 
   return (
     <div className={styles.alert}>
-      <Alert
-        type='warning'
-      >
+      <Alert type='warning'>
         {getLocale('errorRateLimit')}
         <Button
           slot='actions'
           kind='filled'
           onClick={conversationContext.retryAPIRequest}
         >
-            {getLocale('retryButtonLabel')}
+          {getLocale('retryButtonLabel')}
         </Button>
       </Alert>
     </div>

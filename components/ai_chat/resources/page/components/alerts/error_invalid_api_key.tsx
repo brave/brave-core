@@ -15,7 +15,6 @@ interface ElementProps {
 }
 
 export default function ErrorInvalidAPIKey(props: ElementProps) {
-
   const aiChatContext = useAIChat()
 
   const handleConfigureClick = () => {
@@ -24,23 +23,21 @@ export default function ErrorInvalidAPIKey(props: ElementProps) {
 
   return (
     <div className={styles.alert}>
-      <Alert
-        type='warning'
-      >
+      <Alert type='warning'>
         {getLocale('errorInvalidAPIKey')}
         <Button
           slot='actions'
           kind='filled'
           onClick={handleConfigureClick}
         >
-            {getLocale('customModelModifyConfigurationLabel')}
+          {getLocale('customModelModifyConfigurationLabel')}
         </Button>
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-            {getLocale('retryButtonLabel')}
+          {getLocale('retryButtonLabel')}
         </Button>
       </Alert>
     </div>

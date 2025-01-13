@@ -3,15 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import * as React from 'react'
- import Alert from '@brave/leo/react/alert'
- import Button from '@brave/leo/react/button'
- import { getLocale } from '$web-common/locale'
- import { useAIChat } from '../../state/ai_chat_context'
- import styles from './alerts.module.scss'
+import * as React from 'react'
+import Alert from '@brave/leo/react/alert'
+import Button from '@brave/leo/react/button'
+import { getLocale } from '$web-common/locale'
+import { useAIChat } from '../../state/ai_chat_context'
+import styles from './alerts.module.scss'
 
-export default function ErrorInvalidEndpointURL () {
-
+export default function ErrorInvalidEndpointURL() {
   const aiChatContext = useAIChat()
 
   const handleConfigureClick = () => {
@@ -20,16 +19,14 @@ export default function ErrorInvalidEndpointURL () {
 
   return (
     <div className={styles.alert}>
-      <Alert
-        type='error'
-      >
+      <Alert type='error'>
         {getLocale('customModelInvalidEndpoint')}
         <Button
           slot='actions'
           kind='filled'
           onClick={handleConfigureClick}
         >
-            {getLocale('customModelModifyConfigurationLabel')}
+          {getLocale('customModelModifyConfigurationLabel')}
         </Button>
       </Alert>
     </div>

@@ -13,19 +13,17 @@ interface ElementProps {
   onRetry?: () => void
 }
 
-export default function ErrorServiceOverloaded (props: ElementProps) {
+export default function ErrorServiceOverloaded(props: ElementProps) {
   return (
     <div className={styles.alert}>
-      <Alert
-        type='error'
-      >
+      <Alert type='error'>
         {getLocale('errorServiceOverloaded')}
         <Button
           slot='actions'
           kind='filled'
           onClick={props.onRetry}
         >
-            {getLocale('retryButtonLabel')}
+          {getLocale('retryButtonLabel')}
         </Button>
       </Alert>
     </div>
