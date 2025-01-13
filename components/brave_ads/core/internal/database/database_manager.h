@@ -43,7 +43,8 @@ class DatabaseManager final {
   // Run a database transaction. The callback takes one argument -
   // `mojom::DBTransactionResultInfoPtr` containing the info of the transaction.
   void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
-                        RunDBTransactionCallback callback);
+                        RunDBTransactionCallback callback,
+                        uint64_t trace_id);
 
  private:
   void CreateOrOpenCallback(

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PIPELINES_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_V2_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PIPELINES_INLINE_CONTENT_ADS_ELIGIBLE_INLINE_CONTENT_ADS_V2_H_
 
+#include <cstdint>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
@@ -36,17 +37,32 @@ class EligibleInlineContentAdsV2 final : public EligibleInlineContentAdsBase {
       EligibleAdsCallback<CreativeInlineContentAdList> callback) override;
 
  private:
-  void GetEligibleAdsForUserModelCallback(
+  void GetForUserModelCallback(
       UserModelInfo user_model,
       const std::string& dimensions,
       EligibleAdsCallback<CreativeInlineContentAdList> callback,
       bool success,
       const AdEventList& ad_events);
-  void GetEligibleAds(UserModelInfo user_model,
-                      const AdEventList& ad_events,
-                      const std::string& dimensions,
-                      EligibleAdsCallback<CreativeInlineContentAdList> callback,
-                      const SiteHistoryList& site_history);
+
+  void GetSiteHistory(
+      UserModelInfo user_model,
+      const std::string& dimensions,
+      const AdEventList& ad_events,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback);
+  void GetSiteHistoryCallback(
+      UserModelInfo user_model,
+      const AdEventList& ad_events,
+      const std::string& dimensions,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback,
+      uint64_t trace_id,
+      const SiteHistoryList& site_history);
+
+  void GetEligibleAds(
+      UserModelInfo user_model,
+      const AdEventList& ad_events,
+      const SiteHistoryList& site_history,
+      const std::string& dimensions,
+      EligibleAdsCallback<CreativeInlineContentAdList> callback);
   void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,

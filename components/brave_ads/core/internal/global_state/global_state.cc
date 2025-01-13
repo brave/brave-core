@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/location.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core.h"

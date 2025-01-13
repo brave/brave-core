@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/time/time.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_day_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/ads_per_hour_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/browser_is_active_permission_rule.h"
@@ -22,12 +23,16 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
 // static
 bool NotificationAdPermissionRules::HasPermission(
     const AdEventList& ad_events) {
+  TRACE_EVENT(kTraceEventCategory,
+              "NotificationAdPermissionRules::HasPermission");
+
   if (!PermissionRulesBase::HasPermission()) {
     return false;
   }

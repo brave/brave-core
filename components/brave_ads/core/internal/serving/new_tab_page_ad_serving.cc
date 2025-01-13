@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/trace_event/trace_event.h"
+#include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
@@ -22,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
@@ -91,14 +94,24 @@ void NewTabPageAdServing::GetAdEventsCallback(
 
 void NewTabPageAdServing::GetUserModel(
     MaybeServeNewTabPageAdCallback callback) {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetUserModel",
+      TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id));
+
   BuildUserModel(base::BindOnce(&NewTabPageAdServing::GetUserModelCallback,
-                                weak_factory_.GetWeakPtr(),
-                                std::move(callback)));
+                                weak_factory_.GetWeakPtr(), std::move(callback),
+                                trace_id));
 }
 
 void NewTabPageAdServing::GetUserModelCallback(
     MaybeServeNewTabPageAdCallback callback,
+    uint64_t trace_id,
     UserModelInfo user_model) const {
+  TRACE_EVENT_NESTABLE_ASYNC_END0(
+      kTraceEventCategory, "GetUserModel",
+      TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id));
+
   NotifyOpportunityAroseToServeNewTabPageAd();
 
   GetEligibleAds(std::move(callback), std::move(user_model));
@@ -107,15 +120,27 @@ void NewTabPageAdServing::GetUserModelCallback(
 void NewTabPageAdServing::GetEligibleAds(
     MaybeServeNewTabPageAdCallback callback,
     UserModelInfo user_model) const {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetEligibleAds",
+      TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id));
+
   eligible_ads_->GetForUserModel(
       std::move(user_model),
       base::BindOnce(&NewTabPageAdServing::GetEligibleAdsCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback),
+                     trace_id));
 }
 
 void NewTabPageAdServing::GetEligibleAdsCallback(
     MaybeServeNewTabPageAdCallback callback,
+    uint64_t trace_id,
     const CreativeNewTabPageAdList& creative_ads) const {
+  TRACE_EVENT_NESTABLE_ASYNC_END1(
+      kTraceEventCategory, "GetEligibleAds",
+      TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id), "creative_ads",
+      creative_ads.size());
+
   if (creative_ads.empty()) {
     BLOG(1, "New tab page ad not served: No eligible ads found");
     return FailedToServeAd(std::move(callback));

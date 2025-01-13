@@ -8,6 +8,8 @@
 
 namespace brave_ads {
 
+inline constexpr char kTraceEventCategory[] = "brave.ads";
+
 inline constexpr char kDatabaseFilename[] = "database.sqlite";
 
 // TODO(https://github.com/brave/brave-browser/issues/39795): Transition away

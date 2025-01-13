@@ -13,6 +13,7 @@
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
+#include "base/location.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected.h"
 #include "base/values.h"

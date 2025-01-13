@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/trace_event/trace_event.h"
+#include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
@@ -22,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
@@ -40,15 +43,14 @@ void EligibleNewTabPageAdsV2::GetForUserModel(
 
   ad_events_database_table_.GetUnexpired(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(
-          &EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback,
-          weak_factory_.GetWeakPtr(), std::move(user_model),
-          std::move(callback)));
+      base::BindOnce(&EligibleNewTabPageAdsV2::GetForUserModelCallback,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback(
+void EligibleNewTabPageAdsV2::GetForUserModelCallback(
     UserModelInfo user_model,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback,
     bool success,
@@ -58,18 +60,45 @@ void EligibleNewTabPageAdsV2::GetEligibleAdsForUserModelCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
+  GetSiteHistory(std::move(user_model), ad_events, std::move(callback));
+}
+
+void EligibleNewTabPageAdsV2::GetSiteHistory(
+    UserModelInfo user_model,
+    const AdEventList& ad_events,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetSiteHistory",
+      TRACE_ID_WITH_SCOPE("EligibleNewTabPageAds", trace_id));
+
   GetAdsClient().GetSiteHistory(
       kSiteHistoryMaxCount.Get(), kSiteHistoryRecentDayRange.Get(),
-      base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAds,
+      base::BindOnce(&EligibleNewTabPageAdsV2::GetSiteHistoryCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
-                     ad_events, std::move(callback)));
+                     ad_events, std::move(callback), trace_id));
+}
+
+void EligibleNewTabPageAdsV2::GetSiteHistoryCallback(
+    UserModelInfo user_model,
+    const AdEventList& ad_events,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+    uint64_t trace_id,
+    const SiteHistoryList& site_history) {
+  TRACE_EVENT_NESTABLE_ASYNC_END1(
+      kTraceEventCategory, "GetSiteHistory",
+      TRACE_ID_WITH_SCOPE("EligibleNewTabPageAds", trace_id), "site_history",
+      site_history.size());
+
+  GetEligibleAds(std::move(user_model), ad_events, site_history,
+                 std::move(callback));
 }
 
 void EligibleNewTabPageAdsV2::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
-    EligibleAdsCallback<CreativeNewTabPageAdList> callback,
-    const SiteHistoryList& site_history) {
+    const SiteHistoryList& site_history,
+    EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   creative_ads_database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNewTabPageAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
@@ -99,6 +128,11 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
+  TRACE_EVENT(kTraceEventCategory,
+              "EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd",
+              "creative_ads", creative_ads.size(), "ad_events",
+              ad_events.size(), "site_history", site_history.size());
+
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
     return std::move(callback).Run(/*eligible_ads=*/{});
@@ -138,6 +172,9 @@ void EligibleNewTabPageAdsV2::FilterAndMaybePredictCreativeAd(
 
 void EligibleNewTabPageAdsV2::ApplyConditionMatcher(
     CreativeNewTabPageAdList& creative_ads) {
+  TRACE_EVENT(kTraceEventCategory, "ApplyConditionMatcher", "creative_ads",
+              creative_ads.size());
+
   std::erase_if(creative_ads, [this](const auto& creative_ad) {
     return creative_ad.wallpapers.size() != 1 ||
            !MatchConditions(&pref_provider_,

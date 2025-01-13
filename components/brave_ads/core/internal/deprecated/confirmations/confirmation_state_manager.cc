@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_value_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_value_util.h"
@@ -89,20 +90,23 @@ void ConfirmationStateManager::SaveState() {
 }
 
 std::string ConfirmationStateManager::ToJson() {
-  const base::Value::Dict dict =
+  TRACE_EVENT(kTraceEventCategory, "ConfirmationStateManager::ToJson");
+
+  std::string json;
+  CHECK(base::JSONWriter::Write(
       base::Value::Dict()
           .Set("unblinded_tokens",
                ConfirmationTokensToValue(confirmation_tokens_.GetAll()))
           .Set("unblinded_payment_tokens",
-               PaymentTokensToValue(payment_tokens_.GetAllTokens()));
-
-  // Write to JSON
-  std::string json;
-  CHECK(base::JSONWriter::Write(dict, &json));
+               PaymentTokensToValue(payment_tokens_.GetAllTokens())),
+      &json));
   return json;
 }
 
 bool ConfirmationStateManager::FromJson(const std::string& json) {
+  TRACE_EVENT(kTraceEventCategory, "ConfirmationStateManager::FromJson", "json",
+              json.size());
+
   const std::optional<base::Value::Dict> dict =
       base::JSONReader::ReadDict(json);
   confirmation_tokens_.RemoveAll();

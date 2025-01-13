@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/location.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
@@ -24,11 +25,13 @@ bool IsError(
 
 // Run a database transaction. The callback takes one argument -
 // `mojom::DBTransactionResultInfoPtr` containing the info of the transaction.
-void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
+void RunDBTransaction(const base::Location& location,
+                      mojom::DBTransactionInfoPtr mojom_db_transaction,
                       RunDBTransactionCallback callback);
 
 // Run a database transaction.
-void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
+void RunDBTransaction(const base::Location& location,
+                      mojom::DBTransactionInfoPtr mojom_db_transaction,
                       ResultCallback callback);
 
 // Raze the database. This must be done before any other actions are run. All

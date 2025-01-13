@@ -19,6 +19,7 @@ namespace json::reader {
 std::optional<CatalogInfo> ReadCatalog(const std::string& json);
 
 }  // namespace json::reader
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_URL_REQUEST_JSON_READER_H_

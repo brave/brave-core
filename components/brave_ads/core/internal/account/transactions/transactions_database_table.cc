@@ -12,9 +12,9 @@
 #include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -24,7 +24,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_type.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 namespace brave_ads::database::table {
 
@@ -210,7 +209,8 @@ void Transactions::Save(const TransactionList& transactions,
 
   Insert(mojom_db_transaction, transactions);
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void Transactions::GetForDateRange(base::Time from_time,
@@ -241,7 +241,7 @@ void Transactions::GetForDateRange(base::Time from_time,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -282,7 +282,8 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
 
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void Transactions::PurgeExpired(ResultCallback callback) const {
@@ -297,7 +298,8 @@ void Transactions::PurgeExpired(ResultCallback callback) const {
           {GetTableName(),
            TimeToSqlValueAsString(base::Time::Now() - base::Days(90))});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 std::string Transactions::GetTableName() const {

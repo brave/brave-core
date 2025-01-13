@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_V2_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_V2_H_
 
+#include <cstdint>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
@@ -33,15 +35,26 @@ class EligibleNotificationAdsV2 final : public EligibleNotificationAdsBase {
       EligibleAdsCallback<CreativeNotificationAdList> callback) override;
 
  private:
-  void GetEligibleAdsForUserModelCallback(
+  void GetForUserModelCallback(
       UserModelInfo user_model,
       EligibleAdsCallback<CreativeNotificationAdList> callback,
       bool success,
       const AdEventList& ad_events);
+
+  void GetSiteHistory(UserModelInfo user_model,
+                      const AdEventList& ad_events,
+                      EligibleAdsCallback<CreativeNotificationAdList> callback);
+  void GetSiteHistoryCallback(
+      UserModelInfo user_model,
+      const AdEventList& ad_events,
+      EligibleAdsCallback<CreativeNotificationAdList> callback,
+      uint64_t trace_id,
+      const SiteHistoryList& site_history);
+
   void GetEligibleAds(UserModelInfo user_model,
                       const AdEventList& ad_events,
-                      EligibleAdsCallback<CreativeNotificationAdList> callback,
-                      const SiteHistoryList& site_history);
+                      const SiteHistoryList& site_history,
+                      EligibleAdsCallback<CreativeNotificationAdList> callback);
   void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,

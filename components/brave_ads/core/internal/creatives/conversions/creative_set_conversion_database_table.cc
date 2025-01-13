@@ -12,9 +12,9 @@
 #include "base/check.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -193,7 +193,8 @@ void CreativeSetConversions::Save(
 
   Insert(mojom_db_transaction, creative_set_conversions);
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 void CreativeSetConversions::GetUnexpired(
@@ -218,7 +219,7 @@ void CreativeSetConversions::GetUnexpired(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -249,7 +250,7 @@ void CreativeSetConversions::GetActive(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(std::move(mojom_db_transaction),
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                    base::BindOnce(&GetCallback, std::move(callback)));
 }
 
@@ -263,7 +264,8 @@ void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
               $2 >= expire_at;)",
           {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
 
-  RunDBTransaction(std::move(mojom_db_transaction), std::move(callback));
+  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                   std::move(callback));
 }
 
 std::string CreativeSetConversions::GetTableName() const {

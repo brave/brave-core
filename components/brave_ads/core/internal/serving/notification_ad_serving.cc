@@ -8,7 +8,10 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/time/time.h"
+#include "base/trace_event/trace_event.h"
+#include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -29,6 +32,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
@@ -92,12 +96,12 @@ bool NotificationAdServing::CanServeAd(const AdEventList& ad_events) const {
     return false;
   }
 
-  if (!NotificationAdPermissionRules::HasPermission(ad_events)) {
+  const bool success = NotificationAdPermissionRules::HasPermission(ad_events);
+  if (!success) {
     BLOG(1, "Notification ad not served: Not allowed due to permission rules");
-    return false;
   }
 
-  return true;
+  return success;
 }
 
 void NotificationAdServing::GetAdEvents() {
@@ -125,25 +129,46 @@ void NotificationAdServing::GetAdEventsCallback(bool success,
 }
 
 void NotificationAdServing::GetUserModel() {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetUserModel",
+      TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id));
+
   BuildUserModel(base::BindOnce(&NotificationAdServing::GetUserModelCallback,
-                                weak_factory_.GetWeakPtr()));
+                                weak_factory_.GetWeakPtr(), trace_id));
 }
 
-void NotificationAdServing::GetUserModelCallback(UserModelInfo user_model) {
+void NotificationAdServing::GetUserModelCallback(uint64_t trace_id,
+                                                 UserModelInfo user_model) {
+  TRACE_EVENT_NESTABLE_ASYNC_END0(
+      kTraceEventCategory, "GetUserModel",
+      TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id));
+
   NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
 
   GetEligibleAds(std::move(user_model));
 }
 
 void NotificationAdServing::GetEligibleAds(UserModelInfo user_model) {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetEligibleAds",
+      TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id));
+
   eligible_ads_->GetForUserModel(
       std::move(user_model),
       base::BindOnce(&NotificationAdServing::GetEligibleAdsCallback,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr(), trace_id));
 }
 
 void NotificationAdServing::GetEligibleAdsCallback(
+    uint64_t trace_id,
     const CreativeNotificationAdList& creative_ads) {
+  TRACE_EVENT_NESTABLE_ASYNC_END1(
+      kTraceEventCategory, "GetEligibleAds",
+      TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id), "creative_ads",
+      creative_ads.size());
+
   if (creative_ads.empty()) {
     BLOG(1, "Notification ad not served: No eligible ads found");
     return FailedToServeAd();

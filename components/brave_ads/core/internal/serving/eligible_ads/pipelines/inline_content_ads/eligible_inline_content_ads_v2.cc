@@ -9,8 +9,11 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/trace_event/trace_event.h"
+#include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/inline_content_ads/inline_content_ad_exclusion_rules.h"
@@ -41,15 +44,14 @@ void EligibleInlineContentAdsV2::GetForUserModel(
 
   ad_events_database_table_.GetUnexpired(
       mojom::AdType::kInlineContentAd,
-      base::BindOnce(
-          &EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback,
-          weak_factory_.GetWeakPtr(), std::move(user_model), dimensions,
-          std::move(callback)));
+      base::BindOnce(&EligibleInlineContentAdsV2::GetForUserModelCallback,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     dimensions, std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback(
+void EligibleInlineContentAdsV2::GetForUserModelCallback(
     UserModelInfo user_model,
     const std::string& dimensions,
     EligibleAdsCallback<CreativeInlineContentAdList> callback,
@@ -60,19 +62,49 @@ void EligibleInlineContentAdsV2::GetEligibleAdsForUserModelCallback(
     return std::move(callback).Run(/*eligible_ads=*/{});
   }
 
+  GetSiteHistory(std::move(user_model), dimensions, ad_events,
+                 std::move(callback));
+}
+
+void EligibleInlineContentAdsV2::GetSiteHistory(
+    UserModelInfo user_model,
+    const std::string& dimensions,
+    const AdEventList& ad_events,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
+  const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
+      kTraceEventCategory, "GetSiteHistory",
+      TRACE_ID_WITH_SCOPE("EligibleInlineContentAds", trace_id));
+
   GetAdsClient().GetSiteHistory(
       kSiteHistoryMaxCount.Get(), kSiteHistoryRecentDayRange.Get(),
-      base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAds,
+      base::BindOnce(&EligibleInlineContentAdsV2::GetSiteHistoryCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
-                     ad_events, dimensions, std::move(callback)));
+                     ad_events, dimensions, std::move(callback), trace_id));
+}
+
+void EligibleInlineContentAdsV2::GetSiteHistoryCallback(
+    UserModelInfo user_model,
+    const AdEventList& ad_events,
+    const std::string& dimensions,
+    EligibleAdsCallback<CreativeInlineContentAdList> callback,
+    uint64_t trace_id,
+    const SiteHistoryList& site_history) {
+  TRACE_EVENT_NESTABLE_ASYNC_END1(
+      kTraceEventCategory, "GetSiteHistory",
+      TRACE_ID_WITH_SCOPE("EligibleInlineContentAds", trace_id), "site_history",
+      site_history.size());
+
+  GetEligibleAds(std::move(user_model), ad_events, site_history, dimensions,
+                 std::move(callback));
 }
 
 void EligibleInlineContentAdsV2::GetEligibleAds(
     UserModelInfo user_model,
     const AdEventList& ad_events,
+    const SiteHistoryList& site_history,
     const std::string& dimensions,
-    EligibleAdsCallback<CreativeInlineContentAdList> callback,
-    const SiteHistoryList& site_history) {
+    EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   creative_ads_database_table_.GetForDimensions(
       dimensions,
       base::BindOnce(&EligibleInlineContentAdsV2::GetEligibleAdsCallback,
@@ -102,6 +134,11 @@ void EligibleInlineContentAdsV2::FilterAndMaybePredictCreativeAd(
     const AdEventList& ad_events,
     const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
+  TRACE_EVENT(kTraceEventCategory,
+              "EligibleInlineContentAdsV2::FilterAndMaybePredictCreativeAd",
+              "creative_ads", creative_ads.size(), "ad_events",
+              ad_events.size(), "site_history", site_history.size());
+
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
     return std::move(callback).Run(/*eligible_ads=*/{});

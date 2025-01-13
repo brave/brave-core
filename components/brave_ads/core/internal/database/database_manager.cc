@@ -50,6 +50,8 @@ void DatabaseManager::RemoveObserver(DatabaseManagerObserver* const observer) {
 }
 
 void DatabaseManager::CreateOrOpen(ResultCallback callback) {
+  CHECK(callback);
+
   NotifyWillCreateOrOpenDatabase();
 
   mojom::DBTransactionInfoPtr mojom_db_transaction =
@@ -61,17 +63,19 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
   RunDBTransaction(
       std::move(mojom_db_transaction),
       base::BindOnce(&DatabaseManager::CreateOrOpenCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)),
+      /*trace_id=*/0);
 }
 
 void DatabaseManager::RunDBTransaction(
     mojom::DBTransactionInfoPtr mojom_db_transaction,
-    RunDBTransactionCallback callback) {
+    RunDBTransactionCallback callback,
+    uint64_t trace_id) {
   CHECK(mojom_db_transaction);
   CHECK(callback);
 
   database_.AsyncCall(&Database::RunDBTransaction)
-      .WithArgs(std::move(mojom_db_transaction))
+      .WithArgs(std::move(mojom_db_transaction), trace_id)
       .Then(std::move(callback));
 }
 

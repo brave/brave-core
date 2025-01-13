@@ -17,7 +17,8 @@
 // macros of the chromium builtin_categories.h.
 #define BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES(X) \
   X("brave")                                            \
-  X("brave.adblock")
+  X("brave.adblock")                                    \
+  X("brave.ads")
 
 #include "src/base/trace_event/builtin_categories.h"  // IWYU pragma: export
 

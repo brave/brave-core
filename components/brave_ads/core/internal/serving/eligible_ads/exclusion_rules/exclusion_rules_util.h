@@ -7,9 +7,11 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULES_UTIL_H_
 
 #include "base/check.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads {
 
@@ -23,6 +25,9 @@ void ApplyExclusionRules(T& creative_ads,
                          const AdInfo& last_served_ad,
                          ExclusionRulesBase* exclusion_rules) {
   CHECK(exclusion_rules);
+
+  TRACE_EVENT(kTraceEventCategory, "ApplyExclusionRules", "creative_ads",
+              creative_ads.size());
 
   if (creative_ads.empty()) {
     return;

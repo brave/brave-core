@@ -11,6 +11,7 @@
 
 #include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
@@ -27,19 +28,10 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 namespace brave_ads {
-
-namespace {
-
-void FailedToInitialize(InitializeCallback callback) {
-  BLOG(0, "Failed to initialize ads");
-
-  std::move(callback).Run(/*success=*/false);
-}
-
-}  // namespace
 
 AdsImpl::AdsImpl(AdsClient& ads_client,
                  const base::FilePath& database_path,
@@ -75,6 +67,9 @@ void AdsImpl::SetFlags(mojom::FlagsPtr mojom_flags) {
 void AdsImpl::Initialize(mojom::WalletInfoPtr mojom_wallet,
                          InitializeCallback callback) {
   BLOG(1, "Initializing ads");
+
+  TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(kTraceEventCategory, "AdsImpl::Initialize",
+                                    TRACE_ID_LOCAL(this));
 
   if (is_initialized_) {
     BLOG(1, "Already initialized ads");
@@ -413,8 +408,20 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
       std::move(mojom_wallet), std::move(callback)));
 }
 
+void AdsImpl::FailedToInitialize(InitializeCallback callback) {
+  TRACE_EVENT_NESTABLE_ASYNC_END0(kTraceEventCategory, "AdsImpl::Initialize",
+                                  TRACE_ID_LOCAL(this));
+
+  BLOG(0, "Failed to initialize ads");
+
+  std::move(callback).Run(/*success=*/false);
+}
+
 void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                                       InitializeCallback callback) {
+  TRACE_EVENT_NESTABLE_ASYNC_END0(kTraceEventCategory, "AdsImpl::Initialize",
+                                  TRACE_ID_LOCAL(this));
+
   BLOG(1, "Successfully initialized ads");
 
   is_initialized_ = true;

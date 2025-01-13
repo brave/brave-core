@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PIPELINES_NEW_TAB_PAGE_ADS_ELIGIBLE_NEW_TAB_PAGE_ADS_V2_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVING_ELIGIBLE_ADS_PIPELINES_NEW_TAB_PAGE_ADS_ELIGIBLE_NEW_TAB_PAGE_ADS_V2_H_
 
+#include <cstdint>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_pref_provider.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -34,15 +36,26 @@ class EligibleNewTabPageAdsV2 final : public EligibleNewTabPageAdsBase {
       EligibleAdsCallback<CreativeNewTabPageAdList> callback) override;
 
  private:
-  void GetEligibleAdsForUserModelCallback(
+  void GetForUserModelCallback(
       UserModelInfo user_model,
       EligibleAdsCallback<CreativeNewTabPageAdList> callback,
       bool success,
       const AdEventList& ad_events);
+
+  void GetSiteHistory(UserModelInfo user_model,
+                      const AdEventList& ad_events,
+                      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
+  void GetSiteHistoryCallback(
+      UserModelInfo user_model,
+      const AdEventList& ad_events,
+      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
+      uint64_t trace_id,
+      const SiteHistoryList& site_history);
+
   void GetEligibleAds(UserModelInfo user_model,
                       const AdEventList& ad_events,
-                      EligibleAdsCallback<CreativeNewTabPageAdList> callback,
-                      const SiteHistoryList& site_history);
+                      const SiteHistoryList& site_history,
+                      EligibleAdsCallback<CreativeNewTabPageAdList> callback);
   void GetEligibleAdsCallback(
       const UserModelInfo& user_model,
       const AdEventList& ad_events,

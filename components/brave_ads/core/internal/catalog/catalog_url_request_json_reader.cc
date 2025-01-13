@@ -7,6 +7,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_conversion_info.h"
@@ -21,9 +22,11 @@
 
 namespace brave_ads::json::reader {
 
+namespace {
+
 // TODO(https://github.com/brave/brave-browser/issues/25987): Reduce cognitive
 // complexity.
-std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
+std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -443,6 +446,22 @@ std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
     }
 
     catalog.campaigns.push_back(campaign);
+  }
+
+  return catalog;
+}
+
+}  // namespace
+
+std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
+  TRACE_EVENT_BEGIN(kTraceEventCategory, "ReadCatalog");
+
+  const std::optional<CatalogInfo> catalog = ReadCatalogImpl(json);
+  if (catalog) {
+    TRACE_EVENT_END2(kTraceEventCategory, "ReadCatalog", "id", catalog->id,
+                     "success", true);
+  } else {
+    TRACE_EVENT_END1(kTraceEventCategory, "ReadCatalog", "success", false);
   }
 
   return catalog;

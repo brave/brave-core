@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_maintenance.h"
 
 #include "base/functional/bind.h"
+#include "base/location.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table_util.h"
