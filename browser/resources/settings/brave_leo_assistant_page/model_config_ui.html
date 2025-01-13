@@ -1,10 +1,4 @@
 <style include="cr-shared-style settings-shared iron-flex">
-  cr-input {
-    --cr-input-border-bottom: none;
-    --cr-input-border-radius: var(--leo-radius-m);
-    --cr-input-error-color: var(--leo-color-systemfeedback-error-icon);
-  }
-
   .primary-title {
     font: var(--leo-font-heading-h3);
     color: var(--leo-color-text-primary);
@@ -14,10 +8,6 @@
   .container {
     width: 100%;
     padding: 16px 0;
-  }
-
-  small {
-    color: var(--leo-color-text-secondary);
   }
 
   .input-container {
@@ -65,10 +55,9 @@
   }
   
   .unsafe-endpoint-label {
-    gap: 1em;
     display: flex;
     justify-content: center;
-    color: var(--leo-color-systemfeedback-error-icon);
+    margin-top: var(--leo-spacing-s);
   }
 </style>
 
@@ -124,13 +113,13 @@
           </leo-tooltip>
         </div>
       </div>
-      <cr-input
+      <leo-input
         required
         auto-validate
         type="text"
         value="[[label]]"
         on-change="onModelLabelChange_"
-      ></cr-input>
+      ></leo-input>
     </div>
     <div class="input-container">
       <div class="custom-label">
@@ -155,13 +144,13 @@
           </leo-tooltip>
         </div>
       </div>
-      <cr-input
+      <leo-input
         required
         auto-validate
         type="text"
         value="[[modelRequestName]]"
         on-change="onModelRequestNameChange_"
-      ></cr-input>
+      ></leo-input>
     </div>
     <div class="input-container">
       <div class="custom-label">
@@ -181,27 +170,30 @@
               kind="plain-faint"
               fab
             >
-              <leo-icon class="small" name="info-outline"></leo-icon>
+              <leo-icon name="info-outline"></leo-icon>
             </leo-button>
           </leo-tooltip>
         </div>
       </div>
-      <div class="note">$i18n{braveLeoAssistantProxyNote}</div>
-      <cr-input
+      <leo-input
         id="endpointInput"
         required
         type="url"
         value="[[endpointUrl]]"
         on-change="onModelServerEndpointChange_"
-        invalid="[[isUrlInvalid]]"
-        error-message="[[invalidUrlErrorMessage]]"
-      ></cr-input>
+        show-errors="[[isUrlInvalid]]"
+      >
+        <div slot="errors">[[invalidUrlErrorMessage]]</div>  
+        <div slot="extra" class="inline-note">
+          $i18n{braveLeoAssistantProxyNote}
+        </div>
+      </leo-input>
       <template is="dom-if" if="[[shouldShowUnsafeEndpointLabel]]">
         <div class="unsafe-endpoint-label">
-          <leo-icon name="lock-open"></leo-icon> 
-          <span class="label-text">
+          <leo-label mode="loud" color="red">
+            <leo-icon name="lock-open" slot="icon-before"></leo-icon> 
             $i18n{braveLeoAssistantEndpointPotentiallyUnsafeError}
-          </span>
+          </leo-label>
         </div>
       </template>
     </div>
@@ -222,18 +214,18 @@
               kind="plain-faint"
               fab
             >
-              <cr-icon class="small" icon="info-outline"></cr-icon>
+              <leo-icon name="info-outline"></leo-icon>
             </leo-button>
           </leo-tooltip>
         </div>
       </div>
-      <cr-input
+      <leo-input
         auto-validate
         type="number"
         value="[[contextSize]]"
         placeholder="$i18n{braveLeoAssistantInputDefaultContextSize}"
         on-change="onContextSizeChange_"
-      ></cr-input>
+      ></leo-input>
     </div>
     <div class="input-container">
       <div class="custom-label">
@@ -251,18 +243,18 @@
               kind="plain-faint"
               fab
             >
-              <leo-icon class="small" name="info-outline"></leo-icon>
+              <leo-icon name="info-outline"></leo-icon>
             </leo-button>
           </leo-tooltip>
         </div>
       </div>
-      <cr-input
+      <leo-input
         auto-validate
         type="text"
         value="[[apiKey]]"
         on-change="onModelApiKeyChange_"
       >
-      </cr-input>
+      </leo-input>
     </div>
 
     <div class="input-container">
@@ -281,30 +273,27 @@
               kind="plain-faint"
               fab
             >
-              <cr-icon class="small"  icon="info-outline"></cr-icon>
+              <leo-icon name="info-outline"></leo-icon>
             </leo-button>
           </leo-tooltip>
-          <template
-          is="dom-if"
-          if="[[promptTokensEstimate]]"
-        >
-          <span class="inline-note">[[promptTokensEstimateString]]</span>
-        </template>
         </div>
       </div>
-      <cr-textarea
+      <leo-textarea
         value="[[modelSystemPrompt]]"
         rows="4"
         placeholder="$i18n{braveLeoAssistantModelSystemPromptPlaceholder}"
         on-change="onModelSystemPromptChange_"
         on-input="constructTokenEstimateString_"
-      ></cr-textarea>
+      >
+        <div slot="extra" class="inline-note">
+          [[promptTokensEstimateString]]
+        </div>
+      </leo-textarea>
     </div>
 
     <div class="actions-container">
       <leo-button
-        disabled="[[!saveEnabled_(label,
-    modelRequestName, endpointUrl)]]"
+        disabled="[[!saveEnabled_(label, modelRequestName, endpointUrl)]]"
         on-click="handleClick_"
       >
         [[buttonLabel_]]

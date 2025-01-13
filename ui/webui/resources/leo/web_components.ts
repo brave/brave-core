@@ -7,15 +7,15 @@
 // as <leo-{component}></leo-{component}>.
 import '@brave/leo/web-components/alert'
 import '@brave/leo/web-components/button'
-import '@brave/leo/web-components/dropdown'
 import '@brave/leo/web-components/checkbox'
+import '@brave/leo/web-components/dropdown'
 import '@brave/leo/web-components/icon'
 import '@brave/leo/web-components/input'
 import '@brave/leo/web-components/label'
 import '@brave/leo/web-components/progressRing'
+import '@brave/leo/web-components/textarea'
 import '@brave/leo/web-components/toggle'
 import '@brave/leo/web-components/tooltip'
-import '@brave/leo/web-components/alert'
 import { setIconBasePath } from '@brave/leo/web-components/icon'
 import iconsMeta from '@brave/leo/icons/meta'
 
