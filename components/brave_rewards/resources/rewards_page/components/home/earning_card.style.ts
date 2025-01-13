@@ -101,6 +101,12 @@ export const style = scoped.css`
       gap: 8px;
       padding: 4px 0;
     }
+
+    .unconnected & {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: solid 1px ${color.divider.subtle};
+    }
   }
 
   .warning-box {
