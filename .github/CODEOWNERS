@@ -177,6 +177,13 @@ android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java
 # These rules are last to take precedence over directory rules.Do not add any
 # new rules below this line without checking with @bridiver
 
+# Renderer code
+**/renderer/**/* @brave/renderer-reviewers
+
+# Rust deps
+**/Cargo.* @brave/rust-deps-reviewers
+third_party/rust @bridiver
+
 # include_rules
 DEPS @brave/deps-reviewers
 
@@ -184,13 +191,6 @@ DEPS @brave/deps-reviewers
 **/sources.gni @brave/sources-gni-reviewers
 **/*_sources.gni @brave/sources-gni-reviewers
 docs/gni_sources.md @brave/sources-gni-reviewers
-
-# Renderer code
-**/renderer/**/* @brave/renderer-reviewers
-
-# Rust deps
-**/Cargo.* @brave/rust-deps-reviewers
-third_party/rust @bridiver
 
 # Rust code
 **/*.rs @brave/rust-reviewers
