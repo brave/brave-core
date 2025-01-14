@@ -106,7 +106,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kParakeet,
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
-      &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
