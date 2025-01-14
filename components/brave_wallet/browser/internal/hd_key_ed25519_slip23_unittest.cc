@@ -228,18 +228,18 @@ TEST(HDKeyEd25519Slip23UnitTest, CardanoSdkCryptoSlip23) {
     }
 
     // Reference implementation encodes pubkey as `pubkey|chain_code`.
-    EXPECT_EQ(*test_dict.FindString("pubkey"),
+    ASSERT_EQ(*test_dict.FindString("pubkey"),
               HexEncodeLower(key->GetPublicKeyAsSpan()) +
                   HexEncodeLower(key->GetChainCodeAsSpanForTesting()));
 
     // Reference implementation encodes private key as
     // `scalar|prefix|chain_code`.
-    EXPECT_EQ(*test_dict.FindString("privatekey"),
+    ASSERT_EQ(*test_dict.FindString("privatekey"),
               HexEncodeLower(key->GetScalarAsSpanForTesting()) +
                   HexEncodeLower(key->GetPrefixAsSpanForTesting()) +
                   HexEncodeLower(key->GetChainCodeAsSpanForTesting()));
 
-    EXPECT_EQ(
+    ASSERT_EQ(
         *test_dict.FindString("signature"),
         HexEncodeLower(*key->Sign(base::byte_span_from_cstring("message"))));
   }
