@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Du er på denne side uden Braves privatlivs og sikkerhedsbeskyttende funktioner. Virker den ikke ordentligt med Shields på?",
+    "message": "Du er på denne side uden Braves privatlivs og sikkerhedsbeskyttende funktioner. Virker den ikke ordentligt med afskærmning?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {

@@ -307,11 +307,11 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="6155018868740116868">Récupérer</translation>
 <translation id="2521960050170773751">Ajouter des médias depuis une page</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> tente d'ouvrir</translation>
-<translation id="7128982309566342232">Une page intégrée sur <ph name="SITE"/> tente d'ouvrir</translation>
+<translation id="4828353184750597953">Une page intégrée à <ph name="SITE"/> tente d'ouvrir</translation>
 <translation id="1175012181261953767">Cette page tente d'ouvrir</translation>
 <translation id="7459546222322124545">Une page intégrée à celle-ci tente d'ouvrir</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> tente d'enregistrer</translation>
-<translation id="5936788906460687941">Une page intégrée sur <ph name="SITE"/> tente d'enregistrer</translation>
+<translation id="8813509417421129632">Une page intégrée à <ph name="SITE"/> tente d'enregistrer</translation>
 <translation id="7700010743463174379">Cette page tente d'enregistrer</translation>
 <translation id="6774238875569752630">Une page intégrée à celle-ci tente d'enregistrer</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
@@ -573,6 +573,7 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="4094590686212463338">Impossible d'associer cette chaîne de synchronisation. La chaîne de synchronisation a été supprimée.</translation>
 <translation id="4908081302669157000">Numéros de téléphone, adresses courriel et adresses</translation>
 <translation id="294985549514492876">Applications Web (PWA)</translation>
+<translation id="7029809446516969842">Mots de passe</translation>
 <translation id="924029461438529367">Afficher les suggestions de recherche</translation>
 <translation id="3128251601544028053">Lorsque vous tapez dans la barre d'adresse ou la zone de recherche, Brave envoie ce que vous saisissez à votre moteur de recherche par défaut pour obtenir de meilleures suggestions. Cette fonctionnalité n'est pas disponible en mode navigation privée.</translation>
 <translation id="6285118765755298263">Indexer d'autres moteurs de recherche</translation>
@@ -715,6 +716,8 @@ Leo. Cette action est définitive.</translation>
 <translation id="1355326130503900056">Le nom du modèle tel qu'il doit apparaître dans la demande adressée au serveur, par exemple phi-3 (si ce nom ne correspond pas exactement à ce qui est attendu par le serveur, l'intégration ne fonctionnera pas).</translation>
 <translation id="3286410514484292784">L'URL où votre cadre de service écoute les demandes. Si vous avez un doute, consultez la documentation de la plateforme de service. Par exemple, pour Ollama, il s'agit toujours de http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Certains cadres de service peuvent exiger des renseignements d'authentification, telles qu'une clé API ou un jeton accès. Ces renseignements seront ajoutés au titre de la demande.</translation>
+<translation id="4335128003329183586">Taille du contexte</translation>
+<translation id="8794525422794607973">Le nombre maximum de jetons que le modèle peut traiter en une seule interaction. Chaque jeton représente environ 3/4 d'un mot. Une taille de contexte plus importante permet au modèle de traiter des conversations plus longues. La taille maximale de contexte dépend du modèle.</translation>
 <translation id="217141195370578385">Brave n'effectue pas de proxy pour ces demandes, veuillez lire les conditions de confidentialité du fournisseur choisi.</translation>
 <translation id="2645532768679870478">Les terminaux non locaux doivent utiliser le protocole HTTPS pour la transmission sécurisée de données.</translation>
 <translation id="8177205483022887785">Vous avez entré une URL non valide. Veuillez entrer une URL valide.</translation>
@@ -724,6 +727,9 @@ Leo. Cette action est définitive.</translation>
 <translation id="7435587476558117990">Connectez votre LLM auto-hébergé ou hébergé par un tiers à Leo et utilisez-le dans le navigateur.</translation>
 <translation id="1381050642750209119">Utilisez n'importe quel cadre compatible avec le protocole de chat de l'OpenAI, tel qu'Ollama.</translation>
 <translation id="2642905648178380593">Enregistrer le modèle</translation>
+<translation id="6304169450064541679">Requête du système</translation>
+<translation id="3081947790648024460">Instructions et/ou contexte personnalisés donnés au modèle pour guider ses réponses dans une direction ou un style précis. Utilisez %datetime% où vous souhaitez insérer la date et l'heure actuelles.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> jetons</translation>
 <translation id="349846214503465941">Activer Liste de lecture</translation>
 <translation id="7903608716704052878">Ajouter automatiquement des fichiers pour consultation hors ligne</translation>
 <translation id="4193768184502613558">Cette option enregistre automatiquement les fichiers multimédias dans le cache pour que vous puissiez les lire sans connexion Internet.</translation>

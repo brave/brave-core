@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
-<translation id="8631427463833030968">Urus iklan</translation>
 <translation id="7630214457764713113">Salin pautan bersih</translation>
-<translation id="885805571521218129">Ini menggambarkan anggaran julat pendapatan anda untuk Iklan Brave bulan ini.</translation>
 <translation id="3478449063771497234">Pemberitahuan dinyahdayakan</translation>
 <translation id="2862978891748913252">Pilih negara anda</translation>
 <translation id="3970520675790340955">Pilih negara anda supaya kami boleh menunjukkan pilihan dan iklan yang sesuai untuk rantau anda.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Tunjukkan cadangan laman teratas</translation>
 <translation id="6285118765755298263">Indeks enjin carian lain</translation>
 <translation id="919715748352669592">Mengindeks laman web secara automatik yang mengikuti spesifikasi OpenSearch.</translation>
+<translation id="412411722208944922">Enjin carian pantas</translation>
+<translation id="2836969042340015500">Enjin Carian Pantas</translation>
+<translation id="9120455214794270250">Papar bar carian pantas</translation>
+<translation id="1052991798173010693">Enjin carian yang digunakan sekarang</translation>
+<translation id="335303688425891752">Tekan lama untuk ubah susunan</translation>
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="8047754398610073499">Notis persetujuan kuki sekatan</translation>
 <translation id="2621893359845808115">Sekat tetingkap timbul laman web yang meminta anda menerima / menolak kuki di laman mereka</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Selamat Datang ke Brave</translation>
 <translation id="4117451092682672487">Privasi. Dipermudahkan.</translation>
 <translation id="7909375417585209817">Apabila Brave ditetapkan sebagai lalai, setiap pautan yang anda ketik akan dibuka dengan perlindungan privasi Brave.</translation>
-<translation id="3737878115109582442">Tambah widget carian</translation>
-<translation id="6199413390010319240">Gunakan Brave dengan mudah untuk meneroka web dengan lebih pantas.</translation>
-<translation id="4338600611020922010">Tambahkan pada skrin utama</translation>
 <translation id="7370959926683925817">Sekat iklan. Simpan data. Setiap hari.</translation>
 <translation id="7281027579943912834">Dengan Brave sebagai pelayar lalai, setiap pautan yang anda ketik mendapat perlindungan sekatan iklan Brave. Setiap halaman, video dan strim.</translation>
 <translation id="5148943178722443958">Bantu usaha menambah baik Brave.</translation>
@@ -408,8 +408,13 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6925081665778864449">Untuk menyegerakkan kata laluan, sila dayakan pengesahan biometrik/kod laluan pada peranti Android anda. Langkah keselamatan tambahan ini membantu dalam memastikan kata laluan anda selamat.</translation>
 <translation id="597993392929850353">Lesen Brave</translation>
 <translation id="6336451774241870485">Tab sulit baru</translation>
-<translation id="6199596294742117349">Ini Tab Persendirian</translation>
-<translation id="5858455511731621847">Walaupun tapak yang anda lawati di tab persendirian tidak disimpan secara tempatan, ia tidak menjadikan anda awanama atau tidak dapat dilihat oleh ISP, majikan anda, atau tapak web yang anda lawati.</translation>
+<translation id="3110967157686007724">Tab sulit</translation>
+<translation id="944340256927461196">Tiada jejak ditinggalkan pada peranti anda</translation>
+<translation id="2063044449012253966">Laman yang anda lawati dalam tetingkap peribadi tidak akan muncul dalam sejarah pelayaran anda. Kuki, data borang, dan data laman akan hilang selepas semua tetingkap peribadi ditutup.</translation>
+<translation id="7395764193745523646">Keterlihatan pelayaran</translation>
+<translation id="8735363371744702779">Harap maklum, walaupun dalam tetingkap peribadi, aktiviti pelayaran anda masih mungkin dapat dilihat oleh ISP anda, pemerhati rangkaian, atau majikan anda (jika menggunakan peranti/rangkaian kerja).</translation>
+<translation id="1413177583895309156">Brave VPN menyulitkan dan melindungi segala yang anda lakukan dalam talian, walaupun di luar pelayar Brave.</translation>
+<translation id="3974348661685061050">Cuba percuma selama 7 hari</translation>
 <translation id="5789441016350810005">Brave Ads dihantar apabila pelayar dibuka di latar belakang</translation>
 <translation id="4973347371961481083">Sumbangan</translation>
 <translation id="7047578174221019462">Sumbangan bulanan anda telah diproses.</translation>
@@ -611,14 +616,14 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5333225216561354793">Kami memerlukan anda mengakui item berikut</translation>
 <translation id="6937275455070754004">Pilih rantaian blok yang hendak digunakan dalam dompet anda.</translation>
 <translation id="1645800479814134195">Saya faham ini ialah dompet penjagaan sendiri, dan saya seorang sahaja yang bertanggungjawab ke atas sebarang dana, aset atau akaun yang berkaitan, dan untuk mengambil tindakan yang sewajarnya untuk menjamin, melindungi dan membuat sandaran dompet saya. Saya faham bahawa Brave tidak boleh mengakses dompet saya atau membalikkan transaksi bagi pihak saya, dan frasa pemulihan saya ialah SATU-SATUNYA cara untuk mendapatkan semula akses sekiranya kata laluan hilang, peranti dicuri atau keadaan yang serupa.</translation>
-<translation id="4565891212173086999">Saya telah membaca dan bersetuju dengan  <ph name="CLICK_START"/>Terma Penggunaan<ph name="CLICK_END"/>.</translation>
+<translation id="4565891212173086999">Saya telah membaca dan bersetuju dengan <ph name="CLICK_START"/>Terma Penggunaan<ph name="CLICK_END"/>.</translation>
 <translation id="3259102562570606417">Simpan frasa pemulihan anda</translation>
 <translation id="4339981001593889376">Frasa pemulihan anda ialah kunci untuk mengakses dompet anda jika anda terlupa kata laluan anda atau kehilangan peranti anda.</translation>
 <translation id="426648489149930289">Simpan di tempat selamat yang tidak dapat diakses oleh orang lain dan elakkan berkongsi frasa pemulihan itu dengan sesiapa sahaja.</translation>
 <translation id="3726490322412361740">Masukkan Kata Laluan</translation>
 <translation id="1566412704591731844">Mencipta dompet anda…</translation>
 <translation id="7779823116893018906">Mungkin mengambil masa beberapa saat…</translation>
-<translation id="1577948178257477049">Akaun <ph name="ACCOUNT_NAME"/>  <ph name="ACCOUNT_NUMBER"/></translation>
+<translation id="1577948178257477049">Akaun <ph name="ACCOUNT_NAME"/> <ph name="ACCOUNT_NUMBER"/></translation>
 <translation id="7665369617277396874">Tambah akaun</translation>
 <translation id="3448492834076427715">Kemas kini akaun</translation>
 <translation id="5532363218245261099">#<ph name="NUMBER"/> <ph name="RECOVERY_PHRASE"/></translation>
@@ -710,9 +715,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1532536259167115948">Langganan bulanan <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Langganan tahunan <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Diperbaharui secara bulanan</translation>
+<translation id="112929124115834557">Diperbaharui setiap tahun</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /bulan</translation>
 <translation id="1163809943099641131">Satu Tahun</translation>
-<translation id="727385358513272220">Diperbaharui setiap tahun (<ph name="DISCOUNT_TEXT_START"/>jimat <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>jimat <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /tahun</translation>
 <translation id="2786538705804257030">Langganan akan dikenakan bayaran melalui akaun Google anda. Mana-mana bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan dibatalkan semasa anda membeli langganan.\n\nLangganan anda akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa.\n\nAnda boleh mengurus langganan anda dalam Tetapan.\n\nDengan menggunakan Brave, anda bersetuju dengan Terma Penggunaan dan Dasar Privasi.</translation>
 <translation id="5035172357624830412">Sudah membeli melalui brave.com?</translation>
@@ -842,7 +848,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4351811224047421378">Titik perpuluhan tepat</translation>
 <translation id="3494964159182650590">Ringkasan Ganjaran</translation>
 <translation id="590733288489975971">Ganjaran dari Iklan</translation>
-<translation id="1886682615222609631">Pendapatan setakat ini</translation>
+<translation id="1450735350187803276">Iklan dilihat bulan ini</translation>
 <translation id="1767561995429774671">Beri Sumbangan</translation>
 <translation id="7335371657242627509">Termasuk dalam Auto-Sumbangan</translation>
 <translation id="6727102863431372879">Tetapkan</translation>
@@ -1228,5 +1234,6 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="2728518864712716830">Kemas kini dimuat turun.</translation>
 <translation id="8403338849301491865">Senarai penapis berjaya dikemas kini</translation>
 <translation id="4650851936784160359">Senarai penapis tidak dapat dikemas kini. Sila cuba semula</translation>
-<translation id="1450735350187803276">Iklan dilihat bulan ini</translation>
+<translation id="3098054327870766317">Papar butang buat asal apabila tab ditutup</translation>
+<translation id="1336494649091412226">Adakah anda pasti mahu keluar daripada Brave?</translation>
 </translationbundle>

@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
-<translation id="8631427463833030968">광고 관리</translation>
 <translation id="7630214457764713113">클린 링크 복사</translation>
-<translation id="885805571521218129">이번 달 Brave Ads로 적립되는 예상액 범위입니다.</translation>
 <translation id="3478449063771497234">알림 비활성화됨</translation>
 <translation id="2862978891748913252">국가 선택</translation>
 <translation id="3970520675790340955">국가를 선택하세요. 그래야 지역에 맞는 옵션과 광고를 표시해드릴 수 있습니다.</translation>
@@ -233,9 +231,6 @@
 <translation id="7207456302801184289">Brave에 오신걸 환영합니다</translation>
 <translation id="4117451092682672487">프라이버시. 더욱 간편하게.</translation>
 <translation id="7909375417585209817">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크가 프라이버시를 보호하는 Brave로 열립니다.</translation>
-<translation id="3737878115109582442">검색 위젯 추가</translation>
-<translation id="6199413390010319240">Brave를 이용하기 편한 곳에 두어 더 빠르게 웹을 탐색하세요.</translation>
-<translation id="4338600611020922010">홈 화면에 추가</translation>
 <translation id="7370959926683925817">광고 차단. 데이터 절약. 언제나.</translation>
 <translation id="7281027579943912834">Brave를 기본 브라우저로 설정하면 탭하는 모든 링크에서 Brave의 광고 차단으로 보호. 어떤 페이지, 비디오, 스트림에서도.</translation>
 <translation id="5148943178722443958">Brave 개선에 참여.</translation>
@@ -408,8 +403,7 @@
 <translation id="6925081665778864449">비밀번호를 동기화하려면 Android 기기에서 생체인식/패스코드 인증을 활성화해야 합니다. 이 추가 보안 수단이 비밀번호를 안전하게 보호해줍니다.</translation>
 <translation id="597993392929850353">Brave 라이선스</translation>
 <translation id="6336451774241870485">새 비공개 탭</translation>
-<translation id="6199596294742117349">이것은 비공개 탭입니다</translation>
-<translation id="5858455511731621847">개인 탭에서 방문하는 사이트는 로컬로 저장되지 않는 경우에도 ISP, 고용주 또는 방문하는 사이트에 사용자를 익명으로 표시하거나 숨기지 않습니다.</translation>
+<translation id="3110967157686007724">비공개 탭</translation>
 <translation id="5789441016350810005">브라우저가 백그라운드에 있을 때 전송된 브레이브 광고</translation>
 <translation id="4973347371961481083">기부</translation>
 <translation id="7047578174221019462">월 기부금이 처리되었습니다.</translation>
@@ -712,7 +706,6 @@
 <translation id="6748319398471481216">매달 갱신</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /월</translation>
 <translation id="1163809943099641131">1년</translation>
-<translation id="727385358513272220">매년 갱신 (<ph name="DISCOUNT_TEXT_START"/><ph name="PERCENTAGE_AMOUNT"/>%% 절약<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /년</translation>
 <translation id="2786538705804257030">구독 대금은 Google 계정을 통해 청구됩니다.구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 최소 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\n\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.</translation>
 <translation id="5035172357624830412">brave.com에서 이미 구매하셨습니까?</translation>
@@ -842,7 +835,7 @@
 <translation id="4351811224047421378">소수 자릿수</translation>
 <translation id="3494964159182650590">보상 요약</translation>
 <translation id="590733288489975971">광고로 받은 리워드</translation>
-<translation id="1886682615222609631">지금까지의 수익</translation>
+<translation id="1450735350187803276">이번 달에 본 광고</translation>
 <translation id="1767561995429774671">기부</translation>
 <translation id="7335371657242627509">자동 기부에 포함하기</translation>
 <translation id="6727102863431372879">설정</translation>
@@ -1228,5 +1221,4 @@
 <translation id="2728518864712716830">업데이트가 다운로드되었습니다.</translation>
 <translation id="8403338849301491865">필터 목록 업데이트 성공</translation>
 <translation id="4650851936784160359">필터 목록을 업데이트할 수 없습니다. 다시 시도하세요.</translation>
-<translation id="1450735350187803276">이번 달에 본 광고</translation>
 </translationbundle>

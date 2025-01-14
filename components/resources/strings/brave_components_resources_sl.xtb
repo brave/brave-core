@@ -106,7 +106,7 @@
 <translation id="4541978218358617681">Oglas</translation>
 <translation id="1776831331757823105">Ura</translation>
 <translation id="7791543448312431591">Dodaj</translation>
-<translation id="7679334366167089823">Zaslužite z ogledom oglasov, ki spoštujejo zasebnost.</translation>
+<translation id="6216996674668969227">Zaslužite žetone za ogled oglasov, ki spoštujejo zasebnost.</translation>
 <translation id="7191394989411626168">Če izklopite Kartice, bodo vse trenutno vidne kartice skrite. Lahko se zgodi, da boste še naprej prejemali obvestila o novih karticah.</translation>
 <translation id="6820526586005233839">Oglasi Brave so zaustavljeni</translation>
 <translation id="5190407395832551012">Če želite Brave Rewards zaščititi pred zlorabo, bomo naključno prosili uporabnike, da rešijo preskus captcha. Za nadaljevanje oglasov kliknite “Reši”.</translation>
@@ -213,7 +213,7 @@
 <translation id="8010081455002666927">Samodejno zaznano</translation>
 <translation id="4394049700291259645">Onemogoči</translation>
 <translation id="4176463684765177261">Onemogočeno</translation>
-<translation id="8283001340969131076">Žal je pri poskusu prekinitve povezave z vašim računom <ph name="PROVIDER"/>  prišlo do napake. Poskusite znova pozneje.</translation>
+<translation id="8283001340969131076">Žal je pri poskusu prekinitve povezave z vašim računom <ph name="PROVIDER"/> prišlo do napake. Poskusite znova pozneje.</translation>
 <translation id="8845154268466251503">BAT</translation>
 <translation id="4684554059837592728">Mesečno plačilo</translation>
 <translation id="2846354907189538">Datum naslednjega prispevka</translation>
@@ -471,10 +471,11 @@
 <translation id="3349204812119681938">Ponastavi storitev Brave Rewards</translation>
 <translation id="4915997950539925115">S ponastavitvijo bo vaš trenutni profil Brave nagrajevanje izbrisan in Brave nagrajevanje ne bo več omogočeno. Če kasneje ponovno omogočite Brave nagrajevanje, boste začeli z novim profilom. Za več <ph name="LINK_BEGIN"/>podrobnosti preberite članek podpore<ph name="LINK_END"/> o ponastavitvi.</translation>
 <translation id="4806029412510565611">Razumem, da bo moj trenutni profil Brave Rewards vključno s podatki o Brave Rewards izbrisan iz moje naprave, hkrati pa sem prebral(a) <ph name="LINK_BEGIN"/>članek s koristnimi informacijami o ponastavitvi<ph name="LINK_END"/>.</translation>
+<translation id="8835777704176513489">Onemogočanje in ponastavitev nagrad</translation>
 <translation id="7717357606512850995">Preverite stanje</translation>
-<translation id="6473937687348632190">Izplačilo nagrad za mesec <ph name="MONTH"/>  je zaključeno.</translation>
-<translation id="1711367267038576241">Izplačilo nagrad za mesec  <ph name="MONTH"/> se bo začelo v času do<ph name="DATE"/>.</translation>
-<translation id="8193714877171133821">Izplačilo nagrad za mesec <ph name="MONTH"/>  je v teku.</translation>
+<translation id="6473937687348632190">Izplačilo nagrad za mesec <ph name="MONTH"/> je zaključeno.</translation>
+<translation id="1711367267038576241">Izplačilo nagrad za mesec <ph name="MONTH"/> se bo začelo v času do<ph name="DATE"/>.</translation>
+<translation id="8193714877171133821">Izplačilo nagrad za mesec <ph name="MONTH"/> je v teku.</translation>
 <translation id="6583902294974160967">Podpora</translation>
 <translation id="3825131544027418568"><ph name="BEGIN_BOLD"/>Za ogled stanja se prijavite v <ph name="PROVIDER"/><ph name="END_BOLD"/></translation>
 <translation id="2659764755126740206">Pojdi na moj <ph name="PROVIDER"/> račun</translation>
@@ -540,7 +541,7 @@
 <translation id="2529827670795983639">Zdi se, da to ne deluje. Oglasi Brave Ads bodo ostali zaustavljeni. Če potrebujete pomoč pri captcha, nas kontaktirajte.</translation>
 <translation id="261607053214862521">Največje število poskusov je preseženo</translation>
 <translation id="2323171459178104277">Rešeno!</translation>
-<translation id="1512837998731269583">Oglasi in zaslužki se bodo zdaj nadaljevali. Hvala, ker ste nam pomagali zaščititi Brave Rewards in oglase, ki temeljijo na zasebnosti.</translation>
+<translation id="1565888393553870503">Oglasi Brave se bodo nadaljevali. Hvala, ker nam pomagate zaščititi nagrade Brave.</translation>
 <translation id="3247549836099021862">Obrnite se na podporo</translation>
 <translation id="5234764350956374838">Opusti</translation>
 <translation id="7859066142771796818">Uporabite žetone za nakup darilnih kartic, zamenjavo za druge valute, podporo ustvarjalcem vsebine in še več.</translation>
@@ -567,7 +568,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Več o tem<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Ne skrbite.</translation>
 <translation id="5027616819996705541">Še vedno lahko brskate zasebno!</translation>
-<translation id="1886682615222609631">Dosedanji zaslužek</translation>
+<translation id="1450735350187803276">Oglasi, videni v tem mesecu</translation>
 <translation id="7649070708921625228">Pomoč</translation>
 <translation id="6042308850641462728">Več</translation>
 <translation id="6245259297588415877">Ustvarjalci</translation>
@@ -716,7 +717,7 @@
 <translation id="7160424977552599351">Uporabite svojo denarnico Web3</translation>
 <translation id="6369571967625114920">Zasebni oglasi Brave v vaši regiji še niso na voljo.</translation>
 <translation id="5309155375926073606">Da, tudi jaz želim prispevati k Brave Search in se vključiti v<ph name="LINK_BEGIN"/>projekt Web Discovery<ph name="LINK_END"/>.</translation>
-<translation id="7285849890826812669">Prispevajte nekaj anonimnih iskanj o podatkih brskanja za namen izboljšanj iskanja Brave s projektom Web Discovery. Projekt je popolnoma odprtokoden.</translation>
+<translation id="4622826307953794521">Prispevajte nekaj anonimnih podatkov o iskanju in brskanju, da bi izboljšali Brave Search s projektom Web Discovery Project. Je popolnoma odprtokoden.</translation>
 <translation id="4174337572777167894">Projekt Web Discovery</translation>
 <translation id="7090992647511817643">račun</translation>
 <translation id="4822132585477111396">ID verige</translation>
@@ -945,8 +946,11 @@
 <translation id="7080614857771109950">Podpira sredstva, ki so združljiva z EVM na blokovni verigi Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Podpira sredstva, združljiva s SPL, na blokovni verigi Solana</translation>
 <translation id="4541295941776129088">Shrani sredstvo FIL</translation>
+<translation id="6030958132571544682">Shranjevanje sredstev FIL Testnet</translation>
 <translation id="29759539656432505">Shranite sredstva BTC</translation>
+<translation id="2399555431746923964">Shranjevanje sredstev BTC Testnet</translation>
 <translation id="8749751940551938347">Shranite sredstva ZEC</translation>
+<translation id="3451958544919449297">Shranjevanje sredstev ZEC Testnet</translation>
 <translation id="8500387257977999003">Zasebni ključ <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Uvozi</translation>
 <translation id="232925166623833246">Uvoz iz strojne denarnice</translation>
@@ -1003,7 +1007,7 @@
 <translation id="453788800165937690">OPOZORILO: Nikoli ne delite zasebnega ključa. Vsakdo, ki ima ta zasebni ključ, lahko za vedno odvzame vaša sredstva.</translation>
 <translation id="2416098547200943834">OPOMBA: Zasebni ključ je na voljo kot šestnajstiško kodiran JSON, ki vsebuje informacije o zasebnem ključu in protokolu. <ph name="LINK_START"/>Več o tem<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">OPOMBA: Zasebni ključ je treba zagotoviti kot šestnajstiško kodiran JSON, ki vsebuje informacije o zasebnem ključu in protokolu. <ph name="LINK_START"/>Več o tem<ph name="LINK_END"/>.</translation>
-<translation id="1505724566145200403">OPOMBA: Podprti so samo razširjeni ključi zprv (ali vprv za Testnet).</translation>
+<translation id="4482913669726886926">OPOMBA: Podprti so samo <ph name="FORMAT"/> razširjeni ključi.</translation>
 <translation id="42126664696688958">Izvozi</translation>
 <translation id="1366855498335432549">Vplačaj</translation>
 <translation id="790104325876206743">Nastavitve računa</translation>
@@ -1025,7 +1029,7 @@
 <translation id="3792938779249970121">Izberite račun</translation>
 <translation id="6797737193502014008">Iščite po računih</translation>
 <translation id="3505920073976671674">Izberite omrežje</translation>
-<translation id="6857856707736769720">Izberite od</translation>
+<translation id="2556155338676955870">Izberi sredstvo</translation>
 <translation id="6323024765179772761">Iskanje kovancev</translation>
 <translation id="6998989275928107238">Za</translation>
 <translation id="1506421160138798546">ocena</translation>
@@ -1171,7 +1175,7 @@
 <translation id="4512871563176965522">Dodatek po meri</translation>
 <translation id="749944179568745958">Ni veljaven ETH naslov</translation>
 <translation id="2832270987629018596">Ni veljaven naslov SOL</translation>
-<translation id="2115100722958448834">Ni veljaven                                                                            <ph name="COIN_TYPE_SYMBOL"/>naslov.</translation>
+<translation id="2115100722958448834">Ni veljaven                                                                           <ph name="COIN_TYPE_SYMBOL"/>naslov.</translation>
 <translation id="240219768078450165">Domena nima povezanega <ph name="COIN_TYPE_SYMBOL"/>naslova.</translation>
 <translation id="4932382283590063268">Naslov prejemnika je tvoj naslov.</translation>
 <translation id="3124753063207986114">Prejemni naslov je pogodbeni naslov žetona.</translation>
@@ -1264,6 +1268,26 @@
 <translation id="6153197326949684688">Prodaja z <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Kupite s Sardino</translation>
 <translation id="3301984548406568819">Finančne in transakcijske podatke obdelujejo naši zunanji povezani partnerji. Brave ne zbira in nima dostopa do takih podatkov.</translation>
+<translation id="5795821518596541838">Partner za transakcije</translation>
+<translation id="1916136859742693273">Brave Wallet uporablja Meld.io, ki pomaga združevati in prikazovati različne ponudnike kriptovalut za vašo regijo. Z Meld.io bomo delili informacije za dokončanje transakcije, vključno z naslovom vaše denarnice in kodo države. Za več informacij preberite pogoje uporabe družbe Meld.</translation>
+<translation id="245827814248186739">Prebral/-a sem <ph name="LINK_BEFORE"/>Pogoje uporabe storitve Meld<ph name="LINK_AFTER"/></translation>
+<translation id="2050829168433446009">Najboljša možnost</translation>
+<translation id="2803020719327054687">Menjalni tečaj s provizijami</translation>
+<translation id="27867052127960599">Provizija</translation>
+<translation id="5914491493054850112">Cena <ph name="CURRENCY"/></translation>
+<translation id="638391338232902087">Nakup z <ph name="PROVIDER"/></translation>
+<translation id="2803778066587058297">Sredstva</translation>
+<translation id="1275718070701477396">Izbrano</translation>
+<translation id="7509108671781225188">Ni razpoložljivih valut</translation>
+<translation id="3799031411423890455">Pridobivanje najboljših cen ...</translation>
+<translation id="8544603592370093978">Nakup <ph name="ASSET"/></translation>
+<translation id="7463545687475534731">Za <ph name="ASSET"/> ni bilo najdenih ponudnikov</translation>
+<translation id="3372351687823322070">Poskusite poiskati drugo sredstvo.</translation>
+<translation id="2619949734919284401">Za <ph name="PROVIDER"/> ni bilo najdenih rezultatov</translation>
+<translation id="3319146983769202287">Poskusite uporabiti drugo ključno besedo ali preverite pravopis.</translation>
+<translation id="4196022627437957774">Ali želite ustvariti račun <ph name="ACCOUNT_TYPE"/>?</translation>
+<translation id="5982914754413312620">Da bi prejeli <ph name="TOKEN_SYMBOL"/> , potrebujete <ph name="ACCOUNT_TYPE"/> račun.</translation>
+<translation id="3067168166931605141">Ime računa</translation>
 <translation id="6534275647567011533">Za nakup uporabite Transak</translation>
 <translation id="5973390321030037823">Nakup s povezavo</translation>
 <translation id="1932640759496708012">Kupujte s Coinbase Pay</translation>
@@ -1317,6 +1341,10 @@
 <translation id="6990756606864308319">Prišlo je do napake pri postopku<ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
 <translation id="6449575669814542383">Odobritev <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> na <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
 <translation id="8036159955043245753">Za preklic obstoječe transakcije bo ustvarjena nova transakcija.</translation>
+<translation id="4056435949094149644">Swapping</translation>
+<translation id="7694836973509310467">Bridging</translation>
+<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> on <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="6934057383578424432">Pri poskusu <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> na <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/> je prišlo do napake</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} more transaction pending.}
       other {{PENDING_TRANSACTIONS} more transactions pending.}
@@ -1716,6 +1744,11 @@
 <translation id="803703704549420287">Počistite filtre</translation>
 <translation id="1472675084647422956">Pokaži več</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
+<translation id="8713438253026855351">Preklop na zaščiteni račun</translation>
+<translation id="3526789880090101085">Zaščita računa</translation>
+<translation id="2298396008562701154">Trenutno ta račun podpira transparentne transakcije, kar pomeni, da so vidne vsem v blockchainu.</translation>
+<translation id="3987095760757102811">Nadgradnja na zaščiteni račun pomeni, da so pri teh transakcijah skriti podatki o pošiljatelju, prejemniku in znesku.</translation>
+<translation id="3819528427777765709">Zaščiten</translation>
 <translation id="7144878232160441200">Poskusi znova</translation>
 <translation id="9094621390791852268">Predogled transakcije ni uspel</translation>
 <translation id="4982713341035600933">Ocenjena sprememba stanja</translation>
@@ -1912,6 +1945,7 @@
 <translation id="8652827551752428289">Prikaži zgodovino</translation>
 <translation id="5030659775136592441">Prikaži upravitelja zaznamkov</translation>
 <translation id="6919203766034706175">Uvozi nastavitve</translation>
+<translation id="6159704524780747483">Klepet Open AI</translation>
 <translation id="1199430163665775722">Uredi iskalnike</translation>
 <translation id="4276265845501430443">Pokaži pomoč</translation>
 <translation id="8104889575691864804">Pokaži meni aplikacije</translation>
@@ -1996,11 +2030,13 @@
 <translation id="1130188644637295274">Odpri v razdeljenem pogledu</translation>
 <translation id="6459036216700972269">Nerazdeljeni zavihki</translation>
 <translation id="4235382917338421035">Položaji zavihka zamenjav</translation>
+<translation id="4288085058450834672">Prikaži aplikacije</translation>
 <translation id="4144468798716165316">Hitri ukazi</translation>
 <translation id="3617523374417810198">Nov razdeljeni pogled</translation>
 <translation id="8571323456914890254">Odpri v razdeljenem pogledu</translation>
 <translation id="5329136173514538969">Nerazdeljeni zavihki</translation>
 <translation id="7595612919377246359">Položaji zavihka zamenjav</translation>
+<translation id="2367972762794486313">Pokaži aplikacije</translation>
 <translation id="8591883849678260674">Poglej original</translation>
 <translation id="1969654232209826429">min. branje</translation>
 <translation id="4101707289420716287">Izklopi Speedreader</translation>
@@ -2056,9 +2092,11 @@
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> od<ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Klepet</translation>
+<translation id="4685048769603134644">Odpri celotno stran</translation>
 <translation id="2961040541145689181">Nov klepet</translation>
 <translation id="7557539689487606886">Pojdi na Premium</translation>
 <translation id="1691256669639196606">Upravljajte naročnino</translation>
+<translation id="3840096463915153852">Zgodovina pogovorov</translation>
 <translation id="2304783958703511257">Napredne nastavitve</translation>
 <translation id="3037594989275592390">Jezikovni modeli</translation>
 <translation id="5543505256451301851">Poskusite 7 dni brezplačno</translation>
@@ -2095,10 +2133,13 @@
 <translation id="2313959174679245365">Vaše ocene ni bilo mogoče poslati, preverite omrežno povezavo in poskusite znova</translation>
 <translation id="98413980871833152">Vaših povratnih informacij ni bilo mogoče poslati, preverite omrežno povezavo in poskusite znova</translation>
 <translation id="8742658901413346500">Ta pogovor je dolg in Leo lahko kmalu začne pozabljati stvari. Če preklopite na premium model, lahko zagotovite daljše pogovore ali pa počistite klepet, da ga ponastavite.</translation>
-<translation id="7550152963854770123">Počisti klepet</translation>
+<translation id="6495402307502950726">Počisti pogovor</translation>
+<translation id="903201991022343217">Začni nov pogovor</translation>
+<translation id="8171760814579050200">Preimenuj pogovor</translation>
+<translation id="7754678742055438573">Izbriši pogovor</translation>
 <translation id="7494736170250048402">Pošlji sporočilo Leu</translation>
 <translation id="8712637175834984815">Razumem</translation>
-<translation id="1093419424466417703">Stran je predolga za Lea. V pogovoru morda manjka nekaj konteksta. Leo je lahko prebral                                       <ph name="PERCENTAGE"/>vsebino strani.</translation>
+<translation id="1093419424466417703">Stran je predolga za Lea. V pogovoru morda manjka nekaj konteksta. Leo je lahko prebral                                      <ph name="PERCENTAGE"/>vsebino strani.</translation>
 <translation id="2186990448773134544">Vsebina strani je bila izpopolnjena z izborom najpomembnejših informacij s strani, ker je bila za Lea predolga.</translation>
 <translation id="5140068729857132378">Iskanje ustreznih delov spletne strani ...</translation>
 <translation id="4370698775470316661">Ta pogovor je predolg in se ne more nadaljevati. Morda so na voljo drugi modeli, s katerimi je Leo sposoben ohraniti natančnost za daljše pogovore.</translation>
@@ -2147,6 +2188,7 @@
 <translation id="49269513399674318">Uporabite mikrofon</translation>
 <translation id="3895031624234442305">Modeli po meri</translation>
 <translation id="4572010449071015143">Začnite nov pogovor</translation>
+<translation id="6287023598025162715">Nov pogovor</translation>
 <translation id="6303294677342628402">Ščiti</translation>
 <translation id="8458987127502506209">Omogoči zaščito Ščiti Brave</translation>
 <translation id="7509914170164691086">Ščit je VKOPLJEN <ph name="LINK_BEFORE"/>za<ph name="LINK_AFTER"/></translation>
@@ -2229,8 +2271,8 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="6821108091726602352">Pomagaj nam popraviti splet s sodelovanjem v projektu Brave Web Discovery Project. Z deljenjem popolnoma anonimnih iskalnih signalov lahko podjetju Brave pomagaš povečati iskalni indeks.</translation>
 <translation id="6764845498618413165">Izvedi več.</translation>
 <translation id="7818938154803162778">Seveda, pomagal bom</translation>
-<translation id="7821773512278295352">Požarni zid Brave + VPN: povezano</translation>
-<translation id="6019088868713395120">Požarni zid Brave + VPN: prekinjena povezava</translation>
+<translation id="958268166261124668">Brave VPN: povezan</translation>
+<translation id="6021669293402055982">Brave VPN: povezava prekinjena</translation>
 <translation id="3541307549916475335">Uporabniški vmesnik plošče Brave VPN</translation>
 <translation id="7143207342074048698">Vzpostavljanje povezave</translation>
 <translation id="1202549130170287307">Prekinitev povezave</translation>
@@ -2242,7 +2284,6 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="3357036723290257445">Ste že kupili VPN Brave?</translation>
 <translation id="8814357473522731680">Poganja</translation>
 <translation id="8652175077544655965">Zaprite nastavitve</translation>
-<translation id="3099126540952997993">Požarni zid + VPN</translation>
 <translation id="5908163815855240493">Na glavno stran</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="5747552184818312860">Poteče</translation>
@@ -2266,6 +2307,7 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="2542131205769293399">Statusa vašega nakupa ni mogoče preveriti. Verjetno gre za težavo z omrežjem. Poskusite znova ali se obrnite na podporo.</translation>
 <translation id="4613076894734402086">Urejanje načina plačila</translation>
 <translation id="427718751211990320">Datum poteka veljavnosti poverilnic je potekel.</translation>
+<translation id="3323234188356372126">Brave VPN ima težave z avtentikacijo v strežniku VPN. Obrnite se na podporo ali poskusite znova pozneje.</translation>
 <translation id="8670619630771851260">Poverilnic ni mogoče naložiti.</translation>
 <translation id="1594643509610625766">Žeton ni več veljaven.</translation>
 <translation id="8373427068383038263">Vaše zadnje plačilo za <ph name="VALUE"/> morda ni bilo izvedeno. Dostop do te naročnine bo prekinjen, dokler ne bo rešeno vprašanje plačila. Poskusite urediti način plačila ali se obrnite na podporo Brave.</translation>
@@ -2306,10 +2348,9 @@ Vzpostavimo povezavo!</translation>
 <translation id="7423206764347669977">Spreminjanje nastavitev</translation>
 <translation id="9061845622728745852">Časovni pas</translation>
 <translation id="8295393906499561642">Seja je potekla</translation>
+<translation id="7070578590391442755">Ne morem preveriti pristnosti v omrežju VPN</translation>
 <translation id="3312623558576021182">Vpišite se v svoj<ph name="BRAVE_ACCOUNT_BEGIN"/>uporabniški račun Brave<ph name="BRAVE_ACCOUNT_END"/> in osvežite svojo sejo VPN.</translation>
-<translation id="6021669293402055982">Brave VPN: povezava prekinjena</translation>
 <translation id="7861195049821776142">Brave VPN: Prekinitev povezave</translation>
-<translation id="958268166261124668">Brave VPN: povezan</translation>
 <translation id="2061807837510296780">Brave VPN: Povezovanje</translation>
 <translation id="1313124107969703758">Brave VPN: napaka</translation>
 <translation id="8273420301954598554">Stanje: povezan</translation>
@@ -2318,6 +2359,11 @@ Vzpostavimo povezavo!</translation>
 <translation id="8048263175525832621">Brave VPN – Povezava prekinjena</translation>
 <translation id="1498770726476841108">Upravljaj račun</translation>
 <translation id="6825718953004242472">Odstrani ikono</translation>
+<translation id="6819278685469225453">Zaščita vseh app v napravi</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">Dodatna zasebnost &amp; varnost na spletu.</translation>
+<translation id="8425213833346101688">Spremeni</translation>
+<translation id="8703188411226330709">Začni brezplačni preizkus</translation>
 <translation id="3287942014983548982">Odpri tukaj</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, trenutno odprto,
 pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
@@ -2325,7 +2371,4 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
      obstoječi zavihek</translation>
 <translation id="451189393813405346">Vprašaj Lea</translation>
 <translation id="8525248723479742219">Predvajaj kasneje</translation>
-<translation id="1450735350187803276">Oglasi, ogledani ta mesec</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="8425213833346101688">Spremeni</translation>
 </translationbundle>

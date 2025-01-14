@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "A Brave bővítmény",
+    "message": "A Brave-bővítmény",
     "description": "The name of the extension."
   },
   "shields": {
@@ -44,7 +44,7 @@
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "Kapcsolat bővítve",
+    "message": "kapcsolat bővítve",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
@@ -208,7 +208,7 @@
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
-    "message": "Hozzáadás a Bravehoz",
+    "message": "Hozzáadás a Brave-hez",
     "description": "Message for adding an extension to Brave"
   },
   "removeFromBrave": {

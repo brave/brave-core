@@ -1,10 +1,10 @@
 {
   "appName": {
-    "message": "Die Brave-Erweiterung",
+    "message": "Die Brave Erweiterung",
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Schutz",
+    "message": "Shields",
     "description": "The Shields feature name"
   },
   "up": {
@@ -20,15 +20,15 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Wird die Seite falsch dargestellt? Deaktivieren Sie den Schutz und versuchen Sie es erneut.",
+    "message": "Wird die Seite falsch dargestellt? Deaktiviere Shhields und versuche es erneut.",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Sie surfen auf dieser Website ohne den Privatsphären- und Sicherheitsschutz von Brave. Funktioniert es nicht richtig mit eingeschaltetem Schutz?",
+    "message": "Du surfst auf dieser Website ohne den Privatsphären- und Sicherheitsschutz von Brave. Funktioniert es nicht richtig mit Shields?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Melden Sie eine fehlerhafte Website",
+    "message": "Melde eine fehlerhafte Website",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -104,7 +104,7 @@
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerabdruck blockiert (streng, könnte Websites kaputtmachen)",
+    "message": "Fingerabdruck blockiert (streng, könnte Websites zerstören)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
@@ -188,11 +188,11 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Webseiten beinhalten häufig Cookies und Scripts, die versuchen, Sie und Ihr Gerät zu identifizieren (oftmals in Werbung eingebaut). Sie wollen herausfinden, wer Sie sind, und Ihnen durch das Internet folgen, wobei sie alles aufzeichnen, was Sie auf jeder einzelnen Webseite machen. Brave blockiert diese Dinge, sodass Sie im Internet surfen können, ohne verfolgt zu werden.",
+    "message": "Websites enthalten oft Cookies und Skripte, die versuchen, dich und dein Gerät zu identifizieren (oft in Anzeigen eingebettet). Diese wollen herausfinden, wer du bist, und verfolgen, was du auf jeder Website tust. Brave blockiert diese Dinge, damit du surfen kannst, ohne getrackt zu werden.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Cross-Site-Tracker und andere gruselige Dinge werden blockiert.",
+    "message": "Cross-Site-Tracker und andere unangenehme Dinge werden blockiert.",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {

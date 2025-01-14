@@ -24,6 +24,7 @@ class CrowdinClientWrapper():
         self._organization = 'Brave-Software'
         self._project_id = project_id
         self._auth_token = get_env_var('CROWDIN_API_KEY')
+        self._timeout = 300
         assert self._project_id, \
             'CrowdinClientWrapper: project_id is not set.'
         assert self._auth_token, \
@@ -32,7 +33,8 @@ class CrowdinClientWrapper():
         # https://brave-software.crowdin.com/u/user_settings/access-tokens
         self._client = CrowdinClient(organization=self._organization,
                                      project_id=self.project_id,
-                                     token=self._auth_token)
+                                     token=self._auth_token,
+                                     timeout=self._timeout)
 
     @property
     def project_id(self):

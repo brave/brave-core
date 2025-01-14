@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
-<translation id="8631427463833030968">Hirdetések kezelése</translation>
 <translation id="7630214457764713113">Tiszta hivatkozás másolása</translation>
-<translation id="885805571521218129">Megmutatja a becsült bevételek tartományát a Brave hirdetéseknél.</translation>
 <translation id="3478449063771497234">Az értesítések le vannak tiltva</translation>
 <translation id="2862978891748913252">Válassza ki az országot</translation>
 <translation id="3970520675790340955">Válassza ki az országát, hogy a régiójának megfelelő lehetőségeket és hirdetéseket mutathassuk.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">A legnépszerűbb webhelyekre vonatkozó javaslatok megjelenítése</translation>
 <translation id="6285118765755298263">Egyéb keresőmotorok indexálása</translation>
 <translation id="919715748352669592">Automatikusan indexálja a weboldalakat, amelyek követik az OpenSearch specet.</translation>
+<translation id="412411722208944922">Gyorskeresők</translation>
+<translation id="2836969042340015500">Gyorskeresők</translation>
+<translation id="9120455214794270250">Gyorskeresősáv megjelenítése</translation>
+<translation id="1052991798173010693">Jelenleg használt keresők</translation>
+<translation id="335303688425891752">Nyomja meg hosszan a sorrend megváltoztatásához</translation>
 <translation id="9148058034647219655">Kilépés</translation>
 <translation id="8047754398610073499">Cookie-khoz való hozzájárulással kapcsolatos értesítések letiltása</translation>
 <translation id="2621893359845808115">Blokkolja a webhelyek felugró ablakait, amelyek a cookie-k elfogadásáról/elutasításáról kérdezik a webhelyükön.</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">A Brave üdvözli Önt!</translation>
 <translation id="4117451092682672487">Adatvédelem. Egyszerűen.</translation>
 <translation id="7909375417585209817">A Brave alapértelmezett böngészőként történő beállításával minden hivatkozás, amelyre rákoppint a Brave adatvédelmi beállításaival fog megnyílni.</translation>
-<translation id="3737878115109582442">Kereső widget hozzáadása</translation>
-<translation id="6199413390010319240">A Brave segítségével gyorsabban felfedezheti az internetet.</translation>
-<translation id="4338600611020922010">Hozzáadás a kezdőképernyőhöz</translation>
 <translation id="7370959926683925817">Blokkolja a hirdetéseket, és csökkentse az adatforgalmat, minden egyes nap.</translation>
 <translation id="7281027579943912834">Ha a Brave-et használja alapértelmezett böngészőként, a Brave hirdetésblokkoló védelme minden megnyitott hivatkozásra kiterjed – minden weblapra, videóra és adatfolyamra.</translation>
 <translation id="5148943178722443958">Segítsen a Brave továbbfejlesztésében.</translation>
@@ -408,8 +408,13 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="6925081665778864449">A jelszavak szinkronizálásához engedélyezze a biometrikus/jelkód-hitelesítést az Android-eszközén. Ez az extra biztonsági intézkedés a jelszavak biztonságát szolgálja.</translation>
 <translation id="597993392929850353">Brave engedély</translation>
 <translation id="6336451774241870485">Új privát ablak</translation>
-<translation id="6199596294742117349">Ez egy bizalmas ablak</translation>
-<translation id="5858455511731621847">Habár a privát füleken megnyitott ablakok nem kerülnek helyi mentésre, még nem tesznek névtelenné vagy láthatatlanná a szolgáltatód, a főnököd, vagy a felkeresett oldalak elől.</translation>
+<translation id="3110967157686007724">Privát fül</translation>
+<translation id="944340256927461196">Nem hagy nyomot a készülékén</translation>
+<translation id="2063044449012253966">A privát módban megtekintett oldalak nem jelennek meg a böngészési előzményében. A sütik, űrlapadatok és webhelyadatok eltűnnek, amint az összes privát ablakot bezárja.</translation>
+<translation id="7395764193745523646">Böngészés láthatósága</translation>
+<translation id="8735363371744702779">Ne feledje, hogy - még a privát ablakokban is - a böngészési tevékenysége látható lehet az internetszolgáltatója, a hálózati megfigyelők vagy a munkáltatója számára (ha munkahelyi eszközt/hálózatot használ).</translation>
+<translation id="1413177583895309156">A Brave VPN titkosítja és védi az online tevékenységét a Brave böngészőn kívül is.</translation>
+<translation id="3974348661685061050">Próbálja ki ingyenesen 7 napig</translation>
 <translation id="5789441016350810005">Háttérben futó böngésző mellett küldött Brave Ads-hirdetések</translation>
 <translation id="4973347371961481083">Hozzájárulások</translation>
 <translation id="7047578174221019462">A havi hozzájárulásaidat feldolgoztuk.</translation>
@@ -548,7 +553,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2956070106555335453">Összefoglalás</translation>
 <translation id="7465614181960492526">Szerezzen tokeneket és adjon vissza</translation>
 <translation id="2731539192954672606">Szerezzen tokeneket adatvédelmet tiszteletben tartó hirdetések nézésével, és támogassa automatikusan kedvenc oldalait és tartalomkészítőit.</translation>
-<translation id="631124996535890460">A folytatással elfogadja a  <ph name="TERMS_OF_SERVICE"/> és az <ph name="PRIVACY_POLICY"/>.</translation>
+<translation id="631124996535890460">A folytatással elfogadja a <ph name="TERMS_OF_SERVICE"/> és az <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="8804164990146287819">Adatvédelmi szabályzat</translation>
 <translation id="8363792084628930008">A jutalmak engedélyezésével elfogadja a következőket: <ph name="TERMS_OF_SERVICE"/> és <ph name="PRIVACY_POLICY"/>.</translation>
 <translation id="185034574799484512">Tegyünk egy gyors bemutatót</translation>
@@ -710,9 +715,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1532536259167115948">Havi csomag <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Éves csomag <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Havonta megújul</translation>
+<translation id="112929124115834557">Évente megújul</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/hó</translation>
 <translation id="1163809943099641131">Egy év</translation>
-<translation id="727385358513272220">Újítsa meg évente (<ph name="DISCOUNT_TEXT_START"/> <ph name="PERCENTAGE_AMOUNT"/>%% megtakarítás<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /év</translation>
 <translation id="2786538705804257030">Az előfizetési díjak kiszabása a Google-fiókján keresztül történik. Az esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti.\nA Brave használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.</translation>
 <translation id="5035172357624830412">Már vásárolt a brave.com-on?</translation>
@@ -842,7 +848,7 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="4351811224047421378">A pontosság tizedesjegyei</translation>
 <translation id="3494964159182650590">Jutalmak összefoglalója</translation>
 <translation id="590733288489975971">Jutalmak az Ads révén</translation>
-<translation id="1886682615222609631">Eddigi jövedelem</translation>
+<translation id="1450735350187803276">Ebben a hónapban megtekintett hirdetések</translation>
 <translation id="1767561995429774671">Hozzájárulás</translation>
 <translation id="7335371657242627509">Automatikus Hozzájárulással</translation>
 <translation id="6727102863431372879">Beállítás</translation>
@@ -1228,5 +1234,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="2728518864712716830">A frissítés le lett töltve.</translation>
 <translation id="8403338849301491865">A szűrőlista sikeresen frissült</translation>
 <translation id="4650851936784160359">A szűrőlistát nem sikerült frissíteni. Kérjük, próbálja újra.</translation>
-<translation id="1450735350187803276">Ebben a hónapban megtekintett hirdetések</translation>
+<translation id="3098054327870766317">Visszavonás gomb megjelenítése a lapok bezárásakor</translation>
+<translation id="1336494649091412226">Biztosan kilép a Brave-ből?</translation>
 </translationbundle>

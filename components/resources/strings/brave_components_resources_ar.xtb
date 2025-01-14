@@ -106,7 +106,7 @@
 <translation id="4541978218358617681">إعلان</translation>
 <translation id="1776831331757823105">الساعة</translation>
 <translation id="7791543448312431591">إضافة</translation>
-<translation id="7679334366167089823">اربح عملات رمزية عند مشاهدة إعلانات تحترم الخصوصية.</translation>
+<translation id="6216996674668969227">اكسب رموزا لعرض إعلانات تحترم الخصوصية.</translation>
 <translation id="7191394989411626168">من خلال إيقاف تشغيل البطاقات، سيتم إخفاء جميع البطاقات المرئية حالياً. ومع ذلك، قد يتم إخطارك بالبطاقات الجديدة.</translation>
 <translation id="6820526586005233839">تم إيقاف إعلانات Brave</translation>
 <translation id="5190407395832551012">للحفاظ على  Brave Rewards من سوء الاستخدام، سنطلب عشوائيًّا من المستخدمين حلّ كلمة تحقق. انقر على “حلّ” لاستئناف الإعلانات.</translation>
@@ -422,7 +422,7 @@
 <translation id="2729085694451916573">سلسلة اختبار لـ <ph name="PART_ONE"/>العناصر النائبة<ph name="PART_ONE_END"/><ph name="PART_TWO"/>معرفة المزيد<ph name="PART_TWO_END"/></translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
 <translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟</translation>
-<translation id="5015092481905019948">سيستخدم متصفح Brave <ph name="PROVIDER_NAME"/> لحل أسماء نطاقات <ph name="DOMAIN_LIST"/> على<ph name="DOMAIN_PROVIDER_NAME"/>. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن <ph name="PROVIDER_NAME"/> سيلاحظ أن شخصًا ما يحاول زيارة هذه النطاقات لكن لا شيء آخر. راجع شروط استخدام <ph name="BEGIN_PROVIDER_TOU_LINK"/><ph name="END_PROVIDER_TOU_LINK"/>  <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>وسياسة الخصوصية<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
+<translation id="5015092481905019948">سيستخدم متصفح Brave <ph name="PROVIDER_NAME"/> لحل أسماء نطاقات <ph name="DOMAIN_LIST"/> على<ph name="DOMAIN_PROVIDER_NAME"/>. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن <ph name="PROVIDER_NAME"/> سيلاحظ أن شخصًا ما يحاول زيارة هذه النطاقات لكن لا شيء آخر. راجع شروط استخدام <ph name="BEGIN_PROVIDER_TOU_LINK"/><ph name="END_PROVIDER_TOU_LINK"/> <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>وسياسة الخصوصية<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">خدمة اسم إيثريوم</translation>
 <translation id="2789190492285945209">خدمة اسم إيثريوم (ENS)</translation>
 <translation id="4335039108389860301">هل تريد تمكين دعم خدمة اسم إيثريوم (ENS) في متصفح Brave؟</translation>
@@ -471,6 +471,7 @@
 <translation id="3349204812119681938">إعادة تعيين Brave Rewards</translation>
 <translation id="4915997950539925115">عند إعادة التعيين، سيُحذف ملفك الشخصي الحالي على Brave Rewards، ولن يتم تمكين Brave Rewards بعد الآن. إذا قمت بتمكين Brave Rewards مرة أخرى لاحقًا، فستبدأ بملف تعريف جديد. اقرأ مقالة الدعم <ph name="LINK_BEGIN"/> حول إعادة تعيين <ph name="LINK_END"/> للحصول على مزيد من التفاصيل.</translation>
 <translation id="4806029412510565611">أفهم أنه سيتم حذف ملف تعريف Brave Rewards الحالي وبيانات Brave Rewards من جهازي، وقد قرأت<ph name="LINK_BEGIN"/>مقالة الدعم حول إعادة التعيين<ph name="LINK_END"/>.</translation>
+<translation id="8835777704176513489">تعطيل وإعادة ضبط المكافآت</translation>
 <translation id="7717357606512850995">تحقق من الحالة</translation>
 <translation id="6473937687348632190">اكتملت مدفعوعات مكافآت <ph name="MONTH"/>.</translation>
 <translation id="1711367267038576241">ستبدأ معالجة دفعات مكافآت <ph name="MONTH"/> بحلول <ph name="DATE"/>.</translation>
@@ -540,7 +541,7 @@
 <translation id="2529827670795983639">يبدو أن هذا الإحراء لا يُجدي. ستظل Brave Ads متوقفة مؤقتًا. تواصل معنا إذا احتجت إلى مساعدة في كلمة التحقق.</translation>
 <translation id="261607053214862521">تجاوزت الحد الأقصى للمحاولات</translation>
 <translation id="2323171459178104277">تم الحلّ!</translation>
-<translation id="1512837998731269583">ستُستأنف الإعلانات والمكاسب الآن. نشكرك على مساعدتنا في حماية Brave Reward والإعلانات القائمة على الخصوصية.</translation>
+<translation id="1565888393553870503">سيتم استئناف إعلانات Brave. شكرا على مساعدتنا على حماية مكافآت Brave.</translation>
 <translation id="3247549836099021862">التواصل مع الدعم</translation>
 <translation id="5234764350956374838">رفض</translation>
 <translation id="7859066142771796818">استفد من هذه الرموز المميزة من خلال استخدامها لشراء بطاقات هدايا، وبادلها بعملات أخرى، وادعم صانعي المحتوى، واستفد من مزايا أخرى أيضًا.</translation>
@@ -567,7 +568,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>اطلع على المزيد<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">لا تقلق</translation>
 <translation id="5027616819996705541">لا يزال بإمكانك التصفح بخصوصية!</translation>
-<translation id="1886682615222609631">الأرباح حتى الآن</translation>
+<translation id="1450735350187803276">الإعلانات المُشاهدة هذا الشهر</translation>
 <translation id="7649070708921625228">مساعدة</translation>
 <translation id="6042308850641462728">المزيد</translation>
 <translation id="6245259297588415877">منشئو المحتوى</translation>
@@ -713,7 +714,7 @@
 <translation id="7160424977552599351">استخدم محفظة Web3 لديك</translation>
 <translation id="6369571967625114920">لم تتوفر ميزة الإعلانات الخاصة على Brave في منطقتك بعد.</translation>
 <translation id="5309155375926073606">نعم، أود أيضًا أن أشارك في Brave Search وأن أشترك في <ph name="LINK_BEGIN"/> مشروع اكتشاف الويب <ph name="LINK_END"/>.</translation>
-<translation id="7285849890826812669">شارك ببعض بيانات البحث والتصفح دون الكشف عن هويتك لتحسين مستوى ميزة البحث في Brave Search من خلال مشروع اكتشاف الويب، فهو مفتوح المصدر بالكامل.</translation>
+<translation id="4622826307953794521">ساهم ببيانات مجهولة للبحث والتصفح لتحسين بحث Brave Search مع مشروع اكتشاف الويب مفتوح المصدر بالكامل.</translation>
 <translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
 <translation id="7090992647511817643">الحساب</translation>
 <translation id="4822132585477111396">معرّف السلسلة</translation>
@@ -942,8 +943,11 @@
 <translation id="7080614857771109950">يدعم الأصول المتوافقة مع الجهاز الافتراضي اللامركزي لمنصة Ethereum على تقنية blockchain لمنصة Ethereum (ERC-20 ، ERC-721 ، ERC-1551 ، ERC-1155)</translation>
 <translation id="6577166808959668729">يدعم الأصول المتوافقة مع عملة SPL على تقنية blockchain لمشروع العملة الرقمية Solana</translation>
 <translation id="4541295941776129088">تخزين الأصول للعملة الرقمية FIL</translation>
+<translation id="6030958132571544682">تخزين أصل FIL Testnet</translation>
 <translation id="29759539656432505">تخزين أصول العملة الرقمية المشفرة BTC</translation>
+<translation id="2399555431746923964">تخزين أصول BTC Testnet</translation>
 <translation id="8749751940551938347">تخزين أصول ZEC</translation>
+<translation id="3451958544919449297">تخزين أصول ZEC Testnet</translation>
 <translation id="8500387257977999003">المفتاح الخاص لـ<ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">الاستيراد</translation>
 <translation id="232925166623833246">الاستيراد من محفظة الأجهزة</translation>
@@ -1000,7 +1004,7 @@
 <translation id="453788800165937690">تحذير: لا تشارك مفتاح الخصوصية الخاص بك. أي شخص يحصل على مفتاح الخصوصية هذا يمكنه الاستيلاء على أصولك إلى الأبد.</translation>
 <translation id="2416098547200943834">ملاحظة: يتم توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص.<ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">ملاحظة: يجب توفير المفتاح الخاص كملف JSON مشفر سداسي يحتوي على معلومات البروتوكول والمفتاح الخاص. <ph name="LINK_START"/>تعرف على المزيد <ph name="LINK_END"/>.</translation>
-<translation id="1505724566145200403">ملاحظة: يتم دعم المفاتيح الموسعة zprv (أو vprv لـ Testnet) فقط.</translation>
+<translation id="4482913669726886926">ملاحظة: فقط <ph name="FORMAT"/> المفاتيح الموسعة مدعومة.</translation>
 <translation id="42126664696688958">تصدير</translation>
 <translation id="1366855498335432549">إيداع</translation>
 <translation id="790104325876206743">إعدادات الحساب</translation>
@@ -1022,7 +1026,7 @@
 <translation id="3792938779249970121">تحديد حساب</translation>
 <translation id="6797737193502014008">البحث عن كلمة مرور</translation>
 <translation id="3505920073976671674">تحديد شبكة</translation>
-<translation id="6857856707736769720">تحديد من</translation>
+<translation id="2556155338676955870">تحديد الأصل</translation>
 <translation id="6323024765179772761">البحث عن العملات المعدنية</translation>
 <translation id="6998989275928107238">إلى</translation>
 <translation id="1506421160138798546">تقدير</translation>
@@ -1260,6 +1264,9 @@
 <translation id="6153197326949684688">بيع باستخدام <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">شراء بواسطة Sardine</translation>
 <translation id="3301984548406568819">تتم معالجة البيانات المالية وبيانات المعاملات من جانب شركائنا في onramp. لا يقوم Brave بجمع مثل هذه البيانات أو الوصول إليها.</translation>
+<translation id="5795821518596541838">شريك المعاملات</translation>
+<translation id="2803778066587058297">الأصل</translation>
+<translation id="3067168166931605141">اسم الحساب</translation>
 <translation id="6534275647567011533">الشراء من خلال Transak</translation>
 <translation id="5973390321030037823">الشراء من خلال الرابط</translation>
 <translation id="1932640759496708012">الشراء باستخدام Coinbase Pay</translation>
@@ -1992,6 +1999,7 @@
 <translation id="8571323456914890254">فتح في عرض مقسم</translation>
 <translation id="5329136173514538969">علامات تبويب غير منفصلة</translation>
 <translation id="7595612919377246359">تبديل مواضع علامات التبويب</translation>
+<translation id="2367972762794486313">إظهار التطبيقات</translation>
 <translation id="8591883849678260674">عرض الصفحة الأصلية</translation>
 <translation id="1969654232209826429">دقائق للقراءة</translation>
 <translation id="4101707289420716287">إيقاف تشغيل قارئ السرعة</translation>
@@ -2084,7 +2092,7 @@
 <translation id="2313959174679245365">لم يتم إرسال المعدل الخاص بك، يرجى التحقق من اتصال الشبكة والمحاولة مجددًا</translation>
 <translation id="98413980871833152">لم يتم إرسال تعليقك، يرجى التحقق من اتصال الشبكة والمحاولة مجددًا</translation>
 <translation id="8742658901413346500">إن هذه المحادثة طويلة وLeo قد ينسى بعض الأشياء قريبًا. بإمكانك الحصول على محادثات أطول عن طريق التبديل للنموذج الحصري (Premium)، أو يمكنك محو سجل الدردشة لإعادة ضبطه.</translation>
-<translation id="7550152963854770123">محو سجل الدردشة</translation>
+<translation id="8171760814579050200">إعادة تسمية المحادثة</translation>
 <translation id="7494736170250048402">إرسال رسالة إلى Leo</translation>
 <translation id="8712637175834984815">تم</translation>
 <translation id="1093419424466417703">تعد الصفحة طويلة للغاية بالنسبة لـ Leo، لذا فقد يفقد بعض السياق من المحادثة، إذ تمكن Leo من قراءة نسبة <ph name="PERCENTAGE"/> فقط من محتويات الصفحة.</translation>
@@ -2141,7 +2149,7 @@
 <translation id="7509914170164691086">دروع حماية حتى <ph name="LINK_BEFORE"/> من أجل <ph name="LINK_AFTER"/></translation>
 <translation id="260764436039299868">دروع حماية أدنى <ph name="LINK_BEFORE"/> من أجل <ph name="LINK_AFTER"/></translation>
 <translation id="3907405056878805220">إذا كان من الواضح تعطل الموقع، فجرب تعطيل دروع الحماية.
-    <ph name="LINK_BEFORE"/>ملاحظة: قد يقلل هذا من حمايات خصوصية Brave. <ph name="LINK_AFTER"/></translation>
+   <ph name="LINK_BEFORE"/>ملاحظة: قد يقلل هذا من حمايات خصوصية Brave. <ph name="LINK_AFTER"/></translation>
 <translation id="8377155647357436161">تم حظر أدوات التتبع والإعلانات وغيرها <ph name="LINK_BEFORE"/>معرفة المزيد <ph name="LINK_AFTER"/></translation>
 <translation id="7604553853176833536">غير محمي بواسطة Brave Shields <ph name="LINK_BEFORE"/>معرفة المزيد<ph name="LINK_AFTER"/></translation>
 <translation id="650318023204990401">الضوابط المتقدمة</translation>
@@ -2218,8 +2226,8 @@
 <translation id="6821108091726602352">ساعدنا على إصلاح الموقع الإلكتروني من خلال المشاركة في مشروع اكتشاف الموقع في Brave، وذلك من خلال مشاركة إشارات البحث غير المعروفة تمامًا، حيث يمكنك مساعدة Brave على توسيع فهرس البحث.</translation>
 <translation id="6764845498618413165">اطلع على المزيد من المعلومات.</translation>
 <translation id="7818938154803162778">بالتأكيد، سأقدم المساعدة.</translation>
-<translation id="7821773512278295352">Brave Firewall + VPN: متصل</translation>
-<translation id="6019088868713395120">Brave Firewall + VPN: غير متصل</translation>
+<translation id="958268166261124668">Brave VPN: متصل</translation>
+<translation id="6021669293402055982">Brave VPN: غير متصل</translation>
 <translation id="3541307549916475335">واجهة مستخدم لوحة Brave VPN</translation>
 <translation id="7143207342074048698">اتصال</translation>
 <translation id="1202549130170287307">قطع الاتصال</translation>
@@ -2231,7 +2239,6 @@
 <translation id="3357036723290257445">هل اشتريت Brave VPN بالفعل؟</translation>
 <translation id="8814357473522731680">مشغل بواسطة</translation>
 <translation id="8652175077544655965">إغلاق الإعدادات</translation>
-<translation id="3099126540952997993">جدار الحماية + VPN</translation>
 <translation id="5908163815855240493">انتقل إلى الصفحة الرئيسية</translation>
 <translation id="7805768142964895445">الحالة</translation>
 <translation id="5747552184818312860">تاريخ انتهاء الصلاحية</translation>
@@ -2302,9 +2309,7 @@
 <translation id="9061845622728745852">المنطقة الزمنية:</translation>
 <translation id="8295393906499561642">انتهت صلاحية الجلسة</translation>
 <translation id="3312623558576021182">يُرجى تسجيل الدخول إلى <ph name="BRAVE_ACCOUNT_BEGIN"/>حساب Brave<ph name="BRAVE_ACCOUNT_END"/> لتحديث جلسة VPN الخاصة بك.</translation>
-<translation id="6021669293402055982">Brave VPN: غير متصل</translation>
 <translation id="7861195049821776142">Brave VPN: يتم إيقاف الاتصال</translation>
-<translation id="958268166261124668">Brave VPN: متصل</translation>
 <translation id="2061807837510296780">Brave VPN: جارٍ الاتصال</translation>
 <translation id="1313124107969703758">Brave VPN: خطأ</translation>
 <translation id="8273420301954598554">الحالة: متصل</translation>
@@ -2313,14 +2318,13 @@
 <translation id="8048263175525832621">Brave VPN - غير متصل</translation>
 <translation id="1498770726476841108">إدارة الحساب</translation>
 <translation id="6825718953004242472">رمز "إزالة"</translation>
+<translation id="6819278685469225453">حماية جميع التطبيقات التي على جهازك</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="8425213833346101688">تغيير</translation>
+<translation id="8703188411226330709">بدء التجربة المجانية</translation>
 <translation id="3287942014983548982">افتح هنا</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>، مفتوحة حاليًا، اضغط على Tab ثم Enter للانتقال إلى علامة التبويب المفتوحة</translation>
 <translation id="1538335063514960365">زر الفتح من هنا، اضغط على Enter لفتح عنوان url في علامة التبويب الحالية، بدلًا من الانتقال إلى علامة التبويب الموجودة مسبقًا</translation>
 <translation id="451189393813405346">اسأل Leo</translation>
 <translation id="8525248723479742219">تشغيل لاحقًا</translation>
-<translation id="1450735350187803276">الإعلانات التي تمت مشاهدتها هذا الشهر</translation>
-<translation id="3960619311638643872">Brave VPN</translation>
-<translation id="8425213833346101688">تغيير</translation>
-<translation id="6819278685469225453">حماية كل التطبيقات &amp; وجهازك بالكامل</translation>
-<translation id="8703188411226330709">بدء التجربة المجانية</translation>
 </translationbundle>

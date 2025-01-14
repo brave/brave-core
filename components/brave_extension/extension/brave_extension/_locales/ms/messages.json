@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "dipasang",
+    "message": "dihidupkan",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "ditutup",
+    "message": "dimatikan",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
@@ -20,15 +20,15 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Jika laman terlihat rosak, cuba nyahkan perisai",
+    "message": "Jika laman kelihatan rosak, cuba tutup perisai",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Anda melayari laman ini tanpa perlindungan privasi dan keselamatan Brave. Adakah ia tidak berfungsi dengan betul dengan Shields dihidupkan?",
+    "message": "Anda melayari laman ini tanpa perlindungan privasi dan keselamatan Brave. Adakah ia tidak berfungsi dengan betul apabila Perisai dihidupkan?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
-    "message": "Laporkan laman yang  terputus-putus",
+    "message": "Laporkan laman rosak",
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
@@ -56,19 +56,19 @@
     "description": "Message for the scripts blocked row label"
   },
   "readOnlyAdsTrackersBlocking": {
-    "message": "Penjejak &amp; iklan disekat",
+    "message": "Penjejak & iklan disekat",
     "description": "Message for the option in the ads and trackers blocking select field in read only view"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Penjejak &amp; iklan disekat (agresif)",
+    "message": "Penjejak & iklan disekat (agresif)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Penjejak &amp; iklan disekat (standard)",
+    "message": "Penjejak & iklan disekat (standard)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Benarkan semua penjejak &amp; iklan",
+    "message": "Benarkan semua penjejak & iklan",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -80,7 +80,7 @@
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Skrip dihalang",
+    "message": "Skrip disekat",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
@@ -88,31 +88,31 @@
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Kuki dihalang",
+    "message": "Kuki disekat",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Semua kuki dibenarkan ",
+    "message": "Semua kuki dibenarkan",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Pengecapan jari disekat",
+    "message": "Pengecaman cap jari disekat",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
-    "message": "Pengecapan jari disekat (standard)",
+    "message": "Pengecaman cap jari disekat (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Pengecapan jari disekat (ketat, mungkin akan melanggar laman)",
+    "message": "Pengecaman cap jari disekat (ketat, mungkin menyebabkan laman tidak berfungsi)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Benarkan semua pengecapan jari",
+    "message": "Benarkan semua pengecaman cap jari",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Percubaan pengecapan jari",
+    "message": "Percubaan pengecaman cap jari",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
@@ -120,15 +120,15 @@
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Halang skrip",
+    "message": "Skrip disekat",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Skrip yang dibenarkan ",
+    "message": "Skrip dibenarkan",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {
-    "message": "Halang semua",
+    "message": "Sekat semua",
     "description": "Message for the resources blocked *block all* option"
   },
   "allowAll": {
@@ -136,7 +136,7 @@
     "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
-    "message": "Halang",
+    "message": "Sekat",
     "description": "Message for the resources blocked *block* option"
   },
   "allow": {
@@ -144,7 +144,7 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Disekat sekali",
+    "message": "Pernah disekat sekali",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
@@ -180,7 +180,7 @@
     "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
   },
   "advancedView": {
-    "message": "Pandangan Lanjutan",
+    "message": "Paparan Lanjutan",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
@@ -188,15 +188,15 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Tapak biasanya mengandungi kuki dan skrip yang akan cuba mengenal pasti diri anda dan peranti anda (biasanya dibenamkan ke dalam iklan). Kuki dan skrip ini ingin mengenal pasti identiti anda dan mengikut anda di serata web - menjejak aktiviti anda di setiap tapak. Brave akan menyekat ini semua agar anda boleh belayar tanpa diikuti.",
+    "message": "Laman web sering menggunakan kuki dan skrip yang cuba mengenal pasti diri anda dan peranti anda (biasanya dimasukkan ke dalam iklan). Kuki dan skrip ini ingin mengenal pasti identiti anda dan mengikuti anda di serata web - menjejak aktiviti anda di setiap laman. Brave menyekat perkara ini supaya anda boleh belayar tanpa dikesan.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Penjejak silang tapak dan perkara mencurigakan lain yang disekat",
+    "message": "Penjejak merentas laman dan perkara mencurigakan lain yang disekat",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Mengubah tetapan Perisai dalam pandangan ini boleh menjejaskan keserasian web di tapak ini.",
+    "message": "Mengubah tetapan Perisai dalam paparan ini boleh menjejaskan keserasian web di laman ini.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
@@ -204,7 +204,7 @@
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Maklumat lanjut",
+    "message": "Ketahui lebih lanjut",
     "description": "Message inviting the user to learn more about Shields"
   },
   "addToBrave": {
@@ -212,7 +212,7 @@
     "description": "Message for adding an extension to Brave"
   },
   "removeFromBrave": {
-    "message": "Alih keluar dari Brave",
+    "message": "Alih keluar daripada Brave",
     "description": "Message for removing an extension from Brave"
   },
   "addToChrome": {

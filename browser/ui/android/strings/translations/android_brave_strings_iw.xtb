@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
-<translation id="8631427463833030968">נהל הודעות</translation>
 <translation id="7630214457764713113">העתק קישור נקי</translation>
-<translation id="885805571521218129">זה משקף את טווח הרווחים המשוער שלך עבור מודעות Brave החודש.</translation>
 <translation id="3478449063771497234">ההתראות מושבתות</translation>
 <translation id="2862978891748913252">בחר את המדינה שלך</translation>
 <translation id="3970520675790340955">בחר את המדינה שלך כדי שנוכל להראות לך את האפשרויות והמודעות הנכונות עבור האזור שלך.</translation>
@@ -114,6 +112,8 @@
 <translation id="1571106259128580884">הצג הצעות של האתרים הטובים ביותר</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
+<translation id="2836969042340015500">מנועי חיפוש מהיר</translation>
+<translation id="1052991798173010693">מנועי חיפוש שנמצאים בשימוש</translation>
 <translation id="9148058034647219655">יציאה</translation>
 <translation id="8047754398610073499">חסימת הודעות הסכמה לקובצי Cookie</translation>
 <translation id="2621893359845808115">חסום חלונות קופצים של אתרים שמבקשים ממך לקבל/לדחות קובצי Cookie באתר שלהם</translation>
@@ -233,9 +233,6 @@
 <translation id="7207456302801184289">ברוכים הבאים ל-Brave</translation>
 <translation id="4117451092682672487">פרטיות. בפשטות.</translation>
 <translation id="7909375417585209817">עם Brave כברירת מחדל, כל קישור שאתם מקישים עליו נפתח עם הגנות הפרטיות של Brave.</translation>
-<translation id="3737878115109582442">הוספת ווידג'ט החיפוש</translation>
-<translation id="6199413390010319240">Brave בקצות האצבעות שלך כדי שתוכל למצוא הכל מהר יותר.</translation>
-<translation id="4338600611020922010">הוספה למסך הבית</translation>
 <translation id="7370959926683925817">חסום פרסומות. שמור מידע. כל יום.</translation>
 <translation id="7281027579943912834">עם Brave כברירת מחדל, כל קישור שאתה מקיש מקבל את הגנת חסימת המודעות של Brave. כל עמוד, סרטון וזרם.</translation>
 <translation id="5148943178722443958">עזרו לנו להפוך את Brave לטוב יותר.</translation>
@@ -409,8 +406,7 @@
 <translation id="6925081665778864449">כדי לסנכרן סיסמאות, הפעל אימות ביומטרי/קוד סיסמה במכשיר האנדרואיד שלך. אמצעי אבטחה נוסף זה עוזר לשמור על בטיחות הסיסמאות שלך.</translation>
 <translation id="597993392929850353">רישיון Brave</translation>
 <translation id="6336451774241870485">כרטיסייה פרטית חדשה</translation>
-<translation id="6199596294742117349">זוהי כרטיסייה פרטית</translation>
-<translation id="5858455511731621847">למרות שאתרים בהם אתם מבקרים בכרטיסיות פרטיות לא נשמרים באופן מקומי, הם לא הופכים אתכם לאנונימיים או בלתי נראים עבור ספק שירותי האינטרנט שלכם, המעסיק שלכם או האתרים שבהם אתם מבקרים.</translation>
+<translation id="3110967157686007724">כרטיסייה פרטית</translation>
 <translation id="5789441016350810005">Brave Ads נשלחות כאשר הדפדפן נמצא ברקע</translation>
 <translation id="4973347371961481083">תרומות</translation>
 <translation id="7047578174221019462">התרומות החודשיות שלך עובדו.</translation>
@@ -713,7 +709,6 @@
 <translation id="6748319398471481216">מתחדש מדי חודש</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> לחודש</translation>
 <translation id="1163809943099641131">שנה אחת</translation>
-<translation id="727385358513272220">מתחדש בכל שנה מחדש (<ph name="DISCOUNT_TEXT_START"/>חיסכון של <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> לשנה</translation>
 <translation id="2786538705804257030">המנויים יחויבו דרך חשבון Google שלך. כל חלק שלא ייעשה בו שימוש בתקופת הניסיון בחינם, במידה ויוצע, יתבטל בעת רכישת מנוי.\n\nהמנוי יתחדש באופן אוטומטי אלא אם יבוטל לפחות 24 שעות לפני תום התקופה הנוכחית.\n\nטת המנויים ניתן לנהל בהגדרות.\nבעצם השימוש ב-Brave, אתם מסכימים לתנאי השימוש ולמדיניות הפרטיות.</translation>
 <translation id="5035172357624830412">האם כבר קניתם ב- brave.com?</translation>
@@ -843,7 +838,6 @@
 <translation id="4351811224047421378">רמת דיוק עשרוני</translation>
 <translation id="3494964159182650590">סיכום תגמולים</translation>
 <translation id="590733288489975971">תגמולים מפרסומות</translation>
-<translation id="1886682615222609631">רווחים עד כה</translation>
 <translation id="1767561995429774671">תרמו</translation>
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
 <translation id="6727102863431372879">הגדר</translation>
@@ -1229,5 +1223,4 @@
 <translation id="2728518864712716830">העדכון הורד</translation>
 <translation id="8403338849301491865">רשימת הסינון עודכנה בהצלחה</translation>
 <translation id="4650851936784160359">רשימת הסינון לא ניתנת לעדכון. אנא נסה שוב.</translation>
-<translation id="1450735350187803276">מודעות שנצפו החודש</translation>
 </translationbundle>

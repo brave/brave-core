@@ -114,7 +114,7 @@
 <translation id="2370739752330685659">나중에</translation>
 <translation id="5100490448228945668">Brave 검색 전환을 닫고 Enter를 누르면 이 추천 항목을 제거합니다.</translation>
 <translation id="6213208892248046484">Brave 검색으로 전환</translation>
-<translation id="9194637241566114638">익명 사용 데이터를 보내 <ph name="SEARCH_NAME"/> 개선을 돕습니다.  <ph name="MORE_INFO"/></translation>
+<translation id="9194637241566114638">익명 사용 데이터를 보내 <ph name="SEARCH_NAME"/> 개선을 돕습니다. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave 검색</translation>
 <translation id="8184318863960255706">추가 정보</translation>
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
@@ -307,11 +307,9 @@
 <translation id="6155018868740116868">복구</translation>
 <translation id="2521960050170773751">페이지에서 미디어 추가</translation>
 <translation id="2301087142998134097"><ph name="SITE"/>이(가) 다음을 열려고 함</translation>
-<translation id="7128982309566342232"><ph name="SITE"/>상에 임베드된 페이지가 다음을 열려고 함</translation>
 <translation id="1175012181261953767">이 페이지가 다음을 열려고 함</translation>
 <translation id="7459546222322124545">이 페이지상에 임베드된 페이지가 다음을 열려고 함</translation>
 <translation id="5836261838911560851"><ph name="SITE"/>이(가) 다음을 저장하려고 함</translation>
-<translation id="5936788906460687941"><ph name="SITE"/>상에 임베드된 페이지가 다음을 저장하려고 함</translation>
 <translation id="7700010743463174379">이 페이지가 다음을 저장하려고 함</translation>
 <translation id="6774238875569752630">이 페이지상에 임베드된 페이지가 다음을 저장하려고 함</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
@@ -573,6 +571,7 @@
 <translation id="4094590686212463338">이 동기화 체인에 참여할 수 없습니다. 동기화 체인이 삭제되었습니다.</translation>
 <translation id="4908081302669157000">전화번호, 이메일, 주소</translation>
 <translation id="294985549514492876">웹 앱(PWA)</translation>
+<translation id="7029809446516969842">비밀번호</translation>
 <translation id="924029461438529367">추천 검색어 표시</translation>
 <translation id="3128251601544028053">주소창이나 검색창에 입력하면 입력하신 내용을 Brave가 기본 검색 엔진으로 보내 추천 결과를 개선합니다. 비공개 창에서는 사용이 불가합니다.</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>

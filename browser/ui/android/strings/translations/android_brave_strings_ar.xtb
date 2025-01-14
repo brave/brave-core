@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
-<translation id="8631427463833030968">إدارة الإعلانات</translation>
 <translation id="7630214457764713113">نسخ الرابط الكامل</translation>
-<translation id="885805571521218129">يعكس هذا نطاق أرباحك المقدرة لإعلانات موقع Brave لهذا الشهر.</translation>
 <translation id="3478449063771497234">تم تعطيل الإشعارات</translation>
 <translation id="2862978891748913252">حدّد بلدك</translation>
 <translation id="3970520675790340955">اختر بلدك حتى نتمكن من عرض الخيارات والإعلانات المناسبة لمنطقتك.</translation>
@@ -114,6 +112,8 @@
 <translation id="1571106259128580884">إظهار اقتراحات أفضل المواقع</translation>
 <translation id="6285118765755298263">فهرس محركات البحث الأخرى</translation>
 <translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
+<translation id="2836969042340015500">محركات البحث السريع</translation>
+<translation id="1052991798173010693">محركات البحث المستخدمة حاليًا</translation>
 <translation id="9148058034647219655">إنهاء</translation>
 <translation id="8047754398610073499">حظر إشعارات الموافقة على ملفات تعريف الارتباط</translation>
 <translation id="2621893359845808115">حظر النوافذ المنبثقة لمواقع الويب التي تطلب قبول / رفض ملفات تعريف الارتباط على موقعها</translation>
@@ -234,9 +234,6 @@
 <translation id="7207456302801184289">‏مرحبًا بك في Brave</translation>
 <translation id="4117451092682672487">الخصوصية. أصبحت أبسط.</translation>
 <translation id="7909375417585209817">باستخدام Brave كافتراضي، يفتح كل رابط تنقر عليه بحماية خصوصية Brave.</translation>
-<translation id="3737878115109582442">أضِف ميزة البحث في واجهة المستخدم</translation>
-<translation id="6199413390010319240">اجعل Brave في متناول يدك لتستكشف الويب بسرعة أكبر.</translation>
-<translation id="4338600611020922010">أضِف إلى الشاشة الرئيسية</translation>
 <translation id="7370959926683925817">حظر الإعلانات. حفظ البيانات. كل يوم.</translation>
 <translation id="7281027579943912834">باستخدام Brave كافتراضي، يحصل كل رابط تنقر عليه على حماية حظر الإعلانات من Brave. وكذلك كل صفحة وفيديو وبث.</translation>
 <translation id="5148943178722443958">ساعد في تحسين Brave.</translation>
@@ -318,7 +315,7 @@
 <translation id="4157741509680155021">الأجهزة المرتبطة بسلسلة التزامن</translation>
 <translation id="279635009973773843">جارٍ تحميل الأجهزة...</translation>
 <translation id="6394333525003604181">مغادرة سلسلة المزامنة ...</translation>
-<translation id="2569646144216067185">عدد الكلمات:  <ph name="WORD_COUNT"/></translation>
+<translation id="2569646144216067185">عدد الكلمات: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">كود مزامنة خاطئ</translation>
 <translation id="8284063834901328650">كود QR للمزامنة غير صحيح</translation>
 <translation id="859506441384380749">تم إنشاء هذا الرمز بواسطة إصدار لا يتلقى تحديثات من Brave، يرجى ترقية جهازك الآخر أولاً</translation>
@@ -405,8 +402,7 @@
 <translation id="6925081665778864449">لمزامنة كلمات المرور، يُرجى تمكين المقاييس الحيوية/مصادقة رمز المرور على جهاز يعمل بنظام تشغيل Android لديك. يساعد هذا الإجراء الأمني ​​الإضافي في الحفاظ على أمان كلمات المرور الخاصة بك.</translation>
 <translation id="597993392929850353">رخصة Brave</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
-<translation id="6199596294742117349">هذه علامة تبويب خاصة</translation>
-<translation id="5858455511731621847">على الرغم من أن المواقع التي تزورها في علامات التبويب الخاصة لا يتم حفظها محلياً، إلا أنها لا تجعلك مجهول الهوية أو غير مرئي لمزود خدمة الإنترنت أو للشركة التي تعمل بها أو للمواقع التي تزورها.</translation>
+<translation id="3110967157686007724">علامة تبويب خاصة</translation>
 <translation id="5789441016350810005">إعلانات Brave المرسلة عندما يكون المتصفح في الخلفية</translation>
 <translation id="4973347371961481083">المساهمات</translation>
 <translation id="7047578174221019462">جرت معالجة إسهاماتك الشهرية.</translation>
@@ -445,7 +441,7 @@
 <translation id="4406937629441301400">اكسب رموزاً مقابل عرض هذه الصورة وردّ الصنيع إلى منشئي المحتوى. <ph name="LEARN_MORE"/></translation>
 <translation id="6632345639591919543">أنت تكسب رموزاً مقابل عرض هذه الصورة.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/> ستبدأ معالجة دفع المكافآت بحلول<ph name="PAYOUT_DATE"/>.</translation>
-<translation id="33967210973550414">صرف المكافآت قيد التقدم. <ph name="CURRENT_MONTH"/>  <ph name="CHECK_STATUS"/></translation>
+<translation id="33967210973550414">صرف المكافآت قيد التقدم. <ph name="CURRENT_MONTH"/> <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">الدفع ل <ph name="CURRENT_MONTH"/> اكتملت المكافآت. <ph name="SUPPORT"/></translation>
 <translation id="7717357606512850995">تحقق من الحالة</translation>
 <translation id="3624048886326677117">حجب المتتبعات &amp; والإعلانات (شديد)</translation>
@@ -562,7 +558,7 @@
 <translation id="3286390186030710347">الشريط المنزلق</translation>
 <translation id="3115702351969988294">كم مرة تريد مشاهدة الإعلانات؟</translation>
 <translation id="2353222426385080466">كلما زادت الإعلانات الخاصة، زادت المكافآت.</translation>
-<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/>  إعلانات في الساعة</translation>
+<translation id="1201128255476890443"><ph name="ADS_PER_HOUR"/> إعلانات في الساعة</translation>
 <translation id="827315274423079662">مرحى، أنت جاهز تماماً!</translation>
 <translation id="3895246934788932488">باستخدام Brave Rewards، فأنت تحمي خصوصيتك وتساعد في جعل الويب مكاناً أفضل للجميع. وهذا الـ’s رائعاً!</translation>
 <translation id="5705882733397021510">العودة</translation>
@@ -709,7 +705,6 @@
 <translation id="6748319398471481216">يتجدد شهريًا</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /شهر</translation>
 <translation id="1163809943099641131">ٍسنة واحدة</translation>
-<translation id="727385358513272220">يتجدد سنويا (<ph name="DISCOUNT_TEXT_START"/>حفظ <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /سنة</translation>
 <translation id="2786538705804257030">سيتم تحصيل الاشتراكات عبر حسابك على Google. وسيتم مصادرة أي جزء غير مستخدم من النسخة التجريبية المجانية، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\n\nباستخدام Brave، توافق على شروط الاستخدام وسياسة الخصوصية.</translation>
 <translation id="5035172357624830412">هل اشتريت بالفعل عبر الموقع الإلكتروني Brave.com؟</translation>
@@ -839,7 +834,7 @@
 <translation id="4351811224047421378">دقة الكسور العشرية</translation>
 <translation id="3494964159182650590">ملخص المكافآت</translation>
 <translation id="590733288489975971">مكافآت من الإعلانات</translation>
-<translation id="1886682615222609631">الأرباح حتى الآن</translation>
+<translation id="1450735350187803276">الإعلانات المُشاهدة هذا الشهر</translation>
 <translation id="1767561995429774671">مساهمة</translation>
 <translation id="7335371657242627509">تضمين في المساهمة التلقائية</translation>
 <translation id="6727102863431372879">تعيين</translation>
@@ -1225,5 +1220,5 @@
 <translation id="2728518864712716830">تم تنزيل التحديث.</translation>
 <translation id="8403338849301491865">تم تحديث قائمة التصفية بنجاح</translation>
 <translation id="4650851936784160359">يتعذر تحديث قائمة التصفية. يُرجى المحاولة مجددًا</translation>
-<translation id="1450735350187803276">الإعلانات التي تمت مشاهدتها هذا الشهر</translation>
+<translation id="3098054327870766317">إظهار زر التراجع عند إغلاق علامات التبويب</translation>
 </translationbundle>

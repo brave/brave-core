@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
-<translation id="8631427463833030968">Reklamları yönet</translation>
 <translation id="7630214457764713113">Temiz bağlantıyı kopyala</translation>
-<translation id="885805571521218129">Bu, bu ay Brave Ads için tahmini kazanç aralığınızı yansıtır.</translation>
 <translation id="3478449063771497234">Bildirimler devre dışı bırakıldı</translation>
 <translation id="2862978891748913252">Ülkenizi seçin</translation>
 <translation id="3970520675790340955">Size bölgeniz için doğru seçenekleri ve reklamları gösterebilmemiz için ülkenizi seçin.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Popüler site önerilerini göster</translation>
 <translation id="6285118765755298263">Diğer arama motorlarını indeksle</translation>
 <translation id="919715748352669592">OpenSearch özelliklerine uygun web siteleri otomatik olarak indeksler.</translation>
+<translation id="412411722208944922">Hızlı arama motorları</translation>
+<translation id="2836969042340015500">Hızlı Arama Motorları</translation>
+<translation id="9120455214794270250">Hızlı arama çubuğunu göster</translation>
+<translation id="1052991798173010693">Şu anda kullanılan arama motorları</translation>
+<translation id="335303688425891752">Sıralamayı değiştirmek için basılı tutun</translation>
 <translation id="9148058034647219655">Çıkış</translation>
 <translation id="8047754398610073499">Çerez onay bildirimlerini engelle</translation>
 <translation id="2621893359845808115">Sitelerinde çerezleri kabul etmenizi / reddetmenizi isteyen web site açılır pencerelerini engeller</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Brave'e Hoş Geldiniz</translation>
 <translation id="4117451092682672487">Gizlilik Basit Hale Geldi.</translation>
 <translation id="7909375417585209817">Brave'i varsayılan olarak ayarladıktan sonra, dokunduğunuz her bağlantı Brave’in gizlilik korumalarıyla açılır.</translation>
-<translation id="3737878115109582442">Arama öğesini ekleyin</translation>
-<translation id="6199413390010319240">Web'de daha hızlı gezinmek için Brave parmaklarınızın ucunda.</translation>
-<translation id="4338600611020922010">Ana ekrana ekle</translation>
 <translation id="7370959926683925817">Reklamları engelleyin. Verileri kaydedin. Her gün.</translation>
 <translation id="7281027579943912834">Varsayılan olarak Brave'i seçtiğiniz zaman, tıkladığınız her bağlantı Brave'in reklam engelleme korumasına sahip olur. Her sayfa, video ve akış.</translation>
 <translation id="5148943178722443958">Brave'i daha iyi hale getirmeye yardım edin.</translation>
@@ -409,8 +409,13 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="6925081665778864449">Şifreleri senkronize etmek için lütfen Android cihazınızın biyometrik/parola doğrulamasını etkinleştirin. Bu ilave güvenlik önlemi, şifrelerinizin güvende kalmasını sağlar.</translation>
 <translation id="597993392929850353">Brave Lisans</translation>
 <translation id="6336451774241870485">Yeni gizli sekmesi</translation>
-<translation id="6199596294742117349">Bu bir Gizli Sekme</translation>
-<translation id="5858455511731621847">Gizli sekmelerde ziyaret ettiğiniz siteler yerel olarak kaydedilmese de, bu sizi ISS'niz, işvereniniz ya da ziyaret ettiğiniz siteler için isimsiz veya görünmez yapmaz.</translation>
+<translation id="3110967157686007724">Gizli sekme</translation>
+<translation id="944340256927461196">Cihazınızda iz bırakmayın</translation>
+<translation id="2063044449012253966">Gizli pencerelerde ziyaret ettiğiniz siteler geçmişinizde görünmez. Çerezler, form verileri ve site verileri, tüm gizli pencereler kapatıldığında silinir.</translation>
+<translation id="7395764193745523646">Gezinme görünürlüğü</translation>
+<translation id="8735363371744702779">Unutmayın, gizli pencerelerde bile, gezinme etkinliğiniz internet servis sağlayıcınız, ağ gözlemcileri veya işvereniniz (iş cihazı/ağı kullanıyorsanız) tarafından görülebilir.</translation>
+<translation id="1413177583895309156">Brave VPN, Brave tarayıcısının dışında bile, çevrimiçi yaptığınız her şeyi şifreler ve korur.</translation>
+<translation id="3974348661685061050">7 gün ücretsiz deneyin</translation>
 <translation id="5789441016350810005">Brave Ads, tarayıcı arka plandayken gönderildi</translation>
 <translation id="4973347371961481083">Katkılar</translation>
 <translation id="7047578174221019462">Aylık katkılarınız işlendi.</translation>
@@ -711,9 +716,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1532536259167115948">Aylık abonelik <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Yıllık abonelik <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Aylık olarak yenilenir</translation>
+<translation id="112929124115834557">Yıllık yenilenir</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /ay</translation>
 <translation id="1163809943099641131">Bir Yıl</translation>
-<translation id="727385358513272220">Yıllık olarak yenilenir (<ph name="DISCOUNT_TEXT_START"/> <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/> tasarruf edin)</translation>
+<translation id="83293016232121346"><ph name="DISCOUNT_TEXT_START"/>%%<ph name="PERCENTAGE_AMOUNT"/> kâr edin<ph name="DISCOUNT_TEXT_END"/></translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /yıl</translation>
 <translation id="2786538705804257030">Abonelikler Google hesabınız üzerinden ücretlendirilir. Ücretsiz deneme sürümünün kullanılmayan herhangi bir kısmı, teklif edilirse, bir abonelik satın ettiğinizde kaybedilir. \n\nGeçerli dönemin bitiminden en az 24 saat önce iptal edilmediği sürece aboneliğiniz otomatik olarak yenilenir.\n\nAboneliklerinizi Ayarlar'dan yönetebilirsiniz.\n\nBrave'i kullanarak Kullanım Koşullarını ve Gizlilik Politikasını kabul etmiş olursunuz.</translation>
 <translation id="5035172357624830412">brave.com adresinden zaten satın aldınız mı?</translation>
@@ -843,7 +849,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4351811224047421378">Ondalık basamak sayısı</translation>
 <translation id="3494964159182650590">Ödüller Özeti</translation>
 <translation id="590733288489975971">Ads Ödülleri</translation>
-<translation id="1886682615222609631">Şimdiye kadarki kazançlar</translation>
+<translation id="1450735350187803276">Bu ay görüntülenen reklamlar</translation>
 <translation id="1767561995429774671">Bağış yap</translation>
 <translation id="7335371657242627509">Otomatik Katkıya Dahil Et</translation>
 <translation id="6727102863431372879">Ayarla</translation>
@@ -1229,5 +1235,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="2728518864712716830">Güncelleme indirildi.</translation>
 <translation id="8403338849301491865">Filtre listesi başarıyla güncellendi</translation>
 <translation id="4650851936784160359">Filtre listesi güncellenemedi. Lütfen tekrar deneyin</translation>
-<translation id="1450735350187803276">Bu ay görülen reklamlar</translation>
+<translation id="3098054327870766317">Sekmeler kapatıldığında geri alma düğmesini göster</translation>
+<translation id="1336494649091412226">Brave'den çıkmak istediğinize emin misiniz?</translation>
 </translationbundle>

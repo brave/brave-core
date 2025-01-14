@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="am">
-<translation id="8631427463833030968">ማስታወቂያዎችን ያቀናብሩ</translation>
 <translation id="7630214457764713113">ንጹህ አገናኝ ቅዳ</translation>
-<translation id="885805571521218129">ይህ በዚህ ወር ለ Brave Ads የእርስዎን የተገመተው የገቢ መጠን ያንፀባርቃል።</translation>
 <translation id="3478449063771497234">ማሳወቂያዎች ተሰናክለዋል</translation>
 <translation id="2862978891748913252">ሀገርዎን ይምረጡ</translation>
 <translation id="3970520675790340955">ለክልልዎ ትክክለኛ አማራጮችን እና ማስታወቂያዎችን እንድናሳይዎ አገርዎን ይምረጡ።</translation>
@@ -385,8 +383,7 @@
 <translation id="6925081665778864449">የይለፍ ቃላትን ለማመሳሰል እባክዎ በአንድሮይድ መሳሪያዎ ላይ የባዮሜትሪክ/የይለፍ ኮድ ማረጋገጫን ያንቁ። ይህ ተጨማሪ የደህንነት እርምጃ የይለፍ ቃላትዎን ደህንነት ለመጠበቅ ያግዛል።</translation>
 <translation id="597993392929850353">የ Brave ፈቃድ</translation>
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
-<translation id="6199596294742117349">ይህ የግል ትር ነው</translation>
-<translation id="5858455511731621847">በግል ትሮች ውስጥ የሚጎበኟቸው ጣቢያዎች በቅርብ ባይቀመጡም፣ ለ ISP፣ ለአሰሪዎ ወይም ለሚጎበኟቸው ጣቢያዎች እርስዎነ ስም አልባ ወይም ስውር አያደርጉዎትም።</translation>
+<translation id="3110967157686007724">ማንነት የማያሳውቅ ትር</translation>
 <translation id="5789441016350810005">አሳሹ በስተጀርባ እያሉ የተላኩ የ Brave ማስታወቂያዎች</translation>
 <translation id="4973347371961481083">መዋጮዎች</translation>
 <translation id="7047578174221019462">ወርሃዊ መዋጮዎችዎ ተካሂደዋል።</translation>
@@ -732,7 +729,7 @@
 <translation id="4803003663447398145">ውሂብ የለም</translation>
 <translation id="1105525362447173583">Solana Dapp Sign ግብይት</translation>
 <translation id="9061799688859969073"><ph name="ACCOUNT_NAME"/> ተልኳል <ph name="CRYPTO_VALUE"/> <ph name="ASSET"/> ($<ph name="FIAT_VALUE"/>) - <ph name="DATE"/></translation>
-<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/>  <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/>ን ልኳል</translation>
+<translation id="1148985422232712046"><ph name="ACCOUNT_NAME"/> <ph name="ASSET"/> #<ph name="ASSET_ID"/> - <ph name="DATE"/>ን ልኳል</translation>
 <translation id="2911329628253651823"><ph name="ACCOUNT_NAME"/> ጸድቋል <ph name="ASSET"/> - <ph name="DATE"/></translation>
 <translation id="7400134344541309180">ያለምንም ገደብ ጸድቋል <ph name="ASSET"/> - <ph name="PROXY"/></translation>
 <translation id="2428770727194227378"><ph name="ACCOUNT_NAME"/> ልውውጥ - <ph name="DATE"/></translation>
@@ -768,7 +765,6 @@
 <translation id="4351811224047421378">የትክክለኛነት አስርዮሽ</translation>
 <translation id="3494964159182650590">የሽልማት ማጠቃለያ</translation>
 <translation id="590733288489975971">ከማስታወቂያዎች የተገኙ ሽልማቶች</translation>
-<translation id="1886682615222609631">እስካሁን የተገኘው ገቢ</translation>
 <translation id="1767561995429774671">አስተዋፅኦ</translation>
 <translation id="7335371657242627509">ራስን አስተዋጽኦ ማድረግ መጨመር</translation>
 <translation id="6727102863431372879">ያዘጋጁ</translation>

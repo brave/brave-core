@@ -18,6 +18,7 @@
 <translation id="8541922081612557424">Giới thiệu về Brave</translation>
 <translation id="6213288206540454953">Để chia sẻ cửa sổ, hãy cho phép Brave ghi màn hình trong phần Lựa chọn ưu tiên về hệ thống.</translation>
 <translation id="1203500561924088507">Cảm ơn bạn đã cài đặt. Bạn phải khởi động lại trình duyệt trước khi sử dụng <ph name="BUNDLE_NAME"/>.</translation>
+<translation id="7691655796369139710">Bạn có thể đăng nhập để truy cập dữ liệu của mình hoặc sử dụng Brave mà không cần tài khoản</translation>
 <translation id="8799570501820813406">Mặc dù thẻ này không hoạt động nhưng bộ nhớ đã được giải phóng để giúp Brave luôn hoạt động nhanh. Bạn có thể chọn luôn loại trừ trang web này khỏi trạng thái không hoạt động.</translation>
 <translation id="8767381092474532098">Brave đã chặn tệp tải xuống này vì đây là tệp nguy hiểm</translation>
 <translation id="3256289531845594061">Khi đăng nhập vào các dịch vụ của Brave như Gmail hoặc YouTube bằng <ph name="USER_EMAIL"/>, bạn có thể tự động được đăng nhập vào Brave bằng cùng một tài khoản</translation>
@@ -168,7 +169,6 @@
 <translation id="3286538390144397061">Khởi động lại Ngay bây giờ</translation>
 <translation id="2339258256897053758">Khóa API của Brave bị thiếu. Một số chức năng của Brave sẽ bị tắt.</translation>
 <translation id="8926637909431618259">Tiếp tục chạy các ứng dụng dưới nền khi Brave bị đóng</translation>
-<translation id="2709673990621360298">Trong khi chúng tôi thiết lập quyền truy cập vào tài khoản, bạn vẫn có thể sử dụng Brave. Bạn có thể không truy cập được vào một số tài nguyên cho đến khi quá trình thiết lập hoàn tất.</translation>
 <translation id="518125528057094977">Brave sẽ cảnh báo bạn trước khi tải trang web bằng kết nối không an toàn</translation>
 <translation id="8652321858775514885">Khi đóng tất cả các cửa sổ Brave, bạn sẽ bị đăng xuất khỏi hầu hết các trang web, ngoại trừ Tài khoản Brave nếu bạn đã đăng nhập vào Brave. Để cho phép trang web ghi nhớ bạn, hãy <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="2711887072399498551">Đã có một hồ sơ trên Brave sử dụng tài khoản này</translation>
@@ -203,6 +203,7 @@
 <translation id="3885770153807205175">Bộ chọn ngôn ngữ</translation>
 <translation id="6315734375101223238">Tùy chỉnh và kiểm soát Brave. Bạn cần lưu ý - nhấp để xem thông tin chi tiết.</translation>
 <translation id="7130675370997202556">Nhấp vào tên của bạn để mở Brave và bắt đầu duyệt web.</translation>
+<translation id="3892148308691398805">Sao chép văn bản</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> đã đăng nhập vào hồ sơ này trên Brave. Để tách biệt hoạt động duyệt web của bạn, Brave có thể tạo hồ sơ riêng cho bạn.</translation>
 <translation id="2337217774418822704">Tài khoản của bạn do <ph name="MANAGER_NAME"/> quản lý. Quản trị viên của bạn có thể xem và chỉnh sửa hồ sơ trình duyệt Brave này cũng như dữ liệu trong đó, chẳng hạn như dấu trang, lịch sử và mật khẩu.</translation>
 <translation id="3941890832296813527">Lỗi cài đặt: Tên tệp của trình cài đặt không hợp lệ hoặc không được hỗ trợ.</translation>
@@ -284,6 +285,7 @@
 <translation id="5051959905407134411">Thử tìm kiếm hình ảnh</translation>
 <translation id="8112581848375017126">Brave đang nghiên cứu các tính năng mới cho phép các trang web giữ nguyên trải nghiệm duyệt web nhưng dùng ít thông tin của bạn hơn</translation>
 <translation id="1204184037023366446">Brave cần có quyền theo dõi cử chỉ tay của bạn</translation>
+<translation id="5174969993834422967">Bạn thường chặn các thông báo. Để trang web này có thể gửi thông báo cho bạn, hãy nhấp vào biểu tượng thông báo ở góc bên phải của thanh vị trí.</translation>
 <translation id="8157129267754368853">Tài khoản Brave cần được xác thực lại</translation>
 <translation id="9078804073692109646">Bạn chưa lưu mật khẩu nào. Brave có thể kiểm tra các mật khẩu của bạn khi bạn lưu các mật khẩu đó.</translation>
 <translation id="6234515504547364178">Đăng xuất khỏi Brave</translation>
@@ -312,6 +314,7 @@
 <translation id="1744365871163268756">Vui lòng đợi khi Brave cài đặt các bản cập nhật hệ thống mới nhất.</translation>
 <translation id="3861679447659630159">Brave đang cố gắng chỉnh sửa mật khẩu. Hãy nhập mật khẩu Windows của bạn để cho phép việc này.</translation>
 <translation id="232381795826373334">Mở tệp PDF trong Brave</translation>
+<translation id="8698412764809151604">Để có tiện ích trên tất cả các máy tính, hãy đăng nhập vào Brave</translation>
 <translation id="4262657160814225216">Mật khẩu và các dữ liệu khác trên Brave được lưu trong Tài khoản Brave của bạn và sẽ bị xoá khỏi thiết bị này. Để sử dụng những dữ liệu đó trong tương lai, hãy đăng nhập lại vào Brave.</translation>
 <translation id="5579324208890605088">Lỗi khi khởi động: vui lòng chạy trình cài đặt với tư cách người dùng thông thường, không phải quản trị viên.</translation>
 <translation id="5596627076506792578">Tùy chọn khác</translation>
@@ -435,6 +438,7 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="4392161457256085190">Sau đó, trang web mà bạn truy cập có thể đề nghị Brave cung cấp mối quan tâm của bạn nhằm cá nhân hoá quảng cáo mà bạn thấy. Brave có thể chia sẻ tối đa 3 mối quan tâm.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="6418340404893954563">Mật khẩu yếu thường dễ đoán. Brave có thể <ph name="BEGIN_LINK"/>tạo mật khẩu mạnh và ghi nhớ mật khẩu này cho bạn<ph name="END_LINK"/>.</translation>
+<translation id="3073260428462538962">Tổ chức của bạn có thể xem và quản lý dữ liệu duyệt web (chẳng hạn như dấu trang, nhật ký và mật khẩu). Tổ chức không thể xem dữ liệu duyệt web trong hồ sơ Brave cá nhân.</translation>
 <translation id="3453763134178591239">Điều khoản của ChromeOS</translation>
 <translation id="3335606533094650083">Brave cần có quyền truy cập vào micrô của bạn cho trang web này</translation>
 <translation id="7011190694940573312">Cài đặt không thành công vì phiên bản hệ điều hành này không được hỗ trợ.</translation>
@@ -491,6 +495,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="7747138024166251722">Trình cài đặt không thể tạo thư mục tạm thời. Vui lòng kiểm tra dung lượng ổ đĩa còn trống và quyền cài đặt phần mềm.</translation>
 <translation id="1978509466033734608">Giúp Brave hoạt động nhanh hơn</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
+<translation id="2684504034454188774">Đảm bảo những người có quyền truy cập vào dữ liệu lưu lượng truy cập Internet của bạn khó biết được các trang web bạn truy cập hơn. Brave dùng một kết nối bảo mật để tra cứu địa chỉ IP của mỗi trang web trong DNS (Hệ thống tên miền).</translation>
 <translation id="7810005234485217901">Bạn có thể ghim tính năng Tìm kiếm hình ảnh để thuận tiện sử dụng</translation>
 <translation id="1652855885539187849">Thiết bị này đã có một hồ sơ trên Brave sử dụng tài khoản này</translation>
 <translation id="7845233973568007926">Cảm ơn bạn đã cài đặt. Bạn phải khởi động lại máy tính trước khi sử dụng <ph name="BUNDLE_NAME"/>.</translation>
@@ -514,6 +519,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="813913629614996137">Đang khởi chạy...</translation>
 <translation id="7550680632761245819">Bật chế độ bảo vệ bổ sung trong công cụ WebAssembly và JavaScript của Brave</translation>
 <translation id="9067428552314418522">Tệp này nguy hiểm, do đó Brave đã chặn tệp.</translation>
+<translation id="8221491193165283816">Bạn thường chặn các thông báo. Để cho phép trang web này thông báo cho bạn, hãy nhấp vào đây.</translation>
 <translation id="8377926237617998195">Để cho phép Brave dùng camera, hãy cấp quyền sử dụng trong phần <ph name="BEGIN_LINK"/>cài đặt hệ thống<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Brave không thể xác minh nguồn gốc của tiện ích này. Tiện ích này có thể không an toàn. Hãy xoá khỏi Brave để tiện ích này không thể xem và thay đổi dữ liệu của bạn (bao gồm cả thông tin cá nhân) trên các trang web mà bạn truy cập nữa.</translation>
 <translation id="8207657266087451193">Brave sẽ cố gắng mô tả cho bạn những hình ảnh không có nội dung mô tả hữu ích. Để tạo nội dung mô tả, các hình ảnh sẽ được gửi đến Brave. Bạn có thể tắt dịch vụ này trong phần cài đặt bất kỳ lúc nào.</translation>
@@ -543,6 +549,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8550334526674375523">Hồ sơ công việc này hoàn toàn riêng biệt với hồ sơ cá nhân của bạn.</translation>
 <translation id="8555465886620020932">Lỗi dịch vụ: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="8556420416730706394">Bạn có thể ghim tính năng Tìm kiếm hình ảnh để thuận tiện sử dụng; hãy nhấp vào nút Ghim ở đầu bảng điều khiển bên</translation>
+<translation id="856656450041460113">Tìm kiếm trong danh sách ngôn ngữ</translation>
 <translation id="227028348235968071">Brave có thể kiểm tra mật khẩu khi bạn đăng nhập bằng Tài khoản Brave của mình</translation>
 <translation id="839677568225616901">Nhiều tổ chức quản lý Brave</translation>
 <translation id="8121009781989288430">Bản quyền <ph name="YEAR"/> Tác giả Brave. Mọi quyền được bảo lưu.</translation>
@@ -612,10 +619,8 @@ Các quyền bạn đã cấp cho các trang web và ứng dụng có thể áp 
 <translation id="8274659559228306809">{COUNT,plural, =0{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave.}=1{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này}=1{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật}=1{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
-<translation id="4104709166890675229">Làm cho các cấu hình có quyền truy cập vào lưu lượng truy cập Internet của bạn gặp khó khăn hơn trong việc xem bạn truy cập trang web nào. Brave sử dụng kết nối an toàn để tra cứu địa chỉ IP của trang web trong DNS (Hệ thống tên miền).</translation>
 <translation id="2176087127109773485">Bạn có thể quản lý chuỗi đồng bộ hóa Brave đã đăng nhập của mình. Chuỗi đồng bộ hóa Brave của bạn được sử dụng cho trình duyệt Brave, Cửa hàng Play, Gmail, v.v. Nếu bạn muốn thêm tài khoản cho người khác, chẳng hạn như một thành viên trong gia đình, hãy thêm hồ sơ mới vào <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Khi bạn nhập vào thanh địa chỉ hoặc hộp tìm kiếm, Brave sẽ gửi nội dung bạn nhập tới công cụ tìm kiếm mặc định của bạn để nhận các đề xuất tốt hơn. Điều này được tắt trong Riêng tư.</translation>
-<translation id="3739288578188828252">Khi bạn nhập vào thanh địa chỉ hoặc hộp tìm kiếm, Brave sẽ gửi nội dung bạn nhập tới Google Drive để nhận đề xuất mục. Điều này được tắt trong Riêng tư.</translation>
 <translation id="2589970573128789862">Brave Riêng tư</translation>
 <translation id="5994282802285556682">Khi duyệt ở chế độ Riêng tư, Brave sẽ cảnh báo bạn trước khi tải trang web bằng kết nối không an toàn</translation>
 </translationbundle>

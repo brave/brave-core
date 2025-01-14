@@ -78,6 +78,7 @@
 <translation id="3169981355900570544">Pintasan fitur Brave</translation>
 <translation id="1333491156693005331">Baru saja diperiksa</translation>
 <translation id="1336996151357442890">Berhenti berlangganan dari <ph name="SITE_NAME"/>. Anda akan ditanyai lagi pada kunjungan berikutnya.</translation>
+<translation id="873343310451048603">Untuk memeriksa sandi yang telah dibobol, buka Pengelola Sandi Brave</translation>
 <translation id="1344653310988386453">Sertakan link ke sorotan</translation>
 <translation id="1347468774581902829">Kelola aktivitas</translation>
 <translation id="1355088659320425659">Histori dan tab</translation>
@@ -113,8 +114,8 @@ Untuk setelan lainnya yang menggunakan data guna meningkatkan pengalaman Brave A
 <translation id="1460751212339734034">Hemat waktu, mengetik lebih sedikit</translation>
 <translation id="5598889255595678761">Pilih bahasa Brave</translation>
 <translation id="1477626028522505441">Download <ph name="FILE_NAME"/> gagal karena masalah server.</translation>
+<translation id="147982357559798527">Berubah</translation>
 <translation id="5970766554644855317">Beberapa histori Anda mungkin tidak muncul di sini. Untuk melihat semua Histori Brave Anda, buka Histori Brave lengkap.</translation>
-<translation id="148482509007564431">Alur penyimpanan bookmark</translation>
 <translation id="1492417797159476138">Anda telah menyimpan nama pengguna ini untuk situs ini</translation>
 <translation id="1493287004536771723">Anda mengikuti <ph name="SITE_NAME"/></translation>
 <translation id="1502010315804028179">Untuk mengelola sandi, update layanan Google Play</translation>
@@ -124,19 +125,23 @@ Untuk setelan lainnya yang menggunakan data guna meningkatkan pengalaman Brave A
 <translation id="1513858653616922153">Hapus sandi</translation>
 <translation id="1521774566618522728">Aktif hari ini</translation>
 <translation id="5840742727909553422">Brave versi baru telah tersedia</translation>
+<translation id="6656719574110770130">{BOOKMARKS_COUNT,plural, =1{1 bookmark hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan bookmark di Akun Brave Anda, <ph name="ACCOUNT_EMAIL"/>.}other{# bookmark hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan bookmark di Akun Brave Anda, <ph name="ACCOUNT_EMAIL"/>.}}</translation>
 <translation id="3748360913454941567">Metode pembayaran dan alamat tidak akan dienkripsi. Histori penjelajahan dari Brave tidak akan disinkronkan.
 Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi Anda. Frasa sandi tidak dikirim ke atau disimpan oleh Brave. Jika lupa frasa sandi atau ingin mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda<ph name="END_LINK"/>.</translation>
 <translation id="8090895580117672212">Untuk mengelola akun Brave Anda, ketuk tombol "Kelola akun"</translation>
 <translation id="154513667535157406">Memberi tanda Suka akan mengirim masukan bahwa Anda menyukai ringkasan ini</translation>
 <translation id="1549000191223877751">Beralih ke jendela lain</translation>
 <translation id="1705567146636171298">Perbarui browser Brave</translation>
+<translation id="2509230690562869141">Bantu Brave menjadi lebih baik bagi pengguna lain seperti Anda</translation>
 <translation id="1568636008098739136">Dengarkan halaman ini. Sentuh lama untuk mengedit pintasan ini.</translation>
+<translation id="1571041387761170095">Tidak ada sandi yang lemah atau digunakan ulang</translation>
 <translation id="1571304935088121812">Salin nama pengguna</translation>
 <translation id="1668445593689059872">Saat ini, sandi yang disimpan di perangkat ini tidak dapat digunakan di seluruh saluran Brave. Setelah Brave 125, sandi yang disimpan di perangkat Anda untuk Brave dan <ph name="CHROME_CHANNEL"/> akan digabungkan dan dapat digunakan di kedua aplikasi.</translation>
 <translation id="1594635596540195766"><ph name="SUGGESTIONS_COUNT"/> item yang disarankan dalam daftar di bawah ini.</translation>
 <translation id="1598163867407640634">Gunakan <ph name="SITE_ETLD_PLUS_ONE"/> dengan <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="1851107663393500801">Jika diaktifkan, data akan digunakan dan disimpan di Akun Brave Anda. Jika dinonaktifkan, data hanya disimpan di perangkat ini.</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Hapus 1 item yang dipilih}other{Hapus # item yang dipilih}}</translation>
+<translation id="9102838806351154392">{BOOKMARKS_COUNT,plural, =1{1 bookmark dan item lainnya hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan bookmark dan item lainnya di Akun Brave Anda, <ph name="ACCOUNT_EMAIL"/>.}other{# bookmark dan item lainnya hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan bookmark dan item lainnya di Akun Brave Anda, <ph name="ACCOUNT_EMAIL"/>.}}</translation>
 <translation id="1641113438599504367">Safe Browsing</translation>
 <translation id="164269334534774161">Anda melihat salinan offline halaman ini dari <ph name="CREATION_TIME"/></translation>
 <translation id="1644574205037202324">Histori</translation>
@@ -214,7 +219,6 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2021896219286479412">Kontrol situs layar penuh</translation>
 <translation id="2038563949887743358">Aktifkan Ubah situs desktop</translation>
 <translation id="7675869148432102528"><ph name="APP_NAME"/> juga memiliki data di Brave</translation>
-<translation id="2046634576464120978">Pendaftaran gagal</translation>
 <translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="2051669996101374349">Gunakan HTTPS jika memungkinkan dan dapatkan peringatan sebelum memuat situs yang tidak mendukungnya. Anda tidak dapat mengubah setelan ini karena Anda mengaktifkan Perlindungan Lanjutan.</translation>
 <translation id="2056878612599315956">Situs dijeda</translation>
@@ -237,7 +241,6 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2141396931810938595">Berdasarkan penggunaan Anda</translation>
 <translation id="5905359144499324202">Brave memeriksa secara berkala untuk memastikan browser Anda memiliki setelan yang paling aman. Kami akan memberi tahu Anda jika ada yang perlu ditinjau.</translation>
 <translation id="2149973817440762519">Edit Bookmark</translation>
-<translation id="2155214902713132423">Metode verifikasi ini tidak tersedia untuk perangkat ini. Pilih opsi lain di perangkat lainnya.</translation>
 <translation id="4162910516440006395">Brave tidak dapat memeriksa semua sandi</translation>
 <translation id="526235294307144732">Untuk menggunakan dan menyimpan data Brave di Akun Brave Anda, masukkan frasa sandi</translation>
 <translation id="2166228530126694506">Versi <ph name="VERSION_NUMBER"/></translation>
@@ -245,6 +248,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2172905120685242547">Tutup jendela?</translation>
 <translation id="2173302385160625112">Periksa koneksi internet Anda</translation>
 <translation id="2175927920773552910">Kode QR</translation>
+<translation id="2184272387334793084">Login untuk mendapatkan bookmark dan lainnya di semua perangkat Anda</translation>
 <translation id="218608176142494674">Berbagi</translation>
 <translation id="2194856509914051091">Hal-hal yang perlu dipertimbangkan</translation>
 <translation id="22091350895006575">Tambahkan nama pengguna</translation>
@@ -257,6 +261,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2247789808226901522">Kartu sudah tidak berlaku</translation>
 <translation id="4808014761134300692">Sandi Anda dienkripsi di perangkat sebelum disimpan ke Pengelola Sandi Brave</translation>
 <translation id="2249635629516220541">Sesuaikan info yang digunakan situs untuk menampilkan iklan</translation>
+<translation id="2253927598983295051">Pilih informasi yang akan dibagikan ke <ph name="APP_NAME"/></translation>
 <translation id="2259659629660284697">Ekspor sandi…</translation>
 <translation id="781982477617612877">Login ke Akun Brave Anda untuk memeriksa sandi</translation>
 <translation id="2278052315791335171">Menghapus sandi ini tidak akan menghapus akun Anda di <ph name="SITE"/></translation>
@@ -277,6 +282,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2767094839186957509">Kebijakan Privasi Brave</translation>
 <translation id="2359808026110333948">Lanjutkan</translation>
 <translation id="2362083820973145409">Login sebagai <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/>. Membuka setelan.</translation>
+<translation id="351551888962017708">Lebih banyak halaman akan dipramuat. Halaman mungkin dipramuat melalui server Brave saat diminta oleh situs atau aplikasi lain.</translation>
 <translation id="2366554533468315977">Histori harga di seluruh web untuk opsi ini</translation>
 <translation id="2385605401818128172">Anda dapat meninjau situs yang mengirim banyak notifikasi dan mencegahnya untuk mengirim lebih banyak notifikasi pada masa mendatang</translation>
 <translation id="2386938421315164605">Sembunyikan dan perlihatkan topik</translation>
@@ -290,6 +296,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2433507940547922241">Tampilan</translation>
 <translation id="2435457462613246316">Tampilkan sandi</translation>
 <translation id="2439153523196674349">Pratinjau <ph name="SITE_NAME"/></translation>
+<translation id="6209052069534739007">Saat situs atau aplikasi Brave meminta untuk melakukan pramuat link yang ada di halamannya secara pribadi, Brave akan mengenkripsi dan melakukan pramuat halaman melalui server Brave tanpa cookie. Hal ini akan menyembunyikan identitas Anda dari situs yang dipramuat.</translation>
 <translation id="2450083983707403292">Ingin mulai mendownload <ph name="FILE_NAME"/> lagi?</translation>
 <translation id="2451607499823206582">Pemantauan</translation>
 <translation id="2453860139492968684">Selesai</translation>
@@ -314,13 +321,14 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2527779675047087889">Sembunyikan konten papan klip</translation>
 <translation id="2532336938189706096">Tampilan Web</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> item dihapus</translation>
+<translation id="253498598929009420">Situs ini akan dapat melihat konten layar Anda</translation>
 <translation id="2536728043171574184">Melihat salinan offline halaman ini</translation>
 <translation id="2546283357679194313">Cookie dan data situs</translation>
 <translation id="1272534541032649011">Kunci profil Anda menjaga keamanan info Anda di mobil, termasuk sandi, pembayaran, dan lainnya yang disimpan di Akun Brave Anda.</translation>
 <translation id="254973855621628293">Sandi disimpan ke perangkat ini</translation>
 <translation id="2560519950693256002">Sandi yang disimpan ke <ph name="USERNAME"/> baru saja diperiksa</translation>
 <translation id="2567385386134582609">GAMBAR</translation>
-<translation id="5079947353572974060">Menawarkan pengiriman halaman dalam bahasa lain ke Brave Terjemahan</translation>
+<translation id="5079947353572974060">Tawarkan untuk mengirimkan halaman dalam bahasa lain ke Brave Terjemahan</translation>
 <translation id="2571834852878229351">Buat sandi saya sendiri</translation>
 <translation id="7242554556818074465">Untuk melihat tab Brave Anda dari perangkat lain, login ke semua perangkat Anda</translation>
 <translation id="8661556138616664061">Konten oleh Brave untuk anak-anak</translation>
@@ -332,7 +340,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="260403163289591229">Mengikuti</translation>
 <translation id="2604446170045642109">Anda dapat menonaktifkan tema gelap untuk situs di setelan.</translation>
 <translation id="2607441479295509868">Logout. Login kembali untuk menggunakan bookmark, sandi, dan lainnya di akun Anda.</translation>
-<translation id="2612676031748830579">Nomor kartu kredit</translation>
+<translation id="2612676031748830579">Nomor kartu</translation>
 <translation id="2620314865574742210"><ph name="NAME"/> mengundang Anda untuk mengakses item yang dibagikan.</translation>
 <translation id="2625189173221582860">Sandi disalin</translation>
 <translation id="2630630219780173487">Anda dapat mencegah situs ini agar tidak mengirim notifikasi pada masa mendatang.</translation>
@@ -360,7 +368,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2723001399770238859">audio</translation>
 <translation id="2742373789128106053"><ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> tidak tersedia untuk saat ini.</translation>
 <translation id="2760805590727089264">BB/TT</translation>
-<translation id="2760989362628427051">Mengaktifkan tema gelap ketika tema gelap perangkat atau Penghemat Baterai aktif</translation>
+<translation id="2760989362628427051">Aktifkan tema gelap ketika tema gelap perangkat atau Penghemat Baterai aktif</translation>
 <translation id="2762000892062317888">baru saja</translation>
 <translation id="276969039800130567">Login sebagai <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="8312774691909088652">Untuk setelan lainnya yang berkaitan dengan privasi, keamanan, dan pengumpulan data, lihat <ph name="BEGIN_LINK"/>Layanan Brave<ph name="END_LINK"/></translation>
@@ -368,6 +376,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2779651927720337254">gagal</translation>
 <translation id="2781151931089541271">1 detik lagi</translation>
 <translation id="2789486458103222910">Oke</translation>
+<translation id="7717639919252237580">{NUM_PASSWORDS,plural, =1{Brave menemukan sandi yang digunakan ulang yang dapat Anda perbaiki}other{Brave menemukan # sandi yang digunakan ulang yang dapat Anda perbaiki}}</translation>
 <translation id="2800066122460699237">Tab <ph name="TAB_TITLE"/> akan ditutup</translation>
 <translation id="2805756323405976993">Aplikasi</translation>
 <translation id="7068873021383263704">Lihat dan kelola sandi tersimpan di <ph name="BEGIN_LINK"/>Akun Brave<ph name="END_LINK"/></translation>
@@ -379,9 +388,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2839327205551510876">Berhenti mengikuti <ph name="SITE_NAME"/></translation>
 <translation id="2841216154655874070">{NUM_DAYS,plural, =1{Diperiksa 1 hari yang lalu}other{Diperiksa # hari yang lalu}}</translation>
 <translation id="2842985007712546952">Folder induk</translation>
-<translation id="6324134303015966238">Brave melakukan pramuat halaman yang mungkin akan Anda buka, agar halaman tersebut dimuat lebih cepat saat Anda membukanya</translation>
 <translation id="2855243985454069333">Menghapus histori dari semua perangkat yang disinkronkan</translation>
-<translation id="2856503607207334158">Login gagal</translation>
 <translation id="2860954141821109167">Pastikan aplikasi telepon diaktifkan di perangkat ini</translation>
 <translation id="6518254564747115579">Beberapa fitur Brave tidak akan tersedia lagi</translation>
 <translation id="2869430948265924908">Untuk melindungi konten sensitif di mobil, Anda harus membuat kunci profil mobil.  Anda dapat melakukannya dengan PIN, kode, atau sandi.</translation>
@@ -408,7 +415,6 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="6537665929855787038">Notifikasi Brave membuat semuanya menjadi lebih mudah</translation>
 <translation id="2940075786175545812">Opsi untuk menyetujui atau tidak menyetujui situs</translation>
 <translation id="2942036813789421260">Tab pratinjau ditutup</translation>
-<translation id="4700262879698141140">Mengupdate Brave untuk terhubung ke perangkat lain</translation>
 <translation id="2951071800649516099">Tambahkan halaman ke daftar bacaan untuk dibaca nanti</translation>
 <translation id="2954586176076923855">Pindahkan kolom URL ke atas</translation>
 <translation id="2956070106555335453">Ringkasan</translation>
@@ -421,12 +427,11 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="2981364137500752533">Anda dapat membuka hingga 5 jendela.</translation>
 <translation id="2983102365694924129">Berdasarkan aktivitas Anda di situs. Setelan ini nonaktif.</translation>
 <translation id="5948666439178419683">Sertakan teks di sekitar dalam penelusuran Brave</translation>
+<translation id="2988638966064514052">Perkuat sandi Anda</translation>
 <translation id="2989523299700148168">Baru saja dikunjungi</translation>
 <translation id="2992473221983447149">Deskripsi gambar</translation>
 <translation id="2996291259634659425">Buat frasa sandi</translation>
 <translation id="2996809686854298943">Perlu URL</translation>
-<translation id="2019027298133375428">Saat sebuah situs Brave meminta untuk melakukan pramuat link yang ada di halamannya secara pribadi, Brave akan mengenkripsi dan melakukan pramuat halaman melalui server Brave tanpa cookie. Hal ini akan menyembunyikan identitas Anda dari situs yang dipramuat.</translation>
-<translation id="5730179015008010982">URL yang Anda buka akan dikirim ke Brave untuk memprediksi situs yang mungkin Anda buka berikutnya dan menampilkan info tambahan tentang halaman yang sedang Anda buka</translation>
 <translation id="3026955690410463085">Sertakan link</translation>
 <translation id="3027644380269727216">Berdasarkan aktivitas Anda di situs. Setelan ini aktif.</translation>
 <translation id="3027950907978057636">Dari <ph name="APP_LABEL"/></translation>
@@ -449,6 +454,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="3091010850649238832">Tampilkan konten papan klip</translation>
 <translation id="821565628224723530">Beberapa gambar dikirim ke Brave guna menyempurnakan deskripsi untuk Anda</translation>
 <translation id="3114507951000454849">Baca berita hari ini <ph name="NEWS_ICON"/></translation>
+<translation id="3122883569442693641">Detail selengkapnya</translation>
 <translation id="3123734510202723619">Pengumuman</translation>
 <translation id="3131961580615093332"><ph name="GIVEN_NAME"/> mengubah tab “<ph name="TAB_NAME"/>”</translation>
 <translation id="3148237711805373460">Arahkan ke sana</translation>
@@ -465,8 +471,6 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> dihapus</translation>
 <translation id="1892217432793359605"><ph name="BEGIN_LINK1"/>Histori penelusuran<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>bentuk aktivitas lainnya<ph name="END_LINK2"/> dapat disimpan di Akun Brave Anda saat login. Anda dapat menghapusnya kapan saja.</translation>
 <translation id="3220943972464248773">Untuk menyinkronkan sandi, verifikasi diri Anda</translation>
-<translation id="9210457680074341078">Jika Anda juga menyimpan bookmark di Akun Brave, Anda dapat memantau harga produk di Brave dan mendapatkan notifikasi jika ada penurunan harga</translation>
-<translation id="9047551989591319903">Brave sebagai Kunci Keamanan</translation>
 <translation id="3232293466644486101">Hapus data penjelajahan…</translation>
 <translation id="3232754137068452469">Aplikasi Web</translation>
 <translation id="3236059992281584593">1 menit lagi</translation>
@@ -476,7 +480,6 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="3250563604907490871">Deskripsi gambar akan dilanjutkan saat Anda terhubung ke Wi-Fi</translation>
 <translation id="3254409185687681395">Bookmark halaman ini</translation>
 <translation id="3259831549858767975">Memperkecil semua yang ada di halaman</translation>
-<translation id="3264259168916048410">Komputer Anda ingin menggunakan perangkat ini untuk login ke situs</translation>
 <translation id="3265093782546847662">Semua halaman dari <ph name="DOMAIN"/></translation>
 <translation id="3269093882174072735">Muat gambar</translation>
 <translation id="327204079441056603">Kami mengubah cara sandi disimpan di perangkat ini</translation>
@@ -499,7 +502,6 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="3384347053049321195">Bagikan gambar</translation>
 <translation id="3387650086002190359">Download <ph name="FILE_NAME"/> gagal karena kesalahan sistem file.</translation>
 <translation id="3398320232533725830">Membuka pengelola bookmark</translation>
-<translation id="1081508498128395141">Lebih banyak halaman dipramuat. Halaman mungkin dipramuat melalui server Brave saat diminta oleh situs lain.</translation>
 <translation id="3414952576877147120">Ukuran:</translation>
 <translation id="3421726884497337397">Pilih kapan cookie pihak ketiga diblokir</translation>
 <translation id="342220687432920852">{HOURS,plural, =1{# jam lalu}other{# jam lalu}}</translation>
@@ -531,6 +533,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="3524334353996115845">Izinkan <ph name="ORIGIN"/> memverifikasi diri Anda</translation>
 <translation id="3527085408025491307">Folder</translation>
 <translation id="3542235761944717775"><ph name="KILOBYTES"/> KB tersedia</translation>
+<translation id="719175600387583059">Karena halaman yang dipramuat terenkripsi dan situs atau aplikasi yang ditautkan ke halaman tersebut adalah situs atau aplikasi Brave, server Brave tidak menerima informasi baru saat melakukan pramuat halaman ini secara pribadi.</translation>
 <translation id="3549657413697417275">Telusuri histori penggunaan</translation>
 <translation id="3557336313807607643">Tambahkan ke kontak</translation>
 <translation id="3563767357928833671">Konten papan klip ditampilkan</translation>
@@ -559,9 +562,9 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="3692944402865947621">Download <ph name="FILE_NAME"/> gagal karena lokasi penyimpanan tidak dapat dijangkau.</translation>
 <translation id="3697705478071004188">Urutkan menurut Situs</translation>
 <translation id="3699022356773522638">Download file?</translation>
-<translation id="3700759344784597882">Jika diaktifkan, sandi akan disimpan di akun Anda. Jika dinonaktifkan, sandi hanya akan disimpan ke perangkat ini.</translation>
 <translation id="3701167022068948696">Perbaiki sekarang</translation>
 <translation id="3701515417135397388">Berikan peringatan jika sandi telah dibobol saat terjadi pelanggaran data</translation>
+<translation id="3703166520839776970">Jika masalah ini terus terjadi, pilih "Detail selengkapnya" di bawah untuk mendapatkan informasi selengkapnya dari <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
 <translation id="3710501561113687889">Untuk melanjutkan, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> akan membagikan <ph name="FIELDS_STRING"/> Anda ke situs ini.</translation>
 <translation id="3714981814255182093">Membuka Bilah Cari</translation>
 <translation id="5805364706385912897">Halaman ini menggunakan terlalu banyak memori, sehingga Brave menjedanya.</translation>
@@ -569,7 +572,6 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="3720422586473670527">Lain kali</translation>
 <translation id="8397843425685839889">Anda dan Brave</translation>
 <translation id="3737319253362202215">Setelan penerjemahan</translation>
-<translation id="3737402728074743863">Untuk menggunakan perangkat ini sebagai kunci keamanan, setel kunci layar</translation>
 <translation id="3738139272394829648">Sentuh untuk Menelusuri</translation>
 <translation id="3739899004075612870">Dibookmark di <ph name="PRODUCT_NAME"/></translation>
 <translation id="3740525748616366977">Penelusuran suara tidak tersedia di perangkat ini</translation>
@@ -588,17 +590,21 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="3819183753496523827">Anda sedang offline. Periksa koneksi internet Anda, lalu coba lagi.</translation>
 <translation id="3823019343150397277">IBAN</translation>
 <translation id="38243391581572867">Lens tidak tersedia di akun ini.</translation>
+<translation id="38258275871320156">Hanya tersedia untuk jendela kecil</translation>
 <translation id="3830886834687455630">Update layanan Google Play untuk memeriksa sandi Anda</translation>
 <translation id="3843603704176567761">Sandi mungkin segera berhenti berfungsi di perangkat ini. Untuk tetap menggunakan sandi Anda, update layanan Google Play.</translation>
 <translation id="3847319713229060696">Bantu tingkatkan keamanan di web untuk semuanya</translation>
+<translation id="385051799172605136">Kembali</translation>
 <translation id="3856096718352044181">Verifikasi bahwa ini adalah penyedia yang valid atau coba lagi nanti</translation>
 <translation id="3858860766373142691">Nama</translation>
+<translation id="3863527519275151528">Memproses notifikasi</translation>
 <translation id="3873174561423636563">Untuk melanjutkan, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> akan membagikan <ph name="FIELDS_STRING"/> Anda ke situs ini. Lihat <ph name="BEGIN_LINK1"/>persyaratan layanan<ph name="END_LINK1"/> situs ini.</translation>
 <translation id="3892148308691398805">Salin teks</translation>
 <translation id="3900966090527141178">Ekspor sandi</translation>
 <translation id="3902562446536395999">Mengurutkan dari A ke Z</translation>
 <translation id="3908308510347173149">Update <ph name="PRODUCT_NAME"/></translation>
 <translation id="3911609878849982353">Mengurutkan dari Z ke A</translation>
+<translation id="3918415141610210050">Tab</translation>
 <translation id="3924911262913579434"><ph name="SAFE_BROWSING_MODE"/> aktif</translation>
 <translation id="3927692899758076493">Sans Serif</translation>
 <translation id="3928666092801078803">Gabungkan data saya</translation>
@@ -621,7 +627,6 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="4016425174436051808">Tidak dapat mengikuti. Terjadi error.</translation>
 <translation id="4024768890073681126">Browser dikelola oleh orang tuamu</translation>
 <translation id="4034817413553209278">{HOURS,plural, =1{# jam}other{# jam}}</translation>
-<translation id="4035877632587724847">Jangan izinkan</translation>
 <translation id="4042941173059740150">Lanjutkan ke <ph name="SITE_ETLD_PLUS_ONE"/> dengan <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="404352903042073578">Grup tanpa nama</translation>
 <translation id="4044708993631234325">Sheet bawah</translation>
@@ -635,12 +640,9 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="4072805772816336153">Coba lagi nanti</translation>
 <translation id="4084682180776658562">Bookmark</translation>
 <translation id="4521874409998847950">Dari <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>dikirim oleh Brave<ph name="END_DEEMPHASIZED"/></translation>
-<translation id="409109920254068737">Anda dapat menggunakan tablet ini untuk login di perangkat yang menampilkan kode QR ini.</translation>
 <translation id="7268155614575494857">Untuk membantu Pengelola Sandi Brave menyimpan info login Anda, tambahkan nama pengguna Anda untuk situs ini</translation>
 <translation id="4095146165863963773">Hapus data aplikasi?</translation>
-<translation id="4095425503313512126">Penjelajahan dan penelusuran lebih cepat</translation>
 <translation id="4096227151372679484">Alur penyimpanan bookmark terbuka setengah</translation>
-<translation id="4101475238162928417">Sinkronkan untuk mendapatkan sandi dan bookmark kamu serta data lain di perangkat lainnya</translation>
 <translation id="1523634703470981382">Update Pengelola Sandi Brave dibuka</translation>
 <translation id="4108314971463891922">Ikuti</translation>
 <translation id="4113030288477039509">Dikelola oleh administrator</translation>
@@ -669,6 +671,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="4248098802131000011">Amankan sandi Anda dari pelanggaran data dan masalah keamanan lainnya</translation>
 <translation id="7445061995866044926">Logout dari Brave?</translation>
 <translation id="4249955472157341256">Urutkan menurut yang Terbaru</translation>
+<translation id="4847510842720497216">Perlindungan berteknologi AI secara real-time terhadap situs, download, dan ekstensi berbahaya yang didasarkan pada data penjelajahan yang dikirim ke Brave</translation>
 <translation id="4256782883801055595">Lisensi open source</translation>
 <translation id="7404502124231907662">Hapus sandi dari Pengelola Sandi Brave?</translation>
 <translation id="426652736638196239">IBAN ini hanya akan disimpan ke perangkat ini</translation>
@@ -687,6 +690,7 @@ Hanya orang yang memiliki frasa sandi Anda yang dapat membaca data terenkripsi A
 <translation id="433213510553688132">Mengikuti...</translation>
 <translation id="4335835283689002019">Safe Browsing nonaktif</translation>
 <translation id="4351244548802238354">Tutup dialog</translation>
+<translation id="4352287748243729941">Gunakan sandi <ph name="PROVIDER"/> Anda?</translation>
 <translation id="4355272626458588338">Anda dapat kembali ke halaman penting dengan menambahkan bookmark</translation>
 <translation id="4357206670025518404">+<ph name="COUNT_NUMBER"/></translation>
 <translation id="4359809482106103048">Sekilas tentang keamanan</translation>
@@ -730,10 +734,8 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="4532845899244822526">Pilih folder</translation>
 <translation id="4543131175509360848">Sheet tidak ada kunci sandi</translation>
 <translation id="4558311620361989323">Pintasan halaman web</translation>
-<translation id="4561730552726921821">Pendaftaran berhasil</translation>
 <translation id="4565377596337484307">Sembunyikan sandi</translation>
 <translation id="4572422548854449519">Login ke akun terkelola</translation>
-<translation id="4576892426230499203">Coba opsi verifikasi lain</translation>
 <translation id="4577115723294378384">Urutkan menurut A ke Z</translation>
 <translation id="4578289292431526768">Mulai</translation>
 <translation id="4583164079174244168">{MINUTES,plural, =1{# menit yang lalu}other{# menit yang lalu}}</translation>
@@ -741,6 +743,7 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="4594952190837476234">Halaman offline ini dibuat pada <ph name="CREATION_TIME"/> dan mungkin berbeda dengan versi onlinenya.</translation>
 <translation id="2724914440849807699">Terjadi kesalahan pada Akun Brave</translation>
 <translation id="4601095002996233687">Pemindaian mendalam untuk download yang mencurigakan.</translation>
+<translation id="3047078595137661468">Saat sebuah situs atau aplikasi meminta untuk melakukan pramuat link yang ada di halamannya secara pribadi, Brave akan mengenkripsi dan melakukan pramuat halaman melalui server Brave tanpa cookie. Hal ini akan menyembunyikan identitas Anda dari situs yang dipramuat.</translation>
 <translation id="2782276843156939908">Daftar sandi tersimpan Anda untuk Brave dan <ph name="CHROME_CHANNEL"/> telah digabungkan. Anda tetap dapat mengisi otomatis semua sandi tersimpan di kedua aplikasi.</translation>
 <translation id="4616150815774728855">Buka <ph name="WEBAPK_NAME"/></translation>
 <translation id="4619564267100705184">Verifikasi diri Anda</translation>
@@ -786,6 +789,7 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="4769632191812288342">Anda mendapatkan perlindungan standar</translation>
 <translation id="4775646243557794597"><ph name="TIME_PERIOD"/> dihapus</translation>
 <translation id="4778653490315793244">Belum ada yang dapat ditampilkan</translation>
+<translation id="4782929588435725897"><ph name="SEARCH_ENGINE"/> adalah mesin telusur default Anda</translation>
 <translation id="4787736314074622408">Ingin menghapus <ph name="ITEM_TITLE"/>?</translation>
 <translation id="4194619960643453552">Pelajari cara Brave menjaga keamanan Anda</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
@@ -807,7 +811,6 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="4864369630010738180">Login...</translation>
 <translation id="5131234170665854056">Tidak dapat menginstal <ph name="MODULE"/> untuk Brave</translation>
 <translation id="4871568871368204250">Nonaktifkan sinkronisasi</translation>
-<translation id="2875466387677348954">Jika dinonaktifkan, Anda akan tetap melihat saran yang disediakan Brave secara lokal</translation>
 <translation id="4875775213178255010">Saran Konten</translation>
 <translation id="4878404682131129617">Gagal membentuk saluran melalui server proxy</translation>
 <translation id="4880127995492972015">Terjemahkan…</translation>
@@ -845,18 +848,18 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="5005498671520578047">Salin sandi</translation>
 <translation id="5010886807652684893">Tampilan visual</translation>
 <translation id="5011311129201317034"><ph name="SITE"/> ingin terhubung</translation>
+<translation id="5012253429094023177"><ph name="BEGIN_BOLD1"/><ph name="PROVIDER1"/><ph name="END_BOLD1"/> dan <ph name="BEGIN_BOLD2"/><ph name="PROVIDER2"/><ph name="END_BOLD2"/> tampaknya berkaitan. Pastikan Anda memercayai <ph name="BEGIN_BOLD3"/><ph name="PROVIDER2"/><ph name="END_BOLD3"/> sebelum menggunakan sandi Anda.</translation>
 <translation id="5016205925109358554">Serif</translation>
 <translation id="5017529052065664584">15 menit terakhir</translation>
 <translation id="5032430150487044192">Tidak dapat membuat Kode QR</translation>
+<translation id="5035846135112863536">Pilih "Detail selengkapnya" di bawah untuk mendapatkan informasi selengkapnya dari <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/>.</translation>
 <translation id="5039678609803776426">{TAB_COUNT,plural, =1{<ph name="TAB_COUNT_ONE"/> tab - <ph name="URL_LIST"/>}other{<ph name="TAB_COUNT_MANY"/> tab - <ph name="URL_LIST"/>}}</translation>
-<translation id="5039804452771397117">Izinkan</translation>
 <translation id="5040262127954254034">Privasi</translation>
 <translation id="504456571576643789">Hal-hal yang perlu dipertimbangkan</translation>
 <translation id="4858031288914533863"><ph name="BEGIN_LINK1"/>Bentuk aktivitas lainnya<ph name="END_LINK1"/> dapat disimpan di Akun Brave Anda saat login. Anda dapat menghapusnya kapan saja.</translation>
 <translation id="506254248375231072">Tidak ada tab</translation>
 <translation id="5062960805900435602">Pembaruan terkait penggabungan sandi ditutup</translation>
 <translation id="5075939510584558547">Simpan tanpa enkripsi</translation>
-<translation id="5081960376148623587">Pilih apakah akan melakukan pramuat halaman</translation>
 <translation id="6518666204737985156">Login ke situs ini dan Brave untuk mendapatkan bookmark Anda dan lainnya di semua perangkat</translation>
 <translation id="4744980273298156620">Sebentar lagi, Anda akan melihat cerita dari <ph name="SITE_NAME"/> saat membuka tab baru. Situs yang Anda ikuti akan disimpan di Akun Brave Anda. Anda dapat mengelolanya di setelan Discover.</translation>
 <translation id="509429900233858213">Terjadi error.</translation>
@@ -866,9 +869,9 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="5115811374190515607">ke <ph name="PRODUCT_NAME"/></translation>
 <translation id="7143053178237996319">Anda dapat menggunakan Brave kapan saja dengan mengetuk link di pesan, dokumen, dan aplikasi lainnya</translation>
 <translation id="5122378528687922675">Jika kamu perlu bantuan, minta kepada orang tuamu (<ph name="PARENT_NAME_1"/> atau <ph name="PARENT_NAME_2"/>)</translation>
-<translation id="5132942445612118989">Sinkronkan sandi, histori, dan lainnya di semua perangkat</translation>
 <translation id="5139940364318403933">Pelajari cara menggunakan Google Drive</translation>
 <translation id="5142281402488957685">Untuk melihat artikel baru, tarik ke bawah untuk memuat ulang</translation>
+<translation id="8164849572238219995">Beberapa halaman yang Anda buka akan dipramuat. Halaman mungkin dipramuat melalui server Brave saat ditautkan dari situs atau aplikasi Brave.</translation>
 <translation id="5152843274749979095">Aplikasi yang didukung tidak terinstal</translation>
 <translation id="5161254044473106830">Perlu judul</translation>
 <translation id="5161262286013276579">Sheet konfirmasi kunci sandi dibuka</translation>
@@ -899,17 +902,16 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="5304593522240415983">Bidang ini tidak boleh kosong</translation>
 <translation id="5306014156308790439">Tambahkan ke koleksi dinonaktifkan</translation>
 <translation id="5308380583665731573">Hubungkan</translation>
+<translation id="5310963254742922113">Sandi digunakan.</translation>
 <translation id="5316947901395241499">Penyimpanan sandi dinonaktifkan oleh administrator Anda</translation>
 <translation id="5317780077021120954">Simpan</translation>
 <translation id="989239400026154074">Brave merekomendasikan Brave</translation>
-<translation id="7815000350132166985">Jika Anda mengizinkan cookie, Brave dapat menggunakannya saat melakukan pramuat</translation>
-<translation id="1681635711794313507">Karena halaman yang dipramuat terenkripsi dan situs yang ditautkan ke halaman tersebut adalah situs Brave, server Brave tidak menerima informasi baru saat melakukan pramuat halaman ini secara pribadi.</translation>
 <translation id="5328542107300944283">Gunakan <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="5342314432463739672">Permintaan izin</translation>
 <translation id="534580735623577507">Tidak ada situs dari <ph name="TIME_PERIOD"/></translation>
 <translation id="5355191726083956201">Perlindungan yang Ditingkatkan aktif</translation>
 <translation id="4771279424883068914">URL halaman yang Anda beri masukan akan dikirim ke Brave dan mungkin akan ditinjau secara manual untuk meningkatkan fitur ini</translation>
-<translation id="5375577065097716013">Telusuri dengan Lens <ph name="BEGIN_NEW"/>Baru<ph name="END_NEW"/></translation>
+<translation id="5375577065097716013">Telusuri dengan Google Lens <ph name="BEGIN_NEW"/>Baru<ph name="END_NEW"/></translation>
 <translation id="4799771635362945886">Pastikan Anda selalu dapat menggunakan data Brave di Akun Brave Anda</translation>
 <translation id="539881862970320163">Sandi kuat disarankan. Keyboard disembunyikan.</translation>
 <translation id="5409881200985013443">Kirim <ph name="ONE_TIME_CODE"/> di <ph name="CLIENT_NAME"/>?</translation>
@@ -950,7 +952,6 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="557018954714092179">Buat folder baru</translation>
 <translation id="5578795271662203820">Telusuri <ph name="SEARCH_ENGINE"/> untuk gambar ini</translation>
 <translation id="5581519193887989363">Anda dapat memilih konten apa yang akan disinkronkan di <ph name="BEGIN_LINK1"/>setelan<ph name="END_LINK1"/> kapan saja.</translation>
-<translation id="5590372121997663538">Ingat komputer ini</translation>
 <translation id="5596627076506792578">Opsi lainnya</translation>
 <translation id="6894318537270274409">Untuk setelan lainnya yang menggunakan data guna meningkatkan pengalaman Brave Anda, buka <ph name="BEGIN_LINK"/>Layanan Brave<ph name="END_LINK"/>.</translation>
 <translation id="5611398002774823980">Simpan di akun</translation>
@@ -1021,6 +1022,7 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="2496394743292988533">Notifikasi <ph name="SEPARATOR"/> Brave menghapus izin ini karena situs ini berbahaya</translation>
 <translation id="5895834791314695851">Sandi mungkin segera berhenti berfungsi di perangkat ini. Untuk tetap menggunakan sandi Anda, update layanan Google Play. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="5899667542927581604">Sheet tidak ada kunci sandi ditutup</translation>
+<translation id="5907542076239273525">Bookmark disimpan ke <ph name="FOLDER_NAME"/></translation>
 <translation id="5916664084637901428">Aktif</translation>
 <translation id="5919204609460789179">Perbarui <ph name="PRODUCT_NAME"/> untuk memulai sinkronisasi</translation>
 <translation id="5938820472109305350">Tambahkan <ph name="INTEREST"/></translation>
@@ -1048,7 +1050,6 @@ Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lain seperti penelu
 <translation id="6026538407078977628">Luaskan ke layar penuh</translation>
 <translation id="6030719887161080597">Mengelola info yang digunakan situs untuk mengukur performa iklan</translation>
 <translation id="6039379616847168523">Beralih ke tab berikutnya</translation>
-<translation id="6040143037577758943">Tutup</translation>
 <translation id="6040939430773295212">Repetitif</translation>
 <translation id="604124094241169006">Otomatis</translation>
 <translation id="6042308850641462728">Lainnya</translation>
@@ -1111,7 +1112,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="6316139424528454185">Versi Android tidak didukung</translation>
 <translation id="6324916366299863871">Edit pintasan</translation>
 <translation id="6324977638108296054">Tidak dapat membuat link ke sorotan</translation>
-<translation id="6324997754869598316">(Error <ph name="ERROR_CODE"/>)</translation>
 <translation id="6333140779060797560">Bagikan dengan <ph name="APPLICATION"/></translation>
 <translation id="6337234675334993532">Enkripsi</translation>
 <translation id="6340526405444716530">Personalisasi</translation>
@@ -1121,7 +1121,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="6344622098450209924">Perlindungan Pelacakan</translation>
 <translation id="6345878117466430440">Tandai telah dibaca</translation>
 <translation id="6356893102071098867">Pastikan Anda memilih akun yang benar</translation>
-<translation id="6357653805084533597">Anda dapat menggunakan ponsel ini untuk login di perangkat yang menampilkan kode QR ini.</translation>
 <translation id="6363990818884053551">Untuk memulai sinkronisasi, verifikasi diri Anda</translation>
 <translation id="6364438453358674297">Hapus saran dari histori?</translation>
 <translation id="806493401838431801">Lebih sering melakukan pramuat halaman yang menurut Brave mungkin akan Anda buka. Setelan ini dapat mengakibatkan peningkatan penggunaan data.</translation>
@@ -1132,7 +1131,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="8789425457808164956">Untuk mengirim tab ini ke perangkat lain, login ke Brave di sana</translation>
 <translation id="6404511346730675251">Edit bookmark</translation>
 <translation id="6406506848690869874">Sinkronisasi</translation>
-<translation id="6407224748847589805">Tidak dapat terhubung ke komputer. Coba opsi verifikasi lain.</translation>
 <translation id="6410883413783534063">Buka tab untuk mengunjungi halaman yang berbeda secara bersamaan</translation>
 <translation id="6411219469806822692">Tidak dapat lebih tinggi lagi. Coba mulai dari bagian yang lebih atas pada halaman.</translation>
 <translation id="641643625718530986">Cetak...</translation>
@@ -1143,6 +1141,7 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="6440291723980579689">Halaman dimuat hanya setelah Anda membukanya</translation>
 <translation id="6441734959916820584">Nama terlalu panjang</translation>
 <translation id="6444291413624515012"><ph name="TAB_GROUP_TITLE"/> grup tab ditutup</translation>
+<translation id="6452534462676960500">Aktivitas baru</translation>
 <translation id="6459045781120991510">Survei</translation>
 <translation id="6461962085415701688">Tidak dapat membuka file</translation>
 <translation id="9055113864158719823">Anda dapat melihat situs yang Anda kunjungi di Brave dan menetapkan timer untuk situs tersebut.\n\nBrave mendapatkan info tentang situs yang Anda tetapkan timer-nya dan durasi Anda mengunjunginya. Info ini digunakan untuk membuat Kesehatan Digital jadi lebih baik.</translation>
@@ -1181,7 +1180,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="6593061639179217415">Situs desktop</translation>
 <translation id="6594347733515723558">Opsi urutan dan tampilan</translation>
 <translation id="2466982615210189224">Gambar dikirim ke Brave guna menyempurnakan deskripsi untuk Anda.</translation>
-<translation id="6595634543029443878">{TAB_COUNT,plural, =1{Pulihkan grup tab sebanyak <ph name="TAB_COUNT_ONE"/> tab sebagai grup tab latar belakang baru.}other{Pulihkan grup tab sebanyak <ph name="TAB_COUNT_MANY"/> tab sebagai grup tab latar belakang baru.}}</translation>
 <translation id="6904452514635238551">Saat Anda login ke Brave, sandi yang Anda simpan akan disimpan di Akun Brave Anda. Untuk menonaktifkannya, <ph name="BEGIN_LINK"/>buka setelan<ph name="END_LINK"/>.</translation>
 <translation id="661266467055912436">Meningkatkan keamanan untuk Anda dan semua orang di web.</translation>
 <translation id="8127050479140582768">Untuk mengirim tab ini ke perangkat lain, login ke Brave di kedua perangkat</translation>
@@ -1197,7 +1195,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/>\u2026 dan <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> lainnya}other{<ph name="CONTACT_PREVIEW"/>\u2026 dan <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> lainnya}}</translation>
 <translation id="6649642165559792194">Lihat pratinjau gambar <ph name="BEGIN_NEW"/>Baru<ph name="END_NEW"/></translation>
 <translation id="6657585470893396449">Sandi</translation>
-<translation id="6659594942844771486">Tab</translation>
 <translation id="666731172850799929">Buka di <ph name="APP_NAME"/></translation>
 <translation id="6671495933530132209">Salin gambar</translation>
 <translation id="6672697278890207089">Masukkan frasa sandi Anda</translation>
@@ -1212,7 +1209,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="671481426037969117">Timer <ph name="FQDN"/> Anda telah berakhir. Timer akan dimulai lagi besok.</translation>
 <translation id="6715020873764921614">Ingin tetap mendownload <ph name="FILE_NAME"/> (<ph name="FILE_SIZE"/>)?</translation>
 <translation id="671928215901716392">Kunci layar</translation>
-<translation id="6719634564325948108">Terhubung dengan Kode QR?</translation>
 <translation id="7499197548870160669">Di Akun Brave Anda</translation>
 <translation id="6734310707649923383">Anda dapat melihat halaman yang pernah Anda buka atau menghapusnya dari histori</translation>
 <translation id="6738867403308150051">Mendownload…</translation>
@@ -1235,13 +1231,9 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="6817747507826986771">Bagikan halaman ini dengan cepat. Sentuh lama untuk mengedit pintasan ini.</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="2909289633148417535">Update Pengelola Sandi Brave ditutup</translation>
-<translation id="6822587385560699678">Jika diaktifkan, sandi akan disimpan di <ph name="ACCOUNT"/>. Jika dinonaktifkan, sandi hanya akan disimpan ke perangkat ini.</translation>
-<translation id="6823561724060793716">Dari kolom URL, Anda dapat membuka info halaman untuk melihat info tambahan tentang halaman yang sedang Anda kunjungi</translation>
 <translation id="6828070228333235514">Berhenti memantau harga</translation>
 <translation id="6830728435402077660">Tidak aman</translation>
 <translation id="6831043979455480757">Terjemahkan</translation>
-<translation id="6836206421467243968">Pulihkan grup tab <ph name="TITLE_OF_GROUP"/> sebagai grup tab latar belakang baru.</translation>
-<translation id="5177927663996571732">Simpan dan gunakan sandi di Akun Brave Anda</translation>
 <translation id="6846298663435243399">Memuat...</translation>
 <translation id="6850409657436465440">Download sedang berlangsung</translation>
 <translation id="6850830437481525139"><ph name="TAB_COUNT"/> tab ditutup</translation>
@@ -1310,7 +1302,6 @@ Misalnya, beberapa situs web mungkin menanggapi permintaan ini dengan menayangka
 <translation id="5499149312981370855">Pilih apakah akan menyertakan histori Brave untuk mendapatkan pengalaman yang lebih dipersonalisasi di layanan Brave</translation>
 <translation id="8208853227947884571">Brave sudah versi terbaru</translation>
 <translation id="7094933634769755999">Tidak akurat</translation>
-<translation id="7105047059074518658">Login agar lebih mudah menjelajah di berbagai perangkat</translation>
 <translation id="7106762743910369165">Browser dikelola oleh organisasi Anda</translation>
 <translation id="144902786838571419">Brave memberi Anda lebih banyak kontrol atas iklan yang Anda lihat dan membatasi hal yang dapat dipelajari situs tentang Anda saat menampilkan iklan yang dipersonalisasi kepada Anda.</translation>
 <translation id="7136902389402789299">{NUM_SITES,plural, =1{Izin ditinjau untuk 1 situs}other{Izin ditinjau untuk # situs}}</translation>
@@ -1342,11 +1333,9 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="8713221522704424328">Semua sandi yang hanya disimpan di perangkat ini untuk Brave dan <ph name="CHROME_CHANNEL"/> telah digabungkan. Anda dapat mengisi otomatis semua sandi tersimpan di kedua aplikasi.</translation>
 <translation id="7227218174981371415">{FILE_COUNT,plural, =1{1 download tertunda}other{# download tertunda}}</translation>
 <translation id="72415438529550637">Saran sandi ditutup.</translation>
-<translation id="7252076891734325316">Letakkan ponsel Anda dekat dengan komputer</translation>
 <translation id="4957342254208357193">Perangkat Android Anda mungkin menyertakan setelan serupa. Jika Pengukuran iklan diaktifkan di Brave dan di perangkat Android Anda, perusahaan iklan mungkin dapat mengukur keefektifan iklan di semua situs yang Anda buka dan aplikasi yang Anda gunakan.</translation>
 <translation id="727288900855680735">Kirim <ph name="ONE_TIME_CODE"/> ke <ph name="ORIGIN"/>?</translation>
 <translation id="7274013316676448362">Situs yang diblokir</translation>
-<translation id="4561646469134805137">Saat Anda mengetik, Brave akan mengirimkan konten kolom URL atau kotak penelusuran ke mesin telusur default Anda</translation>
 <translation id="2700309900785251885">Anda memiliki keamanan terkuat Brave</translation>
 <translation id="7289303553784750393">Jika Anda sudah online tetapi masalah ini terus terjadi, Anda dapat mencoba cara lain untuk melanjutkan di <ph name="SITE_ETLD_PLUS_ONE"/>.</translation>
 <translation id="7290209999329137901">Ganti nama tidak tersedia</translation>
@@ -1358,7 +1347,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="1382596880054356475">Offline. Brave tidak dapat memeriksa sandi Anda.</translation>
 <translation id="7313188324932846546">Ketuk untuk menyiapkan sinkronisasi</translation>
 <translation id="7324354302972299151">Kirim permintaan “Do Not Track”</translation>
-<translation id="7332075081379534664">Login berhasil</translation>
 <translation id="7333041109965360609">Berhenti berlangganan notifikasi</translation>
 <translation id="8716243540027092298">Sinkronkan untuk mendapatkan konten paling relevan dari Brave</translation>
 <translation id="7336259382292148213">Notifikasi aman</translation>
@@ -1381,7 +1369,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="5341476184053934779">Pengguna Akun Brave</translation>
 <translation id="741204030948306876">Ya, saya setuju</translation>
 <translation id="7419565702166471774">Selalu gunakan koneksi aman</translation>
-<translation id="7431991332293347422">Kontrol cara histori browsing digunakan untuk mempersonalisasi Penelusuran dan lainnya</translation>
+<translation id="7431991332293347422">Kontrol cara histori penjelajahan digunakan untuk mempersonalisasi Penelusuran dan lainnya</translation>
 <translation id="7435356471928173109">Dinonaktifkan oleh administrator Anda</translation>
 <translation id="6234515504547364178">Logout dari Brave</translation>
 <translation id="3699067418237091329">Membuat Anda logout dari sebagian besar situs. Anda tidak akan logout dari Akun Brave.</translation>
@@ -1437,7 +1425,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="7638584964844754484">Frasa sandi salah</translation>
 <translation id="7646772052135772216">Sinkronisasi sandi tidak berfungsi</translation>
 <translation id="7655240423373329753">7 hari terakhir</translation>
-<translation id="7655900163790317559">Mengaktifkan Bluetooth …</translation>
 <translation id="7656721520530864426">Tidak ada situs</translation>
 <translation id="7658239707568436148">Batal</translation>
 <translation id="7663320421139257046">Untuk melanjutkan, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> akan membagikan <ph name="FIELDS_STRING"/> Anda ke situs ini. Lihat <ph name="BEGIN_LINK1"/>kebijakan privasi<ph name="END_LINK1"/> situs ini.</translation>
@@ -1446,7 +1433,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="7666185984446444960"><ph name="TAB_GROUPS_AND_TABS_PART"/> ditutup</translation>
 <translation id="7682724950699840886">Coba tips berikut ini: pastikan ruang di perangkat Anda mencukupi, lalu coba ekspor lagi.</translation>
 <translation id="7686086654630106285">Selengkapnya tentang iklan yang disarankan situs</translation>
-<translation id="2667018639405889513">Beberapa halaman yang Anda buka akan dipramuat. Halaman mungkin dipramuat melalui server Brave saat ditautkan dari situs Brave.</translation>
 <translation id="7795837497684113327">Perangkat Anda tidak dapat membuka Brave. Untuk memperbaiki masalah ini, download update Brave terbaru dari app store.</translation>
 <translation id="7691043218961417207">Jelajahi konten untuk diikuti</translation>
 <translation id="7697383401610880082">Handel geser</translation>
@@ -1467,7 +1453,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="7778840695157240389">Periksa kembali nanti untuk membaca artikel baru</translation>
 <translation id="7791543448312431591">Tambahkan</translation>
 <translation id="7798392620021911922">Memulihkan <ph name="TAB_COUNT"/> tab</translation>
-<translation id="780287761701992588">Mendapatkan bookmark, sandi, dan info Anda yang lain di semua perangkat Anda</translation>
+<translation id="780287761701992588">Dapatkan bookmark, sandi, dan info Anda yang lain di semua perangkat Anda</translation>
 <translation id="780301667611848630">Lain kali</translation>
 <translation id="7808889146555843082">Menghapus sandi ini tidak akan menghapus akun Anda di <ph name="SITE"/>. Ubah sandi Anda atau hapus akun Anda di <ph name="SITE"/> untuk menjaganya tetap aman dari orang lain.</translation>
 <translation id="7810647596859435254">Buka dengan...</translation>
@@ -1477,7 +1463,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="7821130663268546430">Anda dapat menemukan semua tab yang terbuka di pengalih tab</translation>
 <translation id="8439902729344548970">Jika Anda login, data ini akan ditautkan ke Akun Brave Anda untuk melindungi Anda di berbagai layanan Brave, misalnya, meningkatkan perlindungan di Gmail setelah insiden keamanan.</translation>
 <translation id="7824665136384946951">Organisasi Anda menonaktifkan Safe Browsing</translation>
-<translation id="78270725016672455">Komputer Anda ingin mendaftarkan perangkat ini untuk login ke situs</translation>
 <translation id="7844171778363018843">Tidak ada data yang dipilih untuk disinkronkan</translation>
 <translation id="7846161022626028328">Terjadi error. Coba lagi.</translation>
 <translation id="7068829570137757602">Layanan Brave</translation>
@@ -1486,13 +1471,11 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="7853202427316060426">Aktivitas</translation>
 <translation id="7859988229622350291">Jangan pernah terjemahkan</translation>
 <translation id="7866213166286285359">Terjemahkan halaman di sini</translation>
-<translation id="78707286264420418"><ph name="PRODUCT_NAME"/> memerlukan izin Perangkat di sekitar untuk terhubung ke perangkat Anda</translation>
 <translation id="7875915731392087153">Buat email</translation>
 <translation id="7876243839304621966">Hapus semua</translation>
 <translation id="6143689084714664628">Berjalan di Brave</translation>
 <translation id="7887174313503389866">Lihat tur terpandu tentang kontrol privasi dan keamanan utama. Untuk opsi lainnya, buka masing-masing setelan.</translation>
 <translation id="7896724475402191389">Konten untuk anak-anak - nonaktif</translation>
-<translation id="7903184275147100332">Mungkin perlu waktu beberapa saat</translation>
 <translation id="7907478394153853634">Lorem Ipsum</translation>
 <translation id="7913993612870913335">{FILE_COUNT,plural, =1{1 diblokir oleh organisasi Anda}other{# diblokir oleh organisasi Anda}}</translation>
 <translation id="7914399737746719723">Aplikasi diinstal</translation>
@@ -1541,7 +1524,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="8084114998886531721">Sandi tersimpan</translation>
 <translation id="1718138320251931534">Mengontrol data Akun Brave Anda</translation>
 <translation id="6213630783726251371">Beberapa histori Anda mungkin tidak muncul di sini. Untuk melihat semua Histori Brave Anda, buka Histori Brave lengkap. Selain itu, Akun Brave Anda mungkin memiliki bentuk histori penjelajahan lainnya di <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
-<translation id="808747664143081553">Terhubung ke perangkat</translation>
+<translation id="8088176524274673045">Untuk berbagi dengan orang-orang di sekitar, izinkan mereka memindai Kode QR ini</translation>
 <translation id="8090732854597034573">Jika kamu perlu bantuan, minta kepada orang tuamu</translation>
 <translation id="8101414242770404289">Tidak ada tab dari <ph name="TIME_PERIOD"/></translation>
 <translation id="3249150807062904185">Dengan melanjutkan, kamu menyetujui <ph name="BEGIN_TOS_LINK"/>Persyaratan Layanan<ph name="END_TOS_LINK"/>.\nUntuk membantu meningkatkan kualitas aplikasi, Brave akan mengirimkan data penggunaan dan error ke Brave. <ph name="BEGIN_UMA_LINK"/>Kelola<ph name="END_UMA_LINK"/></translation>
@@ -1578,6 +1561,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="8243077599929149377">Tambahkan nama pengguna Anda</translation>
 <translation id="8250920743982581267">Dokumen</translation>
 <translation id="8255617931166444521">Situs hanya dapat menggunakan cookie Anda untuk melihat aktivitas penjelajahan Anda di situs itu sendiri</translation>
+<translation id="8258999165172757081">Ditambahkan</translation>
 <translation id="2876689296031086375">Karena halaman yang dipramuat terenkripsi, Brave tidak akan mempelajari apa pun tentang konten halaman yang dipramuat. Server Brave akan mempelajari situs mana yang dipramuat secara pribadi. Informasi ini hanya digunakan untuk melakukan pramuat halaman tersebut dan tidak akan ditautkan ke informasi lain dari Akun Brave Anda.</translation>
 <translation id="8260126382462817229">Coba masuk lagi</translation>
 <translation id="8261506727792406068">Hapus</translation>
@@ -1589,7 +1573,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="8281886186245836920">Lewati</translation>
 <translation id="8282297628636750033">Terapkan tema gelap ke situs, jika mungkin</translation>
 <translation id="8282950411412455249">Buka setelan keamanan</translation>
-<translation id="829672787777123339">Menghubungkan ke perangkat …</translation>
 <translation id="8306751933352925837">Sandi akan segera berhenti berfungsi di perangkat ini. Untuk tetap menggunakan sandi Anda, update layanan Google Play. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="8307517230426267469"><ph name="GIVEN_NAME"/> menghapus tab “<ph name="TAB_NAME"/>”</translation>
 <translation id="8310451567823644042">Sandi akan segera berhenti berfungsi</translation>
@@ -1606,7 +1589,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="8393700583063109961">Kirim pesan</translation>
 <translation id="8402673309244746971">Buka feed Mengikuti</translation>
 <translation id="8413126021676339697">Tampilkan histori lengkap</translation>
-<translation id="5348884013239264115">Melindungi dari situs, download, dan ekstensi yang bereputasi berbahaya. Saat Anda membuka situs, Brave mengirimkan bagian URL yang di-obfuscate ke Brave melalui server privasi yang menyembunyikan alamat IP Anda. Jika situs melakukan hal yang mencurigakan, URL lengkap dan bit konten halaman juga akan dikirim.</translation>
+<translation id="5348884013239264115">Melindungi dari situs, download, dan ekstensi yang diketahui berbahaya. Saat Anda membuka situs, Brave mengirimkan bagian URL yang disamarkan ke Brave melalui server privasi yang menyembunyikan alamat IP Anda. Jika situs melakukan hal yang mencurigakan, URL lengkap dan bit konten halaman juga akan dikirim.</translation>
 <translation id="8414396119627470038">Login ke <ph name="SITE_ETLD_PLUS_ONE"/> dengan <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/></translation>
 <translation id="8419144699778179708">Menghapus histori, termasuk di kotak penelusuran</translation>
 <translation id="8419244640277402268">Sertakan</translation>
@@ -1684,8 +1667,8 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="8748850008226585750">Konten tersembunyi</translation>
 <translation id="8754448020583829686">Salin tanpa link</translation>
 <translation id="8756969031206844760">Perbarui sandi?</translation>
+<translation id="5237925635961014228">{NUM_PASSWORDS,plural, =1{Brave menemukan sandi lemah yang dapat Anda perkuat}other{Brave menemukan # sandi lemah yang dapat Anda perkuat}}</translation>
 <translation id="8766529642647037772">Buat link yang ditandai seperti ini?</translation>
-<translation id="8773160212632396039">Memproses permintaan</translation>
 <translation id="8788265440806329501">Histori navigasi tertutup</translation>
 <translation id="8788968922598763114">Membuka ulang tab yang terakhir ditutup</translation>
 <translation id="8790193082819560975">Ketuk untuk menelusuri opsi pembelian produk di tab baru.</translation>
@@ -1718,7 +1701,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="8924575305646776101"><ph name="BEGIN_LINK"/>Pelajari Lebih Lanjut<ph name="END_LINK"/></translation>
 <translation id="892496902842311796"><ph name="LANG"/> sudah siap</translation>
 <translation id="1174893863889683998">Hapus aktivitas Brave Anda dari Kesehatan Digital?</translation>
-<translation id="179413535815682755">Bergantung pada setelan Anda, Brave juga dapat mengirim cookie, URL saat ini, dan lokasi Anda</translation>
 <translation id="8942627711005830162">Buka di jendela lain</translation>
 <translation id="8945143127965743188"><ph name="LANG"/> - Bahasa ini tidak dapat didownload. Coba lagi nanti.</translation>
 <translation id="8963117664422609631">Buka setelan situs</translation>
@@ -1733,7 +1715,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="8998289560386111590">Tidak tersedia di perangkat Anda</translation>
 <translation id="8998837250940831980">Tidak dapat memperkecil tab. Coba lagi nanti.</translation>
 <translation id="9007002441981613214">Memperbaiki masalah terkait sandi tersimpan</translation>
-<translation id="9012585441087414258">Melindungi dari situs, download, dan ekstensi yang bereputasi berbahaya. Jika halaman melakukan hal yang mencurigakan, URL dan contoh kecil konten halaman akan dikirim ke Google Safe Browsing.</translation>
+<translation id="9012585441087414258">Melindungi dari situs, download, dan ekstensi yang diketahui berbahaya. Jika halaman melakukan hal yang mencurigakan, URL dan contoh kecil konten halaman akan dikirim ke Google Safe Browsing.</translation>
 <translation id="9019199799064251516">Lanjutkan tanpa kunci profil mobil?</translation>
 <translation id="9022774213089566801">Sering dikunjungi</translation>
 <translation id="9022871169049522985">Situs dan pengiklan dapat mengukur performa iklannya</translation>
@@ -1760,7 +1742,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="9104217018994036254">Daftar perangkat yang dapat digunakan untuk berbagi tab.</translation>
 <translation id="9104858485806491627">{INACTIVE_TIME_DAYS,plural, =1{Tidak digunakan selama 1 hari atau lebih}other{Tidak digunakan selama # hari atau lebih}}</translation>
 <translation id="9106148373857059373">Alur penyimpanan bookmark ditutup</translation>
-<translation id="9108312223223904744">Dukungan Ponsel sebagai Kunci Keamanan</translation>
 <translation id="9108808586816295166">DNS aman mungkin tidak tersedia sepanjang waktu</translation>
 <translation id="910908805481542201">Bantu saya memperbaiki hal ini</translation>
 <translation id="9130135798965366513">Untuk melanjutkan, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> akan membagikan <ph name="FIELDS_STRING"/> Anda ke situs ini. Lihat <ph name="BEGIN_LINK1"/>kebijakan privasi<ph name="END_LINK1"/> dan <ph name="BEGIN_LINK2"/>persyaratan layanan<ph name="END_LINK2"/> situs ini.</translation>
@@ -1784,12 +1765,11 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="9212845824145208577">Tidak dapat lebih rendah lagi. Coba mulai dari bagian yang lebih bawah pada halaman.</translation>
 <translation id="9218430445555521422">Jadikan default</translation>
 <translation id="9219103736887031265">Gambar</translation>
-<translation id="6946179564366058239">Saat sebuah situs meminta untuk melakukan pramuat link yang ada di halamannya secara pribadi, Brave akan mengenkripsi dan melakukan pramuat halaman melalui server Brave tanpa cookie. Hal ini akan menyembunyikan identitas Anda dari situs yang dipramuat.</translation>
 <translation id="7625138338483121345">Menjadikan Brave sebagai browser default</translation>
 <translation id="4596514158372210596">Hapus aktivitas Brave Anda dari Kesehatan Digital</translation>
 <translation id="2830145431802238213">Gunakan Mode Ringan di Brave</translation>
 <translation id="928550791203542716">Mengikuti <ph name="SITE_NAME"/></translation>
-<translation id="930124987204876019">Menghapus histori, cookie, data situs, cache…</translation>
+<translation id="930124987204876019">Hapus histori, cookie, data situs, cache…</translation>
 <translation id="93533588269984624">Semua sandi akan didownload di perangkat Anda dan dihapus dari <ph name="CHROME_CHANNEL"/></translation>
 <translation id="938850635132480979">Kesalahan: <ph name="ERROR_CODE"/></translation>
 <translation id="939598580284253335">Masukkan frasa sandi</translation>
@@ -1809,7 +1789,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="1014490034578104945">Gunakan kunci layar untuk melihat tab Privat yang terbuka</translation>
 <translation id="5722020415664104421">Memblokir sementara menggunakan Privat</translation>
 <translation id="8915136961932734044">Sementara dalam mode Privat, situs tidak dapat menggunakan kuki Anda untuk melihat aktivitas perambanan Anda melintasi berbagai situs, misalnya untuk mempersonalisasikan iklan. Fitur di beberapa situs mungkin tidak berfungsi.</translation>
-<translation id="2213938739750509524">Ketika Anda mengetuk atau mengetik pada bilah alamat atau kotak pencarian, Anda akan melihat usulan dari mesin pencarian bawaan Anda. Ini dinonaktifkan saat Privat.</translation>
 <translation id="2589970573128789862">Privat Brave</translation>
 <translation id="5809126106485463836">Mode privat menjaga penelusuran Anda agar tetap privat dari pihak lain yang menggunakan perangkat Anda</translation>
 <translation id="2633278372998075009">Tab pribadi</translation>
@@ -1823,7 +1802,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="4660964651149493586">Buka Kunci Privat</translation>
 <translation id="5278260521317049275">Aktifkan kunci Privat</translation>
 <translation id="6302653771627628530">Tab privat akan dikunci ketika Anda meninggalkan Brave</translation>
-<translation id="3763131702135887799">Bantulah Brave menjadi lebih baik untuk profil-profil yang menggunakannya dengan cara seperti Anda</translation>
 <translation id="4167670741834902166">Tab Privat baru</translation>
 <translation id="8120164982795455341">Tab Privat baru</translation>
 <translation id="1988906120194081364">Beralih ke Privat</translation>
@@ -1851,7 +1829,6 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>hapus data Brave di akun Anda
 <translation id="7096147642287317420">Sentuh dan tahan untuk keluar dari Privat</translation>
 <translation id="2331163878318921124">Sentuh dua kali dan tahan untuk keluar dari Privat</translation>
 <translation id="3947065058794437451">Privat tidak tersedia pada perangkat ini.</translation>
-<translation id="1998933850996224665">Untuk berbagi dengan profil yang berdekatan, biarkan mereka memindai Kode QR ini.</translation>
 <translation id="3095878721037212218">Anda akan dapat dengan mudah mengelola kontrol media, sesi Privat, mengunduh, dan banyak lagi</translation>
 <translation id="5129323533070334129">Simpan kunci sandi di luar mode Privat?</translation>
 <translation id="4325212706000356062">Cari tab Privat Anda</translation>
