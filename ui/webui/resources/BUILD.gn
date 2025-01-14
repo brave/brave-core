@@ -335,6 +335,7 @@ leo_icons = [
   "rewind-15.svg",
   "rocket.svg",
   "safe.svg",
+  "screenshot.svg",
   "search-fuel-tank.svg",
   "search-zoom-in.svg",
   "search.svg",
@@ -377,6 +378,7 @@ leo_icons = [
   "thumb-up.svg",
   "trash.svg",
   "tune.svg",
+  "upload.svg",
   "uphold-color.svg",
   "usb-off.svg",
   "usb.svg",
@@ -423,6 +425,7 @@ leo_icons = [
   "xmark-color.svg",
   "yahoo-color.svg",
   "yandex-color.svg",
+  "window-tab.svg",
   "window-tabs-vertical-expanded.svg",
   "stop-circle.svg",
 ]

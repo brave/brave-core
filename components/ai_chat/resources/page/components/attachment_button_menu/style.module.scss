@@ -18,3 +18,12 @@
   --leo-icon-size: 16px;
   margin-right: 8px;
 }
+
+.buttonContent {
+  display: flex;
+  gap: var(--leo-spacing-xl);
+}
+
+.buttonIcon {
+  --leo-icon-size: 20px;
+}
