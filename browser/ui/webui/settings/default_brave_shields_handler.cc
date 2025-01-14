@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 
-#include <string>
+#include <utility>
 
 #include "base/functional/bind.h"
 #include "base/values.h"
@@ -106,8 +106,8 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       base::BindRepeating(&DefaultBraveShieldsHandler::SetContactInfoSaveFlag,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "getContactInfoSaveFlag",
-      base::BindRepeating(&DefaultBraveShieldsHandler::GetContactInfoSaveFlag,
+      "getContactInfo",
+      base::BindRepeating(&DefaultBraveShieldsHandler::GetContactInfo,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getHideBlockAllCookieTogle",
@@ -353,15 +353,7 @@ void DefaultBraveShieldsHandler::SetContactInfoSaveFlag(
   }
 }
 
-void DefaultBraveShieldsHandler::OnGetContactInfoSaveFlag(
-    base::Value javascript_callback,
-    const bool contact_info_save_flag) {
-  ResolveJavascriptCallback(javascript_callback,
-                            base::Value(contact_info_save_flag));
-}
-
-void DefaultBraveShieldsHandler::GetContactInfoSaveFlag(
-    const base::Value::List& args) {
+void DefaultBraveShieldsHandler::GetContactInfo(const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   AllowJavascript();
@@ -370,13 +362,26 @@ void DefaultBraveShieldsHandler::GetContactInfoSaveFlag(
       webcompat_reporter::WebcompatReporterServiceFactory::GetServiceForContext(
           profile_);
   if (!webcompat_reporter_service) {
-    ResolveJavascriptCallback(args[0].Clone(), base::Value(false));
+    base::Value::Dict params_dict;
+    params_dict.Set("contactInfo", "");
+    params_dict.Set("contactInfoSaveFlag", false);
+    ResolveJavascriptCallback(args[0].Clone(), std::move(params_dict));
   }
 
-  webcompat_reporter_service->GetContactInfoSaveFlag(
-      base::BindOnce(&DefaultBraveShieldsHandler::OnGetContactInfoSaveFlag,
+  webcompat_reporter_service->GetContactInfo(
+      base::BindOnce(&DefaultBraveShieldsHandler::OnGetContactInfo,
                      weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
 }
+void DefaultBraveShieldsHandler::OnGetContactInfo(
+    base::Value javascript_callback,
+    const std::optional<std::string>& contact_info,
+    const bool contact_info_save_flag) {
+  base::Value::Dict params_dict;
+  params_dict.Set("contactInfo", contact_info.value_or(""));
+  params_dict.Set("contactInfoSaveFlag", contact_info_save_flag);
+  ResolveJavascriptCallback(javascript_callback, std::move(params_dict));
+}
+
 void DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled(
     const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
