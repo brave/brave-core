@@ -159,11 +159,7 @@ ConversationHandler* AIChatService::CreateConversation() {
   // Create the conversation metadata
   {
     mojom::ConversationPtr conversation = mojom::Conversation::New(
-        conversation_uuid, "", base::Time::Now(), false, std::nullopt,
-        mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
-                             mojom::ContentType::PageContent, std::nullopt,
-                             std::nullopt, mojom::kContentIdNone, std::nullopt,
-                             0, false, false));
+        conversation_uuid, "", base::Time::Now(), false, std::nullopt, nullptr);
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -749,7 +745,7 @@ void AIChatService::HandleFirstEntry(
   DVLOG(1) << __func__ << " Conversation " << conversation->uuid
            << " being persisted for first time.";
   CHECK(entry->uuid.has_value());
-  CHECK(conversation->associated_content->uuid.has_value());
+
   // We can persist the conversation metadata for the first time as well as the
   // entry.
   if (ai_chat_db_) {
@@ -785,7 +781,7 @@ void AIChatService::HandleNewEntry(
                   conversation->model_key, std::nullopt);
 
     if (associated_content_value.has_value() &&
-        conversation->associated_content->is_content_association_possible) {
+        conversation->associated_content) {
       ai_chat_db_
           .AsyncCall(
               base::IgnoreResult(&AIChatDatabase::AddOrUpdateAssociatedContent))

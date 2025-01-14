@@ -84,13 +84,13 @@ function FeedbackForm() {
             />
           </label>
         </fieldset>
-        {conversationContext.associatedContentInfo?.hostname && (
+        {conversationContext.associatedContentInfo && (
           <fieldset>
             <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
               <label>{
                 formatMessage(getLocale('sendSiteHostnameLabel'), {
                   placeholders: {
-                    $1: conversationContext.associatedContentInfo.hostname
+                    $1: new URL(conversationContext.associatedContentInfo.url.url).hostname
                   }
                 })
               }</label>

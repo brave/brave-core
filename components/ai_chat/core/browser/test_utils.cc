@@ -77,8 +77,8 @@ void ExpectConversationEquals(base::Location location,
 }
 
 void ExpectAssociatedContentEquals(base::Location location,
-                                   const mojom::SiteInfoPtr& a,
-                                   const mojom::SiteInfoPtr& b) {
+                                   const mojom::AssociatedContentPtr& a,
+                                   const mojom::AssociatedContentPtr& b) {
   SCOPED_TRACE(testing::Message() << location.ToString());
   if (!a || !b) {
     EXPECT_EQ(a, b);  // Both should be null or neither
@@ -90,8 +90,6 @@ void ExpectAssociatedContentEquals(base::Location location,
   EXPECT_EQ(a->content_type, b->content_type);
   EXPECT_EQ(a->content_used_percentage, b->content_used_percentage);
   EXPECT_EQ(a->is_content_refined, b->is_content_refined);
-  EXPECT_EQ(a->is_content_association_possible,
-            b->is_content_association_possible);
 }
 
 void ExpectConversationHistoryEquals(

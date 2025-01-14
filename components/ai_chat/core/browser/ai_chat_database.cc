@@ -243,15 +243,12 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
     conversation->updated_time = statement.ColumnTime(index++);
     conversation->has_content = true;
 
-    conversation->associated_content = mojom::SiteInfo::New();
-    conversation->associated_content->content_id = mojom::kContentIdNone;
-
     if (statement.GetColumnType(index) != sql::ColumnType::kNull) {
       DVLOG(1) << __func__ << " got associated content";
-
+      conversation->associated_content = mojom::AssociatedContent::New();
       conversation->associated_content->uuid = statement.ColumnString(index++);
       conversation->associated_content->title =
-          DecryptOptionalColumnToString(statement, index++);
+          DecryptOptionalColumnToString(statement, index++).value_or("");
       auto url_raw = DecryptOptionalColumnToString(statement, index++);
       if (url_raw.has_value()) {
         conversation->associated_content->url = GURL(url_raw.value());
@@ -262,9 +259,6 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
           statement.ColumnInt(index++);
       conversation->associated_content->is_content_refined =
           statement.ColumnBool(index++);
-      conversation->associated_content->is_content_association_possible = true;
-    } else {
-      conversation->associated_content->is_content_association_possible = false;
     }
   }
 
@@ -504,10 +498,10 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
     return false;
   }
 
-  if (conversation->associated_content->is_content_association_possible) {
+  if (conversation->associated_content) {
     DVLOG(2) << "Adding associated content for conversation "
              << conversation->uuid << " with url "
-             << conversation->associated_content->url->spec();
+             << conversation->associated_content->url.spec();
     if (!AddOrUpdateAssociatedContent(
             conversation->uuid, std::move(conversation->associated_content),
             contents)) {
@@ -530,7 +524,7 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
 
 bool AIChatDatabase::AddOrUpdateAssociatedContent(
     std::string_view conversation_uuid,
-    mojom::SiteInfoPtr associated_content,
+    mojom::AssociatedContentPtr associated_content,
     std::optional<std::string> contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
@@ -539,7 +533,7 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
 
   // TODO(petemill): handle multiple associated content per conversation
   CHECK(!conversation_uuid.empty());
-  CHECK(associated_content->uuid.has_value());
+  CHECK(associated_content);
 
   // Check if we already have persisted this content
   static constexpr char kSelectExistingAssociatedContentId[] =
@@ -549,13 +543,12 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
       SQL_FROM_HERE, kSelectExistingAssociatedContentId));
   CHECK(select_statement.is_valid());
   select_statement.BindString(0, conversation_uuid);
-  select_statement.BindString(1, associated_content->uuid.value());
+  select_statement.BindString(1, associated_content->uuid);
 
   sql::Statement statement;
   if (select_statement.Step()) {
     DVLOG(4) << "Updating associated content for conversation "
-             << conversation_uuid << " with id "
-             << associated_content->uuid.value();
+             << conversation_uuid << " with id " << associated_content->uuid;
     static constexpr char kUpdateAssociatedContentQuery[] =
         "UPDATE associated_content"
         " SET title = ?,"
@@ -580,13 +573,13 @@ bool AIChatDatabase::AddOrUpdateAssociatedContent(
   int index = 0;
   BindAndEncryptOptionalString(statement, index++, associated_content->title);
   BindAndEncryptOptionalString(statement, index++,
-                               associated_content->url->spec());
+                               associated_content->url.spec());
   statement.BindInt(index++,
                     base::to_underlying(associated_content->content_type));
   BindAndEncryptOptionalString(statement, index++, contents);
   statement.BindInt(index++, associated_content->content_used_percentage);
   statement.BindBool(index++, associated_content->is_content_refined);
-  statement.BindString(index++, associated_content->uuid.value());
+  statement.BindString(index++, associated_content->uuid);
   statement.BindString(index, conversation_uuid);
 
   if (!statement.Run()) {
@@ -1040,8 +1033,7 @@ bool AIChatDatabase::DeleteAssociatedWebContent(
   // Set any associated content url, title and content to NULL where
   // conversation had any entry between begin_time and end_time.
   static constexpr char kQuery[] =
-      "UPDATE associated_content"
-      " SET url=NULL, title=NULL, last_contents=NULL"
+      "DELETE FROM associated_content"
       " WHERE conversation_uuid IN ("
       "  SELECT conversation_uuid"
       "  FROM conversation_entry"
@@ -1145,9 +1137,8 @@ bool AIChatDatabase::CreateSchema() {
       "title BLOB,"
       // Encrypted url string
       "url BLOB,"
-      // Stores SiteInfo.IsVideo. Future-proofed for multiple content types
-      // 0 for regular content
-      // 1 for video.
+      // Stores AssociatedContent.IsVideo. Future-proofed for multiple content
+      // types 0 for regular content 1 for video.
       "content_type INTEGER NOT NULL,"
       // Encrypted string value of the content, so that conversations can be
       // continued.

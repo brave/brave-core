@@ -27,7 +27,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   private let braveTalkScript: AIChatBraveTalkJavascript?
   var querySubmited: String?
 
-  @Published var siteInfo: AiChat.SiteInfo?
+  @Published var siteInfo: AiChat.AssociatedContent?
   @Published var _shouldSendPageContents: Bool = true
   @Published var _canShowPremiumPrompt: Bool = false
   @Published var premiumStatus: AiChat.PremiumStatus = .inactive
@@ -324,7 +324,7 @@ extension AIChatViewModel: AIChatDelegate {
   }
 
   public func onPageHasContent(
-    _ siteInfo: AiChat.SiteInfo,
+    _ siteInfo: AiChat.AssociatedContent,
     shouldSendContent shouldSendPageContents: Bool
   ) {
     self.siteInfo = siteInfo
