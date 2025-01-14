@@ -26,7 +26,7 @@ function WelcomeGuide() {
         <h4 className={styles.cardTitle}>
           {getLocale('welcomeGuideSiteHelpCardTitle')}
         </h4>
-        {conversationContext.associatedContentInfo?.isContentAssociationPossible &&
+        {conversationContext.associatedContentInfo &&
         conversationContext.shouldSendPageContents ? (
           <>
             <p>{getLocale('welcomeGuideSiteHelpCardDescWithAction')}</p>

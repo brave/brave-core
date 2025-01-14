@@ -71,7 +71,7 @@ function Main() {
     !conversationContext.apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
     !shouldShowStorageNotice && // Don't show premium prompt and storage notice
     aiChatContext.canShowPremiumPrompt &&
-    conversationContext.associatedContentInfo === null && // SiteInfo request has finished and this is a standalone conversation
+    conversationContext.associatedContentInfo === null && // AssociatedContent request has finished and this is a standalone conversation
     !aiChatContext.isPremiumUser
 
 
@@ -81,7 +81,7 @@ function Main() {
   const showContextToggle =
     (conversationContext.conversationHistory.length === 0 ||
       isLastTurnBraveSearchSERPSummary) &&
-    conversationContext.associatedContentInfo?.isContentAssociationPossible
+    !!conversationContext.associatedContentInfo
 
   let currentErrorElement = null
 
@@ -252,7 +252,7 @@ function Main() {
             <>
               <ModelIntro />
 
-              {conversationContext.associatedContentInfo?.isContentAssociationPossible && conversationContext.shouldSendPageContents && (
+              {conversationContext.associatedContentInfo && conversationContext.shouldSendPageContents && (
                 <div className={styles.siteTitleContainer}>
                   <SiteTitle size='default' />
                 </div>
