@@ -134,8 +134,12 @@ function InputBox(props: InputBoxProps) {
           <Button
             fab
             kind='plain-faint'
-            onClick={() =>
-              props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+            onClick={(e) =>
+              {
+                e.preventDefault()
+                e.stopPropagation()
+                props.context.setIsToolsMenuOpen(!props.context.isToolsMenuOpen)
+              }
             }
             title={getLocale('toolsMenuButtonLabel')}
           >

@@ -21,59 +21,20 @@ type Props = Pick<
 >
 
 export default function AttachmentButtonMenu(props: Props) {
-  // State
-  const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(false)
-  const [file, setFile] = React.useState<HTMLInputElement['files']>()
-  const inputRef = React.useRef<HTMLInputElement | null>(null)
-
-  // This effect can be removed when ready, just here for testing.
-  React.useEffect(() => {
-    console.log(file)
-  }, [file])
-
-  // Methods
-  const handleFileChange = React.useCallback(
-    (file: React.ChangeEvent<HTMLInputElement>) => {
-      if (file.target.files) {
-        // Just for testing integration, probably don't need to
-        // set this file to sate, but instead send to server API.
-        setFile(file.target.files)
-      }
-    },
-    []
-  )
-
   return (
     <>
-      <input
-        type='file'
-        ref={inputRef}
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-      />
-      <ButtonMenu
-        id='attachMenu'
-        isOpen={isMenuOpen}
-        onChange={({ isOpen }) => setIsMenuOpen(isOpen)}
-        onClose={() => setIsMenuOpen(false)}
-      >
+      <ButtonMenu>
+        <div
+          slot='anchor-content'
+        >
         <Button
           fab
           kind='plain-faint'
           title={getLocale('attachmentMenuButtonLabel')}
-          slot='anchor-content'
         >
           <Icon name='attachment' />
         </Button>
-        <Button
-          fab
-          kind='plain-faint'
-          title={getLocale('attachmentMenuButtonLabel')}
-          slot='anchor-content'
-          onClick={props.uploadImage}
-        >
-        <Icon name='attachment' />
-        </Button>
+        </div>
         <div className={styles.section}>
           <Icon
             className={styles.attachIcon}
@@ -81,7 +42,7 @@ export default function AttachmentButtonMenu(props: Props) {
           />
           {getLocale('attachMenuTitle')}
         </div>
-        <leo-menu-item key='upload' onClick={props.uploadImage}>
+        <leo-menu-item onClick={props.uploadImage}>
           {getLocale('uploadFileButtonLabel')}
         </leo-menu-item>
         <leo-menu-item
