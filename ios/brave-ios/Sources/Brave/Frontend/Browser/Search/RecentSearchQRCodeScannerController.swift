@@ -16,8 +16,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
   private var didScan = false
   private var onDidScan: (_ string: String) -> Void
 
-  private var didProcessScanReusltsTask: Task<Void, Error>?
-
   public static var hasCameraSupport: Bool {
     if ProcessInfo.processInfo.isiOSAppOnVisionOS {
       // Apps on VisionOS can't access the main camera
@@ -73,28 +71,18 @@ class RecentSearchQRCodeScannerController: UIViewController {
         UIAction(handler: { [weak self] _ in
           guard let self = self else { return }
 
-          self.didProcessScanReusltsTask?.cancel()
           self.scannerView.scannedDisplayButton.isHidden = true
           self.onDidScan(string)
           self.dismiss(animated: true, completion: nil)
         }),
         for: .touchUpInside
       )
-
-      //      didProcessScanReusltsTask = Task.delayed(bySeconds: 3.seconds) { @MainActor [weak self] in
-      //        try Task.checkCancellation()
-      //        guard let self = self else { return }
-      //
-      //        self.scannerView.scannedDisplayButton.isHidden = true
-      //        self.onDidScan(string)
-      //      }
     }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
 
-    didProcessScanReusltsTask?.cancel()
     scannerView.cameraView.stopRunning()
   }
 
@@ -191,12 +179,12 @@ extension RecentSearchQRCodeScannerController {
       }
     }
 
-    private(set) lazy var scannedDisplayButton = UIButton().then {
+    let scannedDisplayButton = UIButton().then {
       $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
       $0.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
       $0.titleLabel?.lineBreakMode = .byTruncatingTail
-      $0.setTitleColor(UIColor.white, for: .normal)
-      $0.backgroundColor = UIColor(braveSystemName: .primitivePurple60)
+      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
+      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
       $0.layer.cornerRadius = 10
       $0.layer.cornerCurve = .continuous
       $0.layer.masksToBounds = true
