@@ -307,11 +307,11 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="6155018868740116868">Vrati</translation>
 <translation id="2521960050170773751">Dodajte medije sa stranice</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> želi se otvoriti</translation>
-<translation id="7128982309566342232">Ugrađena stranica na <ph name="SITE"/> želi se otvoriti</translation>
+<translation id="4828353184750597953">Integrirana stranica na <ph name="SITE"/> želi se otvoriti</translation>
 <translation id="1175012181261953767">Ova se stranica želi otvoriti</translation>
 <translation id="7459546222322124545">Ugrađena stranica na ovoj stranici želi se otvoriti</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> želi spremiti</translation>
-<translation id="5936788906460687941">Ugrađena stranica na <ph name="SITE"/> želi spremiti</translation>
+<translation id="8813509417421129632">Integrirana stranica na <ph name="SITE"/> želi se spremiti</translation>
 <translation id="7700010743463174379">Ova stranica želi spremiti</translation>
 <translation id="6774238875569752630">Ugrađena stranica na ovoj stranici želi spremiti</translation>
 <translation id="9156965752763025780">Promjene će početi vrijediti sljedeći put kad ponovo pokrenete preglednik Brave.</translation>
@@ -572,6 +572,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="4094590686212463338">Nije moguće pridružiti se ovom lancu sinkronizacije. Lanac sinkronizacije je izbrisan.</translation>
 <translation id="4908081302669157000">Telefonski brojevi, e-pošte i adrese</translation>
 <translation id="294985549514492876">Mrežne aplikacije (PWA)</translation>
+<translation id="7029809446516969842">Zaporke</translation>
 <translation id="924029461438529367">Prikaži prijedloge za pretraživanje</translation>
 <translation id="3128251601544028053">Kada upisujete u adresnu traku ili okvir za pretraživanje, Brave šalje ono što upisujete vašoj zadanoj tražilici kako biste dobili bolje prijedloge. Ovo nije dostupno u privatnim prozorima.</translation>
 <translation id="6285118765755298263">Indeksiraj ostale tražilice</translation>
@@ -714,6 +715,7 @@ preglednika Brave. Ta se radnja ne može poništiti.</translation>
 <translation id="1355326130503900056">Naziv modela koji se treba pojaviti u zahtjevu za okvir za posluživanje, na primjer, phi-3 (napominjemo da integracija neće radiiti ako se taj naziv ne podudara točno s onim što se očekuje u okviru posluživanja)</translation>
 <translation id="3286410514484292784">Url adresa na kojoj vaš okvir za posluživanje sluša vaše zahtjeve. Ako niste sigurni, provjerite dokumentaciju okvira posluživanja. Npr., za okvir Ollama, to je http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Neki okviri za posluživanje mogu zahtijevati podatke za provjeru vjerodostojnosti, poput API ključa ili pristupnog tokena. Oni će biti dodani zaglavlju zahtjeva.</translation>
+<translation id="4335128003329183586">Veličina konteksta</translation>
 <translation id="217141195370578385">Platforma Brave nije posrednik za te zahtjeve, pročitajte politiku zaštite privatnosti odabranog pružatelja.</translation>
 <translation id="2645532768679870478">Završne točke koje nisu lokalne trebaju upotrebljavati HTTPS protokol za siguran prijenos podataka.</translation>
 <translation id="8177205483022887785">Upisali ste nevažeću URL adresu. Upišite važeću URL adresu.</translation>
@@ -723,6 +725,9 @@ preglednika Brave. Ta se radnja ne može poništiti.</translation>
 <translation id="7435587476558117990">Spojite svoj LLM čiji ste domaćin ili čiji je domaćin treća strana s pomoćnikom Leo i upotrijebite ih unutar preglednika.</translation>
 <translation id="1381050642750209119">Upotrijebite bilo koji okvir sukladan s protokolom OpenAI za čavrljanje, poput okvira Ollama.</translation>
 <translation id="2642905648178380593">Spremi model</translation>
+<translation id="6304169450064541679">Upute sustavu</translation>
+<translation id="3081947790648024460">Prilagođene upute i/ili kontekst koji se daje modelu kako bi usmjerio njegove odgovore u određenom smjeru ili stilu. Koristite %datetime% tamo gdje želite da se umetne trenutačni datum i vrijeme.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokeni</translation>
 <translation id="349846214503465941">Omogućivanje popisa za reprodukciju</translation>
 <translation id="7903608716704052878">Automatski dodajte datoteke za izvanmrežno gledanje</translation>
 <translation id="4193768184502613558">Ova će mogućnost automatski spremiti medijske datoteke u predmemoriju tako da ih možete reproducirati bez internetske veze.</translation>

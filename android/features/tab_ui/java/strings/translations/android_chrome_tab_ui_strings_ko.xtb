@@ -7,7 +7,6 @@
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{<ph name="NUM_YEARS_ONE"/>년 전 생성됨}other{<ph name="NUM_YEARS_MANY"/>년 전 생성됨}}</translation>
 <translation id="1173894706177603556">이름 바꾸기</translation>
 <translation id="1197088940767939838">오렌지색</translation>
-<translation id="125153950246128346">다른 탭을 보려면 탭하세요.</translation>
 <translation id="1273910660700874265"><ph name="TITLE_OF_GROUP"/> 탭 그룹 옵션</translation>
 <translation id="1293272072740285747">이 그룹을 유지하여 나중에 탭을 추가하거나 더 이상 필요하지 않으면 삭제하세요.
 
@@ -61,6 +60,7 @@
 <translation id="3613492231657284463">비활성 탭 숨기기 대화상자</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">공유 시트 미리보기 썸네일</translation>
+<translation id="3810973564298564668">관리</translation>
 <translation id="381219490185664296">탭 그룹을 해제하시겠습니까?</translation>
 <translation id="3940195383040445971">탭에서 가격 추적</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{탭 그룹화}other{탭 그룹화}}</translation>
@@ -71,7 +71,6 @@
 <translation id="4139634748112164403">이 기기에서 탭은 열린 상태로 유지되지만, 그룹은 완전히 삭제됩니다.</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/>개의 <ph name="COLOR_NAME"/> 탭이 포함된 <ph name="TITLE_OF_GROUP"/> 그룹을 닫습니다.}other{<ph name="TABS_COUNT_MANY"/>개의 <ph name="COLOR_NAME"/> 탭이 포함된 <ph name="TITLE_OF_GROUP"/> 그룹을 닫습니다.}}</translation>
 <translation id="4159784952369912983">보라색</translation>
-<translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{탭 <ph name="TABS_COUNT_ONE"/>개가 포함된 <ph name="TITLE_OF_GROUP"/> 탭 그룹을 펼칩니다.}other{탭 <ph name="TABS_COUNT_MANY"/>개가 포함된 <ph name="TITLE_OF_GROUP"/> 탭 그룹을 펼칩니다.}}</translation>
 <translation id="427987768447457592">새 탭 그룹</translation>
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{탭 <ph name="ONE_CHANGED"/>개 변경됨, <ph name="ANY_CLOSED"/>개 닫힘}other{탭 <ph name="MANY_CHANGED"/>개 변경됨, <ph name="ANY_CLOSED"/>개 닫힘}}</translation>
 <translation id="4371591986692297148">비활성</translation>
@@ -93,11 +92,9 @@
 <translation id="5007392906805964215">검토</translation>
 <translation id="5073204694187207510">전체화면 그리드 숨기기</translation>
 <translation id="5076161749301278626">매장 리뷰를 확인하시겠습니까?</translation>
-<translation id="5082793167783849073">그룹을 만들어서 페이지를 빠르게 비교하세요. 시작하려면 링크를 길게 터치합니다.</translation>
 <translation id="5094423602314093681">탭 및 그룹을 삭제하시겠습니까?</translation>
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{탭 <ph name="ONE_ADDED"/>개 추가됨}other{탭 <ph name="MANY_ADDED"/>개 추가됨}}</translation>
 <translation id="5161254044473106830">제목이 필요합니다.</translation>
-<translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{탭 <ph name="TABS_COUNT_ONE"/>개가 포함된 탭 그룹을 닫습니다.}other{탭 <ph name="TABS_COUNT_MANY"/>개가 포함된 탭 그룹을 닫습니다.}}</translation>
 <translation id="5339733443032484186">마지막 탭</translation>
 <translation id="5400836586163650660">그레이</translation>
 <translation id="5490235265819901748">탭 그룹 펼침</translation>
@@ -139,7 +136,6 @@
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{<ph name="COLOR_NAME"/> 색상의 탭이 <ph name="TABS_COUNT_ONE"/>개 포함된 공유 <ph name="TITLE_OF_GROUP"/> 탭 그룹을 펼칩니다.}other{<ph name="COLOR_NAME"/> 색상의 탭이 <ph name="TABS_COUNT_MANY"/>개 포함된 공유 <ph name="TITLE_OF_GROUP"/> 탭 그룹을 펼칩니다.}}</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{탭 공유}other{탭 공유}}</translation>
 <translation id="7129458170538955174">매장에 관한 정보가 절반 높이로 열림</translation>
-<translation id="7200189319044305940">{NUMBER_OF_TABS,plural, =1{탭 <ph name="TABS_COUNT_ONE"/>개가 포함된 <ph name="TITLE_OF_GROUP"/> 그룹을 닫습니다.}other{탭 <ph name="TABS_COUNT_MANY"/>개가 포함된 <ph name="TITLE_OF_GROUP"/> 그룹을 닫습니다.}}</translation>
 <translation id="7204204600596740190">다중 선택 모드</translation>
 <translation id="7211038039686180558">탭 그룹은 로그인된 모든 기기에서 자동으로 저장되고 업데이트됩니다.</translation>
 <translation id="731648547091221002"><ph name="COLOR_NAME"/> 선택됨</translation>
@@ -188,12 +184,9 @@
 <translation id="8820741577754260431">탭에서 가격 인하를 확인합니다.</translation>
 <translation id="8887921976452567404">닫은 탭 및 그룹은 최근 탭 섹션과 탭 그룹 섹션에서 다시 열 수 있습니다.</translation>
 <translation id="8915916167043355778">모두 닫기</translation>
-<translation id="8926389886865778422">이 메시지 그만 보기</translation>
-<translation id="8993967613304721520">{NUMBER_OF_TABS,plural, =1{탭 <ph name="TABS_COUNT_ONE"/>개가 포함된 탭 그룹을 펼칩니다.}other{탭 <ph name="TABS_COUNT_MANY"/>개가 포함된 탭 그룹을 펼칩니다.}}</translation>
 <translation id="9090098097337832354">매장에 관한 정보가 닫힘</translation>
 <translation id="9111228330448174435">새 탭 그룹 생성 시 대화상자 표시</translation>
 <translation id="9114502155681725011">탭 그룹 <ph name="TITLE_OF_GROUP"/>(색상: <ph name="COLOR_NAME"/>)의 탭 그룹 작업 메뉴 열기</translation>
-<translation id="9150694013019234766">화면 하단의 탭 그룹에서 탭 간 전환</translation>
 <translation id="9169594135889675189">그룹에 새 탭 추가</translation>
 <translation id="9216898458513705996">이 기기에서의 탭은 열린 상태로 유지되지만 <ph name="USER_EMAIL"/>에 로그인된 모든 기기에서는 그룹이 삭제됩니다.</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/>개의 <ph name="COLOR_NAME"/> 탭이 포함된 탭 그룹을 펼칩니다.}other{<ph name="TABS_COUNT_MANY"/>개의 <ph name="COLOR_NAME"/> 탭이 포함된 탭 그룹을 펼칩니다.}}</translation>

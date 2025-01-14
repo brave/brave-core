@@ -7,7 +7,6 @@
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{<ph name="NUM_YEARS_ONE"/> साल पहले बनाया गया}one{<ph name="NUM_YEARS_MANY"/> साल पहले बनाया गया}other{<ph name="NUM_YEARS_MANY"/> साल पहले बनाया गया}}</translation>
 <translation id="1173894706177603556">नाम बदलें</translation>
 <translation id="1197088940767939838">नारंगी</translation>
-<translation id="125153950246128346">कोई दूसरा टैब देखने के लिए टैप करें</translation>
 <translation id="1273910660700874265"><ph name="TITLE_OF_GROUP"/> टैब ग्रुप के विकल्प</translation>
 <translation id="1293272072740285747">बाद में टैब जोड़ने के लिए, इस ग्रुप को बनाए रखें. अगर आपको इसकी ज़रूरत नहीं है, तो इसे मिटा दें.
 
@@ -61,6 +60,7 @@
 <translation id="3613492231657284463">इनऐक्टिव टैब छिपाने का डायलॉग बॉक्स</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">Share sheet की झलक का थंबनेल.</translation>
+<translation id="3810973564298564668">मैनेज करें</translation>
 <translation id="381219490185664296">क्या टैब ग्रुप को ग्रुप से अलग करना है?</translation>
 <translation id="3940195383040445971">टैब पर कीमतों को ट्रैक करें</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{टैब को ग्रुप में शामिल करें}one{टैब को ग्रुप में शामिल करें}other{टैब को ग्रुप में शामिल करें}}</translation>
@@ -71,7 +71,6 @@
 <translation id="4139634748112164403">ये टैब इस डिवाइस में खुले रहेंगे, लेकिन ग्रुप हमेशा के लिए मिटा दिया जाएगा</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_ONE"/> टैब वाले <ph name="TITLE_OF_GROUP"/> ग्रुप को बंद करें.}one{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_MANY"/> टैब वाले <ph name="TITLE_OF_GROUP"/> ग्रुप को बंद करें.}other{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_MANY"/> टैब वाले <ph name="TITLE_OF_GROUP"/> ग्रुप को बंद करें.}}</translation>
 <translation id="4159784952369912983">बैंगनी</translation>
-<translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> टैब वाले टैब ग्रुप को बड़ा करें. इसका नाम <ph name="TITLE_OF_GROUP"/> है.}one{<ph name="TABS_COUNT_MANY"/> टैब वाले टैब ग्रुप को बड़ा करें. इसका नाम <ph name="TITLE_OF_GROUP"/> है.}other{<ph name="TABS_COUNT_MANY"/> टैब वाले टैब ग्रुप को बड़ा करें. इसका नाम <ph name="TITLE_OF_GROUP"/> है.}}</translation>
 <translation id="427987768447457592">नया टैब ग्रुप</translation>
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> टैब बदला गया, <ph name="ANY_CLOSED"/> टैब बंद किए गए}one{<ph name="MANY_CHANGED"/> टैब बदला गया, <ph name="ANY_CLOSED"/> टैब बंद किए गए}other{<ph name="MANY_CHANGED"/> टैब बदले गए, <ph name="ANY_CLOSED"/> टैब बंद किए गए}}</translation>
 <translation id="4371591986692297148">चालू नहीं है</translation>
@@ -93,11 +92,9 @@
 <translation id="5007392906805964215">समीक्षा करें</translation>
 <translation id="5073204694187207510">फ़ुलस्क्रीन ग्रिड को छिपाएं</translation>
 <translation id="5076161749301278626">स्टोर की समीक्षाएं देखें?</translation>
-<translation id="5082793167783849073">पेजों की तुलना तुरंत करने के लिए समूह बनाएं. शुरू करने के लिए, लिंक को दबाकर रखें.</translation>
 <translation id="5094423602314093681">क्या आपको टैब हटाकर ग्रुप को मिटाना है?</translation>
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> टैब जोड़ा गया}one{<ph name="MANY_ADDED"/> टैब जोड़ा गया}other{<ph name="MANY_ADDED"/> टैब जोड़े गए}}</translation>
 <translation id="5161254044473106830">टाइटल आवश्‍यक</translation>
-<translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> टैब वाला टैब ग्रुप बंद करें.}one{<ph name="TABS_COUNT_MANY"/> टैब वाला टैब ग्रुप बंद करें.}other{<ph name="TABS_COUNT_MANY"/> टैब वाला टैब ग्रुप बंद करें.}}</translation>
 <translation id="5339733443032484186">आपका आखिरी टैब</translation>
 <translation id="5400836586163650660">स्लेटी</translation>
 <translation id="5490235265819901748">टैब ग्रुप बड़ा किया गया</translation>
@@ -139,7 +136,6 @@
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_ONE"/> टैब वाले शेयर किए गए टैब ग्रुप <ph name="TITLE_OF_GROUP"/> को बड़ा करें.}one{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_MANY"/> टैब वाले शेयर किए गए टैब ग्रुप <ph name="TITLE_OF_GROUP"/> को बड़ा करें.}other{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_MANY"/> टैब वाले शेयर किए गए टैब ग्रुप <ph name="TITLE_OF_GROUP"/> को बड़ा करें.}}</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{टैब को शेयर करें}one{टैब को शेयर करें}other{टैब को शेयर करें}}</translation>
 <translation id="7129458170538955174">इस स्टोर के बारे में जानकारी आधी स्क्रीन पर खुली हुई है</translation>
-<translation id="7200189319044305940">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> टैब वाला ग्रुप बंद करें. इसका नाम <ph name="TITLE_OF_GROUP"/> है.}one{<ph name="TABS_COUNT_MANY"/> टैब वाला ग्रुप बंद करें. इसका नाम <ph name="TITLE_OF_GROUP"/> है.}other{<ph name="TABS_COUNT_MANY"/> टैब वाला ग्रुप बंद करें. इसका नाम <ph name="TITLE_OF_GROUP"/> है.}}</translation>
 <translation id="7204204600596740190">एक साथ कई टैब चुनने का मोड</translation>
 <translation id="7211038039686180558">टैब ग्रुप, आपके साइन-इन किए हुए सभी डिवाइसों में अपने-आप सेव और अपडेट हो जाते हैं</translation>
 <translation id="731648547091221002"><ph name="COLOR_NAME"/> को चुना गया</translation>
@@ -188,12 +184,9 @@
 <translation id="8820741577754260431">अपने टैब पर कीमत में कमी देखें</translation>
 <translation id="8887921976452567404">बंद किए गए टैब और ग्रुप, 'हाल ही के टैब' सेक्शन और 'टैब ग्रुप' सेक्शन में जाकर फिर से खोले जा सकते हैं.</translation>
 <translation id="8915916167043355778">सभी बंद करें</translation>
-<translation id="8926389886865778422">दोबारा न पूछें</translation>
-<translation id="8993967613304721520">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> टैब वाले टैब ग्रुप को बड़ा करें.}one{<ph name="TABS_COUNT_MANY"/> टैब वाले टैब ग्रुप को बड़ा करें.}other{<ph name="TABS_COUNT_MANY"/> टैब वाले टैब ग्रुप को बड़ा करें.}}</translation>
 <translation id="9090098097337832354">इस स्टोर के बारे में जानकारी दिखाने वाली स्क्रीन बंद हो गई है</translation>
 <translation id="9111228330448174435">नया टैब ग्रुप बनाने पर डायलॉग दिखाएं</translation>
 <translation id="9114502155681725011"><ph name="COLOR_NAME"/> रंग में मौजूद टैब ग्रुप <ph name="TITLE_OF_GROUP"/> के लिए, टैब ग्रुप का ऐक्शन मेन्यू खोलें.</translation>
-<translation id="9150694013019234766">स्क्रीन के सबसे नीचे दिए गए अपने टैब समूह में एक से दूसरे टैब पर जाएं</translation>
 <translation id="9169594135889675189">समूह में नया टैब जोड़ें</translation>
 <translation id="9216898458513705996">ये टैब इस डिवाइस में खुले रहेंगे, लेकिन <ph name="USER_EMAIL"/> में साइन इन किए गए सभी डिवाइसों से यह ग्रुप मिटा दिया जाएगा</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_ONE"/> टैब वाले टैब ग्रुप को बड़ा करें.}one{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_MANY"/> टैब वाले टैब ग्रुप को बड़ा करें.}other{<ph name="COLOR_NAME"/> रंग और <ph name="TABS_COUNT_MANY"/> टैब वाले टैब ग्रुप को बड़ा करें.}}</translation>

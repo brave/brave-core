@@ -106,7 +106,7 @@
 <translation id="4541978218358617681">Reklama</translation>
 <translation id="1776831331757823105">Laikrodis</translation>
 <translation id="7791543448312431591">Pridėti</translation>
-<translation id="7679334366167089823">Gaukite žetonų už privatumo nepažeidžiančių reklamų peržiūrą.</translation>
+<translation id="6216996674668969227">Uždirbkite žetonų už privatumą gerbiančių reklamų peržiūrą.</translation>
 <translation id="7191394989411626168">Išjungus korteles, visos dabar matomos kortelės bus paslėptos. Vis dėlto galėsite gauti pranešimus apie naujas korteles.</translation>
 <translation id="6820526586005233839">„Brave Ads“ pristabdyta</translation>
 <translation id="5190407395832551012">Siekdami apsaugoti „Brave Rewards“ nuo piktnaudžiavimo, atsitiktine tvarka prašome naudotojų išspręsti „Captcha“ ženklų testą. Spustelėkite “Spręsti”, kad grįžtumėte prie reklamų.</translation>
@@ -541,7 +541,6 @@
 <translation id="2529827670795983639">Atrodo, kad tai neveikia. „Brave“ reklamos liks pristabdytos. Jei reikia pagalbos dėl „Captcha“, susisiekite su mumis.</translation>
 <translation id="261607053214862521">Viršytas didžiausias bandymų skaičius</translation>
 <translation id="2323171459178104277">Išspręsta!</translation>
-<translation id="1512837998731269583">Dabar vėl bus rodomos reklamos ir toliau mokamas atlygis. Dėkojame, kad padedate mums apsaugoti „Brave Rewards“ ir privatumo nepažeidžiančias reklamas.</translation>
 <translation id="3247549836099021862">Susisiekti su pagalbos skyriumi</translation>
 <translation id="5234764350956374838">Atsisakyti</translation>
 <translation id="7859066142771796818">Žetonus naudokite dovanų kortelėms pirkti, keisti į kitas valiutas, paremti turinio kūrėjus ir dar daugiau.</translation>
@@ -569,7 +568,6 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>Sužinoti daugiau<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">Nesijaudinkite.</translation>
 <translation id="5027616819996705541">Galite naršyti privačiai!</translation>
-<translation id="1886682615222609631">Iki šiol uždirbta</translation>
 <translation id="7649070708921625228">Žinynas</translation>
 <translation id="6042308850641462728">Daugiau</translation>
 <translation id="6245259297588415877">Kūrėjai</translation>
@@ -715,7 +713,6 @@
 <translation id="7160424977552599351">Naudokite savo „Web3“ piniginę</translation>
 <translation id="6369571967625114920">Privatumo nepažeidžiančios „Brave“ reklamos dar nėra prieinamos jūsų regione.</translation>
 <translation id="5309155375926073606">Taip, taip pat norėčiau prisidėti prie „Brave“ Paieškos ir dalyvauti <ph name="LINK_BEGIN"/>Žiniatinklio pažinimo projekte<ph name="LINK_END"/>.</translation>
-<translation id="7285849890826812669">Prisidėkite prie anoniminės paieškos &amp; naršymo duomenų, kad patobulintumėte „Brave“ Paiešką su Žiniatinklio pažinimo projektu. Jis visiškai atviro šaltinio.</translation>
 <translation id="4174337572777167894">Žiniatinklio pažinimo projektas</translation>
 <translation id="7090992647511817643">paskyra</translation>
 <translation id="4822132585477111396">Grandinės ID</translation>
@@ -1002,7 +999,6 @@
 <translation id="453788800165937690">ĮSPĖJIMAS. Niekada neatskleiskite savo privačiojo rakto. Sužinoję privatųjį raktą, kiti asmenys gali visam laikui perimti jūsų aktyvus.</translation>
 <translation id="2416098547200943834">PASTABA. Privatus raktas pateikiamas šešioliktainiu šifru užšifruotame JSON faile, kuriame yra privatus raktas ir protokolo informacija. <ph name="LINK_START"/>Sužinokite daugiau<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">PASTABA. Privatus raktas turi būti pateiktas šešioliktainiu šifru užšifruotame JSON faile, kuriame yra privatus raktas ir protokolo informacija. <ph name="LINK_START"/>Learn more<ph name="LINK_END"/>.</translation>
-<translation id="1505724566145200403">PASTABA: palaikomi tik zprv („Testnet“ – vprv) išplėstiniai kodai.</translation>
 <translation id="42126664696688958">Eksportuoti</translation>
 <translation id="1366855498335432549">Depozitas</translation>
 <translation id="790104325876206743">Paskyros nuostatos</translation>
@@ -1024,7 +1020,7 @@
 <translation id="3792938779249970121">Pasirinkti sąskaitą</translation>
 <translation id="6797737193502014008">Ieškoti sąskaitų</translation>
 <translation id="3505920073976671674">Pasirinkti tinklą</translation>
-<translation id="6857856707736769720">Pasirinkti iš</translation>
+<translation id="2556155338676955870">Pasirinkti išteklių</translation>
 <translation id="6323024765179772761">Ieškoti monetų</translation>
 <translation id="6998989275928107238">Iki</translation>
 <translation id="1506421160138798546">apytiksliai</translation>
@@ -1243,7 +1239,7 @@
 <translation id="6750790478156673248">IPFS prisegimo būsena</translation>
 <translation id="1247775788061716588">Dar neprienama</translation>
 <translation id="2288623059494346417">Ypatybės</translation>
-<translation id="2962388922926051374">Metodo 'eth_chainId' prašymo  <ph name="URL"/> pateikti nepavyko</translation>
+<translation id="2962388922926051374">Metodo 'eth_chainId' prašymo <ph name="URL"/> pateikti nepavyko</translation>
 <translation id="8325036459845654666">Šis tinklas jau pridėtas.</translation>
 <translation id="554350381160981853">Įvestų duomenų pasirašymas palaikomas tik „Trezor Model One“ su 1.10.5 arba naujesne programine įranga</translation>
 <translation id="1752214435563414457">„Brave Swap“ statymai</translation>
@@ -1261,6 +1257,22 @@
 <translation id="6153197326949684688">Parduoti naudojant <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Pirkti naudojant „Sardine“</translation>
 <translation id="3301984548406568819">Finansinius ir operacijų duomenis tvarko mūsų partneriai „Onramp“. „Brave“ nerenka tokių duomenų ir neturi prieigos prie jų.</translation>
+<translation id="2803020719327054687">Valiutos keitimo kursas su mokesčiais</translation>
+<translation id="27867052127960599">Mokesčiai</translation>
+<translation id="5914491493054850112">Kaina <ph name="CURRENCY"/></translation>
+<translation id="638391338232902087">Pirkti su <ph name="PROVIDER"/></translation>
+<translation id="2803778066587058297">Turtas</translation>
+<translation id="1275718070701477396">Pasirinkta</translation>
+<translation id="7509108671781225188">Nėra prieinamų valiutų</translation>
+<translation id="3799031411423890455">Gaunamos geriausios kainos...</translation>
+<translation id="8544603592370093978">Pirkti <ph name="ASSET"/></translation>
+<translation id="7463545687475534731">Teikėjų nerasta <ph name="ASSET"/></translation>
+<translation id="3372351687823322070">Pabandykite ieškoti kito turto.</translation>
+<translation id="2619949734919284401">Nerasta rezultatų <ph name="PROVIDER"/></translation>
+<translation id="3319146983769202287">Pabandykite naudoti kitą raktažodį arba pasitikrinkite rašybą.</translation>
+<translation id="4196022627437957774">Ar norite sukurti <ph name="ACCOUNT_TYPE"/> paskyrą?</translation>
+<translation id="5982914754413312620">Norėdami gauti <ph name="TOKEN_SYMBOL"/> turite turėti <ph name="ACCOUNT_TYPE"/> paskyrą.</translation>
+<translation id="3067168166931605141">Sąskaitos pavadinimas</translation>
 <translation id="6534275647567011533">Pirkti naudojant „Transak“</translation>
 <translation id="5973390321030037823">Pirkti naudojant nuorodą</translation>
 <translation id="1932640759496708012">Pirkti naudojant „Coinbase Pay“</translation>
@@ -1314,6 +1326,10 @@
 <translation id="6990756606864308319">Įvyko klaida bandant <ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> į <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
 <translation id="6449575669814542383"><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> patvirtinimas <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
 <translation id="8036159955043245753">Bus sukurta nauja operacija, kuria bus atšaukta jūsų esama operacija.</translation>
+<translation id="4056435949094149644">Keitimas</translation>
+<translation id="7694836973509310467">Tiltas</translation>
+<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> ant <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="6934057383578424432">Įvyko klaida bandant <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> ant <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {dar {PENDING_TRANSACTIONS} operacija laukia patvirtinimo.}
       other {dar {PENDING_TRANSACTIONS} operacijos (-ų) laukia patvirtinimo.}
@@ -1994,6 +2010,7 @@
 <translation id="8571323456914890254">Atverti padalytajame rodinyje</translation>
 <translation id="5329136173514538969">Atšaukti skirtukų skaidymą</translation>
 <translation id="7595612919377246359">Sukeisti skirtukų padėtis</translation>
+<translation id="2367972762794486313">Rodyti programas</translation>
 <translation id="8591883849678260674">Žiūrėti originalą</translation>
 <translation id="1969654232209826429">min. nuskaitymas</translation>
 <translation id="4101707289420716287">Išjungti „Speedreader“</translation>
@@ -2086,7 +2103,6 @@
 <translation id="2313959174679245365">Nepavyko pateikti jūsų įvertinimo; patikrinkite interneto ryšį ir bandykite dar kartą</translation>
 <translation id="98413980871833152">Nepavyko pateikti jūsų atsiliepimo; patikrinkite interneto ryšį ir bandykite dar kartą</translation>
 <translation id="8742658901413346500">Šis pokalbis ilgas, ir „Leo“ netrukus gali pradėti šį tą pamiršti. Ilgesnius pokalbius galite gauti perėję prie „Premium“ modelio arba galite išvalyti pokalbį, kad jį nustatytumėte iš naujo.</translation>
-<translation id="7550152963854770123">Išvalyti pokalbius</translation>
 <translation id="7494736170250048402">Siųsti „Leo“ žinutę</translation>
 <translation id="8712637175834984815">Supratau</translation>
 <translation id="1093419424466417703">Puslapis yra per ilgas Leo. Pokalbyje gali trūkti tam tikro konteksto. Leo galėjo perskaityti <ph name="PERCENTAGE"/> puslapio turinio.</translation>
@@ -2220,8 +2236,8 @@
 <translation id="6821108091726602352">Padėkite mums sutvarkyti žiniatinklį dalyvaudami „Brave“ žiniatinklio atradimo projekte. Bendrindami visiškai anoniminius paieškos signalus galite padėti „Brave“ plėsti paieškos indeksą.</translation>
 <translation id="6764845498618413165">Sužinokite daugiau.</translation>
 <translation id="7818938154803162778">Žinoma, padėsiu</translation>
-<translation id="7821773512278295352">„Brave Firewall + VPN“: prisijungta</translation>
-<translation id="6019088868713395120">„Brave Firewall + VPN“: atsijungta</translation>
+<translation id="958268166261124668">„Brave“ VPN: prisijungta</translation>
+<translation id="6021669293402055982">„Brave“ VPN: neprisijungta</translation>
 <translation id="3541307549916475335">„Brave“ VPN skydelio UI</translation>
 <translation id="7143207342074048698">Jungiama</translation>
 <translation id="1202549130170287307">Atsijungiama</translation>
@@ -2233,7 +2249,6 @@
 <translation id="3357036723290257445">Jau įsigijote „Brave“ VPN?</translation>
 <translation id="8814357473522731680">Teikia</translation>
 <translation id="8652175077544655965">Užverti nuostatas</translation>
-<translation id="3099126540952997993">Užkarda ir VPN</translation>
 <translation id="5908163815855240493">Grįžti į pagrindinį</translation>
 <translation id="7805768142964895445">Būsena</translation>
 <translation id="5747552184818312860">Galioja iki</translation>
@@ -2304,9 +2319,7 @@ Būkite prisijungę!</translation>
 <translation id="9061845622728745852">Laiko juosta:</translation>
 <translation id="8295393906499561642">Sesija baigta</translation>
 <translation id="3312623558576021182">Prisijunkite prie savo <ph name="BRAVE_ACCOUNT_BEGIN"/>„Brave“ paskyros<ph name="BRAVE_ACCOUNT_END"/>ir VPN vėl bus įjungtas.</translation>
-<translation id="6021669293402055982">„Brave“ VPN: neprisijungta</translation>
 <translation id="7861195049821776142">„Brave“ VPN: atsijungiama</translation>
-<translation id="958268166261124668">„Brave“ VPN: prisijungta</translation>
 <translation id="2061807837510296780">„Brave“ VPN: jungiamasi</translation>
 <translation id="1313124107969703758">„Brave“ VPN: klaida</translation>
 <translation id="8273420301954598554">Būsena: prisijungta</translation>
@@ -2315,6 +2328,10 @@ Būkite prisijungę!</translation>
 <translation id="8048263175525832621">„Brave“ VPN: atsijungta</translation>
 <translation id="1498770726476841108">Tvarkyti paskyrą</translation>
 <translation id="6825718953004242472">Pašalinti piktogramą</translation>
+<translation id="6819278685469225453">Apsaugokite visas įrenginio programas</translation>
+<translation id="3960619311638643872">„Brave“ VPN</translation>
+<translation id="8425213833346101688">Keisti</translation>
+<translation id="8703188411226330709">Pradėti nemokamą bandomąją versiją</translation>
 <translation id="3287942014983548982">Atidaryti čia</translation>
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>, šiuo metu atviras,
     paspauskite „Tab“, tada „Enter“, kad pereitumėte į atidarytą skirtuką.</translation>
@@ -2322,7 +2339,4 @@ Būkite prisijungę!</translation>
     esamą skirtuką</translation>
 <translation id="451189393813405346">Klausti „Leo“</translation>
 <translation id="8525248723479742219">Leisti vėliau</translation>
-<translation id="1450735350187803276">Šį mėnesį matytos reklamos</translation>
-<translation id="3960619311638643872">„Brave“ VPN</translation>
-<translation id="8425213833346101688">Keisti</translation>
 </translationbundle>

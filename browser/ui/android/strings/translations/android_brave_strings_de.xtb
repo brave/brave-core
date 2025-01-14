@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
-<translation id="8631427463833030968">Anzeigen verwalten</translation>
 <translation id="7630214457764713113">Reinen Link kopieren</translation>
-<translation id="885805571521218129">Dies stellt Ihre geschätzte Verdienstspanne für Brave-Anzeigen dar.</translation>
 <translation id="3478449063771497234">Benachrichtigungen sind deaktiviert</translation>
 <translation id="2862978891748913252">Wählen Sie Ihr Land aus</translation>
 <translation id="3970520675790340955">Wählen Sie Ihr Land aus, damit wir Ihnen die richtigen Optionen und Anzeigen für Ihre Region anzeigen können.</translation>
@@ -114,6 +112,8 @@
 <translation id="1571106259128580884">Empfehlungen für Top-Seiten anzeigen</translation>
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
 <translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
+<translation id="2836969042340015500">Schnellsuchmaschinen</translation>
+<translation id="1052991798173010693">Derzeit verwendete Suchmaschinen</translation>
 <translation id="9148058034647219655">Beenden</translation>
 <translation id="8047754398610073499">Cookie-Einwilligungshinweise blockieren</translation>
 <translation id="2621893359845808115">Blockiert Website-Pop-ups, mit denen Sie darum geben werden, Cookies auf der Website zu akzeptieren bzw. abzulehnen</translation>
@@ -405,8 +405,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6925081665778864449">Um Passwörter zu synchronisieren, aktivieren Sie bitte die Authentifizierung per Biometrie/Passcode auf Ihrem Android-Gerät. Diese zusätzliche Sicherheitsmaßnahme schützt Ihre Passwörter.</translation>
 <translation id="597993392929850353">Brave-Lizenz</translation>
 <translation id="6336451774241870485">Neue private Registerkarte</translation>
-<translation id="6199596294742117349">Dies ist ein privater Tab</translation>
-<translation id="5858455511731621847">Obwohl Websites, die Sie in privaten Tabs besuchen, nicht lokal gespeichert werden, machen sie Sie nicht für Ihren Internetanbieter, Ihren Arbeitgeber oder die von Ihnen besuchten Websites anonym oder unsichtbar.</translation>
+<translation id="3110967157686007724">Private Registerkarte</translation>
 <translation id="5789441016350810005">Es werden Brave Ads gesendet, wenn der Browser im Hintergrund ist</translation>
 <translation id="4973347371961481083">Beiträge</translation>
 <translation id="7047578174221019462">Ihre monatlichen Spenden wurden abgewickelt.</translation>
@@ -483,7 +482,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="9055546041146396417">Falls diese Site nicht zu funktionieren scheint, versuchen Sie es, wenn Schutz aus ist.</translation>
 <translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Schutz nicht richtig funktioniert:</translation>
+<translation id="1653405824851871276">Danke, dass du uns hilfst, Brave für alle besser zu machen. Dieser Bericht wird nur Informationen enthalten, die wir benötigen, um diese Seite zu verbessern.<ph name="LEARN_MORE"/></translation>
 <translation id="8759753423332885148">Mehr hierzu.</translation>
+<translation id="8740275226259417070">Dies ist eine Fehlerseite. Sie kann nicht als defekte Seite gemeldet werden.</translation>
 <translation id="721949491455392748">Screenshot der aktuellen Seite einbeziehen</translation>
 <translation id="8459191579769999214">Screenshot anzeigen</translation>
 <translation id="5299848999918506028">Vielen Dank!</translation>
@@ -664,6 +665,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6284218950354553099">Ping der täglichen Nutzung automatisch an Brave senden.</translation>
 <translation id="2181060149810222381">Mit diesem privaten Ping kann Brave die aktiven Nutzer schätzen.</translation>
 <translation id="6725413948756358325">Accountname</translation>
+<translation id="3240773103344793224">Änderung der Kontoinhaberschaft beantragt</translation>
+<translation id="8041423758956015568">Bei dieser Transaktion wird das Konto einem neuen Programm zugewiesen. Dieser Vorgang ist unumkehrbar und kann zum Verlust von Geldern führen.</translation>
 <translation id="6062431965141524986">Sie können ein sekundäres Konto erstellen, indem Sie Ihren privaten Schlüssel importieren.</translation>
 <translation id="3952797765659730604">Geben Sie Ihre private Schlüsselzeichenfolgendatei oder JSON ein, fügen Sie sie ein oder importieren Sie sie.</translation>
 <translation id="569068482611873351">Importieren …</translation>
@@ -705,7 +708,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6748319398471481216">Wird monatlich erneuert</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/Monat</translation>
 <translation id="1163809943099641131">Ein Jahr</translation>
-<translation id="727385358513272220">Verlängert sich jedes Jahr (<ph name="DISCOUNT_TEXT_START"/>sparen Sie <ph name="PERCENTAGE_AMOUNT"/> %%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/Jahr</translation>
 <translation id="2786538705804257030">Abonnements werden über Ihr Google-Konto abgerechnet. Wenn Ihnen eine kostenlose Testversion angeboten wurde, verfällt deren nicht genutzter Teil beim Kauf eines Abonnements.\n\nIhr Abonnement verlängert sich automatisch, wenn Sie es nicht mindestens 24 Stunden vor Ende des aktuellen Zeitraums kündigen.\n\nSie können Ihre Abonnements in den Einstellungen verwalten.\n\nDurch die Verwendung von Brave stimmen Sie den Nutzungsbedingungen und den Datenschutzbestimmungen zu.</translation>
 <translation id="5035172357624830412">Haben Sie bereits einen Kauf auf brave.com getätigt?</translation>
@@ -756,6 +758,8 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="5431902940483264007">Optimal</translation>
 <translation id="6527596624419285047">Verwenden Sie den besten verfügbaren Server</translation>
 <translation id="6789157560111825412">Verfügbare Server</translation>
+<translation id="5823953367746119927">Server-Region</translation>
+<translation id="6991535320595227154"><ph name="REGION_NAME"/>Server</translation>
 <translation id="4397083831618200686">Problem auswählen</translation>
 <translation id="6687228121145903051">Kann keine Verbindung zum VPN herstellen (anderer Fehler)</translation>
 <translation id="9184988385244077767">Kein Internet wenn verbunden</translation>
@@ -833,7 +837,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4351811224047421378">Dezimalstellen der Genauigkeit</translation>
 <translation id="3494964159182650590">Belohnungs-Übersicht</translation>
 <translation id="590733288489975971">Belohnungen aus Ads</translation>
-<translation id="1886682615222609631">Bisherige Einnahmen</translation>
+<translation id="1450735350187803276">In diesem Monat gesehene Anzeigen</translation>
 <translation id="1767561995429774671">Beitragen</translation>
 <translation id="7335371657242627509">Zu Auto-Beitrag hinzufügen</translation>
 <translation id="6727102863431372879">Festlegen</translation>
@@ -1063,7 +1067,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6996157559236886133">Fehler: Eingeschränkte Funktionalität des Uphold-Kontos</translation>
 <translation id="1677961202754619328">Laut Uphold gibt es derzeit einige Einschränkungen für Ihr Uphold-Konto. Bitte melden Sie sich bei Ihrem Uphold-Konto an und sehen Sie nach, ob es noch Hinweise oder verbleibende Kontoanforderungen zu vervollständigen gibt, und versuchen Sie es dann erneut.</translation>
 <translation id="5425006356459378415">Brave-Belohnungen nicht verfügbar</translation>
-<translation id="833643743158564518">Neuregistrierungen für Brave-Belohnungen sind derzeit in Ihrer Region deaktiviert. Sie können es jedoch zu einem späteren Zeitpunkt erneut versuchen.  <ph name="LEARN_MORE"/></translation>
+<translation id="833643743158564518">Neuregistrierungen für Brave-Belohnungen sind derzeit in Ihrer Region deaktiviert. Sie können es jedoch zu einem späteren Zeitpunkt erneut versuchen. <ph name="LEARN_MORE"/></translation>
 <translation id="7748944510530490017">Primäre Netzwerke</translation>
 <translation id="2781668117338732220">Sekundärnetzwerke</translation>
 <translation id="282560918037172384">Testnetzwerke</translation>
@@ -1095,6 +1099,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="3692772534525889713">Verknüpfen Sie Ihren Play Store-Kauf mit Ihrem Brave-Konto, um Brave Leo auf anderen Geräten verwenden zu können.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Ein Jahr</translation>
+<translation id="2985392169397572983">Bester Wert</translation>
 <translation id="1166682575529520472">Monatlich</translation>
 <translation id="451189393813405346">Leo fragen</translation>
 <translation id="7322560193401221004">Wiedergabeposition merken</translation>
@@ -1218,5 +1223,4 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2728518864712716830">Update wurde heruntergeladen.</translation>
 <translation id="8403338849301491865">Die Filterliste wurde erfolgreich aktualisiert</translation>
 <translation id="4650851936784160359">Die Filterliste konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.</translation>
-<translation id="1450735350187803276">Anzeigen, die diesen Monat gesehen wurden</translation>
 </translationbundle>

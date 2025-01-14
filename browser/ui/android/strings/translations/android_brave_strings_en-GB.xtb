@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="en-GB">
-<translation id="8631427463833030968">Manage ads</translation>
 <translation id="7630214457764713113">Copy clean link</translation>
-<translation id="885805571521218129">This reflects your estimated earnings range for Brave Ads this month.</translation>
 <translation id="3478449063771497234">Notifications are disabled</translation>
 <translation id="2862978891748913252">Select your country</translation>
 <translation id="3970520675790340955">Select your country so we can show you the right options and ads for your region.</translation>
@@ -233,9 +231,6 @@
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="4117451092682672487">Privacy. Made simple.</translation>
 <translation id="7909375417585209817">With Brave as default, every link you tap opens with Brave's privacy protections.</translation>
-<translation id="3737878115109582442">Add the search widget</translation>
-<translation id="6199413390010319240">Have Brave at your fingertips to explore the web faster.</translation>
-<translation id="4338600611020922010">Add to home screen</translation>
 <translation id="7370959926683925817">Block ads. Save data. Every single day.</translation>
 <translation id="7281027579943912834">With Brave as default, every link you tap gets Brave's ad-block protection. Every page, video, and stream.</translation>
 <translation id="5148943178722443958">Help make Brave better.</translation>
@@ -408,8 +403,7 @@ Are you sure you want to do this?</translation>
 <translation id="6925081665778864449">To sync passwords, please enable biometrics/passcode authentication on your Android device. This extra security measure helps keep your passwords safe.</translation>
 <translation id="597993392929850353">Brave licence</translation>
 <translation id="6336451774241870485">New Private tab</translation>
-<translation id="6199596294742117349">This is a private tab</translation>
-<translation id="5858455511731621847">Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer or the sites you are visiting.</translation>
+<translation id="3110967157686007724">Private tab</translation>
 <translation id="5789441016350810005">Brave Ads sent when browser is in the background</translation>
 <translation id="4973347371961481083">Contributions</translation>
 <translation id="7047578174221019462">Your monthly contributions have been processed.</translation>
@@ -712,7 +706,6 @@ Are you sure you want to do this?</translation>
 <translation id="6748319398471481216">Renews monthly</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /month</translation>
 <translation id="1163809943099641131">One year</translation>
-<translation id="727385358513272220">Renews annually (<ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /year</translation>
 <translation id="2786538705804257030">Subscriptions will be charged via your Google account. Any unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.</translation>
 <translation id="5035172357624830412">Already purchased on brave.com?</translation>
@@ -842,7 +835,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4351811224047421378">Decimals of precision</translation>
 <translation id="3494964159182650590">Rewards Summary</translation>
 <translation id="590733288489975971">Rewards from Ads</translation>
-<translation id="1886682615222609631">Earnings so far</translation>
 <translation id="1767561995429774671">Contribute</translation>
 <translation id="7335371657242627509">Include in Auto-Contribute</translation>
 <translation id="6727102863431372879">Set</translation>
@@ -1228,5 +1220,4 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2728518864712716830">Update is downloaded.</translation>
 <translation id="8403338849301491865">Filter list is updated successfully</translation>
 <translation id="4650851936784160359">Filter list could not be updated. Please try again</translation>
-<translation id="1450735350187803276">Ads seen this month</translation>
 </translationbundle>

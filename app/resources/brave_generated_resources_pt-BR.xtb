@@ -114,7 +114,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2370739752330685659">Talvez mais tarde</translation>
 <translation id="5100490448228945668">Dispensar a conversão de pesquisa do Brave, pressione Enter para remover esta sugestão</translation>
 <translation id="6213208892248046484">Mudar para a Pesquisa Brave</translation>
-<translation id="9194637241566114638">Ajude a melhorar a <ph name="SEARCH_NAME"/> enviando dados de uso anônimos.  <ph name="MORE_INFO"/></translation>
+<translation id="9194637241566114638">Ajude a melhorar a <ph name="SEARCH_NAME"/> enviando dados de uso anônimos. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Pesquisa Brave</translation>
 <translation id="8184318863960255706">Mais informações</translation>
 <translation id="780301667611848630">Não</translation>
@@ -307,11 +307,11 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Recuperar</translation>
 <translation id="2521960050170773751">Adicionar mídia da página</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> quer abrir</translation>
-<translation id="7128982309566342232">Uma página incorporada em <ph name="SITE"/> quer abrir</translation>
+<translation id="4828353184750597953">Uma página embutida no <ph name="SITE"/> deseja abrir</translation>
 <translation id="1175012181261953767">Esta página quer abrir</translation>
 <translation id="7459546222322124545">Uma página incorporada nesta página deseja abrir</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> quer salvar</translation>
-<translation id="5936788906460687941">Uma página incorporada em <ph name="SITE"/> quer salvar</translation>
+<translation id="8813509417421129632">Uma página incorporada no <ph name="SITE"/> deseja salvar</translation>
 <translation id="7700010743463174379">Esta página quer salvar</translation>
 <translation id="6774238875569752630">Uma página incorporada nesta página deseja salvar</translation>
 <translation id="9156965752763025780">As alterações entrarão em vigor na próxima vez que você reiniciar o Brave.</translation>
@@ -573,6 +573,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4094590686212463338">Não foi possível ingressar nesta cadeia de sincronização. A cadeia de sincronização foi excluída.</translation>
 <translation id="4908081302669157000">Número de telefone, e-mails e endereços</translation>
 <translation id="294985549514492876">Apps da web (PWAs)</translation>
+<translation id="7029809446516969842">Senhas</translation>
 <translation id="924029461438529367">Mostrar sugestões de pesquisa</translation>
 <translation id="3128251601544028053">Quando você digita na barra de endereço ou na caixa de pesquisa, o Brave envia o que você digita para seu mecanismo de pesquisa padrão para obter sugestões melhores. Isso não está disponível em janelas privadas.</translation>
 <translation id="6285118765755298263">Indexar outros mecanismos de pesquisa</translation>
@@ -715,6 +716,8 @@ Leo. Não é possível anular esta ação.</translation>
 <translation id="1355326130503900056">O nome do modelo como deve aparecer na solicitação ao framework de serviço, por exemplo, phi-3 (observe que se esse nome não corresponder exatamente ao esperado pelo framework de serviço, a integração não funcionará)</translation>
 <translation id="3286410514484292784">O URL onde sua estrutura de serviço está escutando solicitações. Se não tiver certeza, verifique a documentação da estrutura de serviço. Por exemplo para Ollama, é sempre http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Algumas estruturas de serviço podem exigir credenciais de autenticação, como uma chave de API ou um token de acesso. Eles serão adicionados ao cabeçalho da solicitação.</translation>
+<translation id="4335128003329183586">Tamanho do contexto</translation>
+<translation id="8794525422794607973">O número máximo de tokens que o modelo pode processar em uma única interação. Cada token corresponde a cerca de 3/4 de uma palavra. Um tamanho de contexto maior permite que o modelo manipule conversas mais longas. Modelos diferentes suportam diferentes tamanhos de contexto.</translation>
 <translation id="217141195370578385">O Brave não faz proxy dessas solicitações, leia os termos de privacidade do provedor escolhido.</translation>
 <translation id="2645532768679870478">Os endpoints não locais devem empregar o protocolo HTTPS para transmissão segura de dados.</translation>
 <translation id="8177205483022887785">Você inseriu um URL inválido. Insira um URL válido.</translation>
@@ -724,6 +727,9 @@ Leo. Não é possível anular esta ação.</translation>
 <translation id="7435587476558117990">Conecte seu LLM auto-hospedado ou hospedado por terceiros ao Leo e use-o no navegador.</translation>
 <translation id="1381050642750209119">Use qualquer estrutura compatível com o OpenAI Chat Protocol, como Ollama.</translation>
 <translation id="2642905648178380593">Salvar modelo</translation>
+<translation id="6304169450064541679">Solicitação do Sistema</translation>
+<translation id="3081947790648024460">Instruções e/ou contexto personalizados dado ao modelo para orientar suas respostas em uma direção ou estilo específico. Use %datetime% onde você deseja inserir a data e hora atuais.</translation>
+<translation id="5688878061573389791">tokens ≈<ph name="TOKENS_COUNT"/></translation>
 <translation id="349846214503465941">Habilitar a lista de reprodução</translation>
 <translation id="7903608716704052878">Adicionar automaticamente pastas para visualização off-line</translation>
 <translation id="4193768184502613558">Esta opção coloca automaticamente em cache as pastas multimídia para que possa reproduzi-los sem uma conexão com a Internet.</translation>

@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
-<translation id="8631427463833030968">विज्ञापन मैनेज करें</translation>
 <translation id="7630214457764713113">क्लीन लिंक को कॉपी करें</translation>
-<translation id="885805571521218129">यह इस महीने Brave Ads के लिए आपकी अनुमानित कमाई की सीमा को दर्शाता है.</translation>
 <translation id="3478449063771497234">नोटिफ़िकेशन अक्षम किए गए हैं</translation>
 <translation id="2862978891748913252">अपना देश चुनें</translation>
 <translation id="3970520675790340955">अपना देश चुनें ताकि हम आपके क्षेत्र के हिसाब से आपको सही विकल्प और विज्ञापन दिखा सकें.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">टॉप साइट के सुझाव दिखाएं</translation>
 <translation id="6285118765755298263">अन्य सर्च इंजन इंडेक्स करें</translation>
 <translation id="919715748352669592">अपने आप उन वेबसाइटों को इंडेक्स करता है जो OpenSearch निर्देशों का पालन करती हैं.</translation>
+<translation id="412411722208944922">क्विक सर्च इंजन</translation>
+<translation id="2836969042340015500">क्विक सर्च इंजन</translation>
+<translation id="9120455214794270250">क्विक सर्च बार दिखाएँ</translation>
+<translation id="1052991798173010693">अभी इस्तेमाल हो रहे सर्च इंजन</translation>
+<translation id="335303688425891752">क्रम बदलने के लिए दबाएँ रखें</translation>
 <translation id="9148058034647219655">बाहर निकलें</translation>
 <translation id="8047754398610073499">कुकी की इजाज़त के नोटिस को ब्लॉक करें</translation>
 <translation id="2621893359845808115">वेबसाइट के उन पॉप-अप को ब्लॉक करता है जो आपसे अपनी साइट पर कुकी को मंज़ूर / नामंज़ूर करने के लिए कहते हैं.</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Brave में आपका स्वागत है</translation>
 <translation id="4117451092682672487">प्राइवेसी. आसान हो गई है.</translation>
 <translation id="7909375417585209817">जब Brave डिफ़ॉल्ट के तौर पर सेट होता है, तो आप जिस भी लिंक को खोलते हैं, वह Brave की प्राइवेसी सुरक्षा की सुविधा के साथ खुलता है.</translation>
-<translation id="3737878115109582442">सर्च विजेट जोड़ें</translation>
-<translation id="6199413390010319240">वेब को तेज़ी से एक्सप्लोर करने के लिए Brave ब्राउज़र का इस्तेमाल करें.</translation>
-<translation id="4338600611020922010">होम स्क्रीन में जोड़ें</translation>
 <translation id="7370959926683925817">विज्ञापनों को ब्लॉक करें. डेटा बचाएँ. हर एक दिन.</translation>
 <translation id="7281027579943912834">जब Brave डिफ़ॉल्ट के तौर पर सेट होता है, आप जिस भी लिंक पर टैप करते हैं वह Brave के विज्ञापन-ब्लॉक से सुरक्षित होता है, हर पेज, वीडियो और स्ट्रीम.</translation>
 <translation id="5148943178722443958">Brave को बेहतर बनाने में मदद करें.</translation>
@@ -317,7 +317,7 @@
 <translation id="4157741509680155021">सिंक चेन पर डिवाइस</translation>
 <translation id="279635009973773843">डिवाइस लोड हो रही हैं...</translation>
 <translation id="6394333525003604181">सिंक चेन छोड़ना...</translation>
-<translation id="2569646144216067185">शब्द गणना:  <ph name="WORD_COUNT"/></translation>
+<translation id="2569646144216067185">शब्द गणना: <ph name="WORD_COUNT"/></translation>
 <translation id="7507533586185621084">गलत सिंक कोड</translation>
 <translation id="8284063834901328650">गलत सिंक QR कोड</translation>
 <translation id="859506441384380749">यह कोड Brave के पुराने पिछड़े संस्करण से जेनरेट किया गया था, कृपया पहले अपने अन्य डिवाइस को अपग्रेड करें</translation>
@@ -407,8 +407,13 @@
 <translation id="6925081665778864449">पासवर्ड सिंक करने के लिए, कृपया अपने एंड्रॉइड डिवाइस पर बायोमेट्रिक/पासवर्ड का ऑथेंटिकेशन चालू करें. सुरक्षा के इस अतिरिक्त उपाय से आपके पासवर्ड को सुरक्षित रखने में मदद मिलती है.</translation>
 <translation id="597993392929850353">Brave लाइसेंस</translation>
 <translation id="6336451774241870485">नया निजी टैब</translation>
-<translation id="6199596294742117349">यह एक निजी टैब है</translation>
-<translation id="5858455511731621847">भले ही आप निजी टैब में देखी जाने वाली साइटों को स्थानीय रूप से सेव नहीं करते हैं, लेकिन वे आपको आपके आईएसपी, आपके नियोक्ता, या आपके द्वारा देखी जा रही साइटों के लिए आपको गुमनाम या अदृश्य नहीं बनाते हैं।</translation>
+<translation id="3110967157686007724">निजी टैब</translation>
+<translation id="944340256927461196">अपने डिवाइस पर कोई सबूत न छोड़ें</translation>
+<translation id="2063044449012253966">आप जो साइटें प्राइवेट विंडो में खोलते हैं वे आपके इतिहास में दिखाई नहीं देंगे। प्राइवेट विंडो बंद होने पर, कुकी, फ़ॉर्म डेटा और साइट डेटा गायब हो जाता है।</translation>
+<translation id="7395764193745523646">ब्राउज़ करने की विज़िबिलिटी</translation>
+<translation id="8735363371744702779">ध्यान दें -प्राइवेट विंडो में भी- आपकी ब्राउज़िंग गतिविधि आपके ISP, नेटवर्क ऑब्ज़र्वर या आपके नियोक्ता (अगर आप दफ़्तर के डिवाइस/नेटवर्क का इस्तेमाल कर रहे हैं) को दिखाई दे सकती है।</translation>
+<translation id="1413177583895309156">Brave VPN उन सभी गतिविधियों को एन्क्रिप्ट और सुरक्षित करता है जो आप ऑनलाइन करते हैं, Brave ब्राउज़र के बाहर भी।</translation>
+<translation id="3974348661685061050">7 दिनों के लिए मुफ़्त में आज़माएँ</translation>
 <translation id="5789441016350810005">ब्राउज़र के बैकग्राउंड होने पर Brave विज्ञापन भेजे जाते हैं</translation>
 <translation id="4973347371961481083">योगदान</translation>
 <translation id="7047578174221019462">आपके मासिक योगदान को संसाधित कर दिया गया है.</translation>
@@ -709,9 +714,10 @@
 <translation id="1532536259167115948">मासिक सदस्यता <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">सालाना सदस्यता <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">हर महीने रिन्यू होता है</translation>
+<translation id="112929124115834557">हर साल रिन्यू होती है</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> / महीने</translation>
 <translation id="1163809943099641131">एक साल</translation>
-<translation id="727385358513272220">साल भर के लिए रिन्यू करें (<ph name="DISCOUNT_TEXT_START"/>सेव करें<ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> / साल</translation>
 <translation id="2786538705804257030">सब्सक्रिप्शन की राशि आपके Google अकाउंट के ज़रिए लिया जाएगा. जब आप सब्सक्रिप्शन खरीदते हैं, तो फ़्री ट्रायल का बचा हुआ कोई भी हिस्सा, अगर ऑफ़र किया गया हो, ख़त्म हो जाता है.\n\nसब्सक्रिप्शन की मौजूदा अवधि ख़त्म होने के कम-से-कम 24 घंटे पहले अगर उसे कैंसिल नहीं किया जाता है, तो वह अपने आप रिन्यू हो जाती है.\n\nआप अपनी सब्सक्रिप्शन को 'सेटिंग्स' से मैनेज कर सकते हैं.\nBrave का इस्तेमाल करके, आप इस्तेमाल की शर्तों और प्राइवेसी पॉलिसी पर अपनी सहमति देते हैं.</translation>
 <translation id="5035172357624830412">Brave.com पर पहले ही खरीद चुके हैं?</translation>
@@ -789,7 +795,7 @@
 <translation id="2304783958703511257">एडवांस सेटिंग</translation>
 <translation id="4220062530885628403">नोटिस</translation>
 <translation id="1924965034964265193">मनचाहे नॉन्स वैल्यू डालें</translation>
-<translation id="5317780077021120954">सहेजें</translation>
+<translation id="5317780077021120954">सेव करें</translation>
 <translation id="4979796155378508955">अगर आपकी ओर से डाले गए नॉन्स वैल्यू सिक्वेंस के मुताबिक नहीं है या कोई और गड़बड़ी होती है, तो हो सकता है कि नेटवर्क पर लेन-देन न दिखाई दे.</translation>
 <translation id="750843150060816463">गैस की कीमत (Gwei)</translation>
 <translation id="1426320910664514906">गैस की सीमा\n</translation>
@@ -841,7 +847,7 @@
 <translation id="4351811224047421378">डेसिमल ऑफ़ प्रिसिशन</translation>
 <translation id="3494964159182650590">रिवॉर्ड के बारे में जानकारी</translation>
 <translation id="590733288489975971">विज्ञापनों से रिवॉर्ड</translation>
-<translation id="1886682615222609631">अब तक की कमाई</translation>
+<translation id="1450735350187803276">इस महीने देखे गए विज्ञापन</translation>
 <translation id="1767561995429774671">सहयोग करें</translation>
 <translation id="7335371657242627509">ऑटो-योगदान में शामिल करें</translation>
 <translation id="6727102863431372879">सेट</translation>
@@ -1228,5 +1234,6 @@
 <translation id="2728518864712716830">अपडेट डाउनलोड हो गया है.</translation>
 <translation id="8403338849301491865">फ़िल्टर लिस्ट अपडेट की गई</translation>
 <translation id="4650851936784160359">फ़िल्टर लिस्ट अपडेट नहीं की जा सकी. कृपया दोबारा कोशिश करें.</translation>
-<translation id="1450735350187803276">इस महीने देखे गए विज्ञापन</translation>
+<translation id="3098054327870766317">टैब बंद होने पर, अनडू बटन दिखाएँ</translation>
+<translation id="1336494649091412226">क्या आप वाकई Brave से बाहर जाना चाहते हैं?</translation>
 </translationbundle>

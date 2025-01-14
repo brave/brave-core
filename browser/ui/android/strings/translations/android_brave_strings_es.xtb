@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="es">
-<translation id="8631427463833030968">Gestionar anuncios</translation>
 <translation id="7630214457764713113">Copiar enlace limpio</translation>
-<translation id="885805571521218129">Esta es una estimación de las ganancias que has obtenido con Anuncios de Brave este mes.</translation>
 <translation id="3478449063771497234">Las notificaciones están deshabilitadas</translation>
 <translation id="2862978891748913252">Selecciona tu país</translation>
 <translation id="3970520675790340955">Selecciona tu país para que podamos mostrarte las opciones y anuncios adecuados para tu región.</translation>
@@ -114,6 +112,11 @@
 <translation id="1571106259128580884">Mostrar sugerencias de sitios principales</translation>
 <translation id="6285118765755298263">Indexar otros motores de búsqueda</translation>
 <translation id="919715748352669592">Indexa automáticamente los sitios web que siguen las especificaciones OpenSearch.</translation>
+<translation id="412411722208944922">Buscadores rápidos</translation>
+<translation id="2836969042340015500">Buscadores rápidos</translation>
+<translation id="9120455214794270250">Mostrar barra de búsqueda rápida</translation>
+<translation id="1052991798173010693">Utilizado actualmente en buscadores</translation>
+<translation id="335303688425891752">Pulsación larga para cambiar el orden</translation>
 <translation id="9148058034647219655">Salir</translation>
 <translation id="8047754398610073499">Bloquear avisos de consentimiento de cookies</translation>
 <translation id="2621893359845808115">Bloquea las ventanas emergentes que solicitan aceptar o rechazar las cookies en sitios web</translation>
@@ -233,9 +236,6 @@
 <translation id="7207456302801184289">Bienvenido a Brave</translation>
 <translation id="4117451092682672487">La privacidad, simplificada.</translation>
 <translation id="7909375417585209817">Si utilizas Brave de manera predeterminada, todos los enlaces que pulses se abrirán con las protecciones de privacidad de Brave.</translation>
-<translation id="3737878115109582442">Añade el widget de búsqueda</translation>
-<translation id="6199413390010319240">Ten Brave al alcance de la mano para navegar por la web rápidamente.</translation>
-<translation id="4338600611020922010">Añadir a la pantalla de inicio</translation>
 <translation id="7370959926683925817">Bloquea los anuncios. Ahorra datos. Todos los días.</translation>
 <translation id="7281027579943912834">De manera predeterminada, cada enlace que toques en Brave tendrá nuestra protección de bloqueo de anuncios. Cada página, cada vídeo y cada streaming.</translation>
 <translation id="5148943178722443958">Ayuda a mejorar Brave.</translation>
@@ -408,8 +408,13 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="6925081665778864449">Para sincronizar las contraseñas, activa la autenticación mediante biometría o código de acceso en tu dispositivo Android. Esta medida de seguridad adicional permite mantener tus contraseñas protegidas.</translation>
 <translation id="597993392929850353">Licencia de Brave</translation>
 <translation id="6336451774241870485">Nueva pestaña privada</translation>
-<translation id="6199596294742117349">Esta es una Pestaña Privada</translation>
-<translation id="5858455511731621847">Aunque los sitios que visitas en las pestañas privadas no se guardan a nivel local, eso no hace que seas anónimo o invisible para tu ISP, tu empresa o los sitios que visitas.</translation>
+<translation id="3110967157686007724">Pestaña privada</translation>
+<translation id="944340256927461196">No dejes rastro en tu dispositivo</translation>
+<translation id="2063044449012253966">Los sitios que visites en ventanas de incógnito no aparecerán en tu historial. Las cookies, los datos de formularios y los datos del sitio desaparecen una vez que se cierran todas las ventanas privadas.</translation>
+<translation id="7395764193745523646">Visibilidad de navegación</translation>
+<translation id="8735363371744702779">Ten en cuenta que, incluso en las ventanas de incógnito, tu actividad de navegación puede seguir siendo visible para tu ISP, observadores de la red o tu empleador (si utilizas un dispositivo/red de trabajo).</translation>
+<translation id="1413177583895309156">Brave VPN encripta y protege todo lo que haces en línea, incluso fuera del navegador Brave.</translation>
+<translation id="3974348661685061050">Prueba gratis durante 7 días</translation>
 <translation id="5789441016350810005">Brave Ads enviados cuando el navegador está en segundo plano</translation>
 <translation id="4973347371961481083">Contribuciones</translation>
 <translation id="7047578174221019462">Tus contribuciones mensuales se han procesado.</translation>
@@ -710,9 +715,10 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="1532536259167115948">Suscripción mensual - <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Suscripción anual - <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Se renueva mensualmente</translation>
+<translation id="112929124115834557">Renovación anual</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> al mes</translation>
 <translation id="1163809943099641131">Un año</translation>
-<translation id="727385358513272220">Renovación anual (<ph name="DISCOUNT_TEXT_START"/>ahorre <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>guardar <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> al año</translation>
 <translation id="2786538705804257030">Las suscripciones se cobrarán a través de su cuenta de Google. Cuando contrata una suscripción, se queda sin el periodo de tiempo no disfrutado de la prueba gratuita, en caso de que tuviera una. La suscripción se renovará automáticamente a menos que la cancele, como mínimo, 24 horas antes de que finalice el periodo activo en ese momento. Puede gestionar las suscripciones que haya contratado en el menú "Ajustes". Al utilizar Brave, acepta las Condiciones de uso y la Política de privacidad.</translation>
 <translation id="5035172357624830412">¿Ya lo ha contratado en brave.com?</translation>
@@ -842,7 +848,7 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="4351811224047421378">Decimales de precisión</translation>
 <translation id="3494964159182650590">Resumen de las recompensas</translation>
 <translation id="590733288489975971">Recompensas de anuncios de Brave</translation>
-<translation id="1886682615222609631">Ganancias hasta ahora</translation>
+<translation id="1450735350187803276">Anuncios vistos este mes</translation>
 <translation id="1767561995429774671">Contribuir</translation>
 <translation id="7335371657242627509">Incluir en contribuciones automáticas</translation>
 <translation id="6727102863431372879">Configurar</translation>
@@ -1228,5 +1234,6 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="2728518864712716830">Se ha descargado una actualización.</translation>
 <translation id="8403338849301491865">Se ha actualizado la lista de filtros</translation>
 <translation id="4650851936784160359">No se ha podido actualizar la lista de filtros. Inténtelo de nuevo.</translation>
-<translation id="1450735350187803276">Anuncios vistos este mes</translation>
+<translation id="3098054327870766317">Mostrar el botón de deshacer al cerrar pestañas</translation>
+<translation id="1336494649091412226">¿Estás seguro de que quieres salir de Brave?</translation>
 </translationbundle>

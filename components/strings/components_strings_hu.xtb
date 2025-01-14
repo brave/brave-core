@@ -62,6 +62,7 @@
 <translation id="1104409666019087579">Néhány kötelező mező üres. A mentés előtt töltse ki őket.</translation>
 <translation id="8424280348953443220">Jelszavak kezelése gomb. A gombot megnyomva megtekintheti és kezelheti jelszavait a Brave beállításai között.</translation>
 <translation id="1108464073729874771">A3x4</translation>
+<translation id="1110809716549020493">Nincs kitöltve a virtuális kártya? A vágólapra másoláshoz kattintson a virtuális kártya adataira. <ph name="IDS_AUTOFILL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL_VIRTUAL_CARD"/>.</translation>
 <translation id="1110994991967754504">Engedély kiválasztása a következőhöz: <ph name="PERMISSION_NAME"/></translation>
 <translation id="1113000785583998331">Menti az IBAN-számot?</translation>
 <translation id="1113869188872983271">&amp;Átrendezés visszavonása</translation>
@@ -166,7 +167,6 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="1292571435393770077">16. tálca</translation>
 <translation id="1209478311331937175">„A számítógépen található valamelyik szoftver megakadályozza a Brave-ot abban, hogy biztonságosan csatlakozzon az internetre” (csak Windows rendszerű számítógépeken)</translation>
 <translation id="1293797321964802402">9 × 11 hüvelykes boríték</translation>
-<translation id="1294154142200295408">Parancssorváltozatok</translation>
 <translation id="129553762522093515">Mostanában bezárt</translation>
 <translation id="1296930489679394997">Értékesítés</translation>
 <translation id="1297814096526086484">Zárolja a billentyűzetet és az egeret?</translation>
@@ -211,7 +211,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="1357195169723583938">Ki és mikor használta az eszközt a közelmúltban?</translation>
 <translation id="1358187717814494928">Táblázat létrehozása</translation>
 <translation id="1359836962251219822">Konyha és ebédlő</translation>
-<translation id="1361528602584216624">Pix-korlát: <ph name="TRANSACTION_LIMIT"/> BRL</translation>
+<translation id="1361528602584216624">Pix-korlát <ph name="TRANSACTION_LIMIT"/> BRL</translation>
 <translation id="1363015776076529485">A fizetés folytatásához kiválasztható fizetési módok teljes magasságban megnyitva</translation>
 <translation id="1363028406613469049">Szám</translation>
 <translation id="1364822246244961190">Ez a házirend le van tiltva, ezért az értékét figyelmen kívül hagyja a rendszer.</translation>
@@ -262,7 +262,6 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="1446396933673057385">Pontosság ellenőrzése</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
 <translation id="1448166547804028941">A(z) „<ph name="DATA_CONTROLS_FIRST_KEY_SET"/>” kulcsokat nem lehet ugyanabban a szótárban beállítani, mint a(z) „<ph name="DATA_CONTROLS_SECOND_KEY_SET"/>” kulcsokat</translation>
-<translation id="1452803302401719440">A szülőd által kiválasztott beállításokkal mostantól nagyobb biztonságban lehetsz az interneten</translation>
 <translation id="1455413310270022028">Radír</translation>
 <translation id="1458059624921545588">Emberek és társadalom</translation>
 <translation id="1458140305240870199">Alsóruházat</translation>
@@ -423,6 +422,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="1727613060316725209">A tanúsítvány érvényes</translation>
 <translation id="1728677426644403582">Jelenleg weboldal forrását tekinti meg</translation>
 <translation id="173080396488393970">Ez a kártyatípus nem támogatott</translation>
+<translation id="1732445923934584865">Inkább személyesen oldom meg</translation>
 <translation id="1733064249834771892">betűtípusok</translation>
 <translation id="1733631169686303142">Hangtechnika</translation>
 <translation id="1733762317901693627">A támadók néha még az alapvetően biztonságos webhelyekhez is hozzáférhetnek illetéktelenül. Csak akkor keresse fel <ph name="BEGIN_LINK"/>ezt a nem biztonságos webhelyet<ph name="END_LINK"/>, ha biztosan tisztában van a kockázatokkal.</translation>
@@ -541,6 +541,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="1947454675006758438">Kapocs jobbra fent</translation>
 <translation id="1953729392594614704">A(z) <ph name="TOPIC"/> téma letiltásával az összes kapcsolódó témát is letiltja, még akkor is, ha az adott téma aktív.</translation>
 <translation id="1954847915560574887">A3x3</translation>
+<translation id="1955773397805078763">Fizetési mód hozzáadása</translation>
 <translation id="1956486093533522234">Az eszköz megkeresése, biztonságba helyezése vagy törlése</translation>
 <translation id="1957274554973357626">Élő kabaré</translation>
 <translation id="1958218078413065209">A rekordja: <ph name="SCORE"/>.</translation>
@@ -788,7 +789,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="238459632961158867">Webhely</translation>
 <translation id="5244533701344680487">A Brave-ot a Brave-beállítások között frissítheti</translation>
 <translation id="2386255080630008482">A szerver tanúsítványát visszavonták.</translation>
-<translation id="2386410849674401722">A „Tetszik” értékeléssel azt a visszajelzést küldi, hogy tetszik Önnek az automatikus kitöltés AI-val</translation>
+<translation id="2386410849674401722">A „Tetszik” értékeléssel azt a visszajelzést küldi, hogy tetszik Önnek az automatikus kitöltés AI-jal</translation>
 <translation id="2388828676877700238">Adóelőkészítés és -tervezés</translation>
 <translation id="239203817277685015">Részletesebb</translation>
 <translation id="239293030466334554">Nyitott és nyitható tetejű járművek</translation>
@@ -904,6 +905,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="2622754869869445457">A legutóbbi lap</translation>
 <translation id="2625385379895617796">Az órája siet</translation>
 <translation id="262745152991669301">Engedélyt kérhet az USB-eszközökhöz való csatlakozásra</translation>
+<translation id="2627847595568876492">Szöveg kinyerése PDF-ből…</translation>
 <translation id="2628224721443278970">Bejelentkezés a Microsoft OneDrive szolgáltatásba</translation>
 <translation id="2634124572758952069">A(z) <ph name="HOST_NAME"/> szerver IP-címe nem található.</translation>
 <translation id="2639739919103226564">Állapot:</translation>
@@ -1022,7 +1024,6 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="290376772003165898">Az oldal nem <ph name="LANGUAGE"/> nyelvű?</translation>
 <translation id="2904165004205947971">Adatkezelés</translation>
 <translation id="2905107382358353958">Értesítés új fizetési beállításról</translation>
-<translation id="2909120679423833511">Szervezete (<ph name="MANAGER"/>) megköveteli, hogy egy adott profillal jelentkezzen be</translation>
 <translation id="2909946352844186028">Változást érzékeltünk a hálózatban.</translation>
 <translation id="2911255567212929079">Gépi tanulás és mesterséges intelligencia</translation>
 <translation id="2911973620368911614">Munkafiók felhasználói azonosítója</translation>
@@ -1378,9 +1379,10 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="353816159217417898">Raszter (oldalas)</translation>
 <translation id="3542628208405253498">Kártyakép</translation>
 <translation id="3542768452570884558">Link megnyitása új ablakban</translation>
+<translation id="3543935938072367282">Fizessen gyorsabban az automatikus kitöltéssel</translation>
 <translation id="3547442767634383572">A munkaprofil áttekintése</translation>
 <translation id="3547746132308051926">20 × 24 hüvelyk</translation>
-<translation id="3550325450190222557">Visszajelzés küldése az Automatikus kitöltés AI-val funkcióval kapcsolatban.</translation>
+<translation id="3550325450190222557">Visszajelzés küldése az Automatikus kitöltés AI-jal funkcióval kapcsolatban.</translation>
 <translation id="3552155506104542239">Figyelmeztetés: Ez a házirend ütközik a(z) <ph name="POLICY_NAME"/> házirenddel, ezért nem lesz hatással az Android-alkalmazásokra. Minden más esetben a kívánt módon működik.</translation>
 <translation id="3552297013052089404">Sans-serif betűtípus</translation>
 <translation id="3558573058928565255">Nappal</translation>
@@ -1391,6 +1393,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="3566021033012934673">Az Ön kapcsolata nem privát</translation>
 <translation id="3566336457819493938">215 × 315 mm</translation>
 <translation id="3566649245868131295">Egészségügyi és orvosi állások</translation>
+<translation id="3566681680543111735">Változatok karakterláncának vágólapra másolása</translation>
 <translation id="3567778190852720481">Vállalati fiókkal nem regisztrálhat (a vállalati fiók nem jogosult a műveletre).</translation>
 <translation id="3567901620846335314">100 × 150 mm</translation>
 <translation id="3568886473829759308">Nyissa meg a webhelyet a vállalkozás által nyújtott információk, források vagy szolgáltatások megtekintéséhez.</translation>
@@ -1473,7 +1476,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="3681007416295224113">Tanúsítvány adatai</translation>
 <translation id="2659564324969662497">A Brave feljegyzi az Önt érdeklő témákat a legutóbbi böngészési előzményei alapján.</translation>
 <translation id="3682094733650754138">A „Cím kitöltése” lehetőség volt kiválasztva</translation>
-<translation id="3687493962714153124">Az Automatikus kitöltés AI-val funkció kezelése</translation>
+<translation id="3687493962714153124">Az Automatikus kitöltés AI-jal funkció kezelése</translation>
 <translation id="3687920599421452763">Mikrobuszok és kisbuszok</translation>
 <translation id="3693327506115126094">Válassza ki, hogyan szeretné igazolni személyazonosságát</translation>
 <translation id="3698353241727597930">A rendszergazda úgy konfigurálta a <ph name="FILES"/> mentését, hogy a vállalati kezelésű <ph name="CLOUD_STORAGE"/>-tárhelyre kerüljenek. Ezek a fájlok figyelhetők, auditálhatók és megőrizhetők, amikor törli őket.</translation>
@@ -1542,6 +1545,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="3801297763951514916">Ön által gyakran felkeresett</translation>
 <translation id="380329542618494757">Név</translation>
 <translation id="3803801106042434208">Ezek a keresőmotorok népszerűek az Ön régiójában</translation>
+<translation id="9139904989334087578">Mentsen el egy fizetési módot a Brave-fiókjába, így a böngésző automatikusan ki tudja tölteni a Brave-ban végzett vásárlásoknál</translation>
 <translation id="3807366285948165054">Kép X-eltolása</translation>
 <translation id="3807709094043295184">Klasszikus rock és régi zenék</translation>
 <translation id="3807873520724684969">Kártékony tartalom letiltva.</translation>
@@ -1596,6 +1600,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="3905894480064208252">{0,plural, =1{A fájl átvitele le van tiltva}other{<ph name="FILE_COUNT"/> fájl átvitele le van tiltva}}</translation>
 <translation id="3906954721959377182">Táblagép</translation>
 <translation id="3909695131102177774"><ph name="LABEL"/> <ph name="ERROR"/></translation>
+<translation id="2432806109793094400">A rendszer a(z) <ph name="WEBSITE"/> webhelyről származó mentett információkat és az oldalt elküldi a Brave-nak, és előfordulhat, hogy a funkció továbbfejlesztése érdekében felülvizsgálatot végző emberek is láthatják őket.</translation>
 <translation id="3910231615117880630">További információ a beágyazott tartalmakról</translation>
 <translation id="7721467022912831148">A Brave nem tudta lekérni az Ön adatait</translation>
 <translation id="3117446487153407265"><ph name="BEGIN_BOLD"/>Az adatok kezelésének módja<ph name="END_BOLD"/>: A Brave automatikusan törli a 30 napnál régebbi webhelyeket. Előfordulhat, hogy egy újból felkeresett webhely ismét megjelenik a listán. A Brave beállításai között letilthatja, hogy egy adott webhely hirdetéseket javasoljon Önnek, és bármikor kikapcsolhatja a webhelyek által javasolt hirdetéseket.</translation>
@@ -1696,6 +1701,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="4102567721634170493">Helyi hírek</translation>
 <translation id="4103249731201008433">Az eszköz sorozatszáma érvénytelen</translation>
 <translation id="4103592298805904008">Karton (egyfalú)</translation>
+<translation id="4104702906064390950">IBAN-adatok mentése folyamatban</translation>
 <translation id="4106887816571530227">A beágyazott tartalmak nem engedélyezettek</translation>
 <translation id="4110652170750985508">Befizetés áttekintése</translation>
 <translation id="4111546256784973544">Paintball</translation>
@@ -2206,6 +2212,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="5087286274860437796">A szerver tanúsítványa jelenleg nem érvényes.</translation>
 <translation id="5087580092889165836">Kártya hozzáadása</translation>
 <translation id="5088142053160410913">Üzenet az operátornak</translation>
+<translation id="5089791650329866127">Ez a funkció olyan adatokat használ, amelyeket az automatikus kitöltés már elmentett, például az Ön címét.</translation>
 <translation id="5090647584136241764">Adjon hozzá hasonló termékeket tartalmazó lapokat, hogy könnyedén összehasonlíthassa a fontosnak tartott részleteket</translation>
 <translation id="5093232627742069661">Z-hajtás</translation>
 <translation id="4906192414477726331">A szerver nem tudta bizonyítani, hogy valóban a(z) <ph name="DOMAIN"/> domainbe tartozik; biztonsági tanúsítványa a Brave szerint nem megbízható. Ennek oka lehet konfigurációs hiba, vagy hogy egy támadó eltérítette az Ön kapcsolódását.</translation>
@@ -2386,6 +2393,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="5425082381151187189">Lakberendezés és belső dekoráció</translation>
 <translation id="5426179911063097041">A(z) <ph name="SITE"/> értesítéseket szeretne küldeni Önnek</translation>
 <translation id="5430298929874300616">Könyvjelző törlése</translation>
+<translation id="5433756542371550806">Parancssorváltozatok</translation>
 <translation id="8517215617486022589">A Brave <ph name="BEGIN_EMPHASIS"/>nem menti<ph name="END_EMPHASIS"/> a következőket:
           <ph name="BEGIN_LIST"/>
             <ph name="LIST_ITEM"/>Böngészési előzmények
@@ -2561,7 +2569,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="5745733273847572235">Engedélyt kérhet a helyadataihoz való hozzáférésre</translation>
 <translation id="5750869797196646528">Kézmozgás követése</translation>
 <translation id="5752327398324808817">Írjon be egy-két szót</translation>
-<translation id="5752519522101347518">Banki igazolás webhelyének betöltése…</translation>
+<translation id="5752519522101347518">Bank hitelesítő webhelyének betöltése…</translation>
 <translation id="5759751709240058861">A kamera használata és mozgatása</translation>
 <translation id="5763042198335101085">Érvényes e-mail-címet adjon meg</translation>
 <translation id="5764725887548570807">Érvénytelen eredetformátum.</translation>
@@ -2570,7 +2578,6 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="57689295674415555">Nincs kitöltve a virtuális kártya száma?</translation>
 <translation id="5772086939108830423">Azonosítókulcs használata másik eszközön</translation>
 <translation id="5776313857861697733">Prioritás</translation>
-<translation id="5776574724412881956">Nincs kitöltve a virtuális kártya? A vágólapra másoláshoz kattintson a virtuális kártya adataira. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_MANUAL_FALLBACK_BUBBLE_LEARN_MORE_LINK_LABEL"/>.</translation>
 <translation id="577804500166306874">Az eredmény betöltése folyamatban van</translation>
 <translation id="5781136890105823427">Kísérlet engedélyezve</translation>
 <translation id="578305955206182703">Borostyánsárga</translation>
@@ -2761,7 +2768,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="5972135347314259717">Brave Enterprise csatlakozási szoftverek</translation>
 <translation id="6126565365696310362">2. kínai boríték</translation>
 <translation id="6127379762771434464">Elem eltávolítva</translation>
-<translation id="6128214169525122635">A „Nem tetszik” értékeléssel azt a visszajelzést küldi, hogy nem tetszik Önnek az automatikus kitöltés AI-val</translation>
+<translation id="6128214169525122635">A „Nem tetszik” értékeléssel azt a visszajelzést küldi, hogy nem tetszik Önnek az automatikus kitöltés AI-jal</translation>
 <translation id="6131824478727057281">helyszín</translation>
 <translation id="6133320744616005677">Engedélyezés folytatása</translation>
 <translation id="6133984428121856852">A fájlkiterjesztés üres vagy hibás formátumú.</translation>
@@ -2865,7 +2872,6 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="6311642842034740437">Elnevezett hely</translation>
 <translation id="6312113039770857350">A weboldal nem érhető el</translation>
 <translation id="6316110367871394043">A(z) <ph name="CLOUD_PROVIDER"/> szolgáltatásba való fájlfeltöltés szünetel</translation>
-<translation id="1413891145337537586">Új: Itt érvényesek a Family Link Brave-ra vonatkozó beállításai</translation>
 <translation id="63172326633386613">Kisegítő lehetőségek beállításainak kezelése</translation>
 <translation id="6321917430147971392">Ellenőrizze a DNS-beállításokat</translation>
 <translation id="6322182122604171028">Hiba történt a Windows Hello használata során</translation>
@@ -2978,11 +2984,11 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="6499038740797743453">Jelszó visszaállítása?</translation>
 <translation id="6502510275417601303">Az új fizetési beállítással kapcsolatos értesítés bezárva</translation>
 <translation id="6502991525169604759">Az Ön módosításai nélkül</translation>
+<translation id="6505072878288254563">Fordítás folyamatban</translation>
 <translation id="6506959208958864820">Boríték</translation>
 <translation id="6507117483253822672">Megbízhatóbb írás bárhol az interneten</translation>
 <translation id="3960299545138990065">Indítsa újra a Brave-ot</translation>
 <translation id="6513005815064132016">Engedélyt kérhet a kamera pozíciójának nyomon követésére</translation>
-<translation id="6514932395202175590">A folytatáshoz jelentkezzen be a(z) <ph name="EMAIL"/> e-mail-címmel, majd állítson be egy új profilt.</translation>
 <translation id="6517596291481585650">Figyelem: Ezt a házirendet nem egyesítette a rendszer listaként a házirend előírásainak megfelelően, mert nem lista.</translation>
 <translation id="6518133107902771759">Ellenőrzés</translation>
 <translation id="6519885440226079262">Engedélyt kérhet az Ön kézmozgásának követésére</translation>
@@ -3093,6 +3099,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="6710648923880003133">Erős jelszó ajánlása</translation>
 <translation id="671076103358959139">Regisztrációs token</translation>
 <translation id="6711464428925977395">Valami gond van a proxyszerverrel, vagy a cím nem megfelelő.</translation>
+<translation id="6711700233707023861">Változatok karakterlánca vágólapra másolva</translation>
 <translation id="6716039223770814796"><ph name="COMPARE_SET_NAME"/> · <ph name="ITEMS"/> elem összehasonlítása</translation>
 <translation id="6716672519412350405">A(z) <ph name="URL"/> 3D-s térképet szeretne készíteni az Ön környezetéről, és követni szeretné a kamera pozícióját</translation>
 <translation id="6717692133381953670">A(z) <ph name="DEVICE_NAME"/> eszközről küldött lap</translation>
@@ -3153,6 +3160,7 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="6831043979455480757">Fordítás</translation>
 <translation id="683108308100148227">Elem elrejtése</translation>
 <translation id="6832753933931306326">Űrlap kitöltve</translation>
+<translation id="6837361937093656245">Bejelentkezés szükséges</translation>
 <translation id="6841864657731852591">Gravűrhenger</translation>
 <translation id="6842196666980060516">184 × 260 mm</translation>
 <translation id="6844998850832008753">A kézmozgás követése erre az alkalomra engedélyezve van</translation>
@@ -3203,7 +3211,6 @@ Ezt egyéb esetben letiltják az Ön adatvédelmi beállításai. Az engedélyez
 <translation id="6936976777388162184">Csomag részét képező eszköz, ezért nem regisztrálható a Kiosk és a Signage Upgrade szolgáltatásra.</translation>
 <translation id="6944557544071529399">Stratégiai játékok</translation>
 <translation id="6944692733090228304">Olyan webhelyen adta meg a jelszavát, amelyet nem a(z) <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> kezel. Fiókja védelme érdekében ne használja fel újra a jelszót más alkalmazásokban és webhelyeken.</translation>
-<translation id="6945221475159498467">Kiválasztás</translation>
 <translation id="9000864348890316168">Webes keresés a Brave-mal</translation>
 <translation id="6948051842255602737">Vége a játéknak. Pontszám: <ph name="SCORE"/>.</translation>
 <translation id="6948701128805548767">Az átvételi módok és követelmények megtekintéséhez válassza ki a címet</translation>
@@ -3399,6 +3406,7 @@ További részletek:
 <translation id="244157907932852817">A Brave-fiók adatvédelmi beállításainak kezelése</translation>
 <translation id="7305756307268530424">Indítás lassabban</translation>
 <translation id="7308436126008021607">szinkronizálás a háttérben</translation>
+<translation id="3765631529724190482">További információ a hirdetésekhez kapcsolódó adatvédelem Brave-ban való kezeléséről.</translation>
 <translation id="7310392214323165548">Az eszköz hamarosan újraindul</translation>
 <translation id="7311244614769792472">Nincs találat</translation>
 <translation id="7313107491291103073">Szervezete megjelölte ezt a webhelyet, mert irányelvet sérthet.</translation>
@@ -3440,6 +3448,7 @@ További részletek:
 <translation id="7378594059915113390">Médiavezérlők</translation>
 <translation id="7378810950367401542">/</translation>
 <translation id="7380398842872229465">10 × 15 hüvelyk</translation>
+<translation id="7381551826960739226">Az automatikus fizetési módok kitöltése le van tiltva, mivel ez az űrlap nem biztonságos kapcsolatot használ.</translation>
 <translation id="7388380253839603603">Benzinárak és járművek tankolása</translation>
 <translation id="7388594495505979117">{0,plural, =1{Eszköze 1 perc múlva újraindul}other{Eszköze # perc múlva újraindul}}</translation>
 <translation id="7392089738299859607">Cím frissítése</translation>
@@ -3477,6 +3486,7 @@ További részletek:
 <translation id="7424421098814895617">A „Cím törlése” lehetőség volt kiválasztva</translation>
 <translation id="7425037327577270384">Segítség az íráshoz</translation>
 <translation id="7425878584435172632">Vizuális művészet és design</translation>
+<translation id="7426745633088095666">Megosztott lapok</translation>
 <translation id="7427079287360774240">Nyelvtanulás</translation>
 <translation id="7429429656042611765">„Executive” méret</translation>
 <translation id="288933326661929857">Igazolja személyazonosságát, hogy a Brave kitölthesse a fizetési adatait.</translation>
@@ -3537,11 +3547,11 @@ További részletek:
 <translation id="7525804896095537619">A név nem lehet üres</translation>
 <translation id="7526934274050461096">A webhellyel való kapcsolata nem privát</translation>
 <translation id="7529884293139707752">Otthoni oktatás és magántanulás</translation>
+<translation id="7531464389616946220">Kártya beolvasása</translation>
 <translation id="7534987659046836932">C7 boríték</translation>
 <translation id="7535087603100972091">Érték</translation>
 <translation id="796823723482603597">Üzemeltető: Brave</translation>
 <translation id="7537536606612762813">Kötelező</translation>
-<translation id="7542995811387359312">Az automatikus bankkártya-kitöltés le van tiltva, mivel ez az űrlap nem biztonságos kapcsolatot használ.</translation>
 <translation id="7543525346216957623">Kérd a szülő segítségét</translation>
 <translation id="7546409722674205727">A(z) <ph name="APP_NAME"/> elindul…</translation>
 <translation id="7548892272833184391">A kapcsolódási hibák elhárítása</translation>
@@ -3772,6 +3782,7 @@ További részletek:
 <translation id="7952327717479677595">A keresőmotorok gombjának kezelése. A gombot megnyomva kezelheti az alapértelmezett keresőmotort és a webhelyen való keresést.</translation>
 <translation id="7953236668995583915">Az oldal újratöltésével alkalmazhatja a frissített beállításokat erre a webhelyre</translation>
 <translation id="7953569069500808819">Éltűzés felül</translation>
+<translation id="7955105108888461311">Kérés személyesen</translation>
 <translation id="7956713633345437162">Mobilos könyvjelzők</translation>
 <translation id="7961015016161918242">Soha</translation>
 <translation id="7962467575542381659">Platform – gép</translation>
@@ -3807,7 +3818,7 @@ További részletek:
 <translation id="1625114571336329891"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Nyomja le a Tab, majd az Enter billentyűt, a Brave-ot szeretné beállítani a rendszer alapértelmezett böngészőjeként.</translation>
 <translation id="8027077570865220386">15. tálca</translation>
 <translation id="7586767711133020907">A Brave biztonsági ellenőrzését futtató gomb. A gombot megnyomva biztonsági ellenőrzést futtathat a Brave beállításai között.</translation>
-<translation id="8028138772801251745">Automatikus kitöltés AI-val</translation>
+<translation id="8028138772801251745">Automatikus kitöltés AI-jal</translation>
 <translation id="814401020562419411"><ph name="CREATE_GOOGLE_FORM_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tartsa lenyomva a Tab billentyűt, majd nyomja meg az Enter billentyűt új űrlap gyors létrehozásához a Brave Űrlapok szolgáltatással</translation>
 <translation id="8028892419725165118">Egyszerű játékok</translation>
 <translation id="8028960012888758725">Vágás a munka végén</translation>
@@ -3897,7 +3908,6 @@ További részletek:
 <translation id="8194412401381329820">Ezt az oldalt nem kezelheti felügyelt fiókból erről a nem kezelt eszközről. Az összes felügyelt fiók zárolva lesz, ha ezt az oldalt használja, kivéve az eszközével megegyező entitás által kezelt fiókokat (társított fiókok).</translation>
 <translation id="8194797478851900357">&amp;Áthelyezés visszavonása</translation>
 <translation id="8194956568907463262">Lövöldözős játékok</translation>
-<translation id="819931074683918462">Szervezete megköveteli, hogy egy adott profillal jelentkezzen be</translation>
 <translation id="8199437620497683918">Optikai lemez (fényes)</translation>
 <translation id="8199730148066603000">A nem HTTPS URL-ek előnézete nem engedélyezett.</translation>
 <translation id="8200772114523450471">Folytatás</translation>
@@ -4058,7 +4068,6 @@ További részletek:
 <translation id="8460854335417802511">Bekapcsolás</translation>
 <translation id="8461694314515752532">A szinkronizált adatok titkosítása saját összetett szinkronizálási jelszóval</translation>
 <translation id="8461973047386722744">Nem találhatók jelszavak</translation>
-<translation id="8466379296835108687">{COUNT,plural, =1{1 hitelkártya}other{# hitelkártya}}</translation>
 <translation id="1912557825937556898">A Brave biztonsági ellenőrzés oldalának megnyitása a beállításokban</translation>
 <translation id="8468358362970107653">C3 boríték</translation>
 <translation id="8469428721212363950">Kiskereskedelem</translation>
@@ -4212,6 +4221,7 @@ További részletek:
 <translation id="8763927697961133303">USB-eszköz</translation>
 <translation id="8766943070169463815">Biztonságos fizetés hitelesítési adatainak hitelesítési űrlapja megnyitva.</translation>
 <translation id="8767765348545497220">Súgóbuborék bezárása</translation>
+<translation id="8767881944435256294">{COUNT,plural, =1{1 fizetési mód}other{# fizetési mód}}</translation>
 <translation id="7113746389006214608">Prezentáció létrehozása gomb. A gombot megnyomva gyorsan új Brave-prezentációt hozhat létre a Diák szolgáltatás segítségével.</translation>
 <translation id="8770286973007342895">Fűnyírók</translation>
 <translation id="8772387130037509473">Jóga és Pilates</translation>
@@ -4411,7 +4421,7 @@ További részletek:
 <translation id="9150025764986957246">Például a következőket adhatja meg:</translation>
 <translation id="9154194610265714752">Frissítve</translation>
 <translation id="9155211586651734179">Csatlakoztatott hangperifériák</translation>
-<translation id="9155453166708525139">Az automatikus kitöltés AI-val egy kísérleti funkció, amely nem mindig működik megfelelően. <ph name="IDS_AUTOFILL_PREDICTION_IMPROVEMENTS_MANAGE_PREDICTION_IMPROVEMENTS"/>.</translation>
+<translation id="9155453166708525139">Az automatikus kitöltés AI-jal egy kísérleti funkció, amely nem mindig működik megfelelően. <ph name="IDS_AUTOFILL_PREDICTION_IMPROVEMENTS_MANAGE_PREDICTION_IMPROVEMENTS"/>.</translation>
 <translation id="9155646082713385498">Magazinok</translation>
 <translation id="9157595877708044936">Előkészítés...</translation>
 <translation id="9161794544616754735">{0,plural, =1{A(z) <ph name="FILE_NAME"/> bizalmas adatokat tartalmazhat}other{<ph name="FILE_COUNT"/> fájl bizalmas adatokat tartalmazhat}}</translation>
@@ -4450,6 +4460,7 @@ További részletek:
 <translation id="9211461151375991073">Írja be a @ jelet a következőkön való kereséshez: <ph name="FEATURED_SEARCH_LIST"/></translation>
 <translation id="9213433120051936369">Megjelenés személyre szabása</translation>
 <translation id="2206050430829841793">Valamelyik alkalmazás megakadályozza a Brave-ot abban, hogy biztonságosan csatlakozzon a webhelyhez</translation>
+<translation id="921738974253889319">Ez a funkció olyan adatokat használ, amelyeket az automatikus kitöltés már elmentett, például az Ön címét. Ezeket az adatokat ezen az oldalon tekintheti át és kezelheti.</translation>
 <translation id="92178312226016010">Nyomon követi ezt a terméket.</translation>
 <translation id="9218430445555521422">Alapbeállítás</translation>
 <translation id="9219103736887031265">Képek</translation>

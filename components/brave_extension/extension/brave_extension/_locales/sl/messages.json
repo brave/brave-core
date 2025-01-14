@@ -4,7 +4,7 @@
     "description": "The name of the extension."
   },
   "shields": {
-    "message": "Ščiti",
+    "message": "Shields",
     "description": "The Shields feature name"
   },
   "up": {
@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Na tej spletni strani brskate brez brez zaščite zasebnosti in varnosti Brave. Ali stan ne deluje pravilno s ščiti?",
+    "message": "Na tej spletni strani brskate brez zaščite zasebnosti in varnosti Brave. Ali stran ne deluje pravilno s Shields?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -188,7 +188,7 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Spletna mesta pogosto vključujejo piškotke in skripte, ki poskušajo prepoznati vas in vašo napravo (pogosto vdelani v oglase). Želijo ugotoviti, kdo ste in vas spremljati po spletu - spremljati, kaj počnete na vsakem spletnem mestu. Brave blokira te stvari, tako da lahko brskate, ne da bi vas spremljali naokoli.",
+    "message": "Spletna mesta pogosto vključujejo piškotke in skripte, ki poskušajo prepoznati vas in vašo napravo (pogosto vdelani v oglase). Želijo ugotoviti, kdo ste in vas spremljati po spletu - spremljati, kaj počnete na vsakem spletnem mestu. Brave blokira te stvari, tako da lahko brskate, ne da bi vam sledili.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {

@@ -7,7 +7,6 @@
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Búinn til fyrir <ph name="NUM_YEARS_ONE"/> ári}one{Búinn til fyrir <ph name="NUM_YEARS_MANY"/> ári}other{Búinn til fyrir <ph name="NUM_YEARS_MANY"/> árum}}</translation>
 <translation id="1173894706177603556">Endurnefna</translation>
 <translation id="1197088940767939838">Appelsínugulur</translation>
-<translation id="125153950246128346">Ýttu til að sjá annan flipa</translation>
 <translation id="1273910660700874265">Valkostir fyrir flipahópinn „<ph name="TITLE_OF_GROUP"/>“</translation>
 <translation id="1293272072740285747">Haltu flipahópnum ef þú vilt bæta flipum við síðar eða eyddu honum ef þú hefur ekki þörf fyrir hann lengur.
 
@@ -63,6 +62,7 @@ Ef þú eyðir honum munu allir notendur umsvifalaust missa aðgang að flipahó
 <translation id="3613492231657284463">Fela glugga með óvirkum flipum</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">Smámynd til að deila forskoðun blaðs</translation>
+<translation id="3810973564298564668">Stjórna</translation>
 <translation id="381219490185664296">Fjarlægja flipa úr hóp?</translation>
 <translation id="3940195383040445971">Fylgjast með verði á flipum</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{Sameina flipa}one{Sameina flipa}other{Sameina flipa}}</translation>
@@ -73,7 +73,6 @@ Ef þú eyðir honum munu allir notendur umsvifalaust missa aðgang að flipahó
 <translation id="4139634748112164403">Fliparnir verða opnir í þessu tæki en hópnum verður eytt varanlega</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{Loka hópnum „<ph name="TITLE_OF_GROUP"/>“ í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_ONE"/> flipa.}one{Loka hópnum „<ph name="TITLE_OF_GROUP"/>“ í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_MANY"/> flipa.}other{Loka hópnum „<ph name="TITLE_OF_GROUP"/>“ í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_MANY"/> flipa.}}</translation>
 <translation id="4159784952369912983">Purpurarauður</translation>
-<translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{Stækka <ph name="TITLE_OF_GROUP"/>-flipahóp með <ph name="TABS_COUNT_ONE"/> flipa.}one{Stækka <ph name="TITLE_OF_GROUP"/> -flipahóp með <ph name="TABS_COUNT_MANY"/> flipa.}other{Stækka <ph name="TITLE_OF_GROUP"/> -flipahóp með <ph name="TABS_COUNT_MANY"/> flipum.}}</translation>
 <translation id="427987768447457592">Nýr flipahópur</translation>
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> flipa breytt, <ph name="ANY_CLOSED"/> lokað}one{<ph name="MANY_CHANGED"/> flipa breytt, <ph name="ANY_CLOSED"/> lokað}other{<ph name="MANY_CHANGED"/> flipum breytt, <ph name="ANY_CLOSED"/> lokað}}</translation>
 <translation id="4371591986692297148">Óvirkt</translation>
@@ -95,11 +94,9 @@ Ef þú eyðir honum munu allir notendur umsvifalaust missa aðgang að flipahó
 <translation id="5007392906805964215">Yfirfara</translation>
 <translation id="5073204694187207510">Hætta að sýna á öllum skjánum</translation>
 <translation id="5076161749301278626">Skoða umsagnir um verslun?</translation>
-<translation id="5082793167783849073">Berðu síður saman á fljótlegan hátt með því að búa til hóp. Haltu fingri á tengli til að byrja.</translation>
 <translation id="5094423602314093681">Fjarlægja flipa og eyða hóp?</translation>
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> flipa bætt við}one{<ph name="MANY_ADDED"/> flipa bætt við}other{<ph name="MANY_ADDED"/> flipum bætt við}}</translation>
 <translation id="5161254044473106830">Titil vantar</translation>
-<translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{Loka flipahópi með <ph name="TABS_COUNT_ONE"/> flipa.}one{Loka flipahópi með <ph name="TABS_COUNT_MANY"/> flipa.}other{Loka flipahópi með <ph name="TABS_COUNT_MANY"/> flipum.}}</translation>
 <translation id="5339733443032484186">Síðasti flipi</translation>
 <translation id="5400836586163650660">Grár</translation>
 <translation id="5490235265819901748">Flipahópur stækkaður</translation>
@@ -141,7 +138,6 @@ Ef þú yfirgefur hann muntu umsvifalaust missa aðgang að flipahópnum „<ph 
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{Stækka sameiginlega flipahópinn „<ph name="TITLE_OF_GROUP"/>“ í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_ONE"/> flipa.}one{Stækka sameiginlega flipahópinn „<ph name="TITLE_OF_GROUP"/>“ í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_MANY"/> flipa.}other{Stækka sameiginlega flipahópinn „<ph name="TITLE_OF_GROUP"/>“ í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_MANY"/> flipa.}}</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{Deila flipa}one{Deila flipum}other{Deila flipum}}</translation>
 <translation id="7129458170538955174">Upplýsingar um þessa verslun opnaðar á hálfum skjánum</translation>
-<translation id="7200189319044305940">{NUMBER_OF_TABS,plural, =1{Loka <ph name="TITLE_OF_GROUP"/>-hópi með <ph name="TABS_COUNT_ONE"/> flipa.}one{Loka <ph name="TITLE_OF_GROUP"/>-hópi með <ph name="TABS_COUNT_MANY"/> flipa.}other{Loka <ph name="TITLE_OF_GROUP"/>-hópi með <ph name="TABS_COUNT_MANY"/> flipum.}}</translation>
 <translation id="7204204600596740190">Stilling til að velja marga</translation>
 <translation id="7211038039686180558">Flipahóparnir þínir vistast og uppfærast sjálfkrafa í öllum innskráðu tækjunum þínum</translation>
 <translation id="731648547091221002"><ph name="COLOR_NAME"/> er valinn</translation>
@@ -191,12 +187,9 @@ Ef þú yfirgefur hann muntu umsvifalaust missa aðgang að flipahópnum „<ph 
 <translation id="8820741577754260431">Sjá verðlækkanir á flipum</translation>
 <translation id="8887921976452567404">Þú getur opnað lokuðu flipana og hópana þína aftur með því að fara í hlutann „Nýlegir flipar“ eða „Flipahópar“.</translation>
 <translation id="8915916167043355778">Loka öllu</translation>
-<translation id="8926389886865778422">Ekki spyrja aftur</translation>
-<translation id="8993967613304721520">{NUMBER_OF_TABS,plural, =1{Stækka flipahóp með <ph name="TABS_COUNT_ONE"/> flipa.}one{Stækka flipahóp með <ph name="TABS_COUNT_MANY"/> flipa.}other{Stækka flipahóp með <ph name="TABS_COUNT_MANY"/> flipum.}}</translation>
 <translation id="9090098097337832354">Upplýsingum um þessa verslun lokað</translation>
 <translation id="9111228330448174435">Sýna glugga um að búa til nýjan flipahóp</translation>
 <translation id="9114502155681725011">Opnaðu aðgerðavalmynd flipahópsins „<ph name="TITLE_OF_GROUP"/>“ í litnum „<ph name="COLOR_NAME"/>“.</translation>
-<translation id="9150694013019234766">Flettu á milli flipa í flipahópnum neðarlega á skjánum</translation>
 <translation id="9169594135889675189">Bæta nýjum flipa við hóp</translation>
 <translation id="9216898458513705996">Fliparnir verða opnir í þessu tæki en hópnum verður eytt úr öllum tækjum sem eru skráð inn á <ph name="USER_EMAIL"/></translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Stækka flipahóp í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_ONE"/> flipa.}one{Stækka flipahóp í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_MANY"/> flipa.}other{Stækka flipahóp í litnum „<ph name="COLOR_NAME"/>“ sem inniheldur <ph name="TABS_COUNT_MANY"/> flipa.}}</translation>

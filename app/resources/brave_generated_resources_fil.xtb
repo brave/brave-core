@@ -114,7 +114,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2370739752330685659">Sa ibang pagkakataon siguro</translation>
 <translation id="5100490448228945668">Balewalain ang conversion sa paghahanap sa Brave, pindutin ang Enter para alisin ang suhestyong ito</translation>
 <translation id="6213208892248046484">Lumipat sa Brave Search</translation>
-<translation id="9194637241566114638">Tumulong na pagandahin ang <ph name="SEARCH_NAME"/> sa pamamagitan ng pagpapadala ng anonymous usage data.  <ph name="MORE_INFO"/></translation>
+<translation id="9194637241566114638">Tumulong na pagandahin ang <ph name="SEARCH_NAME"/> sa pamamagitan ng pagpapadala ng anonymous usage data. <ph name="MORE_INFO"/></translation>
 <translation id="7404610376221341525">Brave Search</translation>
 <translation id="8184318863960255706">Higit pang impormasyon</translation>
 <translation id="780301667611848630">Hindi, salamat na lang</translation>
@@ -307,11 +307,11 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">I-recover</translation>
 <translation id="2521960050170773751">Magdagdag ng media mula sa page</translation>
 <translation id="2301087142998134097">Gustong buksan ng <ph name="SITE"/></translation>
-<translation id="7128982309566342232">Isang naka-embed sa page sa embedded page on <ph name="SITE"/> ay gustong buksan</translation>
+<translation id="4828353184750597953">Gustong bumukas ng embedded page sa <ph name="SITE"/></translation>
 <translation id="1175012181261953767">Gustong buksan ng page na ito</translation>
 <translation id="7459546222322124545">Isang naka-embed na page sa page na ito ay gustong buksan</translation>
 <translation id="5836261838911560851">Gustong i-save ng <ph name="SITE"/></translation>
-<translation id="5936788906460687941">Isang naka-embed na page sa <ph name="SITE"/> ay gustong i-save</translation>
+<translation id="8813509417421129632">Gustong mag-save ng embededed page sa <ph name="SITE"/></translation>
 <translation id="7700010743463174379">Gustong i-save ng page na ito</translation>
 <translation id="6774238875569752630">Isang naka-embed na page sa page na it ay gustong i-save</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
@@ -573,6 +573,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4094590686212463338">Hindi makasama sa sync chain na ito. Na-delete na ang sync chain.</translation>
 <translation id="4908081302669157000">Mga numero ng telepono, email, at address</translation>
 <translation id="294985549514492876">Mga web app (PWAs)</translation>
+<translation id="7029809446516969842">Mga Password</translation>
 <translation id="924029461438529367">Ipakita ang mga suhestyon sa paghahanap</translation>
 <translation id="3128251601544028053">Kapag nag-type ka sa address bar o kahon para sa paghahanap, ipinapadala ng Brave ang tina-type mo sa iyong default na search engine para makakuha ng mas mahuhusay na mga suhestyon. Hindi ito available sa mga pribadong window.</translation>
 <translation id="6285118765755298263">I-index ang iba pang search engine</translation>
@@ -715,6 +716,8 @@ ang Brave Leo. Hindi puwedeng i-undo ang pagkilos na ito.</translation>
 <translation id="1355326130503900056">Ang pangalan ng model ayon sa kung paano dapat ito lumitaw sa kahilingan sa serving framework, hal. phi-3 (tandaang kung hindi tumutugma nang eksakto ang pangalang inaasahan ng serving framework, hindi gagana ang integration)</translation>
 <translation id="3286410514484292784">Ang url kung saan nakikinig ang serving framework mo sa mga request. Kung hindi ka sigurado, suriin ang dokumentasyon ng serving framework, Hal. para sa Ollama, lagi itong http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Puwedeng mangailangan ang ilang serving framework ng mga authentication credential, tulad ng API key o access token. Idadagdag ang mga ito sa header ng request.</translation>
+<translation id="4335128003329183586">Laki ng context</translation>
+<translation id="8794525422794607973">Ang maximum na bilang ng mga token na puwedeng iproseso ng model sa iisang interaction. Nasa 3/4 ng salita ang bawat token. Pinapayagan ng mas malaking sukat ng context ang model para i-handle ang mas mahahabang pag-uusap. Sinusuportahan ng iba't ibang model ang iba't ibang maximum na mga sukat ng context.</translation>
 <translation id="217141195370578385">HIndi nagpo-proxy ang Brave ng mga request na ito ang Brave, basahin ang mga tuntunin sa privacy ng piniling provider.</translation>
 <translation id="2645532768679870478">Walang hindi lokal na endpoint dapat ang gumagamit ng HTTPS protocol para sa pagpapadala ng secure na data.</translation>
 <translation id="8177205483022887785">Naglagay ka ng hindi valid na URL. Maglagay ng valid na URL.</translation>
@@ -724,6 +727,9 @@ ang Brave Leo. Hindi puwedeng i-undo ang pagkilos na ito.</translation>
 <translation id="7435587476558117990">Ikonekta ang sarili mong hosted o third-party hosted na LLM sa Leo at gamitin ang mga ito sa mga browser.</translation>
 <translation id="1381050642750209119">Gumamit ng kahit na anong framework na compatible sa OpenAI Chat Protocol tulad ng Ollama.</translation>
 <translation id="2642905648178380593">I-save ang model</translation>
+<translation id="6304169450064541679">Prompt ng System</translation>
+<translation id="3081947790648024460">Mga custom na tagubilin at/o context na ibinigay sa model para gabayan ang mga tugon nito sa isang partikular na direksyon o estilo. Gamitin ang %datetime% kung saan mo gustong ilagay ang kasalukuyang petsa at oras.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> token</translation>
 <translation id="349846214503465941">I-enable ang Playlist</translation>
 <translation id="7903608716704052878">Awtomatikong idagdag ang mga file para matingnan offline</translation>
 <translation id="4193768184502613558">Awtomatikong ika-cache ng pagpipiliang ito ang mga media file para maaari mong i-play ang mga ito nang walang koneksyon sa Internet.</translation>

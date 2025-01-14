@@ -216,11 +216,11 @@
     "description": "Message for removing an extension from Brave"
   },
   "addToChrome": {
-    "message": "",
+    "message": "Add to Chrome",
     "description": "Message for adding an extension to Chrome"
   },
   "removeFromChrome": {
-    "message": "",
+    "message": "Remove from Chrome",
     "description": "Message for removing an extension from Chrome"
   }
 }

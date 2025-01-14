@@ -7,7 +7,6 @@
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{បានបង្កើត <ph name="NUM_YEARS_ONE"/> ឆ្នាំមុន}other{បានបង្កើត <ph name="NUM_YEARS_MANY"/> ឆ្នាំមុន}}</translation>
 <translation id="1173894706177603556">ប្តូរឈ្មោះ</translation>
 <translation id="1197088940767939838">ទឹក​ក្រូច</translation>
-<translation id="125153950246128346">ចុចដើម្បីមើល​ផ្ទាំងផ្សេងទៀត</translation>
 <translation id="1273910660700874265">ជម្រើសក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/></translation>
 <translation id="1293272072740285747">រក្សា​ក្រុមនេះ ដើម្បី​បញ្ចូលផ្ទាំង​នៅពេលក្រោយ ឬ​លុបវា ប្រសិនបើ​អ្នកលែង​ត្រូវការ​វាទៀត។
 
@@ -63,6 +62,7 @@
 <translation id="3613492231657284463">ប្រអប់ "លាក់ផ្ទាំងអសកម្ម"</translation>
 <translation id="3652027618765638838"><ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/></translation>
 <translation id="374923079891132274">រូបក្របតំណាងការមើលសាកល្បងនៃបញ្ជីដែលបានចែករំលែក។</translation>
+<translation id="3810973564298564668">គ្រប់គ្រង</translation>
 <translation id="381219490185664296">បំបែក​ក្រុមផ្ទាំងឬ?</translation>
 <translation id="3940195383040445971">តាមដានតម្លៃនៅក្នុងផ្ទាំង</translation>
 <translation id="3954615705217314756">{TABS_COUNT,plural, =1{ដាក់​​ផ្ទាំងជាក្រុម}other{ដាក់ផ្ទាំងជាក្រុម}}</translation>
@@ -73,7 +73,6 @@
 <translation id="4139634748112164403">ផ្ទាំងនឹង​នៅតែ​បើកនៅលើ​ឧបករណ៍នេះ ប៉ុន្តែក្រុម​នឹងត្រូវ​បានលុប​ជាអចិន្ត្រៃយ៍</translation>
 <translation id="4156086991340739772">{NUMBER_OF_TABS,plural, =1{បិទក្រុម <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}other{បិទ​ក្រុម <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}}</translation>
 <translation id="4159784952369912983">ស្វាយ</translation>
-<translation id="4220650239473304853">{NUMBER_OF_TABS,plural, =1{ពង្រីក​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង។}other{ពង្រីក​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង។}}</translation>
 <translation id="427987768447457592">ក្រុមផ្ទាំងថ្មី</translation>
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{បានប្ដូរ <ph name="ONE_CHANGED"/> ផ្ទាំង, បានបិទ <ph name="ANY_CLOSED"/> ផ្ទាំង}other{បានប្ដូរ <ph name="MANY_CHANGED"/> ផ្ទាំង, បានបិទ <ph name="ANY_CLOSED"/> ផ្ទាំង}}</translation>
 <translation id="4371591986692297148">អសកម្ម​</translation>
@@ -95,11 +94,9 @@
 <translation id="5007392906805964215">ពិនិត្យមើល</translation>
 <translation id="5073204694187207510">លាក់ក្រឡា​ពេញ​អេក្រង់</translation>
 <translation id="5076161749301278626">មើលការវាយតម្លៃហាងឬ?</translation>
-<translation id="5082793167783849073">ប្រៀបធៀបទំព័រ​យ៉ាងរហ័សដោយ​ការបង្កើតក្រុម។ ដើម្បីចាប់ផ្ដើម សូមចុច​តំណឱ្យជាប់។</translation>
 <translation id="5094423602314093681">ដកផ្ទាំងចេញ និងលុបក្រុមឬ?</translation>
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{បាន​បញ្ចូល <ph name="ONE_ADDED"/> ផ្ទាំង}other{បាន​បញ្ចូល <ph name="MANY_ADDED"/> ផ្ទាំង}}</translation>
 <translation id="5161254044473106830">ត្រូវមានចំណងជើង</translation>
-<translation id="5338401825260744482">{NUMBER_OF_TABS,plural, =1{បិទ​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង។}other{បិទ​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង។}}</translation>
 <translation id="5339733443032484186">ផ្ទាំង​ចុងក្រោយ​របស់អ្នក</translation>
 <translation id="5400836586163650660">ប្រផេះ</translation>
 <translation id="5490235265819901748">បានពង្រីក​ក្រុមផ្ទាំង</translation>
@@ -141,7 +138,6 @@
 <translation id="7064815189603108598">{NUMBER_OF_TABS,plural, =1{ពង្រីក​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលបាន​ចែករំលែក​ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}other{ពង្រីក​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលបាន​ចែករំលែក​ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}}</translation>
 <translation id="7100731960740376323">{TABS_COUNT,plural, =1{ចែករំលែក​ផ្ទាំង}other{ចែករំលែក​ផ្ទាំង}}</translation>
 <translation id="7129458170538955174">បានបើក​ព័ត៌មានអំពី​ហាងនេះ​ពាក់កណ្ដាល​អេក្រង់</translation>
-<translation id="7200189319044305940">{NUMBER_OF_TABS,plural, =1{បិទ​ក្រុម <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង។}other{បិទ​ក្រុម <ph name="TITLE_OF_GROUP"/> ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង។}}</translation>
 <translation id="7204204600596740190">មុខងារ​ជ្រើសរើសច្រើន</translation>
 <translation id="7211038039686180558">ក្រុមផ្ទាំងរបស់អ្នករក្សាទុក និងធ្វើបច្ចុប្បន្នភាពដោយស្វ័យប្រវត្តិនៅលើគ្រប់ឧបករណ៍ដែល​ចូលគណនីរបស់អ្នក</translation>
 <translation id="731648547091221002">បាន​ជ្រើសរើសពណ៌<ph name="COLOR_NAME"/></translation>
@@ -191,12 +187,9 @@
 <translation id="8820741577754260431">មើលការធ្លាក់ថ្លៃនៅក្នុងផ្ទាំងរបស់អ្នក</translation>
 <translation id="8887921976452567404">ផ្ទាំង និងក្រុមដែលអ្នកបានបិទអាចត្រូវបានបើកឡើងវិញពីផ្នែកផ្ទាំងថ្មីៗ និងផ្នែកក្រុមផ្ទាំង។</translation>
 <translation id="8915916167043355778">បិទ​ទាំងអស់</translation>
-<translation id="8926389886865778422">កុំសួរម្តងទៀត</translation>
-<translation id="8993967613304721520">{NUMBER_OF_TABS,plural, =1{ពង្រីក​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង។}other{ពង្រីក​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង។}}</translation>
 <translation id="9090098097337832354">បានបិទ​ព័ត៌មាន​អំពីហាងនេះ</translation>
 <translation id="9111228330448174435">បង្ហាញប្រអប់ពេលបង្កើតក្រុមផ្ទាំងថ្មី</translation>
 <translation id="9114502155681725011">បើក​ម៉ឺនុយ​សកម្មភាព​ក្រុមផ្ទាំង​សម្រាប់​ក្រុមផ្ទាំង <ph name="TITLE_OF_GROUP"/> ដែលមានពណ៌<ph name="COLOR_NAME"/>។</translation>
-<translation id="9150694013019234766">ប្ដូររវាងផ្ទាំង​នៅក្នុងក្រុម​ផ្ទាំងរបស់​អ្នកនៅជិតផ្នែកខាង​ក្រោមបំផុតរបស់​អេក្រង់</translation>
 <translation id="9169594135889675189">បញ្ចូលផ្ទាំង​ថ្មីទៅក្រុម</translation>
 <translation id="9216898458513705996">ផ្ទាំងនឹងនៅតែបើកនៅលើឧបករណ៍នេះ ប៉ុន្តែក្រុមនឹងត្រូវបានលុបចេញពីគ្រប់ឧបករណ៍ដែលបានចូលគណនីដោយប្រើ <ph name="USER_EMAIL"/></translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{ពង្រីក​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_ONE"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}other{ពង្រីក​ក្រុមផ្ទាំង​ដែលមាន <ph name="TABS_COUNT_MANY"/> ផ្ទាំង ពណ៌<ph name="COLOR_NAME"/>។}}</translation>

@@ -308,11 +308,11 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6155018868740116868">Gendan</translation>
 <translation id="2521960050170773751">Tilføj medier fra side</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> vil gerne åbne</translation>
-<translation id="7128982309566342232">En indlejret side på <ph name="SITE"/> vil gerne åbne</translation>
+<translation id="4828353184750597953">En indlejret side på <ph name="SITE"/> vil gerne åbne</translation>
 <translation id="1175012181261953767">Denne side vil gerne åbne</translation>
 <translation id="7459546222322124545">En indlejret side på denne side vil gerne åbne</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> vil gerne gemme</translation>
-<translation id="5936788906460687941">En indlejret side på <ph name="SITE"/> vil gerne gemme</translation>
+<translation id="8813509417421129632">En indlejret side på <ph name="SITE"/> vil gerne gemme</translation>
 <translation id="7700010743463174379">Denne side vil gerne gemme</translation>
 <translation id="6774238875569752630">En indlejret side på denne side vil gerne gemme</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
@@ -574,6 +574,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="4094590686212463338">Kunne ikke skutte til denne synkroniseringskæde. Synkroniseringskæden blev slettet.</translation>
 <translation id="4908081302669157000">Telefonnumre, e-mailadresser og adresser</translation>
 <translation id="294985549514492876">Web-apps (PWAs)</translation>
+<translation id="7029809446516969842">Adgangskoder</translation>
 <translation id="924029461438529367">Vis søgeforslag</translation>
 <translation id="3128251601544028053">Når du skriver noget i adresselinjen eller søgefeltet, sender Brave de indtastede værdier til din standardsøgemaskine for at få bedre forslag. Dette er slået fra i privat-tilstand.</translation>
 <translation id="6285118765755298263">Indeksér andre søgemaskiner</translation>
@@ -714,6 +715,8 @@ Leo fremover, og denne handling sletter også din chathistorik. Hvis du sletter 
 <translation id="1355326130503900056">Navnet på modellen, som den skal vises i anmodningen til serverrammen, f.eks. phi-3 (bemærk, at hvis dette navn ikke passer præcist til det, der forventes af serveringsrammen, fungerer integrationen ikke).</translation>
 <translation id="3286410514484292784">Den url, hvor dit serversystem lytter efter anmodninger. Hvis du ikke er sikker, så tjek dokumentationen for serversystemet. For Ollama er det f.eks. altid http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Nogle serversystemer kan kræve autentificeringsoplysninger, f.eks. en API-nøgle eller et adgangstoken. Disse vil blive tilføjet til anmodningsheaderen.</translation>
+<translation id="4335128003329183586">Kontekststørrelse</translation>
+<translation id="8794525422794607973">Det maksimale antal tokens, som modellen kan behandle i en enkelt interaktion. Hvert token er ca. 3/4 af et ord. En større kontekststørrelse gør det muligt for modellen at håndtere længere samtaler. Forskellige modeller understøtter forskellige maksimale kontekststørrelser.</translation>
 <translation id="217141195370578385">Brave bruger ikke proxy på disse anmodninger, læs den valgte udbyders vilkår for beskyttelse af personlige oplysninger.</translation>
 <translation id="2645532768679870478">Ikke-lokale slutpunkter bør anvende HTTPS-protokollen til sikker datatransmission.</translation>
 <translation id="8177205483022887785">Du har indtastet en ugyldig URL. Indtast en gyldig URL.</translation>
@@ -723,6 +726,9 @@ Leo fremover, og denne handling sletter også din chathistorik. Hvis du sletter 
 <translation id="7435587476558117990">Tilslut din selvhostede eller tredjeparts-hostede LLM til Leo, og brug dem i browseren.</translation>
 <translation id="1381050642750209119">Brug enhver OpenAI Chat Protocol-kompatibel ramme som Ollama.</translation>
 <translation id="2642905648178380593">Gem model</translation>
+<translation id="6304169450064541679">System-prompt</translation>
+<translation id="3081947790648024460">Brugerdefinerede instruktioner og/eller kontekst, der gives til modellen for at lede dens svar i en bestemt retning eller stil. Brug %datetime%, hvor du gerne vil have indsat den aktuelle dato og det aktuelle klokkeslæt.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
 <translation id="349846214503465941">Aktivér spilleliste</translation>
 <translation id="7903608716704052878">Tilføj automatisk filer til offline visning</translation>
 <translation id="4193768184502613558">Denne indstilling vil automatisk lave cache mediefiler, så du kan afspille dem uden internetforbindelse.</translation>
