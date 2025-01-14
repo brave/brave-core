@@ -27,11 +27,11 @@ void DisplayScreenshotClippedNotification(base::WeakPtr<Browser> browser) {
 namespace brave_screenshots {
 
 BraveScreenshotsTabFeature::BraveScreenshotsTabFeature() {
-  VLOG(1) << "BraveScreenshotsTabFeature created";
+  DVLOG(1) << "BraveScreenshotsTabFeature created";
 }
 
 BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
-  VLOG(1) << "BraveScreenshotsTabFeature destroyed";
+  DVLOG(1) << "BraveScreenshotsTabFeature destroyed";
   if (strategy_) {
     strategy_.reset();
   }
@@ -39,7 +39,7 @@ BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
 
 void BraveScreenshotsTabFeature::StartScreenshot(Browser* browser,
                                                  ScreenshotType type) {
-  VLOG(1) << "Starting screenshot capture";
+  DVLOG(1) << "Starting screenshot capture";
   CHECK(browser);
 
   browser_ = browser->AsWeakPtr();
@@ -71,15 +71,15 @@ std::unique_ptr<BraveScreenshotStrategy>
 BraveScreenshotsTabFeature::CreateStrategy(ScreenshotType type) {
   switch (type) {
     case ScreenshotType::kFullPage:
-      VLOG(3) << "Creating FullPageStrategy";
+      DVLOG(3) << "Creating FullPageStrategy";
       return std::make_unique<FullPageStrategy>();
     case ScreenshotType::kSelection:
       // Based on image_editor::ScreenshotFlow, which requires a WebContents
-      VLOG(3) << "Creating SelectionStrategy";
+      DVLOG(3) << "Creating SelectionStrategy";
       return std::make_unique<SelectionStrategy>(web_contents_.get());
     case ScreenshotType::kViewport:
       // Based on image_editor::ScreenshotFlow, which requires a WebContents
-      VLOG(3) << "Creating ViewportStrategy";
+      DVLOG(3) << "Creating ViewportStrategy";
       return std::make_unique<ViewportStrategy>(web_contents_.get());
     default:
       NOTREACHED();
@@ -91,7 +91,7 @@ void BraveScreenshotsTabFeature::OnCaptureComplete(
   DVLOG(2) << __func__;
 
   if (result.image.IsEmpty()) {
-    LOG(ERROR) << "Screenshot capture failed";
+    DVLOG(2) << "Screenshot capture failed";
     return;
   }
 
