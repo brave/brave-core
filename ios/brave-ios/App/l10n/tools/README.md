@@ -1,4 +1,16 @@
-# How to contribute translations
+# How to push strings to Crowdin
+Once your english strings are all up to date. These changes can be pushed to Crowdin for translation by running the following from Terminal:
+
+```
+cd l10n/
+TOKEN=<token> ./push-strings-to-crowdin.sh
+```
+
+If there any issues pushing strings to Transifex then these issues are logged to ```output.log```
+
+### The API token can be created from Crowdin Dev Portal 
+
+# How to contribute translations via Transifex
 
 There are several things you can do to help us internationalize Brave and provide a great experience for everybody
 
@@ -92,3 +104,4 @@ If there any issues pulling translations into the Xcode project then these issue
 * When importing translations the ```xcodebuild``` command-line tool:
     * does __not__ allow us to specify where localizations are imported into the project folder structure
     * adds duplicate .strings entries to the ```Copy Bundle Resources``` section of ```Build Phases```, which need to be manually removed
+
