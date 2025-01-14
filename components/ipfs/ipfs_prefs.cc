@@ -36,9 +36,6 @@ inline constexpr char kIPFSInfobarCount[] = "brave.ipfs.infobar_count";
 // The number of storage used by IPFS Node
 inline constexpr char kIpfsStorageMax[] = "brave.ipfs.storage_max";
 
-// Used to enable/disable IPFS via admin policy.
-inline constexpr char kIPFSEnabled[] = "brave.ipfs.enabled";
-
 // Used to determine if local node was ever used.
 inline constexpr char kIPFSLocalNodeUsed[] = "brave.ipfs.local_node_used";
 
@@ -81,7 +78,7 @@ inline constexpr char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
 namespace ipfs {
 
 void RegisterDeprecatedIpfsPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kIPFSEnabled, true);
+  registry->RegisterBooleanPref(prefs::kIPFSEnabledByPolicy, true);
   registry->RegisterIntegerPref(kIPFSResolveMethod, 0);
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
   registry->RegisterBooleanPref(kIPFSAlwaysStartMode, false);
@@ -105,7 +102,7 @@ void RegisterDeprecatedIpfsPrefs(PrefRegistrySimple* registry) {
 }
 
 void ClearDeprecatedIpfsPrefs(PrefService* registry) {
-  registry->ClearPref(kIPFSEnabled);
+  registry->ClearPref(prefs::kIPFSEnabledByPolicy);
   registry->ClearPref(kIPFSResolveMethod);
   registry->ClearPref(kIPFSAutoFallbackToGateway);
   registry->ClearPref(kIPFSAlwaysStartMode);
