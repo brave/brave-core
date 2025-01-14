@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_ED25519_SLIP23_H_
 
 #include <memory>
-#include <string>
+#include <string_view>
 
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
@@ -52,7 +52,8 @@ class HDKeyEd25519Slip23 {
   HDKeyEd25519Slip23(
       base::span<const uint8_t, kSlip23ScalarSize> scalar,
       base::span<const uint8_t, kSlip23PrefixSize> prefix,
-      base::span<const uint8_t, kSlip23ChainCodeSize> chain_code);
+      base::span<const uint8_t, kSlip23ChainCodeSize> chain_code,
+      base::span<const uint8_t, kEd25519PublicKeySize> public_key);
 
   static std::unique_ptr<HDKeyEd25519Slip23> FromBip32Entropy(
       base::span<const uint8_t> seed,

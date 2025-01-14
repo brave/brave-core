@@ -14,18 +14,13 @@
 #include "base/containers/span_writer.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/common/hash_utils.h"
 #include "crypto/hmac.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"
 
 namespace brave_wallet {
-namespace {
 
-struct DerivedHmacs {
-  std::array<uint8_t, crypto::hash::kSha512Size> z_hmac = {};
-  std::array<uint8_t, crypto::hash::kSha512Size> cc_hmac = {};
-};
+namespace {
 
 // https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-eddsa-05#section-5.1.5
 // requires scalar to follow this requirements 'The lowest 3 bits of the first
@@ -55,56 +50,14 @@ bool IsValidEd25519Scalar(base::span<const uint8_t, kSlip23ScalarSize> scalar) {
          (scalar[31] & 0b1100'0000) == 0b0100'0000;
 }
 
-std::array<uint8_t, 32> PubkeyFromScalar(base::span<const uint8_t, 32> scalar) {
+std::optional<std::array<uint8_t, 32>> PubkeyFromScalar(
+    base::span<const uint8_t, 32> scalar) {
   DCHECK(IsValidEd25519Scalar(scalar));
   std::array<uint8_t, 32> public_key;
-  ED25519_pubkey_from_scalar(public_key.data(), scalar.data());
+  if (!ED25519_pubkey_from_scalar(public_key.data(), scalar.data())) {
+    return std::nullopt;
+  }
   return public_key;
-}
-
-DerivedHmacs DeriveHardenedHmacs(
-    uint32_t index,
-    base::span<const uint8_t, kSlip23ScalarSize> scalar,
-    base::span<const uint8_t, kSlip23PrefixSize> prefix,
-    base::span<const uint8_t> cc) {
-  std::array<uint8_t, 1 + 32 + 32 + 4> data;
-  auto span_writer = base::SpanWriter(base::span(data));
-  span_writer.Skip(1u);
-  span_writer.Write(scalar);
-  span_writer.Write(prefix);
-  span_writer.WriteU32LittleEndian(index);
-
-  DerivedHmacs result;
-
-  data[0] = 0x00;
-  result.z_hmac = crypto::hmac::SignSha512(cc, data);
-
-  data[0] = 0x01;
-  result.cc_hmac = crypto::hmac::SignSha512(cc, data);
-
-  return result;
-}
-
-DerivedHmacs DeriveNormalHmacs(
-    uint32_t index,
-    base::span<const uint8_t, kSlip23ScalarSize> scalar,
-    base::span<const uint8_t, kEd25519PublicKeySize> public_key,
-    base::span<const uint8_t> cc) {
-  std::array<uint8_t, 1 + 32 + 4> data;
-  auto span_writer = base::SpanWriter(base::span(data));
-  span_writer.Skip(1u);
-  span_writer.Write(public_key);
-  span_writer.WriteU32LittleEndian(index);
-
-  DerivedHmacs result;
-
-  data[0] = 0x02;
-  result.z_hmac = crypto::hmac::SignSha512(cc, data);
-
-  data[0] = 0x03;
-  result.cc_hmac = crypto::hmac::SignSha512(cc, data);
-
-  return result;
 }
 
 std::array<uint8_t, kSlip23ScalarSize> CalculateDerivedScalar(
@@ -158,11 +111,12 @@ HDKeyEd25519Slip23::~HDKeyEd25519Slip23() = default;
 HDKeyEd25519Slip23::HDKeyEd25519Slip23(
     base::span<const uint8_t, kSlip23ScalarSize> scalar,
     base::span<const uint8_t, kSlip23PrefixSize> prefix,
-    base::span<const uint8_t, kSlip23ChainCodeSize> chain_code) {
+    base::span<const uint8_t, kSlip23ChainCodeSize> chain_code,
+    base::span<const uint8_t, kEd25519PublicKeySize> public_key) {
   base::span(scalar_).copy_from(scalar);
   base::span(prefix_).copy_from(prefix);
   base::span(chain_code_).copy_from(chain_code);
-  public_key_ = PubkeyFromScalar(scalar_);
+  base::span(public_key_).copy_from(public_key);
 }
 
 std::unique_ptr<HDKeyEd25519Slip23> HDKeyEd25519Slip23::DeriveChild(
@@ -172,19 +126,47 @@ std::unique_ptr<HDKeyEd25519Slip23> HDKeyEd25519Slip23::DeriveChild(
     return nullptr;
   }
 
-  auto derived =
-      index.is_hardened()
-          ? DeriveHardenedHmacs(*raw_index_value, scalar_, prefix_, chain_code_)
-          : DeriveNormalHmacs(*raw_index_value, scalar_, public_key_,
-                              chain_code_);
+  std::array<uint8_t, crypto::hash::kSha512Size> z_hmac = {};
+  std::array<uint8_t, crypto::hash::kSha512Size> cc_hmac = {};
+
+  if (index.is_hardened()) {
+    std::array<uint8_t, 1 + 32 + 32 + 4> data;
+    auto span_writer = base::SpanWriter(base::span(data));
+    span_writer.Skip(1u);
+    span_writer.Write(scalar_);
+    span_writer.Write(prefix_);
+    span_writer.WriteU32LittleEndian(*raw_index_value);
+
+    data[0] = 0x00;
+    z_hmac = crypto::hmac::SignSha512(chain_code_, data);
+    data[0] = 0x01;
+    cc_hmac = crypto::hmac::SignSha512(chain_code_, data);
+  } else {
+    std::array<uint8_t, 1 + 32 + 4> data;
+    auto span_writer = base::SpanWriter(base::span(data));
+    span_writer.Skip(1u);
+    span_writer.Write(public_key_);
+    span_writer.WriteU32LittleEndian(*raw_index_value);
+
+    data[0] = 0x02;
+    z_hmac = crypto::hmac::SignSha512(chain_code_, data);
+    data[0] = 0x03;
+    cc_hmac = crypto::hmac::SignSha512(chain_code_, data);
+  }
+
+  auto derived_scalar = CalculateDerivedScalar(
+      scalar_, base::span(z_hmac).first<kSlip23DerivationScalarSize>());
+
+  auto pubkey = PubkeyFromScalar(derived_scalar);
+  if (!pubkey) {
+    return nullptr;
+  }
 
   return base::WrapUnique(new HDKeyEd25519Slip23(
-      CalculateDerivedScalar(
-          scalar_,
-          base::span(derived.z_hmac).first<kSlip23DerivationScalarSize>()),
-      CalculateDerivedPrefix(
-          prefix_, base::span(derived.z_hmac).last<kSlip23PrefixSize>()),
-      CalculateDerivedChainCode(derived.cc_hmac)));
+      derived_scalar,
+      CalculateDerivedPrefix(prefix_,
+                             base::span(z_hmac).last<kSlip23PrefixSize>()),
+      CalculateDerivedChainCode(cc_hmac), *pubkey));
 }
 
 // static
@@ -204,11 +186,15 @@ HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(
   }
 
   auto xprv_span = base::span(xprv);
+  auto scalar = ClampScalarEd25519Bip32(xprv_span.first<kSlip23ScalarSize>());
+  auto pubkey = PubkeyFromScalar(scalar);
+  if (!pubkey) {
+    return nullptr;
+  }
 
   return base::WrapUnique(new HDKeyEd25519Slip23(
-      ClampScalarEd25519Bip32(xprv_span.first<kSlip23ScalarSize>()),
-      xprv_span.subspan<kSlip23ScalarSize, kSlip23PrefixSize>(),
-      xprv_span.last<kSlip23ChainCodeSize>()));
+      scalar, xprv_span.subspan<kSlip23ScalarSize, kSlip23PrefixSize>(),
+      xprv_span.last<kSlip23ChainCodeSize>(), *pubkey));
 }
 
 std::optional<std::array<uint8_t, kEd25519SignatureSize>>

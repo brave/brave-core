@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
-OPENSSL_EXPORT void ED25519_pubkey_from_scalar(uint8_t out_public_key[32],
-                                               const uint8_t scalar[32]);
+OPENSSL_EXPORT int ED25519_pubkey_from_scalar(uint8_t out_public_key[32],
+                                              const uint8_t scalar[32]);
 OPENSSL_EXPORT int ED25519_sign_with_scalar_and_prefix(
     uint8_t out_sig[64],
     const uint8_t* message,
