@@ -1205,7 +1205,7 @@ TabSearchBubbleHost* VerticalTabStripRegionView::GetTabSearchBubbleHost() {
   return header_view_->tab_search_button()->tab_search_bubble_host();
 }
 
-int VerticalTabStripRegionView::GetTabStripViewportHeight() const {
+int VerticalTabStripRegionView::GetTabStripViewportMaxHeight() const {
   // Don't depend on |contents_view_|'s current height. It could be bigger than
   // the actual viewport height.
   return GetContentsBounds().height() - header_view_->height() -

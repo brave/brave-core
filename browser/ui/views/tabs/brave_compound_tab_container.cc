@@ -285,7 +285,7 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize(
     }
 
     preferred_size.set_height(
-        std::min(combined_height, region_view->GetTabStripViewportHeight()));
+        std::min(combined_height, region_view->GetTabStripViewportMaxHeight()));
     break;
   }
 
