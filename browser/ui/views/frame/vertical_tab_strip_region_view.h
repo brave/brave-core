@@ -85,7 +85,7 @@ class VerticalTabStripRegionView : public views::View,
 
   TabSearchBubbleHost* GetTabSearchBubbleHost();
 
-  int GetTabStripViewportHeight() const;
+  int GetTabStripViewportMaxHeight() const;
 
   void set_layout_dirty(base::PassKey<VerticalTabStripScrollContentsView>) {
     layout_dirty_ = true;
