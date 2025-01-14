@@ -28,7 +28,10 @@ export default function NoticeConversationStorage() {
           <a
             href='#'
             target='_blank'
-            onClick={() => aiChatContext.uiHandler?.openStorageSupportUrl()}
+            onClick={(e) => {
+              e.preventDefault()
+              aiChatContext.uiHandler?.openStorageSupportUrl()
+            }}
           >
             {getLocale('learnMore')}
           </a>
