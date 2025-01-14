@@ -87,7 +87,7 @@ export const CreateAccountOptions = (options: {
   if (options.isZCashEnabled) {
     accounts.push({
       description: getLocale('braveWalletCreateAccountZCashDescription'),
-      name: 'ZCash',
+      name: 'Zcash',
       fixedNetwork: BraveWallet.Z_CASH_MAINNET,
       coin: BraveWallet.CoinType.ZEC,
       icon: getNetworkLogo(BraveWallet.Z_CASH_MAINNET, 'ZEC'),
@@ -100,7 +100,7 @@ export const CreateAccountOptions = (options: {
         description: getLocale(
           'braveWalletCreateAccountZCashTestnetDescription'
         ),
-        name: 'ZCash Testnet',
+        name: 'Zcash Testnet',
         fixedNetwork: BraveWallet.Z_CASH_TESTNET,
         coin: BraveWallet.CoinType.ZEC,
         icon: getNetworkLogo(BraveWallet.Z_CASH_TESTNET, 'ZEC'),
