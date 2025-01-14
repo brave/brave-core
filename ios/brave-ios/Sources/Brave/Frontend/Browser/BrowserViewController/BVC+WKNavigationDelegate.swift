@@ -228,7 +228,12 @@ extension BrowserViewController: WKNavigationDelegate {
     // Let the system's prompt handle these. We can't let these cases fall-through, as the last check in this file will
     // assume it's an external app prompt
     if ["tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
-      return (.allow, preferences)
+      let shouldOpen = await withCheckedContinuation { continuation in
+        UIApplication.shared.open(requestURL, options: [:]) { didOpen in
+          continuation.resume(returning: didOpen)
+        }
+      }
+      return (shouldOpen ? .allow : .cancel, preferences)
     }
 
     // Second special case are a set of URLs that look like regular http links, but should be handed over to iOS
