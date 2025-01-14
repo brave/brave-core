@@ -122,7 +122,6 @@ provideStrings({
   menuManageSubscription: 'Manage subscription',
   toolsMenuButtonLabel: 'Leo tools',
   attachmentMenuButtonLabel: 'Attachment',
-  attachMenuTitle: 'Attach',
   uploadFileButtonLabel: 'Upload file...',
   screenshotButtonLabel: 'Screenshot',
   currentTabContentsButtonLabel: 'Current tab contents',
