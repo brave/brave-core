@@ -122,18 +122,33 @@ void AIChatUIPageHandler::FileSelected(const ui::SelectedFileInfo& file,
                                        int index) {
   profile_->set_last_selected_directory(file.path().DirName());
   auto read_image = base::BindOnce(
-      [](const base::FilePath& path) -> std::optional<std::vector<uint8_t>> {
-        return base::ReadFileToBytes(path);
+      [](const ui::SelectedFileInfo& info)
+          -> std::tuple<std::optional<std::vector<uint8_t>>,
+                        std::optional<std::string>, std::optional<int64_t>> {
+        return std::make_tuple(base::ReadFileToBytes(info.path()),
+                               info.display_name,
+                               base::GetFileSize(info.path()));
       },
-      file.path());
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()}, std::move(read_image),
+      file);
+  auto get_image_details = base::BindOnce(
+      [](UploadImageCallback callback,
+         std::tuple<std::optional<std::vector<uint8_t>>,
+                    std::optional<std::string>, std::optional<int64_t>>
+             result) {
+        std::move(callback).Run(std::get<0>(result), std::get<1>(result),
+                                std::get<2>(result));
+      },
       std::move(upload_image_callback_));
+
+  base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
+                                               std::move(read_image),
+                                               std::move(get_image_details));
 }
 
 void AIChatUIPageHandler::FileSelectionCanceled() {
   if (upload_image_callback_) {
-    std::move(upload_image_callback_).Run(std::nullopt);
+    std::move(upload_image_callback_)
+        .Run(std::nullopt, std::nullopt, std::nullopt);
   }
 }
 
