@@ -10,8 +10,6 @@ import * as Mojom from '../../../common/mojom'
 import styles from './style.module.scss'
 
 interface Props {
-  children: React.ReactNode
-
   inputText: string,
   isToolsMenuOpen: boolean,
   setIsToolsMenuOpen: (open: boolean) => void,
@@ -30,7 +28,7 @@ export default function ToolsButtonMenu(props: Props) {
       isOpen={props.isToolsMenuOpen}
       onClose={() => props.setIsToolsMenuOpen(false)}
     >
-      <div slot='anchor-content'>{props.children}</div>
+      <div slot='anchor-content' />
       {props.actionList.map((actionGroup) => {
         return (
           <React.Fragment key={actionGroup.category}>
