@@ -9,10 +9,8 @@ package org.chromium.chrome.browser.firstrun;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-import android.Manifest;
 import android.animation.LayoutTransition;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
@@ -35,7 +33,6 @@ import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResp
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -43,7 +40,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -232,11 +228,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     private boolean shouldForceDefaultBrowserPrompt() {
-        return isNewOnboardingEnabled() && !isDefaultBrowser();
-    }
-
-    private boolean isNewOnboardingEnabled() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEW_ANDROID_ONBOARDING);
+        return !isDefaultBrowser();
     }
 
     private void setDefaultBrowserAndProceedToNextStep() {
@@ -251,8 +243,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         return BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this);
     }
 
-    ActivityResultLauncher<String> mRequestPermissionLauncher = registerForActivityResult(
-            new ActivityResultContracts.RequestPermission(), isGranted -> { nextOnboardingStep(); });
+    ActivityResultLauncher<String> mRequestPermissionLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.RequestPermission(),
+                    isGranted -> {
+                        nextOnboardingStep();
+                    });
 
     private void nextOnboardingStep() {
         if (isActivityFinishingOrDestroyed()) return;
@@ -261,8 +257,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mCurrentStep == 0) {
             showIntroPage();
         } else if (mCurrentStep == 1) {
-            if (!isNewOnboardingEnabled()
-                    || !BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+            if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
                 showBrowserSelectionPage();
             } else if (!isDefaultBrowser()) {
                 setDefaultBrowserAndProceedToNextStep();
@@ -318,11 +313,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                         },
                         200);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !isNewOnboardingEnabled()) {
-            mRequestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-        } else {
-            nextOnboardingStep();
-        }
+        nextOnboardingStep();
     }
 
     private void showBrowserSelectionPage() {
