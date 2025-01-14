@@ -67,12 +67,9 @@ export default class ReportView extends React.PureComponent<Props, State> {
   }
 
   private _handleKeyPress(e: KeyboardEvent) {
-    const { onClose, onSubmitReport } = this.props;
-    const { details, contact, attachScreenshot } = this.state
+    const { onClose } = this.props;
     if (e.key === 'Escape') {
       onClose();
-    } else if (e.key === 'Enter') {
-      onSubmitReport(details, contact, attachScreenshot);
     }
   }
 
