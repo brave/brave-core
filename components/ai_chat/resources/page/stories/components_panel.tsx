@@ -626,6 +626,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isCharLimitApproaching: inputText.length > 64,
     isCharLimitExceeded: inputText.length > 70,
     inputTextCharCountDisplay: `${inputText.length} / 70`,
+    imgData: undefined,
     setInputText,
     setCurrentModel: () => { },
     switchToBasicModel,

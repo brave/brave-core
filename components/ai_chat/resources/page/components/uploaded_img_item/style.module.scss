@@ -1,0 +1,53 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.itemWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl) var(--leo-spacing-m)
+    var(--leo-spacing-m);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+}
+
+.image {
+  width: 48px;
+  height: auto;
+  border-radius: var(--leo-radius-m);
+  box-shadow: 0px var(--leo-elevation-xxs, 1px) 0px 0px
+      var(--leo-color-elevation-primary, rgba(0, 0, 0, 0.05)),
+    0px var(--leo-elevation-xxs, 1px) var(--leo-elevation-xs, 4px) 0px
+      var(--leo-color-elevation-secondary, rgba(0, 0, 0, 0.1));
+}
+
+.leftSide {
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-xl);
+}
+
+.imageInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.nameText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.sizeText {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.removeButton {
+  flex-grow: 0;
+}

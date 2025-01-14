@@ -13,6 +13,7 @@ import { AIChatContext } from '../../state/ai_chat_context'
 import { ConversationContext } from '../../state/conversation_context'
 import styles from './style.module.scss'
 import AttachmentButtonMenu from '../attachment_button_menu'
+import UploadedImgItem from '../uploaded_img_item'
 
 type Props = Pick<
   ConversationContext,
@@ -31,6 +32,7 @@ type Props = Pick<
   | 'isGenerating'
   | 'handleStopGenerating'
   | 'uploadImage'
+  | 'imgData'
 > &
   Pick<
     AIChatContext,
@@ -100,6 +102,11 @@ function InputBox(props: InputBoxProps) {
             actionType={props.context.selectedActionType}
             onCloseClick={props.context.resetSelectedActionType}
           />
+        </div>
+      )}
+      {props.context.imgData && (
+        <div className={styles.attachmentWrapper}>
+          <UploadedImgItem imageData={props.context.imgData} removeImage={() => {}} />
         </div>
       )}
       <div

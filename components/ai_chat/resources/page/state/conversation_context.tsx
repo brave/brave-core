@@ -22,6 +22,12 @@ export interface CharCountContext {
   inputTextCharCountDisplay: string
 }
 
+export type UploadedImageData = {
+  data: number[]
+  fileName: string
+  fileSize: number
+}
+
 export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
   conversationUuid?: string
@@ -63,6 +69,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
 
   showAttachments: boolean
   setShowAttachments: (show: boolean) => void
+  imgData?: UploadedImageData
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -105,7 +112,8 @@ const defaultContext: ConversationContext = {
   showAttachments: false,
   setShowAttachments: () => { },
   ...defaultSendFeedbackState,
-  ...defaultCharCountContext
+  ...defaultCharCountContext,
+  imgData: undefined
 }
 
 export function useCharCountInfo(inputText: string) {
@@ -499,7 +507,15 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const uploadImage = () => {
     aiChatContext.uiHandler?.uploadImage()
     .then(({imageData, fileName, fileSize}) => {
-      console.log(imageData, fileName, fileSize)
+      if (imageData && fileName && fileSize) {
+        setPartialContext({
+          imgData: {
+            data: imageData,
+            fileName,
+            fileSize: Number(fileSize)
+          }
+        })
+      }
     })
   }
 
