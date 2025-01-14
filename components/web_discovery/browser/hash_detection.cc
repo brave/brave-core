@@ -7,25 +7,21 @@
 
 #include <cmath>
 
-#include "base/containers/fixed_flat_map.h"
 #include "brave/components/web_discovery/browser/hash_detection_matrix.h"
 
 namespace web_discovery {
 
 namespace {
 
-constexpr auto kTokenMap = base::MakeFixedFlatMap<char, size_t>(
-    {{'1', 1},  {'0', 0},  {'3', 3},  {'2', 2},  {'5', 5},  {'4', 4},
-     {'7', 7},  {'6', 6},  {'9', 9},  {'8', 8},  {'A', 36}, {'C', 38},
-     {'B', 37}, {'E', 40}, {'D', 39}, {'G', 42}, {'F', 41}, {'I', 44},
-     {'H', 43}, {'K', 46}, {'J', 45}, {'M', 48}, {'L', 47}, {'O', 50},
-     {'N', 49}, {'Q', 52}, {'P', 51}, {'S', 54}, {'R', 53}, {'U', 56},
-     {'T', 55}, {'W', 58}, {'V', 57}, {'Y', 60}, {'X', 59}, {'Z', 61},
-     {'a', 10}, {'c', 12}, {'b', 11}, {'e', 14}, {'d', 13}, {'g', 16},
-     {'f', 15}, {'i', 18}, {'h', 17}, {'k', 20}, {'j', 19}, {'m', 22},
-     {'l', 21}, {'o', 24}, {'n', 23}, {'q', 26}, {'p', 25}, {'s', 28},
-     {'r', 27}, {'u', 30}, {'t', 29}, {'w', 32}, {'v', 31}, {'y', 34},
-     {'x', 33}, {'z', 35}});
+size_t CharToToken(char c) {
+  if (c >= 'a') {
+    return c - 'a' + 10;
+  }
+  if (c >= 'A') {
+    return c - 'A' + 36;
+  }
+  return c - '0';
+}
 
 constexpr double kClassifierThreshold = 0.015;
 
@@ -50,14 +46,10 @@ bool IsHashLikely(std::string_view value, double threshold_multiplier) {
     if (!std::isalnum(value[next_char_i])) {
       break;
     }
-    auto matrix_pos_a = kTokenMap.find(value[i]);
-    auto matrix_pos_b = kTokenMap.find(value[next_char_i]);
-    if (matrix_pos_a == kTokenMap.end() || matrix_pos_b == kTokenMap.end()) {
-      continue;
-    }
+    auto matrix_pos_a = CharToToken(value[i]);
+    auto matrix_pos_b = CharToToken(value[next_char_i]);
 
-    log_prob_sum +=
-        kClassifierTransitionMatrix[matrix_pos_a->second][matrix_pos_b->second];
+    log_prob_sum += kClassifierTransitionMatrix[matrix_pos_a][matrix_pos_b];
     add_count++;
   }
 

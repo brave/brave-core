@@ -51,15 +51,18 @@ constexpr char kMaskedURLSuffix[] = "/ (PROTECTED)";
 bool ContainsForbiddenKeywords(const GURL& url) {
   auto path_and_query =
       base::StrCat({url.path_piece(), "?", url.query_piece()});
-  if (g_regex_util->CheckPathAndQueryStringKeywords(path_and_query)) {
+  if (RegexUtil::GetInstance()->CheckPathAndQueryStringKeywords(
+          path_and_query)) {
     return true;
   }
   if (!url.ref_piece().empty() &&
-      g_regex_util->CheckQueryStringOrRefKeywords("#" + url.ref())) {
+      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords("#" +
+                                                              url.ref())) {
     return true;
   }
   if (!url.query_piece().empty() &&
-      g_regex_util->CheckQueryStringOrRefKeywords("?" + url.query())) {
+      RegexUtil::GetInstance()->CheckQueryStringOrRefKeywords("?" +
+                                                              url.query())) {
     return true;
   }
   return false;
@@ -72,7 +75,8 @@ bool IsPrivateDomainLikely(std::string_view host) {
   if (dot_split.size() > kMaxDotSplitDomainSize) {
     return true;
   }
-  if (g_regex_util->CheckForLongNumber(host, kMaxDomainNumberLength)) {
+  if (RegexUtil::GetInstance()->CheckForLongNumber(host,
+                                                   kMaxDomainNumberLength)) {
     return true;
   }
   auto hyphen_split =
@@ -135,15 +139,16 @@ bool IsPrivateQueryLikely(const std::string& query) {
     VLOG(1) << "Ignoring query due to long split length";
     return true;
   }
-  if (g_regex_util->CheckForLongNumber(query, kMaxQueryNumberLength)) {
+  if (RegexUtil::GetInstance()->CheckForLongNumber(query,
+                                                   kMaxQueryNumberLength)) {
     VLOG(1) << "Ignoring query due to long number";
     return true;
   }
-  if (g_regex_util->CheckForEmail(query)) {
+  if (RegexUtil::GetInstance()->CheckForEmail(query)) {
     VLOG(1) << "Ignoring query due to inclusion of email";
     return true;
   }
-  if (g_regex_util->CheckQueryHTTPCredentials(query)) {
+  if (RegexUtil::GetInstance()->CheckQueryHTTPCredentials(query)) {
     VLOG(1) << "Ignoring query due to potential inclusion of HTTP credentials";
     return true;
   }
@@ -179,7 +184,7 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
 }
 
 bool ShouldMaskURL(const GURL& url) {
-  if (g_regex_util->CheckForEmail(url.spec())) {
+  if (RegexUtil::GetInstance()->CheckForEmail(url.spec())) {
     return true;
   }
   if (!url.query_piece().empty()) {
@@ -192,14 +197,14 @@ bool ShouldMaskURL(const GURL& url) {
     if (query_parts.size() > kMaxQueryStringParts) {
       return true;
     }
-    if (g_regex_util->CheckForLongNumber(url.query_piece(),
-                                         kMaxQueryStringOrPathNumberLength)) {
+    if (RegexUtil::GetInstance()->CheckForLongNumber(
+            url.query_piece(), kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }
   if (!url.path_piece().empty()) {
-    if (g_regex_util->CheckForLongNumber(url.path_piece(),
-                                         kMaxQueryStringOrPathNumberLength)) {
+    if (RegexUtil::GetInstance()->CheckForLongNumber(
+            url.path_piece(), kMaxQueryStringOrPathNumberLength)) {
       return true;
     }
   }

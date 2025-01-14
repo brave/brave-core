@@ -48,6 +48,11 @@ namespace web_discovery {
 RegexUtil::RegexUtil() = default;
 RegexUtil::~RegexUtil() = default;
 
+RegexUtil* RegexUtil::GetInstance() {
+  static base::NoDestructor<RegexUtil> regex_util;
+  return regex_util.get();
+}
+
 bool RegexUtil::CheckForEmail(std::string_view str) {
   if (!email_regex_) {
     email_regex_.emplace(kEmailRegex);

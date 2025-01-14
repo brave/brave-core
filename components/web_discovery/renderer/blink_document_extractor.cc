@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/metrics/histogram_macros.h"
 #include "third_party/blink/public/web/web_element.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 
@@ -72,6 +73,7 @@ BlinkDocumentExtractor::~BlinkDocumentExtractor() = default;
 void BlinkDocumentExtractor::QueryElementAttributes(
     std::vector<mojom::SelectRequestPtr> requests,
     QueryElementAttributesCallback callback) {
+  SCOPED_UMA_HISTOGRAM_TIMER_MICROS("Brave.WebDiscovery.BlinkDocumentExtract");
   blink::WebDocument document = render_frame_->GetWebFrame()->GetDocument();
   std::vector<mojom::AttributeResultPtr> results;
   for (const auto& request : requests) {

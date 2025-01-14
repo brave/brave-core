@@ -27,6 +27,7 @@ std::unique_ptr<infobars::InfoBar> CreateWebDiscoveryInfoBar(
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
 #include "brave/browser/web_discovery/web_discovery_service_factory.h"
+#include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "brave/components/web_discovery/common/features.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #endif
@@ -50,14 +51,7 @@ void WebDiscoveryTabHelper::MaybeCreateForWebContents(
 
 WebDiscoveryTabHelper::WebDiscoveryTabHelper(content::WebContents* contents)
     : content::WebContentsObserver(contents),
-      content::WebContentsUserData<WebDiscoveryTabHelper>(*contents) {
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-  if (base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
-    web_discovery_service_ = WebDiscoveryServiceFactory::GetForBrowserContext(
-        contents->GetBrowserContext());
-  }
-#endif
-}
+      content::WebContentsUserData<WebDiscoveryTabHelper>(*contents) {}
 
 WebDiscoveryTabHelper::~WebDiscoveryTabHelper() = default;
 
@@ -111,19 +105,25 @@ void WebDiscoveryTabHelper::ShowInfoBar(PrefService* prefs) {
 void WebDiscoveryTabHelper::MaybeExtractFromPage(
     content::RenderFrameHost* render_frame_host,
     const GURL& url) {
-  if (!web_discovery_service_) {
+  if (!base::FeatureList::IsEnabled(features::kBraveWebDiscoveryNative)) {
+    return;
+  }
+  auto* web_discovery_service =
+      WebDiscoveryServiceFactory::GetForBrowserContext(
+          render_frame_host->GetBrowserContext());
+  if (!web_discovery_service) {
     return;
   }
   if (!render_frame_host->IsInPrimaryMainFrame()) {
     return;
   }
-  if (!web_discovery_service_->ShouldExtractFromPage(url, render_frame_host)) {
+  if (!web_discovery_service->ShouldExtractFromPage(url, render_frame_host)) {
     return;
   }
   mojo::Remote<mojom::DocumentExtractor> remote;
   render_frame_host->GetRemoteInterfaces()->GetInterface(
       remote.BindNewPipeAndPassReceiver());
-  web_discovery_service_->StartExtractingFromPage(url, std::move(remote));
+  web_discovery_service->StartExtractingFromPage(url, std::move(remote));
 }
 #endif
 

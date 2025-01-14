@@ -35,6 +35,8 @@ GURL GeneratePrivateSearchURL(const GURL& original_url,
 bool ShouldMaskURL(const GURL& url);
 
 // Masks a URL to protect privacy. Returns nullopt if URL is invalid.
+// Resolves nested Google URLs and replaces the URL path with a
+// placeholder token, if applicable.
 std::optional<std::string> MaskURL(const GURL& url);
 
 }  // namespace web_discovery

@@ -77,8 +77,8 @@ void WebDiscoveryService::Start() {
 
 void WebDiscoveryService::Stop() {
   content_scraper_ = nullptr;
-  server_config_loader_ = nullptr;
   credential_manager_ = nullptr;
+  server_config_loader_ = nullptr;
 }
 
 void WebDiscoveryService::ClearPrefs() {
@@ -132,6 +132,7 @@ void WebDiscoveryService::StartExtractingFromPage(
       document_extractor_remotes_.Add(std::move(document_extractor));
   // We use a WeakPtr within the ContentScraper for callbacks from the renderer,
   // so using Unretained is fine here.
+  CHECK(content_scraper_);
   content_scraper_->ScrapePage(
       url, false, document_extractor_remotes_.Get(remote_id),
       base::BindOnce(&WebDiscoveryService::OnContentScraped,

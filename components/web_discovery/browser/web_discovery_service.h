@@ -69,6 +69,7 @@ class WebDiscoveryService : public KeyedService {
 
   void OnConfigChange();
   void OnPatternsLoaded();
+  // See patterns.h for details on strict vs. normal scraping
   void OnContentScraped(bool is_strict,
                         std::unique_ptr<PageScrapeResult> result);
 

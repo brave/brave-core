@@ -22,7 +22,8 @@ namespace web_discovery {
 // This class is not thread safe.
 class RegexUtil {
  public:
-  RegexUtil();
+  static RegexUtil* GetInstance();
+
   ~RegexUtil();
 
   RegexUtil(const RegexUtil&) = delete;
@@ -35,6 +36,9 @@ class RegexUtil {
   bool CheckQueryHTTPCredentials(std::string_view str);
 
  private:
+  friend class base::NoDestructor<RegexUtil>;
+  RegexUtil();
+
   std::optional<re2::RE2> email_regex_;
   // key is long number map length
   base::flat_map<size_t, std::unique_ptr<re2::RE2>> long_number_regexes_;
@@ -43,8 +47,6 @@ class RegexUtil {
   std::optional<re2::RE2> http_password_regex_;
   std::optional<re2::RE2> non_alphanumeric_regex_;
 };
-
-static base::NoDestructor<RegexUtil> g_regex_util;
 
 }  // namespace web_discovery
 

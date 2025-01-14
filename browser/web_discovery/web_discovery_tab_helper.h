@@ -11,11 +11,6 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
-#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
-#include "base/memory/raw_ptr.h"
-#include "brave/components/web_discovery/browser/web_discovery_service.h"
-#endif
-
 class PrefService;
 
 namespace web_discovery {
@@ -47,8 +42,6 @@ class WebDiscoveryTabHelper
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
   void MaybeExtractFromPage(content::RenderFrameHost* render_frame_host,
                             const GURL& url);
-
-  raw_ptr<WebDiscoveryService> web_discovery_service_ = nullptr;
 #endif
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
