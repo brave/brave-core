@@ -15,47 +15,53 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-type Props = Pick<
-  ConversationContext,
-  'uploadImage'
->
+type Props = Pick<ConversationContext, 'uploadImage'>
 
 export default function AttachmentButtonMenu(props: Props) {
   return (
     <>
       <ButtonMenu>
-        <div
-          slot='anchor-content'
-        >
-        <Button
-          fab
-          kind='plain-faint'
-          title={getLocale('attachmentMenuButtonLabel')}
-        >
-          <Icon name='attachment' />
-        </Button>
-        </div>
-        <div className={styles.section}>
-          <Icon
-            className={styles.attachIcon}
-            name='attachment'
-          />
-          {getLocale('attachMenuTitle')}
+        <div slot='anchor-content'>
+          <Button
+            fab
+            kind='plain-faint'
+            title={getLocale('attachmentMenuButtonLabel')}
+          >
+            <Icon name='attachment' />
+          </Button>
         </div>
         <leo-menu-item onClick={props.uploadImage}>
-          {getLocale('uploadFileButtonLabel')}
+          <div className={styles.buttonContent}>
+            <Icon
+              className={styles.buttonIcon}
+              name='upload'
+            />
+            {getLocale('uploadFileButtonLabel')}
+          </div>
         </leo-menu-item>
         <leo-menu-item
           // Needs onClick method
           onClick={() => {}}
         >
-          {getLocale('screenshotButtonLabel')}
+          <div className={styles.buttonContent}>
+            <Icon
+              className={styles.buttonIcon}
+              name='screenshot'
+            />
+            {getLocale('screenshotButtonLabel')}
+          </div>
         </leo-menu-item>
         <leo-menu-item
           // Needs onClick method
           onClick={() => {}}
         >
-          {getLocale('currentTabContentsButtonLabel')}
+          <div className={styles.buttonContent}>
+            <Icon
+              className={styles.buttonIcon}
+              name='window-tab'
+            />
+            {getLocale('currentTabContentsButtonLabel')}
+          </div>
         </leo-menu-item>
       </ButtonMenu>
     </>

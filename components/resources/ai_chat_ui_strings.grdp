@@ -498,9 +498,6 @@
   <message name="IDS_AI_CHAT_LEO_ATTACHMENT_MENU_BUTTON_LABEL" desc="The button label for Leo's attachment menu">
     Attachment
   </message>
-  <message name="IDS_AI_CHAT_ATTACH_MENU_TITLE" desc="The title for Leo's attachment menu">
-    Attach
-  </message>
   <message name="IDS_AI_CHAT_UPLOAD_FILE_BUTTON_LABEL" desc="The button label for upload file">
     Upload file...
   </message>

@@ -210,7 +210,6 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"toolsMenuButtonLabel", IDS_AI_CHAT_LEO_TOOLS_BUTTON_LABEL},
        {"attachmentMenuButtonLabel",
         IDS_AI_CHAT_LEO_ATTACHMENT_MENU_BUTTON_LABEL},
-       {"attachMenuTitle", IDS_AI_CHAT_ATTACH_MENU_TITLE},
        {"uploadFileButtonLabel", IDS_AI_CHAT_UPLOAD_FILE_BUTTON_LABEL},
        {"screenshotButtonLabel", IDS_AI_CHAT_SCREENSHOT_BUTTON_LABEL},
        {"currentTabContentsButtonLabel",
