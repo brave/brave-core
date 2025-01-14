@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
-#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -47,6 +48,31 @@ class MockDelegate : public EphemeralStorageServiceDelegate {
               CleanupFirstPartyStorageArea,
               (const std::string& registerable_domain),
               (override));
+  MOCK_METHOD(void,
+              RegisterFirstWindowOpenedCallback,
+              (base::OnceClosure callback),
+              (override));
+
+  void ExpectRegisterFirstWindowOpenedCallback(base::OnceClosure callback,
+                                               bool trigger_callback) {
+    EXPECT_CALL(*this, RegisterFirstWindowOpenedCallback(_))
+        .WillOnce(testing::Invoke(
+            [this, trigger_callback](base::OnceClosure callback) {
+              if (trigger_callback) {
+                std::move(callback).Run();
+              } else {
+                first_window_opened_callback_ = std::move(callback);
+              }
+            }));
+  }
+
+  void TriggerFirstWindowOpenedCallback() {
+    ASSERT_TRUE(first_window_opened_callback_);
+    std::move(first_window_opened_callback_).Run();
+  }
+
+ private:
+  base::OnceClosure first_window_opened_callback_;
 };
 
 class MockObserver : public EphemeralStorageServiceObserver {
@@ -62,6 +88,11 @@ class MockObserver : public EphemeralStorageServiceObserver {
 
 class EphemeralStorageServiceTest : public testing::Test {
  public:
+  enum class ExpectFirstWindowOpenedCallback {
+    kTrigger,
+    kDontTrigger,
+  };
+
   EphemeralStorageServiceTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
   ~EphemeralStorageServiceTest() override = default;
@@ -82,8 +113,16 @@ class EphemeralStorageServiceTest : public testing::Test {
   static std::unique_ptr<EphemeralStorageService> CreateEphemeralStorageService(
       Profile* profile,
       raw_ptr<MockDelegate>& mock_delegate_ptr,
-      MockObserver* observer) {
+      MockObserver* observer,
+      std::optional<ExpectFirstWindowOpenedCallback>
+          expect_first_window_opened_callback =
+              ExpectFirstWindowOpenedCallback::kTrigger) {
     auto mock_delegate = std::make_unique<testing::StrictMock<MockDelegate>>();
+    if (expect_first_window_opened_callback) {
+      mock_delegate->ExpectRegisterFirstWindowOpenedCallback(
+          base::OnceClosure(), expect_first_window_opened_callback ==
+                                   ExpectFirstWindowOpenedCallback::kTrigger);
+    }
     mock_delegate_ptr = mock_delegate.get();
     auto service = std::make_unique<EphemeralStorageService>(
         profile, HostContentSettingsMapFactory::GetForProfile(profile),
@@ -108,6 +147,7 @@ class EphemeralStorageServiceTest : public testing::Test {
   testing::StrictMock<MockObserver> mock_observer_;
   std::unique_ptr<EphemeralStorageService> service_;
   raw_ptr<MockDelegate> mock_delegate_ = nullptr;
+  base::OnceClosure first_window_opened_callback_;
 };
 
 TEST_F(EphemeralStorageServiceTest, EphemeralCleanup) {
@@ -361,6 +401,71 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
   }
 }
 
+TEST_F(EphemeralStorageServiceForgetFirstPartyTest,
+       PreventCleanupIfNoWindowsOpened) {
+  const GURL url("https://a.com");
+  const std::string ephemeral_domain = url.host();
+  const auto storage_partition_config = content::StoragePartitionConfig::Create(
+      &profile_, ephemeral_domain, {}, false);
+
+  host_content_settings_map()->SetContentSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+      CONTENT_SETTING_BLOCK);
+
+  // Create tld ephemeral lifetime.
+  service_->TLDEphemeralLifetimeCreated(ephemeral_domain,
+                                        storage_partition_config);
+  EXPECT_EQ(
+      profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+      0u);
+
+  // Make sure prefs is filled with the origin to cleanup.
+  {
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
+    service_->TLDEphemeralLifetimeDestroyed(ephemeral_domain,
+                                            storage_partition_config, false);
+    EXPECT_EQ(
+        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+        1u);
+  }
+
+  // Simulate a browser restart. No cleanup should happen at construction.
+  {
+    ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
+    ShutdownEphemeralStorageService(service_);
+
+    service_ = CreateEphemeralStorageService(
+        &profile_, mock_delegate_, &mock_observer_,
+        ExpectFirstWindowOpenedCallback::kDontTrigger);
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    EXPECT_EQ(
+        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+        1u);
+  }
+
+  // Cleanup should NOT happen in 5 seconds after the startup.
+  {
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    task_environment_.FastForwardBy(base::Seconds(5));
+  }
+
+  // Trigger the first window opened callback.
+  mock_delegate_->TriggerFirstWindowOpenedCallback();
+
+  // Cleanup should happen in the next 5 seconds after the window is opened.
+  {
+    ScopedVerifyAndClearExpectations verify(mock_delegate_);
+    ScopedVerifyAndClearExpectations verify_observer(&mock_observer_);
+    EXPECT_CALL(*mock_delegate_,
+                CleanupFirstPartyStorageArea(ephemeral_domain));
+    task_environment_.FastForwardBy(base::Seconds(5));
+    EXPECT_EQ(
+        profile_.GetPrefs()->GetList(kFirstPartyStorageOriginsToCleanup).size(),
+        0u);
+  }
+}
+
 TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
   const GURL url("https://a.com");
   const std::string ephemeral_domain = url.host();
@@ -370,8 +475,8 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
   Profile* otr_profile =
       profile_.GetOffTheRecordProfile(Profile::OTRProfileID::PrimaryID(), true);
 
-  auto otr_service = CreateEphemeralStorageService(otr_profile, mock_delegate_,
-                                                   &mock_observer_);
+  auto otr_service = CreateEphemeralStorageService(
+      otr_profile, mock_delegate_, &mock_observer_, std::nullopt);
   host_content_settings_map(otr_profile)
       ->SetContentSettingDefaultScope(
           url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
@@ -396,7 +501,7 @@ TEST_F(EphemeralStorageServiceForgetFirstPartyTest, OffTheRecordSkipsPrefs) {
   {
     ShutdownEphemeralStorageService(otr_service);
     otr_service = CreateEphemeralStorageService(otr_profile, mock_delegate_,
-                                                &mock_observer_);
+                                                &mock_observer_, std::nullopt);
     ScopedVerifyAndClearExpectations verify(mock_delegate_);
     task_environment_.FastForwardBy(base::Seconds(5));
   }

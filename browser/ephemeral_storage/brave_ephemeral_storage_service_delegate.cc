@@ -9,6 +9,7 @@
 
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
@@ -17,6 +18,11 @@
 #include "net/base/features.h"
 #include "net/base/schemeful_site.h"
 #include "url/origin.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
+#endif
 
 namespace ephemeral_storage {
 
@@ -32,8 +38,11 @@ BraveEphemeralStorageServiceDelegate::BraveEphemeralStorageServiceDelegate(
   DCHECK(cookie_settings_);
 }
 
-BraveEphemeralStorageServiceDelegate::~BraveEphemeralStorageServiceDelegate() =
-    default;
+BraveEphemeralStorageServiceDelegate::~BraveEphemeralStorageServiceDelegate() {
+#if !BUILDFLAG(IS_ANDROID)
+  BrowserList::RemoveObserver(this);
+#endif
+}
 
 void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
     const TLDEphemeralAreaKey& key) {
@@ -111,5 +120,31 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
 }
+
+void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
+    base::OnceClosure callback) {
+  DCHECK(callback);
+#if !BUILDFLAG(IS_ANDROID)
+  BrowserList::AddObserver(this);
+  first_window_opened_callback_ = std::move(callback);
+#else
+  std::move(callback).Run();
+#endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+void BraveEphemeralStorageServiceDelegate::OnBrowserAdded(Browser* browser) {
+  if (browser->profile() != Profile::FromBrowserContext(context_)) {
+    return;
+  }
+
+  if (first_window_opened_callback_) {
+    std::move(first_window_opened_callback_).Run();
+  }
+
+  // No need to observe anymore.
+  BrowserList::RemoveObserver(this);
+}
+#endif
 
 }  // namespace ephemeral_storage

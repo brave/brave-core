@@ -56,7 +56,10 @@ EphemeralStorageService::EphemeralStorageService(
   if (base::FeatureList::IsEnabled(
           net::features::kBraveForgetFirstPartyStorage) &&
       !context_->IsOffTheRecord()) {
-    ScheduleFirstPartyStorageAreasCleanupOnStartup();
+    delegate_->RegisterFirstWindowOpenedCallback(
+        base::BindOnce(&EphemeralStorageService::
+                           ScheduleFirstPartyStorageAreasCleanupOnStartup,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 }
 
