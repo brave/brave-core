@@ -9,12 +9,17 @@ public class NotificationBorderView: UIView {
 
   public var didClickBorderedArea: (() -> Void)?
 
-  public init(frame: CGRect, cornerRadius: CGFloat, colouredBorder: Bool = false) {
+  public init(
+    frame: CGRect,
+    cornerRadius: CGFloat,
+    lineWidth: CGFloat = 2,
+    colouredBorder: Bool = false
+  ) {
     let borderLayer = CAShapeLayer().then {
       let frame = frame.with { $0.origin = .zero }
       $0.strokeColor = colouredBorder ? UIColor.braveLighterBlurple.cgColor : UIColor.white.cgColor
       $0.fillColor = UIColor.clear.cgColor
-      $0.lineWidth = 2.0
+      $0.lineWidth = lineWidth
       $0.strokeEnd = 1.0
       $0.path = UIBezierPath(roundedRect: frame, cornerRadius: cornerRadius).cgPath
     }

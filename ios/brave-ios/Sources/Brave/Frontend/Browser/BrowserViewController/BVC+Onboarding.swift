@@ -83,11 +83,6 @@ extension BrowserViewController {
       return
     }
 
-    let frame = view.convert(
-      topToolbar.locationView.frame,
-      from: topToolbar.locationView
-    ).insetBy(dx: -1.0, dy: -1.0)
-
     var controller: UIViewController & PopoverContentComponent
 
     if !Locale.current.isNewOnboardingRegion {
@@ -123,21 +118,43 @@ extension BrowserViewController {
           )
         }
 
-        presentNTPURLBarPopover(
+        presentFavouriteURLBarPopover(
           controller: controller,
           onDismiss: { [weak self] in
             guard let self = self else { return }
             self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
-          },
-          onClickURLBar: { [weak self] in
-            guard let self = self else { return }
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-              self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
-            }
           }
         )
       }
+    }
+
+    func presentFavouriteURLBarPopover(
+      controller: UIViewController & PopoverContentComponent,
+      onDismiss: @escaping () -> Void
+    ) {
+      guard let info = activeNewTabPageViewController?.onboardingYouTubeFavoriteInfo,
+        let cellSuperview = info.cell.superview
+      else { return }
+      let frame = view.convert(info.cell.frame, from: cellSuperview)
+      presentPopoverContent(
+        using: controller,
+        with: frame,
+        arrowDistance: -10,
+        lineWidth: 0,
+        cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
+        didDismiss: {
+          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          onDismiss()
+        },
+        didClickBorderedArea: { [unowned self] in
+          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          self.handleFavoriteAction(favorite: info.favorite, action: .opened())
+        }
+      )
     }
 
     func presentNTPURLBarPopover(
@@ -145,6 +162,11 @@ extension BrowserViewController {
       onDismiss: @escaping () -> Void,
       onClickURLBar: @escaping () -> Void
     ) {
+      let frame = view.convert(
+        topToolbar.locationView.frame,
+        from: topToolbar.locationView
+      ).insetBy(dx: -1.0, dy: -1.0)
+
       presentPopoverContent(
         using: controller,
         with: frame,
@@ -263,6 +285,8 @@ extension BrowserViewController {
   private func presentPopoverContent(
     using contentController: UIViewController & PopoverContentComponent,
     with frame: CGRect,
+    arrowDistance: CGFloat = 10,
+    lineWidth: CGFloat = 2,
     cornerRadius: CGFloat,
     didDismiss: @escaping () -> Void,
     didClickBorderedArea: @escaping () -> Void,
@@ -272,12 +296,13 @@ extension BrowserViewController {
       contentController: contentController,
       contentSizeBehavior: .autoLayout(.phoneWidth)
     )
-    popover.arrowDistance = 10.0
+    popover.arrowDistance = arrowDistance
 
     // Create a border / placeholder view
     let borderView = NotificationBorderView(
       frame: frame,
       cornerRadius: cornerRadius,
+      lineWidth: lineWidth,
       colouredBorder: true
     )
     let placeholderView = UIView(frame: frame).then {
