@@ -5,6 +5,7 @@
 import BraveShared
 import DesignSystem
 import Foundation
+import Preferences
 import Shared
 import UserAgent
 import WebKit
@@ -44,11 +45,23 @@ class BraveWebView: WKWebView {
       isInspectable = true
     }
 
-    backgroundColor = UIColor(braveSystemName: .containerBackground)
-    scrollView.backgroundColor = UIColor(braveSystemName: .containerBackground)
-    // WKWebView flashes white screen on load regardless of background colour assignments without
-    // setting `isOpaque` to false
-    isOpaque = false
+    updateBackgroundColor()
+    Preferences.General.nightModeEnabled.observe(from: self)
+  }
+
+  private func updateBackgroundColor() {
+    if Preferences.General.nightModeEnabled.value {
+      let color = UIColor(braveSystemName: .containerBackground)
+      backgroundColor = color
+      scrollView.backgroundColor = color
+      // WKWebView flashes white screen on load regardless of background colour assignments without
+      // setting `isOpaque` to false
+      isOpaque = false
+    } else {
+      backgroundColor = nil
+      scrollView.backgroundColor = nil
+      isOpaque = true
+    }
   }
 
   static func removeNonPersistentStore() {
@@ -63,6 +76,12 @@ class BraveWebView: WKWebView {
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     lastHitPoint = point
     return super.hitTest(point, with: event)
+  }
+}
+
+extension BraveWebView: PreferencesObserver {
+  func preferencesDidChange(for key: String) {
+    updateBackgroundColor()
   }
 }
 
