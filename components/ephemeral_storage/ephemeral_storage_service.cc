@@ -327,6 +327,11 @@ void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
 
 void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
+
+  if (!delegate_->DoesProfileHaveAnyBrowserWindow()) {
+    first_party_storage_areas_to_cleanup_on_startup_.clear();
+    return;
+  }
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
   for (const auto& url_to_cleanup :
        first_party_storage_areas_to_cleanup_on_startup_) {
