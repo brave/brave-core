@@ -60,20 +60,20 @@ void FullPageStrategy::RequestPageLayoutMetrics() {
 void FullPageStrategy::OnLayoutMetricsReceived(int width, int height) {
   // Maybe clip dimensions
   if (width > kMaxDimensions) {
-    LOG(WARNING) << "Clipping screenshot width to " << kMaxDimensions;
+    DVLOG(3) << "Clipping screenshot width to " << kMaxDimensions;
     width = kMaxDimensions;
     screenshot_was_clipped_ = true;
   }
 
   if (height > kMaxDimensions) {
-    LOG(WARNING) << "Clipping screenshot height to " << kMaxDimensions;
+    DVLOG(3) << "Clipping screenshot height to " << kMaxDimensions;
     height = kMaxDimensions;
     screenshot_was_clipped_ = true;
   }
 
   // Check for invalid dimensions
   if (width <= 0 || height <= 0) {
-    LOG(ERROR) << "Invalid dimensions from Page.getLayoutMetrics";
+    DVLOG(2) << "Invalid dimensions from Page.getLayoutMetrics";
     RunCallback({});
     return;
   }
