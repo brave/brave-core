@@ -30,26 +30,25 @@ export default function BeginGeneration() {
   return <>
     <FiltersContainer>
       <InitialText />
-      <ToolsButtonMenu isToolsMenuOpen={context.isToolsMenuOpen} setIsToolsMenuOpen={context.setIsToolsMenuOpen} actionList={context.actionList} handleActionTypeClick={context.handleActionTypeClick} inputText={context.instructionsText}>
-        <InputBox
-          context={{
-            inputText: context.instructionsText,
-            setInputText: context.setInstructionsText,
-            isToolsMenuOpen: context.isToolsMenuOpen,
-            setIsToolsMenuOpen: context.setIsToolsMenuOpen,
-            resetSelectedActionType: context.resetSelectedActionType,
-            selectedActionType: context.selectedActionType,
-            submitInputTextToAPI: context.submitRewriteRequest,
-            inputTextCharCountDisplay: context.inputTextCharCountDisplay,
-            isCharLimitApproaching: context.isCharLimitApproaching,
-            isCharLimitExceeded: context.isCharLimitExceeded,
-            shouldDisableUserInput: context.isGenerating,
-            isMobile: false,
-            hasAcceptedAgreement: true,
-            isGenerating: context.isGenerating,
-            handleStopGenerating: async () => {}
-          }} />
-      </ToolsButtonMenu>
+      <ToolsButtonMenu isToolsMenuOpen={context.isToolsMenuOpen} setIsToolsMenuOpen={context.setIsToolsMenuOpen} actionList={context.actionList} handleActionTypeClick={context.handleActionTypeClick} inputText={context.instructionsText} />
+      <InputBox
+        context={{
+          inputText: context.instructionsText,
+          setInputText: context.setInstructionsText,
+          isToolsMenuOpen: context.isToolsMenuOpen,
+          setIsToolsMenuOpen: context.setIsToolsMenuOpen,
+          resetSelectedActionType: context.resetSelectedActionType,
+          selectedActionType: context.selectedActionType,
+          submitInputTextToAPI: context.submitRewriteRequest,
+          inputTextCharCountDisplay: context.inputTextCharCountDisplay,
+          isCharLimitApproaching: context.isCharLimitApproaching,
+          isCharLimitExceeded: context.isCharLimitExceeded,
+          shouldDisableUserInput: context.isGenerating,
+          isMobile: false,
+          hasAcceptedAgreement: true,
+          isGenerating: context.isGenerating,
+          handleStopGenerating: async () => {}
+        }} />
     </FiltersContainer>
     <NoContent />
   </>

@@ -347,12 +347,11 @@ function Main() {
             <PageContextToggle />
           </div>
         )}
-        <ToolsButtonMenu {...conversationContext}>
-          <InputBox
-            context={{ ...conversationContext, ...aiChatContext }}
-            onFocusInputMobile={handleOnFocusInputMobile}
-          />
-        </ToolsButtonMenu>
+        <ToolsButtonMenu {...conversationContext} />
+        <InputBox
+          context={{ ...conversationContext, ...aiChatContext }}
+          onFocusInputMobile={handleOnFocusInputMobile}
+        />
       </div>
       <DeleteConversationModal />
     </main>
