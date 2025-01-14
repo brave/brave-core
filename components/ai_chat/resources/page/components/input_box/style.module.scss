@@ -123,3 +123,8 @@
 .slashIconActive {
   --leo-icon-color: var(--leo-color-icon-interactive);
 }
+
+.attachmentWrapper {
+  width: 100%;
+  padding: var(--leo-spacing-m) var(--leo-spacing-m) 0px var(--leo-spacing-m);
+}
