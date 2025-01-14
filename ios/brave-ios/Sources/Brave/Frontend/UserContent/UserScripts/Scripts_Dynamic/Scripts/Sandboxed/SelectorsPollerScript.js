@@ -1021,18 +1021,23 @@ window.__firefox__.execute(function($) {
     styleElm.setAttribute('type', 'text/css')
     targetElm.appendChild(styleElm)
     CC.cosmeticStyleSheet = styleElm
+    // The previous `nextElementSibling` we moved our stylesheet below
+    var prevNextElementSibling = null;
 
     // Start a timer that moves the stylesheet down
     window.setInterval(() => {
       if (styleElm.nextElementSibling === null || styleElm.parentElement !== targetElm) {
         return
       }
-      // `darkreader` (from our night mode) fights with us to be last element
-      // in `document.body`. Repeatedly moving our stylesheet can cause
-      // unwanted animations to repeat every time we move the stylesheet
-      const nextElementClass = styleElm.getAttribute("class");
-      if (nextElementClass.includes("darkreader")) {
-        return;
+      if (styleElm.nextElementSibling !==  null) {
+        // if we already moved below this element
+        if (prevNextElementSibling === styleElm.nextElementSibling) {
+          // Avoid a loop where we are repeatedly swapping places with another
+          // element. This can happen with `darkreader` (night mode) for
+          // example and cause unwanted animations to repeat.
+          return
+        }
+        prevNextElementSibling = styleElm.nextElementSibling;
       }
       moveStyle()
     }, 1000)
