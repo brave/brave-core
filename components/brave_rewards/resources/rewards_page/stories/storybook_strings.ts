@@ -66,7 +66,7 @@ export const localeStrings: { [K in StringKey]: string }  = {
   authorizeUpholdBatNotAllowedTitle: 'BAT unavailable',
   authorizeUpholdInsufficientCapabilitiesText: 'According to Uphold, there are currently some limitations on your Uphold account. Please log in to your Uphold account and check whether there are any notices or remaining account requirements to complete, then try again. For example, you may need to submit more information to Uphold.',
   authorizeUpholdInsufficientCapabilitiesTitle: 'Limited Uphold account functionality',
-  benefitsStoreSubtext: 'Get Brave-branded products.',
+  benefitsStoreSubtext: 'Use promo code BRAVEREWARDS to get 10% off on all Brave merch store items.',
   benefitsStoreText: 'Brave merch store',
   benefitsTitle: 'Your benefits',
   cancelButtonLabel: 'Cancel',

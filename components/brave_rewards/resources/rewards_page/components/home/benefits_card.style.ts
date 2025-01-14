@@ -40,6 +40,7 @@ import { scoped } from '../../lib/scoped_css'
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
     }
 
     .text {
