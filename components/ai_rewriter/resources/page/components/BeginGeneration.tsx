@@ -45,7 +45,9 @@ export default function BeginGeneration() {
             isCharLimitExceeded: context.isCharLimitExceeded,
             shouldDisableUserInput: context.isGenerating,
             isMobile: false,
-            hasAcceptedAgreement: true
+            hasAcceptedAgreement: true,
+            isGenerating: context.isGenerating,
+            handleStopGenerating: async () => {}
           }} />
       </ToolsButtonMenu>
     </FiltersContainer>

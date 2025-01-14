@@ -1457,6 +1457,24 @@ TEST_F(ConversationHandlerUnitTest, SelectedLanguage) {
   testing::Mock::VerifyAndClearExpectations(engine);
 }
 
+TEST_F(ConversationHandlerUnitTest, StopGenerationAndMaybeGetHumanEntry) {
+  std::vector<mojom::ConversationTurnPtr> history = CreateSampleChatHistory(1);
+  conversation_handler_->SetChatHistoryForTesting(CloneHistory(history));
+
+  // When the last entry isn't human generated the callback should be nullptr
+  conversation_handler_->StopGenerationAndMaybeGetHumanEntry(
+      base::BindLambdaForTesting(
+          [](mojom::ConversationTurnPtr entry) { EXPECT_FALSE(entry); }));
+
+  // Modify the conversation so the last entry is human, pass it to the callback
+  history.pop_back();
+  conversation_handler_->SetChatHistoryForTesting(CloneHistory(history));
+  conversation_handler_->StopGenerationAndMaybeGetHumanEntry(
+      base::BindLambdaForTesting([](mojom::ConversationTurnPtr entry) {
+        EXPECT_EQ(entry->character_type, mojom::CharacterType::HUMAN);
+      }));
+}
+
 TEST_F(ConversationHandlerUnitTest, Destuctor) {
   // Verify that the conversation handler cleans up the associated content
   // object when it is destroyed.

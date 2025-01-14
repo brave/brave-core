@@ -118,5 +118,6 @@ provideStrings({
   menuTitleCustomModels: 'Custom models',
   startConversationLabel: 'Start new conversation',
   goBackToActiveConversationButton: 'Go back to the active conversation',
-  conversationListUntitled: 'New conversation'
+  conversationListUntitled: 'New conversation',
+  stopGenerationButtonLabel: 'Stop answering',
 })

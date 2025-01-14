@@ -475,6 +475,10 @@ interface ConversationHandler {
   // most recent message from the conversation to the caller.
   ClearErrorAndGetFailedMessage() => (ConversationTurn turn);
 
+  // Stops a generation and if the last entry was a human entry returns it
+  // to the caller.
+  StopGenerationAndMaybeGetHumanEntry() => (ConversationTurn? human_entry);
+
   // Send a user-rating for a chat
   // message. |turn_id| is the index of the message in the
   // specified conversation.

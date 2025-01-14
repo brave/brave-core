@@ -246,7 +246,7 @@
   <message name="IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING" desc="An error message when the user's chat history is reaching to maximum threshold">
     This conversation is long and Leo may start forgetting things soon. You can get longer conversations by switching to a premium model, or you can clear the chat to reset it.
   </message>
-  <message name="IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL" desc="An button label for clearing chat history">
+  <message name="IDS_CHAT_UI_CLEAR_CHAT_BUTTON_LABEL" desc="A button label for clearing chat history">
     Clear conversation
   </message>
   <message name="IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL" desc="A label for the button which starts a new conversation">
@@ -258,10 +258,13 @@
   <message name="IDS_CHAT_UI_MENU_DELETE_CONVERSATION" desc="Menu entry for removing a conversation">
     Delete conversation
   </message>
-  <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="An button label for sending a chat message">
+  <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="A button label for sending a chat message">
     Send message to Leo
   </message>
-  <message name="IDS_CHAT_UI_GOT_IT_BUTTON_LABEL" desc="An button label for dismissing a warning">
+  <message name="IDS_CHAT_UI_STOP_GENERATION_BUTTON_LABEL" desc="A button label for stopping generation">
+    Stop answering
+  </message>
+  <message name="IDS_CHAT_UI_GOT_IT_BUTTON_LABEL" desc="A button label for dismissing a warning">
     Got it
   </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING" desc="A warning issued when the user is trying to summarize a long content page">
