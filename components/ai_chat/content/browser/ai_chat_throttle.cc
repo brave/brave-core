@@ -23,7 +23,7 @@
 namespace ai_chat {
 
 // static
-std::unique_ptr<AiChatThrottle> AiChatThrottle::MaybeCreateThrottleFor(
+std::unique_ptr<AIChatThrottle> AIChatThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle) {
   // The throttle's only purpose is to deny navigation in a Tab.
 
@@ -65,21 +65,21 @@ std::unique_ptr<AiChatThrottle> AiChatThrottle::MaybeCreateThrottleFor(
           ui::PageTransition::PAGE_TRANSITION_FROM_ADDRESS_BAR)) {
     return nullptr;
   }
-  return std::make_unique<AiChatThrottle>(navigation_handle);
+  return std::make_unique<AIChatThrottle>(navigation_handle);
 #endif  // BUILDFLAG(IS_ANDROID)
 }
 
-AiChatThrottle::AiChatThrottle(content::NavigationHandle* handle)
+AIChatThrottle::AIChatThrottle(content::NavigationHandle* handle)
     : content::NavigationThrottle(handle) {}
 
-AiChatThrottle::~AiChatThrottle() {}
+AIChatThrottle::~AIChatThrottle() {}
 
-AiChatThrottle::ThrottleCheckResult AiChatThrottle::WillStartRequest() {
+AIChatThrottle::ThrottleCheckResult AIChatThrottle::WillStartRequest() {
   return CANCEL_AND_IGNORE;
 }
 
-const char* AiChatThrottle::GetNameForLogging() {
-  return "AiChatThrottle";
+const char* AIChatThrottle::GetNameForLogging() {
+  return "AIChatThrottle";
 }
 
 }  // namespace ai_chat
