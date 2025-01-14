@@ -11,6 +11,13 @@
 
 namespace ipfs {
 
+namespace prefs {
+
+// Used to enable/disable IPFS via admin policy. Deprecated
+inline constexpr char kIPFSEnabledByPolicy[] = "brave.ipfs.enabled";
+
+}  // namespace prefs
+
 void RegisterDeprecatedIpfsPrefs(PrefRegistrySimple* registry);
 
 void ClearDeprecatedIpfsPrefs(PrefService* profile_prefs);
