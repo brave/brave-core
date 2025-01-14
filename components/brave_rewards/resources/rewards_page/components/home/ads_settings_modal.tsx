@@ -121,22 +121,31 @@ export function AdsSettingsModal(props: Props) {
         onClose={props.onClose}
       />
       <div {...style}>
-        <p className='description'>
-          {getString('adsSettingsText')}
-          {' '}
-          <NewTabLink href={urls.adsLearnMoreURL}>
-            {getString('learnMoreLink')}
-          </NewTabLink>
-        </p>
+        {
+          externalWallet &&
+            <p className='description'>
+              {getString('adsSettingsText')}
+              {' '}
+              <NewTabLink href={urls.adsLearnMoreURL}>
+                {getString('learnMoreLink')}
+              </NewTabLink>
+            </p>
+        }
         <section className='summary'>
-          <div className='row'>
-            <span>
-              {getString('adsSettingsPayoutDateLabel')}
-            </span>
-            <span className='value'>
-              {payoutDateFormatter.format(new Date(adsInfo.nextPaymentDate))}
-            </span>
-          </div>
+          {
+            externalWallet &&
+              <div className='row'>
+                <span>
+                  {getString('adsSettingsPayoutDateLabel')}
+                </span>
+                <span className='value'>
+                  {
+                    payoutDateFormatter.format(
+                      new Date(adsInfo.nextPaymentDate))
+                  }
+                </span>
+              </div>
+          }
           <div className='row'>
             <span>
               {getString('adsSettingsTotalAdsLabel')}

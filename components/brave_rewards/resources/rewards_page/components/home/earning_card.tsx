@@ -55,6 +55,19 @@ export function EarningCard() {
     setShowAdsHistoryModal(!showAdsHistoryModal)
   }
 
+  function renderAdsNav() {
+    return (
+      <div className='ads-summary-nav'>
+        <button onClick={toggleAdsHistoryModal}>
+          <Icon name='history' />{getString('adsHistoryButtonLabel')}
+        </button>
+        <button onClick={toggleAdsSettingsModal}>
+          <Icon name='settings' />{getString('adsSettingsButtonLabel')}
+        </button>
+      </div>
+    )
+  }
+
   function renderLimited() {
     return (
       <div className='content-card' {...style}>
@@ -74,22 +87,25 @@ export function EarningCard() {
             }
           </div>
         </div>
-        <section className='connect'>
-          <div className='connect-text'>
-            <div>
-              {getString('connectAccountText')}
+        <section className='unconnected'>
+          <div className='connect'>
+            <div className='connect-text'>
+              <div>
+                {getString('connectAccountText')}
+              </div>
+              <div className='connect-subtext'>
+                {getString('connectAccountSubtext')}
+              </div>
             </div>
-            <div className='connect-subtext'>
-              {getString('connectAccountSubtext')}
-            </div>
+            <Button
+              className='connect-button'
+              size='small'
+              onClick={connectAccount}
+            >
+              {getString('connectButtonLabel')}
+            </Button>
           </div>
-          <Button
-            className='connect-button'
-            size='small'
-            onClick={connectAccount}
-          >
-            {getString('connectButtonLabel')}
-          </Button>
+          {renderAdsNav()}
         </section>
       </div>
     )
@@ -150,35 +166,30 @@ export function EarningCard() {
         {
           showAdDetails && <>
             <AdsSummary />
-            <div className='ads-summary-nav'>
-              <button onClick={toggleAdsHistoryModal}>
-                <Icon name='history' />{getString('adsHistoryButtonLabel')}
-              </button>
-              <button onClick={toggleAdsSettingsModal}>
-                <Icon name='settings' />{getString('adsSettingsButtonLabel')}
-              </button>
-            </div>
+            {renderAdsNav()}
           </>
         }
       </section>
     )
   }
 
-  if (!externalWallet) {
-    return renderLimited()
+  function renderConnected() {
+    return (
+      <div className='content-card' {...style}>
+        <PayoutStatusView />
+        <div className='counter'>
+          <img alt='BAT' src={batCoinColor} />
+          <div className='counter-text'>
+            {renderEarningsCounter()}
+          </div>
+        </div>
+        {renderAdsSummary()}
+      </div>
+    )
   }
 
   return <>
-    <div className='content-card' {...style}>
-      <PayoutStatusView />
-      <div className='counter'>
-        <img alt='BAT' src={batCoinColor} />
-        <div className='counter-text'>
-          {renderEarningsCounter()}
-        </div>
-      </div>
-      {renderAdsSummary()}
-    </div>
+    {externalWallet ? renderConnected() : renderLimited()}
     {
       showAdsHistoryModal ?
         <AdsHistoryModal onClose={toggleAdsHistoryModal} /> :

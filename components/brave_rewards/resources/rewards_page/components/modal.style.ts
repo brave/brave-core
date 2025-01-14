@@ -39,6 +39,10 @@ export const modalStyle = scoped.css`
       border-radius: 16px 16px 0 0;
       margin: auto 0 0 0;
     }
+
+    .modal-skip-animations & {
+      --self-animation-duration: 0ms;
+    }
   }
 
   @keyframes modal-content-fade-in {
@@ -59,10 +63,6 @@ export const modalStyle = scoped.css`
     animation-timing-function: ease-out;
     animation-duration: var(--self-animation-duration);
     animation-fill-mode: both;
-  }
-
-  .modal-skip-animations &::backdrop {
-    animation-duration: 0ms;
   }
 
   @keyframes modal-backdrop-fade {
