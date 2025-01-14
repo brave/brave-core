@@ -9,13 +9,16 @@ import '../settings_vars.css.js'
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
+import {RouteObserverMixin, Router} from '../router.js'
+import {routes} from '../route.js'
 import {loadTimeData} from '../i18n_setup.js'
 import {BraveSearchEnginesPageBrowserProxyImpl} from './brave_search_engines_page_browser_proxy.js'
 import {getTemplate} from './brave_search_engines_page.html.js'
 import type {CrToastElement} from 'chrome://resources/cr_elements/cr_toast/cr_toast.js'
 import type {SearchEngine} from '../search_engines_page/search_engines_browser_proxy.js'
 
-const BraveSearchEnginesPageBase = WebUiListenerMixin(I18nMixin(PolymerElement))
+const BraveSearchEnginesPageBase =
+  WebUiListenerMixin(I18nMixin(RouteObserverMixin(PolymerElement)))
 
 class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
   static get is() {
@@ -68,12 +71,17 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
       'private-search-engines-changed', updatePrivateSearchEngines)
   }
 
+  override currentRouteChanged() {
+    this.showPrivateSearchEngineListDialog_ =
+      Router.getInstance().getCurrentRoute() === routes.PRIVATE_SEARCH
+  }
+
   private onOpenPrivateDialogButtonClick_() {
-    this.showPrivateSearchEngineListDialog_ = true
+    Router.getInstance().navigateTo(routes.PRIVATE_SEARCH)
   }
 
   private onPrivateSearchEngineListDialogClose_() {
-    this.showPrivateSearchEngineListDialog_ = false
+    Router.getInstance().navigateTo(routes.SEARCH)
   }
 
   private onPrivateSearchEngineChangedInDialog_(e: CustomEvent) {
