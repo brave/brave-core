@@ -261,14 +261,14 @@ struct DBActionInfo {
     // Initialize the database table.
     kInitialize,
 
-    // Execute a statement that does not return records.
+    // Execute a SQL statement without any parameter bindings that does not return any records.
     kExecute,
 
-    // Execute a statement with bound columns that does not return records.
-    kRunStatement,
+    // Execute a SQL statement with parameter bindings that does not return any records.
+    kExecuteWithBindings,
 
-    // Execute a statement with bound columns that return records.
-    kStepStatement,
+    // Execute a SQL statement with parameter bindings that returns records.
+    kExecuteQueryWithBindings,
 
     // Migrate the database.
     kMigrate
@@ -281,11 +281,11 @@ struct DBActionInfo {
   string? sql;
 
   // The SQL statement's bound column types. This is only used for
-  // `kStepStatement`.
+  // `kExecuteQueryWithBindings`.
   array<DBBindColumnType> bind_column_types;
 
-  // The SQL statement's bound columns. This is only used for `kRunStatement`
-  // and `kStepStatement`.
+  // The SQL statement's bound columns. This is only used for `kExecuteWithBindings`
+  // and `kExecuteQueryWithBindings`.
   array<DBBindColumnInfo> bind_columns;
 };
 

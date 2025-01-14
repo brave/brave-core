@@ -186,7 +186,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
@@ -216,7 +216,7 @@ void AdEvents::Get(mojom::AdType mojom_ad_type,
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
@@ -252,7 +252,7 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
@@ -292,7 +292,7 @@ void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
@@ -518,7 +518,7 @@ void AdEvents::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   }
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
   mojom_db_action->sql = BuildInsertSql(mojom_db_action, ad_events);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }

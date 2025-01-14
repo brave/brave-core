@@ -372,7 +372,7 @@ void ConfirmationQueue::GetAll(GetConfirmationQueueCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
@@ -406,7 +406,7 @@ void ConfirmationQueue::GetNext(GetConfirmationQueueCallback callback) const {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kStepStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteQueryWithBindings;
   mojom_db_action->sql = base::ReplaceStringPlaceholders(
       R"(
           SELECT
@@ -509,7 +509,7 @@ void ConfirmationQueue::Insert(
   }
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
-  mojom_db_action->type = mojom::DBActionInfo::Type::kRunStatement;
+  mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
   mojom_db_action->sql =
       BuildInsertSql(mojom_db_action, confirmation_queue_items);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
