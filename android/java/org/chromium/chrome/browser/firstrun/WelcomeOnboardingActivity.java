@@ -56,18 +56,25 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.util.Locale;
 
 /**
- * This is on boarding activity
- * */
+ * Activity that handles the first run onboarding experience for new Brave browser installations.
+ * Extends FirstRunActivityBase to provide onboarding flows for:
+ * - Setting Brave as default browser
+ * - Configuring privacy and analytics preferences (P3A and crash reporting)
+ * - Accepting terms of service
+ * The activity guides users through a series of steps using animations and clear UI elements
+ * to explain Brave's key features and privacy-focused approach.
+ */
 public class WelcomeOnboardingActivity extends FirstRunActivityBase {
-    // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
-    // from the same thread, so no need to use extra locks
     private static final String P3A_URL =
             "https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave";
 
     private static final String TAG = "WelcomeOnboarding";
 
+    // mInitializeViewsDone and mInvokePostWorkAtInitializeViews are accessed
+    // from the same thread, so no need to use extra locks
     private boolean mInitializeViewsDone;
     private boolean mInvokePostWorkAtInitializeViews;
+
     private boolean mIsTablet;
     private BraveFirstRunFlowSequencer mFirstRunFlowSequencer;
     private int mCurrentStep = -1;
@@ -79,7 +86,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private ImageView mIvBrave;
     private ImageView mIvArrowDown;
     private LinearLayout mLayoutCard;
-    private TextView mTvWelcome;
     private TextView mTvCard;
     private TextView mTvDefault;
     private Button mBtnPositive;
@@ -87,21 +93,40 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     private CheckBox mCheckboxCrash;
     private CheckBox mCheckboxP3a;
 
+    /**
+     * Initializes the views and sets up the onboarding activity UI.
+     * This method handles the initial setup of the welcome onboarding screen,
+     * including loading the layout, initializing views and click listeners,
+     * and performing first-run setup tasks.
+     */
     private void initializeViews() {
+        // Verify initialization hasn't happened yet
         assert !mInitializeViewsDone;
+
+        // Set the content view to the welcome onboarding layout
         setContentView(R.layout.activity_welcome_onboarding);
 
+        // Check if device is a tablet for layout adjustments
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(this);
 
+        // Initialize view references and setup
         initViews();
+
+        // Setup click listeners for interactive elements
         onClickViews();
 
+        // Mark initialization as complete
         mInitializeViewsDone = true;
+
+        // If post-initialization work was queued, execute it now
         if (mInvokePostWorkAtInitializeViews) {
             finishNativeInitializationPostWork();
         }
 
+        // Check install referral data
         checkReferral();
+
+        // Update any first run default values if needed
         maybeUpdateFirstRunDefaultValues();
     }
 
@@ -162,7 +187,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mIvBrave = findViewById(R.id.iv_brave);
         mIvArrowDown = findViewById(R.id.iv_arrow_down);
         mLayoutCard = findViewById(R.id.layout_card);
-        mTvWelcome = findViewById(R.id.tv_welcome);
         mTvCard = findViewById(R.id.tv_card);
         mTvDefault = findViewById(R.id.tv_default);
         mCheckboxCrash = findViewById(R.id.checkbox_crash);
@@ -207,9 +231,12 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnPositive != null) {
             mBtnPositive.setOnClickListener(
                     view -> {
-                        if (mCurrentStep == 1 && !isDefaultBrowser()) {
+                        // If this is the first step and Brave is not set as default browser
+                        if (mCurrentStep == 0 && !isDefaultBrowser()) {
+                            // Show default browser prompt and proceed to next step
                             setDefaultBrowserAndProceedToNextStep();
                         } else {
+                            // Otherwise just proceed to next onboarding step
                             nextOnboardingStep();
                         }
                     });
@@ -218,9 +245,13 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (mBtnNegative != null) {
             mBtnNegative.setOnClickListener(
                     view -> {
+                        // If we're on the analytics consent page, show the P3A info page
+                        // Otherwise proceed to next onboarding step
                         if (mCurrentStep == getAnalyticsConsentPageStep()) {
+                            // Open P3A info page in a custom tab
                             CustomTabActivity.showInfoPage(this, P3A_URL);
                         } else {
+                            // Move to next onboarding step
                             nextOnboardingStep();
                         }
                     });
@@ -254,66 +285,49 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         if (isActivityFinishingOrDestroyed()) return;
 
         mCurrentStep++;
+        // Step 0: Handle default browser setup
         if (mCurrentStep == 0) {
-            showIntroPage();
-        } else if (mCurrentStep == 1) {
+            // For devices that don't support role manager API, show browser selection page
             if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
+                mIvBrave.setVisibility(View.VISIBLE);
                 showBrowserSelectionPage();
-            } else if (!isDefaultBrowser()) {
+            }
+            // If Brave is not default browser, trigger default browser prompt
+            else if (!isDefaultBrowser()) {
                 setDefaultBrowserAndProceedToNextStep();
-            } else {
+            }
+            // If already default browser, proceed to next step
+            else {
                 nextOnboardingStep();
             }
-        } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
+        }
+        // Step 1: Show analytics consent page
+        else if (mCurrentStep == getAnalyticsConsentPageStep()) {
+            mIvBrave.setVisibility(View.VISIBLE);
             showAnalyticsConsentPage();
-        } else {
+        }
+        // Final step: Complete onboarding
+        else {
+            // Set onboarding preferences
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
             OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
+            
+            // Mark first run flow as complete
             FirstRunStatus.setFirstRunFlowComplete(true);
+            
+            // Accept terms of service and EULA
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
             FirstRunUtils.setEulaAccepted();
+            
+            // Finish activity and notify completion
             finish();
             sendFirstRunCompletePendingIntent();
         }
     }
 
     private int getAnalyticsConsentPageStep() {
-        return 2;
-    }
-
-    private void showIntroPage() {
-        int margin = mIsTablet ? 100 : 0;
-        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1f, margin, true);
-        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1f, margin, false);
-        if (mTvWelcome != null) {
-            mTvWelcome
-                    .animate()
-                    .alpha(1f)
-                    .setDuration(200)
-                    .withEndAction(() -> mTvWelcome.setVisibility(View.VISIBLE));
-        }
-        if (mIvBrave != null) {
-            mIvBrave.animate().scaleX(0.8f).scaleY(0.8f).setDuration(1000);
-        }
-        new Handler()
-                .postDelayed(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                if (mTvWelcome != null) {
-                                    mTvWelcome
-                                            .animate()
-                                            .translationYBy(
-                                                    -dpToPx(WelcomeOnboardingActivity.this, 20))
-                                            .setDuration(3000)
-                                            .start();
-                                }
-                            }
-                        },
-                        200);
-
-        nextOnboardingStep();
+        return 1;
     }
 
     private void showBrowserSelectionPage() {
@@ -328,9 +342,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             if (mBtnNegative != null) {
                 mBtnNegative.setVisibility(View.GONE);
             }
-        }
-        if (mTvWelcome != null) {
-            mTvWelcome.setVisibility(View.GONE);
         }
         if (mLayoutCard != null) {
             mLayoutCard.setVisibility(View.VISIBLE);
@@ -375,24 +386,30 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mBtnNegative.setVisibility(View.VISIBLE);
         }
 
-        if (PackageUtils.isFirstInstall(this)
+        // Handle crash reporting consent based on installation status
+        if (PackageUtils.isFirstInstall(this) 
                 && !OnboardingPrefManager.getInstance().isP3aCrashReportingMessageShown()) {
+            // For first time installs, enable crash reporting by default
             if (mCheckboxCrash != null) {
                 mCheckboxCrash.setChecked(true);
             }
+            // Update metrics reporting consent
             UmaSessionStats.changeMetricsReportingConsent(
                     true, ChangeMetricsReportingStateCalledFrom.UI_FIRST_RUN);
+            // Mark crash reporting message as shown
             OnboardingPrefManager.getInstance().setP3aCrashReportingMessageShown(true);
         } else {
+            // For existing installations, restore previous crash reporting preference
             boolean isCrashReporting = false;
             try {
-                isCrashReporting =
+                // Get current crash reporting permission status
+                isCrashReporting = 
                         PrivacyPreferencesManagerImpl.getInstance()
                                 .isUsageAndCrashReportingPermittedByUser();
-
             } catch (Exception e) {
                 Log.e(TAG, "isCrashReportingOnboarding: " + e.getMessage());
             }
+            // Update checkbox to match current preference
             if (mCheckboxCrash != null) {
                 mCheckboxCrash.setChecked(isCrashReporting);
             }

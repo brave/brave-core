@@ -881,9 +881,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
 
       <!-- Onboarding strings -->
-      <message name="IDS_WELCOME_TO_BRAVE" desc="Text for welcome onboarding">
-        Welcome to Brave
-      </message>
       <message name="IDS_PRIVACY_ONBOARDING" desc="Text for privacy onboarding">
         Privacy. Made simple.
       </message>
