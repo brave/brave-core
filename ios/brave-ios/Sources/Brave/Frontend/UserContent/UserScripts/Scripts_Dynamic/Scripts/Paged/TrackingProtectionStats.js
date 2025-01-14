@@ -166,11 +166,11 @@ window.__firefox__.execute(function($) {
     delete Image.prototype.src;
 
     Object.defineProperty(Image.prototype, "src", {
-      get: $(function() {
+      get: function() {
         return originalImageSrc.get.call(this);
-      }),
+      },
 
-      set: $(function(value) {
+      set: function(value) {
         // Only attach the `error` event listener once for this
         // Image instance.
         if (!this[localErrorHandlerProp]) {
@@ -184,7 +184,7 @@ window.__firefox__.execute(function($) {
         }
 
         originalImageSrc.set.call(this, value);
-      }),
+      },
       enumerable: true,
       configurable: true
     });
