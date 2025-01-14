@@ -498,8 +498,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
 
   const uploadImage = () => {
     aiChatContext.uiHandler?.uploadImage()
-    .then(({imageData}) => {
-      console.log(imageData)
+    .then(({imageData, fileName, fileSize}) => {
+      console.log(imageData, fileName, fileSize)
     })
   }
 
