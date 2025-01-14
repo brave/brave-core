@@ -22,6 +22,12 @@ export interface CharCountContext {
   inputTextCharCountDisplay: string
 }
 
+export type UploadedImageData = {
+  data: number[]
+  fileName: string
+  fileSize: number
+}
+
 export type ConversationContext = SendFeedbackState & CharCountContext & {
   historyInitialized: boolean
   conversationUuid?: string
@@ -62,6 +68,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   handleVoiceRecognition?: () => void
   uploadImage?: () => void
   conversationHandler?: Mojom.ConversationHandlerRemote
+  imgData?: UploadedImageData
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -102,7 +109,8 @@ const defaultContext: ConversationContext = {
   handleActionTypeClick: () => { },
   setIsToolsMenuOpen: () => { },
   ...defaultSendFeedbackState,
-  ...defaultCharCountContext
+  ...defaultCharCountContext,
+  imgData: undefined
 }
 
 export function useCharCountInfo(inputText: string) {
@@ -502,7 +510,15 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   const uploadImage = () => {
     aiChatContext.uiHandler?.uploadImage()
     .then(({imageData, fileName, fileSize}) => {
-      console.log(imageData, fileName, fileSize)
+      if (imageData && fileName && fileSize) {
+        setPartialContext({
+          imgData: {
+            data: imageData,
+            fileName,
+            fileSize: Number(fileSize)
+          }
+        })
+      }
     })
   }
 
