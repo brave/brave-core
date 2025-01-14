@@ -252,11 +252,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
         value: value,
       }
     })
-    this.browserProxy_.getContactInfoSaveFlag().then(value => {
+    this.browserProxy_.getContactInfo().then(value => {
       this.isContactInfoSaveFlagEnabled_ = {
         key: '',
         type: chrome.settingsPrivate.PrefType.BOOLEAN,
-        value: value,
+        value: value.contactInfoSaveFlag,
       }
     })
   }

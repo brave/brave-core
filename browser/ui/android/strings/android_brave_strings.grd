@@ -1678,6 +1678,9 @@ Are you sure you want to do this?
       <message name="IDS_REPORT_BROKEN_SITE_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">
           Contact me at: (optional)
       </message>
+      <message name="IDS_REPORT_BROKEN_SITE_CONTACT_APOPUP_LABEL" desc="Contact information auto population explanation">
+          If you provide contact info it will be stored for future reports.
+      </message>
       <message name="IDS_REPORT_BROKEN_SITE_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">
           Email, Twitter, etc.
       </message>

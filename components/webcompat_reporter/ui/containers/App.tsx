@@ -34,6 +34,7 @@ class WebcompatReportContainer extends React.Component<Props, {}> {
       <WebcompatReportModal
         siteUrl={reporterState.dialogArgs.url}
         contactInfo={reporterState.dialogArgs.contactInfo}
+        contactInfoSaveFlag={reporterState.dialogArgs.contactInfoSaveFlag}
         isErrorPage={reporterState.dialogArgs.isErrorPage}
         submitted={reporterState.submitted}
         onSubmitReport={actions.onSubmitReport}

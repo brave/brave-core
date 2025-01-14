@@ -59,8 +59,6 @@ class WebcompatReporterService : public KeyedService,
 
   void SubmitWebcompatReport(mojom::ReportInfoPtr report_info) override;
 
-  void GetContactInfoSaveFlag(GetContactInfoSaveFlagCallback callback) override;
-
   void SetContactInfoSaveFlag(bool value) override;
 
   void GetContactInfo(GetContactInfoCallback callback) override;

@@ -35,6 +35,7 @@ import {
 interface Props {
   siteUrl: string
   contactInfo: string
+  contactInfoSaveFlag: boolean
   isErrorPage: boolean
   isHttpPage: boolean
   isLocalPage: boolean
@@ -52,6 +53,8 @@ interface State {
 const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web-compatibility-reports'
 
 export default class ReportView extends React.PureComponent<Props, State> {
+  private handleKeyPress: (e: KeyboardEvent) => void;
+
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -59,6 +62,14 @@ export default class ReportView extends React.PureComponent<Props, State> {
       contact: props.contactInfo,
       attachScreenshot: false,
       screenshotObjectUrl: null
+    }
+    this.handleKeyPress = this._handleKeyPress.bind(this);
+  }
+
+  private _handleKeyPress(e: KeyboardEvent) {
+    const { onClose } = this.props;
+    if (e.key === 'Escape') {
+      onClose();
     }
   }
 
@@ -97,9 +108,18 @@ export default class ReportView extends React.PureComponent<Props, State> {
     window.open(screenshotObjectUrl, '_blank', 'noopener')
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress);
+  }
+
   render () {
     const {
       siteUrl,
+      contactInfoSaveFlag,
       isErrorPage,
       isHttpPage,
       isLocalPage,
@@ -152,6 +172,13 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 id='contact-info'
               />
             </FieldCtr>
+            {contactInfoSaveFlag &&
+              <FieldCtr>
+                <InputLabel>
+                  {getLocale('reportContactPopupInfoLabel')}
+                </InputLabel>
+              </FieldCtr>
+            }
             <FieldCtr>
               <Checkbox
                 onChange={this.handleScreenshotChange}

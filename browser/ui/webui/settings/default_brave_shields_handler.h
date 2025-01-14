@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_DEFAULT_BRAVE_SHIELDS_HANDLER_H_
 
+#include <string>
+
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
@@ -60,9 +62,10 @@ class DefaultBraveShieldsHandler
   void SetForgetFirstPartyStorageEnabled(const base::Value::List& args);
   void GetForgetFirstPartyStorageEnabled(const base::Value::List& args);
   void SetContactInfoSaveFlag(const base::Value::List& args);
-  void GetContactInfoSaveFlag(const base::Value::List& args);
-  void OnGetContactInfoSaveFlag(base::Value javascript_callback,
-                                const bool contact_info_save_flag);
+  void GetContactInfo(const base::Value::List& args);
+  void OnGetContactInfo(base::Value javascript_callback,
+                        const std::optional<std::string>& contact_info,
+                        const bool contact_info_save_flag);
 
   raw_ptr<Profile> profile_ = nullptr;
 

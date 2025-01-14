@@ -29,6 +29,7 @@ inline constexpr char kDomainField[] = "domain";
 inline constexpr char kDetailsField[] = "additionalDetails";
 inline constexpr char kContactField[] = "contactInfo";
 inline constexpr char kApiKeyField[] = "api_key";
+inline constexpr char kContactInfoSaveFlagField[] = "contactInfoSaveFlag";
 
 inline constexpr char kUISourceField[] = "ui_source";
 inline constexpr char kIsErrorPage[] = "isErrorPage";

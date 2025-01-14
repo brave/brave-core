@@ -5,6 +5,11 @@
 
 import {sendWithPromise} from 'chrome://resources/js/cr.js'
 
+export type ContactInfo = {
+  contactInfo: string | null
+  contactInfoSaveFlag: boolean
+}
+
 export interface DefaultBraveShieldsBrowserProxy {
   isAdControlEnabled: () => Promise<boolean>
   setAdControlType: (value: boolean) => void
@@ -30,7 +35,7 @@ export interface DefaultBraveShieldsBrowserProxy {
   setForgetFirstPartyStorageEnabled: (value: boolean) => void
 
   setContactInfoSaveFlag: (value: boolean) => void
-  getContactInfoSaveFlag: () => Promise<boolean>
+  getContactInfo: () => Promise<ContactInfo>
 
   getHideBlockAllCookieTogle: () => Promise<boolean>
 }
@@ -101,8 +106,8 @@ implements DefaultBraveShieldsBrowserProxy {
     chrome.send('setContactInfoSaveFlag', [value])
   }
 
-  getContactInfoSaveFlag () {
-    return sendWithPromise('getContactInfoSaveFlag')
+  getContactInfo () {
+    return sendWithPromise('getContactInfo')
   }
 
   getHideBlockAllCookieTogle () {
