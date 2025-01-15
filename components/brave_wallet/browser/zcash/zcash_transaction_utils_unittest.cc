@@ -7,23 +7,10 @@
 
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
-
-namespace {
-
-std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(size_t seed) {
-  auto utxo = zcash::mojom::ZCashUtxo::New();
-  utxo->address = base::NumberToString(seed);
-  utxo->value_zat = seed;
-  utxo->tx_id = std::vector<uint8_t>(32u, 1u);
-  std::vector<zcash::mojom::ZCashUtxoPtr> result;
-  result.push_back(std::move(utxo));
-  return result;
-}
-
-}  // namespace
 
 TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
   // Max amount, but fee is greater
@@ -87,5 +74,68 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashTransparentInputs) {
     EXPECT_EQ(result->inputs[2].utxo_value, 30000u);
   }
 }
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
+  // Able to select inputs
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    auto result = PickZCashOrchardInputs(notes, 150000u);
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->change, 170000u - 150000u - result->fee);  // 17 - 15
+    EXPECT_EQ(result->inputs.size(), 2u);
+    EXPECT_EQ(result->fee, 15000u);
+    EXPECT_EQ(result->inputs.size(), 2u);
+    EXPECT_EQ(result->inputs[0].amount, 70000u);
+    EXPECT_EQ(result->inputs[0].block_id, 3u);
+    EXPECT_EQ(result->inputs[1].amount, 100000u);
+    EXPECT_EQ(result->inputs[1].block_id, 1u);
+  }
+
+  // Full amount
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    auto result = PickZCashOrchardInputs(notes, kZCashFullAmount);
+    EXPECT_TRUE(result.has_value());
+    EXPECT_EQ(result->change, 0u);  // 17 - 15
+    EXPECT_EQ(result->inputs.size(), 3u);
+    EXPECT_EQ(result->fee, 20000u);
+    EXPECT_EQ(result->inputs[0].amount, 100000u);
+    EXPECT_EQ(result->inputs[0].block_id, 1u);
+    EXPECT_EQ(result->inputs[1].amount, 200000u);
+    EXPECT_EQ(result->inputs[1].block_id, 2u);
+    EXPECT_EQ(result->inputs[2].amount, 70000u);
+    EXPECT_EQ(result->inputs[2].block_id, 3u);
+  }
+
+  // Unable to pick inputs
+  {
+    std::vector<OrchardNote> notes;
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
+    auto result = PickZCashOrchardInputs(notes, 300000u);
+    EXPECT_FALSE(result.has_value());
+  }
+
+  // Empty inputs
+  {
+    auto result =
+        PickZCashOrchardInputs(std::vector<OrchardNote>(), kZCashFullAmount);
+    EXPECT_FALSE(result.has_value());
+  }
+
+  // Empty inputs
+  {
+    auto result = PickZCashOrchardInputs(std::vector<OrchardNote>(), 10000u);
+    EXPECT_FALSE(result.has_value());
+  }
+}
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

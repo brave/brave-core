@@ -39,6 +39,28 @@ std::optional<PickInputsResult> PickZCashTransparentInputs(
     uint64_t amount,
     size_t orchard_actions_count);
 
+struct PickOrchardInputsResult {
+  std::vector<OrchardNote> inputs;
+  uint64_t fee;
+  uint64_t change;
+
+  PickOrchardInputsResult(std::vector<OrchardNote> inputs,
+                          uint64_t fee,
+                          uint64_t change);
+  ~PickOrchardInputsResult();
+  PickOrchardInputsResult(const PickOrchardInputsResult& other);
+  PickOrchardInputsResult& operator=(const PickOrchardInputsResult& other) =
+      delete;
+  PickOrchardInputsResult(PickOrchardInputsResult&& other);
+  PickOrchardInputsResult& operator=(PickOrchardInputsResult&& other) = delete;
+};
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
+    const std::vector<OrchardNote>& notes,
+    uint64_t amount);
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TRANSACTION_UTILS_H_
