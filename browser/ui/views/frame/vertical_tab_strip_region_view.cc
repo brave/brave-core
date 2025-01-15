@@ -213,7 +213,7 @@ END_METADATA
 class ShortcutBox : public views::View {
   METADATA_HEADER(ShortcutBox, views::View)
  public:
-  ShortcutBox(const std::u16string& shortcut_text) {
+  explicit ShortcutBox(const std::u16string& shortcut_text) {
     constexpr int kChildSpacing = 4;
     SetLayoutManager(std::make_unique<views::BoxLayout>(
         views::BoxLayout::Orientation::kHorizontal, gfx::Insets(),
