@@ -23,7 +23,6 @@ import {
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import {
-  makeAndroidFundWalletRoute,
   makeDepositFundsRoute,
   makeFundWalletRoute
 } from '../../../../utils/routes-utils'
@@ -202,7 +201,7 @@ export const MarketAsset = () => {
   )
 
   // custom hooks
-  const { foundAndroidBuyToken, foundMeldBuyToken } = useFindBuySupportedToken(
+  const { foundMeldBuyToken } = useFindBuySupportedToken(
     selectedAssetFromParams
   )
 
@@ -303,21 +302,10 @@ export const MarketAsset = () => {
   }, [history, selectedAssetFromParams, updateUserAssetVisible])
 
   const onSelectBuy = React.useCallback(() => {
-    if (selectedAssetFromParams && foundAndroidBuyToken) {
-      history.push(
-        makeAndroidFundWalletRoute(getAssetIdKey(selectedAssetFromParams))
-      )
-      return
-    }
     if (foundMeldBuyToken) {
       history.push(makeFundWalletRoute(foundMeldBuyToken))
     }
-  }, [
-    history,
-    foundMeldBuyToken,
-    selectedAssetFromParams,
-    foundAndroidBuyToken
-  ])
+  }, [history, foundMeldBuyToken])
 
   const onSelectDeposit = React.useCallback(() => {
     if (foundTokens.length === 1) {
@@ -398,7 +386,7 @@ export const MarketAsset = () => {
         />
         <Row padding='0px 20px'>
           <ButtonRow>
-            {(foundMeldBuyToken || foundAndroidBuyToken) && (
+            {foundMeldBuyToken && (
               <div>
                 <LeoSquaredButton onClick={onSelectBuy}>
                   {getLocale('braveWalletBuy')}
