@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519_slip23.h"
 
 #include <array>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -22,11 +23,11 @@ namespace brave_wallet {
 
 namespace {
 
-// https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-eddsa-05#section-5.1.5
+// https://datatracker.ietf.org/doc/html/rfc8032#section-5.1.5
 // requires scalar to follow this requirements 'The lowest 3 bits of the first
 // octet are cleared, the highest bit of the last octet is cleared, and the
 // second highest bit of the last octet is set'.
-// https://input-output-hk.github.io/adrestia/static/Ed25519_BIP.pdf expands
+// https://input-output-hk.github.io/adrestia/static/Ed25519_BIP.pdf extends
 // this requirement to `We admit only those k such that the third highest bit
 // of the last byte of k is zero`
 base::span<uint8_t, kSlip23ScalarSize> ClampScalarEd25519Bip32(
@@ -41,7 +42,7 @@ base::span<uint8_t, kSlip23ScalarSize> ClampScalarEd25519Bip32(
   return scalar;
 }
 
-// https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-eddsa-05#section-5.1.5
+// https://datatracker.ietf.org/doc/html/rfc8032#section-5.1.5
 // requires scalar to follow this requirements 'The lowest 3 bits of the first
 // octet are cleared, the highest bit of the last octet is cleared, and the
 // second highest bit of the last octet is set'.
