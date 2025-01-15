@@ -382,6 +382,7 @@ brave_java_resources = [
   "java/res/drawable/crypto_wallet_hollow_button.xml",
   "java/res/drawable/crypto_wallet_onboarding_blue_button.xml",
   "java/res/drawable/custodian_text_background.xml",
+  "java/res/drawable/dapps_permission_dialog_background.xml",
   "java/res/drawable/default_dot.xml",
   "java/res/drawable/default_indicator.xml",
   "java/res/drawable/ellipse_217.xml",

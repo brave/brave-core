@@ -10,6 +10,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +61,7 @@ public class BraveDappPermissionPromptDialog
     private final ModalDialogManager mModalDialogManager;
     private final int mCoinType;
     private final Context mContext;
+    private final Window mWindow;
     private long mNativeDialogController;
     private PropertyModel mPropertyModel;
     private String mFavIconURL;
@@ -85,13 +87,13 @@ public class BraveDappPermissionPromptDialog
 
     public BraveDappPermissionPromptDialog(
             long nativeDialogController,
-            WindowAndroid windowAndroid,
+            @NonNull WindowAndroid windowAndroid,
             String favIconURL,
             @CoinType.EnumType int coinType) {
         mNativeDialogController = nativeDialogController;
         mFavIconURL = favIconURL;
         mContext = windowAndroid.getActivity().get();
-
+        mWindow = windowAndroid.getWindow();
         mModalDialogManager = windowAndroid.getModalDialogManager();
         mCoinType = coinType;
         mMojoServicesClosed = false;
@@ -113,7 +115,7 @@ public class BraveDappPermissionPromptDialog
     void show() {
         View customView =
                 LayoutInflaterUtils.inflate(
-                        mContext, R.layout.brave_permission_prompt_dialog, null);
+                        mWindow, R.layout.brave_permission_prompt_dialog, null, false);
 
         mFavIconImage = customView.findViewById(R.id.favicon);
         mCvFavContainer = customView.findViewById(R.id.permission_prompt_fav_container);
@@ -142,7 +144,7 @@ public class BraveDappPermissionPromptDialog
                                         R.string.permissions_connect_brave_wallet_back_button_text))
                         .with(ModalDialogProperties.FILTER_TOUCH_FOR_SECURITY, true)
                         .build();
-        mModalDialogManager.showDialog(mPropertyModel, ModalDialogType.APP);
+        mModalDialogManager.showDialog(mPropertyModel, ModalDialogType.TAB);
         initKeyringService();
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
@@ -160,7 +162,7 @@ public class BraveDappPermissionPromptDialog
                 mPermissionDialogPositiveButton.setEnabled(false);
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "show " + e);
+            Log.e(TAG, "show", e);
         }
         initAccounts();
     }
@@ -172,7 +174,7 @@ public class BraveDappPermissionPromptDialog
 
     @NonNull
     private ViewGroup getPermissionModalViewContainer(@NonNull View customView) {
-        ViewParent viewParent = customView.getParent();
+        ViewParent viewParent = (ViewParent) customView;
         while (viewParent.getParent() != null) {
             viewParent = viewParent.getParent();
             if (viewParent instanceof ModalDialogView) {
