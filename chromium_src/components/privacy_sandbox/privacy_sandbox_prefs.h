@@ -15,8 +15,6 @@ namespace prefs {
 // sure these modes are not enabled.
 inline constexpr char kPrivacySandboxApisEnabled[] =
     "privacy_sandbox.apis_enabled";
-inline constexpr char kPrivacySandboxApisEnabledV2[] =
-    "privacy_sandbox.apis_enabled_v2";
 inline constexpr char kPrivacySandboxManuallyControlledV2[] =
     "privacy_sandbox.manually_controlled_v2";
 

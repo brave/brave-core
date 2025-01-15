@@ -528,8 +528,6 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
   // enabled.
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxApisEnabled, true);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
   SetupTestState(
@@ -541,8 +539,6 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
       /*managed_cookie_exceptions=*/{});
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxApisEnabled, true);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
   SetupTestState(
@@ -554,8 +550,6 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
       /*managed_cookie_exceptions=*/{});
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxApisEnabled, true);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
   SetupTestState(
@@ -567,8 +561,6 @@ TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
       /*managed_cookie_exceptions=*/{});
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxApisEnabled, true);
-  profile()->GetTestingPrefService()->SetBoolean(
-      prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 }
 
