@@ -9,10 +9,10 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "brave/browser/ai_chat/upload_image_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -20,7 +20,6 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "ui/shell_dialogs/select_file_dialog.h"
 
 namespace content {
 class WebContents;
@@ -32,8 +31,7 @@ class FaviconService;
 
 namespace ai_chat {
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
-                            public AIChatTabHelper::Observer,
-                            ui::SelectFileDialog::Listener {
+                            public AIChatTabHelper::Observer {
  public:
   AIChatUIPageHandler(
       content::WebContents* owner_web_contents,
@@ -93,10 +91,6 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   // AIChatTabHelper::Observer
   void OnAssociatedContentNavigated(int new_navigation_id) override;
 
-  // ui::SelectFileDialog::Listener
-  void FileSelected(const ui::SelectedFileInfo& file, int index) override;
-  void FileSelectionCanceled() override;
-
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
@@ -106,8 +100,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       chat_tab_helper_observation_{this};
   std::unique_ptr<ChatContextObserver> chat_context_observer_;
 
-  scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
-  UploadImageCallback upload_image_callback_;
+  std::unique_ptr<UploadImageHelper> upload_image_helper_;
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;
