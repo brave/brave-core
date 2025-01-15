@@ -267,6 +267,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetAPIResponseError(GetAPIResponseErrorCallback callback) override;
   void ClearErrorAndGetFailedMessage(
       ClearErrorAndGetFailedMessageCallback callback) override;
+  void StopGenerationAndMaybeGetHumanEntry(
+      StopGenerationAndMaybeGetHumanEntryCallback callback) override;
 
   void SubmitSelectedText(const std::string& selected_text,
                           mojom::ActionType action_type);

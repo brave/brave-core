@@ -994,6 +994,28 @@ void ConversationHandler::GetAPIResponseError(
   std::move(callback).Run(current_error_);
 }
 
+void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
+    StopGenerationAndMaybeGetHumanEntryCallback callback) {
+  if (chat_history_.empty()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  is_request_in_progress_ = false;
+  engine_->ClearAllQueries();
+  OnAPIRequestInProgressChanged();
+
+  mojom::CharacterType last_type = chat_history_.back()->character_type;
+  if (last_type == mojom::CharacterType::HUMAN) {
+    mojom::ConversationTurnPtr turn = std::move(chat_history_.back());
+    chat_history_.pop_back();
+    OnConversationEntryRemoved(turn->uuid);
+    std::move(callback).Run(std::move(turn));
+  } else {
+    std::move(callback).Run(nullptr);
+  }
+}
+
 void ConversationHandler::ClearErrorAndGetFailedMessage(
     ClearErrorAndGetFailedMessageCallback callback) {
   DCHECK(!chat_history_.empty());

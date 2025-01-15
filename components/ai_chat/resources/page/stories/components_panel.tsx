@@ -425,6 +425,7 @@ type CustomArgs = {
   shouldShowLongConversationInfo: boolean
   shouldShowLongPageWarning: boolean
   shouldShowRefinedWarning: boolean
+  isGenerating: boolean
 }
 
 const args: CustomArgs = {
@@ -453,6 +454,7 @@ const args: CustomArgs = {
   shouldShowLongConversationInfo: false,
   shouldShowLongPageWarning: false,
   shouldShowRefinedWarning: false,
+  isGenerating: false,
 }
 
 const meta: Meta<CustomArgs> = {
@@ -572,7 +574,7 @@ function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs:
     allModels: MODELS,
     currentModel,
     suggestedQuestions,
-    isGenerating: true,
+    isGenerating: options.args.isGenerating,
     suggestionStatus: Mojom.SuggestionGenerationStatus[options.args.suggestionStatus],
     currentError,
     apiHasError,
@@ -597,6 +599,7 @@ function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs:
     updateShouldSendPageContents: () => {},
     retryAPIRequest: () => {},
     handleResetError: () => {},
+    handleStopGenerating: async () => {},
     submitInputTextToAPI: () => {},
     resetSelectedActionType: () => {},
     handleActionTypeClick: () => {},

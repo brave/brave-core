@@ -52,6 +52,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   updateShouldSendPageContents: (shouldSend: boolean) => void
   retryAPIRequest: () => void
   handleResetError: () => void
+  handleStopGenerating: () => Promise<void>
   setInputText: (text: string) => void
   submitInputTextToAPI: () => void
   resetSelectedActionType: () => void
@@ -91,6 +92,7 @@ const defaultContext: ConversationContext = {
   updateShouldSendPageContents: () => { },
   retryAPIRequest: () => { },
   handleResetError: () => { },
+  handleStopGenerating: async () => { },
   setInputText: () => { },
   submitInputTextToAPI: () => { },
   resetSelectedActionType: () => { },
@@ -475,6 +477,16 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     })
   }
 
+  const handleStopGenerating = async () => {
+    const { humanEntry } =
+      await conversationHandler.stopGenerationAndMaybeGetHumanEntry()
+    if (humanEntry) {
+      setPartialContext({
+        inputText: humanEntry.text
+      })
+    }
+  }
+
   const handleVoiceRecognition = () => {
     if (!context.conversationUuid) {
       console.error('No conversationUuid found')
@@ -498,6 +510,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       setHasDismissedLongConversationInfo(true),
     retryAPIRequest: () => conversationHandler.retryAPIRequest(),
     handleResetError,
+    handleStopGenerating,
     // Experimentally don't cache model key locally, browser should notify of model change quickly
     setCurrentModel: (model) => conversationHandler.changeModel(model.key),
     generateSuggestedQuestions: () => conversationHandler.generateQuestions(),
@@ -506,6 +519,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setInputText: (inputText) => setPartialContext({ inputText }),
     handleActionTypeClick,
     submitInputTextToAPI,
+    isGenerating: context.isGenerating,
     switchToBasicModel,
     setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
     handleVoiceRecognition,

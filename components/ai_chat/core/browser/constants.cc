@@ -124,6 +124,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"menuRenameConversation", IDS_CHAT_UI_MENU_RENAME_CONVERSATION},
        {"menuDeleteConversation", IDS_CHAT_UI_MENU_DELETE_CONVERSATION},
        {"sendChatButtonLabel", IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL},
+       {"stopGenerationButtonLabel", IDS_CHAT_UI_STOP_GENERATION_BUTTON_LABEL},
        {"errorContextLimitReaching", IDS_CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING},
        {"gotItButtonLabel", IDS_CHAT_UI_GOT_IT_BUTTON_LABEL},
        {"pageContentTooLongWarning", IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING},

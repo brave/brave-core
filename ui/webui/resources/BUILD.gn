@@ -422,6 +422,7 @@ leo_icons = [
   "yahoo-color.svg",
   "yandex-color.svg",
   "window-tabs-vertical-expanded.svg",
+  "stop-circle.svg",
 ]
 
 if (enable_brave_vpn_panel) {
