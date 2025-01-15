@@ -48,9 +48,10 @@
 }
 
 .questionButton {
-  --leo-button-color: var(--leo-color-text-secondary);
+  --leo-button-color: var(--leo-color-divider-subtle);
 }
 
 .questionButtonText {
   font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
 }
