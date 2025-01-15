@@ -61,6 +61,7 @@ class BraveTabContainer : public TabContainerImpl,
   // SplitViewBrowserDataObserver:
   void OnTileTabs(const TabTile& tile) override;
   void OnDidBreakTile(const TabTile& tile) override;
+  void OnSwapTabsInTile(const TabTile& tile) override;
 
  private:
   class DropArrow : public views::WidgetObserver {

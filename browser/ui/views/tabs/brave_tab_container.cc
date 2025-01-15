@@ -614,6 +614,10 @@ void BraveTabContainer::OnDidBreakTile(const TabTile& tile) {
   SchedulePaint();
 }
 
+void BraveTabContainer::OnSwapTabsInTile(const TabTile& tile) {
+  UpdateTabsBorderInTile(tile);
+}
+
 gfx::Rect BraveTabContainer::GetDropBounds(int drop_index,
                                            bool drop_before,
                                            bool drop_in_group,
