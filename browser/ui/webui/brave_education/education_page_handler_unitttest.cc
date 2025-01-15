@@ -11,6 +11,7 @@
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
+#include "brave/components/brave_education/education_urls.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -50,7 +51,7 @@ class EducationPageHandlerTest : public testing::Test {
   }
 
   mojo::Remote<brave_browser_command::mojom::BraveBrowserCommandHandler>&
-  CreateHandler(EducationPageType page_type, Profile* profile = nullptr) {
+  CreateHandler(Profile* profile = nullptr) {
     auto delegate = std::make_unique<TestDelegate>(base::BindLambdaForTesting(
         [this](std::string action) { actions_.push_back(std::move(action)); }));
 
@@ -58,8 +59,16 @@ class EducationPageHandlerTest : public testing::Test {
       profile = profile_.get();
     }
 
+    std::vector<brave_browser_command::mojom::Command> supported_commands = {};
+    supported_commands.insert(
+        supported_commands.end(),
+        {brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
+         brave_browser_command::mojom::Command::kOpenWalletOnboarding,
+         brave_browser_command::mojom::Command::kOpenVPNOnboarding,
+         brave_browser_command::mojom::Command::kOpenAIChat});
+
     page_handler_ = std::make_unique<BraveBrowserCommandHandler>(
-        remote_.BindNewPipeAndPassReceiver(), profile, page_type,
+        remote_.BindNewPipeAndPassReceiver(), profile, supported_commands,
         std::move(delegate));
 
     return remote_;
@@ -80,7 +89,7 @@ class EducationPageHandlerTest : public testing::Test {
 };
 
 TEST_F(EducationPageHandlerTest, BasicCommandsExecuted) {
-  auto& handler = CreateHandler(EducationPageType::kGettingStarted);
+  auto& handler = CreateHandler();
 
   base::test::TestFuture<bool> future;
 
@@ -97,7 +106,7 @@ TEST_F(EducationPageHandlerTest, BasicCommandsExecuted) {
 }
 
 TEST_F(EducationPageHandlerTest, VPNCommandsExecuted) {
-  auto& handler = CreateHandler(EducationPageType::kGettingStarted);
+  auto& handler = CreateHandler();
   base::test::TestFuture<bool> future;
 
   handler->ExecuteCommand(
@@ -114,7 +123,7 @@ TEST_F(EducationPageHandlerTest, VPNCommandsExecuted) {
 }
 
 TEST_F(EducationPageHandlerTest, ChatCommandsExecuted) {
-  auto& handler = CreateHandler(EducationPageType::kGettingStarted);
+  auto& handler = CreateHandler();
   base::test::TestFuture<bool> future;
 
   handler->ExecuteCommand(brave_browser_command::mojom::Command::kOpenAIChat,
@@ -124,13 +133,15 @@ TEST_F(EducationPageHandlerTest, ChatCommandsExecuted) {
   EXPECT_EQ(actions()[0], "open-ai-chat");
 }
 
+// TODO(bsclifton): this currently fails. The web UI won't load
+// for OTR, but the handler works fine. This might have been a change
+// in behavior during the refactoring.
 TEST_F(EducationPageHandlerTest, OffTheRecordProfile) {
   auto* otr_profile = profile().GetOffTheRecordProfile(
       Profile::OTRProfileID::CreateUniqueForTesting(),
       /*create_if_needed=*/true);
 
-  auto& handler =
-      CreateHandler(EducationPageType::kGettingStarted, otr_profile);
+  auto& handler = CreateHandler(otr_profile);
 
   base::test::TestFuture<bool> future;
 

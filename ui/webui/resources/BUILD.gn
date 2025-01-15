@@ -34,20 +34,30 @@ group("grdp") {
   }
 }
 
-if (!is_android && !is_ios) {
+include_polymer = !is_android && !is_ios
+
+if (include_polymer) {
   build_webui("build") {
     grd_prefix = "brave"
 
     # Ensure all the files are relative to this dir (with a brave/ prefix),
     # and not //ui/webui/resources which is the default for build_cr_component.
-    if (!is_android && !is_ios) {
+    if (include_polymer) {
       non_web_component_files = [
         "lit_overriding.ts",
         "polymer_overriding.ts",
+        "js/brave_browser_command/brave_browser_command_proxy.ts",
       ]
     }
 
-    if (!is_android && !is_ios) {
+    mojo_files_deps = [ ]
+    mojo_files = [ ]
+    if (include_polymer) {
+      mojo_files += [ "$root_gen_dir/brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom-webui.ts" ]
+      mojo_files_deps += [ "js/brave_browser_command:mojo_bindings_ts__generator" ]
+    }
+
+    if (include_polymer) {
       css_files = [
         "br_elements/br_shared_style.css",
         "br_elements/br_shared_vars.css",
@@ -59,9 +69,12 @@ if (!is_android && !is_ios) {
     generate_grdp = true
     grd_resource_path_prefix = "brave"
     ts_out_dir = "$root_gen_dir/brave/ui/webui/resources/tsc"
-    ts_deps = [ "//ui/webui/resources/js:build_ts" ]
+    ts_deps = [
+      "//ui/webui/resources/js:build_ts",
+      "//ui/webui/resources/mojo:build_ts",
+    ]
 
-    if (!is_android && !is_ios) {
+    if (include_polymer) {
       ts_deps += [
         "//third_party/lit/v3_0:build_ts",
         "//third_party/polymer/v3_0:library",
