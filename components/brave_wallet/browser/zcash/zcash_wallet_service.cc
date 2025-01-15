@@ -27,6 +27,7 @@
 
 #if BUILDFLAG(ENABLE_ORCHARD)
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_shield_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 namespace brave_wallet {
@@ -204,6 +205,32 @@ void ZCashWalletService::StopShieldSync(mojom::AccountIdPtr account_id,
   }
 #endif
   std::move(callback).Run("Not supported");
+}
+
+ZCashActionContext ZCashWalletService::CreateActionContext(
+    const mojom::AccountIdPtr& account_id,
+    const std::string chain_id) {
+  return ZCashActionContext(*zcash_rpc_,
+#if BUILDFLAG(ENABLE_ORCHARD)
+                            sync_state_,
+#endif
+                            account_id.Clone(), chain_id);
+}
+
+void ZCashWalletService::GetChainTipStatus(mojom::AccountIdPtr account_id,
+                                           const std::string& chain_id,
+                                           GetChainTipStatusCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
+      base::PassKey<class ZCashWalletService>(), *this,
+      CreateActionContext(account_id, chain_id),
+      base::BindOnce(&ZCashWalletService::OnGetChainTipStatusResult,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  task->Start();
+  get_zcash_chain_tip_status_tasks_.push_back(std::move(task));
+#else
+  std::move(callback).Run(nullptr, "Not supported");
+#endif
 }
 
 void ZCashWalletService::RunDiscovery(mojom::AccountIdPtr account_id,
@@ -703,6 +730,22 @@ void ZCashWalletService::OnSyncStatusUpdate(
   for (const auto& observer : observers_) {
     observer->OnSyncStatusUpdate(account_id.Clone(), status.Clone());
   }
+}
+
+void ZCashWalletService::OnGetChainTipStatusResult(
+    GetChainTipStatusCallback callback,
+    base::expected<mojom::ZCashChainTipStatusPtr, std::string> result) {
+  if (result.has_value()) {
+    std::move(callback).Run(std::move(result.value()), std::nullopt);
+  } else {
+    std::move(callback).Run(nullptr, result.error());
+  }
+}
+
+void ZCashWalletService::GetZCashChainTipStatusTaskDone(
+    ZCashGetZCashChainTipStatusTask* task) {
+  CHECK(get_zcash_chain_tip_status_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
 }
 
 #endif  // BUILDFLAG(ENABLE_ORCHARD)

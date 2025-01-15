@@ -1863,6 +1863,11 @@ struct ZCashShieldSyncStatus {
   uint64 spendable_balance;
 };
 
+struct ZCashChainTipStatus {
+  uint32 latest_scanned_block;
+  uint32 chain_tip;
+};
+
 interface ZCashWalletServiceObserver {
   OnSyncStart(AccountId account_id);
   OnSyncStatusUpdate(AccountId account_id, ZCashShieldSyncStatus status);
@@ -1881,6 +1886,8 @@ interface ZCashWalletService {
       (ZCashAddressValidationResult result);
   ShieldAllFunds(string network_id, AccountId account_id) =>
       (string? tx_id, string? error_message);
+  GetChainTipStatus(AccountId account_id, string chain_id) =>
+      (ZCashChainTipStatus? status, string? error_message);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
 
