@@ -317,12 +317,18 @@ static_library("browser") {
 
   if (enable_orchard) {
     sources += [
+      "zcash/zcash_blocks_batch_scan_task.cc",
+      "zcash/zcash_blocks_batch_scan_task.h",
       "zcash/zcash_create_shield_transaction_task.cc",
       "zcash/zcash_create_shield_transaction_task.h",
       "zcash/zcash_get_zcash_chain_tip_status_task.cc",
       "zcash/zcash_get_zcash_chain_tip_status_task.h",
+      "zcash/zcash_scan_blocks_task.cc",
+      "zcash/zcash_scan_blocks_task.h",
       "zcash/zcash_shield_sync_service.cc",
       "zcash/zcash_shield_sync_service.h",
+      "zcash/zcash_verify_chain_state_task.cc",
+      "zcash/zcash_verify_chain_state_task.h",
     ]
 
     deps += [

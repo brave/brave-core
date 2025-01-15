@@ -8,10 +8,36 @@
 
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
+
+class MockOrchardBlockScannerProxy
+    : public ZCashShieldSyncService::OrchardBlockScannerProxy {
+ public:
+  using Callback = base::RepeatingCallback<void(
+      OrchardTreeState tree_state,
+      std::vector<zcash::mojom::CompactBlockPtr> blocks,
+      base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
+                                             OrchardBlockScanner::ErrorCode>)>
+          callback)>;
+
+  explicit MockOrchardBlockScannerProxy(Callback callback);
+
+  ~MockOrchardBlockScannerProxy() override;
+
+  void ScanBlocks(
+      OrchardTreeState tree_state,
+      std::vector<zcash::mojom::CompactBlockPtr> blocks,
+      base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
+                                             OrchardBlockScanner::ErrorCode>)>
+          callback) override;
+
+ private:
+  Callback callback_;
+};
 
 std::array<uint8_t, kOrchardNullifierSize> GenerateMockNullifier(
     const mojom::AccountIdPtr& account_id,
@@ -26,6 +52,8 @@ OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
                                     uint8_t seed);
 
 void SortByBlockId(std::vector<OrchardNote>& vec);
+
+std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(size_t seed);
 
 }  // namespace brave_wallet
 

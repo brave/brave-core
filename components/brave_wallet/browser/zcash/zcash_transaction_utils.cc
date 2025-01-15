@@ -10,7 +10,6 @@
 namespace brave_wallet {
 
 namespace {
-#if BUILDFLAG(ENABLE_ORCHARD)
 
 uint64_t CalculateInputsAmount(
     const std::vector<ZCashTransaction::TxInput>& inputs) {
@@ -20,6 +19,8 @@ uint64_t CalculateInputsAmount(
   }
   return total_value;
 }
+
+#if BUILDFLAG(ENABLE_ORCHARD)
 
 uint64_t CalculateInputsAmount(const std::vector<OrchardNote>& notes) {
   uint64_t total_value = 0;
