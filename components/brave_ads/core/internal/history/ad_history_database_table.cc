@@ -79,7 +79,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid ad history item");
-
       continue;
     }
 
@@ -160,7 +159,6 @@ void GetCallback(
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid ad history item");
-
       continue;
     }
 

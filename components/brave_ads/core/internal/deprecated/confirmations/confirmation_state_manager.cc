@@ -120,7 +120,6 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Malformed confirmation JSON state");
-
     return false;
   }
 

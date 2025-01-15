@@ -165,7 +165,6 @@ bool ClientInfo::FromJson(const std::string& json) {
     base::debug::DumpWithoutCrashing();
 
     BLOG(0, "Malformed client JSON state");
-
     return false;
   }
 

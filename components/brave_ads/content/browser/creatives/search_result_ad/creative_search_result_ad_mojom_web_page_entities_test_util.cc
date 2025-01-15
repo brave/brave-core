@@ -110,7 +110,7 @@ class CreativeAdMojomWebPageEntitiesConstructor final {
       const std::string& name,
       T value) {
     if (!base::Contains(excluded_property_names_, name)) {
-      AddMojomProperty<T>(mojom_properties, name, value);
+      AddMojomProperty<T>(mojom_properties, name, std::move(value));
     }
   }
 

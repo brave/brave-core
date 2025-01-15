@@ -70,7 +70,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid creative set conversion");
-
       continue;
     }
 
@@ -151,7 +150,6 @@ void GetCallback(
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid creative set conversion");
-
       continue;
     }
 
