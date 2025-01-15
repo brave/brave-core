@@ -112,6 +112,11 @@
 <translation id="1571106259128580884">인기 사이트 추천 항목 표시</translation>
 <translation id="6285118765755298263">다른 검색 엔진 색인</translation>
 <translation id="919715748352669592">OpenSearch 사양을 준수하는 웹사이트를 자동으로 색인합니다.</translation>
+<translation id="412411722208944922">빠른 검색 엔진</translation>
+<translation id="2836969042340015500">빠른 검색 엔진</translation>
+<translation id="9120455214794270250">빠른 검색창 표시</translation>
+<translation id="1052991798173010693">현재 사용 중인 검색 엔진</translation>
+<translation id="335303688425891752">길게 눌러 순서 변경</translation>
 <translation id="9148058034647219655">나가기</translation>
 <translation id="8047754398610073499">쿠키 동의 문구 차단</translation>
 <translation id="2621893359845808115">사이트에서 쿠키를 수락/거부하겠냐는 웹사이트 팝업 차단</translation>
@@ -404,6 +409,12 @@
 <translation id="597993392929850353">Brave 라이선스</translation>
 <translation id="6336451774241870485">새 비공개 탭</translation>
 <translation id="3110967157686007724">비공개 탭</translation>
+<translation id="944340256927461196">기기에 흔적 남기지 않기</translation>
+<translation id="2063044449012253966">비공개 창에서 방문하는 사이트는 방문 기록에 표시되지 않습니다. 모든 비공개 창을 닫으면 쿠키와 양식 데이터, 사이트 데이터가 사라집니다.</translation>
+<translation id="7395764193745523646">검색 가시성</translation>
+<translation id="8735363371744702779">비공개 창에서도 ISP, 네트워크 관찰자 또는 고용주(업무용 기기/네트워크를 사용하는 경우)는 여전히 사용자의 검색 활동을 볼 수 있습니다.</translation>
+<translation id="1413177583895309156">Brave VPN은 Brave 브라우저 밖에서도 사용자의 모든 온라인 활동을 암호화하고 보호합니다.</translation>
+<translation id="3974348661685061050">7일 동안 무료로 사용해 보기</translation>
 <translation id="5789441016350810005">브라우저가 백그라운드에 있을 때 전송된 브레이브 광고</translation>
 <translation id="4973347371961481083">기부</translation>
 <translation id="7047578174221019462">월 기부금이 처리되었습니다.</translation>
@@ -704,8 +715,10 @@
 <translation id="1532536259167115948">월간 구독 <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">연간 구독 <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">매달 갱신</translation>
+<translation id="112929124115834557">연간 갱신</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /월</translation>
 <translation id="1163809943099641131">1년</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/><ph name="PERCENTAGE_AMOUNT"/>%% 절약<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /년</translation>
 <translation id="2786538705804257030">구독 대금은 Google 계정을 통해 청구됩니다.구독을 구매하면 무료 평가판에서 미사용된 부분은 포기한 것으로 간주합니다.\n\n현재 구독 기간 종료 최소 24시간 전에 취소하지 않으면 구독이 자동으로 갱신됩니다.\n\n구매 후 설정에서 구독을 관리할 수 있습니다.\n\nBrave를 사용하면 이용 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.</translation>
 <translation id="5035172357624830412">brave.com에서 이미 구매하셨습니까?</translation>
@@ -1221,4 +1234,6 @@
 <translation id="2728518864712716830">업데이트가 다운로드되었습니다.</translation>
 <translation id="8403338849301491865">필터 목록 업데이트 성공</translation>
 <translation id="4650851936784160359">필터 목록을 업데이트할 수 없습니다. 다시 시도하세요.</translation>
+<translation id="3098054327870766317">탭 종료 시 종료 취소 버튼 표시</translation>
+<translation id="1336494649091412226">Brave를 종료하시겠습니까?</translation>
 </translationbundle>

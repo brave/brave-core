@@ -796,7 +796,7 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="2304783958703511257">Configuración avanzada</translation>
 <translation id="4220062530885628403">Nonce</translation>
 <translation id="1924965034964265193">Introduce un valor nonce personalizado</translation>
-<translation id="5317780077021120954">Save</translation>
+<translation id="5317780077021120954">Guardar</translation>
 <translation id="4979796155378508955">Si el valor nonce personalizado no es secuencial o presenta otros errores, es posible que la transacción no se propague por la red.</translation>
 <translation id="750843150060816463">Precio del gas (GWEI)</translation>
 <translation id="1426320910664514906">Límite de gas</translation>

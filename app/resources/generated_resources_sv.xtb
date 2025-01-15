@@ -4582,7 +4582,7 @@ Detta kan omfatta information om installerad mjukvara, filer, webbläsaren och e
 <translation id="4206323443866416204">Feedbackrapport</translation>
 <translation id="4206585797409671301">Får visa begäranden</translation>
 <translation id="4207932031282227921">Behörighet har begärts, tryck på F6 för att svara</translation>
-<translation id="4208390505124702064">Sök på <ph name="SITE_NAME"/></translation>
+<translation id="4208390505124702064">Sök i <ph name="SITE_NAME"/></translation>
 <translation id="4209092469652827314">Stor</translation>
 <translation id="4209251085232852247">Inaktiverade</translation>
 <translation id="4210048056321123003">Den virtuella maskinen laddas ned</translation>
@@ -6494,7 +6494,6 @@ Behörigheter som du redan har gett webbplatser och appar kan gälla för det h�
 <translation id="5060827009373522990">När du är inloggad i Brave lagras lösenord du sparar i Brave-kontot <ph name="USER_EMAIL"/>. Öppna inställningarna om du vill inaktivera detta.</translation>
 <translation id="5614190747811328134">Meddelande till användaren</translation>
 <translation id="5614553682702429503">Vill du spara lösenordet?</translation>
-<translation id="5614625640221885312">Logga in om du vill ha dina bokmärken, lösenord med mera på alla dina enheter</translation>
 <translation id="5614947000616625327">iCloud-nyckelring</translation>
 <translation id="561552177910095306">En lista över de senaste webbplatserna som du har besökt som får föreslå annonser till andra webbplatser när du surfar</translation>
 <translation id="5616571005307953937">Äldsta</translation>

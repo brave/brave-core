@@ -714,6 +714,7 @@
 <translation id="7160424977552599351">Použite peňaženku Web3</translation>
 <translation id="6369571967625114920">Vo vašom regióne nie sú reklamy Brave Private Ads zatiaľ k dispozícii.</translation>
 <translation id="5309155375926073606">Áno, tiež by som chcel/-a prispieť do služby Brave Search a prihlásiť sa k projektu<ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Poskytnite anonymné údaje o vyhľadávaní a prehliadaní na zdokonalenie vyhľadávača Brave pomocou projektu Web Discovery. Ide o celkom otvorený zdrojový kód.</translation>
 <translation id="4174337572777167894">Project Web Discovery</translation>
 <translation id="7090992647511817643">účet</translation>
 <translation id="4822132585477111396">ID reťazca</translation>
@@ -942,8 +943,11 @@
 <translation id="7080614857771109950">Podporuje aktíva kompatibilné s EVM na blockchaine Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Podporuje aktíva kompatibilné so SLP na blockchaine Solana</translation>
 <translation id="4541295941776129088">Uložiť aktívum FIL</translation>
+<translation id="6030958132571544682">Uloženie aktív FIL Testnet</translation>
 <translation id="29759539656432505">Uložiť aktíva BTC</translation>
+<translation id="2399555431746923964">Uloženie aktív BTC Testnet</translation>
 <translation id="8749751940551938347">Uložiť aktíva ZEC</translation>
+<translation id="3451958544919449297">Uloženie aktív ZEC Testnet</translation>
 <translation id="8500387257977999003">Súkromný kľúč <ph name="PROTOCOL"/></translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="232925166623833246">Import z hardvérovej peňaženky</translation>
@@ -1000,6 +1004,7 @@
 <translation id="453788800165937690">VAROVANIE: Nikdy nezdieľajte svoj súkromný kľúč. Ktokoľvek s týmto súkromným kľúčom si môže navždy privlastniť vaše aktíva.</translation>
 <translation id="2416098547200943834">POZNÁMKA: Súkromný kľúč sa poskytuje ako hex-kódovaný JSON, ktorý obsahuje súkromný kľúč a informácie o protokole. <ph name="LINK_START"/>Viac informácií nájdete na <ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">POZNÁMKA: Súkromný kľúč musí byť poskytnutý ako hex-kódovaný JSON, ktorý obsahuje súkromný kľúč a informácie o protokole. <ph name="LINK_START"/>Viac informácií nájdete na<ph name="LINK_END"/>.</translation>
+<translation id="4482913669726886926">POZNÁMKA: Podporované sú len rozšírené kľúče <ph name="FORMAT"/>.</translation>
 <translation id="42126664696688958">Exportovať</translation>
 <translation id="1366855498335432549">Záloha</translation>
 <translation id="790104325876206743">Nastavenia účtu</translation>
@@ -1258,7 +1263,25 @@
 <translation id="6153197326949684688">Predať cez <ph name="OFFRAMP_PROVIDER"/></translation>
 <translation id="7902920577183739843">Kúpte si so službou Sardine</translation>
 <translation id="3301984548406568819">Finančné údaje a údaje o transakciách spracúvajú naši partneri. Spoločnosť Brave takéto údaje nezhromažďuje ani k nim nemá prístup.</translation>
+<translation id="5795821518596541838">Partner transakcií</translation>
+<translation id="1916136859742693273">Brave Wallet využíva službu Meld.io na zhromažďovanie a sprístupňovanie rôznych poskytovateľov kryptomien pre váš región. S Meld.io budeme zdieľať informácie na dokončenie transakcie vrátane adresy vašej peňaženky a kódu krajiny. Ďalšie informácie nájdete v podmienkach používania služby Meld.</translation>
+<translation id="245827814248186739">Prečítal/-a som si <ph name="LINK_BEFORE"/>Podmienky používania služby Meld<ph name="LINK_AFTER"/> a súhlasím s nimi</translation>
+<translation id="2050829168433446009">Najlepšia voľba</translation>
+<translation id="2803020719327054687">Výmenný kurz s poplatkami</translation>
+<translation id="27867052127960599">Poplatky</translation>
+<translation id="5914491493054850112">Cena <ph name="CURRENCY"/></translation>
+<translation id="638391338232902087">Zakúpiť prostredníctvom <ph name="PROVIDER"/></translation>
 <translation id="2803778066587058297">Asset</translation>
+<translation id="1275718070701477396">Vybrané</translation>
+<translation id="7509108671781225188">Žiadne dostupné meny</translation>
+<translation id="3799031411423890455">Získavajú sa najlepšie ceny...</translation>
+<translation id="8544603592370093978">Kúpiť <ph name="ASSET"/></translation>
+<translation id="7463545687475534731">Nenašli sa žiadni poskytovatelia pre <ph name="ASSET"/></translation>
+<translation id="3372351687823322070">Skúste vyhľadať iné aktívum.</translation>
+<translation id="2619949734919284401">Nenašli sa žiadne výsledky pre <ph name="PROVIDER"/></translation>
+<translation id="3319146983769202287">Skúste použiť iné kľúčové slovo alebo skontrolujte pravopis.</translation>
+<translation id="4196022627437957774">Chcete vytvoriť účet <ph name="ACCOUNT_TYPE"/>?</translation>
+<translation id="5982914754413312620">Na prijímanie <ph name="TOKEN_SYMBOL"/> potrebujete účet <ph name="ACCOUNT_TYPE"/>.</translation>
 <translation id="3067168166931605141">Název účtu</translation>
 <translation id="6534275647567011533">Kúpiť pomocou Transak</translation>
 <translation id="5973390321030037823">Kúpiť pomocou služby Link</translation>
@@ -1313,6 +1336,10 @@
 <translation id="6990756606864308319">Pri pokuse o<ph name="SEND_SWAP_OR_BRIDGE"/> <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> v sieti <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/> sa vyskytla chyba</translation>
 <translation id="6449575669814542383">Schvaľuje sa <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> v sieti<ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
 <translation id="8036159955043245753">Vytvorí sa nová transakcia na zrušenie existujúcej transakcie.</translation>
+<translation id="4056435949094149644">Výmena</translation>
+<translation id="7694836973509310467">Prenos</translation>
+<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> v sieti <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="6934057383578424432">Pri pokuse o nasledujúcu transakciu sa vyskytla chyba: <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> v sieti <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} ďalšia transakcia čaká.}
       other {{PENDING_TRANSACTIONS} ´dalších transakcií čaká.}
@@ -1707,6 +1734,11 @@
 <translation id="803703704549420287">Vymazať filtre</translation>
 <translation id="1472675084647422956">Zobraziť viac</translation>
 <translation id="4522570452068850558">Detaily</translation>
+<translation id="8713438253026855351">Prechod na chránený účet</translation>
+<translation id="3526789880090101085">Ochrániť účet</translation>
+<translation id="2298396008562701154">Momentálne tento účet podporuje transparentné transakcie, čo znamená, že sú viditeľné pre všetkých v blockchaine.</translation>
+<translation id="3987095760757102811">Prechod na chránený účet znamená, že tieto transakcie skryjú údaje o odosielateľovi, príjemcovi a sume.</translation>
+<translation id="3819528427777765709">Chránený</translation>
 <translation id="7144878232160441200">Skúsiť znova</translation>
 <translation id="9094621390791852268">Zobrazenie transakcie zlyhalo.</translation>
 <translation id="4982713341035600933">Odhadovaná zmena zostatku</translation>
@@ -1904,6 +1936,7 @@
 <translation id="8652827551752428289">Zobraziť históriu</translation>
 <translation id="5030659775136592441">Zobraziť správcu záložiek</translation>
 <translation id="6919203766034706175">Nastavenia importu</translation>
+<translation id="6159704524780747483">Otvoriť AI chat</translation>
 <translation id="1199430163665775722">Upraviť vyhľadávače</translation>
 <translation id="4276265845501430443">Zobraziť pomocníka</translation>
 <translation id="8104889575691864804">Zobraziť ponuku aplikácií</translation>
@@ -1988,6 +2021,7 @@
 <translation id="1130188644637295274">Otvoriť v rozdelenom zobrazení</translation>
 <translation id="6459036216700972269">Nerozdelené karty</translation>
 <translation id="4235382917338421035">Vymeniť polohy kariet</translation>
+<translation id="4288085058450834672">Zobraziť aplikácie</translation>
 <translation id="4144468798716165316">Rýchle pokyny</translation>
 <translation id="3617523374417810198">Nové rozdelené zobrazenie</translation>
 <translation id="8571323456914890254">Otvoriť v rozdelenom zobrazení</translation>
@@ -2047,9 +2081,11 @@
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> spoločnosťou <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">Chat</translation>
+<translation id="4685048769603134644">Otvoriť celú stránku</translation>
 <translation id="2961040541145689181">Nový chat</translation>
 <translation id="7557539689487606886">Prejsť na Premium</translation>
 <translation id="1691256669639196606">Spravovať predplatné</translation>
+<translation id="3840096463915153852">História konverzácií</translation>
 <translation id="2304783958703511257">Rozšírené nastavenia</translation>
 <translation id="3037594989275592390">Jazykové modely</translation>
 <translation id="5543505256451301851">Vyskúšajte 7  dní zdarma</translation>
@@ -2086,6 +2122,10 @@
 <translation id="2313959174679245365">Vaše hodnotenie nebolo možné odoslať, skontrolujte sieťové pripojenie a skúste to znova</translation>
 <translation id="98413980871833152">Vašu spätnú väzbu nebolo možné odoslať, skontrolujte sieťové pripojenie a skúste to znova</translation>
 <translation id="8742658901413346500">Táto konverzácia je dlhá a Leo môže čoskoro začať zabúdať. Prepnutím na prémiový model môžete získať dlhšie konverzácie alebo vymazať chat a obnoviť ho.</translation>
+<translation id="6495402307502950726">Vymazať konverzáciu</translation>
+<translation id="903201991022343217">Začať novú konverzáciu</translation>
+<translation id="8171760814579050200">Premenovať konverzáciu</translation>
+<translation id="7754678742055438573">Odstrániť konverzáciu</translation>
 <translation id="7494736170250048402">Poslať správu do asistenta Leo</translation>
 <translation id="8712637175834984815">Dobre</translation>
 <translation id="1093419424466417703">Stránka je pre Lea príliš dlhá. V konverzácii môže chýbať určitý kontext. Z obsahu stránky prečítal Leo<ph name="PERCENTAGE"/>.</translation>
@@ -2137,6 +2177,7 @@
 <translation id="49269513399674318">Použiť mikrofón</translation>
 <translation id="3895031624234442305">Vlastné modely</translation>
 <translation id="4572010449071015143">Začať novú konverzáciu</translation>
+<translation id="6287023598025162715">Nová konverzácia</translation>
 <translation id="6303294677342628402">Štíty</translation>
 <translation id="8458987127502506209">Zapnúť štíty Brave</translation>
 <translation id="7509914170164691086">Štíty sú aktívne <ph name="LINK_BEFORE"/>pre<ph name="LINK_AFTER"/></translation>
@@ -2255,6 +2296,7 @@ other {Štíty Brave zablokovali {BLOCKED_COUNT} sledovacie zadiatenia na <ph na
 <translation id="2542131205769293399">Nie je možné skontrolovať stav vášho nákupu. Môže ísť o problém so sieťou. Skúste to znova alebo kontaktujte podporu.</translation>
 <translation id="4613076894734402086">Upraviť platobnú metódu</translation>
 <translation id="427718751211990320">Uplynul dátum platnosti prihlasovacích údajov.</translation>
+<translation id="3323234188356372126">Služba Brave VPN má problémy s overením VPN servera. Kontaktujte prosím podporu alebo to skúste neskôr.</translation>
 <translation id="8670619630771851260">Nepodarilo sa načítať prihlasovacie údaje.</translation>
 <translation id="1594643509610625766">Token už nie je platný.</translation>
 <translation id="8373427068383038263">Zdá sa, že vaša posledná platba za <ph name="VALUE"/> neprebehla. Prístup k tomuto odberu bude pozastavený, kým sa problém s platbou nevyrieši. Skúste upraviť platobnú metódu alebo kontaktujte podporu Brave.</translation>
@@ -2301,6 +2343,7 @@ Pripojíme vás!</translation>
 <translation id="7423206764347669977">Zmeniť nastavenia</translation>
 <translation id="9061845622728745852">Časové pásmo:</translation>
 <translation id="8295393906499561642">Relácia vypršala</translation>
+<translation id="7070578590391442755">Nie je možné overiť VPN</translation>
 <translation id="3312623558576021182">Prosím, prihláste sa do svojho <ph name="BRAVE_ACCOUNT_BEGIN"/> Brave Účtu <ph name="BRAVE_ACCOUNT_END"/>, aby ste obnovili svoju VPN reláciu.</translation>
 <translation id="7861195049821776142">Brave VPN: Odpojenie</translation>
 <translation id="2061807837510296780">Brave VPN: Pripojenie</translation>
@@ -2313,6 +2356,7 @@ Pripojíme vás!</translation>
 <translation id="6825718953004242472">Odstrániť ikonu</translation>
 <translation id="6819278685469225453">Chráňte každú aplikáciu v zariadení</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">Viac súkromia a bezpečnosti online.</translation>
 <translation id="8425213833346101688">Zmeniť</translation>
 <translation id="8703188411226330709">Spustiť bezplatnú skúšobnú verziu</translation>
 <translation id="3287942014983548982">Otvoriť tu</translation>
