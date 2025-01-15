@@ -213,13 +213,24 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
     // gives us the exact same behaviour as Safari.
-
-    if ["sms", "tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
+    // tel:, facetime:, facetime-audio:, already has its own native alert displayed by the OS!
+    if ["sms", "mailto"].contains(requestURL.scheme) {
       let shouldOpen = await handleExternalURL(
         requestURL,
         tab: tab,
         navigationAction: navigationAction
       )
+      return (shouldOpen ? .allow : .cancel, preferences)
+    }
+
+    // Let the system's prompt handle these. We can't let these cases fall-through, as the last check in this file will
+    // assume it's an external app prompt
+    if ["tel", "facetime", "facetime-audio"].contains(requestURL.scheme) {
+      let shouldOpen = await withCheckedContinuation { continuation in
+        UIApplication.shared.open(requestURL, options: [:]) { didOpen in
+          continuation.resume(returning: didOpen)
+        }
+      }
       return (shouldOpen ? .allow : .cancel, preferences)
     }
 
@@ -254,16 +265,6 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if isStoreURL(requestURL) {
-      let shouldOpen = await handleExternalURL(
-        requestURL,
-        tab: tab,
-        navigationAction: navigationAction
-      )
-      return (shouldOpen ? .allow : .cancel, preferences)
-    }
-
-    // Handles custom mailto URL schemes.
-    if requestURL.scheme == "mailto" {
       let shouldOpen = await handleExternalURL(
         requestURL,
         tab: tab,
@@ -1266,7 +1267,11 @@ extension BrowserViewController {
 
     var alertTitle = Strings.openExternalAppURLGenericTitle
 
-    if let displayHost = tab?.url?.withoutWWW.host {
+    if navigationAction.sourceFrame != nil {
+      let displayHost =
+        "\(navigationAction.sourceFrame.securityOrigin.protocol)://\(navigationAction.sourceFrame.securityOrigin.host):\(navigationAction.sourceFrame.securityOrigin.port)"
+      alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
+    } else if let displayHost = tab?.url?.withoutWWW.host {
       alertTitle = String(format: Strings.openExternalAppURLTitle, displayHost)
     }
 
