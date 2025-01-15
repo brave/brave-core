@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDERS_REMINDERS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_REMINDERS_REMINDERS_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
-#include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/history/ad_history_manager_observer.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
