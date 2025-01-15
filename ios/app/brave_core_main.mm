@@ -15,12 +15,14 @@
 #include "base/command_line.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/i18n/icu_util.h"
 #include "base/logging.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/histograms_braveizer.h"
@@ -69,6 +71,7 @@
 #include "ios/chrome/browser/shared/model/browser/browser_list.h"
 #include "ios/chrome/browser/shared/model/browser/browser_list_factory.h"
 #include "ios/chrome/browser/shared/model/paths/paths.h"
+#include "ios/chrome/browser/shared/model/prefs/pref_names.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/chrome/browser/shared/model/web_state_list/web_state_list.h"
@@ -88,6 +91,24 @@
 #include "ios/chrome/browser/credential_provider/model/credential_provider_service_factory.h"
 #include "ios/chrome/browser/credential_provider/model/credential_provider_util.h"
 #endif
+
+class ScopedAllowBlockingForProfile : public base::ScopedAllowBlocking {};
+
+namespace brave {
+ProfileIOS* CreateMainProfileIOS() {
+  // Initialize and set the main browser state.
+  auto* localState = GetApplicationContext()->GetLocalState();
+  auto* profileManager = GetApplicationContext()->GetProfileManager();
+  std::string profileName = localState->GetString(prefs::kLastUsedProfile);
+  if (profileName.empty()) {
+    profileName = profileManager->ReserveNewProfileName();
+    localState->SetString(prefs::kLastUsedProfile, profileName);
+  }
+  DCHECK(!profileName.empty());
+  ScopedAllowBlockingForProfile allow_blocking;
+  return profileManager->CreateProfile(profileName);
+}
+}  // namespace brave
 
 // Chromium logging is global, therefore we cannot link this to the instance in
 // question
@@ -218,27 +239,8 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
     // Setup WebMain
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
-    // Initialize and set the main browser state.
-    std::vector<ProfileIOS*> profiles =
-        GetApplicationContext()->GetProfileManager()->GetLoadedProfiles();
-    ProfileIOS* last_used_profile = profiles.at(0);
-    _main_profile = last_used_profile;
-
-    // Disable Safe-Browsing via Prefs
-    last_used_profile->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled,
-                                              false);
-
-    // Setup main browser
-    _browserList = BrowserListFactory::GetForProfile(_main_profile);
-    _browser = Browser::Create(_main_profile, {});
-    _browserList->AddBrowser(_browser.get());
-
-    // Setup otr browser
-    ProfileIOS* otr_last_used_profile =
-        last_used_profile->GetOffTheRecordProfile();
-    _otr_browserList = BrowserListFactory::GetForProfile(otr_last_used_profile);
-    _otr_browser = Browser::Create(otr_last_used_profile, {});
-    _otr_browserList->AddBrowser(_otr_browser.get());
+    ProfileIOS* profile = brave::CreateMainProfileIOS();
+    [self profileLoaded:profile];
 
     // Initialize the provider UI global state.
     ios::provider::InitializeUI();
@@ -260,9 +262,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
             std::make_unique<ntp_background_images::NTPBackgroundImagesService>(
                 cus, GetApplicationContext()->GetLocalState())];
 
-#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
-    CredentialProviderServiceFactory::GetForProfile(_main_profile);
-#endif
   }
   return self;
 }
@@ -302,6 +301,28 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _webClient.reset();
 
   VLOG(1) << "Terminated Brave-Core";
+}
+
+- (void)profileLoaded:(ProfileIOS*)profile {
+  _main_profile = profile;
+
+  // Disable Safe-Browsing via Prefs
+  profile->GetPrefs()->SetBoolean(prefs::kSafeBrowsingEnabled, false);
+
+  // Setup main browser
+  _browserList = BrowserListFactory::GetForProfile(profile);
+  _browser = Browser::Create(_main_profile, {});
+  _browserList->AddBrowser(_browser.get());
+
+  // Setup otr browser
+  ProfileIOS* otr_last_used_profile = profile->GetOffTheRecordProfile();
+  _otr_browserList = BrowserListFactory::GetForProfile(otr_last_used_profile);
+  _otr_browser = Browser::Create(otr_last_used_profile, {});
+  _otr_browserList->AddBrowser(_otr_browser.get());
+
+#if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
+  CredentialProviderServiceFactory::GetForProfile(profile);
+#endif
 }
 
 - (void)onAppEnterBackground:(NSNotification*)notification {
