@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519_slip23.h"
 
+#include <string>
 #include <vector>
 
 #include "base/containers/span.h"
@@ -199,8 +200,7 @@ TEST(HDKeyEd25519Slip23UnitTest, CustomED25519Sign) {
 }
 
 TEST(HDKeyEd25519Slip23UnitTest, CardanoSdkCryptoSlip23) {
-  base::FilePath test_data_dir;
-  base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+  auto test_data_dir = base::PathService::CheckedGet(brave::DIR_TEST_DATA);
 
   std::string file_contents;
 
@@ -210,6 +210,7 @@ TEST(HDKeyEd25519Slip23UnitTest, CardanoSdkCryptoSlip23) {
       &file_contents));
 
   auto test_items = base::test::ParseJsonList(file_contents);
+  ASSERT_EQ(test_items.size(), 1000u);
 
   for (auto& test : test_items) {
     auto& test_dict = test.GetDict();
