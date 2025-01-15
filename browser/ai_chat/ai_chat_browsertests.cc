@@ -20,9 +20,9 @@
 
 namespace ai_chat {
 
-class AiChatBrowserTest : public InProcessBrowserTest {
+class AIChatBrowserTest : public InProcessBrowserTest {
  public:
-  AiChatBrowserTest() = default;
+  AIChatBrowserTest() = default;
 
   void SetUpOnMainThread() override {
     base::FilePath test_data_dir =
@@ -81,7 +81,7 @@ class AiChatBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
 
-IN_PROC_BROWSER_TEST_F(AiChatBrowserTest, YoutubeNavigations) {
+IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
   const GURL url("https://www.youtube.com/youtube.html");
 
   ui_test_utils::NavigateToURLWithDisposition(

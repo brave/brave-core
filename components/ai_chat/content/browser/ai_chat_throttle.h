@@ -17,12 +17,12 @@ class NavigationHandle;
 namespace ai_chat {
 
 // Prevents navigation to certain AI Chat URLs
-class AiChatThrottle : public content::NavigationThrottle {
+class AIChatThrottle : public content::NavigationThrottle {
  public:
-  explicit AiChatThrottle(content::NavigationHandle* handle);
-  ~AiChatThrottle() override;
+  explicit AIChatThrottle(content::NavigationHandle* handle);
+  ~AIChatThrottle() override;
 
-  static std::unique_ptr<AiChatThrottle> MaybeCreateThrottleFor(
+  static std::unique_ptr<AIChatThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle);
 
   // content::NavigationThrottle:

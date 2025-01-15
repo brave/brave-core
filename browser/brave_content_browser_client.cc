@@ -1284,7 +1284,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 
   if (Profile::FromBrowserContext(context)->IsRegularProfile()) {
     if (auto ai_chat_throttle =
-            ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
+            ai_chat::AIChatThrottle::MaybeCreateThrottleFor(handle)) {
       throttles.push_back(std::move(ai_chat_throttle));
     }
   }

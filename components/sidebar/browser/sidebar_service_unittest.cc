@@ -1073,7 +1073,7 @@ TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
   LoadFromPrefsTest(std::move(sidebar), items, expected_count);
 }
 
-TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
+TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAIChatBuiltInNotListed) {
   base::Value::Dict sidebar =
       base::test::ParseJsonDict(sidebar_builtin_ai_chat_not_listed_json);
 
