@@ -40,9 +40,9 @@ MessageManager::MessageManager(PrefService& local_state,
                                const P3AConfig* config,
                                Delegate& delegate,
                                std::string channel,
-                               std::string week_of_install)
+                               base::Time first_run_time)
     : local_state_(local_state), config_(config), delegate_(delegate) {
-  message_meta_.Init(&local_state, channel, week_of_install);
+  message_meta_.Init(&local_state, channel, first_run_time);
 
   // Init log stores.
   for (MetricLogType log_type : kAllMetricLogTypes) {

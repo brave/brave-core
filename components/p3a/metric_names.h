@@ -237,15 +237,10 @@ inline constexpr auto kCollectedExpressHistograms =
     {"Brave.AIChat.UsageDaily.2", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.UsageDaily.SidebarEnabledA", MetricConfig{.ephemeral = true}},
     {"Brave.Core.UsageDaily", {}},
-    {"Brave.DayZero.A.InstallTime", MetricConfig{
+    {"Brave.DayZero.Variant", MetricConfig{
       .ephemeral = true,
       .constellation_only = true,
-      .append_attributes = MetricAttributesToAppend{MetricAttribute::kRef}
-    }},
-    {"Brave.DayZero.B.InstallTime", MetricConfig{
-      .ephemeral = true,
-      .constellation_only = true,
-      .append_attributes = MetricAttributesToAppend{MetricAttribute::kRef}
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kRef}
     }},
     {"Brave.Rewards.EnabledInstallationTime", MetricConfig{.ephemeral = true}},
     {"Brave.Search.BraveDaily", MetricConfig{.ephemeral = true}},
