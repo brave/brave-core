@@ -46,7 +46,7 @@ fi
 cd $(dirname "$0")
 
 echo "Exporting strings from Xcode project..."
-(cd ../../ && xcodebuild -exportLocalizations SWIFT_EMIT_LOC_STRINGS=NO) >>output.log 2>&1
+(cd ../../ && xcodebuild -exportLocalizations -exportLanguage en SWIFT_EMIT_LOC_STRINGS=NO) >>output.log 2>&1
 if [ $? != 0 ] ; then
   report_error 4 "ERROR: Failed to export strings from Xcode project, please see output.log"
 fi
@@ -69,7 +69,7 @@ if [ $? != 0 ] ; then
 fi
 
 crowdin_project_id=33
-crowdin_storage_id=null
+crowdin_storage_id="null"
 
 add_storage_id()
 {
@@ -124,7 +124,7 @@ delete_file()
 
 echo "Creating a storage id in Crowdin..."
 crowdin_storage_id=$(add_storage_id)
-if [ $crowdin_storage_id == null ]
+if [ "$crowdin_storage_id" == "null" ]
 then
   report_error 5 "ERROR: Failed to create a storage id in Crowdin"
 else
@@ -138,7 +138,7 @@ file_result=$(curl --silent \
   -H "Content-Type: application/json"
 )
 file_id=$(echo "$file_result" | jq '.data.[0].data.id')
-if [ $file_id == null ]
+if [ "$file_id" == "null" ]
 then
   echo "No, there is no file. Adding a new file..."
   add_file_http_code=$(add_file)

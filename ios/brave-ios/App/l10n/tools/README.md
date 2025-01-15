@@ -1,4 +1,9 @@
 # How to push strings to Crowdin
+
+### Prerequisites
+This script is using bash jq command-line tool for parsing JSON data.
+Make sure jq is installed and added to your PATH
+ 
 Once your english strings are all up to date. These changes can be pushed to Crowdin for translation by running the following from Terminal:
 
 ```
@@ -8,7 +13,8 @@ TOKEN=<token> ./push-strings-to-crowdin.sh
 
 If there any issues pushing strings to Transifex then these issues are logged to ```output.log```
 
-### The API token can be created from Crowdin Dev Portal 
+### Note
+The API token can be created from Crowdin Dev Portal 
 
 # How to contribute translations via Transifex
 
