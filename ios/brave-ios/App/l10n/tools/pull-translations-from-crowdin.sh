@@ -51,7 +51,7 @@ start_build()
     -H "Authorization: Bearer ${TOKEN}" \
     -H 'Content-Type: application/json'
   )
-  http_status=$(echo "$response" | head -n 1 | awk '{print $2}')
+  http_status=$(echo "$result" | head -n 1 | awk '{print $2}')
   if [ $http_status != 201 ] ; then
     report_error 4 "Failed to start a build in Crowdin"
   fi
@@ -66,7 +66,7 @@ get_download_url()
     -H "Authorization: Bearer ${TOKEN}" \
     -H 'Content-Type: application/json'
   )
-  http_status=$(echo "$response" | head -n 1 | awk '{print $2}')
+  http_status=$(echo "$result" | head -n 1 | awk '{print $2}')
   if [ $http_status != 200 ] ; then
     report_error 4 "Failed to get a download link from Crowdin."
   fi
@@ -74,8 +74,32 @@ get_download_url()
   echo $download_link
 }
 
-cd $(dirname "$0")
+supported_languages()
+{
+  result=$(curl --silent \
+    -X "GET" "https://brave-software.crowdin.com/api/v2/languages?limit=500" \
+    -H "Authorization: Bearer ${TOKEN}" \
+    -H 'Content-Type: application/json'
+  )
+  echo $result
+  http_status=$(echo "$result" | head -n 1 | awk '{print $2}')
+  if [ $http_status != 200 ] ; then
+    report_error 4 "Failed to get a list of supported languages from Crowdin."
+  fi
+  echo $result
+}
 
+if [ "${TOKEN}" = "" ] ; then
+  report_error 1 "TOKEN environment variable must be set to \"api\""
+fi
+
+crowdin_project_id=33
+crowdin_build_id="null"
+
+supported_languages
+
+cd $(dirname "$0")
+echo "Creating a temporary directory..."
 if [ ! -d "translated-xliffs" ] ; then
   mkdir "translated-xliffs" >>output.log 2>&1
   if [ $? != 0 ] ; then
@@ -83,18 +107,11 @@ if [ ! -d "translated-xliffs" ] ; then
   fi
 fi
 
-crowdin_project_id=33
-crowdin_build_id=null
-
-if [ "${TOKEN}" = "" ] ; then
-  report_error 1 "TOKEN environment variable must be set to \"api\""
-fi
-
 if [ "${BUILD_ID}" = "" ]
 then
   echo "BUILD_ID is NOT provided. Starting a new build..."
   crowdin_build_id=$(start_build)
-  if [ $crowdin_build_id == null ]
+  if [ "$crowdin_build_id" == "null" ]
   then
     report_error 4 "Failed to get a build id"
   else
@@ -110,13 +127,8 @@ else
   else
     echo "Build has finished. Downloading project translations..."
     translated_download_url=$(get_download_url)
-    echo "Downloading translations from Transifex..."
-    # You can specify locales you want to pull. Otherwise all supported locales are pulled.
-    # See 'download-transactions-from-transifex.swift' file for full list of locale codes we support.
-    LOCALES_ARGS="$@"
-    echo "Downloading only $@ locales..."
 
-    USERNAME="${USERNAME}" PASSWORD="${PASSWORD}" swift ./download-translations-from-transifex.swift $LOCALES_ARGS
+    TOKEN="${TOKEN}" swift ./download-translations-from-transifex.swift
     if [ $? != 0 ] ; then
       report_error 4 "ERROR: Failed to download translations from Transifex, please see output.log"
     fi
