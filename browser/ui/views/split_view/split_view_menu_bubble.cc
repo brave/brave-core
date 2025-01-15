@@ -82,6 +82,11 @@ SplitViewMenuBubble::SplitViewMenuBubble(Browser* browser, views::View* anchor)
     return base::BindRepeating(
         [](Browser* browser, int command_id, const ui::Event& event) {
           chrome::ExecuteCommand(browser, command_id);
+          // Some platforms steal this bubble's focus closing
+          // implicitly but some don't, so we need to close it explicitly.
+          if (g_bubble) {
+            g_bubble->GetWidget()->Close();
+          }
         },
         browser, command_id);
   };
