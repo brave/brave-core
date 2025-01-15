@@ -31,7 +31,7 @@ class MessageMetainfo {
 
   void Init(PrefService* local_state,
             std::string brave_channel,
-            std::string week_of_install);
+            base::Time first_run_time);
 
   void Update();
 
