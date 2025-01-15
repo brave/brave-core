@@ -391,16 +391,14 @@ void Database::ErrorCallback(int extended_error,
         result_code != sql::SqliteResultCode::kIoWrite &&
         result_code != sql::SqliteResultCode::kIoFsync &&
         result_code != sql::SqliteResultCode::kIoTruncate) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_schema_version",
+      SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_schema_version",
                               database::kVersionNumber);
       SCOPED_CRASH_KEY_STRING1024(
-          "Issue32066", "sqlite_diagnostic_info",
+          "BraveAds", "sqlite_diagnostic_info",
           db_.GetDiagnosticInfo(extended_error, statement));
-      SCOPED_CRASH_KEY_STRING1024("Issue32066", "sqlite_error_message",
+      SCOPED_CRASH_KEY_STRING1024("BraveAds", "sqlite_error_message",
                                   db_.GetErrorMessage());
-      SCOPED_CRASH_KEY_NUMBER("Issue32066", "sqlite_result_code",
+      SCOPED_CRASH_KEY_NUMBER("BraveAds", "sqlite_result_code",
                               static_cast<int>(result_code));
       base::debug::DumpWithoutCrashing();
     }
