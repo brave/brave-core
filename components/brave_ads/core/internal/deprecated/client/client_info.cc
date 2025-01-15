@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
@@ -158,12 +157,6 @@ bool ClientInfo::FromJson(const std::string& json) {
       json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                 base::JSONParserOptions::JSON_PARSE_RFC);
   if (!dict) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Malformed client JSON state");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Malformed client JSON state");
     return false;
   }

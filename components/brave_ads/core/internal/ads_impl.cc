@@ -9,7 +9,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
@@ -454,12 +453,6 @@ void AdsImpl::LoadClientStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                       InitializeCallback callback,
                                       bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to load client state");
-    base::debug::DumpWithoutCrashing();
-
     return FailedToInitialize(std::move(callback));
   }
 
@@ -495,12 +488,6 @@ void AdsImpl::LoadConfirmationStateCallback(mojom::WalletInfoPtr mojom_wallet,
                                             InitializeCallback callback,
                                             bool success) {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Failed to load confirmation state");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Failed to load confirmation state");
     return FailedToInitialize(std::move(callback));
   }
