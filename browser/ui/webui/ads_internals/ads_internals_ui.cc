@@ -22,7 +22,6 @@ AdsInternalsUI::AdsInternalsUI(content::WebUI* const web_ui,
                                PrefService& prefs)
     : content::WebUIController(web_ui), handler_(ads_service, prefs) {
   CreateAndAddWebUIDataSource(web_ui, name, kAdsInternalsGenerated,
-                              kAdsInternalsGeneratedSize,
                               IDR_ADS_INTERNALS_HTML);
 }
 

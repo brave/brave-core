@@ -66,8 +66,9 @@ class BraveAdblockInternalsMessageHandler
         memory_instrumentation::MemoryInstrumentation::GetInstance();
 
     std::vector<std::string> mad_list;
-    for (const auto& metric : kCollectedMemoryMetrics)
+    for (const auto& metric : kCollectedMemoryMetrics) {
       mad_list.push_back(metric.dump_name);
+    }
     instrumentation->RequestGlobalDumpForPid(
         base::Process::Current().Pid(), mad_list,
         base::BindOnce(&BraveAdblockInternalsMessageHandler::OnGetMemoryDump,
@@ -109,8 +110,9 @@ class BraveAdblockInternalsMessageHandler
   void DiscardRegex(const base::Value::List& args) {
     CHECK_EQ(1U, args.size());
     uint64_t regex_id = 0U;
-    if (!base::StringToUint64(args[0].GetString(), &regex_id))
+    if (!base::StringToUint64(args[0].GetString(), &regex_id)) {
       return;
+    }
     g_brave_browser_process->ad_block_service()->DiscardRegex(regex_id);
   }
 
@@ -133,9 +135,9 @@ class BraveAdblockInternalsMessageHandler
 
 BraveAdblockInternalsUI::BraveAdblockInternalsUI(content::WebUI* web_ui)
     : content::WebUIController(web_ui) {
-  CreateAndAddWebUIDataSource(
-      web_ui, kAdblockInternalsHost, kBraveAdblockInternalsGenerated,
-      kBraveAdblockInternalsGeneratedSize, IDR_BRAVE_ADBLOCK_INTERNALS_HTML);
+  CreateAndAddWebUIDataSource(web_ui, kAdblockInternalsHost,
+                              kBraveAdblockInternalsGenerated,
+                              IDR_BRAVE_ADBLOCK_INTERNALS_HTML);
 
   web_ui->AddMessageHandler(
       std::make_unique<BraveAdblockInternalsMessageHandler>());

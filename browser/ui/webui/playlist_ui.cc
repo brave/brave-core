@@ -99,8 +99,7 @@ void AddLocalizedStrings(content::WebUIDataSource* source) {
 UntrustedPlayerUI::UntrustedPlayerUI(content::WebUI* web_ui)
     : UntrustedWebUIController(web_ui) {
   auto* source = CreateAndAddWebUIDataSource(
-      web_ui, kPlaylistPlayerURL, kPlaylistGenerated, kPlaylistGeneratedSize,
-      IDR_PLAYLIST_PLAYER_HTML);
+      web_ui, kPlaylistPlayerURL, kPlaylistGenerated, IDR_PLAYLIST_PLAYER_HTML);
   source->AddFrameAncestor(GURL(kPlaylistURL));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
@@ -147,9 +146,8 @@ PlaylistUI::PlaylistUI(content::WebUI* web_ui)
   web_ui->SetBindings(
       content::BindingsPolicySet({content::BindingsPolicyValue::kWebUi}));
 
-  auto* source =
-      CreateAndAddWebUIDataSource(web_ui, kPlaylistURL, kPlaylistGenerated,
-                                  kPlaylistGeneratedSize, IDR_PLAYLIST_HTML);
+  auto* source = CreateAndAddWebUIDataSource(
+      web_ui, kPlaylistURL, kPlaylistGenerated, IDR_PLAYLIST_HTML);
 
   AddLocalizedStrings(source);
 

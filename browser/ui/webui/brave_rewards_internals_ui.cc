@@ -473,7 +473,6 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
                                                  const std::string& name)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kBraveRewardsInternalsGenerated,
-                              kBraveRewardsInternalsGeneratedSize,
                               IDR_BRAVE_REWARDS_INTERNALS_HTML);
 
   auto handler_owner = std::make_unique<RewardsInternalsDOMHandler>();

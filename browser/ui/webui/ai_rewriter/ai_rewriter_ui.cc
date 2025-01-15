@@ -49,8 +49,7 @@ AIRewriterUI::AIRewriterUI(content::WebUI* web_ui)
   DCHECK(features::IsAIRewriterEnabled());
 
   auto* source = CreateAndAddWebUIDataSource(
-      web_ui, kRewriterUIHost, kAiRewriterUiGenerated,
-      kAiRewriterUiGeneratedSize, IDR_REWRITER_UI_HTML);
+      web_ui, kRewriterUIHost, kAiRewriterUiGenerated, IDR_REWRITER_UI_HTML);
   DCHECK(source);
 
   for (const auto& str : ai_chat::GetLocalizedStrings()) {

@@ -3,12 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifdef UNSAFE_BUFFERS_BUILD
-// TODO(https://github.com/brave/brave-browser/issues/41661): Remove this and
-// convert code to safer constructs.
-#pragma allow_unsafe_buffers
-#endif
-
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 
 #include <memory>
@@ -168,38 +162,38 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
 }
 
 TEST(EthereumKeyringUnitTest, ImportedAccounts) {
-  const struct {
+  struct TestKey {
     const char* key;
     const char* address;
-  } private_keys[] = {
-      {"d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
-       "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"},
-      {"cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
-       "0x6D59205FADC892333cb945AD563e74F83f3dBA95"},
-      {"ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
-       "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA"},
-      // Used for Sign Message
-      {"6969696969696969696969696969696969696969696969696969696969696969",
-       "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"},
-      // Used for Sign Transaction
-      {"8140CEA58E3BEBD6174DBC589A7F70E049556233D32E44969D62E51DD0D1189A",
-       "0x2166fB4e11D44100112B1124ac593081519cA1ec"}};
+  };
+  auto test_keys = std::to_array<TestKey>(
+      {{"d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+        "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"},
+       {"cca1e9643efc5468789366e4fb682dba57f2e97540981095bc6d9a962309d912",
+        "0x6D59205FADC892333cb945AD563e74F83f3dBA95"},
+       {"ddc33eef7cc4c5170c3ba4021cc22fd888856cf8bf846f48db6d11d15efcd652",
+        "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA"},
+       // Used for Sign Message
+       {"6969696969696969696969696969696969696969696969696969696969696969",
+        "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"},
+       // Used for Sign Transaction
+       {"8140CEA58E3BEBD6174DBC589A7F70E049556233D32E44969D62E51DD0D1189A",
+        "0x2166fB4e11D44100112B1124ac593081519cA1ec"}});
   std::vector<uint8_t> seed;
   EXPECT_TRUE(base::HexStringToBytes(
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   EthereumKeyring keyring(seed);
-  size_t private_keys_size = sizeof(private_keys) / sizeof(private_keys[0]);
-  for (size_t i = 0; i < private_keys_size; ++i) {
+  for (auto& test_key : test_keys) {
     std::vector<uint8_t> private_key;
-    EXPECT_TRUE(base::HexStringToBytes(private_keys[i].key, &private_key));
-    EXPECT_EQ(keyring.ImportAccount(private_key), private_keys[i].address);
+    EXPECT_TRUE(base::HexStringToBytes(test_key.key, &private_key));
+    EXPECT_EQ(keyring.ImportAccount(private_key), test_key.address);
   }
-  EXPECT_EQ(keyring.GetImportedAccountsForTesting().size(), private_keys_size);
+  EXPECT_EQ(keyring.GetImportedAccountsForTesting().size(), test_keys.size());
   // Trying to add a duplicate account
   std::vector<uint8_t> private_key0;
-  EXPECT_TRUE(base::HexStringToBytes(private_keys[0].key, &private_key0));
+  EXPECT_TRUE(base::HexStringToBytes(test_keys[0].key, &private_key0));
   EXPECT_TRUE(keyring.ImportAccount(private_key0).empty());
 
   // SignMessage
@@ -213,7 +207,7 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   EXPECT_TRUE(keyring.RemoveImportedAccount(
       "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"));
   EXPECT_EQ(keyring.GetImportedAccountsForTesting().size(),
-            private_keys_size - 1);
+            test_keys.size() - 1);
   // Delete a non existing account
   EXPECT_FALSE(keyring.RemoveImportedAccount(
       "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"));

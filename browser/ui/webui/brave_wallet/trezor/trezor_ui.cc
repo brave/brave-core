@@ -25,7 +25,7 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
   auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kUntrustedTrezorURL);
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML);
-  untrusted_source->AddResourcePaths(base::span(kTrezorBridgeGenerated));
+  untrusted_source->AddResourcePaths(kTrezorBridgeGenerated);
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
   untrusted_source->OverrideContentSecurityPolicy(

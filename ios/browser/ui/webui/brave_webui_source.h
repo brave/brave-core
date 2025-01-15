@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/containers/span.h"
 #include "build/build_config.h"
 
 namespace web {
@@ -25,9 +26,7 @@ namespace brave {
 web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
     web::WebUIIOS* web_ui,
     const std::string& name,
-    const webui::ResourcePath* resource_map,
-    size_t resouece_map_size,
-    int html_resource_id,
+    base::span<const webui::ResourcePath> resource_paths,
     bool disable_trusted_types_csp = false);
 
 }  // namespace brave

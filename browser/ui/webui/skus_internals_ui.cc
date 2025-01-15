@@ -56,7 +56,6 @@ SkusInternalsUI::SkusInternalsUI(content::WebUI* web_ui,
     : content::WebUIController(web_ui),
       local_state_(g_browser_process->local_state()) {
   CreateAndAddWebUIDataSource(web_ui, name, kSkusInternalsGenerated,
-                              kSkusInternalsGeneratedSize,
                               IDR_SKUS_INTERNALS_HTML);
 
   auto* web_contents = web_ui->GetWebContents();

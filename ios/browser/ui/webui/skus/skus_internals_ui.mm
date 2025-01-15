@@ -42,16 +42,14 @@ namespace {
 web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
     web::WebUIIOS* web_ui,
     const std::string& name,
-    const webui::ResourcePath* resource_map,
-    std::size_t resource_map_size,
+    base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id) {
   web::WebUIIOSDataSource* source = web::WebUIIOSDataSource::Create(name);
   web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
   source->UseStringsJs();
 
   // Add required resources.
-  source->AddResourcePaths(
-      UNSAFE_TODO(base::make_span(resource_map, resource_map_size)));
+  source->AddResourcePaths(resource_paths);
   source->SetDefaultResource(html_resource_id);
   return source;
 }
@@ -82,7 +80,6 @@ SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
       local_state_(GetApplicationContext()->GetLocalState()) {
   // Set up the brave://skus-internals/ source.
   CreateAndAddWebUIDataSource(web_ui, url.host(), kSkusInternalsGenerated,
-                              kSkusInternalsGeneratedSize,
                               IDR_SKUS_INTERNALS_HTML);
 
   ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);

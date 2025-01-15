@@ -329,9 +329,9 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
 
 WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui)
     : ConstrainedWebDialogUI(web_ui) {
-  CreateAndAddWebUIDataSource(
-      web_ui, kWebcompatReporterHost, kWebcompatReporterGenerated,
-      kWebcompatReporterGeneratedSize, IDR_WEBCOMPAT_REPORTER_HTML);
+  CreateAndAddWebUIDataSource(web_ui, kWebcompatReporterHost,
+                              kWebcompatReporterGenerated,
+                              IDR_WEBCOMPAT_REPORTER_HTML);
   auto* profile = Profile::FromWebUI(web_ui);
 
   auto webcompat_reporter_handler =

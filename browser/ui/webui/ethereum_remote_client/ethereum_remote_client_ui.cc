@@ -15,7 +15,6 @@ EthereumRemoteClientUI::EthereumRemoteClientUI(content::WebUI* web_ui,
                                                const std::string& name)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kEthereumRemoteClientPageGenerated,
-                              kEthereumRemoteClientPageGeneratedSize,
                               IDR_BRAVE_WEBUI_ETHEREUM_REMOTE_CLIENT_PAGE_HTML,
                               true /*disable_trusted_types_csp*/);
 }

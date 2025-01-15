@@ -35,7 +35,7 @@ BravePrivateNewTabUI::BravePrivateNewTabUI(content::WebUI* web_ui)
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, chrome::kChromeUINewTabHost, kBravePrivateNewTabGenerated,
-      kBravePrivateNewTabGeneratedSize, IDR_BRAVE_PRIVATE_NEW_TAB_HTML);
+      IDR_BRAVE_PRIVATE_NEW_TAB_HTML);
 
   for (const auto& str : brave_private_new_tab::kLocalizedStrings) {
     std::u16string l10n_str =

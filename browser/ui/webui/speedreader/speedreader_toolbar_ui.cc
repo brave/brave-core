@@ -35,7 +35,7 @@ SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui)
 
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, kSpeedreaderPanelHost, kBraveSpeedreaderToolbarGenerated,
-      kBraveSpeedreaderToolbarGeneratedSize, IDR_SPEEDREADER_UI_HTML);
+      IDR_SPEEDREADER_UI_HTML);
 
   for (const auto& str : speedreader::kLocalizedStrings) {
     std::u16string l10n_str =

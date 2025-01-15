@@ -56,8 +56,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
 content::WebUIDataSource* CreateWebUIDataSource(
     content::WebUI* web_ui,
     const std::string& name,
-    base::span<const webui::ResourcePath> resource_map,
-    size_t resource_map_size,
+    base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
   content::WebUIDataSource* source =
@@ -81,10 +80,7 @@ content::WebUIDataSource* CreateWebUIDataSource(
 
   source->UseStringsJs();
   source->SetDefaultResource(html_resource_id);
-  // Add generated resource paths
-  for (const auto& resource : resource_map) {
-    source->AddResourcePath(resource.path, resource.id);
-  }
+  source->AddResourcePaths(resource_paths);
   CustomizeWebUIHTMLSource(web_ui, name, source);
   return source;
 }
@@ -94,13 +90,12 @@ content::WebUIDataSource* CreateWebUIDataSource(
 content::WebUIDataSource* CreateAndAddWebUIDataSource(
     content::WebUI* web_ui,
     const std::string& name,
-    base::span<const webui::ResourcePath> resource_map,
-    size_t resource_map_size,
+    base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
   content::WebUIDataSource* data_source =
-      CreateWebUIDataSource(web_ui, name, resource_map, resource_map_size,
-                            html_resource_id, disable_trusted_types_csp);
+      CreateWebUIDataSource(web_ui, name, resource_paths, html_resource_id,
+                            disable_trusted_types_csp);
   return data_source;
 }
 
