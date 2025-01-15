@@ -33,6 +33,7 @@ void OrchardStorageTest::SetUp() {
   base::FilePath db_path(
       temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
   orchard_storage_ = std::make_unique<OrchardStorage>(db_path);
+  orchard_storage_->EnsureDbInit();
 }
 
 TEST_F(OrchardStorageTest, AccountMeta) {
@@ -48,7 +49,8 @@ TEST_F(OrchardStorageTest, AccountMeta) {
     EXPECT_FALSE(result.value());
   }
 
-  EXPECT_TRUE(orchard_storage_->RegisterAccount(account_id_1, 100).has_value());
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            orchard_storage_->RegisterAccount(account_id_1, 100).value());
 
   {
     auto result = orchard_storage_->GetAccountMeta(account_id_1);
@@ -960,6 +962,33 @@ TEST_F(OrchardStorageTest, UpdateCheckpoint) {
         OrchardStorage::Result::kNone,
         orchard_storage_->UpdateCheckpoint(account_id, 5, checkpoint).value());
   }
+}
+
+TEST_F(OrchardStorageTest, Transactionally) {
+  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
+
+  EXPECT_FALSE(orchard_storage_->GetAccountMeta(account_id_1).value());
+
+  {
+    auto tx = orchard_storage_->Transactionally();
+    EXPECT_TRUE(tx.has_value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->RegisterAccount(account_id_1, 100).value());
+  }
+
+  EXPECT_FALSE(orchard_storage_->GetAccountMeta(account_id_1).value());
+
+  {
+    auto tx = orchard_storage_->Transactionally();
+    EXPECT_TRUE(tx.has_value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->RegisterAccount(account_id_1, 100).value());
+    EXPECT_TRUE(tx->Commit().has_value());
+  }
+
+  EXPECT_TRUE(orchard_storage_->GetAccountMeta(account_id_1).has_value());
 }
 
 }  // namespace brave_wallet

@@ -166,11 +166,14 @@ void ZCashShieldSyncService::InitAccount() {
 }
 
 void ZCashShieldSyncService::OnAccountInit(
-    base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error> result) {
-  if (!result.has_value()) {
+    base::expected<OrchardStorage::Result, OrchardStorage::Error> result) {
+  if (!result.has_value() ||
+      result.value() != OrchardStorage::Result::kSuccess) {
     error_ = Error{ErrorCode::kFailedToInitAccount, result.error().message};
   } else {
-    account_meta_ = *result;
+    OrchardStorage::AccountMeta account_meta;
+    account_meta.account_birthday = account_birthday_->value;
+    account_meta_ = account_meta;
   }
   ScheduleWorkOnTask();
 }

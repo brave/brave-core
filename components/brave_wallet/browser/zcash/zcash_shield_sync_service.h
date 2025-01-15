@@ -98,6 +98,10 @@ class ZCashShieldSyncService {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest, ScanBlocks);
+  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
+                           ReorgEvent_ChainTipAfter);
+  FRIEND_TEST_ALL_PREFIXES(ZCashShieldSyncServiceTest,
+                           ReorgEvent_ChainTipBelow);
 
   void SetOrchardBlockScannerProxyForTesting(
       std::unique_ptr<OrchardBlockScannerProxy> block_scanner);
@@ -112,7 +116,7 @@ class ZCashShieldSyncService {
                      OrchardStorage::Error> result);
   void InitAccount();
   void OnAccountInit(
-      base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error> error);
+      base::expected<OrchardStorage::Result, OrchardStorage::Error> error);
 
   // Chain reorg flow
   // Chain reorg happens when latest blocks are removed from the blockchain

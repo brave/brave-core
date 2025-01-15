@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_STORAGE_ORCHARD_STORAGE_H_
 
 #include <array>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -21,6 +22,7 @@
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "sql/database.h"
 #include "sql/statement.h"
+#include "sql/transaction.h"
 
 namespace brave_wallet {
 
@@ -81,10 +83,30 @@ class OrchardStorage {
     std::string message;
   };
 
+  class TransactionScope {
+   public:
+    explicit TransactionScope(sql::Database& database);
+    ~TransactionScope();
+    TransactionScope(const TransactionScope&) = delete;
+    TransactionScope& operator=(const TransactionScope&) = delete;
+    TransactionScope(TransactionScope&&);
+    TransactionScope& operator=(TransactionScope&&);
+
+    base::expected<Result, Error> Commit();
+    base::expected<void, Error> Begin(
+        base::PassKey<class OrchardStorage> pass_key);
+
+   private:
+    raw_ref<sql::Database> database_ GUARDED_BY_CONTEXT(sequence_checker_);
+    // Transaction doesn't have move constructor so wrap it with unique_tr
+    std::unique_ptr<sql::Transaction> transaction_;
+    SEQUENCE_CHECKER(sequence_checker_);
+  };
+
   explicit OrchardStorage(const base::FilePath& path_to_database);
   ~OrchardStorage();
 
-  base::expected<AccountMeta, Error> RegisterAccount(
+  base::expected<Result, Error> RegisterAccount(
       const mojom::AccountIdPtr& account_id,
       uint32_t account_birthday_block);
   base::expected<std::optional<AccountMeta>, Error> GetAccountMeta(
@@ -181,8 +203,10 @@ class OrchardStorage {
       const mojom::AccountIdPtr& account_id,
       uint8_t shard_level);
 
- private:
+  base::expected<TransactionScope, Error> Transactionally();
   bool EnsureDbInit();
+
+ private:
   bool CreateOrUpdateDatabase();
   bool CreateSchema();
   bool UpdateSchema();

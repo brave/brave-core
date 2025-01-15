@@ -29,18 +29,18 @@ class OrchardSyncState {
   explicit OrchardSyncState(const base::FilePath& path_to_database);
   virtual ~OrchardSyncState();
 
-  base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error>
-  RegisterAccount(const mojom::AccountIdPtr& account_id,
-                  uint64_t account_birthday_block);
+  base::expected<OrchardStorage::Result, OrchardStorage::Error> RegisterAccount(
+      const mojom::AccountIdPtr& account_id,
+      uint64_t account_birthday_block);
 
   base::expected<std::optional<OrchardStorage::AccountMeta>,
                  OrchardStorage::Error>
   GetAccountMeta(const mojom::AccountIdPtr& account_id);
 
-  base::expected<OrchardStorage::Result, OrchardStorage::Error>
-  HandleChainReorg(const mojom::AccountIdPtr& account_id,
-                   uint32_t reorg_block_id,
-                   const std::string& reorg_block_hash);
+  virtual base::expected<OrchardStorage::Result, OrchardStorage::Error> Rewind(
+      const mojom::AccountIdPtr& account_id,
+      uint32_t rewind_block_height,
+      const std::string& rewind_block_hash);
 
   virtual base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
   GetSpendableNotes(const mojom::AccountIdPtr& account_id);
@@ -60,6 +60,9 @@ class OrchardSyncState {
   GetLatestShardIndex(const mojom::AccountIdPtr& account_id);
 
   virtual base::expected<std::optional<uint32_t>, OrchardStorage::Error>
+  GetMinCheckpointId(const mojom::AccountIdPtr& account_id);
+
+  virtual base::expected<std::optional<uint32_t>, OrchardStorage::Error>
   GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
                            uint32_t chain_tip_height,
                            uint32_t min_confirmations);
@@ -75,8 +78,6 @@ class OrchardSyncState {
   CalculateWitnessForCheckpoint(const mojom::AccountIdPtr& account_id,
                                 const std::vector<OrchardInput>& notes,
                                 uint32_t checkpoint_position);
-
-  bool Truncate(const mojom::AccountIdPtr& account_id, uint32_t checkpoint_id);
 
  private:
   friend class OrchardSyncStateTest;

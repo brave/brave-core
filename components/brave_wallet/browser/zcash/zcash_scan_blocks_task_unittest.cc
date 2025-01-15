@@ -71,8 +71,10 @@ class ZCashScanBlocksTaskTest : public testing::Test {
                                           mojom::KeyringId::kZCashMainnet,
                                           mojom::AccountKind::kDerived, 0);
     auto lambda = base::BindLambdaForTesting(
-        [&](base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error>
-                result) { EXPECT_TRUE(result.has_value()); });
+        [&](base::expected<OrchardStorage::Result, OrchardStorage::Error>
+                result) {
+          EXPECT_EQ(OrchardStorage::Result::kSuccess, result.value());
+        });
     sync_state_.AsyncCall(&OrchardSyncState::RegisterAccount)
         .WithArgs(account_id_.Clone(), kNu5BlockUpdate + 1)
         .Then(std::move(lambda));

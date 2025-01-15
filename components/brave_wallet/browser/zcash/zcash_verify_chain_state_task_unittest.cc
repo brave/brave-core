@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_verify_chain_state_task.h"
 
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -17,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -49,6 +51,48 @@ class MockZCashRPC : public ZCashRpc {
                     GetTreeStateCallback callback));
 };
 
+class MockOrchardSyncState : public OrchardSyncState {
+ public:
+  explicit MockOrchardSyncState(const base::FilePath& path_to_database)
+      : OrchardSyncState(path_to_database) {}
+  ~MockOrchardSyncState() override {}
+
+  MOCK_METHOD1(GetMinCheckpointId,
+               base::expected<std::optional<uint32_t>, OrchardStorage::Error>(
+                   const mojom::AccountIdPtr& account_id));
+
+  MOCK_METHOD3(Rewind,
+               base::expected<OrchardStorage::Result, OrchardStorage::Error>(
+                   const mojom::AccountIdPtr& account_id,
+                   uint32_t rewind_block_height,
+                   const std::string& rewind_block_hash));
+};
+
+class MockOrchardSyncStateProxy : public OrchardSyncState {
+ public:
+  MockOrchardSyncStateProxy(const base::FilePath& file_path,
+                            OrchardSyncState* instance)
+      : OrchardSyncState(file_path), instance_(instance) {}
+
+  ~MockOrchardSyncStateProxy() override {}
+
+  base::expected<std::optional<uint32_t>, OrchardStorage::Error>
+  GetMinCheckpointId(const mojom::AccountIdPtr& account_id) override {
+    return instance_->GetMinCheckpointId(account_id);
+  }
+
+  base::expected<OrchardStorage::Result, OrchardStorage::Error> Rewind(
+      const mojom::AccountIdPtr& account_id,
+      uint32_t rewind_block_height,
+      const std::string& rewind_block_hash) override {
+    return instance_->Rewind(account_id, rewind_block_height,
+                             rewind_block_hash);
+  }
+
+ private:
+  raw_ptr<OrchardSyncState> instance_;
+};
+
 }  // namespace
 
 class ZCashVerifyChainStateTaskTest : public testing::Test {
@@ -60,13 +104,42 @@ class ZCashVerifyChainStateTaskTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
-    sync_state_.emplace(base::SequencedTaskRunner::GetCurrentDefault(),
-                        db_path.AppendASCII("orchard.db"));
     account_id_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                           mojom::KeyringId::kZCashMainnet,
                                           mojom::AccountKind::kDerived, 0);
 
+    mocked_sync_state_ = std::make_unique<MockOrchardSyncState>(db_path);
+    sync_state_ = base::SequenceBound<MockOrchardSyncStateProxy>(
+        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
+        db_path, mocked_sync_state_.get());
+
     InitSyncState();
+  }
+
+  void TearDown() override {
+    sync_state_.Reset();
+    task_environment().RunUntilIdle();
+  }
+
+  void InitSyncState() {
+    auto lambda = base::BindLambdaForTesting(
+        [&](base::expected<OrchardStorage::Result, OrchardStorage::Error>
+                result) {
+          EXPECT_EQ(OrchardStorage::Result::kSuccess, result.value());
+        });
+    sync_state_.AsyncCall(&OrchardSyncState::RegisterAccount)
+        .WithArgs(account_id_.Clone(), kNu5BlockUpdate + 1)
+        .Then(std::move(lambda));
+
+    OrchardBlockScanner::Result result = CreateResultForTesting(
+        OrchardTreeState(), std::vector<OrchardCommitment>());
+    sync_state_.AsyncCall(&OrchardSyncState::ApplyScanResults)
+        .WithArgs(account_id_.Clone(), std::move(result), kLatestScannedBlock,
+                  kLatestScannedBlockHash)
+        .Then(base::BindLambdaForTesting(
+            [&](base::expected<OrchardStorage::Result, OrchardStorage::Error>
+                    r) { EXPECT_TRUE(r.has_value()); }));
+    task_environment().RunUntilIdle();
   }
 
   ZCashActionContext CreateContext() {
@@ -76,129 +149,30 @@ class ZCashVerifyChainStateTaskTest : public testing::Test {
 
   testing::NiceMock<MockZCashRPC>& zcash_rpc() { return zcash_rpc_; }
 
+  MockOrchardSyncState& mocked_sync_state() { return *mocked_sync_state_; }
+
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
-  base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
-  GetSpendableNotes() {
-    std::optional<
-        base::expected<std::vector<OrchardNote>, OrchardStorage::Error>>
-        result;
-    sync_state_.AsyncCall(&OrchardSyncState::GetSpendableNotes)
-        .WithArgs(account_id_.Clone())
-        .Then(base::BindLambdaForTesting(
-            [&](base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
-                    r) { result = std::move(r); }));
-    task_environment().RunUntilIdle();
-    return result.value();
-  }
-
-  base::expected<std::optional<OrchardStorage::AccountMeta>,
-                 OrchardStorage::Error>
-  GetAccountMeta() {
-    std::optional<base::expected<std::optional<OrchardStorage::AccountMeta>,
-                                 OrchardStorage::Error>>
-        result;
-    sync_state_.AsyncCall(&OrchardSyncState::GetAccountMeta)
-        .WithArgs(account_id_.Clone())
-        .Then(base::BindLambdaForTesting(
-            [&](base::expected<std::optional<OrchardStorage::AccountMeta>,
-                               OrchardStorage::Error> r) {
-              result = std::move(r);
-            }));
-    task_environment().RunUntilIdle();
-    return result.value();
-  }
-
-  void InitSyncState() {
-    auto lambda = base::BindLambdaForTesting(
-        [&](base::expected<OrchardStorage::AccountMeta, OrchardStorage::Error>
-                result) { EXPECT_TRUE(result.has_value()); });
-    sync_state_.AsyncCall(&OrchardSyncState::RegisterAccount)
-        .WithArgs(account_id_.Clone(), kNu5BlockUpdate + 1)
-        .Then(std::move(lambda));
-
-    OrchardBlockScanner::Result result = CreateResultForTesting(
-        OrchardTreeState(), std::vector<OrchardCommitment>());
-    result.discovered_notes.push_back(GenerateMockOrchardNote(
-        account_id_, kLatestScannedBlock - kChainReorgBlockDelta - 2, 1));
-    result.discovered_notes.push_back(GenerateMockOrchardNote(
-        account_id_, kLatestScannedBlock - kChainReorgBlockDelta - 1, 2));
-    result.discovered_notes.push_back(GenerateMockOrchardNote(
-        account_id_, kLatestScannedBlock - kChainReorgBlockDelta + 1, 3));
-    result.discovered_notes.push_back(GenerateMockOrchardNote(
-        account_id_, kLatestScannedBlock - kChainReorgBlockDelta + 2, 4));
-
-    sync_state_.AsyncCall(&OrchardSyncState::ApplyScanResults)
-        .WithArgs(account_id_.Clone(), std::move(result), kLatestScannedBlock,
-                  kLatestScannedBlockHash)
-        .Then(base::BindLambdaForTesting(
-            [&](base::expected<OrchardStorage::Result, OrchardStorage::Error>
-                    r) { EXPECT_TRUE(r.has_value()); }));
-    task_environment().RunUntilIdle();
-    ASSERT_EQ(GetSpendableNotes().value().size(), 4u);
-  }
+  mojom::AccountIdPtr& account_id() { return account_id_; }
 
  private:
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
-  base::SequenceBound<OrchardSyncState> sync_state_;
   mojom::AccountIdPtr account_id_;
   testing::NiceMock<MockZCashRPC> zcash_rpc_;
+  std::unique_ptr<MockOrchardSyncState> mocked_sync_state_;
+  base::SequenceBound<OrchardSyncState> sync_state_;
 };
 
-TEST_F(ZCashVerifyChainStateTaskTest, Reorg_NewChaintip) {
-  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
-      .WillByDefault(
-          ::testing::Invoke([](const std::string& chain_id,
-                               ZCashRpc::GetLatestBlockCallback callback) {
-            std::move(callback).Run(zcash::mojom::BlockID::New(
-                kLatestScannedBlock + 1000u, std::vector<uint8_t>({})));
-          }));
-
-  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            if (block->height == kLatestScannedBlock) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb00", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabb", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          }));
-
-  ZCashActionContext context = CreateContext();
-
-  base::MockCallback<
-      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
-      callback;
-  EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-          });
-
-  auto task = ZCashVerifyChainStateTask(context, callback.Get());
-  task.Start();
-
-  task_environment().RunUntilIdle();
-
-  auto meta_result = GetAccountMeta();
-  EXPECT_TRUE(meta_result.has_value());
-  EXPECT_EQ(meta_result.value()->latest_scanned_block_id.value(),
-            kLatestScannedBlock);
-  EXPECT_EQ(meta_result.value()->latest_scanned_block_hash.value(),
-            kLatestScannedBlockHash);
-  EXPECT_EQ(GetSpendableNotes().value().size(), 4u);
-}
-
 TEST_F(ZCashVerifyChainStateTaskTest, NoReorg) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
+      .WillByDefault(
+          ::testing::Invoke([](const mojom::AccountIdPtr& account_id) {
+            return base::ok(
+                std::optional<uint32_t>(kLatestScannedBlock - 100u));
+          }));
+
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
@@ -235,21 +209,22 @@ TEST_F(ZCashVerifyChainStateTaskTest, NoReorg) {
             EXPECT_TRUE(result.has_value());
           });
 
+  EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
+
   auto task = ZCashVerifyChainStateTask(context, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
-
-  auto meta_result = GetAccountMeta();
-  EXPECT_TRUE(meta_result.has_value());
-  EXPECT_EQ(meta_result.value()->latest_scanned_block_id.value(),
-            kLatestScannedBlock);
-  EXPECT_EQ(meta_result.value()->latest_scanned_block_hash.value(),
-            kLatestScannedBlockHash);
-  EXPECT_EQ(GetSpendableNotes().value().size(), 4u);
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
+      .WillByDefault(
+          ::testing::Invoke([](const mojom::AccountIdPtr& account_id) {
+            return base::ok(
+                std::optional<uint32_t>(kLatestScannedBlock - 100u));
+          }));
+
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
@@ -262,19 +237,19 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
       .WillByDefault(::testing::Invoke(
           [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
              ZCashRpc::GetTreeStateCallback callback) {
+            if (block->height == kLatestScannedBlock - 100) {
+              auto tree_state = zcash::mojom::TreeState::New(
+                  chain_id, block->height, "aabb0022", 0, "", "");
+              std::move(callback).Run(std::move(tree_state));
+              return;
+            }
             if (block->height == kLatestScannedBlock) {
               auto tree_state = zcash::mojom::TreeState::New(
                   chain_id, block->height, "aabb00", 0, "", "");
               std::move(callback).Run(std::move(tree_state));
               return;
             }
-            if (block->height ==
-                kLatestScannedBlock - 1 - kChainReorgBlockDelta) {
-              auto tree_state = zcash::mojom::TreeState::New(
-                  chain_id, block->height, "aabb0022", 0, "", "");
-              std::move(callback).Run(std::move(tree_state));
-              return;
-            }
+
             // Valid tree state
             auto tree_state = zcash::mojom::TreeState::New(
                 chain_id, block->height, "aabb", 0, "", "");
@@ -296,18 +271,22 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipBeforeLatestScannedBlock) {
   auto task = ZCashVerifyChainStateTask(context, callback.Get());
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_CALL(mocked_sync_state(),
+              Rewind(EqualsMojo(account_id()), Eq(kLatestScannedBlock - 100u),
+                     Eq("0x2200bbaa")))
+      .Times(1);
 
-  auto meta_result = GetAccountMeta();
-  EXPECT_TRUE(meta_result.has_value());
-  EXPECT_EQ(meta_result.value()->latest_scanned_block_id.value(),
-            kLatestScannedBlock - 1 - kChainReorgBlockDelta);
-  EXPECT_EQ(meta_result.value()->latest_scanned_block_hash.value(),
-            "0x2200bbaa");
-  EXPECT_EQ(GetSpendableNotes().value().size(), 2u);
+  task_environment().RunUntilIdle();
 }
 
 TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
+      .WillByDefault(
+          ::testing::Invoke([](const mojom::AccountIdPtr& account_id) {
+            return base::ok(
+                std::optional<uint32_t>(kLatestScannedBlock - 100u));
+          }));
+
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
@@ -328,7 +307,7 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
               return;
             }
             // New tree state for the new latest scanned block
-            if (block->height == kLatestScannedBlock - kChainReorgBlockDelta) {
+            if (block->height == kLatestScannedBlock - 100) {
               // Hash differs from the latest scanned block hash
               auto tree_state = zcash::mojom::TreeState::New(
                   chain_id, block->height, "aabb0022", 0, "", "");
@@ -356,15 +335,275 @@ TEST_F(ZCashVerifyChainStateTaskTest, Reorg_ChainTipAfterLatestScannedBlock) {
   auto task = ZCashVerifyChainStateTask(context, callback.Get());
   task.Start();
 
-  task_environment().RunUntilIdle();
+  EXPECT_CALL(mocked_sync_state(),
+              Rewind(EqualsMojo(account_id()), Eq(kLatestScannedBlock - 100u),
+                     Eq("0x2200bbaa")))
+      .Times(1);
 
-  auto meta_result = GetAccountMeta();
-  EXPECT_TRUE(meta_result.has_value());
-  EXPECT_EQ(meta_result.value()->latest_scanned_block_id.value(),
-            kLatestScannedBlock - kChainReorgBlockDelta);
-  EXPECT_EQ(meta_result.value()->latest_scanned_block_hash.value(),
-            "0x2200bbaa");
-  EXPECT_EQ(GetSpendableNotes().value().size(), 2u);
+  task_environment().RunUntilIdle();
+}
+
+TEST_F(ZCashVerifyChainStateTaskTest, Reorg_LatestBlockHashChanged) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
+      .WillByDefault(
+          ::testing::Invoke([](const mojom::AccountIdPtr& account_id) {
+            return base::ok(
+                std::optional<uint32_t>(kLatestScannedBlock - 100u));
+          }));
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kLatestScannedBlock, std::vector<uint8_t>({})));
+          }));
+
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
+             ZCashRpc::GetTreeStateCallback callback) {
+            if (block->height == kLatestScannedBlock - 100) {
+              auto tree_state = zcash::mojom::TreeState::New(
+                  chain_id, block->height, "1122", 0, "", "");
+              std::move(callback).Run(std::move(tree_state));
+              return;
+            }
+            if (block->height == kLatestScannedBlock) {
+              auto tree_state = zcash::mojom::TreeState::New(
+                  chain_id, block->height, "aabb33", 0, "", "");
+              std::move(callback).Run(std::move(tree_state));
+              return;
+            }
+            // Valid tree state
+            auto tree_state = zcash::mojom::TreeState::New(
+                chain_id, block->height, "aabb", 0, "", "");
+            std::move(callback).Run(std::move(tree_state));
+          }));
+
+  ZCashActionContext context = CreateContext();
+
+  base::MockCallback<
+      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
+      callback;
+  EXPECT_CALL(callback, Run(testing::_))
+      .Times(1)
+      .WillRepeatedly(
+          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+            EXPECT_TRUE(result.has_value());
+          });
+
+  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  task.Start();
+
+  EXPECT_CALL(mocked_sync_state(),
+              Rewind(EqualsMojo(account_id()), Eq(kLatestScannedBlock - 100u),
+                     Eq("0x2211")))
+      .Times(1);
+
+  task_environment().RunUntilIdle();
+}
+
+TEST_F(ZCashVerifyChainStateTaskTest, Error_CheckpointIdFailed) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
+      .WillByDefault(
+          ::testing::Invoke([](const mojom::AccountIdPtr& account_id) {
+            return base::unexpected(OrchardStorage::Error());
+          }));
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kLatestScannedBlock, std::vector<uint8_t>({})));
+          }));
+
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
+             ZCashRpc::GetTreeStateCallback callback) {
+            if (block->height == kLatestScannedBlock) {
+              auto tree_state = zcash::mojom::TreeState::New(
+                  chain_id, block->height, "aabb33", 0, "", "");
+              std::move(callback).Run(std::move(tree_state));
+              return;
+            }
+            // Valid tree state
+            auto tree_state = zcash::mojom::TreeState::New(
+                chain_id, block->height, "aabb", 0, "", "");
+            std::move(callback).Run(std::move(tree_state));
+          }));
+
+  ZCashActionContext context = CreateContext();
+
+  base::MockCallback<
+      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
+      callback;
+  EXPECT_CALL(callback, Run(testing::_))
+      .Times(1)
+      .WillRepeatedly(
+          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+            EXPECT_FALSE(result.has_value());
+          });
+
+  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  task.Start();
+
+  EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
+
+  task_environment().RunUntilIdle();
+}
+
+TEST_F(ZCashVerifyChainStateTaskTest, Error_NoCheckpointId) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
+      .WillByDefault(
+          ::testing::Invoke([](const mojom::AccountIdPtr& account_id) {
+            return base::ok(std::nullopt);
+          }));
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kLatestScannedBlock, std::vector<uint8_t>({})));
+          }));
+
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
+             ZCashRpc::GetTreeStateCallback callback) {
+            if (block->height == kLatestScannedBlock) {
+              auto tree_state = zcash::mojom::TreeState::New(
+                  chain_id, block->height, "aabb33", 0, "", "");
+              std::move(callback).Run(std::move(tree_state));
+              return;
+            }
+            // Valid tree state
+            auto tree_state = zcash::mojom::TreeState::New(
+                chain_id, block->height, "aabb", 0, "", "");
+            std::move(callback).Run(std::move(tree_state));
+          }));
+
+  ZCashActionContext context = CreateContext();
+
+  base::MockCallback<
+      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
+      callback;
+  EXPECT_CALL(callback, Run(testing::_))
+      .Times(1)
+      .WillRepeatedly(
+          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+            EXPECT_FALSE(result.has_value());
+          });
+
+  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  task.Start();
+
+  EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
+
+  task_environment().RunUntilIdle();
+}
+
+TEST_F(ZCashVerifyChainStateTaskTest, Error_LatestBlockFailed) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
+      .WillByDefault(
+          ::testing::Invoke([](const mojom::AccountIdPtr& account_id) {
+            return base::ok(
+                std::optional<uint32_t>(kLatestScannedBlock - 100u));
+          }));
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+            std::move(callback).Run(base::unexpected("error"));
+          }));
+
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
+             ZCashRpc::GetTreeStateCallback callback) {
+            if (block->height == kLatestScannedBlock - 100) {
+              auto tree_state = zcash::mojom::TreeState::New(
+                  chain_id, block->height, "1122", 0, "", "");
+              std::move(callback).Run(std::move(tree_state));
+              return;
+            }
+            if (block->height == kLatestScannedBlock) {
+              auto tree_state = zcash::mojom::TreeState::New(
+                  chain_id, block->height, "aabb00", 0, "", "");
+              std::move(callback).Run(std::move(tree_state));
+              return;
+            }
+            // Valid tree state
+            auto tree_state = zcash::mojom::TreeState::New(
+                chain_id, block->height, "aabb", 0, "", "");
+            std::move(callback).Run(std::move(tree_state));
+          }));
+
+  ZCashActionContext context = CreateContext();
+
+  base::MockCallback<
+      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
+      callback;
+  EXPECT_CALL(callback, Run(testing::_))
+      .Times(1)
+      .WillRepeatedly(
+          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+            EXPECT_FALSE(result.has_value());
+          });
+
+  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  task.Start();
+
+  EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
+
+  task_environment().RunUntilIdle();
+}
+
+TEST_F(ZCashVerifyChainStateTaskTest, Error_TreeStateFailed) {
+  ON_CALL(mocked_sync_state(), GetMinCheckpointId(_))
+      .WillByDefault(
+          ::testing::Invoke([](const mojom::AccountIdPtr& account_id) {
+            return base::ok(
+                std::optional<uint32_t>(kLatestScannedBlock - 100u));
+          }));
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               ZCashRpc::GetLatestBlockCallback callback) {
+            std::move(callback).Run(zcash::mojom::BlockID::New(
+                kLatestScannedBlock, std::vector<uint8_t>({})));
+          }));
+
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
+             ZCashRpc::GetTreeStateCallback callback) {
+            std::move(callback).Run(base::unexpected("error"));
+          }));
+
+  ZCashActionContext context = CreateContext();
+
+  base::MockCallback<
+      ZCashVerifyChainStateTask::ZCashVerifyChainStateTaskCallback>
+      callback;
+  EXPECT_CALL(callback, Run(testing::_))
+      .Times(1)
+      .WillRepeatedly(
+          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+            EXPECT_FALSE(result.has_value());
+          });
+
+  auto task = ZCashVerifyChainStateTask(context, callback.Get());
+  task.Start();
+
+  EXPECT_CALL(mocked_sync_state(), Rewind(_, _, _)).Times(0);
+
+  task_environment().RunUntilIdle();
 }
 
 }  // namespace brave_wallet
