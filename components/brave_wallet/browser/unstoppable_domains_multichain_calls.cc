@@ -54,6 +54,11 @@ MultichainCall<ResultType>::GetEffectiveResponse() {
     return nullptr;
   }
 
+  auto base_result = responses_.find(mojom::kBaseMainnetChainId);
+  if (base_result == responses_.end()) {
+    return nullptr;
+  }
+
   auto eth_mainnet_result = responses_.find(mojom::kMainnetChainId);
   if (eth_mainnet_result == responses_.end()) {
     return nullptr;
@@ -61,6 +66,10 @@ MultichainCall<ResultType>::GetEffectiveResponse() {
 
   if (polygon_result->second.result || polygon_result->second.error) {
     return &polygon_result->second;
+  }
+
+  if (base_result->second.result || base_result->second.error) {
+    return &base_result->second;
   }
 
   return &eth_mainnet_result->second;
@@ -86,7 +95,8 @@ bool MultichainCall<ResultType>::MaybeResolveCallbacks() {
 template <class KeyType, class ResultType>
 std::vector<std::string> MultichainCalls<KeyType, ResultType>::GetChains()
     const {
-  return {mojom::kPolygonMainnetChainId, mojom::kMainnetChainId};
+  return {mojom::kPolygonMainnetChainId, mojom::kBaseMainnetChainId,
+          mojom::kMainnetChainId};
 }
 
 template <class KeyType, class ResultType>

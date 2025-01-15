@@ -81,7 +81,7 @@ void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   std::string_view cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
 
-std::string GetUnstoppableDomainsProxyReaderContractAddress(
+std::string_view GetUnstoppableDomainsProxyReaderContractAddress(
     std::string_view chain_id);
 std::string GetEnsRegistryContractAddress(std::string_view chain_id);
 
