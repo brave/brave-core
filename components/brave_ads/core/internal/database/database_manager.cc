@@ -162,11 +162,11 @@ void DatabaseManager::RazeAndCreateCallback(ResultCallback callback,
                                             int from_version,
                                             bool success) const {
   if (!success) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+    // TODO(https://github.com/brave/brave-browser/issues/43331): Failed to raze
+    // database.
+    SCOPED_CRASH_KEY_STRING64("Issue43331", "failure_reason",
                               "Failed to raze database");
-    SCOPED_CRASH_KEY_NUMBER("Issue32066", "from_sqlite_schema_version",
+    SCOPED_CRASH_KEY_NUMBER("Issue43331", "from_sqlite_schema_version",
                             from_version);
     base::debug::DumpWithoutCrashing();
 
