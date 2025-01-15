@@ -351,8 +351,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Disable Chromium's privacy sandbox
   registry->SetDefaultPrefValue(prefs::kPrivacySandboxApisEnabled,
                                 base::Value(false));
-  registry->SetDefaultPrefValue(prefs::kPrivacySandboxApisEnabledV2,
-                                base::Value(false));
 
   // Disable ScrollToText (Copy link to text).
   registry->SetDefaultPrefValue(prefs::kScrollToTextFragmentEnabled,
