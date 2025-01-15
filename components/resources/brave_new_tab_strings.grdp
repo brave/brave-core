@@ -136,12 +136,37 @@
     Show Sponsored Images
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="">
+    Show Brave Stats
+  </message>
+
+
   <message name="IDS_NEW_TAB_SHOW_TOP_SITES_LABEL" desc="">
     Show top sites
   </message>
 
   <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
     Solid colors
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="">
+    Trackers &amp; ads blocked
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_BANDWIDTH_SAVED_TEXT" desc="">
+    Bandwidth saved
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_SETTINGS_TITLE" desc="">
+    Brave Stats
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_TIME_SAVED_TEXT" desc="">
+    Time saved
+  </message>
+
+  <message name="IDS_NEW_TAB_STATS_TITLE" desc="">
+    STATS
   </message>
 
   <message name="IDS_NEW_TAB_TOP_SITE_REMOVED_TEXT" desc="">

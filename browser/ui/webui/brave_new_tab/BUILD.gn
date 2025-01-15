@@ -34,6 +34,7 @@ source_set("brave_new_tab") {
     "//brave/browser:browser_process",
     "//brave/browser/ntp_background",
     "//brave/browser/resources/brave_new_tab:generated_resources",
+    "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_search_conversion",
     "//brave/components/l10n/common",

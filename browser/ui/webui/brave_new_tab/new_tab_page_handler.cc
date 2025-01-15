@@ -12,6 +12,7 @@
 #include "brave/browser/ui/webui/brave_new_tab/background_adapter.h"
 #include "brave/browser/ui/webui/brave_new_tab/custom_image_chooser.h"
 #include "brave/browser/ui/webui/brave_new_tab/top_sites_adapter.h"
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
@@ -427,6 +428,27 @@ void NewTabPageHandler::SetClockFormat(const std::string& clock_format,
   std::move(callback).Run();
 }
 
+void NewTabPageHandler::GetShowShieldsStats(
+    GetShowShieldsStatsCallback callback) {
+  std::move(callback).Run(pref_service_->GetBoolean(kNewTabPageShowStats));
+}
+
+void NewTabPageHandler::SetShowShieldsStats(
+    bool show_shields_stats,
+    SetShowShieldsStatsCallback callback) {
+  pref_service_->SetBoolean(kNewTabPageShowStats, show_shields_stats);
+  std::move(callback).Run();
+}
+
+void NewTabPageHandler::GetShieldsStats(GetShieldsStatsCallback callback) {
+  auto stats = mojom::ShieldsStats::New();
+  stats->ads_blocked = pref_service_->GetUint64(kAdsBlocked) +
+                       pref_service_->GetUint64(kTrackersBlocked);
+  stats->bandwidth_saved_bytes = pref_service_->GetUint64(
+      brave_perf_predictor::prefs::kBandwidthSavedBytes);
+  std::move(callback).Run(std::move(stats));
+}
+
 void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
   if (!page_.is_bound()) {
     return;
@@ -443,6 +465,9 @@ void NewTabPageHandler::OnUpdate(UpdateObserver::Source update_source) {
       break;
     case UpdateObserver::Source::kTopSitesPrefs:
       page_->OnTopSitesPrefsUpdated();
+      break;
+    case UpdateObserver::Source::kShieldsStatsPrefs:
+      page_->OnShieldsStatsPrefsUpdated();
       break;
   }
 }

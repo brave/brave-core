@@ -63,6 +63,11 @@ enum TopSitesListKind {
   kMostVisited
 };
 
+struct ShieldsStats {
+  double ads_blocked;
+  double bandwidth_saved_bytes;
+};
+
 // WebUI-side handler for notifications from the browser.
 interface NewTabPage {
 
@@ -80,6 +85,9 @@ interface NewTabPage {
 
   // Called when the list of most-visited sites has been updated.
   OnTopSitesListUpdated();
+
+  // Called when preferences related to shields stats have been updated.
+  OnShieldsStatsPrefsUpdated();
 
 };
 
@@ -199,5 +207,12 @@ interface NewTabPageHandler {
   // Gets or sets the clock time format.
   GetClockFormat() => (string clock_format);
   SetClockFormat(string clock_format) => ();
+
+  // Gets or sets whether the shields stats widget is displayed.
+  GetShowShieldsStats() => (bool show_shields_stats);
+  SetShowShieldsStats(bool show_shields_stats) => ();
+
+  // Returns shields browsing stats for the current user.
+  GetShieldsStats() => (ShieldsStats shields_stats);
 
 };

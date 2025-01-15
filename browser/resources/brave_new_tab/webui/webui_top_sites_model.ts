@@ -8,7 +8,7 @@ import * as mojom from 'gen/brave/browser/ui/webui/brave_new_tab/new_tab_page.mo
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { TopSitesModel, TopSitesListKind, defaultState } from '../models/top_sites_model'
 import { createStore } from '../lib/store'
-import { debounce } from '$web-common/debounce'
+import { debounceListener } from './debounce_listener'
 
 export function listKindFromMojo(type: number): TopSitesListKind {
   switch (type) {
@@ -52,7 +52,7 @@ export function createTopSitesModel(): TopSitesModel {
   }
 
   newTabProxy.addListeners({
-    onTopSitesPrefsUpdated: debounce(loadData, 10),
+    onTopSitesPrefsUpdated: debounceListener(loadData),
     onTopSitesListUpdated: () => loadData()
   })
 

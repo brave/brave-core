@@ -63,7 +63,12 @@ export const style = scoped.css`
   }
 
   .widget-container {
-    min-height: 8px;
+    margin: 0 24px 16px;
+    max-height: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
   }
 
 `

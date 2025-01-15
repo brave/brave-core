@@ -44,6 +44,11 @@ export type Background =
 
 export type ClockFormat = '' | 'h12' | 'h24'
 
+export interface ShieldsStats {
+  bandwidthSavedBytes: number
+  adsBlocked: number
+}
+
 export interface NewTabState {
   backgroundsEnabled: boolean
   backgroundsCustomizable: boolean
@@ -56,6 +61,8 @@ export interface NewTabState {
   sponsoredImageBackground: SponsoredImageBackground | null
   showClock: boolean
   clockFormat: ClockFormat
+  showShieldsStats: boolean
+  shieldsStats: ShieldsStats | null
 }
 
 export function defaultState(): NewTabState {
@@ -70,7 +77,9 @@ export function defaultState(): NewTabState {
     currentBackground: null,
     sponsoredImageBackground: null,
     showClock: false,
-    clockFormat: ''
+    clockFormat: '',
+    showShieldsStats: false,
+    shieldsStats: null
   }
 }
 
@@ -85,6 +94,7 @@ export interface NewTabModel {
   removeCustomBackground: (background: string) => Promise<void>
   setShowClock: (showClock: boolean) => void
   setClockFormat: (format: ClockFormat) => void
+  setShowShieldsStats: (showShieldsStats: boolean) => void
 }
 
 export function defaultModel(): NewTabModel {
@@ -99,6 +109,7 @@ export function defaultModel(): NewTabModel {
     async showCustomBackgroundChooser() { return false },
     async removeCustomBackground(background) {},
     setShowClock(showClock) {},
-    setClockFormat(format) {}
+    setClockFormat(format) {},
+    setShowShieldsStats(showShieldsStats) {}
   }
 }

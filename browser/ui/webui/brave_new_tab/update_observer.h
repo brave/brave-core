@@ -24,7 +24,8 @@ class UpdateObserver {
     kBackgroundPrefs,
     kClockPrefs,
     kSearchPrefs,
-    kTopSitesPrefs
+    kTopSitesPrefs,
+    kShieldsStatsPrefs
   };
 
   explicit UpdateObserver(PrefService& pref_service);

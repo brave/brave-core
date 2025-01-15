@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/browser/ntp_background/ntp_background_prefs.h"
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
@@ -35,6 +36,11 @@ UpdateObserver::UpdateObserver(PrefService& pref_service) {
   AddPrefListener(ntp_prefs::kNtpUseMostVisitedTiles, Source::kTopSitesPrefs);
   AddPrefListener(kNewTabPageShowClock, Source::kClockPrefs);
   AddPrefListener(kNewTabPageClockFormat, Source::kClockPrefs);
+  AddPrefListener(kNewTabPageShowStats, Source::kShieldsStatsPrefs);
+  AddPrefListener(kAdsBlocked, Source::kShieldsStatsPrefs);
+  AddPrefListener(kTrackersBlocked, Source::kShieldsStatsPrefs);
+  AddPrefListener(brave_perf_predictor::prefs::kBandwidthSavedBytes,
+                  Source::kShieldsStatsPrefs);
 }
 
 UpdateObserver::~UpdateObserver() = default;

@@ -12,6 +12,7 @@ import { BackgroundCaption } from './background_caption'
 import { SettingsModal, SettingsView } from './settings/settings_modal'
 import { TopSites } from './top_sites/top_sites'
 import { Clock } from './clock'
+import { StatsWidget } from './widgets/stats_widget'
 
 import { style } from './app.style'
 
@@ -47,7 +48,9 @@ export function App() {
         <div className='background-caption-container'>
           <BackgroundCaption />
         </div>
-        <div className='widget-container' />
+        <div className='widget-container'>
+          <StatsWidget />
+        </div>
       </main>
       <Background />
       <SettingsModal

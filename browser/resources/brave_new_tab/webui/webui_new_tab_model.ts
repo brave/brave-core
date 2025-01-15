@@ -9,7 +9,7 @@ import { NewTabPageProxy } from './new_tab_page_proxy'
 import { NewTabModel, BackgroundType, defaultState } from '../models/new_tab_model'
 import { createStore } from '../lib/store'
 import { getCurrentBackground } from '../models/backgrounds'
-import { debounce } from '$web-common/debounce'
+import { debounceListener } from './debounce_listener'
 
 export function backgroundTypeFromMojo(type: number): BackgroundType {
   switch (type) {
@@ -109,15 +109,28 @@ export function createNewTabModel(): NewTabModel {
     })
   }
 
+  async function updateShieldsStats() {
+    const [
+      { showShieldsStats },
+      { shieldsStats }
+    ] = await Promise.all([
+      handler.getShowShieldsStats(),
+      handler.getShieldsStats()
+    ])
+
+    store.update({ showShieldsStats, shieldsStats })
+  }
+
   newTabProxy.addListeners({
-    onBackgroundPrefsUpdated: debounce(async () => {
+    onBackgroundPrefsUpdated: debounceListener(async () => {
       await Promise.all([
         updateCustomBackgrounds(),
         updateSelectedBackground(),
       ])
       updateCurrentBackground()
-    }, 10),
-    onClockPrefsUpdated: debounce(updateClockPrefs, 10)
+    }),
+    onClockPrefsUpdated: debounceListener(updateClockPrefs),
+    onShieldsStatsPrefsUpdated: debounceListener(updateShieldsStats)
   })
 
   async function loadData() {
@@ -129,7 +142,8 @@ export function createNewTabModel(): NewTabModel {
       updateCustomBackgrounds(),
       updateSelectedBackground(),
       updateSponsoredImageBackground(),
-      updateClockPrefs()
+      updateClockPrefs(),
+      updateShieldsStats()
     ])
 
     updateCurrentBackground()
@@ -190,6 +204,10 @@ export function createNewTabModel(): NewTabModel {
 
     async setClockFormat(format) {
       await handler.setClockFormat(format)
+    },
+
+    async setShowShieldsStats(showShieldsStats) {
+      await handler.setShowShieldsStats(showShieldsStats)
     }
   }
 }

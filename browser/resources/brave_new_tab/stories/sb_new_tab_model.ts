@@ -45,7 +45,12 @@ export function createNewTabModel(): NewTabModel {
       }
     ],
     sponsoredImageBackground: sampleSponsoredImage && null,
-    showClock: true
+    showClock: true,
+    showShieldsStats: true,
+    shieldsStats: {
+      adsBlocked: 3245,
+      bandwidthSavedBytes: 1024 * 1024
+    }
   })
 
   store.update({
@@ -108,6 +113,10 @@ export function createNewTabModel(): NewTabModel {
 
     setShowClock(showClock) {
       store.update({ showClock })
+    },
+
+    setShowShieldsStats(showShieldsStats) {
+      store.update({ showShieldsStats })
     }
   }
 }
