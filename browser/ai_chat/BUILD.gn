@@ -15,6 +15,8 @@ static_library("ai_chat") {
     "ai_chat_urls.h",
     "ai_chat_utils.cc",
     "ai_chat_utils.h",
+    "upload_image_helper.cc",
+    "upload_image_helper.h",
   ]
 
   deps = [
@@ -37,7 +39,9 @@ static_library("ai_chat") {
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
+    "//services/data_decoder/public/cpp",
     "//ui/base",
+    "//ui/shell_dialogs",
   ]
 
   if (is_android) {
