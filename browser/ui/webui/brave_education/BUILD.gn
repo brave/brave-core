@@ -3,14 +3,29 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# based on //chrome/browser/ui/webui/whats_new/BUILD.gn
+
+import("//mojo/public/tools/bindings/mojom.gni")
 import("//brave/components/brave_education/buildflags.gni")
 
 assert(enable_brave_education)
 
+mojom("mojo_bindings") {
+  sources = [ "brave_education.mojom" ]
+  webui_module_path = "/"
+
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}
+
 source_set("brave_education") {
   sources = [
-    "education_page_delegate_desktop.cc",
-    "education_page_delegate_desktop.h",
+    "brave_education_handler.cc",
+    "brave_education_handler.h",
+    "brave_education_page_delegate_desktop.cc",
+    "brave_education_page_delegate_desktop.h",
     "education_page_ui.cc",
     "education_page_ui.h",
     "education_server_checker.cc",
@@ -18,11 +33,8 @@ source_set("brave_education") {
   ]
 
   deps = [
-    "//brave/browser/ui/webui/brave_browser_command:brave_browser_command",
-    "//brave/components/brave_education:brave_education",
-    "//brave/components/brave_education/resources:generated_resources",
+    "//brave/browser/resources/brave_education:resources",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/ui/webui/resources/js/brave_browser_command:mojom",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
@@ -32,7 +44,11 @@ source_set("brave_education") {
     "//ui/webui",
   ]
 
-  public_deps = [ "//brave/components/brave_education" ]
+  public_deps = [
+    "//brave/components/brave_education",
+    "//brave/browser/ui/webui/brave_education:mojo_bindings",
+    "//brave/ui/webui/resources/js/brave_browser_command:mojo_bindings",
+  ]
 }
 
 source_set("browser_tests") {
@@ -43,7 +59,6 @@ source_set("browser_tests") {
   deps = [
     ":brave_education",
     "//base/test:test_support",
-    "//brave/browser/ui/webui/brave_browser_command:brave_browser_command",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/constants",
@@ -68,7 +83,6 @@ source_set("unit_tests") {
   deps = [
     ":brave_education",
     "//base/test:test_support",
-    "//brave/browser/ui/webui/brave_browser_command:brave_browser_command",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
     "//chrome/browser/ui",

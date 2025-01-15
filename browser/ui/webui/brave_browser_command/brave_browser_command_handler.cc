@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// based on //chrome/browser/ui/webui/browser_command/browser_command_handler.cc
+
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 
-#include "base/containers/fixed_flat_set.h"
+#include "base/containers/contains.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -19,23 +21,6 @@
 #endif
 
 namespace {
-
-bool IsCommandSupportedForPageType(
-    brave_browser_command::mojom::Command command,
-    brave_education::EducationPageType page_type) {
-  switch (page_type) {
-    case brave_education::EducationPageType::kGettingStarted: {
-      static constexpr auto kCommands =
-          base::MakeFixedFlatSet<brave_browser_command::mojom::Command>(
-              {brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
-               brave_browser_command::mojom::Command::kOpenWalletOnboarding,
-               brave_browser_command::mojom::Command::kOpenVPNOnboarding,
-               brave_browser_command::mojom::Command::kOpenAIChat});
-      return kCommands.contains(command);
-    }
-  }
-  NOTREACHED();
-}
 
 bool CanShowWalletOnboarding(Profile* profile) {
   return brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
@@ -64,30 +49,53 @@ bool CanShowAIChat(Profile* profile) {
 
 BraveBrowserCommandHandler::BraveBrowserCommandHandler(
     mojo::PendingReceiver<
-        brave_browser_command::mojom::BraveBrowserCommandHandler> receiver,
+        brave_browser_command::mojom::BraveBrowserCommandHandler>
+        pending_page_handler,
     Profile* profile,
-    brave_education::EducationPageType page_type,
+    std::vector<brave_browser_command::mojom::Command> supported_commands,
     std::unique_ptr<Delegate> delegate)
-    : receiver_(this, std::move(receiver)),
-      profile_(profile),
-      page_type_(page_type),
-      delegate_(std::move(delegate)) {}
+    : profile_(profile),
+      supported_commands_(supported_commands),
+      delegate_(std::move(delegate)),
+      page_handler_(this, std::move(pending_page_handler)) {}
 
 BraveBrowserCommandHandler::~BraveBrowserCommandHandler() = default;
 
-void BraveBrowserCommandHandler::GetServerUrl(GetServerUrlCallback callback) {
-  std::move(callback).Run(GetEducationPageServerURL(page_type_).spec());
-}
-
-void BraveBrowserCommandHandler::ExecuteCommand(
-    brave_browser_command::mojom::Command command,
-    ExecuteCommandCallback callback) {
-  if (!CanExecute(command)) {
+void BraveBrowserCommandHandler::CanExecuteCommand(
+    brave_browser_command::mojom::Command command_id,
+    CanExecuteCommandCallback callback) {
+  if (!base::Contains(supported_commands_, command_id)) {
     std::move(callback).Run(false);
     return;
   }
 
-  switch (command) {
+  bool can_execute = false;
+  switch (command_id) {
+    case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
+      can_execute = CanShowWalletOnboarding(profile_);
+      break;
+    case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
+      can_execute = CanShowRewardsOnboarding(profile_);
+      break;
+    case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
+      can_execute = CanShowVPNBubble(profile_);
+      break;
+    case brave_browser_command::mojom::Command::kOpenAIChat:
+      can_execute = CanShowAIChat(profile_);
+      break;
+  }
+  std::move(callback).Run(can_execute);
+}
+
+void BraveBrowserCommandHandler::ExecuteCommand(
+    brave_browser_command::mojom::Command command_id,
+    ExecuteCommandCallback callback) {
+  if (!base::Contains(supported_commands_, command_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  switch (command_id) {
     case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
       delegate_->OpenURL(GURL(kBraveUIWalletURL),
                          WindowOpenDisposition::NEW_FOREGROUND_TAB);
@@ -104,21 +112,4 @@ void BraveBrowserCommandHandler::ExecuteCommand(
   }
 
   std::move(callback).Run(true);
-}
-
-bool BraveBrowserCommandHandler::CanExecute(
-    brave_browser_command::mojom::Command command) {
-  if (!IsCommandSupportedForPageType(command, page_type_)) {
-    return false;
-  }
-  switch (command) {
-    case brave_browser_command::mojom::Command::kOpenWalletOnboarding:
-      return CanShowWalletOnboarding(profile_);
-    case brave_browser_command::mojom::Command::kOpenRewardsOnboarding:
-      return CanShowRewardsOnboarding(profile_);
-    case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
-      return CanShowVPNBubble(profile_);
-    case brave_browser_command::mojom::Command::kOpenAIChat:
-      return CanShowAIChat(profile_);
-  }
 }

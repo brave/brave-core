@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+// based on //chrome/browser/ui/webui/browser_command/browser_command_handler.h
+
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_BROWSER_COMMAND_BRAVE_BROWSER_COMMAND_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_BROWSER_COMMAND_BRAVE_BROWSER_COMMAND_HANDLER_H_
 
@@ -10,11 +12,11 @@
 #include <string_view>
 #include <utility>
 
-#include "brave/components/brave_education/education_urls.h"
 #include "brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "ui/base/window_open_disposition.h"
+#include "url/gurl.h"
 
 class Profile;
 
@@ -34,30 +36,26 @@ class BraveBrowserCommandHandler
 
   BraveBrowserCommandHandler(
       mojo::PendingReceiver<
-          brave_browser_command::mojom::BraveBrowserCommandHandler> receiver,
+          brave_browser_command::mojom::BraveBrowserCommandHandler>
+          pending_page_handler,
       Profile* profile,
-      brave_education::EducationPageType page_type,
+      std::vector<brave_browser_command::mojom::Command> supported_commands,
       std::unique_ptr<Delegate> delegate);
 
   ~BraveBrowserCommandHandler() override;
 
-  static constexpr std::string_view kChildSrcDirective =
-      "child-src chrome://webui-test https://brave.com/;";
-
   // brave_browser_command::mojom::BraveBrowserCommandHandler:
-  void GetServerUrl(GetServerUrlCallback callback) override;
-
-  void ExecuteCommand(brave_browser_command::mojom::Command command,
+  void CanExecuteCommand(brave_browser_command::mojom::Command command_id,
+                         CanExecuteCommandCallback callback) override;
+  void ExecuteCommand(brave_browser_command::mojom::Command command_id,
                       ExecuteCommandCallback callback) override;
 
  private:
-  bool CanExecute(brave_browser_command::mojom::Command command);
-
-  mojo::Receiver<brave_browser_command::mojom::BraveBrowserCommandHandler>
-      receiver_;
   raw_ptr<Profile> profile_;
-  brave_education::EducationPageType page_type_;
+  std::vector<brave_browser_command::mojom::Command> supported_commands_;
   std::unique_ptr<Delegate> delegate_;
+  mojo::Receiver<brave_browser_command::mojom::BraveBrowserCommandHandler>
+      page_handler_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_BROWSER_COMMAND_BRAVE_BROWSER_COMMAND_HANDLER_H_

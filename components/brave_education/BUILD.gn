@@ -4,7 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/buildflag_header.gni")
-import("//mojo/public/tools/bindings/mojom.gni")
 import("buildflags.gni")
 
 buildflag_header("buildflags") {
@@ -23,7 +22,6 @@ source_set("brave_education") {
   deps = [
     "//base",
     "//brave/components/constants:constants",
-    "//brave/ui/webui/resources/js/brave_browser_command:mojom",
     "//url",
   ]
 }

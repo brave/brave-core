@@ -71,14 +71,12 @@ repack("resources") {
     deps += [
       "//brave/components/brave_adblock_ui:generated_resources",
       "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
-      "//brave/components/brave_education/resources:generated_resources",
       "//brave/components/cosmetic_filters/resources/data:generated_resources",
     ]
 
     sources += [
       "$root_gen_dir/brave/components/brave_adblock/adblock_internals/resources/brave_adblock_internals_generated.pak",
       "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
-      "$root_gen_dir/brave/components/brave_education/resources/brave_education_generated.pak",
       "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
     ]
   }
