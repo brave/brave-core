@@ -147,6 +147,18 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                 size='small'
               />
             </SettingsRow>
+            {braveRewardsSupported && (
+              <SettingsRow>
+                <SponsoredImageToggle
+                  onChange={toggleBrandedWallpaperOptIn}
+                  onEnableRewards={onEnableRewards}
+                  checked={showBackgroundImage && brandedWallpaperOptIn}
+                  disabled={!showBackgroundImage /* This option can only be enabled if users opt in for background images */}
+                  rewardsEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
+                  isExternalWalletConnected={
+                    Boolean(this.props.newTabData.rewardsState.externalWallet)} />
+              </SettingsRow>
+            )}
             {showBackgroundImage && featureCustomBackgroundEnabled && (
               <StyledCustomBackgroundSettings>
                 {this.renderUploadButton(this.onClickCustomBackground, usingCustomImageBackground, /* showTitle= */ true, this.props.newTabData.customImageBackgrounds)}
@@ -187,19 +199,6 @@ class BackgroundImageSettings extends React.PureComponent<Props, State> {
                   </StyledCustomBackgroundOptionLabel>
                 </StyledCustomBackgroundOption>
               </StyledCustomBackgroundSettings>
-            )}
-            <div style={{ height: '16px' }}/>
-            {braveRewardsSupported && (
-              <SettingsRow>
-                <SponsoredImageToggle
-                  onChange={toggleBrandedWallpaperOptIn}
-                  onEnableRewards={onEnableRewards}
-                  checked={showBackgroundImage && brandedWallpaperOptIn}
-                  disabled={!showBackgroundImage /* This option can only be enabled if users opt in for background images */}
-                  rewardsEnabled={this.props.newTabData.rewardsState.rewardsEnabled}
-                  isExternalWalletConnected={
-                    Boolean(this.props.newTabData.rewardsState.externalWallet)} />
-              </SettingsRow>
             )}
           </div>
         )}
