@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/AlertDialogContent"
-    android:background="@color/brave_wallet_dn_panel_bg"
+    android:background="@drawable/dapps_permission_dialog_background"
     android:gravity="start">
 
     <TextView
