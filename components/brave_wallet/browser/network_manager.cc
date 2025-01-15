@@ -957,6 +957,8 @@ GURL NetworkManager::GetUnstoppableDomainsRpcUrl(std::string_view chain_id) {
     return GetEthMainnet()->rpc_endpoints.front();
   } else if (chain_id == mojom::kPolygonMainnetChainId) {
     return GetPolygonMainnet()->rpc_endpoints.front();
+  } else if (chain_id == mojom::kBaseMainnetChainId) {
+    return GetBaseMainnet()->rpc_endpoints.front();
   }
 
   NOTREACHED();
