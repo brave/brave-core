@@ -39,4 +39,8 @@ OrchardFullViewKey HDKeyZip32::GetFullViewKey() {
   return orchard_extended_spending_key_->GetFullViewKey();
 }
 
+OrchardSpendingKey HDKeyZip32::GetSpendingKey() {
+  return orchard_extended_spending_key_->GetSpendingKey();
+}
+
 }  // namespace brave_wallet

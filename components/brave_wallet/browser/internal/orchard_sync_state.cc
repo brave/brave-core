@@ -134,6 +134,22 @@ OrchardSyncState::CalculateWitnessForCheckpoint(
   return base::ok(std::move(result));
 }
 
+base::expected<std::optional<uint32_t>, OrchardStorage::Error>
+OrchardSyncState::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return storage_.GetLatestShardIndex(account_id);
+}
+
+base::expected<std::optional<uint32_t>, OrchardStorage::Error>
+OrchardSyncState::GetMaxCheckpointedHeight(
+    const mojom::AccountIdPtr& account_id,
+    uint32_t chain_tip_height,
+    uint32_t min_confirmations) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return storage_.GetMaxCheckpointedHeight(account_id, chain_tip_height,
+                                           min_confirmations);
+}
+
 void OrchardSyncState::ResetDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   storage_.ResetDatabase();

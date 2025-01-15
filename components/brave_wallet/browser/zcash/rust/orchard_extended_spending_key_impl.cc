@@ -53,4 +53,8 @@ OrchardFullViewKey OrchardExtendedSpendingKeyImpl::GetFullViewKey() {
   return cxx_extended_spending_key_->full_view_key();
 }
 
+OrchardSpendingKey OrchardExtendedSpendingKeyImpl::GetSpendingKey() {
+  return cxx_extended_spending_key_->spending_key();
+}
+
 }  // namespace brave_wallet::orchard

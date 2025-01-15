@@ -42,6 +42,8 @@ class OrchardExtendedSpendingKeyImpl : public OrchardExtendedSpendingKey {
 
   OrchardFullViewKey GetFullViewKey() override;
 
+  OrchardSpendingKey GetSpendingKey() override;
+
  private:
   // Extended spending key is a root key of an account, all other keys can be
   // derived from esk
