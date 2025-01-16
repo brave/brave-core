@@ -30,6 +30,7 @@ import {
 // Hooks
 import { useExplorer } from '../../../../common/hooks/explorer'
 import { useSwapTransactionParser } from '../../../../common/hooks/use-swap-tx-parser'
+import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 
 // Types
 import {
@@ -177,6 +178,9 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
   const recipient = getTransactionToAddress(transaction)
   const approvalTarget = getTransactionApprovalTargetAddress(transaction)
 
+  // Refs
+  const transactionDetailsModalRef = React.useRef<HTMLDivElement>(null)
+
   // Queries
   const { data: defaultFiatCurrency = '' } =
     useGetDefaultFiatCurrencyQuery(undefined)
@@ -246,6 +250,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
   const [speedupTx] = useSpeedupTransactionMutation()
   const [retryTx] = useRetryTransactionMutation()
   const [cancelTx] = useCancelTransactionMutation()
+  useOnClickOutside(transactionDetailsModalRef, () => onClose(), true)
 
   // Methods
   const onClickRetryTransaction = () => {
@@ -413,6 +418,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
       onClose={onClose}
       title='Transaction Details'
       width='630px'
+      ref={transactionDetailsModalRef}
     >
       <ContentWrapper
         fullWidth={true}
