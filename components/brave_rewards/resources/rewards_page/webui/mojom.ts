@@ -4,5 +4,5 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export * from 'gen/brave/components/brave_ads/core/mojom/brave_ads.mojom.m.js'
-export * from 'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m.js'
-export * from 'gen/brave/components/brave_rewards/common/mojom/rewards_page.mojom.m.js'
+export * from 'gen/brave/components/brave_rewards/core/mojom/rewards.mojom.m.js'
+export * from 'gen/brave/components/brave_rewards/core/mojom/rewards_page.mojom.m.js'

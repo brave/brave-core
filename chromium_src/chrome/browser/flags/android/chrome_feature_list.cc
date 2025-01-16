@@ -9,7 +9,7 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_news/common/features.h"
-#include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/features.h"

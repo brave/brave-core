@@ -8,7 +8,7 @@
 #include "base/notreached.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/core/rewards_flags.h"
 
 namespace brave_ads {
 

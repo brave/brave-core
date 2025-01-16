@@ -7,9 +7,11 @@
 #define BRAVE_IOS_BROWSER_API_BRAVE_REWARDS_REWARDS_CLIENT_BRIDGE_H_
 
 #import <Foundation/Foundation.h>
+
 #include <string>
 #include <vector>
-#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
+
+#include "brave/components/brave_rewards/core/mojom/rewards_engine.mojom.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

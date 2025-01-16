@@ -11,7 +11,7 @@
 #include "base/functional/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"

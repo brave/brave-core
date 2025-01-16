@@ -20,9 +20,9 @@ source_set("brave_adaptive_captcha") {
   deps = [
     "//base",
     "//brave/components/api_request_helper",
-    "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_rewards/common",
-    "//brave/components/brave_rewards/core:buildflags",
+    "//brave/components/brave_rewards/content",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/internal:buildflags",
     "//components/keyed_service/core",
     "//components/prefs",
     "//net",
