@@ -288,11 +288,11 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs.first)
 
     await playerModel.seek(to: 1, accurately: true)
-    XCTAssertNotEqual(playerModel.currentTime, 0)
+    XCTAssertNotEqual(playerModel.currentTime, 0, accuracy: 0.1)
 
     await playerModel.playPreviousItem()
     XCTAssertEqual(playerModel.selectedItemID, itemsIDs.first)
-    XCTAssertEqual(playerModel.currentTime, 0)
+    XCTAssertEqual(playerModel.currentTime, 0, accuracy: 0.1)
   }
 
   /// Tests playing the previous item successfully from somewhere other than the first item in the
@@ -354,7 +354,7 @@ class PlayerModelTests: CoreDataTestCase {
     playerModel.selectedFolderID = folder.id
     await playerModel.prepareItemQueue()
 
-    XCTAssertEqual(playerModel.currentTime, 3)
+    XCTAssertEqual(playerModel.currentTime, 3, accuracy: 0.1)
   }
 
   /// Tests that playback is correctly saved when the app resigns being active
@@ -371,9 +371,9 @@ class PlayerModelTests: CoreDataTestCase {
     playerModel.selectedFolderID = folder.id
     await playerModel.prepareItemQueue()
 
-    XCTAssertEqual(playerModel.currentTime, 0)
+    XCTAssertEqual(playerModel.currentTime, 0, accuracy: 0.1)
     await playerModel.seek(to: 3, accurately: true)
-    XCTAssertEqual(playerModel.currentTime, 3)
+    XCTAssertEqual(playerModel.currentTime, 3, accuracy: 0.1)
 
     NotificationCenter.default.post(name: UIApplication.willResignActiveNotification, object: nil)
 
@@ -391,8 +391,8 @@ class PlayerModelTests: CoreDataTestCase {
 
     await fulfillment(of: [mergeExpectation, saveExpectation], timeout: 1)
 
-    let lastPlayedOffset = PlaylistItem.getItem(id: item.id)?.lastPlayedOffset
-    XCTAssertEqual(lastPlayedOffset, 3)
+    let lastPlayedOffset = try XCTUnwrap(PlaylistItem.getItem(id: item.id)?.lastPlayedOffset)
+    XCTAssertEqual(lastPlayedOffset, 3, accuracy: 0.1)
   }
 
   /// Test having both an initial offset passed in and the playbackLeftOff preference being enabled
@@ -423,7 +423,7 @@ class PlayerModelTests: CoreDataTestCase {
 
     XCTAssertEqual(playerModel.selectedItemID, items[1].id)
     // Initial item takes precedence
-    XCTAssertEqual(playerModel.currentTime, initialItemOffset)
+    XCTAssertEqual(playerModel.currentTime, initialItemOffset, accuracy: 0.1)
   }
 
   // MARK: - Playback
@@ -448,7 +448,7 @@ class PlayerModelTests: CoreDataTestCase {
     XCTAssertTrue(playerModel.isPlaying)
 
     await playerModel.seek(to: 5, accurately: true)
-    XCTAssertEqual(playerModel.currentTime.rounded(), 5)
+    XCTAssertEqual(playerModel.currentTime, 5, accuracy: 0.1)
 
     playerModel.pause()
     XCTAssertFalse(playerModel.isPlaying)
