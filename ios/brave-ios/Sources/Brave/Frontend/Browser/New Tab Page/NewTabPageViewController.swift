@@ -124,6 +124,20 @@ class NewTabPageViewController: UIViewController {
   private var videoAdPlayer: NewTabPageVideoAdPlayer?
   private var videoButtonsView = NewTabPageVideoAdButtonsView()
 
+  var onboardingYouTubeFavoriteInfo: (favorite: Favorite, cell: UIView)? {
+    // Get the cell for the youtube from the favs section
+    let frc = Favorite.frc()
+    frc.fetchRequest.fetchLimit = 5
+    try? frc.performFetch()
+    guard let section = sections.firstIndex(where: { $0 is FavoritesSectionProvider }),
+      let item = frc.fetchedObjects?.firstIndex(where: { $0.url == "https://m.youtube.com" }),
+      let cell = collectionView.cellForItem(at: .init(item: item, section: section))
+    else {
+      return nil
+    }
+    return (frc.fetchedObjects![item], cell)
+  }
+
   /// A gradient to display over background images to ensure visibility of
   /// the NTP contents and sponsored logo
   ///

@@ -18,8 +18,6 @@ struct FocusStepsView: View {
 
   @ScaledMetric private var iconSize: CGFloat = 32.0
 
-  @State private var indicatorIndex = 0
-  @State private var opacity = 0.0
   @State private var isP3AViewPresented = false
   @Binding var shouldDismiss: Bool
 
@@ -53,12 +51,6 @@ struct FocusStepsView: View {
           .frame(maxWidth: 616, maxHeight: 895)
           .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
           .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-          .overlay(alignment: .topTrailing) {
-            cancelButton
-              .frame(width: iconSize, height: iconSize)
-              .padding(24)
-          }
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background {
@@ -79,13 +71,6 @@ struct FocusStepsView: View {
     } else {
       VStack {
         stepsContentView
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
-          .opacity(opacity)
-          .onAppear {
-            withAnimation(.easeInOut(duration: 1.0).delay(1.25)) {
-              opacity = 1.0
-            }
-          }
       }
       .padding(.bottom, 20)
       .background(Color(braveSystemName: .pageBackground))
@@ -97,11 +82,6 @@ struct FocusStepsView: View {
             shouldDismiss: $shouldDismiss
           )
         }
-      }
-      .overlay(alignment: .topTrailing) {
-        cancelButton
-          .frame(width: 32, height: 32)
-          .padding(24)
       }
     }
   }
@@ -126,31 +106,34 @@ struct FocusStepsView: View {
           .frame(width: 78, height: 78)
       }
       VStack(spacing: 0) {
-        FocusStepsHeaderTitleView(activeIndex: $indicatorIndex)
-          .padding(.bottom, 24)
-
-        TabView(selection: $indicatorIndex) {
-          FocusAdTrackerSliderContentView()
-            .tag(0)
-          FocusVideoAdSliderContentView()
-            .tag(1)
+        VStack(spacing: 10) {
+          Text(Strings.FocusOnboarding.noVideoAdsScreenTitle)
+            .font(
+              Font.custom("Poppins-SemiBold", size: 28)
+            )
+            .opacity(0.9)
+          Text(Strings.FocusOnboarding.noVideoAdsScreenDescription)
+            .font(
+              Font.custom("Poppins-Medium", size: 17)
+            )
+            .foregroundColor(Color(braveSystemName: .textTertiary))
         }
-        .background(Color(braveSystemName: .pageBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-        .animation(.easeInOut, value: indicatorIndex)
-        .disabled(indicatorIndex > 0)
+        .multilineTextAlignment(.center)
+        .dynamicTypeSize(dynamicTypeRange)
+        .fixedSize(horizontal: false, vertical: true)
         .padding(.bottom, 24)
+
+        FocusVideoAdSliderContentView()
+          .background(Color(braveSystemName: .pageBackground))
+          .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+          .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+          .padding(.bottom, 24)
 
         Spacer()
 
         Button(
           action: {
-            if indicatorIndex > 0 {
-              isP3AViewPresented = true
-            } else {
-              indicatorIndex += 1
-            }
+            isP3AViewPresented = true
           },
           label: {
             Text(Strings.FocusOnboarding.continueButtonTitle)
@@ -169,19 +152,6 @@ struct FocusStepsView: View {
           )
         )
       }
-      .opacity(opacity)
-      .onAppear {
-        withAnimation(.easeInOut(duration: 1.0).delay(1.25)) {
-          opacity = 1.0
-        }
-      }
-      .onChange(of: indicatorIndex) { newValue in
-        if indicatorIndex == 1 {
-          Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { _ in
-            UINotificationFeedbackGenerator().vibrate(style: .error)
-          }
-        }
-      }
     }
     .padding(.vertical, shouldUseExtendedDesign ? 64 : 20)
     .padding(.horizontal, shouldUseExtendedDesign ? 60 : 20)
@@ -197,59 +167,6 @@ struct FocusStepsView: View {
           .resizable()
       }
     )
-  }
-}
-
-private struct FocusStepsHeaderTitleView: View {
-  @Binding var activeIndex: Int
-
-  let dynamicTypeRange = (...DynamicTypeSize.large)
-
-  var body: some View {
-    let title =
-      activeIndex == 0
-      ? Strings.FocusOnboarding.movingAdsScreenTitle
-      : Strings.FocusOnboarding.noVideoAdsScreenTitle
-
-    let description =
-      activeIndex == 0
-      ? Strings.FocusOnboarding.movingAdsScreenDescription
-      : Strings.FocusOnboarding.noVideoAdsScreenDescription
-
-    VStack(spacing: 10) {
-      Text(title)
-        .font(
-          Font.custom("Poppins-SemiBold", size: 28)
-        )
-        .opacity(0.9)
-      Text(description)
-        .font(
-          Font.custom("Poppins-Medium", size: 17)
-        )
-        .multilineTextAlignment(.center)
-        .foregroundColor(Color(braveSystemName: .textTertiary))
-    }
-    .dynamicTypeSize(dynamicTypeRange)
-    .fixedSize(horizontal: false, vertical: true)
-  }
-}
-
-struct FocusStepsPagingIndicator: View {
-  var totalPages: Int
-  @Binding var activeIndex: Int
-
-  var body: some View {
-    HStack(spacing: 10) {
-      ForEach(0..<totalPages, id: \.self) { index in
-        Capsule()
-          .fill(
-            index == activeIndex
-              ? Color(braveSystemName: .textDisabled) : Color(braveSystemName: .dividerStrong)
-          )
-          .frame(width: index == activeIndex ? 24 : 8, height: 8)
-      }
-    }
-    .frame(maxWidth: .infinity)
   }
 }
 
