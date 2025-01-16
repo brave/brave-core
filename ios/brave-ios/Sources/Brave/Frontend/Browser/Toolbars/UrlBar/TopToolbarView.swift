@@ -119,6 +119,10 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationTextField?.lastReplacement ?? ""
   }
 
+  var isPastingInURLBar: Bool {
+    locationTextField?.isPasting == true
+  }
+
   // MARK: Views
 
   private var locationTextField: AutocompleteTextField?

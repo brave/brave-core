@@ -92,6 +92,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
             self,
             didEnterText: self.text?.preferredSearchSuggestionText ?? ""
           )
+          self.isPasting = false
         }
       }
     )
@@ -215,6 +216,13 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     autocompleteTextLabel?.removeFromSuperview()
     autocompleteTextLabel = nil
     return hasActiveCompletion
+  }
+
+  private(set) var isPasting: Bool = false
+
+  public override func paste(_ sender: Any?) {
+    isPasting = true
+    super.paste(sender)
   }
 
   // `shouldChangeCharactersInRange` is called before the text changes, and textDidChange is called after.
