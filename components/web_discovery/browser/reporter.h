@@ -73,8 +73,6 @@ class Reporter {
   raw_ptr<CredentialSigner> credential_signer_;
   raw_ptr<const ServerConfigLoader> server_config_loader_;
 
-  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
-
   RequestQueue request_queue_;
 
   std::unique_ptr<network::SimpleURLLoader> url_loader_;

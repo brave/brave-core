@@ -128,7 +128,6 @@ Reporter::Reporter(PrefService* profile_prefs,
       shared_url_loader_factory_(shared_url_loader_factory),
       credential_signer_(credential_signer),
       server_config_loader_(server_config_loader),
-      sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
       request_queue_(profile_prefs,
                      kScheduledReports,
                      kRequestMaxAge,
@@ -215,7 +214,7 @@ void Reporter::OnRequestSigned(std::string final_payload_json,
     request_queue_.NotifyRequestComplete(true);
     return;
   }
-  sequenced_task_runner_->PostTaskAndReplyWithResult(
+  base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&CompressAndEncrypt, full_signed_message, pub_key->second),
       base::BindOnce(&Reporter::OnRequestCompressedAndEncrypted,
