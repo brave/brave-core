@@ -22,13 +22,14 @@ type Props = {
 }
 
 export default function UploadedImgItem(props: Props) {
-  // Computed
-  const blob = new Blob([new Uint8Array(props.imageData.data)], {
-    type: 'image/*'
-  })
-  const dataUrl = URL.createObjectURL(blob)
-
   // Memos
+  const dataUrl = React.useMemo(() => {
+    const blob = new Blob([new Uint8Array(props.imageData.data)], {
+      type: 'image/*'
+    })
+    return URL.createObjectURL(blob)
+  },[props.imageData])
+
   const fileSize = React.useMemo(() => {
     let bytes = props.imageData.fileSize
     const units = ['B', 'KB', 'MB', 'GB']
