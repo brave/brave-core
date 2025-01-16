@@ -1715,8 +1715,9 @@ void JsonRpcService::UnstoppableDomainsResolveDns(
         base::BindOnce(&JsonRpcService::OnUnstoppableDomainsResolveDns,
                        weak_ptr_factory_.GetWeakPtr(), domain, chain_id);
     auto eth_call = eth::eth_call(
-        "", GetUnstoppableDomainsProxyReaderContractAddress(chain_id), "", "",
-        "", *data, kEthereumBlockTagLatest);
+        "",
+        std::string(GetUnstoppableDomainsProxyReaderContractAddress(chain_id)),
+        "", "", "", *data, kEthereumBlockTagLatest);
     RequestInternal(std::move(eth_call), true,
                     NetworkManager::GetUnstoppableDomainsRpcUrl(chain_id),
                     std::move(internal_callback));
@@ -1787,9 +1788,9 @@ void JsonRpcService::UnstoppableDomainsGetWalletAddr(
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnUnstoppableDomainsGetWalletAddr,
                        weak_ptr_factory_.GetWeakPtr(), key, chain_id);
-    auto eth_call =
-        eth::eth_call(GetUnstoppableDomainsProxyReaderContractAddress(chain_id),
-                      ToHex(call_data));
+    auto eth_call = eth::eth_call(
+        std::string(GetUnstoppableDomainsProxyReaderContractAddress(chain_id)),
+        ToHex(call_data));
     RequestInternal(std::move(eth_call), true,
                     NetworkManager::GetUnstoppableDomainsRpcUrl(chain_id),
                     std::move(internal_callback));
