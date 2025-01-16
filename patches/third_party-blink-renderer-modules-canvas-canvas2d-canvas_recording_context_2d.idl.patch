@@ -1,8 +1,8 @@
-diff --git a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-index b86e848b9176181b149b575500beebb9ccddfe0a..79a69d3bbc215fa7eb73a315adad1e37b3d48194 100644
---- a/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-+++ b/third_party/blink/renderer/modules/csspaint/paint_rendering_context_2d.idl
-@@ -64,10 +64,10 @@
+diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_recording_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_recording_context_2d.idl
+index 8e607115e55375abff5fbcf054c97c1eb75e5e26..9f8c083ab9f6ec3b8d9acf0ceeb204a53c6d2381 100644
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_recording_context_2d.idl
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_recording_context_2d.idl
+@@ -66,10 +66,10 @@ interface mixin CanvasRecordingContext2D {
  
      [HighEntropy] void clip(optional CanvasFillRule winding);
      [HighEntropy] void clip(Path2D path, optional CanvasFillRule winding);
