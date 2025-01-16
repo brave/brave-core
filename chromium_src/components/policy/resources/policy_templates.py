@@ -9,8 +9,6 @@ import os
 import override_utils
 import shutil
 
-from brave_chromium_utils import wspath
-
 
 @override_utils.override_function(globals())
 def _LoadPolicies(orig_func):
@@ -61,7 +59,7 @@ def _LoadPolicies(orig_func):
     return policies
 
 
-def update_policy_files():
+def sync_policy_files():
     # Chromium stores all group policy definitions under
     # `//components/policy/resources/templates/policy_definitions/`
     #
@@ -73,23 +71,14 @@ def update_policy_files():
     # when we map to a preference in our policy map:
     # `//brave/browser/policy/brave_simple_policy_map.h`
     #
-    # When the code below is ran this will copy the group policy files from:
-    # `//brave/components/policy/resources/templates/policy_definitions/`
-    # to their expected place in Chromium:
-    # `//components/policy/resources/templates/policy_definitions/`
-    #
-    # NOTE: only the `BraveSoftware` folder is copied.
-    # If you want to create a policy in an existing Chromium group, this
-    # would need to be updated.
-    shutil.copytree(
-        wspath(
-            "//brave/components/policy/resources/templates/policy_definitions/BraveSoftware"  # pylint: disable=line-too-long
-        ),
-        wspath(
-            "//components/policy/resources/templates/policy_definitions/BraveSoftware"  # pylint: disable=line-too-long
-        ),
-        dirs_exist_ok=True,
-        copy_function=copy_only_if_modified)
+    # When the code below is ran this will copy the group policy files from
+    # Brave's policy definitions to Chromium's policy definitions.
+    with open("gen/brave_policies_sync_config.json", "r") as f:
+        brave_policies = json.load(f)
+
+        for policy in brave_policies["policies"]:
+            copy_only_if_modified(f'{brave_policies["copy_from"]}/{policy}',
+                                  f'{brave_policies["copy_to"]}/{policy}')
 
 
 def copy_only_if_modified(src, dst):
@@ -100,10 +89,13 @@ def copy_only_if_modified(src, dst):
             return hashlib.file_digest(f, "sha256").digest()
 
     if not os.path.exists(dst) or file_hash(src) != file_hash(dst):
+        dest_dir = os.path.dirname(dst)
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
         shutil.copy2(src, dst)
 
 
 @override_utils.override_function(globals())
 def main(orig_func):
-    update_policy_files()
+    sync_policy_files()
     orig_func()
