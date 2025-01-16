@@ -271,7 +271,11 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize(
   auto preferred_size =
       CompoundTabContainer::CalculatePreferredSize(available_size);
 
-  // Check if we can expand height to fill the entire scroll area's viewport.
+  const int combined_height =
+      pinned_tab_container_->GetPreferredSize().height() +
+      unpinned_tab_container_->GetPreferredSize().height();
+
+  // Traverse up the parent hierarchy to find the |VerticalTabStripRegionView|
   for (auto* parent_view = parent(); parent_view;
        parent_view = parent_view->parent()) {
     auto* region_view =
@@ -280,7 +284,8 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize(
       continue;
     }
 
-    preferred_size.set_height(region_view->GetTabStripViewportHeight());
+    preferred_size.set_height(
+        std::min(combined_height, region_view->GetTabStripViewportMaxHeight()));
     break;
   }
 
