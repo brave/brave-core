@@ -134,7 +134,13 @@ IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, InactiveTabRequest) {
   EXPECT_EQ(base::Value(true), result_first.value);
 }
 
-IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, ActiveTabRequest) {
+// This test is flaky on MacOS CI, but mostly works locally.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_ActiveTabRequest DISABLED_ActiveTabRequest
+#else
+#define MAYBE_ActiveTabRequest ActiveTabRequest
+#endif
+IN_PROC_BROWSER_TEST_F(EthereumProviderBrowserTest, MAYBE_ActiveTabRequest) {
   RestoreWallet();
   GURL url = https_server()->GetURL("a.com", "/ethereum_provider.html");
 
