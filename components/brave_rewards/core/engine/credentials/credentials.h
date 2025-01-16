@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_CREDENTIALS_CREDENTIALS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_CREDENTIALS_CREDENTIALS_H_
 
-#include "brave/components/brave_rewards/common/mojom/rewards_engine_internal.mojom.h"
 #include "brave/components/brave_rewards/core/engine/credentials/credentials_redeem.h"
 #include "brave/components/brave_rewards/core/engine/credentials/credentials_trigger.h"
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_engine_internal.mojom.h"
 
 namespace brave_rewards::internal {
 namespace credential {

@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_engine_internal.mojom.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/common/post_commit_transaction.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/response_handler.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_engine_internal.mojom.h"
 
 // POST /v0/me/cards/:card-id/transactions/:transaction-id/commit
 //

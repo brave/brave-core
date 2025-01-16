@@ -1,0 +1,205 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_rewards.mojom;
+
+import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
+import "brave/components/brave_rewards/core/mojom/rewards.mojom";
+import "mojo/public/mojom/base/time.mojom";
+
+// Initializes messaging between the browser and the page.
+interface RewardsPageHandlerFactory {
+  CreatePageHandler(pending_remote<RewardsPage> page,
+                    pending_receiver<RewardsPageHandler> receiver);
+};
+
+// Page-side handler for notifications from the browser.
+interface RewardsPage {
+  // Notifies the page that Rewards state has changed and updated information
+  // should be fetched.
+  OnRewardsStateUpdated();
+};
+
+struct AvailableCountryInfo {
+  array<string> country_codes;
+  string default_country_code;
+};
+
+struct AdsSubdivision {
+  string code;
+  string name;
+};
+
+struct AdsSettings {
+  bool browser_upgrade_required;
+  bool is_supported_region;
+  bool new_tab_page_ads_enabled;
+  bool notification_ads_enabled;
+  bool search_ads_enabled;
+  bool inline_content_ads_enabled;
+  int32 notification_ads_per_hour;
+  bool should_allow_subdivision_targeting;
+  string current_subdivision;
+  string auto_detected_subdivision;
+  array<AdsSubdivision> available_subdivisions;
+};
+
+struct AdTypeSummary {
+  int32 notification_ads;
+  int32 new_tab_page_ads;
+  int32 inline_content_ads;
+  int32 search_result_ads;
+};
+
+// We introduce a new struct instead of using `brave_ads.mojom.StatementInfo`
+// directly, because the "ad type summary" map does not currently generate an
+// appropriate TypeScript type, and the compiler can fail to detect breaking
+// changes to that structure. Instead, we use named fields on `AdTypeSummary`.
+struct AdsStatement {
+  double min_earnings_previous_month;
+  mojo_base.mojom.Time next_payment_date;
+  int32 ads_received_this_month;
+  AdTypeSummary ad_type_summary_this_month;
+};
+
+struct CaptchaInfo {
+  string url;
+  bool max_attempts_exceeded;
+};
+
+enum RewardsNotificationType {
+  kTipsProcessed,
+  kGeneral
+};
+
+struct RewardsNotification {
+  string id;
+  RewardsNotificationType type;
+  mojo_base.mojom.Time timestamp;
+  array<string> args;
+};
+
+// Browser-side handler for requests from WebUI page.
+interface RewardsPageHandler {
+  // Notifies the browser that that Rewards page has rendered and is ready to be
+  // displayed to the user.
+  OnPageReady();
+
+  // Opens a new tab with the specified URL.
+  OpenTab(string url);
+
+  // Returns a plural UI string for the specified number.
+  GetPluralString(string key, int32 count) => (string plural_string);
+
+  // Returns the server-side Rewards system parameters.
+  GetRewardsParameters() => (RewardsParameters? rewards_parameters);
+
+  // Returns the user's Rewards payment ID.
+  GetRewardsPaymentId() => (string payment_id);
+
+  // Returns the user's declared country code.
+  GetCountryCode() => (string country_code);
+
+  // Returns the user's external wallet information, if available.
+  GetExternalWallet() => (ExternalWallet? external_wallet);
+
+  // Returns the available wallet providers for the user's region.
+  GetExternalWalletProviders() => (array<string> providers);
+
+  // Returns the user's available BAT balance.
+  GetAvailableBalance() => (double? balance);
+
+  // Returns a value indicating whether a terms of service update has occurred.
+  GetTermsOfServiceUpdateRequired() => (bool update_required);
+
+  // Called when the user has accepted a terms of service update.
+  AcceptTermsOfServiceUpdate() => ();
+
+  // Returns a value indicating whether the user has dismissed the self-custody
+  // inviate UI.
+  GetSelfCustodyInviteDismissed() => (bool invite_dismissed);
+
+  // Called when the user dismisses the self-custody invite.
+  DismissSelfCustodyInvite() => ();
+
+  // Returns the publisher ID associated with the active tab.
+  GetPublisherIdForActiveTab() => (string publisher_id);
+
+  // Fetches current data for the specified publisher.
+  RefreshPublisher(string publisher_id) => ();
+
+  // Returns data about the specified publisher.
+  GetPublisherInfo(string publisher_id) => (PublisherInfo? publisher_info);
+
+  // Returns banner data for the specified publisher.
+  GetPublisherBanner(string publisher_id)
+      => (PublisherBanner? publisher_banner);
+
+  // Returns the recurring contributions set up for the current user.
+  GetRecurringContributions() => (array<PublisherInfo> contributions);
+
+  // Removes a recurring contribution for the specified creator.
+  RemoveRecurringContribution(string creator_id) => ();
+
+  // Returns Brave Ads settings for the current user.
+  GetAdsSettings() => (AdsSettings settings);
+
+  // Returns information about the current state of ad views.
+  GetAdsStatement() => (AdsStatement? statement);
+
+  // Returns Ads history for the current user.
+  GetAdsHistory() => (string history);
+
+  // Updates Ads settings for the current user.
+  SetAdTypeEnabled(brave_ads.mojom.AdType ad_type, bool enabled) => ();
+  SetNotificationAdsPerHour(int32 ads_per_hour) => ();
+  SetAdsSubdivision(string subdivision) => ();
+
+  // Toggles flags for Ad History items.
+  ToggleAdLike(string history_item) => ();
+  ToggleAdDislike(string history_item) => ();
+  ToggleAdInappropriate(string history_item) => ();
+
+  // Returns the currently active Rewards notifications for the user.
+  GetRewardsNotifications() => (array<RewardsNotification> notifications);
+
+  // Clears the Rewards notification with the specified ID.
+  ClearRewardsNotification(string id) => ();
+
+  // Returns the list of available countries that the user can select from.
+  GetAvailableCountries() => (AvailableCountryInfo available_countries);
+
+  // Creates a new Rewards user for the current profile.
+  EnableRewards(string country_code) => (CreateRewardsWalletResult result);
+
+  // Enables or disables the WDP feature from the Rewards page.
+  SetWebDiscoveryProjectEnabled(bool enabled) => ();
+
+  // Begins an external wallet login flow.
+  BeginExternalWalletLogin(string provider)
+      => (ExternalWalletLoginParams? params);
+
+  // Completes an external wallet login flow.
+  ConnectExternalWallet(string provider, map<string, string> args)
+      => (ConnectExternalWalletResult result);
+
+  // Sends a contribution to a Brave Creator with the user's custodial wallet
+  // provider.
+  SendContribution(string creator_id, double amount, bool recurring)
+      => (bool contribution_sent);
+
+  // Returns the current adaptive captcha info for the current user.
+  GetCaptchaInfo() => (CaptchaInfo? captchaInfo);
+
+  // Called when the user completes (with success or failure) an adaptive
+  // captcha attempt.
+  OnCaptchaResult(bool success) => ();
+
+  // Fetches UI card data from the Rewards API.
+  FetchUICards() => (array<UICard>? cards);
+
+  // Clears all Rewards-related user state.
+  ResetRewards() => (bool success);
+};

@@ -63,8 +63,8 @@ source_set("headers") {
     ":*",
     "//brave/browser/extensions:extensions",
     "//brave/browser/ui:ui",
-    "//brave/components/brave_rewards/browser:browser",
-    "//brave/components/brave_rewards/browser:testutil",
+    "//brave/components/brave_rewards/content",
+    "//brave/components/brave_rewards/content:testutil",
     "//brave/vendor/brave-ios:rewards_db",
     "//chrome/browser:browser",
   ]
@@ -80,8 +80,8 @@ source_set("headers") {
 
   public_deps = [
     ":buildflags",
-    "//brave/components/brave_rewards/common/mojom",
-    "//brave/components/brave_rewards/common/mojom:engine",
+    "//brave/components/brave_rewards/core/mojom",
+    "//brave/components/brave_rewards/core/mojom:engine",
   ]
 }
 
@@ -458,8 +458,8 @@ static_library("engine") {
     ":publishers_proto",
     "//base",
     "//brave/components/brave_private_cdn",
-    "//brave/components/brave_rewards/common:features",
-    "//brave/components/brave_rewards/common/mojom:engine",
+    "//brave/components/brave_rewards/core:features",
+    "//brave/components/brave_rewards/core/mojom:engine",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/third_party/bip39wally-core-native:bip39wally-core",
     "//brave/third_party/rapidjson",

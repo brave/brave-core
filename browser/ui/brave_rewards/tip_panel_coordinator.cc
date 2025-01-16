@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/content/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 

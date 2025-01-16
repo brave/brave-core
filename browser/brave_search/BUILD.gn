@@ -39,7 +39,7 @@ if (!is_android) {
       ":brave_search",
       "//base/test:test_support",
       "//brave/components/brave_ads/core/public:headers",
-      "//brave/components/brave_rewards/common",
+      "//brave/components/brave_rewards/core",
       "//brave/components/brave_search/browser",
       "//brave/components/brave_search/common",
       "//chrome/browser/profiles:profile",

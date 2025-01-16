@@ -11,7 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_database.mojom.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_database.mojom.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"

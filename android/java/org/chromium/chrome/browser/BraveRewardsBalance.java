@@ -16,11 +16,9 @@ import java.util.Map;
 public class BraveRewardsBalance {
     public static final String WALLET_BLINDED = "blinded";
 
-    /**
-     * matching consts in
-     * src/brave/components/brave_rewards/browser/balance.h
-     */
+    /** matching consts in src/brave/components/brave_rewards/content/balance.h */
     public static final String JSON_TOTAL = "total";
+
     public static final String JSON_WALLETS = "wallets";
 
     private double mTotal;

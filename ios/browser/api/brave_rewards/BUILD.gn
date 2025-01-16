@@ -30,7 +30,7 @@ source_set("brave_rewards") {
   deps = [
     ":rewards_mojom_wrappers",
     "//base",
-    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/engine",
     "//brave/ios/browser/api/common",
     "//components/os_crypt/sync",
@@ -46,6 +46,6 @@ source_set("brave_rewards") {
 }
 
 ios_objc_mojom_wrappers("rewards_mojom_wrappers") {
-  mojom_target = "//brave/components/brave_rewards/common/mojom:mojom"
-  sources = [ "//brave/components/brave_rewards/common/mojom/rewards.mojom" ]
+  mojom_target = "//brave/components/brave_rewards/core/mojom:mojom"
+  sources = [ "//brave/components/brave_rewards/core/mojom/rewards.mojom" ]
 }

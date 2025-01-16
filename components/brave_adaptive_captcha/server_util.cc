@@ -6,8 +6,8 @@
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 
 #include "base/check.h"
-#include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
+#include "brave/components/brave_rewards/core/rewards_flags.h"
 
 namespace brave_adaptive_captcha {
 

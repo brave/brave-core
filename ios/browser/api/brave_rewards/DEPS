@@ -1,5 +1,5 @@
 include_rules = [
-  "+brave/components/brave_rewards/common",
+  "+brave/components/brave_rewards/core",
   "+brave/components/brave_rewards/core/engine",
   "!components/os_crypt/sync",
 ]
