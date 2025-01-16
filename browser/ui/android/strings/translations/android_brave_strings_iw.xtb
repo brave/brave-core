@@ -112,8 +112,11 @@
 <translation id="1571106259128580884">הצג הצעות של האתרים הטובים ביותר</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
+<translation id="412411722208944922">מנועי חיפוש מהירים</translation>
 <translation id="2836969042340015500">מנועי חיפוש מהיר</translation>
+<translation id="9120455214794270250">הצגת סרגל חיפוש מהיר</translation>
 <translation id="1052991798173010693">מנועי חיפוש שנמצאים בשימוש</translation>
+<translation id="335303688425891752">יש ללחוץ לחיצה ארוכה כדי לשנות את הסדר</translation>
 <translation id="9148058034647219655">יציאה</translation>
 <translation id="8047754398610073499">חסימת הודעות הסכמה לקובצי Cookie</translation>
 <translation id="2621893359845808115">חסום חלונות קופצים של אתרים שמבקשים ממך לקבל/לדחות קובצי Cookie באתר שלהם</translation>
@@ -407,6 +410,12 @@
 <translation id="597993392929850353">רישיון Brave</translation>
 <translation id="6336451774241870485">כרטיסייה פרטית חדשה</translation>
 <translation id="3110967157686007724">כרטיסייה פרטית</translation>
+<translation id="944340256927461196">בלי להשאיר עקבות במכשיר שלך</translation>
+<translation id="2063044449012253966">אתרים שביקרת בהם בחלונות פרטיים לא יופיעו בהיסטוריה שלך. קובצי cookie, נתוני טפסים, ונתוני אתרים נעלמים ברגע שכל החלונות הפרטיים נסגרו.</translation>
+<translation id="7395764193745523646">גלישה גלויה</translation>
+<translation id="8735363371744702779">לתשומך לבך: אפילו בחלונות פרטיים, היסטוריית הגלישה שלך עדיין עשויה להיות גלויה לספק האינטרנט שלך, לצופים ברשת, או למעסיק שלך (אם השתמשת במכשיר או רשת מטעם העבודה).</translation>
+<translation id="1413177583895309156">Brave VPN מצפין ומגן על כל מה שעשית ברשת, אפילו מחוץ לדפדפן Brave.</translation>
+<translation id="3974348661685061050">לנסות חינם למשך 7 ימים</translation>
 <translation id="5789441016350810005">Brave Ads נשלחות כאשר הדפדפן נמצא ברקע</translation>
 <translation id="4973347371961481083">תרומות</translation>
 <translation id="7047578174221019462">התרומות החודשיות שלך עובדו.</translation>
@@ -707,8 +716,10 @@
 <translation id="1532536259167115948">מנוי חודשי <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">מנוי שנתי <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">מתחדש מדי חודש</translation>
+<translation id="112929124115834557">מתחדש מדי שנה</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> לחודש</translation>
 <translation id="1163809943099641131">שנה אחת</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>לחסוך <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> לשנה</translation>
 <translation id="2786538705804257030">המנויים יחויבו דרך חשבון Google שלך. כל חלק שלא ייעשה בו שימוש בתקופת הניסיון בחינם, במידה ויוצע, יתבטל בעת רכישת מנוי.\n\nהמנוי יתחדש באופן אוטומטי אלא אם יבוטל לפחות 24 שעות לפני תום התקופה הנוכחית.\n\nטת המנויים ניתן לנהל בהגדרות.\nבעצם השימוש ב-Brave, אתם מסכימים לתנאי השימוש ולמדיניות הפרטיות.</translation>
 <translation id="5035172357624830412">האם כבר קניתם ב- brave.com?</translation>
@@ -838,6 +849,7 @@
 <translation id="4351811224047421378">רמת דיוק עשרוני</translation>
 <translation id="3494964159182650590">סיכום תגמולים</translation>
 <translation id="590733288489975971">תגמולים מפרסומות</translation>
+<translation id="1450735350187803276">מודעות שנצפו החודש</translation>
 <translation id="1767561995429774671">תרמו</translation>
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
 <translation id="6727102863431372879">הגדר</translation>
@@ -1223,4 +1235,6 @@
 <translation id="2728518864712716830">העדכון הורד</translation>
 <translation id="8403338849301491865">רשימת הסינון עודכנה בהצלחה</translation>
 <translation id="4650851936784160359">רשימת הסינון לא ניתנת לעדכון. אנא נסה שוב.</translation>
+<translation id="3098054327870766317">הצגת כפתור ביטול פעולה כשהכרטיסיות סגורות</translation>
+<translation id="1336494649091412226">בטוח שבא לך לצאת מ-Brave?</translation>
 </translationbundle>

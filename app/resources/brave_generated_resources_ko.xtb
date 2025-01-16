@@ -307,9 +307,11 @@
 <translation id="6155018868740116868">복구</translation>
 <translation id="2521960050170773751">페이지에서 미디어 추가</translation>
 <translation id="2301087142998134097"><ph name="SITE"/>이(가) 다음을 열려고 함</translation>
+<translation id="4828353184750597953"><ph name="SITE"/>에 임베드된 페이지가 다음을 열려고 함</translation>
 <translation id="1175012181261953767">이 페이지가 다음을 열려고 함</translation>
 <translation id="7459546222322124545">이 페이지상에 임베드된 페이지가 다음을 열려고 함</translation>
 <translation id="5836261838911560851"><ph name="SITE"/>이(가) 다음을 저장하려고 함</translation>
+<translation id="8813509417421129632"><ph name="SITE"/>에 임베드된 페이지가 다음을 저장하려고 함</translation>
 <translation id="7700010743463174379">이 페이지가 다음을 저장하려고 함</translation>
 <translation id="6774238875569752630">이 페이지상에 임베드된 페이지가 다음을 저장하려고 함</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
@@ -714,6 +716,8 @@ Brave 레오와 나눴던 모든 대화가 삭제됩니다.
 <translation id="1355326130503900056">서버 측 프레임워크로의 요청에 표시되는 모델의 이름. 예: phi-3 (이 이름이 서버 측 프레임워크에서 기대하는 것과 정확하게 일치하지 않으면 통합이 작동하지 않음)</translation>
 <translation id="3286410514484292784">서버 측 프레임워크가 요청을 수신하는 URL입니다. 잘 모르겠으면 서버 측 프레임워크 문서를 확인하시기 바랍니다. 예를 들어, Ollama의 경우 항상 http://localhost:11434/v1/chat/completions입니다.</translation>
 <translation id="1058790648388035953">몇몇 서버 측 프레임워크가 API 키나 액세스 토큰 등, 인증 자격증명을 요구할 수 있습니다. 요청 헤더에 추가됩니다.</translation>
+<translation id="4335128003329183586">컨텍스트 크기</translation>
+<translation id="8794525422794607973">모델이 단일 상호작용에서 처리할 수 있는 최대 토큰 수입니다. 각 토큰은 대략 단어의 3/4 크기입니다. 컨텍스트 크기가 클수록 모델이 더 긴 대화를 처리할 수 있습니다. 모델마다 지원하는 최대 컨텍스트 크기가 다릅니다.</translation>
 <translation id="217141195370578385">Brave는 이들 요청을 프록시하지 않습니다. 선택된 제공자의 프라이버시 조항을 읽으세요.</translation>
 <translation id="2645532768679870478">안전한 데이터 전송을 위해서는 비로컬 엔드포인트에 HTTPS 프로토콜이 채용되어 있어야 합니다.</translation>
 <translation id="8177205483022887785">유효하지 않은 URL을 입력했습니다. 유효한 URL을 입력하세요.</translation>
@@ -723,6 +727,9 @@ Brave 레오와 나눴던 모든 대화가 삭제됩니다.
 <translation id="7435587476558117990">자체 호스팅 또는 타사 호스팅 LLM을 레오에 연결하면 브라우저 내에서 사용할 수 있습니다.</translation>
 <translation id="1381050642750209119">Ollama 등, OpenAI Chat 프로토콜 호환 프레임워크를 사용하세요.</translation>
 <translation id="2642905648178380593">모델 저장</translation>
+<translation id="6304169450064541679">시스템 프롬프트</translation>
+<translation id="3081947790648024460">특정 방향이나 스타일로 응답을 유도하기 위해 모델에 제공되는 사용자 지정 지침 및/또는 컨텍스트입니다. 현재 날짜와 시간을 삽입할 위치에 %datetime%을 사용하세요.</translation>
+<translation id="5688878061573389791">토큰 약 <ph name="TOKENS_COUNT"/>개</translation>
 <translation id="349846214503465941">재생목록 활성화</translation>
 <translation id="7903608716704052878">파일을 오프라인 보기용으로 자동 추가</translation>
 <translation id="4193768184502613558">이 옵션을 선택하면 미디어 파일을 자동으로 캐싱하여 인터넷 연결이 끊어진 상태에서도 재생할 수 있습니다.</translation>

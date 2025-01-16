@@ -1265,7 +1265,24 @@
 <translation id="7902920577183739843">شراء بواسطة Sardine</translation>
 <translation id="3301984548406568819">تتم معالجة البيانات المالية وبيانات المعاملات من جانب شركائنا في onramp. لا يقوم Brave بجمع مثل هذه البيانات أو الوصول إليها.</translation>
 <translation id="5795821518596541838">شريك المعاملات</translation>
+<translation id="1916136859742693273">تستخدم محفظة Brave موقع Meld.io للمساعدة على جمع وإظهار مختلف مزودي العملات الرقمية لمنطقتك. سنشارك معلومات مع موقع Meld.io لإكمال المعاملات، بما في ذلك عنوان محفظتك ورمز بلدك. للمزيد من المعلومات، يُرجى قراءة شروط استخدام Meld.</translation>
+<translation id="245827814248186739">قرأت وأوافق على <ph name="LINK_BEFORE"/> شروط استخدام Meld<ph name="LINK_AFTER"/></translation>
+<translation id="2050829168433446009">أفضل خيار</translation>
+<translation id="2803020719327054687">سعر الصرف مع الرسوم</translation>
+<translation id="27867052127960599">الرسوم</translation>
+<translation id="5914491493054850112">السعر <ph name="CURRENCY"/></translation>
+<translation id="638391338232902087">اشتر باستخدام <ph name="PROVIDER"/></translation>
 <translation id="2803778066587058297">الأصل</translation>
+<translation id="1275718070701477396">محدد</translation>
+<translation id="7509108671781225188">لا توجد عملات متاحة</translation>
+<translation id="3799031411423890455">جارٍ الحصول على أفضل الأسعار...</translation>
+<translation id="8544603592370093978">اشتر <ph name="ASSET"/></translation>
+<translation id="7463545687475534731">لم يتم العثور على موفري خدمة لـ <ph name="ASSET"/></translation>
+<translation id="3372351687823322070">حاول البحث على أصل مختلف.</translation>
+<translation id="2619949734919284401">لم يتم العثور على نتائج <ph name="PROVIDER"/></translation>
+<translation id="3319146983769202287">حاول استخدام كلمة مفتاح مختلفة أو تحقق من صحة ما كتبته.</translation>
+<translation id="4196022627437957774">هل تريد خلق حساب <ph name="ACCOUNT_TYPE"/>؟</translation>
+<translation id="5982914754413312620">من أجل الحصول على <ph name="TOKEN_SYMBOL"/> ستحتاج إلى حساب <ph name="ACCOUNT_TYPE"/>.</translation>
 <translation id="3067168166931605141">اسم الحساب</translation>
 <translation id="6534275647567011533">الشراء من خلال Transak</translation>
 <translation id="5973390321030037823">الشراء من خلال الرابط</translation>
@@ -1320,6 +1337,10 @@
 <translation id="6990756606864308319">كان يوجد خطأ يحاول أن <ph name="SEND_SWAP_OR_BRIDGE"/><ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> إلى <ph name="VALUE_BEFORE"/><ph name="VALUE"/><ph name="VALUE_AFTER"/></translation>
 <translation id="6449575669814542383">الموافقة على <ph name="AMOUNT_BEFORE"/><ph name="AMOUNT"/><ph name="AMOUNT_AFTER"/> من أجل <ph name="EXCHANGE_BEFORE"/><ph name="EXCHANGE"/><ph name="EXCHANGE_AFTER"/></translation>
 <translation id="8036159955043245753">سننشئ معاملة جديدة لإلغاء معاملتك الحالية.</translation>
+<translation id="4056435949094149644">جارٍ المبادلة</translation>
+<translation id="7694836973509310467">جارٍ التجسير</translation>
+<translation id="997000407026317399"><ph name="SWAPPING_OR_BRIDGING_BEFORE"/><ph name="SWAPPING_OR_BRIDGING"/><ph name="SWAPPING_OR_BRIDGING_AFTER"/> على <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
+<translation id="6934057383578424432">حدث خطأ أثناء محاولة <ph name="SWAP_OR_BRIDGE_BEFORE"/><ph name="SWAP_OR_BRIDGE"/><ph name="SWAP_OR_BRIDGE_AFTER"/> على <ph name="NETWORK_BEFORE"/><ph name="NETWORK"/><ph name="NETWORK_AFTER"/></translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} معاملة واحدة أخرى قيد الانتظار.}
       other {{PENDING_TRANSACTIONS} معاملات أخرى قيد الانتظار.}
@@ -1714,6 +1735,11 @@
 <translation id="803703704549420287">مسح عوامل التصفية</translation>
 <translation id="1472675084647422956">عرض المزيد</translation>
 <translation id="4522570452068850558">التفاصيل</translation>
+<translation id="8713438253026855351">التبديل إلى حساب محمي</translation>
+<translation id="3526789880090101085">حساب درع</translation>
+<translation id="2298396008562701154">يدعم هذا الحساب حاليًا المعاملات الشفافة مما يعني أنها مرئية للجميع على سلسلة الكتل.</translation>
+<translation id="3987095760757102811">الترقية إلى حساب محمي يعني أن هذه المعاملات تُخفي المُرسل والمستقبل وتفاصيل المبلغ.</translation>
+<translation id="3819528427777765709">محمي</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
 <translation id="9094621390791852268">فشلت معاينة المعاملة.</translation>
 <translation id="4982713341035600933">تغير الرصيد التقديري</translation>
@@ -1910,6 +1936,7 @@
 <translation id="8652827551752428289">عرض السجل</translation>
 <translation id="5030659775136592441">عرض مدير الإشارات المرجعية</translation>
 <translation id="6919203766034706175">إعدادات الاستيراد</translation>
+<translation id="6159704524780747483">فتح دردشة AI</translation>
 <translation id="1199430163665775722">تعديل محركات البحث</translation>
 <translation id="4276265845501430443">عرض المساعدة</translation>
 <translation id="8104889575691864804">عرض قائمة التطبيقات</translation>
@@ -1994,6 +2021,7 @@
 <translation id="1130188644637295274">فتح في عرض مقسم</translation>
 <translation id="6459036216700972269">علامات تبويب غير منفصلة</translation>
 <translation id="4235382917338421035">تبديل مواضع علامات التبويب</translation>
+<translation id="4288085058450834672">إظهار التطبيقات</translation>
 <translation id="4144468798716165316">الأوامر السريعة</translation>
 <translation id="3617523374417810198">عرض في مقسم جديد</translation>
 <translation id="8571323456914890254">فتح في عرض مقسم</translation>
@@ -2053,9 +2081,11 @@
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> بواسطة <ph name="COMPANY_NAME"/></translation>
 <translation id="963346402440669081">Premium</translation>
 <translation id="6187065185557150870">الدردشة</translation>
+<translation id="4685048769603134644">فتح الصفحة كاملة</translation>
 <translation id="2961040541145689181">دردشة جديدة</translation>
 <translation id="7557539689487606886">الاشتراك الحصري (Premium)</translation>
 <translation id="1691256669639196606">إدارة الاشتراك</translation>
+<translation id="3840096463915153852">سجل المحادثة</translation>
 <translation id="2304783958703511257">الإعدادات المتقدمة</translation>
 <translation id="3037594989275592390">نماذج اللغة</translation>
 <translation id="5543505256451301851">المحاولة مجانًا لمدة 7 أيام</translation>
@@ -2092,7 +2122,10 @@
 <translation id="2313959174679245365">لم يتم إرسال المعدل الخاص بك، يرجى التحقق من اتصال الشبكة والمحاولة مجددًا</translation>
 <translation id="98413980871833152">لم يتم إرسال تعليقك، يرجى التحقق من اتصال الشبكة والمحاولة مجددًا</translation>
 <translation id="8742658901413346500">إن هذه المحادثة طويلة وLeo قد ينسى بعض الأشياء قريبًا. بإمكانك الحصول على محادثات أطول عن طريق التبديل للنموذج الحصري (Premium)، أو يمكنك محو سجل الدردشة لإعادة ضبطه.</translation>
+<translation id="6495402307502950726">مسح المحادثة</translation>
+<translation id="903201991022343217">بدء محادثة جديدة</translation>
 <translation id="8171760814579050200">إعادة تسمية المحادثة</translation>
+<translation id="7754678742055438573">حذف المحادثة</translation>
 <translation id="7494736170250048402">إرسال رسالة إلى Leo</translation>
 <translation id="8712637175834984815">تم</translation>
 <translation id="1093419424466417703">تعد الصفحة طويلة للغاية بالنسبة لـ Leo، لذا فقد يفقد بعض السياق من المحادثة، إذ تمكن Leo من قراءة نسبة <ph name="PERCENTAGE"/> فقط من محتويات الصفحة.</translation>
@@ -2144,6 +2177,7 @@
 <translation id="49269513399674318">استخدام الميكروفون</translation>
 <translation id="3895031624234442305">نماذج مخصصة</translation>
 <translation id="4572010449071015143">بدء محادثة جديدة</translation>
+<translation id="6287023598025162715">محادثة جديدة</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="8458987127502506209">تمكين دروع حماية  Brave</translation>
 <translation id="7509914170164691086">دروع حماية حتى <ph name="LINK_BEFORE"/> من أجل <ph name="LINK_AFTER"/></translation>
@@ -2262,6 +2296,7 @@
 <translation id="2542131205769293399">تعذّر التحقق من حالة عملية الشراء الخاصة بك. ربما تكون هذه مشكلة في الشبكة. حاول مرة أخرى أو اتصل بالدعم.</translation>
 <translation id="4613076894734402086">تحرير طريقة الدفع</translation>
 <translation id="427718751211990320">انقضاء تاريخ انتهاء صلاحية بيانات الاعتماد.</translation>
+<translation id="3323234188356372126">Brave VPN يواجه صعوبة في المصادقة على خادم VPN. يُرجى الاتصال بفريق الدعم أو المحاولة من جديد لاحقا.</translation>
 <translation id="8670619630771851260">يتعذّر تحميل بيانات الاعتماد.</translation>
 <translation id="1594643509610625766">الرمز المميز لم يعد صالحًا.</translation>
 <translation id="8373427068383038263">يبدو أنه لم يتم تسديد آخر دفعة لك لـ <ph name="VALUE"/>. سيتوقف الوصول إلى هذا الاشتراك مؤقتًا حتى يتم حل مشكلة الدفع. جرّب تعديل طريقة الدفع لديك، أو اتصل بدعم Brave.</translation>
@@ -2308,6 +2343,7 @@
 <translation id="7423206764347669977">تغيير الإعدادات</translation>
 <translation id="9061845622728745852">المنطقة الزمنية:</translation>
 <translation id="8295393906499561642">انتهت صلاحية الجلسة</translation>
+<translation id="7070578590391442755">تعذرت المصادقة على VPN</translation>
 <translation id="3312623558576021182">يُرجى تسجيل الدخول إلى <ph name="BRAVE_ACCOUNT_BEGIN"/>حساب Brave<ph name="BRAVE_ACCOUNT_END"/> لتحديث جلسة VPN الخاصة بك.</translation>
 <translation id="7861195049821776142">Brave VPN: يتم إيقاف الاتصال</translation>
 <translation id="2061807837510296780">Brave VPN: جارٍ الاتصال</translation>
@@ -2320,6 +2356,7 @@
 <translation id="6825718953004242472">رمز "إزالة"</translation>
 <translation id="6819278685469225453">حماية جميع التطبيقات التي على جهازك</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">خصوصية إضافية &amp; أمان على الإنترنت.</translation>
 <translation id="8425213833346101688">تغيير</translation>
 <translation id="8703188411226330709">بدء التجربة المجانية</translation>
 <translation id="3287942014983548982">افتح هنا</translation>
