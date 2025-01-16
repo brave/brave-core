@@ -761,15 +761,6 @@ void BraveBrowserView::ShowReaderModeToolbar(
     content::WebContents* web_contents) {
   auto tile_contents =
       SplitViewUtils::GetTabTileContents(browser(), web_contents);
-  if (!tile_contents.main) {
-    UpdateReaderModeToolbarVisibility(reader_mode_toolbar_view_.get(), false);
-    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
-                                      false);
-  }
-  if (!tile_contents.secondary) {
-    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
-                                      false);
-  }
   if (tile_contents.main == web_contents) {
     UpdateReaderModeToolbarVisibility(reader_mode_toolbar_view_.get(), true);
   }
@@ -785,15 +776,6 @@ void BraveBrowserView::HideReaderModeToolbar(
     content::WebContents* web_contents) {
   auto tile_contents =
       SplitViewUtils::GetTabTileContents(browser(), web_contents);
-  if (!tile_contents.main) {
-    UpdateReaderModeToolbarVisibility(reader_mode_toolbar_view_.get(), false);
-    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
-                                      false);
-  }
-  if (!tile_contents.secondary) {
-    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
-                                      false);
-  }
   if (tile_contents.main == web_contents) {
     UpdateReaderModeToolbarVisibility(reader_mode_toolbar_view_.get(), false);
   }
