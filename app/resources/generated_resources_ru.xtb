@@ -6482,7 +6482,6 @@
 <translation id="5060827009373522990">Если вы вошли в Brave, сохраненные пароли будут добавляться в ваш аккаунт Brave (<ph name="USER_EMAIL"/>). Отключить эту функцию можно в настройках.</translation>
 <translation id="5614190747811328134">Уведомление пользователя</translation>
 <translation id="5614553682702429503">Сохранить пароль?</translation>
-<translation id="5614625640221885312">Войдите, чтобы получить доступ к закладкам, паролям и многому другому на всех своих устройствах.</translation>
 <translation id="5614947000616625327">Связка ключей iCloud</translation>
 <translation id="561552177910095306">Список недавно посещенных сайтов, которые могут предлагать рекламу другим сайтам, когда вы их просматриваете</translation>
 <translation id="5616571005307953937">Самые старые</translation>
@@ -7198,7 +7197,7 @@
 <translation id="6147253937684562370">Войдите в аккаунт, используя основной адрес электронной почты: <ph name="EMAIL"/>.</translation>
 <translation id="6148576794665275391">Открыть</translation>
 <translation id="614890671148262506">Всегда разрешать уведомления от этого сайта</translation>
-<translation id="6149015141270619212">Не удается подключиться к Интернету</translation>
+<translation id="6149015141270619212">Не удается подключиться к интернету</translation>
 <translation id="6149061208933997199">Использовать пароль</translation>
 <translation id="6149791593592044995">Использовать современное обозначение тонов</translation>
 <translation id="6150116777338468525">Качество звука</translation>
@@ -8362,7 +8361,7 @@
 <translation id="6985607387932385770">Принтеры</translation>
 <translation id="6988094684494323731">Запуск контейнера Linux</translation>
 <translation id="6988403677482707277">Вкладка перемещена в начало панели</translation>
-<translation id="344476885517054254">Перейти в настройки аккаунта Brave</translation>
+<translation id="344476885517054254">Управление аккаунтом Brave</translation>
 <translation id="6989274756151920076">Остаться в этом</translation>
 <translation id="6991665348624301627">Выбор места назначения</translation>
 <translation id="6992554835374084304">Включите расширенную проверку правописания</translation>
@@ -9579,7 +9578,7 @@
 <translation id="7870790288828963061">Новых версий киоск-приложений нет. Обновление не требуется. Извлеките USB-накопитель.</translation>
 <translation id="7871109039747854576">Пролистывать список вариантов клавишами "<ph name="COMMA"/>" и "<ph name="PERIOD"/>"</translation>
 <translation id="7871277686245037315">Поиск + Стрелка влево</translation>
-<translation id="7871691770940645922">Виртуальный брайлевский дисплей</translation>
+<translation id="7871691770940645922">Виртуальный дисплей Брайля</translation>
 <translation id="787268756490971083">Отключено</translation>
 <translation id="7872758299142009420">Слишком много вложенных групп: <ph name="ERROR_LINE"/>.</translation>
 <translation id="7873386145597434863">Steam для Chromebook</translation>

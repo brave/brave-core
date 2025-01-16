@@ -106,6 +106,7 @@
 <translation id="4541978218358617681">Oglas</translation>
 <translation id="1776831331757823105">Sat</translation>
 <translation id="7791543448312431591">Dodaj</translation>
+<translation id="6216996674668969227">Zaradite tokene tako što ćete gledati oglase koji poštuju vašu privatnost.</translation>
 <translation id="7191394989411626168">Isključivanjem Kartica sakrivaju se sve kartice koje su trenutačno vidljive. Međutim, možete i dalje primiti obavijest o novim karticama.</translation>
 <translation id="6820526586005233839">Pauzirana značajka Brave Ads</translation>
 <translation id="5190407395832551012">Radi zaštite značajke Brave Rewards od zloupotrebe, nasumično tražimo od korisnika da riješe test captcha. Kliknite na “Riješi” za nastavak oglasa.</translation>
@@ -946,6 +947,7 @@
 <translation id="4541295941776129088">Pohrani imovinu FIL</translation>
 <translation id="6030958132571544682">Pohranite FIL Testnet sredstvo</translation>
 <translation id="29759539656432505">Pohrana imovine BTC</translation>
+<translation id="2399555431746923964">Pohranite sredstva BTC Testnet</translation>
 <translation id="8749751940551938347">Pohrana imovine ZEC</translation>
 <translation id="3451958544919449297">Pohranite ZEC Testnet sredstva</translation>
 <translation id="8500387257977999003">Privatan ključ<ph name="PROTOCOL"/></translation>
@@ -1004,6 +1006,7 @@
 <translation id="453788800165937690">UPOZORENJE: Nikad ne dijelite svoj privatni ključ. Svatko s ovim privatnim ključem može zauvijek uzeti vašu imovinu.</translation>
 <translation id="2416098547200943834">NAPOMENA: privatni ključ pruža se kao heksadecimalno šifrirani JSON koji sadrži podatke o privatnom ključu i protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">NAPOMENA: privatni ključ mora se pružiti kao heksadecimalno šifrirani JSON koji sadrži podatke o privatnom ključu i protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
+<translation id="4482913669726886926">NAPOMENA: Podržani su samo prošireni ključevi <ph name="FORMAT"/>.</translation>
 <translation id="42126664696688958">Izvezi</translation>
 <translation id="1366855498335432549">Depozit</translation>
 <translation id="790104325876206743">Postavke računa</translation>
@@ -1263,15 +1266,19 @@
 <translation id="7902920577183739843">Kupujte sa značajkom Sardine</translation>
 <translation id="3301984548406568819">Financijske i transakcijske podatke obrađuju naši partneri za mijenjanje dekretnog novca u kriptovalute (onramp). Preglednikom Brave ne prikupljaju se takvi podatci i preglednik Brave nema pristup takvim podatcima.</translation>
 <translation id="5795821518596541838">Transakcijski partneri</translation>
+<translation id="1916136859742693273">Braveov novčanik koristi Meld.io za pomoć u prikupljanju i prikazivanju različitih pružatelja kripto usluga za vašu regiju. Podijelit ćemo informacije s Meld.io kako bismo dovršili transakciju, uključujući adresu vašeg novčanika i pozivni broj zemlje. Za više informacija pročitajte Meldove uvjete korištenja.</translation>
+<translation id="245827814248186739">Pročitao/la sam i slažem se s <ph name="LINK_BEFORE"/>Meldovim uvjetima korištenja<ph name="LINK_AFTER"/></translation>
 <translation id="2050829168433446009">Najbolja opcija</translation>
 <translation id="2803020719327054687">Tečaj s naknadama</translation>
 <translation id="27867052127960599">Naknade</translation>
 <translation id="5914491493054850112">Cijena <ph name="CURRENCY"/></translation>
+<translation id="638391338232902087">Kupite s: <ph name="PROVIDER"/></translation>
 <translation id="2803778066587058297">Imovina</translation>
 <translation id="1275718070701477396">Odabrano</translation>
 <translation id="7509108671781225188">Nema dostupnih valuta</translation>
 <translation id="3799031411423890455">Traženje najboljih cijena...</translation>
 <translation id="8544603592370093978">Kupite <ph name="ASSET"/></translation>
+<translation id="7463545687475534731">Nisu pronađeni davatelji usluga za <ph name="ASSET"/></translation>
 <translation id="3372351687823322070">Pokušajte potražiti druga sredstva.</translation>
 <translation id="2619949734919284401">Nisu pronađeni rezultati za <ph name="PROVIDER"/></translation>
 <translation id="3319146983769202287">Pokušajte s drugom ključnom riječi ili provjerite je li ključna riječ točno upisana.</translation>
@@ -1731,6 +1738,7 @@
 <translation id="4522570452068850558">Detalji</translation>
 <translation id="8713438253026855351">Prebacite se na zaštićeni račun</translation>
 <translation id="3526789880090101085">Zaštićeni račun</translation>
+<translation id="2298396008562701154">U ovom trenutku ovaj račun podržava transparentne transakcije što znači da su one vidljive svima na blokchainu.</translation>
 <translation id="3987095760757102811">Prelazak na zaštićeni račun znači da su u tim transakcijama skriveni podaci o pošiljatelju, primatelju i iznosu.</translation>
 <translation id="3819528427777765709">Zaštićeno</translation>
 <translation id="7144878232160441200">Pokušaj ponovo</translation>
@@ -2349,6 +2357,7 @@ Povežimo vas!</translation>
 <translation id="6825718953004242472">Ukloni ikonu</translation>
 <translation id="6819278685469225453">Zaštitite svaku aplikaciju na uređaju</translation>
 <translation id="3960619311638643872">VPN preglednika Brave</translation>
+<translation id="4295077644587784828">Dodatna privatnost i sigurnost na internetu.</translation>
 <translation id="8425213833346101688">Promijeni</translation>
 <translation id="8703188411226330709">Pokreni besplatnu probnu verziju</translation>
 <translation id="3287942014983548982">Otvori ovdje</translation>

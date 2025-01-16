@@ -715,8 +715,10 @@ Segur que vols continuar?</translation>
 <translation id="1532536259167115948">Subscripció mensual <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Subscripció anual <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Es renova mensualment</translation>
+<translation id="112929124115834557">Es renova anualment</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /mes</translation>
 <translation id="1163809943099641131">Un any</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>estalvia't un <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /any</translation>
 <translation id="2786538705804257030">Les subscripcions es cobraran a través del teu compte de Google. Qualsevol part no utilitzada de la prova gratuïta, si s'ofereix, es perd en comprar una subscripció.\n\nLa teva subscripció es renovarà automàticament tret que es cancel·li almenys 24 hores abans del final del període actual.\n\nPots gestionar les teves subscripcions a Configuració.\n\nEn utilitzar Brave, acceptes les Condicions d'ús i la Política de privacitat.</translation>
 <translation id="5035172357624830412">Ja has comprat a brave.com?</translation>
@@ -1232,4 +1234,6 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2728518864712716830">S'ha descarregat l'actualització.</translation>
 <translation id="8403338849301491865">La llista de filtres s'ha actualitzat correctament</translation>
 <translation id="4650851936784160359">La llista de filtres no s'ha pogut actualitzar. Torneu-ho a provar</translation>
+<translation id="3098054327870766317">Mostra el botó de desfer quan es tanquin les pestanyes</translation>
+<translation id="1336494649091412226">Segur que vols sortir de Brave?</translation>
 </translationbundle>

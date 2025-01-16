@@ -6495,7 +6495,6 @@ De tilladelser, du har givet til websites og apps, gælder muligvis for denne ko
 <translation id="5060827009373522990">Når du er logget ind i Brave, opbevares de adgangskoder, du gemmer, på din Brave-konto, <ph name="USER_EMAIL"/>. Gå til indstillingerne for at deaktivere dette.</translation>
 <translation id="5614190747811328134">Brugerbesked</translation>
 <translation id="5614553682702429503">Vil du gemme adgangskoden?</translation>
-<translation id="5614625640221885312">Log ind for at få adgang til dine bogmærker, adgangskoder og meget mere på alle dine enheder</translation>
 <translation id="5614947000616625327">iCloud-nøglering</translation>
 <translation id="561552177910095306">Liste over websites, du har besøgt for nylig, som kan foreslå annoncer på andre websites, når du er på nettet</translation>
 <translation id="5616571005307953937">Ældste</translation>
@@ -6552,7 +6551,7 @@ De tilladelser, du har givet til websites og apps, gælder muligvis for denne ko
 <translation id="5646558797914161501">Forretningsmand</translation>
 <translation id="5646994841348250879">Vælg en konto for at logge ind på <ph name="SITE_ETLD_PLUS_ONE"/></translation>
 <translation id="5648021990716966815">Stik til mikrofon</translation>
-<translation id="5648166631817621825">De seneste syv dage</translation>
+<translation id="5648166631817621825">De seneste 7 dage</translation>
 <translation id="5650537073531199882">Udfyld formularen</translation>
 <translation id="5651308944918885595">Synlighed for Deling tæt på</translation>
 <translation id="5653154844073528838">Du har <ph name="PRINTER_COUNT"/> gemte printere.</translation>

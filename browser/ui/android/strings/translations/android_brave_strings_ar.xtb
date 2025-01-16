@@ -112,8 +112,11 @@
 <translation id="1571106259128580884">إظهار اقتراحات أفضل المواقع</translation>
 <translation id="6285118765755298263">فهرس محركات البحث الأخرى</translation>
 <translation id="919715748352669592">يقوم تلقائيًا بفهرسة مواقع الويب التي تتبع مواصفات OpenSearch.</translation>
+<translation id="412411722208944922">محركات البحث السريع</translation>
 <translation id="2836969042340015500">محركات البحث السريع</translation>
+<translation id="9120455214794270250">إظهار شريط البحث السريع</translation>
 <translation id="1052991798173010693">محركات البحث المستخدمة حاليًا</translation>
+<translation id="335303688425891752">اضغط مطولا لتغيير الترتيب</translation>
 <translation id="9148058034647219655">إنهاء</translation>
 <translation id="8047754398610073499">حظر إشعارات الموافقة على ملفات تعريف الارتباط</translation>
 <translation id="2621893359845808115">حظر النوافذ المنبثقة لمواقع الويب التي تطلب قبول / رفض ملفات تعريف الارتباط على موقعها</translation>
@@ -403,6 +406,12 @@
 <translation id="597993392929850353">رخصة Brave</translation>
 <translation id="6336451774241870485">علامة تبويب خاصة جديدة</translation>
 <translation id="3110967157686007724">علامة تبويب خاصة</translation>
+<translation id="944340256927461196">لا تترك أي أثر على جهازك</translation>
+<translation id="2063044449012253966">لن تظهر المواقع التي تزورها في النوافذ الخاصة في سجل البحث الخاص بك. تختفي ملفات تعريف الارتباط وبيانات الاستمارة وبيانات الموقع بمجرد إغلاق جميع النوافذ الخاصة.</translation>
+<translation id="7395764193745523646">ظهور التصفح</translation>
+<translation id="8735363371744702779">نودّ لفت انتباهك إلى أنه -حتى في النوافذ الخاصة- قد يظل نشاط التصفح الخاص بك مرئيًا لمزود خدمة الإنترنت أو مراقبي الشبكة أو مشغّلك (إذا كنت تستخدم جهاز/شبكة عمل).</translation>
+<translation id="1413177583895309156">يقوم Brave VPN بتشفير وحماية أي شيء تفعله على الإنترنت، حتى خارج متصفح Brave.</translation>
+<translation id="3974348661685061050">جرّب مجاناً لمدة 7 أيام</translation>
 <translation id="5789441016350810005">إعلانات Brave المرسلة عندما يكون المتصفح في الخلفية</translation>
 <translation id="4973347371961481083">المساهمات</translation>
 <translation id="7047578174221019462">جرت معالجة إسهاماتك الشهرية.</translation>
@@ -703,8 +712,10 @@
 <translation id="1532536259167115948">الاشتراك الشهري <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">الاشتراك السنوي <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">يتجدد شهريًا</translation>
+<translation id="112929124115834557">يتجدد سنويًا</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /شهر</translation>
 <translation id="1163809943099641131">ٍسنة واحدة</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>حفظ <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /سنة</translation>
 <translation id="2786538705804257030">سيتم تحصيل الاشتراكات عبر حسابك على Google. وسيتم مصادرة أي جزء غير مستخدم من النسخة التجريبية المجانية، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\n\nباستخدام Brave، توافق على شروط الاستخدام وسياسة الخصوصية.</translation>
 <translation id="5035172357624830412">هل اشتريت بالفعل عبر الموقع الإلكتروني Brave.com؟</translation>
@@ -1221,4 +1232,5 @@
 <translation id="8403338849301491865">تم تحديث قائمة التصفية بنجاح</translation>
 <translation id="4650851936784160359">يتعذر تحديث قائمة التصفية. يُرجى المحاولة مجددًا</translation>
 <translation id="3098054327870766317">إظهار زر التراجع عند إغلاق علامات التبويب</translation>
+<translation id="1336494649091412226">هل أنت متأكد من أنك تريد مغادرة Brave؟</translation>
 </translationbundle>
