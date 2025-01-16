@@ -138,8 +138,9 @@ void AdblockDOMHandler::OnServiceUpdateEvent() {
 
 void AdblockDOMHandler::HandleEnableFilterList(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 2U);
-  if (!args[0].is_string() || !args[1].is_bool())
+  if (!args[0].is_string() || !args[1].is_bool()) {
     return;
+  }
 
   std::string uuid = args[0].GetString();
   bool enabled = args[1].GetBool();
@@ -191,8 +192,9 @@ void AdblockDOMHandler::HandleSubmitNewSubscription(
     const base::Value::List& args) {
   DCHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  if (!args[0].is_string())
+  if (!args[0].is_string()) {
     return;
+  }
 
   std::string subscription_url_string = args[0].GetString();
   const GURL subscription_url = GURL(subscription_url_string);
@@ -210,8 +212,9 @@ void AdblockDOMHandler::HandleSetSubscriptionEnabled(
     const base::Value::List& args) {
   DCHECK_EQ(args.size(), 2U);
   AllowJavascript();
-  if (!args[0].is_string() || !args[1].is_bool())
+  if (!args[0].is_string() || !args[1].is_bool()) {
     return;
+  }
 
   std::string subscription_url_string = args[0].GetString();
   bool enabled = args[1].GetBool();
@@ -229,8 +232,9 @@ void AdblockDOMHandler::HandleDeleteSubscription(
     const base::Value::List& args) {
   DCHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  if (!args[0].is_string())
+  if (!args[0].is_string()) {
     return;
+  }
 
   std::string subscription_url_string = args[0].GetString();
   const GURL subscription_url = GURL(subscription_url_string);
@@ -249,8 +253,9 @@ void AdblockDOMHandler::HandleRefreshSubscription(
   // This handler does not call Javascript directly, but refreshing the
   // subscription will trigger the observer later, which will require it.
   AllowJavascript();
-  if (!args[0].is_string())
+  if (!args[0].is_string()) {
     return;
+  }
 
   std::string subscription_url_string = args[0].GetString();
   const GURL subscription_url = GURL(subscription_url_string);
@@ -265,8 +270,9 @@ void AdblockDOMHandler::HandleRefreshSubscription(
 void AdblockDOMHandler::HandleViewSubscriptionSource(
     const base::Value::List& args) {
   DCHECK_EQ(args.size(), 1U);
-  if (!args[0].is_string())
+  if (!args[0].is_string()) {
     return;
+  }
 
   std::string subscription_url_string = args[0].GetString();
   const GURL subscription_url = GURL(subscription_url_string);
@@ -323,7 +329,6 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
 BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, kAdblockHost, kBraveAdblockGenerated,
-                              kBraveAdblockGeneratedSize,
                               IDR_BRAVE_ADBLOCK_HTML);
   web_ui->AddMessageHandler(std::make_unique<AdblockDOMHandler>());
 }

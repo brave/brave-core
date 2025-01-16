@@ -38,8 +38,9 @@ void TorInternalsDOMHandler::RegisterMessages() {
 void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
     const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
-  if (!web_ui()->CanCallJavascript())
+  if (!web_ui()->CanCallJavascript()) {
     return;
+  }
 
   base::Value::Dict info;
 
@@ -53,16 +54,18 @@ void TorInternalsDOMHandler::HandleGetTorGeneralInfo(
 
 void TorInternalsDOMHandler::HandleGetTorLog(const base::Value::List& args) {
   DCHECK_EQ(args.size(), 0U);
-  if (!web_ui()->CanCallJavascript())
+  if (!web_ui()->CanCallJavascript()) {
     return;
+  }
   tor_launcher_factory_->GetTorLog(base::BindOnce(
       &TorInternalsDOMHandler::OnGetTorLog, weak_ptr_factory_.GetWeakPtr()));
 }
 
 void TorInternalsDOMHandler::OnGetTorLog(bool success, const std::string& log) {
-  if (success)
+  if (success) {
     web_ui()->CallJavascriptFunctionUnsafe("tor_internals.onGetTorLog",
                                            base::Value(log));
+  }
 }
 
 void TorInternalsDOMHandler::OnTorCircuitEstablished(bool result) {
@@ -89,7 +92,6 @@ void TorInternalsDOMHandler::OnTorInitializing(const std::string& percentage,
 TorInternalsUI::TorInternalsUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
   CreateAndAddWebUIDataSource(web_ui, name, kTorInternalsGenerated,
-                              kTorInternalsGeneratedSize,
                               IDR_TOR_INTERNALS_HTML);
   web_ui->AddMessageHandler(std::make_unique<TorInternalsDOMHandler>());
 }

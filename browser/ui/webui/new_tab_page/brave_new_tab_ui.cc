@@ -74,8 +74,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 
   // Non blank NTP.
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
-      web_ui, name, kBraveNewTabGenerated, kBraveNewTabGeneratedSize,
-      IDR_BRAVE_NEW_TAB_HTML);
+      web_ui, name, kBraveNewTabGenerated, IDR_BRAVE_NEW_TAB_HTML);
 
   AddBackgroundColorToSource(source, web_contents);
 

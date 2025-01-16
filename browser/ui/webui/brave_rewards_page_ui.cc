@@ -90,10 +90,9 @@ brave_rewards::RewardsPanelCoordinator* GetPanelCoordinator(
 #endif
 
 // The handler for Javascript messages for Brave about: pages
-class RewardsDOMHandler
-    : public WebUIMessageHandler,
-      public bat_ads::mojom::BatAdsObserver,
-      public brave_rewards::RewardsServiceObserver {
+class RewardsDOMHandler : public WebUIMessageHandler,
+                          public bat_ads::mojom::BatAdsObserver,
+                          public brave_rewards::RewardsServiceObserver {
  public:
   RewardsDOMHandler();
   RewardsDOMHandler(const RewardsDOMHandler&) = delete;
@@ -598,8 +597,9 @@ void RewardsDOMHandler::OnJavascriptDisallowed() {
 }
 
 void RewardsDOMHandler::GetRewardsParameters(const base::Value::List& args) {
-  if (!rewards_service_)
+  if (!rewards_service_) {
     return;
+  }
 
   AllowJavascript();
 
@@ -666,8 +666,9 @@ void RewardsDOMHandler::OnGetRewardsParameters(
 
 void RewardsDOMHandler::OnRewardsInitialized(
     brave_rewards::RewardsService* rewards_service) {
-  if (!IsJavascriptAllowed())
+  if (!IsJavascriptAllowed()) {
     return;
+  }
 
   CallJavascriptFunction("brave_rewards.initialized");
 }
@@ -691,8 +692,9 @@ void RewardsDOMHandler::GetAutoContributeProperties(
 void RewardsDOMHandler::BeginExternalWalletLogin(
     const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
-  if (!rewards_service_)
+  if (!rewards_service_) {
     return;
+  }
 
   AllowJavascript();
   const std::string wallet_type = args[0].GetString();
@@ -1595,8 +1597,9 @@ void RewardsDOMHandler::EnableRewards(const base::Value::List& args) {
 
 void RewardsDOMHandler::GetExternalWalletProviders(
     const base::Value::List& args) {
-  if (!rewards_service_)
+  if (!rewards_service_) {
     return;
+  }
 
   AllowJavascript();
   base::Value::List data;
@@ -1616,8 +1619,8 @@ BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
                                        const std::string& name)
     : WebUIController(web_ui) {
   auto* source = CreateAndAddWebUIDataSource(
-      web_ui, name, kBraveRewardsPageGenerated, kBraveRewardsPageGeneratedSize,
-      IDR_BRAVE_REWARDS_PAGE_HTML, /*disable_trusted_types_csp=*/true);
+      web_ui, name, kBraveRewardsPageGenerated, IDR_BRAVE_REWARDS_PAGE_HTML,
+      /*disable_trusted_types_csp=*/true);
 
 #if BUILDFLAG(IS_ANDROID)
   source->AddBoolean("isAndroid", true);

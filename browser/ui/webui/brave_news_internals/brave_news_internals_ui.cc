@@ -19,9 +19,9 @@ BraveNewsInternalsUI::BraveNewsInternalsUI(
     const std::string& host,
     brave_news::BraveNewsController* controller)
     : content::WebUIController(web_ui), controller_(controller) {
-  auto* source = CreateAndAddWebUIDataSource(
-      web_ui, host, kBraveNewsInternalsGenerated,
-      kBraveNewsInternalsGeneratedSize, IDR_BRAVE_NEWS_INTERNALS_HTML);
+  auto* source =
+      CreateAndAddWebUIDataSource(web_ui, host, kBraveNewsInternalsGenerated,
+                                  IDR_BRAVE_NEWS_INTERNALS_HTML);
   DCHECK(source);
 }
 

@@ -113,8 +113,7 @@ std::string CountryIDToCountryString(int country_id) {
 BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
     : WebUIController(web_ui) {
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
-      web_ui, name, kBraveWelcomeGenerated, kBraveWelcomeGeneratedSize,
-      IDR_BRAVE_WELCOME_HTML,
+      web_ui, name, kBraveWelcomeGenerated, IDR_BRAVE_WELCOME_HTML,
       /*disable_trusted_types_csp=*/true);
 
   // Lottie animations tick on a worker thread and requires the document CSP to
