@@ -11,6 +11,7 @@
 #include "base/json/json_writer.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
@@ -93,7 +94,9 @@ PageScrapeResult::PageScrapeResult(GURL url, std::string id)
 PageScrapeResult::~PageScrapeResult() = default;
 
 ContentScraper::ContentScraper(const ServerConfigLoader* server_config_loader)
-    : sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner({})),
+    : sequenced_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})),
       server_config_loader_(server_config_loader) {}
 
 ContentScraper::~ContentScraper() = default;
