@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
@@ -28,6 +29,7 @@ import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinition
 public class BravePermissionUtils {
     private static final String APP_PACKAGE = "app_package";
     private static final String APP_UID = "app_uid";
+    private static final int NOTIFICATION_PERMISSION_CODE = 123;
 
     public static boolean hasNotificationPermission(Context context) {
         return hasPermission(context, Manifest.permission.POST_NOTIFICATIONS);
@@ -76,5 +78,19 @@ public class BravePermissionUtils {
 
     public static void requestPermission(Activity activity) {
         BravePermissionUtils.notificationSettingPage(activity);
+    }
+
+    public static void showNotificationPermissionDialog(Context context) {
+        // For Android 13 (Tiramisu) and above, we need to explicitly request notification
+        // permission
+        if (context != null
+                && context instanceof Activity
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+                && !hasNotificationPermission(context)) {
+            ActivityCompat.requestPermissions(
+                    (Activity) context,
+                    new String[] {Manifest.permission.POST_NOTIFICATIONS},
+                    NOTIFICATION_PERMISSION_CODE);
+        }
     }
 }
