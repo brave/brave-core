@@ -1,0 +1,45 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+_brave_policies = [
+  "BraveSoftware/.group.details.yaml",
+  "BraveSoftware/BraveAIChatEnabled.yaml",
+  "BraveSoftware/BraveRewardsDisabled.yaml",
+  "BraveSoftware/BraveShieldsDisabledForUrls.yaml",
+  "BraveSoftware/BraveShieldsEnabledForUrls.yaml",
+  "BraveSoftware/BraveSyncUrl.yaml",
+  "BraveSoftware/BraveVPNDisabled.yaml",
+  "BraveSoftware/BraveWalletDisabled.yaml",
+  "BraveSoftware/IPFSEnabled.yaml",
+  "BraveSoftware/TorDisabled.yaml",
+]
+
+_brave_policies_sync_config_path =
+    "$root_build_dir/gen/brave_policies_sync_config.json"
+
+# List Brave's policy files as inputs for policy_templates.py to trigger a
+# rebuild if changes are detected.
+brave_generate_policy_templates_inputs =
+    get_path_info(_brave_policies, "abspath") +
+    [ _brave_policies_sync_config_path ]
+
+# Generate a policy list to copy into Chromium policy_definitions directory.
+# This is to be used by policy_templates.py override. Make sure to only generate
+# the file for the default toolchain as this gni can be used by multiple
+# toolchains.
+if (current_toolchain == default_toolchain) {
+  write_file(
+      _brave_policies_sync_config_path,
+      {
+        policies = _brave_policies
+        copy_from = rebase_path(
+                "//brave/components/policy/resources/templates/policy_definitions",
+                root_build_dir)
+        copy_to = rebase_path(
+                "//components/policy/resources/templates/policy_definitions",
+                root_build_dir)
+      },
+      "json")
+}
