@@ -6,7 +6,12 @@
 #ifndef BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_WEB_DISCOVERY_BROWSER_PREF_NAMES_H_
 
+#include "base/types/strong_alias.h"
+
 namespace web_discovery {
+
+using RequestQueuePrefName =
+    base::StrongAlias<class QueuePrefNameTag, std::string_view>;
 
 // Profile prefs
 inline constexpr char kWebDiscoveryEnabled[] = "brave.web_discovery_enabled";
@@ -19,6 +24,14 @@ inline constexpr char kCredentialRSAPrivateKey[] =
     "brave.web_discovery.rsa_priv_key";
 inline constexpr char kAnonymousCredentialsDict[] =
     "brave.web_discovery.anon_creds";
+
+inline constexpr auto kScheduledDoubleFetches =
+    RequestQueuePrefName("brave.web_discovery.scheduled_double_fetches");
+inline constexpr auto kScheduledReports =
+    RequestQueuePrefName("brave.web_discovery.scheduled_reports");
+inline constexpr char kUsedBasenameCounts[] =
+    "brave.web_discovery.used_basename_counts";
+inline constexpr char kPageCounts[] = "brave.web_discovery.page_counts";
 
 // Local state
 

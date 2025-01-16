@@ -21,6 +21,11 @@
 
 namespace web_discovery {
 
+namespace {
+constexpr base::TimeDelta kAliveCheckInterval = base::Minutes(1);
+constexpr size_t kMinPageCountForAliveMessage = 2;
+}  // namespace
+
 WebDiscoveryService::WebDiscoveryService(
     PrefService* local_state,
     PrefService* profile_prefs,
@@ -51,6 +56,10 @@ void WebDiscoveryService::RegisterLocalStatePrefs(
 void WebDiscoveryService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kAnonymousCredentialsDict);
   registry->RegisterStringPref(kCredentialRSAPrivateKey, {});
+  registry->RegisterListPref(kScheduledDoubleFetches.value());
+  registry->RegisterListPref(kScheduledReports.value());
+  registry->RegisterDictionaryPref(kUsedBasenameCounts);
+  registry->RegisterDictionaryPref(kPageCounts);
 }
 
 void WebDiscoveryService::Shutdown() {
@@ -76,6 +85,9 @@ void WebDiscoveryService::Start() {
 }
 
 void WebDiscoveryService::Stop() {
+  alive_message_timer_.Stop();
+  reporter_ = nullptr;
+  double_fetcher_ = nullptr;
   content_scraper_ = nullptr;
   credential_manager_ = nullptr;
   server_config_loader_ = nullptr;
@@ -84,6 +96,10 @@ void WebDiscoveryService::Stop() {
 void WebDiscoveryService::ClearPrefs() {
   profile_prefs_->ClearPref(kAnonymousCredentialsDict);
   profile_prefs_->ClearPref(kCredentialRSAPrivateKey);
+  profile_prefs_->ClearPref(kScheduledDoubleFetches.value());
+  profile_prefs_->ClearPref(kScheduledReports.value());
+  profile_prefs_->ClearPref(kUsedBasenameCounts);
+  profile_prefs_->ClearPref(kPageCounts);
 }
 
 void WebDiscoveryService::OnEnabledChange() {
@@ -104,6 +120,35 @@ void WebDiscoveryService::OnPatternsLoaded() {
     content_scraper_ =
         std::make_unique<ContentScraper>(server_config_loader_.get());
   }
+  if (!double_fetcher_) {
+    double_fetcher_ = std::make_unique<DoubleFetcher>(
+        profile_prefs_.get(), shared_url_loader_factory_.get(),
+        base::BindRepeating(&WebDiscoveryService::OnDoubleFetched,
+                            base::Unretained(this)));
+  }
+  if (!reporter_) {
+    reporter_ = std::make_unique<Reporter>(
+        profile_prefs_.get(), shared_url_loader_factory_.get(),
+        credential_manager_.get(), server_config_loader_.get());
+  }
+  MaybeSendAliveMessage();
+}
+
+void WebDiscoveryService::OnDoubleFetched(
+    const GURL& url,
+    const base::Value& associated_data,
+    std::optional<std::string> response_body) {
+  if (!response_body) {
+    return;
+  }
+  auto prev_scrape_result = PageScrapeResult::FromValue(associated_data);
+  if (!prev_scrape_result) {
+    return;
+  }
+  content_scraper_->ParseAndScrapePage(
+      url, true, std::move(prev_scrape_result), *response_body,
+      base::BindOnce(&WebDiscoveryService::OnContentScraped,
+                     base::Unretained(this), true));
 }
 
 bool WebDiscoveryService::ShouldExtractFromPage(
@@ -115,6 +160,14 @@ bool WebDiscoveryService::ShouldExtractFromPage(
   const auto* matching_url_details =
       server_config_loader_->GetLastPatterns().GetMatchingURLPattern(url,
                                                                      false);
+  if (!matching_url_details || !matching_url_details->is_search_engine) {
+    if (!current_page_count_hour_key_.empty()) {
+      ScopedDictPrefUpdate page_count_update(profile_prefs_, kPageCounts);
+      auto existing_count =
+          page_count_update->FindInt(current_page_count_hour_key_).value_or(0);
+      page_count_update->Set(current_page_count_hour_key_, existing_count + 1);
+    }
+  }
   if (!matching_url_details) {
     return false;
   }
@@ -151,9 +204,73 @@ void WebDiscoveryService::OnContentScraped(
   if (!original_url_details) {
     return;
   }
+  if (!is_strict && original_url_details->is_search_engine) {
+    auto* strict_url_details =
+        patterns.GetMatchingURLPattern(result->url, true);
+    if (strict_url_details) {
+      auto url = result->url;
+      if (!result->query) {
+        return;
+      }
+      if (IsPrivateQueryLikely(*result->query)) {
+        return;
+      }
+      url = GeneratePrivateSearchURL(url, *result->query, *strict_url_details);
+      VLOG(1) << "Double fetching search page: " << url;
+      double_fetcher_->ScheduleDoubleFetch(url, result->SerializeToValue());
+    }
+  }
   auto payloads =
       GenerateQueryPayloads(server_config_loader_->GetLastServerConfig(),
                             original_url_details, std::move(result));
+  for (auto& payload : payloads) {
+    reporter_->ScheduleSend(std::move(payload));
+  }
+}
+
+bool WebDiscoveryService::UpdatePageCountStartTime() {
+  auto now = base::Time::Now();
+  if (!current_page_count_start_time_.is_null() &&
+      (now - current_page_count_start_time_) < base::Hours(1)) {
+    return false;
+  }
+  base::Time::Exploded exploded;
+  now.UTCExplode(&exploded);
+  exploded.millisecond = 0;
+  exploded.second = 0;
+  exploded.minute = 0;
+  if (!base::Time::FromUTCExploded(exploded, &current_page_count_start_time_)) {
+    return false;
+  }
+  current_page_count_hour_key_ =
+      base::StringPrintf("%04d%02d%02d%02d", exploded.year, exploded.month,
+                         exploded.day_of_month, exploded.hour);
+  return true;
+}
+
+void WebDiscoveryService::MaybeSendAliveMessage() {
+  if (!alive_message_timer_.IsRunning()) {
+    alive_message_timer_.Start(
+        FROM_HERE, kAliveCheckInterval,
+        base::BindRepeating(&WebDiscoveryService::MaybeSendAliveMessage,
+                            base::Unretained(this)));
+  }
+  if (!UpdatePageCountStartTime()) {
+    return;
+  }
+  ScopedDictPrefUpdate update(profile_prefs_, kPageCounts);
+  for (auto it = update->begin(); it != update->end();) {
+    if (it->first == current_page_count_hour_key_) {
+      it++;
+      continue;
+    }
+    if (it->second.is_int() && static_cast<size_t>(it->second.GetInt()) >=
+                                   kMinPageCountForAliveMessage) {
+      reporter_->ScheduleSend(GenerateAlivePayload(
+          server_config_loader_->GetLastServerConfig(), it->first));
+    }
+    it = update->erase(it);
+  }
 }
 
 }  // namespace web_discovery
