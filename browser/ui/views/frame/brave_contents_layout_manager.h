@@ -8,21 +8,10 @@
 
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 
-class BraveBrowserView;
-
 class BraveContentsLayoutManager : public ContentsLayoutManager {
  public:
-  // Spacing between |contents_web_view_| and |secondary_contents_web_view_|.
-  static constexpr auto kSpacingBetweenContentsWebViews = 4;
-
-  BraveContentsLayoutManager(views::View* devtools_view,
-                             views::View* contents_view,
-                             views::View* watermark_view = nullptr);
+  using ContentsLayoutManager::ContentsLayoutManager;
   ~BraveContentsLayoutManager() override;
-
-  void set_browser_view(BraveBrowserView* browser_view) {
-    browser_view_ = browser_view;
-  }
 
   void set_contents_reader_mode_toolbar(
       views::View* contents_reader_mode_toolbar) {
@@ -42,8 +31,6 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
  private:
   friend class BraveContentsLayoutManagerUnitTest;
   friend class SplitViewContentsLayoutManager;
-
-  raw_ptr<BraveBrowserView> browser_view_ = nullptr;
 
   raw_ptr<views::View> contents_reader_mode_toolbar_ = nullptr;
 };

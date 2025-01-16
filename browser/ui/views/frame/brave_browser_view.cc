@@ -762,17 +762,20 @@ void BraveBrowserView::ShowReaderModeToolbar(
   auto tile_contents =
       SplitViewUtils::GetTabTileContents(browser(), web_contents);
   if (!tile_contents.main) {
-    UpdateReaderModeToolbar(reader_mode_toolbar_view_.get(), false);
-    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbarVisibility(reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
+                                      false);
   }
   if (!tile_contents.secondary) {
-    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
+                                      false);
   }
   if (tile_contents.main == web_contents) {
-    UpdateReaderModeToolbar(reader_mode_toolbar_view_.get(), true);
+    UpdateReaderModeToolbarVisibility(reader_mode_toolbar_view_.get(), true);
   }
   if (tile_contents.secondary == web_contents) {
-    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), true);
+    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
+                                      true);
   }
 
   DeprecatedLayoutImmediately();
@@ -783,17 +786,20 @@ void BraveBrowserView::HideReaderModeToolbar(
   auto tile_contents =
       SplitViewUtils::GetTabTileContents(browser(), web_contents);
   if (!tile_contents.main) {
-    UpdateReaderModeToolbar(reader_mode_toolbar_view_.get(), false);
-    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbarVisibility(reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
+                                      false);
   }
   if (!tile_contents.secondary) {
-    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
+                                      false);
   }
   if (tile_contents.main == web_contents) {
-    UpdateReaderModeToolbar(reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbarVisibility(reader_mode_toolbar_view_.get(), false);
   }
   if (tile_contents.secondary == web_contents) {
-    UpdateReaderModeToolbar(secondary_reader_mode_toolbar_view_.get(), false);
+    UpdateReaderModeToolbarVisibility(secondary_reader_mode_toolbar_view_.get(),
+                                      false);
   }
   DeprecatedLayoutImmediately();
 }
@@ -811,8 +817,9 @@ void BraveBrowserView::OnReaderModeToolbarActive(
   }
 }
 
-void BraveBrowserView::UpdateReaderModeToolbar(ReaderModeToolbarView* toolbar,
-                                               bool visible) {
+void BraveBrowserView::UpdateReaderModeToolbarVisibility(
+    ReaderModeToolbarView* toolbar,
+    bool visible) {
   if (!toolbar) {
     return;
   }

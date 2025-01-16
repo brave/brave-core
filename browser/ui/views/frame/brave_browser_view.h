@@ -101,9 +101,12 @@ class BraveBrowserView : public BrowserView,
       speedreader::SpeedreaderBubbleLocation location) override;
   void ShowReaderModeToolbar(content::WebContents* web_contents) override;
   void HideReaderModeToolbar(content::WebContents* web_contents) override;
-  void OnReaderModeToolbarActive(ReaderModeToolbarView* toolbar) override;
-  void UpdateReaderModeToolbar(ReaderModeToolbarView* toolbar, bool visible);
+  void UpdateReaderModeToolbarVisibility(ReaderModeToolbarView* toolbar,
+                                         bool visible);
   void UpdateReaderModeToolbars();
+
+  // ReaderModeToolbarView::Observer overrides:
+  void OnReaderModeToolbarActive(ReaderModeToolbarView* toolbar) override;
 #endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)

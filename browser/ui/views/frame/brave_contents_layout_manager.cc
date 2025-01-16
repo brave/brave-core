@@ -5,17 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 
-#include "base/feature_list.h"
-#include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
 #include "ui/views/view.h"
-
-BraveContentsLayoutManager::BraveContentsLayoutManager(
-    views::View* devtools_view,
-    views::View* contents_view,
-    views::View* watermark_view)
-    : ContentsLayoutManager(devtools_view, contents_view, watermark_view) {}
 
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 
@@ -26,8 +16,6 @@ void BraveContentsLayoutManager::LayoutImpl() {
     return;
   }
 
-  ContentsLayoutManager::LayoutImpl();
-
   if (!contents_reader_mode_toolbar_ ||
       !contents_reader_mode_toolbar_->GetVisible()) {
     return ContentsLayoutManager::LayoutImpl();
@@ -35,10 +23,6 @@ void BraveContentsLayoutManager::LayoutImpl() {
 
   LayoutContents(host_view()->GetLocalBounds(), contents_view_,
                  contents_reader_mode_toolbar_, devtools_view_, strategy_);
-
-  if (browser_view_) {
-    browser_view_->NotifyDialogPositionRequiresUpdate();
-  }
 }
 
 void BraveContentsLayoutManager::LayoutContents(

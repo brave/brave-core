@@ -93,11 +93,11 @@ TEST_F(BraveContentsLayoutManagerUnitTest, Size_SecondaryContentsViewVisible) {
   // Then contents_view_ should take the half and secondary_contents_view_
   // should the rest of the width.
   EXPECT_EQ((contents_container().width() -
-             BraveContentsLayoutManager::kSpacingBetweenContentsWebViews) /
+             SplitViewContentsLayoutManager::kSpacingBetweenContentsWebViews) /
                 2,
             contents_view().width());
   EXPECT_EQ(contents_container().width() - contents_view().width() -
-                BraveContentsLayoutManager::kSpacingBetweenContentsWebViews,
+                SplitViewContentsLayoutManager::kSpacingBetweenContentsWebViews,
             secondary_contents_view().width());
 }
 
