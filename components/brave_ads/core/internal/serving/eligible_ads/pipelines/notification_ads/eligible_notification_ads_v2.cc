@@ -69,7 +69,7 @@ void EligibleNotificationAdsV2::GetSiteHistory(
     EligibleAdsCallback<CreativeNotificationAdList> callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
-      kTraceEventCategory, "GetSiteHistory",
+      kTraceEventCategory, "EligibleNotificationAds::GetSiteHistory",
       TRACE_ID_WITH_SCOPE("EligibleNotificationAds", trace_id));
 
   GetAdsClient().GetSiteHistory(
@@ -86,7 +86,7 @@ void EligibleNotificationAdsV2::GetSiteHistoryCallback(
     uint64_t trace_id,
     const SiteHistoryList& site_history) {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
-      kTraceEventCategory, "GetSiteHistory",
+      kTraceEventCategory, "EligibleNotificationAds::GetSiteHistory",
       TRACE_ID_WITH_SCOPE("EligibleNotificationAds", trace_id), "site_history",
       site_history.size());
 
@@ -129,7 +129,7 @@ void EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd(
     const SiteHistoryList& site_history,
     EligibleAdsCallback<CreativeNotificationAdList> callback) {
   TRACE_EVENT(kTraceEventCategory,
-              "EligibleNotificationAdsV2::FilterAndMaybePredictCreativeAd",
+              "EligibleNotificationAds::FilterAndMaybePredictCreativeAd",
               "creative_ads", creative_ads.size(), "ad_events",
               ad_events.size(), "site_history", site_history.size());
 

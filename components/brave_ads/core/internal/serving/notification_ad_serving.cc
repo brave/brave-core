@@ -131,7 +131,7 @@ void NotificationAdServing::GetAdEventsCallback(bool success,
 void NotificationAdServing::GetUserModel() {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
-      kTraceEventCategory, "GetUserModel",
+      kTraceEventCategory, "NotificationAdServing::GetUserModel",
       TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id));
 
   BuildUserModel(base::BindOnce(&NotificationAdServing::GetUserModelCallback,
@@ -141,7 +141,7 @@ void NotificationAdServing::GetUserModel() {
 void NotificationAdServing::GetUserModelCallback(uint64_t trace_id,
                                                  UserModelInfo user_model) {
   TRACE_EVENT_NESTABLE_ASYNC_END0(
-      kTraceEventCategory, "GetUserModel",
+      kTraceEventCategory, "NotificationAdServing::GetUserModel",
       TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id));
 
   NotifyOpportunityAroseToServeNotificationAd(user_model.interest.segments);
@@ -152,7 +152,7 @@ void NotificationAdServing::GetUserModelCallback(uint64_t trace_id,
 void NotificationAdServing::GetEligibleAds(UserModelInfo user_model) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
-      kTraceEventCategory, "GetEligibleAds",
+      kTraceEventCategory, "NotificationAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id));
 
   eligible_ads_->GetForUserModel(
@@ -165,7 +165,7 @@ void NotificationAdServing::GetEligibleAdsCallback(
     uint64_t trace_id,
     const CreativeNotificationAdList& creative_ads) {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
-      kTraceEventCategory, "GetEligibleAds",
+      kTraceEventCategory, "NotificationAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("NotificationAdServing", trace_id), "creative_ads",
       creative_ads.size());
 

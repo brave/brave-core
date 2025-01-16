@@ -51,7 +51,7 @@ void TextClassificationProcessor::Process(const std::string& text) {
   if (resource_->IsLoaded()) {
     const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
     TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
-        kTraceEventCategory, "Process",
+        kTraceEventCategory, "TextClassificationProcessor::Process",
         TRACE_ID_WITH_SCOPE("TextClassificationProcessor", trace_id));
 
     resource_->ClassifyPage(
@@ -64,7 +64,7 @@ void TextClassificationProcessor::ClassifyPageCallback(
     uint64_t trace_id,
     base::optional_ref<const TextClassificationProbabilityMap> probabilities) {
   TRACE_EVENT_NESTABLE_ASYNC_END0(
-      kTraceEventCategory, "Process",
+      kTraceEventCategory, "TextClassificationProcessor::Process",
       TRACE_ID_WITH_SCOPE("TextClassificationProcessor", trace_id));
 
   if (!probabilities) {

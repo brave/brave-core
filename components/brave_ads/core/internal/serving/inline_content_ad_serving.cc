@@ -117,7 +117,7 @@ void InlineContentAdServing::GetUserModel(
     MaybeServeInlineContentAdCallback callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
-      kTraceEventCategory, "GetUserModel",
+      kTraceEventCategory, "InlineContentAdServing::GetUserModel",
       TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id));
 
   BuildUserModel(base::BindOnce(&InlineContentAdServing::GetUserModelCallback,
@@ -132,7 +132,7 @@ void InlineContentAdServing::GetUserModelCallback(
     uint64_t trace_id,
     UserModelInfo user_model) const {
   TRACE_EVENT_NESTABLE_ASYNC_END0(
-      kTraceEventCategory, "GetUserModel",
+      kTraceEventCategory, "InlineContentAdServing::GetUserModel",
       TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id));
 
   NotifyOpportunityAroseToServeInlineContentAd();
@@ -148,7 +148,7 @@ void InlineContentAdServing::GetEligibleAds(
     UserModelInfo user_model) const {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
-      kTraceEventCategory, "GetEligibleAds",
+      kTraceEventCategory, "InlineContentAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id));
 
   eligible_ads_->GetForUserModel(
@@ -165,7 +165,7 @@ void InlineContentAdServing::GetEligibleAdsCallback(
     uint64_t trace_id,
     const CreativeInlineContentAdList& creative_ads) const {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
-      kTraceEventCategory, "GetEligibleAds",
+      kTraceEventCategory, "InlineContentAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("InlineContentAdServing", trace_id), "creative_ads",
       creative_ads.size());
 

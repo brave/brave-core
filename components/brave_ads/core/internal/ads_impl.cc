@@ -409,8 +409,8 @@ void AdsImpl::CreateOrOpenDatabaseCallback(mojom::WalletInfoPtr mojom_wallet,
 }
 
 void AdsImpl::FailedToInitialize(InitializeCallback callback) {
-  TRACE_EVENT_NESTABLE_ASYNC_END0(kTraceEventCategory, "AdsImpl::Initialize",
-                                  TRACE_ID_LOCAL(this));
+  TRACE_EVENT_NESTABLE_ASYNC_END1(kTraceEventCategory, "AdsImpl::Initialize",
+                                  TRACE_ID_LOCAL(this), "success", false);
 
   BLOG(0, "Failed to initialize ads");
 
@@ -419,8 +419,8 @@ void AdsImpl::FailedToInitialize(InitializeCallback callback) {
 
 void AdsImpl::SuccessfullyInitialized(mojom::WalletInfoPtr mojom_wallet,
                                       InitializeCallback callback) {
-  TRACE_EVENT_NESTABLE_ASYNC_END0(kTraceEventCategory, "AdsImpl::Initialize",
-                                  TRACE_ID_LOCAL(this));
+  TRACE_EVENT_NESTABLE_ASYNC_END1(kTraceEventCategory, "AdsImpl::Initialize",
+                                  TRACE_ID_LOCAL(this), "success", true);
 
   BLOG(1, "Successfully initialized ads");
 

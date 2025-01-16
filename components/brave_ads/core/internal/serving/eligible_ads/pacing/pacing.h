@@ -18,7 +18,7 @@ struct CreativeAdInfo;
 
 template <typename T>
 void PaceCreativeAds(T& creative_ads) {
-  TRACE_EVENT(kTraceEventCategory, "PaceCreativeAds", "creative_ads",
+  TRACE_EVENT(kTraceEventCategory, "Pacing::PaceCreativeAds", "creative_ads",
               creative_ads.size());
 
   std::erase_if(creative_ads, [](const CreativeAdInfo& creative_ad) {
