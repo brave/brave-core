@@ -24,6 +24,7 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "brave/renderer/brave_render_frame_observer.h"
 #include "brave/renderer/brave_render_thread_observer.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
@@ -66,6 +67,11 @@
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "media/base/key_system_info.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+#include "brave/components/web_discovery/common/features.h"
+#include "brave/components/web_discovery/renderer/blink_document_extractor.h"
 #endif
 
 namespace {
@@ -209,6 +215,14 @@ void BraveContentRendererClient::RenderFrameCreated(
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   if (ai_rewriter::features::IsAIRewriterEnabled()) {
     new ai_rewriter::AIRewriterAgent(render_frame, registry);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY_NATIVE)
+  if (base::FeatureList::IsEnabled(
+          web_discovery::features::kBraveWebDiscoveryNative) &&
+      !IsIncognitoProcess()) {
+    new web_discovery::BlinkDocumentExtractor(render_frame, registry);
   }
 #endif
 }

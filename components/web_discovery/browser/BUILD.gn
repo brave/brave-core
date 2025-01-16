@@ -15,6 +15,7 @@ static_library("browser") {
   deps = [
     ":internal",
     "//base",
+    "//brave/components/web_discovery/common:mojom",
     "//components/keyed_service/core",
     "//components/prefs",
     "//services/network/public/cpp",
@@ -25,12 +26,23 @@ source_set("internal") {
   sources = [
     "background_credential_helper.cc",
     "background_credential_helper.h",
+    "content_scraper.cc",
+    "content_scraper.h",
     "credential_manager.cc",
     "credential_manager.h",
     "credential_signer.h",
+    "hash_detection.cc",
+    "hash_detection.h",
+    "hash_detection_matrix.h",
     "patterns.cc",
     "patterns.h",
+    "payload_generator.cc",
+    "payload_generator.h",
     "pref_names.h",
+    "privacy_guard.cc",
+    "privacy_guard.h",
+    "regex_util.cc",
+    "regex_util.h",
     "rsa.cc",
     "rsa.h",
     "server_config_loader.cc",
@@ -39,14 +51,18 @@ source_set("internal") {
     "util.h",
   ]
 
-  visibility = [ ":*" ]
+  visibility = [
+    ":*",
+    "//brave/browser/web_discovery:browser_tests",
+  ]
 
   deps = [
     "anonymous_credentials",
+    "document_extractor",
     "//base",
     "//brave/brave_domains",
     "//brave/components/constants",
-    "//brave/components/web_discovery/common",
+    "//brave/components/web_discovery/common:mojom",
     "//components/prefs",
     "//crypto",
     "//extensions/buildflags",
@@ -63,7 +79,10 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "credential_manager_unittest.cc",
+    "hash_detection_unittest.cc",
     "patterns_unittest.cc",
+    "payload_generator_unittest.cc",
+    "privacy_guard_unittest.cc",
     "server_config_loader_unittest.cc",
   ]
   deps = [

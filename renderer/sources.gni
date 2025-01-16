@@ -8,6 +8,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 brave_chrome_renderer_sources = [
@@ -38,6 +39,7 @@ brave_chrome_renderer_deps = [
   "//brave/components/skus/renderer",
   "//brave/components/speedreader/common/buildflags",
   "//brave/components/tor/buildflags",
+  "//brave/components/web_discovery/buildflags",
   "//brave/renderer/brave_wallet",
   "//mojo/public/cpp/bindings",
   "//third_party/blink/public:blink",
@@ -70,6 +72,13 @@ if (enable_brave_vpn) {
 if (is_android) {
   brave_chrome_renderer_deps += [
     "//brave/components/brave_mobile_subscription/renderer/android:android",
+  ]
+}
+
+if (enable_web_discovery_native) {
+  brave_chrome_renderer_deps += [
+    "//brave/components/web_discovery/common",
+    "//brave/components/web_discovery/renderer",
   ]
 }
 
