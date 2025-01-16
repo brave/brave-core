@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/json/values_util.h"
 #include "base/rand_util.h"
 #include "brave/components/web_discovery/browser/util.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -45,8 +46,7 @@ RequestQueue::~RequestQueue() = default;
 void RequestQueue::ScheduleRequest(base::Value::Dict request_data) {
   base::Value::Dict fetch_dict;
   fetch_dict.Set(kDataKey, std::move(request_data));
-  fetch_dict.Set(kRequestTimeKey,
-                 static_cast<double>(base::Time::Now().ToTimeT()));
+  fetch_dict.Set(kRequestTimeKey, base::TimeToValue(base::Time::Now()));
 
   ScopedListPrefUpdate update(profile_prefs_, list_pref_name_.value());
   update->Append(std::move(fetch_dict));
@@ -90,13 +90,14 @@ void RequestQueue::OnFetchTimer() {
   ScopedListPrefUpdate update(profile_prefs_, list_pref_name_.value());
   for (auto it = update->begin(); it != update->end();) {
     const auto* fetch_dict = it->GetIfDict();
-    const auto request_time =
-        fetch_dict ? fetch_dict->FindDouble(kRequestTimeKey) : std::nullopt;
+    const auto* request_time_value =
+        fetch_dict ? fetch_dict->Find(kRequestTimeKey) : nullptr;
+    const auto request_time = request_time_value
+                                  ? base::ValueToTime(*request_time_value)
+                                  : std::nullopt;
     const auto* data = fetch_dict ? fetch_dict->Find(kDataKey) : nullptr;
     if (!request_time ||
-        (base::Time::Now() - base::Time::FromTimeT(static_cast<time_t>(
-                                 *request_time))) > request_max_age_ ||
-        !data) {
+        (base::Time::Now() - *request_time) > request_max_age_ || !data) {
       it = update->erase(it);
       continue;
     }

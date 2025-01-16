@@ -42,11 +42,14 @@ AESEncryptResult::AESEncryptResult(std::vector<uint8_t> data,
       encoded_public_component_and_iv(encoded_public_component_and_iv) {}
 
 AESEncryptResult::~AESEncryptResult() = default;
+
 AESEncryptResult::AESEncryptResult(const AESEncryptResult&) = default;
+AESEncryptResult& AESEncryptResult::operator=(const AESEncryptResult&) =
+    default;
 
 std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
-    const base::span<uint8_t> server_pub_key,
-    const base::span<uint8_t> data) {
+    base::span<uint8_t> server_pub_key,
+    base::span<uint8_t> data) {
   bssl::UniquePtr<EC_KEY> client_private_key(
       EC_KEY_new_by_curve_name(NID_X9_62_prime256v1));
 

@@ -20,14 +20,15 @@ struct AESEncryptResult {
   ~AESEncryptResult();
 
   AESEncryptResult(const AESEncryptResult&);
+  AESEncryptResult& operator=(const AESEncryptResult&);
 
   std::vector<uint8_t> data;
   std::string encoded_public_component_and_iv;
 };
 
 std::optional<AESEncryptResult> DeriveAESKeyAndEncrypt(
-    const base::span<uint8_t> server_pub_key,
-    const base::span<uint8_t> data);
+    base::span<uint8_t> server_pub_key,
+    base::span<uint8_t> data);
 
 }  // namespace web_discovery
 
