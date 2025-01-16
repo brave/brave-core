@@ -371,7 +371,10 @@
 "aichat.retryActionTitle" = "Reintentar";
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
-"aichat.speechRecognizerDisclaimer" = "Brave no almacena ni comparte sus búsquedas por voz.";
+"aichat.speechRecognizerDisclaimer" = "Brave no almacena ni comparte tus búsquedas por voz.";
+
+/* Title showing the user has no subscription. */
+"aichat.subscriptionNoneTitle" = "Ninguno";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Sugerir preguntas…";

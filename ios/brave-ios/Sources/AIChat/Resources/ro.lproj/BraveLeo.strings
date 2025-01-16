@@ -373,6 +373,9 @@
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
 "aichat.speechRecognizerDisclaimer" = "Brave nu stochează și nu distribuie input-urile tale vocale.";
 
+/* Title showing the user has no subscription. */
+"aichat.subscriptionNoneTitle" = "Niciuna";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Sugerează întrebări...";
 
