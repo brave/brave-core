@@ -58,9 +58,8 @@ content::WebContents* GetTabWebContents(const tabs::TabHandle& handle) {
   return handle.Get()->contents();
 }
 
-std::optional<SplitViewBrowserData::Tile> GetWebContentsTile(
-    Browser* browser,
-    content::WebContents* web_contents) {
+std::optional<TabTile> GetWebContentsTile(Browser* browser,
+                                          content::WebContents* web_contents) {
   if (!IsSplitViewEnabled()) {
     return std::nullopt;
   }
@@ -70,8 +69,7 @@ std::optional<SplitViewBrowserData::Tile> GetWebContentsTile(
   return split_view_data->GetTile(handle);
 }
 
-TileContents GetTileContents(Browser* browser,
-                             const SplitViewBrowserData::Tile& tile) {
+TileContents GetTileContents(Browser* browser, const TabTile& tile) {
   CHECK(IsSplitViewEnabled());
 
   TileContents result;

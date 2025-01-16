@@ -42,12 +42,10 @@ bool IsActiveWebContentsTiled(Browser* browser);
 content::WebContents* GetTabWebContents(Browser* browser,
                                         const tabs::TabHandle& handle);
 
-std::optional<SplitViewBrowserData::Tile> GetWebContentsTile(
-    Browser* browser,
-    content::WebContents* web_contents);
+std::optional<TabTile> GetWebContentsTile(Browser* browser,
+                                          content::WebContents* web_contents);
 
-TileContents GetTileContents(Browser* browser,
-                             const SplitViewBrowserData::Tile& tile);
+TileContents GetTileContents(Browser* browser, const TabTile& tile);
 
 TileContents GetTabTileContents(Browser* browser,
                                 content::WebContents* web_contents);
