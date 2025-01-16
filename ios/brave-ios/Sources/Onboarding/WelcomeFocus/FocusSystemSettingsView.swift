@@ -20,6 +20,7 @@ public struct FocusSystemSettingsView: View {
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass: UserInterfaceSizeClass?
 
   @Binding var shouldDismiss: Bool
+  @Binding var isCompleted: Bool
 
   var screenType: DefaultBrowserScreenType
 
@@ -28,50 +29,67 @@ public struct FocusSystemSettingsView: View {
   }
 
   private let dynamicTypeRange = (...DynamicTypeSize.xLarge)
+  var namespace: Namespace.ID
 
   public init(
+    namespace: Namespace.ID,
     screenType: DefaultBrowserScreenType,
+    isCompleted: Binding<Bool>,
     shouldDismiss: Binding<Bool>
   ) {
+    self.namespace = namespace
     self.screenType = screenType
     self._shouldDismiss = shouldDismiss
+    self._isCompleted = isCompleted
   }
 
   public var body: some View {
-    if shouldUseExtendedDesign {
-      VStack(spacing: 40) {
-        VStack {
+    ZStack {
+      if shouldUseExtendedDesign {
+        VStack(spacing: 40) {
+          VStack {
+            settingsSystemContentView
+              .background(colorScheme == .dark ? .black : .white)
+          }
+          .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+          .frame(maxWidth: 616, maxHeight: 895)
+          .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
+          .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(braveSystemName: .pageBackground))
+        .toolbar(.hidden, for: .navigationBar)
+      } else {
+        VStack(spacing: 16) {
           settingsSystemContentView
-            .background(colorScheme == .dark ? .black : .white)
         }
-        .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
-        .frame(maxWidth: 616, maxHeight: 895)
-        .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
-        .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-
-        if screenType == .onboarding {
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
-        }
+        .padding(.bottom, 20)
+        .background(Color(braveSystemName: .pageBackground))
+        .toolbar(.hidden, for: .navigationBar)
       }
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .background(Color(braveSystemName: .pageBackground))
-      .toolbar(.hidden, for: .navigationBar)
-    } else {
-      VStack(spacing: 16) {
-        settingsSystemContentView
-
-        if screenType == .onboarding {
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
-        }
-      }
-      .padding(.bottom, 20)
-      .background(Color(braveSystemName: .pageBackground))
-      .toolbar(.hidden, for: .navigationBar)
     }
   }
 
   private var settingsSystemContentView: some View {
     VStack {
+      if shouldUseExtendedDesign {
+        HStack {
+          Image("focus-icon-brave", bundle: .module)
+            .resizable()
+            .matchedGeometryEffect(id: "icon", in: namespace)
+            .frame(width: 78, height: 78)
+
+          Image("focus-brave-watermark", bundle: .module)
+            .resizable()
+            .frame(width: 111, height: 31)
+        }
+      } else {
+        Image("focus-icon-brave", bundle: .module)
+          .resizable()
+          .matchedGeometryEffect(id: "icon", in: namespace)
+          .frame(width: 78, height: 78)
+      }
+
       VStack(spacing: 10) {
         Text(Strings.FocusOnboarding.defaultBrowserScreenTitle)
           .font(
@@ -95,7 +113,7 @@ public struct FocusSystemSettingsView: View {
         animation: .named(
           colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
           bundle: .module,
-          subdirectory: "LottieAssets/\(Locale.current.region?.identifier == "JP" ? "ja" : "en")"
+          subdirectory: "LottieAssets"
         )
       )
       .playing(loopMode: .loop)
@@ -111,7 +129,27 @@ public struct FocusSystemSettingsView: View {
 
       Spacer()
 
-      VStack(spacing: 12) {
+      HStack(spacing: 12) {
+
+        Button(
+          action: {
+            completeDefaultBrowserInteraction()
+          },
+          label: {
+            Text(Strings.FocusOnboarding.notNowActionButtonTitle)
+              .font(.subheadline.weight(.semibold))
+              .foregroundColor(Color(braveSystemName: .textInteractive))
+              .dynamicTypeSize(dynamicTypeRange)
+              .padding()
+              .frame(maxWidth: .infinity)
+          }
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+        .overlay(
+          RoundedRectangle(cornerRadius: 12.0)
+            .strokeBorder(Color(braveSystemName: .dividerInteractive).opacity(0.6), lineWidth: 1.0)
+        )
+
         Button(
           action: {
             if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
@@ -136,29 +174,6 @@ public struct FocusSystemSettingsView: View {
             Color.black.opacity(0.2)
           )
         )
-
-        Button(
-          action: {
-            completeDefaultBrowserInteraction()
-          },
-          label: {
-            Text(
-              screenType == .onboarding
-                ? "\(Strings.FocusOnboarding.startBrowseActionButtonTitle) \(Image(systemName: "arrow.right"))"
-                : "\(Strings.FocusOnboarding.notNowActionButtonTitle)"
-            )
-            .font(.subheadline.weight(.semibold))
-            .foregroundColor(Color(braveSystemName: .textInteractive))
-            .dynamicTypeSize(dynamicTypeRange)
-            .padding()
-            .frame(maxWidth: .infinity)
-          }
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
-        .overlay(
-          RoundedRectangle(cornerRadius: 12.0)
-            .strokeBorder(Color(braveSystemName: .dividerInteractive).opacity(0.6), lineWidth: 1.0)
-        )
       }
     }
     .padding(.vertical, shouldUseExtendedDesign ? 48 : 24)
@@ -167,8 +182,7 @@ public struct FocusSystemSettingsView: View {
 
   private func completeDefaultBrowserInteraction() {
     if screenType == .onboarding {
-      Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-      shouldDismiss = true
+      isCompleted = true
     } else {
       dismiss()
     }
@@ -179,10 +193,22 @@ public struct FocusSystemSettingsView: View {
 struct FocusSystemSettingsView_Previews: PreviewProvider {
   static var previews: some View {
     @State var shouldDismiss: Bool = false
+    @State var isCompleted: Bool = false
+    @Namespace var namespace
 
-    FocusSystemSettingsView(screenType: .onboarding, shouldDismiss: $shouldDismiss)
+    FocusSystemSettingsView(
+      namespace: namespace,
+      screenType: .onboarding,
+      isCompleted: $isCompleted,
+      shouldDismiss: $shouldDismiss
+    )
 
-    FocusSystemSettingsView(screenType: .callout, shouldDismiss: $shouldDismiss)
+    FocusSystemSettingsView(
+      namespace: namespace,
+      screenType: .callout,
+      isCompleted: $isCompleted,
+      shouldDismiss: $shouldDismiss
+    )
   }
 }
 #endif

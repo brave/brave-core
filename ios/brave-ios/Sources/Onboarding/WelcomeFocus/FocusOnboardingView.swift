@@ -17,6 +17,7 @@ public struct FocusOnboardingView: View {
   @Environment(\.dismiss) private var dismiss
 
   @State private var shouldDismiss = false
+  @State private var isSystemSettingsComplete = false
   @State private var isSplashViewPresented = true
 
   private let attributionManager: AttributionManager?
@@ -33,12 +34,23 @@ public struct FocusOnboardingView: View {
         if isSplashViewPresented {
           FocusSplashScreenView(namespace: namespace)
         } else {
+          FocusSystemSettingsView(
+            namespace: namespace,
+            screenType: .onboarding,
+            isCompleted: $isSystemSettingsComplete,
+            shouldDismiss: $shouldDismiss
+          )
+        }
+      }
+      .background {
+        NavigationLink("", isActive: $isSystemSettingsComplete) {
           FocusStepsView(
             namespace: namespace,
             attributionManager: attributionManager,
             p3aUtilities: p3aUtilities,
             shouldDismiss: $shouldDismiss
           )
+          .toolbar(.hidden, for: .navigationBar)
         }
       }
       .onAppear {

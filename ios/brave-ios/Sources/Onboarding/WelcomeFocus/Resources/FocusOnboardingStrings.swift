@@ -16,27 +16,11 @@ extension Strings {
       comment: "The title of the button that changes the screen to next"
     )
 
-    public static let movingAdsScreenTitle = NSLocalizedString(
-      "focusOnboarding.movingAdsScreenTitle",
-      tableName: "FocusOnboarding",
-      bundle: .module,
-      value: "Fewer ads & trackers.",
-      comment: "The title of the screen that shows ads are blocked"
-    )
-
-    public static let movingAdsScreenDescription = NSLocalizedString(
-      "focusOnboarding.movingAdsScreenDescription",
-      tableName: "FocusOnboarding",
-      bundle: .module,
-      value: "Browse faster and use less data.",
-      comment: "The subtitle of the screen that shows ads are blocked"
-    )
-
     public static let noVideoAdsScreenTitle = NSLocalizedString(
       "focusOnboarding.noVideoAdsScreenTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "No more video ads.",
+      value: "Block Interruptions When You Stream",
       comment: "The title of the screen that shows ads embeded in video are blocked"
     )
 
@@ -44,7 +28,7 @@ extension Strings {
       "focusOnboarding.noVideoAdsScreenDescription",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Seriously, we got rid of them.",
+      value: "Block annoying interruptions on your favorite streaming sites.",
       comment: "The subtitle of the screen that shows ads embeded in video are blocked"
     )
 
@@ -108,7 +92,7 @@ extension Strings {
       "focusOnboarding.systemSettingsButtonTitle",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Go To System Settings",
+      value: "Set As Default",
       comment: "The title of the button that triggers navigation link to settings"
     )
 
@@ -140,7 +124,7 @@ extension Strings {
       "focusOnboarding.urlBarIndicatorDescription",
       tableName: "FocusOnboarding",
       bundle: .module,
-      value: "Enter a URL to enjoy Fewer ads & trackers",
+      value: "Start streaming and enjoy fewer ads & trackers.",
       comment: "The description of the popup which points to URL Bar after onboarding"
     )
   }

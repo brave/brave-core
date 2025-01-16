@@ -15,7 +15,6 @@ struct FocusP3AScreenView: View {
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass: UserInterfaceSizeClass?
 
   @State private var isP3AHelpPresented = false
-  @State private var isSystemSettingsViewPresented = false
   @State private var isP3AEnabled: Bool = false
 
   @Binding var shouldDismiss: Bool
@@ -48,28 +47,15 @@ struct FocusP3AScreenView: View {
           .frame(maxWidth: 616, maxHeight: 895)
           .shadow(color: .black.opacity(0.1), radius: 18, x: 0, y: 8)
           .shadow(color: .black.opacity(0.05), radius: 0, x: 0, y: 1)
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background(Color(braveSystemName: .pageBackground))
-      .background {
-        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(screenType: .onboarding, shouldDismiss: $shouldDismiss)
-        }
-      }
       .toolbar(.hidden, for: .navigationBar)
     } else {
       VStack {
         consentp3aContentView
-        FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
-          .padding(.bottom, 20)
       }
       .background(Color(braveSystemName: .pageBackground))
-      .background {
-        NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView(screenType: .onboarding, shouldDismiss: $shouldDismiss)
-        }
-      }
       .toolbar(.hidden, for: .navigationBar)
     }
   }
@@ -162,11 +148,11 @@ struct FocusP3AScreenView: View {
       Button(
         action: {
           handleAdCampaignLookupAndDAUPing(isP3AEnabled: p3aUtilities?.isP3AEnabled ?? false)
-
-          isSystemSettingsViewPresented = true
+          Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
+          shouldDismiss = true
         },
         label: {
-          Text(Strings.FocusOnboarding.continueButtonTitle)
+          Text(Strings.FocusOnboarding.startBrowseActionButtonTitle)
             .font(.body.weight(.semibold))
             .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
             .dynamicTypeSize(dynamicTypeRange)
