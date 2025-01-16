@@ -94,9 +94,9 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   void AddedToWidget() override;
 
   // SplitViewBrowserDataObserver:
-  void OnTileTabs(const SplitViewBrowserData::Tile& tile) override;
-  void OnDidBreakTile(const SplitViewBrowserData::Tile& tile) override;
-  void OnSwapTabsInTile(const SplitViewBrowserData::Tile& tile) override;
+  void OnTileTabs(const TabTile& tile) override;
+  void OnDidBreakTile(const TabTile& tile) override;
+  void OnSwapTabsInTile(const TabTile& tile) override;
 
  private:
   friend class SplitViewBrowserTest;

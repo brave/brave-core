@@ -208,7 +208,7 @@ void SplitView::OnTileTabs(const TabTile& tile) {
   UpdateContentsWebViewVisual();
 }
 
-void SplitView::OnDidBreakTile(const SplitViewBrowserData::Tile& tile) {
+void SplitView::OnDidBreakTile(const TabTile& tile) {
   if (!IsActiveWebContentsTiled(tile)) {
     return;
   }

@@ -122,7 +122,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
       split_view_data->IsTabTiled(tab_strip_model().GetTabHandleAt(0)));
 
   // Then, the secondary web view should become hidden
-  EXPECT_FALSE(secondary_contents_view().GetVisible());
+  EXPECT_FALSE(secondary_contents_container().GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
