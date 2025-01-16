@@ -52,7 +52,7 @@ ChromePermissionsClient::MaybeCreateMessageUI(
     ContentSettingsType type,
     base::WeakPtr<permissions::PermissionPromptAndroid> prompt) {
   std::vector<raw_ptr<permissions::PermissionRequest, VectorExperimental>>
-      requests = prompt->delegate()->Requests();
+      requests = prompt->delegate_public()->Requests();
   if (requests.size() > 0) {
     brave_wallet::mojom::CoinType coin_type =
         brave_wallet::mojom::CoinType::ETH;
