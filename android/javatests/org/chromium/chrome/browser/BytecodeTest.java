@@ -1735,7 +1735,7 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         LayoutManager.class,
                         TopUiThemeColorProvider.class,
-                        Supplier.class,
+                        ObservableSupplier.class,
                         ViewGroup.class));
         Assert.assertTrue(
                 constructorsMatch(
