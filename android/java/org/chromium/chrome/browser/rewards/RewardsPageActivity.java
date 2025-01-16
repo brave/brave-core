@@ -13,6 +13,7 @@ import static org.chromium.chrome.browser.customtabs.CustomTabIntentDataProvider
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.Browser;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
@@ -32,7 +34,8 @@ import org.chromium.ui.util.ColorUtils;
 
 /** New Rewards 3.0 custom tab activity */
 public class RewardsPageActivity extends CustomTabActivity {
-    private static final int CLOSE_BUTTON_MARGIN = 32;
+    private static final int CLOSE_BUTTON_MARGIN = 16;
+    private static final int CLOSE_BUTTON_PADDING = 16;
 
     @Override
     public boolean supportsAppMenu() {
@@ -57,22 +60,22 @@ public class RewardsPageActivity extends CustomTabActivity {
 
         ViewGroup parentView = findViewById(android.R.id.content);
         ImageView closeImg = new ImageView(RewardsPageActivity.this);
+        closeImg.setPadding(
+                CLOSE_BUTTON_PADDING,
+                CLOSE_BUTTON_PADDING,
+                CLOSE_BUTTON_PADDING,
+                CLOSE_BUTTON_PADDING);
+
+        Drawable drawable =
+                ResourcesCompat.getDrawable(
+                        getResources(), R.drawable.blue_rounded_notification_bg, null);
+        closeImg.setBackground(drawable);
         closeImg.setImageResource(R.drawable.ic_baseline_close_24);
         closeImg.setOnClickListener(
                 button -> {
                     finish();
                 });
         parentView.addView(closeImg, layoutParams);
-
-        // OnBackPressedCallback callback =
-        //         new OnBackPressedCallback(true /* enabled by default */) {
-        //             @Override
-        //             public void handleOnBackPressed() {
-        //                 // Handle the back button event
-        //             }
-        //         };
-
-        // getOnBackPressedDispatcher().addCallback(RewardsPageActivity.this, callback);
     }
 
     public static void showPage(Context context, String url) {
