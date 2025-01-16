@@ -42,6 +42,7 @@ source_set("browser") {
     "api/sync",
     "api/translate",
     "api/unicode",
+    "api/unzip",
     "api/url",
     "api/version_info",
     "api/web",
