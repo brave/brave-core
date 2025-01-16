@@ -195,11 +195,7 @@ std::optional<OrchardFullViewKey> ZCashKeyring::GetOrchardFullViewKey(
 
 std::optional<OrchardSpendingKey> ZCashKeyring::GetOrchardSpendingKey(
     const uint32_t& account_id) {
-  if (!orchard_key_) {
-    return std::nullopt;
-  }
-
-  auto esk = orchard_key_->DeriveHardenedChild(account_id);
+  auto esk = DeriveOrchardAccount(account_id);
   if (!esk) {
     return std::nullopt;
   }
