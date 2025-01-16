@@ -52,25 +52,24 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   int index = 0;
   for (const auto& creative_set_conversion : creative_set_conversions) {
     if (!creative_set_conversion.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "creative_set_conversion_id",
+      // TODO(https://github.com/brave/brave-browser/issues/43314): Invalid
+      // creative set conversion.
+      SCOPED_CRASH_KEY_STRING64("Issue43314", "creative_set_conversion_id",
                                 creative_set_conversion.id);
-      SCOPED_CRASH_KEY_STRING256("Issue32066", "url_pattern",
+      SCOPED_CRASH_KEY_STRING256("Issue43314", "url_pattern",
                                  creative_set_conversion.url_pattern);
       SCOPED_CRASH_KEY_NUMBER(
-          "Issue32066", "observation_window",
+          "Issue43314", "observation_window",
           creative_set_conversion.observation_window.InDays());
       SCOPED_CRASH_KEY_NUMBER(
-          "Issue32066", "expire_at",
+          "Issue43314", "expire_at",
           creative_set_conversion.expire_at->ToDeltaSinceWindowsEpoch()
               .InMicroseconds());
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+      SCOPED_CRASH_KEY_STRING64("Issue43314", "failure_reason",
                                 "Invalid creative set conversion");
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid creative set conversion");
-
       continue;
     }
 
@@ -133,25 +132,24 @@ void GetCallback(
     const CreativeSetConversionInfo creative_set_conversion =
         FromMojomRow(mojom_db_row);
     if (!creative_set_conversion.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "creative_set_conversion_id",
+      // TODO(https://github.com/brave/brave-browser/issues/43314): Invalid
+      // creative set conversion.
+      SCOPED_CRASH_KEY_STRING64("Issue43314", "creative_set_conversion_id",
                                 creative_set_conversion.id);
-      SCOPED_CRASH_KEY_STRING256("Issue32066", "url_pattern",
+      SCOPED_CRASH_KEY_STRING256("Issue43314", "url_pattern",
                                  creative_set_conversion.url_pattern);
       SCOPED_CRASH_KEY_NUMBER(
-          "Issue32066", "observation_window",
+          "Issue43314", "observation_window",
           creative_set_conversion.observation_window.InDays());
       SCOPED_CRASH_KEY_NUMBER(
-          "Issue32066", "expire_at",
+          "Issue43314", "expire_at",
           creative_set_conversion.expire_at->ToDeltaSinceWindowsEpoch()
               .InMicroseconds());
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+      SCOPED_CRASH_KEY_STRING64("Issue43314", "failure_reason",
                                 "Invalid creative set conversion");
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid creative set conversion");
-
       continue;
     }
 

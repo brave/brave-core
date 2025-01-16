@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -28,8 +27,6 @@ namespace brave_ads {
 namespace {
 
 void FailedToMigrate(const std::string& reason, InitializeCallback callback) {
-  SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason", reason);
-  base::debug::DumpWithoutCrashing();
   BLOG(0, reason);
   std::move(callback).Run(/*success=*/false);
 }

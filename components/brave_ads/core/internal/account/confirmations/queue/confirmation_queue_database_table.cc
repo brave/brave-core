@@ -76,7 +76,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   for (const auto& confirmation_queue_item : confirmation_queue_items) {
     if (!confirmation_queue_item.IsValid()) {
       BLOG(0, "Invalid confirmation queue item");
-
       continue;
     }
 
@@ -230,7 +229,6 @@ void GetCallback(
         FromMojomRow(mojom_db_row);
     if (!confirmation_queue_item.IsValid()) {
       BLOG(0, "Invalid confirmation queue item");
-
       continue;
     }
 

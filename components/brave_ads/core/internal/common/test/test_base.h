@@ -30,7 +30,6 @@ class TimeDelta;
 namespace brave_ads {
 
 class Ads;
-class Database;
 class GlobalState;
 
 namespace test {
@@ -158,8 +157,6 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   brave_l10n::test::ScopedDefaultLocale scoped_default_locale_;
 
   ScopedBrowserVersionNumberForTesting scoped_browser_version_number_;
-
-  std::unique_ptr<Database> database_;
 
   bool is_integration_test_ = false;
 

@@ -42,8 +42,9 @@ base::Time Timer::StartWithPrivacy(const base::Location& location,
                                    base::OnceClosure user_task) {
   base::TimeDelta rand_delay = RandTimeDelta(delay);
   if (rand_delay.is_negative()) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066):
-    // Detect potential defects using `DumpWithoutCrashing`.
+    // TODO(https://github.com/brave/brave-browser/issues/43332): Invalid random
+    // timer delay.
+    SCOPED_CRASH_KEY_STRING256("Issue32066", "location", location.ToString());
     SCOPED_CRASH_KEY_NUMBER("Issue32066", "rand_delay",
                             rand_delay.InMicroseconds());
     SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",

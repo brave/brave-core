@@ -57,7 +57,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   for (const auto& ad_event : ad_events) {
     if (!ad_event.IsValid()) {
       BLOG(0, "Invalid ad event");
-
       continue;
     }
 
@@ -117,7 +116,6 @@ void GetCallback(
     const AdEventInfo ad_event = FromMojomRow(mojom_db_row);
     if (!ad_event.IsValid()) {
       BLOG(0, "Invalid ad event");
-
       continue;
     }
 

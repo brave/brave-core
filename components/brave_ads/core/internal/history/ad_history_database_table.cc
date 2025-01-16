@@ -62,24 +62,23 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   int index = 0;
   for (const auto& ad_history_item : ad_history) {
     if (!ad_history_item.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type",
+      // TODO(https://github.com/brave/brave-browser/issues/43328): Invalid ad
+      // history item.
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "ad_type",
                                 ToString(ad_history_item.type));
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "confirmation_type",
                                 ToString(ad_history_item.confirmation_type));
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "creative_instance_id",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "creative_instance_id",
                                 ad_history_item.creative_instance_id);
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "advertiser_id",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "advertiser_id",
                                 ad_history_item.advertiser_id);
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "segment",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "segment",
                                 ad_history_item.segment);
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "failure_reason",
                                 "Invalid ad history item");
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid ad history item");
-
       continue;
     }
 
@@ -143,24 +142,23 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const AdHistoryItemInfo ad_history_item = FromMojomRow(mojom_db_row);
     if (!ad_history_item.IsValid()) {
-      // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-      // potential defects using `DumpWithoutCrashing`.
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "ad_type",
+      // TODO(https://github.com/brave/brave-browser/issues/43328): Invalid ad
+      // history item.
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "ad_type",
                                 ToString(ad_history_item.type));
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "confirmation_type",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "confirmation_type",
                                 ToString(ad_history_item.confirmation_type));
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "creative_instance_id",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "creative_instance_id",
                                 ad_history_item.creative_instance_id);
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "advertiser_id",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "advertiser_id",
                                 ad_history_item.advertiser_id);
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "segment",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "segment",
                                 ad_history_item.segment);
-      SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+      SCOPED_CRASH_KEY_STRING64("Issue43328", "failure_reason",
                                 "Invalid ad history item");
       base::debug::DumpWithoutCrashing();
 
       BLOG(0, "Invalid ad history item");
-
       continue;
     }
 

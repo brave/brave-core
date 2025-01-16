@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -113,14 +112,7 @@ bool ConfirmationStateManager::FromJson(const std::string& json) {
   payment_tokens_.RemoveAllTokens();
 
   if (!dict) {
-    // TODO(https://github.com/brave/brave-browser/issues/32066): Detect
-    // potential defects using `DumpWithoutCrashing`.
-    SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
-                              "Malformed confirmation JSON state");
-    base::debug::DumpWithoutCrashing();
-
     BLOG(0, "Malformed confirmation JSON state");
-
     return false;
   }
 

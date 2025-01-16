@@ -119,7 +119,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           creatives.notification_ads.push_back(creative_ad);
           ++entries;
 
-          const std::string top_level_segment_name =
+          const std::string& top_level_segment_name =
               segment_name_hierarchy.front();
           CHECK(!top_level_segment_name.empty());
 
@@ -187,7 +187,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           creatives.inline_content_ads.push_back(creative_ad);
           ++entries;
 
-          const std::string top_level_segment_name =
+          const std::string& top_level_segment_name =
               segment_name_hierarchy.front();
           CHECK(!top_level_segment_name.empty());
 
@@ -266,7 +266,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           creatives.new_tab_page_ads.push_back(creative_ad);
           ++entries;
 
-          const std::string top_level_segment_name =
+          const std::string& top_level_segment_name =
               segment_name_hierarchy.front();
           CHECK(!top_level_segment_name.empty());
 
@@ -331,7 +331,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           creatives.promoted_content_ads.push_back(creative_ad);
           ++entries;
 
-          const std::string top_level_segment_name =
+          const std::string& top_level_segment_name =
               segment_name_hierarchy.front();
           CHECK(!top_level_segment_name.empty());
 

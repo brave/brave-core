@@ -69,9 +69,9 @@ void UserRewards::OnDidRedeemPaymentTokens(
   transactions_database_table_.Reconcile(
       payment_tokens, base::BindOnce([](bool success) {
         if (!success) {
-          // TODO(https://github.com/brave/brave-browser/issues/32066):
-          // Detect potential defects using `DumpWithoutCrashing`.
-          SCOPED_CRASH_KEY_STRING64("Issue32066", "failure_reason",
+          // TODO(https://github.com/brave/brave-browser/issues/43316):
+          // Failed to reconcile transactions.
+          SCOPED_CRASH_KEY_STRING64("Issue43316", "failure_reason",
                                     "Failed to reconcile transactions");
           base::debug::DumpWithoutCrashing();
 

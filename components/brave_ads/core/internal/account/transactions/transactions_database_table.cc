@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/debug/dump_without_crashing.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
@@ -56,7 +55,6 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
   int index = 0;
   for (const auto& transaction : transactions) {
     if (!transaction.IsValid()) {
-      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid transaction");
       continue;
     }
@@ -120,7 +118,6 @@ void GetCallback(
        mojom_db_transaction_result->rows_union->get_rows()) {
     const TransactionInfo transaction = FromMojomRow(mojom_db_row);
     if (!transaction.IsValid()) {
-      base::debug::DumpWithoutCrashing();
       BLOG(0, "Invalid transaction");
       continue;
     }
