@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <message name="IDS_NEW_TAB_BACKGROUND_SETTINGS_TITLE" desc="Title for background image settings">
+    Background Image
+  </message>
+
+  <message name="IDS_NEW_TAB_BRAVE_BACKGROUND_LABEL" desc="Label for Brave background option">
+    Brave backgrounds
+  </message>
+
+  <message name="IDS_NEW_TAB_CUSTOM_BACKGROUND_LABEL" desc="Label for custom background option">
+    Use your own
+  </message>
+
+  <message name="IDS_NEW_TAB_GRADIENT_BACKGROUND_LABEL" desc="Gradient background colors title">
+    Gradients
+  </message>
+
+  <message name="IDS_NEW_TAB_PHOTO_CREDITS_TEXT" desc="Photographer credits for Brave background images">
+    Photo by <ph name="AUTHOR">$1</ph>
+  </message>
+
+  <message name="IDS_NEW_TAB_RANDOMIZE_BACKGROUND_LABEL" desc="Label for random toggle button">
+    Refresh on every new tab
+  </message>
+
+  <message name="IDS_NEW_TAB_SETTINGS_TITLE" desc="Title for settings dialog">
+    Customize Dashboard
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_BACKGROUNDS_LABEL" desc="Text for settings background option">
+    Show Background Images
+  </message>
+
+  <message name="IDS_NEW_TAB_SHOW_SPONSORED_IMAGES_LABEL" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">
+    Show Sponsored Images
+  </message>
+
+  <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title">
+    Solid colors
+  </message>
+
+  <message name="IDS_NEW_TAB_UPLOAD_BACKGROUND_LABEL" desc="Text for custom background option upload">
+    Upload from device
+  </message>
+
+</grit-part>

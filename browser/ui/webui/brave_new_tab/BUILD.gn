@@ -1,0 +1,51 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ntp_background_images/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(!is_android)
+assert(enable_custom_background)
+
+mojom("mojom") {
+  sources = [ "new_tab_page.mojom" ]
+}
+
+source_set("brave_new_tab") {
+  sources = [
+    "background_adapter.cc",
+    "background_adapter.h",
+    "custom_image_chooser.cc",
+    "custom_image_chooser.h",
+    "new_tab_page_handler.cc",
+    "new_tab_page_handler.h",
+    "new_tab_page_ui.cc",
+    "new_tab_page_ui.h",
+    "update_observer.cc",
+    "update_observer.h",
+  ]
+
+  deps = [
+    ":mojom",
+    "//brave/browser:browser_process",
+    "//brave/browser/ntp_background",
+    "//brave/browser/resources/brave_new_tab:generated_resources",
+    "//brave/components/l10n/common",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
+    "//brave/components/resources:static_resources",
+    "//brave/components/resources:strings",
+    "//chrome/app:generated_resources",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/themes",
+    "//chrome/browser/ui/webui:webui_util",
+    "//components/prefs",
+    "//components/strings:components_strings",
+    "//ui/base",
+    "//ui/shell_dialogs",
+    "//ui/webui",
+  ]
+}
