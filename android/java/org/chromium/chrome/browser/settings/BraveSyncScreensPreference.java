@@ -65,6 +65,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.back_press.BackPressHelper;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
@@ -596,6 +597,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             getPureWords();
             setNewChainLayout();
             seedWordsReceived(mCodephrase, SyncInputType.NEW);
+            BravePermissionUtils.showNotificationPermissionDialog(getActivity());
         } else if (mMobileButton == v) {
             setAddMobileDeviceLayout();
             selectAddMobileTab();
