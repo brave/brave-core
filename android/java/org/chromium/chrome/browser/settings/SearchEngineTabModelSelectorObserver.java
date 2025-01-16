@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings;
 
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabCreationState;
-import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorObserver;
 
 /**
@@ -24,14 +23,18 @@ public class SearchEngineTabModelSelectorObserver implements TabModelSelectorObs
     @Override
     public void onNewTabCreated(Tab tab, @TabCreationState int creationState) {}
 
-    @Override
-    public void onTabModelSelected(TabModel newModel, TabModel oldModel) {
-        if (newModel.getProfile().isOffTheRecord()) {
-            BraveSearchEngineUtils.initializeBraveSearchEngineStates(newModel.getProfile());
-        } else {
-            BraveSearchEngineUtils.updateActiveDSE(newModel.getProfile(), null);
-        }
-    }
+    // TODO(alexeybarabash): WIP, temporary disabled to get a buildable version.
+    // onTabModelSelected method was removed at
+    // d223f2e8f4900df442947eb2303b356468625d6f .
+    // TabModelSupplier should be used instead.
+    // @Override
+    // public void onTabModelSelected(TabModel newModel, TabModel oldModel) {
+    //     if (newModel.getProfile().isOffTheRecord()) {
+    //         BraveSearchEngineUtils.initializeBraveSearchEngineStates(newModel.getProfile());
+    //     } else {
+    //         BraveSearchEngineUtils.updateActiveDSE(newModel.getProfile(), null);
+    //     }
+    // }
 
     @Override
     public void onTabStateInitialized() {}
