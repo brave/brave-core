@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/json/json_reader.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/version_info/channel.h"
@@ -22,6 +23,7 @@
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/regional_capabilities/regional_capabilities_service_factory.h"
 #include "chrome/common/channel_info.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "ui/message_center/public/cpp/notification.h"
@@ -119,6 +121,9 @@ AdsServiceDelegate::AdsServiceDelegate(
       search_engine_choice_service_(
           *profile_->GetPrefs(),
           local_state_,
+          CHECK_DEREF(
+              regional_capabilities::RegionalCapabilitiesServiceFactory::
+                  GetForProfile(&profile)),
           /*is_profile_eligible_for_dse_guest_propagation=*/false),
       adaptive_captcha_service_(adaptive_captcha_service),
       notification_ad_platform_bridge_(
