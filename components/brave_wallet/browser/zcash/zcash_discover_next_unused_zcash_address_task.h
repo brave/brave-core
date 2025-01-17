@@ -17,7 +17,7 @@ class ZCashDiscoverNextUnusedZCashAddressTask
     : public base::RefCounted<ZCashDiscoverNextUnusedZCashAddressTask> {
  public:
   ZCashDiscoverNextUnusedZCashAddressTask(
-      base::PassKey<class ZCashWalletService> pass_key,
+      base::PassKey<ZCashWalletService> pass_key,
       base::WeakPtr<ZCashWalletService> zcash_wallet_service,
       const mojom::AccountIdPtr& account_id,
       const mojom::ZCashAddressPtr& start_address,

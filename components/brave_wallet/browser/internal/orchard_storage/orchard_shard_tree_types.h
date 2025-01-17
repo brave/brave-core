@@ -141,6 +141,7 @@ struct OrchardTreeState {
   // Number of leafs at the position.
   uint32_t tree_size = 0u;
   // https://docs.aztec.network/protocol-specs/l1-smart-contracts/frontier
+  // Empty arrays means no frontier will be inserted.
   std::vector<uint8_t> frontier;
 };
 

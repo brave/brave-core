@@ -20,7 +20,7 @@ ZCashCreateTransparentToOrchardTransactionTask::
         absl::variant<
             base::PassKey<
                 class ZCashCreateTransparentToOrchardTransactionTaskTest>,
-            base::PassKey<class ZCashWalletService>> pass_key,
+            base::PassKey<ZCashWalletService>> pass_key,
         ZCashWalletService& zcash_wallet_service,
         ZCashActionContext context,
         const OrchardAddrRawPart& receiver,
@@ -38,7 +38,7 @@ ZCashCreateTransparentToOrchardTransactionTask::
     ~ZCashCreateTransparentToOrchardTransactionTask() = default;
 
 void ZCashCreateTransparentToOrchardTransactionTask::Start() {
-  CHECK(!started_);
+  DCHECK(!started_);
   started_ = true;
   ScheduleWorkOnTask();
 }
@@ -68,9 +68,8 @@ void ZCashCreateTransparentToOrchardTransactionTask::WorkOnTask() {
     return;
   }
 
-  if (!transaction_ && !CreateTransaction()) {
-    std::move(callback_).Run(base::unexpected(error_.value()));
-    zcash_wallet_service_->CreateTransactionTaskDone(this);
+  if (!transaction_) {
+    CreateTransaction();
     return;
   }
 
@@ -78,7 +77,7 @@ void ZCashCreateTransparentToOrchardTransactionTask::WorkOnTask() {
   zcash_wallet_service_->CreateTransactionTaskDone(this);
 }
 
-bool ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
+void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
   CHECK(utxo_map_);
 
   ZCashTransaction zcash_transaction;
@@ -90,7 +89,8 @@ bool ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
       2 /* actions count for 1 orchard output no orchard inputs */);
   if (!pick_transparent_inputs_result) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-    return false;
+    ScheduleWorkOnTask();
+    return;
   }
   zcash_transaction.transparent_part().inputs =
       pick_transparent_inputs_result->inputs;
@@ -120,15 +120,15 @@ bool ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
       receiver_, context_.chain_id == mojom::kZCashTestnet);
   if (!orchard_unified_addr) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-    return false;
+    ScheduleWorkOnTask();
+    return;
   }
   zcash_transaction.set_amount(orchard_output.value);
   zcash_transaction.set_to(*orchard_unified_addr);
   zcash_transaction.set_memo(memo_);
 
   transaction_ = std::move(zcash_transaction);
-
-  return true;
+  ScheduleWorkOnTask();
 }
 
 void ZCashCreateTransparentToOrchardTransactionTask::GetAllUtxos() {

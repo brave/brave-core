@@ -23,7 +23,7 @@ class ZCashResolveBalanceTask {
  public:
   using ZCashResolveBalanceTaskCallback = base::OnceCallback<void(
       base::expected<mojom::ZCashBalancePtr, std::string>)>;
-  ZCashResolveBalanceTask(base::PassKey<class ZCashWalletService> pass_key,
+  ZCashResolveBalanceTask(base::PassKey<ZCashWalletService> pass_key,
                           ZCashWalletService& zcash_wallet_service,
                           const std::string& chain_id,
                           mojom::AccountIdPtr account_id,

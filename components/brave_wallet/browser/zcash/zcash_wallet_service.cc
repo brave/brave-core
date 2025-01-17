@@ -92,13 +92,13 @@ ZCashWalletService::~ZCashWalletService() = default;
 void ZCashWalletService::GetBalance(const std::string& chain_id,
                                     mojom::AccountIdPtr account_id,
                                     GetBalanceCallback callback) {
-  auto balance_task = std::make_unique<ZCashResolveBalanceTask>(
-      base::PassKey<class ZCashWalletService>(), *this, chain_id,
-      std::move(account_id),
-      base::BindOnce(&ZCashWalletService::OnResolveBalanceResult,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-  balance_task->Start();
-  resolve_balance_tasks_.push_back(std::move(balance_task));
+  auto& task = resolve_balance_tasks_.emplace_back(
+      std::make_unique<ZCashResolveBalanceTask>(
+          base::PassKey<ZCashWalletService>(), *this, chain_id,
+          std::move(account_id),
+          base::BindOnce(&ZCashWalletService::OnResolveBalanceResult,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
+  task->Start();
 }
 
 void ZCashWalletService::OnResolveBalanceResult(
@@ -220,13 +220,13 @@ void ZCashWalletService::GetChainTipStatus(mojom::AccountIdPtr account_id,
                                            const std::string& chain_id,
                                            GetChainTipStatusCallback callback) {
 #if BUILDFLAG(ENABLE_ORCHARD)
-  auto task = std::make_unique<ZCashGetZCashChainTipStatusTask>(
-      base::PassKey<ZCashWalletService>(), *this,
-      CreateActionContext(account_id, chain_id),
-      base::BindOnce(&ZCashWalletService::OnGetChainTipStatusResult,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  auto& task = get_zcash_chain_tip_status_tasks_.emplace_back(
+      std::make_unique<ZCashGetZCashChainTipStatusTask>(
+          base::PassKey<ZCashWalletService>(), *this,
+          CreateActionContext(account_id, chain_id),
+          base::BindOnce(&ZCashWalletService::OnGetChainTipStatusResult,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
   task->Start();
-  get_zcash_chain_tip_status_tasks_.push_back(std::move(task));
 #else
   std::move(callback).Run(nullptr, "Not supported");
 #endif
@@ -305,7 +305,7 @@ void ZCashWalletService::DiscoverNextUnusedAddress(
       change ? account_info->next_transparent_change_address.Clone()
              : account_info->next_transparent_receive_address.Clone();
   auto task = base::MakeRefCounted<ZCashDiscoverNextUnusedZCashAddressTask>(
-      base::PassKey<class ZCashWalletService>(), weak_ptr_factory_.GetWeakPtr(),
+      base::PassKey<ZCashWalletService>(), weak_ptr_factory_.GetWeakPtr(),
       account_id, start_address, std::move(callback));
   task->Start();
 }
@@ -375,7 +375,7 @@ void ZCashWalletService::SignAndPostTransaction(
     SignAndPostTransactionCallback callback) {
   auto& task = complete_transaction_tasks_.emplace_back(
       std::make_unique<ZCashCompleteTransactionTask>(
-          base::PassKey<class ZCashWalletService>(), *this,
+          base::PassKey<ZCashWalletService>(), *this,
           CreateActionContext(account_id, chain_id), keyring_service_.get(),
           zcash_transaction,
           base::BindOnce(&ZCashWalletService::CompleteTransactionDone,
@@ -602,13 +602,12 @@ void ZCashWalletService::CreateShieldAllTransaction(
   auto internal_addr = keyring_service_->GetOrchardRawBytes(
       account_id, CreateOrchardInternalKeyId(account_id));
 
-  auto shield_funds_task =
+  auto& task = create_shield_transaction_tasks_.emplace_back(
       std::make_unique<ZCashCreateTransparentToOrchardTransactionTask>(
-          base::PassKey<class ZCashWalletService>(), *this,
+          base::PassKey<ZCashWalletService>(), *this,
           CreateActionContext(account_id, chain_id), *internal_addr,
-          std::nullopt, kZCashFullAmount, std::move(callback));
-  shield_funds_task->Start();
-  create_shield_transaction_tasks_.push_back(std::move(shield_funds_task));
+          std::nullopt, kZCashFullAmount, std::move(callback)));
+  task->Start();
 }
 
 void ZCashWalletService::CreateOrchardToOrchardTransaction(
@@ -626,14 +625,12 @@ void ZCashWalletService::CreateOrchardToOrchardTransaction(
     return;
   }
 
-  auto transfer_shield_funds_task =
+  auto& task = create_shielded_transaction_tasks_.emplace_back(
       std::make_unique<ZCashCreateOrchardToOrchardTransactionTask>(
-          base::PassKey<class ZCashWalletService>(), *this,
+          base::PassKey<ZCashWalletService>(), *this,
           CreateActionContext(account_id, chain_id), *receiver_addr,
-          std::move(memo), amount, std::move(callback));
-  transfer_shield_funds_task->Start();
-  create_shielded_transaction_tasks_.push_back(
-      std::move(transfer_shield_funds_task));
+          std::move(memo), amount, std::move(callback)));
+  task->Start();
 }
 
 void ZCashWalletService::CreateTransparentToOrchardTransaction(
@@ -653,25 +650,26 @@ void ZCashWalletService::CreateTransparentToOrchardTransaction(
     return;
   }
 
-  auto shield_funds_task =
+  auto& task = create_shield_transaction_tasks_.emplace_back(
       std::make_unique<ZCashCreateTransparentToOrchardTransactionTask>(
-          base::PassKey<class ZCashWalletService>(), *this,
+          base::PassKey<ZCashWalletService>(), *this,
           CreateActionContext(account_id, chain_id), *receiver_addr,
-          std::move(memo), amount, std::move(callback));
-  shield_funds_task->Start();
-  create_shield_transaction_tasks_.push_back(std::move(shield_funds_task));
+          std::move(memo), amount, std::move(callback)));
+  task->Start();
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(
     ZCashCreateTransparentToOrchardTransactionTask* task) {
-  CHECK(create_shield_transaction_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; }));
+  bool removed = create_shield_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; });
+  DCHECK(removed);
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(
     ZCashCreateOrchardToOrchardTransactionTask* task) {
-  CHECK(create_shielded_transaction_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; }));
+  bool removed = create_shielded_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; });
+  DCHECK(removed);
 }
 
 void ZCashWalletService::CreateShieldAllTransactionTaskDone(
@@ -865,19 +863,22 @@ void ZCashWalletService::OnTransactionResolvedForStatus(
 
 void ZCashWalletService::CompleteTransactionTaskDone(
     ZCashCompleteTransactionTask* task) {
-  CHECK(complete_transaction_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; }));
+  bool removed = complete_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; });
+  DCHECK(removed);
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(
     ZCashCreateTransparentTransactionTask* task) {
-  CHECK(create_transaction_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; }));
+  bool removed = create_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; });
+  DCHECK(removed);
 }
 
 void ZCashWalletService::ResolveBalanceTaskDone(ZCashResolveBalanceTask* task) {
-  CHECK(resolve_balance_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; }));
+  bool removed = resolve_balance_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; });
+  DCHECK(removed);
 }
 
 ZCashRpc& ZCashWalletService::zcash_rpc() {

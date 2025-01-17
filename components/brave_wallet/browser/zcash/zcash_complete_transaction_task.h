@@ -27,7 +27,7 @@ class ZCashCompleteTransactionTask {
  public:
   using ZCashCompleteTransactionTaskCallback =
       base::OnceCallback<void(base::expected<ZCashTransaction, std::string>)>;
-  ZCashCompleteTransactionTask(base::PassKey<class ZCashWalletService> pass_key,
+  ZCashCompleteTransactionTask(base::PassKey<ZCashWalletService> pass_key,
                                ZCashWalletService& zcash_wallet_service,
                                ZCashActionContext context,
                                KeyringService& keyring_service,

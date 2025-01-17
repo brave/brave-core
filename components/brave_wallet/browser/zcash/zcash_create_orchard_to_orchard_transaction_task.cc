@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -17,7 +18,7 @@ ZCashCreateOrchardToOrchardTransactionTask::
     ZCashCreateOrchardToOrchardTransactionTask(
         absl::variant<
             base::PassKey<class ZCashCreateOrchardToOrchardTransactionTaskTest>,
-            base::PassKey<class ZCashWalletService>> pass_key,
+            base::PassKey<ZCashWalletService>> pass_key,
         ZCashWalletService& zcash_wallet_service,
         ZCashActionContext context,
         const OrchardAddrRawPart& receiver,
@@ -35,7 +36,7 @@ ZCashCreateOrchardToOrchardTransactionTask::
     ~ZCashCreateOrchardToOrchardTransactionTask() = default;
 
 void ZCashCreateOrchardToOrchardTransactionTask::Start() {
-  CHECK(!started_);
+  DCHECK(!started_);
   started_ = true;
   ScheduleWorkOnTask();
 }
@@ -126,14 +127,10 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   // Create shielded output
   OrchardOutput& orchard_output =
       zcash_transaction.orchard_part().outputs.emplace_back();
-  if (zcash_transaction.TotalInputsAmount() <
-      zcash_transaction.fee() + pick_result->change) {
-    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-    ScheduleWorkOnTask();
-    return;
-  }
-  orchard_output.value = zcash_transaction.TotalInputsAmount() -
-                         zcash_transaction.fee() - pick_result->change;
+  base::CheckedNumeric<uint32_t> value =
+      base::CheckSub(zcash_transaction.TotalInputsAmount(),
+                     zcash_transaction.fee() + pick_result->change);
+  orchard_output.value = value.ValueOrDie();
   orchard_output.addr = receiver_;
   orchard_output.memo = memo_;
 

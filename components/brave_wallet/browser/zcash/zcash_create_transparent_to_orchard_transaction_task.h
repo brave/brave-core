@@ -29,7 +29,7 @@ class ZCashCreateTransparentToOrchardTransactionTask {
       absl::variant<
           base::PassKey<
               class ZCashCreateTransparentToOrchardTransactionTaskTest>,
-          base::PassKey<class ZCashWalletService>> pass_key,
+          base::PassKey<ZCashWalletService>> pass_key,
       ZCashWalletService& zcash_wallet_service,
       ZCashActionContext context,
       const OrchardAddrRawPart& receiver,
@@ -54,7 +54,7 @@ class ZCashCreateTransparentToOrchardTransactionTask {
 
   void SetError(const std::string& error_string) { error_ = error_string; }
 
-  bool CreateTransaction();
+  void CreateTransaction();
 
   const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
   ZCashActionContext context_;

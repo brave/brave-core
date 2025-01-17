@@ -21,7 +21,7 @@ ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTask(
 ZCashGetZCashChainTipStatusTask::~ZCashGetZCashChainTipStatusTask() = default;
 
 void ZCashGetZCashChainTipStatusTask::Start() {
-  CHECK(!started_);
+  DCHECK(!started_);
   started_ = true;
   ScheduleWorkOnTask();
 }

@@ -36,9 +36,8 @@ mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
     }
   }
 
-  // TODO(cypt4): Add proper flag here
-  // https://github.com/brave/brave-browser/issues/39314
   bool use_shielded_pool = !tx.orchard_part().inputs.empty();
+  DCHECK(!use_shielded_pool || tx.transparent_part().inputs.empty());
   return mojom::ZecTxData::New(
       use_shielded_pool, tx.to(), OrchardMemoToVec(tx.memo()), tx.amount(),
       tx.fee(), std::move(mojom_inputs), std::move(mojom_outputs));

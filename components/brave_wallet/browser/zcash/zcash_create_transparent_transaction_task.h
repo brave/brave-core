@@ -21,7 +21,7 @@ class ZCashCreateTransparentTransactionTask {
   using CreateTransactionCallback =
       ZCashWalletService::CreateTransactionCallback;
   ZCashCreateTransparentTransactionTask(
-      base::PassKey<class ZCashWalletService> pass_key,
+      base::PassKey<ZCashWalletService> pass_key,
       ZCashWalletService& zcash_wallet_service,
       ZCashActionContext context,
       const std::string& address_to,

@@ -23,6 +23,7 @@ namespace brave_wallet {
 namespace {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
+// https://github.com/zcash/librustzcash/blob/2ec38bae002c4763ecda3ac9371e3e367b383fcc/zcash_client_backend/CHANGELOG.md?plain=1#L1264
 constexpr size_t kMinConfirmations = 10;
 
 std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
@@ -39,7 +40,7 @@ std::unique_ptr<OrchardBundleManager> ApplyOrchardSignatures(
 }  // namespace
 
 ZCashCompleteTransactionTask::ZCashCompleteTransactionTask(
-    base::PassKey<class ZCashWalletService> pass_key,
+    base::PassKey<ZCashWalletService> pass_key,
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     KeyringService& keyring_service,
@@ -50,6 +51,8 @@ ZCashCompleteTransactionTask::ZCashCompleteTransactionTask(
       keyring_service_(keyring_service),
       transaction_(transaction),
       callback_(std::move(callback)) {}
+
+ZCashCompleteTransactionTask::~ZCashCompleteTransactionTask() = default;
 
 void ZCashCompleteTransactionTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
@@ -111,8 +114,6 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
 void ZCashCompleteTransactionTask::Start() {
   ScheduleWorkOnTask();
 }
-
-ZCashCompleteTransactionTask::~ZCashCompleteTransactionTask() = default;
 
 void ZCashCompleteTransactionTask::GetLightdInfo() {
   context_.zcash_rpc->GetLightdInfo(
@@ -218,7 +219,6 @@ void ZCashCompleteTransactionTask::OnWitnessCalulcateResult(
     return;
   }
 
-  // TODO(cypt4): rewrite
   witness_inputs_ = result.value();
   transaction_.orchard_part().inputs = result.value();
   ScheduleWorkOnTask();

@@ -17,7 +17,7 @@ namespace brave_wallet {
 
 // CreateTransparentTransactionTask
 ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
-    base::PassKey<class ZCashWalletService> pass_key,
+    base::PassKey<ZCashWalletService> pass_key,
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     const std::string& address_to,
@@ -35,7 +35,7 @@ ZCashCreateTransparentTransactionTask::
     ~ZCashCreateTransparentTransactionTask() = default;
 
 void ZCashCreateTransparentTransactionTask::Start() {
-  CHECK(!started_);
+  DCHECK(!started_);
   started_ = true;
   ScheduleWorkOnTask();
 }

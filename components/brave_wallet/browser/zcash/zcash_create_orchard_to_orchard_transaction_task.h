@@ -25,7 +25,7 @@ class ZCashCreateOrchardToOrchardTransactionTask {
   ZCashCreateOrchardToOrchardTransactionTask(
       absl::variant<
           base::PassKey<class ZCashCreateOrchardToOrchardTransactionTaskTest>,
-          base::PassKey<class ZCashWalletService>> pass_key,
+          base::PassKey<ZCashWalletService>> pass_key,
       ZCashWalletService& zcash_wallet_service,
       ZCashActionContext context,
       const OrchardAddrRawPart& receiver,

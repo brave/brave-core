@@ -17,7 +17,7 @@ namespace brave_wallet {
 
 ZCashDiscoverNextUnusedZCashAddressTask::
     ZCashDiscoverNextUnusedZCashAddressTask(
-        base::PassKey<class ZCashWalletService> pass_key,
+        base::PassKey<ZCashWalletService> pass_key,
         base::WeakPtr<ZCashWalletService> zcash_wallet_service,
         const mojom::AccountIdPtr& account_id,
         const mojom::ZCashAddressPtr& start_address,
@@ -31,7 +31,7 @@ ZCashDiscoverNextUnusedZCashAddressTask::
     ~ZCashDiscoverNextUnusedZCashAddressTask() = default;
 
 void ZCashDiscoverNextUnusedZCashAddressTask::Start() {
-  CHECK(!started_);
+  DCHECK(!started_);
   started_ = true;
   ScheduleWorkOnTask();
 }
