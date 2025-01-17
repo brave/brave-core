@@ -23,15 +23,17 @@ class ZCashResolveBalanceTask {
  public:
   using ZCashResolveBalanceTaskCallback = base::OnceCallback<void(
       base::expected<mojom::ZCashBalancePtr, std::string>)>;
-  ZCashResolveBalanceTask(ZCashWalletService& zcash_wallet_service,
+  ZCashResolveBalanceTask(base::PassKey<class ZCashWalletService> pass_key,
+                          ZCashWalletService& zcash_wallet_service,
                           const std::string& chain_id,
                           mojom::AccountIdPtr account_id,
                           ZCashResolveBalanceTaskCallback callback);
   ~ZCashResolveBalanceTask();
 
-  void ScheduleWorkOnTask();
+  void Start();
 
  private:
+  void ScheduleWorkOnTask();
   void WorkOnTask();
 
   void OnDiscoveryDoneForBalance(
@@ -52,6 +54,8 @@ class ZCashResolveBalanceTask {
   std::string chain_id_;
   mojom::AccountIdPtr account_id_;
   ZCashResolveBalanceTaskCallback callback_;
+
+  bool started_ = false;
 
   std::optional<std::string> error_;
   std::optional<ZCashWalletService::RunDiscoveryResult> discovery_result_;

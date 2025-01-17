@@ -35,11 +35,13 @@ mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
           mojom::ZecTxOutput::New(*orchard_unified_addr, output.value));
     }
   }
+
   // TODO(cypt4): Add proper flag here
   // https://github.com/brave/brave-browser/issues/39314
-  return mojom::ZecTxData::New(false, tx.to(), OrchardMemoToVec(tx.memo()),
-                               tx.amount(), tx.fee(), std::move(mojom_inputs),
-                               std::move(mojom_outputs));
+  bool use_shielded_pool = !tx.orchard_part().inputs.empty();
+  return mojom::ZecTxData::New(
+      use_shielded_pool, tx.to(), OrchardMemoToVec(tx.memo()), tx.amount(),
+      tx.fee(), std::move(mojom_inputs), std::move(mojom_outputs));
 }
 }  // namespace
 

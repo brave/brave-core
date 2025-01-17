@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_DISCOVER_NEXT_UNUSED_ZCASH_ADDRESS_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_DISCOVER_NEXT_UNUSED_ZCASH_ADDRESS_TASK_H_
 
+#include <string>
+
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -14,18 +16,21 @@ namespace brave_wallet {
 class ZCashDiscoverNextUnusedZCashAddressTask
     : public base::RefCounted<ZCashDiscoverNextUnusedZCashAddressTask> {
  public:
-  void ScheduleWorkOnTask();
+  ZCashDiscoverNextUnusedZCashAddressTask(
+      base::PassKey<class ZCashWalletService> pass_key,
+      base::WeakPtr<ZCashWalletService> zcash_wallet_service,
+      const mojom::AccountIdPtr& account_id,
+      const mojom::ZCashAddressPtr& start_address,
+      ZCashWalletService::DiscoverNextUnusedAddressCallback callback);
+
+  void Start();
 
  private:
-  friend class ZCashWalletService;
   friend class base::RefCounted<ZCashDiscoverNextUnusedZCashAddressTask>;
 
-  ZCashDiscoverNextUnusedZCashAddressTask(
-      base::WeakPtr<ZCashWalletService> zcash_wallet_service,
-      mojom::AccountIdPtr account_id,
-      mojom::ZCashAddressPtr start_address,
-      ZCashWalletService::DiscoverNextUnusedAddressCallback callback);
   virtual ~ZCashDiscoverNextUnusedZCashAddressTask();
+
+  void ScheduleWorkOnTask();
 
   mojom::ZCashAddressPtr GetNextAddress(const mojom::ZCashAddressPtr& address);
 
@@ -38,6 +43,9 @@ class ZCashDiscoverNextUnusedZCashAddressTask
   mojom::AccountIdPtr account_id_;
   mojom::ZCashAddressPtr start_address_;
   mojom::ZCashAddressPtr current_address_;
+
+  bool started_ = false;
+
   mojom::ZCashAddressPtr result_;
   std::optional<uint64_t> block_end_;
   std::optional<std::string> error_;

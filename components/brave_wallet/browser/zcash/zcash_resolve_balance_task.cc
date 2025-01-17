@@ -14,6 +14,7 @@
 namespace brave_wallet {
 
 ZCashResolveBalanceTask::ZCashResolveBalanceTask(
+    base::PassKey<class ZCashWalletService> pass_key,
     ZCashWalletService& zcash_wallet_service,
     const std::string& chain_id,
     mojom::AccountIdPtr account_id,
@@ -23,7 +24,13 @@ ZCashResolveBalanceTask::ZCashResolveBalanceTask(
       account_id_(std::move(account_id)),
       callback_(std::move(callback)) {}
 
-ZCashResolveBalanceTask::~ZCashResolveBalanceTask() {}
+ZCashResolveBalanceTask::~ZCashResolveBalanceTask() = default;
+
+void ZCashResolveBalanceTask::Start() {
+  CHECK(!started_);
+  started_ = true;
+  ScheduleWorkOnTask();
+}
 
 void ZCashResolveBalanceTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(

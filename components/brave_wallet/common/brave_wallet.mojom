@@ -1820,6 +1820,7 @@ struct ZCashBalance {
   uint64 total_balance;
   uint64 transparent_balance;
   uint64 shielded_balance;
+  // Transparent balances
   map<string, uint64> balances;  // address -> balance of that address(sum of all related utxos)
 };
 
@@ -1854,6 +1855,23 @@ enum ZCashAddressValidationResult {
   InvalidTransparent = 3,
   InvalidUnified = 4,
   NetworkMismatch = 5
+};
+
+struct ZCashOrchardNoteInfo {
+  uint32 block_index;
+  uint32 tree_position;
+  uint32 value;
+};
+
+struct ZCashOrchardCheckpoint {
+  uint32 checkpoint_id;
+  uint32 tree_position;
+};
+
+struct ZCashTreeState {
+  uint32 tree_size;
+  array<ZCashOrchardNoteInfo> notes;
+  array<ZCashOrchardCheckpoint> checkpoints;
 };
 
 struct ZCashShieldSyncStatus {

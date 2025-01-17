@@ -385,7 +385,7 @@ export function isSolanaSplTransaction(
 export const findTransactionToken = <
   T extends Pick<
     BraveWallet.BlockchainToken,
-    'contractAddress' | 'chainId' | 'coin'
+    'contractAddress' | 'chainId' | 'coin' | 'isShielded'
   >
 >(
   tx: TransactionInfo | undefined,
@@ -407,7 +407,8 @@ export const findTransactionToken = <
       (t) =>
         t.contractAddress === '' &&
         t.chainId === tx.chainId &&
-        t.coin === tx.fromAccountId.coin
+        t.coin === tx.fromAccountId.coin &&
+        t.isShielded === (tx.txDataUnion.zecTxData?.useShieldedPool ?? false)
     )
   }
 
@@ -1181,6 +1182,17 @@ export const accountHasInsufficientFundsForTransaction = ({
   if (txType === BraveWallet.TransactionType.ETHSwap) {
     return sellTokenBalance !== '' && sellAmountWei.gt(sellTokenBalance)
   }
+
+  if (tx.chainId === BraveWallet.Z_CASH_MAINNET ||
+      tx.chainId === BraveWallet.Z_CASH_TESTNET) {
+    return (
+      accountTokenBalance !== '' &&
+      new Amount(getTransactionBaseValue(tx))
+        .plus(gasFee)
+        .gt(accountTokenBalance)
+    )
+  }
+
   // ETHSend
   // SolanaSystemTransfer
   // Other

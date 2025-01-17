@@ -34,7 +34,9 @@
 
 #if BUILDFLAG(ENABLE_ORCHARD)
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "base/test/scoped_run_loop_timeout.h"
+#include "base/threading/sequence_bound.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_test_utils.h"
@@ -59,6 +61,14 @@ std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   std::copy_n(vec.begin(), 32, sized_vec.begin());
   return sized_vec;
 }
+
+#if BUILDFLAG(ENABLE_ORCHARD) && !BUILDFLAG(IS_ANDROID)
+void AppendMerklePath(OrchardNoteWitness& witness, const std::string& hex) {
+  OrchardMerkleHash hash;
+  base::span(hash).copy_from(*PrefixedHexStringToBytes(hex));
+  witness.merkle_path.push_back(hash);
+}
+#endif
 
 class MockZCashRPC : public ZCashRpc {
  public:
@@ -104,6 +114,62 @@ class MockZCashRPC : public ZCashRpc {
                     GetLightdInfoCallback callback));
 };
 
+class MockOrchardSyncState : public OrchardSyncState {
+ public:
+  explicit MockOrchardSyncState(const base::FilePath& path_to_database)
+      : OrchardSyncState(path_to_database) {}
+  ~MockOrchardSyncState() override {}
+
+  MOCK_METHOD1(GetSpendableNotes,
+               base::expected<std::vector<OrchardNote>, OrchardStorage::Error>(
+                   const mojom::AccountIdPtr& account_id));
+
+  MOCK_METHOD3(CalculateWitnessForCheckpoint,
+               base::expected<std::vector<OrchardInput>, OrchardStorage::Error>(
+                   const mojom::AccountIdPtr& account_id,
+                   const std::vector<OrchardInput>& notes,
+                   uint32_t checkpoint_position));
+
+  MOCK_METHOD3(GetMaxCheckpointedHeight,
+               base::expected<std::optional<uint32_t>, OrchardStorage::Error>(
+                   const mojom::AccountIdPtr& account_id,
+                   uint32_t chain_tip_height,
+                   uint32_t min_confirmations));
+};
+
+class MockOrchardSyncStateProxy : public OrchardSyncState {
+ public:
+  MockOrchardSyncStateProxy(const base::FilePath& file_path,
+                            OrchardSyncState* instance)
+      : OrchardSyncState(file_path), instance_(instance) {}
+
+  ~MockOrchardSyncStateProxy() override {}
+
+  base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
+  GetSpendableNotes(const mojom::AccountIdPtr& account_id) override {
+    return instance_->GetSpendableNotes(account_id);
+  }
+
+  base::expected<std::vector<OrchardInput>, OrchardStorage::Error>
+  CalculateWitnessForCheckpoint(const mojom::AccountIdPtr& account_id,
+                                const std::vector<OrchardInput>& notes,
+                                uint32_t checkpoint_position) override {
+    return instance_->CalculateWitnessForCheckpoint(account_id, notes,
+                                                    checkpoint_position);
+  }
+
+  base::expected<std::optional<uint32_t>, OrchardStorage::Error>
+  GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
+                           uint32_t chain_tip_height,
+                           uint32_t min_confirmations) override {
+    return instance_->GetMaxCheckpointedHeight(account_id, chain_tip_height,
+                                               min_confirmations);
+  }
+
+ private:
+  raw_ptr<OrchardSyncState> instance_;
+};
+
 }  // namespace
 
 class ZCashWalletServiceUnitTest : public testing::Test {
@@ -113,9 +179,6 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   ~ZCashWalletServiceUnitTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_shielded_transactions_enabled", "true"}});
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
@@ -155,7 +218,12 @@ class ZCashWalletServiceUnitTest : public testing::Test {
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   base::SequenceBound<OrchardSyncState>& sync_state() {
-    return zcash_wallet_service_->sync_state();
+    return zcash_wallet_service_->sync_state_;
+  }
+
+  void OverrideSyncStateForTesting(
+      base::SequenceBound<OrchardSyncState> sync_state) {
+    zcash_wallet_service_->OverrideSyncStateForTesting(std::move(sync_state));
   }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
@@ -271,6 +339,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
         EXPECT_EQ(balance->transparent_balance, 50u);
         EXPECT_EQ(balance->shielded_balance, 0u);
       }));
+
   zcash_wallet_service_->GetBalance(mojom::kZCashMainnet, account_id.Clone(),
                                     balance_callback.Get());
   task_environment_.RunUntilIdle();
@@ -341,9 +410,10 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   auto update_notes_callback = base::BindLambdaForTesting(
       [](base::expected<OrchardStorage::Result, OrchardStorage::Error>) {});
 
-  OrchardBlockScanner::Result result = CreateResultForTesting(
-      OrchardTreeState(), std::vector<OrchardCommitment>());
+  auto result = CreateResultForTesting(OrchardTreeState(),
+                                       std::vector<OrchardCommitment>());
   result.discovered_notes = std::vector<OrchardNote>({note});
+  result.found_spends = std::vector<OrchardNoteSpend>();
 
   sync_state()
       .AsyncCall(&OrchardSyncState::ApplyScanResults)
@@ -432,6 +502,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
   OrchardBlockScanner::Result result = CreateResultForTesting(
       OrchardTreeState(), std::vector<OrchardCommitment>());
   result.discovered_notes = std::vector<OrchardNote>({note});
+  result.found_spends = std::vector<OrchardNoteSpend>();
 
   sync_state()
       .AsyncCall(&OrchardSyncState::ApplyScanResults)
@@ -824,6 +895,10 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
 #if BUILDFLAG(ENABLE_ORCHARD)
 
 TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
+  feature_list_.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(
       "gate junior chunk maple cage select orange circle price air tortoise "
@@ -876,6 +951,10 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
 
   // Shielded addresses enabled
   {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
     base::MockCallback<ZCashWalletService::ValidateZCashAddressCallback>
         callback;
     EXPECT_CALL(callback,
@@ -890,6 +969,10 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
+  feature_list_.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(
       "gate junior chunk maple cage select orange circle price air tortoise "
@@ -974,6 +1057,10 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
+  feature_list_.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(
       "gate junior chunk maple cage select orange circle price air tortoise "
@@ -1015,10 +1102,10 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
                 zcash::mojom::BlockID::New(100000u, std::vector<uint8_t>());
             std::move(callback).Run(std::move(response));
           }));
-  ON_CALL(zcash_rpc(), GetLatestTreeState(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetTreeStateCallback callback) {
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
+              ZCashRpc::GetTreeStateCallback callback) {
             std::move(callback).Run(base::unexpected("error"));
           }));
 
@@ -1041,9 +1128,11 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
 #if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
 #define MAYBE_ShieldAllFunds DISABLED_ShieldAllFunds
 #define MAYBE_ShieldFunds DISABLED_ShieldFunds
+#define MAYBE_SendShieldedFunds DISABLED_SendShieldedFunds
 #else
 #define MAYBE_ShieldAllFunds ShieldAllFunds
 #define MAYBE_ShieldFunds ShieldFunds
+#define MAYBE_SendShieldedFunds SendShieldedFunds
 #endif
 
 // https://3xpl.com/zcash/transaction/5e07d5b298f2862f2332effc833f5fe9157eb9ca00e03f394663e81b397515a9
@@ -1051,6 +1140,10 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
+  feature_list_.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(
       "gate junior chunk maple cage select orange circle price air tortoise "
@@ -1083,8 +1176,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(zcash_rpc(), GetLatestTreeState(_, _))
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
       .WillByDefault(::testing::Invoke([&](const std::string& chain_id,
+                                           zcash::mojom::BlockIDPtr block_id,
                                            ZCashRpc::GetTreeStateCallback
                                                callback) {
         auto tree_state = zcash::mojom::TreeState::New(
@@ -1157,7 +1251,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
         created_transaction = tx.value();
       });
 
-  zcash_wallet_service_->CreateShieldTransaction(
+  zcash_wallet_service_->CreateTransparentToOrchardTransaction(
       mojom::kZCashMainnet, account_id.Clone(),
       "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzuap4"
       "3ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9ypkss5"
@@ -1454,6 +1548,10 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
+  feature_list_.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(
       "gate junior chunk maple cage select orange circle price air tortoise "
@@ -1478,10 +1576,10 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
             std::move(callback).Run(std::move(response));
           }));
 
-  ON_CALL(zcash_rpc(), GetLatestTreeState(_, _))
-      .WillByDefault(
-          ::testing::Invoke([&](const std::string& chain_id,
-                                ZCashRpc::GetTreeStateCallback callback) {
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
+              ZCashRpc::GetTreeStateCallback callback) {
             auto tree_state = zcash::mojom::TreeState::New(
                 "main" /* network */, 2468414 /* height */,
                 "0000000000b9f12d757cf10d5164c8eb2dceb79efbebd15939ac0c2ef69857"
@@ -1827,6 +1925,548 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
       "f57438f7a7252812a609260bd1a7b692ed75a16966b899c95e100d4e357c720f11b6c9b1"
       "a0cc1ee2786fcff9586d891fd0748430170aeba911fc42a632",
       ToHex(captured_data));
+}
+
+// https://3xpl.com/zcash/transaction/1f4ca7c4b182620861632c9c35398c5f61a846e783070a1ebe30941b6f55ab78
+TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
+  // Creating authorized orchard bundle may take a time
+  base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
+                                                    base::Minutes(1));
+  feature_list_.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  base::ScopedTempDir temp_dir;
+  EXPECT_TRUE(temp_dir.CreateUniqueTempDir());
+  base::FilePath db_path(
+      temp_dir.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
+
+  ON_CALL(zcash_rpc(), GetLightdInfo(_, _))
+      .WillByDefault(
+          ::testing::Invoke([&](const std::string& chain_id,
+                                ZCashRpc::GetLightdInfoCallback callback) {
+            auto response = zcash::mojom::LightdInfo::New("C8E71055");
+            std::move(callback).Run(std::move(response));
+          }));
+
+  std::unique_ptr<MockOrchardSyncState> mocked_sync_state =
+      std::make_unique<MockOrchardSyncState>(db_path);
+  ON_CALL(*mocked_sync_state, GetSpendableNotes(_))
+      .WillByDefault(
+          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id) {
+            std::vector<OrchardNote> result;
+            OrchardNote note;
+            base::span(note.addr).copy_from(*PrefixedHexStringToBytes(
+                "0x7d42765851f3db7cfc87a0b9052a579207424fa8c56e3dae8abbf7a6705c"
+                "805f035dda5e793ed48e97bd0f"));
+            note.block_id = 2763539u;
+            base::span(note.nullifier)
+                .copy_from(*PrefixedHexStringToBytes(
+                    "0x14aeb32cc0a16a9d242875b7001e8421a7585980b6186f05a73bbd45"
+                    "2855b43a"));
+            note.amount = 80000u;
+            note.orchard_commitment_tree_position = 48973018u;
+            base::span(note.rho).copy_from(
+                *PrefixedHexStringToBytes("0xdbce238f803b249b7171cf406cd8dae5a0"
+                                          "c1268a7771c9984ee4a0b17619bd0b"));
+            base::span(note.seed).copy_from(
+                *PrefixedHexStringToBytes("0x8bca3a0d5845270f9d5636f51fc285a653"
+                                          "8506746a2507338cbc12ce9d40d119"));
+            result.push_back(std::move(note));
+            return result;
+          }));
+  ON_CALL(*mocked_sync_state, GetMaxCheckpointedHeight(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [&](const mojom::AccountIdPtr& account_id, uint32_t chain_tip_height,
+              uint32_t min_confirmations) { return base::ok(2765375u); }));
+  ON_CALL(*mocked_sync_state, CalculateWitnessForCheckpoint(_, _, _))
+      .WillByDefault(
+          ::testing::Invoke([&](const mojom::AccountIdPtr& account_id,
+                                const std::vector<OrchardInput>& notes,
+                                uint32_t checkpoint_position) {
+            std::vector<OrchardInput> notes_with_witness = notes;
+            OrchardNoteWitness witness;
+            AppendMerklePath(witness,
+                             "0x69ccc30028f8f48014b90c8df8d383128ee5683db98b86e"
+                             "24b64830fcc32c51e");
+            AppendMerklePath(witness,
+                             "0x3013cca510315350e4000c72f50de9910896d9a68dafbe0"
+                             "145627a76fc258514");
+            AppendMerklePath(witness,
+                             "0x7dfb668f84823c7196fc26a6e7664f9381c6df4de6af26e"
+                             "5d5e34f2d838b0e2d");
+            AppendMerklePath(witness,
+                             "0x58d8d8690b5faa152c41a73aca8a2abf58d17616016b44a"
+                             "85bcf993f193c4612");
+            AppendMerklePath(witness,
+                             "0x997ecea424a5d0eb7b2b2cc8b779525c22c024fca7ce3ef"
+                             "675d7957ecadfe620");
+            AppendMerklePath(witness,
+                             "0x17cb5b1766780f0de0259b643a05093c21bd77982c609d2"
+                             "55260b2869031d935");
+            AppendMerklePath(witness,
+                             "0x4b9ab554ad736be6ccc309694f49d01825251aa376d6cef"
+                             "cf1725fbbebdb0c0a");
+            AppendMerklePath(witness,
+                             "0x5e8be723d9ceb74734eb5356ca66eceaf1a86c4b17a1284"
+                             "cfcaa07b7d2691026");
+            AppendMerklePath(witness,
+                             "0xac6666cddd0b823ee8287ce1c5b47757463e8130b27bfa9"
+                             "dcad48884eadcfd1e");
+            AppendMerklePath(witness,
+                             "0x4a4b16c8ac3b4211d33f5de74c90fb339739597048576c5"
+                             "8f659572e606e0f2e");
+            AppendMerklePath(witness,
+                             "0x75265f7a40040cc3849b2c762386e714703ac5bc63d6049"
+                             "3750833589cb2b110");
+            AppendMerklePath(witness,
+                             "0xd4f485cdc4cb25dec06db85e236ce91a09bc3f0b645cfff"
+                             "74c0cb72e2283d23b");
+            AppendMerklePath(witness,
+                             "0x22ae2800cb93abe63b70c172de70362d9830e5380039888"
+                             "4a7a64ff68ed99e0b");
+            AppendMerklePath(witness,
+                             "0x187110d92672c24cedb0979cdfc917a6053b310d145c031"
+                             "c7292bb1d65b7661b");
+            AppendMerklePath(witness,
+                             "0x0f00a6eccdd778c92fa1940b57175068e04a57b96ad730d"
+                             "b163a948a42baf22c");
+            AppendMerklePath(witness,
+                             "0x63f8dbd10df936f1734973e0b3bd25f4ed440566c923085"
+                             "903f696bc6347ec0f");
+            AppendMerklePath(witness,
+                             "0x6f3f63aab58e63b6449583df5658a91972a20291c6311b5"
+                             "b3e5240aff8d7d002");
+            AppendMerklePath(witness,
+                             "0x12278dfeae9949f887b70ae81e084f8897a5054627acef3"
+                             "efd01c8b29793d522");
+            AppendMerklePath(witness,
+                             "0xca2ced953b7fb95e3ba986333da9e69cd355223c9297310"
+                             "94b6c2174c7638d2e");
+            AppendMerklePath(witness,
+                             "0x60040850b766b126a2b4843fcdfdffa5d5cab3f53bc860a"
+                             "3bef68958b5f06617");
+            AppendMerklePath(witness,
+                             "0x7097b04c2aa045a0deffcaca41c5ac92e694466578f5909"
+                             "e72bb78d33310f705");
+            AppendMerklePath(witness,
+                             "0xcc2dcaa338b312112db04b435a706d63244dd435238f0aa"
+                             "1e9e1598d35470810");
+            AppendMerklePath(witness,
+                             "0x2dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e53"
+                             "8002bd1442978402c");
+            AppendMerklePath(witness,
+                             "0xdaf63debf5b40df902dae98dadc029f281474d190cddece"
+                             "f1b10653248a23415");
+            AppendMerklePath(witness,
+                             "0x1f91982912012669f74d0cfa1030ff37b152324e5b8346b"
+                             "3335a0aaeb63a0a2d");
+            AppendMerklePath(witness,
+                             "0xe2bca6a8d987d668defba89dc082196a922634ed88e065c"
+                             "669e526bb8815ee1b");
+            AppendMerklePath(witness,
+                             "0xe8ae2ad91d463bab75ee941d33cc5817b613c63cda943a4"
+                             "c07f600591b088a25");
+            AppendMerklePath(witness,
+                             "0xd53fdee371cef596766823f4a518a583b1158243afe8970"
+                             "0f0da76da46d0060f");
+            AppendMerklePath(witness,
+                             "0x15d2444cefe7914c9a61e829c730eceb216288fee825f6b"
+                             "3b6298f6f6b6bd62e");
+            AppendMerklePath(witness,
+                             "0x4c57a617a0aa10ea7a83aa6b6b0ed685b6a3d9e5b8fd14f"
+                             "56cdc18021b12253f");
+            AppendMerklePath(witness,
+                             "0x3fd4915c19bd831a7920be55d969b2ac23359e2559da77d"
+                             "e2373f06ca014ba27");
+            AppendMerklePath(witness,
+                             "0x87d063cd07ee4944222b7762840eb94c688bec743fa8bdf"
+                             "7715c8fe29f104c2a");
+            witness.position = 48973018u;
+            notes_with_witness[0].witness = std::move(witness);
+            return base::ok(notes_with_witness);
+          }));
+
+  base::SequenceBound<MockOrchardSyncStateProxy> overrided_sync_state(
+      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}), db_path,
+      mocked_sync_state.get());
+
+  OverrideSyncStateForTesting(std::move(overrided_sync_state));
+
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(
+      "gallery equal segment repair outdoor bronze limb dawn daring main burst "
+      "design palm demise develop exit cycle harbor motor runway turtle quote "
+      "blast tail",
+      kTestWalletPassword, false, base::DoNothing());
+  OrchardBundleManager::OverrideRandomSeedForTesting(985321);
+  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 6);
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 6);
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([&](const std::string& chain_id,
+                                ZCashRpc::GetLatestBlockCallback callback) {
+            auto response = zcash::mojom::BlockID::New(
+                2769076u,
+                *PrefixedHexStringToBytes("0x000000000003b74b5acfd73e70b1a8e8de"
+                                          "5f5557e560d524037cf40d3190a804"));
+            std::move(callback).Run(std::move(response));
+          }));
+
+  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [&](const std::string& chain_id, zcash::mojom::BlockIDPtr block_id,
+              ZCashRpc::GetTreeStateCallback callback) {
+            auto tree_state = zcash::mojom::TreeState::New(
+                "main" /* network */, 2765375u /* height */,
+                "000000000112b1bc454c12ba83f30ffbd7a345058025b563c448191174d65d"
+                "37" /* hash */,
+                1735298875u /* time */,
+                "01648bd00a4d5db427655c678d9c26a59e09abcc8c8ef9a7f2a1e297517e70"
+                "1257001f017d536e6b7eabbdef129ca34437c8d034beced186c35f5f66cd77"
+                "7c64c2ca9b3a016efbc1e91cbd6995a31c5b0897983ab9b2b96c17c662c71f"
+                "5fdf65aeade92d14017b331d294c0e337adcd246b21374e64b910cfc517080"
+                "09d0e0debe917f15ef03015f7f9d6a0e4a9dc8fba2dee53f1bae480c00c7c8"
+                "2cfafa40517f654dbd10d60e01b7bc0e9de66553b16e8232cea0234426708a"
+                "5c69579fb86742d0654e812acf5e019fda3522805f03cf00697404f2dac8a6"
+                "9c9311ac6acb1f1fc9ca80f8f1012830011cd5b744f9cbf8714ba0eaab9bdc"
+                "8cb4e30b7cf3ea8207bf955da49be3c3c9230158722d8666ffd6429f8dac66"
+                "8a521406a8c88292f7f55cb15d93919af7d9f655011a932b1d84e39121c34f"
+                "316343c12c4d0ff98ca14aea2b445fc86e4f252e773d0001a6ab94f6c08c3f"
+                "5631fbff992a0ad6060a974774bb0aaab45feae601b6d20a3e01381db5696e"
+                "399cba5c84b9798fc00081c67622074ef6aabeedc8e0dd7478c334017b8476"
+                "7ca227e22f8192b542c0688d413316e34c2059335311b1188a9c0e9c640159"
+                "ce19fb2d0c0b844f38a48379313529a5a08c150fc62e174d17b00c99d54d0f"
+                "018de4b3e39611e40a92dc0e1214110e088110ac37dc21f3f1d9f7a449447f"
+                "6a700000017d1ce2f0839bdbf1bad7ae37f845e7fe2116e0c1197536bfbad5"
+                "49f3876c3c590000013e2598f743726006b8de42476ed56a55a75629a7b82e"
+                "430c4e7c101a69e9b02a011619f99023a69bb647eab2d2aa1a73c3673c74bb"
+                "033c3c4930eacda19e6fd93b0000000160272b134ca494b602137d89e528c7"
+                "51c06d3ef4a87a45f33af343c15060cc1e0000000000",
+                "0186d941a3b8736a930cb42ba0f5401ecf11ed23d110439c94830215614080"
+                "4f25001f013797643dbbf53668419a775bcb9e952d48c9e1b3b87dba09246d"
+                "1151a94bfa2f01c41cd6f8852d94aa243c8c09123c5fd0272333dc50c5909e"
+                "2ec3e31e50226e3d014244cfb4e26114a03190f5a6c98a972b6236a1609e94"
+                "b71ee4d34fd61f2e5e2e00017a00225e7a25a7acc77283bf8bffb2ff4b71ec"
+                "bca92810c27f15cf9840e1a312000001a8ab4951a8a3ca00d0fb151a18f130"
+                "d616a8943849f96e10ab77c3021e6f92250000018c7625575f2bb3a042b706"
+                "61de0b01be0795b6590a9f21c504e86acdde863d3a0000010f00a6eccdd778"
+                "c92fa1940b57175068e04a57b96ad730db163a948a42baf22c00016f3f63aa"
+                "b58e63b6449583df5658a91972a20291c6311b5b3e5240aff8d7d002011227"
+                "8dfeae9949f887b70ae81e084f8897a5054627acef3efd01c8b29793d52200"
+                "0160040850b766b126a2b4843fcdfdffa5d5cab3f53bc860a3bef68958b5f0"
+                "66170001cc2dcaa338b312112db04b435a706d63244dd435238f0aa1e9e159"
+                "8d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e53800"
+                "2bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190cddec"
+                "ef1b10653248a234150001e2bca6a8d987d668defba89dc082196a922634ed"
+                "88e065c669e526bb8815ee1b000000000000");
+            std::move(callback).Run(std::move(tree_state));
+          }));
+
+  std::optional<ZCashTransaction> created_transaction;
+  base::MockCallback<ZCashWalletService::CreateTransactionCallback>
+      create_transaction_callback;
+  EXPECT_CALL(create_transaction_callback, Run(_))
+      .WillOnce([&](base::expected<ZCashTransaction, std::string> tx) {
+        created_transaction = tx.value();
+      });
+
+  zcash_wallet_service_->CreateOrchardToOrchardTransaction(
+      mojom::kZCashMainnet, account_id.Clone(),
+      "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzuap4"
+      "3ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9ypkss5"
+      "72ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xckh2j",
+      10000u, std::nullopt, create_transaction_callback.Get());
+  task_environment_.RunUntilIdle();
+  testing::Mock::VerifyAndClearExpectations(&create_transaction_callback);
+
+  std::vector<uint8_t> captured_data;
+  EXPECT_CALL(zcash_rpc(), SendTransaction(_, _, _))
+      .WillOnce([&](const std::string& chain_id, base::span<const uint8_t> data,
+                    ZCashRpc::SendTransactionCallback callback) {
+        captured_data = std::vector<uint8_t>(data.begin(), data.end());
+        zcash::mojom::SendResponsePtr response =
+            zcash::mojom::SendResponse::New();
+        response->error_code = 0;
+        std::move(callback).Run(std::move(response));
+      });
+
+  base::MockCallback<ZCashWalletService::SignAndPostTransactionCallback>
+      sign_callback;
+
+  zcash_wallet_service_->SignAndPostTransaction(
+      mojom::kZCashMainnet, account_id.Clone(),
+      std::move(created_transaction.value()), sign_callback.Get());
+  task_environment_.RunUntilIdle();
+
+  EXPECT_EQ(
+      "0x050000800a27a7265510e7c8b4402a00c8402a000000000002cd070549e491a0df4915"
+      "225357413a184ab90d71e4898b5ca7f875df5326d206f82b81e69c77e1aa9e205cde3ea4"
+      "ec2012e7ddbbbce9a6175d85c1b563c33114aa330ebcde9b657ad9ae243ee70996d11b78"
+      "cfbe5149ab5ab7156320bc90e3afbb9756c1154de1acb4cba5240b551cc40715bc56e4f7"
+      "aa9943ed22662c1d591cfe10eb5336fa9de6fe6ea1d717bcd2338b3c2cfcac82d49134e8"
+      "e6f45594b72662f3788511b52fe573730a695a0a8fa83c0104e07ea70fbd322b029d75ee"
+      "6d35b10995fad40a9032839e196e3da02f6494a5a618412edc87edf1c5c178a0e021bea7"
+      "15bbe897b6081ebcec10eeb56a53a3ad57d820a67fe5da08adcd265ae96cc0a9e9bbd911"
+      "ab0fcb6220d19564d7554116cd4c4db477644f2c43d80f8d08e93aedfdf9f4bad1047a3f"
+      "574dac8901c90b3b6c43d99fa8d86816eb839d3c354397d61258ab01eadfdfb395018818"
+      "5d257d1a88f776683e8a596dffef3c715f15aac436eb83b15e6220c58e78427a5f8a30c6"
+      "613e7a6ba0eb7a0f4150b74320adfcf757396fe15d1dac8b416dcdfd14e8e0c8df006043"
+      "66b7d7ffcfaeb84a758e590031cdae473aab7dd960bae73cfd6e288950c593a2cdcdec95"
+      "6cbf1bbcae306b5c67fbb69a9d2c87e7f40bb8791f673eba3c3ffd157501d15935a5876a"
+      "15c732d2796ecb04ee8c86b5adf0b225eaa29e6f77cf7dca359a3be0d8cd9c4cbf7c957b"
+      "4144bcb54fd9ebdd977887a41f0eca5f3ce9e0f909612e843990cd8607be7fe1c30f1929"
+      "4ccffd3de4518b062076d227627103deda4c2e629832c96f9c264a5920c9dd9694d72ec2"
+      "383f9f12e9334b9790462067e5c7e7ea79d08fea0684e84a57b933e370d79125f6b9b548"
+      "e028cb36d4c625b29ab3054b7866caef983a9bcdebde9473426158459985b22d6a236644"
+      "1b2be20dfbf545eda39a42da52a490ed05512f760fcc431d9af350eaadd737bdebe453e1"
+      "0983e36a83270b7774e445f01ce5bf70a649ffe686664801f3f9fb1a3c59ca27964780a9"
+      "f121457a7d0a4908b4fe87f0a0efe5b68f2e6d8e1c22d5c107cdd366c43a32ee6e166fa2"
+      "b654e382c8c9409eca8cb3185509a327a67f82e992bd3ed8a0285dd7d517daabe703959f"
+      "905aec059ac1aafaa08f5ce277bd1ed7f5a14f990c7437812ad7ff9f011cf5dbf7b4eb04"
+      "d8179fb67e39841f56556ec42cbd14aeb32cc0a16a9d242875b7001e8421a7585980b618"
+      "6f05a73bbd452855b43a85a5bb03cd3233ba5bff0675c05374565d06d2f824d07961d610"
+      "d2137beeaf97bd69503da07b4c66af2d1b9beebc24d98ef7296e01f057f62257cb924685"
+      "d51229065505e626bf218b005c2efce29359b280f1178521ddec699b22d40cdab39be67e"
+      "9c9998a596c1b7539ed3c0777555474bd0113fe3cac6fd5e5af5351bd4337c7ee1edf23e"
+      "0836ad89549b289a8680cd7f0320b371fa42f53003d6ee8ffc060114f21dfc15ba94320b"
+      "ac087de256f44ca96ec11aebcb2a9bc1b27275601c94b59a70465c99544c1aafcbc3c939"
+      "680cfed2990aa2ead83b81d1888ed6976690d6a68192b48df45e81beb3e222e3867088a5"
+      "2dcc7e6c3086841a21ba30fc22efa13a86cddf5994c3904cad4258db86d9783827b08dd0"
+      "5e5d1beaeb609808aa856d89f2b19c0717f29826cf0c442ddc59b0308b9c341f3ef747c0"
+      "fe2bbc84354d14b3bad841fb585e1cd9541af304c7f41463e427430a82d04089fc9bd13e"
+      "cedde94bf4ba11ef878ac7fa0b512f1edf002e1b1c85d06e8be3f4fba106d338c31400d9"
+      "cc378c8881f600e39b324714afcec825c7cdbef40928746b02895cf6acc8bba36acf97d7"
+      "1aa853bf363311295d46e319f457171b133427b130ab418bc40d945c032cdad4b9f046f1"
+      "82289132b3cd363ee99dacb5e89f2ce963e380a51b09c2f3ffe171fa4c1282561d9d716d"
+      "66e0f6cf1ad050e3cb20567e25639bcdce1bc867d7d1c5f5ad702b567f3105955628d37b"
+      "71e337229f69983a2e233be753163224eab3d04ba35ad17e7bf91cd5128919e52bc8ab47"
+      "5078fb60aa64e475f9e1e4d35b519044c5b1cc5fcd1d7c84512060ca5c4b2f01d744dd35"
+      "ea4a4cec610b0553f44c1cd7bca3a4a67c82e66ea23a6f56927a4abe28ab9e6a5ec09731"
+      "71318c27aae5f7048e9d2c84195e74a3f647027288f3ce49e1ac48be4467881e36c0d82d"
+      "76d4c6ec95034423f98adbccb208b6ab2d0e2da9003c622526ae46b6c7ea3bb0a56f9425"
+      "992792f4ae238c6ba510937e65e727fec71241469475100b060f7e01a03e6766f0489aca"
+      "173bfe025274aba1124003102700000000000058706d7f3ef746a43c4d07b29c2ea87e70"
+      "78c972b461c72a591b7a633e23e12efd601c657f539571a668851512c305556a14e47d02"
+      "f84e655d5f6a6fabe2addbe6730e2a9e53b1515cb118d28d91871d6d27769f9f651bd2c0"
+      "b20a883384711077d004471b8bf7dca00fda9f1a379c1a199e0306754c89837aa2206479"
+      "3287d5e5730cff5ea24ebf1329b3789449fb1557634cd86b7777d2921a81d916700e7bd1"
+      "d596c20ee021c3ca5e94ddc07bf80ab5d184dd0ebce2aaa936356e8b6babc6f2743d95b7"
+      "d06cb5eb8e24fceec3a304c1dec5a054dbbd6ce4a9a43d731830e86a699f393dfbd9966a"
+      "fbb3b3db66eb895c07f221d897a1c7e56a239c8798af5bf2db0bd27b2efd73219f913a21"
+      "6e538d1ba91962f5f33b77c5978600fb90b281221aaa1009143b326aa07e6d8cdca3253a"
+      "f33aec42d20f4f27fc74b535112b1c14751e1e56c3648e778b11264174f06e4bd09dcd3c"
+      "fbd9b7ac02d689cd166ef65f5f977d54302bd4e9eb222da6433ccddcb9a7fe04f1c09a9c"
+      "c5153393c6fd985edeaba2e04be7f26eb2fcf93037b97380be9ac790962d944618530f3e"
+      "8383a84327a5cf3c6e140110f9548fd427729500f27a90c835258a044a5bb47dfc2fc540"
+      "0da3593f9b4269b5897663322b7f7779f3e0de2943f284308bc9f2ebe1a7e4755221c724"
+      "2fd04bb59e775a5d7e94d681a49330d4698dc6c1f449679439aa8478ea1dc3663fcc0650"
+      "0c8aa2a33309d0ffd51db1a8710240594f816584257d8de112367eeed7b65402a1750f88"
+      "6b1cc27904c18f8b60acef03706085df1ddc5efb44b8535596d49ef5cc3ac43b299d53e2"
+      "973b2601c9a0204c829d681fc489c9c3e8ba91530b6060117ce1b0b4e3f5cea50b36e0b3"
+      "96c2bfe1b777aad4f74a35288ea88aa627ae8d394023a5efb59b9c5110c01b6e26d09239"
+      "66588bf82342d0a91f3d30916c5a2eb02f367ff33b4f325349d94229362519d3ef452ce6"
+      "699be6db95ad1521f025483613fe437fb38bf9b780be49bb9df93a768091a3ef210e57d9"
+      "4f30bf8dab58d01757461470a36a580c876a879d54516781847ba90691de7432822379bd"
+      "662b437b1d74409f06f4dbff1064d0c90cec4ccad5becb8f611f127846253f712ef30f21"
+      "ea1395b630d2f3397e9141eab8a0ecd327e5970c87308464101a72ddbc7629d37c829167"
+      "673fcc19f063313e67e4d70b19e497f6d2baa1c48f2193e41cf3201e6ba3ad53ebd23cb7"
+      "9294ef4a32120eb460e8aaace6775e0fe9922b6e61b018e91129728c54e7673801e92e41"
+      "c38aa834aefa8b8ac66f45e0b5a77c91f77a81c6678b78742011e65d50eef059c3ceae1f"
+      "5ffcdb51fabd9a91bc1c2a4060b699e0d9aba13f32218267ef0ebbc822d520765dbd21ca"
+      "44ead38581228480e8a8028552117ed9c00dce5cc423c1f7b24619a5e7823167f84b8b5e"
+      "22a8b0b6207a165ea35a2338ba7f5b33d5d08bf572b6cda42e0be6e3d7b2e978ba9a92f1"
+      "57b75f5fa1c7ae26424cd8fbe53bb12b7bfc5917727f58b12e65695536ba53e5760362f5"
+      "b106a30109bad91fbca259fb7b1d1f8c1824736e50d8e1a8a9046989d50d2aef68dbb413"
+      "d246830f6214b20cdfa030025c8065835fdfaf87ba9a946cb94d6ef6002e609da9db1630"
+      "e5d3e9b005eebd041f8c2f235ec58faea9ac846bb6510625b80241749ded3022b1d1e925"
+      "c564e95e4fb0cc10354fdb5fe0382af65bd57d9d29d97e09ea5a1d4b972ea2e33e12fe62"
+      "fae549a2d1e3c2abd6015d65e31663055b4ecae6320a60e18470d258c9f56b3fa191803b"
+      "348ed3de1f936fbe7fd7ad6c5a92a52731e25f5fa6dd9a7cd9e7b48915cf500e257b072d"
+      "b03f010d230893dda3a22f818d928ea7030376730fd5b8eeca83267ddb2537671da89602"
+      "57de704b8e1fb02fae21d6ed1624bf1e86578d7c0317c7883c1b02870c818ec1e05d264e"
+      "dcda97e4a31d130b6ff0c2a2aeb96b2ae44d9b98e4a01253b98faaa718507fa2c4b1dd1f"
+      "0b02f7e213399540d4346c5b49f4d982ee2272a6ec9382c2c4c2836016820acdb8b12097"
+      "f3d8010da39e4fc09cc7a7b591c475fa29b70382be699636bd1cb7a4aeced6b4e6601337"
+      "846c6eeb087568e750e2aa44ad20fa301297f9cbcddbab48d2b21c814de083f13cac5723"
+      "7a135d220c03edd95d8eec4157672501b8b06043749defb753742fc518083b6325e6c462"
+      "7500dcd3082cedcce004e656b2aa6b8ccdd832f62aa4be3263ad2a816991e1fedfd55c7d"
+      "fe0a61c541aa6e59dbacbc767ea3ab2bcd1463dae9094defb33f148263dcdddbba84fb7c"
+      "5a901d59bf0ff07902be10fc3b59b7ac3a601381c065ff27c93a39ecdabc2cc5f3e9dfc2"
+      "acb36fa70f4af19e6d84c536f09ba627965d03d7e2ff9b096c917a695eb38368d4db2672"
+      "ebc2f39e4924de7682eb7aa31e4cf2db336483a09091b68b01e723cba30b98887e22b907"
+      "a9641f9660fc6587a403816fbc3b39c1de2b036fd5f9ef860a011f33a0dd3ddfeb1619fd"
+      "e98081102d3907c5dca1d1464d23a83607f7c14c89ecdad0d9edae318ef466795978b631"
+      "b6115620896cc0a42c398934111a705e957b6eb33f6dda6e0c6f04632158cf9b368eee7a"
+      "c0f00fd3cd3bd472271a285cec4bc335f86938a3ce08efaa965cdd0d62dc02e03a05bcca"
+      "e723e032ed9435fbeb69c88f2aba3045a60446800a9a0df77bd4bac900e500fdeb04a13f"
+      "adc4bc98f5138fafdbf231b4f52ab6e23c2c41574594539b36c1ca24bb2f5955a0c83bcb"
+      "9ca0978fa22d241d59511894ff7deaeaf4f57b0a704d3d14b9065e5f576e061b999a6708"
+      "14db73c947dcbcc71ff8487d6fa03239383006001f313fb86697ddea300860d9c2e48f26"
+      "dd7254e1de955a3ca08ba8be35c05b70f72a02910a49b14e389b337a4f6b761c924fdd56"
+      "0218490b7b7ab95e8cb7ab57a70a42ccb910695af50cb2c5356548dabaa7c6d5c47de6df"
+      "785a9805e17f5410892247cce1aa814b3ba0318ce75f89fd796a295bfea23a796bf8e537"
+      "e7421ba6da2a136251958a1b38e97783159ac89df85d812f6aef0b8396a245b4305cba71"
+      "cf3b83b403b266e4dfec6623368a7bea60ded5115a3b9441dd700cb5194042f1203e4106"
+      "5e1875ecf588711dd28b53cc455132d0356b698d6cbb39aff3237c9bb03bb909eb2e3ff3"
+      "2e1d8ed48e6cce57eee4f9e73574df4c1c2705a8ec4f4a74f100db46eac1c8432d6c0619"
+      "f36825b3665e5b8928990430ffed38d3f48ce4373e3d985862c077f7e868b2481b7d5d97"
+      "910d85b80152a30c88e1171a64affeabdf21ced883e028f691ab8bc12a665a354226b205"
+      "31b9737c6b0972a69bbc86e5aa1d80ca4304d48a97ba2aa7540b45b74a1cadcb3b873c47"
+      "cc14ebc48003d1a771032fd836291a213f5ad8534620be45400431ddc6495eed9082e5ad"
+      "601276f5f92562722533c0abeeb95171cadf39f443f330e182ae512ad428c2d894b8e249"
+      "ab3c336b4c05aa62452b3502778bde65160a79b4b943fdc2c0bf4f8cf2b01d5e4205ad87"
+      "6b1d35eb5c84962ae4701afa3ebfb7cfb7c8a3d7016dfd50eb8563c0423c2b5383ab021b"
+      "3a3bd0489ef74e5c488329c7b052702f0b94476f6f9d0637af1244c7bd824840de6d0612"
+      "0df71cd529d94b36fcf7a51155174c7fcb732bacf006573ad80d655af7637eed8f93b05d"
+      "d15ae2a65b556f0f97e69817d50113cb8a1c5ed1e997940775abea4e31a038fa8c62e71f"
+      "83831d6dfca8dbb50619f6bc050c611061c0c69ed52b939a33f4195568594e729509764f"
+      "131c40c67a1f2ee8313b758abed3c5db5cd56bd15b654e9722da39447968a78bafc4b176"
+      "1d99ed127221672001343342aa5235a9a109ec409dda9e529e1d7ee9ad5f76dfe9c47c1d"
+      "400ce694e768cc43977da947a827285c3a49268fceed30f96afbed07fd79f0c9413e0ed3"
+      "d6bb48787311e70714c690f1d1d1af01a6d5fa86d7875be7ed76de9407351957973b3985"
+      "d9f7c239c2ded8defce88221b73bdb24c58ce29edeca93702d2f4d27c689d61ddc07232f"
+      "4ef0f87b4f5ca2fca3ec08690d2f6bc22abd208b7c1709aaeb6e1ccb75003b020869dacf"
+      "6ee4cebf71d336619ccbea02681ba1231235b5559436d583468ba32ea8d8ad4bea27e863"
+      "44fc7e867269f28f9943e831f5375cf7ecaca6aad8313211b1d9bf5f1ca58ca48d1b1fdb"
+      "72487525b1131551270aeb6951cbe9f51e569fd463df9f3c6d8c69ad7e40987c8eee20dd"
+      "581f43792a15254bcff9250e1ddd78fb4d61e260e38dd8a0fbabf2391729a4a9295daee9"
+      "c532cb3aab525c89490129eb077e60a3373f7ff8c69aa712b2efec83fc906b18c83eac8d"
+      "f71199d3805d34541e6068b09b713bac9a3ff4231fba7640722316c9b03dbb73ce72d2f0"
+      "53eaae2a807f28970d20b8287ecd785345ff196550b9f6f74223f179cf9659f88c1a9c2b"
+      "a6714910514e09f546cc75f045864b5a47048c7b6522e172831e0be9ee7144e978d978c0"
+      "e2eb9bfda3e223b55812221d8dcaf664f601e19bb2a4f8c7c7a499e0713ae659e19b7147"
+      "c0f10ac5972396fa325b6f2c2a0466edfd9e1049179d384e37a7719ae55da55edaea3eb2"
+      "5bc64377bdda7233ec277d60530de0fd3a7c69afd3c6ccbccf4117a76b4ee3677e59d675"
+      "c733ecf29312cb66d328d9722b9b8240c23642fef4adb5f2c626d0475de012abefa0b2fe"
+      "4435d337b85766eeac96600da4302ed9efcf5f4c1c14bdf54266a226b22af2ec681f4d07"
+      "3d7fcc978a065a39fc0a64a829ec35597826a47e08b12b7e3e50593ec732d6bbd7ff3b39"
+      "354010fcd6980eb36ec67e1d26cb5221ead31dcf0c4a248ab52c09d604a30f54fda5ba6a"
+      "bcd45f6d8c9c3986cc6e5ee73adae9639d2958d4333b44a2c74d4563a3ba7a0b0cc25cb3"
+      "7356f6022b570e812a079ccf2348baf4ef0f2263cdb16dd29b4f13aa784c285199f5e430"
+      "2e55766b2d61f657dde12d8787090c5129b6a1691fe55f3ebd1f40ed7ca07b879fecd249"
+      "23ecaa53e13e5ee19c3b6f9b723c0291349d959def23c6ffe6af4612f8e7b2cd4f8a8d74"
+      "205ec5d64638459bd03379dec9c45facba605840d64811074f4700e46737eb714a494e14"
+      "b12c5e756b278c282daa80b399a040624ba3abde7a2169f6c87a361b5d3333a4631704a7"
+      "9f09fb469baf41b7e7cc64e6f6642cdca110623eca8da88388728298f11c4619c6825591"
+      "e80dce1cc9a84f3f2755e52da5690b426b6bfe94938bf939ae20632125b6b72332266f92"
+      "dd9b2e81c6356dc56ab49d57aeae8b7b5fa15f873c2a268d863b94605437348568ee64ec"
+      "96eae0c78279e302b294365c7a785a40b90496275823e678498530c85bf35d91757e4e5e"
+      "7cf73fddd3cc01a4ffb4d6f281131c5552d044bbbbd0d295c04e0665e9fe75aa18f535bd"
+      "7269ae264d72a62d863a569e00d85eb8739bc21700681a3009406defaa51ffdfc97e3f55"
+      "cb20d088563e98dfc8ecf29c9bd263138c69f5ce33afd61feed7c52ca88b855ccb0bb9b6"
+      "4f2f6ee42a98970ced49612fb2dcf6c8b66de8a341733e2719354caf4fcda859692b569e"
+      "1f1af68716801f7e0ba5bd2e7fccc68731ca47d0b2001735ae2d70057708b90151e74317"
+      "37f58f9ce605820813fb3737381451a70dca29af445bc3f2b2369991d8994443318bdd8b"
+      "1a0e93a763c608c85fa4b9df024481318a07e8583024cd6e71828da157ad949de4ba1f04"
+      "94e8883d68dbcafd541da38d2cfe5a35ec186dca24ecdfc8ebc96fc4c3f56cec61929d2c"
+      "17b44ed65c2fdb3b1bdd55820a2c3d85c1784655b0f782fba4299b2fc874d366634fd02e"
+      "14167f4592d474f73d0fbe565bc6e4031dffa27b12fb7f94453dbd2557e05a7ce8e4558e"
+      "ff978f349221e704d3760b2dac0043cc316dc7a288a3b1e550a552ef08a676a14cd6b325"
+      "650c4d4d122de903635d4d0310de82a31290667771ed8036a50272a077fc6de7940b8b3d"
+      "4cc083c02255e3f16b4a6a51019a833e0f6b7f0067a4e6f97fa41bb8ec254b54b46db52e"
+      "a1b13beb90712af6bb7edae989e40758142309214574dffaa401e47ff6ff471e15015cbf"
+      "e9f90f9265a16719a153ca85dc890e761ee14756220b1bff91ad8eca190d21c1faa6a1e9"
+      "5e3498d5b0d7a7b2df6f2d351e4d4fe3c0356a0609c61e3c5f6170433565296a78e5ae5d"
+      "96938a7047d8be11fe3bf4d9d2038a715afa81909ec8969b893b0df9c6244746cc840285"
+      "c058f88a54226f22e6374faaac93aba0a6ea5fe8a67edc4d1fdeccee0372a373677e3649"
+      "39e91ce7182ec1aa36b6c91ae05f3664d9611ae7267556c68a5bb07eca1276fa6bdb94d3"
+      "ed1de1cd6fe2761f7b939e361b93c335227e50ca1a548abda449a3d2838a878ba50049cb"
+      "126567182d360a7d06c3bd9b24687a86135d99f5378e56b6673c106bb43d9df051077987"
+      "a79e5d8f88a7a917c4e612d7d70c9aa4fac90757b7b80ef94a35eec58e845dcb7a4ed4d2"
+      "e080e1aea0a5fb9a171168552211178e8d8bd107a61296f6e77f495fa1b07ad488371c2d"
+      "44f44ff33718f19bffceafe126184c11a8118fe52fc7df98fe90da92c6e69e6095f8dd11"
+      "5d54a0a2f010d332c90d8261b9027659c8577472ed4c79407fc5943bcc86d0569131447d"
+      "72e9eef5062043cca43984cf3db4f4297b0e9a3f651e0521f1839bfab069b3a762e7a9c8"
+      "77acae262f14340c7da3a6fa151ca052ff496b3c39d5f3e852ea36e3f56e1d295ea60eba"
+      "cd2265ddc3906b4273144fe29d5c0846b2084c29f9575cfee7bf9df8745b658a773fdcdd"
+      "69d2b29046b197e4229ab592b32346fc589103fe971a0468a035f6a24f0a4f16b36d7881"
+      "8d18b115fa3f59e96b63be6208f856b0e0777e383ba09cae1e0d5dddb0d2769135102969"
+      "9733713fbca650c29eb2f457d50af5b277ab54308734fd4e6493838263bdb590784f5f8c"
+      "89b7d99e17c57cc2f93c462a7e246916a43cd36b47f99f2219c44e83c5f03ec4a35d15ca"
+      "e99ebb9cf757bce5539aa024f0257cef7eb47e736c2d779ba2cee59ecb12bbed650ba2c6"
+      "34e2c05bbb2a8f467f1494cab69ad38d0b5dd3a410bcdeac5e52e139722feaf328ddee41"
+      "c8f580fa7f29dd57213a400b120ed334132479360544005452e560e79a9a64b42afdab57"
+      "ca1b9f6dfc38ab8eacd715377e5b2b318c898d736c36b4a2538b09189786c89b30088409"
+      "7cb8f683118e5dbcca41eb1a100e7c378c62af3af8114a16433ed598bf11a384276b9a60"
+      "8d3569df8f82608ab32eeca0ea7a7ebb95e63ae7f6f6dea1ca00412d88dcc6bf47f5f8fa"
+      "f9276ca8f26631aea788fd2cf0ddb28942b0a655120c85f696fc9a2860162ae875011c4d"
+      "c153ee301f06d499a21f6754f7448cd2e7168a5dc20e6e839d206e477f75c0d9f1f47fdb"
+      "cadac7129dccabd4ff7320ad650bb450b7ecb32396e3c91bdcf1de9d721a9f7aeb36aeb2"
+      "d63fc8cef9e5c8d59d1fe9660d1da4947867ddd025ac714659382d4066e82c028d867437"
+      "c3d89a52ba126c23df49ccc00df8bce39591a85fead39f347cee1bac2bd97be771058050"
+      "0938ca82f0a42e20dc22f60c7989707d8050f30ba1600520a497907280c8906188302a75"
+      "a4ff69024a1d4b479abe766d7d70014bd0f6dac788696c82b95085bebd14a7d99f74c353"
+      "0ad98b8c90066cd8583945274dc0851ffdf11f4ea59e28a2921d3d50ea9d1e5a1bacda40"
+      "1880f287fb143e70bba464f14872c95a1ca2df792b30cb194a7ca30215627feb26f948cc"
+      "54915cead274fa6d866b02125e1ca5d8e52f6561408f8b10027f70d2b6934cc2266294a5"
+      "9c9169f7d949de8665c282603f3a083ae12ff0e52f241a0e353eeea06437b2cc0c9e4e10"
+      "c6453983d1b5425ea63ecc05fb6d2c83ff273809778abe0ae3f63a2af7e317a56e5d9489"
+      "5612a1acb83121551187cb051c40114d9c31c4c11f13ce8bd35dfd98482f35091dd86683"
+      "870755c8c53d552932d8268135a175d54a145b270a13763910a9dc7baa0b6534b70aa39f"
+      "793c9412f62d6d06bcbc8e675c97e817a9686b4b5cc6c50b341c945bb1091f5762457fa6"
+      "5ed6162a81550b72ffe803ab0bcda423a5c588d41cf7668e683a73133223a245889a19b1"
+      "fb1cbe1caf7485bcda2ae1298266c0c612b6c20de51e54e245b93e72c4a90f557eaf4098"
+      "693e56cf2a07fcddb7049a33ad2e4cbfea0d5cb61f379ff71f3b88a9405a5f5960c8194b"
+      "5ade8b2cf8fbc859963e2594f0164522950880a9eacbc34ba581faaa0a77ccf6826201ea"
+      "a5737035be0246c99f032e7a63799abbdff416b96a67ef6b034c1fb66d9be5467c774315"
+      "56409f98982e462f112eea01f6a4d5f40cc9242995bd20e05f6c96173f678d9430c18e47"
+      "aa1ca5f8bfc859c0690bc04c984d28b9a65e359e4b778ad53d48dd2f2a48ed45782b90ad"
+      "27a428e06be67b5fafe9cd9974667d7212000c5962dd5f9293f7e2d79938224bc0f22f34"
+      "ff61c94cee9b9d0acc2ad439082f911ab02d3305fafaac19cf3477cce1c9edd1674ca061"
+      "7294169eaed2c124a85c8f8f7dfe3f615afc06194030b8dbe49a1cee42387ed44bb3a625"
+      "219ecd71c79d2b2a86275a0eec398088f50fae8f4cf2d3bcbcc9659175fc2e902a5f37fe"
+      "e0f449cf3705033876af6730971ee95a2278a2a7fb99e4d0e4470a9de5bd739fbd241d1e"
+      "0380eba55a6b91e97b1a00bd2bdc0d6f148b4e8eec50ecce55d13d6f2591f7aea93c2157"
+      "523dc78c940ba222283d84b53a4ab884a4f0be1a1c057e9fcd41b31c52cb17b4de4dda58"
+      "df394c3d00a6f9ee78236bafc7cd29ae3645eca0f08e4fbc51265f82c3bbc2dbcf1964a4"
+      "fb9eaed6b239c199e56217ff668400b8b6c7f4e71a911bdcf0418389dc3cc0154d6183a8"
+      "5ff4f0ce1e2bb83807ad05ea0730578474f00abfdf7da0ee6b3c2c32959122971e274ab6"
+      "774663b4d17f2fecc2f12596f9a53a115d816bb84191f999e5e44117e8cdd75208e951a5"
+      "217468885b9edb284dae7049c878c8a26d199d2e0f88a9865d257150c632ee6c92bf338a"
+      "008473a480fff34ff162e8d29a2a99ead10d3b49bf369a191052a2e02bec10cb650521b5"
+      "110ec827612e225d1c2f6c3ab1f831698e74bd23ad8f4bd04efc5505fdb1c690ba58d2d2"
+      "d4a62ff3ce10a400ae7577ab5350d9dcbb91a8447c053cfa7227eb84dd1541ccbb060652"
+      "e50dde555b82485d236859d3184af0fae1662a4c4edcb5c5b3419078b826605205145c4c"
+      "89b583a2c5a866a723ed4d12062898f26b222c1f34be7853847e312329a40057c45372cf"
+      "1d6f421a32953b9038bd66435a828824bae045165c8690f5989dda63b66bec1e6b9de911"
+      "8cb0f581559df0a68eeb9094051e9e579c32ed1dc3ac5e994bdd75b325906db616f35a1b"
+      "faeb4a6e58cba57b6699c8c7c1d794109706ac7298f0ba1a836ef916ad3058e8448817ee"
+      "18907f1180e0d6c1e1294607478096ba2e51f8b5fa608f5e7f5222538216c3e20d8cb87c"
+      "9ba8603f73c4daaa7f242968309e8da755d187e70aab0b240cb73ad822184576c41706cb"
+      "fa046cbfe4a36d62315fd46fc431369020bdfd70eb7c1fab8bda51d08b183882b3300a38"
+      "02b78c4d1bfddf4a5c4696c941bc0b0666bb43f42ef223853c3c0aa4c1e076a90b85ced8"
+      "1c6dda01185c77a85b0b73e76b41847e7b213dabc505d9ad9897d7a626b4f2d7506c7d3c"
+      "5c6881fa1343d5434d3f1ec5a4fe3d3dcd208dccebedb5c14eb6585649ad18868ab0537d"
+      "89576a93905b4ad0f8065e14b2be41036a15b00baf2e2fd146c7d42d2575883abcf70438"
+      "eafecf87646793867dd0c0458990c527de15bd858672bd126aa08a77ceaa6c35ec507f75"
+      "d3396ca02f8bcbbfdec29c3e452afe39ba3060b47db6524c1ad6c1d561c95511473f1494"
+      "37a683ec2c1e23567c18cb63fb096526fdee02b4029da8dc6f1802b9f47cb89cae297616"
+      "39f720a07e0567d939a4aec13f621b01a6db64c9a21e0516d5018cbeb5820e983b09704d"
+      "1f261b8336c707864c529cdcffdd6d473ddcdec70a1d741c90e2680c7f5568d910ab07b7"
+      "00e65e22e5d8975a59360d7bc6f5fed784df0d2b96fa556af134e801a1185ef723010de1"
+      "3929fb724c2467c6376e58b6e81ca88096c8307139053d4f4a8194a2ef47335f124da40e"
+      "241fb315b7ac16cdeb5f8c83ae6c99ee17e9ae8a13995fabada5761f9e9d5699326ea6b9"
+      "aac5c9b0bea0a4b0065aa5269358063eeb05a4ec0becddecd954315243a70f2e1dfb1b44"
+      "5dae3ecc346f8382d5e2bf795a3beffb6bd870f823cf723a80a40ad50d14ed5b9e007d7e"
+      "ccb741b9868080ec133d81ad26226fafe30b300582ed8ee4c15505f0eb79b4d6d99433c3"
+      "609d4d3b8b920298388ff5d9c982fb79cec8163c3bf7d65d72d985f7ef381e6ccb2ee9cc"
+      "3337f86152dd6aa2150eb97a2b4964e11b1ee31e97336b864e0cc114025a15156b9b6d12"
+      "081aebd862b212293ff3894f9209eee6009f27744faf40da02bbd8da6411f40630bee0e4"
+      "8ef65c9a8230702e613b7b26665b93ea1315b040ce60d10de6aa334b6dcbdeefe1df571d"
+      "a2d5b927a11e607ce2d6d4f36193977cbdf4ee939512",
+      ToHex(captured_data));
+
+  {
+    // Cleanup old MockOrchardSyncStateProxy to prevent dangling pointer error
+    base::SequenceBound<MockOrchardSyncStateProxy> empty_sync_state(
+        base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
+        db_path, nullptr);
+    OverrideSyncStateForTesting(std::move(empty_sync_state));
+    task_environment_.RunUntilIdle();
+  }
 }
 
 #endif
