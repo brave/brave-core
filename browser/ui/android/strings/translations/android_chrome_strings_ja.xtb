@@ -32,7 +32,7 @@
 <translation id="1138458427267715730">値下げしたウェブサイトがあった場合にアラートを受け取ります</translation>
 <translation id="1142732900304639782">これらのサイトを翻訳するか尋ねない</translation>
 <translation id="1145536944570833626">既存のデータを削除します。</translation>
-<translation id="7083341910267693582">Brave で <ph name="APP_NAME"/> を開きます。続行すると、<ph name="BEGIN_LINK1"/>Brave 利用規約<ph name="END_LINK1"/>と <ph name="BEGIN_LINK2"/>Brave および Chrome OS 追加利用規約<ph name="END_LINK2"/>に同意したものと見なされます。</translation>
+<translation id="7083341910267693582">Brave で <ph name="APP_NAME"/> を開きます。続行すると、<ph name="BEGIN_LINK1"/>Brave 利用規約<ph name="END_LINK1"/>と <ph name="BEGIN_LINK2"/>Brave および ChromeOS 追加利用規約<ph name="END_LINK2"/>に同意したものと見なされます。</translation>
 <translation id="115483310321669804">パスワード <ph name="PASSWORD"/> を使用</translation>
 <translation id="1173894706177603556">名前を変更</translation>
 <translation id="7947699437047020219">画面の幅が狭い場合、Brave はモバイルサイトをリクエストします</translation>
@@ -448,7 +448,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="3066573403916685335">下に移動</translation>
 <translation id="3067505415088964188">低価格</translation>
 <translation id="3070005020161560471">自動的に翻訳する</translation>
-<translation id="1094255666887095087">Brave で <ph name="APP_NAME"/> を開きます。続行すると、<ph name="BEGIN_LINK1"/>Brave 利用規約<ph name="END_LINK1"/>と <ph name="BEGIN_LINK2"/>Brave および Chrome OS 追加利用規約<ph name="END_LINK2"/>に同意したものと見なされます。また、<ph name="BEGIN_LINK3"/>プライバシー ポリシー<ph name="END_LINK3"/>も適用されます。</translation>
+<translation id="1094255666887095087">Brave で <ph name="APP_NAME"/> を開きます。続行すると、<ph name="BEGIN_LINK1"/>Brave 利用規約<ph name="END_LINK1"/>と <ph name="BEGIN_LINK2"/>Brave および ChromeOS 追加利用規約<ph name="END_LINK2"/>に同意したものと見なされます。また、<ph name="BEGIN_LINK3"/>プライバシー ポリシー<ph name="END_LINK3"/>も適用されます。</translation>
 <translation id="3080525922482950719">ページを保存して、後で読んだり、オフラインで読んだりできます</translation>
 <translation id="3087734570205094154">下</translation>
 <translation id="3091010850649238832">クリップボードの内容を表示</translation>
@@ -1219,7 +1219,7 @@ Brave を使いやすくするためにデータを使用するその他の設�
 <translation id="6762511428368667596"><ph name="NAME"/>、<ph name="EMAIL"/>。</translation>
 <translation id="676305334223455055">ログインすると、興味や関心に基づくコンテンツが表示されるようになります</translation>
 <translation id="6767294960381293877">タブを共有するデバイスのリストが画面の下半分に表示されました。</translation>
-<translation id="8174975477247159780">Brave および Chrome OS 追加利用規約</translation>
+<translation id="8174975477247159780">Brave および ChromeOS 追加利用規約</translation>
 <translation id="6795633245022906657">新しいタブをすばやく開きます。このショートカットは [設定] で編集できます。</translation>
 <translation id="4757665660890677272">Brave を既定のブラウザにする</translation>
 <translation id="679956319013005046">自動入力サービスを設定するには、まず使用するサービスを <ph name="BEGIN_LINK"/>Android 設定<ph name="END_LINK"/>で追加します。</translation>

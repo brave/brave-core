@@ -6495,7 +6495,6 @@ https://support.google.com/chromebook/?p=tpm</translation>
 <translation id="5060827009373522990">Brave에 로그인하면, 저장하는 비밀번호가 내 Brave 계정(<ph name="USER_EMAIL"/>)에 저장됩니다. 이 기능을 사용 중지하려면 설정으로 이동하세요.</translation>
 <translation id="5614190747811328134">사용자 알림</translation>
 <translation id="5614553682702429503">비밀번호를 저장하시겠습니까?</translation>
-<translation id="5614625640221885312">모든 기기에서 내 북마크, 비밀번호 등을 사용하려면 로그인하세요</translation>
 <translation id="5614947000616625327">iCloud 키체인</translation>
 <translation id="561552177910095306">탐색하면서 다른 사이트에 광고를 추천할 수 있는 최근 방문한 사이트 목록</translation>
 <translation id="5616571005307953937">가장 오래됨</translation>
@@ -11048,7 +11047,7 @@ https://support.google.com/chromebook/?p=sm</translation>
 <translation id="8897537894864195436"><ph name="APP_NAME"/>용 패스키가 있는 기기의 카메라로 이 QR 코드를 스캔하세요</translation>
 <translation id="8898786835233784856">다음 탭 선택</translation>
 <translation id="8898790559170352647">Microsoft 계정 추가</translation>
-<translation id="1984646864943401749">모든 웹 사용자에게 영향을 주는 새로운 위협을 발견하고 사용자를 보호하는 데 도움을 주기 위해 방문한 일부 페이지의 URL, 제한된 시스템 정보, 일부 페이지 콘텐츠를 Brave로 전송합니다.</translation>
+<translation id="1984646864943401749">새로운 위협을 발견하고 모든 웹 사용자를 보호하는데 도움을 주기 위해 방문한 일부 페이지의 URL, 제한된 시스템 정보, 일부 페이지 콘텐츠를 Brave로 전송합니다.</translation>
 <translation id="8899851313684471736">새 창에서 링크 열기(&amp;W)</translation>
 <translation id="8900413463156971200">셀룰러 사용</translation>
 <translation id="8902059453911237649">{NUM_DAYS,plural, =1{<ph name="MANAGER"/>에서 오늘 데이터를 백업하고 이 <ph name="DEVICE_TYPE"/> 기기를 반납할 것을 요청합니다.}other{<ph name="MANAGER"/>에서 기한 전에 데이터를 백업하고 이 <ph name="DEVICE_TYPE"/> 기기를 반납할 것을 요청합니다.}}</translation>

@@ -716,6 +716,7 @@ preglednika Brave. Ta se radnja ne može poništiti.</translation>
 <translation id="3286410514484292784">Url adresa na kojoj vaš okvir za posluživanje sluša vaše zahtjeve. Ako niste sigurni, provjerite dokumentaciju okvira posluživanja. Npr., za okvir Ollama, to je http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Neki okviri za posluživanje mogu zahtijevati podatke za provjeru vjerodostojnosti, poput API ključa ili pristupnog tokena. Oni će biti dodani zaglavlju zahtjeva.</translation>
 <translation id="4335128003329183586">Veličina konteksta</translation>
+<translation id="8794525422794607973">Maksimalni broj tokena koje model može obraditi u jednoj interakciji. Svaki token je otprilike 3/4 riječi. Veća veličina konteksta omogućuje modelu da obrađuje duže razgovore. Različiti modeli podržavaju različite maksimalne veličine konteksta.</translation>
 <translation id="217141195370578385">Platforma Brave nije posrednik za te zahtjeve, pročitajte politiku zaštite privatnosti odabranog pružatelja.</translation>
 <translation id="2645532768679870478">Završne točke koje nisu lokalne trebaju upotrebljavati HTTPS protokol za siguran prijenos podataka.</translation>
 <translation id="8177205483022887785">Upisali ste nevažeću URL adresu. Upišite važeću URL adresu.</translation>
