@@ -95,35 +95,6 @@ class MockZCashShieldSyncServiceObserver
 
 }  // namespace
 
-class MockOrchardBlockScannerProxy
-    : public ZCashShieldSyncService::OrchardBlockScannerProxy {
- public:
-  using Callback = base::RepeatingCallback<void(
-      OrchardTreeState,
-      std::vector<zcash::mojom::CompactBlockPtr>,
-      base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
-                                             OrchardBlockScanner::ErrorCode>)>
-          callback)>;
-
-  explicit MockOrchardBlockScannerProxy(Callback callback)
-      : OrchardBlockScannerProxy({}), callback_(callback) {}
-
-  ~MockOrchardBlockScannerProxy() override = default;
-
-  void ScanBlocks(
-      OrchardTreeState tree_state,
-      std::vector<zcash::mojom::CompactBlockPtr> blocks,
-      base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
-                                             OrchardBlockScanner::ErrorCode>)>
-          callback) override {
-    callback_.Run(std::move(tree_state), std::move(blocks),
-                  std::move(callback));
-  }
-
- private:
-  Callback callback_;
-};
-
 class ZCashShieldSyncServiceTest : public testing::Test {
  public:
   ZCashShieldSyncServiceTest()
@@ -155,8 +126,9 @@ class ZCashShieldSyncServiceTest : public testing::Test {
     OrchardFullViewKey fvk;
 
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
-        zcash_rpc_, sync_state_, account_id, account_birthday, fvk,
-        observer_->GetWeakPtr());
+        ZCashActionContext(zcash_rpc_, sync_state_, account_id,
+                           mojom::kZCashMainnet),
+        account_birthday, fvk, observer_->GetWeakPtr());
 
     // Ensure previous OrchardStorage is destroyed on background thread
     task_environment_.RunUntilIdle();
@@ -198,11 +170,11 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
             // First 2 notes are spent
             if (block->height == kNu5BlockUpdate + 255) {
-              result.found_spends.push_back(OrchardNoteSpend{
-                  block->height, GenerateMockNullifier(account_id, 1)});
+              result.found_spends.push_back(OrchardNoteSpend(
+                  block->height, {GenerateMockNullifier(account_id, 1)}));
             } else if (block->height == kNu5BlockUpdate + 265) {
-              result.found_spends.push_back(OrchardNoteSpend{
-                  block->height, GenerateMockNullifier(account_id, 2)});
+              result.found_spends.push_back(OrchardNoteSpend(
+                  block->height, {GenerateMockNullifier(account_id, 2)}));
             }
           }
           std::move(callback).Run(std::move(result));
@@ -252,17 +224,20 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
              ZCashRpc::GetCompactBlocksCallback callback) {
             std::vector<zcash::mojom::CompactBlockPtr> blocks;
             for (uint32_t i = from; i <= to; i++) {
+              auto chain_metadata = zcash::mojom::ChainMetadata::New();
+              chain_metadata->orchard_commitment_tree_size = 0;
               // Create empty block for testing
               blocks.push_back(zcash::mojom::CompactBlock::New(
                   0u, i, std::vector<uint8_t>({0xbb, 0xaa}),
                   std::vector<uint8_t>(), 0u, std::vector<uint8_t>(),
-                  std::vector<zcash::mojom::CompactTxPtr>(), nullptr));
+                  std::vector<zcash::mojom::CompactTxPtr>(),
+                  std::move(chain_metadata)));
             }
             std::move(callback).Run(std::move(blocks));
           }));
 
   {
-    sync_service()->StartSyncing();
+    sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
@@ -326,7 +301,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           }));
 
   {
-    sync_service()->StartSyncing();
+    sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
@@ -368,7 +343,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
-    sync_service()->StartSyncing();
+    sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
@@ -431,7 +406,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
-    sync_service()->StartSyncing();
+    sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();

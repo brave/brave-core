@@ -1857,10 +1857,19 @@ enum ZCashAddressValidationResult {
 };
 
 struct ZCashShieldSyncStatus {
-  uint64 current_block;
-  uint64 chain_tip;
+  uint32 start_block;
+  uint32 end_block;
+
+  uint32 total_ranges;
+  uint32 scanned_ranges;
+
   uint32 notes_found;
   uint64 spendable_balance;
+};
+
+struct ZCashChainTipStatus {
+  uint32 latest_scanned_block;
+  uint32 chain_tip;
 };
 
 interface ZCashWalletServiceObserver {
@@ -1884,9 +1893,11 @@ interface ZCashWalletService {
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
 
-  MakeAccountShielded(AccountId account_id) => (string? error_message);
-  StartShieldSync(AccountId account_id) => (string? error_message);
+  MakeAccountShielded(AccountId account_id, uint32 account_birthday_block /* 0 if use last available block */) => (string? error_message);
+  StartShieldSync(AccountId account_id, uint32 to /* 0 if latest available block is used */) => (string? error_message);
   StopShieldSync(AccountId account_id) => (string? error_message);
+  ResetSyncState(AccountId account_id) => (string? error_message);
+  GetChainTipStatus(AccountId account_id, string chain_id) => (ZCashChainTipStatus? status, string? error_message);
 };
 
 enum TransactionStatus {

@@ -934,7 +934,7 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
     EXPECT_CALL(make_account_shielded_callback, Run(Eq(std::nullopt)));
 
     zcash_wallet_service_->MakeAccountShielded(
-        account_id_1.Clone(), make_account_shielded_callback.Get());
+        account_id_1.Clone(), 0, make_account_shielded_callback.Get());
     task_environment_.RunUntilIdle();
   }
 

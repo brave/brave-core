@@ -20,6 +20,18 @@ uint64_t CalculateInputsAmount(
   return total_value;
 }
 
+#if BUILDFLAG(ENABLE_ORCHARD)
+
+uint64_t CalculateInputsAmount(const std::vector<OrchardNote>& notes) {
+  uint64_t total_value = 0;
+  for (const auto& note : notes) {
+    total_value += note.amount;
+  }
+  return total_value;
+}
+
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+
 }  // namespace
 
 PickInputsResult::PickInputsResult(
@@ -27,7 +39,7 @@ PickInputsResult::PickInputsResult(
     uint64_t fee,
     uint64_t change)
     : inputs(inputs), fee(fee), change(change) {}
-PickInputsResult::~PickInputsResult() {}
+PickInputsResult::~PickInputsResult() = default;
 PickInputsResult::PickInputsResult(const PickInputsResult& other) = default;
 PickInputsResult::PickInputsResult(PickInputsResult&& other) = default;
 
@@ -78,5 +90,52 @@ std::optional<PickInputsResult> PickZCashTransparentInputs(
 
   return std::nullopt;
 }
+
+PickOrchardInputsResult::PickOrchardInputsResult(
+    std::vector<OrchardNote> inputs,
+    uint64_t fee,
+    uint64_t change)
+    : inputs(inputs), fee(fee), change(change) {}
+PickOrchardInputsResult::~PickOrchardInputsResult() = default;
+PickOrchardInputsResult::PickOrchardInputsResult(
+    const PickOrchardInputsResult& other) = default;
+PickOrchardInputsResult::PickOrchardInputsResult(
+    PickOrchardInputsResult&& other) = default;
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
+    const std::vector<OrchardNote>& notes,
+    uint64_t amount) {
+  if (amount == kZCashFullAmount) {
+    auto fee =
+        CalculateZCashTxFee(0, notes.size() + 1 /* orchard actions count */);
+    if (CalculateInputsAmount(notes) < fee) {
+      return std::nullopt;
+    }
+    return PickOrchardInputsResult{notes, fee, 0};
+  }
+
+  std::vector<OrchardNote> mutable_notes = notes;
+
+  base::ranges::sort(mutable_notes, [](auto& input1, auto& input2) {
+    return input1.amount < input2.amount;
+  });
+
+  std::vector<OrchardNote> selected_inputs;
+  uint64_t fee = 0;
+  for (auto& input : mutable_notes) {
+    selected_inputs.push_back(input);
+    fee = CalculateZCashTxFee(0, selected_inputs.size() + 1);
+
+    auto total_inputs_amount = CalculateInputsAmount(selected_inputs);
+    if (total_inputs_amount >= amount + fee) {
+      return PickOrchardInputsResult{std::move(selected_inputs), fee,
+                                     total_inputs_amount - amount - fee};
+    }
+  }
+
+  return std::nullopt;
+}
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 }  // namespace brave_wallet

@@ -123,7 +123,7 @@ bool UrlPathEndsWithSlash(const GURL& base_url) {
   return !path_piece.empty() && path_piece.back() == '/';
 }
 
-const GURL MakeGetTreeStateUrl(const GURL& base_url) {
+GURL MakeGetTreeStateUrl(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -140,7 +140,7 @@ const GURL MakeGetTreeStateUrl(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeGetLatestTreeStateUrl(const GURL& base_url) {
+GURL MakeGetLatestTreeStateUrl(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -157,7 +157,7 @@ const GURL MakeGetLatestTreeStateUrl(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeGetAddressUtxosURL(const GURL& base_url) {
+GURL MakeGetAddressUtxosURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -174,7 +174,7 @@ const GURL MakeGetAddressUtxosURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeSendTransactionURL(const GURL& base_url) {
+GURL MakeSendTransactionURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -191,7 +191,7 @@ const GURL MakeSendTransactionURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeGetTaddressTxURL(const GURL& base_url) {
+GURL MakeGetTaddressTxURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -208,7 +208,7 @@ const GURL MakeGetTaddressTxURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeGetLatestBlockHeightURL(const GURL& base_url) {
+GURL MakeGetLatestBlockHeightURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -225,7 +225,7 @@ const GURL MakeGetLatestBlockHeightURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeGetLightdInfoURL(const GURL& base_url) {
+GURL MakeGetLightdInfoURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -242,7 +242,7 @@ const GURL MakeGetLightdInfoURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeGetTransactionURL(const GURL& base_url) {
+GURL MakeGetTransactionURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }
@@ -259,7 +259,7 @@ const GURL MakeGetTransactionURL(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
-const GURL MakeGetCompactBlocksURL(const GURL& base_url) {
+GURL MakeGetCompactBlocksURL(const GURL& base_url) {
   if (!base_url.is_valid()) {
     return GURL();
   }

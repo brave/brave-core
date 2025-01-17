@@ -34,6 +34,8 @@ class OrchardExtendedSpendingKey {
       uint32_t div_index,
       OrchardAddressKind kind) = 0;
 
+  virtual OrchardSpendingKey GetSpendingKey() = 0;
+
   virtual OrchardFullViewKey GetFullViewKey() = 0;
 };
 

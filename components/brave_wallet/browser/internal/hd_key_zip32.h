@@ -42,6 +42,8 @@ class HDKeyZip32 {
   // Full view key(fvk) is used to decode incoming transactions
   OrchardFullViewKey GetFullViewKey();
 
+  OrchardSpendingKey GetSpendingKey();
+
  private:
   explicit HDKeyZip32(std::unique_ptr<orchard::OrchardExtendedSpendingKey> key);
   // Extended spending key is a root key of an account, all other keys can be

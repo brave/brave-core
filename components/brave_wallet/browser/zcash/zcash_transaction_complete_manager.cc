@@ -112,8 +112,9 @@ void ZCashTransactionCompleteManager::OnGetTreeState(
   }
 
   CHECK_EQ(params.transaction.orchard_part().outputs.size(), 1u);
-  auto orchard_bundle_manager = OrchardBundleManager::Create(
-      *state_tree_bytes, params.transaction.orchard_part().outputs);
+  auto orchard_bundle_manager =
+      OrchardBundleManager::Create(*state_tree_bytes, OrchardSpendsBundle(),
+                                   params.transaction.orchard_part().outputs);
 
   if (!orchard_bundle_manager) {
     std::move(params.callback)

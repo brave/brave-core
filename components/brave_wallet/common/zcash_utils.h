@@ -105,9 +105,9 @@ struct OrchardOutput {
   static std::optional<OrchardOutput> FromValue(const base::Value::Dict& value);
 };
 
-// Structure describes note nullifier that marks some note as spent
+// Describes note nullifier that marks some note as spent.
 struct OrchardNoteSpend {
-  // Block id where spent nullifier was met
+  // Block id where spent nullifier was met.
   uint32_t block_id = 0;
   std::array<uint8_t, kOrchardNullifierSize> nullifier;
 

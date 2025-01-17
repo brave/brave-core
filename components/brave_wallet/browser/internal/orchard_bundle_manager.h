@@ -45,6 +45,7 @@ class OrchardBundleManager {
   // Returns in unauthorized state
   static std::unique_ptr<OrchardBundleManager> Create(
       base::span<const uint8_t> tree_state,
+      const OrchardSpendsBundle& spends_bundle,
       const std::vector<OrchardOutput>& orchard_outputs);
 
   static void OverrideRandomSeedForTesting(size_t seed) {
