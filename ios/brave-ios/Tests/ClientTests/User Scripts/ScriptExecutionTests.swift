@@ -37,7 +37,7 @@ final class ScriptExecutionTests: XCTestCase {
   }
 
   override class func setUp() {
-    Preferences.UserScript.translate.value = false
+    BraveCoreMain.initializeResourceBundleForTesting()
   }
 
   @MainActor func testSiteStateListenerScript() async throws {
