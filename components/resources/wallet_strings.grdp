@@ -1158,6 +1158,20 @@
   <message name="IDS_BRAVE_WALLET_SHIELDED" desc="Shielded label">Shielded</message>
   <message name="IDS_BRAVE_WALLET_UNIFIED" desc="Unified label">Unified</message>
   <message name="IDS_BRAVE_WALLET_TRANSPARENT" desc="Transparent label">Transparent</message>
+  <message name="IDS_BRAVE_WALLET_OUT_OF_SYNC_TITLE" desc="Warning title for when an account is out of sync.">Out of sync</message>
+  <message name="IDS_BRAVE_WALLET_OUT_OF_SYNC_BLOCKS_BEHIND_TITLE" desc="Warning title for when an account is out of sync with blocks behind.">Out of sync (<ph name="BLOCKS">$1<ex>12,568</ex></ph> blocks behind)</message>
+  <message name="IDS_BRAVE_WALLET_OUT_OF_SYNC_DESCRIPTION" desc="Warning description for when an account is out of sync.">Sync your account to access the latest transactions and balance.</message>
+  <message name="IDS_BRAVE_WALLET_SYNC_ACCOUNT_BUTTON" desc="Sync account button label.">Sync account</message>
+  <message name="IDS_BRAVE_WALLET_SYNC_ACCOUNT_NAME" desc="Sync account name title on sync dialog.">Sync <ph name="ACCOUNT">$1<ex>Zcash Account 1</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_INITIALIZING" desc="Initializing label on sync dialog.">Initializing...</message>
+  <message name="IDS_BRAVE_WALLET_PROCESSING_BLOCK" desc="Processing block label on sync dialog.">Processing block:</message>
+  <message name="IDS_BRAVE_WALLET_BLOCKS_LEFT" desc="Blocks left to be synced on sync dialag."><ph name="BLOCKS">$1<ex>257</ex></ph> left</message>
+  <message name="IDS_BRAVE_WALLET_BLOCKS_OF_BLOCKS" desc="Number of blocks synced out of total number of blocks."><ph name="BLOCKS">$1<ex>367</ex></ph> of <ph name="TOTAL_BLOCKS">$2<ex>934</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_RANGES" desc="Ranges label on sync dialog.">Ranges:</message>
+  <message name="IDS_BRAVE_WALLET_PAUSE" desc="Pause button label on sync dialog.">Pause</message>
+  <message name="IDS_BRAVE_WALLET_SYNC_COMPLETE_MESSAGE" desc="Sync complete message on sync dialog.">Sync complete. You may now close this window.</message>
+  <message name="IDS_BRAVE_WALLET_SYNC_STARTED_MESSAGE" desc="Sync started message on sync dialog.">Please don’t close this window until sync finishes.</message>
+  <message name="IDS_BRAVE_WALLET_CONTINUE_USING_WALLET" desc="Continue using wallet button label on sync dialog. ">Continue using wallet in a new tab</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action">Retry</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PREVIEW_FAILED" desc="Explaination that simulation of a transaction has failed">Transaction preview failed.</message>
   <message name="IDS_BRAVE_WALLET_ESTIMATED_BALANCE_CHANGE" desc="Grouping header for estimated balance changes">Estimated balance change</message>
