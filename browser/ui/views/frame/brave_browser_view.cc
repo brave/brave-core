@@ -649,10 +649,6 @@ void BraveBrowserView::AddedToWidget() {
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
   }
-
-  if (split_view_) {
-    GetBrowserViewLayout()->set_contents_container(split_view_);
-  }
 }
 
 bool BraveBrowserView::ShowBraveHelpBubbleView(const std::string& text) {
@@ -873,6 +869,14 @@ bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {
 
 bool BraveBrowserView::IsInTabDragging() const {
   return frame()->tab_drag_kind() == TabDragKind::kAllTabs;
+}
+
+views::View* BraveBrowserView::GetContentsContainerForLayoutManager() {
+  // In split view, |split_view_| wraps primary and secondary contents and
+  // it manages each content's bounds. So, BrowserViewLayoutManager only
+  // need to manage |split_view_|'s bounds.
+  return split_view_ ? split_view_
+                     : BrowserView::GetContentsContainerForLayoutManager();
 }
 
 bool BraveBrowserView::IsSidebarVisible() const {

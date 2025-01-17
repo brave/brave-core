@@ -41,6 +41,10 @@
 #undef BrowserViewLayout
 #undef InfoBarContainerView
 
+views::View* BrowserView::GetContentsContainerForLayoutManager() {
+  return contents_container();
+}
+
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
   // Sets a kBrowserWindowKey to given child |widget| so that we can get
   // BrowserView from the |widget|.

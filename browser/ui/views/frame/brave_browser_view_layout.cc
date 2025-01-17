@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <utility>
 
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
@@ -32,6 +33,42 @@ constexpr int kSidebarSeparatorWidth = 1;
 constexpr int kSidebarSeparatorMargin = 4;
 
 }  // namespace
+
+BraveBrowserViewLayout::BraveBrowserViewLayout(
+    std::unique_ptr<BrowserViewLayoutDelegate> delegate,
+    BrowserView* browser_view,
+    views::View* top_container,
+    WebAppFrameToolbarView* web_app_frame_toolbar,
+    views::Label* web_app_window_title,
+    TabStripRegionView* tab_strip_region_view,
+    TabStrip* tab_strip,
+    views::View* toolbar,
+    InfoBarContainerView* infobar_container,
+    views::View* contents_container,
+    views::View* left_aligned_side_panel_separator,
+    views::View* unified_side_panel,
+    views::View* right_aligned_side_panel_separator,
+    views::View* side_panel_rounded_corner,
+    ImmersiveModeController* immersive_mode_controller,
+    views::View* contents_separator)
+    : BrowserViewLayout(
+          std::move(delegate),
+          browser_view,
+          top_container,
+          web_app_frame_toolbar,
+          web_app_window_title,
+          tab_strip_region_view,
+          tab_strip,
+          toolbar,
+          infobar_container,
+          (browser_view ? browser_view->GetContentsContainerForLayoutManager()
+                        : browser_view),
+          left_aligned_side_panel_separator,
+          unified_side_panel,
+          right_aligned_side_panel_separator,
+          side_panel_rounded_corner,
+          immersive_mode_controller,
+          contents_separator) {}
 
 BraveBrowserViewLayout::~BraveBrowserViewLayout() = default;
 

@@ -33,10 +33,11 @@
   GetTabSearchBubbleHost_Unused(); \
   virtual TabSearchBubbleHost* GetTabSearchBubbleHost
 
-#define UpdateExclusiveAccessBubble                           \
-  UpdateExclusiveAccessBubble_ChromiumImpl(                   \
-      const ExclusiveAccessBubbleParams& params,              \
-      ExclusiveAccessBubbleHideCallback first_hide_callback); \
+#define UpdateExclusiveAccessBubble                            \
+  UpdateExclusiveAccessBubble_ChromiumImpl(                    \
+      const ExclusiveAccessBubbleParams& params,               \
+      ExclusiveAccessBubbleHideCallback first_hide_callback);  \
+  virtual views::View* GetContentsContainerForLayoutManager(); \
   void UpdateExclusiveAccessBubble
 
 #if BUILDFLAG(IS_WIN)
