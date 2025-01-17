@@ -12,10 +12,10 @@ import tempfile
 
 from lib.l10n.crowdin.common import should_use_crowdin_for_file
 from lib.l10n.crowdin.pull import pull_source_file_from_crowdin
-from lib.l10n.grd_utils import (get_override_file_path, update_xtbs_locally)
+from lib.l10n.grd_utils import (combine_override_xtb_into_original,
+                                get_override_file_path, update_xtbs_locally)
 from lib.l10n.transifex.common import should_use_transifex_for_file
-from lib.l10n.transifex.pull import (combine_override_xtb_into_original,
-                                     pull_source_files_from_transifex)
+from lib.l10n.transifex.pull import pull_source_files_from_transifex
 
 
 BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
