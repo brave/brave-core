@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-=======
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved. This Source Code Form is subject to
- * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
- * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
->>>>>>> 6060cc31b46 (Add notification permission function in Utils)
 package org.chromium.chrome.browser.vpn.utils;
 
 import android.content.Context;
@@ -30,8 +22,6 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 public class BraveVpnProfileUtils {
     private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;
     private static Object sMutex = new Object();
-
-    private static final int NOTIFICATION_PERMISSION_CODE = 123;
 
     private BraveVpnProfileUtils() {}
 

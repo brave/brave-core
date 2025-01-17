@@ -597,7 +597,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             getPureWords();
             setNewChainLayout();
             seedWordsReceived(mCodephrase, SyncInputType.NEW);
-            BravePermissionUtils.showNotificationPermissionDialog(getActivity());
         } else if (mMobileButton == v) {
             setAddMobileDeviceLayout();
             selectAddMobileTab();
@@ -1484,6 +1483,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             BraveSyncDevices.get().addDeviceInfoChangedListener(this);
             mDeviceInfoObserverSet = true;
         }
+
+        BravePermissionUtils.showNotificationPermissionDialog(getActivity());
 
         getActivity()
                 .getWindow()
