@@ -477,6 +477,11 @@ void ConversationHandler::SetAssociatedContentDelegate(
   OnAssociatedContentInfoChanged();
 }
 
+void ConversationHandler::SetUploadedContentDelegate(
+    base::WeakPtr<UploadedContentDelegate> delegate) {
+  uploaded_content_delegate_ = std::move(delegate);
+}
+
 const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   CHECK(model);

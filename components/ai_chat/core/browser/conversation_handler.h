@@ -148,6 +148,11 @@ class ConversationHandler : public mojom::ConversationHandler,
     base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
   };
 
+  class UploadedContentDelegate {
+    virtual std::vector<std::vector<uint8_t>>& GetUploadedImages() = 0;
+    virtual size_t GetUploadedImagesSize() = 0;
+  };
+
   class Observer : public base::CheckedObserver {
    public:
     ~Observer() override {}
@@ -231,6 +236,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   // content, this conversation can be reunited with the delegate.
   void SetAssociatedContentDelegate(
       base::WeakPtr<AssociatedContentDelegate> delegate);
+  void SetUploadedContentDelegate(
+      base::WeakPtr<UploadedContentDelegate> delegate);
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 
@@ -422,6 +429,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnStateForConversationEntriesChanged();
 
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
+  base::WeakPtr<UploadedContentDelegate> uploaded_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;
 
   std::string model_key_;
