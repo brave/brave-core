@@ -374,6 +374,7 @@ interface AIChatUIHandler {
   HandleVoiceRecognition(string conversation_uuid);
   UploadImage() => (array<uint8>? image_data, string? file_name,
       int64? file_size);
+  RemoveUploadedImage(uint32 index);
 
   // This might be a no-op if the UI isn't closeable
   CloseUI();
