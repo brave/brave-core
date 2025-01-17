@@ -148,7 +148,7 @@ class ScriptFactory {
     case .domainUserScript(let domainUserScript):
       resultingScript = try self.makeScript(for: domainUserScript)
 
-    case .selectorsPoller(let setup, let proceduralActions):
+    case .contentCosmetic(let setup, let proceduralActions):
       let encoder = JSONEncoder()
       let data = try encoder.encode(setup)
       let args = String(data: data, encoding: .utf8)!

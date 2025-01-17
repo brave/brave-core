@@ -11,7 +11,7 @@ import os.log
 
 /// This handler receives a list of urls for a given frame that need to determine its partiness (i.e. 1st part vs 3rd party)
 ///
-/// The urls are collected in the `SelectorsPollerScript.js` file.
+/// The urls are collected in the `content_cosmetic_ios.js` file.
 class URLPartinessScriptHandler: TabContentScript {
   struct PartinessDTO: Decodable {
     struct PartinessDTOData: Decodable, Hashable {
@@ -35,7 +35,7 @@ class URLPartinessScriptHandler: TabContentScript {
     replyHandler: @escaping (Any?, String?) -> Void
   ) {
     if !verifyMessage(message: message) {
-      assertionFailure("Invalid security token. Fix the `SelectorsPollerScript.js` script")
+      assertionFailure("Invalid security token. Fix the `content_cosmetic_ios.js` script")
       replyHandler(nil, nil)
       return
     }
@@ -71,7 +71,7 @@ class URLPartinessScriptHandler: TabContentScript {
 
       replyHandler(results, nil)
     } catch {
-      assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")
+      assertionFailure("Invalid type of message. Fix the `content_cosmetic_ios.js` script")
       replyHandler(nil, nil)
     }
   }
