@@ -6481,7 +6481,6 @@ Na tento účet sa môžu vzťahovať povolenia, ktoré ste už udelili webom a�
 <translation id="5060827009373522990">Keď sa prihlásite do Chromu, heslá sa budú ukladať do vášho účtu Brave <ph name="USER_EMAIL"/>. Túto možnosť môžete vypnúť v nastaveniach.</translation>
 <translation id="5614190747811328134">Oznámenie pre používateľa</translation>
 <translation id="5614553682702429503">Uložiť heslo?</translation>
-<translation id="5614625640221885312">Prihláste sa a používajte záložky, heslá a ďalší obsah vo všetkých svojich zariadeniach</translation>
 <translation id="5614947000616625327">iCloud Kľúčenka</translation>
 <translation id="561552177910095306">Zoznam nedávno navštívených webov, ktoré môžu pri prehliadaní navrhovať reklamy iným webom</translation>
 <translation id="5616571005307953937">Najstaršie</translation>
@@ -8736,7 +8735,7 @@ Máte ešte # ďalších. Správca hesiel Brave odporúča okamžite dané hesl
 <translation id="727595954130325265">Nakupovať</translation>
 <translation id="7278164481614262110">Vytváranie motívov pomocou umelej inteligencie</translation>
 <translation id="727952162645687754">Chyba sťahovania</translation>
-<translation id="7280649757394340890">Hlasové nastavenia prevodu textu na reč</translation>
+<translation id="7280649757394340890">Nastavenia hlasu pre prevod textu na reč</translation>
 <translation id="7280877790564589615">Vyžaduje sa povolenie</translation>
 <translation id="7281166215790160128">Režim</translation>
 <translation id="7282056103720203738">Čítať priložené informácie a údaje o zariadeniach</translation>
@@ -9955,7 +9954,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8126355825906412872">Usmejte sa</translation>
 <translation id="8129265306888404830">Použitie e‑mailovej adresy organizácie (<ph name="EMAIL_DOMAIN"/>) je podmienené podnikovou registráciou. Ak je toto zariadenie určené na osobné použitie, prihláste sa pomocou osobného účtu Brave.</translation>
 <translation id="8130476996317833777">Nepovoliť webom používať optimalizátor V8</translation>
-<translation id="813082847718468539">Zobraziť informácie o stránkach</translation>
+<translation id="813082847718468539">Zobraziť informácie o webe</translation>
 <translation id="8131740175452115882">Potvrdiť</translation>
 <translation id="8133297578569873332">Prijateľná – FM</translation>
 <translation id="8133676275609324831">&amp;Zobraziť v priečinku</translation>

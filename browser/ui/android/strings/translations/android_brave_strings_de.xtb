@@ -112,8 +112,11 @@
 <translation id="1571106259128580884">Empfehlungen für Top-Seiten anzeigen</translation>
 <translation id="6285118765755298263">Andere Suchmaschinen indizieren</translation>
 <translation id="919715748352669592">Indiziert automatisch Websites, die der OpenSearch-Spezifikation entsprechen.</translation>
+<translation id="412411722208944922">Schnelle Suchmaschinen</translation>
 <translation id="2836969042340015500">Schnellsuchmaschinen</translation>
+<translation id="9120455214794270250">Schnellsuchleiste anzeigen</translation>
 <translation id="1052991798173010693">Derzeit verwendete Suchmaschinen</translation>
+<translation id="335303688425891752">Lang drücken, um die Reihenfolge zu ändern</translation>
 <translation id="9148058034647219655">Beenden</translation>
 <translation id="8047754398610073499">Cookie-Einwilligungshinweise blockieren</translation>
 <translation id="2621893359845808115">Blockiert Website-Pop-ups, mit denen Sie darum geben werden, Cookies auf der Website zu akzeptieren bzw. abzulehnen</translation>
@@ -406,6 +409,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="597993392929850353">Brave-Lizenz</translation>
 <translation id="6336451774241870485">Neue private Registerkarte</translation>
 <translation id="3110967157686007724">Private Registerkarte</translation>
+<translation id="944340256927461196">Anonymität auf deinem Gerät</translation>
+<translation id="2063044449012253966">Websites, die du in privaten Fenstern besuchst, werden nicht in deinem Verlauf angezeigt. Cookies, Formulardaten und Website-Daten verschwinden, sobald alle privaten Fenster geschlossen sind.</translation>
+<translation id="7395764193745523646">Sichtbarkeit beim Surfen</translation>
+<translation id="8735363371744702779">Beachte, dass deine Browsing-Aktivitäten - selbst in privaten Fenstern - für deinen ISP, Netzwerkbeobachter oder deinen Arbeitgeber (wenn du ein Arbeitsgerät/Netzwerk verwendest) sichtbar sein können.</translation>
+<translation id="1413177583895309156">Brave VPN verschlüsselt und schützt alles, was du online machst, auch außerhalb des Brave Browsers.</translation>
+<translation id="3974348661685061050">7 Tage kostenlos testen</translation>
 <translation id="5789441016350810005">Es werden Brave Ads gesendet, wenn der Browser im Hintergrund ist</translation>
 <translation id="4973347371961481083">Beiträge</translation>
 <translation id="7047578174221019462">Ihre monatlichen Spenden wurden abgewickelt.</translation>
@@ -706,8 +715,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1532536259167115948">Monatsabo <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Jahresabo <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Wird monatlich erneuert</translation>
+<translation id="112929124115834557">Verlängert sich jährlich</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/>/Monat</translation>
 <translation id="1163809943099641131">Ein Jahr</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>spare <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/>/Jahr</translation>
 <translation id="2786538705804257030">Abonnements werden über Ihr Google-Konto abgerechnet. Wenn Ihnen eine kostenlose Testversion angeboten wurde, verfällt deren nicht genutzter Teil beim Kauf eines Abonnements.\n\nIhr Abonnement verlängert sich automatisch, wenn Sie es nicht mindestens 24 Stunden vor Ende des aktuellen Zeitraums kündigen.\n\nSie können Ihre Abonnements in den Einstellungen verwalten.\n\nDurch die Verwendung von Brave stimmen Sie den Nutzungsbedingungen und den Datenschutzbestimmungen zu.</translation>
 <translation id="5035172357624830412">Haben Sie bereits einen Kauf auf brave.com getätigt?</translation>
@@ -1223,4 +1234,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2728518864712716830">Update wurde heruntergeladen.</translation>
 <translation id="8403338849301491865">Die Filterliste wurde erfolgreich aktualisiert</translation>
 <translation id="4650851936784160359">Die Filterliste konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.</translation>
+<translation id="3098054327870766317">Rückgängig-Schaltfläche anzeigen, wenn Registerkarten geschlossen werden</translation>
+<translation id="1336494649091412226">Bist du sicher, dass du Brave verlassen möchtest?</translation>
 </translationbundle>

@@ -1278,6 +1278,7 @@
 <translation id="8544603592370093978">Kaufe <ph name="ASSET"/></translation>
 <translation id="7463545687475534731">Keine Anbieter gefunden für <ph name="ASSET"/></translation>
 <translation id="3372351687823322070">Versuche, nach einem anderen Asset zu suchen.</translation>
+<translation id="2619949734919284401">Keine Ergebnisse gefunden für <ph name="PROVIDER"/></translation>
 <translation id="3319146983769202287">Versuche es mit einem anderen Keyword oder überprüfe die Rechtschreibung.</translation>
 <translation id="4196022627437957774">Möchtest du ein <ph name="ACCOUNT_TYPE"/> Konto erstellen?</translation>
 <translation id="5982914754413312620">Um <ph name="TOKEN_SYMBOL"/> zu erhalten, benötigst du ein <ph name="ACCOUNT_TYPE"/> Konto.</translation>
@@ -2122,6 +2123,8 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="8742658901413346500">Diese Unterhaltung ist ziemlich lang; möglicherweise wird Leo bald ein paar Dinge vergessen. Sie können längere Unterhaltungen ermöglichen, indem Sie auf ein Premium-Modell wechseln, oder Sie können den Chat löschen, um ihn zurückzusetzen.</translation>
 <translation id="6495402307502950726">Chat löschen</translation>
 <translation id="903201991022343217">Neuen Chat starten</translation>
+<translation id="8171760814579050200">Unterhaltung umbenennen</translation>
+<translation id="7754678742055438573">Unterhaltung löschen</translation>
 <translation id="7494736170250048402">Nachricht an Leo schicken</translation>
 <translation id="8712637175834984815">Alles klar</translation>
 <translation id="1093419424466417703">Diese Seite ist zu lang für Leo. Teile des Kontexts fehlen in der Unterhaltung möglicherweise. Leo konnte <ph name="PERCENTAGE"/> der Seiteninhalte lesen.</translation>
@@ -2173,6 +2176,7 @@ other {{PENDING_TRANSACTIONS} weitere anstehende Transaktionen.}
 <translation id="49269513399674318">Mikrofon benutzen</translation>
 <translation id="3895031624234442305">Benutzerdefinierte Modelle</translation>
 <translation id="4572010449071015143">Neue Unterhaltung starten</translation>
+<translation id="6287023598025162715">Neue Unterhaltung</translation>
 <translation id="6303294677342628402">Schutz</translation>
 <translation id="8458987127502506209">Brave Schutz aktivieren</translation>
 <translation id="7509914170164691086">Schutz ist AKTIV <ph name="LINK_BEFORE"/>für<ph name="LINK_AFTER"/></translation>
@@ -2291,6 +2295,7 @@ hat <ph name="NUMBER"/> Tracker, Anzeigen und mehr blockiert</translation>
 <translation id="2542131205769293399">Der Status Ihres Kaufs kann nicht überprüft werden. Dies ist wahrscheinlich ein Netzwerkproblem. Versuchen Sie es erneut oder wenden Sie sich an den Support.</translation>
 <translation id="4613076894734402086">Zahlungsmethode bearbeiten</translation>
 <translation id="427718751211990320">Das Ablaufdatum der Anmeldedaten ist verstrichen.</translation>
+<translation id="3323234188356372126">Brave VPN hat Probleme bei der Authentifizierung zum VPN-Server. Bitte kontaktiere den Support oder versuche es später noch einmal.</translation>
 <translation id="8670619630771851260">Anmeldedaten konnten nicht geladen werden.</translation>
 <translation id="1594643509610625766">Token ist nicht mehr gültig.</translation>
 <translation id="8373427068383038263">Anscheinend wurde Ihre letzte Zahlung für <ph name="VALUE"/> nicht durchgeführt. Der Zugriff auf dieses Abonnement wird pausiert, bis das Zahlungsproblem gelöst wurde. Ändern Sie Ihre Zahlungsmethode oder wenden Sie sich an den Brave-Support.</translation>
@@ -2337,6 +2342,7 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="7423206764347669977">Einstellungen ändern</translation>
 <translation id="9061845622728745852">Zeitzone:</translation>
 <translation id="8295393906499561642">Sitzung abgelaufen</translation>
+<translation id="7070578590391442755">Kann sich nicht bei VPN authentifizieren</translation>
 <translation id="3312623558576021182">Bitte melden Sie sich bei Ihrem <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave-Konto<ph name="BRAVE_ACCOUNT_END"/> an, um Ihre VPN-Sitzung zu aktualisieren.</translation>
 <translation id="7861195049821776142">Brave VPN: Verbindung wird unterbrochen</translation>
 <translation id="2061807837510296780">Brave VPN: Verbindung wird hergestellt</translation>
@@ -2349,6 +2355,7 @@ Lassen Sie uns gemeinsam eine Verbindung herstellen!</translation>
 <translation id="6825718953004242472">Symbol entfernen</translation>
 <translation id="6819278685469225453">Schützen Sie jede App auf Ihrem Gerät</translation>
 <translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4295077644587784828">Zusätzliche Privatsphäre &amp; Sicherheit online.</translation>
 <translation id="8425213833346101688">Ändern</translation>
 <translation id="8703188411226330709">Kostenlos testen</translation>
 <translation id="3287942014983548982">Hier öffnen</translation>

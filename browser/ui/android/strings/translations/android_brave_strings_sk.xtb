@@ -112,8 +112,11 @@
 <translation id="1571106259128580884">Zobraziť najlepšie návrhy stránok</translation>
 <translation id="6285118765755298263">Indexovať ostatné vyhľadávače</translation>
 <translation id="919715748352669592">Automaticky indexované webové lokality, ktoré sa riadia špecifikáciami OpenSearch</translation>
+<translation id="412411722208944922">Rýchle vyhľadávače</translation>
 <translation id="2836969042340015500">Rýchle vyhľadávače</translation>
+<translation id="9120455214794270250">Zobraziť panel rýchleho vyhľadávania</translation>
 <translation id="1052991798173010693">Aktuálne používané vyhľadávače</translation>
+<translation id="335303688425891752">Dlhým stlačením zmeníte poradie</translation>
 <translation id="9148058034647219655">Ukončiť</translation>
 <translation id="8047754398610073499">Blokovať upozornenia na súhlas so súbormi cookie</translation>
 <translation id="2621893359845808115">Blokuje vyskakovacie okná webových stránok, ktoré vás žiadajú o prijatie/odmietnutie súborov cookie na ich stránke</translation>
@@ -406,6 +409,12 @@ Naozaj chcete pokračovať?</translation>
 <translation id="597993392929850353">Licencia Brave</translation>
 <translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="3110967157686007724">Súkromná karta</translation>
+<translation id="944340256927461196">Nezanechajte na svojom zariadení žiadne stopy</translation>
+<translation id="2063044449012253966">Stránky, ktoré navštívite v súkromných oknách, sa nezobrazia v histórii. Súbory cookie, údaje z formulárov a údaje o stránkach zmiznú po zatvorení všetkých súkromných okien.</translation>
+<translation id="7395764193745523646">Viditeľnosť prehliadania</translation>
+<translation id="8735363371744702779">Upozorňujeme, že aj v súkromných oknách môže byť vaša aktivita pri prehliadaní viditeľná pre poskytovateľa internetových služieb, pozorovateľov siete alebo vášho zamestnávateľa (ak používate pracovné zariadenie/sieť).</translation>
+<translation id="1413177583895309156">Brave VPN šifruje a chráni všetko, čo robíte online, a to aj mimo prehliadača Brave.</translation>
+<translation id="3974348661685061050">Vyskúšajte zadarmo na 7 dní</translation>
 <translation id="5789441016350810005">Reklamy Brave odoslané, keď je prehliadač na pozadí</translation>
 <translation id="4973347371961481083">Príspevky</translation>
 <translation id="7047578174221019462">Vaše mesačné príspevky boli spracované.</translation>
@@ -706,8 +715,10 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1532536259167115948">Mesačné predplatné <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Ročné predplatné <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Obnovuje sa mesačne</translation>
+<translation id="112929124115834557">Obnovuje sa ročne</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> /mesiac</translation>
 <translation id="1163809943099641131">Jeden rok</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>ušetríte <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> /rok</translation>
 <translation id="2786538705804257030">Predplatné sa bude účtovať prostredníctvom vášho účtu Google. Akákoľvek nevyužitá časť bezplatnej skúšobnej verzie, ak je v ponuke, prepadne pri zakúpení predplatného.\n\nVaše predplatné sa automaticky obnoví, ak nebude zrušené aspoň 24 hodín pred koncom aktuálneho obdobia.\n\nSvoje odbery môžete spravovať v Nastaveniach.\nPoužívaním Brave súhlasíte s Podmienkami používania a Zásadami ochrany osobných údajov.</translation>
 <translation id="5035172357624830412">Už ste nakupovali na brave.com?</translation>
@@ -1223,4 +1234,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="2728518864712716830">Aktualizácia je stiahnutá.</translation>
 <translation id="8403338849301491865">Zoznam filtrov je úspešne aktualizovaný</translation>
 <translation id="4650851936784160359">Zoznam filtrov sa nepodarilo aktualizovať. Skúste to znova</translation>
+<translation id="3098054327870766317">Zobraziť tlačidlo „Späť“ pri zatvorení kariet</translation>
+<translation id="1336494649091412226">Naozaj chcete opustiť Brave?</translation>
 </translationbundle>

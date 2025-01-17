@@ -269,7 +269,7 @@
 <translation id="55252794453047936">Перемещение медиафайла</translation>
 <translation id="4418985925423678811">Новый плейлист</translation>
 <translation id="385051799172605136">Back</translation>
-<translation id="5317780077021120954">Save</translation>
+<translation id="5317780077021120954">Сохранить</translation>
 <translation id="7930125899031086027">Создать и переместить</translation>
 <translation id="2860159216666546928">Выберите папку.</translation>
 <translation id="9130105487623071247">Название плейлиста</translation>
@@ -307,6 +307,7 @@
 <translation id="6155018868740116868">Восстановить</translation>
 <translation id="2521960050170773751">Добавить медиаконтент со страницы</translation>
 <translation id="2301087142998134097">Открывается сайт <ph name="SITE"/></translation>
+<translation id="4828353184750597953">Открывается встроенная страница по адресу <ph name="SITE"/></translation>
 <translation id="1175012181261953767">Открывается страница</translation>
 <translation id="7459546222322124545">Открывается встроенная страница</translation>
 <translation id="5836261838911560851">Сайт <ph name="SITE"/> запрашивает сохранение</translation>
@@ -726,6 +727,9 @@
 <translation id="7435587476558117990">Подключайте свои или сторонние большие языковые модели к Leo и используйте их в браузере.</translation>
 <translation id="1381050642750209119">Используйте любой фреймворк, совместимый с протоколом чата OpenAI, например Ollama.</translation>
 <translation id="2642905648178380593">Сохранить модель</translation>
+<translation id="6304169450064541679">Системный запрос</translation>
+<translation id="3081947790648024460">Пользовательские инструкции и/или контекст, предоставляемые модели, чтобы направлять ее ответы в определенном направлении или стиле. Используйте %datetime% где вы бы хотели вставить текущую дату и время.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
 <translation id="349846214503465941">Включить плейлист</translation>
 <translation id="7903608716704052878">Автоматически добавлять файлы для просмотра, находясь не в сети</translation>
 <translation id="4193768184502613558">Этот вариант автоматически будет кэшировать медиафайлы, чтобы вы могли воспроизводить их, находясь не в сети.</translation>

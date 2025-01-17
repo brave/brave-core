@@ -307,9 +307,11 @@ Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="6155018868740116868">Atkurti</translation>
 <translation id="2521960050170773751">Pridėti mediją iš puslapio</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> nori atsiverti</translation>
+<translation id="4828353184750597953">Norima atidaryti įterptąjį puslapį adresu <ph name="SITE"/></translation>
 <translation id="1175012181261953767">Šis puslapis nori atsiverti</translation>
 <translation id="7459546222322124545">Įterptas puslapis nori atsiverti šiame puslapyje</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> nori įrašyti</translation>
+<translation id="8813509417421129632">Norima įrašyti įterptąjį puslapį adresu <ph name="SITE"/></translation>
 <translation id="7700010743463174379">Šis puslapis nori įrašyti</translation>
 <translation id="6774238875569752630">Įterptas puslapis nori įrašyti šiame puslapyje</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
@@ -726,6 +728,8 @@ Leo“. Šio veiksmo atšaukti negalima.</translation>
 <translation id="1381050642750209119">Naudokite bet kurią su „OpenAI“ pokalbių protokolu suderinamą sistemą, pavyzdžiui, „Ollama“.</translation>
 <translation id="2642905648178380593">Įrašyti modelį</translation>
 <translation id="6304169450064541679">Sistemos raginimas</translation>
+<translation id="3081947790648024460">Asmeninės instrukcijos ir (arba) kontekstas, pateikiamas modeliui, kad jo atsakymai būtų nukreipti tam tikra linkme ar stiliumi. Vietoje, kurioje norite įterpti dabartinę datą ir laiką, naudokite %datetime%.</translation>
+<translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> žetonai</translation>
 <translation id="349846214503465941">Įjungti grojaraštį</translation>
 <translation id="7903608716704052878">Automatiškai pridėti failus, kad būtų galima peržiūrėti neprisijungus</translation>
 <translation id="4193768184502613558">Pasirinkus šią parinktį, medijos failai automatiškai padedami į atmintinę, tad galite juos leisti neprisijungę prie interneto.</translation>

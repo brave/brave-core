@@ -6458,7 +6458,6 @@ Na tym koncie mogą obowiązywać uprawnienia przyznane stronom i aplikacjom. K
 <translation id="5060827009373522990">Gdy zalogujesz się w Brave, zapisane hasła pojawią się na Twoim koncie Brave <ph name="USER_EMAIL"/>. Aby wyłączyć tę funkcję, otwórz ustawienia.</translation>
 <translation id="5614190747811328134">Informacje dla użytkownika</translation>
 <translation id="5614553682702429503">Zapisać hasło?</translation>
-<translation id="5614625640221885312">Zaloguj się, aby mieć dostęp do zakładek, haseł oraz innych ustawień i danych na wszystkich swoich urządzeniach</translation>
 <translation id="5614947000616625327">Pęk kluczy iCloud</translation>
 <translation id="561552177910095306">Lista ostatnio odwiedzonych przez Ciebie witryn, które mogą sugerować reklamy innym witrynom, gdy kontynuujesz przeglądanie</translation>
 <translation id="5616571005307953937">Najstarsza</translation>
@@ -10223,7 +10222,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8337399713761067085">Jesteś teraz w trybie offline.</translation>
 <translation id="8338427544764842461">Tutaj są zapisywane grupy kart. Będą one aktualizowane na wszystkich urządzeniach, na których się zalogujesz</translation>
 <translation id="8338952601723052325">Witryna dewelopera</translation>
-<translation id="8339288417038613756">Rozmiar wyświetlacza i tekstu</translation>
+<translation id="8339288417038613756">Rozmiar elementów interfejsu i tekstu</translation>
 <translation id="833986336429795709">Aby otworzyć ten link, wybierz aplikację</translation>
 <translation id="8340547030807793004">Więcej działań dotyczących: <ph name="DEVICE"/></translation>
 <translation id="8341557223534936723">{NUM_SITES,plural, =1{Sprawdź <ph name="BEGIN_BOLD"/>1 witrynę<ph name="END_BOLD"/>, która ostatnio wysłała wiele powiadomień}few{Sprawdź <ph name="BEGIN_BOLD"/>{NUM_SITES} witryny<ph name="END_BOLD"/>, które ostatnio wysłały wiele powiadomień}many{Sprawdź <ph name="BEGIN_BOLD"/>{NUM_SITES} witryn<ph name="END_BOLD"/>, które ostatnio wysłały wiele powiadomień}other{Sprawdź <ph name="BEGIN_BOLD"/>{NUM_SITES} witryny<ph name="END_BOLD"/>, która ostatnio wysłała wiele powiadomień}}</translation>
