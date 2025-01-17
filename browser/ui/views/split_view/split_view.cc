@@ -402,6 +402,11 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
   InvalidateLayout();
 }
 
+void SplitView::UpdateCornerRadius(const gfx::RoundedCornersF& corners) {
+  secondary_contents_web_view_->holder()->SetCornerRadii(corners);
+  secondary_devtools_web_view_->holder()->SetCornerRadii(corners);
+}
+
 void SplitView::UpdateSecondaryDevtoolsLayoutAndVisibility() {
   DevToolsContentsResizingStrategy strategy;
   content::WebContents* devtools = DevToolsWindow::GetInTabWebContents(

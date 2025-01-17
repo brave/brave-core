@@ -958,9 +958,7 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
                        devtools_docked_placement(), corners);
 
   if (in_split_view_mode) {
-    update_corner_radius(split_view_->secondary_contents_web_view()->holder(),
-                         split_view_->secondary_devtools_web_view()->holder(),
-                         DevToolsDockedPlacement::kUnknown, corners);
+    split_view_->UpdateCornerRadius(corners);
   }
 }
 

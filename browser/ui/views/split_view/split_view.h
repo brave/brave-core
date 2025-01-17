@@ -19,6 +19,7 @@
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
 #include "ui/views/view.h"
 
 namespace content {
@@ -83,6 +84,8 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   views::WebView* secondary_devtools_web_view() {
     return secondary_devtools_web_view_;
   }
+
+  void UpdateCornerRadius(const gfx::RoundedCornersF& corners);
 
   // Sets the contents resizing strategy.
   void SetSecondaryContentsResizingStrategy(
