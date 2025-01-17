@@ -75,6 +75,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private static final String PREF_SECURITY_SECTION = "security_section";
     private static final String PREF_PRIVACY_GUIDE = "privacy_guide";
     private static final String PREF_JAVASCRIPT_OPTIMIZER = "javascript_optimizer";
+    private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -424,6 +425,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         removePreferenceIfPresent(PREF_THIRD_PARTY_COOKIES);
         removePreferenceIfPresent(PREF_SECURITY_SECTION);
         removePreferenceIfPresent(PREF_PRIVACY_GUIDE);
+        removePreferenceIfPresent(PREF_PASSWORD_LEAK_DETECTION);
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_SAFE_BROWSING)) {
             removePreferenceIfPresent(PREF_SAFE_BROWSING);
