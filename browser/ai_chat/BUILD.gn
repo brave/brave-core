@@ -19,8 +19,8 @@ static_library("ai_chat") {
     "tab_data_web_contents_observer.h",
     "tab_tracker_service_factory.cc",
     "tab_tracker_service_factory.h",
-    "upload_image_helper.cc",
-    "upload_image_helper.h",
+    "upload_file_helper.cc",
+    "upload_file_helper.h",
   ]
 
   deps = [

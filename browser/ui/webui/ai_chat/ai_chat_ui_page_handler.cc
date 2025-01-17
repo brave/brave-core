@@ -157,6 +157,8 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
+  upload_file_helper_ =
+      std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -175,11 +177,13 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 }
 
 void AIChatUIPageHandler::UploadImage(UploadImageCallback callback) {
-  upload_image_helper_ =
-      std::make_unique<UploadImageHelper>(owner_web_contents_, profile_);
-  upload_image_helper_->UploadImage(
+  upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
       std::move(callback));
+}
+
+void AIChatUIPageHandler::RemoveUploadedImage(uint32_t index) {
+  upload_file_helper_->RemoveUploadedImage(index);
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {
@@ -325,6 +329,7 @@ void AIChatUIPageHandler::BindRelatedConversation(
               active_chat_tab_helper_->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+  conversation->SetUploadedContentDelegate(upload_file_helper_->GetWeakPtr());
 }
 
 void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
@@ -380,6 +385,7 @@ void AIChatUIPageHandler::NewConversation(
   }
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+  conversation->SetUploadedContentDelegate(upload_file_helper_->GetWeakPtr());
 }
 
 void AIChatUIPageHandler::BindParentUIFrameFromChildFrame(
