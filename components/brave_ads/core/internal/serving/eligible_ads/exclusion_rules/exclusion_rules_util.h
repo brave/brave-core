@@ -26,8 +26,8 @@ void ApplyExclusionRules(T& creative_ads,
                          ExclusionRulesBase* exclusion_rules) {
   CHECK(exclusion_rules);
 
-  TRACE_EVENT(kTraceEventCategory, "ApplyExclusionRules", "creative_ads",
-              creative_ads.size());
+  TRACE_EVENT(kTraceEventCategory, "ExclusionRules::ApplyExclusionRules",
+              "creative_ads", creative_ads.size());
 
   if (creative_ads.empty()) {
     return;

@@ -96,7 +96,7 @@ void NewTabPageAdServing::GetUserModel(
     MaybeServeNewTabPageAdCallback callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
-      kTraceEventCategory, "GetUserModel",
+      kTraceEventCategory, "NewTabPageAdServing::GetUserModel",
       TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id));
 
   BuildUserModel(base::BindOnce(&NewTabPageAdServing::GetUserModelCallback,
@@ -109,7 +109,7 @@ void NewTabPageAdServing::GetUserModelCallback(
     uint64_t trace_id,
     UserModelInfo user_model) const {
   TRACE_EVENT_NESTABLE_ASYNC_END0(
-      kTraceEventCategory, "GetUserModel",
+      kTraceEventCategory, "NewTabPageAdServing::GetUserModel",
       TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id));
 
   NotifyOpportunityAroseToServeNewTabPageAd();
@@ -122,7 +122,7 @@ void NewTabPageAdServing::GetEligibleAds(
     UserModelInfo user_model) const {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
-      kTraceEventCategory, "GetEligibleAds",
+      kTraceEventCategory, "NewTabPageAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id));
 
   eligible_ads_->GetForUserModel(
@@ -137,7 +137,7 @@ void NewTabPageAdServing::GetEligibleAdsCallback(
     uint64_t trace_id,
     const CreativeNewTabPageAdList& creative_ads) const {
   TRACE_EVENT_NESTABLE_ASYNC_END1(
-      kTraceEventCategory, "GetEligibleAds",
+      kTraceEventCategory, "NewTabPageAdServing::GetEligibleAds",
       TRACE_ID_WITH_SCOPE("NewTabPageAdServing", trace_id), "creative_ads",
       creative_ads.size());
 

@@ -454,14 +454,18 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
 }  // namespace
 
 std::optional<CatalogInfo> ReadCatalog(const std::string& json) {
-  TRACE_EVENT_BEGIN(kTraceEventCategory, "ReadCatalog");
+  TRACE_EVENT_BEGIN(kTraceEventCategory,
+                    "CatalogUrlRequestJsonReader::ReadCatalog");
 
   const std::optional<CatalogInfo> catalog = ReadCatalogImpl(json);
   if (catalog) {
-    TRACE_EVENT_END2(kTraceEventCategory, "ReadCatalog", "id", catalog->id,
-                     "success", true);
+    TRACE_EVENT_END2(kTraceEventCategory,
+                     "CatalogUrlRequestJsonReader::ReadCatalog", "id",
+                     catalog->id, "success", true);
   } else {
-    TRACE_EVENT_END1(kTraceEventCategory, "ReadCatalog", "success", false);
+    TRACE_EVENT_END1(kTraceEventCategory,
+                     "CatalogUrlRequestJsonReader::ReadCatalog", "success",
+                     false);
   }
 
   return catalog;
