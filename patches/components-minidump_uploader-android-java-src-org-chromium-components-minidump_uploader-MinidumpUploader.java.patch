@@ -1,9 +1,9 @@
 diff --git a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
-index 5f30ab591586f986da1f26359d9b5cf7bb763772..a430483effebcee3887d0957f0eb81e871855daa 100644
+index ed22448263bbe51443570f8fc8274e6557d75f62..a90c41d767021d7652fe1a000f9b002a97a570bf 100644
 --- a/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
 +++ b/components/minidump_uploader/android/java/src/org/chromium/components/minidump_uploader/MinidumpUploader.java
-@@ -26,7 +26,7 @@ import java.util.zip.GZIPOutputStream;
-  */
+@@ -29,7 +29,7 @@ import java.util.zip.GZIPOutputStream;
+ @NullMarked
  public class MinidumpUploader {
      /* package */
 -    static final String CRASH_URL_STRING = "https://clients2.google.com/cr/report";
