@@ -47,12 +47,14 @@ class BraveSearchFallbackJSHandler {
   bool EnsureConnected();
 
   // A function to be called from JS
-  v8::Local<v8::Promise> FetchBackupResults(const std::string& query_string,
-                                            const std::string& lang,
-                                            const std::string& country,
-                                            const std::string& geo,
-                                            bool filter_explicit_results,
-                                            int page_index);
+  v8::Local<v8::Promise> FetchBackupResults(
+      const std::string& query_string,
+      const std::string& lang,
+      const std::string& country,
+      const std::string& geo,
+      bool filter_explicit_results,
+      int page_index,
+      const std::string& cookie_header_value);
   void OnFetchBackupResults(
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
       const std::string& response);

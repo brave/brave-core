@@ -8,5 +8,6 @@ interface BraveSearchFallback {
                      string country,
                      string geo,
                      bool filter_explicit_results,
-                     int32 page_index) => (string response);
+                     int32 page_index,
+                     string? cookie_header_value) => (string response);
 };

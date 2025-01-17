@@ -86,6 +86,7 @@ void BraveSearchFallbackHost::FetchBackupResults(
     const std::string& geo,
     bool filter_explicit_results,
     int page_index,
+    const std::optional<std::string>& cookie_header_value,
     FetchBackupResultsCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL("https://www.google.com/search");
@@ -99,6 +100,10 @@ void BraveSearchFallbackHost::FetchBackupResults(
   request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = "GET";
   request->headers.SetHeaderIfMissing("x-geo", geo);
+  if (cookie_header_value) {
+    request->headers.SetHeader(net::HttpRequestHeaders::kCookie,
+                               *cookie_header_value);
+  }
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
