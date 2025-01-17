@@ -21,6 +21,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -1142,6 +1143,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsAll,                                                              \
           ORIGIN_LIST_VALUE_TYPE(syncer::kSyncServiceURL, ""),                 \
           kBraveSyncImplLink,                                                  \
+      },                                                                       \
+      {                                                                        \
+          "brave-sync-default-passwords",                                      \
+          "Enable password syncing by default",                                \
+          "Turn on password syncing when Sync is enabled.",                    \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_sync::features::kBraveSyncDefaultPasswords),               \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
