@@ -101,7 +101,8 @@ v8::Local<v8::Promise> BraveSearchFallbackJSHandler::FetchBackupResults(
     const std::string& country,
     const std::string& geo,
     bool filter_explicit_results,
-    int page_index) {
+    int page_index,
+    const std::string& cookie_header_value) {
   if (!EnsureConnected())
     return v8::Local<v8::Promise>();
 
@@ -113,6 +114,9 @@ v8::Local<v8::Promise> BraveSearchFallbackJSHandler::FetchBackupResults(
     promise_resolver->Reset(isolate_, resolver.ToLocalChecked());
     brave_search_fallback_->FetchBackupResults(
         query_string, lang, country, geo, filter_explicit_results, page_index,
+        cookie_header_value.empty()
+            ? std::nullopt
+            : std::make_optional<std::string>(cookie_header_value),
         base::BindOnce(&BraveSearchFallbackJSHandler::OnFetchBackupResults,
                        base::Unretained(this), std::move(promise_resolver)));
 
