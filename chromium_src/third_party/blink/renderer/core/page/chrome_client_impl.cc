@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
-
 #include "src/third_party/blink/renderer/core/page/chrome_client_impl.cc"
+
+#include <algorithm>
+#include <array>
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
@@ -16,11 +17,22 @@
 #include "ui/display/screen_infos.h"
 #include "ui/gfx/geometry/rect.h"
 
+struct ScreenSize {
+  int width;
+  int height;
+  constexpr ScreenSize(int width, int height) : width(width), height(height) {}
+};
+
+constexpr auto allowed_desktop_screen_sizes = std::array<ScreenSize, 7>{
+    ScreenSize(1280, 800),  ScreenSize(1366, 768),  ScreenSize(1440, 900),
+    ScreenSize(1680, 1050), ScreenSize(1920, 1080), ScreenSize(2560, 1440),
+    ScreenSize(3840, 2160),
+};
+
 namespace blink {
 
 const display::ScreenInfos& ChromeClientImpl::BraveGetScreenInfos(
     LocalFrame& frame) const {
-  display::ScreenInfo screen_info = GetScreenInfo(frame);
   LocalDOMWindow* dom_window = frame.DomWindow();
   if (!dom_window) {
     return GetScreenInfos(frame);
@@ -29,17 +41,18 @@ const display::ScreenInfos& ChromeClientImpl::BraveGetScreenInfos(
   if (!brave::BlockScreenFingerprinting(context)) {
     return GetScreenInfos(frame);
   }
-  // Don't tell window screen is smaller than 450x450.
-  int min_width =
-      FarbleInteger(context, brave::FarbleKey::kWindowInnerWidth, 450, 0, 8);
-  int min_height =
-      FarbleInteger(context, brave::FarbleKey::kWindowInnerHeight, 450, 0, 8);
-  gfx::Rect farbled_screen_rect(
-      dom_window->screenX(), dom_window->screenY(),
-      std::max(min_width, dom_window->outerWidth()),
-      std::max(min_height, dom_window->outerHeight()));
-  screen_info.rect = farbled_screen_rect;
-  screen_info.available_rect = farbled_screen_rect;
+  display::ScreenInfo screen_info = GetScreenInfo(frame);
+  screen_info.rect = gfx::Rect(allowed_desktop_screen_sizes.back().width,
+                               allowed_desktop_screen_sizes.back().height);
+  const int outerWidth = dom_window->outerWidth();
+  const int outerHeight = dom_window->outerHeight();
+  for (const auto& size : allowed_desktop_screen_sizes) {
+    if (size.width >= outerWidth && size.height >= outerHeight) {
+      screen_info.rect = gfx::Rect(size.width, size.height);
+      break;
+    }
+  }
+  screen_info.available_rect = screen_info.rect;
   screen_info.is_extended = false;
   screen_info.is_primary = false;
   screen_infos_ = display::ScreenInfos(screen_info);

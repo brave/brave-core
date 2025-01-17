@@ -35,6 +35,11 @@ constexpr auto kTestWindowBounds = std::to_array<const gfx::Rect>(
     {gfx::Rect(200, 100, 300, 200), gfx::Rect(50, 50, 200, 200),
      gfx::Rect(50, 50, 475, 460), gfx::Rect(0, 0, 200, 200)});
 
+constexpr auto kAllowedScreenSizes = std::to_array<const gfx::Size>(
+    {gfx::Size(1280, 800), gfx::Size(1366, 768), gfx::Size(1440, 900),
+     gfx::Size(1680, 1050), gfx::Size(1920, 1080), gfx::Size(2560, 1440),
+     gfx::Size(3840, 2160)});
+
 }  // namespace
 
 // A helper class to wait for widget bounds changes beyond given thresholds.
@@ -143,6 +148,15 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->window()->GetBounds();
   }
 
+  bool IsAllowedScreenSize(const int width, const int height) {
+    for (const auto& allowed_size : kAllowedScreenSizes) {
+      if (allowed_size.width() == width && allowed_size.height() == height) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   void FarbleScreenSize(const GURL& url, bool content_scheme) {
     for (const auto& test_bounds : kTestWindowBounds) {
       SetBounds(test_bounds);
@@ -158,20 +172,21 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
             EXPECT_GE(8, EvalJs(host, "window.outerWidth - parent.innerWidth"));
             EXPECT_GE(8,
                       EvalJs(host, "window.outerHeight - parent.innerHeight"));
-            EXPECT_GE(8, EvalJs(host,
-                                "window.screen.availWidth - Math.max(450, "
-                                "parent.innerWidth)"));
-            EXPECT_GE(8, EvalJs(host,
-                                "window.screen.availHeight -  Math.max(450, "
-                                "parent.innerHeight)"));
-            EXPECT_GE(
-                8,
-                EvalJs(
-                    host,
-                    "window.screen.width - Math.max(450, parent.innerWidth)"));
-            EXPECT_GE(8, EvalJs(host,
-                                "window.screen.height - Math.max(450, "
-                                "parent.innerHeight)"));
+            EXPECT_EQ(
+                0,
+                EvalJs(host, "window.screen.width - window.screen.availWidth"));
+            EXPECT_EQ(
+                0, EvalJs(host,
+                          "window.screen.height - window.screen.availHeight"));
+            const auto& screen_width =
+                EvalJs(host, "window.screen.width").ExtractInt();
+            const auto& screen_height =
+                EvalJs(host, "window.screen.height").ExtractInt();
+            EXPECT_TRUE(IsAllowedScreenSize(screen_width, screen_height));
+            EXPECT_GE(screen_width, test_bounds.width());
+            EXPECT_GE(screen_height, test_bounds.height());
+            EXPECT_GE(8, EvalJs(host, "window.screenX"));
+            EXPECT_GE(8, EvalJs(host, "window.screenY"));
           } else {
             EXPECT_LE(0, EvalJs(host, "window.outerWidth - parent.innerWidth"));
             EXPECT_LT(8,
