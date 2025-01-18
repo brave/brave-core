@@ -10,6 +10,7 @@ import { Optional } from '../../shared/lib/optional'
 
 interface EmbedderInfo {
   isBubble: boolean
+  isAutoResizeBubble: boolean
   platform: 'android' | 'desktop'
   animatedBackgroundEnabled: boolean
 }
@@ -164,6 +165,7 @@ export function defaultState(): AppState {
     openTime: Date.now(),
     embedder: {
       isBubble: false,
+      isAutoResizeBubble: false,
       platform: 'desktop',
       animatedBackgroundEnabled: false
     },
