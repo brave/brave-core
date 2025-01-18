@@ -20,6 +20,7 @@ namespace {
 // See https://crbug.com/1260828. When this happens, we may wish to notify the
 // user that only a portion of their page could be captured.
 void DisplayScreenshotClippedNotification(base::WeakPtr<Browser> browser) {
+  // Issue: https://github.com/brave/brave-browser/issues/43369
   NOTIMPLEMENTED();
 }
 
