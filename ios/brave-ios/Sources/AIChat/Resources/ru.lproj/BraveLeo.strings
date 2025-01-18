@@ -373,6 +373,9 @@
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
 "aichat.speechRecognizerDisclaimer" = "Brave не хранит и не передает данные о голосовом поиске.";
 
+/* Title showing the user has no subscription. */
+"aichat.subscriptionNoneTitle" = "Нет";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Предположить вопросы…";
 

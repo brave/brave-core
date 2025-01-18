@@ -1234,7 +1234,7 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Відкрити налаштування";
 
-/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+/* The description indicating the device is active # of days ago. The parameter substituted for "%ld" is the number of days. E.g.: Active 123 Days Ago */
 "opentabs.activePeriodDeviceDaysAgoTitle" = "У мережі %ld дн. тому";
 
 /* The description indicating the device is active last time this month */
@@ -1276,13 +1276,13 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Відкрити все";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Минулого тижня, %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
 "opentabs.openTabsItemLastSyncedTodayTitle" = "Сьогодні, %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
 "opentabs.openTabsItemLastSyncedYesterdayTitle" = "Учора, %@";
 
 /* The title displayed on table header for open tabs list from other devices */
@@ -2158,19 +2158,19 @@
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Надіслати";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "Сайт %@ хоче отримати доступ до камери й мікрофона";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraPermissionPrompt" = "Сайт %@ хоче отримати доступ до камери";
 
 /* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
 "requestCaptureDevicePermissionAllowButtonTitle" = "Дозволити";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCaptureDevicePermissionPrompt" = "Сайт %@ хоче отримати доступ до пристрою захоплення медіаданих";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "Сайт %@ хоче отримати доступ до мікрофона";
 
 /* Name of folder where restored bookmarks are retrieved */
@@ -2494,13 +2494,13 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Показувати пошукові підказки";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Пошукові підказки %@";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Перейти до цієї вкладки";
 
-/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Пошукова система %@";
 
 /* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
@@ -2635,7 +2635,7 @@
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
 
-/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+/* Subtitle for  The parameter substituted for "%@" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
 "shieldEducation.domainSpecificDataSavedSubtitle" = "Середній обсяг збережених даних:\n%@ МБ";
 
 /* Action title for button at domain specific data saved pop-up */
@@ -2650,7 +2650,7 @@
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
 
-/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+/* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
 "shieldEducation.trackerCountShareTitle" = "Заблоковано трекерів і рекламних оголошень: %ld.";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
@@ -3274,7 +3274,7 @@
 /* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
 "TabTrayEmptyVoiceOverText" = "Немає вкладок";
 
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
 "TabTrayMultiTabPositionFormatVoiceOverText" = "Вкладки: з %1$@ по %2$@ із %3$@";
 
 /* Accessibility label for the New Tab button in the tab toolbar. */
@@ -3283,7 +3283,7 @@
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Пошук у вкладках";
 
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "Вкладки: %1$@ із %2$@";
 
 /* No comment provided by engineer. */
@@ -3406,16 +3406,16 @@
 /* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
 "today.getFeedsFromSiteButtonTitle" = "Отримуйте стрічки від";
 
-/* \"OPML\" is a file extension that contains a list of rss feeds. */
+/* "OPML" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "Імпорт OPML";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Небезпечні джерела — додавайте лише на власний розсуд";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+/* Shown above a button that turns on the "Brave News" product in the app. by sources & feeds they mean websites & blogs. */
 "today.introCardBody" = "Підпишіться на улюблені ресурси, щоб переглядати їх в одній стрічці. Просто відкрийте вкладку в Brave, прогорніть її донизу… готово!\nУ Brave News відображається приватна й анонімна реклама.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
+/* Shown above a button that turns on the "Brave News" product in the app. */
 "today.introCardTitle" = "Увімкніть Brave News, щоб не пропустити жодної новини";
 
 /* No comment provided by engineer. */

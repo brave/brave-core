@@ -52,6 +52,6 @@
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "Tik op %@ om je eerste item toe te voegen";
 
-/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
 "userActionPromptFill" = "Voeg toe aan Playlist";
 

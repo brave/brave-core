@@ -52,6 +52,6 @@
 /* %@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature */
 "userActionPrompt" = "輕觸 %@ 以新增您的第一個項目";
 
-/* Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\" */
+/* Will be shown next to an icon inside of some other text. i.e. "Tap 'Add to Playlist' to add your first item" */
 "userActionPromptFill" = "新增至播放清單";
 
