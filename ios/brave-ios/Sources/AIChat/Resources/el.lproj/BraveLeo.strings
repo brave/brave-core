@@ -373,6 +373,9 @@
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
 "aichat.speechRecognizerDisclaimer" = "Η Brave δεν αποθηκεύει ούτε κοινοποιεί τα φωνητικά δεδομένα που εισάγετε.";
 
+/* Title showing the user has no subscription. */
+"aichat.subscriptionNoneTitle" = "Καμία";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Πρόταση ερωτήσεων...";
 
