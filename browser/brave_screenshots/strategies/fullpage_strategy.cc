@@ -52,8 +52,7 @@ void FullPageStrategy::Capture(
 
 void FullPageStrategy::RequestPageLayoutMetrics() {
   // https://chromedevtools.github.io/devtools-protocol/tot/Page/#method-getLayoutMetrics
-  base::Value::Dict params;  // No parameters needed
-  SendDevToolsCommand("Page.getLayoutMetrics", std::move(params), next_id_++);
+  SendDevToolsCommand("Page.getLayoutMetrics", base::Value::Dict(), next_id_++);
 }
 
 // Response arrives in DispatchProtocolMessage
