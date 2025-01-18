@@ -306,7 +306,7 @@ void CreateAndAddRewardsPageDataSource(content::WebUI& web_ui,
   source->AddString("platform", "desktop");
 #endif
 
-  source->AddBoolean("isBubble", host == kRewardsPageTopHost);
+  source->AddBoolean("isAutoResizeBubble", host == kRewardsPageTopHost);
 
   source->AddBoolean(
       "animatedBackgroundEnabled",

@@ -10,10 +10,10 @@ export const style = scoped.css`
     display: flex;
     flex-direction: column;
     gap: 8px;
-  }
 
-  .is-wide-view & {
-    gap: 24px;
+    @container style(--is-wide-view) {
+      gap: 24px;
+    }
   }
 
   .columns {
