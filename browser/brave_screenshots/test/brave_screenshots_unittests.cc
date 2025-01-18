@@ -130,7 +130,7 @@ TEST_F(BraveScreenshotsContextMenuTest, MenuForDevTools) {
   content::ContextMenuParams params;
   params.page_url = GURL("devtools://devtools");
 
-  auto context_menu = CreateContextMenu(GetWebContents(), params, true);
+  auto context_menu = CreateContextMenu(GetWebContents(), params);
   EXPECT_TRUE(context_menu);
   EXPECT_FALSE(context_menu->menu_model()
                    .GetIndexOfCommandId(IDC_BRAVE_SCREENSHOT_TOOLS)
