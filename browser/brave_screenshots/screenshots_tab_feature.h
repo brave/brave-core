@@ -31,9 +31,9 @@ class BraveScreenshotsTabFeature {
   ~BraveScreenshotsTabFeature();
 
   void StartScreenshot(Browser* browser, ScreenshotType type);
-  void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
 
  private:
+  void OnCaptureComplete(const image_editor::ScreenshotCaptureResult& result);
   std::unique_ptr<BraveScreenshotStrategy> CreateStrategy(ScreenshotType type);
   base::WeakPtr<Browser> browser_ = nullptr;
   std::unique_ptr<BraveScreenshotStrategy> strategy_ = nullptr;
