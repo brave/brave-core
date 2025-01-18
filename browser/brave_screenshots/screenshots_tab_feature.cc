@@ -32,32 +32,19 @@ BraveScreenshotsTabFeature::BraveScreenshotsTabFeature() {
 
 BraveScreenshotsTabFeature::~BraveScreenshotsTabFeature() {
   DVLOG(1) << "BraveScreenshotsTabFeature destroyed";
-  if (strategy_) {
-    strategy_.reset();
-  }
 }
 
 void BraveScreenshotsTabFeature::StartScreenshot(Browser* browser,
                                                  ScreenshotType type) {
-  DVLOG(1) << "Starting screenshot capture";
+  DVLOG(1) << "Called StartScreenshot";
   CHECK(browser);
 
   browser_ = browser->AsWeakPtr();
   web_contents_ =
       browser_->tab_strip_model()->GetActiveWebContents()->GetWeakPtr();
 
-  // Instantiate the strategy and start the capture
-  if (strategy_) {
-    strategy_.reset();
-  }
-
   // We've determined the appropriate strategy to use
   strategy_ = CreateStrategy(type);
-
-  if (!strategy_) {
-    OnCaptureComplete({});
-    return;
-  }
 
   DVLOG(2) << "Starting capture";
 
