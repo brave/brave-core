@@ -21,6 +21,7 @@ public abstract class BravePictureInPictureActivity extends AsyncInitializationA
             // the Java environment or the application is not in an
             // appropriate state for the requested operation.
             // We can just ignore it.
+        } catch (IllegalArgumentException ignored) {
         }
     }
 }
