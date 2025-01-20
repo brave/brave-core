@@ -284,8 +284,6 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
       browser_->is_type_normal()) {
-    SplitViewBrowserData::CreateForBrowser(browser_.get());
-
     split_view_ =
         contents_container_->parent()->AddChildView(std::make_unique<SplitView>(
             *browser_, contents_container_, contents_web_view_));

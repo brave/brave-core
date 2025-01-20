@@ -63,6 +63,7 @@ SplitView::SplitView(Browser& browser,
       contents_container_(contents_container),
       contents_web_view_(contents_web_view) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  SplitViewBrowserData::CreateForBrowser(&browser_.get());
 
   // Re-parent the |contents_container| to this view.
   AddChildView(
