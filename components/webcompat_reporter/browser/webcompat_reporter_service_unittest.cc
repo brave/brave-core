@@ -58,8 +58,14 @@ class MockWebCompatServiceDelegate : public WebCompatServiceDelegate {
               GetComponentInfos,
               (),
               (const));
-  MOCK_METHOD(std::optional<std::string>, GetCookiePolicy, (), (const));
-  MOCK_METHOD(std::optional<std::string>, GetScriptBlockingFlag, (), (const));
+  MOCK_METHOD(std::optional<std::string>,
+              GetCookiePolicy,
+              (const std::optional<std::string>& current_url),
+              (const));
+  MOCK_METHOD(std::optional<std::string>,
+              GetScriptBlockingFlag,
+              (const std::optional<std::string>& current_url),
+              (const));
 };
 }  // namespace
 
