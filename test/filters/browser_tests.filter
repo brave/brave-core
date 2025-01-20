@@ -1327,7 +1327,7 @@
 -ValidityService3pTrialBrowserTest.*
 
 # This test fails because we disable RedirectHeuristicTabHelper (because it
-# crashes because we disable kDIPS).
+# crashes because we disable kBtm).
 -RedirectHeuristicBrowserTest.RecordsRedirectHeuristicCookieAccessEvent
 
 # These tests fail on CI but pass locally
