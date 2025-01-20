@@ -60,28 +60,32 @@ WebcompatReporterServiceDelegateImpl::GetChannelName() const {
 }
 
 std::optional<std::string>
-WebcompatReporterServiceDelegateImpl::GetCookiePolicy() const {
+WebcompatReporterServiceDelegateImpl::GetCookiePolicy(
+    const std::optional<std::string>& current_url) const {
   DCHECK(host_content_settings_map_);
   DCHECK(cookie_settings_);
-  if (!host_content_settings_map_ || !cookie_settings_) {
+  if (!host_content_settings_map_ || !cookie_settings_ || !current_url) {
     return std::nullopt;
   }
 
   return brave_shields::ControlTypeToString(brave_shields::GetCookieControlType(
-      host_content_settings_map_, cookie_settings_.get(), GURL()));
+      host_content_settings_map_, cookie_settings_.get(),
+      GURL(current_url.value())));
 }
 
 std::optional<std::string>
-WebcompatReporterServiceDelegateImpl::GetScriptBlockingFlag() const {
+WebcompatReporterServiceDelegateImpl::GetScriptBlockingFlag(
+    const std::optional<std::string>& current_url) const {
   DCHECK(host_content_settings_map_);
   DCHECK(cookie_settings_);
-  if (!host_content_settings_map_ || !cookie_settings_) {
+  if (!host_content_settings_map_ || !cookie_settings_ || !current_url) {
     return std::nullopt;
   }
 
-  return BoolToString(brave_shields::GetNoScriptControlType(
-                          host_content_settings_map_, GURL()) ==
-                      brave_shields::ControlType::BLOCK);
+  return BoolToString(
+      brave_shields::GetNoScriptControlType(host_content_settings_map_,
+                                            GURL(current_url.value())) ==
+      brave_shields::ControlType::BLOCK);
 }
 
 }  // namespace webcompat_reporter
