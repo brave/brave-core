@@ -789,7 +789,7 @@ extension BrowserViewController: WKNavigationDelegate {
       return .download
     }
 
-    if [MIMEType.passbook, MIMEType.passbookBundle].contains(response.mimeType?.lowercased()) {
+    if [MIMEType.passbook, MIMEType.passbookBundle].contains(response.mimeType) {
       return .download
     }
 

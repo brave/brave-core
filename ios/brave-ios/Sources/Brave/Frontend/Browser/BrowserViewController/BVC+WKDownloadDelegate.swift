@@ -18,8 +18,7 @@ extension BrowserViewController: WKDownloadDelegate {
   ) async -> URL? {
 
     if let httpResponse = response as? HTTPURLResponse {
-      if ![MIMEType.passbook, MIMEType.passbookBundle].contains(httpResponse.mimeType?.lowercased())
-      {
+      if ![MIMEType.passbook, MIMEType.passbookBundle].contains(httpResponse.mimeType) {
         let shouldDownload = await downloadAlert(
           download,
           response: response,
@@ -85,7 +84,7 @@ extension BrowserViewController: WKDownloadDelegate {
     )
 
     if [MIMEType.passbook, MIMEType.passbookBundle].contains(
-      downloadInfo.response.mimeType?.lowercased()
+      downloadInfo.response.mimeType
     ) {
       downloadQueue.download(downloadInfo, didFinishDownloadingTo: downloadInfo.fileURL)
       if let passbookHelper = OpenPassBookHelper(

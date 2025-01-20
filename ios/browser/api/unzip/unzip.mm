@@ -27,13 +27,26 @@
   base::FilePath file_to_unzip = base::apple::NSStringToFilePath(zipFile);
   base::FilePath output_directory = base::apple::NSStringToFilePath(directory);
 
-  unzip::Unzip(unzip::LaunchInProcessUnzipper(), file_to_unzip,
-               output_directory, unzip::mojom::UnzipOptions::New(),
-               unzip::AllContents(), base::DoNothing(),
-               base::BindOnce([](const base::FilePath& output_directory,
-                                 void (^completion)(bool),
-                                 bool success) { completion(success); },
-                              output_directory, completion));
+  scoped_refptr<base::SequencedTaskRunner> current_sequence =
+      base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+
+  current_sequence->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](const base::FilePath& file_to_unzip,
+             const base::FilePath& output_directory, void (^completion)(bool)) {
+            unzip::Unzip(
+                unzip::LaunchInProcessUnzipper(), file_to_unzip,
+                output_directory, unzip::mojom::UnzipOptions::New(),
+                unzip::AllContents(), base::DoNothing(),
+                base::BindOnce([](const base::FilePath& output_directory,
+                                  void (^completion)(bool),
+                                  bool success) { completion(success); },
+                               output_directory, completion));
+          },
+          file_to_unzip, output_directory, completion));
 }
 
 @end
