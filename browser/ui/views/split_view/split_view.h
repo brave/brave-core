@@ -12,7 +12,6 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
-#include "base/memory/weak_ptr.h"
 #include "base/types/pass_key.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
@@ -50,18 +49,18 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
 
   ~SplitView() override;
 
-  // This must be called before BrowserView sets the active web contents to
-  // contents web view, we don't observe tab strip model directly. This returns
-  // callback that should be called after swapping active web contents
-  using AfterSetWebContents =
-      base::OnceCallback<void(content::WebContents* old_contents,
-                              content::WebContents* new_contents)>;
-  [[nodiscard]] AfterSetWebContents WillChangeActiveWebContents(
-      BrowserViewKey,
-      content::WebContents* old_contents,
-      content::WebContents* new_contents);
+  // Called before/after BrowserView::OnActiveTabChanged() as we have some
+  // jobs such as reducing flickering while active tab changing. See the
+  // comments of each methods for more details.
+  void WillChangeActiveWebContents(BrowserViewKey,
+                                   content::WebContents* old_contents,
+                                   content::WebContents* new_contents);
+  void DidChangeActiveWebContents(BrowserViewKey,
+                                  content::WebContents* old_contents,
+                                  content::WebContents* new_contents);
 
-  // Called before/after BrowseView::UpdateDevToolsForContents().
+  // Called before/after BrowseView::UpdateDevToolsForContents() to avoid
+  // holiding same WebContents from primary and secondary devtools webview.
   void WillUpdateDevToolsForActiveContents(BrowserViewKey);
   void DidUpdateDevToolsForActiveContents(BrowserViewKey);
 
@@ -105,9 +104,6 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
 
-  void DidChangeActiveWebContents(content::WebContents* old_contents,
-                                  content::WebContents* new_contents);
-
   tabs::TabHandle GetActiveTabHandle() const;
   bool IsActiveWebContentsTiled(const TabTile& tile) const;
   bool IsWebContentsTiled(content::WebContents* contents) const;
@@ -136,8 +132,6 @@ class SplitView : public views::View, public SplitViewBrowserDataObserver {
 
   base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
       split_view_observation_{this};
-
-  base::WeakPtrFactory<SplitView> weak_ptr_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPLIT_VIEW_SPLIT_VIEW_H_

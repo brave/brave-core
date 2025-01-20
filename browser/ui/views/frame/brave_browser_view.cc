@@ -837,16 +837,16 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                           content::WebContents* new_contents,
                                           int index,
                                           int reason) {
-  SplitView::AfterSetWebContents after_set_callback;
   if (split_view_) {
-    after_set_callback = split_view_->WillChangeActiveWebContents(
+    split_view_->WillChangeActiveWebContents(
         /*passkey*/ {}, old_contents, new_contents);
   }
 
   BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
 
-  if (after_set_callback) {
-    std::move(after_set_callback).Run(old_contents, new_contents);
+  if (split_view_) {
+    split_view_->DidChangeActiveWebContents(
+        /*passkey*/ {}, old_contents, new_contents);
   }
 }
 

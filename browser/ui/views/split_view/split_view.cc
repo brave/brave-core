@@ -95,16 +95,19 @@ SplitView::SplitView(Browser& browser,
 
 SplitView::~SplitView() = default;
 
-SplitView::AfterSetWebContents SplitView::WillChangeActiveWebContents(
+void SplitView::WillChangeActiveWebContents(
     BrowserViewKey,
     content::WebContents* old_contents,
     content::WebContents* new_contents) {
-  // Early return with null callback if this active state changes is not related
-  // with split view. |secondary_contents_container_| is not visible if previous
-  // active contents is not in tile.
+  // Early return if this active state changes is not related with split view.
+  // |secondary_contents_container_| is not visible if previous active contents
+  // is not in tile.
   if (!secondary_contents_container_->GetVisible() &&
       !IsWebContentsTiled(new_contents)) {
-    return base::NullCallback();
+    // In this state, we don't need to call DidChangeActiveWebContents() after
+    // changing primary WebContents but it's ok as it's no-op.
+    // Otherwise, we need to use another flag to avoid calling it.
+    return;
   }
 
   // This helps reduce flickering when switching between tiled tabs.
@@ -117,26 +120,19 @@ SplitView::AfterSetWebContents SplitView::WillChangeActiveWebContents(
     UpdateSecondaryContentsWebViewVisibility();
   }
 
+  // WebContents in secondary webview could be used by primary when active tab
+  // changes. As same webcontents could not be hold by multiple webview, it
+  // should be cleared WebContents from secondary webview in advance before
+  // active tab changes. Secondary WebContents will be set again via
+  // DidChangeActiveWebContents() after BrowserView::OnActiveTabChanged()
+  // called.
   secondary_contents_web_view_->SetWebContents(nullptr);
-
-  return base::BindOnce(&SplitView::DidChangeActiveWebContents,
-                        weak_ptr_factory_.GetWeakPtr());
 }
 
-void SplitView::WillUpdateDevToolsForActiveContents(BrowserViewKey) {
-  // The secondary web view might have had the devtools web contents for
-  // the current active tab.
-  secondary_devtools_web_view_->SetWebContents(nullptr);
-}
-
-void SplitView::DidUpdateDevToolsForActiveContents(BrowserViewKey) {
-  if (secondary_contents_container_->GetVisible()) {
-    UpdateSecondaryDevtoolsLayoutAndVisibility();
-  }
-}
-
-void SplitView::DidChangeActiveWebContents(content::WebContents* old_contents,
+void SplitView::DidChangeActiveWebContents(BrowserViewKey,
+                                           content::WebContents* old_contents,
                                            content::WebContents* new_contents) {
+  // Update secondary webview & UI after changing active WebContents.
   UpdateSplitViewSizeDelta(old_contents, new_contents);
   UpdateContentsWebViewVisual();
 
@@ -144,6 +140,22 @@ void SplitView::DidChangeActiveWebContents(content::WebContents* old_contents,
   contents_web_view_->SetFastResize(false);
   secondary_contents_web_view_->SetFastResize(false);
   InvalidateLayout();
+}
+
+void SplitView::WillUpdateDevToolsForActiveContents(BrowserViewKey) {
+  // WebContents in secondary devtools webview could be used by primary's when
+  // active tab changes. As same WebContents could not be hold by multiple
+  // webview, it should be cleared WebContents from secondary devtools webview
+  // in advance before active tab changes. Secondary devtools's WebContents will
+  // be set again via DidUpdateDevToolsForActiveContents() after
+  // BrowserView::UpdateDevToolsForContents() called.
+  secondary_devtools_web_view_->SetWebContents(nullptr);
+}
+
+void SplitView::DidUpdateDevToolsForActiveContents(BrowserViewKey) {
+  if (secondary_contents_container_->GetVisible()) {
+    UpdateSecondaryDevtoolsLayoutAndVisibility();
+  }
 }
 
 void SplitView::GetAccessiblePanes(BrowserViewKey,
