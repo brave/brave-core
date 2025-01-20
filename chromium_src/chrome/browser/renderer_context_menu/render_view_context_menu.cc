@@ -20,6 +20,7 @@
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
@@ -764,7 +765,7 @@ void BraveRenderViewContextMenu::InitMenu() {
   // Add Open Link with Tor
   if (!TorProfileServiceFactory::IsTorDisabled(GetProfile()) &&
       content_type_->SupportsGroup(ContextMenuContentType::ITEM_GROUP_LINK) &&
-      !params_.link_url.is_empty()) {
+      !params_.link_url.is_empty() && !params_.link_url.spec().starts_with(kAIChatUIURL)) {
     const Browser* browser = GetBrowser();
     const bool is_app = browser && browser->is_type_app();
 
@@ -778,6 +779,14 @@ void BraveRenderViewContextMenu::InitMenu() {
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
 #endif
+
+  if (params_.link_url.spec().starts_with(kAIChatUIURL) && GetProfile()->
+      GetPrefs()->GetBoolean(ai_chat::prefs::kBraveAIChatContextMenuEnabled)) {
+    index = menu_model_->.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
+    DCHECK(index);
+    menu_model_.RemoveItemAt(index.value());
+  }
+
   if (!params_.link_url.is_empty() && params_.link_url.SchemeIsHTTPOrHTTPS()) {
     std::optional<size_t> link_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_COPYLINKLOCATION);
