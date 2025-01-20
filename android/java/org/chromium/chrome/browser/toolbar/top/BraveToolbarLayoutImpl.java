@@ -423,8 +423,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showOrHideRewardsBadge(boolean shouldShow) {
+        Context context = getContext();
+        if (context instanceof Activity
+                && (((Activity) context).isFinishing() || ((Activity) context).isDestroyed())) {
+            return;
+        }
         View rewardsBadge = findViewById(R.id.rewards_notfication_badge);
-        rewardsBadge.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
+        if (rewardsBadge != null) {
+            rewardsBadge.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override

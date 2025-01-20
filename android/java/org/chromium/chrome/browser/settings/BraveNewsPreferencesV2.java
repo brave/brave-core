@@ -192,14 +192,22 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
                 view -> { openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Suggestions); });
 
         mLayoutChannels.setOnClickListener(
-                view -> { openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Channels); });
+                view -> {
+                    openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Channels);
+                });
 
-        mLayoutFollowing.setOnClickListener(view -> {
-            if (BraveNewsUtils.getFollowingPublisherList().size() > 0
-                    || BraveNewsUtils.getFollowingChannelList().size() > 0) {
-                openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Following);
-            }
-        });
+        mLayoutFollowing.setOnClickListener(
+                view -> {
+                    List<Publisher> followingPublisherList =
+                            BraveNewsUtils.getFollowingPublisherList();
+                    List<Channel> followingChannelList = BraveNewsUtils.getFollowingChannelList();
+                    assert followingPublisherList != null;
+                    assert followingChannelList != null;
+                    if ((followingPublisherList != null && followingPublisherList.size() > 0)
+                            || (followingChannelList != null && followingChannelList.size() > 0)) {
+                        openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Following);
+                    }
+                });
     }
 
     private void onShowNewsToggle(boolean isEnable) {
