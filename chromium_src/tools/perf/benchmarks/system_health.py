@@ -10,6 +10,10 @@ import override_utils
 
 def _add_brave_metrics(options):
     options.ExtendTimelineBasedMetric(['braveNavigationMetric'])
+    tracing_categories = options.config.chrome_trace_config.category_filter
+    tracing_categories.AddIncludedCategory('brave')
+    tracing_categories.AddIncludedCategory('brave.adblock')
+    tracing_categories.AddIncludedCategory('brave.ads')
     return options
 
 
