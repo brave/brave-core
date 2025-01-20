@@ -86,7 +86,7 @@ void ApplyDontAskAgainOption(JNIEnv* env,
 }  // namespace
 
 // static
-void PermissionDialogDelegate::Create(
+std::unique_ptr<PermissionDialogDelegate> PermissionDialogDelegate::Create(
     content::WebContents* web_contents,
     PermissionPromptAndroid_ChromiumImpl* permission_prompt) {
   // This should never be invoked, created only as a stub.

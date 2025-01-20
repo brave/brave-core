@@ -15,9 +15,10 @@ class PermissionPromptAndroid_ChromiumImpl;
 }  // namespace permissions
 
 // Additional PermissionDialogDelegate::Create stub method to be in accordance
-// with the overridden method at
+// with the overridden method at permission_prompt_android.h
 //   void CreatePermissionDialogDelegate() {
-//     PermissionDialogDelegate::Create(web_contents_, this);
+//     permission_dialog_delegate_ =
+//         PermissionDialogDelegate::Create(web_contents_, this);
 //   }
 // which after PermissionPromptAndroid_ChromiumImpl override wants us to pass
 // PermissionPromptAndroid_ChromiumImpl* as the second arg.
@@ -25,7 +26,7 @@ class PermissionPromptAndroid_ChromiumImpl;
 #define Create                                                     \
   Create(content::WebContents* web_contents,                       \
          PermissionPromptAndroid_ChromiumImpl* permission_prompt); \
-  static void Create
+  static std::unique_ptr<PermissionDialogDelegate> Create
 
 #include "src/components/permissions/android/permission_prompt/permission_dialog_delegate.h"  // IWYU pragma: export
 
