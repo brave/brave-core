@@ -1261,7 +1261,7 @@
 # Needs further investigation
 -All/PartitionedBlobUrlUsagePolicyBrowserTestP.FetchingPartitionedBlobUrlUsageEnterprisePolicy/1
 
-# These tests fail because we disable DIPS via features::kDIPS
+# These tests fail because we disable DIPS via features::kBtm
 -All/DIPSBounceDetectorBFCacheTest.*/*
 -All/DIPSDataDeletionBrowserTest.*
 -All/DIPSPrivacySandboxDataPreservationTest.*
@@ -1309,7 +1309,7 @@
 -ValidityService3pTrialBrowserTest.*
 
 # This test fails because we disable RedirectHeuristicTabHelper (because it
-# crashes because we disable kDIPS).
+# crashes because we disable kBtm).
 -RedirectHeuristicBrowserTest.RecordsRedirectHeuristicCookieAccessEvent
 
 # These tests fail on CI but pass locally

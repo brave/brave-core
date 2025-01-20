@@ -294,7 +294,7 @@
 # features::kEarlyHintsPreloadForNavigation
 -PreconnectManagerTest.*
 
-# These tests fail because we disable DIPS via features::kDIPS
+# These tests fail because we disable DIPS via features::kBtm
 -DIPSDatabaseConfigTest.*
 -DIPSServiceUkmTest.*
 -All/DIPSDatabaseAllColumnTest.*/*
