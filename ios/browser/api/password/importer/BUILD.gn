@@ -21,7 +21,6 @@ source_set("importer") {
     "//ios/chrome/browser/affiliations/model:model",
     "//ios/chrome/browser/passwords/model:store_factory",
     "//ios/chrome/browser/shared/model/application_context",
-    "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/webauthn/model",
     "//ios/web/public/thread",

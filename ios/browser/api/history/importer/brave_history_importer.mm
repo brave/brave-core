@@ -96,92 +96,75 @@ void AddHistoryItems(const std::vector<history::URLRow>& history_items) {
           withListener:
               (void (^)(BraveHistoryImporterState,
                         NSArray<BraveImportedHistory*>* _Nullable))listener {
-  base::FilePath source_file_path = base::apple::NSStringToFilePath(filePath);
+  __weak BraveHistoryImporter* weakSelf = self;
 
-  auto start_import = [](BraveHistoryImporter* weak_importer,
-                         const base::FilePath& source_file_path,
-                         bool automaticImport,
-                         base::RepeatingCallback<void(
-                             BraveHistoryImporterState,
-                             NSArray<BraveImportedHistory*>*)> listener) {
+  auto start_import = ^{
     // Import cancelled as the importer has been deallocated
-    __strong BraveHistoryImporter* importer = weak_importer;
+    __strong BraveHistoryImporter* importer = weakSelf;
     if (!importer) {
-      listener.Run(BraveHistoryImporterStateStarted, nullptr);
-      listener.Run(BraveHistoryImporterStateCancelled, nullptr);
+      listener(BraveHistoryImporterStateStarted, nullptr);
+      listener(BraveHistoryImporterStateCancelled, nullptr);
       return;
     }
 
-    listener.Run(BraveHistoryImporterStateStarted, nullptr);
+    base::FilePath source_file_path = base::apple::NSStringToFilePath(filePath);
+
+    listener(BraveHistoryImporterStateStarted, nullptr);
     std::vector<history::URLRow> history_items;
     history_json_reader::ImportHistoryFile(
-        base::BindRepeating(
-            [](BraveHistoryImporter* importer) -> bool {
-              return [importer isImporterCancelled];
-            },
-            base::Unretained(importer)),
-        base::BindRepeating([](BraveHistoryImporter* importer, const GURL& url)
-                                -> bool { return [importer canImportURL:url]; },
-                            base::Unretained(importer)),
+        base::BindRepeating(^{
+          return [importer isImporterCancelled];
+        }),
+        base::BindRepeating(^(const GURL& url) {
+          return [importer canImportURL:url];
+        }),
         source_file_path, &history_items);
 
     if (!history_items.empty() && ![importer isImporterCancelled]) {
       if (automaticImport) {
-        auto complete_import =
-            [](std::vector<history::URLRow> history_items,
-               base::RepeatingCallback<void(BraveHistoryImporterState,
-                                            NSArray<BraveImportedHistory*>*)>
-                   listener) {
-              history::AddHistoryItems(history_items);
-              listener.Run(BraveHistoryImporterStateAutoCompleted, nullptr);
-            };
-
         // Import into the Profile/ProfileIOS on the main-thread.
         web::GetUIThreadTaskRunner({})->PostTask(
-            FROM_HERE, base::BindOnce(complete_import, std::move(history_items),
-                                      base::BindRepeating(listener)));
+            FROM_HERE, base::BindOnce(
+                           ^(std::vector<history::URLRow> items) {
+                             history::AddHistoryItems(items);
+                             listener(BraveHistoryImporterStateAutoCompleted,
+                                      nullptr);
+                           },
+                           std::move(history_items)));
       } else {
-        listener.Run(BraveHistoryImporterStateCompleted,
-                     [importer convertToIOSImportedHistory:history_items]);
+        listener(BraveHistoryImporterStateCompleted,
+                 [importer convertToIOSImportedHistory:history_items]);
       }
     } else {
-      listener.Run(BraveHistoryImporterStateCancelled, nullptr);
+      listener(BraveHistoryImporterStateCancelled, nullptr);
     }
   };
 
   // Run the importer on the sequenced task runner.
-  __weak BraveHistoryImporter* weakSelf = self;
-  import_thread_->PostTask(
-      FROM_HERE,
-      base::BindOnce(start_import, weakSelf, source_file_path, automaticImport,
-                     base::BindRepeating(listener)));
+  import_thread_->PostTask(FROM_HERE, base::BindOnce(start_import));
 }
 
 - (void)importFromArray:(NSArray<BraveImportedHistory*>*)historyItems
            withListener:(void (^)(BraveHistoryImporterState))listener {
-  auto start_import =
-      [](BraveHistoryImporter* weak_importer,
-         NSArray<BraveImportedHistory*>* history_items,
-         base::RepeatingCallback<void(BraveHistoryImporterState)> listener) {
-        // Import cancelled as the importer has been deallocated
-        __strong BraveHistoryImporter* importer = weak_importer;
-        if (!importer) {
-          listener.Run(BraveHistoryImporterStateStarted);
-          listener.Run(BraveHistoryImporterStateCancelled);
-          return;
-        }
+  __weak BraveHistoryImporter* weakSelf = self;
 
-        listener.Run(BraveHistoryImporterStateStarted);
-        history::AddHistoryItems(
-            [importer convertToChromiumImportedHistory:history_items]);
-        listener.Run(BraveHistoryImporterStateCompleted);
-      };
+  auto start_import = ^{
+    // Import cancelled as the importer has been deallocated
+    __strong BraveHistoryImporter* importer = weakSelf;
+    if (!importer) {
+      listener(BraveHistoryImporterStateStarted);
+      listener(BraveHistoryImporterStateCancelled);
+      return;
+    }
+
+    listener(BraveHistoryImporterStateStarted);
+    history::AddHistoryItems(
+        [importer convertToChromiumImportedHistory:historyItems]);
+    listener(BraveHistoryImporterStateCompleted);
+  };
 
   // Import into the Profile/ProfileIOS on the main-thread.
-  __weak BraveHistoryImporter* weakSelf = self;
-  import_thread_->PostTask(FROM_HERE,
-                           base::BindOnce(start_import, weakSelf, historyItems,
-                                          base::BindRepeating(listener)));
+  import_thread_->PostTask(FROM_HERE, base::BindOnce(start_import));
 }
 
 // MARK: - Private
