@@ -21,6 +21,7 @@ var package = Package(
     .library(name: "DesignSystem", targets: ["DesignSystem", "NalaAssets"]),
     .library(name: "BraveWallet", targets: ["BraveWallet"]),
     .library(name: "Data", targets: ["Data"]),
+    .library(name: "DataImporter", targets: ["DataImporter"]),
     .library(name: "Storage", targets: ["Storage"]),
     .library(name: "BrowserIntentsModels", targets: ["BrowserIntentsModels"]),
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
@@ -164,6 +165,20 @@ var package = Package(
     .target(
       name: "Data",
       dependencies: ["BraveShields", "Storage", "Strings", "Preferences", "Shared"],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "DataImporter",
+      dependencies: [
+        "BraveCore",
+        "BraveShared",
+        "BraveStrings",
+        "BraveUI",
+        "DesignSystem",
+        "Strings",
+        .product(name: "Collections", package: "swift-collections"),
+        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+      ],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -454,6 +469,7 @@ var braveTarget: PackageDescription.Target = .target(
     "BraveUI",
     "DesignSystem",
     "Data",
+    "DataImporter",
     "Storage",
     "Fuzi",
     "SnapKit",
@@ -641,7 +657,7 @@ package.targets.append(braveTarget)
 let iosRootDirectory = URL(string: #file)!.deletingLastPathComponent().absoluteString.dropLast()
 let isStripAbsolutePathsFromDebugSymbolsEnabled = {
   do {
-    let env = try String(contentsOfFile: "\(iosRootDirectory)/../../.env")
+    let env = try String(contentsOfFile: "\(iosRootDirectory)/../../.env", encoding: .utf8)
       .split(separator: "\n")
       .map { $0.split(separator: "=").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) } }
     return env.contains(where: { $0.first == "use_remoteexec" && $0.last == "true" })

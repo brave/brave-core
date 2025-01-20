@@ -100,56 +100,44 @@
           withListener:
               (void (^)(BraveBookmarksImporterState,
                         NSArray<BraveImportedBookmark*>* _Nullable))listener {
-  base::FilePath source_file_path = base::apple::NSStringToFilePath(filePath);
+  __weak BraveBookmarksImporter* weakSelf = self;
 
-  // In Chromium, this is IDS_BOOKMARK_GROUP (804)
-  std::u16string top_level_folder_name = base::SysNSStringToUTF16(folderName);
-
-  auto start_import = [](BraveBookmarksImporter* weak_importer,
-                         const base::FilePath& source_file_path,
-                         const std::u16string& top_level_folder_name,
-                         bool automaticImport,
-                         std::function<void(BraveBookmarksImporterState,
-                                            NSArray<BraveImportedBookmark*>*)>
-                             listener) {
+  auto start_import = ^{
     // Import cancelled as the importer has been deallocated
-    __strong BraveBookmarksImporter* importer = weak_importer;
+    __strong BraveBookmarksImporter* importer = weakSelf;
     if (!importer) {
       listener(BraveBookmarksImporterStateStarted, nullptr);
       listener(BraveBookmarksImporterStateCancelled, nullptr);
       return;
     }
 
+    // In Chromium, this is IDS_BOOKMARK_GROUP (804)
+    std::u16string top_level_folder_name = base::SysNSStringToUTF16(folderName);
+    base::FilePath source_file_path = base::apple::NSStringToFilePath(filePath);
+
     listener(BraveBookmarksImporterStateStarted, nullptr);
     std::vector<ImportedBookmarkEntry> bookmarks;
     bookmark_html_reader::ImportBookmarksFile(
-        base::BindRepeating(
-            [](BraveBookmarksImporter* importer) -> bool {
-              return [importer isImporterCancelled];
-            },
-            base::Unretained(importer)),
-        base::BindRepeating(
-            [](BraveBookmarksImporter* importer, const GURL& url) -> bool {
-              return [importer canImportURL:url];
-            },
-            base::Unretained(importer)),
+        base::BindRepeating(^{
+          return [importer isImporterCancelled];
+        }),
+        base::BindRepeating(^(const GURL& url) {
+          return [importer canImportURL:url];
+        }),
         source_file_path, &bookmarks, nullptr);
 
     if (!bookmarks.empty() && ![importer isImporterCancelled]) {
       if (automaticImport) {
-        auto complete_import =
-            [](std::vector<ImportedBookmarkEntry> bookmarks,
-               const std::u16string& top_level_folder_name,
-               std::function<void(BraveBookmarksImporterState,
-                                  NSArray<BraveImportedBookmark*>*)> listener) {
-              BookmarksImporter::AddBookmarks(top_level_folder_name, bookmarks);
-              listener(BraveBookmarksImporterStateAutoCompleted, nullptr);
-            };
-
         // Import into the Profile/ProfileIOS on the main-thread.
         web::GetUIThreadTaskRunner({})->PostTask(
-            FROM_HERE, base::BindOnce(complete_import, std::move(bookmarks),
-                                      top_level_folder_name, listener));
+            FROM_HERE,
+            base::BindOnce(
+                ^(std::vector<ImportedBookmarkEntry> items,
+                  const std::u16string& top_most_folder_name) {
+                  BookmarksImporter::AddBookmarks(top_most_folder_name, items);
+                  listener(BraveBookmarksImporterStateAutoCompleted, nullptr);
+                },
+                std::move(bookmarks), top_level_folder_name));
       } else {
         listener(BraveBookmarksImporterStateCompleted,
                  [importer convertToIOSImportedBookmarks:bookmarks]);
@@ -160,44 +148,36 @@
   };
 
   // Run the importer on the sequenced task runner.
-  __weak BraveBookmarksImporter* weakSelf = self;
-  import_thread_->PostTask(
-      FROM_HERE,
-      base::BindOnce(start_import, weakSelf, source_file_path,
-                     top_level_folder_name, automaticImport, listener));
+  import_thread_->PostTask(FROM_HERE, base::BindOnce(start_import));
 }
 
 - (void)importFromArray:(NSArray<BraveImportedBookmark*>*)bookmarks
      topLevelFolderName:(NSString*)folderName
            withListener:(void (^)(BraveBookmarksImporterState))listener {
-  // In Chromium, this is IDS_BOOKMARK_GROUP (804)
-  std::u16string top_level_folder_name = base::SysNSStringToUTF16(folderName);
+  __weak BraveBookmarksImporter* weakSelf = self;
 
-  auto start_import =
-      [](BraveBookmarksImporter* weak_importer,
-         NSArray<BraveImportedBookmark*>* bookmarks,
-         const std::u16string& top_level_folder_name,
-         std::function<void(BraveBookmarksImporterState)> listener) {
-        // Import cancelled as the importer has been deallocated
-        __strong BraveBookmarksImporter* importer = weak_importer;
-        if (!importer) {
-          listener(BraveBookmarksImporterStateStarted);
-          listener(BraveBookmarksImporterStateCancelled);
-          return;
-        }
+  auto start_import = ^{
+    // Import cancelled as the importer has been deallocated
+    __strong BraveBookmarksImporter* importer = weakSelf;
+    if (!importer) {
+      listener(BraveBookmarksImporterStateStarted);
+      listener(BraveBookmarksImporterStateCancelled);
+      return;
+    }
 
-        listener(BraveBookmarksImporterStateStarted);
-        BookmarksImporter::AddBookmarks(
-            top_level_folder_name,
-            [importer convertToChromiumImportedBookmarks:bookmarks]);
-        listener(BraveBookmarksImporterStateCompleted);
-      };
+    // In Chromium, this is IDS_BOOKMARK_GROUP (804)
+    std::u16string top_level_folder_name = base::SysNSStringToUTF16(folderName);
+
+    listener(BraveBookmarksImporterStateStarted);
+    BookmarksImporter::AddBookmarks(
+        top_level_folder_name,
+        [importer convertToChromiumImportedBookmarks:bookmarks]);
+    listener(BraveBookmarksImporterStateCompleted);
+  };
 
   // Import into the Profile/ProfileIOS on the main-thread.
-  __weak BraveBookmarksImporter* weakSelf = self;
-  import_thread_->PostTask(FROM_HERE,
-                           base::BindOnce(start_import, weakSelf, bookmarks,
-                                          top_level_folder_name, listener));
+  web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE,
+                                           base::BindOnce(start_import));
 }
 
 // MARK: - Private

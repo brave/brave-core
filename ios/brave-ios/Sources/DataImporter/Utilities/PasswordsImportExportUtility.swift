@@ -8,46 +8,31 @@ import BraveShared
 import Foundation
 import os.log
 
-class HistoryImportExportUtility {
+class PasswordsImportExportUtility {
 
   @MainActor
-  func importHistory(from path: URL) async -> Bool {
+  func importPasswords(from path: URL) async -> BravePasswordImporter.Results? {
     precondition(
       state == .none,
-      "History Import - Error Importing while an Import/Export operation is in progress"
+      "Passwords Import - Error Importing while an Import/Export operation is in progress"
     )
 
-    let doImport = { (path: URL, nativePath: String) async -> Bool in
+    let doImport = { (path: URL, nativePath: String) async -> BravePasswordImporter.Results? in
       await withCheckedContinuation { continuation in
-        self.importer.import(
-          fromFile: nativePath,
-          automaticImport: true
-        ) { [weak self] state, historyItems in
+        self.importer.importPasswords(nativePath) { [weak self] results in
           guard let self else {
-            continuation.resume(returning: false)
+            // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
+            // (Note: this is not reference counted)
+            continuation.resume(returning: results)
             return
           }
 
           self.state = .none
-          switch state {
-          case .started:
-            Logger.module.debug("History Import - Import Started")
-          case .cancelled:
-            Logger.module.debug("History Import - Import Cancelled")
-            continuation.resume(returning: false)
-          case .autoCompleted, .completed:
-            Logger.module.debug("History Import - Import Completed")
-            continuation.resume(returning: true)
-          @unknown default:
-            fatalError()
-          }
+
+          Logger.module.debug("Passwords Import - Import Completed")
+          continuation.resume(returning: results)
         }
       }
-    }
-
-    guard let nativePath = path.fileSystemRepresentation else {
-      Logger.module.error("History Import - Invalid FileSystem Path")
-      return false
     }
 
     // While accessing document URL from UIDocumentPickerViewController to access the file
@@ -67,7 +52,7 @@ class HistoryImportExportUtility {
 
     if path.pathExtension.lowercased() == "zip" {
       guard let zipFileExtractedURL = try? await ZipImporter.unzip(path: path) else {
-        return false
+        return nil
       }
 
       defer {
@@ -76,25 +61,28 @@ class HistoryImportExportUtility {
         }
       }
 
-      let historyFileURL = zipFileExtractedURL.appending(path: "History").appendingPathExtension(
-        "json"
-      )
-      guard
-        let nativeHistoryPath = historyFileURL.fileSystemRepresentation
-      else {
-        Logger.module.error("History Import - Invalid FileSystem Path")
-        return false
-      }
+      let passwordsFileURL = zipFileExtractedURL.appending(path: "Passwords")
+        .appendingPathExtension(
+          "csv"
+        )
 
-      return await doImport(historyFileURL, nativeHistoryPath)
+      return await doImport(passwordsFileURL, passwordsFileURL.path)
     }
 
-    return await doImport(path, nativePath)
+    return await doImport(path, path.path)
+  }
+
+  func continueImporting(
+    _ entries: [BravePasswordImportEntry]
+  ) async -> BravePasswordImporter.Results? {
+    state = .importing
+    defer { state = .none }
+    return await importer.continueImport(entries)
   }
 
   // MARK: - Private
   private var state: State = .none
-  private let importer = BraveHistoryImporter()
+  private let importer = BravePasswordImporter()
 
   private enum State {
     case importing

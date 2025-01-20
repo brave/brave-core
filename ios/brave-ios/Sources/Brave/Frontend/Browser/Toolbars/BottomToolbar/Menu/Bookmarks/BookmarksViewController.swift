@@ -6,6 +6,7 @@ import BraveShared
 import CoreData
 import CoreServices
 import Data
+import DataImporter
 import Favicon
 import Preferences
 import Shared

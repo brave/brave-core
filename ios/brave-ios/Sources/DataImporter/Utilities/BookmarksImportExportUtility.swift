@@ -5,16 +5,16 @@
 
 import BraveCore
 import BraveShared
-import Data
 import Foundation
-import Shared
 import os.log
 
-class BookmarksImportExportUtility {
+public class BookmarksImportExportUtility {
+
+  public init() {}
 
   // Import an array of bookmarks into BraveCore
   @MainActor
-  func importBookmarks(
+  public func importBookmarks(
     from array: [BraveImportedBookmark]
   ) async -> Bool {
     precondition(
@@ -24,7 +24,7 @@ class BookmarksImportExportUtility {
 
     state = .importing
     return await withCheckedContinuation { continuation in
-      self.importer.import(from: array, topLevelFolderName: Strings.Sync.importFolderName) {
+      self.importer.import(from: array, topLevelFolderName: Strings.DataImporter.importFolderName) {
         state in
 
         self.state = .none
@@ -46,7 +46,7 @@ class BookmarksImportExportUtility {
 
   // Import bookmarks from a file into BraveCore
   @MainActor
-  func importBookmarks(from path: URL) async -> Bool {
+  public func importBookmarks(from path: URL) async -> Bool {
     precondition(
       state == .none,
       "Bookmarks Import - Error Importing while an Import/Export operation is in progress"
@@ -56,7 +56,7 @@ class BookmarksImportExportUtility {
       await withCheckedContinuation { continuation in
         self.importer.import(
           fromFile: nativePath,
-          topLevelFolderName: Strings.Sync.importFolderName,
+          topLevelFolderName: Strings.DataImporter.importFolderName,
           automaticImport: true
         ) { [weak self] state, bookmarks in
           guard let self else {
@@ -79,11 +79,6 @@ class BookmarksImportExportUtility {
           }
         }
       }
-    }
-
-    guard let nativePath = path.fileSystemRepresentation else {
-      Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
-      return false
     }
 
     // While accessing document URL from UIDocumentPickerViewController to access the file
@@ -116,35 +111,24 @@ class BookmarksImportExportUtility {
         .appendingPathExtension(
           "html"
         )
-      guard
-        let nativeBookmarksPath = bookmarksFileURL.fileSystemRepresentation
-      else {
-        Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
-        return false
-      }
 
-      return await doImport(bookmarksFileURL, nativeBookmarksPath)
+      return await doImport(bookmarksFileURL, bookmarksFileURL.path)
     }
 
-    return await doImport(path, nativePath)
+    return await doImport(path, path.path)
   }
 
   // Export bookmarks from BraveCore to a file
   @MainActor
-  func exportBookmarks(to path: URL) async -> Bool {
+  public func exportBookmarks(to path: URL) async -> Bool {
     precondition(
       state == .none,
       "Bookmarks Import - Error Exporting while an Import/Export operation is in progress"
     )
 
-    guard let nativePath = path.fileSystemRepresentation else {
-      Logger.module.error("Bookmarks Export - Invalid FileSystem Path")
-      return false
-    }
-
     self.state = .exporting
     return await withCheckedContinuation { continuation in
-      self.exporter.export(toFile: nativePath) { [weak self] state in
+      self.exporter.export(toFile: path.path) { [weak self] state in
         guard let self = self else {
           continuation.resume(returning: false)
           return

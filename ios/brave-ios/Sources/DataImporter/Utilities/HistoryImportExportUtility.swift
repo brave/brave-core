@@ -8,36 +8,41 @@ import BraveShared
 import Foundation
 import os.log
 
-class PasswordsImportExportUtility {
+class HistoryImportExportUtility {
 
   @MainActor
-  func importPasswords(from path: URL) async -> Bool {
+  func importHistory(from path: URL) async -> Bool {
     precondition(
       state == .none,
-      "Passwords Import - Error Importing while an Import/Export operation is in progress"
+      "History Import - Error Importing while an Import/Export operation is in progress"
     )
 
     let doImport = { (path: URL, nativePath: String) async -> Bool in
       await withCheckedContinuation { continuation in
-        self.importer.importPasswords(nativePath) { [weak self] in
+        self.importer.import(
+          fromFile: nativePath,
+          automaticImport: true
+        ) { [weak self] state, historyItems in
           guard let self else {
-            // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
-            // (Note: this is not reference counted)
             continuation.resume(returning: false)
             return
           }
 
           self.state = .none
-
-          Logger.module.debug("Passwords Import - Import Completed")
-          continuation.resume(returning: true)
+          switch state {
+          case .started:
+            Logger.module.debug("History Import - Import Started")
+          case .cancelled:
+            Logger.module.debug("History Import - Import Cancelled")
+            continuation.resume(returning: false)
+          case .autoCompleted, .completed:
+            Logger.module.debug("History Import - Import Completed")
+            continuation.resume(returning: true)
+          @unknown default:
+            fatalError()
+          }
         }
       }
-    }
-
-    guard let nativePath = path.fileSystemRepresentation else {
-      Logger.module.error("Passwords Import - Invalid FileSystem Path")
-      return false
     }
 
     // While accessing document URL from UIDocumentPickerViewController to access the file
@@ -66,27 +71,19 @@ class PasswordsImportExportUtility {
         }
       }
 
-      let passwordsFileURL = zipFileExtractedURL.appending(path: "Passwords")
-        .appendingPathExtension(
-          "csv"
-        )
+      let historyFileURL = zipFileExtractedURL.appending(path: "History").appendingPathExtension(
+        "json"
+      )
 
-      guard
-        let nativePasswordsPath = passwordsFileURL.fileSystemRepresentation
-      else {
-        Logger.module.error("Passwords Import - Invalid FileSystem Path")
-        return false
-      }
-
-      return await doImport(passwordsFileURL, nativePasswordsPath)
+      return await doImport(historyFileURL, historyFileURL.path)
     }
 
-    return await doImport(path, nativePath)
+    return await doImport(path, path.path)
   }
 
   // MARK: - Private
   private var state: State = .none
-  private let importer = BravePasswordImporter()
+  private let importer = BraveHistoryImporter()
 
   private enum State {
     case importing
