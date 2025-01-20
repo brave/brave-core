@@ -43,7 +43,7 @@ public struct BraveVPNEnableSettingsHeaderView: View {
           label: {
             HStack {
               Text(buttonTitle)
-                .font(.body.weight(.semibold))
+                .font(.headline)
                 .foregroundColor(Color(.white))
                 .padding()
                 .frame(maxWidth: .infinity)

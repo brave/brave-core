@@ -21,7 +21,7 @@ public struct AIChatTermsAndConditionsView: View {
             .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
             .fixedSize(horizontal: false, vertical: true)
-            .font(.body.weight(.semibold))
+            .font(.headline)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
 
           Text(
@@ -53,10 +53,7 @@ public struct AIChatTermsAndConditionsView: View {
             .padding([.leading, .trailing], 16)
             .frame(maxWidth: .infinity)
             .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
-            .background(
-              Color(braveSystemName: .buttonBackground),
-              in: Capsule()
-            )
+            .background(Color(braveSystemName: .buttonBackground), in: .capsule)
         }
       )
       .buttonStyle(.plain)

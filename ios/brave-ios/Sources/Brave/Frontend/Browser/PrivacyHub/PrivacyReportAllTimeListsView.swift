@@ -154,7 +154,7 @@ struct PrivacyReportAllTimeListsView: View {
 
       if trackersLoading || websitesLoading {
         ProgressView()
-          .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
       } else {
         switch currentPage {
         case .trackersAndAds: trackersList
