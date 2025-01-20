@@ -10,7 +10,6 @@
 #include "components/permissions/request_type.h"
 
 #define PermissionPromptAndroid PermissionPromptAndroid_ChromiumImpl
-#define GetIconId virtual GetIconId
 
 #define PermissionCount                                                       \
   NotUsed() {                                                                 \
@@ -27,7 +26,6 @@
 #include "src/components/permissions/android/permission_prompt/permission_prompt_android.h"  // IWYU pragma: export
 
 #undef PermissionCount
-#undef GetIconId
 #undef PermissionPromptAndroid
 
 namespace permissions {
