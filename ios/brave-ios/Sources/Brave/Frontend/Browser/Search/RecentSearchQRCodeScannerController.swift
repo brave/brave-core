@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveCore
 import BraveShared
 import Foundation
 import Shared
@@ -12,7 +13,7 @@ import UIKit
 class RecentSearchQRCodeScannerController: UIViewController {
 
   private let scannerView = ScannerView()
-  private var didScan: Bool = false
+  private var didScan = false
   private var onDidScan: (_ string: String) -> Void
 
   public static var hasCameraSupport: Bool {
@@ -62,10 +63,20 @@ class RecentSearchQRCodeScannerController: UIViewController {
       // Feedback indicating code scan is finalized
       AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
       UIImpactFeedbackGenerator(style: .medium).vibrate()
-
       self.didScan = true
-      self.onDidScan(string)
-      self.dismiss(animated: true, completion: nil)
+
+      self.scannerView.scannedText = string
+      self.scannerView.scannedDisplayButton.isHidden = false
+      self.scannerView.scannedDisplayButton.addAction(
+        UIAction(handler: { [weak self] _ in
+          guard let self = self else { return }
+
+          self.scannerView.scannedDisplayButton.isHidden = true
+          self.onDidScan(string)
+          self.dismiss(animated: true, completion: nil)
+        }),
+        for: .touchUpInside
+      )
     }
   }
 
@@ -142,12 +153,69 @@ extension RecentSearchQRCodeScannerController {
       $0.textColor = .braveLabel
     }
 
+    var scannedText: String? {
+      didSet {
+        let processedScannedResult = processScannedText()
+        let truncationMode = processedScannedResult.truncationMode
+
+        if let scannedText = processedScannedResult.string {
+          let paragraphStyle = NSMutableParagraphStyle()
+          paragraphStyle.lineBreakMode = truncationMode
+          paragraphStyle.baseWritingDirection = .leftToRight
+
+          let title = NSAttributedString(
+            string: scannedText,
+            attributes: [
+              .font: UIFont.preferredFont(forTextStyle: .body),
+              .paragraphStyle: paragraphStyle,
+            ]
+          )
+
+          scannedDisplayButton.titleLabel?.lineBreakMode = truncationMode
+          scannedDisplayButton.setAttributedTitle(title, for: .normal)
+        } else {
+          scannedDisplayButton.setTitle(nil, for: .normal)
+        }
+      }
+    }
+
+    let scannedDisplayButton = UIButton().then {
+      $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
+      $0.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
+      $0.titleLabel?.lineBreakMode = .byTruncatingTail
+      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
+      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
+      $0.layer.cornerRadius = 10
+      $0.layer.cornerCurve = .continuous
+      $0.layer.masksToBounds = true
+      $0.isHidden = true
+    }
+
+    private func processScannedText() -> (string: String?, truncationMode: NSLineBreakMode) {
+      if let text = scannedText, let url = URIFixup.getURL(text) {
+        let scannedText = URLFormatter.formatURL(
+          URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
+          formatTypes: [
+            .omitDefaults, .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+          ],
+          unescapeOptions: .normal
+        )
+
+        let truncationMode: NSLineBreakMode =
+          ["http", "https"].contains(url.scheme ?? "") ? .byTruncatingHead : .byTruncatingTail
+        return (scannedText, truncationMode)
+      }
+
+      return (scannedText, .byTruncatingTail)
+    }
+
     override init(frame: CGRect) {
       super.init(frame: frame)
 
       backgroundColor = .secondaryBraveBackground
 
       addSubview(cameraView)
+      addSubview(scannedDisplayButton)
       addSubview(scrollView)
       scrollView.addSubview(stackView)
       stackView.addStackViewItems(
@@ -162,6 +230,13 @@ extension RecentSearchQRCodeScannerController {
         $0.centerX.equalToSuperview()
         $0.height.equalTo(cameraView.snp.width)
         $0.width.lessThanOrEqualTo(375)
+      }
+
+      scannedDisplayButton.snp.makeConstraints {
+        $0.centerX.equalTo(cameraView)
+        $0.bottom.equalTo(cameraView).inset(10)
+        $0.leading.greaterThanOrEqualTo(cameraView).inset(40)
+        $0.trailing.lessThanOrEqualTo(cameraView).inset(40)
       }
 
       scrollView.snp.makeConstraints {
