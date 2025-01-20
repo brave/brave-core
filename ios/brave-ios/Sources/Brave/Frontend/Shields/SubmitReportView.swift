@@ -129,6 +129,10 @@ struct SubmitReportView: View {
 
   @MainActor func createAndSubmitReport() async {
     let domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
+    var blockScripts: String?
+    if let noScript = domain.shield_noScript {
+      blockScripts = noScript == 1 ? "true" : "false"
+    }
     guard
       let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
         privateMode: isPrivateBrowsing
@@ -159,7 +163,7 @@ struct SubmitReportView: View {
         details: additionalDetails,
         contact: contactDetails,
         cookiePolicy: Preferences.Privacy.blockAllCookies.value ? "block" : nil,
-        blockScripts: String(Preferences.Shields.blockScripts.value),
+        blockScripts: blockScripts,
         adBlockComponentsVersion: nil,
         screenshotPng: nil
       )
