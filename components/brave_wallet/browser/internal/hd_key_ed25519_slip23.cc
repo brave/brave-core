@@ -42,13 +42,8 @@ base::span<uint8_t, kSlip23ScalarSize> ClampScalarEd25519Bip32(
   return scalar;
 }
 
-// https://datatracker.ietf.org/doc/html/rfc8032#section-5.1.5
-// requires scalar to follow this requirements 'The lowest 3 bits of the first
-// octet are cleared, the highest bit of the last octet is cleared, and the
-// second highest bit of the last octet is set'.
 bool IsValidEd25519Scalar(base::span<const uint8_t, kSlip23ScalarSize> scalar) {
-  return (scalar[0] & 0b0000'0111) == 0b0000'0000 &&
-         (scalar[31] & 0b1100'0000) == 0b0100'0000;
+  return ED25519_is_scalar_pruned(scalar.data());
 }
 
 std::optional<std::array<uint8_t, 32>> PubkeyFromScalar(
@@ -137,6 +132,7 @@ std::unique_ptr<HDKeyEd25519Slip23> HDKeyEd25519Slip23::DeriveChild(
     span_writer.Write(scalar_);
     span_writer.Write(prefix_);
     span_writer.WriteU32LittleEndian(*raw_index_value);
+    DCHECK_EQ(span_writer.remaining(), 0u);
 
     data[0] = 0x00;
     z_hmac = crypto::hmac::SignSha512(chain_code_, data);
@@ -148,6 +144,7 @@ std::unique_ptr<HDKeyEd25519Slip23> HDKeyEd25519Slip23::DeriveChild(
     span_writer.Skip(1u);
     span_writer.Write(public_key_);
     span_writer.WriteU32LittleEndian(*raw_index_value);
+    DCHECK_EQ(span_writer.remaining(), 0u);
 
     data[0] = 0x02;
     z_hmac = crypto::hmac::SignSha512(chain_code_, data);
