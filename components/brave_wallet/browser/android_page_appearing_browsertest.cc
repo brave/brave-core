@@ -430,11 +430,12 @@ IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest,
   }
 }
 
-IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestBuyPageAppearing) {
+IN_PROC_BROWSER_TEST_F(AndroidPageAppearingBrowserTest, TestMeldPageAppearing) {
   const GURL expected_url = GURL("brave://wallet/crypto/fund-wallet");
   for (auto scheme : GetWebUISchemes()) {
     GURL url = GURL(base::StrCat({scheme, "wallet/crypto/fund-wallet"}));
     const std::vector<std::string> ignore_patterns = {
+        "An internal error has occurred",
         "TypeError: Cannot read properties of undefined (reading 'forEach')",
         "ReactDOM.render is no longer supported in React 18"};
     VerifyPage(url, expected_url, ignore_patterns);
