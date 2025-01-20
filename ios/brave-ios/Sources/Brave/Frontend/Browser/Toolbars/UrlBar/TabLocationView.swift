@@ -134,7 +134,7 @@ class TabLocationView: UIView {
     secureContentStateButton.isHidden = false
 
     // Consider brave translate
-    translateButton.isHidden = translationState == .unavailable
+    translateButton.isHidden = true
   }
 
   deinit {
