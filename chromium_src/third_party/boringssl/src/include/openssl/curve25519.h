@@ -9,6 +9,9 @@
 extern "C" {
 #endif
 
+// These functions support custom ED25519 keys generation and signing for
+// Cardano.
+OPENSSL_EXPORT int ED25519_is_scalar_pruned(const uint8_t scalar[32]);
 OPENSSL_EXPORT int ED25519_pubkey_from_scalar(uint8_t out_public_key[32],
                                               const uint8_t scalar[32]);
 OPENSSL_EXPORT int ED25519_sign_with_scalar_and_prefix(
