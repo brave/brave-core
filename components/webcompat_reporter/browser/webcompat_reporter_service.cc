@@ -84,14 +84,16 @@ struct ReportFiller {
 
   ReportFiller& FillCookiePolicy() {
     if (!(*report_info)->cookie_policy) {
-      (*report_info)->cookie_policy = service_delegate->GetCookiePolicy();
+      (*report_info)->cookie_policy =
+          service_delegate->GetCookiePolicy((*report_info)->report_url);
     }
     return *this;
   }
 
   ReportFiller& FillScriptBlockingFlag() {
     if (!(*report_info)->block_scripts) {
-      (*report_info)->block_scripts = service_delegate->GetScriptBlockingFlag();
+      (*report_info)->block_scripts =
+          service_delegate->GetScriptBlockingFlag((*report_info)->report_url);
     }
     return *this;
   }
