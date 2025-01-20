@@ -175,7 +175,8 @@ extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
     try? FileManager.default.moveItem(at: location, to: temporaryLocation)
     Task {
       do {
-        let destination = try await uniqueDownloadPathForFilename(filename)
+        let downloadsPath = try await AsyncFileManager.default.downloadsPath()
+        let destination = try await URL.uniqueFileName(filename, in: downloadsPath)
         try await AsyncFileManager.default.moveItem(at: temporaryLocation, to: destination)
         isComplete = true
         delegate?.download(self, didFinishDownloadingTo: destination)
