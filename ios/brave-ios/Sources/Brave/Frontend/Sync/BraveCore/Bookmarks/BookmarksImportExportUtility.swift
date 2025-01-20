@@ -81,11 +81,6 @@ class BookmarksImportExportUtility {
       }
     }
 
-    guard let nativePath = path.fileSystemRepresentation else {
-      Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
-      return false
-    }
-
     // While accessing document URL from UIDocumentPickerViewController to access the file
     // startAccessingSecurityScopedResource should be called for that URL
     // Reference: https://stackoverflow.com/a/73912499/2239348
@@ -116,17 +111,11 @@ class BookmarksImportExportUtility {
         .appendingPathExtension(
           "html"
         )
-      guard
-        let nativeBookmarksPath = bookmarksFileURL.fileSystemRepresentation
-      else {
-        Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
-        return false
-      }
 
-      return await doImport(bookmarksFileURL, nativeBookmarksPath)
+      return await doImport(bookmarksFileURL, bookmarksFileURL.path)
     }
 
-    return await doImport(path, nativePath)
+    return await doImport(path, path.path)
   }
 
   // Export bookmarks from BraveCore to a file
@@ -137,14 +126,9 @@ class BookmarksImportExportUtility {
       "Bookmarks Import - Error Exporting while an Import/Export operation is in progress"
     )
 
-    guard let nativePath = path.fileSystemRepresentation else {
-      Logger.module.error("Bookmarks Export - Invalid FileSystem Path")
-      return false
-    }
-
     self.state = .exporting
     return await withCheckedContinuation { continuation in
-      self.exporter.export(toFile: nativePath) { [weak self] state in
+      self.exporter.export(toFile: path.path) { [weak self] state in
         guard let self = self else {
           continuation.resume(returning: false)
           return

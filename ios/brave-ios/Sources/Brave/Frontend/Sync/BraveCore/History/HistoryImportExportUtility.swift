@@ -45,11 +45,6 @@ class HistoryImportExportUtility {
       }
     }
 
-    guard let nativePath = path.fileSystemRepresentation else {
-      Logger.module.error("History Import - Invalid FileSystem Path")
-      return false
-    }
-
     // While accessing document URL from UIDocumentPickerViewController to access the file
     // startAccessingSecurityScopedResource should be called for that URL
     // Reference: https://stackoverflow.com/a/73912499/2239348
@@ -79,17 +74,11 @@ class HistoryImportExportUtility {
       let historyFileURL = zipFileExtractedURL.appending(path: "History").appendingPathExtension(
         "json"
       )
-      guard
-        let nativeHistoryPath = historyFileURL.fileSystemRepresentation
-      else {
-        Logger.module.error("History Import - Invalid FileSystem Path")
-        return false
-      }
 
-      return await doImport(historyFileURL, nativeHistoryPath)
+      return await doImport(historyFileURL, historyFileURL.path)
     }
 
-    return await doImport(path, nativePath)
+    return await doImport(path, path.path)
   }
 
   // MARK: - Private

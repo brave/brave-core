@@ -35,11 +35,6 @@ class PasswordsImportExportUtility {
       }
     }
 
-    guard let nativePath = path.fileSystemRepresentation else {
-      Logger.module.error("Passwords Import - Invalid FileSystem Path")
-      return false
-    }
-
     // While accessing document URL from UIDocumentPickerViewController to access the file
     // startAccessingSecurityScopedResource should be called for that URL
     // Reference: https://stackoverflow.com/a/73912499/2239348
@@ -71,17 +66,10 @@ class PasswordsImportExportUtility {
           "csv"
         )
 
-      guard
-        let nativePasswordsPath = passwordsFileURL.fileSystemRepresentation
-      else {
-        Logger.module.error("Passwords Import - Invalid FileSystem Path")
-        return false
-      }
-
-      return await doImport(passwordsFileURL, nativePasswordsPath)
+      return await doImport(passwordsFileURL, passwordsFileURL.path)
     }
 
-    return await doImport(path, nativePath)
+    return await doImport(path, path.path)
   }
 
   // MARK: - Private
