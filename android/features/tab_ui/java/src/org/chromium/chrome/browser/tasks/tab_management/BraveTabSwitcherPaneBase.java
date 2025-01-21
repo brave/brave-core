@@ -39,8 +39,8 @@ public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
     @Override
     public @NonNull HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
             @NonNull HubContainerView hubContainerView) {
-        int tabId = getCurrentTabId();
-        if (getTabListMode() != TabListMode.LIST && tabId != Tab.INVALID_TAB_ID) {
+        Tab tab = getCurrentTab();
+        if (getTabListMode() != TabListMode.LIST && tab != null) {
             // Force call TabSwitcherPaneBase.createTabSwitcherPaneCoordinator
             // to ensure TabSwitcherPaneBase.mTabSwitcherPaneCoordinatorSupplier is set
             super.createTabSwitcherPaneCoordinator();
