@@ -45,12 +45,14 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
   Tab* AddTab(std::unique_ptr<Tab> tab,
               int model_index,
               TabPinned pinned) override;
+  void MoveTab(int from_model_index, int to_model_index) override;
+  void RemoveTab(int index, bool was_active) override;
+  void SetTabPinned(int model_index, TabPinned pinned) override;
   int GetUnpinnedContainerIdealLeadingX() const override;
   TabContainer* GetTabContainerAt(
       gfx::Point point_in_local_coords) const override;
   gfx::Rect ConvertUnpinnedContainerIdealBoundsToLocal(
       gfx::Rect ideal_bounds) const override;
-  void OnThemeChanged() override;
   void PaintChildren(const views::PaintInfo& info) override;
   void ChildPreferredSizeChanged(views::View* child) override;
   void SetActiveTab(std::optional<size_t> prev_active_index,
@@ -68,6 +70,7 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
 
   bool ShouldShowVerticalTabs() const;
 
+  void UpdatePinnedTabContainerBorder();
   void UpdateUnpinnedContainerSize();
   void ScrollTabToBeVisible(int model_index);
 
