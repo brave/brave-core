@@ -17,8 +17,6 @@ import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.base.test.util.DisabledTest;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Feature;
-import org.chromium.base.test.util.Features.DisableFeatures;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.settings.SettingsActivity;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
@@ -43,7 +41,6 @@ public class BraveManageSyncSettingsTest {
     @Test
     @SmallTest
     @Feature({"Sync"})
-    @DisableFeatures({ChromeFeatureList.REPLACE_SYNC_PROMOS_WITH_SIGN_IN_PROMOS})
     @DisabledTest(message = "https://github.com/brave/brave-browser/issues/43285")
     public void syncEverythingOrPasswordsHandlerIsOriginalOnChromeOS() {
         syncEverythingOrPasswordsOverridden(true, false);
@@ -52,7 +49,6 @@ public class BraveManageSyncSettingsTest {
     @Test
     @SmallTest
     @Feature({"Sync"})
-    @DisableFeatures({ChromeFeatureList.REPLACE_SYNC_PROMOS_WITH_SIGN_IN_PROMOS})
     @DisabledTest(message = "https://github.com/brave/brave-browser/issues/43285")
     public void syncEverythingOrPasswordsHandlerOverriddenOnNonChromeOS() {
         syncEverythingOrPasswordsOverridden(false, true);
