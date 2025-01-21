@@ -1356,9 +1356,12 @@ public abstract class BraveActivity extends ChromeActivity
                         .setAction(getResources().getString(R.string.update), null)
                         .setSingleLine(false)
                         .setDuration(10000);
-        SnackbarManager snackbarManager =
-                SnackbarManagerProvider.from(getActivityTab().getWindowAndroid());
-        snackbarManager.showSnackbar(snackbar);
+        Tab currentTab = getActivityTabProvider().get();
+        if (currentTab != null) {
+            SnackbarManager snackbarManager =
+                    SnackbarManagerProvider.from(currentTab.getWindowAndroid());
+            snackbarManager.showSnackbar(snackbar);
+        }
     }
 
     private final InstallStateUpdatedListener mInstallStateUpdatedListener =
@@ -2089,7 +2092,10 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveLeo() {
         BraveLeoUtils.verifySubscription(null);
-        BraveLeoUtils.openLeoUrlForTab(getActivityTab().getWebContents());
+        Tab currentTab = getActivityTabProvider().get();
+        if (currentTab != null) {
+            BraveLeoUtils.openLeoUrlForTab(currentTab.getWebContents());
+        }
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {
