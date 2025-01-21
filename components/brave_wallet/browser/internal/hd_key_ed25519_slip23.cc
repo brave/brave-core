@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519_slip23.h"
 
 #include <array>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -13,7 +14,6 @@
 #include "base/check.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
-#include "base/memory/ptr_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "crypto/hmac.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
@@ -105,6 +105,7 @@ HDKeyEd25519Slip23::~HDKeyEd25519Slip23() = default;
 
 // Child key derivation constructor.
 HDKeyEd25519Slip23::HDKeyEd25519Slip23(
+    PassKey,
     base::span<const uint8_t, kSlip23ScalarSize> scalar,
     base::span<const uint8_t, kSlip23PrefixSize> prefix,
     base::span<const uint8_t, kSlip23ChainCodeSize> chain_code,
@@ -160,11 +161,11 @@ std::unique_ptr<HDKeyEd25519Slip23> HDKeyEd25519Slip23::DeriveChild(
     return nullptr;
   }
 
-  return base::WrapUnique(new HDKeyEd25519Slip23(
-      derived_scalar,
+  return std::make_unique<HDKeyEd25519Slip23>(
+      PassKey(), derived_scalar,
       CalculateDerivedPrefix(prefix_,
                              base::span(z_hmac).last<kSlip23PrefixSize>()),
-      CalculateDerivedChainCode(cc_hmac), *pubkey));
+      CalculateDerivedChainCode(cc_hmac), *pubkey);
 }
 
 // static
@@ -190,9 +191,10 @@ HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(
     return nullptr;
   }
 
-  return base::WrapUnique(new HDKeyEd25519Slip23(
-      scalar, xprv_span.subspan<kSlip23ScalarSize, kSlip23PrefixSize>(),
-      xprv_span.last<kSlip23ChainCodeSize>(), *pubkey));
+  return std::make_unique<HDKeyEd25519Slip23>(
+      PassKey(), scalar,
+      xprv_span.subspan<kSlip23ScalarSize, kSlip23PrefixSize>(),
+      xprv_span.last<kSlip23ChainCodeSize>(), *pubkey);
 }
 
 std::optional<std::array<uint8_t, kEd25519SignatureSize>>
