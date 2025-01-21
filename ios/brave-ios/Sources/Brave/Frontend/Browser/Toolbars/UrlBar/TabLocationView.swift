@@ -43,9 +43,35 @@ class TabLocationView: UIView {
   let contentView = UIView()
   private var tabObservers: TabObservers!
   private var privateModeCancellable: AnyCancellable?
+  private var _url: URL?
 
   var url: URL? {
-    didSet {
+    get {
+      _url
+    }
+
+    set(newValue) {
+      _url = newValue
+
+      // Strip `user:pass` from blob URLs
+      if newValue?.scheme == "blob", let url = newValue,
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+      {
+        components.scheme = nil
+
+        if let newURL = components.url {
+          if var newComponents = URLComponents(url: newURL, resolvingAgainstBaseURL: true) {
+            newComponents.user = nil
+            newComponents.password = nil
+            newComponents.scheme = newURL.scheme
+
+            if let url = newComponents.url, let result = URL(string: "blob:\(url.absoluteString)") {
+              _url = result
+            }
+          }
+        }
+      }
+
       updateLeadingItem()
       updateURLBarWithText()
       setNeedsUpdateConstraints()
@@ -512,7 +538,7 @@ class TabLocationView: UIView {
   private func updateURLBarWithText() {
     guard let urlDisplayLabel = urlDisplayLabel as? DisplayURLLabel else { return }
 
-    if let url = url {
+    if var url = url {
       if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
         urlDisplayLabel.isLeftToRight = true
         urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
@@ -524,39 +550,49 @@ class TabLocationView: UIView {
         // If we can't parse the origin and the URL can't be classified via AutoCompleteClassifier
         // the URL is likely a broken deceptive URL. Example: `about:blank#https://apple.com`
         if URLOrigin(url: url).url == nil && URIFixup.getURL(url.absoluteString) == nil {
-          urlDisplayLabel.isLeftToRight = true
-          urlDisplayLabel.text = url.scheme == "about" ? "about:blank" : ""
-        } else {
-          urlDisplayLabel.text = URLFormatter.formatURL(
-            URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
-            formatTypes: [
-              .omitDefaults, .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
-            ],
-            unescapeOptions: .normal
-          )
-
-          // The direction the string will be rendered (this happens regardless of locale!!!)
-          // In a LTR environment, Arabic will always render RTL
-          // The dominant charset based on unicode's bidirection algorithm
-          // with strong L and strong R determines how a string will be rendered
-          let isRenderedLeftToRight = url.isRenderedLeftToRight
-
-          // Determine if the URL has BOTH LTR and RTL characters.
-          // Very likely a malicious URL, but not always!
-          // URLs like: m5155.xn--mgbaiqly6b2eg.xn--ngbc5azd/ are innocent
-          let isMixedCharset = !url.isUnidirectional
-
-          var isLTR = isRenderedLeftToRight && !isMixedCharset
-          if isMixedCharset {
-            // FORCE LTR - ETLD are always the right most portion after the dot.
-            // We will force render the URL in LTR mode, so we should force clip on the left (sub-domain).
-            // RTL rendered domains will clip from the right side (sub-domain) and the ETLD will be rendered on the left.
-            isLTR = true
+          if url.scheme == "about" {
+            url = URL(string: "about:blank")!
           }
-
-          urlDisplayLabel.isLeftToRight =
-            !["http", "https"].contains(url.scheme ?? "") || !isLTR
         }
+
+        // Default is to format the FULL url
+        var urlString = url.absoluteString
+
+        // For the web schemes, format the origin instead of the full url
+        if ["http", "https"].contains(url.scheme) {
+          urlString = url.origin.url?.absoluteString ?? url.absoluteString
+        }
+
+        // Format the url
+        urlDisplayLabel.text = URLFormatter.formatURL(
+          urlString,
+          formatTypes: [
+            .omitDefaults, .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+          ],
+          unescapeOptions: .normal
+        )
+
+        // The direction the string will be rendered (this happens regardless of locale!!!)
+        // In a LTR environment, Arabic will always render RTL
+        // The dominant charset based on unicode's bidirection algorithm
+        // with strong L and strong R determines how a string will be rendered
+        let isRenderedLeftToRight = url.isRenderedLeftToRight
+
+        // Determine if the URL has BOTH LTR and RTL characters.
+        // Very likely a malicious URL, but not always!
+        // URLs like: m5155.xn--mgbaiqly6b2eg.xn--ngbc5azd/ are innocent
+        let isMixedCharset = !url.isUnidirectional
+
+        var isLTR = isRenderedLeftToRight && !isMixedCharset
+        if isMixedCharset {
+          // FORCE LTR - ETLD are always the right most portion after the dot.
+          // We will force render the URL in LTR mode, so we should force clip on the left (sub-domain).
+          // RTL rendered domains will clip from the right side (sub-domain) and the ETLD will be rendered on the left.
+          isLTR = true
+        }
+
+        urlDisplayLabel.isLeftToRight =
+          !["http", "https", "blob"].contains(url.scheme ?? "") || !isLTR
       }
     } else {
       urlDisplayLabel.isLeftToRight = true
