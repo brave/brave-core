@@ -143,10 +143,13 @@ public class BraveWalletResetPreference
     }
 
     private void launchBraveTabbedActivity() {
-        Intent intent =
-                new Intent(BraveActivity.getChromeTabbedActivity(), ChromeTabbedActivity.class);
+        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+        if (activity == null) {
+            return;
+        }
+        Intent intent = new Intent(activity, ChromeTabbedActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setAction(Intent.ACTION_VIEW);
-        BraveActivity.getChromeTabbedActivity().startActivity(intent);
+        activity.startActivity(intent);
     }
 }
