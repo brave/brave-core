@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index f8d62e947251f221388daba8648e0b6e2e21adbe..ec0a2ccad9675817bc3068a186a7daa496fa7be7 100644
+index f8d62e947251f221388daba8648e0b6e2e21adbe..763142c93cfd642aa10d11278d1cf17cad6730b8 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
 @@ -546,6 +546,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
@@ -10,15 +10,7 @@ index f8d62e947251f221388daba8648e0b6e2e21adbe..ec0a2ccad9675817bc3068a186a7daa4
      CHECK(!views.empty(), base::NotFatalUntil::M128)
          << "The views vector must not be empty.";
  
-@@ -749,6 +750,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
-     // index.
-     std::stable_sort(orderable_children.begin(), orderable_children.end());
- 
-+    BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN
-     for (const ZOrderableTabContainerElement& child : orderable_children) {
-       child.view()->Paint(paint_info);
-     }
-@@ -842,6 +844,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -842,6 +843,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
          continue;
        }
  
