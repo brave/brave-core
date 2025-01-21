@@ -12,7 +12,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/brave_javascript_tab_modal_dialog_view_views.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
+#include "brave/browser/ui/views/frame/split_view_contents_layout_manager.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -168,7 +168,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, SplitViewSizeDelta) {
 
   // When size delta is set
   auto* browser_view = static_cast<BrowserView*>(browser()->window());
-  auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
+  auto* contents_layout_manager = static_cast<SplitViewContentsLayoutManager*>(
       browser_view->contents_container()->GetLayoutManager());
   constexpr int kSizeDelta = 100;
   contents_layout_manager->set_split_view_size_delta(kSizeDelta);

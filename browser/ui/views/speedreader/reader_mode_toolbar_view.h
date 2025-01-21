@@ -8,17 +8,22 @@
 
 #include <memory>
 
+#include "base/observer_list.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/webview/webview.h"
 
-namespace content {
-class BrowserContext;
-}
+class Browser;
 
 class ReaderModeToolbarView : public views::View {
   METADATA_HEADER(ReaderModeToolbarView, views::View)
  public:
-  explicit ReaderModeToolbarView(content::BrowserContext* browser_context);
+  struct Observer : public base::CheckedObserver {
+    ~Observer() override = default;
+
+    virtual void OnReaderModeToolbarActive(ReaderModeToolbarView* toolbar) {}
+  };
+
+  explicit ReaderModeToolbarView(Browser* browser);
   ~ReaderModeToolbarView() override;
 
   ReaderModeToolbarView(const ReaderModeToolbarView&) = delete;
@@ -26,16 +31,28 @@ class ReaderModeToolbarView : public views::View {
   ReaderModeToolbarView& operator=(const ReaderModeToolbarView&) = delete;
   ReaderModeToolbarView& operator=(ReaderModeToolbarView&&) = delete;
 
+  void SetVisible(bool visible) override;
+
   content::WebContents* GetWebContentsForTesting();
 
   views::View* toolbar() const { return toolbar_.get(); }
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
+
+  void NotifyActive();
 
  private:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
 
+  bool OnMousePressed(const ui::MouseEvent& event) override;
+
   std::unique_ptr<views::WebView> toolbar_;
+  bool toolbar_loaded_ = false;
+
+  base::ObserverList<Observer> observers_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_TOOLBAR_VIEW_H_

@@ -22,7 +22,7 @@
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
 #define BookmarkBarView BraveBookmarkBarView
-#define ContentsLayoutManager BraveContentsLayoutManager
+#define ContentsLayoutManager SplitViewContentsLayoutManager
 
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
