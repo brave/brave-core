@@ -213,6 +213,12 @@
   <message name="IDS_CHAT_UI_CANCEL_BUTTON_LABEL" desc="Button label to cancel action">
     Cancel
   </message>
+  <message name="IDS_CHAT_UI_DELETE_BUTTON_LABEL" desc="Button label to delete conversation">
+    Delete
+  </message>
+  <message name="IDS_CHAT_UI_DELETE_CONVERSATION_WARNING" desc="A warning issued when the user is trying to delete a conversation">
+    Are you sure you want to delete this conversation? This action cannot be undone.
+  </message>
   <message name="IDS_CHAT_UI_SAVE_BUTTON_LABEL" desc="Button label to save data/form">
     Save
   </message>

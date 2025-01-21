@@ -406,6 +406,7 @@ type CustomArgs = {
   inputText: string
   hasConversation: boolean
   editingConversationId: string | null
+  deletingConversationId: string | null
   visibleConversationListCount: number
   hasSuggestedQuestions: boolean
   hasSiteInfo: boolean
@@ -436,6 +437,7 @@ const args: CustomArgs = {
   hasSuggestedQuestions: true,
   hasSiteInfo: true,
   editingConversationId: null,
+  deletingConversationId: null,
   isFeedbackFormVisible: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
@@ -478,6 +480,10 @@ const meta: Meta<CustomArgs> = {
     },
     visibleConversationListCount: {
       control: { type: 'number' }
+    },
+    deletingConversationId: {
+      options: CONVERSATIONS.map(conversation => conversation.uuid),
+      control: { type: 'select' }
     }
   },
   args,
@@ -532,6 +538,7 @@ function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs:
     conversationEntriesComponent: StorybookConversationEntries,
     initialized: options.args.initialized,
     editingConversationId: options.args.editingConversationId,
+    deletingConversationId: options.args.deletingConversationId,
     visibleConversations,
     isStoragePrefEnabled: options.args.isStoragePrefEnabled,
     hasAcceptedAgreement: options.args.hasAcceptedAgreement,
@@ -552,6 +559,7 @@ function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs:
     dismissPremiumPrompt: () => {},
     userRefreshPremiumSession: () => {},
     setEditingConversationId: (id: string | null) => setArgs({ editingConversationId: id }),
+    setDeletingConversationId: (id: string | null) => setArgs({ deletingConversationId: id }),
     showSidebar: showSidebar,
     toggleSidebar: () => setShowSidebar(s => !s)
   }

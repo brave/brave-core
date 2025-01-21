@@ -79,7 +79,7 @@ function ConversationItem(props: ConversationItemProps) {
 
   const handleDelete: EventListener = (e) => {
     e.preventDefault()
-    aiChatContext.service?.deleteConversation(uuid)
+    aiChatContext.setDeletingConversationId(uuid)
   }
 
   const isEditing = aiChatContext.editingConversationId === uuid
