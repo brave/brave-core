@@ -782,7 +782,7 @@ void BraveRenderViewContextMenu::InitMenu() {
 
   if (params_.link_url.spec().starts_with(kAIChatUIURL) && GetProfile()->
       GetPrefs()->GetBoolean(ai_chat::prefs::kBraveAIChatContextMenuEnabled)) {
-    index = menu_model_->.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
+    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKOFFTHERECORD);
     DCHECK(index);
     menu_model_.RemoveItemAt(index.value());
   }
