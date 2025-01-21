@@ -10,7 +10,7 @@
 #include <string_view>
 
 #include "base/containers/span.h"
-#include "base/gtest_prod_util.h"
+#include "base/types/pass_key.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 
 namespace brave_wallet {
@@ -24,7 +24,15 @@ inline constexpr size_t kSlip23ChainCodeSize = 32;
 // https://github.com/satoshilabs/slips/blob/master/slip-0023.md
 class HDKeyEd25519Slip23 {
  public:
+  using PassKey = base::PassKey<HDKeyEd25519Slip23>;
+
   HDKeyEd25519Slip23();
+  HDKeyEd25519Slip23(
+      PassKey,
+      base::span<const uint8_t, kSlip23ScalarSize> scalar,
+      base::span<const uint8_t, kSlip23PrefixSize> prefix,
+      base::span<const uint8_t, kSlip23ChainCodeSize> chain_code,
+      base::span<const uint8_t, kEd25519PublicKeySize> public_key);
   ~HDKeyEd25519Slip23();
   HDKeyEd25519Slip23(const HDKeyEd25519Slip23&) = delete;
   HDKeyEd25519Slip23& operator=(const HDKeyEd25519Slip23&) = delete;
@@ -47,14 +55,6 @@ class HDKeyEd25519Slip23 {
       LIFETIME_BOUND;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(HDKeyEd25519Slip23UnitTest, TestVectorZ);
-
-  HDKeyEd25519Slip23(
-      base::span<const uint8_t, kSlip23ScalarSize> scalar,
-      base::span<const uint8_t, kSlip23PrefixSize> prefix,
-      base::span<const uint8_t, kSlip23ChainCodeSize> chain_code,
-      base::span<const uint8_t, kEd25519PublicKeySize> public_key);
-
   static std::unique_ptr<HDKeyEd25519Slip23> FromBip32Entropy(
       base::span<const uint8_t> seed,
       std::string_view hd_path);
