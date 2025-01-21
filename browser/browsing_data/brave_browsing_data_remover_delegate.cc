@@ -72,7 +72,7 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
   }
 
   // That code executes on desktop only. Android part is done inside
-  // BraveClearBrowsingDataFragmentAdvanced::onClearBrowsingData(). It's done
+  // BraveClearBrowsingDataFragment::onClearBrowsingData(). It's done
   // that way to avoid extensive patching in java files by adding extra
   // types inside ClearBrowsingDataFragment.DialogOption and surrounding
   // functions

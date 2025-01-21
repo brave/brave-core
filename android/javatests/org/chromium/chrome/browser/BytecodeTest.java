@@ -352,7 +352,7 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/password_manager/settings/ExportFlow"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge"));
@@ -1782,8 +1782,8 @@ public class BytecodeTest {
                         TopUiThemeColorProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced", // presubmit: ignore-long-line
-                        "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragment")); // presubmit: ignore-long-line
 
         Assert.assertTrue(
                 constructorsMatch(
