@@ -1620,7 +1620,23 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ACCOUNT_SHIELDED_DESCRIPTION},
     {"braveWalletShielded", IDS_BRAVE_WALLET_SHIELDED},
     {"braveWalletUnified", IDS_BRAVE_WALLET_UNIFIED},
-    {"braveWalletTransparent", IDS_BRAVE_WALLET_TRANSPARENT}};
+    {"braveWalletTransparent", IDS_BRAVE_WALLET_TRANSPARENT},
+    {"braveWalletOutOfSyncTitle", IDS_BRAVE_WALLET_OUT_OF_SYNC_TITLE},
+    {"braveWalletOutOfSyncBlocksBehindTitle",
+     IDS_BRAVE_WALLET_OUT_OF_SYNC_BLOCKS_BEHIND_TITLE},
+    {"braveWalletOutOfSyncDescription",
+     IDS_BRAVE_WALLET_OUT_OF_SYNC_DESCRIPTION},
+    {"braveWalletSyncAccountButton", IDS_BRAVE_WALLET_SYNC_ACCOUNT_BUTTON},
+    {"braveWalletSyncAccountName", IDS_BRAVE_WALLET_SYNC_ACCOUNT_NAME},
+    {"braveWalletInitializing", IDS_BRAVE_WALLET_INITIALIZING},
+    {"braveWalletProcessingBlock", IDS_BRAVE_WALLET_PROCESSING_BLOCK},
+    {"braveWalletBlocksLeft", IDS_BRAVE_WALLET_BLOCKS_LEFT},
+    {"braveWalletBlocksOfBlocks", IDS_BRAVE_WALLET_BLOCKS_OF_BLOCKS},
+    {"braveWalletRanges", IDS_BRAVE_WALLET_RANGES},
+    {"braveWalletPause", IDS_BRAVE_WALLET_PAUSE},
+    {"braveWalletSyncCompleteMessage", IDS_BRAVE_WALLET_SYNC_COMPLETE_MESSAGE},
+    {"braveWalletSyncStartedMessage", IDS_BRAVE_WALLET_SYNC_STARTED_MESSAGE},
+    {"braveWalletContinueUsingWallet", IDS_BRAVE_WALLET_CONTINUE_USING_WALLET}};
 
 // 0x swap constants
 inline constexpr char kZeroExBaseAPIURL[] = "https://api.0x.wallet.brave.com";

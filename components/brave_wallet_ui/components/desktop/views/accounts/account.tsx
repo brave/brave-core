@@ -4,15 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 import { Redirect, useParams, useLocation, useHistory } from 'react-router'
 import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
 import {
+  useSafeUISelector,
   useSafeWalletSelector //
 } from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
+import { UISelectors, WalletSelectors } from '../../../../common/selectors'
 
 // Types
 import {
@@ -33,7 +36,8 @@ import { filterNetworksForAccount } from '../../../../utils/network-utils'
 import {
   makeAccountRoute,
   makeAccountTransactionRoute,
-  makePortfolioAssetRoute
+  makePortfolioAssetRoute,
+  openTab
 } from '../../../../utils/routes-utils'
 
 import Amount from '../../../../utils/amount'
@@ -53,9 +57,11 @@ import {
   AssetsWrapper,
   NFTsWrapper,
   TransactionsWrapper,
-  EmptyStateWrapper
+  EmptyStateWrapper,
+  SyncAlert,
+  SyncAlertWrapper
 } from './style'
-import { Column, VerticalSpace, Text } from '../../../shared/style'
+import { Column, Row, VerticalSpace, Text } from '../../../shared/style'
 import { EmptyTransactionsIcon } from '../portfolio/style'
 import { NftGrid } from '../nfts/components/nfts.styles'
 
@@ -91,6 +97,7 @@ import {
 import {
   ViewOnBlockExplorerModal //
 } from '../../popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
+import { ZCashSyncModal } from '../../popup-modals/zcash_sync_modal/zcash_sync_modal'
 
 // options
 import { AccountDetailsOptions } from '../../../../options/nav-options'
@@ -102,7 +109,11 @@ import {
   useGetVisibleNetworksQuery,
   useGetUserTokensRegistryQuery,
   useGetTransactionsQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
+  useStartShieldSyncMutation,
+  useGetChainTipStatusQuery,
+  useGetZCashAccountInfoQuery,
+  useStopShieldSyncMutation
 } from '../../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s //
@@ -135,6 +146,19 @@ const coinSupportsAssets = (coin: BraveWallet.CoinType) => {
 }
 
 export const Account = () => {
+  // safe selectors
+  const assetAutoDiscoveryCompleted = useSafeWalletSelector(
+    WalletSelectors.assetAutoDiscoveryCompleted
+  )
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled
+  )
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // mutations
+  const [startShieldSync] = useStartShieldSyncMutation()
+  const [stopShieldSync] = useStopShieldSyncMutation()
+
   // routing
   const { accountId: addressOrUniqueKey, selectedTab } = useParams<{
     accountId: string
@@ -173,16 +197,40 @@ export const Account = () => {
       : skipToken,
     { skip: !selectedAccount }
   )
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    isZCashShieldedTransactionsEnabled &&
+      selectedAccount?.accountId.coin === BraveWallet.CoinType.ZEC
+      ? selectedAccount.accountId
+      : skipToken
+  )
 
-  // safe selectors
-  const assetAutoDiscoveryCompleted = useSafeWalletSelector(
-    WalletSelectors.assetAutoDiscoveryCompleted
+  const isShieldedAccount =
+    isZCashShieldedTransactionsEnabled &&
+    !!zcashAccountInfo &&
+    !!zcashAccountInfo.accountShieldBirthday
+
+  const { data: chainTipStatus } = useGetChainTipStatusQuery(
+    isShieldedAccount && selectedAccount ? selectedAccount.accountId : skipToken
   )
 
   // state
   const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
   const [showViewOnBlockExplorerModal, setShowViewOnBlockExplorerModal] =
     React.useState<boolean>(false)
+  const [showSyncAccountModal, setShowSyncAccountModal] =
+    React.useState<boolean>(false)
+  const [syncWarningDismissed, setSyncWarningDismissed] =
+    React.useState<boolean>(false)
+
+  // Computed
+  const blocksBehind = chainTipStatus
+    ? chainTipStatus.chainTip - chainTipStatus.latestScannedBlock
+    : 0
+
+  const showSyncWarning =
+    isShieldedAccount &&
+    (blocksBehind > 1000 || chainTipStatus === null) &&
+    !syncWarningDismissed
 
   // custom hooks & memos
   const scrollIntoView = useScrollIntoView()
@@ -466,6 +514,27 @@ export const Account = () => {
     [history]
   )
 
+  const onStartShieldSync = React.useCallback(async () => {
+    if (isPanel && selectedAccount) {
+      openTab(
+        'brave://wallet' +
+          makeAccountRoute(selectedAccount, AccountPageTabs.AccountAssetsSub)
+      )
+      return
+    }
+    if (selectedAccount) {
+      await startShieldSync(selectedAccount.accountId)
+      setShowSyncAccountModal(true)
+    }
+  }, [startShieldSync, selectedAccount, isPanel])
+
+  const onStopAndCloseShieldSync = React.useCallback(async () => {
+    if (selectedAccount) {
+      await stopShieldSync(selectedAccount.accountId)
+      setShowSyncAccountModal(false)
+    }
+  }, [stopShieldSync, selectedAccount])
+
   const showAssetDiscoverySkeleton =
     selectedAccount &&
     coinSupportsAssets(selectedAccount.accountId.coin) &&
@@ -498,6 +567,55 @@ export const Account = () => {
         />
       }
     >
+      {showSyncWarning && (
+        <SyncAlertWrapper
+          margin='0px 0px 32px 0px'
+          padding='0px 32px'
+        >
+          <SyncAlert
+            type={
+              blocksBehind > 7000
+                ? 'error'
+                : blocksBehind > 3000
+                ? 'warning'
+                : 'info'
+            }
+          >
+            <div slot='title'>
+              {!chainTipStatus
+                ? getLocale('braveWalletOutOfSyncTitle')
+                : getLocale('braveWalletOutOfSyncBlocksBehindTitle').replace(
+                    '$1',
+                    blocksBehind.toLocaleString()
+                  )}
+            </div>
+            {getLocale('braveWalletOutOfSyncDescription')}
+            <Row
+              slot='actions'
+              width='unset'
+              gap='8px'
+            >
+              <Button
+                size='small'
+                onClick={onStartShieldSync}
+              >
+                <Icon
+                  name='refresh'
+                  slot='icon-before'
+                />
+                {getLocale('braveWalletSyncAccountButton')}
+              </Button>
+              <Button
+                size='small'
+                kind='plain-faint'
+                onClick={() => setSyncWarningDismissed(true)}
+              >
+                {getLocale('braveWalletDismissButton')}
+              </Button>
+            </Row>
+          </SyncAlert>
+        </SyncAlertWrapper>
+      )}
       <ControlsWrapper fullWidth={true}>
         <SegmentedControl navOptions={routeOptions} />
       </ControlsWrapper>
@@ -626,6 +744,13 @@ export const Account = () => {
         <AddOrEditNftModal
           onClose={() => setShowAddNftModal(false)}
           onHideForm={() => setShowAddNftModal(false)}
+        />
+      )}
+
+      {showSyncAccountModal && (
+        <ZCashSyncModal
+          account={selectedAccount}
+          onClose={onStopAndCloseShieldSync}
         />
       )}
     </WalletPageWrapper>

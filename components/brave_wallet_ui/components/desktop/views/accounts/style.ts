@@ -3,9 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
+import Alert from '@brave/leo/react/alert'
 import * as leo from '@brave/leo/tokens/css/variables'
 
-import { Column } from '../../../shared/style'
+import { Column, Row } from '../../../shared/style'
 import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const ControlsWrapper = styled(Column)`
@@ -54,4 +55,17 @@ export const EmptyStateWrapper = styled(Column)`
 export const AccountsListWrapper = styled(Column)`
   border-radius: ${leo.radius.l};
   border: 1px solid ${leo.color.divider.subtle};
+`
+
+export const SyncAlertWrapper = styled(Row)`
+  padding: 0px 32px;
+  margin: 0px 0px 32px 0px;
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 16px 16px 0px 16px;
+    margin: 0px;
+  }
+`
+
+export const SyncAlert = styled(Alert)`
+  width: 100%;
 `

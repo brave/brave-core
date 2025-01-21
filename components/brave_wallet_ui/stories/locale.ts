@@ -1528,5 +1528,22 @@ provideStrings({
     'Upgrading to a shielded account means that these transactions hide the sender, receiver and amount details.',
   braveWalletShielded: 'Shielded',
   braveWalletUnified: 'Unified',
-  braveWalletTransparent: 'Transparent'
+  braveWalletTransparent: 'Transparent',
+  braveWalletOutOfSyncTitle: 'Out of sync',
+  braveWalletOutOfSyncBlocksBehindTitle: 'Out of sync ($1 blocks behind)',
+  braveWalletOutOfSyncDescription:
+    'Sync your account to access the latest transactions and balance.',
+  braveWalletSyncAccountButton: 'Sync account',
+  braveWalletSyncAccountName: 'Sync $1',
+  braveWalletInitializing: 'Initializing...',
+  braveWalletProcessingBlock: 'Processing block:',
+  braveWalletBlocksLeft: '$1 left',
+  braveWalletBlocksOfBlocks: '$1 of $2',
+  braveWalletRanges: 'Ranges:',
+  braveWalletPause: 'Pause',
+  braveWalletSyncCompleteMessage:
+    'Sync complete. You may now close this window.',
+  braveWalletSyncStartedMessage:
+    'Please don’t close this window until sync finishes.',
+  braveWalletContinueUsingWallet: 'Continue using wallet in a new tab'
 })

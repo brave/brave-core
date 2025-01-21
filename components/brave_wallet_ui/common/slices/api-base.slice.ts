@@ -85,7 +85,8 @@ export function createWalletApiBase() {
       'MeldPaymentMethods',
       'MeldWidget',
       'ZCashAccountInfo',
-      'IsShieldingAvailable'
+      'IsShieldingAvailable',
+      'ZcashChainTipStatus'
     ],
     endpoints: ({ mutation, query }) => ({})
   })
