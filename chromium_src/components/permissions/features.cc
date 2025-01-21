@@ -17,6 +17,8 @@ BASE_FEATURE(kPermissionLifetime,
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPermissionOnDeviceNotificationPredictions,
      base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPermissionPredictionsV2, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kPermissionPredictionsV3, base::FEATURE_DISABLED_BY_DEFAULT},
 #if !BUILDFLAG(IS_ANDROID)
     {kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
