@@ -22,7 +22,6 @@
 #define BrowserViewLayout BraveBrowserViewLayout
 #define SidePanel BraveSidePanel
 #define BookmarkBarView BraveBookmarkBarView
-#define ContentsLayoutManager BraveContentsLayoutManager
 
 #define MaybeShowReadingListInSidePanelIPH \
   virtual MaybeShowReadingListInSidePanelIPH
@@ -34,10 +33,11 @@
   GetTabSearchBubbleHost_Unused(); \
   virtual TabSearchBubbleHost* GetTabSearchBubbleHost
 
-#define UpdateExclusiveAccessBubble                           \
-  UpdateExclusiveAccessBubble_ChromiumImpl(                   \
-      const ExclusiveAccessBubbleParams& params,              \
-      ExclusiveAccessBubbleHideCallback first_hide_callback); \
+#define UpdateExclusiveAccessBubble                            \
+  UpdateExclusiveAccessBubble_ChromiumImpl(                    \
+      const ExclusiveAccessBubbleParams& params,               \
+      ExclusiveAccessBubbleHideCallback first_hide_callback);  \
+  virtual views::View* GetContentsContainerForLayoutManager(); \
   void UpdateExclusiveAccessBubble
 
 #if BUILDFLAG(IS_WIN)
@@ -64,7 +64,6 @@
 #undef GetTabStripVisible
 #undef UpdateDevToolsForContents
 #undef MaybeShowReadingListInSidePanelIPH
-#undef ContentsLayoutManager
 #undef BookmarkBarView
 #undef SidePanel
 #undef BrowserViewLayout

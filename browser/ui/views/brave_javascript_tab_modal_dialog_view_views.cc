@@ -11,6 +11,7 @@
 #include "base/types/to_address.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/split_view/split_view.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/javascript_dialogs/javascript_tab_modal_dialog_manager_delegate_desktop.h"
 #include "chrome/browser/ui/views/chrome_widget_sublevel.h"
@@ -150,7 +151,7 @@ gfx::Point BraveJavaScriptTabModalDialogViewViews::
   auto* target_web_view =
       tab_strip_model->GetActiveTab()->GetHandle() == tab_handle
           ? browser_view->contents_web_view()
-          : browser_view->secondary_contents_web_view();
+          : browser_view->split_view()->secondary_contents_web_view();
   auto target_web_view_bounds = target_web_view->GetLocalBounds();
 
   // Adjust X position

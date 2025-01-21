@@ -6,13 +6,30 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_LAYOUT_H_
 
+#include <memory>
+
 #include "chrome/browser/ui/views/frame/browser_view_layout.h"
 
 class SidebarContainerView;
 
 class BraveBrowserViewLayout : public BrowserViewLayout {
  public:
-  using BrowserViewLayout::BrowserViewLayout;
+  BraveBrowserViewLayout(std::unique_ptr<BrowserViewLayoutDelegate> delegate,
+                         BrowserView* browser_view,
+                         views::View* top_container,
+                         WebAppFrameToolbarView* web_app_frame_toolbar,
+                         views::Label* web_app_window_title,
+                         TabStripRegionView* tab_strip_region_view,
+                         TabStrip* tab_strip,
+                         views::View* toolbar,
+                         InfoBarContainerView* infobar_container,
+                         views::View* contents_container,
+                         views::View* left_aligned_side_panel_separator,
+                         views::View* unified_side_panel,
+                         views::View* right_aligned_side_panel_separator,
+                         views::View* side_panel_rounded_corner,
+                         ImmersiveModeController* immersive_mode_controller,
+                         views::View* contents_separator);
   ~BraveBrowserViewLayout() override;
 
   void set_contents_background(views::View* contents_background) {
@@ -34,6 +51,8 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
   void set_sidebar_separator(views::View* sidebar_separator) {
     sidebar_separator_ = sidebar_separator;
   }
+
+  views::View* contents_container() { return contents_container_; }
 
   // Returns the ideal sidebar width, given the current available width. Used
   // for determining the target width in sidebar width animations.

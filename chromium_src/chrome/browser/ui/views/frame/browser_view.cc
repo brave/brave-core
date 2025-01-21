@@ -8,7 +8,6 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 #include "brave/browser/ui/views/frame/brave_browser_view_layout.h"
-#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/infobars/brave_infobar_container_view.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
@@ -29,13 +28,11 @@
 #define TabStrip BraveTabStrip
 #define TabStripRegionView BraveTabStripRegionView
 #define BookmarkBarView BraveBookmarkBarView
-#define ContentsLayoutManager BraveContentsLayoutManager
 #define UpdateExclusiveAccessBubble UpdateExclusiveAccessBubble_ChromiumImpl
 
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
 
 #undef UpdateExclusiveAccessBubble
-#undef ContentsLayoutManager
 #undef BookmarkBarView
 #undef TabStripRegionView
 #undef TabStrip
@@ -43,6 +40,10 @@
 #undef ToolbarView
 #undef BrowserViewLayout
 #undef InfoBarContainerView
+
+views::View* BrowserView::GetContentsContainerForLayoutManager() {
+  return contents_container();
+}
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
   // Sets a kBrowserWindowKey to given child |widget| so that we can get
