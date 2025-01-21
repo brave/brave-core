@@ -1,7 +1,14 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//build/config/features.gni")
 
 static_library("browser") {
   sources = [
+    "backup_results_service.cc",
+    "backup_results_service.h",
     "brave_search_default_host.cc",
     "brave_search_default_host.h",
     "brave_search_default_host_private.cc",

@@ -7,7 +7,6 @@
 android_test_exception_sources = [
   "//brave/browser/brave_content_browser_client_browsertest.cc",
   "//brave/browser/brave_scheme_load_browsertest.cc",
-  "//brave/browser/brave_search/brave_search_browsertest.cc",
   "//brave/browser/brave_shields/brave_shields_web_contents_observer_browsertest.cc",
   "//brave/browser/brave_shields/cookie_expiry_browsertest.cc",
   "//brave/browser/brave_shields/domain_block_page_browsertest.cc",

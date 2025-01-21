@@ -51,7 +51,22 @@ constexpr char kPageWithCookie[] = "/simple_page_with_cookie.html";
 constexpr char kPageWithoutCookie[] = "/simple_page_without_cookie.html";
 constexpr char kSearchAdsHeader[] = "Brave-Search-Ads";
 constexpr char kSearchAdsDisabledValue[] = "?0";
-constexpr char kBackupSearchContent[] = "<html><body>results</body></html>";
+constexpr char kBackupSearchRedirectContent[] = R"(
+<html>
+<head>
+<script>
+window.location.href = '/real_search';
+</script>
+</head>
+<body>
+Will redirect
+</body>
+</html>
+)";
+
+constexpr char kBackupSearchContent[] =
+    "<html><body>Actual results</body></html>";
+
 constexpr char kScriptDefaultAPIExists[] =
     "!!(window.brave && window.brave.getCanSetDefaultSearchProvider)";
 // Use setTimeout to allow opensearch xml to be fetched
@@ -159,6 +174,12 @@ class BraveSearchTest : public InProcessBrowserTest {
       auto cookie_header_it =
           request.headers.find(net::HttpRequestHeaders::kCookie);
       fallback_sets_cookie_ = cookie_header_it != request.headers.end();
+      http_response->set_code(net::HTTP_OK);
+      http_response->set_content_type("text/html");
+      http_response->set_content(kBackupSearchRedirectContent);
+      return http_response;
+    }
+    if (url.path() == "/real_search") {
       http_response->set_code(net::HTTP_OK);
       http_response->set_content_type("text/html");
       http_response->set_content(kBackupSearchContent);

@@ -124,6 +124,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_federated",
   "//brave/browser/brave_rewards:brave_rewards_impl",
   "//brave/browser/brave_rewards:util",
+  "//brave/browser/brave_search",
   "//brave/browser/brave_wallet",
   "//brave/browser/brave_wallet:brave_wallet_delegate",
   "//brave/browser/brave_wallet:tab_helper",

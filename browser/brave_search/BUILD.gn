@@ -1,0 +1,54 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("brave_search") {
+  sources = [
+    "backup_results_navigation_throttle.cc",
+    "backup_results_navigation_throttle.h",
+    "backup_results_service_factory.cc",
+    "backup_results_service_factory.h",
+    "backup_results_service_impl.cc",
+    "backup_results_service_impl.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_search/browser",
+    "//brave/components/brave_search/common",
+    "//chrome/browser/content_extraction",
+    "//chrome/browser/profiles",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+  ]
+}
+
+if (!is_android) {
+  source_set("browser_tests") {
+    testonly = true
+
+    sources = [
+      "backup_results_service_browsertest.cc",
+      "brave_search_browsertest.cc",
+    ]
+
+    deps = [
+      ":brave_search",
+      "//base/test:test_support",
+      "//brave/components/brave_ads/core/public:headers",
+      "//brave/components/brave_rewards/common",
+      "//brave/components/brave_search/browser",
+      "//brave/components/brave_search/common",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/search_engines",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+      "//net:test_support",
+    ]
+
+    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  }
+}

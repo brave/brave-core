@@ -8,37 +8,10 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "net/base/load_flags.h"
+#include "brave/components/brave_search/browser/backup_results_service.h"
 #include "net/base/url_util.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace {
-net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("brave_search_host", R"(
-      semantics {
-        sender: "Brave Search Host Controller"
-        description:
-          "This controller is used as a backup search "
-          "provider for users that have opted into this feature."
-        trigger:
-          "Triggered by Brave search if a user has opted in."
-        data:
-          "Local backup provider results."
-        destination: WEBSITE
-      }
-      policy {
-        cookies_allowed: NO
-        setting:
-          "You can enable or disable this feature on chrome://flags."
-        policy_exception_justification:
-          "Not implemented."
-      }
-    )");
-}
-
-const unsigned int kRetriesCountOnNetworkChange = 1;
 static GURL backup_provider_for_test;
 }  // namespace
 
@@ -50,8 +23,9 @@ void BraveSearchFallbackHost::SetBackupProviderForTest(
 }
 
 BraveSearchFallbackHost::BraveSearchFallbackHost(
-    scoped_refptr<network::SharedURLLoaderFactory> factory)
-    : shared_url_loader_factory_(std::move(factory)), weak_factory_(this) {}
+    brave_search::BackupResultsService* backup_results_service)
+    : backup_results_service_(backup_results_service->GetWeakPtr()),
+      weak_factory_(this) {}
 
 BraveSearchFallbackHost::~BraveSearchFallbackHost() = default;
 
@@ -88,45 +62,34 @@ void BraveSearchFallbackHost::FetchBackupResults(
     int page_index,
     const std::optional<std::string>& cookie_header_value,
     FetchBackupResultsCallback callback) {
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL("https://www.google.com/search");
+  auto url = GURL("https://www.google.com/search");
   if (!backup_provider_for_test.is_empty()) {
-    request->url = backup_provider_for_test;
+    url = backup_provider_for_test;
   }
-  request->url = GetBackupResultURL(request->url, query, lang, country, geo,
-                                    filter_explicit_results, page_index);
-  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
-  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
-  request->load_flags |= net::LOAD_DO_NOT_SAVE_COOKIES;
-  request->method = "GET";
-  request->headers.SetHeaderIfMissing("x-geo", geo);
+  url = GetBackupResultURL(url, query, lang, country, geo,
+                           filter_explicit_results, page_index);
+
+  net::HttpRequestHeaders headers;
+
+  headers.SetHeaderIfMissing("x-geo", geo);
   if (cookie_header_value) {
-    request->headers.SetHeader(net::HttpRequestHeaders::kCookie,
-                               *cookie_header_value);
+    headers.SetHeader(net::HttpRequestHeaders::kCookie, *cookie_header_value);
   }
 
-  auto url_loader = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  url_loader->SetRetryOptions(
-      kRetriesCountOnNetworkChange,
-      network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
-  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-      shared_url_loader_factory_.get(),
-      base::BindOnce(&BraveSearchFallbackHost::OnURLLoaderComplete,
-                     weak_factory_.GetWeakPtr(), iter, std::move(callback)));
+  backup_results_service_->FetchBackupResults(
+      url, headers,
+      base::BindOnce(&BraveSearchFallbackHost::OnResultsAvailable,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void BraveSearchFallbackHost::OnURLLoaderComplete(
-    SimpleURLLoaderList::iterator iter,
+void BraveSearchFallbackHost::OnResultsAvailable(
     BraveSearchFallbackHost::FetchBackupResultsCallback callback,
-    const std::unique_ptr<std::string> response_body) {
-  url_loaders_.erase(iter);
-  if (response_body) {
-    std::move(callback).Run(*response_body);
-  } else {
-    std::move(callback).Run("");
+    const std::optional<BackupResultsService::BackupResults> backup_results) {
+  if (backup_results) {
+    std::move(callback).Run(backup_results->html);
+    return;
   }
+  std::move(callback).Run("");
 }
 
 }  // namespace brave_search

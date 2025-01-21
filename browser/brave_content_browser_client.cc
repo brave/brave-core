@@ -21,6 +21,8 @@
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_search/backup_results_navigation_throttle.h"
+#include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -56,6 +58,7 @@
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
+#include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/browser/brave_search_default_host.h"
 #include "brave/components/brave_search/browser/brave_search_default_host_private.h"
 #include "brave/components/brave_search/browser/brave_search_fallback_host.h"
@@ -426,10 +429,14 @@ void BindBraveSearchFallbackHost(
   }
 
   content::BrowserContext* context = render_process_host->GetBrowserContext();
+  auto* backup_results_service =
+      brave_search::BackupResultsServiceFactory::GetForBrowserContext(context);
+  if (!backup_results_service) {
+    return;
+  }
   mojo::MakeSelfOwnedReceiver(
       std::make_unique<brave_search::BraveSearchFallbackHost>(
-          context->GetDefaultStoragePartition()
-              ->GetURLLoaderFactoryForBrowserProcess()),
+          backup_results_service),
       std::move(receiver));
 }
 
@@ -1298,6 +1305,12 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     throttles.push_back(std::move(ai_chat_brave_search_throttle));
   }
 #endif
+
+  if (auto backup_results_throttle =
+          brave_search::BackupResultsNavigationThrottle::MaybeCreateThrottleFor(
+              handle)) {
+    throttles.push_back(std::move(backup_results_throttle));
+  }
 
   return throttles;
 }

@@ -1,0 +1,46 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "webDiscovery",
+    "description": "Includes Web Discovery functions for the Brave extension",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/web_discovery_api.h"
+    },
+    "functions": [
+      {
+        "name": "retrieveBackupResults",
+        "type": "function",
+        "description": "Requests search results from backup provider and returns SERP HTML",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string"
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "object",
+              "properties": {
+                "response_code": {
+                  "type": "integer",
+                  "description": "The last response code while fetching SERP"
+                },
+                "html": {
+                  "type": "string",
+                  "description": "The HTML contents of the SERP"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
