@@ -21,6 +21,7 @@ import org.chromium.brave_shields.mojom.FilterListConstants;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
+import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragment;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.metrics.ChangeMetricsReportingStateCalledFrom;
 import org.chromium.chrome.browser.metrics.UmaSessionStats;
@@ -654,6 +655,13 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         return true;
     }
 
+    private void updateClearBrowsingFragment() {
+        Preference clearBrowsingData = findPreference(PREF_CLEAR_BROWSING_DATA);
+        if (clearBrowsingData != null) {
+            clearBrowsingData.setFragment(BraveClearBrowsingDataFragment.class.getCanonicalName());
+        }
+    }
+
     private void updateBravePreferences() {
         for (int i = 0; i < NEW_PRIVACY_PREFERENCE_ORDER.length; i++) {
             if (findPreference(NEW_PRIVACY_PREFERENCE_ORDER[i]) != null) {
@@ -661,6 +669,8 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
             }
         }
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
+
+        updateClearBrowsingFragment();
 
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
 

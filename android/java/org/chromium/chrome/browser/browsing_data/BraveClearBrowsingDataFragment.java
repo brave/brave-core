@@ -23,7 +23,7 @@ import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
-public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFragmentAdvanced {
+public class BraveClearBrowsingDataFragment extends ClearBrowsingDataFragment {
     ClearBrowsingDataCheckBoxPreference mClearAIChatDataCheckBoxPreference;
 
     @Override
@@ -103,9 +103,12 @@ public class BraveClearBrowsingDataFragmentAdvanced extends ClearBrowsingDataFra
         };
     }
 
-    @Override
-    protected void onClearBrowsingData() {
-        super.onClearBrowsingData();
+    public void onClearBrowsingData() {
+        // Skip call ClearBrowsingDataFragment.onClearBrowsingData
+        // because right now it just writes a user metric which we don't use
+        // If you need to call super - the simplest way is to patch to make
+        // ClearBrowsingDataFragment.onClearBrowsingData protected
+
         if (mClearAIChatDataCheckBoxPreference != null
                 && mClearAIChatDataCheckBoxPreference.isChecked()) {
             Profile profile = getProfile();
