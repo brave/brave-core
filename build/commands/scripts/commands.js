@@ -65,6 +65,7 @@ program
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_android_base <target_android_base>', 'target Android OS apk (classic, modern, mono)', 'classic')
   .option('--target_environment <target_environment>', 'target environment (device, catalyst, simulator)')
+  .option('--checkdeps_only', 'only run checkdeps')
   .arguments('[build_config]')
   .action(gnCheck)
 
