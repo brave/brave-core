@@ -141,6 +141,18 @@
   <message name="IDS_CHAT_UI_PREMIUM_PRICING" desc="Price label to subscribe for Premium model">
     USD $ <ph name="PRICE_VALUE">$1<ex>14.99</ex></ph> /month
   </message>
+  <message name="IDS_CHAT_UI_PREMIUM_ANNUAL_PRICING" desc="Price label to subscribe for annual Premium model">
+    USD $ <ph name="PRICE_VALUE">$1<ex>149.99</ex></ph> /year
+  </message>
+  <message name="IDS_CHAT_UI_MONTHLY_LABEL" desc="Monthly label for Premium modal">
+    Monthly
+  </message>
+  <message name="IDS_CHAT_UI_ONE_YEAR_LABEL" desc="One year label for Premium modal">
+    One year
+  </message>
+  <message name="IDS_CHAT_UI_BEST_VALUE_LABEL" desc="Best value label for Premium modal">
+    Best value
+  </message>
   <message name="IDS_CHAT_UI_DISMISS_BUTTON_LABEL" desc="A button label to dismiss dialog">
     Dismiss
   </message>
