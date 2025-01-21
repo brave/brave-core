@@ -25,8 +25,6 @@ source_set("brave_color_mixers") {
     "$target_gen_dir/nala/nala_color_mixer.h",
     "brave_ref_color_mixer.cc",
     "brave_ref_color_mixer.h",
-    "brave_sys_color_mixer.cc",
-    "brave_sys_color_mixer.h",
   ]
 
   deps = [
@@ -36,16 +34,5 @@ source_set("brave_color_mixers") {
     "//ui/color:color_headers",
     "//ui/color:color_provider_key",
     "//ui/color/dynamic_color",
-  ]
-}
-
-source_set("unit_tests") {
-  testonly = true
-  sources = [ "brave_sys_color_mixer_unittest.cc" ]
-
-  deps = [
-    "//testing/gtest",
-    "//ui/color",
-    "//ui/color:mixers",
   ]
 }
