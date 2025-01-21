@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <iostream>
 #include <utility>
 
 #include "brave/components/constants/webui_url_constants.h"
@@ -22,6 +23,7 @@
 #include "ui/base/mojom/dialog_button.mojom.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/layout/fill_layout.h"
+#include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
@@ -56,13 +58,14 @@ EmailAliasesBubbleView::EmailAliasesBubbleView(views::View* anchor_view,
       field_renderer_id_(field_renderer_id) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
-  auto* web_view = new views::WebView(browser->profile());
+  auto web_view = std::make_unique<views::WebView>(browser->profile());
+  std::cout << "EmailAliasesBubbleView::EmailAliasesBubbleView: web_view" << web_view << std::endl;
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   web_view->SetPreferredSize(gfx::Size(500, 350));
-  AddChildView(web_view);
+  web_view_ = AddChildView(std::move(web_view));
 
   // Load URL after adding to view hierarchy
-  web_view->LoadInitialURL(GURL(kEmailAliasesBubbleURL));
+  web_view_->LoadInitialURL(GURL(kEmailAliasesBubbleURL));
 }
 
 EmailAliasesBubbleView::~EmailAliasesBubbleView() {}
@@ -106,6 +109,12 @@ void EmailAliasesBubbleView::FillFieldWithNewAlias(
     return;
   }
   email_aliases_bubble_view->FillField(field_value);
+}
+
+gfx::Size EmailAliasesBubbleView::CalculatePreferredSize(
+    const views::SizeBounds& available_size) const {
+  std::cout << "EmailAliasesBubbleView::CalculatePreferredSize" << std::endl;
+  return gfx::Size(500, 350);
 }
 
 BEGIN_METADATA(EmailAliasesBubbleView)
