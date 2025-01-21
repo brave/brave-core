@@ -68,55 +68,6 @@ def pull_source_file_from_crowdin(channel, source_file_path, filename,
                 f.write(json_content.encode('utf-8'))
 
 
-def combine_override_xtb_into_original(source_string_path):
-    """Applies XTB override file to the original"""
-    source_base_path = os.path.dirname(source_string_path)
-    override_path = get_override_file_path(source_string_path)
-    override_base_path = os.path.dirname(override_path)
-    xtb_files = get_xtb_files(source_string_path)
-    override_xtb_files = get_xtb_files(override_path)
-    assert len(xtb_files) == len(override_xtb_files)
-
-    for (idx, _) in enumerate(xtb_files):
-        (lang, xtb_path) = xtb_files[idx]
-        (override_lang, override_xtb_path) = override_xtb_files[idx]
-        assert lang == override_lang
-
-        xtb_tree = lxml.etree.parse(os.path.join(source_base_path, xtb_path))
-        override_xtb_tree = lxml.etree.parse(
-            os.path.join(override_base_path, override_xtb_path))
-        translationbundle = xtb_tree.xpath('//translationbundle')[0]
-        override_translations = override_xtb_tree.xpath('//translation')
-        translations = xtb_tree.xpath('//translation')
-
-        override_translation_fps = [
-            t.attrib['id'] for t in override_translations
-        ]
-        translation_fps = [t.attrib['id'] for t in translations]
-
-        # Remove translations that we have a matching FP for
-        for translation in xtb_tree.xpath('//translation'):
-            if translation.attrib['id'] in override_translation_fps:
-                translation.getparent().remove(translation)
-            elif translation_fps.count(translation.attrib['id']) > 1:
-                translation.getparent().remove(translation)
-                translation_fps.remove(translation.attrib['id'])
-
-        # Append the override translations into the original translation bundle
-        for translation in override_translations:
-            translationbundle.append(translation)
-
-        xtb_content = (b'<?xml version="1.0" ?>\n' +
-                       lxml.etree.tostring(xtb_tree,
-                                           pretty_print=True,
-                                           xml_declaration=False,
-                                           encoding='utf-8').strip())
-        with open(os.path.join(source_base_path, xtb_path), mode='wb') as f:
-            f.write(xtb_content)
-        # Delete the override xtb for this lang
-        os.remove(os.path.join(override_base_path, override_xtb_path))
-
-
 # Helper functions
 # ----------------
 
@@ -158,9 +109,14 @@ def fix_crowdin_translation_file_content(content, file_ext):
         return content.replace(b"\\'", b"'")
     if file_ext == '.grd':
         # For .grd files, for some reason Crowdin puts a \\" and \'
-        return content.replace(b'\\\\"',
-                               b'"').replace(b'\\"',
-                                             b'"').replace(b"\\'", b"'")
+        # Also, in android grd files when we upload %% is converted to [%],
+        # so we need to convert it back.
+        return content.\
+            replace(b'\\\\"', b'"').\
+            replace(b'\\"', b'"').\
+            replace(b"\\'", b"'").\
+            replace(b"[%]", b"%%").\
+            replace(b"[ %]", b" %%")
     return None
 
 
