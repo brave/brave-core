@@ -330,7 +330,26 @@ Tab* BraveCompoundTabContainer::AddTab(std::unique_ptr<Tab> tab,
     ScrollTabToBeVisible(model_index);
   }
 
+  UpdatePinnedTabContainerBorder();
+
   return new_tab;
+}
+
+void BraveCompoundTabContainer::MoveTab(int from_model_index,
+                                        int to_model_index) {
+  CompoundTabContainer::MoveTab(from_model_index, to_model_index);
+  UpdatePinnedTabContainerBorder();
+}
+
+void BraveCompoundTabContainer::RemoveTab(int index, bool was_active) {
+  CompoundTabContainer::RemoveTab(index, was_active);
+  UpdatePinnedTabContainerBorder();
+}
+
+void BraveCompoundTabContainer::SetTabPinned(int model_index,
+                                             TabPinned pinned) {
+  CompoundTabContainer::SetTabPinned(model_index, pinned);
+  UpdatePinnedTabContainerBorder();
 }
 
 int BraveCompoundTabContainer::GetUnpinnedContainerIdealLeadingX() const {
@@ -392,18 +411,6 @@ BrowserRootView::DropTarget* BraveCompoundTabContainer::GetDropTarget(
   }
 
   return nullptr;
-}
-
-void BraveCompoundTabContainer::OnThemeChanged() {
-  CompoundTabContainer::OnThemeChanged();
-
-  if (ShouldShowVerticalTabs()) {
-    pinned_tab_container_->SetBorder(views::CreateSolidSidedBorder(
-        gfx::Insets().set_bottom(1),
-        GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator)));
-  } else {
-    pinned_tab_container_->SetBorder(nullptr);
-  }
 }
 
 void BraveCompoundTabContainer::PaintChildren(const views::PaintInfo& info) {
@@ -491,6 +498,20 @@ gfx::Rect BraveCompoundTabContainer::ConvertUnpinnedContainerIdealBoundsToLocal(
 bool BraveCompoundTabContainer::ShouldShowVerticalTabs() const {
   return tabs::utils::ShouldShowVerticalTabs(
       tab_slot_controller_->GetBrowser());
+}
+
+void BraveCompoundTabContainer::UpdatePinnedTabContainerBorder() {
+  // We're using pinned tab container's bottom border as a separator from
+  // unpinned tab container. It should be drawn when only both are not empty.
+  const bool should_have_separator_between_pinned_and_unpinned =
+      ShouldShowVerticalTabs() && pinned_tab_container_->GetTabCount() != 0 &&
+      unpinned_tab_container_->GetTabCount() != 0;
+  if (should_have_separator_between_pinned_and_unpinned) {
+    pinned_tab_container_->SetBorder(views::CreateThemedSolidSidedBorder(
+        gfx::Insets().set_bottom(1), kColorBraveVerticalTabSeparator));
+  } else {
+    pinned_tab_container_->SetBorder(nullptr);
+  }
 }
 
 void BraveCompoundTabContainer::UpdateUnpinnedContainerSize() {
