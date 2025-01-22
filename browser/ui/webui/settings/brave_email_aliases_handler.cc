@@ -16,10 +16,11 @@
 #include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/views/email_aliases_bubble_view.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/browser/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/singleton_tabs.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/web_ui.h"
@@ -136,6 +137,11 @@ void BraveEmailAliasesHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "email_aliases.fillField",
       base::BindRepeating(&BraveEmailAliasesHandler::FillField,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "email_aliases.showSettingsPage",
+      base::BindRepeating(&BraveEmailAliasesHandler::ShowSettingsPage,
                           base::Unretained(this)));
 }
 
@@ -406,8 +412,8 @@ void BraveEmailAliasesHandler::OnRequestAccountResponse(
 }
 
 void BraveEmailAliasesHandler::GetAccountEmail(const base::Value::List& args) {
-  AllowJavascript();
   CHECK_EQ(1U, args.size());
+  AllowJavascript();
   const auto callback_id = args[0].GetString();
   const auto account_email = GetStringPref(kEmailAliasesAccountEmail);
   ResolveJavascriptCallback(base::Value(callback_id),
@@ -434,4 +440,10 @@ void BraveEmailAliasesHandler::FillField(const base::Value::List& args) {
   const auto field_value = args[1].GetString();
   EmailAliasesBubbleView::FillFieldWithNewAlias(field_value);
   ResolveJavascriptCallback(base::Value(callback_id), base::Value());
+}
+
+void BraveEmailAliasesHandler::ShowSettingsPage(const base::Value::List& args) {
+  CHECK_EQ(1U, args.size());
+  ShowSingletonTabOverwritingNTP(GetProfile(), GURL(kEmailAliasesSettingsURL));
+  EmailAliasesBubbleView::Close();
 }

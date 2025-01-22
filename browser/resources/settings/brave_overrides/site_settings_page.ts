@@ -182,13 +182,13 @@ RegisterPolymerComponentReplacement(
               currentIndex++
               const emailAliasesItem = {
                 route: routes.EMAIL_ALIASES,
-                id: 'braveEmailAliases',
+                id: ContentSettingsTypes.EMAIL_ALIASES,
                 label: 'siteSettingsEmailAliases',
                 icon: 'product-email-aliases',
                 enabledLabel: 'siteSettingsEmailAliasesAsk',
                 disabledLabel: 'siteSettingsEmailAliasesBlock'
               }
-              lists_.permissionsAdvanced.splice(currentIndex, 0,
+              lists.permissionsAdvanced.splice(currentIndex, 0,
                 emailAliasesItem)
             }
           }

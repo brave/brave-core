@@ -21,6 +21,7 @@
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
+#include "brave/components/email_aliases/browser/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
@@ -512,7 +513,14 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       if (params_.form_control_type.value() ==
               blink::mojom::FormControlType::kInputEmail ||
           params_.is_content_editable_for_autofill) {
-        EmailAliasesBubbleView::Show(GetBrowser(), params_.field_renderer_id);
+        if (GetProfile()
+                ->GetPrefs()
+                ->GetString(kEmailAliasesAccountEmail)
+                .empty()) {
+          brave::ShowEmailAliases(GetBrowser());
+        } else {
+          EmailAliasesBubbleView::Show(GetBrowser(), params_.field_renderer_id);
+        }
       }
       break;
     default:

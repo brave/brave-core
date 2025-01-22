@@ -119,7 +119,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
 
   const isEmailAliasesFeatureEnabled = loadTimeData.getBoolean('isEmailAliasesFeatureEnabled')
-  if (isEmailAliasesFeatureEnabled) {
+  if (isEmailAliasesFeatureEnabled && r.AUTOFILL) {
     r.EMAIL_ALIASES = r.AUTOFILL.createChild('/email-aliases')
   }
 

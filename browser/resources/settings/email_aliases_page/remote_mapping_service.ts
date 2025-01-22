@@ -62,4 +62,7 @@ export class RemoteMappingService implements MappingService {
   async fillField(fieldValue: string): Promise<void> {
     await sendWithPromise('email_aliases.fillField', fieldValue)
   }
+  async showSettingsPage(): Promise<void> {
+    await sendWithPromise('email_aliases.showSettingsPage')
+  }
 }

@@ -23,6 +23,7 @@ export interface MappingService {
   logout (): Promise<void>
   closeBubble (): Promise<void>
   fillField(fieldValue: string): Promise<void>
+  showSettingsPage(): Promise<void>
 }
 
 export enum ViewMode {
