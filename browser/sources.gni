@@ -288,6 +288,7 @@ if (!is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/ui/ai_chat",
+    "//brave/browser/ui/tabs:impl",
     "//brave/browser/ui/webui/brave_news_internals",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
@@ -387,6 +388,7 @@ if (is_android) {
 
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
+    "//brave/browser/android:tab_features",
     "//brave/browser/android/background_video",
     "//brave/browser/android/background_video:features",
     "//brave/browser/android/preferences",
@@ -611,5 +613,6 @@ if (is_android) {
   brave_chrome_browser_allow_circular_includes_from += [
     "//brave/browser/android:android_browser_process",
     "//brave/browser/android/preferences",
+    "//brave/browser/android:tab_features",
   ]
 }
