@@ -31,9 +31,9 @@ PsstConsentDialog::PsstConsentDialog(bool prompt_for_new_version,
   set_margins(gfx::Insets(40));
   SetModalType(ui::mojom::ModalType::kChild);
   SetShowCloseButton(true);
-  SetButtonLabel(ui::DIALOG_BUTTON_OK,
+  SetButtonLabel(ui::mojom::DialogButton::kOk,
                  l10n_util::GetStringUTF16(IDS_PSST_CONSENT_DIALOG_OK));
-  SetButtonLabel(ui::DIALOG_BUTTON_CANCEL,
+  SetButtonLabel(ui::mojom::DialogButton::kCancel,
                  l10n_util::GetStringUTF16(IDS_PSST_CONSENT_DIALOG_CANCEL));
 
   std::u16string full_text = base::StrCat(

@@ -11,7 +11,6 @@
 
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
-#include "brave/browser/ui/views/psst/psst_consent_dialog.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class PsstConsentDialog : public views::DialogDelegateView {
