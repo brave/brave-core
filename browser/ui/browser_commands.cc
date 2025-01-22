@@ -20,7 +20,7 @@
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_screenshots/screenshots_tab_feature.h"
+#include "brave/browser/brave_screenshots/brave_screenshots_tab_feature.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_prefs.h"
