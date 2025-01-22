@@ -116,7 +116,7 @@ source_set("ui") {
   if (enable_brave_screenshots) {
     sources += [
       "//brave/browser/brave_screenshots/features.h",
-      "//brave/browser/brave_screenshots/screenshots_tab_feature.h",
+      "//brave/browser/brave_screenshots/brave_screenshots_tab_feature.h",
       "//brave/browser/brave_screenshots/strategies/fullpage_strategy.h",
       "//brave/browser/brave_screenshots/strategies/screenshot_strategy.h",
       "//brave/browser/brave_screenshots/strategies/selection_strategy.h",
