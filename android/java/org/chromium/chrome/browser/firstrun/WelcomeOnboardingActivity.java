@@ -273,6 +273,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
             mIvBrave.setVisibility(View.VISIBLE);
             showAnalyticsConsentPage();
+        } else if (mCurrentStep == getWDPPageStep()) {
+            showWDPPage();
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
             OnboardingPrefManager.getInstance().setOnboardingSearchBoxTooltip(true);
@@ -290,6 +292,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
 
     private int getAnalyticsConsentPageStep() {
         return 1;
+    }
+
+    private int getWDPPageStep() {
+        return 2;
     }
 
     private void showBrowserSelectionPage() {
@@ -433,6 +439,54 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
         if (mIvArrowDown != null) {
             mIvArrowDown.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showWDPPage() {
+        int margin = mIsTablet ? 250 : 60;
+        setLeafAnimation(mVLeafAlignTop, mIvLeafTop, 1.5f, margin, true);
+        setLeafAnimation(mVLeafAlignBottom, mIvLeafBottom, 1.5f, margin, false);
+
+        if (mLayoutCard != null) {
+            mLayoutCard.setVisibility(View.GONE);
+        }
+        if (mIvArrowDown != null) {
+            mIvArrowDown.setVisibility(View.GONE);
+        }
+
+        if (mTvCard != null) {
+            mTvCard.setText(getResources().getString(R.string.wdp_title));
+        }
+        if (mTvDefault != null) {
+            mTvDefault.setText(getResources().getString(R.string.wdp_text));
+        }
+        if (mBtnPositive != null) {
+            mBtnPositive.setText(getResources().getString(R.string.sure_ill_help_onboarding));
+        }
+        if (mBtnNegative != null) {
+            mBtnNegative.setText(getResources().getString(R.string.maybe_later));
+            mBtnNegative.setVisibility(View.VISIBLE);
+        }
+
+
+        if (mTvCard != null) {
+            mTvCard.setVisibility(View.VISIBLE);
+        }
+
+        if (mTvDefault != null) {
+            mTvDefault.setVisibility(View.VISIBLE);
+        }
+        if (mLayoutCard != null) {
+            mLayoutCard.setVisibility(View.VISIBLE);
+        }
+        if (mIvArrowDown != null) {
+            mIvArrowDown.setVisibility(View.VISIBLE);
+        }
+        if (mCheckboxCrash != null) {
+            mCheckboxCrash.setVisibility(View.GONE);
+        }
+        if (mCheckboxP3a != null) {
+            mCheckboxP3a.setVisibility(View.GONE);
         }
     }
 
