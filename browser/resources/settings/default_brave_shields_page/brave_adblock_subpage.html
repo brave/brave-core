@@ -324,27 +324,32 @@
   sub-label="$i18n{adblockDeveloperModeDesc}">
 </settings-toggle-button>
 
-<div class="settings-box">
-  <div class="flex">
-    <div class="label shields-primary-title">
-      $i18n{adblockCustomFiltersLabel}
+<template is="dom-if" if="[[shouldShowCustomFilters_]]" restamp>
+  <div class="settings-box">
+    <div class="flex">
+      <div class="label shields-primary-title">
+        $i18n{adblockCustomFiltersLabel}
+      </div>
+      <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockCustomFiltersDesc', 'https://support.brave.com/hc/en-us/articles/6449369961741')]]"></div>
+      <adblock-filter-editor
+        prefs="{{prefs}}"
+        value="{{customFilters_}}"
+        on-save="handleSave_"
+      ></adblock-filter-editor>
     </div>
-    <div class="label secondary shields-secondary-title" inner-h-t-m-l="[[getStringHtml_('adblockCustomFiltersDesc', 'https://support.brave.com/hc/en-us/articles/6449369961741')]]"></div>
-    <adblock-filter-editor
-      prefs="{{prefs}}"
-      value="{{customFilters_}}"
-      on-save="handleSave_"
-    ></adblock-filter-editor>
   </div>
-</div>
+</template>
 
-<template is="dom-if" if="[[cosmeticFilteringCustomScriptletsEnabled_]]">
+<template is="dom-if" if="[[shouldShowCustomScriptlets_]]" restamp>
   <div class="settings-box">
     <div class="flex">
       <div class="label shields-primary-title">
         $i18n{adblockCustomSciptletsListLabel}
       </div>
-      <adblock-scriptlet-list prefs="{{prefs}}"></adblock-scriptlet-list>
+      <adblock-scriptlet-list
+        prefs="{{prefs}}"
+        on-list-changed="handleSciptletsChanged_">
+      </adblock-scriptlet-list>
     </div>
   </div>
 </template>

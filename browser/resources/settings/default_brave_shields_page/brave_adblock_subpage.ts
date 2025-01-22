@@ -20,6 +20,7 @@ import {
   BraveAdblockBrowserProxy,
   BraveAdblockBrowserProxyImpl,
   FilterList,
+  Scriptlet,
   SubscriptionInfo
 } from './brave_adblock_browser_proxy.js'
 
@@ -49,13 +50,15 @@ class AdBlockSubpage extends AdBlockSubpageBase {
         type: Boolean,
         value: false
       },
-      cosmeticFilteringCustomScriptletsEnabled_: {
-        type: Boolean,
-        value: loadTimeData.getBoolean(
-          'cosmeticFilteringCustomScriptletsEnabled'
-        )
-      }
+      shouldShowCustomFilters_: Boolean,
+      shouldShowCustomScriptlets_: Boolean
     }
+  }
+
+  static get observers() {
+    return [
+      'updateState_(prefs.brave.ad_block.developer_mode.value, customFilters_, customScriptlets_)'
+    ]
   }
 
   private filterList_: FilterList[]
@@ -64,7 +67,9 @@ class AdBlockSubpage extends AdBlockSubpageBase {
   private subscribeUrl_: string
   private listsUpdatingState_: string
   private hasListExpanded_: boolean
-  private cosmeticFilteringCustomScriptletsEnabled_: boolean
+  private shouldShowCustomFilters_: boolean
+  private shouldShowCustomScriptlets_: boolean
+  private customScriptlets_: Scriptlet[]
 
   private browserProxy_: BraveAdblockBrowserProxy =
     BraveAdblockBrowserProxyImpl.getInstance()
@@ -86,10 +91,44 @@ class AdBlockSubpage extends AdBlockSubpageBase {
       this.customFilters_ = value
     })
 
+    if (loadTimeData.getBoolean('cosmeticFilteringCustomScriptletsEnabled')) {
+      this.browserProxy_.getCustomScriptlets().then((value: Scriptlet[]) => {
+        this.customScriptlets_ = value
+      })
+    }
+
     this.browserProxy_.addWebUiListener(
       'brave_adblock.onGetListSubscriptions', (value: SubscriptionInfo[]) => {
         this.subscriptionList_ = value
     })
+    this.browserProxy_.addWebUiListener(
+      'brave_adblock.onCustomFiltersChanged',
+      (value: string) => {
+        this.customFilters_ = value
+      }
+    )
+  }
+
+  private updateState_(
+    devMode: boolean,
+    customFilters: string,
+    customScriptlets: Scriptlet[]
+  ) {
+    this.shouldShowCustomScriptlets_ =
+      devMode !== undefined &&
+      customScriptlets != undefined &&
+      loadTimeData.getBoolean('cosmeticFilteringCustomScriptletsEnabled') &&
+      (customScriptlets.length > 0 || devMode)
+
+    this.shouldShowCustomFilters_ =
+      devMode !== undefined &&
+      customFilters !== undefined &&
+      (customFilters.trim().length > 0 || devMode)
+  }
+
+  private handleSciptletsChanged_(e: CustomEvent) {
+    const value = e.detail.value as Scriptlet[]
+    this.customScriptlets_ = value
   }
 
   private handleShowList_() {

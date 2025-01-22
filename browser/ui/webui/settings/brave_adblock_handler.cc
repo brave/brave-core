@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -20,11 +19,9 @@
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "content/public/browser/web_ui.h"
 #include "ui/base/l10n/time_format.h"
@@ -34,7 +31,6 @@ BraveAdBlockHandler::BraveAdBlockHandler() = default;
 BraveAdBlockHandler::~BraveAdBlockHandler() = default;
 
 void BraveAdBlockHandler::RegisterMessages() {
-  profile_ = Profile::FromWebUI(web_ui());
   web_ui()->RegisterMessageCallback(
       "brave_adblock.getRegionalLists",
       base::BindRepeating(&BraveAdBlockHandler::GetRegionalLists,
@@ -109,15 +105,21 @@ void BraveAdBlockHandler::RegisterMessages() {
       "brave_adblock.removeCustomScriptlet",
       base::BindRepeating(&BraveAdBlockHandler::RemoveCustomScriptlet,
                           base::Unretained(this)));
+  pref_change_registrar_.Init(g_browser_process->local_state());
 }
 
 void BraveAdBlockHandler::OnJavascriptAllowed() {
   service_observer_.Observe(g_brave_browser_process->ad_block_service()
                                 ->subscription_service_manager());
+  pref_change_registrar_.Add(
+      brave_shields::prefs::kAdBlockCustomFilters,
+      base::BindRepeating(&BraveAdBlockHandler::RefreshCustomFilters,
+                          weak_factory_.GetWeakPtr()));
 }
 
 void BraveAdBlockHandler::OnJavascriptDisallowed() {
   service_observer_.Reset();
+  pref_change_registrar_.RemoveAll();
 }
 
 void BraveAdBlockHandler::OnServiceUpdateEvent() {
@@ -362,6 +364,15 @@ void BraveAdBlockHandler::OnScriptletUpdateStatus(
 
 void BraveAdBlockHandler::RefreshSubscriptionsList() {
   FireWebUIListener("brave_adblock.onGetListSubscriptions", GetSubscriptions());
+}
+
+void BraveAdBlockHandler::RefreshCustomFilters() {
+  const std::string& custom_filters =
+      g_brave_browser_process->ad_block_service()
+          ->custom_filters_provider()
+          ->GetCustomFilters();
+  FireWebUIListener("brave_adblock.onCustomFiltersChanged",
+                    base::Value(custom_filters));
 }
 
 base::Value::List BraveAdBlockHandler::GetSubscriptions() {

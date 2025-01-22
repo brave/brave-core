@@ -20,6 +20,10 @@
     .scriptlet:last-of-type {
         border-bottom: none;
     }
+
+    cr-icon-button[disabled] {
+        pointer-events: none;
+    }
 </style>
 
 <div>
@@ -30,9 +34,11 @@
                     <div class="label">[[item.name]]</div>
                 </div>
                 <div>
-                    <cr-icon-button id="edit" on-click="handleEdit_" class="size-20" iron-icon="edit-pencil">
+                    <cr-icon-button id="edit" on-click="handleEdit_" class="size-20" iron-icon="edit-pencil"
+                        disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
                     </cr-icon-button>
-                    <cr-icon-button id="delete" on-click="handleDelete_" class="size-20" iron-icon="trash">
+                    <cr-icon-button id="delete" on-click="handleDelete_" class="size-20" iron-icon="trash"
+                        disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
                     </cr-icon-button>
                 </div>
             </div>
