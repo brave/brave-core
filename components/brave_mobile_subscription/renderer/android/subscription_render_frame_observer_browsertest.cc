@@ -4,8 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h"
+#include "brave/components/skus/renderer/skus_render_frame_observer.h"
 
 #include "base/test/scoped_feature_list.h"
+//#include "base/test/task_environment.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
@@ -15,6 +17,22 @@
 #include "content/public/test/render_view_test.h"
 #include "url/gurl.h"
 
+// namespace {
+// const int kMaxTimeoutPerLoadedURL = 200;
+// void WaitForTimeout(int timeout) {
+//     base::RunLoop run_loop;
+//     base::OneShotTimer timeout_1;
+//     timeout_1.Start(FROM_HERE, base::Seconds(0), run_loop.QuitClosure());
+//     run_loop.Run();
+// //   base::test::ScopedRunLoopTimeout file_download_timeout(
+// //       FROM_HERE, base::Seconds(kMaxTimeoutPerLoadedURL + 1));
+// //   base::RunLoop run_loop;
+// //   base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+// //       FROM_HERE, run_loop.QuitClosure(), base::Seconds(timeout));
+// //   run_loop.Run();
+// }
+// }
+
 namespace brave_subscription {
 
 class SubscriptionRenderFrameObserverBrowserTest
@@ -23,14 +41,42 @@ class SubscriptionRenderFrameObserverBrowserTest
   SubscriptionRenderFrameObserverBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN,
-         ai_chat::features::kAIChat},
+         ai_chat::features::kAIChat, skus::features::kSkusFeature},
         {});
   }
   ~SubscriptionRenderFrameObserverBrowserTest() override = default;
 
+  bool ExecuteJavascript(const std::u16string& script) {
+    int result = -1;
+    LOG(ERROR) << "!!!here0";
+    EXPECT_TRUE(ExecuteJavaScriptAndReturnIntValue(script, &result));
+    LOG(ERROR) << "!!!here01";
+    return result == 1;
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
+
+TEST_F(SubscriptionRenderFrameObserverBrowserTest, StatusCheck) {
+  SubscriptionRenderFrameObserver observer(GetMainRenderFrame(),
+                                            content::ISOLATED_WORLD_ID_GLOBAL);
+  //skus::SkusRenderFrameObserver observer(GetMainRenderFrame());
+  LoadHTMLWithUrlOverride(
+      R"(<html><body></body></html>)",
+      "https://account.brave.com/?intent=link-order&product=leo");
+
+  base::RunLoop().RunUntilIdle();
+  LOG(ERROR) << "!!!before wait";
+  //WaitForTimeout(kMaxTimeoutPerLoadedURL);
+  //task_environment_.AdvanceClock(base::Microseconds(100));
+  LOG(ERROR) << "!!!after wait";
+  std::u16string command = //u"Number((window.chrome  !== undefined) && (window.chrome.braveSkus !== "
+      //u"undefined) && "
+      //u"(window.chrome.braveSkus.refresh_order !== undefined))";
+  /*u"Number(console.log('hi') == undefined)";*/u"Number(linkState != undefined)";
+  EXPECT_TRUE(ExecuteJavascript(command));
+}
 
 TEST_F(SubscriptionRenderFrameObserverBrowserTest, IsAllowed) {
   SubscriptionRenderFrameObserver observer(GetMainRenderFrame(),
@@ -48,6 +94,7 @@ TEST_F(SubscriptionRenderFrameObserverBrowserTest, IsAllowed) {
       "https://account.brave.com/?intent=link-order&product=leo");
 
   EXPECT_TRUE(observer.IsAllowed());
+
   // http
   LoadHTMLWithUrlOverride(
       R"(<html><body></body></html>)",
