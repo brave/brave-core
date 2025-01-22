@@ -10,8 +10,7 @@ import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
 import { getHtml } from './cr_toolbar.html.js';
 import { getCss } from './cr_toolbar.css.js';
 
-import './cr_toolbar_search_field.js'
-import type { CrToolbarSearchFieldElement } from './cr_toolbar_search_field.js'
+import '//resources/brave/br_elements/br_toolbar/br_toolbar_search_field.js'
 
 const customCurrentWebUINameMap: { [key: string]: string } = {
   extensions: 'settings',
@@ -20,7 +19,7 @@ const customCurrentWebUINameMap: { [key: string]: string } = {
 
 export interface CrToolbarElement {
   $: {
-    search: CrToolbarSearchFieldElement
+    search: any
   }
 }
 
@@ -154,7 +153,7 @@ export class CrToolbarElement extends CrLitElement {
     }
   }
 
-  /** @return {!CrToolbarSearchFieldElement} */
+  /** @return {!BrToolbarSearchFieldElement} */
   getSearchField() {
     return this.$.search;
   }

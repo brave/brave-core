@@ -5,36 +5,42 @@
 
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js';
 
-import { CrSearchFieldMixinLit } from '../cr_search_field/cr_search_field_mixin_lit.js';
-import { getHtml } from './cr_toolbar_search_field.html.js'
-import { getCss } from './cr_toolbar_search_field.css.js';
+// @ts-expect-error
+import { CrSearchFieldMixinLit } from '//resources/cr_elements/cr_search_field/cr_search_field_mixin_lit.js';
+import { getHtml } from './br_toolbar_search_field.html.js'
+import { getCss } from './br_toolbar_search_field.css.js';
 
 import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
 
 const BraveToolbarSearchFieldBase = CrSearchFieldMixinLit(CrLitElement)
 
-export interface CrToolbarSearchFieldElement {
+export interface BrToolbarSearchFieldElement {
   $: {
+    icon: any
     pageSearchToggle: HTMLInputElement
     searchInput: HTMLInputElement
-    icon: any
   }
+
+  label: string
+  hasSearchText: boolean
+  onSearchTermSearch(): void
+  setValue(value: string, noEvent?: boolean): void
 }
 
-export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
+export class BrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
   static get is() {
     return 'br-toolbar-search-field'
   }
 
-  static override get styles() {
+  static get styles() {
     return getCss()
   }
 
-  override render() {
+  render() {
     return getHtml.bind(this)()
   }
 
-  static override get properties() {
+  static get properties() {
     return {
       narrow: { type: Boolean, reflect: true },
       showingSearch: { type: Boolean, reflect: true, notify: true },
@@ -62,7 +68,7 @@ export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
     return this.computeIsSpinnerShown_()
   }
 
-  override willUpdate(changedProperties: PropertyValues<this>) {
+  willUpdate(changedProperties: PropertyValues<this>) {
     super.willUpdate(changedProperties);
 
     if (changedProperties.has('showingSearch')) {
@@ -70,7 +76,7 @@ export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
     }
   }
 
-  override getSearchInput() {
+  getSearchInput() {
     return this.$.searchInput
   }
 
@@ -83,7 +89,7 @@ export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
     this.focus_()
   }
 
-  override onSearchTermInput() {
+  onSearchTermInput() {
     super.onSearchTermInput()
     this.showingSearch = this.hasSearchText || this.isSearchFocused()
   }
@@ -157,11 +163,5 @@ export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
   }
 }
 
-declare global {
-  interface HTMLElementTagNameMap {
-    'cr-toolbar-search-field': CrToolbarSearchFieldElement;
-  }
-}
-
 customElements.define(
-  CrToolbarSearchFieldElement.is, CrToolbarSearchFieldElement)
+  BrToolbarSearchFieldElement.is, BrToolbarSearchFieldElement as any)
