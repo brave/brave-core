@@ -76,10 +76,10 @@
     Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_HAIKU" desc="AI Chat intro message for the Claude Haiku model">
-    Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks.
+    Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3 Haiku, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LEO_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model">
-    Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3.5 Sonnet, a model created by Anthropic to power conversational and text processing tasks.
+    Hi, I'm Leo. I'm proxied by Brave and powered by Claude 3.5 Sonnet, a model created by Anthropic to power conversational and text processing tasks. <ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">$2</ph>
   </message>
   <message name="IDS_CHAT_UI_MODEL_NAME_SYNTAX" desc="Sentence structure for model name">
     <ph name="MODEL_NAME">$1<ex>llama2-13b</ex></ph> by <ph name="COMPANY_NAME">$2<ex>Meta</ex></ph>
