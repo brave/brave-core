@@ -89,7 +89,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
     setEditingConversationId,
     showSidebar,
     toggleSidebar: () => setShowSidebar(s => !s),
-    conversationEntriesComponent: props.conversationEntriesComponent
+    conversationEntriesComponent: props.conversationEntriesComponent,
   }
 
   return (
