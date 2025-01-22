@@ -14,6 +14,7 @@ public enum DeepLink: String {
   case vpnCrossPlatformPromo = "vpn_promo"
   case braveLeo = "brave_leo"
   case playlist
+  case browserMenu = "menu"
 }
 
 // The root navigation for the Router. Look at the tests to see a complete URL
@@ -92,6 +93,8 @@ public enum NavigationPath: Equatable {
     case .playlist:
       let helper = BrowserNavigationHelper(bvc)
       helper.openPlaylist()
+    case .browserMenu:
+      bvc.presentMenu(from: bvc.navigationToolbar)
     }
   }
 
