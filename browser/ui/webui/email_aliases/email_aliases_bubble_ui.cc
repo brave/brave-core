@@ -23,9 +23,9 @@ namespace email_aliases {
 
 EmailAliasesBubbleUI::EmailAliasesBubbleUI(content::WebUI* web_ui)
     : content::WebUIController(web_ui) {
-  auto* source = CreateAndAddWebUIDataSource(
-      web_ui, kEmailAliasesBubbleHost, kEmailAliasesBubbleGenerated,
-      kEmailAliasesBubbleGeneratedSize, IDR_EMAIL_ALIASES_BUBBLE_HTML);
+  auto* source = CreateAndAddWebUIDataSource(web_ui, kEmailAliasesBubbleHost,
+                                             kEmailAliasesBubbleGenerated,
+                                             IDR_EMAIL_ALIASES_BUBBLE_HTML);
   web_ui->AddMessageHandler(std::make_unique<BraveEmailAliasesHandler>());
   settings::BraveAddEmailAliasesStrings(source);
   DCHECK(source);

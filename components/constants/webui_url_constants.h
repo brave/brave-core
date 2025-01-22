@@ -114,7 +114,6 @@ inline constexpr auto kInstallablePWAWebUIHosts =
 inline constexpr char kEmailAliasesHost[] = "email-aliases";
 inline constexpr char kEmailAliasesSettingsURL[] =
     "brave://settings/email-aliases";
-inline constexpr char kEmailAliasesBubbleURL[] =
-    "chrome://email-aliases-bubble";
+inline constexpr char kEmailAliasesBubbleURL[] = "brave://email-aliases-bubble";
 inline constexpr char kEmailAliasesBubbleHost[] = "email-aliases-bubble";
 #endif  // BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
