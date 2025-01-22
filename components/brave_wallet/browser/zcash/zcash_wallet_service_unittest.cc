@@ -179,6 +179,8 @@ class ZCashWalletServiceUnitTest : public testing::Test {
   ~ZCashWalletServiceUnitTest() override = default;
 
   void SetUp() override {
+    feature_list_.InitAndEnableFeature(
+        brave_wallet::features::kBraveWalletZCashFeature);
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
@@ -245,6 +247,10 @@ class ZCashWalletServiceUnitTest : public testing::Test {
 };
 
 TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                             mojom::KeyringId::kZCashMainnet,
@@ -895,7 +901,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateZCashAddress) {
 #if BUILDFLAG(ENABLE_ORCHARD)
 
 TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
-  feature_list_.InitAndEnableFeatureWithParameters(
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "true"}});
 
@@ -951,7 +958,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
 
   // Shielded addresses enabled
   {
-    feature_list_.InitAndEnableFeatureWithParameters(
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
         features::kBraveWalletZCashFeature,
         {{"zcash_shielded_transactions_enabled", "true"}});
 
@@ -969,7 +977,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
 }
 
 TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
-  feature_list_.InitAndEnableFeatureWithParameters(
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "true"}});
 
@@ -1057,7 +1066,8 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
-  feature_list_.InitAndEnableFeatureWithParameters(
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "true"}});
 
@@ -1140,7 +1150,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
-  feature_list_.InitAndEnableFeatureWithParameters(
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "true"}});
 
@@ -1548,7 +1559,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
-  feature_list_.InitAndEnableFeatureWithParameters(
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "true"}});
 
@@ -1932,7 +1944,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
   // Creating authorized orchard bundle may take a time
   base::test::ScopedRunLoopTimeout specific_timeout(FROM_HERE,
                                                     base::Minutes(1));
-  feature_list_.InitAndEnableFeatureWithParameters(
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
       {{"zcash_shielded_transactions_enabled", "true"}});
 

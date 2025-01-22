@@ -13,6 +13,7 @@
 #include "base/task/thread_pool.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/threading/sequence_bound.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -93,6 +94,9 @@ class ZCashCreateTransparentToOrchardTransactionTaskTest
     : public testing::Test {
  public:
   void SetUp() override {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
@@ -150,6 +154,7 @@ class ZCashCreateTransparentToOrchardTransactionTaskTest
   base::test::TaskEnvironment& task_environment() { return task_environment_; }
 
  private:
+  base::test::ScopedFeatureList feature_list_;
   base::ScopedTempDir temp_dir_;
 
   sync_preferences::TestingPrefServiceSyncable prefs_;
