@@ -50,7 +50,7 @@ class BraveVPNButton : public ToolbarButton,
 
   // ToolbarButton overrides:
   void UpdateColorsAndInsets() override;
-  std::u16string GetTooltipText(const gfx::Point& p) const override;
+  std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
   void OnThemeChanged() override;
   void InkDropRippleAnimationEnded(views::InkDropState state) override;
 
