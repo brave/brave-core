@@ -379,11 +379,6 @@ class TargetsCollection {
     });
   }
 
-  getXpathsForMarked(): string[] {
-    return this.targets.map((el) => getElementXpath(el.element))
-      .filter((item): item is string => item !== null)
-  }
-
   forceRecalcCoords() {
     this.targets.forEach(t => t.forceRecalcCoords())
     // for case when element no longer in the DOM
@@ -433,80 +428,9 @@ const hideByCssSelector = (selector: string) => {
   style.innerText += `${selector} {display: none !important;}`
 }
 
-const hideByXPath = (xpath: string): void => {
-  const hideStyle: Partial<CSSStyleDeclaration> = {
-    display: 'none'
-  }
-  const result = document.evaluate(
-      xpath,
-      document,
-      null,
-      XPathResult.ORDERED_NODE_ITERATOR_TYPE,
-      null
-  );
-
-  let node: Node | null = result.iterateNext();
-
-  while (node) {
-      if (node instanceof HTMLElement) {
-          Object.assign(node.style, hideStyle);
-      }
-      node = result.iterateNext();
-  }
-}
-
-const getElementByXpath = (xpath: string) => {
-  const result = document.evaluate(
-    xpath,
-    document,
-    null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
-  );
-
-  // Return the single node found, or null if none
-  return result.singleNodeValue as Element | null;
-}
-
-const getElementXpath = (element: Element | null): string => {
-  if (!element || !(element instanceof Element)) {
-    return ''
-  }
-
-  const getXPathSegment = (el: Element): string => {
-      const tagName = el.tagName.toLowerCase();
-
-      if (!el.parentElement) {
-          return `/${tagName}`
-      }
-
-      const siblings = Array.from(el.parentElement.children).filter(
-          (sibling) => sibling.tagName === el.tagName
-      );
-      if (siblings.length === 1) {
-          return `/${tagName}`
-      }
-
-      const index = siblings.indexOf(el) + 1
-      return `/${tagName}[${index}]`
-  };
-
-  const segments: string[] = []
-
-  while (element) {
-      segments.unshift(getXPathSegment(element))
-      element = element.parentElement!
-  }
-
-  return segments.join('')
-}
 
 const onTargetSelected = (selected: Element | null, index: number): string => {
   if (lastHoveredElem === null) { return '' }
-
-  if (isAndroid) {
-    return getElementXpath(selected)
-  }
 
   let elem: Element | null = selected
   const selectorBuilders = []
@@ -559,13 +483,8 @@ const elementPickerHoverCoordsChanged = (x: number, y: number) => {
 
 const getElementBySelector = (selector: string) => {
   let elements: Element[] | null;
-  if (isAndroid) {
-      const singleElement = getElementByXpath(selector);
-      elements = singleElement ? [singleElement] : null;
-  } else {
       const nodeList = document.querySelectorAll(selector);
       elements = nodeList.length > 0 ? Array.from(nodeList) : null;
-  }
   return elements
 }
 
@@ -751,18 +670,6 @@ const launchElementPicker = (root: ShadowRoot) => {
   const createButton = root.getElementById('btnCreate')!
   createButton.addEventListener('click', () => {
     if (createButton.classList.contains('block-button-disabled')) {
-      return
-    }
-    if (isAndroid) {
-      const selectedXpaths = targetedElems.getXpathsForMarked()
-      if(selectedXpaths && selectedXpaths.length > 0) {
-        for(const expr of selectedXpaths) {
-          const rule = `:xpath(${expr})`
-          api.cosmeticFilterCreate(rule)
-          hideByXPath(expr)
-        }
-        quitElementPicker()
-      }
       return
     }
     const selector = rulesTextArea.value.trim()
