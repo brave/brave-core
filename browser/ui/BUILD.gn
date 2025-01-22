@@ -621,7 +621,7 @@ source_set("ui") {
     ]
 
     deps += [
-      "//brave/browser/ui/side_panel:public",
+      "//brave/browser/ui/side_panel",
       "//chrome/browser/devtools",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
