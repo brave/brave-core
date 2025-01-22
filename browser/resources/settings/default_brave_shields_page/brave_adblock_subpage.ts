@@ -91,9 +91,11 @@ class AdBlockSubpage extends AdBlockSubpageBase {
       this.customFilters_ = value
     })
 
-    this.browserProxy_.getCustomScriptlets().then((value: Scriptlet[]) => {
-      this.customScriptlets_ = value
-    })
+    if (loadTimeData.getBoolean('cosmeticFilteringCustomScriptletsEnabled')) {
+      this.browserProxy_.getCustomScriptlets().then((value: Scriptlet[]) => {
+        this.customScriptlets_ = value
+      })
+    }
 
     this.browserProxy_.addWebUiListener(
       'brave_adblock.onGetListSubscriptions', (value: SubscriptionInfo[]) => {
