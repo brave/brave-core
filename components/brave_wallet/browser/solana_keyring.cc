@@ -15,12 +15,11 @@
 #include "base/containers/span_rust.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/rust/lib.rs.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace brave_wallet {
 
@@ -187,15 +186,14 @@ std::optional<std::string> SolanaKeyring::CreateProgramDerivedAddress(
   buffer.insert(buffer.end(), program_id_bytes.begin(), program_id_bytes.end());
   buffer.insert(buffer.end(), pda_marker.begin(), pda_marker.end());
 
-  auto hash_array = crypto::SHA256Hash(buffer);
-  std::vector<uint8_t> hash_vec(hash_array.begin(), hash_array.end());
+  auto hash_array = crypto::hash::Sha256(buffer);
 
   // Invalid because program derived addresses have to be off-curve.
-  if (bytes_are_curve25519_point(base::SpanToRustSlice(hash_vec))) {
+  if (bytes_are_curve25519_point(base::SpanToRustSlice(hash_array))) {
     return std::nullopt;
   }
 
-  return Base58Encode(hash_vec);
+  return Base58Encode(hash_array);
 }
 
 // Find a valid program derived address and its corresponding bump seed.

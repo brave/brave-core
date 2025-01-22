@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -413,7 +412,6 @@ void EthTxManager::GetNonceForHardwareTransaction(
     GetNonceForHardwareTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta = GetEthTxStateManager().GetEthTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "No transaction found";
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -437,7 +435,6 @@ void EthTxManager::GetEthTransactionMessageToSign(
     GetEthTransactionMessageToSignCallback callback) {
   std::unique_ptr<EthTxMeta> meta = GetEthTxStateManager().GetEthTx(tx_meta_id);
   if (!meta) {
-    VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -447,7 +444,7 @@ void EthTxManager::GetEthTransactionMessageToSign(
     return;
   }
   std::move(callback).Run(base::ToLowerASCII(
-      base::HexEncode(meta->tx()->GetMessageToSign(chain_id, false))));
+      base::HexEncode(meta->tx()->GetMessageToSign(chain_id))));
 }
 
 mojom::CoinType EthTxManager::GetCoinType() const {
@@ -462,8 +459,6 @@ void EthTxManager::OnGetNextNonceForHardware(
   if (!success) {
     meta->set_status(mojom::TransactionStatus::Error);
     tx_state_manager().AddOrUpdateTx(*meta);
-    VLOG(1) << __FUNCTION__
-            << "GetNextNonce failed for tx with meta:" << meta->id();
     std::move(callback).Run(std::nullopt);
     return;
   }
@@ -481,7 +476,6 @@ void EthTxManager::ProcessEthHardwareSignature(
     ProcessEthHardwareSignatureCallback callback) {
   std::unique_ptr<EthTxMeta> meta = GetEthTxStateManager().GetEthTx(tx_meta_id);
   if (!meta) {
-    VLOG(1) << __FUNCTION__ << "No transaction found with id" << tx_meta_id;
     std::move(callback).Run(
         false, mojom::ProviderError::kResourceNotFound,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
@@ -489,9 +483,6 @@ void EthTxManager::ProcessEthHardwareSignature(
   }
   if (!meta->tx()->ProcessVRS(hw_signature->v_bytes, hw_signature->r_bytes,
                               hw_signature->s_bytes)) {
-    VLOG(1) << __FUNCTION__
-            << "Could not initialize a transaction with v,r,s for id:"
-            << tx_meta_id;
     meta->set_status(mojom::TransactionStatus::Error);
     tx_state_manager().AddOrUpdateTx(*meta);
     std::move(callback).Run(
@@ -531,7 +522,6 @@ void EthTxManager::ApproveTransaction(const std::string& tx_meta_id,
                                       ApproveTransactionCallback callback) {
   std::unique_ptr<EthTxMeta> meta = GetEthTxStateManager().GetEthTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "No transaction found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewProviderError(
@@ -561,7 +551,6 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
   if (!success) {
     meta->set_status(mojom::TransactionStatus::Error);
     tx_state_manager().AddOrUpdateTx(*meta);
-    LOG(ERROR) << "GetNextNonce failed";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewProviderError(
@@ -572,7 +561,6 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
 
   uint256_t chain_id = 0;
   if (!HexValueToUint256(meta->chain_id(), &chain_id)) {
-    LOG(ERROR) << "Could not convert chain ID";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewProviderError(
@@ -604,7 +592,6 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
     return;
   }
   if (!meta->tx()->IsSigned()) {
-    LOG(ERROR) << "Transaction must be signed first";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewProviderError(
@@ -654,7 +641,6 @@ void EthTxManager::OnPublishTransaction(const std::string& chain_id,
                                         const std::string& error_message) {
   std::unique_ptr<TxMeta> meta = tx_state_manager().GetTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "Transaction should be found";
     std::move(callback).Run(
         false,
         mojom::ProviderErrorUnion::NewProviderError(
@@ -695,7 +681,6 @@ void EthTxManager::MakeFilForwarderTransferData(
   std::optional<std::vector<uint8_t>> data = filforwarder::Forward(fil_address);
 
   if (!data) {
-    LOG(ERROR) << "Could not make transfer data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
@@ -714,21 +699,18 @@ void EthTxManager::MakeERC20TransferData(
 
   uint256_t amount_uint = 0;
   if (!HexValueToUint256(amount, &amount_uint)) {
-    LOG(ERROR) << "Could not convert amount";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   std::string data;
   if (!erc20::Transfer(to_address, amount_uint, &data)) {
-    LOG(ERROR) << "Could not make transfer data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   std::vector<uint8_t> data_decoded;
   if (!PrefixedHexStringToBytes(data, &data_decoded)) {
-    LOG(ERROR) << "Could not decode data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
@@ -746,21 +728,18 @@ void EthTxManager::MakeERC20ApproveData(const std::string& spender_address,
 
   uint256_t amount_uint = 0;
   if (!HexValueToUint256(amount, &amount_uint)) {
-    LOG(ERROR) << "Could not convert amount";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   std::string data;
   if (!erc20::Approve(spender_address, amount_uint, &data)) {
-    LOG(ERROR) << "Could not make transfer data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   std::vector<uint8_t> data_decoded;
   if (!PrefixedHexStringToBytes(data.data(), &data_decoded)) {
-    LOG(ERROR) << "Could not decode data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
@@ -781,7 +760,6 @@ void EthTxManager::MakeERC721TransferFromData(
 
   uint256_t token_id_uint = 0;
   if (!HexValueToUint256(token_id, &token_id_uint)) {
-    VLOG(1) << __FUNCTION__ << ": Could not convert token_id";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
@@ -807,15 +785,12 @@ void EthTxManager::ContinueMakeERC721TransferFromData(
   std::string data;
   if (!erc721::TransferFromOrSafeTransferFrom(is_safe_transfer_from_supported,
                                               from, to, token_id, &data)) {
-    VLOG(1) << __FUNCTION__
-            << ": Could not make transferFrom/safeTransferFrom data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   std::vector<uint8_t> data_decoded;
   if (!PrefixedHexStringToBytes(data, &data_decoded)) {
-    VLOG(1) << __FUNCTION__ << ": Could not decode data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
@@ -837,28 +812,24 @@ void EthTxManager::MakeERC1155TransferFromData(
 
   uint256_t token_id_uint = 0;
   if (!HexValueToUint256(token_id, &token_id_uint)) {
-    VLOG(1) << __FUNCTION__ << ": Could not convert token_id";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   uint256_t value_uint = 0;
   if (!HexValueToUint256(value, &value_uint) || (value_uint == 0)) {
-    VLOG(1) << __FUNCTION__ << ": Could not convert value";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   std::string data;
   if (!erc1155::SafeTransferFrom(from, to, token_id_uint, value_uint, &data)) {
-    VLOG(1) << __FUNCTION__ << ": Could not make safeTransferFrom data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }
 
   std::vector<uint8_t> data_decoded;
   if (!PrefixedHexStringToBytes(data, &data_decoded)) {
-    VLOG(1) << __FUNCTION__ << ": Could not decode data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
   }

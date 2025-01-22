@@ -74,7 +74,7 @@ TEST(Eip2930TransactionUnitTest, AccessListAndValue) {
   EXPECT_EQ(*access_list_from_value, access_list);
 }
 
-TEST(Eip2930TransactionUnitTest, GetMessageToSign) {
+TEST(Eip2930TransactionUnitTest, GetHashedMessageToSign) {
   std::vector<uint8_t> data;
   EXPECT_TRUE(base::HexStringToBytes("010200", &data));
   Eip2930Transaction tx = *Eip2930Transaction::FromTxData(
@@ -93,7 +93,7 @@ TEST(Eip2930TransactionUnitTest, GetMessageToSign) {
 
   access_list->push_back(item);
 
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetMessageToSign())),
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(tx.GetHashedMessageToSign(0))),
             "78528e2724aa359c58c13e43a7c467eb721ce8d410c2a12ee62943a3aaefb60b");
 }
 
@@ -125,11 +125,10 @@ TEST(Eip2930TransactionUnitTest, GetSignedTransactionAndHash) {
   HDKey key;
   key.SetPrivateKey(private_key);
   int recid;
-  const std::vector<uint8_t> signature =
-      key.SignCompact(tx.GetMessageToSign(), &recid);
+  auto signature = *key.SignCompact(tx.GetHashedMessageToSign(0), &recid);
 
   ASSERT_FALSE(tx.IsSigned());
-  tx.ProcessSignature(signature, recid);
+  tx.ProcessSignature(signature, recid, 0);
   ASSERT_TRUE(tx.IsSigned());
   EXPECT_EQ(
       tx.GetSignedTransaction(),

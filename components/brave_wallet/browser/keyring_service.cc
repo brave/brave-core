@@ -20,12 +20,14 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
+#include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/value_iterators.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hardware_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_import_keyring.h"
@@ -590,7 +592,7 @@ std::optional<KeyringSeed> MakeSeedFromMnemonic(
     const std::string& mnemonic,
     bool use_legacy_eth_seed_format) {
   KeyringSeed result;
-  const auto seed = MnemonicToSeed(mnemonic, "");
+  const auto seed = bip39::MnemonicToSeed(mnemonic, "");
   if (!seed) {
     return std::nullopt;
   }
@@ -598,14 +600,11 @@ std::optional<KeyringSeed> MakeSeedFromMnemonic(
   result.seed = std::move(*seed);
 
   if (use_legacy_eth_seed_format) {
-    const auto eth_seed = MnemonicToEntropy(mnemonic);
+    const auto eth_seed = bip39::MnemonicToEntropy(mnemonic);
     if (!eth_seed) {
       return std::nullopt;
     }
-    if (eth_seed->size() != 32) {
-      VLOG(1) << __func__
-              << "mnemonic for legacy brave wallet must be 24 words which will "
-                 "produce 32 bytes seed";
+    if (eth_seed->size() != bip39::kLegacyEthEntropySize) {
       return std::nullopt;
     }
     result.eth_seed = std::move(*eth_seed);
@@ -674,14 +673,19 @@ bool KeyringService::IsWalletCreatedSync() {
 
 void KeyringService::CreateWallet(const std::string& password,
                                   CreateWalletCallback callback) {
-  const std::string mnemonic = GenerateMnemonic(16);
-  if (CreateWalletInternal(mnemonic, password, false, false)) {
+  const auto mnemonic = bip39::GenerateMnemonic(
+      base::RandBytesAsVector(bip39::kDefaultEntropySize));
+  if (!mnemonic) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  if (CreateWalletInternal(*mnemonic, password, false, false)) {
     WalletDataFilesInstaller::GetInstance()
         .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
             [](const std::string& mnemonic, CreateWalletCallback callback) {
               std::move(callback).Run(mnemonic);
             },
-            mnemonic, std::move(callback)));
+            *mnemonic, std::move(callback)));
   } else {
     std::move(callback).Run(std::nullopt);
   }
@@ -853,7 +857,6 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
   }
 
   // Only register the component if restore is successful.
-  CHECK(is_valid_mnemonic);
   WalletDataFilesInstaller::GetInstance()
       .MaybeRegisterWalletDataFilesComponentOnDemand(base::BindOnce(
           [](RestoreWalletCallback callback) { std::move(callback).Run(true); },
@@ -1605,41 +1608,27 @@ void KeyringService::SignTransactionByDefaultKeyring(
   keyring->SignTransaction(account_id.address, tx, chain_id);
 }
 
-KeyringService::SignatureWithError::SignatureWithError() = default;
-KeyringService::SignatureWithError::SignatureWithError(
-    SignatureWithError&& other) = default;
-KeyringService::SignatureWithError&
-KeyringService::SignatureWithError::operator=(SignatureWithError&& other) =
-    default;
-KeyringService::SignatureWithError::~SignatureWithError() = default;
-
-KeyringService::SignatureWithError KeyringService::SignMessageByDefaultKeyring(
+base::expected<std::vector<uint8_t>, std::string>
+KeyringService::SignMessageByDefaultKeyring(
     const mojom::AccountIdPtr& account_id,
     base::span<const uint8_t> message,
     bool is_eip712) {
   CHECK(account_id);
-  SignatureWithError ret;
   auto* keyring = GetEthereumKeyring();
   if (!keyring || account_id->keyring_id != mojom::kDefaultKeyringId) {
-    ret.signature = std::nullopt;
-    ret.error_message =
-        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST);
-    return ret;
+    return base::unexpected(
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
   }
 
   auto address = account_id->address;
   // MM currently doesn't provide chain_id when signing message
-  std::vector<uint8_t> signature =
-      keyring->SignMessage(address, message, 0, is_eip712);
-  if (signature.empty()) {
-    ret.signature = std::nullopt;
-    ret.error_message =
+  auto signature = keyring->SignMessage(address, message, 0, is_eip712);
+  if (!signature) {
+    return base::unexpected(
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
-                                  base::ASCIIToUTF16(address));
-    return ret;
+                                  base::ASCIIToUTF16(address)));
   }
-  ret.signature = std::move(signature);
-  return ret;
+  return base::ok(*signature);
 }
 
 std::optional<std::string> KeyringService::RecoverAddressByDefaultKeyring(

@@ -14,14 +14,13 @@
 #include "base/strings/string_split.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest.h"
 
 using base::test::ParseJson;
 
@@ -267,8 +266,8 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
   account_index_ = account_index;
 
   if (mnemonic && account_index) {
-    keyring_ =
-        std::make_unique<BitcoinHDKeyring>(*MnemonicToSeed(*mnemonic), false);
+    keyring_ = std::make_unique<BitcoinHDKeyring>(
+        *bip39::MnemonicToSeed(*mnemonic), false);
 
     address_0_ =
         keyring_->GetAddress(*account_index_, *mojom::BitcoinKeyId::New(0, 0))

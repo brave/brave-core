@@ -32,6 +32,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -1601,7 +1602,11 @@ void BraveWalletService::ConvertFEVMToFVMAddress(
     ConvertFEVMToFVMAddressCallback callback) {
   base::flat_map<std::string, std::string> result;
   for (const auto& fevm_address : fevm_addresses) {
-    auto address = FilAddress::FromFEVMAddress(is_mainnet, fevm_address);
+    auto eth_address = EthAddress::FromHex(fevm_address);
+    if (!eth_address.IsValid()) {
+      continue;
+    }
+    auto address = FilAddress::FromFEVMAddress(is_mainnet, eth_address);
     DCHECK(result.find(fevm_address) == result.end());
     if (!address.IsEmpty()) {
       result[fevm_address] = address.EncodeAsString();

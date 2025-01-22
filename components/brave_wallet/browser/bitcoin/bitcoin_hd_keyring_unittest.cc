@@ -10,11 +10,13 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
+using bip39::MnemonicToSeed;
 using mojom::BitcoinKeyId;
 
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors

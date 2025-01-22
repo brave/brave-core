@@ -19,7 +19,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/sys_byteorder.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -32,7 +31,7 @@
 #include "brave/components/brave_wallet/common/solana_address.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "build/build_config.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
 
@@ -499,7 +498,7 @@ SnsNamehash GetHashedName(const std::string& prefix, const std::string& name) {
   // https://github.com/Bonfida/solana-program-library/blob/6e3be3eedad3a7f4a83c1b7cd5f17f89231e0bca/name-service/js/src/constants.ts#L13
   constexpr char kHashPrefix[] = "SPL Name Service";
   const std::string input = kHashPrefix + prefix + name;
-  return crypto::SHA256Hash(base::as_byte_span(input));
+  return crypto::hash::Sha256(base::as_byte_span(input));
 }
 
 // https://github.com/Bonfida/name-tokenizer#mint

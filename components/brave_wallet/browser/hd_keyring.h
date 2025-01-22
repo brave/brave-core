@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
@@ -26,8 +25,6 @@ class HDKeyring {
   virtual ~HDKeyring();
   HDKeyring(const HDKeyring&) = delete;
   HDKeyring& operator=(const HDKeyring&) = delete;
-
-  static std::string GetRootPath(mojom::KeyringId keyring_id);
 
   virtual std::optional<AddedAccountInfo> AddNewHDAccount() = 0;
   virtual void RemoveLastHDAccount() = 0;

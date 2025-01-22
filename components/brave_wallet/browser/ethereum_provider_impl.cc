@@ -743,15 +743,14 @@ void EthereumProviderImpl::OnSignMessageRequestProcessed(
 
   base::Value formed_response;
   if (account_id->kind != mojom::AccountKind::kHardware) {
-    auto signature_with_err = keyring_service_->SignMessageByDefaultKeyring(
+    auto signature = keyring_service_->SignMessageByDefaultKeyring(
         account_id, message, is_eip712);
-    if (!signature_with_err.signature) {
-      formed_response =
-          GetProviderErrorDictionary(mojom::ProviderError::kInternalError,
-                                     signature_with_err.error_message);
+    if (!signature.has_value()) {
+      formed_response = GetProviderErrorDictionary(
+          mojom::ProviderError::kInternalError, signature.error());
       reject = true;
     } else {
-      formed_response = base::Value(ToHex(*signature_with_err.signature));
+      formed_response = base::Value(ToHex(signature.value()));
     }
   } else {
     if (!hw_signature) {  // Missing hardware signature.

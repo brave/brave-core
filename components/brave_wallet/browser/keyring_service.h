@@ -13,6 +13,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
@@ -137,21 +138,10 @@ class KeyringService : public mojom::KeyringService {
   std::optional<std::string> GetDiscoveryAddress(mojom::KeyringId keyring_id,
                                                  int index);
 
-  struct SignatureWithError {
-    SignatureWithError();
-    SignatureWithError(SignatureWithError&& other);
-    SignatureWithError& operator=(SignatureWithError&& other);
-    SignatureWithError(const SignatureWithError&) = delete;
-    SignatureWithError& operator=(const SignatureWithError&) = delete;
-    ~SignatureWithError();
-
-    std::optional<std::vector<uint8_t>> signature;
-    std::string error_message;
-  };
-  SignatureWithError SignMessageByDefaultKeyring(
+  base::expected<std::vector<uint8_t>, std::string> SignMessageByDefaultKeyring(
       const mojom::AccountIdPtr& account_id,
       base::span<const uint8_t> message,
-      bool is_eip712 = false);
+      bool is_eip712);
 
   std::vector<uint8_t> SignMessageBySolanaKeyring(
       const mojom::AccountIdPtr& account_id,

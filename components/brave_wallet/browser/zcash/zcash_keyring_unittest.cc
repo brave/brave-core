@@ -10,7 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -30,6 +30,8 @@ constexpr char kDeputyVisaTestMnemonic[] =
 }  // namespace
 
 namespace brave_wallet {
+
+using bip39::MnemonicToSeed;
 using mojom::ZCashKeyId;
 
 TEST(ZCashKeyringUnitTest, GetPubKey) {

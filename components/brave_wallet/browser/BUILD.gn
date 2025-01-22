@@ -34,6 +34,8 @@ static_library("browser") {
     "asset_ratio_response_parser.h",
     "asset_ratio_service.cc",
     "asset_ratio_service.h",
+    "bip39.cc",
+    "bip39.h",
     "bitcoin/bitcoin_block_tracker.cc",
     "bitcoin/bitcoin_block_tracker.h",
     "bitcoin/bitcoin_discover_account_task.cc",

@@ -11,6 +11,7 @@
 #include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -343,16 +344,19 @@ TEST(FilAddressUnitTest, FromBytes) {
 TEST(FilAddressUnitTest, ConvertFEVMtoFVM) {
   EXPECT_EQ("f410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
             FilAddress::FromFEVMAddress(
-                true, "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                true, EthAddress::FromHex(
+                          "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51"))
                 .EncodeAsString());
 
   EXPECT_EQ("t410frrqkhkktbxosf5cmboocdhsv42jtgw2rddjac2y",
             FilAddress::FromFEVMAddress(
-                false, "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                false, EthAddress::FromHex(
+                           "0x8C60a3A9530dDD22F44C0B9c219E55E693335b51"))
                 .EncodeAsString());
 
   EXPECT_TRUE(FilAddress::FromFEVMAddress(
-                  false, "8C60a3A9530dDD22F44C0B9c219E55E693335b51")
+                  false, EthAddress::FromHex(
+                             "8C60a3A9530dDD22F44C0B9c219E55E693335b51"))
                   .IsEmpty());
 }
 

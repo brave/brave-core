@@ -24,7 +24,10 @@ inline constexpr size_t kSecp256k1ChainCodeSize = 32;
 inline constexpr size_t kSecp256k1PubkeySize = 33;
 inline constexpr size_t kSecp256k1IdentifierSize = 20;
 inline constexpr size_t kSecp256k1FingerprintSize = 4;
+inline constexpr size_t kSecp256k1SignMsgSize = 32;
 
+using Secp256k1SignMsgSpan = base::span<const uint8_t, kSecp256k1SignMsgSize>;
+using CompactSignatureSpan = base::span<const uint8_t, kCompactSignatureSize>;
 using SecureVector = std::vector<uint8_t, crypto::SecureAllocator<uint8_t>>;
 
 enum class ExtendedKeyVersion : uint32_t {
@@ -94,24 +97,24 @@ class HDKey {
   // Sign the message using private key. The msg has to be exactly 32 bytes
   // Return 64 bytes ECDSA signature when succeed, otherwise empty vector
   // if recid is not null, recovery id will be filled.
-  std::vector<uint8_t> SignCompact(base::span<const uint8_t> msg, int* recid);
+  std::optional<std::array<uint8_t, kCompactSignatureSize>> SignCompact(
+      Secp256k1SignMsgSpan msg,
+      int* recid);
 
   // Sign the message using private key and return it in DER format.
-  std::optional<std::vector<uint8_t>> SignDer(
-      base::span<const uint8_t, 32> msg);
+  std::optional<std::vector<uint8_t>> SignDer(Secp256k1SignMsgSpan msg);
 
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return true when successfully verified, false otherwise.
-  bool VerifyForTesting(base::span<const uint8_t> msg,
-                        base::span<const uint8_t> sig);
+  bool VerifyForTesting(Secp256k1SignMsgSpan msg, CompactSignatureSpan sig);
 
   // Recover public key from signature and message. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return valid public key when succeed, all zero vector otherwise
   std::vector<uint8_t> RecoverCompact(bool compressed,
-                                      base::span<const uint8_t> msg,
-                                      base::span<const uint8_t> sig,
+                                      Secp256k1SignMsgSpan msg,
+                                      CompactSignatureSpan sig,
                                       int recid);
 
   // Key identifier - hash of pubkey.

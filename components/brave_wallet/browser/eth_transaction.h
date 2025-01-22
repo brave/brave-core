@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace base {
 class Value;
@@ -68,14 +69,12 @@ class EthTransaction {
                   const std::vector<uint8_t>& s);
   bool IsToCreationAddress() const { return to_.IsEmpty(); }
 
-  // return
-  // if hash == true:
-  //   keccack(rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0]))
-  // else:
-  //   rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
+  // return rlp([nonce, gasPrice, gasLimit, to, value, data, chainID, 0, 0])
   // Support EIP-155 chain id
-  virtual std::vector<uint8_t> GetMessageToSign(uint256_t chain_id,
-                                                bool hash = true) const;
+  virtual std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const;
+
+  // keccak(GetMessageToSign(chain_id))
+  KeccakHashArray GetHashedMessageToSign(uint256_t chain_id) const;
 
   // return rlp([nonce, gasPrice, gasLimit, to, value, data, v, r, s])
   virtual std::string GetSignedTransaction() const;
@@ -85,7 +84,7 @@ class EthTransaction {
 
   // signature and recid will be used to produce v, r, s
   // Support EIP-155 chain id
-  virtual void ProcessSignature(const std::vector<uint8_t> signature,
+  virtual void ProcessSignature(base::span<const uint8_t> signature,
                                 int recid,
                                 uint256_t chain_id);
 
@@ -97,9 +96,6 @@ class EthTransaction {
   uint256_t GetBaseFee() const;
   // Gas paid for the data.
   virtual uint256_t GetDataFee() const;
-  // The up front amount that an account must have for this transaction to be
-  // valid
-  virtual uint256_t GetUpfrontCost(uint256_t block_base_fee = 0) const;
 
  protected:
   // type 0 would be LegacyTransaction

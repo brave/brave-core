@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
@@ -20,6 +20,8 @@
 using testing::ElementsAre;
 
 namespace brave_wallet {
+
+using bip39::MnemonicToSeed;
 
 TEST(SolanaKeyringUnitTest, ConstructRootHDKey) {
   SolanaKeyring keyring(*MnemonicToSeed(kMnemonicScarePiece));

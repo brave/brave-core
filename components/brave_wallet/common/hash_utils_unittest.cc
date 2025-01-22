@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
+#include <array>
+#include <cstdint>
 #include <vector>
 
 #include "base/containers/span.h"
@@ -77,6 +79,25 @@ TEST(HashUtilsUnitTest, Hash160) {
 
   EXPECT_EQ(HexEncodeLower(Hash160(std::vector<uint8_t>{})),
             "b472a266d0bd89c13706a4132ccfb16f7c3b9fcb");
+}
+
+TEST(HashUtilsUnitTest, Blake2bHash) {
+  // https://datatracker.ietf.org/doc/html/rfc7693#appendix-A
+  EXPECT_EQ(
+      base::HexEncode(Blake2bHash(base::byte_span_from_cstring("abc"), 64)),
+      "BA80A53F981C4D0D6A2797B69F12F6E9"
+      "4C212F14685AC4B74B12BB6FDBFFA2D1"
+      "7D87C5392AAB792DC252D5DE4533CC95"
+      "18D38AA8DBF1925AB92386EDD4009923");
+
+  auto personalizer =
+      std::to_array<uint8_t>({1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
+  EXPECT_EQ(base::HexEncode(Blake2bHash(base::byte_span_from_cstring("abc"), 64,
+                                        personalizer)),
+            "D969E8AFD6AD50262CA3391E492191E2"
+            "70A4AB7A7CBDE0766E2174263DC28286"
+            "39EE37F542A54015DA432264C2585F48"
+            "FFE06DEF21A179B3758FD7174D76E03E");
 }
 
 }  // namespace brave_wallet
