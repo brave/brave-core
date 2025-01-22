@@ -34,3 +34,12 @@ index db7c64eebdf34913139d556429f2717d08f39a56..dd1624786018139b6dca63279f5803a3
      },
      {
        name: "SerializeViewTransitionStateInSPA",
+@@ -4157,7 +4161,7 @@
+     },
+     {
+       name: "SvgInlineRootPixelSnappingScaleAdjustment",
+-      status: "stable",
++      status: "test",
+     },
+     {
+       name: "SvgNoPixelSnappingScaleAdjustment",
