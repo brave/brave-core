@@ -155,7 +155,8 @@ base::Value::List ConversationEventsToList(
            {ConversationEventType::RequestSummary, "requestSummary"},
            {ConversationEventType::RequestSuggestedActions,
             "requestSuggestedActions"},
-           {ConversationEventType::SuggestedActions, "suggestedActions"}});
+           {ConversationEventType::SuggestedActions, "suggestedActions"},
+           {ConversationEventType::UploadImage, "uploadImage"}});
 
   base::Value::List events;
   for (const auto& event : conversation) {
