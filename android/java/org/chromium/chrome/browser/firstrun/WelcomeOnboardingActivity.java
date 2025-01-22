@@ -50,6 +50,7 @@ import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUti
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.Locale;
@@ -220,6 +221,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     view -> {
                         if (mCurrentStep == 0 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
+                        } else if (mCurrentStep == getWDPPageStep()) {
+                            UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
+                                    .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
+                            nextOnboardingStep();
                         } else {
                             nextOnboardingStep();
                         }
@@ -467,7 +472,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mBtnNegative.setText(getResources().getString(R.string.maybe_later));
             mBtnNegative.setVisibility(View.VISIBLE);
         }
-
 
         if (mTvCard != null) {
             mTvCard.setVisibility(View.VISIBLE);
