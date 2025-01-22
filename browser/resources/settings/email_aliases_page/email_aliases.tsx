@@ -42,6 +42,8 @@ import {
   SignupRow,
 } from './styles'
 
+const MAX_ALIASES = 5;
+
 type ViewState = {
   mode: ViewMode,
   alias?: Alias
@@ -179,6 +181,7 @@ const AliasList = ({ aliases, onViewChange, onListChange, mappingService }: { ma
         </div>
       </Col>
       <Button style='flex-grow: 0;'
+        isDisabled={aliases.length >= MAX_ALIASES}
         title={getLocale('emailAliasesCreateAliasTitle')}
         id='add-alias'
         onClick={
