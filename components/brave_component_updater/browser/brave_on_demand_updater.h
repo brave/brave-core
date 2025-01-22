@@ -44,6 +44,7 @@ class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveOnDemandUpdater {
                       component_updater::OnDemandUpdater::Priority priority,
                       component_updater::Callback callback = base::DoNothing());
 
+bool IsValid();
  private:
   friend base::NoDestructor<BraveOnDemandUpdater>;
   BraveOnDemandUpdater();

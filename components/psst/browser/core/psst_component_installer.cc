@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
@@ -20,8 +21,13 @@
 #include "brave/components/psst/browser/core/psst_rule_registry.h"
 #include "brave/components/psst/common/features.h"
 #include "components/component_updater/component_installer.h"
+#include "components/component_updater/component_updater_paths.h"
 #include "components/component_updater/component_updater_service.h"
+#include "components/prefs/pref_service.h"
 #include "crypto/sha2.h"
+#include "base/path_service.h"
+
+#include "base/debug/task_trace.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
 
@@ -58,6 +64,12 @@ constexpr char kPsstComponentBase64PublicKey[] =
     "FlvQUzi5ZykXnPfzlsNLyyQ8fy6/+8hzSE5x4HTW5fy3TIRvmDi/"
     "7HmW+evvuMIPl1gtVe4HKOZ7G8UaznjXBfspszHU1fqTiZWeCPb53uemo1a+rdnSHXwIDAQAB";
 
+base::FilePath GetComponentDir() {
+  base::FilePath components_dir =
+      base::PathService::CheckedGet(component_updater::DIR_COMPONENT_USER);
+
+  return components_dir.Append(kPsstComponentId);
+}
 }  // namespace
 
 class PsstComponentInstallerPolicy
@@ -68,6 +80,8 @@ class PsstComponentInstallerPolicy
   PsstComponentInstallerPolicy(const PsstComponentInstallerPolicy&) = delete;
   PsstComponentInstallerPolicy& operator=(const PsstComponentInstallerPolicy&) =
       delete;
+
+  static void DeleteComponent();
 
   // component_updater::ComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
@@ -101,6 +115,10 @@ PsstComponentInstallerPolicy::PsstComponentInstallerPolicy()
   crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
 }
 
+void PsstComponentInstallerPolicy::DeleteComponent() {
+  base::DeletePathRecursively(GetComponentDir());
+}
+
 bool PsstComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates()
     const {
   return true;
@@ -122,7 +140,7 @@ void PsstComponentInstallerPolicy::OnCustomUninstall() {}
 void PsstComponentInstallerPolicy::ComponentReady(const base::Version& version,
                                                   const base::FilePath& path,
                                                   base::Value::Dict manifest) {
-  std::cerr << "PSST xyzzy component ready: " << version.GetString() << std::endl;
+  LOG(INFO) << "[PSST] PsstComponentInstallerPolicy::ComponentReady version:" << version.GetString() << " path:" << path << " manifest:" << manifest.DebugString();
   PsstRuleRegistry::GetInstance()->LoadRules(path);
 }
 
@@ -160,17 +178,19 @@ void OnRegistered(const std::string& component_id) {
 
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
   if (!base::FeatureList::IsEnabled(psst::features::kBravePsst) || !cus) {
-    // In test, |cus| could be nullptr.
+    PsstComponentInstallerPolicy::DeleteComponent();
     return;
   }
+
 auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<PsstComponentInstallerPolicy>());
-  // installer->Register(
-  //     // After Register, run the callback with component id.
-  //     cus, base::BindOnce([]() {
-  //       brave_component_updater::BraveOnDemandUpdater::GetInstance()
-  //           ->EnsureInstalled(kPsstComponentId);
-  //     }));
+//   installer->Register(
+//       // After Register, run the callback with component id.
+//       cus, base::BindOnce([]() {
+// base::debug::TaskTrace().Print();
+//         brave_component_updater::BraveOnDemandUpdater::GetInstance()
+//             ->EnsureInstalled(kPsstComponentId);
+//       }));
 
   installer->Register(cus, base::BindOnce(&OnRegistered, kPsstComponentId));
 }

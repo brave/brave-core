@@ -83,7 +83,7 @@ void PsstRule::RegisterJSONConverter(
   converter->RegisterCustomValueField<base::FilePath>(
       kTestScript, &PsstRule::test_script_path_, GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
-      kPolicyScriptPath, &PsstRule::policy_script_path_, GetFilePathFromValue);
+      kPolicyScript, &PsstRule::policy_script_path_, GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &PsstRule::version_);
 }
 
