@@ -377,4 +377,8 @@ public class QuickSearchEnginesUtil {
                 .getDefaultSearchEngineTemplateUrl()
                 .getKeyword();
     }
+
+    public static void addSearchEngine(Profile profile) {
+        TemplateUrlServiceFactory.getForProfile(profile).addSearchEngine();
+    }
 }
