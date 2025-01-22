@@ -56,12 +56,6 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   ) {
     // Setup
 
-    guard let webView = message.webView else {
-      Logger.module.error("Invalid WebView for Translation")
-      replyHandler(nil, BraveTranslateError.otherError.rawValue)
-      return
-    }
-
     if !Preferences.Translate.translateEnabled.value {
       Logger.module.debug("Translation Disabled")
       replyHandler(nil, BraveTranslateError.translateDisabled.rawValue)
