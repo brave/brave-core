@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_FEATURE_H_
-#define BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_FEATURE_H_
+#ifndef BRAVE_BROWSER_BRAVE_SCREENSHOTS_BRAVE_SCREENSHOTS_TAB_FEATURE_H_
+#define BRAVE_BROWSER_BRAVE_SCREENSHOTS_BRAVE_SCREENSHOTS_TAB_FEATURE_H_
 
 #include <memory>
 
@@ -44,4 +44,4 @@ class BraveScreenshotsTabFeature {
 
 }  // namespace brave_screenshots
 
-#endif  // BRAVE_BROWSER_BRAVE_SCREENSHOTS_SCREENSHOTS_TAB_FEATURE_H_
+#endif  // BRAVE_BROWSER_BRAVE_SCREENSHOTS_BRAVE_SCREENSHOTS_TAB_FEATURE_H_
