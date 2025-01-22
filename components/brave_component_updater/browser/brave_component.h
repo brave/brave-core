@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
@@ -31,7 +32,7 @@ namespace brave_component_updater {
 class LocalDataFilesService;
 
 // DEPRECATED: Use ComponentInstallerPolicy instead.
-class BraveComponent {
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponent {
  public:
   using ReadyCallback = base::RepeatingCallback<void(const base::FilePath&,
                                                 const std::string& manifest)>;

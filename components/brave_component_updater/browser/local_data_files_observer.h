@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -43,7 +44,7 @@ namespace brave_component_updater {
 // The abstract base class for observers of the local data files service,
 // which is the component that arbitrates access to various DAT files
 // like tracking protection.
-class LocalDataFilesObserver {
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) LocalDataFilesObserver {
  public:
   virtual ~LocalDataFilesObserver();
   virtual void OnComponentReady(const std::string& component_id,

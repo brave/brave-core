@@ -19,7 +19,7 @@ using brave_component_updater::BraveComponent;
 using brave_component_updater::BraveOnDemandUpdater;
 using component_updater::ComponentUpdateService;
 
-namespace brave {
+namespace brave_component_updater {
 
 BraveComponentUpdaterDelegate::BraveComponentUpdaterDelegate(
     ComponentUpdateService* component_updater,
@@ -40,10 +40,9 @@ void BraveComponentUpdaterDelegate::Register(
     const std::string& component_base64_public_key,
     base::OnceClosure registered_callback,
     BraveComponent::ReadyCallback ready_callback) {
-  brave::RegisterComponent(base::to_address(component_updater_), component_name,
-                           component_base64_public_key,
-                           std::move(registered_callback),
-                           std::move(ready_callback));
+  RegisterComponent(base::to_address(component_updater_), component_name,
+                    component_base64_public_key, std::move(registered_callback),
+                    std::move(ready_callback));
 }
 
 bool BraveComponentUpdaterDelegate::Unregister(
@@ -78,4 +77,4 @@ PrefService* BraveComponentUpdaterDelegate::local_state() {
   return base::to_address(local_state_);
 }
 
-}  // namespace brave
+}  // namespace brave_component_updater

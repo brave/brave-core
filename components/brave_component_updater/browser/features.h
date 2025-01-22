@@ -6,10 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_FEATURES_H_
 
+#include "base/component_export.h"
 #include "base/feature_list.h"
 
 namespace brave_component_updater {
 
+COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 BASE_DECLARE_FEATURE(kUseDevUpdaterUrl);
 
 }  // namespace brave_component_updater

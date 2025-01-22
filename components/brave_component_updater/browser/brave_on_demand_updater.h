@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/functional/callback_helpers.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -19,7 +20,7 @@ class NoDestructor;
 
 namespace brave_component_updater {
 
-class BraveOnDemandUpdater {
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveOnDemandUpdater {
  public:
   static BraveOnDemandUpdater* GetInstance();
 

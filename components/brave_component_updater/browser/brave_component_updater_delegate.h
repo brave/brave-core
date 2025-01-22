@@ -8,11 +8,10 @@
 
 #include <string>
 
+#include "base/component_export.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-
-using brave_component_updater::BraveComponent;
 
 namespace base {
 class SequencedTaskRunner;
@@ -24,9 +23,10 @@ class ComponentUpdateService;
 
 class PrefService;
 
-namespace brave {
+namespace brave_component_updater {
 
-class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentUpdaterDelegate
+    : public BraveComponent::Delegate {
  public:
   BraveComponentUpdaterDelegate(
       component_updater::ComponentUpdateService* updater,
@@ -42,7 +42,8 @@ class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   void Register(const std::string& component_name,
                 const std::string& component_base64_public_key,
                 base::OnceClosure registered_callback,
-                BraveComponent::ReadyCallback ready_callback) override;
+                brave_component_updater::BraveComponent::ReadyCallback
+                    ready_callback) override;
   bool Unregister(const std::string& component_id) override;
   void EnsureInstalled(const std::string& component_id) override;
 
@@ -61,6 +62,6 @@ class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 };
 
-}  // namespace brave
+}  // namespace brave_component_updater
 
 #endif  // BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_UPDATER_DELEGATE_H_

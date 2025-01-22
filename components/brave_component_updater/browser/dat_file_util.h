@@ -11,14 +11,17 @@
 #include <utility>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/files/file_path.h"
 
 namespace brave_component_updater {
 
 using DATFileDataBuffer = std::vector<unsigned char>;
 
+COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 std::string GetDATFileAsString(const base::FilePath& file_path);
 
+COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path);
 
 }  // namespace brave_component_updater

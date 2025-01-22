@@ -47,10 +47,9 @@ gcm::GCMDriver* BraveApplicationContextImpl::GetGCMDriver() {
 brave_component_updater::BraveComponent::Delegate*
 BraveApplicationContextImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_) {
-    brave_component_updater_delegate_ =
-        std::make_unique<brave::BraveComponentUpdaterDelegate>(
-            GetComponentUpdateService(), GetLocalState(),
-            GetApplicationLocale());
+    brave_component_updater_delegate_ = std::make_unique<
+        brave_component_updater::BraveComponentUpdaterDelegate>(
+        GetComponentUpdateService(), GetLocalState(), GetApplicationLocale());
   }
 
   return brave_component_updater_delegate_.get();

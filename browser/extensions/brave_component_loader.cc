@@ -96,7 +96,7 @@ void BraveComponentLoader::ReinstallAsNonComponent(
 void BraveComponentLoader::AddExtension(const std::string& extension_id,
                                         const std::string& name,
                                         const std::string& public_key) {
-  brave::RegisterComponent(
+  brave_component_updater::RegisterComponent(
       g_browser_process->component_updater(), name, public_key,
       base::BindOnce(&BraveComponentLoader::OnComponentRegistered,
                      base::Unretained(this), extension_id),
