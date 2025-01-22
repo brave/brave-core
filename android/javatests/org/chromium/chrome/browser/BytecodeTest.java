@@ -1796,6 +1796,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         DoubleConsumer.class,
                         UserEducationHelper.class,
+                        ObservableSupplier.class,
                         ObservableSupplier.class));
 
         Assert.assertTrue(
