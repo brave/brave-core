@@ -31,6 +31,9 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
+/* The title for the button that allows the user to view the AppStore Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "Ver recibo da App Store";
+
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "Falha ao ligar à App Store. Tente outra vez mais tarde.";
 
@@ -180,6 +183,12 @@
 
 /* The default title displayed above a code block when the language of the code is not known. */
 "aichat.leoCodeExampleDefaultTitle" = "Exemplo de código";
+
+/* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
+"aichat.leoDisabledMessageDescription" = "O Leo está atualmente desativado através dos sinalizadores de funcionalidades. Para voltar a ativar o Leo, visite brave://flags e active-o.";
+
+/* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
+"aichat.leoDisabledMessageTitle" = "Leo Inapto";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "Pesquisa de resposta aprimorada para";
@@ -363,6 +372,9 @@
 
 /* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
 "aichat.speechRecognizerDisclaimer" = "A Brave não guarda nem partilha as suas pesquisas de voz.";
+
+/* Title showing the user has no subscription. */
+"aichat.subscriptionNoneTitle" = "Nenhum";
 
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Sugerir perguntas...";

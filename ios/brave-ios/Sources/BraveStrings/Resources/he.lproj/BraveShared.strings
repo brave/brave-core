@@ -1234,7 +1234,7 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "פתיחת ההגדרות";
 
-/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+/* The description indicating the device is active # of days ago. The parameter substituted for "%ld" is the number of days. E.g.: Active 123 Days Ago */
 "opentabs.activePeriodDeviceDaysAgoTitle" = "פעיל לפני %ld ימים";
 
 /* The description indicating the device is active last time this month */
@@ -1276,13 +1276,13 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "פתיחת הכול";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "השבוע שעבר %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
 "opentabs.openTabsItemLastSyncedTodayTitle" = "היום %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
 "opentabs.openTabsItemLastSyncedYesterdayTitle" = "אתמול %@";
 
 /* The title displayed on table header for open tabs list from other devices */
@@ -2158,19 +2158,19 @@
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "שלח";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" מבקש גישה למצלמה והמיקרופון";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraPermissionPrompt" = "\"%@\" מבקש גישה למצלמה";
 
 /* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
 "requestCaptureDevicePermissionAllowButtonTitle" = "אפשר";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCaptureDevicePermissionPrompt" = "\"%@\" מבקש גישה למכשיר צילום או הקלטת מדיה";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\" מבקש גישה למיקרופון";
 
 /* Name of folder where restored bookmarks are retrieved */
@@ -2494,13 +2494,13 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "הצגת הצעות חיפוש";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "הצעות חיפוש מאת %@";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "החלפה לכרטיסיה זו";
 
-/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "חיפוש %@";
 
 /* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
@@ -2635,7 +2635,7 @@
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "מזל טוב. את/ה די מיוחד/ת.";
 
-/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+/* Subtitle for  The parameter substituted for "%@" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
 "shieldEducation.domainSpecificDataSavedSubtitle" = "ממוצע נתונים שנחסכו\n%@ מגה בייט";
 
 /* Action title for button at domain specific data saved pop-up */
@@ -2650,7 +2650,7 @@
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "מזל טוב. את/ה די מיוחד/ת.";
 
-/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+/* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
 "shieldEducation.trackerCountShareTitle" = "%ld כלי מעקב ומודעות נחסמו!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
@@ -2954,7 +2954,7 @@
 "sync.codeTimeMultipleSecondsText" = "שניות";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
-"sync.codeTimeRemainingTitleLabel" = "הקוד הזמני הזה תקף למשך ה-%@ הבאות";
+"sync.codeTimeRemainingTitleLabel" = "הקוד הזמני הזה תקף לעוד %@";
 
 /* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
 "sync.codeTimeSingleHourText" = "שעה";
@@ -3274,7 +3274,7 @@
 /* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
 "TabTrayEmptyVoiceOverText" = "אין כרטיסיות";
 
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
 "TabTrayMultiTabPositionFormatVoiceOverText" = "כרטיסיות %1$@ עד %2$@ מתוך %3$@";
 
 /* Accessibility label for the New Tab button in the tab toolbar. */
@@ -3283,7 +3283,7 @@
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "חיפוש בכרטיסיות";
 
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "כרטיסייה %1$@ מתוך %2$@";
 
 /* No comment provided by engineer. */
@@ -3406,16 +3406,16 @@
 /* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
 "today.getFeedsFromSiteButtonTitle" = "קבלת פידים מ-";
 
-/* \"OPML\" is a file extension that contains a list of rss feeds. */
+/* "OPML" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "ייבוא OPML";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "מקורות לא מאובטחים - ההוספה באחריותך";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+/* Shown above a button that turns on the "Brave News" product in the app. by sources & feeds they mean websites & blogs. */
 "today.introCardBody" = "לעקוב אחר המקורות האהובים עליך, בפיד אחד. צריך רק לפתוח כרטיסיה ב-Brave, לגלול למטה, ו...זהו!\nחדשות Brave נתמך על ידי מודעות פרטיות ואנונימיות.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
+/* Shown above a button that turns on the "Brave News" product in the app. */
 "today.introCardTitle" = "הפעל/י את Brave News כדי לא לפספס אף סיפור ";
 
 /* No comment provided by engineer. */
