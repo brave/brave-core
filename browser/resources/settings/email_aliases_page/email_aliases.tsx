@@ -371,6 +371,12 @@ export const ManagePage = ({ mappingService }:
   React.useEffect(() => {
     onEmailChange();
     onListChange();
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        onEmailChange();
+        onListChange();
+      }
+    })
   }, [] /* Only run at mount. */)
   return (
     <Col style={{ padding: spacing.l }}>
