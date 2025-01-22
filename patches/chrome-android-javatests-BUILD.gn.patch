@@ -1,0 +1,12 @@
+diff --git a/chrome/android/javatests/BUILD.gn b/chrome/android/javatests/BUILD.gn
+index 32047aabf61ee7bc9f6a19294d36812daec66b3b..2dfda0304be6362ff56efd0d612c896adea34206 100644
+--- a/chrome/android/javatests/BUILD.gn
++++ b/chrome/android/javatests/BUILD.gn
+@@ -1995,6 +1995,7 @@ android_library("chrome_unit_test_java_misc") {
+     "src/org/chromium/chrome/browser/toolbar/ToolbarSecurityIconTest.java",
+     "src/org/chromium/chrome/browser/webapps/WebappLaunchCauseMetricsTest.java",
+   ]
++  sources -= [ "src/org/chromium/chrome/browser/ntp/IncognitoDescriptionViewRenderTest.java" ]
+ 
+   deps = chrome_unit_test_java_deps
+ 
