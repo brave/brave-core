@@ -14,10 +14,10 @@ source_set("utils") {
   ]
 
   deps = [
-    "//chrome/browser/image_editor:image_editor",
-    "//chrome/browser/ui:ui",
-    "//chrome/browser/ui/browser_window:browser_window",
-    "//ui/base/clipboard:clipboard",
+    "//chrome/browser/image_editor",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/browser_window",
+    "//ui/base/clipboard",
   ]
 }
 
@@ -33,8 +33,8 @@ source_set("strategies") {
   ]
 
   deps = [
-    "//chrome/browser/image_editor:image_editor",
-    "//chrome/browser/ui:ui",
+    "//chrome/browser/image_editor",
+    "//chrome/browser/ui",
   ]
 }
 
@@ -47,8 +47,8 @@ source_set("tabs") {
   deps = [
     ":strategies",
     ":utils",
-    "//chrome/browser/image_editor:image_editor",
-    "//chrome/browser/ui:ui",
+    "//chrome/browser/image_editor",
+    "//chrome/browser/ui",
   ]
 }
 
@@ -58,7 +58,7 @@ source_set("features") {
     "features.h",
   ]
 
-  deps = [ "//base:base" ]
+  deps = [ "//base" ]
 }
 
 source_set("unit_tests") {
@@ -66,9 +66,9 @@ source_set("unit_tests") {
   sources = [ "test/brave_screenshots_unittests.cc" ]
   deps = [
     ":features",
-    "//base:base",
+    "//base",
     "//brave/app:command_ids",
     "//chrome/test:test_support",
-    "//testing/gtest:gtest",
+    "//testing/gtest",
   ]
 }
