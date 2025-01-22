@@ -106,7 +106,7 @@ void CookieMonster::SetCanonicalCookieAsync(
       // Shouldn't happen, but don't do anything in this case.
       net::CookieInclusionStatus cookie_inclusion_status;
       cookie_inclusion_status.AddExclusionReason(
-          net::CookieInclusionStatus::EXCLUDE_UNKNOWN_ERROR);
+          net::CookieInclusionStatus::ExclusionReason::EXCLUDE_UNKNOWN_ERROR);
 
       MaybeRunCookieCallback(std::move(callback),
                              CookieAccessResult(cookie_inclusion_status));
