@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/android/tab_features_android.h b/chrome/browser/android/tab_features_android.h
+index 03c4880f2f1b0..d3c9a5b87ecf4 100644
+--- a/chrome/browser/android/tab_features_android.h
++++ b/chrome/browser/android/tab_features_android.h
+@@ -22,7 +22,7 @@ class SyncSessionsRouterTabHelper;
+ class TabFeaturesAndroid {
+  public:
+   TabFeaturesAndroid(content::WebContents* web_contents, Profile* profile);
+-  ~TabFeaturesAndroid();
++  virtual ~TabFeaturesAndroid();
+ 
+  private:
+   std::unique_ptr<sync_sessions::SyncSessionsRouterTabHelper>
