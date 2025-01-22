@@ -660,16 +660,14 @@ void ZCashWalletService::CreateTransparentToOrchardTransaction(
 
 void ZCashWalletService::CreateTransactionTaskDone(
     ZCashCreateTransparentToOrchardTransactionTask* task) {
-  bool removed = create_shield_transaction_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; });
-  DCHECK(removed);
+  CHECK(create_shield_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(
     ZCashCreateOrchardToOrchardTransactionTask* task) {
-  bool removed = create_shielded_transaction_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; });
-  DCHECK(removed);
+  CHECK(create_shielded_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
 }
 
 void ZCashWalletService::CreateShieldAllTransactionTaskDone(
@@ -863,22 +861,19 @@ void ZCashWalletService::OnTransactionResolvedForStatus(
 
 void ZCashWalletService::CompleteTransactionTaskDone(
     ZCashCompleteTransactionTask* task) {
-  bool removed = complete_transaction_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; });
-  DCHECK(removed);
+  CHECK(complete_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
 }
 
 void ZCashWalletService::CreateTransactionTaskDone(
     ZCashCreateTransparentTransactionTask* task) {
-  bool removed = create_transaction_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; });
-  DCHECK(removed);
+  CHECK(create_transaction_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
 }
 
 void ZCashWalletService::ResolveBalanceTaskDone(ZCashResolveBalanceTask* task) {
-  bool removed = resolve_balance_tasks_.remove_if(
-      [task](auto& item) { return item.get() == task; });
-  DCHECK(removed);
+  CHECK(resolve_balance_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
 }
 
 ZCashRpc& ZCashWalletService::zcash_rpc() {
