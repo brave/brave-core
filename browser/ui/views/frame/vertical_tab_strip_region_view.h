@@ -85,7 +85,7 @@ class VerticalTabStripRegionView : public views::View,
 
   TabSearchBubbleHost* GetTabSearchBubbleHost();
 
-  int GetTabStripViewportHeight() const;
+  int GetTabStripViewportMaxHeight() const;
 
   void set_layout_dirty(base::PassKey<VerticalTabStripScrollContentsView>) {
     layout_dirty_ = true;
@@ -195,6 +195,9 @@ class VerticalTabStripRegionView : public views::View,
 
   raw_ptr<HeaderView> header_view_ = nullptr;
   raw_ptr<views::View> contents_view_ = nullptr;
+
+  // Separator between tabs and new tab button.
+  raw_ptr<views::View> separator_ = nullptr;
 
   // New tab button created for vertical tabs
   raw_ptr<BraveNewTabButton> new_tab_button_ = nullptr;

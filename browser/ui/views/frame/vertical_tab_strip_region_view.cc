@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/strings/string_split.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
@@ -68,6 +69,7 @@
 namespace {
 
 constexpr int kHeaderInset = tabs::kMarginForVerticalTabContainers;
+constexpr int kSeparatorHeight = 1;
 
 // Use toolbar button's ink drop effect.
 class ToggleButton : public ToolbarButton {
@@ -204,17 +206,59 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
 BEGIN_METADATA(VerticalTabSearchButton)
 END_METADATA
 
+class ShortcutBox : public views::View {
+  METADATA_HEADER(ShortcutBox, views::View)
+ public:
+  explicit ShortcutBox(const std::u16string& shortcut_text) {
+    constexpr int kChildSpacing = 4;
+    SetLayoutManager(std::make_unique<views::BoxLayout>(
+        views::BoxLayout::Orientation::kHorizontal, gfx::Insets(),
+        kChildSpacing));
+
+    std::vector<std::u16string> tokens = base::SplitString(
+        shortcut_text, u"+", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+    for (const auto& token : tokens) {
+      AddShortcutPart(token);
+    }
+  }
+
+ private:
+  void AddShortcutPart(const std::u16string& text) {
+    constexpr int kFontSize = 12;
+    auto* shortcut_part = AddChildView(std::make_unique<views::Label>(text));
+    shortcut_part->SetHorizontalAlignment(
+        gfx::HorizontalAlignment::ALIGN_CENTER);
+    shortcut_part->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
+    const auto shortcut_font = shortcut_part->font_list();
+    shortcut_part->SetFontList(shortcut_font.DeriveWithSizeDelta(
+        kFontSize - shortcut_font.GetFontSize()));
+    shortcut_part->SetEnabledColorId(
+        kColorBraveVerticalTabNTBShortcutTextColor);
+    shortcut_part->SetBorder(views::CreateThemedRoundedRectBorder(
+        /*thickness*/ 1, /*radius*/ 4, kColorBraveVerticalTabSeparator));
+
+    // Give padding and set minimum to width.
+    auto preferred_size = shortcut_part->GetPreferredSize();
+    preferred_size.Enlarge(4, 0);
+    constexpr int kMinWidth = 18;
+    preferred_size.set_width(std::max(kMinWidth, preferred_size.width()));
+    shortcut_part->SetPreferredSize(preferred_size);
+  }
+};
+
+BEGIN_METADATA(ShortcutBox)
+END_METADATA
+
 class VerticalTabNewTabButton : public BraveNewTabButton {
   METADATA_HEADER(VerticalTabNewTabButton, BraveNewTabButton)
  public:
-  static constexpr int kHeight = 50;
-
   VerticalTabNewTabButton(TabStrip* tab_strip,
                           PressedCallback callback,
-                          const std::u16string& shortcut_text,
-                          VerticalTabStripRegionView* region_view)
-      : BraveNewTabButton(tab_strip, std::move(callback)),
-        region_view_(region_view) {
+                          const std::u16string& shortcut_text)
+      : BraveNewTabButton(tab_strip, std::move(callback)) {
+    // Turn off inkdrop to have same bg color with tab's.
+    views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
+
     // We're going to use flex layout for children of this class. Other children
     // from base classes should be handled out of flex layout.
     for (views::View* child : children()) {
@@ -223,13 +267,15 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
     SetNotifyEnterExitOnChild(true);
 
+    constexpr int kNewTabVerticalPadding = 8;
+    constexpr int kNewTabHorizontalPadding = 7;
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
-        .SetCrossAxisAlignment(views::LayoutAlignment::kStretch);
+        .SetCrossAxisAlignment(views::LayoutAlignment::kStretch)
+        .SetInteriorMargin(
+            gfx::Insets::VH(kNewTabHorizontalPadding, kNewTabVerticalPadding));
 
     plus_icon_ = AddChildView(std::make_unique<views::ImageView>());
-    plus_icon_->SetPreferredSize(
-        gfx::Size(tabs::kVerticalTabMinWidth, kHeight));
     plus_icon_->SetHorizontalAlignment(views::ImageView::Alignment::kCenter);
     plus_icon_->SetVerticalAlignment(views::ImageView::Alignment::kCenter);
     plus_icon_->SetImage(ui::ImageModel::FromVectorIcon(
@@ -245,38 +291,40 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
         l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB)));
     text_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
     text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
+    constexpr int kGapBetweenIconAndText = 16;
+    text_->SetProperty(views::kMarginsKey,
+                       gfx::Insets::TLBR(0, kGapBetweenIconAndText, 0, 0));
     text_->SetProperty(views::kFlexBehaviorKey,
                        views::FlexSpecification(
                            views::MinimumFlexSizeRule::kPreferredSnapToZero,
-                           views::MaximumFlexSizeRule::kUnbounded)
-                           .WithOrder(3)
-                           .WithWeight(0));
+                           views::MaximumFlexSizeRule::kPreferred)
+                           .WithOrder(3));
 
     constexpr int kFontSize = 12;
     const auto text_font = text_->font_list();
     text_->SetFontList(
         text_font.DeriveWithSizeDelta(kFontSize - text_font.GetFontSize()));
+    text_->SetEnabledColorId(kColorBraveVerticalTabNTBTextColor);
 
-    shortcut_text_ = AddChildView(std::make_unique<views::Label>());
-    shortcut_text_->SetHorizontalAlignment(
-        gfx::HorizontalAlignment::ALIGN_RIGHT);
-    shortcut_text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
-    const auto shortcut_font = shortcut_text_->font_list();
-    shortcut_text_->SetFontList(shortcut_font.DeriveWithSizeDelta(
-        kFontSize - shortcut_font.GetFontSize()));
-    shortcut_text_->SetProperty(
-        views::kMarginsKey,
-        gfx::Insets::VH(0, tabs::kMarginForVerticalTabContainers));
-    shortcut_text_->SetProperty(
+    auto* spacer = AddChildView(std::make_unique<views::View>());
+    spacer->SetProperty(
         views::kFlexBehaviorKey,
-        views::FlexSpecification(
-            views::MinimumFlexSizeRule::kPreferredSnapToZero,
-            views::MaximumFlexSizeRule::kPreferred)
+        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                                 views::MaximumFlexSizeRule::kUnbounded)
+            .WithOrder(4));
+
+    auto* shortcut_box =
+        AddChildView(std::make_unique<ShortcutBox>(shortcut_text));
+    shortcut_box->SetProperty(
+        views::kMarginsKey, gfx::Insets::TLBR(0, kGapBetweenIconAndText, 0, 0));
+    shortcut_box->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                                 views::MaximumFlexSizeRule::kPreferred)
             .WithOrder(2));
 
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
     SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
-    SetShortcutText(shortcut_text);
   }
 
   ~VerticalTabNewTabButton() override = default;
@@ -298,89 +346,39 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
   }
 
   void PaintIcon(gfx::Canvas* canvas) override {
-    // Revert back the offset set by NewTabButton::PaintButtonContents(), which
-    // is the caller of this method.
-    gfx::ScopedCanvas scoped_canvas(canvas);
-    canvas->Translate(-GetContentsBounds().OffsetFromOrigin());
-
     // Bypass '+' painting as we have a |plus_icon_| for that.
-    ImageButton::PaintButtonContents(canvas);
+    return;
   }
 
   gfx::Insets GetInsets() const override {
-    return gfx::Insets(tabs::kMarginForVerticalTabContainers);
+    // This button doesn't need any insets. Invalidate parent's one.
+    return gfx::Insets();
   }
 
   void OnPaintFill(gfx::Canvas* canvas) const override {
-    auto* cp = GetColorProvider();
-    CHECK(cp);
-
-    // Override fill color
-    {
-      gfx::ScopedCanvas scoped_canvas_for_scaling(canvas);
-      canvas->UndoDeviceScaleFactor();
-      cc::PaintFlags flags;
-      flags.setAntiAlias(true);
-      flags.setColor(cp->GetColor(kColorToolbar));
-      canvas->DrawPath(GetBorderPath(gfx::Point(), false), flags);
-    }
-
-    // Draw split line on the top.
-    // Revert back the offset set by NewTabButton::PaintButtonContents(), which
-    // is the caller of this method.
-    gfx::ScopedCanvas scoped_canvas_for_translating(canvas);
-    canvas->Translate(-GetContentsBounds().OffsetFromOrigin());
-
-    gfx::Rect separator_bounds = GetLocalBounds();
-    separator_bounds.set_height(1);
-    cc::PaintFlags flags;
-    flags.setStyle(cc::PaintFlags::kFill_Style);
-    flags.setColor(cp->GetColor(kColorToolbar));
-    canvas->DrawRect(gfx::RectF(separator_bounds), flags);
+    // Invalidate upstream's paint operation.
+    // We fill background whenever state changed to have same bg color with
+    // tab's. See StateChanged().
+    // It's difficult to have same bg color with ink drop.
   }
 
-  void OnThemeChanged() override {
-    BraveNewTabButton::OnThemeChanged();
+  void StateChanged(ButtonState old_state) override {
+    BraveNewTabButton::StateChanged(old_state);
 
-    CHECK(text_ && shortcut_text_);
-
-    auto* cp = GetColorProvider();
-    CHECK(cp);
-
-    plus_icon_->SchedulePaint();
-    text_->SetEnabledColor(cp->GetColor(kColorBraveVerticalTabNTBTextColor));
-    shortcut_text_->SetEnabledColor(
-        cp->GetColor(kColorBraveVerticalTabNTBShortcutTextColor));
-  }
-
-  void Layout(PassKey) override {
-    LayoutSuperclass<BraveNewTabButton>(this);
-
-    // FlexLayout could set the ink drop container invisible.
-    if (!ink_drop_container()->GetVisible()) {
-      ink_drop_container()->SetVisible(true);
+    int bg_color_id = kColorToolbar;
+    if (GetState() == views::Button::STATE_PRESSED) {
+      bg_color_id = kColorBraveVerticalTabActiveBackground;
+    } else if (GetState() == views::Button::STATE_HOVERED) {
+      bg_color_id = kColorBraveVerticalTabHoveredBackground;
     }
-  }
 
-  gfx::Size CalculatePreferredSize(
-      const views::SizeBounds& available_size) const override {
-    auto size = BraveNewTabButton::CalculatePreferredSize(available_size);
-    if (tabs::utils::ShouldShowVerticalTabs(tab_strip()->GetBrowser())) {
-      size.set_height(kHeight);
-    }
-    return size;
+    SetBackground(views::CreateThemedRoundedRectBackground(bg_color_id,
+                                                           GetCornerRadius()));
   }
 
  private:
-  void SetShortcutText(const std::u16string& text) {
-    CHECK(shortcut_text_);
-    shortcut_text_->SetText(text);
-  }
-
-  raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;
   raw_ptr<views::ImageView> plus_icon_ = nullptr;
   raw_ptr<views::Label> text_ = nullptr;
-  raw_ptr<views::Label> shortcut_text_ = nullptr;
 };
 
 BEGIN_METADATA(VerticalTabNewTabButton)
@@ -624,12 +622,14 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       AddChildView(std::make_unique<VerticalTabStripScrollContentsView>(
           this, original_region_view_->tab_strip_));
   header_view_->toggle_button()->SetHighlighted(state_ == State::kExpanded);
-
+  separator_ = AddChildView(std::make_unique<views::View>());
+  separator_->SetBackground(
+      views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
       original_region_view_->tab_strip_,
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
                           base::Unretained(original_region_view_->tab_strip_)),
-      GetShortcutTextForNewTabButton(browser_view), this));
+      GetShortcutTextForNewTabButton(browser_view)));
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
 
@@ -917,26 +917,35 @@ void VerticalTabStripRegionView::Layout(PassKey) {
 
   // As we have to update ScrollView's viewport size and its contents size,
   // laying out children manually will be more handy.
-
-  // 1. New tab should be fixed at the bottom of container.
   const auto contents_bounds = GetContentsBounds();
-  new_tab_button_->SetSize(
-      {contents_bounds.width(), new_tab_button_->GetPreferredSize().height()});
-  new_tab_button_->SetPosition(
-      {contents_bounds.x(),
-       contents_bounds.bottom() - new_tab_button_->height()});
 
   const gfx::Size header_size{contents_bounds.width(),
                               tabs::kVerticalTabHeight + kHeaderInset * 2};
-  header_view_->SetPosition(contents_bounds.origin());
-  header_view_->SetSize(header_size);
+  header_view_->SetBoundsRect(gfx::Rect(contents_bounds.origin(), header_size));
 
-  contents_view_->SetSize(
-      {contents_bounds.width(), contents_bounds.height() -
-                                    new_tab_button_->height() -
-                                    header_view_->height()});
-  contents_view_->SetPosition({contents_bounds.origin().x(),
-                               header_view_->y() + header_view_->height()});
+  constexpr int kNewTabButtonHeight = tabs::kVerticalTabHeight;
+  const int contents_view_max_height =
+      contents_bounds.height() - kNewTabButtonHeight - header_view_->height();
+  const int contents_view_preferred_height =
+      tab_strip()->GetPreferredSize().height();
+  contents_view_->SetBoundsRect(gfx::Rect(
+      header_view_->bounds().bottom_left(),
+      gfx::Size(
+          contents_bounds.width(),
+          std::min(contents_view_max_height, contents_view_preferred_height))));
+
+  gfx::Rect separator_bounds(
+      contents_view_->bounds().bottom_left(),
+      gfx::Size(contents_bounds.width(), kSeparatorHeight));
+  separator_bounds.Inset(
+      gfx::Insets::VH(0, tabs::kMarginForVerticalTabContainers));
+  separator_->SetBoundsRect(separator_bounds);
+  gfx::Rect new_tab_button_bounds(
+      separator_->bounds().bottom_left(),
+      gfx::Size(separator_bounds.width(), kNewTabButtonHeight));
+  new_tab_button_bounds.Offset(0, tabs::kMarginForVerticalTabContainers);
+  new_tab_button_->SetBoundsRect(new_tab_button_bounds);
+
   UpdateOriginalTabSearchButtonVisibility();
 
   // Put resize area, overlapped with contents.
@@ -1185,16 +1194,18 @@ void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   auto* original_ntb = original_region_view_->new_tab_button();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
+  separator_->SetVisible(is_vertical_tabs);
 }
 
 TabSearchBubbleHost* VerticalTabStripRegionView::GetTabSearchBubbleHost() {
   return header_view_->tab_search_button()->tab_search_bubble_host();
 }
 
-int VerticalTabStripRegionView::GetTabStripViewportHeight() const {
+int VerticalTabStripRegionView::GetTabStripViewportMaxHeight() const {
   // Don't depend on |contents_view_|'s current height. It could be bigger than
   // the actual viewport height.
   return GetContentsBounds().height() - header_view_->height() -
+         (separator_->height() + tabs::kMarginForVerticalTabContainers) -
          new_tab_button_->height();
 }
 
@@ -1248,8 +1259,10 @@ void VerticalTabStripRegionView::UpdateBorder() {
       (sidebar_on_same_side
            ? 0
            : BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
-  gfx::Insets border_insets = (is_on_right) ? gfx::Insets::TLBR(0, inset, 0, 0)
-                                            : gfx::Insets::TLBR(0, 0, 0, inset);
+  gfx::Insets border_insets =
+      (is_on_right)
+          ? gfx::Insets::TLBR(0, inset, tabs::kVerticalTabsSpacing, 0)
+          : gfx::Insets::TLBR(0, 0, tabs::kVerticalTabsSpacing, inset);
 
   if (show_visible_border()) {
     SetBorder(views::CreateSolidSidedBorder(
