@@ -40,8 +40,8 @@ source_set("strategies") {
 
 source_set("tabs") {
   sources = [
-    "screenshots_tab_feature.cc",
-    "screenshots_tab_feature.h",
+    "brave_screenshots_tab_feature.cc",
+    "brave_screenshots_tab_feature.h",
   ]
 
   deps = [
