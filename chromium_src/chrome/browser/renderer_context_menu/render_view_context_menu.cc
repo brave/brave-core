@@ -13,7 +13,7 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/brave_screenshots/features.h"
-#include "brave/browser/brave_screenshots/screenshots_tab_feature.h"
+#include "brave/browser/brave_screenshots/brave_screenshots_tab_feature.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/cosmetic_filters/cosmetic_filters_tab_helper.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
