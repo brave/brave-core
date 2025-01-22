@@ -63,6 +63,7 @@ class ConversationAPIClient {
     RequestSummary,
     RequestRewrite,
     SuggestedActions,
+    UploadImage,
     // TODO(petemill):
     // - Search in-progress?
     // - Sources?

@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -58,6 +59,7 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
   void GenerateAssistantResponse(
       const bool& is_video,
       const std::string& page_content,
+      const std::vector<std::vector<uint8_t>>& uploaded_images,
       const ConversationHistory& conversation_history,
       const std::string& selected_language,
       GenerationDataCallback data_received_callback,
