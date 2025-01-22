@@ -194,7 +194,7 @@ class ScriptFactory {
       sourceWrapper = sourceWrapper.replacingOccurrences(of: "$<scriplet>", with: source)
       sourceWrapper = sourceWrapper.replacingOccurrences(
         of: "$<required_href>",
-        with: configuration.frameURL.domainURL.absoluteString
+        with: configuration.frameURL.windowOriginURL.absoluteString
       )
       // when `isMainFrame` is true, we still need to inject to all frames to handle `about:blank` first-party frames
       resultingScript = WKUserScript(
