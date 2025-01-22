@@ -48,13 +48,10 @@ class BraveScreenshotsContextMenuTest : public testing::Test {
   // Returns a test context menu.
   std::unique_ptr<BraveRenderViewContextMenuMock> CreateContextMenu(
       content::WebContents* web_contents,
-      content::ContextMenuParams params,
-      bool is_pwa_browser = false) {
+      content::ContextMenuParams params) {
     auto menu = std::make_unique<BraveRenderViewContextMenuMock>(
         *web_contents->GetPrimaryMainFrame(), params);
-    Browser::CreateParams create_params(
-        is_pwa_browser ? Browser::Type::TYPE_APP : Browser::Type::TYPE_NORMAL,
-        profile_.get(), true);
+    Browser::CreateParams create_params(profile_.get(), true);
     auto test_window = std::make_unique<TestBrowserWindow>();
     create_params.window = test_window.get();
     browser_.reset(Browser::Create(create_params));
