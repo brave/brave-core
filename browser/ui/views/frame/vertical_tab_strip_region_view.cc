@@ -107,7 +107,7 @@ class ToggleButton : public ToolbarButton {
     }
   }
 
-  std::u16string GetTooltipText(const gfx::Point& p) const override {
+  std::u16string GetRenderedTooltipText(const gfx::Point& p) const override {
     if (region_view_->state() == VerticalTabStripRegionView::State::kExpanded) {
       return l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_MINIMIZE);
     }

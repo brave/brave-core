@@ -40,7 +40,7 @@ class BraveShieldsActionView
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
-  std::u16string GetTooltipText(const gfx::Point& p) const override;
+  std::u16string GetRenderedTooltipText(const gfx::Point& p) const override;
   void OnThemeChanged() override;
 
   SkPath GetHighlightPath() const;
