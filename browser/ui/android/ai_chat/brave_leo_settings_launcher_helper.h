@@ -27,6 +27,8 @@ void HandleVoiceRecognition(content::WebContents* web_contents,
                             const std::string& conversation_uuid);
 // Closes Leo chat window
 void CloseActivity(content::WebContents* web_contents);
+// Shows soft keyboard
+void HandleShowSoftKeyboard(content::WebContents* web_contents);
 
 }  // namespace ai_chat
 

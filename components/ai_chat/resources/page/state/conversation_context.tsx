@@ -23,6 +23,7 @@ export interface CharCountContext {
 }
 
 export type ConversationContext = SendFeedbackState & CharCountContext & {
+  historyInitialized: boolean
   conversationUuid?: string
   conversationHistory: Mojom.ConversationTurn[]
   associatedContentInfo?: Mojom.SiteInfo
@@ -69,6 +70,7 @@ export const defaultCharCountContext: CharCountContext = {
 }
 
 const defaultContext: ConversationContext = {
+  historyInitialized: false,
   conversationHistory: [],
   allModels: [],
   suggestedQuestions: [],
@@ -189,7 +191,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       const { conversationHistory } =
         await conversationHandler.getConversationHistory()
       setPartialContext({
-        conversationHistory
+        conversationHistory,
+        historyInitialized: true
       })
     }
 
