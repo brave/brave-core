@@ -382,6 +382,9 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_TITLE" desc="The title for the create alias">
     Create a new alias email
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_BUBBLE_DESCRIPTION" desc="The description for the email alias bubble">
+    Create a random email address that forwards to your inbox while keeping your personal email private.
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CREATE_ALIAS_LABEL" desc="The label for the create alias">
     New alias
   </message>
@@ -396,6 +399,9 @@
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_CANCEL_BUTTON" desc="The label for the cancel button">
     Cancel
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_MANAGE_BUTTON" desc="The label for the manage button">
+    Manage
   </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_ALIAS_LABEL" desc="The label for the alias">
     Email alias

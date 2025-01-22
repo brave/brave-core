@@ -150,7 +150,7 @@ export const GeneratedEmailContainer = styled(Row)`
 `
 
 export const ButtonRow = styled(Row)`
-  justify-content: end;
+  justify-content: space-between;
   margin: 1em 0em;
 `
 

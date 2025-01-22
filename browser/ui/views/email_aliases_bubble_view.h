@@ -11,6 +11,10 @@
 #include "base/memory/weak_ptr.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
+namespace views {
+class WebView;
+}
+
 class Browser;
 
 class EmailAliasesBubbleView : public views::BubbleDialogDelegateView {
@@ -28,9 +32,13 @@ class EmailAliasesBubbleView : public views::BubbleDialogDelegateView {
 
   void FillField(const std::string& value);
 
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override;
+
  private:
   raw_ptr<Browser> browser_;
   uint64_t field_renderer_id_;
+  raw_ptr<views::WebView> web_view_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_EMAIL_ALIASES_BUBBLE_VIEW_H_
