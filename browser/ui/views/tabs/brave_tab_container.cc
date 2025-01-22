@@ -405,10 +405,6 @@ void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
     if (!ZOrderableTabContainerElement::CanOrderView(child)) {
       continue;
     }
-    if (child->layer()) {
-      continue;
-    }
-
     orderable_children.emplace_back(child);
   }
 

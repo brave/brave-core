@@ -37,14 +37,16 @@ NSString* keyCombinationForMenuItem(NSMenuItem* item) {
   NSMutableString* string = [NSMutableString string];
   NSUInteger modifiers = item.keyEquivalentModifierMask;
 
+  // Appended "+" after the modifier as key combination
+  // is splited to each part and rendered separately.
   if (modifiers & NSEventModifierFlagCommand)
-    [string appendString:@"\u2318"];
+    [string appendString:@"\u2318+"];
   if (modifiers & NSEventModifierFlagControl)
-    [string appendString:@"\u2303"];
+    [string appendString:@"\u2303+"];
   if (modifiers & NSEventModifierFlagOption)
-    [string appendString:@"\u2325"];
+    [string appendString:@"\u2325+"];
   if (modifiers & NSEventModifierFlagShift)
-    [string appendString:@"\u21E7"];
+    [string appendString:@"\u21E7+"];
 
   [string appendString:[item.keyEquivalent uppercaseString]];
   return string;
