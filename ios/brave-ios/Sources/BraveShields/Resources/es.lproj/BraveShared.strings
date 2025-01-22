@@ -83,7 +83,7 @@
 "CustomFiltersInvalidRuleError" = "Regla no válida \"%1$@\" en la línea %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Añada aquí sus filtros personalizados, cada uno en una línea.";
+"CustomFiltersPlaceholder" = "Añada aquí tus filtros personalizados, cada uno en una línea.";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "El límite de líneas para los filtros personalizados es %i";

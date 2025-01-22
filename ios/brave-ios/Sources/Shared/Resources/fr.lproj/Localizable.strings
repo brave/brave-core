@@ -71,7 +71,7 @@
 "OKString" = "OK";
 
 /* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
-"ReaderModeAvailableVoiceOverAnnouncement" = "Mode Lecteur disponible";
+"ReaderModeAvailableVoiceOverAnnouncement" = "Mode Lecture disponible";
 
 /* Accessibility label for button resetting font size in display settings of reader mode */
 "ReaderModeResetFontSizeAccessibilityLabel" = "Réinitialiser la taille du texte";

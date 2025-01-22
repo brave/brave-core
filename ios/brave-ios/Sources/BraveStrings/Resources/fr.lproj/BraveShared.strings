@@ -1234,7 +1234,7 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Ouvrir les paramètres";
 
-/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+/* The description indicating the device is active # of days ago. The parameter substituted for "%ld" is the number of days. E.g.: Active 123 Days Ago */
 "opentabs.activePeriodDeviceDaysAgoTitle" = "Actif il y a %ld jours";
 
 /* The description indicating the device is active last time this month */
@@ -1276,13 +1276,13 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Tout ouvrir";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "%@ dernier à";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
 "opentabs.openTabsItemLastSyncedTodayTitle" = "Aujourd'hui à %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
 "opentabs.openTabsItemLastSyncedYesterdayTitle" = "Hier à %@";
 
 /* The title displayed on table header for open tabs list from other devices */
@@ -2036,10 +2036,10 @@
 "ReaderModeLoadOriginalLinkText" = "Charger la page d'origine";
 
 /* Message displayed when the reader mode page could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModePageCantShowDisplayText" = "Impossible d'afficher la page en mode Lecteur.";
+"ReaderModePageCantShowDisplayText" = "Impossible d'afficher la page en mode Lecture.";
 
 /* Title of a bar that show up when you enter reader mode. */
-"readerModeSettingsButton" = "Mode lecture";
+"readerModeSettingsButton" = "Mode Lecture";
 
 /* Accessibility label for button decreasing font size in display settings of reader mode */
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Réduire la taille du texte";
@@ -2158,19 +2158,19 @@
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Envoyer";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "« %@ » souhaite accéder à la caméra et au micro";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraPermissionPrompt" = "« %@ » souhaite accéder à la caméra";
 
 /* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
 "requestCaptureDevicePermissionAllowButtonTitle" = "Autoriser";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCaptureDevicePermissionPrompt" = "« %@ » souhaite accéder à un périphérique de capture de contenu multimédia";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "« %@ » souhaite accéder au micro";
 
 /* Name of folder where restored bookmarks are retrieved */
@@ -2494,13 +2494,13 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Afficher les suggestions de recherche";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Suggestions de recherche de %@";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Afficher cet onglet";
 
-/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "Recherche sur %@";
 
 /* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
@@ -2635,7 +2635,7 @@
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "Félicitations, vous êtes exceptionnel.";
 
-/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+/* Subtitle for  The parameter substituted for "%@" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
 "shieldEducation.domainSpecificDataSavedSubtitle" = "Moyenne des données économisées\n%@ Mo";
 
 /* Action title for button at domain specific data saved pop-up */
@@ -2650,7 +2650,7 @@
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Félicitations, vous êtes exceptionnel.";
 
-/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+/* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
 "shieldEducation.trackerCountShareTitle" = "%ld traqueurs et publicités bloqués !";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
@@ -2951,16 +2951,16 @@
 "sync.codeTimeMultipleHourText" = "heures";
 
 /* The unit text used for multiple seconds when showing code validity. Ex: This temporary code is valid for the next 2 seconds */
-"sync.codeTimeMultipleSecondsText" = "Frenchify(seconds)";
+"sync.codeTimeMultipleSecondsText" = "secondes";
 
 /* Title explaining how loing the sync code can be used. It will be used like Ex: This temporary code is valid for the next 17 hours 33 minutes 1 second */
 "sync.codeTimeRemainingTitleLabel" = "Ce code temporaire est valable pendant %@";
 
 /* The unit text used for single hour when showing code validity. Ex: This temporary code is valid for the next 1 hour */
-"sync.codeTimeSingleHourText" = "Frenchify hour";
+"sync.codeTimeSingleHourText" = "heure";
 
 /* The unit text used for single second when showing code validity. Ex: This temporary code is valid for the next 1 second */
-"sync.codeTimeSingleSecondText" = "Frenchify(second)";
+"sync.codeTimeSingleSecondText" = "seconde";
 
 /* Code words input help */
 "sync.codeWordInputHelp" = "Saisissez les mots codés fournis pour la chaîne de synchronisation dans le formulaire ci-dessous.";
@@ -3236,7 +3236,7 @@
 "TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
 /* Accessibility label for the Reader View button */
-"TabToolbarReaderViewButtonAccessibilityLabel" = "Mode Lecteur";
+"TabToolbarReaderViewButtonAccessibilityLabel" = "Mode Lecture";
 
 /* Accessibility label for action adding current page to reading list. */
 "TabToolbarReaderViewButtonTitle" = "Ajouter à la liste de lecture";
@@ -3274,7 +3274,7 @@
 /* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
 "TabTrayEmptyVoiceOverText" = "Aucun onglet";
 
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
 "TabTrayMultiTabPositionFormatVoiceOverText" = "Onglets %1$@ à %2$@ sur %3$@";
 
 /* Accessibility label for the New Tab button in the tab toolbar. */
@@ -3283,7 +3283,7 @@
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Onglets de recherche";
 
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "Onglet %1$@ sur %2$@";
 
 /* No comment provided by engineer. */
@@ -3406,16 +3406,16 @@
 /* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
 "today.getFeedsFromSiteButtonTitle" = "Recevez des flux de";
 
-/* \"OPML\" is a file extension that contains a list of rss feeds. */
+/* "OPML" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "Importer OPML";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Sources non sécurisées. Ajoutez-la à vos risques et périls";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+/* Shown above a button that turns on the "Brave News" product in the app. by sources & feeds they mean websites & blogs. */
 "today.introCardBody" = "Suivez vos sources préférées au sein d'un seul et même flux. Il vous suffit d'ouvrir un onglet dans Brave, de faire défiler la page vers le bas, et le tour est joué !\nLes actualités Brave sont soutenues par des publicités privées et anonymisées.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
+/* Shown above a button that turns on the "Brave News" product in the app. */
 "today.introCardTitle" = "Activez les actualités Brave et ne ratez aucune info";
 
 /* No comment provided by engineer. */
@@ -3497,7 +3497,7 @@
 "today.userSourcesHeaderTitle" = "Sources de l'utilisateur";
 
 /* Button title that when tapped toggles the web page in our out of reader mode */
-"ToggleReaderMode" = "Activer/désactiver le mode Lecteur";
+"ToggleReaderMode" = "Activer/désactiver le mode Lecture";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Activer les suggestions de recherche ?";

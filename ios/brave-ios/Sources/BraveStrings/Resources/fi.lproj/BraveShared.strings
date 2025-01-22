@@ -1234,7 +1234,7 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Avaa asetukset";
 
-/* The description indicating the device is active # of days ago. The parameter substituted for \"%ld\" is the number of days. E.g.: Active 123 Days Ago */
+/* The description indicating the device is active # of days ago. The parameter substituted for "%ld" is the number of days. E.g.: Active 123 Days Ago */
 "opentabs.activePeriodDeviceDaysAgoTitle" = "Aktiivinen %ld päivää sitten";
 
 /* The description indicating the device is active last time this month */
@@ -1276,13 +1276,13 @@
 /* The title for the action to open all the tabs in a synced open session */
 "opentabs.openSessionOpenAllActionTitle" = "Avaa kaikki";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact day of the week and exact time. E.g.: Last Week Monday 12:00 PM */
 "opentabs.openTabsItemLastSyncedLastWeekTitle" = "Viime viikko %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Today 12:00 PM */
 "opentabs.openTabsItemLastSyncedTodayTitle" = "Tänään %@";
 
-/* The description indicating when is the open tab synced. The parameter substituted for \"%@\" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
+/* The description indicating when is the open tab synced. The parameter substituted for "%@" is the actual string representation of the exact time. E.g.: Yesterday 12:00 PM */
 "opentabs.openTabsItemLastSyncedYesterdayTitle" = "Eilen %@";
 
 /* The title displayed on table header for open tabs list from other devices */
@@ -2158,19 +2158,19 @@
 /* No comment provided by engineer. */
 "ReportBrokenSubmitButtonTitle" = "Lähetä";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraAndMicrophonePermissionPrompt" = "\"%@\" haluaa kameran ja mikrofonin käyttöoikeuden";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCameraPermissionPrompt" = "\"%@\" haluaa kameran käyttöoikeuden";
 
 /* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
 "requestCaptureDevicePermissionAllowButtonTitle" = "Salli";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCaptureDevicePermissionPrompt" = "\"%@\" haluaa mediantallennuslaitteen käyttöoikeuden";
 
-/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\") */
+/* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestMicrophonePermissionPrompt" = "\"%@\" haluaa mikrofonin käyttöoikeuden";
 
 /* Name of folder where restored bookmarks are retrieved */
@@ -2494,13 +2494,13 @@
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "Näytä hakuehdotukset";
 
-/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Search suggestions from Google */
+/* Accessibility label for image of default search engine displayed left to the actual search suggestions from the engine. The parameter substituted for "%@" is the name of the search engine. E.g.: Search suggestions from Google */
 "SearchSuggestionFromFormatText" = "Hakuehdotukset kohteesta %@";
 
 /* Action title for Switching to an existing tab for the suggestion item shown on the table list */
 "searchSuggestionOpenTabActionTitle" = "Vaihda tähän välilehteen";
 
-/* Section Title when showing search suggestions. The parameter substituted for \"%@\" is the name of the search engine. E.g.: Google Search */
+/* Section Title when showing search suggestions. The parameter substituted for "%@" is the name of the search engine. E.g.: Google Search */
 "SearchSuggestionSectionTitleFormat" = "%@-haku";
 
 /* Section Title when showing search suggestions and the engine does not contain the word 'Search'. */
@@ -2635,7 +2635,7 @@
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkSpecialTierTitle" = "Onnittelut, olet erityinen.";
 
-/* Subtitle for  The parameter substituted for \"%@\" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
+/* Subtitle for  The parameter substituted for "%@" is the amount of data saved in MB. E.g.: Average Data Saved: 17.43 MB */
 "shieldEducation.domainSpecificDataSavedSubtitle" = "Keskimääräinen tallennettu data\n%@ Mt";
 
 /* Action title for button at domain specific data saved pop-up */
@@ -2650,7 +2650,7 @@
 /* Subtitle for Shield Education Tracker Count Share */
 "shieldEducation.trackerCountShareSubtitle" = "Onnittelut, olet erityinen.";
 
-/* Title for Shield Education Tracker Count Share. The parameter substituted for \"%ld\" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
+/* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
 "shieldEducation.trackerCountShareTitle" = "%ld seurantaohjelmaa ja mainosta estetty!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
@@ -3274,7 +3274,7 @@
 /* Message spoken by VoiceOver to indicate that there are no tabs in the Tabs Tray */
 "TabTrayEmptyVoiceOverText" = "Ei välilehtiä";
 
-/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. \"Tabs 8 to 10 of 15\" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
+/* Message spoken by VoiceOver saying the range of tabs that are currently visible in Tabs Tray, along with the total number of tabs. E.g. "Tabs 8 to 10 of 15" says tabs 8, 9 and 10 are visible, out of 15 tabs total. */
 "TabTrayMultiTabPositionFormatVoiceOverText" = "Välilehdet %1$@–%2$@ / %3$@";
 
 /* Accessibility label for the New Tab button in the tab toolbar. */
@@ -3283,7 +3283,7 @@
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Etsi välilehdistä";
 
-/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
+/* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. "Tab 2 of 5" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "Välilehti %1$@/%2$@";
 
 /* No comment provided by engineer. */
@@ -3406,16 +3406,16 @@
 /* Shown with a website the user has typed in after the text. For example: 'Get feeds from https://brave.com'. */
 "today.getFeedsFromSiteButtonTitle" = "Hae syötteitä osoitteesta";
 
-/* \"OPML\" is a file extension that contains a list of rss feeds. */
+/* "OPML" is a file extension that contains a list of rss feeds. */
 "today.importOPML" = "Tuo OPML";
 
 /* The header above the list of insecure sources */
 "today.insecureSourcesHeader" = "Lähteet ovat suojaamattomia – lisää omalla vastuullasi";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. by sources & feeds they mean websites & blogs. */
+/* Shown above a button that turns on the "Brave News" product in the app. by sources & feeds they mean websites & blogs. */
 "today.introCardBody" = "Seuraa suosikkilähteitäsi yhdessä syötteessä. Avaa välilehti Bravessa, vieritä alas ja… voila!\nBrave-uutistoimintoa tuetaan yksityisillä, anonymisoiduilla mainoksilla.";
 
-/* Shown above a button that turns on the \"Brave News\" product in the app. */
+/* Shown above a button that turns on the "Brave News" product in the app. */
 "today.introCardTitle" = "Ota Brave-uutiset käyttöön, niin yksikään tarina ei mene ohi";
 
 /* No comment provided by engineer. */
