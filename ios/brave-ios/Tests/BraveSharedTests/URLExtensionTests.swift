@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import WebKit
 import XCTest
 
 class URLExtensionTests: XCTestCase {
@@ -134,5 +135,37 @@ class URLExtensionTests: XCTestCase {
       embeddedURL.displayURL,
       embeddedURL
     )
+  }
+
+  // Test that `windowOriginURL` returns the same value as `window.origin`.
+  @MainActor func testWindowOriginURL() async {
+    let testURLs = [
+      // multiple subdomains
+      (URL(string: "https://one.two.three.example.com")!, "https://one.two.three.example.com"),
+      // trailing slash
+      (URL(string: "https://example.com/")!, "https://example.com"),
+      // query
+      (URL(string: "https://www.example.com/?v=1234567")!, "https://www.example.com"),
+      // match
+      (URL(string: "https://www.example.com")!, "https://www.example.com"),
+    ]
+
+    let webView = WKWebView()
+    for (value, expected) in testURLs {
+      do {
+        webView.loadHTMLString("", baseURL: value)
+
+        try await Task.sleep(seconds: 1)
+
+        guard let result = try await webView.evaluateJavaScript("window.origin") as? String else {
+          XCTFail("Expected a String result")
+          return
+        }
+        XCTAssertEqual(result, expected)
+        XCTAssertEqual(result, value.windowOriginURL.absoluteString)
+      } catch {
+        XCTFail("Expected a valid `window.origin`")
+      }
+    }
   }
 }
