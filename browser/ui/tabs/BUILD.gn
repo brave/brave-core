@@ -21,7 +21,7 @@ if (!is_android) {
 
     deps = [
       ":tabs_public",
-      "//brave/browser/ui/side_panel:public",
+      "//brave/browser/ui/side_panel",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/tabs:impl",
     ]
