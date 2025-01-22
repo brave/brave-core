@@ -172,8 +172,10 @@ extension BrowserViewController {
 
     let defaultBrowserCallout = UIHostingController(
       rootView: FocusSystemSettingsView(
+        namespace: Namespace().wrappedValue,
         screenType: .callout,
-        shouldDismiss: Binding.constant(false)
+        isCompleted: .constant(false),
+        shouldDismiss: .constant(false)
       )
     ).then {
       $0.isModalInPresentation = true
