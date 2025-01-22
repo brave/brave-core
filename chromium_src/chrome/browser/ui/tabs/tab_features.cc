@@ -5,8 +5,8 @@
 
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
-#include "brave/browser/brave_screenshots/features.h"
 #include "brave/browser/brave_screenshots/brave_screenshots_tab_feature.h"
+#include "brave/browser/brave_screenshots/features.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 
 #define Init Init_ChromiumImpl
