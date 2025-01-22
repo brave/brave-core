@@ -19,11 +19,18 @@ import '@brave/leo/web-components/alert'
 import { setIconBasePath } from '@brave/leo/web-components/icon'
 import iconsMeta from '@brave/leo/icons/meta'
 
-setIconBasePath('//resources/brave-icons')
+// Note: This file is loaded for some extensions, and on those pages we fall back
+// to loading icons from the `chrome://` scheme.
+const chromeSchemes = ['chrome:', 'chrome-untrusted:']
+const scheme = chromeSchemes.includes(window.location.protocol)
+  ? `${window.location.protocol}//`
+  : 'chrome://'
+
+setIconBasePath(`${scheme}resources/brave-icons`)
 
 // In Chromium UI Nala variables haven't necessarily been included. We
 // make sure the variables are imported so the controls look correct.
-const variablesUrl = '//resources/brave/leo/css/variables.css'
+const variablesUrl = `//resources/brave/leo/css/variables.css`
 const variablesLink = document.querySelector(`link[rel=stylesheet][href$="${variablesUrl}"]`)
 if (!variablesLink) {
   const link = document.createElement('link')
