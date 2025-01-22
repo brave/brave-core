@@ -56,10 +56,6 @@ void ZCashTxManager::AddUnapprovedTransaction(
     AddUnapprovedTransactionCallback callback) {
   const auto& zec_tx_data = tx_data_union->get_zec_tx_data();
 
-  if (zec_tx_data->use_shielded_pool) {
-    std::move(callback).Run(false, "", "");
-    return;
-  }
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     bool has_orchard_part =
@@ -71,11 +67,21 @@ void ZCashTxManager::AddUnapprovedTransaction(
         std::move(callback).Run(false, "", "");
         return;
       }
-      zcash_wallet_service_->CreateShieldTransaction(
-          chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
-          base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                         weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
-                         origin, std::move(callback)));
+      if (zec_tx_data->use_shielded_pool) {
+        // Create shielded transaction
+        zcash_wallet_service_->CreateOrchardToOrchardTransaction(
+            chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
+            base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                           weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
+                           origin, std::move(callback)));
+      } else {
+        // Create transparent to shielded transaction
+        zcash_wallet_service_->CreateTransparentToOrchardTransaction(
+            chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
+            base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                           weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
+                           origin, std::move(callback)));
+      }
       return;
     }
   }

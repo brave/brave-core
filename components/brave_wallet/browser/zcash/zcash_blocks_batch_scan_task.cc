@@ -39,7 +39,7 @@ ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTask(
 ZCashBlocksBatchScanTask::~ZCashBlocksBatchScanTask() = default;
 
 void ZCashBlocksBatchScanTask::Start() {
-  CHECK(!started_);
+  DCHECK(!started_);
   started_ = true;
   ScheduleWorkOnTask();
 }
@@ -188,10 +188,15 @@ void ZCashBlocksBatchScanTask::ScanBlocks() {
 
   OrchardTreeState tree_state;
   {
-    auto frontier_bytes = PrefixedHexStringToBytes(
-        base::StrCat({"0x", frontier_tree_state_.value()->orchardTree}));
-
-    if (!frontier_bytes) {
+    std::vector<uint8_t> frontier_bytes;
+    // Allow an empty orchardTree to simplify testing.
+    // If the tree is empty, the frontier won't be inserted.
+    // Otherwise, the frontier must be recalculated each time
+    // based on the previous state and newly added leaves,
+    // which makes the process more complex.
+    if (!frontier_tree_state_.value()->orchardTree.empty() &&
+        !base::HexStringToBytes(frontier_tree_state_.value()->orchardTree,
+                                &frontier_bytes)) {
       error_ = ZCashShieldSyncService::Error{
           ZCashShieldSyncService::ErrorCode::kScannerError,
           "Failed to parse tree state"};
@@ -202,7 +207,7 @@ void ZCashBlocksBatchScanTask::ScanBlocks() {
     tree_state.block_height = frontier_block_.value()->height;
     tree_state.tree_size =
         frontier_block_.value()->chain_metadata->orchard_commitment_tree_size;
-    tree_state.frontier = std::move(*frontier_bytes);
+    tree_state.frontier = std::move(frontier_bytes);
   }
 
   latest_scanned_block_ = downloaded_blocks_->back().Clone();

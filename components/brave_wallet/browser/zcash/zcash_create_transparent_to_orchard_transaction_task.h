@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_SHIELD_TRANSACTION_TASK_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_SHIELD_TRANSACTION_TASK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_TRANSPARENT_TO_ORCHARD_TRANSACTION_TASK_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_TRANSPARENT_TO_ORCHARD_TRANSACTION_TASK_H_
 
 #include <memory>
 #include <set>
@@ -14,38 +14,37 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/browser/internal/orchard_bundle_manager.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 
 namespace brave_wallet {
 
-// This tasks takes all transparent UTXOs for an account and
-// creates transaction which transfers this funds to the internal shielded
+// This tasks takes all transparent UTXOs for the provided account and
+// creates transaction which transfers this funds to the provided shielded
 // address.
-class ZCashCreateShieldTransactionTask {
+class ZCashCreateTransparentToOrchardTransactionTask {
  public:
-  ~ZCashCreateShieldTransactionTask();
-
-  void ScheduleWorkOnTask();
-
- private:
-  friend class ZCashWalletService;
-
-  ZCashCreateShieldTransactionTask(
+  ZCashCreateTransparentToOrchardTransactionTask(
+      absl::variant<
+          base::PassKey<
+              class ZCashCreateTransparentToOrchardTransactionTaskTest>,
+          base::PassKey<ZCashWalletService>> pass_key,
       ZCashWalletService& zcash_wallet_service,
-      const std::string& chain_id,
-      const mojom::AccountIdPtr& account_id,
+      ZCashActionContext context,
       const OrchardAddrRawPart& receiver,
       std::optional<OrchardMemo> memo,
       uint64_t amount,
       ZCashWalletService::CreateTransactionCallback callback);
+  ~ZCashCreateTransparentToOrchardTransactionTask();
 
+  void Start();
+
+ private:
+  void ScheduleWorkOnTask();
   void WorkOnTask();
 
   void GetAllUtxos();
-  void GetTreeState();
-  void GetChainHeight();
   void GetChangeAddress();
 
   void OnGetChangeAddress(
@@ -55,14 +54,15 @@ class ZCashCreateShieldTransactionTask {
 
   void SetError(const std::string& error_string) { error_ = error_string; }
 
-  bool CreateTransaction();
+  void CreateTransaction();
 
   const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
-  std::string chain_id_;
-  mojom::AccountIdPtr account_id_;
+  ZCashActionContext context_;
   OrchardAddrRawPart receiver_;
   std::optional<OrchardMemo> memo_;
   uint64_t amount_;
+
+  bool started_ = false;
 
   std::optional<std::string> error_;
 
@@ -73,10 +73,10 @@ class ZCashCreateShieldTransactionTask {
 
   ZCashWalletService::CreateTransactionCallback callback_;
 
-  base::WeakPtrFactory<ZCashCreateShieldTransactionTask> weak_ptr_factory_{
-      this};
+  base::WeakPtrFactory<ZCashCreateTransparentToOrchardTransactionTask>
+      weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_SHIELD_TRANSACTION_TASK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_TRANSPARENT_TO_ORCHARD_TRANSACTION_TASK_H_

@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
 
+#include <string>
+#include <utility>
+
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/grit/brave_components_strings.h"
@@ -14,17 +17,24 @@ namespace brave_wallet {
 
 ZCashDiscoverNextUnusedZCashAddressTask::
     ZCashDiscoverNextUnusedZCashAddressTask(
+        base::PassKey<ZCashWalletService> pass_key,
         base::WeakPtr<ZCashWalletService> zcash_wallet_service,
-        mojom::AccountIdPtr account_id,
-        mojom::ZCashAddressPtr start_address,
+        const mojom::AccountIdPtr& account_id,
+        const mojom::ZCashAddressPtr& start_address,
         ZCashWalletService::DiscoverNextUnusedAddressCallback callback)
     : zcash_wallet_service_(std::move(zcash_wallet_service)),
-      account_id_(std::move(account_id)),
-      start_address_(std::move(start_address)),
+      account_id_(account_id.Clone()),
+      start_address_(start_address.Clone()),
       callback_(std::move(callback)) {}
 
 ZCashDiscoverNextUnusedZCashAddressTask::
     ~ZCashDiscoverNextUnusedZCashAddressTask() = default;
+
+void ZCashDiscoverNextUnusedZCashAddressTask::Start() {
+  DCHECK(!started_);
+  started_ = true;
+  ScheduleWorkOnTask();
+}
 
 void ZCashDiscoverNextUnusedZCashAddressTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(

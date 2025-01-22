@@ -95,6 +95,9 @@ bool ZCashTransaction::TransparentPart::operator!=(
     const TransparentPart& other) const {
   return !(*this == other);
 }
+bool ZCashTransaction::TransparentPart::IsEmpty() const {
+  return inputs.empty() && outputs.empty();
+}
 
 base::Value::Dict ZCashTransaction::Outpoint::ToValue() const {
   base::Value::Dict dict;
@@ -269,6 +272,12 @@ base::Value::Dict ZCashTransaction::ToValue() const {
     inputs_value.Append(input.ToValue());
   }
 
+  auto& orchard_inputs_value =
+      dict.Set("orchard_inputs", base::Value::List())->GetList();
+  for (auto& input : orchard_part_.inputs) {
+    orchard_inputs_value.Append(input.ToValue());
+  }
+
   auto& outputs_value = dict.Set("outputs", base::Value::List())->GetList();
   for (auto& output : transparent_part_.outputs) {
     outputs_value.Append(output.ToValue());
@@ -297,18 +306,35 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
   ZCashTransaction result;
 
   auto* inputs_list = value.FindList("inputs");
-  if (!inputs_list) {
+  auto* orchard_inputs_list = value.FindList("orchard_inputs");
+  if (!inputs_list && !orchard_inputs_list) {
     return std::nullopt;
   }
-  for (auto& item : *inputs_list) {
-    if (!item.is_dict()) {
-      return std::nullopt;
+  if (inputs_list) {
+    for (auto& item : *inputs_list) {
+      if (!item.is_dict()) {
+        return std::nullopt;
+      }
+      auto input_opt = ZCashTransaction::TxInput::FromValue(item.GetDict());
+      if (!input_opt) {
+        return std::nullopt;
+      }
+      result.transparent_part_.inputs.push_back(std::move(*input_opt));
     }
-    auto input_opt = ZCashTransaction::TxInput::FromValue(item.GetDict());
-    if (!input_opt) {
-      return std::nullopt;
+  }
+
+  if (orchard_inputs_list) {
+    for (auto& item : *orchard_inputs_list) {
+      if (!item.is_dict()) {
+        return std::nullopt;
+      }
+      auto input_opt =
+          ZCashTransaction::OrchardInput::FromValue(item.GetDict());
+      if (!input_opt) {
+        return std::nullopt;
+      }
+      result.orchard_part().inputs.push_back(std::move(*input_opt));
     }
-    result.transparent_part_.inputs.push_back(std::move(*input_opt));
   }
 
   auto* outputs_list = value.FindList("outputs");
@@ -384,6 +410,9 @@ uint64_t ZCashTransaction::TotalInputsAmount() const {
   uint64_t result = 0;
   for (auto& input : transparent_part_.inputs) {
     result += input.utxo_value;
+  }
+  for (auto& input : orchard_part_.inputs) {
+    result += input.note.amount;
   }
   return result;
 }

@@ -290,7 +290,9 @@ export const mockZecSendTransaction = {
       fee: BigInt(10000000),
       inputs: [],
       outputs: [],
-      to: 'another-Zec-address'
+      to: 'another-Zec-address',
+      useShieldedPool: false,
+      memo: undefined
     }
   },
   txStatus: 4,

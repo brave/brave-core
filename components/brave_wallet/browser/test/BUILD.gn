@@ -107,6 +107,8 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/unstoppable_domains_dns_resolve_unittest.cc",
     "//brave/components/brave_wallet/browser/unstoppable_domains_multichain_calls_unittest.cc",
     "//brave/components/brave_wallet/browser/wallet_data_files_installer_unittest.cc",
+    "//brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_orchard_transaction_task_unittest.cc",
+    "//brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_orchard_transaction_task_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_grpc_utils_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/zcash/zcash_serializer_unittest.cc",

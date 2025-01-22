@@ -9,35 +9,33 @@
 #include <string>
 
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
+// Creates transaction with transparent inputs and transparent outputs.
 class ZCashCreateTransparentTransactionTask {
  public:
   using UtxoMap = ZCashWalletService::UtxoMap;
   using CreateTransactionCallback =
       ZCashWalletService::CreateTransactionCallback;
-
-  virtual ~ZCashCreateTransparentTransactionTask();
-
-  void ScheduleWorkOnTask();
-
- private:
-  friend class ZCashWalletService;
-
   ZCashCreateTransparentTransactionTask(
+      base::PassKey<ZCashWalletService> pass_key,
       ZCashWalletService& zcash_wallet_service,
-      const std::string& chain_id,
-      const mojom::AccountIdPtr& account_id,
+      ZCashActionContext context,
       const std::string& address_to,
       uint64_t amount,
       CreateTransactionCallback callback);
+  virtual ~ZCashCreateTransparentTransactionTask();
 
+  void Start();
+
+ private:
+  void ScheduleWorkOnTask();
   void WorkOnTask();
 
-  bool IsTestnet() { return chain_id_ == mojom::kZCashTestnet; }
+  bool IsTestnet() { return context_.chain_id == mojom::kZCashTestnet; }
 
   void SetError(const std::string& error_string) { error_ = error_string; }
 
@@ -51,10 +49,11 @@ class ZCashCreateTransparentTransactionTask {
       base::expected<mojom::ZCashAddressPtr, std::string> result);
 
   const raw_ref<ZCashWalletService> zcash_wallet_service_;  // Owns `this`.
-  std::string chain_id_;
-  mojom::AccountIdPtr account_id_;
+  ZCashActionContext context_;
   uint64_t amount_;
   CreateTransactionCallback callback_;
+
+  bool started_ = false;
 
   std::optional<uint32_t> chain_height_;
   ZCashWalletService::UtxoMap utxo_map_;

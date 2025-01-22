@@ -29,7 +29,7 @@ ZCashScanBlocksTask::ZCashScanBlocksTask(
 ZCashScanBlocksTask::~ZCashScanBlocksTask() = default;
 
 void ZCashScanBlocksTask::Start() {
-  CHECK(!started_);
+  DCHECK(!started_);
   started_ = true;
   ScheduleWorkOnTask();
 }
