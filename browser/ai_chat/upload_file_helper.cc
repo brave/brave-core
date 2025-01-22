@@ -43,7 +43,7 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
   select_file_dialog_ = ui::SelectFileDialog::Create(this, std::move(policy));
   ui::SelectFileDialog::FileTypeInfo info;
   info.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
-  info.extensions = {{"png", "jpeg", "jpg"}};
+  info.extensions = {{"png", "jpeg", "jpg", "webp"}};
   select_file_dialog_->SelectFile(
       ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(),
       profile_->last_selected_directory(), &info, 0,

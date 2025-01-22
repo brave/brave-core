@@ -108,6 +108,7 @@ void AIChatUIPageHandler::UploadImage(UploadImageCallback callback) {
   upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
       std::move(callback));
+  // TODO(darkdh): do automatically vision model switching
 }
 
 void AIChatUIPageHandler::RemoveUploadedImage(uint32_t index) {

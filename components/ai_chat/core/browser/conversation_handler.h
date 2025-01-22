@@ -149,6 +149,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   };
 
   class UploadedContentDelegate {
+   public:
     virtual std::vector<std::vector<uint8_t>>& GetUploadedImages() = 0;
     virtual size_t GetUploadedImagesSize() = 0;
   };

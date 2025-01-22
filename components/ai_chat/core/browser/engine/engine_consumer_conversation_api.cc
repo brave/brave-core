@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -19,6 +20,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -101,6 +103,7 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
+    const std::vector<std::vector<uint8_t>>& uploaded_images,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
@@ -115,6 +118,21 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   if (!page_content.empty()) {
     conversation.push_back(
         GetAssociatedContentConversationEvent(page_content, is_video));
+  }
+  if (!uploaded_images.empty()) {
+    size_t counter = 0;
+    constexpr char kImageUrl[] = R"(data:image/png;base64,$1)";
+    for (const auto& uploaded_image : uploaded_images) {
+      // Only send the first uploaded_image becasue llama-vision seems to take
+      // the last one if there are multiple screenshots
+      if (counter++ > 0) {
+        break;
+      }
+      const std::string image_url = base::ReplaceStringPlaceholders(
+          kImageUrl, {base::Base64Encode(uploaded_image)}, nullptr);
+      conversation.push_back({mojom::CharacterType::HUMAN,
+                              ConversationEventType::UploadImage, image_url});
+    }
   }
   // history
   for (const auto& message : conversation_history) {
