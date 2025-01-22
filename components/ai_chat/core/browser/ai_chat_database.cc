@@ -196,6 +196,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
     conversation->has_content = true;
 
     conversation->associated_content = mojom::SiteInfo::New();
+    conversation->associated_content->content_id = -1;
 
     if (statement.GetColumnType(index) != sql::ColumnType::kNull) {
       DVLOG(1) << __func__ << " got associated content";

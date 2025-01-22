@@ -85,6 +85,7 @@ const associatedContentNone: Mojom.SiteInfo =  {
   title: undefined,
   hostname: undefined,
   url: undefined,
+  contentId: -1,
 }
 
 const CONVERSATIONS: Mojom.Conversation[] = [
@@ -397,6 +398,7 @@ const SITE_INFO: Mojom.SiteInfo = {
   hostname: 'www.example.com',
   url: { url: 'https://www.example.com/a' },
   isContentRefined: false,
+  contentId: -1,
 }
 
 type CustomArgs = {
@@ -551,6 +553,7 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
     isStandalone: options.args.isStandalone,
     allActions: ACTIONS_LIST,
+    tabs: [],
     goPremium: () => {},
     managePremium: () => {},
     handleAgreeClick: () => {},

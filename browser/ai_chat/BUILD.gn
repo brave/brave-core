@@ -15,6 +15,10 @@ static_library("ai_chat") {
     "ai_chat_urls.h",
     "ai_chat_utils.cc",
     "ai_chat_utils.h",
+    "tab_data_web_contents_observer.cc",
+    "tab_data_web_contents_observer.h",
+    "tab_tracker_service_factory.cc",
+    "tab_tracker_service_factory.h",
   ]
 
   deps = [
@@ -31,6 +35,7 @@ static_library("ai_chat") {
     "//brave/net/base:utils",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/common:channel_info",
     "//components/browsing_data/core",
     "//components/keyed_service/content",

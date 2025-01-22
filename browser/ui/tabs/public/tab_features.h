@@ -12,6 +12,10 @@
 
 class Profile;
 
+namespace ai_chat {
+class TabDataWebContentsObserver;
+}
+
 namespace tabs {
 
 class TabInterface;
@@ -27,6 +31,9 @@ class TabFeatures : public TabFeatures_Chromium {
   ~TabFeatures() override;
 
   void Init(TabInterface& tab, Profile* profile) override;
+
+ private:
+  std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
 };
 
 }  // namespace tabs

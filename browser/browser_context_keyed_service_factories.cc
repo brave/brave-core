@@ -7,6 +7,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
@@ -188,6 +189,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   ai_chat::AIChatServiceFactory::GetInstance();
   ai_chat::ModelServiceFactory::GetInstance();
+  ai_chat::TabTrackerServiceFactory::GetInstance();
 
   brave_search::BackupResultsServiceFactory::GetInstance();
 

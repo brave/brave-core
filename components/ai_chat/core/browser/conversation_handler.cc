@@ -1675,6 +1675,8 @@ void ConversationHandler::BuildAssociatedContentInfo() {
     const GURL url = associated_content_delegate_->GetURL();
     metadata_->associated_content->hostname = url.host();
     metadata_->associated_content->url = url;
+    metadata_->associated_content->content_id =
+        associated_content_delegate_->GetContentId();
     metadata_->associated_content->content_used_percentage =
         GetContentUsedPercentage();
     metadata_->associated_content->is_content_refined = is_content_refined_;
@@ -1683,6 +1685,7 @@ void ConversationHandler::BuildAssociatedContentInfo() {
     metadata_->associated_content->title = std::nullopt;
     metadata_->associated_content->hostname = std::nullopt;
     metadata_->associated_content->url = std::nullopt;
+    metadata_->associated_content->content_id = -1;
     metadata_->associated_content->is_content_association_possible = false;
   }
 }

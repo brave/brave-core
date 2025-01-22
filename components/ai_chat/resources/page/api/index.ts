@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import { loadTimeData } from '$web-common/loadTimeData'
- import API from '../../common/api'
- import * as Mojom from '../../common/mojom'
+import { loadTimeData } from '$web-common/loadTimeData'
+import API from '../../common/api'
+import * as Mojom from '../../common/mojom'
 
 // State that is owned by this class because it is global to the UI
 // (loadTimeData / Service / UIHandler).
@@ -19,6 +19,7 @@ export type State = Mojom.ServiceState & {
   isMobile: boolean
   isHistoryFeatureEnabled: boolean
   allActions: Mojom.ActionGroup[]
+  tabs: Mojom.TabData[]
 }
 
 export const defaultUIState: State = {
@@ -34,6 +35,7 @@ export const defaultUIState: State = {
   isMobile: loadTimeData.getBoolean('isMobile'),
   isHistoryFeatureEnabled: loadTimeData.getBoolean('isHistoryEnabled'),
   allActions: [],
+  tabs: []
 }
 
 // Owns connections to the browser via mojom as well as global state
@@ -52,6 +54,9 @@ class PageAPI extends API<State> {
 
   public conversationEntriesFrameObserver: Mojom.ParentUIFrameCallbackRouter
     = new Mojom.ParentUIFrameCallbackRouter()
+
+  public tabObserver: Mojom.TabDataObserverCallbackRouter
+    = new Mojom.TabDataObserverCallbackRouter()
 
   constructor() {
     super(defaultUIState)
@@ -85,6 +90,16 @@ class PageAPI extends API<State> {
       visibleConversations,
       allActions
     })
+
+    // If we're in standalone mode, listen for tab changes so we can show a picker.
+    if (isStandalone) {
+      Mojom.TabTrackerService.getRemote().addObserver(this.tabObserver.$.bindNewPipeAndPassRemote())
+      this.tabObserver.tabDataChanged.addListener((tabs: Mojom.TabData[]) => {
+        this.setPartialState({
+          tabs
+        })
+      })
+    }
 
     this.observer.onStateChanged.addListener((state: Mojom.ServiceState) => {
       this.setPartialState(state)

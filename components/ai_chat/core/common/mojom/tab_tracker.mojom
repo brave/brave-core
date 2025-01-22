@@ -1,0 +1,28 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ai_chat.mojom;
+
+import "url/mojom/url.mojom";
+
+struct TabData {
+    // This is the ID of the tab. It should be possible to look up the
+    // Tab/TabAndroid from this ID.
+    int32 id;
+    // This is the ID of the content currently loaded in the tab. It should be
+    // the same as the AssociatedContent Id.
+    int32 content_id;
+
+    string title;
+    url.mojom.Url url;
+};
+
+interface TabDataObserver {
+    TabDataChanged(array<TabData> tabs);
+};
+
+interface TabTrackerService {
+    AddObserver(pending_remote<TabDataObserver> observer);
+};

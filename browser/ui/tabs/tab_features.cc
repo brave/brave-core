@@ -10,6 +10,7 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
@@ -47,6 +48,9 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   // Expect upstream's Init to create the registry.
   CHECK(side_panel_registry());
   brave::RegisterContextualSidePanel(side_panel_registry(), tab.GetContents());
+
+  tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
+      tab.GetHandle().raw_value(), tab.GetContents());
 }
 
 }  // namespace tabs
