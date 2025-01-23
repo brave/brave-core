@@ -83,9 +83,6 @@
     Update Brave button, activate to update Brave from your Brave settings
   </message>
 
-  <message name="IDS_OMNIBOX_PEDAL_RUN_CHROME_SAFETY_CHECK_HINT" desc="The button text contents to suggest pedal action, RUN_CHROME_SAFETY_CHECK">
-    Run Brave safety check
-  </message>
   <message name="IDS_OMNIBOX_PEDAL_RUN_CHROME_SAFETY_CHECK_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe pedal action, RUN_CHROME_SAFETY_CHECK">
     Run a safety check in Brave settings
   </message>

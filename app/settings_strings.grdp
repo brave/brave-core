@@ -1717,7 +1717,7 @@
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_WAA_LABEL" desc="Text of the Web and App Activity label in the completion card of the 'Privacy Guide'.">
     Web &amp; App Activity
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_AI_SETTINGS_LABEL" desc="Text of the AI Innovations sublabel in the completion card of the 'Privacy Guide'." translateable="false">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COMPLETION_CARD_AI_SETTINGS_LABEL" desc="Text of the AI Innovations sublabel in the completion card of the 'Privacy Guide'.">
     Explore how AI shapes your experience and make informed choices about your privacy
   </message>
   <message name="IDS_SETTINGS_PRIVACY_GUIDE_MSBB_CARD_HEADER" desc="Header of the 'make searches and browsing better' card in the 'Privacy Guide'.">
@@ -1817,11 +1817,6 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_ALLOW_AGAIN_LABEL" desc="'Unused Site Permissions' shows unused websites for which permissions have been revoked. This label is for the action to undo the revokation and allow the site permissions again.">
     Allow again
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_HEADER_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This label is the header of the module in the site settings page. The number represents the number of sites for which permissions were revoked.">
-    {NUM_SITES, plural,
-     =1 {Permissions removed from <ph name="BEGIN_BOLD">&lt;b&gt;</ph>1 site<ph name="END_BOLD">&lt;/b&gt;</ph> you haven’t visited in a while}
-     other {Permissions removed from <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{NUM_SITES} sites<ph name="END_BOLD">&lt;/b&gt;</ph> you haven’t visited in a while}}
-  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_UNUSED_SITE_PERMISSIONS_REMOVED_ONE_PERMISSION_LABEL" desc="'Unused Site Permissions' shows the revoked permissions of unused websites. This text describes which permission was removed and is shown if there is exactly one permission.">
     Removed <ph name="PERMISSION">$1<ex>location</ex></ph>
   </message>
@@ -1904,16 +1899,6 @@
      =1 {Review 1 extension that may be unsafe}
      other {Review {NUM_EXTENSIONS} extensions that may be unsafe}}
   </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_PRIMARY_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is the header of the module in the site settings notification page. The number represents the number of notification permissions to be reviewed.">
-    {NUM_SITES, plural,
-     =1 {Review 1 site that sent a lot of notifications}
-     other {Review {NUM_SITES} sites that sent a lot of notifications}}
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_SECONDARY_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is the description of the module in site settings notification page.">
-    {NUM_SITES, plural,
-     =1 {This site sent a lot of notifications recently. You can stop it from sending future notifications.}
-     other {These sites sent a lot of notifications recently. You can stop them from sending future notifications.}}
-  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSION_REVIEW_IGNORED_TOAST_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is to indicate for which site the user has explicitly allowed permissions.">
     Notifications allowed for <ph name="SITE">$1<ex>www.example.com</ex></ph>
   </message>
@@ -1948,11 +1933,6 @@
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_MORE_ACTIONS_ARIA_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This ARIA (accessibility) label is to show more actions for a notification permissions item.">
     More actions for <ph name="WEBSITE">$1<ex>website.com</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_NOTIFICATION_PERMISSIONS_HEADER_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for the header in Privacy and Security Settings page that surface an entry point to the module itself. The integer input represents the number of notification permissions to be reviewed.">
-    {NUM_SITES, plural,
-     =1 {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>1 site<ph name="END_BOLD">&lt;/b&gt;</ph> that recently sent a lot of notifications}
-     other {Review <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{NUM_SITES} sites<ph name="END_BOLD">&lt;/b&gt;</ph> that recently sent a lot of notifications}}
   </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_NOTIFICATION_PERMISSION_REVIEW_BLOCK_ALL_LABEL" desc="'Review Notification Permissions' shows the websites that send a lot of notifications. This label is for a button that allows the user to block notifications for all selected sites.">
     Block all
@@ -2795,19 +2775,19 @@
     Not allowed to use V8 optimizer
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_DESCRIPTION" desc="Description of the keyboard lock content setting.">
-    Sites use this feature to capture and use the input of your keyboard, like for games or remote desktop apps
+    Sites use this feature to override the input of your keyboard, like for games or remote desktop apps
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED" desc="Label for the enabled option of the keyboard lock content setting.">
-    Sites can ask to capture and use your keyboard input
+    Sites can ask to override your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED" desc="Label for the disabled option of the keyboard lock content setting.">
-    Don't allow sites to capture and use your keyboard input
+    Don't allow sites to override your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the keyboard lock content setting.">
-    Allowed to capture and use your keyboard input
+    Allowed to override your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_KEYBOARD_LOCK_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the keyboard lock content setting.">
-    Not allowed to capture and use your keyboard input
+    Not allowed to override your keyboard input
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCATION_DESCRIPTION" desc="Description of the location content setting.">
     Sites usually use your location for relevant features or info, like local news or nearby shops
@@ -3748,9 +3728,6 @@
   <message name="IDS_SETTINGS_PEOPLE_VERIFY_ACCOUNT_BUTTON" desc="This button is shown in Brave's Settings, in the 'You and Brave' section. It appears when the user needs to sign back in to Brave in order to continue saving and using data (like bookmarks, passwords, or payment methods) in their Brave sync chain. When the user clicks this button, they will be prompted to enter their Brave sync chain credentials.">
     Verify it's you
   </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Brave' dialog to stop syncing for managed profiles.">
-    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-  </message>
   <message name="IDS_SETTINGS_TURN_OFF_SYNC_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Turn Sync off' dialog to stop syncing for managed profiles.">
     Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph> you will not be signed out of your Brave sync chain. Your bookmarks, history, passwords, and other settings will no longer be synced. However, your previously synced data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
@@ -4625,12 +4602,16 @@
   <message name="IDS_SETTINGS_GLIC_DATA_SECTION" translateable="false" desc="Name of the Glic settings section related to user data.">
     Data
   </message>
-  <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE" translateable="false" desc="Name of the Glic setting for the toggle enabling feature in the menu.">
-    Feature in your menu
-  </message>
-  <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE_SUBLABEL" translateable="false" desc="Subheading for the 'feature in your menu' toggle.">
-    Access feature on the toolbar
-  </message>
+  <if expr="is_macosx">
+    <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE" translateable="false" desc="Name of the Glic setting for the toggle enabling feature in the menu (on Mac only).">
+      Feature in your toolbar
+    </message>
+  </if>
+  <if expr="not is_macosx">
+    <message name="IDS_SETTINGS_GLIC_OS_WIDGET_TOGGLE" translateable="false" desc="Name of the Glic setting for the toggle enabling feature in the menu (on Windows and Linux).">
+      Feature in your Toolbar
+    </message>
+  </if>
   <message name="IDS_SETTINGS_GLIC_KEYBOARD_SHORTCUT" translateable="false" desc="Name of the Glic setting for the keyboard shortcut.">
     Keyboard shortcut
   </message>
@@ -4661,7 +4642,18 @@
   <message name="IDS_SETTINGS_GLIC_DATA_ACTIVITY_BUTTON_SUBLABEL" translateable="false" desc="Sublabel describing the 'activity' button.">
     View and manage your activity
   </message>
-
+  <message name="IDS_SETTINGS_GLIC_DATA_TAB_ACCESS_WHEN_ON_1" translateable="false" desc="First point in the 'when on' column of the 'tab access' collapsible section.">
+    [Placeholder String 1]
+  </message>
+  <message name="IDS_SETTINGS_GLIC_DATA_TAB_ACCESS_WHEN_ON_2" translateable="false" desc="Second point in the 'when on' column of the 'tab access' collapsible section.">
+    [Placeholder String 2]
+  </message>
+  <message name="IDS_SETTINGS_GLIC_DATA_TAB_ACCESS_CONSIDER_1" translateable="false" desc="First point in the 'things to consider' column of the 'tab access' collapsible section.">
+    [Placeholder String 3]
+  </message>
+  <message name="IDS_SETTINGS_GLIC_DATA_TAB_ACCESS_CONSIDER_2" translateable="false" desc="Second point in the 'things to consider' column of the 'tab access' collapsible section.">
+    [Placeholder String 4]
+  </message>
 
 
   <!-- Security settings toast confirmation -->

@@ -106,6 +106,9 @@
   <message name="IDS_PROFILES_DICE_SYNC_DISABLED_TITLE" desc="Title of the profile user menu when sync is disabled.">
     Sync disabled
   </message>
+  <message name="IDS_PROFILES_DASHER_FEATURE_DISABLED_TITLE" desc="Description of the profile user menu when certain features are disabled for Dasherless profile.">
+    This isn't a Brave sync chain. Items you save to Brave won't be available on other devices.
+  </message>
    <message name="IDS_PROFILES_DICE_SYNC_PAUSED_TITLE" desc="Title of the profile user menu when sync is paused.">
     Sync is paused
   </message>
@@ -230,9 +233,6 @@
   </message>
   <message name="IDS_LEGACY_DEFAULT_PROFILE_NAME" desc="The legacy default name given to a new profile.">
     Default Profile
-  </message>
-  <message name="IDS_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI.">
-    User <ph name="VALUE">$1<ex>1</ex></ph>
   </message>
   <message name="IDS_NEW_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI using the --new-profile-management flag.">
     Person <ph name="VALUE">$1<ex>1</ex></ph>

@@ -28,7 +28,7 @@ CHAR_LIMIT guidelines:
   * Context menu items - 30 characters
   * Action bar items - 32 characters
 -->
-<grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
+<grit current_release="1" latest_public_release="0">
   <translations>
     <file path="translations/android_chrome_strings_override_af.xtb" lang="af" />
     <file path="translations/android_chrome_strings_override_am.xtb" lang="am" />
@@ -170,7 +170,7 @@ CHAR_LIMIT guidelines:
         Open in Private Brave tab
       </message>
 
-     <message name="IDS_INCOGNITO_REAUTH_PAGE_UNLOCK_INCOGNITO_BUTTON_LABEL" desc="The label of button which upon click allows user to start the re-authentication process to view their existing Private tabs.">
+      <message name="IDS_INCOGNITO_REAUTH_PAGE_UNLOCK_INCOGNITO_BUTTON_LABEL" desc="The label of button which upon click allows user to start the re-authentication process to view their existing Private tabs.">
        Unlock Private
      </message>
      <message name="IDS_INCOGNITO_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card.">

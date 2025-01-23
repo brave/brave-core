@@ -358,10 +358,11 @@
     Verify it's you to use and save Brave data in your account, <ph name="ACCOUNT_EMAIL">$1<ex>elisa.beckett@gmail.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_ERROR_PASSPHRASE_USER_ERROR_DESCRIPTION_WITH_EMAIL" desc="Subtitle of settings page that indicates user must re-enter their sync password.">
-    To use and save Brave data in your Brave sync chain, enter your passphrase, <ph name="ACCOUNT_EMAIL">$1<ex>elisa.beckett@gmail.com</ex></ph>
+    Enter your passphrase to use and save Brave data in your account, <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>
   </message>
-
-
+  <message name="IDS_SETTINGS_SIGN_OUT" desc="The text label of the Sign out of Brave button in the settings page.">
+    Sign out of Brave
+  </message>
 
   <!-- Page content -->
   <message name="IDS_SETTINGS_PAGE_CONTENT_THINGS_TO_CONSIDER_BULLET_TWO" desc="Bullet point in the 'Things to consider' column of the description of the setting that enables features that provide contextual help for currently opened pages.">

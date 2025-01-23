@@ -5,7 +5,7 @@ locale.  The variables is_win, is_macosx, is_linux, and is_posix are available
 for making strings OS specific.  Other platform defines such as use_titlecase
 are declared in tools/grit/grit_args.gni.
 -->
-<grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<grit base_dir="." latest_public_release="0" current_release="1" source_lang_id="en" enc_check="möl">
   <translations>
     <file path="resources/generated_resources_override_af.xtb" lang="af" />
     <file path="resources/generated_resources_override_am.xtb" lang="am" />
@@ -972,11 +972,6 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="use_titlecase">
         </if>
-      <if expr="chromeos_lacros">
-        </if>
-      <if expr="chromeos_lacros">
-        </if>
-
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -1322,7 +1317,16 @@ are declared in tools/grit/grit_args.gni.
         </if>
 
     <if expr="enable_glic">
+      <if expr="is_macosx">
+        </if>
+      <if expr="is_win or is_linux">
+        </if>
       </if>
+
+    <if expr="is_chromeos">
+      </if>
+
+
   </messages>
 </release>
 </grit>
