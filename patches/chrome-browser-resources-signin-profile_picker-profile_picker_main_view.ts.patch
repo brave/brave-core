@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-index 0a43bbd1556c145d4b4bba76fa94b1fbcef78013..a7b33db7020720a682cf4a135c94a75ee89b20dd 100644
+index fd91dc6690da03a40fb0fb188f3759df9982d954..e0f1177bf131126b5124d654996834199aa346d8 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-@@ -101,6 +101,7 @@ export class ProfilePickerMainViewElement extends
-   protected shouldShownSigninButton_: boolean = false;
+@@ -109,6 +109,7 @@ export class ProfilePickerMainViewElement extends
+   private eventTracker_: EventTracker = new EventTracker();
  
    override firstUpdated() {
 +    this.$.addProfile.style.borderRadius = '8px';
