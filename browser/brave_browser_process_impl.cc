@@ -198,9 +198,9 @@ void BraveBrowserProcessImpl::PostDestroyThreads() {
 brave_component_updater::BraveComponent::Delegate*
 BraveBrowserProcessImpl::brave_component_updater_delegate() {
   if (!brave_component_updater_delegate_) {
-    brave_component_updater_delegate_ =
-        std::make_unique<brave::BraveComponentUpdaterDelegate>(
-            component_updater(), local_state(), GetApplicationLocale());
+    brave_component_updater_delegate_ = std::make_unique<
+        brave_component_updater::BraveComponentUpdaterDelegate>(
+        component_updater(), local_state(), GetApplicationLocale());
   }
   return brave_component_updater_delegate_.get();
 }

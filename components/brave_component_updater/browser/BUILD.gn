@@ -5,7 +5,9 @@
 
 import("//extensions/buildflags/buildflags.gni")
 
-static_library("browser") {
+component("browser") {
+  defines = [ "IS_BRAVE_COMPONENT_UPDATER_IMPL" ]
+
   sources = [
     "brave_component.cc",
     "brave_component.h",

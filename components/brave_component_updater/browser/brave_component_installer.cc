@@ -20,8 +20,6 @@
 #include "components/update_client/update_client_errors.h"
 #include "crypto/sha2.h"
 
-using brave_component_updater::BraveComponent;
-
 namespace {
 using Result = update_client::CrxInstaller::Result;
 using InstallError = update_client::InstallError;
@@ -64,7 +62,7 @@ std::string GetManifestString(base::Value::Dict* manifest,
 
 }  // namespace
 
-namespace brave {
+namespace brave_component_updater {
 
 BraveComponentInstallerPolicy::BraveComponentInstallerPolicy(
     const std::string& name,
@@ -154,4 +152,4 @@ void RegisterComponent(component_updater::ComponentUpdateService* cus,
   installer->Register(cus, std::move(registered_callback));
 }
 
-}  // namespace brave
+}  // namespace brave_component_updater

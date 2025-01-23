@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
@@ -32,7 +33,8 @@ inline constexpr char kLocalDataFilesComponentBase64PublicKey[] =
 
 // The component in charge of delegating access to different DAT files
 // such as tracking protection.
-class LocalDataFilesService : public BraveComponent {
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) LocalDataFilesService
+    : public BraveComponent {
  public:
   explicit LocalDataFilesService(BraveComponent::Delegate* delegate);
   LocalDataFilesService(const LocalDataFilesService&) = delete;
@@ -61,6 +63,7 @@ class LocalDataFilesService : public BraveComponent {
 };
 
 // Creates the LocalDataFilesService
+COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 std::unique_ptr<LocalDataFilesService>
 LocalDataFilesServiceFactory(BraveComponent::Delegate* delegate);
 

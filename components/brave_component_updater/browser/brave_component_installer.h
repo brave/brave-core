@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/values.h"
@@ -16,11 +17,9 @@
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
 
-using brave_component_updater::BraveComponent;
+namespace brave_component_updater {
 
-namespace brave {
-
-class BraveComponentInstallerPolicy
+class COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER) BraveComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   explicit BraveComponentInstallerPolicy(
@@ -59,12 +58,13 @@ class BraveComponentInstallerPolicy
   BraveComponent::ReadyCallback ready_callback_;
 };
 
+COMPONENT_EXPORT(BRAVE_COMPONENT_UPDATER)
 void RegisterComponent(component_updater::ComponentUpdateService* cus,
                        const std::string& name,
                        const std::string& base64_public_key,
                        base::OnceClosure registered_callback,
                        BraveComponent::ReadyCallback ready_callback);
 
-}  // namespace brave
+}  // namespace brave_component_updater
 
 #endif  // BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_BRAVE_COMPONENT_INSTALLER_H_
