@@ -16,7 +16,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-inline constexpr int kBraveCurrentDataVersion = 30;
+inline constexpr int kBraveCurrentDataVersion = 31;
 
 // The version is important to increment because Chromium will cache the list
 // of search engines that are shown. When the version is incremented, Chromium
@@ -40,6 +40,7 @@ enum BravePrepopulatedEngineID : unsigned int {
 
   // These engine IDs are already defined in prepopulated_engines.json
   PREPOPULATED_ENGINE_ID_GOOGLE = 1,
+  PREPOPULATED_ENGINE_ID_YAHOO_JP = 2,
   PREPOPULATED_ENGINE_ID_BING = 3,
   PREPOPULATED_ENGINE_ID_YANDEX = 15,
   PREPOPULATED_ENGINE_ID_NAVER = 67,
@@ -120,6 +121,7 @@ extern const PrepopulatedEngine brave_yandex;
 extern const PrepopulatedEngine brave_search;
 extern const PrepopulatedEngine brave_search_tor;
 extern const PrepopulatedEngine brave_bing;
+extern const PrepopulatedEngine brave_yahoo_jp;
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap();

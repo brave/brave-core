@@ -65,6 +65,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_STARTPAGE, &startpage},
         {PREPOPULATED_ENGINE_ID_ECOSIA, &brave_ecosia},
         {PREPOPULATED_ENGINE_ID_BRAVE, &brave_search},
+        {PREPOPULATED_ENGINE_ID_YAHOO_JP, &brave_yahoo_jp},
 };
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
@@ -239,6 +240,35 @@ const PrepopulatedEngine brave_bing = ModifyEngineParams(
     "https://www.bing.com/osjson.aspx?query={searchTerms}&language={language}",
     "https://www.bing.com/images/detail/search?iss=sbiupload#enterInsights",
     PREPOPULATED_ENGINE_ID_BING);
+
+const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
+    yahoo_jp,
+    u"Yahoo! JAPAN",
+    nullptr,  // keyword
+    // search url
+    "https://search.yahoo.co.jp/search?p={searchTerms}&ei={inputEncoding}&fr="
+#if BUILDFLAG(IS_ANDROID)
+    "brave-mobile_ext",
+#else
+    "brave-desktop_ext",
+#endif
+    // suggest url
+    "https://search.yahooapis.jp/AssistSearchService/V2/"
+    "webassistSearch?p={searchTerms}&output=fxjson&fr="
+#if BUILDFLAG(IS_ANDROID)
+    "brave-mobile_ext",
+#else
+    "brave-desktop_ext",
+#endif
+    // image url
+    "https://search.yahoo.co.jp/image/"
+    "search?p={searchTerms}&ei={inputEncoding}&fr="
+#if BUILDFLAG(IS_ANDROID)
+    "brave-mobile_ext",
+#else
+    "brave-desktop_ext",
+#endif
+    PREPOPULATED_ENGINE_ID_YAHOO_JP);
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap() {
