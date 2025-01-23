@@ -274,6 +274,9 @@ CHAR_LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_USB" desc="Label for USB-related notifications, within a list of notification categories. [CHAR_LIMIT=32]">
         USB
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_COLLABORATION" desc="Label for collaboration-related notifications, within a list of notification categories. [CHAR_LIMIT=32]">
+        Collaboration
+      </message>
 
       <!-- Sign-in, sync and personalization preferences -->
       <message name="IDS_PREFS_SECTION_ACCOUNT_AND_GOOGLE_SERVICES" desc="Title for the group of account-related entries and google services in Settings. [CHAR_LIMIT=32]">
@@ -416,12 +419,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PRIVACY_SYNC_AND_SERVICES_LINK_LEGACY" desc="The text for Privacy preferences that is shown after all preference rows.">
         For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;link&gt;</ph>Sync and Brave services<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
-      <message name="IDS_PRIVACY_SYNC_AND_SERVICES_LINK_SYNC_ON" desc="The text for Privacy preferences that is shown after all preference rows. This version of the text is shown if Sync has been turned on.">
-        For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Sync<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>Brave services<ph name="END_LINK2">&lt;/link2&gt;</ph>
-      </message>
-      <message name="IDS_PRIVACY_SYNC_AND_SERVICES_LINK_SYNC_OFF" desc="The text for Privacy preferences that is shown after all preference rows. This version of the text is shown if Sync hasn't been turned on.">
-        For more settings that relate to privacy, security, and data collection, see <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave services<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
       <message name="IDS_PRIVACY_CHROME_DATA_AND_GOOGLE_SERVICES_FOOTER" desc="Footer to invite the user to open the Account Settings and Brave Services settings.">
         You can <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>manage what Brave data is saved<ph name="END_LINK1">&lt;/link1&gt;</ph> in your Brave sync chain.
 
@@ -465,6 +462,14 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <!-- Address bar settings -->
       <message name="IDS_ADDRESS_BAR_SETTINGS" desc="Title for Address Bar settings. [CHAR_LIMIT=32]">
         Address bar
+      </message>
+
+      <message name="IDS_ADDRESS_BAR_SETTINGS_DESCRIPTION" desc="TODO">
+        You can also touch and hold the address bar to change the position.
+      </message>
+
+      <message name="IDS_ADDRESS_BAR_SETTINGS_DESCRIPTION_FOLDABLE" desc="TODO">
+        When your device is folded, you can choose an option or touch and hold the address bar to change the position.
       </message>
 
       <message name="IDS_ADDRESS_BAR_SETTINGS_TOP" desc="Title for the toggle that will show the address bar on the top. [CHAR_LIMIT=32]">
@@ -1017,14 +1022,17 @@ For more settings that use data to improve your Brave experience, go to <ph name
         Passwords will stop working soon because Google Play services isn’t available. To use passwords saved in your Brave sync chain, sign in using another device, or go to passwords.google.com.
       </message>
       <!-- Acknowledge grouped credential bottom sheet -->
+      <message name="IDS_ACK_GROUPED_CRED_SHEET_OPENED" desc="The accessibility string to be announced by TalkBack right after the bottom sheet is opened.">
+        Password suggestion confirmation
+      </message>
       <message name="IDS_ACK_GROUPED_CRED_SHEET_TITLE" desc="The title of the bottom sheet verifying that user wants to use the password saved for another web site or app grouped with the current web site.">
         Use your <ph name="PROVIDER">%1$s<ex>example.com</ex></ph> password?
       </message>
       <message name="IDS_ACK_GROUPED_CRED_SHEET_DESC" desc="The text in the bottom sheet verifying that user wants to use the password saved for another web site or app grouped with the current web site.">
         <ph name="BEGIN_BOLD1">&lt;b1&gt;</ph><ph name="PROVIDER1">%1$s<ex>example.com</ex></ph><ph name="END_BOLD1">&lt;/b1&gt;</ph> and <ph name="BEGIN_BOLD2">&lt;b2&gt;</ph><ph name="PROVIDER2">%2$s<ex>example.com</ex></ph><ph name="END_BOLD2">&lt;/b2&gt;</ph> seem to be related. Make sure you trust <ph name="BEGIN_BOLD3">&lt;b3&gt;</ph><ph name="PROVIDER2">%2$s<ex>example.com</ex></ph><ph name="END_BOLD3">&lt;/b3&gt;</ph> before using your password.
       </message>
-      <message name="IDS_ACK_GROUPED_CRED_SHEET_ACCEPTED" desc="The accessibility string announced after accpting the bottom sheet verifying that user wants to use the password saved for another web site or app grouped with the current web site.">
-        Password used.
+      <message name="IDS_ACK_GROUPED_CRED_SHEET_CLOSED" desc="The accessibility string announced after closing the bottom sheet verifying that user wants to use the password saved for another web site or app grouped with the current web site.">
+        Password suggestion is closed.
       </message>
 
       <!-- Lock Screen Fragment -->
@@ -1603,14 +1611,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_PRIVACY_GUIDE_EXPLANATION_CLOSED_DESCRIPTION" desc="The accessibility string read when the privacy guide explanation bottom sheet is closed.">
         Privacy guide explanation closed
-      </message>
-
-      <!-- Tracking protection -->
-      <message name="IDS_TRACKING_PROTECTION_TITLE" desc="Tracking Protection preference item title.">
-        Tracking Protection
-      </message>
-      <message name="IDS_TRACKING_PROTECTION_SUMMARY" desc="Tracking Protection preference item summary.">
-        Manage third-party cookies and tracking protections
       </message>
 
       <!-- IP protection -->
@@ -2553,6 +2553,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Google Pay data for Autofill. 'Google Pay' should not be translated as it is the product name.">
         Payment methods, offers, and addresses using Google Pay
       </message>
+      <message name="IDS_ACCOUNT_SETTINGS_TITLE" desc="Title for the account settings page. [CHAR_LIMIT=32]">
+        Account
+      </message>
       <message name="IDS_ACCOUNT_SECTION_HEADER" desc="Header of a section with toggles to control which types of data users can use and save in their Brave sync chain (as opposed to saving them only on the device). Try to avoid long strings because this is a header in large font size.">
         In your Brave sync chain
       </message>
@@ -2938,11 +2941,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
       </message>
-      <message name="IDS_ACCESSIBILITY_UNDO_CLOSED_TAB_ANNOUNCEMENT_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo a closed tab.">
-        Restored <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph>, tab
-      </message>
-      <message name="IDS_ACCESSIBILITY_UNDO_MULTIPLE_CLOSED_TABS_ANNOUNCEMENT_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo multiple closed tabs at once.">
-        Restored <ph name="TAB_COUNT">%1$s<ex>3</ex></ph> tabs
+      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_TOOLBAR_BTN_MENU" desc="Content description for the settings menu button in the Tab Switcher Toolbar.">
+        Manage open tabs
       </message>
       <message name="IDS_ACCESSIBILITY_TABSTRIP_TAB" desc="Content description for the tab title.">
         <ph name="TAB_TITLE">%1$s<ex>Welcome to Facebook</ex></ph>, tab
@@ -3299,6 +3299,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_NOTIFICATION_MANAGE_BUTTON" desc="Text of a button shown on notifications, that opens the Brave notifications settings page. This allows users to edit notification settings when a site asks them to allow notifications. [CHAR_LIMIT=9]">
         Manage
       </message>
+      <message name="IDS_NOTIFICATION_WARNING_TITLE" desc="Title of a warning notification informing the user that the notification may be suspicious.">
+        Possible spam
+      </message>
+      <message name="IDS_NOTIFICATION_WARNING_BODY" desc="Body text of a warning notification informing the user that the notification from the domain may be suspicious.">
+        Brave detected possible spam from <ph name="DOMAIN">%1$s<ex>example.com</ex></ph>.
+      </message>
+      <message name="IDS_NOTIFICATION_SHOW_ORIGINAL_BUTTON" desc="Text of a button shown on suspicious notifications, allowing the user to see the contents of the original notification instead of the warning.">
+        Show notification
+      </message>
 
       <!-- Download UI -->
       <message name="IDS_DOWNLOAD_NOTIFICATION_PENDING" desc="Download notification to be displayed when a download has been scheduled but has not started being fetched from the network.">
@@ -3427,7 +3436,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Pages
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_UI_VIDEO" desc="Indicates that clicking on this button shows only downloaded videos.">
-        Video
+        Videos
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_UI_AUDIO" desc="Indicates that clicking on this button shows only downloaded audio files.">
         Audio
@@ -3658,9 +3667,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_HEADER" desc="Header of the section with info about the data that users share with Brave if they turn on the metric sharing option.">
         Things to consider
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_BODY" desc="Text with info about the data that users share with Brave if they turn on the metric sharing option.">
-        Info is sent to Brave about your Brave usage, but it isn\u2019t tied to you\n\nIf Brave crashes, details about the crash may include some personal info\n\nIf you turn on sync, metrics may also include info about URLs you visit
-      </message>
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_BODY_WITH_HISTORY_SYNC" desc="Text with info about the data that users share with Brave if they turn on the metric sharing option. This version is used when the metrics sharing option is linked to history syncing, as opposed to the whole sync feature in IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_BODY.">
         Info is sent to Brave about your Brave usage, but it isn\u2019t tied to you\n\nIf Brave crashes, details about the crash may include some personal info\n\nIf you sync your history to your Brave sync chain, metrics may also include info about URLs you visit
       </message>
@@ -3694,9 +3700,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_DEVICE_LOCK_DESCRIPTION" desc="Text description explaining that a profile lock is required for automotive devices to protect data privacy.">
         To protect your sensitive content in the car, you must create a car profile lock.  You can do this with a pin, code, or password.
-      </message>
-      <message name="IDS_DEVICE_LOCK_EXISTING_LOCK_DESCRIPTION" desc="Text description explaining to users who have already set an existing lock that a profile lock is required for automotive devices to protect data privacy. 'Sync' is short for synchronization.">
-        Your profile lock keeps your info secure in the car, including synced passwords, payments and more.
       </message>
       <message name="IDS_DEVICE_LOCK_EXISTING_LOCK_DESCRIPTION_FOR_SIGNIN" desc="Text description explaining to users who have already set an existing lock that a profile lock is required for automotive devices to protect data privacy. ">
         Your profile lock keeps your info secure in the car, including passwords, payments, and more saved in your Brave sync chain.
@@ -3857,8 +3860,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SYNC_PROMO_TITLE_BOOKMARKS" desc="This string is the headline of a card that appears when the user opens Brave's bookmarks; the user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get your bookmarks from your other devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
         Get all your bookmarks
       </message>
-      <message name="IDS_SYNC_PROMO_DESCRIPTION_BOOKMARKS" desc="This string is the body of a card that appears when the user opens Brave's bookmarks; the user may be signed in to Brave, but isn't syncing their Brave data. The headline above this string is 'Get all your bookmarks'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Sync to get your bookmarks from your other devices
+      <message name="IDS_ACCOUNT_SETTINGS_PROMO_DESCRIPTION_BOOKMARKS" desc="This string is on a promo intended to promote reviewing the user's Brave sync chain settings page to enable bookmarks toggle. It appears on the Bookmarks page when the user is signed in and not syncing bookmarks.">
+        To get your bookmarks on all your devices, turn on “Bookmarks” in settings
       </message>
       <message name="IDS_SIGNIN_PROMO_TITLE_BOOKMARKS" desc="This string is the headline of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The line below this string is 'Sign in to get your bookmarks and more from your other devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
         Get all your bookmarks
@@ -3991,9 +3994,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_NTP_MANAGE_INTERESTS" desc="Content description to manage settings from the feed header overflow menu.">
         Manage interests
-      </message>
-      <message name="IDS_NTP_MANAGE_REACTIONS" desc="Content description to manage feed reactions from the feed header overflow menu.">
-        Manage reactions
       </message>
       <message name="IDS_NTP_MANAGE_FEED" desc="Menu item to manage feed settings from the feed header overflow menu.">
         Manage
@@ -4234,6 +4234,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_TOOLBAR_SHORTCUT" desc="Title for toolbar shortcut toggle button in adaptive toolbar button preference page.">
         Toolbar shortcut
       </message>
+      <message name="IDS_TOOLBAR_LONG_PRESS_OPTIONS_IPH" desc="The in-product-help message shown to inform the user they can change placement of the address bar from a long-press menu.">
+        Touch and hold the address bar to change its position.
+      </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_NEW_TAB_IPH" desc="An in-product-help message for the new tab button.">
         Quickly open a new tab. To edit this shortcut, touch and hold.
       </message>
@@ -4403,6 +4406,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_SWITCH_OUT_OF_INCOGNITO" desc="Menu item for switching out of private.">
         Switch out of Private
+      </message>
+      <message name="IDS_MENU_OPEN_WITH" desc="Menu item to open the content with another app.">
+        Open with…
       </message>
 
       <!-- Bookmarks strings -->
@@ -4899,9 +4905,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_IDENTITY_DISC_WITH_NAME" desc="The content description for a toolbar button displaying user profile picture, for users who don't have a readable email address. Tapping on this button navigates to 'Sync and Brave services' page in settings">
               Signed in as <ph name="USER_NAME">%s<ex>Bruce Wayne</ex></ph>. Opens settings.
       </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SIGNED_OUT_WITH_SYNC_IDENTITY_DISC" desc="The content description for a toolbar button displaying the signed-out avatar. Tapping on this button navigates to 'Turn on Sync' page in settings">
-        Signed out. Opens dialog to sign in and turn on sync.
-      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SIGNED_OUT_IDENTITY_DISC" desc="The content description for a toolbar button displaying the signed-out avatar. Tapping on this button opens the sign-in sheet">
         Signed out. Opens options to sign in.
       </message>
@@ -4972,7 +4975,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Search: <ph name="SEARCH_QUERY">%s<ex>Weather in San Francisco</ex></ph>
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_MOST_VISITED_TILE_NAVIGATE" desc="Announces that interacting with a Tile takes the user to specific website.">
-        Navigate: <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph>: <ph name="WEBSITE_URL">%2$s<ex>https://www.nps.gov/crla</ex></ph>
+        <ph name="WEBSITE_TITLE">%1$s<ex>Crater Lake National Park (U.S. National Park Service)</ex></ph>: <ph name="WEBSITE_URL">%2$s<ex>https://www.nps.gov/crla</ex></ph>
       </message>
       <message name="IDS_ACCESSIBILITY_OMNIBOX_MOST_VISITED_LIST" desc="Category name of the most visited sites. Announced as: 'amazon.com, 1 of 10 in list Most Visited Sites, 10 items.'">
         Most visited sites
@@ -5103,12 +5106,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_UNDO_BAR_MULTIPLE_DOWNLOADS_DELETE_MESSAGE" desc="Message shown when you can undo deleting several downloads.">
         <ph name="NUMBER_OF_DOWNLOADS">%1$s<ex>3</ex></ph> downloads deleted
-      </message>
-      <message name="IDS_UNDO_BAR_DELETE_RESTORE_ACCESSIBILITY_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo a download deletion.">
-        Restored <ph name="ITEM_TITLE">%1$s<ex>YouTube</ex></ph>
-      </message>
-      <message name="IDS_UNDO_BAR_MULTIPLE_DOWNLOADS_DELETE_RESTORE_ACCESSIBILITY_MESSAGE" desc="Message spoken out loud for accessibility when a user decides to undo multiple download deletions at once.">
-        <ph name="NUMBER_OF_DOWNLOADS">%1$s<ex>3</ex></ph> downloads restored
       </message>
 
       <!-- MultiWindow -->
@@ -5777,22 +5774,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Submit <ph name="ONE_TIME_CODE">%1$s<ex>123</ex></ph> to <ph name="ORIGIN">%2$s<ex>example.com</ex></ph>?
       </message>
 
-      <!-- Interventions -->
-      <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
-         Redirect blocked:
-      </message>
-      <message name="IDS_REDIRECT_BLOCKED_SHORT_MESSAGE" desc="The short message stating that a redirect (noun) was blocked on this page.">
-         Redirect blocked.
-      </message>
-      <message name="IDS_ALWAYS_ALLOW_REDIRECTS" desc="The infobar button text allowing a user to always allow redirects (noun) after they were blocked on this page.">
-        Always allow
-      </message>
-      <message name="IDS_NEAR_OOM_INTERVENTION_MESSAGE" desc="The message stating that the browser intervened to stop the page using too much memory.">
-         This page uses too much memory, so Brave paused it.
-      </message>
-      <message name="IDS_NEAR_OOM_INTERVENTION_DECLINE" desc="The text of the button letting the user decline the browser's intervention, so that the page can resume what it was doing.">
-         Resume
-      </message>
       <!-- Usage Stats strings -->
       <message name="IDS_USAGE_STATS_CONSENT_TITLE" desc="Title for activity authorizing Digital Wellbeing to access Brave usage data">
         Show your Brave activity in Digital Wellbeing?
@@ -6204,6 +6185,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up.">
         To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">%2$s<ex>name and email address</ex></ph> with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK2">&lt;/link_terms_of_service&gt;</ph>.
       </message>
+      <message name="IDS_FILTERED_ACCOUNT_MESSAGE" desc="Message shown to the user when the account they are trying to sign in with has been filtered out by one of the filters passed by the RP.">
+      You can’t sign in using this account
+    </message>
 
       <message name="IDS_CUSTOM_TABS_SIGNED_OUT_MESSAGE_BUTTON" desc="This string is found on a primary action button that the user can press if they want to sign-in to Brave.">
         Sign in
@@ -6310,6 +6294,25 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_TITLE" desc="Text for the HTTPS-First Mode toggle in settings.">
         Always use secure connections
       </message>
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_DESCRIPTION" desc="Secondary, continued explanation of HTTPS-Only Mode in Security settings">
+        For sites that don’t support secure connections, get warned before visiting the site
+      </message>
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_WITH_ADVANCED_PROTECTION_DESCRIPTION" desc="Secondary, continued explanation of HTTPS-Only Mode in Security settings when the user can't change the setting">
+        For sites that don’t support secure connections, get warned before visiting the site. You can’t change this setting because you have Advanced Protection enabled.
+      </message>
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_DISABLED_LABEL" desc="Label shown under main HTTPS-First Mode title ('Always use secure connections') when the feature is turned off.">
+        Off
+      </message>
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_STRICT_LABEL" desc="Label for radio button to enable the stricter form of HTTPS-First Mode">
+        Warns you for insecure public &amp; private sites
+      </message>
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_STRICT_SUBLABEL" desc="Secondary, continued explanation for the stricter form of HTTPS-First Mode">
+        Private sites might include things like your company’s intranet
+      </message>
+      <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_BALANCED_LABEL" desc="Label for radio button to enable the less-strict form of HTTPS-First Mode">
+        Warns you for insecure public sites
+      </message>
+      <!-- Old HTTPS-First Mode settings strings. TODO(crbug.com/349860796): Remove after new settings are fully rolled out. -->
       <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_SUMMARY" desc="Secondary, continued explanation of HTTPS-First Mode in settings.">
         Use HTTPS whenever possible and get warned before loading sites that don’t support it
       </message>
@@ -6382,10 +6385,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_PASSWORD_MANAGER_DROPDOWN_BUTTON_DESCRIPTION" desc="This is a description that will be used for the TalkBack to describe the button with the down arrow that opens a dropdown with a list of items.">
         Select from the dropdown list
-      </message>
-      <!-- Price tracking strings -->
-      <message name="IDS_PRICE_DROP_SPOTTED_IPH" desc="This text appears in the IPH when a user opens a new tab page and an item in any of their open tabs has a price drop.">
-        Price drop spotted
       </message>
       <!-- Partial Custom Tab accessibility -->
       <message name="IDS_ACCESSIBILITY_PARTIAL_CUSTOM_TAB_BOTTOM_SHEET" desc="Content description for partial custom tab of bottom sheet type">
@@ -6633,6 +6632,213 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Data Sharing -->
+      <!-- Data Sharing Create Flow -->
+      <message name="IDS_COLLABORATION_SHARE_GROUP_TITLE" desc="The Title for the creation flow for a shared group.">
+          Share “<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>” tab group
+      </message>
+      <!-- Data Sharing Create Flow -->
+
+      <!-- Data Sharing Owner Manage Flow -->
+      <message name="IDS_COLLABORATION_MANAGE_GROUP_TITLE" desc="The Title for the manage flow dialog for a shared group.">
+        Manage access
+      </message>
+      <message name="IDS_COLLABORATION_MANAGE_STOP_SHARING_OPTION" desc="The Label for the manage flow stop sharing option and confirmation button.">
+        Stop sharing
+      </message>
+      <!-- Data Sharing Owner Manage Flow -->
+
+      <!-- Data Sharing Owner Stop Sharing Dialog -->
+      <message name="IDS_COLLABORATION_OWNER_STOP_SHARING_DIALOG_TITLE" desc="The title for the stop sharing dialog.">
+        Stop sharing?
+      </message>
+      <!-- Data Sharing Owner Stop Sharing Dialog -->
+
+      <!-- Data Sharing Owner Remove Member Dialog -->
+      <message name="IDS_COLLABORATION_OWNER_REMOVE_MEMBER_DIALOG_TITLE" desc="The title of the remove member dialog.">
+        Remove <ph name="MEMBER_FULL_NAME">%1$s<ex>John Doe</ex></ph>?
+      </message>
+      <message name="IDS_COLLABORATION_OWNER_REMOVE_MEMBER_DIALOG_CONFIRM" desc="The confirmation button for the remove member dialog.">
+        Remove
+      </message>
+      <!-- DataSharing Owner Remove Member Dialog -->
+
+      <!-- Data Sharing Owner Delete Group -->
+      <message name="IDS_COLLABORATION_OWNER_DELETE_DIALOG_TITLE" desc="The title of the group owner's delete group dialog.">
+        Delete tab group?
+      </message>
+      <message name="IDS_COLLABORATION_OWNER_DELETE_DIALOG_CONFIRM" desc="The confirmation button for the delete group dialog.">
+        Delete
+      </message>
+      <!-- Data Sharing Owner Delete Group -->
+
+      <!-- Data Sharing Preview Dialog -->
+      <message name="IDS_COLLABORATION_PREVIEW_DIALOG_TITLE_SINGLE" desc="The title for the dialog that shows a preview of a tab group with a single member.">
+        Join tab group with <ph name="OWNER_FIRST_NAME">%1$s<ex>Ali</ex></ph>
+      </message>
+      <message name="IDS_COLLABORATION_PREVIEW_DIALOG_TITLE_MULTIPLE" desc="The title for the dialog that shows a preview of a tab group with multiple members.">
+
+        {NUM_OTHER_MEMBERS, plural,
+          =1 {Join tab group with <ph name="OWNER_FIRST_NAME">%1$s<ex>Ali</ex></ph> and <ph name="NUMBER_OF_OTHER_MEMBERS">%2$d<ex>1</ex></ph> other}
+          other {Join tab group with <ph name="OWNER_FIRST_NAME">%1$s<ex>Ali</ex></ph> and <ph name="NUMBER_OF_OTHER_MEMBERS">%2$d<ex>1</ex></ph> others}
+        }
+      </message>
+      <message name="IDS_COLLABORATION_PREVIEW_DIALOG_CONFIRM" desc="A button that allows a user to join a shared group.">
+        Join and open
+      </message>
+      <message name="IDS_COLLABORATION_PREVIEW_DIALOG_DETAILS_TITLE" desc="The title for the details page of the dialog that shows a preview of a tab group.">
+        Tab group details
+      </message>
+      <message name="IDS_COLLABORATION_LINK_FAILED_TITLE" desc="The title for the link failed dialog.">
+        This link doesn’t work
+      </message>
+      <!-- Data Sharing Preview Dialog -->
+
+      <!-- Data Sharing Leave Dialog -->
+      <message name="IDS_COLLABORATION_LEAVE_DIALOG_TITLE" desc="The title for the leave group dialog.">
+        Leave tab group?
+      </message>
+      <message name="IDS_COLLABORATION_LEAVE_DIALOG_CONFIRM" desc="The text for the confirmation button for the leave group dialog.">
+        Leave
+      </message>
+      <!-- Data Sharing Leave Dialog -->
+
+      <!-- Data Sharing Owner Block Member Dialog -->
+      <message name="IDS_COLLABORATION_OWNER_BLOCK_DIALOG_TITLE" desc="The title of the block member dialog.">
+        Block <ph name="MEMBER_FULL_NAME">%1$s<ex>John Doe</ex></ph>?
+      </message>
+      <message name="IDS_COLLABORATION_OWNER_BLOCK_DIALOG_CONFIRM" desc="The confirmation button for the block member dialog.">
+        Block
+      </message>
+      <!-- DataSharing Owner Block Member Dialog -->
+
+      <!-- Data Sharing Block and Leave Dialog -->
+      <message name="IDS_COLLABORATION_BLOCK_LEAVE_DIALOG_TITLE" desc="The title for the block and leave group dialog.">
+        Block and leave group?
+      </message>
+      <message name="IDS_COLLABORATION_BLOCK_LEAVE_DIALOG_CONFIRM" desc="The text for a button to block and leave a shared group.">
+        Block and leave
+      </message>
+      <!-- Data Sharing Block and Leave Dialog -->
+
+      <!-- Delete Last Tab Dialog -->
+      <message name="IDS_COLLABORATION_DELETE_LAST_TAB_TITLE" desc="Title for the delete last tab dialog.">
+        Keep tab group?
+      </message>
+      <message name="IDS_COLLABORATION_DELETE_LAST_TAB_CANCEL" desc="cancel button text for the delete last tab dialog.">
+        Keep group
+      </message>
+      <message name="IDS_COLLABORATION_OWNER_DELETE_LAST_TAB_CONFIRM" desc="confirm button text for the delete last tab dialog if the user is the owner of the group.">
+        Delete group
+      </message>
+      <message name="IDS_COLLABORATION_MEMBER_DELETE_LAST_TAB_CONFIRM" desc="confirm button text for the delete last tab dialog if the user is the member of the group.">
+        Leave group
+      </message>
+      <!-- Delete Last Tab Dialog -->
+
+      <!-- Data Sharing Create Flow -->
+      <message name="IDS_COLLABORATION_SHARE_GROUP_BODY" desc="The description of how shared group links work.">Anyone with the link can edit all tabs, so share wisely. Link expires in 48 hours.</message>
+      <message name="IDS_COLLABORATION_SHARE_GROUP_SHARE_AS" desc="A sublabel showing which profile the shared group is being shared as.">Share as <ph name="OWNER_FULL_NAME">%1$s<ex>John Doe</ex></ph></message>
+      <!-- Data Sharing Create Flow -->
+
+      <!-- Data Sharing Owner Manage Flow -->
+      <message name="IDS_COLLABORATION_MANAGE_GROUP_DESCRIPTION" desc="The description of how link sharing works for manage screen.">
+        Anyone with the link can edit all tabs.
+      </message>
+      <message name="IDS_COLLABORATION_MANAGE_SHARE_WISELY" desc="The description of how link sharing works.">
+        Always share wisely. Links expire in 48 hours.
+      </message>
+      <!-- Data Sharing Owner Manage Flow -->
+
+      <!-- Data Sharing Owner Stop Sharing Dialog -->
+      <message name="IDS_COLLABORATION_OWNER_STOP_SHARING_DIALOG_BODY" desc="The body for the owner's stop sharing dialog.">
+        Everyone will immediately lose access to the “<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>” tab group, and all invitation links will be turned off
+      </message>
+      <!-- Data Sharing Owner Stop Sharing Dialog -->
+
+      <!-- Data Sharing Owner Remove Member Dialog -->
+      <message name="IDS_COLLABORATION_OWNER_REMOVE_MEMBER_DIALOG_BODY" desc="The body for the owner's remove member dialog.">
+        <ph name="MEMBER_FULL_NAME">%1$s<ex>John Doe</ex></ph> (<ph name="EMAIL">%2$s<ex>johndoe@gmail.com</ex></ph>) will immediately lose access to the “<ph name="GROUP_NAME">%3$s<ex>Vacation</ex></ph>” tab group
+      </message>
+      <!-- DataSharing Owner Remove Member Dialog -->
+
+      <!-- Data Sharing Owner Delete Group -->
+      <message name="IDS_COLLABORATION_OWNER_DELETE_DIALOG_BODY" desc="The body for the owner's delete group dialog.">
+        Everyone will immediately lose access to the “<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>” tab group, and it will be deleted from all devices
+      </message>
+      <!-- Data Sharing Owner Delete Group -->
+
+      <!-- Data Sharing Preview Dialog -->
+      <message name="IDS_COLLABORATION_PREVIEW_DIALOG_BODY" desc="The body for the dialog that shows a preview of a tab group.">
+        <ph name="OWNER_FULL_NAME">%1$s<ex>Ali Connors</ex></ph> (<ph name="OWNER_EMAIL">%2$s<ex>ali.connors@gmail.com</ex></ph>) wants you to join a tab group. Anyone with the link can edit all tabs, so join with care. Link expires in 48 hr.
+      </message>
+      <message name="IDS_COLLABORATION_PREVIEW_DIALOG_TABS" desc="Preview dialog tabs count string.">
+        {TABS_COUNT, plural,
+          =1 {1 tab}
+          other {<ph name="NUMBER_OF_TABS">%1$d<ex>4</ex></ph> tabs}
+        }
+      </message>
+      <message name="IDS_COLLABORATION_PREVIEW_DIALOG_DETAILS_TABS_IN_GROUP" desc="The title for the tabs in group section in the preview details for a group.">
+        Tabs in group
+      </message>
+      <message name="IDS_COLLABORATION_LINK_FAILED_BODY" desc="The body for the link failed dialog.">
+        Contact the sender to ask for a new link
+      </message>
+      <message name="IDS_COLLABORATION_JOIN_GROUP_AS" desc="A sublabel showing which profile the shared group is being joined as.">
+        Join as <ph name="MEMBER_FULL_NAME">%1$s<ex>John Doe</ex></ph>
+      </message>
+      <!-- Data Sharing Preview Dialog -->
+
+      <!-- Data Sharing Leave Dialog -->
+      <message name="IDS_COLLABORATION_LEAVE_DIALOG_BODY" desc="The body for the leave group dialog.">
+        You’ll immediately lose access to the “<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>” tab group, and it will be deleted from all your devices
+      </message>
+      <!-- Data Sharing Leave Dialog -->
+
+      <!-- Data Sharing Owner Block Member Dialog -->
+      <message name="IDS_COLLABORATION_OWNER_BLOCK_DIALOG_BODY" desc="The body for the owner's block member dialog.">
+        <ph name="MEMBER_FULL_NAME">%1$s<ex>John Doe</ex></ph> (<ph name="EMAIL">%2$s<ex>johndoe@gmail.com</ex></ph>) will immediately lose access to the “<ph name="GROUP_NAME">%3$s<ex>Vacation</ex></ph>” tab group, and will no longer be able to interact with you across Brave services.
+      </message>
+      <!-- DataSharing Owner Block Member Dialog -->
+
+      <!-- Data Sharing Block and Leave Dialog -->
+        <message name="IDS_COLLABORATION_BLOCK_LEAVE_DIALOG_BODY" desc="The body for the block and leave group dialog.">
+          You’ll immediately lose access to the “<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>” tab group, and <ph name="BLOCKED_MEMBER_FULL_NAME">%1$s<ex>Ali Connors</ex></ph> (<ph name="BLOCKED_MEMBER_EMAIL">%2$s<ex>ali.connors@gmail.com</ex></ph>) will no longer be able to interact with you across Brave services.
+        </message>
+        <message name="IDS_COLLABORATION_BLOCK_LEAVE_LEARN_MORE" desc="The text for the learn more link for the block and leave group dialog.">
+          Learn about blocked accounts
+        </message>
+      <!-- Data Sharing Block and Leave Dialog -->
+
+      <!-- Delete Last Tab Dialog -->
+      <message name="IDS_COLLABORATION_OWNER_DELETE_LAST_TAB_BODY" desc="Description for the confirming the owner deleting the last tab of the shared group.">
+        Keep this group to add tabs later, or delete it if you no longer need it.
+      </message>
+      <message name="IDS_COLLABORATION_OWNER_DELETE_LAST_TAB_BODY_2" desc="More description for the confirming the owner deleting the last tab of the shared group.">
+        If you delete it, everyone will immediately lose access to the "<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>" tab group, and it will be deleted from all devices.
+      </message>
+      <message name="IDS_COLLABORATION_MEMBER_DELETE_LAST_TAB_BODY" desc="Description for the confirming the member deleting the last tab of the shared group.">
+        Keep this group to add tabs later, or leave it if you no longer want access to it
+      </message>
+      <!-- Delete Last Tab Dialog -->
+
+      <!-- Misc -->
+      <message name="IDS_COLLABORATION_LEARN_ABOUT_SHARED_GROUPS" desc="The title for a link that can be clicked to go to the help page for shared groups.">
+        Learn about shared tab groups
+      </message>
+      <message name="IDS_COLLABORATION_PEOPLE_WITH_ACCESS" desc="Text describing a list of members of a group.">
+        People with access
+      </message>
+      <message name="IDS_COLLABORATION_LINK_EDIT_ACCESS" desc="Text describing how link sharing works.">
+        Anyone with the link can edit all tabs
+      </message>
+      <message name="IDS_COLLABORATION_LINK_JOIN_TOGGLE" desc="A description of how the the toggle for link sharing works.">
+        Let anyone with the link join
+      </message>
+      <message name="IDS_COLLABORATION_CANCEL" desc="The label for buttons that cancel any dialogs in data sharing.">
+        Cancel
+      </message>
+      <!-- Misc -->
+
       <message name="IDS_SHARED_IMAGE_TILES_COUNT" desc="The count string for number of tiles that overflows from shared image tiles. |COUNT_NUMBER| will be a number between 1 and 99 (it will be 1-2 digits at most). [CHAR_LIMIT=3]">
         +<ph name="COUNT_NUMBER">%1$s<ex>1</ex></ph>
       </message>
@@ -6692,6 +6898,19 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_TAB_CHANGED_LABEL" desc="The label on a chip denoting a tab was recently changed.">
         Changed
+      </message>
+
+      <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_BOTTOM_SHEET_TITLE" desc="The title of the bottom sheet that shows the list of recent activity in a collaboration.">
+        Recent Activity
+      </message>
+      <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string that describes the recent activity bottom sheet.">
+        Recent activity bottom sheet
+      </message>
+      <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_BOTTOM_SHEET_ACCESSIBILITY_OPENED_FULL" desc="Accessibility string that describes that the recent activity bottom sheet has fully opened.">
+        Recent activity bottom sheet opened at full height
+      </message>
+      <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_BOTTOM_SHEET_ACCESSIBILITY_CLOSED" desc="Accessibility string that describes that the recent activity bottom sheet has closed.">
+        Recent activity bottom sheet closed
       </message>
 
       <!-- Interstitial shown prior to making digital identity request to wallet -->
