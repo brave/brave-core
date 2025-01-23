@@ -37,6 +37,8 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr uint32_t kAccountBirthday = kNu5BlockUpdate + 100u;
+
 class MockZCashRPC : public ZCashRpc {
  public:
   MockZCashRPC() : ZCashRpc(nullptr, nullptr) {}
@@ -93,6 +95,12 @@ class MockZCashShieldSyncServiceObserver
       this};
 };
 
+OrchardCommitment CreateCommitment(OrchardCommitmentValue value,
+                                   bool marked,
+                                   std::optional<uint32_t> checkpoint_id) {
+  return OrchardCommitment{std::move(value), marked, checkpoint_id};
+}
+
 }  // namespace
 
 class ZCashShieldSyncServiceTest : public testing::Test {
@@ -122,7 +130,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
                                               mojom::KeyringId::kZCashMainnet,
                                               mojom::AccountKind::kDerived, 0);
     auto account_birthday =
-        mojom::ZCashAccountShieldBirthday::New(kNu5BlockUpdate + 100, "hash");
+        mojom::ZCashAccountShieldBirthday::New(kAccountBirthday, "hash");
     OrchardFullViewKey fvk;
 
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
@@ -142,6 +150,15 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
   mojom::AccountIdPtr account() { return zcash_account_.Clone(); }
 
+  void ApplyScanResults(OrchardBlockScanner::Result&& result,
+                        uint32_t latest_scanned_block_id,
+                        const std::string& latest_scanned_block_hash) {
+    sync_state_.AsyncCall(&OrchardSyncState::ApplyScanResults)
+        .WithArgs(account().Clone(), std::move(result), latest_scanned_block_id,
+                  latest_scanned_block_hash);
+    task_environment_.RunUntilIdle();
+  }
+
   std::unique_ptr<MockOrchardBlockScannerProxy>
   CreateMockOrchardBlockScannerProxy() {
     return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
@@ -153,30 +170,42 @@ class ZCashShieldSyncServiceTest : public testing::Test {
           auto account_id = MakeIndexBasedAccountId(
               mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
               mojom::AccountKind::kDerived, 0);
-          OrchardBlockScanner::Result result = CreateResultForTesting(
-              std::move(tree_state), std::vector<OrchardCommitment>());
+          std::vector<OrchardCommitment> commitments;
+          std::vector<OrchardNote> notes;
+          std::vector<OrchardNoteSpend> spends;
+
           for (const auto& block : blocks) {
             // 3 notes in the blockchain
             if (block->height == kNu5BlockUpdate + 105) {
-              result.discovered_notes.push_back(
+              notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 1));
             } else if (block->height == kNu5BlockUpdate + 205) {
-              result.discovered_notes.push_back(
+              notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 2));
             } else if (block->height == kNu5BlockUpdate + 305) {
-              result.discovered_notes.push_back(
+              notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 3));
             }
 
             // First 2 notes are spent
             if (block->height == kNu5BlockUpdate + 255) {
-              result.found_spends.push_back(OrchardNoteSpend(
+              spends.push_back(OrchardNoteSpend(
                   block->height, {GenerateMockNullifier(account_id, 1)}));
             } else if (block->height == kNu5BlockUpdate + 265) {
-              result.found_spends.push_back(OrchardNoteSpend(
+              spends.push_back(OrchardNoteSpend(
                   block->height, {GenerateMockNullifier(account_id, 2)}));
             }
+
+            // Last commitment in the block
+            commitments.push_back(
+                CreateCommitment(CreateMockCommitmentValue(5, block->height),
+                                 false, block->height));
           }
+
+          OrchardBlockScanner::Result result = CreateResultForTesting(
+              std::move(tree_state), std::move(commitments));
+          result.discovered_notes = notes;
+          result.found_spends = spends;
           std::move(callback).Run(std::move(result));
         }));
   }
@@ -226,7 +255,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             for (uint32_t i = from; i <= to; i++) {
               auto chain_metadata = zcash::mojom::ChainMetadata::New();
               chain_metadata->orchard_commitment_tree_size = 0;
-              // Create empty block for testing
+              // Create empty block for testing.
               blocks.push_back(zcash::mojom::CompactBlock::New(
                   0u, i, std::vector<uint8_t>({0xbb, 0xaa}),
                   std::vector<uint8_t>(), 0u, std::vector<uint8_t>(),
@@ -266,40 +295,43 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             auto account_id = MakeIndexBasedAccountId(
                 mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
                 mojom::AccountKind::kDerived, 0);
-            OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>());
+            std::vector<OrchardCommitment> commitments;
+            std::vector<OrchardNote> notes;
+            std::vector<OrchardNoteSpend> spends;
+
             for (const auto& block : blocks) {
+              commitments.push_back(
+                  CreateCommitment(CreateMockCommitmentValue(1, block->height),
+                                   false, block->height));
               // 3 notes in the blockchain
               if (block->height == kNu5BlockUpdate + 605) {
-                result.discovered_notes.push_back(
+                notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 5));
               } else if (block->height == kNu5BlockUpdate + 705) {
-                result.discovered_notes.push_back(
+                notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 6));
               } else if (block->height == kNu5BlockUpdate + 905) {
-                result.discovered_notes.push_back(
+                notes.push_back(
                     GenerateMockOrchardNote(account_id, block->height, 7));
               }
 
               // First 2 notes are spent
               if (block->height == kNu5BlockUpdate + 855) {
-                result.found_spends.push_back(OrchardNoteSpend{
+                spends.push_back(OrchardNoteSpend{
                     block->height, GenerateMockNullifier(account_id, 3)});
               }
             }
+
+            OrchardTreeState orchard_tree_state;
+            orchard_tree_state.tree_size = blocks[0]->height - kAccountBirthday;
+            OrchardBlockScanner::Result result = CreateResultForTesting(
+                std::move(orchard_tree_state), std::move(commitments));
+            result.discovered_notes = notes;
+            result.found_spends = spends;
             std::move(callback).Run(std::move(result));
           })));
 
-  ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
-      .WillByDefault(::testing::Invoke(
-          [](const std::string& chain_id, zcash::mojom::BlockIDPtr block,
-             ZCashRpc::GetTreeStateCallback callback) {
-            // Valid tree state
-            auto tree_state = zcash::mojom::TreeState::New(
-                chain_id, block->height, "aabbcc", 0, "", "");
-            std::move(callback).Run(std::move(tree_state));
-          }));
-
+  // Continue scanning
   {
     sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
@@ -308,15 +340,16 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
     EXPECT_EQ(sync_status->spendable_balance, 180u);
   }
 
-  // Chain reorg when chain tip is greater than latest scanned block
   ResetSyncService();
 
+  // Reorg case, chain tip after the latest scanned block.
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
+            // New chain tip is after the previous one.
             std::move(callback).Run(zcash::mojom::BlockID::New(
-                kNu5BlockUpdate + 1010u, std::vector<uint8_t>({})));
+                kNu5BlockUpdate + 1100u, std::vector<uint8_t>({})));
           }));
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
@@ -337,8 +370,27 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
                                 OrchardBlockScanner::ErrorCode>)> callback) {
+            auto account_id = MakeIndexBasedAccountId(
+                mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
+                mojom::AccountKind::kDerived, 0);
+            std::vector<OrchardCommitment> commitments;
+            std::vector<OrchardNote> notes;
+
+            for (const auto& block : blocks) {
+              commitments.push_back(
+                  CreateCommitment(CreateMockCommitmentValue(1, block->height),
+                                   false, block->height));
+              if (block->height == kNu5BlockUpdate + 1005u) {
+                notes.push_back(
+                    GenerateMockOrchardNote(account_id, block->height, 9));
+              }
+            }
+
+            OrchardTreeState orchard_tree_state;
+            orchard_tree_state.tree_size = blocks[0]->height - kAccountBirthday;
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>());
+                std::move(orchard_tree_state), std::move(commitments));
+            result.discovered_notes = notes;
             std::move(callback).Run(std::move(result));
           })));
 
@@ -347,18 +399,19 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
-    EXPECT_EQ(sync_status->spendable_balance, 140u);
+    EXPECT_EQ(sync_status->spendable_balance, 200u);
   }
 
-  // Chain reorg when chain tip is less than latest scanned block
+  // Reorg case, chain tip before the latest scanned block.
   ResetSyncService();
 
   ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
       .WillByDefault(
           ::testing::Invoke([](const std::string& chain_id,
                                ZCashRpc::GetLatestBlockCallback callback) {
+            // New chain tip below previous one.
             std::move(callback).Run(zcash::mojom::BlockID::New(
-                kNu5BlockUpdate + 950u, std::vector<uint8_t>({})));
+                kNu5BlockUpdate + 1010u, std::vector<uint8_t>({})));
           }));
 
   ON_CALL(zcash_rpc(), GetTreeState(_, _, _))
@@ -384,22 +437,16 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(tree_state), std::vector<OrchardCommitment>());
             for (const auto& block : blocks) {
-              // First block is the current chain tip - kChainReorgBlockDelta
-              EXPECT_GE(block->height,
-                        kNu5BlockUpdate + 950u - kChainReorgBlockDelta);
-              // Last block is the current chain tip
-              EXPECT_GE(kNu5BlockUpdate + 950u, block->height);
-
               // Add a new note on height 900
-              if (block->height == kNu5BlockUpdate + 900) {
+              if (block->height == kNu5BlockUpdate + 1005u) {
                 result.discovered_notes.push_back(
-                    GenerateMockOrchardNote(account_id, block->height, 8));
+                    GenerateMockOrchardNote(account_id, block->height, 10));
               }
 
               // Add a nullifier for previous note
-              if (block->height == kNu5BlockUpdate + 905) {
+              if (block->height == kNu5BlockUpdate + 1010u) {
                 result.found_spends.push_back(OrchardNoteSpend{
-                    block->height, GenerateMockNullifier(account_id, 3)});
+                    block->height, GenerateMockNullifier(account_id, 5)});
               }
             }
             std::move(callback).Run(std::move(result));
@@ -410,7 +457,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
-    EXPECT_EQ(sync_status->spendable_balance, 190u);
+    EXPECT_EQ(sync_status->spendable_balance, 160u);
   }
 }
 

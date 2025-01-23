@@ -34,17 +34,45 @@ void ZCashVerifyChainStateTask::WorkOnTask() {
     return;
   }
 
+  // In case no blocks were scanned return early.
+  if (!account_meta_->latest_scanned_block_id) {
+    std::move(callback_).Run(true);
+    return;
+  }
+
   if (!chain_tip_block_) {
     GetChainTipBlock();
     return;
   }
 
-  if (!chain_state_verified_) {
+  if (!verification_state_) {
     VerifyChainState();
     return;
   }
 
-  std::move(callback_).Run(chain_state_verified_);
+  // Reorg not needed
+  if (verification_state_.value() == VerificationState::kNoReorg) {
+    std::move(callback_).Run(true);
+    return;
+  }
+
+  // Reorg flow
+  if (!rewind_block_heght_) {
+    GetMinCheckpointId();
+    return;
+  }
+
+  if (!rewind_block_tree_state_) {
+    GetRewindBlockTreeState();
+    return;
+  }
+
+  if (!rewind_result_) {
+    Rewind();
+    return;
+  }
+
+  std::move(callback_).Run(rewind_result_.value());
 }
 
 void ZCashVerifyChainStateTask::ScheduleWorkOnTask() {
@@ -113,26 +141,57 @@ void ZCashVerifyChainStateTask::OnGetChainTipBlock(
   ScheduleWorkOnTask();
 }
 
-void ZCashVerifyChainStateTask::VerifyChainState() {
-  // Skip chain state verification if no blocks were scanned yet
-  if (!account_meta_->latest_scanned_block_id) {
-    chain_state_verified_ = true;
+void ZCashVerifyChainStateTask::GetMinCheckpointId() {
+  context_->sync_state->AsyncCall(&OrchardSyncState::GetMinCheckpointId)
+      .WithArgs(context_->account_id.Clone())
+      .Then(base::BindOnce(&ZCashVerifyChainStateTask::OnGetMinCheckpointId,
+                           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ZCashVerifyChainStateTask::OnGetMinCheckpointId(
+    base::expected<std::optional<uint32_t>, OrchardStorage::Error> result) {
+  if (!result.has_value()) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kDatabaseError,
+        result.error().message};
     ScheduleWorkOnTask();
     return;
   }
 
+  if (!result.value()) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kFailedToVerifyChainState,
+        "CheckpointId doesn't exist"};
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  rewind_block_heght_ = *(result.value());
+
+  ScheduleWorkOnTask();
+}
+
+void ZCashVerifyChainStateTask::VerifyChainState() {
+  // Skip chain state verification if no blocks were scanned yet
+  if (!account_meta_->latest_scanned_block_id) {
+    verification_state_ = VerificationState::kNoReorg;
+    ScheduleWorkOnTask();
+    return;
+  }
   // If block chain has removed blocks we already scanned then we need to handle
   // chain reorg.
   if (*chain_tip_block_ < account_meta_->latest_scanned_block_id.value()) {
     // Assume that chain reorg can't affect more than kChainReorgBlockDelta
     // blocks So we can just fallback on this number from the chain tip block.
-    GetTreeStateForChainReorg(*chain_tip_block_ - kChainReorgBlockDelta);
+    verification_state_ = VerificationState::kReorg;
+    ScheduleWorkOnTask();
     return;
   }
   // Retrieve block info for last scanned block id to check whether block hash
   // is the same
   auto block_id = zcash::mojom::BlockID::New(
       account_meta_->latest_scanned_block_id.value(), std::vector<uint8_t>());
+
   context_->zcash_rpc->GetTreeState(
       context_->chain_id, std::move(block_id),
       base::BindOnce(
@@ -162,62 +221,57 @@ void ZCashVerifyChainStateTask::OnGetTreeStateForChainVerification(
   }
   if (backend_block_hash.value() !=
       account_meta_->latest_scanned_block_hash.value()) {
-    // Assume that chain reorg can't affect more than kChainReorgBlockDelta
-    // blocks So we can just fallback on this number.
-    uint32_t new_block_id =
-        account_meta_->latest_scanned_block_id.value() > kChainReorgBlockDelta
-            ? account_meta_->latest_scanned_block_id.value() -
-                  kChainReorgBlockDelta
-            : 0;
-    GetTreeStateForChainReorg(new_block_id);
+    verification_state_ = VerificationState::kReorg;
+    ScheduleWorkOnTask();
     return;
   }
 
-  chain_state_verified_ = true;
+  verification_state_ = VerificationState::kNoReorg;
   ScheduleWorkOnTask();
 }
 
-void ZCashVerifyChainStateTask::GetTreeStateForChainReorg(
-    uint32_t new_block_height) {
-  // Query block info by block height
-  auto block_id =
-      zcash::mojom::BlockID::New(new_block_height, std::vector<uint8_t>());
+void ZCashVerifyChainStateTask::GetRewindBlockTreeState() {
+  auto block_id = zcash::mojom::BlockID::New(rewind_block_heght_.value(),
+                                             std::vector<uint8_t>());
   context_->zcash_rpc->GetTreeState(
       context_->chain_id, std::move(block_id),
-      base::BindOnce(&ZCashVerifyChainStateTask::OnGetTreeStateForChainReorg,
-                     weak_ptr_factory_.GetWeakPtr(), new_block_height));
+      base::BindOnce(&ZCashVerifyChainStateTask::OnGetRewindBlockTreeState,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashVerifyChainStateTask::OnGetTreeStateForChainReorg(
-    uint32_t new_block_height,
+void ZCashVerifyChainStateTask::OnGetRewindBlockTreeState(
     base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state) {
   if (!tree_state.has_value() || !tree_state.value() ||
-      new_block_height != (*tree_state)->height) {
+      rewind_block_heght_.value() != (*tree_state)->height) {
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
         base::StrCat({"Reorg tree state failed, ", tree_state.error()})};
     ScheduleWorkOnTask();
     return;
-  } else {
-    auto reverted_hex = RevertHex((*tree_state)->hash);
-    if (!reverted_hex) {
-      error_ = ZCashShieldSyncService::Error{
-          ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
-          "Wrong block hash format"};
-      ScheduleWorkOnTask();
-      return;
-    }
-    // Reorg database so records related to removed blocks are wiped out
-    context_->sync_state->AsyncCall(&OrchardSyncState::HandleChainReorg)
-        .WithArgs(context_->account_id.Clone(), (*tree_state)->height,
-                  *reverted_hex)
-        .Then(base::BindOnce(
-            &ZCashVerifyChainStateTask::OnDatabaseUpdatedForChainReorg,
-            weak_ptr_factory_.GetWeakPtr()));
   }
+
+  rewind_block_tree_state_ = std::move(tree_state.value());
+  ScheduleWorkOnTask();
 }
 
-void ZCashVerifyChainStateTask::OnDatabaseUpdatedForChainReorg(
+void ZCashVerifyChainStateTask::Rewind() {
+  auto reverted_hex = RevertHex((*rewind_block_tree_state_)->hash);
+  if (!reverted_hex) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
+        "Wrong block hash format"};
+    ScheduleWorkOnTask();
+    return;
+  }
+  // Reorg database so records related to removed blocks are wiped out
+  context_->sync_state->AsyncCall(&OrchardSyncState::Rewind)
+      .WithArgs(context_->account_id.Clone(), rewind_block_heght_.value(),
+                *reverted_hex)
+      .Then(base::BindOnce(&ZCashVerifyChainStateTask::OnRewindResult,
+                           weak_ptr_factory_.GetWeakPtr()));
+}
+
+void ZCashVerifyChainStateTask::OnRewindResult(
     base::expected<OrchardStorage::Result, OrchardStorage::Error> result) {
   if (!result.has_value()) {
     error_ = ZCashShieldSyncService::Error{
@@ -227,7 +281,7 @@ void ZCashVerifyChainStateTask::OnDatabaseUpdatedForChainReorg(
     return;
   }
 
-  chain_state_verified_ = true;
+  rewind_result_ = true;
   ScheduleWorkOnTask();
 }
 
