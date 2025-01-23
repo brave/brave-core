@@ -33,6 +33,7 @@ class BackupResultsNavigationThrottle : public content::NavigationThrottle {
  private:
   // content::NavigationThrottle overrides:
   ThrottleCheckResult WillStartRequest() override;
+  ThrottleCheckResult WillRedirectRequest() override;
 
   const char* GetNameForLogging() override;
 };

@@ -27,16 +27,12 @@ namespace brave_search {
 //
 // There are three modes of operation for this service:
 // i)   If `features::kBackupResultsFullRender` is disabled, the initial search
-// page
-//      will be renderered, and the actual search engine results page will be
+//      page will be rendered, and the actual search engine results page will be
 //      fetched.
 // ii)  If `features::kBackupResultsFullRender` is enabled, the initial search
-// page
-//      and the actual search engine results page will be rendered.
+//      page and the actual search engine results page will be rendered.
 // iii) If a cookie header value is provided in `FetchBackupResults`, the actual
-// search engine results
-//      the actual search engine results page will be fetched, with no
-//      rendering.
+//      search engine result page will be directly fetched, with no rendering.
 class BackupResultsService : public KeyedService {
  public:
   struct BackupResults {
@@ -54,7 +50,6 @@ class BackupResultsService : public KeyedService {
   virtual void FetchBackupResults(
       const GURL& url,
       std::optional<net::HttpRequestHeaders> headers,
-
       BackupResultsCallback callback) = 0;
 
   // Called by BackupResultsNavigationThrottle. Returns true if request should

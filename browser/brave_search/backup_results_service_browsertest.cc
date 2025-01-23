@@ -38,6 +38,19 @@ window.location.href = "/test2";
 </html>
 )";
 
+constexpr char kTestInitInvalidRedirectHtml[] = R"(
+<!doctype html>
+<html>
+<body>
+Test Content
+<script>
+document.cookie = "testcookie=value; path=/";
+window.location.href = "https://google.invalid/test2";
+</script>
+</body>
+</html>
+)";
+
 constexpr char kTestFinalPath[] = "/test2";
 constexpr char kTestFinalHtml[] =
     "<!doctype html><html><body>Test Content</body></html>";
@@ -59,7 +72,11 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
                             base::Unretained(this)));
 
     ASSERT_TRUE(https_server_->Start());
+    backup_results_service_ =
+        BackupResultsServiceFactory::GetForBrowserContext(browser()->profile());
   }
+
+  void TearDownOnMainThread() override { backup_results_service_ = nullptr; }
 
  protected:
   std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
@@ -70,7 +87,9 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
 
     auto path = request.GetURL().path();
     if (path == kTestInitPath) {
-      response->set_content(kTestInitHtml);
+      response->set_content(redirect_to_invalid_domain_
+                                ? kTestInitInvalidRedirectHtml
+                                : kTestInitHtml);
     } else if (path == kTestFinalPath) {
       auto cookie_it = request.headers.find(net::HttpRequestHeaders::kCookie);
       bool has_cookie =
@@ -92,19 +111,19 @@ class BackupResultsServiceBrowserTest : public InProcessBrowserTest {
     return response;
   }
 
+  bool redirect_to_invalid_domain_ = false;
   base::test::ScopedFeatureList scoped_feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
+
+  raw_ptr<BackupResultsService> backup_results_service_;
 };
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
-  auto* backup_results_service =
-      BackupResultsServiceFactory::GetForBrowserContext(browser()->profile());
-
   base::RunLoop run_loop;
-  GURL url = https_server_->GetURL("a.com", kTestInitPath);
+  GURL url = https_server_->GetURL("google.ca", kTestInitPath);
 
-  backup_results_service->FetchBackupResults(
+  backup_results_service_->FetchBackupResults(
       url, std::nullopt,
       base::BindLambdaForTesting(
           [&](std::optional<BackupResultsService::BackupResults> result) {
@@ -119,17 +138,46 @@ IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, BasicRenderAndLoad) {
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, CookieHeader) {
-  auto* backup_results_service =
-      BackupResultsServiceFactory::GetForBrowserContext(browser()->profile());
+IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidDomain) {
+  base::RunLoop run_loop;
+  GURL url = https_server_->GetURL("google.invalid", kTestInitPath);
+
+  backup_results_service_->FetchBackupResults(
+      url, std::nullopt,
+      base::BindLambdaForTesting(
+          [&](std::optional<BackupResultsService::BackupResults> result) {
+            EXPECT_FALSE(result.has_value());
+            run_loop.Quit();
+          }));
+
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, InvalidRedirect) {
+  redirect_to_invalid_domain_ = true;
 
   base::RunLoop run_loop;
-  GURL url = https_server_->GetURL("a.com", kTestFinalPath);
+  GURL url = https_server_->GetURL("google.ca", kTestInitPath);
+
+  backup_results_service_->FetchBackupResults(
+      url, std::nullopt,
+      base::BindLambdaForTesting(
+          [&](std::optional<BackupResultsService::BackupResults> result) {
+            EXPECT_FALSE(result.has_value());
+            run_loop.Quit();
+          }));
+
+  run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BackupResultsServiceBrowserTest, CookieHeader) {
+  base::RunLoop run_loop;
+  GURL url = https_server_->GetURL("google.co.uk", kTestFinalPath);
 
   net::HttpRequestHeaders headers;
   headers.SetHeader(net::HttpRequestHeaders::kCookie, "testcookie=value");
 
-  backup_results_service->FetchBackupResults(
+  backup_results_service_->FetchBackupResults(
       url, headers,
       base::BindLambdaForTesting(
           [&](std::optional<BackupResultsService::BackupResults> result) {
@@ -154,13 +202,10 @@ class BackupResultsServiceFullRenderBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(BackupResultsServiceFullRenderBrowserTest, FullRender) {
-  auto* backup_results_service =
-      BackupResultsServiceFactory::GetForBrowserContext(browser()->profile());
-
   base::RunLoop run_loop;
-  GURL url = https_server_->GetURL("a.com", kTestInitPath);
+  GURL url = https_server_->GetURL("google.com", kTestInitPath);
 
-  backup_results_service->FetchBackupResults(
+  backup_results_service_->FetchBackupResults(
       url, std::nullopt,
       base::BindLambdaForTesting(
           [&](std::optional<BackupResultsService::BackupResults> result) {

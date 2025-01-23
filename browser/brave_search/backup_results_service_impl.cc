@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
 #include "chrome/browser/content_extraction/inner_html.h"
@@ -46,7 +47,8 @@ constexpr net::NetworkTrafficAnnotationTag kNetworkTrafficAnnotationTag =
       policy {
         cookies_allowed: YES
         setting:
-          "You can enable or disable this feature on brave://settings/search."
+          "You can enable or disable these features on brave://settings/search "
+          "and https://search.brave.com/settings"
         policy_exception_justification:
           "Not implemented."
       }
@@ -129,9 +131,9 @@ void BackupResultsServiceImpl::FetchBackupResults(
     }
   }
 
-  auto request = pending_requests_.emplace(
-      pending_requests_.end(), std::move(web_contents), url, headers,
-      otr_profile, std::move(callback));
+  auto request = pending_requests_.emplace(pending_requests_.end(),
+                                           std::move(web_contents), headers,
+                                           otr_profile, std::move(callback));
 
   if (should_render) {
     auto load_url_params = content::NavigationController::LoadURLParams(url);
@@ -162,12 +164,10 @@ void BackupResultsServiceImpl::FetchBackupResults(
 
 BackupResultsServiceImpl::PendingRequest::PendingRequest(
     std::unique_ptr<content::WebContents> web_contents,
-    GURL original_url,
     std::optional<net::HttpRequestHeaders> headers,
     Profile* otr_profile,
     BackupResultsCallback callback)
-    : original_url(original_url),
-      headers(std::move(headers)),
+    : headers(std::move(headers)),
       callback(std::move(callback)),
       web_contents(std::move(web_contents)),
       otr_profile(otr_profile) {}
@@ -189,12 +189,12 @@ bool BackupResultsServiceImpl::HandleWebContentsStartRequest(
   if (pending_request == pending_requests_.end()) {
     return false;
   }
-  if (!url.SchemeIs(url::kHttpsScheme) ||
-      url.host_piece() != pending_request->original_url.host_piece()) {
+  if (!IsBackupResultURLAllowed(url)) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE,
         base::BindOnce(&BackupResultsServiceImpl::CleanupAndDispatchResult,
-                       base::Unretained(this), pending_request, std::nullopt));
+                       weak_ptr_factory_.GetWeakPtr(), pending_request,
+                       std::nullopt));
     return false;
   }
   if (features::IsBackupResultsFullRenderEnabled()) {

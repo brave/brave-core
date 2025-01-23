@@ -8,13 +8,16 @@
 #include <utility>
 
 #include "brave/browser/brave_search/backup_results_service_factory.h"
+#include "brave/components/constants/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "extensions/browser/extension_function.h"
 
 namespace extensions::api {
 
 namespace {
 
-constexpr char kResponseCodeKey[] = "response_code";
+constexpr char kResponseCodeKey[] = "responseCode";
 constexpr char kHtmlKey[] = "html";
 
 }  // namespace
@@ -24,6 +27,10 @@ WebDiscoveryRetrieveBackupResultsFunction::
 
 ExtensionFunction::ResponseAction
 WebDiscoveryRetrieveBackupResultsFunction::Run() {
+  auto* user_prefs = user_prefs::UserPrefs::Get(browser_context());
+  if (!user_prefs || !user_prefs->GetBoolean(kWebDiscoveryEnabled)) {
+    return RespondNow(Error("web discovery is not enabled"));
+  }
   EXTENSION_FUNCTION_VALIDATE(has_args() && !args().empty());
   const auto* url_str = args().front().GetIfString();
   EXTENSION_FUNCTION_VALIDATE(url_str);

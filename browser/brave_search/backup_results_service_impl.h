@@ -59,13 +59,11 @@ class BackupResultsServiceImpl : public BackupResultsService,
  private:
   struct PendingRequest {
     PendingRequest(std::unique_ptr<content::WebContents> web_contents,
-                   const GURL original_url,
                    std::optional<net::HttpRequestHeaders> headers,
                    Profile* otr_profile,
                    BackupResultsCallback callback);
     ~PendingRequest();
 
-    GURL original_url;
     std::optional<net::HttpRequestHeaders> headers;
     BackupResultsCallback callback;
 

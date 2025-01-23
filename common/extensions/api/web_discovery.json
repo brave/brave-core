@@ -28,7 +28,7 @@
               "name": "result",
               "type": "object",
               "properties": {
-                "response_code": {
+                "responseCode": {
                   "type": "integer",
                   "description": "The last response code while fetching SERP"
                 },

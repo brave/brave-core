@@ -175,6 +175,7 @@ source_set("extensions") {
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
     "//components/update_client:network_impl",
+    "//components/user_prefs",
     "//content/public/browser",
   ]
 

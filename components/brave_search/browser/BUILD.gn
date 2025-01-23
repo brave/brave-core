@@ -7,6 +7,8 @@ import("//build/config/features.gni")
 
 static_library("browser") {
   sources = [
+    "backup_results_allowed_urls.cc",
+    "backup_results_allowed_urls.h",
     "backup_results_service.cc",
     "backup_results_service.h",
     "brave_search_default_host.cc",

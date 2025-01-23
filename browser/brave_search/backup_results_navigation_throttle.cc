@@ -34,6 +34,10 @@ BackupResultsNavigationThrottle::~BackupResultsNavigationThrottle() = default;
 
 content::NavigationThrottle::ThrottleCheckResult
 BackupResultsNavigationThrottle::WillStartRequest() {
+  if (!navigation_handle()->IsInPrimaryMainFrame()) {
+    return content::NavigationThrottle::CANCEL;
+  }
+
   auto* web_contents = navigation_handle()->GetWebContents();
   auto* backup_results_service =
       BackupResultsServiceFactory::GetForBrowserContext(
@@ -44,6 +48,11 @@ BackupResultsNavigationThrottle::WillStartRequest() {
   }
 
   return content::NavigationThrottle::CANCEL;
+}
+
+content::NavigationThrottle::ThrottleCheckResult
+BackupResultsNavigationThrottle::WillRedirectRequest() {
+  return WillStartRequest();
 }
 
 const char* BackupResultsNavigationThrottle::GetNameForLogging() {
