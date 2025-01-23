@@ -15,7 +15,7 @@
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/brave_rewards/creator_detection_script_injector.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "content/public/browser/web_contents_observer.h"

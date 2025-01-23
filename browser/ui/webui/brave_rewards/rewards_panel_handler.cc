@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/content/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"

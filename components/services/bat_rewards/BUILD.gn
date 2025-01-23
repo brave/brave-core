@@ -16,7 +16,7 @@ static_library("lib") {
 
   public_deps = [
     "public/interfaces",
-    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/internal",
   ]
 
   deps = [ "//mojo/public/cpp/system" ]

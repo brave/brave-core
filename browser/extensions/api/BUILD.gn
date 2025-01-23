@@ -14,7 +14,7 @@ function_registration("generated_api_registration") {
 
   deps = [
     "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_rewards/common/mojom",
+    "//brave/components/brave_rewards/core/mojom",
     "//extensions/browser",
     "//extensions/common",
   ]

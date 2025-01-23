@@ -1,7 +1,7 @@
 include_rules = [
   "+brave/components/brave_ads/core/public",
   "+brave/components/brave_news/common",
-  "+brave/components/brave_rewards/common",
+  "+brave/components/brave_rewards/core",
   "+brave/components/brave_sync",
   "+brave/components/brave_wallet/browser",
   "+brave/components/de_amp/common",

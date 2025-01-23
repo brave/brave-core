@@ -32,7 +32,7 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/theme:java",
   "//brave/components/ai_chat/core/common/mojom:mojom_java",
   "//brave/components/brave_news/common:mojom_java",
-  "//brave/components/brave_rewards/common/mojom:mojom_java",
+  "//brave/components/brave_rewards/core/mojom:mojom_java",
   "//brave/components/brave_shields/core/common:mojom_java",
   "//brave/components/brave_vpn/common/mojom:mojom_java",
   "//brave/components/brave_wallet/common:mojom_java",

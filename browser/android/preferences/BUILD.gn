@@ -15,7 +15,7 @@ source_set("preferences") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_referrals/common",
-    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/core",
     "//brave/components/brave_shields/content/browser",
     "//brave/components/brave_sync:prefs",
     "//brave/components/constants",
@@ -36,7 +36,7 @@ java_cpp_strings("java_pref_names_srcjar") {
   sources = [
     "//brave/components/ai_chat/core/common/pref_names.h",
     "//brave/components/brave_adaptive_captcha/pref_names.h",
-    "//brave/components/brave_rewards/common/pref_names.h",
+    "//brave/components/brave_rewards/core/pref_names.h",
     "//brave/components/brave_shields/core/common/pref_names.h",
     "//brave/components/brave_vpn/common/pref_names.h",
     "//brave/components/constants/pref_names.h",
