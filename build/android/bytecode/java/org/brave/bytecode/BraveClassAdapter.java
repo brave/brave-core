@@ -13,6 +13,7 @@ public class BraveClassAdapter {
         chain = new BraveActivityClassAdapter(chain);
         chain = new BraveAppHooksClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
+        chain = new BraveTemplateUrlServiceClassAdapter(chain);
         chain = new BraveApplicationImplBaseClassAdapter(chain);
         chain = new BraveAutocompleteCoordinatorClassAdapter(chain);
         chain = new BraveAutocompleteEditTextClassAdapter(chain);
