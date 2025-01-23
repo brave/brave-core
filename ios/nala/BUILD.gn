@@ -14,6 +14,7 @@ nala_icons = [
   "leo.airplay.video.svg",
   "leo.appearance.svg",
   "leo.arrow.diagonal-up-right.svg",
+  "leo.arrow.diagonal-up-left.svg",
   "leo.arrow.left.svg",
   "leo.arrow.right.svg",
   "leo.arrow.small-down.svg",

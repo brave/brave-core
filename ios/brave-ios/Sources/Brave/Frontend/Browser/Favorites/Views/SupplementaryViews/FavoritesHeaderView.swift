@@ -10,16 +10,17 @@ import UIKit
 class FavoritesHeaderView: UICollectionReusableView {
   let label = UILabel().then {
     $0.text = Strings.recentSearchFavorites
-    $0.font = .systemFont(ofSize: 18, weight: .semibold)
+    $0.font = .systemFont(ofSize: 17, weight: .semibold)
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+
     addSubview(label)
     label.snp.makeConstraints {
-      $0.leading.equalToSuperview().inset(12)
-      $0.trailing.lessThanOrEqualToSuperview().inset(12)
-      $0.centerY.equalToSuperview()
+      $0.top.bottom.equalToSuperview().inset(12)
+      $0.leading.trailing.equalToSuperview().inset(16)
     }
   }
 

@@ -10,20 +10,13 @@ import UIKit
 
 class FavoritesRecentSearchHeaderView: UICollectionReusableView {
 
-  private let titleLabel = UILabel().then {
+  private let label = UILabel().then {
     $0.text = Strings.recentSearchSectionHeaderTitle
-    $0.font = .systemFont(ofSize: 15.0, weight: .semibold)
-    $0.textColor = .braveLabel
-    $0.setContentHuggingPriority(.required, for: .horizontal)
-    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.font = .systemFont(ofSize: 17, weight: .semibold)
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
   }
 
-  let showMoreButton = UIButton()
   let clearButton = UIButton()
-
-  private let vStackView = UIStackView().then {
-    $0.axis = .vertical
-  }
 
   private let hStackView = UIStackView().then {
     $0.spacing = 9.0
@@ -42,26 +35,19 @@ class FavoritesRecentSearchHeaderView: UICollectionReusableView {
   }
 
   private func setTheme() {
-    showMoreButton.do {
-      $0.setTitle(Strings.recentShowMore, for: .normal)
-      $0.setTitleColor(.braveBlurpleTint, for: .normal)
-      $0.titleLabel?.font = .systemFont(ofSize: 12.0)
-      $0.backgroundColor = .clear
-    }
-
     clearButton.do {
       $0.setTitle(Strings.recentSearchClear, for: .normal)
-      $0.setTitleColor(.braveBlurpleTint, for: .normal)
-      $0.titleLabel?.font = .systemFont(ofSize: 12.0)
+      $0.setTitleColor(UIColor(braveSystemName: .textInteractive), for: .normal)
+      $0.titleLabel?.font = .systemFont(ofSize: 14.0, weight: .semibold)
       $0.backgroundColor = .clear
     }
   }
 
   private func doLayout() {
-    addSubview(vStackView)
-    vStackView.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(12.0)
-      $0.top.bottom.equalToSuperview().priority(.low)
+    addSubview(hStackView)
+    hStackView.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(16.0)
+      $0.top.bottom.equalToSuperview().inset(12.0)
     }
 
     let spacer = UIView().then {
@@ -69,30 +55,13 @@ class FavoritesRecentSearchHeaderView: UICollectionReusableView {
       $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     }
 
-    vStackView.addArrangedSubview(hStackView)
-
-    [titleLabel, spacer, showMoreButton, clearButton].forEach(hStackView.addArrangedSubview(_:))
-    hStackView.setCustomSpacing(0, after: spacer)
-    hStackView.setCustomSpacing(15, after: showMoreButton)
-
-    showMoreButton.do {
-      $0.setContentHuggingPriority(.required, for: .horizontal)
-      $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-      $0.contentHorizontalAlignment = .leading
-    }
+    [label, spacer, clearButton].forEach(hStackView.addArrangedSubview(_:))
+    hStackView.setCustomSpacing(15, after: spacer)
 
     clearButton.do {
       $0.setContentHuggingPriority(.required, for: .horizontal)
       $0.setContentCompressionResistancePriority(.required, for: .horizontal)
       $0.contentHorizontalAlignment = .trailing
-    }
-
-    showMoreButton.snp.makeConstraints {
-      $0.height.lessThanOrEqualTo(40.0)
-    }
-
-    clearButton.snp.makeConstraints {
-      $0.height.lessThanOrEqualTo(40.0)
     }
   }
 
@@ -102,8 +71,8 @@ class FavoritesRecentSearchHeaderView: UICollectionReusableView {
     setTheme()
   }
 
-  func setButtonVisibility(showMoreButtonVisible: Bool) {
-    showMoreButton.alpha = showMoreButtonVisible ? 1.0 : 0.0
+  func setButtonVisibility(showClearButtonVisible: Bool) {
+    clearButton.alpha = showClearButtonVisible ? 1.0 : 0.0
   }
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
