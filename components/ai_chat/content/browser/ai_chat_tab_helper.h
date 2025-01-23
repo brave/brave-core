@@ -151,6 +151,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   // PrintPreviewExtractionDelegate is provided as it's implementation is
   // in a different layer.
   AIChatTabHelper(content::WebContents* web_contents,
+                  AIChatService* ai_chat_service,
                   std::unique_ptr<PrintPreviewExtractionDelegate>
                       print_preview_extraction_delegate);
 

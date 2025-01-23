@@ -46,6 +46,8 @@ class OneShotEvent;
 
 namespace ai_chat {
 
+class AIChatService;
+
 // Contains a platform-independent relationship between multiple conversations
 // and a single piece of content. Must be subclassed to
 // provide the platform-specific retrieval of the content details, such as
@@ -60,7 +62,8 @@ class AssociatedContentDriver
     virtual void OnAssociatedContentNavigated(int new_navigation_id) {}
   };
 
-  explicit AssociatedContentDriver(
+  AssociatedContentDriver(
+      AIChatService* ai_chat_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~AssociatedContentDriver() override;
 
@@ -170,6 +173,8 @@ class AssociatedContentDriver
 
   // Handlers that are interested in this content for the current navigation.
   std::set<raw_ptr<ConversationHandler>> associated_conversations_;
+
+  raw_ptr<AIChatService> ai_chat_service_;
 
   // Store the unique ID for each "page" so that
   // we can ignore API async responses against any navigated-away-from

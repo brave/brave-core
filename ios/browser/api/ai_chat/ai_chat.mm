@@ -62,7 +62,7 @@
     service_ = ai_chat::AIChatServiceFactory::GetForBrowserState(profile_);
 
     current_content_ = std::make_unique<ai_chat::AssociatedContentDriverIOS>(
-        profile_->GetSharedURLLoaderFactory(), delegate);
+        service_, profile_->GetSharedURLLoaderFactory(), delegate);
 
     conversation_client_ = std::make_unique<ai_chat::ConversationClient>(
         service_.get(), delegate_);

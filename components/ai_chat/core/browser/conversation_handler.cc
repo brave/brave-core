@@ -404,8 +404,8 @@ void ConversationHandler::OnAssociatedContentDestroyed(
                         ? associated_content_delegate_->GetContentId()
                         : -1;
   DisassociateContentDelegate();
-  if (!chat_history_.empty() && should_send_page_contents_ &&
-      metadata_->associated_content &&
+  if (ai_chat_service_->IsAIChatHistoryEnabled() && !chat_history_.empty() &&
+      should_send_page_contents_ && metadata_->associated_content &&
       metadata_->associated_content->is_content_association_possible) {
     // Get the latest version of article text and
     // associated_content_info_ if this chat has history and was connected to
@@ -584,7 +584,7 @@ void ConversationHandler::SendFeedback(const std::string& category,
       },
       std::move(callback));
 
-  if (!associated_content_delegate_) {
+  if (!associated_content_delegate_ || !should_send_page_contents_) {
     send_hostname = false;
   }
 
@@ -1138,7 +1138,8 @@ void ConversationHandler::PerformAssistantGeneration(
 
   if (features::IsPageContentRefineEnabled() &&
       page_content.length() > max_content_length &&
-      input != summarize_page_question && associated_content_delegate_) {
+      input != summarize_page_question && should_send_page_contents_ &&
+      associated_content_delegate_) {
     DVLOG(2) << "Refining content of length: " << page_content.length();
 
     auto refined_content_callback = base::BindOnce(

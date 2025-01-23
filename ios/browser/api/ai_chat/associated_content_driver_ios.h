@@ -16,9 +16,12 @@
 
 namespace ai_chat {
 
+class AIChatService;
+
 class AssociatedContentDriverIOS : public AssociatedContentDriver {
  public:
   AssociatedContentDriverIOS(
+      AIChatService* ai_chat_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       id<AIChatDelegate> delegate);
   ~AssociatedContentDriverIOS() override;

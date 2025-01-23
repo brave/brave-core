@@ -23,6 +23,7 @@
 #include "base/one_shot_event.h"
 #include "base/strings/strcat.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/brave_search_responses.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -63,8 +64,10 @@ GetSearchQuerySummaryNetworkTrafficAnnotationTag() {
 }  // namespace
 
 AssociatedContentDriver::AssociatedContentDriver(
+    AIChatService* ai_chat_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(url_loader_factory) {}
+    : url_loader_factory_(url_loader_factory),
+      ai_chat_service_(ai_chat_service) {}
 
 AssociatedContentDriver::~AssociatedContentDriver() {
   DisassociateWithConversations();
@@ -308,6 +311,11 @@ void AssociatedContentDriver::DisassociateWithConversations() {
       conversation->OnAssociatedContentDestroyed(cached_text_content_,
                                                  is_video_);
     }
+  }
+  // We also notify the AIChatService directly for conversations that aren't
+  // directly related.
+  if (ai_chat_service_) {
+    ai_chat_service_->OnAssociatedContentDestroyed(current_navigation_id_);
   }
 }
 

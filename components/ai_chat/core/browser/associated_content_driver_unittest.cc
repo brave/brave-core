@@ -43,7 +43,8 @@ class MockAssociatedContentDriver : public AssociatedContentDriver {
  public:
   MockAssociatedContentDriver(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-      : AssociatedContentDriver(url_loader_factory) {}
+      : AssociatedContentDriver(nullptr /*ai_chat_service*/,
+                                url_loader_factory) {}
   ~MockAssociatedContentDriver() override = default;
 
   MOCK_METHOD(GURL, GetPageURL, (), (const, override));
