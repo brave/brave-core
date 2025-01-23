@@ -79,16 +79,16 @@ Ripemd160HashArray Hash160(base::span<const uint8_t> input) {
   return result;
 }
 
-std::vector<uint8_t> Blake2bHash(
+void Blake2bHash(
     base::span<const uint8_t> payload,
-    size_t length,
+    base::span<uint8_t> hash_out,
     std::optional<base::span<const uint8_t, kBlake2bPersonalizerLength>>
         personalizer /* = std::nullopt */) {
-  CHECK_GT(length, 0u);
-  CHECK_LE(length, kBlake2bMaxLength);
+  CHECK_GT(hash_out.size(), 0u);
+  CHECK_LE(hash_out.size(), kBlake2bMaxLength);
 
   blake2b_param param = {};
-  param.digest_length = length;
+  param.digest_length = hash_out.size();
   param.fanout = 1;
   param.depth = 1;
   if (personalizer) {
@@ -98,10 +98,7 @@ std::vector<uint8_t> Blake2bHash(
   blake2b_state state = {};
   CHECK_EQ(0, blake2b_init_param(&state, &param));
   CHECK_EQ(0, blake2b_update(&state, payload.data(), payload.size()));
-
-  std::vector<uint8_t> result(length, 0);
-  CHECK_EQ(0, blake2b_final(&state, result.data(), result.size()));
-  return result;
+  CHECK_EQ(0, blake2b_final(&state, hash_out.data(), hash_out.size()));
 }
 
 }  // namespace brave_wallet

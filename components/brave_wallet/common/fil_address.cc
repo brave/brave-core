@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/containers/extend.h"
+#include "base/containers/to_vector.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -48,10 +49,10 @@ std::optional<mojom::FilecoinAddressProtocol> ToProtocol(char input) {
 
 }  // namespace
 
-FilAddress::FilAddress(const std::vector<uint8_t>& bytes,
+FilAddress::FilAddress(base::span<const uint8_t> bytes,
                        mojom::FilecoinAddressProtocol protocol,
                        const std::string& network)
-    : protocol_(protocol), network_(network), bytes_(bytes) {
+    : protocol_(protocol), network_(network), bytes_(base::ToVector(bytes)) {
   DCHECK(IsValidNetwork(network));
 }
 FilAddress::FilAddress() = default;
@@ -144,7 +145,7 @@ FilAddress FilAddress::FromAddress(const std::string& address) {
 
 // static
 FilAddress FilAddress::FromBytes(const std::string& chain_id,
-                                 const std::vector<uint8_t>& bytes) {
+                                 base::span<const uint8_t> bytes) {
   if (!IsValidNetwork(chain_id)) {
     return FilAddress();
   }
@@ -152,10 +153,9 @@ FilAddress FilAddress::FromBytes(const std::string& chain_id,
     return FilAddress();
   }
   mojom::FilecoinAddressProtocol protocol =
-      static_cast<mojom::FilecoinAddressProtocol>(bytes.at(0));
-  std::vector<uint8_t> payload(bytes.begin() + 1, bytes.end());
+      static_cast<mojom::FilecoinAddressProtocol>(bytes.front());
 
-  return FilAddress::FromPayload(payload, protocol, chain_id);
+  return FilAddress::FromPayload(bytes.subspan(1), protocol, chain_id);
 }
 
 // Creates FilAddress from SECP256K uncompressed public key
@@ -163,7 +163,7 @@ FilAddress FilAddress::FromBytes(const std::string& chain_id,
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
 // static
 FilAddress FilAddress::FromUncompressedPublicKey(
-    const std::vector<uint8_t>& uncompressed_public_key,
+    base::span<const uint8_t> uncompressed_public_key,
     mojom::FilecoinAddressProtocol protocol,
     const std::string& network) {
   if (protocol != mojom::FilecoinAddressProtocol::SECP256K1) {
@@ -172,8 +172,8 @@ FilAddress FilAddress::FromUncompressedPublicKey(
   if (uncompressed_public_key.empty()) {
     return FilAddress();
   }
-  auto payload = Blake2bHash(uncompressed_public_key, kHashLengthSecp256K);
-  return FromPayload(payload, protocol, network);
+  return FromPayload(Blake2bHash<kHashLengthSecp256K>(uncompressed_public_key),
+                     protocol, network);
 }
 
 // static
@@ -184,10 +184,9 @@ FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
   }
   std::vector<uint8_t> to_hash = {4, 10};
   base::Extend(to_hash, fevm_address.bytes());
-  auto checksum = Blake2bHash(to_hash, kChecksumSize);
 
   auto payload = fevm_address.bytes();
-  base::Extend(payload, checksum);
+  base::Extend(payload, Blake2bHash<kChecksumSize>(to_hash));
 
   std::string encoded =
       base32::Base32Encode(payload, base32::Base32EncodePolicy::OMIT_PADDING);
@@ -198,7 +197,7 @@ FilAddress FilAddress::FromFEVMAddress(bool is_mainnet,
 // with specified protocol and network.
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
 // static
-FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
+FilAddress FilAddress::FromPayload(base::span<const uint8_t> payload,
                                    mojom::FilecoinAddressProtocol protocol,
                                    const std::string& network) {
   if (!IsValidNetwork(network)) {
@@ -263,10 +262,9 @@ std::string FilAddress::EncodeAsString() const {
     checksum_payload.push_back(0x0A /* Agent id is 10*/);
   }
   base::Extend(checksum_payload, bytes_);
-  auto checksum_hash = Blake2bHash(checksum_payload, kChecksumSize);
 
   std::vector<uint8_t> payload_hash(bytes_);
-  base::Extend(payload_hash, checksum_hash);
+  base::Extend(payload_hash, Blake2bHash<kChecksumSize>(checksum_payload));
 
   // Encoding as lower case base32 without padding according to
   // https://spec.filecoin.io/appendix/address/#section-appendix.address.payload

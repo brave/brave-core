@@ -84,7 +84,7 @@ TEST(HashUtilsUnitTest, Hash160) {
 TEST(HashUtilsUnitTest, Blake2bHash) {
   // https://datatracker.ietf.org/doc/html/rfc7693#appendix-A
   EXPECT_EQ(
-      base::HexEncode(Blake2bHash(base::byte_span_from_cstring("abc"), 64)),
+      base::HexEncode(Blake2bHash<64>(base::byte_span_from_cstring("abc"))),
       "BA80A53F981C4D0D6A2797B69F12F6E9"
       "4C212F14685AC4B74B12BB6FDBFFA2D1"
       "7D87C5392AAB792DC252D5DE4533CC95"
@@ -92,12 +92,20 @@ TEST(HashUtilsUnitTest, Blake2bHash) {
 
   auto personalizer =
       std::to_array<uint8_t>({1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
-  EXPECT_EQ(base::HexEncode(Blake2bHash(base::byte_span_from_cstring("abc"), 64,
-                                        personalizer)),
+  EXPECT_EQ(base::HexEncode(Blake2bHash<64>(base::byte_span_from_cstring("abc"),
+                                            personalizer)),
             "D969E8AFD6AD50262CA3391E492191E2"
             "70A4AB7A7CBDE0766E2174263DC28286"
             "39EE37F542A54015DA432264C2585F48"
             "FFE06DEF21A179B3758FD7174D76E03E");
+
+  EXPECT_EQ(
+      base::HexEncode(Blake2bHash<4>(base::byte_span_from_cstring("abc"))),
+      "63906248");
+
+  std::array<uint8_t, 4> result;
+  Blake2bHash(base::byte_span_from_cstring("abc"), result);
+  EXPECT_EQ(base::HexEncode(result), "63906248");
 }
 
 }  // namespace brave_wallet

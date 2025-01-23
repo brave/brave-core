@@ -42,12 +42,23 @@ SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input);
 // ripemd160(sha256(input))
 Ripemd160HashArray Hash160(base::span<const uint8_t> input);
 
-// blake2b-length(input, length, personalizer?)
-std::vector<uint8_t> Blake2bHash(
+void Blake2bHash(
     base::span<const uint8_t> payload,
-    size_t length,
+    base::span<uint8_t> hash_out,
     std::optional<base::span<const uint8_t, kBlake2bPersonalizerLength>>
         personalizer = std::nullopt);
+
+template <size_t T>
+  requires(T > 0 && T <= kBlake2bMaxLength)
+std::array<uint8_t, T> Blake2bHash(
+    base::span<const uint8_t> payload,
+    std::optional<base::span<const uint8_t, kBlake2bPersonalizerLength>>
+        personalizer = std::nullopt) {
+  std::array<uint8_t, T> result;
+  Blake2bHash(payload, result, personalizer);
+  return result;
+}
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_HASH_UTILS_H_
