@@ -160,7 +160,7 @@ base::Value::List BuildMessages(
           base::Value::Dict tool_result;
           tool_result.Set("role", "tool");
           tool_result.Set("tool_call_id", tool_event->tool_id);
-          // Only send the large results (images) in the last 2x tool result
+          // Only send the large results (images) in the last X tool result
           // events, otherwise the context gets filled.
           if (!tool_event->output_json->empty() &&
               (large_event_count < 2 ||
@@ -183,7 +183,7 @@ base::Value::List BuildMessages(
               tool_result.Set("content", possible_content.value().GetString());
             }
           } else {
-            tool_result.Set("content", "");
+            tool_result.Set("content", base::Value::List());
           }
           tool_results.Append(std::move(tool_result));
         }

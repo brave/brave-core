@@ -99,14 +99,6 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
     switch (input?.action) {
       case 'screenshot': {
         toolText = <>Looking at the page</>
-        if (output) {
-          toolText = (
-            <Tooltip>
-              {toolText}
-              <div slot='content'><div><img className={styles.screenshotPreview} src={output?.[0]?.image_url} /></div></div>
-            </Tooltip>
-          )
-        }
         break
       }
       case 'key': {
@@ -128,6 +120,14 @@ export function ToolEvent(props: { event: Mojom.ToolUseEvent, isActiveEntry: boo
       default: {
         toolText = <>{input?.action}</>
       }
+    }
+    if (output?.[0]?.image_url) {
+      toolText = (
+        <Tooltip>
+          {toolText}
+          <div slot='content'><div><img className={styles.screenshotPreview} src={output?.[0]?.image_url} /></div></div>
+        </Tooltip>
+      )
     }
   }
 

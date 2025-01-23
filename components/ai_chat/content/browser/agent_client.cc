@@ -9,16 +9,21 @@
 #include <string>
 
 #include "base/base64.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/json/string_escape.h"
 #include "base/strings/to_string.h"
 #include "base/types/expected.h"
+#include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_cursor.h"
 #include "brave/components/ai_chat/content/browser/build_devtools_key_event_params.h"
 // #include "chrome/browser/ui/browser.h"
 // #include "chrome/browser/ui/browser_window.h"
 #include "content/public/browser/render_widget_host_view.h"
+#include "content/public/browser/render_view_host.h"
+#include "content/public/browser/render_widget_host.h"
 #include "content/public/browser/web_contents.h"
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkPngDecoder.h"
@@ -197,6 +202,9 @@ void AgentClient::UseTool(
   }
   cursor_overlay_->ShowCursor();
 
+  devtools_agent_host_->Activate();
+  devtools_agent_host_->GetWebContents()->Focus();
+
   auto message_callback =
       base::BindOnce(&AgentClient::OnMessageForToolUseComplete,
                      base::Unretained(this), std::move(callback));
@@ -242,34 +250,51 @@ void AgentClient::UseTool(
   } else if (*action == "left_click") {
     do_action = base::BindOnce(
         [](AgentClient* instance, MessageCallback callback) {
-          instance->Execute("Input.dispatchMouseEvent",
-                            R"({
+          instance->Execute(
+              "Input.dispatchMouseEvent",
+              R"({
         "type": "mousePressed",
         "x": )" + base::ToString(instance->mouse_position_.x()) +
-                                R"(,
+                  R"(,
         "y": )" + base::ToString(instance->mouse_position_.y()) +
-                                R"(,
+                  R"(,
         "button": "left",
         "clickCount": 1
       })",
-                            base::DoNothing());
+              base::DoNothing());
 
-          instance->Execute("Input.dispatchMouseEvent",
-                            R"({
+          instance->Execute(
+              "Input.dispatchMouseEvent",
+              R"({
         "type": "mouseReleased",
         "x": )" + base::ToString(instance->mouse_position_.x()) +
-                                R"(,
+                  R"(,
         "y": )" + base::ToString(instance->mouse_position_.y()) +
-                                R"(,
+                  R"(,
         "button": "left",
         "clickCount": 1
       })",
-                            std::move(callback));
+              base::BindOnce(
+                  [](AgentClient* instance, MessageCallback callback,
+                     MessageResult result) {
+                    base::SequencedTaskRunner::GetCurrentDefault()
+                        ->PostDelayedTask(FROM_HERE,
+                                          base::BindOnce(
+                                              [](AgentClient* instance,
+                                                 MessageCallback callback) {
+                                                instance->CaptureScreenshot(
+                                                    std::move(callback));
+                                              },
+                                              base::Unretained(instance),
+                                              std::move(callback)),
+                                          base::Milliseconds(3000)); // allow time for actions / navigations to happen
+                  },
+                  base::Unretained(instance), std::move(callback)));
         },
         base::Unretained(this),
         base::BindOnce(
             std::move(message_callback),
-            2000));  // allow time for actions / navigations to happen
+            0));
   } else if (*action == "key") {
     auto* key = input.FindString("text");
     if (!key) {
@@ -280,17 +305,20 @@ void AgentClient::UseTool(
     do_action = base::BindOnce(
         [](AgentClient* instance, const std::string& in_key,
            MessageCallback callback) {
+            // TODO(petemill): Get an Accelerator via extensions/common/command.cc's ParseImpl and then one of:
+            // devtools_agent_host_->GetWebContents()->GetRenderViewHost()->GetWidget()->ForwardKeyboardEvent(const input::NativeWebKeyboardEvent &key_event)
+            // views::Widget::GetWidgetForNativeView(devtools_agent_host_->GetWebContents()->GetNativeView())->GetContentsView()->AcceleratorPressed({});
           auto params = BuildDevToolsKeyEventParams(in_key);
+          //  "nativeVirtualKeyCode": )" +
+          //         base::ToString(params.native_virtual_key_code) + R"(,
+          //                         "code": ")" +
+          // params.dom_code_string + R"(",
           instance->Execute(
               "Input.dispatchKeyEvent",
               R"({
-                                "type": "keyDown",
+                                "type": "rawKeyDown",
                                 "windowsVirtualKeyCode": )" +
                   base::ToString(params.windows_native_virtual_key_code) + R"(,
-                                "nativeVirtualKeyCode": )" +
-                  base::ToString(params.native_virtual_key_code) + R"(,
-                                "code": ")" +
-                  params.dom_code_string + R"(",
                                 "modifiers": )" +
                   base::ToString(params.modifiers) + R"(
                               })",
@@ -317,29 +345,40 @@ void AgentClient::UseTool(
                   std::move(callback)));
         },
         base::Unretained(this), *key,
-        base::BindOnce(std::move(message_callback), 100));
+        base::BindOnce(std::move(message_callback), 2000));
   } else {
     DLOG(ERROR) << "Unknown action: " << action;
     std::move(callback).Run(std::nullopt, 0);
     return;
   }
 
-  // We must set the viewport size and scale first
-  Execute("Emulation.setDeviceMetricsOverride",
-          R"({
-    "width": )" +
-              base::ToString(kForcedWidth) + R"(,
-    "height": )" +
-              base::ToString(kForcedHeight) + R"(,
-    "deviceScaleFactor": 1,
-    "mobile": false
-  })",
-          base::BindOnce(
-              [](base::OnceCallback<void()> do_action,
-                 MessageResult device_metrics_result) {
-                std::move(do_action).Run();
-              },
-              std::move(do_action)));
+  if (!has_overriden_metrics_) {
+    has_overriden_metrics_ = true;
+    // We must set the viewport size and scale first
+    Execute("Emulation.setDeviceMetricsOverride",
+            R"({
+      "width": )" +
+                base::ToString(kForcedWidth) + R"(,
+      "height": )" +
+                base::ToString(kForcedHeight) + R"(,
+      "deviceScaleFactor": 1,
+      "mobile": false
+    })",
+            base::BindOnce(
+                [](base::OnceCallback<void()> do_action,
+                  MessageResult device_metrics_result) {
+                  std::move(do_action).Run();
+                },
+                std::move(do_action)));
+  } else {
+    Execute("Page.bringToFront", "{}",
+            base::BindOnce(
+                [](base::OnceCallback<void()> do_action,
+                   MessageResult device_metrics_result) {
+                  std::move(do_action).Run();
+                },
+                std::move(do_action)));
+  }
 }
 
 void AgentClient::OnMessageForToolUseComplete(
