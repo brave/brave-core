@@ -27,7 +27,7 @@ import {
   // eslint-disable-next-line import/no-named-default
   default as BraveCoreThemeProvider
 } from '../../../../../common/BraveCoreThemeProvider'
-import { FundWalletScreen } from '../../fund-wallet/fund-wallet'
+import { FundWalletScreen } from '../../fund-wallet/fund_wallet_v2'
 
 // Resources
 import { setIconBasePath } from '@brave/leo/react/icon'

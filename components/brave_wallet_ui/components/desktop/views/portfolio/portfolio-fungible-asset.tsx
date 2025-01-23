@@ -40,7 +40,6 @@ import { getLocale } from '../../../../../common/locale'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import { isRewardsAssetId } from '../../../../utils/rewards_utils'
 import {
-  makeAndroidFundWalletRoute,
   makeDepositFundsRoute,
   makeFundWalletRoute
 } from '../../../../utils/routes-utils'
@@ -210,7 +209,7 @@ export const PortfolioFungibleAsset = () => {
   )
 
   // custom hooks
-  const { foundAndroidBuyToken, foundMeldBuyToken } = useFindBuySupportedToken(
+  const { foundMeldBuyToken } = useFindBuySupportedToken(
     selectedAssetFromParams
   )
 
@@ -355,21 +354,10 @@ export const PortfolioFungibleAsset = () => {
   ])
 
   const onSelectBuy = React.useCallback(() => {
-    if (foundAndroidBuyToken && selectedAssetFromParams) {
-      history.push(
-        makeAndroidFundWalletRoute(getAssetIdKey(selectedAssetFromParams))
-      )
-      return
-    }
     if (foundMeldBuyToken) {
       history.push(makeFundWalletRoute(foundMeldBuyToken))
     }
-  }, [
-    history,
-    foundAndroidBuyToken,
-    foundMeldBuyToken,
-    selectedAssetFromParams
-  ])
+  }, [history, foundMeldBuyToken])
 
   const onSelectDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
@@ -438,7 +426,7 @@ export const PortfolioFungibleAsset = () => {
         />
         <Row padding='0px 20px'>
           <ButtonRow>
-            {(foundMeldBuyToken || foundAndroidBuyToken) && !isRewardsToken && (
+            {foundMeldBuyToken && !isRewardsToken && (
               <div>
                 <LeoSquaredButton onClick={onSelectBuy}>
                   {getLocale('braveWalletBuy')}

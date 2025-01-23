@@ -3,20 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { skipToken } from '@reduxjs/toolkit/query/react'
-
 // types
 import { BraveWallet } from '../../constants/types'
 
 // utils
 import { getAssetSymbol } from '../../utils/meld_utils'
-import { loadTimeData } from '../../../common/loadTimeData'
 
 // hooks
-import {
-  useGetMeldCryptoCurrenciesQuery,
-  useGetOnRampAssetsQuery
-} from '../slices/api.slice'
+import { useGetMeldCryptoCurrenciesQuery } from '../slices/api.slice'
 
 export const useFindBuySupportedToken = (
   token?: Pick<
@@ -24,24 +18,8 @@ export const useFindBuySupportedToken = (
     'symbol' | 'contractAddress' | 'chainId'
   >
 ) => {
-  // Computed
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
-
   // queries
-  const { data: options } = useGetMeldCryptoCurrenciesQuery(
-    token && !isAndroid ? undefined : skipToken
-  )
-
-  const { data: androidOptions = undefined } = useGetOnRampAssetsQuery(
-    token && isAndroid ? undefined : skipToken
-  )
-
-  const canBuyOnAndroid =
-    token &&
-    isAndroid &&
-    androidOptions?.allAssetOptions.some(
-      (asset) => asset.symbol.toLowerCase() === token.symbol.toLowerCase()
-    )
+  const { data: options } = useGetMeldCryptoCurrenciesQuery()
 
   // computed
   const foundNativeToken =
@@ -72,7 +50,6 @@ export const useFindBuySupportedToken = (
   // render
   return {
     foundMeldBuyToken:
-      foundNativeToken || foundTokenByContractAddress || foundTokenBySymbol,
-    foundAndroidBuyToken: canBuyOnAndroid ? token : undefined
+      foundNativeToken || foundTokenByContractAddress || foundTokenBySymbol
   }
 }

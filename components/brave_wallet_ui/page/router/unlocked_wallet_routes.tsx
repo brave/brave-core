@@ -6,9 +6,6 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router'
 
-// Utils
-import { loadTimeData } from '../../../common/loadTimeData'
-
 // Types
 import { WalletRoutes } from '../../constants/types'
 
@@ -23,7 +20,6 @@ import {
 } from '../screens/backup-wallet/backup-wallet.routes'
 import { DepositFundsScreen } from '../screens/fund-wallet/deposit-funds'
 import { FundWalletScreen } from '../screens/fund-wallet/fund_wallet_v2'
-import FundWalletScreenAndroid from '../screens/fund-wallet/fund-wallet'
 import { SimplePageWrapper } from '../screens/page-screen.styles'
 import {
   OnboardingSuccess //
@@ -34,9 +30,6 @@ export const UnlockedWalletRoutes = ({
 }: {
   sessionRoute: WalletRoutes | undefined
 }) => {
-  // Computed
-  const isAndroid = loadTimeData.getBoolean('isAndroid') || false
-
   // render
   return (
     <>
@@ -63,7 +56,7 @@ export const UnlockedWalletRoutes = ({
         </Route>
 
         <Route path={WalletRoutes.FundWalletPageStart}>
-          {isAndroid ? <FundWalletScreenAndroid /> : <FundWalletScreen />}
+          <FundWalletScreen />
         </Route>
 
         <Route path={WalletRoutes.DepositFundsPageStart}>

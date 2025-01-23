@@ -26,7 +26,6 @@ import {
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 import {
-  makeAndroidFundWalletRoute,
   makeDepositFundsRoute,
   makeFundWalletRoute,
   makeSendRoute,
@@ -80,8 +79,7 @@ export const AssetItemMenu = (props: Props) => {
     checkIsAssetSellSupported
   } = useMultiChainSellAssets()
 
-  const { foundAndroidBuyToken, foundMeldBuyToken } =
-    useFindBuySupportedToken(asset)
+  const { foundMeldBuyToken } = useFindBuySupportedToken(asset)
 
   // Memos
   const isAssetsBalanceZero = React.useMemo(() => {
@@ -96,14 +94,10 @@ export const AssetItemMenu = (props: Props) => {
 
   // Methods
   const onClickBuy = React.useCallback(() => {
-    if (foundAndroidBuyToken) {
-      history.push(makeAndroidFundWalletRoute(getAssetIdKey(asset)))
-      return
-    }
     if (foundMeldBuyToken) {
       history.push(makeFundWalletRoute(foundMeldBuyToken, account))
     }
-  }, [foundMeldBuyToken, history, account, foundAndroidBuyToken, asset])
+  }, [foundMeldBuyToken, history, account])
 
   const onClickSend = React.useCallback(() => {
     history.push(makeSendRoute(asset, account))
@@ -145,7 +139,7 @@ export const AssetItemMenu = (props: Props) => {
 
   return (
     <StyledWrapper yPosition={42}>
-      {(foundMeldBuyToken || foundAndroidBuyToken) && (
+      {foundMeldBuyToken && (
         <PopupButton onClick={onClickBuy}>
           <ButtonIcon name='coins-alt1' />
           <PopupButtonText>{getLocale('braveWalletBuy')}</PopupButtonText>
