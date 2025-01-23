@@ -153,9 +153,15 @@ class URLExtensionTests: XCTestCase {
     let webView = WKWebView()
     for (value, expected) in testURLs {
       do {
+        let expectation = XCTestExpectation(description: "didFinish")
+        let navigationDelegate = NavigationDelegate(didFinish: {
+          expectation.fulfill()
+        })
+        webView.navigationDelegate = navigationDelegate
         webView.loadHTMLString("", baseURL: value)
 
-        try await Task.sleep(seconds: 1)
+        // await load of html
+        await fulfillment(of: [expectation], timeout: 1)
 
         guard let result = try await webView.evaluateJavaScript("window.origin") as? String else {
           XCTFail("Expected a String result")
@@ -167,5 +173,17 @@ class URLExtensionTests: XCTestCase {
         XCTFail("Expected a valid `window.origin`")
       }
     }
+  }
+}
+
+class NavigationDelegate: NSObject, WKNavigationDelegate {
+  private var didFinish: () -> Void
+
+  init(didFinish: @escaping () -> Void) {
+    self.didFinish = didFinish
+  }
+
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    didFinish()
   }
 }
