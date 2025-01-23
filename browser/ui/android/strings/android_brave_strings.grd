@@ -912,7 +912,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Help Brave Search grow
       </message>
       <message name="IDS_WDP_TEXT" desc="Text for WDP text onboarding">
-        Opt into the Web Discovery Project to help grow the index and improve search results. Learn more.
+        Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
       </message>
       <message name="IDS_SURE_ILL_HELP_ONBOARDING" desc="Text for Sure i'll help button onboarding">
         Sure, I'll help
