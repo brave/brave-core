@@ -20,7 +20,8 @@ std::string_view NavigationTool::name() const {
 
 std::string_view NavigationTool::description() const {
   return "Navigate the current browser Tab's URL to a new page. Use this "
-         "function to completely change the url to another page or website.";
+         "function to completely change the url to another page or website. "
+         "The assistant should always take a screenshot after navigating.";
 }
 
 std::optional<std::string> NavigationTool::GetInputSchemaJson() const {

@@ -61,6 +61,7 @@ class AgentClient : public Tool, public content::DevToolsAgentHostClient {
   int request_id_ = 1;
   std::map<int, MessageCallback> message_callbacks_;
   scoped_refptr<content::DevToolsAgentHost> devtools_agent_host_;
+  bool has_overriden_metrics_ = false;
 };
 
 }  // namespace ai_chat
