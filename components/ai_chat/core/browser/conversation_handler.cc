@@ -802,6 +802,24 @@ void ConversationHandler::SubmitHumanConversationEntry(
   is_request_in_progress_ = true;
   OnAPIRequestInProgressChanged();
 
+  // If we have a previous assistant entry, cancel any pending tool requests
+  // - the human entry takes precedence.
+  if (!chat_history_.empty()) {
+    auto& last_entry = chat_history_.back();
+    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
+        last_entry->events && !last_entry->events->empty()) {
+      // Delete any event that is_tool_use_event and has no output
+      last_entry->events->erase(
+          base::ranges::remove_if(last_entry->events.value(),
+                         [](const auto& event) {
+                           return event->is_tool_use_event() &&
+                                  event->get_tool_use_event()->output_json ==
+                                      std::nullopt;
+                         }),
+          last_entry->events->end());
+    }
+  }
+
   // Directly modify Entry's text to remove engine-breaking substrings
   if (!has_edits) {  // Edits are already sanitized.
     engine_->SanitizeInput(latest_turn->text);
