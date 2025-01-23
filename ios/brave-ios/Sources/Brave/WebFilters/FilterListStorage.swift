@@ -346,16 +346,6 @@ extension AdblockService {
     }
   }
 
-  @MainActor fileprivate func filterListChangesStream() -> AsyncStream<
-    GroupedAdBlockEngine.EngineType
-  > {
-    return AsyncStream { continuation in
-      registerFilterListChanges({ isDefaultFilterList in
-        continuation.yield(isDefaultFilterList ? .standard : .aggressive)
-      })
-    }
-  }
-
   /// Get a list of files for the given engine type if the path exists
   @MainActor func fileInfos(
     for engineType: GroupedAdBlockEngine.EngineType

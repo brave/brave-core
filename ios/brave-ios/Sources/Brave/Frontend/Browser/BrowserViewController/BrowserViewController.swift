@@ -404,6 +404,23 @@ public class BrowserViewController: UIViewController {
       // Accessing `STWebpageController` on Vision OS results in a crash
       screenTimeViewController = STWebpageController()
     }
+
+    braveCore.adblockService.registerFilterListChanges { [weak self] _ in
+      // Filter lists updated, reset selectors cache(s).
+      self?.tabManager.allTabs.forEach {
+        $0.contentBlocker.resetSelectorsCache()
+      }
+    }
+
+    FilterListStorage.shared.$filterLists
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        // Filter lists selections changed, reset selectors cache(s).
+        self?.tabManager.allTabs.forEach {
+          $0.contentBlocker.resetSelectorsCache()
+        }
+      }
+      .store(in: &cancellables)
   }
 
   deinit {
