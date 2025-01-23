@@ -152,7 +152,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
 
   func submitSuggestion(_ suggestion: String) {
     apiError = .none
-    submitQuery(suggestion)
+    api.submitSuggestion(suggestion)
   }
 
   func submitQuery(_ text: String) {

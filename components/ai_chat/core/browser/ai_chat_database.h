@@ -19,6 +19,10 @@
 
 namespace ai_chat {
 
+extern const int kLowestSupportedDatabaseVersion;
+extern const int kCompatibleDatabaseVersionNumber;
+extern const int kCurrentDatabaseVersion;
+
 // Persists AI Chat conversations and associated content. Conversations are
 // mainly formed of their conversation entries. Edits to conversation entries
 // should be handled with removal and re-adding so that other classes can make
@@ -76,6 +80,7 @@ class AIChatDatabase {
 
  private:
   friend class AIChatDatabaseTest;
+  friend class AIChatDatabaseMigrationTest;
 
   sql::Database& GetDB();
 

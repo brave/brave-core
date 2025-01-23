@@ -59,7 +59,6 @@ class EngineConsumerClaudeRemote : public EngineConsumer {
       const bool& is_video,
       const std::string& page_content,
       const ConversationHistory& conversation_history,
-      const std::string& human_input,
       const std::string& selected_language,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;

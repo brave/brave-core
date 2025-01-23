@@ -77,18 +77,16 @@ std::string GetConversationHistoryString(
     if (turn == conversation_history.back()) {
       continue;
     }
-    const std::string& text = (turn->edits && !turn->edits->empty())
-                                  ? turn->edits->back()->text
-                                  : turn->text;
+
     turn_strings.push_back((turn->character_type == CharacterType::HUMAN
                                 ? kHumanPromptPlaceholder
                                 : kAIPromptPlaceholder) +
-                           text);
+                           EngineConsumer::GetPromptForEntry(turn));
     if (turn->selected_text) {
       DCHECK(turn->character_type == CharacterType::HUMAN);
       turn_strings.back() =
           base::StrCat({turn_strings.back(), kSelectedTextPromptPlaceholder,
-                        *turn->selected_text});
+                        turn->selected_text.value()});
     }
   }
 
@@ -96,7 +94,6 @@ std::string GetConversationHistoryString(
 }
 
 std::string BuildClaudePrompt(
-    const std::string& question_part,
     const std::string& page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
@@ -145,8 +142,10 @@ std::string BuildClaudePrompt(
            l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART1),
            {date_and_time_string, prompt_segment_history}, nullptr),
        "\n\n", prompt_segment_selected_text,
-       base::ReplaceStringPlaceholders(system_message_part2_template,
-                                       {question_part}, nullptr),
+       base::ReplaceStringPlaceholders(
+           system_message_part2_template,
+           {EngineConsumer::GetPromptForEntry(conversation_history.back())},
+           nullptr),
        "\n\n",
        l10n_util::GetStringUTF8(IDS_AI_CHAT_CLAUDE_SYSTEM_MESSAGE_PART3),
        kAIPromptSequence, " <response>\n"});
@@ -260,7 +259,6 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
     const ConversationHistory& conversation_history,
-    const std::string& human_input,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
     GenerationCompletedCallback completed_callback) {
@@ -278,9 +276,8 @@ void EngineConsumerClaudeRemote::GenerateAssistantResponse(
   const std::string& truncated_page_content = page_content.substr(
       0, selected_text ? max_associated_content_length_ - selected_text->size()
                        : max_associated_content_length_);
-  std::string prompt =
-      BuildClaudePrompt(human_input, truncated_page_content, selected_text,
-                        is_video, conversation_history);
+  std::string prompt = BuildClaudePrompt(truncated_page_content, selected_text,
+                                         is_video, conversation_history);
   CheckPrompt(prompt);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));

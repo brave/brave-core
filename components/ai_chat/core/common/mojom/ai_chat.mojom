@@ -14,11 +14,6 @@ enum CharacterType {
   ASSISTANT
 };
 
-enum ConversationTurnVisibility {
-  VISIBLE,
-  HIDDEN // does not get added to chat history, used as a flag internally
-};
-
 enum APIError {
   None,
   ConnectionIssue,
@@ -128,6 +123,10 @@ struct ConversationArchive {
   array<ContentArchive> associated_content;
 };
 
+// Which action the user was taking for the entry. This can be used
+// to provide better prompts (via the server) and for metrics.
+// Keep all items even if they're unused (they can be renamed as such) and only
+// add new items to the end, as this is serialized to the database as an int.
 enum ActionType {
   UNSPECIFIED,
   RESPONSE,
@@ -151,6 +150,8 @@ enum ActionType {
   // Change length
   SHORTEN,
   EXPAND,
+  CONVERSATION_STARTER,
+  SUGGESTION,
 };
 
 struct PageContentRefineEvent {
@@ -203,13 +204,15 @@ struct ConversationTurn {
 
   CharacterType character_type;
   ActionType action_type;
-  ConversationTurnVisibility visibility;
+
   // The text that is displayed to the user. This might be different than
   // the text sent to the AI engine to represent this turn, which might be more
   // verbose.
-  // TODO(petemill): Store the text sent to the AI engine to aid in regeneration
-  // and error retries.
   string text;
+
+  // Optional actual prompt used instead of |text| for the entry
+  string? prompt;
+
   string? selected_text;
   // Ordered list of events that occurred during this turn
   // TODO(petemill): ConversationTurn's |text| and |selected_text| might move
@@ -459,6 +462,10 @@ interface ConversationHandler {
   SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
   ModifyConversation(uint32 turn_index, string new_text);
   SubmitSummarizationRequest();
+
+  // Submit one of the generated suggested questions for response from
+  // the assistant.
+  SubmitSuggestion(string suggestion);
 
   // Get associated page information. If there is none then |site_info| will be
   // |null|. If the reason for that is it's still being fetched, then

@@ -75,13 +75,13 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::HUMAN,
       mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-      mojom::ConversationTurnVisibility::VISIBLE,
-      "Which show is this catchphrase from?", "This is the way.", std::nullopt,
-      base::Time::Now(), std::nullopt, false));
+      "Which show is this catchphrase from?", std::nullopt /* prompt */,
+      "This is the way.", std::nullopt, base::Time::Now(), std::nullopt,
+      false));
   history.push_back(mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
-      "The Mandalorian.", std::nullopt, std::nullopt, base::Time::Now(),
+      mojom::ActionType::RESPONSE, "The Mandalorian.",
+      std::nullopt /* prompt */, std::nullopt, std::nullopt, base::Time::Now(),
       std::nullopt, false));
   auto* mock_remote_completion_client =
       static_cast<MockRemoteCompletionClient*>(engine_->GetAPIForTesting());
@@ -130,8 +130,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "This is a page.", history, "What's his name?", "",
-      base::DoNothing(),
+      false, "This is a page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -180,8 +179,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history2.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "This is a page.", history2, "What's his name?", "",
-      base::DoNothing(),
+      false, "This is a page.", history2, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -216,7 +214,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "12345", history, "user question", "", base::DoNothing(),
+      false, "12345", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -237,8 +235,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
       });
 
   engine_->GenerateAssistantResponse(
-      false, "12345", GetHistoryWithModifiedReply(), "user question", "",
-      base::DoNothing(),
+      false, "12345", GetHistoryWithModifiedReply(), "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -251,7 +248,7 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _)).Times(0);
   auto run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "Who?", "", base::DoNothing(),
+      false, "This is my page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -259,9 +256,9 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
 
   mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
       std::nullopt, mojom::CharacterType::ASSISTANT,
-      mojom::ActionType::RESPONSE, mojom::ConversationTurnVisibility::VISIBLE,
-      "", std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
-      base::Time::Now(), std::nullopt, false);
+      mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */, std::nullopt,
+      std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
+      std::nullopt, false);
   entry->events->push_back(mojom::ConversationEntryEvent::NewCompletionEvent(
       mojom::CompletionEvent::New("Me")));
   history.push_back(std::move(entry));
@@ -269,7 +266,7 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _)).Times(0);
   run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", history, "Who?", "", base::DoNothing(),
+      false, "This is my page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
