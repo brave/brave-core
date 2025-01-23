@@ -5,7 +5,7 @@
 
 .boxPremium {
   width: 100%;
-  background: var(--leo-color-private-window-10);
+  background: var(--leo-color-primary-10);
   border-radius: 16px;
   max-width: 600px;
   margin: 0 auto;
@@ -61,11 +61,17 @@
   }
 }
 
+.priceListWrapper {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--leo-color-primary-20);
+  padding: 16px;
+}
+
 .priceList {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid var(--leo-color-private-window-20);
-  padding: 16px;
+  gap: var(--leo-spacing-m);
 }
 
 .price {
@@ -85,14 +91,14 @@
   width: 36px;
   height: 36px;
   border-radius: var(--leo-radius-m);
-  background: var(--leo-color-private-window-20);
+  background: var(--leo-color-primary-20);
   display: flex;
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
 
   leo-icon {
-    color: var(--leo-color-private-window-60);
+    color: var(--leo-color-primary-60);
   }
 }
 
@@ -105,7 +111,11 @@
   border: 2px solid var(--leo-color-divider-interactive);
   border-radius: 12px;
   padding: var(--leo-spacing-xl);
-  background: var(--leo-color-container-background);
+  background: var(--leo-color-blurple-5);
+}
+
+.priceButtonMonthly {
+  background: var(--leo-color-primary-10);
 }
 
 .priceButtonLabel {
@@ -126,4 +136,11 @@
   gap: 10px;
   width: 100%;
   padding: 24px 16px 16px 16px;
+}
+
+.bestValueColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--leo-spacing-s);
 }

@@ -6,6 +6,8 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import Label from '@brave/leo/react/label'
+import classnames from '$web-common/classnames'
 import formatMessage from '$web-common/formatMessage'
 import { getLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -50,6 +52,12 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
     }
   })
 
+  const pricingAnnualInfo = formatMessage(getLocale('premiumAnnualPricing'), {
+    placeholders: {
+      $1: <data>149.99</data>
+    }
+  })
+
   React.useEffect(() => {
     if (buttonRef.current === undefined) return
     buttonRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -77,11 +85,20 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
         </ul>
       </div>
       {!aiChatContext.isMobile && (
-        <div className={styles.priceList}>
-          <button className={styles.priceButton} tabIndex={-1}>
-            <span className={styles.priceButtonLabel}>Monthly</span>
-            <span className={styles.price}>{pricingInfo}</span>
-          </button>
+        <div className={styles.priceListWrapper}>
+          <div className={styles.priceList}>
+            <button className={styles.priceButton} tabIndex={-1}>
+              <div className={styles.bestValueColumn}>
+                <span className={styles.priceButtonLabel}>{getLocale('oneYearLabel')}</span>
+                <Label color='green'>{getLocale('bestValueLabel')}</Label>
+              </div>
+              <span className={styles.price}>{pricingAnnualInfo}</span>
+            </button>
+            <button className={classnames(styles.priceButton, styles.priceButtonMonthly)} tabIndex={-1}>
+              <span className={styles.priceButtonLabel}>{getLocale('monthlyLabel')}</span>
+              <span className={styles.price}>{pricingInfo}</span>
+            </button>
+          </div>
           <div className={styles.subscriptionPolicy}>
             {getLocale('subscriptionPolicyInfo')}
           </div>
