@@ -176,7 +176,7 @@ class URLExtensionTests: XCTestCase {
   }
 }
 
-class NavigationDelegate: NSObject, WKNavigationDelegate {
+private class NavigationDelegate: NSObject, WKNavigationDelegate {
   private var didFinish: () -> Void
 
   init(didFinish: @escaping () -> Void) {
