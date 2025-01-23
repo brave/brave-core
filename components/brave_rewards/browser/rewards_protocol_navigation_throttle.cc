@@ -15,7 +15,11 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/navigation_throttle.h"
@@ -32,6 +36,19 @@ using content::NavigationThrottle;
 using content::WebContents;
 
 namespace brave_rewards {
+
+// static
+std::unique_ptr<RewardsProtocolNavigationThrottle>
+RewardsProtocolNavigationThrottle::MaybeCreateThrottleFor(
+    content::NavigationHandle* navigation_handle) {
+  auto* pref_service = user_prefs::UserPrefs::Get(
+      navigation_handle->GetWebContents()->GetBrowserContext());
+  if (!pref_service->GetBoolean(brave_rewards::prefs::kEnabled)) {
+    return nullptr;
+  }
+
+  return std::make_unique<RewardsProtocolNavigationThrottle>(navigation_handle);
+}
 
 RewardsProtocolNavigationThrottle::RewardsProtocolNavigationThrottle(
     NavigationHandle* handle)

@@ -1195,10 +1195,13 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 
   // inserting the navigation throttle at the fist position before any java
   // navigation happens
-  throttles.insert(
-      throttles.begin(),
-      std::make_unique<brave_rewards::RewardsProtocolNavigationThrottle>(
-          handle));
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
+
+  if (auto rewards_throttle = brave_rewards::RewardsProtocolNavigationThrottle::
+          MaybeCreateThrottleFor(handle)) {
+    throttles.insert(throttles.begin(), std::move(rewards_throttle));
+  }
 
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
@@ -1212,9 +1215,6 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   throttles.push_back(
       std::make_unique<extensions::BraveWebTorrentNavigationThrottle>(handle));
 #endif
-
-  content::BrowserContext* context =
-      handle->GetWebContents()->GetBrowserContext();
 
 #if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
