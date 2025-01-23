@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveUI
 import DesignSystem
 import GuardianConnect
@@ -152,10 +153,28 @@ public struct BrowserMenu: View {
     }
     .background(Material.thick)
     .dynamicTypeSize(DynamicTypeSize.xSmall..<DynamicTypeSize.accessibility3)
-    // Not sure if this is needed
-    // .background(Color(braveSystemName: .materialThick))
-    .sheet(isPresented: $isEditMenuPresented) {
-      CustomizeMenuView(model: model)
+    .osAvailabilityModifiers { content in
+      // "Designed for iPad" VisionOS - FB16385402
+      //
+      // There is a bug unfortunately on "Designed for iPad" VisionOS apps in SwiftUI where a
+      // sheet presented on top of a popover will dismiss the popover before presenting the sheet
+      // (thus then dismissing the sheet since the underlying State/View hierarchy will dealloc)
+      //
+      // As a workaround, VisionOS will present a popover for the edit menu. The fixed frame
+      // is fine because iPad apps running on VisionOS have a fixed size (in both portrait and
+      // landscape forced orientations)
+      if ProcessInfo.processInfo.isiOSAppOnVisionOS {
+        content
+          .popover(isPresented: $isEditMenuPresented) {
+            CustomizeMenuView(model: model)
+              .frame(width: 600, height: 600)
+          }
+      } else {
+        content
+          .sheet(isPresented: $isEditMenuPresented) {
+            CustomizeMenuView(model: model)
+          }
+      }
     }
     .onGeometryChange(
       for: Bool.self,
@@ -237,9 +256,11 @@ private struct QuickActionsView: View {
               body: { _, state, _ in state = true }
             )
           )
-          .onTapGesture {
-            configuration.trigger()
-          }
+          .simultaneousGesture(
+            TapGesture().onEnded {
+              configuration.trigger()
+            }
+          )
           .labelStyle(_LabelStyle(isPressed: isPressed, traits: traits))
           .animation(isPressed ? nil : .default, value: isPressed)
       }
@@ -482,9 +503,11 @@ private struct MenuRowButtonStyleModifier: ViewModifier {
             body: { _, state, _ in state = true }
           )
         )
-        .onTapGesture {
-          configuration.trigger()
-        }
+        .simultaneousGesture(
+          TapGesture().onEnded {
+            configuration.trigger()
+          }
+        )
         .hoverEffect()
         .background(
           Color(braveSystemName: .iosBrowserContainerHighlightIos).opacity(isPressed ? 1 : 0)
