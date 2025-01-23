@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index dfa0ad39ff349d3c30ea928f4f1d119fec2c23f9..5ee4c54699175bde203b1a31a69bce27c345e9d4 100644
+index 37a31a6da40a5dc9bb328f339319d12f41802255..3e038e8beb4bf52055f1aa37dd9ecb9dbb52cb36 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1472,6 +1472,7 @@ source_set("extensions") {
+@@ -1443,6 +1443,7 @@ source_set("extensions") {
        allow_circular_includes_from += [ "//chrome/browser/glic:impl" ]
      }
    }  # if (enable_extensions)

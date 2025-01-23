@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/BUILD.gn b/third_party/blink/renderer/modules/BUILD.gn
-index d62b5f5b5ad426aee5ce40cbbbf5bfe757d76a12..852f9b841d83c3cbd0ddf2b42e5033367464f6be 100644
+index 275a7e9b81eca91885ff0cd631999692089836bf..34a1da297fe85b6a43554a0737e8c41e2492d539 100644
 --- a/third_party/blink/renderer/modules/BUILD.gn
 +++ b/third_party/blink/renderer/modules/BUILD.gn
 @@ -20,6 +20,7 @@ if (is_ios) {

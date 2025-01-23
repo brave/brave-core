@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 08b5bc10f2b6c29a9a4805ab9d82e5bff52b299a..7444c0f4c6f0890b94184760f7a6967ee8aac7c5 100644
+index 8ce1ca9dc8cbe5e48db9e0dc8beb4ead5f4e7ef9..6696efb8ba0abefcb237065d727c0f2b987deb68 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1241,6 +1241,7 @@ const FeatureEntry::FeatureVariation kUpdatedFirstRunSequenceVariations[] = {
+@@ -1237,6 +1237,7 @@ const FeatureEntry::FeatureVariation kYoutubeIncognitoVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

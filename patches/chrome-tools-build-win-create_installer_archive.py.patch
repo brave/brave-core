@@ -1,8 +1,8 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index a5e308cd0a5c2ac8bd0ca4ee51f94f5d2a05e9a6..457432cd3e1b51205c5ee638194579285258d3b6 100755
+index 40b2598575761bd7effa861028f26a8076ee5318..7ebef6bf0ba9357c116661ddefdaae2d63590c5f 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -763,6 +763,7 @@ def _ParseOptions():
+@@ -775,6 +775,7 @@ def _ParseOptions():
                        action='store_true',
                        dest='verbose',
                        default=False)
@@ -10,7 +10,7 @@ index a5e308cd0a5c2ac8bd0ca4ee51f94f5d2a05e9a6..457432cd3e1b51205c5ee63819457928
  
      options, _ = parser.parse_args()
      if not options.build_dir:
-@@ -793,6 +794,7 @@ def _ParseOptions():
+@@ -805,6 +806,7 @@ def _ParseOptions():
  
      return options
  

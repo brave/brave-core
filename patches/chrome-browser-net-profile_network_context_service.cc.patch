@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/net/profile_network_context_service.cc b/chrome/browser/net/profile_network_context_service.cc
-index c29bbe4620212efe83e18898bab24c5bf7536f9e..141488e05090a3b262246f075560349138436c67 100644
+index c0d0fae74c40b55cbce51f056fa145253ae6364a..4cb7dc0182f1b37ad4dcf040ff31e0b6c0fc70b4 100644
 --- a/chrome/browser/net/profile_network_context_service.cc
 +++ b/chrome/browser/net/profile_network_context_service.cc
-@@ -623,6 +623,7 @@ network::mojom::CTPolicyPtr ProfileNetworkContextService::GetCTPolicy() {
+@@ -612,6 +612,7 @@ network::mojom::CTPolicyPtr ProfileNetworkContextService::GetCTPolicy() {
    std::vector<std::string> excluded_spkis(
        TranslateStringArray(ct_excluded_spkis));
  
