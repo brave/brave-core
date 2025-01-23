@@ -12,6 +12,8 @@
 
 namespace sql_metrics {
 
+// In Chromium this check ensures the histograms.xml sync, but we don't care
+// about this because it's for server-side synchronization.
 constexpr bool IsValidDatabaseTag(std::string_view s) {
   return true;
 }
