@@ -78,8 +78,10 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
                                   ZCashTransaction transaction,
                                   std::string error);
 
-  void OnGetTransactionStatus(const std::string& tx_meta_id,
-                              base::expected<bool, std::string> confirm_status);
+  void OnGetTransactionStatus(
+      const std::string& tx_meta_id,
+      base::expected<ZCashWalletService::ResolveTransactionStatusResult,
+                     std::string> confirm_status);
 
   raw_ref<ZCashWalletService> zcash_wallet_service_;
   base::ScopedObservation<ZCashBlockTracker, ZCashBlockTracker::Observer>

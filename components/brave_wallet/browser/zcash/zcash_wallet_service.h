@@ -40,6 +40,8 @@ class ZCashCreateTransparentTransactionTask;
 class ZCashGetTransparentUtxosContext;
 class ZCashGetZCashChainTipStatusTask;
 class ZCashResolveBalanceTask;
+class ZCashResolveTransactionStatusTask;
+class ZCashTxMeta;
 
 class ZCashWalletService : public mojom::ZCashWalletService,
 #if BUILDFLAG(ENABLE_ORCHARD)
@@ -47,6 +49,12 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 #endif
                            KeyringServiceObserverBase {
  public:
+  enum class ResolveTransactionStatusResult {
+    kCompleted,
+    kExpired,
+    kInProgress,
+  };
+
   using UtxoMap =
       std::map<std::string, std::vector<zcash::mojom::ZCashUtxoPtr>>;
   using RunDiscoveryResult =
@@ -55,8 +63,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
   using CreateTransactionCallback =
       base::OnceCallback<void(base::expected<ZCashTransaction, std::string>)>;
-  using GetTransactionStatusCallback =
-      base::OnceCallback<void(base::expected<bool, std::string>)>;
+  using GetTransactionStatusCallback = base::OnceCallback<void(
+      base::expected<ResolveTransactionStatusResult, std::string>)>;
   using SignAndPostTransactionCallback =
       base::OnceCallback<void(std::string, ZCashTransaction, std::string)>;
   using RunDiscoveryCallback = base::OnceCallback<void(RunDiscoveryResult)>;
@@ -157,8 +165,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       CreateTransactionCallback callback);
 #endif
 
-  void GetTransactionStatus(const std::string& chain_id,
-                            const std::string& tx_hash,
+  void GetTransactionStatus(const mojom::AccountIdPtr& account_id,
+                            const std::string& chain_id,
+                            std::unique_ptr<ZCashTxMeta> tx_meta,
                             GetTransactionStatusCallback callback);
 
   void CompleteAndPostTransaction(const std::string& chain_id,
@@ -176,12 +185,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
  private:
   friend class ZCashCompleteTransactionTask;
-  friend class ZCashCreateTransparentToOrchardTransactionTask;
   friend class ZCashCreateOrchardToOrchardTransactionTask;
+  friend class ZCashCreateTransparentToOrchardTransactionTask;
   friend class ZCashCreateTransparentTransactionTask;
   friend class ZCashDiscoverNextUnusedZCashAddressTask;
   friend class ZCashGetZCashChainTipStatusTask;
   friend class ZCashResolveBalanceTask;
+  friend class ZCashResolveTransactionStatusTask;
   friend class ZCashTxManager;
 
   friend class ZCashWalletServiceUnitTest;
@@ -214,7 +224,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   void OnTransactionResolvedForStatus(
       GetTransactionStatusCallback callback,
-      base::expected<zcash::mojom::RawTransactionPtr, std::string> result);
+      base::expected<ResolveTransactionStatusResult, std::string> result);
 
   void OnSendTransactionResult(
       SignAndPostTransactionCallback callback,
@@ -228,6 +238,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   void CreateTransactionTaskDone(ZCashCreateTransparentTransactionTask* task);
   void CompleteTransactionTaskDone(ZCashCompleteTransactionTask* task);
   void ResolveBalanceTaskDone(ZCashResolveBalanceTask* task);
+  virtual void ResolveTransactionStatusTaskDone(
+      ZCashResolveTransactionStatusTask* task);
   void CompleteTransactionDone(std::string chain_id,
                                ZCashTransaction original_zcash_transaction,
                                SignAndPostTransactionCallback callback,
@@ -315,6 +327,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   std::list<std::unique_ptr<ZCashCreateTransparentTransactionTask>>
       create_transaction_tasks_;
   std::list<std::unique_ptr<ZCashResolveBalanceTask>> resolve_balance_tasks_;
+  std::list<std::unique_ptr<ZCashResolveTransactionStatusTask>>
+      resolve_transaction_status_tasks_;
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   base::SequenceBound<OrchardSyncState> sync_state_;

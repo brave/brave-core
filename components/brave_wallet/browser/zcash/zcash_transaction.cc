@@ -293,6 +293,7 @@ base::Value::Dict ZCashTransaction::ToValue() const {
   dict.Set("to", to_);
   dict.Set("amount", base::NumberToString(amount_));
   dict.Set("fee", base::NumberToString(fee_));
+  dict.Set("expiry_height", base::NumberToString(expiry_height_));
   if (memo_) {
     dict.Set("memo", base::HexEncode(memo_.value()));
   }
@@ -384,6 +385,12 @@ std::optional<ZCashTransaction> ZCashTransaction::FromValue(
 
   if (!ReadUint64StringTo(value, "fee", result.fee_)) {
     return std::nullopt;
+  }
+
+  if (value.Find("expiry_height")) {
+    if (!ReadUint32StringTo(value, "expiry_height", result.expiry_height_)) {
+      return std::nullopt;
+    }
   }
 
   if (value.Find("memo")) {
