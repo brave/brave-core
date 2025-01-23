@@ -19,8 +19,8 @@ void ExpectConversationEquals(base::Location location,
                               const mojom::ConversationPtr& b);
 
 void ExpectAssociatedContentEquals(base::Location location,
-                                   const mojom::SiteInfoPtr& a,
-                                   const mojom::SiteInfoPtr& b);
+                                   const mojom::AssociatedContentPtr& a,
+                                   const mojom::AssociatedContentPtr& b);
 
 void ExpectConversationEntryEquals(base::Location location,
                                    const mojom::ConversationTurnPtr& a,

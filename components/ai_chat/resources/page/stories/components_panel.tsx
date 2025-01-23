@@ -76,24 +76,13 @@ function getPageContentRefineEvent(): Mojom.ConversationEntryEvent {
   }
 }
 
-const associatedContentNone: Mojom.SiteInfo =  {
-  uuid: undefined,
-  contentType: Mojom.ContentType.PageContent,
-  isContentAssociationPossible: false,
-  contentUsedPercentage: 0,
-  isContentRefined: false,
-  title: undefined,
-  hostname: undefined,
-  url: undefined,
-}
-
 const CONVERSATIONS: Mojom.Conversation[] = [
   {
     title: 'Star Trek Poem',
     uuid: '1',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000000') },
-    associatedContent: associatedContentNone,
+    associatedContent: undefined,
     modelKey: undefined,
   },
   {
@@ -101,7 +90,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     uuid: '2',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000001') },
-    associatedContent: associatedContentNone,
+    associatedContent: undefined,
     modelKey: undefined,
   },
   {
@@ -109,7 +98,7 @@ const CONVERSATIONS: Mojom.Conversation[] = [
     uuid: '3',
     hasContent: true,
     updatedTime: { internalValue: BigInt('13278618001000002') },
-    associatedContent: associatedContentNone,
+    associatedContent: undefined,
     modelKey: undefined,
   }
 ]
@@ -388,13 +377,11 @@ const SAMPLE_QUESTIONS = [
   'Why did google executives disregard this character in the company?'
 ]
 
-const SITE_INFO: Mojom.SiteInfo = {
-  uuid: undefined,
+const ASSOCIATED_CONTENT: Mojom.AssociatedContent = {
+  uuid: 'uuid',
   contentType: Mojom.ContentType.PageContent,
   title: 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
   contentUsedPercentage: 40,
-  isContentAssociationPossible: true,
-  hostname: 'www.example.com',
   url: { url: 'https://www.example.com/a' },
   isContentRefined: false,
 }
@@ -409,7 +396,7 @@ type CustomArgs = {
   deletingConversationId: string | null
   visibleConversationListCount: number
   hasSuggestedQuestions: boolean
-  hasSiteInfo: boolean
+  hasAssociatedContent: boolean
   isFeedbackFormVisible: boolean
   isStorageNoticeDismissed: boolean
   canShowPremiumPrompt: boolean
@@ -435,7 +422,7 @@ const args: CustomArgs = {
   hasConversation: true,
   visibleConversationListCount: CONVERSATIONS.length,
   hasSuggestedQuestions: true,
-  hasSiteInfo: true,
+  hasAssociatedContent: true,
   editingConversationId: null,
   deletingConversationId: null,
   isFeedbackFormVisible: false,
@@ -505,10 +492,10 @@ function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs:
   const options = { args: props.args }
   const { setArgs } = props
 
-  const siteInfo = options.args.hasSiteInfo ? SITE_INFO : new Mojom.SiteInfo()
+  const associatedContent = options.args.hasAssociatedContent ? ASSOCIATED_CONTENT : new Mojom.AssociatedContent()
   const suggestedQuestions = options.args.hasSuggestedQuestions
     ? SAMPLE_QUESTIONS
-    : siteInfo
+    : associatedContent
       ? [SAMPLE_QUESTIONS[0]]
       : []
 
@@ -578,7 +565,7 @@ function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs:
   const conversationContext: ConversationContext = {
     conversationUuid: CONVERSATIONS[1].uuid,
     conversationHistory: options.args.hasConversation ? HISTORY : [],
-    associatedContentInfo: siteInfo,
+    associatedContentInfo: associatedContent,
     allModels: MODELS,
     currentModel,
     suggestedQuestions,
@@ -590,7 +577,7 @@ function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs:
     shouldDisableUserInput: false,
     shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
     shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo,
-    shouldSendPageContents: siteInfo?.isContentAssociationPossible,
+    shouldSendPageContents: !!associatedContent,
     inputText,
     actionList: ACTIONS_LIST,
     selectedActionType: undefined,
