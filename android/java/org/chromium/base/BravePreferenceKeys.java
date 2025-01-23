@@ -89,6 +89,9 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_QUICK_SEARCH_ENGINES_PREVIOUS_DSE =
             "quick_search_engines_previous_dse";
 
+    public static final String BRAVE_SAFE_BROWSING_ERRORS =
+            "org.chromium.brave.browser.Brave_SAFE_BROWSING_ERRORS";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider
