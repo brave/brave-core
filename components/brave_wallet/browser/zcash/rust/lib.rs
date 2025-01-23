@@ -4,14 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 use std::{
-    cell::RefCell, cmp::{Ord, Ordering},
     collections::BTreeSet, convert::TryFrom, error, fmt, io::Cursor, marker::PhantomData,
-    ops::{Add, Bound, RangeBounds, Sub}, rc::Rc, vec};
+    vec};
 
 use orchard::{
     builder:: {
         BuildError as OrchardBuildError, InProgress, Unauthorized, Unproven
-    }, bundle::{commitments, Bundle},
+    }, bundle::Bundle,
     keys::{FullViewingKey as OrchardFVK,
         PreparedIncomingViewingKey,
         Scope as OrchardScope, SpendingKey},
@@ -36,7 +35,6 @@ use zcash_primitives::{
     transaction::components::amount::Amount};
 
 use incrementalmerkletree::{
-    frontier::{self, Frontier},
     Address,
     Position,
     Retention};
@@ -50,7 +48,6 @@ use zcash_note_encryption::{
 };
 
 use shardtree::{
-    error::ShardTreeError,
     store::{Checkpoint, ShardStore, TreeState},
     LocatedPrunableTree, LocatedTree, PrunableTree, RetentionFlags,
     ShardTree,
@@ -67,17 +64,13 @@ use crate::ffi::{
     CxxOrchardShardTreeCap,
     CxxOrchardCheckpoint,
     CxxOrchardCheckpointBundle,
-    CxxOrchardCheckpointRetention,
     CxxOrchardShard,
     CxxOrchardCompactAction,
     CxxOrchardOutput,
     CxxOrchardSpend,
-    CxxOrchardShardTreeLeaf,
     CxxOrchardShardTreeLeafs,
     CxxOrchardShardTreeState
 };
-
-use shardtree::error::QueryError;
 
 // The rest of the wallet code should be updated to use this version of unwrap
 // and then this code can be removed
@@ -114,8 +107,6 @@ macro_rules! impl_result {
         }
     };
 }
-
-use paste::item;
 
 macro_rules! impl_result_option_wrapper {
     ($t: ty, $rt: ident, $l: ident) => {
