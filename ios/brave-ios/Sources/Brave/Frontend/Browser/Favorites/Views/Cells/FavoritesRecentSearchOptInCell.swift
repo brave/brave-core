@@ -8,21 +8,13 @@ import Foundation
 import Shared
 import UIKit
 
-class FavoritesRecentSearchOptInHeaderView: UICollectionReusableView {
+class FavoritesRecentSearchOptInCell: UICollectionViewCell, CollectionViewReusable {
   private struct DesignUX {
     static let buttonHeight = 40.0
     static let buttonCornerRadius = 12.0
     static let paddingX = 15.0
     static let paddingY = 10.0
     static let searchImageSize = CGSize(width: 40.0, height: 40.0)
-  }
-
-  let headerLabel = UILabel().then {
-    $0.text = Strings.recentSearchSectionHeaderTitle
-    $0.font = .systemFont(ofSize: 18, weight: .semibold)
-    $0.textColor = UIColor(braveSystemName: .textPrimary)
-    $0.setContentHuggingPriority(.required, for: .vertical)
-    $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
 
   private let searchImageView = UIImageView().then {
@@ -78,21 +70,13 @@ class FavoritesRecentSearchOptInHeaderView: UICollectionReusableView {
   }
 
   private func doLayout() {
-    addSubview(headerLabel)
-
-    headerLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().inset(16.0)
-      $0.leading.equalToSuperview().inset(18.0)
-      $0.trailing.lessThanOrEqualToSuperview().inset(18.0)
-    }
-
     addSubview(vStackView)
 
     vStackView.snp.makeConstraints {
-      $0.top.equalTo(headerLabel.snp.bottom).inset(-16.0)
-      $0.leading.equalToSuperview().inset(4.0)
-      $0.bottom.equalToSuperview().inset(4.0)
-      $0.trailing.equalToSuperview().inset(4.0)
+      $0.top.equalToSuperview()
+      $0.leading.equalToSuperview()
+      $0.bottom.equalToSuperview()
+      $0.trailing.equalToSuperview()
     }
 
     vStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
@@ -116,14 +100,8 @@ class FavoritesRecentSearchOptInHeaderView: UICollectionReusableView {
   }
 
   private func setTheme() {
-    self.do {
-      $0.backgroundColor = UIColor(braveSystemName: .containerBackground).withAlphaComponent(0.55)
-      $0.layer.cornerRadius = 12.0
-    }
-
     vStackView.do {
-      $0.backgroundColor = UIColor(braveSystemName: .containerBackground)
-      $0.layer.cornerRadius = 12.0
+      $0.backgroundColor = .clear
       $0.layoutMargins = .init(top: 16, left: 16, bottom: 16, right: 16)
       $0.isLayoutMarginsRelativeArrangement = true
     }

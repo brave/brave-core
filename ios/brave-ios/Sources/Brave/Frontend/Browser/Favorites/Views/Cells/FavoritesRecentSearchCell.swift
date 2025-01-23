@@ -12,25 +12,26 @@ class FavoritesRecentSearchCell: UICollectionViewCell, CollectionViewReusable {
   static let identifier = "RecentSearchCell"
   var openButtonAction: (() -> Void)?
 
-  private let stackView = UIStackView().then {
-    $0.spacing = 20.0
-    $0.isLayoutMarginsRelativeArrangement = true
-    $0.layoutMargins = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
+  private let hStackView = UIStackView().then {
+    $0.axis = .horizontal
+    $0.alignment = .center
+    $0.spacing = 12.0
   }
 
   private let titleLabel = UILabel().then {
-    $0.font = .systemFont(ofSize: 15.0)
+    $0.font = .preferredFont(for: .subheadline, weight: .regular)
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
     $0.lineBreakMode = .byTruncatingMiddle
+    $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
   }
 
   private let openButton = BraveButton(type: .system).then {
     $0.setImage(
-      UIImage(named: "recent-search-arrow", in: .module, compatibleWith: nil)!,
+      UIImage(braveSystemNamed: "leo.arrow.diagonal-up-left"),
       for: .normal
     )
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setContentHuggingPriority(.required, for: .horizontal)
-    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.hitTestSlop = UIEdgeInsets(equalInset: -25.0)
   }
 
@@ -39,12 +40,13 @@ class FavoritesRecentSearchCell: UICollectionViewCell, CollectionViewReusable {
 
     openButton.addTarget(self, action: #selector(onOpenButtonPressed(_:)), for: .touchUpInside)
 
-    contentView.addSubview(stackView)
-    stackView.addArrangedSubview(titleLabel)
-    stackView.addArrangedSubview(openButton)
-
-    stackView.snp.makeConstraints {
+    contentView.addSubview(hStackView)
+    hStackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
+    }
+    [titleLabel, openButton].forEach(hStackView.addArrangedSubview(_:))
+    openButton.snp.makeConstraints {
+      $0.height.width.equalTo(20.0)
     }
   }
 

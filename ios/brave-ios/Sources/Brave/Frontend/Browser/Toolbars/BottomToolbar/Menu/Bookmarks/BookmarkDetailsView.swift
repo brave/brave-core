@@ -123,7 +123,9 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
     $0.alignment = .center
   }
 
-  private let faviconImageView = LargeFaviconView().then {
+  private let faviconImageView = LargeFaviconView(
+    config: FaviconConfiguration.defaultConfig
+  ).then {
     $0.snp.makeConstraints {
       $0.size.equalTo(UX.faviconSize)
     }
