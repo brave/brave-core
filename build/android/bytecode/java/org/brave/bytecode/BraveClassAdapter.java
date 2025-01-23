@@ -15,6 +15,7 @@ public class BraveClassAdapter {
         chain = new BraveAppMenuClassAdapter(chain);
         chain = new BraveBaseCustomTabActivityClassAdapter(chain);
         chain = new BraveCustomTabActivityClassAdapter(chain);
+        chain = new BraveTemplateUrlServiceClassAdapter(chain);
         chain = new BraveApplicationImplBaseClassAdapter(chain);
         chain = new BraveAutocompleteCoordinatorClassAdapter(chain);
         chain = new BraveAutocompleteEditTextClassAdapter(chain);
