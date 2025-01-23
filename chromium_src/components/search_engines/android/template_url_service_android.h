@@ -9,6 +9,7 @@
 #define DoesDefaultSearchEngineHaveLogo                              \
   DoesDefaultSearchEngineHaveLogo_ChromiumImpl(                      \
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj); \
+  jboolean AddSearchEngine(JNIEnv* env);                             \
   jboolean DoesDefaultSearchEngineHaveLogo
 
 #include "src/components/search_engines/android/template_url_service_android.h"  // IWYU pragma: export
