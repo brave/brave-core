@@ -16,26 +16,33 @@ struct WrappingHStack: Layout {
       return .zero
     }
 
-    let height = subviews.map { $0.sizeThatFits(proposal).height }.max() ?? 0.0
+    var widths = [CGFloat]()
+    var currentRowWidth = 0.0
+    var totalHeight = 0.0
+    var currentRowHeight = 0.0
 
-    var rowWidths = [CGFloat]()
-    var currentRowWidth: CGFloat = 0
     subviews.forEach { subview in
-      if currentRowWidth + hSpacing + subview.sizeThatFits(proposal).width >= proposal.width ?? 0.0
-      {
-        rowWidths.append(currentRowWidth)
-        currentRowWidth = subview.sizeThatFits(proposal).width
+      let size = subview.sizeThatFits(proposal)
+
+      if currentRowWidth + size.width > (proposal.width ?? .greatestFiniteMagnitude) {
+        widths.append(currentRowWidth)
+
+        totalHeight += currentRowHeight + vSpacing
+
+        currentRowWidth = size.width
+        currentRowHeight = size.height
       } else {
-        currentRowWidth += hSpacing + subview.sizeThatFits(proposal).width
+        currentRowWidth += size.width + (currentRowWidth == 0 ? 0 : hSpacing)
+        currentRowHeight = max(currentRowHeight, size.height)
       }
     }
 
-    rowWidths.append(currentRowWidth)
+    widths.append(currentRowWidth)
+    totalHeight += currentRowHeight
 
-    let rowCount = CGFloat(rowWidths.count)
     return CGSize(
-      width: max(rowWidths.max() ?? 0.0, proposal.width ?? 0.0),
-      height: rowCount * height + (rowCount - 1) * vSpacing
+      width: max(widths.max() ?? 0, proposal.width ?? 0),
+      height: totalHeight
     )
   }
 
@@ -45,33 +52,34 @@ struct WrappingHStack: Layout {
     subviews: Subviews,
     cache: inout ()
   ) {
-    let height = subviews.map { $0.dimensions(in: proposal).height }.max() ?? 0.0
-
     guard !subviews.isEmpty else {
       return
     }
 
     var x = bounds.minX
-    var y = height + bounds.minY
+    var y = bounds.minY
+    var currentRowHeight = 0.0
 
     subviews.forEach { subview in
-      x += subview.dimensions(in: proposal).width / 2.0
+      let subviewWidth = subview.dimensions(in: proposal).width
+      let subviewHeight = subview.dimensions(in: proposal).height
 
-      if x + subview.dimensions(in: proposal).width / 2.0 > bounds.maxX {
-        x = bounds.minX + subview.dimensions(in: proposal).width / 2.0
-        y += subview.dimensions(in: proposal).height + vSpacing
+      if x + subviewWidth > bounds.maxX {
+        x = bounds.minX
+        y += currentRowHeight + vSpacing
       }
 
       subview.place(
-        at: CGPoint(x: x, y: y),
-        anchor: .init(x: 0.5, y: 1.0),
+        at: CGPoint(x: x + subviewWidth / 2.0, y: y + subviewHeight / 2.0),
+        anchor: .init(x: 0.5, y: 0.5),
         proposal: ProposedViewSize(
-          width: subview.dimensions(in: proposal).width,
-          height: subview.dimensions(in: proposal).height
+          width: subviewWidth,
+          height: subviewHeight
         )
       )
 
-      x += subview.dimensions(in: proposal).width / 2.0 + hSpacing
+      x += subviewWidth + hSpacing
+      currentRowHeight = max(currentRowHeight, subviewHeight)
     }
   }
 }
