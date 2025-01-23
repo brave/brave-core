@@ -1,8 +1,8 @@
 diff --git a/components/browsing_data/content/browsing_data_helper.cc b/components/browsing_data/content/browsing_data_helper.cc
-index 7d9f7945a59b302a5eab7d0e1fb4d0855ba2eab1..ab064f3b8e129d59e4956545c7928c3854aa8836 100644
+index 85b715a741276fd21c67fd27ec59e764bfe51875..19ef2fbf1a1139c917372f232c5b8d975d25fe70 100644
 --- a/components/browsing_data/content/browsing_data_helper.cc
 +++ b/components/browsing_data/content/browsing_data_helper.cc
-@@ -39,7 +39,7 @@ bool WebsiteSettingsFilterAdapter(
+@@ -38,7 +38,7 @@ bool WebsiteSettingsFilterAdapter(
    // Website settings only use origin-scoped patterns. The only content setting
    // this filter is used for is DURABLE_STORAGE, which also only uses
    // origin-scoped patterns. Such patterns can be directly translated to a GURL.

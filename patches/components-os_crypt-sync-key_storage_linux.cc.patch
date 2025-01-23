@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/sync/key_storage_linux.cc b/components/os_crypt/sync/key_storage_linux.cc
-index 2773d9faa792f5d8e4b42e4650ffe95222d31ac0..ef041f505c213c904b6bb5845ead23f2b735d883 100644
+index 2eacbdcdf317e352c8e2e425a24dfc015f16d07e..ee7bc32dbc57bf653ebf8fb238935f4d5ecd7921 100644
 --- a/components/os_crypt/sync/key_storage_linux.cc
 +++ b/components/os_crypt/sync/key_storage_linux.cc
 @@ -29,8 +29,7 @@
@@ -12,7 +12,7 @@ index 2773d9faa792f5d8e4b42e4650ffe95222d31ac0..ef041f505c213c904b6bb5845ead23f2
  #endif
  
  namespace {
-@@ -126,6 +125,7 @@ std::unique_ptr<KeyStorageLinux> KeyStorageLinux::CreateService(
+@@ -124,6 +123,7 @@ std::unique_ptr<KeyStorageLinux> KeyStorageLinux::CreateService(
    std::unique_ptr<KeyStorageLinux> key_storage;
  #if defined(USE_LIBSECRET) || defined(USE_KWALLET)
    key_storage = CreateServiceInternal(selected_backend, config);
@@ -20,7 +20,7 @@ index 2773d9faa792f5d8e4b42e4650ffe95222d31ac0..ef041f505c213c904b6bb5845ead23f2
  #endif  // defined(USE_LIBSECRET) || defined(USE_KWALLET)
  
    UMA_HISTOGRAM_ENUMERATION(
-@@ -145,7 +145,7 @@ std::unique_ptr<KeyStorageLinux> KeyStorageLinux::CreateServiceInternal(
+@@ -143,7 +143,7 @@ std::unique_ptr<KeyStorageLinux> KeyStorageLinux::CreateServiceInternal(
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
    static const base::NoDestructor<std::string> kDefaultApplicationName("chrome");
  #else

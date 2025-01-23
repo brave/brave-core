@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/dynamic_module_resolver.cc b/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
-index 82aee101c20f1660ec041d8afd5b28f54f9214a2..dd12cdf39e1bff0988870a38015644d8f2e31ed5 100644
+index 6e3f58fbe64fc67f182ecc7a94c1e172526930ba..3120662d5571906343edc78ce1faec323ea8745a 100644
 --- a/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
 +++ b/third_party/blink/renderer/core/script/dynamic_module_resolver.cc
 @@ -288,6 +288,7 @@ void DynamicModuleResolver::ResolveDynamically(

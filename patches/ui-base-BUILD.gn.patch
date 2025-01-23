@@ -1,8 +1,8 @@
 diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
-index 12896a91a06e53d623daab137c6a11326659dc2f..6e701b491df283ef98b8992e0a1370d87060a681 100644
+index fd73152fa4b6da606c1f7709ff314912d90f10fe..e2b6799a4395ffe3ed22b222b399477e711ab95b 100644
 --- a/ui/base/BUILD.gn
 +++ b/ui/base/BUILD.gn
-@@ -534,6 +534,7 @@ component("base") {
+@@ -546,6 +546,7 @@ component("base") {
        "//ui/events",
        "//ui/events/devices",
      ]

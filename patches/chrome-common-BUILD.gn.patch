@@ -1,8 +1,8 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index d8aae1b4cb41444828721172b9df75cf878b1ccf..2e5a8c333de6242ae2e22b287acd2026e75fa72e 100644
+index b7338a65d9a68cf88b8e886f7645ec65616f8443..5989d498416eda5a69c26ceded52a2378a530ce0 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
-@@ -100,6 +100,7 @@ source_set("channel_info") {
+@@ -102,6 +102,7 @@ source_set("channel_info") {
    } else if (is_posix) {
      sources += [ "channel_info_posix.cc" ]
    }
@@ -10,7 +10,7 @@ index d8aae1b4cb41444828721172b9df75cf878b1ccf..2e5a8c333de6242ae2e22b287acd2026
  }
  
  source_set("ini_parser") {
-@@ -285,6 +286,7 @@ static_library("common_lib") {
+@@ -286,6 +287,7 @@ static_library("common_lib") {
    if (enable_ppapi) {
      public_deps += [ "//ppapi/shared_impl" ]
    }
@@ -18,7 +18,7 @@ index d8aae1b4cb41444828721172b9df75cf878b1ccf..2e5a8c333de6242ae2e22b287acd2026
  
    if (enable_extensions_core) {
      public_deps += [
-@@ -498,6 +500,7 @@ static_library("non_code_constants") {
+@@ -499,6 +501,7 @@ static_library("non_code_constants") {
    if (is_win) {
      sources += [ "chrome_icon_resources_win.h" ]
    }

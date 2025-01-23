@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/tab_strip_region_view.h b/chrome/browser/ui/views/frame/tab_strip_region_view.h
-index 450c2b206dd786f4abbb855e4f56f9107e77652a..4f3b698773a92d1497c938c5945a06ed57c19c6c 100644
+index adc8e335485f10d31e349184718b8455db85a0bc..03b37be7565492709833b1d76a80ec1083a2697a 100644
 --- a/chrome/browser/ui/views/frame/tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/tab_strip_region_view.h
-@@ -25,7 +25,7 @@ class TabSearchPositionMetricsLogger;
+@@ -29,7 +29,7 @@ class TabSearchPositionMetricsLogger;
  
  // Container for the tabstrip and the other views sharing space with it -
  // with the exception of the caption buttons.

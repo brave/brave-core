@@ -1,5 +1,5 @@
 diff --git a/components/vector_icons/aggregate_vector_icons.py b/components/vector_icons/aggregate_vector_icons.py
-index 3e5a94a7f053ffc66f1a820073265cbfe1332b39..5d34e9cdefbbd2f3c8834c13e9ca0393553de9d7 100644
+index 87d7eaf12d2f1142a64cddc733722d4d7518f570..f1710b7d445b57356ae3d580a975f45ca2fe0b4e 100644
 --- a/components/vector_icons/aggregate_vector_icons.py
 +++ b/components/vector_icons/aggregate_vector_icons.py
 @@ -214,5 +214,6 @@ def main():
