@@ -71,6 +71,7 @@ public final class BravePreferenceKeys {
             "remember_list_playback_position";
     public static final String PREF_CONTINUOUS_LISTENING = "continuous_listening";
     public static final String PREF_RESET_PLAYLIST = "reset_playlist";
+    public static final String PLAYLIST_DB_REMOVAL = "playlist_db_removal";
 
     // These are dynamic keys
     public static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
