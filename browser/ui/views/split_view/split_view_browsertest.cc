@@ -178,10 +178,13 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest,
   brave::NewSplitViewForTab(browser());
   auto* split_view_data = SplitViewBrowserData::FromBrowser(browser());
   ASSERT_TRUE(split_view_data);
-  ASSERT_TRUE(split_view_data->IsTabTiled(tab_strip_model().GetTabHandleAt(0)));
-  ASSERT_TRUE(split_view_data->IsTabTiled(tab_strip_model().GetTabHandleAt(1)));
+  ASSERT_TRUE(split_view_data->IsTabTiled(
+      tab_strip_model().GetTabAtIndex(0)->GetHandle()));
+  ASSERT_TRUE(split_view_data->IsTabTiled(
+      tab_strip_model().GetTabAtIndex(1)->GetHandle()));
   ASSERT_TRUE(secondary_contents_container().GetVisible());
-  auto tile = *split_view_data->GetTile(tab_strip_model().GetTabHandleAt(0));
+  auto tile = *split_view_data->GetTile(
+      tab_strip_model().GetTabAtIndex(0)->GetHandle());
 
   // When the tile.first is active contents,
   tab_strip_model().ActivateTabAt(

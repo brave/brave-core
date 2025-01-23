@@ -242,7 +242,7 @@ tabs::TabHandle SplitView::GetActiveTabHandle() const {
   if (model->empty()) {
     return {};
   }
-  return model->GetTabHandleAt(model->active_index());
+  return model->GetTabAtIndex(model->active_index())->GetHandle();
 }
 
 bool SplitView::IsActiveWebContentsTiled(const TabTile& tile) const {
@@ -257,7 +257,7 @@ bool SplitView::IsWebContentsTiled(content::WebContents* contents) const {
     return false;
   }
   const auto tab_handle =
-      browser_->tab_strip_model()->GetTabHandleAt(tab_index);
+      browser_->tab_strip_model()->GetTabAtIndex(tab_index)->GetHandle();
   return SplitViewBrowserData::FromBrowser(base::to_address(browser_))
       ->IsTabTiled(tab_handle);
 }
@@ -276,7 +276,9 @@ void SplitView::UpdateSplitViewSizeDelta(content::WebContents* old_contents,
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   auto get_tab_handle = [this, &get_index_of](content::WebContents* contents) {
-    return browser_->tab_strip_model()->GetTabHandleAt(get_index_of(contents));
+    return browser_->tab_strip_model()
+        ->GetTabAtIndex(get_index_of(contents))
+        ->GetHandle();
   };
   auto old_tab_handle = get_tab_handle(old_contents);
   auto new_tab_handle = get_tab_handle(new_contents);
@@ -390,7 +392,8 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
     //  Contents   | secondary_contents_web_view_ | contents_web_view_  |
     auto* model = browser_->tab_strip_model();
     auto* contents = model->GetWebContentsAt(model->GetIndexOfTab(
-        second_tile_is_active_web_contents ? tile->first : tile->second));
+        second_tile_is_active_web_contents ? tile->first.Get()
+                                           : tile->second.Get()));
     CHECK_NE(contents, contents_web_view_->web_contents());
     if (secondary_contents_web_view_->web_contents() != contents) {
       secondary_contents_web_view_->SetWebContents(contents);
