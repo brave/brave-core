@@ -22,14 +22,15 @@ namespace brave_search {
 
 // Fetches search results from a backup search provider,
 // for use in Brave Search fallback mixing (GMix) and Web Discovery Project.
+// This class does not interact with Brave Search.
 //
 // Each request will use an OTR profile for temporarily storing cookies, etc.
 //
 // There are three modes of operation for this service:
-// i)   If `features::kBackupResultsFullRender` is disabled, the initial search
+// i)   If `features::kBackupResultsFullRender` is disabled, the bootstrap
 //      page will be rendered, and the actual search engine results page will be
 //      fetched.
-// ii)  If `features::kBackupResultsFullRender` is enabled, the initial search
+// ii)  If `features::kBackupResultsFullRender` is enabled, the bootstrap
 //      page and the actual search engine results page will be rendered.
 // iii) If a cookie header value is provided in `FetchBackupResults`, the actual
 //      search engine result page will be directly fetched, with no rendering.

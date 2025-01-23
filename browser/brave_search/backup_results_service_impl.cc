@@ -11,7 +11,9 @@
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/brave_search/common/features.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/content_extraction/inner_html.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
@@ -63,15 +65,17 @@ class BackupResultsWebContentsObserver
  public:
   void DidFinishNavigation(content::NavigationHandle* controller) override {
     const auto* response_headers = controller->GetResponseHeaders();
-    if (response_headers) {
-      backup_results_service_->HandleWebContentsDidFinishNavigation(
-          web_contents(), response_headers->response_code());
+    if (!response_headers || !backup_results_service_) {
+      return;
     }
+    backup_results_service_->HandleWebContentsDidFinishNavigation(
+        web_contents(), response_headers->response_code());
   }
 
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override {
-    if (!validated_url.SchemeIs(url::kHttpsScheme)) {
+    if (!validated_url.SchemeIs(url::kHttpsScheme) ||
+        !backup_results_service_) {
       return;
     }
     backup_results_service_->HandleWebContentsDidFinishLoad(web_contents());
@@ -107,14 +111,27 @@ void BackupResultsServiceImpl::FetchBackupResults(
     std::optional<net::HttpRequestHeaders> headers,
     BackupResultsCallback callback) {
   if (!profile_) {
+    std::move(callback).Run(std::nullopt);
     return;
   }
-  auto otr_profile_id =
-      Profile::OTRProfileID::CreateUniqueForSearchBackupResults();
-  auto* otr_profile = profile_->GetOffTheRecordProfile(otr_profile_id, true);
 
   bool should_render =
       !headers || !headers->HasHeader(net::HttpRequestHeaders::kCookie);
+
+  if (should_render) {
+    auto* host_content_settings_map =
+        HostContentSettingsMapFactory::GetForProfile(profile_);
+    if (host_content_settings_map &&
+        brave_shields::GetNoScriptControlType(host_content_settings_map, url) ==
+            brave_shields::ControlType::BLOCK) {
+      std::move(callback).Run(std::nullopt);
+      return;
+    }
+  }
+
+  auto otr_profile_id =
+      Profile::OTRProfileID::CreateUniqueForSearchBackupResults();
+  auto* otr_profile = profile_->GetOffTheRecordProfile(otr_profile_id, true);
 
   std::unique_ptr<content::WebContents> web_contents;
 
@@ -318,15 +335,23 @@ void BackupResultsServiceImpl::CleanupAndDispatchResult(
 }
 
 void BackupResultsServiceImpl::OnProfileWillBeDestroyed(Profile* profile) {
-  profile_->RemoveObserver(this);
-  for (auto& request : pending_requests_) {
-    request.web_contents = nullptr;
-    auto* otr_profile = request.otr_profile.get();
-    request.otr_profile = nullptr;
-    profile_->DestroyOffTheRecordProfile(otr_profile);
+  Shutdown();
+}
+
+void BackupResultsServiceImpl::Shutdown() {
+  if (profile_) {
+    profile_->RemoveObserver(this);
+    for (auto& request : pending_requests_) {
+      request.web_contents = nullptr;
+      auto* otr_profile = request.otr_profile.get();
+      request.otr_profile = nullptr;
+      profile_->DestroyOffTheRecordProfile(otr_profile);
+    }
+    pending_requests_.clear();
+    profile_ = nullptr;
   }
-  pending_requests_.clear();
-  profile_ = nullptr;
+
+  weak_ptr_factory_.InvalidateWeakPtrs();
 }
 
 }  // namespace brave_search

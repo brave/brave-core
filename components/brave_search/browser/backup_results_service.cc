@@ -5,11 +5,13 @@
 
 #include "brave/components/brave_search/browser/backup_results_service.h"
 
+#include <utility>
+
 namespace brave_search {
 
 BackupResultsService::BackupResults::BackupResults(int final_status_code,
                                                    std::string html)
-    : final_status_code(final_status_code), html(html) {}
+    : final_status_code(final_status_code), html(std::move(html)) {}
 
 BackupResultsService::BackupResults::~BackupResults() = default;
 

@@ -56,6 +56,9 @@ class BackupResultsServiceImpl : public BackupResultsService,
   // ProfileObserver:
   void OnProfileWillBeDestroyed(Profile* profile) override;
 
+  // KeyedService:
+  void Shutdown() override;
+
  private:
   struct PendingRequest {
     PendingRequest(std::unique_ptr<content::WebContents> web_contents,

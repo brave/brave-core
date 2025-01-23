@@ -33,3 +33,15 @@ static_library("browser") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "backup_results_allowed_urls_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base/test:test_support",
+    "//testing/gtest:gtest",
+    "//url",
+  ]
+}

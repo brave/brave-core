@@ -5,11 +5,14 @@
 
 #include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
 
+#include <string>
 #include <string_view>
+#include <vector>
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/logging.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "url/url_constants.h"
 
 namespace brave_search {
@@ -59,6 +62,7 @@ bool IsBackupResultURLAllowed(const GURL& url) {
   if (!url.SchemeIs(url::kHttpsScheme)) {
     return false;
   }
+
   // Extract the hostname from the URL
   auto hostname = url.host_piece();
 
@@ -70,10 +74,16 @@ bool IsBackupResultURLAllowed(const GURL& url) {
     return false;
   }
 
-  std::string_view tld = host_parts.back();
-  std::string_view sld = host_parts[host_parts.size() - 2];
+  // Look for "google" in the parts
+  auto google_it = std::find(host_parts.begin(), host_parts.end(), kGoogleSLD);
+  if (google_it == host_parts.end()) {
+    return false;
+  }
 
-  return sld == kGoogleSLD && kAllowedGoogleTLDs.contains(tld);
+  std::string potential_tld = base::JoinString(
+      std::vector<std::string>(google_it + 1, host_parts.end()), ".");
+
+  return !potential_tld.empty() && kAllowedGoogleTLDs.contains(potential_tld);
 }
 
 }  // namespace brave_search

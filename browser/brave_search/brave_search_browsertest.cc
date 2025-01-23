@@ -126,7 +126,7 @@ class BraveSearchTest : public InProcessBrowserTest {
     https_server_->ServeFilesFromDirectory(test_data_dir);
 
     ASSERT_TRUE(https_server_->Start());
-    GURL url = https_server()->GetURL("a.com", "/search");
+    GURL url = https_server()->GetURL("google.com", "/search");
     brave_search::BraveSearchFallbackHost::SetBackupProviderForTest(url);
 
     // Force default search engine to Google

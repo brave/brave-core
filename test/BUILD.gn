@@ -203,6 +203,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_rewards/core/test",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
     "//brave/components/brave_search/browser",
+    "//brave/components/brave_search/browser:unit_tests",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_search_conversion:unit_tests",

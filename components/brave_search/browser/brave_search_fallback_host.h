@@ -48,7 +48,7 @@ class BraveSearchFallbackHost final
   void OnResultsAvailable(
       BraveSearchFallbackHost::FetchBackupResultsCallback callback,
       const std::optional<BackupResultsService::BackupResults> backup_results);
-  base::WeakPtr<brave_search::BackupResultsService> backup_results_service_;
+  base::WeakPtr<BackupResultsService> backup_results_service_;
   base::WeakPtrFactory<BraveSearchFallbackHost> weak_factory_;
 };
 

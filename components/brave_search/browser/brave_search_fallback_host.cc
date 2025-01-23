@@ -76,6 +76,11 @@ void BraveSearchFallbackHost::FetchBackupResults(
     headers.SetHeader(net::HttpRequestHeaders::kCookie, *cookie_header_value);
   }
 
+  if (!backup_results_service_) {
+    OnResultsAvailable(std::move(callback), std::nullopt);
+    return;
+  }
+
   backup_results_service_->FetchBackupResults(
       url, headers,
       base::BindOnce(&BraveSearchFallbackHost::OnResultsAvailable,
