@@ -42,8 +42,6 @@ if (!is_android && !is_ios) {
     # and not //ui/webui/resources which is the default for build_cr_component.
     if (!is_android && !is_ios) {
       non_web_component_files = [
-        "br_elements/br_toolbar/br_toolbar_search_field.ts",
-        "br_elements/br_toolbar/br_toolbar_search_field.html.ts",
         "lit_overriding.ts",
         "polymer_overriding.ts",
       ]
@@ -53,7 +51,6 @@ if (!is_android && !is_ios) {
       css_files = [
         "br_elements/br_shared_style.css",
         "br_elements/br_shared_vars.css",
-        "br_elements/br_toolbar/br_toolbar_search_field.css",
         "page_specific/settings/br_settings_shared.css",
       ]
     }
