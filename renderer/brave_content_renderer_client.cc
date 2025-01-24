@@ -42,6 +42,11 @@
 #include "third_party/widevine/cdm/buildflags.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/youtube_script_injector/common/features.h"
+#include "brave/components/youtube_script_injector/renderer/youtube_render_frame_observer.h"
+#endif
+
 #if BUILDFLAG(ENABLE_AI_REWRITER)
 #include "brave/components/ai_rewriter/common/features.h"
 #include "brave/components/ai_rewriter/renderer/ai_rewriter_agent.h"
@@ -185,6 +190,11 @@ void BraveContentRendererClient::RenderFrameCreated(
   if (brave_vpn::IsBraveVPNFeatureEnabled() ||
       ai_chat::features::IsAIChatHistoryEnabled()) {
     new brave_subscription::SubscriptionRenderFrameObserver(
+        render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
+  }
+  if (base::FeatureList::IsEnabled(
+          youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
+    new youtube_script_injector::YouTubeRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 #endif
