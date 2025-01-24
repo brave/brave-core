@@ -454,6 +454,9 @@ interface ConversationHandler {
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
+  // Get allowed URLs
+  GetAllowedURLs() => (array<url.mojom.Url> urls);
+
   // The browser should generate some questions and fire an event when they
   // are ready.
   GenerateQuestions();

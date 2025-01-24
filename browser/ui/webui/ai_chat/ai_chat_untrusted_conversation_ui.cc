@@ -86,8 +86,8 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
     ai_chat_ui_controller->BindInterface(std::move(parent_ui_frame_receiver));
   }
 
- private:
-  void OpenURL(GURL url) {
+  void OpenURL(const GURL& url) override {
+    LOG(ERROR) << "URL: " << url;
     if (!url.SchemeIs(url::kHttpsScheme)) {
       return;
     }
@@ -106,6 +106,7 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
 #endif
   }
 
+ private:
   raw_ptr<content::WebUI> web_ui_ = nullptr;
   mojo::Receiver<ai_chat::mojom::UntrustedUIHandler> receiver_;
 };

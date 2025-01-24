@@ -6,6 +6,8 @@
 import * as React from 'react'
 import Markdown from 'react-markdown'
 import type { Root, Element as HastElement } from 'hast'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 const { visit } = require('unist-util-visit')
 
@@ -48,7 +50,10 @@ const allowedElements = [
 
   // Line elements
   'br',
-  'hr'
+  'hr',
+
+  // hyperlinks
+  'a'
 ]
 
 interface CursorDecoratorProps {
@@ -79,6 +84,7 @@ interface MarkdownRendererProps {
 
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
   const lastElementRef = React.useRef<HastElement | undefined>()
+  const context = useUntrustedConversationContext() 
 
   const plugin = React.useCallback(() => {
     const transformer = (tree: Root) => {
@@ -98,35 +104,55 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
     return transformer
   }, [])
 
-  return (
-    <div className={styles.markdownContainer}>
-      <Markdown
-        allowedElements={allowedElements}
-        // We only read the total lines value from AST
-        // if the component is allowed to show the text cursor.
-        rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
-        unwrapDisallowed={true}
-        children={mainProps.text}
-        components={{
-          p: (props) => (
-            <CursorDecorator
-              as='p'
-              children={props.children}
-              isCursorVisible={
-                (props.node as HastElement) === lastElementRef.current
-              }
-            />
-          ),
-          li: (props) => (
-            <CursorDecorator
-              as='li'
-              children={props.children}
-              isCursorVisible={
-                (props.node as HastElement) === lastElementRef.current
-              }
-            />
-          ),
-          code: (props) => {
+
+  const renderLink = React.useCallback((props: React.ComponentProps<'a'>) => {
+    const { href, children, ...rest } = props
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      console.log('----handle click!')
+      e.preventDefault()
+      if (href) {
+        const url = new Url()
+        url.url = href
+        console.log('open url:', url)
+        console.log(url)
+        context.uiHandler?.openURL(url)
+      }
+    }
+
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={handleClick}
+        {...rest}
+      >
+        {children}
+      </a>
+    )
+    }, [context.uiHandler])
+
+
+    const components = React.useMemo(() => ({
+            p: (props: any) => (
+              <CursorDecorator
+                as='p'
+                children={props.children}
+                isCursorVisible={
+                  (props.node as HastElement) === lastElementRef.current
+                }
+              />
+            ),
+            li: (props: any) => (
+              <CursorDecorator
+                as='li'
+                children={props.children}
+                isCursorVisible={
+                  (props.node as HastElement) === lastElementRef.current
+                }
+              />
+            ),
+          code: (props: any) => {
             const { children, className } = props
             const match = /language-([^ ]+)/.exec(className || '')
             return match ? (
@@ -141,8 +167,20 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
                 <CodeInline code={String(children)} />
               </React.Suspense>
             )
-          }
-        }}
+          },
+        a: renderLink,
+    }), [renderLink, lastElementRef])
+
+    return (
+      <div className={styles.markdownContainer}>
+        <Markdown
+          allowedElements={allowedElements}
+          // We only read the total lines value from AST
+          // if the component is allowed to show the text cursor.
+          rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
+          unwrapDisallowed={true}
+          children={mainProps.text}
+          components={components}
       />
     </div>
   )
