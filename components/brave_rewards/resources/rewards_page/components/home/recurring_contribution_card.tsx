@@ -12,6 +12,7 @@ import { RecurringContribution } from '../../lib/app_state'
 import { AppModelContext, useAppState } from '../../lib/app_model_context'
 import { useLocaleContext } from '../../lib/locale_strings'
 import { getCreatorIconSrc, getCreatorPlatformIcon } from '../../lib/creator_icon'
+import { isSelfCustodyProvider } from '../../../shared/lib/external_wallet'
 import { NewTabLink } from '../../../shared/components/new_tab_link'
 
 import { style } from './recurring_contribution_card.style'
@@ -114,7 +115,7 @@ export function RecurringContributionCard() {
     </>
   }
 
-  if (!externalWallet) {
+  if (!externalWallet || isSelfCustodyProvider(externalWallet.provider)) {
     return null
   }
 
