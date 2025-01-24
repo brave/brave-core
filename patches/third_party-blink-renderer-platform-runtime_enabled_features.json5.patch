@@ -1,7 +1,16 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index db7c64eebdf34913139d556429f2717d08f39a56..cb30f0069f00c54ef8e6ee83d9d1b8998296904e 100644
+index db7c64eebdf34913139d556429f2717d08f39a56..223daf68c5abe8067bd14c522097f00ce40b5ed3 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
+@@ -1193,7 +1193,7 @@
+     {
+       // crbug.com/359616070
+       name: "CSSRelativeColorLateResolveAlways",
+-      status: "stable",
++      status: "experimental",
+     },
+     {
+       // crbug.com/365818844
 @@ -1965,6 +1965,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
