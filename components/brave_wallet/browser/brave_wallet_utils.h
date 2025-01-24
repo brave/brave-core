@@ -25,24 +25,6 @@ class GURL;
 
 namespace brave_wallet {
 
-// Generate mnemonic from random entropy following BIP39.
-// |entropy_size| should be specify in bytes
-// If |entropy_size| is not in 16, 20, 24, 28, 32 range or allocation
-// failure, the empty string will be returned.
-std::string GenerateMnemonic(size_t entropy_size);
-// Testing specific entropy
-std::string GenerateMnemonicForTest(const std::vector<uint8_t>& entropy);
-// Generate seed from mnemonic following BIP39.
-// If allocation failed, it would return nullptr. Otherwise 512 bits seed will
-// be returned.
-std::unique_ptr<std::vector<uint8_t>> MnemonicToSeed(
-    base::cstring_view mnemonic,
-    std::string_view passphrase = "");
-// This is mainly used for restoring legacy brave crypto wallet
-std::unique_ptr<std::vector<uint8_t>> MnemonicToEntropy(
-    base::cstring_view mnemonic);
-bool IsValidMnemonic(base::cstring_view mnemonic);
-
 bool EncodeString(std::string_view input, std::string* output);
 bool EncodeStringArray(base::span<const std::string> input,
                        std::string* output);

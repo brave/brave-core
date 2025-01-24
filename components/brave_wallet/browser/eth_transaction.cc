@@ -172,8 +172,8 @@ std::optional<EthTransaction> EthTransaction::FromValue(
   return tx;
 }
 
-std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
-                                                      bool hash) const {
+std::vector<uint8_t> EthTransaction::GetMessageToSign(
+    uint256_t chain_id) const {
   DCHECK(nonce_);
   base::Value::List list;
   list.Append(RLPUint256ToBlob(nonce_.value()));
@@ -188,8 +188,12 @@ std::vector<uint8_t> EthTransaction::GetMessageToSign(uint256_t chain_id,
     list.Append(RLPUint256ToBlob(0));
   }
 
-  auto result = RLPEncode(list);
-  return hash ? base::ToVector(KeccakHash(result)) : result;
+  return RLPEncode(list);
+}
+
+KeccakHashArray EthTransaction::GetHashedMessageToSign(
+    uint256_t chain_id) const {
+  return KeccakHash(GetMessageToSign(chain_id));
 }
 
 std::string EthTransaction::GetSignedTransaction() const {
@@ -223,7 +227,7 @@ bool EthTransaction::ProcessVRS(const std::vector<uint8_t>& v,
 }
 
 // signature and recid will be used to produce v, r, s
-void EthTransaction::ProcessSignature(const std::vector<uint8_t> signature,
+void EthTransaction::ProcessSignature(base::span<const uint8_t> signature,
                                       int recid,
                                       uint256_t chain_id) {
   if (signature.size() != 64) {
@@ -279,10 +283,6 @@ uint256_t EthTransaction::GetDataFee() const {
     cost += byte == 0 ? kTxDataZeroCostPerByte : kTxDataCostPerByte;
   }
   return cost;
-}
-
-uint256_t EthTransaction::GetUpfrontCost(uint256_t block_base_fee) const {
-  return gas_limit_ * gas_price_ + value_;
 }
 
 base::Value EthTransaction::Serialize() const {

@@ -345,54 +345,43 @@ std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(
   return hd_key;
 }
 
-std::vector<uint8_t> HDKey::SignCompact(base::span<const uint8_t> msg,
-                                        int* recid) {
-  std::vector<uint8_t> sig(kCompactSignatureSize);
-  if (msg.size() != 32) {
-    LOG(ERROR) << __func__ << ": message length should be 32";
-    return sig;
-  }
+std::optional<std::array<uint8_t, kCompactSignatureSize>> HDKey::SignCompact(
+    Secp256k1SignMsgSpan msg,
+    int* recid) {
+  std::array<uint8_t, kCompactSignatureSize> sig = {};
   if (!recid) {
     secp256k1_ecdsa_signature ecdsa_sig;
     if (!secp256k1_ecdsa_sign(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
                               private_key_.data(),
                               secp256k1_nonce_function_rfc6979, nullptr)) {
-      LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
-      return sig;
+      return std::nullopt;
     }
 
     if (!secp256k1_ecdsa_signature_serialize_compact(GetSecp256k1Ctx(),
                                                      sig.data(), &ecdsa_sig)) {
-      LOG(ERROR) << __func__
-                 << ": secp256k1_ecdsa_signature_serialize_compact failed";
+      return std::nullopt;
     }
   } else {
     secp256k1_ecdsa_recoverable_signature ecdsa_sig;
     if (!secp256k1_ecdsa_sign_recoverable(
             GetSecp256k1Ctx(), &ecdsa_sig, msg.data(), private_key_.data(),
             secp256k1_nonce_function_rfc6979, nullptr)) {
-      LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign_recoverable failed";
-      return sig;
+      return std::nullopt;
     }
     if (!secp256k1_ecdsa_recoverable_signature_serialize_compact(
             GetSecp256k1Ctx(), sig.data(), recid, &ecdsa_sig)) {
-      LOG(ERROR)
-          << __func__
-          << ": secp256k1_ecdsa_recoverable_signature_serialize_compact failed";
+      return std::nullopt;
     }
   }
 
   return sig;
 }
 
-std::optional<std::vector<uint8_t>> HDKey::SignDer(
-    base::span<const uint8_t, 32> msg) {
-  unsigned char extra_entropy[32] = {0};
+std::optional<std::vector<uint8_t>> HDKey::SignDer(Secp256k1SignMsgSpan msg) {
   secp256k1_ecdsa_signature ecdsa_sig;
   if (!secp256k1_ecdsa_sign(GetSecp256k1Ctx(), &ecdsa_sig, msg.data(),
                             private_key_.data(),
                             secp256k1_nonce_function_rfc6979, nullptr)) {
-    LOG(ERROR) << __func__ << ": secp256k1_ecdsa_sign failed";
     return std::nullopt;
   }
 
@@ -405,6 +394,7 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(
   };
 
   // Grind R https://github.com/bitcoin/bitcoin/pull/13666
+  unsigned char extra_entropy[32] = {0};
   uint32_t extra_entropy_counter = 0;
   while (!sig_has_low_r(GetSecp256k1Ctx(), &ecdsa_sig)) {
     base::as_writable_byte_span(extra_entropy)
@@ -433,13 +423,8 @@ std::optional<std::vector<uint8_t>> HDKey::SignDer(
   return sig_der;
 }
 
-bool HDKey::VerifyForTesting(base::span<const uint8_t> msg,
-                             base::span<const uint8_t> sig) {
-  if (msg.size() != 32 || sig.size() != kCompactSignatureSize) {
-    LOG(ERROR) << __func__ << ": message or signature length is invalid";
-    return false;
-  }
-
+bool HDKey::VerifyForTesting(Secp256k1SignMsgSpan msg,
+                             CompactSignatureSpan sig) {
   secp256k1_ecdsa_signature ecdsa_sig;
   if (!secp256k1_ecdsa_signature_parse_compact(GetSecp256k1Ctx(), &ecdsa_sig,
                                                sig.data())) {
@@ -474,8 +459,8 @@ std::array<uint8_t, kSecp256k1FingerprintSize> HDKey::GetFingerprint() const {
 }
 
 std::vector<uint8_t> HDKey::RecoverCompact(bool compressed,
-                                           base::span<const uint8_t> msg,
-                                           base::span<const uint8_t> sig,
+                                           Secp256k1SignMsgSpan msg,
+                                           CompactSignatureSpan sig,
                                            int recid) {
   size_t public_key_len = compressed ? 33 : 65;
   std::vector<uint8_t> public_key(public_key_len);

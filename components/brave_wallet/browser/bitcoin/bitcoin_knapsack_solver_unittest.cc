@@ -10,13 +10,13 @@
 #include "base/containers/span.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "components/grit/brave_components_strings.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -75,7 +75,7 @@ class BitcoinKnapsackSolverUnitTest : public testing::Test {
     tx_input.utxo_address = address;
     std::string txid_fake = address + base::NumberToString(amount);
     tx_input.utxo_outpoint.txid =
-        crypto::SHA256Hash(base::as_byte_span(txid_fake));
+        crypto::hash::Sha256(base::as_byte_span(txid_fake));
     tx_input.utxo_outpoint.index = tx_input.utxo_outpoint.txid.back();
     tx_input.utxo_value = amount;
 
@@ -87,7 +87,8 @@ class BitcoinKnapsackSolverUnitTest : public testing::Test {
   double longterm_fee_rate() const { return 3.0; }
 
   bool testnet_ = false;
-  BitcoinHDKeyring keyring_{*MnemonicToSeed(kMnemonicAbandonAbandon), testnet_};
+  BitcoinHDKeyring keyring_{*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
+                            testnet_};
 };
 
 TEST_F(BitcoinKnapsackSolverUnitTest, NoInputs) {

@@ -15,6 +15,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/filecoin/rs/src/lib.rs.h"
 #include "brave/components/json/json_helper.h"
 
@@ -78,7 +79,11 @@ std::optional<FilTransaction> FilTransaction::FromTxData(
 
   auto address = FilAddress::FromAddress(tx_data->to);
   if (address.IsEmpty()) {
-    address = FilAddress::FromFEVMAddress(is_mainnet, tx_data->to);
+    auto eth_address = EthAddress::FromHex(tx_data->to);
+    if (!eth_address.IsValid()) {
+      return std::nullopt;
+    }
+    address = FilAddress::FromFEVMAddress(is_mainnet, eth_address);
     if (address.IsEmpty()) {
       return std::nullopt;
     }

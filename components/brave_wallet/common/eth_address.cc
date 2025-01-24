@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/containers/span.h"
-#include "base/logging.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -37,7 +36,6 @@ bool EthAddress::operator!=(const EthAddress& other) const {
 EthAddress EthAddress::FromPublicKey(base::span<const uint8_t> public_key) {
   // TODO(apaymyshev): should be a fixed-size span.
   if (public_key.size() != 64) {
-    VLOG(1) << __func__ << ": public key size should be 64 bytes";
     return EthAddress();
   }
 
@@ -53,7 +51,6 @@ EthAddress EthAddress::FromHex(std::string_view input) {
 
   std::vector<uint8_t> bytes;
   if (!PrefixedHexStringToBytes(input, &bytes)) {
-    VLOG(1) << __func__ << ": PrefixedHexStringToBytes failed";
     return EthAddress();
   }
 
@@ -76,11 +73,9 @@ EthAddress EthAddress::ZeroAddress() {
 // static
 bool EthAddress::IsValidAddress(std::string_view input) {
   if (!IsValidHexString(input)) {
-    VLOG(1) << __func__ << ": input is not a valid hex representation";
     return false;
   }
   if (input.size() - 2 != kEthAddressLength * 2) {
-    VLOG(1) << __func__ << ": input should be 20 bytes long";
     return false;
   }
   return true;

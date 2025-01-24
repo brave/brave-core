@@ -63,10 +63,9 @@ class Eip1559Transaction : public Eip2930Transaction {
     gas_estimation_ = estimation;
   }
 
-  // keccak256(0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
-  // gasLimit, destination, value, data, access_list]))
-  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id = 0,
-                                        bool hash = true) const override;
+  // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas,
+  // gasLimit, destination, value, data, access_list])
+  std::vector<uint8_t> GetMessageToSign(uint256_t chain_id) const override;
 
   // 0x02 || rlp([chainId, nonce, maxPriorityFeePerGas, maxFeePerGas, gasLimit,
   // destination, value, data, accessList, signatureYParity, signatureR,
@@ -79,8 +78,6 @@ class Eip1559Transaction : public Eip2930Transaction {
   std::string GetTransactionHash() const override;
 
   base::Value::Dict ToValue() const override;
-
-  uint256_t GetUpfrontCost(uint256_t block_base_fee = 0) const override;
 
  protected:
   Eip1559Transaction(std::optional<uint256_t> nonce,

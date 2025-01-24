@@ -14,8 +14,8 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_common.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
@@ -26,6 +26,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
+using bip39::MnemonicToSeed;
 
 namespace {
 bool IsPublicKeyEmpty(const std::vector<uint8_t>& public_key) {
@@ -398,12 +400,13 @@ TEST(HDKeyUnitTest, GenerateFromPrivateKey) {
   std::unique_ptr<HDKey> key = HDKey::GenerateFromPrivateKey(private_key);
   EXPECT_NE(key, nullptr);
 
-  const std::vector<uint8_t> msg_a(32, 0x00);
-  const std::vector<uint8_t> msg_b(32, 0x08);
+  std::array<uint8_t, 32> msg_a = {};
+  std::array<uint8_t, 32> msg_b = {};
+  msg_b.fill(0x08);
   int recid_a = -1;
   int recid_b = -1;
-  const std::vector<uint8_t> sig_a = key->SignCompact(msg_a, &recid_a);
-  const std::vector<uint8_t> sig_b = key->SignCompact(msg_b, &recid_b);
+  auto sig_a = *key->SignCompact(msg_a, &recid_a);
+  auto sig_b = *key->SignCompact(msg_b, &recid_b);
   EXPECT_NE(recid_a, -1);
   EXPECT_NE(recid_b, -1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
@@ -422,12 +425,13 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
       "GfSh6dqA9QWTyefMLEcBYJUuekgW4BYPJcr9E7j");
   auto* key = parsed_xprv->hdkey.get();
 
-  const std::vector<uint8_t> msg_a(32, 0x00);
-  const std::vector<uint8_t> msg_b(32, 0x08);
+  std::array<uint8_t, 32> msg_a = {};
+  std::array<uint8_t, 32> msg_b = {};
+  msg_b.fill(0x08);
   int recid_a = -1;
   int recid_b = -1;
-  const std::vector<uint8_t> sig_a = key->SignCompact(msg_a, &recid_a);
-  const std::vector<uint8_t> sig_b = key->SignCompact(msg_b, &recid_b);
+  auto sig_a = *key->SignCompact(msg_a, &recid_a);
+  auto sig_b = *key->SignCompact(msg_b, &recid_b);
   EXPECT_NE(recid_a, -1);
   EXPECT_NE(recid_b, -1);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig_a)),
@@ -453,25 +457,11 @@ TEST(HDKeyUnitTest, SignAndVerifyAndRecover) {
   EXPECT_EQ(base::HexEncode(uncompressed_public_key_b),
             base::HexEncode(key->GetUncompressedPublicKey()));
 
-  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(32),
-                                     std::vector<uint8_t>(64)));
+  EXPECT_FALSE(key->VerifyForTesting(std::array<uint8_t, 32>{},
+                                     std::array<uint8_t, 64>{}));
   EXPECT_FALSE(key->VerifyForTesting(msg_a, sig_b));
   EXPECT_FALSE(key->VerifyForTesting(msg_b, sig_a));
 
-  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(31), sig_a));
-  EXPECT_FALSE(key->VerifyForTesting(std::vector<uint8_t>(33), sig_a));
-
-  EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(63)));
-  EXPECT_FALSE(key->VerifyForTesting(msg_a, std::vector<uint8_t>(65)));
-
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, std::vector<uint8_t>(31), sig_a, recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, std::vector<uint8_t>(33), sig_a, recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, msg_a, std::vector<uint8_t>(31), recid_a)));
-  EXPECT_TRUE(IsPublicKeyEmpty(
-      key->RecoverCompact(true, msg_a, std::vector<uint8_t>(33), recid_a)));
   EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(true, msg_a, sig_a, -1)));
   EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(true, msg_a, sig_a, 4)));
   EXPECT_TRUE(IsPublicKeyEmpty(key->RecoverCompact(false, msg_a, sig_a, -1)));

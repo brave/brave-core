@@ -129,12 +129,12 @@ std::optional<std::vector<uint8_t>> DecryptPrivateKeyFromJsonKeystore(
       return std::nullopt;
     }
 
-    crypto::kdf::Pbkdf2HmacSha256Params params = {
-        .iterations = *c,
-    };
     if (!crypto::kdf::DeriveKeyPbkdf2HmacSha256(
-            params, base::as_byte_span(password),
-            base::as_byte_span(salt_bytes), derived_key)) {
+            {
+                .iterations = *c,
+            },
+            base::as_byte_span(password), base::as_byte_span(salt_bytes),
+            derived_key)) {
       return std::nullopt;
     }
   } else if (*kdf == "scrypt") {

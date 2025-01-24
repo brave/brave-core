@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -17,6 +18,8 @@
 using testing::ElementsAre;
 
 namespace brave_wallet {
+
+using bip39::MnemonicToSeed;
 
 namespace {
 std::vector<uint8_t> GetPublicKey(const std::string& private_key_hex) {

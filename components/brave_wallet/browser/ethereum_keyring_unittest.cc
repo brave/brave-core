@@ -12,6 +12,7 @@
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -26,6 +27,8 @@ constexpr char kMnemonic[] =
 }
 
 namespace brave_wallet {
+
+using bip39::MnemonicToSeed;
 
 TEST(EthereumKeyringUnitTest, ConstructRootHDKey) {
   std::vector<uint8_t> seed;
@@ -126,36 +129,34 @@ TEST(EthereumKeyringUnitTest, SignMessage) {
 
   std::vector<uint8_t> message;
   EXPECT_TRUE(base::HexStringToBytes("deadbeef", &message));
-  std::vector<uint8_t> sig = keyring.SignMessage(address, message, 0, false);
+  auto sig = *keyring.SignMessage(address, message, 0, false);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "1b");
 
-  sig = keyring.SignMessage(address, message, 3, false);
+  sig = *keyring.SignMessage(address, message, 3, false);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "29");
 
-  sig = keyring.SignMessage(address, message, 300, false);
+  sig = *keyring.SignMessage(address, message, 300, false);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "a77440e5c84e5f16ca3636c7af5857c828d2a8f1afbc0a6945d33d4fc45f216e"
             "3eefd69ccc5b3cee000fdaa564d8f1512789af8fe62f2907f5a8c87885b508fa"
             "7b");
 
-  EXPECT_TRUE(keyring
-                  .SignMessage("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF",
-                               message, 0, false)
-                  .empty());
+  EXPECT_FALSE(keyring.SignMessage("0xDEADBEEFdeadbeefdeadbeefdeadbeefDEADBEEF",
+                                   message, 0, false));
 
   // when message is not Keccak hash
-  EXPECT_TRUE(keyring.SignMessage(address, message, 0, true).empty());
+  EXPECT_FALSE(keyring.SignMessage(address, message, 0, true));
   message.clear();
   EXPECT_TRUE(base::HexStringToBytes(
       "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2",
       &message));
-  sig = keyring.SignMessage(address, message, 3, true);
+  sig = *keyring.SignMessage(address, message, 3, true);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "789c0e9025bbf9410b58c2ca43ea1add3c6cfed66001300b9c102f78022cf6e21b"
             "bf3780d68ff28e72c0ccb4f515b3d527c585abf59bc03531f5047b0357ef3329");
@@ -199,8 +200,8 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   // SignMessage
   std::vector<uint8_t> message;
   EXPECT_TRUE(base::HexStringToBytes("68656c6c6f20776f726c64", &message));
-  const std::vector<uint8_t> sig = keyring.SignMessage(
-      "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB", message, 0, false);
+  auto sig = *keyring.SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB",
+                                  message, 0, false);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(sig)),
             "ce909e8ea6851bc36c007a0072d0524b07a3ff8d4e623aca4c71ca8e57250c4d0a"
             "3fc38fa8fbaaa81ead4b9f6bd03356b6f8bf18bccad167d78891636e1d69561b");
@@ -213,10 +214,8 @@ TEST(EthereumKeyringUnitTest, ImportedAccounts) {
       "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB"));
   EXPECT_FALSE(keyring.RemoveImportedAccount(""));
   EXPECT_FALSE(keyring.RemoveImportedAccount("*****0x*****"));
-  EXPECT_TRUE(keyring
-                  .SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB",
-                               message, 0, false)
-                  .empty());
+  EXPECT_FALSE(keyring.SignMessage("0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB",
+                                   message, 0, false));
 
   // Sign Transaction
   EthTransaction tx = *EthTransaction::FromTxData(mojom::TxData::New(

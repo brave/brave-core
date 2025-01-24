@@ -19,6 +19,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -46,6 +47,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
+#include "crypto/random.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -481,7 +483,7 @@ TEST_F(KeyringServiceUnitTest, CreateWallet_DoubleCall) {
   EXPECT_CALL(callback1,
               Run(Truly([](const std::optional<std::string>& mnemonic) {
                 EXPECT_TRUE(mnemonic);
-                return IsValidMnemonic(*mnemonic);
+                return bip39::IsValidMnemonic(*mnemonic);
               })));
   service.CreateWallet(kTestWalletPassword, callback1.Get());
 
@@ -641,7 +643,9 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
     NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
-    AccountUtils(&service).CreateWallet(GenerateMnemonic(16), kPasswordBrave);
+    AccountUtils(&service).CreateWallet(
+        *bip39::GenerateMnemonic(crypto::RandBytesAsVector(16)),
+        kPasswordBrave);
     ASSERT_TRUE(AddAccount(&service, mojom::CoinType::ETH,
                            mojom::kDefaultKeyringId, "ETH Account 1"));
     EXPECT_FALSE(service.IsLockedSync());
@@ -2231,33 +2235,27 @@ TEST_F(KeyringServiceUnitTest, SignMessageByDefaultKeyring) {
   auto account1 = GetAccountUtils(&service).EthAccountId(0);
 
   const std::vector<uint8_t> message = {0xde, 0xad, 0xbe, 0xef};
-  auto sig_with_err = service.SignMessageByDefaultKeyring(account1, message);
-  EXPECT_NE(sig_with_err.signature, std::nullopt);
-  EXPECT_FALSE(sig_with_err.signature->empty());
-  EXPECT_TRUE(sig_with_err.error_message.empty());
+  EXPECT_TRUE(service.SignMessageByDefaultKeyring(account1, message, false)
+                  .has_value());
 
   // message is 0x
-  sig_with_err =
-      service.SignMessageByDefaultKeyring(account1, std::vector<uint8_t>());
-  EXPECT_NE(sig_with_err.signature, std::nullopt);
-  EXPECT_FALSE(sig_with_err.signature->empty());
-  EXPECT_TRUE(sig_with_err.error_message.empty());
+  EXPECT_TRUE(
+      service
+          .SignMessageByDefaultKeyring(account1, std::vector<uint8_t>(), false)
+          .has_value());
 
   // not a valid account in this wallet
   auto invalid_account = GetAccountUtils(&service).EthUnkownAccountId();
-  sig_with_err = service.SignMessageByDefaultKeyring(invalid_account, message);
-  EXPECT_EQ(sig_with_err.signature, std::nullopt);
   EXPECT_EQ(
-      sig_with_err.error_message,
+      service.SignMessageByDefaultKeyring(invalid_account, message, false)
+          .error(),
       l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_INVALID_ADDRESS,
                                 base::ASCIIToUTF16(invalid_account->address)));
 
   // Cannot sign message when locked
   service.Lock();
-  sig_with_err = service.SignMessageByDefaultKeyring(account1, message);
-  EXPECT_EQ(sig_with_err.signature, std::nullopt);
   EXPECT_EQ(
-      sig_with_err.error_message,
+      service.SignMessageByDefaultKeyring(account1, message, false).error(),
       l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SIGN_MESSAGE_UNLOCK_FIRST));
 }
 
@@ -3241,9 +3239,10 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
       *brave_wallet_service.GetBitcoinWalletService());
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc(std::nullopt, std::nullopt);
-  BitcoinHDKeyring keyring_84(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
-  BitcoinHDKeyring keyring_84_test(*MnemonicToSeed(kMnemonicAbandonAbandon),
-                                   true);
+  BitcoinHDKeyring keyring_84(*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
+                              false);
+  BitcoinHDKeyring keyring_84_test(
+      *bip39::MnemonicToSeed(kMnemonicAbandonAbandon), true);
 
   // Account 0
   bitcoin_test_rpc_server.AddTransactedAddress(

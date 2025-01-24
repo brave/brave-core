@@ -23,12 +23,12 @@ namespace brave_wallet {
 namespace {
 
 // Get the 32 byte message hash
-std::vector<uint8_t> GetMessageHash(base::span<const uint8_t> message) {
+KeccakHashArray GetMessageHash(base::span<const uint8_t> message) {
   std::string prefix = base::StrCat({"\x19", "Ethereum Signed Message:\n",
                                      base::NumberToString(message.size())});
   std::vector<uint8_t> hash_input(prefix.begin(), prefix.end());
   base::Extend(hash_input, message);
-  return base::ToVector(KeccakHash(hash_input));
+  return KeccakHash(hash_input);
 }
 
 std::unique_ptr<HDKey> ConstructAccountsRootKey(
@@ -56,12 +56,12 @@ std::optional<std::string> EthereumKeyring::RecoverAddress(
     base::span<const uint8_t> message,
     base::span<const uint8_t> signature) {
   // A compact ECDSA signature (recovery id byte + 64 bytes).
-  if (signature.size() != kCompactSignatureSize + 1) {
+  auto signature_span = signature.to_fixed_extent<kCompactSignatureSize + 1>();
+  if (!signature_span) {
     return std::nullopt;
   }
 
-  std::vector<uint8_t> signature_only(signature.begin(), signature.end());
-  uint8_t v = signature_only.back();
+  uint8_t v = signature_span->back();
   if (v < 27) {
     VLOG(1) << "v should be >= 27";
     return std::nullopt;
@@ -70,8 +70,6 @@ std::optional<std::string> EthereumKeyring::RecoverAddress(
   // v = chain_id ? recid + chain_id * 2 + 35 : recid + 27;
   // So recid = v - 27 when chain_id is 0
   uint8_t recid = v - 27;
-  signature_only.pop_back();
-  std::vector<uint8_t> hash = GetMessageHash(message);
 
   // Public keys (in scripts) are given as 04 <x> <y> where x and y are 32
   // byte big-endian integers representing the coordinates of a point on the
@@ -79,7 +77,8 @@ std::optional<std::string> EthereumKeyring::RecoverAddress(
   // y is even and 0x03 if y is odd.
   HDKey key;
   std::vector<uint8_t> public_key =
-      key.RecoverCompact(false, hash, signature_only, recid);
+      key.RecoverCompact(false, GetMessageHash(message),
+                         signature_span->first<kCompactSignatureSize>(), recid);
   if (public_key.size() != 65) {
     VLOG(1) << "public key should be 65 bytes";
     return std::nullopt;
@@ -96,35 +95,39 @@ std::optional<std::string> EthereumKeyring::RecoverAddress(
   return addr.ToChecksumAddress();
 }
 
-std::vector<uint8_t> EthereumKeyring::SignMessage(
+std::optional<std::vector<uint8_t>> EthereumKeyring::SignMessage(
     const std::string& address,
     base::span<const uint8_t> message,
     uint256_t chain_id,
     bool is_eip712) {
   HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
-    return std::vector<uint8_t>();
+    return std::nullopt;
   }
 
-  std::vector<uint8_t> hash;
+  std::array<uint8_t, kSecp256k1SignMsgSize> hashed_message = {};
   if (!is_eip712) {
-    hash = GetMessageHash(message);
+    hashed_message = GetMessageHash(message);
   } else {
     // eip712 hash is Keccak
     if (message.size() != 32) {
-      return std::vector<uint8_t>();
+      return std::nullopt;
     }
 
-    hash.assign(message.begin(), message.end());
+    base::span(hashed_message).copy_from(message);
   }
 
-  int recid;
-  std::vector<uint8_t> signature = hd_key->SignCompact(hash, &recid);
+  int recid = 0;
+  auto signature = hd_key->SignCompact(hashed_message, &recid);
+  if (!signature) {
+    return std::nullopt;
+  }
+
   uint8_t v =
       static_cast<uint8_t>(chain_id ? recid + chain_id * 2 + 35 : recid + 27);
-  signature.push_back(v);
-
-  return signature;
+  auto result = base::ToVector(*signature);
+  result.push_back(v);
+  return result;
 }
 
 void EthereumKeyring::SignTransaction(const std::string& address,
@@ -135,10 +138,13 @@ void EthereumKeyring::SignTransaction(const std::string& address,
     return;
   }
 
-  const std::vector<uint8_t> message = tx->GetMessageToSign(chain_id);
-  int recid;
-  const std::vector<uint8_t> signature = hd_key->SignCompact(message, &recid);
-  tx->ProcessSignature(signature, recid, chain_id);
+  int recid = 0;
+  auto signature =
+      hd_key->SignCompact(tx->GetHashedMessageToSign(chain_id), &recid);
+  if (!signature) {
+    return;
+  }
+  tx->ProcessSignature(*signature, recid, chain_id);
 }
 
 std::string EthereumKeyring::GetAddressInternal(const HDKey& hd_key) const {

@@ -10,11 +10,11 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -60,7 +60,7 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
     keyring_ = std::make_unique<BitcoinHDKeyring>(
-        *MnemonicToSeed(kMnemonicDivideCruise), false);
+        *bip39::MnemonicToSeed(kMnemonicDivideCruise), false);
   }
 
   AccountUtils GetAccountUtils() {

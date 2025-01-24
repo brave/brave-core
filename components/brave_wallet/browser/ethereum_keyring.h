@@ -34,10 +34,11 @@ class EthereumKeyring : public Secp256k1HDKeyring {
       base::span<const uint8_t> message,
       base::span<const uint8_t> signature);
 
-  std::vector<uint8_t> SignMessage(const std::string& address,
-                                   base::span<const uint8_t> message,
-                                   uint256_t chain_id,
-                                   bool is_eip712);
+  std::optional<std::vector<uint8_t>> SignMessage(
+      const std::string& address,
+      base::span<const uint8_t> message,
+      uint256_t chain_id,
+      bool is_eip712);
 
   void SignTransaction(const std::string& address,
                        EthTransaction* tx,

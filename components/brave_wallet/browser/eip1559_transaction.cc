@@ -10,7 +10,6 @@
 #include <utility>
 
 #include "base/containers/extend.h"
-#include "base/containers/to_vector.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/rlp_encode.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -272,11 +271,9 @@ std::optional<Eip1559Transaction> Eip1559Transaction::FromValue(
   return tx;
 }
 
-std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
-                                                          bool hash) const {
+std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(
+    uint256_t chain_id) const {
   DCHECK(nonce_);
-  std::vector<uint8_t> result;
-  result.push_back(type_);
 
   base::Value::List list;
   list.Append(RLPUint256ToBlob(chain_id_));
@@ -289,8 +286,10 @@ std::vector<uint8_t> Eip1559Transaction::GetMessageToSign(uint256_t chain_id,
   list.Append(base::Value(data_));
   list.Append(base::Value(AccessListToValue(access_list_)));
 
+  std::vector<uint8_t> result;
+  result.push_back(type_);
   base::Extend(result, RLPEncode(list));
-  return hash ? base::ToVector(KeccakHash(result)) : result;
+  return result;
 }
 
 std::string Eip1559Transaction::GetSignedTransaction() const {
@@ -335,14 +334,6 @@ base::Value::Dict Eip1559Transaction::ToValue() const {
                  Uint256ValueToHex(gas_estimation_.base_fee_per_gas));
 
   return tx;
-}
-
-uint256_t Eip1559Transaction::GetUpfrontCost(uint256_t block_base_fee) const {
-  uint256_t inclusion_fee_per_gas =
-      std::min(max_priority_fee_per_gas_, max_fee_per_gas_ - block_base_fee);
-  uint256_t gas_price = inclusion_fee_per_gas + block_base_fee;
-
-  return gas_limit_ * gas_price + value_;
 }
 
 std::vector<uint8_t> Eip1559Transaction::Serialize() const {

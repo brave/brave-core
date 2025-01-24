@@ -11,15 +11,17 @@
 #include <string_view>
 
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
-#include "crypto/sha2.h"
+#include "crypto/hash.h"
 
 namespace brave_wallet {
 
 inline constexpr size_t kKeccakHashLength = 32;
 inline constexpr size_t kRipemd160HashLength = 20;
+inline constexpr size_t kBlake2bPersonalizerLength = 16;
+inline constexpr size_t kBlake2bMaxLength = 64;
 
 using KeccakHashArray = std::array<uint8_t, kKeccakHashLength>;
-using SHA256HashArray = std::array<uint8_t, crypto::kSHA256Length>;
+using SHA256HashArray = std::array<uint8_t, crypto::hash::kSha256Size>;
 using Ripemd160HashArray = std::array<uint8_t, kRipemd160HashLength>;
 
 KeccakHashArray KeccakHash(base::span<const uint8_t> input);
@@ -39,6 +41,23 @@ SHA256HashArray DoubleSHA256Hash(base::span<const uint8_t> input);
 
 // ripemd160(sha256(input))
 Ripemd160HashArray Hash160(base::span<const uint8_t> input);
+
+void Blake2bHash(
+    base::span<const uint8_t> payload,
+    base::span<uint8_t> hash_out,
+    std::optional<base::span<const uint8_t, kBlake2bPersonalizerLength>>
+        personalizer = std::nullopt);
+
+template <size_t T>
+  requires(T > 0 && T <= kBlake2bMaxLength)
+std::array<uint8_t, T> Blake2bHash(
+    base::span<const uint8_t> payload,
+    std::optional<base::span<const uint8_t, kBlake2bPersonalizerLength>>
+        personalizer = std::nullopt) {
+  std::array<uint8_t, T> result;
+  Blake2bHash(payload, result, personalizer);
+  return result;
+}
 
 }  // namespace brave_wallet
 
