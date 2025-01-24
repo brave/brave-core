@@ -1,8 +1,8 @@
 diff --git a/chrome/common/extensions/BUILD.gn b/chrome/common/extensions/BUILD.gn
-index dd8f39527875036840fa5f46d907760bb98c6363..8a97b3311493d417a569dc31b57e6b477fa23dd5 100644
+index fdcf7eaac6b2511536d709efba7f97519a13a6fb..d98a383b3014a682965b3b7002881cb5222c01bb 100644
 --- a/chrome/common/extensions/BUILD.gn
 +++ b/chrome/common/extensions/BUILD.gn
-@@ -121,6 +121,7 @@ source_set("extensions") {
+@@ -119,6 +119,7 @@ source_set("extensions") {
  
      sources += [ "api/file_system_provider_capabilities/file_system_provider_capabilities_handler.cc" ]
    }

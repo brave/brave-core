@@ -10,10 +10,9 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import org.chromium.base.supplier.ObservableSupplier;
-import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.HubContainerView;
 import org.chromium.chrome.browser.hub.HubLayoutAnimatorProvider;
-import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tasks.tab_management.TabListCoordinator.TabListMode;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
@@ -24,27 +23,27 @@ import java.util.function.DoubleConsumer;
 public abstract class BraveTabSwitcherPaneBase extends TabSwitcherPaneBase {
     BraveTabSwitcherPaneBase(
             @NonNull Context context,
-            @NonNull OneshotSupplier<ProfileProvider> profileProviderSupplier,
             @NonNull TabSwitcherPaneCoordinatorFactory factory,
             boolean isIncognito,
             @NonNull DoubleConsumer onToolbarAlphaChange,
             @NonNull UserEducationHelper userEducationHelper,
-            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier) {
+            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            @NonNull ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier) {
         super(
                 context,
-                profileProviderSupplier,
                 factory,
                 isIncognito,
                 onToolbarAlphaChange,
                 userEducationHelper,
-                edgeToEdgeSupplier);
+                edgeToEdgeSupplier,
+                compositorViewHolderSupplier);
     }
 
     @Override
     public @NonNull HubLayoutAnimatorProvider createHideHubLayoutAnimatorProvider(
             @NonNull HubContainerView hubContainerView) {
-        int tabId = getCurrentTabId();
-        if (getTabListMode() != TabListMode.LIST && tabId != Tab.INVALID_TAB_ID) {
+        Tab tab = getCurrentTab();
+        if (getTabListMode() != TabListMode.LIST && tab != null) {
             // Force call TabSwitcherPaneBase.createTabSwitcherPaneCoordinator
             // to ensure TabSwitcherPaneBase.mTabSwitcherPaneCoordinatorSupplier is set
             super.createTabSwitcherPaneCoordinator();

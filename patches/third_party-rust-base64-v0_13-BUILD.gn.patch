@@ -1,10 +1,10 @@
 diff --git a/third_party/rust/base64/v0_13/BUILD.gn b/third_party/rust/base64/v0_13/BUILD.gn
-index bf3074ae80fcbef61788f013e0bf002e6682639e..042e6a5a9a6615de8b52ec36d78fb14d3ecae50a 100644
+index 7da4e67c383c02840efb9fd4b7964582ecee1975..eb0ff111d9bab827695755b21f92206db9e8ff06 100644
 --- a/third_party/rust/base64/v0_13/BUILD.gn
 +++ b/third_party/rust/base64/v0_13/BUILD.gn
-@@ -47,5 +47,4 @@ cargo_crate("lib") {
-   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
-   features = [ "std" ]
+@@ -50,5 +50,4 @@ cargo_crate("lib") {
+     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+   ]
  
 -  testonly = true
  }

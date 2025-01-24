@@ -76,6 +76,7 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(
   dom_distiller::AddObserver(web_contents, this);
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
+  is_visible_ = web_contents->GetVisibility() != content::Visibility::HIDDEN;
 }
 
 SpeedreaderTabHelper::~SpeedreaderTabHelper() {
@@ -627,7 +628,7 @@ bool SpeedreaderTabHelper::SendGestureEvent(ui::ViewAndroid* view,
                                             int64_t time_ms,
                                             float scale) {
   float dip_scale = view->GetDipScale();
-  auto size = view->GetSize();
+  auto size = view->GetSizeDIPs();
   float x = size.width() / 2;
   float y = size.height() / 2;
   gfx::PointF root_location =

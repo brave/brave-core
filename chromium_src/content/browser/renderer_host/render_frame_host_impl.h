@@ -22,8 +22,13 @@
   void SetEphemeralStorageToken(const url::Origin& top_frame_origin); \
   std::optional<base::UnguessableToken> GetEphemeralStorageToken() const
 
+#define BindTrustTokenQueryAnswerer(...)    \
+  BindTrustTokenQueryAnswerer(__VA_ARGS__); \
+  void BindTrustTokenQueryAnswerer_ChromiumImpl(__VA_ARGS__)
+
 #include "src/content/browser/renderer_host/render_frame_host_impl.h"  // IWYU pragma: export
 
+#undef BindTrustTokenQueryAnswerer
 #undef embedding_token_
 #undef CopyImageAt
 

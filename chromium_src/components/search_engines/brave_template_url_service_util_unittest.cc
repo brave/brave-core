@@ -11,6 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/country_codes/country_codes.h"
+#include "components/regional_capabilities/regional_capabilities_test_utils.h"
 #include "components/search_engines/search_engine_choice/search_engine_choice_service.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_terms_data.h"
@@ -46,9 +47,12 @@ std::unique_ptr<TemplateURLData> CreatePrepopulateTemplateURLData(
 class BraveTemplateURLServiceUtilTest : public testing::Test {
  public:
   BraveTemplateURLServiceUtilTest()
-      : search_engine_choice_service_(
+      : regional_capabilities_service_(
+            regional_capabilities::CreateServiceWithFakeClient(prefs_)),
+        search_engine_choice_service_(
             prefs_,
             &local_state_,
+            *regional_capabilities_service_,
             /*is_profile_eligible_for_dse_guest_propagation=*/false) {}
   void SetUp() override {
     TemplateURLPrepopulateData::RegisterProfilePrefs(prefs_.registry());
@@ -57,6 +61,8 @@ class BraveTemplateURLServiceUtilTest : public testing::Test {
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
   TestingPrefServiceSimple local_state_;
+  std::unique_ptr<regional_capabilities::RegionalCapabilitiesService>
+      regional_capabilities_service_;
   search_engines::SearchEngineChoiceService search_engine_choice_service_;
 };
 
@@ -94,7 +100,6 @@ WDKeywordsResult InitKeywordResult(
   WDKeywordsResult kwResult;
   kwResult.metadata.builtin_keyword_data_version =
       TemplateURLPrepopulateData::GetDataVersion(prefs);
-  kwResult.default_search_provider_id = 2;
   kwResult.keywords = local_turls;
   return kwResult;
 }
@@ -117,9 +122,9 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
 
   prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
   GetSearchProvidersUsingKeywordResult(
-      result, nullptr, &prefs_, &search_engine_choice_service_, &template_urls,
-      default_turl.get(), SearchTermsData(), updated_keywords_metadata,
-      nullptr);
+      result.GetValue(), nullptr, &prefs_, &search_engine_choice_service_,
+      &template_urls, default_turl.get(), SearchTermsData(),
+      updated_keywords_metadata, nullptr);
 
   // Verify count and order.
   TestDefaultOrder(template_urls,
@@ -146,9 +151,9 @@ TEST_F(BraveTemplateURLServiceUtilTest,
   // Check Germany.
   prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
   GetSearchProvidersUsingKeywordResult(
-      result, nullptr, &prefs_, &search_engine_choice_service_, &template_urls,
-      default_turl.get(), SearchTermsData(), updated_keywords_metadata,
-      nullptr);
+      result.GetValue(), nullptr, &prefs_, &search_engine_choice_service_,
+      &template_urls, default_turl.get(), SearchTermsData(),
+      updated_keywords_metadata, nullptr);
 
   // Verify count and order.
   TestDefaultOrder(template_urls,

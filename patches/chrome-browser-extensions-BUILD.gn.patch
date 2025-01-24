@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 132702a6a7ed2f8fd3333d25334cd0aa1f6f30d0..ef17c31e60cab39ccaa5c28f63071a4ffa2f5614 100644
+index 37a31a6da40a5dc9bb328f339319d12f41802255..3e038e8beb4bf52055f1aa37dd9ecb9dbb52cb36 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
-@@ -1470,6 +1470,7 @@ source_set("extensions") {
-       "//components/enterprise/data_controls/core/browser",
-     ]
-   }
+@@ -1443,6 +1443,7 @@ source_set("extensions") {
+       allow_circular_includes_from += [ "//chrome/browser/glic:impl" ]
+     }
+   }  # if (enable_extensions)
 +  deps += brave_extensions_resources
  }
  
- # KeyedService factories initialization.
+ if (enable_extensions) {

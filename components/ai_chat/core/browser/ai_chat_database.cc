@@ -69,7 +69,8 @@ constexpr int kCurrentDatabaseVersion = 2;
 AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
                                os_crypt_async::Encryptor encryptor)
     : db_file_path_(db_file_path),
-      db_({.page_size = 4096, .cache_size = 1000}),
+      db_({.page_size = 4096, .cache_size = 1000},
+          sql::Database::Tag("AIChatDatabase")),
       encryptor_(std::move(encryptor)) {}
 
 AIChatDatabase::~AIChatDatabase() = default;

@@ -31,7 +31,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 
 public class BraveWalletPreferences extends BravePreferenceFragment
@@ -179,7 +179,7 @@ public class BraveWalletPreferences extends BravePreferenceFragment
                             new SpanApplier.SpanInfo(
                                     "<LINK_1>",
                                     "</LINK_1>",
-                                    new NoUnderlineClickableSpan(
+                                    new ChromeClickableSpan(
                                             requireContext(),
                                             R.color.brave_link,
                                             result -> {

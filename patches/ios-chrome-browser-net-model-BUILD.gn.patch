@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/net/model/BUILD.gn b/ios/chrome/browser/net/model/BUILD.gn
-index 7bba8d0fc2654aeef115c19974bb11a26f40d1e4..67fc54523d9c7b005889ec0716fb416abede147c 100644
+index fcc01d0ec5ec870b7ff1611d77221a0b3f29e30f..d263f52ab995c6abf53f7766913b3b23f4b02337 100644
 --- a/ios/chrome/browser/net/model/BUILD.gn
 +++ b/ios/chrome/browser/net/model/BUILD.gn
-@@ -58,6 +58,7 @@ source_set("network_delegate") {
+@@ -56,6 +56,7 @@ source_set("network_delegate") {
      "//ios/web/public/thread",
      "//net",
    ]

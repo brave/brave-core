@@ -58,8 +58,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     public static void showOnboardingNotification() {
         Context context = ContextUtils.getApplicationContext();
         if (context == null) return;
-        NotificationManagerProxyImpl notificationManager =
-            new NotificationManagerProxyImpl(context);
+        NotificationManagerProxyImpl notificationManager = new NotificationManagerProxyImpl();
 
         NotificationBuilderBase notificationBuilder =
                 new BraveNotificationBuilder(context)
@@ -129,10 +128,9 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
         }
     }
 
-    public static void cancelOnboardingNotification(Context context) {
-        NotificationManagerProxyImpl notificationManager =
-            new NotificationManagerProxyImpl(context);
+    public static void cancelOnboardingNotification() {
+        NotificationManagerProxyImpl notificationManager = new NotificationManagerProxyImpl();
         notificationManager.cancel(
-            BRAVE_ONBOARDING_NOTIFICATION_TAG, BRAVE_ONBOARDING_NOTIFICATION_ID);
+                BRAVE_ONBOARDING_NOTIFICATION_TAG, BRAVE_ONBOARDING_NOTIFICATION_ID);
     }
 }

@@ -6,13 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SEARCHBOX_REALBOX_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SEARCHBOX_REALBOX_HANDLER_H_
 
-#define GetMatchWithUrl(...)    \
-  GetMatchWithUrl(__VA_ARGS__); \
-                                \
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
+
+#define UpdateSelection(...)    \
+  UpdateSelection(__VA_ARGS__); \
   friend class BraveRealboxHandlerTest
 
 #include "src/chrome/browser/ui/webui/searchbox/realbox_handler.h"  // IWYU pragma: export
 
-#undef GetMatchWithUrl
+#undef UpdateSelection
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SEARCHBOX_REALBOX_HANDLER_H_

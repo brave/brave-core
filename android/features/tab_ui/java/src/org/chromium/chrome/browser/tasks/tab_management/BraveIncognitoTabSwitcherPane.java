@@ -15,9 +15,9 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
-import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tabmodel.TabGroupModelFilter;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
@@ -29,24 +29,24 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
 
     public BraveIncognitoTabSwitcherPane(
             @NonNull Context context,
-            @NonNull OneshotSupplier<ProfileProvider> profileProviderSupplier,
             @NonNull TabSwitcherPaneCoordinatorFactory factory,
-            @NonNull Supplier<TabGroupModelFilter> incognitoTabModelFilterSupplier,
+            @NonNull Supplier<TabGroupModelFilter> incognitoTabGroupModelFilterSupplier,
             @NonNull OnClickListener newTabButtonClickListener,
             @Nullable OneshotSupplier<IncognitoReauthController> incognitoReauthControllerSupplier,
             @NonNull DoubleConsumer onToolbarAlphaChange,
             @NonNull UserEducationHelper userEducationHelper,
-            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier) {
+            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            @NonNull ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier) {
         super(
                 context,
-                profileProviderSupplier,
                 factory,
-                incognitoTabModelFilterSupplier,
+                incognitoTabGroupModelFilterSupplier,
                 newTabButtonClickListener,
                 incognitoReauthControllerSupplier,
                 onToolbarAlphaChange,
                 userEducationHelper,
-                edgeToEdgeSupplier);
+                edgeToEdgeSupplier,
+                compositorViewHolderSupplier);
 
         ResourceButtonData newReferenceButtonData =
                 new ResourceButtonData(

@@ -35,7 +35,7 @@ std::vector<uint8_t> RLPEncodeLength(size_t length, uint8_t offset) {
   result[0] =
       base::CheckAdd(length_encoded.size(), offset, kSingleByteLengthLimit)
           .ValueOrDie<uint8_t>();
-  base::span(result).subspan(1).copy_from(length_encoded);
+  base::span(result).subspan(1u).copy_from(length_encoded);
   return result;
 }
 

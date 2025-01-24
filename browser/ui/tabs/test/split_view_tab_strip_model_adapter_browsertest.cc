@@ -57,15 +57,17 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                                        /*foreground=*/true);
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground=*/true);
-  auto secondary_tab = tab_strip_model()->GetTabHandleAt(3);
+  auto secondary_tab = tab_strip_model()->GetTabAtIndex(3)->GetHandle();
 
   // When tiling two tabs that are not adjacent,
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(0), secondary_tab});
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(0)));
+  data().TileTabs(
+      {tab_strip_model()->GetTabAtIndex(0)->GetHandle(), secondary_tab});
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(0)->GetHandle()));
   ASSERT_TRUE(data().IsTabTiled(secondary_tab));
 
   // Then the tabs should get adjacent.
-  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(secondary_tab));
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(secondary_tab.Get()));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
@@ -81,10 +83,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
   ASSERT_FALSE(tab_strip_model()->GetTabGroupForTab(2));
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(1),
-                   tab_strip_model()->GetTabHandleAt(2)});
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(1)));
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(2)));
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(1)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(2)->GetHandle()});
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(1)->GetHandle()));
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
   base::RunLoop().RunUntilIdle();
 
   // Then the other tab should be grouped too
@@ -109,10 +113,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   ASSERT_EQ(second_group_id, *tab_strip_model()->GetTabGroupForTab(2));
 
   // When tiling with a tab in another group,
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(1),
-                   tab_strip_model()->GetTabHandleAt(2)});
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(1)));
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(2)));
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(1)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(2)->GetHandle()});
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(1)->GetHandle()));
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
   base::RunLoop().RunUntilIdle();
 
   // Then the other tab should be moved to the first tab's group
@@ -132,10 +138,12 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
   ASSERT_FALSE(tab_strip_model()->IsTabPinned(1));
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(0),
-                   tab_strip_model()->GetTabHandleAt(1)});
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(0)));
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(1)));
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(0)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(1)->GetHandle()});
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(0)->GetHandle()));
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(1)->GetHandle()));
   base::RunLoop().RunUntilIdle();
 
   // Then the other tab should be pinned too
@@ -147,10 +155,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   // Given that two tabs are tiled
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(0),
-                   tab_strip_model()->GetTabHandleAt(1)});
-  auto tab1 = tab_strip_model()->GetTabHandleAt(0);
-  auto tab2 = tab_strip_model()->GetTabHandleAt(1);
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(0)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(1)->GetHandle()});
+  auto tab1 = tab_strip_model()->GetTabAtIndex(0)->GetHandle();
+  auto tab2 = tab_strip_model()->GetTabAtIndex(1)->GetHandle();
   ASSERT_TRUE(data().IsTabTiled(tab1));
   ASSERT_TRUE(data().IsTabTiled(tab2));
 
@@ -165,8 +173,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   EXPECT_TRUE(data().IsTabTiled(tab1));
   EXPECT_TRUE(data().IsTabTiled(tab2));
 
-  EXPECT_EQ(tab1, tab_strip_model()->GetTabHandleAt(0));
-  EXPECT_EQ(tab2, tab_strip_model()->GetTabHandleAt(1));
+  EXPECT_EQ(tab1, tab_strip_model()->GetTabAtIndex(0)->GetHandle());
+  EXPECT_EQ(tab2, tab_strip_model()->GetTabAtIndex(1)->GetHandle());
   EXPECT_EQ(new_contents_ptr, tab_strip_model()->GetWebContentsAt(2));
 }
 
@@ -179,10 +187,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                                        /*foreground*/ true);
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(0),
-                   tab_strip_model()->GetTabHandleAt(1)});
-  auto tab1 = tab_strip_model()->GetTabHandleAt(0);
-  auto tab2 = tab_strip_model()->GetTabHandleAt(1);
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(0)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(1)->GetHandle()});
+  auto tab1 = tab_strip_model()->GetTabAtIndex(0)->GetHandle();
+  auto tab2 = tab_strip_model()->GetTabAtIndex(1)->GetHandle();
   ASSERT_TRUE(data().IsTabTiled(tab1));
   ASSERT_TRUE(data().IsTabTiled(tab2));
 
@@ -193,8 +201,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 
   // Then the the tab should follow.
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(3, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(3, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 
   // when moving the left tab to the left
   ASSERT_EQ(0,
@@ -203,8 +211,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 
   // Then the the tab should follow.
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(0, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(0, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 
   // When moving the right tab to the right,
   ASSERT_EQ(2,
@@ -213,8 +221,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 
   // Then the the tab should follow.
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 
   // When moving the right tab to the left,
   ASSERT_EQ(0,
@@ -223,8 +231,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
 
   // Then the the tab should follow.
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(0, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(0, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
@@ -232,10 +240,10 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   // Given that two tabs are tiled
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(0),
-                   tab_strip_model()->GetTabHandleAt(1)});
-  auto tab1 = tab_strip_model()->GetTabHandleAt(0);
-  auto tab2 = tab_strip_model()->GetTabHandleAt(1);
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(0)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(1)->GetHandle()});
+  auto tab1 = tab_strip_model()->GetTabAtIndex(0)->GetHandle();
+  auto tab2 = tab_strip_model()->GetTabAtIndex(1)->GetHandle();
   ASSERT_TRUE(data().IsTabTiled(tab1));
   ASSERT_TRUE(data().IsTabTiled(tab2));
 
@@ -252,40 +260,40 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   // Given that two tabs are tiled
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(0),
-                   tab_strip_model()->GetTabHandleAt(1)});
-  auto tab1 = tab_strip_model()->GetTabHandleAt(0);
-  auto tab2 = tab_strip_model()->GetTabHandleAt(1);
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(0)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(1)->GetHandle()});
+  auto tab1 = tab_strip_model()->GetTabAtIndex(0)->GetHandle();
+  auto tab2 = tab_strip_model()->GetTabAtIndex(1)->GetHandle();
   ASSERT_TRUE(data().IsTabTiled(tab1));
   ASSERT_TRUE(data().IsTabTiled(tab2));
 
   // When one of tab is pinned,
-  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab1),
+  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab1.Get()),
                                   /*pinned*/ true);
 
   // Then the other tab should be pinned together.
   base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(
-      tab_strip_model()->IsTabPinned(tab_strip_model()->GetIndexOfTab(tab2)));
+  EXPECT_TRUE(tab_strip_model()->IsTabPinned(
+      tab_strip_model()->GetIndexOfTab(tab2.Get())));
 
   // Also unpinning is synced too.
   tab_strip_model()->SetTabPinned(1, /*pinned*/ false);
   base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(
-      tab_strip_model()->IsTabPinned(tab_strip_model()->GetIndexOfTab(tab1)));
+  EXPECT_FALSE(tab_strip_model()->IsTabPinned(
+      tab_strip_model()->GetIndexOfTab(tab1.Get())));
 
   // This also should be work the same with the other tab.
-  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab2),
+  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab2.Get()),
                                   /*pinned*/ true);
   base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(
-      tab_strip_model()->IsTabPinned(tab_strip_model()->GetIndexOfTab(tab1)));
+  EXPECT_TRUE(tab_strip_model()->IsTabPinned(
+      tab_strip_model()->GetIndexOfTab(tab1.Get())));
 
-  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab2),
+  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab2.Get()),
                                   /*pinned*/ false);
   base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(
-      tab_strip_model()->IsTabPinned(tab_strip_model()->GetIndexOfTab(tab1)));
+  EXPECT_FALSE(tab_strip_model()->IsTabPinned(
+      tab_strip_model()->GetIndexOfTab(tab1.Get())));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
@@ -298,11 +306,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   tab_strip_model()->AppendWebContents(CreateWebContents(),
                                        /*foreground*/ true);
   tab_strip_model()->SetTabPinned(0, /*pinned*/ true);
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(2),
-                   tab_strip_model()->GetTabHandleAt(3)});
-  auto non_tiled_tab = tab_strip_model()->GetTabHandleAt(1);
-  auto tab1 = tab_strip_model()->GetTabHandleAt(2);
-  auto tab2 = tab_strip_model()->GetTabHandleAt(3);
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(2)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(3)->GetHandle()});
+  auto non_tiled_tab = tab_strip_model()->GetTabAtIndex(1)->GetHandle();
+  auto tab1 = tab_strip_model()->GetTabAtIndex(2)->GetHandle();
+  auto tab2 = tab_strip_model()->GetTabAtIndex(3)->GetHandle();
 
   // |pin|                           |
   // | x | non_tiled_tab, tab1, tab2 |
@@ -310,49 +318,49 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   ASSERT_TRUE(data().IsTabTiled(tab2));
 
   // When one of tab is pinned,
-  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab1),
+  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab1.Get()),
                                   /*pinned*/ true);
 
   // Then the other tab should be pinned and moved to together.
   // |     pin        |               |
   // | x,  tab1, tab2 | non_tiled_tab |
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 
   // Also unpinning is synced too.
   tab_strip_model()->SetTabPinned(
-      tab_strip_model()->GetIndexOfTab(non_tiled_tab), true);
-  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab1),
+      tab_strip_model()->GetIndexOfTab(non_tiled_tab.Get()), true);
+  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab1.Get()),
                                   /*pinned*/ false);
 
   // |        pin       |            |
   // | x, non_tiled_tab | tab1, tab2 |
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(3, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(3, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 
   // This should work when the right tab's pinned state changes
   tab_strip_model()->SetTabPinned(
-      tab_strip_model()->GetIndexOfTab(non_tiled_tab), false);
-  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab2),
+      tab_strip_model()->GetIndexOfTab(non_tiled_tab.Get()), false);
+  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab2.Get()),
                                   /*pinned*/ true);
 
   // |      pin       |               |
   // | x , tab1, tab2 | non_tiled_tab |
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 
   tab_strip_model()->SetTabPinned(3, true);
-  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab2),
+  tab_strip_model()->SetTabPinned(tab_strip_model()->GetIndexOfTab(tab2.Get()),
                                   /*pinned*/ false);
 
   // |         pin       |            |
   // | x , non_tiled_tab | tab1, tab2 |
   base::RunLoop().RunUntilIdle();
-  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(3, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(3, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
@@ -368,11 +376,11 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                                          /*add_types*/ 0, group_id);
   tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
                                          /*add_types*/ 0, group_id);
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(1),
-                   tab_strip_model()->GetTabHandleAt(2)});
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(1)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(2)->GetHandle()});
 
-  auto tab1 = tab_strip_model()->GetTabHandleAt(1);
-  auto tab2 = tab_strip_model()->GetTabHandleAt(2);
+  auto tab1 = tab_strip_model()->GetTabAtIndex(1)->GetHandle();
+  auto tab2 = tab_strip_model()->GetTabAtIndex(2)->GetHandle();
 
   // When removing a tab from a group,
   tab_strip_model()->RemoveFromGroup({1});
@@ -380,7 +388,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   // Then the other should be inserted to the group together.
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(tab_strip_model()->GetTabGroupForTab(
-      tab_strip_model()->GetIndexOfTab(tab2)));
+      tab_strip_model()->GetIndexOfTab(tab2.Get())));
 
   // When adding a tab to a group,
   tab_strip_model()->AddToExistingGroup({2}, group_id);
@@ -388,8 +396,8 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   // Then The other tab should be grouped too
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(tab_strip_model()->GetTabGroupForTab(1));
-  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab1));
-  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2));
+  EXPECT_EQ(1, tab_strip_model()->GetIndexOfTab(tab1.Get()));
+  EXPECT_EQ(2, tab_strip_model()->GetIndexOfTab(tab2.Get()));
 }
 
 IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
@@ -401,27 +409,36 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
                                     /*add_types=*/0);
-  data().TileTabs({tab_strip_model()->GetTabHandleAt(0),
-                   tab_strip_model()->GetTabHandleAt(1)});
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(0)));
-  ASSERT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(1)));
-  ASSERT_FALSE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(2)));
+  data().TileTabs({tab_strip_model()->GetTabAtIndex(0)->GetHandle(),
+                   tab_strip_model()->GetTabAtIndex(1)->GetHandle()});
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(0)->GetHandle()));
+  ASSERT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(1)->GetHandle()));
+  ASSERT_FALSE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
 
   // When moving non-tiled tab between tiled tabs
   adapter().TabDragStarted();
   tab_strip_model()->MoveWebContentsAt(2, 1, /*select_after_move*/ false);
 
   // Then the tile should be kept during drag and drop session
-  EXPECT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(0)));
-  EXPECT_FALSE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(1)));
-  EXPECT_TRUE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(2)));
+  EXPECT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(0)->GetHandle()));
+  EXPECT_FALSE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(1)->GetHandle()));
+  EXPECT_TRUE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
 
   // When drag-and-drop session ends
   adapter().TabDragEnded();
 
   // Then the tile should be broken.
   base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(0)));
-  EXPECT_FALSE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(1)));
-  EXPECT_FALSE(data().IsTabTiled(tab_strip_model()->GetTabHandleAt(2)));
+  EXPECT_FALSE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(0)->GetHandle()));
+  EXPECT_FALSE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(1)->GetHandle()));
+  EXPECT_FALSE(
+      data().IsTabTiled(tab_strip_model()->GetTabAtIndex(2)->GetHandle()));
 }

@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
 class ProfileIOS;
@@ -28,10 +28,10 @@ namespace skus {
 
 class SkusService;
 
-class SkusServiceFactory : public BrowserStateKeyedServiceFactory {
+class SkusServiceFactory : public ProfileKeyedServiceFactoryIOS {
  public:
   // Creates the service if it doesn't exist already for |profile|.
-  static mojo::PendingRemote<mojom::SkusService> GetForBrowserState(
+  static mojo::PendingRemote<mojom::SkusService> GetForProfile(
       ProfileIOS* profile);
 
   static SkusServiceFactory* GetInstance();
@@ -42,13 +42,11 @@ class SkusServiceFactory : public BrowserStateKeyedServiceFactory {
   SkusServiceFactory();
   ~SkusServiceFactory() override;
 
-  // BrowserContextKeyedServiceFactory:
-  // BrowserStateKeyedServiceFactory implementation.
+  // ProfileKeyedServiceFactoryIOS implementation.
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       web::BrowserState* context) const override;
   void RegisterBrowserStatePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
-  bool ServiceIsNULLWhileTesting() const override;
 
   SkusServiceFactory(const SkusServiceFactory&) = delete;
   SkusServiceFactory& operator=(const SkusServiceFactory&) = delete;

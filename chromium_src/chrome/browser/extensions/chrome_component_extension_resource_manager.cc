@@ -15,19 +15,16 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-#define BRAVE_WEBTORRENT_RESOURCES                            \
-  AddComponentResourceEntries(kBraveWebtorrentResources,      \
-                              kBraveWebtorrentResourcesSize); \
-  AddComponentResourceEntries(kBraveWebtorrentGenerated,      \
-                              kBraveWebtorrentGeneratedSize);
+#define BRAVE_WEBTORRENT_RESOURCES                        \
+  AddComponentResourceEntries(kBraveWebtorrentResources); \
+  AddComponentResourceEntries(kBraveWebtorrentGenerated);
 #else
 #define BRAVE_WEBTORRENT_RESOURCES
 #endif
 
-#define BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA  \
-  AddComponentResourceEntries(kBraveExtension, kBraveExtensionSize); \
-  AddComponentResourceEntries(kBraveExtensionGenerated,              \
-                              kBraveExtensionGeneratedSize);         \
+#define BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA \
+  AddComponentResourceEntries(kBraveExtension);                     \
+  AddComponentResourceEntries(kBraveExtensionGenerated);            \
   BRAVE_WEBTORRENT_RESOURCES
 
 #include "src/chrome/browser/extensions/chrome_component_extension_resource_manager.cc"

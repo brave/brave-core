@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/cr_lottie.ts b/chrome/browser/resources/settings/privacy_page/cr_lottie.ts
+index 9fa56cc13b42594b59b3dae88bed0a09398f0474..0b7f6e854abf938678e13f139dd4204734661013 100644
+--- a/chrome/browser/resources/settings/privacy_page/cr_lottie.ts
++++ b/chrome/browser/resources/settings/privacy_page/cr_lottie.ts
+@@ -344,6 +344,7 @@ export class CrLottieElement extends CrLitElement {
+       this.fire('cr-lottie-paused');
+     } else if (event.data.name === 'stopped') {
+       this.fire('cr-lottie-stopped');
++    } else if (event.data.name === 'complete') { this.fire('cr-lottie-complete');
+     } else if (event.data.name === 'resized') {
+       this.fire('cr-lottie-resized', event.data.size);
+     }

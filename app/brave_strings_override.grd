@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This file contains definitions of strings that are distribution specific.
 If you update this file, be sure also to update google_chrome_strings.grd. -->
-<grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<grit base_dir="." latest_public_release="0" current_release="1" source_lang_id="en" enc_check="möl">
   <translations>
     <file path="resources/brave_strings_override_af.xtb" lang="af" />
     <file path="resources/brave_strings_override_am.xtb" lang="am" />
@@ -167,14 +167,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="chromeos_ash">
         </if>
-      <if expr="chromeos_ash">
-        </if>
-
       <if expr="is_linux">
         </if>
 
-      <if expr="is_win">
-        </if>
       <if expr="is_macosx">
       </if>
       <if expr="is_win">
@@ -334,9 +329,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="not is_android">
-        </if>
-
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -395,10 +387,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           </if>
         <if expr="not chromeos_lacros">
           </if>
-        <if expr="chromeos_lacros">
-          </if>
-        <if expr="not chromeos_lacros">
-          </if>
 
         </if>
 
@@ -431,6 +419,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="enable_extensions">
         </if>
-    </messages>
+
+      </messages>
   </release>
 </grit>

@@ -104,6 +104,9 @@ cargo_crate("lib") {
   build_sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/build.rs",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
   if (target_name == "buildrs_support" && epoch == "1") {
     deps -= [
       "//brave/third_party/rust/proc_macro2/v1:lib",
@@ -212,6 +215,9 @@ cargo_crate("buildrs_support") {
       "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/build.rs"
   build_sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/syn-1.0.109/build.rs",
+  ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
   if (target_name == "buildrs_support" && epoch == "1") {
     deps -= [

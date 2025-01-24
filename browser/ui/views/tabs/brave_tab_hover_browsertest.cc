@@ -80,29 +80,6 @@ class BraveTabHoverTest : public InProcessBrowserTest {
       animation_mode_reset_;
 };
 
-// There should be no tooltip unless the mode is |TOOLTIP|, as otherwise we'll
-// get a tooltip AND a card showing up.
-IN_PROC_BROWSER_TEST_F(BraveTabHoverTest,
-                       GetTooltipOnlyHasTextWhenHoverModeIsTooltip) {
-  TabRendererData data;
-  data.visible_url = GURL("https://example.com");
-  data.title = u"Hello World";
-  tabstrip()->SetTabData(browser()->tab_strip_model()->active_index(), data);
-  EXPECT_EQ(u"Hello World", active_tab()->data().title);
-
-  browser()->profile()->GetPrefs()->SetInteger(brave_tabs::kTabHoverMode,
-                                               brave_tabs::TabHoverMode::CARD);
-  EXPECT_EQ(u"", active_tab()->GetTooltipText(gfx::Point()));
-
-  browser()->profile()->GetPrefs()->SetInteger(
-      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::CARD_WITH_PREVIEW);
-  EXPECT_EQ(u"", active_tab()->GetTooltipText(gfx::Point()));
-
-  browser()->profile()->GetPrefs()->SetInteger(
-      brave_tabs::kTabHoverMode, brave_tabs::TabHoverMode::TOOLTIP);
-  EXPECT_EQ(u"Hello World", active_tab()->GetTooltipText(gfx::Point()));
-}
-
 // The ThumbnailTabHelper needs to be attached in all |TabHoverModes| so that
 // we can change between modes safely without restarting.
 IN_PROC_BROWSER_TEST_F(BraveTabHoverTest, ThumbnailHelperIsAlwaysAttached) {

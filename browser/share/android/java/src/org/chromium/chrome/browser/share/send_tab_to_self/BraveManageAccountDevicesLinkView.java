@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.signin.base.AccountInfo;
+import org.chromium.components.signin.base.GaiaId;
 
 public class BraveManageAccountDevicesLinkView extends LinearLayout {
     public BraveManageAccountDevicesLinkView(Context context, AttributeSet attrs) {
@@ -21,6 +22,6 @@ public class BraveManageAccountDevicesLinkView extends LinearLayout {
     }
 
     public static AccountInfo getSharingAccountInfo(Profile profile) {
-        return new AccountInfo.Builder("", "").build();
+        return new AccountInfo.Builder("", new GaiaId("")).build();
     }
 }

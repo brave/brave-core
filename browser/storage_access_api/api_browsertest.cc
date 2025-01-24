@@ -111,8 +111,9 @@ class StorageAccessAPIBrowserTest : public PlatformBrowserTest {
   void SetCrossSiteCookieOnDomain(std::string_view domain) {
     GURL domain_url = GetURL(domain);
     std::string cookie = base::StrCat({"cross-site=", domain});
-    content::SetCookie(profile(), domain_url,
-                       base::StrCat({cookie, CookieAttributes(domain)}));
+    ASSERT_TRUE(
+        content::SetCookie(profile(), domain_url,
+                           base::StrCat({cookie, CookieAttributes(domain)})));
     ASSERT_THAT(content::GetCookies(profile(), domain_url),
                 testing::HasSubstr(cookie));
   }

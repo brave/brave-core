@@ -6,15 +6,14 @@
 import * as i18n from '../../core/i18n/i18n.js'
 import * as SDK from '../../core/sdk/sdk.js'
 import * as LitHtml from '../../ui/lit-html/lit-html.js'
-import * as Coordinator from '../../ui/components/render_coordinator/render_coordinator.js'
+import * as RenderCoordinator from '../../ui/components/render_coordinator/render_coordinator.js';
 import * as LegacyWrapper from '../../ui/components/legacy_wrapper/legacy_wrapper.js'
 
 const { render, html } = LitHtml
-const coordinator = Coordinator.RenderCoordinator.RenderCoordinator.instance()
 
 export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
   .WrappableComponent {
-  static readonly litTagName = LitHtml.literal`devtools-request-adblock-info`
+  static readonly litTagName = LitHtml.StaticHtml.literal`devtools-request-adblock-info`
   readonly #shadow = this.attachShadow({ mode: 'open' })
   readonly #request: SDK.NetworkRequest.NetworkRequest
   #manager: SDK.NetworkManager.NetworkManager | null
@@ -26,7 +25,7 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
   }
 
   override async render(): Promise<void> {
-    return coordinator.write(() => {
+    return RenderCoordinator.write(() => {
       if (!this.#manager) {
         render(html``, this.#shadow, { host: this })
       } else {

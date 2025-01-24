@@ -6,8 +6,8 @@
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/grit/brave_unscaled_resources.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "ui/webui/webui_util.h"
 
 namespace {
 

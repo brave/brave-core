@@ -300,15 +300,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, NewTabVisibility) {
   EXPECT_TRUE(
-      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
 
   ToggleVerticalTabStrip();
   EXPECT_FALSE(
-      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
 
   ToggleVerticalTabStrip();
   EXPECT_TRUE(
-      browser_view()->tab_strip_region_view()->new_tab_button()->GetVisible());
+      browser_view()->tab_strip_region_view()->GetNewTabButton()->GetVisible());
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MinHeight) {
@@ -405,7 +405,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
       browser_view()->GetExclusiveAccessManager()->fullscreen_controller();
   {
     auto observer = FullscreenNotificationObserver(browser());
-    fullscreen_controller->ToggleBrowserFullscreenMode();
+    fullscreen_controller->ToggleBrowserFullscreenMode(/*user_initiated=*/true);
     observer.Wait();
   }
 
@@ -418,7 +418,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
 
   {
     auto observer = FullscreenNotificationObserver(browser());
-    fullscreen_controller->ToggleBrowserFullscreenMode();
+    fullscreen_controller->ToggleBrowserFullscreenMode(/*user_initiated=*/true);
     observer.Wait();
   }
   ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
@@ -716,13 +716,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
 
-  auto* tab_search_container =
-      region_view->original_region_view_->tab_search_container();
-  if (!tab_search_container) {
-    return;
-  }
-
-  auto* original_tab_search_button = tab_search_container->tab_search_button();
+  auto* original_tab_search_button =
+      region_view->original_region_view_->GetTabSearchButton();
   if (!original_tab_search_button) {
     // On Windows 10, the button is on the window frame and vertical tab strip
     // does nothing to it.

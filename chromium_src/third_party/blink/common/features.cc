@@ -16,7 +16,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kReducedReferrerGranularity, base::FEATURE_ENABLED_BY_DEFAULT},
     {kUACHOverrideBlank, base::FEATURE_ENABLED_BY_DEFAULT},
 
-    {kAdAuctionReportingWithMacroApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAdInterestGroupAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAllowURNsInIframes, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAttributionReportingInBrowserMigration,
@@ -38,11 +37,8 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // This feature uses shared memory to reduce IPCs to access cookies, but
     // Ephemeral Storage can switch cookie storage backend at runtime, so we
     // can't use it.
-    {kReduceCookieIPCs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSharedStorageAPIM118, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSharedStorageAPIM125, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
 }});

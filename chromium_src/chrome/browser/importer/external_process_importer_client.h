@@ -8,6 +8,7 @@
 
 // To prevent re-defining Start() in timer.h by ours overriding.
 #include "base/timer/timer.h"
+#include "components/history/core/browser/history_types.h"
 
 #define BRAVE_EXTERNAL_PROCESS_IMPORTER_CLIENT_H \
     friend class BraveExternalProcessImporterClient;

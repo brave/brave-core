@@ -202,7 +202,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ObservableSupplier<Tab> tabSupplier,
             BrowserControlsVisibilityManager browserControlsVisibilityManager,
             TopUiThemeColorProvider topUiThemeColorProvider,
-            Supplier<Integer> bottomToolbarControlsOffsetSupplier) {
+            ObservableSupplier<Integer> bottomToolbarControlsOffsetSupplier) {
         super.initializeWithNative(
                 profile,
                 layoutUpdater,

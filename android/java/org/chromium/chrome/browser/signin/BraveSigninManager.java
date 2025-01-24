@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.jni_zero.CalledByNative;
+import org.jni_zero.JniType;
 
 import org.chromium.base.Callback;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -96,8 +97,8 @@ public class BraveSigninManager implements SigninManager {
     @CalledByNative
     static SigninManager create(
             long nativeSigninManagerAndroid,
-            Profile profile,
-            IdentityManager identityManager,
+            @JniType("Profile*") Profile profile,
+            @JniType("signin::IdentityManager*") IdentityManager identityManager,
             IdentityMutator identityMutator,
             SyncService syncService) {
         AccountInfoServiceProvider.init(identityManager);

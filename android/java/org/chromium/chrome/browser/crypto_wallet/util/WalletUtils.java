@@ -55,6 +55,7 @@ public class WalletUtils {
         return dateFormat.format(new Date(timeDelta.microseconds / 1000));
     }
 
+    @SuppressWarnings("NoStreams")
     public static String generateUniqueAccountName(
             @CoinType.EnumType int coinType, AccountInfo[] accountInfos) {
         Context context = ContextUtils.getApplicationContext();

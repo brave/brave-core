@@ -44,6 +44,9 @@ cargo_crate("lib") {
   if (current_cpu == "x64" || current_cpu == "x86") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
   }
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
   if (target_cpu == "x64" || target_cpu == "x86") {
     deps += [ "//brave/third_party/rust/cpufeatures/v0_2:lib" ]
   }

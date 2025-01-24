@@ -5,11 +5,12 @@
 
 package org.chromium.chrome.browser.bookmarks;
 
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveBookmarkModel extends BookmarkModel {
-    BraveBookmarkModel(long nativeBookmarkBridge) {
-        super(nativeBookmarkBridge);
+    BraveBookmarkModel(long nativeBookmarkBridge, Profile profile) {
+        super(nativeBookmarkBridge, profile);
     }
 
     public void importBookmarks(WindowAndroid windowAndroid, String importFilePath) {

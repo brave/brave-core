@@ -8,7 +8,7 @@
 
 #define getExtension                                           \
   getExtension_ChromiumImpl(ScriptState*, const String& name); \
-  ScriptValue getExtension
+  ScriptObject getExtension
 
 #define getSupportedExtensions           \
   getSupportedExtensions_ChromiumImpl(); \

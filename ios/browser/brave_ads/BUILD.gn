@@ -15,6 +15,7 @@ source_set("brave_ads") {
     "//components/pref_registry",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/web/public",
     "//sql",
   ]
@@ -24,6 +25,5 @@ source_set("brave_ads") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/mojom",
     "//components/keyed_service/core",
-    "//components/keyed_service/ios",
   ]
 }

@@ -11,7 +11,7 @@
 
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
-#include "chrome/browser/ui/views/tabs/tab_drag_controller.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
 
 class TabDragController : public TabDragControllerChromium {
  public:
@@ -40,17 +40,15 @@ class TabDragController : public TabDragControllerChromium {
                                  gfx::NativeWindow* window) override;
 
   void DetachAndAttachToNewContext(ReleaseCapture release_capture,
-                                   TabDragContext* target_context,
-                                   const gfx::Point& point_in_screen,
-                                   bool set_capture = true) override;
+                                   TabDragContext* target_context) override;
 
-  gfx::Rect CalculateNonMaximizedDraggedBrowserBounds(
-      views::Widget* widget,
-      const gfx::Point& point_in_screen) override;
-  gfx::Rect CalculateDraggedBrowserBounds(
-      TabDragContext* source,
-      const gfx::Point& point_in_screen,
-      std::vector<gfx::Rect>* drag_bounds) override;
+  //   gfx::Rect CalculateNonMaximizedDraggedBrowserBounds(
+  //       views::Widget* widget,
+  //       const gfx::Point& point_in_screen) override;
+  //   gfx::Rect CalculateDraggedBrowserBounds(
+  //       TabDragContext* source,
+  //       const gfx::Point& point_in_screen,
+  //       std::vector<gfx::Rect>* drag_bounds) override;
   [[nodiscard]] Liveness ContinueDragging(
       const gfx::Point& point_in_screen) override;
 

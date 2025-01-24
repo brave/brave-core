@@ -468,7 +468,8 @@ bool SidebarItemsScrollView::IsInVisibleContentsViewBounds(
 bool SidebarItemsScrollView::GetDropFormats(
     int* formats,
     std::set<ui::ClipboardFormatType>* format_types) {
-  format_types->insert(ui::ClipboardFormatType::GetType(kSidebarItemDragType));
+  format_types->insert(
+      ui::ClipboardFormatType::CustomPlatformType(kSidebarItemDragType));
   return true;
 }
 
@@ -480,7 +481,7 @@ bool SidebarItemsScrollView::CanDrop(const OSExchangeData& data) {
   }
 
   return data.HasCustomFormat(
-      ui::ClipboardFormatType::GetType(kSidebarItemDragType));
+      ui::ClipboardFormatType::CustomPlatformType(kSidebarItemDragType));
 }
 
 void SidebarItemsScrollView::OnDragExited() {
@@ -543,8 +544,9 @@ void SidebarItemsScrollView::WriteDragDataForView(views::View* sender,
       item_view->GetImage(views::Button::STATE_NORMAL),
       press_pt.OffsetFromOrigin());
 
-  data->SetPickledData(ui::ClipboardFormatType::GetType(kSidebarItemDragType),
-                       base::Pickle());
+  data->SetPickledData(
+      ui::ClipboardFormatType::CustomPlatformType(kSidebarItemDragType),
+      base::Pickle());
 }
 
 int SidebarItemsScrollView::GetDragOperationsForView(views::View* sender,

@@ -77,6 +77,9 @@
   <message name="IDS_WEBSITE_SETTINGS_FEDERATED_IDENTITY" desc="Title for Third-Party Sign In settings, which control whether websites can access browser third-party sign in API.">
     Third-party sign-in
   </message>
+  <message name="IDS_WEBSITE_SETTINGS_JAVASCRIPT_OPTIMIZER_LINK_ROW_LABEL" desc="Title for V8 Optimizer settings, which controls whether the browser's JavaScript engine runs in a mode which is more resilient from attacks by malicious actors with the tradeoff of slightly reducing website performance.">
+    V8 optimizer
+  </message>
   <message name="IDS_WEBSITE_SETTINGS_FILE_SYSTEM_WRITE_GUARD_TITLE" desc="Title of the permission to edit files [CHAR_LIMIT=32]">
     File editing
   </message>
@@ -124,9 +127,6 @@
   </message>
   <message name="IDS_STORAGE_ACCESS_PERMISSION_TITLE" desc="Title of the permission to allow embedded content to access cookies and site data [CHAR_LIMIT=32]">
     Embedded content
-  </message>
-  <message name="IDS_TRACKING_PROTECTION_SETTINGS_TITLE" desc="Title of the Tracking Protection category in Site Settings [CHAR_LIMIT=32]">
-    Tracking Protection
   </message>
 
   <!-- Site settings global toggles -->
@@ -246,14 +246,8 @@
   <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_ALLOW" desc="Summary text explaining that Brave will allow a website to access some permission, e.g. JavaScript: allow.">
     Allow
   </message>
-  <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_ALLOWED_DSE" desc="Status message explaining that the default search engine is allowed to access this permission. Displayed in Site Settings page. e.g. Location: Allowed for current search engine">
-    Allowed for current search engine
-  </message>
   <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_BLOCK" desc="Summary text explaining that Brave will block a website from accessing some permission, e.g. JavaScript: block.">
     Block
-  </message>
-  <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_BLOCKED_DSE" desc="Status message explaining that the default search engine is blocked from accessing this permission. Displayed in Site Settings page. e.g. Location: Blocked for current search engine">
-    Blocked for current search engine
   </message>
   <message name="IDS_WEBSITE_SETTINGS_DOMAIN_EXCEPTION_LABEL" desc="The label for site exceptions that apply to the entire domain.">
     All sites under <ph name="DOMAIN">%1$s<ex>google.com</ex></ph>
@@ -455,6 +449,40 @@
   </message>
   <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_BACKGROUND_SYNC" desc="The description for the allow Background Sync for website dialog.">
     Allow Background Sync for a specific site.
+  </message>
+
+  <!-- Javascript Optimizer -->
+
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_OPTIMIZER_A11Y" desc="The screen reader announcement describing a toggle with two states, controlling whether Javascript Optimizer is enabled. Disabling the JavaScript optimizer reduces performance but makes the JavaScript engine more resilient to attacks by malicious actors.">
+    When on, Brave runs faster and features that use JavaScript should work as designed. When off, this reduces performance but makes V8 more resistant to attacks.
+  </message>
+
+  <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_JAVASCRIPT_OPTIMIZER_ALLOW" desc="The description for the allow-v8-optimizer-for-website dialog.">
+    Allow site to use V8 optimizer.
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_JAVASCRIPT_OPTIMIZER_BLOCK" desc="The description for the block-v8-optimizer-for-website dialog.">
+    Block site from using V8 optimizer.
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_OPTIMIZER_ALLOWED" desc="Label for the enabled option of the JavaScript optimizer content setting.">
+    Brave runs faster and features that use JavaScript should work as designed
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_OPTIMIZER_BLOCKED" desc="Label for the disabled option of the JavaScript optimizer content setting.">
+    Reduces performance but makes V8 more resistant to attacks
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_OPTIMIZER_ALLOWED_LIST" desc="Summary text explaining that sites will use the Javascript optimizer. To be shown in the list of permission categories.">
+    Sites can use V8 optimizer
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_OPTIMIZER_BLOCKED_LIST" desc="Summary text explaining that sites will not use the Javascript optimizer. To be shown in the list of permission categories.">
+    Sites cannot use V8 optimizer
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_OPTIMIZER_PAGE_DESCRIPTION" desc="An explanation of what V8 is which appears beneath the page title: 'V8 optimizer'.">
+    V8 is Brave’s JavaScript and WebAssembly engine used to improve site performance
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_PRIVACY_AND_SECURITY_JAVASCRIPT_OPTIMIZER_ROW_LABEL" desc="Title for the link row to the V8 security settings.">
+    Manage V8 security
+  </message>
+  <message name="IDS_WEBSITE_SETTINGS_PRIVACY_AND_SECURITY_JAVASCRIPT_OPTIMIZER_SUMMARY" desc="Description for the link row of the V8 security settings page.">
+    Turn on additional protection in Brave’s JavaScript and WebAssembly engine
   </message>
 
   <!-- Bluetooth -->
@@ -787,9 +815,6 @@
   </message>
   <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_A11Y" desc="The screen reader announcement describing a toggle with two states, controling whether sites can request permission to send notifications. It is important to keep this string as two full sentences terminated by a period.">
     When on, sites can ask to send notifications. When off, sites can’t send notifications.
-  </message>
-  <message name="IDS_NOTIFICATIONS_IPH" desc="A message that explains to the users that notification permission requests will appear as an infobar from now on because the user repeatedly denied the notification permission in the past.">
-    You usually block notifications. To allow, tap Details.
   </message>
   <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_ASK" desc="Summary text explaining that sites need to ask for permission before sending notifications.">
     Sites can ask to send notifications

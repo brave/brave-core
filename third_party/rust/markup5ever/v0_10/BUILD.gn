@@ -58,4 +58,7 @@ cargo_crate("lib") {
     "generated.rs",
     "named_entities.rs",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

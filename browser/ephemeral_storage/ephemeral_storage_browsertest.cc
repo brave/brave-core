@@ -1296,7 +1296,7 @@ class EphemeralStorageWithDisableThirdPartyStoragePartitioningBrowserTest
 
     blink::RuntimeFeatureStateContext& context =
         navigation_handle->GetMutableRuntimeFeatureStateContext();
-    context.SetDisableThirdPartyStoragePartitioning2Enabled(GetParam());
+    context.SetDisableThirdPartyStoragePartitioning3Enabled(GetParam());
   }
 };
 

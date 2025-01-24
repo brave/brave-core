@@ -88,10 +88,10 @@ class PageMetrics {
 
   void OnHttpsNavigationEvent(const char* histogram_name,
                               uint64_t name_hash,
-                              base::HistogramBase::Sample sample);
+                              base::HistogramBase::Sample32 sample);
   void OnInterstitialDecisionEvent(const char* histogram_name,
                                    uint64_t name_hash,
-                                   base::HistogramBase::Sample sample);
+                                   base::HistogramBase::Sample32 sample);
 
   void OnDomainDiversityResult(
       std::pair<history::DomainDiversityResults,

@@ -264,22 +264,6 @@ RegisterPolymerTemplateModifications({
             </settings-brave-personalization-options>
           `)
       }
-      const cookiesTemplate = templateContent.querySelector(
-        'template[is="dom-if"][if="[[!is3pcdRedesignEnabled_]]"]')
-      if (!cookiesTemplate) {
-        console.error(
-          '[Brave Settings Overrides] Couldn\'t find cookies template')
-      } else {
-        const cookiesLinkRow = cookiesTemplate.content.
-          getElementById('thirdPartyCookiesLinkRow')
-        if (!cookiesLinkRow) {
-          console.error(
-            '[Brave Settings Overrides] ' +
-            'Couldn\'t find thirdPartyCookiesLinkRow')
-        } else {
-          cookiesLinkRow.setAttribute('hidden', 'true')
-        }
-      }
     }
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
       const privacySandboxSettings3Template = templateContent.

@@ -119,6 +119,29 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
         "[data-test-id=refresh-publisher-button]");
   }
 
+  void WaitForDelay(base::TimeDelta delta) {
+    base::RunLoop run_loop;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitClosure(), delta);
+    run_loop.Run();
+  }
+
+  void WaitForPublishersVisited() {
+    int visited_count = 0;
+    while (visited_count == 0) {
+      base::RunLoop run_loop;
+      rewards_service_->GetPublishersVisitedCount(
+          base::BindLambdaForTesting([&](int count) {
+            visited_count = count;
+            run_loop.Quit();
+          }));
+      run_loop.Run();
+      if (visited_count == 0) {
+        WaitForDelay(base::Seconds(0.25));
+      }
+    }
+  }
+
   void SetSKUOrderResponse() {
     std::vector<mojom::SKUOrderItemPtr> items;
     auto item = mojom::SKUOrderItem::New();
@@ -162,6 +185,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Switch to original tab to trigger saving publisher activity
   browser()->tab_strip_model()->ActivateTabAt(0);
+  WaitForPublishersVisited();
 
   // Switch back to publisher tab and verify that we see correct visited count
   // in Rewards panel
@@ -191,6 +215,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
   // Switch to original tab to trigger saving publisher activity
   browser()->tab_strip_model()->ActivateTabAt(0);
+  WaitForPublishersVisited();
 
   // Switch back to publisher tab and verify that we see correct visited count
   // in Rewards panel

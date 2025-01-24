@@ -33,17 +33,16 @@ BraveAudioFarblingHelper::BraveAudioFarblingHelper(double fudge_factor,
 
 BraveAudioFarblingHelper::~BraveAudioFarblingHelper() = default;
 
-void BraveAudioFarblingHelper::FarbleAudioChannel(float* dst,
-                                                  size_t count) const {
+void BraveAudioFarblingHelper::FarbleAudioChannel(base::span<float> dst) const {
   if (max_) {
     uint64_t v = seed_;
-    for (size_t i = 0; i < count; i++) {
+    for (auto& value : dst) {
       v = lfsr_next(v);
-      dst[i] = (v / maxUInt64AsDouble) / 10;
+      value = (v / maxUInt64AsDouble) / 10;
     }
   } else {
-    for (size_t i = 0; i < count; i++) {
-      dst[i] = dst[i] * fudge_factor_;
+    for (auto& value : dst) {
+      value = value * fudge_factor_;
     }
   }
 }

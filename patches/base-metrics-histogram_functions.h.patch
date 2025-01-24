@@ -1,12 +1,12 @@
 diff --git a/base/metrics/histogram_functions.h b/base/metrics/histogram_functions.h
-index effa04b16f8778a1ce4a7b03bc164ab01200102a..7b3a1ede2b23a4aa8d60d1bd264fb2abda050ec4 100644
+index 59db5cbe38c1c31466c77d335342e022100b316c..d8e3ad4dacc8f9289e451641b21e9a964c8e4651 100644
 --- a/base/metrics/histogram_functions.h
 +++ b/base/metrics/histogram_functions.h
-@@ -79,6 +79,7 @@ void UmaHistogramEnumeration(std::string_view name, T sample) {
+@@ -80,6 +80,7 @@ void UmaHistogramEnumeration(std::string_view name, T sample) {
    static_assert(static_cast<uintmax_t>(T::kMaxValue) <=
                      static_cast<uintmax_t>(INT_MAX) - 1,
                  "Enumeration's kMaxValue is out of range of INT_MAX!");
 +  BRAVE_HISTOGRAM_FUNCTIONS_UMA_HISTOGRAM_ENUMERATION
    DCHECK_LE(static_cast<uintmax_t>(sample),
              static_cast<uintmax_t>(T::kMaxValue));
-   return UmaHistogramExactLinear(name, static_cast<int>(sample),
+   // While UmaHistogramExactLinear’s documentation states that the third

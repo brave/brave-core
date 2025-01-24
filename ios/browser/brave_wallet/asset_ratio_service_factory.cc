@@ -8,8 +8,6 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/web/public/browser_state.h"
@@ -19,17 +17,17 @@ namespace brave_wallet {
 
 // static
 mojo::PendingRemote<mojom::AssetRatioService>
-AssetRatioServiceFactory::GetForBrowserState(ProfileIOS* profile) {
-  return static_cast<AssetRatioService*>(
-             GetInstance()->GetServiceForBrowserState(profile, true))
+AssetRatioServiceFactory::GetForProfile(ProfileIOS* profile) {
+  return GetInstance()
+      ->GetServiceForProfileAs<AssetRatioService>(profile, true)
       ->MakeRemote();
 }
 
 // static
 AssetRatioService* AssetRatioServiceFactory::GetServiceForState(
     ProfileIOS* profile) {
-  return static_cast<AssetRatioService*>(
-      GetInstance()->GetServiceForBrowserState(profile, true));
+  return GetInstance()->GetServiceForProfileAs<AssetRatioService>(profile,
+                                                                  true);
 }
 
 // static
@@ -39,9 +37,10 @@ AssetRatioServiceFactory* AssetRatioServiceFactory::GetInstance() {
 }
 
 AssetRatioServiceFactory::AssetRatioServiceFactory()
-    : BrowserStateKeyedServiceFactory(
-          "AssetRatioService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("AssetRatioService",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kNoServiceForTests) {}
 
 AssetRatioServiceFactory::~AssetRatioServiceFactory() = default;
 
@@ -51,15 +50,6 @@ std::unique_ptr<KeyedService> AssetRatioServiceFactory::BuildServiceInstanceFor(
   std::unique_ptr<AssetRatioService> asset_ratio_service(
       new AssetRatioService(profile->GetSharedURLLoaderFactory()));
   return asset_ratio_service;
-}
-
-bool AssetRatioServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
-}
-
-web::BrowserState* AssetRatioServiceFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return GetBrowserStateRedirectedInIncognito(context);
 }
 
 }  // namespace brave_wallet

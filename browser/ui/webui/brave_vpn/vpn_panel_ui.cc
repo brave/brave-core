@@ -20,7 +20,6 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -30,6 +29,7 @@
 #include "content/public/common/bindings_policy.h"
 #include "content/public/common/url_constants.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
+#include "ui/webui/webui_util.h"
 
 VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {

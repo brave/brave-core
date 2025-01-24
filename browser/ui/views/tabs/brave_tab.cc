@@ -28,14 +28,14 @@
 
 BraveTab::~BraveTab() = default;
 
-std::u16string BraveTab::GetTooltipText(const gfx::Point& p) const {
+std::u16string BraveTab::GetRenderedTooltipText(const gfx::Point& p) const {
   auto* browser = controller_->GetBrowser();
   if (browser &&
       brave_tabs::AreTooltipsEnabled(browser->profile()->GetPrefs())) {
     return Tab::GetTooltipText(data_.title,
                                GetAlertStateToShow(data_.alert_state));
   }
-  return Tab::GetTooltipText(p);
+  return TabSlotView::GetTooltipText();
 }
 
 int BraveTab::GetWidthOfLargestSelectableRegion() const {
@@ -164,6 +164,6 @@ void BraveTab::SetData(TabRendererData data) {
   if (data_changed &&
       tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
       data_.pinned) {
-    set_group(std::nullopt);
+    SetGroup(std::nullopt);
   }
 }

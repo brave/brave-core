@@ -31,6 +31,7 @@ SidebarButtonView::SidebarButtonView(const std::u16string& accessible_name) {
   // Views resulting in focusable nodes later on in the accessibility tree need
   // to have an accessible name for screen readers to see what they are about.
   SetAccessibleName(accessible_name);
+  SetTooltipText(accessible_name);
 }
 
 SidebarButtonView::~SidebarButtonView() = default;
@@ -50,10 +51,6 @@ void SidebarButtonView::OnThemeChanged() {
 gfx::Size SidebarButtonView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   return {kSidebarButtonSize + kMargin * 2, kSidebarButtonSize};
-}
-
-std::u16string SidebarButtonView::GetTooltipText(const gfx::Point& p) const {
-  return GetAccessibleName();
 }
 
 BEGIN_METADATA(SidebarButtonView)
