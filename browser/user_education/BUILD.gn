@@ -3,6 +3,15 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}
+
 source_set("unit_tests") {
   testonly = true
 
@@ -11,6 +20,7 @@ source_set("unit_tests") {
 
     deps = [
       "//base",
+      "//brave/browser/user_education:features",
       "//chrome/browser",
       "//chrome/test:test_support",
       "//content/test:test_support",
