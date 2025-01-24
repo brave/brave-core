@@ -223,9 +223,10 @@ const ModalWithCloseButton = ({ children, returnToMain }: React.PropsWithChildre
 )
 
 export const EmailAliasModal = (
-  { returnToMain, viewState, email, mode, mappingService }:
+  { returnToMain, viewState, email, mode, mappingService, bubble }:
     { returnToMain: Function,
       viewState?: ViewState,
+      bubble?: boolean,
       mode: ViewMode
       email: string,
       mappingService: MappingService }
@@ -258,6 +259,7 @@ export const EmailAliasModal = (
   return (
     <span>
       <h2>{mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasTitle') : getLocale('emailAliasesEditAliasTitle')}</h2>
+      {bubble && <div>{getLocale('emailAliasesBubbleDescription')}</div>}
       <ModalSectionCol style={{}}>
         <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesAliasLabel')}</h3>
       <GeneratedEmailContainer>
@@ -278,7 +280,13 @@ export const EmailAliasModal = (
       </Input>
       {mode == ViewMode.Edit && viewState?.alias?.domains && <div>getLocale('emailAliasesUsedBy', viewState?.alias?.domains?.join(', '))</div>}
     </ModalSectionCol>
-    <ButtonRow>
+    <ButtonRow style={{justifyContent: bubble ? 'space-between' : 'end'}}>
+      <span>
+        {bubble && <Button onClick={() => mappingService.showSettingsPage()} kind='plain' style='flex-grow: 0;'>
+          {getLocale('emailAliasesManageButton')}
+        </Button>}
+      </span>
+      <span>
       <Button onClick={() => returnToMain()} kind='plain' style='flex-grow: 0;'>
         {getLocale('emailAliasesCancelButton')}
       </Button>
@@ -288,6 +296,7 @@ export const EmailAliasModal = (
         onClick={() => createOrSave()}>
         {mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasButton') : getLocale('emailAliasesSaveAliasButton')}
         </Button>
+      </span>
       </ButtonRow>
     </span>
   )
@@ -426,6 +435,7 @@ export const mountModal = (at: HTMLElement, mappingService: MappingService) => {
     <StyleSheetManager target={at}>
       <EmailAliasModal
        returnToMain={() => mappingService.closeBubble()}
+       bubble={true}
        mode={ViewMode.Create}
        email={'test@test.com'}
        mappingService={mappingService}/>

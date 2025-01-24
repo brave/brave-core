@@ -30,6 +30,7 @@ provideStrings({
   emailAliasesNoteLabel: 'Note',
   emailAliasesEditNotePlaceholder: 'Enter a note for your address (optional)',
   emailAliasesCancelButton: 'Cancel',
+  emailAliasesManageButton: 'Manage',
   emailAliasesAliasLabel: 'Email alias',
   emailAliasesEmailsWillBeForwardedTo: 'Emails will be forwarded to $1',
   emailAliasesEditAliasTitle: 'Edit email alias',
@@ -147,6 +148,10 @@ class MockMappingService implements MappingService {
   async fillField (fieldValue: string): Promise<void> {
     console.log("fillField", fieldValue)
   }
+
+  async showSettingsPage (): Promise<void> {
+    console.log("showSettingsPage")
+  }
 }
 
 const mockMappingServiceSingleton = new MockMappingService()
@@ -163,6 +168,7 @@ export const Bubble = () => {
       returnToMain={() => {}}
       viewState={{ mode: ViewMode.Create }}
       email={demoData.email}
+      bubble={true}
       mode={ViewMode.Create}
       mappingService={mockMappingServiceSingleton}
     />
