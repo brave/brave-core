@@ -46,6 +46,8 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
             return true;
         }
 
+        default void maybeShowSafeBrowsingError(String error) {}
+
         Activity getActivity();
     }
 
@@ -149,15 +151,17 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                 // An error with the Google Play Services API contains some
                                 // additional details.
                                 ApiException apiException = (ApiException) e;
+                                String error =
+                                        "Error: "
+                                                + CommonStatusCodes.getStatusCodeString(
+                                                        apiException.getStatusCode())
+                                                + ", code: "
+                                                + apiException.getStatusCode();
                                 if (isDebuggable()) {
-                                    Log.d(
-                                            TAG,
-                                            "Error: "
-                                                    + CommonStatusCodes.getStatusCodeString(
-                                                            apiException.getStatusCode())
-                                                    + ", code: "
-                                                    + apiException.getStatusCode());
+                                    Log.d(TAG, error);
                                 }
+                                mBraveSafeBrowsingApiHandlerDelegate.maybeShowSafeBrowsingError(
+                                        error);
                                 if (apiException.getStatusCode()
                                         == CommonStatusCodes.API_NOT_CONNECTED) {
                                     // That means that device doesn't have Google Play Services API.
@@ -189,9 +193,12 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                 }
                             } else {
                                 // A different, unknown type of error occurred.
+                                String error = "Error: " + e.getMessage();
                                 if (isDebuggable()) {
-                                    Log.d(TAG, "Error: " + e.getMessage());
+                                    Log.d(TAG, error);
                                 }
+                                mBraveSafeBrowsingApiHandlerDelegate.maybeShowSafeBrowsingError(
+                                        error);
                                 mObserver.onUrlCheckDone(
                                         callbackId,
                                         LookupResult.FAILURE_API_CALL_TIMEOUT,

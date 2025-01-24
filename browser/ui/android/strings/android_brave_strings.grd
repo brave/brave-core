@@ -4126,6 +4126,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_CLEAR_AI_HISTORY_SUMMARY" desc="A summary to delete Leo AI history">
       Chat history
     </message>
+    <message name="IDS_SAFEBROWSING_ERRORS_PREF" desc="A preferences to show Safe Browsing errors">
+      Show Safe Browsing errors
+    </message>
   </messages>
   </release>
 </grit>

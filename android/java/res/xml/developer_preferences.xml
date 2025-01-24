@@ -28,4 +28,8 @@
         android:fragment="org.chromium.chrome.browser.settings.developer.BraveRewardsDebugPreferences"
         android:key="brave_rewards_debug_preferences"
         android:title="Rewards Debug"/>
+    <org.chromium.chrome.browser.settings.developer.BraveSafeBrowsingErrorsPreference
+        android:key="safebrowsing_errors_switch"
+        android:title="@string/safebrowsing_errors_pref"
+        android:defaultValue="false" />
 </PreferenceScreen>
