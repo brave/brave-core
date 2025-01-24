@@ -444,6 +444,6 @@ void BraveEmailAliasesHandler::FillField(const base::Value::List& args) {
 
 void BraveEmailAliasesHandler::ShowSettingsPage(const base::Value::List& args) {
   CHECK_EQ(1U, args.size());
-  EmailAliasesBubbleView::Close();
   ShowSingletonTabOverwritingNTP(GetProfile(), GURL(kEmailAliasesSettingsURL));
+  EmailAliasesBubbleView::Close();
 }
