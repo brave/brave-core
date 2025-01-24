@@ -49,4 +49,13 @@
         android:title="@string/send_web_discovery_title"
         android:summary="@string/send_web_discovery_summary"
         android:defaultValue="false" />
+    <PreferenceCategory
+        android:key="custom_search_engines"
+        android:order="9"
+        android:title="@string/custom_search_engines">
+        <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:key="add_custom_search_engine"
+            android:order="1"
+            android:title="@string/add_custom_search_engine"/>
+    </PreferenceCategory>
 </PreferenceScreen>

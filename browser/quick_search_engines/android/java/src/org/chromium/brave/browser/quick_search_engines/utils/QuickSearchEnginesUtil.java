@@ -452,6 +452,6 @@ public class QuickSearchEnginesUtil {
     }
 
     public static void addSearchEngine(Profile profile) {
-        TemplateUrlServiceFactory.getForProfile(profile).addSearchEngine();
+        // ((BraveTemplateUrlService)TemplateUrlServiceFactory.getForProfile(profile)).addSearchEngine();
     }
 }
