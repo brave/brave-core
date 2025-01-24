@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//mojo/public/tools/bindings/mojom.gni")
+
 component("common") {
   output_name = "youtube_script_injector_common"
   defines = [ "IS_YOUTUBE_SCRIPT_INJECTOR_COMMON_IMPL" ]
@@ -13,4 +15,12 @@ component("common") {
   ]
 
   deps = [ "//base" ]
+}
+
+mojom("mojom") {
+  sources = [
+    "youtube_injector.mojom",
+  ]
+
+  deps = [ "//mojo/public/mojom/base" ]
 }
