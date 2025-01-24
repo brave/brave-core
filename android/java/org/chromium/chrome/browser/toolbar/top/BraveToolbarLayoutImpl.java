@@ -106,7 +106,6 @@ import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.feature_engagement.Tracker;
 import org.chromium.content_public.browser.NavigationHandle;
@@ -426,15 +425,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showOrHideRewardsBadge(boolean shouldShow) {
-        Context context = getContext();
-        if (context instanceof Activity
-                && (((Activity) context).isFinishing() || ((Activity) context).isDestroyed())) {
-            return;
-        }
         View rewardsBadge = findViewById(R.id.rewards_notfication_badge);
-        if (rewardsBadge != null) {
-            rewardsBadge.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
-        }
+        rewardsBadge.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -1113,9 +1105,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mPublisherId != null && !mPublisherId.isEmpty()) {
             rewardsUrl += "?creator=" + URLEncoder.encode(mPublisherId);
         }
-        Log.e(TAG, "rewardsUrl: " + rewardsUrl);
-        TabUtils.openUrlInNewTab(false, rewardsUrl);
-        // RewardsPageActivity.showPage(getContext(), rewardsUrl);
+        RewardsPageActivity.showPage(getContext(), rewardsUrl);
     }
 
     private void maybeShowWalletPanel() {

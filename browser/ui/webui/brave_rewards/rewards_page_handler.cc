@@ -38,6 +38,12 @@
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
+#include "brave/build/android/jni_headers/RewardsPageActivity_jni.h"
+#endif
+
 namespace brave_rewards {
 
 namespace {
@@ -223,9 +229,16 @@ void RewardsPageHandler::OnPageReady() {
 }
 
 void RewardsPageHandler::OpenTab(const std::string& url) {
+#if BUILDFLAG(IS_ANDROID)
+  Java_RewardsPageActivity_openURL(
+      base::android::AttachCurrentThread(),
+      base::android::ConvertUTF8ToJavaString(
+          base::android::AttachCurrentThread(), url));
+#else
   if (bubble_delegate_) {
     bubble_delegate_->OpenTab(url);
   }
+#endif
 }
 
 void RewardsPageHandler::GetPluralString(const std::string& key,
