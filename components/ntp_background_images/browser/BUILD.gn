@@ -30,6 +30,8 @@ static_library("browser") {
 
   if (!is_ios) {
     sources += [
+      "ntp_sponsored_rich_media_source.cc",
+      "ntp_sponsored_rich_media_source.h",
       "ntp_background_images_source.cc",
       "ntp_background_images_source.h",
       "ntp_sponsored_images_source.cc",
@@ -70,6 +72,7 @@ static_library("browser") {
       "//brave/components/brave_referrals/browser",
       "//content/public/browser",
       "//content/public/common",
+      "//net",
     ]
   }
 

@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_
 
-#include <map>
 #include <optional>
 #include <string>
 #include <vector>
@@ -55,8 +54,13 @@ struct Logo {
   ~Logo();
 };
 
+enum WallpaperType { kImage, kRichMedia };
+
 struct SponsoredBackground {
-  base::FilePath image_file;
+  WallpaperType wallpaper_type;
+  base::FilePath wallpaper_file;
+  // TODO(tmancey): Discussed with @aseren and this is no longer needed :-).
+  std::vector<base::FilePath> rich_media_assets;
   gfx::Point focal_point;
   brave_ads::ConditionMatcherMap condition_matchers;
   std::string background_color;
@@ -68,7 +72,7 @@ struct SponsoredBackground {
 
   SponsoredBackground();
   // For unit test.
-  SponsoredBackground(const base::FilePath& image_file_path,
+  SponsoredBackground(const base::FilePath& wallpaper_file_path,
                       const gfx::Point& point,
                       const Logo& test_logo,
                       const std::string& creative_instance_id);
@@ -105,8 +109,9 @@ struct NTPSponsoredImagesData {
                           const base::FilePath& installed_dir);
 
   // Parse common properties for SI & SR.
-  Campaign GetCampaignFromValue(const base::Value::Dict& value,
-                                const base::FilePath& installed_dir);
+  std::optional<Campaign> GetCampaignFromValue(
+      const base::Value::Dict& value,
+      const base::FilePath& installed_dir);
   void ParseSRProperties(const base::Value::Dict& value,
                          const base::FilePath& installed_dir);
 
@@ -117,10 +122,6 @@ struct NTPSponsoredImagesData {
 
   bool IsSuperReferral() const;
   void PrintCampaignsParsingResult() const;
-
-  bool AdInfoMatchesSponsoredImage(const brave_ads::NewTabPageAdInfo& ad_info,
-                                   size_t campaign_index,
-                                   size_t background_index) const;
 
   std::string url_prefix;
 

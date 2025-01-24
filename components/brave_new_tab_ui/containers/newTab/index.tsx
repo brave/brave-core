@@ -46,6 +46,8 @@ import Icon from '@brave/leo/react/icon'
 import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
 import { EngineContextProvider } from '../../components/search/EngineContext'
+// TODO(tmancey): @aseren inconsistent naming, i.e., SponsoredRichMediaBackgroundInfo and SponsoredRichMediaBackground would match, your thoughts?
+import { RichMediaBackgroundInfo, RichMediaBackground } from './sponsored_rich_media_background'
 
 const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 const SearchPlaceholder = React.lazy(() => import('../../components/search/SearchPlaceholder'))
@@ -100,6 +102,26 @@ function GetBackgroundImageSrc (props: Props) {
   return undefined
 }
 
+function GetRichMediaBackground (props: Props): RichMediaBackgroundInfo | undefined {
+  if (!props.newTabData.showBackgroundImage &&
+    (!props.newTabData.brandedWallpaper || props.newTabData.brandedWallpaper.isSponsored
+      || props.newTabData.brandedWallpaper.type !== 'html')) {
+    return undefined
+  }
+  if (props.newTabData.brandedWallpaper) {
+    const wallpaperData = props.newTabData.brandedWallpaper
+    if (wallpaperData.wallpaperImageUrl) {
+      return {
+        url: wallpaperData.wallpaperImageUrl,
+        placement_id: wallpaperData.wallpaperId,
+        creative_instance_id: wallpaperData.creativeInstanceId
+      }
+    }
+  }
+
+  return undefined
+}
+
 function GetShouldShowSearchPromotion (props: Props, showSearchPromotion: boolean) {
   if (GetIsShowingBrandedWallpaper(props)) { return false }
 
@@ -138,9 +160,11 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   imgCache: HTMLImageElement
+  richMediaBackgroundCache: HTMLIFrameElement
   braveNewsPromptTimerId: number
   hasInitBraveNews: boolean = false
   imageSource?: string = undefined
+  richMediaBackgroundInfo?: RichMediaBackgroundInfo = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
@@ -152,6 +176,8 @@ class NewTabPage extends React.Component<Props, State> {
     // if a notification is open at component mounting time, close it
     this.props.actions.showTilesRemovedNotice(false)
     this.imageSource = GetBackgroundImageSrc(this.props)
+    this.richMediaBackgroundInfo = GetRichMediaBackground(this.props)
+
     this.trackCachedImage()
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
@@ -182,8 +208,16 @@ class NewTabPage extends React.Component<Props, State> {
     if (newImageSource && oldImageSource !== newImageSource) {
       this.trackCachedImage()
     }
-    if (oldImageSource &&
-      !newImageSource) {
+
+    const oldRichMediaBackground = GetRichMediaBackground(prevProps)
+    const newRichMediaBackground = GetRichMediaBackground(this.props)
+    this.richMediaBackgroundInfo = newRichMediaBackground
+    if (newRichMediaBackground && oldRichMediaBackground !== newRichMediaBackground) {
+      this.trackCachedRichMediaBackground()
+    }
+
+    if ((oldImageSource &&
+      !newImageSource) || (oldRichMediaBackground && !newRichMediaBackground)) {
       // reset loaded state
       console.debug('reset image loaded state due to removing image source')
       this.setState({ backgroundHasLoaded: false })
@@ -253,6 +287,30 @@ class NewTabPage extends React.Component<Props, State> {
       })
       imgCache.addEventListener('error', (e) => {
         console.debug('image error', e)
+      })
+    }
+  }
+
+  trackCachedRichMediaBackground () {
+    console.debug('trackCachedRichMediaBackground')
+    if (this.state.backgroundHasLoaded) {
+      console.debug('Resetting to new image')
+      this.setState({ backgroundHasLoaded: false })
+    }
+    if (this.richMediaBackgroundInfo) {
+      const richMediaBackgroundCache = document.createElement('iframe')
+      // Store RichMediaBackground in class so it doesn't go out of scope
+      this.richMediaBackgroundCache = richMediaBackgroundCache
+      richMediaBackgroundCache.src = this.richMediaBackgroundInfo.url
+      console.debug('iframe start loading...')
+      richMediaBackgroundCache.addEventListener('load', () => {
+        console.debug('iframe loaded')
+        this.setState({
+          backgroundHasLoaded: true
+        })
+      })
+      richMediaBackgroundCache.addEventListener('error', (e) => {
+        console.debug('iframe error', e)
       })
     }
   }
@@ -615,6 +673,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const hasImage = this.imageSource !== undefined
+    const hasRichMediaBackground = this.richMediaBackgroundInfo !== undefined
     const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
 
     const hasWallpaperInfo = newTabData.backgroundWallpaper?.type === 'brave'
@@ -648,14 +707,28 @@ class NewTabPage extends React.Component<Props, State> {
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
         colorForBackground={colorForBackground}
+        hasRichMediaBackground={hasRichMediaBackground}
+        richMediaBackgroundHasLoaded={this.state.backgroundHasLoaded}
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews && !defaultState.featureFlagBraveNewsFeedV2Enabled) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
         <BraveNewsContextProvider>
         <EngineContextProvider>
+
+        {
+          hasRichMediaBackground &&
+          <RichMediaBackground
+            richMediaBackgroundInfo={this.richMediaBackgroundInfo!}
+            richMediaHasLoaded={this.state.backgroundHasLoaded}
+            onEventReported={() => { console.log('RichMediaBackground event reported') }}
+          />
+        }
+
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
             imageHasLoaded={this.state.backgroundHasLoaded}
+            hasRichMediaBackground={hasRichMediaBackground}
+            richMediaBackgroundHasLoaded={this.state.backgroundHasLoaded}
             showClock={showClock}
             showStats={showStats}
             colorForBackground={colorForBackground}
@@ -700,9 +773,11 @@ class NewTabPage extends React.Component<Props, State> {
                 />
               </Page.GridItemTopSites>
             }
-            {newTabData.brandedWallpaper?.isSponsored && <Page.GridItemSponsoredImageClickArea otherWidgetsHidden={this.allWidgetsHidden()}>
-              <SponsoredImageClickArea onClick={this.onClickLogo}
-                sponsoredImageUrl={newTabData.brandedWallpaper.logo.destinationUrl}/>
+            {newTabData.brandedWallpaper?.isSponsored
+              && newTabData.brandedWallpaper.type !== 'html'
+              && <Page.GridItemSponsoredImageClickArea otherWidgetsHidden={this.allWidgetsHidden()}>
+                <SponsoredImageClickArea onClick={this.onClickLogo}
+                  sponsoredImageUrl={newTabData.brandedWallpaper.logo.destinationUrl}/>
               </Page.GridItemSponsoredImageClickArea>}
             {
               gridSitesData.shouldShowSiteRemovedNotification

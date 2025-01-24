@@ -95,6 +95,13 @@ inline constexpr char kRewriterUIHost[] = "rewriter";
 inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
     u"https://github.com/brave/brave-browser/wiki/Transaction-Simulation";
 
+// TODO(tmancey): @aseren is this not defined by Chromium code?
+inline constexpr char kBraveNewTabPageURL[] = "chrome://newtab/";
+// TODO(tmancey): @aseren this does not appear to be used...
+inline constexpr char kRichMediaHost[] = "rich-media";
+// TODO(tmancey): @aseren maybe NTPSponsoredRichMediaUrl?
+inline constexpr char kRichMediaURL[] = "chrome-untrusted://rich-media/";
+
 // Hosts that are allowed to be installed as PWAs, which is usually
 // a blocked action for WebUIs. In Chromium, the "password-manager" host
 // is already allowed.

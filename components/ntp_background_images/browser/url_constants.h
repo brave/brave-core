@@ -26,10 +26,6 @@ inline constexpr char kThemeNameKey[] = "themeName";
 
 inline constexpr char kLogoKey[] = "logo";
 
-inline constexpr char kCampaignIdKey[] = "campaignId";
-
-inline constexpr char kWallpapersKey[] = "wallpapers";
-inline constexpr char kWallpaperFocalPointKey[] = "focalPoint";
 inline constexpr char kWallpaperConditionMatchersKey[] = "conditionMatchers";
 inline constexpr char kWallpaperConditionMatcherPrefPathKey[] = "prefPath";
 inline constexpr char kWallpaperConditionMatcherKey[] = "condition";
@@ -45,11 +41,14 @@ inline constexpr char kTopSiteNameKey[] = "name";
 inline constexpr char kTopSiteIconURLKey[] = "iconUrl";
 
 inline constexpr char kImageURLKey[] = "imageUrl";
+inline constexpr char kHtmlURLKey[] = "htmlUrl";
+inline constexpr char kAssetsKey[] = "assets";
 inline constexpr char kDestinationURLKey[] = "destinationUrl";
 inline constexpr char kBackgroundColorKey[] = "backgroundColor";
 inline constexpr char kCompanyNameKey[] = "companyName";
 inline constexpr char kViewboxKey[] = "viewbox";
 
+inline constexpr char kCampaignIDKey[] = "campaignId";
 inline constexpr char kCreativeInstanceIDKey[] = "creativeInstanceId";
 inline constexpr char kWallpaperIDKey[] = "wallpaperId";
 

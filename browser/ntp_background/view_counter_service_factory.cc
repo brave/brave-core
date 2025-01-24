@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
@@ -79,6 +80,8 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
         browser_context, std::make_unique<NTPBackgroundImagesSource>(service));
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPSponsoredImagesSource>(service));
+    content::URLDataSource::Add(browser_context,
+                                std::make_unique<NTPSponsoredRichMediaSource>(service));
 
     std::unique_ptr<NTPP3AHelperImpl> ntp_p3a_helper;
     if (g_brave_browser_process->p3a_service() != nullptr) {

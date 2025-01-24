@@ -173,7 +173,7 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
       data.FindBool(ntp_background_images::kIsSponsoredKey).value_or(false);
   auto* creative_instance_id =
       data.FindString(ntp_background_images::kCreativeInstanceIDKey);
-  auto* campaign_id = data.FindString(ntp_background_images::kCampaignIdKey);
+  auto* campaign_id = data.FindString(ntp_background_images::kCampaignIDKey);
   const std::string* wallpaper_id =
       data.FindString(ntp_background_images::kWallpaperIDKey);
 

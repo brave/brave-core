@@ -34,6 +34,7 @@ interface API {
   pageCallbackRouter: BraveNewTabPage.PageCallbackRouter
   pageHandler: BraveNewTabPage.PageHandlerRemote
   newTabMetrics: BraveNewTabPage.NewTabMetricsRemote
+  richMediaEventHandler: BraveNewTabPage.RichMediaEventsHandlerRemote
   addBackgroundUpdatedListener: (listener: BackgroundUpdated) => void
   addCustomImageBackgroundsUpdatedListener: (listener: CustomImageBackgroundsUpdated) => void
   addSearchPromotionDisabledListener: (listener: () => void) => void
@@ -48,13 +49,15 @@ class NTPBrowserAPI implements API {
   pageCallbackRouter = new BraveNewTabPage.PageCallbackRouter()
   pageHandler = new BraveNewTabPage.PageHandlerRemote()
   newTabMetrics = new BraveNewTabPage.NewTabMetricsRemote()
+  richMediaEventHandler = new BraveNewTabPage.RichMediaEventsHandlerRemote()
 
   constructor () {
     const factory = BraveNewTabPage.PageHandlerFactory.getRemote()
     factory.createPageHandler(
       this.pageCallbackRouter.$.bindNewPipeAndPassRemote(),
       this.pageHandler.$.bindNewPipeAndPassReceiver(),
-      this.newTabMetrics.$.bindNewPipeAndPassReceiver()
+      this.newTabMetrics.$.bindNewPipeAndPassReceiver(),
+      this.richMediaEventHandler.$.bindNewPipeAndPassReceiver()
     )
   }
 

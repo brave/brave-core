@@ -29,6 +29,7 @@ class BraveNewsController;
 }  // namespace brave_news
 
 class BraveNewTabPageHandler;
+class BraveRichMediaEventsHandler;
 
 class BraveNewTabUI : public ui::MojoWebUIController,
                       public brave_new_tab_page::mojom::PageHandlerFactory {
@@ -62,10 +63,15 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
           pending_page_handler,
       mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
-          pending_new_tab_metrics) override;
+          pending_new_tab_metrics,
+      mojo::PendingReceiver<brave_new_tab_page::mojom::RichMediaEventsHandler>
+          pending_rich_media_handler) override;
 
   std::unique_ptr<BraveNewTabPageHandler> page_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
+  // TODO(tmancey): @aseren the object is RichMediaEventsHandler so the variable
+  // should be rich_media_events_handler_
+  std::unique_ptr<BraveRichMediaEventsHandler> rich_media_handler_;
   mojo::Receiver<brave_new_tab_page::mojom::PageHandlerFactory>
       page_factory_receiver_;
 

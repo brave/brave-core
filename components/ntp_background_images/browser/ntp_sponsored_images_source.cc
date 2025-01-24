@@ -7,13 +7,11 @@
 
 #include <optional>
 #include <utility>
-#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
 #include "base/memory/ref_counted_memory.h"
-#include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
@@ -128,13 +126,13 @@ base::FilePath NTPSponsoredImagesSource::GetLocalFilePathFor(
       const auto logo_basename_from_data =
           background.logo.image_file.BaseName();
       const auto wallpaper_basename_from_data =
-          background.image_file.BaseName();
+          background.wallpaper_file.BaseName();
 
       if (logo_basename_from_data == basename_from_path)
         return background.logo.image_file;
 
       if (wallpaper_basename_from_data == basename_from_path)
-        return background.image_file;
+        return background.wallpaper_file;
     }
   }
 
@@ -162,7 +160,7 @@ bool NTPSponsoredImagesSource::IsValidPath(const std::string& path) const {
       const auto logo_basename_from_data =
           background.logo.image_file.BaseName();
       const auto wallpaper_basename_from_data =
-          background.image_file.BaseName();
+          background.wallpaper_file.BaseName();
 
       if (logo_basename_from_data == basename_from_path ||
           wallpaper_basename_from_data == basename_from_path)
