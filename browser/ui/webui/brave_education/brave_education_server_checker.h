@@ -26,16 +26,17 @@ namespace brave_education {
 
 // A helper for determining the whether an education server URL is currently
 // returning a valid response.
-class EducationServerChecker {
+class BraveEducationServerChecker {
  public:
-  EducationServerChecker(
+  BraveEducationServerChecker(
       PrefService& pref_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
-  ~EducationServerChecker();
+  ~BraveEducationServerChecker();
 
-  EducationServerChecker(const EducationServerChecker&) = delete;
-  EducationServerChecker& operator=(const EducationServerChecker&) = delete;
+  BraveEducationServerChecker(const BraveEducationServerChecker&) = delete;
+  BraveEducationServerChecker& operator=(const BraveEducationServerChecker&) =
+      delete;
 
   using IsServerPageAvailableCallback = base::OnceCallback<void(bool)>;
 
@@ -52,7 +53,7 @@ class EducationServerChecker {
 
   raw_ref<PrefService> pref_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  base::WeakPtrFactory<EducationServerChecker> weak_factory_{this};
+  base::WeakPtrFactory<BraveEducationServerChecker> weak_factory_{this};
 };
 
 }  // namespace brave_education

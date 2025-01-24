@@ -21,5 +21,3 @@ void BraveEducationHandler::GetServerUrl(GetServerUrlCallback callback) {
   std::move(callback).Run(
       brave_education::GetEducationPageServerURL(page_type_));
 }
-
-void BraveEducationHandler::RecordBrowserCommandExecuted() {}

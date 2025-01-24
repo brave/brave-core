@@ -32,7 +32,7 @@
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
-#include "brave/browser/ui/webui/brave_education/education_page_ui.h"
+#include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
 #endif
 
 namespace {
@@ -95,6 +95,6 @@ void RegisterChromeWebUIConfigs() {
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   map.AddWebUIConfig(
-      std::make_unique<EducationPageUIConfig>());
+      std::make_unique<BraveEducationPageUIConfig>());
 #endif
 }

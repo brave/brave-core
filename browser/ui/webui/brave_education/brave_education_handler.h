@@ -10,7 +10,6 @@
 
 #include "brave/components/brave_education/education_urls.h"
 #include "brave/browser/ui/webui/brave_education/brave_education.mojom.h"
-// #include "components/user_education/webui/whats_new_registry.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -34,7 +33,6 @@ class BraveEducationHandler : public brave_education::mojom::PageHandler {
  private:
   // brave_education::mojom::PageHandler
   void GetServerUrl(GetServerUrlCallback callback) override;
-  void RecordBrowserCommandExecuted() override;
 
   // These are located at the end of the list of member variables to ensure the
   // WebUI page is disconnected before other members are destroyed.

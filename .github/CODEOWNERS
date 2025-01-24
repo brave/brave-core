@@ -77,12 +77,6 @@ net/proxy_resolution/ @brave/tor-reviewers
 chromium_src/**/extensions/**/*_features.json @brave/sec-team
 chromium_src/tools/json_schema_compiler/ @brave/sec-team
 
-# Browser commands available via Brave Education content
-browser/ui/webui/brave_browser_command/brave_browser_command_handler.cc @brave/sec-team
-browser/resources/brave_education/brave_education_app.ts @brave/sec-team
-components/brave_education/education_urls.* @brave/sec-team
-ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom @brave/sec-team
-
 # Brave theme
 browser/themes @simonhong
 
@@ -216,3 +210,9 @@ docs/gni_sources.md @brave/sources-gni-reviewers
 **/*.grd @brave/string-reviewers-team
 **/*.grdp @brave/string-reviewers-team
 components/brave_extension/extension/brave_extension/_locales/en_US/messages.json @brave/string-reviewers-team
+
+# Browser commands available via Brave Education content
+browser/ui/webui/brave_browser_command/brave_browser_command_handler.cc @brave/sec-team
+browser/resources/brave_education/brave_education_app.ts @brave/sec-team
+components/brave_education/education_urls.* @brave/sec-team
+ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom @brave/sec-team

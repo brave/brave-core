@@ -22,7 +22,7 @@
 
 namespace brave_education {
 
-class EducationPageUIBrowserTest : public InProcessBrowserTest {
+class BraveEducationPageUIBrowserTest : public InProcessBrowserTest {
  protected:
   void SetUpOnMainThread() override { CreateAndAddWebUITestDataSource(); }
 
@@ -55,8 +55,9 @@ class EducationPageUIBrowserTest : public InProcessBrowserTest {
 
     source->SetRequestFilter(
         base::BindRepeating([](const std::string&) { return true; }),
-        base::BindRepeating(&EducationPageUIBrowserTest::HandleWebUITestRequest,
-                            weak_factory_.GetWeakPtr()));
+        base::BindRepeating(
+            &BraveEducationPageUIBrowserTest::HandleWebUITestRequest,
+            weak_factory_.GetWeakPtr()));
   }
 
   void HandleWebUITestRequest(
@@ -84,10 +85,10 @@ class EducationPageUIBrowserTest : public InProcessBrowserTest {
   }
 
   std::string message_data_;
-  base::WeakPtrFactory<EducationPageUIBrowserTest> weak_factory_{this};
+  base::WeakPtrFactory<BraveEducationPageUIBrowserTest> weak_factory_{this};
 };
 
-IN_PROC_BROWSER_TEST_F(EducationPageUIBrowserTest, OpenWalletOnboarding) {
+IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenWalletOnboarding) {
   NavigateToEducationPage(EducationPageType::kGettingStarted);
 
   content::WebContentsAddedObserver added_observer;
@@ -100,7 +101,7 @@ IN_PROC_BROWSER_TEST_F(EducationPageUIBrowserTest, OpenWalletOnboarding) {
   EXPECT_EQ(new_web_contents->GetVisibleURL(), GURL(kBraveUIWalletPageURL));
 }
 
-IN_PROC_BROWSER_TEST_F(EducationPageUIBrowserTest, OpenRewardsOnboarding) {
+IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenRewardsOnboarding) {
   NavigateToEducationPage(EducationPageType::kGettingStarted);
 
   content::WebContentsAddedObserver added_observer;
@@ -115,7 +116,7 @@ IN_PROC_BROWSER_TEST_F(EducationPageUIBrowserTest, OpenRewardsOnboarding) {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 
-IN_PROC_BROWSER_TEST_F(EducationPageUIBrowserTest, OpenVPNOnboarding) {
+IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenVPNOnboarding) {
   NavigateToEducationPage(EducationPageType::kGettingStarted);
 
   content::WebContentsAddedObserver added_observer;
@@ -130,7 +131,7 @@ IN_PROC_BROWSER_TEST_F(EducationPageUIBrowserTest, OpenVPNOnboarding) {
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
 
-IN_PROC_BROWSER_TEST_F(EducationPageUIBrowserTest, OpenAPIChat) {
+IN_PROC_BROWSER_TEST_F(BraveEducationPageUIBrowserTest, OpenAPIChat) {
   NavigateToEducationPage(EducationPageType::kGettingStarted);
 
   content::WebContentsAddedObserver added_observer;

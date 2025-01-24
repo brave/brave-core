@@ -43,7 +43,7 @@ class TestDelegate : public BraveBrowserCommandHandler::Delegate {
   AddActionCallback add_action_;
 };
 
-class EducationPageHandlerTest : public testing::Test {
+class BraveEducationPageHandlerTest : public testing::Test {
  protected:
   void SetUp() override {
     TestingProfile::Builder builder;
@@ -88,7 +88,7 @@ class EducationPageHandlerTest : public testing::Test {
   std::vector<std::string> actions_;
 };
 
-TEST_F(EducationPageHandlerTest, BasicCommandsExecuted) {
+TEST_F(BraveEducationPageHandlerTest, BasicCommandsExecuted) {
   auto& handler = CreateHandler();
 
   base::test::TestFuture<bool> future;
@@ -105,7 +105,7 @@ TEST_F(EducationPageHandlerTest, BasicCommandsExecuted) {
   EXPECT_EQ(actions()[1], "open-rewards-panel");
 }
 
-TEST_F(EducationPageHandlerTest, VPNCommandsExecuted) {
+TEST_F(BraveEducationPageHandlerTest, VPNCommandsExecuted) {
   auto& handler = CreateHandler();
   base::test::TestFuture<bool> future;
 
@@ -122,7 +122,7 @@ TEST_F(EducationPageHandlerTest, VPNCommandsExecuted) {
 #endif
 }
 
-TEST_F(EducationPageHandlerTest, ChatCommandsExecuted) {
+TEST_F(BraveEducationPageHandlerTest, ChatCommandsExecuted) {
   auto& handler = CreateHandler();
   base::test::TestFuture<bool> future;
 
@@ -136,7 +136,7 @@ TEST_F(EducationPageHandlerTest, ChatCommandsExecuted) {
 // TODO(bsclifton): this currently fails. The web UI won't load
 // for OTR, but the handler works fine. This might have been a change
 // in behavior during the refactoring.
-TEST_F(EducationPageHandlerTest, OffTheRecordProfile) {
+TEST_F(BraveEducationPageHandlerTest, OffTheRecordProfile) {
   auto* otr_profile = profile().GetOffTheRecordProfile(
       Profile::OTRProfileID::CreateUniqueForTesting(),
       /*create_if_needed=*/true);

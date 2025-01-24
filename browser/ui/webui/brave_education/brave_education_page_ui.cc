@@ -5,7 +5,7 @@
 
 // based on //chrome/browser/ui/webui/whats_new/whats_new_ui.cc
 
-#include "brave/browser/ui/webui/brave_education/education_page_ui.h"
+#include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
 
 #include <string>
 #include <utility>
@@ -53,7 +53,8 @@ void CreateAndAddWhatsNewUIHtmlSource(content::WebUI* web_ui,
 
 }  // namespace
 
-EducationPageUI::EducationPageUI(content::WebUI* web_ui, const GURL& url)
+BraveEducationPageUI::BraveEducationPageUI(content::WebUI* web_ui,
+                                           const GURL& url)
     : ui::MojoWebUIController(web_ui, /*enable_chrome_send=*/true),
       page_factory_receiver_(this),
       browser_command_factory_receiver_(this),
@@ -61,23 +62,21 @@ EducationPageUI::EducationPageUI(content::WebUI* web_ui, const GURL& url)
   CreateAndAddWhatsNewUIHtmlSource(web_ui, profile_);
 }
 
-WEB_UI_CONTROLLER_TYPE_IMPL(EducationPageUI)
+WEB_UI_CONTROLLER_TYPE_IMPL(BraveEducationPageUI)
 
-void EducationPageUI::BindInterface(
+void BraveEducationPageUI::BindInterface(
     mojo::PendingReceiver<brave_education::mojom::PageHandlerFactory>
         receiver) {
   page_factory_receiver_.reset();
   page_factory_receiver_.Bind(std::move(receiver));
 }
 
-void EducationPageUI::CreatePageHandler(
+void BraveEducationPageUI::CreatePageHandler(
     mojo::PendingRemote<brave_education::mojom::Page> page,
     mojo::PendingReceiver<brave_education::mojom::PageHandler> receiver) {
   DCHECK(page);
 
   auto* web_contents = web_ui()->GetWebContents();
-  auto* tab = tabs::TabInterface::GetFromContents(web_contents);
-  CHECK(tab);
   auto education_page_type = brave_education::EducationPageTypeFromBrowserURL(
       web_contents->GetVisibleURL());
 
@@ -85,7 +84,7 @@ void EducationPageUI::CreatePageHandler(
       std::move(receiver), std::move(page), *education_page_type);
 }
 
-void EducationPageUI::BindInterface(
+void BraveEducationPageUI::BindInterface(
     mojo::PendingReceiver<BraveBrowserCommandHandlerFactory> pending_receiver) {
   if (browser_command_factory_receiver_.is_bound()) {
     browser_command_factory_receiver_.reset();
@@ -93,7 +92,7 @@ void EducationPageUI::BindInterface(
   browser_command_factory_receiver_.Bind(std::move(pending_receiver));
 }
 
-void EducationPageUI::CreateBrowserCommandHandler(
+void BraveEducationPageUI::CreateBrowserCommandHandler(
     mojo::PendingReceiver<
         brave_browser_command::mojom::BraveBrowserCommandHandler>
         pending_handler) {
@@ -116,4 +115,4 @@ void EducationPageUI::CreateBrowserCommandHandler(
           *tab));
 }
 
-EducationPageUI::~EducationPageUI() = default;
+BraveEducationPageUI::~BraveEducationPageUI() = default;

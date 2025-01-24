@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/brave_education/education_server_checker.h"
+#include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
 
 #include <utility>
 
@@ -61,14 +61,14 @@ bool URLLoadedWithSuccess(const network::SimpleURLLoader& url_loader) {
 
 }  // namespace
 
-EducationServerChecker::EducationServerChecker(
+BraveEducationServerChecker::BraveEducationServerChecker(
     PrefService& pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : pref_service_(pref_service), url_loader_factory_(url_loader_factory) {}
 
-EducationServerChecker::~EducationServerChecker() = default;
+BraveEducationServerChecker::~BraveEducationServerChecker() = default;
 
-void EducationServerChecker::IsServerPageAvailable(
+void BraveEducationServerChecker::IsServerPageAvailable(
     EducationPageType page_type,
     IsServerPageAvailableCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
@@ -92,7 +92,7 @@ void EducationServerChecker::IsServerPageAvailable(
   auto* url_loader_ptr = url_loader.get();
 
   auto download_callback = base::BindOnce(
-      &EducationServerChecker::OnURLResponse, weak_factory_.GetWeakPtr(),
+      &BraveEducationServerChecker::OnURLResponse, weak_factory_.GetWeakPtr(),
       page_type, std::move(url_loader), std::move(callback));
 
   url_loader_ptr->DownloadToString(url_loader_factory_.get(),
@@ -100,7 +100,7 @@ void EducationServerChecker::IsServerPageAvailable(
                                    kMaxDownloadBytes);
 }
 
-void EducationServerChecker::OnURLResponse(
+void BraveEducationServerChecker::OnURLResponse(
     EducationPageType page_type,
     std::unique_ptr<network::SimpleURLLoader> url_loader,
     IsServerPageAvailableCallback callback,

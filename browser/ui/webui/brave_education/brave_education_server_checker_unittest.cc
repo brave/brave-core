@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/brave_education/education_server_checker.h"
+#include "brave/browser/ui/webui/brave_education/brave_education_server_checker.h"
 
 #include <memory>
 #include <optional>
@@ -23,7 +23,7 @@
 
 namespace brave_education {
 
-class EducationServerCheckerTest : public testing::Test {
+class BraveEducationPageUIBrowserTest : public testing::Test {
  protected:
   void SetUp() override {
     language::LanguagePrefs::RegisterProfilePrefs(prefs_.registry());
@@ -40,8 +40,8 @@ class EducationServerCheckerTest : public testing::Test {
                                          net::HTTP_NOT_FOUND);
   }
 
-  std::unique_ptr<EducationServerChecker> CreateChecker() {
-    return std::make_unique<EducationServerChecker>(
+  std::unique_ptr<BraveEducationServerChecker> CreateChecker() {
+    return std::make_unique<BraveEducationServerChecker>(
         prefs_, test_url_loader_factory_.GetSafeWeakWrapper());
   }
 
@@ -50,7 +50,7 @@ class EducationServerCheckerTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
 };
 
-TEST_F(EducationServerCheckerTest, SuccessResponse) {
+TEST_F(BraveEducationPageUIBrowserTest, SuccessResponse) {
   AddSuccessResponse(EducationPageType::kGettingStarted);
 
   base::test::TestFuture<bool> future;
@@ -61,7 +61,7 @@ TEST_F(EducationServerCheckerTest, SuccessResponse) {
   ASSERT_TRUE(future.Get());
 }
 
-TEST_F(EducationServerCheckerTest, BadResponse) {
+TEST_F(BraveEducationPageUIBrowserTest, BadResponse) {
   AddErrorResponse(EducationPageType::kGettingStarted);
 
   base::test::TestFuture<bool> future;
