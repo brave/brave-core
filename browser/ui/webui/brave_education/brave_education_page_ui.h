@@ -5,8 +5,8 @@
 
 // based on //chrome/browser/ui/webui/whats_new/whats_new_ui.h
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_PAGE_UI_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_PAGE_UI_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_BRAVE_EDUCATION_PAGE_UI_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_BRAVE_EDUCATION_PAGE_UI_H_
 
 #include <memory>
 
@@ -27,25 +27,25 @@ class WebUI;
 }
 
 class BraveEducationHandler;
-class EducationPageUI;
+class BraveEducationPageUI;
 
-class EducationPageUIConfig
-    : public content::DefaultWebUIConfig<EducationPageUI> {
+class BraveEducationPageUIConfig
+    : public content::DefaultWebUIConfig<BraveEducationPageUI> {
  public:
-  EducationPageUIConfig()
+  BraveEducationPageUIConfig()
       : DefaultWebUIConfig(content::kChromeUIScheme, kBraveGettingStartedHost) {
   }
 };
 
 // The Web UI controller for the Brave product education page, which displays
 // production education website content in an iframe.
-class EducationPageUI
+class BraveEducationPageUI
     : public ui::MojoWebUIController,
       public brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
       public brave_education::mojom::PageHandlerFactory {
  public:
-  EducationPageUI(content::WebUI* web_ui, const GURL& url);
-  ~EducationPageUI() override;
+  BraveEducationPageUI(content::WebUI* web_ui, const GURL& url);
+  ~BraveEducationPageUI() override;
 
   // Instantiates the implementor of the
   // brave_education::mojom::PageHandlerFactory mojo interface.
@@ -60,8 +60,8 @@ class EducationPageUI
           brave_browser_command::mojom::BraveBrowserCommandHandlerFactory>
           pending_receiver);
 
-  EducationPageUI(const EducationPageUI&) = delete;
-  EducationPageUI& operator=(const EducationPageUI&) = delete;
+  BraveEducationPageUI(const BraveEducationPageUI&) = delete;
+  BraveEducationPageUI& operator=(const BraveEducationPageUI&) = delete;
 
  private:
   // brave_education::mojom::PageHandlerFactory:
@@ -89,4 +89,4 @@ class EducationPageUI
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_PAGE_UI_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_BRAVE_EDUCATION_PAGE_UI_H_

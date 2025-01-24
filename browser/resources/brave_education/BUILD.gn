@@ -30,8 +30,6 @@ build_webui("build") {
 
   mojo_files_deps =
       [ "//brave/browser/ui/webui/brave_education:mojo_bindings_ts__generator" ]
-  mojo_files = [
-    "$root_gen_dir/brave/browser/ui/webui/brave_education/brave_education.mojom-webui.ts",
-  ]
+  mojo_files = [ "$root_gen_dir/brave/browser/ui/webui/brave_education/brave_education.mojom-webui.ts" ]
   use_brave_grit = true
 }

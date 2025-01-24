@@ -25,7 +25,7 @@ constexpr std::string_view PageTypeToBrowserURL(EducationPageType page_type) {
 constexpr std::string_view PageTypeToServerURL(EducationPageType page_type) {
   switch (page_type) {
     case EducationPageType::kGettingStarted:
-      return "https://brave.com/getting-started/";
+      return "https://browser-education.brave.com/";
   }
 }
 

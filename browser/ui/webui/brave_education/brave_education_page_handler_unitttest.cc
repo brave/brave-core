@@ -43,7 +43,7 @@ class TestDelegate : public BraveBrowserCommandHandler::Delegate {
   AddActionCallback add_action_;
 };
 
-class EducationPageHandlerTest : public testing::Test {
+class BraveEducationPageHandlerTest : public testing::Test {
  protected:
   void SetUp() override {
     TestingProfile::Builder builder;
@@ -88,7 +88,7 @@ class EducationPageHandlerTest : public testing::Test {
   std::vector<std::string> actions_;
 };
 
-TEST_F(EducationPageHandlerTest, BasicCommandsExecuted) {
+TEST_F(BraveEducationPageHandlerTest, BasicCommandsExecuted) {
   auto& handler = CreateHandler();
 
   base::test::TestFuture<bool> future;
@@ -105,7 +105,7 @@ TEST_F(EducationPageHandlerTest, BasicCommandsExecuted) {
   EXPECT_EQ(actions()[1], "open-rewards-panel");
 }
 
-TEST_F(EducationPageHandlerTest, VPNCommandsExecuted) {
+TEST_F(BraveEducationPageHandlerTest, VPNCommandsExecuted) {
   auto& handler = CreateHandler();
   base::test::TestFuture<bool> future;
 
@@ -122,7 +122,7 @@ TEST_F(EducationPageHandlerTest, VPNCommandsExecuted) {
 #endif
 }
 
-TEST_F(EducationPageHandlerTest, ChatCommandsExecuted) {
+TEST_F(BraveEducationPageHandlerTest, ChatCommandsExecuted) {
   auto& handler = CreateHandler();
   base::test::TestFuture<bool> future;
 
@@ -133,10 +133,7 @@ TEST_F(EducationPageHandlerTest, ChatCommandsExecuted) {
   EXPECT_EQ(actions()[0], "open-ai-chat");
 }
 
-// TODO(bsclifton): this currently fails. The web UI won't load
-// for OTR, but the handler works fine. This might have been a change
-// in behavior during the refactoring.
-TEST_F(EducationPageHandlerTest, OffTheRecordProfile) {
+TEST_F(BraveEducationPageHandlerTest, OffTheRecordProfile) {
   auto* otr_profile = profile().GetOffTheRecordProfile(
       Profile::OTRProfileID::CreateUniqueForTesting(),
       /*create_if_needed=*/true);
@@ -145,19 +142,29 @@ TEST_F(EducationPageHandlerTest, OffTheRecordProfile) {
 
   base::test::TestFuture<bool> future;
 
-  handler->ExecuteCommand(
+  // browser/resources/brave_education/brave_education_app.ts
+  // calls `CanExecuteCommand` before calling `ExecuteCommand`
+  //
+  // Since OTR does not allow, callback is immediately called w/ false
+  handler->CanExecuteCommand(
       brave_browser_command::mojom::Command::kOpenWalletOnboarding,
-      base::DoNothing());
-  handler->ExecuteCommand(
-      brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
-      base::DoNothing());
-  handler->ExecuteCommand(
-      brave_browser_command::mojom::Command::kOpenVPNOnboarding,
-      base::DoNothing());
-  handler->ExecuteCommand(brave_browser_command::mojom::Command::kOpenAIChat,
-                          future.GetCallback());
-
+      future.GetCallback());
   ASSERT_FALSE(future.Get());
+
+  handler->CanExecuteCommand(
+      brave_browser_command::mojom::Command::kOpenRewardsOnboarding,
+      future.GetCallback());
+  ASSERT_FALSE(future.Get());
+
+  handler->CanExecuteCommand(
+      brave_browser_command::mojom::Command::kOpenVPNOnboarding,
+      future.GetCallback());
+  ASSERT_FALSE(future.Get());
+
+  handler->CanExecuteCommand(brave_browser_command::mojom::Command::kOpenAIChat,
+                             future.GetCallback());
+  ASSERT_FALSE(future.Get());
+
   EXPECT_TRUE(actions().empty());
 }
 

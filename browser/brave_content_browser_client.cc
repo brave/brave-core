@@ -269,7 +269,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
-#include "brave/browser/ui/webui/brave_education/education_page_ui.h"
+#include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
 #endif
 
 namespace {
@@ -908,10 +908,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 
 #if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_education::mojom::PageHandlerFactory, EducationPageUI>(map);
+      brave_education::mojom::PageHandlerFactory, BraveEducationPageUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
-      EducationPageUI>(map);
+      BraveEducationPageUI>(map);
 #endif
 }
 

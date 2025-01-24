@@ -22,7 +22,8 @@ enum Command {
 // BraveBrowserCommandHandlers to handle requests for browser commands from JS.
 interface BraveBrowserCommandHandlerFactory {
   // Called when first initialized.
-  CreateBrowserCommandHandler(pending_receiver<BraveBrowserCommandHandler> receiver);
+  CreateBrowserCommandHandler(
+      pending_receiver<BraveBrowserCommandHandler> receiver);
 };
 
 // Browser-side handler for requests from the WebUI page.

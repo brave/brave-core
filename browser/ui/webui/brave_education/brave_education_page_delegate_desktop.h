@@ -11,9 +11,7 @@
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
-namespace tabs {
-class TabInterface;
-}
+class BrowserWindowInterface;
 
 namespace brave_education {
 
@@ -21,7 +19,8 @@ namespace brave_education {
 class BraveEducationPageDelegateDesktop
     : public BraveBrowserCommandHandler::Delegate {
  public:
-  explicit BraveEducationPageDelegateDesktop(tabs::TabInterface& tab);
+  explicit BraveEducationPageDelegateDesktop(
+      BrowserWindowInterface& window_interface);
   ~BraveEducationPageDelegateDesktop() override;
 
   void OpenURL(const GURL& url, WindowOpenDisposition disposition) override;
@@ -30,8 +29,8 @@ class BraveEducationPageDelegateDesktop
   void OpenAIChat() override;
 
  private:
-  // The tab that contains the Brave Education WebUI.
-  raw_ref<tabs::TabInterface> tab_;
+  // The browser window interface for tab w/ brave_education's WebUI.
+  raw_ref<BrowserWindowInterface> window_interface_;
 };
 
 }  // namespace brave_education

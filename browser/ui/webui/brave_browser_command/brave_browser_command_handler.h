@@ -11,6 +11,7 @@
 #include <memory>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 #include "brave/ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"

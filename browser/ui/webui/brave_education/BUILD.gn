@@ -5,8 +5,8 @@
 
 # based on //chrome/browser/ui/webui/whats_new/BUILD.gn
 
-import("//mojo/public/tools/bindings/mojom.gni")
 import("//brave/components/brave_education/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 
 assert(enable_brave_education)
 
@@ -26,14 +26,15 @@ source_set("brave_education") {
     "brave_education_handler.h",
     "brave_education_page_delegate_desktop.cc",
     "brave_education_page_delegate_desktop.h",
-    "education_page_ui.cc",
-    "education_page_ui.h",
-    "education_server_checker.cc",
-    "education_server_checker.h",
+    "brave_education_page_ui.cc",
+    "brave_education_page_ui.h",
+    "brave_education_server_checker.cc",
+    "brave_education_server_checker.h",
   ]
 
   deps = [
     "//brave/browser/resources/brave_education:resources",
+    "//brave/browser/ui/webui/brave_browser_command",
     "//brave/components/brave_vpn/common/buildflags",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/profiles:profile",
@@ -45,8 +46,8 @@ source_set("brave_education") {
   ]
 
   public_deps = [
-    "//brave/components/brave_education",
     "//brave/browser/ui/webui/brave_education:mojo_bindings",
+    "//brave/components/brave_education",
     "//brave/ui/webui/resources/js/brave_browser_command:mojo_bindings",
   ]
 }
@@ -54,7 +55,7 @@ source_set("brave_education") {
 source_set("browser_tests") {
   testonly = true
 
-  sources = [ "education_page_ui_browsertest.cc" ]
+  sources = [ "brave_education_page_ui_browsertest.cc" ]
 
   deps = [
     ":brave_education",
@@ -76,13 +77,14 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "education_page_handler_unitttest.cc",
-    "education_server_checker_unittest.cc",
+    "brave_education_page_handler_unitttest.cc",
+    "brave_education_server_checker_unittest.cc",
   ]
 
   deps = [
     ":brave_education",
     "//base/test:test_support",
+    "//brave/browser/ui/webui/brave_browser_command",
     "//brave/components/brave_education",
     "//brave/components/brave_vpn/common/buildflags",
     "//chrome/browser/ui",

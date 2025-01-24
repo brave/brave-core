@@ -32,8 +32,6 @@ function handleBrowserCommand(commandId: number) {
   handler.canExecuteCommand(commandId).then(({canExecute}) => {
     if (canExecute) {
       handler.executeCommand(commandId);
-      const pageHandler = BraveEducationProxyImpl.getInstance().handler;
-      pageHandler.recordBrowserCommandExecuted();
     } else {
       console.warn('Received invalid command: ' + commandId);
     }

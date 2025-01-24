@@ -66,10 +66,10 @@ bool IsChromeDev(const std::u16string& browser_name) {
 
 WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile)
     : profile_(profile),
-      education_server_checker_(*profile->GetPrefs(),
-                                profile->GetURLLoaderFactory()) {
+      brave_education_server_checker_(*profile->GetPrefs(),
+                                      profile->GetURLLoaderFactory()) {
   base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(
-      GURL("https://brave.com"))
+      GURL("https://browser-education.brave.com"))
       ->StartCheckIsDefaultAndGetDefaultClientName(
           base::BindOnce(&WelcomeDOMHandler::OnGetDefaultBrowser,
                          weak_ptr_factory_.GetWeakPtr()));
@@ -192,7 +192,7 @@ void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
     OnGettingStatedServerCheck(callback_id, /* available */ false);
     return;
   }
-  education_server_checker_.IsServerPageAvailable(
+  brave_education_server_checker_.IsServerPageAvailable(
       brave_education::EducationPageType::kGettingStarted,
       base::BindOnce(&WelcomeDOMHandler::OnGettingStatedServerCheck,
                      weak_ptr_factory_.GetWeakPtr(), callback_id));

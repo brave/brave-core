@@ -10,29 +10,29 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 
 namespace brave_education {
 
 BraveEducationPageDelegateDesktop::BraveEducationPageDelegateDesktop(
-    tabs::TabInterface& tab)
-    : tab_(tab) {}
+    BrowserWindowInterface& window_interface)
+    : window_interface_(window_interface) {}
 
-BraveEducationPageDelegateDesktop::~BraveEducationPageDelegateDesktop() = default;
+BraveEducationPageDelegateDesktop::~BraveEducationPageDelegateDesktop() =
+    default;
 
-void BraveEducationPageDelegateDesktop::OpenURL(const GURL& url,
-                                           WindowOpenDisposition disposition) {
-  tab_->GetBrowserWindowInterface()->OpenGURL(url, disposition);
+void BraveEducationPageDelegateDesktop::OpenURL(
+    const GURL& url,
+    WindowOpenDisposition disposition) {
+  window_interface_->OpenGURL(url, disposition);
 }
 
 void BraveEducationPageDelegateDesktop::OpenRewardsPanel() {
   // TODO(zenparsing): Instead of using a `Browser` pointer,
   // expose Rewards panel functionality via `BrowserWindowFeatures`.
   // See https://github.com/brave/brave-browser/issues/42179.
-  auto* browser =
-      tab_->GetBrowserWindowInterface()->GetBrowserForMigrationOnly();
+  auto* browser = window_interface_->GetBrowserForMigrationOnly();
   CHECK(browser);
   if (auto* panel_coordinator =
           brave_rewards::RewardsPanelCoordinator::FromBrowser(browser)) {
@@ -42,15 +42,13 @@ void BraveEducationPageDelegateDesktop::OpenRewardsPanel() {
 
 void BraveEducationPageDelegateDesktop::OpenVPNPanel() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  tab_->GetBrowserWindowInterface()
-      ->GetFeatures()
-      .GetBraveVPNController()
-      ->ShowBraveVPNBubble(/* show_select */ false);
+  window_interface_->GetFeatures().GetBraveVPNController()->ShowBraveVPNBubble(
+      /* show_select */ false);
 #endif
 }
 
 void BraveEducationPageDelegateDesktop::OpenAIChat() {
-  tab_->GetBrowserWindowInterface()->GetFeatures().side_panel_ui()->Show(
+  window_interface_->GetFeatures().side_panel_ui()->Show(
       SidePanelEntry::Key(SidePanelEntryId::kChatUI));
 }
 

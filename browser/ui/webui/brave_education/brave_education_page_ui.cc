@@ -5,10 +5,11 @@
 
 // based on //chrome/browser/ui/webui/whats_new/whats_new_ui.cc
 
-#include "brave/browser/ui/webui/brave_education/education_page_ui.h"
+#include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "brave/browser/ui/webui/brave_browser_command/brave_browser_command_handler.h"
 #include "brave/browser/ui/webui/brave_education/brave_education_handler.h"
@@ -20,13 +21,13 @@
 #include "brave/grit/brave_education_resources_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_interface.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "chrome/grit/branded_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "ui/webui/webui_util.h"
 
 namespace {
 
@@ -47,12 +48,13 @@ void CreateAndAddWhatsNewUIHtmlSource(content::WebUI* web_ui,
   // Allow embedding of iframe content from allowed domains.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ChildSrc,
-      "child-src chrome://webui-test https://brave.com/;");
+      "child-src chrome://webui-test https://browser-education.brave.com;");
 }
 
 }  // namespace
 
-EducationPageUI::EducationPageUI(content::WebUI* web_ui, const GURL& url)
+BraveEducationPageUI::BraveEducationPageUI(content::WebUI* web_ui,
+                                           const GURL& url)
     : ui::MojoWebUIController(web_ui, /*enable_chrome_send=*/true),
       page_factory_receiver_(this),
       browser_command_factory_receiver_(this),
@@ -60,23 +62,21 @@ EducationPageUI::EducationPageUI(content::WebUI* web_ui, const GURL& url)
   CreateAndAddWhatsNewUIHtmlSource(web_ui, profile_);
 }
 
-WEB_UI_CONTROLLER_TYPE_IMPL(EducationPageUI)
+WEB_UI_CONTROLLER_TYPE_IMPL(BraveEducationPageUI)
 
-void EducationPageUI::BindInterface(
+void BraveEducationPageUI::BindInterface(
     mojo::PendingReceiver<brave_education::mojom::PageHandlerFactory>
         receiver) {
   page_factory_receiver_.reset();
   page_factory_receiver_.Bind(std::move(receiver));
 }
 
-void EducationPageUI::CreatePageHandler(
+void BraveEducationPageUI::CreatePageHandler(
     mojo::PendingRemote<brave_education::mojom::Page> page,
     mojo::PendingReceiver<brave_education::mojom::PageHandler> receiver) {
   DCHECK(page);
 
   auto* web_contents = web_ui()->GetWebContents();
-  auto* tab = tabs::TabInterface::GetFromContents(web_contents);
-  CHECK(tab);
   auto education_page_type = brave_education::EducationPageTypeFromBrowserURL(
       web_contents->GetVisibleURL());
 
@@ -84,7 +84,7 @@ void EducationPageUI::CreatePageHandler(
       std::move(receiver), std::move(page), *education_page_type);
 }
 
-void EducationPageUI::BindInterface(
+void BraveEducationPageUI::BindInterface(
     mojo::PendingReceiver<BraveBrowserCommandHandlerFactory> pending_receiver) {
   if (browser_command_factory_receiver_.is_bound()) {
     browser_command_factory_receiver_.reset();
@@ -92,7 +92,7 @@ void EducationPageUI::BindInterface(
   browser_command_factory_receiver_.Bind(std::move(pending_receiver));
 }
 
-void EducationPageUI::CreateBrowserCommandHandler(
+void BraveEducationPageUI::CreateBrowserCommandHandler(
     mojo::PendingReceiver<
         brave_browser_command::mojom::BraveBrowserCommandHandler>
         pending_handler) {
@@ -112,7 +112,7 @@ void EducationPageUI::CreateBrowserCommandHandler(
   command_handler_ = std::make_unique<BraveBrowserCommandHandler>(
       std::move(pending_handler), profile_, supported_commands,
       std::make_unique<brave_education::BraveEducationPageDelegateDesktop>(
-          *tab));
+          *tab->GetBrowserWindowInterface()));
 }
 
-EducationPageUI::~EducationPageUI() = default;
+BraveEducationPageUI::~BraveEducationPageUI() = default;

@@ -109,11 +109,9 @@ source_set("ui") {
     sources += [
       "webui/webcompat_reporter/webcompat_reporter_ui.cc",
       "webui/webcompat_reporter/webcompat_reporter_ui.h",
-      # brave_browser_commands are desktop only too
-      "webui/brave_browser_command/brave_browser_command_handler.cc",
-      "webui/brave_browser_command/brave_browser_command_handler.h",
     ]
     deps += [
+      "//brave/browser/ui/webui/brave_browser_command",
       "//brave/components/webcompat_reporter/common:mojom",
       "//brave/ui/webui/resources/js/brave_browser_command:mojo_bindings",
     ]

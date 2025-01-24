@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_SERVER_CHECKER_H_
-#define BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_SERVER_CHECKER_H_
+#ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_BRAVE_EDUCATION_SERVER_CHECKER_H_
+#define BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_BRAVE_EDUCATION_SERVER_CHECKER_H_
 
 #include <memory>
 #include <optional>
@@ -26,16 +26,17 @@ namespace brave_education {
 
 // A helper for determining the whether an education server URL is currently
 // returning a valid response.
-class EducationServerChecker {
+class BraveEducationServerChecker {
  public:
-  EducationServerChecker(
+  BraveEducationServerChecker(
       PrefService& pref_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
-  ~EducationServerChecker();
+  ~BraveEducationServerChecker();
 
-  EducationServerChecker(const EducationServerChecker&) = delete;
-  EducationServerChecker& operator=(const EducationServerChecker&) = delete;
+  BraveEducationServerChecker(const BraveEducationServerChecker&) = delete;
+  BraveEducationServerChecker& operator=(const BraveEducationServerChecker&) =
+      delete;
 
   using IsServerPageAvailableCallback = base::OnceCallback<void(bool)>;
 
@@ -52,9 +53,9 @@ class EducationServerChecker {
 
   raw_ref<PrefService> pref_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  base::WeakPtrFactory<EducationServerChecker> weak_factory_{this};
+  base::WeakPtrFactory<BraveEducationServerChecker> weak_factory_{this};
 };
 
 }  // namespace brave_education
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_EDUCATION_SERVER_CHECKER_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_EDUCATION_BRAVE_EDUCATION_SERVER_CHECKER_H_

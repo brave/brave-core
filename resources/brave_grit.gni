@@ -1,6 +1,7 @@
-# Copyright 2022 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//tools/grit/grit_rule.gni")
 
@@ -23,11 +24,11 @@ template("brave_grit") {
 template("brave_or_default_grit") {
   if (defined(invoker.use_brave_grit) && invoker.use_brave_grit) {
     brave_grit(target_name) {
-      forward_variables_from(invoker, "*")
+      forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
     }
   } else {
     grit(target_name) {
-      forward_variables_from(invoker, "*")
+      forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
     }
   }
 }
