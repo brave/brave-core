@@ -22,7 +22,7 @@ import { searchEnginesPromise } from '../../../components/search/SearchContext'
 import { MediumSearchEngineIcon } from '../../../components/search/SearchEngineIcon'
 import { useNewTabPref } from '../../../hooks/usePref'
 import { getLocale } from '../../../../common/locale'
-import { braveSearchHost } from '../../../components/search/config'
+import { defaultSearchHost } from '../../../components/search/config'
 import { useEngineContext } from '../../../components/search/EngineContext'
 
 const EnginesContainer = styled(Flex)`
@@ -89,7 +89,7 @@ export default function SearchSettings() {
         // If we've just enabled the searchbox, make sure at least one engine
         // is enabled.
         if (e.checked && !hasEnabledEngine(engineConfig)) {
-          setEngineConfig(braveSearchHost, true)
+          setEngineConfig(defaultSearchHost, true)
         }
       }} />
     </SettingsRow>
