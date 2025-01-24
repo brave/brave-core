@@ -900,35 +900,8 @@ extension BrowserViewController: TopToolbarDelegate {
 
     present(navigationController, animated: true)
   }
-}
 
-extension BrowserViewController: ToolbarDelegate {
-  func tabToolbarDidPressSearch(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
-  }
-
-  func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    tabManager.selectedTab?.goBack()
-    resetExternalAlertProperties(tabManager.selectedTab)
-    recordNavigationActionP3A(isNavigationActionForward: false)
-  }
-
-  func tabToolbarDidLongPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    UIImpactFeedbackGenerator(style: .heavy).vibrate()
-    showBackForwardList()
-  }
-
-  func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-    tabManager.selectedTab?.goForward()
-    resetExternalAlertProperties(tabManager.selectedTab)
-    recordNavigationActionP3A(isNavigationActionForward: true)
-  }
-
-  func tabToolbarDidPressShare() {
-    navigationHelper.openShareSheet()
-  }
-
-  func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol) {
+  func presentMenu(from tabToolbar: ToolbarProtocol) {
     let selectedTabURL: URL? = {
       guard let url = tabManager.selectedTab?.url else { return nil }
 
@@ -1005,6 +978,37 @@ extension BrowserViewController: ToolbarDelegate {
       menuController.popoverPresentationController?.popoverLayoutMargins = .init(equalInset: 4)
       menuController.popoverPresentationController?.permittedArrowDirections = [.up, .down]
     }
+  }
+}
+
+extension BrowserViewController: ToolbarDelegate {
+  func tabToolbarDidPressSearch(_ tabToolbar: ToolbarProtocol, button: UIButton) {
+    topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
+  }
+
+  func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
+    tabManager.selectedTab?.goBack()
+    resetExternalAlertProperties(tabManager.selectedTab)
+    recordNavigationActionP3A(isNavigationActionForward: false)
+  }
+
+  func tabToolbarDidLongPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
+    UIImpactFeedbackGenerator(style: .heavy).vibrate()
+    showBackForwardList()
+  }
+
+  func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
+    tabManager.selectedTab?.goForward()
+    resetExternalAlertProperties(tabManager.selectedTab)
+    recordNavigationActionP3A(isNavigationActionForward: true)
+  }
+
+  func tabToolbarDidPressShare() {
+    navigationHelper.openShareSheet()
+  }
+
+  func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol) {
+    presentMenu(from: tabToolbar)
   }
 
   func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
