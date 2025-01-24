@@ -25,12 +25,13 @@ namespace youtube_script_injector {
 class YouTubeRegistry;
 
 // Used to inject JS scripts into the page.
-class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
+class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper final
     : public content::WebContentsObserver,
       public content::WebContentsUserData<YouTubeTabHelper> {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents,
                                         const int32_t world_id);
+  static void EnterPipMode();
   ~YouTubeTabHelper() override;
   YouTubeTabHelper(const YouTubeTabHelper&) = delete;
   YouTubeTabHelper& operator=(const YouTubeTabHelper&) = delete;
