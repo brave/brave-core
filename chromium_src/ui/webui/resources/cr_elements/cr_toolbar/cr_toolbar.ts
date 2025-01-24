@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js';
-import { loadTimeData } from '//resources/js/load_time_data.js';
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
-import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
-import { getHtml } from './cr_toolbar.html.js';
-import { getCss } from './cr_toolbar.css.js';
+import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
+import { getHtml } from './cr_toolbar.html.js'
+import { getCss } from './cr_toolbar.css.js'
 
 import '//resources/brave/br_elements/br_toolbar/br_toolbar_search_field.js'
 
@@ -17,6 +17,8 @@ const customCurrentWebUINameMap: { [key: string]: string } = {
   sync: 'settings',
 }
 
+// TODO(simonhong): Avoid any and use its type(BrToolbarSearchFieldElement).
+// Can't import type from //resources/brave/br_elements/br_toolbar/br_toolbar_search_field.js.
 export interface CrToolbarElement {
   $: {
     search: any

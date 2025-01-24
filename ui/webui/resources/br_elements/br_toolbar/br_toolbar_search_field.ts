@@ -3,17 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js';
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
-// @ts-expect-error
-import { CrSearchFieldMixinLit } from '//resources/cr_elements/cr_search_field/cr_search_field_mixin_lit.js';
+// @ts-expect-error: TS2792: Can't find this module.
+import { CrSearchFieldMixinLit } from '//resources/cr_elements/cr_search_field/cr_search_field_mixin_lit.js'
 import { getHtml } from './br_toolbar_search_field.html.js'
-import { getCss } from './br_toolbar_search_field.css.js';
+import { getCss } from './br_toolbar_search_field.css.js'
 
-import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
+import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 
 const BraveToolbarSearchFieldBase = CrSearchFieldMixinLit(CrLitElement)
 
+// TODO(simonhong): Avoid any and use its type(CrIconButtonElement).
+// Can't import type from //resources/cr_elements/cr_icon_button/cr_icon_button.js
 export interface BrToolbarSearchFieldElement {
   $: {
     icon: any
