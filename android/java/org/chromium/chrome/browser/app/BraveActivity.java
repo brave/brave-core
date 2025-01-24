@@ -5,6 +5,11 @@
 
 package org.chromium.chrome.browser.app;
 
+import static org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher.ActivityState.RESUMED_WITH_NATIVE;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.deviceSupportedPictureInPictureMode;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.hasPictureInPicturePermissionEnabled;
+import static org.chromium.chrome.browser.util.PictureInPictureUtils.launchPictureInPictureSettings;
+
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
