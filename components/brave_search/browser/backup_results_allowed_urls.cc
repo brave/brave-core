@@ -13,6 +13,7 @@
 #include "base/logging.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/url_constants.h"
 
 namespace brave_search {
@@ -63,27 +64,27 @@ bool IsBackupResultURLAllowed(const GURL& url) {
     return false;
   }
 
-  // Extract the hostname from the URL
-  auto hostname = url.host_piece();
+  // Extract domain and registry using GetDomainAndRegistry
+  auto domain_and_registry =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url, net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
 
-  // Split hostname into parts
-  auto host_parts = base::SplitString(hostname, ".", base::KEEP_WHITESPACE,
-                                      base::SPLIT_WANT_ALL);
-
-  if (host_parts.size() < 2) {
+  if (domain_and_registry.empty()) {
     return false;
   }
 
-  // Look for "google" in the parts
-  auto google_it = std::find(host_parts.begin(), host_parts.end(), kGoogleSLD);
-  if (google_it == host_parts.end()) {
+  // Find the first dot position to split into SLD and TLD
+  auto dot_pos = domain_and_registry.find('.');
+  if (dot_pos == std::string::npos) {
     return false;
   }
 
-  std::string potential_tld = base::JoinString(
-      std::vector<std::string>(google_it + 1, host_parts.end()), ".");
+  // Extract SLD and TLD
+  auto sld = domain_and_registry.substr(0, dot_pos);
+  auto tld = domain_and_registry.substr(dot_pos + 1);
 
-  return !potential_tld.empty() && kAllowedGoogleTLDs.contains(potential_tld);
+  // Check if SLD is "google" and TLD is in allowed list
+  return sld == kGoogleSLD && kAllowedGoogleTLDs.contains(tld);
 }
 
 }  // namespace brave_search

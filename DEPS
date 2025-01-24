@@ -17,7 +17,7 @@ deps = {
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
-  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@ad3fa8ec9c5f296a543ee1ac5beb2016787c75c6",
+  "vendor/web-discovery-project": "https://github.com/brave/web-discovery-project@91387374e7a9c935f7adbc1622973cd8e6939f32",
   "third_party/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
   "third_party/ethash/src": "https://github.com/chfast/ethash.git@e4a15c3d76dc09392c7efd3e30d84ee3b871e9ce",
   "third_party/bitcoin-core/src": "https://github.com/bitcoin/bitcoin.git@8105bce5b384c72cf08b25b7c5343622754e7337", # v25.0
