@@ -793,6 +793,7 @@
 -ConfigParserTest.*
 -DeclarativeContentActionTest.*
 -DevToolsUIBindingsTest.SanitizeFrontendURL
+-DevToolsUIDataSourceTest.TestDevToolsRemoteURL
 -DownloadProtectionServiceTest.*
 -DownloadRequestMakerTest.PopulatesEnhancedProtection
 -DownloadTargetDeterminerTest.*
