@@ -2738,6 +2738,27 @@ public abstract class BraveActivity extends ChromeActivity
         }
     }
 
+    public void enterPipMode() {
+        if (!deviceSupportedPictureInPictureMode(this)) {
+            Toast.makeText(this, R.string.picture_in_picture_not_supported, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if (!hasPictureInPicturePermissionEnabled(this)) {
+            launchPictureInPictureSettings(this);
+            return;
+        }
+
+        final Tab currentTab = getActivityTab();
+        if (TabUtils.isYouTubeVideo(currentTab)) {
+            if (getLifecycleDispatcher().getCurrentActivityState() != RESUMED_WITH_NATIVE) {
+                return;
+            }
+            BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
+            enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+        }
+    }
+
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
