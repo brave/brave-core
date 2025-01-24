@@ -422,6 +422,7 @@ if (is_android) {
     "//brave/components/youtube_script_injector/browser/content",
     "//brave/components/youtube_script_injector/browser/core",
     "//brave/components/youtube_script_injector/common",
+    "//brave/components/youtube_script_injector/common:mojom",
     "//chrome/android:jni_headers",
     "//components/sync_device_info",
   ]
