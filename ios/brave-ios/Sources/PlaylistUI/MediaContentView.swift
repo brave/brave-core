@@ -305,8 +305,11 @@ extension MediaContentView {
                 // FIXME: iOS 16 - Menu doesn't apply button styles
                 Label(Strings.Playlist.sleepTimer, braveSystemImage: "leo.sleep.timer")
                   .labelStyle(.iconOnly)
-                if case .date(let sleepTimerFireDate) = model.sleepTimerCondition {
-                  Text(timerInterval: .now...sleepTimerFireDate, countsDown: true)
+                let now = Date.now
+                if case .date(let sleepTimerFireDate) = model.sleepTimerCondition,
+                  sleepTimerFireDate >= now
+                {
+                  Text(timerInterval: now...sleepTimerFireDate, countsDown: true)
                     .font(.callout.weight(.semibold))
                     .transition(.opacity)
                 }
