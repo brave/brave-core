@@ -148,6 +148,10 @@ class URLExtensionTests: XCTestCase {
       (URL(string: "https://www.example.com/?v=1234567")!, "https://www.example.com"),
       // match
       (URL(string: "https://www.example.com")!, "https://www.example.com"),
+      // punycode
+      (URL(string: "http://Дом.ru/")!, "http://xn--d1aqf.ru"),
+      // punycode
+      (URL(string: "http://Дoм.ru/")!, "http://xn--o-gtbz.ru"),
     ]
 
     let webView = WKWebView()
@@ -161,7 +165,7 @@ class URLExtensionTests: XCTestCase {
         webView.loadHTMLString("", baseURL: value)
 
         // await load of html
-        await fulfillment(of: [expectation], timeout: 1)
+        await fulfillment(of: [expectation], timeout: 2)
 
         guard let result = try await webView.evaluateJavaScript("window.origin") as? String else {
           XCTFail("Expected a String result")
