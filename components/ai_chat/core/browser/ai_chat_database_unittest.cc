@@ -477,7 +477,7 @@ class AIChatDatabaseMigrationTest : public testing::Test,
     EXPECT_TRUE(IsInitOk());
     db_.reset();
     // Verify current version of database is latest
-    sql::Database db;
+    sql::Database db(sql::Database::Tag("AIChatDatabase"));
     sql::MetaTable meta_table;
     ASSERT_TRUE(db.Open(db_file_path()));
     ASSERT_TRUE(meta_table.Init(&db, kCurrentDatabaseVersion,
