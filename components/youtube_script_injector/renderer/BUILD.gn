@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+component("renderer") {
+  output_name = "youtube_script_injector_renderer"
+
+  defines = [ "IS_YOUTUBE_SCRIPT_INJECTOR_RENDERER_IMPL" ]
+
+  sources = [
+    "youtube_render_frame_observer.cc",
+    "youtube_render_frame_observer.h",
+    "youtube_injector_frame_js_handler.cc",
+    "youtube_injector_frame_js_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/youtube_script_injector/common",
+    "//brave/components/youtube_script_injector/common:mojom",
+    "//brave/components/youtube_script_injector/browser/core",
+    "//brave/components/youtube_script_injector/browser/content",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//third_party/blink/public/strings",
+    "//v8",
+  ]
+}
