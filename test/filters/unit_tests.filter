@@ -757,6 +757,11 @@
 -KAnonymityServiceClientTest.*
 -KAnonymityTrustTokenGetterTest.*
 
+# These tests fail because we rename the bookmarks bar from "Bookmarks bar" to
+# "Bookmarks"
+-BookmarkHTMLWriterTest.CheckOutput*
+-BookmarkHTMLWriterTest.ExportThenImport
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.*
@@ -799,15 +804,12 @@
 -BinaryUploadServiceTest.*
 -BlocklistedExtensionSyncServiceTest.*
 -BlocklistStatesInteractionUnitTest.*
--BookmarkBarViewInWidgetTest.*
--BookmarkBarViewTest.*
+-BookmarkBarViewTest.ManagedShowAppsShortcutInBookmarksBar
 -BookmarkBubbleViewTest.SyncPromoNotSignedIn
--BookmarkManagerPrivateApiUnitTest.*
--BookmarkMenuDelegateTest.*
--BookmarkTest.*
+-BookmarkTest.EmptyBookmarkBarNotShownOnNTP
 -BreadcrumbManagerBrowserAgentTest.*
 -BreadcrumbManagerTabHelperTest.*
--BrowserBookmarkBarTest.*
+-BrowserBookmarkBarTest.StateOnActiveTabChanged
 -BrowserCommandHandlerTest.*
 -BrowserCommandsTest.*
 -BrowserFeaturePromoControllerTest.*
