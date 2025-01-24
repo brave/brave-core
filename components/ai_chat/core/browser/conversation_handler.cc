@@ -503,6 +503,13 @@ void ConversationHandler::GetConversationHistory(
   std::move(callback).Run(std::move(history));
 }
 
+void ConversationHandler::GetAllowedURLs(
+    GetAllowedURLsCallback callback) {
+  LOG(ERROR) << "=====ConversationHandler::GetAllowedURLs";
+  std::vector<GURL> urls;
+  std::move(callback).Run(urls);
+}
+
 void ConversationHandler::GetState(GetStateCallback callback) {
   const auto& models = model_service_->GetModels();
   std::vector<mojom::ModelPtr> models_copy(models.size());
