@@ -511,7 +511,11 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
   }
 
   const uploadImage = () => {
-    aiChatContext.uiHandler?.uploadImage()
+    if (!context.conversationUuid) {
+      console.error('No conversationUuid found')
+      return
+    }
+    aiChatContext.uiHandler?.uploadImage(context.conversationUuid)
     .then(({imageData, fileName, fileSize}) => {
       if (imageData && fileName && fileSize) {
         setPartialContext({

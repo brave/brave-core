@@ -85,8 +85,6 @@ AIChatUIPageHandler::AIChatUIPageHandler(
     chat_context_observer_ =
         std::make_unique<ChatContextObserver>(chat_context_web_contents, *this);
   }
-  upload_file_helper_ =
-      std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
 }
 
 AIChatUIPageHandler::~AIChatUIPageHandler() = default;
@@ -104,7 +102,20 @@ void AIChatUIPageHandler::ShowSoftKeyboard() {
 #endif
 }
 
-void AIChatUIPageHandler::UploadImage(UploadImageCallback callback) {
+void AIChatUIPageHandler::UploadImage(const std::string& conversation_uuid,
+                                      UploadImageCallback callback) {
+  if (!upload_file_helper_) {
+    upload_file_helper_ =
+        std::make_unique<UploadFileHelper>(owner_web_contents_, profile_);
+  }
+  ConversationHandler* conversation =
+      AIChatServiceFactory::GetForBrowserContext(profile_)->GetConversation(
+          conversation_uuid);
+  if (!conversation) {
+    std::move(callback).Run(std::nullopt, std::nullopt, std::nullopt);
+    return;
+  }
+  conversation->SetUploadedContentDelegate(upload_file_helper_->GetWeakPtr());
   upload_file_helper_->UploadImage(
       std::make_unique<ChromeSelectFilePolicy>(owner_web_contents_),
       std::move(callback));
@@ -253,7 +264,6 @@ void AIChatUIPageHandler::BindRelatedConversation(
               active_chat_tab_helper_->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
-  conversation->SetUploadedContentDelegate(upload_file_helper_->GetWeakPtr());
 }
 
 void AIChatUIPageHandler::NewConversation(
@@ -271,7 +281,6 @@ void AIChatUIPageHandler::NewConversation(
   }
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
-  conversation->SetUploadedContentDelegate(upload_file_helper_->GetWeakPtr());
 }
 
 void AIChatUIPageHandler::GetFaviconImageData(

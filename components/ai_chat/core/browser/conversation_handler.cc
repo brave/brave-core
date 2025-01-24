@@ -1187,10 +1187,14 @@ void ConversationHandler::PerformAssistantGeneration(
     OnAssociatedContentInfoChanged();
   }
 
-  engine_->GenerateAssistantResponse(
-      is_video, page_content, uploaded_content_delegate_->GetUploadedImages(),
-      chat_history_, selected_language_, std::move(data_received_callback),
-      std::move(data_completed_callback));
+  std::vector<std::vector<uint8_t>> uploaded_images = {};
+  if (uploaded_content_delegate_) {
+    uploaded_images = uploaded_content_delegate_->GetUploadedImages();
+  }
+  engine_->GenerateAssistantResponse(is_video, page_content, uploaded_images,
+                                     chat_history_, selected_language_,
+                                     std::move(data_received_callback),
+                                     std::move(data_completed_callback));
 }
 
 void ConversationHandler::SetAPIError(const mojom::APIError& error) {
@@ -1473,9 +1477,12 @@ void ConversationHandler::OnGetRefinedPageContent(
       OnAssociatedContentInfoChanged();
     }
   }
+  std::vector<std::vector<uint8_t>> uploaded_images = {};
+  if (uploaded_content_delegate_) {
+    uploaded_images = uploaded_content_delegate_->GetUploadedImages();
+  }
   engine_->GenerateAssistantResponse(
-      is_video, page_content_to_use,
-      uploaded_content_delegate_->GetUploadedImages(), chat_history_,
+      is_video, page_content_to_use, uploaded_images, chat_history_,
       selected_language_, std::move(data_received_callback),
       std::move(data_completed_callback));
 }
