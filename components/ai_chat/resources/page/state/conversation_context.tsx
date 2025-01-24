@@ -66,9 +66,10 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   handleActionTypeClick: (actionType: Mojom.ActionType) => void
   setIsToolsMenuOpen: (isOpen: boolean) => void
   handleVoiceRecognition?: () => void
-  uploadImage?: () => void
+  uploadImage: () => void
+  removeImage: (index: number) => void
   conversationHandler?: Mojom.ConversationHandlerRemote
-  imgData?: UploadedImageData
+  imgData?: UploadedImageData[]
 }
 
 export const defaultCharCountContext: CharCountContext = {
@@ -108,6 +109,8 @@ const defaultContext: ConversationContext = {
   resetSelectedActionType: () => { },
   handleActionTypeClick: () => { },
   setIsToolsMenuOpen: () => { },
+  uploadImage: () => { },
+  removeImage: () => { },
   ...defaultSendFeedbackState,
   ...defaultCharCountContext,
   imgData: undefined
@@ -512,13 +515,20 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     .then(({imageData, fileName, fileSize}) => {
       if (imageData && fileName && fileSize) {
         setPartialContext({
-          imgData: {
+          imgData: [{
             data: imageData,
             fileName,
             fileSize: Number(fileSize)
-          }
+          }]
         })
       }
+    })
+  }
+
+  const removeImage = (index: number) => {
+    aiChatContext.uiHandler?.removeUploadedImage(index)
+    setPartialContext({
+      imgData: undefined
     })
   }
 
@@ -551,6 +561,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setIsToolsMenuOpen: (isToolsMenuOpen) => setPartialContext({ isToolsMenuOpen }),
     handleVoiceRecognition,
     uploadImage,
+    removeImage,
     conversationHandler
   }
 
