@@ -150,7 +150,7 @@ BASE_FEATURE(kCosmeticFilteringJsPerformance,
 
 BASE_FEATURE(kCosmeticFilteringCustomScriptlets,
              "CosmeticFilteringCustomScriptlets",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 constexpr base::FeatureParam<int> kComponentUpdateCheckIntervalMins{
     &kAdBlockDefaultResourceUpdateInterval, "update_interval_mins", 100};
