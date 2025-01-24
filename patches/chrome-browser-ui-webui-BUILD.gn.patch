@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index 5ea207b3f1384f9bd4d976cf59a2d04e6c93c827..586d2e59830fc79c7dcd3ee67db99619a9214609 100644
+index 0d928ba9d55fbe798dd286823f4a8195d1be830f..50ea030bfc149ea2b3cbe49ac6bb79b394066cab 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -61,6 +61,7 @@ source_set("configs") {
+@@ -65,6 +65,7 @@ source_set("configs") {
        "//chromeos/constants",
      ]
    }

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index a45e8e2e9b2fc96dd7712487e0cfc006b56a31fb..b76da0decfe56e61c84623f42bee3d548688ff74 100644
+index 2b75f7f769629cf9bc81560b50ef8ebc0ce45321..8d24c924325bf234f597a3728870e071e18a425c 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -192,6 +192,7 @@ if (current_toolchain == default_toolchain) {
@@ -50,7 +50,7 @@ index a45e8e2e9b2fc96dd7712487e0cfc006b56a31fb..b76da0decfe56e61c84623f42bee3d54
      deps = [
        ":chrome_app_java_resources",
        ":chrome_unit_test_java_resources",
-@@ -2331,6 +2337,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2332,6 +2338,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -58,7 +58,7 @@ index a45e8e2e9b2fc96dd7712487e0cfc006b56a31fb..b76da0decfe56e61c84623f42bee3d54
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -2543,6 +2550,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2544,6 +2551,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -66,7 +66,7 @@ index a45e8e2e9b2fc96dd7712487e0cfc006b56a31fb..b76da0decfe56e61c84623f42bee3d54
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
        }
-@@ -2821,6 +2829,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2822,6 +2830,7 @@ if (current_toolchain == default_toolchain) {
        "//third_party/androidx:androidx_annotation_annotation_experimental_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -74,7 +74,7 @@ index a45e8e2e9b2fc96dd7712487e0cfc006b56a31fb..b76da0decfe56e61c84623f42bee3d54
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -3922,6 +3931,7 @@ generate_jni("chrome_jni_headers") {
+@@ -3923,6 +3932,7 @@ generate_jni("chrome_jni_headers") {
      "java/src/org/chromium/chrome/browser/webapps/WebApkUpdateManager.java",
      "java/src/org/chromium/chrome/browser/webapps/WebappRegistry.java",
    ]

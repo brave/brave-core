@@ -1,5 +1,5 @@
 diff --git a/components/crx_file/crx_verifier.cc b/components/crx_file/crx_verifier.cc
-index d2e3d81efdad713e8988e1d269fda4753f34c576..c3fa6bafec42fbb179b111997e658940069400da 100644
+index 1bea357d91476835fdbdb948b8ea4fc2ec118148..5886cec5cad0ced2ac832a1e61e0215945668335 100644
 --- a/components/crx_file/crx_verifier.cc
 +++ b/components/crx_file/crx_verifier.cc
 @@ -210,6 +210,7 @@ VerifierResult VerifyCrx3(

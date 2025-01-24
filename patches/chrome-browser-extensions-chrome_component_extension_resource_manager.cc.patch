@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index 30712d614263aaa565eedda2bf4d3b734e3093bf..8e1744a37f28f553cd3279a947e3fae243653ea7 100644
+index c863c6481bfa9066bf95ab5a7300629ea17a8c1c..818ddeb03ccafe5a3a1e8b4011d3c678464c138e 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-@@ -173,6 +173,7 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+@@ -170,6 +170,7 @@ ChromeComponentExtensionResourceManager::Data::Data() {
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
    AddComponentResourceEntries(kTtsEngineResources, kTtsEngineResourcesSize);
  #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
