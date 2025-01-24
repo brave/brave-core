@@ -9,12 +9,20 @@
 #include <memory>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_screenshots/strategies/screenshot_strategy.h"
-#include "chrome/browser/image_editor/screenshot_flow.h"
-#include "chrome/browser/ui/browser.h"
-#include "content/public/browser/web_contents.h"
+
+namespace content {
+class WebContents;
+}  // namespace content
+
+namespace image_editor {
+struct ScreenshotCaptureResult;
+}  // namespace image_editor
+
+class Browser;
 
 namespace brave_screenshots {
+
+class BraveScreenshotStrategy;
 
 enum ScreenshotType {
   kSelection,
