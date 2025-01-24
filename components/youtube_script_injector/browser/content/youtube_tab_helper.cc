@@ -39,6 +39,12 @@ void YouTubeTabHelper::MaybeCreateForWebContents(content::WebContents* contents,
                                                                   world_id);
 }
 
+//static
+void YouTubeTabHelper::EnterPipMode() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BackgroundVideoPlaybackTabHelper_enterPipMode(env);
+}
+
 YouTubeTabHelper::YouTubeTabHelper(content::WebContents* web_contents,
                                    const int32_t world_id)
     : WebContentsObserver(web_contents),
