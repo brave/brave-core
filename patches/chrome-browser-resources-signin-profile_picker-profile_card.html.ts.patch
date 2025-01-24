@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_card.html.ts b/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
-index 36a13e5c182e708794d8443ceb237499a274a43a..103a56dce081ab6f382b2a02cf9688f21b381302 100644
+index 531d1fc9b1adf3bdd73d2cfbc9c73da32117df5c..1c5d0af1b02d0bb4892d556fa34ce93adad3ac72 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
 @@ -9,7 +9,7 @@ import type {ProfileCardElement} from './profile_card.js';
@@ -8,6 +8,6 @@ index 36a13e5c182e708794d8443ceb237499a274a43a..103a56dce081ab6f382b2a02cf9688f2
  <div id="profileCardContainer">
 -  <cr-button id="profileCardButton" @click="${this.onProfileClick_}"
 +  <cr-button id="profileCardButton" class="plain" @click="${this.onProfileClick_}"
-       aria-label="${this.i18n(
-           'profileCardButtonLabel', this.profileState.localProfileName)}">
+       aria-label="${this.profileState.profileCardButtonLabel}">
      <div id="avatarContainer">
+       <img class="profile-avatar" alt="" .src="${this.profileState.avatarIcon}">

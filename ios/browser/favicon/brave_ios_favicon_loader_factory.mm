@@ -8,10 +8,9 @@
 #include "base/no_destructor.h"
 #import "brave/ios/browser/favicon/brave_ios_favicon_loader.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
+#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
 #include "ios/chrome/browser/favicon/model/favicon_service_factory.h"
 #import "ios/chrome/browser/favicon/model/ios_chrome_large_icon_service_factory.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -30,16 +29,16 @@ std::unique_ptr<KeyedService> BuildFaviconLoader(web::BrowserState* context) {
 }  // namespace
 
 namespace brave_favicon {
-BraveFaviconLoader* BraveIOSFaviconLoaderFactory::GetForBrowserState(
+BraveFaviconLoader* BraveIOSFaviconLoaderFactory::GetForProfile(
     ProfileIOS* profile) {
-  return static_cast<BraveFaviconLoader*>(
-      GetInstance()->GetServiceForBrowserState(profile, true));
+  return GetInstance()->GetServiceForProfileAs<BraveFaviconLoader>(profile,
+                                                                   true);
 }
 
-BraveFaviconLoader* BraveIOSFaviconLoaderFactory::GetForBrowserStateIfExists(
+BraveFaviconLoader* BraveIOSFaviconLoaderFactory::GetForProfileIfExists(
     ProfileIOS* profile) {
-  return static_cast<BraveFaviconLoader*>(
-      GetInstance()->GetServiceForBrowserState(profile, false));
+  return GetInstance()->GetServiceForProfileAs<BraveFaviconLoader>(profile,
+                                                                   false);
 }
 
 BraveIOSFaviconLoaderFactory* BraveIOSFaviconLoaderFactory::GetInstance() {
@@ -54,9 +53,10 @@ BraveIOSFaviconLoaderFactory::GetDefaultFactory() {
 }
 
 BraveIOSFaviconLoaderFactory::BraveIOSFaviconLoaderFactory()
-    : BrowserStateKeyedServiceFactory(
-          "BraveFaviconLoader",
-          BrowserStateDependencyManager::GetInstance()) {
+    : ProfileKeyedServiceFactoryIOS("BraveFaviconLoader",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kNoServiceForTests) {
   DependsOn(ios::FaviconServiceFactory::GetInstance());
   DependsOn(IOSChromeLargeIconServiceFactory::GetInstance());
 }
@@ -67,14 +67,5 @@ std::unique_ptr<KeyedService>
 BraveIOSFaviconLoaderFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   return BuildFaviconLoader(context);
-}
-
-web::BrowserState* BraveIOSFaviconLoaderFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return GetBrowserStateRedirectedInIncognito(context);
-}
-
-bool BraveIOSFaviconLoaderFactory::ServiceIsNULLWhileTesting() const {
-  return true;
 }
 }  // namespace brave_favicon

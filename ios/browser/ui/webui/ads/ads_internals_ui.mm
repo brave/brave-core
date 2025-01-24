@@ -51,9 +51,9 @@ ProfileIOS* GetProfile(web::WebUIIOS* web_ui) {
 
 AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
     : web::WebUIIOSController(web_ui, url.host()),
-      handler_(brave_ads::AdsServiceFactoryIOS::GetForBrowserState(
-                   GetProfile(web_ui)),
-               *GetProfile(web_ui)->GetPrefs()) {
+      handler_(
+          brave_ads::AdsServiceFactoryIOS::GetForProfile(GetProfile(web_ui)),
+          *GetProfile(web_ui)->GetPrefs()) {
   CreateAndAddWebUIDataSource(web_ui, url.host(),
                               base::span(kAdsInternalsGenerated),
                               IDR_ADS_INTERNALS_HTML);

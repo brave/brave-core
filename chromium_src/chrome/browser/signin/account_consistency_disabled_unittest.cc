@@ -44,8 +44,7 @@ TEST(AccountConsistencyDisabledTest, NewProfile) {
             /*managed_prefs=*/base::MakeRefCounted<TestingPrefStore>(),
             /*supervised_user_prefs=*/base::MakeRefCounted<TestingPrefStore>(),
             /*extension_prefs=*/base::MakeRefCounted<TestingPrefStore>(),
-            /*standalone_browser_prefs=*/
-            base::MakeRefCounted<TestingPrefStore>(), std::move(user_prefs),
+            /*user_prefs=*/std::move(user_prefs),
             /*recommended_prefs=*/base::MakeRefCounted<TestingPrefStore>(),
             base::MakeRefCounted<user_prefs::PrefRegistrySyncable>(),
             std::make_unique<PrefNotifierImpl>());

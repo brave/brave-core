@@ -85,7 +85,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(base::span<const uint8_t> seed) {
   DCHECK(out_len == kSHA512Length);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
-  auto hmac_span = base::make_span(hmac);
+  auto hmac_span = base::span(hmac);
   hdkey->SetPrivateKey(hmac_span.first<kSecp256k1PrivateKeySize>());
   hdkey->SetChainCode(hmac_span.last<kSecp256k1ChainCodeSize>());
   return hdkey;
@@ -281,7 +281,7 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(const DerivationIndex& index) {
   }
   DCHECK(out_len == kSHA512Length);
 
-  auto hmac_span = base::make_span(hmac);
+  auto hmac_span = base::span(hmac);
 
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
   hdkey->SetChainCode(hmac_span.last<kSecp256k1ChainCodeSize>());

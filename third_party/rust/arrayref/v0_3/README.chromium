@@ -2,7 +2,7 @@ Name: arrayref
 URL: https://crates.io/crates/arrayref
 Version: 0.3.7
 Revision: 6a0d5849e359a9ad29ad096997eba3f1c7ca6b64
-License: BSD 2-Clause
+License: BSD-2-Clause
 License File: //brave/third_party/rust/chromium_crates_io/vendor/arrayref-0.3.7/LICENSE
 Shipped: yes
 Security Critical: yes

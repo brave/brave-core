@@ -15,7 +15,6 @@
 #include "ios/web/navigation/navigation_java_script_feature.h"
 #include "ios/web/public/js_messaging/java_script_feature.h"
 #include "ios/web/public/js_messaging/java_script_feature_util.h"
-#include "ios/web/text_fragments/text_fragments_java_script_feature.h"
 #include "ui/base/resource/resource_bundle.h"
 
 @implementation TranslateScript
@@ -27,7 +26,6 @@
       web::java_script_features::GetCommonJavaScriptFeature(),
       web::java_script_features::GetMessageJavaScriptFeature(),
       web::NavigationJavaScriptFeature::GetInstance(),
-      web::TextFragmentsJavaScriptFeature::GetInstance(),
       web::AnnotationsJavaScriptFeature::GetInstance(),
       language::LanguageDetectionJavaScriptFeature::GetInstance()};
 

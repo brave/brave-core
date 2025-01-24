@@ -1,12 +1,11 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 6e8b117acb7beafbb5e358cbc9cd24d4cefb2eae..b68d99622aa9ce5866a796810db5f6a6ed675699 100644
+index f2a7f14322350225bebc4f79ca41dcbb602775ac..85ab5acd04559071de0b03889af14f818ed68961 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -494,7 +494,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
-   source->AddBoolean("isLacrosEnabled",
-                      crosapi::browser_util::IsLacrosEnabled());
+@@ -481,6 +481,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+           l10n_util::GetStringUTF16(IDS_SHORT_PRODUCT_OS_NAME)));
  #endif
--
+ 
 +  BRAVE_CREATE_EXTENSIONS_SOURCE
    return source;
  }

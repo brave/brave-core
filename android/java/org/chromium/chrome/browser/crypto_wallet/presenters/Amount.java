@@ -69,10 +69,6 @@ public class Amount {
         return (value != null && value.mValue != null) ? value.mValue : BigDecimal.ZERO;
     }
 
-    private void safeInit() {
-        if (mValue == null) mValue = BigDecimal.ZERO;
-    }
-
     public BigDecimal getValue() {
         return BigDecimal.valueOf(mValue.doubleValue());
     }

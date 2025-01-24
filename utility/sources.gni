@@ -11,13 +11,6 @@ brave_utility_sources = [
   "//brave/utility/brave_content_utility_client.h",
 ]
 
-if (is_android) {
-  brave_utility_sources += [
-    "//chrome/utility/importer/bookmark_html_reader.cc",
-    "//chrome/utility/importer/bookmark_html_reader.h",
-  ]
-}
-
 brave_utility_sources += brave_utility_importer_sources
 
 brave_utility_deps = [
@@ -30,6 +23,19 @@ brave_utility_deps = [
   "//brave/components/tor/buildflags",
   "//mojo/public/cpp/bindings",
 ]
+
+if (is_android) {
+  brave_utility_sources += [
+    "//chrome/utility/importer/bookmark_html_reader.cc",
+    "//chrome/utility/importer/bookmark_html_reader.h",
+  ]
+
+  brave_utility_deps += [
+    "//chrome/common/importer",
+    "//chrome/common/importer:interfaces",
+    "//components/favicon_base",
+  ]
+}
 
 brave_utility_deps += brave_utility_importer_deps
 

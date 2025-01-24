@@ -1,7 +1,7 @@
 Name: zcash
 URL: https://crates.io/crates/zcash
 Version: 1.0.0
-License: Mozilla Public License 2.0
+License: Mozilla-Public-License-2.0
 License File: //brave/third_party/rust/chromium_crates_io/vendor/zcash-1.0.0/../../../../../common/licenses/MPL-2.0
 Shipped: yes
 Security Critical: yes

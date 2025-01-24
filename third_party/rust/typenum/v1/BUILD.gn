@@ -55,4 +55,7 @@ cargo_crate("lib") {
     "TYPENUM_BUILD_CONSTS=" + rebase_path(target_gen_dir) + "/lib/consts.rs",
     "TYPENUM_BUILD_OP=" + rebase_path(target_gen_dir) + "/lib/op.rs",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

@@ -1,0 +1,12 @@
+diff --git a/build/android/gyp/create_app_bundle.py b/build/android/gyp/create_app_bundle.py
+index 279898876b70c759dcfd1762a6ac36eee2559caf..7c2a51bbc051dafd81334474e4f54dfa7abc2276 100755
+--- a/build/android/gyp/create_app_bundle.py
++++ b/build/android/gyp/create_app_bundle.py
+@@ -80,6 +80,7 @@ _ALLOWLISTED_NON_BASE_SERVICES = {
+     'com.google.apps.tiktok.concurrent.InternalForegroundService',
+ }
+ 
++from brave_app_bundle_utils import extend_allowlisted_non_base_services; _ALLOWLISTED_NON_BASE_SERVICES = extend_allowlisted_non_base_services(_ALLOWLISTED_NON_BASE_SERVICES)
+ 
+ def _ParseArgs(args):
+   parser = argparse.ArgumentParser()

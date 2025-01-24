@@ -14,7 +14,7 @@ namespace {
 
 // This replicates the functionality that the removed upstream flag
 // kAutofillEnableOfferNotificationForPromoCodes used to have.
-bool BraveIsOfferValid(AutofillOfferData* offer) {
+bool BraveIsOfferValid(const AutofillOfferData* offer) {
   if (!offer) {
     return false;
   }

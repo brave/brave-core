@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.components.browser_ui.accessibility.AccessibilitySettings;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 
 public class BraveAccessibilitySettings extends AccessibilitySettings {

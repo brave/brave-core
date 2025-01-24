@@ -5,6 +5,7 @@
 
 #include "components/performance_manager/public/metrics/page_resource_monitor.h"
 
+#if !BUILDFLAG(IS_ANDROID)
 namespace performance_manager::metrics {
 namespace {
 class StubGraphOwnedDefaultImpl : public GraphOwnedDefaultImpl {};
@@ -15,5 +16,8 @@ class StubGraphOwnedDefaultImpl : public GraphOwnedDefaultImpl {};
 // nothing in Brave, but the collection is CPU-intensive. Disable it to save
 // CPU during startup.
 #define PageResourceMonitor StubGraphOwnedDefaultImpl
+#endif  // !BUILDFLAG(IS_ANDROID)
 #include "src/chrome/browser/performance_manager/chrome_browser_main_extra_parts_performance_manager.cc"
+#if !BUILDFLAG(IS_ANDROID)
 #undef PageResourceMonitor
+#endif  // !BUILDFLAG(IS_ANDROID)

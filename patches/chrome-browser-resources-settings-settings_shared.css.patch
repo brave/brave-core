@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings_shared.css b/chrome/browser/resources/settings/settings_shared.css
-index 009cd5cf423be1c0bacdcb264065782b6878e71c..a0a2cb915e9fe4e3fe8188367a858eff38134999 100644
+index a1b05ff64049b32654077e906ac74d2f7b6f3915..22c3c84b1d0cb44e3e1789571ac0f35caf44cf32 100644
 --- a/chrome/browser/resources/settings/settings_shared.css
 +++ b/chrome/browser/resources/settings/settings_shared.css
 @@ -8,7 +8,8 @@

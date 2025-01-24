@@ -14,6 +14,9 @@ PROGNAME=brave
 # Base directory for package installation.
 INSTALLDIR=/opt/brave.com/brave
 
+# Directory for device policy enrollments.
+ENROLLMENTDIR=/etc/brave/policies/enrollment
+
 # Display string for desktop menu/icon.
 MENUNAME="Brave Web Browser"
 

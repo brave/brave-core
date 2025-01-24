@@ -621,6 +621,7 @@ source_set("ui") {
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",
       "//chrome/browser/ui/views/bubble",
+      "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
@@ -851,7 +852,6 @@ source_set("ui") {
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/webui",
-    "//chrome/browser/ui/webui:webui_util",
     "//chrome/common",
     "//components/bookmarks/common",
     "//components/content_settings/browser",

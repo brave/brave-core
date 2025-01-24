@@ -13,7 +13,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/autofill/content/browser/content_autofill_driver.h"
-#include "components/autofill/core/browser/browser_autofill_manager.h"
+#include "components/autofill/core/browser/foundations/browser_autofill_manager.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -57,10 +57,7 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
         autofill::ContentAutofillDriver::GetForRenderFrameHost(
             active_contents->GetPrimaryMainFrame());
     ASSERT_TRUE(cross_driver);
-    EXPECT_EQ(static_cast<autofill::BrowserAutofillManager*>(
-                  &cross_driver->GetAutofillManager())
-                  ->IsAutofillEnabled(),
-              enabled);
+    EXPECT_EQ(cross_driver->GetAutofillClient().IsAutofillEnabled(), enabled);
   }
 };
 

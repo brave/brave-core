@@ -42,8 +42,8 @@ inline constexpr char kBrowserSettingsSearchEngineURL[] =
     "chrome://settings/search";
 
 // "Learn more" URL for Battery Saver Mode.
-inline constexpr char kBatterySaverModeLearnMoreUrl[] =
-    "https://support.brave.com/hc/en-us/articles/13380606172557";
+inline constexpr char16_t kBatterySaverModeLearnMoreUrl[] =
+    u"https://support.brave.com/hc/en-us/articles/13380606172557";
 
 // The URL for providing help when the Bluetooth adapter is off.
 inline constexpr char kBluetoothAdapterOffHelpURL[] =
@@ -245,8 +245,8 @@ inline constexpr char kGoogleTwoFactorIntersitialURL[] =
 inline constexpr char kGooglePasswordManagerURL[] = "https://support.brave.com";
 
 // The URL for the "Learn more" link for the High Efficiency Mode.
-inline constexpr char kMemorySaverModeLearnMoreUrl[] =
-    "https://support.brave.com/hc/en-us/articles/13383683902733";
+inline constexpr char16_t kMemorySaverModeLearnMoreUrl[] =
+    u"https://support.brave.com/hc/en-us/articles/13383683902733";
 
 // The URL in the help text for the High Efficiency Mode tab discarding
 // exceptions add dialog.
@@ -331,7 +331,7 @@ inline constexpr char kAddressesAndPaymentMethodsLearnMoreURL[] =
     "https://support.brave.com";
 
 // Help URL for Autofill Prediction Improvements.
-inline constexpr char16_t kAutofillPredictionImprovementsLearnMoreURL[] =
+inline constexpr char16_t kAutofillAiLearnMoreURL[] =
     u"https://support.brave.com";
 
 // "Learn more" URL for the performance intervention notification setting.
@@ -339,7 +339,8 @@ inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
     u"https://support.brave.com";
 
 // "Learn more" URL for the preloading section in Performance settings.
-inline constexpr char kPreloadingLearnMoreUrl[] = "https://support.brave.com";
+inline constexpr char16_t kPreloadingLearnMoreUrl[] =
+    u"https://support.brave.com";
 
 // "Learn more" URL for the Privacy section under Options.
 inline constexpr char kPrivacyLearnMoreURL[] =
@@ -491,12 +492,27 @@ inline constexpr char16_t kWhoIsMyAdministratorHelpURL[] =
 inline constexpr char16_t kCwsEnhancedSafeBrowsingLearnMoreURL[] =
     u"https://support.brave.com/";
 
-// The URL path to online privacy policy.
+// The URL path to Google's Privacy Policy page.
+inline constexpr char kPrivacyPolicyURL[] = "https://support.brave.com/";
+
+// The URL path to Google's Privacy Policy page for users in China.
+inline constexpr char kPrivacyPolicyURLChina[] = "https://support.brave.com/";
+
+// The URL path to Google's Embedded Privacy Policy page.
 inline constexpr char kPrivacyPolicyOnlineURLPath[] =
     "https://support.brave.com/";
 
-// The URL path to online privacy policy dark mode.
+// The URL path to Google's Embedded Privacy Policy page - Dark Mode.
 inline constexpr char kPrivacyPolicyOnlineDarkModeURLPath[] =
+    "https://support.brave.com/";
+
+// The URL path to Google's Embedded Privacy Policy page for users in China.
+inline constexpr char kPrivacyPolicyEmbeddedURLPathChina[] =
+    "https://support.brave.com/";
+
+// The URL path to Google's Embedded Privacy Policy page for users in China -
+// Dark Mode.
+inline constexpr char kPrivacyPolicyEmbeddedDarkModeURLPathChina[] =
     "https://support.brave.com/";
 
 #if BUILDFLAG(IS_ANDROID)

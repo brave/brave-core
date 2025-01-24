@@ -351,6 +351,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_TASK_MANAGER_SEARCH_ACCESSIBILITY_NAME" desc="The accessibility description for the Search bar in the Task Manager window" translateable="false">
         Look up the name of any tab title or extension to highlight it in the process table.
       </message>
+      <message name="IDS_TASK_MANAGER_CLEAR_SEARCH_BUTTON_ACCESSIBILITY_NAME" desc="The accessibility name for the clear button accompanying the task manager search bar input.">
+        Clear search
+      </message>
       <message name="IDS_TASK_MANAGER_KILL_ACCESSIBILITY_NAME" desc="The accessibility description for the End Process button in the Task Manager window" translateable="false">
         Ends the highlighted process.
       </message>
@@ -360,8 +363,11 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_TASK_MANAGER_CATEGORY_EXTENSIONS_NAME" desc="The title of the 'Extensions' filter category." translateable="false">
         Extensions
       </message>
-      <message name="IDS_TASK_MANAGER_CATEGORY_SYSTEM_NAME" desc="The title of the 'System' filter category." translateable="false">
+      <message name="IDS_TASK_MANAGER_CATEGORY_SYSTEM_NAME" desc="The title of the 'System' filter category on ChromeOS." translateable="false">
         System
+      </message>
+      <message name="IDS_TASK_MANAGER_CATEGORY_BROWSER_NAME" desc="The title of the 'System' filter category on Windows/Mac/Linux." translateable="false">
+        Browser
       </message>
       <message name="IDS_SESSION_CRASHED_VIEW_UMA_OPTIN" desc="Text besides the checkbox to let users optin to UMA in the restore from previous crash bubble.">
         Help make Brave better by sending crash reports and <ph name="UMA_LINK">$1<ex>usage statistics</ex></ph> to Brave
@@ -583,15 +589,6 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
 
-      <!-- Crash Recovery Dialog -->
-      <message name="IDS_CRASH_RECOVERY_TITLE" desc="Title of dialog shown when the browser crashes." translateable="false">
-        Brave
-      </message>
-      <if expr="is_win">
-        <message name="IDS_CRASH_RECOVERY_CONTENT" desc="Text content telling the user the browser has crashed.">
-          Whoa! Brave has crashed. Relaunch now?
-        </message>
-      </if>
       <!-- Password generation strings -->
       <message name="IDS_PASSWORD_GENERATION_PROMPT" desc="Autofill dropdown text describing password generation.">
         Brave will save this password in your Brave sync chain. You won’t have to remember it.
@@ -820,12 +817,12 @@ Permissions you've already given to websites and apps may apply to this account.
           other {These extensions are no longer supported. Brave recommends that you remove them.}}
         </message>
         <message name="IDS_EXTENSIONS_MV2_DEPRECATION_MESSAGE_DISABLED_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation message for a specific extension during the disabled stage.">
-          Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>
+          Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>
         </message>
         <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_DISABLED_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation panel for the disabled stage.">
           {NUM_EXTENSIONS, plural,
-            =1 {Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>}
-            other {Brave recommends that you remove them. <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>}
+            =1 {Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>}
+            other {Brave recommends that you remove them. <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>}
           }
         </message>
         <message name="IDS_EXTENSIONS_MV2_DEPRECATION_PANEL_REMOVE_BUTTON_ACC_LABEL" desc="The (accessible) label for the button to remove an extension.">
@@ -1037,7 +1034,7 @@ Permissions you've already given to websites and apps may apply to this account.
 
       <!-- Managed profile required interstitial -->
       <message name="IDS_MANAGED_PROFILE_INTERSTITIAL_PRIMARY_PARAGRAPH" desc="The main text of the interstitial that tells the user that their organization requires them to sign in to Brave with their managed account in order to access it.">
-        You can sign in to get your stuff, or use Brave without an account
+       To continue, you'll need to sign in to Brave with <ph name="EMAIL">$1<ex>user@example.com</ex></ph>. This ensures compliance with your organization's policies.
       </message>
 
       <!-- Extension requests sign in to Brave through chrome.identity API -->
@@ -1142,6 +1139,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE" desc="Subtitle of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account.">
           To get your passwords and more on all your devices, sign in to Brave
         </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE_SUPERVISED" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
+          To stay safer online with your parent’s choices, sign in to Brave
+        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN_REMINDER" desc="This string is the body text of a reminder message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. After a period of time, this reminder message appears at the top right of Brave (pointing at the Profile Menu) to remind the user that they made this choice a while ago. This body text string comes after the 'Welcome back, USER_NAME' string. We are focusing on the benefit that user enjoys, now that they're signed in to Brave. The tone should be welcoming.">
           While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. You can change this at any time in settings.
         </message>
@@ -1152,7 +1152,7 @@ Permissions you've already given to websites and apps may apply to this account.
           Sign out of Brave?
         </message>
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_NO_UNSYNCED_BODY" desc="This is the subtitle of a confirmation dialog that asks the user to confirm that they want to sign out of Brave. It appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. This subtitle is after the 'Sign out of Brave?' string. The tone should be calm, because we want to explain to the user that their data is saved; however, we want to set expectations by clarifying that the data will be removed from the device. This string provides a path to resolution because it explains how the user can see their data again (by signing back in).">
-          Your passwords and other Brave data are saved in your Brave sync chain, and will be removed from this device. To use them in the future, sign back in to Brave.
+          Your passwords, payment methods, and addresses that you saved in your Brave sync chain will be removed from this device. To use them again in Brave, sign back in.
         </message>
         <message name="IDS_CHROME_SIGNOUT_CONFIRMATION_PROMPT_VERIFY_BODY" desc="This is the subtitle of an error message dialog that appears when the user opens the Brave Profile Menu and chooses 'Sign out of Brave'. The error message appears when the user has saved some data (like a password or payment method) to Brave, but Brave wasn't able to save the data to the user's Brave sync chain due to a sign-in error; but, the data has been saved locally to Brave. This subtitle is after the 'Some data isn’t saved yet' string. The tone should be cautionary, because we want to explain to the user that their data is not saved to their Brave sync chain. This string provides a path to resolution because it explains how the user can properly save their data before they sign out of Brave.">
           Brave needs to verify it’s you before some data can be saved in your Brave sync chain and used on all your devices. If you sign out, this data will stay on this device.
@@ -1167,7 +1167,7 @@ Permissions you've already given to websites and apps may apply to this account.
           clear the Brave data in your account
         </message>
         <message name="IDS_SYNC_PASSPHRASE_DIALOG_BODY" desc="">
-          Your data is encrypted with your passphrase. Enter it to use and save Brave data in your Brave account.
+          Your data is encrypted with your passphrase. Enter it to use and save Brave data in your Brave sync chain.
         </message>
         <message name="IDS_AVATAR_BUTTON_INTERCEPT_BUBBLE_CHROME_SIGNIN_ACCESSIBILITY_LABEL" desc="Accessibility label (read by the accessibility tools) of the avatar button when the Brave Signin bubble is shown. The text implies that the expanded bubble underneath the button is closable by clicking on the button. The actual text is 'Sign in to Brave?' with a bubble shown under it.">
           Click to close the Brave sign-in dialog
@@ -1183,6 +1183,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <!-- Autofill Sign In Promo Bubble -->
         <message name="IDS_AUTOFILL_SIGNIN_PROMO_SUBTITLE_PASSWORD" desc="This is the body text of a confirmation message and means that the password was only saved locally to the user's device (not in their Brave sync chain). It appears when the user is not signed in to Brave and is after the 'Password saved to this device' string. If the user wants to save this data to their Brave sync chain, they can click the 'Sign in to Brave' button at the bottom of this message. The tone should be motivating.">
           To get your passwords and more on all your devices, sign in to Brave. This password will be saved in your Brave sync chain after you sign in.
+        </message>
+        <message name="IDS_AUTOFILL_SIGNIN_PROMO_SUBTITLE_ADDRESS" desc="This is the body text of a confirmation message and means that the address was only saved locally to the user's device (not in their Brave sync chain). It appears when the user is not signed in to Brave and is after the 'Address saved to this device' string. If the user wants to save this data to their Brave sync chain, they can click the 'Sign in to Brave' button at the bottom of this message. The tone should be motivating.">
+          To get your addresses and more on all your devices, sign in to Brave. This address will be saved in your Brave sync chain after you sign in.
         </message>
       </if>
 
@@ -1216,6 +1219,12 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_PROFILE_MENU_SIGNIN_PROMO_BUTTON" desc="Text for the button in the sign-in promo in the profile menu when the used is signed out.">
         Sign in to Brave
       </message>
+      <message name="IDS_PROFILE_MENU_BROWSER_MANAGED_HEADER" desc="Disclaimer indicating that Brave is managed">
+        Brave is managed
+      </message>
+      <message name="IDS_PROFILE_MENU_PLACEHOLDER_PROFILE_NAME" desc="Placeholder profile name, used when the user did not enter a name for their profile.">
+        Your Brave
+      </message>
       <if expr="not use_titlecase">
         <message name="IDS_PROFILE_MENU_SIGN_OUT_WHEN_SIGNIN_PENDING" desc="The text label of the Sign out of Brave button in the Profile Menu when the user is in sign in pending state.">
           Remove account from Brave
@@ -1228,6 +1237,9 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
         <message name="IDS_PROFILE_MENU_SIGN_OUT" desc="The text label of the Sign out of Brave button in the Profile Menu.">
           Sign out of Brave
+        </message>
+        <message name="IDS_PROFILE_MENU_ADD_PROFILE" desc="The text label of the add new profile item in the profile menu.">
+          Add Brave profile
         </message>
       </if>
       <if expr="use_titlecase">
@@ -1243,6 +1255,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_PROFILE_MENU_SIGN_OUT" desc="The text label of the Sign out of Brave button in the Profile Menu.">
           Sign Out of Brave
         </message>
+        <message name="IDS_PROFILE_MENU_ADD_PROFILE" desc="The text label of the add new profile item in the profile menu.">
+          Add Brave Profile
+        </message>
       </if>
 
       <!-- App list -->
@@ -1251,6 +1266,10 @@ Permissions you've already given to websites and apps may apply to this account.
           Remove from Brave...
         </message>
       </if>
+
+      <message name="IDS_APP_ALSO_DELETE_APPS_DATA" desc="Checkbox text to ask the user during uninstall; Whether they want to remove associated data for the app being uninstalled. Only used when uninstalling an app associated with a particular website.">
+        Remove this apps data from Brave
+      </message>
 
       <!-- App shortcuts -->
       <message name="IDS_APP_SHORTCUTS_SUBDIR_NAME" desc="Name for the Brave Apps Start Menu folder name.">
@@ -1492,22 +1511,26 @@ Permissions you've already given to websites and apps may apply to this account.
       <message name="IDS_SYNC_ERROR_USER_MENU_UPGRADE_BUTTON" desc="Button in the header of desktop user menu that prompts the user to update Brave to fix the out-of-date Brave client error.">
         Update Brave
       </message>
-      <message name="IDS_SYNC_ERROR_PASSPHRASE_USER_MENU_TITLE_SIGNED_IN_ONLY" desc="Title of the sync/signin error header of desktop user menu. Shown for users who are signed-in but not syncing.">
-        To use and save Brave data in your Brave sync chain, enter your passphrase
+      <message name="IDS_SYNC_ERROR_PASSPHRASE_USER_MENU_ERROR_DESCRIPTION" desc="Error description of the sync/signin error header of desktop user menu.">
+        Enter your passphrase to use and save Brave data in your account, <ph name="ACCOUNT_EMAIL">$1<ex>elisa.beckett@gmail.com</ex></ph>
+      </message>
+      <message name="IDS_SYNC_ERROR_TRUSTED_VAULT_USER_MENU_ERROR_DESCRIPTION" desc="Error description of the sync/signin error header of desktop user menu.">
+        Verify it's you to use and save Brave data in your account, <ph name="ACCOUNT_EMAIL">$1<ex>elisa.beckett@gmail.com</ex></ph>
       </message>
        <message name="IDS_SYNC_ERROR_UPGRADE_CLIENT_USER_MENU_TITLE" desc="Error message to resolve sync protocol error for out-of-date client.">
         To use and save Brave data in your Brave sync chain, update Brave
       </message>
+      <message name="IDS_SYNC_ERROR_UPGRADE_CLIENT_USER_MENU_ERROR_DESCRIPTION" desc="Error message to resolve sync protocol error for out-of-date client.">
+        Update Brave to keeping using the Brave data in your Brave sync chain, <ph name="ACCOUNT_EMAIL">$1<ex>elisa.beckett@gmail.com</ex></ph>
+      </message>
 
-      <!-- Sync errors. Android uses native UI to handle Sync settings -->
-      <if expr="not is_android">
-        <message name="IDS_SYNC_UPGRADE_CLIENT" desc="Message indicating client needs to be upgraded to the latest version.">
-          Update Brave to start sync
-        </message>
-        <message name="IDS_SYNC_UPGRADE_CLIENT_BUTTON" desc="Button indicating client needs to be upgraded to the latest version.">
-          Update Brave
-        </message>
-      </if>
+      <!-- Sync errors. -->
+      <message name="IDS_SYNC_UPGRADE_CLIENT" desc="Message indicating client needs to be upgraded to the latest version.">
+        Update Brave to start sync
+      </message>
+      <message name="IDS_SYNC_UPGRADE_CLIENT_BUTTON" desc="Button indicating client needs to be upgraded to the latest version.">
+        Update Brave
+      </message>
 
       <!-- Upgrade recovery bubble -->
       <message name="IDS_RECOVERY_BUBBLE_TITLE" desc="Text for the title of the chrome recovery bubble view.">
@@ -1633,11 +1656,6 @@ Permissions you've already given to websites and apps may apply to this account.
           Pinned! You can access Image Search again from the new button on the toolbar
         </message>
 
-        <!-- Search Bubble Strings -->
-        <message name="IDS_LENS_SEARCH_BUBBLE_DIALOG_TITLE" desc="The name of the lens search bubble dialog.">
-          Image Search Search Bubble
-        </message>
-
         <!-- Overlay WebUI Strings -->
         <message name="IDS_LENS_OVERLAY_COPY" desc="Command in the Lens Overlay context menu to copy text.">
           Copy
@@ -1759,25 +1777,6 @@ Permissions you've already given to websites and apps may apply to this account.
           New! You can translate both text and images on your screen by selecting the "translate screen" button
         </message>
 
-        <!-- Entrypoint Strings -->
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to search anything on the page via Google Lens.">
-          Search anything on this page
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE_1" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to search any image or text via Google Lens.">
-          Search any image or text with Lens
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE_2" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to select images or text to search with Google Lens.">
-          Select images/text to search with Lens
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL" desc="Label     for the Google Lens button in the CTRL+F dialog.">
-          Image Search
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL_1" desc="Label     for the button in the CTRL+F dialog to open Google Lens.">
-          Open Image Search
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL_2" desc="Label     for the button in the CTRL+F dialog inviting the user to try Google Lens.">
-          Try Image Search
-        </message>
         <message name="IDS_CONTENT_CONTEXT_LENS_OVERLAY" desc="The name of the Lens overlay command in the content area context menu">
           Search with Image Search
         </message>
@@ -2122,47 +2121,6 @@ Permissions you've already given to websites and apps may apply to this account.
         Continue
       </message>
 
-      <!-- Privacy Sandbox Dialog strings -->
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_SUBTITLE" desc="A subtitle on the consent page. Consider this a tagline for the Privacy Sandbox project.* “exploring” conveys that this is a work in progress. * “new features” include settings that the user can turn on/off and also backend features that change the way Brave works for everyone * “allow sites to deliver”: Privacy Sandbox is proposed by Brave as a collaborative effort with the browser industry. We’re building and testing functionality that will live in the Brave browser. In order to land the full promise of Privacy Sandbox, websites and advertisers need to adopt the new APIs / functionality that we’re developing. So “allow sites…” makes it clear to the user that we’re building something for the ecosystem. Typically a Brave product builds something for the user, and that’s true in this case, but it’s bigger than that. * “same browsing experience using less of your info”: Another definition of the promise of Privacy Sandbox. Third-party cookies are going away. In this new world, the user will have essentially the same browsing experience but it’s more private because it doesn’t expose so much of the user’s info.">
-        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your info
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BODY_DESCRIPTION_2" desc="A paragraph beneath the “More control over the ads you see” subtitle. * “see and remove topics of interests”: we want to stress the element of control * “estimate topics”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “recent browsing history”: Later in the UI, we define this as “a record of sites you’ve visited using Brave on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI).">
-        You can see and remove topics of interest sites use to show you ads. Brave estimates your interests based on your recent browsing history.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_LABEL" desc="Learn more link * Unfolds content within the page * The text that appears describes 2 ways in which a site can target ads: the “Topics API” and the “FLEDGE API”. You can see what those are at www.privacysanbox.com or they’re described for the user’s benefit in other text. * “ad personalization” can mean different things in different contexts. Here, we’re using it as a simple noun. In other words, it’s not the name of a control but a descriptive term used to describe the personalization of ads in the Brave browser. This “ad personalization” shouldn’t be confused with the setting in the Brave sync chain called “Ad personalization”.">
-        Learn more about ad personalization in Brave
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_HEADER" desc="TOPICS API A sub title that describes the first of 2 ways a site can get info from Brave in order to target ads to the user. Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. * “Your”: we need to convey a sense of ownership, even if the user didn’t explicitly choose the interests we’re talking about. Without the “your”, it could sound like Brave is simply building a generic library of interests. * “estimated”: It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “by Brave”: This is new behavior for a browser (Brave) to take an active role in processing user data for the purposes of showing ads. It’s important to convey “Brave”, the actor in this case.">
-        Your interests as estimated by Brave
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_1" desc="TOPICS API Bullet 1 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help people skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Brave’s top level. The Topics API estimates topics of interest based on sites in the user’s browsing history that are participating in the trials.">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_2" desc="TOPICS API Bullet 2 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How we use this data:” is bold and serves as a label to help people skimming the page. * “estimate your interests”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”).">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD">&lt;/b&gt;</ph> Brave can estimate your interests. Later, a site you visit can ask Brave to see your interests in order to personalize the ads you see.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_1_BULLET_POINT_3" desc="TOPICS API Bullet 3 of 3 that appear beneath the “Your interests as estimated by Brave” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How you can manage your data:” is bold and serves as a label to help people skimming the page. * “To protect your privacy”: Today, most data is kept for long periods of time. This new Topics API doesn’t retain estimated topics for more than 3 weeks. The only reason for this feature is to protect the user’s privacy. * “auto”: isn’t strictly necessary, but it conveys that this feature is an ongoing part of the service. This isn’t describing, for example, a one-time deletion. * “older than 3 weeks”: We’re trying to convey a rolling delete. Imagine a user opens a browser for the very first time. As the user browses, Brave will estimate up to 5 topics of interest in the first week. In the second week, Brave will estimate up to 5 additional topics of interest. The same for the third week, for a total of 15 potential interests. In week 4, Brave will automatically delete the 5 interests from week 1 so that there aren’t ever more than 15 topics associated with a user at any given time. * “interests can refresh”: If a user loves horror films and reads about them for months on end, the interest “Horror movies” might get deleted and refreshed in the same week, so that “Horror movies” doesn’t ever disappear from the user’s list of interests. * “Or you can…”: A user might love horror movies but can’t stand the idea of seeing ads about horror movies (because even the visuals will ruin the surprise of opening night). In this case, the user can remove “Horror movies” from the list of interests Brave will consider. This removal remains in place indefinitely. Note that the user might still see ads about Horror movies from different ad networks or by other means than Brave’s “Browser-based ad personalization” setting.">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How you can manage your data:<ph name="END_BOLD">&lt;/b&gt;</ph> To protect your privacy, we auto-delete your interests that are older than 4 weeks. As you keep browsing, an interest might appear on the list again. Or you can remove interests you don’t want Brave to consider.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_BULLET_POINT_1" desc="FLEDGE APIBullet 1 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “What data is used:” is bold and serves as a label to help people skimming the page. * “Your browsing history”: The user’s browsing history is available beneath the “History” menu at Brave’s top level. This content taken in isolation is somewhat misleading. With FLEDGE, a site can store information in Brave about the user’s visit to their site. For example, the site might store “running_shoes_red_size_35” to indicate that the user showed interest in a particular shoe. We’re OK with the simplification in this bullet because 1) we explain it in the next bullet and 2) we want the user to understand that at the top level, both Topics &amp; Fledge are based on the same thing and that is the user’s browsing history.">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_LEARN_MORE_SECTION_2_BULLET_POINT_2" desc="FLEDGE API Bullet 2 of 3 that appear beneath the “Sites you visit that define your interests” subtitle. We break the description into the 3 pieces users most care about: 1) what data, 2) why this data, 3) what can I do about it? * “How we use this data:” is bold and serves as a label to help people skimming the page.">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD">&lt;/b&gt;</ph> Sites can store information with Brave about your interests. For example, if you visit a site to buy shoes for a marathon, the site might define your interest as running marathons. Later, if you visit a different site to register for a race, that site can show you an ad for running shoes based on your interests.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “You can change your mind”: When writing a consent moment, we have a legal obligation to inform the user how they can “revoke their consent” or “opt out”. A friendlier way to say this is “change your mind”. * “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice. * “The trials run alongside…”: The trials happen in addition to today’s current system based on third-party cookies. In other words, even by accepting in this consent moment, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. ">
-        You can change your mind at any time in Brave settings. The trials run alongside the current way ads get served, so you won’t see changes right away.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_SUBTITLE" desc="A subtitle on the consent page. Consider this a tagline for the Privacy Sandbox project.* “exploring” conveys that this is a work in progress. * “new features” include settings that the user can turn on/off and also backend features that change the way Brave works for everyone * “allow sites to deliver”: Privacy Sandbox is proposed by Brave as a collaborative effort with the browser industry. We’re building and testing functionality that will live in the Brave browser. In order to land the full promise of Privacy Sandbox, websites and advertisers need to adopt the new APIs / functionality that we’re developing. So “allow sites…” makes it clear to the user that we’re building something for the ecosystem. Typically a Brave product builds something for the user, and that’s true in this case, but it’s bigger than that. * “same browsing experience using less of your info”: Another definition of the promise of Privacy Sandbox. Third-party cookies are going away. In this new world, the user will have essentially the same browsing experience but it’s more private because it doesn’t expose so much of the user’s info.">
-        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your info
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BODY_DESCRIPTION_2" desc="A paragraph beneath the “More control over the ads you see” subtitle.* “During the trials”: The trials happens in addition to today’s current system based on third-party cookies. In other words, even by agreeing to or remaining in a trial,, the user’s core experience doesn’t change much. This is an experiment, and we need the user to understand as much. * “see and remove topics of interests”: we want to stress the element of control * “estimate topics”: Topics of interest include things like “Live comedy” and “Rock music”. Brave estimates these interests based on the sites users visit. It’s an “estimation”, and we don’t want to suggest that we know with certainty the user’s interests. Avoid words like “guess”, “establish”, “define”, etc. (in place of “estimate”). * “recent browsing history”: Later in the UI, we define this as “a record of sites you’ve visited using Brave on this device.” By “recent”, we mean the last 3 weeks (also defined later in the UI).">
-        During the trials, you can see and remove topics of interest sites use to show you ads. Brave estimates your interests based on your recent browsing history.
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_BOTTOM_SUMMARY" desc="A conclusion paragraph for the entire page. It sits beneath the “More control over the ads you see” subtitle but it’s no more associated with that topic than “Limit sharing between sites”. * “in Brave settings”: The URL is chrome://settings/privacySandbox. We don’t make it a live link because we need the users to stay in this moment until they make a choice.">
-        You can learn more about these features in Brave settings.
-      </message>
-
       <!-- Advanced security settings -->
       <message name="IDS_SETTINGS_SECURITY_V8_LINK_DESCRIPTION" desc="Description for the link row of the V8 security settings page.">
         Turn on additional protection in Brave’s JavaScript and WebAssembly engine
@@ -2468,6 +2426,11 @@ Permissions you've already given to websites and apps may apply to this account.
           To get your extensions on all your computers, sign in to Brave
         </message>
       </if>
+
+      <!-- Internal debug pages disabled interstitial. -->
+      <message name="IDS_INTERNAL_DEBUG_PAGES_DISABLED_BODY" desc="This is the text, with a link, that appears below the heading for the page that appears when the user attempts to load an internal developer debugging page when such pages are disabled by a pref. It instructs the user on how to enable the pref if they wish.">
+        These pages are intended for use by Brave developers, and may not be actively maintained or tested. To enable them, navigate to <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>chrome://chrome-urls<ph name="LINK_END">&lt;/a&gt;</ph>, click the button to enable debug pages, and then navigate to this page again.
+      </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta
         </message><message name="IDS_CHROME_SHORTCUT_NAME_DEV" desc="The Chrome shortcut name for dev channel">

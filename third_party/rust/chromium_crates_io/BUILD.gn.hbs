@@ -129,16 +129,17 @@ cargo_crate("{{this.name}}") {
     {{/each}}
   ]
   {{/if}}
-  {{#if (or rustflags extra_kv.rustflags)}}
   rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  {{#if (or rustflags extra_kv.rustflags)}}
     {{#each rustflags}}
     "{{this}}",
     {{/each}}
     {{#each extra_kv.rustflags}}
     "{{this}}",
     {{/each}}
-  ]
   {{/if}}
+  ]
   {{#if output_dir}}
   output_dir = "{{output_dir}}"
   {{/if}}

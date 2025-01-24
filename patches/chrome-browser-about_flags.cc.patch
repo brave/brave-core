@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 7613006656aaacda9a9b8cb9a54944f92d96c77d..e7224ffedbeb2aec3c2a0c7ffcdc7bb62f6de5eb 100644
+index 5d14b91245e6fc418de910dcaf2ed5b208925e4a..762738da937c5b654a1f07330a566f8e47275fdc 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4339,6 +4339,7 @@ const FeatureEntry::FeatureVariation kServiceWorkerAutoPreloadVariations[] = {
+@@ -4337,6 +4337,7 @@ const FeatureEntry::FeatureVariation kMerchantTrustVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

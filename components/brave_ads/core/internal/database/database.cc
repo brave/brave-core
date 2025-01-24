@@ -29,7 +29,9 @@
 
 namespace brave_ads {
 
-Database::Database(base::FilePath path) : db_path_(std::move(path)) {
+Database::Database(base::FilePath path)
+    : db_path_(std::move(path)),
+      db_(sql::Database::Tag("AdsInternalDatabase")) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
   db_.set_error_callback(base::BindRepeating(&Database::ErrorCallback,

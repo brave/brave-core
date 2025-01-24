@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/chrome_pref_service_factory.cc b/chrome/browser/prefs/chrome_pref_service_factory.cc
-index 2df13b1a2d35b2f45181348845aecc4fa0bb7815..31e37ad410e58252ba07c2736be3f6e3595bb1e0 100644
+index f0372ed6fe8f0afe10e55c16c459fe61039cbdae..d5cc9bceedfa0a47015a292fb506e630f7c5461a 100644
 --- a/chrome/browser/prefs/chrome_pref_service_factory.cc
 +++ b/chrome/browser/prefs/chrome_pref_service_factory.cc
 @@ -189,6 +189,7 @@ const prefs::TrackedPreferenceMetadata kTrackedPrefs[] = {

@@ -414,9 +414,15 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpURLNotStoredInHistory) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL().path(), "/canonical_2");
 }
 
+// This test is crashing on MacOS CI, but doesn't crash locally.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_NonDeAmpedPageSameAsOriginal DISABLED_NonDeAmpedPageSameAsOriginal
+#else
+#define MAYBE_NonDeAmpedPageSameAsOriginal NonDeAmpedPageSameAsOriginal
+#endif
 // Inspired by view-source test:
 // chrome/browser/tab_contents/view_source_browsertest.cc
-IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, NonDeAmpedPageSameAsOriginal) {
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, MAYBE_NonDeAmpedPageSameAsOriginal) {
   TogglePref(true);
   SetRequestHandler(kTestSimpleNonAmpPage, Canonical("simple"));
   StartServer();

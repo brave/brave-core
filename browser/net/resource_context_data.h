@@ -62,7 +62,6 @@ class ResourceContextData : public base::SupportsUserData::Data {
 
   static void StartProxying(
       content::BrowserContext* browser_context,
-      int render_process_id,
       content::FrameTreeNodeId frame_tree_node_id,
       network::URLLoaderFactoryBuilder& factory_builder,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
@@ -75,7 +74,6 @@ class ResourceContextData : public base::SupportsUserData::Data {
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
       content::BrowserContext* browser_context,
-      int render_process_id,
       int frame_id,
       content::FrameTreeNodeId frame_tree_node_id,
       const url::Origin& origin);

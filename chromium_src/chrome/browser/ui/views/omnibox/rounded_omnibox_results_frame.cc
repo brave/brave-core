@@ -7,7 +7,8 @@
 
 // Set our radius value directly as kOmniboxExpandedRadius is mapped to
 // more general token ShapeSysTokens::kMedium.
-#define kOmniboxExpandedRadius kOmniboxExpandedRadius); (corner_radius = 4
+#define kOmniboxExpandedRadius kOmniboxExpandedRadius) ? 4 : 4; \
+  DCHECK_EQ(corner_radius, 4
 
 #include "src/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc"
 

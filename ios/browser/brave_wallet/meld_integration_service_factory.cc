@@ -10,8 +10,6 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_manager_ios.h"
 #include "ios/web/public/browser_state.h"
@@ -21,17 +19,17 @@ namespace brave_wallet {
 
 // static
 mojo::PendingRemote<mojom::MeldIntegrationService>
-MeldIntegrationServiceFactory::GetForBrowserState(ProfileIOS* profile) {
-  return static_cast<MeldIntegrationService*>(
-             GetInstance()->GetServiceForBrowserState(profile, true))
+MeldIntegrationServiceFactory::GetForProfile(ProfileIOS* profile) {
+  return GetInstance()
+      ->GetServiceForProfileAs<MeldIntegrationService>(profile, true)
       ->MakeRemote();
 }
 
 // static
 MeldIntegrationService* MeldIntegrationServiceFactory::GetServiceForState(
     ProfileIOS* profile) {
-  return static_cast<MeldIntegrationService*>(
-      GetInstance()->GetServiceForBrowserState(profile, true));
+  return GetInstance()->GetServiceForProfileAs<MeldIntegrationService>(profile,
+                                                                       true);
 }
 
 // static
@@ -41,9 +39,10 @@ MeldIntegrationServiceFactory* MeldIntegrationServiceFactory::GetInstance() {
 }
 
 MeldIntegrationServiceFactory::MeldIntegrationServiceFactory()
-    : BrowserStateKeyedServiceFactory(
-          "MeldIntegrationService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("MeldIntegrationService",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kNoServiceForTests) {}
 
 MeldIntegrationServiceFactory::~MeldIntegrationServiceFactory() = default;
 
@@ -53,15 +52,6 @@ MeldIntegrationServiceFactory::BuildServiceInstanceFor(
   auto* profile = ProfileIOS::FromBrowserState(context);
   return std::make_unique<MeldIntegrationService>(
       profile->GetSharedURLLoaderFactory());
-}
-
-bool MeldIntegrationServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
-}
-
-web::BrowserState* MeldIntegrationServiceFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return GetBrowserStateRedirectedInIncognito(context);
 }
 
 }  // namespace brave_wallet

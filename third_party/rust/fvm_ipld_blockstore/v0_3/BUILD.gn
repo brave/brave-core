@@ -39,4 +39,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/cid/v0_11:lib",
     "//brave/third_party/rust/multihash_codetable/v0_1:lib",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

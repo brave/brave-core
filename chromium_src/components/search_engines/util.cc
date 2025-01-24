@@ -12,7 +12,7 @@
 #include "base/ranges/algorithm.h"
 
 void GetSearchProvidersUsingKeywordResult(
-    const WDTypedResult& result,
+    const WDKeywordsResult& result,
     KeywordWebDataService* service,
     PrefService* prefs,
     search_engines::SearchEngineChoiceService* search_engine_choice_service,

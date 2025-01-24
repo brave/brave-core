@@ -104,7 +104,7 @@ extra_kv = { raw_gn = '''
   library_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
   executable_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
   proc_macro_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
-  rustflags = [ "-Zallow-features=min_specialization" ]
+  rustflags += [ "-Zallow-features=min_specialization" ]
 '''}
 
 [crate.ansi_term]
@@ -288,7 +288,7 @@ if (target_cpu == "arm64" || target_cpu == "x64") {
 if (epoch != "0.2") {
   build_script_outputs = [ "radix_bases.rs" ]
 } else {
-  rustflags = [ "--cfg", "has_i128" ]
+  rustflags += [ "--cfg", "has_i128" ]
 }
 ''' }
 

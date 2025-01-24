@@ -12,7 +12,6 @@ import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -56,7 +55,6 @@ import com.google.android.material.tabs.TabLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -903,38 +901,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         getBraveSyncWorker().finalizeSyncSetup();
     }
 
-    private void showMainSyncScrypt() {
-        if (null != mScrollViewSyncInitial) {
-            mScrollViewSyncInitial.setVisibility(View.VISIBLE);
-        }
-        if (null != mScrollViewAddMobileDevice) {
-            mScrollViewAddMobileDevice.setVisibility(View.GONE);
-        }
-        if (null != mScrollViewAddLaptop) {
-            mScrollViewAddLaptop.setVisibility(View.GONE);
-        }
-        if (null != mScrollViewSyncStartChain) {
-            mScrollViewSyncStartChain.setVisibility(View.GONE);
-        }
-        if (null != mScrollViewSyncChainCode) {
-            mScrollViewSyncChainCode.setVisibility(View.GONE);
-        }
-        if (null != mScrollViewEnterCodeWords) {
-            mScrollViewEnterCodeWords.setVisibility(View.GONE);
-        }
-    }
-
-    // Handles the requesting of the camera permission.
-    private void requestCameraPermission() {
-        Log.w(TAG, "Camera permission is not granted. Requesting permission");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            final String[] permissions = new String[] {Manifest.permission.CAMERA};
-
-            requestPermissions(permissions, RC_HANDLE_CAMERA_PERM);
-        }
-    }
-
     @SuppressLint("InlinedApi")
     private void createCameraSource(boolean autoFocus, boolean useFlash) {
         Context context = getActivity().getApplicationContext();
@@ -1591,15 +1557,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private void clearBackground(View view) {
         if (null != view) {
             view.setBackgroundColor(Color.TRANSPARENT);
-        }
-    }
-
-    private Context getBaseApplicationContext() {
-        Context context = ContextUtils.getApplicationContext();
-        if (context instanceof ContextWrapper) {
-            return ((ContextWrapper) context).getBaseContext();
-        } else {
-            return context;
         }
     }
 

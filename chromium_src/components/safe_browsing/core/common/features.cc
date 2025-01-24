@@ -11,10 +11,7 @@
 namespace safe_browsing {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kExtensionTelemetryDisableOffstoreExtensions,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     {kExtensionTelemetryForEnterprise, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kExtensionTelemetryTabsApiSignal, base::FEATURE_DISABLED_BY_DEFAULT},
     {kGooglePlayProtectInApkTelemetry, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 

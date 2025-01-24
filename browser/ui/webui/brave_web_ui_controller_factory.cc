@@ -201,8 +201,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       // in WebUI.
       url.host_piece() == chrome::kChromeUINewTabHost ||
       url.host_piece() == chrome::kChromeUISettingsHost ||
-      ((url.host_piece() == kWelcomeHost ||
-        url.host_piece() == chrome::kChromeUIWelcomeURL) &&
+      ((url.host_piece() == kWelcomeHost || url.host_piece() == kWelcomeURL) &&
        !profile->IsGuestSession()) ||
 #endif  // BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)

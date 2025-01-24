@@ -26,6 +26,7 @@ import android.view.ViewStub;
 import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.Preference;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
@@ -137,7 +138,7 @@ import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarC
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
-import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
 import org.chromium.components.browser_ui.media.MediaNotificationInfo;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -486,8 +487,7 @@ public class BytecodeTest {
                         boolean.class,
                         Activity.class,
                         WindowAndroid.class,
-                        Tracker.class,
-                        boolean.class));
+                        Tracker.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
@@ -717,14 +717,6 @@ public class BytecodeTest {
                         true,
                         String.class,
                         Intent.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController",
-                        "wrapDialogDismissalCallback",
-                        MethodModifier.REGULAR,
-                        true,
-                        Callback.class,
-                        Callback.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl",
@@ -1199,6 +1191,7 @@ public class BytecodeTest {
                         FullscreenManager.class,
                         TabObscuringHandler.class,
                         int.class,
+                        int.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         Supplier.class));
@@ -1246,8 +1239,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl",
-                        "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl",
-                        Context.class));
+                        "org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl"));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/status/StatusMediator",
@@ -1270,7 +1262,6 @@ public class BytecodeTest {
                         Activity.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
-                        ModalDialogManager.class,
                         SnackbarManager.class,
                         ActivityLifecycleDispatcher.class,
                         TabModelSelector.class,
@@ -1474,7 +1465,9 @@ public class BytecodeTest {
                         LocationBarEmbedderUiOverrides.class,
                         View.class,
                         Supplier.class,
-                        OnLongClickListener.class));
+                        OnLongClickListener.class,
+                        BrowserControlsStateProvider.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1560,7 +1553,6 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         OneshotSupplier.class,
                         OneshotSupplier.class,
-                        Supplier.class,
                         BrowserControlsManager.class,
                         ActivityWindowAndroid.class,
                         ActivityLifecycleDispatcher.class,
@@ -1577,6 +1569,7 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         ObservableSupplierImpl.class,
+                        OneshotSupplierImpl.class,
                         int.class,
                         Supplier.class,
                         AppMenuDelegate.class,
@@ -1593,7 +1586,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         View.class,
                         ManualFillingComponentSupplier.class,
-                        EdgeToEdgeStateProvider.class));
+                        EdgeToEdgeManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -1627,12 +1620,15 @@ public class BytecodeTest {
                         boolean.class,
                         SnackbarManager.class,
                         Profile.class,
-                        BookmarkUiPrefs.class));
+                        BookmarkUiPrefs.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkManagerMediator",
-                        Context.class,
+                        Activity.class,
+                        LifecycleOwner.class,
+                        ModalDialogManager.class,
                         BookmarkModel.class,
                         BookmarkOpener.class,
                         SelectableListLayout.class,
@@ -1649,15 +1645,21 @@ public class BytecodeTest {
                         BookmarkImageFetcher.class,
                         ShoppingService.class,
                         SnackbarManager.class,
+                        BooleanSupplier.class,
                         Consumer.class,
                         BookmarkMoveSnackbarManager.class));
-        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
-                "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge", long.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/bookmarks/BookmarkBridge",
+                        "org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge",
+                        long.class,
+                        Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkModel",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkModel",
-                        long.class));
+                        long.class,
+                        Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkPage",
@@ -1787,7 +1789,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
                         "org/chromium/chrome/browser/tasks/tab_management/BraveIncognitoTabSwitcherPane", // presubmit: ignore-long-line
                         Context.class,
-                        OneshotSupplier.class,
                         TabSwitcherPaneCoordinatorFactory.class,
                         Supplier.class,
                         OnClickListener.class,

@@ -132,11 +132,15 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
                           TabStripController* tab_strip_controller,
                           BrowserWindowInterface* browser_window_interface,
                           Edge fixed_flat_edge,
-                          Edge animated_flat_edge)
+                          Edge animated_flat_edge,
+                          views::View* anchor_view,
+                          TabStrip* tab_strip)
       : BraveTabSearchButton(tab_strip_controller,
                              browser_window_interface,
                              fixed_flat_edge,
-                             animated_flat_edge) {
+                             animated_flat_edge,
+                             anchor_view,
+                             tab_strip) {
     SetPreferredSize(
         gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SEARCH));
@@ -477,7 +481,8 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
     // way to change its bubble arrow from TOP_RIGHT at the moment.
     tab_search_button_ = AddChildView(std::make_unique<VerticalTabSearchButton>(
         region_view, region_view->tab_strip()->controller(),
-        browser_window_interface, Edge::kNone, Edge::kNone));
+        browser_window_interface, Edge::kNone, Edge::kNone, this,
+        region_view->tab_strip()));
     UpdateTabSearchButtonVisibility();
 
     vertical_tab_on_right_.Init(
@@ -1195,7 +1200,7 @@ void VerticalTabStripRegionView::AnimationEnded(
 
 void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
   const bool is_vertical_tabs = tabs::utils::ShouldShowVerticalTabs(browser_);
-  auto* original_ntb = original_region_view_->new_tab_button();
+  auto* original_ntb = original_region_view_->GetNewTabButton();
   original_ntb->SetVisible(!is_vertical_tabs);
   new_tab_button_->SetVisible(is_vertical_tabs);
   separator_->SetVisible(is_vertical_tabs);
@@ -1225,7 +1230,7 @@ void VerticalTabStripRegionView::UpdateOriginalTabSearchButtonVisibility() {
   const bool use_search_button =
       browser_->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
   if (auto* tab_search_container =
-          original_region_view_->tab_search_container()) {
+          original_region_view_->GetTabSearchContainer()) {
     if (auto* tab_search_button = tab_search_container->tab_search_button()) {
       tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
     }

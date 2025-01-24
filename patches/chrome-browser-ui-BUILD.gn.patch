@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index df9b0eed0776196f652070972b6feb11af354fc0..bdc8721371810010b0a670ecce68425da562c6f7 100644
+index c8b65faa2d65bfa90824f44624b4c1975bcce43c..8e47e4aea605b150500ec80e988f37925cd3f05d 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -738,6 +738,7 @@ static_library("ui") {
-     "//chrome/browser/updates/announcement_notification:impl",
-     "//chrome/browser/prefs:impl",
+@@ -748,6 +748,7 @@ static_library("ui") {
+ 
+     "//chrome/browser/task_manager:impl",
    ]
 +  import("//brave/browser/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3556,7 +3557,10 @@ static_library("ui") {
+@@ -3514,7 +3515,10 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
@@ -22,9 +22,9 @@ index df9b0eed0776196f652070972b6feb11af354fc0..bdc8721371810010b0a670ecce68425d
      }
    }
  
-@@ -5676,6 +5680,7 @@ static_library("ui_public_dependencies") {
-     "//content/public/browser",
+@@ -5649,6 +5653,7 @@ static_library("ui_public_dependencies") {
      "//mojo/public/cpp/bindings",
+     "//ui/webui/resources",
    ]
 +  public_deps += [ "//brave/browser/ui:ui_public_dependencies" ]
    if (!is_android) {

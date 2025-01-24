@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,9 +30,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONException;
 
@@ -52,7 +48,7 @@ import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder
 import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -168,17 +164,12 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     private void setMonthlyInformationClick(View view) {
         View informationButton = view.findViewById(R.id.info_outline);
-        informationButton.setOnClickListener(v -> {
-            MonthlyContributionToolTip toolTip = new MonthlyContributionToolTip(view.getContext());
-            toolTip.show(informationButton);
-        });
-    }
-
-    private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
-        FrameLayout bottomSheet =
-                (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        informationButton.setOnClickListener(
+                v -> {
+                    MonthlyContributionToolTip toolTip =
+                            new MonthlyContributionToolTip(view.getContext());
+                    toolTip.show(informationButton);
+                });
     }
 
     private void updateTermsOfServicePlaceHolder(View view) {
@@ -340,15 +331,22 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     private SpannableString stringMonthlyToSpannableString(String text) {
         Spanned textSpanned = BraveRewardsHelper.spannedFromHtmlString(text);
         SpannableString textSpannableString = new SpannableString(textSpanned.toString());
-        NoUnderlineClickableSpan monthlyContributionClickableSpan = new NoUnderlineClickableSpan(
-                getActivity(), R.color.monthly_contributions_text_color, (textView) -> {
-                    TabUtils.openUrlInNewTab(
-                            false, BraveActivity.BRAVE_REWARDS_SETTINGS_MONTHLY_URL);
-                    dismissRewardsPanel();
-                });
+        ChromeClickableSpan monthlyContributionClickableSpan =
+                new ChromeClickableSpan(
+                        getActivity(),
+                        R.color.monthly_contributions_text_color,
+                        (textView) -> {
+                            TabUtils.openUrlInNewTab(
+                                    false, BraveActivity.BRAVE_REWARDS_SETTINGS_MONTHLY_URL);
+                            dismissRewardsPanel();
+                        });
 
-        BraveRewardsHelper.setSpan(getActivity(), text, textSpannableString,
-                R.string.monthly_contributions, monthlyContributionClickableSpan);
+        BraveRewardsHelper.setSpan(
+                getActivity(),
+                text,
+                textSpannableString,
+                R.string.monthly_contributions,
+                monthlyContributionClickableSpan);
 
         return textSpannableString;
     }

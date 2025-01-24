@@ -21,7 +21,9 @@
       gpu::SyncPointManager* sync_point_manager = nullptr,     \
       gpu::SharedImageManager* shared_image_manager = nullptr, \
       gpu::Scheduler* scheduler = nullptr,                     \
-      base::WaitableEvent* shutdown_event = nullptr);          \
+      base::WaitableEvent* shutdown_event = nullptr,           \
+      const gpu::SharedContextState::GrContextOptionsProvider* \
+          gr_context_options_provider = nullptr);              \
   void InitializeWithHost
 #else
 #define InitializeWithHost                                    \

@@ -13,6 +13,7 @@
 namespace chrome {
 
 inline constexpr char kPerformanceSubPage[] = "system";
+inline constexpr char kBraveUISyncHost[] = "sync";
 
 }  // namespace chrome
 

@@ -8,22 +8,22 @@
 
 struct BraveNavigatorAttributeInstallerTrait;
 
-#define BRAVE_IDL_MEMBER_INSTALLER_H_                     \
-  template <typename T>                                   \
-  static void BraveInstallAttributes(                     \
-      v8::Isolate* isolate, const DOMWrapperWorld& world, \
-      v8::Local<v8::Template> instance_template,          \
-      v8::Local<v8::Template> prototype_template,         \
-      v8::Local<v8::Template> interface_template,         \
-      v8::Local<v8::Signature> signature,                 \
-      base::span<const AttributeConfig> configs);         \
-  template <typename T>                                   \
-  static void BraveInstallAttributes(                     \
-      v8::Isolate* isolate, const DOMWrapperWorld& world, \
-      v8::Local<v8::Object> instance_object,              \
-      v8::Local<v8::Object> prototype_object,             \
-      v8::Local<v8::Object> interface_object,             \
-      v8::Local<v8::Signature> signature,                 \
+#define BRAVE_IDL_MEMBER_INSTALLER_H_                                 \
+  template <typename T>                                               \
+  static void BraveInstallAttributes(                                 \
+      v8::Isolate* isolate, const DOMWrapperWorld& world,             \
+      v8::Local<v8::Template> instance_template,                      \
+      v8::Local<v8::Template> prototype_template,                     \
+      v8::Local<v8::Template> interface_template,                     \
+      v8::Local<v8::Signature> signature, const char* interface_name, \
+      base::span<const AttributeConfig> configs);                     \
+  template <typename T>                                               \
+  static void BraveInstallAttributes(                                 \
+      v8::Isolate* isolate, const DOMWrapperWorld& world,             \
+      v8::Local<v8::Object> instance_object,                          \
+      v8::Local<v8::Object> prototype_object,                         \
+      v8::Local<v8::Object> interface_object,                         \
+      v8::Local<v8::Signature> signature, const char* interface_name, \
       base::span<const AttributeConfig> configs);
 
 #include "src/third_party/blink/renderer/platform/bindings/idl_member_installer.h"  // IWYU pragma: export

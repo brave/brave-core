@@ -22,6 +22,7 @@ import org.chromium.components.safe_browsing.BraveSafeBrowsingUtils.SafeBrowsing
 import org.chromium.components.safe_browsing.SafeBrowsingApiHandler.LookupResult;
 
 import java.util.List;
+import java.util.Observer;
 import java.util.stream.Collectors;
 
 /**
@@ -86,6 +87,7 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
         mObserver = observer;
     }
 
+    @SuppressWarnings("NoStreams")
     @Override
     public void startUriLookup(long callbackId, String uri, int[] threatTypes, int protocol) {
         if (mBraveSafeBrowsingApiHandlerDelegate == null
