@@ -1,5 +1,5 @@
 diff --git a/tools/git/move_source_file.py b/tools/git/move_source_file.py
-index 99ed543f6d145a03f4bcdc523a17324022e30e6d..5a1e337ce8b3a2602a799fd740736c4c12fa3b14 100755
+index e8cca8c242f6e9d9428949ac64835d613a22565c..7e0ba3fbe8ca407ad6862c7c3f573b08325d4214 100755
 --- a/tools/git/move_source_file.py
 +++ b/tools/git/move_source_file.py
 @@ -91,6 +91,7 @@ def UpdatePostMove(from_path, to_path):

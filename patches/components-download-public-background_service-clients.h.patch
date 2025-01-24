@@ -1,8 +1,8 @@
 diff --git a/components/download/public/background_service/clients.h b/components/download/public/background_service/clients.h
-index d2547050c34bba5a336253860ac8a0d7e19b255f..baf131b6da0ef355543b7de50a931b494e6aae0e 100644
+index 6bf051c9a76face5153cd342782059f37c41d7ca..992f17a3407acecac4c8977715c89ea1446e7c5b 100644
 --- a/components/download/public/background_service/clients.h
 +++ b/components/download/public/background_service/clients.h
-@@ -48,6 +48,7 @@ enum class DownloadClient {
+@@ -49,6 +49,7 @@ enum class DownloadClient {
  
    // New clients should be added above here.
    BOUNDARY = 8,

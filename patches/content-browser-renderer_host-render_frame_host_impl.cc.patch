@@ -2,7 +2,7 @@ diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/b
 index 6aef73a782904554d4ccae7ad127a3ce72273cc7..46695640b54e0d45e52a53448fc5bd2b437c1d9c 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
-@@ -4820,6 +4820,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -4809,6 +4809,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
      candidate_site_for_cookies = net::SiteForCookies(top_frame_site);
    }
  
@@ -10,7 +10,7 @@ index 6aef73a782904554d4ccae7ad127a3ce72273cc7..46695640b54e0d45e52a53448fc5bd2b
    std::optional<base::UnguessableToken> nonce =
        ComputeNonce(is_credentialless, fenced_frame_nonce_for_navigation);
    return net::IsolationInfo::Create(request_type, top_frame_origin,
-@@ -4830,6 +4831,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
+@@ -4819,6 +4820,7 @@ net::IsolationInfo RenderFrameHostImpl::ComputeIsolationInfoInternal(
  std::optional<base::UnguessableToken> RenderFrameHostImpl::ComputeNonce(
      bool is_credentialless,
      std::optional<base::UnguessableToken> fenced_frame_nonce_for_navigation) {

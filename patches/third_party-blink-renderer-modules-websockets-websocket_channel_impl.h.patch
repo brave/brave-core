@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h b/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
-index 5c8f237f387e322d425e531bca63ae3e26f8164a..3b6e13ed7eda979c6da9fdcbb0675d5c73b74d8e 100644
+index c37c96b9e3c1a8c72850eb022faf8217a54ec87f..f3a453d40c289f5a327378863951667f3f4f521a 100644
 --- a/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
 +++ b/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
 @@ -79,7 +79,7 @@ class WebSocketHandshakeThrottle;
@@ -11,7 +11,7 @@ index 5c8f237f387e322d425e531bca63ae3e26f8164a..3b6e13ed7eda979c6da9fdcbb0675d5c
      : public WebSocketChannel,
        public network::mojom::blink::WebSocketHandshakeClient,
        public network::mojom::blink::WebSocketClient {
-@@ -366,6 +366,7 @@ class MODULES_EXPORT WebSocketChannelImpl final
+@@ -367,6 +367,7 @@ class MODULES_EXPORT WebSocketChannelImpl final
    void OnConnectionError(const base::Location& set_from,
                           uint32_t custom_reason,
                           const std::string& description);
