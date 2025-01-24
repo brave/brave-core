@@ -156,7 +156,6 @@
 -AudioLifetimeEnforcerBrowserTest.DocumentInactiveIfNeverPlayedAudio
 -ChromeWebPlatformSecurityMetricsBrowserTest.*
 -ChromeWebUsbTest.*
--CookiesTreeModelBrowserTest.NonDefaultStoragePartition
 -CredentialManagerAvatarTest.AvatarFetchIsolatedPerOrigin
 -IsolatedOriginNTPBrowserTest.IsolatedOriginDoesNotInterfereWithNTP
 -LensDesktopNTPSearchEnabledPolicyTest.LensSearchButtonHidden
