@@ -68,6 +68,7 @@ export type StringKey =
   'authorizeUpholdBatNotAllowedTitle' |
   'authorizeUpholdInsufficientCapabilitiesText' |
   'authorizeUpholdInsufficientCapabilitiesTitle' |
+  'batUtilityTitle' |
   'benefitsStoreSubtext' |
   'benefitsStoreText' |
   'benefitsTitle' |

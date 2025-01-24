@@ -122,6 +122,7 @@ static constexpr webui::LocalizedString kStrings[] = {
      IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TEXT},
     {"authorizeUpholdInsufficientCapabilitiesTitle",
      IDS_REWARDS_AUTHORIZE_UPHOLD_INSUFFICIENT_CAPABILITIES_TITLE},
+    {"batUtilityTitle", IDS_REWARDS_BAT_UTILITY_TITLE},
     {"benefitsStoreSubtext", IDS_REWARDS_BENEFITS_STORE_SUBTEXT},
     {"benefitsStoreText", IDS_REWARDS_BENEFITS_STORE_TEXT},
     {"benefitsTitle", IDS_REWARDS_BENEFITS_TITLE},
