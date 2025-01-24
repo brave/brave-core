@@ -47,7 +47,9 @@ export default function BeginGeneration() {
           isMobile: false,
           hasAcceptedAgreement: true,
           isGenerating: context.isGenerating,
-          handleStopGenerating: async () => {}
+          handleStopGenerating: async () => {},
+          removeImage: () => {},
+          uploadImage: () => {}
         }} />
     </FiltersContainer>
     <NoContent />
