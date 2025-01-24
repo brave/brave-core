@@ -28,7 +28,7 @@ export default function UploadedImgItem(props: Props) {
       type: 'image/*'
     })
     return URL.createObjectURL(blob)
-  },[props.imageData])
+  }, [props.imageData])
 
   const fileSize = React.useMemo(() => {
     let bytes = props.imageData.fileSize

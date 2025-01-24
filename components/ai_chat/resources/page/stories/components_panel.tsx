@@ -644,6 +644,8 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     handleFeedbackFormSubmit: () => { },
     setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
     showAttachments: options.args.showAttachments,
+    removeImage: () => {},
+    uploadImage: () => {}
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {

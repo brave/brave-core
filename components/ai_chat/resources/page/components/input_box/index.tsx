@@ -33,11 +33,9 @@ type Props = Pick<
   | 'handleStopGenerating'
   | 'uploadImage'
   | 'imgData'
+  | 'removeImage'
 > &
-  Pick<
-    AIChatContext,
-    'isMobile' | 'hasAcceptedAgreement'
-  >
+  Pick<AIChatContext, 'isMobile' | 'hasAcceptedAgreement'>
 
 interface InputBoxProps {
   context: Props
@@ -106,7 +104,13 @@ function InputBox(props: InputBoxProps) {
       )}
       {props.context.imgData && (
         <div className={styles.attachmentWrapper}>
-          <UploadedImgItem imageData={props.context.imgData} removeImage={() => {}} />
+          {props.context.imgData.map((img, i) => 
+            <UploadedImgItem
+              key={img.fileName}
+              imageData={img}
+              removeImage={() => props.context.removeImage(i)}
+            />            
+          )}
         </div>
       )}
       <div
@@ -168,7 +172,7 @@ function InputBox(props: InputBoxProps) {
               <Icon name='microphone' />
             </Button>
           )}
-          <AttachmentButtonMenu uploadImage = { props.context.uploadImage } />
+          <AttachmentButtonMenu uploadImage={props.context.uploadImage} />
         </div>
         <div>
           {props.context.isGenerating ? (
