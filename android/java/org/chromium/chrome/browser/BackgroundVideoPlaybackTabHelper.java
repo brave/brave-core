@@ -44,4 +44,14 @@ public class BackgroundVideoPlaybackTabHelper {
             Log.e(TAG, "showYouTubeFeaturesLayout", e);
         }
     }
+
+    @CalledByNative
+    public static void enterPipMode() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.enterPipMode();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "enterPipMode", e);
+        }
+    }
 }
