@@ -322,8 +322,8 @@ if (enable_commander) {
 
 if (enable_brave_screenshots) {
   brave_chrome_browser_deps += [
+    "//brave/browser/brave_screenshots:brave_screenshots_impl",
     "//brave/browser/brave_screenshots:features",
-    "//brave/browser/brave_screenshots:tabs",
   ]
 }
 
