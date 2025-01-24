@@ -1,0 +1,5 @@
+module youtube_script_injector.mojom;
+
+interface YouTubeInjector {
+  NativePipMode();
+};
