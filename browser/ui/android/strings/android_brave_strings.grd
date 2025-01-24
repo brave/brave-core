@@ -4133,6 +4133,14 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SAFEBROWSING_ERRORS_PREF" desc="A preferences to show Safe Browsing errors">
       Show Safe Browsing errors
     </message>
+
+    <!-- Custom search engines -->
+    <message name="IDS_CUSTOM_SEARCH_ENGINES" desc="Search engines category title for custom search engines">
+      Custom-Search Engines
+    </message>
+    <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE" desc="Search engines settings option for add custom search engine">
+      Add Custom Search Engine
+    </message>
   </messages>
   </release>
 </grit>
