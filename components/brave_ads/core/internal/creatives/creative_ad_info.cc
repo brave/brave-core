@@ -39,6 +39,7 @@ bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
                                     std::numeric_limits<double>::epsilon()) &&
          split_test_group == other.split_test_group &&
          segment == other.segment && geo_targets == other.geo_targets &&
+         condition_matchers == other.condition_matchers &&
          target_url == other.target_url && dayparts == other.dayparts;
 }
 

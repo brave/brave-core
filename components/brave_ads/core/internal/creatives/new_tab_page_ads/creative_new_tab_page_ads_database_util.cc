@@ -7,7 +7,6 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 
 namespace brave_ads::database {
@@ -17,15 +16,6 @@ void DeleteCreativeNewTabPageAds() {
   database_table.Delete(base::BindOnce([](bool success) {
     if (!success) {
       BLOG(0, "Failed to delete creative new tab page ads");
-    }
-  }));
-}
-
-void DeleteCreativeNewTabPageAdWallpapers() {
-  const table::CreativeNewTabPageAdWallpapers database_table;
-  database_table.Delete(base::BindOnce([](bool success) {
-    if (!success) {
-      BLOG(0, "Failed to delete creative new tab page ad wallpapers");
     }
   }));
 }

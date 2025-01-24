@@ -5,53 +5,122 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
+#include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/campaigns_database_util.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/dayparts_database_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/segments_database_util.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 
 namespace brave_ads {
 
 namespace {
 
-void Delete() {
-  database::DeleteCampaigns();
-  database::DeleteCreativeNotificationAds();
-  database::DeleteCreativeInlineContentAds();
-  database::DeleteCreativeNewTabPageAds();
-  database::DeleteCreativeNewTabPageAdWallpapers();
-  database::DeleteCreativePromotedContentAds();
-  database::DeleteCreativeAds();
-  database::DeleteSegments();
-  database::DeleteGeoTargets();
-  database::DeleteDayparts();
+void Delete(ResultCallback callback) {
+  mojom::DBTransactionInfoPtr mojom_db_transaction =
+      mojom::DBTransactionInfo::New();
+
+  // Remove catalog data not linked to new tab page ads. New tab page ads are
+  // provided by component resources and will be purged after the campaign ends.
+  database::Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        geo_targets
+      WHERE
+        campaign_id NOT IN (
+          SELECT
+            DISTINCT campaign_id
+          FROM
+            creative_new_tab_page_ads
+        );
+
+      DELETE FROM
+        segments
+      WHERE
+        creative_set_id NOT IN (
+          SELECT
+            DISTINCT creative_set_id
+          FROM
+            creative_new_tab_page_ads
+        );
+
+      DELETE FROM
+        dayparts
+      WHERE
+        campaign_id NOT IN (
+          SELECT
+            DISTINCT campaign_id
+          FROM
+            creative_new_tab_page_ads
+        );
+
+      DELETE FROM
+        creative_promoted_content_ads
+      WHERE
+        creative_instance_id NOT IN (
+          SELECT
+            DISTINCT creative_instance_id
+          FROM
+            creative_new_tab_page_ads
+        );
+
+      DELETE FROM
+        creative_inline_content_ads
+      WHERE
+        creative_instance_id NOT IN (
+          SELECT
+            DISTINCT creative_instance_id
+          FROM
+            creative_new_tab_page_ads
+        );
+
+      DELETE FROM
+        creative_ads
+      WHERE
+        creative_instance_id NOT IN (
+          SELECT
+            DISTINCT creative_instance_id
+          FROM
+            creative_new_tab_page_ads
+        );
+
+      DELETE FROM
+        creative_ad_notifications
+      WHERE
+        creative_instance_id NOT IN (
+          SELECT
+            DISTINCT creative_instance_id
+          FROM
+            creative_new_tab_page_ads
+        );
+
+      DELETE FROM
+        campaigns
+      WHERE
+        id NOT IN (
+          SELECT
+            DISTINCT campaign_id
+          FROM
+            creative_new_tab_page_ads
+        );)");
+
+  database::RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                             std::move(callback));
 }
 
-void PurgeExpired() {
-  database::PurgeExpiredCreativeSetConversions();
-  database::PurgeExpiredDeposits();
-}
-
-}  // namespace
-
-void SaveCatalog(const CatalogInfo& catalog) {
-  Delete();
-
-  PurgeExpired();
+void SaveCatalogCallback(const CatalogInfo& catalog, bool success) {
+  if (!success) {
+    return BLOG(0, "Failed to save catalog");
+  }
 
   SetCatalogId(catalog.id);
   SetCatalogVersion(catalog.version);
@@ -60,18 +129,29 @@ void SaveCatalog(const CatalogInfo& catalog) {
   const CreativesInfo creatives = BuildCreatives(catalog);
   database::SaveCreativeNotificationAds(creatives.notification_ads);
   database::SaveCreativeInlineContentAds(creatives.inline_content_ads);
-  database::SaveCreativeNewTabPageAds(creatives.new_tab_page_ads);
   database::SaveCreativePromotedContentAds(creatives.promoted_content_ads);
   database::SaveCreativeSetConversions(creatives.conversions);
 }
 
-void ResetCatalog() {
+void ResetCatalogCallback(bool success) {
+  if (!success) {
+    return BLOG(0, "Failed to reset catalog");
+  }
+
   ClearProfilePref(prefs::kCatalogId);
   ClearProfilePref(prefs::kCatalogVersion);
   ClearProfilePref(prefs::kCatalogPing);
   ClearProfilePref(prefs::kCatalogLastUpdated);
+}
 
-  Delete();
+}  // namespace
+
+void SaveCatalog(const CatalogInfo& catalog) {
+  Delete(base::BindOnce(&SaveCatalogCallback, catalog));
+}
+
+void ResetCatalog() {
+  Delete(base::BindOnce(&ResetCatalogCallback));
 }
 
 std::string GetCatalogId() {

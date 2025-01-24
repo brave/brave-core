@@ -10,8 +10,6 @@
 
 namespace brave_ads::database {
 
-void DeleteCreativePromotedContentAds();
-
 void SaveCreativePromotedContentAds(
     const CreativePromotedContentAdList& creative_ads);
 

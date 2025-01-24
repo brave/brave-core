@@ -92,6 +92,11 @@ class ADS_EXPORT Ads {
       mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) = 0;
 
+  // Called to save new tab page ads. The callback takes one argument - `bool`
+  // is set to `true` if successful otherwise `false`.
+  virtual void SaveNewTabPageAds(base::Value::Dict value,
+                                 SaveNewTabPageAdsCallback callback) = 0;
+
   // Called to serve a new tab page ad. The callback takes one argument -
   // `NewTabPageAdInfo` containing the info for the ad.
   virtual void MaybeServeNewTabPageAd(

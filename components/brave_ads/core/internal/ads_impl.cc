@@ -176,6 +176,19 @@ void AdsImpl::TriggerInlineContentAdEvent(
                                              std::move(callback));
 }
 
+void AdsImpl::SaveNewTabPageAds(base::Value::Dict value,
+                                SaveNewTabPageAdsCallback callback) {
+  if (task_queue_.should_queue()) {
+    return task_queue_.Add(
+        base::BindOnce(&AdsImpl::SaveNewTabPageAds, weak_factory_.GetWeakPtr(),
+                       std::move(value), std::move(callback)));
+  }
+
+  // TODO(tmancey): Save new tab page ads to the database and ensure they are
+  // not saved for non-Rewards users. When saving, delete old entries to avoid
+  // serving outdated ads.
+}
+
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (task_queue_.should_queue()) {
     return task_queue_.Add(base::BindOnce(&AdsImpl::MaybeServeNewTabPageAd,

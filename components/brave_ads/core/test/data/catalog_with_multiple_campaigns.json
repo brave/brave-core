@@ -21,32 +21,6 @@
               }
             },
             {
-              "creativeInstanceId": "7ff400b9-7f8a-46a8-89f1-cb386612edcf",
-              "type": {
-                "code": "new_tab_page_all_v1",
-                "platform": "all",
-                "name": "new_tab_page",
-                "version": 1
-              },
-              "payload": {
-                "logo": {
-                  "alt": "Test New Tab Page Ad Campaign 1",
-                  "imageUrl": "https://brave.com/1/test.jpg",
-                  "companyName": "New Tab Page 1",
-                  "destinationUrl": "https://brave.com/1/new_tab_page_ad"
-                },
-                "wallpapers": [
-                  {
-                    "focalPoint": {
-                      "x": 1200,
-                      "y": 1400
-                    },
-                    "imageUrl": "https://brave.com/1/test2.jpg"
-                  }
-                ]
-              }
-            },
-            {
               "creativeInstanceId": "60001aa5-9368-45d2-81fc-e69887d278c5",
               "type": {
                 "code": "promoted_content_all_v1",
@@ -159,38 +133,6 @@
                 "body": "Test Notification Ad Campaign 2 Body",
                 "title": "Test Notification Ad Campaign 2 Title",
                 "targetUrl": "https://brave.com/2/notification_ad"
-              }
-            },
-            {
-              "creativeInstanceId": "3dfe54d0-80b7-48d7-9bcc-3c77a912f583",
-              "type": {
-                "code": "new_tab_page_all_v1",
-                "platform": "all",
-                "name": "new_tab_page",
-                "version": 1
-              },
-              "payload": {
-                "logo": {
-                  "alt": "Test New Tab Page Ad Campaign 2",
-                  "imageUrl": "https://brave.com/2/test.jpg",
-                  "companyName": "New Tab Page 2",
-                  "destinationUrl": "https://brave.com/2/new_tab_page_ad"
-                },
-                "wallpapers": [
-                  {
-                    "conditionMatchers": [
-                      {
-                        "prefPath": "brave.today.opted_in",
-                        "condition": "1"
-                      }
-                    ],
-                    "focalPoint": {
-                      "x": 1000,
-                      "y": 1200
-                    },
-                    "imageUrl": "https://brave.com/2/test2.jpg"
-                  }
-                ]
               }
             },
             {

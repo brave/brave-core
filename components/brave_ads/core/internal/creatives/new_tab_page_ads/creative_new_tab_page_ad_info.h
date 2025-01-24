@@ -10,8 +10,6 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
-#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -30,9 +28,7 @@ struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   bool operator==(const CreativeNewTabPageAdInfo&) const = default;
 
   std::string company_name;
-  GURL image_url;
   std::string alt;
-  CreativeNewTabPageAdWallpaperList wallpapers;
 };
 
 using CreativeNewTabPageAdList = std::vector<CreativeNewTabPageAdInfo>;

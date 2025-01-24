@@ -81,7 +81,7 @@ class CreativeInlineContentAds final : public TableInterface {
                int to_version) override;
 
  private:
-  void MigrateToV45(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV46(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
   void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
               const CreativeInlineContentAdList& creative_ads);

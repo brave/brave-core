@@ -113,7 +113,7 @@ OBJC_EXPORT
                           eventType:(BraveAdsInlineContentAdEventType)eventType
                          completion:(void (^)(BOOL success))completion;
 
-- (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
+- (void)triggerNewTabPageAdEvent:(NSString*)placementId
               creativeInstanceId:(NSString*)creativeInstanceId
                        eventType:(BraveAdsNewTabPageAdEventType)eventType
                       completion:(void (^)(BOOL success))completion;

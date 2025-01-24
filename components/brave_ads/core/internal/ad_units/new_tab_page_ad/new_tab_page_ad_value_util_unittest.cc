@@ -28,20 +28,10 @@ constexpr char kNewTabPageAdAsJson[] =
           "company_name": "Test Ad Company Name",
           "creative_instance_id": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
           "creative_set_id": "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123",
-          "image_url": "https://brave.com/image",
           "placement_id": "9bac9ae4-693c-4569-9b3e-300e357780cf",
           "segment": "untargeted",
           "target_url": "https://brave.com/",
-          "type": "new_tab_page_ad",
-          "wallpapers": [
-            {
-              "focal_point": {
-                "x": 1280,
-                "y": 720
-              },
-              "image_url": "https://brave.com/wallpaper_image"
-            }
-          ]
+          "type": "new_tab_page_ad"
         })";
 
 }  // namespace

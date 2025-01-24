@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
@@ -71,7 +70,7 @@ class CreativeNewTabPageAds final : public TableInterface {
                int to_version) override;
 
  private:
-  void MigrateToV45(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV46(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
   void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
               const CreativeNewTabPageAdList& creative_ads);
@@ -84,8 +83,6 @@ class CreativeNewTabPageAds final : public TableInterface {
 
   Campaigns campaigns_database_table_;
   CreativeAds creative_ads_database_table_;
-  CreativeNewTabPageAdWallpapers
-      creative_new_tab_page_ad_wallpapers_database_table_;
   Dayparts dayparts_database_table_;
   Deposits deposits_database_table_;
   GeoTargets geo_targets_database_table_;

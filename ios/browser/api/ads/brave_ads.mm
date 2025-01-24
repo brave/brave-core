@@ -1516,7 +1516,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 // TODO(https://github.com/brave/brave-browser/issues/33470): Unify Brave Ads
 // new tab page ad serving.
 
-- (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
+- (void)triggerNewTabPageAdEvent:(NSString*)placementId
               creativeInstanceId:(NSString*)creativeInstanceId
                        eventType:(BraveAdsNewTabPageAdEventType)eventType
                       completion:(void (^)(BOOL success))completion {
@@ -1525,7 +1525,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   }
 
   adsService->TriggerNewTabPageAdEvent(
-      base::SysNSStringToUTF8(wallpaperId),
+      base::SysNSStringToUTF8(placementId),
       base::SysNSStringToUTF8(creativeInstanceId),
       static_cast<brave_ads::mojom::NewTabPageAdEventType>(eventType),
       base::BindOnce(completion));

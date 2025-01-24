@@ -392,8 +392,8 @@ void CreativeNotificationAds::Migrate(
       break;
     }
 
-    case 45: {
-      MigrateToV45(mojom_db_transaction);
+    case 46: {
+      MigrateToV46(mojom_db_transaction);
       break;
     }
   }
@@ -406,16 +406,19 @@ void CreativeNotificationAds::MigrateToV37(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
+  // Embeddings are deprecated.
   DropTable(mojom_db_transaction, "embeddings");
   DropTable(mojom_db_transaction, "text_embedding_html_events");
 }
 
-void CreativeNotificationAds::MigrateToV45(
+void CreativeNotificationAds::MigrateToV46(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
-  // We can safely recreate the table because it will be repopulated after
-  // downloading the catalog.
+  // Recreating the table is safe because it will be repopulated after
+  // downloading the catalog post-migration. However, after this migration, we
+  // should not drop the table as it needs to maintain relationships with other
+  // tables.
   DropTable(mojom_db_transaction, GetTableName());
   Create(mojom_db_transaction);
 }

@@ -12,6 +12,7 @@
 #include "base/containers/flat_set.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
+#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -48,6 +49,7 @@ struct CreativeAdInfo {
   std::string split_test_group;
   CreativeDaypartList dayparts;
   base::flat_set<std::string> geo_targets;
+  ConditionMatcherMap condition_matchers;
   GURL target_url;
 };
 

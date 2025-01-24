@@ -31,6 +31,8 @@ class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
  protected:
   void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
 
+  // TODO(tmancey): Refactor to mock component updater because new tab page ads
+  // are now served from the catalog. We also need to test condition matchers.
   void SetUpMocks() override {
     const test::URLResponseMap url_responses = {
         {BuildCatalogUrlPath(),
