@@ -43,7 +43,7 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
   // Given a path to youtube.json, loads the scripts from the file into memory.
   void LoadJson(const base::FilePath& path);
   const std::optional<YouTubeJson>& GetJson() const { return json_; }
-  bool IsYouTubeDomain(const GURL& url) const;
+  static bool IsYouTubeDomain(const GURL& url);
 
  private:
   YouTubeRegistry();
