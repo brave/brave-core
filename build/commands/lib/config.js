@@ -1172,7 +1172,7 @@ Object.defineProperty(Config.prototype, 'outputDir', {
     if (this.targetOS && this.targetOS !== this.hostOS) {
       buildConfigDir = this.targetOS + '_' + buildConfigDir
     }
-    if (this.targetEnvironment) {
+    if (this.targetEnvironment && this.targetEnvironment != 'device') {
       buildConfigDir = buildConfigDir + "_" + this.targetEnvironment
     }
     if (this.isChromium) {
