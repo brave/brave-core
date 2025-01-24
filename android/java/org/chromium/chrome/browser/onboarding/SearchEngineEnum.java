@@ -25,7 +25,11 @@ public enum SearchEngineEnum {
             R.string.startpage_desc),
     ECOSIA(R.drawable.ecosia, SearchEngineEnumConstants.SEARCH_ECOSIA_ID, R.string.ecosia_desc),
     DAUM(R.drawable.daum, SearchEngineEnumConstants.SEARCH_DAUM_ID, R.string.daum_desc),
-    NAVER(R.drawable.naver, SearchEngineEnumConstants.SEARCH_NAVER_ID, R.string.naver_desc);
+    NAVER(R.drawable.naver, SearchEngineEnumConstants.SEARCH_NAVER_ID, R.string.naver_desc),
+    YAHOO_JAPAN(
+            R.drawable.ic_yahoo_color,
+            SearchEngineEnumConstants.SEARCH_YAHOO_JAPAN_ID,
+            R.string.naver_desc);
 
     private final int icon;
     private final int id;
@@ -60,5 +64,6 @@ public enum SearchEngineEnum {
         static final int SEARCH_ECOSIA_ID = 7;
         static final int SEARCH_DAUM_ID = 8;
         static final int SEARCH_NAVER_ID = 9;
+        static final int SEARCH_YAHOO_JAPAN_ID = 10;
     }
 }

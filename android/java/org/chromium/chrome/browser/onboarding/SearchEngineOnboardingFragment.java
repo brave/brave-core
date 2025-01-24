@@ -94,9 +94,9 @@ public class SearchEngineOnboardingFragment extends Fragment {
         for (TemplateUrl templateUrl : templateUrls) {
             if (templateUrl.getIsPrepopulated()
                     && OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName())
-                    != null) {
+                            != null) {
                 SearchEngineEnum searchEngineEnum =
-                    OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
+                        OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
 
                 String title = templateUrl.getShortName();
                 String desc = getActivity().getResources().getString(searchEngineEnum.getDesc());
