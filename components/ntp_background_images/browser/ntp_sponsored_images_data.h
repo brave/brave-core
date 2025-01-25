@@ -59,8 +59,6 @@ enum WallpaperType { kImage, kRichMedia };
 struct SponsoredBackground {
   WallpaperType wallpaper_type;
   base::FilePath wallpaper_file;
-  // TODO(tmancey): Discussed with @aseren and this is no longer needed :-).
-  std::vector<base::FilePath> rich_media_assets;
   gfx::Point focal_point;
   brave_ads::ConditionMatcherMap condition_matchers;
   std::string background_color;

@@ -429,17 +429,17 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
       WallpaperType::kRichMedia) {
     // TODO(tmancey): @aseren would it not make sense to prepend when building
     // wallpaper_file in campaign.backgrounds?
-    wallpaper_url = kRichMediaURL +
+    wallpaper_url = kRichMediaURL + campaign.backgrounds[background_index].creative_instance_id + "/" +
                     background_file_path.BaseName().AsUTF8Unsafe();
   }
 
-  // TODO(tmancey): Discussed with @aseren and "html" should be "richMedia".
+  // DONE. TODO(tmancey): Discussed with @aseren and "html" should be "richMedia".
   // However, where is this actually used?
   data.Set(kWallpaperTypeKey,
            campaign.backgrounds[background_index].wallpaper_type ==
                    WallpaperType::kImage
                ? "brave"
-               : "html");
+               : "richMedia");
   data.Set(kWallpaperImageURLKey, wallpaper_url);
   data.Set(kWallpaperImagePathKey, background_file_path.AsUTF8Unsafe());
   data.Set(kWallpaperFocalPointXKey,

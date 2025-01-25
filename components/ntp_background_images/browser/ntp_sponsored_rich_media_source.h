@@ -1,7 +1,7 @@
 /* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_RICH_MEDIA_SOURCE_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_RICH_MEDIA_SOURCE_H_
@@ -46,8 +46,7 @@ class NTPSponsoredRichMediaSource : public content::URLDataSource {
   std::string GetContentSecurityPolicy(
       network::mojom::CSPDirectiveName directive) override;
 
-  bool CanStartDataRequest(const std::string& path) const;
-  base::FilePath GetLocalFilePathFor(const std::string& path);
+  std::optional<base::FilePath> GetLocalFilePathFor(const std::string& path);
   void ReadFileCallback(GotDataCallback callback,
                         std::optional<std::string> input);
 

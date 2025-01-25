@@ -1,7 +1,7 @@
 /* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_source.h"
 
@@ -16,6 +16,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/mime_util.h"
@@ -54,21 +55,20 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
   VLOG(6) << "Start data request for Rich Media asset at " << url;
 
   const std::string path = URLDataSource::URLToRequestPath(url);
-  if (!CanStartDataRequest(path)) {
+  std::optional<base::FilePath> file_path = GetLocalFilePathFor(path);
+  // DONE. TODO(tmancey): @aseren would it make sense to return std::optional,
+  // but I am unsure how this could fail in the first place.
+  if (!file_path) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback),
                                   scoped_refptr<base::RefCountedMemory>()));
+
     return;
   }
 
-  base::FilePath file_path = GetLocalFilePathFor(path);
-  // TODO(tmancey): @aseren would it make sense to return std::optional, but I
-  // am unsure how this could fail in the first place.
-  CHECK(!file_path.empty());
-
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&ReadFileToString, file_path),
+      base::BindOnce(&ReadFileToString, *file_path),
       base::BindOnce(&NTPSponsoredRichMediaSource::ReadFileCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -77,9 +77,9 @@ void NTPSponsoredRichMediaSource::ReadFileCallback(
     GotDataCallback callback,
     std::optional<std::string> input) {
   if (!input) {
-    // TODO(tmancey): @aseren is it intentional that we do not call the callback
-    // if this function fails? Surely we need to?
-    return;
+    // DONE. TODO(tmancey): @aseren is it intentional that we do not call the
+    // callback if this function fails? Surely we need to?
+    return std::move(callback).Run(scoped_refptr<base::RefCountedMemory>());
   }
 
   std::move(callback).Run(
@@ -126,64 +126,38 @@ std::string NTPSponsoredRichMediaSource::GetContentSecurityPolicy(
   }
 }
 
-// TODO(tmancey): @aseren do we need all these nested loops after our
+// DONE. TODO(tmancey): @aseren do we need all these nested loops after our
 // discussion? And are we sure NOTREACHED() is safe? GetLocalFilePathFor is
 // confusing, maybe me :-) because it is not clear what it is doing.
-base::FilePath NTPSponsoredRichMediaSource::GetLocalFilePathFor(
+std::optional<base::FilePath> NTPSponsoredRichMediaSource::GetLocalFilePathFor(
     const std::string& path) {
   VLOG(6) << "Get local path for Rich Media asset at " << path;
 
   auto* images_data = service_->GetBrandedImagesData(false);
-  CHECK(images_data);
-
-  const auto basename_from_path =
-      base::FilePath::FromUTF8Unsafe(path).BaseName();
-
-  for (const auto& campaign : images_data->campaigns) {
-    for (const auto& background : campaign.backgrounds) {
-      for (const auto& asset : background.rich_media_assets) {
-        const auto basename_from_data = asset.BaseName();
-
-        if (basename_from_data == basename_from_path) {
-          return asset;
-        }
-      }
-    }
-  }
-
-  // Should give valid path always here because invalid |path| was
-  // already filtered by `CanStartDataRequest()`.
-  NOTREACHED();
-}
-
-// TODO(tmancey): I have discussed changing this code with @aseren so that we
-// only match against the dir name, meaning we do not need assets, because we do
-// not allow any files outside of that folder.
-bool NTPSponsoredRichMediaSource::CanStartDataRequest(
-    const std::string& path) const {
-  VLOG(6) << "Checking if following Rich Media asset is valid " << path;
-
-  NTPSponsoredImagesData* images_data = service_->GetBrandedImagesData(false);
   if (!images_data) {
-    return false;
+    return std::nullopt;
   }
 
   const auto basename_from_path =
       base::FilePath::FromUTF8Unsafe(path).BaseName();
+  const auto dirname_from_path =
+      base::FilePath::FromUTF8Unsafe(path).DirName().AsUTF8Unsafe();
 
   for (const auto& campaign : images_data->campaigns) {
     for (const auto& background : campaign.backgrounds) {
-      for (const auto& asset : background.rich_media_assets) {
-        const auto basename_from_data = asset.BaseName();
+      if (dirname_from_path == background.creative_instance_id) {
+        const auto assets_directory_path = background.wallpaper_file.DirName();
+        const auto local_file_path =
+            assets_directory_path.Append(basename_from_path);
 
-        if (basename_from_data == basename_from_path) {
-          return true;
-        }
+        VLOG(6) << "Found matching campaign for Rich Media asset at "
+                << local_file_path.AsUTF8Unsafe();
+        return local_file_path;
       }
     }
   }
 
-  return false;
+  return std::nullopt;
 }
 
 }  // namespace ntp_background_images
