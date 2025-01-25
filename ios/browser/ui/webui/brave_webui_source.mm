@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/webui/webui_resources.h"
+#include "brave/ios/browser/ui/webui/public/brave_web_ui_ios_data_source.h"
 #include "build/build_config.h"
 #include "components/grit/components_resources.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -35,7 +36,7 @@ web::WebUIIOSDataSource* CreateWebUIDataSource(
     base::span<const webui::ResourcePath> resource_paths,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  web::WebUIIOSDataSource* source = web::WebUIIOSDataSource::Create(name);
+  web::WebUIIOSDataSource* source = BraveWebUIIOSDataSource::Create(name);
   web::WebUIIOSDataSource::Add(ProfileIOS::FromWebUIIOS(web_ui), source);
 
   source->UseStringsJs();

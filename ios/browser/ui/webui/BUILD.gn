@@ -1,4 +1,4 @@
-# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -19,6 +19,7 @@ source_set("webui") {
     "//brave/components/constants",
     "//brave/components/webui",
     "//brave/ios/browser/ui/webui/ads",
+    "//brave/ios/browser/ui/webui/public",
     "//brave/ios/browser/ui/webui/skus",
     "//components/prefs",
     "//components/profile_metrics",
@@ -30,6 +31,7 @@ source_set("webui") {
     "//ios/chrome/browser/webui/ui_bundled:webui_internal",
     "//ios/components/webui:url_constants",
     "//ios/web/public/webui",
+    "//ios/web/webui:webui",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",
