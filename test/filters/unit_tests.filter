@@ -67,41 +67,10 @@
 # actions the test expects to find.
 -CustomizeToolbarHandlerTest.ListActions
 
-# These tests crash because brave.search.p3a_default_switch pref is not
-# registered.
--All/ManagementToolbarButtonUnitTest.Visibility/*
--BrowserFeaturePromoControllerReshowTest.ReshowKeyedPromoNoLimit
--BrowserFeaturePromoControllerReshowTest.ReshowKeyedPromoWithLimit
--BrowserFeaturePromoControllerReshowTest.ReshowLegalNoticeWithLimit
--BrowserFeaturePromoControllerReshowTest.ReshowLegalNoticeWithNoLimit
--CookieControlsContentViewTrackingProtectionUnitTest.CreateManagedSectionForCookieSettingEnforcement
--CookieControlsContentViewTrackingProtectionUnitTest.CreateManagedSectionForPolicyEnforcement
--CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithEnforcementByCookieSetting
--CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOff
--CookieControlsContentViewTrackingProtectionUnitTest.CreateRowForThirdPartyCookiesWithProtectionsOn
--CookieControlsUserBypassTrackingProtectionUiTest.DisplayEyeIconWhenActFeaturesNotEnforced
--CookieControlsUserBypassTrackingProtectionUiTest.DoesNotDisplayEyeIconWhenActFeaturesAreEnforced
--TabListViewUnitTest.CloseButtonRemovesListItem
--TabListViewUnitTest.CloseButtonShowsAndHides
--TabListViewUnitTest.CloseButtonShowsAndHidesUpdate
--TabListViewUnitTest.CloseButtonShowsAndHidesWithFocus
--TabListViewUnitTest.PopulateTabList
--VideoStreamCoordinatorTest.ConnectToFrameHandlerAndReceiveNoFrames
-
-# Unregistered brave.rewards.notifications pref.
--PageCaptureApiUnitTest.PageNavigationDuringSaveAsMHTML
--SiteAccessRequestsHelperUnittest.*
-
 # This test fails because the message it checks has Brave intead of Google.
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResultExplicitSigninDisabled
 -SaveCardBubbleControllerImplTestWithCvCStorageAndFilling.UploadCardSaveWithCvcDialogContent
-
-# This test crashes in SidebarContainerView::UpdateToolbarButtonVisibility
-# because browser_view->toolbar()->GetSidePanelButton() returns nullptr
--SidePanelPinningCoordinatorTest.ExtensionSidePanelHasPinButton
--SidePanelPinningCoordinatorTest.SidePanelPinButtonsHideInGuestMode
--SidePanelPinningCoordinatorTest.SidePanelTitleUpdates
 
 # These tests crash because pinned_toolbar_actions_container_ in
 # BraveToolbarView is set to nullptr
@@ -120,12 +89,6 @@
 # These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
 # always return false
 -SearchEngineChoiceDialogServiceTest.*
-
-# These tests DCHECK because they pass their own pref service to the testing
-# profile so our prefs in pref_service_builder_utils.cc aren't initialized.
--All/ExtensionContextMenuModelWithUserHostControlsAndPermittedSitesTest.PageAccessItemsVisibilityBasedOnSiteSettings/*
--All/ExtensionContextMenuModelWithUserHostControlsTest.*
--TabHelperUnitTest.*
 
 # These tests DCHECK in CookieControlsBubbleCoordinator::ShowBubble
 # because we circumvent creation of CookieControlsIconView
@@ -173,12 +136,6 @@
 -ChromeAppsIconFactoryTest.LoadStandardIcon
 -ChromeAppsIconFactoryTest.LoadUncompressedIcon
 
-# These tests crash due to disabled side search prefs - side_search.enabled
--SideSearchSideContentsHelperTest.EmitsPerJourneyMetrics
--SideSearchSideContentsHelperTest.EmitsPerJourneyMetricsAutotriggered
--SideSearchSideContentsHelperTest.EmitsPerJourneyMetricsFromMenuOption
--SideSearchSideContentsHelperTest.RedirectionConfigNavigatesTabContents
-
 # These tests fail because we customize the download status messages with our
 # own verbiage
 -ContentAnalysisDownloadsDelegateTest.TestGetMessageAndUrl
@@ -211,22 +168,8 @@
 # The following tests are disabled for BraveRenderViewContextMenu::InitMenu
 # attempting to check Tor statuses, which dereferences an uninitialised
 # g_browser_process->local_state().
--AutofillContextMenuManagerTest.AutofillContextMenuContents
--AutofillContextMenuManagerTest.AutocompleteUnrecognizedFallback_ContextMenuEntry
--AutofillContextMenuManagerTest.AutocompleteUnrecognizedFallback_ExplicitlyTriggeredMetric_Accepted
--AutofillContextMenuManagerTest.AutocompleteUnrecognizedFallback_ExplicitlyTriggeredMetric_NotAccepted
--AutofillContextMenuManagerTest.AutocompleteUnrecognizedFallback_TriggerSuggestions
--AutofillContextMenuManagerTest.ExecuteCommand
--AutofillContextMenuManagerTest.RecordContextMenuIsShownOnField
 -PasswordsPrivateDelegateImplTest.ShowAddShortcutDialog
 -PerformanceHandlerTest.GetCurrentOpenSites
--PermissionPromptBubbleTwoOriginsViewTest.DescriptionMentionsTwoOriginsAndPermission
--PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsRequestingOriginAndPermission
--SavedTabGroupBarUnitTest.*
-
-# These tests fail because local_state passed to KeyringService is nullptr.
--All/CookieControlsUserBypassTrackingProtectionUiTest.AddsActFeaturesToVectorBasedOnFeatureAndExceptionStatus/*
--TabGroupServiceWrapper/TabGroupServiceWrapperUnitTest.*
 
 # Prerender is disabled
 -PrerenderManagerBasicRequirementTest.*
@@ -248,9 +191,6 @@
 # Test failing due to Brave's disabling of header variation (e.g overrides for
 # GetClientDataHeaders)
 -RealboxHandlerTest.RealboxLensVariationsContainsVariations
-
-# Test flaky in cr109, although corrected in newer revisions
--TabStripScrollSessionTestWithVariableSpeed.GivenScrollSessionWhenMaybeStartThenTimerCallback
 
 # These tests fail because we intentionally disable DICE signin via
 # BraveAccountConsistencyModeManager::IsDiceSignInAllowed()
@@ -322,26 +262,9 @@
 
 # These tests fail a CalledOnValidSequence check when calling
 # TorProfileServiceFactory::IsTorDisabled
--All/CustomizeChromePageHandlerSetThemeTest.*/*
--CustomizeChromePageHandlerTest.*
--CustomizeChromePageHandlerWithModulesTest.*
--CustomizeChromePageHandlerWithWallpaperSearchTest.*
--CWSInfoServiceTest.*
--ExtensionsHatsHandlerTest.ExtensionsPageLoad
--ExtensionsHatsHandlerTest.OnSurveyInteraction
+-CWSInfoServiceTest.IgnoresNonCWSExtensions
 -LocalTabHandlerTest.*
--PermissionPromptBaseViewTest.IncludedInTrackedPictureInPictureWidgets
--PermissionPromptBubbleTwoOriginsViewTest.DiesIfPermissionNotAllowed
--PermissionPromptBubbleTwoOriginsViewTest.LinkIsPresent
--PermissionPromptBubbleTwoOriginsViewTest.TitleMentionsTwoOriginsAndPermission
--ProductSpecificationsButtonTest.AnimatesToExpanded
--ProductSpecificationsButtonTest.AppliesWidthFactor
--SavedTabGroupBar/SavedTabGroupBarUnitTest.*
--SavedTabGroupEverythingMenu/STGEverythingMenuUnitTest.TabGroupItemsSortedByCreationTime/*
--SavedTabGroupKeyedServiceUnitTest.*
--TabLifecycleUnitTest.CannotDiscardPictureInPictureWindow
 -TabOrganizationServiceTest.*
--TabOrganizationTriggerObserverTest.TriggersOnTabStripModelChange
 
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
@@ -384,6 +307,7 @@
 -ExtensionSyncServiceTransportModeTest.AccountExtensionTypeChangesWithSync
 -ExtensionSyncServiceTransportModeTest.OnlySyncAccountExtensions
 -ManagePasswordsUIControllerWithBrowserTestExplicitBrowserSignin.MovePasswordUponSigninWithExistingAccount
+-PeopleHandlerTest.*
 -PeopleHandlerDiceTest.StoredAccountsList
 -PeopleHandlerDiceUnifiedConsentTest.StoredAccountsList
 -PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
@@ -594,11 +518,6 @@
 -NavigationPredictorUserInteractionsTest.MLModelMaxHoverTime
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
 
-# These tests fail a CalledOnValidSequence check when calling FindPreference
--BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedDefaultValue
--BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToFalse
--BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToTrue
-
 # These tests fail a CalledOnValidSequence check in brave_sync::Prefs::GetSeed
 -PeopleHandlerWithExplicitBrowserSigninTest.*
 
@@ -672,11 +591,6 @@
 -TranslatePageLoadMetricsObserverTest.PrerenderAndActivation
 -TrustedVaultEncryptionKeysTabHelperPrerenderingTest.CreateEncryptionKeysInPrerendering
 -WebAppIconDownloaderPrerenderTest.PrerenderedPageNavigates
-
-# This test crashes because brave.sidebar.side_panel_width isn't registered by
-# SidebarService for the test.
--ExtensionsToolbarButtonFeatureUnitTest.UpdateState
--MemorySaverChipViewTest.MoreThan2GbMemorySavings
 
 # These tests fail because we disable kPermissionStorageAccessAPI
 -PageInfoTest.NonFactoryDefaultAndRecentlyChangedPermissionsShown
@@ -831,176 +745,50 @@
 -OfferNotificationBubbleControllerImplTest.*
 -OmniboxViewViewsSteadyStateElisionsTest.*
 -OmniboxViewViewsTest.*
--PageFreezerTest.*
 -PageInfoBubbleViewTest.*
 -PageInfoTest.IncognitoPermissionsDontShowAsk # Change upstream logic for incognito windows. https://github.com/brave/brave-browser/issues/24720
--PdfPrinterHandlerGetCapabilityTest.*
 -PdfPrinterHandlerPosixTest.*
--PeopleHandlerTest.*
--PeriodicBackgroundSyncPermissionContextTest.*
--PeriodicBackgroundSyncPermissionContextWithPermissionTest.*
--PermissionChipUnitTest.*
+-PeriodicBackgroundSyncPermissionContextWithPermissionTest.DefaultSearchEngine
 -PermissionDashboardUnitTest.DisplayLHSIndicatorForCamera*
--PermissionMessageCombinationsUnittest.*
--PermissionMessagesUnittest.*
--PermissionsAPISiteAccessRequestsUnitTest.AddSiteAccessRequest*
--PermissionsAPISiteAccessRequestsUnitTest.RemoveSiteAccessRequest*
--PermissionsAPIUnitTest.*
--PermissionsManagerUnitTest.FaviconPermissionsAreNotWithheld
--PermissionsTest.*
--PermissionsUpdaterTest.*
--PinnedTabCodecTest.*
--PinnedTabServiceTest.*
--PinnedTabsResetTest.*
--PolicyInstalledThemeTest.*
--PredictionManagerRemoteFetchingDisabledTest.*
--PredictionManagerTest.*
--PrefetchProxyTabHelperBodyLimitTest.*
--PrefetchProxyTabHelperConcurrentPrefetchesTest.*
--PrefetchProxyTabHelperDataSaverDisabledNotRequiredTest.*
--PrefetchProxyTabHelperLimitedPrefetchesTest.*
--PrefetchProxyTabHelperNoPrefetchesTest.*
--PrefetchProxyTabHelperPredictionPositionsTest.*
--PrefetchProxyTabHelperRedirectTest.*
--PrefetchProxyTabHelperRedirectUnlimitedPrefetchesTest.*
--PrefetchProxyTabHelperRedirectWithDecoyTest.*
--PrefetchProxyTabHelperTest.*
--PrefetchProxyTabHelperUnlimitedPrefetchesTest.*
--PrefetchProxyTabHelperWithDecoyTest.*
--PrefetchProxyTabHelperWithHTMLOnly.*
--PreinstalledWebAppManagerTest.*
--PresentationRequestNotificationProducerTest.*
--PrintPreviewDialogControllerUnitTest.*
--PrintPreviewUIUnitTest.*
--PrintViewManagerTest.*
--PrivacyMetricsServiceTest.*
+-PermissionsUpdaterTest.GrantAndRevokeOptionalPermissions
 -ProfileAttributesStorageTest.*
--ProfileManagerTest.*
--ProfileResetterTest.*
--ProfileSigninConfirmationHelperTest.*
--ReadAnythingControllerTest.*
--ReadAnythingCoordinatorTest.*
--ReadAnythingModelTest.*
--RelaunchNotificationControllerPlatformImplTest.*
--RenameHandlerOpenDownloadTest.*
+-ProfileResetterTest.CheckSnapshots
+-ProfileResetterTest.ResetContentSettings
+-ProfileResetterTest.ResetStartPagePartially
 -RenderViewContextMenuExtensionsTest.*
--ReopenTabInProductHelpTest.*
--RulesRegistryWithCacheTest.*
--SafeBrowsingPrivateApiUnitTest.*
--SafeBrowsingVerdictHandlerUnitTest.*
--SafetyCheckHandlerTest.*
--SaveCardBubbleControllerImplTest.*
--SaveCardBubbleControllerImplTestWithLoadingAndConfirmation.*
--SaveCardBubbleControllerImplTestWithoutStatusChip.*
--SaveCardBubbleLoggingTest.*
--SaveCardBubbleSingletonTest.*
--SavedFilesServiceUnitTest.*
--SaveUpdateAddressProfileBubbleControllerImplTest.*
--ScriptingPermissionsModifierUnitTest.*
--SearchApiUnitTest.*
--SearchEngineBaseURLTrackerTest.*
--SearchIPCRouterPolicyTest.*
--SearchIPCRouterTest.*
--SearchProviderCommandLineOverrideTest.*
--SearchProviderRequestTest.*
+-SaveCardBubbleControllerImplTest.UploadCvcOnlySaveDialogContent
+-SearchProviderRequestTest.SendRequest*
 -SearchProviderTest.*
--SearchTest.*
--SendTabToSelfDesktopUtilTest.*
--SendTabToSelfSubMenuModelTest.*
--SendTabToSelfUtilTest.*
--SendTabToSelfUtilTestWithWindow.*
--SessionServiceTest.*
--SessionStorageApiUnittest.*
--SettingsOverriddenDialogViewUnitTest.DialogResult_ChangeSettingsBack
--SettingsOverriddenDialogViewUnitTest.DialogResult_CloseParentWidget
--SettingsOverriddenDialogViewUnitTest.DialogResult_DismissDialog
--SettingsOverriddenDialogViewUnitTest.DialogResult_KeepNewSettings
--SettingsOverriddenParamsProvidersUnitTest.*
--SettingsResetPromptModel/ResetStatesTest.*
--SettingsResetPromptModelTest.*
--SharedModuleServiceUnitTest.*
--SharingDialogViewTest.*
--SidePanelCoordinatorLensOverlayTest.*
--SidePanelCoordinatorLoadingContentTest.*
--SidePanelCoordinatorTest.*
--SidePanelToolbarButtonTest.*
--SidePanelToolbarContainerTest.*
--SigninErrorHandlerTest.*
+-SearchTest.InstantCacheableNTPNavigationEntryNewProfile
+-SettingsOverriddenParamsProvidersUnitTest.GetExtensionControllingNewTab
 -SigninManagerTest.*
--SigninUiUtilTest.*
--SingletonTabsTest.DoesNotFindDifferentPath
--SingletonTabsTest.DoesNotFindNonSingletonDisposition
--SingletonTabsTest.DoesNotFindViewSource
--SingletonTabsTest.FindsExactMatch
--SingletonTabsTest.FindsWithDifferentRef
--SitePermissionsHelperUnitTest.*
--SitePermissionsHelperWithUserHostControlsUnitTest.DowngradingFromAllSitesToOnClickAppliesUserPermittedSites
--SideSearchTabContentsHelperTest.*
--StartupBrowserPolicyUnitTest.*
--StartupTabProviderTest.*
+-SigninUiUtilTest.GetOrderedAccountsForDisplay
+-StartupTabProviderTest.GetCommandLineTabs
 -StateStoreTest.ClearAll
 -StateStoreTest.Persistence
 -StateStoreTest.PersistenceWithStoreDelete
--StorageAccessGrantPermissionContextAPIEnabledTest.*
 -StorageAccessGrantPermissionContextAPIWithImplicitGrantsTest.*
 -StorageAccessGrantPermissionContextTest.*
 -StubResolverConfigReaderTest.*
--SubresourceFilterComponentInstallerTest.*
--SyncPromoUITest.*
--SyncServiceFactoryTest.*
--TabActiveWatcherDisableBackgroundLogTest.*
--TabActivityWatcherScorerType0Test.*
--TabActivityWatcherScorerType3Test.*
--TabDesktopMediaListTest.*
--TabGroupsApiUnitTest.*
+-SubresourceFilterComponentInstallerTest.TestComponentRegistrationWhenFeatureEnabled
 -TabHoverCardControllerTest.*
--TabLoaderTest.*
--TabLoadTrackerTest.*
--TabManagerTest.*
--TabMatcherDesktopTest.*
--TabMenuModelTest.*
--TabMetricsLoggerTest.*
--TabMetricsTest.*
--TabsApiUnitTest.*
--TabSearchPageHandlerTest.*
--TabStatsTrackerTest.*
--TabStripModelTest.*
--TabStripModelTestWithReadLaterEnabled.*
--TabStripPageHandlerTest.*
 -TabTest.*
--TabTestWithDiscardRingImprovements.*
--TCPSocketUnitTest.*
--TemplateURLServiceSyncTest.*
--TemplateURLServiceTest.*
--TestChromeColorsService.*
--TestReadingListPageHandlerTest.*
--TestReadLaterPageHandlerTest.*
--ThemeProviderRedirectedEquivalenceTest.*
--ThemeServiceTest.*
+-TCPSocketUnitTest.SocketConnectDisconnectRace
+-TemplateURLServiceSyncTest.MergeConflictingPrepopulatedEngine
+-TemplateURLServiceTest.RepairPrepopulatedSearchEngines/SearchEngineChoiceDisabled
+-TemplateURLServiceTest.RepairPrepopulatedSearchEngines/SearchEngineChoiceEnabled
+-TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceDisabled
+-TemplateURLServiceTest.RepairStarterPackEngines/SearchEngineChoiceEnabled
+-TestChromeColorsService.RecordDynamicColorOnLoadHistogramForGrayscale
+-ThemeServiceTest.IsGrayscale
 -ThemeSyncableServiceTest.*
 -ThemeSyncableServiceTestWithAccountThemesSeparation.LoadsLocalGrayscaleThemeFromPrefUponSyncStop
 -ThemeSyncableServiceWithMigrationFlag*.*
 -ThemeSyncableServiceVerifyFinalStateTest.*
--ToolbarActionsModelUnitTest.*
 -TranslateManagerRenderViewHostTest.*
--TurnSyncOnHelperTest.*
--TurnSyncOnHelperSearchEngineTest.*
--UkmPageLoadMetricsObserverTest.*
--UpdateInstallGateTest.*
 -UpdateServiceCanUpdateFeatureEnabledNonDefaultUpdateUrl.*
--UserNoteServiceDelegateImplTest.*
--UserNoteUICoordinatorTest.*
--UserScriptListenerTest.*
 -VideoOverlayWindowViewsTest.*
 -VideoOverlayWindowViewsWith2024UITest.*
--WebDialogWebContentsDelegateTest.*
 -WebRtcEventLogUploaderImplTest.*
 -WebstoreInstallerTest.*
--WebUISourcesTest.*
--WebUITabCounterButtonTest.*
--WebUITabStripContainerViewTest.*
--WebUITabStripDevToolsTest.*
--WebUsbDetectorTest.*
--WebUsbServiceImplTest.*
--WellKnownChangePasswordNavigationThrottleTest.*
--ZipFileInstallerTest.*
+-WellKnownChangePasswordNavigationThrottleTest.CreateNavigationThrottle_ChangePasswordUrl_FromGoogleLink
