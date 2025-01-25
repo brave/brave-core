@@ -46,6 +46,7 @@ class BraveNewsEngine {
  public:
   // Alias so its easier to reuse the callbacks from the mojom interface.
   using m = mojom::BraveNewsController;
+  using GetStateCallback = base::OnceCallback<void(mojom::StatePtr)>;
 
   explicit BraveNewsEngine(
       std::unique_ptr<network::PendingSharedURLLoaderFactory>
@@ -60,6 +61,7 @@ class BraveNewsEngine {
   void GetFeed(SubscriptionsSnapshot snapshot, m::GetFeedCallback callback);
   void GetFollowingFeed(SubscriptionsSnapshot snapshot,
                         m::GetFollowingFeedCallback callback);
+  void GetState(SubscriptionsSnapshot snapshot, GetStateCallback callback);
   void GetChannelFeed(SubscriptionsSnapshot snapshot,
                       const std::string& channel,
                       m::GetChannelFeedCallback callback);
