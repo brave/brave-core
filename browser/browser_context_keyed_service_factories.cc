@@ -94,7 +94,9 @@ namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory::GetInstance();
+
   brave_ads::AdsServiceFactory::GetInstance();
+
   brave_federated::BraveFederatedServiceFactory::GetInstance();
   brave_perf_predictor::NamedThirdPartyRegistryFactory::GetInstance();
   brave_rewards::RewardsServiceFactory::GetInstance();
