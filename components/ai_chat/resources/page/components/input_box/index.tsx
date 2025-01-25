@@ -38,6 +38,7 @@ type Props = Pick<
 interface InputBoxProps {
   context: Props
   onFocusInputMobile?: () => unknown
+  maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
 }
 
 function InputBox(props: InputBoxProps) {
@@ -45,7 +46,10 @@ function InputBox(props: InputBoxProps) {
     props.context.setInputText(e.target.value)
   }
 
+  const querySubmitted = React.useRef(false)
+
   const handleSubmit = () => {
+    querySubmitted.current = true
     props.context.submitInputTextToAPI()
   }
 
@@ -86,7 +90,11 @@ function InputBox(props: InputBoxProps) {
   }
 
   const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
-    if (node && props.context.selectedActionType) {
+    if (!node) {
+      return
+    }
+    if (props.context.selectedActionType ||
+        props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
       node.focus()
     }
   }

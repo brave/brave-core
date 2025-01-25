@@ -93,6 +93,12 @@ void AIChatUIPageHandler::HandleVoiceRecognition(
 #endif
 }
 
+void AIChatUIPageHandler::ShowSoftKeyboard() {
+#if BUILDFLAG(IS_ANDROID)
+  ai_chat::HandleShowSoftKeyboard(owner_web_contents_.get());
+#endif
+}
+
 void AIChatUIPageHandler::OpenAIChatSettings() {
   content::WebContents* contents_to_navigate =
       (active_chat_tab_helper_) ? active_chat_tab_helper_->web_contents()
