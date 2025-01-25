@@ -69,14 +69,14 @@ public class NTPBackgroundImagesBridge {
         mObservers.removeObserver(observer);
     }
 
-    static public boolean enableSponsoredImages() {
+    public static boolean enableSponsoredImages() {
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         return braveRewardsNativeWorker != null
                 && braveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
     }
 
-    static public NTPBackgroundImagesBridge getInstance(Profile profile)  {
+    public static NTPBackgroundImagesBridge getInstance(Profile profile) {
         return NTPBackgroundImagesBridgeJni.get().getInstance(profile);
     }
 

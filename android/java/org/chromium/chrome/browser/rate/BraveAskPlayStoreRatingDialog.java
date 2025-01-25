@@ -30,7 +30,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
 public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
-    final public static String TAG_FRAGMENT = "brave_ask_play_store_rating_dialog_tag";
+    public static final String TAG_FRAGMENT = "brave_ask_play_store_rating_dialog_tag";
     private static final String TAG = "AskPlayStoreRating";
     private ReviewManager mReviewManager;
     private ReviewInfo mReviewInfo;

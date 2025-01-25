@@ -31,13 +31,13 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     private List<TwoLineItem> mValues;
     private final ExecutorService mExecutor;
     private final Handler mHandler;
-    private ADAPTER_VIEW_ORIENTATION mItemViewOrientation;
+    private AdapterViewOrientation mItemViewOrientation;
     private LayoutInflater mLayoutInflater;
     public int mSubTextAlignment;
     public int mDividerMargin;
 
     public TwoLineItemRecyclerViewAdapter(
-            List<TwoLineItem> items, ADAPTER_VIEW_ORIENTATION orientation) {
+            List<TwoLineItem> items, AdapterViewOrientation orientation) {
         mValues = items;
         mItemViewOrientation = orientation;
         mExecutor = Executors.newSingleThreadExecutor();
@@ -46,7 +46,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     }
 
     public TwoLineItemRecyclerViewAdapter(List<TwoLineItem> items) {
-        this(items, ADAPTER_VIEW_ORIENTATION.VERTICAL);
+        this(items, AdapterViewOrientation.VERTICAL);
     }
 
     @NonNull
@@ -70,7 +70,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                             .inflate(R.layout.item_fragment_two_line_single_text, parent, false));
         }
         int layout = R.layout.item_fragment_two_line_item;
-        if (ADAPTER_VIEW_ORIENTATION.HORIZONTAL == mItemViewOrientation) {
+        if (AdapterViewOrientation.HORIZONTAL == mItemViewOrientation) {
             layout = R.layout.item_two_line_horizontal;
         }
         return new ViewHolder(getInflater(parent.getContext()).inflate(layout, parent, false));
@@ -89,7 +89,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         if (twoLineItem.getType() == TwoLineItem.TYPE_TEXT) {
             ViewHolder viewHolder = (ViewHolder) holder;
             // Only vertical layout support image icon and blockies
-            if (ADAPTER_VIEW_ORIENTATION.VERTICAL == mItemViewOrientation) {
+            if (AdapterViewOrientation.VERTICAL == mItemViewOrientation) {
                 AndroidUtils.gone(viewHolder.mIvIconContainer);
             }
             if (mSubTextAlignment != 0) {
@@ -108,7 +108,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
                 viewHolder.mTvSubtitle.setText(itemDataSourceText.subTitle);
             }
 
-            if (ADAPTER_VIEW_ORIENTATION.VERTICAL == mItemViewOrientation
+            if (AdapterViewOrientation.VERTICAL == mItemViewOrientation
                     && itemDataSourceText.imageType == ImageType.BLOCKIE) {
                 AndroidUtils.show(viewHolder.mIvIconContainer);
                 Utils.setTextGeneratedBlockies(
@@ -124,7 +124,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
             }
         } else if (twoLineItem.getType() == TwoLineItem.TYPE_HEADER) {
             ViewHolder viewHolder = (ViewHolder) holder;
-            if (ADAPTER_VIEW_ORIENTATION.VERTICAL == mItemViewOrientation) {
+            if (AdapterViewOrientation.VERTICAL == mItemViewOrientation) {
                 AndroidUtils.gone(viewHolder.mIvIconContainer);
             }
             TwoLineItemHeader itemDataSourceHeader = (TwoLineItemHeader) twoLineItem;
@@ -267,7 +267,7 @@ public class TwoLineItemRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
         BLOCKIE
     }
 
-    public enum ADAPTER_VIEW_ORIENTATION {
+    public enum AdapterViewOrientation {
         HORIZONTAL,
         VERTICAL
     }

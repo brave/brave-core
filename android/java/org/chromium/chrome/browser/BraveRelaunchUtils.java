@@ -16,26 +16,30 @@ import org.chromium.chrome.R;
 
 @JNINamespace("chrome::android")
 public class BraveRelaunchUtils {
-    static public void askForRelaunch(Context context) {
+    public static void askForRelaunch(Context context) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder
-            .setMessage(R.string.settings_require_relaunch_notice)
-            .setCancelable(true)
-            .setPositiveButton(R.string.settings_require_relaunch_now, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog,int id) {
-                    BraveRelaunchUtilsJni.get().restart();
-                    dialog.cancel();
-                }
-            })
-            .setNegativeButton(R.string.settings_require_relaunch_later,new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog,int id) {
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+                .setMessage(R.string.settings_require_relaunch_notice)
+                .setCancelable(true)
+                .setPositiveButton(
+                        R.string.settings_require_relaunch_now,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                BraveRelaunchUtilsJni.get().restart();
+                                dialog.cancel();
+                            }
+                        })
+                .setNegativeButton(
+                        R.string.settings_require_relaunch_later,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     public static void askForRelaunchCustom(Context context) {

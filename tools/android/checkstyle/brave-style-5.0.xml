@@ -18,14 +18,14 @@
   <module name="TreeWalker">
     <module name="SuppressWarningsHolder"/>
     <module name="AvoidStarImport">
-      <property name="severity" value="warning"/>
+      <property name="severity" value="error"/>
     </module>
     <module name="IllegalCatch">
       <property name="severity" value="info"/>
     </module>
     <module name="ModifierOrder">
       <message key="mod.order" value="&quot;{0}&quot; modifier out of order with the JLS suggestions. The correct order: public protected private abstract default static final transient volatile synchronized native strictfp. See https://crbug.com/1003711 for details."/>
-      <property name="severity" value="warning"/>
+      <property name="severity" value="error"/>
     </module>
     <module name="RedundantImport">
       <message key="import.redundant" value="Redundant import: {0}."/>
@@ -50,20 +50,20 @@
       <property name="allowMissingReturnTag" value="true"/>
     </module>
     <module name="PackageName">
-      <property name="severity" value="warning"/>
+      <property name="severity" value="error"/>
       <property name="format" value="^[a-z]+(\.[a-z][a-z0-9_]{1,})*$"/>
     </module>
     <module name="SimplifyBooleanExpression">
-      <property name="severity" value="warning"/>
+      <property name="severity" value="error"/>
     </module>
     <module name="SimplifyBooleanReturn">
-      <property name="severity" value="warning"/>
+      <property name="severity" value="error"/>
     </module>
     <module name="TypeName">
-      <property name="severity" value="warning"/>
+      <property name="severity" value="error"/>
     </module>
     <module name="ConstantName">
-      <property name="severity" value="warning"/>
+      <property name="severity" value="error"/>
       <property name="format" value="^([A-Z][A-Z0-9]*(_[A-Z0-9]+)*)|(s[A-Z][a-zA-Z0-9]*)$"/>
       <message key="name.invalidPattern" value="Static final field names must either be all caps (e.g. int HEIGHT_PX) for 'true' constants, or start with s (e.g. AtomicInteger sNextId or Runnable sSuspendTask) for fields with mutable state or that don't 'feel' like constants."/>
     </module>
