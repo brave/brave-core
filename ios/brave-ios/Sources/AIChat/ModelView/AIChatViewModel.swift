@@ -269,9 +269,6 @@ extension AIChatViewModel: AIChatDelegate {
       return (nil, false)
     }
 
-    requestInProgress = true
-    defer { requestInProgress = self.requestInProgress }
-
     if let transcript = await braveTalkScript?.getTranscript() {
       return (transcript, false)
     }
