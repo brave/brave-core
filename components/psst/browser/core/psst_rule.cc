@@ -5,6 +5,7 @@
 
 #include "brave/components/psst/browser/core/psst_rule.h"
 
+#include <iostream>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -24,7 +25,9 @@ namespace {
 // psst.json keys
 constexpr char kInclude[] = "include";
 constexpr char kExclude[] = "exclude";
+const char kName[] = "name";
 constexpr char kVersion[] = "version";
+const char kUserScript[] = "user_script";
 constexpr char kTestScript[] = "test_script";
 constexpr char kPolicyScript[] = "policy_script";
 
@@ -60,6 +63,8 @@ PsstRule::~PsstRule() = default;
 PsstRule::PsstRule(const PsstRule& other) {
   include_pattern_set_ = other.include_pattern_set_.Clone();
   exclude_pattern_set_ = other.exclude_pattern_set_.Clone();
+  name_ = other.name_;
+  user_script_path_ = other.user_script_path_;
   test_script_path_ = other.test_script_path_;
   policy_script_path_ = other.policy_script_path_;
   version_ = other.version_;
@@ -72,10 +77,13 @@ void PsstRule::RegisterJSONConverter(
       kInclude, &PsstRule::include_pattern_set_, GetURLPatternSetFromValue);
   converter->RegisterCustomValueField<extensions::URLPatternSet>(
       kExclude, &PsstRule::exclude_pattern_set_, GetURLPatternSetFromValue);
+  converter->RegisterStringField(kName, &PsstRule::name_);
+  converter->RegisterCustomValueField<base::FilePath>(
+      kUserScript, &PsstRule::user_script_path_, GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
       kTestScript, &PsstRule::test_script_path_, GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
-      kPolicyScript, &PsstRule::policy_script_path_, GetFilePathFromValue);
+      kPolicyScriptPath, &PsstRule::policy_script_path_, GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &PsstRule::version_);
 }
 
@@ -115,6 +123,7 @@ bool PsstRule::ShouldInsertScript(const GURL& url) const {
     return false;
   }
 
+  std::cerr << "ShouldInsertScript: " << url << std::endl;
   return true;
 }
 

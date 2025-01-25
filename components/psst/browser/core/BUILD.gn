@@ -9,6 +9,8 @@ component("core") {
   defines = [ "IS_PSST_BROWSER_CORE_IMPL" ]
 
   sources = [
+    "matched_rule.cc",
+    "matched_rule.h",
     "psst_component_installer.cc",
     "psst_component_installer.h",
     "psst_rule.cc",

@@ -15,11 +15,17 @@ component("content") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/app/theme:brave_theme_resources",
     "//brave/components/psst/browser/core",
     "//brave/components/psst/common",
     "//brave/components/script_injector/common/mojom",
+    "//components/constrained_window",
+    "//components/prefs",
     "//components/sessions",
+    "//components/user_prefs",
     "//content/public/browser",
+    "//ui/views",
     "//url",
   ]
 }
