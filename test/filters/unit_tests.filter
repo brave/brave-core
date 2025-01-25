@@ -47,22 +47,6 @@
 # to have no name.
 -SafetyHubHandlerTest.RevokeAllContentSettingTypes
 
-# These tests crash because they call SyncServiceFactory's SetTestingFactory
-# with BrowserContextKeyedServiceFactory::TestingFactory after our
-# BraveSyncAlertsServiceFactory already subscribed to observe the previously
-# created MockSyncService. This call destroys the sync service without letting
-# it shut down, so we don't remove the observer. When the observer is being
-# removed in the d'tor it crashes because the service has been destroyed.
--SyncInternalsMessageHandlerTest.AddRemoveObserversSyncDisabled
--SyncInternalsMessageHandlerTest.SendAboutInfoSyncDisabled
-
-# These tests fail because the expected number of calls to add/remove observer
-# for MockSyncService ends up being wrong due to BraveSyncAlertsServiceFactory
-# adding/removing an observer. Perhaps BraveSyncAlertsServiceFactory should
-# be NULL for testing?
--SyncInternalsMessageHandlerTest.AddRemoveObservers
--SyncInternalsMessageHandlerTest.AddRemoveObserversDisallowJavascript
-
 # This test fails because we disable LensOverlay, which is one of the sidepanel
 # actions the test expects to find.
 -CustomizeToolbarHandlerTest.ListActions
@@ -194,13 +178,9 @@
 
 # These tests fail because we intentionally disable DICE signin via
 # BraveAccountConsistencyModeManager::IsDiceSignInAllowed()
--All/DiceWebSigninInterceptorManagedAccountTest.*
--All/ProcessDiceHeaderDelegateImplTestEnableSync.*
--All/ProcessDiceHeaderDelegateImplTestHandleTokenExchangeFailure.*
 -DiceResponseHandlerTest.Signin
 -DiceSigninUiUtilTest.*
 -DiceTabHelperPrerenderTest.SigninStatusAfterPrerendering
--DiceTurnSyncOnHelperTest.*
 -DiceWebSigninInterceptorForcedSeparationTest.*
 -DiceWebSigninInterceptorTest.*
 -GAIAInfoUpdateServiceTest.*
@@ -209,7 +189,6 @@
 # This test fails because we intentionally stub out
 # IdentityManager::PrepareForAddingNewAccount
 -DiceTabHelperTest.Initialization
--PreconnectEnabled/SigninDiceResponseHandlerTestPreconnect.Signin/1
 
 # These tests fail because we disable the privacy sandbox
 -PrivacySandboxServiceTest.*
@@ -243,7 +222,6 @@
 -All/DIPSDatabaseInteractionTest.*/*
 -All/DIPSDatabasePopupsTest.*/*
 -BrowserSigninDetectorServiceTest.LateObservation
--CreateChooserTitleTest.ExtensionsFrameTree
 -DIPSDatabaseBounceTableGarbageCollectionTest.*
 -DIPSDatabaseHistogramTest.*
 -DIPSDatabaseMigrationTest.*
@@ -252,7 +230,6 @@
 -DIPSServiceStateRemovalTest.*
 -DIPSServiceTest.*
 -DIPSUtilsTest.*
--GetSitesToClearTest.*
 -StorageAccessGrantPermissionContextAPIDisabledTest.AllowedByCookieSettings*
 -StorageAccessGrantPermissionContextAPIDisabledTest.InsecureOriginsDisallowed*
 -StorageAccessGrantPermissionContextAPIDisabledTest.PermissionBlocked*
@@ -325,47 +302,6 @@
 # See ChromeBrowserFieldTrials.
 -ChromeBrowserFieldTrialsTest.SamplingTrials
 
-# These tests crash because we disable
-# enterprise_connectors::kLocalContentAnalysisEnabled feature
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforePreview/0
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforePreview/1
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforeSystemDialog/0
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforeSystemDialog/1
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforeSystemDialog/2
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_BeforeSystemDialog/3
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_NormalPrintAfterPreview/2
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_NormalPrintAfterPreview/3
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_SystemPrintBeforePrintDocument/2
--All/PrintContentAnalysisUtilsTest.GetPrintAnalysisData_SystemPrintBeforePrintDocument/3
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyAllowed/2
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyAllowed/3
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyBlocked/2
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyBlocked/3
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyReportOnly/2
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyReportOnly/3
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnThenCancel/2
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnThenCancel/3
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnedThenBypass/2
--All/PrintContentAnalysisUtilsTest.PrintIfAllowedByPolicyWarnedThenBypass/3
--FilesRequestHandlerTest.FileIsEncrypted_LocalAnalysis
--FilesRequestHandlerTest.FileIsLarge_LocalAnalysis
--FilesRequestHandlerTest.MultipleFilesUpload_LocalAnalysis
--ConnectorsManagerAnalysisConnectorsTest/ConnectorsManagerAnalysisConnectorsTest.NamesAndConfigs/1
--ConnectorsManagerAnalysisConnectorsTest/ConnectorsManagerAnalysisConnectorsTest.NamesAndConfigs/3
--ConnectorsManagerAnalysisConnectorsTest/ConnectorsManagerAnalysisConnectorsTest.NamesAndConfigs/5
--ConnectorsManagerAnalysisConnectorsTest/ConnectorsManagerAnalysisConnectorsTest.NamesAndConfigs/7
--ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/1
--ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/11
--ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/17
--ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/19
--ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/25
--ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/27
--ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/3
--ConnectorsManagerConnectorPoliciesTest/ConnectorsManagerConnectorPoliciesTest.NormalPref/9
--ContentAnalysisDelegateResultHandlingTest.Test/*
--ContentAnalysisDelegateWithLocalClient.*
--ManagementUIHandlerTests.ThreatReportingInfo
-
 # These tests fail because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
 -All/ClientSideDetectionServiceTest.GetNumReportTestESB/0
@@ -398,7 +334,6 @@
 -All/ClientSideDetectionServiceTest.TestSessionExecutionSuccessButFailedParsing/3
 -All/ClientSideDetectionServiceTest.TestSessionExecutionSuccessButNotComplete/1
 -All/ClientSideDetectionServiceTest.TestSessionExecutionSuccessButNotComplete/3
--ChromeClientSideDetectionHostDelegateTest.*
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.AutoCanceledReport_Sent
 -ChromeDownloadManagerDelegateTestWithSafeBrowsing.CanceledReportAtShutdown_Persisted
 -ChromePingManagerFactoryTest.ShouldFetchAccessTokenForReport_Yes
@@ -418,7 +353,10 @@
 -ClientSideDetectionHostScamDetectionTest.RTLookupResponseDoesNotHaveLlamaForcedTriggerInfoSoItDoesNotTriggersOnDeviceLLM
 -ClientSideDetectionHostScamDetectionTest.RTLookupResponseHaveFalseIntelligentScanSoItDoesNotTriggersOnDeviceLLM
 -ClientSideDetectionHostScamDetectionTest.RTLookupResponseLlamaForcedTriggerInfoTriggersOnDeviceLLM
--ClientSideDetectionHostTest.*
+-ClientSideDetectionHostTest.CSDFeaturesCacheContainsVerdictAndFullDebuggingMetadata
+-ClientSideDetectionHostTest.PhishingDetectionDoneCalledTwiceShouldSucceed
+-ClientSideDetectionHostTest.PhishingDetectionDoneEnhancedProtectionShouldHaveToken
+-ClientSideDetectionHostTest.RTLookupResponseForceRequestSendsCSPPPingWhenVerdictNotPhishing
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestAlreadyPhishing
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerNotTriggerClassificationRequestNoEnforcedPing
 -ClientSideDetectionRTLookupResponseForceRequestTest.AsyncCheckTrackerTriggersClassificationRequest
@@ -440,11 +378,6 @@
 
 # This test fails because we disable kIOSPromoPasswordBubble.
 -IOSPasswordPromoOnDesktopTest.IsDirectVariantIOSPasswordPromoTestFalseFeatureInactive
-
-# These fail because we have journeys/history clusters disabled.
--HistoryClustersHandlerTest.OpenVisitUrlsInTabGroup
--HistoryClustersPageHandlerCartTest.CheckClusterHasCart
--HistoryClustersPageHandlerTest.*
 
 # These fail because we override IdentityManager::GetAccountsInCookieJar
 -ChildAccountServiceTest.GetGoogleAuthState
@@ -521,19 +454,9 @@
 # These tests fail a CalledOnValidSequence check in brave_sync::Prefs::GetSeed
 -PeopleHandlerWithExplicitBrowserSigninTest.*
 
-# These tests fail because of disabled kCookieDeprecationFacilitatedTesting and/
-# or TrackingProtectionOnboardingFactory.
--All/CookieDeprecationLabelAllowedTest.OnboardingStatusChecked/1
--All/CookieDeprecationLabelAllowedTest.IsClientEligibleChecked/1
--EligibilityServiceDisable3PCsTest.Onboarded_NotifyManager
--EligibilityServiceTest.VersionChange_OnboardingPrefsReset
--ThirdPartyCookiesBlockedByCookieDeprecationExperiment/ThirdPartyCookiesBlockedByCookieDeprecationExperimentTest.AreThirdPartyCookiesBlockedByExperiment/*
-
 # These tests fail because we do not record permissions UKM, see
 # brave/chromium_src/components/permissions/permission_uma_util.cc
 # GetUkmSourceId override.
--All/SiteSettingsHandlerTest.NotificationPermissionRevokeUkm/*
--All/UnusedSitePermissionsServiceTest.UnusedSitePermissionsServiceTest/*
 -SiteSettingsHandlerTest.NotificationPermissionRevokeUkm
 
 # This test fails because we replace WebUI chrome:// scheme with brave://
@@ -664,12 +587,6 @@
 -CollaborationMessagingTabDataTest.CanSetAndClearData
 -CollaborationMessagingTabDataTest.IgnoresRequestsWhenMessageIsChanged
 -CollaborationMessagingTabDataTest.IgnoresRequestsWhenMessageIsCleared
-
-# These tests fail because we override
-# KAnonymityTrustTokenGetter::TryGetTrustTokenAndKey to not do anything.
--KAnonymityServiceClientJoinQueryTest.*
--KAnonymityServiceClientTest.*
--KAnonymityTrustTokenGetterTest.*
 
 # These tests fail because we rename the bookmarks bar from "Bookmarks bar" to
 # "Bookmarks"
