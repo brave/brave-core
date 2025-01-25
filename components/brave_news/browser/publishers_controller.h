@@ -61,6 +61,8 @@ class PublishersController {
   void GetOrFetchPublishers(const SubscriptionsSnapshot& subscriptions,
                             base::OnceClosure callback,
                             bool wait_for_current_update);
+
+  std::string GetFallbackLocale(const std::string& requested_locale, const base::flat_set<std::string>& available_locales);
   void UpdateDefaultLocale();
 
   raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
