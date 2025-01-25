@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.quick_search_engines.settings;
+package org.chromium.brave.browser.quick_search_engines.settings;
 
 public class QuickSearchEnginesModel {
     private String mShortName;

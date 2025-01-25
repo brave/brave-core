@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.quick_search_engines.utils;
+package org.chromium.brave.browser.quick_search_engines.utils;
 
 import android.content.Context;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.R;
+import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesModel;
+import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesModel;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
