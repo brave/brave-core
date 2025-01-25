@@ -1,0 +1,79 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/tools/crates/wasm_bindgen/sources.gni")
+import("//brave/tools/crates/wasm_pack/sources.gni")
+
+template("rust_to_wasm") {
+  assert(defined(invoker.rust_packages),
+         "Need rust_packages in $target_name listing the Config.toml files.")
+  if (defined(invoker.wasm_pack_target)) {
+    assert(invoker.wasm_pack_target == "bundler" ||
+               invoker.wasm_pack_target == "nodejs" ||
+               invoker.wasm_pack_target == "web",
+           "${invoker.wasm_pack_target} is not a supported wasm-pack target.")
+  }
+
+  action_foreach(target_name) {
+    deps = [ "//brave/tools/crates/wasm_pack:build_wasm_pack($host_toolchain)" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    inputs = [ wasm_pack_exe ]
+    sources = invoker.rust_packages
+    inputs += sources
+
+    script = "//brave/script/rust_to_wasm.py"
+
+    wasm_pack_target = "bundler"
+    if (defined(invoker.wasm_pack_target)) {
+      wasm_pack_target = invoker.wasm_pack_target
+    }
+
+    # A note on --mode no-install: it's needed because we vendor our own wasm-bindgen (CLI).
+    # Without --mode no-install, wasm-pack attempts to download the binary from the GitHub releases page,
+    # or via `cargo install`, which:
+    # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
+    # - makes our approach less self-contained.
+    # --mode no-install suppresses wasm-opt's installation as well - also, currently we don't vendor wasm-opt (befause of the transitive Git submodule dependencies).
+    args = [
+      "--wasm_bindgen_path",
+      get_path_info(rebase_path(wasm_bindgen_exe), "dir"),
+
+      # below will be forwarded to wasm-pack (above will be added to $PATH)
+      rebase_path(wasm_pack_exe),
+      "build",
+      "{{source_dir}}",
+      "--mode",
+      "no-install",
+      "--target",
+      wasm_pack_target,
+      "--out-dir",
+      rebase_path(
+          "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg"),
+      "--out-name",
+      "index",
+      "--",
+      "--target-dir",
+      rebase_path(
+          "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/target"),
+    ]
+
+    # common output files for all the wasm-pack targets
+    outputs = [
+      "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg/index_bg.wasm",
+      "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg/index_bg.wasm.d.ts",
+      "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg/index.d.ts",
+      "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg/index.js",
+      "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg/package.json",
+    ]
+
+    # additional output file for the bundler wasm-pack target
+    if (wasm_pack_target == "bundler") {
+      outputs += [ "$root_gen_dir/{{source_root_relative_dir}}/$wasm_pack_target/pkg/index_bg.js" ]
+    }
+  }
+}

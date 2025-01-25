@@ -1,0 +1,43 @@
+[package]
+authors = ["The wasm-bindgen Developers"]
+edition = "2021"
+name = "todomvc"
+publish = false
+version = "0.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[build-dependencies]
+askama = "0.12"
+
+[dependencies]
+askama = "0.12"
+console_error_panic_hook = "0.1.5"
+js-sys = { path = "../../crates/js-sys" }
+wasm-bindgen = { path = "../../" }
+
+[dependencies.web-sys]
+features = [
+  'console',
+  'CssStyleDeclaration',
+  'Document',
+  'DomStringMap',
+  'DomTokenList',
+  'Element',
+  'Event',
+  'EventTarget',
+  'HtmlBodyElement',
+  'HtmlElement',
+  'HtmlInputElement',
+  'KeyboardEvent',
+  'Location',
+  'Node',
+  'NodeList',
+  'Storage',
+  'Window',
+]
+path = "../../crates/web-sys"
+
+[lints]
+workspace = true

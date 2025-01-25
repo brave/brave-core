@@ -1,0 +1,76 @@
+[package]
+authors = ["The wasm-bindgen Developers"]
+edition = "2021"
+name = "webxr"
+publish = false
+version = "0.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+futures = "0.3.4"
+js-sys = { path = "../../crates/js-sys" }
+wasm-bindgen = { path = "../../" }
+wasm-bindgen-futures = { path = "../../crates/futures" }
+
+[dependencies.web-sys]
+features = [
+  'Document',
+  'Element',
+  'Gpu',
+  'Headers',
+  'HtmlCanvasElement',
+  'Navigator',
+  'Request',
+  'RequestInit',
+  'RequestMode',
+  'Response',
+  'WebGl2RenderingContext',
+  'Window',
+  'XrBoundedReferenceSpace',
+  'XrEye',
+  'XrFrame',
+  'XrHandedness',
+  'XrInputSource',
+  'XrInputSourceArray',
+  'XrInputSourceEvent',
+  'XrInputSourceEventInit',
+  'XrInputSourcesChangeEvent',
+  'XrJointPose',
+  'XrJointSpace',
+  'XrPose',
+  'XrReferenceSpace',
+  'XrReferenceSpaceEvent',
+  'XrReferenceSpaceEventInit',
+  'XrReferenceSpaceType',
+  'XrRenderState',
+  'XrRenderStateInit',
+  'XrRigidTransform',
+  'XrSession',
+  'XrSessionEvent',
+  'XrSessionEventInit',
+  'XrSessionInit',
+  'XrSessionMode',
+  'XrSpace',
+  'XrTargetRayMode',
+  'XrView',
+  'XrViewerPose',
+  'XrViewport',
+  'XrVisibilityState',
+  'XrWebGlLayer',
+  'XrWebGlLayerInit',
+  'XrSystem',
+  'console',
+]
+path = "../../crates/web-sys"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(web_sys_unstable_apis)'] }
+
+[lints.clippy]
+large_enum_variant = "allow"
+new_without_default = "allow"
+overly_complex_bool_expr = "allow"
+too_many_arguments = "allow"
+type_complexity = "allow"

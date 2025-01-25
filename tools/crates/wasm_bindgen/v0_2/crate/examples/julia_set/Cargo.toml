@@ -1,0 +1,19 @@
+[package]
+authors = ["The wasm-bindgen Developers"]
+edition = "2021"
+name = "julia_set"
+publish = false
+version = "0.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = { path = "../../" }
+
+[dependencies.web-sys]
+features = ['ImageData', 'CanvasRenderingContext2d']
+path = "../../crates/web-sys"
+
+[lints]
+workspace = true

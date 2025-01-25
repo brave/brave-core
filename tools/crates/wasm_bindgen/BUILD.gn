@@ -1,0 +1,29 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/tools/crates/sources.gni")
+import("//brave/tools/crates/wasm_bindgen/sources.gni")
+
+action("build_wasm_bindgen") {
+  assert(current_toolchain == host_toolchain)
+
+  script = "//build/gn_run_binary.py"
+
+  wasm_bindgen_src = "v0_2/crate/crates/cli"
+
+  inputs = [ cargo_exe ]
+
+  outputs = [ wasm_bindgen_exe ]
+
+  args = [
+    rebase_path(cargo_exe),
+    "build",
+    "--release",
+    "--manifest-path",
+    rebase_path("$wasm_bindgen_src/Cargo.toml"),
+    "--target-dir",
+    rebase_path(wasm_bindgen_target_dir),
+  ]
+}

@@ -1,0 +1,7 @@
+Name: wasm-pack
+URL: https://crates.io/crates/wasm-pack
+Description: 📦✨ your favorite rust -> wasm workflow tool!
+Version: 0.13.1
+Security Critical: no
+License: MIT OR Apache-2.0
+Revision: 24bdca457abad34e444912e6165eb71422a51046

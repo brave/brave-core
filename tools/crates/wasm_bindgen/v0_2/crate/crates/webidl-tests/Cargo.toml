@@ -1,0 +1,26 @@
+[package]
+authors = ["The wasm-bindgen Developers"]
+edition = "2021"
+name = "webidl-tests"
+publish = false
+version = "0.0.0"
+
+[lib]
+doctest = false
+path = 'lib.rs'
+test = false
+
+[dependencies]
+js-sys = { path = '../js-sys' }
+wasm-bindgen = { path = '../..' }
+wasm-bindgen-futures = { path = '../futures' }
+
+[build-dependencies]
+wasm-bindgen-webidl = { path = "../webidl" }
+
+[dev-dependencies]
+wasm-bindgen-test = { path = '../test' }
+
+[[test]]
+name = 'wasm'
+path = 'main.rs'
