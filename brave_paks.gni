@@ -64,6 +64,7 @@ template("brave_extra_paks") {
         "$root_gen_dir/brave/brave_generated_resources.pak",
         "$root_gen_dir/brave/brave_unscaled_resources.pak",
         "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
+        "$root_gen_dir/brave/brave_education_resources.pak",
       ]
     }
 
@@ -79,6 +80,7 @@ template("brave_extra_paks") {
         "//brave/app/theme:brave_unscaled_resources",
         "//brave/browser/resources/settings:resources",
         "//brave/components/resources:strings",
+        "//brave/browser/resources/brave_education:resources_grit",
       ]
     }
 

@@ -1,0 +1,16 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# based on //ui/webui/resources/js/browser_command/BUILD.gn
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojo_bindings") {
+  sources = [ "brave_browser_command.mojom" ]
+
+  # The generated mojo bindings are part of the ui/webui/resources/brave/
+  # build_webui() target, so are served from chrome://resources/brave/
+  webui_module_path = "chrome://resources/brave/"
+}

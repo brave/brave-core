@@ -19,3 +19,15 @@ template("brave_grit") {
     deps += [ brave_grit_resource_id_target ]
   }
 }
+
+template("brave_or_default_grit") {
+  if (defined(invoker.use_brave_grit) && invoker.use_brave_grit) {
+    brave_grit(target_name) {
+      forward_variables_from(invoker, "*")
+    }
+  } else {
+    grit(target_name) {
+      forward_variables_from(invoker, "*")
+    }
+  }
+}

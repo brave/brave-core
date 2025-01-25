@@ -32,7 +32,7 @@ bool IsURLAllowedInIncognitoBraveImpl(const GURL& url) {
 
   if (host == kRewardsPageHost || host == chrome::kChromeUISyncInternalsHost ||
       host == chrome::kChromeUISyncHost || host == kAdblockHost ||
-      host == kWelcomeHost) {
+      host == kWelcomeHost || host == kBraveGettingStartedHost) {
     return false;
   }
 
