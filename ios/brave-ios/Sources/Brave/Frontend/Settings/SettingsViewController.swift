@@ -281,7 +281,15 @@ class SettingsViewController: TableViewController {
             UIApplication.shared.open(settingsUrl)
           },
           cellClass: MultilineButtonCell.self
-        )
+        ),
+        .init(
+          text: Strings.importBrowsingDataSettingsMenuTitle,
+          selection: { [unowned self] in
+            let controllre = UIHostingController(rootView: BraveDataImportView())
+            self.navigationController?.pushViewController(controllre, animated: true)
+          },
+          cellClass: MultilineButtonCell.self
+        ),
       ]
     )
 

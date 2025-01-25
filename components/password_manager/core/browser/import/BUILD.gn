@@ -1,0 +1,63 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("importer") {
+  sources = [
+    "safari_import_results.cc",
+    "safari_import_results.h",
+    "safari_password_importer.cc",
+    "safari_password_importer.h",
+  ]
+  public_deps = [
+    ":csv",
+    "//base",
+    "//components/password_manager/core/browser:password_form",
+  ]
+
+  deps = [
+    "//brave/components/password_manager/services/csv_password:lib",
+    "//brave/components/password_manager/services/csv_password/public/mojom:mojom",
+    "//build:blink_buildflags",
+    "//components/password_manager/core/browser/ui",
+    "//components/password_manager/core/common:constants",
+    "//components/password_manager/core/common:features",
+    "//components/sync/base:base",
+  ]
+
+  if (use_blink) {
+    deps +=
+        [ "//brave/components/password_manager/services/csv_password:service" ]
+  }
+
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
+}
+
+source_set("csv") {
+  sources = [
+    "csv_safari_password.cc",
+    "csv_safari_password.h",
+    "csv_safari_password_iterator.cc",
+    "csv_safari_password_iterator.h",
+    "csv_safari_password_sequence.cc",
+    "csv_safari_password_sequence.h",
+  ]
+  public_deps = [
+    "//base",
+    "//components/password_manager/core/browser:password_form",
+    "//components/password_manager/core/browser/import:csv",
+  ]
+
+  deps = [
+    "//build:blink_buildflags",
+    "//components/affiliations/core/browser:affiliations",
+    "//components/password_manager/core/browser/form_parsing",
+    "//url",
+  ]
+
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
+}

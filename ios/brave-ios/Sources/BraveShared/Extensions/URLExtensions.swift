@@ -185,6 +185,26 @@ extension URL {
 
     return renderedString.bidiBaseDirection == .leftToRight
   }
+
+  public static func uniqueFileName(_ filename: String, in folder: URL) async throws -> URL {
+    let basePath = folder.appending(path: filename)
+    let fileExtension = basePath.pathExtension
+    let filenameWithoutExtension =
+      !fileExtension.isEmpty ? String(filename.dropLast(fileExtension.count + 1)) : filename
+
+    var proposedPath = basePath
+    var count = 0
+
+    while await AsyncFileManager.default.fileExists(atPath: proposedPath.path) {
+      count += 1
+
+      let proposedFilenameWithoutExtension = "\(filenameWithoutExtension) (\(count))"
+      proposedPath = folder.appending(path: proposedFilenameWithoutExtension)
+        .appending(path: fileExtension)
+    }
+
+    return proposedPath
+  }
 }
 
 extension InternalURL {
