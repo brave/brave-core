@@ -34,8 +34,6 @@
 #include "brave/components/ai_chat/core/browser/text_embedder.h"
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -59,6 +57,8 @@ class AIChatFeedbackAPI;
 class AIChatService;
 class AssociatedArchiveContent;
 class AIChatCredentialManager;
+class MultiAssociatedContentDriver;
+class AssociatedContentDriver;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning
@@ -97,6 +97,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     // Get metadata about the current page
     virtual GURL GetURL() const = 0;
     virtual std::u16string GetTitle() const = 0;
+
+    virtual std::vector<mojom::SiteInfoDetailPtr> GetSiteInfoDetail() const = 0;
 
     // Implementer should fetch content from the "page" associated with this
     // conversation.
@@ -231,8 +233,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   // content, this conversation can be reunited with the delegate.
   void SetAssociatedContentDelegate(
       base::WeakPtr<AssociatedContentDelegate> delegate);
+  void SetMultiAssociatedContentDelegate(
+      std::unique_ptr<MultiAssociatedContentDriver> multi_content);
+
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
+
+  void AddAssociation(AssociatedContentDriver* delegate);
+  void RemoveAssociation(AssociatedContentDriver* delegate);
 
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
@@ -423,6 +431,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;
+  std::unique_ptr<MultiAssociatedContentDriver> multi_content_;
 
   std::string model_key_;
   // Chat conversation entries

@@ -84,19 +84,17 @@ function FeedbackForm() {
             />
           </label>
         </fieldset>
-        {conversationContext.associatedContentInfo?.hostname && (
-          <fieldset>
-            <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
-              <label>{
-                formatMessage(getLocale('sendSiteHostnameLabel'), {
-                  placeholders: {
-                    $1: conversationContext.associatedContentInfo.hostname
-                  }
-                })
-              }</label>
-            </Checkbox>
-          </fieldset>
-        )}
+        {conversationContext.associatedContentInfo?.details.map((detail, i) => <fieldset key={i}>
+          <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
+            <label>{
+              formatMessage(getLocale('sendSiteHostnameLabel'), {
+                placeholders: {
+                  $1: detail.hostname
+                }
+              })
+            }</label>
+          </Checkbox>
+        </fieldset>)}
         {!aiChatContext.isPremiumUser && (
           <div className={styles.premiumNote}>
             {formatMessage(getLocale('feedbackPremiumNote'), {

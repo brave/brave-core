@@ -33,6 +33,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
@@ -159,8 +160,8 @@ ConversationHandler* AIChatService::CreateConversation() {
     mojom::ConversationPtr conversation = mojom::Conversation::New(
         conversation_uuid, "", base::Time::Now(), false, std::nullopt,
         mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
-                             mojom::ContentType::PageContent, std::nullopt,
-                             std::nullopt, std::nullopt, 0, false, false));
+                             std::vector<mojom::SiteInfoDetailPtr>(), 0, false,
+                             false));
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -292,6 +293,18 @@ ConversationHandler* AIChatService::CreateConversationHandlerForContent(
                                         associated_content);
 
   return conversation;
+}
+
+void AIChatService::AssociateContent(AssociatedContentDriver* driver,
+                                     const std::string& conversation_uuid) {
+  DCHECK(base::Contains(conversation_handlers_, conversation_uuid));
+  conversation_handlers_.at(conversation_uuid)->AddAssociation(driver);
+}
+
+void AIChatService::DisassociateContent(AssociatedContentDriver* driver,
+                                        const std::string& conversation_uuid) {
+  DCHECK(base::Contains(conversation_handlers_, conversation_uuid));
+  conversation_handlers_.at(conversation_uuid)->RemoveAssociation(driver);
 }
 
 void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,

@@ -73,6 +73,7 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
 
   return std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
+
       std::move(credential_manager), user_prefs::UserPrefs::Get(context),
       (g_brave_browser_process->process_misc_metrics())
           ? g_brave_browser_process->process_misc_metrics()->ai_chat_metrics()

@@ -48,6 +48,8 @@ static_library("browser") {
     "model_service.h",
     "model_validator.cc",
     "model_validator.h",
+    "multi_associated_content_driver.cc",
+    "multi_associated_content_driver.h",
     "types.h",
     "utils.cc",
     "utils.h",

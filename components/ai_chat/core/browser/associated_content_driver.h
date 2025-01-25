@@ -58,6 +58,8 @@ class AssociatedContentDriver
     ~Observer() override {}
 
     virtual void OnAssociatedContentNavigated(int new_navigation_id) {}
+    virtual void OnAssociatedContentDestroyed(
+        AssociatedContentDriver* content) {}
   };
 
   explicit AssociatedContentDriver(
@@ -77,6 +79,7 @@ class AssociatedContentDriver
   int GetContentId() const override;
   GURL GetURL() const override;
   std::u16string GetTitle() const override;
+  std::vector<mojom::SiteInfoDetailPtr> GetSiteInfoDetail() const override;
   void GetContent(
       ConversationHandler::GetPageContentCallback callback) override;
   std::string_view GetCachedTextContent() override;
@@ -88,6 +91,15 @@ class AssociatedContentDriver
     return weak_ptr_factory_.GetWeakPtr();
   }
 
+  // Implementer should fetch content from the "page" associated with this
+  // conversation.
+  // |invalidation_token| is an optional parameter received in a prior callback
+  // response of this function against the same page. See GetPageContentCallback
+  // for explanation.
+  virtual void GetPageContent(
+      ConversationHandler::GetPageContentCallback callback,
+      std::string_view invalidation_token) = 0;
+
  protected:
   using GetSearchSummarizerKeyCallback =
       base::OnceCallback<void(const std::optional<std::string>&)>;
@@ -97,15 +109,6 @@ class AssociatedContentDriver
   // Get summarizer-key meta tag content from Brave Search SERP if exists.
   virtual void GetSearchSummarizerKey(
       GetSearchSummarizerKeyCallback callback) = 0;
-
-  // Implementer should fetch content from the "page" associated with this
-  // conversation.
-  // |invalidation_token| is an optional parameter received in a prior callback
-  // response of this function against the same page. See GetPageContentCallback
-  // for explanation.
-  virtual void GetPageContent(
-      ConversationHandler::GetPageContentCallback callback,
-      std::string_view invalidation_token) = 0;
 
   // Implementer should call this when the favicon for the content changes
   void OnFaviconImageDataChanged();
