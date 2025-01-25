@@ -214,6 +214,7 @@ class DownloadHelperTests: XCTestCase {
       MIMEType.html,
       MIMEType.octetStream,
       MIMEType.passbook,
+      MIMEType.passbookBundle,
       MIMEType.pdf,
       MIMEType.plainText,
       MIMEType.png,
