@@ -303,6 +303,12 @@
   <message name="IDS_CHAT_UI_SEARCH_QUERIES" desc="AI Response status to indicate that search queries were used to enhance the response">
     Improved answer searching for <ph name="SEARCH_TERMS">$1<ex>"my first search engine query", "my second search engine query"</ex></ph>.
   </message>
+  <message name="IDS_CHAT_UI_SOURCES" desc="Heading for a list of website sources that were used to generate an AI chat response">
+    Sources
+  </message>
+  <message name="IDS_CHAT_UI_EXPAND_SOURCES" desc="Button to expand the list of sources and explains how many more sources are available">
+    <ph name="COUNT">$1<ex>3</ex></ph> more…
+  </message>
   <message name="IDS_CHAT_UI_LEARN_MORE" desc="Link text to learn more about a feature">
     Learn more
   </message>

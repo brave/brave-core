@@ -98,6 +98,8 @@ provideStrings({
   errorConversationEnd: 'This conversation is too long and cannot continue. There may be other models available with which Leo is capable of maintaining accuracy for longer conversations.',
   searchInProgress: 'Improving your answer with Brave Search…',
   searchQueries: 'Improved answer searching for $1.',
+  sources: 'Sources',
+  expandSources: '$1 more…',
   leoSettingsTooltipLabel: 'Leo settings',
   summarizePageButtonLabel: 'Summarize this page',
   welcomeGuideTitle: 'Hi, I\'m Leo!',

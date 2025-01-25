@@ -140,6 +140,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"errorConversationEnd", IDS_CHAT_UI_CONVERSATION_END_ERROR},
        {"searchInProgress", IDS_CHAT_UI_SEARCH_IN_PROGRESS},
        {"searchQueries", IDS_CHAT_UI_SEARCH_QUERIES},
+       {"sources", IDS_CHAT_UI_SOURCES},
+       {"expandSources", IDS_CHAT_UI_EXPAND_SOURCES},
        {"learnMore", IDS_CHAT_UI_LEARN_MORE},
        {"closeNotice", IDS_CHAT_UI_CLOSE_NOTICE},
        {"noticeConversationHistoryBody",

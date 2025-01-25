@@ -166,6 +166,16 @@ struct SearchStatusEvent {
   bool is_searching = true;
 };
 
+struct WebSource {
+  string title;
+  url.mojom.Url url;
+  url.mojom.Url favicon_url;
+};
+
+struct WebSourcesEvent {
+  array<WebSource> sources;
+};
+
 struct CompletionEvent {
   string completion;
 };
@@ -184,6 +194,7 @@ union ConversationEntryEvent {
   PageContentRefineEvent page_content_refine_event;
   SearchQueriesEvent search_queries_event;
   SearchStatusEvent search_status_event;
+  WebSourcesEvent sources_event;
 
   // These events don't normally get added to the conversation entry
   // but are used in engine responses.

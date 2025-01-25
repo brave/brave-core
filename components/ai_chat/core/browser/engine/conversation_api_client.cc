@@ -56,6 +56,9 @@ using ConversationEvent = ConversationAPIClient::ConversationEvent;
 using ConversationEventType = ConversationAPIClient::ConversationEventType;
 
 constexpr char kRemotePath[] = "v1/conversation";
+
+constexpr char kAllowedWebSourceFaviconHost[] = "imgs.search.brave.com";
+
 #if !defined(OFFICIAL_BUILD)
 constexpr char kAIChatServerUrl[] = "ai-chat-server-url";
 #endif
@@ -114,6 +117,47 @@ mojom::ConversationEntryEventPtr ParseResponseEvent(
     }
     return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
         std::move(event));
+  } else if (*type == "webSources") {
+    const base::Value::List* sources = response_event.FindList("sources");
+    if (!sources) {
+      return nullptr;
+    }
+    auto event = mojom::WebSourcesEvent::New();
+    for (auto& item : *sources) {
+      if (!item.is_dict()) {
+        continue;
+      }
+      const base::Value::Dict& source = item.GetDict();
+      const std::string* title = source.FindString("title");
+      const std::string* url = source.FindString("url");
+      const std::string* favicon_url = source.FindString("favicon");
+      if (!title || !url || !favicon_url) {
+        DVLOG(2) << "Missing required fields in web source event: "
+                 << item.DebugString();
+        continue;
+      }
+      GURL item_url(*url);
+      GURL item_favicon_url(*favicon_url);
+      if (!item_url.is_valid() || !item_favicon_url.is_valid()) {
+        DVLOG(2) << "Invalid URL in webSource event: " << item.DebugString();
+        continue;
+      }
+      // Validate favicon is private source
+      if (!item_favicon_url.SchemeIs(url::kHttpsScheme) ||
+          base::CompareCaseInsensitiveASCII(item_favicon_url.host_piece(),
+                                            kAllowedWebSourceFaviconHost) !=
+              0) {
+        DVLOG(2) << "webSource event contained disallowed host or scheme: "
+                 << item.DebugString();
+        continue;
+      }
+      event->sources.push_back(
+          mojom::WebSource::New(*title, item_url, item_favicon_url));
+    }
+    if (event->sources.empty()) {
+      return nullptr;
+    }
+    return mojom::ConversationEntryEvent::NewSourcesEvent(std::move(event));
   } else if (*type == "conversationTitle") {
     const std::string* title = response_event.FindString("title");
     if (!title) {
