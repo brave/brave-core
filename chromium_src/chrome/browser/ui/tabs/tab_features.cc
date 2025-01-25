@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
+#include "brave/browser/brave_screenshots/brave_screenshots_tab_feature.h"
+#include "brave/browser/brave_screenshots/features.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 
 #define Init Init_ChromiumImpl
@@ -19,6 +21,12 @@ void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   CHECK(side_panel_registry_.get());
   brave::RegisterContextualSidePanel(side_panel_registry_.get(),
                                      tab.GetContents());
+
+  // Brave Screenshots (via Context Menu and Commander)
+  if (brave_screenshots::features::IsBraveScreenshotsEnabled()) {
+    brave_screenshots_tab_feature_ =
+        std::make_unique<brave_screenshots::BraveScreenshotsTabFeature>();
+  }
 }
 
 }  // namespace tabs
