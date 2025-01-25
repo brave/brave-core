@@ -239,7 +239,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     if isFirstLaunch {
-      Preferences.DAU.installationDate.value = Date()
+      let currentDate = Date()
+      Preferences.DAU.installationDate.value = currentDate
+      Preferences.P3A.installationDate.value = currentDate
 
       // VPN credentials are kept in keychain and persist between app reinstalls.
       // To avoid unexpected problems we clear all vpn keychain items.
@@ -275,14 +277,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     )
     #endif
 
-    // DAU may not have pinged on the first launch so weekOfInstallation pref may not be set yet
-    if let weekOfInstall = Preferences.DAU.weekOfInstallation.value
-      ?? Preferences.DAU.installationDate.value?.mondayOfCurrentWeekFormatted,
-      AppConstants.isOfficialBuild
-    {
+    if Preferences.P3A.installationDate.value == nil {
+      let dauInstallDate = Preferences.DAU.installationDate.value
+      Preferences.P3A.installationDate.value = {
+        if dauInstallDate == nil {
+          // Migrate install date from DAU week of install if installation date has already
+          // been removed
+          if let weekOfInstall = DAU.weekOfInstallDate {
+            let calendar = DAU.calendar
+            let components = calendar.dateComponents([.hour, .minute, .second], from: .now)
+            let migratedInstallDate = calendar.date(
+              bySettingHour: components.hour ?? 0,
+              minute: components.minute ?? 0,
+              second: components.minute ?? 0,
+              of: weekOfInstall
+            )
+            return migratedInstallDate
+          } else {
+            // If we somehow still don't have an install date due to malformed week of install data
+            // then replace the date with today
+            return .now
+          }
+        } else {
+          return dauInstallDate
+        }
+      }()
+    }
+
+    if let installDate = Preferences.P3A.installationDate.value, AppConstants.isOfficialBuild {
       AppState.shared.braveCore.initializeP3AService(
         forChannel: AppConstants.buildChannel.serverChannelParam,
-        weekOfInstall: weekOfInstall
+        installationDate: installDate
       )
     }
 

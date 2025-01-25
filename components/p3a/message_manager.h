@@ -66,7 +66,7 @@ class MessageManager : public MetricLogStore::Delegate {
                  const P3AConfig* config,
                  Delegate& delegate,
                  std::string channel,
-                 std::string week_of_install);
+                 base::Time first_run_time);
   ~MessageManager() override;
 
   MessageManager(const MessageManager&) = delete;

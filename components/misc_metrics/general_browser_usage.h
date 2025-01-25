@@ -23,8 +23,7 @@ inline constexpr char kWeeklyUseHistogramName[] = "Brave.Core.WeeklyUsage";
 inline constexpr char kProfileCountHistogramName[] = "Brave.Core.ProfileCount";
 
 #if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
-inline constexpr char kDayZeroInstallTimePrefix[] = "Brave.DayZero.";
-inline constexpr char kDayZeroInstallTimeSuffix[] = ".InstallTime";
+inline constexpr char kDayZeroVariantHistogramName[] = "Brave.DayZero.Variant";
 #endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
 // TODO(djandries): remove this metric when Nebula experiment is over

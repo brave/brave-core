@@ -27,6 +27,11 @@ extension Preferences {
     public static let sendUsagePing = Option<Bool>(key: "dau.send-usage-ping", default: true)
   }
 
+  public final class P3A {
+    /// The apps installation date, this value is not reset after 14 days like the DAU preference
+    public static let installationDate = Option<Date?>(key: "p3a.installation-date", default: nil)
+  }
+
   public final class URP {
     public static let nextCheckDate = Option<TimeInterval?>(
       key: "urp.next-check-date",
