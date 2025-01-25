@@ -18,6 +18,8 @@ source_set("hd_key") {
     "hd_key.h",
     "hd_key_ed25519.cc",
     "hd_key_ed25519.h",
+    "hd_key_ed25519_slip23.cc",
+    "hd_key_ed25519_slip23.h",
   ]
 
   visibility = [
