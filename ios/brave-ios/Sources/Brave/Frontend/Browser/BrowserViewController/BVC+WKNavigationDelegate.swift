@@ -1022,6 +1022,9 @@ extension BrowserViewController: WKNavigationDelegate {
     tab.nightMode = Preferences.General.nightModeEnabled.value
     tab.clearSolanaConnectedAccounts()
 
+    // Dismiss any alerts that are showing on page navigation.
+    self.dismiss(animated: false)
+
     // Providers need re-initialized when changing origin to align with desktop in
     // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
     // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
