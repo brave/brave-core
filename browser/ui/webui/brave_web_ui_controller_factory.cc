@@ -12,6 +12,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -42,6 +43,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/browser/ui/webui/brave_new_tab/new_tab_page_ui.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
@@ -151,6 +153,9 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     // WebUIConfig. Currently, we can't add both BravePrivateNewTabUI and
     // BraveNewTabUI configs in RegisterChromeWebUIConfigs because they use the
     // same origin (content::kChromeUIScheme + chrome::kChromeUINewTabHost).
+    if (base::FeatureList::IsEnabled(features::kUseUpdatedNTP)) {
+      return new brave_new_tab::NewTabPageUI(web_ui);
+    }
     return new BraveNewTabUI(web_ui, url.host());
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)

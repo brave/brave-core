@@ -229,6 +229,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/new_tab/new_tab_shows_navigation_throttle.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
+#include "brave/browser/ui/webui/brave_new_tab/new_tab_page_ui.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_page_top_ui.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
@@ -652,6 +653,10 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
           .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
           .Add<brave_news::mojom::BraveNewsController>();
 
+  auto ntp_next_registration =
+      registry.ForWebUI<brave_new_tab::NewTabPageUI>()
+          .Add<brave_new_tab::mojom::NewTabPageHandler>();
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     ntp_registration.Add<brave_vpn::mojom::ServiceHandler>();
@@ -660,6 +665,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
     ntp_registration.Add<searchbox::mojom::PageHandler>();
+    ntp_next_registration.Add<searchbox::mojom::PageHandler>();
   }
 
   if (base::FeatureList::IsEnabled(

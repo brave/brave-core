@@ -9,7 +9,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("brave_new_tab_ui") {
   entry_points = [ [
-        "brave_new_tab",
+        "brave_new_tab_ui",
         rebase_path("brave_new_tab.tsx"),
       ] ]
   public_deps = [
@@ -23,12 +23,12 @@ transpile_web_ui("brave_new_tab_ui") {
       "//ui/webui/resources/cr_components/searchbox:mojo_bindings_js",
     ]
   }
-  resource_name = "brave_new_tab"
+  resource_name = "brave_new_tab_ui"
 }
 
 pack_web_resources("generated_resources") {
-  resource_name = "brave_new_tab"
-  output_dir = "$root_gen_dir/brave/components/brave_new_tab/resources"
+  resource_name = "brave_new_tab_ui"
+  output_dir = "$root_gen_dir/brave/components/brave_new_tab_ui"
   deps = [ ":brave_new_tab_ui" ]
 }
 

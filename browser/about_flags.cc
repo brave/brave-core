@@ -502,6 +502,13 @@
           FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget),                 \
       },                                                                       \
       {                                                                        \
+          "brave-use-updated-ntp",                                             \
+          "Use the updated New Tab Page",                                      \
+          "Uses an updated version of the New Tab Page",                       \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kUseUpdatedNTP),                        \
+      },                                                                       \
+      {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
           "Enable CNAME uncloaking",                                           \
           "Take DNS CNAME records into account when making network request "   \

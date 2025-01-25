@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/brave_perf_predictor/common",
+  "+brave/components/brave_private_cdn",
+]
