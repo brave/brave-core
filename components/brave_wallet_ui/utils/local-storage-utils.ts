@@ -222,3 +222,17 @@ export const setPersistedNftCollectionNamesRegistry = (
     console.error(error)
   }
 }
+
+export const getAddressHistoryIdentifier = (
+  network?: BraveWallet.NetworkInfo
+) => {
+  if (!network) {
+    return undefined
+  }
+  // Since ETH and SOL use the address between networks
+  // we use the CoinType as the identifier.
+  return network.coin === BraveWallet.CoinType.ETH ||
+    network.coin === BraveWallet.CoinType.SOL
+    ? network.coin.toString()
+    : network.chainId
+}

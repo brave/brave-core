@@ -7,14 +7,27 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import Icon from '@brave/leo/react/icon'
 import ProgressRing from '@brave/leo/react/progressRing'
+import Button from '@brave/leo/react/button'
+
+// Constants
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../../common/constants/local-storage-keys'
 
 // Types
 import {
   BraveWallet,
   AddressMessageInfo,
   AddressMessageInfoIds,
-  CoinTypesMap
+  CoinTypesMap,
+  AddressHistory
 } from '../../../../../constants/types'
+
+// Selectors
+import {
+  useSafeUISelector //
+} from '../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../common/selectors'
 
 // Queries
 import {
@@ -32,12 +45,20 @@ import {
   useValidateUnifiedAddressQuery
 } from '../../../../../common/slices/api.slice'
 
+// Hooks
+import {
+  useLocalStorage //
+} from '../../../../../common/hooks/use_local_storage'
+
 // Utils
 import {
   isValidBtcAddress,
   isValidEVMAddress,
   isValidFilAddress
 } from '../../../../../utils/address-utils'
+import {
+  getAddressHistoryIdentifier //
+} from '../../../../../utils/local-storage-utils'
 
 // Messages
 import {
@@ -91,7 +112,8 @@ import {
   WalletIcon,
   AddressButtonText,
   DomainLoadIcon,
-  SearchBoxContainer
+  SearchBoxContainer,
+  TrashIcon
 } from './select_address_modal.style'
 
 interface Props {
@@ -115,6 +137,20 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       setToAddressOrUrl,
       setResolvedDomainAddress
     } = props
+
+    // UI Selectors (safe)
+    const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+    // Local Storage
+    const [addressHistory, setAddressHistory] = useLocalStorage<AddressHistory>(
+      LOCAL_STORAGE_KEYS.RECENTLY_INTERACTED_WITH_ADDRESS_HISTORY,
+      {}
+    )
+    const [isAddressHistoryDisabled, setIsAddressHistoryDisabled] =
+      useLocalStorage<boolean>(
+        LOCAL_STORAGE_KEYS.RECENTLY_INTERACTED_WITH_ADDRESS_HISTORY_IS_DISABLED,
+        false
+      )
 
     // Mutations
     const [enableEnsOffchainLookup] = useEnableEnsOffchainLookupMutation()
@@ -211,6 +247,22 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
           account.name.toLowerCase().startsWith(searchValue.toLocaleLowerCase())
       )
     }, [accountsByNetwork, searchValue])
+
+    const addressHistoryIdentifier =
+      getAddressHistoryIdentifier(selectedNetwork)
+
+    const addressHistoryByNetworkOrCoin = React.useMemo(() => {
+      if (!addressHistoryIdentifier) {
+        return []
+      }
+      return addressHistory[addressHistoryIdentifier] ?? []
+    }, [addressHistoryIdentifier, addressHistory])
+
+    const filteredAddressHistory = React.useMemo(() => {
+      return addressHistoryByNetworkOrCoin.filter((address) =>
+        address.toLocaleLowerCase().startsWith(searchValue.toLocaleLowerCase())
+      )
+    }, [addressHistoryByNetworkOrCoin, searchValue])
 
     const evmAddressesforFVMTranslation = React.useMemo(
       () =>
@@ -323,7 +375,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         filteredAccounts.length !== 0) ||
       (!isSearchingForDomain &&
         addressMessageInformation &&
-        filteredAccounts.length === 0)
+        filteredAccounts.length === 0 &&
+        filteredAddressHistory.length === 0)
 
     // Methods
     const onSelectAccount = React.useCallback(
@@ -368,6 +421,35 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       enableEnsOffchainLookup()
       dismissOffchainEnsWarning(true)
     }, [enableEnsOffchainLookup])
+
+    const onClickDeleteAddress = React.useCallback(
+      (address: string) => {
+        if (addressHistoryIdentifier) {
+          const newAddressHistoryForNetwork =
+            addressHistoryByNetworkOrCoin.filter(
+              (addr: string) => addr !== address
+            )
+          let history = addressHistory
+          history[addressHistoryIdentifier] = newAddressHistoryForNetwork
+          setAddressHistory(history)
+        }
+      },
+      [
+        addressHistory,
+        addressHistoryByNetworkOrCoin,
+        addressHistoryIdentifier,
+        setAddressHistory
+      ]
+    )
+
+    const onClickDisableAddressHistory = React.useCallback(() => {
+      setAddressHistory({})
+      setIsAddressHistoryDisabled(true)
+    }, [setAddressHistory, setIsAddressHistoryDisabled])
+
+    const onClickEnableAddressHistory = React.useCallback(() => {
+      setIsAddressHistoryDisabled(false)
+    }, [setIsAddressHistoryDisabled])
 
     if (showChecksumInfo) {
       return (
@@ -439,13 +521,62 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
               fullWidth={true}
               justifyContent='flex-start'
             >
+              {!isAddressHistoryDisabled &&
+                filteredAddressHistory.length !== 0 && (
+                  <>
+                    <Row
+                      width='100%'
+                      justifyContent='flex-start'
+                      padding='0px 8px'
+                      margin='4px 0px'
+                    >
+                      <LabelText
+                        textSize='12px'
+                        isBold={true}
+                      >
+                        {getLocale('braveWalletRecentAddresses')}
+                      </LabelText>
+                    </Row>
+                    {filteredAddressHistory.map((address) => (
+                      <Row
+                        key={address}
+                        gap='12px'
+                      >
+                        <AddressButton onClick={() => onSelectAddress(address)}>
+                          <WalletIcon />
+                          <Column alignItems='flext-start'>
+                            <AddressButtonText
+                              textSize='14px'
+                              isBold={true}
+                              textColor='primary'
+                              textAlign='left'
+                            >
+                              {address}
+                            </AddressButtonText>
+                          </Column>
+                        </AddressButton>
+                        <Button
+                          kind='plain-faint'
+                          size='small'
+                          onClick={() => onClickDeleteAddress(address)}
+                        >
+                          <TrashIcon />
+                        </Button>
+                      </Row>
+                    ))}
+                  </>
+                )}
               {filteredAccounts.length !== 0 && (
                 <>
                   <Row
                     width='100%'
                     justifyContent='flex-start'
                     padding='0px 8px'
-                    marginBottom={4}
+                    margin={
+                      filteredAddressHistory.length !== 0
+                        ? '8px 0px 4px 0px'
+                        : '0px 0px 4px 0px'
+                    }
                   >
                     <LabelText
                       textSize='12px'
@@ -482,6 +613,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
                 </Row>
               )}
               {filteredAccounts.length === 0 &&
+                filteredAddressHistory.length === 0 &&
                 !isSearchingForDomain &&
                 !showEnsOffchainWarning &&
                 addressMessageInformation?.type !== 'error' && (
@@ -533,6 +665,36 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
               )}
             </ScrollContainer>
           )}
+          <Row
+            gap='8px'
+            padding={isPanel ? '16px' : '16px 16px 0px 16px'}
+          >
+            <Text
+              textSize='12px'
+              isBold={false}
+              textColor='tertiary'
+              textAlign='left'
+            >
+              {isAddressHistoryDisabled
+                ? getLocale('braveWalletAddressHistoryDisabledDisclaimer')
+                : getLocale('braveWalletAddressHistoryEnabledDisclaimer')}
+            </Text>
+            <div>
+              <Button
+                kind='plain'
+                size='tiny'
+                onClick={
+                  isAddressHistoryDisabled
+                    ? onClickEnableAddressHistory
+                    : onClickDisableAddressHistory
+                }
+              >
+                {isAddressHistoryDisabled
+                  ? getLocale('braveWalletButtonEnable')
+                  : getLocale('braveWalletDisableAddressHistory')}
+              </Button>
+            </div>
+          </Row>
         </Wrapper>
       </PopupModal>
     )

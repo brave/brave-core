@@ -1121,3 +1121,5 @@ export type zcashAddressOptionType = {
   addressType: zcashAddressTypes
   label: string
 }
+
+export type AddressHistory = Record<string, string[]>

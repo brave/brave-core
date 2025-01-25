@@ -103,6 +103,13 @@ export const WalletIcon = styled(Icon).attrs({
   margin-right: 8px;
 `
 
+export const TrashIcon = styled(Icon).attrs({
+  name: 'trash'
+})`
+  --leo-icon-size: 20px;
+  color: ${leo.color.icon.default};
+`
+
 export const DomainLoadIcon = styled(LoaderIcon)<{ position: number }>`
   color: ${leo.color.icon.default};
   height: 20px;
