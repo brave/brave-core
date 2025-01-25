@@ -17,6 +17,11 @@
 #undef IsPrimaryOTRProfile
 #undef BRAVE_ALLOWS_BROWSER_WINDOWS
 
+namespace {
+const char kSearchBackupResultsOTRProfileIDPrefix[] =
+    "SearchBackupResults::OTR";
+}  // namespace
+
 // static
 const Profile::OTRProfileID Profile::OTRProfileID::TorID() {
   return OTRProfileID(tor::kTorProfileID);
@@ -37,4 +42,14 @@ bool Profile::IsPrimaryOTRProfile() const {
   if (IsTor())
     return true;
   return IsPrimaryOTRProfile_ChromiumImpl();
+}
+
+Profile::OTRProfileID
+Profile::OTRProfileID::CreateUniqueForSearchBackupResults() {
+  return CreateUnique(kSearchBackupResultsOTRProfileIDPrefix);
+}
+
+bool Profile::OTRProfileID::IsSearchBackupResults() const {
+  return base::StartsWith(profile_id_, kSearchBackupResultsOTRProfileIDPrefix,
+                          base::CompareCase::SENSITIVE);
 }
