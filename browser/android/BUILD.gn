@@ -49,3 +49,12 @@ source_set("android_browser_process") {
     "//url",
   ]
 }
+
+source_set("tab_features") {
+  sources = [
+    "brave_tab_features_android.cc",
+    "brave_tab_features_android.h",
+  ]
+
+  deps = [ "//base" ]
+}
