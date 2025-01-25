@@ -128,6 +128,10 @@ class ConversationHandler : public mojom::ConversationHandler,
     }
     TextEmbedder* GetTextEmbedderForTesting() { return text_embedder_.get(); }
 
+    base::WeakPtr<AssociatedContentDelegate> GetWeakPtr() {
+      return weak_ptr_factory_.GetWeakPtr();
+    }
+
    protected:
     // Content has navigated
     virtual void OnNewPage(int64_t navigation_id);
