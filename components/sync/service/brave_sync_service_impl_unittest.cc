@@ -12,8 +12,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/gtest_util.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/history/core/browser/sync/brave_history_data_type_controller.h"
 #include "brave/components/history/core/browser/sync/brave_history_delete_directives_data_type_controller.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
@@ -23,6 +25,7 @@
 #include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/signin/public/identity_manager/accounts_in_cookie_jar_info.h"
+#include "components/sync/base/data_type.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/model/type_entities_count.h"
@@ -55,7 +58,7 @@ constexpr char kValidSyncCode[] =
     "exotic ill sure question trial squirrel glove celery "
     "awkward push jelly logic broccoli almost grocery drift";
 
-// Taken from anonimous namespace from sync_service_crypto_unittest.cc
+// Taken from anonymous namespace from sync_service_crypto_unittest.cc
 sync_pb::EncryptedData MakeEncryptedData(
     const std::string& passphrase,
     const KeyDerivationParams& derivation_params) {
@@ -98,7 +101,9 @@ class SyncServiceObserverMock : public SyncServiceObserver {
 class BraveSyncServiceImplTest : public testing::Test {
  public:
   BraveSyncServiceImplTest()
-      : brave_sync_prefs_(sync_service_impl_bundle_.pref_service()),
+      : task_environment_(
+            base::test::SingleThreadTaskEnvironment::TimeSource::MOCK_TIME),
+        brave_sync_prefs_(sync_service_impl_bundle_.pref_service()),
         sync_prefs_(sync_service_impl_bundle_.pref_service()) {
     sync_service_impl_bundle_.identity_test_env()
         ->SetAutomaticIssueOfAccessTokens(true);
@@ -117,6 +122,8 @@ class BraveSyncServiceImplTest : public testing::Test {
 
     std::unique_ptr<SyncClientMock> sync_client =
         sync_service_impl_bundle_.CreateSyncClientMock();
+
+    ON_CALL(*sync_client, IsPasswordSyncAllowed).WillByDefault(Return(true));
 
     auto sync_service_delegate(std::make_unique<SyncServiceImplDelegateMock>());
     sync_service_delegate_ = sync_service_delegate.get();
@@ -710,6 +717,44 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   // SyncServiceImpl::Initialize and details will not be cleared
   EXPECT_EQ(leave_chain_pref_changed_count, 0u);
   EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
+}
+
+class BraveSyncServiceImpl_EnableDefaultPasswordSyncingTest
+    : public BraveSyncServiceImplTest {
+ public:
+  BraveSyncServiceImpl_EnableDefaultPasswordSyncingTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_sync::features::kBraveSyncDefaultPasswords);
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(BraveSyncServiceImpl_EnableDefaultPasswordSyncingTest,
+       BookmarksAndPasswordsAfterSetup) {
+  OSCryptMocker::SetUp();
+  CreateSyncService(DataTypeSet({BOOKMARKS, PASSWORDS}));
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.FastForwardUntilNoTasksRemain();
+
+  auto sync_blocker = brave_sync_service_impl()->GetSetupInProgressHandle();
+  brave_sync_service_impl()
+      ->GetUserSettings()
+      ->SetInitialSyncFeatureSetupComplete(
+          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+  EXPECT_TRUE(engine());
+
+  EXPECT_FALSE(
+      brave_sync_service_impl()->GetUserSettings()->IsSyncEverythingEnabled());
+  auto selected_types =
+      brave_sync_service_impl()->GetUserSettings()->GetSelectedTypes();
+  EXPECT_EQ(selected_types.size(), 2u);
+  EXPECT_TRUE(selected_types.Has(UserSelectableType::kBookmarks));
+  EXPECT_TRUE(selected_types.Has(UserSelectableType::kPasswords));
+
+  OSCryptMocker::TearDown();
 }
 
 namespace {

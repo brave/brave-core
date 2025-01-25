@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/sync/service/brave_sync_auth_manager.h"
 #include "brave/components/sync/service/sync_service_impl_delegate.h"
 #include "build/build_config.h"
@@ -42,7 +43,6 @@ BraveSyncServiceImpl::BraveSyncServiceImpl(
       brave_sync::Prefs::GetSeedPath(),
       base::BindRepeating(&BraveSyncServiceImpl::OnBraveSyncPrefsChanged,
                           base::Unretained(this)));
-
   bool failed_to_decrypt = false;
   GetBraveSyncAuthManager()->DeriveSigningKeys(
       brave_sync_prefs_.GetSeed(&failed_to_decrypt));
@@ -165,7 +165,7 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
 
     if (!seed.empty()) {
       GetBraveSyncAuthManager()->DeriveSigningKeys(seed);
-      // Default enabled types: Bookmarks
+      // Default enabled types: Bookmarks, Passwords
 
       // Related Chromium change: 33441a0f3f9a591693157f2fd16852ce072e6f9d
       // We need to acquire setup handle before change selected types.
@@ -175,6 +175,10 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
 
       syncer::UserSelectableTypeSet selected_types;
       selected_types.Put(UserSelectableType::kBookmarks);
+      if (base::FeatureList::IsEnabled(
+              brave_sync::features::kBraveSyncDefaultPasswords)) {
+        selected_types.Put(UserSelectableType::kPasswords);
+      }
       GetUserSettings()->SetSelectedTypes(false, selected_types);
 
       brave_sync_prefs_.ClearLeaveChainDetails();
