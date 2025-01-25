@@ -1,0 +1,13 @@
+diff --git a/telemetry/telemetry/core/mime.types b/telemetry/telemetry/core/mime.types
+index a1b1ca6a4e0a82e6229eec9897555d16b84aa9b8..7654c98c258f015a35e045c6fcdce3c58266390c 100644
+--- a/telemetry/telemetry/core/mime.types
++++ b/telemetry/telemetry/core/mime.types
+@@ -144,7 +144,7 @@ application/ipfix       ipfix
+ application/java-archive      jar
+ application/java-serialized-object    ser
+ application/java-vm       class
+-application/javascript        js
++application/javascript        js mjs
+ # application/jose
+ # application/jose+json
+ # application/jrd+json
