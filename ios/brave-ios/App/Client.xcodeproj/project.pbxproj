@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -23,6 +23,7 @@
 		272FC5AF2979EA700027C53D /* TopNewsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272FC5AE2979E9D60027C53D /* TopNewsWidget.swift */; };
 		27462BEA29DF39EE00715268 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 27462BE929DF39EE00715268 /* OrderedCollections */; };
 		27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */ = {isa = PBXBuildFile; productRef = 27466BB0288EDB9C00584C90 /* RuntimeWarnings */; };
+		2749F5CA2D088E6500A5DAAB /* BraveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2749F5C92D088E6500A5DAAB /* BraveCore */; };
 		2759468D29CCB62F0094BDDE /* GRDWireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2759468C29CCB62F0094BDDE /* GRDWireGuardKit */; };
 		2759468F29CCB6350094BDDE /* GRDWireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2759468E29CCB6350094BDDE /* GRDWireGuardKit */; };
 		2787B06A2B7ED260004796F8 /* BraveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2787B0692B7ED260004796F8 /* BraveCore */; };
@@ -200,6 +201,7 @@
 		273DFB18284FDB1D007781AF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Shortcuts/ja.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27444B6A29831BBE002E1EBE /* topics_news.en_US.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = topics_news.en_US.json; sourceTree = "<group>"; };
 		27465DC3284FDB6F0056FDB2 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Shortcuts/sv.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		2749F5B72D088E0100A5DAAB /* WebShell.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebShell.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		275A4C39284FDB290016F5A8 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "Shortcuts/ko-KR.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
 		276FEA8B284FDB7A001A0718 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Shortcuts/tr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		277CA004284FDB34002E8470 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = Shortcuts/ms.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
@@ -474,6 +476,20 @@
 		F926647A234D4EF400359492 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2749F5CC2D08904200A5DAAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2749F5B62D088E0100A5DAAB /* WebShell */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2749F5B82D088E0100A5DAAB /* WebShell */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2749F5CC2D08904200A5DAAB /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = WebShell; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		2714EE662AF2D4CD002090A9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -482,6 +498,14 @@
 				27E998272B7BE1BC00D9ECF7 /* BraveCore in Frameworks */,
 				271C57792B07F036008D824E /* CredentialProviderUI in Frameworks */,
 				2714EE6B2AF2D4CD002090A9 /* AuthenticationServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2749F5B42D088E0100A5DAAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2749F5CA2D088E6500A5DAAB /* BraveCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,6 +821,7 @@
 				CA0391B7271E1023000EB13C /* BraveWidgets */,
 				2FD860C329C3D686005AADD1 /* BraveWireGuard */,
 				2714EE6C2AF2D4CD002090A9 /* AutoFillProvider */,
+				2749F5B82D088E0100A5DAAB /* WebShell */,
 				7B604FC11C496005006EEEC3 /* Frameworks */,
 				F84B21BF1A090F8100AAB793 /* Products */,
 			);
@@ -815,6 +840,7 @@
 				2FD860C129C3D677005AADD1 /* BraveWireGuard.appex */,
 				2FE7D51B2B509DA40039FBA4 /* ActionExtension.appex */,
 				2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */,
+				2749F5B72D088E0100A5DAAB /* WebShell.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -852,6 +878,29 @@
 			productName = AutoFillProvider;
 			productReference = 2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		2749F5B62D088E0100A5DAAB /* WebShell */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2749F5C82D088E0200A5DAAB /* Build configuration list for PBXNativeTarget "WebShell" */;
+			buildPhases = (
+				2749F5B32D088E0100A5DAAB /* Sources */,
+				2749F5B42D088E0100A5DAAB /* Frameworks */,
+				2749F5B52D088E0100A5DAAB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2749F5B82D088E0100A5DAAB /* WebShell */,
+			);
+			name = WebShell;
+			packageProductDependencies = (
+				2749F5C92D088E6500A5DAAB /* BraveCore */,
+			);
+			productName = WebShell;
+			productReference = 2749F5B72D088E0100A5DAAB /* WebShell.app */;
+			productType = "com.apple.product-type.application";
 		};
 		27F443942135E11200296C58 /* ShareExtension */ = {
 			isa = PBXNativeTarget;
@@ -1012,12 +1061,15 @@
 			attributes = {
 				DefaultBuildSystemTypeForWorkspace = Latest;
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Mozilla;
 				TargetAttributes = {
 					2714EE682AF2D4CD002090A9 = {
 						CreatedOnToolsVersion = 15.0.1;
+					};
+					2749F5B62D088E0100A5DAAB = {
+						CreatedOnToolsVersion = 16.2;
 					};
 					27F443942135E11200296C58 = {
 						CreatedOnToolsVersion = 10.0;
@@ -1120,6 +1172,7 @@
 				CA0391B1271E1023000EB13C /* BraveWidgetsExtension */,
 				2FD860C029C3D676005AADD1 /* BraveWireGuard */,
 				2714EE682AF2D4CD002090A9 /* AutoFillProvider */,
+				2749F5B62D088E0100A5DAAB /* WebShell */,
 			);
 		};
 /* End PBXProject section */
@@ -1131,6 +1184,13 @@
 			files = (
 				44A8A3792BADE6DC004D1BF1 /* PrivacyInfo.xcprivacy in Resources */,
 				2714EE8D2AF3F476002090A9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2749F5B52D088E0100A5DAAB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1218,6 +1278,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				2714EE6E2AF2D4CD002090A9 /* CredentialProviderViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2749F5B32D088E0100A5DAAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1784,6 +1851,266 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Beta AutoFill Provider";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
+		2749F5C22D088E0200A5DAAB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WebShell/WebShell.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WebShell/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.ios.WebShell;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2749F5C32D088E0200A5DAAB /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WebShell/WebShell.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WebShell/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.ios.WebShell;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug (AppStore)";
+		};
+		2749F5C42D088E0200A5DAAB /* Nightly */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WebShell/WebShell.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WebShell/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.ios.WebShell;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Nightly;
+		};
+		2749F5C52D088E0200A5DAAB /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WebShell/WebShell.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WebShell/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.ios.WebShell;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release (AppStore)";
+		};
+		2749F5C62D088E0200A5DAAB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WebShell/WebShell.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WebShell/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.ios.WebShell;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2749F5C72D088E0200A5DAAB /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WebShell/WebShell.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = KL8N8XSYF4;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WebShell/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brave.ios.WebShell;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -3485,6 +3812,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		2749F5C82D088E0200A5DAAB /* Build configuration list for PBXNativeTarget "WebShell" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2749F5C22D088E0200A5DAAB /* Debug */,
+				2749F5C32D088E0200A5DAAB /* Debug (AppStore) */,
+				2749F5C42D088E0200A5DAAB /* Nightly */,
+				2749F5C52D088E0200A5DAAB /* Release (AppStore) */,
+				2749F5C62D088E0200A5DAAB /* Release */,
+				2749F5C72D088E0200A5DAAB /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -3626,6 +3966,10 @@
 		27466BB0288EDB9C00584C90 /* RuntimeWarnings */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RuntimeWarnings;
+		};
+		2749F5C92D088E6500A5DAAB /* BraveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveCore;
 		};
 		2759468C29CCB62F0094BDDE /* GRDWireGuardKit */ = {
 			isa = XCSwiftPackageProductDependency;

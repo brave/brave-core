@@ -1,0 +1,12 @@
+diff --git a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
+index a3e5cdad9454cda0a49986b2a67f1b11741ad7d3..538b2a93c65fc3912a2fb5cabde42ef640e9c9b0 100644
+--- a/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
++++ b/ios/web/web_state/ui/wk_web_view_configuration_provider.mm
+@@ -143,6 +143,7 @@ void WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+       fetchDataRecordsOfTypes:data_types
+             completionHandler:^(NSArray<WKWebsiteDataRecord*>* records){
+             }];
++  BRAVE_RESET_WITH_WEB_VIEW_CONFIGURATION
+ }
+ 
+ WKWebViewConfiguration*
