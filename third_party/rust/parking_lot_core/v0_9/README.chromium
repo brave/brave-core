@@ -1,9 +1,9 @@
 Name: parking_lot_core
 URL: https://crates.io/crates/parking_lot_core
-Version: 0.9.7
-Revision: f549eacc36168db632f63731c701ac0521b58e50
+Version: 0.9.10
+Revision: 9dace42690f78bcf30f387ba42024bff4e8b6c18
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

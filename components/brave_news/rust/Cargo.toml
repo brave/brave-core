@@ -8,7 +8,7 @@ license = "MPL-2.0"
 
 [dependencies]
 cxx = "1"
-feed-rs = "1.3.0"
+feed-rs = "1.4.0"
 log = "0.4.14"
 lazy_static = "1.4.0"
 regex = "1.5.5"

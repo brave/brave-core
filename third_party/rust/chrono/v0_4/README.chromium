@@ -1,9 +1,9 @@
 Name: chrono
 URL: https://crates.io/crates/chrono
-Version: 0.4.24
-Revision: daa86a77d36d74f474913fd3b560a40f1424bd77
+Version: 0.4.39
+Revision: 8b863490d88ba098038392c8aa930012ffd0c439
 License: Apache 2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.24/LICENSE.txt
+License File: //brave/third_party/rust/chromium_crates_io/vendor/chrono-0.4.39/LICENSE.txt
 Shipped: yes
 Security Critical: yes
 

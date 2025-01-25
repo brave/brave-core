@@ -1,0 +1,70 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "windows_core"
+  epoch = "0.52"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/agile_reference.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/array.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/as_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/com_interface.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/event.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/guid.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/hresult.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/bindings.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/com_bindings.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/delay_load.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/factory_cache.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/generic_factory.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/heap.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/ref_count.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/sha1.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/waiter.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/imp/weak_ref_count.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/inspectable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/interface.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/param.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/runtime_name.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/runtime_type.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/scoped_interface.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/strings/bstr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/strings/hstring.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/strings/literals.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/strings/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/strings/pcstr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/strings/pcwstr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/strings/pstr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/strings/pwstr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/type.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/unknown.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/windows-core-0.52.0/src/weak.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.52.0"
+  cargo_pkg_authors = "Microsoft"
+  cargo_pkg_name = "windows-core"
+  cargo_pkg_description = "Rust for Windows"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/windows_targets/v0_52:lib" ]
+}

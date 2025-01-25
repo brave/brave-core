@@ -1,0 +1,69 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "quick_xml"
+  epoch = "0.31"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/de/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/de/map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/de/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/de/resolver.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/de/simple_type.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/de/text.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/de/var.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/encoding.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/errors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/escapei.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/events/attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/events/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/name.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/reader/async_tokio.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/reader/buffered_reader.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/reader/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/reader/ns_reader.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/reader/slice_reader.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/reader/state.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/se/content.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/se/element.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/se/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/se/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/se/simple_type.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/se/text.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/serde_helpers.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/writer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/src/writer/async_tokio.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.31.0"
+  cargo_pkg_name = "quick-xml"
+  cargo_pkg_description = "High performance xml reader and writer"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/encoding_rs/v0_8:lib",
+    "//brave/third_party/rust/memchr/v2:lib",
+  ]
+  features = [
+    "encoding",
+    "encoding_rs",
+  ]
+}

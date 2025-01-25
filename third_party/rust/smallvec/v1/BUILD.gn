@@ -12,18 +12,18 @@ cargo_crate("lib") {
   crate_name = "smallvec"
   epoch = "1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.10.0/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.13.2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.10.0/src/arbitrary.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.10.0/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.10.0/src/specialization.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.10.0/src/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.13.2/src/arbitrary.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.13.2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.13.2/src/specialization.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/smallvec-1.13.2/src/tests.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "1.10.0"
+  cargo_pkg_version = "1.13.2"
   cargo_pkg_authors = "The Servo Project Developers"
   cargo_pkg_name = "smallvec"
   cargo_pkg_description = "'Small vector' optimization: store up to a small number of items on the stack"
@@ -33,4 +33,5 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  features = [ "const_generics" ]
 }

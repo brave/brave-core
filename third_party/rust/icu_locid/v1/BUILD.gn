@@ -1,0 +1,77 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "icu_locid"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/databake.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/other/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/other/subtag.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/private/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/private/other.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/transform/fields.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/transform/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/transform/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/transform/value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/unicode/attribute.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/unicode/attributes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/unicode/key.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/unicode/keywords.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/unicode/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/extensions/unicode/value.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/helpers.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/langid.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/locale.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/ordering.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/parser/errors.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/parser/langid.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/parser/locale.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/parser/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/shortvec/litemap.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/shortvec/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/subtags/language.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/subtags/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/subtags/region.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/subtags/script.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/subtags/variant.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/subtags/variants.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_locid-1.5.0/src/zerovec.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "1.5.0"
+  cargo_pkg_authors = "The ICU4X Project Developers"
+  cargo_pkg_name = "icu_locid"
+  cargo_pkg_description =
+      "API for managing Unicode Language and Locale Identifiers"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/displaydoc/v0_2:lib",
+    "//brave/third_party/rust/litemap/v0_7:lib",
+    "//brave/third_party/rust/tinystr/v0_7:lib",
+    "//brave/third_party/rust/writeable/v0_5:lib",
+    "//brave/third_party/rust/zerovec/v0_10:lib",
+  ]
+  features = [ "zerovec" ]
+}

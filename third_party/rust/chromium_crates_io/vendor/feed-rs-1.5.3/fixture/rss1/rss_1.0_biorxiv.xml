@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rdf:RDF xmlns:admin="http://webns.net/mvcb/" xmlns="http://purl.org/rss/1.0/"
+         xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:prism="http://purl.org/rss/1.0/modules/prism/"
+         xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:syn="http://purl.org/rss/1.0/modules/syndication/">
+    <channel rdf:about="http://biorxiv.org">
+        <admin:errorReportsTo rdf:resource="mailto:biorxiv@cshlpress.edu"/>
+        <title>bioRxiv Subject Collection: Genomics</title>
+        <link>http://biorxiv.org</link>
+        <description>
+            This feed contains articles for bioRxiv Subject Collection "Genomics"
+        </description>
+
+
+        <items>
+            <rdf:Seq>
+                <rdf:li rdf:resource="http://biorxiv.org/cgi/content/short/2023.12.16.571984v1?rss=1"/>
+            </rdf:Seq>
+        </items>
+        <prism:eIssn/>
+        <prism:publicationName>bioRxiv</prism:publicationName>
+        <prism:issn/>
+
+        <image rdf:resource=""/>
+    </channel>
+    <image rdf:about="">
+        <title>bioRxiv</title>
+        <url>https://www.biorxiv.org/sites/default/files/bioRxiv_article.jpg</url>
+        <link>https://www.biorxiv.org</link>
+    </image>
+    <item rdf:about="http://biorxiv.org/cgi/content/short/2023.12.16.571984v1?rss=1">
+        <title>
+            <![CDATA[
+Complete genome of the Medicago anthracnose fungus, Colletotrichum destructivum, reveals a mini-chromosome-like region within a core chromosome.
+]]>
+        </title>
+        <link>
+            http://biorxiv.org/cgi/content/short/2023.12.16.571984v1?rss=1
+        </link>
+        <description><![CDATA[
+Colletotrichum destructivum (Cd) is a phytopathogenic fungus causing significant economic losses on forage legume crops (Medicago and Trifolium species) worldwide. To gain insights into the genetic basis of fungal virulence and host specificity, we sequenced the genome of an isolate from M. sativa using long-read (PacBio) technology. The resulting genome assembly has a total length of 51.7 Mb and comprises 10 core chromosomes and two accessory chromosomes, all of which were sequenced from telomere to telomere. A total of 15,631 gene models were predicted, including genes encoding potentially pathogenicity-related proteins such as candidate secreted effectors (484), secondary metabolism key enzymes (110) and carbohydrate-active enzymes (619). Synteny analysis revealed extensive structural rearrangements in the genome of Cd relative to the closely-related Brassicaceae pathogen, C. higginsianum. In addition, a 1.2 Mb species-specific region was detected within the largest core chromosome of Cd that has all the characteristics of fungal accessory chromosomes (transposon-rich, gene-poor, distinct codon usage), providing evidence for exchange between these two genomic compartments. This region was also unique in having undergone extensive intra-chromosomal segmental duplications. Our findings provide insights into the evolution of accessory regions and possible mechanisms for generating genetic diversity in this asexual fungal pathogen.
+]]></description>
+        <dc:creator>
+            <![CDATA[ LAPALU, N., SIMON, A., Lu, A., Plaumann, P.-L., Amselem, J., Pigne, S., Auger, A., Koch, C., Dallery, J.-F., O'Connell, R. J. ]]></dc:creator>
+        <dc:date>2023-12-16</dc:date>
+        <dc:identifier>doi:10.1101/2023.12.16.571984</dc:identifier>
+        <dc:title>
+            <![CDATA[Complete genome of the Medicago anthracnose fungus, Colletotrichum destructivum, reveals a mini-chromosome-like region within a core chromosome.]]></dc:title>
+        <dc:publisher>Cold Spring Harbor Laboratory</dc:publisher>
+        <prism:publicationDate>2023-12-16</prism:publicationDate>
+        <prism:section></prism:section>
+    </item>
+</rdf:RDF>

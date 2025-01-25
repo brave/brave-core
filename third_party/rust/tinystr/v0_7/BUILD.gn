@@ -1,0 +1,51 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "tinystr"
+  epoch = "0.7"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/ascii.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/asciibyte.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/databake.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/int_ops.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/ule.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tinystr-0.7.6/src/unvalidated.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "0.7.6"
+  cargo_pkg_authors = "The ICU4X Project Developers"
+  cargo_pkg_name = "tinystr"
+  cargo_pkg_description =
+      "A small ASCII-only bounded length string representation."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/displaydoc/v0_2:lib",
+    "//brave/third_party/rust/zerovec/v0_10:lib",
+  ]
+  features = [
+    "alloc",
+    "zerovec",
+  ]
+}

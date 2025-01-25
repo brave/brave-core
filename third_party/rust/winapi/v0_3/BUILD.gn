@@ -438,11 +438,7 @@ cargo_crate("lib") {
     "errhandlingapi",
     "fileapi",
     "handleapi",
-    "minwinbase",
-    "minwindef",
     "processenv",
-    "std",
-    "timezoneapi",
   ]
   build_root =
       "//brave/third_party/rust/chromium_crates_io/vendor/winapi-0.3.9/build.rs"
