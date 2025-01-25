@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED Substring matching attribute value selector on end with declared namespace (css3-modsel-128)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-128.expected0.html",
-    "*|q, *|s": "css3-modsel-128.expected1.html"
-  },
-  "src": "css3-modsel-128.src.html"
-}

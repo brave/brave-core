@@ -20,7 +20,7 @@ include = [
 [dependencies]
 html5ever = "0.25.1"
 kuchikiki = "0.8.4-speedreader"
-lol_html = "0.3.0"
+lol_html = "2.1.0"
 regex = "1"
 serde_json = "1.0.70"
 thiserror = "1.0.30"

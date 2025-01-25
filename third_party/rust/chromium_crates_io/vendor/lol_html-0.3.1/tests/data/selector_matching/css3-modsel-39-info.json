@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - ::first-letter pseudo-element (css3-modsel-39)",
-  "selectors": {
-    "p:first-letter": "css3-modsel-39.expected0.html"
-  },
-  "src": "css3-modsel-39.src.html"
-}

@@ -20,7 +20,7 @@ rust_static_library("lib") {
     "//brave/third_party/rust/html5ever/v0_25:lib",
     "//brave/third_party/rust/kuchikiki/v0_8:lib",
     "//brave/third_party/rust/lifeguard/v0_6:lib",
-    "//brave/third_party/rust/lol_html/v0_3:lib",
+    "//brave/third_party/rust/lol_html/v2:lib",
     "//brave/third_party/rust/markup5ever/v0_10:lib",
     "//brave/third_party/rust/thiserror/v1:lib",
     "//brave/third_party/rust/url/v2:lib",

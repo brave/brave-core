@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED Attribute existence selector with declared namespace (css3-modsel-57b)",
-  "selectors": {
-    "*|p, *|q, *|r": "css3-modsel-57b.expected0.html",
-    "*|p, *|r": "css3-modsel-57b.expected1.html"
-  },
-  "src": "css3-modsel-57b.src.html"
-}

@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Attribute value selector (css3-modsel-6)",
-  "selectors": {
-    "address": "css3-modsel-6.expected0.html",
-    "address[title=\"foo\"]": "css3-modsel-6.expected1.html",
-    "span[title=\"a\"]": "css3-modsel-6.expected2.html"
-  },
-  "src": "css3-modsel-6.src.html"
-}

@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - Syntax and parsing of unknown pseudo-classes (css3-modsel-160)",
-  "selectors": {
-    "p": "css3-modsel-160.expected0.html"
-  },
-  "src": "css3-modsel-160.src.html"
-}

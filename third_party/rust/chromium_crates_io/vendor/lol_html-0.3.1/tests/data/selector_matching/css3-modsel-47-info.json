@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED type element selector (css3-modsel-47)",
-  "selectors": {
-    "div.stub span, div.stub address, div.stub *|q, div.stub *|r": "css3-modsel-47.expected0.html",
-    "address, *|q, *|r": "css3-modsel-47.expected1.html",
-    "div.stub *:not(p)": "css3-modsel-47.expected2.html"
-  },
-  "src": "css3-modsel-47.src.html"
-}

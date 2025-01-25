@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED :link pseudo-class (css3-modsel-61)",
-  "selectors": {
-    "div.stub > *": "css3-modsel-61.expected0.html",
-    "div.stub *:not(:link)": "css3-modsel-61.expected1.html"
-  },
-  "src": "css3-modsel-61.src.html"
-}

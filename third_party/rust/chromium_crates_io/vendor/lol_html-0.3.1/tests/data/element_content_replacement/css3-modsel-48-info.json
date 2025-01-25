@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED universal selector (css3-modsel-48)",
-  "selectors": {
-    "div.stub > *|*:not(*)": "css3-modsel-48.expected0.html"
-  },
-  "src": "css3-modsel-48.src.html"
-}

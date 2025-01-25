@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED starts-with attribute selector with empty value (css3-modsel-184e)",
-  "selectors": {
-    "p": "css3-modsel-184e.expected0.html",
-    "p:not([class^=\"\"])": "css3-modsel-184e.expected1.html"
-  },
-  "src": "css3-modsel-184e.src.html"
-}

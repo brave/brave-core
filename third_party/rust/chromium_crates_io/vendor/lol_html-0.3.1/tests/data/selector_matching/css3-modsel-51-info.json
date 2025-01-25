@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED attribute value selector (css3-modsel-51)",
-  "selectors": {
-    "div.stub > p": "css3-modsel-51.expected0.html",
-    "div.stub *|*:not([test=\"1\"])": "css3-modsel-51.expected1.html"
-  },
-  "src": "css3-modsel-51.src.html"
-}

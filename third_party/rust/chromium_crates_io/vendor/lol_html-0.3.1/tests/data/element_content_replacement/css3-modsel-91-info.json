@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - Type element selector with declared namespace (css3-modsel-91)",
-  "selectors": {
-    "testa": "css3-modsel-91.expected0.html"
-  },
-  "src": "css3-modsel-91.src.html"
-}

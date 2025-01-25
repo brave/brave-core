@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - Substring matching attribute selector on end with universal namespace (css3-modsel-109b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-109b.expected0.html",
-    "*|p, *|r, *|s": "css3-modsel-109b.expected1.html",
-    "*|*[*|title$=\"tait\"]": "css3-modsel-109b.expected2.html"
-  },
-  "src": "css3-modsel-109b.src.html"
-}

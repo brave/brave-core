@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - :after with ::after (css3-modsel-169a)",
-  "selectors": {
-    "span::after": "css3-modsel-169a.expected0.html",
-    "span:after": "css3-modsel-169a.expected1.html"
-  },
-  "src": "css3-modsel-169a.src.html"
-}

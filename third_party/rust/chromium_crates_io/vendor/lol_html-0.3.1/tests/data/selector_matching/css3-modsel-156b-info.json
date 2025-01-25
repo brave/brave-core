@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - Syntax and parsing (css3-modsel-156b)",
-  "selectors": {
-    "p": "css3-modsel-156b.expected0.html"
-  },
-  "src": "css3-modsel-156b.src.html"
-}

@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - ::after pseudo-element (css3-modsel-42)",
-  "selectors": {
-    "p::after": "css3-modsel-42.expected0.html"
-  },
-  "src": "css3-modsel-42.src.html"
-}

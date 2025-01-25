@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Attribute existence selector with declared namespace (css3-modsel-97b)",
-  "selectors": {
-    "*|p, *|q, *|r": "css3-modsel-97b.expected0.html",
-    "*|q": "css3-modsel-97b.expected1.html"
-  },
-  "src": "css3-modsel-97b.src.html"
-}

@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - Substring matching attribute selector on middle without declared namespace (css3-modsel-117)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-117.expected0.html",
-    "*|p, *|r": "css3-modsel-117.expected1.html",
-    "*|*[|title*=\"on ch\"]": "css3-modsel-117.expected2.html"
-  },
-  "src": "css3-modsel-117.src.html"
-}

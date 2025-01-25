@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - :visited pseudo-class (css3-modsel-17)",
-  "selectors": {
-    "p.test a": "css3-modsel-17.expected0.html",
-    "p.test *:visited": "css3-modsel-17.expected1.html"
-  },
-  "src": "css3-modsel-17.src.html"
-}

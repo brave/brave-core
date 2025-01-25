@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - Impossible rules (* html, * :root) (css3-modsel-27b)",
-  "selectors": {
-    "* html": "css3-modsel-27b.expected0.html",
-    "* :root": "css3-modsel-27b.expected1.html",
-    "p": "css3-modsel-27b.expected2.html"
-  },
-  "src": "css3-modsel-27b.src.html"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED :hover pseudo-class (css3-modsel-63)",
-  "selectors": {
-    "div.stub *": "css3-modsel-63.expected0.html",
-    "div.stub > * > *:not(:hover)": "css3-modsel-63.expected1.html"
-  },
-  "src": "css3-modsel-63.src.html"
-}

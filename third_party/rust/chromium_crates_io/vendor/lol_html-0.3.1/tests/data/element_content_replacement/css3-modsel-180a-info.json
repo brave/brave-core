@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - ::first-letter after &lt;br&gt; (css3-modsel-180a)",
-  "selectors": {
-    "p": "css3-modsel-180a.expected0.html",
-    "p:first-letter": "css3-modsel-180a.expected1.html",
-    "p::first-letter": "css3-modsel-180a.expected2.html"
-  },
-  "src": "css3-modsel-180a.src.html"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED :target pseudo-class (css3-modsel-66b)",
-  "selectors": {
-    "p": "css3-modsel-66b.expected0.html",
-    "p:not(:target)": "css3-modsel-66b.expected1.html"
-  },
-  "src": "css3-modsel-66b.src.html"
-}

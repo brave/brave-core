@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - :first-letter with ::first-letter (css3-modsel-166a)",
-  "selectors": {
-    "p::first-letter": "css3-modsel-166a.expected0.html",
-    "p:first-letter": "css3-modsel-166a.expected1.html"
-  },
-  "src": "css3-modsel-166a.src.html"
-}

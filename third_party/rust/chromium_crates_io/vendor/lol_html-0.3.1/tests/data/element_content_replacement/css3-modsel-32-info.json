@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - :first-child pseudo-class (css3-modsel-32)",
-  "selectors": {
-    ".red": "css3-modsel-32.expected0.html",
-    ".t1 td:first-child": "css3-modsel-32.expected1.html",
-    "p > *:first-child": "css3-modsel-32.expected2.html"
-  },
-  "src": "css3-modsel-32.src.html"
-}

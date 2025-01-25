@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - :after pseudo-element (css3-modsel-42a)",
-  "selectors": {
-    "p:after": "css3-modsel-42a.expected0.html"
-  },
-  "src": "css3-modsel-42a.src.html"
-}

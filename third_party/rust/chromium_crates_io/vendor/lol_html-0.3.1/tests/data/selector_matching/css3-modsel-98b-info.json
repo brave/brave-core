@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Attribute value selector with declared namespace (css3-modsel-98b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-98b.expected0.html",
-    "*|q": "css3-modsel-98b.expected1.html"
-  },
-  "src": "css3-modsel-98b.src.html"
-}

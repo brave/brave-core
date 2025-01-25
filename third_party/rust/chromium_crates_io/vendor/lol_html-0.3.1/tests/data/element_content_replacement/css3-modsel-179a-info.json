@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - ::first-line after &lt;br&gt; (css3-modsel-179a)",
-  "selectors": {
-    "p": "css3-modsel-179a.expected0.html",
-    "p:first-line": "css3-modsel-179a.expected1.html",
-    "p::first-line": "css3-modsel-179a.expected2.html"
-  },
-  "src": "css3-modsel-179a.src.html"
-}

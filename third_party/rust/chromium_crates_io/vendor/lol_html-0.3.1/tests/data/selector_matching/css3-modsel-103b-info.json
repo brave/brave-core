@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Substring matching attribute value selector on middle with declared namespace (css3-modsel-103b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-103b.expected0.html",
-    "*|p, *|r": "css3-modsel-103b.expected1.html"
-  },
-  "src": "css3-modsel-103b.src.html"
-}

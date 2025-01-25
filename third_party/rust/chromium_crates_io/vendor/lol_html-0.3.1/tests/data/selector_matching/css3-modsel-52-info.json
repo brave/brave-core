@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED attribute space-separated value selector (css3-modsel-52)",
-  "selectors": {
-    "div.stub p": "css3-modsel-52.expected0.html",
-    "div.stub *|*:not([test~=\"foo\"])": "css3-modsel-52.expected1.html",
-    "div.stub *|p:not([class~=\"foo\"])": "css3-modsel-52.expected2.html"
-  },
-  "src": "css3-modsel-52.src.html"
-}

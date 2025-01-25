@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Type element selector without declared namespace (css3-modsel-93)",
-  "selectors": {
-    "*|testA": "css3-modsel-93.expected0.html",
-    "|testA": "css3-modsel-93.expected1.html"
-  },
-  "src": "css3-modsel-93.src.html"
-}

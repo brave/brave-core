@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - :before with ::before (css3-modsel-168a)",
-  "selectors": {
-    "span::before": "css3-modsel-168a.expected0.html",
-    "span:before": "css3-modsel-168a.expected1.html"
-  },
-  "src": "css3-modsel-168a.src.html"
-}

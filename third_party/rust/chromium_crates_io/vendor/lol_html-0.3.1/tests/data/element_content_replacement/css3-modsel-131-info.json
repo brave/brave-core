@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED Attribute value selector with universal namespace (css3-modsel-131)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-131.expected0.html",
-    "*|q": "css3-modsel-131.expected1.html",
-    "div.stub *|*:not([*|title=\"si on chantait\"])": "css3-modsel-131.expected2.html"
-  },
-  "src": "css3-modsel-131.src.html"
-}

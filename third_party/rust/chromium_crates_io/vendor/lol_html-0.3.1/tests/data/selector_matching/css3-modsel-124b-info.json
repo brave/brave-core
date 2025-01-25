@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED Attribute value selector with declared namespace (css3-modsel-124b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-124b.expected0.html",
-    "*|p, *|r, *|s": "css3-modsel-124b.expected1.html"
-  },
-  "src": "css3-modsel-124b.src.html"
-}
