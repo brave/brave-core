@@ -17,24 +17,15 @@ enum ScriptSourceType {
   case farblingProtection
   /// This script wraps engine scripts and executes them for the correct frame
   case frameCheckWrapper
-  /// A script that polls selectors from a frame and sends it to iOS which then returns the hidden elements
-  ///
-  /// This script is a modification of the android and desktop script found here:
-  /// https://github.com/brave/brave-core/blob/master/components/cosmetic_filters/resources/data/content_cosmetic.ts
-  case selectorsPoller
   /// Global Privacy Control script
   case gpc
-  /// Used in conjunction with selectorsPoller to provide procedural filters support
-  case proceduralFilters
 
   var fileName: String {
     switch self {
     case .nacl: return "nacl.min"
     case .farblingProtection: return "FarblingProtectionScript"
     case .frameCheckWrapper: return "FrameCheckWrapper"
-    case .selectorsPoller: return "SelectorsPollerScript"
     case .gpc: return "gpc"
-    case .proceduralFilters: return "ProceduralFilters"
     }
   }
 
