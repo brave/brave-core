@@ -1,9 +1,42 @@
 diff --git a/front_end/core/protocol_client/protocol_client.ts b/front_end/core/protocol_client/protocol_client.ts
-index 6cc8a12337304550a27f467ca2ffc67fe7eeb057..645a4a033f03565bffd8c2732c7dcfcd141307d0 100644
+index 6cc8a12337304550a27f467ca2ffc67fe7eeb057..ab7400bc08372ce1818bd15adb1a4c0179857232 100644
 --- a/front_end/core/protocol_client/protocol_client.ts
 +++ b/front_end/core/protocol_client/protocol_client.ts
-@@ -18,3 +18,4 @@ self.Protocol = self.Protocol || {};
+@@ -8,7 +8,7 @@ import * as NodeURL from './NodeURL.js';
+ 
+ export {
+   InspectorBackend,
+-  NodeURL,
++  NodeURL
+ };
+ 
+ // Create the global here because registering commands will involve putting
+@@ -18,3 +18,28 @@ self.Protocol = self.Protocol || {};
  
  // FIXME: This instance of InspectorBackend should not be a side effect of importing this module.
  InspectorBackendCommands.registerCommands(InspectorBackend.inspectorBackend);
-+InspectorBackend.inspectorBackend.registerEvent('Network.requestAdblockInfoReceived' as InspectorBackend.QualifiedName, ['requestId', 'info']);
++InspectorBackend.inspectorBackend.registerEvent(
++  "Network.requestAdblockInfoReceived" as InspectorBackend.QualifiedName,
++  ["requestId", "info"]
++);
++
++InspectorBackend.inspectorBackend.registerEvent("Brave.braveEventReceived" as InspectorBackend.QualifiedName, ['event', 'params'])
++
++InspectorBackend.inspectorBackend.registerCommand(
++  "Brave.enable" as InspectorBackend.QualifiedName,
++  [],
++  [],
++  ""
++);
++InspectorBackend.inspectorBackend.registerCommand(
++  "Brave.disable" as InspectorBackend.QualifiedName,
++  [],
++  [],
++  ""
++);
++InspectorBackend.inspectorBackend.registerCommand(
++  "Brave.sendBraveMessage" as InspectorBackend.QualifiedName,
++  [{ name: "message", type: "object", optional: false, description: "" }],
++  [],
++  ""
++);

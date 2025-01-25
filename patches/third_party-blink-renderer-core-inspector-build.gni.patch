@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/inspector/build.gni b/third_party/blink/renderer/core/inspector/build.gni
+index 76c8bc93a02b91459ad1e49ae4bcd24be878c9f3..d730ce986e5b7c5f34ddbb62e0f177964a80f5ba 100644
+--- a/third_party/blink/renderer/core/inspector/build.gni
++++ b/third_party/blink/renderer/core/inspector/build.gni
+@@ -135,6 +135,7 @@ blink_core_sources_inspector = [
+   "worker_thread_debugger.cc",
+   "worker_thread_debugger.h",
+ ]
++import("//brave/third_party/blink/renderer/core/inspector/sources.gni") blink_core_sources_inspector += brave_blink_core_sources_inspector
+ 
+ blink_core_tests_inspector = [
+   "agent_registry_test.cc",
