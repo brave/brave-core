@@ -46,6 +46,21 @@ window.__firefox__.execute(function($) {
     })
   })
 
+  /**
+   Throttles the given function by the given delay
+   */
+  const throttle = $((func, delay) => {
+    let timerId = null;
+    return (...args) => {
+      if (timerId === null) {
+        func(...args);
+        timerId = setTimeout(() => {
+          timerId = null;
+        }, delay);
+      }
+    };
+  })
+
   // Start looking for things to unhide before at most this long after
   // the backend script is up and connected (eg backgroundReady = true),
   // or sooner if the thread is idle.
@@ -1073,17 +1088,7 @@ window.__firefox__.execute(function($) {
    * This is an optimaization so we don't constantly re-apply rules
    * for each small change that may happen simultaneously.
    */
-  const setRulesOnStylesheetThrottled = () => {
-    if (setRulesTimerId) {
-      // Each time this is called cancell the timer and allow a new one to start
-      window.clearTimeout(setRulesTimerId)
-    }
-
-    setRulesTimerId = window.setTimeout(() => {
-      setRulesOnStylesheet()
-      delete setRulesTimerId
-    }, 200)
-  }
+  const setRulesOnStylesheetThrottled = throttle(setRulesOnStylesheet, 200);
 
   /**
    * Start polling the page for content and start the queue pump (if needed)
