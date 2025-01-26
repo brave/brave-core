@@ -1683,7 +1683,6 @@ void ConversationHandler::BuildAssociatedContentInfo() {
     // Note: We don't create a new AssociatedContent object here unless one
     // doesn't exist. If we generate one with a new UUID the deserializer
     // breaks.
-    // TODO: Confirm with @petemill if I should try and fix this.
     if (!metadata_->associated_content) {
       metadata_->associated_content = mojom::AssociatedContent::New();
       metadata_->associated_content->uuid =
