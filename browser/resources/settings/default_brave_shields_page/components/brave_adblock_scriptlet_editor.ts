@@ -127,7 +127,6 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   }
 
   validateName_() {
-    this.scriptlet.name = this.scriptlet.name.toLowerCase()
     if (!/^[a-zA-Z0-9-_.]+$/.test(this.scriptlet.name)) {
       this.updateError(ErrorCode.kInvalidName)
     } else {
@@ -135,9 +134,12 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
     }
   }
 
+  startsWithCaseInsensitive(str: string, prefix: string): boolean {
+    return str.slice(0, prefix.length).toLowerCase() == prefix.toLowerCase()
+  }
+
   updateScriptletBeforeSave_() {
-    this.scriptlet.name = this.scriptlet.name.toLowerCase()
-    if (!this.scriptlet.name.startsWith('user-')) {
+    if (!this.startsWithCaseInsensitive(this.scriptlet.name, 'user-')) {
       this.scriptlet.name = 'user-' + this.scriptlet.name
     }
     if (!this.scriptlet.name.endsWith('.js')) {

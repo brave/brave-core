@@ -204,19 +204,19 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, AddEditRemoveScriptlet) {
 
   EXPECT_EQ("user-custom-script.js", GetCustomScriptletName(web_contents()));
   EXPECT_EQ(kContent, GetCustomScriptletContent(web_contents()));
-  SaveCustomScriptlet("custom-script-edited", kEditedContent);
+  SaveCustomScriptlet("Custom-Script-Edited", kEditedContent);
   {
     const auto& custom_resources = GetCustomResources();
     ASSERT_TRUE(custom_resources.is_list());
     ASSERT_EQ(1u, custom_resources.GetList().size());
     CheckCustomScriptlet(custom_resources.GetList().front(),
-                         "user-custom-script-edited.js", kEditedContent);
+                         "user-Custom-Script-Edited.js", kEditedContent);
   }
 
   ASSERT_TRUE(ClickCustomScriplet(web_contents(),
-                                  "user-custom-script-edited.js", "delete"));
+                                  "user-Custom-Script-Edited.js", "delete"));
   AwaitElement(web_contents(), "adblockScriptletList",
-               "user-custom-script-edited.js", true);
+               "user-Custom-Script-Edited.js", true);
   {
     const auto& custom_resources = GetCustomResources();
     ASSERT_TRUE(custom_resources.is_list());
@@ -249,7 +249,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
   constexpr const char kBraveFix[] = "window.test = 'default-script'";
   constexpr const char kBraveFixResource[] = R"json(
     [{
-      "name": "user-fix.js",
+      "name": "user-Fix.js",
       "kind": { "mime": "application/javascript" },
       "content": "$1"
     }]
@@ -263,9 +263,9 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
   constexpr const char kContent[] = "window.test = 'custom-script'";
 
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
-  SaveCustomScriptlet("user-fix", kContent);
+  SaveCustomScriptlet("user-Fix", kContent);
 
-  UpdateAdBlockInstanceWithRules("a.com##+js(user-fix)");
+  UpdateAdBlockInstanceWithRules("a.com##+js(user-Fix)");
 
   GURL tab_url =
       embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
