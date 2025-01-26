@@ -478,10 +478,6 @@ interface ConversationHandler {
   // the assistant.
   SubmitSuggestion(string suggestion);
 
-  // Submit one of the generated suggested questions for response from
-  // the assistant.
-  SubmitSuggestion(string suggestion);
-
   // Get associated page information. If there is none then |associated_content|
   // will be |null|. If the reason for that is it's still being fetched, then
   // |is_fetching| will be |true|.
