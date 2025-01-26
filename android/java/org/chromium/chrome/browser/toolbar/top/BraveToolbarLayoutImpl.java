@@ -1101,9 +1101,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void showRewardsPage() {
-        String rewardsUrl = BraveActivity.BRAVE_REWARDS_SETTINGS_URL;
+        String rewardsUrl = BraveActivity.BRAVE_REWARDS_SETTINGS_URL + "?bubble";
         if (mPublisherId != null && !mPublisherId.isEmpty()) {
-            rewardsUrl += "?creator=" + URLEncoder.encode(mPublisherId);
+            rewardsUrl += "&creator=" + URLEncoder.encode(mPublisherId);
         }
         RewardsPageActivity.showPage(getContext(), rewardsUrl);
     }
