@@ -3,12 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/android/brave_tab_features_android.h"
 #include "chrome/browser/android/tab_features_android.h"
 
-// Replace TabFeaturesAndroid with our subclass
-#define TabFeaturesAndroid BraveTabFeaturesAndroid
+#define TabFeaturesAndroid TabFeaturesAndroid_Chromium
 
-#include "src/chrome/browser/android/tab_android.cc"
+#include "src/chrome/browser/android/tab_features_android.cc"
 
 #undef TabFeaturesAndroid

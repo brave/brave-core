@@ -8,16 +8,12 @@
 
 #include "base/callback_list.h"
 
-#define CreateTabFeatures() \
-  CreateTabFeatures();      \
-  static std::unique_ptr<TabFeatures> CreateTabFeatures_ChromiumImpl()
-
-#define ReplaceTabFeaturesForTesting(__VA_ARGS__)         \
-  ReplaceTabFeaturesForTesting_ChromiumImpl(__VA_ARGS__); \
-  static void ReplaceTabFeaturesForTesting(__VA_ARGS__)
+#define TabFeatures TabFeatures_Chromium
 
 #include "src/chrome/browser/ui/tabs/public/tab_features.h"  // IWYU pragma: export
-#undef CreateTabFeatures
-#undef ReplaceTabFeaturesForTesting
+
+#undef TabFeatures
+
+#include "brave/browser/ui/tabs/public/tab_features.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_PUBLIC_TAB_FEATURES_H_

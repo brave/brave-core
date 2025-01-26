@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_ANDROID_BRAVE_TAB_FEATURES_ANDROID_H_
-#define BRAVE_BROWSER_ANDROID_BRAVE_TAB_FEATURES_ANDROID_H_
+#ifndef BRAVE_BROWSER_ANDROID_TAB_FEATURES_ANDROID_H_
+#define BRAVE_BROWSER_ANDROID_TAB_FEATURES_ANDROID_H_
 
 #include "chrome/browser/android/tab_features_android.h"
 
@@ -14,10 +14,10 @@ class WebContents;
 
 class Profile;
 
-class BraveTabFeaturesAndroid : public TabFeaturesAndroid {
+class TabFeaturesAndroid : public TabFeaturesAndroid_Chromium {
  public:
-  BraveTabFeaturesAndroid(content::WebContents* web_contents, Profile* profile);
-  ~BraveTabFeaturesAndroid() override;
+  TabFeaturesAndroid(content::WebContents* web_contents, Profile* profile);
+  ~TabFeaturesAndroid();
 };
 
-#endif  // BRAVE_BROWSER_ANDROID_BRAVE_TAB_FEATURES_ANDROID_H_
+#endif  // BRAVE_BROWSER_ANDROID_TAB_FEATURES_ANDROID_H_
