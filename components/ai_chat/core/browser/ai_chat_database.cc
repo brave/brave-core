@@ -1033,7 +1033,8 @@ bool AIChatDatabase::DeleteAssociatedWebContent(
   // Set any associated content url, title and content to NULL where
   // conversation had any entry between begin_time and end_time.
   static constexpr char kQuery[] =
-      "DELETE FROM associated_content"
+      "UPDATE associated_content"
+      " SET url=NULL, title=NULL, last_contents=NULL"
       " WHERE conversation_uuid IN ("
       "  SELECT conversation_uuid"
       "  FROM conversation_entry"
