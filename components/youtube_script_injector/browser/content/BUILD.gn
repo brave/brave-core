@@ -9,10 +9,10 @@ component("content") {
   defines = [ "IS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_IMPL" ]
 
   sources = [
-    "youtube_tab_helper.cc",
-    "youtube_tab_helper.h",
     "youtube_injector_host.cc",
     "youtube_injector_host.h",
+    "youtube_tab_helper.cc",
+    "youtube_tab_helper.h",
   ]
 
   deps = [

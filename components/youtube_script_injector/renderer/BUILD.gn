@@ -9,18 +9,18 @@ component("renderer") {
   defines = [ "IS_YOUTUBE_SCRIPT_INJECTOR_RENDERER_IMPL" ]
 
   sources = [
-    "youtube_render_frame_observer.cc",
-    "youtube_render_frame_observer.h",
     "youtube_injector_frame_js_handler.cc",
     "youtube_injector_frame_js_handler.h",
+    "youtube_render_frame_observer.cc",
+    "youtube_render_frame_observer.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/youtube_script_injector/browser/content",
+    "//brave/components/youtube_script_injector/browser/core",
     "//brave/components/youtube_script_injector/common",
     "//brave/components/youtube_script_injector/common:mojom",
-    "//brave/components/youtube_script_injector/browser/core",
-    "//brave/components/youtube_script_injector/browser/content",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",

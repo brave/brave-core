@@ -24,8 +24,8 @@ class YouTubeInjectorFrameJSHandler {
  public:
   YouTubeInjectorFrameJSHandler(content::RenderFrame* render_frame);
   YouTubeInjectorFrameJSHandler(const YouTubeInjectorFrameJSHandler&) = delete;
-  YouTubeInjectorFrameJSHandler& operator=(const YouTubeInjectorFrameJSHandler&) =
-      delete;
+  YouTubeInjectorFrameJSHandler& operator=(
+      const YouTubeInjectorFrameJSHandler&) = delete;
   ~YouTubeInjectorFrameJSHandler();
 
   void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
@@ -46,7 +46,8 @@ class YouTubeInjectorFrameJSHandler {
   void NativePipMode();
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
-  mojo::Remote<youtube_script_injector::mojom::YouTubeInjector> youtube_injector_;
+  mojo::Remote<youtube_script_injector::mojom::YouTubeInjector>
+      youtube_injector_;
 };
 
 }  // namespace youtube_script_injector

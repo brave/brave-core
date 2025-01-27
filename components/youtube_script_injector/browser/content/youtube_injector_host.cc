@@ -4,20 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/youtube_script_injector/browser/content/youtube_injector_host.h"
+
 #include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 
-
 namespace youtube_script_injector {
-  YouTubeInjectorHost::~YouTubeInjectorHost() = default;
+YouTubeInjectorHost::~YouTubeInjectorHost() = default;
 
-  YouTubeInjectorHost::YouTubeInjectorHost(
-      const GURL& url)
-      : url_(url) {}
+YouTubeInjectorHost::YouTubeInjectorHost(const GURL& url) : url_(url) {}
 
-  void YouTubeInjectorHost::NativePipMode() {
-    if (YouTubeRegistry::IsYouTubeDomain(url_)) {
+void YouTubeInjectorHost::NativePipMode() {
+  if (YouTubeRegistry::IsYouTubeDomain(url_)) {
     YouTubeTabHelper::EnterPipMode();
-    }
   }
 }
+}  // namespace youtube_script_injector
