@@ -509,6 +509,7 @@ interface UntrustedConversationHandler {
 
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
+  GetAllowedURLs() => (array<url.mojom.Url> urls);
 
   ModifyConversation(uint32 turn_index, string new_text);
 };

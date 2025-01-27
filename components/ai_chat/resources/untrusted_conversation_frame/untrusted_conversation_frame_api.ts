@@ -6,16 +6,19 @@
 import { loadTimeData } from '$web-common/loadTimeData'
 import API from '../common/api'
 import * as Mojom from '../common/mojom'
+import { Url } from 'gen/url/mojom/url.mojom.m.js'
 
 // Global state for this UI
 export type ConversationEntriesUIState = Mojom.ConversationEntriesState & {
   conversationHistory: Mojom.ConversationTurn[]
   isMobile: boolean
+  allowedURLs: Url[]
 }
 
 // Default state before initial API call
 export const defaultConversationEntriesUIState: ConversationEntriesUIState = {
   conversationHistory: [],
+  allowedURLs: [],
   isGenerating: false,
   isLeoModel: true,
   contentUsedPercentage: undefined,
@@ -46,17 +49,22 @@ export default class UntrustedConversationFrameAPI extends API<ConversationEntri
   async initialize() {
     const [
       { conversationEntriesState },
-      { conversationHistory }
+      { conversationHistory },
+      { urls }
      ] = await Promise.all([
       this.conversationHandler.bindUntrustedConversationUI(
         this.conversationObserver.$.bindNewPipeAndPassRemote()
       ),
-      this.conversationHandler.getConversationHistory()
+      this.conversationHandler.getConversationHistory(),
+      this.conversationHandler.getAllowedURLs()
     ])
     this.setPartialState({
       ...conversationEntriesState,
-      conversationHistory
+      conversationHistory,
+      allowedURLs: urls,
     })
+    console.log('-----allowedURLs:')
+    console.log(urls)
     this.conversationObserver.onConversationHistoryUpdate.addListener(
       async () => this.setPartialState(await this.conversationHandler.getConversationHistory())
     )
