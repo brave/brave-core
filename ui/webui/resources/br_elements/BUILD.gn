@@ -1,0 +1,18 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//tools/grit/preprocess_if_expr.gni")
+import("sources.gni")
+
+# Move brave files to the place where chromium cr-elements is
+# compiled from. It should be the same directory that build_webui.gni uses
+# after it performs its own preprocess_if_expr. Once chromium and brave frontend
+# files are all in the same place, build_webui.gni will continue its typescript
+# and rollup compile (etc.) from that directory.
+preprocess_if_expr("preprocess") {
+  out_folder = "$root_gen_dir/ui/webui/resources/cr_elements/preprocessed"
+  in_files =
+      brave_br_elements_non_web_component_files + brave_br_elements_css_files
+}

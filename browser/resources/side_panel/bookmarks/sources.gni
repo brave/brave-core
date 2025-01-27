@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_side_panel_bookmarks_non_web_component_files = [
+  "brave_overrides/cr_toolbar_search_field.ts",
   "brave_overrides/power_bookmarks_list.ts",
   "brave_overrides/power_bookmarks_edit_dialog.ts",
   "brave_overrides/index.ts",

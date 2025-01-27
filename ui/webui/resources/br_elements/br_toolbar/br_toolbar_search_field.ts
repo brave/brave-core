@@ -3,25 +3,27 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js';
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { CrSearchFieldMixinLit } from '../cr_search_field/cr_search_field_mixin_lit.js';
-import { getHtml } from './cr_toolbar_search_field.html.js'
-import { getCss } from './cr_toolbar_search_field.css.js';
+import type {CrIconButtonElement} from '../cr_icon_button/cr_icon_button.js';
+import { CrSearchFieldMixinLit } from '../cr_search_field/cr_search_field_mixin_lit.js'
 
-import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
+import { getHtml } from './br_toolbar_search_field.html.js'
+import { getCss } from './br_toolbar_search_field.css.js'
+
+import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 
 const BraveToolbarSearchFieldBase = CrSearchFieldMixinLit(CrLitElement)
 
-export interface CrToolbarSearchFieldElement {
+export interface BrToolbarSearchFieldElement {
   $: {
+    icon: CrIconButtonElement
     pageSearchToggle: HTMLInputElement
     searchInput: HTMLInputElement
-    icon: any
   }
 }
 
-export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
+export class BrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
   static get is() {
     return 'br-toolbar-search-field'
   }
@@ -159,9 +161,9 @@ export class CrToolbarSearchFieldElement extends BraveToolbarSearchFieldBase {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'cr-toolbar-search-field': CrToolbarSearchFieldElement;
+    'br-toolbar-search-field': BrToolbarSearchFieldElement;
   }
 }
 
 customElements.define(
-  CrToolbarSearchFieldElement.is, CrToolbarSearchFieldElement)
+  BrToolbarSearchFieldElement.is, BrToolbarSearchFieldElement)

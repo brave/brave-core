@@ -1,0 +1,16 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_br_elements_non_web_component_files = [
+  "br_toolbar/br_toolbar_search_field.ts",
+  "br_toolbar/br_toolbar_search_field.html.ts",
+]
+
+brave_br_elements_css_files = [ "br_toolbar/br_toolbar_search_field.css" ]
+
+brave_br_elements_ts_definitions = []
+
+brave_br_elements_preprocess_extra_deps =
+    [ "//brave/ui/webui/resources/br_elements:preprocess" ]
