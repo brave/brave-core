@@ -6,7 +6,6 @@
 #include "ios/chrome/browser/signin/model/about_signin_internals_factory.h"
 
 #include "base/no_destructor.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/signin/core/browser/about_signin_internals.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -14,17 +13,15 @@
 namespace ios {
 
 AboutSigninInternalsFactory::AboutSigninInternalsFactory()
-    : BrowserStateKeyedServiceFactory(
-          "AboutSigninInternals",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("AboutSigninInternals") {}
 
-AboutSigninInternalsFactory::~AboutSigninInternalsFactory() {}
+AboutSigninInternalsFactory::~AboutSigninInternalsFactory() = default;
 
 // static
 AboutSigninInternals* AboutSigninInternalsFactory::GetForProfile(
     ProfileIOS* profile) {
-  return static_cast<AboutSigninInternals*>(
-      GetInstance()->GetServiceForBrowserState(profile, true));
+  return GetInstance()->GetServiceForProfileAs<AboutSigninInternals>(
+      profile, /*create=*/true);
 }
 
 // static

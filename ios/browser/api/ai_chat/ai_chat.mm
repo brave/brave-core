@@ -58,8 +58,8 @@
     profile_ = profile;
     delegate_ = delegate;
 
-    model_service_ = ai_chat::ModelServiceFactory::GetForBrowserState(profile_);
-    service_ = ai_chat::AIChatServiceFactory::GetForBrowserState(profile_);
+    model_service_ = ai_chat::ModelServiceFactory::GetForProfile(profile_);
+    service_ = ai_chat::AIChatServiceFactory::GetForProfile(profile_);
 
     current_content_ = std::make_unique<ai_chat::AssociatedContentDriverIOS>(
         profile_->GetSharedURLLoaderFactory(), delegate);

@@ -155,7 +155,7 @@ FilAddress FilAddress::FromBytes(const std::string& chain_id,
   mojom::FilecoinAddressProtocol protocol =
       static_cast<mojom::FilecoinAddressProtocol>(bytes.front());
 
-  return FilAddress::FromPayload(bytes.subspan(1), protocol, chain_id);
+  return FilAddress::FromPayload(bytes.subspan(1u), protocol, chain_id);
 }
 
 // Creates FilAddress from SECP256K uncompressed public key

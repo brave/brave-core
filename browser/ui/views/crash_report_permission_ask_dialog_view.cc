@@ -238,7 +238,8 @@ void CrashReportPermissionAskDialogView::OnWidgetInitialized() {
 
 void CrashReportPermissionAskDialogView::OnAcceptButtonClicked() {
   // Enable crash reporting.
-  ChangeMetricsReportingState(true);
+  ChangeMetricsReportingState(
+      true, ChangeMetricsReportingStateCalledFrom::kSessionCrashedDialog);
 }
 
 void CrashReportPermissionAskDialogView::OnWindowClosing() {

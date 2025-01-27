@@ -8,18 +8,16 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_wallet {
 
 // static
-mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForBrowserState(
+mojo::PendingRemote<mojom::SwapService> SwapServiceFactory::GetForProfile(
     ProfileIOS* profile) {
-  return static_cast<SwapService*>(
-             GetInstance()->GetServiceForBrowserState(profile, true))
+  return GetInstance()
+      ->GetServiceForProfileAs<SwapService>(profile, true)
       ->MakeRemote();
 }
 
@@ -30,9 +28,10 @@ SwapServiceFactory* SwapServiceFactory::GetInstance() {
 }
 
 SwapServiceFactory::SwapServiceFactory()
-    : BrowserStateKeyedServiceFactory(
-          "SwapService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("SwapService",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kNoServiceForTests) {}
 
 SwapServiceFactory::~SwapServiceFactory() = default;
 
@@ -42,15 +41,6 @@ std::unique_ptr<KeyedService> SwapServiceFactory::BuildServiceInstanceFor(
   std::unique_ptr<SwapService> swap_service(
       new SwapService(profile->GetSharedURLLoaderFactory()));
   return swap_service;
-}
-
-bool SwapServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
-}
-
-web::BrowserState* SwapServiceFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return GetBrowserStateRedirectedInIncognito(context);
 }
 
 }  // namespace brave_wallet

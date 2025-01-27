@@ -14,10 +14,10 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
     {kFewerUpdateConfirmations, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
-#if !BUILDFLAG(IS_ANDROID)
-    {kHaTSWebUI, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
+#if !defined(ANDROID)
+    {kToolbarPinning, base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 }});
 
 }  // namespace features

@@ -1,19 +1,19 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index c5b452b53983e5e348f437087a1e7715ce25bce7..024b81c4dda7133421aafc4ab6ebeaba3c6ba86f 100644
+index 5b321684b69474e382d9cb246f9130d156344762..7138c8b2eb1d3aff9471ca1c65fd3ba3645315af 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -781,6 +781,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
- 
-   registry->RegisterIntegerPref(
+@@ -705,6 +705,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
        prefs::kProminenceNotificationAlertImpressionCount, 0);
+ 
+   registry->RegisterIntegerPref(prefs::kChromeDataRegionSetting, 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1134,6 +1135,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-       std::string());
+@@ -1058,6 +1059,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
-   registry->RegisterIntegerPref(prefs::kIOSLastKnownNTPWebStateIndex, -1);
+   // Deprecated 12/2024.
+   registry->RegisterBooleanPref(kPageContentCollectionEnabled, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

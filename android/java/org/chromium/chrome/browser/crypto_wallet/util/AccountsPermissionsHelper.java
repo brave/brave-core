@@ -31,6 +31,7 @@ public class AccountsPermissionsHelper {
         return mAccountsWithPermissions;
     }
 
+    @SuppressWarnings("NoStreams")
     private static boolean containsAccount(AccountId[] accounts, AccountId searchFor) {
         return Arrays.stream(accounts)
                 .anyMatch(
@@ -39,6 +40,7 @@ public class AccountsPermissionsHelper {
                         });
     }
 
+    @SuppressWarnings("NoStreams")
     public void checkAccounts(Runnable runWhenDone) {
         AccountId[] allAccountIds =
                 Arrays.stream(mAccounts).map(acc -> acc.accountId).toArray(AccountId[]::new);

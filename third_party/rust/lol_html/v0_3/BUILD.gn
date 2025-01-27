@@ -119,4 +119,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/selectors/v0_22:lib",
     "//brave/third_party/rust/thiserror/v1:lib",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

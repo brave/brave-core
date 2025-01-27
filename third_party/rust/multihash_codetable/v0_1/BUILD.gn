@@ -41,4 +41,7 @@ cargo_crate("lib") {
     "CARGO_MANIFEST_DIR=" + rebase_path(
             "//brave/third_party/rust/chromium_crates_io/vendor/multihash-codetable-0.1.4") + "",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

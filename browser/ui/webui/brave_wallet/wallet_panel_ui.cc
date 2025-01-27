@@ -37,7 +37,6 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/plural_string_handler.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
@@ -46,6 +45,7 @@
 #include "content/public/common/url_constants.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/webui/web_ui_util.h"
+#include "ui/webui/webui_util.h"
 
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : TopChromeWebUIController(web_ui,

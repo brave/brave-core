@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/regex_syntax/v0_8/BUILD.gn b/third_party/rust/regex_syntax/v0_8/BUILD.gn
-index da0ae7be10d5c1a599de8875badfe3e7d085167d..1a481395d2cf1e64277d4e014f64b5c9a2b8a946 100644
+index 1d664c9263051763192c7d073153a8698e8979d5..3dd87756753e61dfbfa4ff08698a3d8d5192b277 100644
 --- a/third_party/rust/regex_syntax/v0_8/BUILD.gn
 +++ b/third_party/rust/regex_syntax/v0_8/BUILD.gn
-@@ -79,5 +79,4 @@ cargo_crate("lib") {
+@@ -82,5 +82,4 @@ cargo_crate("lib") {
    # //third_party/rust/chromium_crates_io/Cargo.toml to use
    # it from first-party code.
    visibility = [ "//third_party/rust/*" ]

@@ -46,4 +46,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/tracing/v0_1:lib",
   ]
   features = [ "legacy-api" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

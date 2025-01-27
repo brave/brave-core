@@ -238,10 +238,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private boolean shouldForceDefaultBrowserPrompt() {
-        return !isDefaultBrowser();
-    }
-
     private void setDefaultBrowserAndProceedToNextStep() {
         BraveSetDefaultBrowserUtils.setDefaultBrowser(this);
         if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
@@ -288,7 +284,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             FirstRunUtils.setEulaAccepted();
 
             finish();
-            sendFirstRunCompletePendingIntent();
+            sendFirstRunCompleteIntent();
         }
     }
 

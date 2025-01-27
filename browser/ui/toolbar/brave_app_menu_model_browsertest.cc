@@ -209,7 +209,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 
   std::vector<int> more_tools_in_order = {
       IDC_ADD_NEW_PROFILE, IDC_OPEN_GUEST_PROFILE, IDC_SHOW_BRAVE_SYNC,
-      IDC_SHOW_APPS_PAGE,  IDC_DEV_TOOLS,          IDC_TASK_MANAGER,
+      IDC_SHOW_APPS_PAGE,  IDC_DEV_TOOLS,          IDC_TASK_MANAGER_APP_MENU,
   };
 
   if (!syncer::IsSyncAllowedByFlag()) {
@@ -312,7 +312,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 
   std::vector<int> more_tools_in_order_for_guest_profile = {
       IDC_DEV_TOOLS,
-      IDC_TASK_MANAGER,
+      IDC_TASK_MANAGER_APP_MENU,
   };
   CheckMoreToolsCommandsAreInOrderInMenuModel(
       guest_browser, more_tools_in_order_for_guest_profile);

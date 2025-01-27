@@ -255,32 +255,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // return -1;
     }
 
-    private boolean isAdsTrackerAlreadyAdded(BraveStatsTable braveStat) {
-        String sql =
-                "SELECT * FROM "
-                        + BraveStatsTable.TABLE_NAME
-                        + " WHERE "
-                        + BraveStatsTable.COLUMN_STAT_SITE
-                        + " = '"
-                        + braveStat.getStatSite()
-                        + "'"
-                        + " AND "
-                        + BraveStatsTable.COLUMN_URL
-                        + " = '"
-                        + braveStat.getUrl()
-                        + "'";
-
-        Log.e("NTP", sql);
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-
-        int count = cursor.getCount();
-        cursor.close();
-
-        return count > 0;
-    }
-
     @SuppressLint("Range")
     public List<BraveStatsTable> getAllStats() {
         List<BraveStatsTable> braveStats = new ArrayList<>();

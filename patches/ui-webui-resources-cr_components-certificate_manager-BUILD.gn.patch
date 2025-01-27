@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_components/certificate_manager/BUILD.gn b/ui/webui/resources/cr_components/certificate_manager/BUILD.gn
-index c7fbec010504b332d55068c1bd051f55d0115e06..9c0e5cbb73817f12fed96ffae95ea58d947f598f 100644
+index be64513d6b0de5c80be26782d1b89546790d4dc0..2b26073c96a8f7bb9bf77ad2249a3f5565cb4681 100644
 --- a/ui/webui/resources/cr_components/certificate_manager/BUILD.gn
 +++ b/ui/webui/resources/cr_components/certificate_manager/BUILD.gn
-@@ -110,4 +110,5 @@ build_webui("build") {
+@@ -102,4 +102,5 @@ build_webui("build") {
    webui_context_type = "relative"
    generate_grdp = true
    grd_resource_path_prefix = rebase_path(".", "//ui/webui/resources")

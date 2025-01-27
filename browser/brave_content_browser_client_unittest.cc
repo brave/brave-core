@@ -101,12 +101,12 @@ class BraveContentBrowserClientTest : public testing::Test {
 TEST_F(BraveContentBrowserClientTest, ResolvesSync) {
   GURL url("chrome://sync/");
   ASSERT_TRUE(
-    BraveContentBrowserClient::HandleURLOverrideRewrite(&url, nullptr));
+      BraveContentBrowserClient::HandleURLOverrideRewrite(&url, nullptr));
   ASSERT_STREQ(url.spec().c_str(), "chrome://settings/braveSync");
 
   GURL url2("chrome://sync/");
   ASSERT_TRUE(
-    BraveContentBrowserClient::HandleURLOverrideRewrite(&url2, nullptr));
+      BraveContentBrowserClient::HandleURLOverrideRewrite(&url2, nullptr));
 }
 
 TEST_F(BraveContentBrowserClientTest, ResolvesWelcomePage) {

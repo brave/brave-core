@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment;
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 
 public class AndroidUtils {
     public static int getToolBarHeight(Context context) {
@@ -127,10 +127,10 @@ public class AndroidUtils {
 
     public static SpannableString createClickableSpanString(
             Context context, @StringRes int id, Callback listener) {
-        NoUnderlineClickableSpan noUnderlineClickableSpan =
-                new NoUnderlineClickableSpan(context, R.color.brave_link, listener);
+        ChromeClickableSpan chromeClickableSpan =
+                new ChromeClickableSpan(context, R.color.brave_link, listener);
         SpannableString spannableString = new SpannableString(context.getString(id));
-        spannableString.setSpan(noUnderlineClickableSpan, 0, spannableString.length(), 0);
+        spannableString.setSpan(chromeClickableSpan, 0, spannableString.length(), 0);
         return spannableString;
     }
 }

@@ -50,4 +50,7 @@ cargo_crate("lib") {
     "serde-codec",
     "std",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

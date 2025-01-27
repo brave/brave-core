@@ -1,17 +1,8 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index db7c64eebdf34913139d556429f2717d08f39a56..223daf68c5abe8067bd14c522097f00ce40b5ed3 100644
+index 24d8368d0622ca85efb6ae56fa95064deef3acc1..4551815b7bacd36f091dc8086054f5c7e335463b 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -1193,7 +1193,7 @@
-     {
-       // crbug.com/359616070
-       name: "CSSRelativeColorLateResolveAlways",
--      status: "stable",
-+      status: "experimental",
-     },
-     {
-       // crbug.com/365818844
-@@ -1965,6 +1965,7 @@
+@@ -1959,6 +1959,7 @@
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
        status: "experimental",
@@ -19,7 +10,7 @@ index db7c64eebdf34913139d556429f2717d08f39a56..223daf68c5abe8067bd14c522097f00c
      },
      {
        // The FileSystemHandle.getCloudIdentifiers() method (see
-@@ -1980,6 +1981,7 @@
+@@ -1974,6 +1975,7 @@
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
        status: {"default": "stable"},
@@ -27,7 +18,7 @@ index db7c64eebdf34913139d556429f2717d08f39a56..223daf68c5abe8067bd14c522097f00c
      },
      {
        name: "FileSystemAccessLockingScheme",
-@@ -2788,6 +2790,7 @@
+@@ -2808,6 +2810,7 @@
      {
        name: "MiddleClickAutoscroll",
        status: "test",
@@ -35,7 +26,7 @@ index db7c64eebdf34913139d556429f2717d08f39a56..223daf68c5abe8067bd14c522097f00c
      },
      // Killswitch. Remove after 1 or 2 stable releases.
      {
-@@ -3876,6 +3879,7 @@
+@@ -3886,6 +3889,7 @@
      {
        name: "Serial",
        status: {"Android": "", "default": "stable"},
@@ -43,12 +34,3 @@ index db7c64eebdf34913139d556429f2717d08f39a56..223daf68c5abe8067bd14c522097f00c
      },
      {
        name: "SerializeViewTransitionStateInSPA",
-@@ -4157,7 +4161,7 @@
-     },
-     {
-       name: "SvgInlineRootPixelSnappingScaleAdjustment",
--      status: "stable",
-+      status: "test",
-     },
-     {
-       name: "SvgNoPixelSnappingScaleAdjustment",

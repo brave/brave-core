@@ -21,7 +21,6 @@ source_set("translate") {
     "//ios/web/js_messaging",
     "//ios/web/navigation:navigation_feature",
     "//ios/web/public/js_messaging:js_messaging",
-    "//ios/web/text_fragments:text_fragments",
     "//ui/base:base",
   ]
 

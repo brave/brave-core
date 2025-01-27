@@ -27,6 +27,9 @@ class ExtensionTelemetryServiceFactory : public ProfileKeyedServiceFactory {
   ExtensionTelemetryServiceFactory& operator=(
       const ExtensionTelemetryServiceFactory&) = delete;
 
+  std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
+      content::BrowserContext* context) const override;
+
  private:
   friend class base::NoDestructor<ExtensionTelemetryServiceFactory>;
 

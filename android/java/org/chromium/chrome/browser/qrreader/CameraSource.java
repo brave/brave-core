@@ -16,7 +16,6 @@
 package org.chromium.chrome.browser.qrreader;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -31,6 +30,7 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.annotation.StringDef;
 
@@ -632,9 +632,10 @@ public class CameraSource {
      * Sets camera auto-focus move callback.
      *
      * @param cb the callback to run
-     * @return {@code true} if the operation is supported (i.e. from Jelly Bean), {@code false} otherwise
+     * @return {@code true} if the operation is supported (i.e. from Jelly Bean), {@code false}
+     *     otherwise
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     public boolean setAutoFocusMoveCallback(@Nullable AutoFocusMoveCallback cb) {
         synchronized (mCameraLock) {
             if (mCamera != null) {
@@ -702,7 +703,7 @@ public class CameraSource {
     }
 
     /** Wraps the camera1 auto focus move callback so that the deprecated API isn't exposed. */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     private static class CameraAutoFocusMoveCallback implements Camera.AutoFocusMoveCallback {
         private AutoFocusMoveCallback mDelegate;
 

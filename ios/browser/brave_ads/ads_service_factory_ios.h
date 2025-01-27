@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "components/keyed_service/ios/browser_state_keyed_service_factory.h"
+#include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
 
 class ProfileIOS;
 class KeyedService;
@@ -26,7 +26,7 @@ namespace brave_ads {
 
 class AdsServiceImplIOS;
 
-class AdsServiceFactoryIOS : public BrowserStateKeyedServiceFactory {
+class AdsServiceFactoryIOS : public ProfileKeyedServiceFactoryIOS {
  public:
   AdsServiceFactoryIOS(const AdsServiceFactoryIOS&) = delete;
   AdsServiceFactoryIOS& operator=(const AdsServiceFactoryIOS&) = delete;
@@ -34,7 +34,7 @@ class AdsServiceFactoryIOS : public BrowserStateKeyedServiceFactory {
   AdsServiceFactoryIOS(AdsServiceFactoryIOS&&) = delete;
   AdsServiceFactoryIOS& operator=(AdsServiceFactoryIOS&&) = delete;
 
-  static AdsServiceImplIOS* GetForBrowserState(ProfileIOS* profile);
+  static AdsServiceImplIOS* GetForProfile(ProfileIOS* profile);
 
   static AdsServiceFactoryIOS* GetInstance();
 
@@ -44,7 +44,7 @@ class AdsServiceFactoryIOS : public BrowserStateKeyedServiceFactory {
   AdsServiceFactoryIOS();
   ~AdsServiceFactoryIOS() override;
 
-  // BrowserContextKeyedServiceFactory:
+  // ProfileKeyedServiceFactoryIOS:
   std::unique_ptr<KeyedService> BuildServiceInstanceFor(
       web::BrowserState* context) const override;
 };

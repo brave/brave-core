@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 1c7e5fc10fb9b0a8ebc6b3b65431e9a65ece20e9..c330f3a3589ead0ccd81f5efeb4f5ce8b219c605 100644
+index 67d245628fff5ac146deb5bc67a673fa95376c76..b4319dcba610ed4969f5d4e0a7304748d7424190 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
-@@ -150,7 +150,7 @@ pub fn readme_file_from_package<'a>(
+@@ -122,7 +122,7 @@ pub fn readme_file_from_package<'a>(
      if license_files.is_empty() {
          // Exceptions for https://crbug.com/369075726 can only apply to crates that are not
          // shipped.
@@ -11,24 +11,45 @@ index 1c7e5fc10fb9b0a8ebc6b3b65431e9a65ece20e9..c330f3a3589ead0ccd81f5efeb4f5ce8
              && crate_config
                  .as_ref()
                  .map_or(false, |cfg| cfg.no_license_file_tracked_in_crbug_369075726);
-@@ -209,7 +209,7 @@ pub fn readme_file_from_package<'a>(
+@@ -198,6 +198,9 @@ enum LicenseKind {
  
- // Allowed licenses, in the format they are specified in Cargo.toml files from
- // crates.io, and the format to write to README.chromium.
--static ALLOWED_LICENSES: [(&str, &str); 21] = [
-+static ALLOWED_LICENSES: [(&str, &str); 26] = [
-     // ("Cargo.toml string", "License for README.chromium")
-     ("Apache-2.0", "Apache 2.0"),
-     ("MIT OR Apache-2.0", "Apache 2.0"),
-@@ -235,6 +235,11 @@ static ALLOWED_LICENSES: [(&str, &str); 21] = [
-     ),
-     ("Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT", "Apache 2.0"),
-     ("BSD-2-Clause OR Apache-2.0 OR MIT", "Apache 2.0"),
-+    ("CC0-1.0 OR MIT-0 OR Apache-2.0", "Apache 2.0"),
-+    ("MIT OR Apache-2.0 OR BSD-1-Clause", "Apache 2.0"),
-+    ("BSD-2-Clause", "BSD 2-Clause"),
-+    ("MPL-2.0", "Mozilla Public License 2.0"),
-+    ("CC0-1.0 OR Apache-2.0", "Apache 2.0"),
- ];
+     /// https://spdx.org/licenses/Unicode-3.0.html
+     Unicode3,
++    UnicodeDfs2016,
++    BSD2,
++    Mozzila2,
+ }
  
- static EXPECTED_LICENSE_FILE: [(&str, &str); 21] = [
+ impl Display for LicenseKind {
+@@ -212,6 +215,9 @@ impl Display for LicenseKind {
+             LicenseKind::ISC => write!(f, "ISC"),
+             LicenseKind::Zlib => write!(f, "Zlib"),
+             LicenseKind::Unicode3 => write!(f, "Unicode-3.0"),
++            LicenseKind::UnicodeDfs2016 => write!(f, "Unicode-DFS-2016"),
++            LicenseKind::BSD2 => write!(f, "BSD-2-Clause"),
++            LicenseKind::Mozzila2 => write!(f, "Mozilla-Public-License-2.0"),
+         }
+     }
+ }
+@@ -255,6 +261,11 @@ static LICENSE_STRING_TO_LICENSE_KIND: LazyLock<HashMap<&'static str, Vec<Licens
+         h.insert("Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT", vec![LicenseKind::Apache2]);
+         h.insert("BSD-2-Clause OR Apache-2.0 OR MIT", vec![LicenseKind::Apache2]);
+         h.insert("Zlib", vec![LicenseKind::Zlib]);
++        h.insert("CC0-1.0 OR MIT-0 OR Apache-2.0", vec![LicenseKind::Apache2]);
++        h.insert("MIT OR Apache-2.0 OR BSD-1-Clause", vec![LicenseKind::Apache2]);
++        h.insert("BSD-2-Clause", vec![LicenseKind::BSD2]);
++        h.insert("MPL-2.0", vec![LicenseKind::Mozzila2]);
++        h.insert("CC0-1.0 OR Apache-2.0", vec![LicenseKind::Apache2]);
+         h
+     });
+ 
+@@ -283,6 +294,9 @@ static LICENSE_KIND_TO_LICENSE_FILES: LazyLock<HashMap<LicenseKind, Vec<&'static
+         h.insert(LicenseKind::ISC, vec!["LICENSE-ISC", "LICENSE.md", "LICENSE"]);
+         h.insert(LicenseKind::Zlib, vec!["LICENSE-ZLIB", "LICENSE.md", "LICENSE"]);
+         h.insert(LicenseKind::Unicode3, vec!["LICENSE-UNICODE", "LICENSE.md", "LICENSE"]);
++        h.insert(LicenseKind::UnicodeDfs2016, vec!["LICENSE-UNICODE", "LICENSE.md", "LICENSE"]);
++        h.insert(LicenseKind::BSD2, vec!["LICENSE.md", "LICENSE"]);
++        h.insert(LicenseKind::Mozzila2, vec!["LICENSE.md", "LICENSE"]);
+         h
+     });
+ 

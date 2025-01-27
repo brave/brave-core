@@ -37,11 +37,13 @@ public class BravePrivacySettingsTest {
     private static final String PREF_SAFE_BROWSING = "safe_browsing";
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
+    private static final String PREF_HTTPS_FIRST_MODE_LEGACY = "https_first_mode_legacy";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
     private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
+    private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
 
     private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 30;
 
@@ -68,6 +70,7 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_CAN_MAKE_PAYMENT);
         checkPreferenceExists(PREF_CLEAR_BROWSING_DATA);
         checkPreferenceExists(PREF_DO_NOT_TRACK);
+        checkPreferenceExists(PREF_HTTPS_FIRST_MODE_LEGACY);
         checkPreferenceExists(PREF_HTTPS_FIRST_MODE);
         checkPreferenceExists(PREF_HTTPS_UPGRADE);
         checkPreferenceExists(PREF_FORGET_FIRST_PARTY_STORAGE);
@@ -78,6 +81,7 @@ public class BravePrivacySettingsTest {
 
         checkPreferenceRemoved(PREF_NETWORK_PREDICTIONS);
         checkPreferenceRemoved(PREF_SYNC_AND_SERVICES_LINK);
+        checkPreferenceRemoved(PREF_PASSWORD_LEAK_DETECTION);
 
         assertEquals(BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS, mItemsLeft);
     }
