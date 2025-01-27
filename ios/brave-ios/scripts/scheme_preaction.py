@@ -45,7 +45,7 @@ def main():
     target_arch = 'arm64' if platform.processor(
     ) == 'arm' or options.platform_name == 'iphoneos' else 'x64'
     target_environment = 'simulator' if (options.platform_name
-                                         == 'iphonesimulator') else None
+                                         == 'iphonesimulator') else 'device'
 
     if options.only_update_symlink:
         # If we're choosing to only update the symlink we should validate
@@ -79,28 +79,19 @@ def UpdateSymlink(config, target_arch, target_environment):
     cmd_args = [
         'npm', 'run', 'update_symlink', '--', config, '--symlink_dir',
         os.path.join(src_dir, 'out/ios_current_link'), '--target_os', 'ios',
-        '--target_arch', target_arch
+        '--target_arch', target_arch, '--target_environment',
+        target_environment
     ]
-    if target_environment != None:
-        cmd_args += ['--target_environment', target_environment]
     CallNpm(cmd_args)
 
 
 def BuildCore(config, target_arch, target_environment):
     """Generates and builds the BraveCore.framework"""
     cmd_args = [
-        'npm',
-        'run',
-        'build',
-        '--',
-        config,
-        '--target_os',
-        'ios',
-        '--target_arch',
-        target_arch,
+        'npm', 'run', 'build', '--', config, '--target_os', 'ios',
+        '--target_arch', target_arch, '--target_environment',
+        target_environment
     ]
-    if target_environment != None:
-        cmd_args += ['--target_environment', target_environment]
     CallNpm(cmd_args)
 
 
