@@ -13,8 +13,8 @@
 #include "content/public/renderer/render_frame.h"
 #include "gin/arguments.h"
 #include "gin/function_template.h"
-#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/mojom/devtools/console_message.mojom.h"
+#include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/public/web/blink.h"
@@ -33,7 +33,7 @@ YouTubeInjectorFrameJSHandler::~YouTubeInjectorFrameJSHandler() = default;
 bool YouTubeInjectorFrameJSHandler::EnsureConnected() {
   if (!youtube_injector_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker().GetInterface(
-      youtube_injector_.BindNewPipeAndPassReceiver());
+        youtube_injector_.BindNewPipeAndPassReceiver());
   }
 
   return youtube_injector_.is_bound();
@@ -45,8 +45,9 @@ void YouTubeInjectorFrameJSHandler::AddJavaScriptObjectToFrame(
   v8::Isolate* isolate =
       render_frame_->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
   v8::HandleScope handle_scope(isolate);
-  if (context.IsEmpty())
+  if (context.IsEmpty()) {
     return;
+  }
 
   v8::Context::Scope context_scope(context);
 
@@ -77,8 +78,8 @@ void YouTubeInjectorFrameJSHandler::BindFunctionsToObject(
   }
   BindFunctionToObject(
       isolate, brave_obj, "nativePipMode",
-      base::BindRepeating(
-          &YouTubeInjectorFrameJSHandler::NativePipMode, base::Unretained(this)));
+      base::BindRepeating(&YouTubeInjectorFrameJSHandler::NativePipMode,
+                          base::Unretained(this)));
 }
 
 template <typename Sig>
