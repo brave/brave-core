@@ -220,13 +220,16 @@ void ZCashWalletService::GetChainTipStatus(mojom::AccountIdPtr account_id,
                                            const std::string& chain_id,
                                            GetChainTipStatusCallback callback) {
 #if BUILDFLAG(ENABLE_ORCHARD)
-  auto& task = get_zcash_chain_tip_status_tasks_.emplace_back(
-      std::make_unique<ZCashGetZCashChainTipStatusTask>(
-          base::PassKey<ZCashWalletService>(), *this,
-          CreateActionContext(account_id, chain_id),
-          base::BindOnce(&ZCashWalletService::OnGetChainTipStatusResult,
-                         weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
-  task->Start();
+  if (IsZCashShieldedTransactionsEnabled()) {
+    auto& task = get_zcash_chain_tip_status_tasks_.emplace_back(
+        std::make_unique<ZCashGetZCashChainTipStatusTask>(
+            base::PassKey<ZCashWalletService>(), *this,
+            CreateActionContext(account_id, chain_id),
+            base::BindOnce(&ZCashWalletService::OnGetChainTipStatusResult,
+                           weak_ptr_factory_.GetWeakPtr(),
+                           std::move(callback))));
+    task->Start();
+  }
 #else
   std::move(callback).Run(nullptr, "Not supported");
 #endif

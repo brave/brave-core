@@ -23,7 +23,9 @@ class ZCashGetZCashChainTipStatusTask {
       base::expected<mojom::ZCashChainTipStatusPtr, std::string>)>;
 
   ZCashGetZCashChainTipStatusTask(
-      base::PassKey<ZCashWalletService> pass_key,
+      absl::variant<base::PassKey<ZCashWalletService>,
+                    base::PassKey<class ZCashGetChainTipStatusTaskTest>>
+          pass_key,
       ZCashWalletService& zcash_wallet_service,
       ZCashActionContext context,
       ZCashGetZCashChainTipStatusTaskCallback callback);

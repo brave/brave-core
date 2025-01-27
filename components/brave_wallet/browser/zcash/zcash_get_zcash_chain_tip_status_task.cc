@@ -10,7 +10,8 @@
 namespace brave_wallet {
 
 ZCashGetZCashChainTipStatusTask::ZCashGetZCashChainTipStatusTask(
-    base::PassKey<ZCashWalletService> pass_key,
+    absl::variant<base::PassKey<ZCashWalletService>,
+                  base::PassKey<class ZCashGetChainTipStatusTaskTest>> pass_key,
     ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     ZCashGetZCashChainTipStatusTaskCallback callback)
@@ -84,13 +85,28 @@ void ZCashGetZCashChainTipStatusTask::OnGetChainTipHeightResult(
 void ZCashGetZCashChainTipStatusTask::OnGetAccountMeta(
     base::expected<std::optional<OrchardStorage::AccountMeta>,
                    OrchardStorage::Error> result) {
-  if (!result.has_value() || !result.value()) {
+  if (!result.has_value()) {
     error_ = "Failed to resolve account's meta";
     ScheduleWorkOnTask();
     return;
   }
 
-  account_meta_ = **result;
+  if (result.value()) {
+    account_meta_ = **result;
+    ScheduleWorkOnTask();
+    return;
+  }
+
+  OrchardStorage::AccountMeta account_meta;
+  auto birthday =
+      zcash_wallet_service_->GetAccountShieldBirthday(context_.account_id);
+  if (!birthday) {
+    error_ = "Account not shielded";
+    ScheduleWorkOnTask();
+    return;
+  }
+  account_meta.account_birthday = birthday->value;
+  account_meta_ = account_meta;
   ScheduleWorkOnTask();
 }
 
