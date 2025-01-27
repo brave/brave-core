@@ -1,0 +1,7 @@
+Name: wasm-bindgen
+URL: https://crates.io/crates/wasm-bindgen
+Description: Facilitating high-level interactions between Wasm modules and JavaScript.
+Version: 0.2.100
+Security Critical: no
+License: MIT OR Apache-2.0
+Revision: 2405ec2b4bcd1cc4e3bd1562c373e9d5f0cbdcb5

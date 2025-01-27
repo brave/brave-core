@@ -1,0 +1,8 @@
+[package]
+edition = "2021"
+name = "msrv-cli-test"
+publish = false
+version = "0.0.0"
+
+[dependencies]
+wasm-bindgen-cli = { path = "../../cli" }

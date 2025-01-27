@@ -1,0 +1,31 @@
+[package]
+authors = ["The wasm-bindgen Developers"]
+edition = "2021"
+name = "webrtc_datachannel"
+publish = false
+version = "0.0.0"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+js-sys = { path = "../../crates/js-sys" }
+wasm-bindgen = { path = "../../" }
+wasm-bindgen-futures = { path = "../../crates/futures" }
+
+[dependencies.web-sys]
+features = [
+  "MessageEvent",
+  "RtcPeerConnection",
+  "RtcSignalingState",
+  "RtcSdpType",
+  "RtcSessionDescriptionInit",
+  "RtcPeerConnectionIceEvent",
+  "RtcIceCandidate",
+  "RtcDataChannel",
+  "RtcDataChannelEvent",
+]
+path = "../../crates/web-sys"
+
+[lints]
+workspace = true
