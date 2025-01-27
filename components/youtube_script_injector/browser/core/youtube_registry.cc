@@ -98,7 +98,8 @@ void YouTubeRegistry::SetComponentPath(const base::FilePath& path) {
 }
 
 bool YouTubeRegistry::IsYouTubeDomain(const GURL& url) {
-  if (url.is_valid() && net::registry_controlled_domains::SameDomainOrHost(
+  if (url.is_valid() &&
+      net::registry_controlled_domains::SameDomainOrHost(
           url, GURL(kYouTubeUrl),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return true;

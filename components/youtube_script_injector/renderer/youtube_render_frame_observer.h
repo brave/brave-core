@@ -18,33 +18,32 @@
 
 namespace youtube_script_injector {
 
-  class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_RENDERER) YouTubeRenderFrameObserver
-  : public content::RenderFrameObserver {
-   public:
-    YouTubeRenderFrameObserver(content::RenderFrame* render_frame,
-                                   int32_t world_id);
+class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_RENDERER)
+    YouTubeRenderFrameObserver : public content::RenderFrameObserver {
+ public:
+  YouTubeRenderFrameObserver(content::RenderFrame* render_frame,
+                             int32_t world_id);
   ~YouTubeRenderFrameObserver() override;
-    YouTubeRenderFrameObserver(const YouTubeRenderFrameObserver&) =
-        delete;
-    YouTubeRenderFrameObserver& operator=(
-        const YouTubeRenderFrameObserver&) = delete;
+  YouTubeRenderFrameObserver(const YouTubeRenderFrameObserver&) = delete;
+  YouTubeRenderFrameObserver& operator=(const YouTubeRenderFrameObserver&) =
+      delete;
 
-    // RenderFrameObserver implementation.
-    void DidStartNavigation(
-        const GURL& url,
-        std::optional<blink::WebNavigationType> navigation_type) override;
-    void DidCreateScriptContext(v8::Local<v8::Context> context,
-                                int32_t world_id) override;
-    void DidFinishLoad() override;
+  // RenderFrameObserver implementation.
+  void DidStartNavigation(
+      const GURL& url,
+      std::optional<blink::WebNavigationType> navigation_type) override;
+  void DidCreateScriptContext(v8::Local<v8::Context> context,
+                              int32_t world_id) override;
+  void DidFinishLoad() override;
 
-   private:
-    // RenderFrameObserver implementation.
-    void OnDestruct() override;
+ private:
+  // RenderFrameObserver implementation.
+  void OnDestruct() override;
 
-    std::unique_ptr<YouTubeInjectorFrameJSHandler> native_javascript_handle_;
-    int32_t world_id_;
-    GURL url_;
-  };
+  std::unique_ptr<YouTubeInjectorFrameJSHandler> native_javascript_handle_;
+  int32_t world_id_;
+  GURL url_;
+};
 
-} // namespace youtube_script_injector
-#endif // BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_RENDERER_YOUTUBE_RENDER_FRAME_OBSERVER_H_
+}  // namespace youtube_script_injector
+#endif  // BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_RENDERER_YOUTUBE_RENDER_FRAME_OBSERVER_H_
