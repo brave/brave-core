@@ -12,6 +12,7 @@
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
@@ -182,6 +183,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
   ai_chat::AIChatServiceFactory::GetInstance();
   ai_chat::ModelServiceFactory::GetInstance();
+
+  brave_search::BackupResultsServiceFactory::GetInstance();
 }
 
 }  // namespace brave
