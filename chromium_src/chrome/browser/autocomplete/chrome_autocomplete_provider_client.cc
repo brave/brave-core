@@ -108,6 +108,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           base::UTF16ToUTF8(query) /* text */, std::nullopt /* prompt */,
           std::nullopt /* selected_text */, std::nullopt /* events */,
           base::Time::Now(), std::nullopt /* edits */,
+          std::nullopt /* uploaded images */,
           false /* from_brave_search_SERP */);
 
   conversation_handler->SubmitHumanConversationEntry(std::move(turn));

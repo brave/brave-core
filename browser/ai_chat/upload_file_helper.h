@@ -47,20 +47,20 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener,
   void FileSelectionCanceled() override;
 
   void OnImageRead(std::tuple<std::optional<std::vector<uint8_t>>,
-                              std::optional<std::string>,
+                              std::string,
                               std::optional<int64_t>> result);
-  void OnImageSanitized(std::optional<std::string> filename,
-                        std::optional<int64_t> filesize,
+  void OnImageSanitized(std::string filename,
+                        int64_t filesize,
                         const SkBitmap& decoded_bitmap);
-  void OnImageEncoded(std::optional<std::string> filename,
-                      std::optional<int64_t> filesize,
+  void OnImageEncoded(std::string filename,
+                      int64_t filesize,
                       std::optional<std::vector<uint8_t>> output);
 
   // ConversationHandler::UploadedContentDelegate
-  std::vector<std::vector<uint8_t>>& GetUploadedImages() override;
+  std::vector<mojom::UploadedImagePtr> GetUploadedImages() override;
   size_t GetUploadedImagesSize() override;
 
-  std::vector<std::vector<uint8_t>> uploaded_images_;
+  std::vector<mojom::UploadedImagePtr> uploaded_images_;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;

@@ -112,7 +112,7 @@ void AIChatUIPageHandler::UploadImage(const std::string& conversation_uuid,
       AIChatServiceFactory::GetForBrowserContext(profile_)->GetConversation(
           conversation_uuid);
   if (!conversation) {
-    std::move(callback).Run(std::nullopt, std::nullopt, std::nullopt);
+    std::move(callback).Run(nullptr);
     return;
   }
   conversation->SetUploadedContentDelegate(upload_file_helper_->GetWeakPtr());

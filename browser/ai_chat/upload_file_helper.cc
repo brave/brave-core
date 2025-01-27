@@ -57,8 +57,8 @@ void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
   profile_->set_last_selected_directory(file.path().DirName());
   auto read_image = base::BindOnce(
       [](const ui::SelectedFileInfo& info)
-          -> std::tuple<std::optional<std::vector<uint8_t>>,
-                        std::optional<std::string>, std::optional<int64_t>> {
+          -> std::tuple<std::optional<std::vector<uint8_t>>, std::string,
+                        std::optional<int64_t>> {
         return std::make_tuple(base::ReadFileToBytes(info.path()),
                                info.display_name,
                                base::GetFileSize(info.path()));
@@ -81,40 +81,39 @@ void UploadFileHelper::RemoveUploadedImage(uint32_t index) {
 
 void UploadFileHelper::FileSelectionCanceled() {
   if (upload_image_callback_) {
-    std::move(upload_image_callback_)
-        .Run(std::nullopt, std::nullopt, std::nullopt);
+    std::move(upload_image_callback_).Run(nullptr);
   }
 }
 
 void UploadFileHelper::OnImageRead(
     std::tuple<std::optional<std::vector<uint8_t>>,
-               std::optional<std::string>,
+               std::string,
                std::optional<int64_t>> result) {
   auto image_data = std::get<0>(result);
-  if (!image_data) {
-    std::move(upload_image_callback_)
-        .Run(std::get<0>(result), std::get<1>(result), std::get<2>(result));
+  auto filesize = std::get<2>(result);
+  if (!image_data || !filesize) {
+    std::move(upload_image_callback_).Run(nullptr);
   }
-  auto on_image_sanitized = base::BindOnce(
-      &UploadFileHelper::OnImageSanitized, weak_ptr_factory_.GetWeakPtr(),
-      std::get<1>(result), std::get<2>(result));
+  auto on_image_sanitized = base::BindOnce(&UploadFileHelper::OnImageSanitized,
+                                           weak_ptr_factory_.GetWeakPtr(),
+                                           std::get<1>(result), *filesize);
   data_decoder::DecodeImage(
       GetDataDecoder(), *image_data, data_decoder::mojom::ImageCodec::kDefault,
       true, data_decoder::kDefaultMaxSizeInBytes, gfx::Size(1024, 768),
       std::move(on_image_sanitized));
 }
 
-void UploadFileHelper::OnImageSanitized(std::optional<std::string> filename,
-                                        std::optional<int64_t> filesize,
+void UploadFileHelper::OnImageSanitized(std::string filename,
+                                        int64_t filesize,
                                         const SkBitmap& decoded_bitmap) {
   auto encode_image = base::BindOnce(
       [](const SkBitmap& decoded_bitmap) {
         return gfx::PNGCodec::EncodeBGRASkBitmap(decoded_bitmap, false);
       },
       decoded_bitmap);
-  auto on_image_encoded =
-      base::BindOnce(&UploadFileHelper::OnImageEncoded,
-                     weak_ptr_factory_.GetWeakPtr(), filename, filesize);
+  auto on_image_encoded = base::BindOnce(&UploadFileHelper::OnImageEncoded,
+                                         weak_ptr_factory_.GetWeakPtr(),
+                                         std::move(filename), filesize);
 
   base::ThreadPool::PostTaskAndReplyWithResult(FROM_HERE, {base::MayBlock()},
                                                std::move(encode_image),
@@ -122,18 +121,24 @@ void UploadFileHelper::OnImageSanitized(std::optional<std::string> filename,
 }
 
 void UploadFileHelper::OnImageEncoded(
-    std::optional<std::string> filename,
-    std::optional<int64_t> filesize,
+    std::string filename,
+    int64_t filesize,
     std::optional<std::vector<uint8_t>> output) {
+  mojom::UploadedImagePtr uploaded_image;
   if (output) {
-    uploaded_images_.push_back(*output);
+    uploaded_image =
+        mojom::UploadedImage::New(std::move(filename), filesize, *output);
+    uploaded_images_.emplace_back(uploaded_image.Clone());
   }
-  std::move(upload_image_callback_)
-      .Run(std::move(output), std::move(filename), std::move(filesize));
+  std::move(upload_image_callback_).Run(std::move(uploaded_image));
 }
 
-std::vector<std::vector<uint8_t>>& UploadFileHelper::GetUploadedImages() {
-  return uploaded_images_;
+std::vector<mojom::UploadedImagePtr> UploadFileHelper::GetUploadedImages() {
+  std::vector<mojom::UploadedImagePtr> result;
+  for (const auto& uploaded_image : uploaded_images_) {
+    result.emplace_back(uploaded_image.Clone());
+  }
+  return result;
 }
 
 size_t UploadFileHelper::GetUploadedImagesSize() {

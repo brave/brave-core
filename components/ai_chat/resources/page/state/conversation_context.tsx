@@ -516,13 +516,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       return
     }
     aiChatContext.uiHandler?.uploadImage(context.conversationUuid)
-    .then(({imageData, fileName, fileSize}) => {
-      if (imageData && fileName && fileSize) {
+    .then(({uploadedImage}) => {
+      if (uploadedImage) {
         setPartialContext({
           imgData: [{
-            data: imageData,
-            fileName,
-            fileSize: Number(fileSize)
+            data: uploadedImage.imageData,
+            fileName: uploadedImage.filename,
+            fileSize: Number(uploadedImage.filesize)
           }]
         })
       }
