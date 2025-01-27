@@ -13,20 +13,21 @@
 
 namespace youtube_script_injector {
 
-class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeInjectorHost final
+class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
+    YouTubeInjectorHost final
     : public youtube_script_injector::mojom::YouTubeInjector {
  public:
- YouTubeInjectorHost(const YouTubeInjectorHost&) = delete;
- YouTubeInjectorHost& operator=(const YouTubeInjectorHost&) = delete;
+  YouTubeInjectorHost(const YouTubeInjectorHost&) = delete;
+  YouTubeInjectorHost& operator=(const YouTubeInjectorHost&) = delete;
 
- YouTubeInjectorHost(const GURL& url);
+  YouTubeInjectorHost(const GURL& url);
   ~YouTubeInjectorHost() override;
 
- // youtube_script_injector::mojom::YouTubeInjector:
- void NativePipMode() override;
+  // youtube_script_injector::mojom::YouTubeInjector:
+  void NativePipMode() override;
 
  private:
- const GURL url_;
+  const GURL url_;
 };
 
 }  // namespace youtube_script_injector

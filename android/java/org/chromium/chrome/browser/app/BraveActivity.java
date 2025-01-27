@@ -63,7 +63,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.Task;
 import com.wireguard.android.backend.GoBackend;
 
-import org.chromium.chrome.browser.util.TabUtils;
 import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
@@ -207,6 +206,7 @@ import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.util.KeyboardVisibilityHelper;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.util.UsageMonitor;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -516,6 +516,7 @@ public abstract class BraveActivity extends ChromeActivity
         cleanUpWalletNativeServices();
         cleanUpMiscAndroidMetrics();
     }
+
     @Override
     public void performOnConfigurationChanged(Configuration newConfig) {
         super.performOnConfigurationChanged(newConfig);
@@ -2726,7 +2727,8 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void enterPipMode() {
         if (!deviceSupportedPictureInPictureMode(this)) {
-            Toast.makeText(this, R.string.picture_in_picture_not_supported, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.picture_in_picture_not_supported, Toast.LENGTH_LONG)
+                    .show();
             return;
         }
 

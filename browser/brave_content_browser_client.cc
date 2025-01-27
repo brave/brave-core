@@ -67,11 +67,6 @@
 #include "brave/components/brave_search/common/brave_search_default.mojom.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
-
-#include "brave/components/youtube_script_injector/browser/content/youtube_injector_host.h"
-#include "brave/components/youtube_script_injector/common/youtube_injector.mojom.h"
-#include "brave/components/youtube_script_injector/common/features.h"
-
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
@@ -107,6 +102,9 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
+#include "brave/components/youtube_script_injector/browser/content/youtube_injector_host.h"
+#include "brave/components/youtube_script_injector/common/features.h"
+#include "brave/components/youtube_script_injector/common/youtube_injector.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "build/build_config.h"
@@ -419,11 +417,12 @@ void BindBraveSearchDefaultHost(
 #if BUILDFLAG(IS_ANDROID)
 void BindYouTubeInjectorHost(
     content::RenderFrameHost* const frame_host,
-    mojo::PendingReceiver<youtube_script_injector::mojom::YouTubeInjector> receiver) {
-    const GURL url = frame_host->GetLastCommittedURL();
-    mojo::MakeSelfOwnedReceiver(
-        std::make_unique<youtube_script_injector::YouTubeInjectorHost>(url),
-        std::move(receiver));
+    mojo::PendingReceiver<youtube_script_injector::mojom::YouTubeInjector>
+        receiver) {
+  const GURL url = frame_host->GetLastCommittedURL();
+  mojo::MakeSelfOwnedReceiver(
+      std::make_unique<youtube_script_injector::YouTubeInjectorHost>(url),
+      std::move(receiver));
 }
 
 void BindIAPSubscription(
@@ -798,13 +797,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     map->Add<brave_search::mojom::BraveSearchDefault>(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
-  #if BUILDFLAG(IS_ANDROID)
-    if (base::FeatureList::IsEnabled(
+#if BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(
           youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
     map->Add<youtube_script_injector::mojom::YouTubeInjector>(
         base::BindRepeating(&BindYouTubeInjectorHost));
   }
-  #endif
+#endif
 
   map->Add<brave_wallet::mojom::BraveWalletP3A>(
       base::BindRepeating(&MaybeBindWalletP3A));

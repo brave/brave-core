@@ -18,9 +18,7 @@ component("common") {
 }
 
 mojom("mojom") {
-  sources = [
-    "youtube_injector.mojom",
-  ]
+  sources = [ "youtube_injector.mojom" ]
 
   deps = [ "//mojo/public/mojom/base" ]
 }
