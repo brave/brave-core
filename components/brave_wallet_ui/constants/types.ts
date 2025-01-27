@@ -556,9 +556,6 @@ export enum WalletRoutes {
   Restore = '/crypto/restore-wallet',
   Unlock = '/crypto/unlock',
 
-  // Activity (Transactions)
-  Activity = '/crypto/activity',
-
   // portfolio
   Portfolio = '/crypto/portfolio',
   PortfolioAssets = '/crypto/portfolio/assets',

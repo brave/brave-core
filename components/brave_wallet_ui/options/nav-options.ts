@@ -77,13 +77,6 @@ export const BuySendSwapDepositOptions: NavOption[] = [
   }
 ]
 
-const ActivityNavOption: NavOption = {
-  id: 'activity',
-  name: 'braveWalletActivity',
-  icon: 'activity',
-  route: WalletRoutes.Activity
-}
-
 const PortfolioActivityNavOption: NavOption = {
   id: 'activity',
   name: 'braveWalletActivity',
@@ -128,7 +121,6 @@ export const NavOptions: NavOption[] = [
     icon: 'coins',
     route: WalletRoutes.Portfolio
   },
-  ActivityNavOption,
   {
     id: 'accounts',
     name: 'braveWalletTopNavAccounts',
@@ -140,8 +132,7 @@ export const NavOptions: NavOption[] = [
 
 export const AllNavOptions: NavOption[] = [
   ...NavOptions,
-  ...BuySendSwapDepositOptions,
-  ActivityNavOption
+  ...BuySendSwapDepositOptions
 ]
 
 export const PortfolioNavOptions: NavOption[] = [
