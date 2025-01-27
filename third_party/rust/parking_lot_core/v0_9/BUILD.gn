@@ -12,30 +12,31 @@ cargo_crate("lib") {
   crate_name = "parking_lot_core"
   epoch = "0.9"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/parking_lot.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/spinwait.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/generic.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/linux.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/redox.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/sgx.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/unix.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/wasm.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/wasm_atomic.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/windows/keyed_event.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/windows/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/thread_parker/windows/waitaddress.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/util.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/src/word_lock.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/parking_lot.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/spinwait.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/generic.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/linux.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/redox.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/sgx.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/unix.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/wasm.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/wasm_atomic.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/windows/bindings.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/windows/keyed_event.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/windows/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/thread_parker/windows/waitaddress.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/util.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/src/word_lock.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2018"
-  cargo_pkg_version = "0.9.7"
+  edition = "2021"
+  cargo_pkg_version = "0.9.10"
   cargo_pkg_authors = "Amanieu d'Antras <amanieu@gmail.com>"
   cargo_pkg_name = "parking_lot_core"
   cargo_pkg_description =
@@ -54,8 +55,8 @@ cargo_crate("lib") {
     deps += [ "//brave/third_party/rust/libc/v0_2:lib" ]
   }
   if (is_win) {
-    deps += [ "//brave/third_party/rust/windows_sys/v0_45:lib" ]
+    deps += [ "//brave/third_party/rust/windows_targets/v0_52:lib" ]
   }
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.7/build.rs" ]
+  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/build.rs"
+  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/parking_lot_core-0.9.10/build.rs" ]
 }

@@ -1,0 +1,10 @@
+Name: icu_properties
+URL: https://crates.io/crates/icu_properties
+Version: 1.5.1
+Revision: e1193d0f5d343317857570e9c4e8a03c87875d8b
+License: Unicode 3.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Definitions for Unicode properties

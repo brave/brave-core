@@ -1,0 +1,55 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "icu_collections"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/char16trie/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/char16trie/trie.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointinvlist/builder.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointinvlist/conversions.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointinvlist/cpinvlist.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointinvlist/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointinvlist/utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointinvliststringlist/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointtrie/cptrie.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointtrie/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointtrie/impl_const.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointtrie/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointtrie/planes.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointtrie/serde.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/codepointtrie/toml.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/iterator_utils.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_collections-1.5.0/src/lib.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "1.5.0"
+  cargo_pkg_authors = "The ICU4X Project Developers"
+  cargo_pkg_name = "icu_collections"
+  cargo_pkg_description = "Collection of API for use in ICU libraries."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/displaydoc/v0_2:lib",
+    "//brave/third_party/rust/yoke/v0_7:lib",
+    "//brave/third_party/rust/zerofrom/v0_1:lib",
+    "//brave/third_party/rust/zerovec/v0_10:lib",
+  ]
+}

@@ -27,7 +27,7 @@ thiserror = "1.0.30"
 
 # lifeguard <= 0.6.0 panics at runtime on Rust 1.48+
 lifeguard = "^ 0.6.1"
-url = "2.2"
+url = "2.5"
 
 readability = { path = "src/readability" }
 lazy_static = "1.4"

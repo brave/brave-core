@@ -1,0 +1,10 @@
+Name: quick-xml
+URL: https://crates.io/crates/quick-xml
+Version: 0.31.0
+Revision: 120e074f18d83c686aa2e086200277e29433e311
+License: MIT
+License File: //brave/third_party/rust/chromium_crates_io/vendor/quick-xml-0.31.0/LICENSE-MIT.md
+Shipped: yes
+Security Critical: yes
+
+Description: High performance xml reader and writer

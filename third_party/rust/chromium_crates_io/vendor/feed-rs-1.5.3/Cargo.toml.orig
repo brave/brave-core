@@ -1,0 +1,33 @@
+[package]
+name = "feed-rs"
+version = "1.5.3"
+edition = '2021'
+authors = ["Hiroki Kumamoto <kumabook@live.jp>", "Mark Pritchard <mpritcha@gmail.com>"]
+include = [
+    "**/*.rs",
+    "Cargo.toml",
+    "LICENSE-MIT",
+    "README.md",
+    "fixture/*"
+]
+license = "MIT"
+homepage = "https://github.com/feed-rs/feed-rs"
+repository = "https://github.com/feed-rs/feed-rs.git"
+description = "A unified feed parser that handles Atom, RSS 2.0, RSS 1.0, RSS 0.x and JSON Feed"
+keywords = ["feed", "rss", "atom", "json", "jsonfeed"]
+categories = ["parser-implementations"]
+readme = "README.md"
+
+[badges]
+travis-ci = { repository = "feed-rs/feed-rs", branch = "master" }
+
+[dependencies]
+chrono = { version = "0.4.38", default-features = false }
+mime = "0.3.17"
+quick-xml = { version = "0.31.0", features = ["encoding"] }
+regex = "1.10.4"
+serde = { version = "1.0.198", features = ["derive"] }
+serde_json = "1.0.116"
+siphasher = "1.0.1"
+url = "2.5.0"
+uuid = { version = "1.8.0", features = ["v4"] }

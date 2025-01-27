@@ -1,0 +1,56 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "icu_properties"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/bidi.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/bidi_data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/exemplar_chars.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/maps.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/props.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/provider.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/provider/bidi_data.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/provider/names.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/runtime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/script.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/sets.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties-1.5.1/src/trievalue.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "1.5.1"
+  cargo_pkg_authors = "The ICU4X Project Developers"
+  cargo_pkg_name = "icu_properties"
+  cargo_pkg_description = "Definitions for Unicode properties"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/displaydoc/v0_2:lib",
+    "//brave/third_party/rust/icu_collections/v1:lib",
+    "//brave/third_party/rust/icu_locid_transform/v1:lib",
+    "//brave/third_party/rust/icu_properties_data/v1:lib",
+    "//brave/third_party/rust/icu_provider/v1:lib",
+    "//brave/third_party/rust/tinystr/v0_7:lib",
+    "//brave/third_party/rust/zerovec/v0_10:lib",
+  ]
+  features = [ "compiled_data" ]
+}

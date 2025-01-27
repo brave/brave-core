@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title><![CDATA[NBC New York]]></title>
+        <link>https://www.nbcnewyork.com</link>
+        <atom:link xmlns:atom="http://www.w3.org/2005/Atom" href="https://www.nbcnewyork.com" rel="self" type="application/rss+xml"/>
+        <description><![CDATA[]]></description>
+
+        <copyright>Copyright 2023</copyright>
+        <image>
+            <url>https://media.nbcnewyork.com/2019/09/NY_On_Light@3x-3.png?fit=552%2C120&#038;quality=85&#038;strip=all</url>
+            <title>NBC New York</title>
+            <link>https://www.nbcnewyork.com</link>
+        </image>
+        <language>en_US</language>
+        <pubDate>Sun, 17 Dec 2023 00:58:40 -0500</pubDate>
+        <lastBuildDate>Sun, 17 Dec 2023 00:58:40 -0500</lastBuildDate>
+        <generator>NBC Owned Television Stations</generator>
+
+        <item>
+            <title>NYC cops search for stabbing suspect after leaving 18-year-old to bleed out on sidewalk</title>
+            <link>https://www.nbcnewyork.com/news/local/nyc-cops-search-for-stabbing-suspect-after-leaving-18-year-old-to-bleed-out-on-sidewalk/4956764/</link>
+
+            <guid isPermaLink="false">4956764</guid>
+            <dc:creator><![CDATA[Gaby Acevedo and Jessica Cunnington]]></dc:creator>
+            <category>post</category>
+            <description><![CDATA[<p>A young man was left for dead on a Manhattan sidewalk late Friday, bleeding out from multiple stab wounds across his body, police said. </p>]]></description>
+            <pubDate>Sat, Dec 16 2023 02:02:33 PM</pubDate>
+        </item>
+    </channel>
+</rss>
