@@ -1330,7 +1330,9 @@ public abstract class BraveActivity extends ChromeActivity
                 BraveSearchEngineUtils.getTemplateUrlByShortName(
                         getCurrentProfile(),
                         BraveSearchEngineUtils.getDSEShortName(getCurrentProfile(), false));
-        if (BRAVE_SEARCH_ENGINE_KEYWORD.equals(defaultSearchEngineTemplateUrl.getKeyword())) {
+        if (defaultSearchEngineTemplateUrl != null
+                && BRAVE_SEARCH_ENGINE_KEYWORD.equals(
+                        defaultSearchEngineTemplateUrl.getKeyword())) {
             UserPrefs.get(getCurrentProfile()).setBoolean(Pref.SEARCH_SUGGEST_ENABLED, true);
         }
     }

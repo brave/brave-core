@@ -142,6 +142,7 @@ public class BraveVpnUtils {
     public static void dismissProgressDialog() {
         if (sProgressDialog != null && sProgressDialog.isShowing()) {
             sProgressDialog.dismiss();
+            sProgressDialog = null;
         }
     }
 
