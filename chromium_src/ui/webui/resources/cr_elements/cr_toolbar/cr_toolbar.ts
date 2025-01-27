@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js';
-import { loadTimeData } from '//resources/js/load_time_data.js';
+import '../br_toolbar/br_toolbar_search_field.js'
 
-import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js';
-import { getHtml } from './cr_toolbar.html.js';
-import { getCss } from './cr_toolbar.css.js';
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
+import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 
-import './cr_toolbar_search_field.js'
+import { getHtml } from './cr_toolbar.html.js'
+import { getCss } from './cr_toolbar.css.js'
 import type { CrToolbarSearchFieldElement } from './cr_toolbar_search_field.js'
 
 const customCurrentWebUINameMap: { [key: string]: string } = {
@@ -18,6 +18,8 @@ const customCurrentWebUINameMap: { [key: string]: string } = {
   sync: 'settings',
 }
 
+// search type should be BrToolbarSearchFieldElement but can't use here
+// because other places refer this search by using CrToolbarSearchFieldElement type.
 export interface CrToolbarElement {
   $: {
     search: CrToolbarSearchFieldElement
@@ -154,7 +156,7 @@ export class CrToolbarElement extends CrLitElement {
     }
   }
 
-  /** @return {!CrToolbarSearchFieldElement} */
+  /** @return {!BrToolbarSearchFieldElement} */
   getSearchField() {
     return this.$.search;
   }

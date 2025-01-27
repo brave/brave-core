@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index 4668ff3914f59678e07c696b79b38111552d2340..5ce83927bb8ef82e19754ec9891325232d6f2213 100644
+index 4668ff3914f59678e07c696b79b38111552d2340..f9c6e05ab21eeb8863bfa7f881cabe009d420096 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
-@@ -229,6 +229,7 @@ build_webui("build") {
-     "//third_party/lit/v3_0:build_ts",
+@@ -236,6 +236,7 @@ build_webui("build") {
+     "//tools/typescript/definitions/pending.d.ts",
+     "//tools/typescript/definitions/settings_private.d.ts",
    ]
-   if (!is_android && !is_ios) {
-+    ts_deps += ["//brave/ui/webui/resources:build_ts"]
-     ts_deps += [ "//third_party/polymer/v3_0:library" ]
-   }
-   ts_definitions = [
++  if (!is_android && !is_ios) { ts_deps += ["//brave/ui/webui/resources:build_ts"] import("//brave/ui/webui/resources/br_elements/sources.gni") non_web_component_files += brave_br_elements_non_web_component_files css_files += brave_br_elements_css_files exclude_ts_preprocess_files = brave_br_elements_non_web_component_files exclude_html_css_preprocess_files = brave_br_elements_css_files  preprocess_deps = brave_br_elements_preprocess_extra_deps ts_definitions += brave_br_elements_ts_definitions }
+   webui_context_type = "relative"
+   generate_grdp = true
+   grd_resource_path_prefix = rebase_path(".", "//ui/webui/resources")
