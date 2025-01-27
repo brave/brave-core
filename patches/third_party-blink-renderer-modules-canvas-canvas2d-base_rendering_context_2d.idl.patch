@@ -1,0 +1,30 @@
+diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
+index 66fe87ea7c661d91d5f66dc9d4f7bd83a967207e..3b861588d7792e6c175d7799edffb8cfc9869284 100644
+--- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
++++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
+@@ -69,10 +69,10 @@ interface mixin BaseRenderingContext2D {
+ 
+     [HighEntropy] void clip(optional CanvasFillRule winding);
+     [HighEntropy] void clip(Path2D path, optional CanvasFillRule winding);
+-    [HighEntropy, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    [HighEntropy, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
+-    [HighEntropy, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
+-    [HighEntropy, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
+ 
+     // text (see also the CanvasDrawingStyles interface)
+     [HighEntropy, MeasureAs=Canvas2DDrawText] void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
+@@ -99,8 +99,8 @@ interface mixin BaseRenderingContext2D {
+     [RaisesException] ImageData createImageData(ImageData imagedata);
+     [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
+     [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
+-    [HighEntropy, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
+-    [HighEntropy, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh);
++    [CallWith=ScriptState, HighEntropy, MeasureAs=Canvas2DGetImageData, RaisesException] ImageData getImageData([EnforceRange] long sx, [EnforceRange] long sy, [EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);
+     [RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy);
+     [RaisesException] void putImageData(ImageData imagedata, [EnforceRange] long dx, [EnforceRange] long dy, [EnforceRange] long dirtyX, [EnforceRange] long dirtyY, [EnforceRange] long dirtyWidth, [EnforceRange] long dirtyHeight);
+ 

@@ -43,12 +43,13 @@ bool SetEnableHighAccuracy(LocalFrame* frame, bool enable_high_accuracy) {
 // client layer. Instead of touching |WebContents|, |Geolocation|,
 // |GeolocationContext| interfaces, it would be more simple to pass via
 // separated mojo interface.
-#define SetHighAccuracy(is_high_accuracy) \
-  SetHighAccuracy(SetEnableHighAccuracy(GetFrame(), is_high_accuracy));
+#define SetHighAccuracyHint(is_high_accuracy) \
+  SetHighAccuracyHint(SetEnableHighAccuracy(GetFrame(), is_high_accuracy));
 #else
-#define SetHighAccuracy(is_high_accuracy) SetHighAccuracy(is_high_accuracy)
+#define SetHighAccuracyHint(is_high_accuracy) \
+  SetHighAccuracyHint(is_high_accuracy)
 #endif
 
 #include "src/third_party/blink/renderer/modules/geolocation/geolocation.cc"
 
-#undef SetHighAccuracy
+#undef SetHighAccuracyHint

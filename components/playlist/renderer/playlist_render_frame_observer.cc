@@ -29,8 +29,12 @@ PlaylistRenderFrameObserver::PlaylistRenderFrameObserver(
     int32_t isolated_world_id)
     : RenderFrameObserver(frame),
       RenderFrameObserverTracker<PlaylistRenderFrameObserver>(frame),
-      is_playlist_enabled_callback_(std::move(is_playlist_enabled_callback)),
-      isolated_world_id_(isolated_world_id) {
+      is_playlist_enabled_callback_(std::move(is_playlist_enabled_callback))
+#if !BUILDFLAG(IS_ANDROID)
+      ,
+      isolated_world_id_(isolated_world_id)
+#endif  // !BUILDFLAG(IS_ANDROID)
+{
   render_frame()
       ->GetAssociatedInterfaceRegistry()
       ->AddInterface<mojom::PlaylistRenderFrameObserverConfigurator>(

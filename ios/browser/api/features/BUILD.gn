@@ -29,7 +29,6 @@ source_set("features") {
     "//brave/ios/browser/playlist",
     "//brave/ios/browser/ui/browser_menu:features",
     "//build:blink_buildflags",
-    "//ios/components/security_interstitials/https_only_mode:feature",
     "//net",
   ]
 

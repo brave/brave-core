@@ -65,6 +65,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
     public final LiveData<NetworkLists> mNetworkLists;
 
+    @SuppressWarnings("NoStreams")
     public NetworkModel(
             BraveWalletService braveWalletService,
             @NonNull JsonRpcService jsonRpcService,
@@ -228,6 +229,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         init();
     }
 
+    @SuppressWarnings("NoStreams")
     static void getAllNetworks(
             JsonRpcService jsonRpcService, Callbacks.Callback1<List<NetworkInfo>> callback) {
         if (jsonRpcService == null) {

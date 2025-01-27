@@ -1,5 +1,5 @@
 diff --git a/content/browser/gpu/gpu_internals_ui.cc b/content/browser/gpu/gpu_internals_ui.cc
-index e3b783bebd535eb685b0f232ac7668a81e147f8e..f739515c438ed83e68d4a27621d7b1c1163ccfd2 100644
+index a598b669c611c144599fd06022f06b548bcbd4b7..11d626138844a712a5b83ed1c626814f2b773cb5 100644
 --- a/content/browser/gpu/gpu_internals_ui.cc
 +++ b/content/browser/gpu/gpu_internals_ui.cc
 @@ -815,6 +815,7 @@ base::Value::Dict GpuMessageHandler::GetClientInfo() {

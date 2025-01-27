@@ -8,7 +8,6 @@
 #include "base/no_destructor.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/browser_state.h"
@@ -16,10 +15,9 @@
 namespace brave_ads {
 
 // static
-AdsServiceImplIOS* AdsServiceFactoryIOS::GetForBrowserState(
-    ProfileIOS* profile) {
-  return static_cast<AdsServiceImplIOS*>(
-      GetInstance()->GetServiceForBrowserState(profile, true));
+AdsServiceImplIOS* AdsServiceFactoryIOS::GetForProfile(ProfileIOS* profile) {
+  return GetInstance()->GetServiceForProfileAs<AdsServiceImplIOS>(profile,
+                                                                  true);
 }
 
 // static
@@ -29,9 +27,7 @@ AdsServiceFactoryIOS* AdsServiceFactoryIOS::GetInstance() {
 }
 
 AdsServiceFactoryIOS::AdsServiceFactoryIOS()
-    : BrowserStateKeyedServiceFactory(
-          "AdsService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("AdsService") {}
 
 AdsServiceFactoryIOS::~AdsServiceFactoryIOS() = default;
 

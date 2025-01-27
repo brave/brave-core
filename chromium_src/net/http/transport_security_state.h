@@ -37,6 +37,7 @@ class NET_EXPORT TransportSecurityState
   SSLUpgradeDecision GetSSLUpgradeDecision(
       const NetworkAnonymizationKey& network_anonymization_key,
       const std::string& host,
+      bool is_top_level_nav,
       const NetLogWithSource& net_log = NetLogWithSource());
   bool ShouldSSLErrorsBeFatal(
       const NetworkAnonymizationKey& network_anonymization_key,

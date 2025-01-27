@@ -88,7 +88,7 @@ SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
   ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
   skus_service_getter_ = base::BindRepeating(
       [](ProfileIOS* profile) {
-        return skus::SkusServiceFactory::GetForBrowserState(profile);
+        return skus::SkusServiceFactory::GetForProfile(profile);
       },
       profile);
 

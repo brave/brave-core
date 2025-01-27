@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.custom_layout.popup_window_tooltip;
 
 import android.content.Context;
 import android.graphics.RectF;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,26 +58,8 @@ public final class PopupWindowTooltipUtils {
         }
     }
 
-    private static ViewGroup.MarginLayoutParams getOrCreateMarginLayoutParams(View view) {
-        ViewGroup.LayoutParams lp = view.getLayoutParams();
-        if (lp != null) {
-            if (lp instanceof ViewGroup.MarginLayoutParams) {
-                return (ViewGroup.MarginLayoutParams) lp;
-            } else {
-                return new ViewGroup.MarginLayoutParams(lp);
-            }
-        } else {
-            return new ViewGroup.MarginLayoutParams(view.getWidth(), view.getHeight());
-        }
-    }
-
     public static int getColor(Context context, @ColorRes int colorRes) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return context.getColor(colorRes);
-        } else {
-            // noinspection deprecation
-            return context.getColor(colorRes);
-        }
+        return context.getColor(colorRes);
     }
 
     public static ViewGroup findFrameLayout(View anchorView) {

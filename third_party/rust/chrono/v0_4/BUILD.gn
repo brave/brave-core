@@ -86,4 +86,7 @@ cargo_crate("lib") {
     "std",
     "winapi",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

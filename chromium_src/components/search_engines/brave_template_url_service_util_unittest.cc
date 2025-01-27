@@ -94,7 +94,6 @@ WDKeywordsResult InitKeywordResult(
   WDKeywordsResult kwResult;
   kwResult.metadata.builtin_keyword_data_version =
       TemplateURLPrepopulateData::GetDataVersion(prefs);
-  kwResult.default_search_provider_id = 2;
   kwResult.keywords = local_turls;
   return kwResult;
 }
@@ -117,9 +116,9 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
 
   prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
   GetSearchProvidersUsingKeywordResult(
-      result, nullptr, &prefs_, &search_engine_choice_service_, &template_urls,
-      default_turl.get(), SearchTermsData(), updated_keywords_metadata,
-      nullptr);
+      result.GetValue(), nullptr, &prefs_, &search_engine_choice_service_,
+      &template_urls, default_turl.get(), SearchTermsData(),
+      updated_keywords_metadata, nullptr);
 
   // Verify count and order.
   TestDefaultOrder(template_urls,
@@ -146,9 +145,9 @@ TEST_F(BraveTemplateURLServiceUtilTest,
   // Check Germany.
   prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
   GetSearchProvidersUsingKeywordResult(
-      result, nullptr, &prefs_, &search_engine_choice_service_, &template_urls,
-      default_turl.get(), SearchTermsData(), updated_keywords_metadata,
-      nullptr);
+      result.GetValue(), nullptr, &prefs_, &search_engine_choice_service_,
+      &template_urls, default_turl.get(), SearchTermsData(),
+      updated_keywords_metadata, nullptr);
 
   // Verify count and order.
   TestDefaultOrder(template_urls,

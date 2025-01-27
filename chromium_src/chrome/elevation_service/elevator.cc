@@ -53,8 +53,7 @@ HRESULT Elevator::InstallVPNServices() {
                                            validation_data->cend());
 
     // Note: Validation should always be done using caller impersonation token.
-    std::string log_message;
-    HRESULT validation_result = ValidateData(process, data, &log_message);
+    HRESULT validation_result = ValidateData(process, data);
     if (FAILED(validation_result)) {
       return validation_result;
     }

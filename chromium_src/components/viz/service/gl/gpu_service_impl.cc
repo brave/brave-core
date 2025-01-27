@@ -30,14 +30,25 @@ void GpuServiceImpl::InitializeWithHost(
     gpu::SharedImageManager* shared_image_manager,
     gpu::Scheduler* scheduler,
 #endif
-    base::WaitableEvent* shutdown_event) {
+    base::WaitableEvent* shutdown_event
+#if BUILDFLAG(IS_ANDROID)
+    ,
+    const gpu::SharedContextState::GrContextOptionsProvider*
+        gr_context_options_provider
+#endif
+) {
   InitializeWithHost_ChromiumImpl(
       std::move(pending_gpu_host), std::move(use_shader_cache_shm_count),
       std::move(default_offscreen_surface), std::move(creation_params),
 #if BUILDFLAG(IS_ANDROID)
       sync_point_manager, shared_image_manager, scheduler,
 #endif
-      shutdown_event);
+      shutdown_event
+#if BUILDFLAG(IS_ANDROID)
+      ,
+      gr_context_options_provider
+#endif
+  );
 #if BUILDFLAG(IS_WIN)
   if (gpu_host_) {
     std::string result;

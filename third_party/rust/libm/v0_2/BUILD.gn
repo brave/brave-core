@@ -158,4 +158,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/chromium_crates_io/vendor/libm-0.2.8/build.rs",
   ]
   rustenv = [ "OPT_LEVEL=0" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

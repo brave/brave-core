@@ -14,7 +14,6 @@ source_set("de_amp") {
     "//brave/components/de_amp/common",
     "//components/prefs",
     "//ios/chrome/browser/shared/model/application_context",
-    "//ios/chrome/browser/shared/model/browser_state",
   ]
   frameworks = [ "Foundation.framework" ]
 }

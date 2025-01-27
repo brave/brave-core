@@ -3,6 +3,7 @@ include_rules = [
   "+cc/task/core",
   "+cc/task/text",
   "+components/os_crypt/async",
+  "+components/os_crypt/sync",
   "+services/data_decoder/public",
   "+services/network/public",
   "+services/network/test",
