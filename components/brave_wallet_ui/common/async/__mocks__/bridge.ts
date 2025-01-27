@@ -1289,7 +1289,18 @@ export class MockedWalletApiProxy {
         error: 0,
         errorMessage: ''
       }
-    }
+    },
+    getCode: async (
+      address,
+      coin,
+      chain
+    ) => {
+      return {
+        bytecode: '',
+        error: 0,
+        errorMessage: ''
+      }
+    },
   }
 
   solanaTxManagerProxy: Partial<
