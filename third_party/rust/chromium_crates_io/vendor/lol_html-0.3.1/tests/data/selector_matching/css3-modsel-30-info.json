@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - :nth-of-type() pseudo-class (css3-modsel-30)",
-  "selectors": {
-    ".red": "css3-modsel-30.expected0.html",
-    "p:nth-of-type(3)": "css3-modsel-30.expected1.html",
-    "dl > :nth-of-type(3n+1)": "css3-modsel-30.expected2.html"
-  },
-  "src": "css3-modsel-30.src.html"
-}

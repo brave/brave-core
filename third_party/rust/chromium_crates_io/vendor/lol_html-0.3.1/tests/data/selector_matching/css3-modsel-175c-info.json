@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Parsing: Numbers in classes (css3-modsel-175c)",
-  "selectors": {
-    "p": "css3-modsel-175c.expected0.html",
-    ".\\31 \\33": "css3-modsel-175c.expected1.html"
-  },
-  "src": "css3-modsel-175c.src.html"
-}

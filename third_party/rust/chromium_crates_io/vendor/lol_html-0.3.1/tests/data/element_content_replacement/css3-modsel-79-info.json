@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED :first-of-type pseudo-class (css3-modsel-79)",
-  "selectors": {
-    ".red": "css3-modsel-79.expected0.html",
-    "address": "css3-modsel-79.expected1.html",
-    "address:not(:first-of-type)": "css3-modsel-79.expected2.html"
-  },
-  "src": "css3-modsel-79.src.html"
-}

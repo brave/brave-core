@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - :first-line with ::first-line (css3-modsel-167a)",
-  "selectors": {
-    "p::first-line": "css3-modsel-167a.expected0.html",
-    "p:first-line": "css3-modsel-167a.expected1.html"
-  },
-  "src": "css3-modsel-167a.src.html"
-}

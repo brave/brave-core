@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Ends-with attribute selector with empty value (css3-modsel-184a)",
-  "selectors": {
-    "p": "css3-modsel-184a.expected0.html",
-    "p[class$=\"\"]": "css3-modsel-184a.expected1.html"
-  },
-  "src": "css3-modsel-184a.src.html"
-}

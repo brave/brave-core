@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - :only-of-type pseudo-class (css3-modsel-37)",
-  "selectors": {
-    ".red": "css3-modsel-37.expected0.html",
-    ".t1 :only-of-type": "css3-modsel-37.expected1.html"
-  },
-  "src": "css3-modsel-37.src.html"
-}

@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Substring matching attribute selector on end without declared namespace (css3-modsel-116b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-116b.expected0.html",
-    "*|p, *|r": "css3-modsel-116b.expected1.html",
-    "*|*[|title$=\"tait\"]": "css3-modsel-116b.expected2.html"
-  },
-  "src": "css3-modsel-116b.src.html"
-}

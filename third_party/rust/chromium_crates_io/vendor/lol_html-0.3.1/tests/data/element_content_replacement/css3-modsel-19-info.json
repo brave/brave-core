@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - :active pseudo-class (css3-modsel-19)",
-  "selectors": {
-    "a:active": "css3-modsel-19.expected0.html"
-  },
-  "src": "css3-modsel-19.src.html"
-}

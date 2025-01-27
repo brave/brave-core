@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Attribute space-separated value selector with universal namespace (css3-modsel-106b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-106b.expected0.html",
-    "*|p, *|r, *|s": "css3-modsel-106b.expected1.html",
-    "*|*[*|class~=\"deux\"], *|*[*|foo~=\"deux\"]": "css3-modsel-106b.expected2.html"
-  },
-  "src": "css3-modsel-106b.src.html"
-}

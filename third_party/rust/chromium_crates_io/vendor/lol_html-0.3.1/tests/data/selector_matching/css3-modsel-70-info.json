@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED :checked pseudo-class (css3-modsel-70)",
-  "selectors": {
-    "input, span": "css3-modsel-70.expected0.html",
-    "input:not(:checked), input:not(:checked) + span": "css3-modsel-70.expected1.html"
-  },
-  "src": "css3-modsel-70.src.html"
-}

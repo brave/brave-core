@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED Attribute selectors with multiple attributes (css3-modsel-174b)",
-  "selectors": {
-    "tests, tests *": "css3-modsel-174b.expected0.html",
-    "testA:not([*|attribute=\"pass\"])": "css3-modsel-174b.expected1.html",
-    "testB:not([*|attribute=\"pass\"])": "css3-modsel-174b.expected2.html"
-  },
-  "src": "css3-modsel-174b.src.html"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Type element selector with universal namespace (css3-modsel-92)",
-  "selectors": {
-    "div.myTest *": "css3-modsel-92.expected0.html",
-    "div.myTest *|testA": "css3-modsel-92.expected1.html"
-  },
-  "src": "css3-modsel-92.src.html"
-}

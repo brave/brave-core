@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED :focus pseudo-class (css3-modsel-65)",
-  "selectors": {
-    "a:not(:focus)": "css3-modsel-65.expected0.html",
-    "a": "css3-modsel-65.expected1.html"
-  },
-  "src": "css3-modsel-65.src.html"
-}

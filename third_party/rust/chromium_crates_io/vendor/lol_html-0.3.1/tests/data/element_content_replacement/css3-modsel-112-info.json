@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Attribute value selector without declared namespace (css3-modsel-112)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-112.expected0.html",
-    "*|p, *|r": "css3-modsel-112.expected1.html",
-    "*|*[|title=\"si on chantait\"]": "css3-modsel-112.expected2.html"
-  },
-  "src": "css3-modsel-112.src.html"
-}

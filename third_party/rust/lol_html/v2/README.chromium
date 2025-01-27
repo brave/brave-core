@@ -1,0 +1,10 @@
+Name: lol_html
+URL: https://crates.io/crates/lol_html
+Version: 2.1.0
+Revision: cac9f2f59aea8ad803286b0aae0d667926f441c7
+License: BSD 3-Clause
+License File: //brave/third_party/rust/chromium_crates_io/vendor/lol_html-2.1.0/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: Streaming HTML rewriter/parser with CSS selector-based API

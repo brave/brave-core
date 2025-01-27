@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - Parsing : vs :: (css3-modsel-177b)",
-  "selectors": {
-    "div": "css3-modsel-177b.expected0.html"
-  },
-  "src": "css3-modsel-177b.src.html"
-}

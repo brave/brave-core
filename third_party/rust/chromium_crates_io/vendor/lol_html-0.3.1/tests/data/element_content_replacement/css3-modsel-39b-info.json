@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - ::first-letter pseudo-element (css3-modsel-39b)",
-  "selectors": {
-    "p::first-letter": "css3-modsel-39b.expected0.html"
-  },
-  "src": "css3-modsel-39b.src.html"
-}

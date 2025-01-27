@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED substring matching attribute selector on beginning (css3-modsel-54)",
-  "selectors": {
-    "div.stub > *": "css3-modsel-54.expected0.html",
-    "div.stub *:not([title^=\"si on\"])": "css3-modsel-54.expected1.html"
-  },
-  "src": "css3-modsel-54.src.html"
-}

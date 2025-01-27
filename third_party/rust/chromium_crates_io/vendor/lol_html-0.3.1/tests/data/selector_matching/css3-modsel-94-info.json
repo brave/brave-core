@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - Universal selector with declared namespace (css3-modsel-94)",
-  "selectors": {
-    "p, q": "css3-modsel-94.expected0.html"
-  },
-  "src": "css3-modsel-94.src.html"
-}

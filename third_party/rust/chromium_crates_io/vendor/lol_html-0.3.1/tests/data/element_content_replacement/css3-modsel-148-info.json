@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - :empty pseudo-class and text (css3-modsel-148)",
-  "selectors": {
-    "p": "css3-modsel-148.expected0.html",
-    "p:empty": "css3-modsel-148.expected1.html"
-  },
-  "src": "css3-modsel-148.src.html"
-}

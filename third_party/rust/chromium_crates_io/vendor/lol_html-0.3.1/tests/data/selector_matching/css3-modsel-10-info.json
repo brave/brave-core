@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Substring matching attribute selector (end) (css3-modsel-10)",
-  "selectors": {
-    "p": "css3-modsel-10.expected0.html",
-    "p[title$=\"bar\"]": "css3-modsel-10.expected1.html"
-  },
-  "src": "css3-modsel-10.src.html"
-}

@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - Type element selectors (css3-modsel-2)",
-  "selectors": {
-    "address": "css3-modsel-2.expected0.html"
-  },
-  "src": "css3-modsel-2.src.html"
-}

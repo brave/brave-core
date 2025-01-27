@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED Attribute existence selector with declared namespace (css3-modsel-57)",
-  "selectors": {
-    "*|p, *|q, *|r": "css3-modsel-57.expected0.html",
-    "*|p, *|r": "css3-modsel-57.expected1.html"
-  },
-  "src": "css3-modsel-57.src.html"
-}

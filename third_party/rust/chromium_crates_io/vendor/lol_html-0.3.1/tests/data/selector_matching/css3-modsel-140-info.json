@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED Attribute dash-separated value selector without declared namespace (css3-modsel-140)",
-  "selectors": {
-    "*|p, *|address, *|q, *|r": "css3-modsel-140.expected0.html",
-    "*|address, *|r": "css3-modsel-140.expected1.html",
-    "div.stub *|*:not([|lang|=\"foo-bar\"])": "css3-modsel-140.expected2.html"
-  },
-  "src": "css3-modsel-140.src.html"
-}

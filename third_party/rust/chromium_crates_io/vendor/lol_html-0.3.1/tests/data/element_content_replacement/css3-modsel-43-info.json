@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Descendant combinator (css3-modsel-43)",
-  "selectors": {
-    ".white": "css3-modsel-43.expected0.html",
-    ".red": "css3-modsel-43.expected1.html",
-    "div.t1 p": "css3-modsel-43.expected2.html"
-  },
-  "src": "css3-modsel-43.src.html"
-}

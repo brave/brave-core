@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - Syntax and parsing (css3-modsel-157)",
-  "selectors": {
-    "p": "css3-modsel-157.expected0.html"
-  },
-  "src": "css3-modsel-157.src.html"
-}

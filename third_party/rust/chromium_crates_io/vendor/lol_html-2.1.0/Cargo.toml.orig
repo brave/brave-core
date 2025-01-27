@@ -1,0 +1,74 @@
+[package]
+name = "lol_html"
+version = "2.1.0"
+authors = ["Ivan Nikulin <inikulin@cloudflare.com, ifaaan@gmail.com>"]
+license = "BSD-3-Clause"
+description = "Streaming HTML rewriter/parser with CSS selector-based API"
+repository = "https://github.com/cloudflare/lol-html"
+documentation = "https://docs.rs/lol-html"
+categories = ["parser-implementations", "web-programming"]
+keywords = ["html", "css-selectors", "parser", "rewriter", "streaming"]
+readme = "README.md"
+include = ["/Cargo.toml", "/LICENSE", "/README.md", "/media", "/src"]
+autotests = false
+edition = "2021"
+
+[lib]
+# Disable libtest to make sure criterion can parse the command line flags.
+# See https://bheisler.github.io/criterion.rs/book/faq.html and https://github.com/rust-lang/rust/issues/47241.
+bench = false
+
+[features]
+debug_trace = []
+# Unstable: for internal use only
+integration_test = []
+
+[[test]]
+harness = false
+name = "integration_tests"
+
+[[bench]]
+harness = false
+name = "bench"
+
+[dependencies]
+bitflags = "2.0.0"
+cfg-if = "1.0.0"
+cssparser = "0.27.2"
+encoding_rs = "0.8.13"
+lazycell = "1.3.0"
+lazy_static = "1.3.0"
+memchr = "2.1.2"
+selectors = "0.22.0"
+thiserror = "1.0.2"
+hashbrown = "0.15.0"
+mime = "0.3.16"
+
+[dev-dependencies]
+criterion = "0.5.1"
+# Needed for criterion <= v0.5.1. See https://github.com/bheisler/criterion.rs/pull/703.
+clap = { version = "4.5.21", features = ["help"] }
+glob = "0.3.0"
+html5ever = "0.26.0"
+markup5ever_rcdom = "0.2.0"
+hashbrown = { version = "0.15.0", features = ["serde"] }
+serde = "1.0.126"
+serde_derive = "1.0.19"
+serde_json = "1.0.65"
+static_assertions = "1.1.0"
+rand = "0.8.5"
+rustc-test = "0.3.1"
+itertools = "0.10.1"
+
+[lints.rust]
+keyword_idents = { level = "deny", priority = 1 }
+for_loops_over_fallibles = "deny"
+unit_bindings = "deny"
+absolute_paths_not_starting_with_crate = "warn"
+elided_lifetimes_in_paths = "warn"
+macro_use_extern_crate = "warn"
+meta_variable_misuse = "warn"
+redundant_lifetimes = "warn"
+trivial_numeric_casts = "warn"
+unnameable_types = "warn"
+unused_qualifications = "warn"
