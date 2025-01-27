@@ -1,0 +1,10 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+cargo_audit_target_dir = "$root_build_dir/cargo_audit"
+cargo_audit_exe = "$cargo_audit_target_dir/release/cargo-audit"
+if (host_os == "win") {
+  cargo_audit_exe += ".exe"
+}
