@@ -28,6 +28,7 @@ export function GenerateSuggestionsButton() {
     <SuggestionButton
       onClick={conversationContext.generateSuggestedQuestions}
       isLoading={conversationContext.suggestionStatus === Mojom.SuggestionGenerationStatus.IsGenerating}
+      className={styles.questionButton}
     >
       <span className={styles.generateButtonText}>
         {getLocale('suggestQuestionsLabel')}
