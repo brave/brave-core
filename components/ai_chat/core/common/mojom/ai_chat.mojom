@@ -184,6 +184,12 @@ struct ConversationTitleEvent {
   string title;
 };
 
+struct UploadedImage {
+  string filename;
+  int64 filesize;
+  array<uint8> image_data;
+};
+
 // Events that occur during a conversation turn (only assistant for now)
 union ConversationEntryEvent {
   CompletionEvent completion_event;
@@ -235,6 +241,10 @@ struct ConversationTurn {
   // instead of the original turn text when submitting the turn to the AI
   // engine or displaying the most recent text to users.
   array<ConversationTurn>? edits;
+
+  // Due to server limitation, we only support one image in one turn for the
+  // entire conversation. Each turns will share the same image.
+  array<UploadedImage>? uploaded_images;
 
   // Whether the turn was generated from Brave Search SERP.
   bool from_brave_search_SERP = false;
@@ -383,8 +393,7 @@ interface AIChatUIHandler {
   ManagePremium();
   HandleVoiceRecognition(string conversation_uuid);
   ShowSoftKeyboard();
-  UploadImage(string conversation_uuid) => (
-      array<uint8>? image_data, string? file_name, int64? file_size);
+  UploadImage(string conversation_uuid) => (UploadedImage? uploaded_image);
   RemoveUploadedImage(uint32 index);
 
   // This might be a no-op if the UI isn't closeable

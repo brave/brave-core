@@ -666,7 +666,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
       std::nullopt, CharacterType::HUMAN, mojom::ActionType::QUERY, input,
       std::nullopt /* prompt */, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      false);
+      std::nullopt /* uploaded_images */, false);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -674,6 +674,11 @@ void ConversationHandler::SubmitHumanConversationEntry(
     mojom::ConversationTurnPtr turn) {
   VLOG(1) << __func__;
   DVLOG(4) << __func__ << ": " << turn->text;
+
+  if (uploaded_content_delegate_ &&
+      uploaded_content_delegate_->GetUploadedImagesSize()) {
+    turn->uploaded_images = uploaded_content_delegate_->GetUploadedImages();
+  }
 
   // If there's edits, use the last one as the latest turn.
   bool has_edits = turn->edits && !turn->edits->empty();
@@ -787,7 +792,8 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         turn->character_type, turn->action_type, trimmed_input,
         std::nullopt /* prompt */, std::nullopt /* selected_text */,
-        std::move(events), base::Time::Now(), std::nullopt /* edits */, false);
+        std::move(events), base::Time::Now(), std::nullopt /* edits */,
+        std::nullopt, false);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
         ->completion = trimmed_input;
@@ -821,7 +827,7 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
       base::Uuid::GenerateRandomV4().AsLowercaseString(), turn->character_type,
       turn->action_type, sanitized_input, std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */, false);
+      base::Time::Now(), std::nullopt /* edits */, std::nullopt, false);
   if (!turn->edits) {
     turn->edits.emplace();
   }
@@ -855,7 +861,8 @@ void ConversationHandler::SubmitSummarizationRequest() {
       l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE),
       l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE),
       std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */, false);
+      base::Time::Now(), std::nullopt /* edits */,
+      std::nullopt /* uploaded_images */, false);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -881,7 +888,7 @@ void ConversationHandler::SubmitSuggestion(
       std::nullopt, CharacterType::HUMAN, suggestion.action_type,
       suggestion.title, suggestion.prompt, std::nullopt /* selected_text */,
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
-      false);
+      std::nullopt, false);
   SubmitHumanConversationEntry(std::move(turn));
 
   // Remove the suggestion from the list, assume the list has been modified
@@ -1069,7 +1076,7 @@ void ConversationHandler::SubmitSelectedTextWithQuestion(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, std::nullopt, false);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -1108,7 +1115,7 @@ void ConversationHandler::AddSubmitSelectedTextError(
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
       std::nullopt, CharacterType::HUMAN, action_type, question,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
-      std::nullopt, false);
+      std::nullopt, std::nullopt, false);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -1189,8 +1196,10 @@ void ConversationHandler::PerformAssistantGeneration(
   }
 
   std::vector<std::vector<uint8_t>> uploaded_images = {};
-  if (uploaded_content_delegate_) {
-    uploaded_images = uploaded_content_delegate_->GetUploadedImages();
+  if (last_entry->uploaded_images) {
+    for (const auto& uploaded_image : last_entry->uploaded_images.value()) {
+      uploaded_images.emplace_back(uploaded_image->image_data);
+    }
   }
   engine_->GenerateAssistantResponse(is_video, page_content, uploaded_images,
                                      chat_history_, selected_language_,
@@ -1215,7 +1224,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
         std::nullopt /* prompt */, std::nullopt,
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
-        std::nullopt, false);
+        std::nullopt, std::nullopt, false);
     chat_history_.push_back(std::move(entry));
   }
 
@@ -1391,7 +1400,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::HUMAN, mojom::ActionType::QUERY, entry.query,
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
-        base::Time::Now(), std::nullopt, true));
+        base::Time::Now(), std::nullopt, std::nullopt, true));
     OnConversationEntryAdded(chat_history_.back());
 
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1401,7 +1410,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
         CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, entry.summary,
         std::nullopt /* prompt */, std::nullopt, std::move(events),
-        base::Time::Now(), std::nullopt, true));
+        base::Time::Now(), std::nullopt, std::nullopt, true));
     OnConversationEntryAdded(chat_history_.back());
   }
 }
@@ -1481,8 +1490,11 @@ void ConversationHandler::OnGetRefinedPageContent(
     }
   }
   std::vector<std::vector<uint8_t>> uploaded_images = {};
-  if (uploaded_content_delegate_) {
-    uploaded_images = uploaded_content_delegate_->GetUploadedImages();
+  mojom::ConversationTurnPtr& last_entry = chat_history_.back();
+  if (last_entry->uploaded_images) {
+    for (const auto& uploaded_image : last_entry->uploaded_images.value()) {
+      uploaded_images.emplace_back(uploaded_image->image_data);
+    }
   }
   engine_->GenerateAssistantResponse(
       is_video, page_content_to_use, uploaded_images, chat_history_,

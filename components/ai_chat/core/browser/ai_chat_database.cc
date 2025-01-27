@@ -323,7 +323,7 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
 
     auto entry = mojom::ConversationTurn::New(
         entry_uuid, character_type, action_type, text, prompt, selected_text,
-        std::nullopt, date, std::nullopt, false);
+        std::nullopt, date, std::nullopt, std::nullopt, false);
 
     // events
     struct Event {
@@ -410,6 +410,29 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
       for (auto& event : events) {
         entry->events->emplace_back(std::move(event.event));
       }
+    }
+
+    // Uploaded images
+    sql::Statement uploaded_image_statement(
+        GetDB().GetUniqueStatement("SELECT filename, filesize, image_data"
+                                   " FROM conversation_entry_uploaded_images"
+                                   " WHERE conversation_entry_uuid=?"
+                                   " ORDER BY image_order ASC"));
+    uploaded_image_statement.BindString(0, entry_uuid);
+
+    while (uploaded_image_statement.Step()) {
+      auto filename = DecryptColumnToString(uploaded_image_statement, 0);
+      int64_t filesize = uploaded_image_statement.ColumnInt64(1);
+      auto decrypted_image_str =
+          DecryptColumnToString(uploaded_image_statement, 2);
+      base::span<const uint8_t> image_bytes =
+          base::as_byte_span(decrypted_image_str);
+      std::vector<uint8_t> image_data(image_bytes.begin(), image_bytes.end());
+      if (!entry->uploaded_images) {
+        entry->uploaded_images = std::vector<mojom::UploadedImagePtr>{};
+      }
+      entry->uploaded_images->emplace_back(mojom::UploadedImage::New(
+          std::move(filename), filesize, std::move(image_data)));
     }
 
     // root entry or edited entry
@@ -773,6 +796,32 @@ bool AIChatDatabase::AddConversationEntry(
     }
   }
 
+  if (entry->uploaded_images.has_value()) {
+    for (size_t i = 0; i < entry->uploaded_images->size(); ++i) {
+      const mojom::UploadedImagePtr& uploaded_image =
+          entry->uploaded_images->at(i);
+      sql::Statement image_statement(GetDB().GetCachedStatement(
+          SQL_FROM_HERE,
+          "INSERT INTO conversation_entry_uploaded_images"
+          "(image_order, filename, filesize, image_data,"
+          " conversation_entry_uuid)"
+          " VALUES(?, ?, ?, ?, ?)"));
+      CHECK(image_statement.is_valid());
+      image_statement.BindInt(0, static_cast<int>(i));
+      if (!BindAndEncryptString(image_statement, 1, uploaded_image->filename)) {
+        return false;
+      }
+      image_statement.BindInt64(2, uploaded_image->filesize);
+      if (!BindAndEncryptString(
+              image_statement, 3,
+              base::as_string_view(base::span(uploaded_image->image_data)))) {
+        return false;
+      }
+      image_statement.BindString(4, entry->uuid.value());
+      image_statement.Run();
+    }
+  }
+
   if (!transaction.Commit()) {
     DVLOG(0) << "Transaction commit failed with reason: "
              << db_.GetErrorMessage();
@@ -869,6 +918,17 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
     CHECK(delete_conversation_entry_statement.is_valid());
     delete_conversation_entry_statement.BindString(0, conversation_entry_uuid);
     if (!delete_conversation_entry_statement.Run()) {
+      return false;
+    }
+
+    static constexpr char kDeleteUploadedImagesQuery[] =
+        "DELETE FROM conversation_entry_uploaded_images "
+        " WHERE conversation_entry_uuid=?";
+    sql::Statement delete_uploaded_images_statement(
+        GetDB().GetUniqueStatement(kDeleteUploadedImagesQuery));
+    CHECK(delete_uploaded_images_statement.is_valid());
+    delete_uploaded_images_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_uploaded_images_statement.Run()) {
       return false;
     }
   }
@@ -974,6 +1034,23 @@ bool AIChatDatabase::DeleteConversationEntry(
     if (!delete_statement.Run()) {
       DLOG(ERROR) << "Failed to delete from conversation_entry for "
                      "conversation entry uuid: "
+                  << conversation_entry_uuid;
+      return false;
+    }
+  }
+
+  // Delete from conversation_entry_uploaded_images
+  {
+    static constexpr char kQuery[] =
+        "DELETE FROM conversation_entry_uploaded_images WHERE "
+        "conversation_entry_uuid=?";
+    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
+    CHECK(delete_statement.is_valid());
+    delete_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_statement.Run()) {
+      DLOG(ERROR) << "Failed to delete from "
+                     "conversation_entry_uploaded_images for conversation "
+                     "entry uuid: "
                   << conversation_entry_uuid;
       return false;
     }
@@ -1222,6 +1299,22 @@ bool AIChatDatabase::CreateSchema() {
       ")";
   CHECK(GetDB().IsSQLValid(kCreateWebSourcesTableQuery));
   if (!GetDB().Execute(kCreateWebSourcesTableQuery)) {
+    return false;
+  }
+
+  static constexpr char kCreateUploadedImagesTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS conversation_entry_uploaded_images("
+      "conversation_entry_uuid INTEGER NOT NULL,"
+      "image_order INTEGER NOT NULL,"
+      // encrypted filename
+      "filename BLOB NOT NULL,"
+      "filesize INTEGER NOT NULL,"
+      // encrypted image data
+      "image_data BLOB NOT NULL,"
+      "PRIMARY KEY(conversation_entry_uuid, image_order)"
+      ")";
+  CHECK(GetDB().IsSQLValid(kCreateUploadedImagesTableQuery));
+  if (!GetDB().Execute(kCreateUploadedImagesTableQuery)) {
     return false;
   }
 
