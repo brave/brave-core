@@ -78,10 +78,6 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT) YouTubeTabHelper
   // activation).
   void PrimaryMainDocumentElementAvailable() override;
 
-  // Override fullscreen toggle notification.
-  void DidToggleFullscreenModeForTab(bool entered_fullscreen,
-                                       bool /*is_user_initiated*/) override;
-
   void MediaStartedPlaying(const MediaPlayerInfo& video_type,
                            const content::MediaPlayerId& id) override;
   void MediaStoppedPlaying(
