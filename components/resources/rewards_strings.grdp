@@ -950,4 +950,8 @@
     View Store
   </message>
 
+  <message name="IDS_REWARDS_BAT_UTILITY_TITLE" desc="">
+    Basic Attention Token – BAT
+  </message>
+
 </grit-part>

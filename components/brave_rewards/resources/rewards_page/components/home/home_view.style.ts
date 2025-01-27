@@ -12,6 +12,10 @@ export const style = scoped.css`
     gap: 8px;
   }
 
+  .is-wide-view & {
+    gap: 24px;
+  }
+
   .columns {
     display: flex;
     gap: 24px;
@@ -20,7 +24,7 @@ export const style = scoped.css`
       flex: 1 1 50%;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 24px;
     }
   }
 `

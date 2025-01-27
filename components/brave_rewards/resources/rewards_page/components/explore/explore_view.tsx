@@ -8,6 +8,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 
 import { useAppState } from '../../lib/app_model_context'
 import { useBreakpoint } from '../../lib/breakpoint'
+import { BatUtilityCard } from './bat_utility_card'
 import { CommunityCard } from './community_card'
 import { MerchStoreCard } from './merch_store_card'
 
@@ -33,6 +34,7 @@ export function ExploreView() {
         <div className='columns'>
           <div>
             <MerchStoreCard />
+            <BatUtilityCard />
           </div>
           <div>
             <CommunityCard />
@@ -45,6 +47,7 @@ export function ExploreView() {
   return (
     <div {...style}>
       <MerchStoreCard />
+      <BatUtilityCard />
       <CommunityCard />
     </div>
   )
