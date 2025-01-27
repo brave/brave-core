@@ -24,6 +24,7 @@
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
@@ -1003,6 +1004,14 @@
           "corners, padding, and a drop shadow",                               \
           kOsWin | kOsLinux | kOsMac,                                          \
           FEATURE_VALUE_TYPE(features::kBraveWebViewRoundedCorners),           \
+      },                                                                       \
+      {                                                                        \
+          "brave-sync-default-passwords",                                      \
+          "Enable password syncing by default",                                \
+          "Turn on password syncing when Sync is enabled.",                    \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_sync::features::kBraveSyncDefaultPasswords),               \
       })                                                                       \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
