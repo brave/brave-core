@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Playlist colors -->
+    <color name="playlist_background">#1E2029</color>
+    <color name="red_playlist">#FB542B</color>
+    <color name="icon_tint">#FFFFFF</color>
+    <color name="hint_color">#501E2029</color>
+    <color name="media_stats_color">#84889C</color>
+    <color name="playlist_text_color">#FFFFFF</color>
+    <color name="day_night_icon_color">#F0F2FF</color>
+</resources>
