@@ -88,8 +88,13 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         }
 
         // cache blocked selectors
-        tab.contentBlocker.hiddenStandardSelectors.formUnion(standardSelectors)
-        tab.contentBlocker.hiddenAggressiveSelectors.formUnion(aggressiveSelectors)
+        if let url = tab.url {
+          tab.contentBlocker.cacheSelectors(
+            for: url,
+            standardSelectors: standardSelectors,
+            aggressiveSelectors: aggressiveSelectors
+          )
+        }
 
         replyHandler(
           [

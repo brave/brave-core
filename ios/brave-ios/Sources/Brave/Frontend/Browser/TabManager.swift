@@ -1540,10 +1540,6 @@ extension TabManager: WKNavigationDelegate {
   func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
     if let tab = self[webView] {
       tab.contentBlocker.clearPageStats()
-      // if url eTLD+1 has changed, reset selectors cache.
-      if webView.url?.baseDomain != tab.url?.baseDomain {
-        tab.contentBlocker.resetSelectorsCache()
-      }
     }
   }
 

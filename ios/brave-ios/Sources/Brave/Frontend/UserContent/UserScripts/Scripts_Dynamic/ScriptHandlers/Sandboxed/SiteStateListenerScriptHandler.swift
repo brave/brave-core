@@ -76,11 +76,20 @@ class SiteStateListenerScriptHandler: TabContentScript {
             forFrameURL: frameURL,
             domain: domain
           )
+
+          var cachedStandardSelectors: Set<String> = .init()
+          var cachedAggressiveSelectors: Set<String> = .init()
+          if let url = tab.url,
+            let (standard, aggressive) = tab.contentBlocker.cachedSelectors(for: url)
+          {
+            cachedStandardSelectors = standard
+            cachedAggressiveSelectors = aggressive
+          }
           let setup = try self.makeSetup(
             from: models,
             isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
-            cachedStandardSelectors: tab.contentBlocker.hiddenStandardSelectors,
-            cachedAggressiveSelectors: tab.contentBlocker.hiddenAggressiveSelectors
+            cachedStandardSelectors: cachedStandardSelectors,
+            cachedAggressiveSelectors: cachedAggressiveSelectors
           )
 
           // Join the procedural actions
