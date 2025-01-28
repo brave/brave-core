@@ -5,9 +5,6 @@
 
 #include "brave/components/youtube_script_injector/renderer/youtube_injector_frame_js_handler.h"
 
-#include <tuple>
-#include <utility>
-
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "content/public/renderer/render_frame.h"
