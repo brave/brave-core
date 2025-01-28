@@ -22,7 +22,7 @@ namespace youtube_script_injector {
 
 class YouTubeInjectorFrameJSHandler {
  public:
-  YouTubeInjectorFrameJSHandler(content::RenderFrame* render_frame);
+  explicit YouTubeInjectorFrameJSHandler(content::RenderFrame* render_frame);
   YouTubeInjectorFrameJSHandler(const YouTubeInjectorFrameJSHandler&) = delete;
   YouTubeInjectorFrameJSHandler& operator=(
       const YouTubeInjectorFrameJSHandler&) = delete;
