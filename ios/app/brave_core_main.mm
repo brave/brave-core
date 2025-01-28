@@ -464,7 +464,8 @@ static bool CustomLogHandler(int severity,
 - (BraveTabGeneratorAPI*)tabGeneratorAPI {
   if (!_tabGeneratorAPI) {
     _tabGeneratorAPI =
-        [[BraveTabGeneratorAPI alloc] initWithBrowser:_browser.get()];
+        [[BraveTabGeneratorAPI alloc] initWithBrowser:_browser.get()
+                                           otrBrowser:_otr_browser.get()];
   }
   return _tabGeneratorAPI;
 }
