@@ -31,6 +31,9 @@ include_rules += [
   "!brave/components/brave_mobile_subscription/renderer/android/subscription_render_frame_observer.h",
   "+brave/components/playlist/common",
   "+brave/components/playlist/renderer",
+  "+brave/components/web_discovery/buildflags",
+  "+brave/components/web_discovery/common",
+  "+brave/components/web_discovery/renderer",
 ]
 
 specific_include_rules = {

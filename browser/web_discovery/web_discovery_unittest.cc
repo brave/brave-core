@@ -26,6 +26,8 @@
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+namespace web_discovery {
+
 class WebDiscoveryCTATest : public testing::Test {
  public:
   WebDiscoveryCTATest() = default;
@@ -172,3 +174,5 @@ TEST_F(WebDiscoveryCTATest, ShouldShowInfoBarTest) {
   GetWebDiscoveryCTAIDForTesting() = "v2";
   EXPECT_TRUE(ShouldShowWebDiscoveryInfoBar());
 }
+
+}  // namespace web_discovery
