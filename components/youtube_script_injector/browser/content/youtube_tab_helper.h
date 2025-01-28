@@ -41,7 +41,6 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
       content::RenderFrameHost* rfh);
 
   int32_t GetWorldId() const { return world_id_; }
-  bool IsMediaPlaying() const { return is_media_playing_; }
   const std::optional<YouTubeJson>& GetJson() const;
   // Called to insert a YouTube script into the page.
   void InsertScriptInPage(
@@ -79,19 +78,11 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
   // activation).
   void PrimaryMainDocumentElementAvailable() override;
 
-  void MediaStartedPlaying(const MediaPlayerInfo& video_type,
-                           const content::MediaPlayerId& id) override;
-  void MediaStoppedPlaying(
-      const MediaPlayerInfo& video_type,
-      const content::MediaPlayerId& id,
-      WebContentsObserver::MediaStoppedReason reason) override;
-
   const int32_t world_id_;
   const raw_ptr<YouTubeRegistry> youtube_registry_;  // NOT OWNED
   // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
-  bool is_media_playing_ = false;
   base::WeakPtrFactory<YouTubeTabHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

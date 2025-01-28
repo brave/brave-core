@@ -23,10 +23,6 @@ YouTubeRenderFrameObserver::YouTubeRenderFrameObserver(
 
 YouTubeRenderFrameObserver::~YouTubeRenderFrameObserver() = default;
 
-void YouTubeRenderFrameObserver::DidCreateScriptContext(
-    v8::Local<v8::Context> context,
-    int32_t world_id) {}
-
 void YouTubeRenderFrameObserver::DidStartNavigation(
     const GURL& url,
     std::optional<blink::WebNavigationType> navigation_type) {

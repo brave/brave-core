@@ -116,19 +116,6 @@ void YouTubeTabHelper::PrimaryMainDocumentElementAvailable() {
                      blink::mojom::UserActivationOption::kDoNotActivate));
 }
 
-void YouTubeTabHelper::MediaStartedPlaying(
-    const MediaPlayerInfo& /*video_type*/,
-    const content::MediaPlayerId& id) {
-  is_media_playing_ = true;
-}
-
-void YouTubeTabHelper::MediaStoppedPlaying(
-    const MediaPlayerInfo& /*video_type*/,
-    const content::MediaPlayerId& id,
-    WebContentsObserver::MediaStoppedReason /*reason*/) {
-  is_media_playing_ = false;
-}
-
 // bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 //   PrefService* prefs =
 //       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
@@ -168,16 +155,6 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
           helper->GetWeakPtr(),
           web_contents->GetPrimaryMainFrame()->GetGlobalId(),
           blink::mojom::UserActivationOption::kActivate));
-}
-
-jboolean JNI_BackgroundVideoPlaybackTabHelper_IsPlayingMedia(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
-  content::WebContents* web_contents =
-      content::WebContents::FromJavaWebContents(jweb_contents);
-  auto* helper =
-      youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
-  return helper ? helper->IsMediaPlaying() : false;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabHelper);

@@ -32,8 +32,6 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_RENDERER)
   void DidStartNavigation(
       const GURL& url,
       std::optional<blink::WebNavigationType> navigation_type) override;
-  void DidCreateScriptContext(v8::Local<v8::Context> context,
-                              int32_t world_id) override;
   void DidFinishLoad() override;
 
  private:
