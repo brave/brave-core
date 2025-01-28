@@ -370,6 +370,51 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, InProgress_Time) {
             ZCashWalletService::ResolveTransactionStatusResult::kInProgress);
 }
 
+TEST_F(ZCashResolveTransactionStatusTaskTest,
+       InProgress_Time_NowIsLessThanSubmitted) {
+  auto tx_meta = CreateZCashTxMeta();
+  tx_meta->set_submitted_time(base::Time::Now() + base::Hours(4));
+  tx_meta->set_tx_hash("tx_hash");
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(
+          ::testing::Invoke([](const std::string& chain_id,
+                               MockZCashRPC::GetLatestBlockCallback callback) {
+            std::move(callback).Run(
+                zcash::mojom::BlockID::New(12u, std::vector<uint8_t>()));
+          }));
+
+  ON_CALL(zcash_rpc(), GetTransaction(_, _, _))
+      .WillByDefault(::testing::Invoke(
+          [](const std::string& chain_id, const std::string& tx_hash,
+             MockZCashRPC::GetTransactionCallback callback) {
+            EXPECT_EQ(tx_hash, "tx_hash");
+            std::move(callback).Run(
+                zcash::mojom::RawTransaction::New(std::vector<uint8_t>(), 0));
+          }));
+
+  base::MockCallback<ZCashResolveTransactionStatusTask::
+                         ZCashResolveTransactionStatusTaskCallback>
+      callback;
+
+  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
+      CreatePassKey(), CreateContext(), zcash_wallet_service(),
+      std::move(tx_meta), callback.Get());
+  EXPECT_CALL(zcash_wallet_service(),
+              ResolveTransactionStatusTaskDone(testing::Eq(task.get())));
+  base::expected<ZCashWalletService::ResolveTransactionStatusResult,
+                 std::string>
+      tx_result;
+  EXPECT_CALL(callback, Run(_)).WillOnce(SaveArg<0>(&tx_result));
+
+  task->Start();
+
+  task_environment().RunUntilIdle();
+
+  EXPECT_EQ(tx_result.value(),
+            ZCashWalletService::ResolveTransactionStatusResult::kInProgress);
+}
+
 TEST_F(ZCashResolveTransactionStatusTaskTest, Error_Transaction) {
   auto tx_meta = CreateZCashTxMeta();
   tx_meta->set_tx_hash("tx_hash");

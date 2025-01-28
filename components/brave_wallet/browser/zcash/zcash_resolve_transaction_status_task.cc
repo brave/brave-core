@@ -86,9 +86,12 @@ void ZCashResolveTransactionStatusTask::WorkOnTask() {
     if (expiry_height != 0) {
       expired = chain_tip > expiry_height;
     } else {
-      // Fallback to the submitted time
-      expired = base::Time::Now() - tx_meta_->submitted_time() >
-                base::Hours(kTransactionExpiryHours);
+      auto now = base::Time::Now();
+      if (now >= tx_meta_->submitted_time()) {
+        // Fallback to the submitted time
+        expired = base::Time::Now() - tx_meta_->submitted_time() >
+                  base::Hours(kTransactionExpiryHours);
+      }
     }
     std::move(callback_).Run(
         base::ok(expired ? ResolveTransactionStatusResult::kExpired

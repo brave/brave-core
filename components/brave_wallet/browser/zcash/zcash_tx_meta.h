@@ -37,14 +37,8 @@ class ZCashTxMeta : public TxMeta {
   ZCashTransaction* tx() const { return tx_.get(); }
   void set_tx(std::unique_ptr<ZCashTransaction> tx) { tx_ = std::move(tx); }
 
-  std::optional<uint32_t> expiry_height() const { return expiry_height_; }
-  void set_expiry_height(std::unique_ptr<ZCashTransaction> tx) {
-    tx_ = std::move(tx);
-  }
-
  private:
   std::unique_ptr<ZCashTransaction> tx_;
-  std::optional<uint32_t> expiry_height_;
 };
 
 }  // namespace brave_wallet
