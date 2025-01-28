@@ -127,6 +127,9 @@ interface RewardsPageHandler {
   // Returns the publisher ID associated with the active tab.
   GetPublisherIdForActiveTab() => (string publisher_id);
 
+  // Fetches current data for the specified publisher.
+  RefreshPublisher(string publisher_id) => ();
+
   // Returns data about the specified publisher.
   GetPublisherInfo(string publisher_id) => (PublisherInfo? publisher_info);
 

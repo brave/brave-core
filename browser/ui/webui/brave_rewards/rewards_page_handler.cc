@@ -328,6 +328,18 @@ void RewardsPageHandler::GetPublisherIdForActiveTab(
   std::move(callback).Run(bubble_delegate_->GetPublisherIdForActiveTab());
 }
 
+void RewardsPageHandler::RefreshPublisher(const std::string& publisher_id,
+                                          RefreshPublisherCallback callback) {
+  if (publisher_id.empty()) {
+    std::move(callback).Run();
+    return;
+  }
+  rewards_service_->RefreshPublisher(
+      publisher_id,
+      base::IgnoreArgs<mojom::PublisherStatus, const std::string&>(
+          std::move(callback)));
+}
+
 void RewardsPageHandler::GetPublisherInfo(const std::string& publisher_id,
                                           GetPublisherInfoCallback callback) {
   if (publisher_id.empty()) {
