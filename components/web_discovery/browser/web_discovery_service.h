@@ -14,6 +14,8 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/web_discovery/browser/content_scraper.h"
 #include "brave/components/web_discovery/browser/credential_manager.h"
+#include "brave/components/web_discovery/browser/double_fetcher.h"
+#include "brave/components/web_discovery/browser/reporter.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -72,6 +74,12 @@ class WebDiscoveryService : public KeyedService {
   // See patterns.h for details on strict vs. normal scraping
   void OnContentScraped(bool is_strict,
                         std::unique_ptr<PageScrapeResult> result);
+  void OnDoubleFetched(const GURL& url,
+                       const base::Value& associated_data,
+                       std::optional<std::string> response_body);
+
+  bool UpdatePageCountStartTime();
+  void MaybeSendAliveMessage();
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<PrefService> profile_prefs_;
@@ -86,6 +94,12 @@ class WebDiscoveryService : public KeyedService {
   std::unique_ptr<ServerConfigLoader> server_config_loader_;
   std::unique_ptr<CredentialManager> credential_manager_;
   std::unique_ptr<ContentScraper> content_scraper_;
+  std::unique_ptr<DoubleFetcher> double_fetcher_;
+  std::unique_ptr<Reporter> reporter_;
+
+  base::Time current_page_count_start_time_;
+  std::string current_page_count_hour_key_;
+  base::RepeatingTimer alive_message_timer_;
 };
 
 }  // namespace web_discovery
