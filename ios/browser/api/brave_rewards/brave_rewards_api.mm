@@ -647,123 +647,25 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 #pragma mark - Reporting
 
 - (void)setSelectedTabId:(UInt32)selectedTabId {
-  if (!self.initialized) {
-    return;
-  }
-
-  const auto time = [[NSDate date] timeIntervalSince1970];
-  if (_selectedTabId != selectedTabId) {
-    const auto oldTabId = _selectedTabId;
-    [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-      engine->OnHide(oldTabId, time);
-    }];
-  }
   _selectedTabId = selectedTabId;
-  if (_selectedTabId > 0) {
-    [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-      engine->OnShow(selectedTabId, time);
-    }];
-  }
 }
 
 - (void)applicationDidBecomeActive {
-  if (!self.initialized) {
-    return;
-  }
-
-  const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->OnForeground(self.selectedTabId, time);
-  }];
 }
 
 - (void)applicationDidBackground {
-  if (!self.initialized) {
-    return;
-  }
-
-  const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->OnBackground(self.selectedTabId, time);
-  }];
 }
 
 - (void)reportLoadedPageWithURL:(NSURL*)url tabId:(UInt32)tabId {
-  if (!self.initialized) {
-    return;
-  }
-
-  const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
-    url::Origin origin = url::Origin::Create(parsedUrl);
-    const std::string baseDomain = GetDomainAndRegistry(
-        origin.host(),
-        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-
-    if (baseDomain == "") {
-      return;
-    }
-
-    const std::string publisher_url =
-        origin.scheme() + "://" + baseDomain + "/";
-
-    brave_rewards::mojom::VisitDataPtr data =
-        brave_rewards::mojom::VisitData::New();
-    data->name = baseDomain;
-    data->domain = origin.host();
-    data->path = parsedUrl.path();
-    data->tab_id = tabId;
-    data->url = publisher_url;
-
-    engine->OnLoad(std::move(data), time);
-  }];
 }
 
 - (void)reportXHRLoad:(NSURL*)url
                 tabId:(UInt32)tabId
         firstPartyURL:(NSURL*)firstPartyURL
           referrerURL:(NSURL*)referrerURL {
-  if (!self.initialized) {
-    return;
-  }
-
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    base::flat_map<std::string, std::string> partsMap;
-    const auto urlComponents = [[NSURLComponents alloc] initWithURL:url
-                                            resolvingAgainstBaseURL:NO];
-    for (NSURLQueryItem* item in urlComponents.queryItems) {
-      std::string value =
-          item.value != nil ? base::SysNSStringToUTF8(item.value) : "";
-      partsMap[base::SysNSStringToUTF8(item.name)] = value;
-    }
-
-    auto visit = brave_rewards::mojom::VisitData::New();
-    visit->path = base::SysNSStringToUTF8(url.absoluteString);
-    visit->tab_id = tabId;
-
-    std::string ref = referrerURL != nil
-                          ? base::SysNSStringToUTF8(referrerURL.absoluteString)
-                          : "";
-    std::string fpu =
-        firstPartyURL != nil
-            ? base::SysNSStringToUTF8(firstPartyURL.absoluteString)
-            : "";
-
-    engine->OnXHRLoad(tabId, base::SysNSStringToUTF8(url.absoluteString),
-                      std::move(partsMap), fpu, ref, std::move(visit));
-  }];
 }
 
 - (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId {
-  if (!self.initialized) {
-    return;
-  }
-
-  const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
-    engine->OnUnload(tabId, time);
-  }];
 }
 
 #pragma mark - Preferences
