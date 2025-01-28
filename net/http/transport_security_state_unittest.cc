@@ -53,8 +53,12 @@ class TransportSecurityStateTestBase : public ::testing::Test,
                     const std::string& host) {
     SCOPED_TRACE(testing::Message() << network_anonymization_key.ToDebugString()
                                     << " host: " << host);
-    EXPECT_FALSE(state->ShouldUpgradeToSSL(host));
-    EXPECT_FALSE(state->ShouldUpgradeToSSL(network_anonymization_key, host));
+    EXPECT_FALSE(state->ShouldUpgradeToSSL(host, /*is_top_level_nav=*/true));
+    EXPECT_FALSE(state->ShouldUpgradeToSSL(host, /*is_top_level_nav=*/false));
+    EXPECT_FALSE(state->ShouldUpgradeToSSL(network_anonymization_key, host,
+                                           /*is_top_level_nav=*/true));
+    EXPECT_FALSE(state->ShouldUpgradeToSSL(network_anonymization_key, host,
+                                           /*is_top_level_nav=*/false));
     EXPECT_FALSE(state->ShouldSSLErrorsBeFatal(host));
     EXPECT_FALSE(
         state->ShouldSSLErrorsBeFatal(network_anonymization_key, host));
@@ -67,8 +71,12 @@ class TransportSecurityStateTestBase : public ::testing::Test,
                      const std::string& host) {
     SCOPED_TRACE(testing::Message() << network_anonymization_key.ToDebugString()
                                     << " host: " << host);
-    EXPECT_TRUE(state->ShouldUpgradeToSSL(host));
-    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_anonymization_key, host));
+    EXPECT_TRUE(state->ShouldUpgradeToSSL(host, /*is_top_level_nav=*/true));
+    EXPECT_TRUE(state->ShouldUpgradeToSSL(host, /*is_top_level_nav=*/false));
+    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_anonymization_key, host,
+                                          /*is_top_level_nav=*/true));
+    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_anonymization_key, host,
+                                          /*is_top_level_nav=*/false));
     EXPECT_TRUE(state->ShouldSSLErrorsBeFatal(host));
     EXPECT_TRUE(state->ShouldSSLErrorsBeFatal(network_anonymization_key, host));
     {
@@ -85,8 +93,12 @@ class TransportSecurityStateTestBase : public ::testing::Test,
       const std::string& host) {
     SCOPED_TRACE(testing::Message() << network_anonymization_key.ToDebugString()
                                     << " host: " << host);
-    EXPECT_FALSE(state->ShouldUpgradeToSSL(host));
-    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_anonymization_key, host));
+    EXPECT_FALSE(state->ShouldUpgradeToSSL(host, /*is_top_level_nav=*/true));
+    EXPECT_FALSE(state->ShouldUpgradeToSSL(host, /*is_top_level_nav=*/false));
+    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_anonymization_key, host,
+                                          /*is_top_level_nav=*/true));
+    EXPECT_TRUE(state->ShouldUpgradeToSSL(network_anonymization_key, host,
+                                          /*is_top_level_nav=*/false));
     EXPECT_FALSE(state->ShouldSSLErrorsBeFatal(host));
     EXPECT_TRUE(state->ShouldSSLErrorsBeFatal(network_anonymization_key, host));
     {
