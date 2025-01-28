@@ -82,21 +82,13 @@ bool CanImportURL(const GURL& url) {
 
 namespace {
 
-class FileBookmarksExportObserver : public BookmarksExportObserver {
- public:
-  explicit FileBookmarksExportObserver(const JavaParamRef<jobject>& obj)
-      : obj_(ScopedJavaGlobalRef<jobject>(obj)) {}
+void OnExportFinished(ScopedJavaGlobalRef<jobject> obj,
+                      bookmark_html_writer::Result result) {
+  JNIEnv* env = AttachCurrentThread();
+  Java_BraveBookmarkBridge_bookmarksExported(
+      env, obj, result == bookmark_html_writer::Result::kSuccess);
+}
 
-  void OnExportFinished(Result result) override {
-    JNIEnv* env = AttachCurrentThread();
-    Java_BraveBookmarkBridge_bookmarksExported(env, obj_,
-                                               result == Result::kSuccess);
-    delete this;
-  }
-
- private:
-  const ScopedJavaGlobalRef<jobject> obj_;
-};
 }  // namespace
 
 // Attempts to create a TemplateURL from the provided data. |title| is optional.
@@ -207,7 +199,7 @@ void BookmarkBridge::ExportBookmarks(
   base::FilePath file_export_path =
       base::FilePath::FromUTF16Unsafe(export_path);
 
-  BookmarksExportObserver* observer = new FileBookmarksExportObserver(obj);
-
-  bookmark_html_writer::WriteBookmarks(profile_, file_export_path, observer);
+  bookmark_html_writer::WriteBookmarks(
+      profile_, file_export_path,
+      base::BindOnce(&OnExportFinished, ScopedJavaGlobalRef<jobject>(obj)));
 }
