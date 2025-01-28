@@ -273,3 +273,28 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameConflicts) {
 
   EXPECT_EQ("default-script", EvalJs(web_contents(), "window.test"));
 }
+
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, NameCases) {
+  EnableDeveloperMode(true);
+  NavigateToURL(GURL("brave://settings/shields/filters"));
+
+  constexpr const char kContentA[] = "window.lower = true";
+  constexpr const char kContentB[] = "window.upper = true";
+
+  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
+  SaveCustomScriptlet("user-script", kContentA);
+
+  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
+  SaveCustomScriptlet("user-ScRiPt", kContentB);
+
+  UpdateAdBlockInstanceWithRules(
+      "a.com##+js(user-script)\n"
+      "a.com##+js(user-ScRiPt)");
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("a.com", "/cosmetic_filtering.html");
+  NavigateToURL(tab_url);
+
+  EXPECT_TRUE(EvalJs(web_contents(), "window.lower").ExtractBool());
+  EXPECT_TRUE(EvalJs(web_contents(), "window.upper").ExtractBool());
+}
