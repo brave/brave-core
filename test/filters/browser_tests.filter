@@ -1981,23 +1981,10 @@
 -LiveCaptionAutomaticLanguageDownloadTest.*
 -LiveCaptionControllerTest.*
 
-# These tests are disabled because we disable creation of UserEducationService
-# for regular and guest profiles.
--All/MLPromotionInstallDialogBrowserTest.*
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_ProfileSwitch
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_SupervisedUser
--BatterySaverHelpPromoTest.*
--BrowserUserEducationService*
--FirstRunIntroPixelTest.InvokeUi_default/*
--HelpBubbleFactoryViewsBrowsertest.*
--LowUsageHelpControllerBrowsertest.NoPromoOnFreshProfile
--MLPromotionBrowserTest*
 -PrivacySandboxQueueTestNotice.*
 -PrivacySandboxQueueTestNoticeWithSearchEngine.*
--SavedTabGroupV2Promo/SavedTabGroupV2PromoTest.*
--ShowPromoInPageBrowserTest.*
--StartTutorialInPageBrowserTest.*
-
 # This test fails because we stub out NetworkService::UpdateKeysPinList
 -PKIMetadataComponentInstallerTest.InstallComponentUpdatesPinningConfig
 

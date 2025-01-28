@@ -290,6 +290,7 @@ if (!is_android) {
   brave_chrome_browser_deps += [
     "//brave/browser/ui/ai_chat",
     "//brave/browser/ui/webui/brave_news_internals",
+    "//brave/browser/user_education:features",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
     "//components/feed/mojom:mojo_bindings",
