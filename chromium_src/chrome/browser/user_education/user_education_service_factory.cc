@@ -5,11 +5,20 @@
 
 #include "chrome/browser/user_education/user_education_service_factory.h"
 
+#include "brave/browser/user_education/features.h"
 #include "chrome/browser/profiles/profile_selections.h"
 
-// Do not create education service for regular and guest profiles.
-#define WithRegular(SELECTION) WithRegular(ProfileSelection::kNone)
-#define WithGuest(SELECTION) WithGuest(ProfileSelection::kNone)
+// Do not create education service for regular and guest profiles if disabled
+// by feature.
+#define WithRegular(SELECTION)                                               \
+  WithRegular(base::FeatureList::IsEnabled(features::kChromiumUserEducation) \
+                  ? SELECTION                                                \
+                  : ProfileSelection::kNone)
+
+#define WithGuest(SELECTION)                                               \
+  WithGuest(base::FeatureList::IsEnabled(features::kChromiumUserEducation) \
+                ? SELECTION                                                \
+                : ProfileSelection::kNone)
 
 #include "src/chrome/browser/user_education/user_education_service_factory.cc"
 #undef WithGuest
