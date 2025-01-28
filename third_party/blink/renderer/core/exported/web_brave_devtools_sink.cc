@@ -11,11 +11,15 @@ namespace blink {
 
 WebBraveDevtoolsSink::WebBraveDevtoolsSink(LocalFrame& frame)
     : Supplement<LocalFrame>(frame) {
-  GetSupplementable()->GetProbeSink()->AddWebBraveDevtoolsSink(this);
+  if (GetSupplementable()->GetProbeSink()) {
+    GetSupplementable()->GetProbeSink()->AddWebBraveDevtoolsSink(this);
+  }
 }
 
 WebBraveDevtoolsSink::~WebBraveDevtoolsSink() {
-  GetSupplementable()->GetProbeSink()->RemoveWebBraveDevtoolsSink(this);
+  if (GetSupplementable()->GetProbeSink()) {
+    GetSupplementable()->GetProbeSink()->RemoveWebBraveDevtoolsSink(this);
+  }
 }
 
 // static
