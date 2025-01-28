@@ -714,7 +714,7 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
   add_block_elements &= page_url.SchemeIsHTTPOrHTTPS();
   add_block_elements &= base::FeatureList::IsEnabled(
       brave_shields::features::kBraveShieldsElementPicker);
-  
+
   const auto* profile = GetProfile();
   add_block_elements &= profile && !profile->IsOffTheRecord();
   if (add_block_elements) {

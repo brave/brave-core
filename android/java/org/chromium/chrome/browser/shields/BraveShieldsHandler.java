@@ -749,8 +749,9 @@ public class BraveShieldsHandler
         TextView blockElementsText =
                 mSecondaryLayout.findViewById(R.id.brave_shields_block_element_text);
         blockElementsText.setVisibility(
-            !isPrivateWindow &&
-                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
+                !isPrivateWindow
+                                && ChromeFeatureList.isEnabled(
+                                        BraveFeatureList.BRAVE_SHIELDS_ELEMENT_PICKER)
                         ? View.VISIBLE
                         : View.GONE);
         blockElementsText.setOnClickListener(
