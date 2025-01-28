@@ -30,11 +30,14 @@ WebDiscoveryService::WebDiscoveryService(
     PrefService* local_state,
     PrefService* profile_prefs,
     base::FilePath user_data_dir,
-    scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory)
+    scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory,
+    brave_search::BackupResultsService* backup_results_service)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
       user_data_dir_(user_data_dir),
-      shared_url_loader_factory_(shared_url_loader_factory) {
+      shared_url_loader_factory_(shared_url_loader_factory),
+      backup_results_service_(backup_results_service) {
+  CHECK(backup_results_service);
   pref_change_registrar_.Init(profile_prefs);
   pref_change_registrar_.Add(
       kWebDiscoveryEnabled,
@@ -123,6 +126,7 @@ void WebDiscoveryService::OnPatternsLoaded() {
   if (!double_fetcher_) {
     double_fetcher_ = std::make_unique<DoubleFetcher>(
         profile_prefs_.get(), shared_url_loader_factory_.get(),
+        backup_results_service_.get(),
         base::BindRepeating(&WebDiscoveryService::OnDoubleFetched,
                             base::Unretained(this)));
   }

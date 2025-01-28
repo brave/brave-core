@@ -46,7 +46,7 @@ class WebDiscoveryDoubleFetcherTest : public testing::Test {
  protected:
   void InitDoubleFetcher() {
     double_fetcher_ = std::make_unique<DoubleFetcher>(
-        &profile_prefs_, shared_url_loader_factory_.get(),
+        &profile_prefs_, shared_url_loader_factory_.get(), nullptr,
         base::BindRepeating(&WebDiscoveryDoubleFetcherTest::HandleDoubleFetch,
                             base::Unretained(this)));
   }

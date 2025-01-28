@@ -14,6 +14,7 @@ if (enable_web_discovery_native) {
     ]
     deps = [
       "//base",
+      "//brave/browser/brave_search",
       "//brave/components/web_discovery/browser",
       "//brave/components/web_discovery/common",
       "//chrome/browser:browser_process",

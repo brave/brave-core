@@ -71,6 +71,7 @@ source_set("internal") {
     "document_extractor",
     "//base",
     "//brave/brave_domains",
+    "//brave/components/brave_search/browser",
     "//brave/components/constants",
     "//brave/components/web_discovery/common:mojom",
     "//components/prefs",

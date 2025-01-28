@@ -33,6 +33,10 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
+namespace brave_search {
+class BackupResultsService;
+}  // namespace brave_search
+
 namespace web_discovery {
 
 // The main service for the native re-implementation of Web Discovery Project.
@@ -43,7 +47,8 @@ class WebDiscoveryService : public KeyedService {
       PrefService* local_state,
       PrefService* profile_prefs,
       base::FilePath user_data_dir,
-      scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory,
+      brave_search::BackupResultsService* backup_results_service);
   ~WebDiscoveryService() override;
 
   WebDiscoveryService(const WebDiscoveryService&) = delete;
@@ -88,6 +93,7 @@ class WebDiscoveryService : public KeyedService {
   base::FilePath user_data_dir_;
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  raw_ptr<brave_search::BackupResultsService> backup_results_service_;
 
   mojo::RemoteSet<mojom::DocumentExtractor> document_extractor_remotes_;
 

@@ -7,6 +7,9 @@
 
 #include <utility>
 
+#include "base/containers/contains.h"
+#include "brave/components/brave_search/browser/backup_results_allowed_urls.h"
+#include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/web_discovery/browser/pref_names.h"
 #include "brave/components/web_discovery/browser/request_queue.h"
 #include "brave/components/web_discovery/browser/util.h"
@@ -22,6 +25,7 @@ namespace web_discovery {
 namespace {
 constexpr char kUrlKey[] = "url";
 constexpr char kAssociatedDataKey[] = "assoc_data";
+constexpr char kSearchPath[] = "/search";
 
 constexpr base::TimeDelta kRequestMaxAge = base::Hours(1);
 constexpr base::TimeDelta kMinRequestInterval =
@@ -55,9 +59,11 @@ constexpr net::NetworkTrafficAnnotationTag kFetchNetworkTrafficAnnotation =
 DoubleFetcher::DoubleFetcher(
     PrefService* profile_prefs,
     network::SharedURLLoaderFactory* shared_url_loader_factory,
+    brave_search::BackupResultsService* backup_results_service,
     FetchedCallback callback)
     : profile_prefs_(profile_prefs),
       shared_url_loader_factory_(shared_url_loader_factory),
+      backup_results_service_(backup_results_service),
       request_queue_(profile_prefs,
                      kScheduledDoubleFetches,
                      kRequestMaxAge,
@@ -88,24 +94,56 @@ void DoubleFetcher::OnFetchTimer(const base::Value& request_data) {
   }
 
   GURL url(*url_str);
+
+  if (brave_search::IsBackupResultURLAllowed(url) &&
+      base::StartsWith(url.path_piece(), kSearchPath)) {
+    CHECK(backup_results_service_);
+    backup_results_service_->FetchBackupResults(
+        url, {},
+        base::BindOnce(&DoubleFetcher::OnRenderedResponse,
+                       weak_ptr_factory_.GetWeakPtr(), url));
+    return;
+  }
+
   auto resource_request = CreateResourceRequest(url);
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), kFetchNetworkTrafficAnnotation);
   url_loader_->DownloadToString(
       shared_url_loader_factory_.get(),
-      base::BindOnce(&DoubleFetcher::OnRequestComplete, base::Unretained(this),
-                     url),
+      base::BindOnce(&DoubleFetcher::OnURLLoaderResponse,
+                     base::Unretained(this), url),
       kMaxDoubleFetchResponseSize);
 }
 
+void DoubleFetcher::OnURLLoaderResponse(
+    const GURL& url,
+    std::optional<std::string> response_body) {
+  auto* response_info = url_loader_->ResponseInfo();
+  std::optional<int> response_code;
+  if (response_info) {
+    response_code = response_info->headers->response_code();
+  }
+
+  OnRequestComplete(url, response_code, std::move(response_body));
+}
+
+void DoubleFetcher::OnRenderedResponse(
+    const GURL& url,
+    std::optional<brave_search::BackupResultsService::BackupResults> results) {
+  if (results) {
+    OnRequestComplete(url, results->final_status_code, results->html);
+  } else {
+    OnRequestComplete(url, std::nullopt, std::nullopt);
+  }
+}
+
 void DoubleFetcher::OnRequestComplete(
-    GURL url,
+    const GURL& url,
+    std::optional<int> response_code,
     std::optional<std::string> response_body) {
   bool result = false;
-  auto* response_info = url_loader_->ResponseInfo();
-  if (response_info) {
-    auto response_code = response_info->headers->response_code();
-    if (!network::IsSuccessfulStatus(response_code)) {
+  if (response_code) {
+    if (!network::IsSuccessfulStatus(*response_code)) {
       if (response_code >= net::HttpStatusCode::HTTP_BAD_REQUEST &&
           response_code < net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR) {
         // Only retry failures due to server error

@@ -6,6 +6,7 @@
 #include "brave/browser/web_discovery/web_discovery_service_factory.h"
 
 #include "base/path_service.h"
+#include "brave/browser/brave_search/backup_results_service_factory.h"
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "brave/components/web_discovery/common/features.h"
 #include "chrome/browser/browser_process.h"
@@ -30,7 +31,9 @@ WebDiscoveryServiceFactory* WebDiscoveryServiceFactory::GetInstance() {
 
 WebDiscoveryServiceFactory::WebDiscoveryServiceFactory()
     : ProfileKeyedServiceFactory("WebDiscoveryService",
-                                 CreateProfileSelections()) {}
+                                 CreateProfileSelections()) {
+  DependsOn(brave_search::BackupResultsServiceFactory::GetInstance());
+}
 
 WebDiscoveryServiceFactory::~WebDiscoveryServiceFactory() = default;
 
@@ -48,11 +51,13 @@ WebDiscoveryServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
+  auto* backup_results_service =
+      brave_search::BackupResultsServiceFactory::GetForBrowserContext(context);
   base::FilePath user_data_dir =
       base::PathService::CheckedGet(chrome::DIR_USER_DATA);
   return std::make_unique<WebDiscoveryService>(
       g_browser_process->local_state(), user_prefs::UserPrefs::Get(context),
-      user_data_dir, shared_url_loader_factory);
+      user_data_dir, shared_url_loader_factory, backup_results_service);
 }
 
 bool WebDiscoveryServiceFactory::ServiceIsCreatedWithBrowserContext() const {

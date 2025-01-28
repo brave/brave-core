@@ -12,6 +12,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
+#include "brave/components/brave_search/browser/backup_results_service.h"
 #include "brave/components/web_discovery/browser/request_queue.h"
 #include "url/gurl.h"
 
@@ -37,6 +38,7 @@ class DoubleFetcher {
                                    std::optional<std::string> response_body)>;
   DoubleFetcher(PrefService* profile_prefs,
                 network::SharedURLLoaderFactory* shared_url_loader_factory,
+                brave_search::BackupResultsService* backup_results_service,
                 FetchedCallback callback);
   ~DoubleFetcher();
 
@@ -50,15 +52,25 @@ class DoubleFetcher {
 
  private:
   void OnFetchTimer(const base::Value& request_data);
-  void OnRequestComplete(GURL url, std::optional<std::string> response_body);
+  void OnURLLoaderResponse(const GURL& url,
+                           std::optional<std::string> response_body);
+  void OnRenderedResponse(
+      const GURL& url,
+      std::optional<brave_search::BackupResultsService::BackupResults> results);
+  void OnRequestComplete(const GURL& url,
+                         std::optional<int> response_code,
+                         std::optional<std::string> response_body);
 
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
+  raw_ptr<brave_search::BackupResultsService> backup_results_service_;
 
   RequestQueue request_queue_;
 
   FetchedCallback callback_;
+
+  base::WeakPtrFactory<DoubleFetcher> weak_ptr_factory_{this};
 };
 
 }  // namespace web_discovery
