@@ -21,11 +21,11 @@ BraveSystemMenuModelBuilder::~BraveSystemMenuModelBuilder() = default;
 void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
     ui::SimpleMenuModel* model) {
   if (tabs::utils::SupportsVerticalTabs(browser())) {
-    std::optional<size_t> task_manager_index =
-        model->GetIndexOfCommandId(IDC_TASK_MANAGER);
+    std::optional<size_t> bookmark_all_tabs_index =
+        model->GetIndexOfCommandId(IDC_BOOKMARK_ALL_TABS);
 
-    if (task_manager_index.has_value()) {
-      model->InsertCheckItemWithStringIdAt(task_manager_index.value(),
+    if (bookmark_all_tabs_index.has_value()) {
+      model->InsertCheckItemWithStringIdAt(bookmark_all_tabs_index.value() + 1,
                                            IDC_TOGGLE_VERTICAL_TABS,
                                            IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
     }
