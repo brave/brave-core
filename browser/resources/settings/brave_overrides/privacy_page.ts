@@ -264,6 +264,15 @@ RegisterPolymerTemplateModifications({
             </settings-brave-personalization-options>
           `)
       }
+      const thirdPartyCookiesLinkRow =
+        templateContent.getElementById('thirdPartyCookiesLinkRow')
+      if (!thirdPartyCookiesLinkRow) {
+        console.error(
+          '[Brave Settings Overrides] Could not find ' +
+          'thirdPartyCookiesLinkRow id on privacy page.')
+      } else {
+        thirdPartyCookiesLinkRow.setAttribute('hidden', 'true')
+      }
     }
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
       const privacySandboxSettings3Template = templateContent.
