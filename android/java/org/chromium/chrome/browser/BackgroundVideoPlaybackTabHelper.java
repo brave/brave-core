@@ -24,15 +24,9 @@ public class BackgroundVideoPlaybackTabHelper {
         BackgroundVideoPlaybackTabHelperJni.get().setFullscreen(webContents);
     }
 
-    public static boolean isPlayingMedia(WebContents webContents) {
-        return BackgroundVideoPlaybackTabHelperJni.get().isPlayingMedia(webContents);
-    }
-
     @NativeMethods
     interface Natives {
         void setFullscreen(WebContents webContents);
-
-        boolean isPlayingMedia(WebContents webContents);
     }
 
     @CalledByNative
