@@ -54,7 +54,7 @@ import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.ChromeClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.text.SpanApplier.SpanInfo;
 
@@ -470,8 +470,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             mTvCard.setText(getResources().getString(R.string.wdp_title));
         }
         if (mTvDefault != null) {
-            NoUnderlineClickableSpan wdpLearnMoreClickableSpan =
-                    new NoUnderlineClickableSpan(
+            ChromeClickableSpan wdpLearnMoreClickableSpan =
+                    new ChromeClickableSpan(
                             WelcomeOnboardingActivity.this,
                             R.color.brave_blue_tint_color,
                             (textView) -> {
