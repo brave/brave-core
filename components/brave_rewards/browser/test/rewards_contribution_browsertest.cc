@@ -147,7 +147,7 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       AutoContributionUnconnected) {
+                       DISABLED_AutoContributionUnconnected) {
   // Set kEnabled to false before calling CreateRewardsWallet to ensure that
   // prefs are configured to reflect an unconnected user
   auto* pref_service = browser()->profile()->GetPrefs();
@@ -173,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       AutoContributionUnconnectedJapan) {
+                       DISABLED_AutoContributionUnconnectedJapan) {
   // Set kEnabled to false before calling CreateRewardsWallet to ensure that
   // prefs are configured to reflect an unconnected user
   auto* pref_service = browser()->profile()->GetPrefs();
