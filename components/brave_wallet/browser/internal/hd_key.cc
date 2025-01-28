@@ -194,7 +194,7 @@ std::unique_ptr<HDKey::ParsedExtendedKey> HDKey::GenerateFromExtendedKey(
 
   if (*ptr == 0x00) {
     // Skip first zero byte which is not part of private key.
-    hdkey->SetPrivateKey(base::make_span(ptr + 1, ptr + 33));
+    hdkey->SetPrivateKey(base::span(ptr + 1, ptr + 33));
   } else {
     hdkey->SetPublicKey(*base::span(ptr, ptr + kSecp256k1PubkeySize)
                              .to_fixed_extent<kSecp256k1PubkeySize>());

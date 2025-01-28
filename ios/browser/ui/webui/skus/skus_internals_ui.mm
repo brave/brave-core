@@ -51,7 +51,7 @@ web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
 
   // Add required resources.
   source->AddResourcePaths(
-      UNSAFE_TODO(base::make_span(resource_map, resource_map_size)));
+      UNSAFE_TODO(base::span(resource_map, resource_map_size)));
   source->SetDefaultResource(html_resource_id);
   return source;
 }
