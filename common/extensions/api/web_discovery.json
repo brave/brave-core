@@ -40,6 +40,21 @@
             }
           ]
         }
+      },
+      {
+        "name": "isWebDiscoveryNativeEnabled",
+        "type": "function",
+        "description": "Returns true if Web Discovery native feature is active",
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "enabled",
+              "type": "boolean"
+            }
+          ]
+        }
       }
     ]
   }

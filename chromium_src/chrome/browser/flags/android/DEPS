@@ -11,5 +11,7 @@ include_rules = [
   "+brave/components/playlist/common/features.h",
   "+brave/components/request_otr/common/features.h",
   "+brave/components/speedreader/common/features.h",
+  "+brave/components/web_discovery/buildflags",
+  "+brave/components/web_discovery/common",
   "+brave/components/webcompat/core/common/features.h",
 ]

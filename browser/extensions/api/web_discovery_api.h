@@ -26,6 +26,18 @@ class WebDiscoveryRetrieveBackupResultsFunction : public ExtensionFunction {
       std::optional<brave_search::BackupResultsService::BackupResults> results);
 };
 
+class WebDiscoveryIsWebDiscoveryNativeEnabledFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("webDiscovery.isWebDiscoveryNativeEnabled",
+                             UNKNOWN)
+
+ protected:
+  ~WebDiscoveryIsWebDiscoveryNativeEnabledFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace extensions::api
 
 #endif  // BRAVE_BROWSER_EXTENSIONS_API_WEB_DISCOVERY_API_H_

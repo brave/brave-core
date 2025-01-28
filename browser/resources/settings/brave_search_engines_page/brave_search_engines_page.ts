@@ -104,6 +104,10 @@ class BraveSearchEnginesPage extends BraveSearchEnginesPageBase {
     return !loadTimeData.getBoolean('isGuest') && !this.isDefaultSearchEngineEnforced_(prefs)
   }
 
+  private isWebDiscoveryNativeEnabled_() {
+    return loadTimeData.getBoolean('isWebDiscoveryNativeEnabled');
+  }
+
   private isDefaultSearchEngineEnforced_(
     prefs: chrome.settingsPrivate.PrefObject)
   {
