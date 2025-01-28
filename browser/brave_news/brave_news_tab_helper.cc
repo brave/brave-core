@@ -212,9 +212,9 @@ void BraveNewsTabHelper::OnFoundFeedData(
   }
 
   if (feeds.empty()) {
-    rss_page_feeds_.erase(
-        base::ranges::remove(rss_page_feeds_, feed_url, &FeedDetails::feed_url),
-        rss_page_feeds_.end());
+    auto to_remove =
+        std::ranges::remove(rss_page_feeds_, feed_url, &FeedDetails::feed_url);
+    rss_page_feeds_.erase(to_remove.begin(), to_remove.end());
   } else {
     DCHECK_EQ(1u, feeds.size())
         << "As we were passed a FeedURL, this should only find one feed.";
