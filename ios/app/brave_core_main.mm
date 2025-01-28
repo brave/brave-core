@@ -95,12 +95,12 @@ ProfileIOS* CreateMainProfileIOS() {
   // Initialize and set the main browser state.
   auto* localState = GetApplicationContext()->GetLocalState();
   auto* profileManager = GetApplicationContext()->GetProfileManager();
-  std::string profileName = localState->GetString(prefs::kLastUsedProfile);
-  if (profileName.empty()) {
-    profileName = profileManager->ReserveNewProfileName();
-    localState->SetString(prefs::kLastUsedProfile, profileName);
-  }
-  DCHECK(!profileName.empty());
+  std::string profileName =
+      "Default";  // kIOSChromeInitialProfile which is now removed
+  // Set this as the last used profile always so that its saved for the future
+  // where we may have multiple profile support and need to read it from local
+  // state before creating the profile
+  localState->SetString(prefs::kLastUsedProfile, profileName);
   ScopedAllowBlockingForProfile allow_blocking;
   return profileManager->CreateProfile(profileName);
 }
