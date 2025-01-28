@@ -908,6 +908,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_P3A_INSIGHTS" desc="Text for p3a insights onboarding">
         Share private and anonymous product insights about what features are being used by Brave's users.
       </message>
+      <message name="IDS_WDP_TITLE" desc="Text for WDP title onboarding">
+        Help Brave Search grow
+      </message>
+      <message name="IDS_WDP_TEXT" desc="Text for WDP text onboarding">
+        Opt into the Web Discovery Project to help grow the index and improve search results. <ph name="LEARN_MORE_START">&lt;learn_more&gt;</ph>Learn more.<ph name="LEARN_MORE_END">&lt;/learn_more&gt;</ph>
+      </message>
+      <message name="IDS_SURE_ILL_HELP_ONBOARDING" desc="Text for Sure i'll help button onboarding">
+        Sure, I'll help
+      </message>
       <message name="IDS_TYPE_WEBSITE" desc="Text for searhbox tooltip title onboarding">
         Type a website name or URL
       </message>
