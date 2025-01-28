@@ -507,6 +507,9 @@ void ConversationHandler::GetAllowedURLs(
     GetAllowedURLsCallback callback) {
   LOG(ERROR) << "=====ConversationHandler::GetAllowedURLs";
   std::vector<GURL> urls;
+  urls.push_back(GURL("https://www.microsoft.com"));
+  urls.push_back(GURL("https://microsoft.com"));
+  urls.push_back(GURL("https://brave.com"));
   std::move(callback).Run(urls);
 }
 

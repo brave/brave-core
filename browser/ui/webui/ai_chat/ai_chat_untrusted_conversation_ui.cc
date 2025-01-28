@@ -210,9 +210,6 @@ void AIChatUntrustedConversationUI::BindInterface(
               return;
             }
             conversation_handler->Bind(std::move(receiver));
-            conversation_handler->GetAllowedURLs(base::BindOnce([](const std::vector<GURL> &urls) { 
-                  LOG(ERROR) << "GetAllowedURLs: " << urls.size();
-                  }));
           },
           std::move(receiver)));
 }
