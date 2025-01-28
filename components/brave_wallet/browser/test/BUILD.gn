@@ -58,6 +58,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/fil_tx_state_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/filecoin_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/internal/hd_key_common_unittest.cc",
+    "//brave/components/brave_wallet/browser/internal/hd_key_ed25519_slip23_unittest.cc",
     "//brave/components/brave_wallet/browser/internal/hd_key_ed25519_unittest.cc",
     "//brave/components/brave_wallet/browser/internal/hd_key_unittest.cc",
     "//brave/components/brave_wallet/browser/json_keystore_parser_unittest.cc",
