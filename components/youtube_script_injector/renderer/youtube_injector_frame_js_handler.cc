@@ -42,15 +42,13 @@ bool YouTubeInjectorFrameJSHandler::EnsureConnected() {
 void YouTubeInjectorFrameJSHandler::AddJavaScriptObjectToFrame(
     v8::Local<v8::Context> context) {
   CHECK(render_frame_);
+  CHECK(!context.IsEmpty());
   v8::Isolate* isolate =
       render_frame_->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
-  v8::HandleScope handle_scope(isolate);
-  if (context.IsEmpty()) {
-    return;
-  }
 
   v8::Context::Scope context_scope(context);
-
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   BindFunctionsToObject(isolate, context);
 }
 
@@ -88,7 +86,6 @@ void YouTubeInjectorFrameJSHandler::BindFunctionToObject(
     v8::Local<v8::Object> javascript_object,
     const std::string& name,
     const base::RepeatingCallback<Sig>& callback) {
-  LOG(ERROR) << "SIMONE - BindFunctionToObject";
   v8::Local<v8::Context> context = isolate->GetCurrentContext();
   javascript_object
       ->Set(context, gin::StringToSymbol(isolate, name),
@@ -102,7 +99,6 @@ void YouTubeInjectorFrameJSHandler::NativePipMode() {
   if (!EnsureConnected()) {
     return;
   }
-  // auto* web_frame = render_frame_->GetWebFrame();
   youtube_injector_->NativePipMode();
 }
 

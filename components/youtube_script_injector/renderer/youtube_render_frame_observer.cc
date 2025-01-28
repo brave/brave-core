@@ -8,6 +8,7 @@
  #include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"
 
  #include "content/public/renderer/render_frame.h"
+ #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
  #include "third_party/blink/public/platform/web_isolated_world_info.h"
  #include "third_party/blink/public/platform/web_url.h"
  #include "third_party/blink/public/web/web_local_frame.h"
@@ -26,11 +27,34 @@
  void YouTubeRenderFrameObserver::DidCreateScriptContext(
      v8::Local<v8::Context> context,
      int32_t world_id) {
-   if (!render_frame()->IsMainFrame() || world_id_ != world_id) {
+ }
+
+ void YouTubeRenderFrameObserver::DidStartNavigation(const GURL& url,
+   std::optional<blink::WebNavigationType> navigation_type) {
+   url_ = url;
+}
+
+ void YouTubeRenderFrameObserver::DidFinishLoad() {
+   if (!render_frame()->IsMainFrame()) {
       return;
    }
 
    if (!YouTubeRegistry::IsYouTubeDomain(url_)) {
+      return;
+   }
+
+   blink::WebLocalFrame* web_frame = render_frame()->GetWebFrame();
+   v8::Isolate* isolate = web_frame->GetAgentGroupScheduler()->Isolate();
+
+    v8::HandleScope handle_scope(isolate);
+
+    v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
+    if (context.IsEmpty()) {
+        return;
+    }
+
+   int32_t world_id =  web_frame->GetScriptContextWorldId(context);
+   if (world_id_ != world_id) {
       return;
    }
 
@@ -42,14 +66,6 @@
    }
 
    native_javascript_handle_->AddJavaScriptObjectToFrame(context);
- }
-
- void YouTubeRenderFrameObserver::DidStartNavigation(const GURL& url,
-   std::optional<blink::WebNavigationType> navigation_type) {
-   url_ = url;
-}
-
- void YouTubeRenderFrameObserver::DidFinishLoad() {
  }
 
  void YouTubeRenderFrameObserver::OnDestruct() {
