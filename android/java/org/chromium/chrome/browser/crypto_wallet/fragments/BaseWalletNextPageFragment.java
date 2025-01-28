@@ -98,7 +98,7 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
     @Nullable
     protected NetworkModel getNetworkModel() {
-        Activity activity = requireActivity();
+        Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getNetworkModel();
         }
@@ -108,7 +108,7 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
     @Nullable
     protected KeyringModel getKeyringModel() {
-        Activity activity = requireActivity();
+        Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getKeyringModel();
         }
@@ -118,7 +118,7 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
     @Nullable
     protected KeyringService getKeyringService() {
-        Activity activity = requireActivity();
+        Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getKeyringService();
         }
@@ -128,7 +128,7 @@ public abstract class BaseWalletNextPageFragment extends Fragment {
 
     @Nullable
     protected JsonRpcService getJsonRpcService() {
-        Activity activity = requireActivity();
+        Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getJsonRpcService();
         }
