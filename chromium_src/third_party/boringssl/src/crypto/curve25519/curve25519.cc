@@ -5,12 +5,11 @@
 
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
 
-#include "src/third_party/boringssl/src/crypto/curve25519/curve25519.c"
+#include "src/third_party/boringssl/src/crypto/curve25519/curve25519.cc"
 
 #ifdef UNSAFE_BUFFERS_BUILD
 #pragma allow_unsafe_buffers
 #endif
-
 
 int ED25519_is_scalar_pruned(const uint8_t scalar[32]) {
   return (scalar[0] & 0b00000111) == 0b00000000 &&
