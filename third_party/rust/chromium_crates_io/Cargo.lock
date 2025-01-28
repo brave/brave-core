@@ -615,7 +615,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.136"
+version = "1.0.137"
 dependencies = [
  "cc",
  "cxxbridge-cmd",
@@ -627,7 +627,7 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.136"
+version = "1.0.137"
 dependencies = [
  "clap",
  "codespan-reporting",
@@ -638,11 +638,11 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-flags"
-version = "1.0.136"
+version = "1.0.137"
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.136"
+version = "1.0.137"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2652,7 +2652,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.14"
+version = "1.0.15"
 
 [[package]]
 name = "unicode-normalization"
