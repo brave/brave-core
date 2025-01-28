@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_INJECTOR_HOST_H_
 #define BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_INJECTOR_HOST_H_
 
-#include <string>
-
 #include "brave/components/youtube_script_injector/common/youtube_injector.mojom.h"
 #include "url/gurl.h"
 
