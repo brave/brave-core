@@ -43,7 +43,7 @@ public class BraveNewsUtils {
     private static Map<Integer, DisplayAd> sCurrentDisplayAds;
     private static String mLocale;
     private static List<Channel> mChannelList;
-    private static List<Publisher> mGlobalPublisherList;
+    private static List<Publisher> sGlobalPublisherList;
     private static List<Publisher> mPublisherList;
     private static List<Channel> mFollowingChannelList;
     private static List<Publisher> mFollowingPublisherList;
@@ -219,8 +219,8 @@ public class BraveNewsUtils {
 
     public static void setFollowingPublisherList() {
         List<Publisher> publisherList = new ArrayList<>();
-        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
-            for (Publisher publisher : mGlobalPublisherList) {
+        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : sGlobalPublisherList) {
                 if (publisher.userEnabledStatus == UserEnabled.ENABLED
                         || (publisher.type == PublisherType.DIRECT_SOURCE
                                 && publisher.userEnabledStatus != UserEnabled.DISABLED)) {
@@ -276,8 +276,8 @@ public class BraveNewsUtils {
 
     public static List<Publisher> searchPublisher(String search) {
         List<Publisher> publisherList = new ArrayList<>();
-        if (mGlobalPublisherList != null && mGlobalPublisherList.size() > 0) {
-            for (Publisher publisher : mGlobalPublisherList) {
+        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : sGlobalPublisherList) {
                 if (publisher.publisherName.toLowerCase(Locale.ROOT).contains(search)
                         || publisher.categoryName.toLowerCase(Locale.ROOT).contains(search)
                         || publisher.feedSource.url.toLowerCase(Locale.ROOT).contains(search)
@@ -292,11 +292,13 @@ public class BraveNewsUtils {
 
     public static boolean searchPublisherForRss(String feedUrl) {
         boolean isFound = false;
-        for (Publisher publisher : mGlobalPublisherList) {
-            if (publisher.feedSource.url.equalsIgnoreCase(feedUrl)
-                    || publisher.siteUrl.url.equalsIgnoreCase(feedUrl)) {
-                isFound = true;
-                break;
+        if (sGlobalPublisherList != null && sGlobalPublisherList.size() > 0) {
+            for (Publisher publisher : sGlobalPublisherList) {
+                if (publisher.feedSource.url.equalsIgnoreCase(feedUrl)
+                        || publisher.siteUrl.url.equalsIgnoreCase(feedUrl)) {
+                    isFound = true;
+                    break;
+                }
             }
         }
         return isFound;
@@ -369,7 +371,7 @@ public class BraveNewsUtils {
 
         Collections.sort(globalPublisherList, compareByName);
 
-        mGlobalPublisherList = globalPublisherList;
+        sGlobalPublisherList = globalPublisherList;
 
         Collections.sort(publisherList, compareByName);
 
