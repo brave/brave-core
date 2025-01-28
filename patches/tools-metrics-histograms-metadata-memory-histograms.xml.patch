@@ -1,0 +1,85 @@
+diff --git a/tools/metrics/histograms/metadata/memory/histograms.xml b/tools/metrics/histograms/metadata/memory/histograms.xml
+index def2bd6b0ba3b1257b9b78ccbf934d0276490047..67d0365b331d54d2b81a698f4e17b6c1fe16a246 100644
+--- a/tools/metrics/histograms/metadata/memory/histograms.xml
++++ b/tools/metrics/histograms/metadata/memory/histograms.xml
+@@ -436,6 +436,21 @@ chromium-metrics-reviews@google.com.
+   <summary>TBD.</summary>
+ </histogram>
+ 
++<histogram name="Memory.CommitAvailableMB" units="MB"
++    expires_after="2025-06-29">
++  <owner>aattar@google.com</owner>
++  <owner>catan-team@chromium.org</owner>
++  <summary>
++    Reported for Windows only. This represents the amount of virtual memory
++    currently available for the system to commit, measured in megabytes. This
++    value is obtained directly from the ullAvailPageFile field of the
++    MEMORYSTATUSEX struct returned by the GlobalMemoryStatusEx API. It indicates
++    the remaining capacity for applications to commit memory before reaching the
++    system's commit limit. This value is recorded at the same time as the
++    current memory pressure signal.
++  </summary>
++</histogram>
++
+ <histogram name="Memory.CommitLimitMB" units="MB" expires_after="2025-06-29">
+   <owner>aattar@google.com</owner>
+   <owner>catan-team@chromium.org</owner>
+@@ -462,19 +477,6 @@ chromium-metrics-reviews@google.com.
+   </summary>
+ </histogram>
+ 
+-<histogram name="Memory.CommitRemainingMB" units="MB"
+-    expires_after="2025-06-29">
+-  <owner>aattar@google.com</owner>
+-  <owner>catan-team@chromium.org</owner>
+-  <summary>
+-    Reported for Windows only. Calculated as CommitLimit - TotalCommit, this
+-    metric indicates the amount of virtual memory still available for
+-    commitment. It shows how much &quot;headroom&quot;; the system has before it
+-    runs out of committable memory. This value is recorded at the same time as
+-    the current memory pressure signal.
+-  </summary>
+-</histogram>
+-
+ <histogram name="Memory.Discardable.FreelistSize.Foreground" units="KiB"
+     expires_after="2023-03-05">
+   <owner>thiabaud@google.com</owner>
+@@ -1340,6 +1342,19 @@ chromium-metrics-reviews@google.com.
+   <summary>The memory size freed by each low memory kill event.</summary>
+ </histogram>
+ 
++<histogram name="Memory.MemoryStatusRetrievalSuccess" enum="Boolean"
++    expires_after="2025-06-29">
++  <owner>aattar@google.com</owner>
++  <owner>catan-team@chromium.org</owner>
++  <summary>
++    Reported for Windows only. This status indicates whether the system
++    successfully retrieved memory status via a call to GlobalMemoryStatusEx. The
++    successful retrieval of memory status is a prerequisite for emitting metrics
++    like Memory.CommitLimitMB and Memory.CommitAvailableMB. This helps diagnose
++    issues with memory metric collection on Windows systems.
++  </summary>
++</histogram>
++
+ <histogram name="Memory.NativeLibrary.MappedAndResidentMemoryFootprint3"
+     units="KB" expires_after="2025-05-11">
+   <owner>lizeb@chromium.org</owner>
+@@ -1750,18 +1765,6 @@ chromium-metrics-reviews@google.com.
+   </summary>
+ </histogram>
+ 
+-<histogram name="Memory.PerformanceInfoRetrievalSuccess" enum="Boolean"
+-    expires_after="2025-06-29">
+-  <owner>aattar@google.com</owner>
+-  <owner>catan-team@chromium.org</owner>
+-  <summary>
+-    Reported for Windows only. This status indicates whether the system
+-    successfully collected memory performance information, such as
+-    Memory.CommitLimitMB. This helps diagnose issues with memory metric
+-    collection on Windows systems.
+-  </summary>
+-</histogram>
+-
+ <histogram name="Memory.PreFreeze2.Gpu.PrivateMemoryFootprint.{Timing}"
+     units="MiB" expires_after="2025-02-01">
+   <owner>thiabaud@google.com</owner>
