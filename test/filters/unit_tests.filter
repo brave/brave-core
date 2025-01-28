@@ -680,11 +680,6 @@
 -RecentTabsSubMenuModelTest.OtherDevices
 -RecentTabsSubMenuModelTest.OtherDevicesDynamicUpdate
 
-# These tests are disabled because we disable creation of UserEducationService
-# for regular and guest profiles.
--BrowserFeaturePromoController*
--NewTabPageFeaturePromoHelperTest.*
-
 # zoom_level.display_name is "(Brave error pages)"
 -SiteSettingsHandlerTest.ZoomLevels
 
