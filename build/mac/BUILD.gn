@@ -474,28 +474,30 @@ action("create_dmg") {
   ]
 }
 
-action("sign_dmg") {
-  script = "//build/gn_run_binary.py"
-  shell_script = "sign_dmg.sh"
+_upstream_signed_dmg_path = "$root_out_dir/$mac_signed_output_prefix/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full.dmg"
 
+action("_sign_dmg") {
+  deps = [
+    "//chrome:chrome_app",
+    "//chrome/installer/mac",
+    "//chrome/updater/mac:browser_install_script",
+  ]
+  script = "$packaging_dir/sign_chrome.py"
   args = [
-    rebase_path(shell_script, root_build_dir),
-    rebase_path(unsigned_dmg_path),
-    rebase_path(signed_dmg_path),
-    keychain_db,
+    "--input",
+    rebase_path(root_build_dir, root_build_dir),
+    "--output",
+    rebase_path("$root_out_dir/signed", root_build_dir),
+    "--identity",
     mac_signing_identifier,
-    "-r=designated => identifier \"$chrome_product_full_name\" and certificate leaf = H\"$mac_signing_identifier\"",
   ]
+  outputs = [ _upstream_signed_dmg_path ]
+}
 
-  inputs = [
-    script,
-    shell_script,
-    unsigned_dmg_path,
-  ]
-
-  outputs = [ "${root_out_dir}/$mac_signed_output_prefix/$brave_dmg" ]
-
-  deps = [ ":create_dmg" ]
+copy("sign_dmg") {
+  deps = [ ":_sign_dmg" ]
+  sources = [ _upstream_signed_dmg_path ]
+  outputs = [ signed_dmg_path ]
 }
 
 group("finalize_dmg_pkg") {
