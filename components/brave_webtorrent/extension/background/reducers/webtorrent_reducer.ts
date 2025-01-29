@@ -59,7 +59,7 @@ const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
 
     // Use an existing infoHash if it's the same torrentId
     const torrentUrl = parsedURL.origin + parsedURL.pathname
-    const key = (Object.keys(torrentStateMap) as unknown as (keyof TorrentStateMap)[]).find(
+    const key = (Object.keys(torrentStateMap) as unknown as Array<keyof TorrentStateMap>).find(
       (key) =>
         torrentStateMap[key].infoHash &&
         torrentStateMap[key].torrentId === torrentUrl
@@ -209,7 +209,7 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
   })
 
   const tabClients: Set<number> = new Set<number>()
-    ; (Object.keys(torrentStateMap) as unknown as (keyof TorrentStateMap)[])
+    ; (Object.keys(torrentStateMap) as unknown as Array<keyof TorrentStateMap>)
       .filter((key) => torrentStateMap[key].infoHash === infoHash)
       .map((key) => {
         tabClients.add(torrentStateMap[key].tabId)

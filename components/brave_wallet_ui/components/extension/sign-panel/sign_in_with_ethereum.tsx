@@ -57,7 +57,8 @@ export const getKeyLocale = (key: string) => {
     : getLocale(localeString)
 }
 
-const getFormattedKeyValue = (key: keyof BraveWallet.SIWEMessage, data?: BraveWallet.SIWEMessage) => {
+const getFormattedKeyValue = (key: keyof BraveWallet.SIWEMessage,
+  data?: BraveWallet.SIWEMessage) => {
   if (!data?.[key]) {
     return ''
   }
@@ -143,7 +144,8 @@ export const SignInWithEthereum = (props: Props) => {
           fullHeight={true}
           padding='0px 16px'
         >
-          {dataKeys.map((objectKey: keyof BraveWallet.SIWEMessage, key: number) => (
+          {dataKeys.map((objectKey: keyof BraveWallet.SIWEMessage,
+            key: number) => (
             <React.Fragment key={objectKey}>
               <Row
                 justifyContent='flex-start'

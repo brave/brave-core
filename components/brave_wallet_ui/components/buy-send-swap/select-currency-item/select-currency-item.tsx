@@ -46,8 +46,9 @@ export const SelectCurrencyItem = (props: Props) => {
   }, [currency])
 
   const currencySymbol = React.useMemo(() => {
-    return CurrencySymbols[currency.currencyCode as keyof typeof CurrencySymbols]
-      ? CurrencySymbols[currency.currencyCode as keyof typeof CurrencySymbols]
+    const code = currency.currencyCode as keyof typeof CurrencySymbols
+    return CurrencySymbols[code]
+      ? CurrencySymbols[code]
       : currency.currencyCode.charAt(0)
   }, [currency.currencyCode])
 

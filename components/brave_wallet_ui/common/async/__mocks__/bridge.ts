@@ -1396,7 +1396,7 @@ export class MockedWalletApiProxy {
         errorResponse: '',
         errorString: '',
         response: this
-          .evmSimulationResponse as BraveWallet.EVMSimulationResponse
+          .evmSimulationResponse!
       }
     },
     scanSolanaTransaction: async (request, language) => {
@@ -1404,7 +1404,7 @@ export class MockedWalletApiProxy {
         errorResponse: '',
         errorString: '',
         response: this
-          .svmSimulationResponse as BraveWallet.SolanaSimulationResponse
+          .svmSimulationResponse!
       }
     }
   }

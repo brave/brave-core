@@ -18,10 +18,14 @@ export const sortCoinMarkets = (
   columnId: MarketGridColumnTypes
 ) => {
   if (sortOrder === 'asc') {
-    // @ts-expect-error
+    // @ts-expect-error - there are some soundness issues here - not all
+    // columnIds exist on CoinMarket and not all properties in a CoinMarket are
+    // numbers.
     return marketData.sort((a, b) => a[columnId] - b[columnId])
   } else {
-    // @ts-expect-error
+    // @ts-expect-error - there are some soundness issues here - not all
+    // columnIds exist on CoinMarket and not all properties in a CoinMarket are
+    // numbers.
     return marketData.sort((a, b) => b[columnId] - a[columnId])
   }
 }

@@ -212,7 +212,7 @@ function NameEditField ({
           }
         }}
       />
-      <StyledLengthLabel onClick={() => {inputRef.current?.focus()}}>
+      <StyledLengthLabel onClick={() => { inputRef.current?.focus() }}>
         {currentLength}/{maxNameLength}
       </StyledLengthLabel>
     </NameEditFieldContainer>

@@ -101,7 +101,8 @@ export const getAddressLabel = (
   accounts?: EntityState<BraveWallet.AccountInfo>
 ): string => {
   if (!accounts) {
-    return registry[address.toLowerCase() as keyof typeof registry] ?? reduceAddress(address)
+    return registry[address.toLowerCase() as keyof typeof registry]
+      ?? reduceAddress(address)
   }
   return (
     registry[address.toLowerCase() as keyof typeof registry] ??

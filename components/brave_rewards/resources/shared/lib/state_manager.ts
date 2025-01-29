@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 type Listener<State> = (state: State) => void
 
@@ -23,7 +24,7 @@ export function createStateManager<State>(
   }
 
   function update(source: Partial<State>) {
-    for (const [key, value] of Object.entries(source) as [keyof State, any][]) {
+    for (const [key, value] of Object.entries(source) as Array<[keyof State, any]>) {
       if (value !== undefined) {
         state[key] = value
       }

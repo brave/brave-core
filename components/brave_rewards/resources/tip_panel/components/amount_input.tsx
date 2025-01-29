@@ -114,7 +114,8 @@ export function AmountInput (props: Props) {
   function onCustomInputMounted (elem: HTMLElement | null) {
     // Expose a programmatic way to update the value in browser tests.
     if (elem) {
-      // @ts-ignore
+      // @ts-expect-error - Symbol.for('updateCustomAmountForTesting') doesn't
+      // exist on HTMLElement
       elem[Symbol.for('updateCustomAmountForTesting')] = updateCustomAmount
     }
   }

@@ -19,7 +19,7 @@ import { ContentSettingsType } from 'gen/components/content_settings/core/common
 
 import Toggle from '../../../../../web-components/toggle'
 
-interface WebcompatSettingsMap {[index: ContentSettingsType]: boolean}
+interface WebcompatSettingsMap { [index: ContentSettingsType]: boolean }
 
 const kLearnMoreLink = 'https://support.brave.com/hc/en-us/articles/360022806212-How-do-I-use-Shields-while-browsing#h_01HXSZ8JPHR8YMBEZCT5M0VZTR'
 

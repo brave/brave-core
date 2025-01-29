@@ -262,7 +262,8 @@ export default class Amount {
       maximumFractionDigits: maxDecimals
     }
 
-    if (currency && CurrencySymbols[currency.toUpperCase() as keyof typeof CurrencySymbols]) {
+    const currencyCode = currency?.toUpperCase() as keyof typeof CurrencySymbols
+    if (currency && CurrencySymbols[currencyCode]) {
       options.style = 'currency'
       options.currency = currency
       options.currencyDisplay = 'narrowSymbol'
