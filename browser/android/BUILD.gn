@@ -56,5 +56,9 @@ source_set("tab_features") {
     "tab_features_android.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//chrome/browser/profiles:profile",
+    "//content/public/browser",
+  ]
 }
