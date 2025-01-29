@@ -581,26 +581,21 @@ void RewardsPageHandler::GetRewardsNotifications(
   }
   std::vector<mojom::RewardsNotificationPtr> notifications;
   for (auto [_, value] : notification_service->GetAllNotifications()) {
-    std::optional<mojom::RewardsNotificationType> type;
+    auto type = mojom::RewardsNotificationType::kGeneral;
     switch (value.type_) {
       case RewardsNotificationService::REWARDS_NOTIFICATION_TIPS_PROCESSED:
         type = mojom::RewardsNotificationType::kTipsProcessed;
         break;
-      case RewardsNotificationService::REWARDS_NOTIFICATION_GENERAL:
-        type = mojom::RewardsNotificationType::kGeneral;
-        break;
       default:
         break;
     }
-    if (type) {
-      auto notification = mojom::RewardsNotification::New();
-      notification->id = value.id_;
-      notification->type = type.value();
-      notification->timestamp =
-          base::Time::FromSecondsSinceUnixEpoch(value.timestamp_);
-      notification->args = /* copy */ value.args_;
-      notifications.push_back(std::move(notification));
-    }
+    auto notification = mojom::RewardsNotification::New();
+    notification->id = value.id_;
+    notification->type = type;
+    notification->timestamp =
+        base::Time::FromSecondsSinceUnixEpoch(value.timestamp_);
+    notification->args = /* copy */ value.args_;
+    notifications.push_back(std::move(notification));
   }
   std::move(callback).Run(std::move(notifications));
 }
