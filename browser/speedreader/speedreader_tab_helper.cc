@@ -76,6 +76,7 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(
   dom_distiller::AddObserver(web_contents, this);
   speedreader_service_observation_.Observe(GetSpeedreaderService());
   tts_player_observation_.Observe(speedreader::TtsPlayer::GetInstance());
+  is_visible_ = web_contents->GetVisibility() != content::Visibility::HIDDEN;
 }
 
 SpeedreaderTabHelper::~SpeedreaderTabHelper() {
