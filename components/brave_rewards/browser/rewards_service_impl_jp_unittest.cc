@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/browser/test_util.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_browser_process.h"

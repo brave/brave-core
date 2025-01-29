@@ -1228,7 +1228,6 @@ static_library("internal") {
     "//base",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
-    "//brave/components/brave_rewards/core",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/components/constants",
     "//brave/components/l10n/common",

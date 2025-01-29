@@ -21,7 +21,7 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"

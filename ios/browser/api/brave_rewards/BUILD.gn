@@ -31,7 +31,7 @@ source_set("brave_rewards") {
     ":rewards_mojom_wrappers",
     "//base",
     "//brave/components/brave_rewards/common",
-    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/engine",
     "//brave/ios/browser/api/common",
     "//components/os_crypt/sync",
     "//net:net",

@@ -10,7 +10,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_engine_internal.mojom.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 

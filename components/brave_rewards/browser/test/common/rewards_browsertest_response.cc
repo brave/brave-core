@@ -17,9 +17,9 @@
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
-#include "brave/components/brave_rewards/core/publisher/prefix_util.h"
-#include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
-#include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
+#include "brave/components/brave_rewards/core/engine/publisher/prefix_util.h"
+#include "brave/components/brave_rewards/core/engine/publisher/protos/channel_response.pb.h"
+#include "brave/components/brave_rewards/core/engine/publisher/protos/publisher_prefix_list.pb.h"
 #include "chrome/test/base/ui_test_utils.h"
 
 namespace {
