@@ -75,16 +75,39 @@ function Action(props: NotificationActionViewProps) {
   )
 }
 
+function useAutoDismissCheck(notification: Notification) {
+  const [externalWallet] = useAppState((state) => [state.externalWallet])
+
+  // Auto-dismiss "disconnected" notifications if the user is now connected.
+  if (notification.type === 'external-wallet-disconnected' &&
+      externalWallet && externalWallet.authenticated) {
+    return true
+  }
+
+  return false
+}
+
 interface Props {
   notification: Notification
 }
 
 export function NotificationModal(props: Props) {
   const model = React.useContext(AppModelContext)
+  const autoDismiss = useAutoDismissCheck(props.notification)
   const View = getNotificationView(props.notification)
 
   function dismiss() {
     model.clearNotification(props.notification.id)
+  }
+
+  React.useEffect(() => {
+    if (autoDismiss) {
+      dismiss()
+    }
+  }, [autoDismiss, props.notification.id])
+
+  if (autoDismiss) {
+    return null
   }
 
   return (
