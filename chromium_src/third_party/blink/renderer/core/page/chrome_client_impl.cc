@@ -16,19 +16,21 @@
 #include "ui/display/screen_infos.h"
 #include "ui/gfx/geometry/rect.h"
 
-struct ScreenSize {
-  int width;
-  int height;
-  constexpr ScreenSize(int width, int height) : width(width), height(height) {}
-};
-
-constexpr auto allowed_desktop_screen_sizes = std::array<ScreenSize, 7>{
-    ScreenSize(1280, 800),  ScreenSize(1366, 768),  ScreenSize(1440, 900),
-    ScreenSize(1680, 1050), ScreenSize(1920, 1080), ScreenSize(2560, 1440),
-    ScreenSize(3840, 2160),
-};
-
 namespace blink {
+
+namespace {
+
+constexpr auto allowed_desktop_screen_sizes = std::to_array<const gfx::Size>({
+    gfx::Size(1280, 800),
+    gfx::Size(1366, 768),
+    gfx::Size(1440, 900),
+    gfx::Size(1680, 1050),
+    gfx::Size(1920, 1080),
+    gfx::Size(2560, 1440),
+    gfx::Size(3840, 2160),
+});
+
+}  // namespace
 
 const display::ScreenInfos& ChromeClientImpl::BraveGetScreenInfos(
     LocalFrame& frame) const {
@@ -41,13 +43,13 @@ const display::ScreenInfos& ChromeClientImpl::BraveGetScreenInfos(
     return GetScreenInfos(frame);
   }
   display::ScreenInfo screen_info = GetScreenInfo(frame);
-  screen_info.rect = gfx::Rect(allowed_desktop_screen_sizes.back().width,
-                               allowed_desktop_screen_sizes.back().height);
+  screen_info.rect = gfx::Rect(allowed_desktop_screen_sizes.back().width(),
+                               allowed_desktop_screen_sizes.back().height());
   const int outerWidth = dom_window->outerWidth();
   const int outerHeight = dom_window->outerHeight();
   for (const auto& size : allowed_desktop_screen_sizes) {
-    if (size.width >= outerWidth && size.height >= outerHeight) {
-      screen_info.rect = gfx::Rect(size.width, size.height);
+    if (size.width() >= outerWidth && size.height() >= outerHeight) {
+      screen_info.rect = gfx::Rect(size.width(), size.height());
       break;
     }
   }
