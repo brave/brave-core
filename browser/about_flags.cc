@@ -397,7 +397,7 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
           "brave-ai-host-specific-distillation",                               \
           "Brave AI Host-Specific Distillation",                               \
           "Enables support for host-specific distillation scripts",            \
-          kOsWin | kOsMac | kOsLinux,                                          \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(ai_chat::features::kCustomSiteDistillerScripts),  \
       },                                                                       \
       {                                                                        \
