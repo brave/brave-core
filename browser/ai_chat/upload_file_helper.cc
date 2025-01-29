@@ -16,6 +16,8 @@
 #include "services/data_decoder/public/cpp/data_decoder.h"
 #include "services/data_decoder/public/cpp/decode_image.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "third_party/skia/include/core/SkCanvas.h"
+#include "third_party/skia/include/core/SkImage.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/shell_dialogs/selected_file_info.h"
 
@@ -30,6 +32,43 @@ namespace ai_chat {
 
 namespace {
 using UploadImageCallback = mojom::AIChatUIHandler::UploadImageCallback;
+
+SkBitmap ScaleBitmap(const SkBitmap& bitmap) {
+  constexpr int kTargetWidth = 1024;
+  constexpr int kTargetHeight = 768;
+
+  SkBitmap scaled_bitmap;
+  scaled_bitmap.allocN32Pixels(kTargetWidth, kTargetHeight);
+
+  SkCanvas canvas(scaled_bitmap);
+  canvas.clear(SK_ColorTRANSPARENT);
+
+  // Use high-quality scaling options
+  SkSamplingOptions sampling_options(SkFilterMode::kLinear,
+                                     SkMipmapMode::kLinear);
+
+  // Maintain aspect ratio while fitting within target dimensions
+  float src_aspect = static_cast<float>(bitmap.width()) / bitmap.height();
+  float dst_aspect = static_cast<float>(kTargetWidth) / kTargetHeight;
+
+  SkRect dst_rect;
+  if (src_aspect > dst_aspect) {
+    // Source is wider - fit to width
+    float scaled_height = kTargetWidth / src_aspect;
+    float y_offset = (kTargetHeight - scaled_height) / 2;
+    dst_rect = SkRect::MakeXYWH(0, y_offset, kTargetWidth, scaled_height);
+  } else {
+    // Source is taller - fit to height
+    float scaled_width = kTargetHeight * src_aspect;
+    float x_offset = (kTargetWidth - scaled_width) / 2;
+    dst_rect = SkRect::MakeXYWH(x_offset, 0, scaled_width, kTargetHeight);
+  }
+
+  // Draw scaled bitmap with high-quality sampling
+  canvas.drawImageRect(bitmap.asImage(), dst_rect, sampling_options);
+
+  return scaled_bitmap;
+}
 }  // namespace
 
 UploadFileHelper::UploadFileHelper(content::WebContents* web_contents,
@@ -49,6 +88,7 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
       profile_->last_selected_directory(), &info, 0,
       base::FilePath::StringType(), web_contents_->GetTopLevelNativeWindow(),
       nullptr);
+
   upload_image_callback_ = std::move(callback);
 }
 
@@ -108,7 +148,8 @@ void UploadFileHelper::OnImageSanitized(std::string filename,
                                         const SkBitmap& decoded_bitmap) {
   auto encode_image = base::BindOnce(
       [](const SkBitmap& decoded_bitmap) {
-        return gfx::PNGCodec::EncodeBGRASkBitmap(decoded_bitmap, false);
+        return gfx::PNGCodec::EncodeBGRASkBitmap(ScaleBitmap(decoded_bitmap),
+                                                 false);
       },
       decoded_bitmap);
   auto on_image_encoded = base::BindOnce(&UploadFileHelper::OnImageEncoded,
