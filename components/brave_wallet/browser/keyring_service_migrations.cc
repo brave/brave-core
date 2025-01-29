@@ -326,8 +326,7 @@ void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,
 
     auto deprecated_encryptor =
         PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-            password, *deprecated_salt, kPbkdf2IterationsLegacy,
-            kPbkdf2KeySize);
+            password, *deprecated_salt, kPbkdf2IterationsLegacy);
     if (!deprecated_encryptor) {
       continue;
     }
@@ -342,7 +341,7 @@ void MaybeMigratePBKDF2Iterations(PrefService* profile_prefs,
                                                     /*force_create = */ true);
 
     auto encryptor = PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-        password, salt, kPbkdf2Iterations, kPbkdf2KeySize);
+        password, salt, kPbkdf2Iterations);
     if (!encryptor) {
       continue;
     }
@@ -420,7 +419,7 @@ void MaybeMigrateToWalletMnemonic(PrefService* profile_prefs,
 
   auto deprecated_eth_encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          password, *deprecated_eth_salt, kPbkdf2Iterations, kPbkdf2KeySize);
+          password, *deprecated_eth_salt, kPbkdf2Iterations);
   if (!deprecated_eth_encryptor) {
     return;
   }
@@ -491,7 +490,7 @@ void MaybeMigrateToWalletMnemonic(PrefService* profile_prefs,
 
     auto deprecated_encryptor =
         PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-            password, *deprecated_salt, kPbkdf2Iterations, kPbkdf2KeySize);
+            password, *deprecated_salt, kPbkdf2Iterations);
     if (!deprecated_encryptor) {
       continue;
     }

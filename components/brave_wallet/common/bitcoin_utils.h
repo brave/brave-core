@@ -31,7 +31,7 @@ struct DecodedBitcoinAddress {
   DecodedBitcoinAddress();
   DecodedBitcoinAddress(BitcoinAddressType address_type,
                         std::vector<uint8_t> pubkey_hash,
-                        bool testnet = false);
+                        bool testnet);
   ~DecodedBitcoinAddress();
   DecodedBitcoinAddress(const DecodedBitcoinAddress& other);
   DecodedBitcoinAddress& operator=(const DecodedBitcoinAddress& other);

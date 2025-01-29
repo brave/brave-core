@@ -26,16 +26,15 @@ class HDKeyEd25519Slip23 {
  public:
   using PassKey = base::PassKey<HDKeyEd25519Slip23>;
 
-  HDKeyEd25519Slip23();
   HDKeyEd25519Slip23(
       PassKey,
       base::span<const uint8_t, kSlip23ScalarSize> scalar,
       base::span<const uint8_t, kSlip23PrefixSize> prefix,
       base::span<const uint8_t, kSlip23ChainCodeSize> chain_code,
       base::span<const uint8_t, kEd25519PublicKeySize> public_key);
+  HDKeyEd25519Slip23(const HDKeyEd25519Slip23&);
+  HDKeyEd25519Slip23& operator=(const HDKeyEd25519Slip23&);
   ~HDKeyEd25519Slip23();
-  HDKeyEd25519Slip23(const HDKeyEd25519Slip23&) = delete;
-  HDKeyEd25519Slip23& operator=(const HDKeyEd25519Slip23&) = delete;
 
   static std::unique_ptr<HDKeyEd25519Slip23> GenerateMasterKeyFromBip39Entropy(
       base::span<const uint8_t> entropy);

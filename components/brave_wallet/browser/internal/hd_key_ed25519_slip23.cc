@@ -9,19 +9,21 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "crypto/hmac.h"
+#include "crypto/kdf.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
-#include "third_party/boringssl/src/include/openssl/evp.h"
 
 namespace brave_wallet {
 
 namespace {
+
+// https://github.com/cardano-foundation/CIPs/blob/master/CIP-0003/Icarus.md
+inline constexpr uint32_t kCardanoIcarusMasterIterations = 4096;
 
 // https://datatracker.ietf.org/doc/html/rfc8032#section-5.1.5
 // requires scalar to follow this requirements 'The lowest 3 bits of the first
@@ -100,8 +102,10 @@ std::array<uint8_t, kSlip23ChainCodeSize> CalculateDerivedChainCode(
 
 }  // namespace
 
-HDKeyEd25519Slip23::HDKeyEd25519Slip23() = default;
 HDKeyEd25519Slip23::~HDKeyEd25519Slip23() = default;
+HDKeyEd25519Slip23::HDKeyEd25519Slip23(const HDKeyEd25519Slip23&) = default;
+HDKeyEd25519Slip23& HDKeyEd25519Slip23::operator=(const HDKeyEd25519Slip23&) =
+    default;
 
 // Child key derivation constructor.
 HDKeyEd25519Slip23::HDKeyEd25519Slip23(
@@ -177,10 +181,10 @@ HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(
              kSlip23ScalarSize + kSlip23PrefixSize + kSlip23ChainCodeSize>
       xprv;
   std::string passphrase;
-  if (PKCS5_PBKDF2_HMAC(passphrase.data(), passphrase.size(), entropy.data(),
-                        entropy.size(), 4096, EVP_sha512(), xprv.size(),
-                        xprv.data())) {
-  } else {
+
+  if (!crypto::kdf::DeriveKeyPbkdf2HmacSha512(
+          {.iterations = kCardanoIcarusMasterIterations}, {},
+          base::as_byte_span(entropy), xprv)) {
     return nullptr;
   }
 

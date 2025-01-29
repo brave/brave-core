@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_wallet/external_wallets_importer.h"
 
+#include <memory>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -376,7 +377,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          password, *salt_decoded, 600000, 256);
+          password, *salt_decoded, 600000);
   DCHECK(encryptor);
 
   auto decrypted_keyrings =
@@ -385,7 +386,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     // Also try with legacy 10K iterations.
     std::unique_ptr<PasswordEncryptor> encryptor_10k =
         PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-            password, *salt_decoded, 10000, 256);
+            password, *salt_decoded, 10000);
     DCHECK(encryptor_10k);
 
     decrypted_keyrings =

@@ -8,8 +8,7 @@
 #include "base/containers/span.h"
 #include "base/strings/strcat.h"
 #include "brave/third_party/bip39wally-core-native/include/wally_bip39.h"
-#include "third_party/boringssl/src/include/openssl/digest.h"
-#include "third_party/boringssl/src/include/openssl/evp.h"
+#include "crypto/kdf.h"
 
 namespace brave_wallet::bip39 {
 
@@ -60,14 +59,13 @@ std::optional<std::vector<uint8_t>> MnemonicToSeed(
 
   std::vector<uint8_t> seed(kSeedSize, 0);
   const std::string salt = base::StrCat({"mnemonic", passphrase});
-  if (PKCS5_PBKDF2_HMAC(mnemonic.data(), mnemonic.length(),
-                        base::as_byte_span(salt).data(), salt.length(),
-                        kPBKDF2Iterations, EVP_sha512(), seed.size(),
-                        seed.data())) {
-    return seed;
-  }
 
-  return std::nullopt;
+  if (!crypto::kdf::DeriveKeyPbkdf2HmacSha512({.iterations = kPBKDF2Iterations},
+                                              base::as_byte_span(mnemonic),
+                                              base::as_byte_span(salt), seed)) {
+    return std::nullopt;
+  }
+  return seed;
 }
 
 std::optional<std::vector<uint8_t>> MnemonicToEntropy(

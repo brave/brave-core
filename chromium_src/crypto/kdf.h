@@ -22,11 +22,23 @@ CRYPTO_EXPORT bool DeriveKeyScryptNoCheck(const ScryptParams& params,
 struct Pbkdf2HmacSha256Params {
   // BoringSSL uses a uint32_t for the iteration count for PBKDF2, so we match
   // that.
-  uint32_t iterations;
+  uint32_t iterations = 0;
 };
 
 CRYPTO_EXPORT bool DeriveKeyPbkdf2HmacSha256(
     const kdf::Pbkdf2HmacSha256Params& params,
+    base::span<const uint8_t> password,
+    base::span<const uint8_t> salt,
+    base::span<uint8_t> result);
+
+struct Pbkdf2HmacSha512Params {
+  // BoringSSL uses a uint32_t for the iteration count for PBKDF2, so we match
+  // that.
+  uint32_t iterations = 0;
+};
+
+CRYPTO_EXPORT bool DeriveKeyPbkdf2HmacSha512(
+    const kdf::Pbkdf2HmacSha512Params& params,
     base::span<const uint8_t> password,
     base::span<const uint8_t> salt,
     base::span<uint8_t> result);

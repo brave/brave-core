@@ -26,24 +26,15 @@ TEST(PasswordEncryptorUnitTest, CreateSalt) {
 }
 
 TEST(PasswordEncryptorUnitTest, DeriveKeyFromPasswordUsingPbkdf2) {
-  EXPECT_EQ(PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-                "password", base::byte_span_from_cstring("salt"), 100, 64),
-            nullptr);
   EXPECT_NE(PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-                "password", base::byte_span_from_cstring("salt"), 100, 128),
-            nullptr);
-  EXPECT_NE(PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-                "password", base::byte_span_from_cstring("salt"), 100, 256),
-            nullptr);
-  EXPECT_EQ(PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-                "password", base::byte_span_from_cstring("salt"), 0, 256),
+                "password", base::byte_span_from_cstring("salt"), 100),
             nullptr);
 }
 
 TEST(PasswordEncryptorUnitTest, EncryptAndDecrypt) {
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password", base::byte_span_from_cstring("salt"), 100, 256);
+          "password", base::byte_span_from_cstring("salt"), 100);
   const std::vector<uint8_t> nonce(12, 0xAB);
   auto ciphertext =
       encryptor->Encrypt(base::byte_span_from_cstring("bravo"), nonce);
@@ -65,26 +56,26 @@ TEST(PasswordEncryptorUnitTest, EncryptAndDecrypt) {
   // password mismatch
   std::unique_ptr<PasswordEncryptor> encryptor2 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password2", base::byte_span_from_cstring("salt"), 100, 256);
+          "password2", base::byte_span_from_cstring("salt"), 100);
   EXPECT_FALSE(encryptor2->Decrypt(ciphertext, nonce));
 
   // salt mismatch
   std::unique_ptr<PasswordEncryptor> encryptor3 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password", base::byte_span_from_cstring("salt2"), 100, 256);
+          "password", base::byte_span_from_cstring("salt2"), 100);
   EXPECT_FALSE(encryptor3->Decrypt(ciphertext, nonce));
 
   // iteration mismatch
   std::unique_ptr<PasswordEncryptor> encryptor4 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password", base::byte_span_from_cstring("salt"), 200, 256);
+          "password", base::byte_span_from_cstring("salt"), 200);
   EXPECT_FALSE(encryptor4->Decrypt(ciphertext, nonce));
 }
 
 TEST(PasswordEncryptorUnitTest, EncryptToDictAndDecryptFromDict) {
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password", base::byte_span_from_cstring("salt"), 100, 256);
+          "password", base::byte_span_from_cstring("salt"), 100);
   const std::vector<uint8_t> nonce(12, 0xAB);
   auto encrypted_dict =
       encryptor->EncryptToDict(base::byte_span_from_cstring("bravo"), nonce);
@@ -126,26 +117,26 @@ TEST(PasswordEncryptorUnitTest, EncryptToDictAndDecryptFromDict) {
   // password mismatch
   std::unique_ptr<PasswordEncryptor> encryptor2 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password2", base::byte_span_from_cstring("salt"), 100, 256);
+          "password2", base::byte_span_from_cstring("salt"), 100);
   EXPECT_FALSE(encryptor2->DecryptFromDict(encrypted_dict));
 
   // salt mismatch
   std::unique_ptr<PasswordEncryptor> encryptor3 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password", base::byte_span_from_cstring("salt2"), 100, 256);
+          "password", base::byte_span_from_cstring("salt2"), 100);
   EXPECT_FALSE(encryptor3->DecryptFromDict(encrypted_dict));
 
   // iteration mismatch
   std::unique_ptr<PasswordEncryptor> encryptor4 =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password", base::byte_span_from_cstring("salt"), 200, 256);
+          "password", base::byte_span_from_cstring("salt"), 200);
   EXPECT_FALSE(encryptor4->DecryptFromDict(encrypted_dict));
 }
 
 TEST(PasswordEncryptorUnitTest, DecryptForImporter) {
   std::unique_ptr<PasswordEncryptor> encryptor =
       PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-          "password", base::byte_span_from_cstring("salt"), 100, 256);
+          "password", base::byte_span_from_cstring("salt"), 100);
   const std::vector<uint8_t> nonce_12(12, 0xAB);
   const std::vector<uint8_t> nonce_16(16, 0xAB);
 
