@@ -379,7 +379,12 @@ test("brave_unit_tests") {
     deps += [ "//brave/components/web_discovery/browser:unit_tests" ]
   }
 
-  data = [ "data/" ]
+  data = [
+    "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
+    "//brave/test/data",
+    "//chrome/test/data/extensions",
+    "//components/test/data/update_client/updatecheck_reply_1.json",
+  ]
 
   public_deps = [
     ":brave_test_support_unit",
@@ -711,6 +716,10 @@ if (!is_android) {
       "//third_party/re2",
     ]
 
+    data = [
+      "//brave/test/data",
+    ]
+
     if (toolkit_views) {
       deps += [ "//brave/components/sidebar/browser" ]
     }
@@ -1010,6 +1019,23 @@ test("brave_browser_tests") {
     "//ui/views",
   ]
 
+  data = [
+    "//.vpython3",
+    "//brave/test/data",
+    "//chrome/test/data",
+    "//content/test/data",
+    "//extensions/test/data",
+    "//net/tools/testserver",
+    "//third_party/depot_tools/cipd",
+    "//third_party/depot_tools/cipd_bin_setup.sh",
+    "//third_party/depot_tools/cipd_client_version",
+    "//third_party/depot_tools/cipd_client_version.digests",
+    "//third_party/depot_tools/cipd_manifest.txt",
+    "//third_party/depot_tools/cipd_manifest.versions",
+    "//third_party/depot_tools/vpython3",
+    "//third_party/pywebsocket3",
+  ]
+
   if (is_mac) {
     sources += [
       "//brave/browser/brave_app_controller_mac_browsertest.mm",
@@ -1214,7 +1240,7 @@ test("brave_browser_tests") {
         "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"
     android_manifest_dep = ":brave_browser_tests_manifest"
 
-    data = [
+    data += [
       "$root_out_dir/brave_resources.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/chrome_100_percent.pak",
       "$root_gen_dir/chrome/android/chrome_apk_paks/locales/en-US.pak",
@@ -1222,8 +1248,6 @@ test("brave_browser_tests") {
       "$root_gen_dir/components/components_resources.pak",
       "$root_gen_dir/components/dev_ui_components_resources.pak",
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
-      "//brave/test/data",
-      "//chrome/test/data",
     ]
 
     deps -= android_test_exception_deps
