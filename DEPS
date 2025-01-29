@@ -92,7 +92,7 @@ hooks = [
     'condition': 'checkout_mac',
     'action': ['vpython3', 'build/download_dep.py',
                'omaha4/BraveUpdater-132.1.76.11.zip',
-               '//build/mac_files/omaha4'],
+               '//third_party/updater/chrome_mac_universal_prod/cipd'],
   },
   {
     'name': 'update_pip',
