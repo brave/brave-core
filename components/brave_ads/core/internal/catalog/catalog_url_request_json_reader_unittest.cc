@@ -292,8 +292,9 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   wallpaper.image_url = GURL("https://brave.com/2/test2.jpg");
   wallpaper.focal_point =
       CatalogNewTabPageAdWallpaperFocalPointInfo{.x = 1'000, .y = 1'200};
-  wallpaper.condition_matchers.emplace("brave.today.opted_in", "1");
   catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper);
+  catalog_creative_new_tab_page_ad.payload.condition_matchers.emplace(
+      "brave.today.opted_in", "1");
 
   catalog_creative_new_tab_page_ads.push_back(catalog_creative_new_tab_page_ad);
 

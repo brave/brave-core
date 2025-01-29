@@ -524,6 +524,8 @@ static_library("internal") {
     "creatives/creative_ad_util.h",
     "creatives/creative_ads_database_table.cc",
     "creatives/creative_ads_database_table.h",
+    "creatives/creative_ads_database_table_util.cc",
+    "creatives/creative_ads_database_table_util.h",
     "creatives/creative_ads_database_util.cc",
     "creatives/creative_ads_database_util.h",
     "creatives/creative_daypart_info.h",

@@ -14,11 +14,11 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "url/gurl.h"
 
@@ -43,6 +43,7 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kInt,     // total_max
       mojom::DBBindColumnType::kDouble,  // value
       mojom::DBBindColumnType::kString,  // split_test_group
+      mojom::DBBindColumnType::kString,  // condition_matchers
       mojom::DBBindColumnType::kString   // target_url
   };
 }
@@ -65,6 +66,8 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
     BindColumnInt(mojom_db_action, index++, creative_ad.total_max);
     BindColumnDouble(mojom_db_action, index++, creative_ad.value);
     BindColumnString(mojom_db_action, index++, creative_ad.split_test_group);
+    BindColumnString(mojom_db_action, index++,
+                     ConditionMatchersToString(creative_ad.condition_matchers));
     BindColumnString(mojom_db_action, index++, creative_ad.target_url.spec());
 
     ++row_count;
@@ -85,8 +88,10 @@ CreativeAdInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
   creative_ad.per_month = ColumnInt(mojom_db_row, 4);
   creative_ad.total_max = ColumnInt(mojom_db_row, 5);
   creative_ad.value = ColumnDouble(mojom_db_row, 6);
-  creative_ad.split_test_group = ColumnString(mojom_db_row, 13);
-  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 7));
+  creative_ad.split_test_group = ColumnString(mojom_db_row, 7);
+  creative_ad.condition_matchers =
+      StringToConditionMatchers(ColumnString(mojom_db_row, 8));
+  creative_ad.target_url = GURL(ColumnString(mojom_db_row, 9));
 
   return creative_ad;
 }
@@ -239,6 +244,7 @@ void CreativeAds::Create(
         total_max INTEGER NOT NULL DEFAULT 0,
         value DOUBLE NOT NULL DEFAULT 0,
         split_test_group TEXT,
+        condition_matchers TEXT NOT NULL,
         target_url TEXT NOT NULL
       );)");
 }
@@ -249,8 +255,8 @@ void CreativeAds::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 45: {
-      MigrateToV45(mojom_db_transaction);
+    case 46: {
+      MigrateToV46(mojom_db_transaction);
       break;
     }
   }
@@ -258,7 +264,7 @@ void CreativeAds::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativeAds::MigrateToV45(
+void CreativeAds::MigrateToV46(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
@@ -287,10 +293,11 @@ std::string CreativeAds::BuildInsertSql(
             total_max,
             value,
             split_test_group,
+            condition_matchers,
             target_url
           ) VALUES $2;)",
       {GetTableName(),
-       BuildBindColumnPlaceholders(/*column_count=*/9, row_count)},
+       BuildBindColumnPlaceholders(/*column_count=*/10, row_count)},
       nullptr);
 }
 

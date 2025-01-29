@@ -177,8 +177,7 @@ void EligibleNewTabPageAdsV2::ApplyConditionMatcher(
 
   std::erase_if(creative_ads, [this](const auto& creative_ad) {
     return creative_ad.wallpapers.size() != 1 ||
-           !MatchConditions(&pref_provider_,
-                            creative_ad.wallpapers[0].condition_matchers);
+           !MatchConditions(&pref_provider_, creative_ad.condition_matchers);
   });
 }
 

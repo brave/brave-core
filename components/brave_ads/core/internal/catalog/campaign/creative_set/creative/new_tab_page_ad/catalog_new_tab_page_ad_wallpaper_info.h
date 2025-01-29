@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
-#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -31,7 +30,6 @@ struct CatalogNewTabPageAdWallpaperInfo final {
 
   GURL image_url;
   CatalogNewTabPageAdWallpaperFocalPointInfo focal_point;
-  ConditionMatcherMap condition_matchers;
 };
 
 using CatalogNewTabPageAdWallpaperList =

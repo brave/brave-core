@@ -38,6 +38,7 @@ bool CreativeAdInfo::operator==(const CreativeAdInfo& other) const {
          base::IsApproximatelyEqual(value, other.value,
                                     std::numeric_limits<double>::epsilon()) &&
          split_test_group == other.split_test_group &&
+         condition_matchers == other.condition_matchers &&
          segment == other.segment && geo_targets == other.geo_targets &&
          target_url == other.target_url && dayparts == other.dayparts;
 }

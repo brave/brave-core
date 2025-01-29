@@ -381,7 +381,7 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
                      wallpaper_node["conditionMatchers"].GetArray()) {
                   if (condition_matchers_node["prefPath"].IsString() &&
                       condition_matchers_node["condition"].IsString()) {
-                    wallpaper.condition_matchers.emplace(
+                    creative.payload.condition_matchers.emplace(
                         condition_matchers_node["prefPath"].GetString(),
                         condition_matchers_node["condition"].GetString());
                   }
