@@ -37,8 +37,9 @@ class BraveEducationPageUIBrowserTest : public InProcessBrowserTest {
     message_data_ = message_data;
     auto* web_contents = chrome_test_utils::GetActiveWebContents(this);
     ASSERT_TRUE(content::ExecJs(web_contents, R"(
-      const iframe = document.getElementById('content')
-      iframe.src = "chrome://webui-test/"
+      const app = document.querySelector('brave-education-app')
+      app.url_ = 'chrome://webui-test/'
+      app.shadowRoot.querySelector('#content').src = app.url_
     )"));
   }
 
