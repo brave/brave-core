@@ -20,11 +20,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
+import org.chromium.chrome.browser.BraveConfig;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.base.BraveFeatureList;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -228,7 +231,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     view -> {
                         if (mCurrentStep == 0 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
-                        } else if (mCurrentStep == getWDPPageStep()) {
+                        } else if (isWDPNativeEnabled() && mCurrentStep == getWDPPageStep()) {
                             UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
                                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
                             nextOnboardingStep();
@@ -285,7 +288,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
             mIvBrave.setVisibility(View.VISIBLE);
             showAnalyticsConsentPage();
-        } else if (mCurrentStep == getWDPPageStep()) {
+        } else if (isWDPNativeEnabled() && mCurrentStep == getWDPPageStep()) {
             showWDPPage();
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
@@ -300,6 +303,11 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             finish();
             sendFirstRunCompleteIntent();
         }
+    }
+
+    private boolean isWDPNativeEnabled() {
+        return BraveConfig.WEB_DISCOVERY_ENABLED
+                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WEB_DISCOVERY_NATIVE);
     }
 
     private int getAnalyticsConsentPageStep() {
