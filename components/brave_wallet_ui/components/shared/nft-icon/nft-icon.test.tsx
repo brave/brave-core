@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from '@testing-library/react'
+import { render, act } from '@testing-library/react'
 
 // components
 import { NftIcon } from './nft-icon'
@@ -16,27 +16,30 @@ import {
 } from '../../../utils/test-utils'
 
 describe('NFT Icon', () => {
-  it('Should attempt IPFS gateway lookup when given an IPFS token image URL', () => {
+  it('Should attempt IPFS gateway lookup when given an IPFS token image URL', async () => {
     const mockStore = createMockStore({})
     const dispatchSpy = jest.spyOn(mockStore, 'dispatch')
 
-    render(
-      <NftIcon icon='ipfs://QmXyZ' />,
-      renderComponentOptionsWithMockStore(mockStore)
-    )
+    await act(async () => {
+      render(
+        <NftIcon icon='ipfs://QmXyZ' />,
+        renderComponentOptionsWithMockStore(mockStore)
+      )
+    })
 
-    // should call the gateway lookup action
     expect(dispatchSpy).toBeCalledTimes(1)
   })
 
-  it('Should NOT attempt IPFS gateway lookup when given an IPFS token image URL', () => {
+  it('Should NOT attempt IPFS gateway lookup when given an IPFS token image URL', async () => {
     const mockStore = createMockStore({})
     const dispatchSpy = jest.spyOn(mockStore, 'dispatch')
 
-    render(
-      <NftIcon icon='brave.com' />,
-      renderComponentOptionsWithMockStore(mockStore)
-    )
+    await act(async () => {
+      render(
+        <NftIcon icon='brave.com' />,
+        renderComponentOptionsWithMockStore(mockStore)
+      )
+    })
 
     // should not call the gateway lookup action
     expect(dispatchSpy).toBeCalledTimes(0)

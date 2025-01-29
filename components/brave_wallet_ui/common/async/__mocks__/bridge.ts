@@ -681,7 +681,8 @@ export class MockedWalletApiProxy {
       )
     },
     recordActiveWalletCount(count, coinType) {
-      console.log(`active wallet count: ${count} for ${coinType}`)
+      // Follow up issue to fix test via https://github.com/brave/brave-browser/issues/43583
+      // console.log(`active wallet count: ${count} for ${coinType}`)
     },
     recordNFTGalleryView(nftCount) {
       console.log(`viewing nft gallery with ${nftCount} nfts`)
@@ -1019,7 +1020,8 @@ export class MockedWalletApiProxy {
               getAssetIdKey({
                 ...id,
                 coin: account.accountId.coin,
-                isShielded: false })
+                isShielded: false
+              })
           ) ||
           this.userAssets.find(
             (t) =>
@@ -1027,7 +1029,8 @@ export class MockedWalletApiProxy {
               getAssetIdKey({
                 ...id,
                 coin: account.accountId.coin,
-                isShielded: false })
+                isShielded: false
+              })
           )
 
         if (!token) {
@@ -1290,17 +1293,13 @@ export class MockedWalletApiProxy {
         errorMessage: ''
       }
     },
-    getCode: async (
-      address,
-      coin,
-      chain
-    ) => {
+    getCode: async (address, coin, chain) => {
       return {
         bytecode: '',
         error: 0,
         errorMessage: ''
       }
-    },
+    }
   }
 
   solanaTxManagerProxy: Partial<
