@@ -75,17 +75,6 @@ extension BrowserViewController {
     let popover = PopoverController(contentController: braveRewardsPanel)
     popover.addsConvenientDismissalMargins = false
     popover.present(from: topToolbar.rewardsButton, on: self)
-    popover.popoverDidDismiss = { [weak self] _ in
-      guard let self = self else { return }
-      if let tabId = self.tabManager.selectedTab?.rewardsId,
-        self.rewards.rewardsAPI?.selectedTabId == 0
-      {
-        // Show the tab currently visible
-        self.rewards.rewardsAPI?.selectedTabId = tabId
-      }
-    }
-    // Hide the current tab
-    rewards.rewardsAPI?.selectedTabId = 0
   }
 
   @objc func resetNTPNotification() {
@@ -205,10 +194,6 @@ extension Tab {
         textContent: textContent
       )
     }
-  }
-
-  func reportPageNavigation(to rewards: BraveRewards) {
-    rewards.reportTabNavigation(tabId: self.rewardsId)
   }
 }
 

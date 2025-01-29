@@ -1230,10 +1230,6 @@ public class BrowserViewController: UIViewController {
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     updateToolbarUsingTabManager(tabManager)
-
-    if let tabId = tabManager.selectedTab?.rewardsId, rewards.rewardsAPI?.selectedTabId == 0 {
-      rewards.rewardsAPI?.selectedTabId = tabId
-    }
   }
 
   public override func viewIsAppearing(_ animated: Bool) {
@@ -1349,7 +1345,6 @@ public class BrowserViewController: UIViewController {
     screenshotHelper.viewIsVisible = false
     super.viewWillDisappear(animated)
 
-    rewards.rewardsAPI?.selectedTabId = 0
     view.window?.windowScene?.userActivity = nil
   }
 
@@ -1923,7 +1918,6 @@ public class BrowserViewController: UIViewController {
           let rewardsURL = tab.rewardsXHRLoadURL,
           url.host == rewardsURL.host
         {
-          tab.reportPageNavigation(to: rewards)
           if let url = webView.url {
             tab.reportPageLoad(to: rewards, redirectChain: [url])
           }
@@ -2640,7 +2634,6 @@ extension BrowserViewController: TabDelegate {
       DownloadContentScriptHandler(browserController: self),
       PlaylistScriptHandler(tab: tab),
       PlaylistFolderSharingScriptHandler(),
-      RewardsReportingScriptHandler(rewards: rewards),
       AdsMediaReportingScriptHandler(rewards: rewards),
       ReadyStateScriptHandler(),
       DeAmpScriptHandler(),

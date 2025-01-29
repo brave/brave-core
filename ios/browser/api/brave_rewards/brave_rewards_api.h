@@ -155,25 +155,6 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly, copy) NSString* rewardsDatabasePath;
 
-#pragma mark - Reporting
-
-@property(nonatomic) UInt32 selectedTabId;
-
-/// Report that a page has loaded in the current browser tab, and the HTML is
-/// available for analysis
-- (void)reportLoadedPageWithURL:(NSURL*)url
-                          tabId:(UInt32)tabId
-    NS_SWIFT_NAME(reportLoadedPage(url:tabId:));
-
-- (void)reportXHRLoad:(NSURL*)url
-                tabId:(UInt32)tabId
-        firstPartyURL:(NSURL*)firstPartyURL
-          referrerURL:(nullable NSURL*)referrerURL;
-
-/// Report that a tab with a given id navigated or was closed by the user
-- (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId
-    NS_SWIFT_NAME(reportTabNavigationOrClosed(tabId:));
-
 #pragma mark - Preferences
 
 /// The number of seconds before a publisher is added.

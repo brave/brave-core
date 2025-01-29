@@ -17,9 +17,6 @@ struct UserScriptsDebugView: View {
   private var cookieBlocking = Preferences.UserScript.cookieBlocking
 
   @ObservedObject
-  private var rewardsReporting = Preferences.UserScript.rewardsReporting
-
-  @ObservedObject
   private var mediaBackgroundPlay = Preferences.UserScript.mediaBackgroundPlay
 
   @ObservedObject
@@ -68,8 +65,6 @@ struct UserScriptsDebugView: View {
         Toggle("Block All (Everything below & more!)", isOn: $blockAllScripts.value)
 
         Toggle("Cookie Blocking", isOn: $cookieBlocking.value)
-
-        Toggle("Rewards", isOn: $rewardsReporting.value)
 
         Toggle("Background Play", isOn: $mediaBackgroundPlay.value)
 

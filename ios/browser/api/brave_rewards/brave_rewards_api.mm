@@ -182,18 +182,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
               brave_rewards::internal::RewardsEngine>(
               self->_rewardsClient->MakeRemote(), std::move(options));
         }));
-
-    // Add notifications for standard app foreground/background
-    [NSNotificationCenter.defaultCenter
-        addObserver:self
-           selector:@selector(applicationDidBecomeActive)
-               name:UIApplicationDidBecomeActiveNotification
-             object:nil];
-    [NSNotificationCenter.defaultCenter
-        addObserver:self
-           selector:@selector(applicationDidBackground)
-               name:UIApplicationDidEnterBackgroundNotification
-             object:nil];
   }
   return self;
 }
@@ -642,30 +630,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
           });
         }));
   }];
-}
-
-#pragma mark - Reporting
-
-- (void)setSelectedTabId:(UInt32)selectedTabId {
-  _selectedTabId = selectedTabId;
-}
-
-- (void)applicationDidBecomeActive {
-}
-
-- (void)applicationDidBackground {
-}
-
-- (void)reportLoadedPageWithURL:(NSURL*)url tabId:(UInt32)tabId {
-}
-
-- (void)reportXHRLoad:(NSURL*)url
-                tabId:(UInt32)tabId
-        firstPartyURL:(NSURL*)firstPartyURL
-          referrerURL:(NSURL*)referrerURL {
-}
-
-- (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId {
 }
 
 #pragma mark - Preferences

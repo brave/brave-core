@@ -575,9 +575,6 @@ var braveTarget: PackageDescription.Target = .target(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/TrackingProtectionStats.js"
     ),
     .copy(
-      "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/RewardsReportingScript.js"
-    ),
-    .copy(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletEthereumProviderScript.js"
     ),
     .copy(
