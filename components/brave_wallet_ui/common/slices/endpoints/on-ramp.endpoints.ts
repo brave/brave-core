@@ -231,6 +231,6 @@ export const onRampEndpoints = ({ query }: WalletApiEndpointBuilderParams) => {
 // internals
 function getRampProviderName(onRampProvider: BraveWallet.OnRampProvider) {
   return Object.keys(BraveWallet.OnRampProvider)
-    .find((key) => BraveWallet.OnRampProvider[key] === onRampProvider)
+    .find((key: keyof typeof BraveWallet.OnRampProvider) => BraveWallet.OnRampProvider[key] === onRampProvider)
     ?.substring(1)
 }

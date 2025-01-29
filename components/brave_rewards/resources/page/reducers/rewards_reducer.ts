@@ -67,8 +67,9 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      Object.keys(properties).map((property: string) => {
+      Object.keys(properties).map((property) => {
         if (properties[property] !== undefined && properties[property] !== 'ui') {
+          // @ts-expect-error
           state[property] = properties[property]
         } else if (properties[property] === 'ui') {
           ui = Object.assign(ui, properties[property])
@@ -95,6 +96,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         chrome.send('brave_rewards.saveSetting', [key, value.toString()])
       }
 
+      // @ts-expect-error
       state[key] = value
       break
     }
@@ -191,11 +193,13 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.ON_CLEAR_ALERT: {
       let ui = state.ui
-      if (ui[action.payload.property] === undefined) {
+      const property: keyof typeof ui = action.payload.property
+      if (ui[property] === undefined) {
         break
       }
 
-      ui[action.payload.property] = null
+      // @ts-expect-error
+      ui[property] = null
       state = {
         ...state,
         ui
@@ -309,6 +313,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       if (key) {
         chrome.send('brave_rewards.saveAdsSetting', [key, value.toString()])
         state.adsData = { ...state.adsData }
+        // @ts-expect-error
         state.adsData[key] = value
       }
       break

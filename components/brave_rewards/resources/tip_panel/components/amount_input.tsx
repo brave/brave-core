@@ -39,7 +39,6 @@ function currencyFormatter (currency: string) {
     maximumFractionDigits: 2,
     minimumSignificantDigits: 1,
     maximumSignificantDigits: 1,
-    // @ts-expect-error: "roudingPriority" not yet recognized
     roundingPriority: 'morePrecision',
     roundingMode: 'ceil'
   })
@@ -115,6 +114,7 @@ export function AmountInput (props: Props) {
   function onCustomInputMounted (elem: HTMLElement | null) {
     // Expose a programmatic way to update the value in browser tests.
     if (elem) {
+      // @ts-ignore
       elem[Symbol.for('updateCustomAmountForTesting')] = updateCustomAmount
     }
   }

@@ -31,7 +31,6 @@ const exchangeFormatter = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2,
   minimumSignificantDigits: 1,
   maximumSignificantDigits: 1,
-  // @ts-expect-error: "roudingPriority" not yet recognized
   roundingPriority: 'morePrecision',
   roundingMode: 'ceil'
 })

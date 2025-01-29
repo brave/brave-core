@@ -10,7 +10,7 @@ export interface StateManager<State> {
   addListener: (listener: Listener<State>) => (() => void)
 }
 
-export function createStateManager<State> (
+export function createStateManager<State>(
   initialState: State
 ): StateManager<State> {
   const listeners = new Set<Listener<State>>()
@@ -18,12 +18,12 @@ export function createStateManager<State> (
 
   let sendInitialState = false
 
-  function getState () {
+  function getState() {
     return state
   }
 
-  function update (source: Partial<State>) {
-    for (const [key, value] of Object.entries(source)) {
+  function update(source: Partial<State>) {
+    for (const [key, value] of Object.entries(source) as [keyof State, any][]) {
       if (value !== undefined) {
         state[key] = value
       }
@@ -40,7 +40,7 @@ export function createStateManager<State> (
     }
   }
 
-  function addListener (listener: Listener<State>) {
+  function addListener(listener: Listener<State>) {
     if (!listeners.has(listener)) {
       listeners.add(listener)
       // Send initial state to listeners in a microtask

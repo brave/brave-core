@@ -289,7 +289,7 @@ export function PlaylistItem ({
             {cached ? (
               <>
                 <CachedIcon name='check-circle-outline' />
-                {mediaFileBytes && <span>{formatBytes(mediaFileBytes)}</span>}
+                {!!mediaFileBytes && <span>{formatBytes(mediaFileBytes)}</span>}
               </>
             ) : (
               cachingProgress && (

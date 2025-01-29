@@ -37,7 +37,7 @@ function generateWebcompatEntries (invokedWebcompatList: Number[] | undefined) :
   const names = Object.keys(ContentSettingsType)
   let raw : Array<[string, Number]> = []
   for (const name of names) {
-    const value = ContentSettingsType[name]
+    const value = ContentSettingsType[name as keyof typeof ContentSettingsType]
     if (value > ContentSettingsType.BRAVE_WEBCOMPAT_NONE &&
         value < ContentSettingsType.BRAVE_WEBCOMPAT_ALL &&
         invokedWebcompatList.includes(value)) {
