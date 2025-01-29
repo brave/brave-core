@@ -20,6 +20,7 @@ source_set("web") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/constants",
     "//brave/ios/browser/application_context",
+    "//brave/ios/web_view",
     "//components/component_updater/installer_policies",
     "//components/translate/ios/browser",
     "//ios/chrome/browser/application_context/model",
