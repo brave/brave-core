@@ -35,7 +35,6 @@ namespace {
 //    |_ fullscreen.js
 // See youtube_json.cc for the format of youtube.json.
 
-constexpr size_t kHashSize = 32;
 constexpr char kYouTubeComponentName[] = "Brave YouTube Injector";
 constexpr char kYouTubeComponentId[] = "ninjlighifanhiflenpeafpnanjemako";
 constexpr char kYouTubeComponentBase64PublicKey[] =
@@ -80,7 +79,7 @@ class YouTubeComponentInstallerPolicy
  private:
   const std::string component_id_;
   const std::string component_name_;
-  uint8_t component_hash_[kHashSize];
+  std::string component_hash_;
 };
 
 YouTubeComponentInstallerPolicy::YouTubeComponentInstallerPolicy()
@@ -89,7 +88,7 @@ YouTubeComponentInstallerPolicy::YouTubeComponentInstallerPolicy()
   // Generate hash from public key.
   std::string decoded_public_key;
   base::Base64Decode(kYouTubeComponentBase64PublicKey, &decoded_public_key);
-  crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
+  component_hash_ = crypto::SHA256HashString(decoded_public_key);
 }
 
 bool YouTubeComponentInstallerPolicy::
@@ -129,7 +128,7 @@ base::FilePath YouTubeComponentInstallerPolicy::GetRelativeInstallDir() const {
 
 void YouTubeComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  hash->assign(component_hash_, component_hash_ + kHashSize);
+  hash->assign(component_hash_.begin(), component_hash_.end());
 }
 
 std::string YouTubeComponentInstallerPolicy::GetName() const {
