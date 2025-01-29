@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..d9996a8931038ceebb89b77db255f675f286c6cf 100644
+index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..192d6f564614f97c3456cbf510bc7acb800b2e00 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -195,6 +195,7 @@ if (!is_android && !is_mac) {
@@ -60,9 +60,12 @@ index 9bb34fe40f0cc08cb832ee6728ac8e32458c969b..d9996a8931038ceebb89b77db255f675
        }
  
        extra_substitutions = [
-@@ -915,6 +922,7 @@ if (is_win) {
+@@ -913,8 +920,9 @@ if (is_win) {
+     }
+ 
      if (enable_updater) {
-       if (is_chrome_branded) {
+-      if (is_chrome_branded) {
++      if (true) {
          sources += [ "//third_party/updater/chrome_mac_universal_prod/cipd/${updater_product_full_name}.app" ]
 +      } else if (use_prebuilt_omaha4) { sources += [ "//build/mac_files/omaha4/${updater_product_full_name}.app" ]
        } else {
