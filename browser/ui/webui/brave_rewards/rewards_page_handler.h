@@ -78,6 +78,8 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
       DismissSelfCustodyInviteCallback callback) override;
   void GetPublisherIdForActiveTab(
       GetPublisherIdForActiveTabCallback callback) override;
+  void RefreshPublisher(const std::string& publisher_id,
+                        RefreshPublisherCallback callback) override;
   void GetPublisherInfo(const std::string& publisher_id,
                         GetPublisherInfoCallback callback) override;
   void GetPublisherBanner(const std::string& publisher_id,

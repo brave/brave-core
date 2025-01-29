@@ -57,6 +57,7 @@ export function createModel(): AppModel {
   const isBubble = loadTimeData.getBoolean('isBubble')
   const platform = normalizePlatform(loadTimeData.getString('platform'))
   const creatorParam = new URLSearchParams(location.search).get('creator') ?? ''
+  let lastPublisherRefresh = 0
 
   // Expose the state manager for devtools diagnostic purposes.
   Object.assign(self, {
@@ -196,6 +197,11 @@ export function createModel(): AppModel {
     let id = creatorParam
     if (!id) {
       id = (await pageHandler.getPublisherIdForActiveTab()).publisherId
+    }
+
+    if (Date.now() - lastPublisherRefresh > 1000 * 10) {
+      await pageHandler.refreshPublisher(id)
+      lastPublisherRefresh = Date.now()
     }
 
     const [{ publisherInfo }, { publisherBanner }] = await Promise.all([
