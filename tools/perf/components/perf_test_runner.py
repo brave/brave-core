@@ -236,6 +236,7 @@ class RunableConfiguration:
     if self.common_options.verbose:
       args.extend(['--show-stdout', '--verbose'])
 
+    args.append('--browser-logging-verbosity=non-verbose')
     success, _ = perf_test_utils.GetProcessOutput(
         args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout)
     if success and not local_run:
