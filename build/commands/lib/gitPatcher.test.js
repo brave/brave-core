@@ -121,9 +121,9 @@ describe('Apply Patches', function () {
     // apply again
     const status = await gitPatcher.applyPatches()
     expect(status).toHaveLength(1)
-    expect(status[0]).toHaveProperty('path', file1Name)
-    expect(status[0]).toHaveProperty('error', undefined)
-    expect(status[0]).toHaveProperty('reason', GitPatcher.patchApplyReasons.PATCH_REMOVED)
+    expect(status[0].path).toBe(file1Name)
+    expect(status[0].error).toBeUndefined()
+    expect(status[0].reason).toBe(GitPatcher.patchApplyReasons.PATCH_REMOVED)
     // check file was reset
     const testFile1Content = await fs.readFile(testFile1Path, writeReadFileOptions)
     expect(testFile1Content).toBe(file1InitialContent)
@@ -153,9 +153,9 @@ describe('Apply Patches', function () {
     await fs.writeFile(testFile1PatchPath, 'bad patch', writeReadFileOptions)
     const status = await gitPatcher.applyPatches()
     expect(status).toHaveLength(1)
-    expect(status[0]).toHaveProperty('patchPath', testFile1PatchPath) 
-    expect(status[0]).toHaveProperty('path', undefined)
-    expect(status[0]).toHaveProperty('error')
+    expect(status[0].patchPath).toBe(testFile1PatchPath)
+    expect(status[0].path).toBeUndefined()
+    expect(status[0].error).toBeDefined()
   })
 
   test('handles no patch dir', async function () {
