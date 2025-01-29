@@ -707,10 +707,6 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
                             shields_tab_helper->GetBraveShieldsEnabled() &&
                             shields_tab_helper->GetAdBlockMode() !=
                                 brave_shields::mojom::AdBlockMode::ALLOW;
-#if BUILDFLAG(IS_ANDROID)
-  // Content picker doesn't available for Android.
-  add_block_elements = false;
-#endif  // BUILDFLAG(IS_ANDROID)
   add_block_elements &=
       params_.selection_text.empty() || !params_.link_url.is_empty();
 
@@ -718,6 +714,9 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
   add_block_elements &= page_url.SchemeIsHTTPOrHTTPS();
   add_block_elements &= base::FeatureList::IsEnabled(
       brave_shields::features::kBraveShieldsElementPicker);
+
+  const auto* profile = GetProfile();
+  add_block_elements &= profile && !profile->IsOffTheRecord();
   if (add_block_elements) {
     std::optional<size_t> inspect_index =
         menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_INSPECTELEMENT);
