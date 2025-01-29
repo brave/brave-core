@@ -189,16 +189,16 @@ void WelcomeDOMHandler::HandleGetWelcomeCompleteURL(
   const auto& callback_id = args[0].GetString();
   if (!base::FeatureList::IsEnabled(
           brave_education::features::kShowGettingStartedPage)) {
-    OnGettingStatedServerCheck(callback_id, /* available */ false);
+    OnGettingStartedServerCheck(callback_id, /* available */ false);
     return;
   }
   brave_education_server_checker_.IsServerPageAvailable(
       brave_education::EducationPageType::kGettingStarted,
-      base::BindOnce(&WelcomeDOMHandler::OnGettingStatedServerCheck,
+      base::BindOnce(&WelcomeDOMHandler::OnGettingStartedServerCheck,
                      weak_ptr_factory_.GetWeakPtr(), callback_id));
 }
 
-void WelcomeDOMHandler::OnGettingStatedServerCheck(
+void WelcomeDOMHandler::OnGettingStartedServerCheck(
     const std::string& callback_id,
     bool available) {
   if (!IsJavascriptAllowed()) {

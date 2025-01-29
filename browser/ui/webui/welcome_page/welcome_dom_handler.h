@@ -45,8 +45,8 @@ class WelcomeDOMHandler : public content::WebUIMessageHandler {
   void HandleEnableWebDiscovery(const base::Value::List& args);
   void HandleGetWelcomeCompleteURL(const base::Value::List& args);
 
-  void OnGettingStatedServerCheck(const std::string& callback_id,
-                                  bool available);
+  void OnGettingStartedServerCheck(const std::string& callback_id,
+                                   bool available);
 
   Browser* GetBrowser();
 

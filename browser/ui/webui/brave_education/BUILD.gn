@@ -77,7 +77,7 @@ source_set("unit_tests") {
   testonly = true
 
   sources = [
-    "brave_education_page_handler_unitttest.cc",
+    "brave_education_page_handler_unittest.cc",
     "brave_education_server_checker_unittest.cc",
   ]
 
