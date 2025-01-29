@@ -55,6 +55,7 @@ namespace ai_chat {
 
 class ModelService;
 class AIChatMetrics;
+class AssociatedContentDriver;
 
 // Main entry point for creating and consuming AI Chat conversations
 class AIChatService : public KeyedService,
@@ -122,6 +123,11 @@ class AIChatService : public KeyedService,
       base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
           associated_content);
 
+  void AssociateContent(AssociatedContentDriver* associated_content,
+                        const std::string& conversation_uuid);
+  void DisassociateContent(AssociatedContentDriver* associated_content,
+                           const std::string& conversation_uuid);
+
   // Removes all in-memory and persisted data for all conversations
   void DeleteConversations(std::optional<base::Time> begin_time = std::nullopt,
                            std::optional<base::Time> end_time = std::nullopt);
@@ -181,6 +187,7 @@ class AIChatService : public KeyedService,
   using ConversationMapCallback = base::OnceCallback<void(ConversationMap&)>;
 
   void MaybeInitStorage();
+
   // Called when the database encryptor is ready.
   void OnOsCryptAsyncReady(os_crypt_async::Encryptor encryptor, bool success);
   void LoadConversationsLazy(ConversationMapCallback callback);
