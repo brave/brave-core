@@ -35,25 +35,6 @@ interface RewardsEngine {
 
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
-  OnLoad(VisitData visit_data, uint64 current_time);
-
-  OnUnload(uint32 tab_id, uint64 current_time);
-
-  OnShow(uint32 tab_id, uint64 current_time);
-
-  OnHide(uint32 tab_id, uint64 current_time);
-
-  OnForeground(uint32 tab_id, uint64 current_time);
-
-  OnBackground(uint32 tab_id, uint64 current_time);
-
-  OnXHRLoad(uint32 tab_id,
-            string url,
-            map<string, string> parts,
-            string first_party_url,
-            string referrer,
-            VisitData visit_data);
-
   SetPublisherExclude(string publisher_key, PublisherExclude exclude)
       => (Result result);
 

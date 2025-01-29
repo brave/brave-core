@@ -147,61 +147,6 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       DISABLED_AutoContributionUnconnected) {
-  // Set kEnabled to false before calling CreateRewardsWallet to ensure that
-  // prefs are configured to reflect an unconnected user
-  auto* pref_service = browser()->profile()->GetPrefs();
-  pref_service->SetBoolean(prefs::kEnabled, false);
-  test_util::CreateRewardsWallet(rewards_service_);
-
-  // Visit publisher (this opens a new tab at index 1)
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "duckduckgo.com");
-
-  test_util::WaitForAutoContributeVisitTime();
-
-  // Switch to original tab to trigger saving publisher activity
-  browser()->tab_strip_model()->ActivateTabAt(0);
-
-  // Switch back to publisher tab and verify that we see correct visited count
-  // in Rewards panel
-  browser()->tab_strip_model()->ActivateTabAt(1);
-  test_util::WaitForElementToContain(
-      context_helper_->OpenRewardsPopup().get(),
-      "[data-test-id=publishers-count]",
-      "This month, you've visited 1 creator supported by Brave Rewards");
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       DISABLED_AutoContributionUnconnectedJapan) {
-  // Set kEnabled to false before calling CreateRewardsWallet to ensure that
-  // prefs are configured to reflect an unconnected user
-  auto* pref_service = browser()->profile()->GetPrefs();
-  pref_service->SetBoolean(prefs::kEnabled, false);
-  test_util::CreateRewardsWallet(rewards_service_, "JP");
-
-  // Ensure that auto-contribution is disabled
-  ASSERT_FALSE(pref_service->GetBoolean(prefs::kAutoContributeEnabled));
-
-  // Visit publisher (this opens a new tab at index 1)
-  test_util::NavigateToPublisherPage(browser(), https_server_.get(),
-                                     "duckduckgo.com");
-
-  test_util::WaitForAutoContributeVisitTime();
-
-  // Switch to original tab to trigger saving publisher activity
-  browser()->tab_strip_model()->ActivateTabAt(0);
-
-  // Switch back to publisher tab and verify that we see correct visited count
-  // in Rewards panel
-  browser()->tab_strip_model()->ActivateTabAt(1);
-  test_util::WaitForElementToContain(
-      context_helper_->OpenRewardsPopup().get(),
-      "[data-test-id=publishers-count]",
-      "This month, you've visited 1 creator supported by Brave Rewards");
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        TipVerifiedPublisherWithCustomAmount) {
   contribution_->StartProcessWithBalance(30);
   contribution_->TipPublisher(

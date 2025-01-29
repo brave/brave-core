@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_H_
 
-#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -99,25 +98,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
 
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
-
-  void OnLoad(mojom::VisitDataPtr visit_data, uint64_t current_time) override;
-
-  void OnUnload(uint32_t tab_id, uint64_t current_time) override;
-
-  void OnShow(uint32_t tab_id, uint64_t current_time) override;
-
-  void OnHide(uint32_t tab_id, uint64_t current_time) override;
-
-  void OnForeground(uint32_t tab_id, uint64_t current_time) override;
-
-  void OnBackground(uint32_t tab_id, uint64_t current_time) override;
-
-  void OnXHRLoad(uint32_t tab_id,
-                 const std::string& url,
-                 const base::flat_map<std::string, std::string>& parts,
-                 const std::string& first_party_url,
-                 const std::string& referrer,
-                 mojom::VisitDataPtr visit_data) override;
 
   void SetPublisherExclude(const std::string& publisher_key,
                            mojom::PublisherExclude exclude,
@@ -377,10 +357,6 @@ class RewardsEngine : public mojom::RewardsEngine,
   std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;
   std::unique_ptr<zebpay::ZebPay> zebpay_;
-
-  std::map<uint32_t, mojom::VisitData> current_pages_;
-  uint64_t last_tab_active_time_ = 0;
-  uint32_t last_shown_tab_id_ = -1;
 
   base::OneShotEvent ready_event_;
   base::WeakPtrFactory<RewardsEngine> weak_factory_{this};

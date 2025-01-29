@@ -259,7 +259,6 @@ public class BraveRewards: PreferencesObserver {
 
     let tabId = Int(tab.rewardsId)
     if isSelected {
-      rewardsAPI?.selectedTabId = UInt32(tabId)
       tabRetrieved(tabId, url: url, html: nil)
     }
   }
@@ -309,17 +308,6 @@ public class BraveRewards: PreferencesObserver {
         }
       }
     }
-    rewardsAPI?.reportLoadedPage(url: url, tabId: UInt32(tabId))
-  }
-
-  /// Report any XHR load happening in the page
-  func reportXHRLoad(url: URL, tabId: Int, firstPartyURL: URL, referrerURL: URL?) {
-    rewardsAPI?.reportXHRLoad(
-      url,
-      tabId: UInt32(tabId),
-      firstPartyURL: firstPartyURL,
-      referrerURL: referrerURL
-    )
   }
 
   /// Report that media has started on a tab with a given id
@@ -334,17 +322,11 @@ public class BraveRewards: PreferencesObserver {
     ads.notifyTabDidStopPlayingMedia(tabId)
   }
 
-  /// Report that a tab with a given id navigated to a new page in the same tab
-  func reportTabNavigation(tabId: UInt32) {
-    rewardsAPI?.reportTabNavigationOrClosed(tabId: tabId)
-  }
-
   /// Report that a tab with a given id was closed by the user
   func reportTabClosed(tabId: Int) {
     if ads.isServiceRunning() {
       ads.notifyDidCloseTab(tabId)
     }
-    rewardsAPI?.reportTabNavigationOrClosed(tabId: UInt32(tabId))
   }
 
   private func tabRetrieved(_ tabId: Int, url: URL, html: String?) {

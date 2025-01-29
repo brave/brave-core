@@ -144,17 +144,6 @@ class RewardsService : public KeyedService {
   virtual void GetExcludedList(GetPublisherInfoListCallback callback) = 0;
 
   virtual void RestorePublishers() = 0;
-  virtual void OnLoad(mojom::VisitDataPtr visit_data) = 0;
-  virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
-  virtual void OnUnload(SessionID tab_id) = 0;
-  virtual void OnShow(SessionID tab_id) = 0;
-  virtual void OnHide(SessionID tab_id) = 0;
-  virtual void OnForeground(SessionID tab_id) = 0;
-  virtual void OnBackground(SessionID tab_id) = 0;
-  virtual void OnXHRLoad(SessionID tab_id,
-                         const GURL& url,
-                         const GURL& first_party_url,
-                         const GURL& referrer) = 0;
 
   virtual void GetReconcileStamp(GetReconcileStampCallback callback) = 0;
   virtual void GetPublisherMinVisitTime(

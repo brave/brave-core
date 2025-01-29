@@ -1043,8 +1043,6 @@ extension BrowserViewController: WKNavigationDelegate {
       tab.walletSolProvider?.initialize(eventsListener: tab)
     }
 
-    rewards.reportTabNavigation(tabId: tab.rewardsId)
-
     // Notify of tab changes after navigation completes but before notifying that
     // the tab has loaded, so that any listeners can process the tab changes
     // before the tab is considered loaded.

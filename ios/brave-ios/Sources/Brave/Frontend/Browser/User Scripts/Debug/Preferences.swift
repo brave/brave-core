@@ -19,12 +19,6 @@ extension Preferences {
         default: true
       )
 
-    public static let rewardsReporting =
-      Option<Bool>(
-        key: "userscript.preferences.\(UserScriptManager.ScriptType.rewardsReporting.rawValue)",
-        default: true
-      )
-
     public static let mediaBackgroundPlay =
       Option<Bool>(
         key: "userscript.preferences.\(UserScriptManager.ScriptType.mediaBackgroundPlay.rawValue)",

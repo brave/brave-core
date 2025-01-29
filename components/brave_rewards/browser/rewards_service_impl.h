@@ -142,17 +142,6 @@ class RewardsServiceImpl final : public RewardsService,
 
   void OnGetPublisherInfoList(GetPublisherInfoListCallback callback,
                               std::vector<mojom::PublisherInfoPtr> list);
-  void OnLoad(mojom::VisitDataPtr visit_data) override;
-  void OnLoad(SessionID tab_id, const GURL& url) override;
-  void OnUnload(SessionID tab_id) override;
-  void OnShow(SessionID tab_id) override;
-  void OnHide(SessionID tab_id) override;
-  void OnForeground(SessionID tab_id) override;
-  void OnBackground(SessionID tab_id) override;
-  void OnXHRLoad(SessionID tab_id,
-                 const GURL& url,
-                 const GURL& first_party_url,
-                 const GURL& referrer) override;
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
   void GetPublisherMinVisitTime(
       GetPublisherMinVisitTimeCallback callback) override;
