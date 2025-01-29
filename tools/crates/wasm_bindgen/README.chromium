@@ -1,5 +1,5 @@
 Name: wasm-bindgen
-URL: https://crates.io/crates/wasm-bindgen
+URL: https://crates.io/crates/wasm-bindgen (https://github.com/rustwasm/wasm-bindgen)
 Description: Facilitating high-level interactions between Wasm modules and JavaScript.
 Version: 0.2.100
 Security Critical: no
