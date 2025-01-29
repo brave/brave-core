@@ -5,6 +5,7 @@
 
 #import <WebKit/WebKit.h>
 
+#import "brave/ios/web_view/public/chrome_web_view.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/web/public/web_state.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
@@ -15,8 +16,10 @@ namespace brave {
 void ShouldBlockJavaScript(web::WebState* webState,
                            NSURLRequest* request,
                            WKWebpagePreferences* preferences) {
-  CWVWebView* webView = [CWVWebView webViewForWebState:webState];
-  id<CWVNavigationDelegate> navigationDelegate = webView.navigationDelegate;
+  BraveWebView* webView =
+      static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
 
   if ([navigationDelegate respondsToSelector:@selector
                           (webView:shouldBlockJavaScriptForRequest:)]) {
