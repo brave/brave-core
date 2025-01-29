@@ -106,6 +106,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
                            : mojom::ModelEngineType::LLAMA_REMOTE;
       options->max_associated_content_length = 8000;
       options->long_conversation_warning_character_limit = 9700;
+      options->vision_support = false;
 
       auto model = mojom::Model::New();
       model->key = "chat-leo-expanded";
@@ -127,6 +128,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
                            : mojom::ModelEngineType::CLAUDE_REMOTE;
       options->max_associated_content_length = 180000;
       options->long_conversation_warning_character_limit = 320000;
+      options->vision_support = false;
 
       auto model = mojom::Model::New();
       model->key = "chat-claude-haiku";
@@ -148,6 +150,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
                            : mojom::ModelEngineType::CLAUDE_REMOTE;
       options->max_associated_content_length = 180000;
       options->long_conversation_warning_character_limit = 320000;
+      options->vision_support = true;
 
       auto model = mojom::Model::New();
       model->key = "chat-claude-sonnet";
@@ -171,6 +174,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
                            : mojom::ModelEngineType::LLAMA_REMOTE;
       options->max_associated_content_length = 8000;
       options->long_conversation_warning_character_limit = 9700;
+      options->vision_support = false;
 
       auto model = mojom::Model::New();
       model->key = "chat-basic";
@@ -217,6 +221,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
                            : mojom::ModelEngineType::LLAMA_REMOTE;
       options->max_associated_content_length = 8000;
       options->long_conversation_warning_character_limit = 9700;
+      options->vision_support = true;
 
       auto model = mojom::Model::New();
       model->key = "chat-vision-basic";
