@@ -5,6 +5,9 @@
 
 #include "brave/browser/android/tab_features_android.h"
 
+#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/web_contents.h"
+
 TabFeaturesAndroid::TabFeaturesAndroid(content::WebContents* web_contents,
                                        Profile* profile)
     : TabFeaturesAndroid_Chromium(web_contents, profile) {}
