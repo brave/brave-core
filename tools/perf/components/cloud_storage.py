@@ -17,8 +17,8 @@ _CLOUD_HTTPS_URL = 'https://perf-data.s3.brave.com'
 
 
 class CloudFolder(str, Enum):
-  TEST_PROFILES = 'perf-profiles'
-  CATAPULT_PERF_DATA = 'telemetry-perf-data'
+  TEST_PROFILES = 'perf-profiles'  # 6 months lifetime
+  CATAPULT_PERF_DATA = 'telemetry-perf-data'  # infinite lifetime
 
 
 def UpdateSha1(path: str):
