@@ -14,4 +14,4 @@ Included when redeeming an anonymous confirmation token:
 
 Please add to it!
 
-[^1]: MVP for iOS in Japan.
+[^1]: New tab page ads

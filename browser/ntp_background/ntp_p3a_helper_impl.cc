@@ -21,6 +21,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -51,6 +52,9 @@ constexpr int kCountBuckets[] = {0, 1, 2, 3, 8, 12, 16};
 constexpr char kCreativeViewEventKey[] = "views";
 constexpr char kCreativeClickEventKey[] = "clicks";
 constexpr char kCreativeLandEventKey[] = "lands";
+constexpr char kCreativeMediaPlayEventKey[] = "media_play";
+constexpr char kCreativeMedia25EventKey[] = "media_25";
+constexpr char kCreativeMedia100EventKey[] = "media_100";
 
 constexpr char kCampaignViewedEventKey[] = "viewed";
 constexpr char kCampaignAwareEventKey[] = "aware";
@@ -173,16 +177,47 @@ void NTPP3AHelperImpl::RecordView(const std::string& creative_instance_id,
   UpdateMetricCount(creative_instance_id, kCreativeViewEventKey);
 }
 
-void NTPP3AHelperImpl::RecordClickAndMaybeLand(
+void NTPP3AHelperImpl::RecordNewTabPageAdEvent(
+    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
     const std::string& creative_instance_id) {
   if (!p3a_service_->IsP3AEnabled() || !IsRewardsDisabled(prefs_)) {
     return;
   }
-  UpdateMetricCount(creative_instance_id, kCreativeClickEventKey);
-  landing_check_timer_.Start(
-      FROM_HERE, kStartLandingCheckTime,
-      base::BindOnce(&NTPP3AHelperImpl::OnLandingStartCheck,
-                     base::Unretained(this), creative_instance_id));
+
+  switch (mojom_ad_event_type) {
+    case brave_ads::mojom::NewTabPageAdEventType::kServedImpression:
+    case brave_ads::mojom::NewTabPageAdEventType::kViewedImpression: {
+      // Served impressions are handled by the ads component. Viewed impressions
+      // are handled in `RecordView` which is called when a sponsored ad is be
+      // displayed.
+      NOTREACHED() << "Unexpected mojom::NewTabPageAdEventType: "
+                   << base::to_underlying(mojom_ad_event_type);
+    }
+
+    case brave_ads::mojom::NewTabPageAdEventType::kClicked: {
+      UpdateMetricCount(creative_instance_id, kCreativeClickEventKey);
+      landing_check_timer_.Start(
+          FROM_HERE, kStartLandingCheckTime,
+          base::BindOnce(&NTPP3AHelperImpl::OnLandingStartCheck,
+                         base::Unretained(this), creative_instance_id));
+      break;
+    }
+
+    case brave_ads::mojom::NewTabPageAdEventType::kMediaPlay: {
+      UpdateMetricCount(creative_instance_id, kCreativeMediaPlayEventKey);
+      break;
+    }
+
+    case brave_ads::mojom::NewTabPageAdEventType::kMedia25: {
+      UpdateMetricCount(creative_instance_id, kCreativeMedia25EventKey);
+      break;
+    }
+
+    case brave_ads::mojom::NewTabPageAdEventType::kMedia100: {
+      UpdateMetricCount(creative_instance_id, kCreativeMedia100EventKey);
+      break;
+    }
+  }
 }
 
 void NTPP3AHelperImpl::SetLastTabURL(const GURL& url) {
@@ -332,6 +367,12 @@ void NTPP3AHelperImpl::CleanOldCampaignsAndCreatives() {
           creative_instance_id, kCreativeViewEventKey));
       p3a_service_->RemoveDynamicMetric(BuildCreativeHistogramName(
           creative_instance_id, kCreativeLandEventKey));
+      p3a_service_->RemoveDynamicMetric(BuildCreativeHistogramName(
+          creative_instance_id, kCreativeMediaPlayEventKey));
+      p3a_service_->RemoveDynamicMetric(BuildCreativeHistogramName(
+          creative_instance_id, kCreativeMedia25EventKey));
+      p3a_service_->RemoveDynamicMetric(BuildCreativeHistogramName(
+          creative_instance_id, kCreativeMedia100EventKey));
       it = creative_update->erase(it);
     }
   }
