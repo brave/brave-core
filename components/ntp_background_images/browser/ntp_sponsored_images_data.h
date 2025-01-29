@@ -93,7 +93,7 @@ struct Campaign {
 // For SR, campaign list has only one item.
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
-  NTPSponsoredImagesData(const std::string& json_string,
+  NTPSponsoredImagesData(const base::Value::Dict& data,
                          const base::FilePath& installed_dir);
   NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData& data);

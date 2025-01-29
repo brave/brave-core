@@ -243,12 +243,17 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
   // SR.
   if (IsValidSuperReferralComponentInfo(value)) {
     RegisterSuperReferralComponent();
-    const std::string cached_data = local_pref_->GetString(
+    const std::string cached_json_data = local_pref_->GetString(
         prefs::kNewTabPageCachedSuperReferralComponentData);
-    if (!cached_data.empty()) {
+    if (!cached_json_data.empty()) {
+      std::optional<base::Value> cached_data =
+          base::JSONReader::Read(cached_json_data);
+      if (!cached_data || !cached_data->is_dict()) {
+        return;
+      }
       DVLOG(6) << "Initialize Super Referral Data from cache.";
       sr_images_data_ = std::make_unique<NTPSponsoredImagesData>(
-          cached_data, sr_installed_dir_);
+          cached_data->GetDict(), sr_installed_dir_);
     }
     return;
   }
@@ -540,12 +545,19 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
 void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     bool is_super_referral,
     const std::string& json_string) {
+  std::optional<base::Value> json_value = base::JSONReader::Read(json_string);
+  if (!json_value || !json_value->is_dict()) {
+    DVLOG(2) << "Read json data failed. Invalid JSON data";
+    return;
+  }
+  base::Value::Dict& data = json_value->GetDict();
+
   if (is_super_referral) {
     local_pref_->SetBoolean(
           prefs::kNewTabPageGetInitialSRComponentInProgress,
           false);
-    sr_images_data_ = std::make_unique<NTPSponsoredImagesData>(
-        json_string, sr_installed_dir_);
+    sr_images_data_ =
+        std::make_unique<NTPSponsoredImagesData>(data, sr_installed_dir_);
     // |initial_sr_component_info_| has proper data only for initial component
     // downloading. After that, it's empty. In test, it's also empty.
     if (initial_sr_component_info_) {
@@ -555,8 +567,8 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralComponentData,
                            json_string);
   } else {
-    si_images_data_ = std::make_unique<NTPSponsoredImagesData>(
-        json_string, si_installed_dir_);
+    si_images_data_ =
+        std::make_unique<NTPSponsoredImagesData>(data, si_installed_dir_);
   }
 
   if (is_super_referral && !sr_images_data_->IsValid()) {

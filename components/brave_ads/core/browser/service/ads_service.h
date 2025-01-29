@@ -139,6 +139,12 @@ class AdsService : public KeyedService {
       const std::string& placement_id,
       const std::string& creative_instance_id) = 0;
 
+  // Called to parse and save creative new tab page ads. The callback takes one
+  // argument - `bool` is set to `true` if successful otherwise `false`.
+  virtual void ParseAndSaveCreativeNewTabPageAds(
+      const base::Value::Dict& data,
+      ParseAndSaveCreativeNewTabPageAdsCallback callback) = 0;
+
   // Called when a user views or interacts with a new tab page ad to trigger a
   // `mojom_ad_event_type` event for the specified `placement_id` and
   // `creative_instance_id`. `placement_id` should be a 128-bit random GUID in

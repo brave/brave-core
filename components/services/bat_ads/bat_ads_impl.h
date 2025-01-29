@@ -67,6 +67,9 @@ class BatAdsImpl : public mojom::BatAds {
       brave_ads::mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerInlineContentAdEventCallback callback) override;
 
+  void ParseAndSaveCreativeNewTabPageAds(
+      base::Value::Dict data,
+      ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
