@@ -5,19 +5,16 @@
 
 package org.chromium.chrome.browser.vpn.utils;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.vpn.timer.TimerUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardService;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
@@ -25,8 +22,6 @@ import org.chromium.chrome.browser.vpn.wireguard.WireguardUtils;
 public class BraveVpnProfileUtils {
     private static volatile BraveVpnProfileUtils sBraveVpnProfileUtils;
     private static Object sMutex = new Object();
-
-    private static final int NOTIFICATION_PERMISSION_CODE = 123;
 
     private BraveVpnProfileUtils() {}
 
@@ -67,21 +62,7 @@ public class BraveVpnProfileUtils {
     public void startVpn(Context context) {
         ContextCompat.startForegroundService(context, new Intent(context, WireguardService.class));
         TimerUtils.cancelScheduledVpnAction(context);
-        // For Android 13 (Tiramisu) and above, we need to explicitly request notification
-        // permission
-        if (context != null
-                && context instanceof Activity
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                && ContextCompat.checkSelfPermission(
-                                context, Manifest.permission.POST_NOTIFICATIONS)
-                        != PackageManager.PERMISSION_GRANTED) {
-            // Permission not granted yet, request it from the user via system dialog
-            // This is required for VPN service notifications to show stats
-            ActivityCompat.requestPermissions(
-                    (Activity) context,
-                    new String[] {Manifest.permission.POST_NOTIFICATIONS},
-                    NOTIFICATION_PERMISSION_CODE);
-        }
+        BravePermissionUtils.showNotificationPermissionDialog(context);
     }
 
     public void stopVpn(Context context) {
