@@ -20,14 +20,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.Button;
-import org.chromium.chrome.browser.BraveConfig;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.base.BraveFeatureList;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -41,6 +38,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -231,7 +229,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     view -> {
                         if (mCurrentStep == 0 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
-                        } else if (isWDPNativeEnabled() && mCurrentStep == getWDPPageStep()) {
+                        } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
                             UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
                                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
                             nextOnboardingStep();
@@ -288,7 +286,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
             mIvBrave.setVisibility(View.VISIBLE);
             showAnalyticsConsentPage();
-        } else if (isWDPNativeEnabled() && mCurrentStep == getWDPPageStep()) {
+        } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
             showWDPPage();
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
@@ -305,9 +303,8 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private boolean isWDPNativeEnabled() {
-        return BraveConfig.WEB_DISCOVERY_ENABLED
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WEB_DISCOVERY_NATIVE);
+    private boolean isWDPEnabled() {
+        return BraveConfig.WEB_DISCOVERY_ENABLED;
     }
 
     private int getAnalyticsConsentPageStep() {
