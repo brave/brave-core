@@ -5,7 +5,6 @@
 
 #include "src/third_party/blink/renderer/core/page/chrome_client_impl.cc"
 
-#include <algorithm>
 #include <array>
 
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
