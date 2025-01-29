@@ -12,21 +12,31 @@ private let braveCoreMain: BraveCoreMain = {
   return main
 }()
 
+private class NavDelegate: NSObject, BraveWebViewNavigationDelegate {
+  func webView(_ webView: CWVWebView, shouldBlockJavaScriptFor request: URLRequest) -> Bool {
+    return true
+  }
+}
+
 @dynamicMemberLookup
 class WebViewModel: ObservableObject {
-  @Published var webView: CWVWebView {
+  private let delegate = NavDelegate()
+
+  @Published var webView: BraveWebView {
     didSet {
       setUpObservers()
+      self.webView.navigationDelegate = delegate
     }
   }
 
-  init(webView: CWVWebView) {
+  init(webView: BraveWebView) {
     self.webView = webView
     setUpObservers()
+    self.webView.navigationDelegate = delegate
   }
 
   private func setUpObservers() {
-    func subscriber<Value>(for keyPath: KeyPath<CWVWebView, Value>) -> NSKeyValueObservation {
+    func subscriber<Value>(for keyPath: KeyPath<BraveWebView, Value>) -> NSKeyValueObservation {
       return webView.observe(keyPath, options: [.prior]) { _, change in
         if change.isPrior {
           self.objectWillChange.send()
@@ -48,18 +58,18 @@ class WebViewModel: ObservableObject {
 
   private var observers: [NSKeyValueObservation] = []
 
-  public subscript<T>(dynamicMember keyPath: KeyPath<CWVWebView, T>) -> T {
+  public subscript<T>(dynamicMember keyPath: KeyPath<BraveWebView, T>) -> T {
     webView[keyPath: keyPath]
   }
 }
 
 struct WebView: UIViewRepresentable {
-  var webView: CWVWebView
+  var webView: BraveWebView
 
-  func makeUIView(context: Context) -> CWVWebView {
+  func makeUIView(context: Context) -> BraveWebView {
     webView
   }
-  func updateUIView(_ uiView: CWVWebView, context: Context) {
+  func updateUIView(_ uiView: BraveWebView, context: Context) {
   }
 }
 
