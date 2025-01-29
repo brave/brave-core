@@ -74,7 +74,7 @@ module.exports = async function (env, argv) {
     chunkFilename: '[name].chunk.js',
     publicPath: '/'
   }
-  if (env.module_library_type) {
+  if (env.output_module) {
     output.library = { type: 'module' }
   }
   if (env.output_public_path) {

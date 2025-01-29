@@ -42,7 +42,6 @@ def main():
                              output_module=args.output_module,
                              extra_modules=args.extra_modules,
                              public_asset_path=args.public_asset_path,
-                             module_library_type=args.module_library_type,
                              sync_wasm=args.sync_wasm)
     transpile_web_uis(transpile_options)
     generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0],
@@ -79,7 +78,6 @@ def parse_args():
                         help='Extra paths to find modules',
                         required=False,
                         default=[])
-    parser.add_argument('--module_library_type', action='store_true')
     parser.add_argument('--sync_wasm', action='store_true')
 
     args = parser.parse_args()
@@ -129,9 +127,6 @@ def transpile_web_uis(options):
     # via in a custom variable, comma-separated and with
     # "[name]=[path]" syntax.
     args.append("--env=brave_entries=" + ",".join(options['entry_points']))
-
-    if options['module_library_type']:
-        args.append("--env=module_library_type")
 
     if options['sync_wasm']:
         args.append("--env=sync_wasm")

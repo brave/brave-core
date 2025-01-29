@@ -88,11 +88,9 @@ brave_common_web_compile_inputs = [
 #   rust_packages
 #     An optional list of Cargo.toml files that identify the Rust packages
 #     to be compiled to WASM.
-#   module_library_type
-#     Sets output.library to { type: 'module' } in webpack config.
 #   sync_wasm
-#     Sets experiments.syncWebAssembly to true in webpack config.
-#     If not used, experiments.asyncWebAssembly is set to true.
+#     Synchronous WASM loading (experiments.syncWebAssembly - deprecated).
+#     If not used, we default to asynchronous WASM loading (experiments.asyncWebAssembly).
 template("transpile_web_ui") {
   if (defined(invoker.rust_packages)) {
     rust_to_wasm("build_rust_packages") {
@@ -210,10 +208,6 @@ template("transpile_web_ui") {
 
     if (is_official_build) {
       args += [ "--production" ]
-    }
-
-    if (defined(invoker.module_library_type) && invoker.module_library_type) {
-      args += [ "--module_library_type" ]
     }
 
     if (defined(invoker.sync_wasm) && invoker.sync_wasm) {
