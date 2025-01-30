@@ -34,7 +34,7 @@ export const style = scoped.css`
     }
   }
 
-  &.is-bubble {
+  &.is-auto-resize-bubble {
     width: 392px;
     min-height: 600px;
     max-height: calc(var(--app-screen-height, 950px) - 80px);

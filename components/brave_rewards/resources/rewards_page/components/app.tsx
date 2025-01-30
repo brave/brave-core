@@ -91,8 +91,8 @@ export function App() {
 
   function getClassNames() {
     const list: string[] = []
-    if (embedder.isBubble) {
-      list.push('is-bubble')
+    if (embedder.isAutoResizeBubble) {
+      list.push('is-auto-resize-bubble')
     }
     if (viewType === 'narrow') {
       list.push('is-narrow-view')
