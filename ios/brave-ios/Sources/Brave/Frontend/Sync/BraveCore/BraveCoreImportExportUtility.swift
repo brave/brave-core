@@ -43,14 +43,6 @@ class BraveCoreImportExportUtility {
       "Bookmarks Import - Error Importing while an Import/Export operation is in progress"
     )
 
-    guard let nativePath = nativeURLPathFromURL(path) else {
-      Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
-      DispatchQueue.main.async {
-        completion(false)
-      }
-      return
-    }
-
     state = .importing
     self.queue.async {
       // While accessing document URL from UIDocumentPickerViewController to access the file
@@ -64,7 +56,7 @@ class BraveCoreImportExportUtility {
       }
 
       self.importer.import(
-        fromFile: nativePath,
+        fromFile: path.path,
         topLevelFolderName: Strings.Sync.importFolderName,
         automaticImport: true
       ) { [weak self] state, bookmarks in
@@ -106,14 +98,6 @@ class BraveCoreImportExportUtility {
       "Bookmarks Import - Error Importing while an Import/Export operation is in progress"
     )
 
-    guard let nativePath = nativeURLPathFromURL(path) else {
-      Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
-      DispatchQueue.main.async {
-        completion(false, [])
-      }
-      return
-    }
-
     state = .importing
     self.queue.async {
       // To access a document URL from UIDocumentPickerViewController
@@ -126,7 +110,7 @@ class BraveCoreImportExportUtility {
       }
 
       self.importer.import(
-        fromFile: nativePath,
+        fromFile: path.path,
         topLevelFolderName: Strings.Sync.importFolderName,
         automaticImport: false
       ) { [weak self] state, bookmarks in
@@ -163,17 +147,9 @@ class BraveCoreImportExportUtility {
       "Bookmarks Import - Error Exporting while an Import/Export operation is in progress"
     )
 
-    guard let nativePath = nativeURLPathFromURL(path) else {
-      Logger.module.error("Bookmarks Export - Invalid FileSystem Path")
-      DispatchQueue.main.async {
-        completion(false)
-      }
-      return
-    }
-
     self.state = .exporting
     self.queue.async {
-      self.exporter.export(toFile: nativePath) { [weak self] state in
+      self.exporter.export(toFile: path.path) { [weak self] state in
         guard let self = self, state != .started else { return }
 
         do {
@@ -206,16 +182,6 @@ class BraveCoreImportExportUtility {
     case importing
     case exporting
     case none
-  }
-}
-
-// MARK: - Parsing
-extension BraveCoreImportExportUtility {
-  func nativeURLPathFromURL(_ url: URL) -> String? {
-    return url.withUnsafeFileSystemRepresentation { bytes -> String? in
-      guard let bytes = bytes else { return nil }
-      return String(cString: bytes)
-    }
   }
 }
 
