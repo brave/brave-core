@@ -79,6 +79,12 @@ class WebDiscoverySignatureBasenameTest : public testing::Test {
   void SetUp() override {
     WebDiscoveryService::RegisterProfilePrefs(profile_prefs_.registry());
 
+    base::Time future_mock_time;
+    // Set to fixed date to avoid timing related issues i.e. DST
+    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
+    task_environment_.AdvanceClock(future_mock_time.UTCMidnight() -
+                                   base::Hours(6) - base::Time::Now());
+
     auto action_config = std::make_unique<SourceMapActionConfig>();
     action_config->keys.push_back("q->url");
     action_config->period = 24;
@@ -198,7 +204,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameForFlattenedObj) {
   ASSERT_TRUE(actual_basename);
   EXPECT_EQ(actual_basename->count, 0u);
 
-  auto epoch_period_hours = GetPeriodHoursSinceEpoch(24);
+  auto epoch_period_hours = GetPeriodHoursSinceEpoch(12);
   auto expected_basename = GenerateExpectedBasename(
       "img", 12, 1, expected_flattened_obj->GetList().Clone(), 0u,
       epoch_period_hours);
@@ -224,7 +230,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameSimple) {
   ASSERT_TRUE(actual_basename);
   EXPECT_EQ(actual_basename->count, 0u);
 
-  auto epoch_period_hours = GetPeriodHoursSinceEpoch(24);
+  auto epoch_period_hours = GetPeriodHoursSinceEpoch(12);
   auto expected_basename = GenerateExpectedBasename(
       "basic", 12, 1, std::move(key_list), 0u, epoch_period_hours);
 
