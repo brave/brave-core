@@ -114,11 +114,11 @@ Logo::~Logo() = default;
 
 SponsoredBackground::SponsoredBackground() = default;
 SponsoredBackground::SponsoredBackground(
-    const base::FilePath& image_file_path,
+    const base::FilePath& file_path,
     const gfx::Point& point,
     const Logo& test_logo,
     const std::string& creative_instance_id)
-    : image_file(image_file_path),
+    : file_path(file_path),
       focal_point(point),
       creative_instance_id(creative_instance_id),
       logo(test_logo) {}
@@ -226,7 +226,7 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
       }
 
       SponsoredBackground background;
-      background.image_file = installed_dir.AppendASCII(*image_url);
+      background.file_path = installed_dir.AppendASCII(*image_url);
 
       if (auto* focal_point = wallpaper.FindDict(kWallpaperFocalPointKey)) {
         background.focal_point = {focal_point->FindInt(kXKey).value_or(0),
@@ -343,7 +343,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   data.Set(kWallpaperIDKey, base::Uuid::GenerateRandomV4().AsLowercaseString());
 
   const auto background_file_path =
-      campaign.backgrounds[background_index].image_file;
+      campaign.backgrounds[background_index].file_path;
   const std::string wallpaper_image_url =
       url_prefix + background_file_path.BaseName().AsUTF8Unsafe();
 
@@ -495,7 +495,7 @@ bool NTPSponsoredImagesData::AdInfoMatchesSponsoredImage(
         }
 
         if (base::FilePath::FromUTF8Unsafe(wallpaper_image_filename)
-                .BaseName() != background.image_file.BaseName()) {
+                .BaseName() != background.file_path.BaseName()) {
           return false;
         }
         return wallpaper_info.focal_point.x == background.focal_point.x() &&

@@ -127,7 +127,7 @@
     (const ntp_background_images::SponsoredBackground&)sponsoredBackground {
   auto imagePath =
       [NSURL fileURLWithPath:base::SysUTF8ToNSString(
-                                 sponsoredBackground.image_file.value())];
+                                 sponsoredBackground.file_path.value())];
   auto focalPoint = sponsoredBackground.focal_point.ToCGPoint();
   auto backgroundColor =
       base::SysUTF8ToNSString(sponsoredBackground.background_color);

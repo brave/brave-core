@@ -333,14 +333,14 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_EQ(image_count, campaign.backgrounds.size());
   EXPECT_EQ(696, campaign.backgrounds[0].focal_point.x());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-1.jpg"),
-            campaign.backgrounds[0].image_file.BaseName());
+            campaign.backgrounds[0].file_path.BaseName());
   // Check default value is set if "focalPoint" is missed.
   EXPECT_EQ(0, campaign.backgrounds[1].focal_point.x());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-2.jpg"),
-            campaign.backgrounds[1].image_file.BaseName());
+            campaign.backgrounds[1].file_path.BaseName());
   EXPECT_EQ(0, campaign.backgrounds[2].focal_point.x());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-3.jpg"),
-            campaign.backgrounds[2].image_file.BaseName());
+            campaign.backgrounds[2].file_path.BaseName());
   EXPECT_TRUE(campaign.backgrounds[0].creative_instance_id.empty());
   EXPECT_FALSE(campaign.backgrounds[1].creative_instance_id.empty());
   EXPECT_TRUE(campaign.backgrounds[2].creative_instance_id.empty());
@@ -464,7 +464,7 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
   EXPECT_FALSE(campaign_0.campaign_id.empty());
   EXPECT_EQ(3UL, campaign_0.backgrounds.size());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-1.jpg"),
-            campaign_0.backgrounds[0].image_file.BaseName());
+            campaign_0.backgrounds[0].file_path.BaseName());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("logo.png"),
             campaign_0.backgrounds[0].logo.image_file.BaseName());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("logo-2.png"),
@@ -477,9 +477,9 @@ TEST_F(NTPBackgroundImagesServiceTest, MultipleCampaignsTest) {
   EXPECT_FALSE(campaign_1.campaign_id.empty());
   EXPECT_EQ(2UL, campaign_1.backgrounds.size());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-4.jpg"),
-            campaign_1.backgrounds[0].image_file.BaseName());
+            campaign_1.backgrounds[0].file_path.BaseName());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("background-5.jpg"),
-            campaign_1.backgrounds[1].image_file.BaseName());
+            campaign_1.backgrounds[1].file_path.BaseName());
   EXPECT_EQ(base::FilePath::FromUTF8Unsafe("logo-4.png"),
             campaign_1.backgrounds[1].logo.image_file.BaseName());
   EXPECT_FALSE(campaign_1.backgrounds[0].creative_instance_id.empty());

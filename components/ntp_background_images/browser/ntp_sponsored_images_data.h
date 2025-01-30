@@ -55,8 +55,11 @@ struct Logo {
   ~Logo();
 };
 
+enum class WallpaperType { kImage };
+
 struct SponsoredBackground {
-  base::FilePath image_file;
+  WallpaperType wallpaper_type;
+  base::FilePath file_path;
   gfx::Point focal_point;
   brave_ads::ConditionMatcherMap condition_matchers;
   std::string background_color;
@@ -68,7 +71,7 @@ struct SponsoredBackground {
 
   SponsoredBackground();
   // For unit test.
-  SponsoredBackground(const base::FilePath& image_file_path,
+  SponsoredBackground(const base::FilePath& file_path,
                       const gfx::Point& point,
                       const Logo& test_logo,
                       const std::string& creative_instance_id);
