@@ -495,6 +495,9 @@ action("_sign_dmg") {
     "--identity",
     mac_signing_identifier,
   ]
+  if (!is_official_build) {
+    args += [ "--development" ]
+  }
   outputs = [ _upstream_signed_dmg_path ]
 }
 
