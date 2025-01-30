@@ -15,7 +15,7 @@ action("build_wasm_pack") {
 
   script = "//build/gn_run_binary.py"
 
-  wasm_pack_src = "v0_13/crate"
+  wasm_pack_src = "v0_13_1"
 
   inputs = [
     cargo_exe,
