@@ -26,6 +26,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -90,6 +91,24 @@
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
+
+const flags_ui::FeatureEntry::FeatureParam
+    kZCashShieldedTransactionsDisabled[] = {
+        {"zcash_shielded_transactions_enabled", "false"}};
+
+#if BUILDFLAG(ENABLE_ORCHARD)
+const flags_ui::FeatureEntry::FeatureParam kZCashShieldedTransactionsEnabled[] =
+    {{"zcash_shielded_transactions_enabled", "true"}};
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+
+const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
+    {"- Shielded support disabled", kZCashShieldedTransactionsDisabled,
+     std::size(kZCashShieldedTransactionsDisabled), nullptr},
+#if BUILDFLAG(ENABLE_ORCHARD)
+    {"- Shielded support enabled", kZCashShieldedTransactionsEnabled,
+     std::size(kZCashShieldedTransactionsEnabled), nullptr}
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+};
 
 #define SPEEDREADER_FEATURE_ENTRIES                                        \
   IF_BUILDFLAG(                                                            \
@@ -161,14 +180,11 @@
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kNativeBraveWalletFeature),             \
       },                                                                      \
-      {                                                                       \
-          "brave-wallet-zcash",                                               \
-          "Enable BraveWallet ZCash support",                                 \
-          "Zcash support for native Brave Wallet",                            \
-          kOsDesktop | kOsAndroid,                                            \
-          FEATURE_VALUE_TYPE(                                                 \
-              brave_wallet::features::kBraveWalletZCashFeature),              \
-      },                                                                      \
+      {"brave-wallet-zcash", "Enable BraveWallet ZCash support",              \
+       "Zcash support for native Brave Wallet", kOsDesktop | kOsAndroid,      \
+       FEATURE_WITH_PARAMS_VALUE_TYPE(                                        \
+           brave_wallet::features::kBraveWalletZCashFeature,                  \
+           kZCashFeatureVariations, "BraveWalletZCash")},                     \
       {                                                                       \
           "brave-wallet-bitcoin",                                             \
           "Enable Brave Wallet Bitcoin support",                              \
