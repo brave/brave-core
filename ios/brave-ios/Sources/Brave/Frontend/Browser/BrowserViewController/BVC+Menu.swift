@@ -361,7 +361,11 @@ extension BrowserViewController {
 
   struct PageActionsMenuSection: View {
     var browserViewController: BrowserViewController
+    /// The selected tab's url, or the extracted url from
+    /// error page or reader mode page
     var tabURL: URL
+    /// The selected tab's url
+    var originalTabURL: URL
     var activities: [UIActivity]
 
     @State private var playlistItemAdded: Bool = false
@@ -421,7 +425,9 @@ extension BrowserViewController {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }
-          if BraveCore.FeatureList.kBraveShredFeature.enabled {
+          if BraveCore.FeatureList.kBraveShredFeature.enabled,
+            originalTabURL.isShredAvailable
+          {
             MenuItemButton(
               icon: Image(braveSystemName: "leo.shred.data"),
               title: Strings.Shields.shredSiteData
@@ -643,9 +649,10 @@ extension BrowserViewController {
         return .updateAction(actionCopy)
       },
     ]
-    if BraveCore.FeatureList.kBraveShredFeature.enabled {
+    if BraveCore.FeatureList.kBraveShredFeature.enabled, let tabURL = tabManager.selectedTab?.url {
       actions.append(
-        .init(id: .shredData) { @MainActor [unowned self] _ in
+        .init(id: .shredData, attributes: tabURL.isShredAvailable ? [] : [.disabled]) {
+          @MainActor [unowned self] _ in
           self.dismiss(animated: true) {
             guard let tab = self.tabManager.selectedTab, let url = tab.url else { return }
             let alert = UIAlertController.shredDataAlert(url: url) { _ in

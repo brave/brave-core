@@ -470,7 +470,10 @@ extension BrowserViewController: TabManagerDelegate {
 
     var closeAllTabMenuChildren: [UIAction] = []
 
-    if FeatureList.kBraveShredFeature.enabled {
+    if FeatureList.kBraveShredFeature.enabled,
+      let url = tabManager.selectedTab?.url,
+      url.isShredAvailable
+    {
       let shredDataAction = UIAction(
         title: Strings.Shields.shredSiteData,
         image: UIImage(braveSystemNamed: "leo.shred.data"),

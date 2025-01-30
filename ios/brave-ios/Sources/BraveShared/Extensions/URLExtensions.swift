@@ -194,6 +194,11 @@ extension URL {
     components.host = self.host
     return components.url ?? self
   }
+
+  /// Returns true if we should show Shred option for the given URL.
+  public var isShredAvailable: Bool {
+    InternalURL(self) == nil
+  }
 }
 
 extension InternalURL {

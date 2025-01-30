@@ -425,7 +425,10 @@ class TabTrayController: AuthenticationController {
 
     containerView.addSubview(contentStackView)
 
-    if FeatureList.kBraveShredFeature.enabled {
+    if FeatureList.kBraveShredFeature.enabled,
+      let url = tabManager.selectedTab?.url,
+      url.isShredAvailable
+    {
       tabTypeSelectorContainerView.addSubview(shredButton)
 
       shredButton.snp.makeConstraints {
