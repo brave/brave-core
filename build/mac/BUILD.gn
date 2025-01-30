@@ -266,17 +266,21 @@ group("finalize_app") {
   }
 }
 
-if (is_official_build) {
+if (is_official_build) {  
   if (is_release_channel) {
-    provisioning_profile = "//brave/build/mac/release.provisionprofile"
+    _channel_nonempty = "release"
   } else {
-    provisioning_profile =
-        "//brave/build/mac/${brave_channel}.provisionprofile"
+    _channel_nonempty = brave_channel
   }
+  provisioning_profile_name =
+    "${_channel_nonempty}.9c57a508dc89402964eb013d30ef6df4da849aa9"
 } else {
   # an empty dummy file just to simplify things
-  provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
+  provisioning_profile_name = "dummy"
 }
+
+provisioning_profile =
+  "//brave/build/mac/${provisioning_profile_name}.provisionprofile"
 
 action("sign_app") {
   script = "//build/gn_run_binary.py"
@@ -327,9 +331,12 @@ action("sign_app") {
 }
 
 copy("copies") {
-  visibility = [ ":sign_app" ]
+  visibility = [ ":sign_app", ":_sign_dmg" ]
 
-  sources = [ "//brave/app/helper-entitlements.plist" ]
+  sources = [
+    provisioning_profile,
+    "//brave/app/helper-entitlements.plist"
+  ]
 
   public_deps = [ "//chrome/installer/mac" ]
 
@@ -482,6 +489,7 @@ _upstream_signed_dmg_path = "$root_out_dir/$mac_signed_output_prefix/" + string_
 
 action("_sign_dmg") {
   deps = [
+    ":copies",
     "//chrome:chrome_app",
     "//chrome/installer/mac",
     "//chrome/updater/mac:browser_install_script",
