@@ -280,7 +280,7 @@ if (is_official_build) {
 }
 
 provisioning_profile =
-  "//brave/build/mac/${provisioning_profile_name}.provisionprofile"
+  "//brave/build/mac/signing/${provisioning_profile_name}.provisionprofile"
 
 action("sign_app") {
   script = "//build/gn_run_binary.py"
@@ -529,8 +529,8 @@ action("_sign_dmg") {
 copy("signing_config") {
   visibility = [ ":_sign_dmg" ]
   sources = [
-    "internal_config.py",
-    "internal_invoker.py",
+    "signing/internal_config.py",
+    "signing/internal_invoker.py",
   ]
   outputs = [ "$packaging_dir/signing/{{source_file_part}}" ]
 }
