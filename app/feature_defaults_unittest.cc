@@ -231,6 +231,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,
       &privacy_sandbox::kPrivacySandboxSettings4,
       &privacy_sandbox::kTrackingProtectionContentSettingUbControl,
+      &safe_browsing::kDownloadsPageReferrerUrl,
       &safe_browsing::kExtensionTelemetryForEnterprise,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
       &segmentation_platform::features::kSegmentationPlatformCollectTabRankData,
