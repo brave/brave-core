@@ -15,6 +15,10 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/android/rewards/rewards_page_helper.h"
+#endif
+
 using brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory;
 
 namespace brave_rewards {
@@ -30,10 +34,7 @@ class AndroidBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
 
   void ShowUI() override {}
 
-  void OpenTab(const std::string& url) override {
-    // TODO(https://github.com/brave/brave-browser/issues/38434): Open a new
-    // tab from Java.
-  }
+  void OpenTab(const std::string& url) override { brave_rewards::OpenURL(url); }
 
   std::string GetPublisherIdForActiveTab() override { return ""; }
 };

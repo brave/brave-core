@@ -41,7 +41,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
-import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeStateProvider;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
@@ -59,7 +59,6 @@ public class RewardsCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoordi
             @NonNull ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             @NonNull ObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
             @NonNull ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
-            @NonNull Supplier<Long> lastUserInteractionTimeSupplier,
             @NonNull BrowserControlsManager browserControlsManager,
             @NonNull ActivityWindowAndroid windowAndroid,
             @NonNull ActivityLifecycleDispatcher activityLifecycleDispatcher,
@@ -88,7 +87,7 @@ public class RewardsCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoordi
             @NonNull Supplier<CustomTabMinimizeDelegate> minimizeDelegateSupplier,
             @NonNull Supplier<CustomTabFeatureOverridesManager> featureOverridesManagerSupplier,
             @Nullable View baseChromeLayout,
-            @NonNull EdgeToEdgeStateProvider edgeToEdgeStateProvider) {
+            @NonNull EdgeToEdgeManager edgeToEdgeManager) {
         super(
                 activity,
                 shareDelegateSupplier,
@@ -97,7 +96,6 @@ public class RewardsCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoordi
                 bookmarkModelSupplier,
                 tabBookmarkerSupplier,
                 tabModelSelectorSupplier,
-                lastUserInteractionTimeSupplier,
                 browserControlsManager,
                 windowAndroid,
                 activityLifecycleDispatcher,
@@ -126,7 +124,7 @@ public class RewardsCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoordi
                 minimizeDelegateSupplier,
                 featureOverridesManagerSupplier,
                 baseChromeLayout,
-                edgeToEdgeStateProvider);
+                edgeToEdgeManager);
     }
 
     @Override

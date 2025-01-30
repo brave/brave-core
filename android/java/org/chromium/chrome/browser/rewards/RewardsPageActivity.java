@@ -30,13 +30,24 @@ import org.jni_zero.CalledByNative;
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
+import org.chromium.chrome.browser.customtabs.BaseCustomTabRootUiCoordinator;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabController;
+import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizationManagerHolder;
+import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.util.ColorUtils;
 
 /** New Rewards 3.0 custom tab activity */
 public class RewardsPageActivity extends CustomTabActivity {
+
+    private BaseCustomTabRootUiCoordinator mBaseCustomTabRootUiCoordinator;
+    private CustomTabToolbarCoordinator mToolbarCoordinator;
+    private BrowserServicesIntentDataProvider mIntentDataProvider;
+    private CustomTabActivityTabController mTabController;
+    private CustomTabMinimizationManagerHolder mMinimizationManagerHolder;
+
     private static final int CLOSE_BUTTON_MARGIN = 16;
     private static final int CLOSE_BUTTON_PADDING = 16;
 
@@ -118,7 +129,6 @@ public class RewardsPageActivity extends CustomTabActivity {
                         mBookmarkModelSupplier,
                         mTabBookmarkerSupplier,
                         getTabModelSelectorSupplier(),
-                        this::getLastUserInteractionTime,
                         getBrowserControlsManager(),
                         getWindowAndroid(),
                         getLifecycleDispatcher(),
@@ -145,9 +155,9 @@ public class RewardsPageActivity extends CustomTabActivity {
                         mBackPressManager,
                         () -> mTabController,
                         () -> mMinimizationManagerHolder.getMinimizationManager(),
-                        () -> mFeatureOverridesManager,
+                        () -> mCustomTabFeatureOverridesManager,
                         getBaseChromeLayout(),
-                        getEdgeToEdgeStateProvider());
+                        getEdgeToEdgeManager());
         return mBaseCustomTabRootUiCoordinator;
     }
 }

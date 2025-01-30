@@ -17,6 +17,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAutocompleteEditTextClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAutocompleteMediatorBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAutocompleteMediatorClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveBaseCustomTabActivityClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveBookmarkActivityClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveBookmarkBridgeClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveBookmarkDelegateClassAdapter.java",
