@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -155,7 +156,9 @@ class ZCashScanBlocksTaskTest : public testing::Test {
               mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
               mojom::AccountKind::kDerived, 0);
           OrchardBlockScanner::Result result = CreateResultForTesting(
-              std::move(tree_state), std::vector<OrchardCommitment>());
+              std::move(tree_state), std::vector<OrchardCommitment>(),
+              blocks[blocks.size() - 1]->height,
+              ToHex(blocks[blocks.size() - 1]->hash));
           for (const auto& block : blocks) {
             // 3 notes in the blockchain found in the first batch
             if (block->height == kNu5BlockUpdate + 105) {
@@ -245,20 +248,46 @@ TEST_F(ZCashScanBlocksTaskTest, ScanRanges) {
               NOTREACHED();
             }
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>(),
+                blocks[blocks.size() - 1]->height,
+                ToHex(blocks[blocks.size() - 1]->hash));
             std::move(callback).Run(std::move(result));
           }));
 
   ZCashActionContext context = CreateContext();
 
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
+  testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
-      .Times(4)
-      .WillRepeatedly(
-          [&](base::expected<ZCashShieldSyncService::ScanRangeResult,
-                             ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-          });
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 0u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 1u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 2u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 3u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 4u);
+      });
 
   auto task =
       ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
@@ -280,7 +309,9 @@ TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
                 mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
                 mojom::AccountKind::kDerived, 0);
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>(),
+                blocks[blocks.size() - 1]->height,
+                ToHex(blocks[blocks.size() - 1]->hash));
             EXPECT_EQ(blocks.size(), 1u);
             EXPECT_EQ(blocks[0]->height, kNu5BlockUpdate + 1u);
             result.discovered_notes.push_back(
@@ -291,17 +322,21 @@ TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
   ZCashActionContext context = CreateContext();
 
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
+  testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillRepeatedly(
-          [&](base::expected<ZCashShieldSyncService::ScanRangeResult,
-                             ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-            if (result->ready_ranges == 1u) {
-              auto notes1 = GetSpendableNotes();
-              EXPECT_EQ(1u, notes1.value().size());
-            }
-          });
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 0u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 1u);
+        auto notes1 = GetSpendableNotes();
+        EXPECT_EQ(1u, notes1.value().size());
+      });
 
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
                                   kNu5BlockUpdate + 1);
@@ -315,23 +350,37 @@ TEST_F(ZCashScanBlocksTaskTest, ScanLimited) {
   ZCashActionContext context = CreateContext();
 
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
+  testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
-      .Times(3)
-      .WillRepeatedly(
-          [&](base::expected<ZCashShieldSyncService::ScanRangeResult,
-                             ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-            if (result->ready_ranges == 1u) {
-              auto notes1 = GetSpendableNotes();
-              EXPECT_EQ(3u, notes1.value().size());
-            } else if (result->ready_ranges == 2u) {
-              auto notes2 = GetSpendableNotes();
-              EXPECT_EQ(1u, notes2.value().size());
-            } else if (result->ready_ranges == 3u) {
-              auto notes3 = GetSpendableNotes();
-              EXPECT_EQ(3u, notes3.value().size());
-            }
-          });
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 0u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 1u);
+        auto notes1 = GetSpendableNotes();
+        EXPECT_EQ(3u, notes1.value().size());
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 2u);
+        auto notes2 = GetSpendableNotes();
+        EXPECT_EQ(1u, notes2.value().size());
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 3u);
+        auto notes3 = GetSpendableNotes();
+        EXPECT_EQ(3u, notes3.value().size());
+      });
 
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
                                   kNu5BlockUpdate + kExpectedBatchSize * 3);
@@ -345,26 +394,81 @@ TEST_F(ZCashScanBlocksTaskTest, ScanUnlimited) {
   ZCashActionContext context = CreateContext();
 
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
+  testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
-      .Times(10)
-      .WillRepeatedly(
-          [&](base::expected<ZCashShieldSyncService::ScanRangeResult,
-                             ZCashShieldSyncService::Error> result) {
-            EXPECT_TRUE(result.has_value());
-            if (result->ready_ranges == 1u) {
-              auto notes1 = GetSpendableNotes();
-              EXPECT_EQ(3u, notes1.value().size());
-            } else if (result->ready_ranges == 2u) {
-              auto notes2 = GetSpendableNotes();
-              EXPECT_EQ(1u, notes2.value().size());
-            } else if (result->ready_ranges == 3u) {
-              auto notes3 = GetSpendableNotes();
-              EXPECT_EQ(3u, notes3.value().size());
-            } else if (result->ready_ranges == 8u) {
-              auto notes8 = GetSpendableNotes();
-              EXPECT_EQ(5u, notes8.value().size());
-            }
-          });
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 0u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 1u);
+        auto notes1 = GetSpendableNotes();
+        EXPECT_EQ(3u, notes1.value().size());
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 2u);
+        auto notes2 = GetSpendableNotes();
+        EXPECT_EQ(1u, notes2.value().size());
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 3u);
+        auto notes3 = GetSpendableNotes();
+        EXPECT_EQ(3u, notes3.value().size());
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 4u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 5u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 6u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 7u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 8u);
+        auto notes8 = GetSpendableNotes();
+        EXPECT_EQ(5u, notes8.value().size());
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 9u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 10u);
+      });
 
   // Scan without right border
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
@@ -402,21 +506,32 @@ TEST_F(ZCashScanBlocksTaskTest, PartialScanningDueError) {
   ZCashActionContext context = CreateContext();
 
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
+  testing::Sequence seq;
   EXPECT_CALL(callback, Run(testing::_))
-      .Times(2)
-      .WillRepeatedly(
-          [&](base::expected<ZCashShieldSyncService::ScanRangeResult,
-                             ZCashShieldSyncService::Error> result) {
-            // First batch completes, second batch fails
-            EXPECT_TRUE(!result.has_value() || result->ready_ranges == 1u);
-            if (result.has_value()) {
-              auto notes1 = GetSpendableNotes();
-              EXPECT_EQ(3u, notes1.value().size());
-            }
-          });
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 0u);
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_EQ(result->ready_ranges, 1u);
+        auto notes1 = GetSpendableNotes();
+        EXPECT_EQ(3u, notes1.value().size());
+      });
+  EXPECT_CALL(callback, Run(testing::_))
+      .InSequence(seq)
+      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                                   ZCashShieldSyncService::Error> result) {
+        EXPECT_FALSE(result.has_value());
+      });
 
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
                                   kNu5BlockUpdate + kExpectedBatchSize * 3);
+  // Sequental scanning
+  task.set_max_tasks_in_progress(1);
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -439,7 +554,7 @@ TEST_F(ZCashScanBlocksTaskTest, ChainTipMismatch) {
       .Times(1)
       .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
                                    ZCashShieldSyncService::Error> result) {
-        EXPECT_FALSE(result.has_value());
+        EXPECT_TRUE(!result.has_value());
       });
 
   // Scan with right border less than actual chain tip
@@ -466,7 +581,7 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_LatestBlock) {
       .Times(1)
       .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
                                    ZCashShieldSyncService::Error> result) {
-        EXPECT_FALSE(result.has_value());
+        EXPECT_TRUE(!result.has_value());
       });
 
   // Scan without right border
@@ -490,11 +605,13 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_CompactBlocks) {
 
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
-                                   ZCashShieldSyncService::Error> result) {
-        EXPECT_FALSE(result.has_value());
-      });
+      .Times(2)
+      .WillRepeatedly(
+          [&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                             ZCashShieldSyncService::Error> result) {
+            EXPECT_TRUE(!result.has_value() ||
+                        result.value().ready_ranges == 0u);
+          });
 
   // Scan without right border
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
@@ -517,11 +634,13 @@ TEST_F(ZCashScanBlocksTaskTest, NetworkError_TreeState) {
 
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
-                                   ZCashShieldSyncService::Error> result) {
-        EXPECT_FALSE(result.has_value());
-      });
+      .Times(2)
+      .WillRepeatedly(
+          [&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                             ZCashShieldSyncService::Error> result) {
+            EXPECT_TRUE(!result.has_value() ||
+                        result.value().ready_ranges == 0u);
+          });
 
   // Scan without right border
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),
@@ -546,11 +665,13 @@ TEST_F(ZCashScanBlocksTaskTest, DecodingError) {
 
   base::MockCallback<ZCashScanBlocksTask::ZCashScanBlocksTaskObserver> callback;
   EXPECT_CALL(callback, Run(testing::_))
-      .Times(1)
-      .WillOnce([&](base::expected<ZCashShieldSyncService::ScanRangeResult,
-                                   ZCashShieldSyncService::Error> result) {
-        EXPECT_FALSE(result.has_value());
-      });
+      .Times(2)
+      .WillRepeatedly(
+          [&](base::expected<ZCashShieldSyncService::ScanRangeResult,
+                             ZCashShieldSyncService::Error> result) {
+            EXPECT_TRUE(!result.has_value() ||
+                        result.value().ready_ranges == 0u);
+          });
 
   // Scan without right border
   auto task = ZCashScanBlocksTask(context, *block_scanner, callback.Get(),

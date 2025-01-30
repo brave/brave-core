@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_ORCHARD_TEST_UTILS_H_
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
@@ -15,7 +16,9 @@ namespace brave_wallet {
 
 OrchardBlockScanner::Result CreateResultForTesting(
     OrchardTreeState tree_state,
-    std::vector<OrchardCommitment> commitments);
+    std::vector<OrchardCommitment> commitments,
+    uint32_t latest_scanned_block_id,
+    const std::string& latest_scanned_block_hash);
 
 OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,
                                                  uint32_t rseed);

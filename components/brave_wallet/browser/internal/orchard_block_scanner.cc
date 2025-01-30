@@ -8,6 +8,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -16,10 +17,14 @@ OrchardBlockScanner::Result::Result() = default;
 OrchardBlockScanner::Result::Result(
     std::vector<OrchardNote> discovered_notes,
     std::vector<OrchardNoteSpend> spent_notes,
-    std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks)
+    std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks,
+    uint32_t latest_scanned_block_id,
+    const std::string& latest_scanned_block_hash)
     : discovered_notes(std::move(discovered_notes)),
       found_spends(std::move(spent_notes)),
-      scanned_blocks(std::move(scanned_blocks)) {}
+      scanned_blocks(std::move(scanned_blocks)),
+      latest_scanned_block_id(latest_scanned_block_id),
+      latest_scanned_block_hash(latest_scanned_block_hash) {}
 
 OrchardBlockScanner::Result::Result(OrchardBlockScanner::Result&&) = default;
 OrchardBlockScanner::Result& OrchardBlockScanner::Result::operator=(
@@ -53,6 +58,9 @@ OrchardBlockScanner::ScanBlocks(
 
   std::vector<OrchardNoteSpend> found_spends;
 
+  uint32_t latest_block_id = blocks[blocks.size() - 1]->height;
+  std::string latest_block_hash = ToHex(blocks[blocks.size() - 1]->hash);
+
   for (const auto& block : blocks) {
     for (const auto& tx : block->vtx) {
       // We only scan orchard actions here
@@ -73,7 +81,7 @@ OrchardBlockScanner::ScanBlocks(
   }
 
   return Result({std::move(found_notes.value()), std::move(found_spends),
-                 std::move(result)});
+                 std::move(result), latest_block_id, latest_block_hash});
 }
 
 }  // namespace brave_wallet

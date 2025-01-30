@@ -174,6 +174,7 @@ TEST(OrchardBlockScannerTest, DiscoverNewNotes) {
     block->vtx.push_back(std::move(tx));
 
     block->height = 11u;
+    block->hash = {0xaa, 0xbb};
     blocks.push_back(std::move(block));
   }
 
@@ -188,6 +189,8 @@ TEST(OrchardBlockScannerTest, DiscoverNewNotes) {
   EXPECT_EQ(result.value().discovered_notes[2].amount, 1881904414u);
   EXPECT_EQ(result.value().discovered_notes[3].block_id, 11u);
   EXPECT_EQ(result.value().discovered_notes[3].amount, 2549979667u);
+  EXPECT_EQ(result.value().latest_scanned_block_id, 11u);
+  EXPECT_EQ(result.value().latest_scanned_block_hash, "0xaabb");
 
   EXPECT_EQ(result.value().found_spends.size(), 5u);
 }

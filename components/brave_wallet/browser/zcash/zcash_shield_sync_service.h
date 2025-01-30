@@ -80,7 +80,15 @@ class ZCashShieldSyncService {
             callback);
 
    private:
-    base::SequenceBound<OrchardBlockScanner> background_block_scanner_;
+    static base::expected<OrchardBlockScanner::Result,
+                          OrchardBlockScanner::ErrorCode>
+    ScanBlocksInBackground(OrchardFullViewKey full_view_key,
+                           OrchardTreeState tree_state,
+                           std::vector<zcash::mojom::CompactBlockPtr> blocks);
+    OrchardFullViewKey full_view_key_;
+    scoped_refptr<base::TaskRunner> task_runner_;
+
+    base::WeakPtrFactory<OrchardBlockScannerProxy> weak_ptr_factory_{this};
   };
 
   ZCashShieldSyncService(

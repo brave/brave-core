@@ -23,17 +23,15 @@ constexpr uint32_t kBlockDownloadBatchSize = 10u;
 ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTask(
     ZCashActionContext& context,
     ZCashShieldSyncService::OrchardBlockScannerProxy& scanner,
-    uint32_t from,
-    uint32_t to,
+    ScanRange scan_range,
     ZCashBlocksBatchScanTaskCallback callback)
     : context_(context),
       scanner_(scanner),
-      from_(from),
-      to_(to),
+      scan_range_(scan_range),
       callback_(std::move(callback)) {
-  CHECK_GT(from, kNu5BlockUpdate);
-  CHECK_GE(to, from);
-  frontier_block_height_ = from - 1;
+  CHECK_GT(scan_range_.from, kNu5BlockUpdate);
+  CHECK_GE(scan_range_.to, scan_range_.from);
+  frontier_block_height_ = scan_range_.from - 1;
 }
 
 ZCashBlocksBatchScanTask::~ZCashBlocksBatchScanTask() = default;
@@ -44,6 +42,13 @@ void ZCashBlocksBatchScanTask::Start() {
   ScheduleWorkOnTask();
 }
 
+void ZCashBlocksBatchScanTask::FinishWithResult(
+    base::expected<void, ZCashShieldSyncService::Error> result) {
+  DCHECK(!finished_);
+  finished_ = true;
+  std::move(callback_).Run(std::move(result));
+}
+
 void ZCashBlocksBatchScanTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&ZCashBlocksBatchScanTask::WorkOnTask,
@@ -52,7 +57,7 @@ void ZCashBlocksBatchScanTask::ScheduleWorkOnTask() {
 
 void ZCashBlocksBatchScanTask::WorkOnTask() {
   if (error_) {
-    std::move(callback_).Run(base::unexpected(*error_));
+    FinishWithResult(base::unexpected(*error_));
     return;
   }
 
@@ -66,8 +71,9 @@ void ZCashBlocksBatchScanTask::WorkOnTask() {
     return;
   }
 
-  if (!scan_result_ && (!downloaded_blocks_ ||
-                        downloaded_blocks_->size() != (to_ - from_ + 1))) {
+  if (!scan_result_ &&
+      (!downloaded_blocks_ ||
+       downloaded_blocks_->size() != (scan_range_.to - scan_range_.from + 1))) {
     DownloadBlocks();
     return;
   }
@@ -77,12 +83,7 @@ void ZCashBlocksBatchScanTask::WorkOnTask() {
     return;
   }
 
-  if (!database_updated_) {
-    UpdateDatabase();
-    return;
-  }
-
-  std::move(callback_).Run(true);
+  FinishWithResult(base::ok());
 }
 
 void ZCashBlocksBatchScanTask::GetFrontierTreeState() {
@@ -130,9 +131,11 @@ void ZCashBlocksBatchScanTask::OnGetFrontierBlock(
 }
 
 void ZCashBlocksBatchScanTask::DownloadBlocks() {
-  uint32_t start_index =
-      downloaded_blocks_ ? from_ + downloaded_blocks_->size() : from_;
-  uint32_t end_index = std::min(start_index + kBlockDownloadBatchSize - 1, to_);
+  uint32_t start_index = downloaded_blocks_
+                             ? scan_range_.from + downloaded_blocks_->size()
+                             : scan_range_.from;
+  uint32_t end_index =
+      std::min(start_index + kBlockDownloadBatchSize - 1, scan_range_.to);
   auto expected_size = end_index - start_index + 1;
 
   context_->zcash_rpc->GetCompactBlocks(
@@ -233,30 +236,8 @@ void ZCashBlocksBatchScanTask::OnBlocksScanned(
   ScheduleWorkOnTask();
 }
 
-void ZCashBlocksBatchScanTask::UpdateDatabase() {
-  CHECK(scan_result_.has_value());
-  CHECK(latest_scanned_block_.has_value());
-  auto latest_scanned_block_hash = ToHex((*latest_scanned_block_)->hash);
-  auto latest_scanned_block_height = (*latest_scanned_block_)->height;
-
-  context_->sync_state->AsyncCall(&OrchardSyncState::ApplyScanResults)
-      .WithArgs(context_->account_id.Clone(), std::move(scan_result_.value()),
-                latest_scanned_block_height, latest_scanned_block_hash)
-      .Then(base::BindOnce(&ZCashBlocksBatchScanTask::OnDatabaseUpdated,
-                           weak_ptr_factory_.GetWeakPtr()));
-}
-
-void ZCashBlocksBatchScanTask::OnDatabaseUpdated(
-    base::expected<OrchardStorage::Result, OrchardStorage::Error> result) {
-  if (!result.has_value()) {
-    error_ = ZCashShieldSyncService::Error{
-        ZCashShieldSyncService::ErrorCode::kFailedToUpdateDatabase,
-        result.error().message};
-    ScheduleWorkOnTask();
-    return;
-  }
-  database_updated_ = true;
-  ScheduleWorkOnTask();
+OrchardBlockScanner::Result ZCashBlocksBatchScanTask::TakeResult() {
+  return std::move(scan_result_.value());
 }
 
 }  // namespace brave_wallet

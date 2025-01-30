@@ -150,12 +150,9 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
   mojom::AccountIdPtr account() { return zcash_account_.Clone(); }
 
-  void ApplyScanResults(OrchardBlockScanner::Result&& result,
-                        uint32_t latest_scanned_block_id,
-                        const std::string& latest_scanned_block_hash) {
+  void ApplyScanResults(OrchardBlockScanner::Result&& result) {
     sync_state_.AsyncCall(&OrchardSyncState::ApplyScanResults)
-        .WithArgs(account().Clone(), std::move(result), latest_scanned_block_id,
-                  latest_scanned_block_hash);
+        .WithArgs(account().Clone(), std::move(result));
     task_environment_.RunUntilIdle();
   }
 
@@ -203,7 +200,9 @@ class ZCashShieldSyncServiceTest : public testing::Test {
           }
 
           OrchardBlockScanner::Result result = CreateResultForTesting(
-              std::move(tree_state), std::move(commitments));
+              std::move(tree_state), std::move(commitments),
+              blocks[blocks.size() - 1]->height,
+              ToHex(blocks[blocks.size() - 1]->hash));
           result.discovered_notes = notes;
           result.found_spends = spends;
           std::move(callback).Run(std::move(result));
@@ -325,7 +324,9 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             OrchardTreeState orchard_tree_state;
             orchard_tree_state.tree_size = blocks[0]->height - kAccountBirthday;
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(orchard_tree_state), std::move(commitments));
+                std::move(orchard_tree_state), std::move(commitments),
+                blocks[blocks.size() - 1]->height,
+                ToHex(blocks[blocks.size() - 1]->hash));
             result.discovered_notes = notes;
             result.found_spends = spends;
             std::move(callback).Run(std::move(result));
@@ -389,7 +390,9 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             OrchardTreeState orchard_tree_state;
             orchard_tree_state.tree_size = blocks[0]->height - kAccountBirthday;
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(orchard_tree_state), std::move(commitments));
+                std::move(orchard_tree_state), std::move(commitments),
+                blocks[blocks.size() - 1]->height,
+                ToHex(blocks[blocks.size() - 1]->hash));
             result.discovered_notes = notes;
             std::move(callback).Run(std::move(result));
           })));
@@ -435,7 +438,9 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                 mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
                 mojom::AccountKind::kDerived, 0);
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>(),
+                blocks[blocks.size() - 1]->height,
+                ToHex(blocks[blocks.size() - 1]->hash));
             for (const auto& block : blocks) {
               // Add a new note on height 900
               if (block->height == kNu5BlockUpdate + 1005u) {
