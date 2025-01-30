@@ -7,4 +7,5 @@ include_rules = [
   "+brave/components/brave_vpn/common",
   "+brave/components/playlist/common",
   "+brave/components/ai_chat/core/common",
+  "+brave/components/brave_education/buildflags.h",
 ]

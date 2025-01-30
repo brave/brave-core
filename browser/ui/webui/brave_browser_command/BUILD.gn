@@ -1,0 +1,35 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+import("//chrome/common/features.gni")
+
+source_set("brave_browser_command") {
+  sources = [
+    "brave_browser_command_handler.cc",
+    "brave_browser_command_handler.h",
+  ]
+
+  deps = [
+    "//base:base",
+    "//brave/browser/ai_chat",
+    "//brave/browser/brave_rewards",
+    "//brave/browser/brave_wallet",
+    "//brave/components/brave_education",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/constants",
+    "//brave/ui/webui/resources/js/brave_browser_command:mojo_bindings",
+    "//chrome/browser/profiles:profile",
+    "//mojo/public/cpp/bindings:bindings",
+    "//ui/base:types",
+    "//url:url",
+  ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/browser/brave_vpn" ]
+  }
+}

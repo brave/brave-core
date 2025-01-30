@@ -35,6 +35,9 @@ function InputCheckbox (props: InputCheckboxProps) {
 function HelpImprove () {
   const [isMetricsReportingEnabled, setMetricsReportingEnabled] = React.useState(true)
   const [isP3AEnabled, setP3AEnabled] = React.useState(true)
+  const [completeURLPromise] = React.useState(() => {
+    return WelcomeBrowserProxyImpl.getInstance().getWelcomeCompleteURL()
+  })
 
   const handleP3AChange = () => {
     setP3AEnabled(!isP3AEnabled)
@@ -48,7 +51,9 @@ function HelpImprove () {
     WelcomeBrowserProxyImpl.getInstance().setP3AEnabled(isP3AEnabled)
     WelcomeBrowserProxyImpl.getInstance().setMetricsReportingEnabled(isMetricsReportingEnabled)
     WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Finished)
-    window.open('chrome://newtab', '_self')
+    completeURLPromise.then((url) => {
+      window.open(url || 'chrome://newtab', '_self', 'noopener')
+    })
   }
 
   const handleOpenSettingsPage = () => {
