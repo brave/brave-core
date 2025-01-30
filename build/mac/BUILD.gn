@@ -501,13 +501,18 @@ action("_sign_dmg") {
     rebase_path(root_build_dir, root_build_dir),
     "--output",
     rebase_path("$root_out_dir/signed", root_build_dir),
+    # sign_chrome.py requires --identity even when signing is skipped.
     "--identity=$mac_signing_identifier",
+    "--package-as-dmg",
+    "--package-as-pkg",
   ]
   if (!is_official_build) {
     args += [ "--development" ]
   }
   if (skip_signing) {
     args += [ "--skip-signing" ]
+  } else {
+    args += [ "--installer-identity=$mac_installer_signing_identifier" ]
   }
   if (notarize) {
     args += [ "--notarize" ]

@@ -6,6 +6,8 @@ class Invoker(standard_invoker.Invoker):
     @staticmethod
     def register_arguments(parser):
         standard_invoker.Invoker.register_arguments(parser)
+        parser.add_argument("--package-as-dmg", action="store_true")
+        parser.add_argument("--package-as-pkg", action="store_true")
         parser.add_argument("--skip-signing", action="store_true")
 
     def __init__(self, args, config):
@@ -13,6 +15,8 @@ class Invoker(standard_invoker.Invoker):
         if args.skip_signing:
             self._signer = StubSigner()
             stub_out_verify_part()
+        # The config can use this to access the args:
+        self.args = args
 
 
 class StubSigner:
