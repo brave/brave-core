@@ -60,7 +60,9 @@ ZCashTxMeta::~ZCashTxMeta() = default;
 
 base::Value::Dict ZCashTxMeta::ToValue() const {
   base::Value::Dict dict = TxMeta::ToValue();
-  dict.Set("tx", tx_->ToValue());
+  if (tx_) {
+    dict.Set("tx", tx_->ToValue());
+  }
   return dict;
 }
 

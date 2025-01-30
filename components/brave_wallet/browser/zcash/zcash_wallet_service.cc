@@ -17,7 +17,9 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_discover_next_unused_zcash_address_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_transparent_utxos_context.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_resolve_balance_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_resolve_transaction_status_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_tx_meta.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -840,23 +842,23 @@ void ZCashWalletService::OverrideSyncStateForTesting(
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
 void ZCashWalletService::GetTransactionStatus(
+    const mojom::AccountIdPtr& account_id,
     const std::string& chain_id,
-    const std::string& tx_hash,
+    std::unique_ptr<ZCashTxMeta> tx_meta,
     GetTransactionStatusCallback callback) {
-  zcash_rpc_->GetTransaction(
-      chain_id, tx_hash,
-      base::BindOnce(&ZCashWalletService::OnTransactionResolvedForStatus,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  auto& task = resolve_transaction_status_tasks_.emplace_back(
+      std::make_unique<ZCashResolveTransactionStatusTask>(
+          base::PassKey<ZCashWalletService>(),
+          CreateActionContext(account_id, chain_id), *this, std::move(tx_meta),
+          base::BindOnce(&ZCashWalletService::OnTransactionResolvedForStatus,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
+  task->Start();
 }
 
 void ZCashWalletService::OnTransactionResolvedForStatus(
     GetTransactionStatusCallback callback,
-    base::expected<zcash::mojom::RawTransactionPtr, std::string> result) {
-  if (!result.has_value() || !result.value()) {
-    std::move(callback).Run(base::unexpected(result.error()));
-    return;
-  }
-  std::move(callback).Run((*result)->height > 0);
+    base::expected<ResolveTransactionStatusResult, std::string> result) {
+  std::move(callback).Run(std::move(result));
 }
 
 void ZCashWalletService::CompleteTransactionTaskDone(
@@ -873,6 +875,12 @@ void ZCashWalletService::CreateTransactionTaskDone(
 
 void ZCashWalletService::ResolveBalanceTaskDone(ZCashResolveBalanceTask* task) {
   CHECK(resolve_balance_tasks_.remove_if(
+      [task](auto& item) { return item.get() == task; }));
+}
+
+void ZCashWalletService::ResolveTransactionStatusTaskDone(
+    ZCashResolveTransactionStatusTask* task) {
+  CHECK(resolve_transaction_status_tasks_.remove_if(
       [task](auto& item) { return item.get() == task; }));
 }
 

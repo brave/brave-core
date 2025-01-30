@@ -244,6 +244,8 @@ static_library("browser") {
     "zcash/zcash_grpc_utils.h",
     "zcash/zcash_resolve_balance_task.cc",
     "zcash/zcash_resolve_balance_task.h",
+    "zcash/zcash_resolve_transaction_status_task.cc",
+    "zcash/zcash_resolve_transaction_status_task.h",
     "zcash/zcash_rpc.cc",
     "zcash/zcash_rpc.h",
     "zcash/zcash_serializer.cc",

@@ -248,8 +248,12 @@ void ZCashTxManager::UpdatePendingTransactions(
   std::set<std::string> pending_chain_ids;
   for (const auto& pending_transaction : pending_transactions) {
     auto pending_chain_id = pending_transaction->chain_id();
+
+    std::unique_ptr<ZCashTxMeta> meta =
+        GetZCashTxStateManager().GetZCashTx(pending_transaction->id());
     zcash_wallet_service_->GetTransactionStatus(
-        pending_transaction->chain_id(), pending_transaction->tx_hash(),
+        pending_transaction->from(), pending_transaction->chain_id(),
+        std::move(meta),
         base::BindOnce(&ZCashTxManager::OnGetTransactionStatus,
                        weak_factory_.GetWeakPtr(), pending_transaction->id()));
     pending_chain_ids.emplace(pending_chain_id);
@@ -259,7 +263,8 @@ void ZCashTxManager::UpdatePendingTransactions(
 
 void ZCashTxManager::OnGetTransactionStatus(
     const std::string& tx_meta_id,
-    base::expected<bool, std::string> confirm_status) {
+    base::expected<ZCashWalletService::ResolveTransactionStatusResult,
+                   std::string> confirm_status) {
   if (!confirm_status.has_value()) {
     return;
   }
@@ -268,11 +273,14 @@ void ZCashTxManager::OnGetTransactionStatus(
   if (!meta) {
     return;
   }
-  if (confirm_status.value()) {
-    // TODO(cypt4): dropped and error state.
-    mojom::TransactionStatus status = mojom::TransactionStatus::Confirmed;
-    meta->set_status(status);
+  if (confirm_status.value() ==
+      ZCashWalletService::ResolveTransactionStatusResult::kCompleted) {
+    meta->set_status(mojom::TransactionStatus::Confirmed);
     meta->set_confirmed_time(base::Time::Now());
+    tx_state_manager().AddOrUpdateTx(*meta);
+  } else if (confirm_status.value() ==
+             ZCashWalletService::ResolveTransactionStatusResult::kExpired) {
+    meta->set_status(mojom::TransactionStatus::Rejected);
     tx_state_manager().AddOrUpdateTx(*meta);
   }
 }
