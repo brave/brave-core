@@ -214,7 +214,8 @@ void AIChatMetrics::RecordEnabled(
         premium_check_in_progress_ = true;
         std::move(retrieve_premium_status_callback)
             .Run(base::BindOnce(&AIChatMetrics::OnPremiumStatusUpdated,
-                                weak_ptr_factory_.GetWeakPtr(), is_new_user));
+                                weak_ptr_factory_.GetWeakPtr(), is_enabled,
+                                is_new_user));
       }
       return;
     }
@@ -239,7 +240,8 @@ void AIChatMetrics::RecordReset() {
                              std::numeric_limits<int>::max() - 1, 7);
 }
 
-void AIChatMetrics::OnPremiumStatusUpdated(bool is_new_user,
+void AIChatMetrics::OnPremiumStatusUpdated(bool is_enabled,
+                                           bool is_new_user,
                                            mojom::PremiumStatus premium_status,
                                            mojom::PremiumInfoPtr) {
   is_premium_ = premium_status == mojom::PremiumStatus::Active ||
@@ -248,7 +250,7 @@ void AIChatMetrics::OnPremiumStatusUpdated(bool is_new_user,
   local_state_->SetTime(prefs::kBraveChatP3ALastPremiumCheck,
                         base::Time::Now());
   premium_check_in_progress_ = false;
-  RecordEnabled(true, is_new_user, {});
+  RecordEnabled(is_enabled, is_new_user, {});
 }
 
 void AIChatMetrics::RecordNewChat() {
