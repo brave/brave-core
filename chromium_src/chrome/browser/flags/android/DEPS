@@ -14,4 +14,5 @@ include_rules = [
   "+brave/components/web_discovery/buildflags",
   "+brave/components/web_discovery/common",
   "+brave/components/webcompat/core/common/features.h",
+  "+brave/components/youtube_script_injector/common/features.h",
 ]

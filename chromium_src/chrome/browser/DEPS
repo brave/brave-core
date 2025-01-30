@@ -10,7 +10,6 @@ include_rules += [
   "+brave/components/constants",
   "+brave/components/l10n/common",
   "+brave/components/playlist/common/buildflags",
-  "+brave/components/youtube_script_injector",
   "+brave/components/version_info",
   # Make sure renderer directories are not included for components with
   # incorrect directory structures
