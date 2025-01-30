@@ -498,6 +498,20 @@ action("_sign_dmg") {
   if (!is_official_build) {
     args += [ "--development" ]
   }
+  if (notarize) {
+    args += [ "--notarize" ]
+    notary_args = [
+      "--apple-id",
+      notary_user,
+      "--password",
+      notary_password,
+      "--team-id",
+      chrome_mac_team_id,
+    ]
+    foreach (arg, notary_args) {
+      args += [ "--notary-arg=$arg", ]
+    }
+  }
   outputs = [ _upstream_signed_dmg_path ]
 }
 
