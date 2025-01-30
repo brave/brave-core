@@ -121,7 +121,8 @@ class AIChatMetrics {
   void HandleOpenViaEntryPoint(EntryPoint entry_point);
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
-  void OnPremiumStatusUpdated(bool is_new_user,
+  void OnPremiumStatusUpdated(bool is_enabled,
+                              bool is_new_user,
                               mojom::PremiumStatus premium_status,
                               mojom::PremiumInfoPtr);
 
