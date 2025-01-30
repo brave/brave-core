@@ -38,6 +38,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveLocalState;
 import org.chromium.chrome.browser.back_press.SecondaryActivityBackPressUma.SecondaryActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -228,7 +229,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     view -> {
                         if (mCurrentStep == 0 && !isDefaultBrowser()) {
                             setDefaultBrowserAndProceedToNextStep();
-                        } else if (mCurrentStep == getWDPPageStep()) {
+                        } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
                             UserPrefs.get(getProfileProviderSupplier().get().getOriginalProfile())
                                     .setBoolean(BravePref.WEB_DISCOVERY_ENABLED, true);
                             nextOnboardingStep();
@@ -285,7 +286,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
             mIvBrave.setVisibility(View.VISIBLE);
             showAnalyticsConsentPage();
-        } else if (mCurrentStep == getWDPPageStep()) {
+        } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
             showWDPPage();
         } else {
             OnboardingPrefManager.getInstance().setP3aOnboardingShown(true);
@@ -300,6 +301,10 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
             finish();
             sendFirstRunCompleteIntent();
         }
+    }
+
+    private boolean isWDPEnabled() {
+        return BraveConfig.WEB_DISCOVERY_ENABLED;
     }
 
     private int getAnalyticsConsentPageStep() {
