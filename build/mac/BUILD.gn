@@ -266,7 +266,7 @@ group("finalize_app") {
   }
 }
 
-if (is_official_build) {  
+if (is_official_build) {
   if (is_release_channel) {
     _channel_nonempty = "release"
   } else {
