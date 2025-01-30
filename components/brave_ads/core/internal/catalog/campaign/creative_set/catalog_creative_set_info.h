@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 
 namespace brave_ads {
 
@@ -42,6 +43,7 @@ struct CatalogCreativeSetInfo final {
   int total_max = 0;
   double value = 0.0;
   std::string split_test_group;
+  ConditionMatcherMap condition_matchers;
   CatalogSegmentList segments;
   CatalogOsList oses;
   CatalogConversionList conversions;

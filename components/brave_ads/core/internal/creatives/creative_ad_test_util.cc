@@ -46,6 +46,8 @@ CreativeAdInfo BuildCreativeAd(bool should_generate_random_uuids) {
 
   creative_ad.split_test_group = "";
 
+  creative_ad.condition_matchers = {};
+
   creative_ad.dayparts = {
       {.days_of_week = "0123456", .start_minute = 0, .end_minute = 1439}};
 

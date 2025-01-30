@@ -225,6 +225,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.total_max = creative_set.total_max;
         creative_ad.value = creative_set.value;
         creative_ad.split_test_group = creative_set.split_test_group;
+        creative_ad.condition_matchers = creative.payload.condition_matchers;
         creative_ad.dayparts = dayparts;
         creative_ad.geo_targets = geo_targets;
         creative_ad.target_url = creative.payload.target_url;
@@ -241,8 +242,6 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           wallpaper.focal_point = CreativeNewTabPageAdWallpaperFocalPointInfo{
               .x = catalog_new_tab_page_ad_wallpaper.focal_point.x,
               .y = catalog_new_tab_page_ad_wallpaper.focal_point.y};
-          wallpaper.condition_matchers =
-              catalog_new_tab_page_ad_wallpaper.condition_matchers;
           creative_ad.wallpapers.push_back(wallpaper);
         }
 

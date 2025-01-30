@@ -98,8 +98,8 @@ void Campaigns::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 45: {
-      MigrateToV45(mojom_db_transaction);
+    case 46: {
+      MigrateToV46(mojom_db_transaction);
       break;
     }
   }
@@ -107,7 +107,7 @@ void Campaigns::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Campaigns::MigrateToV45(
+void Campaigns::MigrateToV46(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
