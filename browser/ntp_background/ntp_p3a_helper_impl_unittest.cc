@@ -14,6 +14,7 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -157,8 +158,10 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
 }
 
 TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
-  ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
-  ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordNewTabPageAdEvent(
+      brave_ads::mojom::NewTabPageAdEventType::kClicked, kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordNewTabPageAdEvent(
+      brave_ads::mojom::NewTabPageAdEventType::kClicked, kTestCreativeMetricId);
 
   const std::string histogram_name =
       GetExpectedCreativeHistogramName(kClicksEventType);
@@ -175,7 +178,8 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
 
   // Recorded a click while recorded count is "in-flight"
-  ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordNewTabPageAdEvent(
+      brave_ads::mojom::NewTabPageAdEventType::kClicked, kTestCreativeMetricId);
   NotifyMetricCycle(histogram_name);
 
   EXPECT_TRUE(
@@ -200,7 +204,8 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
   scoped_feature_list.InitAndEnableFeatureWithParameters(
       brave_ads::kSiteVisitFeature, {{"page_land_after", "10s"}});
 
-  ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordNewTabPageAdEvent(
+      brave_ads::mojom::NewTabPageAdEventType::kClicked, kTestCreativeMetricId);
 
   const std::string clicks_histogram_name =
       GetExpectedCreativeHistogramName(kClicksEventType);
@@ -233,7 +238,8 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
   histogram_tester_->ExpectUniqueSample(lands_histogram_name, 1, 1);
   histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
 
-  ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
+  ntp_p3a_helper_->RecordNewTabPageAdEvent(
+      brave_ads::mojom::NewTabPageAdEventType::kClicked, kTestCreativeMetricId);
 
   ntp_p3a_helper_->SetLastTabURL(GURL("https://adexample.com/page1"));
 

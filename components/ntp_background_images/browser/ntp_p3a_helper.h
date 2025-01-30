@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "url/gurl.h"
 
 namespace ntp_background_images {
@@ -19,7 +20,8 @@ class NTPP3AHelper {
   virtual void RecordView(const std::string& creative_instance_id,
                           const std::string& campaign_id) = 0;
 
-  virtual void RecordClickAndMaybeLand(
+  virtual void RecordNewTabPageAdEvent(
+      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type,
       const std::string& creative_instance_id) = 0;
 
   virtual void SetLastTabURL(const GURL& url) = 0;
