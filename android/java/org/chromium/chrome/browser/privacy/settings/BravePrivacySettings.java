@@ -379,8 +379,7 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mSendP3A = (ChromeSwitchPreference) findPreference(PREF_SEND_P3A);
         mSendP3A.setOnPreferenceChangeListener(this);
 
-        if (BraveConfig.WEB_DISCOVERY_ENABLED
-                && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_WEB_DISCOVERY_NATIVE)) {
+        if (BraveConfig.WEB_DISCOVERY_ENABLED) {
             mSendWebDiscovery = (ChromeSwitchPreference) findPreference(PREF_SEND_WEB_DISCOVERY);
             mSendWebDiscovery.setOnPreferenceChangeListener(this);
         } else {
