@@ -7,6 +7,7 @@
 
 #import "brave/ios/web_view/public/chrome_web_view.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
+#include "ios/web/common/url_scheme_util.h"
 #include "ios/web/public/web_state.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
 #import "ios/web_view/public/cwv_navigation_delegate.h"
@@ -16,6 +17,9 @@ namespace brave {
 void ShouldBlockJavaScript(web::WebState* webState,
                            NSURLRequest* request,
                            WKWebpagePreferences* preferences) {
+  if (!web::UrlHasWebScheme(request.URL)) {
+    return;
+  }
   BraveWebView* webView =
       static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
   id<BraveWebViewNavigationDelegate> navigationDelegate =
