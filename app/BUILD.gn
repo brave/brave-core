@@ -135,6 +135,7 @@ source_set("unit_tests") {
     "//components/embedder_support",
     "//components/heap_profiling/in_process",
     "//components/history_clusters/core",
+    "//components/history_embeddings",
     "//components/language/core/common",
     "//components/lens",
     "//components/manta",
