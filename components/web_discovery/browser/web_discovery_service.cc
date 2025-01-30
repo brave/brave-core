@@ -120,8 +120,7 @@ void WebDiscoveryService::OnConfigChange() {
 
 void WebDiscoveryService::OnPatternsLoaded() {
   if (!content_scraper_) {
-    content_scraper_ =
-        std::make_unique<ContentScraper>(server_config_loader_.get());
+    content_scraper_ = ContentScraper::Create(server_config_loader_.get());
   }
   if (!double_fetcher_) {
     double_fetcher_ = std::make_unique<DoubleFetcher>(

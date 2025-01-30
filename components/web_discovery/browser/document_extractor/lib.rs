@@ -13,7 +13,7 @@ use kuchikiki::{
     traits::TendrilSink,
 };
 
-#[cxx::bridge(namespace = "rust_document_extractor")]
+#[cxx::bridge(namespace = "web_discovery")]
 mod ffi {
     pub struct SelectAttributeRequest {
         /// An optional selector for an element within the current selected element.
