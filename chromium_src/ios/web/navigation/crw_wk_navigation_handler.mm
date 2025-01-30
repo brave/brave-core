@@ -6,16 +6,41 @@
 #include "ios/web/navigation/crw_wk_navigation_handler.h"
 
 #import <Foundation/Foundation.h>
+#import <WebKit/WebKit.h>
 
-#include "ios/web/public/web_state.h"
-
-#define BRAVE_SHOULD_BLOCK_JAVASCRIPT                                          \
-  brave::ShouldBlockJavaScript(static_cast<web::WebState*>(self.webStateImpl), \
-                               action.request, preferences);
-#define BRAVE_SHOULD_BLOCK_UNIVERSAL_LINKS                            \
-  brave::ShouldBlockUniversalLinks(                                   \
-      static_cast<web::WebState*>(self.webStateImpl), action.request, \
-      &forceBlockUniversalLinks);
 #include "src/ios/web/navigation/crw_wk_navigation_handler.mm"
-#undef BRAVE_SHOULD_BLOCK_UNIVERSAL_LINKS
-#undef BRAVE_SHOULD_BLOCK_JAVASCRIPT
+
+@implementation BraveCRWWKNavigationHandler
+
+- (void)webView:(WKWebView*)webView
+    decidePolicyForNavigationAction:(WKNavigationAction*)action
+                        preferences:(WKWebpagePreferences*)preferences
+                    decisionHandler:(void (^)(WKNavigationActionPolicy,
+                                              WKWebpagePreferences*))handler {
+  auto decisionHandler =
+      ^(WKNavigationActionPolicy policy, WKWebpagePreferences*) {
+        bool shouldBlockJavaScript = brave::ShouldBlockJavaScript(
+            static_cast<web::WebState*>(self.webStateImpl), action.request);
+        if (shouldBlockJavaScript && preferences) {
+          // Only ever update it to false
+          preferences.allowsContentJavaScript = false;
+        }
+        if (policy == WKNavigationActionPolicyAllow) {
+          // Check if we want to explicitly block universal links
+          bool forceBlockUniversalLinks = brave::ShouldBlockUniversalLinks(
+              static_cast<web::WebState*>(self.webStateImpl), action.request);
+          if (forceBlockUniversalLinks) {
+            handler(web::kNavigationActionPolicyAllowAndBlockUniversalLinks,
+                    preferences);
+            return;
+          }
+        }
+        handler(policy, preferences);
+      };
+  [super webView:webView
+      decidePolicyForNavigationAction:action
+                          preferences:preferences
+                      decisionHandler:decisionHandler];
+}
+
+@end
