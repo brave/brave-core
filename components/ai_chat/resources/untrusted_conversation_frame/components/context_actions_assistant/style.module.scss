@@ -1,0 +1,26 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.actionsWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--leo-spacing-xl);
+}
+
+.button {
+  display: flex;
+  color: var(--leo-color-neutral-30);
+  flex: 0;
+}
+
+.liked {
+  color: var(--leo-color-systemfeedback-success-text);
+}
+
+.disliked {
+  color: var(--leo-color-systemfeedback-error-text);
+}

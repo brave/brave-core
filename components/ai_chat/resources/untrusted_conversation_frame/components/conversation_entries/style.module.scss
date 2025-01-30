@@ -7,7 +7,7 @@
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  gap: var(--leo-spacing-m);
+  gap: var(--leo-spacing-xl);
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   padding: var(--leo-spacing-2xl) var(--leo-spacing-2xl) 0 var(--leo-spacing-2xl);
@@ -25,36 +25,7 @@
 
 .turnAI {
   background-color: transparent;
-}
-
-
-.avatarContainer {
-  display: flex;
-  gap: var(--leo-spacing-m);
-  align-items: center;
-
-  span {
-    font: var(--leo-font-default-semibold);
-    color: var(--leo-color-text-tertiary);
-  }
-}
-
-.avatar {
-  --leo-icon-size: 18px;
-  width: 28px;
-  height: 28px;
-  background: var(--leo-color-container-highlight);
-  border-radius: 100px;
-  flex-shrink: 0;
-  color: var(--leo-color-icon-default);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.avatarAI {
-  background: linear-gradient(314.42deg, #FA7250 8.49%, #FF1893 43.72%, #A78AFF 99.51%);
-  color: white;
+  align-items: flex-start;
 }
 
 .message {
@@ -62,26 +33,23 @@
   width: 100%;
 }
 
-.humanMessageContent {
-  white-space: pre-wrap;
-}
-
-.rightContainer {
+.humanMessage {
   display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.turnHeader {
+  margin: 0;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: var(--leo-spacing-m);
 }
 
-.turnActions {
+.humanMessageBubble {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  padding: var(--leo-spacing-xl);
+  border-radius: var(--leo-spacing-xl) var(--leo-spacing-xl) var(--leo-spacing-s) var(--leo-spacing-xl);
+  background-color: var(--leo-color-neutral-10);
+  white-space: pre-wrap;
+  max-width: 520px;
+  gap: var(--leo-spacing-m);
 }
 
 .editLabel {
@@ -91,7 +59,7 @@
   align-items: center;
   gap: var(--leo-spacing-xs);
   border-radius: var(--leo-radius-s);
-  background: var(--leo-color-neutral-20);
+  background: var( --leo-color-container-background);
 }
 
 .editLabelText {
@@ -101,4 +69,8 @@
   font-style: normal;
   font-weight: 700;
   line-height: 10px;
+}
+
+.divToKeepGap {
+  min-width: 16px;
 }
