@@ -1283,6 +1283,19 @@ void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
                                /*intentional*/ base::DoNothing());
 }
 
+void AdsServiceImpl::ParseAndSaveCreativeNewTabPageAds(
+    const base::Value::Dict& data,
+    ParseAndSaveCreativeNewTabPageAdsCallback callback) {
+  if (!bat_ads_associated_remote_.is_bound()) {
+    return std::move(callback).Run(/*success*/ false);
+  }
+
+  // Since `data` contains small JSON from a CRX component, cloning it has
+  // no performance impact.
+  bat_ads_associated_remote_->ParseAndSaveCreativeNewTabPageAds(
+      data.Clone(), std::move(callback));
+}
+
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,

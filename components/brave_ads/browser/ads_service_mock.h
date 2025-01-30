@@ -69,6 +69,10 @@ class AdsServiceMock : public AdsService {
   MOCK_METHOD(void,
               OnFailedToPrefetchNewTabPageAd,
               (const std::string&, const std::string&));
+  MOCK_METHOD(void,
+              ParseAndSaveCreativeNewTabPageAds,
+              (const base::Value::Dict& data,
+               ParseAndSaveCreativeNewTabPageAdsCallback));
 
   MOCK_METHOD(void,
               TriggerPromotedContentAdEvent,

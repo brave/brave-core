@@ -92,6 +92,9 @@ class AdsServiceImplIOS : public AdsService {
   void OnFailedToPrefetchNewTabPageAd(
       const std::string& placement_id,
       const std::string& creative_instance_id) override;
+  void ParseAndSaveCreativeNewTabPageAds(
+      const base::Value::Dict& data,
+      ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,

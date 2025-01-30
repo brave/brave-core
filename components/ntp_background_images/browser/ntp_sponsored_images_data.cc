@@ -8,7 +8,6 @@
 #include <optional>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
@@ -137,17 +136,10 @@ bool Campaign::IsValid() const {
 
 NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
 NTPSponsoredImagesData::NTPSponsoredImagesData(
-    const std::string& json_string,
+    const base::Value::Dict& data,
     const base::FilePath& installed_dir)
     : NTPSponsoredImagesData() {
-  std::optional<base::Value> json_value = base::JSONReader::Read(json_string);
-  if (!json_value || !json_value->is_dict()) {
-    DVLOG(2) << "Read json data failed. Invalid JSON data";
-    return;
-  }
-  base::Value::Dict& root = json_value->GetDict();
-
-  std::optional<int> incomingSchemaVersion = root.FindInt(kSchemaVersionKey);
+  std::optional<int> incomingSchemaVersion = data.FindInt(kSchemaVersionKey);
   const bool schemaVersionIsValid =
       incomingSchemaVersion && *incomingSchemaVersion == kExpectedSchemaVersion;
   if (!schemaVersionIsValid) {
@@ -161,7 +153,7 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 
   url_prefix = base::StringPrintf("%s://%s/", content::kChromeUIScheme,
                                   kBrandedWallpaperHost);
-  if (auto* name = root.FindString(kThemeNameKey)) {
+  if (auto* name = data.FindString(kThemeNameKey)) {
     theme_name = *name;
     url_prefix += kSuperReferralPath;
   } else {
@@ -177,18 +169,18 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
   // `campaigns2` array, fall back to `campaigns`, and then fall back to the
   // root `campaign` for backward compatibility. Non-smart capable browsers
   // continue to read the `campaigns` array.
-  if (auto* campaigns2_value = root.FindList(kCampaigns2Key)) {
+  if (auto* campaigns2_value = data.FindList(kCampaigns2Key)) {
     ParseCampaignsList(*campaigns2_value, installed_dir);
-  } else if (auto* campaigns_value = root.FindList(kCampaignsKey)) {
+  } else if (auto* campaigns_value = data.FindList(kCampaignsKey)) {
     ParseCampaignsList(*campaigns_value, installed_dir);
   } else {
     // Get a global campaign directly if the campaign list doesn't exist.
-    const auto campaign = GetCampaignFromValue(root, installed_dir);
+    const auto campaign = GetCampaignFromValue(data, installed_dir);
     if (campaign.IsValid())
       campaigns.push_back(campaign);
   }
 
-  ParseSRProperties(root, installed_dir);
+  ParseSRProperties(data, installed_dir);
 
   PrintCampaignsParsingResult();
 }

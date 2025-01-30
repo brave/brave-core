@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/common/functional/once_closure_task_queue.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
@@ -68,6 +69,9 @@ class AdsImpl final : public Ads {
       mojom::InlineContentAdEventType mojom_ad_event_type,
       TriggerAdEventCallback callback) override;
 
+  void ParseAndSaveCreativeNewTabPageAds(
+      base::Value::Dict data,
+      ParseAndSaveCreativeNewTabPageAdsCallback callback) override;
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
