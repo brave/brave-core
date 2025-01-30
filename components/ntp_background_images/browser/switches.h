@@ -10,9 +10,9 @@ namespace ntp_background_images {
 
 namespace switches {
 
-// Allows forcing background images to use a local directory to find the json
-// (photo.json for sponsored images or data.json for super referral) rule file
-// and associated images.
+// Allows forcing sponsored images to use a local directory to find the json
+// (campaigns.json for sponsored images or data.json for super referral) rule
+// file and associated images.
 inline constexpr char kNTPSponsoredImagesDataPathForTesting[] =
     "ntp-sponsored-images-data-path";
 inline constexpr char kNTPSuperReferralDataPathForTesting[] =
