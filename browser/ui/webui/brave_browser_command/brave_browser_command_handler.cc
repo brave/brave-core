@@ -104,8 +104,13 @@ void BraveBrowserCommandHandler::ExecuteCommand(
       delegate_->OpenRewardsPanel();
       break;
     case brave_browser_command::mojom::Command::kOpenVPNOnboarding:
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
       delegate_->OpenVPNPanel();
       break;
+#else
+      std::move(callback).Run(false);
+      return;
+#endif
     case brave_browser_command::mojom::Command::kOpenAIChat:
       delegate_->OpenAIChat();
       break;
