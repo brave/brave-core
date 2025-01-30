@@ -115,6 +115,7 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
     }
 
     @NonNull
+    @SuppressWarnings("NoStreams")
     private NetworkModel.NetworkLists filterSupportedDapp(
             @NonNull final NetworkModel.NetworkLists networkLists) {
         final Predicate<NetworkInfo> supportedNetworkFilter =

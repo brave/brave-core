@@ -25,6 +25,7 @@ source_set("unit_tests") {
     "//brave/components/constants",
     "//brave/components/sync/test:test_support",
     "//components/history/core/browser:browser",
+    "//components/network_time",
     "//components/os_crypt/sync:os_crypt",
     "//components/os_crypt/sync:test_support",
     "//components/prefs:prefs",

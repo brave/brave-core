@@ -20,12 +20,12 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
-#include "chrome/browser/ui/webui/webui_util.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "net/base/features.h"
+#include "ui/webui/webui_util.h"
 
 // Cache active Browser instance's TabStripModel to give
 // to ShieldsPanelDataHandler when this is created because

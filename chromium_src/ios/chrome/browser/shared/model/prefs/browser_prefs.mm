@@ -91,9 +91,8 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #undef BRAVE_REGISTER_LOCAL_STATE_PREFS
 #undef BRAVE_REGISTER_BROWSER_STATE_PREFS
 
-void MigrateObsoleteProfilePrefs(const base::FilePath& state_path,
-                                 PrefService* prefs) {
-  MigrateObsoleteProfilePrefs_ChromiumImpl(state_path, prefs);
+void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+  MigrateObsoleteProfilePrefs_ChromiumImpl(prefs);
 
   brave_ads::MigrateObsoleteProfilePrefs(prefs);
   brave_wallet::MigrateObsoleteProfilePrefs(prefs);

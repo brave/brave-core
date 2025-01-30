@@ -31,7 +31,6 @@ source_set("importer") {
     "//components/user_prefs:user_prefs",
     "//ios/chrome/browser/bookmarks/model",
     "//ios/chrome/browser/shared/model/application_context",
-    "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public/thread",
     "//net",

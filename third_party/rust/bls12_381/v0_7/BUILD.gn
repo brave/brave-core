@@ -67,4 +67,7 @@ cargo_crate("lib") {
     "pairing",
     "pairings",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

@@ -18,7 +18,5 @@ public class BraveNotificationPermissionRationaleDialogControllerClassAdapter
         super(visitor);
 
         redirectConstructor(sContoller, sBraveContoller);
-        deleteMethod(sBraveContoller, "wrapDialogDismissalCallback");
-        makePublicMethod(sContoller, "wrapDialogDismissalCallback");
     }
 }

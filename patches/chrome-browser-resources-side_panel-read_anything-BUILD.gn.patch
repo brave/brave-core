@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/side_panel/read_anything/BUILD.gn b/chrome/browser/resources/side_panel/read_anything/BUILD.gn
-index 6ca49c3d2b32ae5f030c1c906120c40f0a00a083..bf3b063f47bd4f699c53465446d60498a7d28d32 100644
+index 9a847ad3b44a7be841c8c943ecf9293dd6876f3a..54feb4ed95fd1129f1a608bd8f9e080f3a9e9da1 100644
 --- a/chrome/browser/resources/side_panel/read_anything/BUILD.gn
 +++ b/chrome/browser/resources/side_panel/read_anything/BUILD.gn
 @@ -68,7 +68,7 @@ build_webui("build") {

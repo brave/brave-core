@@ -51,7 +51,7 @@ web::WebUIIOSDataSource* CreateAndAddWebUIDataSource(
 
   // Add required resources.
   source->AddResourcePaths(
-      UNSAFE_TODO(base::make_span(resource_map, resource_map_size)));
+      UNSAFE_TODO(base::span(resource_map, resource_map_size)));
   source->SetDefaultResource(html_resource_id);
   return source;
 }
@@ -88,7 +88,7 @@ SkusInternalsUI::SkusInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
   ProfileIOS* profile = ProfileIOS::FromWebUIIOS(web_ui);
   skus_service_getter_ = base::BindRepeating(
       [](ProfileIOS* profile) {
-        return skus::SkusServiceFactory::GetForBrowserState(profile);
+        return skus::SkusServiceFactory::GetForProfile(profile);
       },
       profile);
 

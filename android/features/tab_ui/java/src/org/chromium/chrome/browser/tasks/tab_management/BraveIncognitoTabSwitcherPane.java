@@ -17,7 +17,6 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
-import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tabmodel.TabGroupModelFilter;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
@@ -29,9 +28,8 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
 
     public BraveIncognitoTabSwitcherPane(
             @NonNull Context context,
-            @NonNull OneshotSupplier<ProfileProvider> profileProviderSupplier,
             @NonNull TabSwitcherPaneCoordinatorFactory factory,
-            @NonNull Supplier<TabGroupModelFilter> incognitoTabModelFilterSupplier,
+            @NonNull Supplier<TabGroupModelFilter> incognitoTabGroupModelFilterSupplier,
             @NonNull OnClickListener newTabButtonClickListener,
             @Nullable OneshotSupplier<IncognitoReauthController> incognitoReauthControllerSupplier,
             @NonNull DoubleConsumer onToolbarAlphaChange,
@@ -39,9 +37,8 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
             @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier) {
         super(
                 context,
-                profileProviderSupplier,
                 factory,
-                incognitoTabModelFilterSupplier,
+                incognitoTabGroupModelFilterSupplier,
                 newTabButtonClickListener,
                 incognitoReauthControllerSupplier,
                 onToolbarAlphaChange,

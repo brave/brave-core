@@ -32,7 +32,8 @@ void SplitViewBrowserData::TileTabs(const TabTile& tile) {
   CHECK(!IsTabTiled(tile.second));
 
   auto& model = tab_strip_model_adapter_.tab_strip_model();
-  CHECK_LT(model.GetIndexOfTab(tile.first), model.GetIndexOfTab(tile.second));
+  CHECK_LT(model.GetIndexOfTab(tile.first.Get()),
+           model.GetIndexOfTab(tile.second.Get()));
 
   tiles_.push_back(tile);
 
@@ -43,7 +44,7 @@ void SplitViewBrowserData::TileTabs(const TabTile& tile) {
       tab_strip_model_adapter_.SynchronizePinnedState(tile, tile.first);
   tabs_are_adjacent |= tab_strip_model_adapter_.SynchronizeGroupedState(
       tile, /*source=*/tile.first,
-      model.GetTabGroupForTab(model.GetIndexOfTab(tile.first)));
+      model.GetTabGroupForTab(model.GetIndexOfTab(tile.first.Get())));
 
   if (!tabs_are_adjacent) {
     tab_strip_model_adapter_.MakeTiledTabsAdjacent(tile);

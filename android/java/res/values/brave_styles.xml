@@ -20,15 +20,15 @@
      </style>
     <style name="BraveRewardsSwitchTheme">
         <item name="colorControlActivated">@color/rewards_panel_action_color</item>
-        <item name="colorSwitchThumbNormal">@color/modern_grey_600</item>
-        <item name="android:colorForeground">@color/modern_grey_600</item>
+        <item name="colorSwitchThumbNormal">@color/baseline_neutral_40</item>
+        <item name="android:colorForeground">@color/baseline_neutral_40</item>
         <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     </style>
 
     <style name="TippingSwitchTheme">
         <item name="colorControlActivated">@color/rewards_panel_action_color</item>
-        <item name="colorSwitchThumbNormal">@color/modern_grey_600</item>
-        <item name="android:colorForeground">@color/modern_grey_600</item>
+        <item name="colorSwitchThumbNormal">@color/baseline_neutral_40</item>
+        <item name="android:colorForeground">@color/baseline_neutral_40</item>
     </style>
 
     <style name="AppBottomSheetDialogTheme"

@@ -15,7 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 class Browser;
 
 @interface BraveTabGeneratorAPI (Private)
-- (instancetype)initWithBrowser:(Browser*)browser;
+- (instancetype)initWithBrowser:(Browser*)browser
+                     otrBrowser:(Browser*)otrBrowser;
 
 @end
 

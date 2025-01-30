@@ -231,10 +231,6 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         }
     }
 
-    private boolean shouldForceDefaultBrowserPrompt() {
-        return isNewOnboardingEnabled() && !isDefaultBrowser();
-    }
-
     private boolean isNewOnboardingEnabled() {
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEW_ANDROID_ONBOARDING);
     }
@@ -283,7 +279,7 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                     .writeBoolean(ChromePreferenceKeys.FIRST_RUN_CACHED_TOS_ACCEPTED, true);
             FirstRunUtils.setEulaAccepted();
             finish();
-            sendFirstRunCompletePendingIntent();
+            sendFirstRunCompleteIntent();
         }
     }
 

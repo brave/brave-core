@@ -86,9 +86,6 @@ class BravePasswordManagerAndroidUtilTest : public testing::Test {
 // We don't migrate and don't delete passwords DB.
 TEST_F(BravePasswordManagerAndroidUtilTest,
        SetUsesSplitStoresAndUPMForLocal_DeletesLoginDataFilesForMigratedUsers) {
-  base::test::ScopedFeatureList feature_list(
-      password_manager::features::kClearLoginDatabaseForAllMigratedUPMUsers);
-
   // This is a state of a local user that has just been migrated.
   pref_service()->SetInteger(kPasswordsUseUPMLocalAndSeparateStores,
                              base::to_underlying(kOn));

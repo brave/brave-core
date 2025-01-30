@@ -41,6 +41,9 @@ cargo_crate("lib") {
   if (is_android && current_cpu == "arm64") {
     deps += [ "//brave/third_party/rust/libc/v0_2:lib" ]
   }
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
   if (is_apple && target_cpu == "arm64") {
     deps += [ "//brave/third_party/rust/libc/v0_2:lib" ]
   }

@@ -419,7 +419,7 @@ void MaybeBindSolanaProvider(
 }
 
 void BindBraveSearchFallbackHost(
-    int process_id,
+    content::ChildProcessId process_id,
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
   content::RenderProcessHost* render_process_host =
       content::RenderProcessHost::FromID(process_id);
@@ -1016,7 +1016,6 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
   // TODO(iefremov): Skip proxying for certain requests?
   BraveProxyingURLLoaderFactory::MaybeProxyRequest(
       browser_context, frame,
-      type == URLLoaderFactoryType::kNavigation ? -1 : render_process_id,
       factory_builder, navigation_response_task_runner);
 
   ChromeContentBrowserClient::WillCreateURLLoaderFactory(
@@ -1120,7 +1119,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
   }
 
   // brave://sync => brave://settings/braveSync
-  if (url->host() == chrome::kChromeUISyncHost) {
+  if (url->host() == chrome::kBraveUISyncHost) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kChromeUIScheme);
     replacements.SetHostStr(chrome::kChromeUISettingsHost);
@@ -1142,8 +1141,8 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
 #endif
 
   // no special win10 welcome page
-  if (url->host() == chrome::kChromeUIWelcomeHost) {
-    *url = GURL(chrome::kChromeUIWelcomeURL);
+  if (url->host() == kWelcomeHost) {
+    *url = GURL(kWelcomeURL);
     return true;
   }
 

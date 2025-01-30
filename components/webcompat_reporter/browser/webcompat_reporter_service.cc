@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_util.h"
 #include "brave/components/version_info/version_info.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/common/pref_names.h"

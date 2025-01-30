@@ -16,18 +16,22 @@ source_set("ui") {
     "//base",
     "//components/profile_metrics",
     "//ios/chrome/browser/shared/model/application_context",
-    "//ios/chrome/browser/shared/model/browser_state",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/components/webui:url_constants",
     "//ios/web/js_messaging:js_messaging",
+    "//ios/web/public",
+    "//ios/web/public/navigation",
     "//ios/web/public/thread",
+    "//ios/web/public/ui",
     "//ios/web/public/webui",
     "//ios/web/web_state",
     "//ios/web/web_state:web_state_impl_header",
     "//ios/web/web_state/ui:web_controller_header",
     "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
     "//ios/web/webui",
+    "//net",
     "//ui/base",
+    "//url",
   ]
 
   frameworks = [

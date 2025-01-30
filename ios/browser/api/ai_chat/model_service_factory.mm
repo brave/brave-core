@@ -8,21 +8,16 @@
 #include "base/no_destructor.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "components/keyed_service/ios/browser_state_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
-#include "ios/chrome/browser/shared/model/browser_state/browser_state_otr_helper.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 
 namespace ai_chat {
-ModelService* ModelServiceFactory::GetForBrowserState(ProfileIOS* profile) {
-  return static_cast<ModelService*>(
-      GetInstance()->GetServiceForBrowserState(profile, true));
+ModelService* ModelServiceFactory::GetForProfile(ProfileIOS* profile) {
+  return GetInstance()->GetServiceForProfileAs<ModelService>(profile, true);
 }
 
-ModelService* ModelServiceFactory::GetForBrowserStateIfExists(
-    ProfileIOS* profile) {
-  return static_cast<ModelService*>(
-      GetInstance()->GetServiceForBrowserState(profile, false));
+ModelService* ModelServiceFactory::GetForProfileIfExists(ProfileIOS* profile) {
+  return GetInstance()->GetServiceForProfileAs<ModelService>(profile, false);
 }
 
 ModelServiceFactory* ModelServiceFactory::GetInstance() {
@@ -31,23 +26,15 @@ ModelServiceFactory* ModelServiceFactory::GetInstance() {
 }
 
 ModelServiceFactory::ModelServiceFactory()
-    : BrowserStateKeyedServiceFactory(
-          "ModelService",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("ModelService",
+                                    ProfileSelection::kRedirectedInIncognito,
+                                    ServiceCreation::kCreateLazily,
+                                    TestingCreation::kNoServiceForTests) {}
 
 ModelServiceFactory::~ModelServiceFactory() {}
 
 std::unique_ptr<KeyedService> ModelServiceFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   return std::make_unique<ModelService>(user_prefs::UserPrefs::Get(context));
-}
-
-web::BrowserState* ModelServiceFactory::GetBrowserStateToUse(
-    web::BrowserState* context) const {
-  return GetBrowserStateRedirectedInIncognito(context);
-}
-
-bool ModelServiceFactory::ServiceIsNULLWhileTesting() const {
-  return true;
 }
 }  // namespace ai_chat

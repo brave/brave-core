@@ -1993,7 +1993,7 @@ extension BrowserViewController: WKUIDelegate {
       return nil
     }
 
-    if FeatureList.kHttpsOnlyMode.enabled, ShieldPreferences.httpsUpgradeLevel.isStrict,
+    if ShieldPreferences.httpsUpgradeLevel.isStrict,
       let url = originalURL.encodeEmbeddedInternalURL(for: .httpBlocked)
     {
       Self.log.debug(

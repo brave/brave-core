@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/BUILD.gn b/chrome/browser/resources/side_panel/bookmarks/BUILD.gn
-index 5ad1fd3b09a9fbbb07a0760c5a964efa911e64ad..3cf5c6980b4d95c0d233b76bd4be0d1b9fdef90d 100644
+index 90addfafaf1a783741ad7b139708cf4e743abcbd..ded5d765caf7e5527fd27f57793743ca916a112d 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/BUILD.gn
 +++ b/chrome/browser/resources/side_panel/bookmarks/BUILD.gn
-@@ -70,4 +70,5 @@ build_webui("build") {
+@@ -71,4 +71,5 @@ build_webui("build") {
  
    html_to_wrapper_template = "detect"
    webui_context_type = "trusted"

@@ -195,6 +195,7 @@ public class BraveWalletNetworksPreference extends Preference
                 });
     }
 
+    @SuppressWarnings("NoStreams")
     private NetworkInfo[] filterNetworksByCoin(
             @CoinType.EnumType final int coinType, NetworkInfo[] networks) {
         return Arrays.stream(networks).filter(n -> n.coin == coinType).toArray(NetworkInfo[]::new);

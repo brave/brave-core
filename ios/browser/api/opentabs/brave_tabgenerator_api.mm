@@ -54,23 +54,28 @@
 
 @interface BraveTabGeneratorAPI () {
   raw_ptr<Browser> browser_;
+  raw_ptr<Browser> otr_browser_;
 }
 @end
 
 @implementation BraveTabGeneratorAPI
 
-- (instancetype)initWithBrowser:(Browser*)browser {
+- (instancetype)initWithBrowser:(Browser*)browser
+                     otrBrowser:(Browser*)otrBrowser {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
     DCHECK(browser);
+    DCHECK(otrBrowser);
     browser_ = browser;
+    otr_browser_ = otrBrowser;
   }
   return self;
 }
 
 - (BraveSyncTab*)createBraveSyncTab:(bool)isOffTheRecord {
-  return [[BraveSyncTab alloc] initWithBrowser:browser_
-                                isOffTheRecord:isOffTheRecord];
+  return [[BraveSyncTab alloc]
+      initWithBrowser:isOffTheRecord ? otr_browser_ : browser_
+       isOffTheRecord:isOffTheRecord];
 }
 
 - (void)dealloc {

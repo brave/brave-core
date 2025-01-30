@@ -243,7 +243,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
   // This will always be the regular profile (not private/OTR).
   ProfileIOS* profile = [self getLastUsedProfile];
-  adsService = brave_ads::AdsServiceFactoryIOS::GetForBrowserState(profile);
+  adsService = brave_ads::AdsServiceFactoryIOS::GetForProfile(profile);
   CHECK(adsService);
 
   adsService->InitializeAds(

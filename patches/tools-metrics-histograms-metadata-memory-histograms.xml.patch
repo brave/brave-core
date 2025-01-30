@@ -1,0 +1,23 @@
+diff --git a/tools/metrics/histograms/metadata/memory/histograms.xml b/tools/metrics/histograms/metadata/memory/histograms.xml
+index 36831bac2a4a678fdddd178fdf0e57d5edfb95cf..67d0365b331d54d2b81a698f4e17b6c1fe16a246 100644
+--- a/tools/metrics/histograms/metadata/memory/histograms.xml
++++ b/tools/metrics/histograms/metadata/memory/histograms.xml
+@@ -1765,18 +1765,6 @@ chromium-metrics-reviews@google.com.
+   </summary>
+ </histogram>
+ 
+-<histogram name="Memory.PerformanceInfoRetrievalSuccess" enum="Boolean"
+-    expires_after="2025-06-29">
+-  <owner>aattar@google.com</owner>
+-  <owner>catan-team@chromium.org</owner>
+-  <summary>
+-    Reported for Windows only. This status indicates whether the system
+-    successfully collected memory performance information, such as
+-    Memory.CommitLimitMB. This helps diagnose issues with memory metric
+-    collection on Windows systems.
+-  </summary>
+-</histogram>
+-
+ <histogram name="Memory.PreFreeze2.Gpu.PrivateMemoryFootprint.{Timing}"
+     units="MiB" expires_after="2025-02-01">
+   <owner>thiabaud@google.com</owner>

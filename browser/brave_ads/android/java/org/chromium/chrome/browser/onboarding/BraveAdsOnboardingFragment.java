@@ -133,7 +133,7 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
     }
 
     private void startCountdown() {
-        BraveOnboardingNotification.cancelOnboardingNotification(getActivity());
+        BraveOnboardingNotification.cancelOnboardingNotification();
 
         if (countDownTimer != null) countDownTimer.cancel();
 

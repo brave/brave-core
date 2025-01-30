@@ -24,7 +24,6 @@
 #include "base/memory/scoped_refptr.h"
 #import "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
-#include "net/base/host_port_pair.h"
 #include "net/base/net_errors.h"
 #include "net/base/network_anonymization_key.h"
 #include "net/cert/cert_verify_proc_ios.h"
@@ -201,8 +200,7 @@ namespace {
   // For this, we use the verification result above
   net::TransportSecurityState::PKPStatus status =
       transport_security_state->CheckPublicKeyPins(
-          net::HostPortPair(base::SysNSStringToUTF8(host), port),
-          verify_result.is_issued_by_known_root,
+          base::SysNSStringToUTF8(host), verify_result.is_issued_by_known_root,
           verify_result.public_key_hashes);
   switch (status) {
     case net::TransportSecurityState::PKPStatus::VIOLATED:

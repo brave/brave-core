@@ -33,4 +33,7 @@ cargo_crate("lib") {
     "//brave/third_party/rust/generic_array/v0_14:lib",
     "//brave/third_party/rust/hmac/v0_8:lib",
   ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
 }

@@ -7,7 +7,7 @@
 
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "components/omnibox/browser/autocomplete_input.h"
-#include "content/public/browser/web_contents.h"
+#include "content/public/browser/page_navigator.h"
 #include "net/base/url_util.h"
 
 namespace {
@@ -26,14 +26,6 @@ content::OpenURLParams MaybeOverrideURLParams(content::OpenURLParams params,
 
 }  // namespace
 
-// We tweak a few AutocompleteInput settings because unlike Chromium we only
-// want keyword search results.
-#define set_prefer_keyword(prefer)                    \
-  set_keyword_mode_entry_method(                      \
-      metrics::OmniboxEventProto::KEYBOARD_SHORTCUT); \
-  autocomplete_input.set_prefer_keyword(true)
-#define set_allow_exact_keyword_match(allow) set_allow_exact_keyword_match(true)
-
 // Unfortunately, plumbing through the source doesn't seem trivial - it looks
 // like it should be possible with the {source} part but it seems like it only
 // works with Google Search. Additionally, the {source} param treats the NTP
@@ -50,5 +42,3 @@ content::OpenURLParams MaybeOverrideURLParams(content::OpenURLParams params,
 #include "src/chrome/browser/ui/webui/searchbox/realbox_handler.cc"
 
 #undef OpenURL
-#undef set_prefer_keyword
-#undef set_allow_exact_keyword_match

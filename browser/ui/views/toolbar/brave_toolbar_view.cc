@@ -342,11 +342,6 @@ void BraveToolbarView::OnThemeChanged() {
   }
 }
 
-views::View* BraveToolbarView::GetAnchorView(
-    std::optional<PageActionIconType> type) {
-  return ToolbarView::GetAnchorView(type);
-}
-
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
   Update(nullptr);
 }

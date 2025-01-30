@@ -103,6 +103,7 @@ public class BraveSafeBrowsingUtils {
         }
     }
 
+    @SuppressWarnings("NoStreams")
     public static int[] safeBrowsingToSafetyNetThreatTypes(int[] safeBrowsingThreatTypes) {
         List<Integer> arrSafetyNetThreatTypes = new ArrayList<Integer>();
         for (int i = 0; i < safeBrowsingThreatTypes.length; ++i) {

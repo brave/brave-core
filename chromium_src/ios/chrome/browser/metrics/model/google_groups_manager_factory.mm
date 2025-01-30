@@ -24,23 +24,14 @@ GoogleGroupsManagerFactory::GetInstance() {
 }
 
 GoogleGroupsManagerFactory::GoogleGroupsManagerFactory()
-    : BrowserStateKeyedServiceFactory(
-          "GoogleGroupsManager",
-          BrowserStateDependencyManager::GetInstance()) {}
+    : ProfileKeyedServiceFactoryIOS("GoogleGroupsManager",
+                                    ServiceCreation::kCreateWithProfile,
+                                    TestingCreation::kNoServiceForTests) {}
 
 std::unique_ptr<KeyedService>
 GoogleGroupsManagerFactory::BuildServiceInstanceFor(
     web::BrowserState* context) const {
   return nullptr;
-}
-
-bool GoogleGroupsManagerFactory::ServiceIsCreatedWithBrowserState()
-    const {
-  return true;
-}
-
-bool GoogleGroupsManagerFactory::ServiceIsNULLWhileTesting() const {
-  return true;
 }
 
 void GoogleGroupsManagerFactory::RegisterBrowserStatePrefs(

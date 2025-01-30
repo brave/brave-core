@@ -58,7 +58,6 @@ class BraveProxyingURLLoaderFactory
         BraveProxyingURLLoaderFactory& factory,
         uint64_t request_id,
         int32_t network_service_request_id,
-        int render_process_id,
         content::FrameTreeNodeId frame_tree_node_id,
         uint32_t options,
         const network::ResourceRequest& request,
@@ -126,7 +125,6 @@ class BraveProxyingURLLoaderFactory
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
 
-    const int render_process_id_;
     const content::FrameTreeNodeId frame_tree_node_id_;
     const uint32_t options_;
 
@@ -186,7 +184,6 @@ class BraveProxyingURLLoaderFactory
   BraveProxyingURLLoaderFactory(
       BraveRequestHandler& request_handler,
       content::BrowserContext* browser_context,
-      int render_process_id,
       content::FrameTreeNodeId frame_tree_node_id,
       network::URLLoaderFactoryBuilder& factory_builder,
       scoped_refptr<RequestIDGenerator> request_id_generator,
@@ -202,7 +199,6 @@ class BraveProxyingURLLoaderFactory
   static void MaybeProxyRequest(
       content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
-      int render_process_id,
       network::URLLoaderFactoryBuilder& factory_builder,
       scoped_refptr<base::SequencedTaskRunner> navigation_response_task_runner);
 
@@ -230,7 +226,6 @@ class BraveProxyingURLLoaderFactory
 
   const raw_ref<BraveRequestHandler> request_handler_;
   raw_ptr<content::BrowserContext> browser_context_ = nullptr;
-  const int render_process_id_;
   const content::FrameTreeNodeId frame_tree_node_id_;
 
   mojo::ReceiverSet<network::mojom::URLLoaderFactory> proxy_receivers_;

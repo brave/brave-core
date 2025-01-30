@@ -396,8 +396,9 @@ tabs::TabHandle BraveBrowserView::GetActiveTabHandle() {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
 
   auto* model = browser()->tab_strip_model();
-  return model->GetTabHandleAt(
-      model->GetIndexOfWebContents(GetActiveWebContents()));
+  return model
+      ->GetTabAtIndex(model->GetIndexOfWebContents(GetActiveWebContents()))
+      ->GetHandle();
 }
 
 bool BraveBrowserView::IsActiveWebContentsTiled(const TabTile& tile) {
@@ -421,7 +422,10 @@ void BraveBrowserView::UpdateSplitViewSizeDelta(
 
   auto* split_view_browser_data = SplitViewBrowserData::FromBrowser(browser());
   auto get_tab_handle = [this, &get_index_of](content::WebContents* contents) {
-    return browser()->tab_strip_model()->GetTabHandleAt(get_index_of(contents));
+    return browser()
+        ->tab_strip_model()
+        ->GetTabAtIndex(get_index_of(contents))
+        ->GetHandle();
   };
   auto old_tab_handle = get_tab_handle(old_contents);
   auto new_tab_handle = get_tab_handle(new_contents);
@@ -533,7 +537,8 @@ void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
     //  Contents   | secondary_contents_web_view_ | contents_web_view_  |
     auto* model = browser()->tab_strip_model();
     auto* contents = model->GetWebContentsAt(model->GetIndexOfTab(
-        second_tile_is_active_web_contents ? tile->first : tile->second));
+        second_tile_is_active_web_contents ? tile->first.Get()
+                                           : tile->second.Get()));
     CHECK_NE(contents, contents_web_view_->web_contents());
     if (secondary_contents_web_view_->web_contents() != contents) {
       secondary_contents_web_view_->SetWebContents(nullptr);
@@ -582,7 +587,7 @@ void BraveBrowserView::UpdateSecondaryDevtoolsLayoutAndVisibility(
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
   if (auto* tab_search_container =
-          tab_strip_region_view()->tab_search_container()) {
+          tab_strip_region_view()->GetTabSearchContainer()) {
     if (auto* button = tab_search_container->tab_search_button()) {
       auto is_tab_search_visible =
           GetProfile()->GetPrefs()->GetBoolean(kTabsSearchShow);
@@ -1127,12 +1132,12 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
     // split view only when it's needed.
     auto* browser_data = SplitViewBrowserData::FromBrowser(browser_.get());
     auto* tab_strip_model = browser_->tab_strip_model();
-    if (auto tile =
-            browser_data->GetTile(tab_strip_model->GetTabHandleAt(index))) {
+    if (auto tile = browser_data->GetTile(
+            tab_strip_model->GetTabAtIndex(index)->GetHandle())) {
       auto* main_web_contents = tab_strip_model->GetWebContentsAt(
-          tab_strip_model->GetIndexOfTab(tile->first));
+          tab_strip_model->GetIndexOfTab(tile->first.Get()));
       auto* secondary_web_contents = tab_strip_model->GetWebContentsAt(
-          tab_strip_model->GetIndexOfTab(tile->second));
+          tab_strip_model->GetIndexOfTab(tile->second.Get()));
       if (main_web_contents != new_contents) {
         std::swap(main_web_contents, secondary_web_contents);
       }
@@ -1154,7 +1159,9 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
     secondary_contents_web_view_->SetFastResize(true);
 
     if (!SplitViewBrowserData::FromBrowser(browser_.get())
-             ->GetTile(browser_->tab_strip_model()->GetTabHandleAt(index))) {
+             ->GetTile(browser_->tab_strip_model()
+                           ->GetTabAtIndex(index)
+                           ->GetHandle())) {
       // This will help reduce flickering when switching to non tiled tab.
       UpdateSecondaryContentsWebViewVisibility();
     }

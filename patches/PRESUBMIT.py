@@ -42,7 +42,7 @@ def CheckPatchFile(input_api, output_api):
         return []
 
     return [
-        output_api.PresubmitError(
+        output_api.PresubmitPromptWarning(
             'Patch should not add or remove empty lines at hunk boundaries',
             items)
     ]

@@ -71,7 +71,7 @@ NSString* decode_asn1_string(bssl::der::Input value) {
 
   if (type == V_ASN1_IA5STRING) {
     std::string result;
-    if (bssl::der::ParseIA5String(bssl::der::Input(base::make_span(
+    if (bssl::der::ParseIA5String(bssl::der::Input(base::span(
                                       data, static_cast<std::size_t>(length))),
                                   &result)) {
       return base::SysUTF8ToNSString(result);
@@ -326,7 +326,7 @@ bool pkcs7_get_signed_content(
     }
 
     for (auto&& octet : result) {
-      auto receipt_input_ = bssl::der::Input(base::make_span(
+      auto receipt_input_ = bssl::der::Input(base::span(
           ASN1_STRING_data(octet.get()),
           static_cast<std::size_t>(ASN1_STRING_length(octet.get()))));
 
