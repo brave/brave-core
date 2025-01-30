@@ -14,11 +14,9 @@
 
 namespace brave {
 
-void ShouldBlockJavaScript(web::WebState* webState,
-                           NSURLRequest* request,
-                           WKWebpagePreferences* preferences) {
+bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request) {
   if (!web::UrlHasWebScheme(request.URL)) {
-    return;
+    return false;
   }
   BraveWebView* webView =
       static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
@@ -27,13 +25,10 @@ void ShouldBlockJavaScript(web::WebState* webState,
 
   if ([navigationDelegate respondsToSelector:@selector
                           (webView:shouldBlockJavaScriptForRequest:)]) {
-    BOOL shouldBlockJavaScript = [navigationDelegate webView:webView
-                             shouldBlockJavaScriptForRequest:request];
-    if (shouldBlockJavaScript && preferences) {
-      // Only ever update it to false
-      preferences.allowsContentJavaScript = false;
-    }
+    return [navigationDelegate webView:webView
+        shouldBlockJavaScriptForRequest:request];
   }
+  return false;
 }
 
 }  // namespace brave

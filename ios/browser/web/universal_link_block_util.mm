@@ -10,9 +10,7 @@
 
 namespace brave {
 
-void ShouldBlockUniversalLinks(web::WebState* webState,
-                               NSURLRequest* request,
-                               bool* forceBlockUniversalLinks) {
+bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request) {
   BraveWebView* webView =
       static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
   id<BraveWebViewNavigationDelegate> navigationDelegate =
@@ -20,13 +18,10 @@ void ShouldBlockUniversalLinks(web::WebState* webState,
 
   if ([navigationDelegate respondsToSelector:@selector
                           (webView:shouldBlockUniversalLinksForRequest:)]) {
-    BOOL shouldBlockUniversalLinks = [navigationDelegate webView:webView
-                             shouldBlockUniversalLinksForRequest:request];
-    if (forceBlockUniversalLinks && shouldBlockUniversalLinks) {
-      // Only ever update it to true
-      *forceBlockUniversalLinks = shouldBlockUniversalLinks;
-    }
+    return [navigationDelegate webView:webView
+        shouldBlockUniversalLinksForRequest:request];
   }
+  return false;
 }
 
 }  // namespace brave
