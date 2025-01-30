@@ -15,7 +15,8 @@ root_dir = os.path.dirname(__file__)
 #   shared memory, passive segments, etc.
 
 os.environ.update(
-    {"RUSTFLAGS": "-C target-feature=+atomics,+bulk-memory,+mutable-globals"})
+    {"RUSTFLAGS": "-C target-feature=+atomics,+bulk-memory,+mutable-globals"}
+)
 
 subprocess.run(
     [
@@ -45,13 +46,12 @@ subprocess.run(
             "target",
             "wasm32-unknown-unknown",
             "release",
-            "wasm_audio_worklet.wasm",
+            "raytrace_parallel.wasm",
         ),
         "--out-dir",
         os.path.join(root_dir, "pkg"),
         "--target",
-        "web",
-        "--split-linked-modules",
+        "no-modules",
     ],
     cwd=root_dir,
 ).check_returncode()

@@ -11,7 +11,7 @@ action("build_wasm_bindgen") {
 
   script = "//build/gn_run_binary.py"
 
-  wasm_bindgen_src = "v0_2/crate/crates/cli"
+  wasm_bindgen_src = "v0_2_100/crates/cli"
 
   inputs = [ cargo_exe ]
 
