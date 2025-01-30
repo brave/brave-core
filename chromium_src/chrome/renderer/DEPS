@@ -9,8 +9,5 @@ include_rules += [
   "+brave/components/content_settings/renderer",
   "+brave/components/tor/buildflags",
   "+brave/components/tor/renderer",
-  "+brave/components/web_discovery/buildflags",
-  "+brave/components/web_discovery/common",
-  "+brave/components/web_discovery/renderer",
   "+brave/renderer",
 ]
