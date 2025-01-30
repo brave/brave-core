@@ -1,0 +1,8 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { return42 } from 'gen/brave/ui/webui/resources/some_resource/rust_package_1/bundler/pkg'
+import { return24 } from 'gen/brave/ui/webui/resources/some_resource/rust_package_2/bundler/pkg'
+export { return42, return24 }
