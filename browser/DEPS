@@ -79,6 +79,8 @@ include_rules += [
   "+brave/components/body_sniffer",
   "+brave/components/brave_search/browser",
   "+brave/components/brave_search/common",
+  "+brave/components/youtube_script_injector/browser",
+  "+brave/components/youtube_script_injector/common",
   "+brave/components/brave_webtorrent/browser",
   "+brave/components/cosmetic_filters/browser",
   "+brave/components/cosmetic_filters/common",

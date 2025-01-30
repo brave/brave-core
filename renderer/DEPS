@@ -13,6 +13,8 @@ include_rules += [
   "+brave/components/ai_rewriter/common",
   "+brave/components/brave_search/common",
   "+brave/components/brave_search/renderer",
+  "+brave/components/youtube_script_injector/common",
+  "+brave/components/youtube_script_injector/renderer",
   "+brave/components/brave_shields/core/common",
   "+brave/components/brave_vpn/common/buildflags/buildflags.h",
   "+brave/components/brave_wallet/common",
