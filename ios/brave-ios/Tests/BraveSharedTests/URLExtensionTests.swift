@@ -5,6 +5,7 @@
 
 import Foundation
 import Shared
+import WebKit
 import XCTest
 
 class URLExtensionTests: XCTestCase {
@@ -134,5 +135,59 @@ class URLExtensionTests: XCTestCase {
       embeddedURL.displayURL,
       embeddedURL
     )
+  }
+
+  // Test that `windowOriginURL` returns the same value as `window.origin`.
+  @MainActor func testWindowOriginURL() async {
+    let testURLs = [
+      // multiple subdomains
+      (URL(string: "https://one.two.three.example.com")!, "https://one.two.three.example.com"),
+      // trailing slash
+      (URL(string: "https://example.com/")!, "https://example.com"),
+      // query
+      (URL(string: "https://www.example.com/?v=1234567")!, "https://www.example.com"),
+      // match
+      (URL(string: "https://www.example.com")!, "https://www.example.com"),
+      // punycode
+      (URL(string: "http://Дом.ru/")!, "http://xn--d1aqf.ru"),
+      // punycode
+      (URL(string: "http://Дoм.ru/")!, "http://xn--o-gtbz.ru"),
+    ]
+
+    let webView = WKWebView()
+    for (value, expected) in testURLs {
+      do {
+        let expectation = XCTestExpectation(description: "didFinish")
+        let navigationDelegate = NavigationDelegate(didFinish: {
+          expectation.fulfill()
+        })
+        webView.navigationDelegate = navigationDelegate
+        webView.loadHTMLString("", baseURL: value)
+
+        // await load of html
+        await fulfillment(of: [expectation], timeout: 2)
+
+        guard let result = try await webView.evaluateJavaScript("window.origin") as? String else {
+          XCTFail("Expected a String result")
+          return
+        }
+        XCTAssertEqual(result, expected)
+        XCTAssertEqual(result, value.windowOriginURL.absoluteString)
+      } catch {
+        XCTFail("Expected a valid `window.origin`")
+      }
+    }
+  }
+}
+
+private class NavigationDelegate: NSObject, WKNavigationDelegate {
+  private var didFinish: () -> Void
+
+  init(didFinish: @escaping () -> Void) {
+    self.didFinish = didFinish
+  }
+
+  func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+    didFinish()
   }
 }
