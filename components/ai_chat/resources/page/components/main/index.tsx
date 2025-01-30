@@ -36,6 +36,7 @@ import { GenerateSuggestionsButton, SuggestedQuestion } from '../suggested_quest
 import ToolsButtonMenu from '../tools_button_menu'
 import WelcomeGuide from '../welcome_guide'
 import styles from './style.module.scss'
+import useIsConversationVisible from '../../hooks/useIsConversationVisible'
 
 // Amount of pixels user has to scroll up to break out of
 // automatic scroll to bottom when new response lines are generated.
@@ -160,6 +161,8 @@ function Main() {
     aiChatContext.hasAcceptedAgreement &&
     (conversationContext.suggestedQuestions.length > 0 ||
       SUGGESTION_STATUS_SHOW_BUTTON.has(conversationContext.suggestionStatus))
+
+  const isVisible = useIsConversationVisible(conversationContext.conversationUuid)
 
   const maybeShowSoftKeyboard = (querySubmitted: boolean) => {
     if (aiChatContext.isMobile && aiChatContext.hasAcceptedAgreement &&
@@ -315,6 +318,7 @@ function Main() {
         )}
         <ToolsButtonMenu {...conversationContext}>
           <InputBox
+            conversationStarted={isVisible}
             context={{ ...conversationContext, ...aiChatContext }}
             maybeShowSoftKeyboard={maybeShowSoftKeyboard}
           />

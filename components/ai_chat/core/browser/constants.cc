@@ -30,6 +30,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"aboutDescription", IDS_CHAT_UI_ABOUT_DESCRIPTION},
        {"aboutDescription_2", IDS_CHAT_UI_ABOUT_DESCRIPTION_2},
        {"aboutDescription_3", IDS_CHAT_UI_ABOUT_DESCRIPTION_3},
+       {"initialPlaceholderLabel", IDS_CHAT_UI_INITIAL_PLACEHOLDER_LABEL},
        {"placeholderLabel", IDS_CHAT_UI_PLACEHOLDER_LABEL},
        {"pageContentWarning", IDS_CHAT_UI_PAGE_CONTENT_WARNING},
        {"customModelInvalidEndpoint", IDS_CUSTOM_MODEL_ENDPOINT_INVALID_ERROR},

@@ -32,6 +32,7 @@ export default function BeginGeneration() {
       <InitialText />
       <ToolsButtonMenu isToolsMenuOpen={context.isToolsMenuOpen} setIsToolsMenuOpen={context.setIsToolsMenuOpen} actionList={context.actionList} handleActionTypeClick={context.handleActionTypeClick} inputText={context.instructionsText}>
         <InputBox
+          conversationStarted
           context={{
             inputText: context.instructionsText,
             setInputText: context.setInstructionsText,
