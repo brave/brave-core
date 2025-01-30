@@ -366,6 +366,7 @@ void DefaultBraveShieldsHandler::GetContactInfo(const base::Value::List& args) {
     params_dict.Set("contactInfo", "");
     params_dict.Set("contactInfoSaveFlag", false);
     ResolveJavascriptCallback(args[0].Clone(), std::move(params_dict));
+    return;
   }
 
   webcompat_reporter_service->GetContactInfo(
