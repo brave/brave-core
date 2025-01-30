@@ -266,21 +266,25 @@ group("finalize_app") {
   }
 }
 
+if (is_official_build) {
+  if (is_release_channel) {
+    provisioning_profile = "//brave/build/mac/release.provisionprofile"
+  } else {
+    provisioning_profile =
+        "//brave/build/mac/${brave_channel}.provisionprofile"
+  }
+} else {
+  # an empty dummy file just to simplify things
+  provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
+}
+
 action("sign_app") {
   script = "//build/gn_run_binary.py"
   shell_script = "//brave/build/mac/sign_app.sh"
 
   if (is_official_build) {
-    if (is_release_channel) {
-      provisioning_profile = "//brave/build/mac/release.provisionprofile"
-    } else {
-      provisioning_profile =
-          "//brave/build/mac/${brave_channel}.provisionprofile"
-    }
     is_development = "False"
   } else {
-    # an empty dummy file just to simplify things
-    provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
     is_development = "True"
   }
 
@@ -538,15 +542,8 @@ action("notarize_dmg_pkg") {
 
   if (is_official_build) {
     development_arg = ""
-    if (is_release_channel) {
-      provisioning_profile = "//brave/build/mac/release.provisionprofile"
-    } else {
-      provisioning_profile =
-          "//brave/build/mac/${brave_channel}.provisionprofile"
-    }
   } else {
     development_arg = "--development"
-    provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
   }
 
   args = [
