@@ -16,6 +16,9 @@ private class NavDelegate: NSObject, BraveWebViewNavigationDelegate {
   func webView(_ webView: CWVWebView, shouldBlockJavaScriptFor request: URLRequest) -> Bool {
     return true
   }
+  func webView(_ webView: CWVWebView, shouldBlockUniversalLinksFor request: URLRequest) -> Bool {
+    return true
+  }
 }
 
 @dynamicMemberLookup

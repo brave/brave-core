@@ -9,9 +9,14 @@
 
 #include <Webkit/Webkit.h>
 
+#define _navigationHandler                                         \
+  _navigationHandler =                                             \
+      [[BraveCRWWKNavigationHandler alloc] initWithDelegate:self]; \
+  [[maybe_unused]] auto* _
 #define webViewNavigationProxy webViewNavigationProxy_ChromiumImpl
 #include "src/ios/web/web_state/ui/crw_web_controller.mm"
 #undef webViewNavigationProxy
+#undef _navigationHandler
 
 #pragma mark - BackForwardList
 

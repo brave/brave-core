@@ -16,12 +16,8 @@ class WebState;
 }
 
 namespace brave {
-void ShouldBlockUniversalLinks(web::WebState* webState,
-                               NSURLRequest* request,
-                               bool* forceBlockUniversalLinks);
-void ShouldBlockJavaScript(web::WebState* webState,
-                           NSURLRequest* request,
-                           WKWebpagePreferences* preferences);
+bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request);
+bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request);
 }  // namespace brave
 
 #endif  // BRAVE_CHROMIUM_SRC_IOS_WEB_NAVIGATION_WK_NAVIGATION_ACTION_POLICY_UTIL_H_
