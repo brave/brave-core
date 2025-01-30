@@ -13,7 +13,6 @@
 
 namespace brave {
 
-// FIXME: Replace patch + override with WKWebViewConfigurationProviderObserver
 void ResetWithWebViewConfiguration(WKWebViewConfiguration* configuration) {
   // Adjusts the underlying WKWebViewConfiguration for settings we don't want
   // to inherit from Chromium
@@ -22,7 +21,7 @@ void ResetWithWebViewConfiguration(WKWebViewConfiguration* configuration) {
   @try {
     [configuration setValue:@YES forKey:@"longPressActionsEnabled"];
   } @catch (NSException* exception) {
-    DCHECK(false) << "Error setting value for longPressActionsEnabled";
+    NOTREACHED() << "Error setting value for longPressActionsEnabled";
   }
 
   // Restore Apple's safe browsing implementation

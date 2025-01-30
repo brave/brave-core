@@ -18,7 +18,6 @@
 #include "ios/web/web_state/ui/crw_web_controller.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web/web_state/web_state_impl.h"
-#include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
 #include "ios/web_view/public/cwv_navigation_delegate.h"
@@ -137,7 +136,7 @@ id NSObjectFromValue(const base::Value* value) {
   }
   web::WebFrameInternal* webFrame = mainFrame->GetWebFrameInternal();
   auto worlds = web::JavaScriptFeatureManager::FromBrowserState(
-                    self.configuration.browserState)
+                    self.webState->GetBrowserState())
                     ->GetAllContentWorlds();
 
   auto jsContentWorld =
