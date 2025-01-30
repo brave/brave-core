@@ -139,6 +139,7 @@ import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.components.browser_ui.media.MediaNotificationInfo;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -1780,7 +1781,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ActivityLifecycleDispatcher.class,
                         ActivityTabProvider.class,
-                        TopUiThemeColorProvider.class));
+                        TopUiThemeColorProvider.class,
+                        EdgeToEdgeSystemBarColorHelper.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
