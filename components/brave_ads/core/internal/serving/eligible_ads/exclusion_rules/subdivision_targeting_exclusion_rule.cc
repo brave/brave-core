@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 
-#include <vector>
-
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/subdivision_util.h"

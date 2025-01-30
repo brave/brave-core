@@ -492,6 +492,11 @@ void ConfirmationQueue::Migrate(
       MigrateToV43(mojom_db_transaction);
       break;
     }
+
+    default: {
+      // No migration needed.
+      break;
+    }
   }
 }
 

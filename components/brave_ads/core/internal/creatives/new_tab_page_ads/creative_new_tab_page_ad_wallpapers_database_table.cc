@@ -112,6 +112,11 @@ void CreativeNewTabPageAdWallpapers::Migrate(
       MigrateToV46(mojom_db_transaction);
       break;
     }
+
+    default: {
+      // No migration needed.
+      break;
+    }
   }
 }
 

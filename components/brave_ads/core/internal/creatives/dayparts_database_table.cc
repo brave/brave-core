@@ -101,6 +101,11 @@ void Dayparts::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
       MigrateToV46(mojom_db_transaction);
       break;
     }
+
+    default: {
+      // No migration needed.
+      break;
+    }
   }
 }
 
