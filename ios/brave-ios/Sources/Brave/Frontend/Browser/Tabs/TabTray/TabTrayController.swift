@@ -1017,6 +1017,10 @@ extension TabTrayController: TabManagerDelegate {
     if tabManager.tabsForCurrentMode.count < 1 {
       dismiss(animated: true)
     }
+
+    if BraveCore.FeatureList.kBraveShredFeature.enabled {
+      shredButton.isHidden = tabManager.selectedTab?.url?.isShredAvailable == false
+    }
   }
 
   func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?) {}
