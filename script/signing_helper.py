@@ -114,18 +114,15 @@ def BraveModifyPartsForSigning(parts, config):
 
 
 def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
-    """ Creates Brave specific config used for signing """
-    class ConfigNonChromeBranded(config_class):  # pylint: disable=too-few-public-methods
-        """ Config that overrides is_chrome_branded """
+
+    class BraveCodeSignConfig(config_class):
 
         @staticmethod
         def is_chrome_branded():
-            """ Not chrome branded """
             return False
 
         @property
         def distributions(self):
-            """ Brave distribution """
             return [model.Distribution(channel=brave_channel)]
 
         @property
@@ -135,31 +132,13 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
         @property
         def codesign_requirements_basic(self):
             return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */' # pylint: disable=line-too-long
-
-    config_class = ConfigNonChromeBranded
-
-    if mac_provisioning_profile is not None:
-        provisioning_profile = mac_provisioning_profile
-    else:
-        # Retrieve provisioning profile exported by build/mac/sign_app.sh
-        provisioning_profile = os.environ['MAC_PROVISIONING_PROFILE']
-
-    # If provisioning_profile is not set, then it's development config.
-    if not provisioning_profile:
-        return config_class
-
-    class ProvisioningProfileCodeSignConfig(config_class):
-        """ Config with provisioning profile """
-
+        
         @property
         def provisioning_profile_basename(self):
-            """ Provisioning profile base name """
-            return os.path.splitext(os.path.basename(
-                provisioning_profile))[0]
-
+            return brave_channel or "release"
+        
         @property
         def run_spctl_assess(self):
-            """ Run spctl check """
             return True
 
-    return ProvisioningProfileCodeSignConfig
+    return BraveCodeSignConfig
