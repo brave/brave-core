@@ -371,6 +371,7 @@ void DefaultBraveShieldsHandler::GetContactInfoSaveFlag(
           profile_);
   if (!webcompat_reporter_service) {
     ResolveJavascriptCallback(args[0].Clone(), base::Value(false));
+    return;
   }
 
   webcompat_reporter_service->GetContactInfoSaveFlag(
