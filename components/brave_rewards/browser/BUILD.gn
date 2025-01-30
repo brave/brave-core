@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_rewards/core/config.gni")
+import("//brave/components/brave_rewards/core/engine/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 static_library("browser") {
@@ -37,7 +37,7 @@ static_library("browser") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_rewards/common/buildflags",
-    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/engine",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
@@ -65,7 +65,7 @@ static_library("browser") {
     "//url",
   ]
 
-  public_deps = [ "//brave/components/brave_rewards/core:headers" ]
+  public_deps = [ "//brave/components/brave_rewards/core/engine:headers" ]
 
   if (is_android) {
     deps += [ "//brave/components/safetynet:android" ]
@@ -80,7 +80,7 @@ source_set("testutil") {
     "//brave/browser",
     "//brave/browser/brave_rewards",
     "//brave/components/brave_rewards/common",
-    "//brave/components/brave_rewards/core:headers",
+    "//brave/components/brave_rewards/core/engine:headers",
     "//chrome/browser/bitmap_fetcher:bitmap_fetcher",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",

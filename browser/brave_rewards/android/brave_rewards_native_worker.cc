@@ -27,7 +27,7 @@
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
-#include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"

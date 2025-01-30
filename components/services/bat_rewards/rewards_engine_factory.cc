@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/rewards_engine.h"
+#include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 
 namespace brave_rewards::internal {
 

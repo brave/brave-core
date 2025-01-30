@@ -14,10 +14,10 @@ static_library("lib") {
     "rewards_engine_factory.h",
   ]
 
-  public_deps = [
-    "public/interfaces",
-    "//brave/components/brave_rewards/core",
-  ]
+  public_deps = [ "public/interfaces" ]
 
-  deps = [ "//mojo/public/cpp/system" ]
+  deps = [
+    "//brave/components/brave_rewards/core/engine",
+    "//mojo/public/cpp/system",
+  ]
 }

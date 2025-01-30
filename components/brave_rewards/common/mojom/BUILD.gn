@@ -17,15 +17,10 @@ mojom("mojom") {
 }
 
 mojom("engine") {
-  sources = [ "rewards_engine.mojom" ]
-
-  public_deps = [ "//mojo/public/mojom/base" ]
-
-  deps = [ ":mojom" ]
-}
-
-mojom("core") {
-  sources = [ "rewards_core.mojom" ]
+  sources = [
+    "rewards_engine.mojom",
+    "rewards_engine_internal.mojom",
+  ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 
