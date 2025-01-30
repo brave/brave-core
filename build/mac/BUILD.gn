@@ -490,6 +490,7 @@ _upstream_signed_dmg_path = "$root_out_dir/$mac_signed_output_prefix/" + string_
 action("_sign_dmg") {
   deps = [
     ":copies",
+    ":invoker",
     "//chrome:chrome_app",
     "//chrome/installer/mac",
     "//chrome/updater/mac:browser_install_script",
@@ -500,11 +501,13 @@ action("_sign_dmg") {
     rebase_path(root_build_dir, root_build_dir),
     "--output",
     rebase_path("$root_out_dir/signed", root_build_dir),
-    "--identity",
-    mac_signing_identifier,
+    "--identity=$mac_signing_identifier",
   ]
   if (!is_official_build) {
     args += [ "--development" ]
+  }
+  if (skip_signing) {
+    args += [ "--skip-signing" ]
   }
   if (notarize) {
     args += [ "--notarize" ]
@@ -521,6 +524,12 @@ action("_sign_dmg") {
     }
   }
   outputs = [ _upstream_signed_dmg_path ]
+}
+
+copy("invoker") {
+  visibility = [ ":_sign_dmg" ]
+  sources = [ "internal_invoker.py" ]
+  outputs = [ "$packaging_dir/signing/{{source_file_part}}" ]
 }
 
 copy("sign_dmg") {
