@@ -30,6 +30,7 @@ include_rules += [
   "+brave/components/brave_ads/browser",
   "+brave/components/brave_ads/core/public",
   "+brave/components/brave_component_updater/browser",
+  "+brave/components/brave_education",
   "+brave/components/brave_news/browser",
   "+brave/components/brave_news/common",
   "+brave/components/brave_rewards/browser",
