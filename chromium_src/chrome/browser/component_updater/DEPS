@@ -3,4 +3,5 @@ include_rules = [
   "+brave/components/ai_chat/core/browser",
   "+brave/components/brave_wallet/browser",
   "+brave/components/psst/browser/core",
+  "+brave/components/youtube_script_injector/browser/core",
 ]

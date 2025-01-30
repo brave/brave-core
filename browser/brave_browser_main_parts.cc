@@ -61,7 +61,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/content/content_infobar_manager.h"
 #else
-#include "brave/components/youtube_script_injector/common/features.h"
+#include "brave/components/youtube_script_injector/common/features.h"  // nogncheck
 #endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
