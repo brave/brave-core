@@ -10,23 +10,8 @@
 import collections
 import os
 import re
-import sys
-import signing.signing  # pylint: disable=import-error, wrong-import-position, unused-import
-import signing.model  # pylint: disable=import-error, reimported, wrong-import-position, unused-import
 
 from lib.widevine import can_generate_sig_file, generate_sig_file
-from os.path import basename, splitext, exists
-from signing import model  # pylint: disable=import-error, reimported
-
-# Construct path to signing modules in chrome/installer/mac/signing
-signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
-signing_path = os.path.realpath(os.path.join(
-    signing_path, os.pardir, os.pardir, "chrome", "installer", "mac"))
-sys.path.append(signing_path)
-
-# Import the entire module to avoid circular dependencies in the functions
-
-brave_channel = os.environ.get('BRAVE_CHANNEL')
 
 
 def GenerateBraveWidevineSigFile(paths, config, part):
@@ -111,34 +96,3 @@ def BraveModifyPartsForSigning(parts, config):
                                               privileged_helper.identifier)
 
     return parts
-
-
-def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
-
-    class BraveCodeSignConfig(config_class):
-
-        @staticmethod
-        def is_chrome_branded():
-            return False
-
-        @property
-        def distributions(self):
-            return [model.Distribution(channel=brave_channel)]
-
-        @property
-        def codesign_requirements_outer_app(self):
-            return 'designated => identifier "' + self.base_bundle_id + '"'
-
-        @property
-        def codesign_requirements_basic(self):
-            return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */' # pylint: disable=line-too-long
-        
-        @property
-        def provisioning_profile_basename(self):
-            return brave_channel or "release"
-        
-        @property
-        def run_spctl_assess(self):
-            return True
-
-    return BraveCodeSignConfig
