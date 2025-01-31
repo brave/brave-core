@@ -366,6 +366,7 @@ source_set("ui") {
       "//base",
       "//brave/browser/ntp_background",
       "//brave/browser/profiles:util",
+      "//brave/browser/ui/tabs:tabs_public",
       "//brave/common",
       "//brave/components/constants",
       "//brave/components/misc_metrics",
