@@ -288,6 +288,7 @@ var package = Package(
       dependencies: [
         "BraveCore",
         "BraveShared",
+        "BraveStrings",
         "BraveUI",
         "DesignSystem",
         "Preferences",
