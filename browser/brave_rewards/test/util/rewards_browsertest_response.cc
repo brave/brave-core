@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_response.h"
 
 #include <utility>
 #include <vector>
@@ -15,8 +15,8 @@
 #include "base/numerics/byte_conversions.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_network_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/core/engine/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/engine/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/engine/publisher/protos/publisher_prefix_list.pb.h"
@@ -78,10 +78,8 @@ std::string GetPublisherChannelResponse(
   channel->set_channel_identifier(key);
 
   if (key == "bumpsmack.com") {
-    AddUpholdWalletToChannelResponse(
-        channel,
-        "address1",
-        publishers_pb::UPHOLD_ACCOUNT_NO_KYC);
+    AddUpholdWalletToChannelResponse(channel, "address1",
+                                     publishers_pb::UPHOLD_ACCOUNT_NO_KYC);
   } else if (key == "duckduckgo.com") {
     AddUpholdWalletToChannelResponse(channel, "address2");
   } else if (key == "3zsistemi.si") {
@@ -137,45 +135,38 @@ RewardsBrowserTestResponse::~RewardsBrowserTestResponse() = default;
 void RewardsBrowserTestResponse::LoadMocks() {
   base::FilePath path;
   test_util::GetTestDataDir(&path);
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("wallet_resp.json"),
-      &wallet_));
+  ASSERT_TRUE(
+      base::ReadFileToString(path.AppendASCII("wallet_resp.json"), &wallet_));
 
   ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("creds_tokens_sku_resp.json"),
-      &creds_tokens_sku_));
+      path.AppendASCII("creds_tokens_sku_resp.json"), &creds_tokens_sku_));
 
   ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("creds_tokens_sku_prod_resp.json"),
       &creds_tokens_sku_prod_));
 
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("parameters_resp.json"),
-      &parameters_));
+  ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("parameters_resp.json"),
+                                     &parameters_));
+
+  ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("uphold_auth_resp.json"),
+                                     &uphold_auth_resp_));
+
+  ASSERT_TRUE(
+      base::ReadFileToString(path.AppendASCII("uphold_transactions_resp.json"),
+                             &uphold_transactions_resp_));
 
   ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("uphold_auth_resp.json"),
-      &uphold_auth_resp_));
+      path.AppendASCII("uphold_commit_resp.json"), &uphold_commit_resp_));
 
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("uphold_transactions_resp.json"),
-      &uphold_transactions_resp_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("uphold_commit_resp.json"),
-      &uphold_commit_resp_));
-
-  std::vector<std::string> publisher_keys {
-      "bumpsmack.com",
-      "duckduckgo.com",
-      "3zsistemi.si",
-      "site1.com",
-      "site2.com",
-      "site3.com",
-      "laurenwags.github.io",
-      "kjozwiakstaging.github.io",
-      "registeredsite.com"
-  };
+  std::vector<std::string> publisher_keys{"bumpsmack.com",
+                                          "duckduckgo.com",
+                                          "3zsistemi.si",
+                                          "site1.com",
+                                          "site2.com",
+                                          "site3.com",
+                                          "laurenwags.github.io",
+                                          "kjozwiakstaging.github.io",
+                                          "registeredsite.com"};
 
   for (auto& key : publisher_keys) {
     std::string prefix = internal::publisher::GetHashPrefixRaw(key, 4);
@@ -183,11 +174,10 @@ void RewardsBrowserTestResponse::LoadMocks() {
   }
 }
 
-void RewardsBrowserTestResponse::Get(
-    const std::string& url,
-    int32_t method,
-    int* response_status_code,
-    std::string* response) {
+void RewardsBrowserTestResponse::Get(const std::string& url,
+                                     int32_t method,
+                                     int* response_status_code,
+                                     std::string* response) {
   requests_.emplace_back(url, method);
   DCHECK(response_status_code && response);
 
@@ -211,15 +201,13 @@ void RewardsBrowserTestResponse::Get(
 
   if (url.find("/publishers/prefix-list") != std::string::npos) {
     *response = GetPublisherPrefixListResponse(publisher_prefixes_);
-    }
+  }
 
   if (url.find("/publishers/prefixes/") != std::string::npos) {
     size_t start = url.rfind('/') + 1;
     if (start < url.length()) {
       *response = GetPublisherChannelResponse(
-          publisher_prefixes_,
-          url.substr(start),
-          alternative_publisher_list_);
+          publisher_prefixes_, url.substr(start), alternative_publisher_list_);
     } else {
       *response = "";
     }
@@ -234,20 +222,16 @@ void RewardsBrowserTestResponse::Get(
   }
 
   if (url.find("/v0/me/cards") != std::string::npos) {
-    if (base::EndsWith(
-        url,
-        "transactions",
-        base::CompareCase::INSENSITIVE_ASCII)) {
+    if (base::EndsWith(url, "transactions",
+                       base::CompareCase::INSENSITIVE_ASCII)) {
       *response = uphold_transactions_resp_;
       *response_status_code = net::HTTP_ACCEPTED;
-    } else if (base::EndsWith(
-        url,
-        "commit",
-        base::CompareCase::INSENSITIVE_ASCII)) {
-        *response = uphold_commit_resp_;
+    } else if (base::EndsWith(url, "commit",
+                              base::CompareCase::INSENSITIVE_ASCII)) {
+      *response = uphold_commit_resp_;
     } else {
-        *response = test_util::GetUpholdCard(
-            external_balance_, test_util::GetUpholdExternalAddress());
+      *response = test_util::GetUpholdCard(
+          external_balance_, test_util::GetUpholdExternalAddress());
     }
     return;
   }
@@ -265,11 +249,11 @@ void RewardsBrowserTestResponse::Get(
   if (url.find("/v1/orders") != std::string::npos) {
     if (url.find("credentials") != std::string::npos) {
       if (method == 0) {
-        #if defined(OFFICIAL_BUILD)
-          *response = creds_tokens_sku_prod_;
-        #else
-          *response = creds_tokens_sku_;
-        #endif
+#if defined(OFFICIAL_BUILD)
+        *response = creds_tokens_sku_prod_;
+#else
+        *response = creds_tokens_sku_;
+#endif
 
         return;
       }

@@ -1,16 +1,16 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_helper.h"
 
 #include <string>
 
 #include "base/test/bind.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
@@ -92,9 +92,7 @@ void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
                                                      bool verified) {
   const std::string publisher = url.host();
   ui_test_utils::NavigateToURLWithDisposition(
-      browser_,
-      url,
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser_, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // The minimum publisher duration when testing is 1 second (and the

@@ -1,10 +1,10 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_NETWORK_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_NETWORK_UTIL_H_
+#ifndef BRAVE_BROWSER_BRAVE_REWARDS_TEST_UTIL_REWARDS_BROWSERTEST_NETWORK_UTIL_H_
+#define BRAVE_BROWSER_BRAVE_REWARDS_TEST_UTIL_REWARDS_BROWSERTEST_NETWORK_UTIL_H_
 
 #include <memory>
 #include <string>
@@ -23,12 +23,11 @@ std::string GetUpholdCapabilities();
 
 std::string GetUpholdUser();
 
-std::string GetUpholdCard(
-    const std::string& balance,
-    const std::string& address);
+std::string GetUpholdCard(const std::string& balance,
+                          const std::string& address);
 
 std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order);
 
 }  // namespace brave_rewards::test_util
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_NETWORK_UTIL_H_
+#endif  // BRAVE_BROWSER_BRAVE_REWARDS_TEST_UTIL_REWARDS_BROWSERTEST_NETWORK_UTIL_H_

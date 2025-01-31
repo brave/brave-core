@@ -1,18 +1,18 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_contribution.h"
 
 #include <memory>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_helper.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -81,9 +81,7 @@ void RewardsBrowserTestContribution::TipPublisher(
 
   // Navigate to a site in a new tab
   ui_test_utils::NavigateToURLWithDisposition(
-      browser_,
-      url,
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      browser_, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that the tip button is disabled for unverified publishers.
@@ -235,10 +233,7 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
     const mojom::RewardsType type,
     const mojom::ContributionProcessor processor) {
   if (result == mojom::Result::OK) {
-    UpdateContributionBalance(
-        amount,
-        true,
-        processor);
+    UpdateContributionBalance(amount, true, processor);
   }
 
   if (type == mojom::RewardsType::AUTO_CONTRIBUTE) {
@@ -330,7 +325,7 @@ void RewardsBrowserTestContribution::OnRecurringTipSaved(
 void RewardsBrowserTestContribution::WaitForMultipleTipReconcileCompleted(
     const int32_t needed) {
   multiple_tip_reconcile_needed_ = needed;
-  if (multiple_tip_reconcile_completed_||
+  if (multiple_tip_reconcile_completed_ ||
       multiple_tip_reconcile_count_ == needed) {
     return;
   }

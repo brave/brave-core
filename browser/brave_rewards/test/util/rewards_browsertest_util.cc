@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
 
 #include <optional>
 #include <utility>
@@ -141,10 +141,9 @@ void StartProcessWithConnectedUser(Profile* profile) {
   }
 }
 
-GURL GetUrl(
-    net::EmbeddedTestServer* https_server,
-    const std::string& publisher_key,
-    const std::string& path) {
+GURL GetUrl(net::EmbeddedTestServer* https_server,
+            const std::string& publisher_key,
+            const std::string& path) {
   DCHECK(https_server);
   std::string new_path = path;
   if (new_path.empty()) {
@@ -172,15 +171,13 @@ std::string GetGeminiExternalAddress() {
   return "00471311-fc4d-463b-9317-579e82b0a6b8";
 }
 
-void NavigateToPublisherPage(
-    Browser* browser,
-    net::EmbeddedTestServer* https_server,
-    const std::string& publisher_key,
-    const std::string& path) {
+void NavigateToPublisherPage(Browser* browser,
+                             net::EmbeddedTestServer* https_server,
+                             const std::string& publisher_key,
+                             const std::string& path) {
   DCHECK(browser && https_server);
   ui_test_utils::NavigateToURLWithDisposition(
-      browser,
-      GetUrl(https_server, publisher_key, path),
+      browser, GetUrl(https_server, publisher_key, path),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 }

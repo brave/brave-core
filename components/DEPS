@@ -38,51 +38,6 @@ specific_include_rules = {
     "+brave/browser",
     "+chrome",
   ],
-  "rewards_browsertest\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
-  "rewards_browsertest_context_helper\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
-  "rewards_browsertest_context_helper\.h": [
-    "+chrome",
-  ],
-  "rewards_browsertest_contribution\.cc": [
-    "+chrome",
-  ],
-  "rewards_browsertest_response\.cc": [
-    "+chrome",
-  ],
-  "rewards_browsertest_util\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
-  "rewards_contribution_browsertest\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
-  "rewards_flag_browsertest\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
-  "rewards_notification_browsertest\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
-  "rewards_p3a_browsertest\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
-  "rewards_publisher_browsertest\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
-  "rewards_state_browsertest\.cc": [
-    "+brave/browser",
-    "+chrome",
-  ],
   "webcompat_exceptions_browsertest\.cc": [
     "+brave/browser",
     "+chrome",

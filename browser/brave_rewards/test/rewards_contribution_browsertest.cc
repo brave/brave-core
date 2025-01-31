@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 #include <string>
@@ -12,13 +12,13 @@
 #include "base/test/bind.h"
 #include "base/threading/platform_thread.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_helper.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_contribution.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_network_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_response.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -66,9 +66,8 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
     base::ScopedAllowBlockingForTesting allow_blocking;
     response_->LoadMocks();
     rewards_service_->ForTestingSetTestResponseCallback(
-        base::BindRepeating(
-            &RewardsContributionBrowserTest::GetTestResponse,
-            base::Unretained(this)));
+        base::BindRepeating(&RewardsContributionBrowserTest::GetTestResponse,
+                            base::Unretained(this)));
     rewards_service_->SetEngineEnvForTesting();
 
     // Other
@@ -77,9 +76,7 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
     test_util::SetOnboardingBypassed(browser());
   }
 
-  void TearDown() override {
-    InProcessBrowserTest::TearDown();
-  }
+  void TearDown() override { InProcessBrowserTest::TearDown(); }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
@@ -88,18 +85,13 @@ class RewardsContributionBrowserTest : public InProcessBrowserTest {
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
-  void GetTestResponse(
-      const std::string& url,
-      int32_t method,
-      int* response_status_code,
-      std::string* response,
-      base::flat_map<std::string, std::string>* headers) {
+  void GetTestResponse(const std::string& url,
+                       int32_t method,
+                       int* response_status_code,
+                       std::string* response,
+                       base::flat_map<std::string, std::string>* headers) {
     response_->SetExternalBalance(contribution_->GetExternalBalance());
-    response_->Get(
-        url,
-        method,
-        response_status_code,
-        response);
+    response_->Get(url, method, response_status_code, response);
   }
 
   content::WebContents* contents() {

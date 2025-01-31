@@ -1,9 +1,9 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_util.h"
 
 #include "base/strings/stringprintf.h"
 #include "content/public/test/browser_test_utils.h"
@@ -49,15 +49,14 @@ constexpr char kWaitForElementToAppearScript[] = R"(
 
 }  // namespace
 
-void WaitForElementToAppear(
-    content::WebContents* context,
-    const std::string& selector,
-    bool should_appear) {
-  if (!context)
+void WaitForElementToAppear(content::WebContents* context,
+                            const std::string& selector,
+                            bool should_appear) {
+  if (!context) {
     return;
+  }
 
-  auto script = kWaitForElementToAppearScript +
-      content::JsReplace(R"(
+  auto script = kWaitForElementToAppearScript + content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
             try {
               const selector = $1;
@@ -69,23 +68,20 @@ void WaitForElementToAppear(
             }
           })
       )",
-      selector);
+                                                                   selector);
 
-  auto result = EvalJs(
-      context,
-      script,
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(context, script, content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END);
 
   ASSERT_EQ(should_appear, result);
 }
 
-void WaitForElementToEqual(
-    content::WebContents* context,
-    const std::string& selector,
-    const std::string& expectedValue) {
-  if (!context)
+void WaitForElementToEqual(content::WebContents* context,
+                           const std::string& selector,
+                           const std::string& expectedValue) {
+  if (!context) {
     return;
+  }
 
   std::string script = R"(
     new Promise(async (resolve, reject) => {
@@ -140,12 +136,12 @@ void WaitForElementToEqual(
   ASSERT_EQ(true, result);
 }
 
-void WaitForElementToContain(
-    content::WebContents* context,
-    const std::string& selector,
-    const std::string& substring) {
-  if (!context)
+void WaitForElementToContain(content::WebContents* context,
+                             const std::string& selector,
+                             const std::string& substring) {
+  if (!context) {
     return;
+  }
 
   auto script =
       kWaitForElementToAppearScript + content::JsReplace(R"(
@@ -194,24 +190,21 @@ void WaitForElementToContain(
       )",
                                                          selector, substring);
 
-  auto result = EvalJs(
-      context,
-      script,
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(context, script, content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END);
 
   ASSERT_EQ(true, result);
 }
 
-void WaitForElementToContainHTML(
-    content::WebContents* context,
-    const std::string& selector,
-    const std::string& html) {
-  if (!context)
+void WaitForElementToContainHTML(content::WebContents* context,
+                                 const std::string& selector,
+                                 const std::string& html) {
+  if (!context) {
     return;
+  }
 
-  auto script = kWaitForElementToAppearScript +
-      content::JsReplace(R"(
+  auto script =
+      kWaitForElementToAppearScript + content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
             const TIMEOUT_SECONDS = 5;
             const selector = $1;
@@ -255,26 +248,21 @@ void WaitForElementToContainHTML(
             }
           });
       )",
-      selector,
-      html);
+                                                         selector, html);
 
-  auto result = EvalJs(
-      context,
-      script,
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(context, script, content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END);
 
   ASSERT_EQ(true, result);
 }
 
-void WaitForElementThenClick(
-    content::WebContents* context,
-    const std::string& selector) {
-  if (!context)
+void WaitForElementThenClick(content::WebContents* context,
+                             const std::string& selector) {
+  if (!context) {
     return;
+  }
 
-  auto script = kWaitForElementToAppearScript +
-      content::JsReplace(R"(
+  auto script = kWaitForElementToAppearScript + content::JsReplace(R"(
           new Promise(async (resolve, reject) => {
             try {
               const selector = $1;
@@ -287,26 +275,23 @@ void WaitForElementThenClick(
             }
           })
       )",
-      selector);
+                                                                   selector);
 
-  auto result = EvalJs(
-      context,
-      script,
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(context, script, content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END);
 
   ASSERT_EQ(true, result);
 }
 
-std::string WaitForElementThenGetAttribute(
-    content::WebContents* context,
-    const std::string& selector,
-    const std::string& attribute_name) {
-  if (!context)
+std::string WaitForElementThenGetAttribute(content::WebContents* context,
+                                           const std::string& selector,
+                                           const std::string& attribute_name) {
+  if (!context) {
     return "";
+  }
 
   auto script = kWaitForElementToAppearScript +
-    content::JsReplace(R"(
+                content::JsReplace(R"(
         new Promise(async (resolve, reject) => {
           try {
             const selector = $1;
@@ -319,26 +304,21 @@ std::string WaitForElementThenGetAttribute(
           }
         })
     )",
-    selector,
-    attribute_name);
+                                   selector, attribute_name);
 
-  auto result = EvalJs(
-    context,
-    script,
-    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-    content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(context, script, content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END);
 
   return result.ExtractString();
 }
 
-std::string WaitForElementThenGetContent(
-    content::WebContents* context,
-    const std::string& selector) {
-  if (!context)
+std::string WaitForElementThenGetContent(content::WebContents* context,
+                                         const std::string& selector) {
+  if (!context) {
     return "";
+  }
 
-  auto script = kWaitForElementToAppearScript +
-    content::JsReplace(R"(
+  auto script = kWaitForElementToAppearScript + content::JsReplace(R"(
         new Promise(async (resolve, reject) => {
           try {
             const selector = $1;
@@ -350,23 +330,20 @@ std::string WaitForElementThenGetContent(
           }
         })
     )",
-    selector);
+                                                                   selector);
 
-  auto result = EvalJs(
-    context,
-    script,
-    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-    content::ISOLATED_WORLD_ID_CONTENT_END);
+  auto result = EvalJs(context, script, content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                       content::ISOLATED_WORLD_ID_CONTENT_END);
 
   return result.ExtractString();
 }
 
-void DragAndDrop(
-    content::WebContents* context,
-    const std::string& drag_selector,
-    const std::string& drop_selector) {
-  if (!context)
+void DragAndDrop(content::WebContents* context,
+                 const std::string& drag_selector,
+                 const std::string& drop_selector) {
+  if (!context) {
     return;
+  }
 
   const std::string js_code = base::StringPrintf(
       R"(
@@ -424,24 +401,21 @@ void DragAndDrop(
           '%s',
           '%s')
       )",
-      drag_selector.c_str(),
-      drop_selector.c_str());
-  content::EvalJsResult jsResult = EvalJs(
-      context,
-      js_code,
-      content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+      drag_selector.c_str(), drop_selector.c_str());
+  content::EvalJsResult jsResult =
+      EvalJs(context, js_code, content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES,
+             content::ISOLATED_WORLD_ID_CONTENT_END);
   ASSERT_TRUE(jsResult.ExtractBool());
 }
 
 std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
-  if (!context)
+  if (!context) {
     return {};
+  }
 
   WaitForElementToAppear(context, "[data-test-id=tip-amount-options]");
-  auto options = content::EvalJs(
-      context,
-      R"(
+  auto options = content::EvalJs(context,
+                                 R"(
           const delay = t => new Promise(resolve => setTimeout(resolve, t));
           delay(500).then(() => Array.from(
             document.querySelectorAll(
@@ -449,8 +423,9 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
             )
           ).map(node => parseFloat(node.dataset.optionValue)))
       )",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
+                                 content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                 content::ISOLATED_WORLD_ID_CONTENT_END)
+                     .ExtractList();
 
   std::vector<double> result;
   for (const auto& value : options) {
@@ -460,8 +435,9 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
 }
 
 double GetRewardsPopupMonthlyTipValue(content::WebContents* context) {
-  if (!context)
+  if (!context) {
     return 0;
+  }
 
   WaitForElementToAppear(context, "[data-test-id=monthly-tip-button]");
   std::string script = R"_(

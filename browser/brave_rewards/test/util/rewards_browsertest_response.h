@@ -1,10 +1,10 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_RESPONSE_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_RESPONSE_H_
+#ifndef BRAVE_BROWSER_BRAVE_REWARDS_TEST_UTIL_REWARDS_BROWSERTEST_RESPONSE_H_
+#define BRAVE_BROWSER_BRAVE_REWARDS_TEST_UTIL_REWARDS_BROWSERTEST_RESPONSE_H_
 
 #include <map>
 #include <string>
@@ -29,11 +29,10 @@ class RewardsBrowserTestResponse {
 
   void LoadMocks();
 
-  void Get(
-      const std::string& url,
-      int32_t method,
-      int* response_status_code,
-      std::string* response);
+  void Get(const std::string& url,
+           int32_t method,
+           int* response_status_code,
+           std::string* response);
 
   std::vector<Request> GetRequests();
 
@@ -63,4 +62,4 @@ class RewardsBrowserTestResponse {
 
 }  // namespace brave_rewards::test_util
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_RESPONSE_H_
+#endif  // BRAVE_BROWSER_BRAVE_REWARDS_TEST_UTIL_REWARDS_BROWSERTEST_RESPONSE_H_
