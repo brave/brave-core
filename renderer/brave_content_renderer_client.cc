@@ -118,6 +118,8 @@ void BraveContentRendererClient::
         "FileSystemAccessAPIExperimental", false);
   }
   blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
+  blink::WebRuntimeFeatures::EnableFeatureFromString("PrivateStateTokens",
+                                                     false);
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(
