@@ -381,8 +381,8 @@ test("brave_unit_tests") {
 
   data = [
     "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
-    "//brave/test/data",
-    "//chrome/test/data/extensions",
+    "//brave/test/data/",
+    "//chrome/test/data/extensions/",
     "//components/test/data/update_client/updatecheck_reply_1.json",
   ]
 
@@ -530,7 +530,7 @@ test("brave_unit_tests") {
       "$root_gen_dir/chrome/android/chrome_apk_paks/resources.pak",
       "$root_out_dir/brave_resources.pak",
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
-      "//brave/test/data",
+      "//brave/test/data/",
     ]
   } else {
     deps += [ ":brave_installer_unittests" ]
@@ -716,7 +716,7 @@ if (!is_android) {
       "//third_party/re2",
     ]
 
-    data = [ "//brave/test/data" ]
+    data = [ "//brave/test/data/" ]
 
     if (toolkit_views) {
       deps += [ "//brave/components/sidebar/browser" ]
@@ -1019,11 +1019,11 @@ test("brave_browser_tests") {
 
   data = [
     "//.vpython3",
-    "//brave/test/data",
-    "//chrome/test/data",
-    "//content/test/data",
-    "//extensions/test/data",
-    "//net/tools/testserver",
+    "//brave/test/data/",
+    "//chrome/test/data/",
+    "//content/test/data/",
+    "//extensions/test/data/",
+    "//net/tools/testserver/",
     "//third_party/depot_tools/cipd",
     "//third_party/depot_tools/cipd_bin_setup.sh",
     "//third_party/depot_tools/cipd_client_version",
@@ -1031,7 +1031,7 @@ test("brave_browser_tests") {
     "//third_party/depot_tools/cipd_manifest.txt",
     "//third_party/depot_tools/cipd_manifest.versions",
     "//third_party/depot_tools/vpython3",
-    "//third_party/pywebsocket3",
+    "//third_party/pywebsocket3/",
   ]
 
   if (is_mac) {
