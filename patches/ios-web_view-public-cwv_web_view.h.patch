@@ -1,0 +1,13 @@
+diff --git a/ios/web_view/public/cwv_web_view.h b/ios/web_view/public/cwv_web_view.h
+index c17c6eb810f3122705cc0124e68e1b4a32cd10b8..c76bc2193fb3230585e719e35db730d24eee60e1 100644
+--- a/ios/web_view/public/cwv_web_view.h
++++ b/ios/web_view/public/cwv_web_view.h
+@@ -71,7 +71,7 @@ CWV_EXPORT
+ //   (not implemented for CWVWebView)
+ //   |visibleURL| is the bad cert page URL. |lastCommittedURL| is the previous
+ //   page URL.
+-@property(nonatomic, readonly) NSURL* visibleURL;
++@property(nonatomic, readonly, nullable) NSURL* visibleURL;
+ 
+ // A human-friendly string which represents the location of the document
+ // currently being loaded. KVO compliant.

@@ -1,14 +1,12 @@
-// Copyright (c) 2025 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/ios/web_view/public/chrome_web_view.h"
+#include "brave/ios/web_view/public/cwv_web_view_extras.h"
 
 #include "base/apple/foundation_util.h"
-#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
-#include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
 #include "ios/web/common/user_agent.h"
 #include "ios/web/js_messaging/java_script_feature_manager.h"
@@ -18,13 +16,10 @@
 #include "ios/web/web_state/ui/crw_web_controller.h"
 #include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "ios/web/web_state/web_state_impl.h"
+#include "ios/web_view/internal/cwv_web_view_configuration_internal.h"
 #include "ios/web_view/internal/cwv_web_view_internal.h"
 #include "ios/web_view/internal/web_view_browser_state.h"
 #include "ios/web_view/public/cwv_navigation_delegate.h"
-#include "ios/web_view/public/cwv_web_view.h"
-
-// FIXME: Technically shouldn't import from ios/chrome from here
-#include "ios/chrome/browser/tabs/model/tab_helper_util.h"
 
 const CWVUserAgentType CWVUserAgentTypeNone =
     static_cast<CWVUserAgentType>(web::UserAgentType::NONE);
@@ -35,14 +30,7 @@ const CWVUserAgentType CWVUserAgentTypeMobile =
 const CWVUserAgentType CWVUserAgentTypeDesktop =
     static_cast<CWVUserAgentType>(web::UserAgentType::DESKTOP);
 
-@interface CWVWebView ()
-- (void)attachSecurityInterstitialHelpersToWebStateIfNecessary;
-@end
-
-@implementation BraveWebView
-
-// These are shadowed CWVWebView properties
-@dynamic visibleURL, navigationDelegate;
+@implementation CWVWebView (Extras)
 
 + (BOOL)isRestoreDataValid:(NSData*)data {
   return [self _isRestoreDataValid:data];
@@ -136,7 +124,7 @@ id NSObjectFromValue(const base::Value* value) {
   }
   web::WebFrameInternal* webFrame = mainFrame->GetWebFrameInternal();
   auto worlds = web::JavaScriptFeatureManager::FromBrowserState(
-                    self.webState->GetBrowserState())
+                    self.configuration.browserState)
                     ->GetAllContentWorlds();
 
   auto jsContentWorld =
@@ -176,41 +164,6 @@ id NSObjectFromValue(const base::Value* value) {
       web::WKWebViewConfigurationProvider::FromBrowserState(
           self.webState->GetBrowserState());
   return config_provider.GetWebViewConfiguration();
-}
-
-#pragma mark - CWVWebView
-
-- (void)attachSecurityInterstitialHelpersToWebStateIfNecessary {
-  [super attachSecurityInterstitialHelpersToWebStateIfNecessary];
-  AttachTabHelpers(self.webState);
-}
-
-- (CWVAutofillController*)autofillController {
-  NOTIMPLEMENTED();
-  return nil;
-}
-
-- (CWVTranslationController*)translationController {
-  NOTIMPLEMENTED();
-  return nil;
-}
-
-#pragma mark - CRWWebStateDelegate
-
-- (void)webState:(web::WebState*)webState
-    didRequestHTTPAuthForProtectionSpace:(NSURLProtectionSpace*)protectionSpace
-                      proposedCredential:(NSURLCredential*)proposedCredential
-                       completionHandler:(void (^)(NSString* username,
-                                                   NSString* password))handler {
-  SEL selector = @selector(webView:
-      didRequestHTTPAuthForProtectionSpace:proposedCredential:completionHandler
-                                          :);
-  if ([self.navigationDelegate respondsToSelector:selector]) {
-    [self.navigationDelegate webView:self
-        didRequestHTTPAuthForProtectionSpace:protectionSpace
-                          proposedCredential:proposedCredential
-                           completionHandler:handler];
-  }
 }
 
 @end
