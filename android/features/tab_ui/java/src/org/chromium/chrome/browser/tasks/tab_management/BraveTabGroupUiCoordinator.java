@@ -25,7 +25,7 @@ import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
-import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.widget.ChromeImageView;
 
@@ -40,7 +40,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull Activity activity,
             @NonNull ViewGroup parentView,
             @NonNull BrowserControlsStateProvider browserControlsStateProvider,
-            @NonNull ScrimCoordinator scrimCoordinator,
+            @NonNull ScrimManager scrimManager,
             @NonNull ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             @NonNull BottomSheetController bottomSheetController,
             @NonNull DataSharingTabManager dataSharingTabManager,
@@ -54,7 +54,7 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
                 activity,
                 parentView,
                 browserControlsStateProvider,
-                scrimCoordinator,
+                scrimManager,
                 omniboxFocusStateSupplier,
                 bottomSheetController,
                 dataSharingTabManager,

@@ -149,7 +149,7 @@ import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
-import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
@@ -1151,7 +1151,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         List.class,
                         ActivityTabProvider.class,
-                        ScrimCoordinator.class,
+                        ScrimManager.class,
                         ToolbarActionModeCallback.class,
                         FindToolbarManager.class,
                         ObservableSupplier.class,
@@ -1221,7 +1221,7 @@ public class BytecodeTest {
                         Activity.class,
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
-                        ScrimCoordinator.class,
+                        ScrimManager.class,
                         ObservableSupplier.class,
                         BottomSheetController.class,
                         DataSharingTabManager.class,
@@ -1899,8 +1899,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mAppThemeColorProvider"));
         Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimCoordinator"));
+                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimManager"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",

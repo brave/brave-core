@@ -76,7 +76,7 @@ import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
-import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.WindowAndroid;
@@ -94,7 +94,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private FullscreenManager mFullscreenManager;
     private ActivityTabProvider mActivityTabProvider;
     private AppThemeColorProvider mAppThemeColorProvider;
-    private ScrimCoordinator mScrimCoordinator;
+    private ScrimManager mScrimManager;
     private MenuButtonCoordinator mMenuButtonCoordinator;
     private ToolbarTabControllerImpl mToolbarTabController;
     private LocationBar mLocationBar;
@@ -151,7 +151,7 @@ public class BraveToolbarManager extends ToolbarManager {
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             List<ButtonDataProvider> buttonDataProviders,
             ActivityTabProvider tabProvider,
-            ScrimCoordinator scrimCoordinator,
+            ScrimManager scrimManager,
             ToolbarActionModeCallback toolbarActionModeCallback,
             FindToolbarManager findToolbarManager,
             ObservableSupplier<Profile> profileSupplier,
@@ -197,7 +197,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 shareDelegateSupplier,
                 buttonDataProviders,
                 tabProvider,
-                scrimCoordinator,
+                scrimManager,
                 toolbarActionModeCallback,
                 findToolbarManager,
                 profileSupplier,
@@ -286,7 +286,7 @@ public class BraveToolbarManager extends ToolbarManager {
                                     mActivity,
                                     mBottomControls.findViewById(R.id.bottom_container_slot),
                                     mBrowserControlsSizer,
-                                    mScrimCoordinator,
+                                    mScrimManager,
                                     mOmniboxFocusStateSupplier,
                                     mBottomSheetController,
                                     mDataSharingTabManager,
