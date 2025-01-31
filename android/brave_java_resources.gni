@@ -631,6 +631,7 @@ brave_java_resources = [
   "java/res/drawable/rewards_logged_out_state_gradient_bg.xml",
   "java/res/drawable/rewards_map_background.xml",
   "java/res/drawable/rewards_onboarding_all_set.xml",
+  "java/res/drawable/rewards_page_close_bg.xml",
   "java/res/drawable/rewards_panel_background.xml",
   "java/res/drawable/rewards_panel_information_for_unverified_background.xml",
   "java/res/drawable/rewards_panel_notification_date_bg.xml",

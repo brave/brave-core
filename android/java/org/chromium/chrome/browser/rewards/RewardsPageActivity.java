@@ -1,4 +1,4 @@
-/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -23,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import org.jni_zero.CalledByNative;
@@ -32,6 +33,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.customtabs.BaseCustomTabRootUiCoordinator;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
+import org.chromium.chrome.browser.customtabs.CustomTabFeatureOverridesManager;
 import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabController;
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizationManagerHolder;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
@@ -47,9 +49,10 @@ public class RewardsPageActivity extends CustomTabActivity {
     private BrowserServicesIntentDataProvider mIntentDataProvider;
     private CustomTabActivityTabController mTabController;
     private CustomTabMinimizationManagerHolder mMinimizationManagerHolder;
+    private CustomTabFeatureOverridesManager mCustomTabFeatureOverridesManager;
 
     private static final int CLOSE_BUTTON_MARGIN = 16;
-    private static final int CLOSE_BUTTON_PADDING = 16;
+    private static final int CLOSE_BUTTON_PADDING = 8;
 
     @Override
     public boolean supportsAppMenu() {
@@ -81,10 +84,12 @@ public class RewardsPageActivity extends CustomTabActivity {
                 CLOSE_BUTTON_PADDING);
 
         Drawable drawable =
-                ResourcesCompat.getDrawable(
-                        getResources(), R.drawable.blue_rounded_notification_bg, null);
+                ResourcesCompat.getDrawable(getResources(), R.drawable.rewards_page_close_bg, null);
         closeImg.setBackground(drawable);
         closeImg.setImageResource(R.drawable.ic_baseline_close_24);
+        closeImg.setColorFilter(
+                ContextCompat.getColor(RewardsPageActivity.this, android.R.color.black),
+                android.graphics.PorterDuff.Mode.SRC_IN);
         closeImg.setOnClickListener(
                 button -> {
                     finish();

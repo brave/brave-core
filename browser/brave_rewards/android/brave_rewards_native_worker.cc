@@ -256,15 +256,11 @@ void BraveRewardsNativeWorker::OnPanelPublisherInfo(
   if (!info) {
     return;
   }
-  LOG(ERROR) << "barve_rewards : " << "info->id : " << info->id;
   brave_rewards::mojom::PublisherInfoPtr pi = info->Clone();
   map_publishers_info_[tabId] = std::move(pi);
   JNIEnv* env = base::android::AttachCurrentThread();
   base::android::ScopedJavaLocalRef<jstring> res =
       base::android::ConvertUTF8ToJavaString(env, info->id);
-  // if (!pi->id.empty()) {
-  //   res = base::android::ConvertUTF8ToJavaString(env, pi->id);
-  // }
   Java_BraveRewardsNativeWorker_onPublisherInfo(
       env, weak_java_brave_rewards_native_worker_.get(env), tabId, res);
 }
