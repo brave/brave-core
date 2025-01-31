@@ -16,7 +16,6 @@
 #include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "base/uuid.h"
-#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/core/engine/constants.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/engine/database/database.h"
@@ -28,6 +27,7 @@
 #include "brave/components/brave_rewards/core/engine/publisher/server_publisher_fetcher.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/state/state.h"
+#include "brave/components/brave_rewards/core/features.h"
 
 namespace brave_rewards::internal {
 

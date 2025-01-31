@@ -153,7 +153,8 @@
       "test/data/speedreader/",
     ],
     "CheckStableMojomChanges": [
-      "components/brave_rewards/common/mojom/rewards_engine\\.mojom",
+      "components/brave_rewards/common/mojom/.*\\.mojom",
+      "components/services/bat_rewards/public/interfaces/rewards_engine_factory\\.mojom",
     ]
   },
 

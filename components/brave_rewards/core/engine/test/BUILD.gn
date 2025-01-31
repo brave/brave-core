@@ -85,9 +85,9 @@ source_set("test") {
 
   deps = [
     "//base/test:test_support",
-    "//brave/components/brave_rewards/common/mojom:engine",
     "//brave/components/brave_rewards/core/engine",
     "//brave/components/brave_rewards/core/engine:publishers_proto",
+    "//brave/components/brave_rewards/core/mojom:engine",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/third_party/rapidjson",
     "//net:net",

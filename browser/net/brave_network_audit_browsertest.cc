@@ -21,7 +21,7 @@
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
 #include "brave/browser/ui/brave_browser.h"
-#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/brave_rewards/content/rewards_service_impl.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "chrome/browser/password_manager/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"

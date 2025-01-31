@@ -10,7 +10,7 @@ declare namespace RewardsInternals {
 
   export interface State {
     balance: import(
-      'gen/brave/components/brave_rewards/common/mojom/rewards.mojom.m.js'
+      'gen/brave/components/brave_rewards/core/mojom/rewards.mojom.m.js'
     ).Balance
     info: {
       isKeyInfoSeedValid: boolean
@@ -46,7 +46,7 @@ declare namespace RewardsInternals {
     contributedAmount: number
   }
 
-  type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js').WalletStatus
+  type WalletStatus = import('gen/brave/components/brave_rewards/core/mojom/rewards_types.mojom.m.js').WalletStatus
 
   export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 
@@ -74,5 +74,5 @@ declare namespace RewardsInternals {
     diagnosticId: string
   }
 
-  type Environment = import('gen/brave/components/brave_rewards/common/mojom/rewards_types.mojom.m.js').Environment
+  type Environment = import('gen/brave/components/brave_rewards/core/mojom/rewards_types.mojom.m.js').Environment
 }

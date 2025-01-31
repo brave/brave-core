@@ -9,7 +9,7 @@
 
 #include "base/feature_list.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
-#include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/rewards_page_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"

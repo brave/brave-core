@@ -9,10 +9,10 @@
 
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
-#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/core/engine/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/engine/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "brave/components/brave_rewards/core/features.h"
 #include "build/build_config.h"
 
 namespace brave_rewards::internal {

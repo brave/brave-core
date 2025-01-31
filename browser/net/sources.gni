@@ -63,7 +63,7 @@ brave_browser_net_deps = [
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_referrals/browser",
-  "//brave/components/brave_rewards/common",
+  "//brave/components/brave_rewards/core",
   "//brave/components/brave_search/common",
   "//brave/components/brave_service_keys",
   "//brave/components/brave_shields/adblock/rs:rust_lib",

@@ -13,10 +13,10 @@
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_context_helper.h"
-#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/content/rewards_service_impl.h"
+#include "brave/components/brave_rewards/content/rewards_service_observer.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 
 class browser;
 

@@ -8,13 +8,13 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/wallet_provider/bitflyer/bitflyer_transfer.h"
 #include "brave/components/brave_rewards/core/engine/wallet_provider/bitflyer/connect_bitflyer_wallet.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 
 namespace brave_rewards::internal::bitflyer {
 

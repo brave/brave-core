@@ -8,12 +8,12 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
 #include "brave/components/brave_rewards/core/engine/wallet_provider/zebpay/connect_zebpay_wallet.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 
 using brave_rewards::internal::endpoints::GetBalanceZebPay;
 using brave_rewards::internal::endpoints::RequestFor;

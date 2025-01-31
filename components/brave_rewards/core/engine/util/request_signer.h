@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/engine/util/signer.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 
 namespace brave_rewards::internal {
 

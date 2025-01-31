@@ -11,7 +11,7 @@
 #include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/constants/pref_names.h"

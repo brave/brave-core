@@ -14,7 +14,7 @@ source_set("features") {
     "//brave/components/ai_chat/core/common:common",
     "//brave/components/brave_component_updater/browser:browser",
     "//brave/components/brave_news/common:common",
-    "//brave/components/brave_rewards/common:features",
+    "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion:brave_search_conversion",
     "//brave/components/brave_shields/core/common:common",

@@ -47,7 +47,7 @@ group("browser") {
     "//brave/test:*",
 
     # these are layering violation and need to be fixed
-    "//brave/components/brave_rewards/browser:testutil",
+    "//brave/components/brave_rewards/content:testutil",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
   ]
 

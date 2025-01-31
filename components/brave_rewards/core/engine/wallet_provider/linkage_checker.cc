@@ -9,13 +9,13 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/engine/notifications/notification_keys.h"
 #include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/engine/wallet/wallet_util.h"
 #include "brave/components/brave_rewards/core/engine/wallet_provider/wallet_provider.h"
+#include "brave/components/brave_rewards/core/features.h"
 
 namespace brave_rewards::internal {
 

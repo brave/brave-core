@@ -145,9 +145,9 @@ source_set("extensions") {
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_news/common",
-    "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_rewards/common",
-    "//brave/components/brave_rewards/common/mojom",
+    "//brave/components/brave_rewards/content",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/mojom",
     "//brave/components/brave_search/browser",
     "//brave/components/brave_shields/core/common",
     "//brave/components/brave_vpn/common/buildflags",
@@ -185,7 +185,7 @@ source_set("extensions") {
     ":component_loader",
     "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/components/brave_ads/core/mojom",
-    "//brave/components/brave_rewards/common/mojom",
+    "//brave/components/brave_rewards/core/mojom",
     "//extensions/browser",
   ]
 

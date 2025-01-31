@@ -10,9 +10,9 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_engine_internal.mojom.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine_helper.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_engine_internal.mojom.h"
 
 namespace brave_rewards::internal::endpoints {
 

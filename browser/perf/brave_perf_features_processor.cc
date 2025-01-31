@@ -13,7 +13,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"

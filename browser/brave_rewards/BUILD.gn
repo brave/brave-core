@@ -1,7 +1,7 @@
 # Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/. */
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import("//extensions/buildflags/buildflags.gni")
 import("//testing/test.gni")
@@ -15,7 +15,7 @@ source_set("brave_rewards") {
 
   deps = [
     "//base",
-    "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/content",
     "//brave/components/script_injector/common/mojom",
     "//chrome/browser/profiles",
     "//components/keyed_service/content",
@@ -40,9 +40,9 @@ source_set("brave_rewards_impl") {
     "//base",
     "//brave/browser/brave_wallet",
     "//brave/browser/ui:brave_rewards_source",
-    "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_rewards/common",
-    "//brave/components/brave_rewards/common:features",
+    "//brave/components/brave_rewards/content",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/resources/creator_detection:creator_detection_generated_grit",
     "//chrome/browser/bitmap_fetcher",
     "//chrome/browser/favicon",
@@ -73,7 +73,7 @@ source_set("util") {
   ]
 
   deps = [
-    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/core",
     "//chrome/browser/profiles:profile",
     "//components/prefs",
   ]

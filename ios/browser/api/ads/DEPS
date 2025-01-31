@@ -2,7 +2,7 @@ include_rules = [
   "+brave/components/brave_ads/core/mojom",
   "+brave/components/brave_ads/core/public",
   "+brave/components/brave_news/common",
-  "+brave/components/brave_rewards/common",
+  "+brave/components/brave_rewards/core",
   "+brave/components/l10n/common",
   "+brave/components/ntp_background_images/common",
 ]

@@ -31,7 +31,7 @@ public class BraveRewardsNativeWorker {
     public interface PublisherObserver { void onFrontTabPublisherChanged(boolean verified); }
 
     // Rewards notifications
-    // Taken from components/brave_rewards/browser/rewards_notification_service.h
+    // Taken from components/brave_rewards/content/rewards_notification_service.h
     public static final int REWARDS_NOTIFICATION_INVALID = 0;
     public static final int REWARDS_NOTIFICATION_AUTO_CONTRIBUTE = 1;
     public static final int REWARDS_NOTIFICATION_FAILED_CONTRIBUTION = 4;

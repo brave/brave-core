@@ -10,9 +10,9 @@
 
 #include "base/functional/callback.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/result_for.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 
 namespace brave_rewards::internal::endpoints {
 

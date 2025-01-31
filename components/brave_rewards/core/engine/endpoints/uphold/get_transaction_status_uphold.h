@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/rewards_engine_internal.mojom.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/common/get_transaction_status.h"
 #include "brave/components/brave_rewards/core/engine/endpoints/response_handler.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_engine_internal.mojom.h"
 
 // GET /v0/me/transactions/:transaction-id
 //

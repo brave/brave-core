@@ -11,7 +11,7 @@
 
 #include "base/location.h"
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_engine.mojom.h"
 
 namespace brave_rewards::internal {
 

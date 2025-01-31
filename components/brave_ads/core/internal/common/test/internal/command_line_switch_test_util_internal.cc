@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/internal/command_line_switch_test_util_internal.h"
 
-#include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/core/rewards_flags.h"
 
 namespace brave_ads::test {
 

@@ -20,12 +20,12 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_engine_internal.mojom.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution_external_wallet.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution_monthly.h"
 #include "brave/components/brave_rewards/core/engine/contribution/contribution_tip.h"
 #include "brave/components/brave_rewards/core/engine/rewards_callbacks.h"
+#include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/core/mojom/rewards_engine_internal.mojom.h"
 
 namespace brave_rewards::internal {
 class RewardsEngine;
