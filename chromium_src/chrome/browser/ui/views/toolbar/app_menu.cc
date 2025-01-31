@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "chrome/browser/ui/views/frame/app_menu_button.h"
+
 // Upstream uses wrong api for setting color. It comes from
 // https://chromium-review.googlesource.com/c/chromium/src/+/4395705
 #define SetTextColor SetTextColorId
