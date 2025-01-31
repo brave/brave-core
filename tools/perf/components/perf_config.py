@@ -98,6 +98,8 @@ class BenchmarkConfig:
   pageset_repeat: int = 1
   stories: List[str]
   stories_exclude: List[str]
+  extra_benchmark_args: List[str] = []
+  extra_browser_args: List[str] = []
 
   def __init__(self, json: Optional[dict] = None):
     if not json:
@@ -108,7 +110,8 @@ class BenchmarkConfig:
       self.pageset_repeat = pageset_repeat
     self.stories = json.get('stories') or []
     self.stories_exclude = json.get('stories-exclude') or []
-
+    self.extra_benchmark_args = json.get('extra-benchmark-args') or []
+    self.extra_browser_args = json.get('extra-browser-args') or []
 
 class PerfConfig:
   """A config includes configurations & benchmarks that should be launched.

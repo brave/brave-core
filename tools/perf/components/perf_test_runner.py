@@ -5,6 +5,7 @@
 import json
 import logging
 import os
+import random
 import shutil
 import time
 import sys
@@ -16,7 +17,7 @@ import components.path_util as path_util
 import components.perf_test_utils as perf_test_utils
 from components.browser_binary_fetcher import BrowserBinary, PrepareBinary
 from components.browser_type import BraveVersion
-from components.common_options import CommonOptions
+from components.common_options import CommonOptions, PerfMode
 from components.field_trials import MaybeInjectSeedToLocalState
 from components.perf_config import (BenchmarkConfig, ParseTarget,
                                     ProfileRebaseType, RunnerConfig)
@@ -178,7 +179,11 @@ class RunableConfiguration:
     args.extend(binary.get_run_benchmark_args())
     browser_args.extend(self.binary.get_browser_args())
 
-    # process the extra args from json config:
+    # process the extra args from benchmark config:
+    args.extend(benchmark_config.extra_benchmark_args)
+    browser_args.extend(benchmark_config.extra_browser_args)
+
+    # process the extra args from the global config:
     args.extend(self.config.extra_benchmark_args)
     browser_args.extend(self.config.extra_browser_args)
 
@@ -236,8 +241,26 @@ class RunableConfiguration:
     if self.common_options.verbose:
       args.extend(['--show-stdout', '--verbose'])
 
+    extra_env = {}
+    if self.common_options.mode == PerfMode.GENERATE_PGO:
+      assert benchmark_config.pageset_repeat == 1
+      if bench_out_dir:
+        extra_env['LLVM_PROFILE_FILE'] = os.path.join(bench_out_dir,
+                                                      'perf-%p.profraw')
+      else:
+        profraw_dir = os.path.abspath(
+            os.path.join(
+                out_dir,
+                f"{benchmark_name}_profraw{random.randint(0, 1000000)}"))
+        os.makedirs(profraw_dir, exist_ok=True)
+        extra_env['LLVM_PROFILE_FILE'] = os.path.join(profraw_dir,
+                                                      'perf-%p.profraw')
+
     success, _ = perf_test_utils.GetProcessOutput(
-        args, cwd=path_util.GetChromiumPerfDir(), timeout=timeout)
+        args,
+        cwd=path_util.GetChromiumPerfDir(),
+        extra_env=extra_env,
+        timeout=timeout)
     if success and not local_run:
       assert (out_dir is not None)
       assert (bench_out_dir is not None)

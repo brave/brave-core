@@ -71,6 +71,11 @@ def GetPageSetsDataPath(filename: str) -> str:
   return os.path.join(GetBravePerfDir(), 'brave_page_sets', 'data', filename)
 
 
+def GetBravePgoProfilesPath(target: str) -> str:
+  return os.path.join(GetBraveDir(), 'build', 'pgo_profiles',
+                      target + '.profdata')
+
+
 @contextlib.contextmanager
 def SysPath(path, position=None):
   if position is None:

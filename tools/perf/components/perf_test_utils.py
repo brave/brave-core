@@ -53,14 +53,18 @@ def TerminateProcess(p):
 def GetProcessOutput(args: List[str],
                      cwd: Optional[str] = None,
                      check=False,
+                     extra_env: Optional[Dict[str, str]] = None,
                      output_to_debug=True,
                      timeout: Optional[int] = None) -> Tuple[bool, str]:
+  env = os.environ.copy()
+  if extra_env:
+    env.update(extra_env)
   if logging.root.isEnabledFor(logging.DEBUG):
     logging.debug('Run binary: %s, cwd = %s  output:', ' '.join(args), cwd)
     process = subprocess.Popen(args,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT,
-                               env=os.environ,
+                               env=env,
                                cwd=cwd,
                                bufsize=0,
                                universal_newlines=True)
@@ -95,7 +99,7 @@ def GetProcessOutput(args: List[str],
     output = subprocess.check_output(args,
                                      stderr=subprocess.STDOUT,
                                      cwd=cwd,
-                                     env=os.environ,
+                                     env=env,
                                      timeout=timeout,
                                      universal_newlines=True)
     return True, output
