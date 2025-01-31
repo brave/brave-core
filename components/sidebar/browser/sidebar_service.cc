@@ -416,13 +416,11 @@ std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {
   const auto added_default_items = GetCurrentlyPresentBuiltInTypes();
   auto default_items = GetDefaultSidebarItems();
 
-  default_items.erase(
-      base::ranges::remove_if(default_items,
-                              [&added_default_items](auto& item) {
-                                return base::Contains(added_default_items,
-                                                      item.built_in_item_type);
-                              }),
-      default_items.end());
+  auto to_remove =
+      std::ranges::remove_if(default_items, [&added_default_items](auto& item) {
+        return base::Contains(added_default_items, item.built_in_item_type);
+      });
+  default_items.erase(to_remove.begin(), to_remove.end());
   return default_items;
 }
 

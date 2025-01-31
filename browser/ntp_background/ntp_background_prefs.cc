@@ -141,8 +141,11 @@ void NTPBackgroundPrefs::RemoveCustomImageFromList(
     const std::string& file_name) {
   ScopedListPrefUpdate update(service_,
                               NTPBackgroundPrefs::kCustomImageListPrefName);
-  update->erase(base::ranges::remove(update.Get(), file_name),
-                update.Get().end());
+  auto to_remove = std::ranges::remove_if(
+      update.Get(), [&file_name](const base::Value& value) {
+        return value.is_string() && value.GetString() == file_name;
+      });
+  update->erase(to_remove.begin(), to_remove.end());
 }
 
 std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {

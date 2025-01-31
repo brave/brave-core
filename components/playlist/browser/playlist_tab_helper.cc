@@ -208,7 +208,8 @@ void PlaylistTabHelper::OnItemRemovedFromList(const std::string& playlist_id,
   }
 
   auto& parents = (*iter)->parents;
-  parents.erase(base::ranges::remove(parents, playlist_id), parents.end());
+  auto to_remove = std::ranges::remove(parents, playlist_id);
+  parents.erase(to_remove.begin(), to_remove.end());
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);

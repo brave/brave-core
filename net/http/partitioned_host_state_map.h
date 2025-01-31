@@ -114,7 +114,7 @@ class NET_EXPORT PartitionedHostStateMap : public PartitionedHostStateMapBase {
   // partition hash part.
   bool DeleteDataInAllPartitions(const key_type& k) {
     static_assert(crypto::kSHA256Length == sizeof(key_type));
-    auto equal_range_pair = base::ranges::equal_range(
+    auto equal_range_pair = std::ranges::equal_range(
         map_, base::span(k).template first<crypto::kSHA256Length / 2>(),
         [](const auto& v1, const auto& v2) {
           // Mimic std::less by calling memcmp on base::span arrays.
@@ -126,11 +126,11 @@ class NET_EXPORT PartitionedHostStateMap : public PartitionedHostStateMapBase {
               .template first<crypto::kSHA256Length / 2>();
         });
 
-    if (equal_range_pair.first == equal_range_pair.second) {
+    if (equal_range_pair.begin() == equal_range_pair.end()) {
       return false;
     }
 
-    map_.erase(equal_range_pair.first, equal_range_pair.second);
+    map_.erase(equal_range_pair.begin(), equal_range_pair.end());
     return true;
   }
 

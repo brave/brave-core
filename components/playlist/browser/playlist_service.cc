@@ -621,7 +621,10 @@ void PlaylistService::ReorderPlaylist(const std::string& playlist_id,
                                       ReorderPlaylistCallback callback) {
   {
     ScopedListPrefUpdate playlist_order_update(prefs_, kPlaylistOrderPref);
-    auto it = base::ranges::find(*playlist_order_update, playlist_id);
+    auto it = std::ranges::find_if(
+        *playlist_order_update, [&playlist_id](const base::Value& value) {
+          return value.is_string() && value.GetString() == playlist_id;
+        });
     if (it == playlist_order_update->end()) {
       std::move(callback).Run(false);
       return;
