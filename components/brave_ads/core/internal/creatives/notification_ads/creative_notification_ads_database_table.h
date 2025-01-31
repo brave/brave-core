@@ -41,8 +41,6 @@ class CreativeNotificationAds final : public TableInterface {
   void Save(const CreativeNotificationAdList& creative_ads,
             ResultCallback callback);
 
-  void Delete(ResultCallback callback) const;
-
   void GetForSegments(const SegmentList& segments,
                       GetCreativeNotificationAdsCallback callback) const;
 

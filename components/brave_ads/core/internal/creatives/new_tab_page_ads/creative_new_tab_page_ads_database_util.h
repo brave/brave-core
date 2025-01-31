@@ -11,9 +11,6 @@
 
 namespace brave_ads::database {
 
-void DeleteCreativeNewTabPageAds();
-void DeleteCreativeNewTabPageAdWallpapers();
-
 bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict data);
 
 void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads);

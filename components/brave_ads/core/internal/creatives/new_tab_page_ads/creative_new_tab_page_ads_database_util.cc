@@ -80,24 +80,6 @@ constexpr char kCreativeConditionMatcherPrefPathKey[] = "prefPath";
 
 }  // namespace
 
-void DeleteCreativeNewTabPageAds() {
-  const table::CreativeNewTabPageAds database_table;
-  database_table.Delete(base::BindOnce([](bool success) {
-    if (!success) {
-      BLOG(0, "Failed to delete creative new tab page ads");
-    }
-  }));
-}
-
-void DeleteCreativeNewTabPageAdWallpapers() {
-  const table::CreativeNewTabPageAdWallpapers database_table;
-  database_table.Delete(base::BindOnce([](bool success) {
-    if (!success) {
-      BLOG(0, "Failed to delete creative new tab page ad wallpapers");
-    }
-  }));
-}
-
 // This temporary implementation has high congitive complexity to parse and save
 // creative new tab page ads. It will be replaced when new tab page ads are
 // served from the ads component.

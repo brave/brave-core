@@ -48,8 +48,6 @@ class CreativePromotedContentAds final : public TableInterface {
   void Save(const CreativePromotedContentAdList& creative_ads,
             ResultCallback callback);
 
-  void Delete(ResultCallback callback) const;
-
   void GetForCreativeInstanceId(
       const std::string& creative_instance_id,
       GetCreativePromotedContentAdCallback callback) const;

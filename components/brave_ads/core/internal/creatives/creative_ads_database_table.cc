@@ -177,16 +177,6 @@ void CreativeAds::Insert(
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
-void CreativeAds::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_db_transaction =
-      mojom::DBTransactionInfo::New();
-
-  DeleteTable(mojom_db_transaction, GetTableName());
-
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
-}
-
 void CreativeAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetCreativeAdCallback callback) const {
