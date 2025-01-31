@@ -15,8 +15,6 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_creative_new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
@@ -93,17 +91,10 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_type_new_tab_page_ad.version = 1;
   catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
   catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 1";
-  catalog_creative_new_tab_page_ad.payload.image_url =
-      GURL("https://brave.com/1/test.jpg");
   catalog_creative_new_tab_page_ad.payload.alt =
       "Test New Tab Page Ad Campaign 1";
   catalog_creative_new_tab_page_ad.payload.target_url =
       GURL("https://brave.com/1/new_tab_page_ad");
-  CatalogNewTabPageAdWallpaperInfo wallpaper;
-  wallpaper.image_url = GURL("https://brave.com/1/test2.jpg");
-  wallpaper.focal_point =
-      CatalogNewTabPageAdWallpaperFocalPointInfo{.x = 1'200, .y = 1'400};
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper);
 
   catalog_creative_new_tab_page_ads.push_back(catalog_creative_new_tab_page_ad);
 
@@ -282,17 +273,10 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   catalog_type_new_tab_page_ad.version = 1;
   catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
   catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 2";
-  catalog_creative_new_tab_page_ad.payload.image_url =
-      GURL("https://brave.com/2/test.jpg");
   catalog_creative_new_tab_page_ad.payload.alt =
       "Test New Tab Page Ad Campaign 2";
   catalog_creative_new_tab_page_ad.payload.target_url =
       GURL("https://brave.com/2/new_tab_page_ad");
-  CatalogNewTabPageAdWallpaperInfo wallpaper;
-  wallpaper.image_url = GURL("https://brave.com/2/test2.jpg");
-  wallpaper.focal_point =
-      CatalogNewTabPageAdWallpaperFocalPointInfo{.x = 1'000, .y = 1'200};
-  catalog_creative_new_tab_page_ad.payload.wallpapers.push_back(wallpaper);
   catalog_creative_new_tab_page_ad.payload.condition_matchers.emplace(
       "brave.today.opted_in", "1");
 

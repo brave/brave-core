@@ -54,12 +54,9 @@ constexpr char kFirstCreativeInstanceId[] =
 constexpr char kAltText[] = "Technikke: For music lovers.";
 constexpr char kCompanyName[] = "Technikke";
 constexpr char kLogoImageFile[] = "logo_image.png";
-constexpr char kLogoImageUrl[] = "https://static.bave.com/logos/logo_image.png";
 constexpr char kDestinationUrl[] = "https://brave.com";
 constexpr char kCreativeInstanceId[] = "c0d61af3-3b85-4af4-a3cc-cf1b3dd40e70";
 constexpr char kSponsoredImageFile[] = "wallpaper2.jpg";
-constexpr char kSponsoredImageUrl[] =
-    "https://static.bave.com/image/wallpaper2.jpg";
 constexpr int kSponsoredImageFocalPointX = 5233;
 constexpr int kSponsoredImageFocalPointY = 3464;
 
@@ -220,13 +217,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     ad_info.creative_instance_id = kCreativeInstanceId;
     ad_info.company_name = kCompanyName;
     ad_info.alt = kAltText;
-    ad_info.image_url = GURL(kLogoImageUrl);
     ad_info.target_url = GURL(kDestinationUrl);
-    brave_ads::NewTabPageAdWallpaperInfo wallpaper_info;
-    wallpaper_info.image_url = GURL(kSponsoredImageUrl);
-    wallpaper_info.focal_point.x = kSponsoredImageFocalPointX;
-    wallpaper_info.focal_point.y = kSponsoredImageFocalPointY;
-    ad_info.wallpapers.push_back(wallpaper_info);
     return ad_info;
   }
 

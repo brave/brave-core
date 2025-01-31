@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "url/gurl.h"
 
@@ -30,10 +29,8 @@ struct CatalogNewTabPageAdPayloadInfo final {
   bool operator==(const CatalogNewTabPageAdPayloadInfo&) const = default;
 
   std::string company_name;
-  GURL image_url;
   std::string alt;
   GURL target_url;
-  CatalogNewTabPageAdWallpaperList wallpapers;
   ConditionMatcherMap condition_matchers;
 };
 

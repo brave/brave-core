@@ -41,8 +41,6 @@ void Delete(ResultCallback callback) {
   database::DeleteTable(mojom_db_transaction, "creative_ad_notifications");
   database::DeleteTable(mojom_db_transaction, "creative_inline_content_ads");
   database::DeleteTable(mojom_db_transaction, "creative_new_tab_page_ads");
-  database::DeleteTable(mojom_db_transaction,
-                        "creative_new_tab_page_ad_wallpapers");
   database::DeleteTable(mojom_db_transaction, "creative_promoted_content_ads");
 
   database::RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
