@@ -26,7 +26,7 @@ void TabTrackerService::UpdateTab(int32_t tab_id, mojom::TabDataPtr tab) {
   auto allowed_scheme =
       tab && base::Contains(kAllowedContentSchemes, tab->url.scheme());
 
-  auto it = base::ranges::find_if(
+  auto it = std::ranges::find_if(
       tabs_, [tab_id](const auto& tab) { return tab->id == tab_id; });
 
   // New tab we haven't heard about
