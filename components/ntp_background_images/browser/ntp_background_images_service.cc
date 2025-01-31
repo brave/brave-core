@@ -5,7 +5,6 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
-#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>

@@ -454,7 +454,7 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
 void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    brave_ads::mojom::NewTabPageAdEventType mojoma_ad_event_type) {
+    brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
   if (!ads_service_) {
     // If `brave_ads::kShouldAlwaysRunBraveAdsServiceFeature` flag is disabled,
     // `ads_service_` will be null if the user has not joined Brave Rewards.
@@ -464,7 +464,7 @@ void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
   // If `brave_ads::kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature` flag is
   // disabled `AdsService::TriggerNewTabPageAdEvent` will be no-op.
   ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                         mojoma_ad_event_type,
+                                         mojom_ad_event_type,
                                          /*intentional*/ base::DoNothing());
 }
 

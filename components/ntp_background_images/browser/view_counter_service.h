@@ -80,10 +80,11 @@ class ViewCounterService : public KeyedService,
   void BrandedWallpaperLogoClicked(const std::string& creative_instance_id,
                                    const std::string& destination_url,
                                    const std::string& wallpaper_id);
+
   void MaybeTriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      brave_ads::mojom::NewTabPageAdEventType mojoma_ad_event_type);
+      brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
 
   std::optional<base::Value::Dict> GetNextWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();

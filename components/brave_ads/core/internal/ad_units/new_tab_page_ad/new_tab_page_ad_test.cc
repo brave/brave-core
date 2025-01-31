@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/json_reader_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
