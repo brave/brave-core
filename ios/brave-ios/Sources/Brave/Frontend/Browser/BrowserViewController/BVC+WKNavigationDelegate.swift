@@ -1023,11 +1023,7 @@ extension BrowserViewController: WKNavigationDelegate {
     tab.clearSolanaConnectedAccounts()
 
     // Dismiss any alerts that are showing on page navigation.
-    if let alert = self.presentedViewController as? JSPromptAlertController {
-      alert.dismiss(animated: false)
-    }
-
-    if let alert = self.presentedViewController as? BrowserAlertController {
+    if let alert = tab.shownPromptAlert {
       alert.dismiss(animated: false)
     }
 
@@ -1491,6 +1487,9 @@ extension BrowserViewController: WKUIDelegate {
       alertController.dismissedWithoutAction = {
         decisionHandler(.prompt)
       }
+
+      tabManager.tabForWebView(webView)?.shownPromptAlert = alertController
+
       if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen
       {
         webView.closeAllMediaPresentations {
@@ -1651,6 +1650,8 @@ extension BrowserViewController: WKUIDelegate {
     if shouldDisplayJSAlertForWebView(webView) {
       let controller = alert.alertController()
       controller.delegate = self
+      promptingTab.shownPromptAlert = controller
+
       present(controller, animated: true)
     } else {
       promptingTab.queueJavascriptAlertPrompt(alert)
