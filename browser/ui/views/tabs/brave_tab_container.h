@@ -50,6 +50,8 @@ class BraveTabContainer : public TabContainerImpl,
   void CompleteAnimationAndLayout() override;
   void PaintChildren(const views::PaintInfo& paint_info) override;
   void SetTabSlotVisibility() override;
+  void InvalidateIdealBounds() override;
+  void Layout(PassKey) override;
 
   // BrowserRootView::DropTarget
   std::optional<BrowserRootView::DropIndex> GetDropIndex(
@@ -140,6 +142,9 @@ class BraveTabContainer : public TabContainerImpl,
   BooleanPrefMember vertical_tabs_collapsed_;
 
   bool layout_locked_ = false;
+
+  // Size we last laid out at.
+  gfx::Size last_layout_size_;
 
   base::ScopedObservation<SplitViewBrowserData, SplitViewBrowserDataObserver>
       split_view_data_observation_{this};
