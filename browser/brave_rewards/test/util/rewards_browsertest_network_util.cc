@@ -1,12 +1,13 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_network_util.h"
 
 #include <utility>
 
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "content/public/test/browser_test_utils.h"
 
 namespace brave_rewards::test_util {
@@ -47,7 +48,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
   if (request.relative_url == "/reddit") {
     http_response->set_content(
-      "<html>"
+        "<html>"
         "  <head></head>"
         "  <body>"
         "    <div class='Comment'>"
@@ -63,7 +64,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 
   if (request.relative_url == "/github") {
     http_response->set_content(
-      "<html>"
+        "<html>"
         "  <head></head>"
         "  <body>"
         "   <div class='timeline-comment-actions'>"
@@ -120,9 +121,8 @@ std::string GetUpholdUser() {
   )";
 }
 
-std::string GetUpholdCard(
-    const std::string& balance,
-    const std::string& address) {
+std::string GetUpholdCard(const std::string& balance,
+                          const std::string& address) {
   return base::StringPrintf(
       R"({
         "available": "%s",
@@ -137,9 +137,7 @@ std::string GetUpholdCard(
           "starred": false
         }
       })",
-      balance.c_str(),
-      balance.c_str(),
-      address.c_str());
+      balance.c_str(), balance.c_str(), address.c_str());
 }
 
 std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order) {
@@ -147,7 +145,7 @@ std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order) {
   std::string items;
   for (const auto& item : sku_order->items) {
     items.append(base::StringPrintf(
-      R"({
+        R"({
         "id": "%s",
         "orderId": "%s",
         "sku": "",
@@ -158,11 +156,8 @@ std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order) {
         "price": "%g",
         "description": "%s"
       })",
-      item->order_item_id.c_str(),
-      sku_order->order_id.c_str(),
-      item->quantity,
-      item->price,
-      item->description.c_str()));
+        item->order_item_id.c_str(), sku_order->order_id.c_str(),
+        item->quantity, item->price, item->description.c_str()));
   }
 
   return base::StringPrintf(
@@ -176,9 +171,7 @@ std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order) {
         "status": "pending",
         "items": [%s]
       })",
-      sku_order->order_id.c_str(),
-      sku_order->total_amount,
-      items.c_str());
+      sku_order->order_id.c_str(), sku_order->total_amount, items.c_str());
 }
 
 }  // namespace brave_rewards::test_util

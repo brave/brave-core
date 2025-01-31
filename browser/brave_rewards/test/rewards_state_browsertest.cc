@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
 #include <optional>
@@ -20,10 +20,10 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_network_util.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_response.h"
+#include "brave/browser/brave_rewards/test/util/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/engine/buildflags.h"
 #include "brave/components/brave_rewards/core/engine/state/state_keys.h"
@@ -73,29 +73,20 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
     // Response mock
     base::ScopedAllowBlockingForTesting allow_blocking;
     response_->LoadMocks();
-    rewards_service_->ForTestingSetTestResponseCallback(
-        base::BindRepeating(
-            &RewardsStateBrowserTest::GetTestResponse,
-            base::Unretained(this)));
+    rewards_service_->ForTestingSetTestResponseCallback(base::BindRepeating(
+        &RewardsStateBrowserTest::GetTestResponse, base::Unretained(this)));
     rewards_service_->SetEngineEnvForTesting();
   }
 
-  void GetTestResponse(
-      const std::string& url,
-      int32_t method,
-      int* response_status_code,
-      std::string* response,
-      base::flat_map<std::string, std::string>* headers) {
-    response_->Get(
-        url,
-        method,
-        response_status_code,
-        response);
+  void GetTestResponse(const std::string& url,
+                       int32_t method,
+                       int* response_status_code,
+                       std::string* response,
+                       base::flat_map<std::string, std::string>* headers) {
+    response_->Get(url, method, response_status_code, response);
   }
 
-  void TearDown() override {
-    InProcessBrowserTest::TearDown();
-  }
+  void TearDown() override { InProcessBrowserTest::TearDown(); }
 
   void GetMigrationVersionFromTest(int32_t* version) {
     if (!version) {
@@ -109,10 +100,7 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
     std::string test_name = test_info->name();
 
     auto version_split = base::SplitStringUsingSubstr(
-      test_name,
-      "_",
-      base::TRIM_WHITESPACE,
-      base::SPLIT_WANT_NONEMPTY);
+        test_name, "_", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
     if (version_split.size() != 2) {
       return;
@@ -188,14 +176,13 @@ class RewardsStateBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", -1);
   test_util::StartProcess(rewards_service_);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visit_time"),
-      5);
+  EXPECT_EQ(profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visit_time"),
+            5);
   EXPECT_EQ(profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visits"), 5);
   EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.score.a"),
-      14500.0);
+            14500.0);
   EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.score.b"),
-      -14000.0);
+            -14000.0);
 
   rewards_service_->GetBalanceReport(
       4, 2020,
@@ -232,18 +219,13 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
   EXPECT_EQ(
       wallet_json,
       R"({"payment_id":"eea767c4-cd27-4411-afd4-78a9c6b54dbc","recovery_seed":"PgFfhazUJuf8dX+8ckTjrtK1KMLyrfXmKJFDiS1Ad3I="})");  // NOLINT
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetUint64("brave.rewards.creation_stamp"),
-      1590484778ul);
+  EXPECT_EQ(profile_->GetPrefs()->GetUint64("brave.rewards.creation_stamp"),
+            1590484778ul);
   EXPECT_EQ(
       profile_->GetPrefs()->GetUint64("brave.rewards.ac.next_reconcile_stamp"),
       2593076778ul);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetDouble("brave.rewards.ac.amount"),
-      20.0);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
-      true);
+  EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.amount"), 20.0);
+  EXPECT_EQ(profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"), true);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACEnabled) {
@@ -251,9 +233,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACEnabled) {
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", true);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", true);
   test_util::StartProcess(rewards_service_);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
-      true);
+  EXPECT_EQ(profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"), true);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACDisabled) {
@@ -261,9 +241,8 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsEnabledACDisabled) {
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", true);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", false);
   test_util::StartProcess(rewards_service_);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
-      false);
+  EXPECT_EQ(profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
+            false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACEnabled) {
@@ -271,9 +250,8 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACEnabled) {
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", false);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", true);
   test_util::StartProcess(rewards_service_);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
-      false);
+  EXPECT_EQ(profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
+            false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACDisabled) {
@@ -281,9 +259,8 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V8RewardsDisabledACDisabled) {
   profile_->GetPrefs()->SetBoolean("brave.rewards.enabled", false);
   profile_->GetPrefs()->SetBoolean("brave.rewards.ac.enabled", false);
   test_util::StartProcess(rewards_service_);
-  EXPECT_EQ(
-      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
-      false);
+  EXPECT_EQ(profile_->GetPrefs()->GetBoolean("brave.rewards.ac.enabled"),
+            false);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11ValidWallet) {
