@@ -101,9 +101,6 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/translate/core/common/brave_translate_switches.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
-#include "brave/components/youtube_script_injector/browser/content/youtube_injector_host.h"
-#include "brave/components/youtube_script_injector/common/features.h"
-#include "brave/components/youtube_script_injector/common/youtube_injector.mojom.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "build/build_config.h"
@@ -181,6 +178,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
+#include "brave/components/youtube_script_injector/browser/content/youtube_injector_host.h"  // nogncheck
+#include "brave/components/youtube_script_injector/common/features.h"  // nogncheck
+#include "brave/components/youtube_script_injector/common/youtube_injector.mojom.h"  // nogncheck
 #endif
 
 #if BUILDFLAG(ENABLE_AI_REWRITER)

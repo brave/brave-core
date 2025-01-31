@@ -47,7 +47,7 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"
+#include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"  // nogncheck
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
