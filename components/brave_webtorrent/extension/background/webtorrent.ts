@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as WebTorrent from 'webtorrent'
+const WebTorrent = require('webtorrent')
+import type * as TWebTorrent from 'webtorrent'
 import { addTorrentEvents, removeTorrentEvents } from './events/torrentEvents'
 import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
@@ -11,20 +12,20 @@ import { Instance } from 'parse-torrent'
 import { basename, extname } from 'path'
 import * as JSZip from 'jszip'
 
-let webTorrent: WebTorrent.Instance | undefined
+let webTorrent: TWebTorrent.Instance | undefined
 let servers: { [key: string]: any } = {}
 
-export const getWebTorrent = () => {
+export const getWebTorrent = (): TWebTorrent.Instance => {
   if (!webTorrent) {
     webTorrent = new WebTorrent({ tracker: { wrtc: false } })
-    addWebtorrentEvents(webTorrent)
+    addWebtorrentEvents(webTorrent!)
   }
 
-  return webTorrent
+  return webTorrent!
 }
 
 export const createServer = (
-  torrent: WebTorrent.Torrent,
+  torrent: TWebTorrent.Torrent,
   cb: (serverURL: string) => void
 ) => {
   if (!torrent.infoHash) return // torrent is not ready
@@ -94,7 +95,7 @@ export const saveAllFiles = (infoHash: string) => {
 
   if (!torrent || !torrent.name || !torrent.files) return
 
-  const files: WebTorrent.TorrentFile[] = torrent.files
+  const files: TWebTorrent.TorrentFile[] = torrent.files
 
   let zip: any = new JSZip()
   const zipFilename = basename(torrent.name, extname(torrent.name)) + '.zip'

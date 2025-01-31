@@ -45,16 +45,16 @@ export default function WebSourcesEvent (props: { sources: mojom.WebSource[] }) 
     <div className={styles.sources}>
       <h4>{getLocale('sources')}</h4>
       <ul>
-        {unhiddenSources.map(source => <WebSource source={source} />)}
+        {unhiddenSources.map(source => <WebSource key={source.url.url} source={source} />)}
         {!isExpanded && hiddenSources.length > 0 && (
           <li>
-            <button onClick={() => setIsExpanded(true)}>
+            <button name='expand' onClick={() => setIsExpanded(true)}>
               <Icon className={styles.expandIcon} name='plus-add' />
               {formatMessage(getLocale('expandSources'), { placeholders: { $1: hiddenSources.length } })}
             </button>
           </li>
         )}
-        {isExpanded && hiddenSources.map(source => <WebSource source={source} />)}
+        {isExpanded && hiddenSources.map(source => <WebSource key={source.url.url} source={source} />)}
       </ul>
     </div>
   )

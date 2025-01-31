@@ -49,23 +49,6 @@ function ConversationEntries() {
     onTouchMove: () => setActiveMenuId(undefined)
   })
 
-  const lastAssistantId = React.useMemo(() => {
-    // Get the last entry that is an assistant entry
-    for (
-      let i = conversationContext.conversationHistory.length - 1;
-      i >= 0;
-      i--
-    ) {
-      if (
-        conversationContext.conversationHistory[i].characterType ===
-        Mojom.CharacterType.ASSISTANT
-      ) {
-        return i
-      }
-    }
-    return -1
-  }, [conversationContext.conversationHistory])
-
   const getCompletion = (turn: Mojom.ConversationTurn) => {
     const event = turn.events?.find((event) => event.completionEvent)
     return event?.completionEvent?.completion ?? ''
@@ -75,7 +58,8 @@ function ConversationEntries() {
     <>
       <div>
         {conversationContext.conversationHistory.map((turn, id) => {
-          const isLastEntry = id === lastAssistantId
+          const isLastEntry =
+            (id === conversationContext.conversationHistory.length - 1)
           const isAIAssistant =
             turn.characterType === Mojom.CharacterType.ASSISTANT
           const isEntryInProgress =
