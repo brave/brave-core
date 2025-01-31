@@ -28,6 +28,12 @@ bool CanUpgradeToHTTPS(const GURL& url) {
   !base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault) && \
   !(prefs_ && prefs_->GetBoolean(prefs::kHttpsUpgradesEnabled)
 #define IsLocalhost IsLocalhost(url) || !CanUpgradeToHTTPS
+// Add a check to exclude back/forward navigations from upgrading since
+// `NavigationManagerImpl::LoadURLWithParams` does not allow loading when the
+// transition type is back/forward
+#define BRAVE_EXCLUDE_BACKFORWARD_NAVS \
+  &&!(navigation_transition_type_ & ui::PAGE_TRANSITION_FORWARD_BACK)
 #include "src/ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.mm"
+#undef BRAVE_EXCLUDE_BACKFORWARD_NAVS
 #undef IsLocalhost
 #undef kHttpsUpgrades
