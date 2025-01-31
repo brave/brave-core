@@ -11,15 +11,6 @@
 
 namespace brave_ads::database {
 
-void DeleteCreativePromotedContentAds() {
-  const table::CreativePromotedContentAds database_table;
-  database_table.Delete(base::BindOnce([](bool success) {
-    if (!success) {
-      BLOG(0, "Failed to delete creative promoted content ads");
-    }
-  }));
-}
-
 void SaveCreativePromotedContentAds(
     const CreativePromotedContentAdList& creative_ads) {
   table::CreativePromotedContentAds database_table;

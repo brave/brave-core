@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+
 namespace base {
 class Time;
 class TimeDelta;
@@ -17,8 +19,8 @@ namespace brave_ads {
 
 struct CatalogInfo;
 
-void SaveCatalog(const CatalogInfo& catalog);
-void ResetCatalog();
+void SaveCatalog(const CatalogInfo& catalog, ResultCallback callback);
+void ResetCatalog(ResultCallback callback);
 
 std::string GetCatalogId();
 void SetCatalogId(const std::string& id);

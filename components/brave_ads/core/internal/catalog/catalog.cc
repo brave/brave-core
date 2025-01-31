@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
@@ -91,8 +92,7 @@ void Catalog::ShutdownCatalogUrlRequest() {
     catalog_url_request_.reset();
     BLOG(1, "Shutdown catalog URL request");
 
-    ResetCatalog();
-    BLOG(1, "Reset catalog");
+    ResetCatalog(/*intentional*/ base::DoNothing());
   }
 }
 
@@ -136,9 +136,17 @@ void Catalog::OnDidFetchCatalog(const CatalogInfo& catalog) {
     return BLOG(1, "Catalog id " << catalog.id << " is up to date");
   }
 
-  SaveCatalog(catalog);
+  SaveCatalog(catalog, base::BindOnce(&Catalog::OnDidFetchCatalogCallback,
+                                      weak_factory_.GetWeakPtr(), catalog));
+}
 
-  NotifyDidFetchCatalog(catalog);
+void Catalog::OnDidFetchCatalogCallback(const CatalogInfo& catalog,
+                                        bool success) {
+  if (success) {
+    NotifyDidFetchCatalog(catalog);
+  } else {
+    NotifyFailedToFetchCatalog();
+  }
 }
 
 void Catalog::OnFailedToFetchCatalog() {
@@ -146,7 +154,7 @@ void Catalog::OnFailedToFetchCatalog() {
 }
 
 void Catalog::OnDidMigrateDatabase(int /*from_version*/, int /*to_version*/) {
-  ResetCatalog();
+  ResetCatalog(/*intentional*/ base::DoNothing());
 }
 
 }  // namespace brave_ads
