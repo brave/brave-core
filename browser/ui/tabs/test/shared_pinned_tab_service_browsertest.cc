@@ -78,7 +78,7 @@ void SharedPinnedTabServiceBrowserTest::TearDownOnMainThread() {
   }
 
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return base::ranges::none_of(browsers_, [](const auto& b) { return b; });
+    return std::ranges::none_of(browsers_, [](const auto& b) { return !!b; });
   }));
 
   InProcessBrowserTest::TearDownOnMainThread();

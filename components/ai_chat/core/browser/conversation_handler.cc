@@ -876,9 +876,9 @@ void ConversationHandler::SubmitSuggestion(
 
   // Remove the suggestion from the list, assume the list has been modified
   // inside SubmitHumanConversationEntry so search for it again.
-  suggestions_.erase(
-      base::ranges::remove(suggestions_, suggestion_title, &Suggestion::title),
-      suggestions_.end());
+  auto to_remove =
+      std::ranges::remove(suggestions_, suggestion_title, &Suggestion::title);
+  suggestions_.erase(to_remove.begin(), to_remove.end());
   OnSuggestedQuestionsChanged();
 }
 

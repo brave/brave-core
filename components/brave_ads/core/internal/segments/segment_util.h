@@ -27,7 +27,8 @@ SegmentList GetSegments(const T& creative_ads) {
   }
 
   base::ranges::sort(segments);
-  segments.erase(base::ranges::unique(segments), segments.cend());
+  auto to_remove = std::ranges::unique(segments);
+  segments.erase(to_remove.begin(), to_remove.end());
   return segments;
 }
 

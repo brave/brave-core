@@ -80,13 +80,12 @@ void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
 #if BUILDFLAG(ENABLE_WIDEVINE)
   auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
   if (!dynamic_params.widevine_enabled) {
-    key_systems.erase(
-        base::ranges::remove(
-            key_systems, kWidevineKeySystem,
-            [](const std::unique_ptr<media::KeySystemInfo>& key_system) {
-              return key_system->GetBaseKeySystemName();
-            }),
-        key_systems.cend());
+    auto to_remove = std::ranges::remove(
+        key_systems, kWidevineKeySystem,
+        [](const std::unique_ptr<media::KeySystemInfo>& key_system) {
+          return key_system->GetBaseKeySystemName();
+        });
+    key_systems.erase(to_remove.begin(), to_remove.end());
   }
 #endif
   cb.Run(std::move(key_systems));

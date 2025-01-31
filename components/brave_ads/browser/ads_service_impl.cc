@@ -1600,8 +1600,8 @@ void AdsServiceImpl::GetSiteHistory(int max_count,
             }
 
             base::ranges::sort(site_history);
-            site_history.erase(base::ranges::unique(site_history),
-                               site_history.cend());
+            auto to_remove = std::ranges::unique(site_history);
+            site_history.erase(to_remove.begin(), to_remove.end());
             std::move(callback).Run(site_history);
           },
           std::move(callback)),

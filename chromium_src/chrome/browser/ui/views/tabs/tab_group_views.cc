@@ -30,12 +30,13 @@
     if (children_in_same_group.empty()) {                                      \
       return {nullptr, nullptr};                                               \
     }                                                                          \
-    return base::ranges::minmax(                                               \
-        children_in_same_group,                                                \
-        [](const views::View* a, const views::View* b) {                       \
-          return a->GetBoundsInScreen().bottom() <                             \
-                 b->GetBoundsInScreen().bottom();                              \
-        });                                                                    \
+    auto [min, max] =                                                          \
+        base::ranges::minmax(children_in_same_group,                           \
+                             [](const views::View* a, const views::View* b) {  \
+                               return a->GetBoundsInScreen().bottom() <        \
+                                      b->GetBoundsInScreen().bottom();         \
+                             });                                               \
+    return {min, max};                                                         \
   }
 
 #include "src/chrome/browser/ui/views/tabs/tab_group_views.cc"
