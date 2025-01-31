@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.mm b/ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.mm
-index 052275cb0b38783f07f1ba05ce9f801178223f9c..b21b3774fff31d6a1fb8cccabf6c20c3e59b1ac5 100644
+index 052275cb0b38783f07f1ba05ce9f801178223f9c..7797f9c93bde5649d15fca2c0984b6816c486b2c 100644
 --- a/ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.mm
 +++ b/ios/chrome/browser/https_upgrades/model/https_only_mode_upgrade_tab_helper.mm
 @@ -270,7 +270,7 @@ void HttpsOnlyModeUpgradeTabHelper::ShouldAllowResponse(
@@ -7,7 +7,7 @@ index 052275cb0b38783f07f1ba05ce9f801178223f9c..b21b3774fff31d6a1fb8cccabf6c20c3
    // navigations.
    if (item_pending->GetHttpsUpgradeType() == web::HttpsUpgradeType::kNone &&
 -      !navigation_is_post_) {
-+      !navigation_is_post_ && !(navigation_transition_type_ & ui::PAGE_TRANSITION_FORWARD_BACK)) {
++      !navigation_is_post_ BRAVE_EXCLUDE_BACKFORWARD_NAVS) {
      if ((!base::FeatureList::IsEnabled(
               security_interstitials::features::kHttpsUpgrades) &&
           !(prefs_ && prefs_->GetBoolean(prefs::kHttpsOnlyModeEnabled))) ||
@@ -16,7 +16,7 @@ index 052275cb0b38783f07f1ba05ce9f801178223f9c..b21b3774fff31d6a1fb8cccabf6c20c3
    }
  
 -  if (state_ == State::kNone && !navigation_is_post_) {
-+  if (state_ == State::kNone && !navigation_is_post_ && !(navigation_transition_type_ & ui::PAGE_TRANSITION_FORWARD_BACK)) {
++  if (state_ == State::kNone && !navigation_is_post_ BRAVE_EXCLUDE_BACKFORWARD_NAVS) {
      // If the pending item was a failed upgrade but the upgrade bit wasn't set,
      // this is likely an interstitial reload.
      timer_.Stop();
