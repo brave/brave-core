@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_rewards/core/publisher_utils.h"
 
+#include <algorithm>
 #include <array>
 #include <optional>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
@@ -29,7 +29,7 @@ bool IsMediaPlatformURL(const GURL& url) {
   if (!url.is_valid() || !url.SchemeIsHTTPOrHTTPS()) {
     return false;
   }
-  return base::ranges::any_of(kMediaPlatformDomains, [&url](auto domain) {
+  return std::ranges::any_of(kMediaPlatformDomains, [&url](auto domain) {
     return net::registry_controlled_domains::SameDomainOrHost(
         url, GURL("https://" + std::string(domain)),
         net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);

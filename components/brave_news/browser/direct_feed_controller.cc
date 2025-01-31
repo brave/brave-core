@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 
+#include <algorithm>
 #include <iterator>
 #include <string>
 #include <utility>
@@ -143,8 +144,8 @@ void DirectFeedController::OnFindFeedsImplResponse(
       // We need to do deep-copy
       for (auto& request : ongoing_requests_[feed_url]) {
         std::vector<mojom::FeedSearchResultItemPtr> clone;
-        base::ranges::transform(results, std::back_inserter(clone),
-                                &mojom::FeedSearchResultItemPtr::Clone);
+        std::ranges::transform(results, std::back_inserter(clone),
+                               &mojom::FeedSearchResultItemPtr::Clone);
         std::move(request.callback).Run(std::move(clone));
       }
     }

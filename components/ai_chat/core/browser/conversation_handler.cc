@@ -29,7 +29,6 @@
 #include "base/notreached.h"
 #include "base/numerics/safe_math.h"
 #include "base/rand_util.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -329,10 +328,10 @@ bool ConversationHandler::HasAnyHistory() {
     return false;
   }
   // If any entry is not staged, then we have history
-  return base::ranges::any_of(chat_history_,
-                              [](const mojom::ConversationTurnPtr& turn) {
-                                return !turn->from_brave_search_SERP;
-                              });
+  return std::ranges::any_of(chat_history_,
+                             [](const mojom::ConversationTurnPtr& turn) {
+                               return !turn->from_brave_search_SERP;
+                             });
 }
 
 bool ConversationHandler::IsRequestInProgress() {
@@ -536,7 +535,7 @@ void ConversationHandler::RateMessage(bool is_liked,
   const std::vector<mojom::ConversationTurnPtr>& history = chat_history_;
 
   auto entry_it =
-      base::ranges::find(history, turn_uuid, &mojom::ConversationTurn::uuid);
+      std::ranges::find(history, turn_uuid, &mojom::ConversationTurn::uuid);
 
   if (entry_it == history.end()) {
     std::move(callback).Run(std::nullopt);
@@ -817,7 +816,7 @@ void ConversationHandler::ModifyConversation(uint32_t turn_index,
   }
   // Erase all turns after the edited turn and notify observers
   std::vector<std::optional<std::string>> erased_turn_ids;
-  base::ranges::transform(
+  std::ranges::transform(
       chat_history_.begin() + turn_index, chat_history_.end(),
       std::back_inserter(erased_turn_ids),
       [](mojom::ConversationTurnPtr& turn) { return turn->uuid; });
@@ -858,7 +857,7 @@ void ConversationHandler::SubmitSuggestion(
   }
 
   auto suggest_it =
-      base::ranges::find(suggestions_, suggestion_title, &Suggestion::title);
+      std::ranges::find(suggestions_, suggestion_title, &Suggestion::title);
   if (suggest_it == suggestions_.end()) {
     DLOG(ERROR)
         << "A suggestion was submitted that is not in the suggestions list.";
@@ -884,8 +883,8 @@ void ConversationHandler::SubmitSuggestion(
 
 std::vector<std::string> ConversationHandler::GetSuggestedQuestionsForTest() {
   std::vector<std::string> suggestions;
-  base::ranges::transform(suggestions_, std::back_inserter(suggestions),
-                          [](const auto& s) { return s.title; });
+  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
+                         [](const auto& s) { return s.title; });
   return suggestions;
 }
 
@@ -1307,7 +1306,7 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
           mojom::SuggestionGenerationStatus::HasGenerated) {
     // TODO(petemill): ask content fetcher if it knows whether current page is a
     // video.
-    auto found_iter = base::ranges::find_if(
+    auto found_iter = std::ranges::find_if(
         chat_history_, [](mojom::ConversationTurnPtr& turn) {
           if (turn->action_type == mojom::ActionType::SUMMARIZE_PAGE ||
               turn->action_type == mojom::ActionType::SUMMARIZE_VIDEO) {
@@ -1622,11 +1621,11 @@ void ConversationHandler::OnConversationEntryAdded(
   // If this is the first entry that isn't staged, notify about all previous
   // staged entries
   if (!entry->from_brave_search_SERP &&
-      base::ranges::all_of(chat_history_,
-                           [&entry](mojom::ConversationTurnPtr& history_entry) {
-                             return history_entry == entry ||
-                                    history_entry->from_brave_search_SERP;
-                           })) {
+      std::ranges::all_of(chat_history_,
+                          [&entry](mojom::ConversationTurnPtr& history_entry) {
+                            return history_entry == entry ||
+                                   history_entry->from_brave_search_SERP;
+                          })) {
     // Notify every item in chat history
     for (auto& observer : observers_) {
       for (auto& history_entry : chat_history_) {

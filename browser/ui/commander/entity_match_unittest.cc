@@ -10,9 +10,9 @@
 
 #include "brave/browser/ui/commander/entity_match.h"
 
+#include <algorithm>
 #include <functional>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/commander/command_source.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -98,7 +98,7 @@ TEST_F(CommanderEntityMatchTest, WindowRanksMatches) {
 
   auto matches = WindowsMatchingInput(browser(), u"orange", true);
   ASSERT_EQ(matches.size(), 2u);
-  base::ranges::sort(matches, std::greater<>(), &WindowMatch::score);
+  std::ranges::sort(matches, std::greater<>(), &WindowMatch::score);
   EXPECT_EQ(matches.at(0).browser, browser_best_match.get());
 }
 
@@ -109,14 +109,14 @@ TEST_F(CommanderEntityMatchTest, WindowMRUOrderWithNoInput) {
   // Browser 2 was activated last, so we expect it to be the top match.
   auto matches = WindowsMatchingInput(browser(), u"", true);
   ASSERT_EQ(matches.size(), 2u);
-  base::ranges::sort(matches, std::greater<>(), &WindowMatch::score);
+  std::ranges::sort(matches, std::greater<>(), &WindowMatch::score);
   EXPECT_EQ(matches.at(0).browser, browser2.get());
 
   BrowserList::GetInstance()->SetLastActive(browser1.get());
   // Activating browser 1 should have brought it to the top.
   matches = WindowsMatchingInput(browser(), u"", true);
   ASSERT_EQ(matches.size(), 2u);
-  base::ranges::sort(matches, std::greater<>(), &WindowMatch::score);
+  std::ranges::sort(matches, std::greater<>(), &WindowMatch::score);
   EXPECT_EQ(matches.at(0).browser, browser1.get());
 }
 

@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <iterator>
 #include <memory>
 
 #include "base/memory/scoped_refptr.h"
 #include "base/metrics/field_trial.h"
 #include "base/metrics/field_trial_param_associator.h"
-#include "base/ranges/algorithm.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/types.h"
@@ -198,7 +198,7 @@ TEST_F(OmniboxPromotionTest, PromotionEntrySortTest) {
   EXPECT_EQ(1, promotion_match_count);
 
   auto brave_search_conversion_match =
-      base::ranges::find_if(controller->result(), IsBraveSearchPromotionMatch);
+      std::ranges::find_if(controller->result(), IsBraveSearchPromotionMatch);
   EXPECT_NE(brave_search_conversion_match, controller->result().end());
 
   // Located as last entry for banner type.

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 
+#include <algorithm>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -322,7 +323,7 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
 
     Eip712HashArray result = {};
     base::span(result).copy_from(base::byte_span_from_ref(encoded_value));
-    base::ranges::reverse(result);
+    std::ranges::reverse(result);
 
     return result;
   }
@@ -365,7 +366,7 @@ EthSignTypedDataHelper::EncodeField(const std::string_view type,
 
     Eip712HashArray result = {};
     base::span(result).copy_from(base::byte_span_from_ref(encoded_value));
-    base::ranges::reverse(result);
+    std::ranges::reverse(result);
 
     return result;
   }

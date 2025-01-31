@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -409,8 +409,8 @@ bool ZCashTransaction::IsTransparentPartSigned() const {
     return false;
   }
 
-  return base::ranges::all_of(transparent_part_.inputs,
-                              [](auto& input) { return input.IsSigned(); });
+  return std::ranges::all_of(transparent_part_.inputs,
+                             [](auto& input) { return input.IsSigned(); });
 }
 
 uint64_t ZCashTransaction::TotalInputsAmount() const {

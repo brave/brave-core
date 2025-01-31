@@ -6,12 +6,12 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 
+#include <algorithm>
 #include <sstream>
 #include <string_view>
 #include <vector>
 
 #include "base/containers/fixed_flat_set.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -24,10 +24,10 @@ constexpr auto kAllowedHeaders = base::MakeFixedFlatSet<std::string_view>(
     {"accept", "content-type", "digest", "signature"});
 
 bool ShouldAllowHeader(const std::string& header) {
-  return base::ranges::any_of(kAllowedHeaders,
-                              [&header](std::string_view allowed_header) {
-                                return header.starts_with(allowed_header);
-                              });
+  return std::ranges::any_of(kAllowedHeaders,
+                             [&header](std::string_view allowed_header) {
+                               return header.starts_with(allowed_header);
+                             });
 }
 
 std::string HeadersToString(const std::vector<std::string>& headers,

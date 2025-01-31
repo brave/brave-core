@@ -6,10 +6,11 @@
 #ifndef BRAVE_CHROMIUM_SRC_BASE_DEBUG_ALIAS_H_
 #define BRAVE_CHROMIUM_SRC_BASE_DEBUG_ALIAS_H_
 
+#include <algorithm>
+
 #include "base/containers/span.h"
 #include "base/memory/raw_ptr_exclusion.h"
 #include "base/memory/stack_allocated.h"
-#include "base/ranges/algorithm.h"
 
 #include "src/base/debug/alias.h"  // IWYU pragma: export
 
@@ -35,7 +36,7 @@ class StackObjectCopy {
           span(reinterpret_cast<const uint8_t*>(original), kSize));
       span(buffer_).copy_from(std::move(original_object_memory));
     } else {
-      ranges::fill(buffer_, 0);
+      std::ranges::fill(buffer_, 0);
     }
   }
 

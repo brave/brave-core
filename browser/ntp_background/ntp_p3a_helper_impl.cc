@@ -402,7 +402,7 @@ void NTPP3AHelperImpl::RemoveMetricIfInstanceDoesNotExist(
     const std::string& event_type,
     const std::string& creative_instance_id) {
   bool creative_instance_exists =
-      base::ranges::any_of(kAllCreativeCountDicts, [&](auto dict_pref_name) {
+      std::ranges::any_of(kAllCreativeCountDicts, [&](auto dict_pref_name) {
         const auto& count_dict = local_state_->GetDict(dict_pref_name);
         const auto* creative_dict = count_dict.FindDict(creative_instance_id);
         if (creative_dict == nullptr) {

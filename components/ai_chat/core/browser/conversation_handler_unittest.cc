@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <string>
@@ -17,7 +18,6 @@
 #include "base/functional/callback.h"
 #include "base/functional/overloaded.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/ranges/algorithm.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
 #include "base/task/sequenced_task_runner.h"
@@ -1295,7 +1295,7 @@ TEST_F(ConversationHandlerUnitTest, GenerateQuestions) {
                                               "Question 3?", "Question 4?"};
   std::vector<std::string> expected_results;
   expected_results.push_back(initial_question);
-  base::ranges::copy(questions, std::back_inserter(expected_results));
+  std::ranges::copy(questions, std::back_inserter(expected_results));
 
   conversation_handler_->SetShouldSendPageContents(true);
   EXPECT_CALL(*associated_content_, GetURL)
@@ -1526,9 +1526,9 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, SelectedLanguage) {
       conversation_handler_->GetConversationHistory();
   ASSERT_FALSE(conversation_history.empty());
   bool has_selected_language_event =
-      base::ranges::any_of(conversation_history, [](const auto& entry) {
+      std::ranges::any_of(conversation_history, [](const auto& entry) {
         return entry->events.has_value() &&
-               base::ranges::any_of(*entry->events, [](const auto& event) {
+               std::ranges::any_of(*entry->events, [](const auto& event) {
                  return event->is_selected_language_event();
                });
       });
@@ -1696,7 +1696,7 @@ TEST_P(PageContentRefineTest, TextEmbedder) {
           base::DoNothing(), base::DoNothing(), test_case.page_content, false,
           base::ok("refined_page_content"));
       EXPECT_FALSE(
-          base::ranges::any_of(conversation_history, [](const auto& turn) {
+          std::ranges::any_of(conversation_history, [](const auto& turn) {
             return turn->events && !turn->events->empty() &&
                    turn->events->back()->is_page_content_refine_event();
           }));

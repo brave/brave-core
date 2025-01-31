@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/cxx_orchard_shard_tree_delegate.h"
 
+#include <algorithm>
 #include <utility>
 #include <vector>
 
@@ -29,7 +30,7 @@ CxxOrchardShardTreeCap ToRust(
     ::brave_wallet::OrchardShardTreeCap& shard_store_cap) {
   ::rust::Vec<uint8_t> data;
   data.reserve(shard_store_cap.size());
-  base::ranges::copy(shard_store_cap, std::back_inserter(data));
+  std::ranges::copy(shard_store_cap, std::back_inserter(data));
   return CxxOrchardShardTreeCap{std::move(data)};
 }
 
@@ -37,7 +38,7 @@ CxxOrchardShardTreeCap ToRust(
     const CxxOrchardShardTreeCap& cap) {
   ::brave_wallet::OrchardShardTreeCap shard_store_cap;
   shard_store_cap.reserve(cap.data.size());
-  base::ranges::copy(cap.data, std::back_inserter(shard_store_cap));
+  std::ranges::copy(cap.data, std::back_inserter(shard_store_cap));
   return shard_store_cap;
 }
 
@@ -46,13 +47,13 @@ CxxOrchardShardTreeCap ToRust(
   if (!tree.hash.empty()) {
     CHECK_EQ(kOrchardShardTreeHashSize, tree.hash.size());
     OrchardShardRootHash hash_value;
-    base::ranges::copy(tree.hash, hash_value.begin());
+    std::ranges::copy(tree.hash, hash_value.begin());
     shard_root_hash = hash_value;
   }
 
   std::vector<uint8_t> data;
   data.reserve(tree.data.size());
-  base::ranges::copy(tree.data, std::back_inserter(data));
+  std::ranges::copy(tree.data, std::back_inserter(data));
 
   return ::brave_wallet::OrchardShard(FromRust(tree.address), shard_root_hash,
                                       std::move(data));
@@ -61,11 +62,11 @@ CxxOrchardShardTreeCap ToRust(
 CxxOrchardShard ToRust(const ::brave_wallet::OrchardShard& tree) {
   ::rust::Vec<uint8_t> data;
   data.reserve(tree.shard_data.size());
-  base::ranges::copy(tree.shard_data, std::back_inserter(data));
+  std::ranges::copy(tree.shard_data, std::back_inserter(data));
 
   ::rust::Vec<uint8_t> hash;
   if (tree.root_hash) {
-    base::ranges::copy(tree.root_hash.value(), std::back_inserter(hash));
+    std::ranges::copy(tree.root_hash.value(), std::back_inserter(hash));
   }
   return CxxOrchardShard{ToRust(tree.address), std::move(hash),
                          std::move(data)};
@@ -74,8 +75,8 @@ CxxOrchardShard ToRust(const ::brave_wallet::OrchardShard& tree) {
 CxxOrchardCheckpoint ToRust(
     const ::brave_wallet::OrchardCheckpoint& checkpoint) {
   ::rust::Vec<uint32_t> marks_removed;
-  base::ranges::copy(checkpoint.marks_removed,
-                     std::back_inserter(marks_removed));
+  std::ranges::copy(checkpoint.marks_removed,
+                    std::back_inserter(marks_removed));
   return CxxOrchardCheckpoint{!checkpoint.tree_state_position.has_value(),
                               checkpoint.tree_state_position.value_or(0),
                               marks_removed};

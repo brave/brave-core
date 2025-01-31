@@ -435,7 +435,7 @@ std::optional<std::vector<uint8_t>> DnsEncode(std::string_view dotted_name) {
   std::vector<uint8_t> result;
   result.resize(dotted_name.size() + 2);
   result.front() = '.';  // Placeholder for first label length.
-  base::ranges::copy(dotted_name, result.begin() + 1);
+  std::ranges::copy(dotted_name, result.begin() + 1);
   result.back() = '.';  // Placeholder for terminal zero byte.
 
   size_t last_dot_pos = 0;

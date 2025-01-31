@@ -14,7 +14,6 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_news/browser/feed_sampling.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/signal_calculator.h"
@@ -119,10 +118,10 @@ ArticleInfos GetArticleInfos(const std::string& locale,
 
   for (const auto& [publisher_id, publisher] : publishers) {
     auto channels = GetChannelsForPublisher(locale, publisher);
-    if (base::ranges::any_of(kSensitiveChannels,
-                             [&](const std::string& channel) {
-                               return base::Contains(channels, channel);
-                             })) {
+    if (std::ranges::any_of(kSensitiveChannels,
+                            [&](const std::string& channel) {
+                              return base::Contains(channels, channel);
+                            })) {
       non_discoverable_publishers.insert(publisher_id);
     }
   }
@@ -147,7 +146,7 @@ ArticleInfos GetArticleInfos(const std::string& locale,
       // If we don't have any signals for this article, or the source this
       // article comes from has been disabled then filter it out.
       if (article_signals.empty() ||
-          base::ranges::any_of(article_signals, [](const auto* signal) {
+          std::ranges::any_of(article_signals, [](const auto* signal) {
             return signal->disabled;
           })) {
         continue;
@@ -339,7 +338,7 @@ void FeedGenerationInfo::ReduceCounts(const mojom::FeedItemMetadataPtr& article,
   for (const auto& to_remove : remove_content_groups) {
     DVLOG(1) << "Consumed the last article from " << to_remove
              << ". Removing it from the list of eligible content groups.";
-    auto it = base::ranges::find_if(
+    auto it = std::ranges::find_if(
         content_groups_.value(),
         [&to_remove](const auto& group) { return group.first == to_remove; });
 

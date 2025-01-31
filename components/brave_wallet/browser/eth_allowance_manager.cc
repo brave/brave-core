@@ -326,7 +326,7 @@ bool EthAllowanceManager::IsAllTasksCompleted() const {
   DCHECK(!discover_eth_allowance_callbacks_.empty());
 
   return get_block_tasks_ == 0 &&
-         base::ranges::all_of(allowance_discovery_tasks_, [](const auto& item) {
+         std::ranges::all_of(allowance_discovery_tasks_, [](const auto& item) {
            return item.second->is_completed_;
          });
 }

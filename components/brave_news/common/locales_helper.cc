@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/common/locales_helper.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -14,7 +15,6 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
@@ -48,10 +48,10 @@ constexpr auto kEnabledLocales =
 
 bool HasAnyLocale(const base::flat_set<std::string>& locales,
                   const mojom::Publisher* publisher) {
-  return base::ranges::any_of(publisher->locales,
-                              [&locales](const auto& locale_info) {
-                                return locales.contains(locale_info->locale);
-                              });
+  return std::ranges::any_of(publisher->locales,
+                             [&locales](const auto& locale_info) {
+                               return locales.contains(locale_info->locale);
+                             });
 }
 
 std::optional<std::string> GetBestMissingLocale(
@@ -74,7 +74,7 @@ std::optional<std::string> GetBestMissingLocale(
     return {};
   }
 
-  return base::ranges::max_element(
+  return std::ranges::max_element(
              missing_locale_counts,
              [](const auto& a, const auto& b) { return a.second < b.second; })
       ->first;

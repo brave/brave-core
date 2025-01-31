@@ -40,7 +40,7 @@ std::array<uint8_t, kPaddedHrpSize> GetPaddedHRP(bool is_testnet) {
                 "Wrong kPaddedHrpSize size");
   std::string hrp = is_testnet ? kTestnetHRP : kMainnetHRP;
   std::array<uint8_t, kPaddedHrpSize> padded_hrp = {};
-  base::ranges::copy(base::as_byte_span(hrp), padded_hrp.begin());
+  std::ranges::copy(base::as_byte_span(hrp), padded_hrp.begin());
   return padded_hrp;
 }
 
@@ -415,7 +415,7 @@ std::optional<OrchardAddrRawPart> GetOrchardRawBytes(
         return std::nullopt;
       }
       OrchardAddrRawPart result;
-      base::ranges::copy(part.second, result.begin());
+      std::ranges::copy(part.second, result.begin());
       return result;
     }
   }
@@ -510,7 +510,7 @@ std::optional<OrchardMemo> ToOrchardMemo(
   }
 
   std::array<uint8_t, kOrchardMemoSize> output = {};
-  base::ranges::copy(*input, output.begin());
+  std::ranges::copy(*input, output.begin());
   return output;
 }
 

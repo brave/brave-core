@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/check_is_test.h"
@@ -115,7 +116,7 @@ OrchardSyncState::ApplyScanResults(
   std::vector<OrchardNoteSpend> nf_to_add;
 
   for (const auto& nf : block_scanner_results.found_spends) {
-    if (base::ranges::find_if(existing_notes.value(), [&nf](const auto& v) {
+    if (std::ranges::find_if(existing_notes.value(), [&nf](const auto& v) {
           return v.nullifier == nf.nullifier;
         }) != existing_notes.value().end()) {
       nf_to_add.push_back(nf);

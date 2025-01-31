@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_block_scanner.h"
 
+#include <algorithm>
+
 #include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
@@ -502,7 +504,7 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
           "0x1b32edbbe4d18f28876de262518ad31122701f8c0a52e98047a337876e7eea19")
           .value();
   OrchardNoteSpend spend;
-  base::ranges::copy(nullifier_bytes, spend.nullifier.begin());
+  std::ranges::copy(nullifier_bytes, spend.nullifier.begin());
   spend.block_id = 10;
 
   action->nullifier = nullifier_bytes;
@@ -521,7 +523,7 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
   std::vector<OrchardNote> notes;
   OrchardNote note;
   note.block_id = 10;
-  base::ranges::copy(nullifier_bytes, note.nullifier.begin());
+  std::ranges::copy(nullifier_bytes, note.nullifier.begin());
   note.amount = 1;
 
   notes.push_back(note);

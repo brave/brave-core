@@ -5,9 +5,10 @@
 
 #include "brave/components/misc_metrics/menu_metrics.h"
 
+#include <algorithm>
+
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/misc_metrics/pref_names.h"
@@ -73,7 +74,7 @@ void MenuMetrics::RecordMenuGroupAction(MenuGroup group) {
     // No need to check for max element if we added to the last known max group.
     histogram_value = current_max_group_->second;
   } else {
-    const auto& result = base::ranges::max_element(
+    const auto& result = std::ranges::max_element(
         update_dict.cbegin(), update_dict.cend(),
         [](const auto& a, const auto& b) {
           return a.second.GetDouble() < b.second.GetDouble();

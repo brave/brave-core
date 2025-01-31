@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 
+#include <algorithm>
 #include <array>
 #include <memory>
 #include <optional>
@@ -13,7 +14,6 @@
 #include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/containers/span_rust.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -91,7 +91,7 @@ std::string SolanaKeyring::ImportAccount(base::span<const uint8_t> keypair) {
     return std::string();
   }
 
-  if (base::ranges::any_of(accounts_, [&](auto& acc) {
+  if (std::ranges::any_of(accounts_, [&](auto& acc) {
         return GetAddressInternal(*acc) == address;
       })) {
     return std::string();

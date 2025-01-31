@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/tabs/tab_drag_controller.h"
 
+#include <algorithm>
 #include <optional>
 #include <set>
 #include <utility>
@@ -76,7 +77,7 @@ TabDragController::Liveness TabDragController::Init(
   if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
       browser->profile()->GetPrefs()->GetBoolean(
           brave_tabs::kSharedPinnedTab)) {
-    if (base::ranges::any_of(dragging_views, [](TabSlotView* slot_view) {
+    if (std::ranges::any_of(dragging_views, [](TabSlotView* slot_view) {
           // We don't allow sharable pinned tabs to be detached.
           return slot_view->GetTabSlotViewType() ==
                      TabSlotView::ViewType::kTab &&

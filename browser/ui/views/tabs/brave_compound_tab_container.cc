@@ -157,8 +157,8 @@ base::OnceClosure BraveCompoundTabContainer::LockLayout() {
 
   return base::BindOnce(
       [](std::vector<base::OnceClosure> closures) {
-        base::ranges::for_each(closures,
-                               [](auto& closure) { std::move(closure).Run(); });
+        std::ranges::for_each(closures,
+                              [](auto& closure) { std::move(closure).Run(); });
       },
       std::move(closures));
 }

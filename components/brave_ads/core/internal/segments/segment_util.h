@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SEGMENTS_SEGMENT_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SEGMENTS_SEGMENT_UTIL_H_
 
+#include <algorithm>
 #include <string>
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace brave_ads {
@@ -26,7 +26,7 @@ SegmentList GetSegments(const T& creative_ads) {
     segments.push_back(creative_ad.segment);
   }
 
-  base::ranges::sort(segments);
+  std::ranges::sort(segments);
   auto to_remove = std::ranges::unique(segments);
   segments.erase(to_remove.begin(), to_remove.end());
   return segments;

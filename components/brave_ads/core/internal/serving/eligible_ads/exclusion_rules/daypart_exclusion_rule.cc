@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
@@ -28,7 +29,7 @@ bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   const int day_of_week = DayOfWeek(now, /*is_local=*/true);
   const int minutes = LocalTimeInMinutesSinceMidnight(now);
 
-  return base::ranges::any_of(
+  return std::ranges::any_of(
       creative_ad.dayparts,
       [day_of_week, minutes](const CreativeDaypartInfo& daypart) {
         return MatchDayOfWeek(daypart, day_of_week) &&

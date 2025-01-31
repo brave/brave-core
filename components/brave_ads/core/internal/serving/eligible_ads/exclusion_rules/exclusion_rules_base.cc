@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_base.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/anti_targeting_exclusion_rule.h"
@@ -74,7 +75,7 @@ ExclusionRulesBase::~ExclusionRulesBase() = default;
 
 bool ExclusionRulesBase::ShouldExcludeCreativeAd(
     const CreativeAdInfo& creative_ad) {
-  return base::ranges::any_of(
+  return std::ranges::any_of(
       exclusion_rules_,
       [&](const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
               exclusion_rule) {
@@ -107,7 +108,7 @@ bool ExclusionRulesBase::AddToCacheIfNeeded(
 ///////////////////////////////////////////////////////////////////////////////
 
 bool ExclusionRulesBase::IsCached(const CreativeAdInfo& creative_ad) const {
-  return base::ranges::any_of(uuids_, [&creative_ad](const std::string& uuid) {
+  return std::ranges::any_of(uuids_, [&creative_ad](const std::string& uuid) {
     return creative_ad.creative_instance_id == uuid ||
            creative_ad.creative_set_id == uuid ||
            creative_ad.campaign_id == uuid ||

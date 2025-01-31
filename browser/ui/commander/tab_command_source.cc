@@ -10,6 +10,7 @@
 
 #include "brave/browser/ui/commander/tab_command_source.h"
 
+#include <algorithm>
 #include <memory>
 #include <numeric>
 #include <string>
@@ -17,7 +18,6 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/command_utils.h"
 #include "brave/browser/ui/commander/entity_match.h"
@@ -103,7 +103,7 @@ bool HasPinnedTabs(const TabStripModel* model) {
 
 bool CanMoveTabsToExistingWindow(const Browser* browser_to_exclude) {
   const BrowserList* browser_list = BrowserList::GetInstance();
-  return base::ranges::any_of(
+  return std::ranges::any_of(
       *browser_list, [browser_to_exclude](Browser* browser) {
         return browser != browser_to_exclude && browser->is_type_normal() &&
                browser->profile() == browser_to_exclude->profile();

@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/serving/targeting/segments/top_segments.h"
 
+#include <algorithm>
+
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
 namespace brave_ads {
@@ -42,7 +44,7 @@ std::optional<std::string> GetTopSegment(const SegmentList& segments,
                                          bool parent_only) {
   const SegmentList& target_segments =
       parent_only ? GetParentSegments(segments) : segments;
-  const auto iter = base::ranges::find_if(
+  const auto iter = std::ranges::find_if(
       target_segments,
       [](const auto& segment) { return !ShouldFilterSegment(segment); });
 

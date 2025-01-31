@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 
+#include <algorithm>
+
 #include "base/check_is_test.h"
 #include "base/containers/contains.h"
 #include "base/functional/callback_helpers.h"

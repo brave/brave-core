@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <memory>
 #include <optional>
@@ -615,7 +616,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               session_data_dict->FindList("sourceCurrencyCodes");
           EXPECT_TRUE(source_currency_codes_list);
           for (const auto& item_value : *source_currency_codes_list) {
-            EXPECT_EQ(base::ranges::count_if(
+            EXPECT_EQ(std::ranges::count_if(
                           source_currency_codes,
                           [&](const auto& item) { return item == item_value; }),
                       1);
@@ -706,7 +707,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(base::ranges::count_if(
+            EXPECT_EQ(std::ranges::count_if(
                           *sps,
                           [](const auto& item) {
                             return item->name == "Banxa" &&
@@ -729,7 +730,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                                    !item->logo_images->light_short_url;
                           }),
                       1);
-            EXPECT_EQ(base::ranges::count_if(
+            EXPECT_EQ(std::ranges::count_if(
                           *sps,
                           [](const auto& item) {
                             return item->name == "Blockchain.com" &&
@@ -852,7 +853,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
       [](const std::optional<std::vector<mojom::MeldCryptoQuotePtr>>& quotes,
          const std::optional<std::vector<std::string>>& errors) {
         EXPECT_FALSE(errors.has_value());
-        EXPECT_EQ(base::ranges::count_if(
+        EXPECT_EQ(std::ranges::count_if(
                       *quotes,
                       [](const auto& item) {
                         return item->transaction_type == "CRYPTO_PURCHASE" &&
@@ -1010,7 +1011,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
                  payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(base::ranges::count_if(
+            EXPECT_EQ(std::ranges::count_if(
                           *payment_methods,
                           [](const auto& item) {
                             return item->payment_method == "ACH" &&
@@ -1048,7 +1049,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
                  payment_methods,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(base::ranges::count_if(
+            EXPECT_EQ(std::ranges::count_if(
                           *payment_methods,
                           [](const auto& item) {
                             return item->payment_method == "ACH" &&
@@ -1180,7 +1181,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
                  fiat_currencies,
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
-            EXPECT_EQ(base::ranges::count_if(
+            EXPECT_EQ(std::ranges::count_if(
                           *fiat_currencies,
                           [](const auto& item) {
                             return item->currency_code == "AFN" &&
@@ -1190,7 +1191,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
                                        "AFN/symbol.png";
                           }),
                       1);
-            EXPECT_EQ(base::ranges::count_if(
+            EXPECT_EQ(std::ranges::count_if(
                           *fiat_currencies,
                           [](const auto& item) {
                             return item->currency_code == "DZD" &&
@@ -1318,7 +1319,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(
-                base::ranges::count_if(
+                std::ranges::count_if(
                     *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "USDT_KCC" && !item->name &&
@@ -1333,7 +1334,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                     }),
                 1);
             EXPECT_EQ(
-                base::ranges::count_if(
+                std::ranges::count_if(
                     *crypto_currencies,
                     [](const auto& item) {
                       return item->currency_code == "00" &&
@@ -1474,7 +1475,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
              const std::optional<std::vector<std::string>>& errors) {
             EXPECT_FALSE(errors.has_value());
             EXPECT_EQ(
-                base::ranges::count_if(
+                std::ranges::count_if(
                     *countries,
                     [](const auto& item) {
                       return item->country_code == "AF" &&
@@ -1487,7 +1488,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                     }),
                 1);
             EXPECT_EQ(
-                base::ranges::count_if(
+                std::ranges::count_if(
                     *countries,
                     [](const auto& item) {
                       return item->country_code == "AL" &&
