@@ -17,8 +17,8 @@ _CLOUD_HTTPS_URL = 'https://perf-data.s3.brave.com'
 
 
 class CloudFolder(str, Enum):
-  TEST_PROFILES = 'perf-profiles'
-  CATAPULT_PERF_DATA = 'telemetry-perf-data'
+  TEST_PROFILES = 'perf-profiles'  # 6 months lifetime
+  CATAPULT_PERF_DATA = 'telemetry-perf-data'  # infinite lifetime
 
 
 def UpdateSha1(path: str):
@@ -40,7 +40,7 @@ def UploadFileToCloudStorage(folder: CloudFolder, path: str):
 
   s3_url = f's3://{_CLOUD_BUCKET}/{folder}/{sha1}'
   success, _ = perf_test_utils.GetProcessOutput(
-      ['aws', 's3', 'cp', path, s3_url, '--sse', 'AES256'])
+      ['aws', 's3', 'cp', path, s3_url, '--sse', 'AES256'], timeout=10 * 60)
   if not success:
     raise RuntimeError(f'Can\'t upload to {s3_url}')
   return path + '.sha1'

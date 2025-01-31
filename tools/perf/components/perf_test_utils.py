@@ -107,13 +107,13 @@ def GetProcessOutput(args: List[str],
     return False, e.output
 
 
-def DownloadFile(url: str, output: str):
+def DownloadFile(url: str, output: str, timeout_sec=3 * 60):
 
   def load_data():
     for _ in range(3):
       try:
         logging.info('Downloading %s to %s', url, output)
-        f = urlopen(url)
+        f = urlopen(url, timeout=timeout_sec)
         return f.read()
       except Exception:
         logging.error('Download attempt failed')
