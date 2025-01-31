@@ -8,11 +8,12 @@
 
 #include "base/callback_list.h"
 
-#define Init(...)                 \
-  Init_ChromiumImpl(__VA_ARGS__); \
-  virtual void Init(__VA_ARGS__)
+#define TabFeatures TabFeatures_Chromium
 
 #include "src/chrome/browser/ui/tabs/public/tab_features.h"  // IWYU pragma: export
-#undef Init
+
+#undef TabFeatures
+
+#include "brave/browser/ui/tabs/public/tab_features.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_PUBLIC_TAB_FEATURES_H_

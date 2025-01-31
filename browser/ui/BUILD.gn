@@ -59,7 +59,12 @@ source_set("ui") {
     "//brave/components/brave_shields/core/browser",
     "//brave/components/webcompat/core/common",
     "//chrome/browser/ui:browser_navigator_params_headers",
+    "//chrome/browser/ui/tabs:tabs_public",
   ]
+
+  if (!is_android) {
+    deps += [ "//brave/browser/ui/tabs:impl" ]
+  }
 
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
@@ -481,7 +486,6 @@ source_set("ui") {
 
   if (toolkit_views) {
     sources += [
-      "side_panel/brave_side_panel_utils.h",
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
       "views/bookmarks/brave_bookmark_bar_view.cc",
@@ -626,6 +630,7 @@ source_set("ui") {
     ]
 
     deps += [
+      "//brave/browser/ui/side_panel",
       "//chrome/browser/devtools",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",

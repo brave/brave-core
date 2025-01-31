@@ -5,20 +5,8 @@
 
 #include "chrome/browser/ui/tabs/public/tab_features.h"
 
-#include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
+#define TabFeatures TabFeatures_Chromium
 
-#define Init Init_ChromiumImpl
 #include "src/chrome/browser/ui/tabs/tab_features.cc"
-#undef Init
 
-namespace tabs {
-
-void TabFeatures::Init(TabInterface& tab, Profile* profile) {
-  Init_ChromiumImpl(tab, profile);
-  // Expect upstream's Init to create the registry.
-  CHECK(side_panel_registry_.get());
-  brave::RegisterContextualSidePanel(side_panel_registry_.get(),
-                                     tab.GetContents());
-}
-
-}  // namespace tabs
+#undef TabFeatures
