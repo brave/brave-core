@@ -9,9 +9,6 @@ source_set("web") {
     "brave_web_client.mm",
     "brave_web_main_parts.h",
     "brave_web_main_parts.mm",
-    "javascript_block_util.mm",
-    "universal_link_block_util.mm",
-    "web_view_tab_helper_util.mm",
   ]
   deps = [
     "//base",
@@ -20,7 +17,6 @@ source_set("web") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/constants",
     "//brave/ios/browser/application_context",
-    "//brave/ios/web_view",
     "//components/component_updater/installer_policies",
     "//components/translate/ios/browser",
     "//ios/chrome/browser/application_context/model",
@@ -29,7 +25,6 @@ source_set("web") {
     "//ios/chrome/browser/shared/model/paths",
     "//ios/chrome/browser/shared/model/url",
     "//ios/chrome/browser/shared/model/url:constants",
-    "//ios/chrome/browser/tabs/model",
     "//ios/chrome/browser/web/model:web_internal",
     "//ios/components/security_interstitials",
     "//ios/components/security_interstitials/lookalikes",

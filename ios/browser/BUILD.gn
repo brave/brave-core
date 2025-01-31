@@ -40,6 +40,7 @@ group("browser") {
     "api/version_info",
     "api/web",
     "api/web_image",
+    "api/web_view",
     "brave_wallet",
     "//brave/browser/sync",
     "//brave/components/constants",
