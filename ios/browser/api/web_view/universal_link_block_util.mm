@@ -3,30 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#import <WebKit/WebKit.h>
+#import <Foundation/Foundation.h>
 
-#import "brave/ios/web_view/public/chrome_web_view.h"
-#include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "ios/web/common/url_scheme_util.h"
+#import "brave/ios/browser/api/web_view/brave_web_view.h"
 #include "ios/web/public/web_state.h"
 #import "ios/web_view/internal/cwv_web_view_internal.h"
-#import "ios/web_view/public/cwv_navigation_delegate.h"
 
 namespace brave {
 
-bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request) {
-  if (!web::UrlHasWebScheme(request.URL)) {
-    return false;
-  }
+bool ShouldBlockUniversalLinks(web::WebState* webState, NSURLRequest* request) {
   BraveWebView* webView =
       static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
   id<BraveWebViewNavigationDelegate> navigationDelegate =
       webView.navigationDelegate;
 
   if ([navigationDelegate respondsToSelector:@selector
-                          (webView:shouldBlockJavaScriptForRequest:)]) {
+                          (webView:shouldBlockUniversalLinksForRequest:)]) {
     return [navigationDelegate webView:webView
-        shouldBlockJavaScriptForRequest:request];
+        shouldBlockUniversalLinksForRequest:request];
   }
   return false;
 }

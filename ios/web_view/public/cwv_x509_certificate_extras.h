@@ -9,6 +9,7 @@
 #include "cwv_x509_certificate.h"  // NOLINT
 
 @interface CWVX509Certificate (Extras)
+/// The underlying security reference
 @property(readonly, nullable) SecCertificateRef certificateRef;
 @end
 
