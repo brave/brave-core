@@ -1023,7 +1023,13 @@ extension BrowserViewController: WKNavigationDelegate {
     tab.clearSolanaConnectedAccounts()
 
     // Dismiss any alerts that are showing on page navigation.
-    self.dismiss(animated: false)
+    if let alert = self.presentedViewController as? JSPromptAlertController {
+      alert.dismiss(animated: false)
+    }
+
+    if let alert = self.presentedViewController as? BrowserAlertController {
+      alert.dismiss(animated: false)
+    }
 
     // Providers need re-initialized when changing origin to align with desktop in
     // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
@@ -1438,6 +1444,11 @@ extension BrowserViewController: WKUIDelegate {
     type: WKMediaCaptureType,
     decisionHandler: @escaping (WKPermissionDecision) -> Void
   ) {
+    if frame.securityOrigin.protocol.isEmpty || frame.securityOrigin.host.isEmpty {
+      decisionHandler(.deny)
+      return
+    }
+
     let presentAlert = { [weak self] in
       guard let self = self else { return }
 
@@ -1517,7 +1528,7 @@ extension BrowserViewController: WKUIDelegate {
       completionHandler: completionHandler,
       suppressHandler: nil
     )
-    handleAlert(webView: webView, alert: &messageAlert) {
+    handleAlert(webView: webView, frame: frame, alert: &messageAlert) {
       completionHandler()
     }
   }
@@ -1534,7 +1545,7 @@ extension BrowserViewController: WKUIDelegate {
       completionHandler: completionHandler,
       suppressHandler: nil
     )
-    handleAlert(webView: webView, alert: &confirmAlert) {
+    handleAlert(webView: webView, frame: frame, alert: &confirmAlert) {
       completionHandler(false)
     }
   }
@@ -1553,7 +1564,7 @@ extension BrowserViewController: WKUIDelegate {
       defaultText: defaultText,
       suppressHandler: nil
     )
-    handleAlert(webView: webView, alert: &textInputAlert) {
+    handleAlert(webView: webView, frame: frame, alert: &textInputAlert) {
       completionHandler(nil)
     }
   }
@@ -1572,15 +1583,22 @@ extension BrowserViewController: WKUIDelegate {
 
   func handleAlert<T: JSAlertInfo>(
     webView: WKWebView,
+    frame: WKFrameInfo,
     alert: inout T,
     completionHandler: @escaping () -> Void
   ) {
+    if frame.securityOrigin.protocol.isEmpty || frame.securityOrigin.host.isEmpty {
+      completionHandler()
+      return
+    }
+
     guard let promptingTab = tabManager[webView], !promptingTab.blockAllAlerts else {
       suppressJSAlerts(webView: webView)
       tabManager[webView]?.cancelQueuedAlerts()
       completionHandler()
       return
     }
+
     promptingTab.alertShownCount += 1
     let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
       if suppress {
