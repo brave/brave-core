@@ -89,28 +89,6 @@ TEST_F(BraveAdsNewTabPageAdServingTest, ServeAd) {
   run_loop.Run();
 }
 
-TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
-  // Arrange
-  test::ForcePermissionRules();
-
-  CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
-  creative_ad.wallpapers.clear();
-  database::SaveCreativeNewTabPageAds({creative_ad});
-
-  // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnOpportunityAroseToServeNewTabPageAd);
-
-  EXPECT_CALL(delegate_mock_, OnFailedToServeNewTabPageAd);
-
-  base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
-  base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
-      .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
-  MaybeServeAd(callback.Get());
-  run_loop.Run();
-}
-
 TEST_F(BraveAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
   // Arrange
   test::ForcePermissionRules();

@@ -9,9 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_wallpaper_info.h"
 #include "brave/components/brave_ads/core/public/export.h"
-#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -31,9 +29,7 @@ struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   [[nodiscard]] bool IsValid() const;
 
   std::string company_name;
-  GURL image_url;
   std::string alt;
-  NewTabPageAdWallpaperList wallpapers;
 };
 
 }  // namespace brave_ads

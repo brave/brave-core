@@ -21,8 +21,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
@@ -231,19 +229,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.target_url = creative.payload.target_url;
 
         creative_ad.company_name = creative.payload.company_name;
-        creative_ad.image_url = creative.payload.image_url;
         creative_ad.alt = creative.payload.alt;
-
-        CHECK(!creative.payload.wallpapers.empty());
-        for (const auto& catalog_new_tab_page_ad_wallpaper :
-             creative.payload.wallpapers) {
-          CreativeNewTabPageAdWallpaperInfo wallpaper;
-          wallpaper.image_url = catalog_new_tab_page_ad_wallpaper.image_url;
-          wallpaper.focal_point = CreativeNewTabPageAdWallpaperFocalPointInfo{
-              .x = catalog_new_tab_page_ad_wallpaper.focal_point.x,
-              .y = catalog_new_tab_page_ad_wallpaper.focal_point.y};
-          creative_ad.wallpapers.push_back(wallpaper);
-        }
 
         // Segments
         for (const auto& segment : creative_set.segments) {

@@ -29,7 +29,7 @@ class Segments final : public TableInterface {
                int to_version) override;
 
  private:
-  void MigrateToV46(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV47(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
   std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
                              const CreativeAdList& creative_ads) const;

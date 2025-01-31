@@ -468,16 +468,6 @@ bool NTPSponsoredImagesData::AdInfoMatchesSponsoredImage(
     return false;
   }
 
-  const std::string ad_image_filename = ad_info.image_url.ExtractFileName();
-  if (ad_image_filename.empty()) {
-    return false;
-  }
-
-  if (base::FilePath::FromUTF8Unsafe(ad_image_filename).BaseName() !=
-      background.logo.image_file.BaseName()) {
-    return false;
-  }
-
   if (ad_info.alt != background.logo.alt_text) {
     return false;
   }
@@ -486,23 +476,7 @@ bool NTPSponsoredImagesData::AdInfoMatchesSponsoredImage(
     return false;
   }
 
-  const auto it = base::ranges::find_if(
-      ad_info.wallpapers, [&background](const auto& wallpaper_info) {
-        const std::string wallpaper_image_filename =
-            wallpaper_info.image_url.ExtractFileName();
-        if (wallpaper_image_filename.empty()) {
-          return false;
-        }
-
-        if (base::FilePath::FromUTF8Unsafe(wallpaper_image_filename)
-                .BaseName() != background.file_path.BaseName()) {
-          return false;
-        }
-        return wallpaper_info.focal_point.x == background.focal_point.x() &&
-               wallpaper_info.focal_point.y == background.focal_point.y();
-      });
-
-  return it != ad_info.wallpapers.end();
+  return true;
 }
 
 }  // namespace ntp_background_images

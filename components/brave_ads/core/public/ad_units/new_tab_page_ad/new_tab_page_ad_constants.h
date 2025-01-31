@@ -18,11 +18,6 @@ inline constexpr char kNewTabPageAdAdvertiserIdKey[] = "advertiser_id";
 inline constexpr char kNewTabPageAdSegmentKey[] = "segment";
 inline constexpr char kNewTabPageAdCompanyNameKey[] = "company_name";
 inline constexpr char kNewTabPageAdAltKey[] = "alt";
-inline constexpr char kNewTabPageAdImageUrlKey[] = "image_url";
-inline constexpr char kNewTabPageAdFocalPointKey[] = "focal_point";
-inline constexpr char kNewTabPageAdFocalPointXKey[] = "x";
-inline constexpr char kNewTabPageAdFocalPointYKey[] = "y";
-inline constexpr char kNewTabPageAdWallpapersKey[] = "wallpapers";
 inline constexpr char kNewTabPageAdTargetUrlKey[] = "target_url";
 
 }  // namespace brave_ads

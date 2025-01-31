@@ -160,14 +160,8 @@ void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
               << "  advertiserId: " << ad.advertiser_id << "\n"
               << "  segment: " << ad.segment << "\n"
               << "  companyName: " << ad.company_name << "\n"
-              << "  imageUrl: " << ad.image_url << "\n"
               << "  alt: " << ad.alt << "\n"
-              << "  targetUrl: " << ad.target_url << "\n"
-              << "  wallpaper:\n"
-              << "    imageUrl: " << ad.wallpapers[0].image_url << "\n"
-              << "    focalPoint:\n"
-              << "      x: " << ad.wallpapers[0].focal_point.x << "\n"
-              << "      y: " << ad.wallpapers[0].focal_point.y);
+              << "  targetUrl: " << ad.target_url);
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdServedEvent(

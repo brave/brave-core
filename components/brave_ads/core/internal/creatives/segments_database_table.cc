@@ -89,8 +89,8 @@ void Segments::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 46: {
-      MigrateToV46(mojom_db_transaction);
+    case 47: {
+      MigrateToV47(mojom_db_transaction);
       break;
     }
 
@@ -103,7 +103,7 @@ void Segments::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Segments::MigrateToV46(
+void Segments::MigrateToV47(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 

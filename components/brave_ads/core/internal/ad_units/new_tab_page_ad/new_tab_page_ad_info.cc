@@ -22,8 +22,7 @@ NewTabPageAdInfo& NewTabPageAdInfo::operator=(
 NewTabPageAdInfo::~NewTabPageAdInfo() = default;
 
 bool NewTabPageAdInfo::IsValid() const {
-  return AdInfo::IsValid() && !company_name.empty() && image_url.is_valid() &&
-         !alt.empty() && !wallpapers.empty();
+  return AdInfo::IsValid() && !company_name.empty() && !alt.empty();
 }
 
 }  // namespace brave_ads
