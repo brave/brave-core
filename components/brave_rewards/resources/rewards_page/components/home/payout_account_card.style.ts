@@ -74,9 +74,11 @@ export const style = scoped.css`
     flex-direction: column;
     gap: 4px;
     font: ${font.heading.h3};
+    white-space: nowrap;
   }
 
   .account {
+    min-width: 0;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -86,6 +88,7 @@ export const style = scoped.css`
   }
 
   .account-drop-down {
+    max-width: 100%;
     display: flex;
     gap: 4px;
     align-items: center;
@@ -102,6 +105,12 @@ export const style = scoped.css`
       height: 16px;
       width: auto;
     }
+  }
+
+  .account-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .account-details {
