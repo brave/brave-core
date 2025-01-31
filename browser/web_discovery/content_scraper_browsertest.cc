@@ -164,7 +164,7 @@ class WebDiscoveryContentScraperTest : public PlatformBrowserTest {
 
     server_config_loader_->SetLastPatternsForTesting(std::move(patterns_group));
 
-    scraper_ = std::make_unique<ContentScraper>(server_config_loader_.get());
+    scraper_ = ContentScraper::Create(server_config_loader_.get());
   }
 
   content::ContentMockCertVerifier mock_cert_verifier_;

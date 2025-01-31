@@ -13,8 +13,6 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/values.h"
-#include "brave/components/web_discovery/browser/document_extractor/lib.rs.h"
-#include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/common/web_discovery.mojom.h"
 #include "url/gurl.h"
@@ -60,55 +58,22 @@ class ContentScraper {
   using PageScrapeResultCallback =
       base::OnceCallback<void(std::unique_ptr<PageScrapeResult>)>;
 
-  explicit ContentScraper(const ServerConfigLoader* server_config_loader);
-  ~ContentScraper();
+  static std::unique_ptr<ContentScraper> Create(
+      const ServerConfigLoader* server_config_loader);
 
-  ContentScraper(const ContentScraper&) = delete;
-  ContentScraper& operator=(const ContentScraper&) = delete;
+  virtual ~ContentScraper() = default;
 
   // For initial page scrape in renderer
-  void ScrapePage(const GURL& url,
-                  bool is_strict_scrape,
-                  mojom::DocumentExtractor* document_extractor,
-                  PageScrapeResultCallback callback);
-  // For subsequent double fetches after initial scrape
-  void ParseAndScrapePage(const GURL& url,
+  virtual void ScrapePage(const GURL& url,
                           bool is_strict_scrape,
-                          std::unique_ptr<PageScrapeResult> prev_result,
-                          std::string html,
-                          PageScrapeResultCallback callback);
-
- private:
-  void ProcessStandardRule(const std::string& report_key,
-                           const ScrapeRule& rule,
-                           const std::string& root_selector,
-                           const GURL& url,
-                           PageScrapeResult* scrape_result);
-  void OnScrapedElementAttributes(
-      bool is_strict_scrape,
-      std::unique_ptr<PageScrapeResult> scrape_result,
-      PageScrapeResultCallback callback,
-      std::vector<mojom::AttributeResultPtr> attribute_results);
-  void OnRustElementAttributes(
-      bool is_strict_scrape,
-      std::unique_ptr<PageScrapeResult> scrape_result,
-      PageScrapeResultCallback callback,
-      rust::Vec<rust_document_extractor::AttributeResult> attribute_results);
-
-  std::optional<std::string> ExecuteRefineFunctions(
-      const RefineFunctionList& function_list,
-      std::string value);
-  void ProcessAttributeValue(const ScrapeRuleGroup& rule_group,
-                             PageScrapeResult& scrape_result,
-                             std::string key,
-                             std::optional<std::string> value_str,
-                             base::Value::Dict& attribute_values);
-
-  scoped_refptr<base::SequencedTaskRunner> sequenced_task_runner_;
-
-  raw_ptr<const ServerConfigLoader> server_config_loader_;
-
-  base::WeakPtrFactory<ContentScraper> weak_ptr_factory_{this};
+                          mojom::DocumentExtractor* document_extractor,
+                          PageScrapeResultCallback callback) = 0;
+  // For subsequent double fetches after initial scrape
+  virtual void ParseAndScrapePage(const GURL& url,
+                                  bool is_strict_scrape,
+                                  std::unique_ptr<PageScrapeResult> prev_result,
+                                  std::string html,
+                                  PageScrapeResultCallback callback) = 0;
 };
 
 }  // namespace web_discovery
