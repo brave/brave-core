@@ -545,7 +545,7 @@ class VerticalTabStripRegionView::HeaderView : public views::View {
       RemoveChildView(children().front());
     }
 
-    base::ranges::for_each(new_children, [&](auto* v) { AddChildView(v); });
+    std::ranges::for_each(new_children, [&](auto* v) { AddChildView(v); });
     layout_->SetFlexForView(spacer_,
                             1 /* resize |spacer| to fill the rest of space */);
   }
@@ -697,9 +697,9 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
 
   // At this point, Browser hasn't finished its initialization. In order to
   // access some of its member, we should observe BrowserList.
-  DCHECK(base::ranges::find(*BrowserList::GetInstance(),
-                            browser_view->browser()) ==
-         BrowserList::GetInstance()->end())
+  DCHECK(
+      std::ranges::find(*BrowserList::GetInstance(), browser_view->browser()) ==
+      BrowserList::GetInstance()->end())
       << "Browser shouldn't be added at this point.";
   BrowserList::AddObserver(this);
 

@@ -5,12 +5,12 @@
 
 #include <algorithm>
 
+#include "base/containers/adapters.h"
+
 #define GetSearchProvidersUsingKeywordResult \
   GetSearchProvidersUsingKeywordResult_ChromiumImpl
 #include "src/components/search_engines/util.cc"
 #undef GetSearchProvidersUsingKeywordResult
-
-#include "base/containers/adapters.h"
 
 void GetSearchProvidersUsingKeywordResult(
     const WDKeywordsResult& result,

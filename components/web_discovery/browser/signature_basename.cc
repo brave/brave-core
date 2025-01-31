@@ -5,6 +5,7 @@
 
 #include "brave/components/web_discovery/browser/signature_basename.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
