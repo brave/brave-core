@@ -103,7 +103,9 @@ export function PayoutAccountCard() {
             <span className='provider-icon'>
               <WalletProviderIcon provider={externalWallet.provider} />
             </span>
-            <span>{externalWallet.name}</span>
+            <span className='account-name'>
+              {externalWallet.name || providerName}
+            </span>
             <Icon name='arrow-small-down' />
           </button>
           {renderAccountDetails()}

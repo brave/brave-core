@@ -15,7 +15,7 @@ export const style = scoped.css`
     font: ${font.default.regular};
 
     @container style(--is-wide-view) {
-      max-width: 600px;
+      width: 530px;
     }
   }
 
