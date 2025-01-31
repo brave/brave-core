@@ -117,8 +117,8 @@ void FullPageStrategy::SendDevToolsCommand(const std::string& command,
 
   std::string json;
   base::JSONWriter::Write(message, &json);
-  devtools_host_->DispatchProtocolMessage(
-      this, base::as_bytes(base::make_span(json)));
+  devtools_host_->DispatchProtocolMessage(this,
+                                          base::as_bytes(base::span(json)));
 }
 
 // DevToolsAgentHostClient overrides
@@ -165,7 +165,7 @@ void FullPageStrategy::DispatchProtocolMessage(
 
     DVLOG(2) << "Creating image from PNG";
     result.image = gfx::Image::CreateFrom1xPNGBytes(
-        base::as_bytes(base::make_span(decoded_png)));
+        base::as_bytes(base::span(decoded_png)));
 
     RunCallback(result);
     return;
