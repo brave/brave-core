@@ -185,6 +185,15 @@ extension URL {
 
     return renderedString.bidiBaseDirection == .leftToRight
   }
+
+  /// Matches what `window.origin` would return in javascript.
+  public var windowOriginURL: URL {
+    var components = URLComponents()
+    components.scheme = self.scheme
+    components.port = self.port
+    components.host = self.host
+    return components.url ?? self
+  }
 }
 
 extension InternalURL {
