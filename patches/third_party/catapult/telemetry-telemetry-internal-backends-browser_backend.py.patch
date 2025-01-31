@@ -1,0 +1,9 @@
+diff --git a/telemetry/telemetry/internal/backends/browser_backend.py b/telemetry/telemetry/internal/backends/browser_backend.py
+index 58617505db871c3ed5ab9fd43a75a97b531ef4ef..82d813e09ac7fd4b31f88814cfe544e8115edc16 100644
+--- a/telemetry/telemetry/internal/backends/browser_backend.py
++++ b/telemetry/telemetry/internal/backends/browser_backend.py
+@@ -629,3 +629,4 @@ def _GetWindowsStackSummary(symbolized_minidump):
+     logging.info('Unable to parse any call sites')
+     return None
+   return call_sites
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
