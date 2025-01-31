@@ -532,10 +532,12 @@
 -ZoomControllerForPrerenderingTest.*
 
 # These tests fail because we intentionally disable trust tokens via
-# network::features::kPrivateStateTokens
+# disabling PrivateStateTokens runtime feature in blink and disabling the
+# installation of Trust Tokens component.
 -All/BrowsingDataModelBrowserTest.FederatedIdentityHandledCorrectly/*
 -All/BrowsingDataModelBrowserTest.TrustTokenIssuance/*
 -BrowsingDataModelBrowserTest.TrustTokenIssuance
+-TrustTokenUseCountersBrowsertest.*
 
 # These tests fail because we disable Browsing Topics (and Trust Tokens, and
 # Fledge, and Interest Groups, etc.)
