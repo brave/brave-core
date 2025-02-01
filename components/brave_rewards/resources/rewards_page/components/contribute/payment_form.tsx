@@ -165,7 +165,13 @@ export function PaymentForm(props: Props) {
                 ])
               }
             </h4>
-            <p>{getString('contributeLoggedOutText')}</p>
+            <p>
+              {
+                formatMessage(getString('contributeLoggedOutText'), [
+                  providerName
+                ])
+              }
+            </p>
             {web3URL && <p>{getString('contributeLoggedOutWeb3Text')}</p>}
           </div>
         </div>
