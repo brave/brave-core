@@ -957,6 +957,16 @@ const util = {
     }
     return false
   },
+
+  updateBraveToolsCrates: (options = {}) => {
+    args = [path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py')]
+
+    if (options.crate_path) {
+      args.push('--crate_path=' + options.crate_path)
+    }
+
+    util.run('python3', args, config.defaultOptions)
+  },
 }
 
 module.exports = util
