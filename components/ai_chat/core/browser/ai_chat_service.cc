@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 
+#include <algorithm>
 #include <array>
 #include <compare>
 #include <functional>
@@ -24,7 +25,6 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/numerics/clamped_math.h"
-#include "base/ranges/algorithm.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -72,8 +72,8 @@ std::vector<mojom::Conversation*> FilterVisibleConversations(
     }
     conversations.push_back(conversation.get());
   }
-  base::ranges::sort(conversations, std::greater<>(),
-                     &mojom::Conversation::updated_time);
+  std::ranges::sort(conversations, std::greater<>(),
+                    &mojom::Conversation::updated_time);
   return conversations;
 }
 

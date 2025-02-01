@@ -5,11 +5,11 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_impl_android.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 #include <vector>
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
@@ -25,7 +25,7 @@ namespace brave_wallet {
 namespace {
 content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
   auto tab_models = TabModelList::models();
-  auto iter = base::ranges::find_if(
+  auto iter = std::ranges::find_if(
       tab_models, [](const auto& model) { return model->IsActiveModel(); });
   if (iter == tab_models.end()) {
     return nullptr;

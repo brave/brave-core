@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_rewards/content/rewards_protocol_navigation_throttle.h"
 
+#include <algorithm>
 #include <map>
 #include <string>
 #include <string_view>
 #include <vector>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/escape.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
@@ -87,7 +87,7 @@ bool IsValidWalletProviderRedirect(
     wallet_provider = redirect_path_segments[0];
   }
 
-  if (base::ranges::none_of(
+  if (std::ranges::none_of(
           allowed_referrer_urls.contains(wallet_provider)
               ? allowed_referrer_urls.at(wallet_provider)
               : std::vector<GURL>{},
@@ -136,7 +136,7 @@ void MaybeLoadRewardsURL(const GURL& redirect_url, WebContents* web_contents) {
           GURL(BUILDFLAG(ZEBPAY_SANDBOX_OAUTH_URL))}}};
 
     for (const auto& [wallet_provider, urls] : allowed_urls) {
-      DCHECK(base::ranges::none_of(
+      DCHECK(std::ranges::none_of(
           urls,
           [](const GURL& url) { return !url.is_valid() || !url.has_host(); }))
           << wallet_provider << " has malformed referrer URL(s)!";

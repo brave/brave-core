@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_handler.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/ptr_util.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"

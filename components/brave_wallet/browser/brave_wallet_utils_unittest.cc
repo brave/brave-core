@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <set>
@@ -331,7 +332,7 @@ TEST(BraveWalletUtilsUnitTest, GenerateRandomHexString) {
   for (int i = 0; i < 1000; ++i) {
     auto random_string = GenerateRandomHexString();
     EXPECT_EQ(64u, random_string.size());
-    EXPECT_TRUE(base::ranges::all_of(random_string, base::IsHexDigit<char>));
+    EXPECT_TRUE(std::ranges::all_of(random_string, base::IsHexDigit<char>));
     EXPECT_FALSE(base::Contains(strings, random_string));
     strings.insert(random_string);
   }
@@ -448,7 +449,7 @@ TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
   auto assets = GetAllUserAssets(&prefs);
 
   {
-    const auto count = base::ranges::count_if(
+    const auto count = std::ranges::count_if(
         assets, [](const mojom::BlockchainTokenPtr& item) {
           return item->is_shielded == true &&
                  item->coin == mojom::CoinType::ZEC;
@@ -458,7 +459,7 @@ TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureEnabled) {
   }
 
   {
-    const auto count = base::ranges::count_if(
+    const auto count = std::ranges::count_if(
         assets, [](const mojom::BlockchainTokenPtr& item) {
           return item->is_shielded == false &&
                  item->coin == mojom::CoinType::ZEC;
@@ -480,7 +481,7 @@ TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureDisabled) {
   auto assets = GetAllUserAssets(&prefs);
 
   {
-    const auto count = base::ranges::count_if(
+    const auto count = std::ranges::count_if(
         assets, [](const mojom::BlockchainTokenPtr& item) {
           return item->is_shielded == true &&
                  item->coin == mojom::CoinType::ZEC;
@@ -490,7 +491,7 @@ TEST(BraveWalletUtilsUnitTest, DefaultZCashShieldedAssets_FeatureDisabled) {
   }
 
   {
-    const auto count = base::ranges::count_if(
+    const auto count = std::ranges::count_if(
         assets, [](const mojom::BlockchainTokenPtr& item) {
           return item->is_shielded == false &&
                  item->coin == mojom::CoinType::ZEC;

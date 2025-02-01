@@ -5,6 +5,7 @@
 
 #include "brave/components/web_discovery/browser/reporter.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/containers/span_writer.h"
@@ -121,8 +122,8 @@ std::optional<AESEncryptResult> CompressAndEncrypt(
             << kMaxCompressedMessageSize << " bytes";
     return std::nullopt;
   }
-  base::ranges::copy(base::U16ToBigEndian(compressed_data_size),
-                     compressed_data.data());
+  std::ranges::copy(base::U16ToBigEndian(compressed_data_size),
+                    compressed_data.data());
   compressed_data[0] |= kCompressedMessageId;
   return DeriveAESKeyAndEncrypt(server_pub_key, compressed_data);
 }

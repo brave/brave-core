@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -136,7 +136,7 @@ TEST(EthAbiUtilsTest, ExtractFunctionSelectorAndArgsFromCall) {
     // Only selector.
     std::vector<uint8_t> bytes = {0x01, 0x02, 0x03, 0x04};
     auto [selector, args] = *ExtractFunctionSelectorAndArgsFromCall(bytes);
-    EXPECT_TRUE(base::ranges::equal(bytes, selector));
+    EXPECT_TRUE(std::ranges::equal(bytes, selector));
     EXPECT_TRUE(args.empty());
   }
 

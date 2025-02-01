@@ -5,11 +5,11 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
 #include "base/logging.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"

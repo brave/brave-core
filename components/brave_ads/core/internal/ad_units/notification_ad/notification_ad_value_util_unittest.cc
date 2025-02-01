@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 
+#include <algorithm>
+
 #include "base/containers/circular_deque.h"
-#include "base/ranges/algorithm.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
@@ -126,7 +127,7 @@ TEST_F(BraveAdsNotificationAdValueUtilTest, NotificationAdsFromValue) {
   const NotificationAdInfo ad =
       BuildNotificationAd(creative_ad, test::kPlacementId);
   const base::circular_deque<NotificationAdInfo> expected_ads = {ad, ad};
-  EXPECT_TRUE(base::ranges::equal(expected_ads, ads));
+  EXPECT_TRUE(std::ranges::equal(expected_ads, ads));
 }
 
 }  // namespace brave_ads

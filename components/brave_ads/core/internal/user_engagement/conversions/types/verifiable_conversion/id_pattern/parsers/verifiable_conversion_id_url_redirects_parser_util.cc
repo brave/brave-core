@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/id_pattern/parsers/verifiable_conversion_id_url_redirects_parser_util.h"
 
+#include <algorithm>
 #include <string_view>
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_info.h"
@@ -19,7 +19,7 @@ namespace brave_ads {
 std::optional<std::string> MaybeParseVerifableConversionIdFromUrlRedirects(
     const std::vector<GURL>& redirect_chain,
     const ConversionResourceIdPatternInfo& resource_id_pattern) {
-  const auto iter = base::ranges::find_if(
+  const auto iter = std::ranges::find_if(
       redirect_chain, [&resource_id_pattern](const GURL& url) {
         return MatchUrlPattern(url, resource_id_pattern.url_pattern);
       });

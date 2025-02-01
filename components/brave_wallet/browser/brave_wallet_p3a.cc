@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <utility>
@@ -13,7 +14,6 @@
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -153,7 +153,7 @@ void BraveWalletP3A::ReportJSProvider(mojom::JSProviderType provider_type,
   }
 
   JSProviderAnswer answer = JSProviderAnswer::kNoWallet;
-  bool is_wallet_setup = base::ranges::any_of(
+  bool is_wallet_setup = std::ranges::any_of(
       keyring_service_->GetAllAccountInfos(), [coin_type](auto& account) {
         return account->account_id->coin == coin_type;
       });

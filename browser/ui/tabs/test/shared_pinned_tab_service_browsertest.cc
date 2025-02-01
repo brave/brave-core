@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 
+#include <algorithm>
 #include <memory>
 
 #include "base/functional/bind.h"

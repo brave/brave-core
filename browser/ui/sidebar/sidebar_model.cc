@@ -5,12 +5,12 @@
 
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <utility>
 
 #include "base/logging.h"
-#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -200,7 +200,7 @@ bool SidebarModel::IsSidebarHasAllBuiltInItems() const {
 
 std::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
   const auto items = GetAllSidebarItems();
-  const auto iter = base::ranges::find_if(items, [&item](const auto& i) {
+  const auto iter = std::ranges::find_if(items, [&item](const auto& i) {
     return (item.built_in_item_type == i.built_in_item_type &&
             item.url == i.url);
   });
@@ -213,7 +213,7 @@ std::optional<size_t> SidebarModel::GetIndexOf(const SidebarItem& item) const {
 std::optional<size_t> SidebarModel::GetIndexOf(
     SidebarItem::BuiltInItemType type) const {
   const auto items = GetAllSidebarItems();
-  const auto iter = base::ranges::find_if(items, [&type](const auto& i) {
+  const auto iter = std::ranges::find_if(items, [&type](const auto& i) {
     return IsBuiltInType(i) && (type == i.built_in_item_type);
   });
   if (iter == items.end()) {

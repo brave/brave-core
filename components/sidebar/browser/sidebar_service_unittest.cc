@@ -5,6 +5,7 @@
 
 #include "brave/components/sidebar/browser/sidebar_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <string_view>
@@ -12,7 +13,6 @@
 
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
-#include "base/ranges/algorithm.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
@@ -466,7 +466,7 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   // Have prefs which contain a custom item and hides 1 built-in item
   {
     base::Value::List list;
-    base::ranges::for_each(hidden_builtin_types, [&list](const auto& item) {
+    std::ranges::for_each(hidden_builtin_types, [&list](const auto& item) {
       list.Append(static_cast<int>(item));
     });
     prefs_.SetList(sidebar::kSidebarHiddenBuiltInItems, std::move(list));
@@ -494,7 +494,7 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   // All other default items should be present even though not present
   // in kSidebarItems pref.
   std::vector<SidebarItem::BuiltInItemType> default_items;
-  base::ranges::copy_if(
+  std::ranges::copy_if(
       kDefaultBuiltInItemTypesForTest, std::back_inserter(default_items),
       [&hidden_builtin_types](const auto& built_in_type) {
         if (base::Contains(hidden_builtin_types, built_in_type)) {
@@ -528,19 +528,19 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   // Get expected indexes (excluding the hidden items).
   const auto custom_item_index = std::distance(
       items.begin(),
-      base::ranges::find(items, SidebarItem::BuiltInItemType::kNone,
-                         &SidebarItem::built_in_item_type));
+      std::ranges::find(items, SidebarItem::BuiltInItemType::kNone,
+                        &SidebarItem::built_in_item_type));
 
   for (auto built_in_type : default_items) {
     auto expected_index =
         std::distance(std::begin(default_items),
-                      base::ranges::find(default_items, built_in_type));
+                      std::ranges::find(default_items, built_in_type));
     if (expected_index >= custom_item_index) {
       expected_index++;
     }
 
-    auto iter = base::ranges::find(items, built_in_type,
-                                   &SidebarItem::built_in_item_type);
+    auto iter = std::ranges::find(items, built_in_type,
+                                  &SidebarItem::built_in_item_type);
     EXPECT_NE(iter, items.end());
     auto actual_index = std::distance(items.begin(), iter);
 
@@ -584,8 +584,8 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
   EXPECT_EQ(GetDefaultItemCount() - 2UL, service_->items().size());
   auto items = service_->items();
   auto talk_iter =
-      base::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
-                         &SidebarItem::built_in_item_type);
+      std::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
+                        &SidebarItem::built_in_item_type);
   EXPECT_NE(talk_iter, items.end());
   EXPECT_TRUE(base::Contains(items, SidebarItem::BuiltInItemType::kReadingList,
                              &SidebarItem::built_in_item_type));
@@ -680,8 +680,8 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
   // index.
   auto items = service_->items();
   auto iter =
-      base::ranges::find(items, SidebarItem::BuiltInItemType::kReadingList,
-                         &SidebarItem::built_in_item_type);
+      std::ranges::find(items, SidebarItem::BuiltInItemType::kReadingList,
+                        &SidebarItem::built_in_item_type);
   auto index = iter - items.begin();
   EXPECT_EQ(4, index);
 }
@@ -915,7 +915,7 @@ class SidebarServiceTestWithPlaylist : public SidebarServiceTest {
 
   bool SidebarHasDefaultPanelItem() const {
     const auto items = service_->items();
-    auto iter = base::ranges::find_if(items, [](const SidebarItem& item) {
+    auto iter = std::ranges::find_if(items, [](const SidebarItem& item) {
       return item.type == SidebarItem::Type::kTypeBuiltIn && item.open_in_panel;
     });
     return iter != items.end();
@@ -923,7 +923,7 @@ class SidebarServiceTestWithPlaylist : public SidebarServiceTest {
 
   void RemoveAnySidebarPanelItem() {
     const auto items = service_->items();
-    auto iter = base::ranges::find_if(items, [](const SidebarItem& item) {
+    auto iter = std::ranges::find_if(items, [](const SidebarItem& item) {
       return item.type == SidebarItem::Type::kTypeBuiltIn && item.open_in_panel;
     });
     if (iter == items.end()) {
@@ -971,7 +971,7 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
     size_t srv_items_index = 0, dbt_index = 0;
     const auto default_btin_types_count = defined_order.size();
     std::vector<SidebarItem> only_builtin_types;
-    base::ranges::copy_if(
+    std::ranges::copy_if(
         service_->items(), std::back_inserter(only_builtin_types),
         [](const SidebarItem& item) {
           return item.built_in_item_type != SidebarItem::BuiltInItemType::kNone;

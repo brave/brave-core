@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/reconciled_transactions_util.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
@@ -16,7 +17,7 @@ namespace {
 bool HasReconciledTransactionsForDateRange(const TransactionList& transactions,
                                            base::Time from_time,
                                            base::Time to_time) {
-  return base::ranges::any_of(
+  return std::ranges::any_of(
       transactions, [from_time, to_time](const TransactionInfo& transaction) {
         return DidReconcileTransactionWithinDateRange(transaction, from_time,
                                                       to_time);

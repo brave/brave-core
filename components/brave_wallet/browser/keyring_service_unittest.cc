@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 
+#include <algorithm>
 #include <optional>
 #include <string_view>
 #include <utility>
@@ -13,7 +14,6 @@
 #include "base/containers/span.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback_helpers.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -452,11 +452,11 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   mojom::AccountInfoPtr FirstSolAccount(KeyringService* service) {
-    return base::ranges::find_if(service->GetAllAccountsSync()->accounts,
-                                 [](auto& acc) {
-                                   return acc->account_id->coin ==
-                                          mojom::CoinType::SOL;
-                                 })
+    return std::ranges::find_if(service->GetAllAccountsSync()->accounts,
+                                [](auto& acc) {
+                                  return acc->account_id->coin ==
+                                         mojom::CoinType::SOL;
+                                })
         ->Clone();
   }
 
@@ -1554,8 +1554,8 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   };
 
   std::vector<mojom::HardwareWalletAccountPtr> accounts;
-  base::ranges::transform(new_accounts, std::back_inserter(accounts),
-                          [](const auto& account) { return account.Clone(); });
+  std::ranges::transform(new_accounts, std::back_inserter(accounts),
+                         [](const auto& account) { return account.Clone(); });
 
   EXPECT_CALL(observer, AccountsChanged()).Times(0);
   EXPECT_TRUE(service.AddHardwareAccountsSync(new_accounts_func()).empty());

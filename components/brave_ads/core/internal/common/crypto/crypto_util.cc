@@ -9,11 +9,11 @@
 #include <openssl/hkdf.h>
 #include <openssl/sha.h>
 
+#include <algorithm>
 #include <cstdint>
 #include <iterator>
 
 #include "base/base64.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 #include "crypto/random.h"
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
@@ -168,9 +168,9 @@ std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
                   nonce.data(), public_key.data(), secret_key.data());
 
   std::vector<uint8_t> plaintext;
-  base::ranges::copy_n(padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
-                       padded_plaintext.size() - crypto_box_ZEROBYTES,
-                       std::back_inserter(plaintext));
+  std::ranges::copy_n(padded_plaintext.cbegin() + crypto_box_ZEROBYTES,
+                      padded_plaintext.size() - crypto_box_ZEROBYTES,
+                      std::back_inserter(plaintext));
   return plaintext;
 }
 

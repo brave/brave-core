@@ -11,6 +11,7 @@
 #include <windows.media.ocr.h>
 #include <wrl/client.h>
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -200,7 +201,7 @@ std::vector<std::string> GetAvailableRecognizerLanguages() {
     std::string default_language_code =
         brave_l10n::GetISOLanguageCode(base::WideToUTF8(name));
     // Try to locate default language at 0.
-    const auto iter = base::ranges::find(language_codes, default_language_code);
+    const auto iter = std::ranges::find(language_codes, default_language_code);
     if (iter != language_codes.begin() && iter != language_codes.end()) {
       std::iter_swap(language_codes.begin(), iter);
     }
