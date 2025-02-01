@@ -48,8 +48,7 @@ base::Value::Dict BraveNTPCustomBackgroundService::GetBackground() const {
   base::Value::Dict data;
   data.Set(kIsBackgroundKey, true);
   if (delegate_->IsCustomImageBackgroundEnabled()) {
-    data.Set(kWallpaperImageURLKey,
-             delegate_->GetCustomBackgroundImageURL().spec());
+    data.Set(kWallpaperURLKey, delegate_->GetCustomBackgroundImageURL().spec());
     data.Set(kWallpaperTypeKey, "image");
     data.Set(kWallpaperRandomKey, delegate_->ShouldUseRandomValue());
   } else if (delegate_->IsColorBackgroundEnabled()) {

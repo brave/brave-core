@@ -14,13 +14,12 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/export.h"
 #include "sql/database.h"
 #include "sql/meta_table.h"
 
 namespace brave_ads {
 
-class ADS_EXPORT Database final {
+class Database final {
  public:
   explicit Database(base::FilePath path);
 

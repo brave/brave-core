@@ -347,8 +347,8 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   const std::string wallpaper_image_url =
       url_prefix + background_file_path.BaseName().AsUTF8Unsafe();
 
-  data.Set(kWallpaperImageURLKey, wallpaper_image_url);
-  data.Set(kWallpaperImagePathKey, background_file_path.AsUTF8Unsafe());
+  data.Set(kWallpaperURLKey, wallpaper_image_url);
+  data.Set(kWallpaperFilePathKey, background_file_path.AsUTF8Unsafe());
   data.Set(kWallpaperFocalPointXKey,
            campaign.backgrounds[background_index].focal_point.x());
   data.Set(kWallpaperFocalPointYKey,

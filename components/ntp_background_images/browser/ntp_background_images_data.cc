@@ -110,10 +110,9 @@ base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   const std::string wallpaper_image_url =
       url_prefix + backgrounds[index].image_file.BaseName().AsUTF8Unsafe();
   // URL is used by NTP WebUI.
-  data.Set(kWallpaperImageURLKey, wallpaper_image_url);
+  data.Set(kWallpaperURLKey, wallpaper_image_url);
   // Path is used by android NTP.
-  data.Set(kWallpaperImagePathKey,
-           backgrounds[index].image_file.AsUTF8Unsafe());
+  data.Set(kWallpaperFilePathKey, backgrounds[index].image_file.AsUTF8Unsafe());
 
   data.Set(kIsBackgroundKey, true);
   data.Set(kImageAuthorKey, backgrounds[index].author);
