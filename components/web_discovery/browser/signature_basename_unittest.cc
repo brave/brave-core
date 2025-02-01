@@ -79,11 +79,10 @@ class WebDiscoverySignatureBasenameTest : public testing::Test {
   void SetUp() override {
     WebDiscoveryService::RegisterProfilePrefs(profile_prefs_.registry());
 
-    base::Time future_mock_time;
     // Set to fixed date to avoid timing related issues i.e. DST
-    CHECK(base::Time::FromString("2050-01-04", &future_mock_time));
-    task_environment_.AdvanceClock(future_mock_time.UTCMidnight() -
-                                   base::Hours(6) - base::Time::Now());
+    auto now = base::Time::Now();
+    task_environment_.AdvanceClock((now + base::Days(7)).UTCMidnight() -
+                                   base::Hours(6) - now);
 
     auto action_config = std::make_unique<SourceMapActionConfig>();
     action_config->keys.push_back("q->url");

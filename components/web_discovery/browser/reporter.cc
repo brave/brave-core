@@ -58,7 +58,16 @@ constexpr size_t kMaxRetries = 10;
 constexpr char kTypeField[] = "type";
 constexpr char kWdpType[] = "wdp";
 constexpr char kChannelField[] = "channel";
-constexpr char kBraveChannel[] = "brave";
+
+constexpr char kBraveChannel[] =
+#if BUILDFLAG(IS_ANDROID)
+    "brave-native-android";
+#elif BUILDFLAG(IS_IOS)
+    "brave-native-ios";
+#else
+    "brave-native-desktop";
+#endif
+
 constexpr char kReporterVersionField[] = "ver";
 constexpr char kCurrentReporterVersion[] = "1.0";
 constexpr char kAntiDuplicatesField[] = "anti-duplicates";
