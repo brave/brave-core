@@ -5,6 +5,7 @@
     "profile": "brave-typical-mac",
     "extra-browser-args": [
       "--disable-features=CalculateNativeWinOcclusion",
+      "--disable-backgrounding-occluded-windows",
     ],
     "extra-benchmark-args": [
       "--also-run-disabled-tests"
