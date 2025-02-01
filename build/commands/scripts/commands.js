@@ -301,4 +301,9 @@ program
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program
+  .command('update_brave_tools_crates')
+  .option('--crate <crate>', 'The crate to be updated (its relative path to brave/tools/crates).')
+  .action(util.updateBraveToolsCrates)
+
+program
   .parse(process.argv)
