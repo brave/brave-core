@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/statement_util.h"
 
+#include <algorithm>
 #include <iterator>
 
-#include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ads_received_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ads_summary_util.h"
@@ -26,11 +26,11 @@ namespace {
 TransactionList FilterTransactionsForEstimatedEarnings(
     const TransactionList& transactions) {
   TransactionList filtered_transactions;
-  base::ranges::copy_if(transactions, std::back_inserter(filtered_transactions),
-                        [](const TransactionInfo& transaction) {
-                          return transaction.ad_type !=
-                                 mojom::AdType::kNewTabPageAd;
-                        });
+  std::ranges::copy_if(transactions, std::back_inserter(filtered_transactions),
+                       [](const TransactionInfo& transaction) {
+                         return transaction.ad_type !=
+                                mojom::AdType::kNewTabPageAd;
+                       });
   return filtered_transactions;
 }
 

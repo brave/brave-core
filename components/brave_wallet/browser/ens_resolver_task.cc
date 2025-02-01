@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -13,7 +14,6 @@
 #include "base/containers/contains.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"

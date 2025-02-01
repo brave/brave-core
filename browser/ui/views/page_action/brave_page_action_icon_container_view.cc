@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/page_action/brave_page_action_icon_container_view.h"
 
+#include <algorithm>
+
 #include "base/check_is_test.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/components/playlist/common/features.h"
@@ -34,7 +36,7 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   }
 
   params.types_enabled.insert(
-      base::ranges::find(params.types_enabled, PageActionIconType::kSharingHub),
+      std::ranges::find(params.types_enabled, PageActionIconType::kSharingHub),
       brave::kWaybackMachineActionIconType);
 
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
@@ -44,8 +46,8 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
         !params.browser->profile()->IsOffTheRecord()) {
       // Insert Playlist action before sharing hub or at the end of the vector.
       params.types_enabled.insert(
-          base::ranges::find(params.types_enabled,
-                             PageActionIconType::kSharingHub),
+          std::ranges::find(params.types_enabled,
+                            PageActionIconType::kSharingHub),
           brave::kPlaylistPageActionIconType);
     }
   }
@@ -54,7 +56,7 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   if (base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature)) {
     if (params.browser) {
       params.types_enabled.insert(
-          base::ranges::find(
+          std::ranges::find(
               params.types_enabled,
               PageActionIconType::kCookieControls),  // The place where
                                                      // kReaderMode was.

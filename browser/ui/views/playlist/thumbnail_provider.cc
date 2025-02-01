@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/playlist/thumbnail_provider.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 
@@ -118,7 +119,7 @@ void ThumbnailProvider::GetThumbnail(
   }
 
   // Else, find the first cached thumbnail.
-  auto iter = base::ranges::find_if(list->items, &IsItemThumbnailCached);
+  auto iter = std::ranges::find_if(list->items, &IsItemThumbnailCached);
   if (iter == list->items.end()) {
     std::move(callback).Run({});
     return;

@@ -5,9 +5,9 @@
 
 #include "components/update_client/update_checker.h"
 
+#include <algorithm>
 #include <optional>
 
-#include "base/ranges/algorithm.h"
 #include "components/update_client/update_client.h"
 
 #include "src/components/update_client/update_checker.cc"
@@ -55,7 +55,7 @@ void SequentialUpdateChecker::CheckForUpdates(
   // `components_to_check_for_updates` doesn't matter to the caller, as
   // post-update mapping is done via an Id->Component map, making this
   // rearrangement safe.
-  base::ranges::stable_partition(
+  std::ranges::stable_partition(
       update_context_->components_to_check_for_updates,
       [&](const std::string& id) {
         return IsBraveComponent(update_context_->components[id].get());

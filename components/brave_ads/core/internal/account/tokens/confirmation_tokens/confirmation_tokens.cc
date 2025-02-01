@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "base/check_op.h"
 #include "base/containers/contains.h"
-#include "base/ranges/algorithm.h"
 
 namespace brave_ads {
 
@@ -44,8 +44,7 @@ void ConfirmationTokens::Add(const ConfirmationTokenList& confirmation_tokens) {
 
 bool ConfirmationTokens::Remove(
     const ConfirmationTokenInfo& confirmation_token) {
-  const auto iter =
-      base::ranges::find(confirmation_tokens_, confirmation_token);
+  const auto iter = std::ranges::find(confirmation_tokens_, confirmation_token);
   if (iter == confirmation_tokens_.cend()) {
     return false;
   }

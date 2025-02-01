@@ -10,6 +10,7 @@
 
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
 
+#include <algorithm>
 #include <string_view>
 #include <vector>
 
@@ -1987,10 +1988,10 @@ bool AllowFontByFamilyName(const AtomicString& family_name,
     return true;
   }
   std::string lower_ascii_name = family_name.LowerASCII().Ascii();
-  if (base::ranges::binary_search(fontWhitelist, lower_ascii_name)) {
+  if (std::ranges::binary_search(fontWhitelist, lower_ascii_name)) {
     return true;
   }
-  if (base::ranges::binary_search(
+  if (std::ranges::binary_search(
           GetAdditionalFontWhitelistByLocale(default_language),
           lower_ascii_name)) {
     return true;

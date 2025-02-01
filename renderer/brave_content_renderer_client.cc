@@ -5,10 +5,10 @@
 
 #include "brave/renderer/brave_content_renderer_client.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/feature_list.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"

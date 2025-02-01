@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -92,7 +94,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfileTest, SidebarCheck) {
   auto* sidebar_model =
       static_cast<BraveBrowser*>(browser_)->sidebar_controller()->model();
 
-  bool is_in_sidebar = base::ranges::any_of(
+  bool is_in_sidebar = std::ranges::any_of(
       sidebar_model->GetAllSidebarItems(), [](const auto& item) {
         return item.built_in_item_type ==
                sidebar::SidebarItem::BuiltInItemType::kChatUI;
@@ -112,7 +114,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfileTest, Autocomplete) {
                                       ->autocomplete_controller();
   const auto& providers = autocomplete_controller->providers();
   bool is_in_providers =
-      base::ranges::any_of(providers, [](const auto& provider) {
+      std::ranges::any_of(providers, [](const auto& provider) {
         return provider->type() == AutocompleteProvider::TYPE_BRAVE_LEO;
       });
   if (IsAIChatEnabled()) {

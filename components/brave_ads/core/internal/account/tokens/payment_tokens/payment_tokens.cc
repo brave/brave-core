@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "base/check_op.h"
 #include "base/containers/contains.h"
-#include "base/ranges/algorithm.h"
 
 namespace brave_ads {
 
@@ -42,7 +42,7 @@ void PaymentTokens::AddTokens(const PaymentTokenList& payment_tokens) {
 }
 
 bool PaymentTokens::RemoveToken(const PaymentTokenInfo& payment_token) {
-  const auto iter = base::ranges::find(payment_tokens_, payment_token);
+  const auto iter = std::ranges::find(payment_tokens_, payment_token);
   if (iter == payment_tokens_.cend()) {
     return false;
   }

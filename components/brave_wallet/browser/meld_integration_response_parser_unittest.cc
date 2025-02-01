@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <memory>
 #include <string>
@@ -45,7 +46,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
   auto service_providers = ParseServiceProviders(ParseJson(json));
   EXPECT_TRUE(service_providers);
   EXPECT_EQ(
-      base::ranges::count_if(
+      std::ranges::count_if(
           *service_providers,
           [](const auto& item) {
             return item->name == "Banxa" && item->service_provider == "BANXA" &&
@@ -82,7 +83,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_ServiceProvider) {
   service_providers = ParseServiceProviders(ParseJson(json_null_logos));
   EXPECT_TRUE(service_providers);
   EXPECT_EQ(
-      base::ranges::count_if(
+      std::ranges::count_if(
           *service_providers,
           [](const auto& item) {
             return item->name == "Banxa" && item->service_provider == "BANXA" &&
@@ -198,7 +199,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoQuotes) {
 
   auto quotes_result = ParseCryptoQuotes(ParseJson(json));
   EXPECT_TRUE(quotes_result.has_value());
-  EXPECT_EQ(base::ranges::count_if(
+  EXPECT_EQ(std::ranges::count_if(
                 quotes_result.value(),
                 [](const auto& item) {
                   return item->transaction_type == "CRYPTO_PURCHASE" &&
@@ -252,7 +253,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
 
   auto payment_methods = ParsePaymentMethods(ParseJson(json));
   EXPECT_TRUE(payment_methods);
-  EXPECT_EQ(base::ranges::count_if(
+  EXPECT_EQ(std::ranges::count_if(
                 *payment_methods,
                 [](const auto& item) {
                   return item->payment_method == "ACH" && item->name == "ACH" &&
@@ -280,7 +281,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_PaymentMethods) {
   ])");
   payment_methods = ParsePaymentMethods(ParseJson(json_null_dark_logo));
   EXPECT_TRUE(payment_methods);
-  EXPECT_EQ(base::ranges::count_if(
+  EXPECT_EQ(std::ranges::count_if(
                 *payment_methods,
                 [](const auto& item) {
                   return item->payment_method == "ACH" && item->name == "ACH" &&
@@ -321,7 +322,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
 
   auto fiat_currencies = ParseFiatCurrencies(ParseJson(json));
   EXPECT_TRUE(fiat_currencies);
-  EXPECT_EQ(base::ranges::count_if(
+  EXPECT_EQ(std::ranges::count_if(
                 *fiat_currencies,
                 [](const auto& item) {
                   return item->currency_code == "AFN" &&
@@ -357,7 +358,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_CryptoCurrencies) {
   }])");
   auto crypto_currencies = ParseCryptoCurrencies(ParseJson(json));
   EXPECT_TRUE(crypto_currencies);
-  EXPECT_EQ(base::ranges::count_if(
+  EXPECT_EQ(std::ranges::count_if(
                 *crypto_currencies,
                 [](const auto& item) {
                   return item->currency_code == "USDT_KCC" &&
@@ -407,7 +408,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
   }])");
   auto countries = ParseCountries(ParseJson(json));
   EXPECT_TRUE(countries);
-  EXPECT_EQ(base::ranges::count_if(
+  EXPECT_EQ(std::ranges::count_if(
                 *countries,
                 [](const auto& item) {
                   return item->country_code == "AF" &&

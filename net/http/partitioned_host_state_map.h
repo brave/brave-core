@@ -6,13 +6,13 @@
 #ifndef BRAVE_NET_HTTP_PARTITIONED_HOST_STATE_MAP_H_
 #define BRAVE_NET_HTTP_PARTITIONED_HOST_STATE_MAP_H_
 
+#include <algorithm>
 #include <array>
 #include <optional>
 #include <string>
 
 #include "base/auto_reset.h"
 #include "base/containers/span.h"
-#include "base/ranges/algorithm.h"
 #include "crypto/sha2.h"
 #include "net/base/net_export.h"
 

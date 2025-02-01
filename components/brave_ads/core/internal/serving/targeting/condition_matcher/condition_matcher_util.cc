@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <optional>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/pattern.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
@@ -52,7 +52,7 @@ bool MatchConditions(const PrefProviderInterface* const pref_provider,
                      const ConditionMatcherMap& condition_matchers) {
   CHECK(pref_provider);
 
-  return base::ranges::all_of(
+  return std::ranges::all_of(
       condition_matchers, [pref_provider](const auto& condition_matcher) {
         const auto& [pref_path, condition] = condition_matcher;
 

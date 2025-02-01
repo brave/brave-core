@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 
+#include <algorithm>
 #include <map>
 #include <optional>
 #include <string>
@@ -331,7 +332,7 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
 
     // insert events in order
     if (!events.empty()) {
-      base::ranges::sort(events, [](const Event& a, const Event& b) {
+      std::ranges::sort(events, [](const Event& a, const Event& b) {
         return a.event_order < b.event_order;
       });
       entry->events = std::vector<mojom::ConversationEntryEventPtr>{};

@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/renderer/yt_util.h"
 
+#include <algorithm>
 #include <functional>
 #include <ios>
 #include <optional>
@@ -14,7 +15,6 @@
 #include "base/containers/checked_iterators.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
-#include "base/ranges/algorithm.h"
 #include "base/values.h"
 
 namespace ai_chat {
@@ -35,8 +35,8 @@ std::optional<std::string> ChooseCaptionTrackUrl(
     // When multiple tracks, favor english (due to ai_chat models), then first
     // english auto-generated track, then settle for anything.
     // TODO(petemill): Consider preferring user's language.
-    auto iter = base::ranges::find_if(
-        *caption_tracks, [](const base::Value& track_raw) {
+    auto iter =
+        std::ranges::find_if(*caption_tracks, [](const base::Value& track_raw) {
           const base::Value::Dict* language_track = track_raw.GetIfDict();
           auto* kind = language_track->FindString("kind");
           if (kind && *kind == "asr") {
@@ -49,7 +49,7 @@ std::optional<std::string> ChooseCaptionTrackUrl(
           return false;
         });
     if (iter == caption_tracks->end()) {
-      iter = base::ranges::find_if(
+      iter = std::ranges::find_if(
           *caption_tracks, [](const base::Value& track_raw) {
             const base::Value::Dict* language_track = track_raw.GetIfDict();
             auto* lang = language_track->FindString("languageCode");

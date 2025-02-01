@@ -5,9 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/contextual/text_classification/text_classification_processor.h"
 
+#include <algorithm>
+
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "base/ranges/algorithm.h"
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -27,11 +28,11 @@ std::string GetTopSegmentFromPageProbabilities(
     const TextClassificationProbabilityMap& probabilities) {
   CHECK(!probabilities.empty());
 
-  return base::ranges::max_element(probabilities,
-                                   [](const SegmentProbabilityPair& lhs,
-                                      const SegmentProbabilityPair& rhs) {
-                                     return lhs.second < rhs.second;
-                                   })
+  return std::ranges::max_element(probabilities,
+                                  [](const SegmentProbabilityPair& lhs,
+                                     const SegmentProbabilityPair& rhs) {
+                                    return lhs.second < rhs.second;
+                                  })
       ->first;
 }
 

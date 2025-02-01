@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <memory>
 
 #include "base/functional/bind.h"
 #include "base/path_service.h"
-#include "base/ranges/algorithm.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -593,9 +593,9 @@ IN_PROC_BROWSER_TEST_F(PlaylistBrowserTestWithSitesUsingMediaSource,
       });
 
   std::vector<playlist::mojom::PlaylistItemPtr> items;
-  base::ranges::transform(playlist_tab_helper->found_items(),
-                          std::back_inserter(items),
-                          &playlist::mojom::PlaylistItemPtr::Clone);
+  std::ranges::transform(playlist_tab_helper->found_items(),
+                         std::back_inserter(items),
+                         &playlist::mojom::PlaylistItemPtr::Clone);
 
   auto* playlist_service = GetService();
   ASSERT_TRUE(playlist_service);

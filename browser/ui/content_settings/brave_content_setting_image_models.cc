@@ -5,7 +5,8 @@
 
 #include "brave/browser/ui/content_settings/brave_content_setting_image_models.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "brave/browser/ui/content_settings/brave_autoplay_blocked_image_model.h"
 #include "third_party/widevine/cdm/buildflags.h"
 

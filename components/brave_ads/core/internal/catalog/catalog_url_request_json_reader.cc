@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"

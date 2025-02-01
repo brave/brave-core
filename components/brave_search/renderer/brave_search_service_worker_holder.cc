@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_search/renderer/brave_search_service_worker_holder.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 #include <vector>
 
 #include "base/auto_reset.h"
-#include "base/ranges/algorithm.h"
 #include "base/threading/thread_checker.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search/renderer/brave_search_fallback_js_handler.h"

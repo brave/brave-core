@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/reminders/reminder/clicked_same_ad_multiple_times_reminder_util.h"
 
+#include <algorithm>
 #include <cstddef>
 
 #include "base/check_op.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
 #include "brave/components/brave_ads/core/internal/reminders/reminders_feature.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -22,7 +22,7 @@ bool ShouldRemindUser() {
 
 bool DidUserClickTheSameAdMultipleTimes(const std::string& creative_instance_id,
                                         const AdHistoryList& ad_history) {
-  const size_t count = base::ranges::count_if(
+  const size_t count = std::ranges::count_if(
       ad_history,
       [&creative_instance_id](const AdHistoryItemInfo& ad_history_item) {
         return ad_history_item.creative_instance_id == creative_instance_id &&

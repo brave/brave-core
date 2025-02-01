@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
 
+#include <algorithm>
 #include <limits>
 
 #include "base/numerics/ranges.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 
 namespace brave_ads {
@@ -58,7 +58,7 @@ bool CatalogCreativeSetInfo::DoesSupportOS() const {
 
   const std::string platform_name = PlatformHelper::GetInstance().GetName();
 
-  return base::ranges::any_of(oses, [&platform_name](const CatalogOsInfo& os) {
+  return std::ranges::any_of(oses, [&platform_name](const CatalogOsInfo& os) {
     return os.name == platform_name;
   });
 }
