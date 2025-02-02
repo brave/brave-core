@@ -155,7 +155,7 @@ export const HardwareWalletAccountsList = ({
 
     return networksRegistry.visibleIdsByCoinType[
       currentHardwareImportScheme.coin
-    ].map((id) => networksRegistry.entities[id] as BraveWallet.NetworkInfo)
+    ].map((id) => networksRegistry.entities[id]!)
   }, [networksRegistry, currentHardwareImportScheme])
 
   const showSchemesDropdown = coinsSupportingSchemesDropdown.includes(

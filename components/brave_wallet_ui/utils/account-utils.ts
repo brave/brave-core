@@ -43,7 +43,8 @@ export const groupAccountsById = (
 ) => {
   return accounts.reduce<Record<string, BraveWallet.AccountInfo[]>>(
     (result, obj) => {
-      ;(result[obj[key]] = result[obj[key]] || []).push(obj)
+      const resultKey: any = obj[key as keyof BraveWallet.AccountInfo]
+      ;(result[resultKey] = result[resultKey] || []).push(obj)
       return result
     },
     {}
@@ -100,10 +101,11 @@ export const getAddressLabel = (
   accounts?: EntityState<BraveWallet.AccountInfo>
 ): string => {
   if (!accounts) {
-    return registry[address.toLowerCase()] ?? reduceAddress(address)
+    return registry[address.toLowerCase() as keyof typeof registry]
+      ?? reduceAddress(address)
   }
   return (
-    registry[address.toLowerCase()] ??
+    registry[address.toLowerCase() as keyof typeof registry] ??
     findAccountByAddress(address, accounts)?.name ??
     reduceAddress(address)
   )

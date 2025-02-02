@@ -73,7 +73,8 @@ export function BuyAmountInput({
       <Row justifyContent='space-between'>
         <AssetButton onClick={onShowCurrencySelection}>
           <AssetTicker role='currency'>
-            {CurrencySymbols[selectedFiatCurrencyCode]}
+            {CurrencySymbols
+              [selectedFiatCurrencyCode as keyof typeof CurrencySymbols]}
           </AssetTicker>
           <CaratDownIcon />
           <HorizontalSpace space='8px' />

@@ -499,7 +499,7 @@ const meta: Meta<CustomArgs> = {
   ]
 }
 
-function StoryContext(props: React.PropsWithChildren<{args: CustomArgs, setArgs: (newArgs: Partial<CustomArgs>) => void}>) {
+function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs: (newArgs: Partial<CustomArgs>) => void }>) {
   const isSmall = useIsSmall()
 
   const options = { args: props.args }

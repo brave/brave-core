@@ -250,7 +250,7 @@ export const NonFungibleErcTokenTransfer = ({
       symbol: transfer.asset.symbol,
       tokenId: transfer.asset.tokenId || '',
       isShielded: false
-  }}, [transfer, network, tokensRegistry])
+  } }, [transfer, network, tokensRegistry])
 
   // computed
   const isReceive = new Amount(transfer.amount.after) //

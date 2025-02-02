@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 const assert = require('assert')
-const JSDOMEnvironment = require('jest-environment-jsdom')
+const JSDOMEnvironment = require('jest-environment-jsdom').TestEnvironment
 const webcrypto = require('crypto').webcrypto
 
 module.exports = class CustomEnvironment extends JSDOMEnvironment {

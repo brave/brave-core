@@ -130,7 +130,7 @@ export const styledScrollbarMixin = css`
 `
 
 export const backgroundColorMixin = css<{
-  color?: ThemeColor
+  color?: keyof IThemeProps['color']
 }>`
   background-color: ${(p) =>
     p?.color

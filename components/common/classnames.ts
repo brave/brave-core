@@ -56,7 +56,7 @@ export default function classnames (...args: Argument[]): string {
       if (arg.toString === Object.prototype.toString) {
         for (const key in arg as Mapping) {
           // Only take keys if they are directly on the object and have truthy values
-          if (hasOwn.call(arg, key) && arg[key]) {
+          if (hasOwn.call(arg, key) && arg[key as keyof typeof arg]) {
             classes.push(key)
           }
         }

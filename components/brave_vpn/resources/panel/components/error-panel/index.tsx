@@ -53,7 +53,7 @@ function ErrorPanel(props: Props) {
             <div slot='title'>{getLocale('braveVpnUnableConnectToServer')}</div>
             {getLocale('braveVpnUnableConnectInfo').replace(
               /\$\d+/g,
-              (match) => matches[match]
+              (match) => matches[match as keyof typeof matches]
             )}
           </S.StyledAlert>
           <S.StyledActionButton

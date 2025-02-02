@@ -13,6 +13,7 @@ import * as torrentTypes from '../../constants/webtorrent_types'
 import {
   File,
   TorrentState,
+  TorrentStateMap,
   TorrentsState
 } from '../../constants/webtorrentState'
 
@@ -58,7 +59,7 @@ const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
 
     // Use an existing infoHash if it's the same torrentId
     const torrentUrl = parsedURL.origin + parsedURL.pathname
-    const key = Object.keys(torrentStateMap).find(
+    const key = (Object.keys(torrentStateMap) as unknown as Array<keyof TorrentStateMap>).find(
       (key) =>
         torrentStateMap[key].infoHash &&
         torrentStateMap[key].torrentId === torrentUrl
@@ -208,11 +209,11 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
   })
 
   const tabClients: Set<number> = new Set<number>()
-  Object.keys(torrentStateMap)
-    .filter((key) => torrentStateMap[key].infoHash === infoHash)
-    .map((key) => {
-      tabClients.add(torrentStateMap[key].tabId)
-    })
+    ; (Object.keys(torrentStateMap) as unknown as Array<keyof TorrentStateMap>)
+      .filter((key) => torrentStateMap[key].infoHash === infoHash)
+      .map((key) => {
+        tabClients.add(torrentStateMap[key].tabId)
+      })
 
   torrentObjMap[torrent.infoHash] = {
     ...torrentObjMap[torrent.infoHash],
