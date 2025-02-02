@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_observer_interface.h"
-#include "brave/components/brave_ads/core/public/export.h"
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 namespace base {
@@ -25,7 +24,7 @@ namespace brave_ads {
 class AdsClient;
 struct NotificationAdInfo;
 
-class ADS_EXPORT Ads {
+class Ads {
  public:
   Ads() = default;
 

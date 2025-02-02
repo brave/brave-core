@@ -9,11 +9,10 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
-#include "brave/components/brave_ads/core/public/export.h"
 
 namespace brave_ads {
 
-struct ADS_EXPORT PromotedContentAdInfo final : AdInfo {
+struct PromotedContentAdInfo final : AdInfo {
   [[nodiscard]] bool IsValid() const;
 
   std::string title;

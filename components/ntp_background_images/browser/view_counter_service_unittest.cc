@@ -407,27 +407,27 @@ TEST_F(NTPBackgroundImagesViewCounterTest, GetCurrentWallpaperTest) {
   service_->bi_images_data_ = GetDemoBackgroundWallpaper();
   EXPECT_TRUE(view_counter_->IsBackgroundWallpaperActive());
   auto background = view_counter_->GetCurrentWallpaper();
-  std::string* bg_url = background->FindString(kWallpaperImageURLKey);
+  std::string* bg_url = background->FindString(kWallpaperURLKey);
   EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg", *bg_url);
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   // Enable custom image background.
   delegate_->image_enabled_ = true;
   background = view_counter_->GetCurrentWallpaper();
-  bg_url = background->FindString(kWallpaperImageURLKey);
+  bg_url = background->FindString(kWallpaperURLKey);
   EXPECT_TRUE(bg_url->starts_with(kCustomWallpaperURL))
       << "actual url " << *bg_url;
 
   // Disable custom image background.
   delegate_->image_enabled_ = false;
   background = view_counter_->GetCurrentWallpaper();
-  bg_url = background->FindString(kWallpaperImageURLKey);
+  bg_url = background->FindString(kWallpaperURLKey);
   EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg", *bg_url);
 
   // Enable color background
   delegate_->color_enabled_ = true;
   background = view_counter_->GetCurrentWallpaper();
-  EXPECT_FALSE(background->FindString(kWallpaperImageURLKey));
+  EXPECT_FALSE(background->FindString(kWallpaperURLKey));
   EXPECT_EQ(delegate_->GetColor(), *background->FindString(kWallpaperColorKey));
 #endif
 }

@@ -375,13 +375,13 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_TRUE(observer.on_bi_updated_);
   EXPECT_TRUE(*bi_data->GetBackgroundAt(0).FindBool(kIsBackgroundKey));
   EXPECT_EQ("chrome://background-wallpaper/background-image-source.webp",
-            *bi_data->GetBackgroundAt(0).FindString(kWallpaperImageURLKey));
+            *bi_data->GetBackgroundAt(0).FindString(kWallpaperURLKey));
   EXPECT_EQ("background-image-source.webp",
-            *bi_data->GetBackgroundAt(0).FindString(kWallpaperImagePathKey));
+            *bi_data->GetBackgroundAt(0).FindString(kWallpaperFilePathKey));
   EXPECT_EQ("chrome://background-wallpaper/background-image-source.avif",
-            *bi_data->GetBackgroundAt(1).FindString(kWallpaperImageURLKey));
+            *bi_data->GetBackgroundAt(1).FindString(kWallpaperURLKey));
   EXPECT_EQ("background-image-source.avif",
-            *bi_data->GetBackgroundAt(1).FindString(kWallpaperImagePathKey));
+            *bi_data->GetBackgroundAt(1).FindString(kWallpaperFilePathKey));
 
   // Invalid schema version
   const std::string test_json_string_higher_schema = R"(

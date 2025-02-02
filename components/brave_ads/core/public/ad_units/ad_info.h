@@ -9,12 +9,11 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/export.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
-struct ADS_EXPORT AdInfo {
+struct AdInfo {
   AdInfo();
 
   AdInfo(const AdInfo&);
