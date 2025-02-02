@@ -5,8 +5,6 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 
-#include <algorithm>
-#include <optional>
 #include <utility>
 
 #include "base/logging.h"
