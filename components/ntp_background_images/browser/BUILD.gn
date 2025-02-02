@@ -34,6 +34,8 @@ static_library("browser") {
       "ntp_background_images_source.h",
       "ntp_sponsored_images_source.cc",
       "ntp_sponsored_images_source.h",
+      "ntp_sponsored_rich_media_source.cc",
+      "ntp_sponsored_rich_media_source.h",
       "view_counter_model.cc",
       "view_counter_model.h",
       "view_counter_service.cc",
@@ -46,6 +48,7 @@ static_library("browser") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/core",
+    "//brave/components/constants",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/ntp_background_images/common",
@@ -70,6 +73,7 @@ static_library("browser") {
       "//brave/components/brave_referrals/browser",
       "//content/public/browser",
       "//content/public/common",
+      "//net",
     ]
   }
 

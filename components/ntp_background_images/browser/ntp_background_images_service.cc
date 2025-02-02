@@ -43,6 +43,7 @@ namespace ntp_background_images {
 namespace {
 
 constexpr char kNTPManifestFile[] = "photo.json";
+constexpr char kNTPSponsoredManifestFile[] = "campaigns.json";
 constexpr char kNTPSRMappingTableFile[] = "mapping-table.json";
 
 constexpr char kNTPSRMappingTableComponentPublicKey[] = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp7IWv7wzH/KLrxx7BKWOIIUMDylQNzxwM5Fig2WHc16BoMW9Kaya/g17Bpfp0YIvxdcmDBcB9kFALqQLxi1WQfa9d7YxqcmAGUKo407RMwEa6dQVkIPMFz2ZPGSfFgr526gYOqWh3Q4h8oN94qxBLgFyT25SMK5zQDGyq96ntME4MQRNwpDBUv7DDK7Npwe9iE8cBgzYTvf0taAFn2ZZi1RhS0RzpdynucpKosnc0sVBLTXy+HDvnMr+77T48zM0YmpjIh8Qmrp9CNbKzZUsZzNfnHpL9IZnjwQ51EOYdPGX2r1obChVZN19HzpK5scZEMRKoCMfCepWpEkMSIoPzQIDAQAB";  // NOLINT
@@ -58,28 +59,20 @@ std::string GetMappingTableData(const base::FilePath& installed_dir) {
   return contents;
 }
 
-// If registered component is for sponsored images wallpaper, it has photo.json
-// in |installed_dir|. Otherwise, it has data.json for super referral.
-// This methods cache super referral's favicon data because that favicon images
-// could be used after campaign ends.
-// And return manifest json string.
-std::string HandleComponentData(const base::FilePath& installed_dir) {
-  base::FilePath json_path = installed_dir.AppendASCII(kNTPManifestFile);
+// If registered component is for sponsored images wallpaper, it has
+// campaigns.json in |installed_dir|. Otherwise, it has data.json for super
+// referral. This methods cache super referral's favicon data because that
+// favicon images could be used after campaign ends. And return manifest json
+// string.
+std::string HandleComponentData(const base::FilePath& installed_dir,
+                                const std::string& manifest_file) {
+  const base::FilePath file_path = installed_dir.AppendASCII(manifest_file);
+
   std::string contents;
-
-  if (json_path.empty()) {
-    // NTP sponsored component should have photo.json always but anything can
-    // happen outside of browser. Handle it gracefully instead of crash.
-    VLOG(6) << "Cannot find valid NTP Images component manifest file in: "
-            << installed_dir;
-    return contents;
-  }
-
-  bool success = base::ReadFileToString(json_path, &contents);
+  const bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
-    VLOG(6) << "Cannot read NTP Images component manifest file at: "
-            << json_path;
-    return contents;
+    VLOG(6) << "Cannot read NTP component " << manifest_file
+            << " manifest file";
   }
 
   return contents;
@@ -507,7 +500,7 @@ void NTPBackgroundImagesService::OnComponentReady(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&HandleComponentData, installed_dir),
+      base::BindOnce(&HandleComponentData, installed_dir, kNTPManifestFile),
       base::BindOnce(&NTPBackgroundImagesService::OnGetComponentJsonData,
                      weak_factory_.GetWeakPtr()));
 }
@@ -535,7 +528,8 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&HandleComponentData, installed_dir),
+      base::BindOnce(&HandleComponentData, installed_dir,
+                     kNTPSponsoredManifestFile),
       base::BindOnce(
           &NTPBackgroundImagesService::OnGetSponsoredComponentJsonData,
           weak_factory_.GetWeakPtr(), is_super_referral));
@@ -568,6 +562,9 @@ void NTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
   } else {
     si_images_data_ =
         std::make_unique<NTPSponsoredImagesData>(data, si_installed_dir_);
+    for (auto& observer : observer_list_) {
+      observer.OnUpdated(data);
+    }
   }
 
   if (is_super_referral && !sr_images_data_->IsValid()) {

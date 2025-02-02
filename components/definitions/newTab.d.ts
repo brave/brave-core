@@ -39,7 +39,10 @@ declare namespace NewTab {
     destinationUrl: string
   }
 
+  export type BrandedWallpaperType = 'image' | 'richMedia'
+
   export type BrandedWallpaper = {
+    type: BrandedWallpaperType
     wallpaperImageUrl: string
     isSponsored: boolean
     creativeInstanceId: string

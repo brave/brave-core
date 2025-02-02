@@ -85,6 +85,10 @@ class ViewCounterService : public KeyedService,
       const std::string& placement_id,
       const std::string& creative_instance_id,
       brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type);
+  void MaybeTriggerSponsoredRichMediaAdEvent(
+      const std::string& placement_id,
+      const std::string& creative_instance_id,
+      const std::string& ad_event_type);
 
   std::optional<base::Value::Dict> GetNextWallpaperForDisplay();
   std::optional<base::Value::Dict> GetCurrentWallpaperForDisplay();
@@ -155,6 +159,7 @@ class ViewCounterService : public KeyedService,
   // NTPBackgroundImagesService::Observer
   void OnUpdated(NTPBackgroundImagesData* data) override;
   void OnUpdated(NTPSponsoredImagesData* data) override;
+  void OnUpdated(const base::Value::Dict& data) override;
   void OnSuperReferralEnded() override;
 
   void ResetNotificationState();

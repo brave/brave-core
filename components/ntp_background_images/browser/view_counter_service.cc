@@ -18,6 +18,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_event_type_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_provider.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
@@ -374,6 +375,13 @@ void ViewCounterService::OnUpdated(NTPSponsoredImagesData* data) {
   }
 }
 
+void ViewCounterService::OnUpdated(const base::Value::Dict& data) {
+  if (ads_service_) {
+    ads_service_->ParseAndSaveCreativeNewTabPageAds(
+        data, /*intentional*/ base::DoNothing());
+  }
+}
+
 void ViewCounterService::OnSuperReferralEnded() {
   // Need to reset model because SI images are shown only for every 4th NTP but
   // we've shown SR images for every NTP.
@@ -466,6 +474,56 @@ void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
   ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                          mojom_ad_event_type,
                                          /*intentional*/ base::DoNothing());
+}
+
+void ViewCounterService::MaybeTriggerSponsoredRichMediaAdEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const std::string& ad_event_type) {
+  if (!ads_service_) {
+    // If `brave_ads::kShouldAlwaysRunBraveAdsServiceFeature` flag is disabled,
+    // `ads_service_` will be null if the user has not joined Brave Rewards.
+    return;
+  }
+
+  const std::optional<brave_ads::mojom::NewTabPageAdEventType>
+      mojom_ad_event_type =
+          brave_ads::ToMojomNewTabPageAdEventType(ad_event_type);
+  if (!mojom_ad_event_type) {
+    return;
+  }
+
+  switch (*mojom_ad_event_type) {
+    case brave_ads::mojom::NewTabPageAdEventType::kServedImpression: {
+      // Served impressions are handled by the ads component.
+      break;
+    }
+
+    case brave_ads::mojom::NewTabPageAdEventType::kViewedImpression: {
+      // Viewed impressions are handled in `BrandedWallpaperWillBeDisplayed`
+      // which is called when a sponsored ad will be displayed.
+      break;
+    }
+
+    case brave_ads::mojom::NewTabPageAdEventType::kClicked:
+    case brave_ads::mojom::NewTabPageAdEventType::kInteraction:
+    case brave_ads::mojom::NewTabPageAdEventType::kMediaPlay:
+    case brave_ads::mojom::NewTabPageAdEventType::kMedia25:
+    case brave_ads::mojom::NewTabPageAdEventType::kMedia50:
+    case brave_ads::mojom::NewTabPageAdEventType::kMedia75:
+    case brave_ads::mojom::NewTabPageAdEventType::kMedia100: {
+      if (ntp_p3a_helper_) {
+        // Report P3A rich media ad event if Brave Rewards are disabled.
+        ntp_p3a_helper_->RecordNewTabPageAdEvent(*mojom_ad_event_type,
+                                                 creative_instance_id);
+      }
+
+      MaybeTriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                    *mojom_ad_event_type);
+
+      break;
+    }
+  }
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {

@@ -58,7 +58,7 @@ OBJC_EXPORT
 
 OBJC_EXPORT
 @interface NTPSponsoredImageLogo : NSObject
-@property(readonly) NSURL* imagePath;
+@property(readonly, nullable) NSURL* imagePath;
 @property(readonly) NSString* altText;
 @property(readonly, nullable) NSURL* destinationURL;
 @property(readonly) NSString* companyName;

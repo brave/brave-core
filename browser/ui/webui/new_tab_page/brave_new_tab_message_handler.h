@@ -59,6 +59,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void HandleSaveNewTabPagePref(const base::Value::List& args);
   void HandleRegisterNewTabPageView(const base::Value::List& args);
   void HandleBrandedWallpaperLogoClicked(const base::Value::List& args);
+  void HandleTriggerSponsoredRichMediaAdEvent(const base::Value::List& args);
   void HandleGetWallpaperData(const base::Value::List& args);
   void HandleCustomizeClicked(const base::Value::List& args);
 

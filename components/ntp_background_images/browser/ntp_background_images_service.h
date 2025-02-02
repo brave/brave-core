@@ -38,6 +38,7 @@ class NTPBackgroundImagesService {
     // Called whenever ntp background images component is updated.
     virtual void OnUpdated(NTPBackgroundImagesData* data) = 0;
     virtual void OnUpdated(NTPSponsoredImagesData* data) = 0;
+    virtual void OnUpdated(const base::Value::Dict& data) {}
     // Called when SR campaign ended.
     virtual void OnSuperReferralEnded() = 0;
    protected:

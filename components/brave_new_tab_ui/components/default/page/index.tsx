@@ -24,6 +24,7 @@ interface HasImageProps {
   imageHasLoaded: boolean
   imageSrc?: string
   colorForBackground?: string
+  hasSponsoredRichMediaBackground: boolean
 }
 
 type AppProps = {
@@ -108,6 +109,15 @@ const StyledPage = styled('div') <PageProps>`
     flex-direction: column;
     align-items: center;
   }
+
+  ${p => p.hasSponsoredRichMediaBackground && css`
+    // Allow clicks to pass through to background
+    pointer-events: none;
+    // Restore click events for child elements
+    & > * {
+      pointer-events: auto;
+    }
+  `};
 `
 
 export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> = (props) => {
@@ -315,6 +325,10 @@ export const FooterContent = styled('div')`
 
 // Gets the value of the CSS `background` property.
 function getBackground(p: HasImageProps) {
+  if (p.hasSponsoredRichMediaBackground) {
+    return ''
+  }
+
   if (!p.hasImage) {
     return p.colorForBackground || `linear-gradient(to bottom right, #4D54D1, #A51C7B 50%, #EE4A37 100%)`
   }

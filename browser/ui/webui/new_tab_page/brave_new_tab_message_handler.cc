@@ -210,6 +210,11 @@ void BraveNewTabMessageHandler::RegisterMessages() {
           &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "triggerSponsoredRichMediaAdEvent",
+      base::BindRepeating(
+          &BraveNewTabMessageHandler::HandleTriggerSponsoredRichMediaAdEvent,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getWallpaperData",
       base::BindRepeating(&BraveNewTabMessageHandler::HandleGetWallpaperData,
                           base::Unretained(this)));
@@ -472,6 +477,44 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
         creative_instance_id ? *creative_instance_id : "",
         destination_url ? *destination_url : "",
         wallpaper_id ? *wallpaper_id : "");
+  }
+}
+
+void BraveNewTabMessageHandler::HandleTriggerSponsoredRichMediaAdEvent(
+    const base::Value::List& args) {
+  AllowJavascript();
+
+  if (args.size() != 2) {
+    LOG(ERROR) << "Invalid input";
+    return;
+  }
+
+  const base::Value::Dict* const wallpaper = args[0].GetIfDict();
+  if (!wallpaper) {
+    return;
+  }
+
+  const std::string* const placement_id =
+      wallpaper->FindString(ntp_background_images::kWallpaperIDKey);
+  if (!placement_id) {
+    return;
+  }
+
+  const std::string* const creative_instance_id =
+      wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey);
+  if (!creative_instance_id) {
+    return;
+  }
+
+  const std::string* const ad_event_type = args[1].GetIfString();
+  if (!ad_event_type) {
+    return;
+  }
+
+  if (ntp_background_images::ViewCounterService* const service =
+          ViewCounterServiceFactory::GetForProfile(profile_)) {
+    service->MaybeTriggerSponsoredRichMediaAdEvent(
+        *placement_id, *creative_instance_id, *ad_event_type);
   }
 }
 

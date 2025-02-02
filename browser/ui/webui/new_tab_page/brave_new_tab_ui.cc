@@ -23,6 +23,7 @@
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/misc_metrics/new_tab_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
@@ -36,6 +37,7 @@
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 
@@ -75,6 +77,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   // Non blank NTP.
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, name, kBraveNewTabGenerated, IDR_BRAVE_NEW_TAB_HTML);
+
+  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
 
   AddBackgroundColorToSource(source, web_contents);
 
@@ -127,6 +131,11 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
                                 std::make_unique<NTPCustomImagesSource>(
                                     ntp_custom_background_images_service));
   }
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      std::string("frame-src ") + kNTPSponsoredRichMediaUrl + ";");
+  source->AddString("ntpSponsoredRichMediaUrl", kNTPSponsoredRichMediaUrl);
 }
 
 BraveNewTabUI::~BraveNewTabUI() = default;
