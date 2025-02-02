@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_factory.h"
 
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_clicked.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_interaction.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_media_100.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_media_25.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/new_tab_page_ads/new_tab_page_ad_event_media_play.h"
@@ -29,6 +30,10 @@ NewTabPageAdEventFactory::Build(
 
     case mojom::NewTabPageAdEventType::kClicked: {
       return std::make_unique<NewTabPageAdEventClicked>();
+    }
+
+    case mojom::NewTabPageAdEventType::kInteraction: {
+      return std::make_unique<NewTabPageAdEventInteraction>();
     }
 
     case mojom::NewTabPageAdEventType::kMediaPlay: {

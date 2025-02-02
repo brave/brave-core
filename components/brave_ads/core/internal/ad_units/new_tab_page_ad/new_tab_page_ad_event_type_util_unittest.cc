@@ -23,6 +23,9 @@ TEST(BraveAdsNewTabPageAdEventTypeUtilTest, ToMojomNewTabPageAdEventType) {
   EXPECT_EQ(ToMojomNewTabPageAdEventType("click"),
             mojom::NewTabPageAdEventType::kClicked);
 
+  EXPECT_EQ(ToMojomNewTabPageAdEventType("interaction"),
+            mojom::NewTabPageAdEventType::kInteraction);
+
   EXPECT_EQ(ToMojomNewTabPageAdEventType("media_play"),
             mojom::NewTabPageAdEventType::kMediaPlay);
 
@@ -50,6 +53,10 @@ TEST(BraveAdsNewTabPageAdEventTypeUtilTest, FromMojomNewTabPageAdEventType) {
   EXPECT_EQ(
       FromMojomNewTabPageAdEventType(mojom::NewTabPageAdEventType::kClicked),
       "click");
+
+  EXPECT_EQ(FromMojomNewTabPageAdEventType(
+                mojom::NewTabPageAdEventType::kInteraction),
+            "interaction");
 
   EXPECT_EQ(
       FromMojomNewTabPageAdEventType(mojom::NewTabPageAdEventType::kMediaPlay),

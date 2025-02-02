@@ -104,13 +104,16 @@ enum ConfirmationType {
   // When the user converts on an ad.
   kConversion,
 
-  // When a new tab page video ad starts playing.
+  // When the user interacts on a new tab page ad.
+  kInteraction,
+
+  // When a new tab page video ad begins playing.
   kMediaPlay,
 
-  // When played 25% of a new tab page video ad.
+  // When 25% of a new tab page video ad has been played.
   kMedia25,
 
-  // When played 100% of a new tab page video ad.
+  // When 100% of a new tab page video ad has been played.
   kMedia100
 };
 
@@ -132,6 +135,7 @@ enum NewTabPageAdEventType {
   kServedImpression = 0,
   kViewedImpression,
   kClicked,
+  kInteraction,
   kMediaPlay,
   kMedia25,
   kMedia100

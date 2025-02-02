@@ -27,6 +27,7 @@ constexpr char kMarkAdAsInappropriateType[] = "flag";
 constexpr char kLikedAdType[] = "upvote";
 constexpr char kDislikedAdType[] = "downvote";
 constexpr char kConversionType[] = "conversion";
+constexpr char kInteractionType[] = "interaction";
 constexpr char kMediaPlayType[] = "media_play";
 constexpr char kMedia25Type[] = "media_25";
 constexpr char kMedia100Type[] = "media_100";
@@ -45,6 +46,7 @@ constexpr auto kStringToMojomConfirmationTypeMap =
          {kLikedAdType, mojom::ConfirmationType::kLikedAd},
          {kDislikedAdType, mojom::ConfirmationType::kDislikedAd},
          {kConversionType, mojom::ConfirmationType::kConversion},
+         {kInteractionType, mojom::ConfirmationType::kInteraction},
          {kMediaPlayType, mojom::ConfirmationType::kMediaPlay},
          {kMedia25Type, mojom::ConfirmationType::kMedia25},
          {kMedia100Type, mojom::ConfirmationType::kMedia100}});
@@ -63,6 +65,7 @@ constexpr auto kMojomConfirmationTypeToStringMap =
          {mojom::ConfirmationType::kLikedAd, kLikedAdType},
          {mojom::ConfirmationType::kDislikedAd, kDislikedAdType},
          {mojom::ConfirmationType::kConversion, kConversionType},
+         {mojom::ConfirmationType::kInteraction, kInteractionType},
          {mojom::ConfirmationType::kMediaPlay, kMediaPlayType},
          {mojom::ConfirmationType::kMedia25, kMedia25Type},
          {mojom::ConfirmationType::kMedia100, kMedia100Type}});

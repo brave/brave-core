@@ -25,6 +25,10 @@ class NewTabPageAdEventHandlerDelegate {
   // Invoked when the new tab page `ad` is clicked.
   virtual void OnDidFireNewTabPageAdClickedEvent(const NewTabPageAdInfo& ad) {}
 
+  // Invoked when the new tab page `ad` is interacted with.
+  virtual void OnDidFireNewTabPageAdInteractionEvent(
+      const NewTabPageAdInfo& ad) {}
+
   // Invoked when the new tab page video `ad` started playing.
   virtual void OnDidFireNewTabPageAdMediaPlayEvent(const NewTabPageAdInfo& ad) {
   }

@@ -198,6 +198,16 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
                        mojom::ConfirmationType::kClicked);
 }
 
+void NewTabPageAdHandler::OnDidFireNewTabPageAdInteractionEvent(
+    const NewTabPageAdInfo& ad) {
+  BLOG(3, "Interacted with new tab page ad with placement id "
+              << ad.placement_id << " and creative instance id "
+              << ad.creative_instance_id);
+
+  GetAccount().Deposit(ad.creative_instance_id, ad.segment, ad.type,
+                       mojom::ConfirmationType::kInteraction);
+}
+
 void NewTabPageAdHandler::OnDidFireNewTabPageAdMediaPlayEvent(
     const NewTabPageAdInfo& ad) {
   BLOG(3, "Started playing new tab page video ad with placement id "

@@ -63,6 +63,8 @@ class NewTabPageAdHandler final : public NewTabPageAdEventHandlerDelegate,
   void OnDidFireNewTabPageAdServedEvent(const NewTabPageAdInfo& ad) override;
   void OnDidFireNewTabPageAdViewedEvent(const NewTabPageAdInfo& ad) override;
   void OnDidFireNewTabPageAdClickedEvent(const NewTabPageAdInfo& ad) override;
+  void OnDidFireNewTabPageAdInteractionEvent(
+      const NewTabPageAdInfo& ad) override;
   void OnDidFireNewTabPageAdMediaPlayEvent(const NewTabPageAdInfo& ad) override;
   void OnDidFireNewTabPageAdMedia25Event(const NewTabPageAdInfo& ad) override;
   void OnDidFireNewTabPageAdMedia100Event(const NewTabPageAdInfo& ad) override;

@@ -15,6 +15,7 @@ namespace {
 constexpr char kServedImpressionAdEventType[] = "served";
 constexpr char kViewedImpressionAdEventType[] = "view";
 constexpr char kClickedAdEventType[] = "click";
+constexpr char kInteractionAdEventType[] = "interaction";
 constexpr char kMediaPlayAdEventType[] = "media_play";
 constexpr char kMedia25AdEventType[] = "media_25";
 constexpr char kMedia100AdEventType[] = "media_100";
@@ -26,6 +27,7 @@ constexpr auto kNewTabPageAdEventTypeMap =
         {kViewedImpressionAdEventType,
          mojom::NewTabPageAdEventType::kViewedImpression},
         {kClickedAdEventType, mojom::NewTabPageAdEventType::kClicked},
+        {kInteractionAdEventType, mojom::NewTabPageAdEventType::kInteraction},
         {kMediaPlayAdEventType, mojom::NewTabPageAdEventType::kMediaPlay},
         {kMedia25AdEventType, mojom::NewTabPageAdEventType::kMedia25},
         {kMedia100AdEventType, mojom::NewTabPageAdEventType::kMedia100},
@@ -52,6 +54,8 @@ std::string FromMojomNewTabPageAdEventType(
       return kViewedImpressionAdEventType;
     case mojom::NewTabPageAdEventType::kClicked:
       return kClickedAdEventType;
+    case mojom::NewTabPageAdEventType::kInteraction:
+      return kInteractionAdEventType;
     case mojom::NewTabPageAdEventType::kMediaPlay:
       return kMediaPlayAdEventType;
     case mojom::NewTabPageAdEventType::kMedia25:
