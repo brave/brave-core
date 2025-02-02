@@ -29,7 +29,7 @@ class Dayparts final : public TableInterface {
                int to_version) override;
 
  private:
-  void MigrateToV47(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+  void MigrateToV48(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
 
   std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
                              const CreativeAdList& creative_ads) const;

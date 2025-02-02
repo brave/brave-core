@@ -245,8 +245,8 @@ void CreativeAds::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 47: {
-      MigrateToV47(mojom_db_transaction);
+    case 48: {
+      MigrateToV48(mojom_db_transaction);
       break;
     }
 
@@ -259,12 +259,14 @@ void CreativeAds::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativeAds::MigrateToV47(
+void CreativeAds::MigrateToV48(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
-  // We can safely recreate the table because it will be repopulated after
-  // downloading the catalog.
+  // It is safe to recreate the table because it will be repopulated after
+  // downloading the catalog post-migration. However, after this migration, we
+  // should not drop the table as it will store catalog and non-catalog ad units
+  // and maintain relationships with other tables.
   DropTable(mojom_db_transaction, GetTableName());
   Create(mojom_db_transaction);
 }

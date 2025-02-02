@@ -12,16 +12,16 @@
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
-#include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/json_reader_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -29,14 +29,99 @@ namespace brave_ads {
 
 class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
  protected:
-  void SetUp() override { test::TestBase::SetUp(/*is_integration_test=*/true); }
+  void SetUp() override {
+    AdvanceClockTo(test::TimeFromUTCString("Fri, 31 Jan 2025 16:28"));
 
-  void SetUpMocks() override {
-    const test::URLResponseMap url_responses = {
-        {BuildCatalogUrlPath(),
-         {{net::HTTP_OK,
-           /*response_body=*/"/catalog_with_new_tab_page_ad.json"}}}};
-    test::MockUrlResponses(ads_client_mock_, url_responses);
+    test::TestBase::SetUp(/*is_integration_test=*/true);
+  }
+
+  void MockCreativeNewTabPageAds() {
+    const std::string json = R"JSON(
+      {
+        "schemaVersion": 2,
+        "campaigns": [
+          {
+            "version": 1,
+            "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+            "advertiserId": "496b045a-195e-441f-b439-07bac083450f",
+            "startAt": "2024-01-31T00:00:00Z",
+            "endAt": "2025-01-31T23:59:59Z",
+            "dailyCap": 20,
+            "priority": 10,
+            "ptr": 1,
+            "geoTargets": [
+              "US"
+            ],
+            "dayParts": [
+              {
+                "daysOfWeek": "0123456",
+                "startMinute": 0,
+                "endMinute": 1439
+              }
+            ],
+            "creativeSets": [
+              {
+                "creativeSetId": "34ab06be-c9ed-4104-9ce0-9e639f4ad272",
+                "creatives": [
+                  {
+                    "creativeInstanceId": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd",
+                    "companyName": "Rich Media NTT Creative",
+                    "alt": "Some rich content",
+                    "targetUrl": "https://brave.com",
+                    "wallpaper": {
+                      "type": "richMedia",
+                      "relativeUrl": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html"
+                    }
+                  },
+                  {
+                    "creativeInstanceId": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+                    "companyName": "Image NTT Creative",
+                    "alt": "Some content",
+                    "targetUrl": "https://basicattentiontoken.org",
+                    "wallpaper": {
+                      "type": "image",
+                      "relativeUrl": "546fe7b0-5047-4f28-a11c-81f14edcf0f6/background.jpg",
+                      "focalPoint": {
+                        "x": 25,
+                        "y": 50
+                      },
+                      "button": {
+                        "image": {
+                          "relativeUrl": "546fe7b0-5047-4f28-a11c-81f14edcf0f6/button.png"
+                        }
+                      }
+                    }
+                  }
+                ],
+                "conversions": [
+                  {
+                    "observationWindow": 30,
+                    "urlPattern": "https://www.brave.com/*"
+                  }
+                ],
+                "perDay": 20,
+                "perWeek": 140,
+                "perMonth": 560,
+                "totalMax": 1000,
+                "value": "0.1"
+              }
+            ]
+          }
+        ]
+      }
+    )JSON";
+
+    base::RunLoop run_loop;
+    base::MockCallback<ParseAndSaveCreativeNewTabPageAdsCallback> callback;
+    EXPECT_CALL(callback, Run(/*success=*/true))
+        .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
+
+    std::optional<base::Value::Dict> data =
+        test::ReadDictionaryFromJsonString(json);
+    ASSERT_TRUE(data);
+    GetAds().ParseAndSaveCreativeNewTabPageAds(std::move(*data),
+                                               callback.Get());
+    run_loop.Run();
   }
 
   void TriggerNewTabPageAdEventAndVerifiyExpectations(
@@ -61,6 +146,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
 
   test::ForcePermissionRules();
 
+  MockCreativeNewTabPageAds();
+
   // Act & Assert
   EXPECT_CALL(ads_client_mock_,
               RecordP2AEvents(BuildP2AAdOpportunityEvents(
@@ -68,7 +155,7 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, ServeAd) {
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*statement=*/::testing::Ne(std::nullopt)))
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Ne(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
   run_loop.Run();
@@ -79,6 +166,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
+
+  MockCreativeNewTabPageAds();
 
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
@@ -101,6 +190,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   test::OptOutOfNewTabPageAds();
 
+  MockCreativeNewTabPageAds();
+
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
@@ -120,12 +211,14 @@ TEST_F(
 
   test::DisableBraveRewards();
 
+  MockCreativeNewTabPageAds();
+
   // Act & Assert
   EXPECT_CALL(ads_client_mock_, RecordP2AEvents).Times(0);
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   base::RunLoop run_loop;
-  EXPECT_CALL(callback, Run(/*statement=*/::testing::Eq(std::nullopt)))
+  EXPECT_CALL(callback, Run(/*ad=*/::testing::Eq(std::nullopt)))
       .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
   GetAds().MaybeServeNewTabPageAd(callback.Get());
   run_loop.Run();
@@ -137,6 +230,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
   test::ForcePermissionRules();
+
+  MockCreativeNewTabPageAds();
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   base::RunLoop run_loop;
@@ -165,6 +260,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   test::DisableBraveRewards();
 
+  MockCreativeNewTabPageAds();
+
   // Act & Assert
   TriggerNewTabPageAdEventAndVerifiyExpectations(
       test::kPlacementId, test::kCreativeInstanceId,
@@ -177,6 +274,8 @@ TEST_F(
     DoNotTriggerViewedEventIfShouldNotAlwaysTriggerAdEventsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
+
+  MockCreativeNewTabPageAds();
 
   // Act & Assert
   TriggerNewTabPageAdEventAndVerifiyExpectations(
@@ -191,6 +290,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
   test::ForcePermissionRules();
+
+  MockCreativeNewTabPageAds();
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   base::RunLoop run_loop;
@@ -224,6 +325,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
 
   test::DisableBraveRewards();
 
+  MockCreativeNewTabPageAds();
+
   TriggerNewTabPageAdEventAndVerifiyExpectations(
       test::kPlacementId, test::kCreativeInstanceId,
       mojom::NewTabPageAdEventType::kViewedImpression,
@@ -241,6 +344,8 @@ TEST_F(
     DoNotTriggerClickedEventIfShouldNotAlwaysTriggerAdEventsForNonRewardsUser) {
   // Arrange
   test::DisableBraveRewards();
+
+  MockCreativeNewTabPageAds();
 
   TriggerNewTabPageAdEventAndVerifiyExpectations(
       test::kPlacementId, test::kCreativeInstanceId,
@@ -265,6 +370,8 @@ TEST_F(BraveAdsNewTabPageAdIntegrationTest,
       kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature);
 
   test::ForcePermissionRules();
+
+  MockCreativeNewTabPageAds();
 
   base::MockCallback<MaybeServeNewTabPageAdCallback> callback;
   base::RunLoop run_loop;
