@@ -39,4 +39,10 @@ if (!variablesLink) {
   document.head.appendChild(link)
 }
 
-window['leoIcons'] = new Set(Object.keys(iconsMeta.icons))
+declare global {
+  interface Window {
+    leoIcons: Set<string>
+  }
+}
+
+window.leoIcons = new Set(Object.keys(iconsMeta.icons))

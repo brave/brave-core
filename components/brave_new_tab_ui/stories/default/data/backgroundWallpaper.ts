@@ -28,7 +28,7 @@ const generateWallpapers = function (images: NewTab.BackgroundWallpaper[],
     })
 
     if (!staticImages.defaultImage) {
-      staticImages.defaultImage = staticImages[image.author]
+      staticImages.defaultImage = staticImages[image.author as keyof typeof staticImages]
     }
   }
 

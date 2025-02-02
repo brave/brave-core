@@ -25,7 +25,7 @@ const Response = styled.div`
   border-radius: ${radius.m};
   border: 1px solid ${color.divider.subtle};
   background: ${color.container.background};
-  box-shadow: ${effect.elevation[1]};
+  box-shadow: ${effect.elevation['01']};
   align-self: stretch;
   overflow: hidden;
 `

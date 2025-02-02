@@ -67,8 +67,9 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      Object.keys(properties).map((property: string) => {
+      Object.keys(properties).map((property) => {
         if (properties[property] !== undefined && properties[property] !== 'ui') {
+          // @ts-expect-error - correct type for `property` should be added
           state[property] = properties[property]
         } else if (properties[property] === 'ui') {
           ui = Object.assign(ui, properties[property])
@@ -95,6 +96,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         chrome.send('brave_rewards.saveSetting', [key, value.toString()])
       }
 
+      // @ts-expect-error - nothing here is typed (except state) so we
+      // hit a suppressImplicitAnyIndexErrors error here.
       state[key] = value
       break
     }
@@ -191,11 +194,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.ON_CLEAR_ALERT: {
       let ui = state.ui
-      if (ui[action.payload.property] === undefined) {
+      const property: keyof typeof ui = action.payload.property
+      if (ui[property] === undefined) {
         break
       }
 
-      ui[action.payload.property] = null
+      // @ts-expect-error - not all properties of `ui` are nullable so this
+      // assignment is not sound.
+      ui[property] = null
       state = {
         ...state,
         ui
@@ -309,6 +315,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       if (key) {
         chrome.send('brave_rewards.saveAdsSetting', [key, value.toString()])
         state.adsData = { ...state.adsData }
+        // @ts-expect-error - key and value are any so this hits a
+        // suppressImplicitAnyIndexErrors error.
         state.adsData[key] = value
       }
       break

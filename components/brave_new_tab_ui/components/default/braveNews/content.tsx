@@ -18,13 +18,13 @@ import CardsGroup from './cardsGroup'
 import Customize from './options/customize'
 import Refresh from './options/refresh'
 
-function getFeedHashForCache (feed?: Feed) {
+function getFeedHashForCache(feed?: Feed) {
   return feed ? feed.hash : ''
 }
 
 let pageRequestPending = false
 
-export default function BraveNewsContent (props: Props) {
+export default function BraveNewsContent(props: Props) {
   const { feed, publishers } = props
 
   const dispatch = useDispatch()
@@ -46,7 +46,7 @@ export default function BraveNewsContent (props: Props) {
       console.debug('Brave News content Intersection Observer triggered', entries)
       const hasReachedPaginationPoint = entries.some(
         entry => entry.intersectionRatio > 0 ||
-                  entry.boundingClientRect.top < 0)
+          entry.boundingClientRect.top < 0)
       if (hasReachedPaginationPoint) {
         console.debug('Brave News content Intersection Observer determined need new page.')
         if (!pageRequestPending) {
@@ -115,15 +115,12 @@ export default function BraveNewsContent (props: Props) {
   // only local unless it's been awhile).
   React.useEffect(() => {
     const intervalMs = 2 * 60 * 1000
-    let timeoutHandle: number
-    setInterval(() => {
+    const timeoutHandle = setInterval(() => {
       props.onCheckForUpdate()
     }, intervalMs)
     // Cancel the timer when we are unmounted
     return () => {
-      if (timeoutHandle) {
-        clearInterval(timeoutHandle)
-      }
+      clearInterval(timeoutHandle)
     }
   }, [])
 
@@ -185,7 +182,7 @@ export default function BraveNewsContent (props: Props) {
     <>
       {/* no feed content available */}
       {showNoContentMessage &&
-      <CardNoContent onCustomize={props.onCustomizeBraveNews} />}
+        <CardNoContent onCustomize={props.onCustomizeBraveNews} />}
       {/* featured item */}
       {feed.featuredItem && <CardLarge
         content={[feed.featuredItem]}

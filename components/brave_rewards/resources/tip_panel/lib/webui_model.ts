@@ -16,6 +16,7 @@ export function createModel (): Model {
   const stateManager = createStateManager<ModelState>(defaultState())
   const proxy = TipPanelProxy.getInstance()
 
+  // @ts-expect-error - Symbol.for('stateManager') doesn't exist on self
   self[Symbol.for('stateManager')] = stateManager
 
   async function loadData () {

@@ -157,7 +157,7 @@ export const ImportAccountModal = () => {
 
   const onChangeImportOption = React.useCallback(
     (detail: SelectItemEventDetail) => {
-      setImportOption(detail.value as string)
+      setImportOption(detail.value!)
     },
     []
   )

@@ -31,7 +31,6 @@ const exchangeFormatter = new Intl.NumberFormat(undefined, {
   maximumFractionDigits: 2,
   minimumSignificantDigits: 1,
   maximumSignificantDigits: 1,
-  // @ts-expect-error: "roudingPriority" not yet recognized
   roundingPriority: 'morePrecision',
   roundingMode: 'ceil'
 })
@@ -176,7 +175,7 @@ export function PaymentForm(props: Props) {
           </div>
         </div>
         <div className='actions'>
-          <Button onClick={() => { model.beginExternalWalletLogin(provider)}}>
+          <Button onClick={() => { model.beginExternalWalletLogin(provider) }}>
             {
               formatMessage(getString('contributeLoginButtonLabel'), [
                 providerName

@@ -54,7 +54,7 @@ const modifiers = ['Control', 'Alt', 'Shift', 'Meta', 'Command']
 const keyTransforms = {
   'Meta': navigator.platform?.includes('Mac') && 'Command'
 }
-const getKey = (key: string) => keyTransforms[key] || key
+const getKey = (key: string) => keyTransforms[key as keyof typeof keyTransforms] || key
 
 const keyCodeCache: { [code: string]: string } = {}
 const getKeyFromCode = (code: string) => {
@@ -86,7 +86,7 @@ export default function ConfigureShortcut(props: {
 }) {
   const [current, setCurrent] = React.useState<{ codes: string[], isValid: boolean }>({ codes: [], isValid: false })
   const commands = useCommands()
-  const acceleratorLookup = React.useMemo(() => {
+  const acceleratorLookup: { [key: string]: number } = React.useMemo(() => {
     return Object.values(commands)
       .flatMap((c) => c.accelerators.map((a) => [c.id, a.codes]))
       .reduce((prev, next) => ({ ...prev, [next[1]]: next[0] }), {})

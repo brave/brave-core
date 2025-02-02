@@ -30,7 +30,7 @@ import YandexSVG from '../svg/browser-icons/yandex'
 import MicrosoftIE from '../svg/browser-icons/ie'
 
 interface BrowserItemButtonProps {
-  browserName: string
+  browserName: keyof typeof browserIcons
   onChange?: (browserName: string) => void
   isActive: boolean
 }
@@ -146,7 +146,7 @@ function SelectBrowser () {
       </div>
       <S.BrowserListBox>
         <div className="browser-list">
-          {browserTypes.map((entry, id) => {
+          {browserTypes.map((entry: keyof typeof browserIcons, id) => {
             return (
               <BrowserItemButton
                 key={id}

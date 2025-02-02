@@ -68,7 +68,7 @@ export class TrezorBridgeTransport extends MessagingTransport {
     if (!message || !this.handlers.has(message.id)) {
       return
     }
-    const callback = this.handlers.get(message.id) as Function
+    const callback = this.handlers.get(message.id)!
     callback.call(this, message)
     this.removeCommandHandler(event.data.id)
   }

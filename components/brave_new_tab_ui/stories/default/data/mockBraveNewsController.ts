@@ -2166,7 +2166,7 @@ export const mockBraveNewsController: Partial<BraveNewsControllerRemote> = {
   },
 
   async setChannelSubscribed(channelId, subscribed) {
-    return { updated: { ...(await mockBraveNewsController.getChannels!())[channelId], subscribed } }
+    return { updated: { ...(await mockBraveNewsController.getChannels!()).channels[channelId], subscribed } }
   },
 
   async findFeeds() {
