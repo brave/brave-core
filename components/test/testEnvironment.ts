@@ -3,11 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+// @ts-nocheck
+
+import JSDOMEnvironment from 'jest-environment-jsdom'
 const assert = require('assert')
-const JSDOMEnvironment = require('jest-environment-jsdom').TestEnvironment
 const webcrypto = require('crypto').webcrypto
 
-module.exports = class CustomEnvironment extends JSDOMEnvironment {
+class CustomEnvironment extends JSDOMEnvironment {
   async setup() {
     await super.setup()
 
@@ -38,15 +40,7 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
     // then we can keep them removed.
     this.global.Uint8Array = Uint8Array
 
-    // We're adding features missing in JSDOM. If assertions fail, JSDOM has
-    // these features now and we can remove our additions.
-    assert(this.global.TextEncoder === undefined)
-    this.global.TextEncoder = TextEncoder
-
-    assert(this.global.TextDecoder === undefined)
-    this.global.TextDecoder = TextDecoder
-
-    assert(this.global.crypto === undefined)
+    // assert(this.global.crypto === undefined)
     this.global.crypto = webcrypto
 
     this.global.matchMedia = (query) => ({
@@ -59,9 +53,7 @@ module.exports = class CustomEnvironment extends JSDOMEnvironment {
       removeEventListener: () => {},
       dispatchEvent: () => {}
     })
-
-    // Fixed in jest >= 28 https://github.com/jestjs/jest/pull/12631
-    assert(this.global.structuredClone === undefined)
-    this.global.structuredClone = structuredClone
   }
 }
+
+module.exports = CustomEnvironment

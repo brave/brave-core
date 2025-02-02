@@ -6,7 +6,10 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
+const { createJsWithTsEsmPreset } = require('ts-jest')
+
 const crossPlatforms = ['mac', 'win']
+
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
 
@@ -33,23 +36,16 @@ function getReporters() {
   }
 }
 
-/**
- * @type {import('@jest/types').Config.InitialOptions}
- */
-module.exports = {
-  preset: 'ts-jest/presets/default',
-  testEnvironment: '<rootDir>/components/test/testEnvironment.js',
+const jestConfig = {
+  ...createJsWithTsEsmPreset({
+    tsconfig: 'tsconfig-jest.json',
+    isolatedModules: true,
+     useESM: true,
+  }),
+  testEnvironment: '<rootDir>/components/test/testEnvironment.ts',
   moduleFileExtensions: ['js', 'tsx', 'ts', 'json'],
-  globals: {
-    'ts-jest': {
-      'tsconfig': 'tsconfig-jest.json',
-      'isolatedModules': true,
-      useESM: true
-    }
-  },
-  transform: {
-    '\\.(jsx|js|ts|tsx)$': 'ts-jest'
-  },
+  extensionsToTreatAsEsm: [".ts", ".tsx"],
+  // @ts-ignore
   reporters: getReporters(),
   clearMocks: true,
   resetMocks: true,
@@ -80,7 +76,7 @@ module.exports = {
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!.*/)',
+    '<rootDir>/node_modules',
     // prevent jest from transforming itself
     // https://github.com/jestjs/jest/issues/9503#issuecomment-709041807
     '<rootDir>/node_modules/@babel',
@@ -126,3 +122,5 @@ module.exports = {
       '<rootDir>/node_modules/@ledgerhq/devices/lib/hid-framing'
   }
 }
+
+module.exports = jestConfig
