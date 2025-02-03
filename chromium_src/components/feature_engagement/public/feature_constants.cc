@@ -10,9 +10,11 @@
 namespace feature_engagement {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+#if !BUILDFLAG(IS_ANDROID)
     {kIPHGMCCastStartStopFeature, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIPHPasswordsManagementBubbleAfterSaveFeature,
      base::FEATURE_DISABLED_BY_DEFAULT},
+#endif
 }});
 
 }  // namespace feature_engagement

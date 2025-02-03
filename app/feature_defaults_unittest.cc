@@ -22,7 +22,6 @@
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
-#include "components/feature_engagement/public/feature_constants.h"
 #include "components/heap_profiling/in_process/heap_profiler_parameters.h"
 #include "components/history/core/browser/features.h"
 #include "components/history_clusters/core/features.h"
@@ -72,6 +71,7 @@
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "components/device_signals/core/common/signals_features.h"
+#include "components/feature_engagement/public/feature_constants.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
@@ -128,10 +128,8 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
-#if !BUILDFLAG(IS_ANDROID)
       &feature_engagement::kIPHGMCCastStartStopFeature,
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
-#endif
       &features::kToolbarPinning,
 #endif
       &features::kBookmarkTriggerForPrerender2,
