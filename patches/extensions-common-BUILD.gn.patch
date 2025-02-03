@@ -1,0 +1,12 @@
+diff --git a/extensions/common/BUILD.gn b/extensions/common/BUILD.gn
+index 118c7255c77e74bd8c5cdb011c7f9bc96288de40..51d7fc9375d5f4a9629b1d8842b50e1ab3e8e675 100644
+--- a/extensions/common/BUILD.gn
++++ b/extensions/common/BUILD.gn
+@@ -551,6 +551,7 @@ static_library("common") {
+     "//url",
+   ]
+ 
++  deps += ["//brave/components/skus/renderer"]
+   if (enable_extensions) {
+     deps += [ "//extensions:extensions_resources" ]
+   }
