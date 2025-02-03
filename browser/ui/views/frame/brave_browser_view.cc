@@ -36,13 +36,13 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
@@ -101,10 +101,15 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/browser/ui/views/wayback_machine_bubble_view.h"
+#endif
+
+#if BUILDFLAG(ENTERPRISE_WATERMARK)
+#include "chrome/browser/enterprise/watermark/watermark_view.h"
 #endif
 
 namespace {
@@ -219,6 +224,16 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
 
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  reader_mode_toolbar_ = contents_container_->AddChildView(
+      std::make_unique<ReaderModeToolbarView>(browser_.get()));
+
+  contents_container_->SetLayoutManager(
+      std::make_unique<BraveContentsLayoutManager>(
+          devtools_web_view(), contents_web_view(), watermark_view_.get(),
+          reader_mode_toolbar_));
+#endif
+
   if (BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
     // Collapse the separator line between the toolbar or bookmark bar and the
     // views below.
@@ -454,7 +469,7 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
       arrow = views::BubbleBorder::TOP_RIGHT;
       break;
     case speedreader::SpeedreaderBubbleLocation::kToolbar:
-      anchor = reader_mode_toolbar_view_->toolbar();
+      anchor = reader_mode_toolbar_->toolbar();
       arrow = views::BubbleBorder::TOP_LEFT;
       break;
   }
@@ -467,33 +482,24 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
   return reader_mode_bubble;
 }
 
-void BraveBrowserView::ShowReaderModeToolbar() {
-  if (!reader_mode_toolbar_view_) {
-    reader_mode_toolbar_view_ =
-        std::make_unique<ReaderModeToolbarView>(GetProfile());
-    if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser_.get())) {
-      SetBorder(views::CreateThemedSolidSidedBorder(
-          gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
-    }
-    AddChildView(reader_mode_toolbar_view_.get());
-
-    // See the comment of same code in ctor.
-    // TODO(simonhong): Find more better way instead of calling multiple
-    // times.
-    ReorderChildView(find_bar_host_view_, -1);
-    GetBrowserViewLayout()->set_reader_mode_toolbar(
-        reader_mode_toolbar_view_.get());
-  } else {
-    reader_mode_toolbar_view_->SetVisible(true);
+void BraveBrowserView::UpdateReaderModeToolbar() {
+  if (reader_mode_toolbar_) {
+    auto is_distilled = [](content::WebContents* web_contents) {
+      if (!web_contents) {
+        return false;
+      }
+      if (auto* th = speedreader::SpeedreaderTabHelper::FromWebContents(
+              web_contents)) {
+        return speedreader::DistillStates::IsDistilled(th->PageDistillState());
+      }
+      return false;
+    };
+    reader_mode_toolbar_->SetVisible(
+        is_distilled(browser()->tab_strip_model()->GetActiveWebContents()));
   }
 
-  DeprecatedLayoutImmediately();
-}
-
-void BraveBrowserView::HideReaderModeToolbar() {
-  if (reader_mode_toolbar_view_ && reader_mode_toolbar_view_->GetVisible()) {
-    reader_mode_toolbar_view_->SetVisible(false);
-    DeprecatedLayoutImmediately();
+  if (split_view_) {
+    split_view_->UpdateSecondaryReaderModeToolbar();
   }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
@@ -843,6 +849,15 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
     split_view_->DidChangeActiveWebContents(
         /*passkey*/ {}, old_contents, new_contents);
   }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  UpdateReaderModeToolbar();
+  if (split_view_ && reader_mode_toolbar_ &&
+      split_view_->secondary_reader_mode_toolbar()) {
+    reader_mode_toolbar_->SwapToolbarContents(
+        split_view_->secondary_reader_mode_toolbar());
+  }
+#endif
 }
 
 bool BraveBrowserView::AcceleratorPressed(const ui::Accelerator& accelerator) {

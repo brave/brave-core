@@ -8,10 +8,12 @@
 #include <utility>
 
 #include "base/types/to_address.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
@@ -27,7 +29,6 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
-#include "ui/views/layout/fill_layout.h"
 
 namespace {
 
@@ -64,7 +65,7 @@ SplitView::SplitView(Browser& browser,
       contents_container_(contents_container),
       contents_web_view_(contents_web_view) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
-  SplitViewBrowserData::CreateForBrowser(&browser_.get());
+  SplitViewBrowserData::CreateForBrowser(base::to_address(browser_));
 
   // Re-parent the |contents_container| to this view.
   AddChildView(
@@ -84,10 +85,13 @@ SplitView::SplitView(Browser& browser,
   split_view_separator_ = AddChildView(
       std::make_unique<SplitViewSeparator>(base::to_address(browser_)));
 
+  secondary_reader_mode_toolbar_ = secondary_contents_container_->AddChildView(
+      std::make_unique<ReaderModeToolbarView>(base::to_address(browser_)));
+
   secondary_contents_container_->SetLayoutManager(
-      std::make_unique<ContentsLayoutManager>(secondary_devtools_web_view_,
-                                              secondary_contents_web_view_,
-                                              secondary_contents_scrim_view_));
+      std::make_unique<BraveContentsLayoutManager>(
+          secondary_devtools_web_view_, secondary_contents_web_view_, nullptr,
+          secondary_reader_mode_toolbar_));
 
   SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
       contents_container_, secondary_contents_container_,
@@ -421,12 +425,46 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
   split_view_separator_->SetVisible(
       secondary_contents_container_->GetVisible());
 
+  UpdateSecondaryReaderModeToolbar();
+
   InvalidateLayout();
 }
 
 void SplitView::UpdateCornerRadius(const gfx::RoundedCornersF& corners) {
   secondary_contents_web_view_->holder()->SetCornerRadii(corners);
   secondary_devtools_web_view_->holder()->SetCornerRadii(corners);
+}
+
+void SplitView::UpdateSecondaryReaderModeToolbar() {
+  if (!secondary_reader_mode_toolbar_) {
+    return;
+  }
+
+  auto is_distilled = [](tabs::TabHandle tab_handle) {
+    if (!tab_handle.Get() || !tab_handle.Get()->GetContents()) {
+      return false;
+    }
+    if (auto* th = speedreader::SpeedreaderTabHelper::FromWebContents(
+            tab_handle.Get()->GetContents())) {
+      return speedreader::DistillStates::IsDistilled(th->PageDistillState());
+    }
+    return false;
+  };
+
+  auto active_tab_handle = GetActiveTabHandle();
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
+  if (secondary_reader_mode_toolbar_) {
+    if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
+      if (tile->first == active_tab_handle) {
+        secondary_reader_mode_toolbar_->SetVisible(is_distilled(tile->second));
+      } else {
+        secondary_reader_mode_toolbar_->SetVisible(is_distilled(tile->first));
+      }
+    } else if (secondary_reader_mode_toolbar_) {
+      secondary_reader_mode_toolbar_->SetVisible(false);
+    }
+  }
 }
 
 void SplitView::UpdateSecondaryDevtoolsLayoutAndVisibility() {

@@ -343,14 +343,8 @@ void SpeedreaderTabHelper::UpdateUI() {
   }
 #if !BUILDFLAG(IS_ANDROID)
   if (const auto* browser = chrome::FindBrowserWithTab(web_contents())) {
-    if (!DistillStates::IsDistilled(PageDistillState())) {
-      static_cast<BraveBrowserWindow*>(browser->window())
-          ->HideReaderModeToolbar();
-    } else {
-      static_cast<BraveBrowserWindow*>(browser->window())
-          ->ShowReaderModeToolbar();
-    }
-
+    static_cast<BraveBrowserWindow*>(browser->window())
+        ->UpdateReaderModeToolbar();
     browser->window()->UpdatePageActionIcon(
         brave::kSpeedreaderPageActionIconType);
   }

@@ -97,8 +97,7 @@ class BraveBrowserView : public BrowserView,
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
       speedreader::SpeedreaderBubbleLocation location) override;
-  void ShowReaderModeToolbar() override;
-  void HideReaderModeToolbar() override;
+  void UpdateReaderModeToolbar() override;
 #endif
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
@@ -212,7 +211,7 @@ class BraveBrowserView : public BrowserView,
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  std::unique_ptr<ReaderModeToolbarView> reader_mode_toolbar_view_;
+  raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

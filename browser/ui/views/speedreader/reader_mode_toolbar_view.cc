@@ -7,10 +7,16 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_controller.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "url/gurl.h"
@@ -25,10 +31,10 @@ constexpr gfx::Size kToolbarSize{870, 40};
 
 class Toolbar : public views::WebView {
  public:
-  explicit Toolbar(content::BrowserContext* browser_context)
-      : views::WebView(browser_context) {
+  Toolbar(ReaderModeToolbarView* owner,
+          content::BrowserContext* browser_context)
+      : views::WebView(browser_context), owner_(owner) {
     set_allow_accelerators(true);
-    LoadInitialURL(GURL(kSpeedreaderPanelURL));
   }
 
  private:
@@ -38,21 +44,62 @@ class Toolbar : public views::WebView {
     // Ignore context menu.
     return true;
   }
+
+  raw_ptr<ReaderModeToolbarView> owner_ = nullptr;
 };
 
 }  // namespace
 
-ReaderModeToolbarView::ReaderModeToolbarView(
-    content::BrowserContext* browser_context) {
+ReaderModeToolbarView::ReaderModeToolbarView(Browser* browser) {
+  SetVisible(false);
   SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
-  toolbar_ = std::make_unique<Toolbar>(browser_context);
+
+  if (!BraveBrowser::ShouldUseBraveWebViewRoundedCorners(browser)) {
+    SetBorder(views::CreateThemedSolidSidedBorder(
+        gfx::Insets::TLBR(0, 0, 1, 0), kColorToolbarContentAreaSeparator));
+  }
+
+  toolbar_ = std::make_unique<Toolbar>(this, browser->profile());
   AddChildView(toolbar_.get());
 }
 
 ReaderModeToolbarView::~ReaderModeToolbarView() = default;
 
+void ReaderModeToolbarView::SetVisible(bool visible) {
+  if (visible && !toolbar_contents_) {
+    content::WebContents::CreateParams create_params(
+        toolbar_->GetBrowserContext(), FROM_HERE);
+    toolbar_contents_ = content::WebContents::Create(create_params);
+
+    const GURL toolbar_url(kSpeedreaderPanelURL);
+    content::NavigationController::LoadURLParams params(toolbar_url);
+    toolbar_contents_->GetController().LoadURLWithParams(params);
+
+    toolbar_->SetWebContents(toolbar_contents_.get());
+  }
+  views::View::SetVisible(visible);
+}
+
 content::WebContents* ReaderModeToolbarView::GetWebContentsForTesting() {
   return toolbar_->web_contents();
+}
+
+void ReaderModeToolbarView::SwapToolbarContents(
+    ReaderModeToolbarView* another_toolbar) {
+  if (!another_toolbar) {
+    return;
+  }
+
+  CHECK_NE(this, another_toolbar);
+
+  auto* contents = toolbar_->web_contents();
+  auto* another_contents = another_toolbar->toolbar_->web_contents();
+
+  toolbar_->SetWebContents(nullptr);
+  another_toolbar->toolbar_->SetWebContents(nullptr);
+
+  another_toolbar->toolbar_->SetWebContents(contents);
+  toolbar_->SetWebContents(another_contents);
 }
 
 gfx::Size ReaderModeToolbarView::CalculatePreferredSize(
