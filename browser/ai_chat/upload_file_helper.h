@@ -57,8 +57,10 @@ class UploadFileHelper : public ui::SelectFileDialog::Listener,
                       std::optional<std::vector<uint8_t>> output);
 
   // ConversationHandler::UploadedContentDelegate
-  std::vector<mojom::UploadedImagePtr> GetUploadedImages() override;
+  std::optional<std::vector<mojom::UploadedImagePtr>> GetUploadedImages()
+      override;
   size_t GetUploadedImagesSize() override;
+  void ClearUploadedImages() override;
 
   std::vector<mojom::UploadedImagePtr> uploaded_images_;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
