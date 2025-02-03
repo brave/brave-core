@@ -126,7 +126,6 @@ const Config = function () {
   this.internalDepsUrl = 'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
   this.defaultBuildConfig = getEnvConfig(['default_build_config']) || 'Component'
   this.buildConfig = this.defaultBuildConfig
-  this.signTarget = 'sign_app'
   this.buildTargets = ['brave']
   this.rootDir = rootDir
   this.isUniversalBinary = false
