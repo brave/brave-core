@@ -78,6 +78,8 @@ provideStrings({
   cancelButtonLabel: 'Cancel',
   saveButtonLabel: 'Save',
   editButtonLabel: 'Edit',
+  editPromptButtonLabel: 'Edit prompt',
+  copyPromptButtonLabel: 'Copy prompt',
   editedLabel: 'Edited',
   optionNotHelpful: 'Not helpful',
   optionIncorrect: 'Incorrect',
