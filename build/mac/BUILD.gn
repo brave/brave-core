@@ -489,11 +489,14 @@ _upstream_signed_dmg_path = "$root_out_dir/$mac_signed_output_prefix/" + string_
 
 action("_sign_dmg") {
   deps = [
+    ":browser_install_script",
     ":copies",
+    ":dmg_background_image",
+    ":dmg_icon",
+    ":ds_store",
     ":signing_config",
     "//chrome:chrome_app",
     "//chrome/installer/mac",
-    "//chrome/updater/mac:browser_install_script",
   ]
   script = "$packaging_dir/sign_chrome.py"
   args = [
@@ -540,6 +543,27 @@ copy("signing_config") {
     "signing/internal_invoker.py",
   ]
   outputs = [ "$packaging_dir/signing/{{source_file_part}}" ]
+}
+
+copy("browser_install_script") {
+  deps = [ "//chrome/updater/mac:browser_install_script" ]
+  sources = [ "$root_out_dir/$browser_product_name Packaging/updater/.install" ]
+  outputs = [ "$packaging_dir/keystone_install.sh" ]
+}
+
+copy("dmg_background_image") {
+  sources = [ "dmg-background.png" ]
+  outputs = [ "$packaging_dir/chrome_dmg_background.png" ]
+}
+
+copy("dmg_icon") {
+  sources = [ "$dmg_icon_file_name.icns" ]
+  outputs = [ "$packaging_dir/chrome_dmg_icon.icns" ]
+}
+
+copy("ds_store") {
+  sources = [ "DS_Store-files/$ds_store_file_name" ]
+  outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
 }
 
 copy("sign_dmg") {
