@@ -15,6 +15,7 @@ namespace brave_wallet {
 
 class BitcoinBaseKeyring {
  public:
+  explicit BitcoinBaseKeyring(mojom::KeyringId keyring_id);
   virtual ~BitcoinBaseKeyring();
 
   virtual mojom::BitcoinAddressPtr GetAddress(
@@ -29,6 +30,12 @@ class BitcoinBaseKeyring {
       uint32_t account,
       const mojom::BitcoinKeyId& key_id,
       base::span<const uint8_t, 32> message) = 0;
+
+  mojom::KeyringId keyring_id() const { return keyring_id_; }
+  bool IsTestnet() const;
+
+ protected:
+  mojom::KeyringId keyring_id_;
 };
 
 }  // namespace brave_wallet

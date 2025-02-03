@@ -88,7 +88,7 @@ class BitcoinKnapsackSolverUnitTest : public testing::Test {
 
   bool testnet_ = false;
   BitcoinHDKeyring keyring_{*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
-                            testnet_};
+                            mojom::KeyringId::kBitcoin84};
 };
 
 TEST_F(BitcoinKnapsackSolverUnitTest, NoInputs) {

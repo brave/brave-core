@@ -40,6 +40,8 @@ class HDKeyEd25519Slip23 {
       base::span<const uint8_t> entropy);
 
   std::unique_ptr<HDKeyEd25519Slip23> DeriveChild(DerivationIndex index);
+  std::unique_ptr<HDKeyEd25519Slip23> DeriveChildFromPath(
+      base::span<const DerivationIndex> path);
 
   std::optional<std::array<uint8_t, kEd25519SignatureSize>> Sign(
       base::span<const uint8_t> msg);

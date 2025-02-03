@@ -46,6 +46,10 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
       return "bitcoin_hardware";
     case mojom::KeyringId::kBitcoinHardwareTestnet:
       return "bitcoin_hardware_test";
+    case mojom::KeyringId::kCardanoMainnet:
+      return "cardano_mainnet";
+    case mojom::KeyringId::kCardanoTestnet:
+      return "cardano_testnet";
   }
   NOTREACHED();
 }

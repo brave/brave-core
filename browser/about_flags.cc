@@ -185,6 +185,11 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
        FEATURE_WITH_PARAMS_VALUE_TYPE(                                        \
            brave_wallet::features::kBraveWalletZCashFeature,                  \
            kZCashFeatureVariations, "BraveWalletZCash")},                     \
+      {"brave-wallet-cardano", "Enable BraveWallet Cardano support",          \
+       "Cardano support for native Brave Wallet. EXPERIMENTAL!. ",            \
+       kOsDesktop | kOsAndroid,                                               \
+       FEATURE_VALUE_TYPE(                                                    \
+           brave_wallet::features::kBraveWalletCardanoFeature)},              \
       {                                                                       \
           "brave-wallet-bitcoin",                                             \
           "Enable Brave Wallet Bitcoin support",                              \

@@ -55,13 +55,15 @@ std::unique_ptr<HDKeyZip32> ConstructOrchardAccountsRootKey(
 
 }  // namespace
 
-ZCashKeyring::ZCashKeyring(base::span<const uint8_t> seed, bool testnet)
-    : testnet_(testnet) {
-  accounts_root_ = ConstructAccountsRootKey(seed, testnet);
+ZCashKeyring::ZCashKeyring(base::span<const uint8_t> seed,
+                           mojom::KeyringId keyring_id)
+    : keyring_id_(keyring_id) {
+  CHECK(IsZCashKeyring(keyring_id));
+  accounts_root_ = ConstructAccountsRootKey(seed, IsTestnet());
 
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (!seed.empty() && IsZCashShieldedTransactionsEnabled()) {
-    orchard_accounts_root_ = ConstructOrchardAccountsRootKey(seed, testnet);
+    orchard_accounts_root_ = ConstructOrchardAccountsRootKey(seed, IsTestnet());
   }
 #endif
 }
@@ -75,8 +77,8 @@ mojom::ZCashAddressPtr ZCashKeyring::GetTransparentAddress(
     return nullptr;
   }
 
-  return mojom::ZCashAddress::New(hd_key->GetZCashTransparentAddress(testnet_),
-                                  key_id.Clone());
+  return mojom::ZCashAddress::New(
+      hd_key->GetZCashTransparentAddress(IsTestnet()), key_id.Clone());
 }
 
 std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkey(
@@ -90,7 +92,7 @@ std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkey(
 }
 
 std::string ZCashKeyring::GetAddressInternal(const HDKey& hd_key) const {
-  return hd_key.GetZCashTransparentAddress(testnet_);
+  return hd_key.GetZCashTransparentAddress(IsTestnet());
 }
 
 std::optional<std::vector<uint8_t>> ZCashKeyring::GetPubkeyHash(
@@ -142,7 +144,7 @@ std::optional<std::string> ZCashKeyring::GetUnifiedAddress(
           ParsedAddress(ZCashAddrType::kOrchard,
                         std::vector<uint8_t>(orchard_addr_bytes->begin(),
                                              orchard_addr_bytes->end()))},
-      testnet_);
+      IsTestnet());
 }
 
 mojom::ZCashAddressPtr ZCashKeyring::GetShieldedAddress(
@@ -161,7 +163,7 @@ mojom::ZCashAddressPtr ZCashKeyring::GetShieldedAddress(
     return nullptr;
   }
 
-  auto addr_str = GetOrchardUnifiedAddress(addr_bytes.value(), testnet_);
+  auto addr_str = GetOrchardUnifiedAddress(addr_bytes.value(), IsTestnet());
   if (!addr_str) {
     return nullptr;
   }
@@ -242,6 +244,10 @@ std::string ZCashKeyring::EncodePrivateKeyForExport(
     const std::string& address) {
   NOTIMPLEMENTED();
   return "";
+}
+
+bool ZCashKeyring::IsTestnet() const {
+  return IsZCashTestnetKeyring(keyring_id_);
 }
 
 }  // namespace brave_wallet

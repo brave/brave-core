@@ -15,11 +15,14 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
+
 using mojom::BitcoinKeyId;
+using mojom::KeyringId::kBitcoinImport;
+using mojom::KeyringId::kBitcoinImportTestnet;
 
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(BitcoinImportKeyringUnitTest, TestVectors) {
-  BitcoinImportKeyring keyring(false);
+  BitcoinImportKeyring keyring(kBitcoinImport);
   EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
   EXPECT_TRUE(keyring.AddAccount(1, kBtcMainnetImportAccount1));
 
@@ -42,7 +45,7 @@ TEST(BitcoinImportKeyringUnitTest, TestVectors) {
 }
 
 TEST(BitcoinImportKeyringUnitTest, AddAccountFails) {
-  BitcoinImportKeyring keyring(false);
+  BitcoinImportKeyring keyring(kBitcoinImport);
 
   EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
 
@@ -52,12 +55,12 @@ TEST(BitcoinImportKeyringUnitTest, AddAccountFails) {
   // Wrong network.
   EXPECT_FALSE(keyring.AddAccount(1, kBtcTestnetImportAccount0));
 
-  BitcoinImportKeyring testnet_keyring(true);
+  BitcoinImportKeyring testnet_keyring(kBitcoinImportTestnet);
   EXPECT_FALSE(testnet_keyring.AddAccount(0, kBtcMainnetImportAccount0));
 }
 
 TEST(BitcoinImportKeyringUnitTest, GetAddress) {
-  BitcoinImportKeyring keyring(false);
+  BitcoinImportKeyring keyring(kBitcoinImport);
   EXPECT_FALSE(keyring.GetAddress(0, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetAddress(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetAddress(2, BitcoinKeyId(0, 0)));
@@ -80,7 +83,7 @@ TEST(BitcoinImportKeyringUnitTest, GetAddress) {
   EXPECT_EQ(keyring.GetAddress(1, BitcoinKeyId(1, 0))->address_string,
             "bc1qt0x83f5vmnapgl2gjj9r3d67rcghvjaqrvgpck");
 
-  BitcoinImportKeyring testnet_keyring(true);
+  BitcoinImportKeyring testnet_keyring(kBitcoinImportTestnet);
   EXPECT_FALSE(testnet_keyring.GetAddress(0, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetAddress(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetAddress(2, BitcoinKeyId(0, 0)));
@@ -105,7 +108,7 @@ TEST(BitcoinImportKeyringUnitTest, GetAddress) {
 }
 
 TEST(BitcoinImportKeyringUnitTest, GetPubkey) {
-  BitcoinImportKeyring keyring(false);
+  BitcoinImportKeyring keyring(kBitcoinImport);
   EXPECT_FALSE(keyring.GetPubkey(0, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetPubkey(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
@@ -134,7 +137,7 @@ TEST(BitcoinImportKeyringUnitTest, GetPubkey) {
       base::HexEncode(*keyring.GetPubkey(1, BitcoinKeyId(1, 0))),
       "025695996D13031C54896990E6E38DB5849F5A64FA81142B452D6E23C36FD83880");
 
-  BitcoinImportKeyring testnet_keyring(true);
+  BitcoinImportKeyring testnet_keyring(kBitcoinImportTestnet);
   EXPECT_FALSE(testnet_keyring.GetPubkey(0, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetPubkey(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
@@ -165,7 +168,7 @@ TEST(BitcoinImportKeyringUnitTest, GetPubkey) {
 }
 
 TEST(BitcoinImportKeyringUnitTest, SignMessage) {
-  BitcoinImportKeyring keyring(false);
+  BitcoinImportKeyring keyring(kBitcoinImport);
   EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetImportAccount0));
   std::vector<uint8_t> message(32, 0);
   EXPECT_EQ(

@@ -730,6 +730,8 @@ std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
       return kFilecoinPrefKey;
     case mojom::CoinType::SOL:
       return kSolanaPrefKey;
+    case mojom::CoinType::ADA:
+      return kCardanoPrefKey;
   }
   NOTREACHED() << coin;
 }

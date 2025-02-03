@@ -3240,9 +3240,10 @@ TEST_F(KeyringServiceUnitTest, BitcoinDiscovery) {
 
   bitcoin_test_rpc_server.SetUpBitcoinRpc(std::nullopt, std::nullopt);
   BitcoinHDKeyring keyring_84(*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
-                              false);
+                              mojom::KeyringId::kBitcoin84);
   BitcoinHDKeyring keyring_84_test(
-      *bip39::MnemonicToSeed(kMnemonicAbandonAbandon), true);
+      *bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
+      mojom::KeyringId::kBitcoin84Testnet);
 
   // Account 0
   bitcoin_test_rpc_server.AddTransactedAddress(

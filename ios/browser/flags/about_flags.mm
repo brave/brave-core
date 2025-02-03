@@ -53,6 +53,14 @@
               brave_wallet::features::kBraveWalletBitcoinFeature),            \
       },                                                                      \
       {                                                                       \
+          "brave-wallet-cardano",                                             \
+          "Enable BraveWallet Cardano support",                               \
+          "Cardano support for native Brave Wallet. EXPERIMENTAL!. ",         \
+          flags_ui::kOsIos,                                                   \
+          FEATURE_VALUE_TYPE(                                                 \
+              brave_wallet::features::kBraveWalletCardanoFeature),            \
+      },                                                                      \
+      {                                                                       \
           "brave-wallet-enable-ankr-balances",                                \
           "Enable Ankr balances",                                             \
           "Enable usage of Ankr Advanced API for fetching balances in Brave " \
@@ -76,7 +84,7 @@
       {                                                                        \
           "brave-shred",                                                       \
           "Enable Brave 'Shred' Feature",                                      \
-          "Enable the Brave ‘Shred’ feature which will allow a user to "   \
+          "Enable the Brave ‘Shred’ feature which will allow a user to "       \
           "easily delete all site data on demand or automatically when "       \
           "closing a site or terminating the application.",                    \
           flags_ui::kOsIos,                                                    \

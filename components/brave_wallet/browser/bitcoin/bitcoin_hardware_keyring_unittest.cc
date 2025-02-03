@@ -16,10 +16,12 @@
 
 namespace brave_wallet {
 using mojom::BitcoinKeyId;
+using mojom::KeyringId::kBitcoinHardware;
+using mojom::KeyringId::kBitcoinHardwareTestnet;
 
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(BitcoinHardwareKeyringUnitTest, TestVectors) {
-  BitcoinHardwareKeyring keyring(false);
+  BitcoinHardwareKeyring keyring(kBitcoinHardware);
   EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetHardwareAccount0));
   EXPECT_TRUE(keyring.AddAccount(1, kBtcMainnetHardwareAccount1));
 
@@ -42,7 +44,7 @@ TEST(BitcoinHardwareKeyringUnitTest, TestVectors) {
 }
 
 TEST(BitcoinHardwareKeyringUnitTest, AddAccountFails) {
-  BitcoinHardwareKeyring keyring(false);
+  BitcoinHardwareKeyring keyring(kBitcoinHardware);
 
   EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetHardwareAccount0));
 
@@ -52,12 +54,12 @@ TEST(BitcoinHardwareKeyringUnitTest, AddAccountFails) {
   // Wrong network.
   EXPECT_FALSE(keyring.AddAccount(1, kBtcTestnetHardwareAccount0));
 
-  BitcoinHardwareKeyring testnet_keyring(true);
+  BitcoinHardwareKeyring testnet_keyring(kBitcoinHardwareTestnet);
   EXPECT_FALSE(testnet_keyring.AddAccount(0, kBtcMainnetHardwareAccount0));
 }
 
 TEST(BitcoinHardwareKeyringUnitTest, GetAddress) {
-  BitcoinHardwareKeyring keyring(false);
+  BitcoinHardwareKeyring keyring(kBitcoinHardware);
   EXPECT_FALSE(keyring.GetAddress(0, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetAddress(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetAddress(2, BitcoinKeyId(0, 0)));
@@ -80,7 +82,7 @@ TEST(BitcoinHardwareKeyringUnitTest, GetAddress) {
   EXPECT_EQ(keyring.GetAddress(1, BitcoinKeyId(1, 0))->address_string,
             "bc1qt0x83f5vmnapgl2gjj9r3d67rcghvjaqrvgpck");
 
-  BitcoinHardwareKeyring testnet_keyring(true);
+  BitcoinHardwareKeyring testnet_keyring(kBitcoinHardwareTestnet);
   EXPECT_FALSE(testnet_keyring.GetAddress(0, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetAddress(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetAddress(2, BitcoinKeyId(0, 0)));
@@ -105,7 +107,7 @@ TEST(BitcoinHardwareKeyringUnitTest, GetAddress) {
 }
 
 TEST(BitcoinHardwareKeyringUnitTest, GetPubkey) {
-  BitcoinHardwareKeyring keyring(false);
+  BitcoinHardwareKeyring keyring(kBitcoinHardware);
   EXPECT_FALSE(keyring.GetPubkey(0, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetPubkey(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
@@ -134,7 +136,7 @@ TEST(BitcoinHardwareKeyringUnitTest, GetPubkey) {
       base::HexEncode(*keyring.GetPubkey(1, BitcoinKeyId(1, 0))),
       "025695996D13031C54896990E6E38DB5849F5A64FA81142B452D6E23C36FD83880");
 
-  BitcoinHardwareKeyring testnet_keyring(true);
+  BitcoinHardwareKeyring testnet_keyring(kBitcoinHardwareTestnet);
   EXPECT_FALSE(testnet_keyring.GetPubkey(0, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetPubkey(1, BitcoinKeyId(0, 0)));
   EXPECT_FALSE(testnet_keyring.GetPubkey(2, BitcoinKeyId(0, 0)));
@@ -165,7 +167,7 @@ TEST(BitcoinHardwareKeyringUnitTest, GetPubkey) {
 }
 
 TEST(BitcoinHardwareKeyringUnitTest, SignMessage) {
-  BitcoinHardwareKeyring keyring(false);
+  BitcoinHardwareKeyring keyring(kBitcoinHardware);
   EXPECT_TRUE(keyring.AddAccount(0, kBtcMainnetHardwareAccount0));
   std::vector<uint8_t> message(32, 0);
   // Can't sign with HW keyring.

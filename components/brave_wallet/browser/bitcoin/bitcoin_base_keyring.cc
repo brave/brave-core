@@ -5,8 +5,19 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_base_keyring.h"
 
+#include "brave/components/brave_wallet/common/common_utils.h"
+
 namespace brave_wallet {
 
+BitcoinBaseKeyring::BitcoinBaseKeyring(mojom::KeyringId keyring_id)
+    : keyring_id_(keyring_id) {
+  CHECK(IsBitcoinKeyring(keyring_id_));
+}
+
 BitcoinBaseKeyring::~BitcoinBaseKeyring() = default;
+
+bool BitcoinBaseKeyring::IsTestnet() const {
+  return IsBitcoinTestnetKeyring(keyring_id_);
+}
 
 }  // namespace brave_wallet

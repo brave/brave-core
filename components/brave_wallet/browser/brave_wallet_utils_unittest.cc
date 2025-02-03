@@ -14,9 +14,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
 #include "base/test/scoped_feature_list.h"
@@ -284,18 +282,14 @@ TEST(BraveWalletUtilsTest, IsEndpointUsingBraveWalletProxy) {
 }
 
 TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
-  auto key = GetPrefKeyForCoinType(mojom::CoinType::ETH);
-  EXPECT_EQ(key, kEthereumPrefKey);
-  key = GetPrefKeyForCoinType(mojom::CoinType::FIL);
-  EXPECT_EQ(key, kFilecoinPrefKey);
-  key = GetPrefKeyForCoinType(mojom::CoinType::SOL);
-  EXPECT_EQ(key, kSolanaPrefKey);
-  key = GetPrefKeyForCoinType(mojom::CoinType::BTC);
-  EXPECT_EQ(key, kBitcoinPrefKey);
-  key = GetPrefKeyForCoinType(mojom::CoinType::ZEC);
-  EXPECT_EQ(key, kZCashPrefKey);
+  EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::ETH), "ethereum");
+  EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::FIL), "filecoin");
+  EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::SOL), "solana");
+  EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::BTC), "bitcoin");
+  EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::ADA), "cardano");
+  EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::ZEC), "zcash");
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 
   EXPECT_NOTREACHED_DEATH(
       GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));

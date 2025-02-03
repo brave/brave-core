@@ -51,6 +51,10 @@ bool IsBitcoinLedgerEnabled() {
                                    features::kBraveWalletBitcoinLedgerFeature);
 }
 
+bool IsCardanoEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveWalletCardanoFeature);
+}
+
 bool IsZCashEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletZCashFeature);
 }
@@ -83,25 +87,8 @@ bool IsFilecoinKeyringId(mojom::KeyringId keyring_id) {
 }
 
 bool IsBitcoinKeyring(mojom::KeyringId keyring_id) {
-  return keyring_id == mojom::KeyringId::kBitcoin84 ||
-         keyring_id == mojom::KeyringId::kBitcoin84Testnet ||
-         keyring_id == mojom::KeyringId::kBitcoinImport ||
-         keyring_id == mojom::KeyringId::kBitcoinImportTestnet ||
-         keyring_id == mojom::KeyringId::kBitcoinHardware ||
-         keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet;
-}
-
-bool IsZCashKeyring(mojom::KeyringId keyring_id) {
-  return keyring_id == mojom::KeyringId::kZCashMainnet ||
-         keyring_id == mojom::KeyringId::kZCashTestnet;
-}
-
-bool IsZCashMainnetKeyring(mojom::KeyringId keyring_id) {
-  return keyring_id == mojom::KeyringId::kZCashMainnet;
-}
-
-bool IsZCashTestnetKeyring(mojom::KeyringId keyring_id) {
-  return keyring_id == mojom::KeyringId::kZCashTestnet;
+  return IsBitcoinHDKeyring(keyring_id) || IsBitcoinImportKeyring(keyring_id) ||
+         IsBitcoinHardwareKeyring(keyring_id);
 }
 
 bool IsBitcoinMainnetKeyring(mojom::KeyringId keyring_id) {
@@ -136,20 +123,69 @@ bool IsBitcoinNetwork(const std::string& network_id) {
          network_id == mojom::kBitcoinTestnet;
 }
 
-bool IsZCashNetwork(const std::string& network_id) {
-  return network_id == mojom::kZCashMainnet ||
-         network_id == mojom::kZCashTestnet;
-}
-
 bool IsBitcoinAccount(const mojom::AccountId& account_id) {
   return account_id.coin == mojom::CoinType::BTC &&
          IsBitcoinKeyring(account_id.keyring_id);
+}
+
+bool IsZCashKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kZCashMainnet ||
+         keyring_id == mojom::KeyringId::kZCashTestnet;
+}
+
+bool IsZCashMainnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kZCashMainnet;
+}
+
+bool IsZCashTestnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kZCashTestnet;
+}
+
+bool IsZCashNetwork(const std::string& network_id) {
+  return network_id == mojom::kZCashMainnet ||
+         network_id == mojom::kZCashTestnet;
 }
 
 bool IsZCashAccount(const mojom::AccountId& account_id) {
   return account_id.coin == mojom::CoinType::ZEC &&
          IsZCashKeyring(account_id.keyring_id) &&
          account_id.kind == mojom::AccountKind::kDerived;
+}
+
+bool IsCardanoKeyring(mojom::KeyringId keyring_id) {
+  return IsCardanoHDKeyring(keyring_id) || IsCardanoImportKeyring(keyring_id) ||
+         IsCardanoHardwareKeyring(keyring_id);
+}
+
+bool IsCardanoMainnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kCardanoMainnet;
+}
+
+bool IsCardanoTestnetKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kCardanoTestnet;
+}
+
+bool IsCardanoHDKeyring(mojom::KeyringId keyring_id) {
+  return keyring_id == mojom::KeyringId::kCardanoMainnet ||
+         keyring_id == mojom::KeyringId::kCardanoTestnet;
+}
+
+bool IsCardanoImportKeyring(mojom::KeyringId keyring_id) {
+  return false;  // Not supported yet.
+}
+
+bool IsCardanoHardwareKeyring(mojom::KeyringId keyring_id) {
+  return false;  // Not supported yet.
+}
+
+bool IsCardanoNetwork(const std::string& network_id) {
+  return network_id == mojom::kCardanoMainnet ||
+         network_id == mojom::kCardanoTestnet;
+}
+
+bool IsCardanoAccount(const mojom::AccountId& account_id) {
+  return account_id.coin == mojom::CoinType::ADA &&
+         IsCardanoKeyring(account_id.keyring_id);
 }
 
 mojom::KeyringId GetFilecoinKeyringId(const std::string& network) {
@@ -186,6 +222,10 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
 
   if (IsBitcoinKeyring(keyring_id)) {
     return mojom::CoinType::BTC;
+  }
+
+  if (IsCardanoKeyring(keyring_id)) {
+    return mojom::CoinType::ADA;
   }
 
   if (IsZCashKeyring(keyring_id)) {
@@ -232,11 +272,15 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
 std::vector<mojom::CoinType> GetSupportedCoins() {
   std::vector<mojom::CoinType> coins = {
       mojom::CoinType::ETH, mojom::CoinType::SOL, mojom::CoinType::FIL};
+
   if (IsBitcoinEnabled()) {
     coins.push_back(mojom::CoinType::BTC);
   }
   if (IsZCashEnabled()) {
     coins.push_back(mojom::CoinType::ZEC);
+  }
+  if (IsCardanoEnabled()) {
+    coins.push_back(mojom::CoinType::ADA);
   }
   return coins;
 }
@@ -261,6 +305,10 @@ std::vector<mojom::KeyringId> GetSupportedKeyrings() {
   if (IsZCashEnabled()) {
     ids.push_back(mojom::KeyringId::kZCashMainnet);
     ids.push_back(mojom::KeyringId::kZCashTestnet);
+  }
+  if (IsCardanoEnabled()) {
+    ids.push_back(mojom::KeyringId::kCardanoMainnet);
+    ids.push_back(mojom::KeyringId::kCardanoTestnet);
   }
 
   DCHECK_GT(ids.size(), 0u);
@@ -301,6 +349,12 @@ std::vector<mojom::KeyringId> GetSupportedKeyringsForNetwork(
       } else {
         return {mojom::KeyringId::kZCashTestnet};
       }
+    case mojom::CoinType::ADA:
+      if (chain_id == mojom::kCardanoMainnet) {
+        return {mojom::KeyringId::kCardanoMainnet};
+      } else {
+        return {mojom::KeyringId::kCardanoTestnet};
+      }
   }
   NOTREACHED();
 }
@@ -328,7 +382,8 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
                                             mojom::AccountKind kind,
                                             uint32_t account_index) {
 #if DCHECK_IS_ON()
-  DCHECK(coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC);
+  DCHECK(coin == mojom::CoinType::BTC || coin == mojom::CoinType::ZEC ||
+         coin == mojom::CoinType::ADA);
   if (coin == mojom::CoinType::BTC) {
     DCHECK(IsBitcoinKeyring(keyring_id));
     if (IsBitcoinHDKeyring(keyring_id)) {

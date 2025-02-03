@@ -267,7 +267,7 @@ void BitcoinTestRpcServer::SetUpBitcoinRpc(
 
   if (mnemonic && account_index) {
     keyring_ = std::make_unique<BitcoinHDKeyring>(
-        *bip39::MnemonicToSeed(*mnemonic), false);
+        *bip39::MnemonicToSeed(*mnemonic), mojom::KeyringId::kBitcoin84);
 
     address_0_ =
         keyring_->GetAddress(*account_index_, *mojom::BitcoinKeyId::New(0, 0))

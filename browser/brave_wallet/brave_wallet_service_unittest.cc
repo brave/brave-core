@@ -1405,17 +1405,17 @@ TEST_F(BraveWalletServiceUnitTest, SetAssetSpamStatus) {
   EXPECT_TRUE(tokens[2]->visible);  // Should be visible since it's not spam
 
   // Try to set spam status for non-existing asset
-  mojom::BlockchainTokenPtr fakeToken = mojom::BlockchainToken::New();
-  fakeToken->contract_address = "0xFakeAddress";
-  fakeToken->chain_id = token1->chain_id;
+  mojom::BlockchainTokenPtr fake_token = mojom::BlockchainToken::New();
+  fake_token->contract_address = "0xFakeAddress";
+  fake_token->chain_id = token1->chain_id;
   // Should fail because asset does not exist
-  EXPECT_FALSE(SetAssetSpamStatus(fakeToken.Clone(), true));
+  EXPECT_FALSE(SetAssetSpamStatus(fake_token.Clone(), true));
 
   // Try to set spam status with invalid chain_id
-  mojom::BlockchainTokenPtr tokenWithInvalidChain = token1.Clone();
-  tokenWithInvalidChain->chain_id = "invalid_chain_id";
+  mojom::BlockchainTokenPtr token_with_invalid_chain = token1.Clone();
+  token_with_invalid_chain->chain_id = "invalid_chain_id";
   // Should fail because of invalid chain_id
-  EXPECT_FALSE(SetAssetSpamStatus(tokenWithInvalidChain.Clone(), true));
+  EXPECT_FALSE(SetAssetSpamStatus(token_with_invalid_chain.Clone(), true));
 
   // Set the spam_status of a token not in user assets list
   mojom::BlockchainTokenPtr token2 = GetToken1();
@@ -1685,7 +1685,7 @@ TEST_F(BraveWalletServiceUnitTest, AddCustomNetwork) {
               *network_manager_->GetAllCustomChains(mojom::CoinType::ZEC)[0]);
   }
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 }
 
 TEST_F(BraveWalletServiceUnitTest, AddCustomNetworkTwice) {
@@ -1734,8 +1734,6 @@ TEST_F(BraveWalletServiceUnitTest, ERC721TokenAddRemoveSetUserAssetVisible) {
   erc721_token_1->token_id = "0x1";
   auto erc721_token_2 = erc721_token_with_empty_token_id.Clone();
   erc721_token_2->token_id = "0x2";
-  auto erc721_token_1_ = erc721_token_with_empty_token_id.Clone();
-  erc721_token_1->token_id = "0x1";
 
   // Add ERC721 token without tokenId will fail.
   auto network = GetNetwork(mojom::kSepoliaChainId, mojom::CoinType::ETH);

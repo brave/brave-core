@@ -172,6 +172,20 @@ std::unique_ptr<HDKeyEd25519Slip23> HDKeyEd25519Slip23::DeriveChild(
       CalculateDerivedChainCode(cc_hmac), *pubkey);
 }
 
+std::unique_ptr<HDKeyEd25519Slip23> HDKeyEd25519Slip23::DeriveChildFromPath(
+    base::span<const DerivationIndex> path) {
+  auto hd_key = std::make_unique<HDKeyEd25519Slip23>(*this);
+
+  for (auto index : path) {
+    hd_key = hd_key->DeriveChild(index);
+    if (!hd_key) {
+      return nullptr;
+    }
+  }
+
+  return hd_key;
+}
+
 // static
 std::unique_ptr<HDKeyEd25519Slip23>
 HDKeyEd25519Slip23::GenerateMasterKeyFromBip39Entropy(

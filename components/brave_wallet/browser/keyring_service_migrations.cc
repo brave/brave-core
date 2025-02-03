@@ -283,6 +283,8 @@ void MaybeMigrateSelectedAccountPrefs(
       NOTREACHED();
     case mojom::CoinType::BTC:
       NOTREACHED();
+    case mojom::CoinType::ADA:
+      NOTREACHED();
   }
 
   if (!wallet_selected) {

@@ -53,6 +53,10 @@ std::string NewAccName(mojom::KeyringId keyring_id, uint32_t index) {
         return "Bitcoin Hardware Account";
       case mojom::KeyringId::kBitcoinHardwareTestnet:
         return "Bitcoin Hardware Testnet Account";
+      case mojom::KeyringId::kCardanoMainnet:
+        return "Cardano Mainnet Account";
+      case mojom::KeyringId::kCardanoTestnet:
+        return "Cardano Testnet Account";
     }
     NOTREACHED() << keyring_id;
   };

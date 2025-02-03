@@ -9,8 +9,7 @@
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 
-namespace brave_wallet {
-namespace features {
+namespace brave_wallet::features {
 
 BASE_DECLARE_FEATURE(kNativeBraveWalletFeature);
 BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
@@ -21,10 +20,10 @@ BASE_DECLARE_FEATURE(kBraveWalletBitcoinLedgerFeature);
 BASE_DECLARE_FEATURE(kBraveWalletZCashFeature);
 // Adds shielded operations support for Z Cash
 extern const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled;
+BASE_DECLARE_FEATURE(kBraveWalletCardanoFeature);
 BASE_DECLARE_FEATURE(kBraveWalletAnkrBalancesFeature);
 BASE_DECLARE_FEATURE(kBraveWalletTransactionSimulationsFeature);
 
-}  // namespace features
-}  // namespace brave_wallet
+}  // namespace brave_wallet::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FEATURES_H_
