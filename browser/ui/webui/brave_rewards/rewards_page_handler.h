@@ -44,7 +44,6 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   };
 
   RewardsPageHandler(
-      mojo::PendingRemote<mojom::RewardsPage> page,
       mojo::PendingReceiver<mojom::RewardsPageHandler> receiver,
       std::unique_ptr<BubbleDelegate> bubble_delegate,
       RewardsService* rewards_service,
@@ -55,6 +54,7 @@ class RewardsPageHandler : public mojom::RewardsPageHandler {
   ~RewardsPageHandler() override;
 
   // mojom::RewardsPageHandler:
+  void SetRewardsPage(mojo::PendingRemote<mojom::RewardsPage> page) override;
   void OnPageReady() override;
   void OpenTab(const std::string& url) override;
   void GetPluralString(const std::string& key,

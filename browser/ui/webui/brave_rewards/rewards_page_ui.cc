@@ -60,21 +60,12 @@ RewardsPageUI::RewardsPageUI(content::WebUI* web_ui, const std::string& host)
 RewardsPageUI::~RewardsPageUI() = default;
 
 void RewardsPageUI::BindInterface(
-    mojo::PendingReceiver<RewardsPageHandlerFactory> receiver) {
-  factory_receiver_.reset();
-  factory_receiver_.Bind(std::move(receiver));
-}
-
-void RewardsPageUI::CreatePageHandler(
-    mojo::PendingRemote<mojom::RewardsPage> page,
-    mojo::PendingReceiver<mojom::RewardsPageHandler> handler) {
-  DCHECK(page);
-
+    mojo::PendingReceiver<mojom::RewardsPageHandler> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   CHECK(profile);
 
   handler_ = std::make_unique<RewardsPageHandler>(
-      std::move(page), std::move(handler), MakeBubbleDelegate(),
+      std::move(receiver), MakeBubbleDelegate(),
       RewardsServiceFactory::GetForProfile(profile),
       brave_ads::AdsServiceFactory::GetForProfile(profile),
       BraveAdaptiveCaptchaServiceFactory::GetForProfile(profile),

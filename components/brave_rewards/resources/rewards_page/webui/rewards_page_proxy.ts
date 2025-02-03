@@ -20,10 +20,8 @@ export class RewardsPageProxy {
   static getInstance(): RewardsPageProxy {
     if (!instance) {
       const callbackRouter = new mojom.RewardsPageCallbackRouter()
-      const handler = new mojom.RewardsPageHandlerRemote()
-      mojom.RewardsPageHandlerFactory.getRemote().createPageHandler(
-        callbackRouter.$.bindNewPipeAndPassRemote(),
-        handler.$.bindNewPipeAndPassReceiver())
+      const handler = mojom.RewardsPageHandler.getRemote()
+      handler.setRewardsPage(callbackRouter.$.bindNewPipeAndPassRemote())
       instance = new RewardsPageProxy(callbackRouter, handler)
     }
     return instance

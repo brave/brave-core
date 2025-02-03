@@ -185,7 +185,6 @@ class RewardsPageHandler::UpdateObserver
 };
 
 RewardsPageHandler::RewardsPageHandler(
-    mojo::PendingRemote<mojom::RewardsPage> page,
     mojo::PendingReceiver<mojom::RewardsPageHandler> receiver,
     std::unique_ptr<BubbleDelegate> bubble_delegate,
     RewardsService* rewards_service,
@@ -193,7 +192,6 @@ RewardsPageHandler::RewardsPageHandler(
     brave_adaptive_captcha::BraveAdaptiveCaptchaService* captcha_service,
     PrefService* prefs)
     : receiver_(this, std::move(receiver)),
-      page_(std::move(page)),
       bubble_delegate_(std::move(bubble_delegate)),
       rewards_service_(rewards_service),
       ads_service_(ads_service),
@@ -211,6 +209,12 @@ RewardsPageHandler::RewardsPageHandler(
 }
 
 RewardsPageHandler::~RewardsPageHandler() = default;
+
+void RewardsPageHandler::SetRewardsPage(
+    mojo::PendingRemote<mojom::RewardsPage> page) {
+  page_.reset();
+  page_.Bind(std::move(page));
+}
 
 void RewardsPageHandler::OnPageReady() {
   if (bubble_delegate_) {
@@ -690,7 +694,9 @@ void RewardsPageHandler::ResetRewards(ResetRewardsCallback callback) {
 }
 
 void RewardsPageHandler::OnUpdate(UpdateSource update_source) {
-  page_->OnRewardsStateUpdated();
+  if (page_) {
+    page_->OnRewardsStateUpdated();
+  }
 }
 
 }  // namespace brave_rewards
