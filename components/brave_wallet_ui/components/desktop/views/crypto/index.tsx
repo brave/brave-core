@@ -63,7 +63,6 @@ import {
   RemoveAccountModal //
 } from '../../popup-modals/confirm-password-modal/remove-account-modal'
 import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/account-settings-modal'
-import TransactionsScreen from '../../../../page/screens/transactions/transactions-screen'
 import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
@@ -370,14 +369,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           exact={true}
         >
           <Redirect to={WalletRoutes.Market} />
-        </Route>
-
-        {/* Transactions */}
-        <Route
-          path={WalletRoutes.Activity}
-          exact={true}
-        >
-          <TransactionsScreen />
         </Route>
 
         <Redirect to={sessionRoute || WalletRoutes.PortfolioAssets} />
