@@ -38,7 +38,8 @@ class JSPromptAlertController: UIAlertController {
         UIAlertAction(
           title: Strings.suppressAlertsActionTitle,
           style: .default,
-          handler: { _ in
+          handler: { [weak self] _ in
+            guard let self else { return }
             self.handledAction = true
             handler(true)
           }
@@ -50,7 +51,8 @@ class JSPromptAlertController: UIAlertController {
         UIAlertAction(
           title: Strings.cancelButtonTitle,
           style: .cancel,
-          handler: { _ in
+          handler: { [weak self] _ in
+            guard let self else { return }
             self.handledAction = true
             self.info?.cancel()
           }
