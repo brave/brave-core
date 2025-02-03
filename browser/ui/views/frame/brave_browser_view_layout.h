@@ -16,6 +16,7 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
  public:
   BraveBrowserViewLayout(std::unique_ptr<BrowserViewLayoutDelegate> delegate,
                          BrowserView* browser_view,
+                         views::View* window_scrim,
                          views::View* top_container,
                          WebAppFrameToolbarView* web_app_frame_toolbar,
                          views::Label* web_app_window_title,
