@@ -13,7 +13,8 @@ import { StyleSheetManager } from 'styled-components'
 import Input, { InputEventDetail } from '@brave/leo/react/input'
 import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Tooltip from '@brave/leo/react/tooltip'
-import { loadTimeData } from '$web-common/loadTimeData'
+import { getLocale } from '$web-common/locale'
+import formatMessage from '$web-common/formatMessage'
 import {
   AccountRow,
   AliasAnnotation,
@@ -41,12 +42,14 @@ import {
   SignupRow,
 } from './styles'
 
+const MAX_ALIASES = 5;
+
 type ViewState = {
   mode: ViewMode,
   alias?: Alias
 }
 
-const onEnterKey = (onSubmit: Function) => 
+const onEnterKey = (onSubmit: Function) =>
   (e: InputEventDetail) => {
     const innerEvent = e.innerEvent as unknown as KeyboardEvent
     if (innerEvent.key === 'Enter') {
@@ -64,8 +67,8 @@ const BraveIcon = ({style}: {style?: React.CSSProperties | undefined}) => (
 
 const Introduction = () => (
   <Card id='introduction'>
-    <h2>{loadTimeData.getString('emailAliasesShortDescription')}</h2>
-    <div>{loadTimeData.getString('emailAliasesDescription')} <a href="https://support.brave.com" target='_blank'>{loadTimeData.getString('emailAliasesLearnMore')}</a>
+    <h2>{getLocale('emailAliasesShortDescription')}</h2>
+    <div>{getLocale('emailAliasesDescription')} <a href="https://support.brave.com" target='_blank'>{getLocale('emailAliasesLearnMore')}</a>
     </div>
   </Card>
 )
@@ -76,16 +79,16 @@ const MainEmailDisplay = ({ email, onLogout }: { email: string, onLogout: Functi
     <Row>
       <BraveIcon />
       <MainEmailTextContainer>
-        <MainEmail>{email === '' ? loadTimeData.getString('emailAliasesConnectingToBraveAccount') : email}</MainEmail>
-        <MainEmailDescription>{loadTimeData.getString('emailAliasesBraveAccount')}</MainEmailDescription>
+        <MainEmail>{email === '' ? getLocale('emailAliasesConnectingToBraveAccount') : email}</MainEmail>
+        <MainEmailDescription>{getLocale('emailAliasesBraveAccount')}</MainEmailDescription>
       </MainEmailTextContainer>
     </Row>
     <ManageAccountLink
-      title={loadTimeData.getString('emailAliasesSignOutTitle')}
+      title={getLocale('emailAliasesSignOutTitle')}
       href='#'
       onClick={(e) => { e.preventDefault(); onLogout() }}>
       <Icon name="outside" />
-      <span style={{ margin: '0.25em' }}>{loadTimeData.getString('emailAliasesSignOut')}</span>
+      <span style={{ margin: '0.25em' }}>{getLocale('emailAliasesSignOut')}</span>
     </ManageAccountLink>
   </AccountRow>
 </Card>
@@ -114,7 +117,7 @@ const CopyToast = ({ children }: React.PropsWithChildren) => {
     setCopied(true)
     setTimeout(() => setCopied(false), 1000)
   }}>
-    <Tooltip text={copied ? loadTimeData.getString('emailAliasesCopiedToClipboard') : ''} mode="mini" visible={copied}>
+    <Tooltip text={copied ? getLocale('emailAliasesCopiedToClipboard') : ''} mode="mini" visible={copied}>
       {children}
     </Tooltip>
   </div>
@@ -126,7 +129,7 @@ const AliasItem = ({ alias, onEdit, onDelete }: { alias: Alias, onEdit: Function
     <AliasItemRow>
       <Col>
         <CopyToast>
-          <EmailContainer title={loadTimeData.getString('emailAliasesClickToCopyAlias')}
+          <EmailContainer title={getLocale('emailAliasesClickToCopyAlias')}
             onClick={(event: React.MouseEvent<HTMLElement>) => copyEmailToClipboard(alias.email)}>
             {alias.email}
           </EmailContainer>
@@ -135,14 +138,15 @@ const AliasItem = ({ alias, onEdit, onDelete }: { alias: Alias, onEdit: Function
           <AliasAnnotation>
             {(alias.note && <span>{alias.note}</span>)}
             {alias.domains && alias.note && <span>. </span>}
-            {(alias.domains && <span>{loadTimeData.getStringF('emailAliasesUsedBy', alias.domains?.join(", "))}</span>)}
+            {(alias.domains && <span>{formatMessage( getLocale('emailAliasesUsedBy'),
+              { placeholders: { $1: alias.domains?.join(", ") } })}</span>)}
           </AliasAnnotation>
         )}
       </Col>
       <AliasControls>
         <CopyToast>
           <CopyButtonWrapper
-            title={loadTimeData.getString('emailAliasesClickToCopyAlias')}
+            title={getLocale('emailAliasesClickToCopyAlias')}
             onClick={() => {
               copyEmailToClipboard(alias.email)
             }}>
@@ -155,11 +159,11 @@ const AliasItem = ({ alias, onEdit, onDelete }: { alias: Alias, onEdit: Function
           </MenuButton>
           <AliasMenuItem
             iconName="edit-pencil"
-            text={loadTimeData.getString('emailAliasesEdit')}
+            text={getLocale('emailAliasesEdit')}
             onClick={() => onEdit()} />
           <AliasMenuItem
             iconName="trash"
-            text={loadTimeData.getString('emailAliasesDelete')}
+            text={getLocale('emailAliasesDelete')}
             onClick={() => onDelete(alias)} />
         </ButtonMenu>
       </AliasControls>
@@ -171,13 +175,14 @@ const AliasList = ({ aliases, onViewChange, onListChange, mappingService }: { ma
   <Card style={{ borderTop: `1px solid ${color.legacy.divider1}` }}>
     <AliasListIntro>
       <Col>
-        <h2>{loadTimeData.getString('emailAliasesListTitle')}</h2>
+        <h2>{getLocale('emailAliasesListTitle')}</h2>
         <div>
-          {loadTimeData.getString('emailAliasesCreateDescription')}
+          {getLocale('emailAliasesCreateDescription')}
         </div>
       </Col>
       <Button style='flex-grow: 0;'
-        title={loadTimeData.getString('emailAliasesCreateAliasTitle')}
+        isDisabled={aliases.length >= MAX_ALIASES}
+        title={getLocale('emailAliasesCreateAliasTitle')}
         id='add-alias'
         onClick={
           async () => {
@@ -186,7 +191,7 @@ const AliasList = ({ aliases, onViewChange, onListChange, mappingService }: { ma
             onViewChange({ mode: ViewMode.Create, alias: { email: newEmailAlias } })
           }
         }>
-        {loadTimeData.getString('emailAliasesCreateAliasLabel')}
+        {getLocale('emailAliasesCreateAliasLabel')}
       </Button>
     </AliasListIntro>
     {aliases.map(
@@ -203,7 +208,7 @@ const AliasList = ({ aliases, onViewChange, onListChange, mappingService }: { ma
 
 
 const RefreshButton = ( { onClicked } : { onClicked: Function }) => (
-  <Button title={loadTimeData.getString('emailAliasesRefreshButtonTitle')}
+  <Button title={getLocale('emailAliasesRefreshButtonTitle')}
     onClick={() => onClicked()}
     kind="plain" style='flex-grow: 0; padding: 0px'>
     <Icon name="refresh" />
@@ -218,9 +223,10 @@ const ModalWithCloseButton = ({ children, returnToMain }: React.PropsWithChildre
 )
 
 export const EmailAliasModal = (
-  { returnToMain, viewState, email, mode, mappingService }:
+  { returnToMain, viewState, email, mode, mappingService, bubble }:
     { returnToMain: Function,
       viewState?: ViewState,
+      bubble?: boolean,
       mode: ViewMode
       email: string,
       mappingService: MappingService }
@@ -252,37 +258,45 @@ export const EmailAliasModal = (
   }, [])
   return (
     <span>
-      <h2>{mode == ViewMode.Create ? loadTimeData.getString('emailAliasesCreateAliasTitle') : loadTimeData.getString('emailAliasesEditAliasTitle')}</h2>
+      <h2>{mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasTitle') : getLocale('emailAliasesEditAliasTitle')}</h2>
+      {bubble && <div>{getLocale('emailAliasesBubbleDescription')}</div>}
       <ModalSectionCol style={{}}>
-        <h3 style={{ margin: '0.25em' }}>{loadTimeData.getString('emailAliasesAliasLabel')}</h3>
+        <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesAliasLabel')}</h3>
       <GeneratedEmailContainer>
         <div>{proposedAlias}</div>
         {mode == ViewMode.Create && <RefreshButton onClicked={regenerateAlias} />}
       </GeneratedEmailContainer>
-      <div>{loadTimeData.getStringF('emailAliasesEmailsWillBeForwardedTo', mainEmail)}</div>
+      <div>{formatMessage(  getLocale('emailAliasesEmailsWillBeForwardedTo'), { placeholders: { $1: mainEmail } })}</div>
     </ModalSectionCol>
     <ModalSectionCol>
-      <h3 style={{ margin: '0.25em' }}>{loadTimeData.getString('emailAliasesNoteLabel')}</h3>
+      <h3 style={{ margin: '0.25em' }}>{getLocale('emailAliasesNoteLabel')}</h3>
       <Input id='note-input'
         type='text'
-        placeholder={loadTimeData.getString('emailAliasesEditNotePlaceholder')}
+        placeholder={getLocale('emailAliasesEditNotePlaceholder')}
         value={proposedNote}
         onChange={(detail: InputEventDetail) => setProposedNote(detail.value)}
         onKeyDown={onEnterKey(createOrSave)}
         style='margin: 0.25em 0em'>
       </Input>
-      {mode == ViewMode.Edit && viewState?.alias?.domains && <div>loadTimeData.getStringF('emailAliasesUsedBy', viewState?.alias?.domains?.join(', '))</div>}
+      {mode == ViewMode.Edit && viewState?.alias?.domains && <div>getLocale('emailAliasesUsedBy', viewState?.alias?.domains?.join(', '))</div>}
     </ModalSectionCol>
-    <ButtonRow>
+    <ButtonRow style={{justifyContent: bubble ? 'space-between' : 'end'}}>
+      <span>
+        {bubble && <Button onClick={() => mappingService.showSettingsPage()} kind='plain' style='flex-grow: 0;'>
+          {getLocale('emailAliasesManageButton')}
+        </Button>}
+      </span>
+      <span>
       <Button onClick={() => returnToMain()} kind='plain' style='flex-grow: 0;'>
-        {loadTimeData.getString('emailAliasesCancelButton')}
+        {getLocale('emailAliasesCancelButton')}
       </Button>
       <Button
         style='flex-grow: 0; margin-inline-start: 1em;'
         kind='filled'
         onClick={() => createOrSave()}>
-        {mode == ViewMode.Create ? loadTimeData.getString('emailAliasesCreateAliasButton') : loadTimeData.getString('emailAliasesSaveAliasButton')}
+        {mode == ViewMode.Create ? getLocale('emailAliasesCreateAliasButton') : getLocale('emailAliasesSaveAliasButton')}
         </Button>
+      </span>
       </ButtonRow>
     </span>
   )
@@ -291,8 +305,8 @@ export const EmailAliasModal = (
 const BeforeSendingEmailForm = ({ initEmail, onSubmit }: { initEmail: string, onSubmit: Function }) => {
   const [email, setEmail] = React.useState<string>(initEmail)
   return (<Col>
-    <h3>{loadTimeData.getString('emailAliasesSignInOrCreateAccount')}</h3>
-    <div style={{ marginBottom: '1em' }}>{loadTimeData.getString('emailAliasesEnterEmailToGetLoginLink')}</div>
+    <h3>{getLocale('emailAliasesSignInOrCreateAccount')}</h3>
+    <div style={{ marginBottom: '1em' }}>{getLocale('emailAliasesEnterEmailToGetLoginLink')}</div>
       <Row>
         <Input autofocus={true}
           onChange={(detail: InputEventDetail) => setEmail(detail.value)}
@@ -300,10 +314,10 @@ const BeforeSendingEmailForm = ({ initEmail, onSubmit }: { initEmail: string, on
           name='email'
           style='flex-grow: 4; margin-inline-end: 1em;'
           type='text'
-          placeholder={loadTimeData.getString('emailAliasesEmailAddressPlaceholder')}
+          placeholder={getLocale('emailAliasesEmailAddressPlaceholder')}
           value={email || ''}
         ></Input>
-        <Button onClick={() => onSubmit(email)} type='submit' style='flex-grow: 1' kind='filled'>{loadTimeData.getString('emailAliasesGetLoginLinkButton')}</Button>
+        <Button onClick={() => onSubmit(email)} type='submit' style='flex-grow: 1' kind='filled'>{getLocale('emailAliasesGetLoginLinkButton')}</Button>
       </Row>
   </Col>
   )
@@ -311,9 +325,9 @@ const BeforeSendingEmailForm = ({ initEmail, onSubmit }: { initEmail: string, on
 
 const AfterSendingEmailMessage = ({mainEmail, tryAgain}: {mainEmail: string, tryAgain: Function}) => (
   <Col style={{flexGrow: 1}}>
-    <h3>{loadTimeData.getStringF('emailAliasesLoginEmailOnTheWay', mainEmail)}</h3>
-    <div style={{ marginBottom: '1em' }}>{loadTimeData.getString('emailAliasesClickOnSecureLogin')}</div>
-    <div style={{ marginBottom: '1em' }}>{loadTimeData.getString('emailAliasesDontSeeEmail')} <a href='#' onClick={(e) => { e.preventDefault(); tryAgain()}}>{loadTimeData.getString('emailAliasesTryAgain')}</a>
+    <h3>{formatMessage(getLocale('emailAliasesLoginEmailOnTheWay'), { placeholders: { $1: mainEmail } })}</h3>
+    <div style={{ marginBottom: '1em' }}>{getLocale('emailAliasesClickOnSecureLogin')}</div>
+    <div style={{ marginBottom: '1em' }}>{getLocale('emailAliasesDontSeeEmail')} <a href='#' onClick={(e) => { e.preventDefault(); tryAgain()}}>{getLocale('emailAliasesTryAgain')}</a>
     </div>
   </Col>
 )
@@ -369,6 +383,12 @@ export const ManagePage = ({ mappingService }:
   React.useEffect(() => {
     onEmailChange();
     onListChange();
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        onEmailChange();
+        onListChange();
+      }
+    })
   }, [] /* Only run at mount. */)
   return (
     <Col style={{ padding: spacing.l }}>
@@ -377,7 +397,7 @@ export const ManagePage = ({ mappingService }:
         (<MainEmailEntryForm viewState={viewState} mainEmail={mainEmail} onEmailSubmitted={onMainEmailSubmitted} restart={restart}/>) :
         (viewState.mode === ViewMode.Startup ?
           (<Row style={{margin: '1em', flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}><Icon name='loading-spinner' />
-            <h3 style={{margin: '0.25em'}}>{loadTimeData.getString('emailAliasesConnectingToBraveAccount')}</h3>
+            <h3 style={{margin: '0.25em'}}>{getLocale('emailAliasesConnectingToBraveAccount')}</h3>
            </Row>) :
           (<span>
             <MainEmailDisplay onLogout={onLogout} email={mainEmail} />
@@ -415,6 +435,7 @@ export const mountModal = (at: HTMLElement, mappingService: MappingService) => {
     <StyleSheetManager target={at}>
       <EmailAliasModal
        returnToMain={() => mappingService.closeBubble()}
+       bubble={true}
        mode={ViewMode.Create}
        email={'test@test.com'}
        mappingService={mappingService}/>
