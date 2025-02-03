@@ -14,7 +14,8 @@ TEST(KDFTest, Pbkdf2HmacSha256KnownAnswers) {
     const char* result;
   };
 
-  constexpr auto cases = std::to_array<TestCase>({
+  // https://github.com/openssl/openssl/blob/openssl-3.4.0/test/recipes/30-test_evp_data/evpkdf_pbkdf2.txt
+  constexpr auto kCases = std::to_array<TestCase>({
       {"password",
        "salt",
        {1},
@@ -32,9 +33,52 @@ TEST(KDFTest, Pbkdf2HmacSha256KnownAnswers) {
        "c5e478d59288c841aa530db6845c4c8d962893a001ce4e11a4963873aa98134a"},
   });
 
-  for (const auto& c : cases) {
+  for (const auto& c : kCases) {
     std::vector<uint8_t> key(c.len);
     ASSERT_TRUE(crypto::kdf::DeriveKeyPbkdf2HmacSha256(
+        c.params, base::as_byte_span(c.password), base::as_byte_span(c.salt),
+        key));
+
+    std::vector<uint8_t> result_bytes(c.len);
+    ASSERT_TRUE(base::HexStringToSpan(c.result, result_bytes));
+    EXPECT_EQ(key, result_bytes);
+  }
+}
+
+TEST(KDFTest, Pbkdf2HmacSha512KnownAnswers) {
+  struct TestCase {
+    std::string password;
+    std::string salt;
+    crypto::kdf::Pbkdf2HmacSha512Params params;
+    size_t len;
+    const char* result;
+  };
+
+  // https://github.com/openssl/openssl/blob/openssl-3.4.0/test/recipes/30-test_evp_data/evpkdf_pbkdf2.txt
+  constexpr auto kCases = std::to_array<TestCase>({
+      {"password",
+       "salt",
+       {1},
+       64,
+       "867f70cf1ade02cff3752599a3a53dc4af34c7a669815ae5d513554e1c8cf252"
+       "c02d470a285a0501bad999bfe943c08f050235d7d68b1da55e63f73b60a57fce"},
+      {"password",
+       "salt",
+       {2},
+       64,
+       "e1d9c16aa681708a45f5c7c4e215ceb66e011a2e9f0040713f18aefdb866d53c"
+       "f76cab2868a39b9f7840edce4fef5a82be67335c77a6068e04112754f27ccf4e"},
+      {"password",
+       "salt",
+       {4096},
+       64,
+       "d197b1b33db0143e018b12f3d1d1479e6cdebdcc97c5c0f87f6902e072f457b51"
+       "43f30602641b3d55cd335988cb36b84376060ecd532e039b742a239434af2d5"},
+  });
+
+  for (const auto& c : kCases) {
+    std::vector<uint8_t> key(c.len);
+    ASSERT_TRUE(crypto::kdf::DeriveKeyPbkdf2HmacSha512(
         c.params, base::as_byte_span(c.password), base::as_byte_span(c.salt),
         key));
 
@@ -58,7 +102,7 @@ TEST(KDFTest, ScryptNoCheckKnownAnswers) {
   // RFC 7914 test vectors - note that RFC 7914 does not specify
   // max_memory_bytes so we just pass 0 here and let BoringSSL figure it out for
   // us.
-  constexpr auto cases = std::to_array<TestCase>({
+  constexpr auto kCases = std::to_array<TestCase>({
       {"password",
        "NaCl",
        {.cost = 1024, .block_size = 8, .parallelization = 16},
@@ -67,7 +111,7 @@ TEST(KDFTest, ScryptNoCheckKnownAnswers) {
        "2eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640"},
   });
 
-  for (const auto& c : cases) {
+  for (const auto& c : kCases) {
     std::vector<uint8_t> key(c.len);
     EXPECT_TRUE(crypto::kdf::DeriveKeyScryptNoCheck(
         c.params, base::as_byte_span(c.password), base::as_byte_span(c.salt),

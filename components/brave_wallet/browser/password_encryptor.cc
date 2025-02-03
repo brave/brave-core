@@ -9,12 +9,11 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/containers/span.h"
 #include "base/no_destructor.h"
 #include "crypto/aead.h"
-#include "crypto/openssl_util.h"
-#include "crypto/process_bound_string.h"
+#include "crypto/kdf.h"
 #include "crypto/random.h"
-#include "third_party/boringssl/src/include/openssl/evp.h"
 
 namespace brave_wallet {
 namespace {
@@ -22,7 +21,7 @@ constexpr char kCiphertextKey[] = "ciphertext";
 constexpr char kNonceKey[] = "nonce";
 }  // namespace
 
-PasswordEncryptor::PasswordEncryptor(base::span<uint8_t> key)
+PasswordEncryptor::PasswordEncryptor(PassKey, base::span<uint8_t> key)
     : key_(key.begin(), key.end()) {}
 PasswordEncryptor::~PasswordEncryptor() = default;
 
@@ -81,8 +80,8 @@ std::unique_ptr<PasswordEncryptor> PasswordEncryptor::CreateEncryptor(
   const auto iterations =
       GetPbkdf2IterationsForTesting().value_or(kPbkdf2Iterations);  // IN-TEST
 
-  return PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
-      password, salt, iterations, kPbkdf2KeySize);
+  return PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(password, salt,
+                                                             iterations);
 }
 
 // static
@@ -90,22 +89,15 @@ std::unique_ptr<PasswordEncryptor>
 PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
     const std::string& password,
     base::span<const uint8_t> salt,
-    size_t iterations,
-    size_t key_size_in_bits) {
-  if (key_size_in_bits != 128 && key_size_in_bits != 256) {
+    uint32_t iterations) {
+  std::array<uint8_t, kPbkdf2KeySize> key = {};
+  if (!crypto::kdf::DeriveKeyPbkdf2HmacSha256({.iterations = iterations},
+                                              base::as_byte_span(password),
+                                              salt, key)) {
     return nullptr;
   }
 
-  size_t key_size_in_bytes = key_size_in_bits / 8;
-
-  crypto::OpenSSLErrStackTracer err_tracer(FROM_HERE);
-  std::vector<uint8_t> key(key_size_in_bytes);
-
-  int rv = PKCS5_PBKDF2_HMAC(password.data(), password.length(), salt.data(),
-                             salt.size(), static_cast<unsigned>(iterations),
-                             EVP_sha256(), key_size_in_bytes, key.data());
-  std::unique_ptr<PasswordEncryptor> encryptor(new PasswordEncryptor(key));
-  return rv == 1 ? std::move(encryptor) : nullptr;
+  return std::make_unique<PasswordEncryptor>(PassKey(), key);
 }
 
 std::vector<uint8_t> PasswordEncryptor::Encrypt(

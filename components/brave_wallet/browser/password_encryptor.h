@@ -14,6 +14,7 @@
 #include "base/containers/span.h"
 #include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
+#include "base/types/pass_key.h"
 #include "base/values.h"
 #include "crypto/process_bound_string.h"
 
@@ -22,11 +23,14 @@ namespace brave_wallet {
 inline constexpr size_t kEncryptorNonceSize = 12;
 inline constexpr size_t kEncryptorSaltSize = 32;
 inline constexpr int kPbkdf2Iterations = 310000;
-inline constexpr int kPbkdf2KeySize = 256;
+inline constexpr int kPbkdf2KeySize = 32;
 
 // Use password derived key to encrypt/decrypt using AES-256-GCM
 class PasswordEncryptor {
  public:
+  using PassKey = base::PassKey<PasswordEncryptor>;
+
+  PasswordEncryptor(PassKey, base::span<uint8_t> key);
   ~PasswordEncryptor();
   PasswordEncryptor(const PasswordEncryptor&) = delete;
   PasswordEncryptor& operator=(const PasswordEncryptor&) = delete;
@@ -43,12 +47,10 @@ class PasswordEncryptor {
       const std::string& password,
       base::span<const uint8_t> salt);
 
-  // With SHA 256 digest
   static std::unique_ptr<PasswordEncryptor> DeriveKeyFromPasswordUsingPbkdf2(
       const std::string& password,
       base::span<const uint8_t> salt,
-      size_t iterations,
-      size_t key_size_in_bits);
+      uint32_t iterations);
 
   std::vector<uint8_t> Encrypt(base::span<const uint8_t> plaintext,
                                base::span<const uint8_t> nonce);
@@ -68,7 +70,6 @@ class PasswordEncryptor {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(PasswordEncryptorUnitTest, DecryptForImporter);
-  explicit PasswordEncryptor(base::span<uint8_t> key);
 
   // symmetric key used to encrypt and decrypt
   std::vector<uint8_t, crypto::SecureAllocator<uint8_t>> key_;
