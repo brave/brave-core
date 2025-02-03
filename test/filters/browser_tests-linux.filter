@@ -13,22 +13,15 @@
 -ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
 
 # These tests pass locally but fail on CI.
--All/ExtensionBackForwardCacheBrowserTest.ChromeTabsConnectWithMultipleReceivers/1
--All/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/*
--AllocationRecorderBrowserTest.VerifyCrashreportIncludesNoRecorder
 -DebuggerExtensionApiTest.ParentTargetPermissions
--EventPageAndFalse/ExtensionBackForwardCacheBrowserTest.*
--EventPageAndTrue/ExtensionBackForwardCacheBrowserTest.*
--EventPageAndTrue/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
--EventPageAndFalse/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
--EventPageAndTrue/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
+-EventPage/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
--ServiceWorkerAndFalse/ExtensionBackForwardCacheBrowserTest.*
--ServiceWorkerAndTrue/ExtensionBackForwardCacheBrowserTest.*
+-ServiceWorker/ExtensionBackForwardCacheBrowserTest.ChromeRuntimeConnectUsageInIframeWithoutIframeNavigation/0
+-ServiceWorker/ExtensionBackForwardCacheBrowserTest.MessageSentToCachedIdFails/0
 
 # This test fails on Linux only due to the UI it shows being off-screen. Have
 # not investigated the cause.
