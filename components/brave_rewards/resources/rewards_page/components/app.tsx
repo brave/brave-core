@@ -94,6 +94,9 @@ export function App() {
     if (embedder.isAutoResizeBubble) {
       list.push('is-auto-resize-bubble')
     }
+    if (embedder.isBubble) {
+      list.push('is-bubble')
+    }
     if (viewType === 'narrow') {
       list.push('is-narrow-view')
     } else {
