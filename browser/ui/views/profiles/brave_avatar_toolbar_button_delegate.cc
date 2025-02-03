@@ -28,7 +28,8 @@ gfx::Image BraveAvatarToolbarButtonDelegate::GetGaiaAccountImage() const {
 
 ui::ImageModel BraveAvatarToolbarButtonDelegate::GetAvatarIcon(
     int icon_size,
-    SkColor icon_color) const {
+    SkColor icon_color,
+    const ui::ColorProvider* color_provider) const {
   const auto location_bar_icon_size = GetLayoutConstant(LOCATION_BAR_ICON_SIZE);
   if (browser_->profile()->IsTor()) {
     return ui::ImageModel::FromVectorIcon(kLeoProductTorIcon,
@@ -47,7 +48,7 @@ ui::ImageModel BraveAvatarToolbarButtonDelegate::GetAvatarIcon(
   }
 
   return AvatarToolbarButtonDelegate::GetAvatarIcon(location_bar_icon_size,
-                                                    icon_color);
+                                                    icon_color, color_provider);
 }
 
 std::u16string BraveAvatarToolbarButtonDelegate::GetAvatarTooltipText() const {
