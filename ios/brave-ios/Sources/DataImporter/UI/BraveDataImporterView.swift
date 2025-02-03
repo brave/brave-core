@@ -1,7 +1,7 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveUI
@@ -27,7 +27,11 @@ public struct BraveDataImportView: View {
   @ObservedObject
   private var model = DataImportModel()
 
-  public init() {}
+  private var openURL: (URL) -> Void
+
+  public init(openURL: @escaping (URL) -> Void) {
+    self.openURL = openURL
+  }
 
   public var body: some View {
     if model.importState == .success {
@@ -60,7 +64,7 @@ public struct BraveDataImportView: View {
           )
           .padding(.bottom, 24.0)
 
-          Text("Import Bookmarks and more")
+          Text(Strings.DataImporter.importDataFileSelectorTitle)
             .font(.body.weight(.semibold))
             .multilineTextAlignment(.center)
             .foregroundStyle(Color(braveSystemName: .textPrimary))
@@ -68,7 +72,7 @@ public struct BraveDataImportView: View {
             .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, 24.0)
 
-          Text("Bring your bookmarks, history, and other browser data into Brave.")
+          Text(Strings.DataImporter.importDataFileSelectorMessage)
             .font(.footnote)
             .multilineTextAlignment(.center)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
@@ -85,7 +89,7 @@ public struct BraveDataImportView: View {
               )
             },
             label: {
-              Text("Choose a file...")
+              Text(Strings.DataImporter.importDataFileSelectorButtonTitle)
                 .font(.body.weight(.semibold))
                 .padding()
                 .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
@@ -102,14 +106,22 @@ public struct BraveDataImportView: View {
 
         Spacer()
 
-        NavigationLink(destination: BraveDataImporterTutorialView()) {
+        NavigationLink(
+          destination: BraveDataImporterTutorialView().environment(
+            \.openURL,
+            OpenURLAction(handler: {
+              openURL($0)
+              return .handled
+            })
+          )
+        ) {
           HStack {
             Image(
               "safari_icon",
               bundle: .module
             )
 
-            Text("How to export from Safari")
+            Text(Strings.DataImporter.importDataViewTutorialButtonTitle)
               .font(.subheadline.weight(.semibold))
               .foregroundStyle(Color(braveSystemName: .textInteractive))
               .frame(maxWidth: .infinity, alignment: .leading)
@@ -129,7 +141,7 @@ public struct BraveDataImportView: View {
       }
       .padding(16.0)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-      .navigationTitle("Import Browsing Data")
+      .navigationTitle(Strings.DataImporter.importDataFileSelectorNavigationTitle)
       .navigationBarHidden(false)
       .braveSheet(
         isPresented: Binding(
@@ -225,5 +237,5 @@ public struct BraveDataImportView: View {
 }
 
 #Preview {
-  BraveDataImportView()
+  BraveDataImportView(openURL: { _ in })
 }

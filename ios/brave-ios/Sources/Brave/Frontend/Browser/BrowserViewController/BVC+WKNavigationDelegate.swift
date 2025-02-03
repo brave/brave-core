@@ -1019,7 +1019,7 @@ extension BrowserViewController: WKNavigationDelegate {
     )
 
     // Need to evaluate Night mode script injection after url is set inside the Tab
-    //    tab.nightMode = Preferences.General.nightModeEnabled.value
+    tab.nightMode = Preferences.General.nightModeEnabled.value
     tab.clearSolanaConnectedAccounts()
 
     // Dismiss any alerts that are showing on page navigation.

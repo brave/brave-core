@@ -1,9 +1,7 @@
-//
-//  DataImportModel.swift
-//  Brave
-//
-//  Created by Brandon T on 2025-01-30.
-//
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -30,14 +28,14 @@ enum DataImportError: LocalizedError {
 
   var errorDescription: String? {
     switch self {
-    case .failedToUnzip: "An error occurred while unzipping the file."
-    case .failedToImportBookmarks: "An error occurred while importing Bookmarks."
-    case .failedToImportHistory: "An error occurred while importing History."
-    case .failedToImportPasswords: "An error occurred while importing Passwords."
+    case .failedToUnzip: Strings.DataImportError.failedToUnzipError
+    case .failedToImportBookmarks: Strings.DataImportError.failedToImportBookmarksError
+    case .failedToImportHistory: Strings.DataImportError.failedToImportHistoryError
+    case .failedToImportPasswords: Strings.DataImportError.failedToImportPasswordsError
     case .failedToImportPasswordsDueToConflict:
-      "An error occurred while importing Passwords. Some passwords could not be imported due to conflicts."
-    case .invalidZipFileData: "The zip file does not contain import data."
-    case .unknown: "An Unknown Error Occurred during data importing."
+      Strings.DataImportError.failedToImportPasswordsDueToConflictError
+    case .invalidZipFileData: Strings.DataImportError.invalidZipFileDataError
+    case .unknown: Strings.DataImportError.unknownError
     }
   }
 }
@@ -240,9 +238,10 @@ class DataImportModel: ObservableObject {
       let itemName =
         !components.isEmpty ? String(components[0].split(separator: ".").first ?? "") : ""
 
-      // TODO: Localize
       let profile =
-        components.count == 2 ? String(components[1].split(separator: ".").first ?? "") : "Personal"
+        components.count == 2
+        ? String(components[1].split(separator: ".").first ?? "")
+        : Strings.DataImporter.personalImportTitle
 
       if groupedFiles[profile] == nil {
         groupedFiles[profile] = [:]
