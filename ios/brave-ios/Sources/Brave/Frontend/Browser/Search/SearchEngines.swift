@@ -125,7 +125,7 @@ public class SearchEngines {
   func setInitialDefaultEngine(_ engine: String) {
     // update engine
     DefaultEngineType.standard.option.value = engine
-    // set Brave Search as the DSE for private node
+    // set Brave Search as the DSE for private mode
     DefaultEngineType.privateMode.option.value =
       InitialSearchEngines.SearchEngineID.braveSearch.rawValue
 
