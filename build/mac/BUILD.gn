@@ -387,13 +387,15 @@ action("create_pkg") {
   }
 }
 
+postinstall_script = "$packaging_dir/brave/pkg_postinstall.in"
+
 if (install_omaha4_with_pkg) {
   action("postinstall") {
     visibility = [ ":create_pkg" ]
 
     script = "create_postinstall.py"
 
-    output = "$generated_pkg_scripts/postinstall"
+    output = postinstall_script
 
     args = [
       rebase_path("//chrome/installer/mac/pkg_postinstall.in"),
@@ -409,6 +411,11 @@ if (install_omaha4_with_pkg) {
 
     outputs = [ output ]
   }
+} else {
+  copy("postinstall") {
+    sources = [ "pkg-scripts/postinstall" ]
+    outputs = [ postinstall_script ]
+  }
 }
 
 _upstream_signed_basename = "$signed_output_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
@@ -422,6 +429,7 @@ action("_create_dmg_pkg") {
     ":dmg_background_image",
     ":dmg_icon",
     ":ds_store",
+    ":postinstall",
     ":signing_config",
     "//chrome:chrome_app",
     "//chrome/installer/mac",
