@@ -92,12 +92,4 @@ class BraveEmailAliasesHandler : public settings::SettingsPageUIHandler {
   base::WeakPtrFactory<BraveEmailAliasesHandler> weak_factory_{this};
 };
 
-/*
-class BraveEmailAliasesHandlerConfig
-    : public content::DefaultWebUIConfig<BraveEmailAliasesHandler> {
- public:
-  BraveEmailAliasesHandlerConfig()
-      : DefaultWebUIConfig(content::kChromeUIScheme, kEmailAliasesBubbleHost) {}
-};
-*/
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_EMAIL_ALIASES_HANDLER_H_
