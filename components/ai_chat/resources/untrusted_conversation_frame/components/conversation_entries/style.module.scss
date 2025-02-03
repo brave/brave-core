@@ -39,12 +39,19 @@
 
 .humanMessageBubble {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-direction: column;
   padding: var(--leo-spacing-xl);
   border-radius: var(--leo-spacing-xl) var(--leo-spacing-xl) var(--leo-spacing-s) var(--leo-spacing-xl);
   background-color: var(--leo-color-neutral-10);
-  white-space: pre-wrap;
   max-width: 520px;
+  gap: var(--leo-spacing-m);
+}
+
+.humanTextRow {
+  display: flex;
+  align-items: center;
+  white-space: pre-wrap;
   gap: var(--leo-spacing-m);
 }
 

@@ -466,7 +466,8 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     }
 
     setPartialContext({
-      inputText: ''
+      inputText: '',
+      imgData: undefined
     })
     resetSelectedActionType()
   }
