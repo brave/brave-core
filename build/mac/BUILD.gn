@@ -426,8 +426,16 @@ action("_create_dmg_pkg") {
     "//chrome:chrome_app",
     "//chrome/installer/mac",
   ]
-  outputs = [ _upstream_signed_dmg_path ]
+  outputs = [
+    _upstream_signed_dmg_path,
+    _upstream_signed_pkg_path,
+  ]
   script = "$packaging_dir/sign_chrome.py"
+  installer_identity = mac_installer_signing_identifier
+  if (skip_signing && installer_identity == "") {
+    # Prevent an AssertionError in upstream:
+    installer_identity = "stub"
+  }
   args = [
     "--input",
     rebase_path(root_build_dir, root_build_dir),
@@ -435,19 +443,15 @@ action("_create_dmg_pkg") {
     rebase_path(signed_output_dir, root_build_dir),
     # sign_chrome.py requires --identity even when signing is skipped.
     "--identity=$mac_signing_identifier",
+    "--installer-identity=$installer_identity",
     "--package-as-dmg",
+    "--package-as-pkg",
   ]
   if (!is_official_build) {
     args += [ "--development" ]
   }
   if (skip_signing) {
     args += [ "--skip-signing" ]
-  } else {
-    args += [
-      "--package-as-pkg",
-      "--installer-identity=$mac_installer_signing_identifier"
-    ]
-    outputs += [ _upstream_signed_pkg_path ]
   }
   if (notarize) {
     args += [ "--notarize" ]

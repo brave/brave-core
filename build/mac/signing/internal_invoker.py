@@ -1,4 +1,4 @@
-from signing import standard_invoker, signing
+from signing import standard_invoker, signing, commands
 
 
 class Invoker(standard_invoker.Invoker):
@@ -14,7 +14,7 @@ class Invoker(standard_invoker.Invoker):
         super().__init__(args, config)
         if args.skip_signing:
             self._signer = StubSigner()
-            stub_out_verify_part()
+            stub_out_signing_in_upstream()
         # The config can use this to access the args:
         self.args = args
 
@@ -25,8 +25,21 @@ class StubSigner:
         pass
 
 
-def stub_out_verify_part():
+def stub_out_signing_in_upstream():
     # When we skip signing, then upstream's verify_part function fails at
     # various points of the pipeline. Upstream doesn't give us a way to
     # customize verify_part. This function therefore monkey-patches it.
     signing.verify_part = lambda *args, **kwargs: None
+
+    run_command_orig = commands.run_command
+    def run_command(args, **kwargs):
+        if args[0] == 'productbuild':
+            try:
+                sign_index = args.index('--sign')
+            except ValueError:
+                pass
+            else:
+                for _ in range(2):
+                    args.pop(sign_index)
+        return run_command_orig(args, **kwargs)
+    commands.run_command = run_command
