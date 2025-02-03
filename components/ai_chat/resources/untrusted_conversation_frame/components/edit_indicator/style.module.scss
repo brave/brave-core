@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .editIndicator {
-  margin-top: var(--leo-spacing-xl);
   display: flex;
   align-items: flex-start;
   gap: var(--leo-spacing-m);
@@ -20,4 +19,5 @@
 .time {
   color: var(--leo-color-text-tertiary);
   font: var(--leo-font-small-regular);
+  text-decoration: underline;
 }

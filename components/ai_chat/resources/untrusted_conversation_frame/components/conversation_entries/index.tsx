@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import Icon from '@brave/leo/react/icon'
 import * as React from 'react'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
@@ -11,12 +10,11 @@ import useLongPress from '$web-common/useLongPress'
 import * as Mojom from '../../../common/mojom'
 import ActionTypeLabel from '../../../common/components/action_type_label'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
-import ContextMenuAssistant from '../context_menu_assistant'
+import ContextActionsAssistant from '../context_actions_assistant'
+import ContextMenuHuman from '../context_menu_human'
 import Quote from '../quote'
 import LongPageInfo from '../page_context_message/long_page_info'
 import AssistantResponse from '../assistant_response'
-import CopyButton from '../copy_button'
-import EditButton from '../edit_button'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import styles from './style.module.scss'
@@ -24,30 +22,31 @@ import styles from './style.module.scss'
 function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
 
-  const [activeMenuId, setActiveMenuId] = React.useState<number | null>()
-  const [editInputId, setEditInputId] = React.useState<number | null>()
+  const [hoverMenuButtonId, setHoverMenuButtonId] = React.useState<number>()
+  const [activeMenuId, setActiveMenuId] = React.useState<number>()
+  const [editInputId, setEditInputId] = React.useState<number>()
 
   const handleEditSubmit = (index: number, text: string) => {
     conversationContext.conversationHandler?.modifyConversation(index, text)
-    setEditInputId(null)
+    setEditInputId(undefined)
   }
 
-  const showAssistantMenu = (id: number) => {
+  const showHumanMenu = (id: number) => {
     setActiveMenuId(id)
   }
 
-  const hideAssistantMenu = () => {
-    setActiveMenuId(null)
+  const hideHumanMenu = () => {
+    setActiveMenuId(undefined)
   }
 
-  const longPressProps = useLongPress({
+  const { onTouchEnd, onTouchMove, onTouchStart } = useLongPress({
     onLongPress: (e: React.TouchEvent) => {
       const currentTarget = e.currentTarget as HTMLElement
       const id = currentTarget.getAttribute('data-id')
       if (id === null) return
-      showAssistantMenu(parseInt(id))
+      showHumanMenu(parseInt(id))
     },
-    onTouchMove: () => setActiveMenuId(null)
+    onTouchMove: () => setActiveMenuId(undefined)
   })
 
   const lastAssistantId = React.useMemo(() => {
@@ -59,7 +58,7 @@ function ConversationEntries() {
     ) {
       if (
         conversationContext.conversationHistory[i].characterType ===
-            Mojom.CharacterType.ASSISTANT
+        Mojom.CharacterType.ASSISTANT
       ) {
         return i
       }
@@ -97,18 +96,12 @@ function ConversationEntries() {
 
           const turnContainer = classnames({
             [styles.turnContainerMobile]: conversationContext.isMobile,
-            [styles.turnContainerHighlight]:
-              isAIAssistant && activeMenuId === id
+            [styles.turnContainerHighlight]: isHuman && activeMenuId === id
           })
 
           const turnClass = classnames({
             [styles.turn]: true,
             [styles.turnAI]: isAIAssistant
-          })
-
-          const avatarStyles = classnames({
-            [styles.avatar]: true,
-            [styles.avatarAI]: isAIAssistant
           })
 
           const handleCopyText = () => {
@@ -131,67 +124,60 @@ function ConversationEntries() {
               <div
                 data-id={id}
                 className={turnClass}
-                onMouseLeave={
-                  isAIAssistant ? () => setActiveMenuId(null) : undefined
-                }
-                {...(isAIAssistant ? longPressProps : {})}
+                onMouseEnter={() => isHuman && setHoverMenuButtonId(id)}
+                onMouseLeave={() => {
+                  if (!isHuman) return
+                  setActiveMenuId(undefined)
+                  setHoverMenuButtonId(undefined)
+                }}
+                onTouchStart={isHuman ? onTouchStart : undefined}
+                onTouchEnd={isHuman ? onTouchEnd : undefined}
+                onTouchMove={isHuman ? onTouchMove : undefined}
               >
-                <div className={styles.turnHeader}>
-                  <div className={styles.avatarContainer}>
-                    <div className={avatarStyles}>
-                      <Icon
-                        name={isHuman ? 'user-circle' : 'product-brave-leo'}
-                      />
-                    </div>
-                    <span>{isHuman ? 'You' : 'Leo'}</span>
-                  </div>
-                  {!turn.selectedText && (
-                    <div className={styles.rightContainer}>
-                      {latestEdit && (
-                        <div className={styles.editLabel}>
-                          <span className={styles.editLabelText}>
-                            {getLocale('editedLabel')}
-                          </span>
-                        </div>
-                      )}
-                      <div className={styles.turnActions}>
-                        <CopyButton onClick={handleCopyText} />
-                        {!isAIAssistant && (
-                          <EditButton onClick={() => setEditInputId(id)} />
-                        )}
-                        {isAIAssistant &&
-                          conversationContext.isLeoModel && (
-                            <ContextMenuAssistant
-                              turnUuid={turn.uuid}
-                              isOpen={activeMenuId === id}
-                              onClick={() => showAssistantMenu(id)}
-                              onClose={hideAssistantMenu}
-                              onEditAnswerClicked={() => setEditInputId(id)}
-                            />
-                          )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div className={styles.message}>
+                <div
+                  className={
+                    isAIAssistant ? styles.message : styles.humanMessage
+                  }
+                >
                   {isAIAssistant && !showEditInput && (
                     <AssistantResponse
                       entry={latestTurn}
                       isEntryInProgress={isEntryInProgress}
                     />
                   )}
-                  {!isAIAssistant && !turn.selectedText && !showEditInput && (
-                    <span className={styles.humanMessageContent}>
-                      {latestTurnText}
-                    </span>
+                  {isHuman && !turn.selectedText && !showEditInput && (
+                    <>
+                      {hoverMenuButtonId === id ? (
+                        <ContextMenuHuman
+                          isOpen={activeMenuId === id}
+                          onClick={() => showHumanMenu(id)}
+                          onClose={hideHumanMenu}
+                          onEditQuestionClicked={() => setEditInputId(id)}
+                          onCopyQuestionClicked={handleCopyText}
+                        />
+                      ) : (
+                        <div className={styles.divToKeepGap} />
+                      )}
+                      <div className={styles.humanMessageBubble}>
+                        {latestTurnText}
+                        {latestEdit && (
+                          <div className={styles.editLabel}>
+                            <span className={styles.editLabelText}>
+                              {getLocale('editedLabel')}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </>
                   )}
-                  {showEditIndicator && <EditIndicator time={lastEditedTime} />}
                   {showEditInput && (
                     <EditInput
                       text={latestTurnText}
                       onSubmit={(text) => handleEditSubmit(id, text)}
-                      onCancel={() => setEditInputId(null)}
-                      isSubmitDisabled={!conversationContext.canSubmitUserEntries}
+                      onCancel={() => setEditInputId(undefined)}
+                      isSubmitDisabled={
+                        !conversationContext.canSubmitUserEntries
+                      }
                     />
                   )}
                   {turn.selectedText && (
@@ -200,6 +186,19 @@ function ConversationEntries() {
                   {turn.selectedText && <Quote text={turn.selectedText} />}
                   {showLongPageContentInfo && <LongPageInfo />}
                 </div>
+                {isAIAssistant && showEditIndicator && (
+                  <EditIndicator time={lastEditedTime} />
+                )}
+                {isAIAssistant &&
+                  conversationContext.isLeoModel &&
+                  !turn.selectedText &&
+                  !showEditInput && (
+                    <ContextActionsAssistant
+                      turnUuid={turn.uuid}
+                      onEditAnswerClicked={() => setEditInputId(id)}
+                      onCopyTextClicked={handleCopyText}
+                    />
+                  )}
               </div>
             </div>
           )

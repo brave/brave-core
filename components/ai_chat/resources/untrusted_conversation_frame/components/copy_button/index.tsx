@@ -9,6 +9,7 @@ import styles from './style.module.scss'
 import Button from '@brave/leo/react/button'
 import Tooltip from '@brave/leo/react/tooltip'
 import classnames from '$web-common/classnames'
+import { getLocale } from '$web-common/locale'
 
 interface Props {
   onClick?: () => void
@@ -35,9 +36,10 @@ function CopyButton(props: Props) {
           [styles.copyButtonActive]: isActive
         })}
         fab
-        size='tiny'
+        size='small'
         kind='plain-faint'
         onClick={handleClick}
+        title={getLocale('copyButtonLabel')}
       >
         <Icon name='copy' />
       </Button>

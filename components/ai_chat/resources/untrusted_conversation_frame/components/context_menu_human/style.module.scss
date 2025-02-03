@@ -4,12 +4,14 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 .buttonMenu {
+  margin-top: var(--leo-spacing-xl);
   leo-menu-item {
     --leo-icon-size: 20px;
     display: flex;
     align-items: center;
     gap: var(--leo-spacing-xl);
     padding: var(--leo-spacing-m);
+    min-width: 200px;
   }
 }
 
@@ -23,12 +25,4 @@
 
 .moreButtonHide {
   display: none;
-}
-
-.liked {
-  color: var(--leo-color-systemfeedback-success-text);
-}
-
-.disliked {
-  color: var(--leo-color-systemfeedback-error-text);
 }

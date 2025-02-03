@@ -14,40 +14,16 @@ import classnames from '$web-common/classnames'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
 
-enum RatingStatus {
-  Liked,
-  Disliked,
-  None
-}
-
-interface ContextMenuAssistantProps {
-  turnUuid?: string
+interface ContextMenuHumanProps {
   isOpen: boolean
   onClick: () => void
   onClose: () => void
-  onEditAnswerClicked: () => void
+  onEditQuestionClicked: () => void
+  onCopyQuestionClicked: () => void
 }
 
-export default function ContextMenuAssistant(props: ContextMenuAssistantProps) {
+export default function ContextMenuHuman(props: ContextMenuHumanProps) {
   const conversationContext = useUntrustedConversationContext()
-  const [currentRatingStatus, setCurrentRatingStatus] =
-    React.useState<RatingStatus>(RatingStatus.None)
-
-  const hasSentRating = currentRatingStatus !== RatingStatus.None
-
-  function handleLikeAnswer() {
-    if (!props.turnUuid) return
-    if (hasSentRating) return
-    setCurrentRatingStatus(RatingStatus.Liked)
-    conversationContext.parentUiFrame?.rateMessage(props.turnUuid, true)
-  }
-
-  function handleDislikeAnswer() {
-    if (!props.turnUuid) return
-    if (hasSentRating) return
-    setCurrentRatingStatus(RatingStatus.Disliked)
-    conversationContext.parentUiFrame?.rateMessage(props.turnUuid, false)
-  }
 
   return (
     <>
@@ -72,31 +48,17 @@ export default function ContextMenuAssistant(props: ContextMenuAssistantProps) {
         </Button>
         {conversationContext.canSubmitUserEntries && (
           <leo-menu-item
-            onClick={props.onEditAnswerClicked}
+            onClick={props.onEditQuestionClicked}
           >
             <Icon name='edit-pencil' />
-            <span>{getLocale('editAnswerLabel')}</span>
+            <span>{getLocale('editPromptButtonLabel')}</span>
           </leo-menu-item>
         )}
         <leo-menu-item
-          class={classnames({
-            [styles.liked]: currentRatingStatus === RatingStatus.Liked
-          })}
-          onClick={handleLikeAnswer}
-          title={getLocale('likeDislikeAnswerButtonTitle')}
+          onClick={props.onCopyQuestionClicked}
         >
-          <Icon name='thumb-up' />
-          <span>{getLocale('likeAnswerButtonLabel')}</span>
-        </leo-menu-item>
-        <leo-menu-item
-          class={classnames({
-            [styles.disliked]: currentRatingStatus === RatingStatus.Disliked
-          })}
-          onClick={handleDislikeAnswer}
-          title={getLocale('likeDislikeAnswerButtonTitle')}
-        >
-          <Icon name='thumb-down' />
-          <span>{getLocale('dislikeAnswerButtonLabel')}</span>
+          <Icon name='copy' />
+          <span>{getLocale('copyPromptButtonLabel')}</span>
         </leo-menu-item>
       </ButtonMenu>
     </>
