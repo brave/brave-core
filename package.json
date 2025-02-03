@@ -199,7 +199,7 @@
     "@ledgerhq/hw-app-solana": "6.27.1",
     "@ledgerhq/hw-transport-webhid": "6.29.0",
     "@mozilla/readability": "^0.6.0",
-    "@reduxjs/toolkit": "1.8.6",
+    "@reduxjs/toolkit": "2.5.1",
     "@solana/web3.js": "1.98.2",
     "@trezor/connect": "9.1.11",
     "@trezor/connect-web": "9.1.11",
