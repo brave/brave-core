@@ -1,9 +1,7 @@
-//
-//  BraveDataImporterStateView.swift
-//  Brave
-//
-//  Created by Brandon T on 2025-01-30.
-//
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -32,43 +30,43 @@ struct BraveDataImporterStateView: View {
     switch kind {
     case .failure: return "failure_import_logo"
     case .success: return "success_import_logo"
-    case .passwordConflict: return "password_conflict_logo"
+    case .passwordConflict: return "failure_import_logo"
     }
   }
 
   private var title: String {
     switch kind {
-    case .failure: return "Import Failed"
-    case .success: return "Successful!"
-    case .passwordConflict: return "Password conflicts"
+    case .failure: return Strings.DataImporter.importStateFailureTitle
+    case .success: return Strings.DataImporter.importStateSuccessTitle
+    case .passwordConflict: return Strings.DataImporter.importStatePasswordConflictTitle
     }
   }
 
   private var subtitle: String {
     switch kind {
     case .failure:
-      return
-        "Something went wrong while importing your data.\nPlease try again.\nIf the problem persists, contact support."
+      return Strings.DataImporter.importStateFailureMessage
     case .success:
-      return
-        "Your data has been successfully imported.\nYou're all set to start browsing with Brave."
-    case .passwordConflict: return "X Password conflicts were found.\nChoose what to import."
+      return Strings.DataImporter.importStateSuccessMessage
+    case .passwordConflict: return Strings.DataImporter.importStatePasswordConflictMessage
     }
   }
 
   private var primaryButtonTitle: String {
     switch kind {
-    case .failure: return "Try Again"
-    case .success: return "Sync with Brave"
-    case .passwordConflict: return "Keep passwords from Brave"
+    case .failure: return Strings.DataImporter.importStateTryAgainTitle
+    case .success: return Strings.DataImporter.importStateSyncTitle
+    case .passwordConflict:
+      return Strings.DataImporter.importStatePasswordConflictKeepExistingPasswordsTitle
     }
   }
 
   private var secondaryButtonTitle: String {
     switch kind {
     case .failure: return ""
-    case .success: return "Continue"
-    case .passwordConflict: return "Use passwords from Safari"
+    case .success: return Strings.DataImporter.importStateSuccessContinueTitle
+    case .passwordConflict:
+      return Strings.DataImporter.importStatePasswordConflictKeepImportedPasswordsTitle
     }
   }
 
@@ -158,7 +156,7 @@ struct BraveDataImporterStateView: View {
             dismissHandler?()
           },
           label: {
-            Text("Cancel")
+            Text(Strings.CancelString)
               .font(.body.weight(.semibold))
               .padding()
               .foregroundStyle(Color(braveSystemName: .textSecondary))

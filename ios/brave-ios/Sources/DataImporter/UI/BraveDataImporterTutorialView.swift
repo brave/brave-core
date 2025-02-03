@@ -1,9 +1,7 @@
-//
-//  SwiftUIView.swift
-//  Brave
-//
-//  Created by Brandon T on 2025-01-21.
-//
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
 
@@ -17,7 +15,7 @@ private struct BraveDataImporterTutorialStepView: View {
       HStack {
         icon
 
-        Text("STEP \(stepNumber)")
+        Text(String(format: Strings.DataImporter.importTutorialStepTitle, stepNumber))
           .font(.caption2.weight(.bold))
           .foregroundStyle(Color(braveSystemName: .textTertiary))
       }
@@ -42,58 +40,70 @@ private struct BraveDataImporterTutorialStepView: View {
 }
 
 struct BraveDataImporterTutorialView: View {
+
+  @Environment(\.openURL)
+  private var openURL
+
   var body: some View {
     ScrollView {
       VStack(spacing: 12.0) {
         BraveDataImporterTutorialStepView(
           icon: Image(braveSystemName: "leo.grid05"),
           stepNumber: 1,
-          stepDescription: "Open **Settings**, scroll down, and tap **Apps**."
+          stepDescription: Strings.DataImporter.importTutorialStepOneTitle
         )
 
         BraveDataImporterTutorialStepView(
-          icon: Image("safari-icon", bundle: .module),
+          icon: Image("safari_icon", bundle: .module),
           stepNumber: 2,
-          stepDescription: "From the list of apps (sorted alphabetically), find and tap **Safari**."
+          stepDescription: Strings.DataImporter.importTutorialStepTwoTitle
         )
 
         BraveDataImporterTutorialStepView(
           icon: Image(braveSystemName: "leo.arrow.diagonal-up-right"),
           stepNumber: 3,
-          stepDescription: "Scroll down and tap **Export**."
+          stepDescription: Strings.DataImporter.importTutorialStepThreeTitle
         )
 
         BraveDataImporterTutorialStepView(
           icon: Image(braveSystemName: "leo.check.circle-outline"),
           stepNumber: 4,
           stepDescription:
-            "**Select** the data you want to export (Bookmarks, History, Credit Cards, Passwords)."
+            Strings.DataImporter.importTutorialStepFourTitle
         )
 
         BraveDataImporterTutorialStepView(
           icon: Image(braveSystemName: "leo.folder"),
           stepNumber: 5,
           stepDescription:
-            "Save the file in **Files**, choosing a location you can easily find later."
+            Strings.DataImporter.importTutorialStepFiveTitle
         )
         .padding(.bottom, 16.0)
 
-        Text("Want a detailed export process?")
+        Text(Strings.DataImporter.importTutorialDetailedProcessTitle)
           .font(.subheadline)
           .multilineTextAlignment(.center)
           .foregroundStyle(Color(braveSystemName: .textTertiary))
           .fixedSize(horizontal: false, vertical: true)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-        Text("Open Safari help page")
-          .font(.subheadline.weight(.semibold))
-          .multilineTextAlignment(.center)
-          .foregroundStyle(Color(braveSystemName: .textInteractive))
-          .fixedSize(horizontal: false, vertical: true)
-          .frame(maxWidth: .infinity, maxHeight: .infinity)
+        Button(
+          action: {
+            // TODO: GET URL FROM SOMEWHERE!
+            openURL(URL.Brave.braveDataImportSupport)
+          },
+          label: {
+            Text(Strings.DataImporter.importTutorialDetailedProcessMessage)
+              .font(.subheadline.weight(.semibold))
+              .multilineTextAlignment(.center)
+              .foregroundStyle(Color(braveSystemName: .textInteractive))
+              .fixedSize(horizontal: false, vertical: true)
+              .frame(maxWidth: .infinity, maxHeight: .infinity)
+          }
+        )
       }
       .padding(12.0)
-      .navigationTitle("How to export from Safari")
+      .navigationTitle(Strings.DataImporter.importTutorialScreenTitle)
     }
     .background(Color(braveSystemName: .pageBackground))
   }

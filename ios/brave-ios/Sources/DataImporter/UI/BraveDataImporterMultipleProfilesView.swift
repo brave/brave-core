@@ -1,9 +1,7 @@
-//
-//  SwiftUIView.swift
-//  Brave
-//
-//  Created by Brandon T on 2025-01-21.
-//
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import DesignSystem
 import SwiftUI
@@ -39,7 +37,7 @@ struct BraveDataImporterMultipleProfilesView: View {
       )
       .padding(.bottom, 24.0)
 
-      Text("Multiple profiles detected")
+      Text(Strings.DataImporter.multipleProfilesTitle)
         .font(.body.weight(.semibold))
         .multilineTextAlignment(.center)
         .foregroundColor(Color(braveSystemName: .textPrimary))
@@ -47,7 +45,7 @@ struct BraveDataImporterMultipleProfilesView: View {
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 24.0)
 
-      Text("Choose the profile you want to import data from")
+      Text(Strings.DataImporter.multipleProfilesMessage)
         .font(.footnote)
         .multilineTextAlignment(.center)
         .foregroundStyle(Color(braveSystemName: .textSecondary))
@@ -89,7 +87,7 @@ struct BraveDataImporterMultipleProfilesView: View {
       Button {
         dismissHandler?()
       } label: {
-        Text("Cancel")
+        Text(Strings.CancelString)
           .font(.subheadline.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .textSecondary))
           .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)

@@ -1,9 +1,7 @@
-//
-//  SwiftUIView.swift
-//  Brave
-//
-//  Created by Brandon T on 2025-01-22.
-//
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -22,7 +20,7 @@ struct BraveDataImporterLoadingView: View {
         .frame(width: 40, height: 40)
         .padding(.vertical, 32.0)
 
-      Text("Importing Your Data...")
+      Text(Strings.DataImporter.loadingTitle)
         .font(.body.weight(.semibold))
         .multilineTextAlignment(.center)
         .foregroundColor(Color(braveSystemName: .textPrimary))
@@ -30,7 +28,7 @@ struct BraveDataImporterLoadingView: View {
         .fixedSize(horizontal: false, vertical: true)
         .padding(.horizontal, 24.0)
 
-      Text("Please wait while we securely transfer your data.\nThis might take a few moments.")
+      Text(Strings.DataImporter.loadingMessage)
         .font(.footnote)
         .multilineTextAlignment(.center)
         .foregroundStyle(Color(braveSystemName: .textSecondary))
