@@ -43,6 +43,9 @@ class CustomEnvironment extends JSDOMEnvironment {
     // assert(this.global.crypto === undefined)
     this.global.crypto = webcrypto
 
+    // https://github.com/jsdom/jsdom/issues/3363
+    this.global.structuredClone = structuredClone
+
     this.global.matchMedia = (query) => ({
       matches: false,
       media: query,
