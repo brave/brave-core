@@ -481,6 +481,8 @@ extension BrowserViewController: TopToolbarDelegate {
       browser.tabManager.allTabs.forEach {
         if $0.url?.baseDomain == currentDomain {
           $0.reload()
+          // Domain specific shield setting changed, reset selectors cache.
+          $0.contentBlocker.resetSelectorsCache()
         }
       }
     }

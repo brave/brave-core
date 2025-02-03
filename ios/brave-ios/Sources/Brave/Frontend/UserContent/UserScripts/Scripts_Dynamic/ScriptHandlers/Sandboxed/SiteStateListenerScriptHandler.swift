@@ -76,9 +76,20 @@ class SiteStateListenerScriptHandler: TabContentScript {
             forFrameURL: frameURL,
             domain: domain
           )
+
+          var cachedStandardSelectors: Set<String> = .init()
+          var cachedAggressiveSelectors: Set<String> = .init()
+          if let url = tab.url,
+            let (standard, aggressive) = tab.contentBlocker.cachedSelectors(for: url)
+          {
+            cachedStandardSelectors = standard
+            cachedAggressiveSelectors = aggressive
+          }
           let setup = try self.makeSetup(
             from: models,
-            isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive
+            isAggressive: domain.globalBlockAdsAndTrackingLevel.isAggressive,
+            cachedStandardSelectors: cachedStandardSelectors,
+            cachedAggressiveSelectors: cachedAggressiveSelectors
           )
 
           // Join the procedural actions
@@ -108,10 +119,12 @@ class SiteStateListenerScriptHandler: TabContentScript {
 
   @MainActor private func makeSetup(
     from modelTuples: [AdBlockGroupsManager.CosmeticFilterModelTuple],
-    isAggressive: Bool
+    isAggressive: Bool,
+    cachedStandardSelectors: Set<String>,
+    cachedAggressiveSelectors: Set<String>
   ) throws -> UserScriptType.SelectorsPollerSetup {
-    var standardSelectors: Set<String> = []
-    var aggressiveSelectors: Set<String> = []
+    var standardSelectors = cachedStandardSelectors
+    var aggressiveSelectors = cachedAggressiveSelectors
 
     for modelTuple in modelTuples {
       if modelTuple.isAlwaysAggressive {
