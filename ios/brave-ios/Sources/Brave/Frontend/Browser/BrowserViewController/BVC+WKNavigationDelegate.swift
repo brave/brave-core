@@ -1641,6 +1641,8 @@ extension BrowserViewController: WKUIDelegate {
           )
           popoverController.permittedArrowDirections = []
         }
+
+        promptingTab.shownPromptAlert = suppressSheet
         self.present(suppressSheet, animated: true)
       } else {
         completionHandler()
