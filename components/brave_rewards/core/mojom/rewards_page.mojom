@@ -9,12 +9,6 @@ import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
 import "brave/components/brave_rewards/core/mojom/rewards.mojom";
 import "mojo/public/mojom/base/time.mojom";
 
-// Initializes messaging between the browser and the page.
-interface RewardsPageHandlerFactory {
-  CreatePageHandler(pending_remote<RewardsPage> page,
-                    pending_receiver<RewardsPageHandler> receiver);
-};
-
 // Page-side handler for notifications from the browser.
 interface RewardsPage {
   // Notifies the page that Rewards state has changed and updated information
@@ -83,6 +77,10 @@ struct RewardsNotification {
 
 // Browser-side handler for requests from WebUI page.
 interface RewardsPageHandler {
+
+  // Sets the remote that will receive notifications from the browser.
+  SetRewardsPage(pending_remote<RewardsPage> page);
+
   // Notifies the browser that that Rewards page has rendered and is ready to be
   // displayed to the user.
   OnPageReady();

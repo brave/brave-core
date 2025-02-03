@@ -656,7 +656,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   }
 
   registry.ForWebUI<brave_rewards::RewardsPageUI>()
-      .Add<brave_rewards::mojom::RewardsPageHandlerFactory>();
+      .Add<brave_rewards::mojom::RewardsPageHandler>();
 
 #if !BUILDFLAG(IS_ANDROID)
   auto ntp_registration =
@@ -867,7 +867,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         CookieListOptInUI>(map);
   }
   content::RegisterWebUIControllerInterfaceBinder<
-      brave_rewards::mojom::RewardsPageHandlerFactory,
+      brave_rewards::mojom::RewardsPageHandler,
       brave_rewards::RewardsPageTopUI>(map);
   content::RegisterWebUIControllerInterfaceBinder<
       brave_rewards::mojom::PanelHandlerFactory, brave_rewards::RewardsPanelUI>(

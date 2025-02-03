@@ -12,29 +12,19 @@
 #include "brave/components/brave_rewards/core/mojom/rewards_page.mojom.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 
 namespace brave_rewards {
 
 // The WebUI controller for the Rewards page when viewed in a tab.
-class RewardsPageUI : public content::WebUIController,
-                      public mojom::RewardsPageHandlerFactory {
+class RewardsPageUI : public content::WebUIController {
  public:
   explicit RewardsPageUI(content::WebUI* web_ui, const std::string& host);
   ~RewardsPageUI() override;
 
-  void BindInterface(
-      mojo::PendingReceiver<mojom::RewardsPageHandlerFactory> receiver);
+  void BindInterface(mojo::PendingReceiver<mojom::RewardsPageHandler> receiver);
 
  private:
-  // mojom::RewardsPageHandlerFactory:
-  void CreatePageHandler(
-      mojo::PendingRemote<mojom::RewardsPage> page,
-      mojo::PendingReceiver<mojom::RewardsPageHandler> handler) override;
-
   std::unique_ptr<mojom::RewardsPageHandler> handler_;
-  mojo::Receiver<RewardsPageHandlerFactory> factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
