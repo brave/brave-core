@@ -1022,6 +1022,11 @@ extension BrowserViewController: WKNavigationDelegate {
     tab.nightMode = Preferences.General.nightModeEnabled.value
     tab.clearSolanaConnectedAccounts()
 
+    // Dismiss any alerts that are showing on page navigation.
+    if let alert = tab.shownPromptAlert {
+      alert.dismiss(animated: false)
+    }
+
     // Providers need re-initialized when changing origin to align with desktop in
     // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
     // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
@@ -1435,6 +1440,11 @@ extension BrowserViewController: WKUIDelegate {
     type: WKMediaCaptureType,
     decisionHandler: @escaping (WKPermissionDecision) -> Void
   ) {
+    if frame.securityOrigin.protocol.isEmpty || frame.securityOrigin.host.isEmpty {
+      decisionHandler(.deny)
+      return
+    }
+
     let presentAlert = { [weak self] in
       guard let self = self else { return }
 
@@ -1477,6 +1487,9 @@ extension BrowserViewController: WKUIDelegate {
       alertController.dismissedWithoutAction = {
         decisionHandler(.prompt)
       }
+
+      tabManager.tabForWebView(webView)?.shownPromptAlert = alertController
+
       if webView.fullscreenState == .inFullscreen || webView.fullscreenState == .enteringFullscreen
       {
         webView.closeAllMediaPresentations {
@@ -1514,7 +1527,7 @@ extension BrowserViewController: WKUIDelegate {
       completionHandler: completionHandler,
       suppressHandler: nil
     )
-    handleAlert(webView: webView, alert: &messageAlert) {
+    handleAlert(webView: webView, frame: frame, alert: &messageAlert) {
       completionHandler()
     }
   }
@@ -1531,7 +1544,7 @@ extension BrowserViewController: WKUIDelegate {
       completionHandler: completionHandler,
       suppressHandler: nil
     )
-    handleAlert(webView: webView, alert: &confirmAlert) {
+    handleAlert(webView: webView, frame: frame, alert: &confirmAlert) {
       completionHandler(false)
     }
   }
@@ -1550,7 +1563,7 @@ extension BrowserViewController: WKUIDelegate {
       defaultText: defaultText,
       suppressHandler: nil
     )
-    handleAlert(webView: webView, alert: &textInputAlert) {
+    handleAlert(webView: webView, frame: frame, alert: &textInputAlert) {
       completionHandler(nil)
     }
   }
@@ -1569,15 +1582,22 @@ extension BrowserViewController: WKUIDelegate {
 
   func handleAlert<T: JSAlertInfo>(
     webView: WKWebView,
+    frame: WKFrameInfo,
     alert: inout T,
     completionHandler: @escaping () -> Void
   ) {
+    if frame.securityOrigin.protocol.isEmpty || frame.securityOrigin.host.isEmpty {
+      completionHandler()
+      return
+    }
+
     guard let promptingTab = tabManager[webView], !promptingTab.blockAllAlerts else {
       suppressJSAlerts(webView: webView)
       tabManager[webView]?.cancelQueuedAlerts()
       completionHandler()
       return
     }
+
     promptingTab.alertShownCount += 1
     let suppressBlock: JSAlertInfo.SuppressHandler = { [unowned self] suppress in
       if suppress {
@@ -1621,6 +1641,8 @@ extension BrowserViewController: WKUIDelegate {
           )
           popoverController.permittedArrowDirections = []
         }
+
+        promptingTab.shownPromptAlert = suppressSheet
         self.present(suppressSheet, animated: true)
       } else {
         completionHandler()
@@ -1630,6 +1652,8 @@ extension BrowserViewController: WKUIDelegate {
     if shouldDisplayJSAlertForWebView(webView) {
       let controller = alert.alertController()
       controller.delegate = self
+      promptingTab.shownPromptAlert = controller
+
       present(controller, animated: true)
     } else {
       promptingTab.queueJavascriptAlertPrompt(alert)
