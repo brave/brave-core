@@ -71,10 +71,13 @@
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "components/device_signals/core/common/signals_features.h"
-#include "components/feature_engagement/public/feature_constants.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
+#include "components/feature_engagement/public/feature_constants.h"
 #endif
 
 TEST(FeatureDefaultsTest, DisabledFeatures) {
@@ -128,8 +131,12 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
+#endif
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
       &feature_engagement::kIPHGMCCastStartStopFeature,
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
+#endif
+#if !BUILDFLAG(IS_ANDROID)
       &features::kToolbarPinning,
 #endif
       &features::kBookmarkTriggerForPrerender2,
