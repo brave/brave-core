@@ -23,7 +23,9 @@ if (is_universal_binary) {
   unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
 }
 
+if (skip_signing) {
 unsigned_dmg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg"
+}
 unsigned_pkg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_pkg"
 
 signed_app_path =
@@ -32,16 +34,21 @@ if (is_release_channel) {
   signed_app_path = "$root_out_dir/$mac_signing_output_prefix/stable/$brave_exe"
 }
 
+if (!skip_signing) {
 signed_dmg_path = "$root_out_dir/$mac_signed_output_prefix/$brave_dmg"
 signed_pkg_path = "$root_out_dir/$mac_signed_output_prefix/$brave_pkg"
+}
 
 app_path = signed_app_path
 if (skip_signing) {
   app_path = unsigned_app_path
 }
 
+
+if (notarize) {
 notarized_dmg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_dmg"
 notarized_pkg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_pkg"
+}
 
 target_dmg_path = "$root_out_dir/$brave_dmg"
 
@@ -107,10 +114,6 @@ if (!is_release_channel) {
   ds_store_file_name = "DS_Store.$brave_channel"
   dmg_icon_file_name = "dmg-$brave_channel"
 }
-
-dmg_background_image = rebase_path("//brave/build/mac/dmg-background.png")
-ds_store = rebase_path("//brave/build/mac/$ds_store_file_name")
-dmg_icon = rebase_path("//brave/build/mac/$dmg_icon_file_name.icns")
 
 action("generate_dsa_sig_for_dmg") {
   script = "generate_sig.py"
@@ -331,7 +334,7 @@ action("sign_app") {
 }
 
 copy("copies") {
-  visibility = [ ":sign_app", ":_sign_dmg" ]
+  visibility = [ ":sign_app", ":_create_dmg" ]
 
   sources = [
     provisioning_profile,
@@ -406,6 +409,7 @@ if (install_omaha4_with_pkg) {
   }
 }
 
+if (!skip_signing) {
 action("sign_pkg") {
   script = "//build/gn_run_binary.py"
   shell_script = "sign_pkg.sh"
@@ -428,66 +432,11 @@ action("sign_pkg") {
 
   deps = [ ":create_pkg" ]
 }
-
-action("create_dmg") {
-  if (host_os == "mac") {
-    script = "//build/gn_run_binary.py"
-    shell_script = "//chrome/installer/mac/pkg-dmg"
-    args = [ rebase_path(shell_script, root_build_dir) ]
-    inputs = [ shell_script ]
-  } else {
-    script = "cross-compile/pkg-dmg-linux.py"
-    args = []
-    inputs = []
-  }
-
-  args += [
-    "--source",
-    "/var/empty",
-    "--target",
-    "$mac_unsigned_output_prefix/$brave_dmg",
-    "--format",
-    "ULMO",
-    "--verbosity",
-    "2",
-    "--volname",
-    "$chrome_product_full_name",
-    "--copy",
-    rebase_path(app_path, root_build_dir),
-    "--tempdir",
-    "/tmp",
-    "--mkdir",
-    ".background",
-    "--copy",
-    "$dmg_background_image:/.background/dmg-background.png",
-    "--copy",
-    "$ds_store:/.DS_Store",
-    "--icon",
-    "$dmg_icon",
-    "--symlink",
-    "/Applications",
-    "--copy",
-    rebase_path(
-        "$root_out_dir/$browser_product_name Packaging/updater/.install",
-        root_build_dir),
-  ]
-
-  inputs += [
-    script,
-    app_path,
-  ]
-
-  outputs = [ unsigned_dmg_path ]
-
-  deps = [
-    ":finalize_app",
-    "//chrome/updater/mac:browser_install_script",
-  ]
 }
 
 _upstream_signed_dmg_path = "$root_out_dir/$mac_signed_output_prefix/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full.dmg"
 
-action("_sign_dmg") {
+action("_create_dmg") {
   deps = [
     ":browser_install_script",
     ":copies",
@@ -537,7 +486,7 @@ action("_sign_dmg") {
 }
 
 copy("signing_config") {
-  visibility = [ ":_sign_dmg" ]
+  visibility = [ ":_create_dmg" ]
   sources = [
     "signing/internal_config.py",
     "signing/internal_invoker.py",
@@ -566,10 +515,14 @@ copy("ds_store") {
   outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
 }
 
-copy("sign_dmg") {
-  deps = [ ":_sign_dmg" ]
+copy("create_dmg") {
+  deps = [ ":_create_dmg" ]
   sources = [ _upstream_signed_dmg_path ]
-  outputs = [ signed_dmg_path ]
+  if (skip_signing) {
+    outputs = [ unsigned_dmg_path ]
+  } else {
+    outputs = [ signed_dmg_path ]
+  }
 }
 
 group("finalize_dmg_pkg") {
@@ -604,6 +557,8 @@ copy("copy_notarize_script") {
 
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
 }
+
+if (!skip_signing && notarize) {
 
 action("notarize_dmg_pkg") {
   script = "$packaging_dir/notarize_dmg_pkg.py"
@@ -657,9 +612,11 @@ action("notarize_dmg_pkg") {
 
   deps = [
     ":copy_notarize_script",
-    ":sign_dmg",
+    ":create_dmg",
     ":sign_pkg",
   ]
+}
+
 }
 
 copy("copy_dmg_pkg") {
@@ -688,7 +645,7 @@ copy("copy_dmg_pkg") {
       signed_pkg_path,
     ]
     deps = [
-      ":sign_dmg",
+      ":create_dmg",
       ":sign_pkg",
     ]
   }
