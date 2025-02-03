@@ -14,11 +14,14 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+
+namespace ai_chat {
 
 namespace {
 
@@ -51,9 +54,51 @@ bool MigrateFrom1To2(sql::Database* db) {
   return statement.is_valid() && statement.Run();
 }
 
-}  // namespace
+void SerializeWebSourcesEvent(const mojom::WebSourcesEventPtr& mojom_event,
+                              store::WebSourcesEventProto* proto_event) {
+  proto_event->clear_sources();
 
-namespace ai_chat {
+  for (const auto& mojom_source : mojom_event->sources) {
+    if (!mojom_source->url.is_valid() ||
+        !mojom_source->favicon_url.is_valid()) {
+      DVLOG(0) << "Invalid WebSourcesEvent found for persistence, with url: "
+               << mojom_source->url.spec()
+               << " and favicon url: " << mojom_source->favicon_url.spec();
+      continue;
+    }
+    store::WebSourceProto* proto_source = proto_event->add_sources();
+    proto_source->set_title(mojom_source->title);
+    proto_source->set_url(mojom_source->url.spec());
+    proto_source->set_favicon_url(mojom_source->favicon_url.spec());
+  }
+}
+
+mojom::WebSourcesEventPtr DeserializeWebSourcesEvent(
+    const store::WebSourcesEventProto& proto_event) {
+  auto mojom_event = mojom::WebSourcesEvent::New();
+  mojom_event->sources.reserve(proto_event.sources_size());
+
+  for (const auto& proto_source : proto_event.sources()) {
+    auto mojom_source = mojom::WebSource::New();
+    mojom_source->title = proto_source.title();
+    mojom_source->url = GURL(proto_source.url());
+    if (!mojom_source->url.is_valid()) {
+      DVLOG(0) << "Invalid WebSourcesEvent found in database with url: "
+               << proto_source.url();
+      continue;
+    }
+    mojom_source->favicon_url = GURL(proto_source.favicon_url());
+    if (!mojom_source->favicon_url.is_valid()) {
+      DVLOG(0) << "Invalid WebSourcesEvent found in database with favicon url: "
+               << proto_source.favicon_url();
+      continue;
+    }
+    mojom_event->sources.push_back(std::move(mojom_source));
+  }
+  return mojom_event;
+}
+
+}  // namespace
 
 // These database versions should roll together unless we develop migrations.
 // Lowest version we support migrations from - existing database will be deleted
@@ -327,6 +372,34 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
         events.emplace_back(Event{
             event_order, mojom::ConversationEntryEvent::NewSearchQueriesEvent(
                              mojom::SearchQueriesEvent::New(queries))});
+      }
+    }
+
+    // Web Source events
+    {
+      sql::Statement event_statement(GetDB().GetUniqueStatement(
+          "SELECT event_order, sources_serialized"
+          " FROM conversation_entry_event_web_sources"
+          " WHERE conversation_entry_uuid=?"
+          " ORDER BY event_order ASC"));
+      event_statement.BindString(0, entry_uuid);
+
+      while (event_statement.Step()) {
+        int event_order = event_statement.ColumnInt(0);
+        auto data = DecryptColumnToString(event_statement, 1);
+        store::WebSourcesEventProto proto_event;
+        if (proto_event.ParseFromString(data)) {
+          mojom::WebSourcesEventPtr mojom_event =
+              DeserializeWebSourcesEvent(proto_event);
+          if (mojom_event->sources.empty()) {
+            DVLOG(0) << "Empty WebSourcesEvent found in database for entry "
+                     << entry_uuid;
+            continue;
+          }
+          events.emplace_back(
+              Event{event_order, mojom::ConversationEntryEvent::NewSourcesEvent(
+                                     std::move(mojom_event))});
+        }
       }
     }
 
@@ -664,6 +737,29 @@ bool AIChatDatabase::AddConversationEntry(
           event_statement.Run();
           break;
         }
+        case mojom::ConversationEntryEvent::Tag::kSourcesEvent: {
+          sql::Statement event_statement(GetDB().GetCachedStatement(
+              SQL_FROM_HERE,
+              "INSERT INTO conversation_entry_event_web_sources"
+              " (event_order, sources_serialized, conversation_entry_uuid)"
+              " VALUES(?, ?, ?)"));
+          CHECK(event_statement.is_valid());
+
+          store::WebSourcesEventProto proto_event;
+          SerializeWebSourcesEvent(event->get_sources_event(), &proto_event);
+          if (proto_event.sources().empty()) {
+            DVLOG(0) << "Empty WebSourcesEvent found for persistence";
+            break;
+          }
+          event_statement.BindInt(0, static_cast<int>(i));
+          if (!BindAndEncryptString(event_statement, 1,
+                                    proto_event.SerializeAsString())) {
+            return false;
+          }
+          event_statement.BindString(2, entry->uuid.value());
+          event_statement.Run();
+          break;
+        }
         default: {
           break;
         }
@@ -758,6 +854,17 @@ bool AIChatDatabase::DeleteConversation(std::string_view conversation_uuid) {
       return false;
     }
 
+    static constexpr char kDeleteWebSourcesEventQuery[] =
+        "DELETE FROM conversation_entry_event_web_sources "
+        " WHERE conversation_entry_uuid=?";
+    sql::Statement delete_web_sources_event_statement(
+        GetDB().GetUniqueStatement(kDeleteWebSourcesEventQuery));
+    CHECK(delete_web_sources_event_statement.is_valid());
+    delete_web_sources_event_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_web_sources_event_statement.Run()) {
+      return false;
+    }
+
     static constexpr char kDeleteEntryQuery[] =
         "DELETE FROM conversation_entry WHERE uuid=?";
     sql::Statement delete_conversation_entry_statement(
@@ -837,6 +944,23 @@ bool AIChatDatabase::DeleteConversationEntry(
     if (!delete_statement.Run()) {
       DLOG(ERROR) << "Failed to delete from "
                      "conversation_entry_event_search_queries for conversation "
+                     "entry uuid: "
+                  << conversation_entry_uuid;
+      return false;
+    }
+  }
+
+  // Delete from conversation_entry_event_web_sources
+  {
+    static constexpr char kQuery[] =
+        "DELETE FROM conversation_entry_event_web_sources WHERE "
+        "conversation_entry_uuid=?";
+    sql::Statement delete_statement(GetDB().GetUniqueStatement(kQuery));
+    CHECK(delete_statement.is_valid());
+    delete_statement.BindString(0, conversation_entry_uuid);
+    if (!delete_statement.Run()) {
+      DLOG(ERROR) << "Failed to delete from "
+                     "conversation_entry_event_web_sources for conversation "
                      "entry uuid: "
                   << conversation_entry_uuid;
       return false;
@@ -1061,6 +1185,11 @@ bool AIChatDatabase::CreateSchema() {
     return false;
   }
 
+  // TODO(petemill): Consider storing all conversation entry events in a single
+  // table, with serialized data in protocol buffers format. If we need to add
+  // search capability for the encrypted data, we could store some generic
+  // embeddings in a separate table or column.
+
   static constexpr char kCreateConversationEntryTextTableQuery[] =
       "CREATE TABLE IF NOT EXISTS conversation_entry_event_completion("
       "conversation_entry_uuid INTEGER NOT NULL,"
@@ -1084,6 +1213,19 @@ bool AIChatDatabase::CreateSchema() {
       ")";
   CHECK(GetDB().IsSQLValid(kCreateSearchQueriesTableQuery));
   if (!GetDB().Execute(kCreateSearchQueriesTableQuery)) {
+    return false;
+  }
+
+  static constexpr char kCreateWebSourcesTableQuery[] =
+      "CREATE TABLE IF NOT EXISTS conversation_entry_event_web_sources("
+      "conversation_entry_uuid INTEGER NOT NULL,"
+      "event_order INTEGER NOT NULL,"
+      // encrypted serialized web source data
+      "sources_serialized BLOB NOT NULL,"
+      "PRIMARY KEY(conversation_entry_uuid, event_order)"
+      ")";
+  CHECK(GetDB().IsSQLValid(kCreateWebSourcesTableQuery));
+  if (!GetDB().Execute(kCreateWebSourcesTableQuery)) {
     return false;
   }
 

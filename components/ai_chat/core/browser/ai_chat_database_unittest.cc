@@ -258,6 +258,112 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
   EXPECT_EQ(conversations.size(), 0u);
 }
 
+TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
+  const std::string uuid = "first";
+  const GURL page_url = GURL("https://example.com/page");
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
+      mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
+                           std::nullopt, std::nullopt, std::nullopt, 0, false,
+                           false));
+
+  // Test 2 entries to verify they are recorded against different entries
+  auto history = CreateSampleChatHistory(2u);
+  {
+    std::vector<mojom::WebSourcePtr> sources_first;
+    sources_first.emplace_back(
+        mojom::WebSource::New("title1", GURL("https://example.com/source1"),
+                              GURL("https://www.example.com/source1favicon")));
+    sources_first.emplace_back(
+        mojom::WebSource::New("title2", GURL("https://example.com/source2"),
+                              GURL("https://www.example.com/source2favicon")));
+
+    std::vector<mojom::WebSourcePtr> sources_second;
+    sources_second.emplace_back(
+        mojom::WebSource::New("2title1", GURL("https://2example.com/source1"),
+                              GURL("https://www.2example.com/source1favicon")));
+    sources_second.emplace_back(
+        mojom::WebSource::New("2title2", GURL("https://2example.com/source2"),
+                              GURL("https://www.2example.com/source2favicon")));
+
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewSourcesEvent(
+            mojom::WebSourcesEvent::New(std::move(sources_first))));
+    history[3]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewSourcesEvent(
+            mojom::WebSourcesEvent::New(std::move(sources_second))));
+  }
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
+                                   history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+}
+
+TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
+  const std::string uuid = "first";
+  const GURL page_url = GURL("https://example.com/page");
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
+      mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
+                           std::nullopt, std::nullopt, std::nullopt, 0, false,
+                           false));
+
+  // Test 2 entries to verify they are recorded against different entries. Make
+  // some entries invalid to verify they are not persisted.
+  // Test an additional entry with a sources even but no items.
+  auto history = CreateSampleChatHistory(3u);
+  {
+    std::vector<mojom::WebSourcePtr> sources_first;
+    sources_first.emplace_back(mojom::WebSource::New(
+        "title1", GURL(""), GURL("https://www.example.com/source1favicon")));
+    sources_first.emplace_back(
+        mojom::WebSource::New("title2", GURL("https://example.com/source2"),
+                              GURL("https://www.example.com/source2favicon")));
+
+    std::vector<mojom::WebSourcePtr> sources_second;
+    sources_second.emplace_back(
+        mojom::WebSource::New("2title1", GURL("https://2example.com/source1"),
+                              GURL("https://www.2example.com/source1favicon")));
+    sources_second.emplace_back(mojom::WebSource::New(
+        "2title2", GURL("https://2example.com/source2"), GURL("")));
+
+    history[1]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewSourcesEvent(
+            mojom::WebSourcesEvent::New(std::move(sources_first))));
+    history[3]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewSourcesEvent(
+            mojom::WebSourcesEvent::New(std::move(sources_second))));
+    history[5]->events->emplace_back(
+        mojom::ConversationEntryEvent::NewSourcesEvent(
+            mojom::WebSourcesEvent::New()));
+  }
+
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), std::nullopt,
+                                   history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[3]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[4]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[5]->Clone()));
+
+  // Update expected data to remove the invalid sources
+  history[1]->events->back()->get_sources_event()->sources.erase(
+      history[1]->events->back()->get_sources_event()->sources.begin());
+  history[3]->events->back()->get_sources_event()->sources.pop_back();
+  history[5]->events->pop_back();
+
+  mojom::ConversationArchivePtr conversation_data =
+      db_->GetConversationData(uuid);
+  ExpectConversationHistoryEquals(FROM_HERE, conversation_data->entries,
+                                  history);
+}
+
 TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
   const std::vector<std::string> initial_titles = {"first title", ""};
   for (const auto& initial_title : initial_titles) {
