@@ -161,7 +161,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_BasicMessage) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      false, page_content, {}, history, "", base::DoNothing(),
+      false, page_content, history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -202,7 +202,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_WithSelectedText) {
   history.push_back(std::move(turn));
 
   engine_->GenerateAssistantResponse(
-      false, "This is a page about The Mandalorian.", {}, history, "",
+      false, "This is a page about The Mandalorian.", history, "",
       base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
@@ -258,8 +258,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
         std::move(callback).Run("");
       });
   engine_->GenerateAssistantResponse(
-      false, "This is my page. I have spoken.", {}, history, "",
-      base::DoNothing(),
+      false, "This is my page. I have spoken.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -361,7 +360,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_ModifyReply) {
         std::move(callback).Run("");
       });
   engine_->GenerateAssistantResponse(
-      false, "I have spoken.", {}, history, "", base::DoNothing(),
+      false, "I have spoken.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
   run_loop.Run();
@@ -374,7 +373,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
   auto run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _)).Times(0);
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", {}, history, "", base::DoNothing(),
+      false, "This is my page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -394,7 +393,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_EarlyReturn) {
   EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _)).Times(0);
   run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", {}, history, "", base::DoNothing(),
+      false, "This is my page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -428,10 +427,60 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_SummarizePage) {
       "Summarize the content of this page.";  // This text should be ignored
   history.push_back(std::move(turn));
   engine_->GenerateAssistantResponse(
-      false, "This is a sample page content.", {}, history, "",
-      base::DoNothing(),
+      false, "This is a sample page content.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_api_client);
+}
+
+TEST_F(EngineConsumerConversationAPIUnitTest, GenerateEvents_UploadImage) {
+  const std::vector<std::vector<uint8_t>> test_images = {
+      {0x01, 0x02, 0x03, 0x04, 0x05},
+      {0xde, 0xed, 0xbe, 0xef},
+      {0xff, 0xff, 0xff},
+  };
+  constexpr char kTestPrompt[] = "Tell the user what is in the image?";
+  constexpr char kAssistantResponse[] = "It's a lion!";
+  auto* mock_api_client = GetMockConversationAPIClient();
+  base::RunLoop run_loop;
+  EXPECT_CALL(*mock_api_client, PerformRequest(_, _, _, _))
+      .WillOnce([&](const std::vector<ConversationEvent>& conversation,
+                    const std::string& selected_language,
+                    EngineConsumer::GenerationDataCallback data_callback,
+                    EngineConsumer::GenerationCompletedCallback callback) {
+        // Only support one image for now.
+        ASSERT_EQ(conversation.size(), 2u);
+        EXPECT_EQ(conversation[0].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[0].content, "data:image/png;base64,AQIDBAU=");
+        EXPECT_EQ(conversation[0].type, ConversationAPIClient::UploadImage);
+        EXPECT_EQ(conversation[1].role, mojom::CharacterType::HUMAN);
+        EXPECT_EQ(conversation[1].content, kTestPrompt);
+        EXPECT_EQ(conversation[1].type, ConversationAPIClient::ChatMessage);
+        std::move(callback).Run(kAssistantResponse);
+      });
+
+  std::vector<mojom::UploadedImagePtr> uploaded_images;
+  uploaded_images.emplace_back(
+      mojom::UploadedImage::New("filename1", 1, test_images[0]));
+  uploaded_images.emplace_back(
+      mojom::UploadedImage::New("filename", 2, test_images[1]));
+  uploaded_images.emplace_back(
+      mojom::UploadedImage::New("filename", 3, test_images[2]));
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::move(uploaded_images), false));
+
+  engine_->GenerateAssistantResponse(
+      false, "", history, "", base::DoNothing(),
+      base::BindLambdaForTesting([&run_loop, kAssistantResponse](
+                                     EngineConsumer::GenerationResult result) {
+        EXPECT_STREQ(result.value().c_str(), kAssistantResponse);
+        run_loop.Quit();
+      }));
   run_loop.Run();
   testing::Mock::VerifyAndClearExpectations(mock_api_client);
 }

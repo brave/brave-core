@@ -103,7 +103,6 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
-    const std::vector<std::vector<uint8_t>>& uploaded_images,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,
@@ -119,17 +118,18 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
     conversation.push_back(
         GetAssociatedContentConversationEvent(page_content, is_video));
   }
-  if (!uploaded_images.empty()) {
+  const auto& last_entry = conversation_history.back();
+  if (last_entry->uploaded_images) {
     size_t counter = 0;
     constexpr char kImageUrl[] = R"(data:image/png;base64,$1)";
-    for (const auto& uploaded_image : uploaded_images) {
+    for (const auto& uploaded_image : last_entry->uploaded_images.value()) {
       // Only send the first uploaded_image becasue llama-vision seems to take
-      // the last one if there are multiple screenshots
+      // the last one if there are multiple images
       if (counter++ > 0) {
         break;
       }
       const std::string image_url = base::ReplaceStringPlaceholders(
-          kImageUrl, {base::Base64Encode(uploaded_image)}, nullptr);
+          kImageUrl, {base::Base64Encode(uploaded_image->image_data)}, nullptr);
       conversation.push_back({mojom::CharacterType::HUMAN,
                               ConversationEventType::UploadImage, image_url});
     }

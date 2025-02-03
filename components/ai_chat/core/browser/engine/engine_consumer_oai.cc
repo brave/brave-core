@@ -11,6 +11,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
@@ -88,6 +89,35 @@ base::Value::List BuildMessages(
     base::Value::Dict message;
     message.Set("role", "user");
     message.Set("content", prompt_segment_article);
+    messages.Append(std::move(message));
+  }
+  const auto& last_entry = conversation_history.back();
+  if (last_entry->uploaded_images) {
+    base::Value::Dict message;
+    message.Set("role", "user");
+    base::Value::List content;
+    base::Value::Dict user_message;
+    user_message.Set("type", "text");
+    user_message.Set("text", "These images are uploaded by the users");
+    content.Append(std::move(user_message));
+    size_t counter = 0;
+    constexpr char kImageUrl[] = R"(data:image/png;base64,$1)";
+    // Only send the first uploaded_image becasue llama-vision seems to take the
+    // last one if there are multiple uploaded_images
+    for (const auto& uploaded_image : last_entry->uploaded_images.value()) {
+      if (counter++ > 0) {
+        break;
+      }
+      base::Value::Dict image;
+      image.Set("type", "image_url");
+      const std::string image_url = base::ReplaceStringPlaceholders(
+          kImageUrl, {base::Base64Encode(uploaded_image->image_data)}, nullptr);
+      base::Value::Dict image_url_dict;
+      image_url_dict.Set("url", image_url);
+      image.Set("image_url", std::move(image_url_dict));
+      content.Append(std::move(image));
+    }
+    message.Set("content", std::move(content));
     messages.Append(std::move(message));
   }
 
@@ -243,7 +273,6 @@ void EngineConsumerOAIRemote::OnGenerateQuestionSuggestionsResponse(
 void EngineConsumerOAIRemote::GenerateAssistantResponse(
     const bool& is_video,
     const std::string& page_content,
-    const std::vector<std::vector<uint8_t>>& uploaded_images,
     const ConversationHistory& conversation_history,
     const std::string& selected_language,
     GenerationDataCallback data_received_callback,

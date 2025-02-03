@@ -22,6 +22,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
@@ -34,6 +35,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
+using base::test::ParseJsonDict;
 using ::testing::_;
 using ::testing::Sequence;
 
@@ -284,7 +286,7 @@ TEST_F(EngineConsumerOAIUnitTest,
 
   // Initiate the test
   engine_->GenerateAssistantResponse(
-      /* is_video */ false, "", {}, history, "", base::DoNothing(),
+      /* is_video */ false, "", history, "", base::DoNothing(),
       base::BindLambdaForTesting([&run_loop, &assistant_response](
                                      EngineConsumer::GenerationResult result) {
         EXPECT_STREQ(result.value().c_str(), assistant_response.c_str());
@@ -358,7 +360,7 @@ TEST_F(EngineConsumerOAIUnitTest,
   }
 
   engine_->GenerateAssistantResponse(
-      /* is_video */ false, "", {}, history, "", base::DoNothing(),
+      /* is_video */ false, "", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             EXPECT_STREQ(result.value().c_str(), "I dont know");
@@ -397,7 +399,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       });
 
   engine_->GenerateAssistantResponse(
-      false, "", {}, GetHistoryWithModifiedReply(), "", base::DoNothing(),
+      false, "", GetHistoryWithModifiedReply(), "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -412,7 +414,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   auto run_loop = std::make_unique<base::RunLoop>();
   EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", {}, history, "", base::DoNothing(),
+      false, "This is my page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
@@ -432,11 +434,76 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*client, PerformRequest(_, _, _, _)).Times(0);
   run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", {}, history, "", base::DoNothing(),
+      false, "This is my page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult result) {
             run_loop->Quit();
           }));
+  run_loop->Run();
+  testing::Mock::VerifyAndClearExpectations(client);
+}
+
+TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponseUploadImage) {
+  EngineConsumer::ConversationHistory history;
+  auto* client = GetClient();
+  auto run_loop = std::make_unique<base::RunLoop>();
+  const std::vector<std::vector<uint8_t>> test_images = {
+      {0x01, 0x02, 0x03, 0x04, 0x05},
+      {0xde, 0xed, 0xbe, 0xef},
+      {0xff, 0xff, 0xff},
+  };
+  constexpr char kTestPrompt[] = "Tell the user what is in the image?";
+  constexpr char kAssistantResponse[] = "It's a lion!";
+  EXPECT_CALL(*client, PerformRequest(_, _, _, _))
+      .WillOnce(
+          [kTestPrompt, kAssistantResponse](
+              const mojom::CustomModelOptions, base::Value::List messages,
+              EngineConsumer::GenerationDataCallback,
+              EngineConsumer::GenerationCompletedCallback completed_callback) {
+            EXPECT_EQ(*messages[0].GetDict().Find("role"), "system");
+
+            auto expected_dict = ParseJsonDict(R"({
+                 "content": [ {
+                    "text": "These images are uploaded by the users",
+                    "type": "text"
+                 }, {
+                    "image_url": {
+                       "url": "data:image/png;base64,AQIDBAU="
+                    },
+                    "type": "image_url"
+                 } ],
+                 "role": "user"
+                }
+            )");
+            EXPECT_EQ(messages[1].GetDict(), expected_dict);
+
+            EXPECT_EQ(*messages[2].GetDict().Find("role"), "user");
+            EXPECT_EQ(*messages[2].GetDict().Find("content"), kTestPrompt);
+
+            std::move(completed_callback)
+                .Run(EngineConsumer::GenerationResult(kAssistantResponse));
+          });
+
+  std::vector<mojom::UploadedImagePtr> uploaded_images;
+  uploaded_images.emplace_back(
+      mojom::UploadedImage::New("filename1", 1, test_images[0]));
+  uploaded_images.emplace_back(
+      mojom::UploadedImage::New("filename", 2, test_images[1]));
+  uploaded_images.emplace_back(
+      mojom::UploadedImage::New("filename", 3, test_images[2]));
+
+  history.push_back(mojom::ConversationTurn::New(
+      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
+      "What is this image?", kTestPrompt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::move(uploaded_images), false));
+
+  engine_->GenerateAssistantResponse(
+      false, "", history, "", base::DoNothing(),
+      base::BindLambdaForTesting([&run_loop, kAssistantResponse](
+                                     EngineConsumer::GenerationResult result) {
+        EXPECT_STREQ(result.value().c_str(), kAssistantResponse);
+        run_loop->Quit();
+      }));
   run_loop->Run();
   testing::Mock::VerifyAndClearExpectations(client);
 }
@@ -473,7 +540,7 @@ TEST_F(EngineConsumerOAIUnitTest, SummarizePage) {
 
   engine_->GenerateAssistantResponse(
       /* is_video */ false,
-      /* page_content */ "This is a page.", {}, history, "", base::DoNothing(),
+      /* page_content */ "This is a page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop.Quit(); }));
 

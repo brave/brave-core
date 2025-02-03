@@ -130,7 +130,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "This is a page.", {}, history, "", base::DoNothing(),
+      false, "This is a page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -179,7 +179,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history2.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "This is a page.", {}, history2, "", base::DoNothing(),
+      false, "This is a page.", history2, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -214,7 +214,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
     history.push_back(std::move(entry));
   }
   engine_->GenerateAssistantResponse(
-      false, "12345", {}, history, "", base::DoNothing(),
+      false, "12345", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -235,7 +235,7 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
       });
 
   engine_->GenerateAssistantResponse(
-      false, "12345", {}, GetHistoryWithModifiedReply(), "", base::DoNothing(),
+      false, "12345", GetHistoryWithModifiedReply(), "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -248,7 +248,7 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _)).Times(0);
   auto run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", {}, history, "", base::DoNothing(),
+      false, "This is my page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
@@ -266,7 +266,7 @@ TEST_F(EngineConsumerLlamaUnitTest, GenerateAssistantResponseEarlyReturn) {
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _)).Times(0);
   run_loop = std::make_unique<base::RunLoop>();
   engine_->GenerateAssistantResponse(
-      false, "This is my page.", {}, history, "", base::DoNothing(),
+      false, "This is my page.", history, "", base::DoNothing(),
       base::BindLambdaForTesting(
           [&run_loop](EngineConsumer::GenerationResult) { run_loop->Quit(); }));
   run_loop->Run();
