@@ -411,32 +411,9 @@ if (install_omaha4_with_pkg) {
   }
 }
 
-if (!skip_signing) {
-action("sign_pkg") {
-  script = "//build/gn_run_binary.py"
-  shell_script = "sign_pkg.sh"
-
-  args = [
-    rebase_path(shell_script, root_build_dir),
-    rebase_path(unsigned_pkg_path),
-    rebase_path(signed_pkg_path),
-    keychain_db,
-    mac_installer_signing_identifier,
-  ]
-
-  inputs = [
-    script,
-    shell_script,
-    unsigned_pkg_path,
-  ]
-
-  outputs = [ "$signed_output_dir/$brave_pkg" ]
-
-  deps = [ ":create_pkg" ]
-}
-}
-
-_upstream_signed_dmg_path = "$signed_output_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full.dmg"
+_upstream_signed_basename = "$signed_output_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
+_upstream_signed_dmg_path = "$_upstream_signed_basename.dmg"
+_upstream_signed_pkg_path = "$_upstream_signed_basename.pkg"
 
 action("_create_dmg_pkg") {
   deps = [
@@ -449,6 +426,7 @@ action("_create_dmg_pkg") {
     "//chrome:chrome_app",
     "//chrome/installer/mac",
   ]
+  outputs = [ _upstream_signed_dmg_path ]
   script = "$packaging_dir/sign_chrome.py"
   args = [
     "--input",
@@ -469,6 +447,7 @@ action("_create_dmg_pkg") {
       "--package-as-pkg",
       "--installer-identity=$mac_installer_signing_identifier"
     ]
+    outputs += [ _upstream_signed_pkg_path ]
   }
   if (notarize) {
     args += [ "--notarize" ]
@@ -484,7 +463,6 @@ action("_create_dmg_pkg") {
       args += [ "--notary-arg=$arg", ]
     }
   }
-  outputs = [ _upstream_signed_dmg_path ]
 }
 
 copy("signing_config") {
@@ -524,6 +502,14 @@ copy("create_dmg") {
     outputs = [ unsigned_dmg_path ]
   } else {
     outputs = [ signed_dmg_path ]
+  }
+}
+
+if (!skip_signing) {
+  copy("sign_pkg") {
+    deps = [ ":_create_dmg_pkg" ]
+    sources = [ _upstream_signed_pkg_path ]
+    outputs = [ signed_pkg_path ]
   }
 }
 
