@@ -41,7 +41,7 @@ class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
   PermissionContextBase(
       content::BrowserContext* browser_context,
       ContentSettingsType content_settings_type,
-      blink::mojom::PermissionsPolicyFeature permissions_policy_feature);
+      network::mojom::PermissionsPolicyFeature permissions_policy_feature);
 
   ~PermissionContextBase() override;
 

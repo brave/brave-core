@@ -30,7 +30,7 @@ namespace permissions {
 PermissionContextBase::PermissionContextBase(
     content::BrowserContext* browser_context,
     ContentSettingsType content_settings_type,
-    blink::mojom::PermissionsPolicyFeature permissions_policy_feature)
+    network::mojom::PermissionsPolicyFeature permissions_policy_feature)
     : PermissionContextBase_ChromiumImpl(browser_context,
                                          content_settings_type,
                                          permissions_policy_feature) {}
