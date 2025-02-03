@@ -1,7 +1,7 @@
 import os
 
 from signing.chromium_config import ChromiumCodeSignConfig
-from signing.model import Distribution
+from signing.model import Distribution, NotarizeAndStapleLevel
 
 BRAVE_CHANNEL = os.environ.get('BRAVE_CHANNEL')
 
@@ -9,7 +9,8 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
 
     @staticmethod
     def is_chrome_branded():
-        return False
+        # We want to inherit most of upstream's behavior.
+        return True
 
     @property
     def distributions(self):
