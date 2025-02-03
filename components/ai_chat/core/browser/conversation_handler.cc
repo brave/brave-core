@@ -683,6 +683,8 @@ void ConversationHandler::SubmitHumanConversationEntry(
       ChangeModel("chat-vision-basic");
     }
     turn->uploaded_images = uploaded_content_delegate_->GetUploadedImages();
+    // Clear staging uploaded images once submitted into history
+    uploaded_content_delegate_->ClearUploadedImages();
   }
 
   // If there's edits, use the last one as the latest turn.

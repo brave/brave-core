@@ -174,7 +174,11 @@ void UploadFileHelper::OnImageEncoded(
   std::move(upload_image_callback_).Run(std::move(uploaded_image));
 }
 
-std::vector<mojom::UploadedImagePtr> UploadFileHelper::GetUploadedImages() {
+std::optional<std::vector<mojom::UploadedImagePtr>>
+UploadFileHelper::GetUploadedImages() {
+  if (uploaded_images_.empty()) {
+    return std::nullopt;
+  }
   std::vector<mojom::UploadedImagePtr> result;
   for (const auto& uploaded_image : uploaded_images_) {
     result.emplace_back(uploaded_image.Clone());
@@ -184,6 +188,10 @@ std::vector<mojom::UploadedImagePtr> UploadFileHelper::GetUploadedImages() {
 
 size_t UploadFileHelper::GetUploadedImagesSize() {
   return uploaded_images_.size();
+}
+
+void UploadFileHelper::ClearUploadedImages() {
+  uploaded_images_.clear();
 }
 
 }  // namespace ai_chat
