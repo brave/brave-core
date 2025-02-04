@@ -537,7 +537,6 @@ copy("copy_dmg_pkg") {
     deps = [
       ":create_dmg",
       ":create_pkg",
-      ":finalize_dmg_pkg",
     ]
   } else {
     sources = [
