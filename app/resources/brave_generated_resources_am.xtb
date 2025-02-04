@@ -106,7 +106,6 @@
 <translation id="1162706247109707219">እሺን ጠቅ በማድረግ የ Brave ጭነትዎ ወደ Windows 10 ወይም ከዚያ በኋላ እስካላዘመኑ ድረስ ወሳኝ የደህንነት ጥገናዎችን እንደማይቀበል እውቅና ይሰጣሉ። ይህ ማሳሰቢያ እንደገና አይታይም።</translation>
 <translation id="9164786361657554526">እሺን ጠቅ በማድረግ የ Brave ጭነትዎ ወደ macOS 10.15 ወይም ከዚያ በኋላ እስካላዘመኑ ድረስ ወሳኝ የደህንነት ጥገናዎችን እንደማይቀበል እውቅና ይሰጣሉ። ይህ ማሳሰቢያ እንደገና አይታይም።</translation>
 <translation id="2770465223704140727">ከዝርዝር  አስወግድ</translation>
-<translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="2104347391516032700">Bat ሽልማቶች አገልግሎት</translation>
 <translation id="6040143037577758943">ዝጋ</translation>
 <translation id="6665472986740899785">የBrave ማሳወቂያ ማስታወቂያ</translation>
@@ -395,6 +394,7 @@
 <translation id="4182731739150761577">ሙሉ ዝርዝር አሳይ</translation>
 <translation id="1340263054776016283">የማጣሪያ ዝርዝር ዩአርኤልን ያስገቡ</translation>
 <translation id="8578397014396032341">ይዘት ማጣሪያዎች</translation>
+<translation id="5327248766486351172">ስም</translation>
 <translation id="3020183492814296499">አቋራጮች</translation>
 <translation id="5567412479632285879">የ Brave Rewards ታግዷል</translation>
 <translation id="413570371620795359">ለማስቻል እና ለማስጀመር የሽልማት ፓነልን ይክፈቱ</translation>
@@ -458,7 +458,6 @@
 <translation id="7181706637590665047">ለlocalhost ግብዓቶች መዳረሻን አትፍቀድ</translation>
 <translation id="1336116824874668514">የlocalhost ግብዓቶችን ለመዳረስ አልተፈቀደም</translation>
 <translation id="1485435696620658073">የlocalhost ግብዓቶችን ለመዳረስ ተፈቅዷል</translation>
-<translation id="6414370348346025511">መደበኛ ጥበቃ በርቷል።</translation>
 <translation id="5565355416171743213">ማመሳሰል መጠቀም ይጀምሩ</translation>
 <translation id="4332558599726753990">ማዋቀርን አመሳስል</translation>
 <translation id="2187778349654214731">ለመጀመር ለማመሳሰል ባቀዱት ሁሉም መሳሪያዎች ላይ ብራቨ መጫን ያስፈልግዎታል። ከዚያ ደህንነቱ በተጠበቀ ሁኔታ ከማመሳሰል ኮድ ጋር ያገናኙዋቸው።</translation>
@@ -526,7 +525,6 @@
 <translation id="7029809446516969842">የይለፍ ቃላት</translation>
 <translation id="6285118765755298263">ማውጫ ሌላ የፍለጋ ፕሮግራሞች</translation>
 <translation id="919715748352669592">የ OpenSearch ዝርዝርን የሚከተሉ ድር ጣቢያዎችን በራስ-ሰር ይጠቁማል።</translation>
-<translation id="5324939009884545145">የግል መስኮት - በአድራሻ ማስገቢያው ውስጥ ጥቅም ላይ የዋለው የፍለጋ ኤንጅን</translation>
 <translation id="6864914031231797928">ለቅጥያዎች የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
 <translation id="7878791177459550035">የሚዲያ ራውተር በአሳሽ ውስጥ የcast ባህሪ እንዲሰራ ያደርጋል።</translation>
 <translation id="2707635989000984973">የማይቆሙ ጎራዎች የጎራ ስሞችን መፍታት</translation>
@@ -638,10 +636,9 @@
 <translation id="8055509865174199683">በድር ጣቢያዎች ላይ ባለው የአውድ ምናሌ/context menu ውስጥ Leo ን አሳይ</translation>
 <translation id="1529674267267221673">Leo አንድ የድር ጣቢያ ላይ በቀኝ ጠቅ ሲያደርጉ በአውድ ምናሌው ውስጥ ይታያል። ይህም አውድን ከአሁኑ ድረ-ገጽ ወደ Leo ይልካል።</translation>
 <translation id="8172263161008556851">በውይይቱ ውስጥ የተጠቆሙ ጥያቄዎችን አሳይ</translation>
-<translation id="1014480593522400586">የLeo ውሂብን አፅዳ</translation>
 <translation id="5574059574002819179">በራስ-መጠናቀቅ የሚየስችሉ የአስተያየት ጥቆማዎችን ያስተካክሉ</translation>
-<translation id="8157373421434119674">ውሂብ እና የጭውውት ታሪክ</translation>
 <translation id="614530507403667291">ነባሪ ሞዴል ለአዳዲስ ውይይቶች</translation>
+<translation id="8794525422794607973">ሞዴሉ በአንድ መስተጋብር ውስጥ ሊሰራ የሚችለው ከፍተኛው የቶከኖች ብዛት። እያንዳንዱ ቶክን በግምት የአንድን ቃል 3/4 ነው። ትልቅ የአውድ መጠን መኖሩ ሞዴሉ ረጅም ቃለ ምልልሶችን እንዲይዝ ያስችለዋል። የተለያዩ ሞዴሎች የተለያዩ ከፍተኛ የአውድ መጠኖችን ይደግፋሉ።</translation>
 <translation id="349846214503465941">የአጫዋች ዝርዝር አንቃ</translation>
 <translation id="7903608716704052878">ከመስመር ውጭ ለማየት ፋይሎችን በራስ-ሰር ያክሉ</translation>
 <translation id="4193768184502613558">ይህ አማራጭ ያለ በይነመረብ ግንኙነት ማጫወት እንዲችሉ የሚዲያ ፋይሎችን በራስ-ሰር ይሸጉጣል።</translation>

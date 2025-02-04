@@ -124,7 +124,6 @@
 <translation id="6020553119523541665">הלשונית הזאת פעילה בחלון אחר</translation>
 <translation id="4987392683074136770">הקשה על לשונית זו תביא את תוכנו לחלון זה</translation>
 <translation id="8355523213948477234">כפתור תפריט לתצוגה חצויה</translation>
-<translation id="2515126961943087659">שירות Bat Ads</translation>
 <translation id="2104347391516032700">שירות Bat Ads</translation>
 <translation id="6040143037577758943">סגירה</translation>
 <translation id="6665472986740899785">התראת Brave Ad</translation>
@@ -132,6 +131,8 @@
 <translation id="4364336119478610380">אתה מרוויח בכל פעם שמופיעה התראה כזו על המסך שלך. אתה לא צריך ללחוץ כדי להרוויח.</translation>
 <translation id="5893017172751072752">אתה מרוויח כאשר מופיעה התראה של Brave Ads</translation>
 <translation id="3447730462826640312">אתה לא צריך ללחוץ כדי להרוויח, אבל לחץ אם אתה מעוניין!</translation>
+<translation id="5253166205743627564">תודה על תמיכתך בחיפוש Brave באמצעות לחיצה על מודעה פרטית. שלא כמו חברות ביג טק, אנחנו מודדים ביצועי מודעות באופן אנונימי כדי לשמור על הפרטיות שלך.</translation>
+<translation id="8748471354357836070">למידע נוסף / אפשרויות ביטול</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
@@ -244,6 +245,8 @@
 <translation id="2307973900865360088">שמירה בעגינה</translation>
 <translation id="961012016278832836">Microsoft Edge Legacy</translation>
 <translation id="6436994631426134065">יובא מ-<ph name="BROWSER_NAME"/>.</translation>
+<translation id="5119173345047096771">Mozilla Firefox</translation>
+<translation id="6374077068638737855">Iceweasel</translation>
 <translation id="1386966479075994683">הרחב כרטיסיות</translation>
 <translation id="480565261566115689">מזער כרטיסיות</translation>
 <translation id="7194343495483122559">הרחב כרטיסיות</translation>
@@ -435,6 +438,17 @@
 <translation id="3422250445565385437">רשימות מתעדכנות</translation>
 <translation id="1340263054776016283">יש להזין את כתובת האתר של רשימת הסינון</translation>
 <translation id="8578397014396032341">מסנני תוכן</translation>
+<translation id="6655190889273724601">מצב מפתחים</translation>
+<translation id="5289798532644323389">לאפשר הוספת מסננים וקטעי קוד מותאמים אישית</translation>
+<translation id="9202707370720720635">קטעי קוד מותאמים אישית</translation>
+<translation id="5524306331330789642">הוספת קטע קוד חדש</translation>
+<translation id="3865146371459790194">עריכת קטע קוד</translation>
+<translation id="5327248766486351172">שם</translation>
+<translation id="5584409054843451563">בטוח שברצונך למחוק את קטע הקוד הזה? אם יעשה בו שימוש לאחר מכן במסנן מותאם אישית כלשהו, הוא לא יפעל יותר.</translation>
+<translation id="4545850500562727184">קטע קוד כבר קיים.</translation>
+<translation id="4877521822848390663">שם קטע קוד לא חוקי.</translation>
+<translation id="2718718846210516552">קטע קוד לא נמצא.</translation>
+<translation id="4088315951291671239">אין להדביק כאן קוד שאינך מבינ/ה או שלא בדקת בעצמך. זה יוכל לאפשר לתוקפים לגנוב את הזדהות שלך או להשתלט לך על המחשב.</translation>
 <translation id="3020183492814296499">קיצור דרך</translation>
 <translation id="5567412479632285879">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
@@ -504,7 +518,6 @@
 <translation id="5794692721727586076">צ'אט עם Leo AI</translation>
 <translation id="8115153008662981040">אתרים יכולים לבקש לפתוח את הצ'אט עם Leo AI</translation>
 <translation id="1145070115730668595">אל תאפשר לאתר לפתוח את הצ'אט עם Leo AI</translation>
-<translation id="6414370348346025511">ההגנה הסטנדרטית מופעלת.</translation>
 <translation id="5565355416171743213">התחל להשתמש בסנכרון</translation>
 <translation id="4332558599726753990">הגדרות סנכרון</translation>
 <translation id="2187778349654214731">על מנת להתחיל, עליך להתקין את Brave בכל המכשירים שהנך מתכננ/ת לסנכרן. לאחר מכן, קשר/י אותם יחד באופן מאובטח עם קוד סנכרון.</translation>
@@ -576,8 +589,10 @@
 <translation id="3128251601544028053">כשאתה מקליד בשורת הכתובות או בתיבת החיפוש, Brave שולח את הטקסט שאתה מקליד אל ברירת המחדל של מנוע החיפוש שלך על מנת לקבל הצעות טובות יותר. תכונה זאת לא זמינה בחלונות פרטיים.</translation>
 <translation id="6285118765755298263">תצרו אינדקס למנועי חיפוש אחרים</translation>
 <translation id="919715748352669592">כולל אינדקס באופן אוטומטי לאתרי אינטרנט העוקבים אחר מפרט OpenSearch.</translation>
-<translation id="9195748375338942941">חלון רגיל - מנוע החיפוש יוצג בשורת הכתובת.</translation>
-<translation id="5324939009884545145">חלון גלישה פרטית - מנוע החיפוש יוצג בשורת הכתובת</translation>
+<translation id="5522403133543437426">מנוע חיפוש בשימוש בשורת הכתובת.</translation>
+<translation id="280472502078788655">מנוע חיפוש בשימוש בשורת הכתובת עבור חלונות פרטיים.</translation>
+<translation id="7232120595886556478">חלון רגיל</translation>
+<translation id="1280261732441045146"><ph name="SEARCH_ENGINE_NAME"/> הוא כעת מנוע החיפוש המוגדר כברירת מחדל עבור חלונות פרטיים</translation>
 <translation id="6864914031231797928">אפשר התחברות באמצעות Google להרחבות</translation>
 <translation id="7878791177459550035">נתב מדיה הופך את תכונת ההעברה לזמינה בדפדפן.</translation>
 <translation id="2707635989000984973">שיטה לזיהוי דומיינים בלתי ניתנים לעצירה</translation>
@@ -694,13 +709,12 @@
 <translation id="8055509865174199683">הצג את ליאו בתפריט הקונטקסט באתרי אינטרנט</translation>
 <translation id="1529674267267221673">ליאו יוצג בתפריט הקונטקסט כשתלחץ על הלחצן הימני של העכבר באתר האינטרנט. הפעולה תשלח קונטקסט מדף האינטרנט הנוכחי אל ליאו.</translation>
 <translation id="8172263161008556851">הצג הצעות מוצעות בשיחה</translation>
-<translation id="1014480593522400586">נקה נתוני Leo</translation>
-<translation id="6803758564561896401">איפוס Leo יחייב אתכם להצטרף לשימוש ב-Leo
- Brave בעתיד וגם ימחק את היסטוריית הצ'ט שלכם. מחיקת
-היסטוריית הצ'ט שלכם תמחק את כל השיחות הקודמות שלכם עם Leo
-Brave. לא ניתן לבטל פעולה זאת.</translation>
+<translation id="5781842473834867765">לאחסן את היסטוריית השיחות שלי</translation>
+<translation id="1082960401708055995">השבתת אחסון שיחות ימחק לצמיתות את כל השיחות הקודמות שאוחסנו. הפעולה הזו לא ניתנת לביטול.</translation>
+<translation id="6106701981952170121">מחיקת כל נתוני השיחות של Leo AI</translation>
+<translation id="1335414530428321716">איפוס Leo AI יחייב אותך להצטרף לשימוש ב-Leo AI בעתיד וגם ימחק את היסטוריית הצ׳אט שלך. ניקוי היסטוריית הצ׳אט ימחק את כל השיחות הקודמות שלך עם Brave Leo AI הפעולה הזו לא ניתנת לביטול.</translation>
 <translation id="5574059574002819179">התאם הצעות בהשלמה אוטומטית</translation>
-<translation id="8157373421434119674">היסטוריית נתונים וצ'אט</translation>
+<translation id="7942415993090181327">היסטוריית צ׳אטים</translation>
 <translation id="614530507403667291">מודל ברירת מחדל לשיחות חדשות</translation>
 <translation id="8826914609353373601">נהל מנוי פרימיום</translation>
 <translation id="235457946228076038">הביאו מודל משלכם</translation>
@@ -713,13 +727,17 @@ Brave. לא ניתן לבטל פעולה זאת.</translation>
 <translation id="6374563306438145841">מפתח API</translation>
 <translation id="8008271349880309090">שם המודל כפי שהוא יופיע בתפריט לבחירת מודל</translation>
 <translation id="1355326130503900056">שם הדגם כפי שהוא אמור להופיע בבקשה למסגרת השירות, למשל, phi-3 (שים לב שאם השם לא תואם בדיוק למה שמצופה על ידי מסגרת השירות, השילוב לא יפעל)</translation>
-<translation id="3286410514484292784">כתובת ה-URL שבה נמצאת מסגרת השירות שלכם מאזינה לבקשות. אם אינכם בטוחים, בדקו את מסמכי מסגרת השירות. למשל עבור Ollama, הכתובת תמיד תהיה http://localhost:11434/v1/chat/completions</translation>
+<translation id="3213787232304349732">כתובת ה-URL שבה נמצאת מסגרת השירות שלכם מאזינה לבקשות. אם אינך בטוח, יש לבדוק את מסמכי מסגרת השירות. למשל עבור Ollama, הכתובת תמיד תהיה http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">מסגרות שירות מסוימות עשויות לדרוש סיסמאות אימות, כגון מפתח API או אסימון גישה. הם יתווספו לכותרת הבקשה.</translation>
 <translation id="4335128003329183586">אורך ההקשר</translation>
 <translation id="8794525422794607973">מספר האסימונים המרבי שהמודל יכול לעבד באינטראקציה בודדת. כל אסימון שווה בערך 3/4 מילה. הקשר ארוך יותר מאפשר למודל להתמודד עם שיחות ארוכות יותר. מודלים שונים תומכים באורכי מקסימום שונים עבור הקשר.</translation>
 <translation id="217141195370578385">Brave לא מייצגת בקשות אלה. יש לקרוא את תנאי הפרטיות של הספק שנבחר.</translation>
 <translation id="2645532768679870478">נקודות קצה לא מקומיות צריכות להפעיל פרוטוקול HTTPS לצורך שידור נתונים מאובטח</translation>
 <translation id="8177205483022887785">הזנתם כתובת URL לא חוקית. יש להזין כתובת URL חוקית.</translation>
+<translation id="6333402912272476257">נקודת הקצה הזו עלולה להיות לא בטחה.</translation>
+<translation id="4025470490371933693">לא ניתן להשתמש בכתובות IP פרטיות</translation>
+<translation id="3670571614478401810">נראה שהכתובת שהזנת שייכת לרשת פרטית—כמו הראוטר שלך או שרת מקומי. Brave חוסם כאלה כתובות אוטומטית כדי לשמור על הבטיחות שלך, אבל יש לך יכולת לאפשר אותן אם את/ה בטוח/ה שהן מאובטחות.</translation>
+<translation id="4932437543207655965">כדי להמשיך, יש לבקר בכתובת brave://flags/, לחפש "brave-ai-chat-allow-private-ips", ולאפשר את הפיצ׳ר. ברגע שהוא מאופשר, יש לךאפשרות להשתמש בכתובות רשת פרטיות בהגדרות של Leo.</translation>
 <translation id="5249539665306267943">הוסיפו מודל חדש</translation>
 <translation id="7265212806651512211">עדיין לא חיברתם מודל.</translation>
 <translation id="7304802428852949897">המודלים שלכם</translation>

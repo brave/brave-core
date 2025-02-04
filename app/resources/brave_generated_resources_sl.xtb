@@ -126,7 +126,6 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="6020553119523541665">Ta zavihek je dejaven v drugem oknu</translation>
 <translation id="4987392683074136770">S klikom na ta zavihek boste njegovo vsebino prenesli na to okno</translation>
 <translation id="8355523213948477234">Gumb za razdeljen pogled menija</translation>
-<translation id="2515126961943087659">Storitev oglasov Bat Ads</translation>
 <translation id="2104347391516032700">Storitev nagrajevanja Bat rewards</translation>
 <translation id="6040143037577758943">Zapri</translation>
 <translation id="6665472986740899785">Oglasi Brave</translation>
@@ -439,6 +438,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="3422250445565385437">Posodabljanje seznamov</translation>
 <translation id="1340263054776016283">Vnesite URL seznama filtrov</translation>
 <translation id="8578397014396032341">Filtri vsebine</translation>
+<translation id="5327248766486351172">Ime</translation>
 <translation id="3020183492814296499">Bližnjice</translation>
 <translation id="5567412479632285879">Brave Rewards je onemogočen</translation>
 <translation id="413570371620795359">Odprite ploščo z nagradami in začnite</translation>
@@ -508,7 +508,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="5794692721727586076">Klepet Leo AI</translation>
 <translation id="8115153008662981040">Spletna mesta lahko zahtevajo odpiranje klepeta Leo AI</translation>
 <translation id="1145070115730668595">Ne dovoli, da spletna stran odpre klepet Leo AI</translation>
-<translation id="6414370348346025511">Standardna zaščita je vklopljena.</translation>
 <translation id="5565355416171743213">Začni uporabljati sinhronizacijo</translation>
 <translation id="4332558599726753990">Nastavitev sinhronizacije</translation>
 <translation id="2187778349654214731">Za začetek boste morali Brave namestiti na vse naprave, ki jih nameravate sinhronizirati. Nato jih varno povežite s kodo za sinhronizacijo.</translation>
@@ -581,8 +580,6 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="3128251601544028053">Ko v naslovno vrstico ali iskalno polje vtipkate besedilo, Brave vneseno besedilo pošlje vašemu privzetemu iskalniku, da tako dobi boljše predloge. To v zasebnih oknih ni na voljo.</translation>
 <translation id="6285118765755298263">Indeksiraj druge iskalnike</translation>
 <translation id="919715748352669592">Samodejno indeksira spletna mesta, ki sledijo specifikacijam OpenSearch.</translation>
-<translation id="9195748375338942941">Običajno okno - iskalnik, ki se uporablja v naslovni vrstici.</translation>
-<translation id="5324939009884545145">Zasebno okno - iskalnik, ki se uporablja v naslovni vrstici</translation>
 <translation id="6864914031231797928">Dovoli Googlovo prijavo za razširitve</translation>
 <translation id="7878791177459550035">Predstavnostni usmerjevalnik omogoča funkcijo oddajanja v brskalniku.</translation>
 <translation id="2707635989000984973">Razrešite domenska imena neustavljivih domen</translation>
@@ -698,13 +695,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="8055509865174199683">Prikaži Leo v kontekstnem meniju na spletnih mestih</translation>
 <translation id="1529674267267221673">Leo se prikaže v kontekstnem meniju, ko z desno tipko miške kliknete na spletno mesto. To bo v program Leo poslalo kontekst iz trenutne spletne strani.</translation>
 <translation id="8172263161008556851">Pokaži predlagane pozive v pogovoru</translation>
-<translation id="1014480593522400586">Počisti podatke Leo</translation>
-<translation id="6803758564561896401">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Brave
-Leo v prihodnosti in bo počistil tudi vašo zgodovino klepetov. Čiščenje vašega
-zgodovina klepetov bo izbrisala vse vaše prejšnje pogovore z Brave
-Leo. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="5574059574002819179">Prilagodite predloge za samodejno dokončanje</translation>
-<translation id="8157373421434119674">Podatki in zgodovina klepeta</translation>
 <translation id="614530507403667291">Privzeti model za nove pogovore</translation>
 <translation id="8826914609353373601">Upravljanje premium naročnine</translation>
 <translation id="235457946228076038">Prinesite svoj model</translation>
@@ -717,7 +708,6 @@ Leo. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="6374563306438145841">Ključ API</translation>
 <translation id="8008271349880309090">Ime modela, kot bo prikazano v meniju za izbiro modela</translation>
 <translation id="1355326130503900056">Ime modela, kot bi moralo biti prikazano v zahtevi za strežno ogrodje, tj. phi-3 (upoštevajte, da integracija ne bo delovala, če se to ime ne ujema natančno s pričakovanji strežnega ogrodja)</translation>
-<translation id="3286410514484292784">URL, kjer vaše strežno ogrodje posluša zahteve. Če niste prepričani, preverite dokumentacijo strežnega ogrodja. Za npr. Ollamo je to vedno http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Nekatera strežna ogrodja utegnejo zahtevati poverilnice za preverjanje pristnosti, kot je ključ API ali žeton za dostop. Dodane bodo v glavo zahteve.</translation>
 <translation id="4335128003329183586">Velikost konteksta</translation>
 <translation id="8794525422794607973">Največje število žetonov, ki jih lahko model obdela v eni interakciji. Vsak žeton je približno 3/4 besede. Večja velikost konteksta omogoča modelu, da obdela daljše pogovore. Različni modeli podpirajo različne največje velikosti konteksta.</translation>

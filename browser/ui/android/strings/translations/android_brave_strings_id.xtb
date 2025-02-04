@@ -412,7 +412,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="944340256927461196">Tidak meninggalkan jejak pada perangkat Anda</translation>
 <translation id="2063044449012253966">Situs yang Anda kunjungi di jendela pribadi tidak akan muncul di riwayat Anda. Kuki, data formulir, dan data situs akan hilang setelah semua jendela pribadi ditutup.</translation>
 <translation id="7395764193745523646">Visibilitas penelusuran</translation>
-<translation id="8735363371744702779">Ingat, meskipun di jendela pribadi, aktivitas penelusuran Anda mungkin masih dapat dilihat oleh ISP, pengamat jaringan, atau atasan Anda (jika Anda menggunakan perangkat/jaringan kerja).</translation>
 <translation id="1413177583895309156">Brave VPN mengenkripsi dan melindungi apa pun yang Anda lakukan secara daring, bahkan di luar browser Brave.</translation>
 <translation id="3974348661685061050">Coba gratis selama 7 hari</translation>
 <translation id="5789441016350810005">Iklan Brave dikirim ketika peramban sedang di latar belakang</translation>
@@ -450,8 +449,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1116694919640316211">Tentang</translation>
 <translation id="7961015016161918242">Jangan pernah</translation>
 <translation id="1275213816424141989">Mungkin Nanti</translation>
-<translation id="4406937629441301400">Dapatkan token dengan melihat gambar ini dan berikan kebaikan pada kreator. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Anda memperoleh token karena melihat gambar ini.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">Pembayaran imbalan <ph name="CURRENT_MONTH"/> akan mulai diproses sebelum <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Pembayaran imbalan <ph name="CURRENT_MONTH"/> sedang diproses. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Pembayaran imbalan <ph name="CURRENT_MONTH"/> telah selesai. <ph name="SUPPORT"/></translation>
@@ -489,6 +486,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1561541094377237745">Jaringan Solana</translation>
 <translation id="7141438739990875547">Jaringan Bitcoin</translation>
 <translation id="9055546041146396417">Jika situs ini tampak rusak, coba turunkan Shield.</translation>
+<translation id="7898672232170410330">Blokir elemen</translation>
 <translation id="1209739344687072997">Laporkan situs rusak</translation>
 <translation id="8510478288840333677">Beri tahu pengembang Brave bahwa situs ini tidak berfungsi dengan baik saat Perisai aktif:</translation>
 <translation id="1653405824851871276">Terima kasih telah membantu menjadikan Brave lebih baik bagi semua. Laporan ini hanya akan berisi informasi yang diperlukan bagi kami untuk memperbaiki situs ini. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +494,15 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="8740275226259417070">Ini adalah halaman kesalahan. Ini tidak dapat dilaporkan sebagai situs yang rusak.</translation>
 <translation id="721949491455392748">Sertakan tangkapan layar halaman saat ini</translation>
 <translation id="8459191579769999214">Lihat tangkapan layar</translation>
+<translation id="6476216365964140603">Detail tambahan (opsional)</translation>
+<translation id="6145852496180774737">Hubungi saya di: (opsional)</translation>
+<translation id="7616645803364270729">Surel, Twitter, dsb.</translation>
 <translation id="5299848999918506028">Terima kasih!</translation>
 <translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
 <translation id="5370478469168390143">Simpan Data Online</translation>
 <translation id="1118508688433541158">Ramban lebih cepat dan blokir iklan dengan Brave</translation>
 <translation id="7427391215172269363">Setiap hari saya menghemat data dengan menelusuri web menggunakan Brave.</translation>
-<translation id="4776948189086901857">Brave bekerja di mana saja</translation>
-<translation id="1606322780901645965">Unduh Brave di brave.com di laptop atau tablet untuk meramban web yang lebih cepat dan privat</translation>
 <translation id="8374242949413616101">Perlindungan privasi</translation>
 <translation id="4955406228638026265">Brave menghentikan iklan &amp; pelacak mengumpulkan informasi tentang Anda tanpa izin.</translation>
 <translation id="752842701893882688">Simpan data dan baterai</translation>
@@ -1021,7 +1020,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="8382368767453083629">Mulai akun 2</translation>
 <translation id="77243237706803459">Mulai mint 2</translation>
 <translation id="583281660410589416">Tidak dikenal</translation>
-<translation id="5666264859501108700">Wilayah Imbalan Brave Anda telah ditetapkan menjadi <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Sayangnya, telah terjadi kesalahan saat mencoba menetapkan Imbaan Brave. Silakan coba lagi.</translation>
 <translation id="7352651011704765696">Terjadi sesuatu</translation>
 <translation id="7144878232160441200">Coba Lagi</translation>
@@ -1082,10 +1080,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="7748944510530490017">Jaringan Utama</translation>
 <translation id="2781668117338732220">Jaringan Sekunder</translation>
 <translation id="282560918037172384">Jaringan Pengujian</translation>
-<translation id="707569835145765061">Tindakan yang perlu dilakukan: Hubungkan ke akun kustodian atau vBAT Anda akan hilang</translation>
-<translation id="1776742005329298234">Pada <ph name="DUE_DATE"/>, kami akan mengakhiri dukungan untuk saldo BAT virtual yang ada. Hubungkan dengan akun kustodian sebelum tanggal ini sehingga kami dapat mentransfer saldo penghasilan Anda ke akun kustodian Anda, atau saldo Anda akan hilang.</translation>
-<translation id="5089752671190341407">Anda masih punya waktu untuk mengontribusikan vBAT Anda ke kreator favorit Anda</translation>
-<translation id="171158953146804144">Pada <ph name="DUE_DATE"/>, kami akan mengakhiri dukungan untuk saldo BAT virtual yang ada. Sayangnya, di negara Anda (<ph name="REGION"/>)  tidak tersedia kustodian untuk menarik pendapatan Anda. Hingga tersedia kustodian, Anda masih dapat berkontribusi untuk kreator favorit Anda.</translation>
 <translation id="8949422576126100041">Melihat halaman dengan Speedreader?</translation>
 <translation id="3435896845095436175">Aktifkan</translation>
 <translation id="5296840868251496327">Aktifkan Pembaca Kecepatan</translation>
@@ -1105,9 +1099,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="4841860051609590575">ID Permintaan</translation>
 <translation id="1179407411385015942">Leo adalah asisten pintar yang didukung AI, dan dibangun tepat di dalam peramban</translation>
 <translation id="4109670531935487117">Tampilkan usulan penyelesaian otomatis pada bilah alamat</translation>
-<translation id="1250335737108905610">Atur ulang dan hapus data Leo</translation>
-<translation id="6165101586663336913">Mengatur ulang asisten Leo akan mensyaratkan Anda untuk menyetujui penggunaan Leo untuk selanjutnya dan juga akan menghapus riwayat obrolan Anda. Menghapus
-riwayat obrolan Anda akan menghapus semua percakapan Anda sebelumnya dengan Leo. Tindakan ini tidak dapat dibatalkan.</translation>
 <translation id="3692772534525889713">Tautkan pembelian di Play Store Anda ke akun Brave Anda untuk menggunakan Brave Leo pada perangkat lain.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Satu tahun</translation>
@@ -1237,4 +1228,5 @@ riwayat obrolan Anda akan menghapus semua percakapan Anda sebelumnya dengan Leo.
 <translation id="4650851936784160359">Daftar filter tidak dapat diperbarui. Silakan coba lagi.</translation>
 <translation id="3098054327870766317">Tampilkan tombol urungkan saat tab ditutup</translation>
 <translation id="1336494649091412226">Apakah Anda yakin ingin keluar dari Brave?</translation>
+<translation id="2361906291514218784">AI Leo</translation>
 </translationbundle>

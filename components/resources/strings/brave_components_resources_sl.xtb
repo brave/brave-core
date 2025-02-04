@@ -673,9 +673,6 @@
 <translation id="2446517297521536638">Nadzirajte, katere vrste oglasov Brave vidite in kako pogosto. Več vidite, več lahko zaslužite.</translation>
 <translation id="5860033963881614850">Izklopljeno</translation>
 <translation id="5916664084637901428">Vklopljeno</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> prejetih oglasov v tem mesecu</translation>
-<translation id="7697696066810593560">V tem mesecu ste do sedaj zaslužili <ph name="NUM"/></translation>
-<translation id="6733193230212030816">Ocena vašega zaslužka znaša: <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">Vaš znesek</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> denarnica</translation>
 <translation id="3175337080016717494">Račun za izplačilo</translation>
@@ -684,15 +681,6 @@
 <translation id="8414447476773253869">Za ogled vašega stanja se vpišite v <ph name="PROVIDER"/></translation>
 <translation id="615483366383024791">Račun za izplačilo</translation>
 <translation id="1060062421977823695">Vaši zaslužki BAT bodo izplačani na ta račun.</translation>
-<translation id="2544805415966048917">Poslali boste</translation>
-<translation id="6708522254106492579">Do <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">Samodejni način izkazovanja podpore spletnim mestom in ustvarjalcem vsebine glede na to, koliko časa porabite za njihovo vsebino.</translation>
-<translation id="4319242254058427792">Samodejne donacije so onemogočene</translation>
-<translation id="1091835891554961609">Med brskanjem bodo tukaj prikazani preverjeni ustvarjalci, ki jih obiščete.</translation>
-<translation id="7714706530499503523">Samodejna donacija samodejno pošilja mesečne prispevke ustvarjalcem, preverjenim s strani Brave, in sicer glede na to, koliko časa porabite za njihovo vsebino.</translation>
-<translation id="2358028754328876971">Kako delujejo samodejne donacije?</translation>
-<translation id="2870560284913253234">Spletno mesto</translation>
-<translation id="1184072843013036520">Zagotovite si izdelke znamke Brave.</translation>
 <translation id="1170674812179664523">Trgovina z izdelki znamke Brave</translation>
 <translation id="8673202990286883068">Vaše ugodnosti</translation>
 <translation id="3699766258844277472">Nimate še nastavljenih mesečnih prispevkov.</translation>
@@ -1463,12 +1451,6 @@
 <translation id="3253669416991680932">Ta strojna denarnica tega dejanja ne podpira.</translation>
 <translation id="7457027586454688423">Vnesite geslo za Brave Wallet</translation>
 <translation id="7553242001898162573">Vnesite svoje geslo</translation>
-<translation id="2873714185189940594">Odprem aplikacijo Rainbow Bridge?</translation>
-<translation id="2069777099181262239">Rainbow Bridge je neodvisna storitev, ki vam pomaga pri premostitvi sredstev med omrežji in uporabi kriptovalut v drugih omrežjih in ekosistemih DApp. Premostitev sredstev v druga omrežja prinaša nekatera tveganja.</translation>
-<translation id="7387899248733396663">Preberite več o uporabi storitvi Rainbow Bridge</translation>
-<translation id="3890567288132019108">Preberite več o zmanjševanju tveganja na strani Rainbow Bridge</translation>
-<translation id="1792917191129448067">Odpri aplikacijo Rainbow Bridge</translation>
-<translation id="1522775706527775647">Most do Aurore</translation>
 <translation id="4903322403594141291">Izvedite več o Brave Wallet</translation>
 <translation id="4427684901715566795">Geslo mora imeti:</translation>
 <translation id="8521329076169776625">Vsaj 8 znakov</translation>

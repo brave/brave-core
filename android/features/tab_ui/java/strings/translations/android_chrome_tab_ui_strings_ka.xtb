@@ -15,7 +15,6 @@
 <translation id="1419023007528516122">ამ მოქმედებით თქვენი მოწყობილობა სამუდამოდ ამოიშლება ჯგუფიდან</translation>
 <translation id="1486715732399361704">ჩანართების ყველა ჯგუფს აქ ნახავთ</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{შეიქმნა <ph name="NUM_MINS_ONE"/> წუთის წინ}other{შეიქმნა <ph name="NUM_MINS_MANY"/> წუთის წინ}}</translation>
-<translation id="3228718275011575753">დაიხუროს ყველა ინკოგნიტო ჩანართი?</translation>
 <translation id="1501480321619201731">ჯგუფის წაშლა</translation>
 <translation id="1555130319947370107">ლურჯი</translation>
 <translation id="161042844686301425">ციანი</translation>
@@ -27,7 +26,6 @@
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ჩანართი}other{<ph name="TABS_COUNT_MANY"/> ჩანართი}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> არჩეული ჩანართის სანიშნეებში დამატება}other{<ph name="TABS_COUNT_MANY"/> არჩეული ჩანართის სანიშნეებში დამატება}}</translation>
 <translation id="2118649612461486615">მაღაზიის ინფორმაცია</translation>
-<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{თქვენი დახურული ჩანართებისა და ჯგუფების ხელახლა გახსნა შესაძლებელია ბოლო ჩანართების სექციიდან და ჩანართების ჯგუფების სექციიდან. თქვენი ინკოგნიტო ჩანართი მიუწვდომელი იქნება.}other{თქვენი დახურული ჩანართებისა და ჯგუფების ხელახლა გახსნა შესაძლებელია ბოლო ჩანართების სექციიდან და ჩანართების ჯგუფების სექციიდან. თქვენი # ინკოგნიტო ჩანართი მიუწვდომელი იქნება.}}</translation>
 <translation id="2162620598375156287"><ph name="SOURCE_WEBSITE"/>-ზე ახლა <ph name="CURRENT_PRICE"/> ღირს</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{ჩანართის დაჯგუფების გაუქმება}other{ჩანართების დაჯგუფების გაუქმება}}</translation>
 <translation id="2271452184061378400">თქვენი ჩანართების ჯგუფები აქ ინახება</translation>
@@ -77,7 +75,6 @@
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> ჩანართი შეიცვალა, <ph name="ANY_CLOSED"/> დაიხურა}other{<ph name="MANY_CHANGED"/> ჩანართი შეიცვალა, <ph name="ANY_CLOSED"/> დაიხურა}}</translation>
 <translation id="4371591986692297148">არააქტიური</translation>
 <translation id="4460014764210899310">დაჯგუფების გაუქმება</translation>
-<translation id="4590027107044272416">აქ შეგიძლიათ გახსნათ ახალი ჩანართი</translation>
 <translation id="4632233446660511480">{TAB_COUNT,plural, =1{გსურთ, დახუროთ 1 არააქტიური ჩანართი?}other{გსურთ, დახუროთ <ph name="TAB_COUNT_MANY"/> არააქტიური ჩანართი?}}</translation>
 <translation id="4686942373615810936">შეიქმნა ახლახან</translation>
 <translation id="47070857600201406">{DAY_COUNT,plural, =1{დახურვა 1 დღის შემდეგ}other{დახურვა <ph name="DAY_COUNT_MANY"/> დღის შემდეგ}}</translation>
@@ -98,7 +95,9 @@
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> ჩანართი დაემატა}other{<ph name="MANY_ADDED"/> ჩანართი დაემატა}}</translation>
 <translation id="5161254044473106830">საჭიროა სათაური</translation>
 <translation id="5339733443032484186">თქვენი ბოლო ჩანართი</translation>
+<translation id="5380159289133845234">დუბლირებული ჩანართების დაარქივება</translation>
 <translation id="5400836586163650660">ნაცრისფერი</translation>
+<translation id="5446043142172831860">ჩანართის ამოშლა და ჯგუფიდან გასვლა</translation>
 <translation id="5490235265819901748">ჩანართების ჯგუფი გაფართოვდა</translation>
 <translation id="5494920125229734069">აარჩიეთ ყველა</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{დახურეთ ჩანართების <ph name="TABS_COUNT_ONE"/>-ჩანართიანი <ph name="COLOR_NAME"/> ფერის ჯგუფი.}other{დახურეთ ჩანართების <ph name="TABS_COUNT_MANY"/>-ჩანართიანი <ph name="COLOR_NAME"/> ფერის ჯგუფი.}}</translation>
@@ -117,6 +116,7 @@
 <translation id="6051432659151380973">თქვენი ჩანართების ჯგუფი ავტომატურად ინახება</translation>
 <translation id="6054741997831917303">ამ ერთეულის ფასმა ახლახან დაიკლო <ph name="PREVIOUS_PRICE"/>-დან <ph name="NEW_PRICE"/>-მდე</translation>
 <translation id="6082313992897617440">თქვენ მყისიერად დაკარგავთ წვდომას ჩანართების ჯგუფზე „<ph name="GROUP_NAME"/>“</translation>
+<translation id="6109251075362363230">ყველა დუბლირებული ჩანართი დაარქივდება, ყველაზე ხშირად გამოყენებული დუბლიკატის გარდა.</translation>
 <translation id="6193448654517602979">აირჩიეთ ჩანართები</translation>
 <translation id="6228793724645064692">(მაღაზიის შეფასება)</translation>
 <translation id="6271513594716432922">ყველა უმოქმედო ჩანართის დახურვა</translation>
@@ -188,10 +188,13 @@
 <translation id="8887921976452567404">თქვენი დახურული ჩანართებისა და ჯგუფების ხელახლა გახსნა შესაძლებელია ბოლო ჩანართების სექციიდან და ჩანართების ჯგუფების სექციიდან.</translation>
 <translation id="8915916167043355778">ყველას დახურვა</translation>
 <translation id="9090098097337832354">ამ მაღაზიის შესახებ ინფორმაცია დახურულია</translation>
-<translation id="9111228330448174435">ახალი ჩანართების ჯგუფის შექმნის დიალოგის ჩვენება</translation>
 <translation id="9114502155681725011">გახსენით ჩანართების ჯგუფზე მოქმედებების მენიუ ჩანართების <ph name="COLOR_NAME"/> ფერის ჯგუფისთვის „<ph name="TITLE_OF_GROUP"/>“.</translation>
 <translation id="9169594135889675189">ჯგუფში ახალი ჩანართის დამატება</translation>
 <translation id="9216898458513705996">ჩანართები დარჩება გახსნილი ამ მოწყობილობაზე, მაგრამ ჯგუფი წაიშლება ყველა მოწყობილობიდან, რომელიც შესულია ანგარიშში: <ph name="USER_EMAIL"/></translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{გააფართოვეთ ჩანართების <ph name="TABS_COUNT_ONE"/>-ჩანართიანი <ph name="COLOR_NAME"/> ფერის ჯგუფი.}other{გააფართოვეთ ჩანართების <ph name="TABS_COUNT_MANY"/>-ჩანართიანი <ph name="COLOR_NAME"/> ფერის ჯგუფი.}}</translation>
 <translation id="992256792861109788">ვარდისფერი</translation>
+<translation id="3228718275011575753">ნამდვილად გსურთ ყველა პირადი ჩანართის დახურვა?</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
+        =1 {თქვენი დახურული ჩანართების და ჯგუფების აღდგენა ''დამახსოვრებული ჩანართების'' და ''ჩანართების ჯგუფების'' სექციიდან არის შესაძლებელი. თქვენი პირადი ჩანართი არ იქნება ხელმისაწვდომი.}
+        other {თქვენი დახურული ჩანართების და ჯგუფების აღდგენა ''დამახსოვრებული ჩანართების'' და ''ჩანართების ჯგუფების'' სექციიდან არის შესაძლებელი. თქვენი # პირადი ჩანართი არ იქნება ხელმისაწვდომი.}}</translation>
 </translationbundle>

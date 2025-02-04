@@ -670,9 +670,6 @@
 <translation id="2446517297521536638">Kontrolējiet, kādas Brave reklāmas un cik bieži jūs redzat. Jo vairāk jūs redzat, jo vairāk jūs varat nopelnīt.</translation>
 <translation id="5860033963881614850">Izslēgts</translation>
 <translation id="5916664084637901428">Ieslēgts</translation>
-<translation id="4284417062730522399">Šomēnes saņemtas <ph name="NUM"/> reklāmas</translation>
-<translation id="7697696066810593560">Šomēnes līdz šim jūs nopelnījāt <ph name="NUM"/></translation>
-<translation id="6733193230212030816">Plānojam, ka nopelnīsiet <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">Jūsu bilance</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> maks</translation>
 <translation id="3175337080016717494">Izmaksas konts</translation>
@@ -681,15 +678,6 @@
 <translation id="8414447476773253869">Pierakstieties <ph name="PROVIDER"/>, lai redzētu savu bilanci</translation>
 <translation id="615483366383024791">Izmaksas konts</translation>
 <translation id="1060062421977823695">Jūsu BAT līdzekļi tiks ieskaitīti šajā izmaksas kontā.</translation>
-<translation id="2544805415966048917">Jūs nosūtīsiest</translation>
-<translation id="6708522254106492579">Līdz <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">Veids, kā automātiski atbalstīt tīmekļa vietnes un satura veidotājus, pamatojoties uz to, cik ilgu laiku pavadāt, izmantojot to saturu.</translation>
-<translation id="4319242254058427792">Automātiskā ziedošana ir atspējota</translation>
-<translation id="1091835891554961609">Kad pārlūkosiet, apstiprinātie satura veidotāji, kurus apmeklējat, būs redzami šeit.</translation>
-<translation id="7714706530499503523">Automātiskā ziedošana automātiski nosūta ikmēneša ziedojumus Brave apstiprinātiem satura veidotājiem, pamatojoties uz to, cik ilgu laiku pavadāt, izmantojot to saturu.</translation>
-<translation id="2358028754328876971">Kā automātiskā ziedošana darbojas?</translation>
-<translation id="2870560284913253234">Vietne</translation>
-<translation id="1184072843013036520">Saņemiet Brave zīmola produktus.</translation>
 <translation id="1170674812179664523">Brave zīmola veikals</translation>
 <translation id="8673202990286883068">Jūsu priekšrocības</translation>
 <translation id="3699766258844277472">Jums vēl nav izveidoti periodiski ziedojumi.</translation>
@@ -1456,12 +1444,6 @@
 <translation id="3253669416991680932">Šis aparatūras maks neatbalsta šo darbību.</translation>
 <translation id="7457027586454688423">Ievadiet savu Brave maka paroli</translation>
 <translation id="7553242001898162573">Ievadiet savu paroli</translation>
-<translation id="2873714185189940594">Vai atvērt Rainbow Bridge lietotni?</translation>
-<translation id="2069777099181262239">Rainbow Bridge ir neatkarīgs pakalpojums, kas palīdz savienot aktīvus starp dažādiem tīkliem un izmantot jūsu kriptovalūtu citos tīklos un DApp ekosistēmās. Aktīvu savienošana tīklos rada atsevišķus riskus.</translation>
-<translation id="7387899248733396663">Uzzināt vairāk par Rainbow Bridge izmantošanu</translation>
-<translation id="3890567288132019108">Uzzināt vairāk par risku mazināšanu Rainbow Bridge lietotnē</translation>
-<translation id="1792917191129448067">Atvērt Rainbow Bridge lietotni</translation>
-<translation id="1522775706527775647">Tilts uz Aurora</translation>
 <translation id="4903322403594141291">Uzziniet vairāk par Brave maku</translation>
 <translation id="4427684901715566795">Parolē jābūt:</translation>
 <translation id="8521329076169776625">Vismaz 8 rakstzīmēm</translation>
