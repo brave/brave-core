@@ -13,7 +13,7 @@
 #include "base/strings/string_split.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/web_discovery/browser/document_extractor/lib.rs.h"
+#include "brave/components/web_discovery/browser/document_extractor/src/lib.rs.h"
 #include "brave/components/web_discovery/browser/patterns.h"
 #include "brave/components/web_discovery/browser/privacy_guard.h"
 #include "brave/components/web_discovery/browser/util.h"
