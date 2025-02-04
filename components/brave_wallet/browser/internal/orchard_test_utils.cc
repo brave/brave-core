@@ -13,13 +13,19 @@ namespace brave_wallet {
 
 OrchardBlockScanner::Result CreateResultForTesting(
     OrchardTreeState tree_state,
-    std::vector<OrchardCommitment> commitments) {
+    std::vector<OrchardCommitment> commitments,
+    uint32_t latest_scanned_block_id,
+    const std::string& latest_scanned_block_hash) {
   auto builder = orchard::CreateTestingDecodedBundleBuilder();
   for (auto& commitment : commitments) {
     builder->AddCommitment(std::move(commitment));
   }
   builder->SetPriorTreeState(std::move(tree_state));
-  return OrchardBlockScanner::Result{{}, {}, builder->Complete()};
+  return OrchardBlockScanner::Result{{},
+                                     {},
+                                     builder->Complete(),
+                                     latest_scanned_block_id,
+                                     latest_scanned_block_hash};
 }
 
 OrchardCommitmentValue CreateMockCommitmentValue(uint32_t position,

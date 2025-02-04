@@ -14,24 +14,34 @@
 
 namespace brave_wallet {
 
-// Scans single scan range.
+// Downloads and decodes provided range of blocks as a single batch.
+// Result can be taken after by using TakeResult method.
 class ZCashBlocksBatchScanTask {
  public:
   using ZCashBlocksBatchScanTaskCallback = base::OnceCallback<void(
-      base::expected<bool, ZCashShieldSyncService::Error>)>;
+      base::expected<void, ZCashShieldSyncService::Error>)>;
+
+  struct ScanRange {
+    uint32_t from = 0;
+    uint32_t count = 0;
+
+    bool operator==(const ScanRange& other) const;
+  };
+
   ZCashBlocksBatchScanTask(
       ZCashActionContext& context,
       ZCashShieldSyncService::OrchardBlockScannerProxy& scanner,
-      uint32_t from,
-      uint32_t to,
+      ScanRange scan_range,
       ZCashBlocksBatchScanTaskCallback callback);
   ~ZCashBlocksBatchScanTask();
 
-  uint32_t from() const { return from_; }
-
-  uint32_t to() const { return to_; }
+  ScanRange scan_range() const { return scan_range_; }
 
   void Start();
+
+  bool finished() { return finished_; }
+
+  OrchardBlockScanner::Result TakeResult();
 
  private:
   void WorkOnTask();
@@ -55,14 +65,11 @@ class ZCashBlocksBatchScanTask {
   void OnBlocksScanned(base::expected<OrchardBlockScanner::Result,
                                       OrchardBlockScanner::ErrorCode> result);
 
-  void UpdateDatabase();
-  void OnDatabaseUpdated(
-      base::expected<OrchardStorage::Result, OrchardStorage::Error> result);
+  void FinishWithResult(base::expected<void, ZCashShieldSyncService::Error>);
 
   raw_ref<ZCashActionContext> context_;
   raw_ref<ZCashShieldSyncService::OrchardBlockScannerProxy> scanner_;
-  uint32_t from_ = 0;
-  uint32_t to_ = 0;
+  ScanRange scan_range_;
   ZCashBlocksBatchScanTaskCallback callback_;
 
   uint32_t frontier_block_height_ = 0;
@@ -75,7 +82,7 @@ class ZCashBlocksBatchScanTask {
   std::optional<zcash::mojom::CompactBlockPtr> latest_scanned_block_;
 
   bool started_ = false;
-  bool database_updated_ = false;
+  bool finished_ = false;
 
   base::WeakPtrFactory<ZCashBlocksBatchScanTask> weak_ptr_factory_{this};
 };

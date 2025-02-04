@@ -13,7 +13,8 @@
 namespace brave_wallet {
 
 namespace {
-constexpr uint32_t kBatchSize = 1024;
+constexpr uint32_t kBatchSize = 1024u;
+constexpr uint32_t kMaxPendingResultsToInserts = 10u;
 }  // namespace
 
 ZCashScanBlocksTask::ZCashScanBlocksTask(
@@ -41,8 +42,14 @@ void ZCashScanBlocksTask::ScheduleWorkOnTask() {
 }
 
 void ZCashScanBlocksTask::WorkOnTask() {
+  if (finished_) {
+    return;
+  }
+
   if (error_) {
+    scan_tasks_in_progress_.clear();
     observer_.Run(base::unexpected(*error_));
+    finished_ = true;
     return;
   }
 
@@ -56,15 +63,24 @@ void ZCashScanBlocksTask::WorkOnTask() {
     return;
   }
 
-  if (!scan_ranges_) {
+  if (!pending_scan_ranges_) {
     PrepareScanRanges();
     return;
   }
 
-  if (!scan_ranges_->empty()) {
-    ScanRanges();
-    return;
-  }
+  MaybeScanRanges();
+  MaybeInsertResult();
+}
+
+void ZCashScanBlocksTask::NotifyObserver() {
+  ZCashShieldSyncService::ScanRangeResult scan_ranges_result;
+  scan_ranges_result.end_block = end_block_.value();
+  scan_ranges_result.start_block = start_block_.value();
+  scan_ranges_result.total_ranges = initial_ranges_count_.value();
+  scan_ranges_result.ready_ranges = initial_ranges_count_.value() -
+                                    pending_scan_ranges_->size() -
+                                    scan_tasks_in_progress_.size();
+  observer_.Run(std::move(scan_ranges_result));
 }
 
 void ZCashScanBlocksTask::PrepareScanRanges() {
@@ -87,12 +103,14 @@ void ZCashScanBlocksTask::PrepareScanRanges() {
 
   initial_ranges_count_ =
       std::ceil(static_cast<double>((to - from + 1)) / kBatchSize);
-  scan_ranges_ = std::deque<ScanRange>();
-  for (size_t i = 0; i < initial_ranges_count_.value(); i++) {
-    scan_ranges_->push_back(ScanRange{
-        static_cast<uint32_t>(from + i * kBatchSize),
-        std::min(to, static_cast<uint32_t>(from + (i + 1) * kBatchSize - 1))});
+  pending_scan_ranges_ = std::deque<ScanRange>();
+  for (uint32_t i = 0; i < initial_ranges_count_.value(); i++) {
+    uint32_t batch_from = from + i * kBatchSize;
+    uint32_t batch_count = std::min(kBatchSize, to - batch_from + 1);
+    pending_scan_ranges_->push_back(ScanRange{batch_from, batch_count});
   }
+
+  NotifyObserver();
   ScheduleWorkOnTask();
 }
 
@@ -138,33 +156,70 @@ void ZCashScanBlocksTask::OnGetChainTip(
   ScheduleWorkOnTask();
 }
 
-void ZCashScanBlocksTask::ScanRanges() {
-  CHECK(scan_ranges_);
-  CHECK(!scan_ranges_->empty());
-  auto scan_range = scan_ranges_->front();
-  scan_ranges_->pop_front();
-  current_block_range_ = std::make_unique<ZCashBlocksBatchScanTask>(
-      context_.get(), scanner_.get(), scan_range.from, scan_range.to,
-      base::BindOnce(&ZCashScanBlocksTask::OnScanningRangeComplete,
-                     weak_ptr_factory_.GetWeakPtr()));
-  current_block_range_->Start();
+size_t ZCashScanBlocksTask::ReadyScanTasks() {
+  return std::ranges::count_if(scan_tasks_in_progress_,
+                               [](auto& task) { return task.finished(); });
+}
+
+void ZCashScanBlocksTask::MaybeScanRanges() {
+  CHECK(pending_scan_ranges_);
+  auto ready_scan_tasks = ReadyScanTasks();
+  auto total_scan_tasks = scan_tasks_in_progress_.size();
+  auto in_progress_scan_tasks = total_scan_tasks - ready_scan_tasks;
+
+  while (!pending_scan_ranges_->empty() &&
+         in_progress_scan_tasks < max_tasks_in_progress_ &&
+         ready_scan_tasks < kMaxPendingResultsToInserts) {
+    auto scan_range = pending_scan_ranges_->front();
+    pending_scan_ranges_->pop_front();
+    auto& task = scan_tasks_in_progress_.emplace_back(
+        context_.get(), scanner_.get(), scan_range,
+        base::BindOnce(&ZCashScanBlocksTask::OnScanningRangeComplete,
+                       weak_ptr_factory_.GetWeakPtr()));
+    task.Start();
+    in_progress_scan_tasks++;
+  }
 }
 
 void ZCashScanBlocksTask::OnScanningRangeComplete(
-    base::expected<bool, ZCashShieldSyncService::Error> result) {
+    base::expected<void, ZCashShieldSyncService::Error> result) {
   if (!result.has_value()) {
     error_ = result.error();
+  }
+  ScheduleWorkOnTask();
+}
+
+void ZCashScanBlocksTask::MaybeInsertResult() {
+  if (scan_tasks_in_progress_.size() != 0 && !inserting_in_progress_) {
+    // Since insertion is done sequentally we need to wait until the first scan
+    // range in the order is ready.
+    auto& front_task = scan_tasks_in_progress_.front();
+    if (!front_task.finished()) {
+      return;
+    }
+    inserting_in_progress_ = true;
+    context_->sync_state->AsyncCall(&OrchardSyncState::ApplyScanResults)
+        .WithArgs(context_->account_id.Clone(), front_task.TakeResult())
+        .Then(base::BindOnce(&ZCashScanBlocksTask::OnResultInserted,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             front_task.scan_range()));
+  }
+}
+
+void ZCashScanBlocksTask::OnResultInserted(
+    ScanRange scan_range,
+    base::expected<OrchardStorage::Result, OrchardStorage::Error> result) {
+  inserting_in_progress_ = false;
+  scan_tasks_in_progress_.pop_front();
+  if (!result.has_value()) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kFailedToUpdateDatabase,
+        result.error().message};
     ScheduleWorkOnTask();
     return;
   }
-  ZCashShieldSyncService::ScanRangeResult scan_ranges_result;
-  scan_ranges_result.end_block = end_block_.value();
-  scan_ranges_result.start_block = start_block_.value();
-  scan_ranges_result.total_ranges = initial_ranges_count_.value();
-  scan_ranges_result.ready_ranges =
-      initial_ranges_count_.value() - scan_ranges_.value().size();
-  observer_.Run(std::move(scan_ranges_result));
 
+  NotifyObserver();
   ScheduleWorkOnTask();
 }
 

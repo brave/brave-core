@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -29,7 +30,9 @@ class OrchardBlockScanner {
     Result();
     Result(std::vector<OrchardNote> discovered_notes,
            std::vector<OrchardNoteSpend> spent_notes,
-           std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks);
+           std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks,
+           uint32_t latest_scanned_block_id,
+           const std::string& latest_scanned_block_hash);
     Result(const Result&) = delete;
     Result& operator=(const Result&) = delete;
     Result(Result&&);
@@ -42,6 +45,10 @@ class OrchardBlockScanner {
     std::vector<OrchardNoteSpend> found_spends;
     // Decoded blocks bundle to be insterted in the shard tree.
     std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks;
+    // Latest scanned block height.
+    uint32_t latest_scanned_block_id;
+    // Latest scanned block hash.
+    std::string latest_scanned_block_hash;
   };
 
   explicit OrchardBlockScanner(const OrchardFullViewKey& full_view_key);

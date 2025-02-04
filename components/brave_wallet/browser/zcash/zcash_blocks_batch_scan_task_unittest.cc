@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -146,7 +147,8 @@ class ZCashBlocksBatchScanTest : public testing::Test {
               mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
               mojom::AccountKind::kDerived, 0);
           OrchardBlockScanner::Result result = CreateResultForTesting(
-              std::move(tree_state), std::vector<OrchardCommitment>());
+              std::move(tree_state), std::vector<OrchardCommitment>(),
+              blocks.back()->height, ToHex(blocks.back()->hash));
           for (const auto& block : blocks) {
             if (block->height == kNu5BlockUpdate + 105) {
               result.discovered_notes.push_back(
@@ -200,7 +202,8 @@ TEST_F(ZCashBlocksBatchScanTest, SingleBlockDecoded) {
                  base::expected<OrchardBlockScanner::Result,
                                 OrchardBlockScanner::ErrorCode>)> callback) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>(),
+                blocks.back()->height, ToHex(blocks.back()->hash));
             for (const auto& block : blocks) {
               decoded_blocks->push_back(block->height);
             }
@@ -213,15 +216,14 @@ TEST_F(ZCashBlocksBatchScanTest, SingleBlockDecoded) {
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+          [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_TRUE(result.has_value());
             EXPECT_EQ(decoded_blocks.size(), 1u);
             EXPECT_EQ(decoded_blocks[0], kNu5BlockUpdate + 1);
           });
 
-  auto task =
-      ZCashBlocksBatchScanTask(context, *block_scanner, kNu5BlockUpdate + 1,
-                               kNu5BlockUpdate + 1, callback.Get());
+  auto task = ZCashBlocksBatchScanTask(
+      context, *block_scanner, {kNu5BlockUpdate + 1, 1}, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -239,7 +241,8 @@ TEST_F(ZCashBlocksBatchScanTest, AllBlocksDecoded) {
                  base::expected<OrchardBlockScanner::Result,
                                 OrchardBlockScanner::ErrorCode>)> callback) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>(),
+                blocks.back()->height, ToHex(blocks.back()->hash));
             for (const auto& block : blocks) {
               decoded_blocks->push_back(block->height);
             }
@@ -252,7 +255,7 @@ TEST_F(ZCashBlocksBatchScanTest, AllBlocksDecoded) {
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+          [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_TRUE(result.has_value());
             // We shouldn't have any notes added since one block is corrupted
             EXPECT_EQ(decoded_blocks.size(), 400u);
@@ -261,9 +264,8 @@ TEST_F(ZCashBlocksBatchScanTest, AllBlocksDecoded) {
             }
           });
 
-  auto task =
-      ZCashBlocksBatchScanTask(context, *block_scanner, kNu5BlockUpdate + 1,
-                               kNu5BlockUpdate + 400, callback.Get());
+  auto task = ZCashBlocksBatchScanTask(
+      context, *block_scanner, {kNu5BlockUpdate + 1, 400}, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -275,17 +277,20 @@ TEST_F(ZCashBlocksBatchScanTest, Scan) {
 
   base::MockCallback<ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTaskCallback>
       callback;
+
+  auto task = ZCashBlocksBatchScanTask(
+      context, *block_scanner, {kNu5BlockUpdate + 1, 500}, callback.Get());
+
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+          [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_TRUE(result.has_value());
-            EXPECT_EQ(GetSpendableNotes().value().size(), 2u);
+            auto value = task.TakeResult();
+            EXPECT_EQ(value.discovered_notes.size(), 4u);
+            EXPECT_EQ(value.found_spends.size(), 2u);
           });
 
-  auto task =
-      ZCashBlocksBatchScanTask(context, *block_scanner, kNu5BlockUpdate + 1,
-                               kNu5BlockUpdate + 500, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -297,19 +302,17 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialScan) {
 
   base::MockCallback<ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTaskCallback>
       callback;
+
+  auto task = ZCashBlocksBatchScanTask(
+      context, *block_scanner, {kNu5BlockUpdate + 1, 700}, callback.Get());
+
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+          [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_FALSE(result.has_value());
-            // Since we had only 600 available blocks and requiested to scan 700
-            // We shouldn't have any notes added to the database.
-            EXPECT_EQ(GetSpendableNotes().value().size(), 0u);
           });
 
-  auto task =
-      ZCashBlocksBatchScanTask(context, *block_scanner, kNu5BlockUpdate + 1,
-                               kNu5BlockUpdate + 700, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -329,7 +332,8 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialDecoding) {
                 mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
                 mojom::AccountKind::kDerived, 0);
             OrchardBlockScanner::Result result = CreateResultForTesting(
-                std::move(tree_state), std::vector<OrchardCommitment>());
+                std::move(tree_state), std::vector<OrchardCommitment>(),
+                blocks.back()->height, ToHex(blocks.back()->hash));
             for (const auto& block : blocks) {
               if (block->height == kNu5BlockUpdate + 105) {
                 result.discovered_notes.push_back(
@@ -353,18 +357,14 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialDecoding) {
 
   base::MockCallback<ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTaskCallback>
       callback;
+  auto task = ZCashBlocksBatchScanTask(
+      context, *block_scanner, {kNu5BlockUpdate + 1, 400}, callback.Get());
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+          [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_FALSE(result.has_value());
-            // We shouldn't have any notes added since one block is corrupted
-            EXPECT_EQ(GetSpendableNotes().value().size(), 0u);
           });
-
-  auto task =
-      ZCashBlocksBatchScanTask(context, *block_scanner, kNu5BlockUpdate + 1,
-                               kNu5BlockUpdate + 400, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -386,13 +386,12 @@ TEST_F(ZCashBlocksBatchScanTest, NetworkError_Blocks) {
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+          [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_FALSE(result.has_value());
           });
 
-  auto task =
-      ZCashBlocksBatchScanTask(context, *block_scanner, kNu5BlockUpdate + 1,
-                               kNu5BlockUpdate + 200, callback.Get());
+  auto task = ZCashBlocksBatchScanTask(
+      context, *block_scanner, {kNu5BlockUpdate + 1, 200}, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -414,13 +413,12 @@ TEST_F(ZCashBlocksBatchScanTest, NetworkError_TreeState) {
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+          [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_FALSE(result.has_value());
           });
 
-  auto task =
-      ZCashBlocksBatchScanTask(context, *block_scanner, kNu5BlockUpdate + 1,
-                               kNu5BlockUpdate + 200, callback.Get());
+  auto task = ZCashBlocksBatchScanTask(
+      context, *block_scanner, {kNu5BlockUpdate + 1, 200}, callback.Get());
   task.Start();
   task_environment().RunUntilIdle();
 }
@@ -443,13 +441,12 @@ TEST_F(ZCashBlocksBatchScanTest, DecodingError) {
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
-          [&](base::expected<bool, ZCashShieldSyncService::Error> result) {
+          [&](base::expected<void, ZCashShieldSyncService::Error> result) {
             EXPECT_FALSE(result.has_value());
           });
 
-  auto task =
-      ZCashBlocksBatchScanTask(context, *block_scanner, kNu5BlockUpdate + 1,
-                               kNu5BlockUpdate + 200, callback.Get());
+  auto task = ZCashBlocksBatchScanTask(
+      context, *block_scanner, {kNu5BlockUpdate + 1, 200}, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();

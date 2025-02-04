@@ -416,14 +416,14 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   auto update_notes_callback = base::BindLambdaForTesting(
       [](base::expected<OrchardStorage::Result, OrchardStorage::Error>) {});
 
-  auto result = CreateResultForTesting(OrchardTreeState(),
-                                       std::vector<OrchardCommitment>());
+  auto result = CreateResultForTesting(
+      OrchardTreeState(), std::vector<OrchardCommitment>(), 50000, "hash50000");
   result.discovered_notes = std::vector<OrchardNote>({note});
   result.found_spends = std::vector<OrchardNoteSpend>();
 
   sync_state()
       .AsyncCall(&OrchardSyncState::ApplyScanResults)
-      .WithArgs(account_id.Clone(), std::move(result), 50000, "hash50000")
+      .WithArgs(account_id.Clone(), std::move(result))
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();
@@ -506,13 +506,13 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
       [](base::expected<OrchardStorage::Result, OrchardStorage::Error>) {});
 
   OrchardBlockScanner::Result result = CreateResultForTesting(
-      OrchardTreeState(), std::vector<OrchardCommitment>());
+      OrchardTreeState(), std::vector<OrchardCommitment>(), 50000, "hash50000");
   result.discovered_notes = std::vector<OrchardNote>({note});
   result.found_spends = std::vector<OrchardNoteSpend>();
 
   sync_state()
       .AsyncCall(&OrchardSyncState::ApplyScanResults)
-      .WithArgs(account_id.Clone(), std::move(result), 50000, "hash50000")
+      .WithArgs(account_id.Clone(), std::move(result))
       .Then(std::move(update_notes_callback));
 
   task_environment_.RunUntilIdle();

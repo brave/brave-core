@@ -27,14 +27,24 @@ int GetCode(ZCashShieldSyncService::ErrorCode error) {
 }  // namespace
 
 ZCashShieldSyncService::OrchardBlockScannerProxy::OrchardBlockScannerProxy(
-    OrchardFullViewKey full_view_key) {
-  background_block_scanner_.emplace(
-      base::ThreadPool::CreateSequencedTaskRunner({base::MayBlock()}),
-      full_view_key);
+    OrchardFullViewKey full_view_key)
+    : full_view_key_(full_view_key) {
+  task_runner_ = base::ThreadPool::CreateTaskRunner(
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT});
 }
 
 ZCashShieldSyncService::OrchardBlockScannerProxy::~OrchardBlockScannerProxy() =
     default;
+
+// static
+base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
+ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocksInBackground(
+    OrchardFullViewKey full_view_key,
+    OrchardTreeState tree_state,
+    std::vector<zcash::mojom::CompactBlockPtr> blocks) {
+  OrchardBlockScanner scanner(full_view_key);
+  return scanner.ScanBlocks(tree_state, std::move(blocks));
+}
 
 void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
     OrchardTreeState tree_state,
@@ -42,9 +52,11 @@ void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
     base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
                                            OrchardBlockScanner::ErrorCode>)>
         callback) {
-  background_block_scanner_.AsyncCall(&OrchardBlockScanner::ScanBlocks)
-      .WithArgs(std::move(tree_state), std::move(blocks))
-      .Then(std::move(callback));
+  task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&OrchardBlockScannerProxy::ScanBlocksInBackground,
+                     full_view_key_, std::move(tree_state), std::move(blocks)),
+      std::move(callback));
 }
 
 ZCashShieldSyncService::ZCashShieldSyncService(

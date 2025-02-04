@@ -132,10 +132,10 @@ class ZCashVerifyChainStateTaskTest : public testing::Test {
         .Then(std::move(lambda));
 
     OrchardBlockScanner::Result result = CreateResultForTesting(
-        OrchardTreeState(), std::vector<OrchardCommitment>());
+        OrchardTreeState(), std::vector<OrchardCommitment>(),
+        kLatestScannedBlock, kLatestScannedBlockHash);
     sync_state_.AsyncCall(&OrchardSyncState::ApplyScanResults)
-        .WithArgs(account_id_.Clone(), std::move(result), kLatestScannedBlock,
-                  kLatestScannedBlockHash)
+        .WithArgs(account_id_.Clone(), std::move(result))
         .Then(base::BindLambdaForTesting(
             [&](base::expected<OrchardStorage::Result, OrchardStorage::Error>
                     r) { EXPECT_TRUE(r.has_value()); }));

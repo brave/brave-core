@@ -16,16 +16,20 @@
 
 namespace brave_wallet {
 
+inline constexpr uint32_t kZCashMaxTasksInProgress = 4u;
+
 // ZCashScanBlocksTask scans blocks from the last scanned block to the provided
 // right border. Splits this range to subranges and uses a bunch of smaller
-// tasks to process. Current implementation uses sequential scanning. Parallel
-// implementation TBD. Notifies client with the progress. See also
-// ZCashBlocksBatchScanTask.
+// tasks to process.
+// Posts a number of ZCashBlocksBatchScanTask to work in parallel.
+// After a ZCashBlocksBatchScanTask is ready applies the result to the
+// OrchardSyncState.
 class ZCashScanBlocksTask {
  public:
   using ZCashScanBlocksTaskObserver = base::RepeatingCallback<void(
       base::expected<ZCashShieldSyncService::ScanRangeResult,
                      ZCashShieldSyncService::Error>)>;
+  using ScanRange = ZCashBlocksBatchScanTask::ScanRange;
 
   ZCashScanBlocksTask(ZCashActionContext& context,
                       ZCashShieldSyncService::OrchardBlockScannerProxy& scanner,
@@ -37,11 +41,11 @@ class ZCashScanBlocksTask {
 
   void Start();
 
+  void set_max_tasks_in_progress(uint32_t tasks) {
+    max_tasks_in_progress_ = tasks;
+  }
+
  private:
-  struct ScanRange {
-    uint32_t from;
-    uint32_t to;
-  };
   void ScheduleWorkOnTask();
   void WorkOnTask();
 
@@ -56,9 +60,18 @@ class ZCashScanBlocksTask {
 
   void PrepareScanRanges();
 
-  void ScanRanges();
+  void MaybeScanRanges();
   void OnScanningRangeComplete(
-      base::expected<bool, ZCashShieldSyncService::Error> result);
+      base::expected<void, ZCashShieldSyncService::Error> result);
+
+  void MaybeInsertResult();
+  void OnResultInserted(
+      ScanRange scan_range,
+      base::expected<OrchardStorage::Result, OrchardStorage::Error> result);
+
+  void NotifyObserver();
+
+  size_t ReadyScanTasks();
 
   raw_ref<ZCashActionContext> context_;
   raw_ref<ZCashShieldSyncService::OrchardBlockScannerProxy> scanner_;
@@ -70,13 +83,17 @@ class ZCashScanBlocksTask {
   std::optional<uint32_t> end_block_;
 
   bool started_ = false;
+  bool finished_ = false;
+  uint32_t max_tasks_in_progress_ = kZCashMaxTasksInProgress;
 
   std::optional<ZCashShieldSyncService::Error> error_;
   std::optional<OrchardStorage::AccountMeta> account_meta_;
   std::optional<uint32_t> chain_tip_block_;
-  std::optional<std::deque<ScanRange>> scan_ranges_;
-  std::optional<size_t> initial_ranges_count_;
-  std::unique_ptr<ZCashBlocksBatchScanTask> current_block_range_;
+  std::optional<uint32_t> initial_ranges_count_;
+  std::optional<std::deque<ScanRange>> pending_scan_ranges_;
+
+  std::deque<ZCashBlocksBatchScanTask> scan_tasks_in_progress_;
+  bool inserting_in_progress_ = false;
 
   base::WeakPtrFactory<ZCashScanBlocksTask> weak_ptr_factory_{this};
 };
