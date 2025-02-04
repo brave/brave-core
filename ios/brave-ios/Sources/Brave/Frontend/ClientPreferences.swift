@@ -173,6 +173,11 @@ extension Preferences {
     /// How many times Brave Search websites has asked the user to check whether Brave Search can be set as a default
     static let braveSearchDefaultBrowserPromptCount =
       Option<Int>(key: "search.brave-search-default-website-prompt", default: 0)
+    /// Whether or not to execute setting up Yahoo! Japan search engine logic for new users
+    public static let shouldExcludeYahooJPSearchEngine = Option<Bool>(
+      key: "search.should-exclude-yahoo-jp-search-engine",
+      default: false
+    )
   }
 
   final public class BraveSearch {

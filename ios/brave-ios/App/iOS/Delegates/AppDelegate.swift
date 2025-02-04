@@ -213,6 +213,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     Preferences.General.isFirstLaunch.value = false
 
     Task {
+      if Preferences.Search.defaultEngineName.value != nil {
+        // Not a new install. DSE has been set previously.
+        Preferences.Search.shouldExcludeYahooJPSearchEngine.value = true
+      }
       await AppState.shared.profile.searchEngines.loadSearchEngines()
       // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
       // There was a bug that when you skipped onboarding, default search engine preference
