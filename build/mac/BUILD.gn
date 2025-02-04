@@ -147,7 +147,7 @@ action("generate_dsa_sig_for_dmg") {
 
   outputs = [ "$output_dmg_dsa_path" ]
 
-  deps = [ ":copy_dmg_pkg" ]
+  deps = [ ":copy_dmg" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
@@ -185,7 +185,7 @@ action("generate_eddsa_sig_for_dmg") {
 
   outputs = [ "$output_dmg_eddsa_path" ]
 
-  deps = [ ":copy_dmg_pkg" ]
+  deps = [ ":copy_dmg" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
@@ -224,7 +224,7 @@ action("build_delta_installer") {
 
   outputs = [ "$output_delta_path" ]
 
-  deps = [ ":copy_dmg_pkg" ]
+  deps = [ ":copy_dmg" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
@@ -484,7 +484,10 @@ group("finalize_dmg_pkg") {
     if (mac_installer_signing_identifier == "") {
       deps += [ ":sign_app" ]
     } else {
-      deps += [ ":copy_dmg_pkg" ]
+      deps += [
+        ":copy_dmg",
+        ":copy_pkg",
+      ]
       if (sparkle_dsa_private_key_file != "") {
         deps += [ ":generate_dsa_sig_for_dmg" ]
       }
@@ -519,36 +522,31 @@ copy("notarize_pkg") {
 
 }
 
-copy("copy_dmg_pkg") {
+copy("copy_dmg") {
   if (notarize) {
-    sources = [
-      notarized_dmg_path,
-      notarized_pkg_path,
-    ]
-    deps = [
-      ":notarize_dmg",
-      ":notarize_pkg",
-    ]
+    sources = [ notarized_dmg_path ]
+    deps = [ ":notarize_dmg" ]
   } else if (skip_signing) {
-    sources = [
-      unsigned_dmg_path,
-      unsigned_pkg_path,
-    ]
-    deps = [
-      ":create_dmg",
-      ":create_pkg",
-    ]
+    sources = [ unsigned_dmg_path ]
+    deps = [ ":create_dmg" ]
   } else {
-    sources = [
-      signed_dmg_path,
-      signed_pkg_path,
-    ]
-    deps = [
-      ":create_dmg",
-      ":create_pkg",
-    ]
+    sources = [ signed_dmg_path ]
+    deps = [ ":create_dmg" ]
   }
+  outputs = [ "$root_out_dir/{{source_file_part}}" ]
+}
 
+copy("copy_pkg") {
+  if (notarize) {
+    sources = [ notarized_pkg_path ]
+    deps = [ ":notarize_pkg" ]
+  } else if (skip_signing) {
+    sources = [ unsigned_pkg_path ]
+    deps = [ ":create_pkg" ]
+  } else {
+    sources = [ signed_pkg_path ]
+    deps = [ ":create_pkg" ]
+  }
   outputs = [ "$root_out_dir/{{source_file_part}}" ]
 }
 
@@ -561,5 +559,5 @@ crx3("crx") {
   # copied into this directory manually. Changing the private key requires
   # also changing kBravePublisherKeyHash in crx_verifier.cc.
   key = "//brave/updater/crx-private-key.der"
-  deps = [ ":copy_dmg_pkg" ]
+  deps = [ ":copy_dmg" ]
 }
