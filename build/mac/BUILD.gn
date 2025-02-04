@@ -587,7 +587,6 @@ copy("copy_dmg_pkg") {
       notarized_pkg_path,
     ]
     deps = [
-      ":copy_notarize_script",
       ":notarize_dmg_pkg",
     ]
   } else if (skip_signing) {
