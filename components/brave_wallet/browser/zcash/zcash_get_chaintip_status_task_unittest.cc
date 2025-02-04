@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/zcash/zcash_get_zcash_chain_tip_status_task.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
@@ -97,6 +98,9 @@ class ZCashGetChainTipStatusTaskTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath db_path(
         temp_dir_.GetPath().Append(FILE_PATH_LITERAL("orchard.db")));
