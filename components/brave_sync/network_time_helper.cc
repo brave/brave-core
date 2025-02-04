@@ -36,6 +36,14 @@ void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
     std::move(cb).Run(network_time_for_test_);
     return;
   }
+
+  if (ui_task_runner_ == nullptr) {
+    // Safe exit for the case when ui_task_runner_ is not set before
+    // GetNetworkTime call. Crashes were reported through backtrace.
+    std::move(cb).Run(base::Time::Now());
+    return;
+  }
+
   ui_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&NetworkTimeHelper::GetNetworkTimeOnUIThread,
                                 weak_ptr_factory_.GetWeakPtr(), std::move(cb)));
