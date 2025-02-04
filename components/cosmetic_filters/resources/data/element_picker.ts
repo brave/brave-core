@@ -12,8 +12,10 @@ const api = {
   cosmeticFilterCreate: (selector: string) => {
     cf_worker.addSiteCosmeticFilter(selector)
   },
-  cosmeticFilterManage: () => {
-    cf_worker.manageCustomFilters()
+  cosmeticFilterReset: (callback: () => void) => {
+    cf_worker.resetSiteCosmeticFilter().then(() => {
+        callback()
+    })
   },
   getElementPickerThemeInfo: (callback: (
     isDarkModeEnabled: boolean, bgcolor: number) => void) => {
@@ -684,10 +686,13 @@ const launchElementPicker = (root: ShadowRoot) => {
   quitButton.addEventListener('click', () => {
     quitElementPicker()
   })
-
-  const manageButton = root.getElementById('btnManage')!
-  manageButton.addEventListener('click', () => {
-    api.cosmeticFilterManage();
+  
+  const resetButton = root.getElementById('btnReset')!
+  resetButton.addEventListener('click', () => {
+    api.cosmeticFilterReset(() => {
+      quitElementPicker()
+      location.reload()
+    });
   })
 
   const toggleDisplay = (target: HTMLElement | null,

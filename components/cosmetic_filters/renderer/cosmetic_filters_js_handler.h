@@ -79,7 +79,11 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   void OnHiddenClassIdSelectors(base::Value::Dict result);
   bool OnIsFirstParty(const std::string& url_string);
   void OnAddSiteCosmeticFilter(const std::string& selector);
-  void OnManageCustomFilters();
+  v8::Local<v8::Promise> ResetSiteCosmeticFilter(v8::Isolate* isolate);
+  void OnResetSiteCosmeticFilter(
+      std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+      v8::Isolate* isolate,
+      std::unique_ptr<v8::Global<v8::Context>> context_old);
   v8::Local<v8::Value> GetPlatform(v8::Isolate* isolate);
   v8::Local<v8::Promise> GetCosmeticFilterThemeInfo(v8::Isolate* isolate);
   void OnGetCosmeticFilterThemeInfo(

@@ -381,6 +381,12 @@ void AdBlockService::AddUserCosmeticFilter(const std::string& filter) {
   custom_filters_provider_->AddUserCosmeticFilter(filter);
 }
 
+void AdBlockService::ResetCosmeticFilter(
+    const std::string& host) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  custom_filters_provider_->ResetCosmeticFilter(host);
+}
+
 void AdBlockService::GetDebugInfoAsync(GetDebugInfoCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 

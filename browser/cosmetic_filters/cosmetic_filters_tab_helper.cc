@@ -87,15 +87,13 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
   }
 }
 
-void CosmeticFiltersTabHelper::ManageCustomFilters() {
-#if !BUILDFLAG(IS_ANDROID)
-  Browser* browser = chrome::FindLastActive();
-  if (browser) {
-    brave::ShowBraveAdblock(browser);
-  }
-#else   // !BUILDFLAG(IS_ANDROID)
-  ShowCustomFilterSettings();
-#endif  // !BUILDFLAG(IS_ANDROID)
+void CosmeticFiltersTabHelper::ResetCosmeticFilterForCurrentHost(
+    ResetCosmeticFilterForCurrentHostCallback callback) {
+  const auto* sender_rfh = receivers_.GetCurrentTargetFrame();
+  CHECK(sender_rfh);
+  g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
+      sender_rfh->GetLastCommittedOrigin().host());
+  std::move(callback).Run();
 }
 
 void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(

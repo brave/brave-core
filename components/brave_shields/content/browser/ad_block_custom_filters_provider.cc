@@ -5,13 +5,41 @@
 
 #include "brave/components/brave_shields/content/browser/ad_block_custom_filters_provider.h"
 
+#include <optional>
+#include <string>
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_tokenizer.h"
+#include "base/strings/strcat.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+
+namespace {
+
+std::optional<std::string> RemoveFiltersForHost(
+    const std::string& host,
+    const std::string& custom_filters) {
+  if (host.empty()) {
+    return std::nullopt;
+  }
+
+  std::string result{custom_filters};
+  const auto starts_with_str = base::StrCat({host, "##"});
+  base::StringTokenizer tokenizer(custom_filters, "\n");
+  while (tokenizer.GetNext()) {
+    if (!tokenizer.token().starts_with(starts_with_str)) {
+      continue;
+    }
+    base::ReplaceFirstSubstringAfterOffset(
+        &result, 0, base::StrCat({"\n", tokenizer.token()}), "");
+  }
+  return result;
+}
+
+}  // namespace
 
 namespace brave_shields {
 
@@ -49,6 +77,17 @@ void AdBlockCustomFiltersProvider::AddUserCosmeticFilter(
     const std::string& filter) {
   std::string custom_filters = GetCustomFilters();
   UpdateCustomFilters(custom_filters + '\n' + filter);
+}
+
+void AdBlockCustomFiltersProvider::ResetCosmeticFilter(
+    const std::string& host) {
+  std::string custom_filters = GetCustomFilters();
+  const auto modified_filters = RemoveFiltersForHost(host, custom_filters);
+  if (!modified_filters) {
+    return;
+  }
+
+  UpdateCustomFilters(modified_filters.value());
 }
 
 std::string AdBlockCustomFiltersProvider::GetNameForDebugging() {

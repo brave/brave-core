@@ -13,8 +13,10 @@
 #include "base/json/json_writer.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/trace_event/trace_event.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
@@ -292,8 +294,39 @@ void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
   GetElementPickerRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 
-void CosmeticFiltersJSHandler::OnManageCustomFilters() {
-  GetElementPickerRemoteHandler()->ManageCustomFilters();
+v8::Local<v8::Promise> CosmeticFiltersJSHandler::ResetSiteCosmeticFilter(v8::Isolate* isolate) {
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+
+  if (!resolver.IsEmpty()) {
+    auto promise_resolver =
+        std::make_unique<v8::Global<v8::Promise::Resolver>>();
+    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
+    auto context_old = std::make_unique<v8::Global<v8::Context>>(
+        isolate, isolate->GetCurrentContext());
+
+    GetElementPickerRemoteHandler()->ResetCosmeticFilterForCurrentHost(base::BindOnce(
+        &CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter,
+        weak_ptr_factory_.GetWeakPtr(), std::move(promise_resolver), isolate,
+        std::move(context_old)));
+
+    return resolver.ToLocalChecked()->GetPromise();
+  }
+
+  return v8::Local<v8::Promise>();
+}
+
+void CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter(
+    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
+    v8::Isolate* isolate,
+    std::unique_ptr<v8::Global<v8::Context>> context_old) {
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context = context_old->Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
+  std::ignore = resolver->Resolve(context, v8::Object::New(isolate));
 }
 
 mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
@@ -441,12 +474,10 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
       isolate, javascript_object, "addSiteCosmeticFilter",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter,
                           base::Unretained(this)));
-
   BindFunctionToObject(
-      isolate, javascript_object, "manageCustomFilters",
-      base::BindRepeating(&CosmeticFiltersJSHandler::OnManageCustomFilters,
+      isolate, javascript_object, "resetSiteCosmeticFilter",
+      base::BindRepeating(&CosmeticFiltersJSHandler::ResetSiteCosmeticFilter,
                           base::Unretained(this)));
-
   BindFunctionToObject(
       isolate, javascript_object, "getElementPickerThemeInfo",
       base::BindRepeating(&CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo,
