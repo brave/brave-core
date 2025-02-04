@@ -46,6 +46,7 @@ class ReaderModeToolbarView : public views::View, content::WebContentsDelegate {
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+  bool OnMousePressed(const ui::MouseEvent& event) override;
 
   // WebContentsDelegate:
   void ActivateContents(content::WebContents* contents) override;

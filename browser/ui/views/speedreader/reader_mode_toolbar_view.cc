@@ -126,6 +126,13 @@ void ReaderModeToolbarView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   toolbar_->SetBoundsRect(toolbar_bounds);
 }
 
+bool ReaderModeToolbarView::OnMousePressed(const ui::MouseEvent& event) {
+  if (event.IsOnlyLeftMouseButton() && delegate_) {
+    delegate_->OnReaderModeToolbarActivate(this);
+  }
+  return views::View::OnMousePressed(event);
+}
+
 void ReaderModeToolbarView::ActivateContents(content::WebContents* contents) {
   if (delegate_) {
     delegate_->OnReaderModeToolbarActivate(this);
