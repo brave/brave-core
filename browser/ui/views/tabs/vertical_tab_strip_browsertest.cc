@@ -16,8 +16,10 @@
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_compound_tab_container.h"
+#include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
 #include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+#include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/tabs/switches.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
@@ -503,6 +505,44 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
     EXPECT_TRUE(GetBoundsInScreen(region_view, region_view->GetLocalBounds())
                     .Contains(GetBoundsInScreen(tab, tab->GetLocalBounds())));
   }
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       LayoutAfterFirstTabCreation) {
+  ToggleVerticalTabStrip();
+
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+
+  auto* model = browser()->tab_strip_model();
+  model->SetTabPinned(0, true);
+  ASSERT_EQ(1, model->count());
+
+  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+
+  int contents_view_height = region_view->contents_view_->height();
+  AppendTab(browser());
+  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+
+  // When first tab is added, height should have tab's height plush top & bottom
+  // margin.
+  contents_view_height +=
+      (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2);
+  EXPECT_EQ(region_view->contents_view_->height(), contents_view_height);
+
+  AppendTab(browser());
+  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+
+  // When second tab is added, height should be increased with tab height plus
+  // tab spacing.
+  contents_view_height +=
+      (tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing);
+  EXPECT_EQ(region_view->contents_view_->height(), contents_view_height);
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
