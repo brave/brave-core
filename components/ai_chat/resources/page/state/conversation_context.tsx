@@ -516,6 +516,13 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       console.error('No conversationUuid found')
       return
     }
+    // For now we only allow uploading 1 image per conversation.
+    if (context.imgData) {
+      aiChatContext.uiHandler?.removeUploadedImage(0)
+      setPartialContext({
+        imgData: undefined
+      })
+    }
     aiChatContext.uiHandler?.uploadImage(context.conversationUuid)
     .then(({uploadedImage}) => {
       if (uploadedImage) {
