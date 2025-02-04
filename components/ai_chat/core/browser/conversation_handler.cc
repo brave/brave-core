@@ -511,9 +511,13 @@ void ConversationHandler::GetState(GetStateCallback callback) {
 
   BuildAssociatedContentInfo();
 
-  std::vector<std::string> suggestions;
-  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
-                         [](const auto& s) { return s.title; });
+  std::vector<mojom::SuggestionPtr> suggestions;
+
+  std::ranges::transform(
+      suggestions_, std::back_inserter(suggestions), [](const auto& s) {
+        return mojom::Suggestion::New(s.title, s.prompt, s.action_type);
+      });
+
   mojom::ConversationStatePtr state = mojom::ConversationState::New(
       metadata_->uuid, is_request_in_progress_, std::move(models_copy),
       model_key, std::move(suggestions), suggestion_generation_status_,
@@ -849,7 +853,7 @@ void ConversationHandler::SubmitSummarizationRequest() {
 }
 
 void ConversationHandler::SubmitSuggestion(
-    const std::string& suggestion_title) {
+    const std::string& suggestion_prompt) {
   if (is_request_in_progress_) {
     DLOG(ERROR) << "UI should not allow submitting a suggestion when a "
                    "previous request is in progress.";
@@ -857,7 +861,7 @@ void ConversationHandler::SubmitSuggestion(
   }
 
   auto suggest_it =
-      std::ranges::find(suggestions_, suggestion_title, &Suggestion::title);
+      std::ranges::find(suggestions_, suggestion_prompt, &Suggestion::prompt);
   if (suggest_it == suggestions_.end()) {
     DLOG(ERROR)
         << "A suggestion was submitted that is not in the suggestions list.";
@@ -876,7 +880,7 @@ void ConversationHandler::SubmitSuggestion(
   // Remove the suggestion from the list, assume the list has been modified
   // inside SubmitHumanConversationEntry so search for it again.
   auto to_remove =
-      std::ranges::remove(suggestions_, suggestion_title, &Suggestion::title);
+      std::ranges::remove(suggestions_, suggestion_prompt, &Suggestion::prompt);
   suggestions_.erase(to_remove.begin(), to_remove.end());
   OnSuggestedQuestionsChanged();
 }
@@ -1755,12 +1759,16 @@ void ConversationHandler::OnAssociatedContentFaviconImageDataChanged() {
 }
 
 void ConversationHandler::OnSuggestedQuestionsChanged() {
-  std::vector<std::string> suggestions;
-  std::ranges::transform(suggestions_, std::back_inserter(suggestions),
-                         [](const auto& s) { return s.title; });
+  std::vector<mojom::SuggestionPtr> suggestions;
+
+  std::transform(suggestions_.begin(), suggestions_.end(),
+                 std::back_inserter(suggestions), [](const auto& s) {
+                   return mojom::Suggestion::New(s.title, s.prompt,
+                                                 s.action_type);
+                 });
 
   for (auto& client : conversation_ui_handlers_) {
-    client->OnSuggestedQuestionsChanged(suggestions,
+    client->OnSuggestedQuestionsChanged(std::move(suggestions),
                                         suggestion_generation_status_);
   }
 }

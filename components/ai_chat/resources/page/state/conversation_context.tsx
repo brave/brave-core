@@ -29,7 +29,7 @@ export type ConversationContext = SendFeedbackState & CharCountContext & {
   associatedContentInfo?: Mojom.SiteInfo
   allModels: Mojom.Model[]
   currentModel?: Mojom.Model
-  suggestedQuestions: string[]
+  suggestedQuestions: Mojom.Suggestion[]
   isGenerating: boolean
   suggestionStatus: Mojom.SuggestionGenerationStatus
   faviconUrl?: string
@@ -253,7 +253,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     listenerIds.push(id)
 
     id = callbackRouter.onSuggestedQuestionsChanged.addListener(
-      (questions: string[], status: Mojom.SuggestionGenerationStatus) =>
+      (questions: Mojom.Suggestion[], status: Mojom.SuggestionGenerationStatus) =>
         setPartialContext({
           suggestedQuestions: questions,
           suggestionStatus: status

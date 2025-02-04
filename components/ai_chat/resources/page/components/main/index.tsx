@@ -288,7 +288,9 @@ function Main() {
               {showSuggestions && (
               <div className={styles.suggestionsContainer}>
                 <div className={styles.questionsList}>
-                  {conversationContext.suggestedQuestions.map((question, i) => <SuggestedQuestion key={question} question={question} />)}
+                  {conversationContext.suggestedQuestions.map(({ title, prompt }, i) =>
+                    <SuggestedQuestion key={title} title={title} question={prompt || title} />
+                  )}
                   {SUGGESTION_STATUS_SHOW_BUTTON.has(
                     conversationContext.suggestionStatus
                   ) && conversationContext.shouldSendPageContents && (

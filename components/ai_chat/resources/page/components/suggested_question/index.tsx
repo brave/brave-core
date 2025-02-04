@@ -12,13 +12,13 @@ import * as Mojom from '../../../common/mojom'
 import { useConversation } from "../../state/conversation_context";
 import styles from './style.module.scss'
 
-export function SuggestedQuestion({ question }: { question: string }) {
+export function SuggestedQuestion({ title, question }: { title: string, question: string }) {
     const context = useConversation()
     return <SuggestionButton
         onClick={() => context.conversationHandler?.submitSuggestion(question)}
         className={styles.questionButton}
     >
-      <span className={styles.questionButtonText}>{question}</span>
+      <span className={styles.questionButtonText}>{title}</span>
     </SuggestionButton>
 }
 
