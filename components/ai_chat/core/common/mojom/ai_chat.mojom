@@ -271,8 +271,6 @@ struct LeoModelOptions {
   uint32 max_associated_content_length;
   // max limit for overall conversation (measured in chars, not tokens)
   uint32 long_conversation_warning_character_limit;
-  // whether accept image as input
-  bool vision_support;
 };
 
 struct CustomModelOptions {
@@ -301,6 +299,8 @@ struct Model {
   string key;
   // display name, for users
   string display_name;
+  // whether accept image as input
+  bool vision_support;
 };
 
 struct ModelWithSubtitle {
