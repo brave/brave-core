@@ -50,6 +50,10 @@ class Toolbar : public views::WebView {
 
 }  // namespace
 
+void ReaderModeToolbarView::SetDelegate(Delegate* delegate) {
+  delegate_ = delegate;
+}
+
 ReaderModeToolbarView::ReaderModeToolbarView(Browser* browser) {
   SetVisible(false);
   SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
@@ -70,6 +74,7 @@ void ReaderModeToolbarView::SetVisible(bool visible) {
     content::WebContents::CreateParams create_params(
         toolbar_->GetBrowserContext(), FROM_HERE);
     toolbar_contents_ = content::WebContents::Create(create_params);
+    toolbar_contents_->SetDelegate(this);
 
     const GURL toolbar_url(kSpeedreaderPanelURL);
     content::NavigationController::LoadURLParams params(toolbar_url);
@@ -99,7 +104,9 @@ void ReaderModeToolbarView::SwapToolbarContents(
   another_toolbar->toolbar_->SetWebContents(nullptr);
 
   another_toolbar->toolbar_->SetWebContents(contents);
+  contents->SetDelegate(another_toolbar);
   toolbar_->SetWebContents(another_contents);
+  another_contents->SetDelegate(this);
 }
 
 gfx::Size ReaderModeToolbarView::CalculatePreferredSize(
@@ -117,6 +124,12 @@ void ReaderModeToolbarView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   }
 #endif
   toolbar_->SetBoundsRect(toolbar_bounds);
+}
+
+void ReaderModeToolbarView::ActivateContents(content::WebContents* contents) {
+  if (delegate_) {
+    delegate_->OnReaderModeToolbarActivate(this);
+  }
 }
 
 BEGIN_METADATA(ReaderModeToolbarView)

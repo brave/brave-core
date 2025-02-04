@@ -499,7 +499,7 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
   }
 
   if (split_view_) {
-    split_view_->UpdateSecondaryReaderModeToolbar();
+    split_view_->UpdateSecondaryReaderModeToolbar(reader_mode_toolbar_);
   }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
@@ -852,11 +852,6 @@ void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   UpdateReaderModeToolbar();
-  if (split_view_ && reader_mode_toolbar_ &&
-      split_view_->secondary_reader_mode_toolbar()) {
-    reader_mode_toolbar_->SwapToolbarContents(
-        split_view_->secondary_reader_mode_toolbar());
-  }
 #endif
 }
 

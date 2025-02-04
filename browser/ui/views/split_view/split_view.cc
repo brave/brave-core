@@ -85,13 +85,16 @@ SplitView::SplitView(Browser& browser,
   split_view_separator_ = AddChildView(
       std::make_unique<SplitViewSeparator>(base::to_address(browser_)));
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
   secondary_reader_mode_toolbar_ = secondary_contents_container_->AddChildView(
       std::make_unique<ReaderModeToolbarView>(base::to_address(browser_)));
+  secondary_reader_mode_toolbar_->SetDelegate(this);
 
   secondary_contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
           secondary_devtools_web_view_, secondary_contents_web_view_, nullptr,
           secondary_reader_mode_toolbar_));
+#endif
 
   SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
       contents_container_, secondary_contents_container_,
@@ -425,7 +428,9 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
   split_view_separator_->SetVisible(
       secondary_contents_container_->GetVisible());
 
-  UpdateSecondaryReaderModeToolbar();
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  UpdateSecondaryReaderModeToolbar(nullptr);
+#endif
 
   InvalidateLayout();
 }
@@ -435,7 +440,20 @@ void SplitView::UpdateCornerRadius(const gfx::RoundedCornersF& corners) {
   secondary_devtools_web_view_->holder()->SetCornerRadii(corners);
 }
 
-void SplitView::UpdateSecondaryReaderModeToolbar() {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+void SplitView::OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {
+  if (toolbar == secondary_reader_mode_toolbar_ &&
+      secondary_contents_web_view_) {
+    if (secondary_contents_web_view_->web_contents()->GetDelegate()) {
+      secondary_contents_web_view_->web_contents()
+          ->GetDelegate()
+          ->ActivateContents(secondary_contents_web_view_->web_contents());
+    }
+  }
+}
+
+void SplitView::UpdateSecondaryReaderModeToolbar(
+    ReaderModeToolbarView* primary_toolbar) {
   if (!secondary_reader_mode_toolbar_) {
     return;
   }
@@ -461,11 +479,16 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
       } else {
         secondary_reader_mode_toolbar_->SetVisible(is_distilled(tile->first));
       }
+      if (primary_toolbar) {
+        primary_toolbar->SwapToolbarContents(
+            secondary_reader_mode_toolbar_.get());
+      }
     } else if (secondary_reader_mode_toolbar_) {
       secondary_reader_mode_toolbar_->SetVisible(false);
     }
   }
 }
+#endif
 
 gfx::Point SplitView::GetSplitViewLocationBarOffset() const {
 #if BUILDFLAG(ENABLE_SPEEDREADER)

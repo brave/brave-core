@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "content/public/browser/web_contents_delegate.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/webview/webview.h"
 
@@ -16,9 +17,14 @@ class WebContents;
 }
 
 class Browser;
-class ReaderModeToolbarView : public views::View {
+class ReaderModeToolbarView : public views::View, content::WebContentsDelegate {
   METADATA_HEADER(ReaderModeToolbarView, views::View)
  public:
+  struct Delegate {
+    virtual ~Delegate() = default;
+    virtual void OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {}
+  };
+
   explicit ReaderModeToolbarView(Browser* browser);
   ~ReaderModeToolbarView() override;
 
@@ -33,6 +39,7 @@ class ReaderModeToolbarView : public views::View {
 
   views::View* toolbar() const { return toolbar_.get(); }
 
+  void SetDelegate(Delegate* delegate);
   void SwapToolbarContents(ReaderModeToolbarView* toolbar);
 
  private:
@@ -40,8 +47,12 @@ class ReaderModeToolbarView : public views::View {
       const views::SizeBounds& available_size) const override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
 
+  // WebContentsDelegate:
+  void ActivateContents(content::WebContents* contents) override;
+
   std::unique_ptr<views::WebView> toolbar_;
   std::unique_ptr<content::WebContents> toolbar_contents_;
+  raw_ptr<Delegate> delegate_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SPEEDREADER_READER_MODE_TOOLBAR_VIEW_H_
