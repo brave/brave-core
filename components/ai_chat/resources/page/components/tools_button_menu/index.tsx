@@ -28,7 +28,6 @@ export default function ToolsButtonMenu(props: Props) {
       isOpen={props.isToolsMenuOpen}
       onClose={() => props.setIsToolsMenuOpen(false)}
     >
-      <div slot='anchor-content' />
       {props.actionList.map((actionGroup) => {
         return (
           <React.Fragment key={actionGroup.category}>
