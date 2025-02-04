@@ -676,10 +676,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
         model_service_->GetModel(metadata_->model_key.value_or("").empty()
                                      ? model_service_->GetDefaultModelKey()
                                      : metadata_->model_key.value());
-    bool vision_support =
-        current_model->options->is_leo_model_options() &&
-        current_model->options->get_leo_model_options()->vision_support;
-    if (!vision_support) {
+    if (!current_model->vision_support) {
       ChangeModel("chat-vision-basic");
     }
     turn->uploaded_images = uploaded_content_delegate_->GetUploadedImages();

@@ -87,6 +87,9 @@ export class ModelConfigUI extends ModelConfigUIBase {
       buttonLabel_: {
         type: String,
         computed: 'computeButtonLabel_(isEditing_)'
+      },
+      hasVisionSupport : {
+        type: Boolean
       }
     }
   }
@@ -106,6 +109,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
   isValidAsPrivateEndpoint: boolean
   shouldShowUnsafeEndpointModal: boolean
   invalidUrlErrorMessage: string
+  hasVisionSupport: boolean
 
   override ready() {
     super.ready()
@@ -154,7 +158,8 @@ export class ModelConfigUI extends ModelConfigUIBase {
         }
       },
       key: modelKey,
-      displayName: this.label
+      displayName: this.label,
+      visionSupport: this.hasVisionSupport
     }
 
     this.fire('save', { modelConfig })
@@ -208,6 +213,10 @@ export class ModelConfigUI extends ModelConfigUIBase {
     )
   }
 
+  onVisionSupportChanged_(e: any) {
+    this.hasVisionSupport = e.checked
+  }
+
   private saveEnabled_() {
     // Make sure all required fields are filled
     return this.label && this.modelRequestName && this.endpointUrl && !this.isUrlInvalid
@@ -239,6 +248,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       this.apiKey = newValue.options.customModelOptions.apiKey
       this.modelSystemPrompt =
         newValue.options.customModelOptions.modelSystemPrompt
+      this.hasVisionSupport = newValue.visionSupport
     }
     this.constructTokenEstimateString_()
   }
