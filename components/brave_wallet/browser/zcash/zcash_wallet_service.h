@@ -250,7 +250,8 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       ZCashCreateTransparentToOrchardTransactionTask* task);
   virtual void CreateTransactionTaskDone(
       ZCashCreateOrchardToOrchardTransactionTask* task);
-  void GetZCashChainTipStatusTaskDone(ZCashGetZCashChainTipStatusTask* task);
+  virtual void GetZCashChainTipStatusTaskDone(
+      ZCashGetZCashChainTipStatusTask* task);
   void OnGetChainTipStatusResult(
       GetChainTipStatusCallback callback,
       base::expected<mojom::ZCashChainTipStatusPtr, std::string> result);
@@ -286,8 +287,6 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   mojom::ZCashAccountShieldBirthdayPtr GetAccountShieldBirthday(
       const mojom::AccountIdPtr& account_id);
-  bool SetAccountShieldBirthday(std::string network_id,
-                                mojom::AccountIdPtr account_id);
 
   std::vector<mojom::AccountIdPtr> GetShieldedAccounts();
 

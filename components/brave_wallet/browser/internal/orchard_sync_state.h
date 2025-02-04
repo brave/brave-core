@@ -33,8 +33,8 @@ class OrchardSyncState {
       const mojom::AccountIdPtr& account_id,
       uint64_t account_birthday_block);
 
-  base::expected<std::optional<OrchardStorage::AccountMeta>,
-                 OrchardStorage::Error>
+  virtual base::expected<std::optional<OrchardStorage::AccountMeta>,
+                         OrchardStorage::Error>
   GetAccountMeta(const mojom::AccountIdPtr& account_id);
 
   virtual base::expected<OrchardStorage::Result, OrchardStorage::Error> Rewind(
