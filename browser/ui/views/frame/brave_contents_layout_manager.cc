@@ -52,7 +52,3 @@ views::ProposedLayout BraveContentsLayoutManager::CalculateProposedLayout(
 
   return layouts;
 }
-
-void BraveContentsLayoutManager::LayoutImpl() {
-  ContentsLayoutManager::LayoutImpl();
-}

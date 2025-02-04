@@ -639,6 +639,7 @@ source_set("ui") {
       "//brave/browser/ui/side_panel",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
+      "//chrome/browser/enterprise/watermark:watermark_view_lib",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",

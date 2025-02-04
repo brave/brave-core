@@ -21,8 +21,6 @@ class BraveContentsLayoutManager : public ContentsLayoutManager {
   views::ProposedLayout CalculateProposedLayout(
       const views::SizeBounds& size_bounds) const override;
 
-  void LayoutImpl() override;
-
  private:
   raw_ptr<views::View> contents_view_ = nullptr;
   raw_ptr<views::View> reader_mode_toolbar_ = nullptr;

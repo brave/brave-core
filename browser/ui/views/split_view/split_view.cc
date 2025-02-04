@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/types/to_address.h"
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/features.h"
@@ -29,6 +28,10 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#endif
 
 namespace {
 
