@@ -25,8 +25,8 @@ if (is_universal_binary) {
 
 if (skip_signing) {
 unsigned_dmg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg"
-}
 unsigned_pkg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_pkg"
+}
 
 signed_output_dir = "$root_out_dir/$mac_signed_output_prefix"
 
@@ -348,51 +348,10 @@ copy("copies") {
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
 }
 
-if (install_omaha4_with_pkg) {
-  generated_pkg_scripts = "$target_gen_dir/pkg-scripts"
-}
-
-action("create_pkg") {
-  script = "//build/gn_run_binary.py"
-  shell_script = "//brave/build/mac/create_pkg.sh"
-
-  args = [
-    rebase_path(shell_script, root_build_dir),
-    rebase_path(app_path, root_build_dir),
-  ]
-
-  if (install_omaha4_with_pkg) {
-    args += [ rebase_path(generated_pkg_scripts) ]
-  } else {
-    args += [ rebase_path("//brave/build/mac/pkg-scripts") ]
-  }
-
-  args += [
-    rebase_path("$root_out_dir/Brave Browser Component.plist"),
-    "$mac_unsigned_output_prefix/$brave_pkg",
-  ]
-
-  inputs = [
-    script,
-    app_path,
-    shell_script,
-  ]
-
-  outputs = [ unsigned_pkg_path ]
-
-  deps = [ ":finalize_app" ]
-
-  if (install_omaha4_with_pkg) {
-    deps += [ ":postinstall" ]
-  }
-}
-
 postinstall_script = "$packaging_dir/brave/pkg_postinstall.in"
 
 if (install_omaha4_with_pkg) {
   action("postinstall") {
-    visibility = [ ":create_pkg" ]
-
     script = "create_postinstall.py"
 
     output = postinstall_script
@@ -517,10 +476,12 @@ copy("create_dmg") {
   }
 }
 
-if (!skip_signing) {
-  copy("sign_pkg") {
-    deps = [ ":_create_dmg_pkg" ]
-    sources = [ _upstream_signed_pkg_path ]
+copy("create_pkg") {
+  deps = [ ":_create_dmg_pkg" ]
+  sources = [ _upstream_signed_pkg_path ]
+  if (skip_signing) {
+    outputs = [ unsigned_pkg_path ]
+  } else {
     outputs = [ signed_pkg_path ]
   }
 }
@@ -613,7 +574,7 @@ action("notarize_dmg_pkg") {
   deps = [
     ":copy_notarize_script",
     ":create_dmg",
-    ":sign_pkg",
+    ":create_pkg",
   ]
 }
 
@@ -646,7 +607,7 @@ copy("copy_dmg_pkg") {
     ]
     deps = [
       ":create_dmg",
-      ":sign_pkg",
+      ":create_pkg",
     ]
   }
 
