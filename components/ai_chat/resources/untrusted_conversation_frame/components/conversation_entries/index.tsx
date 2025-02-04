@@ -95,8 +95,7 @@ function ConversationEntries() {
           const lastEditedTime = latestTurn.createdTime
 
           const turnContainer = classnames({
-            [styles.turnContainerMobile]: conversationContext.isMobile,
-            [styles.turnContainerHighlight]: isHuman && activeMenuId === id
+            [styles.turnContainerMobile]: conversationContext.isMobile
           })
 
           const turnClass = classnames({
