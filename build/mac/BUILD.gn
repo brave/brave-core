@@ -30,11 +30,6 @@ if (is_release_channel) {
   signed_app_path = "$signed_output_dir/stable/$brave_exe"
 }
 
-
-if (!skip_signing) {
-signed_dmg_path = "$signed_output_dir/$brave_dmg"
-}
-
 app_path = signed_app_path
 if (skip_signing) {
   app_path = unsigned_app_path
