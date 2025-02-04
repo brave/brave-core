@@ -23,10 +23,6 @@ if (is_universal_binary) {
   unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
 }
 
-if (skip_signing) {
-unsigned_dmg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg"
-}
-
 signed_output_dir = "$root_out_dir/$mac_signed_output_prefix"
 
 signed_app_path = "$signed_output_dir/$brave_channel/$brave_exe"
@@ -448,20 +444,18 @@ copy("ds_store") {
   outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
 }
 
-copy("create_dmg") {
-  deps = [ ":_create_dmg_pkg" ]
-  sources = [ _upstream_signed_dmg_path ]
-  if (skip_signing) {
-    outputs = [ unsigned_dmg_path ]
-  } else {
-    outputs = [ signed_dmg_path ]
+if (skip_signing) {
+  copy("unsigned_dmg") {
+    deps = [ ":_create_dmg_pkg" ]
+    sources = [ _upstream_signed_dmg_path ]
+    outputs = [ "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg" ]
   }
 }
 
 group("finalize_dmg_pkg") {
   deps = []
   if (skip_signing) {
-    deps += [ ":create_dmg" ]
+    deps += [ ":unsigned_dmg" ]
   } else {
     if (mac_installer_signing_identifier == "") {
       deps += [ ":sign_app" ]
