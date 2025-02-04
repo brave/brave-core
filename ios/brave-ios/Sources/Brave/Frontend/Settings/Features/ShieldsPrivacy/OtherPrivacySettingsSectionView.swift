@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveShields
 import BraveUI
 import Data
 import Growth
@@ -19,6 +20,11 @@ struct OtherPrivacySettingsSectionView: View {
 
   var body: some View {
     Section {
+      OptionToggleView(
+        title: Strings.Shields.enableGPCLabel,
+        subtitle: Strings.Shields.enableGPCDescription,
+        option: ShieldPreferences.enableGPC
+      )
       OptionToggleView(
         title: Strings.privateBrowsingOnly,
         subtitle: nil,

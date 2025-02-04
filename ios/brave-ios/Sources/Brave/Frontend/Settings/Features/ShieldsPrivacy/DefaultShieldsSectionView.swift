@@ -142,12 +142,6 @@ struct DefaultShieldsSectionView: View {
         option: Preferences.Shields.fingerprintingProtection
       )
 
-      OptionToggleView(
-        title: Strings.Shields.enableGPCLabel,
-        subtitle: Strings.Shields.enableGPCDescription,
-        option: ShieldPreferences.enableGPC
-      )
-
       ToggleView(
         title: Strings.blockCookieConsentNotices,
         subtitle: nil,
