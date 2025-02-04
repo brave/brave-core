@@ -649,9 +649,10 @@ extension BrowserViewController {
         return .updateAction(actionCopy)
       },
     ]
-    if BraveCore.FeatureList.kBraveShredFeature.enabled, let tabURL = tabManager.selectedTab?.url {
+    if BraveCore.FeatureList.kBraveShredFeature.enabled {
+      let isShredAvailable = tabManager.selectedTab?.url?.isShredAvailable ?? false
       actions.append(
-        .init(id: .shredData, attributes: tabURL.isShredAvailable ? [] : [.disabled]) {
+        .init(id: .shredData, attributes: isShredAvailable ? [] : [.disabled]) {
           @MainActor [unowned self] _ in
           self.dismiss(animated: true) {
             guard let tab = self.tabManager.selectedTab, let url = tab.url else { return }
