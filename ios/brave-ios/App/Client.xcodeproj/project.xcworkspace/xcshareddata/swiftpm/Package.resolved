@@ -1,4 +1,5 @@
 {
+  "originHash" : "805c02fe8d6bf5a5f2715cb4269e865e24a7d8887a57843f53f2c2765578ff4e",
   "pins" : [
     {
       "identity" : "feedkit",
@@ -156,7 +157,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jitsi/webrtc",
       "state" : {
-        "revision" : "7c9f8e712da4d399f85f0a9bfec17f0a68ceb1fd"
+        "branch" : "M124",
+        "revision" : "e7fccf32f8833bbe66b9ffdb73e5990af0809840"
       }
     },
     {
@@ -169,5 +171,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
