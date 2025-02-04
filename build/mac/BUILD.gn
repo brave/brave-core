@@ -25,7 +25,6 @@ if (is_universal_binary) {
 
 if (skip_signing) {
 unsigned_dmg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg"
-unsigned_pkg_path = "$root_out_dir/$mac_unsigned_output_prefix/$brave_pkg"
 }
 
 signed_output_dir = "$root_out_dir/$mac_signed_output_prefix"
@@ -38,18 +37,11 @@ if (is_release_channel) {
 
 if (!skip_signing) {
 signed_dmg_path = "$signed_output_dir/$brave_dmg"
-signed_pkg_path = "$signed_output_dir/$brave_pkg"
 }
 
 app_path = signed_app_path
 if (skip_signing) {
   app_path = unsigned_app_path
-}
-
-
-if (notarize) {
-notarized_dmg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_dmg"
-notarized_pkg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_pkg"
 }
 
 target_dmg_path = "$root_out_dir/$brave_dmg"
@@ -466,16 +458,6 @@ copy("create_dmg") {
   }
 }
 
-copy("create_pkg") {
-  deps = [ ":_create_dmg_pkg" ]
-  sources = [ _upstream_signed_pkg_path ]
-  if (skip_signing) {
-    outputs = [ unsigned_pkg_path ]
-  } else {
-    outputs = [ signed_pkg_path ]
-  }
-}
-
 group("finalize_dmg_pkg") {
   deps = []
   if (skip_signing) {
@@ -506,48 +488,16 @@ group("finalize_dmg_pkg") {
   }
 }
 
-if (!skip_signing && notarize) {
-
-copy("notarize_dmg") {
-  sources = [ _upstream_signed_dmg_path ]
-  outputs = [ notarized_dmg_path ]
-  deps = [ ":_create_dmg_pkg" ]
-}
-
-copy("notarize_pkg") {
-  sources = [ _upstream_signed_pkg_path ]
-  outputs = [ notarized_pkg_path ]
-  deps = [ ":_create_dmg_pkg" ]
-}
-
-}
-
 copy("copy_dmg") {
-  if (notarize) {
-    sources = [ notarized_dmg_path ]
-    deps = [ ":notarize_dmg" ]
-  } else if (skip_signing) {
-    sources = [ unsigned_dmg_path ]
-    deps = [ ":create_dmg" ]
-  } else {
-    sources = [ signed_dmg_path ]
-    deps = [ ":create_dmg" ]
-  }
-  outputs = [ "$root_out_dir/{{source_file_part}}" ]
+  sources = [ _upstream_signed_dmg_path ]
+  deps = [ ":_create_dmg_pkg" ]
+  outputs = [ target_dmg_path ]
 }
 
 copy("copy_pkg") {
-  if (notarize) {
-    sources = [ notarized_pkg_path ]
-    deps = [ ":notarize_pkg" ]
-  } else if (skip_signing) {
-    sources = [ unsigned_pkg_path ]
-    deps = [ ":create_pkg" ]
-  } else {
-    sources = [ signed_pkg_path ]
-    deps = [ ":create_pkg" ]
-  }
-  outputs = [ "$root_out_dir/{{source_file_part}}" ]
+  sources = [ _upstream_signed_pkg_path ]
+  deps = [ ":_create_dmg_pkg" ]
+  outputs = [ "$root_out_dir/$brave_pkg" ]
 }
 
 crx3("crx") {
