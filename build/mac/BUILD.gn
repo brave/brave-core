@@ -513,69 +513,18 @@ group("finalize_dmg_pkg") {
   }
 }
 
-copy("copy_notarize_script") {
-  sources = [ "notarize_dmg_pkg.py" ]
-
-  outputs = [ "$packaging_dir/{{source_file_part}}" ]
-}
-
 if (!skip_signing && notarize) {
 
-action("notarize_dmg_pkg") {
-  script = "$packaging_dir/notarize_dmg_pkg.py"
+copy("notarize_dmg") {
+  sources = [ _upstream_signed_dmg_path ]
+  outputs = [ notarized_dmg_path ]
+  deps = [ ":_create_dmg_pkg" ]
+}
 
-  if (is_official_build) {
-    development_arg = ""
-  } else {
-    development_arg = "--development"
-  }
-
-  args = [
-    "--identity",
-    mac_signing_identifier,
-    string_join("=",
-                [
-                  "--notary-arg",
-                  "--apple-id",
-                  notary_user,
-                ]),
-    "--notary-arg=--password",
-    "--notary-arg",
-    notary_password,
-    "--notary-arg=--team-id",
-    "--notary-arg",
-    chrome_mac_team_id,
-    development_arg,
-    "--dmg",
-    rebase_path(signed_dmg_path),
-    "--pkg",
-    rebase_path(signed_pkg_path),
-    "--signed",
-    rebase_path(signed_output_dir),
-    "--outdir",
-    rebase_path("$root_out_dir/$mac_notarized_output_prefix"),
-    "--pkgdir",
-    rebase_path(packaging_dir),
-    "--mac_provisioning_profile",
-    rebase_path(provisioning_profile),
-  ]
-
-  inputs = [
-    script,
-    signed_dmg_path,
-    signed_pkg_path,
-  ]
-
-  outputs = [
-    notarized_dmg_path,
-    notarized_pkg_path,
-  ]
-
-  deps = [
-    ":copy_notarize_script",
-    ":create_dmg",
-    ":create_pkg",
-  ]
+copy("notarize_pkg") {
+  sources = [ _upstream_signed_pkg_path ]
+  outputs = [ notarized_pkg_path ]
+  deps = [ ":_create_dmg_pkg" ]
 }
 
 }
@@ -587,7 +536,8 @@ copy("copy_dmg_pkg") {
       notarized_pkg_path,
     ]
     deps = [
-      ":notarize_dmg_pkg",
+      ":notarize_dmg",
+      ":notarize_pkg",
     ]
   } else if (skip_signing) {
     sources = [
