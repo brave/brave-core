@@ -15,9 +15,12 @@ import { getLocale } from '$web-common/locale'
 // Styles
 import styles from './style.module.scss'
 
-type Props = Pick<ConversationContext, 'uploadImage'>
+type Props = Pick<ConversationContext, 'uploadImage' | 'conversationHistory'>
 
 export default function AttachmentButtonMenu(props: Props) {
+  const isMenuDisabled = props.conversationHistory.some(
+    (turn) => turn.uploadedImages
+  )
   return (
     <>
       <ButtonMenu>
@@ -26,6 +29,7 @@ export default function AttachmentButtonMenu(props: Props) {
             fab
             kind='plain-faint'
             title={getLocale('attachmentMenuButtonLabel')}
+            isDisabled={isMenuDisabled}
           >
             <Icon name='attachment' />
           </Button>
@@ -39,7 +43,7 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale('uploadFileButtonLabel')}
           </div>
         </leo-menu-item>
-        <leo-menu-item
+        {/* <leo-menu-item
           // Needs onClick method
           onClick={() => {}}
         >
@@ -62,7 +66,7 @@ export default function AttachmentButtonMenu(props: Props) {
             />
             {getLocale('currentTabContentsButtonLabel')}
           </div>
-        </leo-menu-item>
+        </leo-menu-item> */}
       </ButtonMenu>
     </>
   )
