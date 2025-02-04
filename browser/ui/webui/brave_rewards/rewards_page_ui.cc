@@ -16,7 +16,7 @@
 #include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/android/rewards/rewards_page_helper.h"
+#include "brave/browser/ui/android/brave_rewards/rewards_page_activity_helper.h"
 #endif
 
 using brave_adaptive_captcha::BraveAdaptiveCaptchaServiceFactory;
@@ -34,7 +34,9 @@ class AndroidBubbleDelegate : public RewardsPageHandler::BubbleDelegate {
 
   void ShowUI() override {}
 
-  void OpenTab(const std::string& url) override { brave_rewards::OpenURL(url); }
+  void OpenTab(const std::string& url) override {
+    brave_rewards::OpenURLForRewardsPageActivity(url);
+  }
 
   std::string GetPublisherIdForActiveTab() override { return ""; }
 };

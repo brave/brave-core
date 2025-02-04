@@ -119,7 +119,7 @@ public class RewardsPageActivity extends CustomTabActivity {
     }
 
     @CalledByNative
-    private static void openURL(String url) {
+    private static void openURLForRewardsPageActivity(String url) {
         TabUtils.openURLWithBraveActivity(url);
     }
 
