@@ -261,16 +261,6 @@ action("generate_eddsa_sig_for_delta") {
   deps = [ ":build_delta_installer" ]
 }
 
-group("finalize_app") {
-  public_deps = [ "//chrome/installer/mac" ]
-
-  if (skip_signing) {
-    public_deps += [ ":universalize" ]
-  } else {
-    public_deps += [ ":sign_app" ]
-  }
-}
-
 if (is_official_build) {
   if (is_release_channel) {
     _channel_nonempty = "release"
