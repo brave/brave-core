@@ -385,13 +385,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   // This forces `caretRect(for position: UITextPosition)` to be called which will decide if we should show the cursor
   // This exists because ` caretRect(for position: UITextPosition)` is not called after we apply an autocompletion.
   private func resetCursor() {
-    guard let text = self.text,
-      let endPosition = self.position(from: self.beginningOfDocument, offset: text.count)
-    else {
-      return
-    }
-
-    if self.selectedTextRange?.start != endPosition {
+    if self.selectedTextRange?.start != self.endOfDocument {
       self.forceResetCursor()
     }
   }
