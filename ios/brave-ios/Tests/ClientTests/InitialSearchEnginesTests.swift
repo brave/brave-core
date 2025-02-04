@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Preferences
 import XCTest
 
 @testable import Brave
@@ -10,6 +11,11 @@ import XCTest
 private typealias SE = InitialSearchEngines
 
 class InitialSearchEnginesTests: XCTestCase {
+
+  override class func setUp() {
+    super.setUp()
+    Preferences.Search.shouldExcludeYahooJPSearchEngine.reset()
+  }
 
   func testDefaultValues() throws {
     let unknownLocaleSE = SE(locale: Locale(identifier: "xx_XX"))
@@ -114,8 +120,9 @@ class InitialSearchEnginesTests: XCTestCase {
     XCTAssertEqual(
       availableEngines,
       [
-        .google,
+        .yahoojp,
         .braveSearch,
+        .google,
         .bing,
         .duckduckgo,
         .qwant,
@@ -127,6 +134,7 @@ class InitialSearchEnginesTests: XCTestCase {
     XCTAssertEqual(
       onboardingEngines,
       [
+        .yahoojp,
         .google,
         .bing,
         .duckduckgo,
@@ -135,8 +143,8 @@ class InitialSearchEnginesTests: XCTestCase {
       ]
     )
 
-    XCTAssertEqual(localeSE.defaultSearchEngine, .google)
-    XCTAssertNil(localeSE.priorityEngine)
+    XCTAssertEqual(localeSE.defaultSearchEngine, .yahoojp)
+    XCTAssertEqual(localeSE.priorityEngine, .yahoojp)
   }
 
   func testEnGB() throws {

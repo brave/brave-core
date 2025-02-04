@@ -417,6 +417,13 @@ public class SearchEngines {
     })
     .asyncFilter({ await AsyncFileManager.default.fileExists(atPath: $0.path) })
     .asyncCompactMap({ await parser.parse($0.path, engineID: $0.name, referenceURL: $0.reference) })
+    .filter {
+      if Preferences.Search.shouldExcludeYahooJPSearchEngine.value {
+        return $0.shortName != OpenSearchEngine.EngineNames.yahooJP
+      } else {
+        return true
+      }
+    }
   }
 
   /// Get all known search engines, possibly as ordered by the user.
@@ -472,6 +479,7 @@ public class SearchEngines {
     case braveSearch = 8
     case naver = 9
     case daum = 10
+    case yahoojp = 11
 
     init(engine: OpenSearchEngine) {
       guard
@@ -493,6 +501,7 @@ public class SearchEngines {
       case .braveSearch: self = .braveSearch
       case .naver: self = .naver
       case .daum: self = .daum
+      case .yahoojp: self = .yahoojp
       }
     }
   }

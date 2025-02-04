@@ -4,13 +4,24 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Preferences
 
 /// This is a list of search engines available to the user at first launch.
 /// For user controlled search engines class look for `SearchEngines.swift`
 class InitialSearchEngines {
   /// Type of search engine available to the user.
   enum SearchEngineID: String, CaseIterable {
-    case google, braveSearch, bing, duckduckgo, yandex, qwant, startpage, ecosia, naver, daum
+    case google
+    case braveSearch
+    case bing
+    case duckduckgo
+    case yandex
+    case qwant
+    case startpage
+    case ecosia
+    case naver
+    case daum
+    case yahoojp
 
     /// Open Search Reference  for default search Engines
     var openSearchReference: String {
@@ -25,6 +36,7 @@ class InitialSearchEngines {
       case .ecosia: return "ecosia.org/opensearch"
       case .naver: return "naver.com"
       case .daum: return "search.daum.net/OpenSearch"
+      case .yahoojp: return "search.yahoo.co.jp/search"
       }
     }
 
@@ -93,6 +105,8 @@ class InitialSearchEngines {
   ]
   let naverDefaultRegions = ["KR"]
   let daumEnabledRegions = ["KR"]
+  let yahooJapanEnabledRegions = ["JP"]
+  let yahooJapanDefaultRegions = ["JP"]
 
   /// Sets what should be the default search engine for given locale.
   /// If the engine does not exist in `engines` list, it is added to it.
@@ -176,10 +190,28 @@ class InitialSearchEngines {
     if daumEnabledRegions.contains(region) {
       replaceOrInsert(engineId: .daum, customId: nil)
     }
+
+    if !Preferences.Search.shouldExcludeYahooJPSearchEngine.value {
+      // This means it is new install, we want to execute the below logic to add Yahoo!
+      // for Japan region
+      if yahooJapanEnabledRegions.contains(region) {
+        replaceOrInsert(engineId: .yahoojp, customId: nil)
+      }
+
+      if yahooJapanDefaultRegions.contains(region) {
+        defaultSearchEngine = .yahoojp
+      }
+    }
   }
 
   private func priorityOverrides() {
-    // No priority engines are live at the moment.
+    guard let region = locale.region?.identifier else { return }
+
+    if !Preferences.Search.shouldExcludeYahooJPSearchEngine.value
+      && yahooJapanEnabledRegions.contains(region)
+    {
+      priorityEngine = .yahoojp
+    }
   }
 
   // MARK: - Helpers

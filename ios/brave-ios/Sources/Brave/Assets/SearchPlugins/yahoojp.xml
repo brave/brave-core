@@ -1,0 +1,19 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/">
+<ShortName>Yahoo! Japan</ShortName>
+<InputEncoding>UTF-8</InputEncoding>
+<Image width="64" height="64">data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAO+SURBVHgB7ZldUtswEMdXJu1LpzPcAHOCEqAzfatzgpITFG6QngA4AXCChhMAJ4gfO9PS0hNUN2hmylMJEX9Zdj4cWfGHYMiwvxnboO9drVYrhYhhGIZhGIZhGIZhGOaFIfIJinZ/4b1FXhFfBP04pWdIsJikQvLLEM8NPVNai0n3m0iGBYxD6AcPvcMTlrAKiTLHqINvS+oEQd8kPTGKPoRV+hVlCyraConWBpQoo7C5Dkw9ptJt7uzhvU6NGceCbqQWnujuDxJitHuF8SL9u9P6SitAkyoBPoKKBi1hQW0MZkil2tvp4/OZmiGzPuG/emj1ZDFfXOJ7ZZucgCqgtYwqHTLr2kYIBZ1QeTAwEeOp4yOGad2DqcLVJ7KOSWnFDKDwQT6zkgVkKNreR9WvjhLw+j8re31F71PfQxeWbC3kOUpBWa/j/DqHdcIq1/6Sk6CdXxKVLCADwvXxPnaUODTrsWq7yeA2LFmX2jkLuu7pvu1OLtgjN32bP6ilAA3W0xElM2IFs3F3YWalPDBR7Q9mLWdoYojr7nK/Ij668++tE1ZbAWmjWFuFezzMuXVIJUmF788kSbTfqRBAOSxAHBv/ZcmhhpTYGfYxg+fuNrahKHE0TdHObdQtv5vsRtrJFWRL9L9ZVLehBWQ7g+g6ipy6/AGEP5kXns4w652ywqetOGZfOXyVBwuYdEO7R3gXmbzMxwdGKaOL+QhTm2riWyr2vaODn3AxR9ygvbarbmMLmHRlBh4XZIez/iCN2AYzwkMxwUE94RPrCu25oy4toUVeue+m/iBczFM9zBQcZvDbCD/xGUPj7K5rHpj+RwWG3C9yfLN4WwIZSxxStgQy4aVWGgZaU/jE/HVfUS5ZGqUuV4C3JZCRxttnBdnrND/zDYVP4oxoMUeclxFe410BSfeI2GjpHYAOl+sLb1iLLImyii95FAUYxJUzNwmnG2M5/Li3vTyPqIAnIZr/V8RVFbuyCjDONr/bjA6oIitsAcmxWc4k9Ms6vllWVgHmWKxj/EBHemdFp71leA6Enp70jN+jmqycBaRr3xuPaAFqgzyTnSEQ/emIErdEhK32LTx/XOHkOI/XUFhRhMjsFgccpS839t2l9ZXaWA98aH5LSNLw9xtZJJD9LnL5ic9FYwvAbGBAKsJAIPy/Cldg+ugsJq1Mv7f61jm21xGW4/a4KOwuhY8lEGJgIXlDFMy+vjFWw6myEmTTiNKDAl5Zgw/fP4ul3r5truCCCI9eZg3PEgzDMAzDMAzDMAzDMC+QB5j9NHrnzAVfAAAAAElFTkSuQmCC</Image>
+<Url type="application/x-suggestions+json" method="GET" template="https://search.yahooapis.jp/AssistSearchService/V2/webassistSearch">
+  <Param name="p" value="{searchTerms}"/>
+  <Param name="eappid" value="A-2JmmcAADvtfirfSVSls_HcbYKv7qcd7598OZZlJYMZDr5BS39URvHWZJRPPPI-bOKX3URKTJoCTzLvipopXHaDHmXo_dBxY_I_MOqSjJ7m3CbMA-cioeFr-dCYYg0oSsNuxaixA2cFOUXgWH2Uem0iIF2UOUgBouMcMSNiNblVDLvEujdXq_MBaZ7mgp7uZG5Ri2u0cZIpfF6Mqg5M5qA~1"/>
+</Url>
+<Url type="text/html" method="GET" template="https://search.yahoo.co.jp/search/">
+  <Param name="p" value="{searchTerms}"/>
+  <Param name="ei" value="UTF-8"/>
+  <Param name="fr" value="brave-mobile_ext"/>
+</Url>
+<SearchForm>https://www.yahoo.co.jp/</SearchForm>
+</SearchPlugin>
