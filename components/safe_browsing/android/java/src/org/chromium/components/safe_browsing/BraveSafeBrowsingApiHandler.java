@@ -162,15 +162,17 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                 if (isDebuggable()) {
                                     Log.d(TAG, error);
                                 }
-                                mBraveSafeBrowsingApiHandlerDelegate.maybeShowSafeBrowsingError(
-                                        error);
-                                if (apiException.getStatusCode()
-                                        == CommonStatusCodes.API_NOT_CONNECTED) {
-                                    // That means that device doesn't have Google Play Services API.
-                                    // Delegate is used to turn off safe browsing option as every
-                                    // request is
-                                    // delayed when it's turned on and not working
-                                    mBraveSafeBrowsingApiHandlerDelegate.turnSafeBrowsingOff();
+                                if (mBraveSafeBrowsingApiHandlerDelegate != null) {
+                                    mBraveSafeBrowsingApiHandlerDelegate.maybeShowSafeBrowsingError(
+                                            error);
+                                    if (apiException.getStatusCode()
+                                            == CommonStatusCodes.API_NOT_CONNECTED) {
+                                        // That means that device doesn't have Google Play Services
+                                        // API. Delegate is used to turn off safe browsing option as
+                                        // every request is delayed when it's turned on and not
+                                        // working
+                                        mBraveSafeBrowsingApiHandlerDelegate.turnSafeBrowsingOff();
+                                    }
                                 }
 
                                 // Note: If the status code, apiException.getStatusCode(),
@@ -199,8 +201,10 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
                                 if (isDebuggable()) {
                                     Log.d(TAG, error);
                                 }
-                                mBraveSafeBrowsingApiHandlerDelegate.maybeShowSafeBrowsingError(
-                                        error);
+                                if (mBraveSafeBrowsingApiHandlerDelegate != null) {
+                                    mBraveSafeBrowsingApiHandlerDelegate.maybeShowSafeBrowsingError(
+                                            error);
+                                }
                                 mObserver.onUrlCheckDone(
                                         callbackId,
                                         LookupResult.FAILURE_API_CALL_TIMEOUT,
