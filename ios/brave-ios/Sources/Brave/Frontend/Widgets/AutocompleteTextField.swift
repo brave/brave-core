@@ -265,7 +265,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     if let l = autocompleteTextLabel {
       addSubview(l)
       hideCursor = true
-      forceResetCursor()
+      resetCursor()
     }
   }
 
@@ -384,9 +384,21 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   // Reset the cursor to the end of the text field.
   // This forces `caretRect(for position: UITextPosition)` to be called which will decide if we should show the cursor
   // This exists because ` caretRect(for position: UITextPosition)` is not called after we apply an autocompletion.
+  private func resetCursor() {
+    guard let text = self.text,
+      let endPosition = self.position(from: self.beginningOfDocument, offset: text.count)
+    else {
+      return
+    }
+
+    if self.selectedTextRange?.start != endPosition {
+      self.forceResetCursor()
+    }
+  }
+
   private func forceResetCursor() {
-    selectedTextRange = nil
-    selectedTextRange = textRange(from: endOfDocument, to: endOfDocument)
+    self.selectedTextRange = nil
+    self.selectedTextRange = self.textRange(from: self.endOfDocument, to: self.endOfDocument)
   }
 
   override public func deleteBackward() {
