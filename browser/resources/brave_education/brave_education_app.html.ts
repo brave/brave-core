@@ -10,6 +10,6 @@ import type {BraveEducationAppElement} from './brave_education_app.js';
 export function getHtml(this: BraveEducationAppElement) {
   return this.url_ ?
       html`<iframe id="content" src="${
-          this.url_}" sandbox="allow-scripts allow-same-origin"></iframe>` :
+          this.url_}" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>` :
       '';
 }
