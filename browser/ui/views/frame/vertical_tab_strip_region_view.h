@@ -133,6 +133,8 @@ class VerticalTabStripRegionView : public views::View,
                            OriginalTabSearchButton);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           LayoutAfterFirstTabCreation);
 
   FullscreenController* GetFullscreenController() const;
   bool IsTabFullscreen() const;
