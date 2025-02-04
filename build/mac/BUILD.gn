@@ -37,6 +37,10 @@ if (skip_signing) {
 
 target_dmg_path = "$root_out_dir/$brave_dmg"
 
+_upstream_signed_basename = "$signed_output_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
+_upstream_signed_dmg_path = "$_upstream_signed_basename.dmg"
+_upstream_signed_pkg_path = "$_upstream_signed_basename.pkg"
+
 if (is_universal_binary) {
   action("universalize") {
     script = "//chrome/installer/mac/universalizer.py"
@@ -116,7 +120,7 @@ action("generate_dsa_sig_for_dmg") {
     "--sign-key-file",
     "$sparkle_dsa_private_key_file",
     "--target",
-    rebase_path("$target_dmg_path"),
+    rebase_path(_upstream_signed_dmg_path),
     "--output",
     rebase_path("$output_dmg_dsa_path"),
     "--dsa",
@@ -125,12 +129,12 @@ action("generate_dsa_sig_for_dmg") {
   inputs = [
     script,
     "$sign_update_path",
-    "$target_dmg_path",
+    _upstream_signed_dmg_path,
   ]
 
   outputs = [ "$output_dmg_dsa_path" ]
 
-  deps = [ ":copy_dmg" ]
+  deps = [ ":_create_dmg_pkg" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
@@ -154,7 +158,7 @@ action("generate_eddsa_sig_for_dmg") {
     "--sign-key",
     "$sparkle_eddsa_private_key",
     "--target",
-    rebase_path("$target_dmg_path"),
+    rebase_path(_upstream_signed_dmg_path),
     "--output",
     rebase_path("$output_dmg_eddsa_path"),
     "--eddsa",
@@ -163,12 +167,12 @@ action("generate_eddsa_sig_for_dmg") {
   inputs = [
     script,
     "$sign_update_path",
-    "$target_dmg_path",
+    _upstream_signed_dmg_path,
   ]
 
   outputs = [ "$output_dmg_eddsa_path" ]
 
-  deps = [ ":copy_dmg" ]
+  deps = [ ":_create_dmg_pkg" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
@@ -194,7 +198,7 @@ action("build_delta_installer") {
     "--old-dmg",
     rebase_path("$root_out_dir/$last_chrome_installer"),
     "--new-dmg",
-    rebase_path("$target_dmg_path"),
+    rebase_path(_upstream_signed_dmg_path),
     "--delta-output",
     rebase_path("$output_delta_path"),
   ]
@@ -202,12 +206,12 @@ action("build_delta_installer") {
   inputs = [
     script,
     "$binary_delta_path",
-    "$target_dmg_path",
+    _upstream_signed_dmg_path,
   ]
 
   outputs = [ "$output_delta_path" ]
 
-  deps = [ ":copy_dmg" ]
+  deps = [ ":_create_dmg_pkg" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
@@ -349,10 +353,6 @@ if (install_omaha4_with_pkg) {
     outputs = [ postinstall_script ]
   }
 }
-
-_upstream_signed_basename = "$signed_output_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
-_upstream_signed_dmg_path = "$_upstream_signed_basename.dmg"
-_upstream_signed_pkg_path = "$_upstream_signed_basename.pkg"
 
 action("_create_dmg_pkg") {
   deps = [
