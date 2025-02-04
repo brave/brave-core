@@ -78,6 +78,7 @@ class SplitView : public views::View,
   void UpdateSecondaryDevtoolsLayoutAndVisibility();
 
   void UpdateSecondaryReaderModeToolbar();
+  gfx::Point GetSplitViewLocationBarOffset() const;
 
   const ContentsWebView* secondary_contents_web_view() const {
     return secondary_contents_web_view_;
