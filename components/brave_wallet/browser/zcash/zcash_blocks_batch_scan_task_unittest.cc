@@ -148,8 +148,7 @@ class ZCashBlocksBatchScanTest : public testing::Test {
               mojom::AccountKind::kDerived, 0);
           OrchardBlockScanner::Result result = CreateResultForTesting(
               std::move(tree_state), std::vector<OrchardCommitment>(),
-              blocks[blocks.size() - 1]->height,
-              ToHex(blocks[blocks.size() - 1]->hash));
+              blocks.back()->height, ToHex(blocks.back()->hash));
           for (const auto& block : blocks) {
             if (block->height == kNu5BlockUpdate + 105) {
               result.discovered_notes.push_back(
@@ -204,8 +203,7 @@ TEST_F(ZCashBlocksBatchScanTest, SingleBlockDecoded) {
                                 OrchardBlockScanner::ErrorCode>)> callback) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(tree_state), std::vector<OrchardCommitment>(),
-                blocks[blocks.size() - 1]->height,
-                ToHex(blocks[blocks.size() - 1]->hash));
+                blocks.back()->height, ToHex(blocks.back()->hash));
             for (const auto& block : blocks) {
               decoded_blocks->push_back(block->height);
             }
@@ -225,8 +223,7 @@ TEST_F(ZCashBlocksBatchScanTest, SingleBlockDecoded) {
           });
 
   auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kNu5BlockUpdate + 1, kNu5BlockUpdate + 1},
-      callback.Get());
+      context, *block_scanner, {kNu5BlockUpdate + 1, 1}, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -245,8 +242,7 @@ TEST_F(ZCashBlocksBatchScanTest, AllBlocksDecoded) {
                                 OrchardBlockScanner::ErrorCode>)> callback) {
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(tree_state), std::vector<OrchardCommitment>(),
-                blocks[blocks.size() - 1]->height,
-                ToHex(blocks[blocks.size() - 1]->hash));
+                blocks.back()->height, ToHex(blocks.back()->hash));
             for (const auto& block : blocks) {
               decoded_blocks->push_back(block->height);
             }
@@ -269,8 +265,7 @@ TEST_F(ZCashBlocksBatchScanTest, AllBlocksDecoded) {
           });
 
   auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kNu5BlockUpdate + 1, kNu5BlockUpdate + 400},
-      callback.Get());
+      context, *block_scanner, {kNu5BlockUpdate + 1, 400}, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -284,8 +279,7 @@ TEST_F(ZCashBlocksBatchScanTest, Scan) {
       callback;
 
   auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kNu5BlockUpdate + 1, kNu5BlockUpdate + 500},
-      callback.Get());
+      context, *block_scanner, {kNu5BlockUpdate + 1, 500}, callback.Get());
 
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
@@ -310,8 +304,7 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialScan) {
       callback;
 
   auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kNu5BlockUpdate + 1, kNu5BlockUpdate + 700},
-      callback.Get());
+      context, *block_scanner, {kNu5BlockUpdate + 1, 700}, callback.Get());
 
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
@@ -340,8 +333,7 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialDecoding) {
                 mojom::AccountKind::kDerived, 0);
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(tree_state), std::vector<OrchardCommitment>(),
-                blocks[blocks.size() - 1]->height,
-                ToHex(blocks[blocks.size() - 1]->hash));
+                blocks.back()->height, ToHex(blocks.back()->hash));
             for (const auto& block : blocks) {
               if (block->height == kNu5BlockUpdate + 105) {
                 result.discovered_notes.push_back(
@@ -366,8 +358,7 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialDecoding) {
   base::MockCallback<ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTaskCallback>
       callback;
   auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kNu5BlockUpdate + 1, kNu5BlockUpdate + 400},
-      callback.Get());
+      context, *block_scanner, {kNu5BlockUpdate + 1, 400}, callback.Get());
   EXPECT_CALL(callback, Run(testing::_))
       .Times(1)
       .WillOnce(
@@ -400,8 +391,7 @@ TEST_F(ZCashBlocksBatchScanTest, NetworkError_Blocks) {
           });
 
   auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kNu5BlockUpdate + 1, kNu5BlockUpdate + 200},
-      callback.Get());
+      context, *block_scanner, {kNu5BlockUpdate + 1, 200}, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();
@@ -428,8 +418,7 @@ TEST_F(ZCashBlocksBatchScanTest, NetworkError_TreeState) {
           });
 
   auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kNu5BlockUpdate + 1, kNu5BlockUpdate + 200},
-      callback.Get());
+      context, *block_scanner, {kNu5BlockUpdate + 1, 200}, callback.Get());
   task.Start();
   task_environment().RunUntilIdle();
 }
@@ -457,8 +446,7 @@ TEST_F(ZCashBlocksBatchScanTest, DecodingError) {
           });
 
   auto task = ZCashBlocksBatchScanTask(
-      context, *block_scanner, {kNu5BlockUpdate + 1, kNu5BlockUpdate + 200},
-      callback.Get());
+      context, *block_scanner, {kNu5BlockUpdate + 1, 200}, callback.Get());
   task.Start();
 
   task_environment().RunUntilIdle();

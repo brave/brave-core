@@ -379,6 +379,13 @@ TEST(OrchardBlockScannerTest, WrongInput) {
     auto result = scanner.ScanBlocks({}, std::move(blocks));
     EXPECT_FALSE(result.has_value());
   }
+
+  // Empty blocks list
+  {
+    std::vector<zcash::mojom::CompactBlockPtr> blocks;
+    auto result = scanner.ScanBlocks({}, std::move(blocks));
+    EXPECT_FALSE(result.has_value());
+  }
 }
 
 // Case when note is spent in the same scanning batch where it is was received

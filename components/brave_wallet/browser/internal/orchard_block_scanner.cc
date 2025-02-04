@@ -56,10 +56,14 @@ OrchardBlockScanner::ScanBlocks(
     return base::unexpected(ErrorCode::kDiscoveredNotesError);
   }
 
+  if (blocks.empty()) {
+    return base::unexpected(ErrorCode::kInputError);
+  }
+
   std::vector<OrchardNoteSpend> found_spends;
 
-  uint32_t latest_block_id = blocks[blocks.size() - 1]->height;
-  std::string latest_block_hash = ToHex(blocks[blocks.size() - 1]->hash);
+  uint32_t latest_block_id = blocks.back()->height;
+  std::string latest_block_hash = ToHex(blocks.back()->hash);
 
   for (const auto& block : blocks) {
     for (const auto& tx : block->vtx) {
@@ -81,7 +85,8 @@ OrchardBlockScanner::ScanBlocks(
   }
 
   return Result({std::move(found_notes.value()), std::move(found_spends),
-                 std::move(result), latest_block_id, latest_block_hash});
+                 std::move(result), latest_block_id,
+                 std::move(latest_block_hash)});
 }
 
 }  // namespace brave_wallet

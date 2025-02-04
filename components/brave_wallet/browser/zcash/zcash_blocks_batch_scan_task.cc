@@ -20,6 +20,9 @@ namespace {
 constexpr uint32_t kBlockDownloadBatchSize = 10u;
 }
 
+bool ZCashBlocksBatchScanTask::ScanRange::operator==(
+    const ScanRange& other) const = default;
+
 ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTask(
     ZCashActionContext& context,
     ZCashShieldSyncService::OrchardBlockScannerProxy& scanner,
@@ -30,7 +33,6 @@ ZCashBlocksBatchScanTask::ZCashBlocksBatchScanTask(
       scan_range_(scan_range),
       callback_(std::move(callback)) {
   CHECK_GT(scan_range_.from, kNu5BlockUpdate);
-  CHECK_GE(scan_range_.to, scan_range_.from);
   frontier_block_height_ = scan_range_.from - 1;
 }
 
@@ -71,9 +73,8 @@ void ZCashBlocksBatchScanTask::WorkOnTask() {
     return;
   }
 
-  if (!scan_result_ &&
-      (!downloaded_blocks_ ||
-       downloaded_blocks_->size() != (scan_range_.to - scan_range_.from + 1))) {
+  if (!scan_result_ && (!downloaded_blocks_ ||
+                        downloaded_blocks_->size() != scan_range_.count)) {
     DownloadBlocks();
     return;
   }
@@ -131,12 +132,12 @@ void ZCashBlocksBatchScanTask::OnGetFrontierBlock(
 }
 
 void ZCashBlocksBatchScanTask::DownloadBlocks() {
-  uint32_t start_index = downloaded_blocks_
-                             ? scan_range_.from + downloaded_blocks_->size()
-                             : scan_range_.from;
-  uint32_t end_index =
-      std::min(start_index + kBlockDownloadBatchSize - 1, scan_range_.to);
-  auto expected_size = end_index - start_index + 1;
+  uint32_t downloaded_blocks_count =
+      downloaded_blocks_ ? downloaded_blocks_->size() : 0;
+  uint32_t remaining_blocks = scan_range_.count - downloaded_blocks_count;
+  uint32_t expected_size = std::min(kBlockDownloadBatchSize, remaining_blocks);
+  uint32_t start_index = scan_range_.from + downloaded_blocks_count;
+  uint32_t end_index = start_index + expected_size - 1;
 
   context_->zcash_rpc->GetCompactBlocks(
       context_->chain_id, start_index, end_index,

@@ -22,11 +22,10 @@ class ZCashBlocksBatchScanTask {
       base::expected<void, ZCashShieldSyncService::Error>)>;
 
   struct ScanRange {
-    uint32_t from;
-    uint32_t to;
+    uint32_t from = 0;
+    uint32_t count = 0;
 
-    bool operator==(const ScanRange&) const;
-    bool operator<(const ScanRange& other) const;
+    bool operator==(const ScanRange& other) const;
   };
 
   ZCashBlocksBatchScanTask(

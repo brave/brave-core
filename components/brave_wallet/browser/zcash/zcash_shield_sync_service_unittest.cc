@@ -201,8 +201,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
 
           OrchardBlockScanner::Result result = CreateResultForTesting(
               std::move(tree_state), std::move(commitments),
-              blocks[blocks.size() - 1]->height,
-              ToHex(blocks[blocks.size() - 1]->hash));
+              blocks.back()->height, ToHex(blocks.back()->hash));
           result.discovered_notes = notes;
           result.found_spends = spends;
           std::move(callback).Run(std::move(result));
@@ -325,8 +324,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             orchard_tree_state.tree_size = blocks[0]->height - kAccountBirthday;
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(orchard_tree_state), std::move(commitments),
-                blocks[blocks.size() - 1]->height,
-                ToHex(blocks[blocks.size() - 1]->hash));
+                blocks.back()->height, ToHex(blocks.back()->hash));
             result.discovered_notes = notes;
             result.found_spends = spends;
             std::move(callback).Run(std::move(result));
@@ -391,8 +389,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
             orchard_tree_state.tree_size = blocks[0]->height - kAccountBirthday;
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(orchard_tree_state), std::move(commitments),
-                blocks[blocks.size() - 1]->height,
-                ToHex(blocks[blocks.size() - 1]->hash));
+                blocks.back()->height, ToHex(blocks.back()->hash));
             result.discovered_notes = notes;
             std::move(callback).Run(std::move(result));
           })));
@@ -439,8 +436,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
                 mojom::AccountKind::kDerived, 0);
             OrchardBlockScanner::Result result = CreateResultForTesting(
                 std::move(tree_state), std::vector<OrchardCommitment>(),
-                blocks[blocks.size() - 1]->height,
-                ToHex(blocks[blocks.size() - 1]->hash));
+                blocks.back()->height, ToHex(blocks.back()->hash));
             for (const auto& block : blocks) {
               // Add a new note on height 900
               if (block->height == kNu5BlockUpdate + 1005u) {

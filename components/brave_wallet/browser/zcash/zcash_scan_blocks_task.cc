@@ -17,12 +17,6 @@ constexpr uint32_t kBatchSize = 1024u;
 constexpr uint32_t kMaxPendingResultsToInserts = 10u;
 }  // namespace
 
-bool ZCashScanBlocksTask::ScanRange::operator==(const ScanRange&) const =
-    default;
-bool ZCashScanBlocksTask::ScanRange::operator<(const ScanRange& other) const {
-  return this->from < other.from && this->to < other.to;
-}
-
 ZCashScanBlocksTask::ZCashScanBlocksTask(
     ZCashActionContext& context,
     ZCashShieldSyncService::OrchardBlockScannerProxy& scanner,
@@ -110,10 +104,10 @@ void ZCashScanBlocksTask::PrepareScanRanges() {
   initial_ranges_count_ =
       std::ceil(static_cast<double>((to - from + 1)) / kBatchSize);
   pending_scan_ranges_ = std::deque<ScanRange>();
-  for (size_t i = 0; i < initial_ranges_count_.value(); i++) {
-    pending_scan_ranges_->push_back(ScanRange{
-        static_cast<uint32_t>(from + i * kBatchSize),
-        std::min(to, static_cast<uint32_t>(from + (i + 1) * kBatchSize - 1))});
+  for (uint32_t i = 0; i < initial_ranges_count_.value(); i++) {
+    uint32_t batch_from = from + i * kBatchSize;
+    uint32_t batch_count = std::min(kBatchSize, to - batch_from + 1);
+    pending_scan_ranges_->push_back(ScanRange{batch_from, batch_count});
   }
 
   NotifyObserver();
@@ -163,8 +157,8 @@ void ZCashScanBlocksTask::OnGetChainTip(
 }
 
 size_t ZCashScanBlocksTask::ReadyScanTasks() {
-  return base::ranges::count_if(scan_tasks_in_progress_,
-                                [](auto& task) { return task.finished(); });
+  return std::ranges::count_if(scan_tasks_in_progress_,
+                               [](auto& task) { return task.finished(); });
 }
 
 void ZCashScanBlocksTask::MaybeScanRanges() {

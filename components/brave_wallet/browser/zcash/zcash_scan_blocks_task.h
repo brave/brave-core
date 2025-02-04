@@ -16,7 +16,7 @@
 
 namespace brave_wallet {
 
-constexpr uint32_t kZCashMaxTasksInProgress = 4u;
+inline constexpr uint32_t kZCashMaxTasksInProgress = 4u;
 
 // ZCashScanBlocksTask scans blocks from the last scanned block to the provided
 // right border. Splits this range to subranges and uses a bunch of smaller
@@ -89,7 +89,7 @@ class ZCashScanBlocksTask {
   std::optional<ZCashShieldSyncService::Error> error_;
   std::optional<OrchardStorage::AccountMeta> account_meta_;
   std::optional<uint32_t> chain_tip_block_;
-  std::optional<size_t> initial_ranges_count_;
+  std::optional<uint32_t> initial_ranges_count_;
   std::optional<std::deque<ScanRange>> pending_scan_ranges_;
 
   std::deque<ZCashBlocksBatchScanTask> scan_tasks_in_progress_;
