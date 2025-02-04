@@ -294,7 +294,8 @@ void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
   GetElementPickerRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 
-v8::Local<v8::Promise> CosmeticFiltersJSHandler::ResetSiteCosmeticFilter(v8::Isolate* isolate) {
+v8::Local<v8::Promise> CosmeticFiltersJSHandler::ResetSiteCosmeticFilter(
+    v8::Isolate* isolate) {
   v8::MaybeLocal<v8::Promise::Resolver> resolver =
       v8::Promise::Resolver::New(isolate->GetCurrentContext());
 
@@ -305,10 +306,11 @@ v8::Local<v8::Promise> CosmeticFiltersJSHandler::ResetSiteCosmeticFilter(v8::Iso
     auto context_old = std::make_unique<v8::Global<v8::Context>>(
         isolate, isolate->GetCurrentContext());
 
-    GetElementPickerRemoteHandler()->ResetCosmeticFilterForCurrentHost(base::BindOnce(
-        &CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter,
-        weak_ptr_factory_.GetWeakPtr(), std::move(promise_resolver), isolate,
-        std::move(context_old)));
+    GetElementPickerRemoteHandler()->ResetCosmeticFilterForCurrentHost(
+        base::BindOnce(&CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter,
+                       weak_ptr_factory_.GetWeakPtr(),
+                       std::move(promise_resolver), isolate,
+                       std::move(context_old)));
 
     return resolver.ToLocalChecked()->GetPromise();
   }

@@ -10,8 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/string_tokenizer.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_tokenizer.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
