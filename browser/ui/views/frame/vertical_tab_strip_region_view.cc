@@ -436,7 +436,6 @@ class VerticalTabStripScrollContentsView : public views::View {
     // Prevent reentrance caused by container_->Layout()
     base::AutoReset<bool> in_preferred_size_change(&in_preferred_size_changed_,
                                                    true);
-    container_->set_layout_dirty({});
     container_->DeprecatedLayoutImmediately();
   }
 
@@ -913,13 +912,6 @@ gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
 }
 
 void VerticalTabStripRegionView::Layout(PassKey) {
-  if (!layout_dirty_ && last_size_ == size()) {
-    return;
-  }
-
-  layout_dirty_ = false;
-  last_size_ = size();
-
   // As we have to update ScrollView's viewport size and its contents size,
   // laying out children manually will be more handy.
   const auto contents_bounds = GetContentsBounds();
@@ -983,7 +975,6 @@ void VerticalTabStripRegionView::OnBrowserPanelsMoved() {
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
-  layout_dirty_ = true;
   if (tabs::utils::ShouldShowVerticalTabs(browser_) && !in_destruction) {
     if (!Contains(original_region_view_)) {
       original_parent_of_region_view_ = original_region_view_->parent();
@@ -1130,11 +1121,6 @@ void VerticalTabStripRegionView::OnBoundsChanged(
             BraveContentsViewUtil::GetRoundedCornersWebViewMargin(browser_));
   }
 #endif
-}
-
-void VerticalTabStripRegionView::PreferredSizeChanged() {
-  layout_dirty_ = true;
-  views::View::PreferredSizeChanged();
 }
 
 void VerticalTabStripRegionView::AddedToWidget() {
