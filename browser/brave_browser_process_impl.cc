@@ -186,6 +186,7 @@ void BraveBrowserProcessImpl::StartTearDown() {
     p3a_service_->StartTeardown();
   }
 #endif
+  brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
   BrowserProcessImpl::StartTearDown();
 }
 
