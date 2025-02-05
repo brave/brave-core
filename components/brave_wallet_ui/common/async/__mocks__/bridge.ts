@@ -1417,6 +1417,20 @@ export class MockedWalletApiProxy {
     }
   }
 
+  zcashWalletService: Partial<
+    InstanceType<typeof BraveWallet.ZCashWalletServiceInterface>
+  > = {
+    getChainTipStatus: async (_accountId) => {
+      return {
+        status: {
+          chainTip: 7687104,
+          latestScannedBlock: 2687104
+        },
+        errorMessage: null
+      }
+    }
+  }
+
   setMockedQuote(newQuote: typeof this.mockZeroExQuote) {
     this.mockZeroExQuote = newQuote
   }
