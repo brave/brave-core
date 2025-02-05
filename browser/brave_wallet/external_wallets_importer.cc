@@ -338,10 +338,9 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;
   }
-  auto parsed_vault =
-      base::JSONReader::Read(*vault_str, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_TRAILING_COMMAS);
-  auto* vault = parsed_vault ? parsed_vault->GetIfDict() : nullptr;
+  auto vault = base::JSONReader::ReadDict(
+      *vault_str,
+      base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!vault) {
     VLOG(1) << "not a valid JSON: " << *vault_str;
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));

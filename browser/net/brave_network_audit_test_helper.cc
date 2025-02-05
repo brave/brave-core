@@ -9,7 +9,7 @@
 #include <string_view>
 
 #include "base/json/json_file_value_serializer.h"
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -163,20 +163,15 @@ void VerifyNetworkAuditLog(
       << "Could not read: " << net_log_path;
 
   // Parse it as JSON.
-  auto parsed = base::JSONReader::Read(file_contents);
-  ASSERT_TRUE(parsed.has_value());
-
-  // Ensure the root value is a dictionary.
-  auto* main = parsed->GetIfDict();
-  ASSERT_TRUE(main);
+  auto main = base::test::ParseJsonDict(file_contents);
 
   // Ensure it has a "constants" property.
-  auto* constants = main->FindDict("constants");
+  auto* constants = main.FindDict("constants");
   ASSERT_TRUE(constants);
   ASSERT_FALSE(constants->empty());
 
   // Ensure it has an "events" property.
-  auto* events = main->FindList("events");
+  auto* events = main.FindList("events");
   ASSERT_TRUE(events);
   ASSERT_FALSE(events->empty());
 
@@ -185,7 +180,7 @@ void VerifyNetworkAuditLog(
       << " in chrome://net-internals for more details.";
 
   // Write results of the audit to disk, useful for further debugging.
-  WriteNetworkAuditResultsToDisk(*main, audit_results_path);
+  WriteNetworkAuditResultsToDisk(main, audit_results_path);
   ASSERT_TRUE(base::PathExists(audit_results_path));
 }
 }  // namespace brave

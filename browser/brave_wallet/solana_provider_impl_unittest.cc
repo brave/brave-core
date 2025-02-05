@@ -435,13 +435,13 @@ class SolanaProviderImplUnitTest : public testing::Test {
                             mojom::SolanaProviderError expected_error,
                             const std::string& expected_error_message) {
     base::Value::Dict result_out;
-    auto value = base::JSONReader::Read(json);
+    auto value = base::JSONReader::ReadDict(json);
     if (!value) {
       return result_out;
     }
     base::RunLoop run_loop;
     provider_->Request(
-        value->GetDict().Clone(),
+        std::move(value).value(),
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
                                        base::Value::Dict result) {

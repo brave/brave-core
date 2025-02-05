@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
@@ -100,17 +100,16 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
   base::expected<ImportInfo, ImportError> SimulateGetImportInfo(
       const std::string& password,
       const std::string& json_str) {
-    auto json =
-        base::JSONReader::Read(json_str, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                             base::JSON_ALLOW_CONTROL_CHARS);
-    EXPECT_TRUE(json);
+    auto json = base::test::ParseJsonDict(
+        json_str,
+        base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_CONTROL_CHARS);
     base::expected<ImportInfo, ImportError> out_info;
 
     {
       ExternalWalletsImporter importer(mojom::ExternalWalletType::CryptoWallets,
                                        browser_context());
 
-      importer.SetStorageDataForTesting(std::move(*json->Clone().GetIfDict()));
+      importer.SetStorageDataForTesting(json.Clone());
 
       base::RunLoop run_loop;
       importer.GetImportInfo(
@@ -125,7 +124,7 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
       ExternalWalletsImporter importer(mojom::ExternalWalletType::MetaMask,
                                        browser_context());
 
-      importer.SetStorageDataForTesting(std::move(*json->GetIfDict()));
+      importer.SetStorageDataForTesting(json.Clone());
 
       base::RunLoop run_loop;
       importer.GetImportInfo(
@@ -147,10 +146,9 @@ class ExternalWalletsImporterUnitTest : public testing::Test {
         mojom::ExternalWalletType::CryptoWallets, browser_context());
     ExternalWalletsImporter mm_importer(mojom::ExternalWalletType::MetaMask,
                                         browser_context());
-    auto json = base::JSONReader::Read(json_str);
-    ASSERT_TRUE(json);
-    cw_importer.SetStorageDataForTesting(std::move(*json->Clone().GetIfDict()));
-    mm_importer.SetStorageDataForTesting(std::move(*json->GetIfDict()));
+    auto json = base::test::ParseJsonDict(json_str);
+    cw_importer.SetStorageDataForTesting(json.Clone());
+    mm_importer.SetStorageDataForTesting(json.Clone());
     cw_importer.SetExternalWalletInstalledForTesting(true);
     mm_importer.SetExternalWalletInstalledForTesting(true);
     *out_initialized = cw_importer.IsExternalWalletInitialized();

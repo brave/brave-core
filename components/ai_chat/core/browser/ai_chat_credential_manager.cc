@@ -121,10 +121,10 @@ void AIChatCredentialManager::OnCredentialSummary(
     return;
   }
 
-  std::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value::Dict> records = base::JSONReader::ReadDict(
       summary->message, base::JSONParserOptions::JSON_PARSE_RFC);
 
-  if (!records_v || !records_v->is_dict()) {
+  if (!records) {
     if (credential_in_cache) {
       std::move(callback).Run(mojom::PremiumStatus::Active,
                               std::move(premium_info));
@@ -134,9 +134,8 @@ void AIChatCredentialManager::OnCredentialSummary(
     return;
   }
 
-  const auto& records_dict = records_v->GetDict();
   // Empty dict - "{}" - all credentials are expired or it's a new user.
-  if (records_dict.empty()) {
+  if (records->empty()) {
     if (credential_in_cache) {
       std::move(callback).Run(mojom::PremiumStatus::Active,
                               std::move(premium_info));
@@ -148,8 +147,8 @@ void AIChatCredentialManager::OnCredentialSummary(
   }
 
   premium_info->remaining_credential_count +=
-      records_dict.FindInt("remaining_credential_count").value_or(0);
-  const std::string* next_active_at = records_dict.FindString("next_active_at");
+      records->FindInt("remaining_credential_count").value_or(0);
+  const std::string* next_active_at = records->FindString("next_active_at");
   if (next_active_at) {
     base::Time next_active_at_v;
     if (base::Time::FromUTCString(next_active_at->c_str(), &next_active_at_v)) {
@@ -157,7 +156,7 @@ void AIChatCredentialManager::OnCredentialSummary(
     }
   }
 
-  const std::string* expires_at = records_dict.FindString("expires_at");
+  const std::string* expires_at = records->FindString("expires_at");
   // If the user has no more credentials AND expires_at is empty, then
   // the user is disconnected (needs to refresh). If expires_at is not empty,
   // the user has just run out of credentials, and they need to wait until a

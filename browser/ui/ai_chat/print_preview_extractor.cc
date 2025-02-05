@@ -217,7 +217,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
       CHECK(print_preview_ui_id_);
 
       // A mininum print setting to avoid PrinterSettingsInvalid
-      auto settings = base::JSONReader::Read(R"({
+      auto settings = base::JSONReader::ReadDict(R"({
      "collate": true,
      "color": 2,
      "copies": 1,
@@ -247,15 +247,15 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
      "shouldPrintSelectionOnly": false
     })");
       CHECK(settings);
-      auto dict = std::move(*settings).TakeDict();
-      dict.Set(printing::kPreviewUIID, print_preview_ui_id_.value());
-      dict.Set(printing::kPreviewRequestID, ++preview_request_id_);
-      dict.Set(printing::kSettingHeaderFooterTitle, web_contents_->GetTitle());
-      dict.Set(printing::kSettingPreviewModifiable, !is_pdf_);
+      settings->Set(printing::kPreviewUIID, print_preview_ui_id_.value());
+      settings->Set(printing::kPreviewRequestID, ++preview_request_id_);
+      settings->Set(printing::kSettingHeaderFooterTitle,
+                    web_contents_->GetTitle());
+      settings->Set(printing::kSettingPreviewModifiable, !is_pdf_);
       auto url = web_contents_->GetLastCommittedURL();
-      dict.Set(printing::kSettingHeaderFooterURL, url.spec());
+      settings->Set(printing::kSettingHeaderFooterURL, url.spec());
       OnPrintPreviewRequest(preview_request_id_);
-      print_render_frame_->PrintPreview(std::move(dict));
+      print_render_frame_->PrintPreview(std::move(settings).value());
     }
   }
 
