@@ -11,7 +11,18 @@ cd l10n/
 TOKEN=<token> ./push-strings-to-crowdin.sh
 ```
 
-If there any issues pushing strings to Transifex then these issues are logged to ```output.log```
+If there any issues pushing strings to Crowdin then these issues are logged to ```output.log```
+
+# How to pull strings from Crowdin
+ 
+You can check if all translation is finished on Crowdin Dev Portal. Once it is finished, the translated xliff files can be downloaded and imported into the project from Terminal:
+
+```
+cd l10n/
+TOKEN=<token> ./pull-translations-from-crowdin.sh
+```
+
+If there any issues downloading from Crowdin or importing strings to the project then these issues are logged to ```output.log```
 
 ### Note
 The API token can be created from Crowdin Dev Portal 

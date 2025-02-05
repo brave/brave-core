@@ -93,45 +93,45 @@ if [ ! -d "translated-xliffs" ] ; then
   fi
 fi
 
-if [ "${BUILD_ID}" = "" ]
+echo "Starting a new build..."
+crowdin_build_id=$(start_build)
+if [ "$crowdin_build_id" == "null" ]
 then
-  echo "BUILD_ID is NOT provided. Starting a new build..."
-  crowdin_build_id=$(start_build)
-  if [ "$crowdin_build_id" == "null" ]
-  then
-    report_error 4 "Failed to get a build id"
-  else
-    echo "New BUILD_ID: $crowdin_build_id"
-    echo "Please run this script again with this BUILD_ID when this build is finished."
-  fi
+  report_error 4 "Failed to get a build id"
 else
-  echo "Checking BUILD_ID: ${BUILD_ID} status..."
-  crowdin_build_status=$(get_build_status ${BUILD_ID})
-  if [ "$crowdin_build_status" != '"finished"' ]
-  then
-    report_error 4 "BUILD_ID: ${BUILD_ID} has not yet finished. Please run this script again when build is finished."
-  else
-    echo "Build has finished. Downloading project translations..."
-    translated_download_url=$(get_download_url)
-    download_http_code=$(curl -o translated-xliffs/translation.zip -w "%{http_code}" "$translated_download_url")
-    if [ "$download_http_code" != 200 then ]
-    then
-      report_error 4 "ERROR: Failed to download translations from Crowdin, please see output.log"
-    else  
-      unzip -d translated-xliffs/ translated-xliffs/translation.zip && rm translated-xliffs/translation.zip
-    fi
-
-    echo "Importing translations into Xcode project..."
-    for path in translated-xliffs/* ; do
-      echo "Importing "$path" ..."
-      (cd ../../ && xcodebuild -importLocalizations -localizationPath "l10n/tools/$path/en.xliff" SWIFT_EMIT_LOC_STRINGS=NO) >>output.log 2>&1
-    done
-    if [ $? != 0 ] ; then
-      report_error 5 "ERROR: Failed to import translations into Xcode project, please see output.log"
-    fi
-
-    cleanup
-
-    echo "Successfully imported translations into Xcode project"
-  fi
+  echo "New BUILD_ID: $crowdin_build_id"
+  BUILD_ID=$crowdin_build_id
 fi
+
+echo "Checking BUILD_ID: ${BUILD_ID} status..."
+crowdin_build_status=$(get_build_status ${BUILD_ID})
+until [ "$crowdin_build_status" == '"finished"' ]
+do
+  echo "Current status: $crowdin_build_status"
+  echo "..."
+  sleep 3
+  crowdin_build_status=$(get_build_status ${BUILD_ID})
+done
+
+echo "Build has finished. Downloading project translations..."
+translated_download_url=$(get_download_url)
+download_http_code=$(curl -o translated-xliffs/translation.zip -w "%{http_code}" "$translated_download_url")
+if [ "$download_http_code" != 200 ]
+then
+  report_error 4 "ERROR: Failed to download translations from Crowdin, please see output.log"
+else  
+  unzip -d translated-xliffs/ translated-xliffs/translation.zip && rm translated-xliffs/translation.zip
+fi
+
+echo "Importing translations into Xcode project..."
+for path in translated-xliffs/*.xliff ; do
+  echo "Importing "$path" ..."
+  (cd ../../ && xcodebuild -importLocalizations -localizationPath "l10n/tools/$path" SWIFT_EMIT_LOC_STRINGS=NO) >>output.log 2>&1
+done
+if [ $? != 0 ] ; then
+  report_error 5 "ERROR: Failed to import translations into Xcode project, please see output.log"
+fi
+
+cleanup
+
+echo "Successfully imported translations into Xcode project"
