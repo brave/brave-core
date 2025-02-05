@@ -670,9 +670,6 @@
 <translation id="2446517297521536638">控制您看到的 Brave 广告类型和频率。观看次数越多，收益越多。</translation>
 <translation id="5860033963881614850">关闭</translation>
 <translation id="5916664084637901428">开启</translation>
-<translation id="4284417062730522399">本月收到 <ph name="NUM"/> 个广告</translation>
-<translation id="7697696066810593560">本月您已赚取 <ph name="NUM"/></translation>
-<translation id="6733193230212030816">您的收益预计为：<ph name="RANGE"/></translation>
 <translation id="7924320838799747606">您的余额</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/>钱包</translation>
 <translation id="3175337080016717494">付款账户</translation>
@@ -681,15 +678,6 @@
 <translation id="8414447476773253869">登录至 <ph name="PROVIDER"/> 查看您的余额</translation>
 <translation id="615483366383024791">付款账户</translation>
 <translation id="1060062421977823695">您的 BAT 收入将支付到此付款账户。</translation>
-<translation id="2544805415966048917">您将发送</translation>
-<translation id="6708522254106492579">最多 <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">根据您在网站和内容创作者的内容上花费的时间，自动为其提供支持。</translation>
-<translation id="4319242254058427792">自动贡献已禁用</translation>
-<translation id="1091835891554961609">您访问过的，且经过验证的创作者将在您浏览时显示在这里。</translation>
-<translation id="7714706530499503523">自动贡献功能可根据您在其内容上花费的时间，每月自动向通过 Brave 验证的创作者发送贡献。</translation>
-<translation id="2358028754328876971">自动贡献是如何运作的？</translation>
-<translation id="2870560284913253234">网站</translation>
-<translation id="1184072843013036520">获取 Brave 品牌产品。</translation>
 <translation id="1170674812179664523">Brave 在线商店</translation>
 <translation id="8673202990286883068">您的好处</translation>
 <translation id="3699766258844277472">您尚未设置任何定期贡献。</translation>
@@ -1456,12 +1444,6 @@
 <translation id="3253669416991680932">这个硬件钱包不支持这项操作。</translation>
 <translation id="7457027586454688423">输入您的 Brave Wallet 密码</translation>
 <translation id="7553242001898162573">输入密码</translation>
-<translation id="2873714185189940594">要开启 Rainbow Bridge 应用程序吗？</translation>
-<translation id="2069777099181262239">彩虹桥是一项独立服务，可帮助您跨网络桥接资产，并在其他网络和 DApp 生态系统中使用您的加密货币。将资产桥接到其他网络存在一些风险。</translation>
-<translation id="7387899248733396663">了解有关如何使用彩虹桥的更多信息</translation>
-<translation id="3890567288132019108">进一步了解如何降低 Rainbow Bridge 上的风险</translation>
-<translation id="1792917191129448067">开启 Rainbow Bridge 应用程序</translation>
-<translation id="1522775706527775647">通往 Aurora</translation>
 <translation id="4903322403594141291">了解有关 Brave Wallet 的更多信息</translation>
 <translation id="4427684901715566795">密码应包含：</translation>
 <translation id="8521329076169776625">至少 8 个字符</translation>

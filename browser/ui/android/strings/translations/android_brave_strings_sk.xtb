@@ -412,7 +412,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="944340256927461196">Nezanechajte na svojom zariadení žiadne stopy</translation>
 <translation id="2063044449012253966">Stránky, ktoré navštívite v súkromných oknách, sa nezobrazia v histórii. Súbory cookie, údaje z formulárov a údaje o stránkach zmiznú po zatvorení všetkých súkromných okien.</translation>
 <translation id="7395764193745523646">Viditeľnosť prehliadania</translation>
-<translation id="8735363371744702779">Upozorňujeme, že aj v súkromných oknách môže byť vaša aktivita pri prehliadaní viditeľná pre poskytovateľa internetových služieb, pozorovateľov siete alebo vášho zamestnávateľa (ak používate pracovné zariadenie/sieť).</translation>
 <translation id="1413177583895309156">Brave VPN šifruje a chráni všetko, čo robíte online, a to aj mimo prehliadača Brave.</translation>
 <translation id="3974348661685061050">Vyskúšajte zadarmo na 7 dní</translation>
 <translation id="5789441016350810005">Reklamy Brave odoslané, keď je prehliadač na pozadí</translation>
@@ -450,8 +449,6 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1116694919640316211">Informácie</translation>
 <translation id="7961015016161918242">Nikdy</translation>
 <translation id="1275213816424141989">Možno neskôr</translation>
-<translation id="4406937629441301400">Získanie tokenov za prezeranie tohto obrázka a ich vyplatenie tvorcom. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Získavate tokeny za prezeranie tohto obrázka.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">Výplata odmien <ph name="CURRENT_MONTH"/> sa začne spracovávať do <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Výplata odmien <ph name="CURRENT_MONTH"/> práve prebieha. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Výplata odmien <ph name="CURRENT_MONTH"/> bola ukončená. <ph name="SUPPORT"/></translation>
@@ -489,6 +486,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1561541094377237745">Siete Solana</translation>
 <translation id="7141438739990875547">Siete Bitcoin</translation>
 <translation id="9055546041146396417">Ak sa táto stránka javí ako poškodená, skúste štíty nadol.</translation>
+<translation id="7898672232170410330">Blokovať prvok</translation>
 <translation id="1209739344687072997">Nahlásiť nefunkčnú stránku</translation>
 <translation id="8510478288840333677">Oznámte vývojárom Brave, ak táto stránka nefunguje správne so Štítmi:</translation>
 <translation id="1653405824851871276">Ďakujeme, že pomáhate zlepšovať prehliadač Brave pre všetkých. Táto správa bude obsahovať len informácie, ktoré potrebujeme na opravu tejto lokality. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +494,15 @@ Naozaj chcete pokračovať?</translation>
 <translation id="8740275226259417070">Toto je chybová stránka. Nemôžno ju nahlásiť ako nefunkčnú lokalitu.</translation>
 <translation id="721949491455392748">Pridať snímku obrazovky aktuálnej stránky</translation>
 <translation id="8459191579769999214">Zobraziť snímku obrazovky</translation>
+<translation id="6476216365964140603">Ďalšie podrobnosti (voliteľné)</translation>
+<translation id="6145852496180774737">Kontaktujte ma na: (voliteľné)</translation>
+<translation id="7616645803364270729">E-mail, Twitter atď.</translation>
 <translation id="5299848999918506028">Ďakujeme!</translation>
 <translation id="76550953340008122">Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!</translation>
 <translation id="650318023204990401">Pokročilé ovládanie</translation>
 <translation id="5370478469168390143">Uložiť dáta online</translation>
 <translation id="1118508688433541158">Prehliadajte rýchlejšie a blokujte reklamy pomocou služby Brave</translation>
 <translation id="7427391215172269363">Každý deň šetrím dáta prehliadaním webu cez Brave.</translation>
-<translation id="4776948189086901857">Brave funguje všade</translation>
-<translation id="1606322780901645965">Stiahnite si prehliadač Brave na brave.com na svoj notebook alebo tablet a získajte rýchlejší a súkromnejší web</translation>
 <translation id="8374242949413616101">Ochrana súkromia</translation>
 <translation id="4955406228638026265">Prehliadač Brave zabraňuje reklamám a sledovačom zhromažďovať informácie o vás bez vášho súhlasu.</translation>
 <translation id="752842701893882688">Šetrite dáta a batériu</translation>
@@ -1021,7 +1020,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="8382368767453083629">Inicializovať viacero podpisov 2</translation>
 <translation id="77243237706803459">Inicializovať vytvorenie 2</translation>
 <translation id="583281660410589416">Neznámy</translation>
-<translation id="5666264859501108700">Váš región Brave Rewards bol nastavený na <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Ľutujeme, pri pokuse o nastavenie Brave Rewards sa vyskytla chyba. Skúste to znova.</translation>
 <translation id="7352651011704765696">Niečo sa pokazilo</translation>
 <translation id="7144878232160441200">Skúsiť znova</translation>
@@ -1082,10 +1080,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="7748944510530490017">Primárne siete</translation>
 <translation id="2781668117338732220">Sekundárne siete</translation>
 <translation id="282560918037172384">Testovacie Siete</translation>
-<translation id="707569835145765061">Vyžaduje sa akcia: Pripojte úschovný účet, inak sa váš vBAT stratí</translation>
-<translation id="1776742005329298234">Dňa <ph name="DUE_DATE"/> ukončíme podporu existujúcich zostatkov virtuálnych BAT. Pred týmto dátumom si pripojte úschovný účet, aby sme naň mohli previesť váš získaný zostatok, inak tento zostatok stratíte.</translation>
-<translation id="5089752671190341407">Stále máte čas prispieť svoj zostatok vBAT svojim obľúbeným tvorcom</translation>
-<translation id="171158953146804144">Dňa <ph name="DUE_DATE"/> ukončíme podporu existujúcich zostatkov virtuálnych BAT. Bohužiaľ, vo vašom regióne (<ph name="REGION"/>) nie sú k dispozícii žiadni správcovia, ktorí by mohli vybrať vaše príjmy. Do tohto termínu môžete stále prispievať svojim obľúbeným tvorcom.</translation>
 <translation id="8949422576126100041">Zobraziť stránku pomocou Speedreader?</translation>
 <translation id="3435896845095436175">Aktivovať</translation>
 <translation id="5296840868251496327">Zapnúť Speedreader</translation>
@@ -1105,8 +1099,6 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4841860051609590575">ID žiadosti</translation>
 <translation id="1179407411385015942">Leo je inteligentný asistent s umelou inteligenciou zabudovaný priamo v prehliadači</translation>
 <translation id="4109670531935487117">Zobraziť návrhy automatického dokončovania na paneli s adresou</translation>
-<translation id="1250335737108905610">Resetovať a vymazať údaje asistenta Leo</translation>
-<translation id="6165101586663336913">Reštart asistenta Leo bude vyžadovať, aby ste sa v budúcnosti prihlásili na používanie Leo a tiež vymaže vašu históriu chatu. Vymazaním histórie chatu sa vymažú všetky vaše predchádzajúce konverzácie s asistentom Leo. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="3692772534525889713">Prepojte nákup v Obchode Play so svojím účtom Brave a používajte Brave Leo na iných zariadeniach.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Jeden rok</translation>
@@ -1236,4 +1228,5 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4650851936784160359">Zoznam filtrov sa nepodarilo aktualizovať. Skúste to znova</translation>
 <translation id="3098054327870766317">Zobraziť tlačidlo „Späť“ pri zatvorení kariet</translation>
 <translation id="1336494649091412226">Naozaj chcete opustiť Brave?</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 </translationbundle>

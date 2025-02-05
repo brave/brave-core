@@ -501,6 +501,11 @@
       =1 {Voit ansaita rahaa <ph name="COUNT_BEGIN"/># mainoksesta<ph name="COUNT_END"/>, jonka olet nähnyt tässä kuussa.}
       other {Voit ansaita rahaa <ph name="COUNT_BEGIN"/># mainoksesta<ph name="COUNT_END"/>, jotka olet nähnyt tässä kuussa.}
     }</translation>
+<translation id="8611388433418909120">{ADS_VIEWED, plural,
+      =0 {Olet nähnyt <ph name="COUNT_BEGIN"/># mainosta<ph name="COUNT_END"/> tässä kuussa}
+      =1 {Ansaitset rahaa <ph name="COUNT_BEGIN"/># mainoksesta<ph name="COUNT_END"/> tässä kuussa}
+      other {Ansaitset rahaa <ph name="COUNT_BEGIN"/># mainoksesta<ph name="COUNT_END"/> tässä kuussa}
+    }</translation>
 <translation id="6067959437127691361">Kun käytät Brave-palkintoja, tuet sisällönluojia ja voit ansaita BATeja.</translation>
 <translation id="944736176598169208">Palkinnot</translation>
 <translation id="2359808026110333948">Jatka</translation>
@@ -670,9 +675,7 @@
 <translation id="2446517297521536638">Hallitse, millaisia Brave-mainoksia näet ja kuinka usein. Mitä enemmän mainoksia näet, sitä enemmän voit ansaita.</translation>
 <translation id="5860033963881614850">Päältä</translation>
 <translation id="5916664084637901428">Käytössä</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> mainosta vastaanotettu tässä kuussa</translation>
-<translation id="7697696066810593560">Olet ansainnut tähän mennessä tässä kuussa <ph name="NUM"/></translation>
-<translation id="6733193230212030816">Ansaitset arvion mukaan: <ph name="RANGE"/></translation>
+<translation id="3977723631999461201"><ph name="NUM"/> mainosta vastaanotettu tässä kuussa</translation>
 <translation id="7924320838799747606">Oma saldosi</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> lompakko</translation>
 <translation id="3175337080016717494">Maksutili</translation>
@@ -681,15 +684,7 @@
 <translation id="8414447476773253869">Kirjaudu sisään palveluntarjoajaan <ph name="PROVIDER"/>, jotta voit nähdä saldosi</translation>
 <translation id="615483366383024791">Maksutili</translation>
 <translation id="1060062421977823695">BAT-ansiosi maksetaan tälle maksutilille.</translation>
-<translation id="2544805415966048917">Lähetät</translation>
-<translation id="6708522254106492579">Enintään <ph name="AMOUNT"/> BATia</translation>
-<translation id="7666058404763778706">Automaattinen tapa tukea verkkosivustoja ja sisällöntuottajia sen mukaan, kuinka paljon aikaa käytät niiden sisältöön.</translation>
-<translation id="4319242254058427792">Automaattinen lahjoittaminen on pois käytöstä</translation>
-<translation id="1091835891554961609">Vahvistetut sisällöntuottajat, joiden luona vierailet, näkyvät täällä selatessasi.</translation>
-<translation id="7714706530499503523">Automaattinen lahjoittaminen lähettää automaattisesti kuukausittain lahjoituksia Braven vahvistamille sisällöntuottajille sen mukaan, kuinka paljon aikaa käytät heidän sisältöönsä.</translation>
-<translation id="2358028754328876971">Miten automaattinen lahjoittaminen toimii?</translation>
-<translation id="2870560284913253234">Sivusto</translation>
-<translation id="1184072843013036520">Hanki Brave-brändättyjä tuotteita</translation>
+<translation id="2310070536993781610">Kampanjakoodilla BRAVEREWARDS saat 10 % alennusta kaikista Brave-kaupan tuotteista.</translation>
 <translation id="1170674812179664523">Brave-kauppa</translation>
 <translation id="8673202990286883068">Etusi</translation>
 <translation id="3699766258844277472">Toistuvia lahjoituksia ei ole vielä määritetty.</translation>
@@ -716,6 +711,9 @@
 <translation id="5309155375926073606">Kyllä, haluan osallistua Brave-hakuun ja <ph name="LINK_BEGIN"/>Web Discovery Projectiin<ph name="LINK_END"/>.</translation>
 <translation id="4622826307953794521">Anna nimettömänä haku- ja selaustietoja Brave Searchin kehittämiseksi Web Discovery Projectin avulla. Lähdekoodi on avoin.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="9034669711835382440">Yhteisö</translation>
+<translation id="814503310257431685">Näytä kaikki</translation>
+<translation id="845020633253356720">Näytä kauppa</translation>
 <translation id="7090992647511817643">tili</translation>
 <translation id="4822132585477111396">Ketjun tunnus</translation>
 <translation id="3269475789479462358">verkkotunnus</translation>
@@ -1147,6 +1145,12 @@
 <translation id="8214232307424031138">Allekirjoitettu</translation>
 <translation id="9065572743819293042">Äskettäiset maksutapahtumat</translation>
 <translation id="1702356231547761669">Maksutapahtuman hajautus</translation>
+<translation id="6030778062363728902">Muistio</translation>
+<translation id="1288859203671057247">Voit kirjoittaa viestin...</translation>
+<translation id="5466702869935634816">Viesti (valinnainen)</translation>
+<translation id="5715145706082194046">Lisää muistio</translation>
+<translation id="1922741261173258284">Poista muistio</translation>
+<translation id="1762915190843068679">Muistion on oltava alle 512 merkkiä pitkä.</translation>
 <translation id="8941851657764077659">Ensisijaisuuden enimmäismaksu</translation>
 <translation id="8047527352810290817">Muokkaa Gas-tokenia</translation>
 <translation id="9091334651803050473">Vaikka siitä ei ole takuita, louhijat todennäköisesti priorisoivat maksutapahtumasi, jos maksat suuremman maksun.</translation>
@@ -1456,12 +1460,6 @@
 <translation id="3253669416991680932">Tämä laitelompakko ei tue tätä toimintoa.</translation>
 <translation id="7457027586454688423">Anna Brave-lompakkosi salasanasi</translation>
 <translation id="7553242001898162573">Anna salasana</translation>
-<translation id="2873714185189940594">Avataanko Rainbow Bridge -sovellus?</translation>
-<translation id="2069777099181262239">Rainbow Bridge on riippumaton palvelu, joka auttaa sinua yhdistämään varoja eri verkoissa ja käyttämään kryptovaluuttaa muissa verkoissa ja DApp-ekosysteemeissä. Varojen yhdistämisessä muihin verkkoihin on riskejä.</translation>
-<translation id="7387899248733396663">Lue lisää Rainbow Bridge -sovelluksen käytöstä</translation>
-<translation id="3890567288132019108">Lue lisää siirtoriskistä Rainbow Bridge -sovelluksessa</translation>
-<translation id="1792917191129448067">Avaa Rainbow Bridge -sovellus</translation>
-<translation id="1522775706527775647">Silta Auroraan</translation>
 <translation id="4903322403594141291">Lue lisää Brave-lompakosta</translation>
 <translation id="4427684901715566795">Salasanassa on oltava:</translation>
 <translation id="8521329076169776625">Vähintään 8 merkkiä</translation>
@@ -1739,6 +1737,8 @@
 <translation id="2298396008562701154">Tällä hetkellä tämä tili tukee avoimia siirtoja, mikä tarkoittaa, että ne näkyvät kaikille lohkoketjussa.</translation>
 <translation id="3987095760757102811">Päivitys suojattuun tiliin tarkoittaa sitä, että siirroista piilotetaan lähettäjä, vastaanottaja ja summa.</translation>
 <translation id="3819528427777765709">Suojattu</translation>
+<translation id="2142946302539262412">Yhdistetty</translation>
+<translation id="4438043733494739848">Avoin</translation>
 <translation id="7144878232160441200">Yritä uudestaan</translation>
 <translation id="9094621390791852268">Maksutapahtuman esikatselu epäonnistui.</translation>
 <translation id="4982713341035600933">Arvioitu saldomuutos</translation>
@@ -1992,6 +1992,7 @@
 <translation id="5950760360751948276">Näytä aina kirjanmerkkipalkki</translation>
 <translation id="2960757369920422313">Näytä kirjanmerkkipalkki uudella välilehtisivulla</translation>
 <translation id="522953399371747698">Piilota kirjanmerkkipalkki</translation>
+<translation id="9079813619990532635">Vie kaikki kirjanmerkit</translation>
 <translation id="134184943774258988">Vaihda Kaikki kirjanmerkit -painikkeen näkyvyysasetusta</translation>
 <translation id="2158862020143233462">Vaihda suojia</translation>
 <translation id="3010280727642018218">Vaihda JavaScript-asetuksia</translation>
@@ -2070,8 +2071,10 @@
 <translation id="4567071417854988869">Tee yhteenveto tästä videosta</translation>
 <translation id="7921782882718083488">Tee yhteenveto tästä sivusta</translation>
 <translation id="7932221068776853847">Katkaise yhteys lopettaaksesi tämän sivun sisällön lähettämisen Leolle ja aloita uusi keskustelu</translation>
+<translation id="2712650703044366764">Tällä mallilla on virheellinen päätepiste. Tarkista konfigurointi ja yritä uudelleen.</translation>
 <translation id="1167803637855350748">Leoon yhteyden muodostamisessa oli verkko-ongelma, tarkista yhteys ja yritä uudelleen.</translation>
 <translation id="1996126325390835277">Olet saavuttanut premium-määrärajan. Yritä uudelleen muutaman tunnin kuluttua.</translation>
+<translation id="8151638057146502721">Konfiguroi</translation>
 <translation id="4177458398826096846">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Llama 3.1 8B:hen, Metan luomaan malliin, joka on tehokas ja soveltuu moniin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Mixtral 8x7B:hen, Mistral AI:n luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hei, olen Leo. Olen Braven täysin tekoälyperusteinen avustaja. Toimintani perustuu Claude Instantiin, Anthropicin luomaan malliin, joka soveltuu edistyneisiin käyttötarkoituksiin. <ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
@@ -2108,6 +2111,7 @@
 <translation id="6393149565874086128">Lisää palaute</translation>
 <translation id="3521125531016408657">Tykkää vastauksesta</translation>
 <translation id="8202517001427388906">Älä tykkää vastauksesta</translation>
+<translation id="3177073390279208955">Lähettää luokituksen, keskustelun, mallin, kielen, version ja premium-tilan</translation>
 <translation id="1379399209929302811">Anna Bravelle tekoälypalautetta</translation>
 <translation id="8442999546461118871">Valitse palautteen aihe</translation>
 <translation id="9018766373792005944">Mitä palautteesi koskee?</translation>
@@ -2133,6 +2137,11 @@
 <translation id="4370698775470316661">Tämä keskustelu on liian pitkä, eikä se voi jatkua. Saatavilla voi olla muita malleja, joiden avulla Leo pystyy säilyttämään tarkkuuden pidempiä keskusteluja varten.</translation>
 <translation id="5719170755629028558">Vastauksia parannetaan Brave-haulla…</translation>
 <translation id="5794962229997281366">Haun <ph name="SEARCH_TERMS"/> paranneltu vastaus.</translation>
+<translation id="8103700533980268469">Sulje tämä ilmoitus</translation>
+<translation id="2315654674554095762">Leo muistaa nyt keskustelusi, joten voit palata niihin. Ne tallennetaan salattuna laitteeseesi, ja voit poistaa ne milloin tahansa.</translation>
+<translation id="7821251979960635244">Keskusteluhistoriasi näkyy täällä, kun aloitat keskustelun.</translation>
+<translation id="887511360213807449">Historia on poistettu käytöstä</translation>
+<translation id="5380979378058584412">Voidaksesi tarkastella aiempia keskusteluja Leon kanssa sinun on otettava keskusteluhistoria käyttöön.</translation>
 <translation id="6291843235651817590">Yleiskäyttöinen chat</translation>
 <translation id="8193130769524604031">Kehittyneet chat-tehtävät</translation>
 <translation id="3185367320601718531">Keskustelun ja tekstin tuottaminen</translation>
@@ -2176,6 +2185,7 @@
 <translation id="49269513399674318">Käytä mikrofonia</translation>
 <translation id="3895031624234442305">Mukautetut mallit</translation>
 <translation id="4572010449071015143">Aloita uusi keskustelu</translation>
+<translation id="345901077335355561">Palaa aktiiviseen keskusteluun</translation>
 <translation id="6287023598025162715">Uusi keskustelu</translation>
 <translation id="6303294677342628402">Suojaukset</translation>
 <translation id="8458987127502506209">Ota Brave-suojaus käyttöön</translation>
@@ -2205,6 +2215,8 @@
 <translation id="6196640612572343990">Estä kolmannen osapuolen evästeet</translation>
 <translation id="693506469193748756">Unohda minut, kun suljen tämän sivuston</translation>
 <translation id="5471580724041424345">Tyhjentää evästeet ja muut sivuston tiedot, kun suljet sivuston.</translation>
+<translation id="6486971767955110687">Säilytä yhteystiedot tulevia rikkoutuneita sivustoja koskevia raportteja varten</translation>
+<translation id="4085787265464238844">Jos annat yhteystiedot, ne tallennetaan tulevia raportteja varten</translation>
 <translation id="6883611015375728278">Estä kaikki evästeet</translation>
 <translation id="5657156137487675418">Salli kaikki evästeet</translation>
 <translation id="8366221601425141146">Fingerprinting-tunniste estetty</translation>

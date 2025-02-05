@@ -35,7 +35,6 @@
 <translation id="10614374240317010">المواقع التي لن تحفظ كلمات المرور أبدًا</translation>
 <translation id="1062407476771304334">استبدال</translation>
 <translation id="1064054731605354900">A3x5</translation>
-<translation id="106701514854093668">الإشارات المرجعية على سطح المكتب</translation>
 <translation id="1067029985695494416">تفاصيل محرّك البحث</translation>
 <translation id="1068672505746868501">عدم ترجمة الصفحات باللغة <ph name="SOURCE_LANGUAGE"/> مُطلقًا</translation>
 <translation id="1070333806075222467">معدن (لامع)</translation>
@@ -59,6 +58,7 @@
 <translation id="1099928364755383720">فتح النوافذ في وضع "نافذة ضمن النافذة" تلقائيًا</translation>
 <translation id="7584468665743195331">‏زر استئناف سجلّ أنشطة البحث والتصفُّح: اضغط على مفتاح Enter لاستئناف سجلّ أنشطة البحث والتصفُّح والاطّلاع على النشاط ذي الصلة في سجلّ Brave.</translation>
 <translation id="1101672080107056897">خطأ في الإجراء</translation>
+<translation id="1101902632743388185">جداول المقارنة</translation>
 <translation id="1104409666019087579">بعض الحقول المطلوبة فارغة. يُرجى ملء هذه الحقول قبل الحفظ.</translation>
 <translation id="8424280348953443220">‏زر إدارة كلمات المرور: انقر على هذا الزر لعرض كلمات المرور وإدارتها في إعدادات Brave.</translation>
 <translation id="1108464073729874771">A3x4</translation>
@@ -108,6 +108,7 @@
 <translation id="1186201132766001848">التحقق من كلمات المرور</translation>
 <translation id="1187430513518041110">سيارات ومركبات</translation>
 <translation id="1190491977647722791">ورق (ثقيل الوزن)</translation>
+<translation id="1194278116501666615">‏إشعار بتقدُّم التحميل المُسبق لنظام التشغيل ArcVm</translation>
 <translation id="1195073053842921378">سيتم حذف هذا العنوان من هذا الجهاز.</translation>
 <translation id="1195558154361252544">يتم حظر الإشعارات تلقائيًا لجميع المواقع الإلكترونية باستثناء المواقع التي تسمح بها.</translation>
 <translation id="1197088940767939838">برتقالي</translation>
@@ -138,7 +139,6 @@
 <translation id="1243027604378859286">المؤلف:</translation>
 <translation id="1247030632403369975">ألومنيوم</translation>
 <translation id="1252209483516427155">ملابس خروج</translation>
-<translation id="1253096324252841344">الدفع باستخدام <ph name="FINANCIAL_ACCOUNT_TYPES"/></translation>
 <translation id="1253846494229886276">جارٍ حفظ لقطة الشاشة</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>، <ph name="TYPE_2"/> (تمت المزامنة)</translation>
 <translation id="1255086252236620440">خلاطات طعام</translation>
@@ -170,6 +170,7 @@
 <translation id="129553762522093515">المغلقة حديثًا</translation>
 <translation id="1296930489679394997">مبيعات</translation>
 <translation id="1297814096526086484">هل تريد قفل لوحة المفاتيح والماوس؟</translation>
+<translation id="1297832388362139384">أخضر 1</translation>
 <translation id="1301227606947843452">Legal Extra</translation>
 <translation id="1301324364792935241">التحقّق من إعدادات نظام أسماء النطاقات الآمن</translation>
 <translation id="1302418742166945866">‏يريد الموقع الإلكتروني <ph name="URL"/> التحكُّم في أجهزة MIDI وإعادة برمجتها.</translation>
@@ -187,7 +188,6 @@
 <translation id="1322083935398004629">سياسة</translation>
 <translation id="132301787627749051">البحث عن صورة الحافظة</translation>
 <translation id="1323433172918577554">إظهار مزيد من الأقسام</translation>
-<translation id="132390688737681464">حفظ العناوين وملؤها</translation>
 <translation id="1329916999021038454">إرسال تقرير</translation>
 <translation id="1330449323196174374">الطي على شكل بوابة يسارًا</translation>
 <translation id="4274264486214599895">‏تشغيل لعبة الديناصور في Brave</translation>
@@ -228,6 +228,7 @@
 <translation id="1384725838384960382">صفحة مصادقة بيانات اعتماد الدفع الآمن</translation>
 <translation id="1386623374109090026">تعليقات توضيحية</translation>
 <translation id="138810468159004008">السماح بالاستخدام أثناء زيارة الموقع الإلكتروني</translation>
+<translation id="139161720020179799">رمادي داكن 1</translation>
 <translation id="1391625539203220400">‏هل تريد حفظ رقم الحساب بصيغة IBAN على هذا الجهاز؟</translation>
 <translation id="139305205187523129">لم يرسل <ph name="HOST_NAME"/> أي بيانات.</translation>
 <translation id="3057197202055415269">‏يتضمّن هذا الموقع الإلكتروني مهاجمِين قد يتمكّنون من خداعك لتثبيت برامج معيَّنة أو الكشف عن بيانات، مثل كلمات المرور أو رقم الهاتف أو أرقام بطاقات الائتمان. وينصح Brave بشدّة بالرجوع إلى وضع الأمان. <ph name="BEGIN_LEARN_MORE_LINK"/>مزيد من المعلومات حول هذا التحذير<ph name="END_LEARN_MORE_LINK"/></translation>
@@ -278,8 +279,8 @@
 <translation id="1473495410389165587">يجب إدخال 3 كلمات أو أكثر للحصول على مساعدة في الكتابة.</translation>
 <translation id="147358896496811705">2A0</translation>
 <translation id="1474576429883213321">خدمات تنظيف</translation>
-<translation id="1475299637784133125">هل تبحث عن إصدار المتصفِّح؟ انتقِل إلى</translation>
 <translation id="1476595624592550506">عليك تغيير كلمة مرورك</translation>
+<translation id="1482372785911828880">رقيق للغاية</translation>
 <translation id="1482879811280872320">ركوب دراجات</translation>
 <translation id="1483493594462132177">إرسال</translation>
 <translation id="1484449009683144042">‏هذه أداة تجريبية للمساعدة في الكتابة باستخدام الذكاء الاصطناعي (AI) وقد توفّر اقتراحات غير دقيقة في بعض الأحيان.
@@ -313,6 +314,7 @@
 <translation id="1549470594296187301">‏يجب تفعيل JavaScript لاستخدام هذه الميزة.</translation>
 <translation id="1553152622374372421">رياضات شتوية</translation>
 <translation id="1705567146636171298">‏تحديث Brave‏</translation>
+<translation id="1554485704925237240">التحكّم في أجهزة القراءة المسمّاة "<ph name="READERNAME"/>" والبطاقات الذكية المستخدَمة معها</translation>
 <translation id="1555130319947370107">أزرق</translation>
 <translation id="1555191101192706055">يتضمّن هذا الموقع الإلكتروني الذي حاولت الانتقال إليه مهاجمِين قد يتمكّنون من خداعك لتثبيت برامج ضارة تؤثّر في طريقة التصفُّح من خلال تغيير الصفحة الرئيسية مثلاً أو عرض إعلانات إضافية على المواقع الإلكترونية التي تنتقل إليها.</translation>
 <translation id="1559231233244409191">ورق مقوّى (ثلاث طبقات)</translation>
@@ -359,6 +361,7 @@
 <translation id="1615402009686901181">تحظر سياسة المشرف إمكانية تصوير الشاشة عند عرض محتوى سري.</translation>
 <translation id="1617276713587758852">مركبات كروس أوفر</translation>
 <translation id="1619007254056372606">إدارة بيانات الموقع الإلكتروني على الجهاز فقط</translation>
+<translation id="1619648179761984213">تمت إزالة علامة تبويب من قِبل "<ph name="USER_DISPLAY_NAME"/>"</translation>
 <translation id="1620510694547887537">الكاميرا</translation>
 <translation id="1622966923835127638">تمويل نشاطات تجارية</translation>
 <translation id="1623104350909869708">منع هذه الصفحة من إنشاء مربعات حوار إضافية.</translation>
@@ -366,6 +369,7 @@
 <translation id="1633137413609266904">{0,plural, =1{تحظر سياسة المشرف إمكانية فتح هذا الملف.}zero{تحظر سياسة المشرف إمكانية فتح # ملف.}two{تحظر سياسة المشرف إمكانية فتح ملفَّين.}few{تحظر سياسة المشرف إمكانية فتح # ملفات.}many{تحظر سياسة المشرف إمكانية فتح # ملفًا.}other{تحظر سياسة المشرف إمكانية فتح # ملف.}}</translation>
 <translation id="1633941398432788136">تخطيط مناسبات</translation>
 <translation id="1634828734222219955">الإجمالي</translation>
+<translation id="1637407510758033366">تم الانضمام إلى المجموعة من قِبل "<ph name="USER_DISPLAY_NAME"/>"</translation>
 <translation id="163826442096818926">نص مختصر</translation>
 <translation id="1639239467298939599">جارٍ التحميل</translation>
 <translation id="1640180200866533862">سياسات المستخدم</translation>
@@ -455,6 +459,7 @@
 <translation id="1777422078676229054">تصوير (أرشفة)</translation>
 <translation id="1778646502362731194">JIS B0</translation>
 <translation id="1785118555253503473">هل تريد تثبيت تطبيقات الويب؟</translation>
+<translation id="1791415068765905273">عرض جميع جداول المقارنة</translation>
 <translation id="3480410886581896628">Brave Smart Lock</translation>
 <translation id="8114214752558951503">‏<ph name="MANAGE_GOOGLE_ACCOUNT_FOCUSED_FRIENDLY_MATCH_TEXT"/>: اضغط على مفتاح التبويب (Tab) ثم Enter لإدارة المعلومات والخصوصية والأمان في حسابك على Brave.</translation>
 <translation id="1793631236004319016">آخر استخدام قبل <ph name="NUM_HOURS_MINUTES_SECONDS"/></translation>
@@ -482,7 +487,6 @@
 <translation id="1822995137827688764">تطوير عقاري</translation>
 <translation id="1824402189105105503">اللفافة الثامنة</translation>
 <translation id="1826516787628120939">حساب شيكات</translation>
-<translation id="1826968372364864056">محو النموذج</translation>
 <translation id="1834452765064623979">بناء وترميم</translation>
 <translation id="1838374766361614909">محو البحث</translation>
 <translation id="1839331950812095887">بضع كلمات تلخِّص أفكارك</translation>
@@ -578,6 +582,7 @@
 <translation id="2025186561304664664">تم ضبط الخادم الوكيل على الإعداد التلقائي.</translation>
 <translation id="2025891858974379949">محتوى غير آمن</translation>
 <translation id="2027465737841872819">بلاستيك</translation>
+<translation id="2027707238798802149">البطاقة غير متوفّرة</translation>
 <translation id="2029735183873159415">الأصل وعلم الأنساب</translation>
 <translation id="2032962459168915086"><ph name="BEGIN_LINK"/>التحقق من الخادم الوكيل والجدار الناري<ph name="END_LINK"/></translation>
 <translation id="2033900728810589426">لا يمكن أن يكون الاختصار مطابقًا للكلمة الرئيسية لمزوِّد البحث التلقائي المحددة من قِبل <ph name="DEFAULT_SEARCH_PROVIDER_KEYWORD_POLICY_NAME"/>‏: <ph name="SHORTCUT_NAME"/></translation>
@@ -667,7 +672,6 @@
 <translation id="2172089022819052306">تصليح مركبات وصيانتها</translation>
 <translation id="2174875517416416684">تعذّر إتمام معاملتك. لم يتم سحب أي أموال من حسابك.</translation>
 <translation id="2175630235841878061">لا تتوفّر إمكانية تنزيل الملفات التي يزيد حجمها عن 100 ميغابايت.</translation>
-<translation id="2176974405772725904">حفظ العنوان في الحساب</translation>
 <translation id="7453373354666409887">‏زر تحديث Brave: انقر على هذا الزر لتحديث متصفِّح Brave من الإعدادات.</translation>
 <translation id="2178904466768126352">يتضمّن هذا الموقع الإلكتروني مهاجمِين قد يتمكّنون من تثبيت برامج ضارة تسرق أو تحذف بيانات، مثل كلمات المرور أو الصور أو الرسائل أو أرقام بطاقات الائتمان.</translation>
 <translation id="2179003720612888584">‫"<ph name="SITE_TITLE"/>" على <ph name="SITE_DOMAIN_NAME"/></translation>
@@ -703,6 +707,7 @@
 <translation id="2227758700723188171">منح تعليمية ودراسية</translation>
 <translation id="1271895112771969155">‏هذا العنوان محفوظ حاليًا في Brave. لاستخدامه في جميع منتجات Brave، عليك حفظه في حسابك على Brave‏، <ph name="ACCOUNT"/>.</translation>
 <translation id="2229456043301340598">اختصار مكرّر تم تجاهله: <ph name="SHORTCUT_NAME"/></translation>
+<translation id="222962001646502673">رمادي داكن 2</translation>
 <translation id="2233041017768270281">{COUNT,plural, =1{علامة تبويب واحدة}zero{‫# علامة تبويب}two{علامتا تبويب}few{‫# علامات تبويب}many{‫# علامة تبويب}other{‫# علامة تبويب}}</translation>
 <translation id="2233745931693710080">قرص مضغوط</translation>
 <translation id="2235344399760031203">تم حظر ملفات تعريف الارتباط التابعة لجهات خارجية.</translation>
@@ -800,7 +805,6 @@
 <translation id="4124760202519850347">‏تم حفظ رقم الحساب بصيغة IBAN هذا في حسابك على Brave لتتمكّن من استخدامه على مختلف خدمات Brave.</translation>
 <translation id="2400600116338235695">السماح للموقع الإلكتروني بطلب الاتصال بمنافذ تسلسلية</translation>
 <translation id="2404884497378469141">حاوِل نسخ ملفاتك مرة أخرى.</translation>
-<translation id="2412310121876768057">هل تريد ملء بيانات البطاقة تلقائيًا في المرة القادمة؟</translation>
 <translation id="2413155254802890957">القديم</translation>
 <translation id="2413528052993050574">هذا الخادم لم يتمكن من إثبات أن ذلك <ph name="DOMAIN"/>؛ بل إنه شهادة أمان ربما تم إلغاء صلاحيتها. وربما يكون السبب في ذلك خطأ في التكوين أو مهاجمًا يعترض اتصالك.</translation>
 <translation id="2414886740292270097">داكن</translation>
@@ -852,10 +856,12 @@
 <translation id="2514548229949738417">منازل وحدائق</translation>
 <translation id="2515629240566999685">التحقّق من اتصال الإنترنت في منطقتك</translation>
 <translation id="2515761554693942801">‏لقد اخترت إثبات هويتك باستخدام ميزة Touch ID على المواقع الإلكترونية التي تستخدم مقدِّم الخدمة <ph name="PROVIDER_ORIGIN"/>. قد يكون مقدِّم الخدمة احتفظ بمعلومات حول طريقة الدفع التي تم استخدامها، ويمكنك <ph name="LINK_TEXT"/>.</translation>
+<translation id="2518584823165598232">هذه البطاقة غير متوفّرة. يُرجى التواصل مع مقدِّم البطاقة.</translation>
 <translation id="2521385132275182522">وضع دبوس أسفل اليمين</translation>
 <translation id="2521736961081452453">إنشاء نموذج</translation>
 <translation id="2523886232349826891">سيتم حفظ البطاقة على هذا الجهاز فقط</translation>
 <translation id="2524461107774643265">إضافة مزيد من المعلومات</translation>
+<translation id="2526062290525841862">لتشغيل هذا التطبيق، يجب إعادة تفعيل "وضع مطوّر تطبيقات الويب المعزولة"</translation>
 <translation id="5151177152796946073">‏يمكنك استخدام العناوين المحفوظة مع جميع منتجات Brave. سيتم حفظ هذا العنوان في حسابك على Brave‏، <ph name="ACCOUNT"/>.</translation>
 <translation id="2527451058878391043">‏يظهر رمز التحقّق من البطاقة (CVC) في الجهة الأمامية من بطاقتك. إنّه الرمز المكوّن من 4 أرقام في أعلى يمين رقم البطاقة.</translation>
 <translation id="2529899080962247600">يجب ألا يحتوي هذا الحقل على أكثر من <ph name="MAX_ITEMS_LIMIT"/> إدخال. وسيتم تجاهل جميع الإدخالات الأخرى.</translation>
@@ -890,11 +896,13 @@
 <translation id="2571488850200220306">للمساعدة في ضمان الحفاظ على الأمان، يمكن أيضًا الاطّلاع على معلومات نظام التشغيل وإصدار المتصفِّح والبرامج المثبَّتة على الجهاز</translation>
 <translation id="2573170131138724450">أجهزة تلفزيون</translation>
 <translation id="257674075312929031">جمع</translation>
+<translation id="258135245577667916">تمت إضافة علامة تبويب من قِبل "<ph name="USER_DISPLAY_NAME"/>"</translation>
 <translation id="2586657967955657006">الحافظة</translation>
 <translation id="2587841377698384444">رقم تعريف واجهة برمجة التطبيقات الدليل:</translation>
 <translation id="2594318783181750337">العرض السريع على الويب:</translation>
 <translation id="2595719060046994702">لا تتم إدارة جهازك وحسابك من خلال شركة أو مؤسسة أخرى.</translation>
 <translation id="2597378329261239068">هذا المستند محمي بكلمة المرور.  يُرجى إدخال كلمة مرور.</translation>
+<translation id="2605979593348332811">الاسم صوتيًا</translation>
 <translation id="2606760465469169465">التحقّق التلقائي</translation>
 <translation id="2608019759319359258">عند حظر أحد المواضيع، لن يتم استخدامه لتخصيص الإعلانات</translation>
 <translation id="2610561535971892504">النقر لنسخ النص</translation>
@@ -910,6 +918,7 @@
 <translation id="2628224721443278970">‏تسجيل الدخول إلى Microsoft OneDrive</translation>
 <translation id="2634124572758952069">‏تعذّر العثور على عنوان IP لخادم <ph name="HOST_NAME"/>.</translation>
 <translation id="2639739919103226564">الحالة:</translation>
+<translation id="2645435784669275700">ChromeOS</translation>
 <translation id="2647086987482648627">نسيج (شبه لامع)</translation>
 <translation id="264810637653812429">لم يتم العثور على أي أجهزة متوافقة.</translation>
 <translation id="2649204054376361687"><ph name="CITY"/>, <ph name="COUNTRY"/></translation>
@@ -938,6 +947,7 @@
 <translation id="2688969097326701645">نعم، متابعة</translation>
 <translation id="2690699652723742414">آخر 30 يومًا</translation>
 <translation id="2691924980723297736">تحذير متعلق بالأمان</translation>
+<translation id="2697248912349197812">طرح سؤال على <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="2699273987028089219">هناك قائمة فرعية متاحة، يمكنك استخدام <ph name="SHORTCUT"/> للانتقال إلى خيارات إضافية.</translation>
 <translation id="2701514975700770343">الوجه للأسفل</translation>
 <translation id="2702592986366989640">خيار السعر المنخفض</translation>
@@ -999,6 +1009,7 @@
 <translation id="2824775600643448204">شريط العناوين والبحث</translation>
 <translation id="2826760142808435982">تم ترميز الاتصال ومصادقته باستخدام <ph name="CIPHER"/>، ويستخدم <ph name="KX"/> كآلية التبادل الرئيسية.</translation>
 <translation id="2833637280516285136">برامج حوارية على الراديو</translation>
+<translation id="2835170189407361413">محو النموذج</translation>
 <translation id="2837891525090413132">بإمكان الموقع الإلكتروني طلب قفل لوحة المفاتيح واستخدامها</translation>
 <translation id="2838682941130655229">يطلب <ph name="EMBEDDED_URL"/> استخدام المعلومات التي تم حفظها بشأنك</translation>
 <translation id="2839032553903800133">تم حظر الإشعارات.</translation>
@@ -1112,9 +1123,11 @@
 <translation id="3061707000357573562">خدمة رمز التصحيح</translation>
 <translation id="306198082577913404">تفعيل ميزة "تحسينات التوقعات"</translation>
 <translation id="3062655045399308513">حذف بيانات التصفّح…</translation>
+<translation id="3063453392496098461">‏تعذَّر تثبيت خدمات VPN التي تُشغَّل في الخلفية.</translation>
 <translation id="306573536155379004">بدأت اللعبة.</translation>
 <translation id="3067505415088964188">السعر منخفض</translation>
 <translation id="3068118691172921711">سيبدأ تحميل الملف إلى <ph name="CLOUD_PROVIDER"/> بعد دقيقة واحدة</translation>
+<translation id="3074671422612537810">{ITEMS,plural, =1{عنصر واحد ({ITEMS})}zero{‫{ITEMS} عنصر}two{عنصران ({ITEMS})}few{‫{ITEMS} عناصر}many{‫{ITEMS} عنصرًا}other{‫{ITEMS} عنصر}}</translation>
 <translation id="3076865167425975822">أنظمة تشغيل</translation>
 <translation id="3080254622891793721">الرسم البياني</translation>
 <translation id="254030672859277244">‏يمكنك السماح لشركة Brave باستخدام سلّات التسوّق للبحث عن خصومات مخصّصة متى توفّرت.</translation>
@@ -1212,10 +1225,12 @@
 <translation id="3229277193950731405">نَسخ بيانات الإصدار</translation>
 <translation id="323107829343500871">‏أدخِل رمز التحقّق (CVC) لبطاقة <ph name="CREDIT_CARD"/></translation>
 <translation id="3234666976984236645">الكشف دائمًا عن المحتوى المهم على هذا الموقع</translation>
+<translation id="323585066388831737">أحمر فاتح</translation>
 <translation id="3236212803136366317">مزايا البطاقة</translation>
 <translation id="3240683217920639535">‏<ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>، اضغط على مفتاح Tab ثم مفتاح Enter لتخصيص مظهر المتصفِّح</translation>
 <translation id="3240791268468473923">تم فتح صفحة عدم تطابق بيانات اعتماد الدفع الآمن.</translation>
 <translation id="324180406144491771">تم حظر روابط "<ph name="HOST_NAME"/>"</translation>
+<translation id="3243650379537999343">رسم</translation>
 <translation id="3248329428895535435">عدم العرض على هذا الموقع الإلكتروني</translation>
 <translation id="3249102948665905108">اكتملت عملية تحميل الملف إلى <ph name="CLOUD_PROVIDER"/> مع حدوث أخطاء</translation>
 <translation id="3252772880526154546">هندسة معمارية</translation>
@@ -1271,10 +1286,8 @@
 <translation id="3349952286488694786">SRA2</translation>
 <translation id="3350450887151703713">إعادة تشغيل 10 ثوانٍ</translation>
 <translation id="3352881017886802007">ألعاب رياضية</translation>
-<translation id="3354508510846323339">الاقتباس <ph name="CURRENT_CITATION"/> من إجمالي <ph name="MAX_CITATIONS"/>، <ph name="PRODUCT_NAME"/>،‏ <ph name="URL"/></translation>
 <translation id="3355823806454867987">تغيير إعدادات الخادم الوكيل...</translation>
 <translation id="335809815767823">اكتملت عملية التصدير.</translation>
-<translation id="3359387651158939842">‏يمكنك ملء بياناتك بطاقتك تلقائيًا لإجراء عمليات شراء مستقبلية في حال حفظ هذه البيانات لاستخدامها من خلال Google Pay</translation>
 <translation id="3359565626472459400">زواج</translation>
 <translation id="3360103848165129075">جدول بيانات معالج الدفع</translation>
 <translation id="3360306038446926262">‏نظام التشغيل Windows</translation>
@@ -1287,13 +1300,13 @@
 <translation id="7740652748540081864">‏تفعيل ميزة "التحقّق من الأمان" في Brave</translation>
 <translation id="3377144306166885718">‏يستخدم الخادم إصدارًا قديمًا لطبقة النقل الآمنة (TLS).</translation>
 <translation id="3377188786107721145">خطأ في تحليل السياسة</translation>
+<translation id="3377642479079205807">رقيق</translation>
 <translation id="3378612801784846695">يتم تحديد المواضيع استنادًا إلى سجلّ التصفُّح الأخير، وتستخدمها المواقع الإلكترونية لعرض إعلانات مخصّصة لك مع حماية هويتك</translation>
 <translation id="3380365263193509176">خطأ غير معروف</translation>
 <translation id="3380864720620200369">معرِّف العميل:</translation>
 <translation id="3381668585148405088">تأكيد عملية الشراء</translation>
 <translation id="3383566085871012386">ترتيب الأولويات الحالي</translation>
 <translation id="3384522979010096022">لا تسمح لك مؤسستك بعرض هذا الموقع الإلكتروني.</translation>
-<translation id="3387261909427947069">طرق الدفع</translation>
 <translation id="3391030046425686457">عنوان التسليم</translation>
 <translation id="3391482648489541560">تعديل الملفات</translation>
 <translation id="3392028486601120379">‏يتضمن نمط عنوان URL "<ph name="URL_PATTERN"/>" مسارًا محددًا، وحيث إنّ المسارات غير متوافقة مع هذا المفتاح، يُرجى إزالة المسار والمحاولة مرة أخرى، على سبيل المثال، *://example.com/ =&gt; *://example.com".</translation>
@@ -1367,6 +1380,7 @@
 <translation id="351522771072578657">يتم حاليًا عرض قائمة</translation>
 <translation id="3517264445792388751">أوقف المشرف نظام الملفات</translation>
 <translation id="3518941727116570328">معالجة الأهداف المتعددة</translation>
+<translation id="3519670528214225835">طرح سؤال على <ph name="KEYWORD_SUFFIX"/></translation>
 <translation id="3525130752944427905">10 × 14 بوصة</translation>
 <translation id="3525435918300186947">‏هل تريد السماح للموقع الإلكتروني بالتحكُّم في أجهزة MIDI وإعادة برمجتها؟</translation>
 <translation id="3527181387426738155">موسيقى ومحتوى صوتي</translation>
@@ -1390,8 +1404,6 @@
 <translation id="3552297013052089404">‏خط Sans-serif</translation>
 <translation id="3558573058928565255">خلال النهار</translation>
 <translation id="3559897352860026926">يجب أن تطلب من المشرف التأكّد من صحة ضبط إعدادات <ph name="CLOUD_PROVIDER"/>.</translation>
-<translation id="355995771319966853">التراجع عن الملء التلقائي</translation>
-<translation id="3560408312959371419">خيارات الحماية من التتبع وبيانات الموقع الإلكتروني على الجهاز فقط</translation>
 <translation id="3560824484345057728">عرض المواقع الإلكترونية ذات الصلة</translation>
 <translation id="3566021033012934673">اتّصالك غير خاصّ</translation>
 <translation id="3566336457819493938">215 × 315 ملم</translation>
@@ -1426,7 +1438,6 @@
 <translation id="3605899229568538311">5 × 5 بوصة</translation>
 <translation id="3606917451836803637">عروض وبرامج تلفزيونية</translation>
 <translation id="3608932978122581043">تخطيط الاتجاه</translation>
-<translation id="1737525120923015525">‏يمكنك حفظ بيانات البطاقة والاسم وعنوان إرسال الفواتير في حسابك على Brave للدفع بشكلٍ أسرع في المرة القادمة.</translation>
 <translation id="3612660594051121194">حافلات وقطارات للمسافات الطويلة</translation>
 <translation id="3614001939154393113">قد تكون هناك محاولات من المهاجمين لسرقة معلوماتك من <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (مثل كلمات المرور أو الرسائل، أو بيانات بطاقات الائتمان). <ph name="BEGIN_LEARN_MORE_LINK"/>مزيد من المعلومات حول هذا التحذير<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="3614103345592970299">الحجم 2</translation>
@@ -1496,6 +1507,7 @@
 <translation id="450379565246785127">‏يحاول متصفِّح Brave إظهار كلمات المرور</translation>
 <translation id="3711861349027352138">ألعاب فيديو وألعاب على الكمبيوتر</translation>
 <translation id="3711895659073496551">تعليق</translation>
+<translation id="3712004750972384495">جارٍ حفظ تسجيل الشاشة</translation>
 <translation id="3712006010833051684">ظرف رقم 10</translation>
 <translation id="3712624925041724820">التراخيص مستنفذة</translation>
 <translation id="3713277100229669269">يمكنك الآن الاطّلاع على مزايا البطاقة قبل الدفع</translation>
@@ -1518,10 +1530,12 @@
 <translation id="3739842843727261045">يمكنك النقر على زر "أعجبني" إذا أعجبتك هذه النتائج</translation>
 <translation id="3740447166056383374">يجب مراجعة الملفات قبل نسخها</translation>
 <translation id="374325029554577103">منتجات تكنولوجية للّياقة البدنية</translation>
+<translation id="3743765582345153106">التحقُّق دائمًا من بيانات طرق الدفع عند استخدام ميزة "الملء التلقائي"</translation>
 <translation id="3744111561329211289">المزامنة في الخلفية</translation>
 <translation id="3744212718085287312">هل تريد تعزيز أمان حسابك باستخدام بطاقة افتراضية في المرة القادمة؟</translation>
 <translation id="8500803517201014627">‏سيتم إرسال النص والمحتوى وعنوان URL للصفحة موضوع الكتابة إلى Brave لمراجعتها من قِبل المختصين، حيث تُستخدم تلك المعلومات لتحسين هذه الميزة. ويجب تجنُّب إدخال معلومات شخصية (مثل التفاصيل الطبية أو المالية) أو استخدام هذه الأداة على مواقع إلكترونية تحتوي على معلومات خاصة أو حسّاسة.</translation>
 <translation id="3748009735914587286">معدن (شديد اللمعان)</translation>
+<translation id="3752181611900535304">هل تريد حفظ العنوان في الحساب؟</translation>
 <translation id="3752543821772132562">تم تجاهل السياسة بسبب عدم ضبط <ph name="POLICY_NAME"/>.</translation>
 <translation id="3754210790023674521">الخروج من وضع "نافذة ضمن نافذة"</translation>
 <translation id="3759461132968374835">ليس لديك أي أعطال تم الإبلاغ عنها مؤخرًا. الأعطال التي حدثت عندما تم إيقاف الإبلاغ عن الأعطال لن تظهر هنا.</translation>
@@ -1544,10 +1558,9 @@
 <translation id="3792826587784915501">أفلام مستقلة وأفلام شعبية</translation>
 <translation id="3793574014653384240">أعداد الأعطال التي حدثت مؤخرًا على الجهاز وأسبابها</translation>
 <translation id="3799805948399000906">الخط المطلوب</translation>
-<translation id="3801265110651850478">‏إرسال طلب Do Not Track مع زيارات التصفُّح
-</translation>
 <translation id="3801297763951514916">تزور هذا الموقع الإلكتروني كثيرًا</translation>
 <translation id="380329542618494757">الاسم</translation>
+<translation id="3309359684969494714">‏عند إجراء عمليات شراء على Brave، يمكنك استخدام المحفظة الإلكترونية كخيار للدفع</translation>
 <translation id="3803801106042434208">محركات البحث هذه رائجة في منطقتك</translation>
 <translation id="9139904989334087578">‏يمكنك حفظ طريقة دفع في حسابك على Brave لمل بيانات بطاقة الائتمان تلقائيًا عند إجراء عمليات شراء في Brave</translation>
 <translation id="3807366285948165054">Image X shift</translation>
@@ -1576,6 +1589,7 @@
 <translation id="3835233591525155343">استخدامك للجهاز</translation>
 <translation id="3836246517890985658">أدوات مطبخ صغيرة</translation>
 <translation id="3839220096695873023">مركبات هجينة وبديلة</translation>
+<translation id="3841356782900714251">أجهزة قراءة البطاقات الذكية</translation>
 <translation id="384315386171052386">أسماك وأطعمة بحرية</translation>
 <translation id="3844725157150297127">RA1</translation>
 <translation id="5749930378398424146">‏<ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT"/>: اضغط على مفتاح التبويب (Tab) ثم Enter لإنشاء "مستند Brave" جديد بسرعة.</translation>
@@ -1633,6 +1647,7 @@
 <translation id="3962859241508114581">المقطع الصوتي السابق</translation>
 <translation id="3963721102035795474">وضع القارئ</translation>
 <translation id="3964661563329879394">{COUNT,plural, =0{بدون}=1{من موقع واحد }two{من موقعين (#) }few{من # مواقع }many{من # موقعًا }other{من # موقع }}</translation>
+<translation id="3965672182149944205">هل تريد حفظ العنوان؟</translation>
 <translation id="3966044442021752214">أمان المنتج</translation>
 <translation id="397105322502079400">جارٍ الحساب...</translation>
 <translation id="3973234410852337861">تم حظر <ph name="HOST_NAME"/></translation>
@@ -1647,10 +1662,10 @@
 <translation id="3990532701115075684">تتبُّع يديك</translation>
 <translation id="3992684624889376114">لمحة حول هذه الصفحة</translation>
 <translation id="3995639283717357522">تطبيق السياسات</translation>
+<translation id="3996683183117168945">الاقتباس <ph name="CURRENT_CITATION"/> من إجمالي <ph name="MAX_CITATIONS"/>، <ph name="PRODUCT_NAME"/>،‏ <ph name="URL"/> <ph name="PAGE_TITLE"/>. <ph name="PAGE_PREVIEW"/>.</translation>
 <translation id="399754345297554962">اختبارات موحَّدة واختبارات قبول</translation>
 <translation id="3999173941208168054">أفلام رعب</translation>
 <translation id="4000598935132966791">مزيد من المعلومات حول قيود المواقع الإلكترونية في المتصفِّحات المُدارة</translation>
-<translation id="4006465311664329701">‏طرق الدفع والعروض الترويجية والعناوين التي تستخدم Google Pay</translation>
 <translation id="4010758435855888356">هل تريد السماح بالوصول إلى مساحة التخزين؟</translation>
 <translation id="401170183602135785">‏ظرف C6</translation>
 <translation id="4014128326099193693">{COUNT,plural, =1{‏مستند PDF يتألف من صفحة واحدة ({COUNT})}zero{‏مستند PDF يتألف من {COUNT} صفحة}two{‏مستند PDF يتألف من صفحتين ({COUNT})}few{‏مستند PDF يتألف من {COUNT} صفحات}many{‏مستند PDF يتألف من {COUNT} صفحة}other{‏مستند PDF يتألف من {COUNT} صفحة}}</translation>
@@ -1695,6 +1710,7 @@
 <translation id="4084219288110917128">‏ظرف C1</translation>
 <translation id="4085326869263783566">‏ساعدني في الكتابة. اضغط على مفتاح التبويب (Tab) ثم مفتاح Enter للفتح</translation>
 <translation id="4085769736382018559">مقارنة المنتجات</translation>
+<translation id="4085778582400064057">أزرق 2</translation>
 <translation id="4088981014127559358">‏طباعة جانب واحد image Y shift</translation>
 <translation id="4089152113577680600">الدُرج 14</translation>
 <translation id="4092349052316400070">ملء عنوان</translation>
@@ -1708,6 +1724,7 @@
 <translation id="4103592298805904008">ورق مقوّى (طبقة واحدة)</translation>
 <translation id="4104702906064390950">‏جارٍ حفظ معلومات رقم الحساب بصيغة IBAN</translation>
 <translation id="4106887816571530227">تم رفض المحتوى المُضمَّن.</translation>
+<translation id="4107047499377819067">‏بدأ تثبيت خدمات VPN التي تُشغَّل في الخلفية، وقد يستغرق هذا الإجراء بضع دقائق.</translation>
 <translation id="4110652170750985508">مراجعة الدفعة</translation>
 <translation id="4111546256784973544">لعبة "بينتبول"</translation>
 <translation id="4112140312785995938">الانتقال إلى الخلف</translation>
@@ -1722,7 +1739,6 @@
 <translation id="4123572138124678573">عمل ثلاثة ثقوب بالأسفل</translation>
 <translation id="412601465078863288">انتهت مهلة التحميل</translation>
 <translation id="4127317221386336246">إكسسوارات ملابس</translation>
-<translation id="4127575959421463246">‏التعرّف على الميزات التجريبية لنظام التشغيل Brave الانتقال</translation>
 <translation id="4129401438321186435">{COUNT,plural, =1{عنصر واحد آخر}zero{# عنصر آخر}two{عنصران آخران (#)}few{# عناصر أخرى}many{# عنصرًا آخر}other{# عنصر آخر}}</translation>
 <translation id="4129992181550680635">مراجع تعليمية</translation>
 <translation id="4130226655945681476">التحقق من كابلات الشبكة، والمودم، وجهاز التوجيه</translation>
@@ -1803,6 +1819,7 @@
 <translation id="4277937682389409325">العنوان المحلي</translation>
 <translation id="4278090321534187713">تم إيقاف البطاقات التي لا يقبلها هذا التاجر</translation>
 <translation id="4278390842282768270">مسموح به</translation>
+<translation id="4281245629646759298">أصفر فاتح</translation>
 <translation id="4281998142035485137">{0,plural, =1{هل تريد فتح الملف السرّي؟}zero{هل تريد فتح الملفات السرّية؟}two{هل تريد فتح الملفَّين السرّيَّين؟}few{هل تريد فتح الملفات السرّية؟}many{هل تريد فتح الملفات السرّية؟}other{هل تريد فتح الملفات السرّية؟}}</translation>
 <translation id="4282280603030594840">شراء مركبات</translation>
 <translation id="4282346679996504092">تم إيقاف التنبيهات لهذا المنتج وتمت إزالة الإشارة المرجعية من الصفحة.</translation>
@@ -1869,7 +1886,6 @@
 <translation id="4384395682990721132">A4x3</translation>
 <translation id="4387692837058041921">‏تم مؤقتًا إيقاف عملية تحميل الملفات إلى Microsoft OneDrive</translation>
 <translation id="4390472908992056574">حافّة</translation>
-<translation id="4397059608630092079">التحقُّق دائمًا من بيانات طرق الدفع عند استخدام ميزة "الملء التلقائي"</translation>
 <translation id="4397978002248035985">يفتح هذا الخيار نافذة منبثقة لإثبات الهوية على الموقع الإلكتروني للمصرف الذي تتعامل معه.</translation>
 <translation id="4406883609789734330">النسخ النصي التلقائي</translation>
 <translation id="4406896451731180161">نتائج البحث</translation>
@@ -1898,6 +1914,7 @@
 <translation id="4451684391620232683">النص المعروض للمستخدم:</translation>
 <translation id="8416018650396907203">‏كلمة المرور التي استخدمتها للتو تم رصدها ضمن عملية اختراق للبيانات. ولتأمين حساباتك، ينصح "مدير كلمات المرور" من Brave بالتحقّق من كلمات المرور المحفوظة.</translation>
 <translation id="4456937135469235202">رحلات مغامرة</translation>
+<translation id="4458013283022578512">إدخال سؤال</translation>
 <translation id="4464826014807964867">المواقع الإلكترونية التي تحتوي على معلومات واردة من مؤسستك</translation>
 <translation id="4466576951214254884">قروض للطلاب وتمويل الدراسة الجامعية</translation>
 <translation id="4467821340016922962">للخروج من وضع "ملء الشاشة" والاطّلاع على عملية التنزيل، اضغط على |<ph name="ACCELERATOR"/>|</translation>
@@ -1919,6 +1936,7 @@
 <translation id="7581711177899574338">‏<ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT"/>، اضغط على مفتاح التبويب (Tab) ثم مفتاح Enter لترجمة هذه الصفحة باستخدام "ترجمة Brave".</translation>
 <translation id="4892470328555495647">‏يتم أخذ البطاقات والعناوين من Brave وحسابك على Brave (<ph name="ACCOUNT_EMAIL"/>)، ويمكنك إدارتها في <ph name="BEGIN_LINK"/>الإعدادات<ph name="END_LINK"/>.</translation>
 <translation id="4515847625438516456">سيارات صغيرة وسيارات مدمجة صغيرة</translation>
+<translation id="451601984112574365">أخضر 3</translation>
 <translation id="4519245469315452746">تمت مقاطعة عملية التحديث على جهازك.</translation>
 <translation id="4520048001084013693">تحظر سياسة المشرف تنزيل هذا الملف.</translation>
 <translation id="4521157617044179198">‏<ph name="WIDTH"/> x <ph name="HEIGHT"/> ملم (<ph name="ORIENTATION"/>)</translation>
@@ -1931,7 +1949,6 @@
 <translation id="4530347922939905757">رسالة نصية</translation>
 <translation id="4531477351494678589">رقم البطاقة الافتراضية:</translation>
 <translation id="4535523368173457420">إنّ محركات البحث هذه رائجة في منطقتك ويتم عرضها بترتيب عشوائي.</translation>
-<translation id="4540780316273593836">حدث خطأٌ</translation>
 <translation id="4541810033354695636">الواقع المعزّز</translation>
 <translation id="4542971377163063093">الدُرج 6</translation>
 <translation id="563788859854213593">‏يمكنك حفظ بيانات البطاقة وعنوان إرسال الفواتير في حسابك على Brave للدفع بشكلٍ أسرع في المرة القادمة.</translation>
@@ -1976,7 +1993,6 @@
 <translation id="464342062220857295">ميزات البحث</translation>
 <translation id="4644567637638438744">‏لا يمكن تحميل الملفات إلا إذا كنت مسجِّلاً الدخول إلى Microsoft OneDrive</translation>
 <translation id="4644670975240021822">ترتيب عكسي والوجه للأسفل</translation>
-<translation id="4646534391647090355">الانتقال الآن</translation>
 <translation id="4648262692072505866">‏يجب أن يكون تنسيق التجزئة SHA-256.</translation>
 <translation id="4652266463001779298">غير مسموح به</translation>
 <translation id="4652440160515225514">حظرت مؤسستك هذا الموقع الإلكتروني لأنه ينتهك إحدى السياسات.</translation>
@@ -1999,6 +2015,7 @@
 <translation id="4687718960473379118">الإعلانات المقترَحة من المواقع الإلكترونية</translation>
 <translation id="4691093235373904540">خدمات تسقيف</translation>
 <translation id="4692623383562244444">محرّكات البحث</translation>
+<translation id="4695702626068620848">‫<ph name="KEYWORD"/> - طرح سؤال على <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="4698692901173737941">رياضات قتالية</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/>‏ <ph name="SENTENCE2"/></translation>
 <translation id="4702504834785592287">الجانب</translation>
@@ -2107,7 +2124,6 @@
 <translation id="4881695831933465202">فتح</translation>
 <translation id="4881808915112408168">24 × 31.5 بوصة</translation>
 <translation id="4882314601499260499">لم يتم تطبيق أي سياسات مستخدِم. لإضافة سياسات المستخدِم، على مؤسستك <ph name="LINK_BEGIN"/>إثبات ملكية نطاقك<ph name="LINK_END"/>.</translation>
-<translation id="4883911187498618061">أدخِل سؤالك أو طلبك</translation>
 <translation id="4885030148564729407">رحلات شهر عسل وعطلات رومانسية</translation>
 <translation id="4885256590493466218">الدفع باستخدام <ph name="CARD_DETAIL"/>.</translation>
 <translation id="4887406273302438710">‏حماية كلمات المرور باستخدام Windows Hello</translation>
@@ -2117,7 +2133,6 @@
 <translation id="4895877746940133817"><ph name="TYPE_1"/>، <ph name="TYPE_2"/>، <ph name="TYPE_3"/></translation>
 <translation id="4896809202198625921">أولمبياد</translation>
 <translation id="4898742041545089450">تمت إزالة حظر هذا الموضوع وقد يصبح نشطًا استنادًا إلى سجلّ التصفُّح</translation>
-<translation id="4899379435492347481">‏يمكنك حفظ هذه البطاقة لاستخدامها على الإنترنت من خلال Google Pay لإجراء عمليات شراء على جميع أجهزتك</translation>
 <translation id="4900217275619098670">اللفافة التاسعة</translation>
 <translation id="4901052769830245369">تصنيفات (شبه لامعة)</translation>
 <translation id="4901162432287938633">أدوات صحية وأدوات نظافة شخصية</translation>
@@ -2125,11 +2140,13 @@
 <translation id="4901952598169637881">أحذية غير رسمية</translation>
 <translation id="4905659621780993806">سيعيد المشرف تشغيل الجهاز تلقائيًا عند الساعة <ph name="TIME"/> في <ph name="DATE"/>. عليك حفظ أي نوافذ مفتوحة قبل إعادة تشغيل الجهاز.</translation>
 <translation id="4913987521957242411">عمل ثقب أعلى اليسار</translation>
+<translation id="4914727764832832057">أزرق 1</translation>
 <translation id="4916389289686916969">برامج تلفزيون الواقع</translation>
 <translation id="4917064667437236721">أسطوانة تصوير</translation>
 <translation id="4918221908152712722">تثبيت <ph name="APP_NAME"/> (لا يتطلَّب تنزيلاً)</translation>
 <translation id="4920457992177678649">أماكن للاستئجار والإقامات القصيرة الأمد</translation>
 <translation id="4920710383559189047">غلاف أسطواني</translation>
+<translation id="4920921410507315601">جداول المقارنة</translation>
 <translation id="1298471559729553235">‏لاستخدام "مدير كلمات المرور" مع نظام التشغيل، يُرجى إعادة تشغيل Brave والسماح بالوصول إلى مدير كلمات المرور على جهاز الكمبيوتر. ستتم إعادة فتح علامات التبويب بعد إعادة التشغيل.</translation>
 <translation id="4923459931733593730">الدفع</translation>
 <translation id="4926049483395192435">يجب تحديدها.</translation>
@@ -2139,7 +2156,7 @@
 <translation id="4930153903256238152">سِعة كبيرة</translation>
 <translation id="4930714375720679147">تفعيل</translation>
 <translation id="4932035752129140860">‏يتم إرسال النص الذي تلصقه أو ترفقه إلى Google Cloud أو جهات خارجية لتحليله. على سبيل المثال، قد يتم فحص هذا النص بحثًا عن بيانات حسّاسة وتخزينه استنادًا إلى سياسات الشركة، وقد يظهر للمشرف.</translation>
-<translation id="4933468175699107356">انقر بزر الماوس الأيمن لملء المعلومات المحفوظة تلقائيًا، مثل اسمك أو عنوانك، في أي نموذج</translation>
+<translation id="4933788293078559286">‏الدفع باستخدام Pix</translation>
 <translation id="4934780484581617878">إدارة النوافذ</translation>
 <translation id="4936134414789135531">تعذَّر العثور على قيمة <ph name="VALUE_NAME"/> التي تم إدراجها.</translation>
 <translation id="4936573216809994970">سيبدأ تحميل الملف إلى <ph name="CLOUD_PROVIDER"/> بعد ساعة واحدة</translation>
@@ -2164,7 +2181,6 @@
 <translation id="4983145717627482381">جولات سياحية إرشادية وبصحبة مرافقين</translation>
 <translation id="498323057460789381">حدث خطأ أثناء التحقّق من صحة المخطط: <ph name="ERROR"/></translation>
 <translation id="4984088539114770594">هل تريد استخدام الميكروفون؟</translation>
-<translation id="4989163558385430922">عرض الكل</translation>
 <translation id="4989542687859782284">التجارب غير المتاحة</translation>
 <translation id="4989809363548539747">هذا المكوِّن الإضافي غير مدعوم</translation>
 <translation id="4990241977441916452">‏ظرف A2</translation>
@@ -2198,6 +2214,7 @@
 <translation id="5039804452771397117">سماح</translation>
 <translation id="5040262127954254034">الخصوصية</translation>
 <translation id="5043480802608081735">الرابط الذي نسخته</translation>
+<translation id="5043753287208271200">أصفر 3</translation>
 <translation id="5045550434625856497">كلمة مرور غير صحيحة</translation>
 <translation id="5048293684454354469">مواضيع الإعلانات هي أحد المصادر المتعدّدة التي يمكن أن يستخدمها الموقع الإلكتروني لتخصيص الإعلانات. حتى في حال عدم توفُّر مواضيع الإعلانات، سيظل بإمكان المواقع الإلكترونية عرض إعلانات لك ولكنّها قد تكون أقل تخصيصًا. تعرَّف على مزيد من المعلومات حول <ph name="BEGIN_LINK"/>إدارة الخصوصية في عرض الإعلانات<ph name="LINK_END"/>.</translation>
 <translation id="5052517576853118371">المواضيع النشِطة</translation>
@@ -2276,6 +2293,7 @@
 <translation id="5191315092027169558">تتم إدارة ملفك الشخصي من خلال النطاق <ph name="DOMAIN"/></translation>
 <translation id="51918995459521422">يريد <ph name="ORIGIN"/> تنزيل ملفات متعددة.</translation>
 <translation id="519422657042045905">التعليق التوضيحي غير متوفِّر</translation>
+<translation id="5200063972779787617">حفظ العنوان في الحساب</translation>
 <translation id="5201306358585911203">تعرض صفحة مضمّنة في هذه الصفحة</translation>
 <translation id="5205222826937269299">الاسم مطلوب</translation>
 <translation id="5206392433295093945">غرفة نوم</translation>
@@ -2298,6 +2316,7 @@
 <translation id="5239623327352565343">تمت الموافقة على طلب الوصول إلى الموقع الجغرافي.</translation>
 <translation id="5241048084654737238">تأكيد عدم إمكانية حفظ معلومات البطاقة</translation>
 <translation id="5242610955375133957">فيلم بمكوّنات جافة</translation>
+<translation id="5243004157379865295">تعديل العنوان</translation>
 <translation id="8854897060240443467">‏زر إدارة حساب Brave: انقر على هذا الزر لإدارة معلوماتك وخصوصيتك وأمان حسابك في Brave.</translation>
 <translation id="5244732203286792411">جارٍ التحميل...
     يُرجى الانتظار قليلاً.</translation>
@@ -2317,6 +2336,7 @@
 <translation id="5278778426231952189">التحميل الآن</translation>
 <translation id="5279286380302340275">إدارة عمليات التنزيل</translation>
 <translation id="5280963125494874678">تطبيقات الويب</translation>
+<translation id="5282008206326321696">{count,plural, =0{‫# إشارة مرجعية}=1{إشارة مرجعية واحدة}two{إشارتان مرجعيتان}few{‫# إشارات مرجعية}many{‫# إشارة مرجعية}other{‫# إشارة مرجعية}}</translation>
 <translation id="5283044957620376778">B1</translation>
 <translation id="5284295735376057059">خصائص المستند</translation>
 <translation id="528468243742722775">‏مفتاح End</translation>
@@ -2335,6 +2355,7 @@
 <translation id="5300589172476337783">عرض</translation>
 <translation id="5305716236436927587">إعلان وتسويق</translation>
 <translation id="5306593769196050043">كِلا الورقتَين</translation>
+<translation id="5307109011461144709">تم تغيير لون المجموعة من قِبل "<ph name="USER_DISPLAY_NAME"/>"</translation>
 <translation id="5307166000025436103">القيمة صالحة</translation>
 <translation id="5308380583665731573">اتصال</translation>
 <translation id="5308689395849655368">ميزة الإبلاغ عن الأعطال غير مفعّلة.</translation>
@@ -2350,7 +2371,6 @@
 <translation id="5332769172018416402">الطلب عبر رسالة</translation>
 <translation id="533323551986281710">تم فتح بطاقة التجارة السفلية بطول الشاشة</translation>
 <translation id="5334013548165032829">سجلّات النظام التفصيلية</translation>
-<translation id="5334145288572353250">هل تريد حفظ العنوان؟</translation>
 <translation id="5340250774223869109">التطبيق محظور</translation>
 <translation id="5342693890921195472">قبل دقيقة</translation>
 <translation id="534295439873310000">‏أجهزة NFC</translation>
@@ -2366,6 +2386,7 @@
 <translation id="5363309033720083897">منفذ تسلسلي سمحَ به مشرفك</translation>
 <translation id="5363532265530011914">جوارب قصيرة وطويلة</translation>
 <translation id="5371425731340848620">تحديث البطاقة</translation>
+<translation id="537425196847960924">تم تغيير علامة تبويب من قِبل "<ph name="USER_DISPLAY_NAME"/>"</translation>
 <translation id="5375686690914744327">SRA1</translation>
 <translation id="5377026284221673050">‏""توقيت ساعتك متأخِّر" أو "توقيت ساعتك متقدِّم" أو "&lt;span class="error-code"&gt;NET::ERR_CERT_DATE_INVALID&lt;/span&gt;"</translation>
 <translation id="5379618281582508161">لحفظ كلمة المرور هذه على جميع أجهزتك، يُرجى إثبات هويتك</translation>
@@ -2380,6 +2401,7 @@
 <translation id="5392506727170022660">معدن (شبه لامع)</translation>
 <translation id="5394069166371280357">برامج تلفزيونية للأسرة</translation>
 <translation id="5396631636586785122">خزم الحواف يمينًا</translation>
+<translation id="5397794290049113714">أنت</translation>
 <translation id="5398772614898833570">تم حظر الإعلانات</translation>
 <translation id="5400836586163650660">رمادي</translation>
 <translation id="5401344472773249513">أخبار مشاهير وترفيه</translation>
@@ -2399,6 +2421,7 @@
 <translation id="5425082381151187189">ديكور منزلي وديكور داخلي</translation>
 <translation id="5426179911063097041">يريد موقع <ph name="SITE"/> إرسال إشعارات إليك.</translation>
 <translation id="5430298929874300616">إزالة إشارة مرجعية</translation>
+<translation id="5431318178759467895">بالألوان</translation>
 <translation id="5433756542371550806">الإصدارات المُعدَّلة لسطر الأوامر</translation>
 <translation id="8517215617486022589">‏<ph name="BEGIN_EMPHASIS"/>لن يحفظ<ph name="END_EMPHASIS"/> Brave ما يلي:
         <ph name="BEGIN_LIST"/>
@@ -2409,6 +2432,7 @@
 <translation id="5443468954631487277">ترتيب عكسي والوجه للأعلى</translation>
 <translation id="5447235695608032700">السماح للموقع الإلكتروني <ph name="SITE"/> باستخدام معلوماتك المحفوظة عليه</translation>
 <translation id="5452270690849572955">لا يمكن العثور على صفحة <ph name="HOST_NAME"/> هذه.</translation>
+<translation id="5452923259299906094">‏الدفع باستخدام المحفظة الإلكترونية وPix</translation>
 <translation id="5455374756549232013">الطابع الزمني للسياسة سيئ</translation>
 <translation id="5456428544444655325">عدم الإظهار مطلقًا</translation>
 <translation id="5456839782162429664">إثبات الهوية يدويًا في كل مرة تستخدم فيها ميزة "الملء التلقائي" لإتمام عملية الدفع</translation>
@@ -2425,6 +2449,7 @@
 <translation id="5481682542063333508">عرض مساعدة في الكتابة</translation>
 <translation id="54817484435770891">إضافة عنوان صالح</translation>
 <translation id="5483838506518938965">اكتملت المهمة</translation>
+<translation id="5485100387355669506">سميك للغاية</translation>
 <translation id="5485973315555778056">جهاز على السحابة الإلكترونية</translation>
 <translation id="1524606353801704832">‏زر إنشاء ملاحظة: انقر على هذا الزر لإنشاء ملاحظة جديدة في Brave Keep بسرعة.</translation>
 <translation id="5490432419156082418">العناوين والمزيد</translation>
@@ -2467,6 +2492,7 @@
 <translation id="5544836308113951378">رحلات بحرية وتأجير سفن</translation>
 <translation id="5547939254150808298">طباعة ونشر</translation>
 <translation id="554815783948612276">منتديات وخدمات دردشة وتواصل</translation>
+<translation id="5548606607480005320">التحقّق من الأمان</translation>
 <translation id="555037537507405574">الميزات المتقدمة للطابعة</translation>
 <translation id="555128936272638662">ملحقات أجهزة جوّالة ولاسلكية</translation>
 <translation id="5551890439174915351">100 × 200 ملم</translation>
@@ -2474,7 +2500,6 @@
 <translation id="5558083606899411167">مكيّفات هواء</translation>
 <translation id="5558125320634132440">تم حظر هذا الموقع الإلكتروني لأنه قد يتضمّن محتوى للكبار</translation>
 <translation id="5559311991468302423">حذف العنوان</translation>
-<translation id="5560088892362098740">تاريخ انتهاء الصلاحية</translation>
 <translation id="55635442646131152">مخطط المستند</translation>
 <translation id="1702142849385752335">‏لاستخدام موقعك الجغرافي، يجب منح Brave إذن الوصول في <ph name="LINK"/>.</translation>
 <translation id="5565735124758917034">نشط</translation>
@@ -2493,6 +2518,7 @@
 <translation id="5593640815048812868">أجهزة كمبيوتر محمولة ودفترية</translation>
 <translation id="5595485650161345191">تعديل العنوان</translation>
 <translation id="5596939519753369075">2 × 3.5 بوصة</translation>
+<translation id="5597254438174353289">أزرق 3</translation>
 <translation id="560412284261940334">الإدارة غير متوفرة</translation>
 <translation id="5605249000617390290">مزيد من المعلومات حول ميزة "تتبُّع الأسعار"</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -2502,6 +2528,7 @@
 <translation id="2012723355262040739">‏ترجمة هذه الصفحة باستخدام "ترجمة Brave"</translation>
 <translation id="5612720917913232150">يريد <ph name="URL"/> استخدام الموقع الجغرافي لجهاز الكمبيوتر.</translation>
 <translation id="5614520971155863709">ألعاب ورق</translation>
+<translation id="5617785978844309968">عرض جميع جداول المقارنة</translation>
 <translation id="5617949217645503996">أعاد <ph name="HOST_NAME"/> توجيهك مرات كثيرة جدًا.</translation>
 <translation id="5619721953841297650">الإعدادات المسبقة</translation>
 <translation id="5624120631404540903">إدارة كلمات المرور</translation>
@@ -2531,13 +2558,11 @@
 <translation id="5675809467256309336">موسيقى إلكترونية وموسيقى رقص</translation>
 <translation id="5675959228867414813">العرض حسب التاريخ</translation>
 <translation id="567604591393105935">تم فتح بطاقة التجارة السفلية في نصف الشاشة</translation>
-<translation id="5677928146339483299">محظور</translation>
 <translation id="5678007133659493065">قصدير</translation>
 <translation id="5680642791693447368">أفلام تشويق وغموض وجرائم</translation>
 <translation id="568292603005599551">Image X position</translation>
 <translation id="5684874026226664614">عفوًا. تعذرت ترجمة هذه الصفحة.</translation>
 <translation id="568489534660743582">الإعلانات المقترَحة من المواقع الإلكترونية هي أحد العوامل التي يمكن أن يستخدمها الموقع الإلكتروني لتخصيص الإعلانات. حتى في حال عدم توفُّر الإعلانات المقترَحة من المواقع الإلكترونية، يمكن للمواقع الإلكترونية عرض إعلانات لك ولكنّها قد تكون أقل صلة باهتماماتك.</translation>
-<translation id="5687340364605915800">تردّ المواقع الإلكترونية على هذا الطلب وفق تقديرها الخاص</translation>
 <translation id="5688137257686092846">اختصاصيو تجميل</translation>
 <translation id="5689199277474810259">‏تصدير إلى JSON</translation>
 <translation id="5689516760719285838">الموقع الجغرافي</translation>
@@ -2550,6 +2575,7 @@
 <translation id="5701381305118179107">توسيط</translation>
 <translation id="5707154300732650394">استئناف سجلّ أنشطة البحث والتصفُّح</translation>
 <translation id="57094364128775171">اقتراح كلمة مرور قوية…</translation>
+<translation id="570953204696852961">أحمر 3</translation>
 <translation id="571403275720188526">(arm64)</translation>
 <translation id="571510845185711675">أطباء بيطريون</translation>
 <translation id="5715150588940290235">هل تريد حذف رموز الأمان المحفوظة؟</translation>
@@ -2572,6 +2598,7 @@
 <translation id="5740911612628596808">‏ظرف C9</translation>
 <translation id="5742806904559466333">حانات وأندية وحفلات ليلية</translation>
 <translation id="5743684619253032786">منتجات عناية بالأظافر</translation>
+<translation id="574392208103952083">متوسط</translation>
 <translation id="5745733273847572235">السماح للموقع الإلكتروني بطلب معرفة موقعك الجغرافي</translation>
 <translation id="5750869797196646528">تتبُّع اليد</translation>
 <translation id="5752327398324808817">أدخِل كلمة أو كلمتين</translation>
@@ -2591,7 +2618,6 @@
 <translation id="57838592816432529">كتم الصوت</translation>
 <translation id="5784606427469807560">حدثت مشكلة أثناء التأكد من بطاقتك. تحقق من اتصالك بالإنترنت وأعد المحاولة.</translation>
 <translation id="5785756445106461925">إضافة إلى ذلك، تتضمن هذه الصفحة موارد أخرى غير آمنة. ويستطيع الآخرون مشاهدة هذه الموارد أثناء نقلها، كما يستطيع أي مهاجم تعديلها لتغيير مظهر الصفحة.</translation>
-<translation id="5789643057113097023">.</translation>
 <translation id="5793317771769868848">سيتم حذف طريقة الدفع هذه من هذا الجهاز.</translation>
 <translation id="5794065675298686371">تفعيل الإشعارات الخاصة بتتبُّع الأسعار</translation>
 <translation id="5800727402210090597">خدمات الهواتف المحمولة وإصلاحها</translation>
@@ -2604,7 +2630,6 @@
 <translation id="5813753398265398978">فيزياء</translation>
 <translation id="5817918615728894473">إقران</translation>
 <translation id="5826507051599432481">‏الاسم الشائع (CN)</translation>
-<translation id="5829215001860862731">الحفظ في الحساب</translation>
 <translation id="5830698870816298009">استخدام الكاميرا وتحريكها</translation>
 <translation id="583281660410589416">غير معروف</translation>
 <translation id="5838278095973806738">يجب عدم إدخال معلومات حسّاسة على هذا الموقع (مثل كلمات المرور أو بطاقات الائتمان) لأنه قد تتم سرقتها من قِبل المهاجمين.</translation>
@@ -2681,6 +2706,7 @@
 <translation id="5969199813874624822">حفظ السعر وتتبُّعه</translation>
 <translation id="5973514677932942122">‏‫‎<ph name="EXPIRATION_DATE"/>‏ | <ph name="SECURITY_CODE"/></translation>
 <translation id="5974052231147553524">اللفافة السادسة</translation>
+<translation id="5974745851230707809">خيارات الدفع على أقساط</translation>
 <translation id="5975083100439434680">تصغير</translation>
 <translation id="5979084224081478209">التحقق من كلمات المرور</translation>
 <translation id="5984570616552610254">رطوبة الغرفة</translation>
@@ -2696,6 +2722,7 @@
 <translation id="6001839398155993679">البدء</translation>
 <translation id="6002122790816966947">أجهزتك</translation>
 <translation id="6002968396561884726">منتج تم عرضه مؤخرًا</translation>
+<translation id="6005188329423473970">‏اكتمل تثبيت خدمات VPN التي تُشغَّل في الخلفية. إذا لم تظهر لك تطبيقات VPN، يُرجى تسجيل الخروج ثم تسجيل الدخول مرة أخرى.</translation>
 <translation id="6005659677094197001">غير متقطع</translation>
 <translation id="6005765687956866568">تم محو المعلومات التي تم ملؤها تلقائيًا من النموذج.</translation>
 <translation id="6006365096047131769">3 × 5 بوصة</translation>
@@ -2750,6 +2777,7 @@
 <translation id="6085149458302186532">تصنيفات (ملوّنة)</translation>
 <translation id="6087312102907839798">عمليات البحث ذات الصلة</translation>
 <translation id="7851017866080575588">‏ستظل علامات التبويب التي تحذفها من سجلّ Brave معروضة في جداول المقارنة</translation>
+<translation id="6093599771645355227">أصفر 1</translation>
 <translation id="6093795393556121384">تم التحقق من صلاحية بطاقتك</translation>
 <translation id="6094273045989040137">إضافة تعليق توضيحي</translation>
 <translation id="6094290315941448991">تحظر سياسة المشرف ميزة تسجيل الشاشة عند عرض محتوى سري.</translation>
@@ -2759,7 +2787,9 @@
 <translation id="6105460996796456817">إنشاء موقع إلكتروني</translation>
 <translation id="6106989379647458772">قد تكون صفحة الويب على <ph name="PAGE"/> غير متاحة مؤقتًا أو تم نقلها نهائيًا إلى عنوان ويب جديد.</translation>
 <translation id="6107012941649240045">الجهة صاحبة الإصدار</translation>
+<translation id="6107864469867367783">تم تغيير اسم المجموعة من قِبل "<ph name="USER_DISPLAY_NAME"/>"</translation>
 <translation id="6107924765192360631">ابدأ بكتابة بضع كلمات أو مسودة أولية للحصول على اقتراحات الكتابة.</translation>
+<translation id="6108508372809181847">مقارنة "<ph name="TABLE_NAME"/>"</translation>
 <translation id="6108580855199168381">تفاصيل الشهادة</translation>
 <translation id="5539282829066374332">‏محرك البحث الخاص بك في Brave</translation>
 <translation id="6108849843016142864">زواحف وبرمائيات</translation>
@@ -2793,6 +2823,7 @@
 <translation id="6159554577634054750">مكافحة حشرات</translation>
 <translation id="6159908896951210943">نص رسمي</translation>
 <translation id="6160391204859821737">تفعيل إحدى ميزات الخصوصية في عرض الإعلانات</translation>
+<translation id="6162403104168428984">هل تريد تعديل العنوان؟</translation>
 <translation id="6165508094623778733">مزيد من المعلومات</translation>
 <translation id="6167577165590485365">وقت آخر محاولة استرجاع:</translation>
 <translation id="1057223975912338979">‏يحاول Brave إثبات هويتك لملء معلومات الدفع.</translation>
@@ -2890,7 +2921,6 @@
 <translation id="633770708279464947">قيمة <ph name="SECURE_DNS_SALT"/> غير صالحة ولن يتم استخدامها.</translation>
 <translation id="6340739886198108203">حسب سياسة المشرف، لا يُنصح بأخذ لقطات شاشة أو تسجيل فيديوهات لمحتوى سرّي معروض على الشاشة:</translation>
 <translation id="6341434961864773665">{0,plural, =1{لا تنصح سياسة المشرف بتحميل هذا الملف إلى <ph name="DESTINATION_NAME"/>.}zero{لا تنصح سياسة المشرف بتحميل هذه الملفات إلى <ph name="DESTINATION_NAME"/>.}two{لا تنصح سياسة المشرف بتحميل هذين الملفَين إلى <ph name="DESTINATION_NAME"/>.}few{لا تنصح سياسة المشرف بتحميل هذه الملفات إلى <ph name="DESTINATION_NAME"/>.}many{لا تنصح سياسة المشرف بتحميل هذه الملفات إلى <ph name="DESTINATION_NAME"/>.}other{لا تنصح سياسة المشرف بتحميل هذه الملفات إلى <ph name="DESTINATION_NAME"/>.}}</translation>
-<translation id="6344622098450209924">الحماية من التتبُّع</translation>
 <translation id="634500758737709758">بدء الاتجاهات</translation>
 <translation id="6348220984832452017">الأنماط المتنوّعة المفعَّلة</translation>
 <translation id="6349101878882523185">تثبيت "<ph name="APP_NAME"/>"</translation>
@@ -2924,6 +2954,7 @@
 <translation id="639068771471208680">نموذج متعدد الأجزاء</translation>
 <translation id="6391700400718590966">تم إغلاق صفحة عدم تطابق بيانات اعتماد الدفع الآمن.</translation>
 <translation id="6392799395081100092">ورق (رق)</translation>
+<translation id="6393156038355142111">اقتراح كلمة مرور قوية</translation>
 <translation id="6393956493820063117">تحظر سياسة المشرف إمكانية اللصق من <ph name="ORIGIN_NAME"/> إلى هذا المكان.</translation>
 <translation id="6394852772105848029">يريد هذا الموقع الإلكتروني فتح تطبيق <ph name="APP_NAME"/>.</translation>
 <translation id="639673288733510393">دراجات سكوتر ودراجات نارية صغيرة</translation>
@@ -2943,7 +2974,7 @@
 <translation id="6424600253695044005">خدمات تخزين في السحابة الإلكترونية</translation>
 <translation id="6425092077175753609">متعدد الأبعاد</translation>
 <translation id="6427730057873428458">الطي على شكل بوابة</translation>
-<translation id="6428450836711225518">إثبات ملكية رقم الهاتف</translation>
+<translation id="6428450836711225518">تأكيد رقم هاتفك</translation>
 <translation id="6429267199680088961">A4 Tab</translation>
 <translation id="7772223497488184427">‏تغيير كلمة مرور Brave</translation>
 <translation id="6432297414176614592">مزيد من المعلومات حول ميزة "مواضيع الإعلانات"</translation>
@@ -3015,7 +3046,6 @@
 <translation id="6547208576736763147">عمل ثقبَين يسارًا</translation>
 <translation id="6549443526281184652">أزياء تنكرية</translation>
 <translation id="6550245281449521513">لا يُسمح بقفل الماوس</translation>
-<translation id="6551873053534932690">هل تريد حفظ العنوان في الحساب؟</translation>
 <translation id="6554732001434021288">تمّت زيارة الموقع الإلكتروني آخر مرّة قبل <ph name="NUM_DAYS"/> يوم.</translation>
 <translation id="6556866813142980365">إعادة</translation>
 <translation id="6557715786897013164">14 × 17 بوصة</translation>
@@ -3025,6 +3055,7 @@
 <translation id="6569060085658103619">أنت تعرض صفحة إضافة</translation>
 <translation id="6573200754375280815">عمل ثقبَين يمينًا</translation>
 <translation id="6574762126505704998">تعبئة</translation>
+<translation id="6575408526598156416">الحفظ في الحساب</translation>
 <translation id="6577792494180292262">رأس مال مُخاطر</translation>
 <translation id="6578434528542148658">رقم تعريف الإضافة غير صالح.</translation>
 <translation id="6579858392010591435">أعياد وفعاليات موسمية</translation>
@@ -3073,7 +3104,6 @@
 <translation id="6668389483194953109">‏تم العثور على اسم حجم الورقة "custom"، إلا أنّ السمة "custom_size" فارغة أو غير صالحة.</translation>
 <translation id="6671169470640320959">تمويل قروض سيارات</translation>
 <translation id="6677351035258626477">وجبات سريعة</translation>
-<translation id="7207774923603194735">{FINANCIAL_ACCOUNT,plural, =1{‏عند إجراء عمليات شراء على متصفّح Brave، يمكنك استخدام <ph name="FINANCIAL_ACCOUNT_TYPES"/> كخيار للدفع}zero{‏عند إجراء عمليات شراء على متصفّح Brave، يمكنك استخدام <ph name="FINANCIAL_ACCOUNT_TYPES"/> كخيارات للدفع}two{‏عند إجراء عمليات شراء على متصفّح Brave، يمكنك استخدام <ph name="FINANCIAL_ACCOUNT_TYPES"/> كخيارَين للدفع}few{‏عند إجراء عمليات شراء على متصفّح Brave، يمكنك استخدام <ph name="FINANCIAL_ACCOUNT_TYPES"/> كخيارات للدفع}many{‏عند إجراء عمليات شراء على متصفّح Brave، يمكنك استخدام <ph name="FINANCIAL_ACCOUNT_TYPES"/> كخيارات للدفع}other{‏عند إجراء عمليات شراء على متصفّح Brave، يمكنك استخدام <ph name="FINANCIAL_ACCOUNT_TYPES"/> كخيارات للدفع}}</translation>
 <translation id="7691784300114873847">‏يحاول متصفِّح Brave إدخال كلمة مرورك على <ph name="APP_NAME"/>.</translation>
 <translation id="6681790815630918386">‏تم حفظ رمز التحقّق من البطاقة (CVC)</translation>
 <translation id="6683022854667115063">سمّاعات رأس</translation>
@@ -3102,7 +3132,6 @@
 <translation id="6709133671862442373">الأخبار</translation>
 <translation id="6710213216561001401">السابق</translation>
 <translation id="6710594484020273272">&lt;إدخال عبارة البحث&gt;</translation>
-<translation id="6710648923880003133">اقتراح كلمة مرور قوية</translation>
 <translation id="671076103358959139">الرمز المميّز للتسجيل:</translation>
 <translation id="6711464428925977395">هناك خطأ ما في الخادم الوكيل، أو العنوان غير صحيح.</translation>
 <translation id="6711700233707023861">تمّ نسخ سلسلة الإصدارات المُعدَّلة إلى الحافظة</translation>
@@ -3120,7 +3149,6 @@
 <translation id="6739943577740687354">تستخدم هذه الميزة الذكاء الاصطناعي وقد تخطئ في بعض الأحيان</translation>
 <translation id="6740851646645036700">لقد وصلت إلى الحد الأقصى لاستخدام ميزة "مساعدة في الكتابة". يُرجى إعادة المحاولة لاحقًا.</translation>
 <translation id="674375294223700098">حدث خطأ غير معروف في شهادة الخادم.</translation>
-<translation id="6744009308914054259">أثناء انتظار اتصال، يمكنك الانتقال إلى مجلد "المحتوى الذي تم تنزيله" للاطِّلاع على المقالات بلا اتصال بالإنترنت.</translation>
 <translation id="6745592621698551453">التحديث الآن</translation>
 <translation id="6751487147225428522">ROC 8K</translation>
 <translation id="6752086006821653994">مؤتمرات عن بُعد</translation>
@@ -3129,7 +3157,6 @@
 <translation id="6754547388777247439">حسابات توفير</translation>
 <translation id="6757797048963528358">خضع جهازك إلى وضع السكون.</translation>
 <translation id="6766558780547452153">طهي ووصفات طعام</translation>
-<translation id="6767985426384634228">هل تريد تعديل العنوان؟</translation>
 <translation id="6770747695101757579">ورق (قطني)</translation>
 <translation id="677257480647123231">سلامة الأطفال على الإنترنت</translation>
 <translation id="3576010969994131987">‏لاستخدام YouTube، يُرجى المتابعة باستخدام حسابك على Brave</translation>
@@ -3166,7 +3193,6 @@
 <translation id="6831043979455480757">ترجمة</translation>
 <translation id="683108308100148227">إخفاء العنصر</translation>
 <translation id="6832753933931306326">تم ملء النموذج.</translation>
-<translation id="6837361937093656245">يجب تسجيل الدخول</translation>
 <translation id="6841864657731852591">أسطوانة محفورة</translation>
 <translation id="6842196666980060516">184 × 260 ملم</translation>
 <translation id="6844998850832008753">تمّ السماح بميزة "تتبُّع اليد" هذه المرة</translation>
@@ -3210,6 +3236,7 @@
 <translation id="6925267999184670015">‏‫B+‎ شمال أمريكا</translation>
 <translation id="6926216138694948720">فن الجسد</translation>
 <translation id="692638818576287323">مركبات تجارية</translation>
+<translation id="6933282894115597956">تطلُب مؤسستك تسجيل الدخول إلى حسابك</translation>
 <translation id="6090573860187511325">‏<ph name="BEGIN_BOLD"/>يتيح لك محرك البحث التلقائي البحث على الإنترنت ويفعِّل ميزات Brave<ph name="END_BOLD"/>، مثل البحث من شريط العناوين ومن الصور على صفحات الويب. قد لا تتوفر إحدى الميزات إذا لم يكن محرك البحث الخاص بك يتيحها.</translation>
 <translation id="6722453239914327220">‏هذا الاسم من حسابك على Brave</translation>
 <translation id="6935082727755903526">وظائف محاسبة وشؤون مالية</translation>
@@ -3219,6 +3246,7 @@
 <translation id="6944692733090228304">لقد أدخلتَ كلمة المرور في موقع إلكتروني لا تديره <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>. ويُرجى عدم إعادة استخدام كلمة المرور في التطبيقات ومواقع الويب الأخرى لحماية حسابك.</translation>
 <translation id="9000864348890316168">‏البحث في الويب على Brave</translation>
 <translation id="6948051842255602737">انتهت اللعبة، والنتيجة التي حققتها هي <ph name="SCORE"/>.</translation>
+<translation id="4203796512947064623">‏عند إجراء عمليات شراء على Brave، يمكنك استخدام Pix كخيار للدفع</translation>
 <translation id="6948701128805548767">لعرض طرق الاستلام ومتطلباته، اختَر عنوانًا</translation>
 <translation id="6948874830249067134">A1x3</translation>
 <translation id="6949872517221025916">إعادة تحديد كلمة المرور</translation>
@@ -3260,6 +3288,7 @@
 <translation id="7003322000677139268">إكسسوارات وقطع غيار مركبات</translation>
 <translation id="7004499039102548441">علامات التبويب الأخيرة</translation>
 <translation id="7006930604109697472">إرسال على أيّ حال</translation>
+<translation id="7009364359744329733">هذه البطاقة غير متوفّرة حاليًا. يُرجى إعادة المحاولة لاحقًا.</translation>
 <translation id="7010658264061801199">أطعمة ومشروبات</translation>
 <translation id="7012363358306927923">China UnionPay</translation>
 <translation id="7013835112918108252">بإمكان الموقع الإلكتروني طلب قفل الماوس واستخدامه</translation>
@@ -3286,6 +3315,7 @@
 <translation id="7058774143982824355">‏خدمة التحليل اللغوي لكلمات المرور في ملف CSV</translation>
 <translation id="7062635574500127092">أزرق مخضر</translation>
 <translation id="5320462991730735481">‏إضافة عناوين وإدارتها في إعدادات متصفّح Brave</translation>
+<translation id="7063157783216323487">أخضر 2</translation>
 <translation id="7064443976734085921">سيارات صغيرة</translation>
 <translation id="7064851114919012435">معلومات الاتصال</translation>
 <translation id="7067633076996245366">موسيقى "سول" وموسيقى "آر آند بي"</translation>
@@ -3336,11 +3366,13 @@
 <translation id="7143682719845053166">PRC 32K</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
 <translation id="7150146631451105528"><ph name="DATE"/></translation>
+<translation id="7152230779180489711">تاريخ آخر زيارة للموقع الإلكتروني</translation>
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> وطريقة دفع <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> أخرى}two{<ph name="PAYMENT_METHOD_PREVIEW"/> وطريقتا دفع <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> أخريان}few{<ph name="PAYMENT_METHOD_PREVIEW"/> و<ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> طرق دفع أخرى}many{<ph name="PAYMENT_METHOD_PREVIEW"/> و<ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> طريقة دفع أخرى}other{<ph name="PAYMENT_METHOD_PREVIEW"/> و<ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> طريقة دفع أخرى}}</translation>
 <translation id="7153618581592392745">بنفسجي فاتح</translation>
 <translation id="7156870133441232244">‏يجب ترقية الخادم إلى الإصدار 1.2 من طبقة النقل الآمنة (TLS) أو إصدار أحدث.</translation>
 <translation id="715996170234243096">{NUM_FILES,plural, =1{لإرسال هذا الملف باستخدام (<ph name="FEATURE_NAME"/>)، يجب إخلاء مساحة بحجم (<ph name="DISK_SPACE_SIZE"/>) على جهازك.}zero{لإرسال هذه الملفات باستخدام (<ph name="FEATURE_NAME"/>)، يجب إخلاء مساحة بحجم (<ph name="DISK_SPACE_SIZE"/>) على جهازك.}two{لإرسال هذين الملفَين باستخدام (<ph name="FEATURE_NAME"/>)، يجب إخلاء مساحة بحجم (<ph name="DISK_SPACE_SIZE"/>) على جهازك.}few{لإرسال هذه الملفات باستخدام (<ph name="FEATURE_NAME"/>)، يجب إخلاء مساحة بحجم (<ph name="DISK_SPACE_SIZE"/>) على جهازك.}many{لإرسال هذه الملفات باستخدام (<ph name="FEATURE_NAME"/>)، يجب إخلاء مساحة بحجم (<ph name="DISK_SPACE_SIZE"/>) على جهازك.}other{لإرسال هذه الملفات باستخدام (<ph name="FEATURE_NAME"/>)، يجب إخلاء مساحة بحجم (<ph name="DISK_SPACE_SIZE"/>) على جهازك.}}</translation>
 <translation id="7160999678034985039">يُرجى حفظ عملك وبدء التحديث عند الاستعداد لذلك.</translation>
+<translation id="7162277662076933695">قارئ البطاقات الذكية</translation>
 <translation id="7163295244162773898">{0,plural, =1{هل تريد نسخ الملف السرّي؟}zero{هل تريد نسخ الملفات السرّية؟}two{هل تريد نسخ الملفَّين السرّيَّين؟}few{هل تريد نسخ الملفات السرّية؟}many{هل تريد نسخ الملفات السرّية؟}other{هل تريد نسخ الملفات السرّية؟}}</translation>
 <translation id="7168625890036931112">‫"<ph name="DATA_CONTROLS_RESTRICTION"/>" ليس شرطًا متوافقًا على هذا النظام الأساسي</translation>
 <translation id="717330890047184534">‏معرّف GAIA:</translation>
@@ -3348,7 +3380,6 @@
 <translation id="7174545416324379297">تم الدمج</translation>
 <translation id="7175097078723125014">تم تحديد خيار تعديل العنوان.</translation>
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> وخيار <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> آخر}two{<ph name="SHIPPING_OPTION_PREVIEW"/> وخياران (<ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/>) آخران}few{<ph name="SHIPPING_OPTION_PREVIEW"/> و<ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> خيارات أخرى}many{<ph name="SHIPPING_OPTION_PREVIEW"/> و<ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> خيارًا آخر}other{<ph name="SHIPPING_OPTION_PREVIEW"/> و<ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> خيار آخر}}</translation>
-<translation id="7179323680825933600">حفظ بيانات طرق الدفع وملؤها</translation>
 <translation id="7180611975245234373">إعادة التحميل</translation>
 <translation id="7182878459783632708">لم يتم ضبط أي سياسات</translation>
 <translation id="7184379626380324540">أثاث منزلي</translation>
@@ -3400,6 +3431,7 @@
 <translation id="725866823122871198">تعذر إنشاء اتصال خاص بـ <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> نظرًا لأن التاريخ والوقت لجهاز الكمبيوتر (<ph name="DATE_AND_TIME"/>) غير صحيحين.</translation>
 <translation id="7260075294900977274">مجلّد ذكي جديد يساعدك في حفظ جميع صفحات التسوّق في مكان واحد وتتبُّع الأسعار تلقائيًا والحصول على معلومات مفصّلة عن الأسعار وغير ذلك</translation>
 <translation id="7265608370113700582">يتوفّر العنوان على هذا الجهاز فقط.</translation>
+<translation id="7269151392155523061">يجب ألا يكون الاختصار مطابِقًا للكلمة الرئيسية لمُجمِّع البحث التي حدّدتها <ph name="SEARCH_AGGREGATOR_SETTINGS_POLICY"/>‏: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="7273111226200291353">‏يتم إرسال الملفات التي تنزِّلها إلى Google Cloud أو جهات خارجية لتحليلها. على سبيل المثال، قد يتم فحص هذه الملفات بحثًا عن بيانات حسّاسة أو برامج ضارة وتخزينها استنادًا إلى سياسات الشركة، وقد تظهر للمشرف.</translation>
 <translation id="7275334191706090484">الإشارات المرجعية المُدارة</translation>
 <translation id="7275808129217605899">تغذية صحية</translation>
@@ -3411,6 +3443,7 @@
 <translation id="7304030187361489308">مرتفع</translation>
 <translation id="244157907932852817">‏إدارة إعدادات خصوصية حسابك على Brave</translation>
 <translation id="7305756307268530424">تشغيل اللعبة ببطء</translation>
+<translation id="7307063504147610123">تم حفظ العنوان على هذا الجهاز</translation>
 <translation id="7308436126008021607">المزامنة في الخلفية</translation>
 <translation id="3765631529724190482">‏مزيد من المعلومات حول إدارة الخصوصية في عرض الإعلانات في Brave</translation>
 <translation id="7310392214323165548">ستتم إعادة تشغيل الجهاز قريبًا.</translation>
@@ -3433,7 +3466,6 @@
 <translation id="7346081071264046066">"الرد بنعم على دعوة الزفاف هذه بأسلوب حماسي"</translation>
 <translation id="7352651011704765696">حدث خطأ ما</translation>
 <translation id="7353601530677266744">سطر الأوامر</translation>
-<translation id="7356678400607112844">تاريخ آخر زيارة للموقع الإلكتروني</translation>
 <translation id="7359588939039777303">تم حظر الإعلانات.</translation>
 <translation id="7308957539693927108">‏ستظهر لك عند الدفع أي خصومات متوفّرة بعد أن ترصدها Brave.</translation>
 <translation id="5417725730200908216">‏<ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>، اضغط على مفتاح التبويب (Tab) ثم مفتاح Enter لإضافة عناوين وإدارتها في إعدادات متصفّح Brave.</translation>
@@ -3457,12 +3489,11 @@
 <translation id="7381551826960739226">تم إيقاف الملء التلقائي لطرق الدفع لأنّ هذا النموذج لا يستخدم اتصالاً آمنًا.</translation>
 <translation id="7388380253839603603">أسعار الوقود وخدمات تزويد السيارات بالوقود</translation>
 <translation id="7388594495505979117">{0,plural, =1{ستتم إعادة تشغيل جهازك بعد دقيقة واحدة}zero{ستتم إعادة تشغيل جهازك بعد # دقيقة}two{ستتم إعادة تشغيل جهازك بعد دقيقتين}few{ستتم إعادة تشغيل جهازك بعد # دقائق}many{ستتم إعادة تشغيل جهازك بعد # دقيقة}other{ستتم إعادة تشغيل جهازك بعد # دقيقة}}</translation>
-<translation id="7392089738299859607">تعديل العنوان</translation>
 <translation id="7393161616326137353">ألعاب مغامرات</translation>
 <translation id="7393475648162498734">يتيح هذا الإعداد عرض المكافآت والمزايا المتاحة لبطاقاتك عند الدفع.</translation>
+<translation id="7393971683644170444">جارٍ الاتصال بمقدّم بطاقتك...</translation>
 <translation id="739728382607845710">رمز معالج الدفع</translation>
 <translation id="7399616692258236448">يتم تلقائيًا منع جميع المواقع الإلكترونية من رصد الموقع الجغرافي باستثناء تلك المواقع التي تسمح لها بذلك.</translation>
-<translation id="7399802613464275309">التحقّق من الأمان</translation>
 <translation id="7400418766976504921">‏عنوان URL</translation>
 <translation id="7403392780200267761">يمكنك مشاركة علامة التبويب هذه عن طريق مشاركة الرابط وإنشاء رمز استجابة سريعة وبث المحتوى وغير ذلك</translation>
 <translation id="7403591733719184120">إدارة <ph name="DEVICE_NAME"/></translation>
@@ -3497,7 +3528,6 @@
 <translation id="7429429656042611765">Executive</translation>
 <translation id="288933326661929857">‏يجب إثبات هويتك حتى يتمكّن Brave من ملء معلومات الدفع.</translation>
 <translation id="7437289804838430631">إضافة معلومات الاتصال</translation>
-<translation id="7440140511386898319">الاستكشاف أثناء عدم الاتصال بالإنترنت</translation>
 <translation id="7441627299479586546">موضوع السياسة غير صحيح</translation>
 <translation id="7441864845853794192">أطعمة مميزة وجاهزة لاختبار التذوق</translation>
 <translation id="7442389976360981500">هل تريد السماح بتتبُّع اليد؟</translation>
@@ -3531,6 +3561,7 @@
 <translation id="7489392576326061356">شامبو وبلسم</translation>
 <translation id="7495528107193238112">هذا المحتوى محظور. يمكنك التواصل مع مالك الموقع الإلكتروني لحلّ المشكلة.</translation>
 <translation id="749865518782565832">سِباكة</translation>
+<translation id="1314010941893038514">‏عند إجراء عمليات شراء على Brave، يمكنك استخدام المحفظة الإلكترونية وPix كخيارين للدفع</translation>
 <translation id="7500917112031739411">العرض حسب المجموعة</translation>
 <translation id="7501663406926337752">أبلغت مؤسستك عن الموقع الإلكتروني الذي تحاول زيارته</translation>
 <translation id="7507075214339298899">ظرف رقم 9</translation>
@@ -3598,6 +3629,7 @@
 <translation id="7599089013883397081">انتهت مهلة التنزيل</translation>
 <translation id="7608583484192556132">إنّ ظهور إعلانات مخصّصة يعتمد على عدة عوامل، منها هذا الإعداد و<ph name="BEGIN_LINK_1"/>الإعلانات المقترَحة من المواقع الإلكترونية<ph name="END_LINK_1"/> و<ph name="BEGIN_LINK_2"/>إعدادات ملفات تعريف الارتباط<ph name="END_LINK_2"/> وما إذا كان الموقع الإلكتروني الذي تتصفّحه يخصِّص الإعلانات. تعرَّف على مزيد من المعلومات حول <ph name="BEGIN_LINK_3"/>إدارة الخصوصية في عرض الإعلانات<ph name="END_LINK_3"/>.</translation>
 <translation id="7610193165460212391">القيمة خارج النطاق <ph name="VALUE"/>.</translation>
+<translation id="761261689936461781">سميك</translation>
 <translation id="7613889955535752492">تاريخ انتهاء الصلاحية: <ph name="EXPIRATION_MONTH"/> / <ph name="EXPIRATION_YEAR"/></translation>
 <translation id="5704205738724476508">‏<ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>، اضغط على مفتاح التبويب (Tab) ثم مفتاح Enter لعرض كلمات المرور في إعدادات Brave وإدارتها.</translation>
 <translation id="8565825862287624454">‏لقد فعّل مشرفك "وصلات Brave Enterprise" على متصفّحك. لدى هذه الوصلات إذن بالوصول إلى بعض بياناتك.</translation>
@@ -3631,6 +3663,7 @@
 <translation id="7660456820368115565">ألعاب بأعداد هائلة من اللاعبين</translation>
 <translation id="7661591871037163355">جدول المقارنة ممتلئ. عليك إزالة أعمدة لإضافة أعمدة جديدة.</translation>
 <translation id="7662298039739062396">يتم التحكّم في الإعداد بواسطة إحدى الإضافات</translation>
+<translation id="7662911501613893058">تمت مغادرة المجموعة من قِبل "<ph name="USER_DISPLAY_NAME"/>"</translation>
 <translation id="7663736086183791259">شهادة <ph name="CERTIFICATE_VALIDITY"/></translation>
 <translation id="7667346355482952095">الرمز المميز المعروض للسياسة خاليًا أو لا يتطابق مع الرمز المميز الحالي</translation>
 <translation id="7668654391829183341">جهاز غير معروف</translation>
@@ -3641,6 +3674,7 @@
 <translation id="767550629621587224">ملحقات تم اقتصاصها مسبقًا</translation>
 <translation id="7675756033024037212">غير مسموح بالانتقال للأعلى أو للأسفل في المحتوى وتكبيره أو تصغيره</translation>
 <translation id="7676643023259824263">البحث عن نص الحافظة،<ph name="TEXT"/></translation>
+<translation id="7679287273775285018">الدفع باستخدام المحفظة الإلكترونية</translation>
 <translation id="4628681623692678085">‏عرض سجلّ التصفُّح وإدارته في إعدادات Brave</translation>
 <translation id="7679947978757153706">بيسبول</translation>
 <translation id="7680990533995586733"><ph name="CARD_NETWORK_NAME"/>، <ph name="CARD_LAST_FOUR_DIGITS"/>، تاريخ انتهاء الصلاحية <ph name="CARD_EXPIRATION"/></translation>
@@ -3688,7 +3722,6 @@
 <translation id="7751019142333897329"><ph name="FIRST_STRING"/> <ph name="SECOND_STRING"/></translation>
 <translation id="921286857694606205">‏تخصيص أحجام الخطوط وأنماطها في Brave</translation>
 <translation id="7752995774971033316">غير مُدار</translation>
-<translation id="7753769899818674547">‏‫‎<ph name="KEYWORD"/>: بدء الدردشة مع "<ph name="KEYWORD_SHORT_NAME"/>"</translation>
 <translation id="1771750053794015966">‏سيتم إغلاق علامات تبويب Brave وتطبيقاته عند بدء التحديث</translation>
 <translation id="7755287808199759310">يمكن لأحد والديك إزالة الحظر لك</translation>
 <translation id="7755624218968747854">اللفافة الأساسية</translation>
@@ -3727,6 +3760,7 @@
 <translation id="7814857791038398352">Microsoft OneDrive</translation>
 <translation id="7815352264092918456">ورق (عادي)</translation>
 <translation id="7815407501681723534">تم العثور على <ph name="NUMBER_OF_RESULTS"/> <ph name="SEARCH_RESULTS"/> لـ "<ph name="SEARCH_STRING"/>"</translation>
+<translation id="7819605256207059717">حظرت مؤسستك هذا الملف.</translation>
 <translation id="7822611063308883975">أجهزة الألعاب المحمولة</translation>
 <translation id="7825558994363763489">أفران ميكروويف</translation>
 <translation id="782886543891417279">‏قد يتطلب Wi-Fi الذي تستخدمه (<ph name="WIFI_NAME"/>) زيارة صفحة تسجيل الدخول.</translation>
@@ -3737,6 +3771,7 @@
 <translation id="7842611866969435396">لنبدأ</translation>
 <translation id="784404208867107517">السجلّ المجمَّع</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{لا تتوفَّر تطبيقات}=1{تطبيق واحد (<ph name="EXAMPLE_APP_1"/>)}=2{تطبيقان (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>)}few{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}many{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}other{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}}</translation>
+<translation id="7846161022626028328">حدث خطأ. يُرجى إعادة المحاولة.</translation>
 <translation id="785476343534277563">رياضات جامعية</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7860345425589240791">‏أدخِل تاريخ انتهاء صلاحية البطاقة الجديد ورمز التحقق من البطاقة (CVC) المتوفّر على <ph name="SIDE_OF_CARD"/>.</translation>
@@ -3746,7 +3781,6 @@
 <translation id="7971990257511863579">‏تغيير كلمة مرور حسابك على Brave</translation>
 <translation id="7877007680666472091">معرّفات المحتوى المحمي</translation>
 <translation id="7878562273885520351">من المحتمل أنه تم اختراق كلمة مرورك</translation>
-<translation id="7880146494886811634">حفظ العنوان</translation>
 <translation id="7882421473871500483">بني</translation>
 <translation id="7886897188117641322">اختَر فئات المواضيع المتنوعة التي يمكن استخدامها للمساعدة في تخصيص الإعلانات</translation>
 <translation id="7887683347370398519">‏تحقق من رمز التحقق من البطاقة (CVC) ثم أعد المحاولة.</translation>
@@ -3776,7 +3810,6 @@
 <translation id="7943397946612013052">تنزيل الملفات محظور</translation>
 <translation id="7943893128817522649">السماح للموقع الإلكتروني بطلب تنزيل ملفات متعدّدة تلقائيًا</translation>
 <translation id="794567586469801724">‏نظام التشغيل macOS</translation>
-<translation id="7946724693008564269">لغة تم التعرّف عليها</translation>
 <translation id="7947285636476623132">تحقق من عام انتهاء الصلاحية وأعِد المحاولة مرة أخرى</translation>
 <translation id="7947310711271925113">موسيقى "بوب"</translation>
 <translation id="3227327027957060968">‏<ph name="SEE_CHROME_TIPS_FOCUSED_FRIENDLY_MATCH_TEXT"/>: اضغط على مفتاح التبويب (Tab) ثم Enter للتعرّف على ميزات Brave.</translation>
@@ -3800,6 +3833,7 @@
 <translation id="7975858430722947486">تمت إضافة الصفحة إلى جدول المقارنة</translation>
 <translation id="7976214039405368314">عدد الطلبات كبير جدًا.</translation>
 <translation id="7977538094055660992">جهاز إخراج</translation>
+<translation id="7979463492896063081">{TIME_DIMENSION,plural, =0{قبل <ph name="TIME_COUNT"/> دقيقة}=1{قبل ساعة واحدة (<ph name="TIME_COUNT"/>)}two{قبل يوميَن (<ph name="TIME_COUNT"/>)}few{قبل <ph name="TIME_COUNT"/> أيام}many{قبل <ph name="TIME_COUNT"/> يومًا}other{قبل <ph name="TIME_COUNT"/> يوم}}</translation>
 <translation id="7979595116210197019">خدمات غذائية</translation>
 <translation id="798134797138789862">السماح للموقع الإلكتروني بطلب استخدام أجهزة الواقع الافتراضي وبياناتها</translation>
 <translation id="7982789257301363584">الشبكة</translation>
@@ -3828,6 +3862,8 @@
 <translation id="814401020562419411">‏<ph name="CREATE_GOOGLE_FORM_FOCUSED_FRIENDLY_MATCH_TEXT"/>: اضغط على مفتاح التبويب (Tab) ثم Enter لإنشاء نموذج جديد في "نماذج Brave" بسرعة.</translation>
 <translation id="8028892419725165118">ألعاب بسيطة</translation>
 <translation id="8028960012888758725">القطع بعد المهمة</translation>
+<translation id="8028993641010258682">الحجم</translation>
+<translation id="8029829038322015001">أحمر 1</translation>
 <translation id="8030729864112325446">تعليم مهني وتعليم مستمر</translation>
 <translation id="8032546467100845887">شفافية</translation>
 <translation id="8035152190676905274">قلم</translation>
@@ -3835,6 +3871,7 @@
 <translation id="8037117624646282037">الأشخاص الذين استخدموا الجهاز مؤخرًا</translation>
 <translation id="8037357227543935929">الطلب (تلقائي)</translation>
 <translation id="803771048473350947">ملف</translation>
+<translation id="8038182528865038593">أحمر 2</translation>
 <translation id="8041089156583427627">إرسال ملاحظات</translation>
 <translation id="8041940743680923270">استخدام الإعداد التلقائي العمومي (طلب)</translation>
 <translation id="8043255123207491407">الاطّلاع على الأحكام والشروط لدى البائع</translation>
@@ -3881,7 +3918,6 @@
 <translation id="8116925261070264013">المواقع الإلكترونية التي تم كتم الصوت فيها</translation>
 <translation id="8118489163946903409">طريقة الدفع</translation>
 <translation id="8118506371121007279">تقديم ملاحظات</translation>
-<translation id="8124085000247609808">بدء محادثة مع <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="8127301229239896662">لم يتم تثبيت "<ph name="SOFTWARE_NAME"/>" بطريقة صحيحة على جهاز الكمبيوتر أو الشبكة. اطلب من مشرف تقنية المعلومات حل هذه المشكلة.</translation>
 <translation id="8131740175452115882">تأكيد</translation>
 <translation id="8133495915926741232">اختَر فئات المواضيع العامة التي يمكن استخدامها للمساعدة في تخصيص الإعلانات، مع العِلم بأنّ إيقاف إحدى الفئات العامة سيؤدي أيضًا إلى حظر المواضيع ذات الصلة بها. <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
@@ -3980,7 +4016,6 @@
 <translation id="8288320283441806607">تفعيل إعداد "تحسين عمليات البحث والتصفُّح" لاستخدام هذه الميزة</translation>
 <translation id="8288807391153049143">عرض الشهادة</translation>
 <translation id="8289355894181816810">اتصل بمشرف الشبكة إذا لم تكن متأكدًا مما يعنيه هذا.</translation>
-<translation id="8293206222192510085">إضافة إشارة مرجعية</translation>
 <translation id="829335040383910391">الصوت</translation>
 <translation id="8294431847097064396">المصدر</translation>
 <translation id="8297545700510100061">يتم استخدام ملفات تعريف الارتباط وبيانات المواقع الإلكترونية الأخرى لتذكُّر بياناتك، مثلاً بهدف تسجيل دخولك أو تقديم إعلانات مخصّصة لك. لإدارة ملفات تعريف الارتباط لجميع المواقع الإلكترونية، يمكنك الانتقال إلى <ph name="SETTINGS"/>.</translation>
@@ -4070,6 +4105,7 @@
 <translation id="8449836157089738489">فتح الكل في مجموعة علامات تبويب جديدة</translation>
 <translation id="1785963607001474601">‏يمكن للمشرف إجراء تغييرات على ملفك الشخصي والمتصفّح عن بُعد، وتحليل المعلومات عن المتصفّح من خلال إعداد التقارير وتنفيذ المهام الضرورية الأخرى. وقد تتم أيضًا إدارة النشاط على هذا الجهاز خارج Brave.  <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
 <translation id="8456383681414356368">تمّ إغلاق البطاقة السفلية.</translation>
+<translation id="8456775115498700722">‏يمكنك الآن ملء بيانات بطاقات <ph name="CARD_ISSUER_NAME"/> تلقائيًا لأنّ حسابك على <ph name="CARD_ISSUER_NAME"/> مرتبط بحساب Google Pay.</translation>
 <translation id="8457125768502047971">غير محدَّد</translation>
 <translation id="8458202188076138974">Letter Extra</translation>
 <translation id="8460854335417802511">تفعيل</translation>
@@ -4082,6 +4118,7 @@
 <translation id="8473626140772740486">300 × 450 ملم</translation>
 <translation id="8473863474539038330">العناوين والمزيد</translation>
 <translation id="8474910779563686872">عرض تفاصيل مطوّر البرامج</translation>
+<translation id="8476959635632921417">لحفظ هذا العنوان واستخدامه على جميع أجهزتك، يُرجى تأكيد هويتك</translation>
 <translation id="8479754468255770962">وضع دبوس أسفل اليسار</translation>
 <translation id="8714154125294613524">‏سيتم حذف هذا العنوان من حسابك على Brave‏، <ph name="ACCOUNT"/>.</translation>
 <translation id="8488350697529856933">تنطبق على</translation>
@@ -4225,11 +4262,14 @@
 <translation id="8757526089434340176">‏يتوفّر عرض Google Pay.</translation>
 <translation id="8759274551635299824">هذه البطاقة منتهية الصلاحية</translation>
 <translation id="87601671197631245">يستخدم هذا الموقع الإلكتروني إعداد أمان غير محدَّث، وقد يكشف ذلك عن معلوماتك (مثل كلمات المرور أو الرسائل أو بطاقات الائتمان) عند إرسالها إلى هذا الموقع الإلكتروني.</translation>
+<translation id="8763226176721243078">‏يمكنك ملء بيانات هذه البطاقة تلقائيًا لأنّ حسابك على <ph name="CARD_ISSUER_NAME"/> مرتبط بحساب Google Pay.</translation>
 <translation id="8763927697961133303">‏جهاز USB</translation>
 <translation id="8766943070169463815">تم فتح صفحة مصادقة بيانات اعتماد الدفع الآمن.</translation>
 <translation id="8767765348545497220">إغلاق فقاعة المساعدة</translation>
 <translation id="8767881944435256294">{COUNT,plural, =1{طريقة دفع واحدة}zero{‫# طريقة دفع}two{طريقتا دفع}few{‫# طُرق دفع}many{‫# طريقة دفع}other{‫# طريقة دفع}}</translation>
 <translation id="7113746389006214608">‏زر إنشاء عرض تقديمي: انقر على هذا الزر لإنشاء عرض تقديمي جديد في "العروض التقديمية من Brave" بسرعة.</translation>
+<translation id="8769662576926275897">تفاصيل البطاقة</translation>
+<translation id="8769858749286369844">بنّي فاتح 2</translation>
 <translation id="8770286973007342895">جزازات عشب</translation>
 <translation id="8772387130037509473">يوغا وبيلاتس</translation>
 <translation id="877348612833018844">{0,plural, =1{هل تريد نقل الملف السرّي؟}zero{هل تريد نقل الملفات السرّية؟}two{هل تريد نقل الملفَّين السرّيَّين؟}few{هل تريد نقل الملفات السرّية؟}many{هل تريد نقل الملفات السرّية؟}other{هل تريد نقل الملفات السرّية؟}}</translation>
@@ -4243,7 +4283,6 @@
 <translation id="8792626944327216835">الميكروفون</translation>
 <translation id="9156291179464624174">‏تم تفعيل "وصلات Brave Enterprise" على متصفّحك من قِبل <ph name="ENROLLMENT_DOMAIN"/>. لدى هذه الوصلات إذن بالوصول إلى بعض بياناتك.</translation>
 <translation id="8798099450830957504">التلقائي</translation>
-<translation id="8798739476508189189">التعرّف على الميزات التجريبية للمتصفّح الانتقال</translation>
 <translation id="8800034312320686233">هل الموقع الإلكتروني لا يعمل؟</translation>
 <translation id="8805819170075074995">‏إدخال في القائمة "<ph name="LANGUAGE_ID"/>": تم تجاهل الإدخال لأنه مضمّن في سياسة SpellcheckLanguage أيضًا.</translation>
 <translation id="8806062468703310719">مقدّمو خدمات هاتفية</translation>
@@ -4258,6 +4297,7 @@
 <translation id="882338992931677877">الفتحة اليدوية</translation>
 <translation id="8830320733681313421">‏بطاقة بريدية Hagaki</translation>
 <translation id="8830565333350631528">عرض الملفات في <ph name="CLOUD_PROVIDER"/></translation>
+<translation id="8831783793142731637">متاح لعمليات الشراء التي تتجاوز <ph name="RANGE_MINIMUM"/></translation>
 <translation id="8833007469711500369">غسالات ومجففات</translation>
 <translation id="8837398923270275776">برامج تلفزيونية في الخيال العلمي والفانتازيا</translation>
 <translation id="883848425547221593">إشارات مرجعية أخرى</translation>
@@ -4289,7 +4329,6 @@
 <translation id="888117890813270681">لا يمكن ضبط "<ph name="DATA_CONTROLS_RESTRICTION"/>" على "<ph name="DATA_CONTROLS_LEVEL"/>"</translation>
 <translation id="8884537526797090108">لا يمكن تسجيل الشاشة بسبب المحتوى السري</translation>
 <translation id="8888187300091017436">فراش</translation>
-<translation id="8890048757975398817">يمكنك التحكّم في "<ph name="READERNAME"/>" والوصول إلى البطاقة الذكية من خلاله.</translation>
 <translation id="8891031436559779793">سيتم إرسال إشعار إليك في حال انخفاض السعر على أي موقع إلكتروني.</translation>
 <translation id="8891727572606052622">وضع الخادم الوكيل غير صالح.</translation>
 <translation id="8894794286471754040">الحافة الطويلة أولًا</translation>
@@ -4313,7 +4352,6 @@
 <translation id="893332455753468063">إضافة اسم</translation>
 <translation id="8942355029279167844">‏لقد سمح مشرفك لتطبيق <ph name="APP_NAME"/> بجمع بيانات التشخيص لتحسين تجربة المنتج. يُرجى الانتقال إلى <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/> للحصول على مزيد من المعلومات.</translation>
 <translation id="8943282376843390568">ليموني</translation>
-<translation id="8944485226638699751">محدودة</translation>
 <translation id="8949410982325929394">الأسلوب</translation>
 <translation id="8949493680961858543">A1x4</translation>
 <translation id="8952569554322479410">طلبَ موقع إلكتروني للتو الوصول إلى <ph name="REQUEST_TYPE"/>. ولمساعدتنا في تحسين طريقة طلب المواقع الإلكترونية لأذونات الوصول، يُرجى المشاركة في هذا الاستطلاع الذي يستغرق دقيقة واحدة.</translation>
@@ -4321,6 +4359,7 @@
 <translation id="8956124158020778855">بعد تفعيل هذا الإعداد، يمكنك الرجوع إلى علامة التبويب هذه لبدء الكتابة.</translation>
 <translation id="8957210676456822347">تفويض المدخل المشروط الوصول إليه</translation>
 <translation id="8959282183248574156"><ph name="NICKNAME_COUNT"/>/<ph name="NICKNAME_MAX"/></translation>
+<translation id="8959288490306482616">بنّي فاتح 3</translation>
 <translation id="8963117664422609631">الانتقال إلى إعدادات الموقع الإلكتروني</translation>
 <translation id="8963213021028234748"><ph name="MARKUP_1"/>اقتراحات:<ph name="MARKUP_2"/>التأكد من أن لديك اتصال بيانات<ph name="MARKUP_3"/>إعادة تحميل صفحة الويب هذه لاحقًا<ph name="MARKUP_4"/>التحقق من العنوان الذي أدخلته<ph name="MARKUP_5"/></translation>
 <translation id="8968766641738584599">حفظ البطاقة</translation>
@@ -4334,7 +4373,6 @@
 <translation id="8987663052629670333">خدمات طباعة صور</translation>
 <translation id="8987927404178983737">شهر</translation>
 <translation id="8989148748219918422"><ph name="ORGANIZATION"/>‏ [<ph name="COUNTRY"/>]</translation>
-<translation id="8992061558343343009">هل تبحث عن إصدار النظام؟ انتقِل إلى</translation>
 <translation id="899688752321268742">يريد الموقع الإلكتروني <ph name="URL"/> رصد استخدامك النشط لهذا الجهاز.</translation>
 <translation id="8997023839087525404">قدم الخادم شهادة لم يتم الكشف عنها علنًا باستخدام سياسة شهادة الشفافية. وهذا ضروري لبعض الشهادات، لضمان أنها جديرة بالثقة ومحمية من المهاجمين.</translation>
 <translation id="9000145382638074673">أجهزتك</translation>
@@ -4384,6 +4422,7 @@
 <translation id="90695670378604968">بلاستيك (غير لامع)</translation>
 <translation id="9069693763241529744">تم الحظر بواسطة إحدى الإضافات</translation>
 <translation id="9073799351042754113">لقد اخترت إيقاف تحذيرات الأمان لهذا الموقع الإلكتروني.</translation>
+<translation id="9075717835386447447">بنّي فاتح 1</translation>
 <translation id="9076283476770535406">قد يتضمن محتوى للبالغين</translation>
 <translation id="9078912659001679888">خلّاطات وعصّارات</translation>
 <translation id="9078964945751709336">مطلوب مزيد من المعلومات</translation>
@@ -4409,6 +4448,7 @@
 <translation id="2628864952962474930">‏<ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT"/>، اضغط على مفتاح التبويب (Tab)، ثم Enter لاستئناف عملية البحث والاطّلاع على النشاط ذي الصلة في سجلّ Brave.</translation>
 <translation id="9119042192571987207">تم التحميل</translation>
 <translation id="9119308212838450857">يريد "<ph name="PROVIDER_ORIGIN"/>" التحقّق من هويتك</translation>
+<translation id="9120593907434185157">حفظ العنوان</translation>
 <translation id="912327514020027767">تنانير</translation>
 <translation id="9128870381267983090">الاتصال بالشبكة</translation>
 <translation id="9131119348384879525">هل تريد أخذ لقطة شاشة أو تسجيل فيديو للمحتوى السرّي؟</translation>
@@ -4453,6 +4493,7 @@
 <translation id="9183425211371246419">يستخدم <ph name="HOST_NAME"/> بروتوكول غير مدعوم.</translation>
 <translation id="918454845714257218">يُرجى التأكّد من صحة الرمز المكتوب على <ph name="SIDE_OF_CARD"/> ثم إعادة المحاولة.</translation>
 <translation id="7202091195027070644">‏زر ضبط Brave كمتصفِّح تلقائي: انقر على هذا الزر لضبط Brave كمتصفِّح تلقائي للنظام.</translation>
+<translation id="9189789270972826888">انقر على تفاصيل البطاقة أدناه لنسخ البيانات ولصقها إذا لم يتم ملؤها تلقائيًا. <ph name="IDS_AUTOFILL_FILLED_CARD_INFORMATION_BUBBLE_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="9190557999028587593">يتم تلقائيًا حذف المواضيع التي مرّ عليها أكثر من 4 أسابيع</translation>
 <translation id="9191834167571392248">عمل ثقب أسفل اليسار</translation>
 <translation id="9192361865877479444">معدن (غير لامع)</translation>
@@ -4491,6 +4532,7 @@
 <translation id="949314938206378263">‏لقد طلبت زيارة هذا الموقع الإلكتروني. يمكن لأحد والدَيك الرد على هذا الطلب في تطبيق Family Link.</translation>
 <translation id="950736567201356821">عمل ثلاثة ثقوب من الأعلى</translation>
 <translation id="1762533279914543867">‏مفتاح المرور • مدير كلمات المرور في Brave</translation>
+<translation id="95721182352849470">أصفر 2</translation>
 <translation id="961663415146723894">التجليد من الأسفل</translation>
 <translation id="961856697154696964">حذف بيانات التصفّح</translation>
 <translation id="961930410699694996">تم السماح بتحديد الموقع الجغرافي هذه المرّة.</translation>
@@ -4530,6 +4572,7 @@
 <translation id="997986563973421916">‏من Google Pay</translation>
 <translation id="8820817407110198400">الإشارات المرجعية</translation>
 <translation id="8362995731815961365">اختار الشخص الذي أعد جهاز الكمبيوتر حظر موقع الويب هذا.</translation>
+<translation id="2977472760057091832">فتح الرابط في نافذة تصفح متخفٍ</translation>
 <translation id="896703648578722320">عند تثبيت الإضافات في Brave، يتم إرسال البيانات ذات الصلة بها إلى جهات خارجية لتحليلها، وقد تكون البيانات مرئية للمشرف. وتتضمّن هذه البيانات معلومات عن الإضافات، مثل الاسم ووقت التثبيت ومصدر التثبيت، بالإضافة إلى النشاط المرتبط بهذه الإضافات (مثل تغيير علامات التبويب أو الاتصال بمواقع إلكترونية أو الوصول إلى ملفات تعريف الارتباط). ويتم جمع هذه البيانات للإضافات المثبّتة من "سوق الإلكتروني" والإضافات التي تمّ تثبيتها من خارج السوق.</translation>
 <translation id="4075123085690634698">‏يمكنك فتح الصفحة في نافذة جديدة للتصفح المتخفي (⇧⌘N)</translation>
 <translation id="2388886110302389394">‏يمكنك فتح الصفحة في نافذة جديدة للتصفح المتخفي (Ctrl-Shift-N)</translation>
@@ -4575,5 +4618,4 @@
 <translation id="8169715168668926832">يظهر أمامك هذا التحذير لأن هذا الموقع لا يدعم HTTPS وأنت في الوضع الخاص. <ph name="BEGIN_LEARN_MORE_LINK"/>تعرَّف على المزيد حول هذا التحذير<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="8108906085747235166">اسأل في الملف الشخصي</translation>
 <translation id="317153861231603077">اسأل في الملف الشخصي بدلًا من ذلك</translation>
-<translation id="2977472760057091832">فتح الرابط في نافذة تصفح متخفٍ</translation>
 </translationbundle>

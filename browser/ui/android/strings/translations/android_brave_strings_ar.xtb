@@ -409,7 +409,6 @@
 <translation id="944340256927461196">لا تترك أي أثر على جهازك</translation>
 <translation id="2063044449012253966">لن تظهر المواقع التي تزورها في النوافذ الخاصة في سجل البحث الخاص بك. تختفي ملفات تعريف الارتباط وبيانات الاستمارة وبيانات الموقع بمجرد إغلاق جميع النوافذ الخاصة.</translation>
 <translation id="7395764193745523646">ظهور التصفح</translation>
-<translation id="8735363371744702779">نودّ لفت انتباهك إلى أنه -حتى في النوافذ الخاصة- قد يظل نشاط التصفح الخاص بك مرئيًا لمزود خدمة الإنترنت أو مراقبي الشبكة أو مشغّلك (إذا كنت تستخدم جهاز/شبكة عمل).</translation>
 <translation id="1413177583895309156">يقوم Brave VPN بتشفير وحماية أي شيء تفعله على الإنترنت، حتى خارج متصفح Brave.</translation>
 <translation id="3974348661685061050">جرّب مجاناً لمدة 7 أيام</translation>
 <translation id="5789441016350810005">إعلانات Brave المرسلة عندما يكون المتصفح في الخلفية</translation>
@@ -447,8 +446,6 @@
 <translation id="1116694919640316211">حول</translation>
 <translation id="7961015016161918242">مطلقًا</translation>
 <translation id="1275213816424141989">ربما لاحقاً</translation>
-<translation id="4406937629441301400">اكسب رموزاً مقابل عرض هذه الصورة وردّ الصنيع إلى منشئي المحتوى. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">أنت تكسب رموزاً مقابل عرض هذه الصورة.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/> ستبدأ معالجة دفع المكافآت بحلول<ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">صرف المكافآت قيد التقدم. <ph name="CURRENT_MONTH"/> <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">الدفع ل <ph name="CURRENT_MONTH"/> اكتملت المكافآت. <ph name="SUPPORT"/></translation>
@@ -486,6 +483,7 @@
 <translation id="1561541094377237745">شبكات Solana</translation>
 <translation id="7141438739990875547">شبكات بيتكوين</translation>
 <translation id="9055546041146396417">إذا كان هذا الموقع يبدو معطلاً فجرّب إيقاف تشغيل Shields.</translation>
+<translation id="7898672232170410330">عنصر الحظر</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
 <translation id="1653405824851871276">نشكرك على تقديم المساعدة في أن يصبح Brave أفضل للجميع. لن يحتوي هذا التقرير إلا على المعلومات اللازمة لنا لإصلاح هذا الموقع. <ph name="LEARN_MORE"/></translation>
@@ -493,14 +491,15 @@
 <translation id="8740275226259417070">هذه صفحة خطأ. ولا يمكن الإبلاغ عنها باعتبارها موقعًا مُعطلًا.</translation>
 <translation id="721949491455392748">تضمين لقطة شاشة للصفحة الحالية</translation>
 <translation id="8459191579769999214">عرض لقطة شاشة</translation>
+<translation id="6476216365964140603">التفاصيل الإضافية (اختياري):</translation>
+<translation id="6145852496180774737">تواصل معي على: (اختياري)</translation>
+<translation id="7616645803364270729">البريد الإلكتروني، تويتر، إلخ.</translation>
 <translation id="5299848999918506028">شكراً لك!</translation>
 <translation id="76550953340008122">شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
 <translation id="650318023204990401">الضوابط المتقدمة</translation>
 <translation id="5370478469168390143">حفظ البيانات عبر الإنترنت</translation>
 <translation id="1118508688433541158">تصفّح أسرع وقم بحظر الإعلانات مع متصفح Brave</translation>
 <translation id="7427391215172269363">أحفظ البيانات يوميًا عبر تصفح موقع الويب باستخدام Brave.</translation>
-<translation id="4776948189086901857">Brave يعمل في كل مكان</translation>
-<translation id="1606322780901645965">قم بتنزيل Brave على موقع brave.com على الكمبيوتر المحمول أو الجهاز اللوحي الخاص بك للحصول على شبكة ويب أسرع وأكثر خصوصية</translation>
 <translation id="8374242949413616101">حماية الخصوصية</translation>
 <translation id="4955406228638026265">يمنع متصفح Brave الإعلانات &amp; وأدوات التتبع من جمع معلومات عنك دون موافقتك.</translation>
 <translation id="752842701893882688">توفير البيانات والبطارية</translation>
@@ -1018,7 +1017,6 @@
 <translation id="8382368767453083629">تهيئة متعدد التوقيع 2</translation>
 <translation id="77243237706803459">تهيئة Mint (العملة) 2</translation>
 <translation id="583281660410589416">غير معروف</translation>
-<translation id="5666264859501108700">تم تعيين منطقة مكافآت Brave الخاصة بك على <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">لسوء الحظ، حدث خطأ أثناء محاولة إعداد مكافآت Brave. يُرجى إعادة المحاولة.</translation>
 <translation id="7352651011704765696">حدث خطأ ما</translation>
 <translation id="7144878232160441200">إعادة المحاولة</translation>
@@ -1079,10 +1077,6 @@
 <translation id="7748944510530490017">الشبكات الأساسية</translation>
 <translation id="2781668117338732220">الشبكات الثانوية</translation>
 <translation id="282560918037172384">اختبار الشبكات</translation>
-<translation id="707569835145765061">الإجراء المطلوب: قم بربط حساب مُستضاف وإلا ستفقد vBAT الخاصة بك</translation>
-<translation id="1776742005329298234">في <ph name="DUE_DATE"/>، سنتوقف عن دعم أرصدة BAT الافتراضية الحالية. قم بربط حساب مستضاف قبل هذا التاريخ حتى نتمكن من تحويل رصيدك المكتسب إلى الحساب المستضاف الخاص بك، وإلا ستفقد رصيدك.</translation>
-<translation id="5089752671190341407">لا يزال لديك الوقت للمساهمة في vBAT الخاص بك لمنشئي المحتوى المفضلين لديك</translation>
-<translation id="171158953146804144">في <ph name="DUE_DATE"/>، سنتوقف عن دعم أرصدة BAT الافتراضية الحالية. لسوء الحظ، لا يوجد مسؤولون متاحون في منطقتك (<ph name="REGION"/>) لسحب أرباحك. حتى ذلك الحين، لا يزال بإمكانك المساهمة في دعم منشئي المحتوى المفضلين لديك.</translation>
 <translation id="8949422576126100041">عرض الصفحة مع قارئ السرعة؟</translation>
 <translation id="3435896845095436175">تفعيل الإضافات</translation>
 <translation id="5296840868251496327">تمكين قارئ السرعة</translation>
@@ -1102,8 +1096,6 @@
 <translation id="4841860051609590575">طلب الرقم التعريفي</translation>
 <translation id="1179407411385015942">Leo هو مساعد ذكي يعمل بالذكاء الاصطناعي، وهو مدمج في المتصفح مباشرةً</translation>
 <translation id="4109670531935487117">عرض اقتراحات الإكمال التلقائي في شريط العنوان</translation>
-<translation id="1250335737108905610">إعادة تعيين بيانات Leo وحذفها</translation>
-<translation id="6165101586663336913">ستتطلب إعادة تعيين مساعد Leo الاشتراك في استخدام Leo في المستقبل وستؤدي أيضًا إلى حذف سجل الدردشة الخاص بك. سيؤدي حذف سجل الدردشة إلى حذف جميع محادثاتك السابقة مع Leo. لا يمكن التراجع عن هذا الإجراء.</translation>
 <translation id="3692772534525889713">اربط مشترياتك من Play Store بحسابك في Brave لاستخدام Brave Leo على الأجهزة الأخرى.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">سنة واحدة</translation>
@@ -1233,4 +1225,5 @@
 <translation id="4650851936784160359">يتعذر تحديث قائمة التصفية. يُرجى المحاولة مجددًا</translation>
 <translation id="3098054327870766317">إظهار زر التراجع عند إغلاق علامات التبويب</translation>
 <translation id="1336494649091412226">هل أنت متأكد من أنك تريد مغادرة Brave؟</translation>
+<translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
 </translationbundle>

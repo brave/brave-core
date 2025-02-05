@@ -412,7 +412,7 @@
 <translation id="944340256927461196">기기에 흔적 남기지 않기</translation>
 <translation id="2063044449012253966">비공개 창에서 방문하는 사이트는 방문 기록에 표시되지 않습니다. 모든 비공개 창을 닫으면 쿠키와 양식 데이터, 사이트 데이터가 사라집니다.</translation>
 <translation id="7395764193745523646">검색 가시성</translation>
-<translation id="8735363371744702779">비공개 창에서도 ISP, 네트워크 관찰자 또는 고용주(업무용 기기/네트워크를 사용하는 경우)는 여전히 사용자의 검색 활동을 볼 수 있습니다.</translation>
+<translation id="8670344404057978375">비공개(시크릿) 창에서도 ISP, 네트워크 관찰자 또는 고용주(업무용 장치/네트워크를 사용하는 경우)는 여전히 사용자의 검색 활동을 볼 수 있습니다.</translation>
 <translation id="1413177583895309156">Brave VPN은 Brave 브라우저 밖에서도 사용자의 모든 온라인 활동을 암호화하고 보호합니다.</translation>
 <translation id="3974348661685061050">7일 동안 무료로 사용해 보기</translation>
 <translation id="5789441016350810005">브라우저가 백그라운드에 있을 때 전송된 브레이브 광고</translation>
@@ -450,8 +450,6 @@
 <translation id="1116694919640316211">정보</translation>
 <translation id="7961015016161918242">사용하지 않음</translation>
 <translation id="1275213816424141989">나중에</translation>
-<translation id="4406937629441301400">이 이미지를 볼 수 있는 토큰을 획득하여 제작자에게 전달하세요. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">이 이미지를 보기 위해 토큰을 획득하고 있습니다.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/> 리워드 지급 처리가 <ph name="PAYOUT_DATE"/> 전에 시작됩니다.</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/> 리워드 지급 처리 중입니다. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/> 리워드 지급이 완료되었습니다. <ph name="SUPPORT"/></translation>
@@ -474,6 +472,8 @@
 <translation id="7854108565842971747">새 사이트에 적용되는 기본 Shields 설정이 있습니다. 설정을 변경해도 기존 사이트별 설정에는 영향을 주지 않습니다.</translation>
 <translation id="218587021686734263">언어 설정을 통한 핑거프린팅 방지</translation>
 <translation id="1706099589708266367">웹사이트가 브라우저의 언어 설정을 기반으로 이용자를 파악할 수 있는 범위를 줄입니다.</translation>
+<translation id="6486971767955110687">향후 고장난 사이트 보고서를 위해 연락처 정보 저장</translation>
+<translation id="4085787265464238844">연락처 정보를 제공하면 향후 보고서를 위해 저장됩니다.</translation>
 <translation id="4721088070859595932">웹사이트가 디바이스를 인식할 수 없게 차단</translation>
 <translation id="7445306466605902444">지문 차단됨 (엄격, 사이트가 작동하지 않을 수 있음)</translation>
 <translation id="5582686930349810484">지문 차단됨 (표준)</translation>
@@ -489,6 +489,7 @@
 <translation id="1561541094377237745">Solana 네트워크</translation>
 <translation id="7141438739990875547">비트코인 네트워크</translation>
 <translation id="9055546041146396417">이 사이트가 손상된 것 같으면 실드 다운을 시도합니다.</translation>
+<translation id="7898672232170410330">요소 차단</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
 <translation id="1653405824851871276">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 포함합니다. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +497,19 @@
 <translation id="8740275226259417070">오류 페이지입니다. 깨진 사이트라고 신고할 수 없습니다.</translation>
 <translation id="721949491455392748">현재 페이지의 스크린샷 포함</translation>
 <translation id="8459191579769999214">스크린샷 보기</translation>
+<translation id="6476216365964140603">추가 세부정보(선택사항)</translation>
+<translation id="6145852496180774737">연락 방법:(선택사항)</translation>
+<translation id="7616645803364270729">이메일, Twitter 등</translation>
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
 <translation id="650318023204990401">고급 컨트롤</translation>
 <translation id="5370478469168390143">데이터 온라인 저장</translation>
 <translation id="1118508688433541158">Brave 사용으로 더 빠른 검색 및 광고 차단</translation>
 <translation id="7427391215172269363">매일 Brave로 웹 브라우징을 하여 데이터를 절약하고 있어요.</translation>
-<translation id="4776948189086901857">Brave는 어디서나 작동합니다</translation>
-<translation id="1606322780901645965">더 빠르고 더 많은 비공개 웹을 이용하려면 노트북이나 태블릿으로 brave.com에서 Brave를 다운로드하십시오</translation>
+<translation id="357198789571802914">YouTube에서 광고만 빼고 시청하세요.</translation>
+<translation id="2154817758398495571">Brave로 YouTube 링크를 열면 광고를 차단하실 수 있습니다.</translation>
+<translation id="1580816390443799567">지금 사용</translation>
+<translation id="8589748782214271192">거부</translation>
 <translation id="8374242949413616101">개인정보 보호</translation>
 <translation id="4955406228638026265">Brave는 광고 및 추적기가 동의 없이 사용자에 대한 정보를 수집하는 것을 막습니다.</translation>
 <translation id="752842701893882688">데이터 및 배터리 절약</translation>
@@ -1021,7 +1027,6 @@
 <translation id="8382368767453083629">multisig 2 초기화</translation>
 <translation id="77243237706803459">민트 2 초기화</translation>
 <translation id="583281660410589416">알 수 없음</translation>
-<translation id="5666264859501108700">Brave Rewards 지역이 <ph name="COUNTRY_NAME"/>인 것으로 설정되었습니다.</translation>
 <translation id="909076461795862330">Brave Rewards를 설정하는 중에 오류가 발생했습니다. 다시 시도하세요.</translation>
 <translation id="7352651011704765696">문제가 생겼습니다</translation>
 <translation id="7144878232160441200">재시도</translation>
@@ -1082,10 +1087,6 @@
 <translation id="7748944510530490017">주사용 네트워크</translation>
 <translation id="2781668117338732220">보조 네트워크</translation>
 <translation id="282560918037172384">테스트 네트워크</translation>
-<translation id="707569835145765061">조치 필요: 보호관리 계정을 연결하지 않으면 vBAT 소실 예정</translation>
-<translation id="1776742005329298234"><ph name="DUE_DATE"/> 부로, 기존 가상 BAT 잔액 지원이 중단됩니다. 이 날짜 이전에 보호관리 계정을 연결하시면 적립되어 있는 잔액을 보호관리 계정으로 이전해드릴 수 있으나, 이를 원치 않으시면 잔액이 소실됩니다.</translation>
-<translation id="5089752671190341407">아직은 vBAT를 마음에 드는 제작자에게 기부할 시간이 충분함</translation>
-<translation id="171158953146804144"><ph name="DUE_DATE"/> 부로, 기존 가상 BAT 잔액 지원이 중단됩니다. 안타깝지만 현재 계신 지역(<ph name="REGION"/>)에서는 사용 가능한 보호관리 서비스가 없어 적립액을 인출할 수 없습니다. 이 날짜 전까지는 마음에 드는 제작자에게 기부하실 수 있습니다.</translation>
 <translation id="8949422576126100041">페이지를 스피드리더로 보시겠습니까?</translation>
 <translation id="3435896845095436175">사용</translation>
 <translation id="5296840868251496327">스피드리더 활성화</translation>
@@ -1104,9 +1105,12 @@
 <translation id="2471230424465522689">시작 날짜 미도래</translation>
 <translation id="4841860051609590575">요청 ID</translation>
 <translation id="1179407411385015942">브라우저에 바로 통합된 AI 기반 스마트 어시스턴트, 레오</translation>
+<translation id="5781842473834867765">대화 기록 저장</translation>
 <translation id="4109670531935487117">주소 표시줄에 자동 완성 추천 표시</translation>
-<translation id="1250335737108905610">레오 데이터 초기화 및 지우기</translation>
-<translation id="6165101586663336913">레오 어시스턴트를 초기화하면 나중에 Brave 레오 사용에 다시 동의해야 하며 채팅 기록이 지워집니다. 채팅 내역이 지워지면 Brave 레오와 나눴던 모든 대화가 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
+<translation id="6106701981952170121">모든 레오 AI 대화 데이터 삭제</translation>
+<translation id="423600389315522551">레오 AI를 초기화하면 나중에 Brave 레오 AI 사용에 다시 동의해야 하며 채팅 기록이 지워집니다. 채팅 기록을 지우면 Brave 레오 AI와 나눴던 모든 대화가 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
+<translation id="6742599753610126012">채팅 기록 지우기</translation>
+<translation id="3443052382074796867">대화 저장을 비활성화하면 이전에 저장된 모든 대화가 영구적으로 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>
 <translation id="3692772534525889713">다른 기기에서도 Brave 레오를 사용하려면 Play 스토어 구매 항목을 Brave 계정에 연결하세요.</translation>
 <translation id="73236265316873967">레오 프리미엄</translation>
 <translation id="1028627582482425924">1년</translation>
@@ -1236,4 +1240,6 @@
 <translation id="4650851936784160359">필터 목록을 업데이트할 수 없습니다. 다시 시도하세요.</translation>
 <translation id="3098054327870766317">탭 종료 시 종료 취소 버튼 표시</translation>
 <translation id="1336494649091412226">Brave를 종료하시겠습니까?</translation>
+<translation id="2361906291514218784">레오 AI</translation>
+<translation id="7942415993090181327">대화 기록</translation>
 </translationbundle>

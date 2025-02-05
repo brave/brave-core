@@ -412,7 +412,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="944340256927461196">Anonymität auf deinem Gerät</translation>
 <translation id="2063044449012253966">Websites, die du in privaten Fenstern besuchst, werden nicht in deinem Verlauf angezeigt. Cookies, Formulardaten und Website-Daten verschwinden, sobald alle privaten Fenster geschlossen sind.</translation>
 <translation id="7395764193745523646">Sichtbarkeit beim Surfen</translation>
-<translation id="8735363371744702779">Beachte, dass deine Browsing-Aktivitäten - selbst in privaten Fenstern - für deinen ISP, Netzwerkbeobachter oder deinen Arbeitgeber (wenn du ein Arbeitsgerät/Netzwerk verwendest) sichtbar sein können.</translation>
+<translation id="8670344404057978375">Beachte, dass deine Browseraktivität auch in privaten Fenstern für deinen Internetanbieter, Netzwerküberwacher oder deinen Arbeitgeber (bei Nutzung eines Arbeitsgeräts/-netzwerks) sichtbar sein kann.</translation>
 <translation id="1413177583895309156">Brave VPN verschlüsselt und schützt alles, was du online machst, auch außerhalb des Brave Browsers.</translation>
 <translation id="3974348661685061050">7 Tage kostenlos testen</translation>
 <translation id="5789441016350810005">Es werden Brave Ads gesendet, wenn der Browser im Hintergrund ist</translation>
@@ -450,8 +450,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1116694919640316211">Über</translation>
 <translation id="7961015016161918242">Nie</translation>
 <translation id="1275213816424141989">Vielleicht später</translation>
-<translation id="4406937629441301400">Verdienen Sie Tokens für das Ansehen dieses Bildes und zahlen Sie sie an die Ersteller weiter. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Sie verdienen Tokens für das Ansehen dieses Bildes.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">Die Auszahlung der Belohnungen vom<ph name="CURRENT_MONTH"/> wird bis zum <ph name="PAYOUT_DATE"/> verarbeitet.</translation>
 <translation id="33967210973550414">Die Auszahlung der Belohnungen vom <ph name="CURRENT_MONTH"/> ist in Arbeit. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Die Auszahlung der Belohnungen vom <ph name="CURRENT_MONTH"/> ist abgeschlossen. <ph name="SUPPORT"/></translation>
@@ -474,6 +472,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7854108565842971747">Dies sind die Standardeinstellungen für Schutz für neue Seiten. Wenn Sie die folgenden Einstellungen ändern, hat dies keine Auswirkung auf die Einstellungen, die Sie für bestimmte Websites gemacht haben</translation>
 <translation id="218587021686734263">Fingerprinting über die Spracheinstellungen verhindern</translation>
 <translation id="1706099589708266367">Verringert das Ausmaß, in dem Websites anhand der Spracheinstellungen Ihres Browsers etwas über Sie erfahren können.</translation>
+<translation id="6486971767955110687">Kontaktinformationen für zukünftige Meldungen von defekten Websites speichern</translation>
+<translation id="4085787265464238844">Wenn du Kontaktinformationen angibst, werden diese für zukünftige Meldungen gespeichert.</translation>
 <translation id="4721088070859595932">Verhindert, dass Websites Ihr Gerät erkennen</translation>
 <translation id="7445306466605902444">Fingerabdruck blockiert (streng, könnte Websites kaputtmachen)</translation>
 <translation id="5582686930349810484">Fingerabdruck blockiert (Standard)</translation>
@@ -489,6 +489,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1561541094377237745">Solana-Netzwerke</translation>
 <translation id="7141438739990875547">Bitcoin-Netzwerke</translation>
 <translation id="9055546041146396417">Falls diese Site nicht zu funktionieren scheint, versuchen Sie es, wenn Schutz aus ist.</translation>
+<translation id="7898672232170410330">Element blockieren</translation>
 <translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Schutz nicht richtig funktioniert:</translation>
 <translation id="1653405824851871276">Danke, dass du uns hilfst, Brave für alle besser zu machen. Dieser Bericht wird nur Informationen enthalten, die wir benötigen, um diese Seite zu verbessern.<ph name="LEARN_MORE"/></translation>
@@ -496,14 +497,19 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="8740275226259417070">Dies ist eine Fehlerseite. Sie kann nicht als defekte Seite gemeldet werden.</translation>
 <translation id="721949491455392748">Screenshot der aktuellen Seite einbeziehen</translation>
 <translation id="8459191579769999214">Screenshot anzeigen</translation>
+<translation id="6476216365964140603">Zusätzliche Details (optional)</translation>
+<translation id="6145852496180774737">Kontaktieren Sie mich unter: (optional)</translation>
+<translation id="7616645803364270729">E-Mail, Twitter usw.</translation>
 <translation id="5299848999918506028">Vielen Dank!</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
 <translation id="5370478469168390143">Daten online speichern</translation>
 <translation id="1118508688433541158">Browsen Sie schneller und blockieren Sie Anzeigen mit Brave</translation>
 <translation id="7427391215172269363">Ich spare jeden Tag Daten, indem ich mit Brave im Internet surfe.</translation>
-<translation id="4776948189086901857">Brave funktioniert überall</translation>
-<translation id="1606322780901645965">Laden Sie für ein schnelleres und privateres Web Brave auf brave.com herunter</translation>
+<translation id="357198789571802914">Schau YouTube, nicht Werbung.</translation>
+<translation id="2154817758398495571">Öffne YouTube-Links in Brave, um Werbung zu blockieren.</translation>
+<translation id="1580816390443799567">Jetzt einschalten</translation>
+<translation id="8589748782214271192">Nein, danke</translation>
 <translation id="8374242949413616101">Privatsphäreschutz</translation>
 <translation id="4955406228638026265">Brave hindert Werbeanzeigen &amp; Tracker daran, Informationen über Sie ohne Ihre Zustimmung zu sammeln.</translation>
 <translation id="752842701893882688">Daten und Akku sparen</translation>
@@ -1021,7 +1027,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="8382368767453083629">Multisignatur 2 initialisieren</translation>
 <translation id="77243237706803459">Prägung 2 initialisieren</translation>
 <translation id="583281660410589416">Unbekannt</translation>
-<translation id="5666264859501108700"><ph name="COUNTRY_NAME"/> wurde als Ihre Region für Brave-Belohnungen festgelegt.</translation>
 <translation id="909076461795862330">Beim Versuch, Brave-Belohnungen einzurichten, ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.</translation>
 <translation id="7352651011704765696">Etwas ist schiefgegangen</translation>
 <translation id="7144878232160441200">Erneut versuchen</translation>
@@ -1082,10 +1087,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="7748944510530490017">Primäre Netzwerke</translation>
 <translation id="2781668117338732220">Sekundärnetzwerke</translation>
 <translation id="282560918037172384">Testnetzwerke</translation>
-<translation id="707569835145765061">Aktion erforderlich: Verknüpfen Sie ein Depotkonto oder Ihr vBAT geht verloren</translation>
-<translation id="1776742005329298234">Am <ph name="DUE_DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Verknüpfen Sie vor diesem Datum ein Depotkonto, damit wir Ihr verdientes Guthaben auf Ihr Depotkonto übertragen können. Andernfalls geht Ihr Guthaben verloren.</translation>
-<translation id="5089752671190341407">Sie haben noch Zeit, mit Ihren vBAT Ihre Lieblingsersteller zu unterstützen</translation>
-<translation id="171158953146804144">Am <ph name="DUE_DATE"/> werden wir die Unterstützung für bestehende virtuelle BAT-Guthaben einstellen. Leider gibt es in Ihrer Region (<ph name="REGION"/>) keine Depotbanken, bei denen Sie Ihre Einnahmen abheben könnten. Bis dahin können Sie Ihre Lieblingsersteller weiterhin mit Beiträgen unterstützen.</translation>
 <translation id="8949422576126100041">Seite mit Speedreader anzeigen?</translation>
 <translation id="3435896845095436175">Aktivieren</translation>
 <translation id="5296840868251496327">Speedreader aktivieren</translation>
@@ -1104,9 +1105,12 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="2471230424465522689">Nicht vor</translation>
 <translation id="4841860051609590575">Anfragen-ID</translation>
 <translation id="1179407411385015942">Leo ist ein intelligenter KI-Assistent, der direkt in den Browser integriert ist</translation>
+<translation id="5781842473834867765">Meinen Konversationsverlauf speichern</translation>
 <translation id="4109670531935487117">Vorschläge zur Autovervollständigung in der Adressleiste anzeigen</translation>
-<translation id="1250335737108905610">Leo-Daten zurücksetzen und löschen</translation>
-<translation id="6165101586663336913">Wenn Sie den Leo-Assistenten zurücksetzen, müssen Sie sich in Zukunft erneut bereiterklären, Leo zu nutzen. Außerdem wird Ihr Chatverlauf gelöscht. Wenn Sie Ihren Chatverlauf löschen, werden alle bisherigen Unterhaltungen mit Leo entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden.</translation>
+<translation id="6106701981952170121">Alle Leo AI-Konversationsdaten löschen</translation>
+<translation id="423600389315522551">Wenn du Leo AI zurücksetzt, musst du dich für die künftige Verwendung von Brave Leo AI entscheiden und dein Chat-Verlauf wird gelöscht. Durch das Löschen deines Chat-Verlaufs werden alle deine früheren Unterhaltungen mit Brave Leo AI gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
+<translation id="6742599753610126012">Chat-Verlauf löschen</translation>
+<translation id="3443052382074796867">Durch die Deaktivierung der Gesprächsspeicherung werden alle zuvor gespeicherten Gespräche endgültig gelöscht. Diese Aktion kann nicht rückgängig gemacht werden.</translation>
 <translation id="3692772534525889713">Verknüpfen Sie Ihren Play Store-Kauf mit Ihrem Brave-Konto, um Brave Leo auf anderen Geräten verwenden zu können.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Ein Jahr</translation>
@@ -1236,4 +1240,6 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="4650851936784160359">Die Filterliste konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.</translation>
 <translation id="3098054327870766317">Rückgängig-Schaltfläche anzeigen, wenn Registerkarten geschlossen werden</translation>
 <translation id="1336494649091412226">Bist du sicher, dass du Brave verlassen möchtest?</translation>
+<translation id="2361906291514218784">Leo-KI</translation>
+<translation id="7942415993090181327">Chat-Verlauf</translation>
 </translationbundle>

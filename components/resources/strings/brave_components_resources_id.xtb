@@ -670,9 +670,6 @@
 <translation id="2446517297521536638">Kendalikan jenis Iklan Brave yang akan Anda lihat, dan seberapa sering. Semakin banyak yang Anda lihat, semakin banyak yang bisa Anda dapatkan.</translation>
 <translation id="5860033963881614850">Nonaktifkan</translation>
 <translation id="5916664084637901428">Aktifkan</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> iklan telah diterima bulan ini</translation>
-<translation id="7697696066810593560">Anda telah mendapatkan <ph name="NUM"/> sejauh ini pada bulan ini</translation>
-<translation id="6733193230212030816">Anda diperkirakan akan mendapatkan penghasilan antara: <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">Saldo Anda</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> dompet</translation>
 <translation id="3175337080016717494">Akun pembayaran</translation>
@@ -681,15 +678,6 @@
 <translation id="8414447476773253869">Masuk ke <ph name="PROVIDER"/> untuk melihat saldo Anda</translation>
 <translation id="615483366383024791">Akun Pembayaran</translation>
 <translation id="1060062421977823695">Penghasilan BAT Anda akan dibayarkan ke akun pembayaran ini.</translation>
-<translation id="2544805415966048917">Anda akan mengirim</translation>
-<translation id="6708522254106492579">Hingga <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">Cara otomatis untuk mendukung situs web dan kreator konten, berdasarkan banyaknya waktu yang Anda habiskan di konten mereka.</translation>
-<translation id="4319242254058427792">Kontribusi Otomatis dinonaktifkan</translation>
-<translation id="1091835891554961609">Kreator terverifikasi yang Anda kunjungi akan muncul di sini saat Anda menjelajah.</translation>
-<translation id="7714706530499503523">Kontribusi otomatis secara otomatis mengirimkan kontribusi bulanan kepada kreator yang terverifikasi dengan Brave, berdasarkan banyaknya waktu yang Anda habiskan di konten mereka.</translation>
-<translation id="2358028754328876971">Bagaimana cara kerja Kontribusi Otomatis?</translation>
-<translation id="2870560284913253234">Situs</translation>
-<translation id="1184072843013036520">Dapatkan produk bermerek Brave.</translation>
 <translation id="1170674812179664523">Toko komoditas Brave</translation>
 <translation id="8673202990286883068">Manfaat Anda</translation>
 <translation id="3699766258844277472">Anda belum menyiapkan kontribusi berulang.</translation>
@@ -1456,12 +1444,6 @@
 <translation id="3253669416991680932">Dompet perangkat keras ini tidak mendukung operasi ini.</translation>
 <translation id="7457027586454688423">Masukkan kata sandi Dompet Brave Anda</translation>
 <translation id="7553242001898162573">Masukkan kata sandi Anda</translation>
-<translation id="2873714185189940594">Buka aplikasi Rainbow Bridge?</translation>
-<translation id="2069777099181262239">Rainbow Bridge adalah layanan independen yang membantu Anda menjembatani aset di seluruh jaringan, serta menggunakan kripto Anda di jaringan dan ekosistem DApp lainnya. Menjembatani aset ke jaringan lain memiliki beberapa risiko.</translation>
-<translation id="7387899248733396663">Pelajari lebih lanjut tentang penggunaan Rainbow Bridge</translation>
-<translation id="3890567288132019108">Pelajari lebih lanjut tentang pencegahan risiko pada Rainbow Bridge</translation>
-<translation id="1792917191129448067">Buka aplikasi Rainbow Bridge</translation>
-<translation id="1522775706527775647">Bridge ke Aurora</translation>
 <translation id="4903322403594141291">Pelajari lebih lanjut tentang Dompet Brave</translation>
 <translation id="4427684901715566795">Kata sandi harus memiliki:</translation>
 <translation id="8521329076169776625">Minimal 8 karakter</translation>

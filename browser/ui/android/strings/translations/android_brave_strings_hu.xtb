@@ -412,7 +412,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="944340256927461196">Nem hagy nyomot a készülékén</translation>
 <translation id="2063044449012253966">A privát módban megtekintett oldalak nem jelennek meg a böngészési előzményében. A sütik, űrlapadatok és webhelyadatok eltűnnek, amint az összes privát ablakot bezárja.</translation>
 <translation id="7395764193745523646">Böngészés láthatósága</translation>
-<translation id="8735363371744702779">Ne feledje, hogy - még a privát ablakokban is - a böngészési tevékenysége látható lehet az internetszolgáltatója, a hálózati megfigyelők vagy a munkáltatója számára (ha munkahelyi eszközt/hálózatot használ).</translation>
+<translation id="8670344404057978375">Ne feledje, hogy - még a privát ablakokban is - a böngészési tevékenysége látható lehet az internetszolgáltatója, a hálózati megfigyelők vagy a munkáltatója számára (ha munkahelyi eszközt/hálózatot használ).</translation>
 <translation id="1413177583895309156">A Brave VPN titkosítja és védi az online tevékenységét a Brave böngészőn kívül is.</translation>
 <translation id="3974348661685061050">Próbálja ki ingyenesen 7 napig</translation>
 <translation id="5789441016350810005">Háttérben futó böngésző mellett küldött Brave Ads-hirdetések</translation>
@@ -450,8 +450,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1116694919640316211">Névjegy</translation>
 <translation id="7961015016161918242">Soha</translation>
 <translation id="1275213816424141989">Talán később</translation>
-<translation id="4406937629441301400">Nézd meg ezt a képet, és szerezz tokeneket, majd küldd tovább az alkotóknak. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">A kép megnézésével tokeneket szerzel.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása <ph name="PAYOUT_DATE"/> dátummal kezdődik.</translation>
 <translation id="33967210973550414">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása folyamatban van. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">A(z) <ph name="CURRENT_MONTH"/> havi jutalmak kifizetésének feldolgozása befejeződött. <ph name="SUPPORT"/></translation>
@@ -474,6 +472,8 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7854108565842971747">Ezek az alapértelmezett Shields beállítások új oldalak esetén. Ezek módosítása nem lesz hatással a meglévő oldalankénti beállításokra.</translation>
 <translation id="218587021686734263">Ujjlenyomatvétel megakadályozása a nyelvi beállításokkal</translation>
 <translation id="1706099589708266367">Korlátozza a webhelyek által Önről a böngésző nyelvi beállításai alapján megszerezhető ismereteket.</translation>
+<translation id="6486971767955110687">Tárolja a kapcsolattartási adatokat a jövőbeli hibás weboldal-jelentésekhez</translation>
+<translation id="4085787265464238844">Ha megadja az elérhetőségi adatokat, azokat a jövőbeli jelentésekhez tároljuk.</translation>
 <translation id="4721088070859595932">Nem engedi, hogy a weboldalak felismerjék az eszközét</translation>
 <translation id="7445306466605902444">Ujjlenyomat-felismerés letiltva (szigorú, a webhelyek összeomolhatnak)</translation>
 <translation id="5582686930349810484">Ujjlenyomat-felismerés letiltva (standard)</translation>
@@ -489,6 +489,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1561541094377237745">Solana-hálózatok</translation>
 <translation id="7141438739990875547">Bitcoin-hálózatok</translation>
 <translation id="9055546041146396417">Ha ez az oldal nem működik, próbáld meg a Shields nélkül.</translation>
+<translation id="7898672232170410330">Blokkelem</translation>
 <translation id="1209739344687072997">Nem működő oldal jelentése</translation>
 <translation id="8510478288840333677">Hívja fel a Brave fejlesztőinek figyelmét arra, hogy ez az oldal nem működik megfelelően a Shieldsel:</translation>
 <translation id="1653405824851871276">Köszönjük, hogy segít a Brave továbbfejlesztésében. Ebben a jelentésben csak az oldal javításához számunkra szükséges információk szerepelnek. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +497,19 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="8740275226259417070">Ez egy hibaoldal. Nem jelenthető nem működő oldalként.</translation>
 <translation id="721949491455392748">Tartalmazza az aktuális oldal képernyőképét</translation>
 <translation id="8459191579769999214">Képernyőkép megtekintése</translation>
+<translation id="6476216365964140603">További részletek (opcionális)</translation>
+<translation id="6145852496180774737">Kapcsolatba léphetnek velem itt: (opcionális)</translation>
+<translation id="7616645803364270729">E-mailben, Twitteren stb.</translation>
 <translation id="5299848999918506028">Köszönjük!</translation>
 <translation id="76550953340008122">Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
 <translation id="5370478469168390143">Adatok mentése online</translation>
 <translation id="1118508688433541158">Böngésszen gyorsabban, és blokkolja a hirdetéseket a Brave segítségével.</translation>
 <translation id="7427391215172269363">Minden nap spórolok az adatforgalmon, amikor a Brave-vel böngészek az interneten.</translation>
-<translation id="4776948189086901857">A Brave mindenhol működik</translation>
-<translation id="1606322780901645965">Töltsd le a Brave-et laptopodra vagy táblagépedre a brave.com-on, hogy a web gyorsabb és privátabb legyen.</translation>
+<translation id="357198789571802914">Nézze a YouTube-ot, ne a hirdetéseket.</translation>
+<translation id="2154817758398495571">Nyissa meg a YouTube linkeket Brave-ban a hirdetések letiltásához.</translation>
+<translation id="1580816390443799567">Kapcsolja be most</translation>
+<translation id="8589748782214271192">Nem, köszönöm.</translation>
 <translation id="8374242949413616101">Adatvédelem</translation>
 <translation id="4955406228638026265">A Brave megakadályozza, hogy a hirdetések és követők a beleegyezésed nélkül információkat gyűjtsenek rólad.</translation>
 <translation id="752842701893882688">Spórolj adatokat és akkumulátort</translation>
@@ -1021,7 +1027,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="8382368767453083629">2. többaláírós tárca inicializálása</translation>
 <translation id="77243237706803459">2. kiadás inicializálása</translation>
 <translation id="583281660410589416">Ismeretlen</translation>
-<translation id="5666264859501108700">A Brave-jutalmakhoz beállított régiója: <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Sajnos hiba történt a Brave-jutalmak beállítása során. Kérjük, próbálja újra.</translation>
 <translation id="7352651011704765696">Valami hiba történt</translation>
 <translation id="7144878232160441200">Újra</translation>
@@ -1082,10 +1087,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="7748944510530490017">Elsődleges hálózatok</translation>
 <translation id="2781668117338732220">Másodlagos hálózatok</translation>
 <translation id="282560918037172384">Teszthálózatok</translation>
-<translation id="707569835145765061">Intézkedés szükséges: csatlakoztasson letétkezelő fiókot, különben vBAT-egyenlege elveszik</translation>
-<translation id="1776742005329298234"><ph name="DUE_DATE"/> dátummal megszüntetjük a meglévő virtuális BAT-egyenlegek támogatását. Csatlakoztasson egy letéti számlát ezen időpont előtt, hogy a megszerzett egyenlegét át tudjuk utalni a letéti számlájára, különben az egyenlege elveszik!</translation>
-<translation id="5089752671190341407">A hátralevő időben továbbra is elküldheti vBAT-tokenjeit kedvenc alkotóinak hozzájárulásként</translation>
-<translation id="171158953146804144"><ph name="DUE_DATE"/> dátummal megszüntetjük a meglévő virtuális BAT-egyenlegek támogatását. Sajnos, az Ön régiójában (<ph name="REGION"/>) nincs elérhető letétkezelő, akihez átutalhatná az egyenlegét. Addig is azonban még támogathatja a kedvenc alkotóit.</translation>
 <translation id="8949422576126100041">Szeretné a Gyorsolvasóval megtekinteni az oldalt?</translation>
 <translation id="3435896845095436175">Engedélyezés</translation>
 <translation id="5296840868251496327">Gyorsolvasó engedélyezése</translation>
@@ -1104,9 +1105,12 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="2471230424465522689">Nem korábban, mint:</translation>
 <translation id="4841860051609590575">Kérelemazonosító</translation>
 <translation id="1179407411385015942">A Leo egy mesterséges intelligencián alapuló, intelligens asszisztens, közvetlenül a böngészőbe építve</translation>
+<translation id="5781842473834867765">Beszélgetési előzmények tárolása</translation>
 <translation id="4109670531935487117">Mutassa az automatikus kiegészítési javaslatokat a címsorban</translation>
-<translation id="1250335737108905610">Leo visszaállítása és Leo-adatok törlése</translation>
-<translation id="6165101586663336913">A Leo asszisztens-visszaállításához a jövőre nézve engedélyeznie kell a Leo használatát, és ez a művelet törli a csevegési előzményeket is. A csevegési előzmények törlésével törli a Leóval folytatott összes korábbi beszélgetését. Ezt a művelet nem vonható vissza.</translation>
+<translation id="6106701981952170121">Leo AI összes csevegési adatának törlése</translation>
+<translation id="423600389315522551">A Leo AI visszaállítása esetén a jövőben újra engedélyeznie kell a Brave Leo AI használatát, és a csevegési előzményei is törlődnek. Az előzmények törlése az összes korábbi beszélgetésének végleges eltávolítását jelenti a Brave Leo AI-val. Ez a művelet nem vonható vissza.</translation>
+<translation id="6742599753610126012">Csevegési előzmények törlése</translation>
+<translation id="3443052382074796867">A beszélgetések tárolásának letiltása véglegesen törli az összes korábban tárolt beszélgetést. Ez a művelet nem vonható vissza.</translation>
 <translation id="3692772534525889713">Kapcsolja össze a Play Áruházban lebonyolított vásárlásait a Brave-fiókjával, ha használni szeretné a Brave Leót más eszközökön is.</translation>
 <translation id="73236265316873967">Leo Prémium</translation>
 <translation id="1028627582482425924">Egy év</translation>
@@ -1236,4 +1240,6 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="4650851936784160359">A szűrőlistát nem sikerült frissíteni. Kérjük, próbálja újra.</translation>
 <translation id="3098054327870766317">Visszavonás gomb megjelenítése a lapok bezárásakor</translation>
 <translation id="1336494649091412226">Biztosan kilép a Brave-ből?</translation>
+<translation id="2361906291514218784">Leo MI</translation>
+<translation id="7942415993090181327">Csevegési előzmények</translation>
 </translationbundle>

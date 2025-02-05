@@ -124,7 +124,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6020553119523541665">Aquesta pestanya està activa en una altra finestra</translation>
 <translation id="4987392683074136770">En fer clic en aquesta pestanya es portarà el seu contingut a aquesta finestra</translation>
 <translation id="8355523213948477234">Botó del menú Vista dividida</translation>
-<translation id="2515126961943087659">Servei d'anuncis BAT</translation>
 <translation id="2104347391516032700">Servei de recompenses BAT</translation>
 <translation id="6040143037577758943">Tanca</translation>
 <translation id="6665472986740899785">Anunci de notificació de Brave</translation>
@@ -436,6 +435,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="3422250445565385437">Les llistes s'estan actualitzant</translation>
 <translation id="1340263054776016283">Introdueix l'URL de la llista de filtres</translation>
 <translation id="8578397014396032341">Filtres de contingut</translation>
+<translation id="5327248766486351172">Nom</translation>
 <translation id="3020183492814296499">Dreceres</translation>
 <translation id="5567412479632285879">Recompenses de Brave està inhabilitat</translation>
 <translation id="413570371620795359">Obre el panell de recompenses per activar i començar</translation>
@@ -505,7 +505,6 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="5794692721727586076">Xat de l'IA Leo</translation>
 <translation id="8115153008662981040">Els llocs web poden demanar obrir el xat de l'IA Leo</translation>
 <translation id="1145070115730668595">No permeteu que el lloc web obri el xat de l'IA Leo</translation>
-<translation id="6414370348346025511">La protecció estàndard està activada.</translation>
 <translation id="5565355416171743213">Comença a utilitzar la sincronització</translation>
 <translation id="4332558599726753990">Posada en marxa de la sincronització</translation>
 <translation id="2187778349654214731">Per començar, necessitaràs instal·lar Brave a tots els dispositius que planegis sincronitzar. Després, enllaceu-los de manera segura amb un codi de sincronització.</translation>
@@ -578,8 +577,6 @@ Segur que vols continuar?</translation>
 <translation id="3128251601544028053">Quan escrius a la barra d'adreces o al quadre de cerca, Brave envia el que escrius al motor de cerca predeterminat per obtenir els millors suggeriments. Això no està disponible a les finestres d'incògnit.</translation>
 <translation id="6285118765755298263">Indexa altres cercadors</translation>
 <translation id="919715748352669592">Indexa automàticament els llocs web que segueixen les especificacions d'OpenSearch</translation>
-<translation id="9195748375338942941">Finestra normal - Motor de cerca utilitzat a la barra d'adreces.</translation>
-<translation id="5324939009884545145">Finestra d'incògnit - Motor de cerca utilitzat a la barra d'adreces</translation>
 <translation id="6864914031231797928">Permetre l'accés a Google per obtenir extensions</translation>
 <translation id="7878791177459550035">L'encaminador multimèdia habilita la funció de transmissió al navegador.</translation>
 <translation id="2707635989000984973">Resol els noms dels dominis d'Unstoppable Domains</translation>
@@ -695,13 +692,7 @@ Segur que vols continuar?</translation>
 <translation id="8055509865174199683">Mostra Leo al menú contextual dels llocs webs</translation>
 <translation id="1529674267267221673">Leo es mostrarà al menú contextual quan cliquis amb el botó dret en un lloc web. D'aquesta manera, s'enviarà context a Leo des d'aquesta pàgina web.</translation>
 <translation id="8172263161008556851">Mostra suggeriments de missatges en la conversa</translation>
-<translation id="1014480593522400586">Esborra les dades de Leo</translation>
-<translation id="6803758564561896401">Per restablir l'assistent Leo, haureu de registrar-vos per fer servir Brave
-Leo en el futur i també esborrar l'historial del xat. Quan esborreu l'historial
-del xat se suprimiran també totes les converses anteriors amb Brave
-Leo. Aquesta acció no es pot desfer.</translation>
 <translation id="5574059574002819179">Configura els suggeriments d'autocompletar</translation>
-<translation id="8157373421434119674">Dades i historial de xat</translation>
 <translation id="614530507403667291">Model predeterminal per a les converses noves</translation>
 <translation id="8826914609353373601">Gestiona la subscripció prèmium</translation>
 <translation id="235457946228076038">Aportar el vostre model</translation>
@@ -714,7 +705,6 @@ Leo. Aquesta acció no es pot desfer.</translation>
 <translation id="6374563306438145841">Clau API</translation>
 <translation id="8008271349880309090">El nom del model tal com apareix al menú de selecció de models</translation>
 <translation id="1355326130503900056">El nom del model tal com hauria d'aparèixer a la sol·licitud a l'entorn del servidor, p. ex., phi-3 (tingueu en compte que si aquest nom no coincideix exactament amb el que espera l'entorn del servidor, la integració no funcionarà)</translation>
-<translation id="3286410514484292784">L'URL en què l'entorn del servidor escolta sol·licituds. Si no ho sabeu del cert, comproveu la documentació de l'entorn del servidor. Per exemple, per a Ollama sempre és http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Alguns entorns de servidor poden requerir credencials d'autenticació, com una clau API o un token d'accés. S'afegiran a l'encapçalament de la sol·licitud.</translation>
 <translation id="4335128003329183586">Mida de context</translation>
 <translation id="8794525422794607973">El nombre màxim de tokens que pot processar el model durant una sola interacció. Cada token correspon, aproximadament, a 3/4 de paraula. Una mida de context més alta permet al model processar converses més llargues. Cada model és compatible amb diferents mides de context màximes.</translation>
