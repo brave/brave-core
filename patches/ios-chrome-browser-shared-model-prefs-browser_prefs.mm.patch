@@ -1,16 +1,16 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 18539a0731183f13ea4ef9e8cf7e008417f977e1..1093737af764831e4804df0097385b8d66413ef8 100644
+index 8622f98a6fdd370a5ab86bc75a153ac003d6b8ed..e57c41f3b8ada3129cd522c16ab40dd190509b7b 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -688,6 +688,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-   registry->RegisterIntegerPref(prefs::kChromeDataRegionSetting, 0);
+@@ -662,6 +662,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
-   registry->RegisterBooleanPref(prefs::kYoutubeIncognitoHasBeenShown, false);
+   registry->RegisterIntegerPref(
+       prefs::kNTPHomeCustomizationNewBadgeImpressionCount, 0);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1044,6 +1045,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1037,6 +1038,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    // Deprecated 12/2024.
    registry->RegisterBooleanPref(kPageContentCollectionEnabled, false);
