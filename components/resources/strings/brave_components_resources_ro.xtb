@@ -670,9 +670,6 @@
 <translation id="2446517297521536638">Controlați ce tipuri de Brave Ads vedeți și cât de des. Cu cât vedeți mai multe, cu atât puteți câștiga mai mult.</translation>
 <translation id="5860033963881614850">Oprit</translation>
 <translation id="5916664084637901428">Pornit</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> reclame primite în această lună</translation>
-<translation id="7697696066810593560">Ați câștigat <ph name="NUM"/> până acum în această lună</translation>
-<translation id="6733193230212030816">Se estimează că veți câștiga între: <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">Soldul dvs.</translation>
 <translation id="8714473477079007268">Portofelul <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Cont de plăți</translation>
@@ -681,15 +678,6 @@
 <translation id="8414447476773253869">Conectați-vă la <ph name="PROVIDER"/> pentru a vă consulta soldul</translation>
 <translation id="615483366383024791">Cont de plăți</translation>
 <translation id="1060062421977823695">Câștigurile dvs. BAT vor fi plătite în acest cont de plăți.</translation>
-<translation id="2544805415966048917">Veți trimite</translation>
-<translation id="6708522254106492579">Până la <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">O modalitate automată de a sprijini site-urile web și creatorii de conținut, în funcție de timpul pe care îl petreceți pe conținutul lor.</translation>
-<translation id="4319242254058427792">Auto-Contribuție este dezactivată</translation>
-<translation id="1091835891554961609">Creatorii verificați pe care îi vizitați vor apărea aici pe măsură ce navigați.</translation>
-<translation id="7714706530499503523">Auto-contribuție trimite automat contribuții lunare către creatorii verificați cu Brave, în funcție de timpul pe care îl petreceți pe conținutul lor.</translation>
-<translation id="2358028754328876971">Cum funcționează Auto-Contribuție?</translation>
-<translation id="2870560284913253234">Site</translation>
-<translation id="1184072843013036520">Obțineți produse marca Brave.</translation>
 <translation id="1170674812179664523">Magazinul de produse Brave</translation>
 <translation id="8673202990286883068">Beneficiile dumneavoastră</translation>
 <translation id="3699766258844277472">Nu aveți încă configurate contribuții recurente.</translation>
@@ -1458,12 +1446,6 @@
 <translation id="3253669416991680932">Portofelul hardware nu acceptă această operațiune.</translation>
 <translation id="7457027586454688423">Introduceți parola Portofelului Brave</translation>
 <translation id="7553242001898162573">Introduceți parola</translation>
-<translation id="2873714185189940594">Deschideți aplicația Rainbow Bridge?</translation>
-<translation id="2069777099181262239">Rainbow Bridge este un serviciu independent care vă ajută să vă corelați activele de pe mai multe rețele, precum și să vă folosiți criptomonedele pe alte rețele și în ecosisteme DApp. Corelarea activelor de pe rețele diferite presupune anumite riscuri.</translation>
-<translation id="7387899248733396663">Aflați mai multe despre cum se utilizează Rainbow Bridge</translation>
-<translation id="3890567288132019108">Aflați mai multe despre cum să reduceți riscurile cu Rainbow Bridge</translation>
-<translation id="1792917191129448067">Deschideți aplicația Rainbow Bridge</translation>
-<translation id="1522775706527775647">Corelați cu Aurora</translation>
 <translation id="4903322403594141291">Aflați mai multe despre Brave Wallet</translation>
 <translation id="4427684901715566795">Parola trebuie să conțină:</translation>
 <translation id="8521329076169776625">Cel puțin 8 caractere</translation>

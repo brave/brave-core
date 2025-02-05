@@ -672,9 +672,6 @@
 <translation id="2446517297521536638">Tvarkykite, kokias „Brave Ads“ reklamas matote ir kaip dažnai. Kuo daugiau jų matote, tuo daugiau galite uždirbti.</translation>
 <translation id="5860033963881614850">Išjungta</translation>
 <translation id="5916664084637901428">Įjungta</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> gautos reklamos šį mėnesį</translation>
-<translation id="7697696066810593560">Šį mėnesį uždirbote <ph name="NUM"/></translation>
-<translation id="6733193230212030816">Jūsų numatomas uždarbis: <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">Jūsų likutis</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> piniginė</translation>
 <translation id="3175337080016717494">Išmokų sąskaita</translation>
@@ -683,15 +680,6 @@
 <translation id="8414447476773253869">Prisijunkite prie „<ph name="PROVIDER"/>“, kad pamatytumėte savo likutį</translation>
 <translation id="615483366383024791">Išmokų sąskaita</translation>
 <translation id="1060062421977823695">Į šią išmokų sąskaitą bus pervedamos jūsų BAT pajamos.</translation>
-<translation id="2544805415966048917">Jūs išsiųsite</translation>
-<translation id="6708522254106492579">Iki <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">Automatinis būdas paremti interneto svetaines ir turinio kūrėjus pagal tai, kiek laiko praleidžiate prie jų turinio.</translation>
-<translation id="4319242254058427792">Automatinio indėlio funkcija išjungta</translation>
-<translation id="1091835891554961609">Patikrinti kūrėjai, pas kuriuos lankotės, bus rodomi čia, kai naršysite.</translation>
-<translation id="7714706530499503523">Automatinio indėlio funkcija automatiškai siunčia mėnesinius įnašus „Brave“ patikrintiems kūrėjams, kurių dydis priklauso nuo to, kiek laiko praleidžiate prie jų turinio.</translation>
-<translation id="2358028754328876971">Kaip veikia automatinio indėlio funkcija?</translation>
-<translation id="2870560284913253234">Svetainė</translation>
-<translation id="1184072843013036520">Gaukite „Brave“ prekių ženklu pažymėtų gaminių.</translation>
 <translation id="1170674812179664523">„Brave“ prekių parduotuvė</translation>
 <translation id="8673202990286883068">Nauda jums</translation>
 <translation id="3699766258844277472">Dar nenustatėte jokių pasikartojančių indėlių.</translation>
@@ -1458,12 +1446,6 @@
 <translation id="3253669416991680932">Šios aparatinės įrangos piniginė šios operacijos nepalaiko.</translation>
 <translation id="7457027586454688423">Įveskite savo „Brave“ piniginės slaptažodį</translation>
 <translation id="7553242001898162573">Įveskite slaptažodį</translation>
-<translation id="2873714185189940594">Atverti programą „Rainbow Bridge“?</translation>
-<translation id="2069777099181262239">„Rainbow Bridge“ yra nepriklausoma paslauga, padedanti jums sujungti išteklius tinkluose ir naudoti kriptovaliutą kituose tinkluose bei DApp ekosistemose. Turto sujungimas su kitais tinklais kelia tam tikrą riziką.</translation>
-<translation id="7387899248733396663">Daugiau sužinokite apie tai, kaip naudoti „Rainbow Bridge“</translation>
-<translation id="3890567288132019108">Daugiau sužinokite apie tai, kaip sumažinti riziką naudojantis „Rainbow Bridge“</translation>
-<translation id="1792917191129448067">Atverti programą „Rainbow Bridge“</translation>
-<translation id="1522775706527775647">Tiltas, jungiantis su „Aurora“</translation>
 <translation id="4903322403594141291">Sužinokite daugiau apie „Brave“ piniginę</translation>
 <translation id="4427684901715566795">Slaptažodyje turėtų būti:</translation>
 <translation id="8521329076169776625">Ne mažiau kaip 8 ženklai</translation>

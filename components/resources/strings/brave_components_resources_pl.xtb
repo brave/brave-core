@@ -503,6 +503,11 @@
       =1 {Możesz otrzymać zapłatę za <ph name="COUNT_BEGIN"/># reklamę<ph name="COUNT_END"/>, która została wyświetlona w tym miesiącu.}
       other {Możesz otrzymać zapłatę za reklamy (<ph name="COUNT_BEGIN"/># <ph name="COUNT_END"/>) wyświetlone w tym miesiącu.}
     }</translation>
+<translation id="8611388433418909120">{ADS_VIEWED, plural,
+      =0 {Liczba wyświetlonych reklam w tym miesiącu: <ph name="COUNT_BEGIN"/>#<ph name="COUNT_END"/>}
+      =1 {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/># reklamy<ph name="COUNT_END"/> w tym miesiącu}
+      other {Zarabiasz za obejrzenie <ph name="COUNT_BEGIN"/># reklam<ph name="COUNT_END"/> w tym miesiącu}
+    }</translation>
 <translation id="6067959437127691361">Korzystanie z Nagród Brave pomaga we wsparciu twórców i pozwala na zdobywanie BAT.</translation>
 <translation id="944736176598169208">Nagrody</translation>
 <translation id="2359808026110333948">Dalej</translation>
@@ -672,9 +677,7 @@
 <translation id="2446517297521536638">Decyduj o rodzaju reklam Brave i częstotliwości ich wyświetlania. Im więcej zobaczysz, tym więcej możesz zarobić.</translation>
 <translation id="5860033963881614850">Wył.</translation>
 <translation id="5916664084637901428">Włączone</translation>
-<translation id="4284417062730522399">Reklamy <ph name="NUM"/> otrzymane w tym miesiącu</translation>
-<translation id="7697696066810593560">Do tej pory w tym miesiącu zarobiono <ph name="NUM"/></translation>
-<translation id="6733193230212030816">Szacujemy, że zarobisz w przedziale: <ph name="RANGE"/></translation>
+<translation id="3977723631999461201">Reklamy otrzymane w tym miesiącu: <ph name="NUM"/></translation>
 <translation id="7924320838799747606">Twoje saldo</translation>
 <translation id="8714473477079007268">Portfel <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Konto do wypłat</translation>
@@ -683,15 +686,7 @@
 <translation id="8414447476773253869">Zaloguj się do <ph name="PROVIDER"/>, aby wyświetlić saldo</translation>
 <translation id="615483366383024791">Konto do wypłat</translation>
 <translation id="1060062421977823695">Zarobione BAT będą przelewane na to konto do wypłat.</translation>
-<translation id="2544805415966048917">Prześlesz</translation>
-<translation id="6708522254106492579">Maksymalnie <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">Automatyczny sposób na wspieranie stron oraz twórców treści w oparciu o ilość czasu, jaką spędzasz na przeglądaniu ich treści.</translation>
-<translation id="4319242254058427792">Automatyczna darowizna wyłączona</translation>
-<translation id="1091835891554961609">Zweryfikowani twórcy, których odwiedzasz, będą wyświetlani tutaj podczas przeglądania.</translation>
-<translation id="7714706530499503523">Automatyczna darowizna wysyłana jest co miesiąc do twórców zweryfikowanych przez Brave w oparciu o ilość czasu, jaką spędzasz na przeglądaniu ich treści.</translation>
-<translation id="2358028754328876971">Jak działa automatyczna darowizna?</translation>
-<translation id="2870560284913253234">Witryna</translation>
-<translation id="1184072843013036520">Zdobądź produkty marki Brave.</translation>
+<translation id="2310070536993781610">Użyj kodu promocyjnego BRAVEREWARDS, by otrzymać 10% zniżki na wszystkie produkty w sklepie Brave.</translation>
 <translation id="1170674812179664523">Sklep z produktami Brave</translation>
 <translation id="8673202990286883068">Twoje korzyści</translation>
 <translation id="3699766258844277472">Nie określono jeszcze miesięcznych darowizn.</translation>
@@ -718,6 +713,9 @@
 <translation id="5309155375926073606">Tak, chcę przyczynić się do rozwoju wyszukiwarki Brave i wyrazić zgodę na włączenie <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
 <translation id="4622826307953794521">Przekaż anonimowe dane dotyczące wyszukiwania i przeglądania, by udoskonalić wyszukiwanie Brave za pomocą open-source'owego systemu Web Discovery Project.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="9034669711835382440">Społeczność</translation>
+<translation id="814503310257431685">Wyświetl wszystko</translation>
+<translation id="845020633253356720">Zobacz sklep</translation>
 <translation id="7090992647511817643">konto</translation>
 <translation id="4822132585477111396">Identyfikator łańcucha</translation>
 <translation id="3269475789479462358">domena</translation>
@@ -1149,6 +1147,12 @@
 <translation id="8214232307424031138">Podpisano</translation>
 <translation id="9065572743819293042">Niedawne transakcje</translation>
 <translation id="1702356231547761669">Hash transakcji</translation>
+<translation id="6030778062363728902">Notatka</translation>
+<translation id="1288859203671057247">Napisz wiadomość...</translation>
+<translation id="5466702869935634816">Wiadomość (opcjonalnie)</translation>
+<translation id="5715145706082194046">Dodaj notatkę</translation>
+<translation id="1922741261173258284">Usuń notatkę</translation>
+<translation id="1762915190843068679">Notatka nie może zawierać więcej niż 512 znaków.</translation>
 <translation id="8941851657764077659">Maksymalna opłata priorytetowa</translation>
 <translation id="8047527352810290817">Edytuj gaz</translation>
 <translation id="9091334651803050473">Nie jest to gwarantowane, ale jeśli zaoferujesz wyższą stawkę, górnicy najprawdopodobniej wybiorą Twoją transakcję w pierwszej kolejności.</translation>
@@ -1458,12 +1462,6 @@
 <translation id="3253669416991680932">Ten portfel sprzętowy nie obsługuje tej operacji.</translation>
 <translation id="7457027586454688423">Wprowadź swoje hasło do Portfela Brave</translation>
 <translation id="7553242001898162573">Wprowadź hasło</translation>
-<translation id="2873714185189940594">Otworzyć aplikację Rainbow Bridge?</translation>
-<translation id="2069777099181262239">Rainbow Bridge jest niezależnym serwisem, który pomaga łączenie aktywów między sieciami i umożliwia korzystanie z kryptowalut w innych sieciach i ekosystemach DApp. Łączenie aktywów z innymi sieciami wiąże się z pewnym ryzykiem.</translation>
-<translation id="7387899248733396663">Dowiedz się więcej na temat używania Rainbow Bridge</translation>
-<translation id="3890567288132019108">Dowiedz się, jak zmniejszyć ryzyko korzystania z aplikacji Rainbow Bridge</translation>
-<translation id="1792917191129448067">Otwórz aplikację Rainbow Bridge</translation>
-<translation id="1522775706527775647">Łączenie z Aurorą</translation>
 <translation id="4903322403594141291">Dowiedz się więcej o Portfelu Brave</translation>
 <translation id="4427684901715566795">Hasło powinno zawierać:</translation>
 <translation id="8521329076169776625">Co najmniej 8 znaków</translation>
@@ -1741,6 +1739,8 @@
 <translation id="2298396008562701154">Na tę chwilę konto to obsługuje transparentne transakcje, co oznacza, że są one widoczne dla wszystkich w blockchainie.</translation>
 <translation id="3987095760757102811">Przejście na konto chronione oznacza, że transakcje będą ukrywać dane nadawcy, odbiorcy i kwoty.</translation>
 <translation id="3819528427777765709">Chronione</translation>
+<translation id="2142946302539262412">Zunifikowane</translation>
+<translation id="4438043733494739848">Przejrzyste</translation>
 <translation id="7144878232160441200">Ponów próbę</translation>
 <translation id="9094621390791852268">Nie udało się wyświetlić podglądu transakcji.</translation>
 <translation id="4982713341035600933">Szacowana zmiana salda</translation>
@@ -1996,6 +1996,7 @@
 <translation id="5950760360751948276">Zawsze pokazuj pasek zakładek</translation>
 <translation id="2960757369920422313">Pokaż pasek zakładek na stronie w nowym oknie</translation>
 <translation id="522953399371747698">Ukryj pasek zakładek</translation>
+<translation id="9079813619990532635">Eksportuj wszystkie zakładki</translation>
 <translation id="134184943774258988">Włącz widoczność przycisku zakładek</translation>
 <translation id="2158862020143233462">Włącz Tarczę</translation>
 <translation id="3010280727642018218">Włącz JavaScript</translation>
@@ -2074,8 +2075,10 @@
 <translation id="4567071417854988869">Streść ten film</translation>
 <translation id="7921782882718083488">Streść tę stronę</translation>
 <translation id="7932221068776853847">Rozłącz się, aby przestać przesyłać treści tej strony do Leo i rozpocząć nową konwersację</translation>
+<translation id="2712650703044366764">Ten model ma nieprawidłowy adres końcowy. Sprawdź konfigurację i spróbuj ponownie.</translation>
 <translation id="1167803637855350748">Wystąpił problem sieciowy przy łączeniu z Leo; sprawdź swoje połączenie i spróbuj ponownie.</translation>
 <translation id="1996126325390835277">Osiągnięto limit częstości w wersji premium. Spróbuj ponownie za kilka godzin.</translation>
+<translation id="8151638057146502721">Skonfiguruj</translation>
 <translation id="4177458398826096846">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Llama 3.1 8B opracowanym przez firmę Meta z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Cześć, jestem Leo. Jestem w pełni obsługiwanym asystentem SI firmy Brave. Opieram się na modelu Mixtral 8x7B opracowanym przez firmę Mistral AI z myślą o radzeniu sobie z zaawansowanymi zadaniami <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Cześć, jestem Leo. Jestem używany przez Brave za pośrednictwem serwera proxy i korzystam z modelu Claude Instant opracowanego przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
@@ -2112,6 +2115,7 @@
 <translation id="6393149565874086128">Dodaj opinię</translation>
 <translation id="3521125531016408657">Podoba mi się odpowiedź</translation>
 <translation id="8202517001427388906">Nie podoba mi się odpowiedź</translation>
+<translation id="3177073390279208955">Wysyła ocenę, rozmowę, model, język, wersję i status premium</translation>
 <translation id="1379399209929302811">Prześlij opinię dotyczącą sztucznej inteligencji Brave</translation>
 <translation id="8442999546461118871">Wybierz temat opinii</translation>
 <translation id="9018766373792005944">Czego dotyczy Twoja opinia?</translation>
@@ -2137,6 +2141,11 @@
 <translation id="4370698775470316661">Ta rozmowa jest za długa i nie może być kontynuowana. Mogą być dostępne inne modele, z którymi Leo jest w stanie zapewnić dokładność przy dłuższych rozmowach.</translation>
 <translation id="5719170755629028558">Udoskonalamy Twoją odpowiedź za pomocą Wyszukiwarki Brave…</translation>
 <translation id="5794962229997281366">Udoskonalona odpowiedź wyszukiwania dla <ph name="SEARCH_TERMS"/></translation>
+<translation id="8103700533980268469">Zamknij to powiadomienie</translation>
+<translation id="2315654674554095762">Leo będzie teraz zapamiętywać rozmowy, by można było do nich wracać. Są one zaszyfrowane na twoim urządzeniu i możesz je w każdej chwili usunąć.</translation>
+<translation id="7821251979960635244">Historia rozmowy pojawi się tutaj, gdy rozpoczniesz rozmowę.</translation>
+<translation id="887511360213807449">Historia jest wyłączona</translation>
+<translation id="5380979378058584412">Aby zobaczyć poprzednie rozmowy z Leo, musisz włączyć historię rozmów.</translation>
 <translation id="6291843235651817590">Czat ogólny</translation>
 <translation id="8193130769524604031">Zaawansowane zadania czatu</translation>
 <translation id="3185367320601718531">Rozmowa i generowanie tekstu</translation>
@@ -2180,6 +2189,7 @@
 <translation id="49269513399674318">Skorzystaj z mikrofonu</translation>
 <translation id="3895031624234442305">Modele niestandardowe</translation>
 <translation id="4572010449071015143">Rozpocznij nową rozmowę</translation>
+<translation id="345901077335355561">Wróć do aktywnej rozmowy</translation>
 <translation id="6287023598025162715">Nowa rozmowa</translation>
 <translation id="6303294677342628402">Tarcze</translation>
 <translation id="8458987127502506209">Włącz Tarcze Brave</translation>
@@ -2209,6 +2219,8 @@
 <translation id="6196640612572343990">Blokuj pliki cookie innych firm</translation>
 <translation id="693506469193748756">Zapomnij po zamknięciu tej strony</translation>
 <translation id="5471580724041424345">Wyczyść pliki cookie i inne dane strony po jej zamknięciu.</translation>
+<translation id="6486971767955110687">Przechowuj informacje kontaktowe na potrzeby przyszłych raportów o niedziałających witrynach</translation>
+<translation id="4085787265464238844">Jeśli podasz dane kontaktowe, zostaną one zapisane na potrzeby przyszłych raportów</translation>
 <translation id="6883611015375728278">Blokuj wszystkie pliki cookie</translation>
 <translation id="5657156137487675418">Zezwalaj na wszystkie pliki cookie</translation>
 <translation id="8366221601425141146">Zablokowano funkcję odcisku palca</translation>

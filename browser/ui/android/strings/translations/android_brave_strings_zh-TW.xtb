@@ -412,7 +412,7 @@
 <translation id="944340256927461196">不在裝置上留下任何痕跡</translation>
 <translation id="2063044449012253966">您在隱私視窗中瀏覽的網站不會出現在您的歷史紀錄中。一旦關閉所有隱私視窗，Cookie、表單資料和網站資料就會消失。</translation>
 <translation id="7395764193745523646">瀏覽可見度</translation>
-<translation id="8735363371744702779">請注意，即使在隱私視窗中，您的瀏覽活動仍可能會被 ISP、網路觀察員或您的雇主 (如果您使用工作裝置/網路) 看到。</translation>
+<translation id="8670344404057978375">請注意，即使在隱私視窗中，您的瀏覽活動仍可能會被 ISP、網路觀察員或您的雇主 (如果您使用工作裝置/網路) 看到。</translation>
 <translation id="1413177583895309156">Brave VPN 會加密並保護您在線上所做的任何事情，即使並未使用 Brave 瀏覽器。</translation>
 <translation id="3974348661685061050">免費試用７天</translation>
 <translation id="5789441016350810005">Brave Ads 會在瀏覽器於背景執行時發送</translation>
@@ -450,8 +450,6 @@
 <translation id="1116694919640316211">關於</translation>
 <translation id="7961015016161918242">一律不要</translation>
 <translation id="1275213816424141989">晚點再說</translation>
-<translation id="4406937629441301400">查看此圖像以賺取代幣，並支付給創作者。<ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">藉由查看這張圖像，您可以賺取代幣.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/>獎勵的支付將於 <ph name="PAYOUT_DATE"/>前開始處理。</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/>獎勵的支付正在處理中。<ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/>獎勵的支付已完成。<ph name="SUPPORT"/></translation>
@@ -474,6 +472,8 @@
 <translation id="7854108565842971747">這些是新網站的 Shields 預設設定。變更此些設定不會影響您現時對每個網站的設定。</translation>
 <translation id="218587021686734263">透過語言設定防止指紋辨識攻擊</translation>
 <translation id="1706099589708266367">減少網站可以根據您瀏覽器的語言設定所掌握到的內容。</translation>
+<translation id="6486971767955110687">儲存聯絡資訊，以備日後的網站損毀報告使用</translation>
+<translation id="4085787265464238844">如果您提供聯絡資訊，該資訊將被儲存，以備日後的報告使用</translation>
 <translation id="4721088070859595932">防止網站識別您的裝置</translation>
 <translation id="7445306466605902444">封鎖指紋（嚴格，可能會破壞網站）</translation>
 <translation id="5582686930349810484">封鎖指紋（標準）</translation>
@@ -489,6 +489,7 @@
 <translation id="1561541094377237745">Solana 網路</translation>
 <translation id="7141438739990875547">比特幣網路</translation>
 <translation id="9055546041146396417">如果此網站顯示為損壞，請試試 Shields down</translation>
+<translation id="7898672232170410330">封鎖元素</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
 <translation id="8510478288840333677">讓 Brave 開發者知道此網站無法與 Shields 一起運作：</translation>
 <translation id="1653405824851871276">感謝您協助 Brave 改善服務。此報告只會包含我們修復此網站所需的資訊。<ph name="LEARN_MORE"/></translation>
@@ -496,14 +497,19 @@
 <translation id="8740275226259417070">此為錯誤頁面。無法將其回報為錯誤網站。</translation>
 <translation id="721949491455392748">附上目前頁面的螢幕截圖</translation>
 <translation id="8459191579769999214">檢視螢幕截圖</translation>
+<translation id="6476216365964140603">其他詳細資訊 (選填)</translation>
+<translation id="6145852496180774737">聯絡方式：(選填)</translation>
+<translation id="7616645803364270729">電子郵件、Twitter 等</translation>
 <translation id="5299848999918506028">感謝！</translation>
 <translation id="76550953340008122">感謝讓 Brave 開發者知道此網站會壞掉。我們將會盡力修復它。</translation>
 <translation id="650318023204990401">進階控制</translation>
 <translation id="5370478469168390143">降低線上使用流量</translation>
 <translation id="1118508688433541158">使用 Brave 瀏覽更快並封鎖廣告</translation>
 <translation id="7427391215172269363">我每日都會透過 Brave 瀏覽網路來節省流量。</translation>
-<translation id="4776948189086901857">Brave 隨處皆可運作</translation>
-<translation id="1606322780901645965">在您的筆記型電腦或平板上，從 brave.com 下載 Brave 以獲得更快和更私密的網際網路</translation>
+<translation id="357198789571802914">觀看 YouTube，而非廣告。</translation>
+<translation id="2154817758398495571">在 Brave 中開啟 YouTube 連結以封鎖廣告。</translation>
+<translation id="1580816390443799567">立即開啟</translation>
+<translation id="8589748782214271192">不用了，謝謝</translation>
 <translation id="8374242949413616101">隱私權保護</translation>
 <translation id="4955406228638026265">Brave 阻止廣告 &amp; 追蹤裝置未經您同意而蒐集關於您的資訊。</translation>
 <translation id="752842701893882688">節省資料和電池量</translation>
@@ -1021,7 +1027,6 @@
 <translation id="8382368767453083629">初始化多重簽名 2</translation>
 <translation id="77243237706803459">初始化鑄幣 2</translation>
 <translation id="583281660410589416">未知</translation>
-<translation id="5666264859501108700">您的 Brave 獎勵區域已設定為 <ph name="COUNTRY_NAME"/>。</translation>
 <translation id="909076461795862330">抱歉，嘗試設定 Brave 獎勵時出錯。請再次嘗試。</translation>
 <translation id="7352651011704765696">有地方出錯了</translation>
 <translation id="7144878232160441200">重試</translation>
@@ -1082,10 +1087,6 @@
 <translation id="7748944510530490017">主要網路</translation>
 <translation id="2781668117338732220">次要網路</translation>
 <translation id="282560918037172384">測試網路</translation>
-<translation id="707569835145765061">需要採取動作：連接託管帳戶，否則您的 vBAT 將遺失</translation>
-<translation id="1776742005329298234">我們將於 <ph name="DUE_DATE"/> 止現有虛擬 BAT 餘額的支援。請在此日期之前連接到一個託管帳戶，以讓我們將您賺取的餘額轉移到您的託管帳戶，否則您的餘額將會遺失。</translation>
-<translation id="5089752671190341407">您仍有時間將您的 vBAT 用於贊助您喜愛的創作者</translation>
-<translation id="171158953146804144">我們將於 <ph name="DUE_DATE"/> 止現有虛擬 BAT 餘額的支援。很抱歉，您所在的區域（<ph name="REGION"/>）沒有可用於提領餘額的託管帳戶。您仍可以在該日期前贊助您喜愛的創作者。</translation>
 <translation id="8949422576126100041">要使用 Speedreader 檢視頁面嗎？</translation>
 <translation id="3435896845095436175">啟用</translation>
 <translation id="5296840868251496327">啟用 Speedreader</translation>
@@ -1104,9 +1105,12 @@
 <translation id="2471230424465522689">不早於</translation>
 <translation id="4841860051609590575">請求 ID</translation>
 <translation id="1179407411385015942">Leo 是採用 AI 技術的智慧助理，內建於瀏覽器中。</translation>
+<translation id="5781842473834867765">儲存我的對話紀錄</translation>
 <translation id="4109670531935487117">在網址列顯示自動完成建議</translation>
-<translation id="1250335737108905610">重設並清除 Leo 資料</translation>
-<translation id="6165101586663336913">如果重設 Leo 助理，日後必須重新選擇加入才能再次使用，您的聊天記錄也會一併清除。清除聊天記錄會刪除您先前與 Leo 的對話。此動作無法復原。</translation>
+<translation id="6106701981952170121">刪除所有 Leo AI 對話資料</translation>
+<translation id="423600389315522551">如果重設 Leo AI，日後必須重新選擇加入才能再次使用 Brave Leo AI，您的聊天紀錄也會一併清除。清除聊天紀錄會刪除您先前與 Brave Leo AI 的對話。此動作無法復原。</translation>
+<translation id="6742599753610126012">清除聊天紀錄</translation>
+<translation id="3443052382074796867">停用對話儲存功能會永久刪除所有先前儲存的對話。此動作無法復原。</translation>
 <translation id="3692772534525889713">將 Play 商店的購買項目與您的 Brave 帳戶建立連結，即可在其他裝置上使用 Brave Leo。</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">1 年</translation>
@@ -1236,4 +1240,6 @@
 <translation id="4650851936784160359">無法更新篩選清單。請再試一次</translation>
 <translation id="3098054327870766317">關閉標籤頁時顯示撤銷按鈕</translation>
 <translation id="1336494649091412226">您確定要退出 Brave 嗎？</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">聊天紀錄</translation>
 </translationbundle>

@@ -124,7 +124,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="6020553119523541665">Tato karta je aktivní v jiném okně</translation>
 <translation id="4987392683074136770">Po kliknutí na kartu se její obsah zobrazí v tomto okně</translation>
 <translation id="8355523213948477234">Tlačítko nabídky rozděleného zobrazení</translation>
-<translation id="2515126961943087659">Služba reklam BAT</translation>
 <translation id="2104347391516032700">Služba odměn BAT</translation>
 <translation id="6040143037577758943">Zavřít</translation>
 <translation id="6665472986740899785">Oznámení Brave s reklamou</translation>
@@ -436,6 +435,7 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="3422250445565385437">Aktualizace seznamů</translation>
 <translation id="1340263054776016283">Zadejte odkaz na seznam filtrů</translation>
 <translation id="8578397014396032341">Filtry obsahu</translation>
+<translation id="5327248766486351172">Název</translation>
 <translation id="3020183492814296499">Zástupci</translation>
 <translation id="5567412479632285879">Odměny Brave jsou vypnuté</translation>
 <translation id="413570371620795359">Otevřete panel Odměny pro aktivaci a začněte</translation>
@@ -505,7 +505,6 @@ Nebo změňte později na odkaze<ph name="SETTINGS_EXTENIONS_LINK"/>.</translati
 <translation id="5794692721727586076">Chat Leo AI</translation>
 <translation id="8115153008662981040">Weby mohou požádat o otevření chatu Leo AI</translation>
 <translation id="1145070115730668595">Nepovolovat webům otevírat chat Leo AI</translation>
-<translation id="6414370348346025511">Je zapnutá standardní ochrana.</translation>
 <translation id="5565355416171743213">Začít používat synchronizaci</translation>
 <translation id="4332558599726753990">Nastavení synchronizace</translation>
 <translation id="2187778349654214731">Pro začátek si budete muset nainstalovat Brave na veškerá zařízení, která si chcete synchronizovat. Poté zařízení bezpečně propojíte pomocí synchronizačního kódu.</translation>
@@ -578,8 +577,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3128251601544028053">Když píšete do adresního řádku nebo vyhledávacího pole, odesílá Brave to, co píšete, do vašeho výchozího vyhledávače, abyste získali lepší návrhy. V soukromých oknech to není dostupné.</translation>
 <translation id="6285118765755298263">Indexovat ostatní vyhledávače</translation>
 <translation id="919715748352669592">Automaticky indexovat webové stránky, které se řídí specifikacemi OpenSearch.</translation>
-<translation id="9195748375338942941">Normální okno – vyhledávač používaný v adresním řádku.</translation>
-<translation id="5324939009884545145">Soukromé okno – vyhledávač používaný v adresním řádku</translation>
 <translation id="6864914031231797928">Povolit rozšířením přihlášení pomocí Google</translation>
 <translation id="7878791177459550035">Směrovač médií umožňuje funkci odesílání v prohlížeči.</translation>
 <translation id="2707635989000984973">Překlad názvů domén Unstoppable Domains</translation>
@@ -695,13 +692,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8055509865174199683">Zobrazit Leo v kontextové nabídce na webových stránkách</translation>
 <translation id="1529674267267221673">Leo se objeví v kontextové nabídce, když kliknete pravým tlačítkem na webovou stránku. To odešle kontext z aktuální webové stránky do Leo.</translation>
 <translation id="8172263161008556851">Zobrazit navrhované výzvy v konverzaci</translation>
-<translation id="1014480593522400586">Vymazat data Leo</translation>
-<translation id="6803758564561896401">Resetování asistenta Leo bude vyžadovat přihlášení k používání služby Brave.
-V budoucnu Leo také vymaže historii vašeho chatu. Vymazání
-vašeho chatu odstraní všechny vaše předchozí konverzace v Brave
-Leo. Tuto akci nelze vrátit zpět.</translation>
 <translation id="5574059574002819179">Úprava návrhů automatického dokončování</translation>
-<translation id="8157373421434119674">Historie dat a chatu</translation>
 <translation id="614530507403667291">Výchozí model pro konverzace</translation>
 <translation id="8826914609353373601">Správa prémiového předplatného</translation>
 <translation id="235457946228076038">Přineste svůj vlastní model</translation>
@@ -714,7 +705,6 @@ Leo. Tuto akci nelze vrátit zpět.</translation>
 <translation id="6374563306438145841">Klíč API</translation>
 <translation id="8008271349880309090">Název modelu, který se zobrazí v nabídce pro výběr modelu</translation>
 <translation id="1355326130503900056">Název modelu, jak by se měl objevit v požadavku na obslužný rámec, např. phi-3 (vezměte na vědomí, že pokud se tento název přesně neshoduje s tím, co očekává obslužný rámec, integrace nebude fungovat)</translation>
-<translation id="3286410514484292784">Adresa URL, kde váš obslužný rámec naslouchá požadavkům. Pokud si nejste jisti, podívejte se do dokumentace k obslužnému rámci. Např. pro nástroj Ollama je to vždy http://localhost:11434/v1/chat/completions.</translation>
 <translation id="1058790648388035953">Některé obslužné rámce mohou vyžadovat ověřovací údaje, například klíč API nebo přístupový token. Ty budou přidány do hlavičky požadavku.</translation>
 <translation id="4335128003329183586">Velikost kontextu</translation>
 <translation id="8794525422794607973">Maximální počet tokenů, které dokáže model zpracovat v rámci jedné interakce. Každý token tvoří zhruba 3/4 slova. Větší velikost kontextu umožňuje modelu zpracovávat delší konverzace. Různé modely podporují různé maximální velikosti kontextu.</translation>

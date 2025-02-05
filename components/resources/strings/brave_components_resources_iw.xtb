@@ -502,8 +502,13 @@
 <translation id="2784412028126205842">יש לחבר חשבון לתשלום</translation>
 <translation id="766126983336630294">{ADS_VIEWED, plural,
       =0 {צפית ב-<ph name="COUNT_BEGIN"/># מודעות<ph name="COUNT_END"/> החודש}
-      =1 {ניתן לקבל תשלום בגין מודעה <ph name="COUNT_BEGIN"/># <ph name="COUNT_END"/> שצפית בה החודש.}
+      =1 {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/>מודעה #<ph name="COUNT_END"/> שצפית בה החודש.}
       other {ניתן לקבל תשלום בגין <ph name="COUNT_BEGIN"/># המודעות<ph name="COUNT_END"/> שבהן צפית החודש.}
+    }</translation>
+<translation id="8611388433418909120">{ADS_VIEWED, plural,
+      =0 {צפית ב-<ph name="COUNT_BEGIN"/># מודעות<ph name="COUNT_END"/> החודש}
+      =1 {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/>מודעה #<ph name="COUNT_END"/> שצפית בה החודש}
+      other {ניתן לקבל תשלום על <ph name="COUNT_BEGIN"/># המודעות<ph name="COUNT_END"/> שצפית בהן החודש}
     }</translation>
 <translation id="6067959437127691361">השימוש ב-Brave Rewards עוזר לתמוך ביוצרי תוכן, ומאפשר לך להרוויח BAT.</translation>
 <translation id="944736176598169208">פרסים</translation>
@@ -676,9 +681,7 @@
 <translation id="2446517297521536638">ניתן לקבוע איזה סוג של Brave מודעות יוצגו בפניך ובאיזו תדירות. ככל שמספר הצפיות יהיה גבוה יותר, כך תוכל להרוויח.</translation>
 <translation id="5860033963881614850">כבוי</translation>
 <translation id="5916664084637901428">פועל</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> מודעות התקבלו החודש</translation>
-<translation id="7697696066810593560">החודש הרווחת <ph name="NUM"/> עד כה</translation>
-<translation id="6733193230212030816">הרווח הצפוי שלך נע בין: <ph name="RANGE"/></translation>
+<translation id="3977723631999461201"><ph name="NUM"/> מודעות התקבלו החודש</translation>
 <translation id="7924320838799747606">היתרה שלך</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> ארנק</translation>
 <translation id="3175337080016717494">חשבון לתשלום</translation>
@@ -687,15 +690,7 @@
 <translation id="8414447476773253869">היכנס אל <ph name="PROVIDER"/> כדי לראות את יתרתך</translation>
 <translation id="615483366383024791">חשבון לתשלום</translation>
 <translation id="1060062421977823695">רווחי BAT שלך ישולמו אל חשבון זה</translation>
-<translation id="2544805415966048917">אתה עומד לשלוח</translation>
-<translation id="6708522254106492579">עד BAT <ph name="AMOUNT"/></translation>
-<translation id="7666058404763778706">דרך אוטומטית לתמוך באתרים ויוצרי תוכן, בהתאם לזמן שתקדיש לתוכן שלהם.</translation>
-<translation id="4319242254058427792">התרומה האוטומטית מושבתת</translation>
-<translation id="1091835891554961609">יוצרים מאומתים שאתם מבקרים יופיעו כאן במהלך הגלישה.</translation>
-<translation id="7714706530499503523">באמצעות תרומה אוטומטית, התרומות נשלחות באופן חודשי אל יוצרים מאומתים ב-Brave, בהתאם לזמן שאתה מקדיש לתוכן שלהם.</translation>
-<translation id="2358028754328876971">כיצד תרומה אוטומטית פועלת?</translation>
-<translation id="2870560284913253234">אתר</translation>
-<translation id="1184072843013036520">קבלו את המוצרים מבית Brave.</translation>
+<translation id="2310070536993781610">אפשר להשתמש בקוד המבצע BRAVEREWARDS ולקבל 10% הנחה על כל פריטי Brave בחנות.</translation>
 <translation id="1170674812179664523">חנות מוצרי Brave</translation>
 <translation id="8673202990286883068">ההטבות שלך</translation>
 <translation id="3699766258844277472">עדיין לא הגדרת תרומות מחזוריות.</translation>
@@ -722,6 +717,9 @@
 <translation id="5309155375926073606">כן, בנוסף הייתי רוצה לתרום לחיפוש Brave ולהצטרף אל <ph name="LINK_BEGIN"/>פרויקט גילוי Web<ph name="LINK_END"/>.</translation>
 <translation id="4622826307953794521">לתרום נתוני חיפוש וגלישה אנונימיים כדי לשפר את חיפוש Brave עם פרויקט Web Discovery. זה מבוסס-קוד פתוח לחלוטין.</translation>
 <translation id="4174337572777167894">פרויקט גילוי אתרים</translation>
+<translation id="9034669711835382440">קהילה</translation>
+<translation id="814503310257431685">הצגת הכל</translation>
+<translation id="845020633253356720">הצגת חנות</translation>
 <translation id="7090992647511817643">חֶשְׁבּוֹן</translation>
 <translation id="4822132585477111396">מזהה שרשרת</translation>
 <translation id="3269475789479462358">תְחוּם</translation>
@@ -1153,6 +1151,12 @@
 <translation id="8214232307424031138">חתום</translation>
 <translation id="9065572743819293042">פעולות אחרונות</translation>
 <translation id="1702356231547761669">עסקת Hash</translation>
+<translation id="6030778062363728902">Memo</translation>
+<translation id="1288859203671057247">אפשר להזין הודעה...</translation>
+<translation id="5466702869935634816">הודעה (לא חובה)</translation>
+<translation id="5715145706082194046">הוספת memo</translation>
+<translation id="1922741261173258284">הסרת memo</translation>
+<translation id="1762915190843068679">Memo חייב להיות מתחת ל-512 תווים.</translation>
 <translation id="8941851657764077659">מקסימום דמי עדיפות</translation>
 <translation id="8047527352810290817">עריכת דלק</translation>
 <translation id="9091334651803050473">למרות שזה לא מובטח, סביר להניח שכורים יעדיפו את העסקה שלך אם תשלם עמלה גבוהה יותר.</translation>
@@ -1466,12 +1470,6 @@
 <translation id="3253669416991680932">ארנק החומרה הזה אינו תומך בפעולה זו.</translation>
 <translation id="7457027586454688423">הזן את סיסמת ה-Brave Wallet שלך</translation>
 <translation id="7553242001898162573">הזן סיסמה</translation>
-<translation id="2873714185189940594">לפתוח את אפליקציית Rainbow Bridge?</translation>
-<translation id="2069777099181262239">Rainbow Bridge הוא שירות עצמאי שעוזר לגשר נכסים בין רשתות, ולהשתמש בקריפטו שלכם ברשתות אחרות ובמערכות אקולוגיות של DApp. כשמגשרים נכסים לרשתות אחרות ישנם כמה סיכונים.</translation>
-<translation id="7387899248733396663">לפרטים נוספים על השימוש ב-Rainbow Bridge</translation>
-<translation id="3890567288132019108">למידע נוסף על הפחתת סיכונים עם Rainbow Bridge</translation>
-<translation id="1792917191129448067">פתח את אפליקציית Rainbow Bridge</translation>
-<translation id="1522775706527775647">Bridge ל-Aurora</translation>
 <translation id="4903322403594141291">למידע נוסף על Brave Wallet</translation>
 <translation id="4427684901715566795">ססמה צריכה להיות:</translation>
 <translation id="8521329076169776625">לפחות 8 תווים</translation>
@@ -1753,6 +1751,8 @@ CoinGecko</translation>
 <translation id="2298396008562701154">כרגע החשבון הזה תומך בעסקאות שקופות, מה שאומר שהן גלויות לכולם בבלוקצ׳יין.</translation>
 <translation id="3987095760757102811">שדרוג לחשבון מוגן אומר שהעסקאות האלה יסתירו את פרטי השולח, המקבל, והסכום.</translation>
 <translation id="3819528427777765709">מוגן</translation>
+<translation id="2142946302539262412">מאוחד</translation>
+<translation id="4438043733494739848">שקוף</translation>
 <translation id="7144878232160441200">נסה שוב</translation>
 <translation id="9094621390791852268">תצוגה מקדימה של העסקה נכשלה.</translation>
 <translation id="4982713341035600933">שינוי יתרה משוער</translation>
@@ -2008,6 +2008,7 @@ CoinGecko</translation>
 <translation id="5950760360751948276">הצג תמיד את סרגל הסימניות</translation>
 <translation id="2960757369920422313">הצג את סרגל הסימניות על NTP</translation>
 <translation id="522953399371747698">הסתר את סרגל הסימניות</translation>
+<translation id="9079813619990532635">ייצוא כל הסימניות</translation>
 <translation id="134184943774258988">שנה את נראות לחצן כל הסימניות</translation>
 <translation id="2158862020143233462">החלף מגנים</translation>
 <translation id="3010280727642018218">החלף JavaScript</translation>
@@ -2086,8 +2087,10 @@ CoinGecko</translation>
 <translation id="4567071417854988869">לסכם את הדף הזה</translation>
 <translation id="7921782882718083488">לסכם את הדף הזה</translation>
 <translation id="7932221068776853847">התנתק כדי להפסיק לשלוח את תוכן הדף הזה ל-Leo, ולהתחיל שיחה חדשה</translation>
+<translation id="2712650703044366764">בדגם הזה יש נקודת קצה לא חוקית. יש לבדוק את הקונפיגורציה ולנסות שוב.</translation>
 <translation id="1167803637855350748">הייתה בעיית רשת בחיבור ל-Leo, נא לבדוק את החיבור ולנסות שוב.</translation>
 <translation id="1996126325390835277">הגעתם לגבול דירוג הפרימיום. אנא נסו שוב בעוד מספר שעות</translation>
+<translation id="8151638057146502721">קביעת קונפיגורציה</translation>
 <translation id="4177458398826096846">שלום, שמי Leo. אני עוזר המבוסס בינה מלאכותית של Brave. אני מופעל על ידי Llama 3.1 8B, דגם שנוצר על ידי Meta לשיפור ביצועים ויכול להיות שימושי במגוון תחומים. <ph name="LINK_BEFORE"/>למידע נוסף<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">שלום, אני ליאו. אני אסיסטנט באחסון מלא של Brave. אני מופעל על ידי Mixtral 8x7B, דגם שנוצר על ידי Mistral AI לטיפול במשימות מתקדמות. <ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">שלום, אני ליאו. אני משתמש ב־Brave כפרוקסי ומופעל על ידי Claude Instant, דגם שנוצר על ידי Anthropic להפעלת משימות עיבוד שיחות וטקסטים. <ph name="LINK_BEFORE"/>למד עוד<ph name="LINK_AFTER"/></translation>
@@ -2124,6 +2127,7 @@ CoinGecko</translation>
 <translation id="6393149565874086128">הוסף משוב</translation>
 <translation id="3521125531016408657">כמו תשובה</translation>
 <translation id="8202517001427388906">לא אוהב תשובה</translation>
+<translation id="3177073390279208955">שולח דירוג, שיחה, דגם, שפה, גרסה, וסטטוס פרימיום</translation>
 <translation id="1379399209929302811">ספק משוב אמיץ לבינה מלאכותית</translation>
 <translation id="8442999546461118871">בחר את נושא המשוב שלך</translation>
 <translation id="9018766373792005944">על מה המשוב שלך?</translation>
@@ -2149,6 +2153,11 @@ CoinGecko</translation>
 <translation id="4370698775470316661">השיחה הזו ארוכה מדי ואי אפשר להמשיך. ייתכן שקיימים דגמים אחרים שבהם ליאו מסוגל לשמור על דיוק לשיחות ארוכות יותר.</translation>
 <translation id="5719170755629028558">משפר את התשובה שלך עם חיפוש Brave...</translation>
 <translation id="5794962229997281366">תשובה משופרת לחיפוש טוב יותר של<ph name="SEARCH_TERMS"/>.</translation>
+<translation id="8103700533980268469">סגירת התראה זו</translation>
+<translation id="2315654674554095762">עכשיו Leo יזכור את השיחות שלך כך שתהיה לך אפשרות לחזור אליהן. הן מאוחסנות באופן מוצפן במכשיר שלך, ובאפשרותך למחוק אותן בכל עת.</translation>
+<translation id="7821251979960635244">היסטוריית השיחות שלך תופיע כאן ברגע שתתחיל/י שיחה.</translation>
+<translation id="887511360213807449">היסטוריה מושבתת</translation>
+<translation id="5380979378058584412">כדי להציג את השיחות הקודמות שלך עם Leo, צריך לאפשר היסטוריית שיחות.</translation>
 <translation id="6291843235651817590">צ'אט למטרות כלליות</translation>
 <translation id="8193130769524604031">משימות צ'אט מתקדמות</translation>
 <translation id="3185367320601718531">יצירת שיחות וטקסט</translation>
@@ -2192,6 +2201,7 @@ CoinGecko</translation>
 <translation id="49269513399674318">השתמש במיקרופון</translation>
 <translation id="3895031624234442305">התאמים אישית מודלים</translation>
 <translation id="4572010449071015143">התחל שיחה חדשה</translation>
+<translation id="345901077335355561">חזרה לשיחה הפעילה</translation>
 <translation id="6287023598025162715">שיחה חדשה</translation>
 <translation id="6303294677342628402">מגנים</translation>
 <translation id="8458987127502506209">אפשר Brave מגנים</translation>
@@ -2222,6 +2232,8 @@ CoinGecko</translation>
 <translation id="6196640612572343990">‏חסום קובצי Cookie של צד שלישי</translation>
 <translation id="693506469193748756">שכח אותי כשאסגור את האתר הזה.</translation>
 <translation id="5471580724041424345">מנקה קובצי Cookie ונתוני אתר אחרים כאשר סוגרים את האתר.</translation>
+<translation id="6486971767955110687">אחסון פרטי קשר עבור דוחות עתידיים על אתרים לא תקינים</translation>
+<translation id="4085787265464238844">אם סיפקת פרטי קשר, הם יאוחסנו עבור דוחות עתידיים</translation>
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
 <translation id="8366221601425141146">טביעות אצבעות נחסמו</translation>

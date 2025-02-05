@@ -413,7 +413,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="944340256927461196">Cihazınızda iz bırakmayın</translation>
 <translation id="2063044449012253966">Gizli pencerelerde ziyaret ettiğiniz siteler geçmişinizde görünmez. Çerezler, form verileri ve site verileri, tüm gizli pencereler kapatıldığında silinir.</translation>
 <translation id="7395764193745523646">Gezinme görünürlüğü</translation>
-<translation id="8735363371744702779">Unutmayın, gizli pencerelerde bile, gezinme etkinliğiniz internet servis sağlayıcınız, ağ gözlemcileri veya işvereniniz (iş cihazı/ağı kullanıyorsanız) tarafından görülebilir.</translation>
+<translation id="8670344404057978375">Gizli pencerelerde bile, tarama etkinliğinizin İSS'niz, ağ gözlemcileri veya işvereniniz (bir iş cihazı/ağ kullanıyorsanız) tarafından görülebileceğini unutmayın.</translation>
 <translation id="1413177583895309156">Brave VPN, Brave tarayıcısının dışında bile, çevrimiçi yaptığınız her şeyi şifreler ve korur.</translation>
 <translation id="3974348661685061050">7 gün ücretsiz deneyin</translation>
 <translation id="5789441016350810005">Brave Ads, tarayıcı arka plandayken gönderildi</translation>
@@ -451,8 +451,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1116694919640316211">Hakkında</translation>
 <translation id="7961015016161918242">Hiçbir Zaman</translation>
 <translation id="1275213816424141989">Belki Daha Sonra</translation>
-<translation id="4406937629441301400">Bu görseli görüntülediğiniz için jeton kazanın, ödemesini oluşturuculara yapın. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Bu görseli görüntülediğiniz için jeton kazanıyorsunuz.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/> ödülleri için ödemenin işlenmesi, <ph name="PAYOUT_DATE"/> itibarıyla başlayacaktır.</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/> ödülleri için ödemelerin işlenmesi devam ediyor. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/> ödülleri için ödemeler tamamlandı. <ph name="SUPPORT"/></translation>
@@ -475,6 +473,8 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7854108565842971747">Bunlar yeni siteler için varsayılan Kalkan ayarlarıdır. Değiştirilmeleri, site başına mevcut ayarlarınızı etkilemeyecektir.</translation>
 <translation id="218587021686734263">Dil ayarlarıyla parmak izini önleme</translation>
 <translation id="1706099589708266367">Tarayıcınızın dil ayarlarına bağlı olarak web sitelerinin sizin hakkınızda edinebileceği bilgiyi azaltır.</translation>
+<translation id="6486971767955110687">Gelecekteki bozuk site raporları için iletişim bilgilerini sakla</translation>
+<translation id="4085787265464238844">İletişim bilgilerinizi verirseniz, gelecekteki raporlar için saklanacaktır</translation>
 <translation id="4721088070859595932">Web sitelerinin cihazınızı tanımasını engeller</translation>
 <translation id="7445306466605902444">Parmak izi engelli (katı, siteleri kırabilir)</translation>
 <translation id="5582686930349810484">Parmak izi engelli (standart)</translation>
@@ -490,6 +490,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1561541094377237745">Solana ağları</translation>
 <translation id="7141438739990875547">Bitcoin ağları</translation>
 <translation id="9055546041146396417">Bu site bozuk görüntülenirse, Shileds'ı kapatmayı deneyin.</translation>
+<translation id="7898672232170410330">Öğeyi engelle</translation>
 <translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
 <translation id="8510478288840333677">Bu sitenin Kalkanlar'la düzgün çalışmadığını Brave geliştiricilerine bildirin:</translation>
 <translation id="1653405824851871276">Brave'in herkes için daha iyi olmasına yardımcı olduğunuz için teşekkürler. Bu rapor sadece bu siteyi düzeltmemiz için gereken bilgileri içerecektir. <ph name="LEARN_MORE"/></translation>
@@ -497,14 +498,19 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8740275226259417070">Bu bir hata sayfasıdır. Bozuk bir site olarak rapor edilemez.</translation>
 <translation id="721949491455392748">Mevcut sayfanın ekran görüntüsünü dahil et</translation>
 <translation id="8459191579769999214">Ekran görüntüsünü görüntüle</translation>
+<translation id="6476216365964140603">Ek ayrıntılar (isteğe bağlı)</translation>
+<translation id="6145852496180774737">Benimle şuradan iletişime geçin (isteğe bağlı):</translation>
+<translation id="7616645803364270729">E-posta, Twitter, vb.</translation>
 <translation id="5299848999918506028">Teşekkür ederiz!</translation>
 <translation id="76550953340008122">Bu sitede yanlış bir şeyler olduğunu Brave geliştiricilerine bildirdiğiniz için teşekkür ederiz. Düzeltmek için elimizden geleni yapacağız!</translation>
 <translation id="650318023204990401">Gelişmiş kontroller</translation>
 <translation id="5370478469168390143">Çevrimiçi Verileri Kaydet</translation>
 <translation id="1118508688433541158">Brave ile daha hızlı gezinin ve reklamları engelleyin</translation>
 <translation id="7427391215172269363">İnternette Brave'le gezinerek her gün veriden tasarruf ediyorum.</translation>
-<translation id="4776948189086901857">Brave her yerde çalışır</translation>
-<translation id="1606322780901645965">Daha hızlı ve daha mahrem bir web için, Brave'i brave.com adresinden laptopunuza veya tabletinize indirin</translation>
+<translation id="357198789571802914">YouTube izleyin, reklamları değil.</translation>
+<translation id="2154817758398495571">Reklamları engellemek için YouTube bağlantılarını Brave'de açın.</translation>
+<translation id="1580816390443799567">Hemen aç</translation>
+<translation id="8589748782214271192">Hayır, teşekkürler</translation>
 <translation id="8374242949413616101">Gizlilik koruma</translation>
 <translation id="4955406228638026265">Brave, reklamların &amp; izleyicilerin sizin hakkınızda rızanız olmadan bilgi toplamalarını engeller.</translation>
 <translation id="752842701893882688">Veriden ve bataryadan tasarruf edin</translation>
@@ -1022,7 +1028,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="8382368767453083629">Multisig 2'yi başlat</translation>
 <translation id="77243237706803459">Mint 2'yi başlat</translation>
 <translation id="583281660410589416">Bilinmeyen</translation>
-<translation id="5666264859501108700">Brave Ödülleri bölgeniz <ph name="COUNTRY_NAME"/> olarak ayarlandı.</translation>
 <translation id="909076461795862330">Ne yazık ki Brave Ödüllerini ayarlamaya çalışırken bir hata oluştu. Lütfen tekrar deneyin.</translation>
 <translation id="7352651011704765696">Bir şey yanlış gitti</translation>
 <translation id="7144878232160441200">Tekrar Dene</translation>
@@ -1083,10 +1088,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="7748944510530490017">Birincil Ağlar</translation>
 <translation id="2781668117338732220">İkincil Ağlar</translation>
 <translation id="282560918037172384">Test Ağları</translation>
-<translation id="707569835145765061">Eylem gerekli: Bir korumalı hesap bağlamazsanız vBAT'ınız kaybolacak</translation>
-<translation id="1776742005329298234"><ph name="DUE_DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Kazandığınız bakiyenizi korumalı hesabınıza aktarabilmemiz için bu tarihten önce bir korumalı hesap bağlayın, aksi takdirde bakiyenizi kaybedersiniz.</translation>
-<translation id="5089752671190341407">Favori oluşturucularınıza vBAT bağışı yapmak için hala zamanınız var</translation>
-<translation id="171158953146804144"><ph name="DUE_DATE"/> tarihinde, mevcut BAT bakiyeleri için destek vermeyi durduracağız. Ne yazık ki bölgenizde (<ph name="REGION"/>) kazancınızı çekebileceğiniz kullanılabilir korumalı hesaplar mevcut değil. O zamana kadar, favori oluşturucularınıza destek vermeye devam edebilirsiniz.</translation>
 <translation id="8949422576126100041">Sayfa Speedreader ile görüntülensin mi?</translation>
 <translation id="3435896845095436175">Etkinleştir</translation>
 <translation id="5296840868251496327">Speedreader'ı etkinleştir</translation>
@@ -1105,9 +1106,12 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="2471230424465522689">En erken</translation>
 <translation id="4841860051609590575">Talep kimliği</translation>
 <translation id="1179407411385015942">Leo, doğrudan tarayıcınıza dâhil edilmiş, gücünü yapay zekâdan alan bir akıllı asistandır</translation>
+<translation id="5781842473834867765">Konuşma geçmişimi sakla</translation>
 <translation id="4109670531935487117">Adres çubuğunda otomatik tamamlamayı göster</translation>
-<translation id="1250335737108905610">Sıfırlayın ve Leo verilerini temizleyin</translation>
-<translation id="6165101586663336913">Leo asistanının sıfırlanması; ileride Leo'yu kullanmak istediğinizde asistanı kendiniz açmanızı gerektirecektir ve aynı zamanda sohbet geçmişinizi de temizleyecektir. Sohbet geçmişinin temizlenmesi, Leo ile yaptığınız önceki tüm görüşmeleri silecektir. Bu işlem geri alınamaz.</translation>
+<translation id="6106701981952170121">Tüm Leo AI konuşma verilerini sil</translation>
+<translation id="423600389315522551">Leo AI'ın sıfırlanması, ileride Brave Leo AI'ı kullanmak istediğinizde asistanı kendiniz açmanızı gerektirecektir ve aynı zamanda sohbet geçmişinizi de temizleyecektir. Sohbet geçmişinin temizlenmesi, Brave Leo AI ile yaptığınız önceki tüm görüşmeleri silecektir. Bu işlem geri alınamaz.</translation>
+<translation id="6742599753610126012">Sohbet geçmişini temizle</translation>
+<translation id="3443052382074796867">Konuşma geçmişi saklamayı devre dışı bırakmak, önceden saklanmış tüm konuşmaları kalıcı olarak siler. Bu eylem geri alınamaz.</translation>
 <translation id="3692772534525889713">Brave Leo'yu diğer cihazlarda kullanmak için Play Store satın alma işleminizi Brave hesabınıza bağlayın.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Bir yıl</translation>
@@ -1237,4 +1241,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="4650851936784160359">Filtre listesi güncellenemedi. Lütfen tekrar deneyin</translation>
 <translation id="3098054327870766317">Sekmeler kapatıldığında geri alma düğmesini göster</translation>
 <translation id="1336494649091412226">Brave'den çıkmak istediğinize emin misiniz?</translation>
+<translation id="2361906291514218784">Leo YZ</translation>
+<translation id="7942415993090181327">Sohbet geçmişi</translation>
 </translationbundle>
