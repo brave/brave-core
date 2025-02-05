@@ -130,10 +130,10 @@ class MockJsonRpcService: BraveWallet.TestJsonRpcService {
     self._ethTokenInfo = { _, _, completion in
       completion(nil, .resourceNotFound, "Token not found.")
     }
-    self._nftMetadatas = { _, _, completion in
+    self._nftMetadatas = { _, completion in
       completion([], "Error Message")
     }
-    self._nftBalances = { _, _, _, completion in
+    self._nftBalances = { _, _, completion in
       completion([0], "")
     }
   }

@@ -134,7 +134,7 @@ class NFTStoreTests: XCTestCase {
     }
 
     let rpcService = MockJsonRpcService()
-    rpcService._nftBalances = { accountAddress, nftIdentifiers, _, completion in
+    rpcService._nftBalances = { accountAddress, nftIdentifiers, completion in
       var balances: [NSNumber] = []
       for nft in nftIdentifiers {
         if nft.contractAddress.caseInsensitiveCompare(
@@ -161,14 +161,12 @@ class NFTStoreTests: XCTestCase {
       }
       completion(balances, "")
     }
-    rpcService._nftMetadatas = { coin, nftIdentifiers, completion in
+    rpcService._nftMetadatas = { nftIdentifiers, completion in
       var allMetadata = [BraveWallet.NftMetadata]()
-      let metadataForCoin = mockNFTMetadata.filter { (key, value) in
-        key.coin == coin
-      }
       for identifier in nftIdentifiers {
-        for (key, value) in metadataForCoin {
-          if identifier.chainId == key.chainId,
+        for (key, value) in mockNFTMetadata {
+          if identifier.chainId.coin == key.coin,
+            identifier.chainId.chainId == key.chainId,
             identifier.contractAddress == key.contractAddress,
             identifier.tokenId == key.tokenId
           {
@@ -183,9 +181,9 @@ class NFTStoreTests: XCTestCase {
     }
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._addObserver = { _ in }
-    walletService._simpleHashSpamNfTs = { walletAddress, chainIds, coin, _, completion in
-      if walletAddress == self.ethAccount1.address, chainIds.contains(BraveWallet.MainnetChainId),
-        coin == .eth
+    walletService._simpleHashSpamNfTs = { walletAddress, chainIds, _, completion in
+      if walletAddress == self.ethAccount1.address,
+        chainIds.contains(BraveWallet.ChainId(coin: .eth, chainId: BraveWallet.MainnetChainId))
       {
         completion([self.spamEthNFT], nil)
       } else {

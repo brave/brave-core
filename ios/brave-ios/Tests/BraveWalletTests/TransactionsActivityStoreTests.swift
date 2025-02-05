@@ -58,7 +58,7 @@ class TransactionsActivityStoreTests: XCTestCase {
 
     let rpcService = MockJsonRpcService()
     rpcService.hiddenNetworks.removeAll()
-    rpcService._nftMetadatas = { _, _, completion in
+    rpcService._nftMetadatas = { _, completion in
       let metadata: BraveWallet.NftMetadata = .init(
         name: "mock.nft.name",
         description: "mock.nft.description",

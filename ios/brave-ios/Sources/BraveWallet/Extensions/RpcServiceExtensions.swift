@@ -70,12 +70,11 @@ extension BraveWalletJsonRpcService {
           walletAddress: account.address,
           nftIdentifiers: [
             .init(
-              chainId: token.chainId,
+              chainId: .init(coin: token.coin, chainId: token.chainId),
               contractAddress: token.contractAddress,
               tokenId: token.tokenId
             )
-          ],
-          coin: token.coin
+          ]
         ) { quantities, errMsg in
           if let quantity = quantities.first {
             completion(quantity.doubleValue)
@@ -301,12 +300,11 @@ extension BraveWalletJsonRpcService {
         walletAddress: accountAddress,
         nftIdentifiers: [
           .init(
-            chainId: token.chainId,
+            chainId: .init(coin: token.coin, chainId: token.chainId),
             contractAddress: token.contractAddress,
             tokenId: token.tokenId
           )
-        ],
-        coin: token.coin
+        ]
       ) { quantities, errMsg in
         if let quantity = quantities.first {
           completion(quantity.stringValue, .success, "")
@@ -411,12 +409,11 @@ extension BraveWalletJsonRpcService {
   ) async -> BraveWallet.NftMetadata? {
     let nftIdentifier: BraveWallet.NftIdentifier =
       .init(
-        chainId: token.chainId,
+        chainId: .init(coin: token.coin, chainId: token.chainId),
         contractAddress: token.contractAddress,
         tokenId: token.tokenId
       )
     let result = await self.nftMetadatas(
-      coin: token.coin,
       nftIdentifiers: [nftIdentifier]
     ).0.first
     return result?.httpfyIpfsUrl(ipfsApi: ipfsApi)
@@ -448,12 +445,12 @@ extension BraveWalletJsonRpcService {
           }
           let nftIdentifiers = uniqueTokensPerCoin.map {
             BraveWallet.NftIdentifier(
-              chainId: $0.chainId,
+              chainId: .init(coin: $0.coin, chainId: $0.chainId),
               contractAddress: $0.contractAddress,
               tokenId: $0.tokenId
             )
           }
-          let metadatas = await self.nftMetadatas(coin: coin, nftIdentifiers: nftIdentifiers).0
+          let metadatas = await self.nftMetadatas(nftIdentifiers: nftIdentifiers).0
           var result = [String: BraveWallet.NftMetadata]()
           for (index, token) in tokensPerCoin.enumerated() {
             if let metadata = metadatas[safe: index] {
