@@ -671,9 +671,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2446517297521536638">Controla els tipus d'anuncis de Brave que veus i amb quina freqüència els veus. Com més els vegis, més pots guanyar.</translation>
 <translation id="5860033963881614850">Desactivat</translation>
 <translation id="5916664084637901428">Activat</translation>
-<translation id="4284417062730522399">Has rebut <ph name="NUM"/> anuncis aquest mes</translation>
-<translation id="7697696066810593560">Fins ara, aquest mes has guanyat <ph name="NUM"/></translation>
-<translation id="6733193230212030816">Es calcula que guanyaràs entre: <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">El teu balanç</translation>
 <translation id="8714473477079007268">Cartera <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Compte de pagament</translation>
@@ -682,15 +679,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8414447476773253869">Inicia la sessió a <ph name="PROVIDER"/> per veure el teu saldo</translation>
 <translation id="615483366383024791">Compte de pagament</translation>
 <translation id="1060062421977823695">Els guanys de BAT es pagaran a aquest compte de pagament.</translation>
-<translation id="2544805415966048917">Enviaràs</translation>
-<translation id="6708522254106492579">Fins a <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">Una manera automàtica de donar suport a llocs web i creadors de contingut, en funció del temps que dediquis al seu contingut.</translation>
-<translation id="4319242254058427792">La contribució automàtica està desactivada.</translation>
-<translation id="1091835891554961609">Els creadors verificats que visitis apareixeran aquí mentre navegues</translation>
-<translation id="7714706530499503523">La contribució automàtica envia automàticament contribucions mensuals als creadors verificats a Brave, en funció del temps que dediquis al seu contingut.</translation>
-<translation id="2358028754328876971">Com funciona la contribució automàtica?</translation>
-<translation id="2870560284913253234">Lloc</translation>
-<translation id="1184072843013036520">Aconsegueix productes de marca Brave.</translation>
 <translation id="1170674812179664523">Botiga de marxandatge de Brave</translation>
 <translation id="8673202990286883068">Els teus beneficis</translation>
 <translation id="3699766258844277472">Encara no tens cap contribució recurrent configurada.</translation>
@@ -1456,12 +1444,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="3253669416991680932">Aquesta cartera física (hardware) no admet aquesta operació.</translation>
 <translation id="7457027586454688423">Introdueix la teva contrasenya de Cartera de Brave</translation>
 <translation id="7553242001898162573">Introdueix la contrasenya</translation>
-<translation id="2873714185189940594">Vols obrir l'aplicació Rainbow Bridge?</translation>
-<translation id="2069777099181262239">Rainbow Bridge és un servei independent que ajuda a vincular els actius a través de les xarxes, i utilitza la teva criptografia en altres xarxes i ecosistemes DApp. El finançament d'actius a altres xarxes té alguns riscos.</translation>
-<translation id="7387899248733396663">Més informació sobre l'ús de Rainbow Bridge</translation>
-<translation id="3890567288132019108">Més informació sobre com disminuir el risc a Rainbow Bridge</translation>
-<translation id="1792917191129448067">Obre l'aplicació de Rainbow Bridge</translation>
-<translation id="1522775706527775647">Bridge a Aurora</translation>
 <translation id="4903322403594141291">Més informació sobre Cartera de Brave</translation>
 <translation id="4427684901715566795">La contrasenya ha de tenir:</translation>
 <translation id="8521329076169776625">Com a mínim 8 caràcters</translation>

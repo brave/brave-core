@@ -125,7 +125,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="6020553119523541665">Esta pestana está activa noutra ventá</translation>
 <translation id="4987392683074136770">Se fas clic nesta pestana, o teu contido aparecerá nesta ventá</translation>
 <translation id="8355523213948477234">Botón de menú de vista dividida</translation>
-<translation id="2515126961943087659">Servidor de anuncios Bat</translation>
 <translation id="2104347391516032700">Servizo de recompensas de Bat</translation>
 <translation id="6040143037577758943">Pechar</translation>
 <translation id="6665472986740899785">Anuncio de notificación de Brave</translation>
@@ -437,6 +436,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="3422250445565385437">Actualizando listas</translation>
 <translation id="1340263054776016283">Introduce o URL da lista de filtros</translation>
 <translation id="8578397014396032341">Filtros de contido</translation>
+<translation id="5327248766486351172">Nome</translation>
 <translation id="3020183492814296499">Atallos</translation>
 <translation id="5567412479632285879">As recompensas de Brave están desactivadas.</translation>
 <translation id="413570371620795359">Abre o panel de recompensas para activalo e comezar</translation>
@@ -506,7 +506,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="5794692721727586076">Chat de IA de Leo</translation>
 <translation id="8115153008662981040">Os sitios poden pedir permiso para abrir o chat de IA de Leo</translation>
 <translation id="1145070115730668595">Non permitir que o sitio abra o chat de IA de Leo</translation>
-<translation id="6414370348346025511">A protección estándar está activada.</translation>
 <translation id="5565355416171743213">Comezar a usar sincronización</translation>
 <translation id="4332558599726753990">Configurar Sincronización</translation>
 <translation id="2187778349654214731">Para comezar, necesitará Brave instalado en todos os dispositivos que planea sincronizar. A continuación, ligalos de xeito seguro cun código de sincronización.</translation>
@@ -579,8 +578,6 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="3128251601544028053">Cando escribes na barra de enderezos ou na caixa de busca, Brave envía o que escribes ao teu motor de busca predeterminado para obter mellores suxestións. Isto non está dispoñible nas ventás privadas.</translation>
 <translation id="6285118765755298263">Indexar outros motores de busca</translation>
 <translation id="919715748352669592">Indexa automaticamente os sitios web que seguen a especificación OpenSearch.</translation>
-<translation id="9195748375338942941">Ventá normal: motor de busca usado na barra de enderezos.</translation>
-<translation id="5324939009884545145">Ventá en modo incógnito: motor de busca usado na barra de enderezos</translation>
 <translation id="6864914031231797928">Permitir o inicio de sesión de Google nas extensións</translation>
 <translation id="7878791177459550035">O router multimedia permite facer transmisións no navegador.</translation>
 <translation id="2707635989000984973">Resolver os nomes de dominio de Unstoppable Domains</translation>
@@ -696,13 +693,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="8055509865174199683">Mostrar a Leo no menú contextual de sitios web</translation>
 <translation id="1529674267267221673">Leo aparecerá no menú contextual cando fagas clic co botón dereito nun sitio web. Desta forma enviarase contexto desde a páxina web actual a Leo.</translation>
 <translation id="8172263161008556851">Mostrar mensaxes emerxentes suxeridas na conversa</translation>
-<translation id="1014480593522400586">Borrar datos de Leo</translation>
-<translation id="6803758564561896401">Para restablecer o asistente de Leo, deberás activar o uso de Brave
-Leo no futuro e tamén se borrará o teu historial de chats. Ao borrar o
-historial de chats eliminaranse todas as túas conversas anteriores con Brave
-Leo. Esta acción non se pode desfacer.</translation>
 <translation id="5574059574002819179">Axustar suxestións de autocompletado</translation>
-<translation id="8157373421434119674">Historial de datos e chat</translation>
 <translation id="614530507403667291">Modelo predeterminado para conversas novas</translation>
 <translation id="8826914609353373601">Xestionar subscrición premium</translation>
 <translation id="235457946228076038">Trae o teu propio modelo</translation>
@@ -715,7 +706,6 @@ Leo. Esta acción non se pode desfacer.</translation>
 <translation id="6374563306438145841">Clave API</translation>
 <translation id="8008271349880309090">O nome do modelo tal e como aparecerá no menú de selección de modelos</translation>
 <translation id="1355326130503900056">O nome do modelo tal e como debería aparecer na solicitude ao marco de servizo, é dicir, phi-3 (ten en conta que se este nome non coincide exactamente co que se espera do marco de servizo, a integración non funcionará)</translation>
-<translation id="3286410514484292784">O URL onde o marco de servizo está a escoitar as solicitudes. Se non estás seguro, consulta a documentación do marco de servizo; por exemplo,  para Ollama, sempre é http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Algúns marcos de servizo poden requirir credenciais de autenticación, como unha clave API ou un token de acceso. Estes engadiranse á cabeceira da solicitude.</translation>
 <translation id="4335128003329183586">Tamaño do contexto</translation>
 <translation id="8794525422794607973">O número máximo de tokens que o modelo pode procesar nunha única interacción. Cada token equivale ao redor de tres cuartas partes dunha palabra. Un tamaño de contexto maior permite ao modelo xestionar conversas máis extensas. Cada modelo ten un tamaño de contexto máximo diferente.</translation>
@@ -729,7 +719,7 @@ Leo. Esta acción non se pode desfacer.</translation>
 <translation id="1381050642750209119">Usa calquera marco compatible co protocolo de OpenAI Chat, como Ollama.</translation>
 <translation id="2642905648178380593">Gardar modelo</translation>
 <translation id="6304169450064541679">Indicador do sistema</translation>
-<translation id="3081947790648024460">Instruccións ou contexto específicos dados ao modelo para guiar as súas respostas nun estilo ou dirección particular. Emprega %datetime% onde desexes que se insira a data e hora actuais.</translation>
+<translation id="3081947790648024460">Instrucións ou contexto específicos dados ao modelo para guiar as súas respostas nun estilo ou dirección particular. Emprega %datetime% onde desexes que se insira a data e hora actuais.</translation>
 <translation id="5688878061573389791">≈<ph name="TOKENS_COUNT"/> tokens</translation>
 <translation id="349846214503465941">Activar Lista de reprodución</translation>
 <translation id="7903608716704052878">Engadir automaticamente ficheiros para visualizalos sen conexión</translation>

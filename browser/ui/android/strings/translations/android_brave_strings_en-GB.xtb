@@ -439,8 +439,6 @@ Are you sure you want to do this?</translation>
 <translation id="1116694919640316211">About</translation>
 <translation id="7961015016161918242">Never</translation>
 <translation id="1275213816424141989">Maybe later</translation>
-<translation id="4406937629441301400">Earn tokens for viewing this image and pay it forward to creators. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">You're earning tokens for viewing this image.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">The payout for <ph name="CURRENT_MONTH"/> rewards will begin processing by <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">The payout for <ph name="CURRENT_MONTH"/> rewards is in progress. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">The payout for <ph name="CURRENT_MONTH"/> rewards has completed. <ph name="SUPPORT"/></translation>
@@ -478,6 +476,7 @@ Are you sure you want to do this?</translation>
 <translation id="1561541094377237745">Solana networks</translation>
 <translation id="7141438739990875547">Bitcoin networks</translation>
 <translation id="9055546041146396417">If this site appears broken, try Shields down.</translation>
+<translation id="7898672232170410330">Block element</translation>
 <translation id="1209739344687072997">Report a broken site</translation>
 <translation id="8510478288840333677">Let Brave's developers know that this site doesn't work properly with Shields:</translation>
 <translation id="1653405824851871276">Thank you for helping make Brave better for all. This report will only contain information necessary for us to fix this site. <ph name="LEARN_MORE"/></translation>
@@ -485,14 +484,15 @@ Are you sure you want to do this?</translation>
 <translation id="8740275226259417070">This is an error page. It cannot be reported as a broken site.</translation>
 <translation id="721949491455392748">Include screenshot of the current page</translation>
 <translation id="8459191579769999214">View screenshot</translation>
+<translation id="6476216365964140603">Additional details (optional)</translation>
+<translation id="6145852496180774737">Contact me at: (optional)</translation>
+<translation id="7616645803364270729">Email, Twitter, etc.</translation>
 <translation id="5299848999918506028">Thank you!</translation>
 <translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
 <translation id="650318023204990401">Advanced controls</translation>
 <translation id="5370478469168390143">Save Data Online</translation>
 <translation id="1118508688433541158">Browse faster and block ads with Brave</translation>
 <translation id="7427391215172269363">Every day I save data by browsing the web with Brave.</translation>
-<translation id="4776948189086901857">Brave works everywhere</translation>
-<translation id="1606322780901645965">Download Brave at brave.com on your laptop or tablet for a faster and more private web</translation>
 <translation id="8374242949413616101">Privacy protection</translation>
 <translation id="4955406228638026265">Brave stops ads &amp; trackers from collecting information about you without your consent.</translation>
 <translation id="752842701893882688">Save data and battery</translation>
@@ -835,6 +835,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4351811224047421378">Decimals of precision</translation>
 <translation id="3494964159182650590">Rewards Summary</translation>
 <translation id="590733288489975971">Rewards from Ads</translation>
+<translation id="1450735350187803276">Ads seen this month</translation>
 <translation id="1767561995429774671">Contribute</translation>
 <translation id="7335371657242627509">Include in Auto-Contribute</translation>
 <translation id="6727102863431372879">Set</translation>
@@ -1007,7 +1008,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="8382368767453083629">Initialise multisig 2</translation>
 <translation id="77243237706803459">Initialise mint 2</translation>
 <translation id="583281660410589416">Unknown</translation>
-<translation id="5666264859501108700">Your Brave Rewards region has been set to <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Unfortunately, there was an error while trying to set up Brave Rewards. Please try again.</translation>
 <translation id="7352651011704765696">Something went wrong</translation>
 <translation id="7144878232160441200">Retry</translation>
@@ -1068,10 +1068,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="7748944510530490017">Primary networks</translation>
 <translation id="2781668117338732220">Secondary networks</translation>
 <translation id="282560918037172384">Test networks</translation>
-<translation id="707569835145765061">Action required: connect a custodial account or your vBATs will be lost</translation>
-<translation id="1776742005329298234">On <ph name="DUE_DATE"/>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.</translation>
-<translation id="5089752671190341407">You still have time to contribute your vBATs to your favourite creators</translation>
-<translation id="171158953146804144">On <ph name="DUE_DATE"/>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION"/>) to withdraw your earnings. Until then, you can still contribute to your favourite creators.</translation>
 <translation id="8949422576126100041">View page with Speedreader?</translation>
 <translation id="3435896845095436175">Enable</translation>
 <translation id="5296840868251496327">Enable Speedreader</translation>
@@ -1091,8 +1087,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="4841860051609590575">Request ID</translation>
 <translation id="1179407411385015942">Leo is an AI-powered smart assistant, built right into the browser</translation>
 <translation id="4109670531935487117">Show autocomplete suggestions in address bar</translation>
-<translation id="1250335737108905610">Reset and clear Leo data</translation>
-<translation id="6165101586663336913">Resetting the Leo assistant will require you to opt-in to use Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Leo. This action cannot be undone.</translation>
 <translation id="3692772534525889713">Link your Play Store purchase to your Brave account to use Brave Leo on other devices.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">One year</translation>
@@ -1220,4 +1214,5 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2728518864712716830">Update is downloaded.</translation>
 <translation id="8403338849301491865">Filter list is updated successfully</translation>
 <translation id="4650851936784160359">Filter list could not be updated. Please try again</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 </translationbundle>

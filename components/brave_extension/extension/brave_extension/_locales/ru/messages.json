@@ -20,11 +20,11 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Если сайт работает неправильно, попробуйте отключить защиту",
+    "message": "Если сайт работает неправильно, попробуйте отключить Защиту",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Вы просматриваете этот сайт без использования средств приватности и безопасности Brave. Не работает правильно с включенной защитой Brave?",
+    "message": "Вы просматриваете этот сайт без использования средств приватности и безопасности Brave. Не работает правильно с включенной Защитой Brave?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -168,7 +168,7 @@
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Изменить общие настройки защиты",
+    "message": "Изменить глобальные настройки Защиты",
     "description": "Message for the button action linking to the settings page"
   },
   "manageCustomFilters": {
@@ -192,11 +192,11 @@
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Заблокированы межсайтовый трекинг и другие нежелательные элементы",
+    "message": "Межсайтовый трекинг и другие нежелательные элементы заблокированы",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Изменение параметров Shield на этой странице может повлиять на работу этого сайта.",
+    "message": "Изменение параметров Защиты в этом виде может повлиять на работу этого сайта.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
@@ -212,7 +212,7 @@
     "description": "Message for adding an extension to Brave"
   },
   "removeFromBrave": {
-    "message": "Удалить",
+    "message": "Удалить из Brave",
     "description": "Message for removing an extension from Brave"
   },
   "addToChrome": {

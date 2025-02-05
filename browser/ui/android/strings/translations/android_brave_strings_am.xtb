@@ -139,7 +139,9 @@
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
 <translation id="59174027418879706">ነቅቷል</translation>
+<translation id="6920492760024499150">ለእርስዎ ብቻ በግልዎ የተላኩ የዛሬ ምርጥ ታሪኮች።</translation>
 <translation id="8300751939969131609">Brave News ያብሩት፣ እና ማንኛውም ታሪክ አያምልጥዎ</translation>
+<translation id="7627131190984957214">ብሬቭ ኒውስ ከመሳሪያዎ ጋር የሚስማሙ የግል እና ማንነታቸው ያልታወቁ ማስታወቂያዎችን የተደገፈ ነው።</translation>
 <translation id="7699565323725789472">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Brave ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!\nየ Brave ዜና ግላዊ እና በማያጋልጡ ማስታወቂያዎች የተደገፈ ነው።</translation>
 <translation id="1765217911817124376">የ Brave ዜናዎች ን ያንቁ</translation>
 <translation id="8981973962043893066">ጣቢያ፣ ርዕስ ወይም RSS ግብአት ይፈልጉ</translation>
@@ -228,6 +230,7 @@
 <translation id="7281027579943912834">Brave በነባሪነት ሲጠቀሙ፣  እያንዳንዷ የሚንኳት ማገናኛ የ Brave የማስታወቂያ እገዳ ጥበቃን ታገኛለች። እያንዳንዱ ገጽ፣ ቪዲዮ እና ዥረት።</translation>
 <translation id="5148943178722443958">Brave ይበልጥ የተሻለ እንዲሆን ያግዙ።</translation>
 <translation id="6718362830686703942">ብልሽት ወይም የማንቀሳቀስ ችግሮች ካጋጠምዎ፣ የምርመራ ሪፖርቶችን ይላኩ።</translation>
+<translation id="8616157231067364693">በብሬቭ ተጠቃሚዎች ምን አይነት ይዘቶች ጥቅም ላይ እንደሚውሉ፣ በግል እና ማንነትን በማያሳውቅ መንገድ አስተያየትዎን ያጋሩ።</translation>
 <translation id="2877653791257935258">የድር ጣቢያ ስም ወይም ዩአርኤል ይተይቡ</translation>
 <translation id="5329830149661250028">የBrave ልዩነትን ይመልከቱ፦ ምንም ማስታወቂያዎች የሉም። ምንም መከታተያዎች የሉም። ይበልጥ ፈጣን የገጽ ጭነት።</translation>
 <translation id="3941792073703079607">የ Brave ልዩነት ይመልከቱ፡ ማስታወቂያዎችን ማገድ። ውሂብ መቆጠብ። ቪድዮዎችን መስመር ላይ በፍጥነት መመልከት።</translation>
@@ -419,8 +422,6 @@
 <translation id="1116694919640316211">ስለ</translation>
 <translation id="7961015016161918242">በፍጹም</translation>
 <translation id="1275213816424141989">ምናልባት በኋላ</translation>
-<translation id="4406937629441301400">ይህን ምስል ለማየትና ወደ ፈጣሪዎች ለማስተላለፍ ማስመሰያዎች ያግኙ። <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">ይህን ምስል በማየትዎ ቶክኖችን እያገኙ ነው።\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">የ <ph name="CURRENT_MONTH"/> ሽልማቶች ክፍያ በ <ph name="PAYOUT_DATE"/>መስራት ይጀምራል።</translation>
 <translation id="33967210973550414">የ <ph name="CURRENT_MONTH"/> ሽልማቶች ክፍያ በሂደት ላይ ነው። <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">የ <ph name="CURRENT_MONTH"/> ሽልማቶች ክፍያ ተጠናቅቋል።<ph name="SUPPORT"/></translation>
@@ -462,14 +463,15 @@
 <translation id="8759753423332885148">ተጨማሪ ይማሩ</translation>
 <translation id="721949491455392748">የአሁኑን ገጽ ስክሪንሾት ያካትታል</translation>
 <translation id="8459191579769999214">ቅጽበታዊ የገጽ እይታን ተመልከት</translation>
+<translation id="6476216365964140603">ተጨማሪ ዝርዝሮች (አማራጭ)</translation>
+<translation id="6145852496180774737">በሚከተለው ያግኙኝ፡ (አማራጭ)</translation>
+<translation id="7616645803364270729">ኢሜይል፣ ትዊተር፣ ወዘተ.</translation>
 <translation id="5299848999918506028">እናመሰግናለን!</translation>
 <translation id="76550953340008122">ይህ ጽ የሆነ ችግር ያለበት መሆኑን የ Brave አዘጋጆች እንዲያውቁ በማድረግዎ እናመሰግናለን። ችግሩን ለመፍታት የተቻለንን ጥረት እናደርጋለን!</translation>
 <translation id="650318023204990401">የጎለበቱ ቁጥጥሮች</translation>
 <translation id="5370478469168390143">በመስመር ላይ ውሂብ ይቆጥቡ</translation>
 <translation id="1118508688433541158">በፍጥነት ያስሱ እና በ Brave ማስታወቂያዎችን ያግዱ</translation>
 <translation id="7427391215172269363">ሁሉ ግዜ ድርን በ Brave ተጠቅሜ በማምጣት ዳታ እቆጥባለሁ።</translation>
-<translation id="4776948189086901857">Brave የትም ይሠራል</translation>
-<translation id="1606322780901645965">ለፈጣን እና ለበለጠ የግል ድር ጣቢያ Braveን ከ brave.com በላፕቶፕዎ ወይም በታብሌትዎ ላይ ያውርዱ</translation>
 <translation id="8374242949413616101">ግላዊነት ጥበቃ</translation>
 <translation id="4955406228638026265">Brave ያለፍቃድዎ ስለእርስዎ መረጃን እንዳይሰበስቡ የተከታታዮች &amp; ማስታወቂያዎችን ያግዳል።</translation>
 <translation id="752842701893882688">ውሂብ እና ባትሪ ይቆጥቡ</translation>
@@ -650,12 +652,21 @@
 <translation id="3510283489391432976">የእርስዎን Geo/ሀገር አቀማመጥ ይምረጡ</translation>
 <translation id="7695158478627528928">Brave እንቅስቃሴዎን በጭራሽ አይመዘግብም።</translation>
 <translation id="4575683170451975058">በ1 የደንበኝነት ምዝገባ ላይ 5 መሳሪያዎችን ይጠብቁ</translation>
+<translation id="755045397420611731">ከፍተኛ ሚስጥራዊነት እና የመስመር ላይ ደህንነት</translation>
+<translation id="4520128772974831415">የ IP አድራሻዎን መደበቅ፤ እንዲሁም ያሉበትን ቦታ መቀየር</translation>
+<translation id="2044418816479192294">በዓለም ዙሪያ በመቶዎች የሚቆጠሩ ሰርቨሮች</translation>
+<translation id="7410504850864021600">እጅግ በጣም ፈጣን የበይነመረብ ግንኙነት</translation>
+<translation id="2422309687188612485">በአንድ እቅድ እስከ 10 የሚደርሱ መሳሪያዎችን ደህንነት ይጠብቁ</translation>
 <translation id="4882693590083943563">ሁሉም  እቅዶች የሚያካትቱት<ph name="TRIAL_DAYS"/></translation>
 <translation id="487741927046441232">ነጻ የ7 ቀን ሙከራ!</translation>
 <translation id="1532536259167115948">ወርሃዊ የደንበኝነት ምዝገባ <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">ዓመታዊ የደንበኝነት ምዝገባ <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">በየወሩ ያድሳል</translation>
+<translation id="112929124115834557">በየዓመቱ ይታደሳል</translation>
 <translation id="1163809943099641131">አንድ ዓመት</translation>
+<translation id="2786538705804257030">የደንበኝነት ምዝገባዎች በጎግል መለያዎ በኩል እንዲከፍሉ ይደረጋሉ። ማንኛውም ጥቅም ላይ ያልዋለ የነጻ ሙከራው ክፍል፣ ካለ፣ የደንበኝነት ምዝገባ ሲገዙ ይጠፋል።\n\n አሁን ያለው ጊዜ ከማብቃቱ ቢያንስ ከ24 ሰዓታት በፊት ካልተሰረዘ በስተቀር፣ የደንበኝነት ምዝገባዎ በራሱ ጊዜ ይታደሳል።\n\nየእርስዎን ምዝገባዎች በቅንብሮች ውስጥ ማስተካከል ይችላሉ።\n\n ብሬቭን በመጠቀምዎ፣ በአጠቃቀም ውሉ እና የግላዊነት መመሪያው ተስማምተዋል።</translation>
+<translation id="5035172357624830412">ቀድሞውንም በ brave.com ተገዝቷል?</translation>
+<translation id="713136183174551885">የማንነት መለያዎችዎን ያድሱ</translation>
 <translation id="6053992191006521518">በነጻ ይሞክሩ</translation>
 <translation id="5903391101107992067">ለ7 ቀናት በነጻ ይሞክሩ</translation>
 <translation id="721747358270435486">VPN ይጫኑ</translation>
@@ -765,6 +776,7 @@
 <translation id="4351811224047421378">የትክክለኛነት አስርዮሽ</translation>
 <translation id="3494964159182650590">የሽልማት ማጠቃለያ</translation>
 <translation id="590733288489975971">ከማስታወቂያዎች የተገኙ ሽልማቶች</translation>
+<translation id="1450735350187803276">በዚህ ወር የታዩ ማስታወቂያዎች</translation>
 <translation id="1767561995429774671">አስተዋፅኦ</translation>
 <translation id="7335371657242627509">ራስን አስተዋጽኦ ማድረግ መጨመር</translation>
 <translation id="6727102863431372879">ያዘጋጁ</translation>
@@ -932,7 +944,6 @@
 <translation id="8382368767453083629">multisig 2 አስጀምር</translation>
 <translation id="77243237706803459">ሚንት 2 አስጀምር</translation>
 <translation id="583281660410589416">ያልታወቀ</translation>
-<translation id="5666264859501108700">የእርስዎ Brave የሽልማት ክልል ወደ <ph name="COUNTRY_NAME"/>ተቀናብሯል።</translation>
 <translation id="909076461795862330">እንደ አለመታደል ሆኖ Brave ሽልማቶችን ለማዋቀር በመሞከር ላይ ሳለ ስህተት ነበር። እባክዎ ዳግም ይሞክሩ።</translation>
 <translation id="7352651011704765696">የሆነ ስህተት ተፈጥሯል</translation>
 <translation id="7144878232160441200">እንደገና ሞክር</translation>
@@ -970,6 +981,7 @@
 <translation id="6610899852831463073">ደህንነቱ የተጠበቀ አሰሳን ማንቃት አልተቻለም</translation>
 <translation id="7954263306665462056">ደህንነቱ የተጠበቀ አሰሳ በመሳሪያዎ ላይ ተሰናክሏል። እሱን ለማንቃት  የGoogle Play አገልግሎቶች መጫኑንና የተዘመነ መሆኑን ያረጋግጡ።</translation>
 <translation id="6605147707233193230">የድጋፍ ይዘት ፈጣሪዎችን ለማገዝ ያብሩ</translation>
+<translation id="5899814466108868020">እርስዎ ብሬቭን እና የBAT ማህበረሰብን በመደገፍ እየረዱን ነው።</translation>
 <translation id="6067959437127691361">የBrave ሽልማቶችን መጠቀም የድጋፍ ይዘት ፈጣሪዎችን ለመደገፍ ያግዛል እንዲሁም እርስዎ BAT እንዲያገኙ ያስችልዎታል።</translation>
 <translation id="3264975266761862670">ገንዘብ ማግኘት ለመጀመር ዝግጁ ነዎት?</translation>
 <translation id="265337947574975838">ከአጋሮቻችን ከአንዱ ጋር መለያ ያገናኙ ወይም ይፍጠሩ።</translation>
@@ -992,10 +1004,6 @@
 <translation id="7748944510530490017">የመጀመሪያ ደረጃ አውታረ መረብ</translation>
 <translation id="2781668117338732220">ሁለተኛ አውታረ መረቦች</translation>
 <translation id="282560918037172384">አውታረመረቦችን ይሞክሩ</translation>
-<translation id="707569835145765061">እርምጃ መውሰድ ያስፈልጋል፦ በአዋቂ የሚተዳደር የልጅ መለያን ያገናኙ አለበለዚያ የእርስዎ vBAT ይጠፋል</translation>
-<translation id="1776742005329298234">በ <ph name="DUE_DATE"/> ላይ፣ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍ መስጠት እናቆማለን። የተገኘውን ሒሳብዎን በአዋቂ ወደሚተዳደር የልጅ ሒሳብዎ ማስተላለፍ እንድንችል ከዚህ ቀን በፊት በአዋቂ ወደሚተዳደር ሒሳብ ጋር ያገናኙ፣ ያለበለዚያ ቀሪ ሒሳብዎ ይጠፋል።</translation>
-<translation id="5089752671190341407">የእርስዎን vBAT ለሚወዷቸው ፈጣሪዎች አስተዋጽኦ ለማበርከት አሁንም ጊዜ አለዎት</translation>
-<translation id="171158953146804144">በ <ph name="DUE_DATE"/>ላይ፣ ለነባር ምናባዊ BAT ቀሪ ሒሳቦች ድጋፍ መስጠት እናቆማለን። በሚያሳዝን ሁኔታ፣ በእርስዎ ክልል ውስጥ (<ph name="REGION"/>) ያገኙትን ገንዘብ ለማውጣት በአዋቂ የሚተዳደሩ የሉም፡፡ እስካዛው ድረስ፣ ወደሚወዷቸው ፈጣሪዎች አሁንም አስተዋጽዖ ማድረግ ይችላሉ።</translation>
 <translation id="8949422576126100041">ገጹን በ Speedreader ይመልከቱ?</translation>
 <translation id="3435896845095436175">አንቃ</translation>
 <translation id="5296840868251496327">የፍጥነት አንባቢን አንቃ</translation>
@@ -1015,10 +1023,10 @@
 <translation id="4841860051609590575">መታወቂያ ጠይቅ</translation>
 <translation id="1179407411385015942">Leo በAI የተጎላበተ ስማርት ረዳት ነው፣ በአሳሹ ውስጥ በትክክል የተሰራ</translation>
 <translation id="4109670531935487117">በአድራሻ ማስገቢያው ላይ የራስ-አጠናቅቅ ጥቆማዎችን አሳይ</translation>
-<translation id="1250335737108905610">የLeo ውሂብን ዳግም ያስጀምሩ እና ያጽዱ</translation>
-<translation id="6165101586663336913">የLeo ረዳትን ዳግም ማስጀመር ለወደፊቱ Leo ለመጠቀም መርጠው እንዲገቡ ይጠይቃል እና የውይይት ታሪክዎን ያጸዳል። የውይይት ታሪክዎን ማጽዳት ከLeo ጋር ያደረጉትን ሁሉንም ንግግሮች ይሰርዛል። ይህ እርምጃ ሊቀለበስ አይችልም።</translation>
 <translation id="3692772534525889713">Brave Leoን በሌሎች መሳሪያዎች ላይ ለመጠቀም የPlay store ግዢዎን ከ Brave መለያዎ ጋር ያገናኙት።</translation>
 <translation id="73236265316873967">Leo Premium</translation>
+<translation id="1028627582482425924">አንድ ዓመት</translation>
+<translation id="2985392169397572983">ምርጥ ዋጋ</translation>
 <translation id="1166682575529520472">በየወሩ</translation>
 <translation id="451189393813405346">Leoን ይጠይቁ</translation>
 <translation id="7322560193401221004">የፋይል መልሶ ማጫወት ቦታን ያስታውሱ</translation>

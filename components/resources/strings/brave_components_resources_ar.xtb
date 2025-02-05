@@ -670,9 +670,6 @@
 <translation id="2446517297521536638">يمكنك التحكم في أنواع إعلانات Brave التي تشاهدها وعدد مرات ظهورها. حيث كلما زاد عدد الإعلانات التي تشاهدها، زادت أرباحك.</translation>
 <translation id="5860033963881614850">إيقاف</translation>
 <translation id="5916664084637901428">تشغيل</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> الإعلانات التي تم تلقيّها هذا الشهر</translation>
-<translation id="7697696066810593560">لقد ربحت <ph name="NUM"/> حتى الآن هذا الشهر</translation>
-<translation id="6733193230212030816">من المقدر أن تكسب ما يتراوح بين: <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">رصيدك</translation>
 <translation id="8714473477079007268">محفظة <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">حساب الدفع</translation>
@@ -681,15 +678,6 @@
 <translation id="8414447476773253869">قم بتسجيل الدخول إلى <ph name="PROVIDER"/> لمعرفة رصيدك</translation>
 <translation id="615483366383024791">حساب الدفع</translation>
 <translation id="1060062421977823695">سيتم دفع أرباح BAT الخاصة بك إلى حساب الدفع هذا.</translation>
-<translation id="2544805415966048917">سترسل</translation>
-<translation id="6708522254106492579">ما يصل إلى <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">طريقة تلقائية لدعم المواقع الإلكترونية ومنشئي المحتوى، بناءً على مقدار الوقت الذي تقضيه في المحتوى الخاص بهم.</translation>
-<translation id="4319242254058427792">تم تعطيل المساهمة التلقائية</translation>
-<translation id="1091835891554961609">سيظهر هنا منشئو المحتوى المعتمدون الذين تزورهم أثناء التصفح.</translation>
-<translation id="7714706530499503523">ترسل ميزة المساهمة التلقائية مساهمات شهرية تلقائيًا إلى المبدعين الذين تم التحقق منهم باستخدام Brave، استنادًا إلى مقدار الوقت الذي تقضيه في المحتوى الخاص بهم.</translation>
-<translation id="2358028754328876971">كيف تعمل المساهمة التلقائية؟</translation>
-<translation id="2870560284913253234">الموقع</translation>
-<translation id="1184072843013036520">احصل على المنتجات ذات العلامة التجارية Brave.</translation>
 <translation id="1170674812179664523">متجر بضائع Brave</translation>
 <translation id="8673202990286883068">المزايا التي تتمتع بها</translation>
 <translation id="3699766258844277472">لم تجري إعداد أي مساهمات متكررة بعد.</translation>
@@ -1457,12 +1445,6 @@
 <translation id="3253669416991680932">محفظة الأجهزة الحالية لا تدعم هذه العملية.</translation>
 <translation id="7457027586454688423">أدخل كلمة مرور محفظة Brave الخاصة بك</translation>
 <translation id="7553242001898162573">أدخل كلمة المرور الخاصة بك</translation>
-<translation id="2873714185189940594">هل تريد فتح تطبيق Rainbow Bridge؟</translation>
-<translation id="2069777099181262239">Rainbow Bridge هي عبارة عن خدمة مستقلة تساعدك على ربط الأصول عبر الشبكات، واستخدام عملاتك المشفرة على الشبكات الأخرى ونُظم الاتصال المشترك الأخرى لـ DApp. إن تجسير الأصول عبر شبكات أخرى ينطوي على بعض المخاطر.</translation>
-<translation id="7387899248733396663">تعرّف على المزيد حول استخدام تطبيق Rainbow Bridge</translation>
-<translation id="3890567288132019108">تعرّف على المزيد حول التخفيف من حدة المخاطر على تطبيق Rainbow Bridge</translation>
-<translation id="1792917191129448067">قتح تطبيق Rainbow Bridge</translation>
-<translation id="1522775706527775647">الاتصال بـ Aurora</translation>
 <translation id="4903322403594141291">تعرف على المزيد حول محفظة Brave</translation>
 <translation id="4427684901715566795">يجب أن تتضمن كلمة المرور:</translation>
 <translation id="8521329076169776625">8 أحرف على الأقل</translation>
