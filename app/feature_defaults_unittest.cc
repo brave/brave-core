@@ -22,6 +22,7 @@
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
+#include "components/feature_engagement/public/feature_constants.h"
 #include "components/heap_profiling/in_process/heap_profiler_parameters.h"
 #include "components/history/core/browser/features.h"
 #include "components/history_clusters/core/features.h"
@@ -74,10 +75,6 @@
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
-#endif
-
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
-#include "components/feature_engagement/public/feature_constants.h"
 #endif
 
 TEST(FeatureDefaultsTest, DisabledFeatures) {
