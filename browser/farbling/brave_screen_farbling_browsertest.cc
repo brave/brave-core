@@ -289,7 +289,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
             "width=${outerWidth + 20},"
             "height=${outerHeight + 20}"
             "`);";
-        content::RenderFrameHost* host = test_mode == TestMode::kIframe ? Parent() : IFrame();
+        content::RenderFrameHost* host =
+            test_mode == TestMode::kIframe ? Parent() : IFrame();
         Browser* popup = OpenPopup(script, test_mode == TestMode::kIframe);
         auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
         content::WaitForLoadStop(popup_contents);
