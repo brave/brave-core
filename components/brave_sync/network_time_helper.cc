@@ -34,19 +34,11 @@ void NetworkTimeHelper::SetNetworkTimeTracker(
 void NetworkTimeHelper::Shutdown() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   network_time_tracker_ = nullptr;
-  ui_task_runner_.reset();
 }
 
 void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
   if (!network_time_for_test_.is_null()) {
     std::move(cb).Run(network_time_for_test_);
-    return;
-  }
-
-  if (!ui_task_runner_) {
-    // Safe exit. Either we don't have it set yet, or we are shutting down
-    // the browser.
-    std::move(cb).Run(base::Time::Now());
     return;
   }
 

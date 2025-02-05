@@ -246,10 +246,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
 
-  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
-      network_time_tracker(),
-      base::SingleThreadTaskRunner::GetCurrentDefault());
-
   brave_wallet::WalletDataFilesInstaller::GetInstance().SetDelegate(
       std::make_unique<brave_wallet::WalletDataFilesInstallerDelegateImpl>());
 }

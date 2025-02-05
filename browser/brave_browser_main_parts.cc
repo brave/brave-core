@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_sync/network_time_helper.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -100,6 +101,10 @@ void ChromeBrowserMainParts::PreBrowserStart() {
 #endif
 
   ChromeBrowserMainParts_ChromiumImpl::PreBrowserStart();
+
+  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
+      g_browser_process->network_time_tracker(),
+      base::SingleThreadTaskRunner::GetCurrentDefault());
 }
 
 void ChromeBrowserMainParts::PostBrowserStart() {
