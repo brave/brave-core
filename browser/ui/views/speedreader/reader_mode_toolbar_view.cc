@@ -99,6 +99,9 @@ void ReaderModeToolbarView::SwapToolbarContents(
 
   auto* contents = toolbar_->web_contents();
   auto* another_contents = another_toolbar->toolbar_->web_contents();
+  if (!contents || !another_contents) {
+    return;
+  }
 
   toolbar_->SetWebContents(nullptr);
   another_toolbar->toolbar_->SetWebContents(nullptr);
