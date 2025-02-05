@@ -176,6 +176,16 @@ void BraveBrowserProcessImpl::Init() {
 #endif
 }
 
+void BraveBrowserProcessImpl::PreMainMessageLoopRun() {
+  BrowserProcessImpl::PreMainMessageLoopRun();
+
+  // Upstream initializes network_time_tracker() at PreMainMessageLoopRun()
+  // right above. We are ready to init NetworkTimeHelper now.
+  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
+      g_browser_process->network_time_tracker(),
+      base::SingleThreadTaskRunner::GetCurrentDefault());
+}
+
 #if !BUILDFLAG(IS_ANDROID)
 void BraveBrowserProcessImpl::StartTearDown() {
   brave_stats_helper_.reset();
@@ -186,6 +196,7 @@ void BraveBrowserProcessImpl::StartTearDown() {
     p3a_service_->StartTeardown();
   }
 #endif
+  brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
   BrowserProcessImpl::StartTearDown();
 }
 
@@ -244,10 +255,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   URLSanitizerComponentInstaller();
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
-
-  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
-      network_time_tracker(),
-      base::SingleThreadTaskRunner::GetCurrentDefault());
 
   brave_wallet::WalletDataFilesInstaller::GetInstance().SetDelegate(
       std::make_unique<brave_wallet::WalletDataFilesInstallerDelegateImpl>());

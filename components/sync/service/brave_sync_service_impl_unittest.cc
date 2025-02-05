@@ -125,6 +125,11 @@ class BraveSyncServiceImplTest : public testing::Test {
         base::SingleThreadTaskRunner::GetCurrentDefault());
   }
 
+  void TearDown() override {
+    brave_sync::NetworkTimeHelper::GetInstance()->Shutdown();
+    testing::Test::TearDown();
+  }
+
   void CreateSyncService(
       DataTypeSet registered_types = DataTypeSet({BOOKMARKS})) {
     DataTypeController::TypeVector controllers;
