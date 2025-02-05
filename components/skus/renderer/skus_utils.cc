@@ -16,16 +16,16 @@
 
 namespace {
 // NOTE: please open a security review when appending to this list.
-std::vector<std::string> safe_origins_string{
-    "https://account.brave.com", "https://account.bravesoftware.com",
-    "https://account.brave.software"};
+std::vector<GURL> safe_origins_gurl{GURL("https://account.brave.com"),
+                                    GURL("https://account.bravesoftware.com"),
+                                    GURL("https://account.brave.software")};
 
 base::NoDestructor<std::vector<blink::WebSecurityOrigin>>
 WebSecurityOriginList() {
-  std::vector<blink::WebSecurityOrigin> list(safe_origins_string.size());
-  std::transform(safe_origins_string.begin(), safe_origins_string.end(),
-                 list.begin(), [](auto& origin_string) {
-                   return blink::WebSecurityOrigin::Create(GURL(origin_string));
+  std::vector<blink::WebSecurityOrigin> list(safe_origins_gurl.size());
+  std::transform(safe_origins_gurl.begin(), safe_origins_gurl.end(),
+                 list.begin(), [](auto& origin_gurl) {
+                   return blink::WebSecurityOrigin::Create(origin_gurl);
                  });
   return base::NoDestructor(list);
 }
@@ -45,8 +45,8 @@ bool IsSafeOrigin(const blink::WebSecurityOrigin& origin) {
 }
 
 bool IsSafeOrigin(const GURL& origin) {
-  for (const std::string& safe_origin_string : safe_origins_string) {
-    auto safe_origin = url::Origin::Create(GURL(safe_origin_string));
+  for (const GURL& safe_origin_gurl : safe_origins_gurl) {
+    auto safe_origin = url::Origin::Create(safe_origin_gurl);
     if (safe_origin.IsSameOriginWith(origin)) {
       return true;
     }
