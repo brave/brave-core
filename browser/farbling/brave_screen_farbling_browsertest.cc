@@ -289,6 +289,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
             "width=${outerWidth + 20},"
             "height=${outerHeight + 20}"
             "`);";
+        content::RenderFrameHost* host =
+            test_mode == TestMode::kIframe ? Parent() : IFrame();
         Browser* popup = OpenPopup(script, test_mode == TestMode::kIframe);
         auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
         content::WaitForLoadStop(popup_contents);
@@ -296,16 +298,12 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
         if (!allow_fingerprinting && !IsFlagDisabled()) {
           EXPECT_GE(child_bounds.x(), parent_bounds.x());
           EXPECT_GE(child_bounds.y(), parent_bounds.y());
-          int max_width = 10 + std::max(450, parent_bounds.width());
-          int max_height = 10 + std::max(450, parent_bounds.width());
-          EXPECT_GE(max_width, child_bounds.width());
-          EXPECT_GE(max_height, child_bounds.height());
         } else {
           EXPECT_LE(child_bounds.x(), std::max(80, 10 + parent_bounds.x()));
           EXPECT_LE(child_bounds.y(), std::max(80, 10 + parent_bounds.y()));
-          EXPECT_LE(parent_bounds.width(), child_bounds.width());
-          EXPECT_LE(parent_bounds.height(), child_bounds.height());
         }
+        EXPECT_GE(EvalJs(host, "screen.width"), child_bounds.width());
+        EXPECT_GE(EvalJs(host, "screen.height"), child_bounds.height());
         if (test_mode != TestMode::kIframe) {
           auto* widget = views::Widget::GetWidgetForNativeWindow(
               popup->window()->GetNativeWindow());
