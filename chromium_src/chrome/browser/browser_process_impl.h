@@ -28,6 +28,7 @@
 #include "services/network/public/mojom/network_service.mojom-forward.h"
 
 #define Init virtual Init
+#define PreMainMessageLoopRun virtual PreMainMessageLoopRun
 
 #if !BUILDFLAG(IS_ANDROID)
 #define StartTearDown virtual StartTearDown
@@ -38,6 +39,7 @@
 
 #undef PostDestroyThreads
 #undef StartTearDown
+#undef PreMainMessageLoopRun
 #undef Init
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSER_PROCESS_IMPL_H_
