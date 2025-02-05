@@ -182,6 +182,7 @@ source_set("unit_tests") {
       "//ui/accessibility:ax_base",
     ]
   }
+}
 
 group("app") {
 }
