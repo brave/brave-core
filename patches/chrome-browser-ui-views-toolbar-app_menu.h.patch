@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/toolbar/app_menu.h b/chrome/browser/ui/views/toolbar/app_menu.h
-index def1151fc7ee00303f5a8c8531f85a07d9449d05..f3abd671ec02620fb36cd62b9e4835d14535620b 100644
+index 48ed2bc5fac56de8fa4b4ae3f8e15849d38a891f..86ac2fd11014dfae446ed671d7251466679f2e8e 100644
 --- a/chrome/browser/ui/views/toolbar/app_menu.h
 +++ b/chrome/browser/ui/views/toolbar/app_menu.h
-@@ -32,7 +32,7 @@ class MenuRunner;
- }  // namespace views
+@@ -34,7 +34,7 @@ class MenuRunner;
+ struct BookmarkParentFolder;
  
  // AppMenu adapts the AppMenuModel to view's menu related classes.
 -class AppMenu final : public views::MenuDelegate,
 +class AppMenu : public views::MenuDelegate,
-                       public bookmarks::BaseBookmarkModelObserver,
+                       public BookmarkMergedSurfaceServiceObserver,
                        public GlobalErrorObserver {
   public:
