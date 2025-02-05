@@ -21,7 +21,7 @@ index 80494b5bb318a9dc4b92b4d2fbb3fab84521d8a9..86a7793311f0970491ca7199f02535b3
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/family_link_user_internals/resources.grd": {
-@@ -573,7 +576,7 @@
+@@ -577,7 +580,7 @@
      "includes": [4720],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -30,7 +30,7 @@ index 80494b5bb318a9dc4b92b4d2fbb3fab84521d8a9..86a7793311f0970491ca7199f02535b3
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -947,6 +950,9 @@
+@@ -951,6 +954,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
@@ -40,7 +40,7 @@ index 80494b5bb318a9dc4b92b4d2fbb3fab84521d8a9..86a7793311f0970491ca7199f02535b3
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
-@@ -1438,7 +1444,7 @@
+@@ -1447,7 +1453,7 @@
      "includes": [9980],
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
