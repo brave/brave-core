@@ -412,7 +412,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="944340256927461196">Laat geen sporen achter op je apparaat</translation>
 <translation id="2063044449012253966">Sites die je bezoekt in privévensters worden niet in je geschiedenis weergegeven. Cookies, formuliergegevens en sitegegevens verdwijnen zodra alle privévensters zijn gesloten.</translation>
 <translation id="7395764193745523646">Zichtbaarheid tijdens browsen</translation>
-<translation id="8735363371744702779">Zelfs in privévensters is je browseactiviteit mogelijk nog steeds zichtbaar voor je ISP, netwerkwaarnemers of je werkgever (als je een apparaat of het netwerk van je werk gebruikt).</translation>
+<translation id="8670344404057978375">Zelfs in privévensters is je browseactiviteit mogelijk nog steeds zichtbaar voor je ISP, netwerkwaarnemers of je werkgever (als je een apparaat of het netwerk van je werk gebruikt).</translation>
 <translation id="1413177583895309156">Brave VPN versleutelt en beschermt alles wat je online doet, zelfs buiten de Brave Browser.</translation>
 <translation id="3974348661685061050">Probeer 7 dagen gratis</translation>
 <translation id="5789441016350810005">Brave Ads die worden verzonden wanneer de browser op de achtergrond draait</translation>
@@ -450,8 +450,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1116694919640316211">Over</translation>
 <translation id="7961015016161918242">Nooit</translation>
 <translation id="1275213816424141989">Misschien later</translation>
-<translation id="4406937629441301400">Verdien tokens voor het bekijken van deze afbeelding en betaal dit door aan makers. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Je verdient tokens voor het bekijken van deze afbeelding.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">De uitbetaling voor de beloningen van <ph name="CURRENT_MONTH"/> worden vanaf <ph name="PAYOUT_DATE"/> verwerkt.</translation>
 <translation id="33967210973550414">De uitbetaling voor de beloningen van <ph name="CURRENT_MONTH"/> worden uitgevoerd. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">De uitbetaling voor de beloningen van <ph name="CURRENT_MONTH"/> zijn voltooid. <ph name="SUPPORT"/></translation>
@@ -474,6 +472,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7854108565842971747">Dit zijn de standaard Shields-instellingen voor nieuwe websites. Wijzigingen aan deze instellingen hebben geen invloed op je bestaande instellingen per website.</translation>
 <translation id="218587021686734263">Voorkom fingerprinting via taalinstellingen</translation>
 <translation id="1706099589708266367">Vermindert wat websites over u te weten kunnen komen op basis van de taalinstellingen van uw browser.</translation>
+<translation id="6486971767955110687">Bewaar contactgegevens voor toekomstige foutrapporten over niet-werkende sites</translation>
+<translation id="4085787265464238844">Als je contactgegevens opgeeft, worden deze bewaard voor toekomstige rapporten</translation>
 <translation id="4721088070859595932">Voorkomt dat websites uw apparaat herkennen</translation>
 <translation id="7445306466605902444">Vingerafdrukken geblokkeerd (strikt, kan websites doen stukgaan)</translation>
 <translation id="5582686930349810484">Vingerafdrukken geblokkeerd (standaard)</translation>
@@ -489,6 +489,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1561541094377237745">Solana-netwerken</translation>
 <translation id="7141438739990875547">Bitcoin-netwerken</translation>
 <translation id="9055546041146396417">Als deze site niet lijkt te werken, probeer dan Shields uit te zetten.</translation>
+<translation id="7898672232170410330">Element blokkeren</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
 <translation id="1653405824851871276">Bedankt voor je hulp om Brave beter te maken voor iedereen. Dit rapport zal alleen informatie bevatten die we nodig hebben om deze site te herstellen. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +497,19 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8740275226259417070">Dit is een foutpagina die niet als een defecte site kan worden gemeld.</translation>
 <translation id="721949491455392748">Voeg een schermafbeelding van de huidige pagina toe</translation>
 <translation id="8459191579769999214">Schermafbeelding bekijken</translation>
+<translation id="6476216365964140603">Aanvullende gegevens (optioneel)</translation>
+<translation id="6145852496180774737">Neem contact met me op via: (optioneel)</translation>
+<translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
 <translation id="5370478469168390143">Sla gegevens online op</translation>
 <translation id="1118508688433541158">Browse sneller en blokkeer advertenties met Brave</translation>
 <translation id="7427391215172269363">Ik bespaar dagelijks data door online te browsen met Brave.</translation>
-<translation id="4776948189086901857">Brave werkt overal</translation>
-<translation id="1606322780901645965">Download Brave op brave.com op uw laptop of tablet voor sneller internet met meer privacy.</translation>
+<translation id="357198789571802914">Kijk YouTube zonder advertenties.</translation>
+<translation id="2154817758398495571">Open YouTube-links in Brave om advertenties te blokkeren.</translation>
+<translation id="1580816390443799567">Nu inschakelen</translation>
+<translation id="8589748782214271192">Nee, bedankt</translation>
 <translation id="8374242949413616101">Privacybescherming</translation>
 <translation id="4955406228638026265">Brave stopt advertenties en trackers die zonder uw toestemming informatie over u verzamelen.</translation>
 <translation id="752842701893882688">Bespaar data en batterij</translation>
@@ -1021,7 +1027,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="8382368767453083629">Multisig 2 initialiseren</translation>
 <translation id="77243237706803459">Mint 2 initialiseren</translation>
 <translation id="583281660410589416">Unknown</translation>
-<translation id="5666264859501108700">Uw Brave Rewards-regio is ingesteld op <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Er heeft zich een probleem voorgedaan tijdens het instellen van Brave Rewards. Probeer het opnieuw.</translation>
 <translation id="7352651011704765696">Er ging iets fout</translation>
 <translation id="7144878232160441200">Opnieuw proberen</translation>
@@ -1082,10 +1087,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="7748944510530490017">Primaire netwerken</translation>
 <translation id="2781668117338732220">Secundaire netwerken</translation>
 <translation id="282560918037172384">Testnetwerken</translation>
-<translation id="707569835145765061">Actie vereist: koppel een beheerdersaccount of uw vBAT gaat verloren</translation>
-<translation id="1776742005329298234">Op <ph name="DUE_DATE"/> beëindigen we de ondersteuning voor bestaand virtueel BAT-saldo. Koppel vóór deze datum een beheerdersaccount, zodat we uw verdiende saldo kunnen overschrijven naar uw beheerdersaccount. Als u dit niet doet, gaat uw saldo verloren.</translation>
-<translation id="5089752671190341407">Er is nog steeds tijd om een bijdrage in vBAT te leveren aan uw favoriete ontwikkelaars</translation>
-<translation id="171158953146804144">Op <ph name="DUE_DATE"/> beëindigen we de ondersteuning voor bestaand virtueel BAT-saldo. Er zijn helaas geen beschikbare beheerders in uw regio (<ph name="REGION"/>) om uw verdiensten op te nemen. U kunt tot die tijd blijven bijdragen aan uw favoriete ontwikkelaars.</translation>
 <translation id="8949422576126100041">Pagina bekijken met Speedreader?</translation>
 <translation id="3435896845095436175">Inschakelen</translation>
 <translation id="5296840868251496327">Speedreader inschakelen</translation>
@@ -1104,9 +1105,12 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2471230424465522689">Niet voor</translation>
 <translation id="4841860051609590575">Aanvraag-ID</translation>
 <translation id="1179407411385015942">Leo is een slimme assistent op basis van AI, die in de browser is ingebouwd</translation>
+<translation id="5781842473834867765">Mijn gespreksgeschiedenis opslaan</translation>
 <translation id="4109670531935487117">Suggesties voor automatisch aanvullen in de adresbalk weergeven</translation>
-<translation id="1250335737108905610">Opnieuw instellen en gegevens wissen van Leo</translation>
-<translation id="6165101586663336913">Als u Leo (assistent) opnieuw instelt, moet u zich in de toekomst aanmelden om Leo te kunnen gebruiken. Ook wordt uw chatgeschiedenis gewist. Als u uw chatgeschiedenis wist, worden al uw eerdere gesprekken met Leo verwijderd. Deze actie kan niet ongedaan worden gemaakt.</translation>
+<translation id="6106701981952170121">Alle Leo AI-gespreksgegevens verwijderen</translation>
+<translation id="423600389315522551">Als je Leo AI reset, moet je je weer aanmelden om Brave Leo AI later te gebruiken en wordt ook je chatgeschiedenis gewist. Door je chatgeschiedenis te wissen, verwijder je al je eerdere gesprekken met Brave Leo AI. Deze actie kun je niet ongedaan maken.</translation>
+<translation id="6742599753610126012">Chatgeschiedenis wissen</translation>
+<translation id="3443052382074796867">Als je je gesprekken niet meer opslaat, worden alle eerder opgeslagen gesprekken ook definitief gewist. Deze actie kan niet ongedaan worden gemaakt.</translation>
 <translation id="3692772534525889713">Koppel uw Play Store-aankoop aan uw Brave-account om Brave Leo op andere apparaten te gebruiken.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Eén jaar</translation>
@@ -1236,4 +1240,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4650851936784160359">Filterlijst kon niet worden bijgewerkt. Probeer het opnieuw.</translation>
 <translation id="3098054327870766317">Knop voor ongedaan maken tonen wanneer tabbladen worden gesloten</translation>
 <translation id="1336494649091412226">Weet je zeker dat je Brave wilt afsluiten?</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">Chatgeschiedenis</translation>
 </translationbundle>

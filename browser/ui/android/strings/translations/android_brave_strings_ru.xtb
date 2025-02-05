@@ -102,7 +102,7 @@
 <translation id="8685431198160039193">Автозаполнять сохраненные данные в режиме инкогнито.</translation>
 <translation id="6583902294974160967">Поддержка</translation>
 <translation id="1799030480311994998">Функции</translation>
-<translation id="2005732746077850308">Brave Щит и конфиденциальность</translation>
+<translation id="2005732746077850308">Защита Brave и конфиденциальность</translation>
 <translation id="4692623383562244444">Поисковые системы</translation>
 <translation id="1468415711258933398">Стандартная вкладка</translation>
 <translation id="3377025655491224618">Приватная вкладка</translation>
@@ -212,7 +212,7 @@
 <translation id="4172219483893066798">Сайты могут запрашивать доступ к localhost</translation>
 <translation id="7181706637590665047">Запретить доступ к localhost</translation>
 <translation id="1485435696620658073">Разрешить доступ к localhost</translation>
-<translation id="181905442828471321">Общие настройки по умолчанию системы Brave Shields</translation>
+<translation id="181905442828471321">Глобальные настройки по умолчанию Защиты Brave</translation>
 <translation id="2675679258824361492">Другие настройки конфиденциальности</translation>
 <translation id="8026334261755873520">Очистить историю</translation>
 <translation id="1690924763769415936">Фоновое воспроизведение</translation>
@@ -244,8 +244,8 @@
 <translation id="2877653791257935258">Введите название сайта или URL</translation>
 <translation id="5329830149661250028">Браузер Brave не похож на другие. Наслаждайтесь непревзойденной скоростью загрузки страниц без рекламы и трекеров.</translation>
 <translation id="3941792073703079607">В чем преимущества Brave? Он блокирует рекламу, сохраняет данные и повышает скорость трансляций.</translation>
-<translation id="3545804467215833536">Коснитесь, чтобы открыть окно настройки Brave Щита.</translation>
-<translation id="1724327820822194498">Узнайте, сколько объявлений и трекеров заблокировал Brave Щит на каждой странице.</translation>
+<translation id="3545804467215833536">Коснитесь, чтобы открыть окно настройки Защиты Brave</translation>
+<translation id="1724327820822194498">Узнайте, сколько плохих вещей заблокировала Защита Brave на каждой странице.</translation>
 <translation id="5386259141409498372">Заблокированные объявления и трекеры: <ph name="BIG_TECH"/> и еще <ph name="TRACKER"/>.</translation>
 <translation id="7256200875155794202"><ph name="BIG_TECH"/>, другие рекламные объявления и трекеры заблокированы</translation>
 <translation id="3092683655478890840">Заблокировано объявлений и трекеров: <ph name="TRACKER_COUNT"/></translation>
@@ -409,10 +409,9 @@
 <translation id="597993392929850353">Лицензия Brave</translation>
 <translation id="6336451774241870485">Новая приватная вкладка</translation>
 <translation id="3110967157686007724">Приватная вкладка</translation>
-<translation id="944340256927461196">Не оставлять след на вашем устройстве</translation>
-<translation id="2063044449012253966">Сайты, которые вы посещаете в приватных окнах, не будут отображаться в вашей истории. Данные о форме, данные о сайте и исчезнут после закрытия всех приватных окон.</translation>
-<translation id="7395764193745523646">Видимость в браузере</translation>
-<translation id="8735363371744702779">Имейте в виду, что даже в приватных окнах ваша активность в браузере по-прежнему может быть видна вашему провайдеру, Сетевые наблюдатели или ваш работодатель (если вы используете рабочее устройство/сеть).</translation>
+<translation id="944340256927461196">Не оставляйте следов на вашем устройстве</translation>
+<translation id="2063044449012253966">Сайты, которые вы посещаете в приватных окнах, не будут отображаться в вашей истории. Файлы cookie, данные форм, и данные сайтов исчезнут после закрытия всех приватных окон.</translation>
+<translation id="7395764193745523646">Видимость активности в браузере</translation>
 <translation id="1413177583895309156">Brave VPN шифрует и защищает всё, что вы делаете в сети, даже за пределами браузера Brave.</translation>
 <translation id="3974348661685061050">Попробуйте бесплатно в течение 7 дней</translation>
 <translation id="5789441016350810005">Brave Ads отправляется, когда браузер работает в фоновом режиме</translation>
@@ -450,8 +449,6 @@
 <translation id="1116694919640316211">About</translation>
 <translation id="7961015016161918242">Никогда</translation>
 <translation id="1275213816424141989">Может быть, позже</translation>
-<translation id="4406937629441301400">Зарабатывайте жетоны за просмотр этого изображения и платите их создателям. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Вы зарабатываете токены за просмотр этого изображения.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">Выплата вознаграждений за <ph name="CURRENT_MONTH"/> начнется до <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Вознаграждения за <ph name="CURRENT_MONTH"/> обрабатываются. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Вознаграждения за <ph name="CURRENT_MONTH"/> начислены. <ph name="SUPPORT"/></translation>
@@ -483,12 +480,13 @@
 <translation id="8553998445606452168">О Защите Brave</translation>
 <translation id="8912304686498704084">ВКЛ</translation>
 <translation id="4963218453264888510">ВЫКЛ</translation>
-<translation id="7474113515179313724">Вы просматриваете этот сайт без защиты конфиденциальности Brave. Он работает неправильно с включенной защитой?</translation>
+<translation id="7474113515179313724">Вы просматриваете этот сайт без защиты конфиденциальности Brave. Он работает неправильно с включенной Защитой?</translation>
 <translation id="4226543734057230801">Сети Ethereum</translation>
 <translation id="3504157706952484145">Сети Filecoin</translation>
 <translation id="1561541094377237745">Сети Solana</translation>
 <translation id="7141438739990875547">Биткойн-сети</translation>
 <translation id="9055546041146396417">Если сайт работает неправильно, попробуйте выключить Защиту.</translation>
+<translation id="7898672232170410330">Блокировать элемент</translation>
 <translation id="1209739344687072997">Сообщить о неработающем сайте</translation>
 <translation id="8510478288840333677">Сообщите разработчикам Brave, что этот сайт некорректно работает с Защитой:</translation>
 <translation id="1653405824851871276">Спасибо, что помогаете нам улучшать Brave! В отчете будет только информация, необходимая для исправления ошибок на этом сайте. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +494,15 @@
 <translation id="8740275226259417070">Это страница ошибки. Ее нельзя включить в отчет.</translation>
 <translation id="721949491455392748">Прикрепить скриншот текущей страницы</translation>
 <translation id="8459191579769999214">Посмотреть скриншот</translation>
+<translation id="6476216365964140603">Дополнительная информация (необязательно)</translation>
+<translation id="6145852496180774737">Как с вами можно связаться (необязательно):</translation>
+<translation id="7616645803364270729">Адрес электронной почты, Твиттер и т. д.</translation>
 <translation id="5299848999918506028">Спасибо!</translation>
 <translation id="76550953340008122">Спасибо, что сообщили разработчикам Brave, что с этим сайтом что-то не так. Мы сделаем все возможное, чтобы это исправить!</translation>
 <translation id="650318023204990401">Расширенное управление</translation>
 <translation id="5370478469168390143">Сохранять данные онлайн</translation>
 <translation id="1118508688433541158">Просматривайте быстрее и блокируйте рекламу с Brave</translation>
 <translation id="7427391215172269363">Каждый день я экономлю данные, просматривая веб-страницы в Brave.</translation>
-<translation id="4776948189086901857">Brave работает везде</translation>
-<translation id="1606322780901645965">Загрузите Brave с brave.com на свой ноутбук или планшет, чтобы получить более быстрый и конфиденциальный доступ в интернет</translation>
 <translation id="8374242949413616101">Защита конфиденциальности</translation>
 <translation id="4955406228638026265">Brave не позволяет трекерам и рекламе собирать информацию о вас без вашего согласия.</translation>
 <translation id="752842701893882688">Экономьте данные и заряд аккумулятора</translation>
@@ -715,10 +714,10 @@
 <translation id="1532536259167115948">Ежемесячная подписка <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Годовая подписка <ph name="TRIAL_TEXT"/></translation>
 <translation id="6748319398471481216">Ежемесячное продление</translation>
-<translation id="112929124115834557">Обновления ежегодно</translation>
+<translation id="112929124115834557">Обновляется ежегодно</translation>
 <translation id="1131191042781544288"><ph name="MONTHLY_AMOUNT"/> в месяц</translation>
 <translation id="1163809943099641131">Один год</translation>
-<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>save <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
+<translation id="83293016232121346">(<ph name="DISCOUNT_TEXT_START"/>сэкономить <ph name="PERCENTAGE_AMOUNT"/>%%<ph name="DISCOUNT_TEXT_END"/>)</translation>
 <translation id="4790641549702094825"><ph name="YEARLY_AMOUNT"/> в год</translation>
 <translation id="2786538705804257030">Плата за подписку будет взиматься с аккаунта Google. При покупке тарифного плана неиспользованный остаток бесплатного пробного периода будет аннулирован.\n\nПодписка будет продлена автоматически, если не отменить ее как минимум за 24 часа до окончания текущего периода.\n\nУправлять подписками можно в настройках.\n\nИспользуя Brave, вы соглашаетесь с Условиями использования и Политикой конфиденциальности.</translation>
 <translation id="5035172357624830412">Уже купили подписку на сайте brave.com?</translation>
@@ -1021,7 +1020,6 @@
 <translation id="8382368767453083629">Инициализировать кошелек с мультиподписью 2</translation>
 <translation id="77243237706803459">Инициализировать минт 2</translation>
 <translation id="583281660410589416">Неизвестно</translation>
-<translation id="5666264859501108700">Установлен ваш регион использования Brave Наград: <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Во время настройки Brave Наград произошла ошибка. Повторите попытку.</translation>
 <translation id="7352651011704765696">Что-то пошло не так</translation>
 <translation id="7144878232160441200">Повторить попытку</translation>
@@ -1082,10 +1080,6 @@
 <translation id="7748944510530490017">Основные сети</translation>
 <translation id="2781668117338732220">Дополнительные сети</translation>
 <translation id="282560918037172384">Тестовые сети</translation>
-<translation id="707569835145765061">Необходимо действие: подключите кастодиальный аккаунт, иначе ваши виртуальные токены BAT будут утеряны</translation>
-<translation id="1776742005329298234">С <ph name="DUE_DATE"/> мы прекращаем поддержку существующих балансов виртуальных токенов BAT. Подключите кастодиальный аккаунт до этой даты, и мы переведем на него заработанные вами средства. Иначе они будут утеряны.</translation>
-<translation id="5089752671190341407">Вы все еще можете перечислить виртуальные токены BAT своим любимым авторам</translation>
-<translation id="171158953146804144">С <ph name="DUE_DATE"/> мы прекращаем поддержку существующих балансов виртуальных токенов BAT. К сожалению, в вашем регионе (<ph name="REGION"/>) нет доступных кастодианов для вывода заработанных средств. До этого срока вы можете перевести токены любимым авторам.</translation>
 <translation id="8949422576126100041">Просмотреть страницу с помощью Speedreader?</translation>
 <translation id="3435896845095436175">Включить</translation>
 <translation id="5296840868251496327">Включить Speedreader</translation>
@@ -1105,8 +1099,6 @@
 <translation id="4841860051609590575">ID запроса</translation>
 <translation id="1179407411385015942">Leo — это ИИ-помощник, встроенный в браузер</translation>
 <translation id="4109670531935487117">Показывать предложения для автозаполнения в адресной строке</translation>
-<translation id="1250335737108905610">Сбросить чат с Leo и удалить данные</translation>
-<translation id="6165101586663336913">Если вы сбросите чат с ИИ-помощником, в будущем для использования Brave Leo вам потребуется дать согласие. Вся переписка в чате будет безвозвратно удалена.</translation>
 <translation id="3692772534525889713">Привяжите покупку в Play Store к аккаунту Brave и используйте Brave Leo на других устройствах.</translation>
 <translation id="73236265316873967">Премиум-подписка Leo</translation>
 <translation id="1028627582482425924">Годовая</translation>
@@ -1236,4 +1228,5 @@
 <translation id="4650851936784160359">Не удалось обновить список фильтров. Повторите попытку.</translation>
 <translation id="3098054327870766317">Показать кнопку отмены при закрытии вкладок</translation>
 <translation id="1336494649091412226">Вы уверены, что хотите выйти из Brave?</translation>
+<translation id="2361906291514218784">ИИ-помощник Leo</translation>
 </translationbundle>

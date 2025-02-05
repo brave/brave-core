@@ -15,7 +15,6 @@ Agar tark etsangiz, “<ph name="TITLE_OF_GROUP"/>” varaqlar guruhiga boshqa k
 <translation id="1419023007528516122">Bunda guruh qurilmadan butunlay oʻchirib tashlanadi.</translation>
 <translation id="1486715732399361704">Barcha varaqlar guruhi shu yerda chiqadi</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> daqiqa oldin yaratilgan}other{<ph name="NUM_MINS_MANY"/> daqiqa oldin yaratilgan}}</translation>
-<translation id="3228718275011575753">Barcha Inkognito varaqlar yopilsinmi?</translation>
 <translation id="1501480321619201731">Ha</translation>
 <translation id="1555130319947370107">Ko‘k</translation>
 <translation id="161042844686301425">Havorang</translation>
@@ -27,7 +26,6 @@ Agar tark etsangiz, “<ph name="TITLE_OF_GROUP"/>” varaqlar guruhiga boshqa k
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ta varaq}other{<ph name="TABS_COUNT_MANY"/> ta varaq}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Tanlangan <ph name="TABS_COUNT_ONE"/> ta varaqni bukmarklash}other{Tanlangan <ph name="TABS_COUNT_MANY"/> ta varaqni bukmarklash}}</translation>
 <translation id="2118649612461486615">Doʻkon haqida</translation>
-<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{Oxirgi varaqlar va Varaqlar guruhi panellaridagi yopilgan varaq va guruhlar qayta ochiladi. Inkognito varaqlar tiklanmaydi.}other{Oxirgi varaqlar va Varaqlar guruhi panellaridagi yopilgan varaq va guruhlar qayta ochiladi. # ta inkognito varaq tiklanmaydi.}}</translation>
 <translation id="2162620598375156287"><ph name="SOURCE_WEBSITE"/> saytidagi joriy narxi: <ph name="CURRENT_PRICE"/></translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Varaqni yechish}other{Varaqlar guruhini yechish}}</translation>
 <translation id="2271452184061378400">Varaqlar guruhi shu yerda saqlanadi</translation>
@@ -77,7 +75,6 @@ Agar tark etsangiz, “<ph name="TITLE_OF_GROUP"/>” varaqlar guruhiga boshqa k
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> ta varaq oʻzgardi, <ph name="ANY_CLOSED"/> tasi yopildi}other{<ph name="MANY_CHANGED"/> ta varaq oʻzgardi, <ph name="ANY_CLOSED"/> tasi yopildi}}</translation>
 <translation id="4371591986692297148">Nofaol</translation>
 <translation id="4460014764210899310">Guruhni bekor qilish</translation>
-<translation id="4590027107044272416">Endi yangi varaq ochish mumkin</translation>
 <translation id="4632233446660511480">{TAB_COUNT,plural, =1{1 ta nofaol varaq yopilsinmi?}other{<ph name="TAB_COUNT_MANY"/> ta nofaol varaq yopilsinmi?}}</translation>
 <translation id="4686942373615810936">Hozirgina yaratildi</translation>
 <translation id="47070857600201406">{DAY_COUNT,plural, =1{1 kundan keyin yopilsin}other{<ph name="DAY_COUNT_MANY"/> kundan keyin yopilsin}}</translation>
@@ -98,7 +95,9 @@ Agar tark etsangiz, “<ph name="TITLE_OF_GROUP"/>” varaqlar guruhiga boshqa k
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> ta varaq kiritildi}other{<ph name="MANY_ADDED"/> ta varaq kiritildi}}</translation>
 <translation id="5161254044473106830">Sarlavha kiriting</translation>
 <translation id="5339733443032484186">Oxirgi varaq</translation>
+<translation id="5380159289133845234">Takroriy varaqlarni arxivlash</translation>
 <translation id="5400836586163650660">Kulrang</translation>
+<translation id="5446043142172831860">Varaqni olib tashlash va guruhni tark etish</translation>
 <translation id="5490235265819901748">Varaqlar guruhi yoyildi</translation>
 <translation id="5494920125229734069">Hammasini tanlash</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Varaqlar guruhini yopish, varaqlari: <ph name="TABS_COUNT_ONE"/> ta, rangi: <ph name="COLOR_NAME"/>.}other{Varaqlar guruhini yopish, varaqlari: <ph name="TABS_COUNT_MANY"/> ta, rangi: <ph name="COLOR_NAME"/>.}}</translation>
@@ -117,6 +116,7 @@ Agar tark etsangiz, “<ph name="TITLE_OF_GROUP"/>” varaqlar guruhiga boshqa k
 <translation id="6051432659151380973">Varaqlar guruhi avtomatik saqlanadi</translation>
 <translation id="6054741997831917303">Bu mahsulot narxi yaqinda <ph name="PREVIOUS_PRICE"/> dan <ph name="NEW_PRICE"/> ga tushdi</translation>
 <translation id="6082313992897617440"><ph name="GROUP_NAME"/> varaqlar guruhiga ruxsat yopiladi</translation>
+<translation id="6109251075362363230">Barcha takroriy varaqlar ham arxivlanadi, oxirgi ishlatilgan nusxasi bundan mustasno.</translation>
 <translation id="6193448654517602979">Varaqlarni tanlang</translation>
 <translation id="6228793724645064692">(doʻkon reytingi)</translation>
 <translation id="6271513594716432922">Barcha nofaol varaqlarni yopish</translation>
@@ -188,10 +188,13 @@ Agar tark etsangiz, “<ph name="TITLE_OF_GROUP"/>” varaqlar guruhiga boshqa k
 <translation id="8887921976452567404">Oxirgi varaqlar va Varaqlar guruhi panellaridagi yopilgan varaq va guruhlar qayta ochiladi.</translation>
 <translation id="8915916167043355778">Hammasini yopish</translation>
 <translation id="9090098097337832354">Bu doʻkon haqidagi axborot yopildi</translation>
-<translation id="9111228330448174435">Yangi varaqlar guruhini yaratishda bildirgi chiqarish</translation>
 <translation id="9114502155681725011"><ph name="COLOR_NAME"/> rangli <ph name="TITLE_OF_GROUP"/> varaqlar guruhi uchun amallar menyusini ochish</translation>
 <translation id="9169594135889675189">Guruhga yangi varaq kiritish</translation>
 <translation id="9216898458513705996">Varaqlar bu qurilmada ochiq qoladi, ammo guruh <ph name="USER_EMAIL"/> hisobidan kirilgan barcha qurilmalardan oʻchirib tashlanadi</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Varaqlar guruhini yoyish, varaqlari: <ph name="TABS_COUNT_ONE"/> ta, rangi: <ph name="COLOR_NAME"/>.}other{Varaqlar guruhini yoyish, varaqlari: <ph name="TABS_COUNT_MANY"/> ta, rangi: <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="992256792861109788">Pushti</translation>
+<translation id="3228718275011575753">Barcha maxfiy varaqlar yopilsinmi?</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
+        one {}=1 {Yopilgan varaqlar va guruhlarni Oxirgi varaqlar hamda Varaq guruhlari boʻlimlarida qayta ochish mumkin. Maxfiy varaq qayta ochilmaydi.}
+        other {Yopilgan varaqlar va guruhlarni Oxirgi varaqlar hamda Varaq guruhlari boʻlimlarida qayta ochish mumkin. Maxfiy varaqlar (#) qayta ochilmaydi.}}</translation>
 </translationbundle>

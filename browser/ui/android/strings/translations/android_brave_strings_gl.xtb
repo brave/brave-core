@@ -412,7 +412,6 @@ Seguro que queres facelo?</translation>
 <translation id="944340256927461196">Non deixa rastro no teu dispositivo</translation>
 <translation id="2063044449012253966">Os sitios que visites en xanelas privadas non aparecerán no teu historial. Os rastros, os datos dos formularios e os datos dos sitios desaparecen unha vez pechadas todas as xanelas privadas.</translation>
 <translation id="7395764193745523646">Visibilidade de navegación</translation>
-<translation id="8735363371744702779">Ten en conta que, incluso nas xanelas privadas, a túa actividade de navegación pode ser visible para o teu provedor de servizos de Internet (ISP), os supervisores da rede ou o teu empregador (se estás a usar un dispositivo/rede de traballo).</translation>
 <translation id="1413177583895309156">A función Brave VPN cifra e protexe todo o que fagas en liña, inclusive fóra do navegador de Brave.</translation>
 <translation id="3974348661685061050">Próbaa de balde durante 7 días</translation>
 <translation id="5789441016350810005">Os anuncios de Brave son enviados cando o navegador está nun segundo plano</translation>
@@ -450,8 +449,6 @@ Seguro que queres facelo?</translation>
 <translation id="1116694919640316211">Acerca de</translation>
 <translation id="7961015016161918242">Nunca</translation>
 <translation id="1275213816424141989">Quizais máis tarde</translation>
-<translation id="4406937629441301400">Gana tokens para ver esta imaxe e págalle aos creadores. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Estás ganando tokens para ver esta imaxe.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> empezará a procesarse a partir do <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> está en curso. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> completouse. <ph name="SUPPORT"/></translation>
@@ -489,6 +486,7 @@ Seguro que queres facelo?</translation>
 <translation id="1561541094377237745">Redes de Solana</translation>
 <translation id="7141438739990875547">Redes de Bitcoin</translation>
 <translation id="9055546041146396417">Se este sitio aparece roto, proba Shields.</translation>
+<translation id="7898672232170410330">Bloquear elemento</translation>
 <translation id="1209739344687072997">Informar sobre un sitio roto</translation>
 <translation id="8510478288840333677">Informe aos desenvolvedores de Brave que este sitio non funciona correctamente con Shields:</translation>
 <translation id="1653405824851871276">Grazas por axudar a que Brave sexa mellor para todos. Este informe só conterá a información necesaria para que poidamos corrixir este sitio. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +494,15 @@ Seguro que queres facelo?</translation>
 <translation id="8740275226259417070">Esta é unha páxina de erro. Non se pode notificar como un sitio danado.</translation>
 <translation id="721949491455392748">Incluír captura de pantalla da páxina actual</translation>
 <translation id="8459191579769999214">Ver captura de pantalla</translation>
+<translation id="6476216365964140603">Detalles adicionais (opcional)</translation>
+<translation id="6145852496180774737">Contacto: (opcional)</translation>
+<translation id="7616645803364270729">Correo electrónico, Twitter, etc.</translation>
 <translation id="5299848999918506028">Por favor!</translation>
 <translation id="76550953340008122">Grazas por facer saber aos desenvolvedores de Brave que hai algo mal neste sitio. Faremos o mellor para solucionalo!</translation>
 <translation id="650318023204990401">Controis avanzados</translation>
 <translation id="5370478469168390143">Gardar os datos en liña</translation>
 <translation id="1118508688433541158">Navega máis rápido e bloquea os anuncios con Brave</translation>
 <translation id="7427391215172269363">Aforro datos cada día navegando pola rede con Brave.</translation>
-<translation id="4776948189086901857">Brave funciona en todo o mundo</translation>
-<translation id="1606322780901645965">Vai a brave.com e descarga Brave no teu portátil ou tableta para gozar dunha experiencia en liña máis rápida e privada</translation>
 <translation id="8374242949413616101">Protección da privacidade</translation>
 <translation id="4955406228638026265">Brave impide que os anuncios e rastreadores recollan información sobre ti sen o teu consentimento.</translation>
 <translation id="752842701893882688">Aforra datos e batería</translation>
@@ -1020,7 +1019,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="8382368767453083629">Iniciar multisig 2</translation>
 <translation id="77243237706803459">Iniciar mint 2</translation>
 <translation id="583281660410589416">Descoñecido</translation>
-<translation id="5666264859501108700">A túa rexión de Brave Rewards estableceuse en <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Desafortunadamente, produciuse un erro ao tentar configurar Brave Rewards. Téntao de novo.</translation>
 <translation id="7352651011704765696">Produciuse un erro</translation>
 <translation id="7144878232160441200">Reintentar</translation>
@@ -1081,10 +1079,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="7748944510530490017">Redes primarias</translation>
 <translation id="2781668117338732220">Redes secundarias</translation>
 <translation id="282560918037172384">Redes de proba</translation>
-<translation id="707569835145765061">Acción necesaria: conecta una conta de custodia se non queres perder os teus vBAT</translation>
-<translation id="1776742005329298234">O <ph name="DUE_DATE"/>, suspenderemos o soporte para os saldos BAT virtuais existentes. Conecta unha conta de custodia antes desta data para que poidamos transferir o saldo gañado á túa conta de custodia; se non o fas, perderás o saldo.</translation>
-<translation id="5089752671190341407">Aínda estás a tempo de apoiar os teus creadores favoritos con vBAT</translation>
-<translation id="171158953146804144">O <ph name="DUE_DATE"/>, suspenderemos o soporte para os saldos BAT virtuais existentes. Desafortunadamente, non hai contas de custodia dispoñibles na túa rexión (<ph name="REGION"/>) para retirar as túas ganancias. Ata entón,  podes contribuír cos teus creadores favoritos.</translation>
 <translation id="8949422576126100041">Queres ver a páxina co lector de velocidade?</translation>
 <translation id="3435896845095436175">Activar</translation>
 <translation id="5296840868251496327">Activar o lector de velocidade</translation>
@@ -1104,8 +1098,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="4841860051609590575">ID da solicitude</translation>
 <translation id="1179407411385015942">Leo é un asistente intelixente de IA que se integra no navegador</translation>
 <translation id="4109670531935487117">Mostrar suxestións autocompletadas na barra de enderezos</translation>
-<translation id="1250335737108905610">Restablecer e borrar os datos de Leo</translation>
-<translation id="6165101586663336913">Para restablecer o asistente Leo, deberás optar por utilizar Leo no futuro, e isto borrará o teu historial de chats. Ao borrar o teu historial de chats, eliminaranse todas as túas conversas anteriores con Leo. Esta acción non se pode desfacer.</translation>
 <translation id="3692772534525889713">Vincula a túa compra de Play Store á túa conta de Brave para usar Brave Leo noutros dispositivos.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Un ano</translation>
@@ -1233,6 +1225,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="2728518864712716830">Descargouse a actualización.</translation>
 <translation id="8403338849301491865">A lista de filtros actualizouse correctamente</translation>
 <translation id="4650851936784160359">Non se puido actualizar a lista de filtros. Téntao de novo</translation>
-<translation id="3098054327870766317">Amosar o botón de desfacer cando se pechan as pestanas</translation>
+<translation id="3098054327870766317">Amosar o botón de desfacer cando se pechan os separadores</translation>
 <translation id="1336494649091412226">Queres saír de Brave?</translation>
+<translation id="2361906291514218784">IA de Leo</translation>
 </translationbundle>

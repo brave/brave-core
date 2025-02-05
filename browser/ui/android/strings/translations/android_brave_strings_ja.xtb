@@ -412,7 +412,7 @@
 <translation id="944340256927461196">デバイスに痕跡を残さない</translation>
 <translation id="2063044449012253966">プライベートウィンドウから訪問したサイトは履歴に表示されません。プライベートウィンドウをすべて閉じると、クッキー、フォームデータ、サイトデータは消去されます。</translation>
 <translation id="7395764193745523646">閲覧情報の可視性</translation>
-<translation id="8735363371744702779">プライベートウィンドウを使用しても、あなたのISP、ネットワーク監視者、または雇用主（仕事用のデバイス/ネットワークを使用している場合）には、あなたのアクティビティが見える可能性があることにご留意ください。</translation>
+<translation id="8670344404057978375">プライベートウィンドウを使用しても、あなたのISP、ネットワーク監視者、または雇用主（仕事用のデバイス/ネットワークを使用している場合）には、あなたのアクティビティが見える可能性があることにご留意ください。</translation>
 <translation id="1413177583895309156">Brave VPN はBrave ブラウザを使用していてもいなくても、オンラインで行うすべての操作を暗号化して保護します。</translation>
 <translation id="3974348661685061050">7日間無料で試す</translation>
 <translation id="5789441016350810005">ブラウザがバックグラウンドにあるときに送信されるBrave広告</translation>
@@ -450,8 +450,6 @@
 <translation id="1116694919640316211">About</translation>
 <translation id="7961015016161918242">使用しない</translation>
 <translation id="1275213816424141989">あとで</translation>
-<translation id="4406937629441301400">この画像を表示するとトークンを受け取ることができ、クリエイターへの支払いに使うことができます。<ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">この画像を表示することでトークンを受け取ることができます。\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581"><ph name="CURRENT_MONTH"/>リワードへの支払い処理が<ph name="PAYOUT_DATE"/>までに開始されます。</translation>
 <translation id="33967210973550414"><ph name="CURRENT_MONTH"/>リワードへの支払いを処理中です。<ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314"><ph name="CURRENT_MONTH"/>リワードへの支払いが完了しました。<ph name="SUPPORT"/></translation>
@@ -474,6 +472,8 @@
 <translation id="7854108565842971747">新しいサイトに対するShieldsのデフォルト設定です。この設定を変更しても、既存のサイト設定には影響しません。</translation>
 <translation id="218587021686734263">言語設定によるフィンガープリントの防止</translation>
 <translation id="1706099589708266367">ブラウザの言語設定に基づき、ウェブサイトがお客様について学習する度合いを低減します。</translation>
+<translation id="6486971767955110687">今後の破損サイト報告のため、連絡先情報を保存する</translation>
+<translation id="4085787265464238844">連絡先情報を入力すると、今後の報告のために保存されます。</translation>
 <translation id="4721088070859595932">ウェブサイトがお使いのデバイスを認識しないようにします</translation>
 <translation id="7445306466605902444">フィンガープリントがブロックされました（強、サイトの表示が崩れる可能性）</translation>
 <translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
@@ -489,6 +489,7 @@
 <translation id="1561541094377237745">Solanaネットワーク</translation>
 <translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="9055546041146396417">ウェブサイトが正常に動作していないように見える場合は、Shieldをオフにしてみてください。</translation>
+<translation id="7898672232170410330">要素を指定してブロック</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
 <translation id="1653405824851871276">Braveの改善に向けてのご協力をいただきありがとうございます。このレポートには、このサイトを修正するために必要な情報のみが含まれています。<ph name="LEARN_MORE"/></translation>
@@ -496,14 +497,19 @@
 <translation id="8740275226259417070">このページはエラーページです。報告対象に含めることができません。</translation>
 <translation id="721949491455392748">現在のページのスクリーンショットを含める</translation>
 <translation id="8459191579769999214">スクリーンショットを見る</translation>
+<translation id="6476216365964140603">追加情報 (オプション)</translation>
+<translation id="6145852496180774737">連絡先: (オプション)</translation>
+<translation id="7616645803364270729">メールアドレス、Twitterなど</translation>
 <translation id="5299848999918506028">ありがとうございます！</translation>
 <translation id="76550953340008122">このサイトの問題をBraveの開発者にお知らせいただき、ありがとうございます。最善を尽くしてその修正を行います！</translation>
 <translation id="650318023204990401">詳細設定</translation>
 <translation id="5370478469168390143">データをオンラインで保存する</translation>
 <translation id="1118508688433541158">Braveなら読み込みが高速で、広告をブロックできます</translation>
 <translation id="7427391215172269363">BraveでWebを閲覧して毎日データ通信量を節約しています。</translation>
-<translation id="4776948189086901857">Braveはどこでも機能します</translation>
-<translation id="1606322780901645965">是非、パソコンやタブレットでもBraveをダウンロードして、高速でプライベートなウェブ体験をお楽しみください</translation>
+<translation id="357198789571802914">YouTubeを観る、広告は見ない。</translation>
+<translation id="2154817758398495571">YouTubeのリンクをBraveで開いて、広告をブロック。</translation>
+<translation id="1580816390443799567">今すぐオンにする</translation>
+<translation id="8589748782214271192">不要</translation>
 <translation id="8374242949413616101">プライバシー保護</translation>
 <translation id="4955406228638026265">Braveは、あなたの同意なしに広告およびトラッカーがあなたに関する情報を収集するのを防ぎます。</translation>
 <translation id="752842701893882688">データとバッテリーを見る</translation>
@@ -1021,7 +1027,6 @@
 <translation id="8382368767453083629">マルチシグを初期化 (2)</translation>
 <translation id="77243237706803459">ミントを初期化 (2)</translation>
 <translation id="583281660410589416">不明</translation>
-<translation id="5666264859501108700">Braveリワードの地域を<ph name="COUNTRY_NAME"/>に設定しました。</translation>
 <translation id="909076461795862330">Brave Rewardsの設定時にエラーが発生しました。もう一度お試しください。</translation>
 <translation id="7352651011704765696">エラーが発生しました</translation>
 <translation id="7144878232160441200">再試行</translation>
@@ -1082,10 +1087,6 @@
 <translation id="7748944510530490017">プライマリネットワーク</translation>
 <translation id="2781668117338732220">セカンダリネットワーク</translation>
 <translation id="282560918037172384">テストネットワーク</translation>
-<translation id="707569835145765061">要対応: カストディアルアカウントとの接続をしない場合、これまで獲得したvBATは消滅します。</translation>
-<translation id="1776742005329298234"><ph name="DUE_DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。この日までにカストディアルアカウントを接続し、獲得した残高をカストディアルアカウントに移行できるようにしてください。この設定を行わない場合、残高は失われます。</translation>
-<translation id="5089752671190341407">サポート終了前までは、お気に入りのクリエイターにvBATで貢献できます</translation>
-<translation id="171158953146804144"><ph name="DUE_DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。残念ながら、お住まいの地域 (<ph name="REGION"/>) には、収益を引き出すために利用可能なカストディアンが存在しません。上記の日程まではお気に入りのクリエイターに貢献することができます。</translation>
 <translation id="8949422576126100041">Speedreaderでページを表示しますか？</translation>
 <translation id="3435896845095436175">有効にする</translation>
 <translation id="5296840868251496327">Speedreaderを有効にする</translation>
@@ -1104,9 +1105,15 @@
 <translation id="2471230424465522689">利用開始日時</translation>
 <translation id="4841860051609590575">リクエストID</translation>
 <translation id="1179407411385015942">Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです</translation>
+<translation id="5781842473834867765">会話履歴を保存</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
-<translation id="1250335737108905610">Leoデータのリセットとクリア</translation>
-<translation id="6165101586663336913">Leoアシスタントのリセットは、将来的にLeoを使用するためのオプトインが必要になり、チャット履歴も消去されます。チャット履歴の消去は以前のLeoとの会話をすべて削除します。この操作は取り消せません。</translation>
+<translation id="6106701981952170121">Leo AI の会話データをすべて削除</translation>
+<translation id="423600389315522551">Leo AIをリセットすると、今後Brave 
+Leo AIの利用をオプトインする必要があります。また、チャット履歴も消去されます。
+チャット履歴を消去すると、Brave 
+Leo AIとの会話がすべて削除されます。この操作を元に戻すことはできません。</translation>
+<translation id="6742599753610126012">チャット履歴を消去</translation>
+<translation id="3443052382074796867">会話ストレージを無効にすると、以前に保存されていたすべての会話が永久に消去されます。この操作は元に戻すことができません。</translation>
 <translation id="3692772534525889713">Playストアでの購入をBraveアカウントにリンクすると、他のデバイスでBrave Leoを使用できます。</translation>
 <translation id="73236265316873967">Leoプレミアム</translation>
 <translation id="1028627582482425924">1年間</translation>
@@ -1236,4 +1243,6 @@
 <translation id="4650851936784160359">フィルターリストを更新できませんでした。もう一度お試しください</translation>
 <translation id="3098054327870766317">タブを閉じるときに元に戻すボタンを表示する</translation>
 <translation id="1336494649091412226">Braveを 終了しますか？</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">チャット履歴</translation>
 </translationbundle>

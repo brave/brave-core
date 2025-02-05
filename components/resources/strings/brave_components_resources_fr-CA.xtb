@@ -670,9 +670,6 @@
 <translation id="2446517297521536638">Contrôlez les types de publicités Brave que vous voyez et leur fréquence. Plus vous en voyez, plus vous pouvez gagner.</translation>
 <translation id="5860033963881614850">Désactivé</translation>
 <translation id="5916664084637901428">Activé</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> publicités reçues ce mois-ci</translation>
-<translation id="7697696066810593560">Vous avez gagné <ph name="NUM"/> ce mois-ci pour l'instant</translation>
-<translation id="6733193230212030816">Fourchette de gains estimée : <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">Votre solde</translation>
 <translation id="8714473477079007268">Portefeuille <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Compte de paiement</translation>
@@ -681,15 +678,6 @@
 <translation id="8414447476773253869">Connectez-vous à <ph name="PROVIDER"/> pour voir votre solde</translation>
 <translation id="615483366383024791">Compte de paiement</translation>
 <translation id="1060062421977823695">Vos revenus en BAT seront versés sur ce compte de paiement.</translation>
-<translation id="2544805415966048917">Vous enverrez</translation>
-<translation id="6708522254106492579">Jusqu'à <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">Une façon automatique de soutenir les sites Web et les créateurs de contenu, en fonction du temps que vous passez sur leur contenu.</translation>
-<translation id="4319242254058427792">La contribution automatique est désactivée</translation>
-<translation id="1091835891554961609">Les créateurs vérifiés que vous consultez apparaîtront ici au fil de votre navigation.</translation>
-<translation id="7714706530499503523">La contribution automatique envoie tous les mois des contributions aux créateurs vérifiés sur Brave, en fonction du temps que vous passez sur leur contenu.</translation>
-<translation id="2358028754328876971">Comment fonctionne la contribution automatique?</translation>
-<translation id="2870560284913253234">Site</translation>
-<translation id="1184072843013036520">Obtenez des produits de la marque Brave.</translation>
 <translation id="1170674812179664523">Boutique de marchandise de Brave</translation>
 <translation id="8673202990286883068">Vos avantages</translation>
 <translation id="3699766258844277472">Aucune contribution récurrente n'a encore été configurée.</translation>
@@ -1456,12 +1444,6 @@
 <translation id="3253669416991680932">Ce portefeuille physique ne prend pas en charge cette opération.</translation>
 <translation id="7457027586454688423">Entrez le mot de passe de votre portefeuille Brave</translation>
 <translation id="7553242001898162573">Saisissez votre mot de passe</translation>
-<translation id="2873714185189940594">Ouvrir l'application Rainbow Bridge?</translation>
-<translation id="2069777099181262239">Rainbow Bridge est un service indépendant qui vous permet de mettre en relation des actifs avec d'autres réseaux, et d'utiliser votre cryptomonnaie sur d'autres réseaux et des écosystèmes DApp. Cette opération comporte certains risques.</translation>
-<translation id="7387899248733396663">En savoir plus sur l'utilisation de Rainbow Bridge</translation>
-<translation id="3890567288132019108">En savoir plus sur la limitation des risques sur Rainbow Bridge</translation>
-<translation id="1792917191129448067">Ouvrir l'application Rainbow Bridge</translation>
-<translation id="1522775706527775647">Pont vers Aurora</translation>
 <translation id="4903322403594141291">En savoir plus sur le portefeuille Brave</translation>
 <translation id="4427684901715566795">Le mot de passe doit contenir :</translation>
 <translation id="8521329076169776625">Au moins 8 caractères</translation>

@@ -412,7 +412,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="944340256927461196">Nu lăsați nicio urmă pe dispozitivul dvs.</translation>
 <translation id="2063044449012253966">Site-urile pe care le vizitați în ferestre private nu vor apărea în istoricul dvs. Modulele cookie, datele din formulare și datele site-ului dispar odată ce toate ferestrele private sunt închise.</translation>
 <translation id="7395764193745523646">Vizibilitatea navigării</translation>
-<translation id="8735363371744702779">Rețineți că  chiar și în ferestre private  activitatea dvs. de navigare poate fi vizibilă pentru ISP, observatorii de rețea sau pentru angajatorul dvs. (dacă utilizați un dispozitiv/rețea de lucru).</translation>
 <translation id="1413177583895309156">Brave VPN criptează și protejează tot ceea ce faceți online, chiar și în afara browserului Brave.</translation>
 <translation id="3974348661685061050">Încercați gratuit timp de 7 zile</translation>
 <translation id="5789441016350810005">Brave Ads trimise atunci când browser-ul este în fundal</translation>
@@ -450,8 +449,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1116694919640316211">Despre</translation>
 <translation id="7961015016161918242">Niciodată</translation>
 <translation id="1275213816424141989">Poate mai târziu</translation>
-<translation id="4406937629441301400">Câștigați tokenuri pentru vizualizarea acestei imagini și răsplătiți creatorii ei. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">În acest moment câștigați tokenuri pentru vizualizarea acestei imagini.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">Plata pentru recompensele din<ph name="CURRENT_MONTH"/> se va procesa până la data de <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Plata pentru recompensele din <ph name="CURRENT_MONTH"/> este în curs de procesare. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Plata pentru recompensele din <ph name="CURRENT_MONTH"/> a fost procesată. <ph name="SUPPORT"/></translation>
@@ -489,6 +486,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1561541094377237745">Rețele Solana</translation>
 <translation id="7141438739990875547">Rețele Bitcoin</translation>
 <translation id="9055546041146396417">Dacă site-ul pare nefuncțional, încercați să dezactivați Shields.</translation>
+<translation id="7898672232170410330">Blocați elementul</translation>
 <translation id="1209739344687072997">Raportați un site nefuncțional</translation>
 <translation id="8510478288840333677">Anunțați-i pe dezvoltatorii Brave că acest site nu funcționează corect cu Scuturi:</translation>
 <translation id="1653405824851871276">Vă mulțumim că ne ajutați să facem Brave mai bun pentru toți. Acest raport va conține doar informațiile necesare pentru a repara acest site. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +494,15 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8740275226259417070">Aceasta este o pagină de eroare. Ea nu poate fi raportată ca un site nefuncțional.</translation>
 <translation id="721949491455392748">Includeți captura de ecran a paginii actuale</translation>
 <translation id="8459191579769999214">Vizualizați captura de ecran</translation>
+<translation id="6476216365964140603">Detalii suplimentare (opțional)</translation>
+<translation id="6145852496180774737">Contactați-mă la: (opțional)</translation>
+<translation id="7616645803364270729">Email, Twitter etc.</translation>
 <translation id="5299848999918506028">Mulțumim!</translation>
 <translation id="76550953340008122">Vă mulțumim că i-ați anunțat pe dezvoltatorii Brave că ceva nu este în regulă cu acest site. Vom face tot ce ne stă în putință ca să rezolvăm problema!</translation>
 <translation id="650318023204990401">Controale avansate</translation>
 <translation id="5370478469168390143">Salvați datele online</translation>
 <translation id="1118508688433541158">Navigați mai rapid și blocați reclamele cu Brave</translation>
 <translation id="7427391215172269363">În fiecare zi, economisesc date folosind browserul Brave.</translation>
-<translation id="4776948189086901857">Brave funcționează oriunde</translation>
-<translation id="1606322780901645965">Descărcați Brave de pe brave.com pe laptop sau tabletă, pentru un web mai rapid și mai privat</translation>
 <translation id="8374242949413616101">Protecția confidențialității</translation>
 <translation id="4955406228638026265">Brave nu permite reclamelor și urmăririlor să colecteze informații despre dvs. fără acordul dvs.</translation>
 <translation id="752842701893882688">Economisiți date și bateria</translation>
@@ -1023,7 +1022,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="8382368767453083629">Inițializați multisig 2</translation>
 <translation id="77243237706803459">Inițializați emisia 2</translation>
 <translation id="583281660410589416">Necunoscut</translation>
-<translation id="5666264859501108700">Regiunea Recompenselor Brave a fost setată la <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Din păcate, a apărut o eroare în timp ce încercam să configurăm Recompensele Brave. Încercați din nou.</translation>
 <translation id="7352651011704765696">A apărut o eroare</translation>
 <translation id="7144878232160441200">Reîncearcă</translation>
@@ -1085,10 +1083,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="7748944510530490017">Rețele primare</translation>
 <translation id="2781668117338732220">Rețele secundare</translation>
 <translation id="282560918037172384">Rețele de test</translation>
-<translation id="707569835145765061">Acțiune necesară: Conectați un cont de custode sau vBAT-ul va fi pierdut.</translation>
-<translation id="1776742005329298234">Pe <ph name="DUE_DATE"/>, vom întrerupe asistența pentru soldurile BAT virtuale existente. Conectați un cont de custode înainte de această dată pentru a vă putea transfera soldul câștigat în contul de custode, altfel soldul dvs. va fi pierdut.</translation>
-<translation id="5089752671190341407">Încă mai aveți timp să contribuiți cu vBAT-ul la creatorii dvs. favoriți</translation>
-<translation id="171158953146804144">Pe <ph name="DUE_DATE"/>, vom întrerupe asistența pentru soldurile BAT virtuale existente. Din păcate, nu există custozi disponibili în regiunea dvs. (<ph name="REGION"/>) pentru a vă retrage câștigurile. Până atunci, puteți contribui în continuare la creatorii dvs. favoriți.</translation>
 <translation id="8949422576126100041">Vizualizați pagina cu ajutorul Speedreader?</translation>
 <translation id="3435896845095436175">Activează</translation>
 <translation id="5296840868251496327">Activați Speedreader</translation>
@@ -1108,8 +1102,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4841860051609590575">Solicitați ID</translation>
 <translation id="1179407411385015942">Leo este un asistent inteligent IA, creat direct în browser</translation>
 <translation id="4109670531935487117">Afișați sugestiile de completare automată în bara de adrese</translation>
-<translation id="1250335737108905610">Resetați și ștergeți datele Leo</translation>
-<translation id="6165101586663336913">Resetarea asistentului Leo necesită acceptarea folosirii Leo în viitor și va șterge istoricul de chat. Prin ștergerea istoricului de chat se vor șterge toate conversațiile anterioare cu Leo. Această acțiune nu poate fi anulată.</translation>
 <translation id="3692772534525889713">Conectați achiziția din Play Store la contul dumneavoastră Brave pentru a utiliza Brave Leo și pe alte dispozitive.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Un an</translation>
@@ -1239,4 +1231,5 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4650851936784160359">Lista de filtre nu a putut fi actualizată. Încercați din nou</translation>
 <translation id="3098054327870766317">Afișați butonul de anulare atunci când filele sunt închise</translation>
 <translation id="1336494649091412226">Sunteți sigur că vreți să părăsiți Brave?</translation>
+<translation id="2361906291514218784">Leo IA</translation>
 </translationbundle>
