@@ -5,7 +5,7 @@
 
 import("//brave/tools/crates/cargo.gni")
 
-template("vendored_rust_dep") {
+template("build_crate") {
   assert(
       defined(invoker.crate_src),
       "Need crate_src in $target_name specifying the path to the corresponding crate.")
@@ -32,7 +32,7 @@ template("vendored_rust_dep") {
       inputs += invoker.inputs
     }
 
-    # To avoid irreproducible builds, `vendored_rust_dep`s MUST always be built with their vendored deps,
+    # To avoid irreproducible builds, `build_crate`s MUST always be built with their vendored deps,
     # therefore we have to make sure to pass:
     #   --config <path/to/the/dep>/crate/.cargo/config.toml
     #   --locked
