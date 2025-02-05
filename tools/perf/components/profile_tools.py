@@ -99,6 +99,10 @@ def MakeUpdatedProfileArchive(cfg: RunnerConfig, options: CommonOptions):
   if os.path.isfile(secure_prefs_path):
     os.remove(secure_prefs_path)
 
+  # Ads service state should be sync with Secure Preferences.
+  ads_service_path = os.path.join(profile_dir, 'Default', 'ads_service')
+  shutil.rmtree(ads_service_path, ignore_errors=True)
+
   # We don't want any preloaded variations
   _EraseVariationsFromLocalState(os.path.join(profile_dir, 'Local State'))
 
