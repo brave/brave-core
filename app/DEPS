@@ -31,6 +31,7 @@ include_rules += [
   "+components/commerce/core/commerce_feature_list.h",
   "+components/compose/core/browser/compose_features.h",
   "+components/content_settings/core/common/features.h",
+  "+components/feature_engagement/public/feature_constants.h",
   "+components/heap_profiling/in_process/heap_profiler_parameters.h",
   "+components/history/core/browser/features.h",
   "+components/history_clusters/core/features.h",

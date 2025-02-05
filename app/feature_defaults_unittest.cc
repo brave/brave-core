@@ -22,6 +22,7 @@
 #include "components/commerce/core/commerce_feature_list.h"
 #include "components/compose/core/browser/compose_features.h"
 #include "components/content_settings/core/common/features.h"
+#include "components/feature_engagement/public/feature_constants.h"
 #include "components/heap_profiling/in_process/heap_profiler_parameters.h"
 #include "components/history/core/browser/features.h"
 #include "components/history_clusters/core/features.h"
@@ -127,6 +128,12 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &extensions_features::kExtensionManifestV2DeprecationWarning,
       &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
+#endif
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX)
+      &feature_engagement::kIPHGMCCastStartStopFeature,
+      &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
+#endif
+#if !BUILDFLAG(IS_ANDROID)
       &features::kToolbarPinning,
 #endif
       &features::kBookmarkTriggerForPrerender2,

@@ -133,6 +133,7 @@ source_set("unit_tests") {
     "//components/content_settings/core/common:features",
     "//components/device_signals/core/common:features",
     "//components/embedder_support",
+    "//components/feature_engagement/public:feature_constants",
     "//components/heap_profiling/in_process",
     "//components/history_clusters/core",
     "//components/history_embeddings",
