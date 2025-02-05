@@ -124,7 +124,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6020553119523541665">This tab is active in another window</translation>
 <translation id="4987392683074136770">Clicking this tab will bring its contents to this window</translation>
 <translation id="8355523213948477234">Split view menu button</translation>
-<translation id="2515126961943087659">Bat Ads Service</translation>
 <translation id="2104347391516032700">Bat Rewards Service</translation>
 <translation id="6040143037577758943">Close</translation>
 <translation id="6665472986740899785">Brave notification ad</translation>
@@ -307,9 +306,11 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6155018868740116868">Recover</translation>
 <translation id="2521960050170773751">Add media from page</translation>
 <translation id="2301087142998134097"><ph name="SITE"/> wants to open</translation>
+<translation id="4828353184750597953">An embedded page at <ph name="SITE"/> wants to open</translation>
 <translation id="1175012181261953767">This page wants to open</translation>
 <translation id="7459546222322124545">An embedded page on this page wants to open</translation>
 <translation id="5836261838911560851"><ph name="SITE"/> wants to save</translation>
+<translation id="8813509417421129632">An embedded page at <ph name="SITE"/> wants to save</translation>
 <translation id="7700010743463174379">This page wants to save</translation>
 <translation id="6774238875569752630">An embedded page on this page wants to save</translation>
 <translation id="9156965752763025780">Your changes will take effect the next time you relaunch Brave.</translation>
@@ -434,6 +435,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3422250445565385437">Lists updating</translation>
 <translation id="1340263054776016283">Enter filter list URL</translation>
 <translation id="8578397014396032341">Content filters</translation>
+<translation id="5327248766486351172">Name</translation>
 <translation id="3020183492814296499">Shortcuts</translation>
 <translation id="5567412479632285879">Brave Rewards is disabled</translation>
 <translation id="413570371620795359">Open Rewards panel to enable and get started</translation>
@@ -503,7 +505,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5794692721727586076">Leo AI chat</translation>
 <translation id="8115153008662981040">Sites can ask to open Leo AI chat</translation>
 <translation id="1145070115730668595">Don't allow site to open Leo AI chat</translation>
-<translation id="6414370348346025511">Standard protection is on.</translation>
 <translation id="5565355416171743213">Start using sync</translation>
 <translation id="4332558599726753990">Sync Setup</translation>
 <translation id="2187778349654214731">To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together with a sync code.</translation>
@@ -576,8 +577,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3128251601544028053">When you type in the address bar or search box, Brave sends what you type to your default search engine to get better suggestions. This is not available in private windows.</translation>
 <translation id="6285118765755298263">Index other search engines</translation>
 <translation id="919715748352669592">Automatically indexes websites that follow the OpenSearch spec.</translation>
-<translation id="9195748375338942941">Normal window - search engine used in the address bar.</translation>
-<translation id="5324939009884545145">Private window - search engine used in the address bar</translation>
 <translation id="6864914031231797928">Allow Google login for extensions</translation>
 <translation id="7878791177459550035">Media router enables cast feature in the browser.</translation>
 <translation id="2707635989000984973">Resolve Unstoppable Domains domain names</translation>
@@ -693,13 +692,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8055509865174199683">Show Leo in the context menu on websites</translation>
 <translation id="1529674267267221673">Leo will appear in the context menu when you right-click on a website. This will send context from the current web page to Leo.</translation>
 <translation id="8172263161008556851">Show suggested prompts in the conversation</translation>
-<translation id="1014480593522400586">Clear Leo data</translation>
-<translation id="6803758564561896401">Resetting the Leo assistant will require you to opt in to use Brave
-Leo in the future and will also clear your chat history. Clearing your
-chat history will delete all your previous conversations with Brave
-Leo. This action can't be undone.</translation>
 <translation id="5574059574002819179">Adjust autocomplete suggestions</translation>
-<translation id="8157373421434119674">Data and chat history</translation>
 <translation id="614530507403667291">Default model for new conversations</translation>
 <translation id="8826914609353373601">Manage premium subscription</translation>
 <translation id="235457946228076038">Bring your own model</translation>
@@ -712,8 +705,9 @@ Leo. This action can't be undone.</translation>
 <translation id="6374563306438145841">API key</translation>
 <translation id="8008271349880309090">The name of the model as it will appear in the model selection menu</translation>
 <translation id="1355326130503900056">The name of the model as it should appear in the request to the serving framework, e.g. phi-3 (note that if this name doesn’t match exactly what is expected by the serving framework, the integration won't work)</translation>
-<translation id="3286410514484292784">The URL where your serving framework is listening for requests. If you're not sure, check the serving framework documentation. E.g. for Ollama, this is always http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Some serving frameworks may require authentication credentials, such as an API key or an access token. These will be added to the request header.</translation>
+<translation id="4335128003329183586">Context size</translation>
+<translation id="8794525422794607973">The maximum number of tokens the model can process in a single interaction. Each token is roughly 3/4 of a word. A larger context size allows the model to handle longer conversations. Different models support different maximum context sizes.</translation>
 <translation id="217141195370578385">Brave doesn't proxy these requests. Please read privacy terms of the chosen provider.</translation>
 <translation id="2645532768679870478">Non-local endpoints should employ the HTTPS protocol for secure data transmission.</translation>
 <translation id="8177205483022887785">You have entered an invalid URL. Please enter a valid URL.</translation>
@@ -723,6 +717,7 @@ Leo. This action can't be undone.</translation>
 <translation id="7435587476558117990">Connect your self-hosted or third-party hosted LLM to Leo and use them within the browser.</translation>
 <translation id="1381050642750209119">Use any OpenAI Chat Protocol compatible framework such as Ollama.</translation>
 <translation id="2642905648178380593">Save model</translation>
+<translation id="6304169450064541679">System Prompt</translation>
 <translation id="349846214503465941">Enable playlist</translation>
 <translation id="7903608716704052878">Automatically add files for offline viewing</translation>
 <translation id="4193768184502613558">This option will automatically cache media files so you can play them without an Internet connection.</translation>

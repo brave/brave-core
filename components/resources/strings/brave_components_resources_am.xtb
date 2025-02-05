@@ -513,6 +513,7 @@
 <translation id="2529827670795983639">ይህ እየሰራ አይመስልም፣ Brave ads እንደቆመ ይቆያል። በ captcha ላይ እገዛ ከፈለጉ ያነጋግሩን።</translation>
 <translation id="261607053214862521">ከፍተኛ ሙከራዎች አልፈዋል</translation>
 <translation id="2323171459178104277">ተስተካክሏል!</translation>
+<translation id="1565888393553870503">የብሬቭ ማስታወቂያዎች ከቆመበት ይቀጥላል። ብሬቭ ሪዋርድን ለመጠበቅ ስለረዱን እናመሰግናለን።</translation>
 <translation id="3247549836099021862">ድጋፍ ሰችን ያነጋግሩ</translation>
 <translation id="5234764350956374838">አሰናብት</translation>
 <translation id="7859066142771796818">የስጦታ ካርዶችን ለመግዛት፣ ለሌሎች ምንዛሬዎች ለመለዋወጥ፣ የይዘት ፈጣሪዎችን ለመደገፍ እና ሌሎች ቶክኖችን ይጠቀሙ።</translation>
@@ -533,6 +534,7 @@
 <translation id="4934459911359992410"><ph name="LINK_BEGIN"/>የበለጠ መረጃ<ph name="LINK_END"/></translation>
 <translation id="4214852687527104244">አይጨነቁ።</translation>
 <translation id="5027616819996705541">አሁንም በግል ማሰስ ይችላሉ!</translation>
+<translation id="1450735350187803276">በዚህ ወር የታዩ ማስታወቂያዎች</translation>
 <translation id="7649070708921625228">እገዛ</translation>
 <translation id="6042308850641462728">ተጨማሪ</translation>
 <translation id="1736419249208073774">አስስ</translation>
@@ -611,7 +613,6 @@
 <translation id="5860033963881614850">አጥፋ</translation>
 <translation id="5916664084637901428">በርቷል</translation>
 <translation id="7924320838799747606">ቀሪ ሂሳብዎ</translation>
-<translation id="2870560284913253234">ጣቢያ</translation>
 <translation id="7751260505918304024">ሁሉንም አሳይ</translation>
 <translation id="4114667046481794032">የመዋጮ መጠን</translation>
 <translation id="7550470870580166294">በቂ ያልሆነ ተቀማጭ</translation>
@@ -1238,12 +1239,6 @@
 <translation id="3253669416991680932">ይህ የሃርድዌር ዋሌት ይህን ተግባር አይደግፍም።</translation>
 <translation id="7457027586454688423">የ Brave Wallet የ ይለፍ ቃልዎን ያስገቡ</translation>
 <translation id="7553242001898162573">የይለፍ ቃልዎን ያስገቡ</translation>
-<translation id="2873714185189940594">የ Rainbow Bridge መተግበሪያን ይከፈት?</translation>
-<translation id="2069777099181262239">Rainbow Bridge ነጻ የሆነ አገልግሎት ሰጪ ሆኖ በአውታረ መረብ ላይ የሚገኙ ንብረቶችን ለማገናኘት ወይም ብሪጅ ለማድረግ እና ክሪፕቶን በሌሎች አውታረ መረቦች እንዲሁም የ DApp ስነ-ምህዳሮች ላይ ለመጠቀም የሚያስችል ነው። ንብረቶችን ከሌሎች አውታረ መረቦች ጋር ማገናኘት ወይም ብሪጅ ማድረግ የተወኑ አደጋዎች አሉት።</translation>
-<translation id="7387899248733396663">የ  Rainbow Bridge አጠቃቀምን በተመለከተ ተጨማሪ መረጃን ያግኙ።</translation>
-<translation id="3890567288132019108">mitigating በ Rainbow Bridge ላይ የሚያስከትለው አደጋ በተመለከተ ተጨማሪ መረጃን ያግኙ</translation>
-<translation id="1792917191129448067">የ Rainbow Bridge መተግበሪያን ክፈት</translation>
-<translation id="1522775706527775647">Bridge ከ Aurora ጋር</translation>
 <translation id="4903322403594141291">ስለ Brave Wallet የበለጠ ይረዱ</translation>
 <translation id="8918368616587206671">ጠንካራ!</translation>
 <translation id="574392208103952083">መካከለኛ</translation>
@@ -1776,6 +1771,8 @@
 <translation id="6291843235651817590">ጠቅላላ የአላማ ጭውውት</translation>
 <translation id="8193130769524604031">የላቁ የጭውውት ተግባራት</translation>
 <translation id="3185367320601718531">ውይይት እና የጽሁፍ ማመንጨት</translation>
+<translation id="7979673624064378842">እጅግ በጣም ፈጣን የጽሑፍ ምልልሶች</translation>
+<translation id="2836330653441111204">የተመጣጠነ ፍጥነት እና አስተውሎት</translation>
 <translation id="3965507912994218570">Leo ቅንብሮች</translation>
 <translation id="1037324977127422019">ሰላም፣ እኔ Leo እባላለሁ!</translation>
 <translation id="8930348081963284873">በAI-የተጎላበተ ብልህ ረዳት፣ በ Brave ውስጥ በትክክል የተሰራ።</translation>
@@ -1894,6 +1891,11 @@
 <translation id="8421945428836418371">በራስ ሰር ዳግም አገናኝ</translation>
 <translation id="434523916398030617">የቴክኒክ ድጋፍን ያነጋግሩ</translation>
 <translation id="1116694919640316211">ስለ</translation>
+<translation id="755045397420611731">ከፍተኛ ሚስጥራዊነት እና የመስመር ላይ ደህንነት</translation>
+<translation id="4520128772974831415">የ IP አድራሻዎን መደበቅ፤ እንዲሁም ያሉበትን ቦታ መቀየር</translation>
+<translation id="2044418816479192294">በዓለም ዙሪያ በመቶዎች የሚቆጠሩ ሰርቨሮች</translation>
+<translation id="7410504850864021600">እጅግ በጣም ፈጣን የበይነመረብ ግንኙነት</translation>
+<translation id="2422309687188612485">በአንድ እቅድ እስከ 10 የሚደርሱ መሳሪያዎችን ደህንነት ይጠብቁ</translation>
 <translation id="1693568075761612600">የድጋፍ ትኬት መፍጠር አልተሳካም፣ ግንኙነትዎን ይፈትሹ።</translation>
 <translation id="8463313539532697053">…ን በመጫን ላይ ትንሽ ይጠብቁ</translation>
 <translation id="4613076894734402086">የመክፈያ ዘዴን ያርትዑ</translation>

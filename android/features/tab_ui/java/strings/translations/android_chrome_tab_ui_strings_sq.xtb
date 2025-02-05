@@ -15,7 +15,6 @@ Nëse e fshin atë, të gjithë do të humbasin menjëherë qasjen te grupi i sk
 <translation id="1419023007528516122">Kjo do të fshijë përgjithmonë grupin nga pajisja jote</translation>
 <translation id="1486715732399361704">Mund t'i gjesh të gjitha grupet e skedave këtu</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Krijuar <ph name="NUM_MINS_ONE"/> minutë më parë}other{Krijuar <ph name="NUM_MINS_MANY"/> minuta më parë}}</translation>
-<translation id="3228718275011575753">Të mbyllen të gjitha skedat "e fshehta"?</translation>
 <translation id="1501480321619201731">Fshi grupin</translation>
 <translation id="1555130319947370107">E kaltër</translation>
 <translation id="161042844686301425">E bruztë</translation>
@@ -27,7 +26,6 @@ Nëse e fshin atë, të gjithë do të humbasin menjëherë qasjen te grupi i sk
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> skedë}other{<ph name="TABS_COUNT_MANY"/> skeda}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Shto te faqeshënuesit <ph name="TABS_COUNT_ONE"/> skedë të zgjedhur}other{Shto te faqeshënuesit <ph name="TABS_COUNT_MANY"/> skeda të zgjedhura}}</translation>
 <translation id="2118649612461486615">Informacione për dyqanin</translation>
-<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{Skedat dhe grupet e tua të mbyllura mund të hapen përsëri nga seksioni "Skedat e fundit" dhe seksioni "Grupet e skedave". Skeda "e fshehtë" nuk do të ofrohet.}other{Skedat dhe grupet e tua të mbyllura mund të hapen përsëri nga seksioni "Skedat e fundit" dhe seksioni "Grupet e skedave". # skedat "e fshehta" nuk do të ofrohen.}}</translation>
 <translation id="2162620598375156287">Tani <ph name="CURRENT_PRICE"/> te <ph name="SOURCE_WEBSITE"/></translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Anulo grupimin e skedës}other{Anulo grupimin e skedave}}</translation>
 <translation id="2271452184061378400">Grupet e skedave ruhen këtu</translation>
@@ -77,7 +75,6 @@ Nëse e fshin atë, të gjithë do të humbasin menjëherë qasjen te grupi i sk
 <translation id="4320174784941799771">{NUMBER_OF_TABS_CHANGED,plural, =1{<ph name="ONE_CHANGED"/> skedë u ndryshua, <ph name="ANY_CLOSED"/> u mbyllën}other{<ph name="MANY_CHANGED"/> skeda u ndryshuan, <ph name="ANY_CLOSED"/> u mbyllën}}</translation>
 <translation id="4371591986692297148">Joaktiv</translation>
 <translation id="4460014764210899310">Mos grupo</translation>
-<translation id="4590027107044272416">Tani mund të hapësh një skedë të re këtu.</translation>
 <translation id="4632233446660511480">{TAB_COUNT,plural, =1{Të mbyllet 1 skedë joaktive?}other{Të mbyllen <ph name="TAB_COUNT_MANY"/> skeda joaktive?}}</translation>
 <translation id="4686942373615810936">Krijuar pikërisht tani</translation>
 <translation id="47070857600201406">{DAY_COUNT,plural, =1{Mbyll pas 1 dite}other{Mbyll pas <ph name="DAY_COUNT_MANY"/> ditësh}}</translation>
@@ -98,7 +95,9 @@ Nëse e fshin atë, të gjithë do të humbasin menjëherë qasjen te grupi i sk
 <translation id="5127339499358128587">{NUMBER_OF_TABS_ADDED,plural, =1{<ph name="ONE_ADDED"/> skedë u shtua}other{<ph name="MANY_ADDED"/> skeda u shtuan}}</translation>
 <translation id="5161254044473106830">Kërkohet titulli</translation>
 <translation id="5339733443032484186">Skeda jote e fundit</translation>
+<translation id="5380159289133845234">Arkivo skedat dublikata</translation>
 <translation id="5400836586163650660">Gri</translation>
+<translation id="5446043142172831860">Hiq skeda dhe largohu nga grupi</translation>
 <translation id="5490235265819901748">Grupi i skedave u zgjerua</translation>
 <translation id="5494920125229734069">Zgjidh të gjitha</translation>
 <translation id="5551694449008560081">{NUMBER_OF_TABS,plural, =1{Mbyll grupin e skedave me <ph name="TABS_COUNT_ONE"/> skedë, ngjyrë <ph name="COLOR_NAME"/>.}other{Mbyll grupin e skedave me <ph name="TABS_COUNT_MANY"/> skeda, ngjyrë <ph name="COLOR_NAME"/>.}}</translation>
@@ -117,6 +116,7 @@ Nëse largohesh, do të humbasësh menjëherë qasjen te grupi i skedave "<ph na
 <translation id="6051432659151380973">Grupet e tua të skedave do të ruhen automatikisht</translation>
 <translation id="6054741997831917303">Çmimi i artikullit ra së fundi nga <ph name="PREVIOUS_PRICE"/> në <ph name="NEW_PRICE"/></translation>
 <translation id="6082313992897617440">Do të humbasësh menjëherë qasjen në grupin e skedave "<ph name="GROUP_NAME"/>"</translation>
+<translation id="6109251075362363230">Të gjitha skedat dublikata tani do të arkivohen gjithashtu, me përjashtim të kopjes së përdorur më së fundi.</translation>
 <translation id="6193448654517602979">Zgjidh skedat</translation>
 <translation id="6228793724645064692">(vlerësimi i dyqanit)</translation>
 <translation id="6271513594716432922">Mbyll të gjitha skedat joaktive</translation>
@@ -188,10 +188,13 @@ Nëse largohesh, do të humbasësh menjëherë qasjen te grupi i skedave "<ph na
 <translation id="8887921976452567404">Skedat dhe grupet e tua të mbyllura mund të hapen përsëri nga seksioni "Skedat e fundit" dhe seksioni "Grupet e skedave".</translation>
 <translation id="8915916167043355778">Mbylli të gjitha</translation>
 <translation id="9090098097337832354">Informacioni për këtë dyqan është mbyllur</translation>
-<translation id="9111228330448174435">Shfaq dialogun në krijimin e një grupi të ri skedash</translation>
 <translation id="9114502155681725011">Hap menynë e veprimeve të grupit të skedave për grupin e skedave "<ph name="TITLE_OF_GROUP"/>", ngjyrë <ph name="COLOR_NAME"/>.</translation>
 <translation id="9169594135889675189">Shto skedë të re te grupi</translation>
 <translation id="9216898458513705996">Skedat do të qëndrojnë të hapura në këtë pajisje, por grupi do të fshihet nga të gjitha pajisjet ku je identifikuar me <ph name="USER_EMAIL"/></translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Zgjero grupin e skedave me <ph name="TABS_COUNT_ONE"/> skedë, ngjyrë <ph name="COLOR_NAME"/>.}other{Zgjero grupin e skedave me <ph name="TABS_COUNT_MANY"/> skeda, ngjyrë <ph name="COLOR_NAME"/>.}}</translation>
 <translation id="992256792861109788">Rozë</translation>
+<translation id="3228718275011575753">Do t'i mbyllësh të gjitha dritaret private?</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Dritaret dhe grupet e tua të mbyllura mund të rihapen nga seksioni Dritaret e fundit dhe seksioni i Grupeve të skedave. Dritarja jote Private nuk do të jetë e disponueshme.}
+        other {Dritaret dhe grupet e tua të mbyllura mund të rihapen nga seksioni Skedat e fundit dhe seksioni i Grupeve të skedave. Dritaret e tua # Private nuk do të jenë të disponueshme.}}</translation>
 </translationbundle>

@@ -671,9 +671,6 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="2446517297521536638">Controle los tipos de Anuncios de Brave que ve y la frecuencia. Cuantos más anuncios vea, más ganará.</translation>
 <translation id="5860033963881614850">Apagado</translation>
 <translation id="5916664084637901428">Activar</translation>
-<translation id="4284417062730522399"><ph name="NUM"/> anuncios recibidos este mes</translation>
-<translation id="7697696066810593560">Ha ganado <ph name="NUM"/> en lo que va de mes</translation>
-<translation id="6733193230212030816">Ganancias estimadas: <ph name="RANGE"/></translation>
 <translation id="7924320838799747606">Su saldo</translation>
 <translation id="8714473477079007268">Cartera de <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Cuenta de pagos</translation>
@@ -682,15 +679,6 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="8414447476773253869">Inicie sesión en <ph name="PROVIDER"/> para consultar su saldo</translation>
 <translation id="615483366383024791">Cuenta de pagos</translation>
 <translation id="1060062421977823695">Sus ganancias en BAT se abonarán en esta cuenta de pagos.</translation>
-<translation id="2544805415966048917">Enviará</translation>
-<translation id="6708522254106492579">Un máximo de <ph name="AMOUNT"/> BAT</translation>
-<translation id="7666058404763778706">Una forma automática de dar apoyo a sitios web y creadores de contenido según el tiempo que dedica a su contenido.</translation>
-<translation id="4319242254058427792">La contribución automática está deshabilitada</translation>
-<translation id="1091835891554961609">Los creadores verificados que visite se mostrarán aquí mientras navega.</translation>
-<translation id="7714706530499503523">La contribución automática envía automáticamente contribuciones mensuales a creadores verificados con Brave según el tiempo que dedica a su contenido.</translation>
-<translation id="2358028754328876971">¿Cómo funciona la contribución automática?</translation>
-<translation id="2870560284913253234">Sitio</translation>
-<translation id="1184072843013036520">Obtenga productos de Brave.</translation>
 <translation id="1170674812179664523">Tienda de Brave</translation>
 <translation id="8673202990286883068">Sus ventajas</translation>
 <translation id="3699766258844277472">Aún no ha establecido ninguna contribución periódica.</translation>
@@ -1457,12 +1445,6 @@ other {Este mes has visitado # creadores apoyados por Recompensas de Brave}
 <translation id="3253669416991680932">Esta cartera de hardware no admite esta operación.</translation>
 <translation id="7457027586454688423">Escribe la contraseña de tu cartera de Brave</translation>
 <translation id="7553242001898162573">Introduce tu contraseña</translation>
-<translation id="2873714185189940594">¿Abrir la aplicación de Rainbow Bridge?</translation>
-<translation id="2069777099181262239">Rainbow Bridge es un servicio independiente que te ayuda a establecer puentes entre activos a través de las redes, así como a utilizar tus criptoactivos en otras redes y ecosistemas de aplicaciones descentralizadas. Usar puentes entre activos y otras redes conlleva algunos riesgos.</translation>
-<translation id="7387899248733396663">Más información sobre cómo usar Rainbow Bridge</translation>
-<translation id="3890567288132019108">Más información sobre cómo mitigar riesgos en Rainbow Bridge</translation>
-<translation id="1792917191129448067">Abrir aplicación de Rainbow Bridge</translation>
-<translation id="1522775706527775647">Puente hacia Aurora</translation>
 <translation id="4903322403594141291">Más información sobre la cartera de Brave</translation>
 <translation id="4427684901715566795">La contraseña debe contener:</translation>
 <translation id="8521329076169776625">8 caracteres como mínimo</translation>

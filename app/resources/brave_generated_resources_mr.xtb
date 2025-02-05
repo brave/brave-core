@@ -1,17 +1,24 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
+<translation id="3333887201479867589">ब्रेव्ह बक्षिसे</translation>
 <translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="7973394300052703468">नवीन &amp;गुप्त विंडो</translation>
 <translation id="6516243500644829484">नवीन &amp;गुप्त विंडो</translation>
+<translation id="1209739344687072997">बिघडलेल्या साइटची माहिती द्या</translation>
 <translation id="6406506848690869874">Sync</translation>
+<translation id="1544192797660353713">वॉलेट</translation>
+<translation id="1990886731975529483">गूगल वाइडवाइन इन्स्टॉल करा आणि चालू करा</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="6965382102122355670">ठीक आहे</translation>
 <translation id="474217410105706308">टॅब निःशब्द करा</translation>
 <translation id="5039804452771397117">परवानगी द्या</translation>
 <translation id="7053983685419859001">अवरोधित करा</translation>
+<translation id="8915916167043355778">सर्व बंद करा</translation>
 <translation id="7658239707568436148">रद्द करा</translation>
+<translation id="4870911314065352661">सर्व टॅब्स बंद करू?</translation>
 <translation id="5234764350956374838">डिसमिस करा</translation>
+<translation id="9194637241566114638">निनावी वापर माहिती पाठवून <ph name="SEARCH_NAME"/> सुधारण्यास मदत करा. <ph name="MORE_INFO"/></translation>
 <translation id="8184318863960255706">अधिक माहिती</translation>
 <translation id="780301667611848630">नाही, नको</translation>
 <translation id="2770465223704140727">सूचीमधून काढून टाका</translation>
@@ -33,6 +40,7 @@
 <translation id="2336228925368920074">सर्व टॅब बुकमार्क करा...</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{टॅब म्यूट करा}one{टॅब म्यूट करा}other{टॅब म्यूट करा}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{टॅब अनम्‍यूट करा}one{टॅब अनम्‍यूट करा}other{टॅब अनम्‍यूट करा}}</translation>
+<translation id="3960619311638643872">ब्रेव्ह VPN</translation>
 <translation id="4378551569595875038">कनेक्ट करीत आहे...</translation>
 <translation id="3368922792935385530">कनेक्ट केले</translation>
 <translation id="1536754031901697553">डिस्कनेक्ट करत आहे...</translation>
@@ -69,8 +77,11 @@
 <translation id="2858138569776157458">टॉप साइट</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
 <translation id="383007806262310953">बुकमार्क बार दर्शवा</translation>
+<translation id="7781069478569868053">नवीन टॅबचे पान</translation>
+<translation id="3719826155360621982">मुख्य पान</translation>
 <translation id="7461924472993315131">पिन</translation>
 <translation id="6303294677342628402">शिल्ड्स</translation>
+<translation id="2133317862976486547">ट्रॅकर्स &amp; जाहिराती ब्लॉक करणे</translation>
 <translation id="7740996059027112821">मानक</translation>
 <translation id="3570081523466826008">HTTPS वर कनेक्शन श्रेणीसुधारित करा</translation>
 <translation id="6196640612572343990">तृतीय-पक्ष कुकीज अवरोधित करा</translation>
@@ -78,10 +89,12 @@
 <translation id="7791543448312431591">जोडा</translation>
 <translation id="6745592621698551453">आता अपडेट करा</translation>
 <translation id="802154636333426148">डाउनलोड अयशस्वी झाले</translation>
+<translation id="5327248766486351172">नाव</translation>
 <translation id="863171915776379000">फेसबुक लॉगिन आणि अंतःस्थापित पोस्टना अनुमती द्या</translation>
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>
 <translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="8798099450830957504">डीफॉल्ट</translation>
+<translation id="933652931229970927">आपोआप निदान अहवाल पाठवा</translation>
 <translation id="7702907602086592255">डोमेन</translation>
 <translation id="3202131003361292969">पथ</translation>
 <translation id="5390743329570580756">यासाठी पाठवा</translation>
@@ -107,4 +120,6 @@
 <translation id="2653659639078652383">सबमिट करा</translation>
 <translation id="8137559199583651773">विस्तार व्यवस्थापित करा</translation>
 <translation id="5840822070878669614">Brave वेब स्टोअर उघडा</translation>
+<translation id="614530507403667291">नवीन संभाषणांसाठीचे डीफॉल्ट मॉडेल</translation>
+<translation id="8794525422794607973">मॉडेल एका आंतरक्रियेत प्रक्रिया करू शकणाऱ्या टोकन्सची कमाल संख्या. प्रत्येक टोकन एका शब्दाच्या सुमारे 3/4 असते. अनुषंगाचे माप मोठे असेल तर मॉडेलला दीर्घकाळ चालणारी संभाषणे हाताळता येतात. वेगवेगळी मॉडेल्स वेगवेगळ्या मापाचे अनुषंग हाताळू शकतात.</translation>
 </translationbundle>

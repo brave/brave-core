@@ -412,7 +412,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="944340256927461196">Não deixe rasto no seu dispositivo</translation>
 <translation id="2063044449012253966">Os websites que visitar em janelas privadas não aparecerão no seu histórico. Os cookies, dados de formulários e dados de websites desaparecem quando todas as janelas privadas são encerradas.</translation>
 <translation id="7395764193745523646">Visibilidade da navegação</translation>
-<translation id="8735363371744702779">Note que – mesmo em janelas privadas – a sua atividade de pesquisa ainda pode ser visível pelo seu ISP, observadores de rede ou a sua entidade empregadora (caso esteja a utilizar um dispositivo ou rede de trabalho).</translation>
+<translation id="8670344404057978375">Tenha em conta que, mesmo em janelas privadas, a sua atividade de pesquisa ainda pode ser visível pelo seu ISP, por observadores de rede ou pela sua entidade empregadora (caso esteja a utilizar um dispositivo ou rede de trabalho).</translation>
 <translation id="1413177583895309156">O Brave VPN encripta e protege qualquer coisa que faça online, mesmo fora do navegador.</translation>
 <translation id="3974348661685061050">Experimente grátis por 7 dias</translation>
 <translation id="5789441016350810005">Anúncios do Brave enviados quando o navegador está em segundo plano</translation>
@@ -450,8 +450,6 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="1116694919640316211">Acerca de</translation>
 <translation id="7961015016161918242">Nunca</translation>
 <translation id="1275213816424141989">Talvez mais tarde</translation>
-<translation id="4406937629441301400">Ganhe pela visualização desta imagem e pague-a aos seus criadores. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Ganha tokens pela visualização desta imagem.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> começará a ser processado até <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> está a ser processado. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">O pagamento das recompensas de <ph name="CURRENT_MONTH"/> encontra-se concluído. <ph name="SUPPORT"/></translation>
@@ -474,6 +472,8 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="7854108565842971747">Estas são as definições predefinidas das proteções para os novos sites. Alterá-las não irá afetar as definições existentes para o site.</translation>
 <translation id="218587021686734263">Evite impressões digitais através das definições de idioma</translation>
 <translation id="1706099589708266367">Reduz as informações que os sites podem descobrir sobre si com base nas definições de idioma do navegador.</translation>
+<translation id="6486971767955110687">Armazenar informações de contacto para futuros relatórios de websites com erros</translation>
+<translation id="4085787265464238844">Se fornecer informações de contacto, as mesmas serão armazenadas para relatórios futuros</translation>
 <translation id="4721088070859595932">Evita que os websites reconheçam o seu dispositivo</translation>
 <translation id="7445306466605902444">Impressão digital bloqueada (estrita, pode abrir sites)</translation>
 <translation id="5582686930349810484">Impressão digital bloqueada (padrão)</translation>
@@ -489,6 +489,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="1561541094377237745">Redes Solana</translation>
 <translation id="7141438739990875547">Redes Bitcoin</translation>
 <translation id="9055546041146396417">Se um ''site'' não abrir, tente desativar as «Proteções»</translation>
+<translation id="7898672232170410330">Bloquear elemento</translation>
 <translation id="1209739344687072997">Informar sobre um site danificado</translation>
 <translation id="8510478288840333677">Permita que os programadores do Brave saibam que o ''site'' não funciona corretamente com as «Proteções»</translation>
 <translation id="1653405824851871276">Agradecemos a sua contribuição para melhorar o Brave para todos. Este relatório apenas irá conter as informações necessárias para corrigir o site. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +497,19 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="8740275226259417070">Trata-se de uma página de erro, pelo que não pode ser comunicada como um site danificado.</translation>
 <translation id="721949491455392748">Incluir captura de ecrã da página atual</translation>
 <translation id="8459191579769999214">Ver captura de ecrã</translation>
+<translation id="6476216365964140603">Detalhes adicionais (opcional)</translation>
+<translation id="6145852496180774737">Entrem em contacto comigo: (opcional)</translation>
+<translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
 <translation id="5299848999918506028">Obrigado!</translation>
 <translation id="76550953340008122">Obrigado por comunicar aos desenvolvedores da Brave que há algo de errado com o site. Daremos o nosso melhor para o consertar.</translation>
 <translation id="650318023204990401">Controlos avançados</translation>
 <translation id="5370478469168390143">Guardar Dados Online</translation>
 <translation id="1118508688433541158">Navegue mais rápido e bloqueie anúncios com Brave</translation>
 <translation id="7427391215172269363">Economizo dados diariamente navegando na web com o Brave.</translation>
-<translation id="4776948189086901857">Brave funciona em qualquer lugar</translation>
-<translation id="1606322780901645965">Descarregue Brave para o seu computador ou tablet em  brave.com, para uma net mais rápida e privada</translation>
+<translation id="357198789571802914">Assista a vídeos no YouTube, não a Anúncios.</translation>
+<translation id="2154817758398495571">Abra links do YouTube no Brave para bloquear anúncios.</translation>
+<translation id="1580816390443799567">Ativar agora</translation>
+<translation id="8589748782214271192">Não, obrigado</translation>
 <translation id="8374242949413616101">Proteção de privacidade</translation>
 <translation id="4955406228638026265">Brave impede que anúncios &amp; rastreadores recolham informação sobre si sem o seu consentimento.</translation>
 <translation id="752842701893882688">Salvar dados e bateria.</translation>
@@ -1021,7 +1027,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="8382368767453083629">Inicializar multisig 2</translation>
 <translation id="77243237706803459">Inicializar cunhagem 2</translation>
 <translation id="583281660410589416">Desconhecido</translation>
-<translation id="5666264859501108700">A sua região para as Recompensas Brave é <ph name="COUNTRY_NAME"/></translation>
 <translation id="909076461795862330">Ocorreu um erro ao tentar configurar as Recompensas Brave. Tente novamente.</translation>
 <translation id="7352651011704765696">Algo correu mal</translation>
 <translation id="7144878232160441200">Tentar Novamente</translation>
@@ -1082,10 +1087,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="7748944510530490017">Redes principais</translation>
 <translation id="2781668117338732220">Redes secundárias</translation>
 <translation id="282560918037172384">Redes de teste</translation>
-<translation id="707569835145765061">Ação necessária: associe uma conta de salvaguarda ou irá perder o seu vBAT</translation>
-<translation id="1776742005329298234">A <ph name="DUE_DATE"/>, iremos descontinuar o suporte do saldo virtual de BAT. Associe uma conta de salvaguarda antes desta data para podermos transferir o seu saldo atual; caso contrário, ele será perdido.</translation>
-<translation id="5089752671190341407">Ainda pode contribuir com o seu vBAT para os seus criadores favoritos</translation>
-<translation id="171158953146804144">A <ph name="DUE_DATE"/>, iremos descontinuar o suporte do saldo virtual de BAT. Infelizmente, não existem opções de salvaguarda na sua região (<ph name="REGION"/>) para as quais possamos transferir o seu saldo. Até lá, ainda pode contribuir para os seus criadores favoritos.</translation>
 <translation id="8949422576126100041">Ver página com Speedreader?</translation>
 <translation id="3435896845095436175">Ativar</translation>
 <translation id="5296840868251496327">Ativar o Speedreader</translation>
@@ -1104,9 +1105,13 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="2471230424465522689">Não antes de</translation>
 <translation id="4841860051609590575">ID de pedido</translation>
 <translation id="1179407411385015942">O Leo é um assistente inteligente fornecido por IA, incorporado diretamente no navegador</translation>
+<translation id="5781842473834867765">Guardar o meu histórico de conversas</translation>
 <translation id="4109670531935487117">Exibir sugestões de preenchimento automático na barra de endereço</translation>
-<translation id="1250335737108905610">Repor e limpar os dados do Leo</translation>
-<translation id="6165101586663336913">A reposição do assistente Leo irá requerer que opte por utilizar o Leo no futuro. Também irá limpar o histórico de chat. A limpeza do histórico de chat irá eliminar todas as conversas anteriores com o Leo. Não é possível anular esta ação.</translation>
+<translation id="6106701981952170121">Eliminar todos os dados de conversa do Leo AI</translation>
+<translation id="423600389315522551">Repor o Leo AI fará com que tenha de voltar a aceitar utilizar o Brave Leo AI no futuro e irá eliminar o seu histórico de conversas. Eliminar o histórico de conversas apaga todas as suas conversas anteriores com o Brave
+Leo AI. Esta ação não pode ser revertida.</translation>
+<translation id="6742599753610126012">Limpar o histórico de conversas</translation>
+<translation id="3443052382074796867">Desativar o armazenamento de conversas irá eliminar permanentemente todas as conversas anteriormente guardadas. Esta ação não pode ser revertida.</translation>
 <translation id="3692772534525889713">Associe a compra na Play Store à sua conta Brave para utilizar o Brave Leo noutros dispositivos.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Um ano</translation>
@@ -1236,4 +1241,6 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="4650851936784160359">Não foi possível atualizar a lista de filtros. Tente novamente</translation>
 <translation id="3098054327870766317">Mostrar o botão de desfazer quando os separadores são encerrados</translation>
 <translation id="1336494649091412226">Tem a certeza que quer sair do Brave?</translation>
+<translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">Histórico de conversas</translation>
 </translationbundle>

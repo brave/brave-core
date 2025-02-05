@@ -414,7 +414,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="944340256927461196">V napravi ne puščajte sledi</translation>
 <translation id="2063044449012253966">Spletna mesta, ki jih obiščete v zasebnih oknih, ne bodo prikazana v vaši zgodovini. Piškotki, podatki iz obrazcev in podatki o spletnem mestu izginejo, ko zaprete vsa zasebna okna.</translation>
 <translation id="7395764193745523646">Vidnost brskanja</translation>
-<translation id="8735363371744702779">Upoštevajte, da je vaša dejavnost brskanja – tudi v zasebnih oknih – lahko še vedno vidna ponudniku internetnih storitev, opazovalcem omrežja ali delodajalcu (če uporabljate službeno napravo/omrežje).</translation>
 <translation id="1413177583895309156">Brave VPN šifrira in ščiti vse, kar počnete na spletu, tudi zunaj brskalnika Brave.</translation>
 <translation id="3974348661685061050">Poskusite brezplačno za 7 dni</translation>
 <translation id="5789441016350810005">Oglasi Brave se pošljejo, ko je brskalnik v ozadju.</translation>
@@ -452,8 +451,6 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1116694919640316211">O možnostih</translation>
 <translation id="7961015016161918242">Nikoli</translation>
 <translation id="1275213816424141989">Morda pozneje</translation>
-<translation id="4406937629441301400">Z ogledom te slike lahko zaslužite žetone, ki jih tako plačate ustvarjalcem. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Z ogledom te slike služite žetone.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">Izplačilo za <ph name="CURRENT_MONTH"/> nagrade se bo začelo obdelovati do
 <ph name="PAYOUT_DATE"/></translation>
 <translation id="33967210973550414">Izplačilo nagrad <ph name="CURRENT_MONTH"/>
@@ -494,6 +491,7 @@ je v teku.
 <translation id="1561541094377237745">Omrežja Solana</translation>
 <translation id="7141438739990875547">Omrežja Bitcoin</translation>
 <translation id="9055546041146396417">Če se spletno mesto zdi kot okvarjeno, poskusite dostop brez zaščite Shields.</translation>
+<translation id="7898672232170410330">Blokiraj element</translation>
 <translation id="1209739344687072997">Prijavite nedelujočo spletno stran</translation>
 <translation id="8510478288840333677">Obvestite razvijalce Brave o tem, da spletna stran ne deluje pravilno s ščiti:</translation>
 <translation id="1653405824851871276">Zahvaljujemo se vam, da ste pomagali izboljšati Brave za vse. To poročilo bo vsebovalo le informacije, ki jih potrebujemo za popravljanje tega spletnega mesta.<ph name="LEARN_MORE"/></translation>
@@ -501,14 +499,15 @@ je v teku.
 <translation id="8740275226259417070">To je stran z napako. Ni je mogoče prijaviti kot nedelujočo stran.</translation>
 <translation id="721949491455392748">Vključite posnetek zaslona trenutne strani</translation>
 <translation id="8459191579769999214">Oglejte si posnetek zaslona</translation>
+<translation id="6476216365964140603">Dodatne podrobnosti (neobvezno)</translation>
+<translation id="6145852496180774737">Kontaktirajte me na: (neobvezno)</translation>
+<translation id="7616645803364270729">E-pošta, Twitter itd.</translation>
 <translation id="5299848999918506028">Hvala!</translation>
 <translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Brave, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
 <translation id="650318023204990401">Napredne nastavitve</translation>
 <translation id="5370478469168390143">Podatke shrani na spletu</translation>
 <translation id="1118508688433541158">Brskaj hitreje in blokiraj oglase s programom Brave</translation>
 <translation id="7427391215172269363">Vsak dan shranjujem podatke z brskanjem po spletu z Brave.</translation>
-<translation id="4776948189086901857">Brave deluje povsod</translation>
-<translation id="1606322780901645965">Na povezavi brave.com si Brave naložite na vaš prenosni ali tablični računalnik ter si zagotovite hitrejšo in bolj zasebno spletno izkušnjo</translation>
 <translation id="8374242949413616101">Varovanje zasebnosti</translation>
 <translation id="4955406228638026265">Brave preprečuje, da bi sledilniki &amp; in oglasi brez vašega soglasja zbirali podatke o vas.</translation>
 <translation id="752842701893882688">Varčujte s podatki in energijo</translation>
@@ -1028,7 +1027,6 @@ je v teku.
 <translation id="8382368767453083629">Inicializiraj multisig 2</translation>
 <translation id="77243237706803459">Inicializiraj kovnico 2</translation>
 <translation id="583281660410589416">Neznano</translation>
-<translation id="5666264859501108700">Vaša regija za nagrade Brave je bila nastavljena na <ph name="COUNTRY_NAME"/>.</translation>
 <translation id="909076461795862330">Na žalost je med poskusom nastavitve nagrad Brave prišlo do napake. Poskusite znova.</translation>
 <translation id="7352651011704765696">Prišlo je do napake</translation>
 <translation id="7144878232160441200">Poskusi znova</translation>
@@ -1089,10 +1087,6 @@ je v teku.
 <translation id="7748944510530490017">Primarna omrežja</translation>
 <translation id="2781668117338732220">Sekundarna omrežja</translation>
 <translation id="282560918037172384">Testna omrežja</translation>
-<translation id="707569835145765061">Zahtevano dejanje: povežite skrbniški račun, sicer bo vaš vBAT izgubljen</translation>
-<translation id="1776742005329298234">Dne <ph name="DUE_DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Povežite skrbniški račun pred tem datumom, da bomo lahko vaše zasluženo stanje prenesli na vaš skrbniški račun, sicer bo vaše stanje izgubljeno.</translation>
-<translation id="5089752671190341407">Še vedno imate čas, da svoj vBAT prispevate svojim najljubšim ustvarjalcem</translation>
-<translation id="171158953146804144">Dne <ph name="DUE_DATE"/> bomo ukinili podporo za obstoječa virtualna stanja BAT. Na žalost v vaši regiji ni razpoložljivih skrbnikov (<ph name="REGION"/>), ki bi lahko dvignili vaš zaslužek. Do takrat lahko še vedno prispevate svojim najljubšim ustvarjalcem.</translation>
 <translation id="8949422576126100041">Ogled strani s programom Speedreader?</translation>
 <translation id="3435896845095436175">Omogoči</translation>
 <translation id="5296840868251496327">Omogoči Hitri bralnik</translation>
@@ -1112,8 +1106,6 @@ je v teku.
 <translation id="4841860051609590575">ID zahteve</translation>
 <translation id="1179407411385015942">Leo je pametni pomočnik, ki ga poganja AI, vgrajen neposredno v brskalnik</translation>
 <translation id="4109670531935487117">Prikaz predlogov za samodejno dokončanje v naslovni vrstici</translation>
-<translation id="1250335737108905610">Ponastavite in počistite Leo podatke</translation>
-<translation id="6165101586663336913">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Lea v prihodnosti, počistili pa boste tudi svojo zgodovino klepetov. Če izbrišete zgodovino klepeta, boste izbrisali vse prejšnje pogovore z Leom. Tega dejanja ni mogoče razveljaviti.</translation>
 <translation id="3692772534525889713">Povežite nakup v Trgovini Play z računom Brave in uporabljajte Brave Leo v drugih napravah.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Eno leto</translation>
@@ -1243,4 +1235,5 @@ je v teku.
 <translation id="4650851936784160359">Seznama filtrov ni bilo mogoče posodobiti. Prosimo, poskusite znova</translation>
 <translation id="3098054327870766317">Prikaži gumb za razveljavitev, ko so zavihki zaprti</translation>
 <translation id="1336494649091412226">Ste prepričani, da želite zapustiti Brave?</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 </translationbundle>

@@ -412,7 +412,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="944340256927461196">Uten et eneste spor på enheten</translation>
 <translation id="2063044449012253966">Nettsidene du besøker i private vinduer dukker ikke opp i loggen din. Alle informasjonskapsler, inndata og sidedata forsvinner når du lukker vinduet.</translation>
 <translation id="7395764193745523646">Synlig surfing</translation>
-<translation id="8735363371744702779">Vær oppmerksom på at aktiviteten din kan være synlig for ISP-leverandøren, nettverksleverandøren og arbeidsgiveren din (dersom du bruker en jobbenhet/-nettverk), selv om du bruker private vinduer.</translation>
 <translation id="1413177583895309156">Brave VPN krypterer og beskytter alt du gjør på nett, også det du gjør i andre nettlesere.</translation>
 <translation id="3974348661685061050">Prøv det gratis i syv dager</translation>
 <translation id="5789441016350810005">Brave Ads blir sendt når nettleseren er i bakgrunnen</translation>
@@ -450,8 +449,6 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1116694919640316211">Info</translation>
 <translation id="7961015016161918242">Aldri</translation>
 <translation id="1275213816424141989">Kanskje senere</translation>
-<translation id="4406937629441301400">Få tokener ved å se på dette bildet og viderebetal til skapere. <ph name="LEARN_MORE"/></translation>
-<translation id="6632345639591919543">Du tjener tokener ved å se på dette bildet.\n<ph name="LEARN_MORE"/></translation>
 <translation id="8164992819127316581">Utbetalingen av <ph name="CURRENT_MONTH"/>-belønninger behandles fra <ph name="PAYOUT_DATE"/>.</translation>
 <translation id="33967210973550414">Utbetalingen av <ph name="CURRENT_MONTH"/>-belønninger behandles. <ph name="CHECK_STATUS"/></translation>
 <translation id="1622952853310946314">Utbetalingen av belønninger for <ph name="CURRENT_MONTH"/> er fullført. <ph name="SUPPORT"/></translation>
@@ -489,6 +486,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1561541094377237745">Solana-nettverk</translation>
 <translation id="7141438739990875547">Bitcoin-nettverk</translation>
 <translation id="9055546041146396417">Hvis denne siden ikke ser ut til å fungere, prøv uten Shields.</translation>
+<translation id="7898672232170410330">Blokk element</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
 <translation id="1653405824851871276">Takk for at du bidrar til med å gjøre Brave bedre for alle. Denne rapporten sender bare informasjonen som kreves for at vi skal kunne fikse dette nettstedet. <ph name="LEARN_MORE"/></translation>
@@ -496,14 +494,15 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="8740275226259417070">Dette er en feilside. Den kan ikke rapporteres inn som en ødelagt nettside.</translation>
 <translation id="721949491455392748">Inkluder skjermbilde av den gjeldende siden</translation>
 <translation id="8459191579769999214">Se skjermbilde</translation>
+<translation id="6476216365964140603">Ytterligere informasjon (valgfritt)</translation>
+<translation id="6145852496180774737">Kontakt meg på: (valgfritt)</translation>
+<translation id="7616645803364270729">E-post, Twitter osv.</translation>
 <translation id="5299848999918506028">Takk skal du ha!</translation>
 <translation id="76550953340008122">Takk for at du ga beskjed til utviklerne av Brave om at noe er galt med dette nettstedet. Vi skal gjøre vårt beste for å rette det!</translation>
 <translation id="650318023204990401">Avanserte kontroller</translation>
 <translation id="5370478469168390143">Lagre data på nett</translation>
 <translation id="1118508688433541158">Gå raskere fra side til side og blokker annonser med Brave</translation>
 <translation id="7427391215172269363">Hver dag sparer jeg data ved å surfe på nettet med Brave.</translation>
-<translation id="4776948189086901857">Brave fungerer overalt</translation>
-<translation id="1606322780901645965">Last ned Brave på brave.com på din bærbare PC eller nettbrett for et raskere og mer privat nett</translation>
 <translation id="8374242949413616101">Personvernbeskyttelse</translation>
 <translation id="4955406228638026265">Brave hindrer annonser &amp; trackere i å samle inn informasjon om deg uten ditt samtykke.</translation>
 <translation id="752842701893882688">Spar data og batteri</translation>
@@ -1021,7 +1020,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="8382368767453083629">Initialiser multisig 2</translation>
 <translation id="77243237706803459">Initialiser mint 2</translation>
 <translation id="583281660410589416">Ukjent</translation>
-<translation id="5666264859501108700">Brave Rewards-regionen din er angitt som <ph name="COUNTRY_NAME"/></translation>
 <translation id="909076461795862330">Dessverre oppstod det en feil under forsøket på å konfigurere Brave Rewards. Prøv på nytt.</translation>
 <translation id="7352651011704765696">Noe gikk galt</translation>
 <translation id="7144878232160441200">Prøv på nytt</translation>
@@ -1082,10 +1080,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="7748944510530490017">Primære nettverk</translation>
 <translation id="2781668117338732220">Sekundære nettverk</translation>
 <translation id="282560918037172384">Testnettverk</translation>
-<translation id="707569835145765061">Handling kreves: Tilknytt en partnerkonto, ellers går vBAT-saldoen din tapt</translation>
-<translation id="1776742005329298234"><ph name="DUE_DATE"/> avvikler vi støtten for eksisterende virtuelle BAT-saldoer. Tilknytt en partnerkonto før denne datoen, slik at vi kan overføre den opptjente saldoen din til partnerkontoen – hvis ikke går saldoen tapt.</translation>
-<translation id="5089752671190341407">Du har fortsatt tid til å gi vBAT til innholdsskapere du liker</translation>
-<translation id="171158953146804144"><ph name="DUE_DATE"/> avvikler vi støtten for eksisterende virtuelle BAT-saldoer. Dessverre er det ingen tilgjengelige partnere i din region (<ph name="REGION"/>) inntektene dine kan overføres til. Frem til da kan du fortsatt gi bidrag til innholdsskapere du liker.</translation>
 <translation id="8949422576126100041">Vil du vise siden med Speedreader?</translation>
 <translation id="3435896845095436175">Slå på</translation>
 <translation id="5296840868251496327">Aktiver Speedreader</translation>
@@ -1105,8 +1099,6 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="4841860051609590575">Forespørsels-ID</translation>
 <translation id="1179407411385015942">Leo er en smartassistent drevet av kunstig intelligens, bygget inn direkte i nettleseren</translation>
 <translation id="4109670531935487117">Vis forslag til autofullføring i adressefeltet</translation>
-<translation id="1250335737108905610">Tilbakestill og fjern Leo-data</translation>
-<translation id="6165101586663336913">Tilbakestilling av Leo-assistenten vil kreve at du velger å bruke Leo i fremtiden, og vil også slette chatloggen din. Sletting av chatloggen vil slette alle tidligere samtaler med Leo. Denne handlingen kan ikke angres.</translation>
 <translation id="3692772534525889713">Knytt Play Store-kjøpet til Brave-kontoen din for å bruke Brave Leo på andre enheter.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Ett år</translation>
@@ -1236,4 +1228,5 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="4650851936784160359">Filterlisten kunne ikke oppdateres. Prøv igjen</translation>
 <translation id="3098054327870766317">Vis angreknappen når faner lukkes</translation>
 <translation id="1336494649091412226">Er du sikker på at du vil avslutte Brave?</translation>
+<translation id="2361906291514218784">Leo AI</translation>
 </translationbundle>

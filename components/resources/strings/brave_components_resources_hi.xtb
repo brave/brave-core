@@ -672,9 +672,6 @@
 <translation id="2446517297521536638">आप किस तरह के Brave Ads, कितनी बार देखना चाहते हैं, यह कंट्रोल करें. जितना ज़्यादा आप देखेंगे, आप उतना ज़्यादा कमा सकेंगे.</translation>
 <translation id="5860033963881614850">बंद</translation>
 <translation id="5916664084637901428">चालू</translation>
-<translation id="4284417062730522399">इस महीने <ph name="NUM"/> विज्ञापन प्राप्त हुए</translation>
-<translation id="7697696066810593560">आपने इस महीने अब तक <ph name="NUM"/>अर्जित किया है</translation>
-<translation id="6733193230212030816">अनुमान है कि आपकी कमाई इस बीच होगी:<ph name="RANGE"/></translation>
 <translation id="7924320838799747606">आपकी शेष धनराशि</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> वॉलेट</translation>
 <translation id="3175337080016717494">पेआउट अकाउंट</translation>
@@ -683,15 +680,6 @@
 <translation id="8414447476773253869">अपना बैलेंस देखने के लिए <ph name="PROVIDER"/> में लॉग इन करें</translation>
 <translation id="615483366383024791">पेआउट अकाउंट</translation>
 <translation id="1060062421977823695">आपके कमाए हए BAT का भुगतान इस पेआउट अकाउंट को किया जाएगा.</translation>
-<translation id="2544805415966048917">आप</translation>
-<translation id="6708522254106492579"><ph name="AMOUNT"/> BAT तक भेज पाएँगे</translation>
-<translation id="7666058404763778706">आप किसी के कंटेंट पर कितना समय बिताते हैं, इस आधार पर वेबसाइट और कंटेंट क्रिएटर्स को सपोर्ट करने का ऑटोमैटिक तरीका.</translation>
-<translation id="4319242254058427792">स्वतः योगदान को बंद रखा गया है</translation>
-<translation id="1091835891554961609">आप वेरिफ़ाई किए गए जिन क्रिएटर्स के कंटेंट पर जाएँगे, वे ब्राउज़ करते समय यहाँ दिखाई देंगे.</translation>
-<translation id="7714706530499503523">आप किसी के कंटेंट पर कितना समय बिताते हैं, इस आधार पर Brave द्वारा वेरिफ़ाई किए गए क्रिएटर्स को स्वत: योगदान के ज़रिए ऑटोमैटिक तरीके से हर महीने योगदान मिल जाएगा.</translation>
-<translation id="2358028754328876971">स्वत: योगदान कैसे काम करता है?</translation>
-<translation id="2870560284913253234">साइट</translation>
-<translation id="1184072843013036520">Brave के ब्रांडेड प्रोडक्ट पाएँ.</translation>
 <translation id="1170674812179664523">Brave मर्चेंडाइज़ स्टोर</translation>
 <translation id="8673202990286883068">आपके फ़ायदे</translation>
 <translation id="3699766258844277472">आपने अभी तक ऐसा कोई योगदान सेट नहीं किया है, जो निश्चित समय पर अपने आप हो जाए.</translation>
@@ -1458,12 +1446,6 @@
 <translation id="3253669416991680932">यह हार्डवेयर वॉलेट इस ऑपरेशन को सपोर्ट नहीं करता है.</translation>
 <translation id="7457027586454688423">अपने Brave वॉलेट का पासवर्ड डालें</translation>
 <translation id="7553242001898162573">अपना पासवर्ड डालें</translation>
-<translation id="2873714185189940594">Rainbow Bridge ऐप खोलना चाहते हैं?</translation>
-<translation id="2069777099181262239">Rainbow Bridge एक स्वतंत्र सेवा है जो आपको अलग-अलग नेटवर्क पर ऐसेट को ब्रिज करने और अन्य नेटवर्क और DApp इकोसिस्टम पर अपने क्रिप्टो का इस्तेमाल करने की सुविधा देती है. अन्य नेटवर्क पर ऐसेट को ब्रिज करने में थोड़ा जोखिम है.</translation>
-<translation id="7387899248733396663">Rainbow Bridge को इस्तेमाल करने के बारे में और जानें</translation>
-<translation id="3890567288132019108">Rainbow Bridge पर जोखिम को कम करने के बारे में और जानें</translation>
-<translation id="1792917191129448067">Rainbow Bridge ऐप खोलें</translation>
-<translation id="1522775706527775647">Aurora के लिए ब्रिज</translation>
 <translation id="4903322403594141291">Brave वॉलेट के बारे में और जानें</translation>
 <translation id="4427684901715566795">पासवर्ड होना चाहिए:</translation>
 <translation id="8521329076169776625">कम से कम 8 कैरेक्टर्स</translation>

@@ -124,7 +124,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6020553119523541665">Denne fanen er aktiv i et annet vindu</translation>
 <translation id="4987392683074136770">Hvis du klikker på denne fanen, hentes innholdet til dette vinduet</translation>
 <translation id="8355523213948477234">Split view-menyknapp</translation>
-<translation id="2515126961943087659">Bat Ads-tjeneste</translation>
 <translation id="2104347391516032700">Bat-belønningstjeneste</translation>
 <translation id="6040143037577758943">Lukk</translation>
 <translation id="6665472986740899785">Brave-varslingsannonse</translation>
@@ -436,6 +435,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3422250445565385437">Lister oppdateres</translation>
 <translation id="1340263054776016283">Skriv inn filterliste-nettadressen</translation>
 <translation id="8578397014396032341">Innholdsfiltre</translation>
+<translation id="5327248766486351172">Navn</translation>
 <translation id="3020183492814296499">Snarveier</translation>
 <translation id="5567412479632285879">Brave Rewards er deaktivert</translation>
 <translation id="413570371620795359">Åpne Belønninger-panelet for å aktivere og komme i gang</translation>
@@ -505,7 +505,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5794692721727586076">Leo AI-chat</translation>
 <translation id="8115153008662981040">Nettsteder kan be om å få åpne Leo AI-chatten</translation>
 <translation id="1145070115730668595">Ikke la nettstedet åpne Leo AI-chatten</translation>
-<translation id="6414370348346025511">Standardbeskyttelse er på.</translation>
 <translation id="5565355416171743213">Begynn å bruke synk</translation>
 <translation id="4332558599726753990">Synkroniseringsoppsett</translation>
 <translation id="2187778349654214731">For å begynne må Brave være installert på alle enhetene du planlegger å synke. Deretter lenker du dem sikkert sammen med en synkkode.</translation>
@@ -578,8 +577,6 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="3128251601544028053">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver til din standard søkemotor for å få bedre forslag. Dette er ikke tilgjengelig i private vinduer.</translation>
 <translation id="6285118765755298263">Indekser andre søkemotorer</translation>
 <translation id="919715748352669592">Indekserer automatisk nettsider som er i tråd med OpenSearch-spesifikasjonene.</translation>
-<translation id="9195748375338942941">Normalt vindu – Søkemotor brukt i adressefeltet.</translation>
-<translation id="5324939009884545145">Privat vindu – Søkemotor brukt i adressefeltet</translation>
 <translation id="6864914031231797928">Tillat Google-pålogging for utvidelser</translation>
 <translation id="7878791177459550035">Mediaruteren slår på cast-funksjonen i nettleseren.</translation>
 <translation id="2707635989000984973">Oppklar domenenavn fra Unstoppable Domains</translation>
@@ -695,13 +692,7 @@ Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette
 <translation id="8055509865174199683">Vis Leo i kontekstmenyen på nettsteder</translation>
 <translation id="1529674267267221673">Leo vises i kontekstmenyen når du høyreklikker på et nettsted. Dette sender kontekst fra den gjeldende nettsiden til Leo.</translation>
 <translation id="8172263161008556851">Vis foreslåtte spørsmål i samtalen</translation>
-<translation id="1014480593522400586">Fjern Leo-data</translation>
-<translation id="6803758564561896401">Hvis du tilbakestiller Leo-assistenten, må du samtykke på nytt til å bruke Brave
-Leo igjen i fremtiden. Chathistorikken din blir også slettet. Hvis du sletter
-chathistorikken, slettes alle de tidligere samtalene dine med Brave
-Leo. Handlingen kan ikke angres.</translation>
 <translation id="5574059574002819179">Tilpass forslag til autofullføring</translation>
-<translation id="8157373421434119674">Data og chathistorikk</translation>
 <translation id="614530507403667291">Standardmodell for nye samtaler</translation>
 <translation id="8826914609353373601">Administrer premiumabonnement</translation>
 <translation id="235457946228076038">Ta med din egen modell</translation>
@@ -714,7 +705,6 @@ Leo. Handlingen kan ikke angres.</translation>
 <translation id="6374563306438145841">API-nøkkel</translation>
 <translation id="8008271349880309090">Navnet på modellen slik det vil vises i modellvalgmenyen</translation>
 <translation id="1355326130503900056">Navnet på modellen slik det skal vises i forespørselen til serveringsrammeverket, dvs. phi-3 (merk at hvis dette navnet ikke samsvarer nøyaktig med det som forventes av server-rammeverket, vil ikke integrasjonen fungere)</translation>
-<translation id="3286410514484292784">Nettadressen der serveringsrammeverket ditt lytter etter forespørsler. Hvis du ikke er sikker, sjekk dokumentasjonen for serveringsrammeverket. F.eks. for Ollama er dette alltid http://localhost:11434/v1/chat/completions</translation>
 <translation id="1058790648388035953">Noen serveringsrammeverk kan kreve autentiseringslegitimasjon, for eksempel en API-nøkkel eller et tilgangstoken. Disse vil bli lagt til forespørselsoverskriften.</translation>
 <translation id="4335128003329183586">Størrelse på kontekst</translation>
 <translation id="8794525422794607973">Dette bestemmer hvor mange tokener modellen kan behandle i en samtale. Et token er cirka tre fjerdedeler av et ord. Jo større kontekst, jo lengre samtaler kan modellen ha. Ulike modeller takler ulike størrelser på kontekst.</translation>
