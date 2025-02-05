@@ -178,6 +178,34 @@ class URLExtensionTests: XCTestCase {
       }
     }
   }
+
+  func testURLToShred() {
+    let testURL = URL(string: "https://brave.com")!
+
+    // Verify regular url
+    XCTAssertEqual(testURL, testURL.urlToShred)
+    XCTAssertTrue(testURL.isShredAvailable)
+
+    // Verify original url returned for reader mode
+    let readerModeTestURL = testURL.encodeEmbeddedInternalURL(for: .readermode, headers: [:])!
+    XCTAssertNotEqual(readerModeTestURL, testURL)
+    XCTAssertEqual(readerModeTestURL.urlToShred, testURL)
+    XCTAssertTrue(readerModeTestURL.isShredAvailable)
+
+    // Verify nil for other `InternalURL`s
+    let errorPageTestURL = testURL.encodeEmbeddedInternalURL(for: .errorpage)!
+    XCTAssertNil(errorPageTestURL.urlToShred)
+    XCTAssertFalse(errorPageTestURL.isShredAvailable)
+
+    let blockedTestURL = testURL.encodeEmbeddedInternalURL(for: .blocked)!
+    XCTAssertNil(blockedTestURL.urlToShred)
+    XCTAssertFalse(blockedTestURL.isShredAvailable)
+
+    // Verify nil for new tab page
+    let ntpTestURL = URL(string: "\(InternalURL.baseUrl)/about/home#panel=0")!
+    XCTAssertNil(ntpTestURL.urlToShred)
+    XCTAssertFalse(ntpTestURL.isShredAvailable)
+  }
 }
 
 private class NavigationDelegate: NSObject, WKNavigationDelegate {

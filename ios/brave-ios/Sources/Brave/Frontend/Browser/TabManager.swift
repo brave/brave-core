@@ -796,7 +796,9 @@ class TabManager: NSObject {
     in tab: Tab
   ) {
     guard FeatureList.kBraveShredFeature.enabled else { return }
-    guard let etldP1 = url.baseDomain else { return }
+    guard let url = url.urlToShred,
+      let etldP1 = url.baseDomain
+    else { return }
     forgetTasks[tab.type]?[etldP1]?.cancel()
     let siteDomain = Domain.getOrCreate(
       forUrl: url,
@@ -814,7 +816,7 @@ class TabManager: NSObject {
         existingTab != tab
       }
       // Ensure that no othe tabs are open for this domain
-      guard !tabs.contains(where: { $0.url?.baseDomain == etldP1 }) else {
+      guard !tabs.contains(where: { $0.url?.urlToShred?.baseDomain == etldP1 }) else {
         return
       }
       forgetDataDelayed(for: url, in: tab, delay: 30)
@@ -822,7 +824,9 @@ class TabManager: NSObject {
   }
 
   @MainActor func shredData(for url: URL, in tab: Tab) {
-    guard let etldP1 = url.baseDomain else { return }
+    guard let url = url.urlToShred,
+      let etldP1 = url.baseDomain
+    else { return }
 
     // Select the next or previous tab that is not being destroyed
     if let index = allTabs.firstIndex(where: { $0 == tab }) {
@@ -830,7 +834,7 @@ class TabManager: NSObject {
       // First seach down or up for a tab that is not being destroyed
       var increasingIndex = index + 1
       while nextTab == nil, increasingIndex < allTabs.count {
-        if allTabs[increasingIndex].url?.baseDomain != etldP1 {
+        if allTabs[increasingIndex].url?.urlToShred?.baseDomain != etldP1 {
           nextTab = allTabs[increasingIndex]
         }
         increasingIndex += 1
@@ -838,7 +842,7 @@ class TabManager: NSObject {
 
       var decreasingIndex = index - 1
       while nextTab == nil, decreasingIndex > 0 {
-        if allTabs[decreasingIndex].url?.baseDomain != etldP1 {
+        if allTabs[decreasingIndex].url?.urlToShred?.baseDomain != etldP1 {
           nextTab = allTabs[decreasingIndex]
         }
         decreasingIndex -= 1
@@ -852,7 +856,7 @@ class TabManager: NSObject {
 
     // Remove all unwanted tabs
     for tab in allTabs {
-      guard tab.url?.baseDomain == etldP1 else { continue }
+      guard tab.url?.urlToShred?.baseDomain == etldP1 else { continue }
       // The Tab's WebView is not deinitialized immediately, so it's possible the
       // WebView still stores data after we shred but before the WebView is deinitialized.
       // Delete the web view to prevent data being stored after data is Shred.
@@ -873,7 +877,9 @@ class TabManager: NSObject {
     in tab: Tab,
     delay: TimeInterval
   ) {
-    guard let etldP1 = url.baseDomain else { return }
+    guard let url = url.urlToShred,
+      let etldP1 = url.baseDomain
+    else { return }
     forgetTasks[tab.type] = forgetTasks[tab.type] ?? [:]
     // Start a task to delete all data for this etldP1
     // The task may be delayed in case we want to cancel it
@@ -893,6 +899,7 @@ class TabManager: NSObject {
   }
 
   @MainActor private func forgetData(for urls: [URL], dataStore: WKWebsiteDataStore? = nil) async {
+    var urls = urls.compactMap(\.urlToShred)
     let baseDomains = Set(urls.compactMap { $0.baseDomain })
     guard !baseDomains.isEmpty else { return }
 
@@ -942,7 +949,7 @@ class TabManager: NSObject {
 
   /// Cancel a forget data request in case we navigate back to the tab within a certain period
   @MainActor func cancelForgetData(for url: URL, in tab: Tab) {
-    guard let etldP1 = url.baseDomain else { return }
+    guard let etldP1 = url.urlToShred?.baseDomain else { return }
     forgetTasks[tab.type]?[etldP1]?.cancel()
     forgetTasks[tab.type]?.removeValue(forKey: etldP1)
   }

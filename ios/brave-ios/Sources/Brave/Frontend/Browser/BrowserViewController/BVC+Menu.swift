@@ -361,7 +361,11 @@ extension BrowserViewController {
 
   struct PageActionsMenuSection: View {
     var browserViewController: BrowserViewController
+    /// The selected tab's url, or the extracted url from
+    /// error page or reader mode page
     var tabURL: URL
+    /// The selected tab's url
+    var originalTabURL: URL
     var activities: [UIActivity]
 
     @State private var playlistItemAdded: Bool = false
@@ -421,18 +425,22 @@ extension BrowserViewController {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }
-          MenuItemButton(
-            icon: Image(braveSystemName: "leo.shred.data"),
-            title: Strings.Shields.shredSiteData
-          ) {
-            browserViewController.dismiss(animated: true) {
-              guard let tab = self.browserViewController.tabManager.selectedTab,
-                let url = tab.url
-              else { return }
-              let alert = UIAlertController.shredDataAlert(url: url) { _ in
-                self.browserViewController.shredData(for: url, in: tab)
+          if BraveCore.FeatureList.kBraveShredFeature.enabled,
+            originalTabURL.isShredAvailable
+          {
+            MenuItemButton(
+              icon: Image(braveSystemName: "leo.shred.data"),
+              title: Strings.Shields.shredSiteData
+            ) {
+              browserViewController.dismiss(animated: true) {
+                guard let tab = self.browserViewController.tabManager.selectedTab,
+                  let url = tab.url
+                else { return }
+                let alert = UIAlertController.shredDataAlert(url: url) { _ in
+                  self.browserViewController.shredData(for: url, in: tab)
+                }
+                browserViewController.present(alert, animated: true)
               }
-              browserViewController.present(alert, animated: true)
             }
           }
           NightModeMenuButton(dismiss: {
@@ -640,16 +648,24 @@ extension BrowserViewController {
         actionCopy.state = Preferences.General.nightModeEnabled.value
         return .updateAction(actionCopy)
       },
-      .init(id: .shredData) { @MainActor [unowned self] _ in
-        self.dismiss(animated: true) {
-          guard let tab = self.tabManager.selectedTab, let url = tab.url else { return }
-          let alert = UIAlertController.shredDataAlert(url: url) { _ in
-            self.shredData(for: url, in: tab)
+    ]
+    if BraveCore.FeatureList.kBraveShredFeature.enabled {
+      let isShredAvailable = tabManager.selectedTab?.url?.isShredAvailable ?? false
+      actions.append(
+        .init(id: .shredData, attributes: isShredAvailable ? [] : [.disabled]) {
+          @MainActor [unowned self] _ in
+          self.dismiss(animated: true) {
+            guard let tab = self.tabManager.selectedTab, let url = tab.url else { return }
+            let alert = UIAlertController.shredDataAlert(url: url) { _ in
+              self.shredData(for: url, in: tab)
+            }
+            self.present(alert, animated: true)
           }
-          self.present(alert, animated: true)
+          return .none
         }
-        return .none
-      },
+      )
+    }
+    actions.append(
       .init(id: .print) { @MainActor [unowned self, weak webView] _ in
         guard let webView else { return .none }
         self.dismiss(animated: true) {
@@ -658,8 +674,8 @@ extension BrowserViewController {
           printController.present(animated: true)
         }
         return .none
-      },
-    ]
+      }
+    )
     if pageURL == nil {
       for index in actions.indices {
         actions[index].attributes.insert(.disabled)

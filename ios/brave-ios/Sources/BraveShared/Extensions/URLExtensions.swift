@@ -194,6 +194,24 @@ extension URL {
     components.host = self.host
     return components.url ?? self
   }
+
+  /// Returns true if we should show Shred option for the given URL.
+  public var isShredAvailable: Bool {
+    urlToShred != nil
+  }
+
+  /// The URL to shred. Extracts reader mode url if it's a reader
+  /// mode internal url.
+  public var urlToShred: URL? {
+    if let internalURL = InternalURL(self) {
+      if internalURL.isReaderModePage {
+        return internalURL.extractedUrlParam
+      }
+      // only allow reader mode InternalURL to be shred
+      return nil
+    }
+    return self
+  }
 }
 
 extension InternalURL {

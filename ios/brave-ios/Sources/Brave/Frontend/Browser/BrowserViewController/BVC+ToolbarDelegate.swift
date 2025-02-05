@@ -921,6 +921,8 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func presentMenu(from tabToolbar: ToolbarProtocol) {
+    /// The selected tab's url, or the extracted url from
+    /// error page or reader mode page
     let selectedTabURL: URL? = {
       guard let url = tabManager.selectedTab?.url else { return nil }
 
@@ -935,6 +937,8 @@ extension BrowserViewController: TopToolbarDelegate {
       }
       return url
     }()
+    /// The selected tab's url
+    let selectedTabOriginalURL = tabManager.selectedTab?.url
 
     displayPageZoom(visible: false)
 
@@ -976,11 +980,12 @@ extension BrowserViewController: TopToolbarDelegate {
           }
           Divider()
           destinationMenuSection(menuController, isShownOnWebPage: isShownOnWebPage)
-          if let tabURL = selectedTabURL {
+          if let tabURL = selectedTabURL, let originalTabURL = selectedTabOriginalURL {
             Divider()
             PageActionsMenuSection(
               browserViewController: self,
               tabURL: tabURL,
+              originalTabURL: originalTabURL,
               activities: activities
             )
           }

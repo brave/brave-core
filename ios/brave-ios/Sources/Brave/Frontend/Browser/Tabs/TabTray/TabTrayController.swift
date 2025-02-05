@@ -425,7 +425,10 @@ class TabTrayController: AuthenticationController {
 
     containerView.addSubview(contentStackView)
 
-    if FeatureList.kBraveShredFeature.enabled {
+    if FeatureList.kBraveShredFeature.enabled,
+      let url = tabManager.selectedTab?.url,
+      url.isShredAvailable
+    {
       tabTypeSelectorContainerView.addSubview(shredButton)
 
       shredButton.snp.makeConstraints {
@@ -1013,6 +1016,10 @@ extension TabTrayController: TabManagerDelegate {
     // Until then, the view is dismissed and takes the user directly to that tab.
     if tabManager.tabsForCurrentMode.count < 1 {
       dismiss(animated: true)
+    }
+
+    if BraveCore.FeatureList.kBraveShredFeature.enabled {
+      shredButton.isHidden = tabManager.selectedTab?.url?.isShredAvailable == false
     }
   }
 
