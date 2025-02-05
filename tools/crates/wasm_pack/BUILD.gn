@@ -3,34 +3,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/tools/crates/cargo.gni")
+import("//brave/tools/crates/vendored_rust_dep.gni")
 import("//brave/tools/crates/wasm_pack/config.gni")
 
-action("build_wasm_pack") {
+vendored_rust_dep("wasm_pack") {
   assert(current_toolchain == host_toolchain)
 
   deps = [
     "//brave/tools/crates/wasm_bindgen:build_wasm_bindgen($host_toolchain)",
   ]
 
-  script = "//build/gn_run_binary.py"
+  crate_src = "v0_13/crate"
 
-  wasm_pack_src = "v0_13/crate"
-
-  inputs = [
-    cargo_exe,
-    "$wasm_pack_src/Cargo.lock",
-  ]
-
+  # TODO(sszaloki): remove this once all the deps under brave/tools/crates have been fixed.
+  inputs = [ "$crate_src/Cargo.lock" ]
   outputs = [ wasm_pack_exe ]
-
-  args = [
-    rebase_path(cargo_exe),
-    "build",
-    "--release",
-    "--manifest-path",
-    rebase_path("$wasm_pack_src/Cargo.toml"),
-    "--target-dir",
-    rebase_path(wasm_pack_target_dir),
-  ]
+  target_dir = wasm_pack_target_dir
 }

@@ -29,12 +29,6 @@ import revisions
 #
 # Notes:
 # - after running this script, you'll need to create a PR to bump the vendored version.
-# - to avoid irreproducible builds, these crates MUST be built with their vendored deps,
-#   therefore make sure you always pass:
-#     --config <path/to/your/crate>/crate/.cargo/config.toml
-#     --locked
-#     --offline (for good measure)
-#   when running `cargo build`.
 
 cargo_bin = os.path.abspath(
     os.path.join(os.environ['RUSTUP_HOME'], 'bin',

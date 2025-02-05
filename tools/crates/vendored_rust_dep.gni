@@ -1,0 +1,57 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/tools/crates/cargo.gni")
+
+template("vendored_rust_dep") {
+  assert(
+      defined(invoker.crate_src),
+      "Need crate_src in $target_name specifying the path to the corresponding crate.")
+  assert(
+      defined(invoker.target_dir),
+      "Need target_dir in $target_name specifying the directory for all generated artifacts and intermediate files.")
+  forward_variables_from(invoker,
+                         [
+                           "crate_src",
+                           "deps",
+                           "outputs",
+                           "target_dir",
+                         ])
+
+  action("build_$target_name") {
+    script = "//build/gn_run_binary.py"
+
+    inputs = [
+      cargo_exe,
+      # TODO(sszaloki): add this back once all the deps under brave/tools/crates have been fixed.
+      # "$crate_src/Cargo.lock",
+    ]
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
+
+    # To avoid irreproducible builds, `vendored_rust_dep`s MUST always be built with their vendored deps,
+    # therefore we have to make sure to pass:
+    #   --config <path/to/the/dep>/crate/.cargo/config.toml
+    #   --locked
+    #   --offline (for good measure)
+    # when running `cargo build`.
+    args = [
+      rebase_path(cargo_exe),
+      "build",
+      "--release",
+      "--manifest-path",
+      rebase_path("$crate_src/Cargo.toml"),
+
+      # "--config",
+      # rebase_path("$crate_src/.cargo/config.toml"),
+      "--target-dir",
+      rebase_path(target_dir),
+
+      # "--offline",
+      # "--locked",
+    ]
+  }
+}
