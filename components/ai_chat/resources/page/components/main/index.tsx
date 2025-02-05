@@ -161,51 +161,6 @@ function Main() {
     (conversationContext.suggestedQuestions.length > 0 ||
       SUGGESTION_STATUS_SHOW_BUTTON.has(conversationContext.suggestionStatus))
 
-  const viewPortWithoutKeyboard = React.useRef(0)
-  const keyboardSize = React.useRef(0)
-
-  React.useEffect(() => {
-    const handler = () => {
-      if (!aiChatContext.isMobile || !window.visualViewport) {
-        return
-      }
-      const viewPortWithKeyboard = window.visualViewport.height
-      if (!headerElement.current || !conversationContentElement.current ||
-        viewPortWithKeyboard === 0 || viewPortWithoutKeyboard.current === 0) {
-        return
-      }
-      if (keyboardSize.current === 0 ||
-        keyboardSize.current <
-        viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
-        keyboardSize.current =
-          viewPortWithoutKeyboard.current - viewPortWithKeyboard
-      }
-      const mountPoint = document.getElementById('mountPoint')
-      if (mountPoint) {
-        if (mountPoint.clientHeight >=
-          (headerElement.current.clientHeight +
-            conversationContentElement.current.clientHeight) * 2) {
-          const percent = viewPortWithKeyboard * 100 /
-            viewPortWithoutKeyboard.current
-          mountPoint.style.height = `${percent}%`
-        } else if (keyboardSize.current >
-          viewPortWithoutKeyboard.current - viewPortWithKeyboard) {
-          mountPoint.style.height = '100%'
-        }
-      }
-    }
-    window.addEventListener('resize', handler)
-    return () => {
-      window.removeEventListener('resize', handler)
-    }
-  }, [])
-
-  const handleOnFocusInputMobile = () => {
-    if (window.visualViewport != null) {
-      viewPortWithoutKeyboard.current = window.visualViewport.height
-    }
-  }
-
   return (
     <main className={styles.main}>
       {isConversationListOpen && !aiChatContext.isStandalone && (
@@ -350,7 +305,6 @@ function Main() {
         <ToolsButtonMenu {...conversationContext}>
           <InputBox
             context={{ ...conversationContext, ...aiChatContext }}
-            onFocusInputMobile={handleOnFocusInputMobile}
           />
         </ToolsButtonMenu>
       </div>
