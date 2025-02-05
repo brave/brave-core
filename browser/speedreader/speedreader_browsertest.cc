@@ -762,7 +762,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
 
   auto* page = ActiveWebContents();
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
-                           ->reader_mode_toolbar_view_.get();
+                           ->reader_mode_toolbar_.get();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
   WaitElement(toolbar, "appearance");
 
@@ -834,7 +834,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
   NavigateToPageSynchronously(kTestPageReadable);
 
   auto* toolbar_view = static_cast<BraveBrowserView*>(browser()->window())
-                           ->reader_mode_toolbar_view_.get();
+                           ->reader_mode_toolbar_.get();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
 
   static constexpr char kGetLang[] = R"js( navigator.languages.toString() )js";
