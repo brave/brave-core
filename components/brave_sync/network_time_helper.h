@@ -11,6 +11,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "base/functional/callback.h"
 
 namespace base {
 template <typename T>
@@ -36,7 +37,7 @@ class NetworkTimeHelper {
   virtual ~NetworkTimeHelper();
 
   void SetNetworkTimeTracker(
-      network_time::NetworkTimeTracker* tracker,
+      base::RepeatingCallback<network_time::NetworkTimeTracker*()> tracker_getter,
       const scoped_refptr<base::SingleThreadTaskRunner>& ui_task_runner);
 
   void GetNetworkTime(GetNetworkTimeCallback cb);
@@ -53,9 +54,7 @@ class NetworkTimeHelper {
 
   SEQUENCE_CHECKER(sequence_checker_);
 
-  // Not owned
-  raw_ptr<network_time::NetworkTimeTracker, DanglingUntriaged>
-      network_time_tracker_ = nullptr;
+  base::RepeatingCallback<network_time::NetworkTimeTracker*()> network_time_tracker_getter_;
 
   base::WeakPtrFactory<NetworkTimeHelper> weak_ptr_factory_{this};
 };

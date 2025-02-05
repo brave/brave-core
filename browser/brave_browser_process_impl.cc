@@ -174,6 +174,12 @@ void BraveBrowserProcessImpl::Init() {
   brave::PrepareSearchSuggestionsConfig(local_state(),
                                         first_run::IsChromeFirstRun());
 #endif
+
+  // This should be called before StartupBrowserCreator code
+  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
+      base::BindRepeating(&BrowserProcessImpl::network_time_tracker,
+                          base::Unretained(this)),
+      base::SingleThreadTaskRunner::GetCurrentDefault());
 }
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -244,10 +250,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   URLSanitizerComponentInstaller();
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
-
-  brave_sync::NetworkTimeHelper::GetInstance()->SetNetworkTimeTracker(
-      network_time_tracker(),
-      base::SingleThreadTaskRunner::GetCurrentDefault());
 
   brave_wallet::WalletDataFilesInstaller::GetInstance().SetDelegate(
       std::make_unique<brave_wallet::WalletDataFilesInstallerDelegateImpl>());

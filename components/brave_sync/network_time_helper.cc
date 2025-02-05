@@ -24,10 +24,10 @@ NetworkTimeHelper::NetworkTimeHelper() = default;
 NetworkTimeHelper::~NetworkTimeHelper() = default;
 
 void NetworkTimeHelper::SetNetworkTimeTracker(
-    network_time::NetworkTimeTracker* tracker,
+    base::RepeatingCallback<network_time::NetworkTimeTracker*()> tracker_getter,
     const scoped_refptr<base::SingleThreadTaskRunner>& ui_task_runner) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  network_time_tracker_ = tracker;
+  network_time_tracker_getter_ = tracker_getter;
   ui_task_runner_ = ui_task_runner;
 }
 
@@ -48,8 +48,8 @@ void NetworkTimeHelper::SetNetworkTimeForTest(const base::Time& time) {
 void NetworkTimeHelper::GetNetworkTimeOnUIThread(GetNetworkTimeCallback cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::Time time;
-  if (!network_time_tracker_ ||
-      network_time_tracker_->GetNetworkTime(&time, nullptr) !=
+  const auto tracker = network_time_tracker_getter_.Run();
+  if (!tracker || tracker->GetNetworkTime(&time, nullptr) !=
           network_time::NetworkTimeTracker::NETWORK_TIME_AVAILABLE) {
     VLOG(1) << "Network time not available, using local time";
     time = base::Time::Now();
