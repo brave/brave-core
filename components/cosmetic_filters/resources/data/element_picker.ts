@@ -686,7 +686,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   quitButton.addEventListener('click', () => {
     quitElementPicker()
   })
-  
+
   const resetButton = root.getElementById('btnReset')!
   resetButton.addEventListener('click', () => {
     api.cosmeticFilterReset(() => {
