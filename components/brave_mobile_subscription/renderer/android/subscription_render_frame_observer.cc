@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
@@ -17,7 +18,10 @@
 #include "brave/components/skus/renderer/skus_utils.h"
 #include "build/build_config.h"
 #include "content/public/renderer/render_frame.h"
+#include "gin/converter.h"
+#include "gin/function_template.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_util.h"
@@ -100,11 +104,85 @@ void SubscriptionRenderFrameObserver::DidCreateScriptContext(
 #endif
   } else if (product_ == Product::kLeo) {
     if (ai_chat_subscription_.is_bound()) {
+      AddJavaScriptObjectToFrame(context);
       ai_chat_subscription_->GetPurchaseTokenOrderId(base::BindOnce(
           &SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId,
           weak_factory_.GetWeakPtr()));
     }
   }
+}
+
+void SubscriptionRenderFrameObserver::AddJavaScriptObjectToFrame(
+    v8::Local<v8::Context> context) {
+  if (!render_frame() || context.IsEmpty()) {
+    return;
+  }
+
+  v8::Isolate* isolate =
+      render_frame()->GetWebFrame()->GetAgentGroupScheduler()->Isolate();
+  v8::HandleScope handle_scope(isolate);
+  v8::Context::Scope context_scope(context);
+
+  CreateLinkResultObject(isolate, context);
+}
+
+void SubscriptionRenderFrameObserver::CreateLinkResultObject(
+    v8::Isolate* isolate,
+    v8::Local<v8::Context> context) {
+  v8::Local<v8::Object> global = context->Global();
+  v8::Local<v8::Object> link_result_obj;
+  v8::Local<v8::Value> link_result_value;
+  if (!global->Get(context, gin::StringToV8(isolate, "linkResult"))
+           .ToLocal(&link_result_value) ||
+      !link_result_value->IsObject()) {
+    link_result_obj = v8::Object::New(isolate);
+    global
+        ->Set(context, gin::StringToSymbol(isolate, "linkResult"),
+              link_result_obj)
+        .Check();
+    BindFunctionToObject(
+        isolate, link_result_obj, "setStatus",
+        base::BindRepeating(&SubscriptionRenderFrameObserver::SetLinkStatus,
+                            base::Unretained(this)));
+  }
+}
+
+template <typename Sig>
+void SubscriptionRenderFrameObserver::BindFunctionToObject(
+    v8::Isolate* isolate,
+    v8::Local<v8::Object> javascript_object,
+    const std::string& name,
+    const base::RepeatingCallback<Sig>& callback) {
+  v8::Local<v8::Context> context = isolate->GetCurrentContext();
+  // Get the isolate associated with this object.
+  javascript_object
+      ->Set(context, gin::StringToSymbol(isolate, name),
+            gin::CreateFunctionTemplate(isolate, callback)
+                ->GetFunction(context)
+                .ToLocalChecked())
+      .Check();
+}
+
+void SubscriptionRenderFrameObserver::SetLinkStatus(const std::string& status) {
+  // The payload looks like that
+  // { status: <value>}
+  // where value 0 means it's not linked otherwise it's linked
+  std::optional<base::Value> status_value =
+      base::JSONReader::Read(status, base::JSONParserOptions::JSON_PARSE_RFC);
+  // VPN uses a different way to detect that.
+  // It uses Guardian backend call for that
+  if (product_ != Product::kLeo || !ai_chat_subscription_.is_bound() ||
+      !status_value || !status_value->is_dict()) {
+    return;
+  }
+
+  const auto& status_dict = status_value->GetDict();
+  if (status_dict.empty()) {
+    return;
+  }
+
+  ai_chat_subscription_->SetLinkStatus(
+      status_dict.FindInt("status").value_or(0));
 }
 
 std::string SubscriptionRenderFrameObserver::GetPurchaseTokenJSString(

@@ -26,6 +26,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterStringPref(kBraveChatPackageNameAndroid, "");
     registry->RegisterStringPref(kBraveChatProductIdAndroid, "");
     registry->RegisterStringPref(kBraveChatOrderIdAndroid, "");
+    // 0 is not linked
+    registry->RegisterIntegerPref(kBraveChatSubscriptionLinkStatusAndroid, 0);
 #endif
     registry->RegisterBooleanPref(kBraveAIChatContextMenuEnabled, true);
     registry->RegisterBooleanPref(kBraveAIChatShowToolbarButton, true);

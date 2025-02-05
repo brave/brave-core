@@ -147,7 +147,7 @@ public class BraveLeoPreferences extends BravePreferenceFragment
             return;
         }
         goPremium.setVisible(false);
-        linkSubscription.setVisible(true);
+        linkSubscription.setVisible(!BraveLeoPrefUtils.isSubscriptionLinked());
         manageSubscription.setVisible(true);
         linkSubscription.setOnPreferenceClickListener(
                 preference -> {

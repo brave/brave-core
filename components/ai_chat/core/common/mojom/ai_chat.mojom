@@ -549,4 +549,5 @@ interface ConversationUI {
 [EnableIf=is_android]
 interface IAPSubscription {
   GetPurchaseTokenOrderId() => (string token, string order_id);
+  SetLinkStatus(int32 status);
 };

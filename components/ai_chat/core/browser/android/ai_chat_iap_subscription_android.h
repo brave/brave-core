@@ -26,6 +26,7 @@ class AIChatIAPSubscription final : public ai_chat::mojom::IAPSubscription {
   // ai_chat::mojom::IAPSubscription
   void GetPurchaseTokenOrderId(
       GetPurchaseTokenOrderIdCallback callback) override;
+  void SetLinkStatus(int status) override;
 
  private:
   raw_ptr<PrefService> prefs_ = nullptr;
