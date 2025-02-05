@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
 
-#include <iostream>
 #include <memory>
 #include <string>
 
@@ -92,7 +91,6 @@ typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
                                                  const GURL& url);
 
 WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
-  std::cout << "NewWebUI: " << url.host_piece() << std::endl;
   auto host = url.host_piece();
   Profile* profile = Profile::FromBrowserContext(
       web_ui->GetWebContents()->GetBrowserContext());
@@ -128,7 +126,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
              brave_rewards::IsSupported(
                  profile->GetPrefs(),
                  brave_rewards::IsSupportedOptions::kSkipRegionCheck)) {
-    std::cout << "kRewardsPageHost case" << std::endl;
     if (base::FeatureList::IsEnabled(
             brave_rewards::features::kNewRewardsUIFeature)) {
       return new brave_rewards::RewardsPageUI(web_ui, url.host());
@@ -157,14 +154,12 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     // BraveNewTabUI configs in RegisterChromeWebUIConfigs because they use the
     // same origin (content::kChromeUIScheme + chrome::kChromeUINewTabHost).
     return new BraveNewTabUI(web_ui, url.host());
-  } else if (host == kEmailAliasesBubbleHost &&
+  } else if (host == kEmailAliasesHost &&
              base::FeatureList::IsEnabled(features::kBraveEmailAliases)) {
-    std::cout << "kEmailAliasesBubbleHost case" << std::endl;
     return new email_aliases::EmailAliasesBubbleUI(web_ui);
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_TOR)
   } else if (host == kTorInternalsHost) {
-    std::cout << "kTorInternalsHost case" << std::endl;
     return new TorInternalsUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(IS_ANDROID)
@@ -187,7 +182,6 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              Profile* profile,
                                              const GURL& url) {
-  std::cout << "GetWebUIFactoryFunction: " << url.host_piece() << std::endl;
   // This will get called a lot to check all URLs, so do a quick check of other
   // schemes to filter out most URLs.
   //
@@ -224,9 +218,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #endif
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kRewardsInternalsHost ||
-      url.host_piece() == kAdsInternalsHost ||
-      url.host_piece() == kEmailAliasesBubbleHost) {
-    std::cout << "returning NewWebUI: " << url.host_piece() << std::endl;
+      url.host_piece() == kAdsInternalsHost) {
     return &NewWebUI;
   }
 
