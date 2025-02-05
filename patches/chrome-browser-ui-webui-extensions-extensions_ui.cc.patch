@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index f3387c7df303d4ac853bbaa3b42d0788876b9e5e..12b812c21522efcd4cd3cc4aa67951be24d63304 100644
+index af4d850908f905d3db8b2c58df16bdfbdf3e5017..6a9804e2f0db1c7da8178a3786cf7a4308f84443 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -486,6 +486,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -502,6 +502,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
            l10n_util::GetStringUTF16(IDS_SHORT_PRODUCT_OS_NAME)));
- #endif
+ #endif  // BUILDFLAG(IS_CHROMEOS)
  
 +  BRAVE_CREATE_EXTENSIONS_SOURCE
    return source;
