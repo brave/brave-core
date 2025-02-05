@@ -27,8 +27,19 @@ import revisions
 # Additionally, this script will update the Revision and Version fields in README.chromium
 # (if one is present).
 #
-# Note: after running this script, you need to create a PR to bump the vendored version.
+# Notes:
+# - after running this script, you'll need to create a PR to bump the vendored version.
+# - to avoid irreproducible builds, these crates MUST be built with their vendored deps,
+#   therefore make sure you always pass:
+#     --config <path/to/your/crate>/crate/.cargo/config.toml
+#     --locked
+#     --offline (for good measure)
+#   when running `cargo build`.
 
+cargo_bin = os.path.abspath(
+    os.path.join(os.environ['RUSTUP_HOME'], 'bin',
+                 'cargo' if sys.platform != 'win32' else 'cargo.exe'))
+crate_dir = 'crate'
 temp_dir = 'temp'
 
 
@@ -67,9 +78,6 @@ def run_git_clone(url, tag):
 
 
 def run_cargo_package(manifest_path, package):
-    cargo_bin = os.path.abspath(
-        os.path.join(os.environ['RUSTUP_HOME'], 'bin',
-                     'cargo' if sys.platform != 'win32' else 'cargo.exe'))
     args = [
         cargo_bin, 'package', '--no-verify',
         f'--manifest-path={os.path.join(temp_dir, *str(manifest_path or "").split("/"), "Cargo.toml")}',
@@ -88,7 +96,7 @@ def extract_crate():
     print(f'Extracting {crate_file}...')
     with tarfile.open(crate_file, 'r:gz') as tar:
         for tarinfo in tar.getmembers():
-            tarinfo.name = re.sub(r'^[^\/]*', 'crate', tarinfo.name)
+            tarinfo.name = re.sub(r'^[^\/]*', crate_dir, tarinfo.name)
         tar.extractall()
 
 
@@ -123,19 +131,43 @@ def update_readme(tag):
         file.write(updated_readme)
 
 
+def run_cargo_vendor():
+    args = [
+        cargo_bin, 'vendor',
+        f'--manifest-path={os.path.join(crate_dir, "Cargo.toml")}',
+        os.path.join(crate_dir, 'vendor')
+    ]
+    print(f'Running {" ".join(args)}...')
+    subprocess.check_call(args)
+
+
+def add_config_toml():
+    config_toml = os.path.join(crate_dir, '.cargo', 'config.toml')
+    print(f'Adding {config_toml}...')
+    os.makedirs(os.path.dirname(config_toml))
+    with open(config_toml, 'w+') as file:
+        file.write('[source.crates-io]\n'
+                   'replace-with = "vendored-sources"\n'
+                   '\n'
+                   '[source.vendored-sources]\n'
+                   'directory = "vendor"\n')
+
+
 def main():
     args = parse_args()
     os.chdir(
         os.path.join(os.path.dirname(os.path.realpath(__file__)), args.crate))
     crate = args.crate.upper()
     dict = vars(revisions)
-    remove_dir('crate')
+    remove_dir(crate_dir)
     run_git_clone(dict[f'{crate}_REPO'], dict[f'{crate}_REVISION'])
     run_cargo_package(dict.get(f'{crate}_MANIFEST_PATH'),
                       args.crate.replace('_', '-'))
     extract_crate()
     update_readme(dict[f'{crate}_REVISION'])
     remove_dir(temp_dir)
+    run_cargo_vendor()
+    add_config_toml()
 
 
 if __name__ == '__main__':
