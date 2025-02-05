@@ -32,6 +32,7 @@ void NetworkTimeHelper::SetNetworkTimeTracker(
 }
 
 void NetworkTimeHelper::Shutdown() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   network_time_tracker_ = nullptr;
   ui_task_runner_.reset();
 }
