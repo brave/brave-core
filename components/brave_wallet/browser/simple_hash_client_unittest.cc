@@ -7,12 +7,15 @@
 
 #include <optional>
 
+#include "base/containers/to_vector.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -71,12 +74,15 @@ class SimpleHashClientUnitTest : public testing::Test {
 
   void TestFetchAllNFTsFromSimpleHash(
       const std::string& account_address,
-      const std::vector<std::string>& chain_ids,
+      const std::vector<std::string>& chain_ids_str,
       mojom::CoinType coin,
       const std::vector<mojom::BlockchainTokenPtr>& expected_nfts) {
+    auto chain_ids = base::ToVector(chain_ids_str, [&](auto& item) {
+      return mojom::ChainId::New(coin, item);
+    });
     base::RunLoop run_loop;
     simple_hash_client_->FetchAllNFTsFromSimpleHash(
-        account_address, chain_ids, coin,
+        account_address, std::move(chain_ids),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> nfts) {
               ASSERT_EQ(nfts.size(), expected_nfts.size());
@@ -88,16 +94,19 @@ class SimpleHashClientUnitTest : public testing::Test {
 
   void TestFetchNFTsFromSimpleHash(
       const std::string& account_address,
-      const std::vector<std::string>& chain_ids,
+      const std::vector<std::string>& chain_ids_str,
       mojom::CoinType coin,
       std::optional<std::string> cursor,
       bool skip_spam,
       bool only_spam,
       const std::vector<mojom::BlockchainTokenPtr>& expected_nfts,
       std::optional<std::string> expected_cursor) {
+    auto chain_ids = base::ToVector(chain_ids_str, [&](auto& item) {
+      return mojom::ChainId::New(coin, item);
+    });
     base::RunLoop run_loop;
     simple_hash_client_->FetchNFTsFromSimpleHash(
-        account_address, chain_ids, coin, cursor, skip_spam, only_spam,
+        account_address, std::move(chain_ids), cursor, skip_spam, only_spam,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> nfts,
                 const std::optional<std::string>& returned_cursor) {
@@ -123,12 +132,11 @@ class SimpleHashClientUnitTest : public testing::Test {
   }
 
   void TestGetNfts(
-      mojom::CoinType coin,
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
       const std::vector<mojom::BlockchainTokenPtr>& expected_nfts) {
     base::RunLoop run_loop;
     simple_hash_client_->GetNfts(
-        coin, std::move(nft_identifiers),
+        std::move(nft_identifiers),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> nfts) {
               ASSERT_EQ(nfts.size(), expected_nfts.size());
@@ -139,16 +147,15 @@ class SimpleHashClientUnitTest : public testing::Test {
   }
 
   void TestGetNftMetadatas(
-      mojom::CoinType coin,
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
       const std::vector<mojom::NftMetadataPtr>& expected_metadatas) {
     base::RunLoop run_loop;
     simple_hash_client_->GetNftMetadatas(
-        coin, std::move(nft_identifiers),
+        std::move(nft_identifiers),
         base::BindLambdaForTesting(
-            [&](std::vector<mojom::NftMetadataPtr> metadatas) {
-              ASSERT_EQ(metadatas.size(), expected_metadatas.size());
-              EXPECT_EQ(metadatas, expected_metadatas);
+            [&](base::expected<std::vector<mojom::NftMetadataPtr>, std::string>
+                    metadatas) {
+              ASSERT_EQ(metadatas.value(), expected_metadatas);
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -156,16 +163,15 @@ class SimpleHashClientUnitTest : public testing::Test {
 
   void TestGetNftBalances(const std::string& wallet_address,
                           std::vector<mojom::NftIdentifierPtr> nft_identifiers,
-                          mojom::CoinType coin,
                           const std::vector<uint64_t>& expected_balances) {
     base::RunLoop run_loop;
     simple_hash_client_->GetNftBalances(
-        wallet_address, std::move(nft_identifiers), coin,
-        base::BindLambdaForTesting([&](const std::vector<uint64_t>& balances) {
-          ASSERT_EQ(balances.size(), expected_balances.size());
-          EXPECT_EQ(balances, expected_balances);
-          run_loop.Quit();
-        }));
+        wallet_address, std::move(nft_identifiers),
+        base::BindLambdaForTesting(
+            [&](base::expected<std::vector<uint64_t>, std::string> balances) {
+              ASSERT_EQ(balances.value(), expected_balances);
+              run_loop.Quit();
+            }));
     run_loop.Run();
   }
 
@@ -178,9 +184,10 @@ class SimpleHashClientUnitTest : public testing::Test {
 
 TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   // Empty address yields empty URL
-  EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
-                "", {mojom::kMainnetChainId}, std::nullopt),
-            GURL(""));
+  EXPECT_EQ(
+      simple_hash_client_->GetSimpleHashNftsByWalletUrl(
+          "", test::MakeVectorFromArgs(EthMainnetChainId()), std::nullopt),
+      GURL(""));
 
   // Empty chains yields empty URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
@@ -190,7 +197,7 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   // One valid chain yields correct URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
                 "0x0000000000000000000000000000000000000000",
-                {mojom::kMainnetChainId}, std::nullopt),
+                test::MakeVectorFromArgs(EthMainnetChainId()), std::nullopt),
             GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
                  "owners?chains=ethereum&wallet_addresses="
                  "0x0000000000000000000000000000000000000000"));
@@ -198,24 +205,30 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   // Two valid chains yields correct URL
   EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
                 "0x0000000000000000000000000000000000000000",
-                {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId},
+                test::MakeVectorFromArgs(
+                    EthMainnetChainId(),
+                    mojom::ChainId::New(mojom::CoinType::ETH,
+                                        mojom::kOptimismMainnetChainId)),
                 std::nullopt),
             GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
                  "owners?chains=ethereum%2Coptimism&wallet_addresses="
                  "0x0000000000000000000000000000000000000000"));
 
   // One invalid chain yields empty URL
-  EXPECT_EQ(simple_hash_client_->GetSimpleHashNftsByWalletUrl(
-                "0x0000000000000000000000000000000000000000",
-                {"chain ID not supported by SimpleHash"}, std::nullopt),
-            GURL());
+  EXPECT_EQ(
+      simple_hash_client_->GetSimpleHashNftsByWalletUrl(
+          "0x0000000000000000000000000000000000000000",
+          test::MakeVectorFromArgs(mojom::ChainId::New(
+              mojom::CoinType::ETH, "chain ID not supported by SimpleHash")),
+          std::nullopt),
+      GURL());
 
   // One valid chain with cursor yields correct URL
   std::optional<std::string> cursor = "example_cursor";
   EXPECT_EQ(
       simple_hash_client_->GetSimpleHashNftsByWalletUrl(
           "0x0000000000000000000000000000000000000000",
-          {mojom::kMainnetChainId}, cursor),
+          test::MakeVectorFromArgs(EthMainnetChainId()), cursor),
       GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
            "owners?chains=ethereum&wallet_addresses="
            "0x0000000000000000000000000000000000000000&cursor=example_cursor"));
@@ -224,7 +237,11 @@ TEST_F(SimpleHashClientUnitTest, GetSimpleHashNftsByWalletUrl) {
   EXPECT_EQ(
       simple_hash_client_->GetSimpleHashNftsByWalletUrl(
           "0x0000000000000000000000000000000000000000",
-          {mojom::kMainnetChainId, mojom::kOptimismMainnetChainId}, cursor),
+          test::MakeVectorFromArgs(
+              EthMainnetChainId(),
+              mojom::ChainId::New(mojom::CoinType::ETH,
+                                  mojom::kOptimismMainnetChainId)),
+          cursor),
       GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
            "owners?chains=ethereum%2Coptimism&wallet_addresses="
            "0x0000000000000000000000000000000000000000&cursor=example_cursor"));
@@ -238,24 +255,24 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   json = R"([])";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  auto result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH, true, false);
+  auto result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_FALSE(result);
 
   // Missing 'nfts' key yields nullopt
   json = R"({"foo": "bar"})";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_FALSE(result);
 
   // Dictionary type 'nfts' key yields nullopt
   json = R"({"nfts": {}})";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_FALSE(result);
 
   // Missing next_cursor yields empty next_cursor
@@ -281,8 +298,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   ASSERT_FALSE(result->first);
 
@@ -310,8 +327,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->first, std::nullopt);
 
@@ -339,12 +356,12 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::FIL, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
 
   // Valid, 1 ETH NFT
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->first);
   EXPECT_EQ(result->first, "abc123");
@@ -405,8 +422,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   ASSERT_TRUE(result->first);
   EXPECT_EQ(result->first, "abc123");
@@ -533,8 +550,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
 
@@ -568,8 +585,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
 
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::SOL, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -619,8 +636,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::SOL, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -672,8 +689,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::SOL, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -748,8 +765,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
 
   // When skip_spam is true and only_spam is false, non spam token should be
   // parsed
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::SOL, true, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, false);
   ASSERT_TRUE(result);
   ASSERT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -757,8 +774,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_FALSE(result->second[0]->is_spam);
 
   // When skip_spam is false and only_spam is true, spam token should be parsed
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::SOL, false, true);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, false, true);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -766,14 +783,14 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_FALSE(result->second[0]->is_spam);
 
   // When only_spam is set and skip_spam is set, parsing should fail
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::SOL, true, true);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, true, true);
   ASSERT_FALSE(result);
 
   // When only_spam is false and skip_spam is false, spam and non spam should be
   // parsed
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::SOL, false, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, false, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 2u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -839,8 +856,8 @@ TEST_F(SimpleHashClientUnitTest, ParseNFTsFromSimpleHash) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result = simple_hash_client_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::SOL, false, false);
+  result =
+      simple_hash_client_->ParseNFTsFromSimpleHash(*json_value, false, false);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
   EXPECT_EQ(result->second[0]->contract_address,
@@ -1247,18 +1264,18 @@ TEST_F(SimpleHashClientUnitTest, FetchNFTsFromSimpleHash) {
 
 TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
   // Empty yields empty URL
-  GURL url = SimpleHashClient::GetNftsUrl(mojom::CoinType::SOL, {});
+  GURL url = SimpleHashClient::GetNftsUrl({});
   EXPECT_EQ(url, GURL());
 
   // Single Solana NFT
   auto nft_id = mojom::NftIdentifier::New();
-  nft_id->chain_id = mojom::kSolanaMainnet;
+  nft_id->chain_id = SolMainnetChainId();
   nft_id->contract_address = "BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG";
   nft_id->token_id = "";
 
   std::vector<mojom::NftIdentifierPtr> nft_ids;
   nft_ids.push_back(std::move(nft_id));
-  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::SOL, nft_ids);
+  url = SimpleHashClient::GetNftsUrl(nft_ids);
   EXPECT_EQ(
       url,
       GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets"
@@ -1267,21 +1284,21 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
 
   // Single Ethereum NFT with non hex token ID yields empty URL
   nft_id = mojom::NftIdentifier::New();
-  nft_id->chain_id = mojom::kMainnetChainId;
+  nft_id->chain_id = EthMainnetChainId();
   nft_id->contract_address = "0x0";
   nft_id->token_id = "78";
   nft_ids.push_back(std::move(nft_id));
-  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
+  url = SimpleHashClient::GetNftsUrl(nft_ids);
   EXPECT_EQ(url, GURL());
   nft_ids.clear();
 
   // Single Ethereum NFT.
   nft_id = mojom::NftIdentifier::New();
-  nft_id->chain_id = mojom::kMainnetChainId;
+  nft_id->chain_id = EthMainnetChainId();
   nft_id->contract_address = "0x0";
   nft_id->token_id = "0x1";
   nft_ids.push_back(std::move(nft_id));
-  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
+  url = SimpleHashClient::GetNftsUrl(nft_ids);
   EXPECT_EQ(url, GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets"
                       "?nft_ids=ethereum.0x0.1"));
   nft_ids.clear();
@@ -1289,12 +1306,12 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
   // 75 NFTs takes two calls, 50 and 25.
   for (int i = 0; i < 75; i++) {
     nft_id = mojom::NftIdentifier::New();
-    nft_id->chain_id = mojom::kMainnetChainId;
+    nft_id->chain_id = EthMainnetChainId();
     nft_id->contract_address = "0x" + base::NumberToString(i);
     nft_id->token_id = "0x" + base::NumberToString(i);
     nft_ids.push_back(std::move(nft_id));
   }
-  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
+  url = SimpleHashClient::GetNftsUrl(nft_ids);
   EXPECT_EQ(
       url,
       GURL(
@@ -1326,19 +1343,20 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
 
   // Any invalid chain ID yields empty URL
   nft_id = mojom::NftIdentifier::New();
-  nft_id->chain_id = mojom::kMainnetChainId;
+  nft_id->chain_id = EthMainnetChainId();
   nft_id->contract_address = "0x0";
   nft_id->token_id = "0x1";
   nft_ids.push_back(std::move(nft_id));
-  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
+  url = SimpleHashClient::GetNftsUrl(nft_ids);
   EXPECT_EQ(url, GURL("https://simplehash.wallet.brave.com/api/v0/nfts/"
                       "assets?nft_ids=ethereum.0x0.1"));
   nft_id = mojom::NftIdentifier::New();
-  nft_id->chain_id = "invalid_chain_id";
+  nft_id->chain_id =
+      mojom::ChainId::New(mojom::CoinType::ETH, "invalid_chain_id");
   nft_id->contract_address = "0x0";
   nft_id->token_id = "1";
   nft_ids.push_back(std::move(nft_id));
-  url = SimpleHashClient::GetNftsUrl(mojom::CoinType::ETH, nft_ids);
+  url = SimpleHashClient::GetNftsUrl(nft_ids);
   EXPECT_EQ(url, GURL());
 }
 
@@ -1346,17 +1364,17 @@ TEST_F(SimpleHashClientUnitTest, GetNfts) {
   // Empty inputs yields no tokens
   std::vector<mojom::NftIdentifierPtr> nft_ids;
   std::vector<mojom::BlockchainTokenPtr> expected_nfts;
-  TestGetNfts(mojom::CoinType::ETH, {}, expected_nfts);
+  TestGetNfts({}, expected_nfts);
 
   // Add the chain_id, contract, and token_id from this URL
   auto nft_id = mojom::NftIdentifier::New();
-  nft_id->chain_id = mojom::kSolanaMainnet;
+  nft_id->chain_id = SolMainnetChainId();
   nft_id->contract_address = "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   nft_id->token_id = "";
   nft_ids.push_back(std::move(nft_id));
 
   auto nft_id2 = mojom::NftIdentifier::New();
-  nft_id2->chain_id = mojom::kSolanaMainnet;
+  nft_id2->chain_id = SolMainnetChainId();
   nft_id2->contract_address = "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   nft_id2->token_id = "";
   nft_ids.push_back(std::move(nft_id2));
@@ -1475,14 +1493,14 @@ TEST_F(SimpleHashClientUnitTest, GetNfts) {
       "8ceccddf1868cf1d3860184fab3f084049efecdbaafb4eea43a1e33823c161a1.png";
   nft2->spl_token_program = mojom::SPLTokenProgram::kUnknown;
   expected_nfts.push_back(std::move(nft2));
-  TestGetNfts(mojom::CoinType::SOL, std::move(nft_ids), expected_nfts);
+  TestGetNfts(std::move(nft_ids), expected_nfts);
 
   // Test two requests are made if > 50 NFTs are supplied
   nft_ids.clear();
   responses.clear();
   for (int i = 0; i < 75; i++) {
     auto nft_id_0 = mojom::NftIdentifier::New();
-    nft_id_0->chain_id = mojom::kMainnetChainId;
+    nft_id_0->chain_id = EthMainnetChainId();
     nft_id_0->contract_address = "0x" + base::NumberToString(i);
     nft_id_0->token_id = "0x" + base::NumberToString(i);
     nft_ids.push_back(std::move(nft_id_0));
@@ -1513,7 +1531,7 @@ TEST_F(SimpleHashClientUnitTest, GetNfts) {
       "2Cethereum.0x70%2Cethereum.0x71%2Cethereum.0x72%2Cethereum.0x73%"
       "2Cethereum.0x74")] = json;
   SetInterceptors(responses);
-  TestGetNfts(mojom::CoinType::SOL, std::move(nft_ids), expected_nfts);
+  TestGetNfts(std::move(nft_ids), expected_nfts);
 }
 
 TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
@@ -1555,15 +1573,14 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
   std::optional<base::flat_map<mojom::NftIdentifierPtr, mojom::NftMetadataPtr>>
-      result = simple_hash_client_->ParseMetadatas(*json_value,
-                                                   mojom::CoinType::ETH);
+      result = simple_hash_client_->ParseMetadatas(*json_value);
   ASSERT_TRUE(result);
 
   // Verify there is one Ethereum entry.
   EXPECT_EQ(result->size(), 1u);
 
   mojom::NftIdentifierPtr azuki_identifier = mojom::NftIdentifier::New();
-  azuki_identifier->chain_id = mojom::kMainnetChainId;
+  azuki_identifier->chain_id = EthMainnetChainId();
   // Expect the result to be a checksum address despite HTTP response being all
   // lowercase
   azuki_identifier->contract_address =
@@ -1621,15 +1638,14 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseMetadatas(*json_value, mojom::CoinType::SOL);
+  result = simple_hash_client_->ParseMetadatas(*json_value);
   ASSERT_TRUE(result);
 
   // Verify there are two Solana entries.
   EXPECT_EQ(result->size(), 2u);
 
   mojom::NftIdentifierPtr warrior_identifier = mojom::NftIdentifier::New();
-  warrior_identifier->chain_id = mojom::kSolanaMainnet;
+  warrior_identifier->chain_id = SolMainnetChainId();
   warrior_identifier->contract_address =
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
 
@@ -1654,7 +1670,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   EXPECT_EQ(it->second->collection, "");
 
   mojom::NftIdentifierPtr ste_nft_identifier = mojom::NftIdentifier::New();
-  ste_nft_identifier->chain_id = mojom::kSolanaMainnet;
+  ste_nft_identifier->chain_id = SolMainnetChainId();
   ste_nft_identifier->contract_address =
       "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
 
@@ -1675,8 +1691,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   json = R"({"foo": "bar"})";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseMetadatas(*json_value, mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseMetadatas(*json_value);
   EXPECT_FALSE(result);
 
   // NFT missing chain or contract_address should be skipped. The rest should be
@@ -1709,8 +1724,7 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
   })";
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  result =
-      simple_hash_client_->ParseMetadatas(*json_value, mojom::CoinType::ETH);
+  result = simple_hash_client_->ParseMetadatas(*json_value);
   ASSERT_TRUE(result);
   EXPECT_EQ(result->size(), 1u);
 
@@ -1738,21 +1752,19 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   // If there are no NFTs, an empty vector is returned.
   std::vector<mojom::NftIdentifierPtr> nft_identifiers;
   std::vector<mojom::NftMetadataPtr> expected_metadatas;
-  TestGetNftMetadatas(mojom::CoinType::ETH, std::move(nft_identifiers),
-                      expected_metadatas);
+  TestGetNftMetadatas(std::move(nft_identifiers), expected_metadatas);
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
   // If there are > 50 NFTs, an empty vector is returned.
   for (int i = 0; i < 75; i++) {
     auto nft_identifier = mojom::NftIdentifier::New();
-    nft_identifier->chain_id = mojom::kMainnetChainId;
+    nft_identifier->chain_id = EthMainnetChainId();
     nft_identifier->contract_address =
         "0xED5AF388653567Af2F388E6224dC7C4b3241C544";
     nft_identifier->token_id = "0x" + base::NumberToString(i);
     nft_identifiers.push_back(std::move(nft_identifier));
   }
-  TestGetNftMetadatas(mojom::CoinType::ETH, std::move(nft_identifiers),
-                      expected_metadatas);
+  TestGetNftMetadatas(std::move(nft_identifiers), expected_metadatas);
 
   std::string json = R"({
     "nfts": [
@@ -1820,14 +1832,14 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   // Add the chain_id, contract, and token_id from simple hash response
   nft_identifiers.clear();
   auto nft_identifier1 = mojom::NftIdentifier::New();
-  nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  nft_identifier1->chain_id = SolMainnetChainId();
   nft_identifier1->contract_address =
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   nft_identifier1->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier1));
 
   auto nft_identifier2 = mojom::NftIdentifier::New();
-  nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  nft_identifier2->chain_id = SolMainnetChainId();
   nft_identifier2->contract_address =
       "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   nft_identifier2->token_id = "";
@@ -1874,24 +1886,22 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   expected_metadatas.push_back(std::move(metadata1));
   expected_metadatas.push_back(std::move(metadata2));
   SetInterceptors(responses);
-  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers),
-                      expected_metadatas);
+  TestGetNftMetadatas(std::move(nft_identifiers), expected_metadatas);
 
-  LOG(ERROR) << "BEFORE RELEVANT TESTS";
   // Test case for duplicate NFT identifiers
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
   expected_metadatas = std::vector<mojom::NftMetadataPtr>();
 
   // Add two identical NFT identifiers
   auto duplicate_nft_identifier1 = mojom::NftIdentifier::New();
-  duplicate_nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  duplicate_nft_identifier1->chain_id = SolMainnetChainId();
   duplicate_nft_identifier1->contract_address =
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   duplicate_nft_identifier1->token_id = "";
   nft_identifiers.push_back(std::move(duplicate_nft_identifier1));
 
   auto duplicate_nft_identifier2 = mojom::NftIdentifier::New();
-  duplicate_nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  duplicate_nft_identifier2->chain_id = SolMainnetChainId();
   duplicate_nft_identifier2->contract_address =
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   duplicate_nft_identifier2->token_id = "";
@@ -1943,28 +1953,26 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
       duplicate_json;
 
   SetInterceptors(responses);
-  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers),
-                      expected_metadatas);
+  TestGetNftMetadatas(std::move(nft_identifiers), expected_metadatas);
 }
 
 TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
   std::string wallet_address = "0x123";
   std::vector<mojom::NftIdentifierPtr> nft_identifiers;
-  mojom::CoinType coin = mojom::CoinType::SOL;
   std::vector<uint64_t> expected_balances;
-  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers),
                      expected_balances);
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
   // More than 50 NFTs yields no balances
   for (int i = 0; i < 75; i++) {
     auto nft_identifier = mojom::NftIdentifier::New();
-    nft_identifier->chain_id = mojom::kMainnetChainId;
+    nft_identifier->chain_id = EthMainnetChainId();
     nft_identifier->contract_address = "0x" + base::NumberToString(i);
     nft_identifier->token_id = "0x" + base::NumberToString(i);
     nft_identifiers.push_back(std::move(nft_identifier));
   }
-  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers),
                      expected_balances);
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
@@ -2006,14 +2014,14 @@ TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
 
   // Add the chain_id, contract, and token_id from simple hash response
   auto nft_identifier1 = mojom::NftIdentifier::New();
-  nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  nft_identifier1->chain_id = SolMainnetChainId();
   nft_identifier1->contract_address =
       "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   nft_identifier1->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier1));
 
   auto nft_identifier2 = mojom::NftIdentifier::New();
-  nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  nft_identifier2->chain_id = SolMainnetChainId();
   nft_identifier2->contract_address =
       "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
   nft_identifier2->token_id = "";
@@ -2029,7 +2037,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
   expected_balances.push_back(999);
   expected_balances.push_back(0);
   SetInterceptors(responses);
-  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers),
                      expected_balances);
 }
 
@@ -2042,8 +2050,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
   ASSERT_TRUE(json_value);
   std::optional<base::flat_map<mojom::NftIdentifierPtr,
                                base::flat_map<std::string, uint64_t>>>
-      result =
-          simple_hash_client_->ParseBalances(*json_value, mojom::CoinType::ETH);
+      result = simple_hash_client_->ParseBalances(*json_value);
   EXPECT_FALSE(result);
 
   // Ethereum test data. Use all uppercase case address to verify that it is
@@ -2074,15 +2081,14 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
   ASSERT_TRUE(json_value);
   std::optional<base::flat_map<mojom::NftIdentifierPtr,
                                base::flat_map<std::string, uint64_t>>>
-      owners =
-          simple_hash_client_->ParseBalances(*json_value, mojom::CoinType::ETH);
+      owners = simple_hash_client_->ParseBalances(*json_value);
   ASSERT_TRUE(owners);
 
   // Verify there is one Ethereum entry.
   EXPECT_EQ(owners->size(), 1u);
 
   mojom::NftIdentifierPtr azuki_identifier = mojom::NftIdentifier::New();
-  azuki_identifier->chain_id = mojom::kMainnetChainId;
+  azuki_identifier->chain_id = EthMainnetChainId();
   azuki_identifier->contract_address =
       "0xED5AF388653567Af2F388E6224dC7C4b3241C544";  // Checksum address
   azuki_identifier->token_id = "0xacf";              // "2767"
@@ -2117,15 +2123,14 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
 
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  owners =
-      simple_hash_client_->ParseBalances(*json_value, mojom::CoinType::SOL);
+  owners = simple_hash_client_->ParseBalances(*json_value);
   ASSERT_TRUE(owners);
 
   // Verify there is one Solana entry.
   EXPECT_EQ(owners->size(), 1u);
 
   mojom::NftIdentifierPtr warrior_identifier = mojom::NftIdentifier::New();
-  warrior_identifier->chain_id = mojom::kSolanaMainnet;
+  warrior_identifier->chain_id = SolMainnetChainId();
   warrior_identifier->contract_address =
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
 
@@ -2163,8 +2168,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
 
-  owners =
-      simple_hash_client_->ParseBalances(*json_value, mojom::CoinType::SOL);
+  owners = simple_hash_client_->ParseBalances(*json_value);
   ASSERT_TRUE(owners);
   EXPECT_EQ(owners->size(), 1u);
   it = owners->find(warrior_identifier);
@@ -2214,8 +2218,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
 
-  owners =
-      simple_hash_client_->ParseBalances(*json_value, mojom::CoinType::ETH);
+  owners = simple_hash_client_->ParseBalances(*json_value);
   ASSERT_TRUE(owners);
   EXPECT_EQ(owners->size(), 1u);
   it = owners->find(azuki_identifier);

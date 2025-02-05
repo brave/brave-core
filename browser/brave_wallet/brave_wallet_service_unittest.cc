@@ -11,6 +11,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/to_vector.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
@@ -838,9 +839,11 @@ class BraveWalletServiceUnitTest : public testing::Test {
       std::optional<std::string> cursor,
       const std::vector<mojom::BlockchainTokenPtr>& expected_nfts,
       std::optional<std::string> expected_cursor) {
+    auto mojom_chain_ids = base::ToVector(
+        chain_ids, [&](auto& item) { return mojom::ChainId::New(coin, item); });
     base::RunLoop run_loop;
     service_->GetSimpleHashSpamNFTs(
-        account_address, chain_ids, coin, cursor,
+        account_address, std::move(mojom_chain_ids), cursor,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> nfts,
                 const std::optional<std::string>& returned_cursor) {

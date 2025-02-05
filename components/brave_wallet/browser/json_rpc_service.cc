@@ -18,7 +18,6 @@
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
@@ -297,44 +296,6 @@ std::optional<std::string> GetAnkrBlockchainFromChainId(
   }
 
   return std::nullopt;
-}
-
-bool ValidateNftIdentifiers(
-    mojom::CoinType coin,
-    std::vector<mojom::NftIdentifierPtr>& nft_identifiers,
-    std::string& error_message) {
-  if (nft_identifiers.empty() ||
-      nft_identifiers.size() > kSimpleHashMaxBatchSize) {
-    error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
-    return false;
-  }
-
-  // Check for duplicates using a set to track unique identifiers
-  base::flat_set<std::string> seen_identifiers;
-  for (const auto& nft : nft_identifiers) {
-    // Create a unique string identifier combining contract, token id, and chain
-    std::string unique_id =
-        base::StrCat({nft->contract_address, nft->token_id, nft->chain_id});
-    if (!seen_identifiers.insert(unique_id).second) {
-      error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
-      return false;
-    }
-  }
-
-  if (coin == mojom::CoinType::ETH) {
-    for (auto& nft_identifier : nft_identifiers) {
-      auto checksum_address =
-          brave_wallet::EthAddress::ToEip1191ChecksumAddress(
-              nft_identifier->contract_address, nft_identifier->chain_id);
-      if (checksum_address) {
-        nft_identifier->contract_address = checksum_address.value();
-      } else {
-        error_message = l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS);
-        return false;
-      }
-    }
-  }
-  return true;
 }
 
 }  // namespace
@@ -2908,58 +2869,48 @@ void JsonRpcService::GetSolTokenMetadata(const std::string& chain_id,
 }
 
 void JsonRpcService::GetNftMetadatas(
-    mojom::CoinType coin,
     std::vector<mojom::NftIdentifierPtr> nft_identifiers,
     GetNftMetadatasCallback callback) {
-  std::string error_message;
-  if (!ValidateNftIdentifiers(coin, nft_identifiers, error_message)) {
-    std::move(callback).Run({}, error_message);
-    return;
-  }
-
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetNftMetadatas,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  simple_hash_client_->GetNftMetadatas(coin, std::move(nft_identifiers),
+  simple_hash_client_->GetNftMetadatas(std::move(nft_identifiers),
                                        std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetNftMetadatas(
     GetNftMetadatasCallback callback,
-    std::vector<mojom::NftMetadataPtr> metadatas) {
+    base::expected<std::vector<mojom::NftMetadataPtr>, std::string> metadatas) {
   // If there are no metadatas, then there was an error
-  if (metadatas.empty()) {
-    std::move(callback).Run(
-        {}, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  if (!metadatas.has_value() || metadatas.value().empty()) {
+    std::move(callback).Run({}, metadatas.error_or(l10n_util::GetStringUTF8(
+                                    IDS_WALLET_INTERNAL_ERROR)));
     return;
   }
 
-  std::move(callback).Run(std::move(metadatas), "");
+  std::move(callback).Run(std::move(metadatas.value()), "");
 }
 
 void JsonRpcService::GetNftBalances(
     const std::string& wallet_address,
     std::vector<mojom::NftIdentifierPtr> nft_identifiers,
-    mojom::CoinType coin,
     GetNftBalancesCallback callback) {
-  std::string error_message;
-  if (!ValidateNftIdentifiers(coin, nft_identifiers, error_message)) {
-    std::move(callback).Run({}, error_message);
-    return;
-  }
-
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetNftBalances,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
-  simple_hash_client_->GetNftBalances(wallet_address,
-                                      std::move(nft_identifiers), coin,
-                                      std::move(internal_callback));
+  simple_hash_client_->GetNftBalances(
+      wallet_address, std::move(nft_identifiers), std::move(internal_callback));
 }
 
-void JsonRpcService::OnGetNftBalances(GetNftBalancesCallback callback,
-                                      const std::vector<uint64_t>& balances) {
-  std::move(callback).Run(balances, "");
+void JsonRpcService::OnGetNftBalances(
+    GetNftBalancesCallback callback,
+    base::expected<std::vector<uint64_t>, std::string> balances) {
+  if (balances.has_value()) {
+    std::move(callback).Run(balances.value(), "");
+  } else {
+    std::move(callback).Run({}, balances.error());
+  }
 }
 
 void JsonRpcService::IsSolanaBlockhashValid(
@@ -3414,7 +3365,7 @@ void JsonRpcService::OnGetSPLTokenBalances(
 
 void JsonRpcService::AnkrGetAccountBalances(
     const std::string& account_address,
-    const std::vector<std::string>& chain_ids,
+    std::vector<mojom::ChainIdPtr> chain_ids,
     AnkrGetAccountBalancesCallback callback) {
   if (!IsAnkrBalancesEnabled()) {
     std::move(callback).Run(
@@ -3434,7 +3385,7 @@ void JsonRpcService::AnkrGetAccountBalances(
   // ignored.
   std::vector<std::string> blockchains;
   for (const auto& chain_id : chain_ids) {
-    if (auto blockchain = GetAnkrBlockchainFromChainId(chain_id); blockchain) {
+    if (auto blockchain = GetAnkrBlockchainFromChainId(chain_id->chain_id)) {
       blockchains.push_back(*blockchain);
     }
   }

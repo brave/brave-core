@@ -45,12 +45,9 @@ class AssetDiscoveryTask {
   AssetDiscoveryTask& operator=(AssetDiscoveryTask&) = delete;
   ~AssetDiscoveryTask();
 
-  void ScheduleTask(const std::map<mojom::CoinType, std::vector<std::string>>&
-                        fungible_chain_ids,
-                    const std::map<mojom::CoinType, std::vector<std::string>>&
-                        non_fungible_chain_ids,
-                    const std::map<mojom::CoinType, std::vector<std::string>>&
-                        account_addresses,
+  void ScheduleTask(std::vector<mojom::AccountIdPtr> accounts,
+                    std::vector<mojom::ChainIdPtr> fungible_chain_ids,
+                    std::vector<mojom::ChainIdPtr> non_fungible_chain_ids,
                     base::OnceClosure callback);
 
  private:
@@ -60,12 +57,9 @@ class AssetDiscoveryTask {
                            GetSimpleHashNftsByWalletUrl);
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryTaskUnitTest, ParseNFTsFromSimpleHash);
 
-  void DiscoverAssets(const std::map<mojom::CoinType, std::vector<std::string>>&
-                          fungible_chain_ids,
-                      const std::map<mojom::CoinType, std::vector<std::string>>&
-                          non_fungible_chain_ids,
-                      const std::map<mojom::CoinType, std::vector<std::string>>&
-                          account_addresses,
+  void DiscoverAssets(std::vector<mojom::AccountIdPtr> accounts,
+                      std::vector<mojom::ChainIdPtr> fungible_chain_ids,
+                      std::vector<mojom::ChainIdPtr> non_fungible_chain_ids,
                       base::OnceClosure callback);
 
   void MergeDiscoveredAssets(
@@ -76,8 +70,8 @@ class AssetDiscoveryTask {
   using DiscoverAssetsCompletedCallback =
       base::OnceCallback<void(std::vector<mojom::BlockchainTokenPtr> tokens)>;
 
-  void DiscoverAnkrTokens(const std::vector<std::string>& chain_ids,
-                          const std::vector<std::string>& account_addresses,
+  void DiscoverAnkrTokens(const std::vector<mojom::AccountIdPtr>& accounts,
+                          const std::vector<mojom::ChainIdPtr>& chain_ids,
                           DiscoverAssetsCompletedCallback callback);
   void OnAnkrGetAccountBalances(
       base::OnceCallback<void(std::vector<mojom::AnkrAssetBalancePtr>)>
@@ -91,8 +85,8 @@ class AssetDiscoveryTask {
           discovered_assets_results);
 
   void DiscoverERC20sFromRegistry(
-      const std::vector<std::string>& chain_ids,
-      const std::vector<std::string>& account_addresses,
+      const std::vector<mojom::AccountIdPtr>& accounts,
+      const std::vector<mojom::ChainIdPtr>& chain_ids,
       DiscoverAssetsCompletedCallback callback);
   void OnGetERC20TokenBalances(
       base::OnceCallback<void(std::map<std::string, std::vector<std::string>>)>
@@ -111,7 +105,7 @@ class AssetDiscoveryTask {
           discovered_assets);
 
   void DiscoverSPLTokensFromRegistry(
-      const std::vector<std::string>& account_addresses,
+      const std::vector<mojom::AccountIdPtr>& accounts,
       DiscoverAssetsCompletedCallback callback);
   void OnGetSolanaTokenAccountsByOwner(
       base::OnceCallback<void(std::vector<SolanaAddress>)> barrier_callback,
@@ -126,17 +120,15 @@ class AssetDiscoveryTask {
       const base::flat_set<std::string>& discovered_contract_addresses,
       std::vector<mojom::BlockchainTokenPtr> sol_token_registry);
 
-  void DiscoverNFTs(
-      const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses,
-      DiscoverAssetsCompletedCallback callback);
+  void DiscoverNFTs(const std::vector<mojom::AccountIdPtr>& accounts,
+                    const std::vector<mojom::ChainIdPtr>& chain_ids,
+                    DiscoverAssetsCompletedCallback callback);
   void MergeDiscoveredNFTs(
       DiscoverAssetsCompletedCallback callback,
       const std::vector<std::vector<mojom::BlockchainTokenPtr>>& nfts);
 
   std::optional<std::pair<GURL, std::vector<mojom::BlockchainTokenPtr>>>
-  ParseNFTsFromSimpleHash(const base::Value& json_value, mojom::CoinType coin);
+  ParseNFTsFromSimpleHash(const base::Value& json_value);
 
   static std::optional<SolanaAddress> DecodeMintAddress(
       const std::vector<uint8_t>& data);

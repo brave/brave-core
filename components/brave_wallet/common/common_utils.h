@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "url/gurl.h"
 
@@ -106,6 +107,11 @@ std::string GetNetworkForBitcoinAccount(const mojom::AccountIdPtr& account_id);
 std::string GetNetworkForZCashKeyring(const mojom::KeyringId& keyring_id);
 
 bool IsHTTPSOrLocalhostURL(const std::string& url);
+
+template <typename T>
+std::vector<T> CloneVector(const std::vector<T>& v) {
+  return base::ToVector(v, &T::Clone);
+}
 
 }  // namespace brave_wallet
 

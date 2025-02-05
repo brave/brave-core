@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 
+#include "base/containers/contains.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
@@ -160,14 +161,13 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 
   void TestDiscoverAssetsOnAllSupportedChains(
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses,
+      std::vector<mojom::AccountIdPtr> accounts,
       bool bypass_rate_limit,
       bool expect_events_fired,
       const std::vector<std::string>& expected_token_contract_addresses,
       size_t expected_ending_queue_size = 0u) {
     asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(
-        account_addresses, bypass_rate_limit);
+        std::move(accounts), bypass_rate_limit);
     if (expect_events_fired) {
       wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
           expected_token_contract_addresses);
@@ -187,47 +187,47 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
 TEST_F(AssetDiscoveryManagerUnitTest, GetFungibleSupportedChains) {
   // GetFungibleSupportedChains should return a map of the same size
   // vectors every time
-  const std::map<mojom::CoinType, std::vector<std::string>> chains1 =
-      asset_discovery_manager_->GetFungibleSupportedChains();
-  const std::map<mojom::CoinType, std::vector<std::string>> chains2 =
-      asset_discovery_manager_->GetFungibleSupportedChains();
-  const std::map<mojom::CoinType, std::vector<std::string>> chains3 =
-      asset_discovery_manager_->GetFungibleSupportedChains();
-  EXPECT_GT(chains1.at(mojom::CoinType::ETH).size(), 0u);
-  EXPECT_GT(chains1.at(mojom::CoinType::SOL).size(), 0u);
+  auto chains1 = asset_discovery_manager_->GetFungibleSupportedChains();
+  auto chains2 = asset_discovery_manager_->GetFungibleSupportedChains();
+  auto chains3 = asset_discovery_manager_->GetFungibleSupportedChains();
+  EXPECT_TRUE(base::Contains(
+      chains1,
+      mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId)));
+  EXPECT_TRUE(base::Contains(
+      chains1,
+      mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet)));
 
-  EXPECT_EQ(chains2.at(mojom::CoinType::ETH).size(),
-            chains1.at(mojom::CoinType::ETH).size());
-  EXPECT_EQ(chains2.at(mojom::CoinType::SOL).size(),
-            chains1.at(mojom::CoinType::SOL).size());
+  EXPECT_EQ(chains1, chains2);
+  EXPECT_EQ(chains1, chains3);
 }
 
 TEST_F(AssetDiscoveryManagerUnitTest, GetNonFungibleSupportedChains) {
   // Gnosis chain ID should not be included if it's not a custom network
-  std::map<mojom::CoinType, std::vector<std::string>> chains =
-      asset_discovery_manager_->GetNonFungibleSupportedChains();
-  EXPECT_EQ(chains.at(mojom::CoinType::ETH).size(), 6UL);
-  EXPECT_EQ(chains.at(mojom::CoinType::SOL).size(), 1UL);
+  auto chains = asset_discovery_manager_->GetNonFungibleSupportedChains();
+  EXPECT_EQ(chains.size(), 7UL);
+  EXPECT_TRUE(base::Contains(
+      chains,
+      mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId)));
+  EXPECT_TRUE(base::Contains(
+      chains,
+      mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet)));
 
   // Verify none of the chain IDs == mojom::kGnosisChainId
-  EXPECT_EQ(
-      std::find(chains.at(mojom::CoinType::ETH).begin(),
-                chains.at(mojom::CoinType::ETH).end(), mojom::kGnosisChainId),
-      chains.at(mojom::CoinType::ETH).end());
+  EXPECT_FALSE(base::Contains(
+      chains,
+      mojom::ChainId::New(mojom::CoinType::ETH, mojom::kGnosisChainId)));
 
   // Add a custom network (Gnosis) and verify it is included
   auto gnosis_network = GetTestNetworkInfo1(mojom::kGnosisChainId);
   network_manager_->AddCustomNetwork(gnosis_network);
 
   chains = asset_discovery_manager_->GetNonFungibleSupportedChains();
-  EXPECT_EQ(chains.at(mojom::CoinType::ETH).size(), 7UL);
-  EXPECT_EQ(chains.at(mojom::CoinType::SOL).size(), 1UL);
+  EXPECT_EQ(chains.size(), 8UL);
 
   // Verify one of the chain IDs is mojom::kGnosisChainId
-  EXPECT_NE(
-      std::find(chains.at(mojom::CoinType::ETH).begin(),
-                chains.at(mojom::CoinType::ETH).end(), mojom::kGnosisChainId),
-      chains.at(mojom::CoinType::ETH).end());
+  EXPECT_TRUE(base::Contains(
+      chains,
+      mojom::ChainId::New(mojom::CoinType::ETH, mojom::kGnosisChainId)));
 }
 
 TEST_F(AssetDiscoveryManagerUnitTest, DiscoverAssetsOnAllSupportedChains) {

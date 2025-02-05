@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/asset_discovery_manager.h"
 
+#include <algorithm>
 #include <map>
 
 #include "base/no_destructor.h"
@@ -70,11 +71,10 @@ AssetDiscoveryManager::AssetDiscoveryManager(
 AssetDiscoveryManager::~AssetDiscoveryManager() = default;
 
 void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        account_addresses,
+    std::vector<mojom::AccountIdPtr> accounts,
     bool bypass_rate_limit) {
   if (bypass_rate_limit) {
-    AddTask(account_addresses);
+    AddTask(std::move(accounts));
     return;
   }
 
@@ -94,41 +94,30 @@ void AssetDiscoveryManager::DiscoverAssetsOnAllSupportedChains(
   }
   prefs_->SetTime(kBraveWalletLastDiscoveredAssetsAt, base::Time::Now());
 
-  AddTask(account_addresses);
+  AddTask(std::move(accounts));
 }
 
-const std::map<mojom::CoinType, std::vector<std::string>>&
+std::vector<mojom::ChainIdPtr>
 AssetDiscoveryManager::GetFungibleSupportedChains() {
-  static const base::NoDestructor<
-      std::map<mojom::CoinType, std::vector<std::string>>>
-      asset_discovery_supported_chains([] {
-        std::map<mojom::CoinType, std::vector<std::string>> supported_chains;
-        std::vector<std::string> supported_eth_chains;
-        for (const auto& entry : GetEthBalanceScannerContractAddresses()) {
-          supported_eth_chains.push_back(entry.first);
-        }
-        supported_chains[mojom::CoinType::ETH] =
-            std::move(supported_eth_chains);
+  std::vector<mojom::ChainIdPtr> supported_chains;
+  for (const auto& entry : GetEthBalanceScannerContractAddresses()) {
+    supported_chains.push_back(
+        mojom::ChainId::New(mojom::CoinType::ETH, entry.first));
+  }
 
-        std::vector<std::string> supported_sol_chains;
-        supported_sol_chains.push_back(mojom::kSolanaMainnet);
-        supported_chains[mojom::CoinType::SOL] =
-            std::move(supported_sol_chains);
+  supported_chains.push_back(
+      mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet));
 
-        return supported_chains;
-      }());
-  return *asset_discovery_supported_chains;
+  return supported_chains;
 }
 
-const std::map<mojom::CoinType, std::vector<std::string>>
+std::vector<mojom::ChainIdPtr>
 AssetDiscoveryManager::GetNonFungibleSupportedChains() {
-  // Use non fungible chains as a base
-  auto non_fungible_supported_chains = GetFungibleSupportedChains();
-
-  // Create a set from the base chains for quick lookups
-  base::flat_set<std::string> base_set(
-      non_fungible_supported_chains[mojom::CoinType::ETH].begin(),
-      non_fungible_supported_chains[mojom::CoinType::ETH].end());
+  // Use fungible chains as a base.
+  std::vector<mojom::ChainIdPtr> non_fungible_supported_chains;
+  for (auto& chain_id : GetFungibleSupportedChains()) {
+    non_fungible_supported_chains.push_back(chain_id.Clone());
+  }
 
   // Add in all the user networks that are supported by SimpleHash
   auto custom_non_fungible_eth_chains =
@@ -144,19 +133,18 @@ AssetDiscoveryManager::GetNonFungibleSupportedChains() {
           mojom::CoinType::ETH);
 
   for (auto custom_chain : custom_non_fungible_eth_chains) {
-    // Only insert the chain if it does not exist in the set
-    if (base_set.find(custom_chain) == base_set.end()) {
-      non_fungible_supported_chains[mojom::CoinType::ETH].push_back(
-          custom_chain);
-    }
+    non_fungible_supported_chains.push_back(
+        mojom::ChainId::New(mojom::CoinType::ETH, custom_chain));
   }
+
+  std::ranges::sort(non_fungible_supported_chains);
+  auto repeated = std::ranges::unique(non_fungible_supported_chains);
+  non_fungible_supported_chains.erase(repeated.begin(), repeated.end());
 
   return non_fungible_supported_chains;
 }
 
-void AssetDiscoveryManager::AddTask(
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        account_addresses) {
+void AssetDiscoveryManager::AddTask(std::vector<mojom::AccountIdPtr> accounts) {
   auto fungible_supported_chains = GetFungibleSupportedChains();
   auto non_fungible_supported_chains = GetNonFungibleSupportedChains();
 
@@ -168,9 +156,9 @@ void AssetDiscoveryManager::AddTask(
   auto* task_ptr = task.get();
   queue_.push(std::move(task));
 
-  task_ptr->ScheduleTask(fungible_supported_chains,
-                         non_fungible_supported_chains, account_addresses,
-                         std::move(callback));
+  task_ptr->ScheduleTask(
+      std::move(accounts), std::move(fungible_supported_chains),
+      std::move(non_fungible_supported_chains), std::move(callback));
 }
 
 void AssetDiscoveryManager::FinishTask() {
@@ -179,21 +167,20 @@ void AssetDiscoveryManager::FinishTask() {
 
 void AssetDiscoveryManager::AccountsAdded(
     std::vector<mojom::AccountInfoPtr> added_accounts) {
-  std::map<mojom::CoinType, std::vector<std::string>> account_addresses_map;
+  std::vector<mojom::AccountIdPtr> accounts;
   for (const auto& account : added_accounts) {
-    if (account->account_id->coin != mojom::CoinType::ETH &&
-        account->account_id->coin != mojom::CoinType::SOL) {
-      continue;
+    auto& account_id = account->account_id;
+    if (account->account_id->coin == mojom::CoinType::ETH ||
+        account->account_id->coin == mojom::CoinType::SOL) {
+      accounts.push_back(account_id.Clone());
     }
-    account_addresses_map[account->account_id->coin].push_back(
-        account->address);
   }
 
-  if (account_addresses_map.empty()) {
+  if (accounts.empty()) {
     return;
   }
 
-  DiscoverAssetsOnAllSupportedChains(account_addresses_map, true);
+  DiscoverAssetsOnAllSupportedChains(std::move(accounts), true);
 }
 
 }  // namespace brave_wallet
