@@ -37,7 +37,6 @@ type Props = Pick<
 
 interface InputBoxProps {
   context: Props
-  onFocusInputMobile?: () => unknown
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
 }
 
@@ -79,16 +78,6 @@ function InputBox(props: InputBoxProps) {
     }
   }
 
-  // We don't want to handle that event on desktop
-  let handleFocusMobile
-  if (props.context.isMobile) {
-    handleFocusMobile = (event: React.FormEvent<HTMLTextAreaElement>) => {
-      if (props.onFocusInputMobile) {
-        props.onFocusInputMobile()
-      }
-    }
-  }
-
   const maybeAutofocus = (node: HTMLTextAreaElement | null) => {
     if (!node) {
       return
@@ -119,7 +108,6 @@ function InputBox(props: InputBoxProps) {
           placeholder={getLocale('placeholderLabel')}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
-          onFocus={handleFocusMobile}
           value={props.context.inputText}
           autoFocus
           rows={1}
