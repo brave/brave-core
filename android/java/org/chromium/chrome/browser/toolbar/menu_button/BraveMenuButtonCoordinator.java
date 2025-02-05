@@ -18,6 +18,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
 import org.chromium.ui.base.WindowAndroid;
@@ -46,19 +47,26 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
     @Override
     public MenuButton getMenuButton() {
         updateMenuButtonState();
-        return isMenuFromBottom() ? null : super.getMenuButton();
+        return BottomToolbarConfiguration.isToolbarTopAnchored() && isMenuFromBottom()
+                ? null
+                : super.getMenuButton();
     }
 
     @Override
     public void drawTabSwitcherAnimationOverlay(View root, Canvas canvas, int alpha) {
-        if (isMenuFromBottom()) return;
+        if (BottomToolbarConfiguration.isToolbarTopAnchored() && isMenuFromBottom()) return;
         super.drawTabSwitcherAnimationOverlay(root, canvas, alpha);
     }
 
     @Override
     public void setVisibility(boolean visible) {
         updateMenuButtonState();
-        super.setVisibility(isMenuFromBottom() ? false : visible);
+
+        // Remove menu from top address bar if it is shown in the bottom controls.
+        super.setVisibility(
+                (isMenuFromBottom() && BottomToolbarConfiguration.isToolbarTopAnchored())
+                        ? false
+                        : visible);
     }
 
     private void updateMenuButtonState() {
@@ -68,6 +76,10 @@ public class BraveMenuButtonCoordinator extends MenuButtonCoordinator {
         if (layout != null) {
             layout.updateMenuButtonState();
         }
+    }
+
+    public boolean isToolbarBottomAnchored() {
+        return BottomToolbarConfiguration.isToolbarBottomAnchored();
     }
 
     public static void setMenuFromBottom(boolean isMenuFromBottom) {

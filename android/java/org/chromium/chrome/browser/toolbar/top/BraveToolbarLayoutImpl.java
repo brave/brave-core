@@ -94,6 +94,7 @@ import org.chromium.chrome.browser.theme.ThemeUtils;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
 import org.chromium.chrome.browser.toolbar.ToolbarTabController;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.home_button.HomeButton;
 import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
@@ -188,7 +189,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private PopupWindowTooltip mShieldsPopupWindowTooltip;
 
-    private boolean mIsBottomToolbarVisible;
+    private boolean mIsBottomControlsVisible;
 
     private ColorStateList mDarkModeTint;
     private ColorStateList mLightModeTint;
@@ -339,7 +340,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // shown and loading state is changed.
         updateBraveShieldsButtonState(null);
         if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)) {
-            if (getMenuButtonCoordinator() != null && isMenuButtonOnBottom()) {
+            if (getMenuButtonCoordinator() != null
+                    && isMenuButtonOnBottomControls()
+                    && BottomToolbarConfiguration.isToolbarTopAnchored()) {
                 getMenuButtonCoordinator().setVisibility(false);
             }
         }
@@ -1477,14 +1480,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    public void onBottomToolbarVisibilityChanged(boolean isVisible) {
-        mIsBottomToolbarVisible = isVisible;
+    public void onBottomControlsVisibilityChanged(boolean isVisible) {
+        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) return;
+        mIsBottomControlsVisible = isVisible;
         if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)
                 && getMenuButtonCoordinator() != null) {
             getMenuButtonCoordinator().setVisibility(!isVisible);
             ToggleTabStackButton toggleTabStackButton = findViewById(R.id.tab_switcher_button);
             if (toggleTabStackButton != null) {
-                toggleTabStackButton.setVisibility(isTabSwitcherOnBottom() ? GONE : VISIBLE);
+                toggleTabStackButton.setVisibility(
+                        isTabSwitcherOnBottomControls() ? GONE : VISIBLE);
             }
         }
     }
@@ -1502,12 +1507,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         updateModernLocationBarColorImpl(mCurrentToolbarColor);
     }
 
-    private boolean isTabSwitcherOnBottom() {
-        return mIsBottomToolbarVisible && BottomToolbarVariationManager.isTabSwitcherOnBottom();
+    private boolean isTabSwitcherOnBottomControls() {
+        return mIsBottomControlsVisible
+                && BottomToolbarVariationManager.isTabSwitcherOnBottomControls();
     }
 
-    private boolean isMenuButtonOnBottom() {
-        return mIsBottomToolbarVisible && BottomToolbarVariationManager.isMenuButtonOnBottom();
+    private boolean isMenuButtonOnBottomControls() {
+        return mIsBottomControlsVisible
+                && BottomToolbarVariationManager.isMenuButtonOnBottomControls();
     }
 
     @Override
@@ -1534,7 +1541,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 trackerSupplier,
                 progressBar);
 
-        BraveMenuButtonCoordinator.setMenuFromBottom(isMenuButtonOnBottom());
+        BraveMenuButtonCoordinator.setMenuFromBottom(
+                isMenuButtonOnBottomControls()
+                        || BottomToolbarConfiguration.isToolbarBottomAnchored());
     }
 
     public void updateWalletBadgeVisibility(boolean visible) {
@@ -1543,7 +1552,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void updateMenuButtonState() {
-        BraveMenuButtonCoordinator.setMenuFromBottom(mIsBottomToolbarVisible);
+        BraveMenuButtonCoordinator.setMenuFromBottom(
+                mIsBottomControlsVisible || BottomToolbarConfiguration.isToolbarBottomAnchored());
     }
 
     @Override
@@ -1600,5 +1610,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 showPlaylistButton(playlistItems);
             }
         }
+    }
+
+    /** Opens hompage in the current tab. Override it here to make it publicly accessible. */
+    @Override
+    public void openHomepage() {
+        super.openHomepage();
     }
 }

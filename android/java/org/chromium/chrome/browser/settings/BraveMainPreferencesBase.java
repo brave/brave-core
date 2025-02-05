@@ -357,8 +357,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
         findPreference(PREF_ABOUT_CHROME).setOrder(++aboutSectionOrder);
 
-        // We don't have home button on top toolbar at the moment
-        if (!DeviceFormFactor.isTablet() && !BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+        // We don't have home button on address bar at the moment.
+        if (!DeviceFormFactor.isTablet()
+                && !BottomToolbarConfiguration.isBraveBottomControlsEnabled()
+                && BottomToolbarConfiguration.isToolbarTopAnchored()) {
             removePreferenceIfPresent(MainSettings.PREF_HOMEPAGE);
         }
     }

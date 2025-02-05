@@ -54,7 +54,7 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
     // Own members.
     private ToolbarLayout mBraveToolbarLayout;
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
-    private boolean mIsBottomToolbarVisible;
+    private boolean mIsBottomControlsVisible;
     private ObservableSupplier<Integer> mConstraintsProxy;
     private ObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
     private ToolbarControlContainer mControlContainer;
@@ -169,11 +169,11 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
         }
     }
 
-    public void onBottomToolbarVisibilityChanged(boolean isVisible) {
-        mIsBottomToolbarVisible = isVisible;
+    public void onBottomControlsVisibilityChanged(boolean isVisible) {
+        mIsBottomControlsVisible = isVisible;
         if (mBraveToolbarLayout instanceof BraveToolbarLayout) {
             ((BraveToolbarLayoutImpl) mBraveToolbarLayout)
-                    .onBottomToolbarVisibilityChanged(isVisible);
+                    .onBottomControlsVisibilityChanged(isVisible);
         }
         mOptionalButtonController.updateButtonVisibility();
     }
@@ -184,8 +184,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
 
     @Override
     public MenuButton getMenuButtonWrapper() {
-        // We consider that there is no top toolbar menu button, if bottom toolbar is visible.
-        return mIsBottomToolbarVisible ? null : mBraveMenuButtonCoordinator.getMenuButton();
+        // We consider that there is no top toolbar menu button, if bottom controls are visible.
+        return mIsBottomControlsVisible ? null : mBraveMenuButtonCoordinator.getMenuButton();
     }
 
     public ObservableSupplier<Integer> getConstraintsProxy() {

@@ -264,6 +264,6 @@ public class DAppsWalletController implements ConnectionErrorHandler {
 
     private boolean shouldShowNotificationAtTop(Context context) {
         return ConfigurationUtils.isTablet(context)
-                || !BottomToolbarConfiguration.isBottomToolbarEnabled();
+                || !BottomToolbarConfiguration.isBraveBottomControlsEnabled();
     }
 }

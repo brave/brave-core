@@ -59,7 +59,8 @@ public class BraveScrollingBottomViewResourceFrameLayout
 
         mBottomContainerSlot = findViewById(R.id.bottom_container_slot);
         assert mBottomContainerSlot != null : "Something has changed in upstream!";
-        if (mBottomContainerSlot != null && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+        if (mBottomContainerSlot != null
+                && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             mBottomContainerSlot.setVisibility(View.GONE);
         }
     }

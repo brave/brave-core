@@ -770,6 +770,8 @@ public abstract class BraveActivity extends ChromeActivity
                     && mMiscAndroidMetrics != null) {
                 mMiscAndroidMetrics.recordAppMenuNewTab();
             }
+        } else if (itemId == R.id.home_menu_id) {
+            getBraveToolbarLayout().openHomepage();
         }
         return super.onOptionsItemSelected(itemId, menuItemData);
     }
@@ -2480,7 +2482,7 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     public void updateBottomSheetPosition(int orientation) {
-        if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+        if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             // Ensure the bottom sheet's container is adjusted to the height of the bottom toolbar.
             ViewGroup sheetContainer = findViewById(R.id.sheet_container);
             assert sheetContainer != null;
@@ -2488,9 +2490,11 @@ public abstract class BraveActivity extends ChromeActivity
             if (sheetContainer != null) {
                 CoordinatorLayout.LayoutParams params =
                         (CoordinatorLayout.LayoutParams) sheetContainer.getLayoutParams();
-                params.bottomMargin = orientation == Configuration.ORIENTATION_LANDSCAPE
-                        ? 0
-                        : getResources().getDimensionPixelSize(R.dimen.bottom_controls_height);
+                params.bottomMargin =
+                        orientation == Configuration.ORIENTATION_LANDSCAPE
+                                ? 0
+                                : getResources()
+                                        .getDimensionPixelSize(R.dimen.bottom_controls_height);
                 sheetContainer.setLayoutParams(params);
             }
         }
