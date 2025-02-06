@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SKUS_RENDERER_SKUS_UTILS_H_
 #define BRAVE_COMPONENTS_SKUS_RENDERER_SKUS_UTILS_H_
 
-class GURL;
-
 namespace blink {
 class WebSecurityOrigin;
 }  // namespace blink
@@ -22,12 +20,6 @@ namespace skus {
 //
 // See //third_party/blink/renderer/platform/weborigin/security_origin.cc
 bool IsSafeOrigin(const blink::WebSecurityOrigin& origin);
-
-// This version is safe for use elsewhere. The internal `IsSameOriginWith`
-// check is different than the version above.
-//
-// See //url/origin.cc
-bool IsSafeOrigin(const GURL& origin);
 }  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_RENDERER_SKUS_UTILS_H_

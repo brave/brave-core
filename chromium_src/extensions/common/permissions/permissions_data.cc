@@ -5,10 +5,9 @@
 
 #include "extensions/common/permissions/permissions_data.h"
 
-#include "brave/components/skus/renderer/skus_utils.h"
-#include "url/origin.h"
+#include "brave/components/skus/common/skus_utils.h"
 
-namespace extensions {
+namespace {
 
 bool IsBraveProtectedUrl(const GURL& url) {
   if (skus::IsSafeOrigin(url)) {
@@ -16,10 +15,6 @@ bool IsBraveProtectedUrl(const GURL& url) {
   }
   return false;
 }
-
-}  // namespace extensions
-
-namespace {
 
 bool IsBraveRestrictedUrl(const GURL& document_url,
                           const extensions::ExtensionId& extension_id,
@@ -30,7 +25,7 @@ bool IsBraveRestrictedUrl(const GURL& document_url,
     return false;
   }
 
-  if (extensions::IsBraveProtectedUrl(document_url)) {
+  if (IsBraveProtectedUrl(document_url)) {
     return true;
   }
 
@@ -40,11 +35,11 @@ bool IsBraveRestrictedUrl(const GURL& document_url,
 }  // namespace
 
 // Disable some content scripts until users click on the extension icon
-#define BRAVE_CAN_RUN_ON_PAGE                                                \
+#define BRAVE_PERMISSION_DATA_CAN_RUN_ON_PAGE                                \
   if (IsBraveRestrictedUrl(document_url, extension_id_, location_, error)) { \
     return PageAccess::kWithheld;                                            \
   }
 
 #include "src/extensions/common/permissions/permissions_data.cc"
 
-#undef BRAVE_CAN_RUN_ON_PAGE
+#undef BRAVE_PERMISSION_DATA_CAN_RUN_ON_PAGE
