@@ -130,10 +130,12 @@ void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
   WaitForSelector(target, selector, true);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 void WaitForSelectorVisible(const content::ToRenderFrameHost& target,
                             const std::string& selector) {
   WaitForSelector(target, selector, false);
 }
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
