@@ -243,11 +243,14 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
 #define BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS                              \
   const bool block_third =                                                    \
       IsAllowed(setting) && !is_explicit_setting && is_third_party_request && \
-      ShouldBlockThirdPartyCookies() &&                                       \
+      ShouldBlockThirdPartyCookies(url::Origin::Create(first_party_url),      \
+                                   overrides) &&                              \
       !IsThirdPartyCookiesAllowedScheme(first_party_url.scheme());            \
   if (!block_third && is_third_party_request &&                               \
       ShouldBlockThirdPartyIfSettingIsExplicit(                               \
-          ShouldBlockThirdPartyCookies(), setting, is_explicit_setting,       \
+          ShouldBlockThirdPartyCookies(url::Origin::Create(first_party_url),  \
+                                       overrides),                            \
+          setting, is_explicit_setting,                                       \
           IsThirdPartyCookiesAllowedScheme(first_party_url.scheme()))) {      \
     return AllowPartitionedCookies{};                                         \
   }
