@@ -19,6 +19,13 @@ struct Converter<base::Value::List> {
                      base::Value::List* out);
 };
 
+template <>
+struct Converter<base::Value::Dict> {
+  static bool FromV8(v8::Isolate* isolate,
+                     v8::Local<v8::Value> v8_value,
+                     base::Value::Dict* out);
+};
+
 }  // namespace gin
 
 #endif  // BRAVE_GIN_CONVERTER_SPECIALIZATIONS_H_

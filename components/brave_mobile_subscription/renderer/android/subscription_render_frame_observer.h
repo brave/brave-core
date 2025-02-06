@@ -77,7 +77,7 @@ class SubscriptionRenderFrameObserver : public content::RenderFrameObserver {
                             v8::Local<v8::Object> javascript_object,
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
-  void SetLinkStatus(const std::string& status);
+  void SetLinkStatus(base::Value::Dict status);
 
   const int32_t world_id_;
   std::optional<Product> product_ = std::nullopt;

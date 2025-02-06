@@ -10,15 +10,14 @@
 #include <vector>
 
 #include "base/feature_list.h"
-#include "base/json/json_reader.h"
 #include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/skus/renderer/skus_utils.h"
+#include "brave/gin/converter_specializations.h"
 #include "build/build_config.h"
 #include "content/public/renderer/render_frame.h"
-#include "gin/converter.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
@@ -163,21 +162,15 @@ void SubscriptionRenderFrameObserver::BindFunctionToObject(
       .Check();
 }
 
-void SubscriptionRenderFrameObserver::SetLinkStatus(const std::string& status) {
+void SubscriptionRenderFrameObserver::SetLinkStatus(
+    base::Value::Dict status_dict) {
   // The payload looks like that
   // { status: <value>}
-  // where value 0 means it's not linked otherwise it's linked
-  std::optional<base::Value> status_value =
-      base::JSONReader::Read(status, base::JSONParserOptions::JSON_PARSE_RFC);
+  // where value 0 means it's not linked otherwise it's linked.
   // VPN uses a different way to detect that.
-  // It uses Guardian backend call for that
+  // It uses Guardian backend call for that.
   if (product_ != Product::kLeo || !ai_chat_subscription_.is_bound() ||
-      !status_value || !status_value->is_dict()) {
-    return;
-  }
-
-  const auto& status_dict = status_value->GetDict();
-  if (status_dict.empty()) {
+      status_dict.empty()) {
     return;
   }
 
