@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -70,6 +71,7 @@ NotificationPlatformBridge* GetSystemNotificationPlatformBridge(
 namespace brave_ads {
 
 NotificationHelper::NotificationHelper() {
+  TRACE_EVENT("brave.ads", "NotificationHelper::NotificationHelper");
 #if BUILDFLAG(IS_ANDROID)
   impl_.reset(new NotificationHelperImplAndroid());
 #elif BUILDFLAG(IS_LINUX)
@@ -106,11 +108,15 @@ void NotificationHelper::InitForProfile(Profile* profile) {
 }
 
 bool NotificationHelper::CanShowNotifications() {
+  TRACE_EVENT("brave.ads", "NotificationHelper::CanShowNotifications");
   return impl_->CanShowNotifications();
 }
 
 bool NotificationHelper::CanShowSystemNotificationsWhileBrowserIsBackgrounded()
     const {
+  TRACE_EVENT("brave.ads",
+              "NotificationHelper::"
+              "CanShowSystemNotificationsWhileBrowserIsBackgrounded");
   if (!does_support_system_notifications_) {
     return false;
   }
@@ -118,6 +124,7 @@ bool NotificationHelper::CanShowSystemNotificationsWhileBrowserIsBackgrounded()
 }
 
 bool NotificationHelper::ShowOnboardingNotification() {
+  TRACE_EVENT("brave.ads", "NotificationHelper::ShowOnboardingNotification");
   return impl_->ShowOnboardingNotification();
 }
 

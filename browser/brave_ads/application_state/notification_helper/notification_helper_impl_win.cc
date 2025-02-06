@@ -11,6 +11,7 @@
 
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/trace_event/trace_event.h"
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
 #include "base/win/windows_version.h"
@@ -163,6 +164,7 @@ bool NotificationHelperImplWin::IsFocusAssistEnabled() const {
 }
 
 bool NotificationHelperImplWin::IsNotificationsEnabled() {
+  TRACE_EVENT("brave.ads", "NotificationHelperImplWin::IsNotificationsEnabled");
   HRESULT hr = InitializeToastNotifier();
   auto* toast_notifier = toast_notifier_.Get();
   if (!toast_notifier || FAILED(hr)) {

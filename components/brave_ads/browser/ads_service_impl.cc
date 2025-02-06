@@ -28,6 +28,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/browser/analytics/p2a/p2a.h"
@@ -465,6 +466,7 @@ void AdsServiceImpl::InitializeBatAds(
 }
 
 void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
+  TRACE_EVENT1("brave.ads", "InitializeBatAdsCallback", "success", success);
   if (!success) {
     VLOG(1) << "Failed to initialize Bat Ads";
     return ShutdownAdsService();
@@ -1065,6 +1067,7 @@ void AdsServiceImpl::OnNotificationAdPositionChanged() {
 }
 
 void AdsServiceImpl::ShutdownAdsService() {
+  TRACE_EVENT("brave.ads", "AdsServiceImpl::ShutdownAdsService");
   if (is_bat_ads_initialized_) {
     SuspendP2AHistograms();
 
