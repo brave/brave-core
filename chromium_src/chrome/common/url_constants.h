@@ -43,7 +43,9 @@ inline constexpr char kBrowserSettingsSearchEngineURL[] =
 
 // "Learn more" URL for Battery Saver Mode.
 inline constexpr char16_t kBatterySaverModeLearnMoreUrl[] =
-    u"https://support.brave.com/hc/en-us/articles/13380606172557";
+    u"https://support.brave.com/hc/en-us/articles/"
+    u"13383683902733-How-do-I-use-the-Memory-and-Energy-Saver-features-in-"
+    u"Brave#energy-saver";
 
 // The URL for providing help when the Bluetooth adapter is off.
 inline constexpr char kBluetoothAdapterOffHelpURL[] =
