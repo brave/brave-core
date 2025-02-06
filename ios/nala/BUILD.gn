@@ -46,6 +46,7 @@ nala_icons = [
   "leo.check.normal.svg",
   "leo.checkbox.checked.svg",
   "leo.checkbox.unchecked.svg",
+  "leo.close.circle-filled.svg",
   "leo.close.svg",
   "leo.cloud.download.svg",
   "leo.cloud.off.svg",

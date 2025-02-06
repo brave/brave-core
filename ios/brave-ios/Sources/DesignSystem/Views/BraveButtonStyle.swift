@@ -8,30 +8,44 @@ import SwiftUI
 public struct BraveButtonSize {
   public var font: Font
   public var padding: EdgeInsets
+  public var radius: CGFloat
+  public var minHeight: CGFloat
 
-  public init(font: Font, padding: EdgeInsets) {
+  public init(
+    font: Font,
+    padding: EdgeInsets,
+    radius: CGFloat,
+    minHeight: CGFloat
+  ) {
     self.font = font
     self.padding = padding
+    self.radius = radius
+    self.minHeight = minHeight
   }
 
   public static let small: Self = .init(
     font: Font.caption.weight(.semibold),
-    padding: .init(top: 6, leading: 12, bottom: 6, trailing: 12)
+    padding: .init(top: 8, leading: 8, bottom: 8, trailing: 8),
+    radius: 8,
+    minHeight: 20
   )
   public static let normal: Self = .init(
     font: Font.callout.weight(.semibold),
-    padding: .init(top: 8, leading: 14, bottom: 8, trailing: 14)
+    padding: .init(top: 12, leading: 12, bottom: 12, trailing: 12),
+    radius: 12,
+    minHeight: 20
   )
   public static let large: Self = .init(
     font: Font.body.weight(.semibold),
-    padding: .init(top: 10, leading: 20, bottom: 10, trailing: 20)
+    padding: .init(top: 12, leading: 16, bottom: 12, trailing: 16),
+    radius: 16,
+    minHeight: 28
   )
 }
 
 public struct BraveFilledButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
 
-  private let clipShape = RoundedRectangle(cornerRadius: 48, style: .continuous)
   public var size: BraveButtonSize
 
   public init(size: BraveButtonSize) {
@@ -39,7 +53,9 @@ public struct BraveFilledButtonStyle: ButtonStyle {
   }
 
   public func makeBody(configuration: Configuration) -> some View {
+    let clipShape = RoundedRectangle(cornerRadius: size.radius, style: .continuous)
     configuration.label
+      .frame(minHeight: size.minHeight)
       .opacity(configuration.isPressed ? 0.7 : 1.0)
       .font(size.font)
       .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
@@ -57,6 +73,7 @@ public struct BraveFilledButtonStyle: ButtonStyle {
       .contentShape(clipShape)
       .hoverEffect()
       .animation(.linear(duration: 0.15), value: isEnabled)
+      .multilineTextAlignment(.center)
   }
 }
 
@@ -64,38 +81,37 @@ public struct BraveOutlineButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
 
   public var size: BraveButtonSize
-  public var enabledTextColor: UIColor
-  public var enabledOutlineColor: UIColor
 
   public init(
-    size: BraveButtonSize,
-    enabledTextColor: UIColor = .braveLabel,
-    enabledOutlineColor: UIColor = .secondaryButtonTint
+    size: BraveButtonSize
   ) {
     self.size = size
-    self.enabledTextColor = enabledTextColor
-    self.enabledOutlineColor = enabledOutlineColor
   }
 
   public func makeBody(configuration: Configuration) -> some View {
+    let clipShape = RoundedRectangle(cornerRadius: size.radius, style: .continuous)
     configuration.label
+      .frame(minHeight: size.minHeight)
       .opacity(configuration.isPressed ? 0.7 : 1.0)
       .font(size.font)
-      .foregroundColor(isEnabled ? Color(enabledTextColor) : Color(.braveDisabled))
+      .foregroundColor(
+        isEnabled ? Color(braveSystemName: .textInteractive) : Color(braveSystemName: .textDisabled)
+      )
       .padding(size.padding)
       .background(
         Group {
           if isEnabled {
-            Color(enabledOutlineColor).opacity(configuration.isPressed ? 0.7 : 1.0)
+            Color(braveSystemName: .dividerInteractive).opacity(configuration.isPressed ? 0.7 : 1.0)
           } else {
-            Color(.braveDisabled)
+            Color(braveSystemName: .buttonDisabled)
           }
         }
-        .clipShape(Capsule().inset(by: 0.5).stroke())
+        .clipShape(clipShape.inset(by: 0.5).stroke())
       )
-      .clipShape(Capsule())
-      .contentShape(Capsule())
+      .clipShape(clipShape)
+      .contentShape(clipShape)
       .animation(.linear(duration: 0.15), value: isEnabled)
+      .multilineTextAlignment(.center)
   }
 }
 
@@ -128,7 +144,10 @@ struct BraveButtonStyle_Previews: PreviewProvider {
             ForEach(defaultSizes.indices, id: \.self) { historyIndex in
               Button {
               } label: {
-                Text(verbatim: "Button text")
+                HStack(spacing: 2) {
+                  Image(braveSystemName: "leo.check.normal")
+                  Text(verbatim: "Text")
+                }
               }
               .buttonStyle(BraveOutlineButtonStyle(size: defaultSizes[historyIndex]))
               .disabled(disabled)
