@@ -235,28 +235,88 @@ CreativeNewTabPageAds::~CreativeNewTabPageAds() = default;
 
 void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
                                  ResultCallback callback) {
-  if (creative_ads.empty()) {
-    return std::move(callback).Run(/*success=*/true);
-  }
-
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
 
-  const std::vector<CreativeNewTabPageAdList> batches =
-      SplitVector(creative_ads, batch_size_);
+  // Replace existing creative new tab page ads.
 
-  for (const auto& batch : batches) {
-    Insert(mojom_db_transaction, batch);
+  database::Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        campaigns
+      WHERE
+        id IN (
+          SELECT
+            DISTINCT campaign_id
+          FROM
+            creative_new_tab_page_ads
+        );)");
 
-    const CreativeAdList creative_ads_batch(batch.cbegin(), batch.cend());
-    campaigns_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
-    creative_ads_database_table_.Insert(mojom_db_transaction,
-                                        creative_ads_batch);
-    dayparts_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
-    deposits_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
-    geo_targets_database_table_.Insert(mojom_db_transaction,
+  database::Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        geo_targets
+      WHERE
+        campaign_id IN (
+          SELECT
+            DISTINCT campaign_id
+          FROM
+            creative_new_tab_page_ads
+        );)");
+
+  database::Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        dayparts
+      WHERE
+        campaign_id IN (
+          SELECT
+            DISTINCT campaign_id
+          FROM
+            creative_new_tab_page_ads
+        );)");
+
+  database::Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        segments
+      WHERE
+        creative_set_id IN (
+          SELECT
+            DISTINCT creative_set_id
+          FROM
+            creative_new_tab_page_ads
+        );)");
+
+  database::Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        creative_ads
+      WHERE
+        creative_instance_id IN (
+          SELECT
+            DISTINCT creative_instance_id
+          FROM
+            creative_new_tab_page_ads
+        );)");
+
+  database::Execute(mojom_db_transaction, R"(
+      DELETE FROM
+        creative_new_tab_page_ads;)");
+
+  if (!creative_ads.empty()) {
+    const std::vector<CreativeNewTabPageAdList> batches =
+        SplitVector(creative_ads, batch_size_);
+
+    for (const auto& batch : batches) {
+      Insert(mojom_db_transaction, batch);
+
+      const CreativeAdList creative_ads_batch(batch.cbegin(), batch.cend());
+      campaigns_database_table_.Insert(mojom_db_transaction,
                                        creative_ads_batch);
-    segments_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
+      creative_ads_database_table_.Insert(mojom_db_transaction,
+                                          creative_ads_batch);
+      dayparts_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
+      deposits_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
+      geo_targets_database_table_.Insert(mojom_db_transaction,
+                                         creative_ads_batch);
+      segments_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
+    }
   }
 
   RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
@@ -461,8 +521,8 @@ void CreativeNewTabPageAds::Migrate(
   CHECK(mojom_db_transaction);
 
   switch (to_version) {
-    case 47: {
-      MigrateToV47(mojom_db_transaction);
+    case 48: {
+      MigrateToV48(mojom_db_transaction);
       break;
     }
 
@@ -475,15 +535,17 @@ void CreativeNewTabPageAds::Migrate(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void CreativeNewTabPageAds::MigrateToV47(
+void CreativeNewTabPageAds::MigrateToV48(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
   CHECK(mojom_db_transaction);
 
   // Wallpapers table has been deprecated.
   DropTable(mojom_db_transaction, "creative_new_tab_page_ad_wallpapers");
 
-  // We can safely recreate the table because it will be repopulated after
-  // downloading the catalog.
+  // It is safe to recreate the table because it will be repopulated after
+  // downloading the component resource post-migration. However, after this
+  // migration, we should not drop the table as it is needed to maintain
+  // relationships with other tables.
   DropTable(mojom_db_transaction, GetTableName());
   Create(mojom_db_transaction);
 }

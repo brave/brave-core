@@ -13,18 +13,6 @@
 namespace brave_ads {
 
 struct NewTabPageAdInfo final : AdInfo {
-  NewTabPageAdInfo();
-
-  NewTabPageAdInfo(const NewTabPageAdInfo&);
-  NewTabPageAdInfo& operator=(const NewTabPageAdInfo&);
-
-  NewTabPageAdInfo(NewTabPageAdInfo&&) noexcept;
-  NewTabPageAdInfo& operator=(NewTabPageAdInfo&&) noexcept;
-
-  ~NewTabPageAdInfo();
-
-  bool operator==(const NewTabPageAdInfo&) const = default;
-
   [[nodiscard]] bool IsValid() const;
 
   std::string company_name;

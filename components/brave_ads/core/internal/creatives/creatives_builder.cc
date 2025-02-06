@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
@@ -192,72 +191,6 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           if (top_level_segment_name != segment_name) {
             creative_ad.segment = top_level_segment_name;
             creatives.inline_content_ads.push_back(creative_ad);
-            ++entries;
-          }
-        }
-      }
-
-      // New tab page ad creatives
-      for (const auto& creative : creative_set.creative_new_tab_page_ads) {
-        CreativeNewTabPageAdInfo creative_ad;
-        creative_ad.creative_instance_id = creative.instance_id;
-        creative_ad.creative_set_id = creative_set.id;
-        creative_ad.campaign_id = campaign.id;
-        creative_ad.advertiser_id = campaign.advertiser_id;
-        if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                       &creative_ad.start_at)) {
-          BLOG(1, "Campaign id " << campaign.id
-                                 << " has an invalid start at time");
-        }
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(),
-                                       &creative_ad.end_at)) {
-          BLOG(1,
-               "Campaign id " << campaign.id << " has an invalid end at time");
-        }
-        creative_ad.daily_cap = campaign.daily_cap;
-        creative_ad.priority = campaign.priority;
-        creative_ad.pass_through_rate = campaign.pass_through_rate;
-        creative_ad.per_day = creative_set.per_day;
-        creative_ad.per_week = creative_set.per_week;
-        creative_ad.per_month = creative_set.per_month;
-        creative_ad.total_max = creative_set.total_max;
-        creative_ad.value = creative_set.value;
-        creative_ad.split_test_group = creative_set.split_test_group;
-        creative_ad.condition_matchers = creative.payload.condition_matchers;
-        creative_ad.dayparts = dayparts;
-        creative_ad.geo_targets = geo_targets;
-        creative_ad.target_url = creative.payload.target_url;
-
-        creative_ad.company_name = creative.payload.company_name;
-        creative_ad.alt = creative.payload.alt;
-
-        // Segments
-        for (const auto& segment : creative_set.segments) {
-          const std::string segment_name = base::ToLowerASCII(segment.name);
-          CHECK(!segment_name.empty());
-
-          std::vector<std::string> segment_name_hierarchy =
-              base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-                                base::SPLIT_WANT_NONEMPTY);
-
-          if (segment_name_hierarchy.empty()) {
-            BLOG(1, "creative set id " << creative_set.id
-                                       << " segment name should not be empty");
-
-            continue;
-          }
-
-          creative_ad.segment = segment_name;
-          creatives.new_tab_page_ads.push_back(creative_ad);
-          ++entries;
-
-          const std::string& top_level_segment_name =
-              segment_name_hierarchy.front();
-          CHECK(!top_level_segment_name.empty());
-
-          if (top_level_segment_name != segment_name) {
-            creative_ad.segment = top_level_segment_name;
-            creatives.new_tab_page_ads.push_back(creative_ad);
             ++entries;
           }
         }

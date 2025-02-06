@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_segment_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_creative_inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
@@ -77,26 +76,6 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
   catalog_creative_notification_ad.payload.target_url =
       GURL("https://brave.com/1/notification_ad");
   catalog_creative_notification_ads.push_back(catalog_creative_notification_ad);
-
-  // Creative New Tab Page Ads
-  CatalogCreativeNewTabPageAdList catalog_creative_new_tab_page_ads;
-
-  CatalogCreativeNewTabPageAdInfo catalog_creative_new_tab_page_ad;
-  catalog_creative_new_tab_page_ad.instance_id =
-      "7ff400b9-7f8a-46a8-89f1-cb386612edcf";
-  CatalogTypeInfo catalog_type_new_tab_page_ad;
-  catalog_type_new_tab_page_ad.code = "new_tab_page_all_v1";
-  catalog_type_new_tab_page_ad.name = "new_tab_page";
-  catalog_type_new_tab_page_ad.platform = "all";
-  catalog_type_new_tab_page_ad.version = 1;
-  catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
-  catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 1";
-  catalog_creative_new_tab_page_ad.payload.alt =
-      "Test New Tab Page Ad Campaign 1";
-  catalog_creative_new_tab_page_ad.payload.target_url =
-      GURL("https://brave.com/1/new_tab_page_ad");
-
-  catalog_creative_new_tab_page_ads.push_back(catalog_creative_new_tab_page_ad);
 
   // Creative Promoted Content Ads
   CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
@@ -171,8 +150,6 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
       catalog_creative_notification_ads;
   catalog_creative_set.creative_inline_content_ads =
       catalog_creative_inline_content_ads;
-  catalog_creative_set.creative_new_tab_page_ads =
-      catalog_creative_new_tab_page_ads;
   catalog_creative_set.creative_promoted_content_ads =
       catalog_creative_promoted_content_ads;
   catalog_creative_set.conversions = catalog_conversions;
@@ -260,28 +237,6 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
       GURL("https://brave.com/2/notification_ad");
   catalog_creative_notification_ads.push_back(catalog_creative_notification_ad);
 
-  // Creative New Tab Page Ads
-  CatalogCreativeNewTabPageAdList catalog_creative_new_tab_page_ads;
-
-  CatalogCreativeNewTabPageAdInfo catalog_creative_new_tab_page_ad;
-  catalog_creative_new_tab_page_ad.instance_id =
-      "3dfe54d0-80b7-48d7-9bcc-3c77a912f583";
-  CatalogTypeInfo catalog_type_new_tab_page_ad;
-  catalog_type_new_tab_page_ad.code = "new_tab_page_all_v1";
-  catalog_type_new_tab_page_ad.name = "new_tab_page";
-  catalog_type_new_tab_page_ad.platform = "all";
-  catalog_type_new_tab_page_ad.version = 1;
-  catalog_creative_new_tab_page_ad.type = catalog_type_new_tab_page_ad;
-  catalog_creative_new_tab_page_ad.payload.company_name = "New Tab Page 2";
-  catalog_creative_new_tab_page_ad.payload.alt =
-      "Test New Tab Page Ad Campaign 2";
-  catalog_creative_new_tab_page_ad.payload.target_url =
-      GURL("https://brave.com/2/new_tab_page_ad");
-  catalog_creative_new_tab_page_ad.payload.condition_matchers.emplace(
-      "brave.today.opted_in", "1");
-
-  catalog_creative_new_tab_page_ads.push_back(catalog_creative_new_tab_page_ad);
-
   // Creative Promoted Content Ads
   CatalogCreativePromotedContentAdList catalog_creative_promoted_content_ads;
 
@@ -352,8 +307,6 @@ CatalogCampaignInfo BuildCatalogCampaign2() {
   catalog_creative_set.oses = catalog_oses;
   catalog_creative_set.creative_notification_ads =
       catalog_creative_notification_ads;
-  catalog_creative_set.creative_new_tab_page_ads =
-      catalog_creative_new_tab_page_ads;
   catalog_creative_set.creative_promoted_content_ads =
       catalog_creative_promoted_content_ads;
   catalog_creative_set.creative_inline_content_ads =
