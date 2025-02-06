@@ -294,41 +294,8 @@ void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
   GetElementPickerRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 
-v8::Local<v8::Promise> CosmeticFiltersJSHandler::ResetSiteCosmeticFilter(
-    v8::Isolate* isolate) {
-  v8::MaybeLocal<v8::Promise::Resolver> resolver =
-      v8::Promise::Resolver::New(isolate->GetCurrentContext());
-
-  if (!resolver.IsEmpty()) {
-    auto promise_resolver =
-        std::make_unique<v8::Global<v8::Promise::Resolver>>();
-    promise_resolver->Reset(isolate, resolver.ToLocalChecked());
-    auto context_old = std::make_unique<v8::Global<v8::Context>>(
-        isolate, isolate->GetCurrentContext());
-
-    GetElementPickerRemoteHandler()->ResetCosmeticFilterForCurrentHost(
-        base::BindOnce(&CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter,
-                       weak_ptr_factory_.GetWeakPtr(),
-                       std::move(promise_resolver), isolate,
-                       std::move(context_old)));
-
-    return resolver.ToLocalChecked()->GetPromise();
-  }
-
-  return v8::Local<v8::Promise>();
-}
-
-void CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter(
-    std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
-    v8::Isolate* isolate,
-    std::unique_ptr<v8::Global<v8::Context>> context_old) {
-  v8::HandleScope handle_scope(isolate);
-  v8::Local<v8::Context> context = context_old->Get(isolate);
-  v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(isolate, context->GetMicrotaskQueue(),
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-  v8::Local<v8::Promise::Resolver> resolver = promise_resolver->Get(isolate);
-  std::ignore = resolver->Resolve(context, v8::Object::New(isolate));
+void CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter() {
+  GetElementPickerRemoteHandler()->ResetCosmeticFilterForCurrentHost();
 }
 
 mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
@@ -478,7 +445,7 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
                           base::Unretained(this)));
   BindFunctionToObject(
       isolate, javascript_object, "resetSiteCosmeticFilter",
-      base::BindRepeating(&CosmeticFiltersJSHandler::ResetSiteCosmeticFilter,
+      base::BindRepeating(&CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter,
                           base::Unretained(this)));
   BindFunctionToObject(
       isolate, javascript_object, "getElementPickerThemeInfo",

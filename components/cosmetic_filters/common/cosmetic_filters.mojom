@@ -25,7 +25,7 @@ interface CosmeticFiltersHandler {
   GetElementPickerThemeInfo() => (
       bool is_dark_mode_enabled, int32 background_color);
 
-  ResetCosmeticFilterForCurrentHost() => ();
+  ResetCosmeticFilterForCurrentHost();
 };
 
 // An interface to render frame agent `CosmeticFiltersJSHandler` to control

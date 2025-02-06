@@ -114,18 +114,27 @@ using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
 namespace {
+
 void WaitForSelector(const content::ToRenderFrameHost& target,
                      const std::string& selector,
-                     const bool must_be_blocked = true) {
-  static constexpr char kTemplate[] = R"(waitCSSSelector($1, 'display', '%s'))";
-
+                     const bool must_be_blocked) {
+  static constexpr char kTemplate[] = R"(waitCSSSelector($1, 'display', $2))";
   ASSERT_TRUE(
-      EvalJs(target, content::JsReplace(
-                         base::StringPrintf(kTemplate,
-                                            must_be_blocked ? "none" : "block"),
-                         selector))
+      EvalJs(target, content::JsReplace(kTemplate, selector,
+                                        must_be_blocked ? "none" : "block"))
           .ExtractBool());
 }
+
+void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
+                            const std::string& selector) {
+  WaitForSelector(target, selector, true);
+}
+
+void WaitForSelectorVisible(const content::ToRenderFrameHost& target,
+                            const std::string& selector) {
+  WaitForSelector(target, selector, false);
+}
+
 }  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
@@ -3043,7 +3052,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
 
   // Reload the page and check the selector is blocked by the new rule.
   NavigateToURL(tab_url);
-  WaitForSelector(web_contents(), "#ad-banner");
+  WaitForSelectorBlocked(web_contents(), "#ad-banner");
   EXPECT_FALSE(
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 
@@ -3056,7 +3065,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
 
   // Reload the page and check the selector is not blocked.
   NavigateToURL(tab_url);
-  WaitForSelector(web_contents(), "#ad-banner", false);
+  WaitForSelectorVisible(web_contents(), "#ad-banner");
   EXPECT_FALSE(
       content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 
@@ -3128,7 +3137,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
 
   // This elements will be check by the mutation observer (without delay).
   AddDivsWithDynamicClasses(contents, 2, 200);
-  WaitForSelector(contents, ".div-class-100");
+  WaitForSelectorBlocked(contents, ".div-class-100");
 
   // This elements will be check by mutation observer after throttling delay.
   AddDivsWithDynamicClasses(contents, 201, 500);
@@ -3140,12 +3149,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
           .ExtractBool());
 
   // Verify that it will be blocked after the delay is finished.
-  WaitForSelector(contents, ".div-class-500");
+  WaitForSelectorBlocked(contents, ".div-class-500");
 
   // Add more elements to trigger switch to DOM selector polling (see
   // UseSelectorsPolling()).
   AddDivsWithDynamicClasses(contents, 501, 1000);
-  WaitForSelector(contents, ".div-class-1000");
+  WaitForSelectorBlocked(contents, ".div-class-1000");
   EXPECT_TRUE(
       EvalJs(contents, "checkSelector('.div-class-999', 'display', 'block')")
           .ExtractBool());
@@ -3182,7 +3191,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTestJsPerformance,
           .ExtractBool());
 
   // Should be blocked after the delay ended.
-  WaitForSelector(iframe, ".div-class-500");
+  WaitForSelectorBlocked(iframe, ".div-class-500");
 
   // Verify that other selectors are visible:
   EXPECT_TRUE(

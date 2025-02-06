@@ -22,21 +22,20 @@ namespace {
 std::optional<std::string> RemoveFiltersForHost(
     const std::string& host,
     const std::string& custom_filters) {
-  if (host.empty()) {
+  if (custom_filters.empty()) {
     return std::nullopt;
   }
 
-  std::string result{custom_filters};
+  std::stringstream result;
   const auto starts_with_str = base::StrCat({host, "##"});
   base::StringTokenizer tokenizer(custom_filters, "\n");
   while (tokenizer.GetNext()) {
-    if (!tokenizer.token().starts_with(starts_with_str)) {
+    if (tokenizer.token().starts_with(starts_with_str)) {
       continue;
     }
-    base::ReplaceFirstSubstringAfterOffset(
-        &result, 0, base::StrCat({"\n", tokenizer.token()}), "");
+    result << base::StrCat({tokenizer.token(), "\n"});
   }
-  return result;
+  return result.str();
 }
 
 }  // namespace
@@ -81,8 +80,11 @@ void AdBlockCustomFiltersProvider::AddUserCosmeticFilter(
 
 void AdBlockCustomFiltersProvider::ResetCosmeticFilter(
     const std::string& host) {
-  std::string custom_filters = GetCustomFilters();
-  const auto modified_filters = RemoveFiltersForHost(host, custom_filters);
+  if (host.empty()) {
+    return;
+  }
+
+  const auto modified_filters = RemoveFiltersForHost(host, GetCustomFilters());
   if (!modified_filters) {
     return;
   }

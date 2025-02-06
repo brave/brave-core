@@ -33,8 +33,7 @@ class CosmeticFiltersTabHelper
   void AddSiteCosmeticFilter(const std::string& filter) override;
   void GetElementPickerThemeInfo(
       GetElementPickerThemeInfoCallback callback) override;
-  void ResetCosmeticFilterForCurrentHost(
-      ResetCosmeticFilterForCurrentHostCallback callback) override;
+  void ResetCosmeticFilterForCurrentHost() override;
 
   friend class content::WebContentsUserData<CosmeticFiltersTabHelper>;
 
