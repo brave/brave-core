@@ -962,6 +962,11 @@ const util = {
     args = [path.join(config.srcDir, 'brave', 'tools', 'crates', 'update.py')]
     util.run('vpython3', args, config.defaultOptions)
   },
+
+  buildRustToolchainAux: (options = {}) => {
+    args = [path.join(config.srcDir, 'brave', 'script', 'build_rust_toolchain_aux.py')]
+    util.run('python3', args, config.defaultOptions)
+  },
 }
 
 module.exports = util
