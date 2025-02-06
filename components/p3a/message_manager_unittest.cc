@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/i18n/time_formatting.h"
+#include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
@@ -21,9 +22,11 @@
 #include "brave/components/p3a/metric_log_type.h"
 #include "brave/components/p3a/metric_names.h"
 #include "brave/components/p3a/p3a_config.h"
+#include "brave/components/p3a/p3a_message.h"
 #include "brave/components/p3a/p3a_service.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/p3a/star_randomness_test_util.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -158,6 +161,10 @@ class P3AMessageManagerTest : public testing::Test,
           url_loader_factory_.AddResponse(request.url.spec(), response);
         }));
 
+    CreateAndStartManager();
+  }
+
+  void CreateAndStartManager() {
     base::Time install_time;
     ASSERT_TRUE(base::Time::FromString("2099-01-01", &install_time));
     message_manager_ = std::make_unique<MessageManager>(
@@ -695,6 +702,80 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfStopped) {
   EXPECT_TRUE(p3a_json_sent_metrics_.empty());
   EXPECT_TRUE(p2a_json_sent_metrics_.empty());
   EXPECT_TRUE(p3a_constellation_sent_messages_.empty());
+}
+
+TEST_F(P3AMessageManagerTest, ActivationDate) {
+  InitFeatures(true);
+  SetUpManager();
+
+  MessageMetainfo meta;
+  meta.Init(local_state_.get(), "release", base::Time::Now() - base::Days(7));
+
+  std::string_view activation_metric;
+  std::string_view non_activation_metric;
+  for (const auto& [histogram_name, config] : kCollectedExpressHistograms) {
+    if (config && config->record_activation_date) {
+      activation_metric = histogram_name;
+    } else if (base::StartsWith(histogram_name, "Brave")) {
+      non_activation_metric = histogram_name;
+    }
+  }
+  auto activation_date = meta.GetActivationDate(activation_metric);
+  auto non_activation_date = meta.GetActivationDate(activation_metric);
+  EXPECT_FALSE(activation_date);
+  EXPECT_FALSE(non_activation_date);
+
+  auto ref_time = base::Time::Now();
+
+  message_manager_->UpdateMetricValue(activation_metric, 1);
+
+  activation_date = meta.GetActivationDate(activation_metric);
+  ASSERT_TRUE(activation_date);
+  EXPECT_GE(*activation_date, ref_time);
+  EXPECT_LT(*activation_date, ref_time + base::Seconds(30));
+
+  message_manager_->UpdateMetricValue(non_activation_metric, 1);
+  activation_date = meta.GetActivationDate(non_activation_metric);
+  EXPECT_FALSE(activation_date);
+
+  task_environment_.FastForwardBy(base::Minutes(30));
+
+  message_manager_->UpdateMetricValue(activation_metric, 1);
+
+  // checking activation date to ensure that it did not get updated
+  activation_date = meta.GetActivationDate(activation_metric);
+  ASSERT_TRUE(activation_date);
+  EXPECT_GE(*activation_date, ref_time);
+  EXPECT_LT(*activation_date, ref_time + base::Seconds(30));
+
+  CreateAndStartManager();
+  // ensure date was not cleared after resetting manager
+  activation_date = meta.GetActivationDate(activation_metric);
+  ASSERT_TRUE(activation_date);
+  EXPECT_GE(*activation_date, ref_time);
+  EXPECT_LT(*activation_date, ref_time + base::Seconds(30));
+}
+
+TEST_F(P3AMessageManagerTest, ActivationDateCleanup) {
+  InitFeatures(true);
+  SetUpManager();
+
+  MessageMetainfo meta;
+  meta.Init(local_state_.get(), "release", base::Time::Now() - base::Days(7));
+
+  const char metric_name[] = "Brave.NonExistentMetric";
+  auto ref_time = base::Time::Now();
+  {
+    ScopedDictPrefUpdate update(local_state_.get(), kActivationDatesDictPref);
+    update->Set(metric_name, base::TimeToValue(ref_time));
+  }
+
+  auto activation_date = meta.GetActivationDate(metric_name);
+  ASSERT_TRUE(activation_date);
+  EXPECT_EQ(activation_date, ref_time);
+
+  CreateAndStartManager();
+  EXPECT_FALSE(meta.GetActivationDate(metric_name));
 }
 
 }  // namespace p3a

@@ -101,6 +101,7 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
 
   registry->RegisterDictionaryPref(kDynamicMetricsDictPref);
+  registry->RegisterDictionaryPref(kActivationDatesDictPref);
 }
 
 void P3AService::InitCallback(std::string_view histogram_name) {

@@ -117,6 +117,8 @@ class MessageManager : public MetricLogStore::Delegate {
 
   void DoConstellationRotation(MetricLogType log_type);
 
+  void CleanupActivationDates();
+
   // MetricLogStore::Delegate
   std::string SerializeLog(std::string_view histogram_name,
                            const uint64_t value,

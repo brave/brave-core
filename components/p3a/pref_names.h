@@ -11,6 +11,7 @@ namespace p3a {
 inline constexpr char kP3AEnabled[] = "brave.p3a.enabled";
 inline constexpr char kP3ANoticeAcknowledged[] =
     "brave.p3a.notice_acknowledged";
+inline constexpr char kActivationDatesDictPref[] = "p3a.activation_dates";
 
 }  // namespace p3a
 

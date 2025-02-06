@@ -10,6 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -26,6 +27,7 @@
 #include "components/metrics/log_store.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace p3a {
@@ -43,6 +45,8 @@ MessageManager::MessageManager(PrefService& local_state,
                                base::Time first_run_time)
     : local_state_(local_state), config_(config), delegate_(delegate) {
   message_meta_.Init(&local_state, channel, first_run_time);
+
+  CleanupActivationDates();
 
   // Init log stores.
   for (MetricLogType log_type : kAllMetricLogTypes) {
@@ -145,6 +149,15 @@ void MessageManager::UpdateMetricValue(
   auto* json_log_store = json_log_stores_[log_type].get();
   if ((update_for_all || !*only_update_for_constellation) && json_log_store) {
     json_log_store->UpdateValue(std::string(histogram_name), bucket);
+  }
+  const auto* metric_config = GetMetricConfig(histogram_name);
+  if (metric_config && *metric_config &&
+      (*metric_config)->record_activation_date) {
+    // Record activation date for metric, for retention measurement purposes
+    ScopedDictPrefUpdate update(&*local_state_, kActivationDatesDictPref);
+    if (!update->contains(histogram_name)) {
+      update->Set(histogram_name, base::TimeToValue(base::Time::Now()));
+    }
   }
 }
 
@@ -426,6 +439,18 @@ const std::optional<MetricConfig>* MessageManager::GetMetricConfig(
     metric_config = &it->second;
   }
   return metric_config;
+}
+
+void MessageManager::CleanupActivationDates() {
+  ScopedDictPrefUpdate update(&*local_state_, kActivationDatesDictPref);
+
+  for (auto it = update->begin(); it != update->end();) {
+    if (!GetMetricConfig(it->first)) {
+      it = update->erase(it);
+    } else {
+      it++;
+    }
+  }
 }
 
 bool MessageManager::IsActualMetric(const std::string& histogram_name) const {
