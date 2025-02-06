@@ -39,6 +39,8 @@ class NetworkTimeHelper {
       network_time::NetworkTimeTracker* tracker,
       const scoped_refptr<base::SingleThreadTaskRunner>& ui_task_runner);
 
+  void Shutdown();
+
   void GetNetworkTime(GetNetworkTimeCallback cb);
 
   void SetNetworkTimeForTest(const base::Time& time);
@@ -56,8 +58,6 @@ class NetworkTimeHelper {
   // Not owned
   raw_ptr<network_time::NetworkTimeTracker, DanglingUntriaged>
       network_time_tracker_ = nullptr;
-
-  base::WeakPtrFactory<NetworkTimeHelper> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_sync

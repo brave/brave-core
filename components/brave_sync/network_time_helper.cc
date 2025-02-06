@@ -31,14 +31,22 @@ void NetworkTimeHelper::SetNetworkTimeTracker(
   ui_task_runner_ = ui_task_runner;
 }
 
+void NetworkTimeHelper::Shutdown() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  network_time_tracker_ = nullptr;
+}
+
 void NetworkTimeHelper::GetNetworkTime(GetNetworkTimeCallback cb) {
   if (!network_time_for_test_.is_null()) {
     std::move(cb).Run(network_time_for_test_);
     return;
   }
+
+  // TODO(alexeybarabash): redo it using mojo interface
+  // https://github.com/brave/brave-browser/issues/43738
   ui_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(&NetworkTimeHelper::GetNetworkTimeOnUIThread,
-                                weak_ptr_factory_.GetWeakPtr(), std::move(cb)));
+                                base::Unretained(this), std::move(cb)));
 }
 
 void NetworkTimeHelper::SetNetworkTimeForTest(const base::Time& time) {
