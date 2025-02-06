@@ -36,6 +36,7 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
     case mojom::ConfirmationType::kLikedAd:
     case mojom::ConfirmationType::kDislikedAd:
     case mojom::ConfirmationType::kConversion:
+    case mojom::ConfirmationType::kInteraction:
     case mojom::ConfirmationType::kMediaPlay:
     case mojom::ConfirmationType::kMedia25:
     case mojom::ConfirmationType::kMedia100: {

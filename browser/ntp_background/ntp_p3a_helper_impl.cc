@@ -54,6 +54,7 @@ constexpr int kCountBuckets[] = {0, 1, 2, 3, 8, 12, 16};
 constexpr char kCreativeViewEventKey[] = "views";
 constexpr char kCreativeClickEventKey[] = "clicks";
 constexpr char kCreativeLandEventKey[] = "lands";
+constexpr char kCreativeInteractionEventKey[] = "interaction";
 constexpr char kCreativeMediaPlayEventKey[] = "media_play";
 constexpr char kCreativeMedia25EventKey[] = "media_25";
 constexpr char kCreativeMedia100EventKey[] = "media_100";
@@ -202,6 +203,11 @@ void NTPP3AHelperImpl::RecordNewTabPageAdEvent(
           FROM_HERE, kStartLandingCheckTime,
           base::BindOnce(&NTPP3AHelperImpl::OnLandingStartCheck,
                          base::Unretained(this), creative_instance_id));
+      break;
+    }
+
+    case brave_ads::mojom::NewTabPageAdEventType::kInteraction: {
+      UpdateMetricCount(creative_instance_id, kCreativeInteractionEventKey);
       break;
     }
 
@@ -369,6 +375,8 @@ void NTPP3AHelperImpl::CleanOldCampaignsAndCreatives() {
           creative_instance_id, kCreativeViewEventKey));
       p3a_service_->RemoveDynamicMetric(BuildCreativeHistogramName(
           creative_instance_id, kCreativeLandEventKey));
+      p3a_service_->RemoveDynamicMetric(BuildCreativeHistogramName(
+          creative_instance_id, kCreativeInteractionEventKey));
       p3a_service_->RemoveDynamicMetric(BuildCreativeHistogramName(
           creative_instance_id, kCreativeMediaPlayEventKey));
       p3a_service_->RemoveDynamicMetric(BuildCreativeHistogramName(
