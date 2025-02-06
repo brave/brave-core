@@ -11,6 +11,7 @@
 #include "base/command_line.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/skus/common/skus_utils.h"
 #include "components/component_updater/component_updater_switches.h"
 
 namespace extensions {
@@ -49,6 +50,15 @@ void BraveExtensionsClient::InitializeWebStoreUrls(
   webstore_update_url_ = GURL(ParseUpdateUrlHost(
       command_line->GetSwitchValueASCII(switches::kComponentUpdater)));
   ChromeExtensionsClient::InitializeWebStoreUrls(command_line);
+}
+
+bool BraveExtensionsClient::IsScriptableURL(const GURL& url,
+                                            std::string* error) const {
+  if (skus::IsSafeOrigin(url)) {
+    *error = "This site is protected and cannot be scripted.";
+    return false;
+  }
+  return ChromeExtensionsClient::IsScriptableURL(url, error);
 }
 
 const GURL& BraveExtensionsClient::GetWebstoreUpdateURL() const {

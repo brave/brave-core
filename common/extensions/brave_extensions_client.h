@@ -17,6 +17,7 @@ class BraveExtensionsClient : public ChromeExtensionsClient {
   BraveExtensionsClient& operator=(const BraveExtensionsClient&) = delete;
 
   void InitializeWebStoreUrls(base::CommandLine* command_line) override;
+  bool IsScriptableURL(const GURL& url, std::string* error) const override;
   const GURL& GetWebstoreUpdateURL() const override;
 
  private:
