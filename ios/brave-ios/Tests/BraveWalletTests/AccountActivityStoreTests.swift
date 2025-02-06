@@ -80,7 +80,7 @@ class AccountActivityStoreTests: XCTestCase {
     rpcService._erc20TokenBalance = { _, _, _, completion in
       completion(mockERC20BalanceWei, .success, "")
     }
-    rpcService._nftBalances = { nftIdentifiers, _, completion in
+    rpcService._nftBalances = { _, nftIdentifiers, completion in
       var balances: [NSNumber] = []
       for nft in nftIdentifiers {
         var balance: Double = 0
@@ -208,8 +208,7 @@ class AccountActivityStoreTests: XCTestCase {
 
     let mockERC721NFT = BraveWallet.BlockchainToken.mockERC721NFTToken.copy(asVisibleAsset: true)
     let mockERC721NFTTokenIdentifier: BraveWallet.NftIdentifier = .init(
-      coin: .eth,
-      chainId: mockERC721NFT.chainId,
+      chainId: .init(coin: .eth, chainId: mockERC721NFT.chainId),
       contractAddress: mockERC721NFT.contractAddress,
       tokenId: mockERC721NFT.tokenId
     )
@@ -408,8 +407,7 @@ class AccountActivityStoreTests: XCTestCase {
     let mockSolanaNFTToken =
       BraveWallet.BlockchainToken.mockSolanaNFTToken.copy(asVisibleAsset: true)
     let mockSolanaNFTTokenIdentifier = BraveWallet.NftIdentifier(
-      coin: .sol,
-      chainId: mockSolanaNFTToken.chainId,
+      chainId: .init(coin: .sol, chainId: mockSolanaNFTToken.chainId),
       contractAddress: mockSolanaNFTToken.contractAddress,
       tokenId: mockSolanaNFTToken.tokenId
     )
