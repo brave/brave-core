@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -114,10 +115,8 @@ AssetDiscoveryManager::GetFungibleSupportedChains() {
 std::vector<mojom::ChainIdPtr>
 AssetDiscoveryManager::GetNonFungibleSupportedChains() {
   // Use fungible chains as a base.
-  std::vector<mojom::ChainIdPtr> non_fungible_supported_chains;
-  for (auto& chain_id : GetFungibleSupportedChains()) {
-    non_fungible_supported_chains.push_back(chain_id.Clone());
-  }
+  std::vector<mojom::ChainIdPtr> non_fungible_supported_chains =
+      CloneVector(GetFungibleSupportedChains());
 
   // Add in all the user networks that are supported by SimpleHash
   auto custom_non_fungible_eth_chains =
