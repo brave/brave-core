@@ -17,6 +17,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
@@ -24,12 +25,14 @@
 #include "components/omnibox/browser/omnibox_controller.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/omnibox/browser/omnibox_popup_selection.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/label.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_class_properties.h"
@@ -40,6 +43,10 @@ void BraveOmniboxResultView::ResetChildren() {
   if (brave_search_promotion_view_) {
     RemoveChildViewT(brave_search_promotion_view_);
     brave_search_promotion_view_ = nullptr;
+  }
+
+  if (leo_match_label_) {
+    RemoveChildViewT(leo_match_label_.ExtractAsDangling());
   }
 
   // Reset children visibility. Their visibility could be configured later
@@ -143,6 +150,19 @@ void BraveOmniboxResultView::UpdateForLeoMatch() {
               gfx::Insets().set_top(1),
               cp->GetColor(kColorBraveOmniboxResultViewSeparator)),
           gfx::Insets().set_top(kLeoMatchPadding)));
+
+      if (!leo_match_label_) {
+        leo_match_label_ = AddChildView(std::make_unique<views::Label>(
+            l10n_util::GetStringUTF16(IDS_OMNIBOX_SELECT_ASK_LEO_HINT)));
+        leo_match_label_->SetHorizontalAlignment(gfx::ALIGN_RIGHT);
+        leo_match_label_->SetBorder(
+            views::CreateEmptyBorder(gfx::Insets().set_right(32)));
+      }
+
+      // The "Press ↑ to highlight" label should only be visible when pressing
+      // up will actually highlight it.
+      leo_match_label_->SetVisible(popup_view_->GetSelection().line == 0 &&
+                                   !GetMatchSelected());
     }
   } else {
     ClearProperty(views::kMarginsKey);
