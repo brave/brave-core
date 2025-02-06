@@ -98,7 +98,6 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
                                uint32_t changed_metrics) override;
 
   // views::WidgetDelegateView:
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   void OnDisplayChanged() override;
   void OnWorkAreaChanged() override;
   void OnPaintBackground(gfx::Canvas* canvas) override;

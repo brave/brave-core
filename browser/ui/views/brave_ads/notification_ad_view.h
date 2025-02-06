@@ -34,7 +34,6 @@ class NotificationAdView : public views::View {
   void OnCloseButtonPressed();
 
   // views::View:
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   void OnDeviceScaleFactorChanged(float old_device_scale_factor,
                                   float new_device_scale_factor) override;
   void OnThemeChanged() override;
@@ -48,6 +47,7 @@ class NotificationAdView : public views::View {
 
   std::u16string accessible_name_;
   void MaybeNotifyAccessibilityEvent();
+  void UpdateAccessibleName();
 };
 
 }  // namespace brave_ads

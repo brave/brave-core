@@ -11,6 +11,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
+#include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 
@@ -19,6 +20,10 @@ namespace brave_ads {
 NotificationAdView::NotificationAdView(const NotificationAd& notification_ad)
     : notification_ad_(notification_ad) {
   CreateView();
+
+  GetViewAccessibility().SetRole(ax::mojom::Role::kGenericContainer);
+  GetViewAccessibility().SetRoleDescription(
+      l10n_util::GetStringUTF8(IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME));
 }
 
 NotificationAdView::~NotificationAdView() = default;
@@ -39,19 +44,6 @@ void NotificationAdView::OnCloseButtonPressed() {
   is_closing_ = true;
 
   NotificationAdPopupHandler::Close(notification_ad_.id(), /*by_user*/ true);
-}
-
-void NotificationAdView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  node_data->role = ax::mojom::Role::kGenericContainer;
-  node_data->AddStringAttribute(
-      ax::mojom::StringAttribute::kRoleDescription,
-      l10n_util::GetStringUTF8(IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME));
-
-  if (accessible_name_.empty()) {
-    node_data->SetNameFrom(ax::mojom::NameFrom::kAttributeExplicitlyEmpty);
-  }
-
-  node_data->SetName(accessible_name_);
 }
 
 void NotificationAdView::OnDeviceScaleFactorChanged(
@@ -88,6 +80,16 @@ void NotificationAdView::MaybeNotifyAccessibilityEvent() {
   accessible_name_ = accessible_name;
 
   NotifyAccessibilityEvent(ax::mojom::Event::kTextChanged, true);
+  UpdateAccessibleName();
+}
+
+void NotificationAdView::UpdateAccessibleName() {
+  if (accessible_name_.empty()) {
+    GetViewAccessibility().SetName(
+        "", ax::mojom::NameFrom::kAttributeExplicitlyEmpty);
+  } else {
+    GetViewAccessibility().SetName(accessible_name_);
+  }
 }
 
 BEGIN_METADATA(NotificationAdView)

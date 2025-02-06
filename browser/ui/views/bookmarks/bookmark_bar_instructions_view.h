@@ -39,7 +39,6 @@ class BookmarkBarInstructionsView : public views::View,
       const views::SizeBounds& available_size) const override;
   void Layout(PassKey) override;
   void OnThemeChanged() override;
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
 
   // views::ContextMenuController:
   void ShowContextMenuForViewImpl(

@@ -99,11 +99,6 @@ void BookmarkBarInstructionsView::OnThemeChanged() {
   UpdateColors();
 }
 
-void BookmarkBarInstructionsView::GetAccessibleNodeData(
-    ui::AXNodeData* node_data) {
-  instructions_->GetAccessibleNodeData(node_data);
-}
-
 void BookmarkBarInstructionsView::LinkClicked() {
   chrome::ShowImportDialog(browser_);
 }

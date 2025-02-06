@@ -27,6 +27,7 @@
 #include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/skia_paint_util.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/border.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/widget/widget.h"
@@ -63,6 +64,10 @@ namespace brave_tooltips {
 BraveTooltipPopup::BraveTooltipPopup(std::unique_ptr<BraveTooltip> tooltip)
     : tooltip_(std::move(tooltip)) {
   CreatePopup();
+
+  GetViewAccessibility().SetRole(ax::mojom::Role::kAlertDialog);
+  GetViewAccessibility().SetRoleDescription(l10n_util::GetStringUTF8(
+      IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME));
 
   NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);
 
@@ -147,12 +152,6 @@ void BraveTooltipPopup::OnDisplayMetricsChanged(const display::Display& display,
                                                 uint32_t changed_metrics) {
   // Called when the metrics of a display change
   RecomputeAlignment();
-}
-
-void BraveTooltipPopup::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  node_data->role = ax::mojom::Role::kAlertDialog;
-  node_data->SetName(l10n_util::GetStringUTF8(
-      IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME));
 }
 
 void BraveTooltipPopup::OnDisplayChanged() {

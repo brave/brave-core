@@ -40,6 +40,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/gfx/range/range.h"
 #include "ui/gfx/skia_paint_util.h"
+#include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/background.h"
 #include "ui/views/cascading_property.h"
 #include "ui/views/controls/button/image_button.h"
@@ -185,17 +186,16 @@ class CloseButton : public views::ImageButton {
   explicit CloseButton(PressedCallback callback = PressedCallback())
       : ImageButton(std::move(callback)) {
     views::ConfigureVectorImageButton(this);
+
+    // Although this appears visually as a button, expose as a list box option
+    // so that it matches the other options within its list box container.
+    GetViewAccessibility().SetRole(ax::mojom::Role::kListBoxOption);
+    GetViewAccessibility().SetRoleDescription(
+        brave_l10n::GetLocalizedResourceUTF16String(
+            IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON));
   }
   CloseButton(const CloseButton&) = delete;
   CloseButton& operator=(const CloseButton&) = delete;
-
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override {
-    // Although this appears visually as a button, expose as a list box option
-    // so that it matches the other options within its list box container.
-    node_data->role = ax::mojom::Role::kListBoxOption;
-    node_data->SetName(brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_ACC_BRAVE_SEARCH_CONVERSION_DISMISS_BUTTON));
-  }
 };
 
 BEGIN_METADATA(CloseButton)

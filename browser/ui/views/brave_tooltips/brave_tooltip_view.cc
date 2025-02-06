@@ -23,6 +23,7 @@
 #include "ui/gfx/geometry/vector2d.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/button/button.h"
@@ -91,23 +92,13 @@ BraveTooltipView::BraveTooltipView(
     : tooltip_popup_(tooltip_popup), tooltip_attributes_(tooltip_attributes) {
   SetSize(kTooltipSize);
   CreateView();
+
+  GetViewAccessibility().SetRole(ax::mojom::Role::kGenericContainer);
+  GetViewAccessibility().SetRoleDescription(l10n_util::GetStringUTF8(
+      IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME));
 }
 
 BraveTooltipView::~BraveTooltipView() = default;
-
-void BraveTooltipView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  node_data->role = ax::mojom::Role::kGenericContainer;
-  node_data->AddStringAttribute(
-      ax::mojom::StringAttribute::kRoleDescription,
-      l10n_util::GetStringUTF8(
-          IDS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_ACCESSIBLE_NAME));
-
-  if (accessible_name_.empty()) {
-    node_data->SetNameFrom(ax::mojom::NameFrom::kAttributeExplicitlyEmpty);
-  }
-
-  node_data->SetName(accessible_name_);
-}
 
 bool BraveTooltipView::OnMousePressed(const ui::MouseEvent& event) {
   initial_mouse_pressed_location_ = event.location();
