@@ -88,7 +88,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     action: #selector(onSuggestionLongPressed(_:))
   )
 
-  var searchDelegate: SearchViewControllerDelegate?
+  weak var searchDelegate: SearchViewControllerDelegate?
   var isUsingBottomBar: Bool = false {
     didSet {
       layoutSearchEngineScrollView()
