@@ -181,14 +181,6 @@ bool ValidateNftIdentifiers(
     return false;
   }
 
-  // Check for duplicates using a set to track unique identifiers
-  std::set<mojom::NftIdentifierPtr> seen_identifiers;
-  for (const auto& nft : nft_identifiers) {
-    if (!seen_identifiers.insert(nft.Clone()).second) {
-      return false;
-    }
-  }
-
   if (coin == mojom::CoinType::ETH) {
     for (auto& nft_identifier : nft_identifiers) {
       auto checksum_address =
@@ -389,11 +381,6 @@ void SimpleHashClient::GetNftBalances(
     return;
   }
 
-  if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
-    std::move(callback).Run(base::unexpected(InvalidParameters()));
-    return;
-  }
-
   GURL url = SimpleHashClient::GetNftsUrl(nft_identifiers);
   if (!url.is_valid()) {
     std::move(callback).Run(base::unexpected(InvalidParameters()));
@@ -458,11 +445,6 @@ void SimpleHashClient::GetNftMetadatas(
     std::vector<mojom::NftIdentifierPtr> nft_identifiers,
     GetNftMetadatasCallback callback) {
   if (!ValidateNftIdentifiers(nft_identifiers)) {
-    std::move(callback).Run(base::unexpected(InvalidParameters()));
-    return;
-  }
-
-  if (nft_identifiers.size() > kSimpleHashMaxBatchSize) {
     std::move(callback).Run(base::unexpected(InvalidParameters()));
     return;
   }

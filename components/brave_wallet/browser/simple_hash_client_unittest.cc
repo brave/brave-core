@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -21,6 +22,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -148,28 +150,30 @@ class SimpleHashClientUnitTest : public testing::Test {
 
   void TestGetNftMetadatas(
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
-      const std::vector<mojom::NftMetadataPtr>& expected_metadatas) {
+      const base::expected<std::vector<mojom::NftMetadataPtr>, std::string>&
+          expected) {
     base::RunLoop run_loop;
     simple_hash_client_->GetNftMetadatas(
         std::move(nft_identifiers),
         base::BindLambdaForTesting(
             [&](base::expected<std::vector<mojom::NftMetadataPtr>, std::string>
                     metadatas) {
-              ASSERT_EQ(metadatas.value(), expected_metadatas);
+              ASSERT_EQ(metadatas, expected);
               run_loop.Quit();
             }));
     run_loop.Run();
   }
 
-  void TestGetNftBalances(const std::string& wallet_address,
-                          std::vector<mojom::NftIdentifierPtr> nft_identifiers,
-                          const std::vector<uint64_t>& expected_balances) {
+  void TestGetNftBalances(
+      const std::string& wallet_address,
+      std::vector<mojom::NftIdentifierPtr> nft_identifiers,
+      const base::expected<std::vector<uint64_t>, std::string>& expected) {
     base::RunLoop run_loop;
     simple_hash_client_->GetNftBalances(
         wallet_address, std::move(nft_identifiers),
         base::BindLambdaForTesting(
             [&](base::expected<std::vector<uint64_t>, std::string> balances) {
-              ASSERT_EQ(balances.value(), expected_balances);
+              ASSERT_EQ(balances, expected);
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -1314,31 +1318,24 @@ TEST_F(SimpleHashClientUnitTest, GetNftsUrl) {
   url = SimpleHashClient::GetNftsUrl(nft_ids);
   EXPECT_EQ(
       url,
-      GURL(
-          "https://simplehash.wallet.brave.com/api/v0/nfts/assets"
-          "?nft_ids=ethereum.0x0.0%2Cethereum.0x1.1%2Cethereum.0x2.2%"
-          "2Cethereum.0x3.3%2Cethereum.0x4.4%2Cethereum.0x5.5%2Cethereum.0x6.6%"
-          "2Cethereum.0x7.7%2Cethereum.0x8.8%2Cethereum.0x9.9%2Cethereum.0x10."
-          "16%"
-          "2Cethereum.0x11.17%2Cethereum.0x12.18%2Cethereum.0x13.19%2Cethereum."
-          "0x14.20%"
-          "2Cethereum.0x15.21%2Cethereum.0x16.22%2Cethereum.0x17.23%2Cethereum."
-          "0x18.24%"
-          "2Cethereum.0x19.25%2Cethereum.0x20.32%2Cethereum.0x21.33%2Cethereum."
-          "0x22.34%"
-          "2Cethereum.0x23.35%2Cethereum.0x24.36%2Cethereum.0x25.37%2Cethereum."
-          "0x26.38%"
-          "2Cethereum.0x27.39%2Cethereum.0x28.40%2Cethereum.0x29.41%2Cethereum."
-          "0x30.48%"
-          "2Cethereum.0x31.49%2Cethereum.0x32.50%2Cethereum.0x33.51%2Cethereum."
-          "0x34.52%"
-          "2Cethereum.0x35.53%2Cethereum.0x36.54%2Cethereum.0x37.55%2Cethereum."
-          "0x38.56%"
-          "2Cethereum.0x39.57%2Cethereum.0x40.64%2Cethereum.0x41.65%2Cethereum."
-          "0x42.66%"
-          "2Cethereum.0x43.67%2Cethereum.0x44.68%2Cethereum.0x45.69%2Cethereum."
-          "0x46.70%"
-          "2Cethereum.0x47.71%2Cethereum.0x48.72%2Cethereum.0x49.73"));
+      GURL("https://simplehash.wallet.brave.com/api/v0/nfts/assets?nft_ids="
+           "ethereum.0x0.0%2Cethereum.0x1.1%2Cethereum.0x2.2%2C"
+           "ethereum.0x3.3%2Cethereum.0x4.4%2Cethereum.0x5.5%2C"
+           "ethereum.0x6.6%2Cethereum.0x7.7%2Cethereum.0x8.8%2C"
+           "ethereum.0x9.9%2Cethereum.0x10.16%2Cethereum.0x11.17%2C"
+           "ethereum.0x12.18%2Cethereum.0x13.19%2Cethereum.0x14.20%2C"
+           "ethereum.0x15.21%2Cethereum.0x16.22%2Cethereum.0x17.23%2C"
+           "ethereum.0x18.24%2Cethereum.0x19.25%2Cethereum.0x20.32%2C"
+           "ethereum.0x21.33%2Cethereum.0x22.34%2Cethereum.0x23.35%2C"
+           "ethereum.0x24.36%2Cethereum.0x25.37%2Cethereum.0x26.38%2C"
+           "ethereum.0x27.39%2Cethereum.0x28.40%2Cethereum.0x29.41%2C"
+           "ethereum.0x30.48%2Cethereum.0x31.49%2Cethereum.0x32.50%2C"
+           "ethereum.0x33.51%2Cethereum.0x34.52%2Cethereum.0x35.53%2C"
+           "ethereum.0x36.54%2Cethereum.0x37.55%2Cethereum.0x38.56%2C"
+           "ethereum.0x39.57%2Cethereum.0x40.64%2Cethereum.0x41.65%2C"
+           "ethereum.0x42.66%2Cethereum.0x43.67%2Cethereum.0x44.68%2C"
+           "ethereum.0x45.69%2Cethereum.0x46.70%2Cethereum.0x47.71%2C"
+           "ethereum.0x48.72%2Cethereum.0x49.73"));
   nft_ids.clear();
 
   // Any invalid chain ID yields empty URL
@@ -1507,29 +1504,35 @@ TEST_F(SimpleHashClientUnitTest, GetNfts) {
   }
 
   responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
-      "assets?nft_ids=ethereum.0x0%2Cethereum.0x1%2Cethereum.0x2%2Cethereum."
-      "0x3%2Cethereum.0x4%2Cethereum.0x5%2Cethereum.0x6%2Cethereum.0x7%"
-      "2Cethereum.0x8%2Cethereum.0x9%2Cethereum.0x10%2Cethereum.0x11%"
-      "2Cethereum.0x12%2Cethereum.0x13%2Cethereum.0x14%2Cethereum.0x15%"
-      "2Cethereum.0x16%2Cethereum.0x17%2Cethereum.0x18%2Cethereum.0x19%"
-      "2Cethereum.0x20%2Cethereum.0x21%2Cethereum.0x22%2Cethereum.0x23%"
-      "2Cethereum.0x24%2Cethereum.0x25%2Cethereum.0x26%2Cethereum.0x27%"
-      "2Cethereum.0x28%2Cethereum.0x29%2Cethereum.0x30%2Cethereum.0x31%"
-      "2Cethereum.0x32%2Cethereum.0x33%2Cethereum.0x34%2Cethereum.0x35%"
-      "2Cethereum.0x36%2Cethereum.0x37%2Cethereum.0x38%2Cethereum.0x39%"
-      "2Cethereum.0x40%2Cethereum.0x41%2Cethereum.0x42%2Cethereum.0x43%"
-      "2Cethereum.0x44%2Cethereum.0x45%2Cethereum.0x46%2Cethereum.0x47%"
-      "2Cethereum.0x48%2Cethereum.0x49")] = "{}";
+      "https://simplehash.wallet.brave.com/api/v0/nfts/assets?nft_ids="
+      "ethereum.0x0.0%2Cethereum.0x1.1%2Cethereum.0x2.2%2C"
+      "ethereum.0x3.3%2Cethereum.0x4.4%2Cethereum.0x5.5%2C"
+      "ethereum.0x6.6%2Cethereum.0x7.7%2Cethereum.0x8.8%2C"
+      "ethereum.0x9.9%2Cethereum.0x10.16%2Cethereum.0x11.17%2C"
+      "ethereum.0x12.18%2Cethereum.0x13.19%2Cethereum.0x14.20%2C"
+      "ethereum.0x15.21%2Cethereum.0x16.22%2Cethereum.0x17.23%2C"
+      "ethereum.0x18.24%2Cethereum.0x19.25%2Cethereum.0x20.32%2C"
+      "ethereum.0x21.33%2Cethereum.0x22.34%2Cethereum.0x23.35%2C"
+      "ethereum.0x24.36%2Cethereum.0x25.37%2Cethereum.0x26.38%2C"
+      "ethereum.0x27.39%2Cethereum.0x28.40%2Cethereum.0x29.41%2C"
+      "ethereum.0x30.48%2Cethereum.0x31.49%2Cethereum.0x32.50%2C"
+      "ethereum.0x33.51%2Cethereum.0x34.52%2Cethereum.0x35.53%2C"
+      "ethereum.0x36.54%2Cethereum.0x37.55%2Cethereum.0x38.56%2C"
+      "ethereum.0x39.57%2Cethereum.0x40.64%2Cethereum.0x41.65%2C"
+      "ethereum.0x42.66%2Cethereum.0x43.67%2Cethereum.0x44.68%2C"
+      "ethereum.0x45.69%2Cethereum.0x46.70%2Cethereum.0x47.71%2C"
+      "ethereum.0x48.72%2Cethereum.0x49.73")] = "{}";
   responses[GURL(
-      "https://simplehash.wallet.brave.com/api/v0/nfts/"
-      "assets?nft_ids=ethereum.0x50%2Cethereum.0x51%2Cethereum.0x52%2Cethereum."
-      "0x53%2Cethereum.0x54%2Cethereum.0x55%2Cethereum.0x56%2Cethereum.0x57%"
-      "2Cethereum.0x58%2Cethereum.0x59%2Cethereum.0x60%2Cethereum.0x61%"
-      "2Cethereum.0x62%2Cethereum.0x63%2Cethereum.0x64%2Cethereum.0x65%"
-      "2Cethereum.0x66%2Cethereum.0x67%2Cethereum.0x68%2Cethereum.0x69%"
-      "2Cethereum.0x70%2Cethereum.0x71%2Cethereum.0x72%2Cethereum.0x73%"
-      "2Cethereum.0x74")] = json;
+      "https://simplehash.wallet.brave.com/api/v0/nfts/assets?nft_ids="
+      "ethereum.0x50.80%2Cethereum.0x51.81%2Cethereum.0x52.82%2C"
+      "ethereum.0x53.83%2Cethereum.0x54.84%2Cethereum.0x55.85%2C"
+      "ethereum.0x56.86%2Cethereum.0x57.87%2Cethereum.0x58.88%2C"
+      "ethereum.0x59.89%2Cethereum.0x60.96%2Cethereum.0x61.97%2C"
+      "ethereum.0x62.98%2Cethereum.0x63.99%2Cethereum.0x64.100%2C"
+      "ethereum.0x65.101%2Cethereum.0x66.102%2Cethereum.0x67.103%2C"
+      "ethereum.0x68.104%2Cethereum.0x69.105%2Cethereum.0x70.112%2C"
+      "ethereum.0x71.113%2Cethereum.0x72.114%2Cethereum.0x73.115%2C"
+      "ethereum.0x74.116")] = json;
   SetInterceptors(responses);
   TestGetNfts(std::move(nft_ids), expected_nfts);
 }
@@ -1749,13 +1752,15 @@ TEST_F(SimpleHashClientUnitTest, ParseMetadatas) {
 }
 
 TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
-  // If there are no NFTs, an empty vector is returned.
+  // If there are no NFTs, an invalid parameters error is returned.
   std::vector<mojom::NftIdentifierPtr> nft_identifiers;
   std::vector<mojom::NftMetadataPtr> expected_metadatas;
-  TestGetNftMetadatas(std::move(nft_identifiers), expected_metadatas);
+  TestGetNftMetadatas(std::move(nft_identifiers),
+                      base::unexpected(l10n_util::GetStringUTF8(
+                          IDS_WALLET_INVALID_PARAMETERS)));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
-  // If there are > 50 NFTs, an empty vector is returned.
+  // If there are > 50 NFTs, an invalid parameters error is returned.
   for (int i = 0; i < 75; i++) {
     auto nft_identifier = mojom::NftIdentifier::New();
     nft_identifier->chain_id = EthMainnetChainId();
@@ -1764,7 +1769,10 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
     nft_identifier->token_id = "0x" + base::NumberToString(i);
     nft_identifiers.push_back(std::move(nft_identifier));
   }
-  TestGetNftMetadatas(std::move(nft_identifiers), expected_metadatas);
+  expected_metadatas.clear();
+  TestGetNftMetadatas(std::move(nft_identifiers),
+                      base::unexpected(l10n_util::GetStringUTF8(
+                          IDS_WALLET_INVALID_PARAMETERS)));
 
   std::string json = R"({
     "nfts": [
@@ -1784,7 +1792,7 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
               "value": "Red"
             },
             {
-              "trait_type": "Size", 
+              "trait_type": "Size",
               "value": "Small"
             }
           ]
@@ -1886,7 +1894,8 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
   expected_metadatas.push_back(std::move(metadata1));
   expected_metadatas.push_back(std::move(metadata2));
   SetInterceptors(responses);
-  TestGetNftMetadatas(std::move(nft_identifiers), expected_metadatas);
+  TestGetNftMetadatas(std::move(nft_identifiers),
+                      base::ok(std::move(expected_metadatas)));
 
   // Test case for duplicate NFT identifiers
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
@@ -1953,15 +1962,16 @@ TEST_F(SimpleHashClientUnitTest, GetNftMetadatas) {
       duplicate_json;
 
   SetInterceptors(responses);
-  TestGetNftMetadatas(std::move(nft_identifiers), expected_metadatas);
+  TestGetNftMetadatas(std::move(nft_identifiers),
+                      base::ok(std::move(expected_metadatas)));
 }
 
 TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
   std::string wallet_address = "0x123";
   std::vector<mojom::NftIdentifierPtr> nft_identifiers;
-  std::vector<uint64_t> expected_balances;
   TestGetNftBalances(wallet_address, std::move(nft_identifiers),
-                     expected_balances);
+                     base::unexpected(l10n_util::GetStringUTF8(
+                         IDS_WALLET_INVALID_PARAMETERS)));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
   // More than 50 NFTs yields no balances
@@ -1973,7 +1983,8 @@ TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
     nft_identifiers.push_back(std::move(nft_identifier));
   }
   TestGetNftBalances(wallet_address, std::move(nft_identifiers),
-                     expected_balances);
+                     base::unexpected(l10n_util::GetStringUTF8(
+                         IDS_WALLET_INVALID_PARAMETERS)));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
   // Response includes two NFTs, wallet address is included in only one of them
@@ -2034,11 +2045,12 @@ TEST_F(SimpleHashClientUnitTest, GetNftBalances) {
       "2Csolana.2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr")] = json;
 
   // Add the expected balances
+  std::vector<uint64_t> expected_balances;
   expected_balances.push_back(999);
   expected_balances.push_back(0);
   SetInterceptors(responses);
   TestGetNftBalances(wallet_address, std::move(nft_identifiers),
-                     expected_balances);
+                     base::ok(expected_balances));
 }
 
 TEST_F(SimpleHashClientUnitTest, ParseBalances) {
@@ -2079,9 +2091,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
 
   json_value = base::JSONReader::Read(json);
   ASSERT_TRUE(json_value);
-  std::optional<base::flat_map<mojom::NftIdentifierPtr,
-                               base::flat_map<std::string, uint64_t>>>
-      owners = simple_hash_client_->ParseBalances(*json_value);
+  auto owners = simple_hash_client_->ParseBalances(*json_value);
   ASSERT_TRUE(owners);
 
   // Verify there is one Ethereum entry.
@@ -2195,22 +2205,6 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
             "quantity": "2"
           }
         ]
-      },
-      {
-        "nft_id": "solana.2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
-        "chain": "solana",
-        "contract_address": "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR",
-        "token_id": null,
-        "name": "Common Water Warrior #19",
-        "extra_metadata": {
-          "metadata_original_url": "https://nft.dragonwar.io/avatars/dragons/CWTWRDR_1.json"
-        },
-        "owners": [
-          {
-            "owner_address": "0x123",
-            "quantity": "3"
-          }
-        ]
       }
     ]
   })";
@@ -2221,6 +2215,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
   owners = simple_hash_client_->ParseBalances(*json_value);
   ASSERT_TRUE(owners);
   EXPECT_EQ(owners->size(), 1u);
+
   it = owners->find(azuki_identifier);
   ASSERT_NE(it, owners->end());
   EXPECT_EQ(it->second.size(), 1u);
@@ -2228,7 +2223,7 @@ TEST_F(SimpleHashClientUnitTest, ParseBalances) {
 }
 
 TEST_F(SimpleHashClientUnitTest, FetchSolCompressedNftProofData) {
-  // HTTP timout should return nullopt.
+  // HTTP timeout should return nullopt.
   std::string token_address = "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   SetHTTPRequestTimeoutInterceptor();
   TestFetchSolCompressedNftProofData(token_address, std::nullopt);

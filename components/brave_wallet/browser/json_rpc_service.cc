@@ -15,6 +15,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
@@ -296,6 +297,12 @@ std::optional<std::string> GetAnkrBlockchainFromChainId(
   }
 
   return std::nullopt;
+}
+
+bool HasDuplicateNftIds(
+    const std::vector<mojom::NftIdentifierPtr>& nft_identifiers) {
+  return base::flat_set<mojom::NftIdentifierPtr>(CloneVector(nft_identifiers))
+             .size() != nft_identifiers.size();
 }
 
 }  // namespace
@@ -2871,6 +2878,12 @@ void JsonRpcService::GetSolTokenMetadata(const std::string& chain_id,
 void JsonRpcService::GetNftMetadatas(
     std::vector<mojom::NftIdentifierPtr> nft_identifiers,
     GetNftMetadatasCallback callback) {
+  if (HasDuplicateNftIds(nft_identifiers)) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetNftMetadatas,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -2895,6 +2908,12 @@ void JsonRpcService::GetNftBalances(
     const std::string& wallet_address,
     std::vector<mojom::NftIdentifierPtr> nft_identifiers,
     GetNftBalancesCallback callback) {
+  if (HasDuplicateNftIds(nft_identifiers)) {
+    std::move(callback).Run(
+        {}, l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetNftBalances,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
