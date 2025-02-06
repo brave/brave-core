@@ -50,10 +50,12 @@ class AdsServiceDelegate : public AdsService::Delegate {
 
   // AdsService::Delegate implementation
   void InitNotificationHelper() override;
-  bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() override;
+  void CanShowSystemNotificationsWhileBrowserIsBackgrounded(
+      base::OnceCallback<void(bool)> callback) override;
   bool DoesSupportSystemNotifications() override;
-  bool CanShowNotifications() override;
-  bool ShowOnboardingNotification() override;
+  void CanShowNotifications(base::OnceCallback<void(bool)> callback) override;
+  void ShowOnboardingNotification(
+      base::OnceCallback<void(bool)> callback) override;
   void ShowScheduledCaptcha(const std::string& payment_id,
                             const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;

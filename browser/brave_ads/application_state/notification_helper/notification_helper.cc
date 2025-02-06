@@ -7,6 +7,7 @@
 
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/brave_ads/application_state/notification_helper/notification_helper_impl.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -70,18 +71,22 @@ NotificationPlatformBridge* GetSystemNotificationPlatformBridge(
 namespace brave_ads {
 
 NotificationHelper::NotificationHelper() {
+  std::unique_ptr<NotificationHelperImpl> impl;
 #if BUILDFLAG(IS_ANDROID)
-  impl_.reset(new NotificationHelperImplAndroid());
+  impl.reset(new NotificationHelperImplAndroid());
 #elif BUILDFLAG(IS_LINUX)
-  impl_.reset(new NotificationHelperImplLinux());
+  impl.reset(new NotificationHelperImplLinux());
 #elif BUILDFLAG(IS_MAC)
-  impl_.reset(new NotificationHelperImplMac());
+  impl.reset(new NotificationHelperImplMac());
 #elif BUILDFLAG(IS_WIN)
-  impl_.reset(new NotificationHelperImplWin());
+  impl.reset(new NotificationHelperImplWin());
 #else
   // Default notification helper for unsupported platforms
-  impl_.reset(new NotificationHelperImpl());
+  impl.reset(new NotificationHelperImpl());
 #endif  // BUILDFLAG(IS_ANDROID)
+  auto task_runner = base::ThreadPool::CreateSequencedTaskRunner(
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE});
+  impl_.emplace(std::move(task_runner), std::move(impl));
 }
 
 NotificationHelper::~NotificationHelper() = default;
@@ -105,20 +110,28 @@ void NotificationHelper::InitForProfile(Profile* profile) {
       weak_factory_.GetWeakPtr()));
 }
 
-bool NotificationHelper::CanShowNotifications() {
-  return impl_->CanShowNotifications();
+void NotificationHelper::CanShowNotifications(
+    base::OnceCallback<void(bool)> callback) const {
+  impl_.AsyncCall(&NotificationHelperImpl::CanShowNotifications)
+      .Then(std::move(callback));
 }
 
-bool NotificationHelper::CanShowSystemNotificationsWhileBrowserIsBackgrounded()
-    const {
+void NotificationHelper::CanShowSystemNotificationsWhileBrowserIsBackgrounded(
+    base::OnceCallback<void(bool)> callback) const {
   if (!does_support_system_notifications_) {
-    return false;
+    std::move(callback).Run(false);
+    return;
   }
-  return impl_->CanShowSystemNotificationsWhileBrowserIsBackgrounded();
+  impl_
+      .AsyncCall(&NotificationHelperImpl::
+                     CanShowSystemNotificationsWhileBrowserIsBackgrounded)
+      .Then(std::move(callback));
 }
 
-bool NotificationHelper::ShowOnboardingNotification() {
-  return impl_->ShowOnboardingNotification();
+void NotificationHelper::ShowOnboardingNotification(
+    base::OnceCallback<void(bool)> callback) {
+  impl_.AsyncCall(&NotificationHelperImpl::ShowOnboardingNotification)
+      .Then(std::move(callback));
 }
 
 bool NotificationHelper::DoesSupportSystemNotifications() const {

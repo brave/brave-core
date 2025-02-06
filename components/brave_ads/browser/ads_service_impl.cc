@@ -1554,8 +1554,8 @@ void AdsServiceImpl::CanShowNotificationAds(
 
 void AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded(
     CanShowNotificationAdsWhileBrowserIsBackgroundedCallback callback) {
-  std::move(callback).Run(
-      delegate_->CanShowSystemNotificationsWhileBrowserIsBackgrounded());
+  delegate_->CanShowSystemNotificationsWhileBrowserIsBackgrounded(
+      std::move(callback));
 }
 
 void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {

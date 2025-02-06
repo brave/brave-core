@@ -34,10 +34,13 @@ class AdsService : public KeyedService {
     virtual ~Delegate() = default;
 
     virtual void InitNotificationHelper() = 0;
-    virtual bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() = 0;
+    virtual void CanShowSystemNotificationsWhileBrowserIsBackgrounded(
+        base::OnceCallback<void(bool)> callback) = 0;
     virtual bool DoesSupportSystemNotifications() = 0;
-    virtual bool CanShowNotifications() = 0;
-    virtual bool ShowOnboardingNotification() = 0;
+    virtual void CanShowNotifications(
+        base::OnceCallback<void(bool)> callback) = 0;
+    virtual void ShowOnboardingNotification(
+        base::OnceCallback<void(bool)> callback) = 0;
     virtual void ShowScheduledCaptcha(const std::string& payment_id,
                                       const std::string& captcha_id) = 0;
     virtual void ClearScheduledCaptcha() = 0;

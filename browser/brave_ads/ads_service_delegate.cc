@@ -194,22 +194,27 @@ void AdsServiceDelegate::InitNotificationHelper() {
   NotificationHelper::GetInstance()->InitForProfile(&*profile_);
 }
 
-bool AdsServiceDelegate::
-    CanShowSystemNotificationsWhileBrowserIsBackgrounded() {
-  return NotificationHelper::GetInstance()
-      ->CanShowSystemNotificationsWhileBrowserIsBackgrounded();
+void AdsServiceDelegate::CanShowSystemNotificationsWhileBrowserIsBackgrounded(
+    base::OnceCallback<void(bool)> callback) {
+  NotificationHelper::GetInstance()
+      ->CanShowSystemNotificationsWhileBrowserIsBackgrounded(
+          std::move(callback));
 }
 
 bool AdsServiceDelegate::DoesSupportSystemNotifications() {
   return NotificationHelper::GetInstance()->DoesSupportSystemNotifications();
 }
 
-bool AdsServiceDelegate::CanShowNotifications() {
-  return NotificationHelper::GetInstance()->CanShowNotifications();
+void AdsServiceDelegate::CanShowNotifications(
+    base::OnceCallback<void(bool)> callback) {
+  NotificationHelper::GetInstance()->CanShowNotifications(
+      std::move(callback));
 }
 
-bool AdsServiceDelegate::ShowOnboardingNotification() {
-  return NotificationHelper::GetInstance()->ShowOnboardingNotification();
+void AdsServiceDelegate::ShowOnboardingNotification(
+    base::OnceCallback<void(bool)> callback) {
+  NotificationHelper::GetInstance()->ShowOnboardingNotification(
+      std::move(callback));
 }
 
 void AdsServiceDelegate::ShowScheduledCaptcha(const std::string& payment_id,

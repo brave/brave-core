@@ -8,7 +8,9 @@
 
 #include <memory>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
+#include "base/threading/sequence_bound.h"
 
 class Profile;
 
@@ -30,10 +32,11 @@ class NotificationHelper final {
 
   void InitForProfile(Profile* profile);
 
-  bool CanShowNotifications();
-  bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() const;
+  void CanShowNotifications(base::OnceCallback<void(bool)> callback) const;
+  void CanShowSystemNotificationsWhileBrowserIsBackgrounded(
+      base::OnceCallback<void(bool)> callback) const;
 
-  bool ShowOnboardingNotification();
+  void ShowOnboardingNotification(base::OnceCallback<void(bool)> callback);
 
   bool DoesSupportSystemNotifications() const;
 
@@ -48,7 +51,7 @@ class NotificationHelper final {
 
   bool does_support_system_notifications_ = true;
 
-  std::unique_ptr<NotificationHelperImpl> impl_;
+  base::SequenceBound<std::unique_ptr<NotificationHelperImpl>> impl_;
 
   base::WeakPtrFactory<NotificationHelper> weak_factory_{this};
 };
