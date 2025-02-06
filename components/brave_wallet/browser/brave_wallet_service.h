@@ -80,7 +80,6 @@ class BraveWalletService : public KeyedService,
   template <class T>
   void Bind(mojo::PendingReceiver<T> receiver);
 
-  static void MigrateHiddenNetworks(PrefService* profile_prefs);
   static void MigrateDeadNetwork(PrefService* prefs,
                                  const std::string& chain_id,
                                  const std::string& fallback_chain_id,
