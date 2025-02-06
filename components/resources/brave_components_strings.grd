@@ -652,7 +652,7 @@
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TRANSACTION" desc="">Auto-Contribute [[processor]]</message>
-      <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Rewards</message>
       <message name="IDS_BRAVE_UI_PRIVACY_POLICY" desc="">Privacy Policy</message>
       <message name="IDS_BRAVE_UI_CANCEL" desc="">Cancel</message>
       <message name="IDS_BRAVE_UI_CAPTCHA_DRAG" desc="">Drag the BAT Icon on to the</message>
