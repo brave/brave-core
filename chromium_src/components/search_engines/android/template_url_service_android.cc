@@ -22,11 +22,16 @@ jboolean TemplateUrlServiceAndroid::DoesDefaultSearchEngineHaveLogo(
 }
 
 jboolean TemplateUrlServiceAndroid::AddSearchEngine(JNIEnv* env) {
+  // const TemplateURL* existing =
+  //     template_url_service_->GetTemplateURLForKeyword(keyword_input);
+  // if (existing) {
+  //   return false;
+  // }
+
   TemplateURLData template_url_data;
   template_url_data.SetShortName(u"test1");
   template_url_data.SetKeyword(u"test.com");
   template_url_data.SetURL("http://test.com/search?t={searchTerms}");
-  template_url_data.prepopulate_id = 99;
   TemplateURL* template_url = template_url_service_->Add(
       std::make_unique<TemplateURL>(template_url_data));
   return !template_url;

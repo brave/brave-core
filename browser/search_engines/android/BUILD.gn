@@ -1,0 +1,37 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//build/config/locales.gni")
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+
+android_library("java") {
+  sources = [ "java/src/org/chromium/brave/browser/search_engines/settings/AddCustomSearchEnginePreferenceFragment.java" ]
+  deps = [
+    ":java_resources",
+    "//base:supplier_java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/settings:java",
+    "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_preference_preference_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.search_engines"
+}
+
+android_resources("java_resources") {
+  sources = [ "java/res/layout/add_custom_search_engine_preference_layout.xml" ]
+  deps = [ ":java_strings_grd" ]
+}
+
+java_strings_grd("java_strings_grd") {
+  defines = chrome_grit_defines
+  grd_file = "java/strings/android_custom_search_engine_strings.grd"
+  outputs = [ "values/android_custom_search_engine_strings.xml" ] + process_file_template(
+                android_bundle_locales_as_resources,
+                [ "values-{{source_name_part}}/android_custom_search_engine_strings.xml" ])
+}

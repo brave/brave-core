@@ -54,6 +54,7 @@
         android:order="9"
         android:title="@string/custom_search_engines">
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
+            android:fragment="org.chromium.brave.browser.search_engines.settings.AddCustomSearchEnginePreferenceFragment"
             android:key="add_custom_search_engine"
             android:order="1"
             android:title="@string/add_custom_search_engine"/>
