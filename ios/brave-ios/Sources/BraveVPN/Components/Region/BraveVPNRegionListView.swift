@@ -112,8 +112,8 @@ public struct BraveVPNRegionListView: View {
         }
 
         isRegionDetailsPresented = true
-        if let designatedRegion = BraveVPN.allRegions[safe: index],
-          let desiredRegion = BraveVPN.allRegions[safe: index]
+        if let designatedRegion = allRegions[safe: index],
+          let desiredRegion = allRegions[safe: index]
         {
           selectedRegion = desiredRegion
           selectedRegionCities = designatedRegion.cities
@@ -209,7 +209,7 @@ public struct BraveVPNRegionListView: View {
     isAutomaticRegion = enabled
 
     guard isAutomaticRegion else {
-      let autoRegion = BraveVPN.allRegions.first(where: {
+      let autoRegion = allRegions.first(where: {
         $0.countryISOCode == BraveVPN.lastKnownRegion?.countryISOCode
       })
       changeCountryRegion(with: autoRegion)
@@ -221,7 +221,7 @@ public struct BraveVPNRegionListView: View {
   }
 
   private func selectDesignatedVPNRegion(at index: Int) {
-    guard !isLoading, let desiredRegion = BraveVPN.allRegions[safe: index],
+    guard !isLoading, let desiredRegion = allRegions[safe: index],
       desiredRegion.regionName != BraveVPN.selectedRegion?.regionName
     else {
       return
