@@ -15,6 +15,7 @@
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_match_cell_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.h"
 #include "components/grit/brave_components_strings.h"
@@ -35,6 +36,7 @@
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/layout/flex_layout_types.h"
 #include "ui/views/view_class_properties.h"
 
 BraveOmniboxResultView::~BraveOmniboxResultView() = default;
@@ -46,7 +48,8 @@ void BraveOmniboxResultView::ResetChildren() {
   }
 
   if (leo_match_label_) {
-    RemoveChildViewT(leo_match_label_.ExtractAsDangling());
+    leo_match_label_->parent()->RemoveChildViewT(
+        leo_match_label_.ExtractAsDangling());
   }
 
   // Reset children visibility. Their visibility could be configured later
@@ -152,11 +155,20 @@ void BraveOmniboxResultView::UpdateForLeoMatch() {
           gfx::Insets().set_top(kLeoMatchPadding)));
 
       if (!leo_match_label_) {
-        leo_match_label_ = AddChildView(std::make_unique<views::Label>(
-            l10n_util::GetStringUTF16(IDS_OMNIBOX_SELECT_ASK_LEO_HINT)));
+        // Note: The |suggestion_view_| is a child of suggestion_and_button_row
+        // which has a FlexLayout but is not stored in a field, so we have to
+        // go via |suggestion_view_->parent()| to add |leo_match_label_|.
+        leo_match_label_ = suggestion_view_->parent()->AddChildView(
+            std::make_unique<views::Label>(
+                l10n_util::GetStringUTF16(IDS_OMNIBOX_SELECT_ASK_LEO_HINT)));
         leo_match_label_->SetHorizontalAlignment(gfx::ALIGN_RIGHT);
         leo_match_label_->SetBorder(
-            views::CreateEmptyBorder(gfx::Insets().set_right(32)));
+            views::CreateEmptyBorder(gfx::Insets().set_left_right(24, 24)));
+        leo_match_label_->SetProperty(
+            views::kFlexBehaviorKey,
+            views::FlexSpecification(views::LayoutOrientation::kHorizontal,
+                                     views::MinimumFlexSizeRule::kPreferred,
+                                     views::MaximumFlexSizeRule::kUnbounded));
       }
 
       // The "Press ↑ to highlight" label should only be visible when pressing
