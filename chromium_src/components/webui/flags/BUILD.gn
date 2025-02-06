@@ -10,11 +10,11 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//components/flags_ui",
-    "//components/flags_ui:switches",
     "//components/prefs:test_support",
     "//components/strings",
     "//components/variations",
+    "//components/webui/flags",
+    "//components/webui/flags:switches",
     "//testing/gtest",
   ]
 }
