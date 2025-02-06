@@ -839,9 +839,8 @@ extension BrowserViewController {
         return .none
       },
       .init(id: .braveWallet) { @MainActor [unowned self] _ in
-        self.dismiss(animated: true) {
-          self.presentWallet()
-        }
+        // Present wallet already handles dismiss + present
+        self.presentWallet()
         return .none
       },
       .init(
@@ -854,9 +853,8 @@ extension BrowserViewController {
         return .none
       },
       .init(id: .playlist) { @MainActor [unowned self] _ in
-        self.dismiss(animated: true) {
-          self.presentPlaylistController()
-        }
+        // presentPlaylistController already handles dismiss + present
+        self.presentPlaylistController()
         return .none
       },
       .init(id: .braveNews) { @MainActor [unowned self] _ in
