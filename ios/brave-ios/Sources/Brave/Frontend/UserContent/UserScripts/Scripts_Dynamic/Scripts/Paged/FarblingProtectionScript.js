@@ -237,6 +237,7 @@ window.__firefox__.execute(function($) {
       }
     }
 
+    /*
     // 4. Farble hardwareConcurrency
     // Adds a random value between 2 and the original hardware concurrency
     // using the provided `randomHardwareIndexScale` which must be a random value between 0 and 1.
@@ -251,6 +252,7 @@ window.__firefox__.execute(function($) {
         value: newRemaining + 2
       })
     }
+    */
 
     try {
       // A value between 0.99 and 1 to fudge the audio data
@@ -284,6 +286,7 @@ window.__firefox__.execute(function($) {
       console.error(`Failed to farble voices: ${error}`)
     }
 
+    /*
     try {
       // This value lets us pick a value between 2 and window.navigator.hardwareConcurrency
       // It is a value between 0 and 1. For example 0.5 will give us 3 and
@@ -293,5 +296,6 @@ window.__firefox__.execute(function($) {
     } catch (error) {
       console.error(`Failed to farble hardware concurrency: ${error}`)
     }
+    */
   })();
 });
