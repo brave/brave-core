@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "src/components/omnibox/browser/on_device_head_provider.h"
+#include "components/omnibox/browser/on_device_head_provider.h"
 
 #include "components/search/search.h"
 #include "components/search_engines/template_url_service.h"
