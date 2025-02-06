@@ -13,6 +13,7 @@
 
 #include "base/check.h"
 #include "base/strings/string_split.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -117,7 +118,9 @@ AIChatDatabase::AIChatDatabase(const base::FilePath& db_file_path,
     : db_file_path_(db_file_path),
       db_({.page_size = 4096, .cache_size = 1000},
           sql::Database::Tag("AIChatDatabase")),
-      encryptor_(std::move(encryptor)) {}
+      encryptor_(std::move(encryptor)) {
+  base::AssertLongCPUWorkAllowed();
+}
 
 AIChatDatabase::~AIChatDatabase() = default;
 
