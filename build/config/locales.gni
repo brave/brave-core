@@ -1,0 +1,24 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# |extended_locales| in Chromium (see build/config/locales.gni) is the list of
+# locales that are not shipped on Desktop platforms. Browser UI cannot be
+# displayed in these languages in Chromium. We want to support some of these
+# locales, so the list below is used to reduce the |extended_locales| list.
+brave_extended_locales_exclusions = []
+if (!is_ios) {
+  brave_extended_locales_exclusions += [
+    "az",
+    "ka",
+    "km",
+    "mk",
+    "mn",
+    "my",
+    "si",
+    "sq",
+    "sr-Latn",
+    "uz",
+  ]
+}
