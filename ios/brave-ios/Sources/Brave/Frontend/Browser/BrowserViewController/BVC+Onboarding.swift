@@ -390,14 +390,19 @@ extension BrowserViewController {
       return
     }
 
-    let welcomeView = FocusOnboardingView(
-      attributionManager: attributionManager,
-      p3aUtilities: braveCore.p3aUtils
+    let controller = OnboardingController(
+      environment: .init(
+        p3aUtils: braveCore.p3aUtils,
+        attributionManager: attributionManager
+      ),
+      onCompletion: {
+        Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+        Preferences.AppState.shouldDeferPromotedPurchase.value = false
+        Preferences.FocusOnboarding.focusOnboardingFinished.value = true
+      }
     )
-    let onboardingController = FocusOnboardingHostingController(rootView: welcomeView).then {
-      $0.modalPresentationStyle = .fullScreen
-    }
+    present(controller, animated: false)
 
-    present(onboardingController, animated: false)
+    Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
   }
 }

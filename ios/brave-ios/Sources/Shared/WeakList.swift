@@ -68,10 +68,15 @@ open class WeakList<T: AnyObject>: Sequence {
   }
 }
 
-open class WeakRef<T: AnyObject> {
-  public weak var value: T?
+@propertyWrapper
+public final class WeakRef<Value: AnyObject> {
+  public var wrappedValue: Value? { value }
+  public weak var value: Value?
 
-  public init(_ value: T) {
+  public init(wrappedValue: Value?) {
+    self.value = wrappedValue
+  }
+  public init(_ value: Value) {
     self.value = value
   }
 }
