@@ -36,7 +36,7 @@ class SearchSuggestionDataSource {
   private let maxPeriodBraveSearchPromotion = 15
   private var suggestClient: SearchSuggestClient?
 
-  var delegate: SearchSuggestionDataSourceDelegate?
+  weak var delegate: SearchSuggestionDataSourceDelegate?
 
   var searchQuery: String = "" {
     didSet {
