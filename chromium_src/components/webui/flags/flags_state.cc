@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/flags_ui/flags_state.h"
+#include "components/webui/flags/flags_state.h"
 
 #include <algorithm>
 #include <string_view>
 
 #include "base/strings/strcat.h"
 
-#include "src/components/flags_ui/flags_state.cc"
+#include "src/components/webui/flags/flags_state.cc"
 
 namespace flags_ui {
 namespace {
