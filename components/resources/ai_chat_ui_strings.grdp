@@ -27,8 +27,11 @@
   <message name="IDS_CHAT_UI_ABOUT_DESCRIPTION_3" desc="Outlining the functioning of AIChat (paragraph 3 of 3)">
     Leo does not collect identifiers such as your IP address that can be linked to you. No data is used to train the AI models and no personal data is retained by the AI models (except for Anthropic that holds data for 30 days before deleting it). See the <ph name="LINK_BEFORE">$1</ph>privacy policy<ph name="LINK_AFTER">$2</ph> for more information.
   </message>
+  <message name="IDS_CHAT_UI_INITIAL_PLACEHOLDER_LABEL" desc="Placeholder text for the initial input box on a new chat">
+    What shall we accomplish today?
+  </message>
   <message name="IDS_CHAT_UI_PLACEHOLDER_LABEL" desc="Placeholder text for an input box allowing users to send messages to the AI service">
-    Enter a prompt here
+    Ask follow up
   </message>
   <message name="IDS_CHAT_UI_SUGGEST_QUESTIONS_LABEL" desc="Button label to ask the AI Chat to suggest some related questions">
     Suggest questions…

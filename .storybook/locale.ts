@@ -266,7 +266,9 @@ let locale: Record<string, string> = {
   showRewards: 'Show Rewards',
   tosAndPp:
     'By turning on {{title}}, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
-  editCardsTitle: 'Edit Cards'
+  editCardsTitle: 'Edit Cards',
+  placeholderLabel: 'Ask follow up',
+  initialPlaceholderLabel: 'What shall we accomplish today?'
 }
 
 export function provideStrings(strings: Record<string, string>) {

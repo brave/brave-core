@@ -37,6 +37,7 @@ type Props = Pick<
 
 interface InputBoxProps {
   context: Props
+  conversationStarted: boolean
   maybeShowSoftKeyboard?: (querySubmitted: boolean) => unknown
 }
 
@@ -83,7 +84,7 @@ function InputBox(props: InputBoxProps) {
       return
     }
     if (props.context.selectedActionType ||
-        props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
+      props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
       node.focus()
     }
   }
@@ -105,7 +106,9 @@ function InputBox(props: InputBoxProps) {
       >
         <textarea
           ref={maybeAutofocus}
-          placeholder={getLocale('placeholderLabel')}
+          placeholder={getLocale(props.conversationStarted
+            ? 'placeholderLabel'
+            : 'initialPlaceholderLabel')}
           onChange={onInputChange}
           onKeyDown={handleOnKeyDown}
           value={props.context.inputText}
