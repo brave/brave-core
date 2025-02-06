@@ -244,7 +244,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
-#include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_new_tab_ui/brave_new_tab_ui.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
@@ -661,7 +661,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 #if !BUILDFLAG(IS_ANDROID)
   auto ntp_registration =
       registry.ForWebUI<BraveNewTabUI>()
-          .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
+          .Add<brave_new_tab_ui::mojom::PageHandlerFactory>()
           .Add<brave_news::mojom::BraveNewsController>();
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)

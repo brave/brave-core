@@ -1,9 +1,9 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-module brave_new_tab_page.mojom;
+module brave_new_tab_ui.mojom;
 
 import "url/mojom/url.mojom";
 import "brave/components/brave_vpn/common/mojom/brave_vpn.mojom";
@@ -24,10 +24,10 @@ struct BraveBackground {
 struct CustomBackground {
   url.mojom.Url url;
 
-  // |color| is a 
-  //   * color value for css background property or 'gradient' when 
+  // |color| is a
+  //   * color value for css background property or 'gradient' when
   //     |use_random_item| is false.
-  //   * either kRandomSlidColorValue or kRandomGradientColorValue when 
+  //   * either kRandomSlidColorValue or kRandomGradientColorValue when
   //     |use_random_item| is true
   string color;
 
@@ -68,11 +68,11 @@ interface PageHandler {
   // When |seleteceBackground| is empty, should use random background.
   UseBraveBackground(string selected_background);
   GetBraveBackgrounds() => (array<BraveBackground> backgrounds);
-  
-  // |color| is a 
-  //   * color value for css background property or 'gradient' when 
+
+  // |color| is a
+  //   * color value for css background property or 'gradient' when
   //     |use_random_color| is false.
-  //   * either kRandomSlidColorValue or kRandomGradientColorValue when 
+  //   * either kRandomSlidColorValue or kRandomGradientColorValue when
   //     |use_random_color| is true
   UseColorBackground(string color, bool use_random_color);
 

@@ -95,9 +95,9 @@ bool IsNTPPromotionEnabled(Profile* profile) {
 }  // namespace
 
 BraveNewTabPageHandler::BraveNewTabPageHandler(
-    mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
+    mojo::PendingReceiver<brave_new_tab_ui::mojom::PageHandler>
         pending_page_handler,
-    mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
+    mojo::PendingRemote<brave_new_tab_ui::mojom::Page> pending_page,
     Profile* profile,
     content::WebContents* web_contents)
     : page_handler_(this, std::move(pending_page_handler)),
@@ -177,10 +177,10 @@ void BraveNewTabPageHandler::UseCustomImageBackground(
 
 void BraveNewTabPageHandler::GetCustomImageBackgrounds(
     GetCustomImageBackgroundsCallback callback) {
-  std::vector<brave_new_tab_page::mojom::CustomBackgroundPtr> backgrounds;
+  std::vector<brave_new_tab_ui::mojom::CustomBackgroundPtr> backgrounds;
   for (const auto& name :
        NTPBackgroundPrefs(profile_->GetPrefs()).GetCustomImageList()) {
-    auto value = brave_new_tab_page::mojom::CustomBackground::New();
+    auto value = brave_new_tab_ui::mojom::CustomBackground::New();
     value->url = CustomBackgroundFileManager::Converter(name).To<GURL>();
     backgrounds.push_back(std::move(value));
   }
@@ -260,8 +260,8 @@ void BraveNewTabPageHandler::OnSearchPromotionDismissed() {
 void BraveNewTabPageHandler::UseColorBackground(const std::string& color,
                                                 bool use_random_color) {
   if (use_random_color) {
-    DCHECK(color == brave_new_tab_page::mojom::kRandomSolidColorValue ||
-           color == brave_new_tab_page::mojom::kRandomGradientColorValue)
+    DCHECK(color == brave_new_tab_ui::mojom::kRandomSolidColorValue ||
+           color == brave_new_tab_ui::mojom::kRandomGradientColorValue)
         << "When |use_random_color| is true, |color| should be "
            "kRandomSolidColorValue or kRandomGradientColorValue";
   }
@@ -280,13 +280,13 @@ void BraveNewTabPageHandler::GetSearchEngines(
   CHECK(service);
 
   auto urls = service->GetTemplateURLs();
-  std::vector<brave_new_tab_page::mojom::SearchEngineInfoPtr> search_engines;
+  std::vector<brave_new_tab_ui::mojom::SearchEngineInfoPtr> search_engines;
   for (TemplateURL* template_url : urls) {
     if (template_url->GetBuiltinEngineType() !=
         BuiltinEngineType::KEYWORD_MODE_PREPOPULATED_ENGINE) {
       continue;
     }
-    auto search_engine = brave_new_tab_page::mojom::SearchEngineInfo::New();
+    auto search_engine = brave_new_tab_ui::mojom::SearchEngineInfo::New();
     search_engine->prepopulate_id = template_url->prepopulate_id();
     search_engine->host = GURL(template_url->url()).host();
     search_engine->name = base::UTF16ToUTF8(template_url->short_name());
@@ -375,7 +375,7 @@ void BraveNewTabPageHandler::OnSavedCustomImage(const base::FilePath& path) {
     return;
   }
 
-  if (brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
+  if (brave_new_tab_ui::mojom::kMaxCustomImageBackgrounds -
           NTPBackgroundPrefs(profile_->GetPrefs())
               .GetCustomImageList()
               .size() <=
@@ -431,7 +431,7 @@ void BraveNewTabPageHandler::OnRemoveCustomImageBackground(
 
 void BraveNewTabPageHandler::OnBackgroundUpdated() {
   if (IsCustomBackgroundImageEnabled()) {
-    auto value = brave_new_tab_page::mojom::CustomBackground::New();
+    auto value = brave_new_tab_ui::mojom::CustomBackground::New();
 
     NTPBackgroundPrefs prefs(profile_->GetPrefs());
     auto selected_value = prefs.GetSelectedValue();
@@ -441,18 +441,18 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
     }
     value->use_random_item = prefs.ShouldUseRandomValue();
     page_->OnBackgroundUpdated(
-        brave_new_tab_page::mojom::Background::NewCustom(std::move(value)));
+        brave_new_tab_ui::mojom::Background::NewCustom(std::move(value)));
     return;
   }
 
   auto ntp_background_prefs = NTPBackgroundPrefs(profile_->GetPrefs());
   if (IsColorBackgroundEnabled()) {
-    auto value = brave_new_tab_page::mojom::CustomBackground::New();
+    auto value = brave_new_tab_ui::mojom::CustomBackground::New();
     auto selected_value = ntp_background_prefs.GetSelectedValue();
     value->color = selected_value;
     value->use_random_item = ntp_background_prefs.ShouldUseRandomValue();
     page_->OnBackgroundUpdated(
-        brave_new_tab_page::mojom::Background::NewCustom(std::move(value)));
+        brave_new_tab_ui::mojom::Background::NewCustom(std::move(value)));
     return;
   }
 
@@ -491,19 +491,19 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
     return;
   }
 
-  auto value = brave_new_tab_page::mojom::BraveBackground::New();
+  auto value = brave_new_tab_ui::mojom::BraveBackground::New();
   value->image_url = GURL(image_url);
   value->author = iter->author;
   value->link = GURL(iter->link);
   page_->OnBackgroundUpdated(
-      brave_new_tab_page::mojom::Background::NewBrave(std::move(value)));
+      brave_new_tab_ui::mojom::Background::NewBrave(std::move(value)));
 }
 
 void BraveNewTabPageHandler::OnCustomImageBackgroundsUpdated() {
-  std::vector<brave_new_tab_page::mojom::CustomBackgroundPtr> backgrounds;
+  std::vector<brave_new_tab_ui::mojom::CustomBackgroundPtr> backgrounds;
   for (const auto& name :
        NTPBackgroundPrefs(profile_->GetPrefs()).GetCustomImageList()) {
-    auto value = brave_new_tab_page::mojom::CustomBackground::New();
+    auto value = brave_new_tab_ui::mojom::CustomBackground::New();
     value->url = CustomBackgroundFileManager::Converter(name).To<GURL>();
     backgrounds.push_back(std::move(value));
   }
@@ -526,7 +526,7 @@ void BraveNewTabPageHandler::MultiFilesSelected(
     const std::vector<ui::SelectedFileInfo>& files) {
   NTPBackgroundPrefs prefs(profile_->GetPrefs());
   auto available_image_count =
-      brave_new_tab_page::mojom::kMaxCustomImageBackgrounds -
+      brave_new_tab_ui::mojom::kMaxCustomImageBackgrounds -
       prefs.GetCustomImageList().size();
   for (const auto& file : files) {
     if (available_image_count == 0) {
@@ -566,11 +566,11 @@ void BraveNewTabPageHandler::GetBraveBackgrounds(
     return;
   }
 
-  std::vector<brave_new_tab_page::mojom::BraveBackgroundPtr> backgrounds;
+  std::vector<brave_new_tab_ui::mojom::BraveBackgroundPtr> backgrounds;
   std::ranges::transform(
       image_data->backgrounds, std::back_inserter(backgrounds),
       [image_data](const auto& data) {
-        auto value = brave_new_tab_page::mojom::BraveBackground::New();
+        auto value = brave_new_tab_ui::mojom::BraveBackground::New();
         value->image_url = GURL(image_data->url_prefix +
                                 data.image_file.BaseName().AsUTF8Unsafe());
         value->author = data.author;

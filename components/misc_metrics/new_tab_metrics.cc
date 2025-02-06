@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_new_tab_ui/brave_new_tab_ui.mojom.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -48,7 +48,7 @@ void NewTabMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
 }
 
 void NewTabMetrics::Bind(
-    mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics> receiver) {
+    mojo::PendingReceiver<brave_new_tab_ui::mojom::NewTabMetrics> receiver) {
   receivers_.Add(this, std::move(receiver));
 }
 

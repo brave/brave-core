@@ -144,7 +144,7 @@ void BraveNewTabUI::BindInterface(
 }
 
 void BraveNewTabUI::BindInterface(
-    mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandlerFactory>
+    mojo::PendingReceiver<brave_new_tab_ui::mojom::PageHandlerFactory>
         pending_receiver) {
   if (page_factory_receiver_.is_bound()) {
     page_factory_receiver_.reset();
@@ -178,10 +178,10 @@ void BraveNewTabUI::BindInterface(
 #endif
 
 void BraveNewTabUI::CreatePageHandler(
-    mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
-    mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
+    mojo::PendingRemote<brave_new_tab_ui::mojom::Page> pending_page,
+    mojo::PendingReceiver<brave_new_tab_ui::mojom::PageHandler>
         pending_page_handler,
-    mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
+    mojo::PendingReceiver<brave_new_tab_ui::mojom::NewTabMetrics>
         pending_new_tab_metrics) {
   DCHECK(pending_page.is_valid());
   Profile* profile = Profile::FromWebUI(web_ui());

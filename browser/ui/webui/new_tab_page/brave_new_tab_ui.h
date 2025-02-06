@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_new_tab_ui/brave_new_tab_ui.mojom.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/searchbox/realbox_handler.h"
@@ -31,7 +31,7 @@ class BraveNewsController;
 class BraveNewTabPageHandler;
 
 class BraveNewTabUI : public ui::MojoWebUIController,
-                      public brave_new_tab_page::mojom::PageHandlerFactory {
+                      public brave_new_tab_ui::mojom::PageHandlerFactory {
  public:
   BraveNewTabUI(content::WebUI* web_ui, const std::string& name);
   ~BraveNewTabUI() override;
@@ -44,7 +44,7 @@ class BraveNewTabUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver);
 
   void BindInterface(
-      mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandlerFactory>
+      mojo::PendingReceiver<brave_new_tab_ui::mojom::PageHandlerFactory>
           pending_receiver);
 
   void BindInterface(mojo::PendingReceiver<searchbox::mojom::PageHandler>
@@ -58,15 +58,15 @@ class BraveNewTabUI : public ui::MojoWebUIController,
  private:
   // new_tab_page::mojom::PageHandlerFactory:
   void CreatePageHandler(
-      mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
-      mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
+      mojo::PendingRemote<brave_new_tab_ui::mojom::Page> pending_page,
+      mojo::PendingReceiver<brave_new_tab_ui::mojom::PageHandler>
           pending_page_handler,
-      mojo::PendingReceiver<brave_new_tab_page::mojom::NewTabMetrics>
+      mojo::PendingReceiver<brave_new_tab_ui::mojom::NewTabMetrics>
           pending_new_tab_metrics) override;
 
   std::unique_ptr<BraveNewTabPageHandler> page_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
-  mojo::Receiver<brave_new_tab_page::mojom::PageHandlerFactory>
+  mojo::Receiver<brave_new_tab_ui::mojom::PageHandlerFactory>
       page_factory_receiver_;
 
   WEB_UI_CONTROLLER_TYPE_DECL();

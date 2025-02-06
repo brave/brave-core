@@ -33,7 +33,7 @@ pack_web_resources("generated_resources") {
 }
 
 mojom("mojom") {
-  sources = [ "brave_new_tab_page.mojom" ]
+  sources = [ "brave_new_tab_ui.mojom" ]
   public_deps = [
     "//brave/components/brave_vpn/common/mojom",
     "//url/mojom:url_mojom_gurl",

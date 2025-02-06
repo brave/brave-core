@@ -14,7 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
-#include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
+#include "brave/components/brave_new_tab_ui/brave_new_tab_ui.mojom.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/search_engines/template_url_service.h"
@@ -39,14 +39,14 @@ class CustomBackgroundFileManager;
 class NtpCustomBackgroundService;
 class Profile;
 
-class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
+class BraveNewTabPageHandler : public brave_new_tab_ui::mojom::PageHandler,
                                public ui::SelectFileDialog::Listener,
                                public TemplateURLServiceObserver {
  public:
   BraveNewTabPageHandler(
-      mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
+      mojo::PendingReceiver<brave_new_tab_ui::mojom::PageHandler>
           pending_page_handler,
-      mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
+      mojo::PendingRemote<brave_new_tab_ui::mojom::Page> pending_page,
       Profile* profile,
       content::WebContents* web_contents);
   ~BraveNewTabPageHandler() override;
@@ -55,7 +55,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   BraveNewTabPageHandler& operator=(const BraveNewTabPageHandler&) = delete;
 
  private:
-  // brave_new_tab_page::mojom::PageHandler overrides:
+  // brave_new_tab_ui::mojom::PageHandler overrides:
   void ChooseLocalCustomBackground() override;
   void UseCustomImageBackground(
       const std::string& selected_background) override;
@@ -113,8 +113,8 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   PrefChangeRegistrar pref_change_registrar_;
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       template_url_service_observation_{this};
-  mojo::Receiver<brave_new_tab_page::mojom::PageHandler> page_handler_;
-  mojo::Remote<brave_new_tab_page::mojom::Page> page_;
+  mojo::Receiver<brave_new_tab_ui::mojom::PageHandler> page_handler_;
+  mojo::Remote<brave_new_tab_ui::mojom::Page> page_;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
 
