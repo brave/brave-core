@@ -180,4 +180,14 @@ export const style = scoped.css`
       }
     }
   }
+
+  .content-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .date {
+      font: ${font.default.semibold};
+    }
+  }
 `
