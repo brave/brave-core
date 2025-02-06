@@ -216,3 +216,6 @@ browser/ui/webui/brave_browser_command/brave_browser_command_handler.cc @brave/s
 browser/resources/brave_education/brave_education_app.ts @brave/sec-team
 components/brave_education/education_urls.* @brave/sec-team
 ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom @brave/sec-team
+
+# l10n scripts deps
+script/lib/l10n/requirements.txt @brave/sec-team
