@@ -195,6 +195,13 @@ addStyles('app-global-styles', css`
       }
     }
 
+    .content-card-footer {
+      background: ${color.page.background};
+      margin: 0 -4px -4px;
+      border-radius: 0 0 16px 16px;
+      padding: 8px 16px;
+    }
+
     .brave-rewards-logo {
       display: inline-block;
       block-size: 28px;
