@@ -12,4 +12,5 @@ html5ever = "0.25"
 
 [lib]
 name = "document_extractor_cxx"
+path = "lib.rs"
 crate-type = ["rlib"]
