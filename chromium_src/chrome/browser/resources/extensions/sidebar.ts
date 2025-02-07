@@ -25,7 +25,7 @@ injectStyle(ExtensionsSidebarElement, css`
     background: transparent !important;
   }
 
-  .cr-nav-menu-item iron-icon {
+  .cr-nav-menu-item cr-icon {
     display: none !important;
   }
 
@@ -37,7 +37,7 @@ injectStyle(ExtensionsSidebarElement, css`
     display: none !important;
   }
 
-  #moreExtensions {
+  #moreExtensions cr-icon {
     display: none !important;
   }
 `)
