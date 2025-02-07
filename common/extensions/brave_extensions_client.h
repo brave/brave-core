@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMMON_EXTENSIONS_BRAVE_EXTENSIONS_CLIENT_H_
 #define BRAVE_COMMON_EXTENSIONS_BRAVE_EXTENSIONS_CLIENT_H_
 
+#include <string>
+
 #include "chrome/common/extensions/chrome_extensions_client.h"
 
 namespace extensions {

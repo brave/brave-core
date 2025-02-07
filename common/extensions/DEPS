@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/components/skus/common/skus_utils.h",
   "+components/component_updater/component_updater_switches.h",
   "+extensions/common",
 ]
