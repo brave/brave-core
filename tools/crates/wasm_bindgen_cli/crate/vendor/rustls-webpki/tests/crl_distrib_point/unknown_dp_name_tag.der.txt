@@ -1,0 +1,92 @@
+SEQUENCE {
+  SEQUENCE {
+    [0] {
+      INTEGER { 2 }
+    }
+    INTEGER { `4a318383d85fcb0156f06e2c6b9f75dbcca89370` }
+    SEQUENCE {
+      # ecdsa-with-SHA256
+      OBJECT_IDENTIFIER { 1.2.840.10045.4.3.2 }
+    }
+    SEQUENCE {
+      SET {
+        SEQUENCE {
+          # commonName
+          OBJECT_IDENTIFIER { 2.5.4.3 }
+          UTF8String { "crl-distrib-point-test.example.com" }
+        }
+      }
+      SET {
+        SEQUENCE {
+          # organizationName
+          OBJECT_IDENTIFIER { 2.5.4.10 }
+          UTF8String { "with_reasons" }
+        }
+      }
+    }
+    SEQUENCE {
+      UTCTime { "861223015911Z" }
+      UTCTime { "861223020011Z" }
+    }
+    SEQUENCE {
+      SET {
+        SEQUENCE {
+          # commonName
+          OBJECT_IDENTIFIER { 2.5.4.3 }
+          UTF8String { "crl-distrib-point-test.example.com" }
+        }
+      }
+      SET {
+        SEQUENCE {
+          # organizationName
+          OBJECT_IDENTIFIER { 2.5.4.10 }
+          UTF8String { "with_reasons" }
+        }
+      }
+    }
+    SEQUENCE {
+      SEQUENCE {
+        # ecPublicKey
+        OBJECT_IDENTIFIER { 1.2.840.10045.2.1 }
+        # secp256r1
+        OBJECT_IDENTIFIER { 1.2.840.10045.3.1.7 }
+      }
+      BIT_STRING { `00` `0498333a0b61bbb126bcb13f9f382ea115a07e87ce0da5b79e58dea9817fb81e54931c9f1f13b9fa15ae2c5e2f1b63a59260ca90fed283c159a6c23bce274a1e26` }
+    }
+    [3] {
+      SEQUENCE {
+        SEQUENCE {
+          # cRLDistributionPoints
+          OBJECT_IDENTIFIER { 2.5.29.31 }
+          OCTET_STRING {
+            SEQUENCE {
+              SEQUENCE {
+                [0] {
+                  # Misencoded - invalid DistributionPointName tag
+                  [4] {
+                    SEQUENCE {
+                      # commonName
+                      OBJECT_IDENTIFIER { 2.5.4.3 }
+                      UTF8String { "cryptography.io" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  SEQUENCE {
+    # ecdsa-with-SHA256
+    OBJECT_IDENTIFIER { 1.2.840.10045.4.3.2 }
+  }
+  BIT_STRING {
+    `00`
+    SEQUENCE {
+      INTEGER { `16f9b57ffe9a4474ee61a2dc481e3048c70cdbce22b1e112a4b641657b0e2a7f` }
+      INTEGER { `00c8c92955dc85fc741a9e80ce314365b33485e5add15258fa78ad8a9b0dc03122` }
+    }
+  }
+}
