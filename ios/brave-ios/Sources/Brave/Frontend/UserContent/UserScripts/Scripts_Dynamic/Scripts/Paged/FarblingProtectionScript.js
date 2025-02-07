@@ -88,6 +88,9 @@ window.__firefox__.execute(function($) {
     // Injects fake plugins with fake mime-types
     // Random plugins are determined by the plugin data
     const farblePlugins = (fakePluginData) => {
+      if (fakePluginData.length === 0) {
+        return
+      }
       // Function that create a fake mime-type based on the given fake data
       const makeFakeMimeType = (fakeData) => {
         return Object.create(window.MimeType.prototype, {

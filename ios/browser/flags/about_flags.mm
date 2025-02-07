@@ -111,6 +111,14 @@
           "Enable debug view for adblock features in Shields panel",           \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveIOSDebugAdblock),  \
+      },                                                                       \
+      {                                                                        \
+          "ios-farble-plugins",                                                \
+          "Enable Farbling Plugins",                                           \
+          "Enable Farbling plugins when enabled globally / per-domain",        \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveIOSEnableFarblingPlugins),        \
       })
 
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES                                      \

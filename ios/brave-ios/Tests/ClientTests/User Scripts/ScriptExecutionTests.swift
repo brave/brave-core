@@ -166,7 +166,9 @@ final class ScriptExecutionTests: XCTestCase {
 
     // Ensure farbled and unfarbled results are not the same
     XCTAssertNotEqual(farblingResult?.voiceNames, controlResult?.voiceNames)
-    XCTAssertNotEqual(farblingResult?.pluginNames, controlResult?.pluginNames)
+    if BraveCore.FeatureList.kBraveIOSEnableFarblingPlugins.enabled {
+      XCTAssertNotEqual(farblingResult?.pluginNames, controlResult?.pluginNames)
+    }
   }
 
   @MainActor func testRequestBlockingScript() async throws {

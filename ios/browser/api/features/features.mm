@@ -211,6 +211,11 @@
       initWithFeature:&brave_shields::features::kBraveIOSDebugAdblock];
 }
 
++ (Feature*)kBraveIOSEnableFarblingPlugins {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kBraveIOSEnableFarblingPlugins];
+}
+
 + (Feature*)kBraveShowStrictFingerprintingMode {
   return
       [[Feature alloc] initWithFeature:&brave_shields::features::
