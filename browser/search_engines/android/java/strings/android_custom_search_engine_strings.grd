@@ -116,6 +116,12 @@
         <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TEXT2" desc="Add custom search engine text2">
           For example: https://youtube.com/search?q=<ph name="SPECIAL_SYMBOL">%s</ph>. If the site supports OpenSearch an option to add automatically will be provided while editing this field.
         </message>
+        <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_TITLE_ERROR" desc="Add custom search engine empty title text">
+          Title can't be empty.
+        </message>
+        <message name="IDS_ADD_CUSTOM_SEARCH_ENGINE_URL_ERROR" desc="Add custom search engine empty url text">
+          URL can't be empty.
+        </message>
         <!-- End of Custom search engine strings -->
   </messages>
   </release>

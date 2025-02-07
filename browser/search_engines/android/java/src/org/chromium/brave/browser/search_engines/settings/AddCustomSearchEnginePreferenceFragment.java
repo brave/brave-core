@@ -1,8 +1,8 @@
-/**
- * Copyright (c) 2025 The Brave Authors. All rights reserved. This Source Code Form is subject to
- * the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with
- * this file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 package org.chromium.brave.browser.search_engines.settings;
 
 import android.os.Bundle;
@@ -21,7 +21,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.browser.search_engines.R;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
+import org.chromium.components.search_engines.BraveTemplateUrlService;
 
 public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment {
     private TextInputEditText mTitleEdittext;
@@ -77,11 +79,30 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // addSearchEngine();
+                        if (isSearchEngineValidated()) {
+                            ((BraveTemplateUrlService)
+                                            TemplateUrlServiceFactory.getForProfile(getProfile()))
+                                    .addSearchEngine();
+                        }
                     }
                 });
 
         return rootView;
+    }
+
+    private boolean isSearchEngineValidated() {
+        boolean isValidated = true;
+        if (mTitleEdittext.getText().toString().isEmpty()) {
+            isValidated = false;
+            mTitleLayout.setError(
+                    getResources().getString(R.string.add_custom_search_engine_title_error));
+        }
+        if (mUrlEdittext.getText().toString().isEmpty()) {
+            isValidated = false;
+            mUrlLayout.setError(
+                    getResources().getString(R.string.add_custom_search_engine_url_error));
+        }
+        return isValidated;
     }
 
     @Override
