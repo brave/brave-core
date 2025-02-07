@@ -129,6 +129,13 @@ void OAIAPIClient::PerformRequest(
   }
 }
 
+// When called as part of a SSE request, this method will not contain the body.
+// Instead, the body is evaluated in chunks via the OnQueryDataReceived method.
+// OnQueryCompleted will instead receive superficial data such as the response
+// code. As such, during SSE, this method will run the callback with either a
+// completion (which could be an empty string), or an error. We aim to provide
+// more information to the user/UI when invalid payloads are received. That
+// effort is tracked here: https://github.com/brave/brave-browser/issues/43536
 void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
                                     APIRequestResult result) {
   const bool success = result.Is2XXResponseCode();
@@ -139,21 +146,19 @@ void OAIAPIClient::OnQueryCompleted(GenerationCompletedCallback callback,
     if (result.value_body().is_dict()) {
       const base::Value::List* choices =
           result.value_body().GetDict().FindList("choices");
-      if (!choices) {
-        DVLOG(2) << "No choices list found in response.";
-        return;
-      }
-      if (choices->front().is_dict()) {
-        const base::Value::Dict* message =
-            choices->front().GetDict().FindDict("message");
-        if (!message) {
-          DVLOG(2) << "No message dict found in response.";
-          return;
+
+      if (choices && !choices->empty() && choices->front().is_dict()) {
+        const std::string* content =
+            choices->front().GetDict().FindStringByDottedPath(
+                "message.content");
+
+        if (content) {
+          completion = *content;
         }
-        completion = *message->FindString("content");
       }
     }
 
+    // May be an empty string if part of SSE request, and payload was invalid.
     std::move(callback).Run(base::ok(std::move(completion)));
     return;
   }
