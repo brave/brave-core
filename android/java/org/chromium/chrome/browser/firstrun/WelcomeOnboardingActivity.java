@@ -276,7 +276,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
         mCurrentStep++;
         if (mCurrentStep == 0) {
             if (!BraveSetDefaultBrowserUtils.supportsDefaultRoleManager()) {
-                mIvBrave.setVisibility(View.VISIBLE);
+                if (mIvBrave != null) {
+                    mIvBrave.setVisibility(View.VISIBLE);
+                }
                 showBrowserSelectionPage();
             } else if (!isDefaultBrowser()) {
                 setDefaultBrowserAndProceedToNextStep();
@@ -284,7 +286,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
                 nextOnboardingStep();
             }
         } else if (mCurrentStep == getAnalyticsConsentPageStep()) {
-            mIvBrave.setVisibility(View.VISIBLE);
+            if (mIvBrave != null) {
+                mIvBrave.setVisibility(View.VISIBLE);
+            }
             showAnalyticsConsentPage();
         } else if (isWDPEnabled() && mCurrentStep == getWDPPageStep()) {
             showWDPPage();
