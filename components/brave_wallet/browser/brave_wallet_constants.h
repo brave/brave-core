@@ -26,6 +26,7 @@ inline constexpr int32_t kAutoLockMinutesMin = 1;
 inline constexpr int32_t kAutoLockMinutesMax = 10080;
 
 inline constexpr int32_t kAssetDiscoveryMinutesPerRequest = 1;
+inline constexpr size_t kBalanceScannerBatchSize = 4000;
 
 inline constexpr char kWalletBaseDirectory[] = "BraveWallet";
 inline constexpr char kImageSourceHost[] = "erc-token-images";

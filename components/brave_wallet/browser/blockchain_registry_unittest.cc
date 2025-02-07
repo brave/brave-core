@@ -31,71 +31,78 @@ namespace {
 
 const char token_list_json[] = R"(
   {
-   "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
-     "name": "Crypto Kitties",
-     "logo": "CryptoKitties-Kitty-13733.svg",
-     "erc20": false,
-     "erc721": true,
-     "symbol": "CK",
-     "decimals": 0
-   },
-   "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
-     "name": "Basic Attention Token",
-     "logo": "bat.svg",
-     "erc20": true,
-     "symbol": "BAT",
-     "decimals": 18
-   },
-   "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
-     "name": "Uniswap",
-     "logo": "uni.svg",
-     "erc20": true,
-     "symbol": "UNI",
-     "decimals": 18,
-     "chainId": "0xaa36a7"
-   },
-   "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef": {
-    "name": "ENS Registrar",
-    "logo": "ens.svg"
-   }
-  })";
-
-const char solana_token_list_json[] = R"(
-  {
-    "So11111111111111111111111111111111111111112": {
-      "name": "Wrapped SOL",
-      "logo": "So11111111111111111111111111111111111111112.png",
-      "erc20": false,
-      "symbol": "SOL",
-      "decimals": 9,
-      "chainId": "0x65",
-      "coingeckoId": "solana"
+    "0x1": {
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
+        "name": "Crypto Kitties",
+        "logo": "CryptoKitties-Kitty-13733.svg",
+        "erc20": false,
+        "erc721": true,
+        "symbol": "CK",
+        "decimals": 0
+      },
+     "0x0D8775F648430679A709E98d2b0Cb6250d2887EF": {
+        "name": "Basic Attention Token",
+        "logo": "bat.svg",
+        "erc20": true,
+        "symbol": "BAT",
+        "decimals": 18
+      },
+      "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef": {
+        "name": "ENS Registrar",
+        "logo": "ens.svg"
+      }
     },
-    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
-      "name": "USD Coin",
-      "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
-      "erc20": false,
-      "symbol": "USDC",
-      "decimals": 6,
-      "chainId": "0x65",
-      "coingeckoId": "usd-coin"
+    "0xaa36a7": {
+      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
+        "name": "Uniswap",
+        "logo": "uni.svg",
+        "erc20": true,
+        "symbol": "UNI",
+        "decimals": 18
+      }
     },
-    "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
-      "name": "Tesla Inc.",
-      "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
-      "erc20": false,
-      "symbol": "TSLA",
-      "decimals": 8,
-      "chainId": "0x65"
+    "0x89": {
+      "0xc2132D05D31c914a87C6611C10748AEb04B58e8F": {
+          "name": "Tether USD - PoS",
+          "logo": "usdt.png",
+          "erc20": true,
+          "symbol": "USDT",
+          "decimals": 6,
+          "coingeckoId": "tether"
+      }
     },
-    "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
-      "name": "SolarMoon",
-      "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
-      "erc20": false,
-      "symbol": "MOON",
-      "decimals": 5,
-      "chainId": "0x65",
-      "token2022": true
+    "0x65": {
+      "So11111111111111111111111111111111111111112": {
+        "name": "Wrapped SOL",
+        "logo": "So11111111111111111111111111111111111111112.png",
+        "erc20": false,
+        "symbol": "SOL",
+        "decimals": 9,
+        "coingeckoId": "solana"
+      },
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
+        "name": "USD Coin",
+        "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+        "erc20": false,
+        "symbol": "USDC",
+        "decimals": 6,
+        "coingeckoId": "usd-coin"
+      },
+      "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
+        "name": "Tesla Inc.",
+        "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+        "erc20": false,
+        "symbol": "TSLA",
+        "decimals": 8
+      },
+      "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
+        "name": "SolarMoon",
+        "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
+        "erc20": false,
+        "symbol": "MOON",
+        "decimals": 5,
+        "token2022": true
+      }
     }
   })";
 
@@ -488,10 +495,7 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
-  ASSERT_TRUE(
-      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
-  ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
-                             mojom::CoinType::SOL));
+  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
   registry->UpdateTokenList(std::move(token_list_map));
 
   // Loop twice to make sure getting the same list twice works
@@ -583,10 +587,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenByAddress) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
-  ASSERT_TRUE(
-      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
-  ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
-                             mojom::CoinType::SOL));
+  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
   registry->UpdateTokenList(std::move(token_list_map));
   base::RunLoop run_loop;
   registry->GetTokenByAddress(
@@ -647,10 +648,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
-  ASSERT_TRUE(
-      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
-  ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
-                             mojom::CoinType::SOL));
+  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
   registry->UpdateTokenList(std::move(token_list_map));
   base::RunLoop run_loop;
   registry->GetTokenBySymbol(
@@ -1008,8 +1006,7 @@ TEST(BlockchainRegistryUnitTest, GetEthTokenListMap) {
   base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
-  ASSERT_TRUE(
-      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
+  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
   registry->UpdateTokenList(std::move(token_list_map));
 
   // Loop twice to make sure getting the same list twice works
@@ -1096,21 +1093,8 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
 
   ASSERT_TRUE(base::WriteFile(path.Append(FPL("coingecko-ids.json")),
                               coingecko_ids_map_json));
-  ASSERT_TRUE(
-      base::WriteFile(path.Append(FPL("contract-map.json")), token_list_json));
-  ASSERT_TRUE(base::WriteFile(path.Append(FPL("evm-contract-map.json")), R"({
-      "0xc2132D05D31c914a87C6611C10748AEb04B58e8F": {
-          "name": "Tether USD - PoS",
-          "logo": "usdt.png",
-          "erc20": true,
-          "symbol": "USDT",
-          "decimals": 6,
-          "coingeckoId": "tether",
-          "chainId": "0x89"
-      }
-  })"));
-  ASSERT_TRUE(base::WriteFile(path.Append(FPL("solana-contract-map.json")),
-                              solana_token_list_json));
+  ASSERT_TRUE(base::WriteFile(path.Append(FPL("coingecko-top5000.json")),
+                              token_list_json));
   ASSERT_TRUE(
       base::WriteFile(path.Append(FPL("chainlist.json")), chain_list_json));
   ASSERT_TRUE(
@@ -1135,7 +1119,7 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
                                "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
       "usd-coin");
 
-  // contract-map.json
+  // coingecko-top5000.json
   EXPECT_EQ(
       registry
           ->GetTokenByAddress(mojom::kMainnetChainId, mojom::CoinType::ETH,
@@ -1143,7 +1127,6 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
           ->symbol,
       "BAT");
 
-  // evm-contract-map.json
   EXPECT_EQ(registry
                 ->GetTokenByAddress(
                     mojom::kPolygonMainnetChainId, mojom::CoinType::ETH,
@@ -1151,7 +1134,6 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
                 ->symbol,
             "USDT");
 
-  // solana-contract-map.json
   EXPECT_EQ(
       registry
           ->GetTokenByAddress(mojom::kSolanaMainnet, mojom::CoinType::SOL,

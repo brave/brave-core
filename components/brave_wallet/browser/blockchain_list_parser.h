@@ -32,9 +32,7 @@ using OffRampTokensListMap =
                    std::vector<mojom::BlockchainTokenPtr>>;
 using RampTokenListMaps = std::pair<OnRampTokensListMap, OffRampTokensListMap>;
 
-bool ParseTokenList(const std::string& json,
-                    TokenListMap* token_list,
-                    mojom::CoinType coin);
+bool ParseTokenList(const std::string& json, TokenListMap* token_list_map);
 std::optional<RampTokenListMaps> ParseRampTokenListMaps(
     const std::string& json);
 std::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(

@@ -74,91 +74,80 @@ namespace {
 
 const char token_list_json[] = R"(
   {
-   "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
-    "name": "USD Coin",
-    "logo": "usdc.png",
-    "erc20": true,
-    "erc721": false,
-    "symbol": "USDC",
-    "decimals": 6,
-    "chainId": "0x1"
-   },
-   "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
-     "name": "Crypto Kitties",
-     "logo": "CryptoKitties-Kitty-13733.svg",
-     "erc20": false,
-     "erc721": true,
-     "symbol": "CK",
-     "decimals": 0,
-     "chainId": "0x1"
-   },
-   "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
-     "name": "Uniswap",
-     "logo": "uni.svg",
-     "erc20": true,
-     "symbol": "UNI",
-     "decimals": 18,
-     "chainId": "0x1"
-   }
-  })";
-
-const char sepolia_list_json[] = R"(
-  {
-   "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
-    "name": "USD Coin",
-    "logo": "usdc.png",
-    "erc20": true,
-    "erc721": false,
-    "symbol": "USDC",
-    "decimals": 6,
-    "chainId": "0xaa36a7"
-   },
-   "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
-     "name": "Crypto Kitties",
-     "logo": "CryptoKitties-Kitty-13733.svg",
-     "erc20": false,
-     "erc721": true,
-     "symbol": "CK",
-     "decimals": 0,
-     "chainId": "0xaa36a7"
-   },
-   "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
-     "name": "Uniswap",
-     "logo": "uni.svg",
-     "erc20": true,
-     "symbol": "UNI",
-     "decimals": 18,
-     "chainId": "0xaa36a7"
-   }
-  })";
-
-const char solana_token_list_json[] = R"(
-  {
-    "So11111111111111111111111111111111111111112": {
-      "name": "Wrapped SOL",
-      "logo": "So11111111111111111111111111111111111111112.png",
-      "erc20": false,
-      "symbol": "SOL",
-      "decimals": 9,
-      "chainId": "0x65",
-      "coingeckoId": "solana"
+    "0x1": {
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+        "name": "USD Coin",
+        "logo": "usdc.png",
+        "erc20": true,
+        "erc721": false,
+        "symbol": "USDC",
+        "decimals": 6
+      },
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
+        "name": "Crypto Kitties",
+        "logo": "CryptoKitties-Kitty-13733.svg",
+        "erc20": false,
+        "erc721": true,
+        "symbol": "CK",
+        "decimals": 0
+      },
+      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
+        "name": "Uniswap",
+        "logo": "uni.svg",
+        "erc20": true,
+        "symbol": "UNI",
+        "decimals": 18
+      }
     },
-    "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
-      "name": "USD Coin",
-      "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
-      "erc20": false,
-      "symbol": "USDC",
-      "decimals": 6,
-      "chainId": "0x65",
-      "coingeckoId": "usd-coin"
+    "0xaa36a7": {
+      "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+        "name": "USD Coin",
+        "logo": "usdc.png",
+        "erc20": true,
+        "erc721": false,
+        "symbol": "USDC",
+        "decimals": 6
+      },
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d": {
+        "name": "Crypto Kitties",
+        "logo": "CryptoKitties-Kitty-13733.svg",
+        "erc20": false,
+        "erc721": true,
+        "symbol": "CK",
+        "decimals": 0
+      },
+      "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
+        "name": "Uniswap",
+        "logo": "uni.svg",
+        "erc20": true,
+        "symbol": "UNI",
+        "decimals": 18
+      }
     },
-    "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
-      "name": "Tesla Inc.",
-      "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
-      "erc20": false,
-      "symbol": "TSLA",
-      "decimals": 8,
-      "chainId": "0x65"
+    "0x65": {
+      "So11111111111111111111111111111111111111112": {
+        "name": "Wrapped SOL",
+        "logo": "So11111111111111111111111111111111111111112.png",
+        "erc20": false,
+        "symbol": "SOL",
+        "decimals": 9,
+        "coingeckoId": "solana"
+      },
+      "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": {
+        "name": "USD Coin",
+        "logo": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png",
+        "erc20": false,
+        "symbol": "USDC",
+        "decimals": 6,
+        "coingeckoId": "usd-coin"
+      },
+      "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
+        "name": "Tesla Inc.",
+        "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+        "erc20": false,
+        "symbol": "TSLA",
+        "decimals": 8
+      }
     }
   })";
 
@@ -364,12 +353,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
 
     auto* registry = BlockchainRegistry::GetInstance();
     TokenListMap token_list_map;
-    ASSERT_TRUE(
-        ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::ETH));
-    ASSERT_TRUE(ParseTokenList(sepolia_list_json, &token_list_map,
-                               mojom::CoinType::ETH));
-    ASSERT_TRUE(ParseTokenList(solana_token_list_json, &token_list_map,
-                               mojom::CoinType::SOL));
+    ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
     registry->UpdateTokenList(std::move(token_list_map));
 
     token1_ = GetRegistry()->GetTokenByAddress(
@@ -2605,13 +2589,15 @@ TEST_F(BraveWalletServiceUnitTest, RecordGeneralUsageMetrics) {
 TEST_F(BraveWalletServiceUnitTest, GetBalanceScannerSupportedChains) {
   service_->GetBalanceScannerSupportedChains(
       base::BindLambdaForTesting([](const std::vector<std::string>& chains) {
-        std::vector<std::string> expected_chains = {
-            mojom::kMainnetChainId,         mojom::kBnbSmartChainMainnetChainId,
-            mojom::kPolygonMainnetChainId,  mojom::kOptimismMainnetChainId,
+        base::flat_set<std::string> expected_chains_set = {
             mojom::kArbitrumMainnetChainId, mojom::kAvalancheMainnetChainId,
+            mojom::kBaseMainnetChainId,     mojom::kBnbSmartChainMainnetChainId,
+            mojom::kMainnetChainId,         mojom::kOptimismMainnetChainId,
+            mojom::kPolygonMainnetChainId,
         };
-        ASSERT_EQ(chains.size(), expected_chains.size());
-        EXPECT_EQ(chains, expected_chains);
+        ASSERT_EQ(chains.size(), expected_chains_set.size());
+        base::flat_set<std::string> chains_set(chains.begin(), chains.end());
+        EXPECT_EQ(chains_set, expected_chains_set);
       }));
 }
 

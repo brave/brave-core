@@ -204,7 +204,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetFungibleSupportedChains) {
 TEST_F(AssetDiscoveryManagerUnitTest, GetNonFungibleSupportedChains) {
   // Gnosis chain ID should not be included if it's not a custom network
   auto chains = asset_discovery_manager_->GetNonFungibleSupportedChains();
-  EXPECT_EQ(chains.size(), 7UL);
+  EXPECT_EQ(chains.size(), 8UL);
   EXPECT_TRUE(base::Contains(
       chains,
       mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId)));
@@ -222,7 +222,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, GetNonFungibleSupportedChains) {
   network_manager_->AddCustomNetwork(gnosis_network);
 
   chains = asset_discovery_manager_->GetNonFungibleSupportedChains();
-  EXPECT_EQ(chains.size(), 8UL);
+  EXPECT_EQ(chains.size(), 9UL);
 
   // Verify one of the chain IDs is mojom::kGnosisChainId
   EXPECT_TRUE(base::Contains(

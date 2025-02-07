@@ -122,17 +122,14 @@ void DoParseCoingeckoIdsMap(const base::FilePath& dir, ParseListsResult& out) {
   out.coingecko_ids_map = std::move(*coingecko_ids_map);
 }
 
-void HandleParseTokenList(const base::FilePath& dir,
-                          const std::string& filename,
-                          mojom::CoinType coin_type,
-                          ParseListsResult& out) {
-  auto result = ParseJsonFile(dir, filename);
+void DoParseTokenList(const base::FilePath& dir, ParseListsResult& out) {
+  auto result = ParseJsonFile(dir, "coingecko-top5000.json");
   if (!result) {
     return;
   }
 
   TokenListMap lists;
-  if (!ParseTokenList(*result, &lists, coin_type)) {
+  if (!ParseTokenList(*result, &lists)) {
     VLOG(1) << "Can't parse token list.";
     return;
   }
@@ -140,13 +137,6 @@ void HandleParseTokenList(const base::FilePath& dir,
   for (auto& list_pair : lists) {
     out.token_list_map[list_pair.first] = std::move(list_pair.second);
   }
-}
-
-void DoParseTokenList(const base::FilePath& dir, ParseListsResult& out) {
-  HandleParseTokenList(dir, "contract-map.json", mojom::CoinType::ETH, out);
-  HandleParseTokenList(dir, "evm-contract-map.json", mojom::CoinType::ETH, out);
-  HandleParseTokenList(dir, "solana-contract-map.json", mojom::CoinType::SOL,
-                       out);
 }
 
 void DoParseChainList(const base::FilePath& dir, ParseListsResult& out) {

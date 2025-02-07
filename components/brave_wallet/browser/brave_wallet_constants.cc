@@ -38,22 +38,21 @@ const base::flat_map<std::string, std::string>&
 GetEthBalanceScannerContractAddresses() {
   static base::NoDestructor<base::flat_map<std::string, std::string>>
       contract_addresses(
-          // Mainnet, Polygon, and Avalanche conctract addresses pulled from
-          // https://github.com/MyCryptoHQ/eth-scan
-          {{mojom::kMainnetChainId,
-            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
-           {mojom::kPolygonMainnetChainId,
-            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
+          // Ref: https://github.com/brave/evm-scanner
+          {{mojom::kArbitrumMainnetChainId,
+            "0xfA542DD20c1997D6e8b24387D64CB8336197df3d"},
            {mojom::kAvalancheMainnetChainId,
-            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
-           // BSC, Optimism, and Arbitrum contract addresses pulled from
-           // https://github.com/onyb/x/blob/75800edce88688dcfe59dd6b4a664087862369bb/core/evm/scanner/balances/EVMScanner.ts
+            "0x827aa7e7C0C665df227Fae6dd155c0048fec6978"},
+           {mojom::kBaseMainnetChainId,
+            "0xF9164898C08f40DfB0999F94Bf9b9F73d66dfFeb"},
            {mojom::kBnbSmartChainMainnetChainId,
-            "0x53242a975aa7c607e17138b0e0231162e3e68593"},
+            "0x578E2574dDD2e609dDA7f6C8B2a90C540794B75e"},
+           {mojom::kMainnetChainId,
+            "0x667e61DB0997B59681C15E07376185aE24f754Db"},
            {mojom::kOptimismMainnetChainId,
-            "0x9e5076DF494FC949aBc4461F4E57592B81517D81"},
-           {mojom::kArbitrumMainnetChainId,
-            "0xa3e7eb35e779f261ca604138d41d0258e995e97b"}});
+            "0x2D1AacdEcd43Be64d82c14E9a6072A29dc804cAe"},
+           {mojom::kPolygonMainnetChainId,
+            "0x0B7Dd2c628a6Ee40153D89ce68bdA82d4840CD34"}});
 
   return *contract_addresses;
 }

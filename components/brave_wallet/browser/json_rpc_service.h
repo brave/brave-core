@@ -612,10 +612,29 @@ class JsonRpcService : public mojom::JsonRpcService {
                               APIRequestResult api_request_result);
   void OnGetERC20TokenAllowance(GetERC20TokenAllowanceCallback callback,
                                 APIRequestResult api_request_result);
-  void OnGetERC20TokenBalances(
-      const std::vector<std::string>& token_contract_addresses,
+  void OnGetERC20TokenBalances(const std::vector<std::string>& token_addresses,
+                               GetERC20TokenBalancesCallback callback,
+                               APIRequestResult api_request_result);
+  void ProcessNextERC20Batch(
+      const std::vector<std::string>& all_tokens,
+      const std::string& user_address,
+      const std::string& scanner_address,
+      const GURL& network_url,
+      std::vector<mojom::ERC20BalanceResultPtr> accumulated_results,
+      size_t start_idx,
+      GetERC20TokenBalancesCallback callback);
+  void OnBatchERC20TokenBalances(
+      const std::vector<std::string>& all_tokens,
+      const std::string& user_address,
+      const std::string& scanner_address,
+      const GURL& network_url,
+      std::vector<mojom::ERC20BalanceResultPtr> accumulated_results,
+      size_t next_start_idx,
       GetERC20TokenBalancesCallback callback,
-      APIRequestResult api_request_result);
+      std::vector<mojom::ERC20BalanceResultPtr> batch_results,
+      mojom::ProviderError error,
+      const std::string& error_message);
+
   void OnUnstoppableDomainsResolveDns(const std::string& domain,
                                       const std::string& chain_id,
                                       APIRequestResult api_request_result);
