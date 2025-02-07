@@ -19,6 +19,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/types/expected.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -102,9 +103,8 @@ class OAIAPIUnitTest : public testing::Test {
   void TearDown() override {}
 
   std::string GetMessagesJson(std::string_view body_json) {
-    auto dict = base::JSONReader::ReadDict(body_json);
-    EXPECT_TRUE(dict.has_value());
-    base::Value::List* events = dict->FindList("messages");
+    auto dict = base::test::ParseJsonDict(body_json);
+    base::Value::List* events = dict.FindList("messages");
     EXPECT_TRUE(events);
     std::string events_json;
     base::JSONWriter::WriteWithOptions(
@@ -113,12 +113,10 @@ class OAIAPIUnitTest : public testing::Test {
   }
 
   std::string FormatComparableEventsJson(std::string_view formatted_json) {
-    auto messages = base::JSONReader::Read(formatted_json);
-    EXPECT_TRUE(messages.has_value())
-        << "Verify that the string is valid JSON!";
+    auto messages = base::test::ParseJson(formatted_json);
     std::string json;
     base::JSONWriter::WriteWithOptions(
-        messages.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
+        messages, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
     return json;
   }
 
@@ -164,15 +162,13 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
             GetMessagesJson(body).c_str(),
             FormatComparableEventsJson(expected_conversation_body).c_str());
 
-        auto chunk = base::JSONReader::Read(server_chunk);
-        EXPECT_TRUE(chunk.has_value());
-        data_received_callback.Run(base::ok(std::move(chunk.value())));
+        auto chunk = base::test::ParseJson(server_chunk);
+        data_received_callback.Run(base::ok(std::move(chunk)));
 
-        auto completed = base::JSONReader::Read(server_completion);
-        EXPECT_TRUE(completed.has_value());
+        auto completed = base::test::ParseJson(server_completion);
         std::move(result_callback)
-            .Run(api_request_helper::APIRequestResult(
-                200, std::move(completed.value()), {}, net::OK, GURL()));
+            .Run(api_request_helper::APIRequestResult(200, std::move(completed),
+                                                      {}, net::OK, GURL()));
 
         run_loop.Quit();
         return Ticket();
@@ -192,11 +188,10 @@ TEST_F(OAIAPIUnitTest, PerformRequest) {
       });
 
   // Begin request
-  auto messages = base::JSONReader::Read(expected_conversation_body);
-  EXPECT_TRUE(messages.has_value());
+  auto messages = base::test::ParseJsonList(expected_conversation_body);
 
   client_->PerformRequest(
-      *model_options, std::move(messages.value().GetList()),
+      *model_options, std::move(messages),
       base::BindRepeating(&MockCallbacks::OnDataReceived,
                           base::Unretained(&mock_callbacks)),
       base::BindOnce(&MockCallbacks::OnCompleted,

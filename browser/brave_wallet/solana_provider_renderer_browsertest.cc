@@ -7,11 +7,11 @@
 
 #include "base/containers/flat_map.h"
 #include "base/feature_list.h"
-#include "base/json/json_reader.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -391,11 +391,6 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     EXPECT_EQ(param->encoded_serialized_msg,
               brave_wallet::Base58Encode(kSerializedMessage));
 
-    auto expect_send_options = base::JSONReader::Read(
-        R"({"maxRetries": 9007199254740991,
-            "preflightCommitment": "confirmed",
-            "skipPreflight": true})");
-    ASSERT_TRUE(expect_send_options);
     EXPECT_EQ(send_options, send_options_);
 
     base::Value::Dict result;
@@ -899,8 +894,7 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderRendererTest, SignAndSendTransaction) {
   TestSolanaProvider* provider = test_content_browser_client_.GetProvider(
       web_contents(browser())->GetPrimaryMainFrame());
   ASSERT_TRUE(provider);
-  provider->SetSendOptions(
-      base::JSONReader::Read(send_options)->GetDict().Clone());
+  provider->SetSendOptions(base::test::ParseJsonDict(send_options));
 
   auto send_options_result =
       EvalJs(web_contents(browser()),

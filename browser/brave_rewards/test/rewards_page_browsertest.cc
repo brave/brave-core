@@ -10,11 +10,11 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
-#include "base/json/json_reader.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/components/brave_rewards/content/rewards_service_impl.h"
@@ -84,7 +84,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
         {"payment_id":"2b6e71a6-f3c7-5999-9235-11605a60ec93",
          "recovery_seed":"QgcQHdg6fo53/bGKVwZlL1UkLiql8X7U68jaWgz6FWQ="})");
 
-    auto params = base::JSONReader::Read(R"(
+    auto params = base::test::ParseJsonDict(R"(
         {
           "ac": {
             "choice": 1.0,
@@ -129,7 +129,7 @@ class RewardsPageBrowserTest : public InProcessBrowserTest {
           }
         })");
 
-    prefs.SetDict(prefs::kParameters, std::move(*params).TakeDict());
+    prefs.SetDict(prefs::kParameters, std::move(params));
   }
 
   void StartRewardsEngine() {

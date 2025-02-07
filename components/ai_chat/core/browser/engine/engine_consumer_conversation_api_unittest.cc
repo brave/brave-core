@@ -13,13 +13,13 @@
 
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/numerics/clamped_math.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "base/values.h"
@@ -57,9 +57,8 @@ class MockConversationAPIClient : public ConversationAPIClient {
   std::string GetEventsJson(
       const std::vector<ConversationEvent>& conversation) {
     auto body = CreateJSONRequestBody(conversation, "", true);
-    auto dict = base::JSONReader::ReadDict(body);
-    EXPECT_TRUE(dict.has_value());
-    base::Value::List* events = dict->FindList("events");
+    auto dict = base::test::ParseJsonDict(body);
+    base::Value::List* events = dict.FindList("events");
     EXPECT_TRUE(events);
     std::string events_json;
     base::JSONWriter::WriteWithOptions(
@@ -101,11 +100,10 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
   void TearDown() override {}
 
   std::string FormatComparableEventsJson(std::string_view formatted_json) {
-    auto events = base::JSONReader::Read(formatted_json);
-    EXPECT_TRUE(events.has_value()) << "Verify that the string is valid JSON!";
+    auto events = base::test::ParseJson(formatted_json);
     std::string events_json;
     base::JSONWriter::WriteWithOptions(
-        events.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
+        events, base::JSONWriter::OPTIONS_PRETTY_PRINT, &events_json);
     return events_json;
   }
 

@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/functional/callback_helpers.h"
-#include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/test/bind.h"
@@ -1953,17 +1952,19 @@ TEST_F(BraveWalletServiceUnitTest, MigrateGoerliNetwork) {
   GetPrefs()->SetBoolean(kBraveWalletGoerliNetworkMigrated, false);
   GetPrefs()->ClearPref(kBraveWalletSelectedNetworksPerOrigin);
 
-  auto selected_networks = base::JSONReader::Read(R"({
+  auto selected_networks = base::test::ParseJsonDict(R"({
     "ethereum": {
       "https://app.uniswap.org": "0xaa36a7"
     }
   })");
-  GetPrefs()->Set(kBraveWalletSelectedNetworksPerOrigin, *selected_networks);
+  GetPrefs()->SetDict(kBraveWalletSelectedNetworksPerOrigin,
+                      std::move(selected_networks));
 
-  auto default_networks = base::JSONReader::Read(R"({
+  auto default_networks = base::test::ParseJsonDict(R"({
     "ethereum": "0xaa36a7"
   })");
-  GetPrefs()->Set(kBraveWalletSelectedNetworks, *default_networks);
+  GetPrefs()->SetDict(kBraveWalletSelectedNetworks,
+                      std::move(default_networks));
 
   // CASE 1: Goerli is the selected network of some origin
   ASSERT_FALSE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
