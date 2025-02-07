@@ -389,7 +389,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         ImageButton homeButton = view.findViewById(R.id.home_menu_id);
         if (homeButton != null && HomepageManager.getInstance() != null) {
             homeButton.setVisibility(
-                    HomepageManager.getInstance().isHomepageEnabled() ? View.VISIBLE : View.GONE);
+                    BottomToolbarConfiguration.isToolbarBottomAnchored()
+                                    && HomepageManager.getInstance().isHomepageEnabled()
+                            ? View.VISIBLE
+                            : View.GONE);
         }
     }
 
