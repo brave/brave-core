@@ -22,7 +22,9 @@
       'styledElement': results.styledElement,
       'upwardInt': results.upwardInt,
       'upwardSelector': results.upwardSelector,
-      'localFrameElement': results.localFrameElement
+      'localFrameElement': results.localFrameElement,
+      'hasTextDisplayIsNone': results.hasTextDisplayIsNone,
+      'hasDisplayIsNone': results.hasDisplayIsNone
     })
   }
 
@@ -41,7 +43,9 @@
       styledElement: false,
       upwardInt: false,
       upwardSelector: false,
-      localFrameElement: false
+      localFrameElement: false,
+      hasTextDisplayIsNone: false,
+      hasDisplayIsNone: false
     }
 
     elements.forEach((node) => {
@@ -77,6 +81,15 @@
 
       if (node.id === 'test-upward-selector') {
         results.upwardSelector = window.getComputedStyle(node).display === 'none'
+      }
+
+      if (node.id === 'test-has-text') {
+        const nodeDisplay = window.getComputedStyle(node).display
+        results.hasTextDisplayIsNone = nodeDisplay === 'none'
+      }
+
+      if (node.id === 'test-has') {
+        results.hasDisplayIsNone = window.getComputedStyle(node).display === 'none'
       }
 
       if (node.id === 'local-iframe') {
