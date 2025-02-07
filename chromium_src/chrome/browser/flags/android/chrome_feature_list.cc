@@ -48,6 +48,8 @@
     &preferences::features::kBraveBackgroundVideoPlayback,              \
     &brave_rewards::features::kNewRewardsUIFeature,                     \
     &youtube_script_injector::features::kBraveYouTubeScriptInjector,    \
+    &youtube_script_injector::features::kBraveBackgroundVideoPlayback,  \
+    &youtube_script_injector::features::kBraveYouTubeExtraControls,     \
     &request_otr::features::kBraveRequestOTRTab,                        \
     &safe_browsing::features::kBraveAndroidSafeBrowsing,                \
     &speedreader::kSpeedreaderFeature,                                  \
