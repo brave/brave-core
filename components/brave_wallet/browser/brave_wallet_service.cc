@@ -834,18 +834,6 @@ void BraveWalletService::MigrateDeadNetwork(
   prefs->SetBoolean(pref_key, true);
 }
 
-void BraveWalletService::MigrateFantomMainnetAsCustomNetwork(
-    PrefService* prefs) {
-  mojom::NetworkInfo network(
-      mojom::kFantomMainnetChainId, "Fantom Opera", {"https://ftmscan.com"}, {},
-      0, {GURL("https://rpc.ftm.tools")}, "FTM", "Fantom", 18,
-      mojom::CoinType::ETH,
-      GetSupportedKeyringsForNetwork(mojom::CoinType::ETH,
-                                     mojom::kFantomMainnetChainId));
-  MigrateAsCustomNetwork(prefs, network, true,
-                         kBraveWalletCustomNetworksFantomMainnetMigrated);
-}
-
 void BraveWalletService::MigrateGoerliNetwork(PrefService* prefs) {
   MigrateDeadNetwork(prefs, "0x5", mojom::kSepoliaChainId,
                      kBraveWalletGoerliNetworkMigrated);
