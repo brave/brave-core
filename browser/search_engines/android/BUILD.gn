@@ -13,10 +13,14 @@ android_library("java") {
   deps = [
     ":java_resources",
     "//base:supplier_java",
+    "//brave/components/search_engines/android:java",
     "//chrome/browser/profiles/android:java",
+    "//chrome/browser/search_engines/android:java",
     "//chrome/browser/settings:java",
+    "//components/search_engines/android:java",
     "//third_party/android_deps:material_design_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_fragment_fragment_java",
     "//third_party/androidx:androidx_preference_preference_java",
   ]
 
