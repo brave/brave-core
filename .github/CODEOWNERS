@@ -219,3 +219,6 @@ ui/webui/resources/js/brave_browser_command/brave_browser_command.mojom @brave/s
 
 # l10n scripts deps
 script/lib/l10n/requirements.txt @brave/sec-team
+
+# protected URLs (needs security review)
+components/skus/common/skus_utils.h @brave/sec-team

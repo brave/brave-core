@@ -13,14 +13,15 @@ class GURL;
 
 namespace skus {
 // NOTE: please open a security review when appending to this list.
-constexpr auto kSafeOrigins = std::to_array<std::string_view>({
+inline constexpr auto kSafeOrigins = std::to_array<std::string_view>({
     "https://account.brave.com",
     "https://account.bravesoftware.com",
     "https://account.brave.software",
 });
 
-// This version is safe for use elsewhere. The internal `IsSameOriginWith`
-// check is different than the version above.
+// This version is safe for use outside the renderer. The internal
+// `IsSameOriginWith` check is different than the version in
+// `//brave/components/skus/renderer/skus_utils.h`
 //
 // See //url/origin.cc
 bool IsSafeOrigin(const GURL& origin);

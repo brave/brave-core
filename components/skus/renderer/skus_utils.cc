@@ -15,7 +15,7 @@
 
 namespace {
 
-const std::vector<blink::WebSecurityOrigin> WebSecurityOriginList() {
+const std::vector<blink::WebSecurityOrigin>& WebSecurityOriginList() {
   static const base::NoDestructor<std::vector<blink::WebSecurityOrigin>> list(
       [] {
         std::vector<blink::WebSecurityOrigin> list;

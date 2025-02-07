@@ -18,6 +18,9 @@ namespace skus {
 // NOTE: You'll get DCHECK/CHECK errors for trying to create a
 // `blink::WebString` if you're not in a blink context (tests are fine).
 //
+// For use in a non-renderer context, please see:
+// `//brave/components/skus/common/skus_utils.h`
+//
 // See //third_party/blink/renderer/platform/weborigin/security_origin.cc
 bool IsSafeOrigin(const blink::WebSecurityOrigin& origin);
 }  // namespace skus
