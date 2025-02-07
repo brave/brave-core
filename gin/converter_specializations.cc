@@ -24,4 +24,18 @@ bool Converter<base::Value::List>::FromV8(v8::Isolate* isolate,
   *out = std::move(*base_value).TakeList();
   return true;
 }
+
+bool Converter<base::Value::Dict>::FromV8(v8::Isolate* isolate,
+                                          v8::Local<v8::Value> v8_value,
+                                          base::Value::Dict* out) {
+  std::unique_ptr<base::Value> base_value =
+      content::V8ValueConverter::Create()->FromV8Value(
+          v8_value, isolate->GetCurrentContext());
+  if (!base_value || !base_value->is_dict()) {
+    return false;
+  }
+
+  *out = std::move(*base_value).TakeDict();
+  return true;
+}
 }  // namespace gin

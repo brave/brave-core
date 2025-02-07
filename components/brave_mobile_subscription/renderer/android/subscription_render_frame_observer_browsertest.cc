@@ -28,9 +28,27 @@ class SubscriptionRenderFrameObserverBrowserTest
   }
   ~SubscriptionRenderFrameObserverBrowserTest() override = default;
 
+  bool ExecuteJavascript(const std::u16string& script) {
+    int result = -1;
+    EXPECT_TRUE(ExecuteJavaScriptAndReturnIntValue(script, &result));
+    return result == 1;
+  }
+
  private:
   base::test::ScopedFeatureList scoped_feature_list_;
 };
+
+TEST_F(SubscriptionRenderFrameObserverBrowserTest, StatusCheck) {
+  SubscriptionRenderFrameObserver observer(GetMainRenderFrame(),
+                                           content::ISOLATED_WORLD_ID_GLOBAL);
+  LoadHTMLWithUrlOverride(
+      R"(<html><body></body></html>)",
+      "https://account.brave.com/?intent=link-order&product=leo");
+
+  std::u16string command =
+      u"Number(linkResult != undefined && linkResult.setStatus != undefined)";
+  EXPECT_TRUE(ExecuteJavascript(command));
+}
 
 TEST_F(SubscriptionRenderFrameObserverBrowserTest, IsAllowed) {
   SubscriptionRenderFrameObserver observer(GetMainRenderFrame(),
@@ -48,6 +66,7 @@ TEST_F(SubscriptionRenderFrameObserverBrowserTest, IsAllowed) {
       "https://account.brave.com/?intent=link-order&product=leo");
 
   EXPECT_TRUE(observer.IsAllowed());
+
   // http
   LoadHTMLWithUrlOverride(
       R"(<html><body></body></html>)",

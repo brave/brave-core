@@ -69,4 +69,8 @@ void AIChatIAPSubscription::GetPurchaseTokenOrderId(
   std::move(callback).Run(base::Base64Encode(response_json), order_id_string);
 }
 
+void AIChatIAPSubscription::SetLinkStatus(int status) {
+  prefs_->SetInteger(prefs::kBraveChatSubscriptionLinkStatusAndroid, status);
+}
+
 }  // namespace ai_chat

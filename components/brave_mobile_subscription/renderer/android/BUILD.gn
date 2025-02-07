@@ -19,6 +19,7 @@ source_set("android") {
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/brave_vpn/common/buildflags",
     "//brave/components/skus/renderer",
+    "//brave/gin:converter_specializations",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
