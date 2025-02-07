@@ -36,7 +36,8 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
   ~YouTubeTabHelper() override;
   YouTubeTabHelper(const YouTubeTabHelper&) = delete;
   YouTubeTabHelper& operator=(const YouTubeTabHelper&) = delete;
-
+  bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents);
+  bool AreYouTubeExtraControlsEnabled(content::WebContents* contents);
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
       content::RenderFrameHost* rfh);
 

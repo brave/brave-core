@@ -16,7 +16,10 @@
 #include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "brave/components/youtube_script_injector/common/features.h"
+#include "brave/components/youtube_script_injector/common/pref_names.h"
 #include "components/sessions/content/session_tab_helper.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
@@ -94,9 +97,31 @@ const std::optional<YouTubeJson>& YouTubeTabHelper::GetJson() const {
   return youtube_registry_->GetJson();
 }
 
+bool YouTubeTabHelper::IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
+  PrefService* prefs =
+        user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+
+  return (base::FeatureList::IsEnabled(
+          features::kBraveBackgroundVideoPlayback) &&
+      prefs->GetBoolean(prefs::kYouTubeBackgroundVideoPlaybackEnabled));
+}
+
+bool YouTubeTabHelper::AreYouTubeExtraControlsEnabled(content::WebContents* contents) {
+  PrefService* prefs =
+        user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+
+  return (base::FeatureList::IsEnabled(
+          features::kBraveYouTubeExtraControls) &&
+      prefs->GetBoolean(prefs::kYouTubeExtraControlsEnabled));
+}
+
 void YouTubeTabHelper::PrimaryMainDocumentElementAvailable() {
   auto url = web_contents()->GetLastCommittedURL();
   if (!youtube_registry_->IsYouTubeDomain(url)) {
+    return;
+  }
+
+  if (!IsBackgroundVideoPlaybackEnabled(web_contents()) && !AreYouTubeExtraControlsEnabled(web_contents())) {
     return;
   }
 
@@ -108,25 +133,22 @@ void YouTubeTabHelper::PrimaryMainDocumentElementAvailable() {
   content::GlobalRenderFrameHostId render_frame_host_id =
       web_contents()->GetPrimaryMainFrame()->GetGlobalId();
 
-  youtube_registry_->LoadScriptFromPath(
-      url, json->GetFeatureScript(),
-      base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
+  if (AreYouTubeExtraControlsEnabled(web_contents())) {
+    youtube_registry_->LoadScriptFromPath(
+        url, json->GetPipScript(),
+        base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
+                      weak_factory_.GetWeakPtr(), render_frame_host_id,
+                      blink::mojom::UserActivationOption::kDoNotActivate));
+  }
+
+  if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
+    youtube_registry_->LoadScriptFromPath(
+        url, json->GetPlaybackVideoScript(),
+        base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
                      weak_factory_.GetWeakPtr(), render_frame_host_id,
                      blink::mojom::UserActivationOption::kDoNotActivate));
+  }
 }
-
-// bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
-//   PrefService* prefs =
-//       static_cast<Profile*>(contents->GetBrowserContext())->GetPrefs();
-
-//   if (!base::FeatureList::IsEnabled(
-//           ::preferences::features::kBraveBackgroundVideoPlayback) &&
-//       !prefs->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
-//     return false;
-//   }
-
-//   return true;
-// }
 
 void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
     JNIEnv* env,
@@ -135,13 +157,16 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
       content::WebContents::FromJavaWebContents(jweb_contents);
 
   // Get the YouTubeTabHelper instance
-  youtube_script_injector::YouTubeTabHelper* helper =
-      youtube_script_injector::YouTubeTabHelper::FromWebContents(web_contents);
+  YouTubeTabHelper* helper = YouTubeTabHelper::FromWebContents(web_contents);
   if (!helper || !helper->GetJson()) {
     return;
   }
 
-  auto* registry = youtube_script_injector::YouTubeRegistry::GetInstance();
+  if (!helper->AreYouTubeExtraControlsEnabled(web_contents)) {
+    return;
+  }
+
+  auto* registry = YouTubeRegistry::GetInstance();
   if (!registry) {
     return;
   }
@@ -150,7 +175,7 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
   registry->LoadScriptFromPath(
       url, helper->GetJson()->GetFullscreenScript(),
       base::BindOnce(
-          &youtube_script_injector::YouTubeTabHelper::InsertScriptInPage,
+          &YouTubeTabHelper::InsertScriptInPage,
           helper->GetWeakPtr(),
           web_contents->GetPrimaryMainFrame()->GetGlobalId(),
           blink::mojom::UserActivationOption::kActivate));
