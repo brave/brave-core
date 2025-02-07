@@ -27,9 +27,10 @@ namespace youtube_script_injector {
 //   "extra_controls_fullscreen_script": "extra-controls-fullscreen.js",
 //   "extra_controls_pip_script": "extra-controls-pip.js"
 // }
-// Note that "playback_video_script_path_", and "extra_controls_fullscreen_script_path_",
-// and "extra_controls_pip_script_path_" give a path relative to the
-// component under scripts directory.
+// Note that "playback_video_script_path_", and
+// "extra_controls_fullscreen_script_path_", and
+// "extra_controls_pip_script_path_" give a path relative to the component under
+// scripts directory.
 class YouTubeJson {
  public:
   YouTubeJson();

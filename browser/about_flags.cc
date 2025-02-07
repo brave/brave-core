@@ -296,15 +296,15 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#define BRAVE_YOUTUBE_SCRIPT_INJECTOR                                          \
-  EXPAND_FEATURE_ENTRIES({                                                     \
-      "brave-youtube-script-injector",                                         \
-      "Youtube script injector",                                               \
-      "Enables play audio from YouTube video in background when tab is not "   \
-      "active or device screen is turned off, and displays extra controls",    \
-      kOsAndroid,                                                              \
-      FEATURE_VALUE_TYPE(                                                      \
-          youtube_script_injector::features::kBraveYouTubeScriptInjector),     \
+#define BRAVE_YOUTUBE_SCRIPT_INJECTOR                                        \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      "brave-youtube-script-injector",                                       \
+      "Youtube script injector",                                             \
+      "Enables play audio from YouTube video in background when tab is not " \
+      "active or device screen is turned off, and displays extra controls",  \
+      kOsAndroid,                                                            \
+      FEATURE_VALUE_TYPE(                                                    \
+          youtube_script_injector::features::kBraveYouTubeScriptInjector),   \
   })
 #define BRAVE_SAFE_BROWSING_ANDROID                                           \
   EXPAND_FEATURE_ENTRIES({                                                    \

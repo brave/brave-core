@@ -44,7 +44,8 @@ YouTubeJson::YouTubeJson() = default;
 YouTubeJson::~YouTubeJson() = default;
 YouTubeJson::YouTubeJson(const YouTubeJson& other) {
   playback_video_script_path_ = other.playback_video_script_path_;
-  extra_controls_fullscreen_script_path_ = other.extra_controls_fullscreen_script_path_;
+  extra_controls_fullscreen_script_path_ =
+      other.extra_controls_fullscreen_script_path_;
   extra_controls_pip_script_path_ = other.extra_controls_pip_script_path_;
   version_ = other.version_;
 }
@@ -53,11 +54,14 @@ YouTubeJson::YouTubeJson(const YouTubeJson& other) {
 void YouTubeJson::RegisterJSONConverter(
     base::JSONValueConverter<YouTubeJson>* converter) {
   converter->RegisterCustomValueField<base::FilePath>(
-      kPlaybackVideoScript, &YouTubeJson::playback_video_script_path_, GetFilePathFromValue);
+      kPlaybackVideoScript, &YouTubeJson::playback_video_script_path_,
+      GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
-      kFullscreenScript, &YouTubeJson::extra_controls_fullscreen_script_path_, GetFilePathFromValue);
+      kFullscreenScript, &YouTubeJson::extra_controls_fullscreen_script_path_,
+      GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
-      kPipScript, &YouTubeJson::extra_controls_pip_script_path_, GetFilePathFromValue);
+      kPipScript, &YouTubeJson::extra_controls_pip_script_path_,
+      GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &YouTubeJson::version_);
 }
 

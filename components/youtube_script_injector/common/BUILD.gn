@@ -17,8 +17,8 @@ component("common") {
   ]
 
   deps = [
-  "//base",
-  "//components/prefs",
+    "//base",
+    "//components/prefs",
   ]
 }
 
