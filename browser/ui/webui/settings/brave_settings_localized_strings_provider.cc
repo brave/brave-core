@@ -83,6 +83,9 @@ constexpr char16_t kEnableNftDiscoveryLearnMoreUrl[] =
 constexpr char16_t kBlockAllCookiesLearnMoreUrl[] =
     u"https://github.com/brave/brave-browser/wiki/"
     u"Block-all-cookies-global-Shields-setting";
+constexpr char16_t kLeoCustomModelsLearnMoreURL[] =
+    u"https://support.brave.com/hc/en-us/articles/"
+    u"34070140231821-How-do-I-use-the-Bring-Your-Own-Model-BYOM-with-Brave-Leo";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -977,6 +980,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(
           IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_BLOCK_ALL_DEPRECATED_LABEL,
           kBlockAllCookiesLearnMoreUrl));
+
+  html_source->AddString(
+      "braveLeoAssistantYourModelsDesc2",
+      l10n_util::GetStringFUTF16(
+          IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2,
+          kLeoCustomModelsLearnMoreURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
