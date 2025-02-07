@@ -15,14 +15,18 @@
 
 namespace {
 
-base::NoDestructor<std::vector<blink::WebSecurityOrigin>>
-WebSecurityOriginList() {
-  std::vector<blink::WebSecurityOrigin> list(skus::kSafeOrigins.size());
-  std::ranges::transform(
-      skus::kSafeOrigins, std::back_inserter(list), [](auto& origin_string) {
-        return blink::WebSecurityOrigin::Create(GURL(origin_string));
-      });
-  return base::NoDestructor(list);
+const std::vector<blink::WebSecurityOrigin> WebSecurityOriginList() {
+  static const base::NoDestructor<std::vector<blink::WebSecurityOrigin>> list =
+      [&] {
+        std::vector<blink::WebSecurityOrigin> list;
+        std::ranges::transform(
+            skus::kSafeOrigins, std::back_inserter(list),
+            [](auto& origin_string) {
+              return blink::WebSecurityOrigin::Create(GURL(origin_string));
+            });
+        return base::NoDestructor(list);
+      }();
+  return *list;
 }
 
 }  // namespace
@@ -30,9 +34,8 @@ WebSecurityOriginList() {
 namespace skus {
 
 bool IsSafeOrigin(const blink::WebSecurityOrigin& origin) {
-  static base::NoDestructor<std::vector<blink::WebSecurityOrigin>>
-      safe_origins = WebSecurityOriginList();
-  for (const blink::WebSecurityOrigin& safe_origin : *safe_origins) {
+  auto safe_origins = WebSecurityOriginList();
+  for (const blink::WebSecurityOrigin& safe_origin : safe_origins) {
     if (safe_origin.IsSameOriginWith(origin)) {
       return true;
     }

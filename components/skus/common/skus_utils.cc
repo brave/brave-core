@@ -14,13 +14,16 @@
 
 namespace {
 
-base::NoDestructor<std::vector<url::Origin>> OriginList() {
-  std::vector<url::Origin> list(skus::kSafeOrigins.size());
-  std::ranges::transform(skus::kSafeOrigins, std::back_inserter(list),
-                         [](auto& origin_string) {
-                           return url::Origin::Create(GURL(origin_string));
-                         });
-  return base::NoDestructor(list);
+const std::vector<url::Origin>& OriginList() {
+  static const base::NoDestructor<std::vector<url::Origin>> list = [&] {
+    std::vector<url::Origin> list;
+    std::ranges::transform(skus::kSafeOrigins, std::back_inserter(list),
+                           [](auto& origin_string) {
+                             return url::Origin::Create(GURL(origin_string));
+                           });
+    return base::NoDestructor(list);
+  }();
+  return *list;
 }
 
 }  // namespace
@@ -28,9 +31,8 @@ base::NoDestructor<std::vector<url::Origin>> OriginList() {
 namespace skus {
 
 bool IsSafeOrigin(const GURL& origin) {
-  static base::NoDestructor<std::vector<url::Origin>> safe_origins =
-      OriginList();
-  for (const url::Origin& safe_origin : *safe_origins) {
+  auto safe_origins = OriginList();
+  for (const url::Origin& safe_origin : safe_origins) {
     if (safe_origin.IsSameOriginWith(origin)) {
       return true;
     }
