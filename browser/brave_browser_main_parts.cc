@@ -202,7 +202,7 @@ void ChromeBrowserMainParts::PostProfileInit(Profile* profile,
 #if BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(
           youtube_script_injector::features::kBraveYouTubeScriptInjector) ||
-      profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
+      profile->GetPrefs()->GetBoolean(kLegacyBackgroundVideoPlaybackEnabled)) {
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();
     command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);

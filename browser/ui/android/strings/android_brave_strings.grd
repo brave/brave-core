@@ -848,7 +848,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Closing all tabs closes Brave
       </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
-        Allows audio to play when you switch to another tab in Brave or another app or your device screen is off.
+        Allows YouTube video to play when you switch to another tab in Brave or another app or your device screen is off.
       </message>
       <message name="IDS_PREFS_OPEN_YOUTUBE_LINKS_BRAVE" desc="Text for open youtube links in brave">
         Open YouTube links in Brave
@@ -4135,6 +4135,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_SAFEBROWSING_ERRORS_PREF" desc="A preferences to show Safe Browsing errors">
       Show Safe Browsing errors
+    </message>
+
+    <message name="IDS_YOUTUBE_VIDEO_ASSISTANT" desc="Preferences title to show extra controls on YouTube videos">
+      YouTube video assistant
+    </message>
+    <message name="IDS_DISPLAY_EXTRA_CONTROLS_ON_YOUTUBE" desc="Preferences to show extra controls on YouTube videos">
+      Displays extra controls on youtube.com to more easily enter picture-in-picture.
     </message>
   </messages>
   </release>

@@ -119,7 +119,7 @@ inline constexpr char kEnableMediaRouterOnRestart[] =
 inline constexpr char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
 inline constexpr char kPlayYTVideoInBrowserEnabled[] =
     "brave.play_yt_video_in_browser_enabled";
-inline constexpr char kBackgroundVideoPlaybackEnabled[] =
+inline constexpr char kLegacyBackgroundVideoPlaybackEnabled[] =
     "brave.background_video_playback";
 inline constexpr char kSafetynetCheckFailed[] = "safetynetcheck.failed";
 inline constexpr char kSafetynetStatus[] = "safetynet.status";

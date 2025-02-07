@@ -8,7 +8,15 @@
 namespace youtube_script_injector::features {
 
 BASE_FEATURE(kBraveYouTubeScriptInjector,
-             "BraveYouTubeScriptInjector",
+              "BraveYouTubeScriptInjector",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveBackgroundVideoPlayback,
+             "BraveBackgroundVideoPlayback",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveYouTubeExtraControls,
+             "BraveYouTubeExtraControls",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace youtube_script_injector::features

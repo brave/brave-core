@@ -15,7 +15,9 @@ public abstract class BraveFeatureList {
     public static final String ENABLE_FORCE_DARK = "enable-force-dark";
     public static final String ENABLE_PARALLEL_DOWNLOADING = "enable-parallel-downloading";
     public static final String BRAVE_SEARCH_OMNIBOX_BANNER = "BraveSearchOmniboxBanner";
+    public static final String BRAVE_YOUTUBE_SCRIPT_INJECTOR = "BraveYouTubeScriptInjector";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK = "BraveBackgroundVideoPlayback";
+    public static final String BRAVE_YOUTUBE_EXTRA_CONTROLS = "BraveYouTubeExtraControls";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL =
             "brave-background-video-playback";
     public static final String BRAVE_ANDROID_SAFE_BROWSING = "BraveAndroidSafeBrowsing";
