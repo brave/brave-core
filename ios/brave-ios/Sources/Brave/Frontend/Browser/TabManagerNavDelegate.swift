@@ -47,6 +47,31 @@ class TabManagerNavDelegate: NSObject, WKNavigationDelegate {
 
   func webView(
     _ webView: WKWebView,
+    authenticationChallenge challenge: URLAuthenticationChallenge,
+    shouldAllowDeprecatedTLS decisionHandler: @escaping @MainActor (Bool) -> Void
+  ) {
+    let authenticatingDelegates = delegates.filter { wv in
+      return wv.responds(
+        to: #selector(
+          WKNavigationDelegate.webView(_:authenticationChallenge:shouldAllowDeprecatedTLS:)
+        )
+      )
+    }
+
+    guard let firstAuthenticatingDelegate = authenticatingDelegates.first else {
+      decisionHandler(false)
+      return
+    }
+
+    firstAuthenticatingDelegate.webView?(
+      webView,
+      authenticationChallenge: challenge,
+      shouldAllowDeprecatedTLS: decisionHandler
+    )
+  }
+
+  func webView(
+    _ webView: WKWebView,
     didReceive challenge: URLAuthenticationChallenge,
     completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
   ) {
