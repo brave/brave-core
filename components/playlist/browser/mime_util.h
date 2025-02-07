@@ -21,7 +21,7 @@ std::optional<base::FilePath::StringType> GetFileExtensionForMimetype(
     std::string_view mime_type);
 
 std::optional<std::string> GetMimeTypeForFileExtension(
-    base::FilePath::StringPieceType file_extension);
+    base::FilePath::StringViewType file_extension);
 
 std::vector<std::string> GetSupportedMimetypes();
 
