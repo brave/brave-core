@@ -110,13 +110,13 @@ void JNI_BravePrefServiceBridge_SetBackgroundVideoPlaybackEnabled(
     JNIEnv* env,
     jboolean enabled) {
   return GetOriginalProfile()->GetPrefs()->SetBoolean(
-      kBackgroundVideoPlaybackEnabled, enabled);
+      kLegacyBackgroundVideoPlaybackEnabled, enabled);
 }
 
 jboolean JNI_BravePrefServiceBridge_GetBackgroundVideoPlaybackEnabled(
     JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(
-      kBackgroundVideoPlaybackEnabled);
+      kLegacyBackgroundVideoPlaybackEnabled);
 }
 
 void JNI_BravePrefServiceBridge_SetDesktopModeEnabled(JNIEnv* env,

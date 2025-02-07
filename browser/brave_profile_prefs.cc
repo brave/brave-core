@@ -107,6 +107,7 @@
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
+#include "brave/components/youtube_script_injector/common/pref_names.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -279,7 +280,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(IS_ANDROID)
   registry->RegisterBooleanPref(kDesktopModeEnabled, false);
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
-  registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, false);
+  registry->RegisterBooleanPref(kLegacyBackgroundVideoPlaybackEnabled, false);
   registry->RegisterBooleanPref(kSafetynetCheckFailed, false);
   registry->RegisterStringPref(kSafetynetStatus, "");
   // clear default popular sites
@@ -458,6 +459,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       bookmarks_webui::prefs::kBookmarksViewType,
       base::Value(static_cast<int>(side_panel::mojom::ViewType::kCompact)));
+#else
+  youtube_script_injector::prefs::RegisterProfilePrefs(registry);
 #endif
 
   ai_chat::prefs::RegisterProfilePrefs(registry);

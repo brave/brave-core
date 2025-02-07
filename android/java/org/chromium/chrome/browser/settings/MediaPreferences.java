@@ -21,9 +21,11 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
@@ -32,6 +34,7 @@ public class MediaPreferences extends BravePreferenceFragment
         implements ConnectionErrorHandler, Preference.OnPreferenceChangeListener {
     public static final String PREF_WIDEVINE_ENABLED = "widevine_enabled";
     public static final String PREF_BACKGROUND_VIDEO_PLAYBACK = "background_video_playback";
+    public static final String PREF_EXTRA_YOUTUBE_CONTROLS = "display_extra_youtube_controls";
     public static final String PLAY_YT_VIDEO_IN_BROWSER_KEY = "play_yt_video_in_browser";
     private static final String PREF_HIDE_YOUTUBE_RECOMMENDED_CONTENT =
             "hide_youtube_recommended_content";
@@ -48,10 +51,23 @@ public class MediaPreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.prefs_media));
         SettingsUtils.addPreferencesFromResource(this, R.xml.media_preferences);
-    }
 
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {}
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_YOUTUBE_SCRIPT_INJECTOR) ||
+                !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
+            ChromeSwitchPreference backgroundVideoPlaybackPref = findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
+            if (backgroundVideoPlaybackPref != null) {
+                backgroundVideoPlaybackPref.setVisible(false);
+            }
+        }
+
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_YOUTUBE_SCRIPT_INJECTOR) ||
+                !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_YOUTUBE_EXTRA_CONTROLS)) {
+            ChromeSwitchPreference extraYoutubeControlsPref = findPreference(PREF_EXTRA_YOUTUBE_CONTROLS);
+            if (extraYoutubeControlsPref != null) {
+                extraYoutubeControlsPref.setVisible(false);
+            }
+        }
+    }
 
     @Override
     public ObservableSupplier<String> getPageTitle() {
@@ -73,13 +89,21 @@ public class MediaPreferences extends BravePreferenceFragment
         }
 
         ChromeSwitchPreference backgroundVideoPlaybackPref =
-                (ChromeSwitchPreference) findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
-        if (backgroundVideoPlaybackPref != null) {
+                findPreference(PREF_BACKGROUND_VIDEO_PLAYBACK);
+        if (backgroundVideoPlaybackPref != null && backgroundVideoPlaybackPref.isVisible()) {
             backgroundVideoPlaybackPref.setOnPreferenceChangeListener(this);
             boolean enabled =
-                    ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                    || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled();
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).getBoolean(BravePref.YOU_TUBE_BACKGROUND_VIDEO_PLAYBACK_ENABLED);
             backgroundVideoPlaybackPref.setChecked(enabled);
+        }
+
+        ChromeSwitchPreference extraYouTubeControlsPref =
+                findPreference(PREF_EXTRA_YOUTUBE_CONTROLS);
+        if (extraYouTubeControlsPref != null && extraYouTubeControlsPref.isVisible()) {
+            extraYouTubeControlsPref.setOnPreferenceChangeListener(this);
+            boolean enabled =
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).getBoolean(BravePref.YOU_TUBE_EXTRA_CONTROLS_ENABLED);
+            extraYouTubeControlsPref.setChecked(enabled);
         }
 
         ChromeSwitchPreference openYoutubeLinksBravePref =
@@ -143,10 +167,10 @@ public class MediaPreferences extends BravePreferenceFragment
                             !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
             shouldRelaunch = true;
         } else if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
-            BraveFeatureUtil.enableFeature(
-                    BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK_INTERNAL,
-                    (boolean) newValue,
-                    false);
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).setBoolean(BravePref.YOU_TUBE_BACKGROUND_VIDEO_PLAYBACK_ENABLED, (boolean) newValue);
+            shouldRelaunch = true;
+        } else if (PREF_EXTRA_YOUTUBE_CONTROLS.equals(key)) {
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).setBoolean(BravePref.YOU_TUBE_EXTRA_CONTROLS_ENABLED, (boolean) newValue);
             shouldRelaunch = true;
         } else if (PLAY_YT_VIDEO_IN_BROWSER_KEY.equals(key)) {
             BravePrefServiceBridge.getInstance().setPlayYTVideoInBrowserEnabled((boolean) newValue);

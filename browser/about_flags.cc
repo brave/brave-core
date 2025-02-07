@@ -300,8 +300,8 @@ const flags_ui::FeatureEntry::FeatureVariation kZCashFeatureVariations[] = {
   EXPAND_FEATURE_ENTRIES({                                                     \
       "brave-youtube-script-injector",                                         \
       "Youtube script injector",                                               \
-      "Enables play audio from video in background when tab is not active or " \
-      "device screen is turned off.",                                          \
+      "Enables play audio from YouTube video in background when tab is not "   \
+      "active or device screen is turned off, and displays extra controls",    \
       kOsAndroid,                                                              \
       FEATURE_VALUE_TYPE(                                                      \
           youtube_script_injector::features::kBraveYouTubeScriptInjector),     \
