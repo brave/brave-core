@@ -103,6 +103,7 @@
   <translations>
     <file path="resources/brave_generated_resources_am.xtb" lang="am" />
     <file path="resources/brave_generated_resources_ar.xtb" lang="ar" />
+    <file path="resources/brave_generated_resources_az.xtb" lang="az" />
     <file path="resources/brave_generated_resources_bg.xtb" lang="bg" />
     <file path="resources/brave_generated_resources_bn.xtb" lang="bn" />
     <file path="resources/brave_generated_resources_ca.xtb" lang="ca" />
@@ -129,13 +130,18 @@
     <!-- The translation console uses 'iw' for Hebrew, but we use 'he'. -->
     <file path="resources/brave_generated_resources_iw.xtb" lang="he" />
     <file path="resources/brave_generated_resources_ja.xtb" lang="ja" />
+    <file path="resources/brave_generated_resources_ka.xtb" lang="ka" />
+    <file path="resources/brave_generated_resources_km.xtb" lang="km" />
     <file path="resources/brave_generated_resources_kn.xtb" lang="kn" />
     <file path="resources/brave_generated_resources_ko.xtb" lang="ko" />
     <file path="resources/brave_generated_resources_lt.xtb" lang="lt" />
     <file path="resources/brave_generated_resources_lv.xtb" lang="lv" />
+    <file path="resources/brave_generated_resources_mk.xtb" lang="mk" />
     <file path="resources/brave_generated_resources_ml.xtb" lang="ml" />
+    <file path="resources/brave_generated_resources_mn.xtb" lang="mn" />
     <file path="resources/brave_generated_resources_mr.xtb" lang="mr" />
     <file path="resources/brave_generated_resources_ms.xtb" lang="ms" />
+    <file path="resources/brave_generated_resources_my.xtb" lang="my" />
     <file path="resources/brave_generated_resources_nl.xtb" lang="nl" />
     <file path="resources/brave_generated_resources_no.xtb" lang="no" />
     <file path="resources/brave_generated_resources_pl.xtb" lang="pl" />
@@ -143,9 +149,12 @@
     <file path="resources/brave_generated_resources_pt-PT.xtb" lang="pt-PT" />
     <file path="resources/brave_generated_resources_ro.xtb" lang="ro" />
     <file path="resources/brave_generated_resources_ru.xtb" lang="ru" />
+    <file path="resources/brave_generated_resources_si.xtb" lang="si" />
     <file path="resources/brave_generated_resources_sk.xtb" lang="sk" />
     <file path="resources/brave_generated_resources_sl.xtb" lang="sl" />
+    <file path="resources/brave_generated_resources_sq.xtb" lang="sq" />
     <file path="resources/brave_generated_resources_sr.xtb" lang="sr" />
+    <file path="resources/brave_generated_resources_sr-Latn.xtb" lang="sr-Latn" />
     <file path="resources/brave_generated_resources_sv.xtb" lang="sv" />
     <file path="resources/brave_generated_resources_sw.xtb" lang="sw" />
     <file path="resources/brave_generated_resources_ta.xtb" lang="ta" />
@@ -153,6 +162,7 @@
     <file path="resources/brave_generated_resources_th.xtb" lang="th" />
     <file path="resources/brave_generated_resources_tr.xtb" lang="tr" />
     <file path="resources/brave_generated_resources_uk.xtb" lang="uk" />
+    <file path="resources/brave_generated_resources_uz.xtb" lang="uz" />
     <file path="resources/brave_generated_resources_vi.xtb" lang="vi" />
     <file path="resources/brave_generated_resources_zh-CN.xtb" lang="zh-CN" />
     <file path="resources/brave_generated_resources_zh-TW.xtb" lang="zh-TW" />

@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="mk">
+<translation id="3333887201479867589">Награди на Brave</translation>
+<translation id="1209739344687072997">Пријави нефункционална страница</translation>
+<translation id="1544192797660353713">Паричник</translation>
+<translation id="1990886731975529483">Инсталирај и стартувај Google Widevine</translation>
+<translation id="8915916167043355778">Затвори ги сите</translation>
+<translation id="4870911314065352661">Да се затворат сите картички?</translation>
+<translation id="9194637241566114638">Помогнете да се подобри <ph name="SEARCH_NAME"/> со испраќање анонимни податоци за користење. <ph name="MORE_INFO"/></translation>
+<translation id="7400418766976504921">УРЛ</translation>
+<translation id="5916664084637901428">Вклучено</translation>
+<translation id="5860033963881614850">Исклучено</translation>
+<translation id="8428213095426709021">Поставки</translation>
+<translation id="3960619311638643872">Brave VPN</translation>
+<translation id="4759238208242260848">Преземања</translation>
+<translation id="1426410128494586442">Да</translation>
+<translation id="4250680216510889253">Не</translation>
+<translation id="4472575034687746823">Започни</translation>
+<translation id="984275831282074731">Начини на плаќање</translation>
+<translation id="8076492880354921740">Картички</translation>
+<translation id="8820817407110198400">Обележувач</translation>
+<translation id="7781069478569868053">Страница на нова картичка</translation>
+<translation id="3719826155360621982">Почетна страница</translation>
+<translation id="2133317862976486547">Блокирање следачи и реклами</translation>
+<translation id="5327248766486351172">Име</translation>
+<translation id="933652931229970927">Испраќај дијагностички извештаи автоматски</translation>
+<translation id="3858860766373142691">Име</translation>
+<translation id="6406506848690869874">Синхронизирај</translation>
+<translation id="614530507403667291">Стандарден модел за нови разговори</translation>
+<translation id="3153779001670804829">Максималниот број на токени што моделот може да ги обработи во една интеракција. Секој токен е приближно 3/4 од еден збор. Поголема големина на контекст му овозможува на моделот да управува со подолги разговори. Различни модели поддржуваат различни максимални големини на контекстот.</translation>
+</translationbundle>
