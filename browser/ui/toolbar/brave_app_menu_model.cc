@@ -238,24 +238,6 @@ void BraveAppMenuModel::BuildBrowserSection() {
     InsertItemWithStringIdAt(bookmark_item_index.value(), IDC_SHOW_DOWNLOADS,
                              IDS_SHOW_DOWNLOADS);
   }
-
-  // Use this command's enabled state to not having it in guest window.
-  // It's disabled in guest window. Upstream's guest window has extensions
-  // menu in app menu, but we hide it.
-  if (IsCommandIdEnabled(IDC_MANAGE_EXTENSIONS)) {
-    // Upstream enabled extensions submenu by default.
-    CHECK(features::IsExtensionMenuInRootAppMenu());
-
-    // Use IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS instead of
-    // IDC_MANAGE_EXTENSIONS because executing it from private(tor) window
-    // causes crash as LogSafetyHubInteractionMetrics() tries to refer
-    // SafetyHubMenuNotificationService. But it's not instantiated in private
-    // window. Upstream also has this crash if ExtensionsMenuInAppMenu feature
-    // is disabled.
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS).value() + 1,
-        IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS, IDS_SHOW_EXTENSIONS);
-  }
 }
 
 void BraveAppMenuModel::BuildMoreToolsSubMenu() {
@@ -339,13 +321,6 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
       GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
   DCHECK(more_tools_model);
 
-  // Remove upstream's extensions item. It'll be added into top level third
-  // section. Upstream enabled extensions submenu by default.
-  CHECK(features::IsExtensionMenuInRootAppMenu());
-  // Hide extensions sub menu.
-  DCHECK(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).has_value());
-  RemoveItemAt(GetIndexOfCommandId(IDC_EXTENSIONS_SUBMENU).value());
-
   {
     // Remove upstream's profile menu. "Add new profile" will be added into more
     // tools sub menu.
@@ -422,12 +397,6 @@ void BraveAppMenuModel::ExecuteCommand(int id, int event_flags) {
 }
 
 bool BraveAppMenuModel::IsCommandIdEnabled(int id) const {
-  if (id == IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS) {
-    // Always returns true as this command id is only added when it could be
-    // used.
-    return true;
-  }
-
 #if defined(TOOLKIT_VIEWS)
   if (id == IDC_SIDEBAR_SHOW_OPTION_ALWAYS ||
       id == IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER ||
