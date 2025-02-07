@@ -52,13 +52,6 @@ export const InvalidAddressMessage: AddressMessageInfo = {
   id: AddressMessageInfoIds.invalidAddressError
 }
 
-export const InvalidUnifiedAddressMessage: AddressMessageInfo = {
-  title: '',
-  description: 'braveWalletInvalidZcashUnifiedRecipientAddress',
-  type: 'error',
-  id: AddressMessageInfoIds.invalidUnifiedAddressError
-}
-
 export const SameAddressMessage: AddressMessageInfo = {
   title: '',
   description: 'braveWalletSameAddressError',
@@ -80,6 +73,47 @@ export const InvalidDomainExtensionMessage: AddressMessageInfo = {
   id: AddressMessageInfoIds.invalidDomainExtension
 }
 
+// ZCash
+export const ZCashInvalidTransparentAddressErrorMessage: AddressMessageInfo = {
+  title: '',
+  description: 'braveWalletZCashInvalidTransparentAddress',
+  type: 'error',
+  id: AddressMessageInfoIds.zcashInvalidTransparentAddressError
+}
+
+export const ZCashInvalidUnifiedAddressErrorMessage: AddressMessageInfo = {
+  title: '',
+  description: 'braveWalletZCashInvalidUnifiedAddress',
+  type: 'error',
+  id: AddressMessageInfoIds.zcashInvalidUnifiedAddressError
+}
+
+export const ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage:
+AddressMessageInfo = {
+  title: '',
+  description: 'braveWalletZCashInvalidUnifiedAddressMissingOrchardPart',
+  type: 'error',
+  id: AddressMessageInfoIds.
+    zcashInvalidUnifiedAddressMissingOrchardPartError
+}
+
+export const ZCashInvalidUnifiedAddressMissingTransparentPartErrorMessage:
+AddressMessageInfo = {
+  title: '',
+  description: 'braveWalletZCashInvalidUnifiedAddressMissingTransparentPart',
+  type: 'error',
+  id: AddressMessageInfoIds.
+    zcashInvalidUnifiedAddressMissingTransparentPartError
+}
+
+export const ZCashInvalidAddressNetworkMismatchErrorMessage:
+AddressMessageInfo = {
+  title: '',
+  description: 'braveWalletZCashInvalidAddressNetworkMismatch',
+  type: 'error',
+  id: AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError
+}
+
 export const AddressValidationMessages = [
   ENSOffchainLookupMessage,
   HasNoDomainAddressMessage,
@@ -87,8 +121,12 @@ export const AddressValidationMessages = [
   MissingChecksumMessage,
   FEVMAddressConvertionMessage,
   InvalidAddressMessage,
-  InvalidUnifiedAddressMessage,
   SameAddressMessage,
   ContractAddressMessage,
-  InvalidDomainExtensionMessage
+  InvalidDomainExtensionMessage,
+  ZCashInvalidTransparentAddressErrorMessage,
+  ZCashInvalidUnifiedAddressErrorMessage,
+  ZCashInvalidUnifiedAddressMissingOrchardPartErrorMessage,
+  ZCashInvalidUnifiedAddressMissingTransparentPartErrorMessage,
+  ZCashInvalidAddressNetworkMismatchErrorMessage
 ]

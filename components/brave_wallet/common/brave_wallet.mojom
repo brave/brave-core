@@ -1848,13 +1848,19 @@ struct ZCashAccountInfo {
   string? orchard_address;
 };
 
-enum ZCashAddressValidationResult {
-  Unknown = 0,
-  ValidTransparent = 1,
-  ValidShielded = 2,
-  InvalidTransparent = 3,
-  InvalidUnified = 4,
-  NetworkMismatch = 5
+enum ZCashTxType {
+  TransparentToTransparent = 0,
+  TransparentToOrchard = 1,
+  OrchardToOrchard = 2,
+  OrchardToTransparent = 3
+};
+
+enum ZCashAddressError {
+  InvalidTransparentAddress = 0,
+  InvalidUnifiedAddress = 1,
+  InvalidUnifiedAddressMissingTransparentPart = 2,
+  InvalidUnifiedAddressMissingOrchardPart = 3,
+  InvalidAddressNetworkMismatch = 4
 };
 
 struct ZCashOrchardNoteInfo {
@@ -1904,10 +1910,10 @@ interface ZCashWalletService {
       (ZCashAddress? address, string? error_message);
   GetZCashAccountInfo(AccountId account_id) =>
       (ZCashAccountInfo? account_info);
-  ValidateZCashAddress(string addr, bool testnet) =>
-      (ZCashAddressValidationResult result);
   ShieldAllFunds(string network_id, AccountId account_id) =>
       (string? tx_id, string? error_message);
+  GetTransactionType(bool testnet, bool use_shielded_pool, string recipient) =>
+      (ZCashTxType? tx_type, ZCashAddressError? error);
 
   AddObserver(pending_remote<ZCashWalletServiceObserver> observer);
 

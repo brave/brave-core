@@ -25,6 +25,11 @@ interface GetFVMAddressArg {
 
 type GetFVMAddressResult = Map<string, { address: string; fvmAddress: string }>
 
+type GetZCashTransactionTypeResult = {
+  txType: BraveWallet.ZCashTxType | null,
+  error: BraveWallet.ZCashAddressError | null
+}
+
 export const addressEndpoints = ({
   mutation,
   query
@@ -91,21 +96,25 @@ export const addressEndpoints = ({
       }
     }),
 
-    validateUnifiedAddress: query<
-      BraveWallet.ZCashAddressValidationResult,
+    getZCashTransactionType: query<
+      GetZCashTransactionTypeResult,
       {
+        testnet: boolean,
+        use_shielded_pool: boolean,
         address: string,
-        testnet: boolean
       }
     >({
       queryFn: async (arg, { endpoint }, _extra, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const { result } =
-            await api.zcashWalletService.validateZCashAddress(
-                arg.address, arg.testnet)
+          const { txType, error } =
+            await api.zcashWalletService.getTransactionType(
+              arg.testnet, arg.use_shielded_pool, arg.address)
           return {
-            data: result
+            data : {
+              txType: txType,
+              error: error
+            }
           }
         } catch (error) {
           return handleEndpointError(

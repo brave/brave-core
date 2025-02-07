@@ -82,13 +82,15 @@ enum class OrchardAddressKind {
 
 using ParsedAddress = std::pair<ZCashAddrType, std::vector<uint8_t>>;
 
-struct DecodedZCashAddress {
-  DecodedZCashAddress();
-  ~DecodedZCashAddress();
-  DecodedZCashAddress(const DecodedZCashAddress& other);
-  DecodedZCashAddress& operator=(const DecodedZCashAddress& other);
-  DecodedZCashAddress(DecodedZCashAddress&& other);
-  DecodedZCashAddress& operator=(DecodedZCashAddress&& other);
+struct DecodedZCashTransparentAddress {
+  DecodedZCashTransparentAddress();
+  ~DecodedZCashTransparentAddress();
+  DecodedZCashTransparentAddress(const DecodedZCashTransparentAddress& other);
+  DecodedZCashTransparentAddress& operator=(
+      const DecodedZCashTransparentAddress& other);
+  DecodedZCashTransparentAddress(DecodedZCashTransparentAddress&& other);
+  DecodedZCashTransparentAddress& operator=(
+      DecodedZCashTransparentAddress&& other);
 
   std::vector<uint8_t> pubkey_hash;
   bool testnet = false;
@@ -169,7 +171,8 @@ struct OrchardSpendsBundle {
   std::vector<OrchardInput> inputs;
 };
 
-bool OutputZCashAddressSupported(const std::string& address, bool is_testnet);
+bool OutputZCashTransparentAddressSupported(const std::string& address,
+                                            bool is_testnet);
 // https://zips.z.cash/zip-0317
 uint64_t CalculateZCashTxFee(const uint32_t tx_input_count,
                              const uint32_t orchard_actions_count);
@@ -183,7 +186,7 @@ std::optional<std::string> PubkeyHashToTransparentAddress(
     base::span<const uint8_t> pubkey_hash,
     bool is_testnet);
 
-std::optional<DecodedZCashAddress> DecodeZCashAddress(
+std::optional<DecodedZCashTransparentAddress> DecodeZCashTransparentAddress(
     const std::string& address);
 
 std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,

@@ -199,15 +199,16 @@ OrchardSpendsBundle::~OrchardSpendsBundle() = default;
 OrchardSpendsBundle::OrchardSpendsBundle(const OrchardSpendsBundle& other) =
     default;
 
-DecodedZCashAddress::DecodedZCashAddress() = default;
-DecodedZCashAddress::~DecodedZCashAddress() = default;
-DecodedZCashAddress::DecodedZCashAddress(const DecodedZCashAddress& other) =
-    default;
-DecodedZCashAddress& DecodedZCashAddress::operator=(
-    const DecodedZCashAddress& other) = default;
-DecodedZCashAddress::DecodedZCashAddress(DecodedZCashAddress&& other) = default;
-DecodedZCashAddress& DecodedZCashAddress::operator=(
-    DecodedZCashAddress&& other) = default;
+DecodedZCashTransparentAddress::DecodedZCashTransparentAddress() = default;
+DecodedZCashTransparentAddress::~DecodedZCashTransparentAddress() = default;
+DecodedZCashTransparentAddress::DecodedZCashTransparentAddress(
+    const DecodedZCashTransparentAddress& other) = default;
+DecodedZCashTransparentAddress& DecodedZCashTransparentAddress::operator=(
+    const DecodedZCashTransparentAddress& other) = default;
+DecodedZCashTransparentAddress::DecodedZCashTransparentAddress(
+    DecodedZCashTransparentAddress&& other) = default;
+DecodedZCashTransparentAddress& DecodedZCashTransparentAddress::operator=(
+    DecodedZCashTransparentAddress&& other) = default;
 
 base::Value::Dict OrchardOutput::ToValue() const {
   base::Value::Dict dict;
@@ -245,8 +246,9 @@ std::optional<OrchardOutput> OrchardOutput::FromValue(
   return result;
 }
 
-bool OutputZCashAddressSupported(const std::string& address, bool is_testnet) {
-  auto decoded_address = DecodeZCashAddress(address);
+bool OutputZCashTransparentAddressSupported(const std::string& address,
+                                            bool is_testnet) {
+  auto decoded_address = DecodeZCashTransparentAddress(address);
   if (!decoded_address) {
     return false;
   }
@@ -297,7 +299,7 @@ std::optional<std::string> PubkeyHashToTransparentAddress(
   return Base58EncodeWithCheck(result);
 }
 
-std::optional<DecodedZCashAddress> DecodeZCashAddress(
+std::optional<DecodedZCashTransparentAddress> DecodeZCashTransparentAddress(
     const std::string& address) {
   std::vector<uint8_t> decode_result;
   if (!DecodeBase58Check(address, decode_result,
@@ -315,7 +317,7 @@ std::optional<DecodedZCashAddress> DecodeZCashAddress(
   std::vector<uint8_t> body(decode_result.begin() + kPrefixSize,
                             decode_result.end());
 
-  DecodedZCashAddress result;
+  DecodedZCashTransparentAddress result;
   result.pubkey_hash = body;
   result.testnet = is_testnet;
 
@@ -324,7 +326,7 @@ std::optional<DecodedZCashAddress> DecodeZCashAddress(
 
 std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
                                                 bool is_testnet) {
-  auto decoded_address = DecodeZCashAddress(address);
+  auto decoded_address = DecodeZCashTransparentAddress(address);
   if (!decoded_address) {
     return {};
   }

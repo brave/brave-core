@@ -31,6 +31,37 @@ ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
   transaction_.set_amount(amount);
 }
 
+// static
+base::expected<void, mojom::ZCashAddressError>
+ZCashCreateTransparentTransactionTask::ValidateAddress(
+    bool testnet,
+    const std::string& addr) {
+  if (IsUnifiedAddress(addr)) {
+    if (IsUnifiedTestnetAddress(addr) != testnet) {
+      return base::unexpected(
+          mojom::ZCashAddressError::InvalidAddressNetworkMismatch);
+    }
+    if (!ExtractTransparentPart(addr, testnet)) {
+      return base::unexpected(mojom::ZCashAddressError::
+                                  InvalidUnifiedAddressMissingTransparentPart);
+    }
+    return base::ok();
+  }
+
+  auto decoded = DecodeZCashTransparentAddress(addr);
+  if (!decoded) {
+    return base::unexpected(
+        mojom::ZCashAddressError::InvalidTransparentAddress);
+  }
+
+  if (decoded->testnet != testnet) {
+    return base::unexpected(
+        mojom::ZCashAddressError::InvalidAddressNetworkMismatch);
+  }
+
+  return base::ok();
+}
+
 ZCashCreateTransparentTransactionTask::
     ~ZCashCreateTransparentTransactionTask() = default;
 
@@ -150,7 +181,8 @@ void ZCashCreateTransparentTransactionTask::OnGetUtxos(
 bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
   auto& target_output = transaction_.transparent_part().outputs.emplace_back();
   target_output.address = transaction_.to();
-  if (!OutputZCashAddressSupported(target_output.address, IsTestnet())) {
+  if (!OutputZCashTransparentAddressSupported(target_output.address,
+                                              IsTestnet())) {
     return false;
   }
 
@@ -171,8 +203,8 @@ bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
     return false;
   }
 
-  CHECK(
-      OutputZCashAddressSupported(change_address->address_string, IsTestnet()));
+  CHECK(OutputZCashTransparentAddressSupported(change_address->address_string,
+                                               IsTestnet()));
   auto& change_output = transaction_.transparent_part().outputs.emplace_back();
   change_output.address = change_address_->address_string;
   change_output.amount = change_amount;

@@ -29,7 +29,7 @@ import {
   useGetEthAddressChecksumQuery,
   useGetFVMAddressQuery,
   useGetIsBase58EncodedSolPubkeyQuery,
-  useValidateUnifiedAddressQuery
+  useGetZCashTransactionTypeQuery
 } from '../../../../../common/slices/api.slice'
 
 // Utils
@@ -254,13 +254,13 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     )
 
     const {
-      data: zecAddressValidationResult = BraveWallet
-        .ZCashAddressValidationResult.Unknown
-    } = useValidateUnifiedAddressQuery(
+      data: getZCashTransactionTypeResult = { txType: null, error: null }
+    } = useGetZCashTransactionTypeQuery(
       fromAccountId?.coin === BraveWallet.CoinType.ZEC && trimmedSearchValue
         ? {
-            address: trimmedSearchValue,
-            testnet: selectedNetwork?.chainId === BraveWallet.Z_CASH_TESTNET
+            testnet: selectedNetwork?.chainId === BraveWallet.Z_CASH_TESTNET,
+            use_shielded_pool: selectedAsset?.isShielded || false,
+            address: trimmedSearchValue
           }
         : skipToken
     )
@@ -274,7 +274,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
           isBase58,
           coinType: fromAccountId?.coin ?? BraveWallet.CoinType.ETH,
           token: selectedAsset,
-          zecAddressValidationResult,
+          zcashAddressError: getZCashTransactionTypeResult.error ?? undefined,
           fullTokenList,
           hasNameServiceError,
           isValidExtension: searchValueHasValidExtension,
@@ -290,7 +290,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         ethAddressChecksum,
         isBase58,
         selectedAsset,
-        zecAddressValidationResult,
+        getZCashTransactionTypeResult,
         fullTokenList,
         hasNameServiceError,
         searchValueHasValidExtension,
@@ -621,29 +621,45 @@ const processEthereumAddress = (
 }
 
 const processZCashAddress = (
-  zecAddressValidationResult: BraveWallet.ZCashAddressValidationResult
+  zcashAddressError: BraveWallet.ZCashAddressError | undefined
 ) => {
-  if (
-    zecAddressValidationResult ===
-    BraveWallet.ZCashAddressValidationResult.Unknown
-  ) {
+  if (zcashAddressError === undefined) {
     return undefined
   }
   if (
-    zecAddressValidationResult ===
-    BraveWallet.ZCashAddressValidationResult.InvalidUnified
+    zcashAddressError ===
+    BraveWallet.ZCashAddressError.InvalidUnifiedAddress
   ) {
-    return AddressMessageInfoIds.invalidUnifiedAddressError
+    return AddressMessageInfoIds.zcashInvalidUnifiedAddressError
   }
   if (
-    zecAddressValidationResult !==
-    BraveWallet.ZCashAddressValidationResult.ValidTransparent &&
-    zecAddressValidationResult !==
-    BraveWallet.ZCashAddressValidationResult.ValidShielded
+    zcashAddressError ===
+    BraveWallet.ZCashAddressError.InvalidTransparentAddress
   ) {
-    return AddressMessageInfoIds.invalidAddressError
+    return AddressMessageInfoIds.zcashInvalidTransparentAddressError
   }
-  return undefined
+  if (
+    zcashAddressError ===
+    BraveWallet.ZCashAddressError.InvalidUnifiedAddressMissingTransparentPart
+  ) {
+    return AddressMessageInfoIds.
+      zcashInvalidUnifiedAddressMissingTransparentPartError
+  }
+  if (
+    zcashAddressError ===
+    BraveWallet.ZCashAddressError.InvalidUnifiedAddressMissingOrchardPart
+  ) {
+    return AddressMessageInfoIds.
+      zcashInvalidUnifiedAddressMissingOrchardPartError
+  }
+  if (
+    zcashAddressError ===
+    BraveWallet.ZCashAddressError.InvalidAddressNetworkMismatch
+  ) {
+    return AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError
+  }
+
+  return AddressMessageInfoIds.invalidAddressError
 }
 
 const processFilecoinAddress = (addressOrUrl: string, checksum: string) => {
@@ -716,7 +732,7 @@ function processAddressOrUrl({
   ethAddressChecksum,
   isBase58,
   coinType,
-  zecAddressValidationResult,
+  zcashAddressError,
   token,
   fullTokenList,
   isValidExtension,
@@ -732,7 +748,7 @@ function processAddressOrUrl({
   token: BraveWallet.BlockchainToken | undefined
   ethAddressChecksum: string
   isBase58: boolean
-  zecAddressValidationResult: BraveWallet.ZCashAddressValidationResult
+  zcashAddressError: BraveWallet.ZCashAddressError | undefined
   fullTokenList: BraveWallet.BlockchainToken[]
   isValidExtension: boolean
   resolvedDomainAddress: string | undefined
@@ -787,7 +803,7 @@ function processAddressOrUrl({
       )
     }
     case BraveWallet.CoinType.ZEC: {
-      return processZCashAddress(zecAddressValidationResult)
+      return processZCashAddress(zcashAddressError)
     }
     default: {
       console.log(`Unknown coin ${coinType}`)

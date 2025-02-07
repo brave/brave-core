@@ -359,16 +359,16 @@ TEST(ZCashUtilsUnitTest, CalculateZCashTxFee) {
   EXPECT_EQ(10000u, CalculateZCashTxFee(1, 1));
 }
 
-TEST(ZCashUtilsUnitTest, OutputZCashAddressSupported) {
-  EXPECT_FALSE(OutputZCashAddressSupported(
+TEST(ZCashUtilsUnitTest, OutputZCashTransparentAddressSupported) {
+  EXPECT_FALSE(OutputZCashTransparentAddressSupported(
       "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs__", false));
-  EXPECT_TRUE(OutputZCashAddressSupported("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs",
-                                          false));
-  EXPECT_FALSE(
-      OutputZCashAddressSupported("t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", true));
-  EXPECT_TRUE(
-      OutputZCashAddressSupported("tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma", true));
-  EXPECT_FALSE(OutputZCashAddressSupported(
+  EXPECT_TRUE(OutputZCashTransparentAddressSupported(
+      "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", false));
+  EXPECT_FALSE(OutputZCashTransparentAddressSupported(
+      "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs", true));
+  EXPECT_TRUE(OutputZCashTransparentAddressSupported(
+      "tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma", true));
+  EXPECT_FALSE(OutputZCashTransparentAddressSupported(
       "tm9iMLAuYMzJ6jtFLcA7rzUmfreGuKvr7Ma", false));
 }
 
