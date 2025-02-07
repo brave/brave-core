@@ -94,7 +94,7 @@ public class CameraSourcePreview extends ViewGroup {
                 mCameraExist = true;
                 startIfReady();
             } catch (SecurityException se) {
-                Log.e(TAG,"Do not have permission to start the camera", se);
+                Log.e(TAG, "Do not have permission to start the camera", se);
             } catch (RuntimeException e) {
                 mCameraExist = false;
                 Log.e(TAG, "Could not start camera source.", e);
@@ -110,8 +110,7 @@ public class CameraSourcePreview extends ViewGroup {
         }
 
         @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        }
+        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
     }
 
     @Override
@@ -160,9 +159,12 @@ public class CameraSourcePreview extends ViewGroup {
         for (int i = 0; i < getChildCount(); ++i) {
             // One dimension will be cropped.  We shift child over or up by this offset and adjust
             // the size to maintain the proper aspect ratio.
-            getChildAt(i).layout(
-                    -1 * childXOffset, -1 * childYOffset,
-                    childWidth - childXOffset, childHeight - childYOffset);
+            getChildAt(i)
+                    .layout(
+                            -1 * childXOffset,
+                            -1 * childYOffset,
+                            childWidth - childXOffset,
+                            childHeight - childYOffset);
         }
 
         try {

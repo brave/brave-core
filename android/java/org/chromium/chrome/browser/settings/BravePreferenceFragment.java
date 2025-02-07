@@ -69,13 +69,15 @@ public abstract class BravePreferenceFragment extends ChromeBaseSettingsFragment
     protected boolean isStoragePermissionGranted(boolean isExport) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Context context = ContextUtils.getApplicationContext();
-            if (context.checkSelfPermission(
-                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (context.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
                 requestPermissions(
-                        new String[] { android.Manifest.permission.WRITE_EXTERNAL_STORAGE },
-                        isExport ? STORAGE_PERMISSION_EXPORT_REQUEST_CODE : STORAGE_PERMISSION_IMPORT_REQUEST_CODE);
+                        new String[] {android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        isExport
+                                ? STORAGE_PERMISSION_EXPORT_REQUEST_CODE
+                                : STORAGE_PERMISSION_IMPORT_REQUEST_CODE);
                 return false;
             }
         }

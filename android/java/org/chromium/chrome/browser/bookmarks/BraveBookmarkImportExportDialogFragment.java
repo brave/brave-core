@@ -28,8 +28,8 @@ import org.chromium.ui.base.DeviceFormFactor;
 
 import java.io.File;
 
-public class BraveBookmarkImportExportDialogFragment
-        extends BraveDialogFragment implements View.OnClickListener {
+public class BraveBookmarkImportExportDialogFragment extends BraveDialogFragment
+        implements View.OnClickListener {
     private static final String IS_IMPORT = "is_import";
     private static final String IS_SUCCESS = "is_success";
     private static final String EXPORT_FILE_PATH = "export_filepath";
@@ -64,8 +64,9 @@ public class BraveBookmarkImportExportDialogFragment
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(
-                R.layout.fragment_brave_bookmark_import_export_dialog, container, false);
+        View view =
+                inflater.inflate(
+                        R.layout.fragment_brave_bookmark_import_export_dialog, container, false);
 
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -80,36 +81,47 @@ public class BraveBookmarkImportExportDialogFragment
         TextView tvTitle = view.findViewById(R.id.tv_title);
         TextView tvDesc = view.findViewById(R.id.tv_desc);
 
-        imageView.setImageResource(mIsSuccess ? R.drawable.ic_bookmark_import_export_success
-                                              : R.drawable.ic_bookmark_import_export_failed);
+        imageView.setImageResource(
+                mIsSuccess
+                        ? R.drawable.ic_bookmark_import_export_success
+                        : R.drawable.ic_bookmark_import_export_failed);
 
         if (mIsImport) {
-            tvTitle.setText(mIsSuccess ? R.string.import_bookmarks_success_title
-                                       : R.string.import_bookmarks_fail_title);
-            tvDesc.setText(mIsSuccess ? R.string.import_bookmarks_success_body
-                                      : R.string.import_bookmarks_fail_body);
+            tvTitle.setText(
+                    mIsSuccess
+                            ? R.string.import_bookmarks_success_title
+                            : R.string.import_bookmarks_fail_title);
+            tvDesc.setText(
+                    mIsSuccess
+                            ? R.string.import_bookmarks_success_body
+                            : R.string.import_bookmarks_fail_body);
         } else {
-            tvTitle.setText(mIsSuccess ? R.string.export_bookmarks_success_title
-                                       : R.string.export_bookmarks_fail_title);
+            tvTitle.setText(
+                    mIsSuccess
+                            ? R.string.export_bookmarks_success_title
+                            : R.string.export_bookmarks_fail_title);
             if (mIsSuccess) {
-                tvDesc.setText(getResources().getString(
-                        R.string.export_bookmarks_success_body, mExportFilePath));
+                tvDesc.setText(
+                        getResources()
+                                .getString(
+                                        R.string.export_bookmarks_success_body, mExportFilePath));
                 Button openBtn = view.findViewById(R.id.btn_open);
                 openBtn.setVisibility(View.VISIBLE);
-                openBtn.setOnClickListener(btn -> {
-                    Activity activity = getActivity();
-                    if (activity != null) {
-                        dismiss();
-                        int pathIndex = mExportFilePath.lastIndexOf(File.separator);
-                        if (pathIndex != -1) {
-                            String path = mExportFilePath.substring(0, pathIndex);
-                            Uri uri = Uri.parse(path);
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setDataAndType(uri, "*/*");
-                            activity.startActivity(intent);
-                        }
-                    }
-                });
+                openBtn.setOnClickListener(
+                        btn -> {
+                            Activity activity = getActivity();
+                            if (activity != null) {
+                                dismiss();
+                                int pathIndex = mExportFilePath.lastIndexOf(File.separator);
+                                if (pathIndex != -1) {
+                                    String path = mExportFilePath.substring(0, pathIndex);
+                                    Uri uri = Uri.parse(path);
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setDataAndType(uri, "*/*");
+                                    activity.startActivity(intent);
+                                }
+                            }
+                        });
             } else {
                 tvDesc.setText(R.string.export_bookmarks_fail_body);
             }

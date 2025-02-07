@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.onboarding;
 
@@ -41,13 +39,14 @@ public class TroubleshootingOnboardingFragment extends Fragment {
     }
 
     private void setActions() {
-        btnContinueToWallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                assert onViewPagerAction != null;
-                if (onViewPagerAction != null) onViewPagerAction.onContinueToWallet();
-            }
-        });
+        btnContinueToWallet.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assert onViewPagerAction != null;
+                        if (onViewPagerAction != null) onViewPagerAction.onContinueToWallet();
+                    }
+                });
     }
 
     private void initializeViews(View root) {

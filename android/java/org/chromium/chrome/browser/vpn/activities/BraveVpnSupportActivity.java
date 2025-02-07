@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn.activities;
 
@@ -66,81 +64,95 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
         RadioGroup otherIssuesRadioGroup = findViewById(R.id.other_issues_radiogroup);
 
         TextView otherIssuesText = findViewById(R.id.other_issues_text);
-        otherIssuesText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (otherIssuesRadioGroup.isShown()) {
-                    otherIssuesText.setCompoundDrawablesWithIntrinsicBounds(
-                            0, 0, R.drawable.ic_toggle_down, 0);
-                    otherIssuesRadioGroup.setVisibility(View.GONE);
-                } else {
-                    otherIssuesText.setCompoundDrawablesWithIntrinsicBounds(
-                            0, 0, R.drawable.ic_toggle_up, 0);
-                    otherIssuesRadioGroup.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        otherIssuesText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (otherIssuesRadioGroup.isShown()) {
+                            otherIssuesText.setCompoundDrawablesWithIntrinsicBounds(
+                                    0, 0, R.drawable.ic_toggle_down, 0);
+                            otherIssuesRadioGroup.setVisibility(View.GONE);
+                        } else {
+                            otherIssuesText.setCompoundDrawablesWithIntrinsicBounds(
+                                    0, 0, R.drawable.ic_toggle_up, 0);
+                            otherIssuesRadioGroup.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
 
         Button btnContinueToEmail = findViewById(R.id.btn_continue_to_email);
-        otherIssuesRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (!btnContinueToEmail.isEnabled()) {
-                    btnContinueToEmail.setEnabled(true);
-                    btnContinueToEmail.setBackgroundResource(R.drawable.orange_rounded_button);
-                }
-            }
-        });
+        otherIssuesRadioGroup.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        if (!btnContinueToEmail.isEnabled()) {
+                            btnContinueToEmail.setEnabled(true);
+                            btnContinueToEmail.setBackgroundResource(
+                                    R.drawable.orange_rounded_button);
+                        }
+                    }
+                });
 
-        btnContinueToEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StringBuilder bodyText =
-                        new StringBuilder(getResources().getString(R.string.support_email_text));
-                if (vpnHostnameSwitch.isChecked()) {
-                    bodyText.append(String.format(getResources().getString(R.string.vpn_host_text),
-                            BraveVpnPrefUtils.getHostname()));
-                }
-                if (subscriptionTypeSwitch.isChecked()) {
-                    bodyText.append(
-                            String.format(getResources().getString(R.string.subscription_type_text),
-                                    BraveVpnPrefUtils.getProductId()));
-                }
-                if (appReceiptSwitch.isChecked()) {
-                    bodyText.append(
-                            String.format(getResources().getString(R.string.playstore_token_text),
-                                    BraveVpnPrefUtils.getPurchaseToken()));
-                }
-                if (appVersionSwitch.isChecked()) {
-                    bodyText.append(String.format(
-                            getResources().getString(R.string.app_version_text),
-                            AboutChromeSettings.getApplicationVersion(BraveVpnSupportActivity.this,
-                                    AboutSettingsBridge.getApplicationVersion())));
-                }
-                if (timezoneSwitch.isChecked()) {
-                    bodyText.append(getResources().getString(R.string.timezone_text))
-                            .append(TimeZone.getDefault().getID());
-                }
-                if (networkTypeSwitch.isChecked()) {
-                    bodyText.append(getResources().getString(R.string.network_type_text))
-                            .append(getNetworkType());
-                }
-                if (cellularCarrierSwitch.isChecked()) {
-                    bodyText.append(getResources().getString(R.string.cellular_carrier_text))
-                            .append(getCellularCarrier());
-                }
+        btnContinueToEmail.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        StringBuilder bodyText =
+                                new StringBuilder(
+                                        getResources().getString(R.string.support_email_text));
+                        if (vpnHostnameSwitch.isChecked()) {
+                            bodyText.append(
+                                    String.format(
+                                            getResources().getString(R.string.vpn_host_text),
+                                            BraveVpnPrefUtils.getHostname()));
+                        }
+                        if (subscriptionTypeSwitch.isChecked()) {
+                            bodyText.append(
+                                    String.format(
+                                            getResources()
+                                                    .getString(R.string.subscription_type_text),
+                                            BraveVpnPrefUtils.getProductId()));
+                        }
+                        if (appReceiptSwitch.isChecked()) {
+                            bodyText.append(
+                                    String.format(
+                                            getResources().getString(R.string.playstore_token_text),
+                                            BraveVpnPrefUtils.getPurchaseToken()));
+                        }
+                        if (appVersionSwitch.isChecked()) {
+                            bodyText.append(
+                                    String.format(
+                                            getResources().getString(R.string.app_version_text),
+                                            AboutChromeSettings.getApplicationVersion(
+                                                    BraveVpnSupportActivity.this,
+                                                    AboutSettingsBridge.getApplicationVersion())));
+                        }
+                        if (timezoneSwitch.isChecked()) {
+                            bodyText.append(getResources().getString(R.string.timezone_text))
+                                    .append(TimeZone.getDefault().getID());
+                        }
+                        if (networkTypeSwitch.isChecked()) {
+                            bodyText.append(getResources().getString(R.string.network_type_text))
+                                    .append(getNetworkType());
+                        }
+                        if (cellularCarrierSwitch.isChecked()) {
+                            bodyText.append(
+                                            getResources()
+                                                    .getString(R.string.cellular_carrier_text))
+                                    .append(getCellularCarrier());
+                        }
 
-                bodyText.append(getResources().getString(R.string.other_issue_text));
-                AppCompatRadioButton checkedRadioButton =
-                        findViewById(otherIssuesRadioGroup.getCheckedRadioButtonId());
-                bodyText.append(checkedRadioButton.getText()).append("\n");
-                bodyText.append(getResources().getString(R.string.platform_text))
-                        .append("Android")
-                        .append("\n");
+                        bodyText.append(getResources().getString(R.string.other_issue_text));
+                        AppCompatRadioButton checkedRadioButton =
+                                findViewById(otherIssuesRadioGroup.getCheckedRadioButtonId());
+                        bodyText.append(checkedRadioButton.getText()).append("\n");
+                        bodyText.append(getResources().getString(R.string.platform_text))
+                                .append("Android")
+                                .append("\n");
 
-                composeEmail(bodyText.toString());
-            }
-        });
+                        composeEmail(bodyText.toString());
+                    }
+                });
     }
 
     @Override

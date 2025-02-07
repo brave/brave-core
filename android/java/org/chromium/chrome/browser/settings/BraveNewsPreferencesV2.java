@@ -134,12 +134,14 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
                     (LottieAnimationView) getView().findViewById(R.id.animation_view);
 
             try {
-                lottieAnimationVIew.addValueCallback(new KeyPath("newspaper", "**"),
+                lottieAnimationVIew.addValueCallback(
+                        new KeyPath("newspaper", "**"),
                         LottieProperty.COLOR_FILTER,
-                        frameInfo
-                        -> new PorterDuffColorFilter(ContextCompat.getColor(getActivity(),
-                                                             R.color.news_settings_optin_color),
-                                PorterDuff.Mode.SRC_ATOP));
+                        frameInfo ->
+                                new PorterDuffColorFilter(
+                                        ContextCompat.getColor(
+                                                getActivity(), R.color.news_settings_optin_color),
+                                        PorterDuff.Mode.SRC_ATOP));
             } catch (Exception exception) {
                 // if newspaper keypath changed in animation json
             }
@@ -163,33 +165,48 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
             updateFollowerCount();
 
             if (!mIsSuggestionAvailable) {
-                PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
-                    if (mBraveNewsController != null) {
-                        BraveNewsUtils.getSuggestionsSources(mBraveNewsController, this);
-                    }
-                });
+                PostTask.postTask(
+                        TaskTraits.BEST_EFFORT,
+                        () -> {
+                            if (mBraveNewsController != null) {
+                                BraveNewsUtils.getSuggestionsSources(mBraveNewsController, this);
+                            }
+                        });
             }
         }
     }
 
     private void onClickViews() {
-        mBtnTurnOnNews.setOnClickListener(view -> { mSwitchShowNews.setChecked(true); });
+        mBtnTurnOnNews.setOnClickListener(
+                view -> {
+                    mSwitchShowNews.setChecked(true);
+                });
 
-        mBtnLearnMore.setOnClickListener(view -> {
-            CustomTabActivity.showInfoPage(getActivity(), BraveConstants.BRAVE_NEWS_LEARN_MORE_URL);
-        });
+        mBtnLearnMore.setOnClickListener(
+                view -> {
+                    CustomTabActivity.showInfoPage(
+                            getActivity(), BraveConstants.BRAVE_NEWS_LEARN_MORE_URL);
+                });
 
-        mSwitchShowNews.setOnCheckedChangeListener((compoundButton, b) -> { onShowNewsToggle(b); });
+        mSwitchShowNews.setOnCheckedChangeListener(
+                (compoundButton, b) -> {
+                    onShowNewsToggle(b);
+                });
 
         mTvSearch.setOnClickListener(
-                view -> { openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Search); });
+                view -> {
+                    openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Search);
+                });
 
-        mLayoutPopularSources.setOnClickListener(view -> {
-            openBraveNewsPreferencesDetails(BraveNewsPreferencesType.PopularSources);
-        });
+        mLayoutPopularSources.setOnClickListener(
+                view -> {
+                    openBraveNewsPreferencesDetails(BraveNewsPreferencesType.PopularSources);
+                });
 
         mLayoutSuggestions.setOnClickListener(
-                view -> { openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Suggestions); });
+                view -> {
+                    openBraveNewsPreferencesDetails(BraveNewsPreferencesType.Suggestions);
+                });
 
         mLayoutChannels.setOnClickListener(
                 view -> {
@@ -216,8 +233,10 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_NEWS_PREF_SHOW_NEWS, isEnable);
 
-        FrameLayout.LayoutParams parentLayoutParams = new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams parentLayoutParams =
+                new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT);
 
         if (isEnable) {
             parentLayoutParams.gravity = Gravity.NO_GRAVITY;
@@ -328,7 +347,8 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
 
     @Override
     public void onSuggestionsReceived() {
-        if (mSwitchShowNews != null && mSwitchShowNews.isChecked()
+        if (mSwitchShowNews != null
+                && mSwitchShowNews.isChecked()
                 && BraveNewsUtils.getSuggestionsPublisherList().size() > 0) {
             if (mLayoutSuggestions != null) {
                 mLayoutSuggestions.setVisibility(View.VISIBLE);

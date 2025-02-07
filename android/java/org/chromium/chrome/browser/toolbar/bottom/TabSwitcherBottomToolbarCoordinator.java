@@ -28,9 +28,9 @@ import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
 
 /**
  * The coordinator for the tab switcher mode bottom toolbar. This class handles all interactions
- * that the tab switcher bottom toolbar has with the outside world.
- * TODO(crbug.com/1036474): This coordinator is not used currently and can be removed if the final
- *                          duet design doesn't need a stand-alone toolbar in tab switcher mode.
+ * that the tab switcher bottom toolbar has with the outside world. TODO(crbug.com/1036474): This
+ * coordinator is not used currently and can be removed if the final duet design doesn't need a
+ * stand-alone toolbar in tab switcher mode.
  */
 public class TabSwitcherBottomToolbarCoordinator {
     /** The mediator that handles events from outside the tab switcher bottom toolbar. */
@@ -123,9 +123,7 @@ public class TabSwitcherBottomToolbarCoordinator {
         mModel.set(TabSwitcherBottomToolbarModel.IS_VISIBLE, visible);
     }
 
-    /**
-     * Clean up any state when the bottom toolbar is destroyed.
-     */
+    /** Clean up any state when the bottom toolbar is destroyed. */
     public void destroy() {
         mMediator.destroy();
         mNewTabButton.destroy();

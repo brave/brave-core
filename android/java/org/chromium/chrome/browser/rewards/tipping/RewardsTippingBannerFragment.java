@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards.tipping;
 
@@ -105,19 +103,23 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
 
     private void closeButtonClick() {
         ImageView view = mContentView.findViewById(R.id.close_it);
-        view.setOnClickListener(v -> { mActivity.finish(); });
+        view.setOnClickListener(
+                v -> {
+                    mActivity.finish();
+                });
     }
 
     private void clickOnVerifiedIcon() {
         ImageView view = mContentView.findViewById(R.id.verified_tick_mark);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TippingVerifiedCreatorToolTip toolTip =
-                        new TippingVerifiedCreatorToolTip(mActivity);
-                toolTip.show(view);
-            }
-        });
+        view.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TippingVerifiedCreatorToolTip toolTip =
+                                new TippingVerifiedCreatorToolTip(mActivity);
+                        toolTip.show(view);
+                    }
+                });
     }
 
     private void background() {
@@ -127,8 +129,10 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
             String prefix = IMAGE_URL_PREFIX;
             if (background.contains(prefix)) {
                 background = background.substring(prefix.length());
-                ImageView iv = (ImageView) mContentView.findViewById(
-                        R.id.top_tipping_banner_ui_background_scenery);
+                ImageView iv =
+                        (ImageView)
+                                mContentView.findViewById(
+                                        R.id.top_tipping_banner_ui_background_scenery);
                 ImageLoader.downloadImage(background, Glide.with(mActivity), false, 1, iv, null);
             }
         }
@@ -268,10 +272,11 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
     private void showAndSetListener(ImageView icon, String url) {
         icon.setVisibility(View.VISIBLE);
         icon.setTag(url);
-        icon.setOnClickListener(v -> {
-            String openUrl = (String) v.getTag();
-            openLink(openUrl);
-        });
+        icon.setOnClickListener(
+                v -> {
+                    String openUrl = (String) v.getTag();
+                    openLink(openUrl);
+                });
     }
 
     private void openLink(String url) {
@@ -300,8 +305,11 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
         if (!TextUtils.isEmpty(title)) {
             String provider = getProvider(mBannerInfo.getProvider());
             if (!TextUtils.isEmpty(provider)) {
-                title = String.format(
-                        getResources().getString(R.string.title_on_provider), title, provider);
+                title =
+                        String.format(
+                                getResources().getString(R.string.title_on_provider),
+                                title,
+                                provider);
             }
             titleTextView.setText(title);
         } else {
@@ -341,7 +349,6 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
                     RewardsTippingPanelBottomsheet.showTippingPanelBottomSheet(
                             (AppCompatActivity) mActivity, mCurrentTabId);
                 });
-
     }
 
     @Override

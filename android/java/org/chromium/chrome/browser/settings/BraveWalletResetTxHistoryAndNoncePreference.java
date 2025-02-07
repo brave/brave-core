@@ -27,11 +27,9 @@ import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
-/**
- * The preference used to reset transaction and nonce history in Brave Wallet.
- */
-public class BraveWalletResetTxHistoryAndNoncePreference
-        extends Preference implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
+/** The preference used to reset transaction and nonce history in Brave Wallet. */
+public class BraveWalletResetTxHistoryAndNoncePreference extends Preference
+        implements Preference.OnPreferenceClickListener, ConnectionErrorHandler {
     private String TAG = "BraveWalletResetTxHistoryAndNoncePreference";
 
     private TxService mTxService;
@@ -41,8 +39,10 @@ public class BraveWalletResetTxHistoryAndNoncePreference
         super(context, attrs);
 
         setOnPreferenceClickListener(this);
-        mConfirmationPhrase = getContext().getResources().getString(
-                R.string.brave_wallet_reset_settings_confirmation_phrase);
+        mConfirmationPhrase =
+                getContext()
+                        .getResources()
+                        .getString(R.string.brave_wallet_reset_settings_confirmation_phrase);
         initTxService();
     }
 
@@ -67,18 +67,23 @@ public class BraveWalletResetTxHistoryAndNoncePreference
                 inflater.inflate(R.layout.brave_wallet_preference_confirmation_text_layout, null);
         TextView textView =
                 view.findViewById(R.id.brave_wallet_preference_confirmation_dialog_tv_message);
-        textView.setText(getContext().getResources().getString(
-                R.string.brave_wallet_clear_tx_and_nonce_dialog_confirmation, mConfirmationPhrase));
+        textView.setText(
+                getContext()
+                        .getResources()
+                        .getString(
+                                R.string.brave_wallet_clear_tx_and_nonce_dialog_confirmation,
+                                mConfirmationPhrase));
         final EditText input =
                 view.findViewById(R.id.brave_wallet_preference_confirmation_dialog_edittext);
 
-        DialogInterface.OnClickListener onClickListener = (dialog, button) -> {
-            if (button == AlertDialog.BUTTON_POSITIVE) {
-                mTxService.reset();
-            } else {
-                dialog.dismiss();
-            }
-        };
+        DialogInterface.OnClickListener onClickListener =
+                (dialog, button) -> {
+                    if (button == AlertDialog.BUTTON_POSITIVE) {
+                        mTxService.reset();
+                    } else {
+                        dialog.dismiss();
+                    }
+                };
 
         AlertDialog.Builder alert =
                 new AlertDialog.Builder(getContext(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
@@ -89,31 +94,34 @@ public class BraveWalletResetTxHistoryAndNoncePreference
                         .setNegativeButton(R.string.cancel, onClickListener)
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                KeyboardVisibilityDelegate.getInstance().showKeyboard(input);
-            }
-        });
+        alertDialog.setOnShowListener(
+                new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        KeyboardVisibilityDelegate.getInstance().showKeyboard(input);
+                    }
+                });
         alertDialog.show();
         final Button okButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         okButton.setEnabled(false);
 
-        input.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {}
+        input.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {}
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Disable ok button if input is invalid
-                String inputText = s.toString().trim();
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        // Disable ok button if input is invalid
+                        String inputText = s.toString().trim();
 
-                okButton.setEnabled(TextUtils.equals(inputText, mConfirmationPhrase));
-            }
-        });
+                        okButton.setEnabled(TextUtils.equals(inputText, mConfirmationPhrase));
+                    }
+                });
     }
 
     @Override

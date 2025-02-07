@@ -20,10 +20,10 @@ import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
-public class BraveWalletEthereumConnectedSitesPreference
-        extends Preference implements ConnectionErrorHandler,
-                                      BraveWalletEthereumConnectedSitesListAdapter
-                                              .BraveEthereumPermissionConnectedSitesDelegate {
+public class BraveWalletEthereumConnectedSitesPreference extends Preference
+        implements ConnectionErrorHandler,
+                BraveWalletEthereumConnectedSitesListAdapter
+                        .BraveEthereumPermissionConnectedSitesDelegate {
     private RecyclerView mRecyclerView;
     private BraveWalletService mBraveWalletService;
     private BraveWalletEthereumConnectedSitesListAdapter mAdapter;
@@ -49,24 +49,29 @@ public class BraveWalletEthereumConnectedSitesPreference
 
     @SuppressLint("NotifyDataSetChanged")
     private void updateWebSitestList() {
-        mBraveWalletService.getWebSitesWithPermission(CoinType.ETH, webSites -> {
-            if (mAdapter == null) {
-                mAdapter = new BraveWalletEthereumConnectedSitesListAdapter(webSites, this);
-                mRecyclerView.setAdapter(mAdapter);
-            } else {
-                mAdapter.setWebSites(webSites);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+        mBraveWalletService.getWebSitesWithPermission(
+                CoinType.ETH,
+                webSites -> {
+                    if (mAdapter == null) {
+                        mAdapter = new BraveWalletEthereumConnectedSitesListAdapter(webSites, this);
+                        mRecyclerView.setAdapter(mAdapter);
+                    } else {
+                        mAdapter.setWebSites(webSites);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     @Override
     public void removePermission(String webSite) {
-        mBraveWalletService.resetWebSitePermission(CoinType.ETH, webSite, success -> {
-            if (success) {
-                updateWebSitestList();
-            }
-        });
+        mBraveWalletService.resetWebSitePermission(
+                CoinType.ETH,
+                webSite,
+                success -> {
+                    if (success) {
+                        updateWebSitestList();
+                    }
+                });
     }
 
     @Override

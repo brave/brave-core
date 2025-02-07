@@ -8,8 +8,8 @@ package org.chromium.chrome.browser.toolbar.bottom;
 import org.chromium.ui.modelutil.PropertyModel;
 
 /**
- * All of the state for the tab switcher bottom toolbar, updated by the
- * {@link TabSwitcherBottomToolbarCoordinator}.
+ * All of the state for the tab switcher bottom toolbar, updated by the {@link
+ * TabSwitcherBottomToolbarCoordinator}.
  */
 public class TabSwitcherBottomToolbarModel extends PropertyModel {
     /** Primary color of tab switcher bottom toolbar. */

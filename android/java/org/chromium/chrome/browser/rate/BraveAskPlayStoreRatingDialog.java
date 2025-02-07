@@ -30,7 +30,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 
 public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
-    final public static String TAG_FRAGMENT = "brave_ask_play_store_rating_dialog_tag";
+    public static final String TAG_FRAGMENT = "brave_ask_play_store_rating_dialog_tag";
     private static final String TAG = "AskPlayStoreRating";
     private ReviewManager mReviewManager;
     private ReviewInfo mReviewInfo;
@@ -65,8 +65,8 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
         try {
             BraveAskPlayStoreRatingDialog fragment =
-                    (BraveAskPlayStoreRatingDialog) manager.findFragmentByTag(
-                            BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
+                    (BraveAskPlayStoreRatingDialog)
+                            manager.findFragmentByTag(BraveAskPlayStoreRatingDialog.TAG_FRAGMENT);
             FragmentTransaction transaction = manager.beginTransaction();
             if (fragment != null) {
                 transaction.remove(fragment);
@@ -89,8 +89,9 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
             Log.e(TAG, "In-App requestReviewFlow exception");
         }
 
-        final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_ask_play_store_rating_dialog, null);
+        final View view =
+                LayoutInflater.from(getContext())
+                        .inflate(R.layout.brave_ask_play_store_rating_dialog, null);
         clickRateNowButton(view);
         clickNotNowButton(view);
         dialog.setContentView(view);
@@ -98,23 +99,27 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
 
     private void clickRateNowButton(View view) {
         Button rateNowButton = view.findViewById(R.id.rate_now_button);
-        rateNowButton.setOnClickListener((v) -> {
-            try {
-                if (mIsFromSettings) {
-                    RateUtils.getInstance().openPlaystore(mContext);
-                } else {
-                    launchReviewFlow();
-                }
-            } catch (NullPointerException e) {
-                Log.e(TAG, "In-App launch Review exception");
-            }
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    dismiss();
-                }
-            }, 500);
-        });
+        rateNowButton.setOnClickListener(
+                (v) -> {
+                    try {
+                        if (mIsFromSettings) {
+                            RateUtils.getInstance().openPlaystore(mContext);
+                        } else {
+                            launchReviewFlow();
+                        }
+                    } catch (NullPointerException e) {
+                        Log.e(TAG, "In-App launch Review exception");
+                    }
+                    new Handler()
+                            .postDelayed(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            dismiss();
+                                        }
+                                    },
+                                    500);
+                });
     }
 
     private void clickNotNowButton(View view) {
@@ -125,14 +130,15 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
     private void requestReviewFlow() {
         if (mReviewManager != null) {
             Task<ReviewInfo> request = mReviewManager.requestReviewFlow();
-            request.addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    mReviewInfo = task.getResult();
-                } else {
-                    // There was some problem
-                    Log.e(TAG, "In-App review error " + task.getException());
-                }
-            });
+            request.addOnCompleteListener(
+                    task -> {
+                        if (task.isSuccessful()) {
+                            mReviewInfo = task.getResult();
+                        } else {
+                            // There was some problem
+                            Log.e(TAG, "In-App review error " + task.getException());
+                        }
+                    });
         }
     }
 
@@ -140,11 +146,11 @@ public class BraveAskPlayStoreRatingDialog extends BottomSheetDialogFragment {
         if (mReviewManager != null && mReviewInfo != null && mContext instanceof Activity) {
             // We can get the ReviewInfo object
             Task<Void> flow = mReviewManager.launchReviewFlow((Activity) mContext, mReviewInfo);
-            flow.addOnCompleteListener(task1
-                    -> {
-                            // The flow has finished. The API does not indicate whether the user
-                            // reviewed or not, or even whether the review dialog was shown.
-                            // Thus, no matter the result, we continue our app flow.
+            flow.addOnCompleteListener(
+                    task1 -> {
+                        // The flow has finished. The API does not indicate whether the user
+                        // reviewed or not, or even whether the review dialog was shown.
+                        // Thus, no matter the result, we continue our app flow.
                     });
         } else {
             // if case fails then open play store app page

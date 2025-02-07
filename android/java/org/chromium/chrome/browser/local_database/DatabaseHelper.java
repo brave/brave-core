@@ -99,8 +99,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean isDisplayAdAlreadyAdded(String uuid) {
-        String sql = "Select * from " + DisplayAdsTable.TABLE_NAME + " where "
-                + DisplayAdsTable.COLUMN_UUID + " = '" + uuid + "'";
+        String sql =
+                "Select * from "
+                        + DisplayAdsTable.TABLE_NAME
+                        + " where "
+                        + DisplayAdsTable.COLUMN_UUID
+                        + " = '"
+                        + uuid
+                        + "'";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, null);
@@ -130,9 +136,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @SuppressLint("Range")
     public DisplayAdsTable getDisplayAd(int position, int tabId) {
-        String selectQuery = "SELECT  * FROM " + DisplayAdsTable.TABLE_NAME + " where "
-                + DisplayAdsTable.COLUMN_POSITION + " = " + position + " AND "
-                + DisplayAdsTable.COLUMN_TAB_ID + " = " + tabId;
+        String selectQuery =
+                "SELECT  * FROM "
+                        + DisplayAdsTable.TABLE_NAME
+                        + " where "
+                        + DisplayAdsTable.COLUMN_POSITION
+                        + " = "
+                        + position
+                        + " AND "
+                        + DisplayAdsTable.COLUMN_TAB_ID
+                        + " = "
+                        + tabId;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.getCount() <= 0) {
@@ -141,17 +155,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.moveToFirst();
 
-        DisplayAdsTable braveAd = new DisplayAdsTable(
-                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_UUID)),
-                cursor.getString(
-                        cursor.getColumnIndex(DisplayAdsTable.COLUMN_CREATIVE_INSTANCE_ID)),
-                cursor.getInt(cursor.getColumnIndex(DisplayAdsTable.COLUMN_POSITION)),
-                cursor.getInt(cursor.getColumnIndex(DisplayAdsTable.COLUMN_TAB_ID)),
-                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_TITLE)),
-                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_DESCRIPTION)),
-                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_CTA_TEXT)),
-                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_CTA_LINK)),
-                cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_IMAGE)));
+        DisplayAdsTable braveAd =
+                new DisplayAdsTable(
+                        cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_UUID)),
+                        cursor.getString(
+                                cursor.getColumnIndex(DisplayAdsTable.COLUMN_CREATIVE_INSTANCE_ID)),
+                        cursor.getInt(cursor.getColumnIndex(DisplayAdsTable.COLUMN_POSITION)),
+                        cursor.getInt(cursor.getColumnIndex(DisplayAdsTable.COLUMN_TAB_ID)),
+                        cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_TITLE)),
+                        cursor.getString(
+                                cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_DESCRIPTION)),
+                        cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_CTA_TEXT)),
+                        cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_CTA_LINK)),
+                        cursor.getString(cursor.getColumnIndex(DisplayAdsTable.COLUMN_AD_IMAGE)));
 
         cursor.close();
 
@@ -205,11 +221,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                TopSiteTable topSite = new TopSiteTable(
-                    cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_NAME)),
-                    cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_DESTINATION_URL)),
-                    cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_BACKGROUND_COLOR)),
-                    cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_IMAGE_PATH)));
+                TopSiteTable topSite =
+                        new TopSiteTable(
+                                cursor.getString(cursor.getColumnIndex(TopSiteTable.COLUMN_NAME)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(TopSiteTable.COLUMN_DESTINATION_URL)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(
+                                                TopSiteTable.COLUMN_BACKGROUND_COLOR)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(TopSiteTable.COLUMN_IMAGE_PATH)));
 
                 topSites.add(topSite);
             } while (cursor.moveToNext());
@@ -234,8 +255,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteTopSite(String destinationUrl) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TopSiteTable.TABLE_NAME, TopSiteTable.COLUMN_DESTINATION_URL + " = ?",
-                  new String[] {destinationUrl});
+        db.delete(
+                TopSiteTable.TABLE_NAME,
+                TopSiteTable.COLUMN_DESTINATION_URL + " = ?",
+                new String[] {destinationUrl});
     }
 
     public long insertStats(BraveStatsTable braveStat) {
@@ -250,7 +273,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN, braveStat.getStatSiteDomain());
         values.put(BraveStatsTable.COLUMN_TIMESTAMP, braveStat.getTimestamp());
 
-        return  db.insert(BraveStatsTable.TABLE_NAME, null, values);
+        return db.insert(BraveStatsTable.TABLE_NAME, null, values);
         // }
         // return -1;
     }
@@ -260,8 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<BraveStatsTable> braveStats = new ArrayList<>();
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM "
-                             + BraveStatsTable.TABLE_NAME;
+        String selectQuery = "SELECT  * FROM " + BraveStatsTable.TABLE_NAME;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -269,13 +291,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                BraveStatsTable braveStat = new BraveStatsTable(
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
+                BraveStatsTable braveStat =
+                        new BraveStatsTable(
+                                cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(
+                                                BraveStatsTable.COLUMN_STAT_SITE_DOMAIN)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
 
                 braveStats.add(braveStat);
             } while (cursor.moveToNext());
@@ -307,13 +336,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                BraveStatsTable braveStat = new BraveStatsTable(
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
+                BraveStatsTable braveStat =
+                        new BraveStatsTable(
+                                cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(
+                                                BraveStatsTable.COLUMN_STAT_SITE_DOMAIN)),
+                                cursor.getString(
+                                        cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
 
                 braveStats.add(braveStat);
             } while (cursor.moveToNext());
@@ -417,7 +453,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH, savedBandwidthTable.getSavedBandwidth());
+        values.put(
+                SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH,
+                savedBandwidthTable.getSavedBandwidth());
         values.put(SavedBandwidthTable.COLUMN_TIMESTAMP, savedBandwidthTable.getTimestamp());
 
         // insert row

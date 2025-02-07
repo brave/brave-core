@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.notifications;
 
@@ -46,8 +44,10 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     public static void showOnboardingDialog() {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
-            BraveAdsNotificationDialog.showNotificationAd(braveActivity,
-                    BRAVE_ONBOARDING_NOTIFICATION_TAG, getNotificationUrl(),
+            BraveAdsNotificationDialog.showNotificationAd(
+                    braveActivity,
+                    BRAVE_ONBOARDING_NOTIFICATION_TAG,
+                    getNotificationUrl(),
                     braveActivity.getString(R.string.brave_ui_brave_rewards),
                     braveActivity.getString(R.string.this_is_your_first_ad));
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -70,12 +70,13 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
                         .setContentIntent(getDeepLinkIntent(context))
                         .setOrigin(getNotificationUrl());
 
-        NotificationWrapper notification = notificationBuilder.build(new NotificationMetadata(
-                                              NotificationUmaTracker.SystemNotificationType
-                                              .UNKNOWN /* Underlying code doesn't track UNKNOWN */,
-                                              BRAVE_ONBOARDING_NOTIFICATION_TAG /* notificationTag */,
-                                              BRAVE_ONBOARDING_NOTIFICATION_ID /* notificationId */
-                                          ));
+        NotificationWrapper notification =
+                notificationBuilder.build(
+                        new NotificationMetadata(
+                                NotificationUmaTracker.SystemNotificationType
+                                        .UNKNOWN /* Underlying code doesn't track UNKNOWN */,
+                                BRAVE_ONBOARDING_NOTIFICATION_TAG /* notificationTag */,
+                                BRAVE_ONBOARDING_NOTIFICATION_ID /* notificationId */));
         notificationManager.notify(notification);
     }
 
@@ -109,7 +110,8 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
             Log.e(TAG, "onReceive " + e);
 
             if (action != null && action.equals(DEEP_LINK)) {
-                intent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE,
+                intent.putExtra(
+                        RetentionNotificationUtil.NOTIFICATION_TYPE,
                         RetentionNotificationUtil.DAY_10);
                 RetentionNotificationPublisher.backgroundNotificationAction(context, intent);
             }
@@ -119,12 +121,12 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     private static String getNotificationUrl() {
         Locale locale = Locale.getDefault();
         switch (locale.toString()) {
-        case COUNTRY_CODE_DE:
-            return BRAVE_ONBOARDING_ORIGIN_DE;
-        case COUNTRY_CODE_FR:
-            return BRAVE_ONBOARDING_ORIGIN_FR;
-        default:
-            return BRAVE_ONBOARDING_ORIGIN_EN;
+            case COUNTRY_CODE_DE:
+                return BRAVE_ONBOARDING_ORIGIN_DE;
+            case COUNTRY_CODE_FR:
+                return BRAVE_ONBOARDING_ORIGIN_FR;
+            default:
+                return BRAVE_ONBOARDING_ORIGIN_EN;
         }
     }
 

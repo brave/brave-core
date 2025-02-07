@@ -101,23 +101,29 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
                     item.setIcon(
                             AppCompatResources.getDrawable(mContext, R.drawable.ic_new_tab_page));
                 } else if (item.getItemId() == R.id.new_incognito_tab_menu_id) {
-                    item.setIcon(AppCompatResources.getDrawable(
-                            mContext, R.drawable.brave_menu_new_private_tab));
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_new_private_tab));
                 } else if (item.getItemId() == R.id.all_bookmarks_menu_id) {
-                    item.setIcon(AppCompatResources.getDrawable(
-                            mContext, R.drawable.brave_menu_bookmarks));
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_bookmarks));
                 } else if (item.getItemId() == R.id.recent_tabs_menu_id) {
-                    item.setIcon(AppCompatResources.getDrawable(
-                            mContext, R.drawable.brave_menu_recent_tabs));
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_recent_tabs));
                 } else if (item.getItemId() == R.id.open_history_menu_id) {
-                    item.setIcon(AppCompatResources.getDrawable(
-                            mContext, R.drawable.brave_menu_history));
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_history));
                 } else if (item.getItemId() == R.id.downloads_menu_id) {
-                    item.setIcon(AppCompatResources.getDrawable(
-                            mContext, R.drawable.brave_menu_downloads));
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_downloads));
                 } else if (item.getItemId() == R.id.preferences_id) {
-                    item.setIcon(AppCompatResources.getDrawable(
-                            mContext, R.drawable.brave_menu_settings));
+                    item.setIcon(
+                            AppCompatResources.getDrawable(
+                                    mContext, R.drawable.brave_menu_settings));
                 }
             }
         }

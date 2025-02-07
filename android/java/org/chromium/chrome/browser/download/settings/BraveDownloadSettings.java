@@ -66,8 +66,12 @@ public class BraveDownloadSettings extends DownloadSettings
     }
 
     private void updateDownloadSettings() {
-        boolean automaticallyOpenWhenPossible = ContextUtils.getAppSharedPreferences().getBoolean(
-                BravePreferenceKeys.BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE, true);
+        boolean automaticallyOpenWhenPossible =
+                ContextUtils.getAppSharedPreferences()
+                        .getBoolean(
+                                BravePreferenceKeys
+                                        .BRAVE_DOWNLOADS_AUTOMATICALLY_OPEN_WHEN_POSSIBLE,
+                                true);
         mAutomaticallyOpenWhenPossiblePref.setChecked(automaticallyOpenWhenPossible);
 
         boolean downloadProgressNotificationBubble =

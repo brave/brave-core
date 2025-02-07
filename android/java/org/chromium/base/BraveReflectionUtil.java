@@ -24,7 +24,7 @@ public class BraveReflectionUtil {
                 // It must be even number as first goes type and then argument itself
                 assert (typesAndArgs.length % 2 == 0);
                 int size = typesAndArgs.length / 2;
-                parameterTypes = new Class<?>[ size ];
+                parameterTypes = new Class<?>[size];
                 args = new Object[size];
                 for (int i = 0; i < typesAndArgs.length; i++) {
                     if (i % 2 == 0) {

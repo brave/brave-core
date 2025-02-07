@@ -15,8 +15,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
-public class BraveWalletSolanaConnectedSites
-        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+public class BraveWalletSolanaConnectedSites extends BravePreferenceFragment
+        implements Preference.OnPreferenceChangeListener {
     private static final String PREF_BRAVE_WALLET_SOLANA_CONNECTED_SITES =
             "pref_brave_wallet_solana_connected_sites";
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
@@ -41,8 +41,8 @@ public class BraveWalletSolanaConnectedSites
     public void onDestroyView() {
         super.onDestroyView();
         BraveWalletSolanaConnectedSitesPreference pref =
-                (BraveWalletSolanaConnectedSitesPreference) findPreference(
-                        PREF_BRAVE_WALLET_SOLANA_CONNECTED_SITES);
+                (BraveWalletSolanaConnectedSitesPreference)
+                        findPreference(PREF_BRAVE_WALLET_SOLANA_CONNECTED_SITES);
         pref.destroy();
     }
 }

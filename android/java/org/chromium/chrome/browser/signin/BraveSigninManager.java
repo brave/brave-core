@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.signin;
 
-
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,7 +54,9 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public void signOut(@SignoutReason int signoutSource, SignOutCallback signOutCallback,
+    public void signOut(
+            @SignoutReason int signoutSource,
+            SignOutCallback signOutCallback,
             boolean forceWipeUserData) {}
 
     @Override
@@ -119,7 +120,9 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public void revokeSyncConsent(@SignoutReason int signoutSource, SignOutCallback signOutCallback,
+    public void revokeSyncConsent(
+            @SignoutReason int signoutSource,
+            SignOutCallback signOutCallback,
             boolean forceWipeUserData) {}
 
     @Override

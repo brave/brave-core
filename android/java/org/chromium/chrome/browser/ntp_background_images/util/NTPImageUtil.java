@@ -57,18 +57,25 @@ public class NTPImageUtil {
             imageBitmap = getBitmapFromImagePath(mWallpaper.getImagePath(), options);
             if (imageBitmap == null) return null;
 
-            centerPointX = mWallpaper.getFocalPointX() == 0 ? (imageBitmap.getWidth() / 2)
-                                                            : mWallpaper.getFocalPointX();
-            centerPointY = mWallpaper.getFocalPointY() == 0 ? (imageBitmap.getHeight() / 2)
-                                                            : mWallpaper.getFocalPointY();
+            centerPointX =
+                    mWallpaper.getFocalPointX() == 0
+                            ? (imageBitmap.getWidth() / 2)
+                            : mWallpaper.getFocalPointX();
+            centerPointY =
+                    mWallpaper.getFocalPointY() == 0
+                            ? (imageBitmap.getHeight() / 2)
+                            : mWallpaper.getFocalPointY();
         } else {
             BackgroundImage mBackgroundImage = (BackgroundImage) ntpImage;
             String imagePath = mBackgroundImage.getImagePath();
 
             // Bundled Background Images
             if (imagePath == null) {
-                imageBitmap = BitmapFactory.decodeResource(
-                        mContext.getResources(), mBackgroundImage.getImageDrawable(), options);
+                imageBitmap =
+                        BitmapFactory.decodeResource(
+                                mContext.getResources(),
+                                mBackgroundImage.getImageDrawable(),
+                                options);
 
                 centerPointX = mBackgroundImage.getCenterPointX();
                 centerPointY = mBackgroundImage.getCenterPointY();
@@ -76,12 +83,14 @@ public class NTPImageUtil {
                 imageBitmap = getBitmapFromImagePath(imagePath, options);
                 if (imageBitmap == null) return null;
 
-                centerPointX = mBackgroundImage.getCenterPointX() == 0
-                        ? (imageBitmap.getWidth() / 2)
-                        : mBackgroundImage.getCenterPointX();
-                centerPointY = mBackgroundImage.getCenterPointY() == 0
-                        ? (imageBitmap.getHeight() / 2)
-                        : mBackgroundImage.getCenterPointY();
+                centerPointX =
+                        mBackgroundImage.getCenterPointX() == 0
+                                ? (imageBitmap.getWidth() / 2)
+                                : mBackgroundImage.getCenterPointX();
+                centerPointY =
+                        mBackgroundImage.getCenterPointY() == 0
+                                ? (imageBitmap.getHeight() / 2)
+                                : mBackgroundImage.getCenterPointY();
             }
         }
         return getCalculatedBitmap(
@@ -105,8 +114,12 @@ public class NTPImageUtil {
         return imageBitmap;
     }
 
-    public static Bitmap getCalculatedBitmap(Bitmap imageBitmap, float centerPointX,
-            float centerPointY, int layoutWidth, int layoutHeight) {
+    public static Bitmap getCalculatedBitmap(
+            Bitmap imageBitmap,
+            float centerPointX,
+            float centerPointY,
+            int layoutWidth,
+            int layoutHeight) {
         float imageWidth = imageBitmap.getWidth();
         float imageHeight = imageBitmap.getHeight();
 
@@ -163,10 +176,13 @@ public class NTPImageUtil {
             imageBitmap =
                     Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
 
-            newBitmap = Bitmap.createBitmap(imageBitmap,
-                    (startX + layoutWidth) <= imageBitmap.getWidth() ? startX : 0,
-                    (startY + (int) layoutHeight) <= imageBitmap.getHeight() ? startY : 0,
-                    layoutWidth, (int) layoutHeight);
+            newBitmap =
+                    Bitmap.createBitmap(
+                            imageBitmap,
+                            (startX + layoutWidth) <= imageBitmap.getWidth() ? startX : 0,
+                            (startY + (int) layoutHeight) <= imageBitmap.getHeight() ? startY : 0,
+                            layoutWidth,
+                            (int) layoutHeight);
             bitmapWithGradient = ImageUtils.addGradient(newBitmap);
 
             if (imageBitmap != null && !imageBitmap.isRecycled()) imageBitmap.recycle();

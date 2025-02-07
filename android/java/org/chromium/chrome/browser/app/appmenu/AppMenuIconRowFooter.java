@@ -24,9 +24,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 
-/**
- * A {@link LinearLayout} that displays a horizontal row of icons for page actions.
- */
+/** A {@link LinearLayout} that displays a horizontal row of icons for page actions. */
 public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickListener {
     private AppMenuHandler mAppMenuHandler;
     private AppMenuDelegate mAppMenuDelegate;
@@ -63,7 +61,8 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
         // ImageView tinting doesn't work with LevelListDrawable, use Drawable tinting instead.
         // See https://crbug.com/891593 for details.
         Drawable icon = AppCompatResources.getDrawable(getContext(), R.drawable.btn_reload_stop);
-        DrawableCompat.setTintList(icon,
+        DrawableCompat.setTintList(
+                icon,
                 AppCompatResources.getColorStateList(
                         getContext(), R.color.default_icon_color_tint_list));
         mReloadButton.setImageDrawable(icon);
@@ -71,14 +70,17 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
 
     /**
      * Initializes the icons, setting enabled state, drawables, and content descriptions.
+     *
      * @param appMenuHandler The {@link AppMenu} that contains the icon row.
-     * @param bookmarkBridge The {@link BookmarkModel} used to retrieve information about
-     *                       bookmarks.
+     * @param bookmarkBridge The {@link BookmarkModel} used to retrieve information about bookmarks.
      * @param currentTab The current activity {@link Tab}.
      * @param appMenuDelegate The AppMenuDelegate to handle options item selection.
      */
-    public void initialize(AppMenuHandler appMenuHandler, BookmarkModel bookmarkBridge,
-            @Nullable Tab currentTab, AppMenuDelegate appMenuDelegate) {
+    public void initialize(
+            AppMenuHandler appMenuHandler,
+            BookmarkModel bookmarkBridge,
+            @Nullable Tab currentTab,
+            AppMenuDelegate appMenuDelegate) {
         mAppMenuHandler = appMenuHandler;
         mAppMenuDelegate = appMenuDelegate;
 
@@ -99,14 +101,19 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
     }
 
     /**
-     * Called when the current tab's load state  has changed.
+     * Called when the current tab's load state has changed.
+     *
      * @param isLoading Whether the tab is currently loading.
      */
     public void loadingStateChanged(boolean isLoading) {
-        mReloadButton.getDrawable().setLevel(isLoading
-                        ? getResources().getInteger(R.integer.reload_button_level_stop)
-                        : getResources().getInteger(R.integer.reload_button_level_reload));
-        mReloadButton.setContentDescription(isLoading
+        mReloadButton
+                .getDrawable()
+                .setLevel(
+                        isLoading
+                                ? getResources().getInteger(R.integer.reload_button_level_stop)
+                                : getResources().getInteger(R.integer.reload_button_level_reload));
+        mReloadButton.setContentDescription(
+                isLoading
                         ? getContext().getString(R.string.accessibility_btn_stop_loading)
                         : getContext().getString(R.string.accessibility_btn_refresh));
     }
@@ -117,7 +124,8 @@ public class AppMenuIconRowFooter extends LinearLayout implements View.OnClickLi
         if (currentTab != null && bookmarkBridge.hasBookmarkIdForTab(currentTab)) {
             mBookmarkButton.setImageResource(R.drawable.btn_star_filled);
             mBookmarkButton.setContentDescription(getContext().getString(R.string.edit_bookmark));
-            ImageViewCompat.setImageTintList(mBookmarkButton,
+            ImageViewCompat.setImageTintList(
+                    mBookmarkButton,
                     AppCompatResources.getColorStateList(
                             getContext(), R.color.default_icon_color_accent1_tint_list));
         } else {

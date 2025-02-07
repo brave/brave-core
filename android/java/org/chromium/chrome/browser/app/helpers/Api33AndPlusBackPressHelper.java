@@ -18,34 +18,42 @@ import androidx.lifecycle.LifecycleOwner;
 import java.lang.ref.WeakReference;
 
 /**
- * Helper class for back press event handling via {@link OnBackInvokedDispatcher}.
- * This should only be used to resolve Android 13+ back press issue
- * {@link https://github.com/brave/brave-browser/issues/27787}.
+ * Helper class for back press event handling via {@link OnBackInvokedDispatcher}. This should only
+ * be used to resolve Android 13+ back press issue {@link
+ * https://github.com/brave/brave-browser/issues/27787}.
  */
 public final class Api33AndPlusBackPressHelper {
     private final WeakReference<FragmentActivity> mActivity;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    public static void create(LifecycleOwner lifecycleOwner, FragmentActivity activity,
+    public static void create(
+            LifecycleOwner lifecycleOwner,
+            FragmentActivity activity,
             OnBackInvokedCallback handler) {
         new Api33AndPlusBackPressHelper(lifecycleOwner, activity, handler);
     }
 
-    private Api33AndPlusBackPressHelper(LifecycleOwner lifecycleOwner, FragmentActivity activity,
+    private Api33AndPlusBackPressHelper(
+            LifecycleOwner lifecycleOwner,
+            FragmentActivity activity,
             OnBackInvokedCallback handler) {
         mActivity = new WeakReference<>(activity);
         if (isActive() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            getRef().getOnBackInvokedDispatcher().registerOnBackInvokedCallback(
-                    OnBackInvokedDispatcher.PRIORITY_DEFAULT, handler);
-            lifecycleOwner.getLifecycle().addObserver(new DefaultLifecycleObserver() {
-                @Override
-                public void onDestroy(@NonNull LifecycleOwner owner) {
-                    if (isAvailable()) {
-                        getRef().getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(
-                                handler);
-                    }
-                }
-            });
+            getRef().getOnBackInvokedDispatcher()
+                    .registerOnBackInvokedCallback(
+                            OnBackInvokedDispatcher.PRIORITY_DEFAULT, handler);
+            lifecycleOwner
+                    .getLifecycle()
+                    .addObserver(
+                            new DefaultLifecycleObserver() {
+                                @Override
+                                public void onDestroy(@NonNull LifecycleOwner owner) {
+                                    if (isAvailable()) {
+                                        getRef().getOnBackInvokedDispatcher()
+                                                .unregisterOnBackInvokedCallback(handler);
+                                    }
+                                }
+                            });
         }
     }
 

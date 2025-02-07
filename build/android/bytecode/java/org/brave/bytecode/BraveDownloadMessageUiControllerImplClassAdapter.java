@@ -18,7 +18,9 @@ public class BraveDownloadMessageUiControllerImplClassAdapter extends BraveClass
         super(visitor);
 
         changeSuperName(sDownloadMessageUiControllerImpl, sBraveDownloadMessageUiControllerImpl);
-        changeMethodOwner(sDownloadMessageUiControllerImpl, "isVisibleToUser",
+        changeMethodOwner(
+                sDownloadMessageUiControllerImpl,
+                "isVisibleToUser",
                 sBraveDownloadMessageUiControllerImpl);
     }
 }

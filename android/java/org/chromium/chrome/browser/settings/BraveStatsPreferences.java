@@ -23,11 +23,9 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
-/**
- * Fragment to keep track of all the display related preferences.
- */
+/** Fragment to keep track of all the display related preferences. */
 public class BraveStatsPreferences extends BravePreferenceFragment
-    implements OnPreferenceChangeListener {
+        implements OnPreferenceChangeListener {
 
     // deprecated preferences from browser-android-tabs
     public static final String PREF_BRAVE_STATS = "brave_stats";
@@ -117,15 +115,16 @@ public class BraveStatsPreferences extends BravePreferenceFragment
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        setOnPreferenceValue(preference.getKey(), (boolean)newValue);
+        setOnPreferenceValue(preference.getKey(), (boolean) newValue);
         return true;
     }
 
     public static void setOnPreferenceValue(String preferenceName, boolean newValue) {
         if (PREF_BRAVE_STATS.equals(preferenceName)) {
-            OnboardingPrefManager.getInstance().setBraveStatsEnabled((boolean)newValue);
+            OnboardingPrefManager.getInstance().setBraveStatsEnabled((boolean) newValue);
         } else if (PREF_BRAVE_STATS_NOTIFICATION.equals(preferenceName)) {
-            OnboardingPrefManager.getInstance().setBraveStatsNotificationEnabled((boolean)newValue);
+            OnboardingPrefManager.getInstance()
+                    .setBraveStatsNotificationEnabled((boolean) newValue);
         } else {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();

@@ -1,9 +1,9 @@
 /*
-  Copyright (c) 2022 The Brave Authors. All rights reserved.
-  This Source Code Form is subject to the terms of the Mozilla Public
-  License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ Copyright (c) 2022 The Brave Authors. All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ You can obtain one at https://mozilla.org/MPL/2.0/.
+*/
 
 package org.chromium.chrome.browser.widget.quickactionsearchandbookmark.promo;
 
@@ -33,8 +33,7 @@ public class SearchWidgetPromoPanel implements View.OnClickListener {
 
     @Override
     public void onClick(@NonNull View view) {
-        if (view.getId() == R.id.btAddWidget)
-            BraveSearchWidgetUtils.requestPinAppWidget();
+        if (view.getId() == R.id.btAddWidget) BraveSearchWidgetUtils.requestPinAppWidget();
         else if (view.getId() == R.id.tvNotNow)
             BraveSearchWidgetUtils.setShouldShowWidgetPromo(false);
         mPopupWindow.dismiss();

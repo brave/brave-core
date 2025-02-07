@@ -159,8 +159,8 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         try {
             ChromeBrowserInitializer.getInstance().handlePreNativeStartupAndLoadLibraries(parts);
 
-            ChromeBrowserInitializer.getInstance().handlePostNativeStartup(
-                    true /* isAsync */, parts);
+            ChromeBrowserInitializer.getInstance()
+                    .handlePostNativeStartup(true /* isAsync */, parts);
         } catch (ProcessInitException e) {
             Log.e(TAG, "Background Launch Error", e);
         }
@@ -195,8 +195,11 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     @Override
-    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
-            int appWidgetId, Bundle newOptions) {
+    public void onAppWidgetOptionsChanged(
+            Context context,
+            AppWidgetManager appWidgetManager,
+            int appWidgetId,
+            Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
         runUpdateAppWidgetsWithNative(new int[] {appWidgetId});
     }
@@ -274,7 +277,8 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static RemoteViews getBaseRemoteViews() {
-        return new RemoteViews(ContextUtils.getApplicationContext().getPackageName(),
+        return new RemoteViews(
+                ContextUtils.getApplicationContext().getPackageName(),
                 R.layout.quick_action_search_and_bookmark_widget_layout);
     }
 
@@ -374,8 +378,11 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static Bitmap getRoundedTileIconFromBitmap(Bitmap icon) {
-        RoundedBitmapDrawable roundedIcon = ViewUtils.createRoundedBitmapDrawable(
-                ContextUtils.getApplicationContext().getResources(), icon, DESIRED_ICON_RADIUS);
+        RoundedBitmapDrawable roundedIcon =
+                ViewUtils.createRoundedBitmapDrawable(
+                        ContextUtils.getApplicationContext().getResources(),
+                        icon,
+                        DESIRED_ICON_RADIUS);
         roundedIcon.setAntiAlias(true);
         roundedIcon.setFilterBitmap(true);
         return getBitmap(roundedIcon);
@@ -397,8 +404,11 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
     private static Bitmap getBitmap(@Nullable Drawable drawable) {
         if (drawable != null) {
-            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                    drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Bitmap bitmap =
+                    Bitmap.createBitmap(
+                            drawable.getIntrinsicWidth(),
+                            drawable.getIntrinsicHeight(),
+                            Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
@@ -409,27 +419,32 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void setRowsVisibility(RemoteViews views, int tilesSize, int minHeight) {
-        views.setViewVisibility(R.id.BookmarkLayoutRow1,
+        views.setViewVisibility(
+                R.id.BookmarkLayoutRow1,
                 tilesSize > 0 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_1
                         ? View.VISIBLE
                         : View.GONE);
-        views.setViewVisibility(R.id.BookmarkLayoutRow2,
+        views.setViewVisibility(
+                R.id.BookmarkLayoutRow2,
                 tilesSize > 1 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_2
                         ? View.VISIBLE
                         : View.GONE);
-        views.setViewVisibility(R.id.BookmarkLayoutRow3,
+        views.setViewVisibility(
+                R.id.BookmarkLayoutRow3,
                 tilesSize > 2 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_3
                         ? View.VISIBLE
                         : View.GONE);
-        views.setViewVisibility(R.id.BookmarkLayoutRow4,
+        views.setViewVisibility(
+                R.id.BookmarkLayoutRow4,
                 tilesSize > 3 * TILES_PER_ROW && minHeight >= MIN_VISIBLE_HEIGHT_ROW_4
                         ? View.VISIBLE
                         : View.GONE);
     }
 
     private static PendingIntent createIntent(@NonNull Context context, @NonNull String url) {
-        Intent intent = new Intent(
-                Intent.ACTION_VIEW, Uri.parse(url), context, ChromeLauncherActivity.class);
+        Intent intent =
+                new Intent(
+                        Intent.ACTION_VIEW, Uri.parse(url), context, ChromeLauncherActivity.class);
         intent.addCategory(Intent.CATEGORY_BROWSABLE);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(WebappConstants.EXTRA_SOURCE, ShortcutSource.BOOKMARK_NAVIGATOR_WIDGET);
@@ -454,7 +469,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
     private static PendingIntent createIncognitoIntent(Context context) {
         Intent trustedIncognitoIntent =
-                IntentHandler.createTrustedOpenNewTabIntent(context, /*incognito=*/true);
+                IntentHandler.createTrustedOpenNewTabIntent(context, /* incognito= */ true);
         trustedIncognitoIntent.putExtra(IntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET, true);
         trustedIncognitoIntent.addFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
@@ -463,16 +478,18 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static PendingIntent createPendingIntent(Context context, Intent intent) {
-        return PendingIntent.getActivity(context, 0, intent,
+        return PendingIntent.getActivity(
+                context,
+                0,
+                intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
                         | IntentUtils.getPendingIntentMutabilityFlag(false));
     }
 
     /**
      * This class acts as a single source of truth for this widet. This widget would use this class
-     *to fetch the data. Also, any modification to the data should be done through this class.
-     **/
-
+     * to fetch the data. Also, any modification to the data should be done through this class.
+     */
     public static class DataManager {
         public static void parseTilesAndWriteWidgetTiles(List<Tile> tiles) {
             List<WidgetTile> widgetTileList = new ArrayList<>();
@@ -511,8 +528,10 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                 JSONArray widgetTilesJsonArray = result.getJSONArray("widgetTiles");
                 for (int i = 0; i < widgetTilesJsonArray.length(); i++) {
                     JSONObject widgetTileJsonObject = widgetTilesJsonArray.getJSONObject(i);
-                    WidgetTile widgetTile = new WidgetTile(widgetTileJsonObject.getString("title"),
-                            new GURL(widgetTileJsonObject.getString("gurl")));
+                    WidgetTile widgetTile =
+                            new WidgetTile(
+                                    widgetTileJsonObject.getString("title"),
+                                    new GURL(widgetTileJsonObject.getString("gurl")));
                     widgetTileList.add(widgetTile);
                 }
             } catch (Exception e) {

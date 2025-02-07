@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.custom_layout;
 
 import android.content.Context;
@@ -13,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.ui.base.ViewUtils;
 
-/**
- * Extension of {@link GridLayoutManager} which adapts span count to recycler view size.
- */
+/** Extension of {@link GridLayoutManager} which adapts span count to recycler view size. */
 public class AutoFitVerticalGridLayoutManager extends GridLayoutManager {
     private final int minColumns;
 
@@ -25,7 +21,7 @@ public class AutoFitVerticalGridLayoutManager extends GridLayoutManager {
     /**
      * @param minColumns Minimum columns count.
      * @param columnWidthDp Expected width of the single item in grid layout in density independent
-     *         pixels.
+     *     pixels.
      */
     public AutoFitVerticalGridLayoutManager(
             final Context context, final int minColumns, final float columnWidthDp) {

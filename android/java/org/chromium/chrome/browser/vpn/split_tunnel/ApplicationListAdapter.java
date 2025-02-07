@@ -38,47 +38,51 @@ public class ApplicationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     public ApplicationListAdapter(
             OnApplicationClickListener onApplicationClickListener, boolean isExcludedApps) {
-        mApplicationList = new SortedList<>(
-                ApplicationDataModel.class, new SortedList.Callback<ApplicationDataModel>() {
-                    @Override
-                    public int compare(ApplicationDataModel applicationDataModel1,
-                            ApplicationDataModel applicationDataModel2) {
-                        return applicationDataModel1.getName().compareTo(
-                                applicationDataModel2.getName());
-                    }
+        mApplicationList =
+                new SortedList<>(
+                        ApplicationDataModel.class,
+                        new SortedList.Callback<ApplicationDataModel>() {
+                            @Override
+                            public int compare(
+                                    ApplicationDataModel applicationDataModel1,
+                                    ApplicationDataModel applicationDataModel2) {
+                                return applicationDataModel1
+                                        .getName()
+                                        .compareTo(applicationDataModel2.getName());
+                            }
 
-                    @Override
-                    public void onChanged(int position, int count) {
-                        notifyItemRangeChanged(position, count);
-                    }
+                            @Override
+                            public void onChanged(int position, int count) {
+                                notifyItemRangeChanged(position, count);
+                            }
 
-                    @Override
-                    public boolean areContentsTheSame(
-                            ApplicationDataModel oldItem, ApplicationDataModel newItem) {
-                        return oldItem.getName().equals(newItem.getName());
-                    }
+                            @Override
+                            public boolean areContentsTheSame(
+                                    ApplicationDataModel oldItem, ApplicationDataModel newItem) {
+                                return oldItem.getName().equals(newItem.getName());
+                            }
 
-                    @Override
-                    public boolean areItemsTheSame(
-                            ApplicationDataModel item1, ApplicationDataModel item2) {
-                        return item1.getName().equals(item2.getName());
-                    }
+                            @Override
+                            public boolean areItemsTheSame(
+                                    ApplicationDataModel item1, ApplicationDataModel item2) {
+                                return item1.getName().equals(item2.getName());
+                            }
 
-                    @Override
-                    public void onInserted(int position, int count) {
-                        notifyItemRangeInserted(position, count);
-                    }
+                            @Override
+                            public void onInserted(int position, int count) {
+                                notifyItemRangeInserted(position, count);
+                            }
 
-                    @Override
-                    public void onRemoved(int position, int count) {
-                        notifyItemRangeRemoved(position, count);
-                    }
+                            @Override
+                            public void onRemoved(int position, int count) {
+                                notifyItemRangeRemoved(position, count);
+                            }
 
-                    @Override
-                    public void onMoved(int fromPosition, int toPosition) {
-                        notifyItemMoved(fromPosition, toPosition);
-                    }
-                });
+                            @Override
+                            public void onMoved(int fromPosition, int toPosition) {
+                                notifyItemMoved(fromPosition, toPosition);
+                            }
+                        });
         this.mOnApplicationClickListener = onApplicationClickListener;
         this.mIsExcludedApps = isExcludedApps;
     }
@@ -94,8 +98,9 @@ public class ApplicationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext())
-                                .inflate(R.layout.application_item_layout, parent, false);
+        View rootView =
+                LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.application_item_layout, parent, false);
         return new ApplicationDataViewHolder(rootView);
     }
 
@@ -108,9 +113,10 @@ public class ApplicationListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         viewHolder.mAppIcon.setImageDrawable(applicationDataModel.getIcon());
         viewHolder.mActionIcon.setImageResource(
                 mIsExcludedApps ? R.drawable.ic_baseline_close_24 : R.drawable.ic_baseline_add_24);
-        viewHolder.mActionIcon.setOnClickListener(view
-                -> mOnApplicationClickListener.onApplicationCLick(
-                        applicationDataModel, position, mIsExcludedApps));
+        viewHolder.mActionIcon.setOnClickListener(
+                view ->
+                        mOnApplicationClickListener.onApplicationCLick(
+                                applicationDataModel, position, mIsExcludedApps));
         setFadeAnimation(viewHolder.itemView);
     }
 

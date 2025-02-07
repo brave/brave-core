@@ -88,8 +88,10 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
 
     private void updateBottomControlsHeight(boolean bothBottomControlsVisible) {
         // Double the height if both bottom controls are visible
-        mBottomControlsHeight = bothBottomControlsVisible ? mBottomControlsHeightDouble
-                                                          : mBottomControlsHeightSingle;
+        mBottomControlsHeight =
+                bothBottomControlsVisible
+                        ? mBottomControlsHeightDouble
+                        : mBottomControlsHeightSingle;
     }
 
     private void updateYOffset() {

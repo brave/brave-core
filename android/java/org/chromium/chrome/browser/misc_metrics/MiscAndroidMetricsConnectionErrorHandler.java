@@ -8,13 +8,9 @@ package org.chromium.chrome.browser.misc_metrics;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
-/**
- * This is a handler for mojo connection failure for Privacy Hub Metrics
- */
+/** This is a handler for mojo connection failure for Privacy Hub Metrics */
 public class MiscAndroidMetricsConnectionErrorHandler implements ConnectionErrorHandler {
-    /**
-     *This is a delegate that is implemented in the object where the connection is created
-     */
+    /** This is a delegate that is implemented in the object where the connection is created */
     public interface MiscAndroidMetricsConnectionErrorHandlerDelegate {
         default void initMiscAndroidMetricsFromAWorkerThread() {}
 

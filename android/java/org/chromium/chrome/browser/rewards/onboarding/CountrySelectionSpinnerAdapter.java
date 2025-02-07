@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards.onboarding;
 
@@ -13,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+
 import java.util.Locale;
 
 public class CountrySelectionSpinnerAdapter extends ArrayAdapter<String> {
@@ -26,10 +26,11 @@ public class CountrySelectionSpinnerAdapter extends ArrayAdapter<String> {
         View view = super.getDropDownView(position, null, parent);
         TextView textViewName = view.findViewById(android.R.id.text1);
 
-        String defaultCountry = BraveRewardsNativeWorker.getInstance().getCountryCode() != null
-                ? new Locale("", BraveRewardsNativeWorker.getInstance().getCountryCode())
-                          .getDisplayCountry()
-                : null;
+        String defaultCountry =
+                BraveRewardsNativeWorker.getInstance().getCountryCode() != null
+                        ? new Locale("", BraveRewardsNativeWorker.getInstance().getCountryCode())
+                                .getDisplayCountry()
+                        : null;
         String currentItem = getItem(position);
         if (defaultCountry != null && currentItem.equals(defaultCountry)) {
             textViewName.setTypeface(textViewName.getTypeface(), Typeface.BOLD);

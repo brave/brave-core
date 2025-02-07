@@ -31,10 +31,11 @@ public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragmen
                 (BraveWebrtcPolicyPreference) findPreference(PREF_WEBRTC_POLICY);
         webrtcPolicyPreference.initialize(BravePrefServiceBridge.getInstance().getWebrtcPolicy());
 
-        webrtcPolicyPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            BravePrefServiceBridge.getInstance().setWebrtcPolicy((int) newValue);
-            return true;
-        });
+        webrtcPolicyPreference.setOnPreferenceChangeListener(
+                (preference, newValue) -> {
+                    BravePrefServiceBridge.getInstance().setWebrtcPolicy((int) newValue);
+                    return true;
+                });
     }
 
     @Override
@@ -47,7 +48,8 @@ public class BraveWebrtcPolicyPreferencesFragment extends BravePreferenceFragmen
         super.onActivityCreated(savedInstanceState);
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O_MR1) {
-            UiUtils.setNavigationBarIconColor(getActivity().getWindow().getDecorView(),
+            UiUtils.setNavigationBarIconColor(
+                    getActivity().getWindow().getDecorView(),
                     getResources().getBoolean(R.bool.window_light_navigation_bar));
         }
 

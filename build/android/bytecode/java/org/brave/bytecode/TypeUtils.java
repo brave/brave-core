@@ -13,12 +13,11 @@ import java.util.Map;
 /**
  * Utility methods for accessing {@link Type}s Strings.
  *
- * Useful definitions to keep in mind when using this class:
- * Internal name - The fully qualified name for a type with dots replaced by slashes. Not really
- * relevant for primitive types.
- * Type descriptor - Single letters for primitive types, "L" + internal name + ";" for class types.
+ * <p>Useful definitions to keep in mind when using this class: Internal name - The fully qualified
+ * name for a type with dots replaced by slashes. Not really relevant for primitive types. Type
+ * descriptor - Single letters for primitive types, "L" + internal name + ";" for class types.
  *
- * The methods in this class accept internal names or primitive type descriptors.
+ * <p>The methods in this class accept internal names or primitive type descriptors.
  */
 class TypeUtils {
     static final String ASSERTION_ERROR = "java/lang/AssertionError";
@@ -36,6 +35,7 @@ class TypeUtils {
     static final String INT = "I";
     static final String VOID = "V";
     private static final Map<String, Type> PRIMITIVE_DESCRIPTORS;
+
     static {
         PRIMITIVE_DESCRIPTORS = new HashMap<>();
         PRIMITIVE_DESCRIPTORS.put(Type.BOOLEAN_TYPE.toString(), Type.BOOLEAN_TYPE);

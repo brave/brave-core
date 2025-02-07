@@ -21,6 +21,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
         extends ScrollingBottomViewResourceFrameLayout implements View.OnLayoutChangeListener {
     /** A swipe recognizer for handling swipe gestures. */
     private SwipeGestureListener mSwipeGestureListener;
+
     private Supplier<BottomControlsCoordinator> mBottomControlsCoordinatorSupplier;
     private final CallbackController mCallbackController;
     View mBottomToolbar;
@@ -35,8 +36,10 @@ public class BraveScrollingBottomViewResourceFrameLayout
         public boolean shouldRecognizeSwipe(MotionEvent e1, MotionEvent e2) {
             int x = Math.round(e1.getX());
             int y = Math.round(e1.getY());
-            if (x > mBottomToolbar.getLeft() && x < mBottomToolbar.getRight()
-                    && y > mBottomToolbar.getTop() && y < mBottomToolbar.getBottom()) {
+            if (x > mBottomToolbar.getLeft()
+                    && x < mBottomToolbar.getRight()
+                    && y > mBottomToolbar.getTop()
+                    && y < mBottomToolbar.getBottom()) {
                 // Only handle swipe on bottom toolbar itself.
                 return true;
             }
@@ -67,6 +70,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
     /**
      * Set the swipe handler for this view and set {@link #isClickable()} to true to allow motion
      * events to be intercepted by the view itself.
+     *
      * @param handler A handler for swipe events on this view.
      */
     public void setSwipeDetector(SwipeHandler handler) {
@@ -101,32 +105,40 @@ public class BraveScrollingBottomViewResourceFrameLayout
             return;
         }
         mBottomControlsCoordinatorSupplier = bottomControlsCoordinatorSupplier;
-        braveBottomControlsCoordinator().getBottomToolbarVisibleSupplier().addObserver(
-                mCallbackController.makeCancelable((visible) -> {
-                    // Only make changes if visibility changed.
-                    if (mBottomToolbar != null
-                            && (mBottomToolbar.getVisibility()
-                                    != (visible ? View.VISIBLE : View.GONE))) {
-                        mBottomToolbar.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        triggerBitmapCapture(!visible);
-                    }
-                }));
-        braveBottomControlsCoordinator().getTabGroupUiVisibleSupplier().addObserver(
-                mCallbackController.makeCancelable((visible) -> {
-                    // Only make changes if visibility changed.
-                    if (mBottomContainerSlot != null
-                            && (mBottomContainerSlot.getVisibility()
-                                    != (visible ? View.VISIBLE : View.GONE))) {
-                        mBottomContainerSlot.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        triggerBitmapCapture(!visible);
-                    }
-                }));
+        braveBottomControlsCoordinator()
+                .getBottomToolbarVisibleSupplier()
+                .addObserver(
+                        mCallbackController.makeCancelable(
+                                (visible) -> {
+                                    // Only make changes if visibility changed.
+                                    if (mBottomToolbar != null
+                                            && (mBottomToolbar.getVisibility()
+                                                    != (visible ? View.VISIBLE : View.GONE))) {
+                                        mBottomToolbar.setVisibility(
+                                                visible ? View.VISIBLE : View.GONE);
+                                        triggerBitmapCapture(!visible);
+                                    }
+                                }));
+        braveBottomControlsCoordinator()
+                .getTabGroupUiVisibleSupplier()
+                .addObserver(
+                        mCallbackController.makeCancelable(
+                                (visible) -> {
+                                    // Only make changes if visibility changed.
+                                    if (mBottomContainerSlot != null
+                                            && (mBottomContainerSlot.getVisibility()
+                                                    != (visible ? View.VISIBLE : View.GONE))) {
+                                        mBottomContainerSlot.setVisibility(
+                                                visible ? View.VISIBLE : View.GONE);
+                                        triggerBitmapCapture(!visible);
+                                    }
+                                }));
     }
 
     private BraveBottomControlsCoordinator braveBottomControlsCoordinator() {
         if (mBottomControlsCoordinatorSupplier != null
                 && mBottomControlsCoordinatorSupplier.get()
-                                instanceof BraveBottomControlsCoordinator) {
+                        instanceof BraveBottomControlsCoordinator) {
             return (BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get();
         }
         return null;
@@ -137,8 +149,16 @@ public class BraveScrollingBottomViewResourceFrameLayout
     }
 
     @Override
-    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-            int oldTop, int oldRight, int oldBottom) {
+    public void onLayoutChange(
+            View v,
+            int left,
+            int top,
+            int right,
+            int bottom,
+            int oldLeft,
+            int oldTop,
+            int oldRight,
+            int oldBottom) {
         final int width = right - left;
         final int height = bottom - top;
         final int oldWidth = oldRight - oldLeft;
@@ -146,8 +166,9 @@ public class BraveScrollingBottomViewResourceFrameLayout
 
         if (width != oldWidth || height != oldHeight) {
             // We need to explicitly trigger bitmap capture when dimensions are changed.
-            getResourceAdapter().onLayoutChange(
-                    v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom);
+            getResourceAdapter()
+                    .onLayoutChange(
+                            v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom);
             triggerBitmapCapture(width < oldWidth || height < oldHeight);
         }
     }

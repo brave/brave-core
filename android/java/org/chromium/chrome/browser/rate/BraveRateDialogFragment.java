@@ -56,8 +56,9 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
         try {
-            BraveRateDialogFragment fragment = (BraveRateDialogFragment) manager.findFragmentByTag(
-                    BraveRateDialogFragment.TAG_FRAGMENT);
+            BraveRateDialogFragment fragment =
+                    (BraveRateDialogFragment)
+                            manager.findFragmentByTag(BraveRateDialogFragment.TAG_FRAGMENT);
             FragmentTransaction transaction = manager.beginTransaction();
             if (fragment != null) {
                 transaction.remove(fragment);
@@ -103,10 +104,11 @@ public class BraveRateDialogFragment extends BottomSheetDialogFragment {
 
     private void clickOnSadImageView(View view) {
         ImageView sadImageView = view.findViewById(R.id.sadImageView);
-        sadImageView.setOnClickListener((v) -> {
-            dismiss();
-            BraveRateThanksFeedbackDialog.showBraveRateThanksFeedbackDialog(
-                    (AppCompatActivity) getActivity());
-        });
+        sadImageView.setOnClickListener(
+                (v) -> {
+                    dismiss();
+                    BraveRateThanksFeedbackDialog.showBraveRateThanksFeedbackDialog(
+                            (AppCompatActivity) getActivity());
+                });
     }
 }

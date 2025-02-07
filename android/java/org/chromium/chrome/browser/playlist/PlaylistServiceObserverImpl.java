@@ -36,8 +36,14 @@ public class PlaylistServiceObserverImpl implements PlaylistServiceObserver {
         default void onPlaylistUpdated(Playlist list) {}
 
         default void onEvent(int event, String playlistId) {}
-        default void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
-                byte percentComplete, String timeRemaining) {}
+
+        default void onMediaFileDownloadProgressed(
+                String id,
+                long totalBytes,
+                long receivedBytes,
+                byte percentComplete,
+                String timeRemaining) {}
+
         default void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {}
     }
 

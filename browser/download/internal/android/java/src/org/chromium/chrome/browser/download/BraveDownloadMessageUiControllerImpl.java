@@ -23,7 +23,9 @@ public class BraveDownloadMessageUiControllerImpl {
             return false;
         }
 
-        return ContextUtils.getAppSharedPreferences().getBoolean(
-                BravePreferenceKeys.BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE, false);
+        return ContextUtils.getAppSharedPreferences()
+                .getBoolean(
+                        BravePreferenceKeys.BRAVE_DOWNLOADS_DOWNLOAD_PROGRESS_NOTIFICATION_BUBBLE,
+                        false);
     }
 }

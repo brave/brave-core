@@ -21,10 +21,13 @@ public interface BraveToolbarLayout {
 
     public void updateModernLocationBarColorImpl(int color);
 
-    public void populateUrlAnimatorSetImpl(boolean showExpandedState,
-            int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
+    public void populateUrlAnimatorSetImpl(
+            boolean showExpandedState,
+            int urlFocusToolbarButtonsDuration,
+            int urlClearFocusTabStackDelayMs,
             List<Animator> animators);
 
     public boolean isLocationBarValid(LocationBarCoordinator locationBar);
+
     public void drawAnimationOverlay(ViewGroup toolbarButtonsContainer, Canvas canvas);
 }

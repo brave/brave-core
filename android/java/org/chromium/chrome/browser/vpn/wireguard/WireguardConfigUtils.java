@@ -20,8 +20,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class WireguardConfigUtils {
-    public static Config createConfig(Context context, String address, String host,
-            String clientPrivateKey, String serverPublicKey)
+    public static Config createConfig(
+            Context context,
+            String address,
+            String host,
+            String clientPrivateKey,
+            String serverPublicKey)
             throws IOException, BadConfigException {
         File file = fileForConfig(context);
         if (!file.createNewFile()) {
@@ -44,10 +48,11 @@ public class WireguardConfigUtils {
             throw new IOException("Configuration file already exists");
         }
         FileOutputStream fileOutputStream = new FileOutputStream(file, false);
-        Config config = new Config.Builder()
-                                .setInterface(getInterface(existingConfig.getInterface()))
-                                .addPeers(existingConfig.getPeers())
-                                .build();
+        Config config =
+                new Config.Builder()
+                        .setInterface(getInterface(existingConfig.getInterface()))
+                        .addPeers(existingConfig.getPeers())
+                        .build();
         fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
         return config;
     }

@@ -34,7 +34,7 @@ class SearchAccelerator extends ChromeImageButton
     /** The {@link Context} used to compute the background color. */
     private final Context mContext;
 
-    /** A provider that notifies components when the theme color changes.*/
+    /** A provider that notifies components when the theme color changes. */
     private ThemeColorProvider mThemeColorProvider;
 
     /** A provider that notifies when incognito mode is entered or exited. */

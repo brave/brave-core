@@ -19,9 +19,7 @@ import org.chromium.components.external_intents.ExternalNavigationHandler.Overri
 import org.chromium.components.external_intents.ExternalNavigationParams;
 import org.chromium.url.GURL;
 
-/**
- * Extends Chromium's ExternalNavigationHandler
- */
+/** Extends Chromium's ExternalNavigationHandler */
 public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
     private static final String TAG = "BraveUrlHandler";
 

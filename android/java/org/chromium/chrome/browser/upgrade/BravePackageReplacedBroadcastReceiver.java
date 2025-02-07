@@ -16,10 +16,9 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 
 /**
- * Triggered when Brave's package is replaced (e.g. when it is
- * upgraded).
+ * Triggered when Brave's package is replaced (e.g. when it is upgraded).
  *
- * See important lifecycle notes in PackageReplacedBroadcastReceiver.
+ * <p>See important lifecycle notes in PackageReplacedBroadcastReceiver.
  */
 public final class BravePackageReplacedBroadcastReceiver extends BroadcastReceiver {
     @Override
@@ -31,8 +30,8 @@ public final class BravePackageReplacedBroadcastReceiver extends BroadcastReceiv
                     .writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, 0);
             // Set dormant users notifications
             if (OnboardingPrefManager.getInstance().isDormantUsersEngagementEnabled()
-                    || context.getPackageName().equals(
-                            BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
+                    || context.getPackageName()
+                            .equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
                 OnboardingPrefManager.getInstance().setDormantUsersPrefs();
                 if (!OnboardingPrefManager.getInstance().isDormantUsersNotificationsStarted()) {
                     RetentionNotificationUtil.scheduleDormantUsersNotifications(context);

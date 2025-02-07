@@ -7,5 +7,6 @@ package org.chromium.chrome.browser.app.domain;
 
 public interface CryptoSharedActions {
     void updateCoinType();
+
     void onNewAccountAdded();
 }

@@ -494,9 +494,10 @@ public class BraveToolbarManager extends ToolbarManager {
     }
 
     private void updateBottomToolbarVisibility() {
-        boolean isBottomToolbarVisible = BottomToolbarConfiguration.isBottomToolbarEnabled()
-                && mActivity.getResources().getConfiguration().orientation
-                        != Configuration.ORIENTATION_LANDSCAPE;
+        boolean isBottomToolbarVisible =
+                BottomToolbarConfiguration.isBottomToolbarEnabled()
+                        && mActivity.getResources().getConfiguration().orientation
+                                != Configuration.ORIENTATION_LANDSCAPE;
         setBottomToolbarVisible(isBottomToolbarVisible);
     }
 

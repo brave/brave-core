@@ -10,9 +10,7 @@ import org.jni_zero.NativeMethods;
 
 import org.chromium.components.prefs.PrefService;
 
-/**
- * Helper for retrieving a {@link PrefService} from a browser local state.
- */
+/** Helper for retrieving a {@link PrefService} from a browser local state. */
 @JNINamespace("chrome::android")
 public class BraveLocalState {
     /** Returns the {@link PrefService} associated with the browser's local state */

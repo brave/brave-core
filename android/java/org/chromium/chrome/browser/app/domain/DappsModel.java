@@ -51,8 +51,11 @@ public class DappsModel implements KeyringServiceObserver {
     public final LiveData<BraveWalletDAppsActivity.ActivityType> mProcessNextDAppsRequest =
             _mProcessNextDAppsRequest;
 
-    public DappsModel(JsonRpcService jsonRpcService, BraveWalletService braveWalletService,
-            KeyringService keyringService, PendingTxHelper pendingTxHelper) {
+    public DappsModel(
+            JsonRpcService jsonRpcService,
+            BraveWalletService braveWalletService,
+            KeyringService keyringService,
+            PendingTxHelper pendingTxHelper) {
         mBraveWalletService = braveWalletService;
         mJsonRpcService = jsonRpcService;
         mKeyringService = keyringService;
@@ -65,7 +68,8 @@ public class DappsModel implements KeyringServiceObserver {
         mKeyringService.addObserver(this);
     }
 
-    public void fetchAccountsForConnectionReq(@CoinType.EnumType int coinType,
+    public void fetchAccountsForConnectionReq(
+            @CoinType.EnumType int coinType,
             Callbacks.Callback1<Pair<AccountInfo, List<AccountInfo>>> callback) {
         if (coinType != CoinType.ETH && coinType != CoinType.SOL) {
             callback.call(new Pair<>(null, Collections.emptyList()));
@@ -132,15 +136,17 @@ public class DappsModel implements KeyringServiceObserver {
                 return;
             }
             mBraveWalletService.notifyGetPublicKeyRequestProcessed(requestId, isApproved);
-            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-                if (requests != null && requests.length > 0) {
-                    _mProcessNextDAppsRequest.postValue(BraveWalletDAppsActivity.ActivityType
-                                                                .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
-                } else {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.FINISH);
-                }
-            });
+            mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
+                    requests -> {
+                        if (requests != null && requests.length > 0) {
+                            _mProcessNextDAppsRequest.postValue(
+                                    BraveWalletDAppsActivity.ActivityType
+                                            .GET_ENCRYPTION_PUBLIC_KEY_REQUEST);
+                        } else {
+                            _mProcessNextDAppsRequest.postValue(
+                                    BraveWalletDAppsActivity.ActivityType.FINISH);
+                        }
+                    });
         }
     }
 
@@ -150,15 +156,16 @@ public class DappsModel implements KeyringServiceObserver {
                 return;
             }
             mBraveWalletService.notifyDecryptRequestProcessed(requestId, isApproved);
-            mBraveWalletService.getPendingDecryptRequests(requests -> {
-                if (requests != null && requests.length > 0) {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
-                } else {
-                    _mProcessNextDAppsRequest.postValue(
-                            BraveWalletDAppsActivity.ActivityType.FINISH);
-                }
-            });
+            mBraveWalletService.getPendingDecryptRequests(
+                    requests -> {
+                        if (requests != null && requests.length > 0) {
+                            _mProcessNextDAppsRequest.postValue(
+                                    BraveWalletDAppsActivity.ActivityType.DECRYPT_REQUEST);
+                        } else {
+                            _mProcessNextDAppsRequest.postValue(
+                                    BraveWalletDAppsActivity.ActivityType.FINISH);
+                        }
+                    });
         }
     }
 
@@ -171,7 +178,8 @@ public class DappsModel implements KeyringServiceObserver {
     }
 
     public void addAccountCreationRequest(@CoinType.EnumType int coinType) {
-        Utils.removeIf(mPendingWalletAccountCreationRequests,
+        Utils.removeIf(
+                mPendingWalletAccountCreationRequests,
                 request -> request.getCoinType() == coinType);
         WalletAccountCreationRequest request = new WalletAccountCreationRequest(coinType);
         mPendingWalletAccountCreationRequests.add(request);
@@ -180,7 +188,8 @@ public class DappsModel implements KeyringServiceObserver {
 
     public void removeProcessedAccountCreationRequest(WalletAccountCreationRequest request) {
         if (request == null) return;
-        Utils.removeIf(mPendingWalletAccountCreationRequests,
+        Utils.removeIf(
+                mPendingWalletAccountCreationRequests,
                 input -> input.getCoinType() == request.getCoinType());
         updatePendingAccountCreationRequest();
     }

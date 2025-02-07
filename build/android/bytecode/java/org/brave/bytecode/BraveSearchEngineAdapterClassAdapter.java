@@ -32,10 +32,14 @@ public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
         super(visitor);
         changeSuperName(sSearchEngineAdapterClassName, sBraveBaseSearchEngineAdapterClassName);
 
-        changeMethodOwner(sSearchEngineAdapterClassName, sMethodGetSearchEngineSourceType,
+        changeMethodOwner(
+                sSearchEngineAdapterClassName,
+                sMethodGetSearchEngineSourceType,
                 sBraveBaseSearchEngineAdapterClassName);
 
-        changeMethodOwner(sSearchEngineAdapterClassName, sMethodSortAndFilterUnnecessaryTemplateUrl,
+        changeMethodOwner(
+                sSearchEngineAdapterClassName,
+                sMethodSortAndFilterUnnecessaryTemplateUrl,
                 sBraveBaseSearchEngineAdapterClassName);
 
         deleteField(sBraveSearchEngineAdapterClassName, "mProfile");

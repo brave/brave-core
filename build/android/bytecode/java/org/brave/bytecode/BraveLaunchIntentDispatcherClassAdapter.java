@@ -8,11 +8,16 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveLaunchIntentDispatcherClassAdapter extends BraveClassVisitor {
-    static String sLaunchIntentDispatcherClassName = "org/chromium/chrome/browser/LaunchIntentDispatcher";
-    static String sBraveLaunchIntentDispatcherClassName = "org/chromium/chrome/browser/BraveLaunchIntentDispatcher";
+    static String sLaunchIntentDispatcherClassName =
+            "org/chromium/chrome/browser/LaunchIntentDispatcher";
+    static String sBraveLaunchIntentDispatcherClassName =
+            "org/chromium/chrome/browser/BraveLaunchIntentDispatcher";
 
     public BraveLaunchIntentDispatcherClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeMethodOwner(sLaunchIntentDispatcherClassName, "isCustomTabIntent", sBraveLaunchIntentDispatcherClassName);
+        changeMethodOwner(
+                sLaunchIntentDispatcherClassName,
+                "isCustomTabIntent",
+                sBraveLaunchIntentDispatcherClassName);
     }
 }

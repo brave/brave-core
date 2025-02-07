@@ -35,19 +35,15 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 
-/**
- * The preference used to reset Brave Wallet.
- */
-public class BraveWalletResetPreference
-        extends Preference implements Preference.OnPreferenceClickListener {
+/** The preference used to reset Brave Wallet. */
+public class BraveWalletResetPreference extends Preference
+        implements Preference.OnPreferenceClickListener {
     private static final String TAG = "BraveWalletResetPref";
 
     private int mPrefAccentColor;
     private final String mConfirmationPhrase;
 
-    /**
-     * Constructor for BraveWalletResetPreference.
-     */
+    /** Constructor for BraveWalletResetPreference. */
     public BraveWalletResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -78,8 +74,11 @@ public class BraveWalletResetPreference
         final TextView textView = (TextView) view.findViewById(R.id.brave_wallet_reset_textview);
         final EditText input = (EditText) view.findViewById(R.id.brave_wallet_reset_edittext);
 
-        textView.setText(getContext().getString(
-                R.string.brave_wallet_reset_settings_confirmation, mConfirmationPhrase));
+        textView.setText(
+                getContext()
+                        .getString(
+                                R.string.brave_wallet_reset_settings_confirmation,
+                                mConfirmationPhrase));
 
         DialogInterface.OnClickListener onClickListener =
                 (dialog, button) -> {
@@ -115,31 +114,34 @@ public class BraveWalletResetPreference
                         .setNegativeButton(R.string.cancel, onClickListener)
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                KeyboardVisibilityDelegate.getInstance().showKeyboard(input);
-            }
-        });
+        alertDialog.setOnShowListener(
+                new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        KeyboardVisibilityDelegate.getInstance().showKeyboard(input);
+                    }
+                });
         alertDialog.show();
         final Button okButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
         okButton.setEnabled(false);
 
-        input.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {}
+        input.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {}
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence s, int start, int count, int after) {}
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Disable ok button if input is invalid
-                String inputText = s.toString().trim();
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        // Disable ok button if input is invalid
+                        String inputText = s.toString().trim();
 
-                okButton.setEnabled(TextUtils.equals(inputText, mConfirmationPhrase));
-            }
-        });
+                        okButton.setEnabled(TextUtils.equals(inputText, mConfirmationPhrase));
+                    }
+                });
     }
 
     private void launchBraveTabbedActivity() {

@@ -1,9 +1,9 @@
 /*
-  Copyright (c) 2022 The Brave Authors. All rights reserved.
-  This Source Code Form is subject to the terms of the Mozilla Public
-  License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ Copyright (c) 2022 The Brave Authors. All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ You can obtain one at https://mozilla.org/MPL/2.0/.
+*/
 
 package org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils;
 
@@ -31,41 +31,47 @@ public class BraveSearchWidgetUtils {
     public static boolean getShouldShowWidgetPromo(Context context) {
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         boolean hasQuickActionSearchBookmarkWidget =
-                manager.getAppWidgetIds(new ComponentName(context,
+                manager.getAppWidgetIds(
+                                        new ComponentName(
+                                                context,
                                                 QuickActionSearchAndBookmarkWidgetProvider.class))
-                        .length
-                > 0;
+                                .length
+                        > 0;
 
         if (hasQuickActionSearchBookmarkWidget) return false;
 
         boolean hasQuickActionSearchWidget =
-                manager.getAppWidgetIds(new ComponentName(context,
+                manager.getAppWidgetIds(
+                                        new ComponentName(
+                                                context,
                                                 QuickActionSearchWidgetProviderSearch.class))
-                        .length
-                > 0;
+                                .length
+                        > 0;
 
         if (hasQuickActionSearchWidget) return false;
 
         boolean hasQuickActionSearchWidgetDino =
-                manager.getAppWidgetIds(new ComponentName(
+                manager.getAppWidgetIds(
+                                        new ComponentName(
                                                 context, QuickActionSearchWidgetProviderDino.class))
-                        .length
-                > 0;
+                                .length
+                        > 0;
 
         if (hasQuickActionSearchWidgetDino) return false;
 
         boolean hasSearchWidget =
                 manager.getAppWidgetIds(new ComponentName(context, SearchWidgetProvider.class))
-                        .length
-                > 0;
+                                .length
+                        > 0;
 
         if (hasSearchWidget) return false;
 
         boolean hasBookmarkThumbnailWidget =
                 manager.getAppWidgetIds(
-                               new ComponentName(context, BookmarkThumbnailWidgetProvider.class))
-                        .length
-                > 0;
+                                        new ComponentName(
+                                                context, BookmarkThumbnailWidgetProvider.class))
+                                .length
+                        > 0;
 
         if (hasBookmarkThumbnailWidget) return false;
 
@@ -80,7 +86,8 @@ public class BraveSearchWidgetUtils {
     public static boolean isRequestPinAppWidgetSupported() {
         AppWidgetManager appWidgetManager =
                 ContextUtils.getApplicationContext().getSystemService(AppWidgetManager.class);
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && appWidgetManager != null
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && appWidgetManager != null
                 && appWidgetManager.isRequestPinAppWidgetSupported();
     }
 
@@ -99,7 +106,10 @@ public class BraveSearchWidgetUtils {
                         new Intent(context, QuickActionSearchAndBookmarkWidgetProvider.class);
                 pinnedWidgetCallbackIntent.putExtras(bundle);
                 PendingIntent successCallback =
-                        PendingIntent.getBroadcast(context, 0, pinnedWidgetCallbackIntent,
+                        PendingIntent.getBroadcast(
+                                context,
+                                0,
+                                pinnedWidgetCallbackIntent,
                                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
                 appWidgetManager.requestPinAppWidget(appWidgetProvider, null, successCallback);

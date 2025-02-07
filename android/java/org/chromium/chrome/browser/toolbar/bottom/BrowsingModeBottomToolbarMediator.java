@@ -20,13 +20,14 @@ class BrowsingModeBottomToolbarMediator implements ThemeColorObserver {
     /** The model for the browsing mode bottom toolbar that holds all of its state. */
     private final BrowsingModeBottomToolbarModel mModel;
 
-    /** A provider that notifies components when the theme color changes.*/
+    /** A provider that notifies components when the theme color changes. */
     private ThemeColorProvider mThemeColorProvider;
 
     /**
      * Build a new mediator that handles events from outside the bottom toolbar.
+     *
      * @param model The {@link BrowsingModeBottomToolbarModel} that holds all the state for the
-     *              browsing mode  bottom toolbar.
+     *     browsing mode bottom toolbar.
      */
     BrowsingModeBottomToolbarMediator(BrowsingModeBottomToolbarModel model) {
         mModel = model;
@@ -37,9 +38,7 @@ class BrowsingModeBottomToolbarMediator implements ThemeColorObserver {
         mThemeColorProvider.addThemeColorObserver(this);
     }
 
-    /**
-     * Clean up anything that needs to be when the bottom toolbar is destroyed.
-     */
+    /** Clean up anything that needs to be when the bottom toolbar is destroyed. */
     void destroy() {
         if (mThemeColorProvider != null) {
             mThemeColorProvider.removeThemeColorObserver(this);

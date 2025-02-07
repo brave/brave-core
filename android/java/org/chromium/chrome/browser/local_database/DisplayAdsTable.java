@@ -19,13 +19,29 @@ public class DisplayAdsTable {
     public static final String COLUMN_AD_IMAGE = "ad_image";
 
     // Create table SQL query
-    public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME
-            + "( ID INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_UUID + " TEXT,"
-            + COLUMN_CREATIVE_INSTANCE_ID + " TEXT," + COLUMN_POSITION + " INT," + COLUMN_TAB_ID
-            + " INT," + COLUMN_AD_TITLE + " TEXT," + COLUMN_AD_DESCRIPTION + " TEXT,"
-            + COLUMN_AD_CTA_TEXT + " TEXT," + COLUMN_AD_CTA_LINK + " TEXT," + COLUMN_AD_IMAGE
-            + " TEXT"
-            + ")";
+    public static final String CREATE_TABLE =
+            "CREATE TABLE IF NOT EXISTS "
+                    + TABLE_NAME
+                    + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_UUID
+                    + " TEXT,"
+                    + COLUMN_CREATIVE_INSTANCE_ID
+                    + " TEXT,"
+                    + COLUMN_POSITION
+                    + " INT,"
+                    + COLUMN_TAB_ID
+                    + " INT,"
+                    + COLUMN_AD_TITLE
+                    + " TEXT,"
+                    + COLUMN_AD_DESCRIPTION
+                    + " TEXT,"
+                    + COLUMN_AD_CTA_TEXT
+                    + " TEXT,"
+                    + COLUMN_AD_CTA_LINK
+                    + " TEXT,"
+                    + COLUMN_AD_IMAGE
+                    + " TEXT"
+                    + ")";
 
     public DisplayAdsTable() {}
 
@@ -39,8 +55,14 @@ public class DisplayAdsTable {
     private String mAdCtaLink;
     private String mAdImage;
 
-    public DisplayAdsTable(String creativeInstanceId, int position, int tabId, String adTitle,
-            String adCtaText, String adCtaLink, String adImage) {
+    public DisplayAdsTable(
+            String creativeInstanceId,
+            int position,
+            int tabId,
+            String adTitle,
+            String adCtaText,
+            String adCtaLink,
+            String adImage) {
         mCreativeInstanceId = creativeInstanceId;
         mPosition = position;
         mTabId = tabId;
@@ -50,8 +72,15 @@ public class DisplayAdsTable {
         mAdImage = adImage;
     }
 
-    public DisplayAdsTable(String uuid, String creativeInstanceId, int position, int tabId,
-            String adTitle, String adDescription, String adCtaText, String adCtaLink,
+    public DisplayAdsTable(
+            String uuid,
+            String creativeInstanceId,
+            int position,
+            int tabId,
+            String adTitle,
+            String adDescription,
+            String adCtaText,
+            String adCtaLink,
             String adImage) {
         mUuid = uuid;
         mCreativeInstanceId = creativeInstanceId;

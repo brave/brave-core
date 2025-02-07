@@ -11,9 +11,9 @@ import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorObserver;
 
 /**
- *  Set proper active default search engine(DSE) provider when current TabModel is changed.
- *  Whenever current TabModel is changed, we should set appropriate DSE because
- *  we use different DSE for normal and private tab.
+ * Set proper active default search engine(DSE) provider when current TabModel is changed. Whenever
+ * current TabModel is changed, we should set appropriate DSE because we use different DSE for
+ * normal and private tab.
  */
 public class SearchEngineTabModelSelectorObserver implements TabModelSelectorObserver {
     public SearchEngineTabModelSelectorObserver() {}

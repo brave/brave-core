@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
@@ -61,19 +59,23 @@ public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
         mConfettiImageView = view.findViewById(R.id.confetti_imageview);
 
         Button btnVideos = view.findViewById(R.id.btn_videos);
-        btnVideos.setOnClickListener(button -> {
-            try {
-                BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                braveActivity.focusSearchBox();
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "onViewCreated btnVideos click " + e);
-            }
+        btnVideos.setOnClickListener(
+                button -> {
+                    try {
+                        BraveActivity braveActivity = BraveActivity.getBraveActivity();
+                        braveActivity.focusSearchBox();
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
+                        Log.e(TAG, "onViewCreated btnVideos click " + e);
+                    }
 
-            dismiss();
-        });
+                    dismiss();
+                });
 
         ImageView cancelImageView = view.findViewById(R.id.cancel_imageview);
-        cancelImageView.setOnClickListener(button -> { dismiss(); });
+        cancelImageView.setOnClickListener(
+                button -> {
+                    dismiss();
+                });
     }
 
     private void checkForImageView() {

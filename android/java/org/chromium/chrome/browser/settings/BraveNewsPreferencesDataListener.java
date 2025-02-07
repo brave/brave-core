@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.settings;
 
 public interface BraveNewsPreferencesDataListener {
     void onChannelReceived();
+
     void onPublisherReceived();
+
     void onSuggestionsReceived();
 }

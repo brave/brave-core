@@ -1,4 +1,3 @@
-
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -110,8 +109,11 @@ public class RateFeedbackUtils {
 
             int HttpResult = urlConnection.getResponseCode();
             if (HttpResult == HttpURLConnection.HTTP_OK) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(
-                        urlConnection.getInputStream(), StandardCharsets.UTF_8.name()));
+                BufferedReader br =
+                        new BufferedReader(
+                                new InputStreamReader(
+                                        urlConnection.getInputStream(),
+                                        StandardCharsets.UTF_8.name()));
                 String line = null;
                 while ((line = br.readLine()) != null) {
                     sb.append(line + "\n");

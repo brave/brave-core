@@ -5,14 +5,13 @@
 
 package org.chromium.chrome.browser.shields;
 
-/**
- * Allows monitoring of brave shields menu actions.
- */
+/** Allows monitoring of brave shields menu actions. */
 public interface BraveShieldsMenuObserver {
-	/**
-	 * Informs when the any of BraveShields Menu switch changes.
-	 * @param isOn Whether shield is on.
-	 * @param isTopShield Whether it is a top shield or not.
-	 */
-	public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield);
+    /**
+     * Informs when the any of BraveShields Menu switch changes.
+     *
+     * @param isOn Whether shield is on.
+     * @param isTopShield Whether it is a top shield or not.
+     */
+    public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield);
 }

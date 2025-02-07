@@ -13,9 +13,7 @@ import androidx.preference.PreferenceViewHolder;
 
 import org.chromium.components.browser_ui.settings.TextMessagePreference;
 
-/**
- * A preference that displays license text.
- */
+/** A preference that displays license text. */
 public class BraveLicensePreference extends TextMessagePreference {
     public BraveLicensePreference(Context context, AttributeSet attrs) {
         super(context, attrs);

@@ -69,13 +69,14 @@ public class BraveSafeBrowsingApiHandler implements SafeBrowsingApiHandler {
         return sInstance;
     }
 
-    public void setDelegate(String apiKey,
+    public void setDelegate(
+            String apiKey,
             BraveSafeBrowsingApiHandlerDelegate braveSafeBrowsingApiHandlerDelegate) {
         mApiKey = apiKey;
         mTriesCount = 0;
         mBraveSafeBrowsingApiHandlerDelegate = braveSafeBrowsingApiHandlerDelegate;
-        assert mBraveSafeBrowsingApiHandlerDelegate
-                != null : "BraveSafeBrowsingApiHandlerDelegate has to be initialized";
+        assert mBraveSafeBrowsingApiHandlerDelegate != null
+                : "BraveSafeBrowsingApiHandlerDelegate has to be initialized";
     }
 
     private void resetDelegate() {

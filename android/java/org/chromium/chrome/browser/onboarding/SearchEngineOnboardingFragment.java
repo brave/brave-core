@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.onboarding;
 
@@ -94,40 +92,55 @@ public class SearchEngineOnboardingFragment extends Fragment {
         for (TemplateUrl templateUrl : templateUrls) {
             if (templateUrl.getIsPrepopulated()
                     && OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName())
-                    != null) {
+                            != null) {
                 SearchEngineEnum searchEngineEnum =
-                    OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
+                        OnboardingPrefManager.searchEngineMap.get(templateUrl.getShortName());
 
                 String title = templateUrl.getShortName();
                 String desc = getActivity().getResources().getString(searchEngineEnum.getDesc());
 
                 SpannableString searchTextSpan =
                         new SpannableString(String.format(searchSpanText, title, desc));
-                searchTextSpan.setSpan(new AbsoluteSizeSpan(16, true), 0, title.length(),
+                searchTextSpan.setSpan(
+                        new AbsoluteSizeSpan(16, true),
+                        0,
+                        title.length(),
                         SPAN_EXCLUSIVE_EXCLUSIVE);
                 searchTextSpan.setSpan(
-                        new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0,
-                        title.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
-                searchTextSpan.setSpan(new AbsoluteSizeSpan(12, true), title.length() + 1,
-                        searchTextSpan.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+                        new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                        0,
+                        title.length(),
+                        SPAN_EXCLUSIVE_EXCLUSIVE);
+                searchTextSpan.setSpan(
+                        new AbsoluteSizeSpan(12, true),
+                        title.length() + 1,
+                        searchTextSpan.length(),
+                        SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 RadioButton rdBtn = new RadioButton(getActivity());
                 rdBtn.setId(searchEngineEnum.getId());
-                RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
-                        RadioGroup.LayoutParams.MATCH_PARENT, dpToPx(getActivity(), 64));
+                RadioGroup.LayoutParams params =
+                        new RadioGroup.LayoutParams(
+                                RadioGroup.LayoutParams.MATCH_PARENT, dpToPx(getActivity(), 64));
                 params.setMargins(0, dpToPx(getActivity(), 6), 0, 0);
                 rdBtn.setLayoutParams(params);
                 rdBtn.setButtonDrawable(null);
                 rdBtn.setPadding(dpToPx(getActivity(), 30), 0, 0, 0);
                 rdBtn.setTextColor(getActivity().getColor(R.color.onboarding_text_color));
                 rdBtn.setBackgroundDrawable(
-                        ResourcesCompat.getDrawable(getActivity().getResources(),
-                                R.drawable.radiobutton_background, /* theme= */ null));
+                        ResourcesCompat.getDrawable(
+                                getActivity().getResources(),
+                                R.drawable.radiobutton_background,
+                                /* theme= */ null));
                 rdBtn.setText(searchTextSpan);
                 rdBtn.setCompoundDrawablesWithIntrinsicBounds(
-                        ResourcesCompat.getDrawable(getActivity().getResources(),
-                                searchEngineEnum.getIcon(), /* theme= */ null),
-                        null, null, null);
+                        ResourcesCompat.getDrawable(
+                                getActivity().getResources(),
+                                searchEngineEnum.getIcon(),
+                                /* theme= */ null),
+                        null,
+                        null,
+                        null);
                 rdBtn.setCompoundDrawablePadding(dpToPx(getActivity(), 16));
                 radioGroup.addView(rdBtn);
             }
@@ -135,19 +148,21 @@ public class SearchEngineOnboardingFragment extends Fragment {
 
         if (defaultSearchEngineTemplateUrl != null
                 && OnboardingPrefManager.searchEngineMap.get(
-                    defaultSearchEngineTemplateUrl.getShortName())
-                != null)
-            radioGroup.check(OnboardingPrefManager.searchEngineMap
-                             .get(defaultSearchEngineTemplateUrl.getShortName())
-                             .getId());
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                View radioButton = radioGroup.findViewById(i);
-                int index = radioGroup.indexOfChild(radioButton);
-                searchEngineSelected(index, templateUrls);
-            }
-        });
+                                defaultSearchEngineTemplateUrl.getShortName())
+                        != null)
+            radioGroup.check(
+                    OnboardingPrefManager.searchEngineMap
+                            .get(defaultSearchEngineTemplateUrl.getShortName())
+                            .getId());
+        radioGroup.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                        View radioButton = radioGroup.findViewById(i);
+                        int index = radioGroup.indexOfChild(radioButton);
+                        searchEngineSelected(index, templateUrls);
+                    }
+                });
     }
 
     private void initializeViews(View root) {

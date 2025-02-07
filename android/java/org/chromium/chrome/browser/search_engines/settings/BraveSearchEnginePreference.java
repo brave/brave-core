@@ -25,8 +25,11 @@ public class BraveSearchEnginePreference extends SearchEngineSettings {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().setTitle(mPrivate ? R.string.prefs_private_search_engine
-                                        : R.string.prefs_standard_search_engine);
+        getActivity()
+                .setTitle(
+                        mPrivate
+                                ? R.string.prefs_private_search_engine
+                                : R.string.prefs_standard_search_engine);
     }
 
     public void createAdapterIfNecessary() {

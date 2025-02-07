@@ -13,11 +13,10 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
 /**
- * A ClassVisitor which adds calls to
- * {@link org.chromium.base.ThreadUtils}'s assertOnUiThread/assertOnBackgroundThread when the
- * corresponding {@link androidx.annotation.UiThread} or
- * {@link androidx.annotation.WorkerThread} annotations are present. The function calls
- * are placed at the start of the method.
+ * A ClassVisitor which adds calls to {@link org.chromium.base.ThreadUtils}'s
+ * assertOnUiThread/assertOnBackgroundThread when the corresponding {@link
+ * androidx.annotation.UiThread} or {@link androidx.annotation.WorkerThread} annotations are
+ * present. The function calls are placed at the start of the method.
  */
 class ThreadAssertionClassAdapter extends ClassVisitor {
     private static final String THREAD_UTILS_DESCRIPTOR = "org/chromium/base/ThreadUtils";
@@ -32,8 +31,12 @@ class ThreadAssertionClassAdapter extends ClassVisitor {
     }
 
     @Override
-    public MethodVisitor visitMethod(final int access, final String name, String desc,
-            String signature, String[] exceptions) {
+    public MethodVisitor visitMethod(
+            final int access,
+            final String name,
+            String desc,
+            String signature,
+            String[] exceptions) {
         return new AddAssertMethodVisitor(
                 super.visitMethod(access, name, desc, signature, exceptions));
     }
@@ -76,8 +79,12 @@ class ThreadAssertionClassAdapter extends ClassVisitor {
         public void visitCode() {
             super.visitCode();
             if (!mAssertMethodName.equals("")) {
-                visitMethodInsn(INVOKESTATIC, THREAD_UTILS_DESCRIPTOR, mAssertMethodName,
-                        THREAD_UTILS_SIGNATURE, false);
+                visitMethodInsn(
+                        INVOKESTATIC,
+                        THREAD_UTILS_DESCRIPTOR,
+                        mAssertMethodName,
+                        THREAD_UTILS_SIGNATURE,
+                        false);
             }
         }
     }

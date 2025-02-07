@@ -84,11 +84,12 @@ public class KeyringModel implements KeyringServiceObserver {
             if (mKeyringService == null) {
                 return;
             }
-            mKeyringService.getAllAccounts(allAccounts -> {
-                _mAllAccountsInfo.postValue(allAccounts);
-                _mAccountInfos.postValue(Arrays.asList(allAccounts.accounts));
-                _mSelectedAccount.postValue(allAccounts.selectedAccount);
-            });
+            mKeyringService.getAllAccounts(
+                    allAccounts -> {
+                        _mAllAccountsInfo.postValue(allAccounts);
+                        _mAccountInfos.postValue(Arrays.asList(allAccounts.accounts));
+                        _mSelectedAccount.postValue(allAccounts.selectedAccount);
+                    });
         }
     }
 
@@ -103,8 +104,11 @@ public class KeyringModel implements KeyringServiceObserver {
                 return;
             }
 
-            mKeyringService.setSelectedAccount(accountInfoToSelect.accountId,
-                    isAccountSelected -> { mCryptoSharedActions.updateCoinType(); });
+            mKeyringService.setSelectedAccount(
+                    accountInfoToSelect.accountId,
+                    isAccountSelected -> {
+                        mCryptoSharedActions.updateCoinType();
+                    });
         }
     }
 
@@ -119,7 +123,10 @@ public class KeyringModel implements KeyringServiceObserver {
     }
 
     public void getAccounts(Callbacks.Callback1<AccountInfo[]> callback1) {
-        mKeyringService.getAllAccounts(allAccounts -> { callback1.call(allAccounts.accounts); });
+        mKeyringService.getAllAccounts(
+                allAccounts -> {
+                    callback1.call(allAccounts.accounts);
+                });
     }
 
     public void isWalletCreated(@NonNull final KeyringService.IsWalletCreated_Response callback) {

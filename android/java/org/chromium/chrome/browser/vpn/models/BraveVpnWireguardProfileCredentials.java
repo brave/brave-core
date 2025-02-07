@@ -12,8 +12,12 @@ public class BraveVpnWireguardProfileCredentials {
     private String mMappedIpv6Address;
     private String mServerPublicKey;
 
-    public BraveVpnWireguardProfileCredentials(String apiAuthToken, String clientId,
-            String mappedIpv4Address, String mappedIpv6Address, String serverPublicKey) {
+    public BraveVpnWireguardProfileCredentials(
+            String apiAuthToken,
+            String clientId,
+            String mappedIpv4Address,
+            String mappedIpv6Address,
+            String serverPublicKey) {
         this.mApiAuthToken = apiAuthToken;
         this.mClientId = clientId;
         this.mMappedIpv4Address = mappedIpv4Address;

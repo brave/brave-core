@@ -25,6 +25,7 @@ public class BraveLanguageSettingsTest {
     @Rule
     public final SettingsActivityTestRule<LanguageSettings> mSettingsActivityTestRule =
             new SettingsActivityTestRule<>(LanguageSettings.class);
+
     private LanguageSettings mLanguageSettings;
 
     @Before

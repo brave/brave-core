@@ -24,7 +24,9 @@ public class BraveSearchEnginePreferenceClassAdapter extends BraveClassVisitor {
         makeProtectedField(sSearchEngineSettingsClassName, "mProfile");
 
         makePublicMethod(sSearchEngineSettingsClassName, "createAdapterIfNecessary");
-        addMethodAnnotation(sBraveSearchEnginePreferenceClassName, "createAdapterIfNecessary",
+        addMethodAnnotation(
+                sBraveSearchEnginePreferenceClassName,
+                "createAdapterIfNecessary",
                 "Ljava/lang/Override;");
     }
 }

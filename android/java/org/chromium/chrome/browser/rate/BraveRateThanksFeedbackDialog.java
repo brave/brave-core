@@ -26,7 +26,7 @@ import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 
 public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
-    final public static String TAG_FRAGMENT = "brave_rate_thanks_feedback_dialog_tag";
+    public static final String TAG_FRAGMENT = "brave_rate_thanks_feedback_dialog_tag";
     private static final String TAG = "RateThanksFeedback";
     private static final String SAD = "sad";
 
@@ -44,8 +44,8 @@ public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
         try {
             BraveRateThanksFeedbackDialog fragment =
-                    (BraveRateThanksFeedbackDialog) manager.findFragmentByTag(
-                            BraveRateThanksFeedbackDialog.TAG_FRAGMENT);
+                    (BraveRateThanksFeedbackDialog)
+                            manager.findFragmentByTag(BraveRateThanksFeedbackDialog.TAG_FRAGMENT);
             FragmentTransaction transaction = manager.beginTransaction();
             if (fragment != null) {
                 transaction.remove(fragment);
@@ -62,8 +62,9 @@ public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
     public void setupDialog(@NonNull Dialog dialog, int style) {
         super.setupDialog(dialog, style);
 
-        final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_rating_thanks_feedback_dialog, null);
+        final View view =
+                LayoutInflater.from(getContext())
+                        .inflate(R.layout.brave_rating_thanks_feedback_dialog, null);
         addSuggestionEditText(view);
         clickOnDoneButton(view);
         dialog.setContentView(view);
@@ -71,14 +72,15 @@ public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
 
     private void clickOnDoneButton(View view) {
         Button doneButton = view.findViewById(R.id.rate_done_button);
-        doneButton.setOnClickListener((v) -> {
-            TextInputEditText feedbackEditText = view.findViewById(R.id.feedbackEditText);
-            String feedBack = feedbackEditText.getText().toString();
-            RateFeedbackUtils.RateFeedbackWorkerTask workerTask =
-                    new RateFeedbackUtils.RateFeedbackWorkerTask(
-                            SAD, feedBack, rateFeedbackCallback);
-            workerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        });
+        doneButton.setOnClickListener(
+                (v) -> {
+                    TextInputEditText feedbackEditText = view.findViewById(R.id.feedbackEditText);
+                    String feedBack = feedbackEditText.getText().toString();
+                    RateFeedbackUtils.RateFeedbackWorkerTask workerTask =
+                            new RateFeedbackUtils.RateFeedbackWorkerTask(
+                                    SAD, feedBack, rateFeedbackCallback);
+                    workerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                });
     }
 
     private void addSuggestionEditText(View view) {

@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn;
 
@@ -139,32 +137,58 @@ public class BraveVpnNativeWorker {
 
     public void getWireguardProfileCredentials(
             String subscriberCredential, String publicKey, String hostname) {
-        BraveVpnNativeWorkerJni.get().getWireguardProfileCredentials(
-                mNativeBraveVpnNativeWorker, subscriberCredential, publicKey, hostname);
+        BraveVpnNativeWorkerJni.get()
+                .getWireguardProfileCredentials(
+                        mNativeBraveVpnNativeWorker, subscriberCredential, publicKey, hostname);
     }
 
     public void verifyCredentials(
             String hostname, String clientId, String subscriberCredential, String apiAuthToken) {
-        BraveVpnNativeWorkerJni.get().verifyCredentials(mNativeBraveVpnNativeWorker, hostname,
-                clientId, subscriberCredential, apiAuthToken);
+        BraveVpnNativeWorkerJni.get()
+                .verifyCredentials(
+                        mNativeBraveVpnNativeWorker,
+                        hostname,
+                        clientId,
+                        subscriberCredential,
+                        apiAuthToken);
     }
 
     public void invalidateCredentials(
             String hostname, String clientId, String subscriberCredential, String apiAuthToken) {
-        BraveVpnNativeWorkerJni.get().invalidateCredentials(mNativeBraveVpnNativeWorker, hostname,
-                clientId, subscriberCredential, apiAuthToken);
+        BraveVpnNativeWorkerJni.get()
+                .invalidateCredentials(
+                        mNativeBraveVpnNativeWorker,
+                        hostname,
+                        clientId,
+                        subscriberCredential,
+                        apiAuthToken);
     }
 
-    public void getSubscriberCredential(String productType, String productId,
-            String validationMethod, String purchaseToken, String packageName) {
-        BraveVpnNativeWorkerJni.get().getSubscriberCredential(mNativeBraveVpnNativeWorker,
-                productType, productId, validationMethod, purchaseToken, packageName);
+    public void getSubscriberCredential(
+            String productType,
+            String productId,
+            String validationMethod,
+            String purchaseToken,
+            String packageName) {
+        BraveVpnNativeWorkerJni.get()
+                .getSubscriberCredential(
+                        mNativeBraveVpnNativeWorker,
+                        productType,
+                        productId,
+                        validationMethod,
+                        purchaseToken,
+                        packageName);
     }
 
     public void verifyPurchaseToken(
             String purchaseToken, String productId, String productType, String packageName) {
-        BraveVpnNativeWorkerJni.get().verifyPurchaseToken(
-                mNativeBraveVpnNativeWorker, purchaseToken, productId, productType, packageName);
+        BraveVpnNativeWorkerJni.get()
+                .verifyPurchaseToken(
+                        mNativeBraveVpnNativeWorker,
+                        purchaseToken,
+                        productId,
+                        productType,
+                        packageName);
     }
 
     // Desktop purchase methods
@@ -181,8 +205,9 @@ public class BraveVpnNativeWorker {
     }
 
     public void reportBackgroundP3A(long sessionStartTimeMs, long sessionEndTimeMs) {
-        BraveVpnNativeWorkerJni.get().reportBackgroundP3A(
-                mNativeBraveVpnNativeWorker, sessionStartTimeMs, sessionEndTimeMs);
+        BraveVpnNativeWorkerJni.get()
+                .reportBackgroundP3A(
+                        mNativeBraveVpnNativeWorker, sessionStartTimeMs, sessionEndTimeMs);
     }
 
     public void reportForegroundP3A() {

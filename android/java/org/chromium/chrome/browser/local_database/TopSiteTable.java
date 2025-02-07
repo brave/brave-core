@@ -15,22 +15,28 @@ public class TopSiteTable {
 
     // Create table SQL query
     public static final String CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_NAME + " TEXT,"
-                    + COLUMN_DESTINATION_URL + " TEXT,"
-                    + COLUMN_BACKGROUND_COLOR + " TEXT,"
-                    + COLUMN_IMAGE_PATH + " TEXT"
+            "CREATE TABLE IF NOT EXISTS "
+                    + TABLE_NAME
+                    + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_NAME
+                    + " TEXT,"
+                    + COLUMN_DESTINATION_URL
+                    + " TEXT,"
+                    + COLUMN_BACKGROUND_COLOR
+                    + " TEXT,"
+                    + COLUMN_IMAGE_PATH
+                    + " TEXT"
                     + ")";
 
-    public TopSiteTable() {
-    }
+    public TopSiteTable() {}
 
     private String mName;
     private String mDestinationUrl;
     private String mBackgroundColor;
     private String mImagePath;
 
-    public TopSiteTable(String name, String destinationUrl, String backgroundColor, String imagePath) {
+    public TopSiteTable(
+            String name, String destinationUrl, String backgroundColor, String imagePath) {
         mName = name;
         mDestinationUrl = destinationUrl;
         mBackgroundColor = backgroundColor;
@@ -39,7 +45,7 @@ public class TopSiteTable {
 
     public String getName() {
         return mName;
-    }        
+    }
 
     public String getDestinationUrl() {
         return mDestinationUrl;

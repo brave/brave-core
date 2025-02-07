@@ -78,7 +78,8 @@ public class MediaPreferences extends BravePreferenceFragment
             backgroundVideoPlaybackPref.setOnPreferenceChangeListener(this);
             boolean enabled =
                     ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
-                    || BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled();
+                            || BravePrefServiceBridge.getInstance()
+                                    .getBackgroundVideoPlaybackEnabled();
             backgroundVideoPlaybackPref.setChecked(enabled);
         }
 

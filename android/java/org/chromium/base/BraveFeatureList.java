@@ -5,9 +5,7 @@
 
 package org.chromium.base;
 
-/**
- * A list of feature flags exposed to Java.
- */
+/** A list of feature flags exposed to Java. */
 public abstract class BraveFeatureList {
     public static final String NATIVE_BRAVE_WALLET = "NativeBraveWallet";
     public static final String USE_DEV_UPDATER_URL = "UseDevUpdaterUrl";

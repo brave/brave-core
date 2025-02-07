@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.dialogs;
 
@@ -97,79 +95,104 @@ public class BraveAdsSignupDialog {
         return AppearancePreferences.getPrefAdsInBackgroundEnabled();
     }
 
-    private static void enqueueOnboardingNotification(Context context, boolean useCustomNotification) {
-        if(!OnboardingPrefManager.getInstance().isOnboardingNotificationShown()) {
+    private static void enqueueOnboardingNotification(
+            Context context, boolean useCustomNotification) {
+        if (!OnboardingPrefManager.getInstance().isOnboardingNotificationShown()) {
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, BraveOnboardingNotification.class);
-            intent.putExtra(BraveOnboardingNotification.USE_CUSTOM_NOTIFICATION, useCustomNotification);
-            am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + MOMENT_LATER,
-                    PendingIntent.getBroadcast(context, 0, intent,
+            intent.putExtra(
+                    BraveOnboardingNotification.USE_CUSTOM_NOTIFICATION, useCustomNotification);
+            am.set(
+                    AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis() + MOMENT_LATER,
+                    PendingIntent.getBroadcast(
+                            context,
+                            0,
+                            intent,
                             PendingIntent.FLAG_UPDATE_CURRENT
                                     | IntentUtils.getPendingIntentMutabilityFlag(true)));
         }
     }
 
     public static void showNewUserDialog(Context context) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.BraveDialogTheme)
-        .setView(R.layout.brave_ads_new_user_dialog_layout)
-        .setPositiveButton(R.string.brave_ads_offer_positive, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        AlertDialog alertDialog =
+                new AlertDialog.Builder(context, R.style.BraveDialogTheme)
+                        .setView(R.layout.brave_ads_new_user_dialog_layout)
+                        .setPositiveButton(
+                                R.string.brave_ads_offer_positive,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                OnboardingPrefManager.getInstance().setOnboardingNotificationShown(false);
+                                        OnboardingPrefManager.getInstance()
+                                                .setOnboardingNotificationShown(false);
 
-                neverShowOnboardingDialogAgain();
-                try {
-                    // Enable ads
-                    BraveActivity.getBraveActivity().openRewardsPanel();
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "showNewUserDialog " + e);
-                }
-            }
-        }).create();
+                                        neverShowOnboardingDialogAgain();
+                                        try {
+                                            // Enable ads
+                                            BraveActivity.getBraveActivity().openRewardsPanel();
+                                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                                            Log.e(TAG, "showNewUserDialog " + e);
+                                        }
+                                    }
+                                })
+                        .create();
         alertDialog.show();
 
         ImageView closeButton = alertDialog.findViewById(R.id.close_button);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.cancel();
-            }
-        });
+        closeButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.cancel();
+                    }
+                });
     }
 
     public static void showExistingUserDialog(Context context) {
-        AlertDialog alertDialog = new AlertDialog.Builder(context, R.style.BraveDialogTheme)
-        .setView(R.layout.brave_ads_existing_user_dialog_layout)
-        .setPositiveButton(R.string.brave_ads_offer_positive, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Enable ads
-                neverShowOnboardingDialogAgain();
-                try {
-                    BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                    braveActivity.openRewardsPanel();
-                } catch (BraveActivity.BraveActivityNotFoundException e) {
-                    Log.e(TAG, "showExistingUserDialog " + e);
-                }
-            }
-        }).create();
+        AlertDialog alertDialog =
+                new AlertDialog.Builder(context, R.style.BraveDialogTheme)
+                        .setView(R.layout.brave_ads_existing_user_dialog_layout)
+                        .setPositiveButton(
+                                R.string.brave_ads_offer_positive,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Enable ads
+                                        neverShowOnboardingDialogAgain();
+                                        try {
+                                            BraveActivity braveActivity =
+                                                    BraveActivity.getBraveActivity();
+                                            braveActivity.openRewardsPanel();
+                                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                                            Log.e(TAG, "showExistingUserDialog " + e);
+                                        }
+                                    }
+                                })
+                        .create();
         alertDialog.show();
 
         ImageView closeButton = alertDialog.findViewById(R.id.close_button);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.cancel();
-            }
-        });
+        closeButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.cancel();
+                    }
+                });
     }
 
     private static boolean hasElapsed24Hours(Context context) {
         boolean result = false;
         try {
-            result = System.currentTimeMillis() >= context.getPackageManager().getPackageInfo(context.getPackageName(), 0).firstInstallTime + TWENTY_FOUR_HOURS;
-        } catch (NameNotFoundException e) {}
+            result =
+                    System.currentTimeMillis()
+                            >= context.getPackageManager()
+                                            .getPackageInfo(context.getPackageName(), 0)
+                                            .firstInstallTime
+                                    + TWENTY_FOUR_HOURS;
+        } catch (NameNotFoundException e) {
+        }
         return result;
     }
 
@@ -184,7 +207,9 @@ public class BraveAdsSignupDialog {
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        editor.putInt(SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER, sharedPref.getInt(SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER, 0) + 1);
+        editor.putInt(
+                SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER,
+                sharedPref.getInt(SHOULD_SHOW_ONBOARDING_DIALOG_VIEW_COUNTER, 0) + 1);
         editor.apply();
     }
 

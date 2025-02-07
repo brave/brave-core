@@ -89,9 +89,10 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             }
         }
 
-        return ContextUtils.getAppSharedPreferences().getString(
-                profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
-                defaultSearchEngineName);
+        return ContextUtils.getAppSharedPreferences()
+                .getString(
+                        profile.isOffTheRecord() ? PRIVATE_DSE_SHORTNAME : STANDARD_DSE_SHORTNAME,
+                        defaultSearchEngineName);
     }
 
     public static TemplateUrl getTemplateUrlByShortName(

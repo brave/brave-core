@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards;
 
@@ -15,9 +13,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-/**
- * BraveRewardsNativeWorker.GetPublisherBanner json response converted to this pojo class
- * */
+/** BraveRewardsNativeWorker.GetPublisherBanner json response converted to this pojo class */
 public class BraveRewardsBannerInfo {
     public static final String PUBLISHER_KEY = "publisher_key";
     public static final String TITLE = "title";
@@ -103,7 +99,8 @@ public class BraveRewardsBannerInfo {
             if (array != null) {
                 mLinks = new HashMap<>();
                 for (int index = 0; index < array.length(); index++) {
-                    mLinks.put(array.getString(index),
+                    mLinks.put(
+                            array.getString(index),
                             linksJsonObject.getString(array.getString(index)));
                 }
             }
@@ -116,10 +113,31 @@ public class BraveRewardsBannerInfo {
     @Override
     public String toString() {
         return "BraveRewardsBannerInfo{"
-                + "mPublisherKey='" + mPublisherKey + '\'' + ", mTitle='" + mTitle + '\''
-                + ", mName='" + mName + '\'' + ", mDescription='" + mDescription + '\''
-                + ", mBackground='" + mBackground + '\'' + ", mLogo='" + mLogo + '\''
-                + ", mProvider='" + mProvider + '\'' + ", mLinks=" + mLinks + ", mStatus=" + mStatus
+                + "mPublisherKey='"
+                + mPublisherKey
+                + '\''
+                + ", mTitle='"
+                + mTitle
+                + '\''
+                + ", mName='"
+                + mName
+                + '\''
+                + ", mDescription='"
+                + mDescription
+                + '\''
+                + ", mBackground='"
+                + mBackground
+                + '\''
+                + ", mLogo='"
+                + mLogo
+                + '\''
+                + ", mProvider='"
+                + mProvider
+                + '\''
+                + ", mLinks="
+                + mLinks
+                + ", mStatus="
+                + mStatus
                 + '}';
     }
 }

@@ -37,8 +37,12 @@ class BraveClassVisitor extends ClassVisitor {
         public String signature;
         public String[] exceptions;
 
-        public Method(final int access, final String name, String desc,
-                      String signature, String[] exceptions) {
+        public Method(
+                final int access,
+                final String name,
+                String desc,
+                String signature,
+                String[] exceptions) {
             this.access = access;
             this.name = name;
             this.desc = desc;
@@ -67,15 +71,14 @@ class BraveClassVisitor extends ClassVisitor {
         }
 
         @Override
-        public void visitMethodInsn(int opcode,
-                                    java.lang.String owner,
-                                    java.lang.String name,
-                                    java.lang.String descriptor,
-                                    boolean isInterface) {
-            if (shouldMakePublicMethod(owner, name) &&
-                    opcode == INVOKESPECIAL) {
-                System.out.println("use invoke virtual for call to method " +
-                        owner + "." + name);
+        public void visitMethodInsn(
+                int opcode,
+                java.lang.String owner,
+                java.lang.String name,
+                java.lang.String descriptor,
+                boolean isInterface) {
+            if (shouldMakePublicMethod(owner, name) && opcode == INVOKESPECIAL) {
+                System.out.println("use invoke virtual for call to method " + owner + "." + name);
                 // use invoke virtual because other classes can override
                 // the method now
                 opcode = INVOKEVIRTUAL;
@@ -95,8 +98,15 @@ class BraveClassVisitor extends ClassVisitor {
             Map<String, String> types = getMapForRedirectTypeInMethod(mName, mMethod.name);
             if (types != null && types.containsKey(type)) {
                 String newType = types.get(type);
-                System.out.println("redirecting type in method " + mMethod.name + " in class "
-                        + mName + " from " + type + " to " + newType);
+                System.out.println(
+                        "redirecting type in method "
+                                + mMethod.name
+                                + " in class "
+                                + mName
+                                + " from "
+                                + type
+                                + " to "
+                                + newType);
                 type = newType;
             }
             super.visitTypeInsn(opcode, type);
@@ -109,8 +119,7 @@ class BraveClassVisitor extends ClassVisitor {
     private Map<String, String> mSuperNames = new HashMap<String, String>();
     private Map<String, ArrayList<String>> mDeleteMethods =
             new HashMap<String, ArrayList<String>>();
-    private Map<String, ArrayList<String>> mDeleteFields =
-            new HashMap<String, ArrayList<String>>();
+    private Map<String, ArrayList<String>> mDeleteFields = new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mDeleteInnerClasses =
             new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mMakePublicMethods =
@@ -140,12 +149,10 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private boolean shouldDeleteMethod(String methodName) {
-        for(Map.Entry<String, ArrayList<String>> entry :
-                mDeleteMethods.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : mDeleteMethods.entrySet()) {
             String className = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
-            return mName.contains(className) &&
-                   methodNames.contains(methodName);
+            return mName.contains(className) && methodNames.contains(methodName);
         }
 
         return false;
@@ -161,8 +168,7 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private boolean shouldMakePublicMethod(String className, String methodName) {
-        for(Map.Entry<String, ArrayList<String>> entry :
-                mMakePublicMethods.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : mMakePublicMethods.entrySet()) {
             String entryClassName = entry.getKey();
             ArrayList<String> methodNames = entry.getValue();
             return className.equals(entryClassName) && methodNames.contains(methodName);
@@ -213,8 +219,15 @@ class BraveClassVisitor extends ClassVisitor {
             if (methods.containsKey(methodName)) {
                 String newOwner = methods.get(methodName);
                 if (!newOwner.equals(mName)) {
-                    System.out.println("changing owner for " + owner + "." + methodName + " in "
-                            + mName + " - new owner " + newOwner);
+                    System.out.println(
+                            "changing owner for "
+                                    + owner
+                                    + "."
+                                    + methodName
+                                    + " in "
+                                    + mName
+                                    + " - new owner "
+                                    + newOwner);
                     return newOwner;
                 }
             }
@@ -223,8 +236,15 @@ class BraveClassVisitor extends ClassVisitor {
         if (mSuperName.equals(owner) && mSuperNames.containsKey(mName)) {
             String newSuperOwner = mSuperNames.get(mName);
             if (!newSuperOwner.equals(mSuperName)) {
-                System.out.println("redirecting ownership for " + mSuperName + "." + methodName
-                        + " in " + mName + " - new owner " + newSuperOwner);
+                System.out.println(
+                        "redirecting ownership for "
+                                + mSuperName
+                                + "."
+                                + methodName
+                                + " in "
+                                + mName
+                                + " - new owner "
+                                + newSuperOwner);
                 return newSuperOwner;
             }
         }
@@ -241,12 +261,10 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private boolean shouldDeleteField(String fieldName) {
-        for(Map.Entry<String, ArrayList<String>> entry :
-                mDeleteFields.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : mDeleteFields.entrySet()) {
             String className = entry.getKey();
             ArrayList<String> fieldNames = entry.getValue();
-            return mName.contains(className) &&
-                   fieldNames.contains(fieldName);
+            return mName.contains(className) && fieldNames.contains(fieldName);
         }
 
         return false;
@@ -308,12 +326,10 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     private boolean shouldMakeProtectedField(String className, String fieldName) {
-        for(Map.Entry<String, ArrayList<String>> entry :
-                mMakeProtectedFields.entrySet()) {
+        for (Map.Entry<String, ArrayList<String>> entry : mMakeProtectedFields.entrySet()) {
             String entryClassName = entry.getKey();
             ArrayList<String> fieldNames = entry.getValue();
-            return className.contains(entryClassName) &&
-                   fieldNames.contains(fieldName);
+            return className.contains(entryClassName) && fieldNames.contains(fieldName);
         }
 
         return false;
@@ -385,12 +401,13 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public void visit(int version,
-                      int access,
-                      String name,
-                      String signature,
-                      String superName,
-                      String[] interfaces) {
+    public void visit(
+            int version,
+            int access,
+            String name,
+            String signature,
+            String superName,
+            String[] interfaces) {
         super.cv = new ClassNode();
         mName = name;
         mSuperName = superName;
@@ -406,12 +423,13 @@ class BraveClassVisitor extends ClassVisitor {
         visitImpl(version, access, name, signature, superName, interfaces);
     }
 
-    protected void visitImpl(int version,
-                             int access,
-                             String name,
-                             String signature,
-                             String superName,
-                             String[] interfaces) {
+    protected void visitImpl(
+            int version,
+            int access,
+            String name,
+            String signature,
+            String superName,
+            String[] interfaces) {
         super.visit(version, access, name, signature, superName, interfaces);
     }
 
@@ -431,11 +449,12 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public FieldVisitor visitField(int access,
-                                   java.lang.String name,
-                                   java.lang.String descriptor,
-                                   java.lang.String signature,
-                                   java.lang.Object value) {
+    public FieldVisitor visitField(
+            int access,
+            java.lang.String name,
+            java.lang.String descriptor,
+            java.lang.String signature,
+            java.lang.Object value) {
         if (shouldDeleteField(name)) {
             System.out.println("delete " + name + " from " + mName);
             return null;
@@ -451,11 +470,12 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     @Override
-    public MethodVisitor visitMethod(final int access,
-                                     final String name,
-                                     String desc,
-                                     String signature,
-                                     String[] exceptions) {
+    public MethodVisitor visitMethod(
+            final int access,
+            final String name,
+            String desc,
+            String signature,
+            String[] exceptions) {
         // This part changes the type in method declaration
         Map<String, String> types = getMapForRedirectTypeInMethod(mName, name);
         if (types != null) {
@@ -465,9 +485,15 @@ class BraveClassVisitor extends ClassVisitor {
                 if (desc.contains(originalTypeName)) {
                     // Use literal replacement like other methods in the class
                     desc = desc.replace(originalTypeName, newTypeName);
-                    System.out.println("redirecting type in method declaration " + name
-                            + " in class " + mName + " from " + originalTypeName + " to "
-                            + newTypeName);
+                    System.out.println(
+                            "redirecting type in method declaration "
+                                    + name
+                                    + " in class "
+                                    + mName
+                                    + " from "
+                                    + originalTypeName
+                                    + " to "
+                                    + newTypeName);
                 }
             }
         }
@@ -488,18 +514,20 @@ class BraveClassVisitor extends ClassVisitor {
     }
 
     protected MethodVisitor visitMethodImpl(Method method) {
-        return new BraveMethodVisitor(method, super.visitMethod(method.access,
-                                                                method.name,
-                                                                method.desc,
-                                                                method.signature,
-                                                                method.exceptions));
+        return new BraveMethodVisitor(
+                method,
+                super.visitMethod(
+                        method.access,
+                        method.name,
+                        method.desc,
+                        method.signature,
+                        method.exceptions));
     }
 
     protected ClassNode process(ClassNode source) {
         Map<String, ArrayList<String>> annotationsForClass = mAddAnnotations.get(source.name);
 
-        if (annotationsForClass == null)
-            return source;
+        if (annotationsForClass == null) return source;
 
         List<MethodNode> methods = source.methods;
         for (MethodNode method : methods) {
@@ -526,7 +554,7 @@ class BraveClassVisitor extends ClassVisitor {
     @Override
     public void visitEnd() {
         super.visitEnd();
-        ClassNode source = (ClassNode)super.cv;
+        ClassNode source = (ClassNode) super.cv;
         ClassNode result = process(source);
         if (mTarget != null) {
             result.accept(mTarget);

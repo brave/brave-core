@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.custom_layout;
 
 import android.annotation.SuppressLint;
@@ -16,8 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
 
 /**
- * {@link NestedScrollView} whose scrolling can be temporarily locked using
- * the method {@link #setScrollingEnabled(boolean)}. The scrolling is enabled by default.
+ * {@link NestedScrollView} whose scrolling can be temporarily locked using the method {@link
+ * #setScrollingEnabled(boolean)}. The scrolling is enabled by default.
  */
 public class LockableNestedScrollView extends NestedScrollView {
     private boolean scrollable = true;

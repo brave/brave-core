@@ -24,7 +24,8 @@ public class BraveWalletEthereumConnectedSitesListAdapter
     private BraveEthereumPermissionConnectedSitesDelegate mDelegate;
 
     public interface BraveEthereumPermissionConnectedSitesDelegate {
-        default void removePermission(String webSite){};
+        default void removePermission(String webSite) {}
+        ;
     }
 
     public BraveWalletEthereumConnectedSitesListAdapter(
@@ -50,11 +51,12 @@ public class BraveWalletEthereumConnectedSitesListAdapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.webSite.setText(mWebSites[position]);
-        holder.iconTrash.setOnClickListener(v -> {
-            if (mDelegate != null) {
-                mDelegate.removePermission(mWebSites[position]);
-            }
-        });
+        holder.iconTrash.setOnClickListener(
+                v -> {
+                    if (mDelegate != null) {
+                        mDelegate.removePermission(mWebSites[position]);
+                    }
+                });
     }
 
     @Override

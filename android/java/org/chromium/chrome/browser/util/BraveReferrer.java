@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.util;
 
@@ -62,6 +60,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
     private class InitReferrerRunnable implements Runnable {
         private Context mContext;
         private BraveReferrer mBraveReferrer;
+
         public InitReferrerRunnable(Context context, BraveReferrer braveReferrer) {
             mContext = context;
             mBraveReferrer = braveReferrer;
@@ -75,8 +74,12 @@ public class BraveReferrer implements InstallReferrerStateListener {
                 onReferrerReady();
                 return;
             }
-            promoCodeFilePath = mContext.getApplicationInfo().dataDir + File.separator
-                    + APP_CHROME_DIR + File.separator + PROMO_CODE_FILE_NAME;
+            promoCodeFilePath =
+                    mContext.getApplicationInfo().dataDir
+                            + File.separator
+                            + APP_CHROME_DIR
+                            + File.separator
+                            + PROMO_CODE_FILE_NAME;
             referrerClient = InstallReferrerClient.newBuilder(mContext).build();
             try {
                 referrerClient.startConnection(mBraveReferrer);
@@ -91,12 +94,14 @@ public class BraveReferrer implements InstallReferrerStateListener {
     public void initReferrer() {
         // On some devices InstallReferrerClient.startConnection causes file IO,
         // so run it in IO task
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK,
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
                 new InitReferrerRunnable(ContextUtils.getApplicationContext(), this));
     }
 
     private class SaveReferrerRunnable implements Runnable {
         private String mUrpc;
+
         public SaveReferrerRunnable(String urpc) {
             mUrpc = urpc;
         }
@@ -109,7 +114,8 @@ public class BraveReferrer implements InstallReferrerStateListener {
                 outputStreamWriter = new FileOutputStream(promoCodeFile);
                 outputStreamWriter.write(mUrpc.getBytes());
             } catch (IOException e) {
-                Log.e(TAG,
+                Log.e(
+                        TAG,
                         "Could not write to file (" + promoCodeFilePath + "): " + e.getMessage());
             } finally {
                 try {
@@ -183,8 +189,11 @@ public class BraveReferrer implements InstallReferrerStateListener {
     }
 
     private void onReferrerReady() {
-        PostTask.postTask(TaskTraits.UI_BEST_EFFORT,
-                () -> { BraveReferrerJni.get().onReferrerReady(mNativeBraveReferrer); });
+        PostTask.postTask(
+                TaskTraits.UI_BEST_EFFORT,
+                () -> {
+                    BraveReferrerJni.get().onReferrerReady(mNativeBraveReferrer);
+                });
     }
 
     @NativeMethods

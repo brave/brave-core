@@ -9,12 +9,15 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveSiteSettingsDelegateClassAdapter extends BraveClassVisitor {
 
-    static String sChromeSiteSettingsDelegateClassName = "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate";
-    static String sBraveSiteSettingsDelegateClassName = "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate";
+    static String sChromeSiteSettingsDelegateClassName =
+            "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate";
+    static String sBraveSiteSettingsDelegateClassName =
+            "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate";
 
     public BraveSiteSettingsDelegateClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(sChromeSiteSettingsDelegateClassName, sBraveSiteSettingsDelegateClassName);
+        redirectConstructor(
+                sChromeSiteSettingsDelegateClassName, sBraveSiteSettingsDelegateClassName);
     }
 }

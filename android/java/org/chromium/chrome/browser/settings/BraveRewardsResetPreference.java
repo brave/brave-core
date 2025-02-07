@@ -6,18 +6,15 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
-import androidx.preference.DialogPreference;
 import android.util.AttributeSet;
+
+import androidx.preference.DialogPreference;
 
 import org.chromium.chrome.R;
 
-/**
- * The preference used to reset Brave Rewards.
- */
+/** The preference used to reset Brave Rewards. */
 public class BraveRewardsResetPreference extends DialogPreference {
-    /**
-     * Constructor for BraveRewardsResetPreference.
-     */
+    /** Constructor for BraveRewardsResetPreference. */
     public BraveRewardsResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         setDialogLayoutResource(R.layout.brave_rewards_reset_tab_content);

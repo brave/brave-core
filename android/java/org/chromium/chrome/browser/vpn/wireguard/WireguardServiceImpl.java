@@ -36,8 +36,8 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WireguardServiceImpl
-        extends WireguardService.Impl implements TunnelModel.TunnelStateUpdateListener {
+public class WireguardServiceImpl extends WireguardService.Impl
+        implements TunnelModel.TunnelStateUpdateListener {
     private Backend mBackend;
     private TunnelModel mTunnelModel;
     private final IBinder mBinder = new LocalBinder();
@@ -101,21 +101,27 @@ public class WireguardServiceImpl
         Intent disconnectVpnIntent = new Intent(mContext, DisconnectVpnBroadcastReceiver.class);
         disconnectVpnIntent.setAction(DisconnectVpnBroadcastReceiver.DISCONNECT_VPN_ACTION);
         PendingIntent disconnectVpnPendingIntent =
-                PendingIntent.getBroadcast(mContext, 0, disconnectVpnIntent,
+                PendingIntent.getBroadcast(
+                        mContext,
+                        0,
+                        disconnectVpnIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                                 | IntentUtils.getPendingIntentMutabilityFlag(true));
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(mContext, BraveActivity.CHANNEL_ID);
-        notificationBuilder.setSmallIcon(R.drawable.ic_vpn)
+        notificationBuilder
+                .setSmallIcon(R.drawable.ic_vpn)
                 .setAutoCancel(false)
                 .setContentTitle(
-                        String.format(mContext.getResources().getString(R.string.connected_to_host),
+                        String.format(
+                                mContext.getResources().getString(R.string.connected_to_host),
                                 BraveVpnPrefUtils.getHostnameDisplay()))
                 .setContentText(notificationText)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .addAction(R.drawable.ic_vpn,
+                .addAction(
+                        R.drawable.ic_vpn,
                         mContext.getResources().getString(R.string.disconnect),
                         disconnectVpnPendingIntent)
                 .setOnlyAlertOnce(true);
@@ -155,36 +161,47 @@ public class WireguardServiceImpl
         // This timer will be active for the duration of the connection.
         // It will become inactive when the connection is terminated/service destroyed.
         mVpnRecordStatisticsTimer = new Timer();
-        mVpnRecordStatisticsTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                recordSessionTimes();
-            }
-        }, 0, 60000);
+        mVpnRecordStatisticsTimer.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        recordSessionTimes();
+                    }
+                },
+                0,
+                60000);
     }
 
     private void updateVpnStatisticsTimer() {
         mVpnStatisticsTimer = new Timer();
-        mVpnStatisticsTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (mBackend != null && mTunnelModel != null) {
-                    try {
-                        Statistics statistics = mBackend.getStatistics(mTunnelModel);
-                        updateVpnNotification(String.format(
-                                HtmlCompat
-                                        .fromHtml(mContext.getResources().getString(
-                                                          R.string.transfer_rx_tx),
-                                                HtmlCompat.FROM_HTML_MODE_LEGACY)
-                                        .toString(),
-                                WireguardUtils.formatBytes(mContext, statistics.totalRx()),
-                                WireguardUtils.formatBytes(mContext, statistics.totalTx())));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+        mVpnStatisticsTimer.schedule(
+                new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (mBackend != null && mTunnelModel != null) {
+                            try {
+                                Statistics statistics = mBackend.getStatistics(mTunnelModel);
+                                updateVpnNotification(
+                                        String.format(
+                                                HtmlCompat.fromHtml(
+                                                                mContext.getResources()
+                                                                        .getString(
+                                                                                R.string
+                                                                                        .transfer_rx_tx),
+                                                                HtmlCompat.FROM_HTML_MODE_LEGACY)
+                                                        .toString(),
+                                                WireguardUtils.formatBytes(
+                                                        mContext, statistics.totalRx()),
+                                                WireguardUtils.formatBytes(
+                                                        mContext, statistics.totalTx())));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                }
-            }
-        }, 0, 500);
+                },
+                0,
+                500);
     }
 
     private void cancelVpnStatisticsTimer() {

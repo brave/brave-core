@@ -42,14 +42,19 @@ public class Shimmer {
     public @interface Shape {
         /** Linear gives a ray reflection effect. */
         int LINEAR = 0;
+
         /** Radial gives a spotlight effect. */
         int RADIAL = 1;
     }
 
     /** Direction of the shimmer's sweep. */
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({Direction.LEFT_TO_RIGHT, Direction.TOP_TO_BOTTOM, Direction.RIGHT_TO_LEFT,
-            Direction.BOTTOM_TO_TOP})
+    @IntDef({
+        Direction.LEFT_TO_RIGHT,
+        Direction.TOP_TO_BOTTOM,
+        Direction.RIGHT_TO_LEFT,
+        Direction.BOTTOM_TO_TOP
+    })
     public @interface Direction {
         int LEFT_TO_RIGHT = 0;
         int TOP_TO_BOTTOM = 1;
@@ -61,14 +66,10 @@ public class Shimmer {
     final int[] colors = new int[COMPONENT_COUNT];
     final RectF bounds = new RectF();
 
-    @Direction
-    int direction = Direction.LEFT_TO_RIGHT;
-    @ColorInt
-    int highlightColor = Color.WHITE;
-    @ColorInt
-    int baseColor = 0x4cffffff;
-    @Shape
-    int shape = Shape.LINEAR;
+    @Direction int direction = Direction.LEFT_TO_RIGHT;
+    @ColorInt int highlightColor = Color.WHITE;
+    @ColorInt int baseColor = 0x4cffffff;
+    @Shape int shape = Shape.LINEAR;
     int fixedWidth;
     int fixedHeight;
 
@@ -155,46 +156,62 @@ public class Shimmer {
 
         T consumeAttributes(TypedArray typedArray) {
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_clip_to_children)) {
-                setClipToChildren(typedArray.getBoolean(
-                        R.styleable.ShimmerFrameLayout_shimmer_clip_to_children,
-                        mShimmer.clipToChildren));
+                setClipToChildren(
+                        typedArray.getBoolean(
+                                R.styleable.ShimmerFrameLayout_shimmer_clip_to_children,
+                                mShimmer.clipToChildren));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_auto_start)) {
-                setAutoStart(typedArray.getBoolean(
-                        R.styleable.ShimmerFrameLayout_shimmer_auto_start, mShimmer.autoStart));
+                setAutoStart(
+                        typedArray.getBoolean(
+                                R.styleable.ShimmerFrameLayout_shimmer_auto_start,
+                                mShimmer.autoStart));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_base_alpha)) {
-                setBaseAlpha(typedArray.getFloat(
-                        R.styleable.ShimmerFrameLayout_shimmer_base_alpha, 0.3f));
+                setBaseAlpha(
+                        typedArray.getFloat(
+                                R.styleable.ShimmerFrameLayout_shimmer_base_alpha, 0.3f));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_highlight_alpha)) {
-                setHighlightAlpha(typedArray.getFloat(
-                        R.styleable.ShimmerFrameLayout_shimmer_highlight_alpha, 1f));
+                setHighlightAlpha(
+                        typedArray.getFloat(
+                                R.styleable.ShimmerFrameLayout_shimmer_highlight_alpha, 1f));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_duration)) {
-                setDuration(typedArray.getInt(R.styleable.ShimmerFrameLayout_shimmer_duration,
-                        (int) mShimmer.animationDuration));
+                setDuration(
+                        typedArray.getInt(
+                                R.styleable.ShimmerFrameLayout_shimmer_duration,
+                                (int) mShimmer.animationDuration));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_repeat_count)) {
-                setRepeatCount(typedArray.getInt(
-                        R.styleable.ShimmerFrameLayout_shimmer_repeat_count, mShimmer.repeatCount));
+                setRepeatCount(
+                        typedArray.getInt(
+                                R.styleable.ShimmerFrameLayout_shimmer_repeat_count,
+                                mShimmer.repeatCount));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_repeat_delay)) {
                 setRepeatDelay(
-                        typedArray.getInt(R.styleable.ShimmerFrameLayout_shimmer_repeat_delay,
+                        typedArray.getInt(
+                                R.styleable.ShimmerFrameLayout_shimmer_repeat_delay,
                                 (int) mShimmer.repeatDelay));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_repeat_mode)) {
-                setRepeatMode(typedArray.getInt(
-                        R.styleable.ShimmerFrameLayout_shimmer_repeat_mode, mShimmer.repeatMode));
+                setRepeatMode(
+                        typedArray.getInt(
+                                R.styleable.ShimmerFrameLayout_shimmer_repeat_mode,
+                                mShimmer.repeatMode));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_start_delay)) {
-                setStartDelay(typedArray.getInt(R.styleable.ShimmerFrameLayout_shimmer_start_delay,
-                        (int) mShimmer.startDelay));
+                setStartDelay(
+                        typedArray.getInt(
+                                R.styleable.ShimmerFrameLayout_shimmer_start_delay,
+                                (int) mShimmer.startDelay));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_direction)) {
-                int direction = typedArray.getInt(
-                        R.styleable.ShimmerFrameLayout_shimmer_direction, mShimmer.direction);
+                int direction =
+                        typedArray.getInt(
+                                R.styleable.ShimmerFrameLayout_shimmer_direction,
+                                mShimmer.direction);
                 switch (direction) {
                     default:
                     case Direction.LEFT_TO_RIGHT:
@@ -213,8 +230,9 @@ public class Shimmer {
             }
 
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_shape)) {
-                int shape = typedArray.getInt(
-                        R.styleable.ShimmerFrameLayout_shimmer_shape, mShimmer.shape);
+                int shape =
+                        typedArray.getInt(
+                                R.styleable.ShimmerFrameLayout_shimmer_shape, mShimmer.shape);
                 switch (shape) {
                     default:
                     case Shape.LINEAR:
@@ -227,32 +245,44 @@ public class Shimmer {
             }
 
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_dropoff)) {
-                setDropoff(typedArray.getFloat(
-                        R.styleable.ShimmerFrameLayout_shimmer_dropoff, mShimmer.dropoff));
+                setDropoff(
+                        typedArray.getFloat(
+                                R.styleable.ShimmerFrameLayout_shimmer_dropoff, mShimmer.dropoff));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_fixed_width)) {
-                setFixedWidth(typedArray.getDimensionPixelSize(
-                        R.styleable.ShimmerFrameLayout_shimmer_fixed_width, mShimmer.fixedWidth));
+                setFixedWidth(
+                        typedArray.getDimensionPixelSize(
+                                R.styleable.ShimmerFrameLayout_shimmer_fixed_width,
+                                mShimmer.fixedWidth));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_fixed_height)) {
-                setFixedHeight(typedArray.getDimensionPixelSize(
-                        R.styleable.ShimmerFrameLayout_shimmer_fixed_height, mShimmer.fixedHeight));
+                setFixedHeight(
+                        typedArray.getDimensionPixelSize(
+                                R.styleable.ShimmerFrameLayout_shimmer_fixed_height,
+                                mShimmer.fixedHeight));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_intensity)) {
-                setIntensity(typedArray.getFloat(
-                        R.styleable.ShimmerFrameLayout_shimmer_intensity, mShimmer.intensity));
+                setIntensity(
+                        typedArray.getFloat(
+                                R.styleable.ShimmerFrameLayout_shimmer_intensity,
+                                mShimmer.intensity));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_width_ratio)) {
-                setWidthRatio(typedArray.getFloat(
-                        R.styleable.ShimmerFrameLayout_shimmer_width_ratio, mShimmer.widthRatio));
+                setWidthRatio(
+                        typedArray.getFloat(
+                                R.styleable.ShimmerFrameLayout_shimmer_width_ratio,
+                                mShimmer.widthRatio));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_height_ratio)) {
-                setHeightRatio(typedArray.getFloat(
-                        R.styleable.ShimmerFrameLayout_shimmer_height_ratio, mShimmer.heightRatio));
+                setHeightRatio(
+                        typedArray.getFloat(
+                                R.styleable.ShimmerFrameLayout_shimmer_height_ratio,
+                                mShimmer.heightRatio));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_tilt)) {
-                setTilt(typedArray.getFloat(
-                        R.styleable.ShimmerFrameLayout_shimmer_tilt, mShimmer.tilt));
+                setTilt(
+                        typedArray.getFloat(
+                                R.styleable.ShimmerFrameLayout_shimmer_tilt, mShimmer.tilt));
             }
             return getThis();
         }
@@ -479,12 +509,15 @@ public class Shimmer {
         ColorHighlightBuilder consumeAttributes(TypedArray typedArray) {
             super.consumeAttributes(typedArray);
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_base_color)) {
-                setBaseColor(typedArray.getColor(
-                        R.styleable.ShimmerFrameLayout_shimmer_base_color, mShimmer.baseColor));
+                setBaseColor(
+                        typedArray.getColor(
+                                R.styleable.ShimmerFrameLayout_shimmer_base_color,
+                                mShimmer.baseColor));
             }
             if (typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_highlight_color)) {
                 setHighlightColor(
-                        typedArray.getColor(R.styleable.ShimmerFrameLayout_shimmer_highlight_color,
+                        typedArray.getColor(
+                                R.styleable.ShimmerFrameLayout_shimmer_highlight_color,
                                 mShimmer.highlightColor));
             }
             return getThis();

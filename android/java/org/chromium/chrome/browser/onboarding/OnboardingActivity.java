@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.onboarding;
 
@@ -30,8 +28,8 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
 
         OnboardingPrefManager.getInstance().setOnboardingShown(true);
 
-        OnboardingViewPagerAdapter onboardingViewPagerAdapter = new OnboardingViewPagerAdapter(
-            this, getSupportFragmentManager(), this);
+        OnboardingViewPagerAdapter onboardingViewPagerAdapter =
+                new OnboardingViewPagerAdapter(this, getSupportFragmentManager(), this);
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(onboardingViewPagerAdapter);
         try {
@@ -61,11 +59,11 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
         finish();
     }
 
-    static public OnboardingActivity getOnboardingActivity() {
+    public static OnboardingActivity getOnboardingActivity() {
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
             if (!(ref instanceof OnboardingActivity)) continue;
 
-            return (OnboardingActivity)ref;
+            return (OnboardingActivity) ref;
         }
 
         return null;

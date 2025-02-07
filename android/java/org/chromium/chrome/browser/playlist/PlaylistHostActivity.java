@@ -55,8 +55,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, PlaylistOptionsListener,
-                   PlaylistServiceObserverImplDelegate {
+        implements ConnectionErrorHandler,
+                PlaylistOptionsListener,
+                PlaylistServiceObserverImplDelegate {
     private static final String TAG = "PlaylistHostActivity";
     private PlaylistService mPlaylistService;
     private PlaylistViewModel mPlaylistViewModel;
@@ -136,41 +137,62 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                                     });
                         });
 
-        mPlaylistViewModel.getRenamePlaylistOption().observe(
-                PlaylistHostActivity.this, renamePlaylistModel -> {
-                    if (mPlaylistService == null) {
-                        return;
-                    }
-                    mPlaylistService.renamePlaylist(renamePlaylistModel.getPlaylistId(),
-                            renamePlaylistModel.getNewName(),
-                            updatedPlaylist -> { loadPlaylist(updatedPlaylist.id); });
-                });
+        mPlaylistViewModel
+                .getRenamePlaylistOption()
+                .observe(
+                        PlaylistHostActivity.this,
+                        renamePlaylistModel -> {
+                            if (mPlaylistService == null) {
+                                return;
+                            }
+                            mPlaylistService.renamePlaylist(
+                                    renamePlaylistModel.getPlaylistId(),
+                                    renamePlaylistModel.getNewName(),
+                                    updatedPlaylist -> {
+                                        loadPlaylist(updatedPlaylist.id);
+                                    });
+                        });
 
-        mPlaylistViewModel.getPlaylistToOpen().observe(
-                PlaylistHostActivity.this, playlistId -> { showPlaylist(playlistId, true); });
+        mPlaylistViewModel
+                .getPlaylistToOpen()
+                .observe(
+                        PlaylistHostActivity.this,
+                        playlistId -> {
+                            showPlaylist(playlistId, true);
+                        });
 
-        mPlaylistViewModel.getFetchPlaylistData().observe(PlaylistHostActivity.this, playlistId -> {
-            if (mPlaylistService == null) {
-                return;
-            }
-            if (playlistId.equals(ConstantUtils.ALL_PLAYLIST)) {
-                loadAllPlaylists();
-            } else {
-                loadPlaylist(playlistId);
-            }
-        });
+        mPlaylistViewModel
+                .getFetchPlaylistData()
+                .observe(
+                        PlaylistHostActivity.this,
+                        playlistId -> {
+                            if (mPlaylistService == null) {
+                                return;
+                            }
+                            if (playlistId.equals(ConstantUtils.ALL_PLAYLIST)) {
+                                loadAllPlaylists();
+                            } else {
+                                loadPlaylist(playlistId);
+                            }
+                        });
 
-        mPlaylistViewModel.getReorderPlaylistItems().observe(
-                PlaylistHostActivity.this, playlistItems -> {
-                    if (mPlaylistService == null) {
-                        return;
-                    }
-                    for (int i = 0; i < playlistItems.size(); i++) {
-                        PlaylistItemModel playlistItemModel = playlistItems.get(i);
-                        mPlaylistService.reorderItemFromPlaylist(playlistItemModel.getPlaylistId(),
-                                playlistItemModel.getId(), (short) i, (result) -> {});
-                    }
-                });
+        mPlaylistViewModel
+                .getReorderPlaylistItems()
+                .observe(
+                        PlaylistHostActivity.this,
+                        playlistItems -> {
+                            if (mPlaylistService == null) {
+                                return;
+                            }
+                            for (int i = 0; i < playlistItems.size(); i++) {
+                                PlaylistItemModel playlistItemModel = playlistItems.get(i);
+                                mPlaylistService.reorderItemFromPlaylist(
+                                        playlistItemModel.getPlaylistId(),
+                                        playlistItemModel.getId(),
+                                        (short) i,
+                                        (result) -> {});
+                            }
+                        });
 
         mPlaylistViewModel
                 .getDeletePlaylistItems()
@@ -304,8 +326,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         }
         loadPlaylist(playlistId);
         PlaylistFragment playlistFragment = new PlaylistFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().replace(
-                R.id.fragment_container_view_tag, playlistFragment);
+        FragmentTransaction transaction =
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container_view_tag, playlistFragment);
         if (shouldFallback) {
             transaction.addToBackStack(AllPlaylistFragment.class.getSimpleName());
         }
@@ -322,8 +346,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         Bundle fragmentBundle = new Bundle();
         fragmentBundle.putBoolean(ConstantUtils.SHOULD_OPEN_PLAYER, true);
         playlistFragment.setArguments(fragmentBundle);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().replace(
-                R.id.fragment_container_view_tag, playlistFragment);
+        FragmentTransaction transaction =
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container_view_tag, playlistFragment);
         transaction.commit();
     }
 
@@ -475,8 +501,12 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public void onMediaFileDownloadProgressed(String id, long totalBytes, long receivedBytes,
-            byte percentComplete, String timeRemaining) {
+    public void onMediaFileDownloadProgressed(
+            String id,
+            long totalBytes,
+            long receivedBytes,
+            byte percentComplete,
+            String timeRemaining) {
         if (mPlaylistViewModel != null) {
             mPlaylistViewModel.updateDownloadProgress(
                     new HlsContentProgressModel(

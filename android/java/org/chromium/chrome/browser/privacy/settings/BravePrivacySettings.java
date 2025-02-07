@@ -443,16 +443,17 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         } else {
             Preference preference = getPreferenceScreen().findPreference(PREF_SAFE_BROWSING);
             if (preference != null) {
-                preference.setOnPreferenceClickListener((pref) -> {
-                    if (!ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(
-                                getActivity())) {
-                        NoGooglePlayServicesDialog.create(getContext()).show();
-                        // Don't show the menu if Google Play Services are not available
-                        return true;
-                    }
+                preference.setOnPreferenceClickListener(
+                        (pref) -> {
+                            if (!ChromiumPlayServicesAvailability.isGooglePlayServicesAvailable(
+                                    getActivity())) {
+                                NoGooglePlayServicesDialog.create(getContext()).show();
+                                // Don't show the menu if Google Play Services are not available
+                                return true;
+                            }
 
-                    return false;
-                });
+                            return false;
+                        });
             }
         }
 
@@ -489,23 +490,29 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 case STRICT:
                     BraveShieldsContentSettings.setHttpsUpgradePref(
                             BraveShieldsContentSettings.BLOCK_RESOURCE);
-                    mHttpsUpgradePref.setSummary(getActivity().getResources().getString(
-                            R.string.https_upgrade_option_1));
+                    mHttpsUpgradePref.setSummary(
+                            getActivity()
+                                    .getResources()
+                                    .getString(R.string.https_upgrade_option_1));
                     mHttpsUpgradePref.setCheckedIndex(0);
                     break;
                 case STANDARD:
                     BraveShieldsContentSettings.setHttpsUpgradePref(
                             BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
-                    mHttpsUpgradePref.setSummary(getActivity().getResources().getString(
-                            R.string.https_upgrade_option_2));
+                    mHttpsUpgradePref.setSummary(
+                            getActivity()
+                                    .getResources()
+                                    .getString(R.string.https_upgrade_option_2));
                     mHttpsUpgradePref.setCheckedIndex(1);
                     break;
                 case ALLOW:
                 default:
                     BraveShieldsContentSettings.setHttpsUpgradePref(
                             BraveShieldsContentSettings.ALLOW_RESOURCE);
-                    mHttpsUpgradePref.setSummary(getActivity().getResources().getString(
-                            R.string.https_upgrade_option_3));
+                    mHttpsUpgradePref.setSummary(
+                            getActivity()
+                                    .getResources()
+                                    .getString(R.string.https_upgrade_option_3));
                     mHttpsUpgradePref.setCheckedIndex(2);
                     break;
             }
@@ -532,15 +539,17 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                     case BraveShieldsContentSettings.BLOCK_RESOURCE:
                         BraveShieldsContentSettings.setFingerprintingPref(newStringValue);
                         mFingerprintingProtectionPref.setSummary(
-                                getActivity().getResources().getString(
-                                        R.string.block_fingerprinting_option_1));
+                                getActivity()
+                                        .getResources()
+                                        .getString(R.string.block_fingerprinting_option_1));
                         mFingerprintingProtectionPref.setCheckedIndex(0);
                         break;
                     case BraveShieldsContentSettings.DEFAULT:
                         BraveShieldsContentSettings.setFingerprintingPref(newStringValue);
                         mFingerprintingProtectionPref.setSummary(
-                                getActivity().getResources().getString(
-                                        R.string.block_fingerprinting_option_2));
+                                getActivity()
+                                        .getResources()
+                                        .getString(R.string.block_fingerprinting_option_2));
                         mFingerprintingProtectionPref.setCheckedIndex(1);
                         break;
                     case BraveShieldsContentSettings.ALLOW_RESOURCE:
@@ -548,8 +557,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                         BraveShieldsContentSettings.setFingerprintingPref(
                                 BraveShieldsContentSettings.ALLOW_RESOURCE);
                         mFingerprintingProtectionPref.setSummary(
-                                getActivity().getResources().getString(
-                                        R.string.block_fingerprinting_option_3));
+                                getActivity()
+                                        .getResources()
+                                        .getString(R.string.block_fingerprinting_option_3));
                         mFingerprintingProtectionPref.setCheckedIndex(2);
                         break;
                 }
@@ -580,23 +590,29 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 case STRICT:
                     BraveShieldsContentSettings.setCookiesPref(
                             BraveShieldsContentSettings.BLOCK_RESOURCE);
-                    mBlockCrosssiteCookies.setSummary(getActivity().getResources().getString(
-                            R.string.block_cookies_option_1));
+                    mBlockCrosssiteCookies.setSummary(
+                            getActivity()
+                                    .getResources()
+                                    .getString(R.string.block_cookies_option_1));
                     mBlockCrosssiteCookies.setCheckedIndex(0);
                     break;
                 case STANDARD:
                     BraveShieldsContentSettings.setCookiesPref(
                             BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
-                    mBlockCrosssiteCookies.setSummary(getActivity().getResources().getString(
-                            R.string.block_cookies_option_2));
+                    mBlockCrosssiteCookies.setSummary(
+                            getActivity()
+                                    .getResources()
+                                    .getString(R.string.block_cookies_option_2));
                     mBlockCrosssiteCookies.setCheckedIndex(1);
                     break;
                 case ALLOW:
                 default:
                     BraveShieldsContentSettings.setCookiesPref(
                             BraveShieldsContentSettings.ALLOW_RESOURCE);
-                    mBlockCrosssiteCookies.setSummary(getActivity().getResources().getString(
-                            R.string.block_cookies_option_3));
+                    mBlockCrosssiteCookies.setSummary(
+                            getActivity()
+                                    .getResources()
+                                    .getString(R.string.block_cookies_option_3));
                     mBlockCrosssiteCookies.setCheckedIndex(2);
             }
         } else if (PREF_BLOCK_SCRIPTS.equals(key)) {
@@ -642,21 +658,27 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
                 switch (newStringValue) {
                     case BraveShieldsContentSettings.BLOCK_RESOURCE:
                         BraveShieldsContentSettings.setTrackersPref(newStringValue);
-                        mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
-                                R.string.block_trackers_ads_option_1));
+                        mAdsTrakersBlockPref.setSummary(
+                                getActivity()
+                                        .getResources()
+                                        .getString(R.string.block_trackers_ads_option_1));
                         mAdsTrakersBlockPref.setCheckedIndex(0);
                         break;
                     case BraveShieldsContentSettings.DEFAULT:
                         BraveShieldsContentSettings.setTrackersPref(newStringValue);
-                        mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
-                                R.string.block_trackers_ads_option_2));
+                        mAdsTrakersBlockPref.setSummary(
+                                getActivity()
+                                        .getResources()
+                                        .getString(R.string.block_trackers_ads_option_2));
                         mAdsTrakersBlockPref.setCheckedIndex(1);
                         break;
                     default:
                         BraveShieldsContentSettings.setTrackersPref(
                                 BraveShieldsContentSettings.ALLOW_RESOURCE);
-                        mAdsTrakersBlockPref.setSummary(getActivity().getResources().getString(
-                                R.string.block_trackers_ads_option_3));
+                        mAdsTrakersBlockPref.setSummary(
+                                getActivity()
+                                        .getResources()
+                                        .getString(R.string.block_trackers_ads_option_3));
                         mAdsTrakersBlockPref.setCheckedIndex(2);
                         break;
                 }
@@ -888,17 +910,23 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     private String webrtcPolicyToString(@BraveWebrtcPolicyPreference.WebrtcPolicy int policy) {
         switch (policy) {
             case BraveWebrtcPolicyPreference.WebrtcPolicy.DEFAULT:
-                return getActivity().getResources().getString(
-                        R.string.settings_webrtc_policy_default);
+                return getActivity()
+                        .getResources()
+                        .getString(R.string.settings_webrtc_policy_default);
             case BraveWebrtcPolicyPreference.WebrtcPolicy.DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES:
-                return getActivity().getResources().getString(
-                        R.string.settings_webrtc_policy_default_public_and_private_interfaces);
+                return getActivity()
+                        .getResources()
+                        .getString(
+                                R.string
+                                        .settings_webrtc_policy_default_public_and_private_interfaces);
             case BraveWebrtcPolicyPreference.WebrtcPolicy.DEFAULT_PUBLIC_INTERFACE_ONLY:
-                return getActivity().getResources().getString(
-                        R.string.settings_webrtc_policy_default_public_interface_only);
+                return getActivity()
+                        .getResources()
+                        .getString(R.string.settings_webrtc_policy_default_public_interface_only);
             case BraveWebrtcPolicyPreference.WebrtcPolicy.DISABLE_NON_PROXIED_UDP:
-                return getActivity().getResources().getString(
-                        R.string.settings_webrtc_policy_disable_non_proxied_udp);
+                return getActivity()
+                        .getResources()
+                        .getString(R.string.settings_webrtc_policy_disable_non_proxied_udp);
         }
         assert false : "Setting is out of range!";
         return "";

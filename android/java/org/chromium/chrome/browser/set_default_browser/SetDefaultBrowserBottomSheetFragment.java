@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.set_default_browser;
 
@@ -86,15 +84,17 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
             dontAskCheckBox.setVisibility(View.GONE);
         }
 
-        dontAskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                nextButton.setEnabled(false);
-                nextButton.setBackgroundResource(R.drawable.set_default_rounded_button_disabled);
-            } else {
-                nextButton.setEnabled(true);
-                nextButton.setBackgroundResource(R.drawable.orange_rounded_button);
-            }
-        });
+        dontAskCheckBox.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    if (isChecked) {
+                        nextButton.setEnabled(false);
+                        nextButton.setBackgroundResource(
+                                R.drawable.set_default_rounded_button_disabled);
+                    } else {
+                        nextButton.setEnabled(true);
+                        nextButton.setBackgroundResource(R.drawable.orange_rounded_button);
+                    }
+                });
 
         Button cancelButton = view.findViewById(R.id.btn_cancel);
         cancelButton.setOnClickListener(

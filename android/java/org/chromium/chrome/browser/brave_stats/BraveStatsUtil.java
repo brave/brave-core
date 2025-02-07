@@ -188,7 +188,8 @@ public class BraveStatsUtil {
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT,
+            sendIntent.putExtra(
+                    Intent.EXTRA_TEXT,
                     context.getResources().getString(R.string.brave_stats_share_text));
             sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
             sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -239,8 +240,12 @@ public class BraveStatsUtil {
 
     /** Create a File for saving an image or video */
     private static File getOutputMediaFile() {
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory() + "/Android/data/"
-                + ContextUtils.getApplicationContext().getPackageName() + "/Files");
+        File mediaStorageDir =
+                new File(
+                        Environment.getExternalStorageDirectory()
+                                + "/Android/data/"
+                                + ContextUtils.getApplicationContext().getPackageName()
+                                + "/Files");
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {

@@ -32,8 +32,9 @@ public class BraveSafeBrowsingSettingsFragmentTest {
     public void setUp() {
         mTestRule.startSettingsActivity();
         mSafeBrowsingSettingsFragment = mTestRule.getFragment();
-        mSafeBrowsingPreference = mSafeBrowsingSettingsFragment.findPreference(
-                SafeBrowsingSettingsFragment.PREF_SAFE_BROWSING);
+        mSafeBrowsingPreference =
+                mSafeBrowsingSettingsFragment.findPreference(
+                        SafeBrowsingSettingsFragment.PREF_SAFE_BROWSING);
     }
 
     @Test

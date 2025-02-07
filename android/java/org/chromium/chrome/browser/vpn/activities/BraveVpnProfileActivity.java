@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn.activities;
 
@@ -41,27 +39,30 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         mProfileText = findViewById(R.id.brave_vpn_profile_text);
 
         mInstallVpnButton = findViewById(R.id.btn_install_profile);
-        mInstallVpnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BraveVpnUtils.showProgressDialog(BraveVpnProfileActivity.this,
-                        getResources().getString(R.string.vpn_connect_text));
-                if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
-                    mBraveVpnPrefModel = new BraveVpnPrefModel();
-                    BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
-                } else {
-                    verifySubscription();
-                }
-            }
-        });
+        mInstallVpnButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BraveVpnUtils.showProgressDialog(
+                                BraveVpnProfileActivity.this,
+                                getResources().getString(R.string.vpn_connect_text));
+                        if (BraveVpnNativeWorker.getInstance().isPurchasedUser()) {
+                            mBraveVpnPrefModel = new BraveVpnPrefModel();
+                            BraveVpnNativeWorker.getInstance().getSubscriberCredentialV12();
+                        } else {
+                            verifySubscription();
+                        }
+                    }
+                });
 
         mContactSupportButton = findViewById(R.id.btn_contact_supoort);
-        mContactSupportButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
-            }
-        });
+        mContactSupportButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BraveVpnUtils.openBraveVpnSupportActivity(BraveVpnProfileActivity.this);
+                    }
+                });
     }
 
     @Override

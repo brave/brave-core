@@ -5,4 +5,10 @@
 
 package org.chromium.chrome.browser.settings;
 
-enum BraveNewsPreferencesSearchType { Init, SearchUrl, GettingFeed, NotFound, NewSource }
+enum BraveNewsPreferencesSearchType {
+    Init,
+    SearchUrl,
+    GettingFeed,
+    NotFound,
+    NewSource
+}

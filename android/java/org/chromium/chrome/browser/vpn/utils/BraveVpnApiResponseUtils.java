@@ -44,10 +44,12 @@ public class BraveVpnApiResponseUtils {
                 InAppPurchaseWrapper.getInstance()
                         .queryPurchases(
                                 _activePurchases, InAppPurchaseWrapper.SubscriptionProduct.VPN);
-                LiveDataUtil.observeOnce(activePurchases, activePurchaseModel -> {
-                    InAppPurchaseWrapper.getInstance().processPurchases(
-                            activity, activePurchaseModel.getPurchase());
-                });
+                LiveDataUtil.observeOnce(
+                        activePurchases,
+                        activePurchaseModel -> {
+                            InAppPurchaseWrapper.getInstance()
+                                    .processPurchases(activity, activePurchaseModel.getPurchase());
+                        });
             }
             BraveVpnNativeWorker.getInstance().getTimezonesForRegions();
         } else {
@@ -57,8 +59,11 @@ public class BraveVpnApiResponseUtils {
         }
     }
 
-    public static void handleOnGetTimezonesForRegions(Activity activity,
-            BraveVpnPrefModel braveVpnPrefModel, String jsonTimezones, boolean isSuccess) {
+    public static void handleOnGetTimezonesForRegions(
+            Activity activity,
+            BraveVpnPrefModel braveVpnPrefModel,
+            String jsonTimezones,
+            boolean isSuccess) {
         if (isSuccess) {
             BraveVpnServerRegion braveVpnServerRegion =
                     BraveVpnUtils.getServerRegionForTimeZone(
@@ -105,14 +110,19 @@ public class BraveVpnApiResponseUtils {
         }
     }
 
-    public static Pair<String, String> handleOnGetHostnamesForRegion(Activity activity,
-            BraveVpnPrefModel braveVpnPrefModel, String jsonHostNames, boolean isSuccess) {
+    public static Pair<String, String> handleOnGetHostnamesForRegion(
+            Activity activity,
+            BraveVpnPrefModel braveVpnPrefModel,
+            String jsonHostNames,
+            boolean isSuccess) {
         Pair<String, String> host = new Pair<String, String>("", "");
         if (isSuccess && braveVpnPrefModel != null) {
             host = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
-            BraveVpnNativeWorker.getInstance().getWireguardProfileCredentials(
-                    braveVpnPrefModel.getSubscriberCredential(),
-                    braveVpnPrefModel.getClientPublicKey(), host.first);
+            BraveVpnNativeWorker.getInstance()
+                    .getWireguardProfileCredentials(
+                            braveVpnPrefModel.getSubscriberCredential(),
+                            braveVpnPrefModel.getClientPublicKey(),
+                            host.first);
         } else {
             BraveVpnUtils.showToast(
                     activity.getResources().getString(R.string.vpn_profile_creation_failed));

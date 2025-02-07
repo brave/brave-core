@@ -1,11 +1,10 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards.tipping;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Resources;
@@ -118,10 +117,13 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
-        final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_rewards_tippingpanel_fragment_base, null);
+        final View view =
+                LayoutInflater.from(getContext())
+                        .inflate(R.layout.brave_rewards_tippingpanel_fragment_base, null);
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
         if (getArguments() != null) {
             mCurrentTabId = getArguments().getInt(RewardsTippingBannerActivity.TAB_ID_EXTRA);
@@ -176,8 +178,11 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         Resources res = getResources();
         TextView proceedTextView = view.findViewById(R.id.proceed_terms_of_service);
         proceedTextView.setMovementMethod(LinkMovementMethod.getInstance());
-        String termsOfServiceText = String.format(res.getString(R.string.brave_rewards_tos_text),
-                res.getString(R.string.terms_of_service), res.getString(R.string.privacy_policy));
+        String termsOfServiceText =
+                String.format(
+                        res.getString(R.string.brave_rewards_tos_text),
+                        res.getString(R.string.terms_of_service),
+                        res.getString(R.string.privacy_policy));
         int termsOfServiceTextColor =
                 GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
                         ? R.color.terms_of_service_text_color_night
@@ -198,7 +203,8 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                 String custodianType = mExternalWallet.getType();
                 if (!TextUtils.isEmpty(custodianType)) {
                     String sendWithCustodian =
-                            String.format(getString(R.string.send_with_custodian),
+                            String.format(
+                                    getString(R.string.send_with_custodian),
                                     getWalletStringFromType(custodianType));
                     mSendButton.setText(sendWithCustodian);
                     if (custodianType.equals(BraveWalletProvider.SOLANA)) {
@@ -230,7 +236,8 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                 || (pubStatus == PublisherStatus.GEMINI_VERIFIED
                         && !mWalletType.equals(BraveWalletProvider.GEMINI))) {
             String notePart1 =
-                    String.format(getString(R.string.creator_unable_receive_contributions),
+                    String.format(
+                            getString(R.string.creator_unable_receive_contributions),
                             getWalletStringFromType(mWalletType));
             int backgroundDrawable = R.drawable.rewards_panel_information_for_unverified_background;
             hideAllViews();
@@ -295,14 +302,18 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     private void showErrorLayout() {
         mSendButton.setEnabled(true);
         mSendButton.setText(R.string.try_again);
-        showWarningMessage(mContentView, R.drawable.tipping_error_alert_message_background,
+        showWarningMessage(
+                mContentView,
+                R.drawable.tipping_error_alert_message_background,
                 getString(R.string.there_was_a_problem_sending_your_contribution),
                 getString(R.string.please_try_again));
     }
 
     private void showNotEnoughTokens() {
         mEnoughFundWarningShown = true;
-        showWarningMessage(mContentView, R.drawable.tipping_error_alert_message_background,
+        showWarningMessage(
+                mContentView,
+                R.drawable.tipping_error_alert_message_background,
                 getString(R.string.not_enough_tokens),
                 String.format(getString(R.string.not_enough_tokens_description), mBalance));
     }
@@ -313,11 +324,13 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         mContentView.findViewById(R.id.set_as_monthly_contribution).setVisibility(View.GONE);
 
         String already_monthly_contribution_description =
-                String.format(getString(R.string.already_monthly_contribution_description),
+                String.format(
+                        getString(R.string.already_monthly_contribution_description),
                         getString(R.string.monthly_contributions));
         SpannableString spannableString =
                 stringMonthlyToSpannableString(already_monthly_contribution_description);
-        showWarningMessage(mContentView,
+        showWarningMessage(
+                mContentView,
                 R.drawable.rewards_panel_information_for_unverified_background,
                 getString(R.string.already_monthly_contribution),
                 already_monthly_contribution_description);
@@ -354,27 +367,35 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     @SuppressLint("SetTextI18n")
     private void setLogoutStateMessage() {
         String logoutWarningMessage =
-                String.format(getString(R.string.logged_out_of_custodian_description),
+                String.format(
+                        getString(R.string.logged_out_of_custodian_description),
                         getWalletStringFromType(mExternalWallet.getType()));
         if (!TextUtils.isEmpty(mWeb3Url)) {
             logoutWarningMessage += getString(R.string.still_receive_contributions_from_web3);
             mWeb3WalletButton.setVisibility(View.VISIBLE);
         }
 
-        showWarningMessage(mContentView, R.drawable.tipping_logout_message_background,
-                String.format(getString(R.string.logged_out_of_custodian),
+        showWarningMessage(
+                mContentView,
+                R.drawable.tipping_logout_message_background,
+                String.format(
+                        getString(R.string.logged_out_of_custodian),
                         getWalletStringFromType(mExternalWallet.getType())),
                 logoutWarningMessage);
 
         hideAllViews();
 
         ((TextView) mContentView.findViewById(R.id.wallet_amount_text))
-                .setText(getResources().getString(R.string.empty_value_palceholder) + " "
-                        + getResources().getString(R.string.bat));
+                .setText(
+                        getResources().getString(R.string.empty_value_palceholder)
+                                + " "
+                                + getResources().getString(R.string.bat));
         mIsLogoutState = true;
         mSendButton.setEnabled(true);
-        mSendButton.setText(String.format(getResources().getString(R.string.login_to_custodian),
-                getWalletStringFromType(mExternalWallet.getType())));
+        mSendButton.setText(
+                String.format(
+                        getResources().getString(R.string.login_to_custodian),
+                        getWalletStringFromType(mExternalWallet.getType())));
     }
 
     private String getWalletStringFromType(String walletType) {
@@ -394,8 +415,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     private void showWarningMessage(View view, int background, String title, String description) {
         View warningLayout = view.findViewById(R.id.tipping_warning_message_layout);
         warningLayout.setVisibility(View.VISIBLE);
-        warningLayout.setBackground(ResourcesCompat.getDrawable(
-                getActivity().getResources(), background, /* theme= */ null));
+        warningLayout.setBackground(
+                ResourcesCompat.getDrawable(
+                        getActivity().getResources(), background, /* theme= */ null));
         TextView warningTitle = view.findViewById(R.id.tipping_warning_title_text);
         warningTitle.setText(title);
         TextView warningDescription = view.findViewById(R.id.tipping_warning_description_text);
@@ -448,39 +470,41 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     private void exchangeButtonClick(View view) {
         View exchangeButton = view.findViewById(R.id.exchange_shape);
-        exchangeButton.setOnClickListener((v) -> {
-            mToggle = !mToggle;
-            mCurrency1ValueEditTextView.setText(mCurrency2ValueTextView.getText());
-            mCurrency1ValueTextView.setText(mCurrency2ValueTextView.getText());
+        exchangeButton.setOnClickListener(
+                (v) -> {
+                    mToggle = !mToggle;
+                    mCurrency1ValueEditTextView.setText(mCurrency2ValueTextView.getText());
+                    mCurrency1ValueTextView.setText(mCurrency2ValueTextView.getText());
 
-            initTipChoice(mToggle);
-        });
+                    initTipChoice(mToggle);
+                });
     }
 
-    private TextWatcher mTextChangeListener = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    private TextWatcher mTextChangeListener =
+            new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (TextUtils.isEmpty(s)) s = "0";
-            Double batValue = getBatValue(s.toString(), mIsBatCurrency);
-            Double usdValue = mRate * batValue;
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (TextUtils.isEmpty(s)) s = "0";
+                    Double batValue = getBatValue(s.toString(), mIsBatCurrency);
+                    Double usdValue = mRate * batValue;
 
-            if (mIsBatCurrency) {
-                mCurrency2ValueTextView.setText(String.valueOf(roundExchangeUp(usdValue)));
-            } else {
-                mCurrency2ValueTextView.setText(String.valueOf(batValue));
-            }
+                    if (mIsBatCurrency) {
+                        mCurrency2ValueTextView.setText(String.valueOf(roundExchangeUp(usdValue)));
+                    } else {
+                        mCurrency2ValueTextView.setText(String.valueOf(batValue));
+                    }
 
-            mAmountSelected = selectedAmount();
-            checkEnoughFund();
-        }
+                    mAmountSelected = selectedAmount();
+                    checkEnoughFund();
+                }
 
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
+                @Override
+                public void afterTextChanged(Editable s) {}
+            };
 
     private void init(View view) {
         mCurrency1TextView = view.findViewById(R.id.currency1);
@@ -526,7 +550,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
             return;
         }
         if (mBalance < mAmountSelected) { // moment more than selected amount button disabled and
-                                          // show warning message
+            // show warning message
             showNotEnoughTokens();
             mSendButton.setEnabled(false);
         } else { // if selected amount is with in range then enable it
@@ -602,53 +626,54 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         }
     }
 
-    private View.OnClickListener mRadioClicker = view -> {
-        if (mFetchBalanceProgressBar.getVisibility() == View.VISIBLE) {
-            return;
-        }
-        mCurrency1ValueEditTextView.removeTextChangedListener(mTextChangeListener);
+    private View.OnClickListener mRadioClicker =
+            view -> {
+                if (mFetchBalanceProgressBar.getVisibility() == View.VISIBLE) {
+                    return;
+                }
+                mCurrency1ValueEditTextView.removeTextChangedListener(mTextChangeListener);
 
-        TextView tb_pressed = (TextView) view;
-        if (!tb_pressed.isSelected()) {
-            tb_pressed.setSelected(true);
-        }
+                TextView tb_pressed = (TextView) view;
+                if (!tb_pressed.isSelected()) {
+                    tb_pressed.setSelected(true);
+                }
 
-        int id = view.getId();
-        if (id == R.id.tipChoiceCustom) {
-            mCurrency1ValueEditTextView.requestFocus();
-            mCurrency1ValueTextView.setVisibility(View.INVISIBLE);
-            mCurrency1ValueEditTextView.setVisibility(View.VISIBLE);
-        } else {
-            mCurrency1ValueTextView.setVisibility(View.VISIBLE);
-            mCurrency1ValueEditTextView.setVisibility(View.INVISIBLE);
-            mCurrency1ValueTextView.setInputType(InputType.TYPE_NULL);
-            String s = ((TextView) view).getText().toString();
+                int id = view.getId();
+                if (id == R.id.tipChoiceCustom) {
+                    mCurrency1ValueEditTextView.requestFocus();
+                    mCurrency1ValueTextView.setVisibility(View.INVISIBLE);
+                    mCurrency1ValueEditTextView.setVisibility(View.VISIBLE);
+                } else {
+                    mCurrency1ValueTextView.setVisibility(View.VISIBLE);
+                    mCurrency1ValueEditTextView.setVisibility(View.INVISIBLE);
+                    mCurrency1ValueTextView.setInputType(InputType.TYPE_NULL);
+                    String s = ((TextView) view).getText().toString();
 
-            Double batValue = getBatValue(s, true);
-            Double usdValue = mRate * batValue;
-            String usdValueString = String.valueOf(roundExchangeUp(usdValue));
+                    Double batValue = getBatValue(s, true);
+                    Double usdValue = mRate * batValue;
+                    String usdValueString = String.valueOf(roundExchangeUp(usdValue));
 
-            if (mIsBatCurrency) {
-                mCurrency1ValueTextView.setText(s);
-                mCurrency1ValueEditTextView.setText(s);
-                mCurrency2ValueTextView.setText(usdValueString);
-            } else {
-                mCurrency1ValueTextView.setText(usdValueString);
-                mCurrency1ValueEditTextView.setText(usdValueString);
-                mCurrency2ValueTextView.setText(s);
-            }
-        }
-        for (TextView tb : mRadioTipAmount) {
-            if (tb.getId() == id) {
-                continue;
-            }
-            tb.setSelected(false);
-        }
-        mAmountSelected = selectedAmount();
+                    if (mIsBatCurrency) {
+                        mCurrency1ValueTextView.setText(s);
+                        mCurrency1ValueEditTextView.setText(s);
+                        mCurrency2ValueTextView.setText(usdValueString);
+                    } else {
+                        mCurrency1ValueTextView.setText(usdValueString);
+                        mCurrency1ValueEditTextView.setText(usdValueString);
+                        mCurrency2ValueTextView.setText(s);
+                    }
+                }
+                for (TextView tb : mRadioTipAmount) {
+                    if (tb.getId() == id) {
+                        continue;
+                    }
+                    tb.setSelected(false);
+                }
+                mAmountSelected = selectedAmount();
 
-        checkEnoughFund();
-        mCurrency1ValueEditTextView.addTextChangedListener(mTextChangeListener);
-    };
+                checkEnoughFund();
+                mCurrency1ValueEditTextView.addTextChangedListener(mTextChangeListener);
+            };
 
     private double selectedAmount() {
         double amount = 0.0;
@@ -671,10 +696,9 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     /**
      * @param inputValue : editText string passed here
-     * @return convert to bat value if current editText is USD
-     * It will return multiple 0.25
-     * And also return which is lower between Max and value
-     * decimal points always roundedOff to floor value.
+     * @return convert to bat value if current editText is USD It will return multiple 0.25 And also
+     *     return which is lower between Max and value decimal points always roundedOff to floor
+     *     value.
      */
     private double getBatValue(String inputValue, boolean isBatCurrencyMode) {
         double rawValue = 0;

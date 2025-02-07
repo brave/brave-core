@@ -49,11 +49,15 @@ public class BraveVariationsSeedFetcher extends VariationsSeedFetcher {
 
         // Replace Chromium URL with Brave URL.
         if (urlString.indexOf(DEFAULT_VARIATIONS_SERVER_URL) != -1) {
-            urlString = urlString.replaceFirst(
-                    DEFAULT_VARIATIONS_SERVER_URL, BraveVariationsConfig.VARIATIONS_SERVER_URL);
+            urlString =
+                    urlString.replaceFirst(
+                            DEFAULT_VARIATIONS_SERVER_URL,
+                            BraveVariationsConfig.VARIATIONS_SERVER_URL);
         } else if (urlString.indexOf(DEFAULT_FAST_VARIATIONS_SERVER_URL) != -1) {
-            urlString = urlString.replaceFirst(DEFAULT_FAST_VARIATIONS_SERVER_URL,
-                    BraveVariationsConfig.VARIATIONS_SERVER_URL);
+            urlString =
+                    urlString.replaceFirst(
+                            DEFAULT_FAST_VARIATIONS_SERVER_URL,
+                            BraveVariationsConfig.VARIATIONS_SERVER_URL);
         } else {
             Log.e(TAG, "Cannot replace seed URL to fetch variations: %s", urlString);
             urlString = "";

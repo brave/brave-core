@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
@@ -29,14 +27,21 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
     private static final String TAG = "DormantEngagement";
 
     private static final List<String> mTexts =
-            Arrays.asList(ContextUtils.getApplicationContext().getResources().getString(
-                                  R.string.dormant_users_engagement_text_1),
-                    ContextUtils.getApplicationContext().getResources().getString(
-                            R.string.dormant_users_engagement_text_2),
-                    ContextUtils.getApplicationContext().getResources().getString(
-                            R.string.dormant_users_engagement_text_3));
-    private static final List<Integer> mImages = Arrays.asList(
-            R.drawable.ic_rocket, R.drawable.ic_brave_battery, R.drawable.ic_brave_mobiledata);
+            Arrays.asList(
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_1),
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_2),
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_3));
+    private static final List<Integer> mImages =
+            Arrays.asList(
+                    R.drawable.ic_rocket,
+                    R.drawable.ic_brave_battery,
+                    R.drawable.ic_brave_mobiledata);
     private String notificationType;
 
     @Override

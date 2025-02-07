@@ -15,8 +15,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
-public class BraveWalletEthereumConnectedSites
-        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+public class BraveWalletEthereumConnectedSites extends BravePreferenceFragment
+        implements Preference.OnPreferenceChangeListener {
     private static final String PREF_BRAVE_WALLET_ETHEREUM_CONNECTED_SITES =
             "pref_brave_wallet_ethereum_connected_sites";
     private final ObservableSupplierImpl<String> mPageTitle = new ObservableSupplierImpl<>();
@@ -41,8 +41,8 @@ public class BraveWalletEthereumConnectedSites
     public void onDestroyView() {
         super.onDestroyView();
         BraveWalletEthereumConnectedSitesPreference pref =
-                (BraveWalletEthereumConnectedSitesPreference) findPreference(
-                        PREF_BRAVE_WALLET_ETHEREUM_CONNECTED_SITES);
+                (BraveWalletEthereumConnectedSitesPreference)
+                        findPreference(PREF_BRAVE_WALLET_ETHEREUM_CONNECTED_SITES);
         pref.destroy();
     }
 }

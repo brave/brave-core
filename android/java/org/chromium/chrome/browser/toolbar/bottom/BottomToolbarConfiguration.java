@@ -23,12 +23,11 @@ public class BottomToolbarConfiguration {
 
     public static boolean isBottomToolbarEnabled() {
         if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                    ContextUtils.getApplicationContext())) {
+                ContextUtils.getApplicationContext())) {
             return false;
         }
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        if (sharedPreferences.getBoolean(
-                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY, false)) {
+        if (sharedPreferences.getBoolean(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY, false)) {
             return sharedPreferences.getBoolean(
                     BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true);
         } else {
@@ -62,4 +61,3 @@ public class BottomToolbarConfiguration {
         return (width <= SMALL_SCREEN_WIDTH) && (height <= SMALL_SCREEN_HEIGHT);
     }
 }
-

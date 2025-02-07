@@ -266,7 +266,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         braveSpeedReader.setVisible(false);
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER)
                 && UserPrefs.get(mTabModelSelector.getCurrentModel().getProfile())
-                           .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED)) {
+                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED)) {
             final Tab currentTab = mActivityTabProvider.get();
             if (currentTab != null && BraveSpeedReaderUtils.tabSupportsDistillation(currentTab)) {
                 braveSpeedReader.setVisible(true);
@@ -355,8 +355,11 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
         if (view instanceof AppMenuIconRowFooter) {
             ((AppMenuIconRowFooter) view)
-                    .initialize(appMenuHandler, mBookmarkModelSupplier.get(),
-                            mActivityTabProvider.get(), mAppMenuDelegate);
+                    .initialize(
+                            appMenuHandler,
+                            mBookmarkModelSupplier.get(),
+                            mActivityTabProvider.get(),
+                            mAppMenuDelegate);
         }
 
         // Hide bookmark button if bottom toolbar is enabled

@@ -24,8 +24,8 @@ public class SnsSettingsFragment extends PreferenceFragmentCompat {
         SettingsUtils.addPreferencesFromResource(this, R.xml.sns_preferences);
 
         RadioButtonGroupDDnsResolveMethodPreference radioButtonGroupDDnsResolveMethodPreference =
-                (RadioButtonGroupDDnsResolveMethodPreference) findPreference(
-                        PREF_SNS_RESOLVE_METHOD);
+                (RadioButtonGroupDDnsResolveMethodPreference)
+                        findPreference(PREF_SNS_RESOLVE_METHOD);
 
         radioButtonGroupDDnsResolveMethodPreference.initialize(
                 BraveLocalState.get().getInteger(BravePref.SNS_RESOLVE_METHOD));

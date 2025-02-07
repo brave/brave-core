@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.notifications;
 
@@ -23,9 +21,7 @@ import androidx.core.content.ContextCompat;
 
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 
-/**
- * This class is for settings permission related checks
- */
+/** This class is for settings permission related checks */
 public class BravePermissionUtils {
     private static final String APP_PACKAGE = "app_package";
     private static final String APP_UID = "app_uid";

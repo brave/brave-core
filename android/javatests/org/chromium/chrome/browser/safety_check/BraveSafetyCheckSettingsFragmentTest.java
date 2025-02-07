@@ -33,6 +33,7 @@ public class BraveSafetyCheckSettingsFragmentTest {
     @Rule
     public SettingsActivityTestRule<SafetyCheckSettingsFragment> mSettingsActivityTestRule =
             new SettingsActivityTestRule<>(SafetyCheckSettingsFragment.class);
+
     private SafetyCheckSettingsFragment mFragment;
 
     @Before

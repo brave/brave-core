@@ -38,8 +38,10 @@ public class BraveTileView extends TileView {
                 if (mTitleView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                     ViewGroup.MarginLayoutParams params =
                             (ViewGroup.MarginLayoutParams) mTitleView.getLayoutParams();
-                    params.bottomMargin = getResources().getDimensionPixelSize(
-                            R.dimen.tile_view_icon_background_margin_top_modern);
+                    params.bottomMargin =
+                            getResources()
+                                    .getDimensionPixelSize(
+                                            R.dimen.tile_view_icon_background_margin_top_modern);
                     mTitleView.setLayoutParams(params);
                 }
             }

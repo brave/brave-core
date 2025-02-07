@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.vpn.activities;
 
@@ -39,8 +37,8 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 
-public abstract class BraveVpnParentActivity
-        extends AsyncInitializationActivity implements BraveVpnObserver {
+public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
+        implements BraveVpnObserver {
     private static final String TAG = "BraveVPN";
     public boolean mIsVerification;
     protected BraveVpnPrefModel mBraveVpnPrefModel;
@@ -49,6 +47,7 @@ public abstract class BraveVpnParentActivity
     private static final int INVALIDATE_CREDENTIAL_TIMER_COUNT = 5000;
 
     abstract void showRestoreMenu(boolean shouldShowRestore);
+
     abstract void updateProfileView();
 
     // Pass @{code ActivityResultRegistry} reference explicitly to avoid crash
@@ -168,14 +167,16 @@ public abstract class BraveVpnParentActivity
         } else {
             BraveVpnUtils.dismissProgressDialog();
         }
-    };
+    }
+    ;
 
     @Override
     public void onGetSubscriberCredential(String subscriberCredential, boolean isSuccess) {
         mBraveVpnPrefModel.setSubscriberCredential(subscriberCredential);
         BraveVpnApiResponseUtils.handleOnGetSubscriberCredential(
                 BraveVpnParentActivity.this, isSuccess);
-    };
+    }
+    ;
 
     @Override
     public void onGetTimezonesForRegions(String jsonTimezones, boolean isSuccess) {
@@ -188,8 +189,9 @@ public abstract class BraveVpnParentActivity
         KeyPair keyPair = new KeyPair();
         mBraveVpnPrefModel.setClientPrivateKey(keyPair.getPrivateKey().toBase64());
         mBraveVpnPrefModel.setClientPublicKey(keyPair.getPublicKey().toBase64());
-        Pair<String, String> host = BraveVpnApiResponseUtils.handleOnGetHostnamesForRegion(
-                BraveVpnParentActivity.this, mBraveVpnPrefModel, jsonHostNames, isSuccess);
+        Pair<String, String> host =
+                BraveVpnApiResponseUtils.handleOnGetHostnamesForRegion(
+                        BraveVpnParentActivity.this, mBraveVpnPrefModel, jsonHostNames, isSuccess);
         mBraveVpnPrefModel.setHostname(host.first);
         mBraveVpnPrefModel.setHostnameDisplay(host.second);
     }

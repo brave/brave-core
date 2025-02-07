@@ -36,8 +36,9 @@ public class BraveNotificationPermissionRationaleDialog extends BraveDialogFragm
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(
-                R.layout.brave_notification_permission_rationale_dialog, container, false);
+        View view =
+                inflater.inflate(
+                        R.layout.brave_notification_permission_rationale_dialog, container, false);
         if (getDialog() != null && getDialog().getWindow() != null) {
             getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -54,14 +55,18 @@ public class BraveNotificationPermissionRationaleDialog extends BraveDialogFragm
 
     private void clickOnContinueButton(View view) {
         Button primaryButton = view.findViewById(R.id.notification_continue_button);
-        primaryButton.setOnClickListener(v -> {
-            dismiss();
-            BravePermissionUtils.requestPermission(getActivity());
-        });
+        primaryButton.setOnClickListener(
+                v -> {
+                    dismiss();
+                    BravePermissionUtils.requestPermission(getActivity());
+                });
     }
 
     private void clickOnNotNow(View view) {
         Button notNowButton = view.findViewById(R.id.notification_not_now_button);
-        notNowButton.setOnClickListener(v -> { dismiss(); });
+        notNowButton.setOnClickListener(
+                v -> {
+                    dismiss();
+                });
     }
 }

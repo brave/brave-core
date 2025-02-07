@@ -64,14 +64,16 @@ class BravePermissionDialogModel {
     }
 
     private static PropertyModel createModelForWidevineRequest(
-            ModalDialogProperties.Controller controller, PermissionDialogDelegate delegate,
+            ModalDialogProperties.Controller controller,
+            PermissionDialogDelegate delegate,
             Runnable touchFilteredCallback) {
         BravePermissionDialogDelegate braveDelegate =
                 (BravePermissionDialogDelegate) (Object) delegate;
         Context context = delegate.getWindow().getContext().get();
         assert context != null;
-        View customView = LayoutInflaterUtils.inflate(
-                context, R.layout.widevine_permission_request_custom_view, null);
+        View customView =
+                LayoutInflaterUtils.inflate(
+                        context, R.layout.widevine_permission_request_custom_view, null);
 
         String messageText = delegate.getMessageText();
         // Override Allow button text
@@ -102,7 +104,9 @@ class BravePermissionDialogModel {
 
         CheckBox checkbox = customView.findViewById(R.id.checkbox);
         checkbox.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> { braveDelegate.setDontAskAgain(isChecked); });
+                (buttonView, isChecked) -> {
+                    braveDelegate.setDontAskAgain(isChecked);
+                });
 
         PropertyModel model =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
@@ -161,12 +165,13 @@ class BravePermissionDialogModel {
             radioButtonIndex += 1;
             radioGroup.addView(radioButon);
         }
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                braveDelegate.setSelectedLifetimeOption(checkedId);
-            }
-        });
+        radioGroup.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        braveDelegate.setSelectedLifetimeOption(checkedId);
+                    }
+                });
         radioGroup.check(0);
         layout.addView(radioGroup);
     }
@@ -176,8 +181,10 @@ class BravePermissionDialogModel {
         CustomTabsIntent customTabIntent =
                 new CustomTabsIntent.Builder()
                         .setShowTitle(true)
-                        .setColorScheme(ColorUtils.inNightMode(context) ? COLOR_SCHEME_DARK
-                                                                        : COLOR_SCHEME_LIGHT)
+                        .setColorScheme(
+                                ColorUtils.inNightMode(context)
+                                        ? COLOR_SCHEME_DARK
+                                        : COLOR_SCHEME_LIGHT)
                         .build();
         Uri uri = Uri.parse(url);
         // customTabIntent.launchUrl(context, uri);

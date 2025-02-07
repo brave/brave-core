@@ -70,9 +70,7 @@ public class BraveSyncDevices {
         }
     }
 
-    /**
-     * Listener for the devices syncchain changes.
-     */
+    /** Listener for the devices syncchain changes. */
     public interface DeviceInfoChangedListener {
         // Invoked when the device info has changed.
         public void deviceInfoChanged();
@@ -93,8 +91,8 @@ public class BraveSyncDevices {
     }
 
     /**
-     * Called when the state of the native sync engine has changed, so various
-     * UI elements can update themselves.
+     * Called when the state of the native sync engine has changed, so various UI elements can
+     * update themselves.
      */
     @CalledByNative
     protected void deviceInfoChanged() {
@@ -149,9 +147,11 @@ public class BraveSyncDevices {
     @NativeMethods
     interface Natives {
         void init(BraveSyncDevices caller);
+
         void destroy(long nativeBraveSyncDevicesAndroid);
 
         String getSyncDeviceListJson(long nativeBraveSyncDevicesAndroid);
+
         void deleteDevice(long nativeBraveSyncDevicesAndroid, String deviceGuid);
     }
 }

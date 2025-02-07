@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.onboarding;
 
@@ -72,16 +70,22 @@ public class BraveRewardsOnboardingFragment extends Fragment {
         btnNext.setText(getResources().getString(R.string.earn_and_give));
         btnSkip.setText(getResources().getString(R.string.skip));
 
-        String braveRewardsText = "<b>"
-                + String.format(getResources().getString(R.string.earn_tokens),
-                        getResources().getString(R.string.token))
-                + "</b> " + getResources().getString(R.string.brave_rewards_onboarding_text);
+        String braveRewardsText =
+                "<b>"
+                        + String.format(
+                                getResources().getString(R.string.earn_tokens),
+                                getResources().getString(R.string.token))
+                        + "</b> "
+                        + getResources().getString(R.string.brave_rewards_onboarding_text);
         Spanned textToInsert = BraveRewardsHelper.spannedFromHtmlString(braveRewardsText);
         tvText.setText(textToInsert);
         tvText.setMovementMethod(new ScrollingMovementMethod());
 
-        String termsText = getResources().getString(R.string.terms_text) + " "
-                           + getResources().getString(R.string.terms_of_service) + ".";
+        String termsText =
+                getResources().getString(R.string.terms_text)
+                        + " "
+                        + getResources().getString(R.string.terms_of_service)
+                        + ".";
         Spanned textToAgree = BraveRewardsHelper.spannedFromHtmlString(termsText);
         SpannableString ss = new SpannableString(textToAgree.toString());
 
@@ -100,33 +104,39 @@ public class BraveRewardsOnboardingFragment extends Fragment {
                     }
                 };
 
-        ss.setSpan(clickableSpan, getResources().getString(R.string.terms_text).length(),
-                   ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(
+                clickableSpan,
+                getResources().getString(R.string.terms_text).length(),
+                ss.length() - 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         ForegroundColorSpan foregroundSpan =
                 new ForegroundColorSpan(getContext().getColor(R.color.onboarding_orange));
-        ss.setSpan(foregroundSpan, getResources().getString(R.string.terms_text).length(),
-                   ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(
+                foregroundSpan,
+                getResources().getString(R.string.terms_text).length(),
+                ss.length() - 1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvAgree.setMovementMethod(LinkMovementMethod.getInstance());
         tvAgree.setText(ss);
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                assert onViewPagerAction != null;
-                if (onViewPagerAction != null)
-                    onViewPagerAction.onSkip();
-            }
-        });
+        btnSkip.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assert onViewPagerAction != null;
+                        if (onViewPagerAction != null) onViewPagerAction.onSkip();
+                    }
+                });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                assert onViewPagerAction != null;
-                if (onViewPagerAction != null)
-                    onViewPagerAction.onNext();
-            }
-        });
+        btnNext.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        assert onViewPagerAction != null;
+                        if (onViewPagerAction != null) onViewPagerAction.onNext();
+                    }
+                });
     }
 
     public void setOnViewPagerAction(OnViewPagerAction onViewPagerAction) {

@@ -5,6 +5,4 @@
 
 package org.chromium.chrome.browser.ntp_background_images.model;
 
-public class NTPImage {
-
-}
+public class NTPImage {}

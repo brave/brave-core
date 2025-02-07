@@ -16,7 +16,8 @@ public class BraveCustomizationProviderDelegateImplClassAdapter extends BraveCla
     public BraveCustomizationProviderDelegateImplClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(sCustomizationProviderDelegateImplClassName,
+        redirectConstructor(
+                sCustomizationProviderDelegateImplClassName,
                 sBraveCustomizationProviderDelegateImplClassName);
     }
 }

@@ -12,7 +12,8 @@ public class RetentionNotification {
     private String channelId;
     private String notificationTitle;
 
-    public RetentionNotification(int notificationId, int notificationTime, String channelId, String notificationTitle) {
+    public RetentionNotification(
+            int notificationId, int notificationTime, String channelId, String notificationTitle) {
         this.notificationId = notificationId;
         this.notificationTime = notificationTime;
         this.channelId = channelId;

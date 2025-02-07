@@ -45,8 +45,9 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
         if (shouldShowMoreOptions && position == (getImages().size() - 2)) {
             int adsPerHour = BraveRewardsNativeWorker.getInstance().getAdsPerHour();
             int adsValue = adsPerHourValues.indexOf(adsPerHour);
-            view = LayoutInflater.from(ContextUtils.getApplicationContext())
-                           .inflate(R.layout.brave_rewards_onboarding_ac_layout, null);
+            view =
+                    LayoutInflater.from(ContextUtils.getApplicationContext())
+                            .inflate(R.layout.brave_rewards_onboarding_ac_layout, null);
             Slider adsPerHourSlider = view.findViewById(R.id.ads_per_hour_slider);
             adsPerHourSlider.setValueTo(adsPerHourValues.size() - 1);
             adsPerHourSlider.setValueFrom(0);
@@ -54,12 +55,16 @@ public class BraveRewardsOnboardingPagerAdapter extends PagerAdapter {
             adsPerHourSlider.setLabelBehavior(LabelFormatter.LABEL_GONE);
             adsPerHourText = view.findViewById(R.id.ads_per_hour_text);
             adsPerHourText.setText(
-                    String.format(ContextUtils.getApplicationContext().getResources().getString(
-                                          R.string.ads_per_hour),
+                    String.format(
+                            ContextUtils.getApplicationContext()
+                                    .getResources()
+                                    .getString(R.string.ads_per_hour),
                             adsPerHour));
             adsPerHourSlider.addOnSliderTouchListener(touchListener);
         } else {
-            view = LayoutInflater.from(ContextUtils.getApplicationContext()).inflate(R.layout.brave_rewards_onboarding_item_layout, null);
+            view =
+                    LayoutInflater.from(ContextUtils.getApplicationContext())
+                            .inflate(R.layout.brave_rewards_onboarding_item_layout, null);
             TextView titleView = view.findViewById(R.id.title_view);
             titleView.setText(getTitles(context).get(position));
             TextView textView = view.findViewById(R.id.onboarding_text_view);

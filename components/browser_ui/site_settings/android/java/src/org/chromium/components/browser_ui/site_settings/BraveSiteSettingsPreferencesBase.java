@@ -26,7 +26,8 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
 
         // Add brave's additional preferences here because |onCreatePreference| is not called
         // by subclass (SiteSettingsPreferences::onCreatePreferences()).
-        // But, calling here has same effect because |onCreatePreferences()| is called by onCreate().
+        // But, calling here has same effect because |onCreatePreferences()| is called by
+        // onCreate().
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_site_settings_preferences);
         configureBravePreferences();
     }
@@ -39,9 +40,7 @@ public class BraveSiteSettingsPreferencesBase extends BaseSiteSettingsFragment {
         super.onResume();
     }
 
-    /**
-     *  We need to override it to avoid NullPointerException in Chromium's child classes
-     */
+    /** We need to override it to avoid NullPointerException in Chromium's child classes */
     @Override
     public Preference findPreference(CharSequence key) {
         Preference result = super.findPreference(key);

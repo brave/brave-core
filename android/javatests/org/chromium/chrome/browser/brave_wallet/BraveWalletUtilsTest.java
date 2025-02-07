@@ -162,7 +162,8 @@ public class BraveWalletUtilsTest {
     @Test
     @SmallTest
     public void stripAccountAddressTest() {
-        assertEquals(Utils.stripAccountAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
+        assertEquals(
+                Utils.stripAccountAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
                 "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
     }
 
@@ -195,8 +196,10 @@ public class BraveWalletUtilsTest {
                 java.lang.Object v = f.get(testToken);
                 if (!t.isPrimitive()) {
                     String varName = f.getName();
-                    if (varName.equals("contractAddress") || varName.equals("name")
-                            || varName.equals("logo") || varName.equals("symbol")
+                    if (varName.equals("contractAddress")
+                            || varName.equals("name")
+                            || varName.equals("logo")
+                            || varName.equals("symbol")
                             || varName.equals("chainId")) {
                         continue;
                     }
@@ -228,11 +231,12 @@ public class BraveWalletUtilsTest {
             java.nio.ByteBuffer byteBuffer = testToken.serialize();
             BlockchainToken testTokenDeserialized = BlockchainToken.deserialize(byteBuffer);
         } catch (Exception exc) {
-            String message = "Check that a variable with a type in the exception below is\n"
-                    + "initialized everywhere in Java files, where BlockchainToken object is\n"
-                    + "created('git grep \"new BlockchainToken\"' inside src/brave).\n"
-                    + "Initialisation of it could be safely added to the test to pass it,\n"
-                    + "but only after all places where it's created are fixed.\n";
+            String message =
+                    "Check that a variable with a type in the exception below is\n"
+                        + "initialized everywhere in Java files, where BlockchainToken object is\n"
+                        + "created('git grep \"new BlockchainToken\"' inside src/brave).\n"
+                        + "Initialisation of it could be safely added to the test to pass it,\n"
+                        + "but only after all places where it's created are fixed.\n";
             fail(message + "\n" + getStackTrace(exc));
         }
     }
@@ -318,9 +322,12 @@ public class BraveWalletUtilsTest {
                 java.lang.Object v = f.get(testStruct);
                 if (!t.isPrimitive()) {
                     String varName = f.getName();
-                    if (varName.equals("nonce") || varName.equals("gasPrice")
-                            || varName.equals("gasLimit") || varName.equals("to")
-                            || varName.equals("value") || varName.equals("data")
+                    if (varName.equals("nonce")
+                            || varName.equals("gasPrice")
+                            || varName.equals("gasLimit")
+                            || varName.equals("to")
+                            || varName.equals("value")
+                            || varName.equals("data")
                             || varName.equals("signedTransaction")) {
                         continue;
                     }
@@ -352,11 +359,12 @@ public class BraveWalletUtilsTest {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
             TxData testStructDeserialized = TxData.deserialize(byteBuffer);
         } catch (Exception exc) {
-            String message = "Check that a variable with a type in the exception below is\n"
-                    + "initialized everywhere in Java files, where TxData object is\n"
-                    + "created('git grep \"new TxData\"' inside src/brave).\n"
-                    + "Initialisation of it could be safely added to the test to pass it,\n"
-                    + "but only after all places where it's created are fixed.\n";
+            String message =
+                    "Check that a variable with a type in the exception below is\n"
+                            + "initialized everywhere in Java files, where TxData object is\n"
+                            + "created('git grep \"new TxData\"' inside src/brave).\n"
+                            + "Initialisation of it could be safely added to the test to pass it,\n"
+                            + "but only after all places where it's created are fixed.\n";
             fail(message + "\n" + getStackTrace(exc));
         }
     }
@@ -410,11 +418,13 @@ public class BraveWalletUtilsTest {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
             GasEstimation1559 testStructDeserialized = GasEstimation1559.deserialize(byteBuffer);
         } catch (Exception exc) {
-            String message = "Check that a variable with a type in the exception below is\n"
-                    + "initialized everywhere in Java files, where GasEstimation1559 object is\n"
-                    + "created('git grep \"new GasEstimation1559\"' inside src/brave).\n"
-                    + "Initialisation of it could be safely added to the test to pass it,\n"
-                    + "but only after all places where it's created are fixed.\n";
+            String message =
+                    "Check that a variable with a type in the exception below is\n"
+                            + "initialized everywhere in Java files, where GasEstimation1559 object"
+                            + " is\n"
+                            + "created('git grep \"new GasEstimation1559\"' inside src/brave).\n"
+                            + "Initialisation of it could be safely added to the test to pass it,\n"
+                            + "but only after all places where it's created are fixed.\n";
             fail(message + "\n" + getStackTrace(exc));
         }
     }
@@ -430,9 +440,11 @@ public class BraveWalletUtilsTest {
                 java.lang.Object v = f.get(testStruct);
                 if (!t.isPrimitive()) {
                     String varName = f.getName();
-                    if (varName.equals("baseData") || varName.equals("chainId")
+                    if (varName.equals("baseData")
+                            || varName.equals("chainId")
                             || varName.equals("maxPriorityFeePerGas")
-                            || varName.equals("maxFeePerGas") || varName.equals("gasEstimation")) {
+                            || varName.equals("maxFeePerGas")
+                            || varName.equals("gasEstimation")) {
                         continue;
                     }
                     if (v == null) {
@@ -474,11 +486,12 @@ public class BraveWalletUtilsTest {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
             TxData1559 testStructDeserialized = TxData1559.deserialize(byteBuffer);
         } catch (Exception exc) {
-            String message = "Check that a variable with a type in the exception below is\n"
-                    + "initialized everywhere in Java files, where TxData1559 object is\n"
-                    + "created('git grep \"new TxData1559\"' inside src/brave).\n"
-                    + "Initialisation of it could be safely added to the test to pass it,\n"
-                    + "but only after all places where it's created are fixed.\n";
+            String message =
+                    "Check that a variable with a type in the exception below is\n"
+                            + "initialized everywhere in Java files, where TxData1559 object is\n"
+                            + "created('git grep \"new TxData1559\"' inside src/brave).\n"
+                            + "Initialisation of it could be safely added to the test to pass it,\n"
+                            + "but only after all places where it's created are fixed.\n";
             fail(message + "\n" + getStackTrace(exc));
         }
     }
@@ -536,11 +549,12 @@ public class BraveWalletUtilsTest {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
             NetworkInfo testStructDeserialized = NetworkInfo.deserialize(byteBuffer);
         } catch (Exception exc) {
-            String message = "Check that a variable with a type in the exception below is\n"
-                    + "initialized everywhere in Java files, where NetworkInfo object is\n"
-                    + "created('git grep \"new NetworkInfo\"' inside src/brave).\n"
-                    + "Initialisation of it could be safely added to the test to pass it,\n"
-                    + "but only after all places where it's created are fixed.\n";
+            String message =
+                    "Check that a variable with a type in the exception below is\n"
+                            + "initialized everywhere in Java files, where NetworkInfo object is\n"
+                            + "created('git grep \"new NetworkInfo\"' inside src/brave).\n"
+                            + "Initialisation of it could be safely added to the test to pass it,\n"
+                            + "but only after all places where it's created are fixed.\n";
             fail(message + "\n" + getStackTrace(exc));
         }
     }

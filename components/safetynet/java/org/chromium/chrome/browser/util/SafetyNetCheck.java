@@ -38,9 +38,7 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-/**
- * Utility class for providing additional safety checks.
- */
+/** Utility class for providing additional safety checks. */
 @JNINamespace("safetynet_check")
 public class SafetyNetCheck {
     private static final String TAG = "SafetyNetCheck";
@@ -78,28 +76,32 @@ public class SafetyNetCheck {
         mNativeSafetyNetCheck = 0;
     }
 
-    /**
-    * Performs client attestation
-    */
+    /** Performs client attestation */
     @CalledByNative
-    public boolean clientAttestation(String nonceData, String apiKey,
-            boolean performAttestationOnClient) {
+    public boolean clientAttestation(
+            String nonceData, String apiKey, boolean performAttestationOnClient) {
         return clientAttestation(nonceData, apiKey, performAttestationOnClient, false);
     }
 
-    private boolean clientAttestation(String nonceData, String apiKey,
-            boolean performAttestationOnClient, boolean forceCheck) {
+    private boolean clientAttestation(
+            String nonceData,
+            String apiKey,
+            boolean performAttestationOnClient,
+            boolean forceCheck) {
         boolean res = false;
         try {
-            Activity activity = (Activity)BraveRewardsHelper.getChromeTabbedActivity();
+            Activity activity = (Activity) BraveRewardsHelper.getChromeTabbedActivity();
             if (activity == null) return false;
-            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity) == ConnectionResult.SUCCESS) {
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity)
+                    == ConnectionResult.SUCCESS) {
                 SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
                 String safetyNetResult = sharedPreferences.getString(PREF_SAFETYNET_RESULT, "");
                 long lastTimeCheck = sharedPreferences.getLong(PREF_SAFETYNET_LAST_TIME_CHECK, 0);
                 Calendar currentTime = Calendar.getInstance();
                 long milliSeconds = currentTime.getTimeInMillis();
-                if (!forceCheck && nonceData.isEmpty() && !safetyNetResult.isEmpty()
+                if (!forceCheck
+                        && nonceData.isEmpty()
+                        && !safetyNetResult.isEmpty()
                         && (milliSeconds - lastTimeCheck < TEN_DAYS)) {
                     clientAttestationResult(true, safetyNetResult, performAttestationOnClient);
                     return true;
@@ -107,23 +109,36 @@ public class SafetyNetCheck {
                 byte[] nonce = nonceData.isEmpty() ? getRequestNonce() : nonceData.getBytes();
                 SafetyNetClient client = SafetyNet.getClient(ContextUtils.getApplicationContext());
                 Task<SafetyNetApi.AttestationResponse> attestTask = client.attest(nonce, apiKey);
-                attestTask.addOnSuccessListener(activity,
-                    new OnSuccessListener<SafetyNetApi.AttestationResponse>() {
-                        @Override
-                        public void onSuccess(SafetyNetApi.AttestationResponse response) {
-                            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-                            sharedPreferencesEditor.putString(PREF_SAFETYNET_RESULT, response.getJwsResult());
-                            sharedPreferencesEditor.putLong(PREF_SAFETYNET_LAST_TIME_CHECK, milliSeconds);
-                            sharedPreferencesEditor.apply();
-                            clientAttestationResult(true, response.getJwsResult(), performAttestationOnClient);
-                        }
-                    }).addOnFailureListener(activity, new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "Failed to perform SafetyNetCheck: " + e);
-                            clientAttestationResult(false, e.toString(), performAttestationOnClient);
-                        }
-                    });
+                attestTask
+                        .addOnSuccessListener(
+                                activity,
+                                new OnSuccessListener<SafetyNetApi.AttestationResponse>() {
+                                    @Override
+                                    public void onSuccess(
+                                            SafetyNetApi.AttestationResponse response) {
+                                        SharedPreferences.Editor sharedPreferencesEditor =
+                                                sharedPreferences.edit();
+                                        sharedPreferencesEditor.putString(
+                                                PREF_SAFETYNET_RESULT, response.getJwsResult());
+                                        sharedPreferencesEditor.putLong(
+                                                PREF_SAFETYNET_LAST_TIME_CHECK, milliSeconds);
+                                        sharedPreferencesEditor.apply();
+                                        clientAttestationResult(
+                                                true,
+                                                response.getJwsResult(),
+                                                performAttestationOnClient);
+                                    }
+                                })
+                        .addOnFailureListener(
+                                activity,
+                                new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e(TAG, "Failed to perform SafetyNetCheck: " + e);
+                                        clientAttestationResult(
+                                                false, e.toString(), performAttestationOnClient);
+                                    }
+                                });
                 res = true;
             } else {
                 clientAttestationResult(
@@ -140,9 +155,7 @@ public class SafetyNetCheck {
         return res;
     }
 
-    /**
-    * Generates a random 24-byte nonce.
-    */
+    /** Generates a random 24-byte nonce. */
     private byte[] getRequestNonce() {
         byte[] bytes = new byte[24];
         Random random = new SecureRandom();
@@ -150,9 +163,7 @@ public class SafetyNetCheck {
         return bytes;
     }
 
-    /**
-    * Returns client attestation final result
-    */
+    /** Returns client attestation final result */
     private void clientAttestationResult(
             boolean tokenReceived, String resultString, boolean performAttestationOnClient) {
         boolean attestationPassed = false;
@@ -175,21 +186,25 @@ public class SafetyNetCheck {
                         Log.e(TAG, "Unable to perform SafetyNet attestation: " + e);
                     }
                     attestationPassed = ctsProfileMatch && basicIntegrity;
-                    BraveLocalState.get().setString(BravePref.SAFETYNET_STATUS,
-                            attestationPassed ? SAFETYNET_STATUS_VERIFIED_PASSED
-                                              : SAFETYNET_STATUS_VERIFIED_NOT_PASSED);
+                    BraveLocalState.get()
+                            .setString(
+                                    BravePref.SAFETYNET_STATUS,
+                                    attestationPassed
+                                            ? SAFETYNET_STATUS_VERIFIED_PASSED
+                                            : SAFETYNET_STATUS_VERIFIED_NOT_PASSED);
                     if (mSafetyNetCheckCallback != null) {
                         mSafetyNetCheckCallback.onResult(attestationPassed);
                     }
                 }
             } else {
-                BraveLocalState.get().setString(
-                        BravePref.SAFETYNET_STATUS, SAFETYNET_STATUS_NOT_VERIFIED);
+                BraveLocalState.get()
+                        .setString(BravePref.SAFETYNET_STATUS, SAFETYNET_STATUS_NOT_VERIFIED);
             }
         }
         if (mNativeSafetyNetCheck == 0) return;
-        SafetyNetCheckJni.get().clientAttestationResult(
-                mNativeSafetyNetCheck, tokenReceived, resultString, attestationPassed);
+        SafetyNetCheckJni.get()
+                .clientAttestationResult(
+                        mNativeSafetyNetCheck, tokenReceived, resultString, attestationPassed);
     }
 
     public String getApiKey() {
@@ -203,8 +218,12 @@ public class SafetyNetCheck {
 
     @NativeMethods
     interface Natives {
-        void clientAttestationResult(long nativeSafetyNetCheck, boolean tokenReceived,
-                String resultString, boolean attestationPassed);
+        void clientAttestationResult(
+                long nativeSafetyNetCheck,
+                boolean tokenReceived,
+                String resultString,
+                boolean attestationPassed);
+
         String getApiKey();
     }
 }

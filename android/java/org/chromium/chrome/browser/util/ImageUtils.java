@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.util;
 
@@ -33,7 +31,9 @@ import org.chromium.url.GURL;
 
 public class ImageUtils {
     public static Bitmap topOffset(Bitmap src, int offsetY) {
-        Bitmap outputimage = Bitmap.createBitmap(src.getWidth(), src.getHeight() + offsetY, Bitmap.Config.ARGB_8888);
+        Bitmap outputimage =
+                Bitmap.createBitmap(
+                        src.getWidth(), src.getHeight() + offsetY, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(outputimage);
         canvas.drawBitmap(src, 0, offsetY, null);
         return outputimage;
@@ -66,16 +66,16 @@ public class ImageUtils {
         Context context = ContextUtils.getApplicationContext();
         int w = src.getWidth();
         int h = src.getHeight();
-        Bitmap result = Bitmap.createBitmap(src,0,0,w,h);
+        Bitmap result = Bitmap.createBitmap(src, 0, 0, w, h);
         Canvas canvas = new Canvas(result);
 
         // Top gradient
         int height;
 
-        if(ConfigurationUtils.isLandscape(context)) {
-            height = ((2*h)/3);
+        if (ConfigurationUtils.isLandscape(context)) {
+            height = ((2 * h) / 3);
         } else {
-            height = (h/3);
+            height = (h / 3);
         }
 
         Paint topPaint = new Paint();
@@ -90,9 +90,9 @@ public class ImageUtils {
                         Shader.TileMode.CLAMP);
         topPaint.setShader(topShader);
         topPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DARKEN));
-        canvas.drawRect(0,0,w,height,topPaint);
+        canvas.drawRect(0, 0, w, height, topPaint);
 
-        //Bottom gradient
+        // Bottom gradient
         Paint bottomPaint = new Paint();
         LinearGradient bottomShader =
                 new LinearGradient(
@@ -105,7 +105,7 @@ public class ImageUtils {
                         Shader.TileMode.CLAMP);
         bottomPaint.setShader(bottomShader);
         bottomPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DARKEN));
-        canvas.drawRect(0,2*(h/3),w,h,bottomPaint);
+        canvas.drawRect(0, 2 * (h / 3), w, h, bottomPaint);
 
         return result;
     }

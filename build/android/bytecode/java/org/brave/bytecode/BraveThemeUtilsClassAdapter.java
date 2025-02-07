@@ -14,7 +14,9 @@ public class BraveThemeUtilsClassAdapter extends BraveClassVisitor {
     public BraveThemeUtilsClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sThemeUtilsClassName,
-                "getTextBoxColorForToolbarBackgroundInNonNativePage", sBraveThemeUtilsClassName);
+        changeMethodOwner(
+                sThemeUtilsClassName,
+                "getTextBoxColorForToolbarBackgroundInNonNativePage",
+                sBraveThemeUtilsClassName);
     }
 }

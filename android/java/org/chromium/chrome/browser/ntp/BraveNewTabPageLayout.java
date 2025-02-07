@@ -116,8 +116,8 @@ import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class BraveNewTabPageLayout
-        extends NewTabPageLayout implements ConnectionErrorHandler, OnBraveNtpListener {
+public class BraveNewTabPageLayout extends NewTabPageLayout
+        implements ConnectionErrorHandler, OnBraveNtpListener {
     private static final String TAG = "BraveNewTabPage";
 
     private static final int MINIMUM_VISIBLE_HEIGHT_THRESHOLD = 50;
@@ -170,7 +170,7 @@ public class BraveNewTabPageLayout
     private long mEndCardViewTime;
     private String mCreativeInstanceId;
     private String mUuid;
-    //@TODO alex make an enum
+    // @TODO alex make an enum
     private String mCardType;
     private int mItemPosition;
     private int mPrevVisibleNewsCardPosition = -1;
@@ -293,8 +293,8 @@ public class BraveNewTabPageLayout
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
 
-        if (OnboardingPrefManager.getInstance().isFromNotification() ) {
-            ((BraveActivity)mActivity).showOnboardingV2(false);
+        if (OnboardingPrefManager.getInstance().isFromNotification()) {
+            ((BraveActivity) mActivity).showOnboardingV2(false);
             OnboardingPrefManager.getInstance().setFromNotification(false);
         }
         if (mBadgeAnimationView != null
@@ -321,22 +321,25 @@ public class BraveNewTabPageLayout
         mNewsSettingsBar.setOnClickListener(view -> {});
 
         // Double tap on the settings bar to scroll back up
-        mNewsSettingsBar.setOnTouchListener(new OnTouchListener() {
-            private GestureDetector mGestureDetector =
-                    new GestureDetector(mActivity, new GestureDetector.SimpleOnGestureListener() {
-                        @Override
-                        public boolean onDoubleTap(MotionEvent e) {
-                            mRecyclerView.smoothScrollToPosition(0);
-                            return super.onDoubleTap(e);
-                        }
-                    });
+        mNewsSettingsBar.setOnTouchListener(
+                new OnTouchListener() {
+                    private GestureDetector mGestureDetector =
+                            new GestureDetector(
+                                    mActivity,
+                                    new GestureDetector.SimpleOnGestureListener() {
+                                        @Override
+                                        public boolean onDoubleTap(MotionEvent e) {
+                                            mRecyclerView.smoothScrollToPosition(0);
+                                            return super.onDoubleTap(e);
+                                        }
+                                    });
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                mGestureDetector.onTouchEvent(event);
-                return true;
-            }
-        });
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        mGestureDetector.onTouchEvent(event);
+                        return true;
+                    }
+                });
         mNewContentLayout = findViewById(R.id.news_load_new_content);
         mNewContentText = findViewById(R.id.new_content_button_text);
         mNewContentProgressBar = findViewById(R.id.new_content_loading_spinner);
@@ -371,12 +374,25 @@ public class BraveNewTabPageLayout
 
         if (mNtpAdapter == null) {
             if (mActivity != null && !mActivity.isDestroyed() && !mActivity.isFinishing()) {
-                mNtpAdapter = new BraveNtpAdapter(mActivity, this, Glide.with(mActivity),
-                        mNewsItemsFeedCard, mBraveNewsController, mMvTilesContainerLayout,
-                        mNtpImageGlobal, mSponsoredTab, mWallpaper, mSponsoredLogo,
-                        mNTPBackgroundImagesBridge, false, mRecyclerView.getHeight(),
-                        mIsTopSitesEnabled, mIsBraveStatsEnabled, mIsDisplayNewsFeed,
-                        mIsDisplayNewsOptin);
+                mNtpAdapter =
+                        new BraveNtpAdapter(
+                                mActivity,
+                                this,
+                                Glide.with(mActivity),
+                                mNewsItemsFeedCard,
+                                mBraveNewsController,
+                                mMvTilesContainerLayout,
+                                mNtpImageGlobal,
+                                mSponsoredTab,
+                                mWallpaper,
+                                mSponsoredLogo,
+                                mNTPBackgroundImagesBridge,
+                                false,
+                                mRecyclerView.getHeight(),
+                                mIsTopSitesEnabled,
+                                mIsBraveStatsEnabled,
+                                mIsDisplayNewsFeed,
+                                mIsDisplayNewsOptin);
 
                 mRecyclerView.setAdapter(mNtpAdapter);
 
@@ -816,8 +832,10 @@ public class BraveNewTabPageLayout
 
     private int firstNewsFeedPosition() {
         if (mNtpAdapter != null) {
-            return mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount()
-                    + mNtpAdapter.getNewContentCount() + 1;
+            return mNtpAdapter.getStatsCount()
+                    + mNtpAdapter.getTopSitesCount()
+                    + mNtpAdapter.getNewContentCount()
+                    + 1;
         }
         return 0;
     }
@@ -887,7 +905,8 @@ public class BraveNewTabPageLayout
 
         if (!mIsFromBottomSheet) {
             setBackgroundResource(0);
-            if (mImageDrawable != null && mImageDrawable.getBitmap() != null
+            if (mImageDrawable != null
+                    && mImageDrawable.getBitmap() != null
                     && !mImageDrawable.getBitmap().isRecycled()) {
                 mImageDrawable.getBitmap().recycle();
             }
@@ -935,12 +954,15 @@ public class BraveNewTabPageLayout
             super.onConfigurationChanged(newConfig);
             showNTPImage(ntpImage);
 
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                if (mNtpAdapter != null) {
-                    mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
-                }
-                keepPosition();
-            }, 10);
+            new Handler(Looper.getMainLooper())
+                    .postDelayed(
+                            () -> {
+                                if (mNtpAdapter != null) {
+                                    mNtpAdapter.setRecyclerViewHeight(mRecyclerView.getHeight());
+                                }
+                                keepPosition();
+                            },
+                            10);
         } else {
             super.onConfigurationChanged(newConfig);
         }
@@ -965,11 +987,16 @@ public class BraveNewTabPageLayout
             mNtpAdapter.setNewsLoading(true);
         }
         initBraveNewsController();
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            if (mBraveNewsController != null) {
-                mBraveNewsController.getFeed(feed -> { runFeed(isNewContent, feed); });
-            }
-        });
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    if (mBraveNewsController != null) {
+                        mBraveNewsController.getFeed(
+                                feed -> {
+                                    runFeed(isNewContent, feed);
+                                });
+                    }
+                });
     }
 
     private void runFeed(boolean isNewContent, Feed feed) {
@@ -980,11 +1007,15 @@ public class BraveNewTabPageLayout
 
         mFeedHash = feed.hash;
         int newsItemsFeedCardSize = mNewsItemsFeedCard.size();
-        new Handler(Looper.getMainLooper()).post(() -> {
-            mNtpAdapter.notifyItemRangeRemoved(
-                    mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
-                    newsItemsFeedCardSize);
-        });
+        new Handler(Looper.getMainLooper())
+                .post(
+                        () -> {
+                            mNtpAdapter.notifyItemRangeRemoved(
+                                    mNtpAdapter.getStatsCount()
+                                            + mNtpAdapter.getTopSitesCount()
+                                            + 1,
+                                    newsItemsFeedCardSize);
+                        });
 
         mNewsItemsFeedCard.clear();
         BraveNewsUtils.initCurrentAds();
@@ -1094,32 +1125,40 @@ public class BraveNewTabPageLayout
     }
 
     private void processFeed(boolean isNewContent) {
-        new Handler(Looper.getMainLooper()).post(() -> {
-            mNtpAdapter.setNewsLoading(false);
-            if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
-                mNtpAdapter.notifyItemRangeChanged(
-                        mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount(),
-                        mNtpAdapter.getItemCount() - mNtpAdapter.getStatsCount()
-                                - mNtpAdapter.getTopSitesCount());
-            }
+        new Handler(Looper.getMainLooper())
+                .post(
+                        () -> {
+                            mNtpAdapter.setNewsLoading(false);
+                            if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
+                                mNtpAdapter.notifyItemRangeChanged(
+                                        mNtpAdapter.getStatsCount()
+                                                + mNtpAdapter.getTopSitesCount(),
+                                        mNtpAdapter.getItemCount()
+                                                - mNtpAdapter.getStatsCount()
+                                                - mNtpAdapter.getTopSitesCount());
+                            }
 
-            if (isNewContent) {
-                mPrevVisibleNewsCardPosition = mPrevVisibleNewsCardPosition - 1;
-                setNewContentChanges(false);
-                RecyclerView.LayoutManager manager = mRecyclerView.getLayoutManager();
-                if (manager instanceof LinearLayoutManager) {
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
-                    linearLayoutManager.scrollToPositionWithOffset(
-                            mNtpAdapter.getStatsCount() + mNtpAdapter.getTopSitesCount() + 1,
-                            dpToPx(mActivity, 60));
-                }
-            }
-            try {
-                BraveActivity.getBraveActivity().setComesFromNewTab(false);
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
-                Log.e(TAG, "processFeed " + e);
-            }
-        });
+                            if (isNewContent) {
+                                mPrevVisibleNewsCardPosition = mPrevVisibleNewsCardPosition - 1;
+                                setNewContentChanges(false);
+                                RecyclerView.LayoutManager manager =
+                                        mRecyclerView.getLayoutManager();
+                                if (manager instanceof LinearLayoutManager) {
+                                    LinearLayoutManager linearLayoutManager =
+                                            (LinearLayoutManager) manager;
+                                    linearLayoutManager.scrollToPositionWithOffset(
+                                            mNtpAdapter.getStatsCount()
+                                                    + mNtpAdapter.getTopSitesCount()
+                                                    + 1,
+                                            dpToPx(mActivity, 60));
+                                }
+                            }
+                            try {
+                                BraveActivity.getBraveActivity().setComesFromNewTab(false);
+                            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                                Log.e(TAG, "processFeed " + e);
+                            }
+                        });
     }
 
     private void setNewContentChanges(boolean isNewContent) {
@@ -1374,7 +1413,9 @@ public class BraveNewTabPageLayout
             iconIv.setClickable(false);
 
             tileView.setOnClickListener(
-                    view -> { TabUtils.openUrlInSameTab(topSite.getDestinationUrl()); });
+                    view -> {
+                        TabUtils.openUrlInSameTab(topSite.getDestinationUrl());
+                    });
 
             tileView.setPadding(0, dpToPx(mActivity, 12), 0, 0);
 

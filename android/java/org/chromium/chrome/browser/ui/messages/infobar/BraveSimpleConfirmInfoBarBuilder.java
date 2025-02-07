@@ -24,18 +24,34 @@ import org.chromium.content_public.browser.WebContents;
 // drawableId of vector drawable resource
 
 public class BraveSimpleConfirmInfoBarBuilder extends SimpleConfirmInfoBarBuilder {
-    public static void createInfobarWithDrawable(WebContents webContents, SimpleConfirmInfoBarBuilder.Listener listener,
+    public static void createInfobarWithDrawable(
+            WebContents webContents,
+            SimpleConfirmInfoBarBuilder.Listener listener,
             int infobarTypeIdentifier,
-            Context context, int drawableId, String message, String primaryText,
-            String secondaryText, String linkText, boolean autoExpire) {
+            Context context,
+            int drawableId,
+            String message,
+            String primaryText,
+            String secondaryText,
+            String linkText,
+            boolean autoExpire) {
 
         Bitmap bitmap = null;
         if (drawableId != 0 && context != null) {
             bitmap = convertDrawableToBitmap(context, drawableId);
         }
 
-        SimpleConfirmInfoBarBuilderJni.get().create(webContents, infobarTypeIdentifier, bitmap,
-            message, primaryText, secondaryText, linkText, autoExpire, listener);
+        SimpleConfirmInfoBarBuilderJni.get()
+                .create(
+                        webContents,
+                        infobarTypeIdentifier,
+                        bitmap,
+                        message,
+                        primaryText,
+                        secondaryText,
+                        linkText,
+                        autoExpire,
+                        listener);
     }
 
     @Nullable
@@ -46,14 +62,20 @@ public class BraveSimpleConfirmInfoBarBuilder extends SimpleConfirmInfoBarBuilde
         }
         drawable = DrawableCompat.wrap(drawable);
 
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
-                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap =
+                Bitmap.createBitmap(
+                        drawable.getIntrinsicWidth(),
+                        drawable.getIntrinsicHeight(),
+                        Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        int icon_color = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                ? ContextCompat.getColor(context, R.color.brave_informer_dark_theme_icon_color)
-                : ContextCompat.getColor(context, R.color.brave_informer_light_theme_icon_color);
+        int icon_color =
+                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                        ? ContextCompat.getColor(
+                                context, R.color.brave_informer_dark_theme_icon_color)
+                        : ContextCompat.getColor(
+                                context, R.color.brave_informer_light_theme_icon_color);
         drawable.setColorFilter(new PorterDuffColorFilter(icon_color, PorterDuff.Mode.SRC_ATOP));
         drawable.draw(canvas);
         return bitmap;

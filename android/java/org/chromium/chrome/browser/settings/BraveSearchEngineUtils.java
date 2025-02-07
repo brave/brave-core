@@ -55,8 +55,10 @@ public class BraveSearchEngineUtils {
         // At first run, we should set initial default prefs to each standard/private DSE prefs.
         // Those pref values will be used until user change DES options explicitly.
         final String notInitialized = "notInitialized";
-        if (notInitialized.equals(ContextUtils.getAppSharedPreferences().getString(
-                    BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
+        if (notInitialized.equals(
+                ContextUtils.getAppSharedPreferences()
+                        .getString(
+                                BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
             final TemplateUrlService templateUrlService =
                     TemplateUrlServiceFactory.getForProfile(profile);
 

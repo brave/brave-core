@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser;
 
 import android.content.Context;
@@ -18,7 +16,7 @@ import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 
 public class BraveRewardsExternalWallet {
-    //fields
+    // fields
     public static final String ACCOUNT_URL = "account_url";
     public static final String ADDRESS = "address";
     public static final String STATUS = "status";
@@ -103,8 +101,9 @@ public class BraveRewardsExternalWallet {
                 value = context.getResources().getString(R.string.brave_ui_wallet_button_connected);
                 break;
             case WalletStatus.LOGGED_OUT:
-                value = context.getResources().getString(
-                        R.string.brave_ui_wallet_button_logged_out);
+                value =
+                        context.getResources()
+                                .getString(R.string.brave_ui_wallet_button_logged_out);
                 break;
             default:
                 break;

@@ -20,7 +20,7 @@ public class TopSite {
 
     public String getName() {
         return mName;
-    }        
+    }
 
     public String getDestinationUrl() {
         return mDestinationUrl;

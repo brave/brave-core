@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rate;
 
@@ -54,9 +52,7 @@ public class RateUtils {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
     }
 
-    /**
-     * Returns the singleton instance of RateUtils, creating it if needed.
-     */
+    /** Returns the singleton instance of RateUtils, creating it if needed. */
     public static RateUtils getInstance() {
         if (sInstance == null) {
             sInstance = new RateUtils();
@@ -64,16 +60,12 @@ public class RateUtils {
         return sInstance;
     }
 
-    /**
-     * Returns the user preference for whether the rate is enabled.
-     */
+    /** Returns the user preference for whether the rate is enabled. */
     public boolean getPrefRateEnabled() {
         return mSharedPreferences.getBoolean(PREF_RATE, false);
     }
 
-    /**
-     * Sets the user preference for whether the rate is enabled.
-     */
+    /** Sets the user preference for whether the rate is enabled. */
     public void setPrefRateEnabled(boolean enabled) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_RATE, enabled);
@@ -117,15 +109,10 @@ public class RateUtils {
     }
 
     /**
-     *
-     * 1. every 30 days
-     * 2. app opened 5 days or more
-     * 3. Last 7 days 4 days used not to be consecutive
-     * 4. Any one of the following true
-     *      i.  User has added at least 5 bookmarks.
-     *      ii. User has set Brave as default.
-     *      iii.User has paid for the VPN subscription.
-     * */
+     * 1. every 30 days 2. app opened 5 days or more 3. Last 7 days 4 days used not to be
+     * consecutive 4. Any one of the following true i. User has added at least 5 bookmarks. ii. User
+     * has set Brave as default. iii.User has paid for the VPN subscription.
+     */
     public boolean shouldShowRateDialog(Context context) {
         return mainCriteria() && anyOneSubCriteria(context);
     }
@@ -135,8 +122,10 @@ public class RateUtils {
                 ChromeSharedPreferences.getInstance()
                         .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
 
-        return (System.currentTimeMillis() > getPrefNextRateDate() && appOpenCount >= APP_OPEN_5
-                && getPrefRateEnabled() && is4DaysUsedLast7Days());
+        return (System.currentTimeMillis() > getPrefNextRateDate()
+                && appOpenCount >= APP_OPEN_5
+                && getPrefRateEnabled()
+                && is4DaysUsedLast7Days());
     }
 
     private boolean anyOneSubCriteria(Context context) {
@@ -173,8 +162,7 @@ public class RateUtils {
     private boolean is4DaysUsedLast7Days() {
         if (dayDifference(lastTimeUsedDate1, lastTimeUsedDate2) <= LAST_7_DAYS
                 && dayDifference(lastTimeUsedDate1, lastTimeUsedDate3) <= LAST_7_DAYS
-                && dayDifference(lastTimeUsedDate1, lastTimeUsedDate4) <= LAST_7_DAYS)
-            return true;
+                && dayDifference(lastTimeUsedDate1, lastTimeUsedDate4) <= LAST_7_DAYS) return true;
         return false;
     }
 
@@ -183,10 +171,7 @@ public class RateUtils {
         return (difference / (1000 * 60 * 60 * 24)) % 365;
     }
 
-    /**
-     * This opens app page in playstore
-     * if it fails open app playstore page link in browser
-     * */
+    /** This opens app page in playstore if it fails open app playstore page link in browser */
     public void openPlaystore(Context context) {
         final Uri marketUri = Uri.parse("market://details?id=" + context.getPackageName());
         try {
@@ -197,9 +182,12 @@ public class RateUtils {
     }
 
     private void openReviewLink(Context context) {
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id="
-                        + context.getPackageName()));
+        Intent webIntent =
+                new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                                "https://play.google.com/store/apps/details?id="
+                                        + context.getPackageName()));
         context.startActivity(webIntent);
     }
 }

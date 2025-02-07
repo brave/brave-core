@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.util;
 
@@ -40,12 +38,10 @@ public class BraveDbUtil {
 
     private static BraveDbUtil sInstance;
 
-    private BraveDbUtil() {
-    }
+    private BraveDbUtil() {}
 
     public static BraveDbUtil getInstance() {
-        if (sInstance != null)
-            return sInstance;
+        if (sInstance != null) return sInstance;
         sInstance = new BraveDbUtil();
         return sInstance;
     }
@@ -67,7 +63,8 @@ public class BraveDbUtil {
 
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat("-yyyy-MM-dd-HHmmss", Locale.getDefault());
-        mRewardsDst = mRewardsDstDir + File.separator + PUBLISHER_INFO_DB + dateFormat.format(new Date());
+        mRewardsDst =
+                mRewardsDstDir + File.separator + PUBLISHER_INFO_DB + dateFormat.format(new Date());
 
         copyRewardsDbThread(dlg, false);
     }
@@ -92,8 +89,7 @@ public class BraveDbUtil {
     }
 
     private void copyRewardsDbThread(Dialog dlg, boolean isImport) {
-        if (dlg != null)
-            dlg.show();
+        if (dlg != null) dlg.show();
 
         if (isImport) {
             File file = new File(mRewardsDst);
@@ -141,7 +137,7 @@ public class BraveDbUtil {
             succeeded = true;
             in.close();
         } catch (IOException e) {
-            Log.e(TAG, "Error on copying database file (" + src + " -> " + dst +  "): " + e);
+            Log.e(TAG, "Error on copying database file (" + src + " -> " + dst + "): " + e);
         }
         return succeeded;
     }
@@ -162,38 +158,40 @@ public class BraveDbUtil {
     }
 
     public boolean performDbExportOnStart() {
-        if (ContextUtils.getAppSharedPreferences() == null)
-            return false;
-        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_PERFORM_DB_EXPORT_ON_START, false);
+        if (ContextUtils.getAppSharedPreferences() == null) return false;
+        return ContextUtils.getAppSharedPreferences()
+                .getBoolean(PREF_PERFORM_DB_EXPORT_ON_START, false);
     }
 
     public void setPerformDbExportOnStart(boolean value) {
-        if (ContextUtils.getAppSharedPreferences() == null)
-            return;
-        ContextUtils.getAppSharedPreferences().edit().putBoolean(PREF_PERFORM_DB_EXPORT_ON_START, value).apply();
+        if (ContextUtils.getAppSharedPreferences() == null) return;
+        ContextUtils.getAppSharedPreferences()
+                .edit()
+                .putBoolean(PREF_PERFORM_DB_EXPORT_ON_START, value)
+                .apply();
     }
 
     public boolean performDbImportOnStart() {
-        if (ContextUtils.getAppSharedPreferences() == null)
-            return false;
-        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_PERFORM_DB_IMPORT_ON_START, false);
+        if (ContextUtils.getAppSharedPreferences() == null) return false;
+        return ContextUtils.getAppSharedPreferences()
+                .getBoolean(PREF_PERFORM_DB_IMPORT_ON_START, false);
     }
 
     public void setPerformDbImportOnStart(boolean value) {
-        if (ContextUtils.getAppSharedPreferences() == null)
-            return;
-        ContextUtils.getAppSharedPreferences().edit().putBoolean(PREF_PERFORM_DB_IMPORT_ON_START, value).apply();
+        if (ContextUtils.getAppSharedPreferences() == null) return;
+        ContextUtils.getAppSharedPreferences()
+                .edit()
+                .putBoolean(PREF_PERFORM_DB_IMPORT_ON_START, value)
+                .apply();
     }
 
     public String dbImportFile() {
-        if (ContextUtils.getAppSharedPreferences() == null)
-            return "";
+        if (ContextUtils.getAppSharedPreferences() == null) return "";
         return ContextUtils.getAppSharedPreferences().getString(PREF_DB_IMPORT_FILE, "");
     }
 
     public void setDbImportFile(String file) {
-        if (ContextUtils.getAppSharedPreferences() == null)
-            return;
+        if (ContextUtils.getAppSharedPreferences() == null) return;
         ContextUtils.getAppSharedPreferences().edit().putString(PREF_DB_IMPORT_FILE, file).apply();
     }
 
@@ -212,8 +210,11 @@ public class BraveDbUtil {
     }
 
     public String importDestinationPath() {
-        return ContextUtils.getApplicationContext().getApplicationInfo().dataDir + File.separator
-                + REWARDS_DB_SRC_DIR + File.separator + PUBLISHER_INFO_DB;
+        return ContextUtils.getApplicationContext().getApplicationInfo().dataDir
+                + File.separator
+                + REWARDS_DB_SRC_DIR
+                + File.separator
+                + PUBLISHER_INFO_DB;
     }
 
     public static String getTag() {

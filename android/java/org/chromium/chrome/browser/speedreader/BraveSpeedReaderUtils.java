@@ -53,9 +53,13 @@ public class BraveSpeedReaderUtils {
     @NativeMethods
     interface Natives {
         void singleShotSpeedreaderForWebContent(WebContents webContents);
+
         void toggleEnabledForWebContent(WebContents webContents, boolean enabled);
+
         boolean tabProbablyReadable(Tab tab);
+
         boolean tabStateIsDistilled(Tab tab);
+
         boolean tabSupportsDistillation(Tab tab);
     }
 }

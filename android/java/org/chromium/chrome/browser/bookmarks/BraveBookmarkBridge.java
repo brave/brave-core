@@ -25,52 +25,77 @@ class BraveBookmarkBridge extends BookmarkBridge {
 
     @CalledByNative
     public void bookmarksImported(boolean isSuccess) {
-        if (mWindowAndroid != null && mWindowAndroid.getContext().get() != null
+        if (mWindowAndroid != null
+                && mWindowAndroid.getContext().get() != null
                 && mWindowAndroid.getContext().get() instanceof AppCompatActivity) {
-            ((AppCompatActivity) mWindowAndroid.getContext().get()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    BraveBookmarkUtils.showBookmarkImportExportDialog(
-                            (AppCompatActivity) mWindowAndroid.getContext().get(), true, isSuccess,
-                            null);
-                }
-            });
+            ((AppCompatActivity) mWindowAndroid.getContext().get())
+                    .runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    BraveBookmarkUtils.showBookmarkImportExportDialog(
+                                            (AppCompatActivity) mWindowAndroid.getContext().get(),
+                                            true,
+                                            isSuccess,
+                                            null);
+                                }
+                            });
         }
     }
 
     @CalledByNative
     public void bookmarksExported(boolean isSuccess) {
-        if (mWindowAndroid != null && mWindowAndroid.getContext().get() != null
+        if (mWindowAndroid != null
+                && mWindowAndroid.getContext().get() != null
                 && mWindowAndroid.getContext().get() instanceof AppCompatActivity) {
-            ((AppCompatActivity) mWindowAndroid.getContext().get()).runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    BraveBookmarkUtils.showBookmarkImportExportDialog(
-                            (AppCompatActivity) mWindowAndroid.getContext().get(), false, isSuccess,
-                            mExportFilePath);
-                }
-            });
+            ((AppCompatActivity) mWindowAndroid.getContext().get())
+                    .runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    BraveBookmarkUtils.showBookmarkImportExportDialog(
+                                            (AppCompatActivity) mWindowAndroid.getContext().get(),
+                                            false,
+                                            isSuccess,
+                                            mExportFilePath);
+                                }
+                            });
         }
     }
 
     public void importBookmarks(WindowAndroid windowAndroid, String importFilePath) {
         mWindowAndroid = windowAndroid;
-        BraveBookmarkBridgeJni.get().importBookmarks(
-                mNativeBookmarkBridge, BraveBookmarkBridge.this, windowAndroid, importFilePath);
+        BraveBookmarkBridgeJni.get()
+                .importBookmarks(
+                        mNativeBookmarkBridge,
+                        BraveBookmarkBridge.this,
+                        windowAndroid,
+                        importFilePath);
     }
 
     public void exportBookmarks(WindowAndroid windowAndroid, String exportFilePath) {
         mWindowAndroid = windowAndroid;
         mExportFilePath = exportFilePath;
-        BraveBookmarkBridgeJni.get().exportBookmarks(
-                mNativeBookmarkBridge, BraveBookmarkBridge.this, windowAndroid, exportFilePath);
+        BraveBookmarkBridgeJni.get()
+                .exportBookmarks(
+                        mNativeBookmarkBridge,
+                        BraveBookmarkBridge.this,
+                        windowAndroid,
+                        exportFilePath);
     }
 
     @NativeMethods
     public interface Natives {
-        void importBookmarks(long nativeBraveBookmarkBridge, BraveBookmarkBridge caller,
-                WindowAndroid window, String importFilePath);
-        void exportBookmarks(long nativeBraveBookmarkBridge, BraveBookmarkBridge caller,
-                WindowAndroid window, String exportFilePath);
+        void importBookmarks(
+                long nativeBraveBookmarkBridge,
+                BraveBookmarkBridge caller,
+                WindowAndroid window,
+                String importFilePath);
+
+        void exportBookmarks(
+                long nativeBraveBookmarkBridge,
+                BraveBookmarkBridge caller,
+                WindowAndroid window,
+                String exportFilePath);
     }
 }

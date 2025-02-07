@@ -11,22 +11,29 @@ public class BraveStatsTable {
     public static final String COLUMN_URL = "url";
     public static final String COLUMN_DOMAIN = "domain";
     public static final String COLUMN_STAT_TYPE = "stat_type";
-    public static final String COLUMN_STAT_SITE = "stat_site"; 
-    public static final String COLUMN_STAT_SITE_DOMAIN = "stat_site_domain"; 
+    public static final String COLUMN_STAT_SITE = "stat_site";
+    public static final String COLUMN_STAT_SITE_DOMAIN = "stat_site_domain";
     public static final String COLUMN_TIMESTAMP = "timestamp";
     // Create table SQL query
     public static final String CREATE_TABLE =
-        "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-        + COLUMN_URL + " TEXT,"
-        + COLUMN_DOMAIN + " TEXT,"
-        + COLUMN_STAT_TYPE + " TEXT,"
-        + COLUMN_STAT_SITE + " TEXT,"
-        + COLUMN_STAT_SITE_DOMAIN + " TEXT,"
-        + COLUMN_TIMESTAMP + " DATETIME"
-        + ")";
+            "CREATE TABLE IF NOT EXISTS "
+                    + TABLE_NAME
+                    + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_URL
+                    + " TEXT,"
+                    + COLUMN_DOMAIN
+                    + " TEXT,"
+                    + COLUMN_STAT_TYPE
+                    + " TEXT,"
+                    + COLUMN_STAT_SITE
+                    + " TEXT,"
+                    + COLUMN_STAT_SITE_DOMAIN
+                    + " TEXT,"
+                    + COLUMN_TIMESTAMP
+                    + " DATETIME"
+                    + ")";
 
-    public BraveStatsTable() {
-    }
+    public BraveStatsTable() {}
 
     private String mUrl;
     private String mDomain;
@@ -35,7 +42,13 @@ public class BraveStatsTable {
     private String mStatSiteDomain;
     private String mTimestamp;
 
-    public BraveStatsTable(String url, String domain, String statType, String statSite, String statSiteDomain, String timestamp) {
+    public BraveStatsTable(
+            String url,
+            String domain,
+            String statType,
+            String statSite,
+            String statSiteDomain,
+            String timestamp) {
         mUrl = url;
         mDomain = domain;
         mStatType = statType;

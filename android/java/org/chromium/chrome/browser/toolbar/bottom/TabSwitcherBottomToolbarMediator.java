@@ -17,13 +17,14 @@ class TabSwitcherBottomToolbarMediator implements ThemeColorObserver {
     /** The model for the tab switcher bottom toolbar that holds all of its state. */
     private final TabSwitcherBottomToolbarModel mModel;
 
-    /** A provider that notifies components when the theme color changes.*/
+    /** A provider that notifies components when the theme color changes. */
     private final ThemeColorProvider mThemeColorProvider;
 
     /**
      * Build a new mediator that handles events from outside the tab switcher bottom toolbar.
-     * @param model The {@link TabSwitcherBottomToolbarModel} that holds all the state for the
-     *              tab switcher bottom toolbar.
+     *
+     * @param model The {@link TabSwitcherBottomToolbarModel} that holds all the state for the tab
+     *     switcher bottom toolbar.
      * @param themeColorProvider Notifies components when the theme color changes.
      */
     TabSwitcherBottomToolbarMediator(
@@ -46,9 +47,7 @@ class TabSwitcherBottomToolbarMediator implements ThemeColorObserver {
                 TabSwitcherBottomToolbarModel.SHOW_ON_TOP, showOnTop && !isGridTabSwitcherEnabled);
     }
 
-    /**
-     * Clean up anything that needs to be when the tab switcher bottom toolbar is destroyed.
-     */
+    /** Clean up anything that needs to be when the tab switcher bottom toolbar is destroyed. */
     void destroy() {
         mThemeColorProvider.removeThemeColorObserver(this);
     }

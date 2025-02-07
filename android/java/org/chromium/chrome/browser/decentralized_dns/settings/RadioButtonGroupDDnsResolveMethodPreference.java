@@ -20,8 +20,8 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayou
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class RadioButtonGroupDDnsResolveMethodPreference
-        extends Preference implements RadioGroup.OnCheckedChangeListener {
+public class RadioButtonGroupDDnsResolveMethodPreference extends Preference
+        implements RadioGroup.OnCheckedChangeListener {
     static final int OPTIONS_SIZE = ResolveMethodTypes.MAX_VALUE + 1;
 
     private @ResolveMethodTypes int mSetting;
@@ -44,19 +44,23 @@ public class RadioButtonGroupDDnsResolveMethodPreference
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        mGroup = (RadioButtonWithDescriptionLayout) holder.findViewById(
-                R.id.ddns_resolve_method_radio_group);
+        mGroup =
+                (RadioButtonWithDescriptionLayout)
+                        holder.findViewById(R.id.ddns_resolve_method_radio_group);
         mGroup.setOnCheckedChangeListener(this);
 
-        mButtons.set(ResolveMethodTypes.ASK,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ddns_resolve_method_ask_radio_button));
-        mButtons.set(ResolveMethodTypes.DISABLED,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ddns_resolve_method_disabled_radio_button));
-        mButtons.set(ResolveMethodTypes.ENABLED,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ddns_resolve_method_enabled_radio_button));
+        mButtons.set(
+                ResolveMethodTypes.ASK,
+                (RadioButtonWithDescription)
+                        holder.findViewById(R.id.ddns_resolve_method_ask_radio_button));
+        mButtons.set(
+                ResolveMethodTypes.DISABLED,
+                (RadioButtonWithDescription)
+                        holder.findViewById(R.id.ddns_resolve_method_disabled_radio_button));
+        mButtons.set(
+                ResolveMethodTypes.ENABLED,
+                (RadioButtonWithDescription)
+                        holder.findViewById(R.id.ddns_resolve_method_enabled_radio_button));
 
         mSettingRadioButton = mButtons.get(mSetting);
         mSettingRadioButton.setChecked(true);

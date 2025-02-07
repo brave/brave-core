@@ -81,9 +81,13 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
-    BottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout scrollingBottomView, View root,
-            ActivityTabProvider tabProvider, OnLongClickListener tabsSwitcherLongClickListner,
-            ThemeColorProvider themeColorProvider, Runnable openHomepageAction,
+    BottomToolbarCoordinator(
+            ScrollingBottomViewResourceFrameLayout scrollingBottomView,
+            View root,
+            ActivityTabProvider tabProvider,
+            OnLongClickListener tabsSwitcherLongClickListner,
+            ThemeColorProvider themeColorProvider,
+            Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
@@ -311,9 +315,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         mBrowsingModeCoordinator.onVisibilityChanged(isVisible);
     }
 
-    /**
-     * Clean up any state when the bottom toolbar is destroyed.
-     */
+    /** Clean up any state when the bottom toolbar is destroyed. */
     void destroy() {
         mBrowsingModeCoordinator.destroy();
         if (mTabSwitcherModeCoordinator != null) {

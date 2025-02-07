@@ -22,7 +22,9 @@ public class BraveIntentHandlerClassAdapter extends BraveClassVisitor {
         changeMethodOwner(sBraveIntentHandlerClassName, "getUrlForWebapp", sIntentHandlerClassName);
 
         makePublicMethod(sIntentHandlerClassName, "isJavascriptSchemeOrInvalidUrl");
-        changeMethodOwner(sBraveIntentHandlerClassName, "isJavascriptSchemeOrInvalidUrl",
+        changeMethodOwner(
+                sBraveIntentHandlerClassName,
+                "isJavascriptSchemeOrInvalidUrl",
                 sIntentHandlerClassName);
 
         changeMethodOwner(

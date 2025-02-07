@@ -33,6 +33,7 @@ public class BraveSearchEnginePrefHelper {
     @NativeMethods
     interface Natives {
         void setFetchSEFromNative(boolean value);
+
         boolean getFetchSEFromNative();
     }
 }

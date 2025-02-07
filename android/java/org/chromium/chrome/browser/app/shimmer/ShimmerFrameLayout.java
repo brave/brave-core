@@ -75,10 +75,10 @@ public class ShimmerFrameLayout extends FrameLayout {
         try {
             Shimmer.Builder<?> shimmerBuilder =
                     typedArray.hasValue(R.styleable.ShimmerFrameLayout_shimmer_colored)
-                            && typedArray.getBoolean(
-                                    R.styleable.ShimmerFrameLayout_shimmer_colored, false)
-                    ? new Shimmer.ColorHighlightBuilder()
-                    : new Shimmer.AlphaHighlightBuilder();
+                                    && typedArray.getBoolean(
+                                            R.styleable.ShimmerFrameLayout_shimmer_colored, false)
+                            ? new Shimmer.ColorHighlightBuilder()
+                            : new Shimmer.AlphaHighlightBuilder();
             setShimmer(shimmerBuilder.consumeAttributes(typedArray).build());
         } finally {
             typedArray.recycle();

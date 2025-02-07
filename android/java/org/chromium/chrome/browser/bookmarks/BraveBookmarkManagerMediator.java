@@ -173,15 +173,17 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
                     outputStream.write(buffers, 0, byteRead);
                 }
                 ((AppCompatActivity) mWindowAndroid.getContext().get())
-                        .runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (mBookmarkModel instanceof BraveBookmarkModel) {
-                                    ((BraveBookmarkModel) mBookmarkModel)
-                                            .importBookmarks(mWindowAndroid, file.getPath());
-                                }
-                            }
-                        });
+                        .runOnUiThread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (mBookmarkModel instanceof BraveBookmarkModel) {
+                                            ((BraveBookmarkModel) mBookmarkModel)
+                                                    .importBookmarks(
+                                                            mWindowAndroid, file.getPath());
+                                        }
+                                    }
+                                });
             } catch (IOException e) {
                 Log.e(TAG, "doImportBookmarks IOException:" + e.getMessage());
             }
@@ -234,14 +236,16 @@ class BraveBookmarkManagerMediator extends BookmarkManagerMediator
     }
 
     private void doExportBookmarksOnUI(File file) {
-        ((AppCompatActivity) mWindowAndroid.getContext().get()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mBookmarkModel instanceof BraveBookmarkModel) {
-                    ((BraveBookmarkModel) mBookmarkModel)
-                            .exportBookmarks(mWindowAndroid, file.getPath());
-                }
-            }
-        });
+        ((AppCompatActivity) mWindowAndroid.getContext().get())
+                .runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mBookmarkModel instanceof BraveBookmarkModel) {
+                                    ((BraveBookmarkModel) mBookmarkModel)
+                                            .exportBookmarks(mWindowAndroid, file.getPath());
+                                }
+                            }
+                        });
     }
 }

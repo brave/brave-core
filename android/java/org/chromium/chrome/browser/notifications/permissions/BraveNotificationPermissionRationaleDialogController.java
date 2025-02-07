@@ -10,10 +10,7 @@ import android.content.Context;
 import org.chromium.base.Callback;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
-/**
- *
- * This is override chromium android 13 default dialog
- * */
+/** This is override chromium android 13 default dialog */
 public class BraveNotificationPermissionRationaleDialogController
         extends NotificationPermissionRationaleDialogController {
     public BraveNotificationPermissionRationaleDialogController(

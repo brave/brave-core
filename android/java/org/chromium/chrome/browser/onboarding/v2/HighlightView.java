@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.onboarding.v2;
 
@@ -88,12 +86,14 @@ public class HighlightView extends FrameLayout {
     public void initializeAnimators() {
         mAnimatorSet = new AnimatorSet();
 
-        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(
-                this, "innerRadius", mInnerRadius * 0.7f, mInnerRadius * 1.1f);
+        ObjectAnimator scaleXAnimator =
+                ObjectAnimator.ofFloat(
+                        this, "innerRadius", mInnerRadius * 0.7f, mInnerRadius * 1.1f);
         scaleXAnimator.setRepeatCount(ValueAnimator.INFINITE);
 
-        ObjectAnimator scaleBigAnimator = ObjectAnimator.ofFloat(
-                this, "outerRadius", mOuterRadius * 0.9f, mOuterRadius * 1.2f);
+        ObjectAnimator scaleBigAnimator =
+                ObjectAnimator.ofFloat(
+                        this, "outerRadius", mOuterRadius * 0.9f, mOuterRadius * 1.2f);
 
         scaleBigAnimator.setRepeatCount(ValueAnimator.INFINITE);
 
@@ -136,8 +136,9 @@ public class HighlightView extends FrameLayout {
     protected void dispatchDraw(Canvas canvas) {
         int[] location = new int[2];
         getLocationOnScreen(location);
-        Bitmap overlay = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(),
-                Bitmap.Config.ARGB_8888);
+        Bitmap overlay =
+                Bitmap.createBitmap(
+                        getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888);
         Canvas overlayCanvas = new Canvas(overlay);
         overlayCanvas.drawColor(0xB3000000);
 
@@ -189,16 +190,23 @@ public class HighlightView extends FrameLayout {
             innerBorderPaint.setStrokeWidth(6);
             outterBorderPaint.setStrokeWidth(6);
 
-            RectF innerRect = new RectF(mItem.getScreenLeft() + 10,
-                    (mItem.getScreenTop() - location[1]) + 10, mItem.getScreenRight() - 10,
-                    mItem.getScreenBottom() - 10 - location[1]);
+            RectF innerRect =
+                    new RectF(
+                            mItem.getScreenLeft() + 10,
+                            (mItem.getScreenTop() - location[1]) + 10,
+                            mItem.getScreenRight() - 10,
+                            mItem.getScreenBottom() - 10 - location[1]);
             overlayCanvas.drawRoundRect(innerRect, 12, 12, mEraserPaint);
             if (mIsHighlightTransparent) {
                 overlayCanvas.drawRoundRect(innerRect, 12, 12, innerBorderPaint);
             }
 
-            RectF outerRect = new RectF(mItem.getScreenLeft(), mItem.getScreenTop() - location[1],
-                    mItem.getScreenRight(), mItem.getScreenBottom() - location[1]);
+            RectF outerRect =
+                    new RectF(
+                            mItem.getScreenLeft(),
+                            mItem.getScreenTop() - location[1],
+                            mItem.getScreenRight(),
+                            mItem.getScreenBottom() - location[1]);
 
             if (!mIsHighlightTransparent) {
                 mEraserPaint.setAlpha(ALPHA_60_PERCENT);

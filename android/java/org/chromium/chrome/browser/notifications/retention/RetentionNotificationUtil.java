@@ -160,7 +160,8 @@ public class RetentionNotificationUtil {
             Context context, String notificationType, String notificationText) {
         RetentionNotification retentionNotification = getNotificationObject(notificationType);
         Log.e("NTP", notificationText);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, retentionNotification.getChannelId());
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(context, retentionNotification.getChannelId());
         builder.setContentTitle(retentionNotification.getNotificationTitle());
         builder.setContentText(notificationText);
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText));
@@ -172,10 +173,13 @@ public class RetentionNotificationUtil {
         launchIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(context,
-                retentionNotification.getNotificationId(), launchIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-                        | IntentUtils.getPendingIntentMutabilityFlag(true));
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        context,
+                        retentionNotification.getNotificationId(),
+                        launchIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                                | IntentUtils.getPendingIntentMutabilityFlag(true));
 
         builder.setContentIntent(resultPendingIntent);
 
@@ -185,53 +189,63 @@ public class RetentionNotificationUtil {
     public static String getNotificationText(Context context, String notificationType) {
         DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
         switch (notificationType) {
-        case HOUR_3:
-            if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                long adsTrackersCount = mDatabaseHelper.getAllStats().size();
-                if (adsTrackersCount >= 5) {
-                    return String.format(context.getResources().getString(R.string.notification_hour_3_text_1), adsTrackersCount);
+            case HOUR_3:
+                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    long adsTrackersCount = mDatabaseHelper.getAllStats().size();
+                    if (adsTrackersCount >= 5) {
+                        return String.format(
+                                context.getResources()
+                                        .getString(R.string.notification_hour_3_text_1),
+                                adsTrackersCount);
+                    } else {
+                        return context.getResources()
+                                .getString(R.string.notification_hour_3_text_2);
+                    }
                 } else {
-                    return context.getResources().getString(R.string.notification_hour_3_text_2);
+                    return context.getResources().getString(R.string.notification_hour_3_text_3);
                 }
-            } else {
-                return context.getResources().getString(R.string.notification_hour_3_text_3);
-            }
-        case HOUR_24:
-            if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                Pair<String, String> dataSavedPair =
-                        BraveStatsUtil.getBraveStatsStringFormNumberPair(
-                                mDatabaseHelper.getTotalSavedBandwidth(), true);
-                return String.format(context.getResources().getString(R.string.notification_hour_24_text_1), dataSavedPair.first, dataSavedPair.second);
-            } else {
-                return context.getResources().getString(R.string.notification_hour_24_text_2);
-            }
-        case EVERY_SUNDAY:
-            long adsTrackersCountWeekly =
-                    mDatabaseHelper
-                            .getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", -7),
-                                    BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0))
-                            .size();
-            Log.e("NTP", "Weekly count : " + adsTrackersCountWeekly);
-            return String.format(context.getResources().getString(R.string.notification_weekly_stats), adsTrackersCountWeekly);
-        case DAY_6:
-            return context.getResources().getString(R.string.notification_marketing);
-        case DAY_10:
-        case DAY_30:
-        case DAY_35:
-            return context.getResources().getString(R.string.notification_rewards);
-        case DEFAULT_BROWSER_1:
-        case DEFAULT_BROWSER_2:
-        case DEFAULT_BROWSER_3:
-            return context.getResources().getString(R.string.set_brave_as_your);
-        case DORMANT_USERS_DAY_14:
-            return context.getResources().getString(
-                    R.string.dormant_users_engagement_notification_body_1);
-        case DORMANT_USERS_DAY_25:
-            return context.getResources().getString(
-                    R.string.dormant_users_engagement_notification_body_2);
-        case DORMANT_USERS_DAY_40:
-            return context.getResources().getString(
-                    R.string.dormant_users_engagement_notification_body_3);
+            case HOUR_24:
+                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    Pair<String, String> dataSavedPair =
+                            BraveStatsUtil.getBraveStatsStringFormNumberPair(
+                                    mDatabaseHelper.getTotalSavedBandwidth(), true);
+                    return String.format(
+                            context.getResources().getString(R.string.notification_hour_24_text_1),
+                            dataSavedPair.first,
+                            dataSavedPair.second);
+                } else {
+                    return context.getResources().getString(R.string.notification_hour_24_text_2);
+                }
+            case EVERY_SUNDAY:
+                long adsTrackersCountWeekly =
+                        mDatabaseHelper
+                                .getAllStatsWithDate(
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", -7),
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0))
+                                .size();
+                Log.e("NTP", "Weekly count : " + adsTrackersCountWeekly);
+                return String.format(
+                        context.getResources().getString(R.string.notification_weekly_stats),
+                        adsTrackersCountWeekly);
+            case DAY_6:
+                return context.getResources().getString(R.string.notification_marketing);
+            case DAY_10:
+            case DAY_30:
+            case DAY_35:
+                return context.getResources().getString(R.string.notification_rewards);
+            case DEFAULT_BROWSER_1:
+            case DEFAULT_BROWSER_2:
+            case DEFAULT_BROWSER_3:
+                return context.getResources().getString(R.string.set_brave_as_your);
+            case DORMANT_USERS_DAY_14:
+                return context.getResources()
+                        .getString(R.string.dormant_users_engagement_notification_body_1);
+            case DORMANT_USERS_DAY_25:
+                return context.getResources()
+                        .getString(R.string.dormant_users_engagement_notification_body_2);
+            case DORMANT_USERS_DAY_40:
+                return context.getResources()
+                        .getString(R.string.dormant_users_engagement_notification_body_3);
         }
         return "";
     }
@@ -241,8 +255,11 @@ public class RetentionNotificationUtil {
         Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
         notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
-                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+                PendingIntent.getBroadcast(
+                        context,
+                        retentionNotification.getNotificationId(),
+                        notificationIntent,
+                        0 | IntentUtils.getPendingIntentMutabilityFlag(true));
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.add(Calendar.MINUTE, retentionNotification.getNotificationTime());
@@ -259,14 +276,18 @@ public class RetentionNotificationUtil {
         Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
         notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
-                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+                PendingIntent.getBroadcast(
+                        context,
+                        retentionNotification.getNotificationId(),
+                        notificationIntent,
+                        0 | IntentUtils.getPendingIntentMutabilityFlag(true));
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert alarmManager != null;
         alarmManager.set(AlarmManager.RTC_WAKEUP, timeInMilliseconds, pendingIntent);
     }
 
-    public static void scheduleNotificationForEverySunday(Context context, String notificationType) {
+    public static void scheduleNotificationForEverySunday(
+            Context context, String notificationType) {
         RetentionNotification retentionNotification = getNotificationObject(notificationType);
         Calendar currentDate = Calendar.getInstance();
         while (currentDate.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
@@ -280,22 +301,35 @@ public class RetentionNotificationUtil {
         Intent notificationIntent = new Intent(context, RetentionNotificationPublisher.class);
         notificationIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(context, retentionNotification.getNotificationId(),
-                        notificationIntent, 0 | IntentUtils.getPendingIntentMutabilityFlag(true));
+                PendingIntent.getBroadcast(
+                        context,
+                        retentionNotification.getNotificationId(),
+                        notificationIntent,
+                        0 | IntentUtils.getPendingIntentMutabilityFlag(true));
         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         assert am != null;
-        am.setRepeating(AlarmManager.RTC_WAKEUP, currentDate.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+        am.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                currentDate.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY * 7,
+                pendingIntent);
     }
 
     public static void scheduleDormantUsersNotifications(Context context) {
-        scheduleNotificationWithTime(context, DORMANT_USERS_DAY_14,
-                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                        DORMANT_USERS_DAY_14));
-        RetentionNotificationUtil.scheduleNotificationWithTime(context, DORMANT_USERS_DAY_25,
-                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                        DORMANT_USERS_DAY_25));
-        RetentionNotificationUtil.scheduleNotificationWithTime(context, DORMANT_USERS_DAY_40,
-                OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                        DORMANT_USERS_DAY_40));
+        scheduleNotificationWithTime(
+                context,
+                DORMANT_USERS_DAY_14,
+                OnboardingPrefManager.getInstance()
+                        .getDormantUsersNotificationTime(DORMANT_USERS_DAY_14));
+        RetentionNotificationUtil.scheduleNotificationWithTime(
+                context,
+                DORMANT_USERS_DAY_25,
+                OnboardingPrefManager.getInstance()
+                        .getDormantUsersNotificationTime(DORMANT_USERS_DAY_25));
+        RetentionNotificationUtil.scheduleNotificationWithTime(
+                context,
+                DORMANT_USERS_DAY_40,
+                OnboardingPrefManager.getInstance()
+                        .getDormantUsersNotificationTime(DORMANT_USERS_DAY_40));
     }
 }

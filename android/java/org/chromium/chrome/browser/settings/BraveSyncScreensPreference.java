@@ -201,7 +201,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private boolean ensureCameraPermission() {
         if (ActivityCompat.checkSelfPermission(
-                    getActivity().getApplicationContext(), Manifest.permission.CAMERA)
+                        getActivity().getApplicationContext(), Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
@@ -226,14 +226,18 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             return;
         }
 
-        Log.e(TAG,
-                "Permission not granted: results len = " + grantResults.length + " Result code = "
+        Log.e(
+                TAG,
+                "Permission not granted: results len = "
+                        + grantResults.length
+                        + " Result code = "
                         + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
 
-        Toast.makeText(getActivity().getApplicationContext(),
-                     getResources().getString(
-                             R.string.sync_camera_permission_was_not_granted_toast),
-                     Toast.LENGTH_LONG)
+        Toast.makeText(
+                        getActivity().getApplicationContext(),
+                        getResources()
+                                .getString(R.string.sync_camera_permission_was_not_granted_toast),
+                        Toast.LENGTH_LONG)
                 .show();
 
         // Go to main sync settings screen
@@ -245,15 +249,18 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             if (null == getActivity()) {
                 return;
             }
-            final String messageFinal = (null == message || message.isEmpty())
-                    ? getResources().getString(R.string.sync_device_failure)
-                    : message;
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    showEndDialog(messageFinal, () -> {});
-                }
-            });
+            final String messageFinal =
+                    (null == message || message.isEmpty())
+                            ? getResources().getString(R.string.sync_device_failure)
+                            : message;
+            getActivity()
+                    .runOnUiThread(
+                            new Runnable() {
+                                @Override
+                                public void run() {
+                                    showEndDialog(messageFinal, () -> {});
+                                }
+                            });
         } catch (Exception exc) {
             Log.e(TAG, "onSyncError exception: " + exc);
         }
@@ -611,23 +618,27 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             setJoinExistingChainLayout();
         } else if (mPasteButton == v) {
             if (null != mCodeWords) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(
-                        Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard =
+                        (ClipboardManager)
+                                getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clipData = clipboard.getPrimaryClip();
                 if (null != clipData && clipData.getItemCount() > 0) {
-                    mCodeWords.setText(clipData.getItemAt(0).coerceToText(
-                            getActivity().getApplicationContext()));
+                    mCodeWords.setText(
+                            clipData.getItemAt(0)
+                                    .coerceToText(getActivity().getApplicationContext()));
                 }
             }
         } else if (mCopyButton == v) {
             if (null != mBraveSyncAddDeviceCodeWords) {
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(
-                        Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard =
+                        (ClipboardManager)
+                                getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("", mBraveSyncAddDeviceCodeWords.getText());
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(getActivity().getApplicationContext(),
-                             getResources().getString(R.string.brave_sync_copied_text),
-                             Toast.LENGTH_LONG)
+                Toast.makeText(
+                                getActivity().getApplicationContext(),
+                                getResources().getString(R.string.brave_sync_copied_text),
+                                Toast.LENGTH_LONG)
                         .show();
             }
         } else if (mConfirmCodeWordsButton == v) {
@@ -817,15 +828,21 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (null == getActivity()) {
             return;
         }
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                seedWordsReceivedImpl(seedWords, syncInputType);
-            }
-        });
+        getActivity()
+                .runOnUiThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                seedWordsReceivedImpl(seedWords, syncInputType);
+                            }
+                        });
     }
 
-    private enum FinalWarningFor { QR_CODE, CODE_WORDS }
+    private enum FinalWarningFor {
+        QR_CODE,
+        CODE_WORDS
+    }
+
     private void showFinalSecurityWarning(
             FinalWarningFor warningFor, Runnable runWhenYes, Runnable runWhenCancel) {
         ThreadUtils.assertOnUiThread();
@@ -837,8 +854,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (warningFor == FinalWarningFor.QR_CODE) {
             text = getActivity().getResources().getString(R.string.sync_final_warning_text_qr_code);
         } else if (warningFor == FinalWarningFor.CODE_WORDS) {
-            text = getActivity().getResources().getString(
-                    R.string.sync_final_warning_text_code_words);
+            text =
+                    getActivity()
+                            .getResources()
+                            .getString(R.string.sync_final_warning_text_code_words);
         } else {
             assert false;
         }
@@ -858,10 +877,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                     dialog.dismiss();
                     mFinalWarningDialog = null;
                 });
-        confirmDialog.setOnCancelListener((dialog) -> {
-            runWhenCancel.run();
-            mFinalWarningDialog = null;
-        });
+        confirmDialog.setOnCancelListener(
+                (dialog) -> {
+                    runWhenCancel.run();
+                    mFinalWarningDialog = null;
+                });
 
         mFinalWarningDialog = confirmDialog.show();
     }
@@ -874,7 +894,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
     }
 
-    private enum SyncInputType { NEW, JOIN }
+    private enum SyncInputType {
+        NEW,
+        JOIN
+    }
+
     private void seedWordsReceivedImpl(String seedWords, SyncInputType syncInputType) {
         pauseSyncStateChangedObserver();
 
@@ -940,8 +964,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         .setRequestedFps(24.0f);
 
         // make sure that auto focus is an available option
-        builder = builder.setFocusMode(
-                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
+        builder =
+                builder.setFocusMode(
+                        autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
 
         mCameraSource =
                 builder.setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null).build();
@@ -951,11 +976,14 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (mCameraSource != null && mCameraSourcePreview.mCameraExist) {
             // check that the device has play services available.
             try {
-                int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
-                        getActivity().getApplicationContext());
+                int code =
+                        GoogleApiAvailability.getInstance()
+                                .isGooglePlayServicesAvailable(
+                                        getActivity().getApplicationContext());
                 if (code != ConnectionResult.SUCCESS) {
-                    Dialog dlg = GoogleApiAvailability.getInstance().getErrorDialog(
-                            getActivity(), code, RC_HANDLE_GMS);
+                    Dialog dlg =
+                            GoogleApiAvailability.getInstance()
+                                    .getErrorDialog(getActivity(), code, RC_HANDLE_GMS);
                     if (null != dlg) {
                         dlg.show();
                     }
@@ -1090,17 +1118,21 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             String validationError = getQrCodeValidationString(jsonQr);
 
             if (!validationError.isEmpty()) {
-                getActivity().runOnUiThread(() -> {
-                    showEndDialog(validationError, new Runnable() {
-                        @Override
-                        public void run() {
-                            synchronized (mQrInProcessingOrFinalizedLock) {
-                                assert mQrInProcessingOrFinalized;
-                                mQrInProcessingOrFinalized = false;
-                            }
-                        }
-                    });
-                });
+                getActivity()
+                        .runOnUiThread(
+                                () -> {
+                                    showEndDialog(
+                                            validationError,
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    synchronized (mQrInProcessingOrFinalizedLock) {
+                                                        assert mQrInProcessingOrFinalized;
+                                                        mQrInProcessingOrFinalized = false;
+                                                    }
+                                                }
+                                            });
+                                });
                 return;
             }
 
@@ -1116,52 +1148,65 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             // but cl format then makes a glitchy formatting and lint does not
             // accept the well-formatted change. So use the full syntax for Runnable.
 
-            getActivity().runOnUiThread(() -> {
-                showFinalSecurityWarning(FinalWarningFor.QR_CODE,
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                synchronized (mQrInProcessingOrFinalizedLock) {
-                                    assert mQrInProcessingOrFinalized;
-                                    // Supposed to set here mQrInProcessingOrFinalized
-                                    // to true, because we validated and accepted the QR code
-                                    // and don't need the new QR codes to be detected.
-                                    // To allow new QR scans, at setJoinExistingChainLayout
-                                    // the flag mQrInProcessingOrFinalized will be reset.
-                                }
+            getActivity()
+                    .runOnUiThread(
+                            () -> {
+                                showFinalSecurityWarning(
+                                        FinalWarningFor.QR_CODE,
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                synchronized (mQrInProcessingOrFinalizedLock) {
+                                                    assert mQrInProcessingOrFinalized;
+                                                    // Supposed to set here
+                                                    // mQrInProcessingOrFinalized
+                                                    // to true, because we validated and accepted
+                                                    // the QR code
+                                                    // and don't need the new QR codes to be
+                                                    // detected.
+                                                    // To allow new QR scans, at
+                                                    // setJoinExistingChainLayout
+                                                    // the flag mQrInProcessingOrFinalized will be
+                                                    // reset.
+                                                }
 
-                                // We have the confirmation from user
-                                // seedHexReceived will call setAppropriateView
-                                seedHexReceived(seedHex);
-                            }
-                        },
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                synchronized (mQrInProcessingOrFinalizedLock) {
-                                    assert mQrInProcessingOrFinalized;
-                                    mQrInProcessingOrFinalized = false;
-                                }
-                            }
-                        });
-            });
+                                                // We have the confirmation from user
+                                                // seedHexReceived will call setAppropriateView
+                                                seedHexReceived(seedHex);
+                                            }
+                                        },
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                synchronized (mQrInProcessingOrFinalizedLock) {
+                                                    assert mQrInProcessingOrFinalized;
+                                                    mQrInProcessingOrFinalized = false;
+                                                }
+                                            }
+                                        });
+                            });
         }
     }
 
     private void showEndDialog(String message, Runnable runWhenDismissed) {
         AlertDialog.Builder alertBuilder =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {}
-        };
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {}
+                };
         AlertDialog alertDialog =
-                alertBuilder.setTitle(getResources().getString(R.string.brave_sync_device))
+                alertBuilder
+                        .setTitle(getResources().getString(R.string.brave_sync_device))
                         .setMessage(message)
                         .setPositiveButton(R.string.ok, onClickListener)
                         .create();
         alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
-        alertDialog.setOnDismissListener((dialog) -> { runWhenDismissed.run(); });
+        alertDialog.setOnDismissListener(
+                (dialog) -> {
+                    runWhenDismissed.run();
+                });
         alertDialog.show();
     }
 
@@ -1185,8 +1230,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 };
         String deviceNameToDisplay = device.mName;
         if (device.mIsCurrentDevice) {
-            deviceNameToDisplay = deviceNameToDisplay + " "
-                    + getResources().getString(R.string.brave_sync_this_device_text);
+            deviceNameToDisplay =
+                    deviceNameToDisplay
+                            + " "
+                            + getResources().getString(R.string.brave_sync_this_device_text);
         }
         AlertDialog alertDialog =
                 alertBuilder
@@ -1203,14 +1250,15 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private void permanentlyDeleteAccount() {
         AlertDialog.Builder alertBuilder =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                if (button == AlertDialog.BUTTON_POSITIVE) {
-                    permanentlyDeleteAccountImpl();
-                }
-            }
-        };
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == AlertDialog.BUTTON_POSITIVE) {
+                            permanentlyDeleteAccountImpl();
+                        }
+                    }
+                };
 
         AlertDialog alertDialog =
                 alertBuilder

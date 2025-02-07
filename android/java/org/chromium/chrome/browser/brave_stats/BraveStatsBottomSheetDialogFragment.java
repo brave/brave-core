@@ -96,7 +96,10 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     @Override
     public void show(FragmentManager manager, String tag) {
         try {
-            BraveStatsBottomSheetDialogFragment fragment = (BraveStatsBottomSheetDialogFragment) manager.findFragmentByTag(BraveStatsBottomSheetDialogFragment.TAG_FRAGMENT);
+            BraveStatsBottomSheetDialogFragment fragment =
+                    (BraveStatsBottomSheetDialogFragment)
+                            manager.findFragmentByTag(
+                                    BraveStatsBottomSheetDialogFragment.TAG_FRAGMENT);
             FragmentTransaction transaction = manager.beginTransaction();
             if (fragment != null) {
                 transaction.remove(fragment);
@@ -112,24 +115,26 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
 
-        final View view = LayoutInflater.from(getContext()).inflate(R.layout.brave_stats_bottom_sheet, null);
+        final View view =
+                LayoutInflater.from(getContext()).inflate(R.layout.brave_stats_bottom_sheet, null);
 
         emptyDataLayout = view.findViewById(R.id.brave_stats_empty_layout);
 
         RadioGroup durationRadioGroup = view.findViewById(R.id.duration_radio_group);
-        durationRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                if (checkedId == R.id.week_radio) {
-                    selectedDuration = DAYS_7;
-                } else if (checkedId == R.id.month_radio) {
-                    selectedDuration = DAYS_30;
-                } else if (checkedId == R.id.months_radio) {
-                    selectedDuration = DAYS_90;
-                }
-                updateBraveStatsLayoutAsync();
-            }
-        });
+        durationRadioGroup.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                        if (checkedId == R.id.week_radio) {
+                            selectedDuration = DAYS_7;
+                        } else if (checkedId == R.id.month_radio) {
+                            selectedDuration = DAYS_30;
+                        } else if (checkedId == R.id.months_radio) {
+                            selectedDuration = DAYS_90;
+                        }
+                        updateBraveStatsLayoutAsync();
+                    }
+                });
 
         mWeekRadioButton = view.findViewById(R.id.week_radio);
         mMonthRadioButton = view.findViewById(R.id.month_radio);
@@ -156,33 +161,34 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         BraveTouchUtils.ensureMinTouchTarget(mWebsitesRadioButton);
 
         RadioGroup statTypeRadioGroup = layout.findViewById(R.id.stat_type_radio_group);
-        statTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                if (checkedId == R.id.websites_radio) {
-                    selectedType = WEBSITES;
-                } else if (checkedId == R.id.trackers_radio) {
-                    selectedType = TRACKERS;
-                }
-                showWebsitesTrackers();
-            }
-        });
+        statTypeRadioGroup.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                        if (checkedId == R.id.websites_radio) {
+                            selectedType = WEBSITES;
+                        } else if (checkedId == R.id.trackers_radio) {
+                            selectedType = TRACKERS;
+                        }
+                        showWebsitesTrackers();
+                    }
+                });
 
         noDataText = layout.findViewById(R.id.empty_data_text);
         ImageView btnClose = view.findViewById(R.id.brave_stats_bottom_sheet_close);
-        btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
+        btnClose.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
         updateBraveStatsLayoutAsync();
         updateNotificationView(view);
 
         dialog.setContentView(view);
         ViewParent parent = view.getParent();
-        ((View)parent).getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-
+        ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
     }
 
     public void onRequestPermissionsResult(

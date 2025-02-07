@@ -136,8 +136,8 @@ public class BraveNewsUtils {
     public static boolean shouldDisplayNewsOptin() {
         return BravePrefServiceBridge.getInstance().getShowNews()
                 && !BravePrefServiceBridge.getInstance().getNewsOptIn()
-                && ContextUtils.getAppSharedPreferences().getBoolean(
-                        BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true);
+                && ContextUtils.getAppSharedPreferences()
+                        .getBoolean(BraveNewsPreferencesV2.PREF_SHOW_OPTIN, true);
     }
 
     public static void setChannelIcons() {
@@ -304,49 +304,62 @@ public class BraveNewsUtils {
         return isFound;
     }
 
-    public static void getBraveNewsSettingsData(BraveNewsController braveNewsController,
+    public static void getBraveNewsSettingsData(
+            BraveNewsController braveNewsController,
             BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
-            if (braveNewsController != null) {
-                braveNewsController.getLocale((locale) -> {
-                    setLocale(locale);
-                    getChannels(braveNewsController, braveNewsPreferencesDataListener);
-                    getPublishers(braveNewsController, braveNewsPreferencesDataListener);
-                    getSuggestionsSources(braveNewsController, braveNewsPreferencesDataListener);
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT,
+                () -> {
+                    if (braveNewsController != null) {
+                        braveNewsController.getLocale(
+                                (locale) -> {
+                                    setLocale(locale);
+                                    getChannels(
+                                            braveNewsController, braveNewsPreferencesDataListener);
+                                    getPublishers(
+                                            braveNewsController, braveNewsPreferencesDataListener);
+                                    getSuggestionsSources(
+                                            braveNewsController, braveNewsPreferencesDataListener);
+                                });
+                    }
                 });
-            }
-        });
     }
 
-    private static void getChannels(BraveNewsController braveNewsController,
+    private static void getChannels(
+            BraveNewsController braveNewsController,
             BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        braveNewsController.getChannels((channels) -> {
-            List<Channel> channelList = new ArrayList<>();
-            for (Map.Entry<String, Channel> entry : channels.entrySet()) {
-                Channel channel = entry.getValue();
-                channelList.add(channel);
-            }
+        braveNewsController.getChannels(
+                (channels) -> {
+                    List<Channel> channelList = new ArrayList<>();
+                    for (Map.Entry<String, Channel> entry : channels.entrySet()) {
+                        Channel channel = entry.getValue();
+                        channelList.add(channel);
+                    }
 
-            Comparator<Channel> compareByName = (Channel o1, Channel o2)
-                    -> o1.channelName.toLowerCase(Locale.ROOT)
-                               .compareTo(o2.channelName.toLowerCase(Locale.ROOT));
-            Collections.sort(channelList, compareByName);
+                    Comparator<Channel> compareByName =
+                            (Channel o1, Channel o2) ->
+                                    o1.channelName
+                                            .toLowerCase(Locale.ROOT)
+                                            .compareTo(o2.channelName.toLowerCase(Locale.ROOT));
+                    Collections.sort(channelList, compareByName);
 
-            setChannelList(channelList);
-            if (braveNewsPreferencesDataListener != null) {
-                braveNewsPreferencesDataListener.onChannelReceived();
-            }
-        });
+                    setChannelList(channelList);
+                    if (braveNewsPreferencesDataListener != null) {
+                        braveNewsPreferencesDataListener.onChannelReceived();
+                    }
+                });
     }
 
-    private static void getPublishers(BraveNewsController braveNewsController,
+    private static void getPublishers(
+            BraveNewsController braveNewsController,
             BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        braveNewsController.getPublishers((publishers) -> {
-            setPublishers(publishers);
-            if (braveNewsPreferencesDataListener != null) {
-                braveNewsPreferencesDataListener.onPublisherReceived();
-            }
-        });
+        braveNewsController.getPublishers(
+                (publishers) -> {
+                    setPublishers(publishers);
+                    if (braveNewsPreferencesDataListener != null) {
+                        braveNewsPreferencesDataListener.onPublisherReceived();
+                    }
+                });
     }
 
     public static void setPublishers(Map<String, Publisher> publishers) {
@@ -365,9 +378,11 @@ public class BraveNewsUtils {
             }
         }
 
-        Comparator<Publisher> compareByName = (Publisher o1, Publisher o2)
-                -> o1.publisherName.toLowerCase(Locale.ROOT)
-                           .compareTo(o2.publisherName.toLowerCase(Locale.ROOT));
+        Comparator<Publisher> compareByName =
+                (Publisher o1, Publisher o2) ->
+                        o1.publisherName
+                                .toLowerCase(Locale.ROOT)
+                                .compareTo(o2.publisherName.toLowerCase(Locale.ROOT));
 
         Collections.sort(globalPublisherList, compareByName);
 
@@ -375,22 +390,26 @@ public class BraveNewsUtils {
 
         Collections.sort(publisherList, compareByName);
 
-        Comparator<Publisher> compareByRank = (Publisher o1, Publisher o2)
-                -> Integer.compare(
-                        localesMap.get(o1.publisherId).rank, localesMap.get(o2.publisherId).rank);
+        Comparator<Publisher> compareByRank =
+                (Publisher o1, Publisher o2) ->
+                        Integer.compare(
+                                localesMap.get(o1.publisherId).rank,
+                                localesMap.get(o2.publisherId).rank);
 
         Collections.sort(publisherList, compareByRank);
 
         setPopularSources(publisherList);
     }
 
-    public static void getSuggestionsSources(BraveNewsController braveNewsController,
+    public static void getSuggestionsSources(
+            BraveNewsController braveNewsController,
             BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        braveNewsController.getSuggestedPublisherIds((publisherIds) -> {
-            setSuggestionsIds(Arrays.asList(publisherIds));
-            if (braveNewsPreferencesDataListener != null) {
-                braveNewsPreferencesDataListener.onSuggestionsReceived();
-            }
-        });
+        braveNewsController.getSuggestedPublisherIds(
+                (publisherIds) -> {
+                    setSuggestionsIds(Arrays.asList(publisherIds));
+                    if (braveNewsPreferencesDataListener != null) {
+                        braveNewsPreferencesDataListener.onSuggestionsReceived();
+                    }
+                });
     }
 }

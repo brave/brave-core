@@ -25,8 +25,8 @@ public class ENSSettingsFragment extends PreferenceFragmentCompat {
         SettingsUtils.addPreferencesFromResource(this, R.xml.ens_preferences);
 
         RadioButtonGroupDDnsResolveMethodPreference radioButtonGroupDDnsResolveMethodPreference =
-                (RadioButtonGroupDDnsResolveMethodPreference) findPreference(
-                        PREF_ENS_RESOLVE_METHOD);
+                (RadioButtonGroupDDnsResolveMethodPreference)
+                        findPreference(PREF_ENS_RESOLVE_METHOD);
         radioButtonGroupDDnsResolveMethodPreference.initialize(
                 BraveLocalState.get().getInteger(BravePref.ENS_RESOLVE_METHOD));
         radioButtonGroupDDnsResolveMethodPreference.setOnPreferenceChangeListener(
@@ -37,14 +37,14 @@ public class ENSSettingsFragment extends PreferenceFragmentCompat {
 
         RadioButtonGroupEnsOffchainResolveMethodPreference
                 radioButtonGroupEnsOffchainResolveMethodPreference =
-                        (RadioButtonGroupEnsOffchainResolveMethodPreference) findPreference(
-                                PREF_ENS_OFFCHAIN_LOOKUP_METHOD);
+                        (RadioButtonGroupEnsOffchainResolveMethodPreference)
+                                findPreference(PREF_ENS_OFFCHAIN_LOOKUP_METHOD);
         radioButtonGroupEnsOffchainResolveMethodPreference.initialize(
                 BraveLocalState.get().getInteger(BravePref.ENS_OFFCHAIN_RESOLVE_METHOD));
         radioButtonGroupEnsOffchainResolveMethodPreference.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
-                    BraveLocalState.get().setInteger(
-                            BravePref.ENS_OFFCHAIN_RESOLVE_METHOD, (int) newValue);
+                    BraveLocalState.get()
+                            .setInteger(BravePref.ENS_OFFCHAIN_RESOLVE_METHOD, (int) newValue);
                     return true;
                 });
     }

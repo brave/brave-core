@@ -12,19 +12,15 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.profiles.Profile;
 
 /**
- * Please don't add anything in that file. We are going to refactor it soon.
- * Check this PRs on how to handle preferences correctly:
- * https://github.com/brave/brave-core/pull/16356
- * https://github.com/brave/brave-core/pull/15905
- * For the local_state based prefs please look on the PR:
- * https://github.com/brave/brave-core/pull/16486
- * Contact code owners if you have additional questions.
+ * Please don't add anything in that file. We are going to refactor it soon. Check this PRs on how
+ * to handle preferences correctly: https://github.com/brave/brave-core/pull/16356
+ * https://github.com/brave/brave-core/pull/15905 For the local_state based prefs please look on the
+ * PR: https://github.com/brave/brave-core/pull/16486 Contact code owners if you have additional
+ * questions.
  */
-
 @JNINamespace("chrome::android")
 public class BravePrefServiceBridge {
-    private BravePrefServiceBridge() {
-    }
+    private BravePrefServiceBridge() {}
 
     private static BravePrefServiceBridge sInstance;
 
@@ -138,28 +134,37 @@ public class BravePrefServiceBridge {
     @NativeMethods
     interface Natives {
         void setCookiesBlockType(String type);
+
         String getCookiesBlockType();
 
         void setPlayYTVideoInBrowserEnabled(boolean enabled);
+
         boolean getPlayYTVideoInBrowserEnabled();
 
         void setDesktopModeEnabled(boolean enabled);
+
         boolean getDesktopModeEnabled();
 
         void setBackgroundVideoPlaybackEnabled(boolean enabled);
+
         boolean getBackgroundVideoPlaybackEnabled();
 
         long getTrackersBlockedCount(Profile profile);
+
         long getAdsBlockedCount(Profile profile);
+
         long getDataSaved(Profile profile);
 
         // Used to pass total stat from upgrading old tabs based browser
         // to a new core based
         void setOldTrackersBlockedCount(Profile profile, long count);
+
         void setOldAdsBlockedCount(Profile profile, long count);
+
         void setOldHttpsUpgradesCount(Profile profile, long count);
 
         void setSafetynetCheckFailed(boolean value);
+
         boolean getSafetynetCheckFailed();
 
         void resetPromotionLastFetchStamp();

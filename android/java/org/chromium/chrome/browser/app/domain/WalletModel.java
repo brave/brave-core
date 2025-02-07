@@ -38,11 +38,17 @@ public class WalletModel {
     private Context mContext;
     private CryptoActions mCryptoActions;
 
-    public WalletModel(Context context, KeyringService keyringService,
-            BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
-            TxService txService, EthTxManagerProxy ethTxManagerProxy,
-            SolanaTxManagerProxy solanaTxManagerProxy, AssetRatioService assetRatioService,
-            BraveWalletService braveWalletService, SwapService swapService) {
+    public WalletModel(
+            Context context,
+            KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry,
+            JsonRpcService jsonRpcService,
+            TxService txService,
+            EthTxManagerProxy ethTxManagerProxy,
+            SolanaTxManagerProxy solanaTxManagerProxy,
+            AssetRatioService assetRatioService,
+            BraveWalletService braveWalletService,
+            SwapService swapService) {
         mContext = context;
         mKeyringService = keyringService;
         mBlockchainRegistry = blockchainRegistry;
@@ -80,11 +86,17 @@ public class WalletModel {
         init();
     }
 
-    public void resetServices(Context context, KeyringService keyringService,
-            BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
-            TxService txService, EthTxManagerProxy ethTxManagerProxy,
-            SolanaTxManagerProxy solanaTxManagerProxy, AssetRatioService assetRatioService,
-            BraveWalletService braveWalletService, SwapService swapService) {
+    public void resetServices(
+            Context context,
+            KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry,
+            JsonRpcService jsonRpcService,
+            TxService txService,
+            EthTxManagerProxy ethTxManagerProxy,
+            SolanaTxManagerProxy solanaTxManagerProxy,
+            AssetRatioService assetRatioService,
+            BraveWalletService braveWalletService,
+            SwapService swapService) {
         mContext = context;
         setKeyringService(keyringService);
         setBlockchainRegistry(blockchainRegistry);
@@ -95,8 +107,15 @@ public class WalletModel {
         setAssetRatioService(assetRatioService);
         setBraveWalletService(braveWalletService);
         mSwapService = swapService;
-        mCryptoModel.resetServices(mContext, mTxService, mKeyringService, mBlockchainRegistry,
-                mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
+        mCryptoModel.resetServices(
+                mContext,
+                mTxService,
+                mKeyringService,
+                mBlockchainRegistry,
+                mJsonRpcService,
+                mEthTxManagerProxy,
+                mSolanaTxManagerProxy,
+                mBraveWalletService,
                 mAssetRatioService);
         mDappsModel.resetServices(
                 mJsonRpcService, mBraveWalletService, mCryptoModel.getPendingTxHelper());
@@ -105,14 +124,18 @@ public class WalletModel {
     }
 
     public void createAccountAndSetDefaultNetwork(NetworkInfo networkInfo) {
-        getKeyringModel().addAccount(
-                networkInfo.coin, networkInfo.chainId, null, isAccountAdded -> {
-                    getNetworkModel().clearCreateAccountState();
+        getKeyringModel()
+                .addAccount(
+                        networkInfo.coin,
+                        networkInfo.chainId,
+                        null,
+                        isAccountAdded -> {
+                            getNetworkModel().clearCreateAccountState();
 
-                    if (isAccountAdded) {
-                        getNetworkModel().setDefaultNetwork(networkInfo, success -> {});
-                    }
-                });
+                            if (isAccountAdded) {
+                                getNetworkModel().setDefaultNetwork(networkInfo, success -> {});
+                            }
+                        });
     }
 
     /*
@@ -128,10 +151,14 @@ public class WalletModel {
     }
 
     public boolean hasAllServices() {
-        return getKeyringService() != null && getBlockchainRegistry() != null
-                && getJsonRpcService() != null && getTxService() != null
-                && getEthTxManagerProxy() != null && getSolanaTxManagerProxy() != null
-                && getAssetRatioService() != null && getBraveWalletService() != null;
+        return getKeyringService() != null
+                && getBlockchainRegistry() != null
+                && getJsonRpcService() != null
+                && getTxService() != null
+                && getEthTxManagerProxy() != null
+                && getSolanaTxManagerProxy() != null
+                && getAssetRatioService() != null
+                && getBraveWalletService() != null;
     }
 
     public CryptoModel getCryptoModel() {

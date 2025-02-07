@@ -16,7 +16,9 @@ public class BraveWebsitePermissionsFetcherClassAdapter extends BraveClassVisito
     public BraveWebsitePermissionsFetcherClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sWebsitePermissionsFetcherClassName, "getPermissionsType",
+        changeMethodOwner(
+                sWebsitePermissionsFetcherClassName,
+                "getPermissionsType",
                 sBraveWebsitePermissionsFetcherClassName);
     }
 }

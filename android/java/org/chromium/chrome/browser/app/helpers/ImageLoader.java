@@ -78,9 +78,14 @@ public class ImageLoader {
     private static FaviconHelper sFaviconHelper;
     private static FaviconHelper.DefaultFaviconHelper sFaviconThemeHelper;
 
-    private static void downloadImage(String url, final RequestManager requestManager,
-            final boolean isCircular, final int roundedCorners, final ImageView imageView,
-            final CustomTarget<Drawable> customTarget, final Callback callback) {
+    private static void downloadImage(
+            String url,
+            final RequestManager requestManager,
+            final boolean isCircular,
+            final int roundedCorners,
+            final ImageView imageView,
+            final CustomTarget<Drawable> customTarget,
+            final Callback callback) {
         if (!isValidImgUrl(url)) {
             if (callback != null) callback.onLoadFailed();
             return;
@@ -190,35 +195,45 @@ public class ImageLoader {
 
     /**
      * Downloads an image from a given URL, including support for GIF and SVG image types.
+     *
      * @param url URL of the image to download.
      * @param RequestManager Glide request manager for applying transformations.
      * @param isCircular When {@code true}, a circular transformation will be applied.
      * @param roundedCorners Radius of the circle used to round the corners in dip. Unused when
-     *         {@code isCircular} is {@code true}.
+     *     {@code isCircular} is {@code true}.
      * @param customTarget Custom target where the downloaded image will be used.
      * @param callback Callback used to notify if the image has been set correctly. It can be {@code
-     *         null}.
+     *     null}.
      */
-    public static void downloadImage(String url, final RequestManager requestManager,
-            final boolean isCircular, final int roundedCorners,
-            final CustomTarget<Drawable> customTarget, final Callback callback) {
+    public static void downloadImage(
+            String url,
+            final RequestManager requestManager,
+            final boolean isCircular,
+            final int roundedCorners,
+            final CustomTarget<Drawable> customTarget,
+            final Callback callback) {
         downloadImage(
                 url, requestManager, isCircular, roundedCorners, null, customTarget, callback);
     }
 
     /**
      * Downloads an image from a given URL, including support for GIF and SVG image types.
+     *
      * @param url URL of the image to download.
      * @param RequestManager Glide request manager for applying transformations.
      * @param isCircular When {@code true}, a circular transformation will be applied.
      * @param roundedCorners Radius of the circle used to round the corners in dip. Unused when
-     *         {@code isCircular} is {@code true}.
+     *     {@code isCircular} is {@code true}.
      * @param imageView ImageView where the downloaded image will be set.
      * @param callback Callback used to notify if the image has been set correctly. It can be {@code
-     *         null}.
+     *     null}.
      */
-    public static void downloadImage(String url, final RequestManager requestManager,
-            final boolean isCircular, final int roundedCorners, final ImageView imageView,
+    public static void downloadImage(
+            String url,
+            final RequestManager requestManager,
+            final boolean isCircular,
+            final int roundedCorners,
+            final ImageView imageView,
             final Callback callback) {
         downloadImage(url, requestManager, isCircular, roundedCorners, imageView, null, callback);
     }
@@ -227,8 +242,8 @@ public class ImageLoader {
      * Parses an input string as an XML document, manipulates it to add the missing attributes to
      * the svg tag, and then serializes it back to a string. If the input string is not a valid SVG
      * image, the method returns null.
-     * <p>
-     * Note that this implementation assumes that the input string is a valid SVG image and does
+     *
+     * <p>Note that this implementation assumes that the input string is a valid SVG image and does
      * not perform any further validation or sanitation of the contents of the image.
      *
      * @param input Input string to sanitize.
@@ -390,11 +405,13 @@ public class ImageLoader {
         DisplayMetrics displayMetrics =
                 ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
         return new BitmapTransformation[] {
-                new FitCenter(), new RoundedCorners(dpToPx(displayMetrics, roundedCorners))};
+            new FitCenter(), new RoundedCorners(dpToPx(displayMetrics, roundedCorners))
+        };
     }
 
     /**
      * Returns {@code true} if a given URL is supported for download.
+     *
      * @param url Given URL to check
      * @return {@code true} if a given URL is supported for download, {@code false} otherwise.
      */
@@ -404,6 +421,7 @@ public class ImageLoader {
 
     /**
      * Checks if the given URL string represents an SVG image file.
+     *
      * @param url a string representing a URL to an image file.
      * @return {@code true} if the URL string represents an SVG image file, {@code false} otherwise.
      */
@@ -416,6 +434,7 @@ public class ImageLoader {
 
     /**
      * Checks if the given URL string represents a GIF image file.
+     *
      * @param url a string representing a URL to an image file.
      * @return {@code true} if the URL string represents an SVG image file, {@code false} otherwise.
      */
@@ -426,22 +445,31 @@ public class ImageLoader {
         return url.endsWith(".gif") || url.endsWith("=gif");
     }
 
-    public static void fetchFavIcon(String originSpecUrl, WeakReference<Context> context,
+    public static void fetchFavIcon(
+            String originSpecUrl,
+            WeakReference<Context> context,
             Callbacks.Callback1<Bitmap> callback) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            FaviconHelper.FaviconImageCallback imageCallback = (bitmap, iconUrl) -> {
-                if (context.get() != null) {
-                    if (bitmap == null) {
-                        bitmap = getFaviconThemeHelper().getDefaultFaviconBitmap(
-                                context.get(), iconUrl, true);
-                    }
-                    callback.call(bitmap);
-                }
-            };
+            FaviconHelper.FaviconImageCallback imageCallback =
+                    (bitmap, iconUrl) -> {
+                        if (context.get() != null) {
+                            if (bitmap == null) {
+                                bitmap =
+                                        getFaviconThemeHelper()
+                                                .getDefaultFaviconBitmap(
+                                                        context.get(), iconUrl, true);
+                            }
+                            callback.call(bitmap);
+                        }
+                    };
             // 0 is a max bitmap size for download
-            getFaviconHelper().getLocalFaviconImageForURL(
-                    activity.getCurrentProfile(), new GURL(originSpecUrl), 0, imageCallback);
+            getFaviconHelper()
+                    .getLocalFaviconImageForURL(
+                            activity.getCurrentProfile(),
+                            new GURL(originSpecUrl),
+                            0,
+                            imageCallback);
 
         } catch (Exception ignored) {
         }
@@ -518,10 +546,12 @@ public class ImageLoader {
 
     /**
      * Callback used to notify if the image has been downloaded successfully.
+     *
      * @see #downloadImage(String, RequestManager, boolean, int, ImageView, Callback)
      */
     public interface Callback {
         boolean onLoadFailed();
+
         boolean onResourceReady(Drawable resource, Target<Drawable> target);
     }
 

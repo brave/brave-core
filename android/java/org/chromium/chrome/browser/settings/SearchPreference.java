@@ -25,18 +25,21 @@ public class SearchPreference extends Preference {
         super.onBindViewHolder(holder);
         SearchView searchView = (SearchView) holder.findViewById(R.id.search_preference);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                getOnPreferenceChangeListener().onPreferenceChange(SearchPreference.this, s);
-                return false;
-            }
+        searchView.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        getOnPreferenceChangeListener()
+                                .onPreferenceChange(SearchPreference.this, s);
+                        return false;
+                    }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                getOnPreferenceChangeListener().onPreferenceChange(SearchPreference.this, s);
-                return false;
-            }
-        });
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        getOnPreferenceChangeListener()
+                                .onPreferenceChange(SearchPreference.this, s);
+                        return false;
+                    }
+                });
     }
 }

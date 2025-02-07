@@ -89,10 +89,10 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private final Handler mHandler = new Handler();
     private int mFetchCount;
     private static final int MAX_FAVICON_FETCH_COUNT = 8;
-    public static final int CROSS_FADE_DURATION = 1000; //ms
-    public static final int THANKYOU_FADE_OUT_DURATION = 1500; //ms
-    public static final int THANKYOU_FADE_IN_DURATION = 1500; //ms
-    public static final int THANKYOU_STAY_DURATION = 2000; //ms
+    public static final int CROSS_FADE_DURATION = 1000; // ms
+    public static final int THANKYOU_FADE_OUT_DURATION = 1500; // ms
+    public static final int THANKYOU_FADE_IN_DURATION = 1500; // ms
+    public static final int THANKYOU_STAY_DURATION = 2000; // ms
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
     private Profile mProfile;
@@ -265,12 +265,14 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
                 mFaviconUrl = mTab.getUrl().getSpec();
             }
 
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    retrieveLargeIconInternal();
-                }
-            }, FAVICON_FETCH_INTERVAL);
+            mHandler.postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            retrieveLargeIconInternal();
+                        }
+                    },
+                    FAVICON_FETCH_INTERVAL);
 
             return;
         }
@@ -290,8 +292,11 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
 
     @Override
     @CalledByNative("LargeIconCallback")
-    public void onLargeIconAvailable(@Nullable Bitmap icon, int fallbackColor,
-                                     boolean isFallbackColorDefault, @IconType int iconType) {
+    public void onLargeIconAvailable(
+            @Nullable Bitmap icon,
+            int fallbackColor,
+            boolean isFallbackColorDefault,
+            @IconType int iconType) {
         if (mFaviconUrl.isEmpty()) {
             return;
         }
@@ -306,7 +311,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
             scheduleIconRetrievalWithDelay();
             return;
         }
-        //else: icon is available
+        // else: icon is available
 
         if (mCallback != null) {
             mCallback.onLargeIconReady(icon);
@@ -331,9 +336,13 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         Bitmap output;
 
         if (bitmap.getWidth() > bitmap.getHeight()) {
-            output = Bitmap.createBitmap(bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+            output =
+                    Bitmap.createBitmap(
+                            bitmap.getHeight(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         } else {
-            output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
+            output =
+                    Bitmap.createBitmap(
+                            bitmap.getWidth(), bitmap.getWidth(), Bitmap.Config.ARGB_8888);
         }
 
         Canvas canvas = new Canvas(output);
@@ -488,21 +497,20 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
                                 }
                             });
         }
-  }
+    }
 
-  public static double probiToDouble(String probi) {
+    public static double probiToDouble(String probi) {
         String probiPower = "1000000000000000000";
-      double val = Double.NaN;
-      try {
-          BigDecimal probiNumber = new BigDecimal(probi);
+        double val = Double.NaN;
+        try {
+            BigDecimal probiNumber = new BigDecimal(probi);
             BigDecimal dividerNumber = new BigDecimal(probiPower);
-          val = probiNumber.divide(dividerNumber).doubleValue();
-      }
-      catch(NumberFormatException e) {
-          val = Double.NaN;
-      }
-      return val;
-  }
+            val = probiNumber.divide(dividerNumber).doubleValue();
+        } catch (NumberFormatException e) {
+            val = Double.NaN;
+        }
+        return val;
+    }
 
     /**
      * Expands touchable area of a small view
@@ -537,13 +545,12 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         return Math.round(px);
     }
 
-
     public static boolean subtextAtOffset(String text, String subtext, int offset) {
         boolean ret_value = false;
         final int startIndex = text.indexOf(subtext);
         if (startIndex >= 0) {
             final int endIndex = startIndex + subtext.length();
-            if (offset >= startIndex && offset  < endIndex) {
+            if (offset >= startIndex && offset < endIndex) {
                 ret_value = true;
             }
         }
@@ -640,7 +647,10 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         tosTextSS.setSpan(
                 clickableSpan, index, index + spanLength, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         Typeface typeface = Typeface.create("sans-serif", Typeface.NORMAL);
-        tosTextSS.setSpan(new StyleSpan(typeface.getStyle()), index, index + spanLength,
+        tosTextSS.setSpan(
+                new StyleSpan(typeface.getStyle()),
+                index,
+                index + spanLength,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 }

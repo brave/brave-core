@@ -19,6 +19,6 @@ public class ImageCredit {
     }
 
     public String getUrl() {
-    	return url;
+        return url;
     }
 }

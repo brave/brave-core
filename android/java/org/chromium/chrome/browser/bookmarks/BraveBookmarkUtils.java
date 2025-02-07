@@ -23,9 +23,7 @@ import org.chromium.components.bookmarks.BookmarkItem;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 
-/**
- * A class holding static util functions for bookmark.
- */
+/** A class holding static util functions for bookmark. */
 public class BraveBookmarkUtils extends BookmarkUtils {
     private static final String TAG = "BraveBookmarkUtils";
 
@@ -59,7 +57,8 @@ public class BraveBookmarkUtils extends BookmarkUtils {
     public static void showBookmarkManagerOnPhone(
             Activity activity, String url, boolean isIncognito) {
         Intent intent =
-                new Intent(activity == null ? ContextUtils.getApplicationContext() : activity,
+                new Intent(
+                        activity == null ? ContextUtils.getApplicationContext() : activity,
                         BraveBookmarkActivity.class);
         intent.putExtra(IntentHandler.EXTRA_INCOGNITO_MODE, isIncognito);
         intent.setData(Uri.parse(url));
@@ -74,13 +73,17 @@ public class BraveBookmarkUtils extends BookmarkUtils {
         }
     }
 
-    public static void showBookmarkImportExportDialog(AppCompatActivity appCompatActivity,
-            boolean isImport, boolean isSuccess, String exportFilePath) {
+    public static void showBookmarkImportExportDialog(
+            AppCompatActivity appCompatActivity,
+            boolean isImport,
+            boolean isSuccess,
+            String exportFilePath) {
         try {
             BraveBookmarkImportExportDialogFragment dialogFragment =
                     BraveBookmarkImportExportDialogFragment.newInstance(
                             isImport, isSuccess, exportFilePath);
-            dialogFragment.show(appCompatActivity.getSupportFragmentManager(),
+            dialogFragment.show(
+                    appCompatActivity.getSupportFragmentManager(),
                     "BraveBookmarkImportExportDialogFragment");
         } catch (IllegalStateException e) {
             Log.e(TAG, "showBookmarkImportExportDialog:" + e.getMessage());

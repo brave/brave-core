@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.custom_layout;
 
 import android.content.Context;
@@ -33,7 +31,8 @@ public class HeightWrappingViewPager extends ViewPager {
             int height = 0;
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                child.measure(
+                        widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
                 int h = child.getMeasuredHeight();
                 if (h > height) height = h;
             }

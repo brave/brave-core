@@ -10,8 +10,12 @@ import org.chromium.url.mojom.Url;
 
 public interface BraveNewsPreferencesListener {
     void onChannelSubscribed(int position, Channel channel, boolean isSubscribed);
+
     void onPublisherPref(String publisherId, int userEnabled);
+
     void findFeeds(String url);
+
     void subscribeToNewDirectFeed(int position, Url feedUrl, boolean isFromFeed);
+
     void updateFeedSearchResultItem(int position, String url, String publisherId);
 }

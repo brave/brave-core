@@ -105,8 +105,10 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         // focus.
         mFrameLayoutForPolicy.setFocusable(true);
         mFrameLayoutForPolicy.setFocusableInTouchMode(true);
-        mFrameLayoutForPolicy.setContentDescription(mFrameLayoutForPolicy.getResources().getString(
-                R.string.accessibility_new_tab_page));
+        mFrameLayoutForPolicy.setContentDescription(
+                mFrameLayoutForPolicy
+                        .getResources()
+                        .getString(R.string.accessibility_new_tab_page));
 
         if (mNtpHeader != null) {
             UiUtils.removeViewFromParent(mNtpHeader);

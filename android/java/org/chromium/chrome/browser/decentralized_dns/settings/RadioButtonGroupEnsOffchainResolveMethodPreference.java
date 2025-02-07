@@ -20,8 +20,8 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayou
 
 import java.util.ArrayList;
 
-public class RadioButtonGroupEnsOffchainResolveMethodPreference
-        extends Preference implements RadioGroup.OnCheckedChangeListener {
+public class RadioButtonGroupEnsOffchainResolveMethodPreference extends Preference
+        implements RadioGroup.OnCheckedChangeListener {
     private @EnsOffchainResolveMethod int mSetting;
     private RadioButtonWithDescription mSettingRadioButton;
     private RadioButtonWithDescriptionLayout mGroup;
@@ -40,20 +40,29 @@ public class RadioButtonGroupEnsOffchainResolveMethodPreference
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
 
-        mGroup = (RadioButtonWithDescriptionLayout) holder.findViewById(
-                R.id.ddns_resolve_method_radio_group);
+        mGroup =
+                (RadioButtonWithDescriptionLayout)
+                        holder.findViewById(R.id.ddns_resolve_method_radio_group);
         mGroup.setOnCheckedChangeListener(this);
 
         mButtons = new ArrayList<>();
-        mButtons.add(Pair.create(EnsOffchainResolveMethod.ASK,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ddns_resolve_method_ask_radio_button)));
-        mButtons.add(Pair.create(EnsOffchainResolveMethod.DISABLED,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ddns_resolve_method_disabled_radio_button)));
-        mButtons.add(Pair.create(EnsOffchainResolveMethod.ENABLED,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.ddns_resolve_method_enabled_radio_button)));
+        mButtons.add(
+                Pair.create(
+                        EnsOffchainResolveMethod.ASK,
+                        (RadioButtonWithDescription)
+                                holder.findViewById(R.id.ddns_resolve_method_ask_radio_button)));
+        mButtons.add(
+                Pair.create(
+                        EnsOffchainResolveMethod.DISABLED,
+                        (RadioButtonWithDescription)
+                                holder.findViewById(
+                                        R.id.ddns_resolve_method_disabled_radio_button)));
+        mButtons.add(
+                Pair.create(
+                        EnsOffchainResolveMethod.ENABLED,
+                        (RadioButtonWithDescription)
+                                holder.findViewById(
+                                        R.id.ddns_resolve_method_enabled_radio_button)));
 
         for (int i = 0; i < mButtons.size(); i++) {
             if (mButtons.get(i).first == mSetting) {

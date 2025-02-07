@@ -21,16 +21,17 @@ public class BraveRadioButtonGroupSafeBrowsingPreference
     public BraveRadioButtonGroupSafeBrowsingPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        noProtectionSummary = context.getResources().getString(
-                R.string.brave_safe_browsing_no_protection_summary);
+        noProtectionSummary =
+                context.getResources()
+                        .getString(R.string.brave_safe_browsing_no_protection_summary);
     }
 
     @Override
     public void onBindViewHolder(PreferenceViewHolder holder) {
         super.onBindViewHolder(holder);
         RadioButtonWithDescriptionAndAuxButton enhancedProtection =
-                (RadioButtonWithDescriptionAndAuxButton) holder.findViewById(
-                        R.id.enhanced_protection);
+                (RadioButtonWithDescriptionAndAuxButton)
+                        holder.findViewById(R.id.enhanced_protection);
         assert enhancedProtection != null : "Something has changed in the upstream!";
         if (enhancedProtection != null) {
             enhancedProtection.setVisibility(View.GONE);

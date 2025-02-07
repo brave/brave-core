@@ -19,8 +19,8 @@ import org.chromium.ui.modelutil.PropertyModelChangeProcessor;
  * update is received.
  */
 public class TabSwitcherBottomToolbarViewBinder
-        implements PropertyModelChangeProcessor
-                           .ViewBinder<TabSwitcherBottomToolbarModel, View, PropertyKey> {
+        implements PropertyModelChangeProcessor.ViewBinder<
+                TabSwitcherBottomToolbarModel, View, PropertyKey> {
     private final ViewGroup mTopRoot;
     private final ViewGroup mBottomRoot;
 
@@ -49,8 +49,10 @@ public class TabSwitcherBottomToolbarViewBinder
             // When shown on the bottom, the layout should match_parent so that it fills its
             // parent container. When the layout is shown on the top, it should wrap_content
             // so that the toolbar shadow is visible.
-            view.getLayoutParams().height = showOnTop ? ViewGroup.LayoutParams.WRAP_CONTENT
-                                                      : ViewGroup.LayoutParams.MATCH_PARENT;
+            view.getLayoutParams().height =
+                    showOnTop
+                            ? ViewGroup.LayoutParams.WRAP_CONTENT
+                            : ViewGroup.LayoutParams.MATCH_PARENT;
             reparentView(view, showOnTop ? mTopRoot : mBottomRoot);
         } else {
             assert false : "Unhandled property detected in TabSwitcherBottomToolbarViewBinder!";

@@ -74,48 +74,63 @@ public class QRCodeShareDialogFragment extends DialogFragment implements View.On
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, qrCodeText);
-        getActivity().startActivity(Intent.createChooser(
-                sharingIntent, getResources().getString(R.string.share_link_chooser_title)));
+        getActivity()
+                .startActivity(
+                        Intent.createChooser(
+                                sharingIntent,
+                                getResources().getString(R.string.share_link_chooser_title)));
     }
 
     private void generateQRCode() {
-        final int WHITE = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                ? 0xFFFFFFFF
-                : 0xFF000000;
-        final int BLACK = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                ? 0x613C4043
-                : 0xFFFFFFFF;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // Generate QR code
-                BitMatrix result;
-                try {
-                    result = new MultiFormatWriter().encode(
-                            qrCodeText, BarcodeFormat.QR_CODE, WIDTH, WIDTH, null);
-                } catch (WriterException e) {
-                    Log.e(TAG, "QR code unsupported format: " + e);
-                    return;
-                }
-                int w = result.getWidth();
-                int h = result.getHeight();
-                int[] pixels = new int[w * h];
-                for (int y = 0; y < h; y++) {
-                    int offset = y * w;
-                    for (int x = 0; x < w; x++) {
-                        pixels[offset + x] = result.get(x, y) ? WHITE : BLACK;
-                    }
-                }
-                Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-                bitmap.setPixels(pixels, 0, WIDTH, 0, 0, w, h);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mQRImage.setImageBitmap(bitmap);
-                        mQRImage.invalidate();
-                    }
-                });
-            }
-        }).start();
+        final int WHITE =
+                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                        ? 0xFFFFFFFF
+                        : 0xFF000000;
+        final int BLACK =
+                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                        ? 0x613C4043
+                        : 0xFFFFFFFF;
+        new Thread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                // Generate QR code
+                                BitMatrix result;
+                                try {
+                                    result =
+                                            new MultiFormatWriter()
+                                                    .encode(
+                                                            qrCodeText,
+                                                            BarcodeFormat.QR_CODE,
+                                                            WIDTH,
+                                                            WIDTH,
+                                                            null);
+                                } catch (WriterException e) {
+                                    Log.e(TAG, "QR code unsupported format: " + e);
+                                    return;
+                                }
+                                int w = result.getWidth();
+                                int h = result.getHeight();
+                                int[] pixels = new int[w * h];
+                                for (int y = 0; y < h; y++) {
+                                    int offset = y * w;
+                                    for (int x = 0; x < w; x++) {
+                                        pixels[offset + x] = result.get(x, y) ? WHITE : BLACK;
+                                    }
+                                }
+                                Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+                                bitmap.setPixels(pixels, 0, WIDTH, 0, 0, w, h);
+                                getActivity()
+                                        .runOnUiThread(
+                                                new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        mQRImage.setImageBitmap(bitmap);
+                                                        mQRImage.invalidate();
+                                                    }
+                                                });
+                            }
+                        })
+                .start();
     }
 }

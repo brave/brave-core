@@ -121,10 +121,11 @@ public class ContentFilteringFragment extends BravePreferenceFragment
 
     private void getFilterLists() {
         if (mFilterListAndroidHandler != null) {
-            mFilterListAndroidHandler.getFilterLists(filterLists -> {
-                mFilterLists = filterLists.storage;
-                mAdapter.setFilterLists(mFilterLists);
-            });
+            mFilterListAndroidHandler.getFilterLists(
+                    filterLists -> {
+                        mFilterLists = filterLists.storage;
+                        mAdapter.setFilterLists(mFilterLists);
+                    });
         }
     }
 

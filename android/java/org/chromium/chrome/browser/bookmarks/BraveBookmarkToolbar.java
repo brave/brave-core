@@ -25,7 +25,10 @@ public class BraveBookmarkToolbar extends BookmarkToolbar {
                 .add(R.id.normal_menu_group, MENU_IMPORT_ID, menuSize, R.string.import_bookmarks)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         getMenu()
-                .add(R.id.normal_menu_group, MENU_EXPORT_ID, menuSize + 1,
+                .add(
+                        R.id.normal_menu_group,
+                        MENU_EXPORT_ID,
+                        menuSize + 1,
                         R.string.export_bookmarks)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
@@ -48,10 +51,11 @@ public class BraveBookmarkToolbar extends BookmarkToolbar {
     }
 
     void setBraveBookmarkDelegate(OneshotSupplier<BookmarkDelegate> bookmarkDelegateSupplier) {
-        bookmarkDelegateSupplier.onAvailable((bookmarkDelegate) -> {
-            if (bookmarkDelegate instanceof BraveBookmarkDelegate) {
-                mBraveBookmarkDelegate = (BraveBookmarkDelegate) bookmarkDelegate;
-            }
-        });
+        bookmarkDelegateSupplier.onAvailable(
+                (bookmarkDelegate) -> {
+                    if (bookmarkDelegate instanceof BraveBookmarkDelegate) {
+                        mBraveBookmarkDelegate = (BraveBookmarkDelegate) bookmarkDelegate;
+                    }
+                });
     }
 }

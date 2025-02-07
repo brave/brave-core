@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards.tipping;
 
@@ -38,7 +36,10 @@ public class RewardsTippingSuccessContribution {
 
     private void setGoBackClick() {
         View goBackButton = mContentView.findViewById(R.id.go_back_button);
-        goBackButton.setOnClickListener(v -> { dismissRewardsPanel(); });
+        goBackButton.setOnClickListener(
+                v -> {
+                    dismissRewardsPanel();
+                });
     }
 
     private void dismissRewardsPanel() {
@@ -57,14 +58,15 @@ public class RewardsTippingSuccessContribution {
 
     private void setShareYourSupportClickListener() {
         View shareYourSupportButton = mContentView.findViewById(R.id.share_your_support);
-        shareYourSupportButton.setOnClickListener(v -> {
-            double amount = mAmountSelected;
+        shareYourSupportButton.setOnClickListener(
+                v -> {
+                    double amount = mAmountSelected;
 
-            String tweetUrl = getTipSuccessTweetUrl(amount);
-            Uri uri = Uri.parse(tweetUrl);
-            mActivity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
-            dismissRewardsPanel();
-        });
+                    String tweetUrl = getTipSuccessTweetUrl(amount);
+                    Uri uri = Uri.parse(tweetUrl);
+                    mActivity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    dismissRewardsPanel();
+                });
     }
 
     private String getTipSuccessTweetUrl(double amount) {
@@ -73,8 +75,10 @@ public class RewardsTippingSuccessContribution {
                 .authority("twitter.com")
                 .appendPath("intent")
                 .appendPath("tweet")
-                .appendQueryParameter("text",
-                        String.format(mActivity.getString(R.string.brave_rewards_tip_success_tweet),
+                .appendQueryParameter(
+                        "text",
+                        String.format(
+                                mActivity.getString(R.string.brave_rewards_tip_success_tweet),
                                 amount));
         return builder.build().toString();
     }

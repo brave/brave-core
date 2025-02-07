@@ -21,12 +21,17 @@ public class BraveContentSettingsResourcesClassAdapter extends BraveClassVisitor
         super(visitor);
 
         makePublicMethod(sContentSettingsResourcesClassName, "getResourceItem");
-        changeMethodOwner(sContentSettingsResourcesClassName, "getResourceItem",
+        changeMethodOwner(
+                sContentSettingsResourcesClassName,
+                "getResourceItem",
                 sBraveContentSettingsResourcesClassName);
         makePublicInnerClass(sContentSettingsResourcesClassName, "ResourceItem");
-        redirectConstructor(sBraveContentSettingsResourcesResourceItemClassName,
+        redirectConstructor(
+                sBraveContentSettingsResourcesResourceItemClassName,
                 sContentSettingsResourcesResourceItemClassName);
-        redirectTypeInMethod(sBraveContentSettingsResourcesClassName, "getResourceItem",
+        redirectTypeInMethod(
+                sBraveContentSettingsResourcesClassName,
+                "getResourceItem",
                 sBraveContentSettingsResourcesResourceItemClassName,
                 sContentSettingsResourcesResourceItemClassName);
     }

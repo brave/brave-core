@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
@@ -25,8 +23,8 @@ import org.chromium.chrome.browser.init.ActivityProfileProvider;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 
-public class BraveRewardsUserWalletActivity
-        extends AsyncInitializationActivity implements View.OnClickListener {
+public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity
+        implements View.OnClickListener {
     private static final String TAG = "BraveRewards";
     public static final int UNDEFINED_WALLET_STATUS = -1;
 
@@ -117,13 +115,16 @@ public class BraveRewardsUserWalletActivity
     public void onClick(@NonNull View view) {
         if (view.getId() == R.id.provider_action) {
             if (getIntent() != null) {
-                int walletStatus = getIntent().getIntExtra(
-                        BraveRewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
+                int walletStatus =
+                        getIntent()
+                                .getIntExtra(
+                                        BraveRewardsExternalWallet.STATUS, UNDEFINED_WALLET_STATUS);
                 if (walletStatus == WalletStatus.CONNECTED) {
                     if (getIntent().getStringExtra(BraveRewardsExternalWallet.ACCOUNT_URL)
                             != null) {
                         Intent intent = new Intent();
-                        intent.putExtra(BraveActivity.OPEN_URL,
+                        intent.putExtra(
+                                BraveActivity.OPEN_URL,
                                 getIntent().getStringExtra(BraveRewardsExternalWallet.ACCOUNT_URL));
                         setResult(RESULT_OK, intent);
                     }

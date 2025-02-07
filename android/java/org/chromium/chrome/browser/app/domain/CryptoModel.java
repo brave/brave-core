@@ -66,11 +66,18 @@ public class CryptoModel {
 
     public LiveData<List<AccountInfo>> mAccountInfosFromKeyRingModel;
 
-    public CryptoModel(Context context, TxService txService, KeyringService keyringService,
-            BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
-            EthTxManagerProxy ethTxManagerProxy, SolanaTxManagerProxy solanaTxManagerProxy,
-            BraveWalletService braveWalletService, AssetRatioService assetRatioService,
-            CryptoSharedActions cryptoSharedActions, SwapService swapService) {
+    public CryptoModel(
+            Context context,
+            TxService txService,
+            KeyringService keyringService,
+            BlockchainRegistry blockchainRegistry,
+            JsonRpcService jsonRpcService,
+            EthTxManagerProxy ethTxManagerProxy,
+            SolanaTxManagerProxy solanaTxManagerProxy,
+            BraveWalletService braveWalletService,
+            AssetRatioService assetRatioService,
+            CryptoSharedActions cryptoSharedActions,
+            SwapService swapService) {
         mContext = context;
         mTxService = txService;
         mKeyringService = keyringService;
@@ -130,26 +137,28 @@ public class CryptoModel {
         if (mBraveWalletService == null) {
             return;
         }
-        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(requests -> {
-            GetEncryptionPublicKeyRequest request = null;
-            if (requests != null && requests.length > 0) {
-                request = requests[0];
-            }
-            onResult.call(request);
-        });
+        mBraveWalletService.getPendingGetEncryptionPublicKeyRequests(
+                requests -> {
+                    GetEncryptionPublicKeyRequest request = null;
+                    if (requests != null && requests.length > 0) {
+                        request = requests[0];
+                    }
+                    onResult.call(request);
+                });
     }
 
     public void getDecryptMessageRequest(Callback1<DecryptRequest> onResult) {
         if (mBraveWalletService == null) {
             return;
         }
-        mBraveWalletService.getPendingDecryptRequests(requests -> {
-            DecryptRequest request = null;
-            if (requests != null && requests.length > 0) {
-                request = requests[0];
-            }
-            onResult.call(request);
-        });
+        mBraveWalletService.getPendingDecryptRequests(
+                requests -> {
+                    DecryptRequest request = null;
+                    if (requests != null && requests.length > 0) {
+                        request = requests[0];
+                    }
+                    onResult.call(request);
+                });
     }
 
     public void refreshTransactions() {
@@ -167,9 +176,13 @@ public class CryptoModel {
 
     public List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes() {
         List<CryptoAccountTypeInfo> cryptoAccountTypeInfos = new ArrayList<>();
-        cryptoAccountTypeInfos.add(new CryptoAccountTypeInfo(
-                mContext.getString(R.string.brave_wallet_create_account_ethereum_description),
-                mContext.getString(R.string.wallet_eth_name), CoinType.ETH, R.drawable.eth));
+        cryptoAccountTypeInfos.add(
+                new CryptoAccountTypeInfo(
+                        mContext.getString(
+                                R.string.brave_wallet_create_account_ethereum_description),
+                        mContext.getString(R.string.wallet_eth_name),
+                        CoinType.ETH,
+                        R.drawable.eth));
 
         cryptoAccountTypeInfos.add(
                 new CryptoAccountTypeInfo(
@@ -234,7 +247,9 @@ public class CryptoModel {
 
     public void isNftDiscoveryEnabled(Callback1<Boolean> callback) {
         mBraveWalletService.getNftDiscoveryEnabled(
-                isNftDiscoveryEnabled -> { callback.call(isNftDiscoveryEnabled); });
+                isNftDiscoveryEnabled -> {
+                    callback.call(isNftDiscoveryEnabled);
+                });
     }
 
     /*

@@ -24,23 +24,23 @@ public class OnboardingViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-        case 0:
-            BraveRewardsOnboardingFragment braveRewardsOnboardingFragment =
-                new BraveRewardsOnboardingFragment();
-            braveRewardsOnboardingFragment.setOnViewPagerAction(onViewPagerAction);
-            return braveRewardsOnboardingFragment;
-        case 1:
-            BraveAdsOnboardingFragment braveAdsOnboardingFragment =
-                new BraveAdsOnboardingFragment();
-            braveAdsOnboardingFragment.setOnViewPagerAction(onViewPagerAction);
-            return braveAdsOnboardingFragment;
-        case 2:
-            TroubleshootingOnboardingFragment troubleshootingOnboardingFragment =
-                new TroubleshootingOnboardingFragment();
-            troubleshootingOnboardingFragment.setOnViewPagerAction(onViewPagerAction);
-            return troubleshootingOnboardingFragment;
-        default:
-            return null;
+            case 0:
+                BraveRewardsOnboardingFragment braveRewardsOnboardingFragment =
+                        new BraveRewardsOnboardingFragment();
+                braveRewardsOnboardingFragment.setOnViewPagerAction(onViewPagerAction);
+                return braveRewardsOnboardingFragment;
+            case 1:
+                BraveAdsOnboardingFragment braveAdsOnboardingFragment =
+                        new BraveAdsOnboardingFragment();
+                braveAdsOnboardingFragment.setOnViewPagerAction(onViewPagerAction);
+                return braveAdsOnboardingFragment;
+            case 2:
+                TroubleshootingOnboardingFragment troubleshootingOnboardingFragment =
+                        new TroubleshootingOnboardingFragment();
+                troubleshootingOnboardingFragment.setOnViewPagerAction(onViewPagerAction);
+                return troubleshootingOnboardingFragment;
+            default:
+                return null;
         }
     }
 

@@ -33,16 +33,20 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
 
         changeSuperName(sChromeTabbedActivityClassName, sBraveActivityClassName);
 
-        changeSuperName(sTabbedAppMenuPropertiesDelegateClassName,
+        changeSuperName(
+                sTabbedAppMenuPropertiesDelegateClassName,
                 sBraveAppMenuPropertiesDelegateImplClassName);
 
-        changeSuperName(sCustomTabAppMenuPropertiesDelegateClassName,
+        changeSuperName(
+                sCustomTabAppMenuPropertiesDelegateClassName,
                 sBraveAppMenuPropertiesDelegateImplClassName);
 
-        redirectConstructor(sTabbedAppMenuPropertiesDelegateClassName,
+        redirectConstructor(
+                sTabbedAppMenuPropertiesDelegateClassName,
                 sBraveTabbedAppMenuPropertiesDelegateClassName);
 
-        redirectConstructor(sAppMenuPropertiesDelegateImplClassName,
+        redirectConstructor(
+                sAppMenuPropertiesDelegateImplClassName,
                 sBraveAppMenuPropertiesDelegateImplClassName);
 
         redirectConstructor(sChromeTabCreatorClassName, sBraveTabCreatorClassName);

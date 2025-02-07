@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.onboarding;
 
@@ -54,7 +52,7 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
 
     @Override
     public View onCreateView(
-        LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_brave_ads_onboarding, container, false);
 
@@ -95,21 +93,23 @@ public class BraveAdsOnboardingFragment extends Fragment implements FirstRunFrag
     }
 
     private void setActions() {
-        btnStartBrowsing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // assert onViewPagerAction != null;
-                // if (onViewPagerAction != null) onViewPagerAction.onStartBrowsing();
-            }
-        });
+        btnStartBrowsing.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // assert onViewPagerAction != null;
+                        // if (onViewPagerAction != null) onViewPagerAction.onStartBrowsing();
+                    }
+                });
 
-        btnDidntSeeAd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // assert onViewPagerAction != null;
-                // if (onViewPagerAction != null) onViewPagerAction.onDidntSeeAd();
-            }
-        });
+        btnDidntSeeAd.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // assert onViewPagerAction != null;
+                        // if (onViewPagerAction != null) onViewPagerAction.onDidntSeeAd();
+                    }
+                });
     }
 
     private void initializeViews(View root) {

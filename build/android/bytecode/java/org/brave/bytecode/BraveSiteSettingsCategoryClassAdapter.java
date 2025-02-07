@@ -16,9 +16,13 @@ public class BraveSiteSettingsCategoryClassAdapter extends BraveClassVisitor {
     public BraveSiteSettingsCategoryClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sSiteSettingsCategoryClassName, "contentSettingsType",
+        changeMethodOwner(
+                sSiteSettingsCategoryClassName,
+                "contentSettingsType",
                 sBraveSiteSettingsCategoryClassName);
-        changeMethodOwner(sSiteSettingsCategoryClassName, "preferenceKey",
+        changeMethodOwner(
+                sSiteSettingsCategoryClassName,
+                "preferenceKey",
                 sBraveSiteSettingsCategoryClassName);
     }
 }

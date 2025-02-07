@@ -103,7 +103,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
         // Add brave's additional preferences here because |onCreatePreference| is not called
         // by subclass (MainPreference::onCreatePreferences()).
-        // But, calling here has same effect because |onCreatePreferences()| is called by onCreate().
+        // But, calling here has same effect because |onCreatePreferences()| is called by
+        // onCreate().
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
 
         overrideChromiumPreferences();
@@ -124,7 +125,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (mNotificationClicked
                 && BraveNotificationWarningDialog.shouldShowNotificationWarningDialog(getActivity())
                 && !OnboardingPrefManager.getInstance()
-                            .isNotificationPermissionEnablingDialogShownFromSetting()) {
+                        .isNotificationPermissionEnablingDialogShownFromSetting()) {
             mNotificationClicked = false;
             if (BravePermissionUtils.hasNotificationPermission(getActivity())) {
                 showNotificationWarningDialog();
@@ -140,7 +141,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         BraveNotificationPermissionRationaleDialog notificationWarningDialog =
                 BraveNotificationPermissionRationaleDialog.newInstance();
         notificationWarningDialog.setCancelable(false);
-        notificationWarningDialog.show(getChildFragmentManager(),
+        notificationWarningDialog.show(
+                getChildFragmentManager(),
                 BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
     }
 
@@ -149,24 +151,27 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                 BraveNotificationWarningDialog.newInstance(
                         BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_SETTINGS);
         notificationWarningDialog.setCancelable(false);
-        notificationWarningDialog.show(getChildFragmentManager(),
+        notificationWarningDialog.show(
+                getChildFragmentManager(),
                 BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
     }
 
     private void notificationClick() {
         Preference notifications = findPreference(PREF_NOTIFICATIONS);
         if (notifications != null) {
-            notifications.setOnPreferenceClickListener(preference -> {
-                mNotificationClicked = true;
+            notifications.setOnPreferenceClickListener(
+                    preference -> {
+                        mNotificationClicked = true;
 
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE,
-                        ContextUtils.getApplicationContext().getPackageName());
-                startActivity(intent);
-                // We handle the click so the default action isn't triggered.
-                return true;
-            });
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                        intent.putExtra(
+                                Settings.EXTRA_APP_PACKAGE,
+                                ContextUtils.getApplicationContext().getPackageName());
+                        startActivity(intent);
+                        // We handle the click so the default action isn't triggered.
+                        return true;
+                    });
         }
     }
 
@@ -229,9 +234,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
     }
 
-    /**
-     *  We need to override it to avoid NullPointerException in Chromium's child classes
-     */
+    /** We need to override it to avoid NullPointerException in Chromium's child classes */
     @Override
     public <T extends Preference> T findPreference(CharSequence key) {
         T result = super.findPreference(key);
@@ -242,13 +245,14 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     /**
-     * Re-arrange by resetting each preference's order.
-     * With this, we can insert our own preferences at any position.
+     * Re-arrange by resetting each preference's order. With this, we can insert our own preferences
+     * at any position.
      */
     private void rearrangePreferenceOrders() {
         int firstSectionOrder = 0;
 
-        if (getActivity() != null && !getActivity().isFinishing()
+        if (getActivity() != null
+                && !getActivity().isFinishing()
                 && BraveVpnPrefUtils.shouldShowCallout()
                 && !BraveVpnPrefUtils.isSubscriptionPurchase()
                 && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
@@ -279,7 +283,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             removePreferenceIfPresent(PREF_BRAVE_PLAYLIST);
         }
 
-        if (getActivity() != null && !getActivity().isFinishing()
+        if (getActivity() != null
+                && !getActivity().isFinishing()
                 && BraveVpnUtils.isVpnFeatureSupported(getActivity())) {
             findPreference(PREF_BRAVE_VPN).setOrder(++firstSectionOrder);
         } else {
@@ -429,16 +434,19 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     }
 
     private void initRateBrave() {
-        findPreference(PREF_RATE_BRAVE).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                BraveRateDialogFragment rateDialogFragment =
-                        BraveRateDialogFragment.newInstance(true);
-                rateDialogFragment.show(
-                        getParentFragmentManager(), BraveRateDialogFragment.TAG_FRAGMENT);
-                return true;
-            }
-        });
+        findPreference(PREF_RATE_BRAVE)
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(Preference preference) {
+                                BraveRateDialogFragment rateDialogFragment =
+                                        BraveRateDialogFragment.newInstance(true);
+                                rateDialogFragment.show(
+                                        getParentFragmentManager(),
+                                        BraveRateDialogFragment.TAG_FRAGMENT);
+                                return true;
+                            }
+                        });
 
         Preference homeScreenWidgetPreference = findPreference(PREF_HOME_SCREEN_WIDGET);
         if (homeScreenWidgetPreference != null) {

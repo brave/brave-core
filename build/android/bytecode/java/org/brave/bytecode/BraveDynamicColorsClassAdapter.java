@@ -16,7 +16,9 @@ public class BraveDynamicColorsClassAdapter extends BraveClassVisitor {
     public BraveDynamicColorsClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sDynamicColorsClassName, "applyToActivityIfAvailable",
+        changeMethodOwner(
+                sDynamicColorsClassName,
+                "applyToActivityIfAvailable",
                 sBraveDynamicColorsClassName);
     }
 }

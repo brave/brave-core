@@ -192,8 +192,9 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
     }
 
     private RadioGroup.LayoutParams setParams() {
-        RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RadioGroup.LayoutParams params =
+                new RadioGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         float density = getResources().getDisplayMetrics().density;
         params.setMargins((int) (20 * density), (int) (10 * density), (int) (20 * density), 0);
         return params;

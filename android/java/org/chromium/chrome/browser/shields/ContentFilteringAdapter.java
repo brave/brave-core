@@ -113,16 +113,19 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
                     customFilterListViewHolder.lastUpdateText.setText(
                             R.string.download_failed_custom_filter);
 
-                    customFilterListViewHolder.lastUpdateText.setTextColor(ContextCompat.getColor(
-                            mContext, R.color.add_custom_filter_error_text_color));
+                    customFilterListViewHolder.lastUpdateText.setTextColor(
+                            ContextCompat.getColor(
+                                    mContext, R.color.add_custom_filter_error_text_color));
                     customFilterListViewHolder.lastUpdateText.setVisibility(View.VISIBLE);
 
                 } else if (customFilter.lastSuccessfulUpdateAttempt.internalValue != 0
                         && customFilter.lastSuccessfulUpdateAttempt.internalValue
                                 != customFilter.lastUpdateAttempt.internalValue) {
                     customFilterListViewHolder.lastUpdateText.setText(
-                            mContext.getResources().getString(R.string.update_failed_custom_filter,
-                                    customFilter.lastUpdatedPrettyText));
+                            mContext.getResources()
+                                    .getString(
+                                            R.string.update_failed_custom_filter,
+                                            customFilter.lastUpdatedPrettyText));
 
                     customFilterListViewHolder.lastUpdateText.setTextColor(
                             ContextCompat.getColor(mContext, R.color.filter_summary_color));
@@ -130,8 +133,10 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 } else {
                     customFilterListViewHolder.lastUpdateText.setText(
-                            mContext.getResources().getString(R.string.last_updated_custom_filter,
-                                    customFilter.lastUpdatedPrettyText));
+                            mContext.getResources()
+                                    .getString(
+                                            R.string.last_updated_custom_filter,
+                                            customFilter.lastUpdatedPrettyText));
                     customFilterListViewHolder.lastUpdateText.setTextColor(
                             ContextCompat.getColor(mContext, R.color.filter_summary_color));
                     customFilterListViewHolder.lastUpdateText.setVisibility(View.VISIBLE);
@@ -214,16 +219,19 @@ public class ContentFilteringAdapter extends RecyclerView.Adapter<RecyclerView.V
         View view;
 
         if (viewType == TYPE_FILTER_HEADER) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.item_filter_title, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.item_filter_title, parent, false);
             return new FilterListHeaderViewHolder(view);
         } else if (viewType == TYPE_CUSTOM_FILTER_LIST) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.item_custom_filter, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.item_custom_filter, parent, false);
             return new CustomFilterListViewHolder(view);
         } else {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.item_filter_list, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.item_filter_list, parent, false);
             return new FilterListViewHolder(view);
         }
     }

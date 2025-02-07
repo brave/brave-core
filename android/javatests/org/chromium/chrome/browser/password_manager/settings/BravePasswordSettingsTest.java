@@ -29,12 +29,14 @@ public class BravePasswordSettingsTest {
     @Rule
     public SettingsActivityTestRule<PasswordSettings> mSettingsActivityTestRule =
             new SettingsActivityTestRule<>(PasswordSettings.class);
+
     PasswordSettings mSavePasswordPreferences;
 
     @Before
     public void setUp() throws Exception {
         Bundle fragmentArgs = new Bundle();
-        fragmentArgs.putInt(PasswordManagerHelper.MANAGE_PASSWORDS_REFERRER,
+        fragmentArgs.putInt(
+                PasswordManagerHelper.MANAGE_PASSWORDS_REFERRER,
                 ManagePasswordsReferrer.CHROME_SETTINGS);
         mSettingsActivityTestRule.startSettingsActivity(fragmentArgs);
         mSavePasswordPreferences = mSettingsActivityTestRule.getFragment();

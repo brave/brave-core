@@ -51,18 +51,21 @@ public class VpnCalloutPreference extends Preference {
         mainView.setLayoutParams(params);
 
         AppCompatImageView btnClose = (AppCompatImageView) holder.findViewById(R.id.modal_close);
-        btnClose.setOnClickListener(v -> {
-            getPreferenceManager().getPreferenceScreen().removePreference(this);
-            BraveVpnPrefUtils.setCallout(false);
-        });
+        btnClose.setOnClickListener(
+                v -> {
+                    getPreferenceManager().getPreferenceScreen().removePreference(this);
+                    BraveVpnPrefUtils.setCallout(false);
+                });
         Button btnLearnMore = (Button) holder.findViewById(R.id.btn_learn_more);
-        btnLearnMore.setOnClickListener(v -> {
-            if (!InternetConnection.isNetworkAvailable(getContext())) {
-                Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
-            } else {
-                BraveVpnUtils.openBraveVpnPlansActivity((Activity) getContext());
-                BraveVpnPrefUtils.setCallout(false);
-            }
-        });
+        btnLearnMore.setOnClickListener(
+                v -> {
+                    if (!InternetConnection.isNetworkAvailable(getContext())) {
+                        Toast.makeText(getContext(), R.string.no_internet, Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        BraveVpnUtils.openBraveVpnPlansActivity((Activity) getContext());
+                        BraveVpnPrefUtils.setCallout(false);
+                    }
+                });
     }
 }

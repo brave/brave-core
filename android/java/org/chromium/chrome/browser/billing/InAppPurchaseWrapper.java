@@ -150,30 +150,34 @@ public class InAppPurchaseWrapper {
         // End existing connection if any before we start another connection
         endConnection();
 
-        mBillingClient = BillingClient.newBuilder(context)
-                                 .enablePendingPurchases()
-                                 .setListener(getPurchasesUpdatedListener(context))
-                                 .build();
+        mBillingClient =
+                BillingClient.newBuilder(context)
+                        .enablePendingPurchases()
+                        .setListener(getPurchasesUpdatedListener(context))
+                        .build();
         if (!mBillingClient.isReady()) {
             try {
-                mBillingClient.startConnection(new BillingClientStateListener() {
-                    @Override
-                    public void onBillingServiceDisconnected() {
-                        retryBillingServiceConnection(billingClientConnectionState);
-                    }
-                    @Override
-                    public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                        if (billingResult.getResponseCode()
-                                == BillingClient.BillingResponseCode.OK) {
-                            if (billingClientConnectionState != null) {
-                                billingClientConnectionState.postValue(true);
+                mBillingClient.startConnection(
+                        new BillingClientStateListener() {
+                            @Override
+                            public void onBillingServiceDisconnected() {
+                                retryBillingServiceConnection(billingClientConnectionState);
                             }
-                        } else {
-                            showToast(billingResult.getDebugMessage());
-                            retryBillingServiceConnection(billingClientConnectionState);
-                        }
-                    }
-                });
+
+                            @Override
+                            public void onBillingSetupFinished(
+                                    @NonNull BillingResult billingResult) {
+                                if (billingResult.getResponseCode()
+                                        == BillingClient.BillingResponseCode.OK) {
+                                    if (billingClientConnectionState != null) {
+                                        billingClientConnectionState.postValue(true);
+                                    }
+                                } else {
+                                    showToast(billingResult.getDebugMessage());
+                                    retryBillingServiceConnection(billingClientConnectionState);
+                                }
+                            }
+                        });
             } catch (IllegalStateException exc) {
                 // That prevents a crash that some users experience
                 // https://github.com/brave/brave-browser/issues/27751.
@@ -183,8 +187,9 @@ public class InAppPurchaseWrapper {
             }
         } else {
             if (billingClientConnectionState != null) {
-                billingClientConnectionState.postValue(mBillingClient.getConnectionState()
-                        == BillingClient.ConnectionState.CONNECTED);
+                billingClientConnectionState.postValue(
+                        mBillingClient.getConnectionState()
+                                == BillingClient.ConnectionState.CONNECTED);
             }
         }
     }
@@ -200,16 +205,16 @@ public class InAppPurchaseWrapper {
         if (product.equals(SubscriptionProduct.VPN)) {
             String bravePackageName = ContextUtils.getApplicationContext().getPackageName();
             if (bravePackageName.equals(BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)) {
-                return subscriptionType == SubscriptionType.MONTHLY ?
-                        VPN_RELEASE_MONTHLY_SUBSCRIPTION
+                return subscriptionType == SubscriptionType.MONTHLY
+                        ? VPN_RELEASE_MONTHLY_SUBSCRIPTION
                         : VPN_RELEASE_YEARLY_SUBSCRIPTION;
             } else if (bravePackageName.equals(BraveConstants.BRAVE_BETA_PACKAGE_NAME)) {
                 return subscriptionType == SubscriptionType.MONTHLY
                         ? VPN_BETA_MONTHLY_SUBSCRIPTION
                         : VPN_BETA_YEARLY_SUBSCRIPTION;
             } else {
-                return subscriptionType == SubscriptionType.MONTHLY ?
-                        VPN_NIGHTLY_MONTHLY_SUBSCRIPTION
+                return subscriptionType == SubscriptionType.MONTHLY
+                        ? VPN_NIGHTLY_MONTHLY_SUBSCRIPTION
                         : VPN_NIGHTLY_YEARLY_SUBSCRIPTION;
             }
         } else if (product.equals(SubscriptionProduct.LEO)) {
@@ -279,8 +284,8 @@ public class InAppPurchaseWrapper {
                 });
     }
 
-    public void queryPurchases(MutableLiveData<PurchaseModel> mutableActivePurchases,
-                               SubscriptionProduct type) {
+    public void queryPurchases(
+            MutableLiveData<PurchaseModel> mutableActivePurchases, SubscriptionProduct type) {
         MutableLiveData<Boolean> _billingConnectionState = new MutableLiveData();
         LiveData<Boolean> billingConnectionState = _billingConnectionState;
         startBillingServiceConnection(_billingConnectionState);
@@ -340,10 +345,11 @@ public class InAppPurchaseWrapper {
     public void initiatePurchase(Activity activity, ProductDetails productDetails) {
         String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
         List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
-        productDetailsParamsList.add(BillingFlowParams.ProductDetailsParams.newBuilder()
-                                             .setProductDetails(productDetails)
-                                             .setOfferToken(offerToken)
-                                             .build());
+        productDetailsParamsList.add(
+                BillingFlowParams.ProductDetailsParams.newBuilder()
+                        .setProductDetails(productDetails)
+                        .setOfferToken(offerToken)
+                        .build());
 
         BillingFlowParams billingFlowParams =
                 BillingFlowParams.newBuilder()
@@ -441,12 +447,12 @@ public class InAppPurchaseWrapper {
     }
 
     private boolean isVPNProduct(List<String> productIds) {
-        return productIds.contains(VPN_NIGHTLY_MONTHLY_SUBSCRIPTION) ||
-                productIds.contains(VPN_NIGHTLY_YEARLY_SUBSCRIPTION) ||
-                productIds.contains(VPN_BETA_MONTHLY_SUBSCRIPTION) ||
-                productIds.contains(VPN_BETA_YEARLY_SUBSCRIPTION) ||
-                productIds.contains(VPN_RELEASE_MONTHLY_SUBSCRIPTION) ||
-                productIds.contains(VPN_RELEASE_YEARLY_SUBSCRIPTION);
+        return productIds.contains(VPN_NIGHTLY_MONTHLY_SUBSCRIPTION)
+                || productIds.contains(VPN_NIGHTLY_YEARLY_SUBSCRIPTION)
+                || productIds.contains(VPN_BETA_MONTHLY_SUBSCRIPTION)
+                || productIds.contains(VPN_BETA_YEARLY_SUBSCRIPTION)
+                || productIds.contains(VPN_RELEASE_MONTHLY_SUBSCRIPTION)
+                || productIds.contains(VPN_RELEASE_YEARLY_SUBSCRIPTION);
     }
 
     private boolean isLeoProduct(List<String> productIds) {
@@ -467,15 +473,12 @@ public class InAppPurchaseWrapper {
                 }
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
-                showToast(
-                        context.getResources().getString(R.string.already_subscribed));
+                showToast(context.getResources().getString(R.string.already_subscribed));
             } else if (billingResult.getResponseCode()
                     == BillingClient.BillingResponseCode.USER_CANCELED) {
-                showToast(
-                        context.getResources().getString(R.string.error_caused_by_user));
+                showToast(context.getResources().getString(R.string.error_caused_by_user));
             } else {
-                showToast(
-                        context.getResources().getString(R.string.purchased_failed));
+                showToast(context.getResources().getString(R.string.purchased_failed));
             }
         };
     }
@@ -483,6 +486,7 @@ public class InAppPurchaseWrapper {
     private int mMaxTries;
     private int mTries;
     private boolean mIsConnectionEstablished;
+
     private void retryBillingServiceConnection(
             MutableLiveData<Boolean> billingClientConnectionState) {
         mMaxTries = 3;
@@ -495,31 +499,35 @@ public class InAppPurchaseWrapper {
 
                 Context context = ContextUtils.getApplicationContext();
 
-                mBillingClient = BillingClient.newBuilder(context)
-                                         .enablePendingPurchases()
-                                         .setListener(getPurchasesUpdatedListener(context))
-                                         .build();
+                mBillingClient =
+                        BillingClient.newBuilder(context)
+                                .enablePendingPurchases()
+                                .setListener(getPurchasesUpdatedListener(context))
+                                .build();
 
-                mBillingClient.startConnection(new BillingClientStateListener() {
-                    @Override
-                    public void onBillingServiceDisconnected() {
-                        if (mTries == mMaxTries && billingClientConnectionState != null) {
-                            billingClientConnectionState.postValue(false);
-                        }
-                    }
-                    @Override
-                    public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                        if (billingResult.getResponseCode()
-                                == BillingClient.BillingResponseCode.OK) {
-                            mIsConnectionEstablished = true;
-                            if (billingClientConnectionState != null) {
-                                billingClientConnectionState.postValue(true);
+                mBillingClient.startConnection(
+                        new BillingClientStateListener() {
+                            @Override
+                            public void onBillingServiceDisconnected() {
+                                if (mTries == mMaxTries && billingClientConnectionState != null) {
+                                    billingClientConnectionState.postValue(false);
+                                }
                             }
-                        } else {
-                            showToast(billingResult.getDebugMessage());
-                        }
-                    }
-                });
+
+                            @Override
+                            public void onBillingSetupFinished(
+                                    @NonNull BillingResult billingResult) {
+                                if (billingResult.getResponseCode()
+                                        == BillingClient.BillingResponseCode.OK) {
+                                    mIsConnectionEstablished = true;
+                                    if (billingClientConnectionState != null) {
+                                        billingClientConnectionState.postValue(true);
+                                    }
+                                } else {
+                                    showToast(billingResult.getDebugMessage());
+                                }
+                            }
+                        });
             } catch (Exception ex) {
                 Log.e(TAG, "retryBillingServiceConnection " + ex.getMessage());
             } finally {

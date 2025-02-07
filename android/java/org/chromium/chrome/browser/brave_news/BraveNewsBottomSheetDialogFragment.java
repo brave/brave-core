@@ -95,21 +95,23 @@ public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragmen
                 getResources().getString(R.string.brave_news_disable_content, mPublisherName));
         disable.setText(disableText);
 
-        newTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TabUtils.openUrlInNewTabInBackground(false, mUrl);
-                dismiss();
-            }
-        });
+        newTab.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TabUtils.openUrlInNewTabInBackground(false, mUrl);
+                        dismiss();
+                    }
+                });
 
-        privateTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TabUtils.openUrlInNewTab(true, mUrl);
-                dismiss();
-            }
-        });
+        privateTab.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TabUtils.openUrlInNewTab(true, mUrl);
+                        dismiss();
+                    }
+                });
 
         disable.setOnClickListener(
                 new View.OnClickListener() {
@@ -144,15 +146,16 @@ public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     }
                 });
 
-        share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent share = new Intent(android.content.Intent.ACTION_SEND);
-                share.setType("text/plain");
-                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                share.putExtra(Intent.EXTRA_TEXT, mUrl);
-                startActivity(Intent.createChooser(share, mUrl));
-            }
-        });
+        share.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                        share.setType("text/plain");
+                        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                        share.putExtra(Intent.EXTRA_TEXT, mUrl);
+                        startActivity(Intent.createChooser(share, mUrl));
+                    }
+                });
     }
 }

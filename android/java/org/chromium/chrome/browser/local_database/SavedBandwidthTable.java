@@ -12,13 +12,16 @@ public class SavedBandwidthTable {
     public static final String COLUMN_TIMESTAMP = "timestamp";
     // Create table SQL query
     public static final String CREATE_TABLE =
-        "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
-        + COLUMN_SAVED_BANDWIDTH + " INTEGER,"
-        + COLUMN_TIMESTAMP + " DATETIME"
-        + ")";
+            "CREATE TABLE IF NOT EXISTS "
+                    + TABLE_NAME
+                    + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_SAVED_BANDWIDTH
+                    + " INTEGER,"
+                    + COLUMN_TIMESTAMP
+                    + " DATETIME"
+                    + ")";
 
-    public SavedBandwidthTable() {
-    }
+    public SavedBandwidthTable() {}
 
     private long mSavedBandwidth;
     private String mTimestamp;

@@ -28,7 +28,7 @@ public class BraveHelpAndFeedbackLauncherImpl implements HelpAndFeedbackLauncher
     @Override
     public void show(final Activity activity, String helpContext, @Nullable String url) {
         if (helpContext.equalsIgnoreCase(
-                    activity.getResources().getString(R.string.help_context_safe_browsing))) {
+                activity.getResources().getString(R.string.help_context_safe_browsing))) {
             launchSafeBrowsingUri(activity);
         } else {
             launchFallbackSupportUri(activity);
@@ -36,8 +36,11 @@ public class BraveHelpAndFeedbackLauncherImpl implements HelpAndFeedbackLauncher
     }
 
     @Override
-    public void showFeedback(final Activity activity, @Nullable String url,
-            @Nullable final String categoryTag, int screenshotMode,
+    public void showFeedback(
+            final Activity activity,
+            @Nullable String url,
+            @Nullable final String categoryTag,
+            int screenshotMode,
             @Nullable final String feedbackContext) {
         showFeedback(activity, url, categoryTag);
     }
@@ -49,8 +52,11 @@ public class BraveHelpAndFeedbackLauncherImpl implements HelpAndFeedbackLauncher
     }
 
     @Override
-    public void showFeedback(final Activity activity, @Nullable String url,
-            @Nullable final String categoryTag, @Nullable final Map<String, String> feedContext) {
+    public void showFeedback(
+            final Activity activity,
+            @Nullable String url,
+            @Nullable final String categoryTag,
+            @Nullable final Map<String, String> feedContext) {
         showFeedback(activity, url, categoryTag);
     }
 

@@ -49,8 +49,6 @@ public class BraveRewardsBalance {
     @VisibleForTesting
     @Override
     public String toString() {
-        return "BraveRewardsBalance{" +
-                "mTotal=" + mTotal +
-                ", mWallets=" + mWallets +'}';
+        return "BraveRewardsBalance{" + "mTotal=" + mTotal + ", mWallets=" + mWallets + '}';
     }
 }

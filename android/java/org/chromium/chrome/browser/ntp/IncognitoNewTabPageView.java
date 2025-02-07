@@ -53,8 +53,8 @@ public class IncognitoNewTabPageView extends FrameLayout {
         void destroy();
 
         /**
-         * Called when the NTP has completely finished loading (all views will be inflated
-         * and any dependent resources will have been loaded).
+         * Called when the NTP has completely finished loading (all views will be inflated and any
+         * dependent resources will have been loaded).
          */
         void onLoadingComplete();
     }
@@ -119,7 +119,9 @@ public class IncognitoNewTabPageView extends FrameLayout {
         mManager = manager;
     }
 
-    /** @return The IncognitoNewTabPageManager associated with this IncognitoNewTabPageView. */
+    /**
+     * @return The IncognitoNewTabPageManager associated with this IncognitoNewTabPageView.
+     */
     protected IncognitoNewTabPageManager getManager() {
         return mManager;
     }
@@ -145,7 +147,7 @@ public class IncognitoNewTabPageView extends FrameLayout {
 
     /**
      * @see org.chromium.chrome.browser.compositor.layouts.content.
-     *         InvalidationAwareThumbnailProvider#captureThumbnail(Canvas)
+     *     InvalidationAwareThumbnailProvider#captureThumbnail(Canvas)
      */
     void captureThumbnail(Canvas canvas) {
         ViewUtils.captureBitmap(this, canvas);
@@ -156,30 +158,35 @@ public class IncognitoNewTabPageView extends FrameLayout {
 
     /**
      * Set the visibility of the cookie controls card on the incognito description.
+     *
      * @param isVisible Whether it's visible or not.
      */
     void setIncognitoCookieControlsCardVisibility(boolean isVisible) {}
 
     /**
      * Set the toggle on the cookie controls card.
+     *
      * @param isChecked Whether it's checked or not.
      */
     void setIncognitoCookieControlsToggleChecked(boolean isChecked) {}
 
     /**
      * Set the incognito cookie controls toggle checked change listener.
+     *
      * @param listener The given checked change listener.
      */
     void setIncognitoCookieControlsToggleCheckedListener(OnCheckedChangeListener listener) {}
 
     /**
      * Set the enforcement rule for the incognito cookie controls toggle.
+     *
      * @param enforcement The enforcement enum to set.
      */
     void setIncognitoCookieControlsToggleEnforcement(@CookieControlsEnforcement int enforcement) {}
 
     /**
      * Set the incognito cookie controls icon click listener.
+     *
      * @param listener The given onclick listener.
      */
     void setIncognitoCookieControlsIconOnclickListener(OnClickListener listener) {}

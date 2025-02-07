@@ -10,9 +10,7 @@ import android.util.AttributeSet;
 
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 
-/**
- * Redefinition of CheckBoxPreference to act as ChromeSwitchPreference in fact.
- */
+/** Redefinition of CheckBoxPreference to act as ChromeSwitchPreference in fact. */
 public class ChromeBaseCheckBoxPreference extends ChromeSwitchPreference {
     public ChromeBaseCheckBoxPreference(Context context, AttributeSet attrs) {
         super(context, attrs);

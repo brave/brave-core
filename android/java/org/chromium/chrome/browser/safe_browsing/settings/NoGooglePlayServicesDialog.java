@@ -39,11 +39,15 @@ public class NoGooglePlayServicesDialog {
         PropertyModel.Builder builder =
                 new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
                         .with(ModalDialogProperties.CONTROLLER, makeController())
-                        .with(ModalDialogProperties.TITLE, resources,
+                        .with(
+                                ModalDialogProperties.TITLE,
+                                resources,
                                 R.string.safe_browsing_no_google_play_services_dialog_title)
-                        .with(ModalDialogProperties.MESSAGE_PARAGRAPH_1,
+                        .with(
+                                ModalDialogProperties.MESSAGE_PARAGRAPH_1,
                                 resources.getString(
-                                        R.string.safe_browsing_no_google_play_services_dialog_message))
+                                        R.string
+                                                .safe_browsing_no_google_play_services_dialog_message))
                         .with(ModalDialogProperties.POSITIVE_BUTTON_TEXT, resources, R.string.ok);
         mModel = builder.build();
         mManager = new ModalDialogManager(new AppModalPresenter(mContext), ModalDialogType.APP);

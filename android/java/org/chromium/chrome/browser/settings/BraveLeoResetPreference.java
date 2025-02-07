@@ -26,16 +26,12 @@ import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.user_prefs.UserPrefs;
 
-/**
- * The preference used to reset Brave Leo.
- */
-public class BraveLeoResetPreference
-        extends Preference implements Preference.OnPreferenceClickListener {
+/** The preference used to reset Brave Leo. */
+public class BraveLeoResetPreference extends Preference
+        implements Preference.OnPreferenceClickListener {
     private static final String TAG = "BraveLeoResetPref";
 
-    /**
-     * Constructor for BraveLeoResetPreference.
-     */
+    /** Constructor for BraveLeoResetPreference. */
     public BraveLeoResetPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 

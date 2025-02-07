@@ -64,7 +64,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final String QA_IMPORT_REWARDS_DB = "qa_import_rewards_db";
     private static final String QA_EXPORT_REWARDS_DB = "qa_export_rewards_db";
 
-    private static final int CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE = STORAGE_PERMISSION_IMPORT_REQUEST_CODE + 1;
+    private static final int CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE =
+            STORAGE_PERMISSION_IMPORT_REQUEST_CODE + 1;
 
     private static final int MAX_ADS = 10;
     private static final int DEFAULT_ADS_PER_HOUR = 2;
@@ -165,12 +166,13 @@ public class BraveQAPreferences extends BravePreferenceFragment
         }
 
         if (mExportRewardsDb != null) {
-            mExportRewardsDb.setOnPreferenceClickListener( preference -> {
-                if (isStoragePermissionGranted(true)) {
-                    requestRestart(false);
-                }
-                return true;
-            });
+            mExportRewardsDb.setOnPreferenceClickListener(
+                    preference -> {
+                        if (isStoragePermissionGranted(true)) {
+                            requestRestart(false);
+                        }
+                        return true;
+                    });
         }
     }
 
@@ -178,61 +180,70 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if (mCommandLine == null) {
             return;
         }
-        mCommandLine.setOnPreferenceClickListener(preference -> {
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(
-                    Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.qa_command_line, null);
-            final EditText input = (EditText) view.findViewById(R.id.qa_command_line);
+        mCommandLine.setOnPreferenceClickListener(
+                preference -> {
+                    LayoutInflater inflater =
+                            (LayoutInflater)
+                                    getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = inflater.inflate(R.layout.qa_command_line, null);
+                    final EditText input = (EditText) view.findViewById(R.id.qa_command_line);
 
-            input.setText(getPreferenceString(PREF_QA_COMMAND_LINE));
+                    input.setText(getPreferenceString(PREF_QA_COMMAND_LINE));
 
-            DialogInterface.OnClickListener onClickListener =
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int button) {
-                            if (button == AlertDialog.BUTTON_POSITIVE) {
-                                // OK was pressed
-                                String newCommandLine = input.getText().toString();
-                                setPreferenceString(PREF_QA_COMMAND_LINE, newCommandLine);
-                                BraveRelaunchUtils.askForRelaunch(getActivity());
-                            }
-                        }
-                    };
+                    DialogInterface.OnClickListener onClickListener =
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int button) {
+                                    if (button == AlertDialog.BUTTON_POSITIVE) {
+                                        // OK was pressed
+                                        String newCommandLine = input.getText().toString();
+                                        setPreferenceString(PREF_QA_COMMAND_LINE, newCommandLine);
+                                        BraveRelaunchUtils.askForRelaunch(getActivity());
+                                    }
+                                }
+                            };
 
-            input.setOnFocusChangeListener(new OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    input.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            InputMethodManager inputMethodManager =
-                                    (InputMethodManager) getActivity().getSystemService(
-                                            Context.INPUT_METHOD_SERVICE);
-                            inputMethodManager.showSoftInput(
-                                    input, InputMethodManager.SHOW_IMPLICIT);
-                        }
-                    });
-                }
-            });
-            input.requestFocus();
+                    input.setOnFocusChangeListener(
+                            new OnFocusChangeListener() {
+                                @Override
+                                public void onFocusChange(View v, boolean hasFocus) {
+                                    input.post(
+                                            new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    InputMethodManager inputMethodManager =
+                                                            (InputMethodManager)
+                                                                    getActivity()
+                                                                            .getSystemService(
+                                                                                    Context
+                                                                                            .INPUT_METHOD_SERVICE);
+                                                    inputMethodManager.showSoftInput(
+                                                            input,
+                                                            InputMethodManager.SHOW_IMPLICIT);
+                                                }
+                                            });
+                                }
+                            });
+                    input.requestFocus();
 
-            AlertDialog.Builder alert = new AlertDialog.Builder(
-                    getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
-            if (alert == null) {
-                return true;
-            }
-            AlertDialog.Builder alertDialog =
-                    alert.setTitle("Enter Command Line string")
-                            .setView(view)
-                            .setPositiveButton(R.string.ok, onClickListener)
-                            .setNegativeButton(R.string.cancel, onClickListener)
-                            .setCancelable(false);
-            Dialog dialog = alertDialog.create();
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
+                    AlertDialog.Builder alert =
+                            new AlertDialog.Builder(
+                                    getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog);
+                    if (alert == null) {
+                        return true;
+                    }
+                    AlertDialog.Builder alertDialog =
+                            alert.setTitle("Enter Command Line string")
+                                    .setView(view)
+                                    .setPositiveButton(R.string.ok, onClickListener)
+                                    .setNegativeButton(R.string.cancel, onClickListener)
+                                    .setCancelable(false);
+                    Dialog dialog = alertDialog.create();
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
 
-            return true;
-        });
+                    return true;
+                });
     }
 
     @Override
@@ -262,7 +273,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
                         preference.getKey())
                 || OnboardingPrefManager.PREF_DORMANT_USERS_ENGAGEMENT.equals(
                         preference.getKey())) {
-            setOnPreferenceValue(preference.getKey(), (boolean)newValue);
+            setOnPreferenceValue(preference.getKey(), (boolean) newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         }
         return true;
@@ -298,34 +309,43 @@ public class BraveQAPreferences extends BravePreferenceFragment
 
     private void checkQACode() {
         LayoutInflater inflater =
-            (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.qa_code_check, null);
         final EditText input = (EditText) view.findViewById(R.id.qa_code);
 
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                if (button != AlertDialog.BUTTON_POSITIVE
-                        || !input.getText().toString().equals(BraveConfig.DEVELOPER_OPTIONS_CODE)) {
-                    getActivity().finish();
-                }
-            }
-        };
-
-        input.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                input.post(new Runnable() {
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
                     @Override
-                    public void run() {
-                        InputMethodManager inputMethodManager =
-                            (InputMethodManager) getActivity().getSystemService(
-                                Context.INPUT_METHOD_SERVICE);
-                        inputMethodManager.showSoftInput(input, InputMethodManager.SHOW_IMPLICIT);
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button != AlertDialog.BUTTON_POSITIVE
+                                || !input.getText()
+                                        .toString()
+                                        .equals(BraveConfig.DEVELOPER_OPTIONS_CODE)) {
+                            getActivity().finish();
+                        }
+                    }
+                };
+
+        input.setOnFocusChangeListener(
+                new OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        input.post(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        InputMethodManager inputMethodManager =
+                                                (InputMethodManager)
+                                                        getActivity()
+                                                                .getSystemService(
+                                                                        Context
+                                                                                .INPUT_METHOD_SERVICE);
+                                        inputMethodManager.showSoftInput(
+                                                input, InputMethodManager.SHOW_IMPLICIT);
+                                    }
+                                });
                     }
                 });
-            }
-        });
         input.requestFocus();
 
         AlertDialog.Builder alert =
@@ -333,12 +353,12 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if (alert == null) {
             return;
         }
-        AlertDialog.Builder alertDialog = alert
-                                          .setTitle("Enter QA code")
-                                          .setView(view)
-                                          .setPositiveButton(R.string.ok, onClickListener)
-                                          .setNegativeButton(R.string.cancel, onClickListener)
-                                          .setCancelable(false);
+        AlertDialog.Builder alertDialog =
+                alert.setTitle("Enter QA code")
+                        .setView(view)
+                        .setPositiveButton(R.string.ok, onClickListener)
+                        .setNegativeButton(R.string.cancel, onClickListener)
+                        .setCancelable(false);
         Dialog dialog = alertDialog.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -357,8 +377,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
             return;
         }
         // Set saved values
-        int adsPerHour = ContextUtils.getAppSharedPreferences().getInt(
-                             QA_ADS_PER_HOUR, DEFAULT_ADS_PER_HOUR);
+        int adsPerHour =
+                ContextUtils.getAppSharedPreferences()
+                        .getInt(QA_ADS_PER_HOUR, DEFAULT_ADS_PER_HOUR);
         BraveRewardsNativeWorker.getInstance().setAdsPerHour(adsPerHour);
     }
 
@@ -386,7 +407,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
     public void onCreatePreferences(Bundle bundle, String s) {}
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (STORAGE_PERMISSION_EXPORT_REQUEST_CODE == requestCode) {
@@ -400,12 +422,14 @@ public class BraveQAPreferences extends BravePreferenceFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE && resultCode == Activity.RESULT_OK
+        if (requestCode == CHOOSE_FILE_FOR_IMPORT_REQUEST_CODE
+                && resultCode == Activity.RESULT_OK
                 && data != null) {
             try {
                 InputStream in =
-                    ContextUtils.getApplicationContext().getContentResolver().openInputStream(
-                        data.getData());
+                        ContextUtils.getApplicationContext()
+                                .getContentResolver()
+                                .openInputStream(data.getData());
                 mFileToImport = mDbUtil.importDestinationPath() + ".prep";
                 FileUtils.copyStreamToFile(in, new File(mFileToImport));
                 in.close();
@@ -418,22 +442,23 @@ public class BraveQAPreferences extends BravePreferenceFragment
     }
 
     private void requestRestart(boolean isImport) {
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                if (button == AlertDialog.BUTTON_POSITIVE) {
-                    if (isImport) {
-                        mDbUtil.setPerformDbImportOnStart(true);
-                        mDbUtil.setDbImportFile(mFileToImport);
-                    } else {
-                        mDbUtil.setPerformDbExportOnStart(true);
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == AlertDialog.BUTTON_POSITIVE) {
+                            if (isImport) {
+                                mDbUtil.setPerformDbImportOnStart(true);
+                                mDbUtil.setDbImportFile(mFileToImport);
+                            } else {
+                                mDbUtil.setPerformDbExportOnStart(true);
+                            }
+                            BraveRelaunchUtils.restart();
+                        } else {
+                            mDbUtil.cleanUpDbOperationRequest();
+                        }
                     }
-                    BraveRelaunchUtils.restart();
-                } else {
-                    mDbUtil.cleanUpDbOperationRequest();
-                }
-            }
-        };
+                };
         AlertDialog.Builder alertDialog =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog)
                         .setMessage(

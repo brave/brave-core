@@ -11,9 +11,7 @@ import android.os.Bundle;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 
-/**
- * Base class for ChromeLauncherActivity
- */
+/** Base class for ChromeLauncherActivity */
 public class BraveLauncherActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {

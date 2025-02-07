@@ -133,8 +133,10 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         if (mIsTablet) {
             return mUrlHasFocus || mIsUrlFocusChangeInProgress;
         } else {
-            return !mIsTablet && !shouldShowDeleteButton()
-                    && (mUrlHasFocus || mIsUrlFocusChangeInProgress
+            return !mIsTablet
+                    && !shouldShowDeleteButton()
+                    && (mUrlHasFocus
+                            || mIsUrlFocusChangeInProgress
                             || mIsLocationBarFocusedFromNtpScroll);
         }
     }
@@ -156,11 +158,13 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             return true;
         }
 
-        PermissionCallback callback = (permissions, grantResults) -> {
-            if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openQRCodeDialog();
-            }
-        };
+        PermissionCallback callback =
+                (permissions, grantResults) -> {
+                    if (grantResults.length != 0
+                            && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        openQRCodeDialog();
+                    }
+                };
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mWindowAndroid.requestPermissions(new String[] {Manifest.permission.CAMERA}, callback);

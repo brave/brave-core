@@ -38,11 +38,15 @@ public class ClassPathValidator {
         }
     }
 
-    private static void printAndQuit(ClassNotLoadedException e, ClassReader classReader,
-            boolean verbose) throws ClassNotLoadedException {
-        System.err.println("Class \"" + e.getClassName()
-                + "\" not found on any classpath. Used by class \"" + classReader.getClassName()
-                + "\"");
+    private static void printAndQuit(
+            ClassNotLoadedException e, ClassReader classReader, boolean verbose)
+            throws ClassNotLoadedException {
+        System.err.println(
+                "Class \""
+                        + e.getClassName()
+                        + "\" not found on any classpath. Used by class \""
+                        + classReader.getClassName()
+                        + "\"");
         if (verbose) {
             throw e;
         }
@@ -105,10 +109,15 @@ public class ClassPathValidator {
         }
     }
 
-    public void validateClassPathsAndOutput(ClassReader classReader,
-            ClassLoader directClassPathClassLoader, ClassLoader fullClassPathClassLoader,
-            Collection<String> jarsOnlyInFullClassPath, boolean isPrebuilt, boolean verbose,
-            Set<String> missingClassAllowlist) throws ClassNotLoadedException {
+    public void validateClassPathsAndOutput(
+            ClassReader classReader,
+            ClassLoader directClassPathClassLoader,
+            ClassLoader fullClassPathClassLoader,
+            Collection<String> jarsOnlyInFullClassPath,
+            boolean isPrebuilt,
+            boolean verbose,
+            Set<String> missingClassAllowlist)
+            throws ClassNotLoadedException {
         if (isPrebuilt) {
             // Prebuilts only need transitive dependencies checked, not direct dependencies.
             try {
@@ -130,9 +139,11 @@ public class ClassPathValidator {
                     }
                 }
                 if (verbose) {
-                    System.err.println("Class \"" + e.getClassName()
-                            + "\" not found in direct dependencies,"
-                            + " but found in indirect dependiences.");
+                    System.err.println(
+                            "Class \""
+                                    + e.getClassName()
+                                    + "\" not found in direct dependencies,"
+                                    + " but found in indirect dependiences.");
                 }
                 // Iterating through all jars that are in the full classpath but not the direct
                 // classpath to find which one provides the class we are looking for.

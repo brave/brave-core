@@ -1,27 +1,37 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.onboarding;
 
 import org.chromium.chrome.R;
 
 public enum SearchEngineEnum {
-    GOOGLE(R.drawable.search_engine_google, SearchEngineEnumConstants.SEARCH_GOOGLE_ID,
+    GOOGLE(
+            R.drawable.search_engine_google,
+            SearchEngineEnumConstants.SEARCH_GOOGLE_ID,
             R.string.google_desc),
-    BRAVE(R.drawable.search_engine_brave, SearchEngineEnumConstants.SEARCH_BRAVE_ID,
+    BRAVE(
+            R.drawable.search_engine_brave,
+            SearchEngineEnumConstants.SEARCH_BRAVE_ID,
             R.string.brave_desc),
-    DUCKDUCKGO(R.drawable.search_engine_duckduckgo, SearchEngineEnumConstants.SEARCH_DUCKDUCKGO_ID,
+    DUCKDUCKGO(
+            R.drawable.search_engine_duckduckgo,
+            SearchEngineEnumConstants.SEARCH_DUCKDUCKGO_ID,
             R.string.ddg_desc),
-    QWANT(R.drawable.search_engine_qwant, SearchEngineEnumConstants.SEARCH_QWANT_ID,
+    QWANT(
+            R.drawable.search_engine_qwant,
+            SearchEngineEnumConstants.SEARCH_QWANT_ID,
             R.string.qwant_desc),
-    BING(R.drawable.search_engine_bing, SearchEngineEnumConstants.SEARCH_BING_ID,
+    BING(
+            R.drawable.search_engine_bing,
+            SearchEngineEnumConstants.SEARCH_BING_ID,
             R.string.bing_desc),
     YANDEX(R.drawable.yandex, SearchEngineEnumConstants.SEARCH_YANDEX_ID, R.string.yandex_desc),
-    STARTPAGE(R.drawable.search_engine_startpage, SearchEngineEnumConstants.SEARCH_STARTPAGE_ID,
+    STARTPAGE(
+            R.drawable.search_engine_startpage,
+            SearchEngineEnumConstants.SEARCH_STARTPAGE_ID,
             R.string.startpage_desc),
     ECOSIA(R.drawable.ecosia, SearchEngineEnumConstants.SEARCH_ECOSIA_ID, R.string.ecosia_desc),
     DAUM(R.drawable.daum, SearchEngineEnumConstants.SEARCH_DAUM_ID, R.string.daum_desc),

@@ -16,7 +16,8 @@ public class BravePureJavaExceptionReporterClassAdapter extends BraveClassVisito
     public BravePureJavaExceptionReporterClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(sChromePureJavaExceptionReporterClassName,
+        redirectConstructor(
+                sChromePureJavaExceptionReporterClassName,
                 sBravePureJavaExceptionReporterClassName);
     }
 }

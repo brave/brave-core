@@ -36,7 +36,7 @@ class BottomToolbarNewTabButton extends ChromeImageButton
     /** A provider that notifies when incognito mode is entered or exited. */
     private IncognitoStateProvider mIncognitoStateProvider;
 
-    /** A provider that notifies when the theme color changes.*/
+    /** A provider that notifies when the theme color changes. */
     private ThemeColorProvider mThemeColorProvider;
 
     public BottomToolbarNewTabButton(Context context, AttributeSet attrs) {
@@ -51,9 +51,7 @@ class BottomToolbarNewTabButton extends ChromeImageButton
         mBackground = background;
     }
 
-    /**
-     * Clean up any state when the new tab button is destroyed.
-     */
+    /** Clean up any state when the new tab button is destroyed. */
     void destroy() {
         if (mIncognitoStateProvider != null) {
             mIncognitoStateProvider.removeObserver(this);
@@ -74,8 +72,10 @@ class BottomToolbarNewTabButton extends ChromeImageButton
     @Override
     public void onIncognitoStateChanged(boolean isIncognito) {
         @StringRes
-        int resId = isIncognito ? R.string.accessibility_toolbar_btn_new_incognito_tab
-                                : R.string.accessibility_toolbar_btn_new_tab;
+        int resId =
+                isIncognito
+                        ? R.string.accessibility_toolbar_btn_new_incognito_tab
+                        : R.string.accessibility_toolbar_btn_new_tab;
         setContentDescription(getResources().getText(resId));
         updateBackground();
     }

@@ -39,8 +39,10 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference
 
         holder.findViewById(R.id.system_default).setVisibility(View.GONE);
 
-        RadioButtonWithDescription braveDefaultView = (RadioButtonWithDescription)holder.findViewById(R.id.light);
-        RadioButtonWithDescription refView = (RadioButtonWithDescription)holder.findViewById(R.id.dark);
+        RadioButtonWithDescription braveDefaultView =
+                (RadioButtonWithDescription) holder.findViewById(R.id.light);
+        RadioButtonWithDescription refView =
+                (RadioButtonWithDescription) holder.findViewById(R.id.dark);
         if (mNTPBackgroundImagesBridge != null && mNTPBackgroundImagesBridge.isSuperReferral()) {
             refView.setPrimaryText(mNTPBackgroundImagesBridge.getSuperReferralThemeName());
             if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())

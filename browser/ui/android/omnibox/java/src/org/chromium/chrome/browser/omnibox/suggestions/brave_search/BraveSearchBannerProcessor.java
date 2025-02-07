@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.omnibox.suggestions.brave_search;
 
@@ -30,13 +28,17 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
      * @param context An Android context.
      * @param suggestionHost A handle to the object using the suggestions.
      */
-    public BraveSearchBannerProcessor(Context context, BraveSuggestionHost suggestionHost,
-            UrlBarEditingTextStateProvider editingTextProvider, AutocompleteDelegate urlDelegate) {
+    public BraveSearchBannerProcessor(
+            Context context,
+            BraveSuggestionHost suggestionHost,
+            UrlBarEditingTextStateProvider editingTextProvider,
+            AutocompleteDelegate urlDelegate) {
         mSuggestionHost = suggestionHost;
         mUrlBarEditingTextProvider = editingTextProvider;
         mUrlBarDelegate = urlDelegate;
-        mMinimumHeight = context.getResources().getDimensionPixelSize(
-                R.dimen.omnibox_brave_search_banner_height);
+        mMinimumHeight =
+                context.getResources()
+                        .getDimensionPixelSize(R.dimen.omnibox_brave_search_banner_height);
     }
 
     public void populateModel(final PropertyModel model) {

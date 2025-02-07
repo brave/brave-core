@@ -201,7 +201,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private PlaylistService mPlaylistService;
 
-    private enum BigtechCompany { Google, Facebook, Amazon }
+    private enum BigtechCompany {
+        Google,
+        Facebook,
+        Amazon
+    }
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -311,30 +315,35 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         }
                     }
                 });
-        mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
-            @Override
-            public void blockEvent(int tabId, String blockType, String subresource) {
-                mBraveShieldsHandler.addStat(tabId, blockType, subresource);
-                Tab currentTab = getToolbarDataProvider().getTab();
-                if (currentTab == null || currentTab.getId() != tabId) {
-                    return;
-                }
-                mBraveShieldsHandler.updateValues(tabId);
-                if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
-                        && (blockType.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
-                                || blockType.equals(BraveShieldsContentSettings
-                                                            .RESOURCE_IDENTIFIER_TRACKERS))) {
-                    addStatsToDb(blockType, subresource, currentTab.getUrl().getSpec());
-                }
-            }
+        mBraveShieldsContentSettingsObserver =
+                new BraveShieldsContentSettingsObserver() {
+                    @Override
+                    public void blockEvent(int tabId, String blockType, String subresource) {
+                        mBraveShieldsHandler.addStat(tabId, blockType, subresource);
+                        Tab currentTab = getToolbarDataProvider().getTab();
+                        if (currentTab == null || currentTab.getId() != tabId) {
+                            return;
+                        }
+                        mBraveShieldsHandler.updateValues(tabId);
+                        if (!isIncognito()
+                                && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+                                && (blockType.equals(
+                                                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
+                                        || blockType.equals(
+                                                BraveShieldsContentSettings
+                                                        .RESOURCE_IDENTIFIER_TRACKERS))) {
+                            addStatsToDb(blockType, subresource, currentTab.getUrl().getSpec());
+                        }
+                    }
 
-            @Override
-            public void savedBandwidth(long savings) {
-                if (!isIncognito() && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                    addSavedBandwidthToDb(savings);
-                }
-            }
-        };
+                    @Override
+                    public void savedBandwidth(long savings) {
+                        if (!isIncognito()
+                                && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                            addSavedBandwidthToDb(savings);
+                        }
+                    }
+                };
         // Initially show shields off image. Shields button state will be updated when tab is
         // shown and loading state is changed.
         updateBraveShieldsButtonState(null);
@@ -352,8 +361,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         (ViewGroup.MarginLayoutParams) mBraveShieldsButton.getLayoutParams();
                 ViewGroup.MarginLayoutParams actionButtonsLayout =
                         (ViewGroup.MarginLayoutParams) customActionButtons.getLayoutParams();
-                actionButtonsLayout.setMarginEnd(actionButtonsLayout.getMarginEnd()
-                        + braveShieldsButtonLayout.getMarginEnd());
+                actionButtonsLayout.setMarginEnd(
+                        actionButtonsLayout.getMarginEnd()
+                                + braveShieldsButtonLayout.getMarginEnd());
                 customActionButtons.setLayoutParams(actionButtonsLayout);
             }
         }
@@ -620,8 +630,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mShouldShowPlaylistMenu = false;
         try {
             ViewGroup viewGroup =
-                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                            android.R.id.content);
+                    BraveActivity.getBraveActivity()
+                            .getWindow()
+                            .getDecorView()
+                            .findViewById(android.R.id.content);
             View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
             if (playlistButton != null && playlistButton.getVisibility() == View.VISIBLE) {
                 playlistButton.setVisibility(View.GONE);
@@ -634,8 +646,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private boolean isPlaylistButtonVisible() {
         try {
             ViewGroup viewGroup =
-                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                            android.R.id.content);
+                    BraveActivity.getBraveActivity()
+                            .getWindow()
+                            .getDecorView()
+                            .findViewById(android.R.id.content);
             View playlistButton = viewGroup.findViewById(R.id.playlist_button_id);
             return playlistButton != null && playlistButton.getVisibility() == View.VISIBLE;
         } catch (BraveActivity.BraveActivityNotFoundException e) {
@@ -654,8 +668,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void showPlaylistButton(PlaylistItem[] items) {
         try {
             ViewGroup viewGroup =
-                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                            android.R.id.content);
+                    BraveActivity.getBraveActivity()
+                            .getWindow()
+                            .getDecorView()
+                            .findViewById(android.R.id.content);
 
             PlaylistOptionsListener playlistOptionsListener =
                     new PlaylistOptionsListener() {
@@ -767,8 +783,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         });
         try {
             ViewGroup viewGroup =
-                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                            android.R.id.content);
+                    BraveActivity.getBraveActivity()
+                            .getWindow()
+                            .getDecorView()
+                            .findViewById(android.R.id.content);
             String playlistName =
                     getContext().getResources().getString(R.string.playlist_play_later);
             PlaylistViewUtils.showSnackBarWithActions(
@@ -812,7 +830,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (!BraveShieldsUtils.isTooltipShown
                     && !BraveActivity.getBraveActivity().mIsDeepLink) {
                 if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                            BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
+                                BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
                         && mBraveShieldsHandler.getTrackersBlockedCount(tab.getId())
                                         + mBraveShieldsHandler.getAdsBlockedCount(tab.getId())
                                 > 0) {
@@ -827,17 +845,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private void showTooltip(String tooltipPref, int tabId) {
         try {
             HighlightView highlightView = new HighlightView(getContext(), null);
-            highlightView.setColor(ContextCompat.getColor(
-                    getContext(), R.color.onboarding_search_highlight_color));
+            highlightView.setColor(
+                    ContextCompat.getColor(
+                            getContext(), R.color.onboarding_search_highlight_color));
             ViewGroup viewGroup =
-                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                            android.R.id.content);
+                    BraveActivity.getBraveActivity()
+                            .getWindow()
+                            .getDecorView()
+                            .findViewById(android.R.id.content);
             float padding = (float) dpToPx(getContext(), 20);
             mShieldsPopupWindowTooltip =
                     new PopupWindowTooltip.Builder(getContext())
                             .anchorView(mBraveShieldsButton)
-                            .arrowColor(ContextCompat.getColor(
-                                    getContext(), R.color.onboarding_arrow_color))
+                            .arrowColor(
+                                    ContextCompat.getColor(
+                                            getContext(), R.color.onboarding_arrow_color))
                             .gravity(Gravity.BOTTOM)
                             .dismissOnOutsideTouch(true)
                             .dismissOnInsideTouch(false)
@@ -845,19 +867,21 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             .padding(padding)
                             .parentPaddingHorizontal(dpToPx(getContext(), 10))
                             .modal(true)
-                            .onDismissListener(tooltip -> {
-                                if (viewGroup != null && highlightView != null) {
-                                    highlightView.stopAnimation();
-                                    viewGroup.removeView(highlightView);
-                                }
-                            })
+                            .onDismissListener(
+                                    tooltip -> {
+                                        if (viewGroup != null && highlightView != null) {
+                                            highlightView.stopAnimation();
+                                            viewGroup.removeView(highlightView);
+                                        }
+                                    })
                             .contentView(R.layout.brave_shields_tooltip_layout)
                             .build();
 
             ArrayList<String> blockerNamesList = mBraveShieldsHandler.getBlockerNamesList(tabId);
 
-            int adsTrackersCount = mBraveShieldsHandler.getTrackersBlockedCount(tabId)
-                    + mBraveShieldsHandler.getAdsBlockedCount(tabId);
+            int adsTrackersCount =
+                    mBraveShieldsHandler.getTrackersBlockedCount(tabId)
+                            + mBraveShieldsHandler.getAdsBlockedCount(tabId);
 
             String displayTrackerName = "";
             if (blockerNamesList.contains(BigtechCompany.Google.name())) {
@@ -872,19 +896,29 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (!displayTrackerName.isEmpty()) {
                 if (adsTrackersCount - 1 == 0) {
                     trackerText =
-                            String.format(getContext().getResources().getString(
-                                                  R.string.shield_bigtech_tracker_only_blocked),
+                            String.format(
+                                    getContext()
+                                            .getResources()
+                                            .getString(
+                                                    R.string.shield_bigtech_tracker_only_blocked),
                                     displayTrackerName);
 
                 } else {
-                    trackerText = String.format(getContext().getResources().getString(
-                                                        R.string.shield_bigtech_tracker_blocked),
-                            displayTrackerName, String.valueOf(adsTrackersCount - 1));
+                    trackerText =
+                            String.format(
+                                    getContext()
+                                            .getResources()
+                                            .getString(R.string.shield_bigtech_tracker_blocked),
+                                    displayTrackerName,
+                                    String.valueOf(adsTrackersCount - 1));
                 }
             } else {
-                trackerText = String.format(
-                        getContext().getResources().getString(R.string.shield_tracker_blocked),
-                        String.valueOf(adsTrackersCount));
+                trackerText =
+                        String.format(
+                                getContext()
+                                        .getResources()
+                                        .getString(R.string.shield_tracker_blocked),
+                                String.valueOf(adsTrackersCount));
             }
 
             TextView tvBlocked = mShieldsPopupWindowTooltip.findViewById(R.id.tv_blocked);
@@ -898,14 +932,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         new ImageButton(getContext(), null, R.style.ToolbarButton);
                 braveShieldButton.setImageResource(R.drawable.btn_brave);
                 FrameLayout.LayoutParams braveShieldParams =
-                        new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
+                        new FrameLayout.LayoutParams(
+                                FrameLayout.LayoutParams.WRAP_CONTENT,
                                 FrameLayout.LayoutParams.WRAP_CONTENT);
 
                 int[] location = new int[2];
                 highlightView.getLocationOnScreen(location);
                 braveShieldParams.leftMargin = item.getScreenLeft() + dpToPx(getContext(), 10);
-                braveShieldParams.topMargin = item.getScreenTop()
-                        + ((item.getScreenBottom() - item.getScreenTop()) / 4) - location[1];
+                braveShieldParams.topMargin =
+                        item.getScreenTop()
+                                + ((item.getScreenBottom() - item.getScreenTop()) / 4)
+                                - location[1];
                 braveShieldButton.setLayoutParams(braveShieldParams);
                 highlightView.addView(braveShieldButton);
 
@@ -1211,8 +1248,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    public void populateUrlAnimatorSetImpl(boolean showExpandedState,
-            int urlFocusToolbarButtonsDuration, int urlClearFocusTabStackDelayMs,
+    public void populateUrlAnimatorSetImpl(
+            boolean showExpandedState,
+            int urlFocusToolbarButtonsDuration,
+            int urlClearFocusTabStackDelayMs,
             List<Animator> animators) {
         if (mBraveShieldsButton != null) {
             Animator animator;
@@ -1221,9 +1260,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
                 float toolbarButtonTranslationX =
                         MathUtils.flipSignIf(URL_FOCUS_TOOLBAR_BUTTONS_TRANSLATION_X_DP, isRtl)
-                        * density;
-                animator = ObjectAnimator.ofFloat(
-                        mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
+                                * density;
+                animator =
+                        ObjectAnimator.ofFloat(
+                                mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
                 animator.setDuration(urlFocusToolbarButtonsDuration);
                 animator.setInterpolator(Interpolators.FAST_OUT_LINEAR_IN_INTERPOLATOR);
                 animators.add(animator);
@@ -1383,13 +1423,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 String value = Integer.toString(count);
                 if (count > 99) {
                     mBraveRewardsNotificationsCount.setBackground(
-                            ResourcesCompat.getDrawable(getContext().getResources(),
-                                    R.drawable.brave_rewards_rectangle, /* theme= */ null));
+                            ResourcesCompat.getDrawable(
+                                    getContext().getResources(),
+                                    R.drawable.brave_rewards_rectangle,
+                                    /* theme= */ null));
                     value = "99+";
                 } else {
                     mBraveRewardsNotificationsCount.setBackground(
-                            ResourcesCompat.getDrawable(getContext().getResources(),
-                                    R.drawable.brave_rewards_circle, /* theme= */ null));
+                            ResourcesCompat.getDrawable(
+                                    getContext().getResources(),
+                                    R.drawable.brave_rewards_circle,
+                                    /* theme= */ null));
                 }
                 mBraveRewardsNotificationsCount.setText(value);
                 mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
@@ -1435,9 +1479,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void onThemeColorChanged(int color, boolean shouldAnimate) {
         if (mWalletIcon != null) {
-            ImageViewCompat.setImageTintList(mWalletIcon,
-                    !ColorUtils.shouldUseLightForegroundOnBackground(color) ? mDarkModeTint
-                                                                            : mLightModeTint);
+            ImageViewCompat.setImageTintList(
+                    mWalletIcon,
+                    !ColorUtils.shouldUseLightForegroundOnBackground(color)
+                            ? mDarkModeTint
+                            : mLightModeTint);
         }
 
         final int textBoxColor =
@@ -1447,9 +1493,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     /**
-     * BraveRewardsNativeWorker.PublisherObserver:
-     *   Update a 'verified publisher' checkmark on url bar BAT icon only if
-     *   no notifications are posted.
+     * BraveRewardsNativeWorker.PublisherObserver: Update a 'verified publisher' checkmark on url
+     * bar BAT icon only if no notifications are posted.
      */
     @Override
     public void onFrontTabPublisherChanged(boolean verified) {
@@ -1468,8 +1513,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             if (mIsPublisherVerified) {
                 mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
                 mBraveRewardsNotificationsCount.setBackground(
-                        ResourcesCompat.getDrawable(getContext().getResources(),
-                                R.drawable.rewards_verified_tick_icon, /* theme= */ null));
+                        ResourcesCompat.getDrawable(
+                                getContext().getResources(),
+                                R.drawable.rewards_verified_tick_icon,
+                                /* theme= */ null));
             } else {
                 mBraveRewardsNotificationsCount.setBackgroundResource(0);
                 mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
@@ -1495,8 +1542,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
 
         mShieldsLayout.setBackgroundDrawable(
-                ApiCompatibilityUtils.getDrawable(getContext().getResources(),
-                        rounded ? R.drawable.modern_toolbar_background_grey_end_segment
+                ApiCompatibilityUtils.getDrawable(
+                        getContext().getResources(),
+                        rounded
+                                ? R.drawable.modern_toolbar_background_grey_end_segment
                                 : R.drawable.modern_toolbar_background_grey_middle_segment));
 
         updateModernLocationBarColorImpl(mCurrentToolbarColor);
@@ -1561,7 +1610,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public boolean isLocationBarValid(LocationBarCoordinator locationBar) {
-        return locationBar != null && locationBar.getPhoneCoordinator() != null
+        return locationBar != null
+                && locationBar.getPhoneCoordinator() != null
                 && locationBar.getPhoneCoordinator().getViewForDrawing() != null;
     }
 

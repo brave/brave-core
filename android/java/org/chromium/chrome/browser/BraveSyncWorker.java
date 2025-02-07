@@ -202,8 +202,11 @@ public class BraveSyncWorker {
         void resetSync(long nativeBraveSyncWorker);
 
         void permanentlyDeleteAccount(long nativeBraveSyncWorker, Callback<String> callback);
+
         void clearAccountDeletedNoticePending(long nativeBraveSyncWorker);
+
         boolean isAccountDeletedNoticePending(long nativeBraveSyncWorker);
+
         void setJoinSyncChainCallback(long nativeBraveSyncWorker, Callback<Boolean> callback);
     }
 }

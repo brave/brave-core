@@ -1,11 +1,10 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards.tipping;
+
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -49,8 +48,8 @@ public class RewardsTippingPanelBottomsheet extends BottomSheetDialogFragment {
     public void show(@NonNull FragmentManager manager, @Nullable String tag) {
         try {
             RewardsTippingPanelBottomsheet fragment =
-                    (RewardsTippingPanelBottomsheet) manager.findFragmentByTag(
-                            RewardsTippingPanelBottomsheet.TAG_FRAGMENT);
+                    (RewardsTippingPanelBottomsheet)
+                            manager.findFragmentByTag(RewardsTippingPanelBottomsheet.TAG_FRAGMENT);
             FragmentTransaction transaction = manager.beginTransaction();
             if (fragment != null) {
                 transaction.remove(fragment);
@@ -77,8 +76,9 @@ public class RewardsTippingPanelBottomsheet extends BottomSheetDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstance) {
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstance);
-        final View view = LayoutInflater.from(getContext())
-                                  .inflate(R.layout.brave_rewards_tippingpanel_bottomsheet, null);
+        final View view =
+                LayoutInflater.from(getContext())
+                        .inflate(R.layout.brave_rewards_tippingpanel_bottomsheet, null);
         dialog.setContentView(view);
         replace();
         setupFullHeight(dialog);

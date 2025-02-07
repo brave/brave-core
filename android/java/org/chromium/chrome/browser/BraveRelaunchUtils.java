@@ -16,34 +16,13 @@ import org.chromium.chrome.R;
 
 @JNINamespace("chrome::android")
 public class BraveRelaunchUtils {
-    static public void askForRelaunch(Context context) {
+    public static void askForRelaunch(Context context) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder
-            .setMessage(R.string.settings_require_relaunch_notice)
-            .setCancelable(true)
-            .setPositiveButton(R.string.settings_require_relaunch_now, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog,int id) {
-                    BraveRelaunchUtilsJni.get().restart();
-                    dialog.cancel();
-                }
-            })
-            .setNegativeButton(R.string.settings_require_relaunch_later,new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog,int id) {
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-    }
-
-    public static void askForRelaunchCustom(Context context) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder.setTitle(R.string.reset_brave_rewards_error_title)
-                .setMessage(R.string.reset_brave_rewards_error_description)
+                .setMessage(R.string.settings_require_relaunch_notice)
                 .setCancelable(true)
-                .setPositiveButton(R.string.settings_require_relaunch_now,
+                .setPositiveButton(
+                        R.string.settings_require_relaunch_now,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
@@ -51,7 +30,35 @@ public class BraveRelaunchUtils {
                                 dialog.cancel();
                             }
                         })
-                .setNegativeButton(R.string.settings_require_relaunch_later,
+                .setNegativeButton(
+                        R.string.settings_require_relaunch_later,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    public static void askForRelaunchCustom(Context context) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder
+                .setTitle(R.string.reset_brave_rewards_error_title)
+                .setMessage(R.string.reset_brave_rewards_error_description)
+                .setCancelable(true)
+                .setPositiveButton(
+                        R.string.settings_require_relaunch_now,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                BraveRelaunchUtilsJni.get().restart();
+                                dialog.cancel();
+                            }
+                        })
+                .setNegativeButton(
+                        R.string.settings_require_relaunch_later,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {

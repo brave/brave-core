@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards.onboarding;
 
@@ -46,9 +44,7 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.TreeMap;
 
-/**
- * This class is used to show rewards onBoarding UI
- **/
+/** This class is used to show rewards onBoarding UI */
 public class RewardsOnboarding implements BraveRewardsObserver {
     private final View mAnchorView;
     private final PopupWindow mPopupWindow;
@@ -72,8 +68,11 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         mAnchorView = anchorView;
         mPopupWindow = new PopupWindow(anchorView.getContext());
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        mPopupWindow.setBackgroundDrawable(ResourcesCompat.getDrawable(
-                anchorView.getContext().getResources(), R.drawable.rewards_panel_background, null));
+        mPopupWindow.setBackgroundDrawable(
+                ResourcesCompat.getDrawable(
+                        anchorView.getContext().getResources(),
+                        R.drawable.rewards_panel_background,
+                        null));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mPopupWindow.setElevation(20);
@@ -85,32 +84,41 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     }
 
     private void setUpViews(int deviceWidth) {
-        LayoutInflater inflater = (LayoutInflater) mAnchorView.getContext().getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater =
+                (LayoutInflater)
+                        mAnchorView.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mPopupView = inflater.inflate(R.layout.rewards_onboarding, null);
 
         // Main layout views
         mMainLayout = mPopupView.findViewById(R.id.rewards_onboarding_layout_id);
         View startUsingButton = mMainLayout.findViewById(R.id.start_using_rewards_button);
-        startUsingButton.setOnClickListener(v -> {
-            mBraveRewardsNativeWorker.getAvailableCountries();
-            mLocationChooseLayout.setVisibility(View.VISIBLE);
-            mMainLayout.setVisibility(View.GONE);
-        });
+        startUsingButton.setOnClickListener(
+                v -> {
+                    mBraveRewardsNativeWorker.getAvailableCountries();
+                    mLocationChooseLayout.setVisibility(View.VISIBLE);
+                    mMainLayout.setVisibility(View.GONE);
+                });
         View howDoseItWorkMainButton = mMainLayout.findViewById(R.id.how_does_it_work_main);
-        howDoseItWorkMainButton.setOnClickListener(v -> { showRewardsTour(); });
+        howDoseItWorkMainButton.setOnClickListener(
+                v -> {
+                    showRewardsTour();
+                });
 
         mCountrySpinner = mPopupView.findViewById(R.id.country_spinner);
         BraveTouchUtils.ensureMinTouchTarget(mCountrySpinner);
 
-        String termsOfServiceText = String.format(
-                mPopupView.getContext().getString(R.string.brave_rewards_onboarding_tos_text),
-                mPopupView.getContext().getString(R.string.terms_of_service),
-                mPopupView.getContext().getString(R.string.privacy_policy));
+        String termsOfServiceText =
+                String.format(
+                        mPopupView
+                                .getContext()
+                                .getString(R.string.brave_rewards_onboarding_tos_text),
+                        mPopupView.getContext().getString(R.string.terms_of_service),
+                        mPopupView.getContext().getString(R.string.privacy_policy));
         TextView tosText = mMainLayout.findViewById(R.id.tos_text);
         tosText.setMovementMethod(LinkMovementMethod.getInstance());
-        tosText.setText(BraveRewardsHelper.tosSpannableString(
-                termsOfServiceText, R.color.brave_rewards_modal_theme_color));
+        tosText.setText(
+                BraveRewardsHelper.tosSpannableString(
+                        termsOfServiceText, R.color.brave_rewards_modal_theme_color));
 
         // Location choose layout views
         mLocationChooseLayout =
@@ -120,23 +128,31 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         // All set layout views
         mAllSetLayout = mPopupView.findViewById(R.id.rewards_onboarding_all_set_layout_id);
         View doneButton = mAllSetLayout.findViewById(R.id.all_set_done_button);
-        doneButton.setOnClickListener(v -> {
-            mPopupWindow.dismiss();
-            TabUtils.openUrlInNewTab(false, BraveRewardsPanel.REWARDS_TOUR_URL);
-        });
+        doneButton.setOnClickListener(
+                v -> {
+                    mPopupWindow.dismiss();
+                    TabUtils.openUrlInNewTab(false, BraveRewardsPanel.REWARDS_TOUR_URL);
+                });
         View howDoseItWorkAllSetButton = mAllSetLayout.findViewById(R.id.how_does_it_work_all_set);
-        howDoseItWorkAllSetButton.setOnClickListener(v -> { showRewardsTour(); });
+        howDoseItWorkAllSetButton.setOnClickListener(
+                v -> {
+                    showRewardsTour();
+                });
 
         // Error layout views
         mErrorLayout = mPopupView.findViewById(R.id.rewards_onboarding_error_layout_id);
         View responseActionButton = mErrorLayout.findViewById(R.id.response_action_btn);
-        responseActionButton.setOnClickListener(v -> {
-            mBraveRewardsNativeWorker.getAvailableCountries();
-            mLocationChooseLayout.setVisibility(View.VISIBLE);
-            mErrorLayout.setVisibility(View.GONE);
-        });
+        responseActionButton.setOnClickListener(
+                v -> {
+                    mBraveRewardsNativeWorker.getAvailableCountries();
+                    mLocationChooseLayout.setVisibility(View.VISIBLE);
+                    mErrorLayout.setVisibility(View.GONE);
+                });
         View responseCloseButton = mErrorLayout.findViewById(R.id.response_modal_close);
-        responseCloseButton.setOnClickListener(v -> { mPopupWindow.dismiss(); });
+        responseCloseButton.setOnClickListener(
+                v -> {
+                    mPopupWindow.dismiss();
+                });
 
         mPopupWindow.setOnDismissListener(
                 new PopupWindow.OnDismissListener() {
@@ -178,9 +194,11 @@ public class RewardsOnboarding implements BraveRewardsObserver {
     private void updateCountryList(String[] countries) {
         shouldShowContinueProgress(false);
         mContinueButton.setText(mActivity.getResources().getString(R.string.continue_text));
-        String defaultCountry = mBraveRewardsNativeWorker.getCountryCode() != null
-                ? new Locale("", mBraveRewardsNativeWorker.getCountryCode()).getDisplayCountry()
-                : null;
+        String defaultCountry =
+                mBraveRewardsNativeWorker.getCountryCode() != null
+                        ? new Locale("", mBraveRewardsNativeWorker.getCountryCode())
+                                .getDisplayCountry()
+                        : null;
 
         TreeMap<String, String> sortedCountryMap = new TreeMap<String, String>();
         ArrayList<String> list = new ArrayList<>();
@@ -200,21 +218,24 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         countrySelectionSpinnerAdapter.setDropDownViewResource(
                 android.R.layout.simple_spinner_dropdown_item);
         mCountrySpinner.setAdapter(countrySelectionSpinnerAdapter);
-        mCountrySpinner.setOnTouchListener((view, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                mCountrySpinner.setSelection(
-                        countrySelectionSpinnerAdapter.getPosition(defaultCountry));
-            }
-            return false;
-        });
-        mCountrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                mContinueButton.setEnabled(pos != 0);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {}
-        });
+        mCountrySpinner.setOnTouchListener(
+                (view, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        mCountrySpinner.setSelection(
+                                countrySelectionSpinnerAdapter.getPosition(defaultCountry));
+                    }
+                    return false;
+                });
+        mCountrySpinner.setOnItemSelectedListener(
+                new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                        mContinueButton.setEnabled(pos != 0);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> arg0) {}
+                });
 
         mContinueButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -329,7 +350,8 @@ public class RewardsOnboarding implements BraveRewardsObserver {
                 BraveNotificationWarningDialog.newInstance(
                         BraveNotificationWarningDialog.FROM_LAUNCHED_BRAVE_PANEL);
         notificationWarningDialog.setCancelable(false);
-        notificationWarningDialog.show(mActivity.getSupportFragmentManager(),
+        notificationWarningDialog.show(
+                mActivity.getSupportFragmentManager(),
                 BraveNotificationWarningDialog.NOTIFICATION_WARNING_DIALOG_TAG);
     }
 }

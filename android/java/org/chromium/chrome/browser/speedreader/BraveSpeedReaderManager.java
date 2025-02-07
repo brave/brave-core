@@ -31,10 +31,7 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modelutil.PropertyModel;
 import org.chromium.url.GURL;
 
-/**
- * Manages UI effects for speedreader including hiding and showing the
- * message UI.
- */
+/** Manages UI effects for speedreader including hiding and showing the message UI. */
 public class BraveSpeedReaderManager extends EmptyTabObserver implements UserData {
     /** The key to access this object from a {@Tab}. */
     public static final Class<BraveSpeedReaderManager> USER_DATA_KEY =
@@ -66,12 +63,15 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
 
     /**
      * Create an instance of the {@link BraveSpeedReaderManager} for the provided tab.
+     *
      * @param tab The tab that will have a manager instance attached to it.
      */
     public static void createForTab(Tab tab) {
-        tab.getUserDataHost().setUserData(USER_DATA_KEY,
-                new BraveSpeedReaderManager(
-                        tab, () -> MessageDispatcherProvider.from(tab.getWindowAndroid())));
+        tab.getUserDataHost()
+                .setUserData(
+                        USER_DATA_KEY,
+                        new BraveSpeedReaderManager(
+                                tab, () -> MessageDispatcherProvider.from(tab.getWindowAndroid())));
     }
 
     /** Clear the status map and references to other objects. */
@@ -132,21 +132,27 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
         // Save url for #onMessageDismissed. Url may have been changed and became
         // different from the url when message is enqueued.
         GURL url = mTab.getUrl();
-        mMessageModel = new PropertyModel.Builder(MessageBannerProperties.ALL_KEYS)
-                                .with(MessageBannerProperties.MESSAGE_IDENTIFIER,
-                                        MessageIdentifier.READER_MODE)
-                                .with(MessageBannerProperties.TITLE,
-                                        resources.getString(R.string.speedreader_message_title))
-                                .with(MessageBannerProperties.PRIMARY_BUTTON_TEXT,
-                                        resources.getString(R.string.speedreader_message_button))
-                                .with(MessageBannerProperties.ON_PRIMARY_ACTION,
-                                        () -> {
-                                            BraveSpeedReaderUtils.enableSpeedreaderMode(mTab);
-                                            return PrimaryActionClickBehavior.DISMISS_IMMEDIATELY;
-                                        })
-                                .with(MessageBannerProperties.ON_DISMISSED,
-                                        (reason) -> onMessageDismissed(url, reason))
-                                .build();
+        mMessageModel =
+                new PropertyModel.Builder(MessageBannerProperties.ALL_KEYS)
+                        .with(
+                                MessageBannerProperties.MESSAGE_IDENTIFIER,
+                                MessageIdentifier.READER_MODE)
+                        .with(
+                                MessageBannerProperties.TITLE,
+                                resources.getString(R.string.speedreader_message_title))
+                        .with(
+                                MessageBannerProperties.PRIMARY_BUTTON_TEXT,
+                                resources.getString(R.string.speedreader_message_button))
+                        .with(
+                                MessageBannerProperties.ON_PRIMARY_ACTION,
+                                () -> {
+                                    BraveSpeedReaderUtils.enableSpeedreaderMode(mTab);
+                                    return PrimaryActionClickBehavior.DISMISS_IMMEDIATELY;
+                                })
+                        .with(
+                                MessageBannerProperties.ON_DISMISSED,
+                                (reason) -> onMessageDismissed(url, reason))
+                        .build();
         messageDispatcher.enqueueMessage(
                 mMessageModel, mTab.getWebContents(), MessageScopeType.NAVIGATION, false);
     }
@@ -162,7 +168,9 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
         }
     }
 
-    /** @return Whether speedreader is enabled. */
+    /**
+     * @return Whether speedreader is enabled.
+     */
     public static boolean isEnabled() {
         boolean isFeatureEnabled = ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER);
         if (!isFeatureEnabled) return false;

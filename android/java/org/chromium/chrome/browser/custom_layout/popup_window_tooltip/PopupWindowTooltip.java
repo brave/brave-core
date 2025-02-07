@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.custom_layout.popup_window_tooltip;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
@@ -116,28 +114,32 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setTouchable(true);
-        mPopupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int x = (int) event.getX();
-                final int y = (int) event.getY();
+        mPopupWindow.setTouchInterceptor(
+                new View.OnTouchListener() {
+                    @SuppressLint("ClickableViewAccessibility")
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        final int x = (int) event.getX();
+                        final int y = (int) event.getY();
 
-                if (!mDismissOnOutsideTouch && (event.getAction() == MotionEvent.ACTION_DOWN)
-                        && ((x < 0) || (x >= mContentLayout.getMeasuredWidth()) || (y < 0)
-                                || (y >= mContentLayout.getMeasuredHeight()))) {
-                    return true;
-                } else if (!mDismissOnOutsideTouch
-                        && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    return true;
-                } else if ((event.getAction() == MotionEvent.ACTION_DOWN)
-                        && mDismissOnInsideTouch) {
-                    dismiss();
-                    return true;
-                }
-                return false;
-            }
-        });
+                        if (!mDismissOnOutsideTouch
+                                && (event.getAction() == MotionEvent.ACTION_DOWN)
+                                && ((x < 0)
+                                        || (x >= mContentLayout.getMeasuredWidth())
+                                        || (y < 0)
+                                        || (y >= mContentLayout.getMeasuredHeight()))) {
+                            return true;
+                        } else if (!mDismissOnOutsideTouch
+                                && event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            return true;
+                        } else if ((event.getAction() == MotionEvent.ACTION_DOWN)
+                                && mDismissOnInsideTouch) {
+                            dismiss();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
         mPopupWindow.setClippingEnabled(false);
     }
 
@@ -147,19 +149,26 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mContentLayout.getViewTreeObserver().addOnGlobalLayoutListener(mLocationLayoutListener);
         mContentLayout.getViewTreeObserver().addOnGlobalLayoutListener(mAutoDismissLayoutListener);
 
-        mRootView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mRootView.isShown()) {
-                    mPopupWindow.showAtLocation(mRootView, Gravity.NO_GRAVITY, mRootView.getWidth(),
-                            mRootView.getHeight());
-                    if (!mBackgroundDimDisabled) {
-                        dimBackgroundPopupWindow();
+        mRootView.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mRootView.isShown()) {
+                            mPopupWindow.showAtLocation(
+                                    mRootView,
+                                    Gravity.NO_GRAVITY,
+                                    mRootView.getWidth(),
+                                    mRootView.getHeight());
+                            if (!mBackgroundDimDisabled) {
+                                dimBackgroundPopupWindow();
+                            }
+                        } else
+                            Log.e(
+                                    TAG,
+                                    "Tooltip cannot be shown, root view is invalid or has been"
+                                            + " closed.");
                     }
-                } else
-                    Log.e(TAG, "Tooltip cannot be shown, root view is invalid or has been closed.");
-            }
-        });
+                });
     }
 
     private void dimBackgroundPopupWindow() {
@@ -198,9 +207,10 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                 location.y = anchorRect.top - mPopupWindow.getContentView().getHeight() - mMargin;
                 break;
             case Gravity.BOTTOM:
-                location.x = mContentArrowAtStart
-                        ? anchorRect.left
-                        : anchorCenter.x - mPopupWindow.getContentView().getWidth() / 2f;
+                location.x =
+                        mContentArrowAtStart
+                                ? anchorRect.left
+                                : anchorCenter.x - mPopupWindow.getContentView().getWidth() / 2f;
                 location.y = anchorRect.bottom + mMargin;
                 break;
             case Gravity.CENTER:
@@ -219,14 +229,19 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         mContentView.setPadding((int) mPadding, (int) mPadding, (int) mPadding, (int) mPadding);
 
         LinearLayout linearLayout = new LinearLayout(mContext);
-        linearLayout.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        linearLayout.setOrientation(mArrowDirection == ArrowColorDrawable.LEFT
+        linearLayout.setLayoutParams(
+                new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        linearLayout.setOrientation(
+                mArrowDirection == ArrowColorDrawable.LEFT
                                 || mArrowDirection == ArrowColorDrawable.RIGHT
                         ? LinearLayout.HORIZONTAL
                         : LinearLayout.VERTICAL);
-        linearLayout.setPadding(mParentPaddingHorizontal, mParentPaddingVertical,
-                mParentPaddingHorizontal, mParentPaddingVertical);
+        linearLayout.setPadding(
+                mParentPaddingHorizontal,
+                mParentPaddingVertical,
+                mParentPaddingHorizontal,
+                mParentPaddingVertical);
 
         mArrowView = new ImageView(mContext);
         mArrowView.setImageDrawable(mArrowColorDrawable);
@@ -271,29 +286,41 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
             mPopupWindow.dismiss();
         }
     }
+
     public boolean isShowing() {
         return mPopupWindow != null && mPopupWindow.isShowing();
     }
+
     public <T extends View> T findViewById(int id) {
         // noinspection unchecked
         return (T) mContentLayout.findViewById(id);
     }
+
     @Override
     public void onDismiss() {
         dismissed = true;
         mRootView = null;
         if (mOnDismissListener != null) mOnDismissListener.onDismiss(this);
         mOnDismissListener = null;
-        mPopupWindow.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(
-                mLocationLayoutListener);
-        mPopupWindow.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(
-                mArrowLayoutListener);
-        mPopupWindow.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(
-                mShowLayoutListener);
-        mPopupWindow.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(
-                mAutoDismissLayoutListener);
+        mPopupWindow
+                .getContentView()
+                .getViewTreeObserver()
+                .removeOnGlobalLayoutListener(mLocationLayoutListener);
+        mPopupWindow
+                .getContentView()
+                .getViewTreeObserver()
+                .removeOnGlobalLayoutListener(mArrowLayoutListener);
+        mPopupWindow
+                .getContentView()
+                .getViewTreeObserver()
+                .removeOnGlobalLayoutListener(mShowLayoutListener);
+        mPopupWindow
+                .getContentView()
+                .getViewTreeObserver()
+                .removeOnGlobalLayoutListener(mAutoDismissLayoutListener);
         mPopupWindow = null;
     }
+
     private final ViewTreeObserver.OnGlobalLayoutListener mLocationLayoutListener =
             new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -302,16 +329,21 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     if (popup == null || dismissed) return;
                     if (mMaxWidth > 0 && mContentView.getWidth() > mMaxWidth) {
                         PopupWindowTooltipUtils.setWidth(mContentView, mMaxWidth);
-                        popup.update(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        popup.update(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT);
                         return;
                     }
                     popup.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    popup.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(
-                            mArrowLayoutListener);
+                    popup.getContentView()
+                            .getViewTreeObserver()
+                            .addOnGlobalLayoutListener(mArrowLayoutListener);
                     PointF location = calculePopupLocation();
                     popup.setClippingEnabled(true);
-                    popup.update((int) location.x, (int) location.y, popup.getWidth(),
+                    popup.update(
+                            (int) location.x,
+                            (int) location.y,
+                            popup.getWidth(),
                             popup.getHeight());
                     popup.getContentView().requestLayout();
                 }
@@ -323,8 +355,9 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     final PopupWindow popup = mPopupWindow;
                     if (popup == null || dismissed) return;
                     popup.getContentView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    popup.getContentView().getViewTreeObserver().addOnGlobalLayoutListener(
-                            mShowLayoutListener);
+                    popup.getContentView()
+                            .getViewTreeObserver()
+                            .addOnGlobalLayoutListener(mShowLayoutListener);
                     RectF achorRect = PopupWindowTooltipUtils.calculeRectOnScreen(mAnchorView);
                     RectF contentViewRect =
                             PopupWindowTooltipUtils.calculeRectOnScreen(mContentLayout);
@@ -391,9 +424,11 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                     if (!mRootView.isShown()) dismiss();
                 }
             };
+
     public interface OnDismissListener {
         void onDismiss(PopupWindowTooltip tooltip);
     }
+
     public interface OnShowListener {
         void onShow(PopupWindowTooltip tooltip);
     }
@@ -422,9 +457,11 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         private int parentPaddingVertical;
         private int width = ViewGroup.LayoutParams.WRAP_CONTENT;
         private int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+
         public Builder(Context context) {
             this.context = context;
         }
+
         public PopupWindowTooltip build() throws IllegalArgumentException {
             validateArguments();
             if (arrowColor == 0) {
@@ -446,6 +483,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                 arrowHeight = context.getResources().getDimension(mDefaultArrowHeightRes);
             return new PopupWindowTooltip(this);
         }
+
         private void validateArguments() throws IllegalArgumentException {
             if (context == null) {
                 throw new IllegalArgumentException("Context not specified.");
@@ -454,100 +492,124 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
                 throw new IllegalArgumentException("Anchor view not specified.");
             }
         }
+
         public Builder setWidth(int width) {
             this.width = width;
             return this;
         }
+
         public Builder setHeight(int height) {
             this.height = height;
             return this;
         }
+
         public Builder contentView(@LayoutRes int contentViewId) {
             LayoutInflater inflater =
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             this.contentView = inflater.inflate(contentViewId, null, false);
             return this;
         }
+
         public Builder dismissOnInsideTouch(boolean dismissOnInsideTouch) {
             this.dismissOnInsideTouch = dismissOnInsideTouch;
             return this;
         }
+
         public Builder dismissOnOutsideTouch(boolean dismissOnOutsideTouch) {
             this.dismissOnOutsideTouch = dismissOnOutsideTouch;
             return this;
         }
+
         public Builder modal(boolean modal) {
             this.modal = modal;
             return this;
         }
+
         public Builder backgroundDimDisabled(boolean backgroundDimDisabled) {
             this.backgroundDimDisabled = backgroundDimDisabled;
             return this;
         }
+
         public Builder contentArrowAtStart(boolean contentArrowAtStart) {
             this.contentArrowAtStart = contentArrowAtStart;
             return this;
         }
+
         public Builder anchorView(View anchorView) {
             this.anchorView = anchorView;
             return this;
         }
+
         public Builder gravity(int gravity) {
             this.gravity = gravity;
             return this;
         }
+
         public Builder arrowDirection(int arrowDirection) {
             this.arrowDirection = arrowDirection;
             return this;
         }
+
         public Builder maxWidth(@DimenRes int maxWidthRes) {
             this.maxWidth = context.getResources().getDimension(maxWidthRes);
             return this;
         }
+
         public Builder maxWidth(float maxWidth) {
             this.maxWidth = maxWidth;
             return this;
         }
+
         public Builder padding(float padding) {
             this.padding = padding;
             return this;
         }
+
         public Builder padding(@DimenRes int paddingRes) {
             this.padding = context.getResources().getDimension(paddingRes);
             return this;
         }
+
         public Builder margin(float margin) {
             this.margin = margin;
             return this;
         }
+
         public Builder margin(@DimenRes int marginRes) {
             this.margin = context.getResources().getDimension(marginRes);
             return this;
         }
+
         public Builder parentPaddingHorizontal(int parentPaddingHorizontal) {
             this.parentPaddingHorizontal = parentPaddingHorizontal;
             return this;
         }
+
         public Builder parentPaddingVertical(int parentPaddingVertical) {
             this.parentPaddingVertical = parentPaddingVertical;
             return this;
         }
+
         public Builder arrowColor(@ColorInt int arrowColor) {
             this.arrowColor = arrowColor;
             return this;
         }
+
         public Builder arrowHeight(float arrowHeight) {
             this.arrowHeight = arrowHeight;
             return this;
         }
+
         public Builder arrowWidth(float arrowWidth) {
             this.arrowWidth = arrowWidth;
             return this;
         }
+
         public Builder onDismissListener(OnDismissListener onDismissListener) {
             this.onDismissListener = onDismissListener;
             return this;
         }
+
         public Builder onShowListener(OnShowListener onShowListener) {
             this.onShowListener = onShowListener;
             return this;

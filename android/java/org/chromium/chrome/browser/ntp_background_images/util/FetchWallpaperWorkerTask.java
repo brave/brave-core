@@ -36,7 +36,11 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
     // The callback to use to communicate the results.
     private WallpaperRetrievedCallback mCallback;
 
-    public FetchWallpaperWorkerTask(NTPImage ntpImage, int layoutWidth, int layoutHeight,WallpaperRetrievedCallback callback) {
+    public FetchWallpaperWorkerTask(
+            NTPImage ntpImage,
+            int layoutWidth,
+            int layoutHeight,
+            WallpaperRetrievedCallback callback) {
         mNTPImage = ntpImage;
         mLayoutWidth = layoutWidth;
         mLayoutHeight = layoutHeight;
@@ -49,14 +53,14 @@ public class FetchWallpaperWorkerTask extends AsyncTask<Pair<Bitmap, Bitmap>> {
         Bitmap logoBitmap = null;
         if (mNTPImage instanceof Wallpaper) {
             Wallpaper mWallpaper = (Wallpaper) mNTPImage;
-            if (mWallpaper.getLogoPath() != null ) {
+            if (mWallpaper.getLogoPath() != null) {
                 InputStream inputStream = null;
                 try {
-                    Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
+                    Uri logoFileUri = Uri.parse("file://" + mWallpaper.getLogoPath());
                     inputStream = mContext.getContentResolver().openInputStream(logoFileUri);
                     logoBitmap = BitmapFactory.decodeStream(inputStream);
                     inputStream.close();
-                } catch(IOException exc) {
+                } catch (IOException exc) {
                     Log.e("NTP", exc.getMessage());
                 } catch (IllegalArgumentException exc) {
                     Log.e("NTP", exc.getMessage());

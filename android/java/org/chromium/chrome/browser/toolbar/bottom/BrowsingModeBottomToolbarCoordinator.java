@@ -243,7 +243,7 @@ public class BrowsingModeBottomToolbarCoordinator {
 
     /**
      * @param enabled Whether to disable click events on the bottom toolbar. Setting true can also
-     *                prevent from all click events on toolbar and all children views on toolbar.
+     *     prevent from all click events on toolbar and all children views on toolbar.
      */
     void setTouchEnabled(boolean enabled) {
         mToolbarRoot.setTouchEnabled(enabled);
@@ -277,9 +277,7 @@ public class BrowsingModeBottomToolbarCoordinator {
         return mBraveHomeButton;
     }
 
-    /**
-     * Clean up any state when the browsing mode bottom toolbar is destroyed.
-     */
+    /** Clean up any state when the browsing mode bottom toolbar is destroyed. */
     public void destroy() {
         if (mShareButtonListenerSupplier != null) {
             mShareButtonListenerSupplier.removeObserver(mShareButtonListenerSupplierCallback);

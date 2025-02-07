@@ -20,7 +20,9 @@ public class BraveNewsSettingsDividerItemDecoration extends RecyclerView.ItemDec
     }
 
     @Override
-    public void onDraw(@NonNull Canvas canvas, @NonNull RecyclerView parent,
+    public void onDraw(
+            @NonNull Canvas canvas,
+            @NonNull RecyclerView parent,
             @NonNull RecyclerView.State state) {
         super.onDraw(canvas, parent, state);
 

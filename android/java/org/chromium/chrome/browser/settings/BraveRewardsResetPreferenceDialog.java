@@ -12,9 +12,7 @@ import androidx.preference.PreferenceDialogFragmentCompat;
 
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 
-/**
- * The dialog used to reset Brave Rewards.
- */
+/** The dialog used to reset Brave Rewards. */
 public class BraveRewardsResetPreferenceDialog extends PreferenceDialogFragmentCompat {
     public static final String TAG = "BraveRewardsResetPreferenceDialog";
 

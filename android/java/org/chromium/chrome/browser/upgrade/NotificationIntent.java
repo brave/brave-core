@@ -24,9 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Fires notification about new features.
- */
+/** Fires notification about new features. */
 public class NotificationIntent {
     private static final String TAG = "NotificationIntent";
     private static final String NOTIFICATION_TAG = "16c570a4-da7d-4c4e-8518-d2b7d6e41615";
@@ -57,14 +55,15 @@ public class NotificationIntent {
         }
 
         NotificationCompat.Builder mBuilder =
-            new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+                new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
 
         // Create an intent that’ll be fired when a user taps the notification//
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(URL));
         intent.putExtra(BravePreferenceKeys.BRAVE_UPDATE_EXTRA_PARAM, true);
         intent.setPackage(context.getPackageName());
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                context, 0, intent, IntentUtils.getPendingIntentMutabilityFlag(true));
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(
+                        context, 0, intent, IntentUtils.getPendingIntentMutabilityFlag(true));
 
         mBuilder.setContentIntent(pendingIntent);
         mBuilder.setAutoCancel(true);

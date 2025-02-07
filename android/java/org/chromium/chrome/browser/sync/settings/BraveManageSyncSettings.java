@@ -134,8 +134,10 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     }
 
     private void showScreenLockToast() {
-        Toast.makeText(ContextUtils.getApplicationContext(),
-                     R.string.password_sync_type_set_screen_lock, Toast.LENGTH_LONG)
+        Toast.makeText(
+                        ContextUtils.getApplicationContext(),
+                        R.string.password_sync_type_set_screen_lock,
+                        Toast.LENGTH_LONG)
                 .show();
     }
 
@@ -278,8 +280,9 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     }
 
     private void setRedPasswordsSummaryOff(int stringId) {
-        Spannable summary = new SpannableString(
-                ContextUtils.getApplicationContext().getResources().getString(stringId));
+        Spannable summary =
+                new SpannableString(
+                        ContextUtils.getApplicationContext().getResources().getString(stringId));
         summary.setSpan(
                 new ForegroundColorSpan(android.graphics.Color.RED), 0, summary.length(), 0);
         mPrefSyncPasswords.setSummaryOff(summary);
@@ -298,12 +301,13 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
                     public void run() {
                         Activity activity = getActivity();
                         if (activity != null) {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    updateSyncPasswordsSummary();
-                                }
-                            });
+                            activity.runOnUiThread(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            updateSyncPasswordsSummary();
+                                        }
+                                    });
                         }
                     }
                 },

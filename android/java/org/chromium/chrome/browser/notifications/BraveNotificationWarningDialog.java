@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.notifications;
 
@@ -30,9 +28,9 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
 /**
- * This dialog is used to show different messages when notification permission is off and
- * if rewards or privacy is on OR both on
- * */
+ * This dialog is used to show different messages when notification permission is off and if rewards
+ * or privacy is on OR both on
+ */
 public class BraveNotificationWarningDialog extends BraveDialogFragment {
     public static final String NOTIFICATION_WARNING_DIALOG_TAG = "NotificationWarningDialog";
 
@@ -49,7 +47,9 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     public interface DismissListener {
         void onDismiss();
     }
+
     private DismissListener mListener;
+
     public void setDismissListener(DismissListener listener) {
         mListener = listener;
     }
@@ -70,12 +70,11 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
     }
 
     /**
-     *  Should show dialog if any one is true
-     *  1. No notification permission
-     *  2. Notification permission is there but general or ads group is blocked
+     * Should show dialog if any one is true 1. No notification permission 2. Notification
+     * permission is there but general or ads group is blocked
      *
-     * if above any case is there and rewards / privacy / both enabled.
-     * */
+     * <p>if above any case is there and rewards / privacy / both enabled.
+     */
     public static boolean shouldShowNotificationWarningDialog(Context context) {
         if (!BravePermissionUtils.hasNotificationPermission(context)) {
             return true;
@@ -162,8 +161,9 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
                 R.string.open_settings_and_turn_on_device_notifications_for_brave_ads);
         view.findViewById(R.id.btn_not_now).setVisibility(View.GONE);
         mPrimaryButton.setText(R.string.brave_open_system_sync_settings);
-        mPrimaryButton.setBackground(ResourcesCompat.getDrawable(
-                view.getResources(), R.drawable.blue_48_rounded_bg, null));
+        mPrimaryButton.setBackground(
+                ResourcesCompat.getDrawable(
+                        view.getResources(), R.drawable.blue_48_rounded_bg, null));
     }
 
     private void launchedFromBraveActivity() {
@@ -202,19 +202,26 @@ public class BraveNotificationWarningDialog extends BraveDialogFragment {
 
     private void clickOnPrimaryButton(View view) {
         Button primaryButton = view.findViewById(R.id.notification_warning_primary_button);
-        primaryButton.setOnClickListener(v -> {
-            dismiss();
-            BravePermissionUtils.requestPermission(getActivity());
-        });
+        primaryButton.setOnClickListener(
+                v -> {
+                    dismiss();
+                    BravePermissionUtils.requestPermission(getActivity());
+                });
     }
 
     private void clickOnCloseButton(View view) {
         ImageView btnClose = view.findViewById(R.id.notification_dialog_close);
-        btnClose.setOnClickListener(v -> { dismiss(); });
+        btnClose.setOnClickListener(
+                v -> {
+                    dismiss();
+                });
     }
 
     private void clickOnNotNow(View view) {
         Button notNowButton = view.findViewById(R.id.btn_not_now);
-        notNowButton.setOnClickListener(v -> { dismiss(); });
+        notNowButton.setOnClickListener(
+                v -> {
+                    dismiss();
+                });
     }
 }

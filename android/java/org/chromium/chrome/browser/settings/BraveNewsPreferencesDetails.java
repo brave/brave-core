@@ -111,9 +111,16 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new BraveNewsPreferencesTypeAdapter(getActivity(), this,
-                BraveNewsPreferencesSearchType.Init, mBraveNewsController,
-                Glide.with(getActivity()), mBraveNewsPreferencesType, channelsList, publisherList);
+        mAdapter =
+                new BraveNewsPreferencesTypeAdapter(
+                        getActivity(),
+                        this,
+                        BraveNewsPreferencesSearchType.Init,
+                        mBraveNewsController,
+                        Glide.with(getActivity()),
+                        mBraveNewsPreferencesType,
+                        channelsList,
+                        publisherList);
         mRecyclerView.setAdapter(mAdapter);
 
         if (mRecyclerView.getItemAnimator() != null) {
@@ -124,8 +131,9 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
             }
         }
 
-        Drawable horizontalDivider = ContextCompat.getDrawable(
-                getActivity(), R.drawable.brave_news_settings_list_divider);
+        Drawable horizontalDivider =
+                ContextCompat.getDrawable(
+                        getActivity(), R.drawable.brave_news_settings_list_divider);
         mRecyclerView.addItemDecoration(
                 new BraveNewsSettingsDividerItemDecoration(horizontalDivider));
     }
@@ -164,13 +172,15 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
 
     @Override
     public void onPublisherPref(String publisherId, int userEnabled) {
-        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
-            if (mBraveNewsController != null) {
-                newsChangeSource();
-                mBraveNewsController.setPublisherPref(publisherId, userEnabled);
-                BraveNewsUtils.setFollowingPublisherList();
-            }
-        });
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT,
+                () -> {
+                    if (mBraveNewsController != null) {
+                        newsChangeSource();
+                        mBraveNewsController.setPublisherPref(publisherId, userEnabled);
+                        BraveNewsUtils.setFollowingPublisherList();
+                    }
+                });
     }
 
     @Override
@@ -273,25 +283,35 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
             closeItem.setVisible(false);
         }
         if (mBraveNewsPreferencesType.equalsIgnoreCase(
-                    BraveNewsPreferencesType.Search.toString())) {
+                BraveNewsPreferencesType.Search.toString())) {
             inflater.inflate(R.menu.menu_brave_news_settings_search, menu);
 
             MenuItem searchItem = menu.findItem(R.id.menu_id_search);
             SearchView searchView = (SearchView) searchItem.getActionView();
             searchView.setMaxWidth(Integer.MAX_VALUE);
             searchView.setQueryHint(getActivity().getString(R.string.brave_news_settings_search));
-            SearchUtils.initializeSearchView(searchItem, mSearch, getActivity(), (query) -> {
-                boolean queryHasChanged = mSearch == null ? query != null && !query.isEmpty()
-                                                          : !mSearch.equals(query);
-                mSearch = query;
-                if (queryHasChanged && mSearch.length() > 0) {
-                    search();
-                } else if (mSearch.length() == 0) {
-                    mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
-                    mAdapter.setItems(new ArrayList<Channel>(), new ArrayList<Publisher>(), null,
-                            BraveNewsPreferencesSearchType.Init, mFeedSearchResultItemFollowMap);
-                }
-            });
+            SearchUtils.initializeSearchView(
+                    searchItem,
+                    mSearch,
+                    getActivity(),
+                    (query) -> {
+                        boolean queryHasChanged =
+                                mSearch == null
+                                        ? query != null && !query.isEmpty()
+                                        : !mSearch.equals(query);
+                        mSearch = query;
+                        if (queryHasChanged && mSearch.length() > 0) {
+                            search();
+                        } else if (mSearch.length() == 0) {
+                            mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
+                            mAdapter.setItems(
+                                    new ArrayList<Channel>(),
+                                    new ArrayList<Publisher>(),
+                                    null,
+                                    BraveNewsPreferencesSearchType.Init,
+                                    mFeedSearchResultItemFollowMap);
+                        }
+                    });
         }
     }
 
@@ -317,7 +337,11 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
         }
         mSearch = searchUrl;
         mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
-        mAdapter.setItems(channelList, publisherList, searchUrl, braveNewsPreferencesSearchType,
+        mAdapter.setItems(
+                channelList,
+                publisherList,
+                searchUrl,
+                braveNewsPreferencesSearchType,
                 mFeedSearchResultItemFollowMap);
         mRecyclerView.scrollToPosition(0);
     }

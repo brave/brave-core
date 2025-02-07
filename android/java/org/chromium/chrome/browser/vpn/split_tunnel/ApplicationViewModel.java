@@ -45,41 +45,49 @@ public class ApplicationViewModel extends ViewModel {
     public LiveData<List<ApplicationDataModel>> getApplicationDataMutableLiveData() {
         return mApplicationDataLiveData;
     }
+
     public LiveData<List<ApplicationDataModel>> getSystemApplicationDataMutableLiveData() {
         return mSystemApplicationDataLiveData;
     }
 
     public void getApplications(Activity activity) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            List<ApplicationDataModel> excludedApplicationDataModels = new ArrayList<>();
-            List<ApplicationDataModel> applicationDataModels = new ArrayList<>();
-            List<ApplicationDataModel> systemApplicationDataModels = new ArrayList<>();
+        executor.execute(
+                () -> {
+                    List<ApplicationDataModel> excludedApplicationDataModels = new ArrayList<>();
+                    List<ApplicationDataModel> applicationDataModels = new ArrayList<>();
+                    List<ApplicationDataModel> systemApplicationDataModels = new ArrayList<>();
 
-            Set<String> excludedPackages = BraveVpnPrefUtils.getExcludedPackages();
-            PackageManager pm = activity.getPackageManager();
-            List<PackageInfo> packageInfos =
-                    activity.getPackageManager().getPackagesHoldingPermissions(
-                            new String[] {Manifest.permission.INTERNET},
-                            PackageManager.GET_META_DATA);
-            for (PackageInfo packageInfo : packageInfos) {
-                String packageName = packageInfo.packageName;
-                ApplicationInfo appInfo = packageInfo.applicationInfo;
-                ApplicationDataModel applicationDataModel = new ApplicationDataModel(
-                        appInfo.loadIcon(pm), appInfo.loadLabel(pm).toString(), packageName,
-                        isSystemApp(appInfo));
-                if (excludedPackages != null && excludedPackages.contains(appInfo.packageName)) {
-                    excludedApplicationDataModels.add(applicationDataModel);
-                } else if (isSystemApp(appInfo)) {
-                    systemApplicationDataModels.add(applicationDataModel);
-                } else {
-                    applicationDataModels.add(applicationDataModel);
-                }
-            }
-            mExcludedApplicationDataMutableLiveData.postValue(excludedApplicationDataModels);
-            mSystemApplicationDataMutableLiveData.postValue(systemApplicationDataModels);
-            mApplicationDataMutableLiveData.postValue(applicationDataModels);
-        });
+                    Set<String> excludedPackages = BraveVpnPrefUtils.getExcludedPackages();
+                    PackageManager pm = activity.getPackageManager();
+                    List<PackageInfo> packageInfos =
+                            activity.getPackageManager()
+                                    .getPackagesHoldingPermissions(
+                                            new String[] {Manifest.permission.INTERNET},
+                                            PackageManager.GET_META_DATA);
+                    for (PackageInfo packageInfo : packageInfos) {
+                        String packageName = packageInfo.packageName;
+                        ApplicationInfo appInfo = packageInfo.applicationInfo;
+                        ApplicationDataModel applicationDataModel =
+                                new ApplicationDataModel(
+                                        appInfo.loadIcon(pm),
+                                        appInfo.loadLabel(pm).toString(),
+                                        packageName,
+                                        isSystemApp(appInfo));
+                        if (excludedPackages != null
+                                && excludedPackages.contains(appInfo.packageName)) {
+                            excludedApplicationDataModels.add(applicationDataModel);
+                        } else if (isSystemApp(appInfo)) {
+                            systemApplicationDataModels.add(applicationDataModel);
+                        } else {
+                            applicationDataModels.add(applicationDataModel);
+                        }
+                    }
+                    mExcludedApplicationDataMutableLiveData.postValue(
+                            excludedApplicationDataModels);
+                    mSystemApplicationDataMutableLiveData.postValue(systemApplicationDataModels);
+                    mApplicationDataMutableLiveData.postValue(applicationDataModels);
+                });
     }
 
     private boolean isSystemApp(ApplicationInfo applicationInfo) {

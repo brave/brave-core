@@ -70,8 +70,10 @@ public class BraveAdsNotificationDialog {
                 case MotionEvent.ACTION_UP:
                     v.performClick();
                     if (mXDown != 0) {
-                        deltaXDp = pxToDp(event.getRawX() + mXDown - mWindowInitialPos,
-                                mContext.getResources().getDisplayMetrics());
+                        deltaXDp =
+                                pxToDp(
+                                        event.getRawX() + mXDown - mWindowInitialPos,
+                                        mContext.getResources().getDisplayMetrics());
                     } else {
                         return false;
                     }
@@ -98,32 +100,36 @@ public class BraveAdsNotificationDialog {
 
         private void translateWindowToOrigin() {
             mAnimator = ValueAnimator.ofInt(mLayoutParams.x, mWindowInitialPos);
-            mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    updateWindowPosition((int) valueAnimator.getAnimatedValue());
-                }
-            });
+            mAnimator.addUpdateListener(
+                    new ValueAnimator.AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                            updateWindowPosition((int) valueAnimator.getAnimatedValue());
+                        }
+                    });
             mAnimator.start();
         }
 
-        /**
-         * Converts a px value to a dp value.
-         */
+        /** Converts a px value to a dp value. */
         private int pxToDp(float value, DisplayMetrics metrics) {
             return Math.round(
                     value / ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         }
-    };
+    }
+    ;
 
-    public static void showNotificationAd(Context context, final String notificationId,
-            final String origin, final String title, final String body) {
+    public static void showNotificationAd(
+            Context context,
+            final String notificationId,
+            final String origin,
+            final String title,
+            final String body) {
         try {
             if (mAdsDialog != null) {
                 mAdsDialog.dismiss();
             }
         } catch (IllegalArgumentException e) {
-          mAdsDialog = null;
+            mAdsDialog = null;
         }
         AlertDialog.Builder b = new AlertDialog.Builder(context);
 
@@ -148,9 +154,10 @@ public class BraveAdsNotificationDialog {
         WindowManager.LayoutParams wlp = window.getAttributes();
 
         wlp.gravity = Gravity.TOP;
-        wlp.flags |= WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+        wlp.flags |=
+                WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 
         mAdsDialog.setCanceledOnTouchOutside(false);
         mAdsDialog.setCancelable(false);
@@ -160,11 +167,13 @@ public class BraveAdsNotificationDialog {
         window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ((TextView) mAdsDialog.findViewById(R.id.brave_ads_custom_notification_header)).setText(title);
+        ((TextView) mAdsDialog.findViewById(R.id.brave_ads_custom_notification_header))
+                .setText(title);
         ((TextView) mAdsDialog.findViewById(R.id.brave_ads_custom_notification_body)).setText(body);
 
         mNotificationId = notificationId;
-        mAdsDialog.findViewById(R.id.brave_ads_custom_notification_popup)
+        mAdsDialog
+                .findViewById(R.id.brave_ads_custom_notification_popup)
                 .setOnTouchListener(new AdsNotificationTouchListener(context, origin));
     }
 
@@ -174,8 +183,9 @@ public class BraveAdsNotificationDialog {
             mAdsDialog = null;
             ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
             if (chromeTabbedActivity != null) {
-                chromeTabbedActivity.getTabCreator(false).launchUrl(
-                        origin, TabLaunchType.FROM_CHROME_UI);
+                chromeTabbedActivity
+                        .getTabCreator(false)
+                        .launchUrl(origin, TabLaunchType.FROM_CHROME_UI);
             }
         } else {
             mAdsDialog.dismiss();
@@ -187,8 +197,11 @@ public class BraveAdsNotificationDialog {
     }
 
     @CalledByNative
-    public static void showNotificationAd(final String notificationId, final String origin,
-            final String title, final String body) {
+    public static void showNotificationAd(
+            final String notificationId,
+            final String origin,
+            final String title,
+            final String body) {
         Activity activity = ApplicationStatus.getLastTrackedFocusedActivity();
         assert activity != null;
         // We want to show ads only when activity is in started or resumed
@@ -204,7 +217,9 @@ public class BraveAdsNotificationDialog {
     @CalledByNative
     private static void closeNotificationAd(final String notificationId) {
         try {
-            if (mNotificationId != null && mNotificationId.equals(notificationId) && mAdsDialog != null) {
+            if (mNotificationId != null
+                    && mNotificationId.equals(notificationId)
+                    && mAdsDialog != null) {
                 mAdsDialog.dismiss();
                 mAdsDialog = null;
                 BraveAdsNativeHelper.nativeOnNotificationAdClosed(

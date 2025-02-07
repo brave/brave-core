@@ -42,16 +42,19 @@ public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator
         if (itemId == R.id.contextmenu_copy_clean_link) {
             UrlSanitizerService urlSanitizerService =
                     UrlSanitizerServiceFactory.getInstance().getUrlSanitizerAndroidService(this);
-            urlSanitizerService.sanitizeUrl(mParams.getUnfilteredLinkUrl().getSpec(), result -> {
-                mItemDelegate.onSaveToClipboard(
-                        result, ContextMenuItemDelegate.ClipboardType.LINK_URL);
-            });
+            urlSanitizerService.sanitizeUrl(
+                    mParams.getUnfilteredLinkUrl().getSpec(),
+                    result -> {
+                        mItemDelegate.onSaveToClipboard(
+                                result, ContextMenuItemDelegate.ClipboardType.LINK_URL);
+                    });
 
         } else {
             super.onItemSelected(itemId);
         }
         return true;
     }
+
     @Override
     public void onConnectionError(MojoException e) {}
 }

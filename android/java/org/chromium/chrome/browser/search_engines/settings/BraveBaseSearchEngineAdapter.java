@@ -17,13 +17,12 @@ import java.util.List;
 import java.util.Set;
 
 public class BraveBaseSearchEngineAdapter extends BaseAdapter {
-    public BraveBaseSearchEngineAdapter() {
-    }
+    public BraveBaseSearchEngineAdapter() {}
 
     // BaseAdapter:
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-    	return convertView;
+        return convertView;
     }
 
     @Override

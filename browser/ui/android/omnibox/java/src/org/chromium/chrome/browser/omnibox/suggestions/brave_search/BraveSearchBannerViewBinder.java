@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.omnibox.suggestions.brave_search;
 
@@ -23,12 +21,20 @@ public class BraveSearchBannerViewBinder {
         int orientation = contentView.getContext().getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             final TextView textViewDesc = contentView.findViewById(R.id.textview_desc);
-            LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            textViewParams.topMargin = contentView.getResources().getDimensionPixelSize(
-                    R.dimen.omnibox_brave_search_banner_text_desc_top_margin);
-            textViewParams.rightMargin = contentView.getResources().getDimensionPixelSize(
-                    R.dimen.omnibox_brave_search_banner_text_desc_right_margin);
+            LinearLayout.LayoutParams textViewParams =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+            textViewParams.topMargin =
+                    contentView
+                            .getResources()
+                            .getDimensionPixelSize(
+                                    R.dimen.omnibox_brave_search_banner_text_desc_top_margin);
+            textViewParams.rightMargin =
+                    contentView
+                            .getResources()
+                            .getDimensionPixelSize(
+                                    R.dimen.omnibox_brave_search_banner_text_desc_right_margin);
             textViewDesc.setLayoutParams(textViewParams);
         }
 
@@ -47,16 +53,22 @@ public class BraveSearchBannerViewBinder {
             BraveSearchBannerProperties.Delegate delegate =
                     model.get(BraveSearchBannerProperties.DELEGATE);
             if (delegate != null) {
-                btnPositive.setOnClickListener(view -> { delegate.onPositiveClicked(); });
+                btnPositive.setOnClickListener(
+                        view -> {
+                            delegate.onPositiveClicked();
+                        });
 
-                btnNegative.setOnClickListener(view -> {
-                    if (!isMaybeLaterPressed) {
-                        OmniboxPrefManager.getInstance().setBraveSearchPromoBannerMaybeLater();
-                    } else {
-                        OmniboxPrefManager.getInstance().setBraveSearchPromoBannerDismissed();
-                    }
-                    delegate.onNegativeClicked();
-                });
+                btnNegative.setOnClickListener(
+                        view -> {
+                            if (!isMaybeLaterPressed) {
+                                OmniboxPrefManager.getInstance()
+                                        .setBraveSearchPromoBannerMaybeLater();
+                            } else {
+                                OmniboxPrefManager.getInstance()
+                                        .setBraveSearchPromoBannerDismissed();
+                            }
+                            delegate.onNegativeClicked();
+                        });
             }
         }
     }

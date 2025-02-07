@@ -15,12 +15,22 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 
 public class BraveShareDelegateImpl extends ShareDelegateImpl {
-    public BraveShareDelegateImpl(BottomSheetController controller,
-            ActivityLifecycleDispatcher lifecycleDispatcher, Supplier<Tab> tabProvider,
-            Supplier<TabModelSelector> tabModelSelectorProvider, Supplier<Profile> profileSupplier,
-            ShareSheetDelegate delegate, boolean isCustomTab) {
-        super(controller, lifecycleDispatcher, tabProvider, tabModelSelectorProvider,
-                profileSupplier, delegate, isCustomTab);
+    public BraveShareDelegateImpl(
+            BottomSheetController controller,
+            ActivityLifecycleDispatcher lifecycleDispatcher,
+            Supplier<Tab> tabProvider,
+            Supplier<TabModelSelector> tabModelSelectorProvider,
+            Supplier<Profile> profileSupplier,
+            ShareSheetDelegate delegate,
+            boolean isCustomTab) {
+        super(
+                controller,
+                lifecycleDispatcher,
+                tabProvider,
+                tabModelSelectorProvider,
+                profileSupplier,
+                delegate,
+                isCustomTab);
     }
 
     @Override

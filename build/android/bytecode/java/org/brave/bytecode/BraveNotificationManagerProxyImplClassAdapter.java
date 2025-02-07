@@ -16,7 +16,8 @@ public class BraveNotificationManagerProxyImplClassAdapter extends BraveClassVis
     public BraveNotificationManagerProxyImplClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        redirectConstructor(sNotificationManagerProxyImplClassName,
+        redirectConstructor(
+                sNotificationManagerProxyImplClassName,
                 sBraveNotificationManagerProxyImplClassName);
     }
 }

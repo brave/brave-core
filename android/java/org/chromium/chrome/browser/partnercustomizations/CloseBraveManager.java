@@ -17,12 +17,13 @@ public class CloseBraveManager {
     }
 
     public static boolean getClosingAllTabsClosesBraveEnabled() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(CLOSING_ALL_TABS_CLOSES_BRAVE, false);
+        return ContextUtils.getAppSharedPreferences()
+                .getBoolean(CLOSING_ALL_TABS_CLOSES_BRAVE, false);
     }
 
     public static void setClosingAllTabsClosesBraveEnabled(boolean enable) {
         SharedPreferences.Editor sharedPreferencesEditor =
-            ContextUtils.getAppSharedPreferences().edit();
+                ContextUtils.getAppSharedPreferences().edit();
         sharedPreferencesEditor.putBoolean(CLOSING_ALL_TABS_CLOSES_BRAVE, enable);
         sharedPreferencesEditor.apply();
     }

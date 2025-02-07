@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.onboarding;
 
@@ -25,9 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-/**
- * Provides information regarding onboarding.
- */
+/** Provides information regarding onboarding. */
 public class OnboardingPrefManager {
     private static final String TAG = "OnboardingPrefMgr";
 
@@ -82,9 +78,7 @@ public class OnboardingPrefManager {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
     }
 
-    /**
-     * Returns the singleton instance of OnboardingPrefManager, creating it if needed.
-     */
+    /** Returns the singleton instance of OnboardingPrefManager, creating it if needed. */
     public static OnboardingPrefManager getInstance() {
         if (sInstance == null) {
             sInstance = new OnboardingPrefManager();
@@ -92,16 +86,12 @@ public class OnboardingPrefManager {
         return sInstance;
     }
 
-    /**
-     * Returns the user preference for whether the onboarding is shown.
-     */
+    /** Returns the user preference for whether the onboarding is shown. */
     public boolean isOnboardingShown() {
         return mSharedPreferences.getBoolean(PREF_ONBOARDING, false);
     }
 
-    /**
-     * Sets the user preference for whether the onboarding is shown.
-     */
+    /** Sets the user preference for whether the onboarding is shown. */
     public void setOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING, isShown);
@@ -128,32 +118,24 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    /**
-     * Returns the user preference for whether the onboarding is shown.
-     */
+    /** Returns the user preference for whether the onboarding is shown. */
     public boolean isP3aOnboardingShown() {
         return mSharedPreferences.getBoolean(PREF_P3A_ONBOARDING, false);
     }
 
-    /**
-     * Sets the user preference for whether the onboarding is shown.
-     */
+    /** Sets the user preference for whether the onboarding is shown. */
     public void setP3aOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_P3A_ONBOARDING, isShown);
         sharedPreferencesEditor.apply();
     }
 
-    /**
-     * Returns the user preference for whether the onboarding is shown.
-     */
+    /** Returns the user preference for whether the onboarding is shown. */
     public boolean isNewOnboardingShown() {
         return mSharedPreferences.getBoolean(PREF_ONBOARDING_V2, false);
     }
 
-    /**
-     * Sets the user preference for whether the onboarding is shown.
-     */
+    /** Sets the user preference for whether the onboarding is shown. */
     public void setNewOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_V2, isShown);
@@ -357,16 +339,12 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    /**
-     * Returns the user preference for application launch count
-     */
+    /** Returns the user preference for application launch count */
     public int launchCount() {
         return mSharedPreferences.getInt(PREF_APP_LAUNCH_COUNT, 0);
     }
 
-    /**
-     * Sets the user preference for application launch count
-     */
+    /** Sets the user preference for application launch count */
     public void updateLaunchCount() {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putInt(PREF_APP_LAUNCH_COUNT, launchCount() + 1);

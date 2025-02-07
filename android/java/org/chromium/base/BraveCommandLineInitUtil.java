@@ -51,7 +51,8 @@ public abstract class BraveCommandLineInitUtil {
             try (BufferedReader reader = new BufferedReader(new FileReader(variationsServerFile))) {
                 String testVariationsServerUrl = reader.readLine();
                 if (testVariationsServerUrl != null && !testVariationsServerUrl.isEmpty()) {
-                    Log.w(TAG,
+                    Log.w(
+                            TAG,
                             "New test variations server url applied: " + testVariationsServerUrl);
                     qaCommandLine += " --variations-server-url=" + testVariationsServerUrl;
                 } else {

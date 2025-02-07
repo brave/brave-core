@@ -26,10 +26,14 @@ import org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayou
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class BraveWebrtcPolicyPreference
-        extends Preference implements RadioGroup.OnCheckedChangeListener {
-    @IntDef({WebrtcPolicy.DEFAULT, WebrtcPolicy.DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES,
-            WebrtcPolicy.DEFAULT_PUBLIC_INTERFACE_ONLY, WebrtcPolicy.DISABLE_NON_PROXIED_UDP})
+public class BraveWebrtcPolicyPreference extends Preference
+        implements RadioGroup.OnCheckedChangeListener {
+    @IntDef({
+        WebrtcPolicy.DEFAULT,
+        WebrtcPolicy.DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES,
+        WebrtcPolicy.DEFAULT_PUBLIC_INTERFACE_ONLY,
+        WebrtcPolicy.DISABLE_NON_PROXIED_UDP
+    })
     public @interface WebrtcPolicy {
         int DEFAULT = 0;
         int DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES = 1;
@@ -68,33 +72,42 @@ public class BraveWebrtcPolicyPreference
         mGroup = (RadioButtonWithDescriptionLayout) holder.findViewById(R.id.radio_button_layout);
         mGroup.setOnCheckedChangeListener(this);
 
-        mButtons.set(WebrtcPolicy.DEFAULT,
+        mButtons.set(
+                WebrtcPolicy.DEFAULT,
                 (RadioButtonWithDescription) holder.findViewById(R.id.webrtc_policy_default));
-        mButtons.set(WebrtcPolicy.DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.webrtc_policy_default_public_and_private_interfaces));
-        mButtons.set(WebrtcPolicy.DEFAULT_PUBLIC_INTERFACE_ONLY,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.webrtc_policy_default_public_interface_only));
-        mButtons.set(WebrtcPolicy.DISABLE_NON_PROXIED_UDP,
-                (RadioButtonWithDescription) holder.findViewById(
-                        R.id.webrtc_policy_disable_non_proxied_udp));
+        mButtons.set(
+                WebrtcPolicy.DEFAULT_PUBLIC_AND_PRIVATE_INTERFACES,
+                (RadioButtonWithDescription)
+                        holder.findViewById(
+                                R.id.webrtc_policy_default_public_and_private_interfaces));
+        mButtons.set(
+                WebrtcPolicy.DEFAULT_PUBLIC_INTERFACE_ONLY,
+                (RadioButtonWithDescription)
+                        holder.findViewById(R.id.webrtc_policy_default_public_interface_only));
+        mButtons.set(
+                WebrtcPolicy.DISABLE_NON_PROXIED_UDP,
+                (RadioButtonWithDescription)
+                        holder.findViewById(R.id.webrtc_policy_disable_non_proxied_udp));
 
         mSettingRadioButton = mButtons.get(mSetting);
         mSettingRadioButton.setChecked(true);
 
-        mLearnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(FALLBACK_SUPPORT_URL));
-                // Let Chrome know that this intent is from Chrome, so that it does not close the
-                // app when the user presses 'back' button.
-                intent.putExtra(Browser.EXTRA_APPLICATION_ID, getContext().getPackageName());
-                intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
-                intent.setPackage(getContext().getPackageName());
-                getContext().startActivity(intent);
-            }
-        });
+        mLearnMore.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent =
+                                new Intent(Intent.ACTION_VIEW, Uri.parse(FALLBACK_SUPPORT_URL));
+                        // Let Chrome know that this intent is from Chrome, so that it does not
+                        // close the
+                        // app when the user presses 'back' button.
+                        intent.putExtra(
+                                Browser.EXTRA_APPLICATION_ID, getContext().getPackageName());
+                        intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
+                        intent.setPackage(getContext().getPackageName());
+                        getContext().startActivity(intent);
+                    }
+                });
     }
 
     @Override

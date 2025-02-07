@@ -40,8 +40,9 @@ public class BraveVpnServerSelectionAdapter
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem = layoutInflater.inflate(
-                R.layout.brave_vpn_server_selection_item_layout, parent, false);
+        View listItem =
+                layoutInflater.inflate(
+                        R.layout.brave_vpn_server_selection_item_layout, parent, false);
         return new ViewHolder(listItem);
     }
 

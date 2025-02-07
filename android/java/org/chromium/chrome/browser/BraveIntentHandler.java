@@ -27,8 +27,9 @@ public class BraveIntentHandler {
             "https://support.brave.com/hc/en-us/articles/360018185871-How-do-I-check-if-a-site-s-connection-is-secure-";
 
     /**
-     * Helper method to extract the raw URL from the intent, without further processing.
-     * The URL may be in multiple locations.
+     * Helper method to extract the raw URL from the intent, without further processing. The URL may
+     * be in multiple locations.
+     *
      * @param intent Intent to examine.
      * @return Raw URL from the intent, or null if raw URL could't be found.
      */

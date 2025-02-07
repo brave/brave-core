@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.set_default_browser;
 
@@ -58,7 +56,7 @@ public class BraveSetDefaultBrowserUtils {
                     BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME);
         } else {
             return resolveInfo.activityInfo.packageName.equals(
-                           BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
+                            BraveConstants.BRAVE_PRODUCTION_PACKAGE_NAME)
                     || resolveInfo.activityInfo.packageName.equals(
                             BraveConstants.BRAVE_BETA_PACKAGE_NAME)
                     || resolveInfo.activityInfo.packageName.equals(
@@ -111,8 +109,11 @@ public class BraveSetDefaultBrowserUtils {
          * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
          */
         if (isBraveSetAsDefaultBrowser(activity)) {
-            Toast toast = Toast.makeText(
-                    activity, R.string.brave_already_set_as_default_browser, Toast.LENGTH_LONG);
+            Toast toast =
+                    Toast.makeText(
+                            activity,
+                            R.string.brave_already_set_as_default_browser,
+                            Toast.LENGTH_LONG);
             toast.show();
             return;
         }
@@ -124,7 +125,8 @@ public class BraveSetDefaultBrowserUtils {
                 SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
                         SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
 
-                bottomSheetDialog.show(activity.getSupportFragmentManager(),
+                bottomSheetDialog.show(
+                        activity.getSupportFragmentManager(),
                         "SetDefaultBrowserBottomSheetFragment");
             } catch (IllegalStateException e) {
                 // That exception could be thrown when Activity is not in the foreground.
@@ -166,8 +168,11 @@ public class BraveSetDefaultBrowserUtils {
                     || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
                 openBraveBlog(activity);
             } else {
-                Toast toast = Toast.makeText(
-                        activity, R.string.brave_default_browser_go_to_settings, Toast.LENGTH_LONG);
+                Toast toast =
+                        Toast.makeText(
+                                activity,
+                                R.string.brave_default_browser_go_to_settings,
+                                Toast.LENGTH_LONG);
                 toast.show();
             }
         }
@@ -185,8 +190,9 @@ public class BraveSetDefaultBrowserUtils {
         Intent browserIntent =
                 new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
 
-        return activity.getPackageManager().resolveActivity(
-                browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
+        return activity.getPackageManager()
+                .resolveActivity(
+                        browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
     }
 
     private static void openDefaultAppsSettings(Activity activity) {
@@ -204,8 +210,12 @@ public class BraveSetDefaultBrowserUtils {
         }
 
         LayoutInflater inflater = activity.getLayoutInflater();
-        View layout = inflater.inflate(R.layout.brave_set_default_browser_dialog,
-                (ViewGroup) activity.findViewById(R.id.brave_set_default_browser_toast_container));
+        View layout =
+                inflater.inflate(
+                        R.layout.brave_set_default_browser_dialog,
+                        (ViewGroup)
+                                activity.findViewById(
+                                        R.id.brave_set_default_browser_toast_container));
 
         Toast toast = new Toast(activity, layout);
         toast.setDuration(Toast.LENGTH_LONG);

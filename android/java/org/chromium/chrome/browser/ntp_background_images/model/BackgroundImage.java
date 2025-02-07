@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.ntp_background_images.model;
 
-public class BackgroundImage extends NTPImage{
+public class BackgroundImage extends NTPImage {
     private int imageDrawable;
     private int centerPointX;
     private int centerPointY;

@@ -99,13 +99,24 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TWO_ITEMS_SPACE = 2;
     private static final String TAG = "BraveNtpAdapter";
 
-    public BraveNtpAdapter(Activity activity, OnBraveNtpListener onBraveNtpListener,
-            RequestManager glide, CopyOnWriteArrayList<FeedItemsCard> newsItems,
-            BraveNewsController braveNewsController, View mvTilesContainerLayout, NTPImage ntpImage,
-            SponsoredTab sponsoredTab, Wallpaper wallpaper, Bitmap sponsoredLogo,
-            NTPBackgroundImagesBridge nTPBackgroundImagesBridge, boolean isNewsLoading,
-            int recyclerViewHeight, boolean isTopSitesEnabled, boolean isBraveStatsEnabled,
-            boolean isDisplayNewsFeed, boolean isDisplayNewsOptin) {
+    public BraveNtpAdapter(
+            Activity activity,
+            OnBraveNtpListener onBraveNtpListener,
+            RequestManager glide,
+            CopyOnWriteArrayList<FeedItemsCard> newsItems,
+            BraveNewsController braveNewsController,
+            View mvTilesContainerLayout,
+            NTPImage ntpImage,
+            SponsoredTab sponsoredTab,
+            Wallpaper wallpaper,
+            Bitmap sponsoredLogo,
+            NTPBackgroundImagesBridge nTPBackgroundImagesBridge,
+            boolean isNewsLoading,
+            int recyclerViewHeight,
+            boolean isTopSitesEnabled,
+            boolean isBraveStatsEnabled,
+            boolean isDisplayNewsFeed,
+            boolean isDisplayNewsOptin) {
         mActivity = activity;
         mOnBraveNtpListener = onBraveNtpListener;
         mGlide = glide;
@@ -278,7 +289,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             if (mRecyclerViewHeight > 0) {
                 LinearLayout.LayoutParams layoutParams =
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT);
 
                 int extraMarginForNews =
@@ -318,8 +330,10 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof NewsOptinViewHolder) {
             NewsOptinViewHolder newsOptinViewHolder = (NewsOptinViewHolder) holder;
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
             int margin = dpToPx(mActivity, 30);
             layoutParams.setMargins(margin, 0, margin, margin);
 
@@ -369,8 +383,10 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if (holder instanceof NoSourcesViewHolder) {
             NoSourcesViewHolder noSourcesViewHolder = (NoSourcesViewHolder) holder;
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams layoutParams =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
             int margin = dpToPx(mActivity, 30);
             layoutParams.setMargins(margin, 0, margin, margin);
 
@@ -399,8 +415,12 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else if (newsLoadingCount == 0) {
                 newsCount = 1;
             }
-            return statsCount + topSitesCount + ONE_ITEM_SPACE + getNewContentCount()
-                    + newsLoadingCount + newsCount;
+            return statsCount
+                    + topSitesCount
+                    + ONE_ITEM_SPACE
+                    + getNewContentCount()
+                    + newsLoadingCount
+                    + newsCount;
         } else {
             return statsCount + topSitesCount + ONE_ITEM_SPACE + newsLoadingCount;
         }
@@ -411,41 +431,48 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         if (viewType == TYPE_STATS) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_stats_layout, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.brave_stats_layout, parent, false);
             return new StatsViewHolder(view);
 
         } else if (viewType == TYPE_TOP_SITES) {
             return new TopSitesViewHolder(mMvTilesContainerLayout);
 
         } else if (viewType == TYPE_NEW_CONTENT) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_load_new_content, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.brave_news_load_new_content, parent, false);
             return new NewContentViewHolder(view);
 
         } else if (viewType == TYPE_IMAGE_CREDIT) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.ntp_image_credit, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.ntp_image_credit, parent, false);
             return new ImageCreditViewHolder(view);
 
         } else if (viewType == TYPE_NEWS_OPTIN) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.optin_layout, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.optin_layout, parent, false);
             return new NewsOptinViewHolder(view);
 
         } else if (viewType == TYPE_NEWS_LOADING) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.news_loading, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.news_loading, parent, false);
             return new NewsLoadingViewHolder(view);
 
         } else if (viewType == TYPE_NEWS_NO_CONTENT_SOURCES) {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_no_sources, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.brave_news_no_sources, parent, false);
             return new NoSourcesViewHolder(view);
 
         } else {
-            view = LayoutInflater.from(parent.getContext())
-                           .inflate(R.layout.brave_news_row, parent, false);
+            view =
+                    LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.brave_news_row, parent, false);
             return new NewsViewHolder(view);
         }
     }
@@ -464,11 +491,13 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else if ((position == statsCount + topSitesCount && !mIsNewContent)
                 || (position == statsCount + topSitesCount + ONE_ITEM_SPACE && mIsNewContent)) {
             return TYPE_IMAGE_CREDIT;
-        } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE && mIsDisplayNewsOptin
+        } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE
+                && mIsDisplayNewsOptin
                 && !mIsNewContent) {
             return TYPE_NEWS_OPTIN;
         } else if (position == statsCount + topSitesCount + ONE_ITEM_SPACE
-                && shouldDisplayNewsLoading() && !mIsNewContent) {
+                && shouldDisplayNewsLoading()
+                && !mIsNewContent) {
             return TYPE_NEWS_LOADING;
         } else if (!shouldDisplayNewsLoading() && mNewsItems.size() == 0) {
             return TYPE_NEWS_NO_CONTENT_SOURCES;
@@ -498,7 +527,8 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 notifyItemRemoved(getStatsCount());
             }
-            notifyItemRangeChanged(getStatsCount(),
+            notifyItemRangeChanged(
+                    getStatsCount(),
                     getStatsCount() + getTopSitesCount() + getNewContentCount() + ONE_ITEM_SPACE);
         }
     }
@@ -601,14 +631,17 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         // We have to use PostTask otherwise it's possible to get IllegalStateException
         // during a call to notifyItemChanged when scrolling is in progress, see details
         // here https://github.com/brave/brave-browser/issues/29343
-        PostTask.postTask(TaskTraits.UI_DEFAULT, () -> {
-            mImageCreditAlpha = alpha;
-            try {
-                notifyItemChanged(getStatsCount() + getTopSitesCount() + getNewContentCount());
-            } catch (IllegalStateException e) {
-                Log.e(TAG, "setImageCreditAlpha: " + e.getMessage());
-            }
-        });
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                () -> {
+                    mImageCreditAlpha = alpha;
+                    try {
+                        notifyItemChanged(
+                                getStatsCount() + getTopSitesCount() + getNewContentCount());
+                    } catch (IllegalStateException e) {
+                        Log.e(TAG, "setImageCreditAlpha: " + e.getMessage());
+                    }
+                });
     }
 
     public void setRecyclerViewHeight(int recyclerViewHeight) {

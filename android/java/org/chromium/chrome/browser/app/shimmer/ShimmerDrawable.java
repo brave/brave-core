@@ -52,8 +52,11 @@ public final class ShimmerDrawable extends Drawable {
     public void setShimmer(@Nullable Shimmer shimmer) {
         mShimmer = shimmer;
         if (mShimmer != null) {
-            mShimmerPaint.setXfermode(new PorterDuffXfermode(
-                    mShimmer.alphaShimmer ? PorterDuff.Mode.DST_IN : PorterDuff.Mode.SRC_IN));
+            mShimmerPaint.setXfermode(
+                    new PorterDuffXfermode(
+                            mShimmer.alphaShimmer
+                                    ? PorterDuff.Mode.DST_IN
+                                    : PorterDuff.Mode.SRC_IN));
         }
         updateShader();
         updateValueAnimator();
@@ -147,8 +150,11 @@ public final class ShimmerDrawable extends Drawable {
                 dy = offset(translateHeight, -translateHeight, animatedValue);
                 break;
             default:
-                throw new IllegalStateException(String.format(
-                        Locale.ENGLISH, "Unhandled shimmer direction for %d.", shimmer.direction));
+                throw new IllegalStateException(
+                        String.format(
+                                Locale.ENGLISH,
+                                "Unhandled shimmer direction for %d.",
+                                shimmer.direction));
         }
 
         mShaderMatrix.reset();
@@ -209,8 +215,11 @@ public final class ShimmerDrawable extends Drawable {
     }
 
     void maybeStartShimmer() {
-        if (mValueAnimator != null && !mValueAnimator.isStarted() && mShimmer != null
-                && mShimmer.autoStart && getCallback() != null) {
+        if (mValueAnimator != null
+                && !mValueAnimator.isStarted()
+                && mShimmer != null
+                && mShimmer.autoStart
+                && getCallback() != null) {
             mValueAnimator.start();
         }
     }
@@ -228,21 +237,35 @@ public final class ShimmerDrawable extends Drawable {
         final Shader shader;
         switch (mShimmer.shape) {
             case Shimmer.Shape.LINEAR:
-                boolean vertical = mShimmer.direction == Shimmer.Direction.TOP_TO_BOTTOM
-                        || mShimmer.direction == Shimmer.Direction.BOTTOM_TO_TOP;
+                boolean vertical =
+                        mShimmer.direction == Shimmer.Direction.TOP_TO_BOTTOM
+                                || mShimmer.direction == Shimmer.Direction.BOTTOM_TO_TOP;
                 int endX = vertical ? 0 : width;
                 int endY = vertical ? height : 0;
-                shader = new LinearGradient(0, 0, endX, endY, mShimmer.colors, mShimmer.positions,
-                        Shader.TileMode.CLAMP);
+                shader =
+                        new LinearGradient(
+                                0,
+                                0,
+                                endX,
+                                endY,
+                                mShimmer.colors,
+                                mShimmer.positions,
+                                Shader.TileMode.CLAMP);
                 break;
             case Shimmer.Shape.RADIAL:
-                shader = new RadialGradient(width / 2f, height / 2f,
-                        (float) (Math.max(width, height) / Math.sqrt(2)), mShimmer.colors,
-                        mShimmer.positions, Shader.TileMode.CLAMP);
+                shader =
+                        new RadialGradient(
+                                width / 2f,
+                                height / 2f,
+                                (float) (Math.max(width, height) / Math.sqrt(2)),
+                                mShimmer.colors,
+                                mShimmer.positions,
+                                Shader.TileMode.CLAMP);
                 break;
             default:
-                throw new IllegalStateException(String.format(
-                        Locale.ENGLISH, "Unhandled shimmer shape for %d.", mShimmer.shape));
+                throw new IllegalStateException(
+                        String.format(
+                                Locale.ENGLISH, "Unhandled shimmer shape for %d.", mShimmer.shape));
         }
 
         mShimmerPaint.setShader(shader);

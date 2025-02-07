@@ -21,9 +21,7 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
-/**
- * Settings fragment containing preferences for QA team.
- */
+/** Settings fragment containing preferences for QA team. */
 public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
     public static final String KEY = "brave_rewards_debug_preferences";
     private static final String QA_EXPORT_REWARDS_DB = "export_rewards_db";
@@ -64,7 +62,8 @@ public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (STORAGE_PERMISSION_EXPORT_REQUEST_CODE == requestCode) {
@@ -74,15 +73,16 @@ public class BraveRewardsDebugPreferences extends BravePreferenceFragment {
     }
 
     private void requestRestart() {
-        DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int button) {
-                if (button == AlertDialog.BUTTON_POSITIVE) {
-                    mDbUtil.setPerformDbExportOnStart(true);
-                    BraveRelaunchUtils.restart();
-                }
-            }
-        };
+        DialogInterface.OnClickListener onClickListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int button) {
+                        if (button == AlertDialog.BUTTON_POSITIVE) {
+                            mDbUtil.setPerformDbExportOnStart(true);
+                            BraveRelaunchUtils.restart();
+                        }
+                    }
+                };
         AlertDialog.Builder alertDialog =
                 new AlertDialog.Builder(getActivity(), R.style.ThemeOverlay_BrowserUI_AlertDialog)
                         .setMessage(

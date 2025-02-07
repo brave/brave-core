@@ -42,8 +42,8 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Java application that takes in an input jar, performs a series of bytecode
- * transformations, and generates an output jar.
+ * Java application that takes in an input jar, performs a series of bytecode transformations, and
+ * generates an output jar.
  */
 class ByteCodeProcessor {
     private static final String CLASS_FILE_SUFFIX = ".class";
@@ -89,8 +89,13 @@ class ByteCodeProcessor {
 
         ClassReader reader = new ClassReader(data);
         if (sShouldCheckClassPath) {
-            sValidator.validateClassPathsAndOutput(reader, sDirectClassPathClassLoader,
-                    sFullClassPathClassLoader, sFullClassPathJarPaths, sIsPrebuilt, sVerbose,
+            sValidator.validateClassPathsAndOutput(
+                    reader,
+                    sDirectClassPathClassLoader,
+                    sFullClassPathClassLoader,
+                    sFullClassPathJarPaths,
+                    sIsPrebuilt,
+                    sVerbose,
                     sMissingClassesAllowlist);
         }
 
@@ -121,15 +126,18 @@ class ByteCodeProcessor {
     }
 
     private static void process(String inputJarPath, String outputJarPath)
-            throws ClassPathValidator.ClassNotLoadedException, ExecutionException,
-                   InterruptedException {
+            throws ClassPathValidator.ClassNotLoadedException,
+                    ExecutionException,
+                    InterruptedException {
         String tempJarPath = outputJarPath + TEMPORARY_FILE_SUFFIX;
         ExecutorService executorService =
                 Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        try (ZipInputStream inputStream = new ZipInputStream(
-                     new BufferedInputStream(new FileInputStream(inputJarPath)));
-                ZipOutputStream tempStream = new ZipOutputStream(
-                        new BufferedOutputStream(new FileOutputStream(tempJarPath)))) {
+        try (ZipInputStream inputStream =
+                        new ZipInputStream(
+                                new BufferedInputStream(new FileInputStream(inputJarPath)));
+                ZipOutputStream tempStream =
+                        new ZipOutputStream(
+                                new BufferedOutputStream(new FileOutputStream(tempJarPath)))) {
             List<Future<EntryDataPair>> list = new ArrayList<>();
             while (true) {
                 ZipEntry entry = inputStream.getNextEntry();
@@ -159,8 +167,9 @@ class ByteCodeProcessor {
         }
 
         if (sValidator.hasErrors()) {
-            System.err.println("Direct classpath is incomplete. To fix, add deps on the "
-                    + "GN target(s) that provide:");
+            System.err.println(
+                    "Direct classpath is incomplete. To fix, add deps on the "
+                            + "GN target(s) that provide:");
             for (Map.Entry<String, Map<String, Set<String>>> entry :
                     sValidator.getErrors().entrySet()) {
                 printValidationError(System.err, entry.getKey(), entry.getValue());
@@ -233,8 +242,10 @@ class ByteCodeProcessor {
         return index + argLength;
     }
 
-    public static void main(String[] args) throws ClassPathValidator.ClassNotLoadedException,
-                                                  ExecutionException, InterruptedException {
+    public static void main(String[] args)
+            throws ClassPathValidator.ClassNotLoadedException,
+                    ExecutionException,
+                    InterruptedException {
         // Invoke this script using //build/android/gyp/bytecode_processor.py
         int currIndex = 0;
         String inputJarPath = args[currIndex++];

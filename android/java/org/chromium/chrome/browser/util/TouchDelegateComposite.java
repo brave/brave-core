@@ -30,9 +30,7 @@ public class TouchDelegateComposite extends TouchDelegate {
         super(bounds, view);
     }
 
-    /**
-     * Add a pre-existing TouchDelegate. Cannot get bounds and view from existing delegate.
-     */
+    /** Add a pre-existing TouchDelegate. Cannot get bounds and view from existing delegate. */
     public void addDelegate(TouchDelegate delegate) {
         mDelegates.add(new Pair<>(null, new Pair<>(new Rect(), delegate)));
     }

@@ -52,13 +52,14 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
 
         SharedPreferencesManager sharedPreferencesManager = ChromeSharedPreferences.getInstance();
         BraveRadioButtonGroupThemePreference radioButtonGroupThemePreference =
-            (BraveRadioButtonGroupThemePreference) findPreference(PREF_UI_THEME_PREF);
+                (BraveRadioButtonGroupThemePreference) findPreference(PREF_UI_THEME_PREF);
 
         int defaultThemePref = ThemeType.SYSTEM_DEFAULT;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            defaultThemePref = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                               ? ThemeType.DARK
-                               : ThemeType.LIGHT;
+            defaultThemePref =
+                    GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                            ? ThemeType.DARK
+                            : ThemeType.LIGHT;
         }
 
         mWebContentsDarkModeEnabled =

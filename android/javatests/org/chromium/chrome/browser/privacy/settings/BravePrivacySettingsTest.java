@@ -55,6 +55,7 @@ public class BravePrivacySettingsTest {
     @Rule
     public SettingsActivityTestRule<BravePrivacySettings> mSettingsActivityTestRule =
             new SettingsActivityTestRule<>(BravePrivacySettings.class);
+
     private BravePrivacySettings mFragment;
 
     @Before

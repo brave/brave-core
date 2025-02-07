@@ -5,9 +5,7 @@
 
 package org.chromium.components.embedder_support.util;
 
-/**
- * Extension of UrlConstants.java
- */
+/** Extension of UrlConstants.java */
 public class BraveUrlConstants {
     public static final String BRAVE_SCHEME = "brave";
 }

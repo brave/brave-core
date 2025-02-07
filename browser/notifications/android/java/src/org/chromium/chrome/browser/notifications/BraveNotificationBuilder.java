@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.notifications;
 
@@ -30,13 +28,9 @@ import org.chromium.components.browser_ui.notifications.NotificationWrapper;
 import org.chromium.components.browser_ui.notifications.NotificationWrapperBuilder;
 import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
 
-/**
- * Builds a notification according to BraveAds spec.
- */
+/** Builds a notification according to BraveAds spec. */
 public class BraveNotificationBuilder extends StandardNotificationBuilder {
-    /**
-     * The maximum width of action icons in dp units.
-     */
+    /** The maximum width of action icons in dp units. */
     private static final int MAX_ACTION_ICON_WIDTH_DP = 32;
 
     /**
@@ -45,9 +39,7 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
      */
     private static final int MAX_BODY_LINES = 7;
 
-    /**
-     * The fontScale considered large for the purposes of layout.
-     */
+    /** The fontScale considered large for the purposes of layout. */
     private static final float FONT_SCALE_LARGE = 1.3f;
 
     /**
@@ -57,14 +49,10 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
      */
     private static final int MAX_SCALABLE_PADDING_DP = 3;
 
-    /**
-     * The notification body height in dp for compact view mode for Android 12 and higher.
-     */
+    /** The notification body height in dp for compact view mode for Android 12 and higher. */
     private static final float COMPACT_BODY_CONTAINER_HEIGHT_DP = 40f;
 
-    /**
-     * The notification title margin top in dp for compact view mode for Android 12 and higher.
-     */
+    /** The notification title margin top in dp for compact view mode for Android 12 and higher. */
     private static final float COMPACT_TITLE_MARGIN_TOP_DP = -4f;
 
     private static Bitmap sBraveIcon;
@@ -82,7 +70,7 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
     /**
      * Override this function to always set the channel ID as Ads channel ID.
      *
-     * This avoids the channel ID being overwritten by Chromium later using
+     * <p>This avoids the channel ID being overwritten by Chromium later using
      * notificationBuilder.setChannelId.
      */
     @Override
@@ -129,10 +117,15 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
         // - the dimensions become less than before.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             compactView.setViewPadding(R.id.title, 0, 0, 0, 0);
-            compactView.setViewLayoutMargin(R.id.title, RemoteViews.MARGIN_TOP,
-                    COMPACT_TITLE_MARGIN_TOP_DP, TypedValue.COMPLEX_UNIT_DIP);
+            compactView.setViewLayoutMargin(
+                    R.id.title,
+                    RemoteViews.MARGIN_TOP,
+                    COMPACT_TITLE_MARGIN_TOP_DP,
+                    TypedValue.COMPLEX_UNIT_DIP);
             compactView.setViewPadding(R.id.body_container, 0, scaledPadding, 0, 0);
-            compactView.setViewLayoutHeight(R.id.body_container, COMPACT_BODY_CONTAINER_HEIGHT_DP,
+            compactView.setViewLayoutHeight(
+                    R.id.body_container,
+                    COMPACT_BODY_CONTAINER_HEIGHT_DP,
                     TypedValue.COMPLEX_UNIT_DIP);
             compactView.setViewVisibility(R.id.icon_frame, View.GONE);
             bigView.setViewVisibility(R.id.icon_frame, View.GONE);
@@ -188,15 +181,21 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
             Resources resources = mContext.getResources();
             DisplayMetrics metrics = resources.getDisplayMetrics();
             int iconSize = dpToPx(metrics, MAX_ACTION_ICON_WIDTH_DP);
-            sBraveIcon = Bitmap.createScaledBitmap(
-                    BitmapFactory.decodeResource(resources, largeIconId), iconSize, iconSize, true);
+            sBraveIcon =
+                    Bitmap.createScaledBitmap(
+                            BitmapFactory.decodeResource(resources, largeIconId),
+                            iconSize,
+                            iconSize,
+                            true);
         }
         return sBraveIcon;
     }
 
     @Override
-    public NotificationBuilderBase addButtonAction(@Nullable Bitmap iconBitmap,
-            @Nullable CharSequence title, PendingIntentProvider intent) {
+    public NotificationBuilderBase addButtonAction(
+            @Nullable Bitmap iconBitmap,
+            @Nullable CharSequence title,
+            PendingIntentProvider intent) {
         return this;
     }
 
@@ -206,8 +205,11 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
      * from Android N, displays a text box within the notification for inline replies.
      */
     @Override
-    public NotificationBuilderBase addTextAction(@Nullable Bitmap iconBitmap,
-            @Nullable CharSequence title, PendingIntentProvider intent, String placeholder) {
+    public NotificationBuilderBase addTextAction(
+            @Nullable Bitmap iconBitmap,
+            @Nullable CharSequence title,
+            PendingIntentProvider intent,
+            String placeholder) {
         return this;
     }
 

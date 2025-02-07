@@ -8,17 +8,14 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveCommandLineInitUtilClassAdapter extends BraveClassVisitor {
-    static String sCommandLineClassName =
-        "org/chromium/base/CommandLineInitUtil";
+    static String sCommandLineClassName = "org/chromium/base/CommandLineInitUtil";
 
-    static String sBraveCommandLineClassName =
-        "org/chromium/base/BraveCommandLineInitUtil";
+    static String sBraveCommandLineClassName = "org/chromium/base/BraveCommandLineInitUtil";
 
     static String sMethodReadFileAsUtf8 = "initCommandLine";
 
     public BraveCommandLineInitUtilClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeMethodOwner(sCommandLineClassName, sMethodReadFileAsUtf8,
-                          sBraveCommandLineClassName);
+        changeMethodOwner(sCommandLineClassName, sMethodReadFileAsUtf8, sBraveCommandLineClassName);
     }
 }

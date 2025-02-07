@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.omnibox;
 
@@ -41,8 +39,8 @@ import org.chromium.chrome.browser.util.BraveTouchUtils;
 
 import java.io.IOException;
 
-public class BraveLocationBarQRDialogFragment
-        extends DialogFragment implements BarcodeTracker.BarcodeGraphicTrackerCallback {
+public class BraveLocationBarQRDialogFragment extends DialogFragment
+        implements BarcodeTracker.BarcodeGraphicTrackerCallback {
     private static final String TAG = "Scan QR Code Dialog";
 
     private CameraSource mCameraSource;
@@ -91,7 +89,10 @@ public class BraveLocationBarQRDialogFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         ImageView backImageView = (ImageView) view.findViewById(R.id.back_imageview);
-        backImageView.setOnClickListener(imageview -> { dismiss(); });
+        backImageView.setOnClickListener(
+                imageview -> {
+                    dismiss();
+                });
 
         mCameraSourcePreview = (CameraSourcePreview) view.findViewById(R.id.preview);
         createCameraSource(true, false);
@@ -141,8 +142,9 @@ public class BraveLocationBarQRDialogFragment
                         .setRequestedFps(24.0f);
 
         // Make sure that auto focus is an available option
-        builder = builder.setFocusMode(
-                autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
+        builder =
+                builder.setFocusMode(
+                        autoFocus ? Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE : null);
 
         mCameraSource =
                 builder.setFlashMode(useFlash ? Camera.Parameters.FLASH_MODE_TORCH : null).build();
@@ -152,11 +154,14 @@ public class BraveLocationBarQRDialogFragment
         if (mCameraSource != null && mCameraSourcePreview.mCameraExist) {
             // Check that the device has play services available.
             try {
-                int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
-                        getActivity().getApplicationContext());
+                int code =
+                        GoogleApiAvailability.getInstance()
+                                .isGooglePlayServicesAvailable(
+                                        getActivity().getApplicationContext());
                 if (code != ConnectionResult.SUCCESS) {
-                    Dialog dlg = GoogleApiAvailability.getInstance().getErrorDialog(
-                            getActivity(), code, RC_HANDLE_GMS);
+                    Dialog dlg =
+                            GoogleApiAvailability.getInstance()
+                                    .getErrorDialog(getActivity(), code, RC_HANDLE_GMS);
                     if (null != dlg) {
                         dlg.show();
                     }
@@ -236,13 +241,15 @@ public class BraveLocationBarQRDialogFragment
 
         if (getActivity() != null) {
             final String barcodeValue = barcode.displayValue;
-            getActivity().runOnUiThread(() -> {
-                if (URLUtil.isNetworkUrl(barcodeValue)) {
-                    mLocationBarMediator.setSearchQuery(barcodeValue);
-                } else {
-                    mLocationBarMediator.performSearchQuery(barcodeValue, null);
-                }
-            });
+            getActivity()
+                    .runOnUiThread(
+                            () -> {
+                                if (URLUtil.isNetworkUrl(barcodeValue)) {
+                                    mLocationBarMediator.setSearchQuery(barcodeValue);
+                                } else {
+                                    mLocationBarMediator.performSearchQuery(barcodeValue, null);
+                                }
+                            });
 
             dismiss();
         }

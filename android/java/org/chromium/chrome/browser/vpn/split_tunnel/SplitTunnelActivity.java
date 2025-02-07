@@ -71,32 +71,43 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
         appsLayout.setVisibility(View.GONE);
 
         Button showSystemAppsBtn = findViewById(R.id.show_system_app_btn);
-        showSystemAppsBtn.setOnClickListener(view -> {
-            showSystemAppsBtn.setVisibility(View.GONE);
-            mRecyclerViewSystemApps.setVisibility(View.VISIBLE);
-        });
+        showSystemAppsBtn.setOnClickListener(
+                view -> {
+                    showSystemAppsBtn.setVisibility(View.GONE);
+                    mRecyclerViewSystemApps.setVisibility(View.VISIBLE);
+                });
 
         ApplicationViewModel viewModel =
                 new ViewModelProvider(SplitTunnelActivity.this).get(ApplicationViewModel.class);
         viewModel.getApplications(SplitTunnelActivity.this);
 
-        viewModel.getExcludedApplicationDataLiveData().observe(
-                SplitTunnelActivity.this, applicationDataModels -> {
-                    if (applicationDataModels.size() > 0) {
-                        mRecyclerViewAdapterExcludedApps.addAll(applicationDataModels);
-                    } else {
-                        findViewById(R.id.empty_excluded_apps_text).setVisibility(View.VISIBLE);
-                    }
-                });
-        viewModel.getApplicationDataMutableLiveData().observe(
-                SplitTunnelActivity.this, applicationDataModels -> {
-                    mRecyclerViewAdapterApps.addAll(applicationDataModels);
-                    appsLayout.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                });
-        viewModel.getSystemApplicationDataMutableLiveData().observe(SplitTunnelActivity.this,
-                applicationDataModels
-                -> mRecyclerViewAdapterSystemApps.addAll(applicationDataModels));
+        viewModel
+                .getExcludedApplicationDataLiveData()
+                .observe(
+                        SplitTunnelActivity.this,
+                        applicationDataModels -> {
+                            if (applicationDataModels.size() > 0) {
+                                mRecyclerViewAdapterExcludedApps.addAll(applicationDataModels);
+                            } else {
+                                findViewById(R.id.empty_excluded_apps_text)
+                                        .setVisibility(View.VISIBLE);
+                            }
+                        });
+        viewModel
+                .getApplicationDataMutableLiveData()
+                .observe(
+                        SplitTunnelActivity.this,
+                        applicationDataModels -> {
+                            mRecyclerViewAdapterApps.addAll(applicationDataModels);
+                            appsLayout.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                        });
+        viewModel
+                .getSystemApplicationDataMutableLiveData()
+                .observe(
+                        SplitTunnelActivity.this,
+                        applicationDataModels ->
+                                mRecyclerViewAdapterSystemApps.addAll(applicationDataModels));
     }
 
     @Override
@@ -131,7 +142,8 @@ public class SplitTunnelActivity extends AsyncInitializationActivity
     @Override
     public void onApplicationCLick(
             ApplicationDataModel applicationDataModel, int position, boolean isExcludedApps) {
-        if (mRecyclerViewAdapterExcludedApps != null && mRecyclerViewAdapterApps != null
+        if (mRecyclerViewAdapterExcludedApps != null
+                && mRecyclerViewAdapterApps != null
                 && mRecyclerViewAdapterSystemApps != null) {
             if (isExcludedApps) {
                 mRecyclerViewAdapterExcludedApps.removeApplication(applicationDataModel);
