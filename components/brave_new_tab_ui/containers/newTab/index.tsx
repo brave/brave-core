@@ -9,6 +9,7 @@ import * as React from 'react'
 import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
+import * as BraveAds from 'gen/brave/components/brave_ads/core/mojom/brave_ads.mojom.m.js'
 import {
   BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion, VPNWidget
 } from '../../components/default'
@@ -46,6 +47,9 @@ import Icon from '@brave/leo/react/icon'
 import * as style from './style'
 import { defaultState } from '../../storage/new_tab_storage'
 import { EngineContextProvider } from '../../components/search/EngineContext'
+import {
+  SponsoredRichMediaBackgroundInfo, SponsoredRichMediaBackground
+} from './sponsored_rich_media_background'
 
 const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 const SearchPlaceholder = React.lazy(() => import('../../components/search/SearchPlaceholder'))
@@ -85,7 +89,8 @@ function GetBackgroundImageSrc (props: Props) {
     (!props.newTabData.brandedWallpaper || props.newTabData.brandedWallpaper.isSponsored)) {
     return undefined
   }
-  if (props.newTabData.brandedWallpaper) {
+
+  if (props.newTabData.brandedWallpaper?.type === 'image') {
     const wallpaperData = props.newTabData.brandedWallpaper
     if (wallpaperData.wallpaperImageUrl) {
       return wallpaperData.wallpaperImageUrl
@@ -98,6 +103,24 @@ function GetBackgroundImageSrc (props: Props) {
   }
 
   return undefined
+}
+
+function GetSponsoredRichMediaBackground(props: Props): SponsoredRichMediaBackgroundInfo | undefined {
+  const wallpaperData = props.newTabData.brandedWallpaper
+
+  const shouldShowRichMediaBackground =
+    props.newTabData.showBackgroundImage &&
+    wallpaperData &&
+    wallpaperData.isSponsored &&
+    wallpaperData.type === 'richMedia' &&
+    wallpaperData.wallpaperImageUrl
+
+  return shouldShowRichMediaBackground ? {
+    url: wallpaperData.wallpaperImageUrl,
+    placementId: wallpaperData.wallpaperId,
+    creativeInstanceId: wallpaperData.creativeInstanceId,
+    targetUrl: wallpaperData.logo.destinationUrl
+  } : undefined
 }
 
 function GetShouldShowSearchPromotion (props: Props, showSearchPromotion: boolean) {
@@ -141,6 +164,7 @@ class NewTabPage extends React.Component<Props, State> {
   braveNewsPromptTimerId: number
   hasInitBraveNews: boolean = false
   imageSource?: string = undefined
+  sponsoredRichMediaBackgroundInfo?: SponsoredRichMediaBackgroundInfo = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
   onVisiblityTimerExpired = () => {
     this.dismissBrandedWallpaperNotification(false)
@@ -152,6 +176,8 @@ class NewTabPage extends React.Component<Props, State> {
     // if a notification is open at component mounting time, close it
     this.props.actions.showTilesRemovedNotice(false)
     this.imageSource = GetBackgroundImageSrc(this.props)
+    this.sponsoredRichMediaBackgroundInfo = GetSponsoredRichMediaBackground(this.props)
+
     this.trackCachedImage()
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
@@ -182,8 +208,20 @@ class NewTabPage extends React.Component<Props, State> {
     if (newImageSource && oldImageSource !== newImageSource) {
       this.trackCachedImage()
     }
-    if (oldImageSource &&
-      !newImageSource) {
+
+    const oldSponsoredRichMediaBackground = GetSponsoredRichMediaBackground(prevProps)
+    const newSponsoredRichMediaBackground = GetSponsoredRichMediaBackground(this.props)
+    this.sponsoredRichMediaBackgroundInfo = newSponsoredRichMediaBackground
+    if (newSponsoredRichMediaBackground &&
+        oldSponsoredRichMediaBackground?.url !== newSponsoredRichMediaBackground?.url) {
+      if (this.state.backgroundHasLoaded) {
+        console.debug('Resetting to sponsored rich media background')
+        this.setState({ backgroundHasLoaded: false })
+      }
+    }
+
+    if ((oldImageSource && !newImageSource) ||
+        (oldSponsoredRichMediaBackground && !newSponsoredRichMediaBackground)) {
       // reset loaded state
       console.debug('reset image loaded state due to removing image source')
       this.setState({ backgroundHasLoaded: false })
@@ -615,6 +653,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const hasImage = this.imageSource !== undefined
+    const hasSponsoredRichMediaBackground = !!this.sponsoredRichMediaBackgroundInfo
     const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
 
     const hasWallpaperInfo = newTabData.backgroundWallpaper?.type === 'brave'
@@ -648,14 +687,43 @@ class NewTabPage extends React.Component<Props, State> {
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
         colorForBackground={colorForBackground}
+        hasSponsoredRichMediaBackground={hasSponsoredRichMediaBackground}
         data-show-news-prompt={((this.state.backgroundHasLoaded || colorForBackground) && this.state.isPromptingBraveNews && !defaultState.featureFlagBraveNewsFeedV2Enabled) ? true : undefined}>
         <OverrideReadabilityColor override={ this.shouldOverrideReadabilityColor(this.props.newTabData) } />
         <BraveNewsContextProvider>
         <EngineContextProvider>
+
+        {
+          this.sponsoredRichMediaBackgroundInfo &&
+          <SponsoredRichMediaBackground
+              sponsoredRichMediaBackgroundInfo={this.sponsoredRichMediaBackgroundInfo}
+              richMediaHasLoaded={this.state.backgroundHasLoaded}
+              onLoaded={() => {
+                this.setState({ backgroundHasLoaded: true })
+              }}
+              onEventReported={(adEventType) => {
+                if (!this.sponsoredRichMediaBackgroundInfo) {
+                  return
+                }
+
+                getNTPBrowserAPI().sponsoredRichMediaAdEventHandler.reportRichMediaAdEvent(
+                  this.sponsoredRichMediaBackgroundInfo.creativeInstanceId,
+                  this.sponsoredRichMediaBackgroundInfo.placementId,
+                  adEventType)
+
+                if (adEventType === BraveAds.NewTabPageAdEventType.kClicked) {
+                  window.open(this.sponsoredRichMediaBackgroundInfo.targetUrl, '_self', 'noopener,noreferrer');
+                }
+              }
+            }
+          />
+        }
+
         <Page.Page
             hasImage={hasImage}
             imageSrc={this.imageSource}
             imageHasLoaded={this.state.backgroundHasLoaded}
+            hasSponsoredRichMediaBackground={hasSponsoredRichMediaBackground}
             showClock={showClock}
             showStats={showStats}
             colorForBackground={colorForBackground}
@@ -700,9 +768,11 @@ class NewTabPage extends React.Component<Props, State> {
                 />
               </Page.GridItemTopSites>
             }
-            {newTabData.brandedWallpaper?.isSponsored && <Page.GridItemSponsoredImageClickArea otherWidgetsHidden={this.allWidgetsHidden()}>
-              <SponsoredImageClickArea onClick={this.onClickLogo}
-                sponsoredImageUrl={newTabData.brandedWallpaper.logo.destinationUrl}/>
+            {newTabData.brandedWallpaper?.isSponsored
+              && newTabData.brandedWallpaper.type !== 'richMedia'
+              && <Page.GridItemSponsoredImageClickArea otherWidgetsHidden={this.allWidgetsHidden()}>
+                <SponsoredImageClickArea onClick={this.onClickLogo}
+                  sponsoredImageUrl={newTabData.brandedWallpaper.logo.destinationUrl}/>
               </Page.GridItemSponsoredImageClickArea>}
             {
               gridSitesData.shouldShowSiteRemovedNotification
@@ -717,6 +787,7 @@ class NewTabPage extends React.Component<Props, State> {
               <Page.FooterContent>
                 {isShowingBrandedWallpaper && newTabData.brandedWallpaper &&
                   newTabData.brandedWallpaper.logo &&
+                  !hasSponsoredRichMediaBackground &&
                   <Page.GridItemBrandedLogo>
                     <BrandedWallpaperLogo
                       menuPosition={'right'}

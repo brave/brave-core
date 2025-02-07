@@ -146,7 +146,9 @@ public class NTPDataSource {
           // Exclude campaigns with only sponsored video backgrounds if the user
           // has selected the `Sponsored Images` option in settings.
           let campaigns = sponsor.campaigns.filter {
-            $0.backgrounds.contains { !$0.isVideoFile || isSponsoredVideoAllowed }
+            $0.backgrounds.contains {
+              $0.logo.imagePath != nil && (!$0.isVideoFile || isSponsoredVideoAllowed)
+            }
           }
 
           // Pick the campaign randomly
@@ -154,7 +156,7 @@ public class NTPDataSource {
             // Exclude sponsored video backgrounds if the user has selected
             // the `Sponsored Images` option in settings.
             let filteredBackgrounds = campaign.backgrounds.filter {
-              !$0.isVideoFile || isSponsoredVideoAllowed
+              $0.logo.imagePath != nil && (!$0.isVideoFile || isSponsoredVideoAllowed)
             }
             if !filteredBackgrounds.isEmpty {
               return (

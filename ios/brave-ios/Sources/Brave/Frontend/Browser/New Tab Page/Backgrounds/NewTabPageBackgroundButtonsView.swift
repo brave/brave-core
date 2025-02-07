@@ -42,7 +42,9 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         imageCreditButton.label.text = String(format: Strings.photoBy, name)
         activeView = imageCreditButton
       case .brandLogo(let logo):
-        sponsorLogoButton.imageView.image = UIImage(contentsOfFile: logo.imagePath.path)
+        if let logoImagePath = logo.imagePath?.path {
+          sponsorLogoButton.imageView.image = UIImage(contentsOfFile: logoImagePath)
+        }
         activeView = sponsorLogoButton
       case .qrCode:
         activeView = qrCodeButton

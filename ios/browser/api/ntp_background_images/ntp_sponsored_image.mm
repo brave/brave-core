@@ -147,7 +147,7 @@
 @end
 
 @interface NTPSponsoredImageLogo ()
-@property(nonatomic, copy) NSURL* imagePath;
+@property(nonatomic, copy, nullable) NSURL* imagePath;
 @property(nonatomic, copy) NSString* altText;
 @property(nonatomic, copy, nullable) NSURL* destinationURL;
 @property(nonatomic, copy) NSString* companyName;

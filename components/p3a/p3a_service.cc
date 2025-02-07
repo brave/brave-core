@@ -128,6 +128,7 @@ void P3AService::InitCallbacks() {
 }
 
 void P3AService::StartTeardown() {
+  dynamic_metric_sample_callbacks_.clear();
   pref_change_registrar_.RemoveAll();
 }
 

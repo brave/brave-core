@@ -36,6 +36,7 @@ mojom("mojom") {
   sources = [ "brave_new_tab_page.mojom" ]
   public_deps = [
     "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/ntp_background_images/browser/mojom",
     "//url/mojom:url_mojom_gurl",
   ]
   if (enable_brave_vpn) {

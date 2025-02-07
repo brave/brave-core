@@ -155,6 +155,7 @@ class ViewCounterService : public KeyedService,
   // NTPBackgroundImagesService::Observer
   void OnUpdated(NTPBackgroundImagesData* data) override;
   void OnUpdated(NTPSponsoredImagesData* data) override;
+  void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override;
   void OnSuperReferralEnded() override;
 
   void ResetNotificationState();

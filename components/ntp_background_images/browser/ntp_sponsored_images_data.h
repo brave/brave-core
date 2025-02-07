@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/public/serving/targeting/condition_matcher/condition_matcher_util.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/gfx/geometry/rect.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 struct NewTabPageAdInfo;
@@ -54,10 +55,11 @@ struct Logo {
   ~Logo();
 };
 
-enum class WallpaperType { kImage };
+enum class WallpaperType { kImage, kRichMedia };
 
 struct SponsoredBackground {
   WallpaperType wallpaper_type;
+  GURL url;
   base::FilePath file_path;
   gfx::Point focal_point;
   brave_ads::ConditionMatcherMap condition_matchers;
@@ -107,8 +109,9 @@ struct NTPSponsoredImagesData {
                           const base::FilePath& installed_dir);
 
   // Parse common properties for SI & SR.
-  Campaign GetCampaignFromValue(const base::Value::Dict& value,
-                                const base::FilePath& installed_dir);
+  std::optional<Campaign> GetCampaignFromValue(
+      const base::Value::Dict& value,
+      const base::FilePath& installed_dir);
   void ParseSRProperties(const base::Value::Dict& value,
                          const base::FilePath& installed_dir);
 

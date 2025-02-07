@@ -1,0 +1,14 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module ntp_background_images.mojom;
+
+import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
+
+interface SponsoredRichMediaAdEventHandler {
+  ReportRichMediaAdEvent(string placement_id,
+                         string creative_instance_id,
+                         brave_ads.mojom.NewTabPageAdEventType ad_event_type);
+};

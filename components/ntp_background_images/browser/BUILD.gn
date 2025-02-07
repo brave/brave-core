@@ -34,6 +34,12 @@ static_library("browser") {
       "ntp_background_images_source.h",
       "ntp_sponsored_images_source.cc",
       "ntp_sponsored_images_source.h",
+      "ntp_sponsored_rich_media_ad_event_handler.cc",
+      "ntp_sponsored_rich_media_ad_event_handler.h",
+      "ntp_sponsored_rich_media_source.cc",
+      "ntp_sponsored_rich_media_source.h",
+      "ntp_sponsored_source_util.cc",
+      "ntp_sponsored_source_util.h",
       "view_counter_model.cc",
       "view_counter_model.h",
       "view_counter_service.cc",
@@ -46,6 +52,7 @@ static_library("browser") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_rewards/core",
+    "//brave/components/constants",
     "//brave/components/l10n/common",
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/ntp_background_images/common",
@@ -62,6 +69,8 @@ static_library("browser") {
     "//url",
   ]
 
+  public_deps = [ "//brave/components/ntp_background_images/browser/mojom" ]
+
   if (is_ios) {
     deps += [ "//brave/extensions:common" ]
   } else {
@@ -70,6 +79,7 @@ static_library("browser") {
       "//brave/components/brave_referrals/browser",
       "//content/public/browser",
       "//content/public/common",
+      "//net",
     ]
   }
 
@@ -81,4 +91,22 @@ static_library("browser") {
       "ntp_custom_images_source.h",
     ]
   }
+}
+
+source_set("test_support") {
+  testonly = true
+
+  deps = [
+    ":browser",
+    "//base",
+    "//brave/components/brave_ads/core/mojom",
+    "//testing/gmock",
+  ]
+
+  sources = [
+    "ntp_background_images_service_waiter.cc",
+    "ntp_background_images_service_waiter.h",
+    "ntp_p3a_helper_mock.cc",
+    "ntp_p3a_helper_mock.h",
+  ]
 }
