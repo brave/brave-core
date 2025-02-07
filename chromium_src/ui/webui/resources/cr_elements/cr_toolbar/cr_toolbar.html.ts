@@ -29,14 +29,6 @@ export function getHtml(this: CrToolbarElement) {
         <span class="nav-item-text">${this.settingsTitle}</span>
       </a>
     </li>
-      ${this.shouldShowRewardsButton_ ? html`<li class="nav-items-list-item" title="${this.braveRewardsTitle}">
-        <a class="nav-item ${this.getNavItemSelectedClassName('rewards')}" href="chrome://rewards">
-          <span class="nav-item-icon">
-            <leo-icon name="product-bat-outline"></leo-icon>
-          </span>
-          <span class="nav-item-text">${this.braveRewardsTitle}</span>
-        </a>
-      </li>` : ''}
     <li class="nav-items-list-item" title="${this.historyTitle}">
       <a class="nav-item ${this.getNavItemSelectedClassName('history')}" href="chrome://history">
         <span class="nav-item-icon">
@@ -69,6 +61,14 @@ export function getHtml(this: CrToolbarElement) {
         <span class="nav-item-text">${this.walletsTitle}</span>
       </a>
     </li>` : ''}
+    ${this.shouldShowRewardsButton_ ? html`<li class="nav-items-list-item" title="${this.braveRewardsTitle}">
+        <a class="nav-item ${this.getNavItemSelectedClassName('rewards')}" href="chrome://rewards">
+          <span class="nav-item-icon">
+            <leo-icon name="product-bat-outline"></leo-icon>
+          </span>
+          <span class="nav-item-text">${this.braveRewardsTitle}</span>
+        </a>
+      </li>` : ''}
   </ul>
     <br-toolbar-search-field id="search"
       ?narrow="${this.narrow}"
