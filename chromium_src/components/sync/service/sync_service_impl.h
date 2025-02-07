@@ -8,6 +8,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "components/signin/public/identity_manager/identity_manager.h"
+#include "components/sync/engine/sync_engine_host.h"
 
 #define BRAVE_SYNC_SERVICE_IMPL_H_                                             \
  private:                                                                      \
