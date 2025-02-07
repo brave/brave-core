@@ -10,22 +10,22 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_WIN)
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
+static const base::FilePath::StringViewType kIpfsClientComponentId =
     FILE_PATH_LITERAL("lnbclahgobmjphilkalbhebakmblnbij");
 #elif BUILDFLAG(IS_MAC)
 #if defined(ARCH_CPU_ARM64)
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
+static const base::FilePath::StringViewType kIpfsClientComponentId =
     FILE_PATH_LITERAL("lejaflgbgglfaomemffoaappaihfligf");
 #else
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
+static const base::FilePath::StringViewType kIpfsClientComponentId =
     FILE_PATH_LITERAL("nljcddpbnaianmglkpkneakjaapinabi");
 #endif
 #elif BUILDFLAG(IS_LINUX)
 #if defined(ARCH_CPU_ARM64)
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
+static const base::FilePath::StringViewType kIpfsClientComponentId =
     FILE_PATH_LITERAL("fmmldihckdnognaabhligdpckkeancng");
 #else
-static const base::FilePath::StringPieceType kIpfsClientComponentId =
+static const base::FilePath::StringViewType kIpfsClientComponentId =
     FILE_PATH_LITERAL("oecghfpdmkjlhnfpmmjegjacfimiafjp");
 #endif
 #endif
