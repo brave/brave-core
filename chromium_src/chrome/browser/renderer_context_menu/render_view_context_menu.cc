@@ -800,11 +800,21 @@ void BraveRenderViewContextMenu::InitMenu() {
   // Add Open Link in Split View
   if (CanOpenSplitViewForWebContents(source_web_contents_->GetWeakPtr()) &&
       params_.link_url.is_valid()) {
-    index = menu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_OPENLINKNEWTAB);
+    // Reset our index
+    index.reset();
+
+    // Loop over menu_model_ items until we find the first separator
+    for (size_t i = 0; i < menu_model_.GetItemCount(); i++) {
+      if (menu_model_.GetTypeAt(i) == ui::MenuModel::ItemType::TYPE_SEPARATOR) {
+        index = i;
+        break;
+      }
+    }
+
     CHECK(index.has_value());
 
     menu_model_.InsertItemWithStringIdAt(
-        index.value() + 1, IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW,
+        index.value(), IDC_CONTENT_CONTEXT_OPENLINK_SPLIT_VIEW,
         IDS_CONTENT_CONTEXT_SPLIT_VIEW);
   }
 }
