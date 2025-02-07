@@ -46,7 +46,7 @@ import {
   ButtonIcon
 } from './wellet-menus.style'
 
-const coinSupportsSwap = (coin: BraveWallet.CoinType) => {
+const coinSupportsSwapOrBridge = (coin: BraveWallet.CoinType) => {
   return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
 }
 
@@ -86,7 +86,7 @@ export const AssetItemMenu = (props: Props) => {
     return new Amount(assetBalance).isZero()
   }, [assetBalance])
 
-  const isSwapSupported = coinSupportsSwap(asset.coin) && account !== undefined
+  const isSwapOrBridgeSupported = coinSupportsSwapOrBridge(asset.coin)
 
   const isSellSupported = React.useMemo(() => {
     return account !== undefined && checkIsAssetSellSupported(asset)
@@ -103,17 +103,18 @@ export const AssetItemMenu = (props: Props) => {
     history.push(makeSendRoute(asset, account))
   }, [account, history, asset])
 
-  const onClickSwap = React.useCallback(() => {
-    if (account) {
+  const onClickSwapOrBridge = React.useCallback(
+    (routeType: 'swap' | 'bridge') => {
       history.push(
         makeSwapOrBridgeRoute({
           fromToken: asset,
           fromAccount: account,
-          routeType: 'swap'
+          routeType
         })
       )
-    }
-  }, [account, history, asset])
+    },
+    [account, history, asset]
+  )
 
   const onClickDeposit = React.useCallback(() => {
     history.push(makeDepositFundsRoute(getAssetIdKey(asset)))
@@ -151,11 +152,17 @@ export const AssetItemMenu = (props: Props) => {
           <PopupButtonText>{getLocale('braveWalletSend')}</PopupButtonText>
         </PopupButton>
       )}
-      {isSwapSupported && !isAssetsBalanceZero && (
-        <PopupButton onClick={onClickSwap}>
-          <ButtonIcon name='currency-exchange' />
-          <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>
-        </PopupButton>
+      {isSwapOrBridgeSupported && (
+        <>
+          <PopupButton onClick={() => onClickSwapOrBridge('swap')}>
+            <ButtonIcon name='currency-exchange' />
+            <PopupButtonText>{getLocale('braveWalletSwap')}</PopupButtonText>
+          </PopupButton>
+          <PopupButton onClick={() => onClickSwapOrBridge('bridge')}>
+            <ButtonIcon name='web3-bridge' />
+            <PopupButtonText>{getLocale('braveWalletBridge')}</PopupButtonText>
+          </PopupButton>
+        </>
       )}
       <PopupButton onClick={onClickDeposit}>
         <ButtonIcon name='money-bag-coins' />

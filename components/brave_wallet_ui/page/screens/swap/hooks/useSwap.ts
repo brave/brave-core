@@ -140,8 +140,9 @@ export const useSwap = () => {
   const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
   const { data: supportedNetworks } = useGetSwapSupportedNetworksQuery()
   const { data: fullTokenList } = useGetCombinedTokensListQuery()
+  const fromAccountIdFromParams = query.get('fromAccountId') ?? undefined
   const { account: fromAccount } = useAccountFromAddressQuery(
-    query.get('fromAccountId') ?? undefined
+    fromAccountIdFromParams
   )
   const { account: toAccount } = useAccountFromAddressQuery(
     query.get('toAddress') ?? undefined
@@ -151,6 +152,8 @@ export const useSwap = () => {
   const toCoinFromParams = query.get('toCoin') ?? undefined
   const toCoin = toCoinFromParams ? Number(toCoinFromParams) : undefined
   const toAddress = query.get('toAddress') ?? undefined
+  const fromContractOrSymbolFromParams = query.get('fromToken') ?? undefined
+  const fromChainIdFromParams = query.get('fromChainId') ?? undefined
 
   // State
   const [fromAmount, setFromAmount] = useState<string>('')
@@ -205,11 +208,9 @@ export const useSwap = () => {
       return
     }
     return supportedNetworks.find(
-      (network) =>
-        network.chainId === query.get('fromChainId') &&
-        network.coin === fromAccount?.accountId.coin
+      (network) => network.chainId === fromChainIdFromParams
     )
-  }, [supportedNetworks, fromAccount?.accountId.coin, query])
+  }, [supportedNetworks, fromChainIdFromParams])
 
   const toNetwork = useMemo(() => {
     if (!supportedNetworks?.length || !toCoin) {
@@ -222,13 +223,16 @@ export const useSwap = () => {
   }, [supportedNetworks, toCoin, query])
 
   const fromToken = useMemo(() => {
-    const contractOrSymbol = query.get('fromToken')
-    if (!contractOrSymbol || !fromNetwork) {
+    if (!fromContractOrSymbolFromParams || !fromNetwork) {
       return
     }
 
-    return getTokenFromParam(contractOrSymbol, fromNetwork, fullTokenList)
-  }, [fullTokenList, query, fromNetwork])
+    return getTokenFromParam(
+      fromContractOrSymbolFromParams,
+      fromNetwork,
+      fullTokenList
+    )
+  }, [fullTokenList, fromContractOrSymbolFromParams, fromNetwork])
 
   const toToken = useMemo(() => {
     const contractOrSymbol = query.get('toToken')
@@ -360,6 +364,11 @@ export const useSwap = () => {
     toAmount,
     slippageTolerance
   ])
+
+  const needsAccountSelected =
+    fromAccountIdFromParams === undefined &&
+    fromContractOrSymbolFromParams !== undefined &&
+    fromChainIdFromParams !== undefined
 
   const jupiter = useJupiter(swapProviderHookParams)
   const zeroEx = useZeroEx(swapProviderHookParams)
@@ -1346,6 +1355,12 @@ export const useSwap = () => {
     }
   }, [fromToken, toToken, reset])
 
+  useEffect(() => {
+    if (needsAccountSelected) {
+      setSelectingFromOrTo('from')
+    }
+  }, [needsAccountSelected])
+
   return {
     fromAccount,
     fromToken,
@@ -1397,7 +1412,8 @@ export const useSwap = () => {
     timeUntilNextQuote,
     selectedProvider,
     availableProvidersForSwap,
-    isSubmittingSwap
+    isSubmittingSwap,
+    needsAccountSelected
   }
 }
 export default useSwap
