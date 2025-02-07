@@ -17,9 +17,16 @@
 #include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/views/accessibility/view_accessibility.h"
 
 // static
-RoundedSeparator::RoundedSeparator() = default;
+RoundedSeparator::RoundedSeparator() {
+  // A valid role must be set in the AXNodeData prior to setting the name
+  // via AXNodeData::SetName.
+  GetViewAccessibility().SetRole(ax::mojom::Role::kSplitter);
+  GetViewAccessibility().SetName(
+      l10n_util::GetStringUTF8(IDS_ACCNAME_SEPARATOR));
+}
 
 RoundedSeparator::~RoundedSeparator() = default;
 
@@ -42,13 +49,6 @@ gfx::Size RoundedSeparator::CalculatePreferredSize(
   gfx::Insets insets = GetInsets();
   size.Enlarge(insets.width(), insets.height());
   return size;
-}
-
-void RoundedSeparator::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  // A valid role must be set in the AXNodeData prior to setting the name
-  // via AXNodeData::SetName.
-  node_data->role = ax::mojom::Role::kSplitter;
-  node_data->SetName(l10n_util::GetStringUTF8(IDS_ACCNAME_SEPARATOR));
 }
 
 void RoundedSeparator::OnPaint(gfx::Canvas* canvas) {

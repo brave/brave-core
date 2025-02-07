@@ -34,7 +34,6 @@ class NotificationAdHeaderView : public views::View {
   void UpdateContent();
 
   // views::View:
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   void OnThemeChanged() override;
 
  private:
@@ -42,6 +41,7 @@ class NotificationAdHeaderView : public views::View {
 
   std::unique_ptr<views::Label> CreateTitleLabel();
   void UpdateTitleLabel();
+  void UpdateAccessibleName();
 
   raw_ptr<views::Label> title_label_ = nullptr;
 };

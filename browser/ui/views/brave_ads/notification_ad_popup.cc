@@ -42,6 +42,7 @@
 #include "ui/gfx/shadow_value.h"
 #include "ui/gfx/skia_paint_util.h"
 #include "ui/native_theme/native_theme.h"
+#include "ui/views/accessibility/view_accessibility.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/widget/widget.h"
 
@@ -101,6 +102,10 @@ NotificationAdPopup::NotificationAdPopup(
     screen_observation_.Observe(screen);
   }
 
+  GetViewAccessibility().SetRole(ax::mojom::Role::kAlertDialog);
+  GetViewAccessibility().SetRoleDescription(
+      l10n_util::GetStringUTF8(IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME));
+
   FadeIn();
 }
 
@@ -139,12 +144,6 @@ void NotificationAdPopup::OnDisplayMetricsChanged(
     uint32_t changed_metrics) {
   // Called when the metrics of a display change
   RecomputeAlignment();
-}
-
-void NotificationAdPopup::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  node_data->role = ax::mojom::Role::kAlertDialog;
-  node_data->SetName(
-      l10n_util::GetStringUTF8(IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME));
 }
 
 void NotificationAdPopup::OnDisplayChanged() {

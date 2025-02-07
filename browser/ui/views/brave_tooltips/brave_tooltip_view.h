@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_TOOLTIPS_BRAVE_TOOLTIP_VIEW_H_
 
-#include <string>
-
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_label_button.h"
@@ -45,7 +43,6 @@ class BraveTooltipView : public views::View {
   views::Button* cancel_button_for_testing() const { return cancel_button_; }
 
   // views::InkDropHostView:
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   bool OnMousePressed(const ui::MouseEvent& event) override;
   bool OnMouseDragged(const ui::MouseEvent& event) override;
   void OnMouseReleased(const ui::MouseEvent& event) override;
@@ -93,8 +90,6 @@ class BraveTooltipView : public views::View {
 
   raw_ptr<views::LabelButton> ok_button_ = nullptr;
   raw_ptr<views::LabelButton> cancel_button_ = nullptr;
-
-  std::u16string accessible_name_;
 };
 
 }  // namespace brave_tooltips
