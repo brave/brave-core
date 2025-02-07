@@ -184,6 +184,28 @@ def generate_overrides_and_replace_strings(source_string_path):
         write_xml_file_from_tree(override_string_path, modified_xml_tree)
 
 
+def update_locale_settings_grd(xml_tree):
+    # Insert additional languages we support into locale_settings_*.grd file.
+    additional_languages = [
+        'az', 'ka', 'km', 'mk', 'mn', 'my', 'si', 'sq', 'sr-Latn', 'uz'
+    ]
+    outputs = xml_tree.find('.//outputs')
+    for lang in additional_languages:
+        found_output = xml_tree.find(f'.//output[@lang="{lang}"]')
+        # In locale_settings_linux.grd some of the languages we support on
+        # desktop are behind <if expr="is_android"> flag, so move them
+        # under <outputs>.
+        if found_output is not None:
+            outputs.append(found_output)
+        else:
+            new_output = etree.SubElement(outputs, 'output')
+            new_output.set('filename', f'platform_locale_settings_{lang}.pak')
+            new_output.set('type', 'data_package')
+            new_output.set('lang', lang)
+            new_output.tail = '\n'
+    return xml_tree
+
+
 def main():
     # pylint: disable=too-many-statements
     args = parse_args()
@@ -294,6 +316,11 @@ def main():
                 namespaces={"re": "http://exslt.org/regular-expressions"}):
             xtb_filename.attrib['path'] = xtb_filename.attrib['path'].replace(
                 'chromium_strings', 'brave_strings')
+
+    # Insert additional languages we support into locale_settings_*.grd files.
+    if basename in ('locale_settings_linux', 'locale_settings_mac',
+                    'locale_settings_win'):
+        xml_tree = update_locale_settings_grd(xml_tree)
 
     print(f'writing file {source_string_path}')
     write_xml_file_from_tree(source_string_path, xml_tree)
