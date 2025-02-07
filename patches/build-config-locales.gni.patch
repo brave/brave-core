@@ -1,0 +1,12 @@
+diff --git a/build/config/locales.gni b/build/config/locales.gni
+index ed26f3de9bed095cdd1d8f928b442c4b50b95e0e..7fe4735d5fd5a7e74f8ff50ad4c5f329063242d2 100644
+--- a/build/config/locales.gni
++++ b/build/config/locales.gni
+@@ -154,6 +154,7 @@ extended_locales = [
+   "zh-HK",
+   "zu",
+ ]
++import("//brave/build/config/locales.gni") extended_locales -= brave_extended_locales_exclusions
+ 
+ # Chrome locales not on Android.
+ # These locales have not yet been tested yet. Specifically, AOSP has not been
