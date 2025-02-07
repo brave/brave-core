@@ -134,6 +134,14 @@ NEVPNProtocolIKEv2* CreateProtocolConfig(const BraveVPNConnectionInfo& info) {
                                              10min to 30min */
   protocol_config.useConfigurationAttributeInternalIPSubnet = false;
 
+  NEProxySettings* proxy_settings = [[NEProxySettings alloc] init];
+  proxy_settings.proxyAutoConfigurationURL =
+      [NSURL URLWithString:base::SysUTF8ToNSString(info.proxy())];
+
+  proxy_settings.autoProxyConfigurationEnabled = YES;
+  proxy_settings.proxyAutoConfigurationJavaScript = nil;
+  protocol_config.proxySettings = proxy_settings;
+
   [[protocol_config IKESecurityAssociationParameters]
       setEncryptionAlgorithm:NEVPNIKEv2EncryptionAlgorithmAES256];
   [[protocol_config IKESecurityAssociationParameters]
