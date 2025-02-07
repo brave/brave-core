@@ -84,11 +84,13 @@ window.__firefox__.execute(function($) {
       }
     });
 
-    /*
     // 2. Farble plugin data
     // Injects fake plugins with fake mime-types
     // Random plugins are determined by the plugin data
     const farblePlugins = (fakePluginData) => {
+      if (fakePluginData.length === 0) {
+        return
+      }
       // Function that create a fake mime-type based on the given fake data
       const makeFakeMimeType = (fakeData) => {
         return Object.create(window.MimeType.prototype, {
@@ -170,7 +172,6 @@ window.__firefox__.execute(function($) {
         })
       }
     }
-    */
 
     // 3. Farble speech synthesizer
     // Adds a vake voice determined by the fakeVoiceName and randomVoiceIndexScale.
@@ -266,8 +267,6 @@ window.__firefox__.execute(function($) {
       console.error(`Failed to farble audio: ${error}`)
     }
 
-    /*
-     Currently plugin farbling is disabled: https://github.com/brave/brave-browser/issues/43804
     try {
       // Fake data that is to be used to construct fake plugins
       const fakePluginData = args['fakePluginData']
@@ -275,7 +274,6 @@ window.__firefox__.execute(function($) {
     } catch (error) {
       console.error(`Failed to farble plugins: ${error}`)
     }
-    */
 
     try {
       // A value representing a fake voice name that will be used to add a fake voice

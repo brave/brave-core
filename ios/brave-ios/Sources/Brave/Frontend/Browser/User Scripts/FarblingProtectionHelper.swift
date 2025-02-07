@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 
 /// A class that helps in creating farbling data
@@ -92,6 +93,9 @@ class FarblingProtectionHelper {
 
   /// Generate fake plugin data to be injected into the farbling protection script
   private static func makeFakePluginData() -> [FarblingData.FakePluginData] {
+    guard BraveCore.FeatureList.kBraveIOSEnableFarblingPlugins.enabled else {
+      return []
+    }
     let pluginCount = UInt8.seededRandom(in: 1...3)
 
     // Generate 1 to 3 fake plugins
