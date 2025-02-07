@@ -78,7 +78,7 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
     ];
   }
 
-  private syncCode: string;
+  private syncCode: string | undefined;
   private codeType: 'qr' | 'words' | 'choose' | 'input' | null;
   private syncCodeValidationError: string;
   private syncCodeWordCount_: number;
@@ -89,16 +89,12 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
   syncBrowserProxy_: BraveSyncBrowserProxy = BraveSyncBrowserProxy.getInstance();
 
   async computeSyncCodeWordCount_() {
-    if (this.codeType !== 'input') {
-      return
-    }
-
-    if (!this.syncCode) {
+    if (this.codeType !== 'words' && this.codeType !== 'input') {
       return
     }
 
     this.syncCodeWordCount_ =
-      await this.syncBrowserProxy_.getWordsCount(this.syncCode)
+      await this.syncBrowserProxy_.getWordsCount(this.syncCode ?? '')
   }
 
   isCodeType(askingType: string) {
@@ -125,6 +121,10 @@ export class SettingsBraveSyncCodeDialogElement extends SettingsBraveSyncCodeDia
   }
 
   handleSyncCodeCopy_() {
+    if (!this.syncCode) {
+      console.warn('Skip handleSyncCodeCopy because code words are empty')
+      return
+    }
     window.clearTimeout(this.hasCopiedSyncCodeTimer_)
     navigator.clipboard.writeText(this.syncCode)
     this.hasCopiedSyncCode_ = true
