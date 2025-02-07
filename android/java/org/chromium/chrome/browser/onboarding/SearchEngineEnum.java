@@ -10,43 +10,61 @@ package org.chromium.chrome.browser.onboarding;
 import org.chromium.chrome.R;
 
 public enum SearchEngineEnum {
-    GOOGLE(R.drawable.search_engine_google, SearchEngineEnumConstants.SEARCH_GOOGLE_ID,
+    GOOGLE(
+            R.drawable.ic_google_color,
+            SearchEngineEnumConstants.SEARCH_GOOGLE_ID,
             R.string.google_desc),
-    BRAVE(R.drawable.search_engine_brave, SearchEngineEnumConstants.SEARCH_BRAVE_ID,
+    BRAVE(
+            R.drawable.ic_brave_search_big_color,
+            SearchEngineEnumConstants.SEARCH_BRAVE_ID,
             R.string.brave_desc),
-    DUCKDUCKGO(R.drawable.search_engine_duckduckgo, SearchEngineEnumConstants.SEARCH_DUCKDUCKGO_ID,
+    DUCKDUCKGO(
+            R.drawable.ic_duckduckgo_color,
+            SearchEngineEnumConstants.SEARCH_DUCKDUCKGO_ID,
             R.string.ddg_desc),
-    QWANT(R.drawable.search_engine_qwant, SearchEngineEnumConstants.SEARCH_QWANT_ID,
+    QWANT(
+            R.drawable.ic_qwant_color,
+            SearchEngineEnumConstants.SEARCH_QWANT_ID,
             R.string.qwant_desc),
-    BING(R.drawable.search_engine_bing, SearchEngineEnumConstants.SEARCH_BING_ID,
-            R.string.bing_desc),
-    YANDEX(R.drawable.yandex, SearchEngineEnumConstants.SEARCH_YANDEX_ID, R.string.yandex_desc),
-    STARTPAGE(R.drawable.search_engine_startpage, SearchEngineEnumConstants.SEARCH_STARTPAGE_ID,
+    BING(R.drawable.ic_bing_color, SearchEngineEnumConstants.SEARCH_BING_ID, R.string.bing_desc),
+    YANDEX(
+            R.drawable.ic_yandex_color,
+            SearchEngineEnumConstants.SEARCH_YANDEX_ID,
+            R.string.yandex_desc),
+    STARTPAGE(
+            R.drawable.ic_startpage_color,
+            SearchEngineEnumConstants.SEARCH_STARTPAGE_ID,
             R.string.startpage_desc),
-    ECOSIA(R.drawable.ecosia, SearchEngineEnumConstants.SEARCH_ECOSIA_ID, R.string.ecosia_desc),
-    DAUM(R.drawable.daum, SearchEngineEnumConstants.SEARCH_DAUM_ID, R.string.daum_desc),
-    NAVER(R.drawable.naver, SearchEngineEnumConstants.SEARCH_NAVER_ID, R.string.naver_desc);
+    ECOSIA(
+            R.drawable.ic_ecosia_color,
+            SearchEngineEnumConstants.SEARCH_ECOSIA_ID,
+            R.string.ecosia_desc),
+    DAUM(R.drawable.ic_daum_color, SearchEngineEnumConstants.SEARCH_DAUM_ID, R.string.daum_desc),
+    NAVER(
+            R.drawable.ic_naver_color,
+            SearchEngineEnumConstants.SEARCH_NAVER_ID,
+            R.string.naver_desc);
 
-    private final int icon;
-    private final int id;
-    private final int desc;
+    private final int mIcon;
+    private final int mId;
+    private final int mDesc;
 
     SearchEngineEnum(int icon, int id, int desc) {
-        this.icon = icon;
-        this.id = id;
-        this.desc = desc;
+        this.mIcon = icon;
+        this.mId = id;
+        this.mDesc = desc;
     }
 
     public int getIcon() {
-        return icon;
+        return mIcon;
     }
 
     public int getId() {
-        return id;
+        return mId;
     }
 
     public int getDesc() {
-        return desc;
+        return mDesc;
     }
 
     interface SearchEngineEnumConstants {

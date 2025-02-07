@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2025 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <group>
+        <clip-path android:pathData="M2,0L22,0A2,2 0,0 1,24 2L24,22A2,2 0,0 1,22 24L2,24A2,2 0,0 1,0 22L0,2A2,2 0,0 1,2 0z" />
+        <path
+            android:fillColor="#ffffff"
+            android:pathData="M2,0L22,0A2,2 0,0 1,24 2L24,22A2,2 0,0 1,22 24L2,24A2,2 0,0 1,0 22L0,2A2,2 0,0 1,2 0z" />
+        <path android:pathData="M0.736,11.957C0.736,8.505 0.735,5.053 0.736,1.601C0.736,0.458 1.195,0.001 2.343,0.001C5.587,0 8.831,-0 12.076,0C16.705,0.002 20.932,2.764 22.662,7.071C24.449,11.516 23.992,15.761 21.063,19.604C19.116,22.158 16.484,23.608 13.263,23.941C12.874,23.98 12.487,24 12.099,24C8.815,24 5.532,24 2.249,23.999C1.215,23.998 0.735,23.515 0.734,22.467C0.732,18.963 0.733,15.46 0.733,11.957C0.734,11.957 0.735,11.957 0.736,11.957ZM7.587,11.997C7.588,11.997 7.589,11.997 7.589,11.997C7.589,13.528 7.588,15.059 7.59,16.59C7.591,17.102 7.63,17.14 8.149,17.14C9.551,17.142 10.952,17.14 12.354,17.14C13.448,17.139 14.382,16.726 15.163,15.985C16.889,14.35 17.398,11.799 16.366,9.653C15.507,7.864 14.12,6.81 12.039,6.846C10.742,6.868 9.444,6.849 8.147,6.85C7.628,6.851 7.589,6.891 7.588,7.402C7.586,8.934 7.587,10.466 7.587,11.997Z"
+            tools:ignore="VectorPath">
+            <aapt:attr name="android:fillColor">
+                <gradient
+                    android:centerX="12.224"
+                    android:centerY="12"
+                    android:gradientRadius="12.526"
+                    android:type="radial">
+                    <item
+                        android:color="#FF739FFA"
+                        android:offset="0" />
+                    <item
+                        android:color="#FFC2C86C"
+                        android:offset="0.175" />
+                    <item
+                        android:color="#FFFDD203"
+                        android:offset="0.34" />
+                    <item
+                        android:color="#FFFE931F"
+                        android:offset="0.515" />
+                    <item
+                        android:color="#FFFF8483"
+                        android:offset="0.705" />
+                    <item
+                        android:color="#FFA597C5"
+                        android:offset="0.845" />
+                    <item
+                        android:color="#FF739FFA"
+                        android:offset="1" />
+                </gradient>
+            </aapt:attr>
+        </path>
+    </group>
+</vector>
