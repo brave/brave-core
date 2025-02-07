@@ -23,8 +23,9 @@ namespace {
 
 // youtube.json keys
 constexpr char kVersion[] = "version";
-constexpr char kFeatureScript[] = "feature_script";
-constexpr char kFullScreenScript[] = "fullscreen_script";
+constexpr char kFullscreenScript[] = "extra_controls_fullscreen_script";
+constexpr char kPipScript[] = "extra_controls_pip_script";
+constexpr char kPlaybackVideoScript[] = "playback_video_script";
 
 bool GetFilePathFromValue(const base::Value* value, base::FilePath* result) {
   if (!value->is_string()) {
@@ -42,8 +43,9 @@ namespace youtube_script_injector {
 YouTubeJson::YouTubeJson() = default;
 YouTubeJson::~YouTubeJson() = default;
 YouTubeJson::YouTubeJson(const YouTubeJson& other) {
-  feature_script_path_ = other.feature_script_path_;
-  fullscreen_script_path_ = other.fullscreen_script_path_;
+  playback_video_script_path_ = other.playback_video_script_path_;
+  extra_controls_fullscreen_script_path_ = other.extra_controls_fullscreen_script_path_;
+  extra_controls_pip_script_path_ = other.extra_controls_pip_script_path_;
   version_ = other.version_;
 }
 
@@ -51,10 +53,11 @@ YouTubeJson::YouTubeJson(const YouTubeJson& other) {
 void YouTubeJson::RegisterJSONConverter(
     base::JSONValueConverter<YouTubeJson>* converter) {
   converter->RegisterCustomValueField<base::FilePath>(
-      kFeatureScript, &YouTubeJson::feature_script_path_, GetFilePathFromValue);
+      kPlaybackVideoScript, &YouTubeJson::playback_video_script_path_, GetFilePathFromValue);
   converter->RegisterCustomValueField<base::FilePath>(
-      kFullScreenScript, &YouTubeJson::fullscreen_script_path_,
-      GetFilePathFromValue);
+      kFullscreenScript, &YouTubeJson::extra_controls_fullscreen_script_path_, GetFilePathFromValue);
+  converter->RegisterCustomValueField<base::FilePath>(
+      kPipScript, &YouTubeJson::extra_controls_pip_script_path_, GetFilePathFromValue);
   converter->RegisterIntField(kVersion, &YouTubeJson::version_);
 }
 

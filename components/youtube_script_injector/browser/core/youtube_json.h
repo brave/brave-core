@@ -23,11 +23,13 @@ namespace youtube_script_injector {
 // Format of the youtube.json file:
 // {
 //   "version": 1,
-//   "feature_script": "keep-playing-audio.js"
-//   "fullscreen_script": "fullescreen.js"
+//   "playback_video_script": "playback-video.js",
+//   "extra_controls_fullscreen_script": "extra-controls-fullscreen.js",
+//   "extra_controls_pip_script": "extra-controls-pip.js"
 // }
-// Note that "feature_script" and "fullscreen_script" give a path
-// relative to the component under scripts directory.
+// Note that "playback_video_script_path_", and "extra_controls_fullscreen_script_path_",
+// and "extra_controls_pip_script_path_" give a path relative to the
+// component under scripts directory.
 class YouTubeJson {
  public:
   YouTubeJson();
@@ -44,18 +46,22 @@ class YouTubeJson {
   static std::optional<YouTubeJson> ParseJson(const std::string& contents);
 
   // Getters.
-  const base::FilePath& GetFeatureScript() const {
-    return feature_script_path_;
+  const base::FilePath& GetPlaybackVideoScript() const {
+    return playback_video_script_path_;
   }
   const base::FilePath& GetFullscreenScript() const {
-    return fullscreen_script_path_;
+    return extra_controls_fullscreen_script_path_;
+  }
+  const base::FilePath& GetPipScript() const {
+    return extra_controls_pip_script_path_;
   }
   int GetVersion() const { return version_; }
 
  private:
   // Thesse are paths (not contents) relative to the component under scripts/.
-  base::FilePath feature_script_path_;
-  base::FilePath fullscreen_script_path_;
+  base::FilePath playback_video_script_path_;
+  base::FilePath extra_controls_fullscreen_script_path_;
+  base::FilePath extra_controls_pip_script_path_;
   // Used for checking if the last inserted script is the latest version.
   int version_;
 };
