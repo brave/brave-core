@@ -22,8 +22,8 @@ component("content") {
     "//brave/components/youtube_script_injector/common",
     "//brave/components/youtube_script_injector/common:mojom",
     "//components/prefs",
-    "//components/user_prefs",
     "//components/sessions",
+    "//components/user_prefs",
     "//content/public/browser",
     "//url",
   ]
