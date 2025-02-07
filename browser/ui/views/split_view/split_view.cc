@@ -59,6 +59,21 @@ class ActivatableContentsWebView : public ContentsWebView {
 BEGIN_METADATA(ActivatableContentsWebView)
 END_METADATA
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+
+bool IsTabDistilled(tabs::TabHandle tab_handle) {
+  if (!tab_handle.Get() || !tab_handle.Get()->GetContents()) {
+    return false;
+  }
+  if (auto* th = speedreader::SpeedreaderTabHelper::FromWebContents(
+          tab_handle.Get()->GetContents())) {
+    return speedreader::DistillStates::IsDistilled(th->PageDistillState());
+  }
+  return false;
+}
+
+#endif
+
 }  // namespace
 
 SplitView::SplitView(Browser& browser,
@@ -432,7 +447,7 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
       secondary_contents_container_->GetVisible());
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  UpdateSecondaryReaderModeToolbar(nullptr);
+  UpdateSecondaryReaderModeToolbarVisibility();
 #endif
 
   InvalidateLayout();
@@ -455,48 +470,48 @@ void SplitView::OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {
   }
 }
 
-void SplitView::UpdateSecondaryReaderModeToolbar(
-    ReaderModeToolbarView* primary_toolbar) {
-  if (!secondary_reader_mode_toolbar_) {
-    return;
-  }
-
-  auto is_distilled = [](tabs::TabHandle tab_handle) {
-    if (!tab_handle.Get() || !tab_handle.Get()->GetContents()) {
-      return false;
-    }
-    if (auto* th = speedreader::SpeedreaderTabHelper::FromWebContents(
-            tab_handle.Get()->GetContents())) {
-      return speedreader::DistillStates::IsDistilled(th->PageDistillState());
-    }
-    return false;
-  };
-
+void SplitView::UpdateSecondaryReaderModeToolbarVisibility() {
   auto active_tab_handle = GetActiveTabHandle();
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(base::to_address(browser_));
-  if (secondary_reader_mode_toolbar_) {
-    if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
-      if (tile->first == active_tab_handle) {
-        secondary_reader_mode_toolbar_->SetVisible(is_distilled(tile->second));
-      } else {
-        secondary_reader_mode_toolbar_->SetVisible(is_distilled(tile->first));
-      }
-      if (primary_toolbar) {
-        primary_toolbar->SwapToolbarContents(
-            secondary_reader_mode_toolbar_.get());
-      }
-    } else if (secondary_reader_mode_toolbar_) {
-      secondary_reader_mode_toolbar_->SetVisible(false);
+  if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
+    if (tile->first == active_tab_handle) {
+      secondary_reader_mode_toolbar_->SetVisible(IsTabDistilled(tile->second));
+    } else {
+      secondary_reader_mode_toolbar_->SetVisible(IsTabDistilled(tile->first));
     }
+  } else if (secondary_reader_mode_toolbar_) {
+    secondary_reader_mode_toolbar_->SetVisible(false);
+  }
+}
+
+void SplitView::UpdateSecondaryReaderModeToolbar() {
+  auto* browser_view = static_cast<BraveBrowserView*>(browser_->window());
+  if (!browser_view) {
+    return;
+  }
+
+  UpdateSecondaryReaderModeToolbarVisibility();
+
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
+  if (split_view_browser_data &&
+      split_view_browser_data->IsTabTiled(GetActiveTabHandle())) {
+    // We need to swap the WebContents of the toolbars because, when the active
+    // browser tab is switched, the split view swaps both the views displaying
+    // the pages and the WebContents within those views. The toolbar does the
+    // same thing to ensure that the toolbar state follows the correct tab.
+    // DevTools views do the same.
+    ReaderModeToolbarView* primary_toolbar =
+        browser_view->reader_mode_toolbar();
+    primary_toolbar->SwapToolbarContents(secondary_reader_mode_toolbar_.get());
   }
 }
 #endif
 
 gfx::Point SplitView::GetSplitViewLocationBarOffset() const {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  if (secondary_reader_mode_toolbar_ &&
-      secondary_reader_mode_toolbar_->GetVisible()) {
+  if (secondary_reader_mode_toolbar_->GetVisible()) {
     return {0, secondary_reader_mode_toolbar_->height()};
   }
 #endif

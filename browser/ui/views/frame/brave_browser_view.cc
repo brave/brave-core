@@ -480,23 +480,21 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 }
 
 void BraveBrowserView::UpdateReaderModeToolbar() {
-  if (reader_mode_toolbar_) {
-    auto is_distilled = [](content::WebContents* web_contents) {
-      if (!web_contents) {
-        return false;
-      }
-      if (auto* th = speedreader::SpeedreaderTabHelper::FromWebContents(
-              web_contents)) {
-        return speedreader::DistillStates::IsDistilled(th->PageDistillState());
-      }
+  auto is_distilled = [](content::WebContents* web_contents) {
+    if (!web_contents) {
       return false;
-    };
-    reader_mode_toolbar_->SetVisible(
-        is_distilled(browser()->tab_strip_model()->GetActiveWebContents()));
-  }
+    }
+    if (auto* th =
+            speedreader::SpeedreaderTabHelper::FromWebContents(web_contents)) {
+      return speedreader::DistillStates::IsDistilled(th->PageDistillState());
+    }
+    return false;
+  };
+  reader_mode_toolbar_->SetVisible(
+      is_distilled(browser()->tab_strip_model()->GetActiveWebContents()));
 
   if (split_view_) {
-    split_view_->UpdateSecondaryReaderModeToolbar(reader_mode_toolbar_);
+    split_view_->UpdateSecondaryReaderModeToolbar();
   }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)

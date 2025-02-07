@@ -96,9 +96,12 @@ class SplitView : public views::View,
   }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+  ReaderModeToolbarView* secondary_reader_mode_toolbar() {
+    return secondary_reader_mode_toolbar_;
+  }
   void OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) override;
-
-  void UpdateSecondaryReaderModeToolbar(ReaderModeToolbarView* primary_toolbar);
+  void UpdateSecondaryReaderModeToolbarVisibility();
+  void UpdateSecondaryReaderModeToolbar();
 #endif
 
   void UpdateCornerRadius(const gfx::RoundedCornersF& corners);

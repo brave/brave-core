@@ -11,7 +11,6 @@
 #include "base/run_loop.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
@@ -19,20 +18,20 @@
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/split_view/split_view.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/constants/brave_paths.h"
-#include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/features.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
-#include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
-#include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
@@ -46,9 +45,6 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/dom_distiller/core/dom_distiller_switches.h"
-#include "components/keep_alive_registry/keep_alive_types.h"
-#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/language/core/browser/language_prefs.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/reload_type.h"
@@ -56,7 +52,6 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "content/public/test/test_utils.h"
-#include "mojo/public/cpp/bindings/receiver.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -93,7 +88,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     feature_list_.InitWithFeaturesAndParameters(
         {{speedreader::kSpeedreaderFeature,
           {{speedreader::kSpeedreaderTTS.name, "true"}}},
-         {ai_chat::features::kAIChat, {{}}}},
+         {ai_chat::features::kAIChat, {{}}},
+         {tabs::features::kBraveSplitView, {{}}}},
         {});
   }
 
@@ -1011,4 +1007,54 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReaderEnableForSite) {
   NavigateToPageSynchronously("/", WindowOpenDisposition::CURRENT_TAB);
   EXPECT_TRUE(speedreader::DistillStates::IsViewOriginal(
       tab_helper()->PageDistillState()));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
+  ToggleSpeedreader();
+
+  brave::NewSplitViewForTab(browser());
+
+  auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
+
+  auto* toolbar = browser_view->reader_mode_toolbar();
+  auto* secondary_toolbar =
+      browser_view->split_view()->secondary_reader_mode_toolbar();
+
+  // No toolbars.
+  EXPECT_FALSE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
+
+  // Load a distillabe page in first tab.
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+
+  ASSERT_TRUE(toolbar && secondary_toolbar);
+  EXPECT_TRUE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
+
+  // Change the active tab.
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  EXPECT_FALSE(toolbar->GetVisible());
+  EXPECT_TRUE(secondary_toolbar->GetVisible());
+
+  // Load a distillabe page in second tab.
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(toolbar->GetVisible());
+  EXPECT_TRUE(secondary_toolbar->GetVisible());
+
+  // Second tab is active. Show original content.
+  ClickReaderButton();
+
+  EXPECT_FALSE(toolbar->GetVisible());
+  EXPECT_TRUE(secondary_toolbar->GetVisible());
+
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  // First tab is active. Show original content.
+  ClickReaderButton();
+
+  // There are no distilled pages.
+  EXPECT_FALSE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
 }

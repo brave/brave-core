@@ -94,6 +94,7 @@ class BraveBrowserView : public BrowserView,
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+  ReaderModeToolbarView* reader_mode_toolbar() { return reader_mode_toolbar_; }
   speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
       speedreader::SpeedreaderBubbleLocation location) override;
