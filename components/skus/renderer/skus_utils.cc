@@ -16,16 +16,16 @@
 namespace {
 
 const std::vector<blink::WebSecurityOrigin> WebSecurityOriginList() {
-  static const base::NoDestructor<std::vector<blink::WebSecurityOrigin>> list =
-      [&] {
+  static const base::NoDestructor<std::vector<blink::WebSecurityOrigin>> list(
+      [] {
         std::vector<blink::WebSecurityOrigin> list;
         std::ranges::transform(
             skus::kSafeOrigins, std::back_inserter(list),
             [](auto& origin_string) {
               return blink::WebSecurityOrigin::Create(GURL(origin_string));
             });
-        return base::NoDestructor(list);
-      }();
+        return list;
+      }());
   return *list;
 }
 

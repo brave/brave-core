@@ -15,14 +15,14 @@
 namespace {
 
 const std::vector<url::Origin>& OriginList() {
-  static const base::NoDestructor<std::vector<url::Origin>> list = [&] {
+  static const base::NoDestructor<std::vector<url::Origin>> list([] {
     std::vector<url::Origin> list;
     std::ranges::transform(skus::kSafeOrigins, std::back_inserter(list),
                            [](auto& origin_string) {
                              return url::Origin::Create(GURL(origin_string));
                            });
-    return base::NoDestructor(list);
-  }();
+    return list;
+  }());
   return *list;
 }
 
