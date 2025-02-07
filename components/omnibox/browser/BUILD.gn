@@ -70,4 +70,6 @@ source_set("unit_tests") {
       "//brave/components/vector_icons",
     ]
   }
+
+  data = [ "//components/test/data/omnibox" ]
 }
