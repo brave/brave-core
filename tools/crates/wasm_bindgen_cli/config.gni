@@ -3,8 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-wasm_bindgen_target_dir = "$root_build_dir/wasm_bindgen"
-wasm_bindgen_exe = "$wasm_bindgen_target_dir/release/wasm-bindgen"
+wasm_bindgen_cli_exe = "$root_build_dir/wasm_bindgen_cli/release/wasm-bindgen"
 if (host_os == "win") {
-  wasm_bindgen_exe += ".exe"
+  wasm_bindgen_cli_exe += ".exe"
 }

@@ -1,0 +1,47 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/tools/crates/cargo.gni")
+
+template("build_crate") {
+  forward_variables_from(invoker,
+                         [
+                           "deps",
+                           "output",
+                         ])
+
+  action("build_$target_name") {
+    script = "//build/gn_run_binary.py"
+
+    inputs = [
+      cargo_exe,
+      "crate/Cargo.lock",
+    ]
+    if (defined(invoker.inputs)) {
+      inputs += invoker.inputs
+    }
+
+    outputs = [ output ]
+    target_dir = get_path_info(output, "dir") + "/.."
+
+    # To avoid irreproducible builds, `build_crate`s MUST always be built with their vendored deps,
+    # therefore we have to make sure to pass:
+    #   --config <path/to/the/dep>/crate/.cargo/config.toml
+    #   --frozen (--locked + --offline)
+    # when running `cargo build`.
+    args = [
+      rebase_path(cargo_exe),
+      "build",
+      "--release",
+      "--manifest-path",
+      rebase_path("crate/Cargo.toml"),
+      "--config",
+      rebase_path("crate/.cargo/config.toml"),
+      "--target-dir",
+      rebase_path(target_dir),
+      "--frozen",
+    ]
+  }
+}

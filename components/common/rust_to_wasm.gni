@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/tools/crates/wasm_bindgen/config.gni")
+import("//brave/tools/crates/wasm_bindgen_cli/config.gni")
 import("//brave/tools/crates/wasm_pack/config.gni")
 
 template("rust_to_wasm") {
@@ -33,15 +33,15 @@ template("rust_to_wasm") {
       wasm_pack_target = invoker.wasm_pack_target
     }
 
-    # A note on --mode no-install: it's needed because we vendor our own wasm-bindgen (CLI).
+    # A note on --mode no-install: it's needed because we vendor our own wasm-bindgen-cli.
     # Without --mode no-install, wasm-pack attempts to download the binary from the GitHub releases page,
     # or via `cargo install`, which:
     # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
     # - makes our approach less self-contained.
     # --mode no-install suppresses wasm-opt's installation as well - also, currently we don't vendor wasm-opt (befause of the transitive Git submodule dependencies).
     args = [
-      "--wasm_bindgen_path",
-      get_path_info(rebase_path(wasm_bindgen_exe), "dir"),
+      "--wasm_bindgen_cli_path",
+      get_path_info(rebase_path(wasm_bindgen_cli_exe), "dir"),
 
       # below will be forwarded to wasm-pack (above will be added to $PATH)
       rebase_path(wasm_pack_exe),

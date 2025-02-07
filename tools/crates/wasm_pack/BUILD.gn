@@ -9,9 +9,7 @@ import("//brave/tools/crates/wasm_pack/config.gni")
 action("build_wasm_pack") {
   assert(current_toolchain == host_toolchain)
 
-  deps = [
-    "//brave/tools/crates/wasm_bindgen:build_wasm_bindgen($host_toolchain)",
-  ]
+  deps = [ "//brave/tools/crates/wasm_bindgen_cli:build_wasm_bindgen_cli($host_toolchain)" ]
 
   script = "//build/gn_run_binary.py"
 
