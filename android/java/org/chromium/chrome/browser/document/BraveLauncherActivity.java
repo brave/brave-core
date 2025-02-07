@@ -19,7 +19,7 @@ public class BraveLauncherActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        BottomToolbarConfiguration.isBottomToolbarEnabled();
+        BottomToolbarConfiguration.isBraveBottomControlsEnabled();
         BraveHelper.disableFREDRP();
     }
 }

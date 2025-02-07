@@ -22,6 +22,7 @@ import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -69,6 +70,7 @@ import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.rewards.tipping.PopupWindowTippingTabletUI;
 import org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
@@ -261,13 +263,41 @@ public class BraveRewardsPanel
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
 
-        mPopupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
+        int mesuredHeight = 0;
+        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+            mPopupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            mesuredHeight = mPopupView.getMeasuredHeight() + mAnchorView.getHeight();
+            mPopupView
+                    .getViewTreeObserver()
+                    .addOnGlobalLayoutListener(
+                            new ViewTreeObserver.OnGlobalLayoutListener() {
+                                @Override
+                                public void onGlobalLayout() {
+                                    // Get the new height of the popup view.
+                                    int newHeight =
+                                            mPopupView.getHeight() + mAnchorView.getHeight();
+
+                                    // Update the popup window's height.
+                                    mPopupWindow.update(
+                                            mAnchorView,
+                                            0,
+                                            -newHeight,
+                                            mPopupWindow.getWidth(),
+                                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                                }
+                            });
+        }
+
+        mPopupWindow.setAnimationStyle(
+                BottomToolbarConfiguration.isToolbarTopAnchored()
+                        ? R.style.AnchoredPopupAnimEndTop
+                        : R.style.AnchoredPopupAnimEndBottom);
 
         if (SysUtils.isLowEndDevice()) {
             mPopupWindow.setAnimationStyle(0);
         }
 
-        mPopupWindow.showAsDropDown(mAnchorView, 0, 0);
+        mPopupWindow.showAsDropDown(mAnchorView, 0, -1 * mesuredHeight);
 
         mBraveRewardsNativeWorker.getExternalWallet();
         mBraveRewardsNativeWorker.recordPanelTrigger();

@@ -109,7 +109,7 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     }
 
     private void maybeUpdateBottomMarginForContainerView() {
-        if (mIsTablet) return;
+        if (mIsTablet || isToolbarBottomAnchored()) return;
 
         BraveReflectionUtil.invokeMethod(
                 HubManagerImpl.class, this, "ensureHubCoordinatorIsInitialized");
@@ -122,5 +122,10 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                         ? mBottomToolbarHeight
                         : 0;
         containerView.setLayoutParams(params);
+    }
+
+    private boolean isToolbarBottomAnchored() {
+        return !ContextUtils.getAppSharedPreferences()
+                .getBoolean(BravePreferenceKeys.BRAVE_TOOLBAR_TOP_ANCHORED, true);
     }
 }

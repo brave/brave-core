@@ -64,11 +64,13 @@ public class BraveHubToolbarView extends HubToolbarView {
     }
 
     private void updateButtonsVisibility() {
-        boolean isMenuFromBottom =
+        boolean shouldHideButtons =
                 ContextUtils.getAppSharedPreferences()
-                        .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
+                                .getBoolean(BravePreferenceKeys.BRAVE_TOOLBAR_TOP_ANCHORED, true)
+                        && ContextUtils.getAppSharedPreferences()
+                                .getBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
 
-        mActionButton.setVisibility(isMenuFromBottom ? View.INVISIBLE : View.VISIBLE);
-        mMenuButton.setVisibility(isMenuFromBottom ? View.INVISIBLE : View.VISIBLE);
+        mActionButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
+        mMenuButton.setVisibility(shouldHideButtons ? View.INVISIBLE : View.VISIBLE);
     }
 }

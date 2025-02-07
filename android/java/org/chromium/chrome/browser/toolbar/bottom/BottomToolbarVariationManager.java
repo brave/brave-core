@@ -11,50 +11,50 @@ package org.chromium.chrome.browser.toolbar.bottom;
  */
 public class BottomToolbarVariationManager {
     /**
-     * @return Whether or not new tab button should be visible on the bottom toolbar
-     *         in portrait mode in the current variation.
+     * @return Whether or not new tab button should be visible on the bottom toolbar in portrait
+     *     mode in the current variation.
      */
-    public static boolean isNewTabButtonOnBottom() {
-        return BottomToolbarConfiguration.isBottomToolbarEnabled();
+    public static boolean isNewTabButtonOnBottomControls() {
+        return BottomToolbarConfiguration.isBraveBottomControlsEnabled();
     }
 
     /**
-     * @return Whether or not menu button should be visible on the top toolbar
-     *         in portrait mode in the current variation.
+     * @return Whether or not menu button should be visible on the top toolbar in portrait mode in
+     *     the current variation.
      */
-    public static boolean isMenuButtonOnBottom() {
-        return BottomToolbarConfiguration.isBottomToolbarEnabled();
+    public static boolean isMenuButtonOnBottomControls() {
+        return BottomToolbarConfiguration.isBraveBottomControlsEnabled();
     }
 
     /**
-     * @return Whether or not bottom toolbar should be visible in overview mode of portrait mode
-     *         in the current variation.
+     * @return Whether or not bottom toolbar should be visible in overview mode of portrait mode in
+     *     the current variation.
      */
-    public static boolean shouldBottomToolbarBeVisibleInOverviewMode() {
-        return BottomToolbarConfiguration.isBottomToolbarEnabled();
+    public static boolean shouldBottomControlsBeVisibleInOverviewMode() {
+        return BottomToolbarConfiguration.isBraveBottomControlsEnabled();
     }
 
     /**
-     * @return Whether or not home button should be visible in top toolbar of portrait mode
-     *         in current variation.
+     * @return Whether or not home button should be visible in top toolbar of portrait mode in
+     *     current variation.
      */
-    public static boolean isHomeButtonOnBottom() {
-        return BottomToolbarConfiguration.isBottomToolbarEnabled();
+    public static boolean isHomeButtonOnBottomControls() {
+        return BottomToolbarConfiguration.isBraveBottomControlsEnabled();
     }
 
     /**
-     * @return Whether or not tab switcher button should be visible in bottom toolbar
-     *         of portrait mode in current variation.
+     * @return Whether or not tab switcher button should be visible in bottom toolbar of portrait
+     *     mode in current variation.
      */
-    public static boolean isTabSwitcherOnBottom() {
-        return BottomToolbarConfiguration.isBottomToolbarEnabled();
+    public static boolean isTabSwitcherOnBottomControls() {
+        return BottomToolbarConfiguration.isBraveBottomControlsEnabled();
     }
 
     /**
-     * @return Whether or not bookmark button should be visible in bottom toolbar
-     *         of portrait mode in current variation.
+     * @return Whether or not bookmark button should be visible in bottom toolbar of portrait mode
+     *     in current variation.
      */
-    public static boolean isBookmarkButtonOnBottom() {
-        return BottomToolbarConfiguration.isBottomToolbarEnabled();
+    public static boolean isBookmarkButtonOnBottomControls() {
+        return BottomToolbarConfiguration.isBraveBottomControlsEnabled();
     }
 }

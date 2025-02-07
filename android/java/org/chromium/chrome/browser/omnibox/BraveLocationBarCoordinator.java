@@ -124,7 +124,9 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 baseChromeLayout,
                 () ->
                         bottomWindowPaddingSupplier.get()
-                                + (isBottomToolbarVisible() ? locationBarLayout.getHeight() : 0),
+                                + (isBraveBottomControlsVisible()
+                                        ? locationBarLayout.getHeight()
+                                        : 0),
                 onLongClickListener,
                 browserControlsStateProvider,
                 isToolbarPositionCustomizationEnabled);
@@ -149,8 +151,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
         }
     }
 
-    private static boolean isBottomToolbarVisible() {
-        return BottomToolbarConfiguration.isBottomToolbarEnabled()
+    private static boolean isBraveBottomControlsVisible() {
+        return BottomToolbarConfiguration.isBraveBottomControlsEnabled()
                 && BraveMenuButtonCoordinator.isMenuFromBottom();
     }
 }

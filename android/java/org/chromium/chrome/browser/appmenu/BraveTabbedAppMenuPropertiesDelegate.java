@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
@@ -359,22 +360,36 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                             mActivityTabProvider.get(), mAppMenuDelegate);
         }
 
-        // Hide bookmark button if bottom toolbar is enabled
+        // Hide bookmark button if bottom toolbar is enabled and address bar is on top.
         ImageButton bookmarkButton = view.findViewById(R.id.bookmark_this_page_id);
-        if (bookmarkButton != null && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+        if (bookmarkButton != null
+                && BottomToolbarConfiguration.isBraveBottomControlsEnabled()
+                && BottomToolbarConfiguration.isToolbarTopAnchored()) {
             bookmarkButton.setVisibility(View.GONE);
         }
 
-        // Replace info button with share
-        ImageButton shareButton = view.findViewById(R.id.info_menu_id);
+        boolean showForwardButton = BottomToolbarConfiguration.isToolbarTopAnchored();
+        ImageButton forwardButton = view.findViewById(R.id.forward_menu_id);
+        if (forwardButton != null) {
+            showForwardButton = showForwardButton || forwardButton.isEnabled();
+            forwardButton.setVisibility(showForwardButton ? View.VISIBLE : View.GONE);
+        }
+
+        ImageButton shareButton = view.findViewById(R.id.share_menu_id);
+        boolean showShareButton =
+                BottomToolbarConfiguration.isToolbarTopAnchored() || !showForwardButton;
         if (shareButton != null) {
-            shareButton.setImageDrawable(
-                    AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
-            shareButton.setContentDescription(mContext.getString(R.string.share));
             Tab currentTab = mActivityTabProvider.get();
             if (currentTab != null && UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())) {
                 shareButton.setEnabled(false);
             }
+            shareButton.setVisibility(showShareButton ? View.VISIBLE : View.GONE);
+        }
+
+        ImageButton homeButton = view.findViewById(R.id.home_menu_id);
+        if (homeButton != null && HomepageManager.getInstance() != null) {
+            homeButton.setVisibility(
+                    HomepageManager.getInstance().isHomepageEnabled() ? View.VISIBLE : View.GONE);
         }
     }
 

@@ -189,7 +189,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
             Log.e(TAG, "initializeWithNative " + e);
         }
         // Do not change bottom bar if HomePage is not customized.
-        if (BottomToolbarVariationManager.shouldBottomToolbarBeVisibleInOverviewMode()) {
+        if (BottomToolbarVariationManager.shouldBottomControlsBeVisibleInOverviewMode()) {
             mLayoutStateObserver =
                     new LayoutStateProvider.LayoutStateObserver() {
                         @Override
@@ -199,22 +199,22 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                             BrowsingModeBottomToolbarCoordinator browsingModeCoordinator =
                                     (BrowsingModeBottomToolbarCoordinator) mBrowsingModeCoordinator;
                             browsingModeCoordinator.getSearchAccelerator().setVisibility(View.GONE);
-                            if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
+                            if (BottomToolbarVariationManager.isHomeButtonOnBottomControls()) {
                                 browsingModeCoordinator
                                         .getHomeButton()
                                         .setVisibility(View.INVISIBLE);
                             }
-                            if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+                            if (BottomToolbarVariationManager.isBookmarkButtonOnBottomControls()) {
                                 browsingModeCoordinator
                                         .getBookmarkButton()
                                         .setVisibility(View.INVISIBLE);
                             }
-                            if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
+                            if (BottomToolbarVariationManager.isTabSwitcherOnBottomControls()) {
                                 browsingModeCoordinator
                                         .getTabSwitcherButtonView()
                                         .setVisibility(View.INVISIBLE);
                             }
-                            if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
+                            if (BottomToolbarVariationManager.isNewTabButtonOnBottomControls()) {
                                 browsingModeCoordinator
                                         .getNewTabButtonParent()
                                         .setVisibility(View.VISIBLE);
@@ -232,20 +232,20 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                             browsingModeCoordinator
                                     .getSearchAccelerator()
                                     .setVisibility(View.VISIBLE);
-                            if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
+                            if (BottomToolbarVariationManager.isHomeButtonOnBottomControls()) {
                                 browsingModeCoordinator.getHomeButton().setVisibility(View.VISIBLE);
                             }
-                            if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+                            if (BottomToolbarVariationManager.isBookmarkButtonOnBottomControls()) {
                                 browsingModeCoordinator
                                         .getBookmarkButton()
                                         .setVisibility(View.VISIBLE);
                             }
-                            if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
+                            if (BottomToolbarVariationManager.isTabSwitcherOnBottomControls()) {
                                 browsingModeCoordinator
                                         .getTabSwitcherButtonView()
                                         .setVisibility(View.VISIBLE);
                             }
-                            if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
+                            if (BottomToolbarVariationManager.isNewTabButtonOnBottomControls()) {
                                 browsingModeCoordinator
                                         .getNewTabButtonParent()
                                         .setVisibility(View.GONE);

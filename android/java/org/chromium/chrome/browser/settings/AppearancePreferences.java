@@ -124,11 +124,18 @@ public class AppearancePreferences extends BravePreferenceFragment
         if (enableBottomToolbar != null) {
             enableBottomToolbar.setOnPreferenceChangeListener(this);
             if (enableBottomToolbar instanceof ChromeSwitchPreference) {
-                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(
-                        ContextUtils.getApplicationContext());
+                if (BottomToolbarConfiguration.isToolbarTopAnchored()) {
+                    boolean isTablet =
+                            DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                                    ContextUtils.getApplicationContext());
+                    ((ChromeSwitchPreference) enableBottomToolbar)
+                            .setChecked(
+                                    !isTablet
+                                            && BottomToolbarConfiguration
+                                                    .isBraveBottomControlsEnabled());
+                }
                 ((ChromeSwitchPreference) enableBottomToolbar)
-                        .setChecked(
-                                !isTablet && BottomToolbarConfiguration.isBottomToolbarEnabled());
+                        .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
             }
         }
 
@@ -213,7 +220,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         boolean shouldRelaunch = false;
         if (BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
             SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
-            Boolean originalStatus = BottomToolbarConfiguration.isBottomToolbarEnabled();
+            Boolean originalStatus = BottomToolbarConfiguration.isBraveBottomControlsEnabled();
             prefs.edit()
                     .putBoolean(
                             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus)

@@ -109,19 +109,19 @@ public class BrowsingModeBottomToolbarCoordinator {
         mTabSwitcherButtonCoordinator = new TabSwitcherButtonCoordinator(mTabSwitcherButtonView);
 
         mTabSwitcherButtonView.setOnLongClickListener(tabSwitcherLongClickListener);
-        if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
+        if (BottomToolbarVariationManager.isNewTabButtonOnBottomControls()) {
             mNewTabButton.setVisibility(View.VISIBLE);
         }
-        if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
+        if (BottomToolbarVariationManager.isHomeButtonOnBottomControls()) {
             mBraveHomeButton.setVisibility(View.VISIBLE);
         }
 
-        if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
+        if (BottomToolbarVariationManager.isTabSwitcherOnBottomControls()) {
             mTabSwitcherButtonView.setVisibility(View.VISIBLE);
         }
 
         mBookmarkButton = mToolbarRoot.findViewById(R.id.bottom_bookmark_button);
-        if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+        if (BottomToolbarVariationManager.isBookmarkButtonOnBottomControls()) {
             mBookmarkButton.setVisibility(View.VISIBLE);
             getNewTabButtonParent().setVisibility(View.GONE);
             OnClickListener bookmarkClickHandler =
@@ -178,7 +178,7 @@ public class BrowsingModeBottomToolbarCoordinator {
                                     .getUiState()
                                     .buttonState;
             BraveMenuButtonCoordinator.setupPropertyModel(mMenuButton, menuButtonStateSupplier);
-            if (!BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+            if (!BottomToolbarVariationManager.isMenuButtonOnBottomControls()) {
                 mMenuButton.setVisibility(View.GONE);
             }
         }
@@ -189,7 +189,7 @@ public class BrowsingModeBottomToolbarCoordinator {
                     ChromeColors.getDefaultThemeColor(ContextUtils.getApplicationContext(), true),
                     false);
         }
-        if (BottomToolbarVariationManager.isNewTabButtonOnBottom()) {
+        if (BottomToolbarVariationManager.isNewTabButtonOnBottomControls()) {
             mNewTabButton.setOnClickListener(newTabListener);
             mNewTabButton.setThemeColorProvider(themeColorProvider);
             mNewTabButton.setIncognitoStateProvider(incognitoStateProvider);
@@ -199,7 +199,7 @@ public class BrowsingModeBottomToolbarCoordinator {
                     mThemeColorProvider.getBrandedColorScheme());
         }
 
-        if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
+        if (BottomToolbarVariationManager.isHomeButtonOnBottomControls()) {
             mBraveHomeButton.setThemeColorProvider(themeColorProvider);
             mBraveHomeButton.onTintChanged(
                     mThemeColorProvider.getTint(),
@@ -214,7 +214,7 @@ public class BrowsingModeBottomToolbarCoordinator {
                 mThemeColorProvider.getTint(),
                 mThemeColorProvider.getBrandedColorScheme());
 
-        if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
+        if (BottomToolbarVariationManager.isTabSwitcherOnBottomControls()) {
             mTabSwitcherButtonCoordinator.setTabSwitcherListener(tabSwitcherListener);
             mTabSwitcherButtonCoordinator.setThemeColorProvider(themeColorProvider);
             mTabSwitcherButtonCoordinator.setTabCountSupplier(

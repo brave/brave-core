@@ -26,6 +26,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -55,6 +56,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.webcompat_reporter.WebcompatReporterServiceFactory;
 import org.chromium.components.browser_ui.widget.ChromeDialog;
@@ -106,6 +108,7 @@ public class BraveShieldsHandler
     private OnCheckedChangeListener mBraveShieldsFingerprintingChangeListener;
 
     private View mPopupView;
+    private View mAnchorView;
     private LinearLayout mMainLayout;
     private LinearLayout mSecondaryLayout;
     private LinearLayout mAboutLayout;
@@ -298,8 +301,31 @@ public class BraveShieldsHandler
         }
         // mPopup.setBackgroundDrawable(mContext.getResources().getDrawable(android.R.drawable.picture_frame));
         // Set the location of the window on the screen
-        popupWindow.showAsDropDown(anchorView, 0, 0);
-        popupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
+        mAnchorView = anchorView;
+        int mesuredHeight = 0;
+        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
+            mPopupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            mesuredHeight = mPopupView.getMeasuredHeight() + mAnchorView.getHeight();
+            mPopupView
+                    .getViewTreeObserver()
+                    .addOnGlobalLayoutListener(
+                            new ViewTreeObserver.OnGlobalLayoutListener() {
+                                @Override
+                                public void onGlobalLayout() {
+                                    // Get the new height of the popup view.
+                                    int newHeight =
+                                            mPopupView.getHeight() + mAnchorView.getHeight();
+
+                                    // Update the popup window's height.
+                                    popupWindow.update(mAnchorView, 0, -newHeight, width, height);
+                                }
+                            });
+        }
+        popupWindow.showAsDropDown(mAnchorView, 0, -1 * mesuredHeight);
+        popupWindow.setAnimationStyle(
+                BottomToolbarConfiguration.isToolbarTopAnchored()
+                        ? R.style.AnchoredPopupAnimEndTop
+                        : R.style.AnchoredPopupAnimEndBottom);
 
         // Turn off window animations for low end devices, and on Android M, which has built-in menu
         // animations.
