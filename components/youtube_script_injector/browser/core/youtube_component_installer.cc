@@ -31,8 +31,9 @@ namespace {
 //  |_ manifest.json
 //  |_ youtube.json
 //  |_ scripts/
-//    |_ keep-playing-audio.js
-//    |_ fullscreen.js
+//    |_ extra-controls-fullscreen.js
+//    |_ extra-controls-pip.js
+//    |_ playback-video.js
 // See youtube_json.cc for the format of youtube.json.
 
 constexpr char kYouTubeComponentName[] = "Brave YouTube Injector";
