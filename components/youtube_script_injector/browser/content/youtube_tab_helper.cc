@@ -17,8 +17,8 @@
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "brave/components/youtube_script_injector/common/features.h"
 #include "brave/components/youtube_script_injector/common/pref_names.h"
-#include "components/sessions/content/session_tab_helper.h"
 #include "components/prefs/pref_service.h"
+#include "components/sessions/content/session_tab_helper.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
@@ -97,22 +97,23 @@ const std::optional<YouTubeJson>& YouTubeTabHelper::GetJson() const {
   return youtube_registry_->GetJson();
 }
 
-bool YouTubeTabHelper::IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
+bool YouTubeTabHelper::IsBackgroundVideoPlaybackEnabled(
+    content::WebContents* contents) {
   PrefService* prefs =
-        user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+      user_prefs::UserPrefs::Get(contents->GetBrowserContext());
 
-  return (base::FeatureList::IsEnabled(
-          features::kBraveBackgroundVideoPlayback) &&
+  return (
+      base::FeatureList::IsEnabled(features::kBraveBackgroundVideoPlayback) &&
       prefs->GetBoolean(prefs::kYouTubeBackgroundVideoPlaybackEnabled));
 }
 
-bool YouTubeTabHelper::AreYouTubeExtraControlsEnabled(content::WebContents* contents) {
+bool YouTubeTabHelper::AreYouTubeExtraControlsEnabled(
+    content::WebContents* contents) {
   PrefService* prefs =
-        user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+      user_prefs::UserPrefs::Get(contents->GetBrowserContext());
 
-  return (base::FeatureList::IsEnabled(
-          features::kBraveYouTubeExtraControls) &&
-      prefs->GetBoolean(prefs::kYouTubeExtraControlsEnabled));
+  return (base::FeatureList::IsEnabled(features::kBraveYouTubeExtraControls) &&
+          prefs->GetBoolean(prefs::kYouTubeExtraControlsEnabled));
 }
 
 void YouTubeTabHelper::PrimaryMainDocumentElementAvailable() {
@@ -121,7 +122,8 @@ void YouTubeTabHelper::PrimaryMainDocumentElementAvailable() {
     return;
   }
 
-  if (!IsBackgroundVideoPlaybackEnabled(web_contents()) && !AreYouTubeExtraControlsEnabled(web_contents())) {
+  if (!IsBackgroundVideoPlaybackEnabled(web_contents()) &&
+      !AreYouTubeExtraControlsEnabled(web_contents())) {
     return;
   }
 
@@ -137,16 +139,16 @@ void YouTubeTabHelper::PrimaryMainDocumentElementAvailable() {
     youtube_registry_->LoadScriptFromPath(
         url, json->GetPipScript(),
         base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
-                      weak_factory_.GetWeakPtr(), render_frame_host_id,
-                      blink::mojom::UserActivationOption::kDoNotActivate));
+                       weak_factory_.GetWeakPtr(), render_frame_host_id,
+                       blink::mojom::UserActivationOption::kDoNotActivate));
   }
 
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
     youtube_registry_->LoadScriptFromPath(
         url, json->GetPlaybackVideoScript(),
         base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
-                     weak_factory_.GetWeakPtr(), render_frame_host_id,
-                     blink::mojom::UserActivationOption::kDoNotActivate));
+                       weak_factory_.GetWeakPtr(), render_frame_host_id,
+                       blink::mojom::UserActivationOption::kDoNotActivate));
   }
 }
 
@@ -174,11 +176,10 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
   auto url = web_contents->GetLastCommittedURL();
   registry->LoadScriptFromPath(
       url, helper->GetJson()->GetFullscreenScript(),
-      base::BindOnce(
-          &YouTubeTabHelper::InsertScriptInPage,
-          helper->GetWeakPtr(),
-          web_contents->GetPrimaryMainFrame()->GetGlobalId(),
-          blink::mojom::UserActivationOption::kActivate));
+      base::BindOnce(&YouTubeTabHelper::InsertScriptInPage,
+                     helper->GetWeakPtr(),
+                     web_contents->GetPrimaryMainFrame()->GetGlobalId(),
+                     blink::mojom::UserActivationOption::kActivate));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabHelper);

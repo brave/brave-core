@@ -14,4 +14,4 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kYouTubeExtraControlsEnabled, true);
 }
 
-}  // youtube_script_injector::prefs
+}  // namespace youtube_script_injector::prefs
