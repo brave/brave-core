@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_event_type_util.h"
 
+#include <string_view>
+
 #include "base/containers/fixed_flat_map.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -21,7 +23,7 @@ constexpr char kMedia25AdEventType[] = "media_25";
 constexpr char kMedia100AdEventType[] = "media_100";
 
 constexpr auto kNewTabPageAdEventTypeMap =
-    base::MakeFixedFlatMap<std::string, mojom::NewTabPageAdEventType>({
+    base::MakeFixedFlatMap<std::string_view, mojom::NewTabPageAdEventType>({
         {kServedImpressionAdEventType,
          mojom::NewTabPageAdEventType::kServedImpression},
         {kViewedImpressionAdEventType,
