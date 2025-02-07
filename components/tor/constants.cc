@@ -19,7 +19,7 @@ namespace tor {
 namespace {
 
 // The filename for the tor client config file.
-constexpr base::FilePath::StringPieceType kTorRcFilename =
+constexpr base::FilePath::StringViewType kTorRcFilename =
     FILE_PATH_LITERAL("tor-torrc");
 
 base::FilePath GetUserDataDir() {
