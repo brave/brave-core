@@ -39,6 +39,7 @@ const std::map<int, const gfx::VectorIcon&>& GetCommandIcons() {
           {IDC_SHOW_DOWNLOADS, kLeoDownloadIcon},
           {IDC_MANAGE_EXTENSIONS, kLeoBrowserExtensionsIcon},
           {IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS, kLeoBrowserExtensionsIcon},
+          {IDC_EXTENSIONS_SUBMENU_VISIT_CHROME_WEB_STORE, kLeoShoppingBagIcon},
           {IDC_ZOOM_MENU, kLeoSearchZoomInIcon},
           {IDC_PRINT, kLeoPrintIcon},
           {IDC_FIND_AND_EDIT_MENU, kLeoFileSearchIcon},
