@@ -29,8 +29,7 @@ namespace youtube_script_injector {
 // static
 void YouTubeTabHelper::MaybeCreateForWebContents(content::WebContents* contents,
                                                  const int32_t world_id) {
-  if (contents->GetBrowserContext()->IsOffTheRecord() ||
-      !base::FeatureList::IsEnabled(
+  if (!base::FeatureList::IsEnabled(
           youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
     return;
   }
