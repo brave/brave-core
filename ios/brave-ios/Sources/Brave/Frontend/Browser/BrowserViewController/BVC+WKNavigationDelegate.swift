@@ -864,13 +864,6 @@ extension BrowserViewController: WKNavigationDelegate {
     download.delegate = self
   }
 
-  public func webView(
-    _ webView: WKWebView,
-    shouldAllowDeprecatedTLSFor challenge: URLAuthenticationChallenge
-  ) async -> Bool {
-    return false
-  }
-
   @MainActor
   public func webView(
     _ webView: WKWebView,
