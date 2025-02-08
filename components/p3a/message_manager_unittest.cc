@@ -158,8 +158,10 @@ class P3AMessageManagerTest : public testing::Test,
           url_loader_factory_.AddResponse(request.url.spec(), response);
         }));
 
+    base::Time install_time;
+    ASSERT_TRUE(base::Time::FromString("2099-01-01", &install_time));
     message_manager_ = std::make_unique<MessageManager>(
-        *local_state_, &p3a_config_, *this, "release", "2099-01-01");
+        *local_state_, &p3a_config_, *this, "release", install_time);
 
     message_manager_->Start(shared_url_loader_factory_);
 

@@ -60,6 +60,7 @@ class P3AConstellationHelperTest : public testing::Test {
 
  protected:
   void SetUp() override {
+    ASSERT_TRUE(base::Time::FromString("2022-01-01", &install_time_));
     p3a_config_.disable_star_attestation = true;
     p3a_config_.star_randomness_host = kTestHost;
 
@@ -175,6 +176,7 @@ class P3AConstellationHelperTest : public testing::Test {
 
   std::string histogram_name_from_callback_;
   uint8_t epoch_from_callback_;
+  base::Time install_time_;
 
   base::flat_map<MetricLogType, bool> info_request_made_;
   base::flat_map<MetricLogType, bool> points_request_made_;
@@ -251,7 +253,7 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
     task_environment_.RunUntilIdle();
 
     MessageMetainfo meta_info;
-    meta_info.Init(&local_state_, "release", "2022-01-01");
+    meta_info.Init(&local_state_, "release", install_time_);
 
     helper_->StartMessagePreparation(
         kTestHistogramName, log_type,
@@ -274,7 +276,7 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
 
 TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   MessageMetainfo meta_info;
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+  meta_info.Init(&local_state_, "release", install_time_);
 
   std::string message_with_no_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType, std::nullopt);
@@ -299,7 +301,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
 
 #if !BUILDFLAG(IS_IOS)
   local_state_.SetString(kReferralPromoCode, "BRV003");
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+  meta_info.Init(&local_state_, "release", install_time_);
 
   message_with_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType,
@@ -313,7 +315,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   EXPECT_EQ(refcode_layers.at(8), "ref|BRV003");
 
   local_state_.SetString(kReferralPromoCode, "ZRK009");
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+  meta_info.Init(&local_state_, "release", install_time_);
 
   message_with_refcode = GenerateP3AConstellationMessage(
       kTestHistogramName, 0, meta_info, kP3AUploadType,
@@ -330,7 +332,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
 
 TEST_F(P3AConstellationHelperTest, CustomAttributes) {
   MessageMetainfo meta_info;
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+  meta_info.Init(&local_state_, "release", install_time_);
 
   // Test with custom attributes list
   MetricConfig config{.attributes = MetricAttributes{
@@ -370,7 +372,7 @@ TEST_F(P3AConstellationHelperTest, CustomAttributes) {
 
 TEST_F(P3AConstellationHelperTest, NebulaMessage) {
   MessageMetainfo meta_info;
-  meta_info.Init(&local_state_, "release", "2022-01-01");
+  meta_info.Init(&local_state_, "release", install_time_);
 
   std::string message = GenerateP3AConstellationMessage(
       kTestHistogramName, 3, meta_info, kP3AUploadType,
@@ -394,7 +396,7 @@ TEST_F(P3AConstellationHelperTest, NebulaSample) {
     task_environment_.RunUntilIdle();
 
     MessageMetainfo meta_info;
-    meta_info.Init(&local_state_, "release", "2022-01-01");
+    meta_info.Init(&local_state_, "release", install_time_);
 
     helper_->StartMessagePreparation(
         kTestNebulaHistogramName, MetricLogType::kTypical,

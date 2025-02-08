@@ -17,6 +17,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/p3a/metric_config.h"
@@ -44,6 +45,7 @@ constexpr char kWosAttributeName[] = "wos";
 constexpr char kMosAttributeName[] = "mos";
 constexpr char kWoiAttributeName[] = "woi";
 constexpr char kYoiAttributeName[] = "yoi";
+constexpr char kDateOfInstallAttributeName[] = "dtoi";
 constexpr char kCountryCodeAttributeName[] = "country_code";
 constexpr char kVersionAttributeName[] = "version";
 constexpr char kRegionAttributeName[] = "region";
@@ -56,7 +58,7 @@ constexpr char kTypicalCadence[] = "typical";
 constexpr char kExpressCadence[] = "express";
 
 constexpr char kOrganicRefPrefix[] = "BRV";
-constexpr char kRefNone[] = "none";
+constexpr char kNone[] = "none";
 constexpr char kRefOther[] = "other";
 
 constexpr auto kLinuxCountries = base::MakeFixedFlatSet<std::string_view>(
@@ -67,6 +69,8 @@ constexpr auto kNotableCountries = base::MakeFixedFlatSet<std::string_view>(
     {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES",
      "NL", "MX", "AU", "RU", "JP", "PL", "ID", "KR", "AR", "AT"});
 
+constexpr base::TimeDelta kDateOmissionThreshold = base::Days(30);
+
 std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
     const std::string_view metric_name,
     const uint64_t metric_value,
@@ -75,7 +79,7 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
     const std::vector<MetricAttribute>& attributes_to_load,
     bool is_creative) {
   base::Time::Exploded exploded;
-  meta.date_of_install().LocalExplode(&exploded);
+  meta.date_of_install().UTCExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
 
   std::vector<std::array<std::string, 2>> attributes;
@@ -88,6 +92,7 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
     attributes = {{kMetricNameAttributeName, std::string(metric_name)}};
   }
   std::string country_code;
+  std::string dtoi;
   for (const auto& attribute : attributes_to_load) {
     switch (attribute) {
       case MetricAttribute::kAnswerIndex:
@@ -131,6 +136,15 @@ std::vector<std::array<std::string, 2>> PopulateConstellationAttributes(
         }
         attributes.push_back(
             {kWoiAttributeName, base::NumberToString(meta.woi())});
+        break;
+      case MetricAttribute::kDateOfInstall:
+        dtoi = kNone;
+        if ((base::Time::Now() - meta.date_of_install()) <
+            kDateOmissionThreshold) {
+          dtoi = base::StringPrintf("%d-%02d-%02d", exploded.year,
+                                    exploded.month, exploded.day_of_month);
+        }
+        attributes.push_back({kDateOfInstallAttributeName, dtoi});
         break;
       case MetricAttribute::kGeneralPlatform:
         attributes.push_back(
@@ -273,7 +287,7 @@ std::string GenerateP3AConstellationMessage(
 
 void MessageMetainfo::Init(PrefService* local_state,
                            std::string brave_channel,
-                           std::string week_of_install) {
+                           base::Time first_run_time) {
   local_state_ = local_state;
   platform_ = brave_stats::GetPlatformIdentifier();
   general_platform_ = brave_stats::GetGeneralPlatformIdentifier();
@@ -281,11 +295,7 @@ void MessageMetainfo::Init(PrefService* local_state,
   InitVersion();
   InitRef();
 
-  if (!week_of_install.empty()) {
-    date_of_install_ = brave_stats::GetYMDAsDate(week_of_install);
-  } else {
-    date_of_install_ = base::Time::Now();
-  }
+  date_of_install_ = first_run_time;
   woi_ = brave_stats::GetIsoWeekNumber(date_of_install_);
 
   country_code_from_timezone_raw_ =
@@ -332,7 +342,7 @@ void MessageMetainfo::InitRef() {
   }
 #endif  // !BUILDFLAG(IS_IOS)
   if (referral_code.empty()) {
-    ref_ = kRefNone;
+    ref_ = kNone;
   } else if (referral_code.starts_with(kOrganicRefPrefix)) {
     ref_ = referral_code;
   } else {
