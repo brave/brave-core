@@ -234,7 +234,11 @@ inline constexpr auto kCollectedSlowHistograms =
 
 inline constexpr auto kCollectedExpressHistograms =
   base::MakeFixedFlatMap<std::string_view, std::optional<MetricConfig>>({
-    {"Brave.AIChat.UsageDaily.2", MetricConfig{.ephemeral = true}},
+    {"Brave.AIChat.UsageDaily.2", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kVersion, MetricAttribute::kYoi, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kWoi},
+      .record_activation_date = true,
+    }},
     {"Brave.AIChat.UsageDaily.SidebarEnabledA", MetricConfig{.ephemeral = true}},
     {"Brave.Core.UsageDaily", {}},
     {"Brave.DayZero.Variant", MetricConfig{
@@ -245,8 +249,16 @@ inline constexpr auto kCollectedExpressHistograms =
     {"Brave.Rewards.EnabledInstallationTime", MetricConfig{.ephemeral = true}},
     {"Brave.Search.BraveDaily", MetricConfig{.ephemeral = true}},
     {"Brave.Search.DefaultEngine.4", {}},
-    {"Brave.Today.IsEnabled", MetricConfig{.ephemeral = true}},
-    {"Brave.Today.UsageDaily", MetricConfig{.ephemeral = true}},
+    {"Brave.Today.IsEnabled", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kDateOfInstall, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
+      .activation_metric_name = "Brave.Today.UsageDaily"
+    }},
+    {"Brave.Today.UsageDaily", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kDateOfActivation, MetricAttribute::kVersion, MetricAttribute::kYoi, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode, MetricAttribute::kWoi},
+      .record_activation_date = true
+    }},
     {"Brave.Uptime.BrowserOpenTime.2", MetricConfig{.ephemeral = true}},
     {"Brave.Wallet.UsageDaily", MetricConfig{.ephemeral = true}},
     {"creativeInstanceId.total.count", {}},

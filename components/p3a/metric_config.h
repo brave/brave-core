@@ -8,6 +8,7 @@
 
 #include <array>
 #include <optional>
+#include <string_view>
 
 namespace p3a {
 
@@ -26,7 +27,8 @@ enum class MetricAttribute {
   kSubregion,
   kRef,
   kDateOfInstall,
-  kMaxValue = kDateOfInstall,
+  kDateOfActivation,
+  kMaxValue = kDateOfActivation,
 };
 
 inline constexpr MetricAttribute kDefaultMetricAttributes[] = {
@@ -42,18 +44,25 @@ using MetricAttributesToAppend = std::array<std::optional<MetricAttribute>, 2>;
 struct MetricConfig {
   // Once the metric value has been sent, the value will be removed from the log
   // store
-  bool ephemeral;
+  bool ephemeral = false;
   // Should only be sent via Constellation
-  bool constellation_only;
+  bool constellation_only = false;
   // Should only be sent via Nebula
-  bool nebula;
+  bool nebula = false;
   // Avoid reporting "other" for countries not included in the allowlist
   // and rely on STAR to provide k-anonymity
-  bool disable_country_strip;
+  bool disable_country_strip = false;
   // Ordered attributes to be included with the metric
   std::optional<MetricAttributes> attributes;
   // Ordered attributes to be appended to the list of default attributes
   MetricAttributesToAppend append_attributes;
+  // If true, the activation date will be recorded for this metric.
+  // Only the first report of the metric will set the activation date
+  // accordingly.
+  bool record_activation_date = false;
+  // If provided, the activation date recorded from another metric
+  // will be reported.
+  std::optional<std::string_view> activation_metric_name;
 };
 
 }  // namespace p3a

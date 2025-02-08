@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_P3A_P3A_MESSAGE_H_
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -36,6 +37,9 @@ class MessageMetainfo {
   void Update();
 
   const std::string& GetCountryCodeForNormalMetrics(bool raw) const;
+
+  std::optional<base::Time> GetActivationDate(
+      std::string_view histogram_name) const;
 
   const std::string& platform() const { return platform_; }
   const std::string& general_platform() const { return general_platform_; }
