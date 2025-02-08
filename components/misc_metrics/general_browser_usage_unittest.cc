@@ -16,11 +16,6 @@
 
 namespace misc_metrics {
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
-constexpr char kDayZeroAInstallTime[] = "Brave.DayZero.A.InstallTime";
-constexpr char kDayZeroBInstallTime[] = "Brave.DayZero.B.InstallTime";
-#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
-
 class GeneralBrowserUsageUnitTest : public testing::Test {
  public:
   GeneralBrowserUsageUnitTest()
@@ -97,57 +92,48 @@ TEST_F(GeneralBrowserUsageUnitTest, ProfileCount) {
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
-TEST_F(GeneralBrowserUsageUnitTest, InstallTimeB) {
+TEST_F(GeneralBrowserUsageUnitTest, InstallTimeVariantSwitch) {
   base::Time install_time = base::Time::Now();
   SetUpUsage("B", true, install_time);
 
-  histogram_tester_->ExpectUniqueSample(kDayZeroBInstallTime, 0, 1);
+  histogram_tester_->ExpectUniqueSample(kDayZeroVariantHistogramName, 1, 1);
 
   task_environment_.FastForwardBy(base::Days(15));
 
-  int last_bucket_count =
-      histogram_tester_->GetBucketCount(kDayZeroBInstallTime, 15);
-  EXPECT_GE(last_bucket_count, 1);
-  histogram_tester_->ExpectTotalCount(kDayZeroAInstallTime, 0);
+  histogram_tester_->ExpectUniqueSample(kDayZeroVariantHistogramName, 1, 16);
 
   SetUpUsage("A", false, install_time);
   // Ensure histogram name does not change if "day zero" is enabled
   // after install; we only want to report the "day zero on" metric
   // if it was enabled at install time.
-  EXPECT_GT(histogram_tester_->GetBucketCount(kDayZeroBInstallTime, 15),
-            last_bucket_count);
-  histogram_tester_->ExpectTotalCount(kDayZeroAInstallTime, 0);
+  histogram_tester_->ExpectUniqueSample(kDayZeroVariantHistogramName, 1, 16);
 
   task_environment_.FastForwardBy(base::Days(16));
-  EXPECT_GE(histogram_tester_->GetBucketCount(kDayZeroBInstallTime, 30), 1);
+  histogram_tester_->ExpectUniqueSample(kDayZeroVariantHistogramName, 1, 31);
 
   ResetHistogramTester();
   // Ensure there are no more reports past 30 days
   task_environment_.FastForwardBy(base::Days(5));
 
-  histogram_tester_->ExpectTotalCount(kDayZeroBInstallTime, 0);
-  histogram_tester_->ExpectTotalCount(kDayZeroAInstallTime, 0);
+  histogram_tester_->ExpectTotalCount(kDayZeroVariantHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kDayZeroVariantHistogramName, 0);
 }
 
-TEST_F(GeneralBrowserUsageUnitTest, InstallTimeA) {
+TEST_F(GeneralBrowserUsageUnitTest, InstallTimeBasic) {
   base::Time install_time = base::Time::Now();
   SetUpUsage("A", true, install_time);
 
-  histogram_tester_->ExpectUniqueSample(kDayZeroAInstallTime, 0, 1);
+  histogram_tester_->ExpectUniqueSample(kDayZeroVariantHistogramName, 0, 1);
 
   task_environment_.FastForwardBy(base::Days(15));
 
-  int last_bucket_count =
-      histogram_tester_->GetBucketCount(kDayZeroAInstallTime, 15);
-  EXPECT_GE(last_bucket_count, 1);
-  histogram_tester_->ExpectTotalCount(kDayZeroBInstallTime, 0);
+  histogram_tester_->ExpectUniqueSample(kDayZeroVariantHistogramName, 0, 16);
 
-  SetUpUsage("B", false, install_time);
-  EXPECT_GT(histogram_tester_->GetBucketCount(kDayZeroAInstallTime, 15),
-            last_bucket_count);
-  histogram_tester_->ExpectTotalCount(kDayZeroBInstallTime, 0);
+  task_environment_.FastForwardBy(base::Days(15));
+  histogram_tester_->ExpectUniqueSample(kDayZeroVariantHistogramName, 0, 31);
+
+  task_environment_.FastForwardBy(base::Days(15));
+  histogram_tester_->ExpectUniqueSample(kDayZeroVariantHistogramName, 0, 31);
 }
-#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
 }  // namespace misc_metrics
