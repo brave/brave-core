@@ -342,7 +342,6 @@ void TxService::OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) {
 }
 
 void TxService::Reset() {
-  ClearTxServiceProfilePrefs(prefs_);
   delegate_->Clear();
   for (auto const& service : tx_manager_map_) {
     service.second->Reset();
