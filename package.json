@@ -70,7 +70,7 @@
         "dir": "src",
         "tag": "133.0.6943.54",
         "repository": {
-          "url": "https://github.com/brave/chromium"
+          "url": "git@github.com:brave/chromium.git"
         }
       },
       "depot_tools": {
