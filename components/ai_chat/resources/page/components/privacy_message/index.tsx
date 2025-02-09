@@ -54,7 +54,6 @@ function PrivacyMessage () {
   return (
     <Dialog
       isOpen={true}
-      size="mobile"
       escapeCloses={false}
       backdropClickCloses={false}
       className={styles.dialog}
