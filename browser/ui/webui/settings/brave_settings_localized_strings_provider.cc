@@ -593,8 +593,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_TITLE},
       {"braveLeoAssistantYourModelsDesc1",
        IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_1},
-      {"braveLeoAssistantYourModelsDesc2",
-       IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2},
       {"braveLeoModelSectionTitle", IDS_CHAT_UI_MENU_TITLE_MODELS},
       {"braveLeoAssistantEndpointInvalidError",
        IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_INVALID_ERROR},
@@ -983,9 +981,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   html_source->AddString(
       "braveLeoAssistantYourModelsDesc2",
-      l10n_util::GetStringFUTF16(
-          IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2,
-          kLeoCustomModelsLearnMoreURL));
+      l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2,
+                                 kLeoCustomModelsLearnMoreURL));
 }  // NOLINT(readability/fn_size)
 
 void BraveAddResources(content::WebUIDataSource* html_source,
