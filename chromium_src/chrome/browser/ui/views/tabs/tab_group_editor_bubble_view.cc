@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.h"
 
+#include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/views/data_sharing/data_sharing_bubble_controller.h"
 #include "chrome/browser/user_education/user_education_service.h"
 #include "ui/views/layout/flex_layout.h"
@@ -36,6 +37,11 @@ void MaybeRemoveFooter(TabGroupEditorBubbleView* bubble_view,
   MaybeRemoveFooter(bubble_view, bubble_view->footer_.ExtractAsDangling()); \
   bubble_view->footer_ = nullptr
 
+#define kUngroupRefreshIcon \
+  kUngroupRefreshIcon, ui::kColorMenuIcon, kDefaultIconSize
+
 #include "src/chrome/browser/ui/views/tabs/tab_group_editor_bubble_view.cc"
+
+#undef kUngroupRefreshIcon
 
 #undef CreateBubble
