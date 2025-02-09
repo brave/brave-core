@@ -273,6 +273,7 @@ export const EmailAliasModal = (
       <Input id='note-input'
         type='text'
         placeholder={getLocale('emailAliasesEditNotePlaceholder')}
+        maxlength={255}
         value={proposedNote}
         onChange={(detail: InputEventDetail) => setProposedNote(detail.value)}
         onKeyDown={onEnterKey(createOrSave)}
