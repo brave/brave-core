@@ -108,8 +108,9 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
                 resolver()->ResolveAccountId(nullptr, &acc->address));
     }
   }
-  EXPECT_TRUE(AllCoinsTested());
-  EXPECT_TRUE(AllKeyringsTested());
+  static_assert(AllCoinsTested<5>());
+
+  static_assert(AllKeyringsTested<12>());
 
   // HW account is not resolvable after removal.
   keyring_service()->RemoveAccount(hw_eth_acc->account_id.Clone(),
@@ -138,8 +139,9 @@ TEST_F(AccountResolverDelegateImplUnitTest, ResolveAccountId) {
     EXPECT_EQ("", btc_like_account->address);
     EXPECT_EQ("", btc_like_account->account_id->address);
   }
-  EXPECT_TRUE(AllCoinsTested());
-  EXPECT_TRUE(AllKeyringsTested());
+  static_assert(AllCoinsTested<5>());
+
+  static_assert(AllKeyringsTested<12>());
 
   const std::string empty_address = "";
   EXPECT_FALSE(resolver()->ResolveAccountId(nullptr, &empty_address));
@@ -170,8 +172,9 @@ TEST_F(AccountResolverDelegateImplUnitTest, ValidateAccountId) {
     ASSERT_TRUE(acc);
     EXPECT_TRUE(resolver()->ValidateAccountId(acc->account_id));
   }
-  EXPECT_TRUE(AllCoinsTested());
-  EXPECT_TRUE(AllKeyringsTested());
+  static_assert(AllCoinsTested<5>());
+
+  static_assert(AllKeyringsTested<12>());
 
   EXPECT_FALSE(
       resolver()->ValidateAccountId(GetAccountUtils().EthUnkownAccountId()));

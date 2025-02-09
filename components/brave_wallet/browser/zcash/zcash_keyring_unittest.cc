@@ -33,9 +33,11 @@ namespace brave_wallet {
 
 using bip39::MnemonicToSeed;
 using mojom::ZCashKeyId;
+using mojom::KeyringId::kZCashMainnet;
+using mojom::KeyringId::kZCashTestnet;
 
 TEST(ZCashKeyringUnitTest, GetPubKey) {
-  ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), false);
+  ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), kZCashMainnet);
 
   EXPECT_EQ(
       base::HexEncode(*keyring.GetPubkey(ZCashKeyId(0, 0, 0))),
@@ -50,7 +52,7 @@ TEST(ZCashKeyringUnitTest, GetPubKey) {
 
 TEST(ZCashKeyringUnitTest, GetTransparentAddress) {
   {
-    ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), false);
+    ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), kZCashMainnet);
 
     EXPECT_EQ(
         keyring.GetTransparentAddress(ZCashKeyId(0, 0, 0))->address_string,
@@ -119,14 +121,16 @@ TEST(ZCashKeyringUnitTest, GetTransparentAddress) {
 
   // https://github.com/zcash/zcash-android-wallet-sdk/blob/57f3b7ada6381dcf67b072c84d2f24a6d331045f/sdk-lib/src/androidTest/java/cash/z/ecc/android/sdk/jni/TransparentTest.kt#L49
   {
-    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic), false);
+    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic),
+                         kZCashMainnet);
     EXPECT_EQ(
         keyring.GetTransparentAddress(ZCashKeyId(0, 0, 0))->address_string,
         "t1PKtYdJJHhc3Pxowmznkg7vdTwnhEsCvR4");
   }
 
   {
-    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic), true);
+    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic),
+                         kZCashTestnet);
     EXPECT_EQ(
         keyring.GetTransparentAddress(ZCashKeyId(0, 0, 0))->address_string,
         "tm9v3KTsjXK8XWSqiwFjic6Vda6eHY9Mjjq");
@@ -135,7 +139,7 @@ TEST(ZCashKeyringUnitTest, GetTransparentAddress) {
 
 TEST(ZCashKeyringUnitTest, GetPubkey) {
   {
-    ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), false);
+    ZCashKeyring keyring(*MnemonicToSeed(kBip84TestMnemonic), kZCashMainnet);
 
     EXPECT_EQ(
         base::HexEncode(*keyring.GetPubkey(ZCashKeyId(0, 0, 0))),
@@ -160,7 +164,8 @@ TEST(ZCashKeyringUnitTest, GetPubkey) {
 
   // https://github.com/zcash/zcash-android-wallet-sdk/blob/57f3b7ada6381dcf67b072c84d2f24a6d331045f/sdk-lib/src/androidTest/java/cash/z/ecc/android/sdk/jni/TransparentTest.kt#L49
   {
-    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic), false);
+    ZCashKeyring keyring(*MnemonicToSeed(kDeputyVisaTestMnemonic),
+                         kZCashMainnet);
     EXPECT_EQ(
         base::HexEncode(*keyring.GetPubkey(ZCashKeyId(0, 0, 0))),
         "03B1D7FB28D17C125B504D06B1530097E0A3C76ADA184237E3BC0925041230A5AF");
@@ -173,7 +178,7 @@ TEST(ZCashKeyringUnitTest, GetPubkey) {
                               0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
                               0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
                               0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f}),
-        false);
+        kZCashMainnet);
     EXPECT_EQ(*keyring.GetPubkeyHash(ZCashKeyId(1, 0, 3)),
               std::vector<uint8_t>({0xca, 0xd2, 0x68, 0x75, 0x8c, 0x5e, 0x71,
                                     0x49, 0x30, 0x66, 0x44, 0x6b, 0x98, 0xe7,
@@ -194,7 +199,7 @@ TEST(ZCashKeyringUnitTest, GetShieldedAddress) {
                             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
                             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
                             0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f}),
-      false);
+      kZCashMainnet);
   // Shielded address
   // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/kind/unified/address/test_vectors.rs#L524
   EXPECT_EQ(keyring.GetShieldedAddress(ZCashKeyId(9, 0, 0))->address_string,
@@ -219,7 +224,7 @@ TEST(ZCashKeyringUnitTest, GetUnifiedAddress) {
                             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
                             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
                             0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f}),
-      false);
+      kZCashMainnet);
 
   // Merged address
   // https://github.com/zcash/librustzcash/blob/zcash_address-0.3.1/components/zcash_address/src/kind/unified/address/test_vectors.rs#L472

@@ -14,6 +14,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
@@ -40,6 +41,7 @@ class BitcoinImportKeyring;
 class EthereumKeyring;
 class EthereumProviderImplUnitTest;
 class EthTransaction;
+class CardanoHDKeyring;
 class FilecoinKeyring;
 class FilTransaction;
 class HDKeyring;
@@ -333,6 +335,7 @@ class KeyringService : public mojom::KeyringService {
   BitcoinHardwareKeyring* GetBitcoinHardwareKeyring(
       mojom::KeyringId keyring_id) const;
   BitcoinHDKeyring* GetBitcoinHDKeyringById(mojom::KeyringId keyring_id) const;
+  CardanoHDKeyring* GetCardanoHDKeyring(mojom::KeyringId keyring_id) const;
   ZCashKeyring* GetZCashKeyringById(mojom::KeyringId keyring_id) const;
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync(
       mojom::KeyringId keyring_id) const;
@@ -392,6 +395,8 @@ class KeyringService : public mojom::KeyringService {
       bitcoin_import_keyrings_;
   base::flat_map<mojom::KeyringId, std::unique_ptr<BitcoinHardwareKeyring>>
       bitcoin_hardware_keyrings_;
+  base::flat_map<mojom::KeyringId, std::unique_ptr<CardanoHDKeyring>>
+      cardano_hd_keyrings_;
   std::unique_ptr<PasswordEncryptor> encryptor_;
 
   raw_ptr<JsonRpcService> json_rpc_service_;

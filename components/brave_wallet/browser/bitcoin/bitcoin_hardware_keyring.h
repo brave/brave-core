@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_HARDWARE_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BITCOIN_BITCOIN_HARDWARE_KEYRING_H_
 
+#include <map>
 #include <memory>
 #include <optional>
 #include <string>
@@ -19,7 +20,7 @@ namespace brave_wallet {
 
 class BitcoinHardwareKeyring : public BitcoinBaseKeyring {
  public:
-  explicit BitcoinHardwareKeyring(bool testnet);
+  explicit BitcoinHardwareKeyring(mojom::KeyringId keyring_id);
   ~BitcoinHardwareKeyring() override;
   BitcoinHardwareKeyring(const BitcoinHardwareKeyring&) = delete;
   BitcoinHardwareKeyring& operator=(const BitcoinHardwareKeyring&) = delete;
@@ -45,8 +46,6 @@ class BitcoinHardwareKeyring : public BitcoinBaseKeyring {
 
   std::unique_ptr<HDKey> DeriveKey(uint32_t account,
                                    const mojom::BitcoinKeyId& key_id);
-
-  bool testnet_ = false;
 };
 
 }  // namespace brave_wallet

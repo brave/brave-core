@@ -390,7 +390,7 @@ void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
 
 void BraveWalletP3A::OnUpdateTimerFired() {
   ReportUsage(false);
-  for (const auto& coin : kAllCoins) {
+  for (const auto& coin : GetSupportedCoins()) {
     ReportTransactionSent(coin, false);
   }
 }

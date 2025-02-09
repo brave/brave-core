@@ -14,11 +14,14 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 
 namespace brave_wallet {
 
-BitcoinHardwareKeyring::BitcoinHardwareKeyring(bool testnet)
-    : testnet_(testnet) {}
+BitcoinHardwareKeyring::BitcoinHardwareKeyring(mojom::KeyringId keyring_id)
+    : BitcoinBaseKeyring(keyring_id) {
+  CHECK(IsBitcoinHardwareKeyring(keyring_id_));
+}
 
 BitcoinHardwareKeyring::~BitcoinHardwareKeyring() = default;
 
@@ -32,11 +35,11 @@ bool BitcoinHardwareKeyring::AddAccount(uint32_t account,
     return false;
   }
 
-  if (testnet_ &&
+  if (IsTestnet() &&
       parsed_key->version != base::to_underlying(ExtendedKeyVersion::kTpub)) {
     return false;
   }
-  if (!testnet_ &&
+  if (!IsTestnet() &&
       parsed_key->version != base::to_underlying(ExtendedKeyVersion::kXpub)) {
     return false;
   }
@@ -58,7 +61,7 @@ mojom::BitcoinAddressPtr BitcoinHardwareKeyring::GetAddress(
   }
 
   return mojom::BitcoinAddress::New(
-      PubkeyToSegwitAddress(hd_key->GetPublicKeyBytes(), testnet_),
+      PubkeyToSegwitAddress(hd_key->GetPublicKeyBytes(), IsTestnet()),
       key_id.Clone());
 }
 

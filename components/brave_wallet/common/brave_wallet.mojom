@@ -897,6 +897,8 @@ enum KeyringId {
   kBitcoinImportTestnet = 9,
   kBitcoinHardware = 10,
   kBitcoinHardwareTestnet = 11,
+  kCardanoMainnet = 12,
+  kCardanoTestnet = 13,
 };
 
 const string kP3ACountTestNetworksSwitch = "p3a-count-wallet-test-networks";
@@ -1398,6 +1400,8 @@ const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 const string kBitcoinMainnet = "bitcoin_mainnet";
 const string kBitcoinTestnet = "bitcoin_testnet";
+const string kCardanoMainnet = "cardano_mainnet";
+const string kCardanoTestnet = "cardano_testnet";
 const string kZCashMainnet = "zcash_mainnet";
 const string kZCashTestnet = "zcash_testnet";
 const string kArbitrumNovaChainId = "0xa4ba";
@@ -1465,7 +1469,8 @@ enum CoinType {
   ZEC = 133,
   ETH = 60,
   FIL = 461,
-  SOL = 501
+  SOL = 501,
+  ADA = 1815,
 };
 
 struct NetworkInfo {
@@ -1808,6 +1813,23 @@ interface BitcoinWalletService {
   // These are parts of wallet internals api(brave://wallet/dev-bitcoin)
   RunDiscovery(AccountId account_id, bool change) => (BitcoinAddress? address, string? error_message);
   GetBitcoinAccountInfo(AccountId account_id) => (BitcoinAccountInfo? account_info);
+};
+
+enum CardanoKeyRole {
+  kExternal = 0,
+  kInternal = 1,
+  kStaking = 2,
+};
+
+struct CardanoKeyId {
+  CardanoKeyRole role;
+  uint32 index;
+};
+
+struct CardanoAddress {
+  string address_string;
+  CardanoKeyId payment_key_id;
+  CardanoKeyId delegation_key_id;
 };
 
 struct ZCashKeyId {

@@ -60,7 +60,8 @@ class AccountDiscoveryManagerUnitTest : public testing::Test {
     bitcoin_test_rpc_server_->SetUpBitcoinRpc(std::nullopt, std::nullopt);
 
     keyring_ = std::make_unique<BitcoinHDKeyring>(
-        *bip39::MnemonicToSeed(kMnemonicDivideCruise), false);
+        *bip39::MnemonicToSeed(kMnemonicDivideCruise),
+        mojom::KeyringId::kBitcoin84);
   }
 
   AccountUtils GetAccountUtils() {

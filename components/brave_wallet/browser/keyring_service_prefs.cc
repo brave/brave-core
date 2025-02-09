@@ -6,6 +6,8 @@
 #include "brave/components/brave_wallet/browser/keyring_service_prefs.h"
 
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -46,6 +48,10 @@ std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
       return "bitcoin_hardware";
     case mojom::KeyringId::kBitcoinHardwareTestnet:
       return "bitcoin_hardware_test";
+    case mojom::KeyringId::kCardanoMainnet:
+      return "cardano_mainnet";
+    case mojom::KeyringId::kCardanoTestnet:
+      return "cardano_testnet";
   }
   NOTREACHED();
 }

@@ -17,7 +17,6 @@
 #include "base/containers/span.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
-#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/rand_util.h"
@@ -34,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -93,6 +93,7 @@ void SerializeHardwareAccounts(const std::string& device_id,
                                mojom::KeyringId keyring_id,
                                std::vector<mojom::AccountInfoPtr>* accounts) {
   CHECK(!IsBitcoinKeyring(keyring_id));
+  CHECK(!IsCardanoKeyring(keyring_id));
   CHECK(!IsZCashKeyring(keyring_id));
   for (const auto account : account_value->GetDict()) {
     DCHECK(account.second.is_dict());
@@ -586,6 +587,7 @@ mojom::BitcoinAccountInfoPtr BitcoinAccountInfoFromPrefInfo(
 struct KeyringSeed {
   std::vector<uint8_t> eth_seed;
   std::vector<uint8_t> seed;
+  std::vector<uint8_t> cardano_entropy;
 };
 
 std::optional<KeyringSeed> MakeSeedFromMnemonic(
@@ -599,18 +601,21 @@ std::optional<KeyringSeed> MakeSeedFromMnemonic(
 
   result.seed = std::move(*seed);
 
+  auto entropy = bip39::MnemonicToEntropy(mnemonic);
+  if (!entropy) {
+    return std::nullopt;
+  }
+
   if (use_legacy_eth_seed_format) {
-    const auto eth_seed = bip39::MnemonicToEntropy(mnemonic);
-    if (!eth_seed) {
+    if (entropy->size() != bip39::kLegacyEthEntropySize) {
       return std::nullopt;
     }
-    if (eth_seed->size() != bip39::kLegacyEthEntropySize) {
-      return std::nullopt;
-    }
-    result.eth_seed = std::move(*eth_seed);
+    result.eth_seed = *entropy;
   } else {
     result.eth_seed = result.seed;
   }
+
+  result.cardano_entropy = *entropy;
 
   return result;
 }
@@ -748,6 +753,8 @@ void KeyringService::CreateKeyrings(const KeyringSeed& keyring_seed) {
       DCHECK(GetBitcoinImportKeyring(keyring_id));
     } else if (IsBitcoinHardwareKeyring(keyring_id)) {
       DCHECK(GetBitcoinHardwareKeyring(keyring_id));
+    } else if (IsCardanoHDKeyring(keyring_id)) {
+      DCHECK(GetCardanoHDKeyring(keyring_id));
     } else {
       DCHECK(GetHDKeyringById(keyring_id));
     }
@@ -1134,10 +1141,9 @@ void KeyringService::ImportAccountFromJson(const std::string& account_name,
 }
 
 HDKeyring* KeyringService::GetHDKeyringById(mojom::KeyringId keyring_id) const {
-  DCHECK(keyring_id != mojom::KeyringId::kBitcoinImport);
-  DCHECK(keyring_id != mojom::KeyringId::kBitcoinImportTestnet);
-  DCHECK(keyring_id != mojom::KeyringId::kBitcoinHardware);
-  DCHECK(keyring_id != mojom::KeyringId::kBitcoinHardwareTestnet);
+  DCHECK(!IsBitcoinImportKeyring(keyring_id));
+  DCHECK(!IsBitcoinHardwareKeyring(keyring_id));
+  DCHECK(!IsCardanoHDKeyring(keyring_id));
   if (keyrings_.contains(keyring_id)) {
     return keyrings_.at(keyring_id).get();
   }
@@ -1202,6 +1208,18 @@ BitcoinHDKeyring* KeyringService::GetBitcoinHDKeyringById(
   }
 
   return static_cast<BitcoinHDKeyring*>(GetHDKeyringById(keyring_id));
+}
+
+CardanoHDKeyring* KeyringService::GetCardanoHDKeyring(
+    mojom::KeyringId keyring_id) const {
+  if (!IsCardanoHDKeyring(keyring_id)) {
+    return nullptr;
+  }
+
+  if (cardano_hd_keyrings_.contains(keyring_id)) {
+    return cardano_hd_keyrings_.at(keyring_id).get();
+  }
+  return nullptr;
 }
 
 ZCashKeyring* KeyringService::GetZCashKeyringById(
@@ -1826,30 +1844,21 @@ void KeyringService::CreateKeyringInternal(mojom::KeyringId keyring_id,
         keyring_seed.seed, GetFilecoinChainId(keyring_id));
   } else if (keyring_id == mojom::kSolanaKeyringId) {
     keyrings_[keyring_id] = std::make_unique<SolanaKeyring>(keyring_seed.seed);
-  } else if (keyring_id == mojom::KeyringId::kBitcoin84) {
+  } else if (IsZCashKeyring(keyring_id)) {
     keyrings_[keyring_id] =
-        std::make_unique<BitcoinHDKeyring>(keyring_seed.seed, false);
-  } else if (keyring_id == mojom::KeyringId::kBitcoin84Testnet) {
+        std::make_unique<ZCashKeyring>(keyring_seed.seed, keyring_id);
+  } else if (IsBitcoinHDKeyring(keyring_id)) {
     keyrings_[keyring_id] =
-        std::make_unique<BitcoinHDKeyring>(keyring_seed.seed, true);
-  } else if (keyring_id == mojom::KeyringId::kZCashMainnet) {
-    keyrings_[keyring_id] =
-        std::make_unique<ZCashKeyring>(keyring_seed.seed, false);
-  } else if (keyring_id == mojom::KeyringId::kZCashTestnet) {
-    keyrings_[keyring_id] =
-        std::make_unique<ZCashKeyring>(keyring_seed.seed, true);
-  } else if (keyring_id == mojom::KeyringId::kBitcoinImport) {
+        std::make_unique<BitcoinHDKeyring>(keyring_seed.seed, keyring_id);
+  } else if (IsBitcoinImportKeyring(keyring_id)) {
     bitcoin_import_keyrings_[keyring_id] =
-        std::make_unique<BitcoinImportKeyring>(false);
-  } else if (keyring_id == mojom::KeyringId::kBitcoinImportTestnet) {
-    bitcoin_import_keyrings_[keyring_id] =
-        std::make_unique<BitcoinImportKeyring>(true);
-  } else if (keyring_id == mojom::KeyringId::kBitcoinHardware) {
+        std::make_unique<BitcoinImportKeyring>(keyring_id);
+  } else if (IsBitcoinHardwareKeyring(keyring_id)) {
     bitcoin_hardware_keyrings_[keyring_id] =
-        std::make_unique<BitcoinHardwareKeyring>(false);
-  } else if (keyring_id == mojom::KeyringId::kBitcoinHardwareTestnet) {
-    bitcoin_hardware_keyrings_[keyring_id] =
-        std::make_unique<BitcoinHardwareKeyring>(true);
+        std::make_unique<BitcoinHardwareKeyring>(keyring_id);
+  } else if (IsCardanoHDKeyring(keyring_id)) {
+    cardano_hd_keyrings_[keyring_id] =
+        std::make_unique<CardanoHDKeyring>(keyring_seed.seed, keyring_id);
   } else {
     NOTREACHED() << keyring_id;
   }

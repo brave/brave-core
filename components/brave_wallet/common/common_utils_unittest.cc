@@ -140,6 +140,91 @@ TEST(CommonUtils, IsBitcoinAccount) {
                      mojom::AccountKind::kImported, "0xasdf")));
 }
 
+TEST(CommonUtils, IsCardanoKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kCardanoMainnet ||
+        keyring_id == mojom::KeyringId::kCardanoTestnet) {
+      EXPECT_TRUE(IsCardanoKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsCardanoKeyring(keyring_id));
+    }
+  }
+}
+
+TEST(CommonUtils, IsCardanoHDKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kCardanoMainnet ||
+        keyring_id == mojom::KeyringId::kCardanoTestnet) {
+      EXPECT_TRUE(IsCardanoHDKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsCardanoHDKeyring(keyring_id));
+    }
+  }
+}
+
+TEST(CommonUtils, IsCardanoImportKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    EXPECT_FALSE(IsCardanoImportKeyring(keyring_id));
+  }
+}
+
+TEST(CommonUtils, IsCardanoHardwareKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    EXPECT_FALSE(IsCardanoHardwareKeyring(keyring_id));
+  }
+}
+
+TEST(CommonUtils, IsCardanoMainnetKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kCardanoMainnet) {
+      EXPECT_TRUE(IsCardanoMainnetKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsCardanoMainnetKeyring(keyring_id));
+    }
+  }
+}
+
+TEST(CommonUtils, IsCardanoTestnetKeyring) {
+  for (const auto& keyring_id : kAllKeyrings) {
+    if (keyring_id == mojom::KeyringId::kCardanoTestnet) {
+      EXPECT_TRUE(IsCardanoTestnetKeyring(keyring_id));
+    } else {
+      EXPECT_FALSE(IsCardanoTestnetKeyring(keyring_id));
+    }
+  }
+}
+
+TEST(CommonUtils, IsCardanoNetwork) {
+  EXPECT_TRUE(IsCardanoNetwork(mojom::kCardanoMainnet));
+  EXPECT_TRUE(IsCardanoNetwork(mojom::kCardanoTestnet));
+
+  EXPECT_FALSE(IsCardanoNetwork(mojom::kMainnetChainId));
+  EXPECT_FALSE(IsCardanoNetwork(mojom::kFilecoinMainnet));
+  EXPECT_FALSE(IsCardanoNetwork(mojom::kSolanaMainnet));
+  EXPECT_FALSE(IsCardanoNetwork(mojom::kBitcoinMainnet));
+  EXPECT_FALSE(IsCardanoNetwork(""));
+  EXPECT_FALSE(IsCardanoNetwork("abc"));
+}
+
+TEST(CommonUtils, IsCardanoAccount) {
+  EXPECT_TRUE(IsCardanoAccount(*MakeIndexBasedAccountId(
+      mojom::CoinType::ADA, mojom::KeyringId::kCardanoMainnet,
+      mojom::AccountKind::kDerived, 4)));
+  EXPECT_TRUE(IsCardanoAccount(*MakeIndexBasedAccountId(
+      mojom::CoinType::ADA, mojom::KeyringId::kCardanoTestnet,
+      mojom::AccountKind::kDerived, 7)));
+
+  EXPECT_FALSE(IsCardanoAccount(
+      *MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
+                     mojom::AccountKind::kDerived, "0xasdf")));
+  EXPECT_FALSE(IsCardanoAccount(
+      *MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                     mojom::AccountKind::kDerived, "0xasdf")));
+  EXPECT_FALSE(IsCardanoAccount(
+      *MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
+                     mojom::AccountKind::kImported, "0xasdf")));
+}
+
 TEST(CommonUtils, GetActiveEndpointUrl) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1();
   EXPECT_EQ(GURL("https://url1.com"), GetActiveEndpointUrl(chain));
@@ -306,8 +391,9 @@ TEST(CommonUtils, GetSupportedKeyringsForNetwork) {
                                              "any non mainnet chain"),
               ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
-  EXPECT_TRUE(AllCoinsTested());
-  EXPECT_TRUE(AllKeyringsTested());
+  static_assert(AllCoinsTested<5>());
+
+  static_assert(AllKeyringsTested<12>());
 }
 
 TEST(CommonUtils, MakeAccountId) {
@@ -377,8 +463,9 @@ TEST(CommonUtils, MakeAccountId) {
   EXPECT_DCHECK_DEATH(MakeAccountId(mojom::CoinType::ZEC,
                                     mojom::KeyringId::kDefault,
                                     mojom::AccountKind::kDerived, "0xabc"));
-  EXPECT_TRUE(AllCoinsTested());
-  EXPECT_TRUE(AllKeyringsTested());
+  static_assert(AllCoinsTested<5>());
+
+  static_assert(AllKeyringsTested<12>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
@@ -444,8 +531,9 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
   EXPECT_TRUE(MakeIndexBasedAccountId(mojom::CoinType::BTC,
                                       mojom::KeyringId::kBitcoinHardwareTestnet,
                                       mojom::AccountKind::kHardware, 123));
-  EXPECT_TRUE(AllCoinsTested());
-  EXPECT_TRUE(AllKeyringsTested());
+  static_assert(AllCoinsTested<5>());
+
+  static_assert(AllKeyringsTested<12>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
@@ -492,8 +580,9 @@ TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
       mojom::CoinType::ZEC, mojom::KeyringId::kZCashMainnet,
       mojom::AccountKind::kImported, 123));
 
-  EXPECT_TRUE(AllCoinsTested());
-  EXPECT_TRUE(AllKeyringsTested());
+  static_assert(AllCoinsTested<5>());
+
+  static_assert(AllKeyringsTested<12>());
 }
 
 TEST(CommonUtils, CoinSupportsDapps) {

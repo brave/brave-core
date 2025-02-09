@@ -9,12 +9,24 @@
 #include <string>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 
 namespace brave_wallet {
 
-bool AllCoinsTested();
-bool AllKeyringsTested();
+// Change calling test's hardcoded value only after it has adequate testing for
+// newly added coin.
+template <size_t N>
+constexpr bool AllCoinsTested() {
+  return N == std::size(kAllCoins);
+}
+
+// Change calling test's hardcoded value only after it has adequate testing for
+// newly added keyring.
+template <size_t N>
+constexpr bool AllKeyringsTested() {
+  return N == std::size(kAllKeyrings);
+}
 
 inline constexpr char kHttpURL[] = "http://bad.com/";
 inline constexpr char kHttpLocalhostURL[] = "http://localhost:8080/";

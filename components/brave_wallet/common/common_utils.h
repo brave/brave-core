@@ -18,7 +18,8 @@ namespace brave_wallet {
 
 inline constexpr mojom::CoinType kAllCoins[] = {
     mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL,
-    mojom::CoinType::BTC, mojom::CoinType::ZEC};
+    mojom::CoinType::BTC, mojom::CoinType::ZEC,
+};
 
 inline constexpr mojom::KeyringId kAllKeyrings[] = {
     mojom::KeyringId::kDefault,
@@ -32,14 +33,14 @@ inline constexpr mojom::KeyringId kAllKeyrings[] = {
     mojom::KeyringId::kBitcoinImport,
     mojom::KeyringId::kBitcoinImportTestnet,
     mojom::KeyringId::kBitcoinHardware,
-    mojom::KeyringId::kBitcoinHardwareTestnet};
-
-bool IsZCashKeyring(mojom::KeyringId keyring_id);
+    mojom::KeyringId::kBitcoinHardwareTestnet,
+};
 
 bool IsNativeWalletEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
+bool IsCardanoEnabled();
 bool IsZCashEnabled();
 bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
@@ -61,6 +62,17 @@ bool IsBitcoinAccount(const mojom::AccountId& account_id);
 bool IsZCashAccount(const mojom::AccountId& account_id);
 bool IsZCashNetwork(const std::string& network_id);
 bool IsZCashKeyring(mojom::KeyringId keyring_id);
+bool IsZCashMainnetKeyring(mojom::KeyringId keyring_id);
+bool IsZCashTestnetKeyring(mojom::KeyringId keyring_id);
+
+bool IsCardanoKeyring(mojom::KeyringId keyring_id);
+bool IsCardanoMainnetKeyring(mojom::KeyringId keyring_id);
+bool IsCardanoTestnetKeyring(mojom::KeyringId keyring_id);
+bool IsCardanoHDKeyring(mojom::KeyringId keyring_id);
+bool IsCardanoImportKeyring(mojom::KeyringId keyring_id);
+bool IsCardanoHardwareKeyring(mojom::KeyringId keyring_id);
+bool IsCardanoNetwork(const std::string& network_id);
+bool IsCardanoAccount(const mojom::AccountId& account_id);
 
 mojom::KeyringId GetFilecoinKeyringId(const std::string& network);
 

@@ -231,7 +231,7 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
       EXPECT_EQ(network_value.FindInt("coin"), static_cast<int>(coin));
     }
 
-    EXPECT_TRUE(AllCoinsTested());
+    static_assert(AllCoinsTested<5>());
   }
 
   {
@@ -273,7 +273,7 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
     EXPECT_THAT(value_network->supported_keyrings,
                 ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
-    EXPECT_TRUE(AllCoinsTested());
+    static_assert(AllCoinsTested<5>());
   }
 }
 

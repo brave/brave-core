@@ -12,16 +12,20 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
 
 using bip39::MnemonicToSeed;
 using mojom::BitcoinKeyId;
+using mojom::KeyringId::kBitcoin84;
+using mojom::KeyringId::kBitcoin84Testnet;
 
 // https://github.com/bitcoin/bips/blob/master/bip-0084.mediawiki#test-vectors
 TEST(BitcoinHDKeyringUnitTest, TestVectors) {
-  BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
+  BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon),
+                           kBitcoin84);
 
   EXPECT_EQ(
       base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
@@ -42,7 +46,8 @@ TEST(BitcoinHDKeyringUnitTest, TestVectors) {
 }
 
 TEST(BitcoinHDKeyringUnitTest, GetAddress) {
-  BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
+  BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon),
+                           kBitcoin84);
 
   EXPECT_EQ(keyring.GetAddress(0, BitcoinKeyId(0, 0))->address_string,
             "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu");
@@ -59,7 +64,7 @@ TEST(BitcoinHDKeyringUnitTest, GetAddress) {
             "bc1qt0x83f5vmnapgl2gjj9r3d67rcghvjaqrvgpck");
 
   BitcoinHDKeyring testnet_keyring(*MnemonicToSeed(kMnemonicAbandonAbandon),
-                                   true);
+                                   kBitcoin84Testnet);
 
   EXPECT_EQ(testnet_keyring.GetAddress(0, BitcoinKeyId(0, 0))->address_string,
             "tb1q6rz28mcfaxtmd6v789l9rrlrusdprr9pqcpvkl");
@@ -77,7 +82,8 @@ TEST(BitcoinHDKeyringUnitTest, GetAddress) {
 }
 
 TEST(BitcoinHDKeyringUnitTest, GetPubkey) {
-  BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
+  BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon),
+                           kBitcoin84);
 
   EXPECT_EQ(
       base::HexEncode(*keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
@@ -100,7 +106,7 @@ TEST(BitcoinHDKeyringUnitTest, GetPubkey) {
       "025695996D13031C54896990E6E38DB5849F5A64FA81142B452D6E23C36FD83880");
 
   BitcoinHDKeyring testnet_keyring(*MnemonicToSeed(kMnemonicAbandonAbandon),
-                                   true);
+                                   kBitcoin84Testnet);
 
   EXPECT_EQ(
       base::HexEncode(*testnet_keyring.GetPubkey(0, BitcoinKeyId(0, 0))),
@@ -124,7 +130,8 @@ TEST(BitcoinHDKeyringUnitTest, GetPubkey) {
 }
 
 TEST(BitcoinHDKeyringUnitTest, SignMessage) {
-  BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon), false);
+  BitcoinHDKeyring keyring(*MnemonicToSeed(kMnemonicAbandonAbandon),
+                           kBitcoin84);
   std::vector<uint8_t> message(32, 0);
   EXPECT_EQ(
       base::HexEncode(*keyring.SignMessage(

@@ -46,7 +46,7 @@ class BitcoinMaxSendSolverUnitTest : public testing::Test {
     target_output.amount = transaction.amount();
     target_output.address = transaction.to();
     target_output.script_pubkey = BitcoinSerializer::AddressToScriptPubkey(
-        target_output.address, testnet_);
+        target_output.address, keyring_.IsTestnet());
     EXPECT_FALSE(target_output.script_pubkey.empty());
     transaction.AddOutput(std::move(target_output));
 
@@ -73,9 +73,8 @@ class BitcoinMaxSendSolverUnitTest : public testing::Test {
   double fee_rate() const { return 11.1; }
   double longterm_fee_rate() const { return 3.0; }
 
-  bool testnet_ = false;
   BitcoinHDKeyring keyring_{*bip39::MnemonicToSeed(kMnemonicAbandonAbandon),
-                            testnet_};
+                            mojom::KeyringId::kBitcoin84};
 };
 
 TEST_F(BitcoinMaxSendSolverUnitTest, NoInputs) {

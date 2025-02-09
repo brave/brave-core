@@ -79,7 +79,7 @@ TEST_F(NetworkManagerUnitTest, GetAllCustomChainsTest) {
     EXPECT_EQ(chain1, *network_manager()->GetAllCustomChains(coin)[0]);
     EXPECT_EQ(chain2, *network_manager()->GetAllCustomChains(coin)[1]);
   }
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 }
 
 TEST_F(NetworkManagerUnitTest, KnownChainExists) {
@@ -130,7 +130,7 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kZCashTestnet,
                                                   mojom::CoinType::ZEC));
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 }
 
 TEST_F(NetworkManagerUnitTest, CustomChainExists) {
@@ -182,7 +182,7 @@ TEST_F(NetworkManagerUnitTest, CustomChainExists) {
   EXPECT_TRUE(network_manager()->CustomChainExists(mojom::kZCashMainnet,
                                                    mojom::CoinType::ZEC));
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 }
 
 TEST_F(NetworkManagerUnitTest, CustomChainsExist) {
@@ -332,8 +332,9 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   EXPECT_THAT(zec_chains[1]->supported_keyrings,
               ElementsAreArray({mojom::KeyringId::kZCashTestnet}));
 
-  EXPECT_TRUE(AllCoinsTested());
-  EXPECT_TRUE(AllKeyringsTested());
+  static_assert(AllCoinsTested<5>());
+
+  static_assert(AllKeyringsTested<12>());
 }
 
 TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
@@ -410,7 +411,7 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
             network_manager()->GetNetworkURL(mojom::kZCashMainnet,
                                              mojom::CoinType::ZEC));
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 }
 
 TEST_F(NetworkManagerUnitTest, GetNetworkURLForKnownChains) {
@@ -568,7 +569,7 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
   EXPECT_EQ(network_manager()->GetChain("zcash_mainnet", mojom::CoinType::ZEC),
             zec_mainnet.Clone());
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 }
 
 // DEPRECATED 01/2024. For migration only.
@@ -793,7 +794,7 @@ TEST_F(NetworkManagerUnitTest, RemoveCustomNetwork) {
         0u, network_manager()->GetAllCustomChains(mojom::CoinType::ZEC).size());
   }
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 }
 
 TEST_F(NetworkManagerUnitTest, RemoveCustomNetworkRemovesEip1559) {
@@ -825,7 +826,7 @@ TEST_F(NetworkManagerUnitTest, HiddenNetworks) {
               ElementsAreArray<std::string>({mojom::kBitcoinTestnet}));
   EXPECT_THAT(network_manager()->GetHiddenNetworks(mojom::CoinType::ZEC),
               ElementsAreArray<std::string>({mojom::kZCashTestnet}));
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 
   for (auto coin : kAllCoins) {
     for (auto& default_hidden : network_manager()->GetHiddenNetworks(coin)) {
@@ -872,7 +873,7 @@ TEST_F(NetworkManagerUnitTest, GetAndSetCurrentChainId) {
       {mojom::CoinType::FIL, mojom::kFilecoinTestnet},
   };
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 
   for (const auto coin_type : kAllCoins) {
     // TODO(apaymyshev): make this test working for BTC which has no localhost

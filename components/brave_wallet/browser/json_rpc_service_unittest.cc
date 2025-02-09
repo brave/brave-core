@@ -3974,7 +3974,7 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidCoin) {
     task_environment_.RunUntilIdle();
   }
 
-  EXPECT_TRUE(AllCoinsTested());
+  static_assert(AllCoinsTested<5>());
 }
 
 TEST_F(JsonRpcServiceUnitTest, IsValidEnsDomain) {
