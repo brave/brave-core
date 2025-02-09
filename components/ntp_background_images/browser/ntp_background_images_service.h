@@ -38,6 +38,8 @@ class NTPBackgroundImagesService {
     // Called whenever ntp background images component is updated.
     virtual void OnUpdated(NTPBackgroundImagesData* data) = 0;
     virtual void OnUpdated(NTPSponsoredImagesData* data) = 0;
+    // Called when sponsored content is updated.
+    virtual void OnSponsoredContentDidUpdate(const base::Value::Dict& data) {}
     // Called when SR campaign ended.
     virtual void OnSuperReferralEnded() = 0;
    protected:
@@ -73,12 +75,27 @@ class NTPBackgroundImagesService {
   void CheckNTPSIComponentUpdateIfNeeded();
 
  private:
+  friend class NTPSponsoredRichMediaSourceTest;
+  friend class NTPSponsoredRichMediaWithCSPViolationBrowserTest;
+  friend class NTPSponsoredRichMediaBrowserTest;
   friend class TestNTPBackgroundImagesService;
   friend class NTPBackgroundImagesServiceTest;
   friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            MultipleCampaignsTest);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      DoNotGetSponsoredImageContentForNonHttpsSchemeTargetUrl);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      DoNotGetSponsoredImageContentIfWallpaperUrlReferencesParent);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      DoNotGetSponsoredImageContentIfWallpaperButtonImageRelativeUrlReferencesParent);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      DoNotGetSponsoredRichMediaContentIfWallpaperRelativeUrlReferencesParent);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            SponsoredImageWithMissingImageUrlTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,

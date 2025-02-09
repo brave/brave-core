@@ -43,35 +43,46 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
 };
 
 TEST_F(NTPBackgroundImagesSourceTest, SponsoredImagesTest) {
-  const std::string test_json_string_referral = R"(
-      {
-        "schemaVersion": 1,
-        "logo": {
-          "imageUrl": "logo.png",
-          "alt": "Technikke: For music lovers",
-          "companyName": "Technikke",
-          "destinationUrl": "https://www.brave.com/?from-super-referreer-demo"
-        },
-        "wallpapers": [
-          {
-            "imageUrl": "background-1.jpg",
-            "focalPoint": { "x": 3988, "y": 2049}
-          },
-          {
-            "imageUrl": "background-2.jpg",
-            "focalPoint": { "x": 5233, "y": 3464}
-          },
-          {
-            "imageUrl": "background-3.jpg"
-          }
-        ]
-      })";
+  const std::string test_json_string_referral = R"JSON(
+    {
+      "schemaVersion": 2,
+      "campaigns": [
+        {
+          "version": 1,
+          "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+          "creativeSets": [
+            {
+              "creativeSetId": "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b",
+              "creatives": [
+                {
+                  "creativeInstanceId": "30244a36-561a-48f0-8d7a-780e9035c57a",
+                  "companyName": "Image NTT Creative",
+                  "alt": "Some content",
+                  "targetUrl": "https://basicattentiontoken.org",
+                  "wallpaper": {
+                    "type": "image",
+                    "relativeUrl": "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b/background.jpg",
+                    "focalPoint": {
+                      "x": 25,
+                      "y": 50
+                    },
+                    "button": {
+                      "image": {
+                        "relativeUrl": "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b/button.png"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    })JSON";
   service_->OnGetSponsoredComponentJsonData(false, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
-  EXPECT_TRUE(source_->IsValidPath("sponsored-images/logo.png"));
-  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-1.jpg"));
-  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-2.jpg"));
-  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background-3.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/button.png"));
+  EXPECT_TRUE(source_->IsValidPath("sponsored-images/background.jpg"));
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
   EXPECT_FALSE(source_->IsValidPath("sponsored-images/abcd.png"));
 
@@ -151,54 +162,70 @@ TEST_F(NTPBackgroundImagesSourceTest, BackgroundImagesTest) {
 #if !BUILDFLAG(IS_LINUX)
 TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
   // Valid super referral component json data.
-  const std::string test_json_string_referral = R"(
-      {
-        "schemaVersion": 1,
-        "themeName": "Technikke",
-        "logo": {
-          "imageUrl": "logo.png",
-          "alt": "Technikke: For music lovers",
-          "companyName": "Technikke",
-          "destinationUrl": "https://www.brave.com/?from-super-referreer-demo"
+  const std::string test_json_string_referral = R"JSON(
+    {
+      "schemaVersion": 2,
+      "themeName": "Technikke",
+      "campaigns": [
+        {
+          "version": 1,
+          "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+          "creativeSets": [
+            {
+              "creativeSetId": "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b",
+              "creatives": [
+                {
+                  "creativeInstanceId": "30244a36-561a-48f0-8d7a-780e9035c57a",
+                  "companyName": "Image NTT Creative",
+                  "alt": "Some content",
+                  "targetUrl": "https://basicattentiontoken.org",
+                  "wallpaper": {
+                    "type": "image",
+                    "relativeUrl": "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b/background.jpg",
+                    "focalPoint": {
+                      "x": 25,
+                      "y": 50
+                    },
+                    "button": {
+                      "image": {
+                        "relativeUrl": "6690ad47-d0af-4dbb-a2dd-c7a678b2b83b/button.png"
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "topSites": [
+        {
+          "name": "Brave",
+          "destinationUrl": "https://brave.com/",
+          "backgroundColor": "#e22919",
+          "iconUrl": "brave.png"
         },
-        "wallpapers": [
-          {
-            "imageUrl": "background-1.jpg",
-            "focalPoint": { "x": 3988, "y": 2049}
-          },
-          {
-            "imageUrl": "background-2.jpg",
-            "focalPoint": { "x": 5233, "y": 3464}
-          },
-          {
-            "imageUrl": "background-3.jpg"
-          }
-        ],
-        "topSites": [
-          {
-            "name": "Brave",
-            "destinationUrl": "https://brave.com/",
-            "iconUrl": "brave.png"
-          },
-          {
-            "name": "Wiki",
-            "destinationUrl": "https://wikipedia.org/",
-            "iconUrl": "wikipedia.png"
-          },
-          {
-            "name": "BAT",
-            "destinationUrl": "https://basicattentiontoken.org/",
-            "iconUrl": "bat.png"
-          }
-        ]
-      })";
+        {
+          "name": "Wiki",
+          "destinationUrl": "https://wikipedia.org/",
+          "backgroundColor": "#e22919",
+          "iconUrl": "wikipedia.png"
+        },
+        {
+          "name": "BAT",
+          "destinationUrl": "https://basicattentiontoken.org/",
+          "backgroundColor": "#e22919",
+          "iconUrl": "bat.png"
+        }
+      ]
+    })JSON";
   service_->OnGetSponsoredComponentJsonData(true, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
   EXPECT_TRUE(source_->IsValidPath("super-referral/bat.png"));
-  EXPECT_TRUE(source_->IsValidPath("super-referral/logo.png"));
-  EXPECT_TRUE(source_->IsValidPath("super-referral/background-1.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/button.png"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/background.jpg"));
   EXPECT_TRUE(source_->IsValidPath("super-referral/brave.png"));
-  EXPECT_FALSE(source_->IsValidPath("sponsored-images/logo.png"));
+  EXPECT_FALSE(source_->IsValidPath("sponsored-images/button.png"));
   EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
   EXPECT_FALSE(source_->IsValidPath("super-referral/abcd.png"));
 }

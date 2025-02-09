@@ -369,6 +369,14 @@ void ViewCounterService::OnUpdated(NTPSponsoredImagesData* data) {
   }
 }
 
+void ViewCounterService::OnSponsoredContentDidUpdate(
+    const base::Value::Dict& data) {
+  if (ads_service_) {
+    ads_service_->ParseAndSaveCreativeNewTabPageAds(
+        data, /*intentional*/ base::DoNothing());
+  }
+}
+
 void ViewCounterService::OnSuperReferralEnded() {
   // Need to reset model because SI images are shown only for every 4th NTP but
   // we've shown SR images for every NTP.
@@ -450,17 +458,11 @@ void ViewCounterService::MaybeTriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdEventType mojom_ad_event_type) {
-  if (!ads_service_) {
-    // If `brave_ads::kShouldAlwaysRunBraveAdsServiceFeature` flag is disabled,
-    // `ads_service_` will be null if the user has not joined Brave Rewards.
-    return;
+  if (ads_service_) {
+    ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
+                                           mojom_ad_event_type,
+                                           /*intentional*/ base::DoNothing());
   }
-
-  // If `brave_ads::kShouldAlwaysTriggerBraveNewTabPageAdEventsFeature` flag is
-  // disabled `AdsService::TriggerNewTabPageAdEvent` will be no-op.
-  ads_service_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
-                                         mojom_ad_event_type,
-                                         /*intentional*/ base::DoNothing());
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {

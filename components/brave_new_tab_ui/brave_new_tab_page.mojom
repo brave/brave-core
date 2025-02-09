@@ -7,6 +7,7 @@ module brave_new_tab_page.mojom;
 
 import "url/mojom/url.mojom";
 import "brave/components/brave_vpn/common/mojom/brave_vpn.mojom";
+import "brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom";
 
 const string kRandomSolidColorValue = "solid";
 const string kRandomGradientColorValue = "gradient";
@@ -24,10 +25,10 @@ struct BraveBackground {
 struct CustomBackground {
   url.mojom.Url url;
 
-  // |color| is a 
-  //   * color value for css background property or 'gradient' when 
+  // |color| is a
+  //   * color value for css background property or 'gradient' when
   //     |use_random_item| is false.
-  //   * either kRandomSlidColorValue or kRandomGradientColorValue when 
+  //   * either kRandomSlidColorValue or kRandomGradientColorValue when
   //     |use_random_item| is true
   string color;
 
@@ -45,7 +46,8 @@ interface PageHandlerFactory {
   // is first initialized.
   CreatePageHandler(pending_remote<Page> page,
                     pending_receiver<PageHandler> handler,
-                    pending_receiver<NewTabMetrics> new_tab_metrics);
+                    pending_receiver<NewTabMetrics> new_tab_metrics,
+                    pending_receiver<ntp_background_images.mojom.SponsoredRichMediaAdEventHandler> rich_media_events_handler);
 };
 
 struct SearchEngineInfo {
@@ -68,11 +70,11 @@ interface PageHandler {
   // When |seleteceBackground| is empty, should use random background.
   UseBraveBackground(string selected_background);
   GetBraveBackgrounds() => (array<BraveBackground> backgrounds);
-  
-  // |color| is a 
-  //   * color value for css background property or 'gradient' when 
+
+  // |color| is a
+  //   * color value for css background property or 'gradient' when
   //     |use_random_color| is false.
-  //   * either kRandomSlidColorValue or kRandomGradientColorValue when 
+  //   * either kRandomSlidColorValue or kRandomGradientColorValue when
   //     |use_random_color| is true
   UseColorBackground(string color, bool use_random_color);
 

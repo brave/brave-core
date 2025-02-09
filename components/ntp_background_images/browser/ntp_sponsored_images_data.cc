@@ -7,85 +7,48 @@
 
 #include <utility>
 
+#include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
 #include "base/uuid.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
-
-/* Sample photo.json.
-{
-  "schemaVersion": 1,
-  "campaignId": "fb7ee174-5430-4fb9-8e97-29bf14e8d828",
-  "logo": {
-    "imageUrl": "logo.png",
-    "alt": "Visit Brave Software",
-    "companyName": "Brave Software",
-    "destinationUrl": "https://www.brave.com/"
-  },
-  "wallpapers": [
-    {
-      "imageUrl": "background-1.jpg",
-      "focalPoint": {
-        "x": 1468,
-        "y": 720
-      }
-    },
-    {
-      "imageUrl": "background-2.jpg",
-      "focalPoint": {
-        "x": 1650,
-        "y": 720
-      },
-      "viewbox": {
-        "x": 1578,
-        "y": 1200,
-        "height": 600,
-        "width": 800
-      },
-      "backgroundColor": "#FFFFFF",
-      "creativeInstanceId": "3e47ee7a-8d2d-445b-8e60-d987fdeea613",
-      "logo": {
-        "imageUrl": "logo-2.png",
-        "alt": "basic attention token",
-        "companyName": "BAT",
-        "destinationUrl": "https://basicattentiontoken.org/"
-      }
-    }
-  ]
-*/
+#include "url/url_constants.h"
 
 namespace ntp_background_images {
 
 namespace {
 
-constexpr int kExpectedSchemaVersion = 1;
+constexpr int kExpectedSchemaVersion = 2;
+constexpr int kExpectedCampaignVersion = 1;
 
-Logo GetLogoFromValue(const base::FilePath& installed_dir,
-                      const std::string& url_prefix,
-                      const base::Value::Dict& value) {
-  Logo logo;
-
-  if (auto* url = value.FindString(kImageURLKey)) {
-    logo.image_file = installed_dir.AppendASCII(*url);
-    logo.image_url = url_prefix + *url;
-  }
-
-  if (auto* alt_text = value.FindString(kAltKey)) {
-    logo.alt_text = *alt_text;
-  }
-
-  if (auto* name = value.FindString(kCompanyNameKey)) {
-    logo.company_name = *name;
-  }
-
-  if (auto* url = value.FindString(kDestinationURLKey)) {
-    logo.destination_url = *url;
-  }
-
-  return logo;
-}
+constexpr char kCampaignVersionKey[] = "version";
+constexpr char kCreativeSetsKey[] = "creativeSets";
+constexpr char kCreativeSetIdKey[] = "creativeSetId";
+constexpr char kCreativesKey[] = "creatives";
+constexpr char kCreativeInstanceIdKey[] = "creativeInstanceId";
+constexpr char kCreativeCompanyNameKey[] = "companyName";
+constexpr char kCreativeAltKey[] = "alt";
+constexpr char kCreativeTargetUrlKey[] = "targetUrl";
+constexpr char kCreativeConditionMatchersKey[] = "conditionMatchers";
+constexpr char kCreativeConditionMatcherConditionKey[] = "condition";
+constexpr char kCreativeConditionMatcherPrefPathKey[] = "prefPath";
+constexpr char kWallpaperKey[] = "wallpaper";
+constexpr char kImageWallpaperType[] = "image";
+constexpr char kImageWallpaperRelativeUrlKey[] = "relativeUrl";
+constexpr char kImageWallpaperFocalPointXKey[] = "focalPoint.x";
+constexpr char kImageWallpaperFocalPointYKey[] = "focalPoint.y";
+constexpr char kImageWallpaperViewBoxXKey[] = "viewBox.x";
+constexpr char kImageWallpaperViewBoxYKey[] = "viewBox.y";
+constexpr char kImageWallpaperViewBoxWidthKey[] = "viewBox.width";
+constexpr char kImageWallpaperViewBoxHeightKey[] = "viewBox.height";
+constexpr char kImageWallpaperBackgroundColorKey[] = "backgroundColor";
+constexpr char kImageWallpaperButtonImageRelativeUrlKey[] =
+    "button.image.relativeUrl";
+constexpr char kRichMediaWallpaperType[] = "richMedia";
+constexpr char kRichMediaWallpaperRelativeUrlKey[] = "relativeUrl";
 
 }  // namespace
 
@@ -137,15 +100,9 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     const base::Value::Dict& data,
     const base::FilePath& installed_dir)
     : NTPSponsoredImagesData() {
-  std::optional<int> incomingSchemaVersion = data.FindInt(kSchemaVersionKey);
-  const bool schemaVersionIsValid =
-      incomingSchemaVersion && *incomingSchemaVersion == kExpectedSchemaVersion;
-  if (!schemaVersionIsValid) {
-    DVLOG(2) << __func__ << "Incoming NTP background images data was not valid."
-             << " Schema version was "
-             << (incomingSchemaVersion ? std::to_string(*incomingSchemaVersion)
-                                       : "missing")
-             << ", but we expected " << kExpectedSchemaVersion;
+  const std::optional<int> schema_version = data.FindInt(kSchemaVersionKey);
+  if (schema_version != kExpectedSchemaVersion) {
+    // Currently, only version 2 is supported. Update this code to maintain.
     return;
   }
 
@@ -158,24 +115,8 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
     url_prefix += kSponsoredImagesPath;
   }
 
-  // SmartNTTs are targeted locally by the browser and are only shown to users
-  // if the configured conditions match. Non-smart capable browsers that predate
-  // the introduction of this feature should never show these NTTs. To enforce
-  // this, the existing `campaigns` array in `photo.json` never includes
-  // SmartNTTs. A new `campaigns2` array is included in `photo.json`. This
-  // includes all NTTs, including smart ones. SmartNTT capable browsers read the
-  // `campaigns2` array, fall back to `campaigns`, and then fall back to the
-  // root `campaign` for backward compatibility. Non-smart capable browsers
-  // continue to read the `campaigns` array.
-  if (auto* campaigns2_value = data.FindList(kCampaigns2Key)) {
-    ParseCampaignsList(*campaigns2_value, installed_dir);
-  } else if (auto* campaigns_value = data.FindList(kCampaignsKey)) {
+  if (auto* campaigns_value = data.FindList(kCampaignsKey)) {
     ParseCampaignsList(*campaigns_value, installed_dir);
-  } else {
-    // Get a global campaign directly if the campaign list doesn't exist.
-    const auto campaign = GetCampaignFromValue(data, installed_dir);
-    if (campaign.IsValid())
-      campaigns.push_back(campaign);
   }
 
   ParseSRProperties(data, installed_dir);
@@ -194,83 +135,247 @@ void NTPSponsoredImagesData::ParseCampaignsList(
     const base::FilePath& installed_dir) {
   for (const auto& campaign_value : campaigns_value) {
     DCHECK(campaign_value.is_dict());
-    const auto campaign =
+    const std::optional<Campaign> campaign =
         GetCampaignFromValue(campaign_value.GetDict(), installed_dir);
-    if (campaign.IsValid())
-      campaigns.push_back(campaign);
+    if (!campaign || !campaign->IsValid()) {
+      // Invalid campaign.
+      continue;
+    }
+
+    campaigns.push_back(*campaign);
   }
 }
 
-Campaign NTPSponsoredImagesData::GetCampaignFromValue(
+// The changes to RichNTT were made to avoid altering the legacy `Campaign`,
+// `SponsoredBackground`, or `Logo` objects, minimizing changes to the
+// existing code. The parsing logic will be removed once new tab page ads are
+// served from the ads component for both non-Rewards and Rewards.
+std::optional<Campaign> NTPSponsoredImagesData::GetCampaignFromValue(
     const base::Value::Dict& value,
     const base::FilePath& installed_dir) {
   Campaign campaign;
 
-  if (const std::string* campaign_id = value.FindString(kCampaignIdKey)) {
-    campaign.campaign_id = *campaign_id;
+  const std::optional<int> campaign_version =
+      value.FindInt(kCampaignVersionKey);
+  if (campaign_version != kExpectedCampaignVersion) {
+    // Currently, only version 1 is supported. Update this code to maintain
+    // backwards compatibility when adding new schema versions.
+    return std::nullopt;
   }
 
-  Logo default_logo;
-  if (auto* logo = value.FindDict(kLogoKey)) {
-    default_logo = GetLogoFromValue(installed_dir, url_prefix, *logo);
+  const std::string* const campaign_id = value.FindString(kCampaignIdKey);
+  if (!campaign_id) {
+    // Campaign ID is required.
+    return std::nullopt;
+  }
+  campaign.campaign_id = *campaign_id;
+
+  const base::Value::List* const creative_sets =
+      value.FindList(kCreativeSetsKey);
+  if (!creative_sets) {
+    // Creative sets are required.
+    return std::nullopt;
   }
 
-  if (auto* wallpapers = value.FindList(kWallpapersKey)) {
-    for (const auto& entry : *wallpapers) {
-      const auto& wallpaper = entry.GetDict();
-      const std::string* image_url = wallpaper.FindString(kImageURLKey);
-      if (!image_url) {
-        continue;
-      }
+  for (const auto& creative_set : *creative_sets) {
+    const base::Value::Dict* const creative_set_dict = creative_set.GetIfDict();
+    if (!creative_set_dict) {
+      // Invalid creative set.
+      return std::nullopt;
+    }
 
+    const std::string* const creative_set_id =
+        creative_set_dict->FindString(kCreativeSetIdKey);
+    if (!creative_set_id) {
+      // Creative set ID is required.
+      return std::nullopt;
+    }
+
+    const base::Value::List* const creatives =
+        creative_set_dict->FindList(kCreativesKey);
+    if (!creatives) {
+      // Creative are required.
+      return std::nullopt;
+    }
+
+    for (const auto& creative : *creatives) {
       SponsoredBackground background;
-      background.file_path = installed_dir.AppendASCII(*image_url);
 
-      if (auto* focal_point = wallpaper.FindDict(kWallpaperFocalPointKey)) {
-        background.focal_point = {focal_point->FindInt(kXKey).value_or(0),
-                                  focal_point->FindInt(kYKey).value_or(0)};
+      const base::Value::Dict* const creative_dict = creative.GetIfDict();
+      if (!creative_dict) {
+        // Invalid creative.
+        return std::nullopt;
       }
 
-      if (const auto* const condition_matchers =
-              wallpaper.FindList(kWallpaperConditionMatchersKey)) {
+      const std::string* const creative_instance_id =
+          creative_dict->FindString(kCreativeInstanceIdKey);
+      if (!creative_instance_id) {
+        // Creative instance ID is required.
+        return std::nullopt;
+      }
+      background.creative_instance_id = *creative_instance_id;
+
+      const std::string* const company_name =
+          creative_dict->FindString(kCreativeCompanyNameKey);
+      if (!company_name) {
+        // Company name is required.
+        return std::nullopt;
+      }
+      background.logo.company_name = *company_name;
+
+      const std::string* const alt = creative_dict->FindString(kCreativeAltKey);
+      if (!alt) {
+        // Alt is required.
+        return std::nullopt;
+      }
+      background.logo.alt_text = *alt;
+
+      const std::string* const target_url =
+          creative_dict->FindString(kCreativeTargetUrlKey);
+      if (!target_url) {
+        // Target URL is required.
+        return std::nullopt;
+      }
+      if (!GURL(*target_url).SchemeIs(url::kHttpsScheme)) {
+        // Target URL is not supported.
+        return std::nullopt;
+      }
+      background.logo.destination_url = *target_url;
+
+      // Condition matchers.
+      const base::Value::List* const condition_matchers =
+          creative_dict->FindList(kCreativeConditionMatchersKey);
+      if (condition_matchers) {
+        // Condition matchers are optional.
         for (const auto& condition_matcher : *condition_matchers) {
-          const auto& dict = condition_matcher.GetDict();
-          const auto* const pref_path =
-              dict.FindString(kWallpaperConditionMatcherPrefPathKey);
-          if (!pref_path) {
-            continue;
+          const base::Value::Dict* const condition_matcher_dict =
+              condition_matcher.GetIfDict();
+          if (!condition_matcher_dict) {
+            // Invalid condition matcher.
+            return std::nullopt;
           }
 
-          const auto* const condition =
-              dict.FindString(kWallpaperConditionMatcherKey);
+          const std::string* const condition =
+              condition_matcher_dict->FindString(
+                  kCreativeConditionMatcherConditionKey);
           if (!condition) {
-            continue;
+            // Condition is required.
+            return std::nullopt;
+          }
+
+          const std::string* const pref_path =
+              condition_matcher_dict->FindString(
+                  kCreativeConditionMatcherPrefPathKey);
+          if (!pref_path) {
+            // Pref path is required.
+            return std::nullopt;
           }
 
           background.condition_matchers.emplace(*pref_path, *condition);
         }
       }
 
-      if (auto* viewbox = wallpaper.FindDict(kViewboxKey)) {
-        gfx::Rect rect(viewbox->FindInt(kXKey).value_or(0),
-                       viewbox->FindInt(kYKey).value_or(0),
-                       viewbox->FindInt(kWidthKey).value_or(0),
-                       viewbox->FindInt(kHeightKey).value_or(0));
-        background.viewbox.emplace(rect);
+      // Wallpaper.
+      const base::Value::Dict* const wallpaper =
+          creative_dict->FindDict(kWallpaperKey);
+      if (!wallpaper) {
+        // Wallpaper is required.
+        return std::nullopt;
       }
-      if (auto* background_color = wallpaper.FindString(kBackgroundColorKey)) {
-        background.background_color = *background_color;
+
+      const std::string* const wallpaper_type =
+          wallpaper->FindString(kWallpaperTypeKey);
+      if (!wallpaper_type) {
+        // Wallpaper type is required.
+        return std::nullopt;
       }
-      if (auto* creative_instance_id =
-              wallpaper.FindString(kCreativeInstanceIDKey)) {
-        background.creative_instance_id = *creative_instance_id;
-      }
-      if (auto* wallpaper_logo = wallpaper.FindDict(kLogoKey)) {
-        background.logo =
-            GetLogoFromValue(installed_dir, url_prefix, *wallpaper_logo);
+
+      if (*wallpaper_type == kImageWallpaperType) {
+        // Image.
+        background.wallpaper_type = WallpaperType::kImage;
+
+        const std::string* const relative_url =
+            wallpaper->FindString(kImageWallpaperRelativeUrlKey);
+        if (!relative_url) {
+          // Relative url is required.
+          return std::nullopt;
+        }
+        if (base::FilePath::FromUTF8Unsafe(*relative_url).ReferencesParent()) {
+          // Path traversal, deny access.
+          return std::nullopt;
+        }
+        background.file_path = installed_dir.AppendASCII(*relative_url);
+        background.url = GURL(url_prefix + *relative_url);
+
+        // Focal point (optional).
+        const int focal_point_x =
+            wallpaper->FindIntByDottedPath(kImageWallpaperFocalPointXKey)
+                .value_or(0);
+        const int focal_point_y =
+            wallpaper->FindIntByDottedPath(kImageWallpaperFocalPointYKey)
+                .value_or(0);
+        background.focal_point = {focal_point_x, focal_point_y};
+
+        // View box (optional, only used on iOS).
+        const int view_box_x =
+            wallpaper->FindIntByDottedPath(kImageWallpaperViewBoxXKey)
+                .value_or(0);
+        const int view_box_y =
+            wallpaper->FindIntByDottedPath(kImageWallpaperViewBoxYKey)
+                .value_or(0);
+        const int view_box_width =
+            wallpaper->FindIntByDottedPath(kImageWallpaperViewBoxWidthKey)
+                .value_or(0);
+        const int view_box_height =
+            wallpaper->FindIntByDottedPath(kImageWallpaperViewBoxHeightKey)
+                .value_or(0);
+        background.viewbox = {view_box_x, view_box_y, view_box_width,
+                              view_box_height};
+
+        // Background color (optional, only used on iOS).
+        if (const std::string* const background_color =
+                wallpaper->FindString(kImageWallpaperBackgroundColorKey)) {
+          background.background_color = *background_color;
+        }
+
+        // Button.
+        const std::string* const button_image_relative_url =
+            wallpaper->FindStringByDottedPath(
+                kImageWallpaperButtonImageRelativeUrlKey);
+        if (!button_image_relative_url) {
+          // Relative url is required.
+          return std::nullopt;
+        }
+        if (base::FilePath::FromUTF8Unsafe(*button_image_relative_url)
+                .ReferencesParent()) {
+          // Path traversal, deny access.
+          return std::nullopt;
+        }
+        background.logo.image_file =
+            installed_dir.AppendASCII(*button_image_relative_url);
+        background.logo.image_url = url_prefix + *button_image_relative_url;
+      } else if (*wallpaper_type == kRichMediaWallpaperType) {
+        // Rich media.
+        background.wallpaper_type = WallpaperType::kRichMedia;
+
+        const std::string* const relative_url =
+            wallpaper->FindStringByDottedPath(
+                kRichMediaWallpaperRelativeUrlKey);
+        if (!relative_url) {
+          // Relative url is required.
+          return std::nullopt;
+        }
+        if (base::FilePath::FromUTF8Unsafe(*relative_url).ReferencesParent()) {
+          // Path traversal, deny access.
+          return std::nullopt;
+        }
+        background.file_path = installed_dir.AppendASCII(*relative_url);
+        background.url = GURL(kNTPSponsoredRichMediaUrl + *relative_url);
       } else {
-        background.logo = default_logo;
+        // Invalid wallpaper type.
+        return std::nullopt;
       }
+
       campaign.backgrounds.push_back(background);
     }
   }
@@ -340,13 +445,23 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   data.Set(kIsBackgroundKey, false);
   data.Set(kWallpaperIDKey, base::Uuid::GenerateRandomV4().AsLowercaseString());
 
-  const auto background_file_path =
-      campaign.backgrounds[background_index].file_path;
-  const std::string wallpaper_image_url =
-      url_prefix + background_file_path.BaseName().AsUTF8Unsafe();
+  const WallpaperType wallpaper_type =
+      campaign.backgrounds[background_index].wallpaper_type;
+  switch (wallpaper_type) {
+    case WallpaperType::kImage: {
+      data.Set(kWallpaperTypeKey, "image");
+      break;
+    }
 
-  data.Set(kWallpaperURLKey, wallpaper_image_url);
-  data.Set(kWallpaperFilePathKey, background_file_path.AsUTF8Unsafe());
+    case WallpaperType::kRichMedia: {
+      data.Set(kWallpaperTypeKey, "richMedia");
+      break;
+    }
+  }
+
+  data.Set(kWallpaperURLKey, campaign.backgrounds[background_index].url.spec());
+  data.Set(kWallpaperFilePathKey,
+           campaign.backgrounds[background_index].file_path.AsUTF8Unsafe());
   data.Set(kWallpaperFocalPointXKey,
            campaign.backgrounds[background_index].focal_point.x());
   data.Set(kWallpaperFocalPointYKey,
