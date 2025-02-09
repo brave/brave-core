@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts b/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
-index 508f0ad9a58a6fb1b1c12eed43abc0ac521417c3..435d7d751a3951506514b29c241a6580e2211cb7 100644
+index 508f0ad9a58a6..8b3cf28211f8f 100644
 --- a/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
 +++ b/ui/webui/resources/cr_components/certificate_manager/certificate_manager_v2.ts
-@@ -8,6 +8,7 @@
-  * and Chrome Cert Management Enterprise policies launch.
-  */
+@@ -485,5 +485,5 @@ declare global {
+   }
+ }
  
-+import './brave_overrides/index.js';
- import './certificate_list_v2.js';
- import './certificate_confirmation_dialog.js';
- import './certificate_info_dialog.js';
+-customElements.define(
+-    CertificateManagerV2Element.is, CertificateManagerV2Element);
++// customElements.define(
++//     CertificateManagerV2Element.is, CertificateManagerV2Element);
