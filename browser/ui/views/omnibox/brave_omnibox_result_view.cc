@@ -15,8 +15,10 @@
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_match_cell_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
@@ -24,14 +26,17 @@
 #include "components/omnibox/browser/omnibox_controller.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/omnibox/browser/omnibox_popup_selection.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/scoped_canvas.h"
 #include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/label.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/layout/flex_layout_types.h"
 #include "ui/views/view_class_properties.h"
 
 BraveOmniboxResultView::~BraveOmniboxResultView() = default;
@@ -40,6 +45,11 @@ void BraveOmniboxResultView::ResetChildren() {
   if (brave_search_promotion_view_) {
     RemoveChildViewT(brave_search_promotion_view_);
     brave_search_promotion_view_ = nullptr;
+  }
+
+  if (leo_match_label_) {
+    leo_match_label_->parent()->RemoveChildViewT(
+        leo_match_label_.ExtractAsDangling());
   }
 
   // Reset children visibility. Their visibility could be configured later
@@ -143,6 +153,28 @@ void BraveOmniboxResultView::UpdateForLeoMatch() {
               gfx::Insets().set_top(1),
               cp->GetColor(kColorBraveOmniboxResultViewSeparator)),
           gfx::Insets().set_top(kLeoMatchPadding)));
+
+      if (!leo_match_label_) {
+        // Note: The |suggestion_view_| is a child of suggestion_and_button_row
+        // which has a FlexLayout but is not stored in a field, so we have to
+        // go via |suggestion_view_->parent()| to add |leo_match_label_|.
+        leo_match_label_ = suggestion_view_->parent()->AddChildView(
+            std::make_unique<views::Label>(
+                l10n_util::GetStringUTF16(IDS_OMNIBOX_SELECT_ASK_LEO_HINT)));
+        leo_match_label_->SetHorizontalAlignment(gfx::ALIGN_RIGHT);
+        leo_match_label_->SetBorder(
+            views::CreateEmptyBorder(gfx::Insets().set_left_right(24, 24)));
+        leo_match_label_->SetProperty(
+            views::kFlexBehaviorKey,
+            views::FlexSpecification(views::LayoutOrientation::kHorizontal,
+                                     views::MinimumFlexSizeRule::kPreferred,
+                                     views::MaximumFlexSizeRule::kUnbounded));
+      }
+
+      // The "Press ↑ to highlight" label should only be visible when pressing
+      // up will actually highlight it.
+      leo_match_label_->SetVisible(popup_view_->GetSelection().line == 0 &&
+                                   !GetMatchSelected());
     }
   } else {
     ClearProperty(views::kMarginsKey);

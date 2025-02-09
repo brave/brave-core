@@ -13,6 +13,10 @@
 class BraveSearchConversionPromotionView;
 class BraveOmniboxPopupViewViews;
 
+namespace views {
+class Label;
+}
+
 // This will render brave specific matches such as the braver search conversion
 // promotion.
 class BraveOmniboxResultView : public OmniboxResultView {
@@ -43,6 +47,8 @@ class BraveOmniboxResultView : public OmniboxResultView {
   // Brave search conversion promotion
   raw_ptr<BraveSearchConversionPromotionView> brave_search_promotion_view_ =
       nullptr;
+
+  raw_ptr<views::Label> leo_match_label_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_RESULT_VIEW_H_
