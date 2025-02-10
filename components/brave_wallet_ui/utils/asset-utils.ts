@@ -569,3 +569,7 @@ export function getCoinTypeName(coin: BraveWallet.CoinType) {
   }
   return ''
 }
+
+export const getDoesCoinSupportSwapOrBridge = (coin: BraveWallet.CoinType) => {
+  return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
+}
