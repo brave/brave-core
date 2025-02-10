@@ -14,7 +14,9 @@ BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* reader_mode_toolbar)
     : ContentsLayoutManager(devtools_view, contents_view, watermark_view),
       contents_view_(contents_view),
-      reader_mode_toolbar_(reader_mode_toolbar) {}
+      reader_mode_toolbar_(reader_mode_toolbar) {
+  CHECK(reader_mode_toolbar_);
+}
 
 BraveContentsLayoutManager::~BraveContentsLayoutManager() = default;
 
@@ -22,10 +24,6 @@ views::ProposedLayout BraveContentsLayoutManager::CalculateProposedLayout(
     const views::SizeBounds& size_bounds) const {
   views::ProposedLayout layouts =
       ContentsLayoutManager::CalculateProposedLayout(size_bounds);
-
-  if (!reader_mode_toolbar_) {
-    return layouts;
-  }
 
   auto* contents_layout = layouts.GetLayoutFor(contents_view_);
   if (!contents_layout) {

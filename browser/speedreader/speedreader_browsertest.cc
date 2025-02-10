@@ -57,6 +57,7 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "ui/events/base_event_utils.h"
 
 constexpr char kTestHost[] = "a.test";
 constexpr char kTestPageSimple[] = "/simple.html";
@@ -205,6 +206,15 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
       WaitDistillable();
     }
     content::WaitForLoadStop(ActiveWebContents());
+  }
+
+  void ClickInView(views::View* clickable_view) {
+    clickable_view->OnMousePressed(
+        ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(), gfx::Point(),
+                       ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0));
+    clickable_view->OnMouseReleased(ui::MouseEvent(
+        ui::EventType::kMouseReleased, gfx::Point(), gfx::Point(),
+        ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0));
   }
 
   void ToggleSpeedreader() {
@@ -1057,4 +1067,36 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   // There are no distilled pages.
   EXPECT_FALSE(toolbar->GetVisible());
   EXPECT_FALSE(secondary_toolbar->GetVisible());
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitViewClicking) {
+  ToggleSpeedreader();
+
+  brave::NewSplitViewForTab(browser());
+
+  auto* browser_view = static_cast<BraveBrowserView*>(browser()->window());
+
+  auto* toolbar = browser_view->reader_mode_toolbar();
+  auto* secondary_toolbar =
+      browser_view->split_view()->secondary_reader_mode_toolbar();
+
+  // No toolbars.
+  EXPECT_FALSE(toolbar->GetVisible());
+  EXPECT_FALSE(secondary_toolbar->GetVisible());
+
+  // Load a distillabe page in first tab.
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  NavigateToPageSynchronously(kTestPageReadable,
+                              WindowOpenDisposition::CURRENT_TAB);
+
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  ClickInView(secondary_toolbar);
+  EXPECT_TRUE(toolbar->GetVisible());
+  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
+
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  secondary_toolbar->GetWebContentsForTesting()
+      ->GetDelegate()
+      ->ActivateContents(secondary_toolbar->GetWebContentsForTesting());
+  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 }
