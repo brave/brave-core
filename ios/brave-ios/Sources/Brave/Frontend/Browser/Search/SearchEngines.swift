@@ -111,9 +111,11 @@ public class SearchEngines {
       return defaultEngine
     }
 
-    let defaultEngineName = initialSearchEngines.defaultSearchEngine.rawValue
+    let defaultEngineName = engineType.option.value ?? ""
 
-    let defaultEngine = orderedEngines.first(where: { $0.engineID == defaultEngineName })
+    let defaultEngine = orderedEngines.first(where: {
+      $0.engineID?.caseInsensitiveCompare(defaultEngineName) == .orderedSame
+    })
     return defaultEngine ?? orderedEngines.first
   }
 
@@ -123,7 +125,9 @@ public class SearchEngines {
   func setInitialDefaultEngine(_ engine: String) {
     // update engine
     DefaultEngineType.standard.option.value = engine
-    DefaultEngineType.privateMode.option.value = engine
+    // set Brave Search as the DSE for private mode
+    DefaultEngineType.privateMode.option.value =
+      InitialSearchEngines.SearchEngineID.braveSearch.rawValue
 
     let priorityEngine = initialSearchEngines.priorityEngine?.rawValue
     let defEngine = defaultEngine(forType: .standard)
