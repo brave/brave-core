@@ -107,9 +107,9 @@ void SidebarShowOptionsEventDetectWidget::AdjustWidgetBounds() {
   // Convert contents container's rect into widget's coordinate
   // to use it as a detect widget's bounds as detect widget is parented
   // to browser widget.
-  auto rect = browser_view_->contents_container()->GetLocalBounds();
+  auto rect = browser_view_->GetContentsBoundingView()->GetLocalBounds();
   auto point = rect.origin();
-  views::View::ConvertPointToTarget(browser_view_->contents_container(),
+  views::View::ConvertPointToTarget(browser_view_->GetContentsBoundingView(),
                                     browser_view_->GetWidget()->GetRootView(),
                                     &point);
   rect.set_origin(point);

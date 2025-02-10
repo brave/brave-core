@@ -222,6 +222,11 @@ class BraveBrowserView::TabCyclingEventHandler : public ui::EventObserver,
   std::unique_ptr<views::EventMonitor> monitor_;
 };
 
+// static
+BraveBrowserView* BraveBrowserView::From(BrowserView* view) {
+  return static_cast<BraveBrowserView*>(view);
+}
+
 BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
     : BrowserView(std::move(browser)) {
   const bool use_rounded_corners =
@@ -328,6 +333,10 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
   // re-ordering. FindBarHost widgets uses this view as a  kHostViewKey.
   // See the comments of BrowserView::find_bar_host_view().
   ReorderChildView(find_bar_host_view_, -1);
+}
+
+views::View* BraveBrowserView::GetContentsBoundingView() const {
+  return contents_view();
 }
 
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
