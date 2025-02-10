@@ -90,7 +90,8 @@ export const Swap = () => {
     timeUntilNextQuote,
     selectedProvider,
     availableProvidersForSwap,
-    isSubmittingSwap
+    isSubmittingSwap,
+    needsAccountSelected
   } = swap
 
   // State
@@ -272,6 +273,7 @@ export const Swap = () => {
           }
           modalType={isBridge ? 'bridge' : 'swap'}
           selectedSendOption='#token'
+          needsAccount={needsAccountSelected}
         />
       )}
       {showPrivacyModal && (

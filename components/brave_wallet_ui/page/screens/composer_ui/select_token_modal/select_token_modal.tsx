@@ -632,23 +632,33 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       [accounts, checkIsAccountOptionDisabled]
     )
 
+    const clearParams = React.useCallback(() => {
+      history.replace(
+        modalType === 'send'
+          ? WalletRoutes.Send
+          : modalType === 'bridge'
+          ? WalletRoutes.Bridge
+          : WalletRoutes.Swap
+      )
+    }, [modalType, history])
+
     const handleOnClose = React.useCallback(() => {
       // Ensure we clear route params if an account is not selected
       // to prevent a broken state.
-      if (needsAccount && modalType === 'send') {
-        history.replace(WalletRoutes.Send)
+      if (needsAccount) {
+        clearParams()
       }
       onClose()
-    }, [modalType, needsAccount, history, onClose])
+    }, [clearParams, needsAccount, onClose])
 
     const handleOnBack = React.useCallback(() => {
       // Clears route params if an account is not selected
       // and user clicks back.
-      if (needsAccount && modalType === 'send') {
-        history.replace(WalletRoutes.Send)
+      if (needsAccount) {
+        clearParams()
       }
       setPendingSelectedAssetState(undefined)
-    }, [modalType, needsAccount, history])
+    }, [clearParams, needsAccount])
 
     // Computed & Memos
     const emptyTokensList =

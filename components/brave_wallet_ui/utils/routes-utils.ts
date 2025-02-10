@@ -264,7 +264,7 @@ export const makeSwapOrBridgeRoute = ({
   routeType
 }: {
   fromToken: BraveWallet.BlockchainToken
-  fromAccount: BraveWallet.AccountInfo
+  fromAccount?: BraveWallet.AccountInfo
   toToken?: BraveWallet.BlockchainToken
   toAddress?: string
   toCoin?: BraveWallet.CoinType
@@ -273,21 +273,38 @@ export const makeSwapOrBridgeRoute = ({
   const baseQueryParams = {
     fromChainId: fromToken.chainId,
     fromToken: fromToken.contractAddress || fromToken.symbol.toUpperCase(),
-    fromAccountId: fromAccount.accountId.uniqueKey,
-    toChainId: toToken ? toToken.chainId : fromToken.chainId,
-    toAddress: toAddress ?? fromAccount.accountId.address,
-    toCoin: toCoin ? toCoin.toString() : fromAccount.accountId.coin.toString()
+    toChainId: toToken ? toToken.chainId : fromToken.chainId
   }
 
-  const toTokenParam = toToken
-    ? toToken.contractAddress || toToken.symbol.toUpperCase()
-    : undefined
+  const fromAccountParams = fromAccount
+    ? {
+        ...baseQueryParams,
+        fromAccountId: fromAccount.accountId.uniqueKey,
+        // Will default to fromAccount's address and be replaced
+        // below if toAddress is passed.
+        toAddress: fromAccount.accountId.address,
+        // Will default to fromAccount's coin and be replaced
+        // below if toCoin is passed.
+        toCoin: fromAccount.accountId.coin.toString()
+      }
+    : baseQueryParams
 
-  const params = new URLSearchParams(
-    toTokenParam
-      ? { ...baseQueryParams, toToken: toTokenParam }
-      : baseQueryParams
-  )
+  const toAddressParams = toAddress
+    ? { ...fromAccountParams, toAddress: toAddress }
+    : fromAccountParams
+
+  const toCoinParams = toCoin
+    ? { ...toAddressParams, toCoin: toCoin.toString() }
+    : toAddressParams
+
+  const toTokenParams = toToken
+    ? {
+        ...toCoinParams,
+        toToken: toToken.contractAddress || toToken.symbol.toUpperCase()
+      }
+    : toCoinParams
+
+  const params = new URLSearchParams(toTokenParams)
 
   const route = routeType === 'bridge' ? WalletRoutes.Bridge : WalletRoutes.Swap
 
