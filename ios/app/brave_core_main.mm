@@ -502,11 +502,11 @@ static bool CustomLogHandler(int severity,
 }
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
-                         weekOfInstall:(NSString*)weekOfInstall {
+                      installationDate:(NSDate*)installDate {
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   _p3a_service = base::MakeRefCounted<p3a::P3AService>(
       *GetApplicationContext()->GetLocalState(),
-      base::SysNSStringToUTF8(channel), base::SysNSStringToUTF8(weekOfInstall),
+      base::SysNSStringToUTF8(channel), base::Time::FromNSDate(installDate),
       p3a::P3AConfig::LoadFromCommandLine());
   _p3a_service->InitCallbacks();
   _p3a_service->Init(GetApplicationContext()->GetSharedURLLoaderFactory());

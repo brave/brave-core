@@ -45,7 +45,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
  public:
   P3AService(PrefService& local_state,
              std::string channel,
-             std::string week_of_install,
+             base::Time first_run_time,
              P3AConfig config);
 
   P3AService(const P3AService&) = delete;

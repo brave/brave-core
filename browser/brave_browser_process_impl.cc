@@ -16,6 +16,7 @@
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/brave_wallet/wallet_data_files_installer_delegate_impl.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
@@ -414,7 +415,7 @@ p3a::P3AService* BraveBrowserProcessImpl::p3a_service() {
   }
   p3a_service_ = base::MakeRefCounted<p3a::P3AService>(
       *local_state(), brave::GetChannelName(),
-      local_state()->GetString(kWeekOfInstallation),
+      brave_stats::GetFirstRunTime(local_state()),
       p3a::P3AConfig::LoadFromCommandLine());
   p3a_service()->InitCallbacks();
   return p3a_service_.get();

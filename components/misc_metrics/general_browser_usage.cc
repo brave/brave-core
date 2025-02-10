@@ -6,7 +6,6 @@
 #include "brave/components/misc_metrics/general_browser_usage.h"
 
 #include "base/metrics/histogram_macros.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/misc_metrics/pref_names.h"
@@ -54,6 +53,7 @@ GeneralBrowserUsage::~GeneralBrowserUsage() = default;
 void GeneralBrowserUsage::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsBrowserUsageList);
   registry->RegisterStringPref(kMiscMetricsDayZeroVariantAtInstall, {});
+  registry->RegisterTimePref(kMiscMetricsLastDayZeroReport, {});
 }
 
 void GeneralBrowserUsage::ReportWeeklyUse() {
@@ -66,10 +66,15 @@ void GeneralBrowserUsage::ReportWeeklyUse() {
                              usage_storage_->GetLastISOWeekSum(), 8);
 }
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 void GeneralBrowserUsage::ReportInstallTime() {
-  int days_since_install = (base::Time::Now() - first_run_time_).InDays();
+  int days_since_install =
+      (base::Time::Now() - first_run_time_).InDaysFloored();
   if (days_since_install < 0 || days_since_install > 30) {
+    return;
+  }
+  auto start_of_report_day = first_run_time_ + base::Days(days_since_install);
+  auto last_report = local_state_->GetTime(kMiscMetricsLastDayZeroReport);
+  if (last_report >= start_of_report_day) {
     return;
   }
   std::string day_zero_variant =
@@ -77,12 +82,14 @@ void GeneralBrowserUsage::ReportInstallTime() {
   if (day_zero_variant.empty()) {
     return;
   }
-  std::string histogram_name = base::StrCat(
-      {kDayZeroInstallTimePrefix, base::ToUpperASCII(day_zero_variant),
-       kDayZeroInstallTimeSuffix});
-  base::UmaHistogramExactLinear(histogram_name, days_since_install, 31);
+  // Get index of first char (0-25 for a-z)
+  int variant_index = base::ToLowerASCII(day_zero_variant[0]) - 'a';
+  if (variant_index < 0) {
+    return;
+  }
+  local_state_->SetTime(kMiscMetricsLastDayZeroReport, base::Time::Now());
+  UMA_HISTOGRAM_EXACT_LINEAR(kDayZeroVariantHistogramName, variant_index, 31);
 }
-#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
 void GeneralBrowserUsage::ReportProfileCount(size_t count) {
 #if !BUILDFLAG(IS_ANDROID)
@@ -98,9 +105,7 @@ void GeneralBrowserUsage::SetUpUpdateTimer() {
 
 void GeneralBrowserUsage::Update() {
   ReportWeeklyUse();
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
   ReportInstallTime();
-#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
   SetUpUpdateTimer();
 }
