@@ -15,7 +15,6 @@ Ezabatzen baduzu, berehala galduko dute denek "<ph name="TITLE_OF_GROUP"/>" fitx
 <translation id="1419023007528516122">Taldea betiko ezabatuko da gailutik</translation>
 <translation id="1486715732399361704">Hemen aurkituko dituzu fitxa talde guztiak</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Duela <ph name="NUM_MINS_ONE"/> minutu sortua}other{Duela <ph name="NUM_MINS_MANY"/> minutu sortua}}</translation>
-<translation id="3228718275011575753">Ezkutuko moduko fitxa guztiak itxi nahi dituzu?</translation>
 <translation id="1501480321619201731">Ezabatu taldea</translation>
 <translation id="1555130319947370107">Urdina</translation>
 <translation id="161042844686301425">Ziana</translation>
@@ -183,7 +182,6 @@ Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talder
 <translation id="870736955561925754">Fitxa itxi eta taldea ezabatu nahi duzu?</translation>
 <translation id="8714939927607906138">Merkeagoa</translation>
 <translation id="8730621377337864115">Eginda</translation>
-<translation id="6687920250729800417">Ezkutuko moduko fitxa hauetan egin dituzun jarduerak kendu egingo dira gailu honetatik</translation>
 <translation id="875848103419578654">{NUM_MONTHS,plural, =1{Duela <ph name="NUM_MONTHS_ONE"/> hilabete sortua}other{Duela <ph name="NUM_MONTHS_MANY"/> hilabete sortua}}</translation>
 <translation id="8804742093141782941">Mantendu taldea</translation>
 <translation id="8820741577754260431">Ikusi prezio-jaitsierak fitxetan</translation>
@@ -195,4 +193,6 @@ Irteten bazara, berehala galduko duzu "<ph name="TITLE_OF_GROUP"/>" fitxa talder
 <translation id="9216898458513705996">Fitxak irekita mantenduko dira gailu honetan, baina <ph name="USER_EMAIL"/> kontuan saioa hasita daukaten gailu guztietan ezabatuko da taldea</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{Zabaldu <ph name="TABS_COUNT_ONE"/> fitxa duen fitxa taldea, <ph name="COLOR_NAME"/> kolorekoa.}other{Zabaldu <ph name="TABS_COUNT_MANY"/> fitxa dituen fitxa taldea, <ph name="COLOR_NAME"/> kolorekoa.}}</translation>
 <translation id="992256792861109788">Arrosa</translation>
+<translation id="3228718275011575753">Ezkutuko moduko fitxa guztiak itxi nahi dituzu?</translation>
+<translation id="6687920250729800417">Ezkutuko moduko fitxa hauetan egin dituzun jarduerak kendu egingo dira gailu honetatik</translation>
 </translationbundle>

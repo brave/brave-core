@@ -412,6 +412,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="944340256927461196">Nu lăsați nicio urmă pe dispozitivul dvs.</translation>
 <translation id="2063044449012253966">Site-urile pe care le vizitați în ferestre private nu vor apărea în istoricul dvs. Modulele cookie, datele din formulare și datele site-ului dispar odată ce toate ferestrele private sunt închise.</translation>
 <translation id="7395764193745523646">Vizibilitatea navigării</translation>
+<translation id="8670344404057978375">Rețineți că chiar și în ferestre private activitatea ta de navigare poate fi vizibilă pentru ISP, observatorii de rețea sau pentru angajatorul tău (dacă utilizezi un dispozitiv/rețea de lucru).</translation>
 <translation id="1413177583895309156">Brave VPN criptează și protejează tot ceea ce faceți online, chiar și în afara browserului Brave.</translation>
 <translation id="3974348661685061050">Încercați gratuit timp de 7 zile</translation>
 <translation id="5789441016350810005">Brave Ads trimise atunci când browser-ul este în fundal</translation>
@@ -471,6 +472,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7854108565842971747">Acestea sunt setările implicite pentru scuturi. Modificarea lor nu va afecta setările existente per site.</translation>
 <translation id="218587021686734263">Împiedicați amprentarea prin setările de limbă</translation>
 <translation id="1706099589708266367">Reduce cât de mult pot afla site-urile web despre dvs., pe baza setărilor de limbă ale browserului dvs.</translation>
+<translation id="6486971767955110687">Stochează informațiile de contact pentru viitoarele rapoarte privind site-urile defecte</translation>
+<translation id="4085787265464238844">Dacă furnizezi informații de contact, acestea vor fi stocate pentru rapoarte viitoare</translation>
 <translation id="4721088070859595932">Împiedică site-urile web să recunoască dispozitivul dvs.</translation>
 <translation id="7445306466605902444">Folosirea amprentei este blocată (strict, poate sparge site-urile)</translation>
 <translation id="5582686930349810484">Folosirea amprentei este blocată (standard)</translation>
@@ -503,6 +506,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5370478469168390143">Salvați datele online</translation>
 <translation id="1118508688433541158">Navigați mai rapid și blocați reclamele cu Brave</translation>
 <translation id="7427391215172269363">În fiecare zi, economisesc date folosind browserul Brave.</translation>
+<translation id="357198789571802914">Urmărește YouTube, nu reclame.</translation>
+<translation id="2154817758398495571">Deschide link-uri YouTube în Brave pentru a bloca reclamele.</translation>
+<translation id="1580816390443799567">Activează acum</translation>
+<translation id="8589748782214271192">Nu, mulțumesc</translation>
 <translation id="8374242949413616101">Protecția confidențialității</translation>
 <translation id="4955406228638026265">Brave nu permite reclamelor și urmăririlor să colecteze informații despre dvs. fără acordul dvs.</translation>
 <translation id="752842701893882688">Economisiți date și bateria</translation>
@@ -1101,7 +1108,12 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2471230424465522689">Nu înainte de</translation>
 <translation id="4841860051609590575">Solicitați ID</translation>
 <translation id="1179407411385015942">Leo este un asistent inteligent IA, creat direct în browser</translation>
+<translation id="5781842473834867765">Păstrează istoricul conversațiilor</translation>
 <translation id="4109670531935487117">Afișați sugestiile de completare automată în bara de adrese</translation>
+<translation id="6106701981952170121">Șterge toate datele conversațiilor Leo AI</translation>
+<translation id="423600389315522551">Resetarea Leo AI îți va cere să accepți să folosești Brave Leo AI în viitor și, de asemenea, îți va șterge istoricul conversațiilor. Ștergerea istoricului de chat va șterge toate conversațiile tale anterioare cu Brave Leo AI. Această acțiune nu poate fi anulată.</translation>
+<translation id="6742599753610126012">Șterge istoricul conversațiilor</translation>
+<translation id="3443052382074796867">Dezactivarea stocării conversațiilor va șterge definitiv toate conversațiile stocate anterior. Această acțiune nu poate fi anulată.</translation>
 <translation id="3692772534525889713">Conectați achiziția din Play Store la contul dumneavoastră Brave pentru a utiliza Brave Leo și pe alte dispozitive.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Un an</translation>
@@ -1232,4 +1244,5 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="3098054327870766317">Afișați butonul de anulare atunci când filele sunt închise</translation>
 <translation id="1336494649091412226">Sunteți sigur că vreți să părăsiți Brave?</translation>
 <translation id="2361906291514218784">Leo IA</translation>
+<translation id="7942415993090181327">Istoricul conversațiilor</translation>
 </translationbundle>

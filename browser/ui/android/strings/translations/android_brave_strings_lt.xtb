@@ -416,6 +416,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="944340256927461196">Nepalikite jokių pėdsakų savo įrenginyje</translation>
 <translation id="2063044449012253966">Svetainės, kuriose lankotės privačiuose languose, nebus rodomos istorijoje. Slapukai, formų duomenys ir svetainės duomenys išnyksta, kai uždaromi visi privatūs langai.</translation>
 <translation id="7395764193745523646">Naršymo matomumas</translation>
+<translation id="8670344404057978375">Atminkite, kad net privačiuose languose jūsų naršymo veikla vis tiek gali būti matoma jūsų IPT, tinklo stebėtojams arba jūsų darbdaviui (jei naudojate darbo įrenginį / tinklą).</translation>
 <translation id="1413177583895309156">„Brave VPN“ užšifruoja ir apsaugo viską, ką darote internete, net ir už „Brave“ naršyklės ribų.</translation>
 <translation id="3974348661685061050">Išbandykite nemokamai 7 dienas</translation>
 <translation id="5789441016350810005">„Brave“ reklamos siunčiamos, kol naršyklė veikia fone</translation>
@@ -475,6 +476,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7854108565842971747">Tai numatytosios skydo nuostatos naujoms svetainėms. Atlikus tokius pakeitimus nustatytos kitoms svetainėms nuostatos išliks tokios pačios.</translation>
 <translation id="218587021686734263">Užkirsti kelią pirštų atspaudams naudojant kalbos nustatymus</translation>
 <translation id="1706099589708266367">Sumažina, kiek svetainės gali sužinoti apie jus, atsižvelgiant į naršyklės kalbos nustatymus.</translation>
+<translation id="6486971767955110687">Išsaugokite kontaktinę informaciją pranešti apie neveikiančią svetainę ateityje</translation>
+<translation id="4085787265464238844">Jei pateiksite kontaktinę informaciją, ji bus išsaugota būsimiems pranešimams</translation>
 <translation id="4721088070859595932">Neleidžia svetainėms atpažinti jūsų įrenginio</translation>
 <translation id="7445306466605902444">Kontrolinių kodų kūrimas blokuojamas (griežtai, gali neveikti svetainės)</translation>
 <translation id="5582686930349810484">Kontrolinių kodų kūrimas blokuojamas (standartiškai)</translation>
@@ -507,6 +510,10 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="5370478469168390143">Įrašyti duomenis internete</translation>
 <translation id="1118508688433541158">Naršykite sparčiau ir blokuokite reklamas naudodami „Brave“</translation>
 <translation id="7427391215172269363">Kasdien naršydamas saityną su „Brave“ taupau duomenis.</translation>
+<translation id="357198789571802914">Žiūrėkite „YouTube“, o ne reklamas.</translation>
+<translation id="2154817758398495571">Atidarykite „YouTube“ nuorodas per „Brave“, kad užblokuotumėte reklamas.</translation>
+<translation id="1580816390443799567">Įjungti dabar</translation>
+<translation id="8589748782214271192">Ne, ačiū</translation>
 <translation id="8374242949413616101">Privatumo apsauga</translation>
 <translation id="4955406228638026265">„Brave“ neleidžia sekikliams ir reklamoms be jūsų sutikimo rinkti informacijos apie jus.</translation>
 <translation id="752842701893882688">Taupykite duomenis ir akumuliatorių</translation>
@@ -1102,7 +1109,12 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="2471230424465522689">Ne anksčiau nei</translation>
 <translation id="4841860051609590575">Užklausos ID</translation>
 <translation id="1179407411385015942">„Leo“ yra dirbtinio intelekto pagrindu veikiantis išmanusis asistentas, integruotas tiesiai naršyklėje</translation>
+<translation id="5781842473834867765">Saugoti mano pokalbių istoriją</translation>
 <translation id="4109670531935487117">Adreso juostoje rodyti automatinio užbaigimo pasiūlymus</translation>
+<translation id="6106701981952170121">Ištrinti visus „Leo“ DI pokalbių duomenis</translation>
+<translation id="423600389315522551">Iš naujo nustatę „Leo“ DI, ateityje turėsite prisijungti prie „Brave Leo“ DI, taip pat bus išvalyta jūsų pokalbių istorija. Išvalius pokalbių istoriją bus ištrinti visi ankstesni jūsų pokalbiai su „Brave Leo“ DI. Šio veiksmo atšaukti negalima.</translation>
+<translation id="6742599753610126012">Išvalyti pokalbių istoriją</translation>
+<translation id="3443052382074796867">Išjungus pokalbių saugojimą, visi anksčiau išsaugoti pokalbiai bus ištrinti visam laikui. Šio veiksmo atšaukti negalima.</translation>
 <translation id="3692772534525889713">Susiekite savo „Play Store“ pirkinį su savo „Brave“ paskyra, kad galėtumėte naudotis „Brave Leo“ kitais įrenginiais.</translation>
 <translation id="73236265316873967">„Leo Premium“</translation>
 <translation id="1028627582482425924">Vieni metai</translation>
@@ -1233,4 +1245,5 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="3098054327870766317">Rodyti atšaukimo mygtuką, kai skirtukai uždaromi</translation>
 <translation id="1336494649091412226">Ar tikrai norite išeiti iš „Brave“?</translation>
 <translation id="2361906291514218784">„Leo“ DI</translation>
+<translation id="7942415993090181327">Pokalbių istorija</translation>
 </translationbundle>

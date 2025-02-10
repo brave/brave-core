@@ -2789,7 +2789,6 @@
 <translation id="2953210795988451570">安全更新已终止。请升级为新款 Chromebook。</translation>
 <translation id="2953218713108551165">不允许 <ph name="SITE"/> 传送通知。当您下次访问时，系统会再次询问您。</translation>
 <translation id="2956070239128776395">有区段嵌套在分组中：<ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">开启开发者模式即可使用此扩展程序，但请注意，Brave 应用商店无法审核此扩展程序。</translation>
 <translation id="2958721676848865875">打包扩展程序警告</translation>
 <translation id="2959127025785722291">出了点问题。无法完成扫描。请重试。</translation>
 <translation id="2959474507964749987">此加密文件可能是病毒或恶意软件。<ph name="LINE_BREAK"/>若要确定它是否安全，您可将此文件及密码发送到 Brave 安全浏览功能进行检查。扫描通常需要几秒钟的时间。<ph name="LINE_BREAK"/>若要扫描，请添加此文件的密码。</translation>
@@ -5861,6 +5860,7 @@
 <translation id="5177479852722101802">仍然禁止访问摄像头和麦克风</translation>
 <translation id="5177549709747445269">您正在使用移动数据网络</translation>
 <translation id="5178667623289523808">查找上一个</translation>
+<translation id="5180276433875360121">显示<ph name="CERT_LIST"/></translation>
 <translation id="5181140330217080051">正在下载</translation>
 <translation id="3656271699136235245">保存到 <ph name="ACCOUNT"/> 的 Brave 密码管理工具</translation>
 <translation id="6029810565516522064">这个密码仅会保存到此设备上。如果想在您的其他设备上使用它，请将它保存到您的 Brave 账号 <ph name="USER_EMAIL"/> 中。</translation>
@@ -6879,7 +6879,6 @@
 <translation id="5932224571077948991">网站展示过侵扰性或误导性广告</translation>
 <translation id="59324397759951282">由<ph name="MANUFACTURER_NAME"/>生产的 USB 设备</translation>
 <translation id="5932441198730183141">您没有足够的可用许可来注册此 Brave Meet 设备。请与销售代表联系，以购买更多许可。如果您认为自己不该看到这条消息，请与支持人员联系。</translation>
-<translation id="4206852577678288113">开启开发者模式即可使用此扩展程序，但请务必确认您信任此扩展程序。它可能包含实验性功能，且尚未经过 Brave 应用商店的审核。</translation>
 <translation id="5932881020239635062">序列号</translation>
 <translation id="5933376509899483611">时区</translation>
 <translation id="5933522550144185133"><ph name="APP_NAME"/> 正在使用您的摄像头和麦克风</translation>
@@ -11655,6 +11654,8 @@
 <translation id="5079334477644844710">私密模式可让<ph name="BEGIN_LINK"/>保持浏览私密，防止他人<ph name="END_LINK"/>使用您的设备</translation>
 <translation id="2099871685186351093">与您周围的个人资料共享文件。<ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">（无痕）</translation>
+<translation id="7759126329265642843">打开开发人员模式以使用该扩展，但 Web Store 无法对其进行审核。</translation>
+<translation id="4206852577678288113">打开开发人员模式以使用该扩展，但前提是您信任该扩展。它可能包含实验性功能，尚未通过 Web Store 的审核。</translation>
 <translation id="4949006391524401372">此扩展已被企业策略禁用，因为它不再在 Web Store上可用。</translation>
 <translation id="5899585985956756612">在无痕模式下启用</translation>
 <translation id="6436164536244065364">在 应用商店中查看详情</translation>

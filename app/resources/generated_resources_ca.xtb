@@ -2797,7 +2797,6 @@ Pots gestionar la configuració d'aquest compte instal·lant l'aplicació Family
 <translation id="2953210795988451570">Ja no hi haurà més actualitzacions de seguretat. Compra't un Chromebook nou.</translation>
 <translation id="2953218713108551165">No es permeten les notificacions per a <ph name="SITE"/>. Se't tornarà a preguntar a la propera visita.</translation>
 <translation id="2956070239128776395">Secció imbricada en grup: <ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">Activa el mode de desenvolupador per utilitzar aquesta extensió, que Brave Web Store no pot revisar.</translation>
 <translation id="2958721676848865875">Advertiment de l'empaquetatge d'extensió</translation>
 <translation id="2959127025785722291">S'ha produït un error. No s'ha pogut completar l'anàlisi. Torna-ho a provar.</translation>
 <translation id="2959474507964749987">Aquest fitxer encriptat pot ser un virus o programari maliciós.<ph name="LINE_BREAK"/>Per comprovar si és segur, pots enviar el fitxer i la contrasenya a Navegació segura de Brave. Les anàlisis solen tardar uns quants segons.<ph name="LINE_BREAK"/>Per dur a terme l'anàlisi, afegeix la contrasenya del fitxer.</translation>
@@ -5869,6 +5868,7 @@ Fes servir Ctrl+Alt+disminueix la brillantor per reduir.</translation>
 <translation id="5177479852722101802">Continua bloquejant l'accés a la càmera i al micròfon</translation>
 <translation id="5177549709747445269">Esteu utilitzant dades mòbils</translation>
 <translation id="5178667623289523808">Cerca l'anterior</translation>
+<translation id="5180276433875360121">Mostra <ph name="CERT_LIST"/></translation>
 <translation id="5181140330217080051">S'està baixant</translation>
 <translation id="3656271699136235245">Ves al gestor de contrasenyes de Brave per a <ph name="ACCOUNT"/></translation>
 <translation id="6029810565516522064">La contrasenya només es desarà en aquest dispositiu. Per utilitzar-la en altres dispositius, desa-la al teu Compte de Brave (<ph name="USER_EMAIL"/>).</translation>
@@ -6889,7 +6889,6 @@ Assegureu-vos que no es pugui accedir a informació sensible.</translation>
 <translation id="5932224571077948991">El lloc web mostra anuncis intrusius o enganyosos</translation>
 <translation id="59324397759951282">Dispositiu USB fabricat per <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">No tens prou llicències disponibles per inscriure aquest dispositiu de maquinari de Brave Meet. Contacta amb l'equip de vendes per comprar-ne més. Si creus que veus aquest missatge per error, posa't en contacte amb el servei d'assistència.</translation>
-<translation id="4206852577678288113">Activa el mode de desenvolupador per utilitzar aquesta extensió, però només si hi confies. És possible que contingui funcions experimentals i que Brave Web Store no les hagi revisat.</translation>
 <translation id="5932881020239635062">Número de sèrie</translation>
 <translation id="5933376509899483611">Zona horària</translation>
 <translation id="5933522550144185133"><ph name="APP_NAME"/> està utilitzant la càmera i el micròfon</translation>
@@ -11672,6 +11671,8 @@ Obtén informació sobre les dades que Brave recull i sobre el motiu pel qual ho
 <translation id="5079334477644844710">El mode privat manté la <ph name="BEGIN_LINK"/>privacitat de la navegació<ph name="END_LINK"/> envers altres persones que utilitzen el teu dispositiu</translation>
 <translation id="2099871685186351093">Comparteix fitxers amb perfils del teu entorn. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Incògnit)</translation>
+<translation id="7759126329265642843">Per utilitzar aquesta extensió (que no es pot revisar des de la Botiga del lloc), activa el mode desenvolupador.</translation>
+<translation id="4206852577678288113">Per utilitzar aquesta extensió, activa el mode desenvolupador; però fes-ho només si confies en l'extensió. És possible que contingui funcions experimentals i no ha estat revisada per la Web Store.</translation>
 <translation id="4949006391524401372">Aquesta extensió s'ha desactivat per la política empresarial perquè ja no està disponible a la Botiga Web.</translation>
 <translation id="5899585985956756612">Permet en mode d'incògnit</translation>
 <translation id="6436164536244065364">Mostra-ho a la Botiga Web</translation>
