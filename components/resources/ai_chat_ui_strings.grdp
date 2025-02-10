@@ -362,6 +362,7 @@
   </message>
   <message name="IDS_CHAT_UI_CHAT_QWEN_SUBTITLE" desc="A description for qwen model">
       General purpose chat, coding, and more
+  </message>
   <message name="IDS_CHAT_UI_CHAT_VISION_BASIC_SUBTITLE" desc="A description for llama vision model">
     General purpose vision
   </message>
