@@ -208,13 +208,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     public BraveToolbarLayoutImpl(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        if (context instanceof RewardsPageActivity) {
-            // Make sure initial state matches previously set flags.
-            mIsBottomToolbarVisible =
-                    BottomToolbarConfiguration.isBottomToolbarEnabled()
-                            && BraveMenuButtonCoordinator.isMenuFromBottom();
-        }
     }
 
     @Override
