@@ -161,7 +161,6 @@ export type StringKey =
   'onboardingTitle' |
   'payoutAccountBalanceLabel' |
   'payoutAccountConnectedLabel' |
-  'payoutAccountDetailsTitle' |
   'payoutAccountLabel' |
   'payoutAccountLink' |
   'payoutAccountLoggedOutTitle' |

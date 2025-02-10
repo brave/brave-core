@@ -233,7 +233,6 @@ static constexpr webui::LocalizedString kStrings[] = {
     {"onboardingTitle", IDS_REWARDS_ONBOARDING_TITLE},
     {"payoutAccountBalanceLabel", IDS_REWARDS_PAYOUT_ACCOUNT_BALANCE_LABEL},
     {"payoutAccountConnectedLabel", IDS_REWARDS_PAYOUT_ACCOUNT_CONNECTED_LABEL},
-    {"payoutAccountDetailsTitle", IDS_REWARDS_PAYOUT_ACCOUNT_DETAILS_TITLE},
     {"payoutAccountLabel", IDS_REWARDS_PAYOUT_ACCOUNT_LABEL},
     {"payoutAccountLink", IDS_REWARDS_PAYOUT_ACCOUNT_LINK},
     {"payoutAccountLoggedOutTitle",
