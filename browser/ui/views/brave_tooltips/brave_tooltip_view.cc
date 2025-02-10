@@ -220,8 +220,8 @@ views::View* BraveTooltipView::CreateHeaderView() {
 views::ImageView* BraveTooltipView::CreateIconView() {
   views::ImageView* view = new views::ImageView();
 
-  view->SetImage(
-      gfx::CreateVectorIcon(kBraveTooltipsStopwatchIcon, kIconColor));
+  view->SetImage(ui::ImageModel::FromImageSkia(
+      gfx::CreateVectorIcon(kBraveTooltipsStopwatchIcon, kIconColor)));
 
   return view;
 }
