@@ -15,13 +15,13 @@ struct CosmeticFilterModel: Codable {
   /// Each one is encoded as JSON.
   let proceduralActions: [String]
   /// These are exceptions that should be given back to the engine
-  /// when retrieving additional selectors given by the `SelectorsPollerScript.js` script.
+  /// when retrieving additional selectors given by the `content_cosmetic_ios.js` script.
   let exceptions: [String]
   /// This is the script that should be injected into the frame.
   /// May contain scripts such as de-amp, youtube ad-block, etc.
   let injectedScript: String
   /// A boolean indicating if generic hide is enabled on the web frame
-  /// and given to the `SelectorsPollerScript.js` script during its initialization.
+  /// and given to the `content_cosmetic_ios.js` script during its initialization.
   let genericHide: Bool
 
   enum CodingKeys: String, CodingKey {

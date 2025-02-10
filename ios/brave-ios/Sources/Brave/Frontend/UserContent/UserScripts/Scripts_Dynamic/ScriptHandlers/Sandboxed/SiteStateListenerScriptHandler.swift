@@ -93,14 +93,14 @@ class SiteStateListenerScriptHandler: TabContentScript {
           )
 
           // Join the procedural actions
-          // Note: they can't be part of `UserScriptType.SelectorsPollerSetup`
+          // Note: they can't be part of `UserScriptType.ContentCosmeticSetup`
           // As this is encoded and therefore the JSON will be escaped
           var proceduralActions: Set<String> = []
           for modelTuple in models {
             proceduralActions = proceduralActions.union(modelTuple.model.proceduralActions)
           }
           let script = try ScriptFactory.shared.makeScript(
-            for: .selectorsPoller(setup, proceduralActions: proceduralActions)
+            for: .contentCosmetic(setup, proceduralActions: proceduralActions)
           )
 
           try await webView.evaluateSafeJavaScriptThrowing(
@@ -122,7 +122,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
     isAggressive: Bool,
     cachedStandardSelectors: Set<String>,
     cachedAggressiveSelectors: Set<String>
-  ) throws -> UserScriptType.SelectorsPollerSetup {
+  ) throws -> UserScriptType.ContentCosmeticSetup {
     var standardSelectors = cachedStandardSelectors
     var aggressiveSelectors = cachedAggressiveSelectors
 
@@ -134,7 +134,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       }
     }
 
-    return UserScriptType.SelectorsPollerSetup(
+    return UserScriptType.ContentCosmeticSetup(
       hideFirstPartyContent: isAggressive,
       genericHide: modelTuples.contains { $0.model.genericHide },
       firstSelectorsPollingDelayMs: nil,
