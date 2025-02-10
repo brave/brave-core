@@ -11,19 +11,25 @@ import { handleEndpointError } from '../../../utils/api-utils'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import { mapLimit } from 'async'
 
+type MakeAccountShieldedPayloadType = {
+  accountId: BraveWallet.AccountId
+  accountBirthdayBlock: number
+}
+
 export const zcashEndpoints = ({
   query,
   mutation
 }: WalletApiEndpointBuilderParams) => {
   return {
-    makeAccountShielded: mutation<true, BraveWallet.AccountId>({
+    makeAccountShielded: mutation<true, MakeAccountShieldedPayloadType>({
       queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
+        const { accountId, accountBirthdayBlock } = args
         try {
           const { zcashWalletService } = baseQuery(undefined).data
 
           const { errorMessage } = await zcashWalletService.makeAccountShielded(
-            args,
-            0
+            accountId,
+            accountBirthdayBlock
           )
 
           if (errorMessage) {

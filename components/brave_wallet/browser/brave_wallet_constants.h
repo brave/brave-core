@@ -1636,7 +1636,13 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPause", IDS_BRAVE_WALLET_PAUSE},
     {"braveWalletSyncCompleteMessage", IDS_BRAVE_WALLET_SYNC_COMPLETE_MESSAGE},
     {"braveWalletSyncStartedMessage", IDS_BRAVE_WALLET_SYNC_STARTED_MESSAGE},
-    {"braveWalletContinueUsingWallet", IDS_BRAVE_WALLET_CONTINUE_USING_WALLET}};
+    {"braveWalletContinueUsingWallet", IDS_BRAVE_WALLET_CONTINUE_USING_WALLET},
+    {"braveWalletShieldedAccountBirthdayBlock",
+     IDS_BRAVE_WALLET_SHIELDED_ACCOUNT_BIRTHDAY_BLOCK},
+    {"braveWalletAccountBirthdayTooLow",
+     IDS_BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_LOW},
+    {"braveWalletAccountBirthdayTooHigh",
+     IDS_BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_HIGH}};
 
 // 0x swap constants
 inline constexpr char kZeroExBaseAPIURL[] = "https://api.0x.wallet.brave.com";
