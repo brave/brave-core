@@ -97,8 +97,8 @@ PromotionButtonView::PromotionButtonView() {
 PromotionButtonView::~PromotionButtonView() = default;
 
 void PromotionButtonView::UpdateTargetProviderImage(const gfx::Image& image) {
-  target_provider_image_->SetImage(
-      gfx::ResizedImage(image, {kIconSize, kIconSize}).AsImageSkia());
+  target_provider_image_->SetImage(ui::ImageModel::FromImageSkia(
+      gfx::ResizedImage(image, {kIconSize, kIconSize}).AsImageSkia()));
 }
 
 void PromotionButtonView::AnimateExpand() {
