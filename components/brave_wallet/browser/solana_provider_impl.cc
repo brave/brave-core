@@ -275,7 +275,7 @@ void SolanaProviderImpl::ContinueSignTransaction(
 
   auto request = mojom::SignSolTransactionsRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
-      account->address, std::move(tx_datas), std::move(raw_messages), chain_id);
+      std::move(tx_datas), std::move(raw_messages), chain_id);
   brave_wallet_service_->AddSignSolTransactionsRequest(
       std::move(request),
       base::BindOnce(&SolanaProviderImpl::OnSignTransactionRequestProcessed,
@@ -415,7 +415,7 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
 
   auto request = mojom::SignSolTransactionsRequest::New(
       MakeOriginInfo(delegate_->GetOrigin()), -1, account->account_id.Clone(),
-      account->address, std::move(tx_datas), std::move(raw_messages), chain_id);
+      std::move(tx_datas), std::move(raw_messages), chain_id);
 
   brave_wallet_service_->AddSignSolTransactionsRequest(
       std::move(request),
@@ -556,6 +556,11 @@ void SolanaProviderImpl::OnTransactionStatusChanged(
     return;
   }
 
+  auto account = keyring_service_->FindAccount(tx_info->from_account_id);
+  if (!account) {
+    return;
+  }
+
   std::string tx_meta_id = tx_info->id;
   if (!sign_and_send_tx_callbacks_.contains(tx_meta_id)) {
     return;
@@ -564,8 +569,7 @@ void SolanaProviderImpl::OnTransactionStatusChanged(
   auto callback = std::move(sign_and_send_tx_callbacks_[tx_meta_id]);
   base::Value::Dict result;
   if (tx_status == mojom::TransactionStatus::Submitted) {
-    CHECK(tx_info->from_address);
-    result.Set(kPublicKey, *tx_info->from_address);
+    result.Set(kPublicKey, account->address);
     result.Set(kSignature, tx_info->tx_hash);
     std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
                             std::move(result));

@@ -29,6 +29,10 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr char kEthFromAddress[] = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+constexpr char kSolFromAddress[] =
+    "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+
 mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
     bool eip1559,
     bool is_eth_send,
@@ -118,7 +122,6 @@ mojom::SignSolTransactionsRequestPtr MakeSolanaSignAllTransactionsRequest(
   request->origin_info = std::move(tx_info->origin_info);
   request->id = 1;
   request->from_account_id = tx_info->from_account_id->Clone();
-  request->from_address = *tx_info->from_address;
 
   auto& solana_tx_data = tx_info->tx_data_union->get_solana_tx_data();
   request->tx_datas.push_back(solana_tx_data.Clone());
@@ -139,7 +142,7 @@ TEST(SimulationRequestHelperUnitTest,
   // correctly.
   auto tx_info =
       GetCannedScanEVMTransactionParams(false, true, false, std::nullopt);
-  auto params = evm::EncodeScanTransactionParams(*tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -158,14 +161,12 @@ TEST(SimulationRequestHelperUnitTest,
   )");
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Params for legacy (type-0) EVM contract interaction is encoded
   // properly.
   tx_info =
       GetCannedScanEVMTransactionParams(false, false, false, std::nullopt);
-  params = evm::EncodeScanTransactionParams(*tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   expected_params = R"(
     {
       "metadata":{
@@ -184,8 +185,6 @@ TEST(SimulationRequestHelperUnitTest,
   )";
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -193,7 +192,7 @@ TEST(SimulationRequestHelperUnitTest,
   // OK: Params for EIP-1559 (type-2) EVM ETH transfer is encoded correctly.
   auto tx_info =
       GetCannedScanEVMTransactionParams(true, true, false, std::nullopt);
-  auto params = evm::EncodeScanTransactionParams(*tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -212,13 +211,11 @@ TEST(SimulationRequestHelperUnitTest,
   )");
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Params for EIP-1559 (type-2) EVM contract interaction is encoded
   // correctly.
   tx_info = GetCannedScanEVMTransactionParams(true, false, false, std::nullopt);
-  params = evm::EncodeScanTransactionParams(*tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   expected_params = R"(
     {
       "metadata":{
@@ -237,8 +234,6 @@ TEST(SimulationRequestHelperUnitTest,
   )";
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -247,7 +242,7 @@ TEST(SimulationRequestHelperUnitTest,
   // correctly.
   auto tx_info = GetCannedScanEVMTransactionParams(false, true, false,
                                                    "https://example.com");
-  auto params = evm::EncodeScanTransactionParams(*tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -266,14 +261,12 @@ TEST(SimulationRequestHelperUnitTest,
   )");
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Custom origin for contract interaction is encoded in params metadata
   // correctly.
   tx_info = GetCannedScanEVMTransactionParams(false, false, false,
                                               "https://example.com");
-  params = evm::EncodeScanTransactionParams(*tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   expected_params = R"(
     {
       "metadata":{
@@ -292,8 +285,6 @@ TEST(SimulationRequestHelperUnitTest,
   )";
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -302,7 +293,7 @@ TEST(SimulationRequestHelperUnitTest,
   // correctly.
   auto tx_info = GetCannedScanEVMTransactionParams(true, true, false,
                                                    "https://example.com");
-  auto params = evm::EncodeScanTransactionParams(*tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -321,14 +312,12 @@ TEST(SimulationRequestHelperUnitTest,
   )");
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Custom origin for contract interaction is encoded in params metadata
   // correctly.
   tx_info = GetCannedScanEVMTransactionParams(true, false, false,
                                               "https://example.com");
-  params = evm::EncodeScanTransactionParams(*tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   expected_params = R"(
     {
       "metadata":{
@@ -347,14 +336,12 @@ TEST(SimulationRequestHelperUnitTest,
   )";
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsEVMInvalidTxData) {
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-  auto params = evm::EncodeScanTransactionParams(*tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(params);
@@ -366,7 +353,7 @@ TEST(SimulationRequestHelperUnitTest,
   // encoded correctly.
   auto tx_info =
       GetCannedScanEVMTransactionParams(false, false, true, std::nullopt);
-  auto params = evm::EncodeScanTransactionParams(*tx_info);
+  auto params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   std::string expected_params(R"(
     {
       "metadata":{
@@ -385,13 +372,11 @@ TEST(SimulationRequestHelperUnitTest,
   )");
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 
   // OK: Params for EIP-1559 (type-2) EVM contract deployment transaction is
   // encoded correctly.
   tx_info = GetCannedScanEVMTransactionParams(true, false, true, std::nullopt);
-  params = evm::EncodeScanTransactionParams(*tx_info);
+  params = evm::EncodeScanTransactionParams(*tx_info, kEthFromAddress);
   expected_params = R"(
     {
       "metadata":{
@@ -410,14 +395,12 @@ TEST(SimulationRequestHelperUnitTest,
   )";
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaTransactionInfoDefaultOrigin) {
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
-  auto params = solana::EncodeScanTransactionParams(*tx_info);
+  auto params = solana::EncodeScanTransactionParams(*tx_info, kSolFromAddress);
 
   std::string expected_params(R"(
     {
@@ -434,14 +417,12 @@ TEST(SimulationRequestHelperUnitTest,
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaTransactionInfoCustomOrigin) {
   auto tx_info = GetCannedScanSolanaTransactionParams("https://example.com");
-  auto params = solana::EncodeScanTransactionParams(*tx_info);
+  auto params = solana::EncodeScanTransactionParams(*tx_info, kSolFromAddress);
 
   std::string expected_params(R"(
     {
@@ -458,8 +439,6 @@ TEST(SimulationRequestHelperUnitTest,
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -467,7 +446,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanSolanaTransactionParams(std::nullopt);
 
   auto parsed = MakeSolanaSignAllTransactionsRequest(tx_info);
-  auto params = solana::EncodeScanTransactionParams(*parsed);
+  auto params = solana::EncodeScanTransactionParams(*parsed, kSolFromAddress);
 
   std::string expected_params(R"(
     {
@@ -484,8 +463,6 @@ TEST(SimulationRequestHelperUnitTest,
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 TEST(SimulationRequestHelperUnitTest,
@@ -493,7 +470,7 @@ TEST(SimulationRequestHelperUnitTest,
   auto tx_info = GetCannedScanSolanaTransactionParams("https://example.com");
 
   auto parsed = MakeSolanaSignAllTransactionsRequest(tx_info);
-  auto params = solana::EncodeScanTransactionParams(*parsed);
+  auto params = solana::EncodeScanTransactionParams(*parsed, kSolFromAddress);
 
   std::string expected_params(R"(
     {
@@ -510,15 +487,13 @@ TEST(SimulationRequestHelperUnitTest,
   // OK: Params for Solana TransactionInfo is encoded correctly.
   ASSERT_TRUE(params);
   EXPECT_EQ(*params, GetJSON(ParseJson(expected_params)));
-  EXPECT_EQ(tx_info->from_address,
-            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 TEST(SimulationRequestHelperUnitTest,
      EncodeScanTransactionParamsSolanaInvalidTxData) {
   auto tx_info =
       GetCannedScanEVMTransactionParams(false, true, false, std::nullopt);
-  auto params = solana::EncodeScanTransactionParams(*tx_info);
+  auto params = solana::EncodeScanTransactionParams(*tx_info, kSolFromAddress);
 
   // KO: Invalid tx data is not encoded.
   EXPECT_FALSE(params);

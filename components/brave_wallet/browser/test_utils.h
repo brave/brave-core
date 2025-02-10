@@ -59,6 +59,8 @@ class AccountResolverDelegateForTest : public AccountResolverDelegate {
       const std::string* from_account_id,
       const std::string* from_address) override;
   bool ValidateAccountId(const mojom::AccountIdPtr& account_id) override;
+  std::optional<std::string> ResolveAddress(
+      const mojom::AccountIdPtr& account_id) override;
 
  private:
   std::vector<mojom::AccountIdPtr> accounts_;

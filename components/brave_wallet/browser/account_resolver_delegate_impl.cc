@@ -44,4 +44,15 @@ bool AccountResolverDelegateImpl::ValidateAccountId(
   return false;
 }
 
+std::optional<std::string> AccountResolverDelegateImpl::ResolveAddress(
+    const mojom::AccountIdPtr& account_id) {
+  const auto& accounts = keyring_service_->GetAllAccountInfos();
+  for (auto& account : accounts) {
+    if (account->account_id == account_id) {
+      return account->address;
+    }
+  }
+  return std::nullopt;
+}
+
 }  // namespace brave_wallet

@@ -43,13 +43,10 @@ base::Value::Dict GetMetadata(const mojom::OriginInfoPtr& origin_info) {
 namespace evm {
 
 std::optional<std::string> EncodeScanTransactionParams(
-    const mojom::TransactionInfo& tx_info) {
-  if (!tx_info.from_address) {
-    return std::nullopt;
-  }
-
+    const mojom::TransactionInfo& tx_info,
+    const std::string& from_address) {
   base::Value::Dict tx_object;
-  tx_object.Set("from", *tx_info.from_address);
+  tx_object.Set("from", from_address);
 
   if (tx_info.tx_data_union->is_eth_tx_data_1559()) {
     const auto& tx_data = tx_info.tx_data_union->get_eth_tx_data_1559();
@@ -120,7 +117,7 @@ std::optional<std::string> EncodeScanTransactionParams(
   tx_objects.Append(std::move(tx_object));
   params.Set("txObjects", std::move(tx_objects));
   params.Set("metadata", GetMetadata(tx_info.origin_info));
-  params.Set("userAccount", *tx_info.from_address);
+  params.Set("userAccount", from_address);
 
   return GetJSON(base::Value(std::move(params)));
 }
@@ -202,7 +199,8 @@ void PopulateRecentBlockhash(mojom::TransactionInfo& tx_info,
 }
 
 std::optional<std::string> EncodeScanTransactionParams(
-    const mojom::SignSolTransactionsRequest& sign_sol_transactions_request) {
+    const mojom::SignSolTransactionsRequest& sign_sol_transactions_request,
+    const std::string& from_address) {
   base::Value::List transactions;
   for (auto& tx_data : sign_sol_transactions_request.tx_datas) {
     auto serialized_tx = GetBase64TransactionFromSolanaTxData(tx_data.Clone());
@@ -217,16 +215,14 @@ std::optional<std::string> EncodeScanTransactionParams(
   params.Set("transactions", std::move(transactions));
   params.Set("metadata",
              GetMetadata(std::move(sign_sol_transactions_request.origin_info)));
-  params.Set("userAccount", sign_sol_transactions_request.from_address);
+  params.Set("userAccount", from_address);
 
   return GetJSON(base::Value(std::move(params)));
 }
 
 std::optional<std::string> EncodeScanTransactionParams(
-    const mojom::TransactionInfo& tx_info) {
-  if (!tx_info.from_address) {
-    return std::nullopt;
-  }
+    const mojom::TransactionInfo& tx_info,
+    const std::string& from_address) {
   if (!tx_info.tx_data_union->is_solana_tx_data()) {
     return std::nullopt;
   }
@@ -242,7 +238,7 @@ std::optional<std::string> EncodeScanTransactionParams(
   base::Value::Dict params;
   params.Set("transactions", std::move(transactions));
   params.Set("metadata", GetMetadata(tx_info.origin_info));
-  params.Set("userAccount", *tx_info.from_address);
+  params.Set("userAccount", from_address);
 
   return GetJSON(base::Value(std::move(params)));
 }

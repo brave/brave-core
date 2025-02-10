@@ -687,7 +687,7 @@ export function getTransactionTransferredValue(
   if (isSolanaDappTransaction(tx)) {
     const lamportsMovedFromInstructions = getLamportsMovedFromInstructions(
       getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData) || [],
-      tx.fromAddress ?? ''
+      txAccount.address ?? ''
     )
 
     const transferredValue = new Amount(getTransactionBaseValue(tx)).plus(
@@ -1051,14 +1051,15 @@ export const isSendingToKnownTokenContractAddress = (
  * @param tx - The transaction to check
  */
 export const transactionHasSameAddressError = (
-  tx: TransactionInfo
+  tx: TransactionInfo,
+  txAccount: BraveWallet.AccountInfo
 ): boolean => {
-  const { txArgs, txType, fromAddress: from = '' } = tx
+  const { txArgs, txType } = tx
 
   // transfer(address recipient, uint256 amount) → bool
   if (txType === BraveWallet.TransactionType.ERC20Transfer) {
     const [recipient] = txArgs // (address recipient, uint256 amount)
-    return recipient.toLowerCase() === from.toLowerCase()
+    return recipient.toLowerCase() === txAccount.address.toLowerCase()
   }
 
   // transferFrom(address owner, address to, uint256 tokenId)
@@ -1076,13 +1077,13 @@ export const transactionHasSameAddressError = (
   // approve(address spender, uint256 amount) → bool
   if (txType === BraveWallet.TransactionType.ERC20Approve) {
     const [spender] = txArgs // (address spender, uint256 amount)
-    return spender.toLowerCase() === from.toLowerCase()
+    return spender.toLowerCase() === txAccount.address.toLowerCase()
   }
 
   if (isSolanaSplTransaction(tx)) {
     return (
       (tx.txDataUnion.solanaTxData.toWalletAddress ?? '').toLowerCase() ===
-      from.toLowerCase()
+      txAccount.address.toLowerCase()
     )
   }
 
@@ -1095,7 +1096,10 @@ export const transactionHasSameAddressError = (
   }
 
   // unknown
-  return getTransactionToAddress(tx).toLowerCase() === from.toLowerCase()
+  return (
+    getTransactionToAddress(tx).toLowerCase() ===
+    txAccount.address.toLowerCase()
+  )
 }
 
 export function getGasFeeFiatValue({
@@ -1122,6 +1126,7 @@ export const accountHasInsufficientFundsForTransaction = ({
   accountTokenBalance,
   gasFee,
   tx,
+  txAccount,
   sellAmountWei = new Amount('0'),
   sellTokenBalance
 }: {
@@ -1129,6 +1134,7 @@ export const accountHasInsufficientFundsForTransaction = ({
   accountTokenBalance: string
   gasFee: string
   tx: TransactionInfo
+  txAccount: BraveWallet.AccountInfo
   sellAmountWei: Amount
   sellTokenBalance: string
 }): boolean => {
@@ -1137,7 +1143,7 @@ export const accountHasInsufficientFundsForTransaction = ({
   if (isSolanaDappTransaction(tx)) {
     const lamportsMovedFromInstructions = getLamportsMovedFromInstructions(
       getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData) || [],
-      tx.fromAddress || ''
+      txAccount.address || ''
     )
 
     const transferredValue = new Amount(getTransactionBaseValue(tx)).plus(
@@ -1183,8 +1189,10 @@ export const accountHasInsufficientFundsForTransaction = ({
     return sellTokenBalance !== '' && sellAmountWei.gt(sellTokenBalance)
   }
 
-  if (tx.chainId === BraveWallet.Z_CASH_MAINNET ||
-      tx.chainId === BraveWallet.Z_CASH_TESTNET) {
+  if (
+    tx.chainId === BraveWallet.Z_CASH_MAINNET ||
+    tx.chainId === BraveWallet.Z_CASH_TESTNET
+  ) {
     return (
       accountTokenBalance !== '' &&
       new Amount(getTransactionBaseValue(tx))
@@ -1291,8 +1299,8 @@ export const getTransactionIntent = ({
   if (tx.txType === BraveWallet.TransactionType.ERC20Approve) {
     return (
       toProperCase(getLocale('braveWalletApprovalTransactionIntent')) +
-        ' ' +
-        (token?.symbol ?? '')
+      ' ' +
+      (token?.symbol ?? '')
     )
   }
 
@@ -1674,7 +1682,10 @@ export const parseTransactionWithoutPrices = ({
 
   const instructions = getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData)
 
-  const sameAddressError = transactionHasSameAddressError(tx)
+  const sameAddressError = transactionHasSameAddressError(
+    tx,
+    transactionAccount
+  )
     ? getLocale('braveWalletSameAddressError')
     : undefined
 
@@ -1851,8 +1862,7 @@ export function hasSystemProgramAssignInstruction(
   const instructions = getTypedSolanaTxInstructions(tx.txDataUnion.solanaTxData)
   return instructions.some(
     (instruction) =>
-      instruction.type === "Assign" ||
-      instruction.type === "AssignWithSeed"
+      instruction.type === 'Assign' || instruction.type === 'AssignWithSeed'
   )
 }
 

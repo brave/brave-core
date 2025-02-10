@@ -595,7 +595,6 @@ class AccountActivityStoreTests: XCTestCase {
     )
     let transaction = BraveWallet.TransactionInfo(
       id: UUID().uuidString,
-      fromAddress: "t165quq7gkjh6ebshr7qi2ud7vycel4m7x6dvfvgb",
       from: account.accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggg1234",
       txDataUnion: .init(filTxData: transactionData),

@@ -54,7 +54,7 @@ base::Value::Dict BitcoinTxMeta::ToValue() const {
 
 mojom::TransactionInfoPtr BitcoinTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
-      id_, std::nullopt, from_.Clone(), tx_hash_,
+      id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewBtcTxData(ToBtcTxData(*tx_)), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,

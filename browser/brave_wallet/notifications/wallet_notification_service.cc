@@ -75,9 +75,9 @@ namespace brave_wallet {
 WalletNotificationService::WalletNotificationService(
     BraveWalletService* brave_wallet_service,
     content::BrowserContext* context)
-    : context_(context) {
-  if (brave_wallet_service) {
-    brave_wallet_service->tx_service()->AddObserver(
+    : brave_wallet_service_(brave_wallet_service), context_(context) {
+  if (brave_wallet_service_) {
+    brave_wallet_service_->tx_service()->AddObserver(
         tx_observer_receiver_.BindNewPipeAndPassRemote());
   }
 }
@@ -105,9 +105,13 @@ void WalletNotificationService::DisplayUserNotification(
 void WalletNotificationService::OnTransactionStatusChanged(
     mojom::TransactionInfoPtr tx_info) {
   if (ShouldDisplayUserNotification(tx_info->tx_status)) {
-    // TODO(apaymyshev): handle address for bitcoin notificaion
-    DisplayUserNotification(tx_info->tx_status,
-                            tx_info->from_address.value_or(""), tx_info->id);
+    auto account = brave_wallet_service_->keyring_service()->FindAccount(
+        tx_info->from_account_id);
+    if (!account) {
+      return;
+    }
+
+    DisplayUserNotification(tx_info->tx_status, account->name, tx_info->id);
   }
 }
 

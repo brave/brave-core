@@ -487,4 +487,14 @@ bool AccountResolverDelegateForTest::ValidateAccountId(
   return false;
 }
 
+std::optional<std::string> AccountResolverDelegateForTest::ResolveAddress(
+    const mojom::AccountIdPtr& account_id) {
+  for (auto& acc : accounts_) {
+    if (acc == account_id) {
+      return acc->address;
+    }
+  }
+  return std::nullopt;
+}
+
 }  // namespace brave_wallet

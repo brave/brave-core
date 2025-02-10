@@ -112,7 +112,6 @@ class TransactionParserTests: XCTestCase {
   ) -> BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "1",
-      fromAddress: fromAccount.address,
       from: fromAccount.accountId,
       txHash: "0xaaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffff1234",
       txDataUnion: txDataUnion,

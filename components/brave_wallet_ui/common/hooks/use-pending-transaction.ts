@@ -302,14 +302,15 @@ export const usePendingTransactions = () => {
   )
 
   const insufficientFundsError = React.useMemo(() => {
-    return transactionInfo
+    return transactionInfo && txAccount
       ? accountHasInsufficientFundsForTransaction({
           accountNativeBalance: nativeBalance || '',
           accountTokenBalance: transferTokenBalance || '',
           gasFee,
           sellAmountWei,
           sellTokenBalance: sellTokenBalance || '',
-          tx: transactionInfo
+          tx: transactionInfo,
+          txAccount
         })
       : false
   }, [
@@ -318,6 +319,7 @@ export const usePendingTransactions = () => {
     sellTokenBalance,
     sellAmountWei,
     transactionInfo,
+    txAccount,
     transferTokenBalance
   ])
 

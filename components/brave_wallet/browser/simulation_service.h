@@ -111,6 +111,8 @@ class SimulationService : public KeyedService, public mojom::SimulationService {
                                const std::string& user_account,
                                APIRequestResult api_request_result);
 
+  mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);
+
   api_request_helper::APIRequestHelper api_request_helper_;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;
   mojo::ReceiverSet<mojom::SimulationService> receivers_;

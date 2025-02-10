@@ -248,6 +248,7 @@ class KeyringService : public mojom::KeyringService {
 #endif
 
   const std::vector<mojom::AccountInfoPtr>& GetAllAccountInfos();
+  mojom::AccountInfoPtr FindAccount(const mojom::AccountIdPtr& account_id);
   mojom::AccountInfoPtr GetSelectedWalletAccount();
   mojom::AccountInfoPtr GetSelectedEthereumDappAccount();
   mojom::AccountInfoPtr GetSelectedSolanaDappAccount();

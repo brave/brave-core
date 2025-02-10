@@ -39,7 +39,7 @@ base::Value::Dict SolanaTxMeta::ToValue() const {
 
 mojom::TransactionInfoPtr SolanaTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
-      id_, from_->address, from_.Clone(), tx_hash_,
+      id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewSolanaTxData(tx_->ToSolanaTxData()), status_,
       tx_->tx_type(), std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
