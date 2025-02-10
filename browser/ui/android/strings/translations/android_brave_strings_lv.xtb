@@ -412,6 +412,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="944340256927461196">Neatstājiet pārlūkošanas pēdas savā ierīcē</translation>
 <translation id="2063044449012253966">Inkognito logos apmeklētās vietnes neparādās jūsu pārlūkošanas vēsturē. Pēc inkognito logu aizvēršanas sīkfaili, ievadītie dati veidlapās un vietņu dati tiek dzēsti.</translation>
 <translation id="7395764193745523646">Pārlūkošanas redzamība</translation>
+<translation id="8670344404057978375">Ņemiet vērā, ka pat inkognito režīmā jūsu pārlūkošanas darbības var vēl aizvien būt redzamas jūsu ISP, tīkla novērotājiem vai jūsu darba devējam (ja lietojat darba ierīci/tīklu).</translation>
 <translation id="1413177583895309156">Brave VPN šifrē un aizsargā jūsu tiešsaistē veiktās darbības pat ārpus Brave pārlūka.</translation>
 <translation id="3974348661685061050">Izmēģiniet 7 dienas bez maksas</translation>
 <translation id="5789441016350810005">Nosūtītās Brave reklāmas, kamēr pārlūkprogramma darbojas fonā</translation>
@@ -471,6 +472,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7854108565842971747">Šie ir aizsargu noklusējuma iestatījumi jaunām vietnēm. Tos nomainot, esošie atsevišķu vietņu iestatījumi netiks ietekmēti.</translation>
 <translation id="218587021686734263">Novērsiet pirkstu nospiedumu noņemšanu, izmantojot valodas iestatījumus</translation>
 <translation id="1706099589708266367">Samazina vietņu skaitu, kas var uzzināt par jums, ņemot vērā jūsu pārlūkprogrammas valodas iestatījumus.</translation>
+<translation id="6486971767955110687">Saglabāt kontaktinformāciju, lai sniegtu ziņojumus par bojātām vietnēm</translation>
+<translation id="4085787265464238844">Ja sniegsiet savu kontaktinformāciju, tā tiks saglabāta turpmāku ziņojumu sniegšanas nolūkiem</translation>
 <translation id="4721088070859595932">Neļauj tīmekļa vietnēm atpazīt jūsu ierīci</translation>
 <translation id="7445306466605902444">Pirkstu nospiedumu ņemšana bloķēta (stingrais režīms, var radīt vietņu darbības traucējumus)</translation>
 <translation id="5582686930349810484">Pirkstu nospiedumu ņemšana bloķēta (standarta režīms)</translation>
@@ -503,6 +506,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5370478469168390143">Saglabāt datus tiešsaistē</translation>
 <translation id="1118508688433541158">Pārlūkojiet ātrāk un bloķējiet reklāmas ar Brave</translation>
 <translation id="7427391215172269363">Es katru dienu ietaupu datus, tīmekli pārlūkojot ar Brave.</translation>
+<translation id="357198789571802914">Skatieties YouTube, nevis reklāmas.</translation>
+<translation id="2154817758398495571">Atveriet YouTube saites Brave pārlūkā, lai bloķētu reklāmas.</translation>
+<translation id="1580816390443799567">Ieslēgt</translation>
+<translation id="8589748782214271192">Nē, paldies</translation>
 <translation id="8374242949413616101">Privātuma aizsardzība</translation>
 <translation id="4955406228638026265">Brave neļauj reklāmām un izsekotājiem ievākt informāciju par jums bez jūsu piekrišanas.</translation>
 <translation id="752842701893882688">Ietaupiet datus un bateriju</translation>
@@ -1099,7 +1106,12 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2471230424465522689">Ne pirms</translation>
 <translation id="4841860051609590575">Pieprasījuma ID</translation>
 <translation id="1179407411385015942">Leo ir mākslīgā intelekta nodrošināts viedais asistents, kas iestrādāts tieši pārlūkā</translation>
+<translation id="5781842473834867765">Saglabāt manu sarunu vēsturi</translation>
 <translation id="4109670531935487117">Rādīt automātiskās aizpildes ieteikumus adrešu joslā</translation>
+<translation id="6106701981952170121">Dzēst visus Leo MI sarunu datus</translation>
+<translation id="423600389315522551">Atiestatot Leo MI, jūsu tērzēšanas vēsture tiks dzēsta, un jums būs atkal jāpiekrīt Brave Leo MI lietošanai. Dzēšot tērzēšanas vēsturi, visas jūsu iepriekšējās sarunas ar Brave Leo MI tiks dzēstas. Šo darbību nav iespējams atsaukt.</translation>
+<translation id="6742599753610126012">Notīrīt tērzēšanas vēsturi</translation>
+<translation id="3443052382074796867">Atspējojot sarunu saglabāšanu, visas iepriekšējās sarunas tiks neatgriezeniski dzēstas. Šo darbību nav iespējams atsaukt.</translation>
 <translation id="3692772534525889713">Saistiet savu Play Store pirkumu ar savu Brave kontu, lai izmantotu Brave Leo citās ierīcēs.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Viens gads</translation>
@@ -1230,4 +1242,5 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="3098054327870766317">Rādīt atsaukšanas pogu, kad cilnes ir aizvērtas</translation>
 <translation id="1336494649091412226">Vai tiešām vēlaties aizvērt Brave?</translation>
 <translation id="2361906291514218784">Leo MI</translation>
+<translation id="7942415993090181327">Tērzēšanas vēsture</translation>
 </translationbundle>

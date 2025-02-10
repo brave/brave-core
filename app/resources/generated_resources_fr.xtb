@@ -4105,7 +4105,7 @@ Cela peut inclure des informations sur les logiciels installés, les fichiers, v
 <translation id="389313931326656921">Associer un contacteur à "Suivant"</translation>
 <translation id="3893268973182382220">Impossible de charger ce panneau pour le moment</translation>
 <translation id="3893536212201235195">Consulter et modifier vos paramètres d'accessibilité</translation>
-<translation id="3893630138897523026">ChromeVox (commentaires audio)</translation>
+<translation id="3893630138897523026">ChromeVox (lecture vocale)</translation>
 <translation id="3893764153531140319"><ph name="DOWNLOADED_SIZE"/>/<ph name="DOWNLOAD_SIZE"/></translation>
 <translation id="3894427358181296146">Ajouter un dossier</translation>
 <translation id="3894983081771074056">Comportement du clavier et de la souris, préférences linguistiques, etc.</translation>
@@ -5870,6 +5870,7 @@ Appuyez sur Ctrl+Alt+Baisser la luminosité pour faire un zoom arrière.</transl
 <translation id="5177479852722101802">Continuer à bloquer l'accès à la caméra et au micro</translation>
 <translation id="5177549709747445269">Vous utilisez des données mobiles</translation>
 <translation id="5178667623289523808">Rechercher le précédent</translation>
+<translation id="5180276433875360121">Afficher <ph name="CERT_LIST"/></translation>
 <translation id="5181140330217080051">Téléchargement</translation>
 <translation id="3656271699136235245">Dans le Gestionnaire de mots de passe de Brave pour <ph name="ACCOUNT"/></translation>
 <translation id="6029810565516522064">Ce mot de passe n'est enregistré que sur cet appareil. Pour l'utiliser sur vos autres appareils, enregistrez-le dans votre compte Brave (<ph name="USER_EMAIL"/>).</translation>
@@ -11563,7 +11564,7 @@ Les autorisations que vous avez déjà accordées aux sites Web et aux applis pe
 <translation id="988978206646512040">Phrase secrète obligatoire</translation>
 <translation id="992032470292211616">Les extensions, les applications et les thèmes peuvent endommager votre appareil. Voulez-vous vraiment continuer ?</translation>
 <translation id="992256792861109788">Rose</translation>
-<translation id="992592832486024913">Désactiver ChromeVox (commentaires audio)</translation>
+<translation id="992592832486024913">Désactiver ChromeVox (lecture vocale)</translation>
 <translation id="992653586748191655"><ph name="NUM"/> groupes d'onglets suggérés</translation>
 <translation id="992778845837390402">Sauvegarde Linux…</translation>
 <translation id="993540765962421562">Installation…</translation>

@@ -2810,7 +2810,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2953210795988451570">Update keamanan telah berakhir. Upgrade ke Chromebook baru.</translation>
 <translation id="2953218713108551165">Notifikasi tidak diizinkan untuk <ph name="SITE"/>. Anda akan ditanyai lagi pada kunjungan berikutnya.</translation>
 <translation id="2956070239128776395">Bagian tersarang dalam grup: <ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">Aktifkan mode developer untuk menggunakan ekstensi ini, yang tidak dapat ditinjau oleh Brave Web Store.</translation>
 <translation id="2958721676848865875">Peringatan ekstensi pack</translation>
 <translation id="2959127025785722291">Terjadi error. Pemindaian tidak dapat diselesaikan. Coba lagi.</translation>
 <translation id="2959474507964749987">File terenkripsi ini mungkin adalah virus atau malware.<ph name="LINE_BREAK"/>Untuk memeriksa apakah file ini tidak aman, Anda dapat mengirim file dan sandi ke Google Safe Browsing. Pemindaian biasanya memerlukan waktu beberapa detik.<ph name="LINE_BREAK"/>Untuk memindai, tambahkan sandi file.</translation>
@@ -6908,7 +6907,6 @@ Izin yang telah Anda berikan ke situs dan aplikasi dapat berlaku untuk akun ini.
 <translation id="5932224571077948991">Situs menampilkan iklan yang mengganggu atau menyesatkan</translation>
 <translation id="59324397759951282">Perangkat USB dari <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">Anda tidak memiliki cukup lisensi yang tersedia untuk mendaftarkan perangkat Brave Meet hardware ini. Hubungi pihak penjualan untuk membeli yang lainnya. Jika Anda yakin Anda tidak seharusnya mendapatkan pesan ini, hubungi dukungan.</translation>
-<translation id="4206852577678288113">Aktifkan mode developer untuk menggunakan ekstensi ini, tetapi hanya jika Anda memercayai ekstensi tersebut. Ekstensi ini mungkin berisi fitur eksperimental dan belum ditinjau oleh Brave Web Store.</translation>
 <translation id="5932881020239635062">Nomor Seri</translation>
 <translation id="5933376509899483611">Zona waktu</translation>
 <translation id="5933522550144185133"><ph name="APP_NAME"/> menggunakan kamera dan mikrofon Anda</translation>
@@ -11690,6 +11688,8 @@ Izin yang telah Anda berikan ke situs dan aplikasi dapat berlaku untuk akun ini.
 <translation id="5079334477644844710">Mode privat menjaga <ph name="BEGIN_LINK"/>perambanan Anda tetap privat dari orang lain<ph name="END_LINK"/> yang menggunakan perangkat Anda</translation>
 <translation id="2099871685186351093">Berbagi file dengan profil-profil di sekitar Anda. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Pribadi)</translation>
+<translation id="7759126329265642843">Aktifkan mode pengembang untuk memakai ekstensi ini. Hal ini tidak dapat ditinjau oleh Web Store.</translation>
+<translation id="4206852577678288113">Aktifkan mode pengembang untuk memakai ekstensi ini, hanya kalau Anda memercayai ekstensi tersebut. Ekstensi ini mungkin berisi fitur eksperimental dan belum ditinjau oleh Web Store.</translation>
 <translation id="4949006391524401372">Ekstensi ini telah dinonaktifkan berdasarkan kebijakan perusahaan karena tidak lagi tersedia di Web Store.</translation>
 <translation id="5899585985956756612">Izinkan di mode Privat</translation>
 <translation id="6436164536244065364">Lihat di Toko Web</translation>

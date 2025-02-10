@@ -2810,7 +2810,6 @@ Anda boleh mengurus tetapan akaun ini dengan memasang apl Family Link pada peran
 <translation id="2953210795988451570">Kemaskinian keselamatan telah ditamatkan. Tingkatkan kepada Chromebook yang baharu.</translation>
 <translation id="2953218713108551165">Pemberitahuan tidak dibenarkan untuk <ph name="SITE"/>. Anda akan ditanya lagi pada lawatan akan datang.</translation>
 <translation id="2956070239128776395">Seksyen diletakkan dalam kumpulan: <ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">Hidupkan mod pembangun untuk menggunakan sambungan ini yang tidak boleh disemak oleh Brave Web Store.</translation>
 <translation id="2958721676848865875">Amaran sambungan pek</translation>
 <translation id="2959127025785722291">Kesilapan telah berlaku. Pengimbasan tidak dapat diselesaikan. Sila cuba lagi.</translation>
 <translation id="2959474507964749987">Fail yang disulitkan ini mungkin virus atau perisian hasad.<ph name="LINE_BREAK"/>Untuk menyemak jika fail ini tidak selamat, anda boleh menghantar fail dan kata laluan kepada Penyemakan Imbas Selamat Brave. Biasanya imbasan mengambil masa beberapa saat.<ph name="LINE_BREAK"/>Untuk mengimbas, tambahkan kata laluan fail.</translation>
@@ -6908,7 +6907,6 @@ Kebenaran yang telah anda berikan kepada laman web dan apl mungkin dikenakan pad
 <translation id="5932224571077948991">Tapak menyiarkan iklan yang mengganggu atau mengelirukan</translation>
 <translation id="59324397759951282">Peranti USB daripada <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">Anda tidak mempunyai lesen tersedia yang mencukupi untuk mendaftarkan peranti perkakasan Brave Meet ini. Sila hubungi bahagian jualan untuk membeli lebih banyak lesen. Jika anda percaya mesej ini merupakan satu kesilapan, sila hubungi sokongan.</translation>
-<translation id="4206852577678288113">Hidupkan mod pembangun untuk menggunakan sambungan ini tetapi hanya jika anda mempercayai sambungan tersebut. Sambungan ini mungkin mengandungi ciri percubaan dan belum disemak oleh Brave Web Store.</translation>
 <translation id="5932881020239635062">Siri</translation>
 <translation id="5933376509899483611">Zon waktu</translation>
 <translation id="5933522550144185133"><ph name="APP_NAME"/> sedang menggunakan kamera dan mikrofon anda</translation>
@@ -11692,6 +11690,8 @@ Kebenaran yang telah anda berikan kepada laman web dan apl mungkin dikenakan pad
 <translation id="5079334477644844710">Mod peribadi memastikan <ph name="BEGIN_LINK"/>penyemakan imbas anda dirahsiakan daripada orang lain<ph name="END_LINK"/> yang menggunakan peranti anda</translation>
 <translation id="2099871685186351093">Kongsi fail dengan profil di sekeliling anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Sulit)</translation>
+<translation id="7759126329265642843">Hidupkan mod pembangun untuk menggunakan sambungan ini, yang tidak boleh disemak oleh Web Store.</translation>
+<translation id="4206852577678288113">Hidupkan mod pembangun untuk menggunakan sambungan ini, tetapi hanya jika anda mempercayainya. Ia mungkin mengandungi ciri eksperimen dan belum disemak oleh Web Store.</translation>
 <translation id="4949006391524401372">Sambungan ini telah dinyahdayakan oleh dasar perusahaan kerana ia tidak lagi tersedia di Gedung Web.</translation>
 <translation id="5899585985956756612">Benarkan dalam Peribadi</translation>
 <translation id="6436164536244065364">Lihat di Kedai Web</translation>

@@ -1751,7 +1751,7 @@
 <translation id="2224337661447660594">インターネットに接続されていません</translation>
 <translation id="2224444042887712269">この設定は <ph name="OWNER_EMAIL"/> に帰属します。</translation>
 <translation id="2224551243087462610">フォルダ名の編集</translation>
-<translation id="2225927550500503913">仮想カードはオンになっています</translation>
+<translation id="2225927550500503913">仮想カードは有効になっています</translation>
 <translation id="2226826835915474236">無効なショートカット</translation>
 <translation id="2226907662744526012">PIN を入力して自動的にロックを解除する</translation>
 <translation id="2227179592712503583">候補を削除</translation>
@@ -4847,7 +4847,7 @@
 <translation id="4430019312045809116">音量</translation>
 <translation id="443031431654216610">数字のみ指定可能</translation>
 <translation id="4430369329743628066">ブックマークを追加しました</translation>
-<translation id="4430422687972614133">仮想カードをオンにする</translation>
+<translation id="4430422687972614133">仮想カードを有効にする</translation>
 <translation id="4432621511648257259">パスワードが正しくありません。</translation>
 <translation id="4434611816075088065">他に確認の必要な項目はありません</translation>
 <translation id="443475966875174318">互換性のないアプリケーションの更新または削除</translation>
@@ -9653,7 +9653,7 @@
 <translation id="7950629216186736592">理由: LBS では http://、https://、file:// の URL のみサポートされています。</translation>
 <translation id="7950814699499457511">オン • この拡張機能は、データの収集方法や使用方法などのプライバシー保護の取り組みを公開していません</translation>
 <translation id="6504904675770402423">Google Pay のお支払い方法を追加、管理するには、<ph name="BEGIN_LINK"/>Brave アカウント<ph name="END_LINK"/>にアクセスしてください</translation>
-<translation id="795130320946928025">仮想カードをオフにする</translation>
+<translation id="795130320946928025">仮想カードを無効にする</translation>
 <translation id="795240231873601803">仕事用アカウントおよび学校用アカウントに企業登録を使用する</translation>
 <translation id="7952708427581814389">サイトがクリップボード内のテキストや画像へのアクセスを要求できるようにする</translation>
 <translation id="795282463722894016">復元が完了しました</translation>
@@ -11658,7 +11658,7 @@
 <translation id="2099871685186351093">周囲の人々にファイルを共有しましょう。<ph name="LINK_BEGIN"/>詳細はこちら<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(プライベート)</translation>
 <translation id="7759126329265642843">ウェブストアで確認できないこの拡張機能を使用するには、開発者モードをオンにしてください。</translation>
-<translation id="4206852577678288113">この拡張機能を使用するには開発者モードをオンにしてください。この拡張機能には実験的な機能が含まれている可能性があり、ウェブストアのレビューを受けていません。</translation>
+<translation id="4206852577678288113">この拡張機能を使用するには、開発者モードをオンにしてください。この拡張機能には実験的な機能が含まれている可能性があり、ウェブストアのレビューを受けていません。</translation>
 <translation id="4949006391524401372">この拡張機能はWebストアで利用できなくなったため、当社のポリシーにより無効化されました。</translation>
 <translation id="5899585985956756612">プライベートで許可する</translation>
 <translation id="6436164536244065364">ウェブストアで見る</translation>

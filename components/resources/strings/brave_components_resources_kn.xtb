@@ -501,6 +501,11 @@
       =1 {ಈ ತಿಂಗಳು ನೀವು ನೋಡಿದ <ph name="COUNT_BEGIN"/># ಜಾಹೀರಾತಿಗೆ <ph name="COUNT_END"/> ನೀವು ಹಣ ಪಡೆಯುತ್ತಿರಬಹುದು.}
       other {ಈ ತಿಂಗಳು ನೀವು ನೋಡಿದ <ph name="COUNT_BEGIN"/># ಜಾಹೀರಾತುಗಳಿಗೆ<ph name="COUNT_END"/> ನೀವು ಹಣ ಪಡೆಯುತ್ತಿರಬಹುದು.}
     }</translation>
+<translation id="8611388433418909120">{ADS_VIEWED, plural,
+      =0 {ನೀವು ನೋಡಿರುವಿರಿ <ph name="COUNT_BEGIN"/># ಜಾಹೀರಾತುಗಳು<ph name="COUNT_END"/> ಈ ತಿಂಗಳು}
+      =1 {ನೀವು ನೋಡುವುದಕ್ಕಾಗಿ ಗಳಿಸುತ್ತಿರುವಿರಿ <ph name="COUNT_BEGIN"/># ಜಾಹೀರಾತುಗಳು<ph name="COUNT_END"/> ಈ ತಿಂಗಳು}
+      other {ನೀವು ನೋಡುವುದಕ್ಕಾಗಿ ಗಳಿಸುತ್ತಿರುವಿರಿ <ph name="COUNT_BEGIN"/># ಜಾಹೀರಾತುಗಳನ್ನು<ph name="COUNT_END"/> ಈ ತಿಂಗಳು}
+    }</translation>
 <translation id="6067959437127691361">Brave ರಿವಾರ್ಡ್ಸ್ ಬಳಸುವುದು ವಿಷಯ ರಚನೆಕಾರರನ್ನು ಬೆಂಬಲಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ ಮತ್ತು ನಿಮಗೆ BAT ಗಳಿಸಲು ಅವಕಾಶ ನೀಡುತ್ತದೆ.</translation>
 <translation id="944736176598169208">ರಿವಾರ್ಡ್‌ಗಳು</translation>
 <translation id="2359808026110333948">ಮುಂದುವರಿಸು</translation>

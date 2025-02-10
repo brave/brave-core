@@ -5915,6 +5915,7 @@ Kichiklashtirish uchun Ctrl+Alt+Yorqinlikni pasaytirish tugmalarini bosing.</tra
 <translation id="5177479852722101802">Kamera va mikrofonga ruxsat har doim bloklansin</translation>
 <translation id="5177549709747445269">Mobil internetdan foydalanilmoqda</translation>
 <translation id="5178667623289523808">Avvalgisini topish</translation>
+<translation id="5180276433875360121">Koʻrsatish: <ph name="CERT_LIST"/></translation>
 <translation id="5181140330217080051">Yuklab olinmoqda</translation>
 <translation id="3656271699136235245"><ph name="ACCOUNT"/> uchun Brave Parollar menejerida</translation>
 <translation id="6029810565516522064">Bu parol faqat mazkur qurilmada saqlangan. Boshqa qurilmalarda foydalanish uchun uni Brave hisobingizda (<ph name="USER_EMAIL"/>) saqlang.</translation>
@@ -7391,7 +7392,7 @@ Ochiq eksponenta (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bit):
 <translation id="6247620186971210352">Hech qanday ilova topilmadi</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="6247802389331535091">Tizim: <ph name="ARC_PROCESS_NAME"/></translation>
-<translation id="6248988683584659830">Qidiruv sozlamalari</translation>
+<translation id="6248988683584659830">Sozlamalar ichidan qidirish</translation>
 <translation id="6249200942125593849">Maxsus imkoniyatlarni sozlash</translation>
 <translation id="6250186368828697007">Ekran namoyishida tafsilotlar berkitiladi</translation>
 <translation id="6251870443722440887">GDI-deskriptorlar</translation>

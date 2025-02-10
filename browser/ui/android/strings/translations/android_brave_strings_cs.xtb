@@ -412,6 +412,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="944340256927461196">Nezanechejte ve svém zařízení žádné stopy</translation>
 <translation id="2063044449012253966">Stránky navštívené v soukromých oknech se nezobrazí v historii. Soubory cookie, údaje z formulářů a údaje o stránkách zmizí po zavření všech soukromých oken.</translation>
 <translation id="7395764193745523646">Viditelnost procházení webu</translation>
+<translation id="8670344404057978375">Upozorňujeme, že i v soukromých oknech může být vaše procházení webu viditelné pro vaše poskytovatele internetových služeb, pozorovatele sítě nebo vašeho zaměstnavatele (pokud používáte pracovní zařízení/síť).</translation>
 <translation id="1413177583895309156">Brave VPN šifruje a chrání vše, co děláte na internetu, i mimo prohlížeč Brave.</translation>
 <translation id="3974348661685061050">Vyzkoušejte si to zdarma na 7 dnů</translation>
 <translation id="5789441016350810005">Brave Ads odesílané, když je prohlížeč na pozadí</translation>
@@ -471,6 +472,8 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="7854108565842971747">Toto jsou výchozí nastavení štítů pro nové stránky. Jejich změna neovlivní vaše stávající nastavení pro jednotlivé stránky.</translation>
 <translation id="218587021686734263">Zabraňte otiskům prstů pomocí nastavení jazyka</translation>
 <translation id="1706099589708266367">Snižuje počet webů, které se o vás mohou dozvědět na základě nastavení jazyka vašeho prohlížeče.</translation>
+<translation id="6486971767955110687">Ukládat kontaktní údaje pro budoucí hlášení o nefunkčních stránkách</translation>
+<translation id="4085787265464238844">Pokud poskytnete kontaktní údaje, budou uloženy pro budoucí hlášení.</translation>
 <translation id="4721088070859595932">Zabraňuje webovým stránkám rozpoznávat vaše zařízení</translation>
 <translation id="7445306466605902444">Získání otisku blokováno (přísně, může poškozovat stránky)</translation>
 <translation id="5582686930349810484">Získání otisku blokováno (standardně)</translation>
@@ -503,6 +506,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5370478469168390143">Uložit data online</translation>
 <translation id="1118508688433541158">Prohlížejte rychleji a blokujte reklamy pomocí Brave</translation>
 <translation id="7427391215172269363">Každý den ukládám data procházením webu přes prohlížeč Brave.</translation>
+<translation id="357198789571802914">Sledujte YouTube, ne reklamy.</translation>
+<translation id="2154817758398495571">Otevírejte odkazy na YouTube v prohlížeči Brave, a zablokujte tak reklamy.</translation>
+<translation id="1580816390443799567">Zapnout nyní</translation>
+<translation id="8589748782214271192">Ne, děkuji</translation>
 <translation id="8374242949413616101">Ochrana soukromí</translation>
 <translation id="4955406228638026265">Prohlížeč Brave brání reklamám a sledovacím prvkům ve shromažďování informací o vás bez vašeho souhlasu.</translation>
 <translation id="752842701893882688">Šetřete data a baterii</translation>
@@ -1098,7 +1105,13 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2471230424465522689">Nejdříve</translation>
 <translation id="4841860051609590575">ID požadavku</translation>
 <translation id="1179407411385015942">Leo je chytrý asistent využívající technologie umělé inteligence a je zabudovaný přímo v prohlížeči.</translation>
+<translation id="5781842473834867765">Uložit historii mých konverzací</translation>
 <translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
+<translation id="6106701981952170121">Odstranit všechna Leo AI konverzace</translation>
+<translation id="423600389315522551">Resetování Leo AI bude vyžadovat přihlášení k používání Brave Leo AI
+v budoucnu a také vymaže vaši historii chatů. Vymazání historie chatů odstraní všechny vaše p ředchozí konverzace s Brave Leo AI. Tuto akci nelze vrátit zpět.</translation>
+<translation id="6742599753610126012">Vymazat historii chatů</translation>
+<translation id="3443052382074796867">Když vypnete ukládání konverzací, trvale se vymažou všechny dříve uložené konverzace. Tuto akci nelze vrátit zpět.</translation>
 <translation id="3692772534525889713">Propojte nákup v obchodě Play se svým účtem Brave a používejte Brave Leo na jiných zařízeních.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Jeden rok</translation>
@@ -1229,4 +1242,5 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="3098054327870766317">Zobrazit tlačítko „Zpět“ při zavření karet</translation>
 <translation id="1336494649091412226">Opravdu chcete opustit Brave?</translation>
 <translation id="2361906291514218784">Umělá inteligence Leo</translation>
+<translation id="7942415993090181327">Historie chatů</translation>
 </translationbundle>

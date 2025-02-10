@@ -506,6 +506,10 @@
 <translation id="5370478469168390143">บันทึกข้อมูลออนไลน์</translation>
 <translation id="1118508688433541158">ท่องเว็บเร็วขึ้นและบล็อกโฆษณาด้วย Brave</translation>
 <translation id="7427391215172269363">ฉันบันทึกข้อมูลด้วยการท่องเว็บด้วย Brave ทุกวัน</translation>
+<translation id="357198789571802914">ดู YouTube ไม่ใช่โฆษณา</translation>
+<translation id="2154817758398495571">เปิดลิงก์ YouTube ใน Brave เพื่อบล็อคโฆษณา</translation>
+<translation id="1580816390443799567">เปิดใช้งานตอนนี้</translation>
+<translation id="8589748782214271192">ไม่เป็นไร ขอบคุณ</translation>
 <translation id="8374242949413616101">การป้องกันความเป็นส่วนตัว</translation>
 <translation id="4955406228638026265">Brave หยุดแอปติดตามและโฆษณาจากการเก็บข้อมูลเกี่ยวกับตัวคุณโดยไม่ได้รับอนุญาต</translation>
 <translation id="752842701893882688">ประหยัดข้อมูลและแบตเตอรี่</translation>
@@ -1104,6 +1108,9 @@
 <translation id="5781842473834867765">บันทึกประวัติการสนทนาของฉัน</translation>
 <translation id="4109670531935487117">แสดงคำแนะนำการเติมข้อความอัตโนมัติในแถบที่อยู่</translation>
 <translation id="6106701981952170121">ลบข้อมูลการสนทนาทั้งหมดของ Leo AI</translation>
+<translation id="423600389315522551">การรีเซ็ต Leo AI จะต้องให้คุณยินยอมใช้ Brave Leo AI ในอนาคตและจะลบประวัติการสนทนาของคุณ การลบประวัติการสนทนาจะลบการสนทนาทั้งหมดที่คุณมีกับ Brave Leo AI การกระทำนี้ไม่สามารถยกเลิกได้</translation>
+<translation id="6742599753610126012">ลบประวัติการสนทนา</translation>
+<translation id="3443052382074796867">การปิดการจัดเก็บการสนทนาจะลบการสนทนาทั้งหมดที่เคยจัดเก็บไว้ถาวร การกระทำนี้ไม่สามารถยกเลิกได้</translation>
 <translation id="3692772534525889713">ลิงก์การซื้อใน Play Store กับบัญชี Brave เพื่อใช้ Brave Leo บนอุปกรณ์อื่นๆ</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">หนึ่งปี</translation>

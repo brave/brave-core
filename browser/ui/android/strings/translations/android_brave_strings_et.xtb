@@ -413,6 +413,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="944340256927461196">Ära jäta seadmesse jälgi</translation>
 <translation id="2063044449012253966">Privaatsetes akendes külastatud veebisaite ei kuvata teie ajaloos. Küpsised ning vormide ja veebisaitide andmed kaovad kõigi privaatsete akende sulgemisel.</translation>
 <translation id="7395764193745523646">Sirvimise nähtavus</translation>
+<translation id="8670344404057978375">Pange tähele, et isegi privaatsetes akendes võib teie sirvimisaktiivsus olla nähtav teie internetiteenuse pakkujale, võrgu vaatlejatele või tööandjale (kui kasutate tööseadet/võrku).</translation>
 <translation id="1413177583895309156">Brave'i VPN krüpteerib ja kaitseb kõike, mida internetis teete, isegi väljaspool Brave'i brauserit.</translation>
 <translation id="3974348661685061050">Proovige 7 päeva tasuta</translation>
 <translation id="5789441016350810005">Brave Ads saadetakse, kui veebilehitseja töötab taustal</translation>
@@ -472,6 +473,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="7854108565842971747">Need on kaitsete vaikeseaded uute veebisaitide jaoks. Nende muutmine ei mõjuta teie olemasolevaid saidipõhiseid seadeid.</translation>
 <translation id="218587021686734263">Tunnustuvastuse takistamine keeleseadete kaudu</translation>
 <translation id="1706099589708266367">Vähendab teabe hulka, mida veebisaidid brauseri keeleseadete põhjal teie kohta saavad.</translation>
+<translation id="6486971767955110687">Säilita kontaktandmed tulevaste katkiste saitide aruannete jaoks</translation>
+<translation id="4085787265464238844">Kui lisate kontaktandmed, salvestatakse need tulevaste aruannete jaoks</translation>
 <translation id="4721088070859595932">Takistab veebisaitidel teie seadet tuvastada</translation>
 <translation id="7445306466605902444">Seadmetuvastus blokeeritud (range, võib saite lõhkuda)</translation>
 <translation id="5582686930349810484">Seadmetuvastus blokeeritud (standardne)</translation>
@@ -504,6 +507,10 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="5370478469168390143">Salvesta andmed veebis</translation>
 <translation id="1118508688433541158">Surfa internetis kiiremini ja blokeeri reklaamid Brave'iga.</translation>
 <translation id="7427391215172269363">Brave'iga veebi lehitsedes salvestan iga päev andmeid.</translation>
+<translation id="357198789571802914">Vaata YouTube'i, mitte reklaame.</translation>
+<translation id="2154817758398495571">Avage YouTube'i lingid Brave'is, et blokeerida reklaame.</translation>
+<translation id="1580816390443799567">Lülita kohe sisse</translation>
+<translation id="8589748782214271192">Ei, aitäh</translation>
 <translation id="8374242949413616101">Privaatsuse kaitse</translation>
 <translation id="4955406228638026265">Brave peatab reklaamid ja jälitajad, mis koguvad sinu teavet ilma sinu nõusolekuta.</translation>
 <translation id="752842701893882688">Säästa andmemahtu ja akut</translation>
@@ -1099,7 +1106,15 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="2471230424465522689">Mitte enne</translation>
 <translation id="4841860051609590575">Päringu ID</translation>
 <translation id="1179407411385015942">Leo on tehisintellektist abiline, mis on brauserisse sisse ehitatud</translation>
+<translation id="5781842473834867765">Salvesta minu vestluste ajalugu</translation>
 <translation id="4109670531935487117">Näita aadressiribal automaatse täitmise soovitusi</translation>
+<translation id="6106701981952170121">Kustuta kõik Leo AI vestluste andmed</translation>
+<translation id="423600389315522551">Kui soovite Leo lähtestada, peate nõustuma Brave 
+Leo AI kasutamisega tulevikus ja sellega, et teie  vestluseajalugu tühjendatakse. See tähendab,
+et kõik eelnevad Brave Leoga peetud vestlused kustutatakse.
+Seda tegevust ei saa tagasi võtta.</translation>
+<translation id="6742599753610126012">Tühjenda vestluse ajalugu</translation>
+<translation id="3443052382074796867">Vestluste salvestamise keelamine kustutab lõplikult kõik varem salvestatud vestlused. Seda toimingut ei saa tühistada.</translation>
 <translation id="3692772534525889713">Ühendage oma Play Store'i ost oma Brave'i kontoga, et kasutada Brave'i Leod teistes seadmetes.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Üks aasta</translation>
@@ -1230,4 +1245,5 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="3098054327870766317">Kuva tagasivõtmise nupp, kui vahekaardid on suletud</translation>
 <translation id="1336494649091412226">Kas olete kindel, et soovite Brave'ist väljuda?</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">Vestluse ajalugu</translation>
 </translationbundle>

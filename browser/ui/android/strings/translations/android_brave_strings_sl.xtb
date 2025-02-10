@@ -414,6 +414,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="944340256927461196">V napravi ne puščajte sledi</translation>
 <translation id="2063044449012253966">Spletna mesta, ki jih obiščete v zasebnih oknih, ne bodo prikazana v vaši zgodovini. Piškotki, podatki iz obrazcev in podatki o spletnem mestu izginejo, ko zaprete vsa zasebna okna.</translation>
 <translation id="7395764193745523646">Vidnost brskanja</translation>
+<translation id="8670344404057978375">Upoštevajte, da je vaša dejavnost brskanja – tudi v zasebnih oknih – lahko še vedno vidna ponudniku internetnih storitev, opazovalcem omrežja ali delodajalcu (če uporabljate službeno napravo/omrežje).</translation>
 <translation id="1413177583895309156">Brave VPN šifrira in ščiti vse, kar počnete na spletu, tudi zunaj brskalnika Brave.</translation>
 <translation id="3974348661685061050">Poskusite brezplačno za 7 dni</translation>
 <translation id="5789441016350810005">Oglasi Brave se pošljejo, ko je brskalnik v ozadju.</translation>
@@ -476,6 +477,8 @@ je v teku.
 <translation id="7854108565842971747">To so privzete nastavitve za Shields glede novih spletnih mest. Če jih spremenite, to ne bo vplivalo na vaše obstoječe nastavitve za posamezno spletno mesto.</translation>
 <translation id="218587021686734263">Preprečite prstne odtise prek jezikovnih nastavitev</translation>
 <translation id="1706099589708266367">Zmanjša, koliko lahko spletna mesta izvedo o vas na podlagi jezikovnih nastavitev vašega brskalnika.</translation>
+<translation id="6486971767955110687">Shranite kontaktne podatke za prihodnja poročila o nedelujočih lokacijah</translation>
+<translation id="4085787265464238844">Če navedete kontaktne podatke, bodo shranjeni za prihodnja poročila</translation>
 <translation id="4721088070859595932">Preprečuje, da bi spletna mesta prepoznala vašo napravo</translation>
 <translation id="7445306466605902444">Ustvarjanje prstnih odtisov blokirano (strogo, lahko zruši spletno mesto)</translation>
 <translation id="5582686930349810484">Ustvarjanje prstnih odtisov blokirano (standardno)</translation>
@@ -508,6 +511,10 @@ je v teku.
 <translation id="5370478469168390143">Podatke shrani na spletu</translation>
 <translation id="1118508688433541158">Brskaj hitreje in blokiraj oglase s programom Brave</translation>
 <translation id="7427391215172269363">Vsak dan shranjujem podatke z brskanjem po spletu z Brave.</translation>
+<translation id="357198789571802914">Glejte YouTube, ne oglasov.</translation>
+<translation id="2154817758398495571">Odprite povezave do YouTuba v programu Brave, da blokirate oglase.</translation>
+<translation id="1580816390443799567">Omogoči zdaj</translation>
+<translation id="8589748782214271192">Ne, hvala</translation>
 <translation id="8374242949413616101">Varovanje zasebnosti</translation>
 <translation id="4955406228638026265">Brave preprečuje, da bi sledilniki &amp; in oglasi brez vašega soglasja zbirali podatke o vas.</translation>
 <translation id="752842701893882688">Varčujte s podatki in energijo</translation>
@@ -1105,7 +1112,12 @@ je v teku.
 <translation id="2471230424465522689">Ne pred</translation>
 <translation id="4841860051609590575">ID zahteve</translation>
 <translation id="1179407411385015942">Leo je pametni pomočnik, ki ga poganja AI, vgrajen neposredno v brskalnik</translation>
+<translation id="5781842473834867765">Shrani mojo zgodovino pogovorov</translation>
 <translation id="4109670531935487117">Prikaz predlogov za samodejno dokončanje v naslovni vrstici</translation>
+<translation id="6106701981952170121">Izbriši vse podatke o pogovorih s storitvijo Leo AI</translation>
+<translation id="423600389315522551">Če ponastavite storitev Leo AI, se boste morali strinjati z uporabo funkcije Brave Leo AI v prihodnosti, prav tako pa bo izbrisana vaša zgodovina klepetov. Z brisanjem zgodovine klepetov boste izbrisali vse svoje prejšnje pogovore s funkcijo Brave Leo AI. Tega dejanja ni mogoče preklicati.</translation>
+<translation id="6742599753610126012">Izbriši zgodovino klepetov</translation>
+<translation id="3443052382074796867">Če onemogočite shranjevanje pogovorov, se trajno izbrišejo vsi predhodno shranjeni pogovori. Tega dejanja ni mogoče preklicati.</translation>
 <translation id="3692772534525889713">Povežite nakup v Trgovini Play z računom Brave in uporabljajte Brave Leo v drugih napravah.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Eno leto</translation>
@@ -1236,4 +1248,5 @@ je v teku.
 <translation id="3098054327870766317">Prikaži gumb za razveljavitev, ko so zavihki zaprti</translation>
 <translation id="1336494649091412226">Ste prepričani, da želite zapustiti Brave?</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">Zgodovina klepetov</translation>
 </translationbundle>
