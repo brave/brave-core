@@ -188,6 +188,12 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2024-10
   brave_adaptive_captcha::MigrateObsoleteProfilePrefs(profile_prefs);
 
+#if BUILDFLAG(IS_ANDROID)
+  // Added 27/11/2024: https://github.com/brave/brave-core/pull/26719
+  profile_prefs->ClearPref(kSafetynetCheckFailed);
+  profile_prefs->ClearPref(kSafetynetStatus);
+#endif  // BUILDFLAG(IS_ANDROID)
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 

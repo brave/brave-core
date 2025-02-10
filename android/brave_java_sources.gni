@@ -17,7 +17,6 @@ import(
     "//brave/components/cached_flags/brave_components_cached_flags_java_sources.gni")
 import("//brave/components/embedder_support/android/java_sources.gni")
 import("//brave/components/permissions/android/java_sources.gni")
-import("//brave/components/safetynet/java_sources.gni")
 import("//brave/components/signin/public/android/java_sources.gni")
 
 brave_java_sources = [
@@ -452,7 +451,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ui/system/BraveStatusBarColorController.java",
   "../../brave/android/java/org/chromium/chrome/browser/undo_tab_close_snackbar/BraveUndoBarControllerBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
-  "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/NotificationIntent.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveConstants.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveDbUtil.java",
@@ -521,7 +519,6 @@ brave_java_sources = [
 brave_java_sources += brave_ads_java_sources
 brave_java_sources += brave_components_embedder_support_java_sources
 brave_java_sources += brave_components_signin_java_sources
-brave_java_sources += brave_rewards_java_sources
 brave_java_sources += brave_feed_java_sources
 brave_java_sources += brave_public_tab_management_java_sources
 brave_java_sources += brave_share_java_sources
@@ -551,7 +548,6 @@ brave_java_base_sources = [
 brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/playlist/hls_content/HlsService.java",
-  "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
 ]
 

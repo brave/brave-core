@@ -39,10 +39,6 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/gfx/image/image.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/components/safetynet/safetynet_check.h"
-#endif
-
 namespace base {
 class OneShotTimer;
 class SequencedTaskRunner;
@@ -489,7 +485,6 @@ class RewardsServiceImpl final : public RewardsService,
 
 #if BUILDFLAG(IS_ANDROID)
   mojom::Environment GetDefaultServerEnvironmentForAndroid();
-  safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<favicon::FaviconService, DanglingUntriaged> favicon_service_;

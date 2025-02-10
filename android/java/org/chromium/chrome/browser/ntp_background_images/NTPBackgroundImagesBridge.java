@@ -19,7 +19,6 @@ import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 
 import java.util.ArrayList;
@@ -69,14 +68,12 @@ public class NTPBackgroundImagesBridge {
         mObservers.removeObserver(observer);
     }
 
-    static public boolean enableSponsoredImages() {
+    public static boolean enableSponsoredImages() {
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        return braveRewardsNativeWorker != null
-                && braveRewardsNativeWorker.isSupported()
-                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
+        return braveRewardsNativeWorker != null && braveRewardsNativeWorker.isSupported();
     }
 
-    static public NTPBackgroundImagesBridge getInstance(Profile profile)  {
+    public static NTPBackgroundImagesBridge getInstance(Profile profile) {
         return NTPBackgroundImagesBridgeJni.get().getInstance(profile);
     }
 

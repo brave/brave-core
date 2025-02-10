@@ -20,7 +20,6 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/brave_referrals/browser/android_brave_referrer.h"
-#include "brave/components/safetynet/safetynet_check.h"
 #endif
 
 class PrefRegistrySimple;
@@ -105,11 +104,6 @@ class BraveReferralsService {
   void OnReadPromoCodeComplete(const std::string& promo_code);
 
 #if BUILDFLAG(IS_ANDROID)
-  void GetSafetynetStatusResult(const bool token_received,
-                                const std::string& result_string,
-                                const bool attestation_passed);
-  safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
-
   void InitAndroidReferrer();
   void OnAndroidBraveReferrerReady();
   android_brave_referrer::BraveReferrer android_brave_referrer_;
