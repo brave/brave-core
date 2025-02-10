@@ -15,9 +15,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kFewerUpdateConfirmations, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
     {kTabHoverCardImages, base::FEATURE_DISABLED_BY_DEFAULT},
-#if !defined(ANDROID)
-    {kToolbarPinning, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
 }});
 
 }  // namespace features
