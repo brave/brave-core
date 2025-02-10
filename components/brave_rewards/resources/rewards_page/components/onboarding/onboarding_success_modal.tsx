@@ -22,7 +22,7 @@ interface Props {
 export function OnboardingSuccessModal(props: Props) {
   const model = React.useContext(AppModelContext)
   const { getString } = useLocaleContext()
-  const [showWdpModal, setShowWdpModal] = React.useState(true)
+  const [showWdpModal, setShowWdpModal] = React.useState(false)
 
   if (showWdpModal) {
     return (
