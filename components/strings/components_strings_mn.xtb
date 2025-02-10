@@ -4331,7 +4331,6 @@
 <translation id="8814547618907885931">Харьцуулалтын бүх хүснэгтийг харах</translation>
 <translation id="8814707942599948500">Дугтуй C8</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Brave-н тохиргооноосоо Brave-г шинэчлэхийн тулд эхлээд Таб дээр, дараа нь Enter дарна уу</translation>
-<translation id="8820817407110198400">Хавчуургууд</translation>
 <translation id="882338992931677877">Гараар оруулах оролт</translation>
 <translation id="8830320733681313421">Хагаки ил захидал</translation>
 <translation id="8830565333350631528">Файлуудыг <ph name="CLOUD_PROVIDER"/>-д харах</translation>
@@ -4609,4 +4608,5 @@
 <translation id="995755448277384931">Олон улсын банк акаунтны дугаар нэмэх</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="997986563973421916">Google Pay-с</translation>
+<translation id="8820817407110198400">Хадгалсан хуудсууд</translation>
 </translationbundle>

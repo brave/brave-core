@@ -412,6 +412,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="944340256927461196">Tidak meninggalkan jejak pada perangkat Anda</translation>
 <translation id="2063044449012253966">Situs yang Anda kunjungi di jendela pribadi tidak akan muncul di riwayat Anda. Kuki, data formulir, dan data situs akan hilang setelah semua jendela pribadi ditutup.</translation>
 <translation id="7395764193745523646">Visibilitas penelusuran</translation>
+<translation id="8670344404057978375">Ingat, meskipun di jendela pribadi, aktivitas penelusuran Anda mungkin masih dapat dilihat oleh ISP, pengamat jaringan, atau atasan Anda (jika Anda menggunakan perangkat/jaringan di tempat kerja).</translation>
 <translation id="1413177583895309156">Brave VPN mengenkripsi dan melindungi apa pun yang Anda lakukan secara daring, bahkan di luar browser Brave.</translation>
 <translation id="3974348661685061050">Coba gratis selama 7 hari</translation>
 <translation id="5789441016350810005">Iklan Brave dikirim ketika peramban sedang di latar belakang</translation>
@@ -471,6 +472,8 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7854108565842971747">Ini adalah pengaturan bawaan Perisai untuk situs baru. Mengubah hal ini tidak akan memengaruhi pengaturan per-situs Anda yang telah ada.</translation>
 <translation id="218587021686734263">Mencegah pengambilan sidik jari melalui pengaturan bahasa</translation>
 <translation id="1706099589708266367">Mengurangi seberapa banyak situs web dapat mempelajari tentang Anda berdasarkan pengaturan bahasa peramban Anda.</translation>
+<translation id="6486971767955110687">Menyimpan informasi kontak untuk pelaporan situs yang rusak di masa mendatang</translation>
+<translation id="4085787265464238844">Jika Anda memberikan info kontak, maka info akan disimpan untuk laporan di masa mendatang</translation>
 <translation id="4721088070859595932">Mencegah situs web dari mengenali perangkat Anda</translation>
 <translation id="7445306466605902444">Sidik jari diblokir (ketat, dapat merusak situs)</translation>
 <translation id="5582686930349810484">Sidik jari diblokir (standar)</translation>
@@ -503,6 +506,10 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="5370478469168390143">Simpan Data Online</translation>
 <translation id="1118508688433541158">Ramban lebih cepat dan blokir iklan dengan Brave</translation>
 <translation id="7427391215172269363">Setiap hari saya menghemat data dengan menelusuri web menggunakan Brave.</translation>
+<translation id="357198789571802914">Tonton YouTube, bukan Iklan.</translation>
+<translation id="2154817758398495571">Buka tautan YouTube di Brave untuk memblokir iklan.</translation>
+<translation id="1580816390443799567">Aktifkan sekarang</translation>
+<translation id="8589748782214271192">Tidak, terima kasih</translation>
 <translation id="8374242949413616101">Perlindungan privasi</translation>
 <translation id="4955406228638026265">Brave menghentikan iklan &amp; pelacak mengumpulkan informasi tentang Anda tanpa izin.</translation>
 <translation id="752842701893882688">Simpan data dan baterai</translation>
@@ -1098,7 +1105,12 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="2471230424465522689">Tidak berlaku sebelum</translation>
 <translation id="4841860051609590575">ID Permintaan</translation>
 <translation id="1179407411385015942">Leo adalah asisten pintar yang didukung AI, dan dibangun tepat di dalam peramban</translation>
+<translation id="5781842473834867765">Simpan riwayat percakapan saya</translation>
 <translation id="4109670531935487117">Tampilkan usulan penyelesaian otomatis pada bilah alamat</translation>
+<translation id="6106701981952170121">Hapus semua data percakapan Leo AI</translation>
+<translation id="423600389315522551">Mereset Leo AI buat Anda memilih pakai Leo AI di masa mendatang dan riwayat obrolan Anda juga terhapus. Menghapus riwayat obrolan juga akan hapus semua percakapan sebelumnya dengan Leo AI. Tidak bisa diurungkan.</translation>
+<translation id="6742599753610126012">Hapus riwayat obrolan</translation>
+<translation id="3443052382074796867">Menonaktifkan penyimpanan percakapan akan hapus permanen semua percakapan yang tersimpan sebelumnya. Tidak bisa diurungkan.</translation>
 <translation id="3692772534525889713">Tautkan pembelian di Play Store Anda ke akun Brave Anda untuk menggunakan Brave Leo pada perangkat lain.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Satu tahun</translation>
@@ -1229,4 +1241,5 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="3098054327870766317">Tampilkan tombol urungkan saat tab ditutup</translation>
 <translation id="1336494649091412226">Apakah Anda yakin ingin keluar dari Brave?</translation>
 <translation id="2361906291514218784">AI Leo</translation>
+<translation id="7942415993090181327">Riwayat obrolan</translation>
 </translationbundle>
