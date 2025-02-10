@@ -201,12 +201,11 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
   EXPECT_FALSE(
       ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 
-  if (dark_mode::SystemDarkModeEnabled()) {
-    dark_mode::SetBraveDarkModeType(
-        dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
-    EXPECT_EQ(initial_mode,
-              ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
-  }
+  ASSERT_TRUE(dark_mode::SystemDarkModeEnabled());
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DEFAULT);
+  EXPECT_EQ(initial_mode,
+            ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 }
 
 // Check some colors from color provider pipeline.
