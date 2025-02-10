@@ -186,6 +186,27 @@ extension URL {
     return renderedString.bidiBaseDirection == .leftToRight
   }
 
+  public var strippingBlobURLAuth: URL {
+    if self.scheme == "blob",
+      var components = URLComponents(url: self, resolvingAgainstBaseURL: true)
+    {
+      components.scheme = nil
+
+      if let newURL = components.url {
+        if var newComponents = URLComponents(url: newURL, resolvingAgainstBaseURL: true) {
+          newComponents.user = nil
+          newComponents.password = nil
+          newComponents.scheme = newURL.scheme
+
+          if let url = newComponents.url, let result = URL(string: "blob:\(url.absoluteString)") {
+            return result
+          }
+        }
+      }
+    }
+    return self
+  }
+
   /// Matches what `window.origin` would return in javascript.
   public var windowOriginURL: URL {
     var components = URLComponents()

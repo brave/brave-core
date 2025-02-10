@@ -43,35 +43,9 @@ class TabLocationView: UIView {
   let contentView = UIView()
   private var tabObservers: TabObservers!
   private var privateModeCancellable: AnyCancellable?
-  private var _url: URL?
 
   var url: URL? {
-    get {
-      _url
-    }
-
-    set(newValue) {
-      _url = newValue
-
-      // Strip `user:pass` from blob URLs
-      if newValue?.scheme == "blob", let url = newValue,
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-      {
-        components.scheme = nil
-
-        if let newURL = components.url {
-          if var newComponents = URLComponents(url: newURL, resolvingAgainstBaseURL: true) {
-            newComponents.user = nil
-            newComponents.password = nil
-            newComponents.scheme = newURL.scheme
-
-            if let url = newComponents.url, let result = URL(string: "blob:\(url.absoluteString)") {
-              _url = result
-            }
-          }
-        }
-      }
-
+    didSet {
       updateLeadingItem()
       updateURLBarWithText()
       setNeedsUpdateConstraints()
@@ -538,7 +512,8 @@ class TabLocationView: UIView {
   private func updateURLBarWithText() {
     guard let urlDisplayLabel = urlDisplayLabel as? DisplayURLLabel else { return }
 
-    if var url = url {
+    // Strip `user:pass` from blob URLs
+    if var url = url?.strippingBlobURLAuth {
       if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
         urlDisplayLabel.isLeftToRight = true
         urlDisplayLabel.text = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
@@ -559,8 +534,8 @@ class TabLocationView: UIView {
         var urlString = url.absoluteString
 
         // For the web schemes, format the origin instead of the full url
-        if ["http", "https"].contains(url.scheme) {
-          urlString = url.origin.url?.absoluteString ?? url.absoluteString
+        if url.isWebPage(includeDataURIs: false), let origin = url.origin.url?.absoluteString {
+          urlString = origin
         }
 
         // Format the url
@@ -591,8 +566,8 @@ class TabLocationView: UIView {
           isLTR = true
         }
 
-        urlDisplayLabel.isLeftToRight =
-          !["http", "https", "blob"].contains(url.scheme ?? "") || !isLTR
+        let isWebPage = url.isWebPage(includeDataURIs: false) || url.scheme == "blob"
+        urlDisplayLabel.isLeftToRight = !isWebPage || !isLTR
       }
     } else {
       urlDisplayLabel.isLeftToRight = true

@@ -5,6 +5,7 @@
 // This code is loosely based on https://github.com/Antol/APAutocompleteTextField
 
 import BraveCore
+import BraveShared
 import BraveUI
 import Shared
 import UIKit
@@ -57,8 +58,17 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   var highlightColor = AutocompleteTextFieldUX.highlightColor
 
   override public var text: String? {
-    didSet {
-      super.text = text
+    get {
+      super.text
+    }
+
+    set(newValue) {
+      if let text = newValue, let url = URL(string: text) {
+        super.text = url.strippingBlobURLAuth.absoluteString
+      } else {
+        super.text = text
+      }
+
       self.textDidChange(self)
     }
   }
@@ -360,7 +370,12 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   }
 
   func setTextWithoutSearching(_ text: String) {
-    super.text = text
+    if let url = URL(string: text) {
+      super.text = url.strippingBlobURLAuth.absoluteString
+    } else {
+      super.text = text
+    }
+
     hideCursor = autocompleteTextLabel != nil
     removeCompletion()
   }
