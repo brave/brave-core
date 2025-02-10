@@ -115,8 +115,8 @@ void SidebarItemAddedFeedbackBubble::AddChildViews() {
       views::BoxLayout::Orientation::kHorizontal, gfx::Insets(),
       kChildSpacing));
   auto* image = first_row->AddChildView(std::make_unique<views::ImageView>());
-  image->SetImage(
-      gfx::CreateVectorIcon(kSidebarItemAddedCheckIcon, SK_ColorWHITE));
+  image->SetImage(ui::ImageModel::FromImageSkia(
+      gfx::CreateVectorIcon(kSidebarItemAddedCheckIcon, SK_ColorWHITE)));
   // Use 12pt and 600 weight.
   auto* label = first_row->AddChildView(std::make_unique<views::Label>(
       brave_l10n::GetLocalizedResourceUTF16String(
