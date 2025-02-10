@@ -425,7 +425,7 @@ export const mount = (at: HTMLElement, mappingService: MappingService) => {
   const root = createRoot(at);
   root.render(
     <StyleSheetManager target={at}>
-      <ManagePage {...{mappingService}}/>
+      <ManagePage mappingService={mappingService}/>
     </StyleSheetManager>
   )
 }
