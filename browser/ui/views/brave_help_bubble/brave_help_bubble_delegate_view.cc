@@ -37,9 +37,8 @@ class BorderWithArrow : public views::BubbleBorder {
   enum BubbleArrowPart { kFill, kBorder };
 
   explicit BorderWithArrow(Arrow arrow, ui::ColorId color_id)
-      : views::BubbleBorder(arrow,
-                            BubbleBorder::Shadow::STANDARD_SHADOW,
-                            color_id) {
+      : views::BubbleBorder(arrow, BubbleBorder::Shadow::STANDARD_SHADOW) {
+    SetColor(color_id);
     set_visible_arrow(true);
   }
 
