@@ -640,6 +640,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
       GetShortcutTextForNewTabButton(browser_view)));
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
+  SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
 
   auto* prefs = browser_->profile()->GetPrefs();
 
@@ -947,8 +948,6 @@ void VerticalTabStripRegionView::Layout(PassKey) {
   new_tab_button_bounds.Offset(0, tabs::kMarginForVerticalTabContainers);
   new_tab_button_->SetBoundsRect(new_tab_button_bounds);
 
-  UpdateOriginalTabSearchButtonVisibility();
-
   // Put resize area, overlapped with contents.
   if (vertical_tab_on_right_.GetPrefName().empty()) {
     // Not initialized yet.
@@ -1024,6 +1023,7 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
   }
 
   UpdateNewTabButtonVisibility();
+  UpdateOriginalTabSearchButtonVisibility();
 
   PreferredSizeChanged();
   DeprecatedLayoutImmediately();
@@ -1032,11 +1032,6 @@ void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
 void VerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
 
-  auto* cp = GetColorProvider();
-  CHECK(cp);
-
-  const auto background_color = cp->GetColor(kColorToolbar);
-  SetBackground(views::CreateSolidBackground(background_color));
   UpdateBorder();
 
   new_tab_button_->FrameColorsChanged();
