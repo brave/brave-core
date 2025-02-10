@@ -15,7 +15,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     return $.postNativeMessage(messageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
-        sourceURL: window.location.href,
+        windowOrigin: $.windowOrigin,
         ids: ids,
         classes: classes
       }
@@ -32,10 +32,25 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     return $.postNativeMessage(partinessMessageHandler, {
       "securityToken": SECURITY_TOKEN,
       "data": {
-        sourceURL: window.location.href,
+        windowOrigin: $.windowOrigin,
         urls: urls,
       }
     })
+  })
+
+  /**
+   Throttles the given function by the given delay
+   */
+  const throttle = $((func, delay) => {
+    let timerId = null;
+    return (...args) => {
+      if (timerId === null) {
+        func(...args);
+        timerId = setTimeout(() => {
+          timerId = null;
+        }, delay);
+      }
+    };
   })
 
   // Start looking for things to unhide before at most this long after
@@ -201,8 +216,11 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
    * @returns True or false indicating if anything was extracted
    */
   const extractIDSelectorIfNeeded = (element) => {
-    const id = element.id
+    const id = element.getAttribute('id')
     if (!id) { return false }
+    if (typeof id !== 'string' && !(id instanceof String)) {
+      return false
+    }
     const selector = `#${id}`
     if (!CC.allSelectors.has(selector)) {
       CC.allSelectors.add(selector)
@@ -1012,11 +1030,23 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     styleElm.setAttribute('type', 'text/css')
     targetElm.appendChild(styleElm)
     CC.cosmeticStyleSheet = styleElm
+    // The previous `nextElementSibling` we moved our stylesheet below
+    var prevNextElementSibling = null;
 
     // Start a timer that moves the stylesheet down
     window.setInterval(() => {
       if (styleElm.nextElementSibling === null || styleElm.parentElement !== targetElm) {
         return
+      }
+      if (styleElm.nextElementSibling !==  null) {
+        // if we already moved below this element
+        if (prevNextElementSibling === styleElm.nextElementSibling) {
+          // Avoid a loop where we are repeatedly swapping places with another
+          // element. This can happen with `darkreader` (night mode) for
+          // example and cause unwanted animations to repeat.
+          return
+        }
+        prevNextElementSibling = styleElm.nextElementSibling;
       }
       moveStyle()
     }, 1000)
@@ -1052,17 +1082,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
    * This is an optimaization so we don't constantly re-apply rules
    * for each small change that may happen simultaneously.
    */
-  const setRulesOnStylesheetThrottled = () => {
-    if (setRulesTimerId) {
-      // Each time this is called cancell the timer and allow a new one to start
-      window.clearTimeout(setRulesTimerId)
-    }
-
-    setRulesTimerId = window.setTimeout(() => {
-      setRulesOnStylesheet()
-      setRulesTimerId = undefined
-    }, 200)
-  }
+  const setRulesOnStylesheetThrottled = throttle(setRulesOnStylesheet, 200);
 
   /**
    * Start polling the page for content and start the queue pump (if needed)
