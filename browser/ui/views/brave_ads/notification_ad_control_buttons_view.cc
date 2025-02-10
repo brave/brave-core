@@ -88,7 +88,7 @@ void NotificationAdControlButtonsView::UpdateInfoButton() {
       should_use_dark_colors ? kBraveAdsDarkModeInfoButtonIcon
                              : kBraveAdsLightModeInfoButtonIcon,
       kInfoButtonIconDipSize, SK_ColorTRANSPARENT);
-  info_button_->SetImage(image_skia);
+  info_button_->SetImage(ui::ImageModel::FromImageSkia(image_skia));
 }
 
 void NotificationAdControlButtonsView::CreateCloseButton() {
