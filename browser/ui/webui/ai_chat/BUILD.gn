@@ -1,0 +1,20 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    "//brave/browser/ai_chat",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common/mojom",
+    "//chrome/browser/ui",
+    "//chrome/test",
+    "//chrome/test:test_support",
+  ]
+
+  sources = [ "ai_chat_ui_page_handler_browsertest.cc" ]
+}

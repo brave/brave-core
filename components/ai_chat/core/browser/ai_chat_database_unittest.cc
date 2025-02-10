@@ -542,7 +542,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     const std::string uuid = "migrationtest";
     mojom::SiteInfoPtr associated_content = mojom::SiteInfo::New(
         std::nullopt, mojom::ContentType::PageContent, std::nullopt,
-        std::nullopt, std::nullopt, 0, false, false);
+        std::nullopt, -1, std::nullopt, 0, false, false);
     const mojom::ConversationPtr metadata =
         mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
                                  std::nullopt, std::move(associated_content));

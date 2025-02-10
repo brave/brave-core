@@ -11,8 +11,11 @@ struct TabData {
     // This is the ID of the tab. It should be possible to look up the
     // Tab/TabAndroid from this ID.
     int32 id;
-    // This is the ID of the content currently loaded in the tab. It should be
-    // the same as the AssociatedContent Id.
+
+    // This is the ID of the content currently loaded in the tab. It calculated
+    // with the same method as the SiteInfo uuid.
+    // Note: This is different from the |id| field, which is stable across
+    //navigations.
     int32 content_id;
 
     string title;

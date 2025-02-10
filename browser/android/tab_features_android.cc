@@ -5,10 +5,12 @@
 
 #include "brave/browser/android/tab_features_android.h"
 
-#include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_contents.h"
+#include <memory>
 
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/web_contents.h"
 
 TabFeaturesAndroid::TabFeaturesAndroid(content::WebContents* web_contents,
                                        Profile* profile)

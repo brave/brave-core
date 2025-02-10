@@ -100,6 +100,7 @@ export default function FullScreen() {
       toggleAside()
     }
   }, [aiChatContext.showSidebar])
+
   return (
     <div className={classNames(styles.fullscreen, aiChatContext.isMobile && isSmall && styles.mobile)}>
       <div className={styles.left}>
@@ -137,11 +138,6 @@ export default function FullScreen() {
       </div>
       <div className={styles.content}>
         <Main />
-        <ul>
-          {aiChatContext.tabs.map((tab) => (
-            <li key={tab.id}>{tab.title}</li>
-          ))}
-        </ul>
       </div>
     </div>
   )

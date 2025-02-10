@@ -35,7 +35,9 @@ class TabDataWebContentsObserver : public content::WebContentsObserver {
 
  private:
   int32_t tab_handle_ = 0;
-  // Note: This can be null in tests.
+
+  // Note: This can be null if we're in a situation where we don't create a
+  // TabTrackerService (i.e. when AIChat is disabled).
   raw_ptr<TabTrackerService> service_;
 
   void UpdateTab();

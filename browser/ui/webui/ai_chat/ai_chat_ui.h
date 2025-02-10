@@ -23,6 +23,10 @@
 #include "content/public/browser/webui_config.h"
 #endif  // #if !BUILDFLAG(IS_ANDROID)
 
+namespace ai_chat {
+class AIChatUIPageHandlerBrowserTest;
+}
+
 namespace content {
 class BrowserContext;
 }
@@ -54,6 +58,7 @@ class AIChatUI : public ui::MojoWebUIController {
   static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
 
  private:
+  friend class ai_chat::AIChatUIPageHandlerBrowserTest;
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
 
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;

@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
@@ -22,6 +24,12 @@ TabTrackerServiceFactory* TabTrackerServiceFactory::GetInstance() {
 TabTrackerService* TabTrackerServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   CHECK(context);
+
+  // If AIChat isn't allowed for this context, we don't need a
+  // TabTrackerService.
+  if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
 
   return static_cast<TabTrackerService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
