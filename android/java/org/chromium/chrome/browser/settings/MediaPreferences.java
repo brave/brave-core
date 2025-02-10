@@ -20,8 +20,8 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
+import org.chromium.chrome.browser.util.BraveProfileUtil;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -94,7 +94,7 @@ public class MediaPreferences extends BravePreferenceFragment
         if (backgroundVideoPlaybackPref != null && backgroundVideoPlaybackPref.isVisible()) {
             backgroundVideoPlaybackPref.setOnPreferenceChangeListener(this);
             boolean enabled =
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    UserPrefs.get(BraveProfileUtil.getProfile())
                             .getBoolean(BravePref.YOU_TUBE_BACKGROUND_VIDEO_PLAYBACK_ENABLED);
             backgroundVideoPlaybackPref.setChecked(enabled);
         }
@@ -104,7 +104,7 @@ public class MediaPreferences extends BravePreferenceFragment
         if (extraYouTubeControlsPref != null && extraYouTubeControlsPref.isVisible()) {
             extraYouTubeControlsPref.setOnPreferenceChangeListener(this);
             boolean enabled =
-                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    UserPrefs.get(BraveProfileUtil.getProfile())
                             .getBoolean(BravePref.YOU_TUBE_EXTRA_CONTROLS_ENABLED);
             extraYouTubeControlsPref.setChecked(enabled);
         }
@@ -170,13 +170,13 @@ public class MediaPreferences extends BravePreferenceFragment
                             !BraveLocalState.get().getBoolean(BravePref.WIDEVINE_ENABLED));
             shouldRelaunch = true;
         } else if (PREF_BACKGROUND_VIDEO_PLAYBACK.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(BraveProfileUtil.getProfile())
                     .setBoolean(
                             BravePref.YOU_TUBE_BACKGROUND_VIDEO_PLAYBACK_ENABLED,
                             (boolean) newValue);
             shouldRelaunch = true;
         } else if (PREF_EXTRA_YOUTUBE_CONTROLS.equals(key)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+            UserPrefs.get(BraveProfileUtil.getProfile())
                     .setBoolean(BravePref.YOU_TUBE_EXTRA_CONTROLS_ENABLED, (boolean) newValue);
             shouldRelaunch = true;
         } else if (PLAY_YT_VIDEO_IN_BROWSER_KEY.equals(key)) {
