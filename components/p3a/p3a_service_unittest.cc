@@ -85,8 +85,10 @@ class P3AServiceTest : public testing::Test {
   void TearDown() override { p3a_service_ = nullptr; }
 
   void SetUpP3AService() {
+    base::Time install_time;
+    ASSERT_TRUE(base::Time::FromString("2049-01-01", &install_time));
     p3a_service_ = scoped_refptr(new P3AService(
-        local_state_, "release", "2049-01-01", P3AConfig(config_)));
+        local_state_, "release", install_time, P3AConfig(config_)));
 
     p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);

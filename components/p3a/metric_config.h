@@ -25,7 +25,8 @@ enum class MetricAttribute {
   kRegion,
   kSubregion,
   kRef,
-  kMaxValue = kRef,
+  kDateOfInstall,
+  kMaxValue = kDateOfInstall,
 };
 
 inline constexpr MetricAttribute kDefaultMetricAttributes[] = {

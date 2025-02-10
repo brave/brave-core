@@ -76,12 +76,15 @@ inline void DCheckCurrentlyOnUIThread() {
 
 P3AService::P3AService(PrefService& local_state,
                        std::string channel,
-                       std::string week_of_install,
+                       base::Time first_run_time,
                        P3AConfig config)
     : local_state_(local_state), config_(std::move(config)) {
   LoadDynamicMetrics();
+  if (first_run_time.is_null()) {
+    first_run_time = base::Time::Now();
+  }
   message_manager_ = std::make_unique<MessageManager>(
-      local_state, &config_, *this, channel, week_of_install);
+      local_state, &config_, *this, channel, first_run_time);
   pref_change_registrar_.Init(&local_state);
   pref_change_registrar_.Add(
       kP3AEnabled, base::BindRepeating(&P3AService::OnP3AEnabledChanged,

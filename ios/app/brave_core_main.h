@@ -95,7 +95,7 @@ OBJC_EXPORT
 @property(readonly) id<IpfsAPI> ipfsAPI;
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
-                         weekOfInstall:(NSString*)weekOfInstall;
+                      installationDate:(NSDate*)installDate;
 
 @property(readonly) BraveP3AUtils* p3aUtils;
 

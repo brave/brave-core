@@ -29,7 +29,7 @@ public class DAU {
   private let pingRefreshDuration = 5.minutes
 
   /// We always use gregorian calendar for DAU pings. This also adds more anonymity to the server call.
-  fileprivate static var calendar: Calendar {
+  public static var calendar: Calendar {
     var cal = Calendar(identifier: .gregorian)
     cal.locale = .init(identifier: "en_US")
     if let timezone = TimeZone(abbreviation: "GMT") {
@@ -55,6 +55,14 @@ public class DAU {
     formatter.timeZone = TimeZone(abbreviation: "GMT")!
     return formatter
   }()
+
+  /// The Date associated with the week of installation preference
+  public static var weekOfInstallDate: Date? {
+    guard let weekOfInstall = Preferences.DAU.weekOfInstallation.value else {
+      return nil
+    }
+    return Self.dateFormatter.date(from: weekOfInstall)
+  }
 
   private let apiKey: String?
   private let braveCoreStats: BraveStats?

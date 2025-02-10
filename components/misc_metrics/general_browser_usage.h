@@ -22,10 +22,7 @@ namespace misc_metrics {
 inline constexpr char kWeeklyUseHistogramName[] = "Brave.Core.WeeklyUsage";
 inline constexpr char kProfileCountHistogramName[] = "Brave.Core.ProfileCount";
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
-inline constexpr char kDayZeroInstallTimePrefix[] = "Brave.DayZero.";
-inline constexpr char kDayZeroInstallTimeSuffix[] = ".InstallTime";
-#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
+inline constexpr char kDayZeroVariantHistogramName[] = "Brave.DayZero.Variant";
 
 // TODO(djandries): remove this metric when Nebula experiment is over
 inline constexpr char kWeeklyUseNebulaHistogramName[] =
@@ -48,9 +45,7 @@ class GeneralBrowserUsage {
 
  private:
   void ReportWeeklyUse();
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
   void ReportInstallTime();
-#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
   void SetUpUpdateTimer();
 
