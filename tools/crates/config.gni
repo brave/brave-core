@@ -1,0 +1,18 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+target_dir = "$root_build_dir/brave_tools_crates"
+
+cargo_audit_exe = "$target_dir/release/cargo-audit"
+wasm_bindgen_cli_exe = "$target_dir/release/wasm-bindgen"
+wasm_opt_exe = "$target_dir/release/wasm-opt"
+wasm_pack_exe = "$target_dir/release/wasm-pack"
+
+if (host_os == "win") {
+  cargo_audit_exe += ".exe"
+  wasm_bindgen_cli_exe += ".exe"
+  wasm_opt_exe += ".exe"
+  wasm_pack_exe += ".exe"
+}
