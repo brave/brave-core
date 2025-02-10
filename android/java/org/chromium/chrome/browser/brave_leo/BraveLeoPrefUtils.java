@@ -132,7 +132,7 @@ public class BraveLeoPrefUtils {
     }
 
     public static boolean isSubscriptionLinked() {
-        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        Profile profileToUse = BraveProfileUtil.getProfile();
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.isSubscriptionLinked profile is null");
             return false;
