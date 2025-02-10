@@ -473,7 +473,7 @@
 <translation id="218587021686734263">言語設定によるフィンガープリントの防止</translation>
 <translation id="1706099589708266367">ブラウザの言語設定に基づき、ウェブサイトがお客様について学習する度合いを低減します。</translation>
 <translation id="6486971767955110687">今後の破損サイト報告のため、連絡先情報を保存する</translation>
-<translation id="4085787265464238844">連絡先情報を入力すると、今後の報告のために保存されます。</translation>
+<translation id="4085787265464238844">連絡先情報を入力すると、今後の報告のために保存されます</translation>
 <translation id="4721088070859595932">ウェブサイトがお使いのデバイスを認識しないようにします</translation>
 <translation id="7445306466605902444">フィンガープリントがブロックされました（強、サイトの表示が崩れる可能性）</translation>
 <translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
@@ -506,7 +506,7 @@
 <translation id="5370478469168390143">データをオンラインで保存する</translation>
 <translation id="1118508688433541158">Braveなら読み込みが高速で、広告をブロックできます</translation>
 <translation id="7427391215172269363">BraveでWebを閲覧して毎日データ通信量を節約しています。</translation>
-<translation id="357198789571802914">YouTubeを観る、広告は見ない。</translation>
+<translation id="357198789571802914">YouTubeを見る。広告は見ない。</translation>
 <translation id="2154817758398495571">YouTubeのリンクをBraveで開いて、広告をブロック。</translation>
 <translation id="1580816390443799567">今すぐオンにする</translation>
 <translation id="8589748782214271192">不要</translation>
@@ -1108,10 +1108,8 @@
 <translation id="5781842473834867765">会話履歴を保存</translation>
 <translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
 <translation id="6106701981952170121">Leo AI の会話データをすべて削除</translation>
-<translation id="423600389315522551">Leo AIをリセットすると、今後Brave 
-Leo AIの利用をオプトインする必要があります。また、チャット履歴も消去されます。
-チャット履歴を消去すると、Brave 
-Leo AIとの会話がすべて削除されます。この操作を元に戻すことはできません。</translation>
+<translation id="423600389315522551">Leo AIをリセットすると、将来的にBrave Leo AIを使用するためのオプトインが必要になり、チャット履歴も消去されます。
+チャット履歴の消去は、以前のBrave Leo AIとの会話をすべて削除します。この操作を元に戻すことはできません。</translation>
 <translation id="6742599753610126012">チャット履歴を消去</translation>
 <translation id="3443052382074796867">会話ストレージを無効にすると、以前に保存されていたすべての会話が永久に消去されます。この操作は元に戻すことができません。</translation>
 <translation id="3692772534525889713">Playストアでの購入をBraveアカウントにリンクすると、他のデバイスでBrave Leoを使用できます。</translation>

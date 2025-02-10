@@ -2798,7 +2798,6 @@ Mesaj de la server: <ph name="SERVER_MSG"/></translation>
 <translation id="2953210795988451570">Actualizările de securitate s-au încheiat. Fă upgrade la un Chromebook nou.</translation>
 <translation id="2953218713108551165">Notificările nu sunt permise pentru <ph name="SITE"/>. Ți se va solicita din nou la următoarea accesare.</translation>
 <translation id="2956070239128776395">Secțiune imbricată în grup: <ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">Activează modul pentru dezvoltatori pentru a folosi această extensie, care nu poate fi examinată de Magazinul web Brave.</translation>
 <translation id="2958721676848865875">Avertisment privind pachetul pentru extensie</translation>
 <translation id="2959127025785722291">A apărut o eroare. Verificarea nu s-a putut finaliza. Încearcă din nou.</translation>
 <translation id="2959474507964749987">Acest fișier criptat poate fi un virus sau un program malware.<ph name="LINE_BREAK"/>Pentru a verifica dacă este nesigur, trimite fișierul și parola la Navigarea sigură Brave. De obicei, verificările durează câteva secunde.<ph name="LINE_BREAK"/>Pentru scanare, adaugă parola fișierului.</translation>
@@ -6893,7 +6892,6 @@ Permisiunile pe care le-ai acordat deja site-urilor și aplicațiilor se pot apl
 <translation id="5932224571077948991">Site-ul afișează anunțuri deranjante sau înșelătoare</translation>
 <translation id="59324397759951282">Dispozitiv USB de la <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">Nu ai suficiente licențe disponibile ca să înregistrezi acest dispozitiv hardware Brave Meet. Contactează departamentul de vânzări ca să cumperi mai multe. În cazul în care consideri că acest mesaj este afișat din greșeală, contactează serviciul de asistență.</translation>
-<translation id="4206852577678288113">Activează modul pentru dezvoltatori pentru a folosi această extensie, dar numai dacă ai încredere în ea. Poate conține funcții experimentale și nu a fost examinată de Magazinul web Brave.</translation>
 <translation id="5932881020239635062">Număr de serie</translation>
 <translation id="5933376509899483611">Fus orar</translation>
 <translation id="5933522550144185133"><ph name="APP_NAME"/> folosește camera și microfonul</translation>
@@ -11679,6 +11677,8 @@ Permisiunile pe care le-ai acordat deja site-urilor și aplicațiilor se pot apl
 <translation id="5079334477644844710">Modul privat vă menține <ph name="BEGIN_LINK"/>navigarea confidențială<ph name="END_LINK"/> față de ceilalți utilizatori care vă folosesc dispozitivul</translation>
 <translation id="2099871685186351093">Trimiteți fișiere către profilurile din jurul dvs. <ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Privat)</translation>
+<translation id="7759126329265642843">Activează modul dezvoltator pentru a utiliza această extensie, care nu poate fi revizuită de Magazinul Web.</translation>
+<translation id="4206852577678288113">Activează modul dezvoltator pentru a utiliza această extensie, dar numai dacă ai încredere în extensie. Aceasta poate conține caracteristici experimentale și nu a fost revizuită de Web Store.</translation>
 <translation id="4949006391524401372">Această extensie a fost dezactivată de politica corporativă deoarece nu mai este disponibilă în magazinul Web.</translation>
 <translation id="5899585985956756612">Permiteți în modul incognito</translation>
 <translation id="6436164536244065364">Vizualizați în Magazinul web Brave</translation>

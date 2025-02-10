@@ -47,7 +47,7 @@
 <translation id="2603217794988474676">Verifiera din identitet för att fortsätta använda lösenord och annat i Brave-kontot</translation>
 <translation id="102916930470544692">Nyckel</translation>
 <translation id="1029317248976101138">Zooma in</translation>
-<translation id="1029526375103058355">Lätt klick på styrplattan</translation>
+<translation id="1029526375103058355">Tryck för att klicka</translation>
 <translation id="1029724557649700742">Nya funktioner läggs till när de blir tillgängliga, och funktionerna kan variera beroende på enhet.</translation>
 <translation id="1031343556156414679">Hantera nycklar i Windows Hello</translation>
 <translation id="1031362278801463162">Läser in förhandsgranskning</translation>
@@ -5885,6 +5885,7 @@ Zooma ut med Ctrl + Alt + Minska ljusstyrkan.</translation>
 <translation id="5177479852722101802">Fortsätt blockera tillgång till kamera och mikrofon</translation>
 <translation id="5177549709747445269">Du använder mobildata</translation>
 <translation id="5178667623289523808">Sök föregående</translation>
+<translation id="5180276433875360121">Visa <ph name="CERT_LIST"/></translation>
 <translation id="5181140330217080051">Nedladdning</translation>
 <translation id="3656271699136235245">I Brave Lösenordshantering för <ph name="ACCOUNT"/></translation>
 <translation id="6029810565516522064">Lösenordet sparas endast på den här enheten. Om du vill använda det på dina andra enheter kan du spara det i Brave-kontot <ph name="USER_EMAIL"/>.</translation>

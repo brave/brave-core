@@ -501,6 +501,11 @@
       =1 {Anda bisa mendapatkan bayaran untuk <ph name="COUNT_BEGIN"/># Iklan<ph name="COUNT_END"/> yang telah Anda lihat bulan ini.}
       other {Anda bisa mendapatkan bayaran untuk <ph name="COUNT_BEGIN"/># Iklan<ph name="COUNT_END"/> yang telah Anda lihat bulan ini.}
     }</translation>
+<translation id="8611388433418909120">{ADS_VIEWED, plural,
+      =0 {Anda telah melihat <ph name="COUNT_BEGIN"/># Iklan<ph name="COUNT_END"/> bulan ini}
+      =1 {Anda mendapat penghasilan dari melihat <ph name="COUNT_BEGIN"/># Iklan<ph name="COUNT_END"/> bulan ini}
+      other {Anda mendapat penghasilan dari melihat <ph name="COUNT_BEGIN"/># Iklan<ph name="COUNT_END"/> bulan ini}
+    }</translation>
 <translation id="6067959437127691361">Menggunakan Brave Rewards akan membantu mendukung kreator konten, dan memungkinkan Anda untuk mendapatkan BAT.</translation>
 <translation id="944736176598169208">Imbalan</translation>
 <translation id="2359808026110333948">Lanjutkan</translation>
@@ -670,6 +675,7 @@
 <translation id="2446517297521536638">Kendalikan jenis Iklan Brave yang akan Anda lihat, dan seberapa sering. Semakin banyak yang Anda lihat, semakin banyak yang bisa Anda dapatkan.</translation>
 <translation id="5860033963881614850">Nonaktifkan</translation>
 <translation id="5916664084637901428">Aktifkan</translation>
+<translation id="3977723631999461201"><ph name="NUM"/> Iklan diterima bulan ini</translation>
 <translation id="7924320838799747606">Saldo Anda</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/> dompet</translation>
 <translation id="3175337080016717494">Akun pembayaran</translation>
@@ -678,6 +684,7 @@
 <translation id="8414447476773253869">Masuk ke <ph name="PROVIDER"/> untuk melihat saldo Anda</translation>
 <translation id="615483366383024791">Akun Pembayaran</translation>
 <translation id="1060062421977823695">Penghasilan BAT Anda akan dibayarkan ke akun pembayaran ini.</translation>
+<translation id="2310070536993781610">Pakai kode promo BRAVEREWARDS buat dapat diskon 10% untuk semua item di Brave Merch Store.</translation>
 <translation id="1170674812179664523">Toko komoditas Brave</translation>
 <translation id="8673202990286883068">Manfaat Anda</translation>
 <translation id="3699766258844277472">Anda belum menyiapkan kontribusi berulang.</translation>
@@ -704,6 +711,9 @@
 <translation id="5309155375926073606">Ya, saya juga ingin berkontribusi pada Pencarian Brave dan ikut serta dalam <ph name="LINK_BEGIN"/>Proyek Penemuan Web<ph name="LINK_END"/>.</translation>
 <translation id="4622826307953794521">Kontribusikan beberapa data pencarian dan penelusuran anonim untuk menyempurnakan Pencarian Brave dengan Web Discovery Project. Aplikasi ini sepenuhnya bersumber terbuka.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="9034669711835382440">Komunitas</translation>
+<translation id="814503310257431685">Lihat semua</translation>
+<translation id="845020633253356720">Lihat Toko</translation>
 <translation id="7090992647511817643">akun</translation>
 <translation id="4822132585477111396">ID Rantai</translation>
 <translation id="3269475789479462358">domain</translation>
@@ -1135,6 +1145,12 @@
 <translation id="8214232307424031138">Ditandatangani</translation>
 <translation id="9065572743819293042">Transaksi terbaru</translation>
 <translation id="1702356231547761669">Hash transaksi</translation>
+<translation id="6030778062363728902">Memo</translation>
+<translation id="1288859203671057247">Anda bisa ketik pesan...</translation>
+<translation id="5466702869935634816">Pesan (Opsional)</translation>
+<translation id="5715145706082194046">Tambahkan memo</translation>
+<translation id="1922741261173258284">Hapus memo</translation>
+<translation id="1762915190843068679">Panjang memo harus kurang dari 512 karakter.</translation>
 <translation id="8941851657764077659">Biaya prioritas maks</translation>
 <translation id="8047527352810290817">Sunting bensin</translation>
 <translation id="9091334651803050473">Meskipun tidak dijamin, penambang kemungkinan akan memprioritaskan transaksi Anda jika Anda membayar biaya yang lebih tinggi.</translation>
@@ -1721,6 +1737,8 @@
 <translation id="2298396008562701154">Saat ini akun ini mendukung transaksi transparan yang berarti transaksi tersebut dapat dilihat oleh semua orang di blockchain.</translation>
 <translation id="3987095760757102811">Meningkatkan ke akun berpelindung berarti transaksi ini menyembunyikan detail pengirim, penerima, dan jumlah.</translation>
 <translation id="3819528427777765709">Berpelindung</translation>
+<translation id="2142946302539262412">Terpadu</translation>
+<translation id="4438043733494739848">Transparan</translation>
 <translation id="7144878232160441200">Coba Lagi</translation>
 <translation id="9094621390791852268">Pratinjau transaksi gagal.</translation>
 <translation id="4982713341035600933">Perkiraan perubahan saldo</translation>
@@ -1974,6 +1992,7 @@
 <translation id="5950760360751948276">Selalu tampilkan bilah markah</translation>
 <translation id="2960757369920422313">Tampilkan bilah markah pada NTP</translation>
 <translation id="522953399371747698">Sembunyikan bilah markah</translation>
+<translation id="9079813619990532635">Ekspor semua bookmark</translation>
 <translation id="134184943774258988">Pilihan Tampilkan semua tombol markah</translation>
 <translation id="2158862020143233462">Pilihan perisai</translation>
 <translation id="3010280727642018218">Pilihan JavaScript</translation>
@@ -2052,8 +2071,10 @@
 <translation id="4567071417854988869">Ringkas video ini</translation>
 <translation id="7921782882718083488">Ringkas halaman ini</translation>
 <translation id="7932221068776853847">Putuskan koneksi untuk menghentikan pengiriman konten halaman ini ke Leo, dan mulai percakapan baru</translation>
+<translation id="2712650703044366764">Model ini punya titik akhir yang tidak valid. Cek konfigurasi dan coba lagi.</translation>
 <translation id="1167803637855350748">Terdapat masalah jaringan untuk terhubung dengan Leo, periksa kembali koneksi Anda dan coba lagi.</translation>
 <translation id="1996126325390835277">Anda telah mencapai batas tingkat premium. Silakan coba lagi dalam beberapa jam.</translation>
+<translation id="8151638057146502721">Konfigurasi</translation>
 <translation id="4177458398826096846">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Llama 3.1 8B, model yang diciptakan Meta agar berfungsi dengan baik dan dapat diterapkan untuk banyak kasus penggunaan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Hai, saya Leo. Saya adalah asisten AI yang dihost sepenuhnya oleh Brave. Saya didukung oleh Mixtral 8x7B, model yang dibuat AI Mistral untuk menangani tugas-tugas lanjutan. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Hai, saya Leo, saya diproksikan oleh Brave dan didukung oleh Claude Instant, model yang dibuat Anthropic untuk mendukung tugas-tugas percakapan dan pemrosesan teks. <ph name="LINK_BEFORE"/>Pelajari lebih lanjut<ph name="LINK_AFTER"/></translation>
@@ -2090,6 +2111,7 @@
 <translation id="6393149565874086128">Tambahkan umpan balik</translation>
 <translation id="3521125531016408657">Suka jawaban</translation>
 <translation id="8202517001427388906">Tidak suka jawaban</translation>
+<translation id="3177073390279208955">Mengirim peringkat, percakapan, model, bahasa, versi, dan status premium</translation>
 <translation id="1379399209929302811">Berikan Umpan Balik untuk AI Brave</translation>
 <translation id="8442999546461118871">Pilih topik umpan balik Anda</translation>
 <translation id="9018766373792005944">Umpan balik Anda adalah tentang apa?</translation>
@@ -2115,6 +2137,11 @@
 <translation id="4370698775470316661">Percakapan ini terlalu panjang dan tidak dapat dilanjutkan. Mungkin ada model lain yang tersedia yang memungkinkan Leo untuk menjaga akurasi percakapan yang lebih panjang.</translation>
 <translation id="5719170755629028558">Meningkatkan kualitas jawaban Anda dengan Pencarian Brave...</translation>
 <translation id="5794962229997281366">Jawaban yang lebih ditingkatkan untuk <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="8103700533980268469">Tutup pemberitahuan ini</translation>
+<translation id="2315654674554095762">Kini Leo mengingat percakapan sehingga Anda bisa kembali ke percakapan itu. Percakapan disimpan dan dienkripsi di perangkat, dan Anda bisa hapus kapan saja.</translation>
+<translation id="7821251979960635244">Riwayat percakapan akan muncul di sini setelah Anda memulai percakapan.</translation>
+<translation id="887511360213807449">Riwayat dinonaktifkan</translation>
+<translation id="5380979378058584412">Untuk melihat percakapan sebelumnya dengan Leo, Anda perlu mengaktifkan riwayat percakapan.</translation>
 <translation id="6291843235651817590">Obrolan umum</translation>
 <translation id="8193130769524604031">Tugas obrolan lanjutan</translation>
 <translation id="3185367320601718531">Penghasil percakapan dan teks</translation>
@@ -2158,6 +2185,7 @@
 <translation id="49269513399674318">Gunakan mikrofon</translation>
 <translation id="3895031624234442305">Model khusus</translation>
 <translation id="4572010449071015143">Memulai percakapan baru</translation>
+<translation id="345901077335355561">Kembali ke percakapan aktif</translation>
 <translation id="6287023598025162715">Percakapan baru</translation>
 <translation id="6303294677342628402">Pelindung</translation>
 <translation id="8458987127502506209">Aktifkan Brave Shield</translation>
@@ -2187,6 +2215,8 @@
 <translation id="6196640612572343990">Blokir cookie pihak ketiga</translation>
 <translation id="693506469193748756">Lupakan saya ketika saya menutup situs ini</translation>
 <translation id="5471580724041424345">Hapus kuki dan data situs lainnya ketika Anda menutup situs.</translation>
+<translation id="6486971767955110687">Menyimpan informasi kontak untuk pelaporan situs yang rusak di masa mendatang</translation>
+<translation id="4085787265464238844">Jika Anda memberikan info kontak, maka info akan disimpan untuk laporan di masa mendatang</translation>
 <translation id="6883611015375728278">Blokir semua kuki</translation>
 <translation id="5657156137487675418">Izinkan semua cookie</translation>
 <translation id="8366221601425141146">Sidik jari diblokir</translation>

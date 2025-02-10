@@ -412,6 +412,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="944340256927461196">Uten et eneste spor på enheten</translation>
 <translation id="2063044449012253966">Nettsidene du besøker i private vinduer dukker ikke opp i loggen din. Alle informasjonskapsler, inndata og sidedata forsvinner når du lukker vinduet.</translation>
 <translation id="7395764193745523646">Synlig surfing</translation>
+<translation id="8670344404057978375">Vær oppmerksom på at aktiviteten din kan være synlig for ISP-leverandøren, nettverksleverandøren og arbeidsgiveren din (dersom du bruker en jobbenhet/-nettverk), selv om du bruker private vinduer.</translation>
 <translation id="1413177583895309156">Brave VPN krypterer og beskytter alt du gjør på nett, også det du gjør i andre nettlesere.</translation>
 <translation id="3974348661685061050">Prøv det gratis i syv dager</translation>
 <translation id="5789441016350810005">Brave Ads blir sendt når nettleseren er i bakgrunnen</translation>
@@ -471,6 +472,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7854108565842971747">Dette er standard Shields-innstillinger for nye nettsteder. Å endre disse påvirker ikke de eksisterende innstillingene per nettsted.</translation>
 <translation id="218587021686734263">Forhindre "fingerprinting" via språkinnstillinger</translation>
 <translation id="1706099589708266367">Reduserer hvor mye nettsider kan få vite om deg basert på språkinnstillingene i nettleseren din.</translation>
+<translation id="6486971767955110687">Lagre kontaktinformasjon for fremtidige rapporter om ødelagte nettsteder</translation>
+<translation id="4085787265464238844">Dersom du angir kontaktinformasjon vil det lagres for rapportering i fremtiden</translation>
 <translation id="4721088070859595932">Hindrer at nettsteder kjenner igjen enheten din</translation>
 <translation id="7445306466605902444">Fingeravtrykk blokkert (strengt, kan ødelegge nettsteder)</translation>
 <translation id="5582686930349810484">Fingeravtrykk blokkert (standard)</translation>
@@ -503,6 +506,10 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5370478469168390143">Lagre data på nett</translation>
 <translation id="1118508688433541158">Gå raskere fra side til side og blokker annonser med Brave</translation>
 <translation id="7427391215172269363">Hver dag sparer jeg data ved å surfe på nettet med Brave.</translation>
+<translation id="357198789571802914">Se YouTube, ikke reklamer.</translation>
+<translation id="2154817758398495571">Åpne YouTube-lenker i Brave for å blokkere annonser.</translation>
+<translation id="1580816390443799567">Skru på nå</translation>
+<translation id="8589748782214271192">Nei takk</translation>
 <translation id="8374242949413616101">Personvernbeskyttelse</translation>
 <translation id="4955406228638026265">Brave hindrer annonser &amp; trackere i å samle inn informasjon om deg uten ditt samtykke.</translation>
 <translation id="752842701893882688">Spar data og batteri</translation>
@@ -1098,7 +1105,14 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="2471230424465522689">Ikke før</translation>
 <translation id="4841860051609590575">Forespørsels-ID</translation>
 <translation id="1179407411385015942">Leo er en smartassistent drevet av kunstig intelligens, bygget inn direkte i nettleseren</translation>
+<translation id="5781842473834867765">Lagre samtaleloggen min</translation>
 <translation id="4109670531935487117">Vis forslag til autofullføring i adressefeltet</translation>
+<translation id="6106701981952170121">Slett alle samtaledata fra Leo AI</translation>
+<translation id="423600389315522551">Hvis du tilbakestiller Leo AI, må du gi samtykke på nytt for å bruke Brave
+Leo AI i fremtiden. Samtaleloggen din blir også slettet. Dersom du tømmer samtaleloggen, slettes alle de gamle samtalene dine med Brave
+Leo AI. Dette kan ikke angres.</translation>
+<translation id="6742599753610126012">Tøm samtaleloggen</translation>
+<translation id="3443052382074796867">Dersom du deaktiverer lagring av samtaler vil alle samtalene dine slettes permanent. Dette kan ikke angres.</translation>
 <translation id="3692772534525889713">Knytt Play Store-kjøpet til Brave-kontoen din for å bruke Brave Leo på andre enheter.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Ett år</translation>
@@ -1229,4 +1243,5 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="3098054327870766317">Vis angreknappen når faner lukkes</translation>
 <translation id="1336494649091412226">Er du sikker på at du vil avslutte Brave?</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">Samtalelogg</translation>
 </translationbundle>

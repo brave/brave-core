@@ -15,7 +15,6 @@
 <translation id="1419023007528516122">Энэ нь бүлгийг таны төхөөрөмжөөс бүрмөсөн устгана</translation>
 <translation id="1486715732399361704">Та бүх табын бүлгээ эндээс олох боломжтой</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> минутын өмнө үүсгэсэн}other{<ph name="NUM_MINS_MANY"/> минутын өмнө үүсгэсэн}}</translation>
-<translation id="3228718275011575753">Бүх Нууцлалтай табыг хаах уу?</translation>
 <translation id="1501480321619201731">Бүлгийг устгах</translation>
 <translation id="1555130319947370107">Цэнхэр</translation>
 <translation id="161042844686301425">Шар хөх өнгө</translation>
@@ -27,7 +26,6 @@
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> таб}other{<ph name="TABS_COUNT_MANY"/> таб}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Сонгосон <ph name="TABS_COUNT_ONE"/> табыг тэмдэглэх}other{Сонгосон <ph name="TABS_COUNT_MANY"/> табыг тэмдэглэх}}</translation>
 <translation id="2118649612461486615">Дэлгүүрийн мэдээлэл</translation>
-<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{Та хаасан таб, бүлгээ саяхны табын хэсэг болон табын бүлгийн хэсгээс дахин нээх боломжтой. Таны нууцлалтай таб боломжгүй байх болно.}other{Та хаасан таб, бүлгээ саяхны табын хэсэг болон табын бүлгийн хэсгээс дахин нээх боломжтой. Таны нууцлалтай # таб боломжгүй байх болно.}}</translation>
 <translation id="2162620598375156287"><ph name="SOURCE_WEBSITE"/> дээр одоо <ph name="CURRENT_PRICE"/> байна</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Табыг бүлэглэхээ болих}other{Табуудыг бүлэглэхээ болих}}</translation>
 <translation id="2271452184061378400">Таны табын бүлгийг энд хадгалдаг</translation>
@@ -195,4 +193,8 @@
 <translation id="9216898458513705996">Таб энэ төхөөрөмж дээр нээлттэй үлдэх хэдий ч бүлгийг <ph name="USER_EMAIL"/>-д нэвтэрсэн бүх төхөөрөмжөөс устгана</translation>
 <translation id="927441551066996669">{NUMBER_OF_TABS,plural, =1{<ph name="TABS_COUNT_ONE"/> таб, <ph name="COLOR_NAME"/> өнгөтэй табын бүлгийг дэлгэнэ үү.}other{<ph name="TABS_COUNT_MANY"/> таб, <ph name="COLOR_NAME"/> өнгөтэй табын бүлгийг дэлгэнэ үү.}}</translation>
 <translation id="992256792861109788">Ягаан</translation>
+<translation id="3228718275011575753">Нууцлалтай бүх табыг хаах уу?</translation>
+<translation id="6086127758480584723">{INCOGNITO_TABS_COUNT, plural,
+        =1 {Таны хаагдсан табууд болон бүлгүүдийг Сүүлд ашигласан таб хэсэг болон Табын бүлгүүд хэсгээс дахин нээх боломжтой. Таны хувийн буюу Нууцлалтай таб боломжгүй болно.}
+        other {Таны хаагдсан табууд болон бүлгүүдийг Сүүлд ашигласан таб хэсэг болон Табын бүлгүүд хэсгээс дахин нээх боломжтой. Таны хувийн буюу #Нууцлалтай таб боломжгүй болно.}}</translation>
 </translationbundle>

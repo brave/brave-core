@@ -412,6 +412,7 @@
 <translation id="944340256927461196">在设备上不留痕迹</translation>
 <translation id="2063044449012253966">您在无痕窗口中访问的网站不会出现在您的历史记录中。在关闭无痕窗口时，cookie、表单数据和网站数据会消失。</translation>
 <translation id="7395764193745523646">浏览可见性</translation>
+<translation id="8670344404057978375">请注意，即使在无痕窗口中，您的浏览活动仍可能被 ISP、网络观察员或您的雇主（如果您使用的是工作设备/网络）看到。</translation>
 <translation id="1413177583895309156">Brave VPN 可加密并保护您在网络上所做的所有活动，甚至在 Brave 浏览器之外亦不例外。</translation>
 <translation id="3974348661685061050">免费试用 7 天</translation>
 <translation id="5789441016350810005">浏览器在后台运行时发送 Brave 广告</translation>
@@ -471,6 +472,8 @@
 <translation id="7854108565842971747">这些是新站点的默认 Shields 设置。更改这些设置不会影响现有针对单一站点的设置。</translation>
 <translation id="218587021686734263">通过语言设置防止指纹识别</translation>
 <translation id="1706099589708266367">根据浏览器的语言设置减少网站可以了解到您的信息的数量。</translation>
+<translation id="6486971767955110687">存储联系信息，用于日后报告站点故障</translation>
+<translation id="4085787265464238844">如果您提供联系信息，这些信息将会被储存起来，在日后的报告中使用</translation>
 <translation id="4721088070859595932">防止网站识别您的设备</translation>
 <translation id="7445306466605902444">已拦截指纹识别（严格，可能破坏网站）</translation>
 <translation id="5582686930349810484">已拦截指纹识别（标准）</translation>
@@ -503,6 +506,10 @@
 <translation id="5370478469168390143">在线保存数据</translation>
 <translation id="1118508688433541158">利用 Brave 更快速的流量并能拦截广告</translation>
 <translation id="7427391215172269363">我每天都用 Brave 浏览网页，节省数据。</translation>
+<translation id="357198789571802914">观看 YouTube，不看广告。</translation>
+<translation id="2154817758398495571">在 Brave 中打开 YouTube 链接可以屏蔽广告。</translation>
+<translation id="1580816390443799567">立即打开</translation>
+<translation id="8589748782214271192">不了，谢谢</translation>
 <translation id="8374242949413616101">隐私保护</translation>
 <translation id="4955406228638026265">Brave 会阻止广告和跟踪者在未经您同意的情况下收集有关您的信息。</translation>
 <translation id="752842701893882688">保存数据和电池</translation>
@@ -1098,7 +1105,15 @@
 <translation id="2471230424465522689">以前没有</translation>
 <translation id="4841860051609590575">申请 ID</translation>
 <translation id="1179407411385015942">Leo 是采用 AI 技术的智慧助理，内置于浏览器中。</translation>
+<translation id="5781842473834867765">保存我的对话记录</translation>
 <translation id="4109670531935487117">在地址栏中显示自动完成建议</translation>
+<translation id="6106701981952170121">删除所有 Leo AI 对话数据</translation>
+<translation id="423600389315522551">重置 Leo AI 将要求您选择在未来使用 Brave
+Leo AI，并清除您的聊天记录。清除您的
+聊天记录将删除您之前与 Brave
+Leo AI 的所有对话。此操作无法撤销。</translation>
+<translation id="6742599753610126012">清除聊天记录</translation>
+<translation id="3443052382074796867">禁用对话存储功能将永久删除所有以前存储的对话。此操作无法撤销。</translation>
 <translation id="3692772534525889713">将您在 Play Store 购买的内容与 Brave 账户关联，以便在其他设备上使用 Brave Leo。</translation>
 <translation id="73236265316873967">Leo 高级版</translation>
 <translation id="1028627582482425924">1 年</translation>
@@ -1229,4 +1244,5 @@
 <translation id="3098054327870766317">关闭标签页时显示撤消按钮</translation>
 <translation id="1336494649091412226">确定要退出 Brave 吗？</translation>
 <translation id="2361906291514218784">Leo 人工智能</translation>
+<translation id="7942415993090181327">聊天记录</translation>
 </translationbundle>

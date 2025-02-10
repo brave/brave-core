@@ -412,6 +412,7 @@ Segur que vols continuar?</translation>
 <translation id="944340256927461196">No deixa cap rastre al teu dispositiu</translation>
 <translation id="2063044449012253966">Els llocs que visitis en finestres d'incògnit no apareixeran al teu hostorial. Les cookies, les dades de forma i les dades del lloc desapareieran un cop es tanquin totes les finestres d'incògnit.</translation>
 <translation id="7395764193745523646">Visibilitat de navegació</translation>
+<translation id="8670344404057978375">Tingues en compte que, fins i tot si estàs en una finestra d'incògnit, la teva activitat en línia pot ser visible per al teu proveïdor d'internet, observadors de xarxa o la teva companyia (si utilitzes un aparell/xarxa de l'empresa).</translation>
 <translation id="1413177583895309156">El VPN de Brave xifra i protegeix tota la teva activitat en línia, fins i tot si aquesta té lloc fora del navegador de Brave.</translation>
 <translation id="3974348661685061050">Prova-ho gratis durant 7 dies</translation>
 <translation id="5789441016350810005">Anuncis de Brave enviats quan el navegador es queda en segon pla</translation>
@@ -471,6 +472,8 @@ Segur que vols continuar?</translation>
 <translation id="7854108565842971747">Aquestes són les proteccions predeterminades dels nous llocs web. Si les canvies, no afectarà la configuració existent per lloc.</translation>
 <translation id="218587021686734263">Evita les empremtes digitals mitjançant la configuració de la llengua</translation>
 <translation id="1706099589708266367">Redueix la quantitat que els llocs web poden aprendre sobre tu en funció de la configuració de la llengua del teu navegador.</translation>
+<translation id="6486971767955110687">Desar informació de contacte per a futurs informes d'errors del lloc</translation>
+<translation id="4085787265464238844">Si introdueixes la teva informació de contacte, aquesta serà emmagatzemada per a futurs informes</translation>
 <translation id="4721088070859595932">Evita que els llocs web reconeguin el teu dispositiu</translation>
 <translation id="7445306466605902444">Empremta dactilar bloquejada (estrictament, pot trencar llocs)</translation>
 <translation id="5582686930349810484">Empremtes dactilars bloquejades (estàndard)</translation>
@@ -503,6 +506,10 @@ Segur que vols continuar?</translation>
 <translation id="5370478469168390143">Guarda les dades en línia</translation>
 <translation id="1118508688433541158">Navega més ràpid i bloqueja anuncis amb Brave</translation>
 <translation id="7427391215172269363">Cada dia estalvio dades navegant la web amb Brave.</translation>
+<translation id="357198789571802914">Gaudeix de YouTube, oblida't dels anuncis.</translation>
+<translation id="2154817758398495571">Obre els enllaços de YouTube amb Brave per bloquejar els anuncis.</translation>
+<translation id="1580816390443799567">Activar ara</translation>
+<translation id="8589748782214271192">No, gràcies</translation>
 <translation id="8374242949413616101">Protecció de privacitat</translation>
 <translation id="4955406228638026265">Brave impedeix que els anuncis i rastrejadors recopilin informació sobre tu sense el teu consentiment.</translation>
 <translation id="752842701893882688">Desa les dades i la bateria</translation>
@@ -1098,7 +1105,12 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="2471230424465522689">No anterior a</translation>
 <translation id="4841860051609590575">ID de la sol·licitud</translation>
 <translation id="1179407411385015942">Leo és un assistent intel·ligent amb IA, integrat en el navegador</translation>
+<translation id="5781842473834867765">Desar el meu historial de converses</translation>
 <translation id="4109670531935487117">Mostra suggeriments d'autocompletat a la barra d'adreces</translation>
+<translation id="6106701981952170121">Esborrar totes les dades de converses amb l'IA Leo</translation>
+<translation id="423600389315522551">Per reiniciar la IA Leo, hauràs d'acceptar utilitzat la IA Leo de Brave en el futur; també esborrarà el teu historial de xat. Esborrar el teu historial de xat esborrarà totes les teves converses anteriors amb la IA Leo de Brave. Aquesta acció no es pot revertir.</translation>
+<translation id="6742599753610126012">Esborrar historial de xat</translation>
+<translation id="3443052382074796867">Si desactives l'opció de desar les converses, s'eliminaran totes les converses emmagatzemades prèviament. Aquesta acció no es pot revertir.</translation>
 <translation id="3692772534525889713">Enllaça la compra de la Play Store al teu compte de Brave per utilitzar la Brave Leo en altres dispositius.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Un any</translation>
@@ -1229,4 +1241,5 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="3098054327870766317">Mostra el botó de desfer quan es tanquin les pestanyes</translation>
 <translation id="1336494649091412226">Segur que vols sortir de Brave?</translation>
 <translation id="2361906291514218784">IA Leo</translation>
+<translation id="7942415993090181327">Historial de xat</translation>
 </translationbundle>

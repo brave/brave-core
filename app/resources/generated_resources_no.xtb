@@ -2804,7 +2804,6 @@ Du kan administrere innstillingene for denne kontoen ved å installere Family Li
 <translation id="2953210795988451570">Du har sluttet å få sikkerhetsoppdateringer. Oppgrader til en ny Chromebook.</translation>
 <translation id="2953218713108551165">Varsler er ikke tillatt for <ph name="SITE"/>. Du blir spurt på nytt neste gang du besøker nettstedet.</translation>
 <translation id="2956070239128776395">En seksjon er flettet i en gruppe: <ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">Slå på utviklermodus for å bruke denne utvidelsen, som ikke kan gjennomgås av Brave Nettmarked.</translation>
 <translation id="2958721676848865875">Advarsel om pakkeutvidelse</translation>
 <translation id="2959127025785722291">Noe gikk galt. Gjennomsøkingen kunne ikke fullføres. Prøv på nytt.</translation>
 <translation id="2959474507964749987">Denne krypterte filen kan være et virus eller skadelig programvare.<ph name="LINE_BREAK"/>For å sjekke om den er utrygg kan du sende filen og passordet til Google Safe Browsing. Skanninger tar vanligvis noen sekunder.<ph name="LINE_BREAK"/>Oppgi passordet for filen for å skanne den.</translation>
@@ -6897,7 +6896,6 @@ Tillatelser du allerede har gitt nettsteder og apper, kan gjelde for denne konto
 <translation id="5932224571077948991">Nettstedet viser forstyrrende eller villedende annonser</translation>
 <translation id="59324397759951282">USB-enhet fra <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">Du har ikke nok ledige lisenser til å registrere denne Brave Meet-enheten. Kontakt salgsavdelingen for å kjøpe flere. Hvis du mener dette er en feil, kan du kontakte brukerstøtten.</translation>
-<translation id="4206852577678288113">Slå på utviklermodus for å bruke denne utvidelsen, men bare hvis du stoler på utvidelsen. Den kan inneholde eksperimentelle funksjoner og er ikke gjennomgått av Brave Nettmarked.</translation>
 <translation id="5932881020239635062">Serienummer</translation>
 <translation id="5933376509899483611">Tidssone</translation>
 <translation id="5933522550144185133"><ph name="APP_NAME"/> bruker kameraet ditt og mikrofonen din</translation>
@@ -11680,6 +11678,8 @@ Tillatelser du allerede har gitt nettsteder og apper, kan gjelde for denne konto
 <translation id="5079334477644844710">Privat modus holder nettleseraktiviteten din <ph name="BEGIN_LINK"/>privat fra andre<ph name="END_LINK"/> som bruker enheten din.</translation>
 <translation id="2099871685186351093">Del filer med profiler rundt deg. <ph name="LINK_BEGIN"/>Finn ut mer<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Privat)</translation>
+<translation id="7759126329265642843">Skru på utviklermodus for å bruke denne utvidelsen. Den kan ikke gjennomgås av Web Store.</translation>
+<translation id="4206852577678288113">Skru på utviklermodus for å bruke denne utvidelsen, men kun dersom du stoler på den. Den kan inneholde eksperimentelle funksjoner og har ikke blitt gjennomgått av Web Store.</translation>
 <translation id="4949006391524401372">Denne utvidelsen er deaktivert fordi den ikke lenger er tilgjengelig i nettbutikken.</translation>
 <translation id="5899585985956756612">Tillat i privat modus</translation>
 <translation id="6436164536244065364">Se i Nettmarked</translation>
