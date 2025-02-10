@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 18
+  |
+1 | leading-us-oct = _0o1
+  |                  ^
+invalid integer
+expected leading digit

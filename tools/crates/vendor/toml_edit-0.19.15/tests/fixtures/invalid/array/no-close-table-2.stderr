@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 17
+  |
+1 | x = [{ key = 42 #
+  |                 ^
+invalid inline table
+expected `}`

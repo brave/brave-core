@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 8
+  |
+1 | barekey
+  |        ^
+expected `.`, `=`

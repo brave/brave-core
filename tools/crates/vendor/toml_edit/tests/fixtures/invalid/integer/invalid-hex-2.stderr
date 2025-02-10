@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 19
+  |
+1 | invalid-hex-2 = 0xgabba00f1
+  |                   ^
+invalid hexadecimal integer

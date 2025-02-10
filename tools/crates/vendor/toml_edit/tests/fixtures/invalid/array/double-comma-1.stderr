@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 21
+  |
+1 | double-comma-1 = [1,,2]
+  |                     ^
+invalid array
+expected `]`

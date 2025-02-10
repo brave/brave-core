@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 14
+  |
+1 | array = [1,2,,]
+  |              ^
+invalid array
+expected `]`

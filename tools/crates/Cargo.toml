@@ -1,0 +1,10 @@
+[package]
+name = "brave-tools-crates"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cargo-audit = "0.21.1"
+wasm-bindgen-cli = "0.2.100"
+wasm-opt = "0.116.1"
+wasm-pack = "0.13.1"
