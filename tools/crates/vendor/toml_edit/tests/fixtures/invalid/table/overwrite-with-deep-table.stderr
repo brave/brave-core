@@ -1,0 +1,6 @@
+TOML parse error at line 2, column 1
+  |
+2 | [a.b.c.d]
+  | ^
+invalid table header
+dotted key `a` attempted to extend non-table type (integer)

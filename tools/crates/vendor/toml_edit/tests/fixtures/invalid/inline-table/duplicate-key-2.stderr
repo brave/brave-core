@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 11
+  |
+1 | table1 = { table2.dupe = 1, table2.dupe = 2 }
+  |           ^
+duplicate key `dupe`
