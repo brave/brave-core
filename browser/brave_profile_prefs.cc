@@ -103,7 +103,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/youtube_script_injector/common/pref_names.h" // nogncheck
+#include "brave/components/youtube_script_injector/common/pref_names.h"  // nogncheck
 #include "components/feed/core/common/pref_names.h"
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
