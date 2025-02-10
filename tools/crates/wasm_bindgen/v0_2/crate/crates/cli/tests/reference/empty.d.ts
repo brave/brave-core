@@ -1,2 +1,0 @@
-/* tslint:disable */
-/* eslint-disable */
