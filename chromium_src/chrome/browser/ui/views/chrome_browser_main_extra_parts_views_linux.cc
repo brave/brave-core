@@ -5,17 +5,17 @@
 
 #include "chrome/browser/ui/views/chrome_browser_main_extra_parts_views_linux.h"
 
-#if defined(USE_DBUS)
+#if BUILDFLAG(USE_DBUS)
 #include "brave/browser/ui/views/brave_dark_mode_manager_linux.h"
 #include "chrome/browser/ui/views/dark_mode_manager_linux.h"
 #endif
 
-#if defined(USE_DBUS)
+#if BUILDFLAG(USE_DBUS)
 #define DarkModeManagerLinux BraveDarkModeManagerLinux
 #endif
 
 #include "src/chrome/browser/ui/views/chrome_browser_main_extra_parts_views_linux.cc"
 
-#if defined(USE_DBUS)
+#if BUILDFLAG(USE_DBUS)
 #undef DarkModeManagerLinux
 #endif
