@@ -108,6 +108,8 @@ source_set("ui") {
     "webui/brave_webui_source.h",
     "webui/skus_internals_ui.cc",
     "webui/skus_internals_ui.h",
+    "webui/untrusted_sanitized_image_source.cc",
+    "webui/untrusted_sanitized_image_source.h",
   ]
 
   # It doesn't make sense to view the webcompat webui on iOS & Android.
@@ -980,16 +982,19 @@ source_set("ui") {
     ]
   }
 
-  # This is no longer compiled into Chromium on Android, but we still
-  # need it
+  # These are no longer compiled into Chromium on Android, but we still
+  # need them
   if (is_android) {
     sources += [
       "//chrome/browser/ui/webui/favicon_source.cc",
       "//chrome/browser/ui/webui/favicon_source.h",
+      "//chrome/browser/ui/webui/sanitized_image_source.cc",
+      "//chrome/browser/ui/webui/sanitized_image_source.h",
     ]
 
     deps += [
       "//chrome/browser/favicon",
+      "//chrome/browser/image_fetcher",
       "//components/favicon/core",
       "//components/favicon_base",
       "//components/history/core/browser",

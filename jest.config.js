@@ -41,7 +41,8 @@ module.exports = {
   globals: {
     'ts-jest': {
       'tsconfig': 'tsconfig-jest.json',
-      'isolatedModules': true
+      'isolatedModules': true,
+      useESM: true
     }
   },
   transform: {
@@ -76,11 +77,12 @@ module.exports = {
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!(@brave/brave-ui|@brave/leo)/)',
+    '<rootDir>/node_modules/(?!.*/)',
     // prevent jest from transforming itself
     // https://github.com/jestjs/jest/issues/9503#issuecomment-709041807
     '<rootDir>/node_modules/@babel',
     '<rootDir>/node_modules/@jest',
+    '<rootDir>/node_modules/jest-runtime',
     '<rootDir>/node_modules/lodash',
     'signal-exit',
     'is-typedarray'

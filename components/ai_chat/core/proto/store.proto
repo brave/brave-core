@@ -1,0 +1,24 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package ai_chat.store;
+
+option optimize_for = LITE_RUNTIME;
+
+//
+// Structured data stored by the client, usually in SQL_FROM_HERE
+//
+
+message WebSourceProto {
+  string title = 1;
+  string url = 2;
+  string favicon_url = 3;
+}
+
+message WebSourcesEventProto {
+  repeated WebSourceProto sources = 1;
+}

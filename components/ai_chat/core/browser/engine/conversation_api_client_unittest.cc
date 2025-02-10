@@ -244,7 +244,7 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
                   "__Secure-sku#brave-leo-premium=" + expected_crediential);
         EXPECT_NE(headers.find("x-brave-key"), headers.end());
 
-        // Verify body contains events in expected json format
+        // Verify input body contains input events in expected json format
         EXPECT_STREQ(GetEventsJson(body).c_str(),
                      FormatComparableEventsJson(expected_events_body).c_str());
 
@@ -254,8 +254,8 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_TRUE(selected_language.has_value());
         EXPECT_TRUE(selected_language.value().empty());
 
-        // Send some event responses so that we can verify it is passed
-        // through to the PerformRequest callbacks.
+        // Send some event responses so that we can verify they are passed
+        // through to the PerformRequest callbacks as events.
         {
           base::Value result(base::Value::Type::DICT);
           result.GetDict().Set("type", "isSearching");
@@ -268,6 +268,50 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
           queries.GetList().Append("Star Wars");
           queries.GetList().Append("Star Trek");
           result.GetDict().Set("queries", std::move(queries));
+          data_received_callback.Run(base::ok(std::move(result)));
+        }
+        {
+          base::Value result(base::Value::Type::DICT);
+          result.GetDict().Set("type", "webSources");
+          base::Value sources(base::Value::Type::LIST);
+          {
+            // Invalid because it doesn't contain the expected host
+            base::Value query(base::Value::Type::DICT);
+            query.GetDict().Set("title", "Star Wars");
+            query.GetDict().Set("url", "https://starwars.com");
+            query.GetDict().Set("favicon", "https://starwars.com/favicon");
+            sources.GetList().Append(std::move(query));
+          }
+          {
+            // Invalid because it doesn't contain the expected scheme
+            base::Value query(base::Value::Type::DICT);
+            query.GetDict().Set("title", "Star Wars");
+            query.GetDict().Set("url", "https://starwars.com");
+            query.GetDict().Set(
+                "favicon", "http://imgs.search.brave.com/starwars.com/favicon");
+            sources.GetList().Append(std::move(query));
+          }
+          {
+            // Valid
+            base::Value query(base::Value::Type::DICT);
+            query.GetDict().Set("title", "Star Wars");
+            query.GetDict().Set("url", "https://starwars.com");
+            query.GetDict().Set(
+                "favicon",
+                "https://imgs.search.brave.com/starwars.com/favicon");
+            sources.GetList().Append(std::move(query));
+          }
+          {
+            // Valid
+            base::Value query(base::Value::Type::DICT);
+            query.GetDict().Set("title", "Star Trek");
+            query.GetDict().Set("url", "https://startrek.com");
+            query.GetDict().Set(
+                "favicon",
+                "https://imgs.search.brave.com/startrek.com/favicon");
+            sources.GetList().Append(std::move(query));
+          }
+          result.GetDict().Set("sources", std::move(sources));
           data_received_callback.Run(base::ok(std::move(result)));
         }
         {
@@ -307,6 +351,21 @@ TEST_F(ConversationAPIUnitTest, PerformRequest_PremiumHeaders) {
         EXPECT_EQ(queries.size(), 2u);
         EXPECT_EQ(queries[0], "Star Wars");
         EXPECT_EQ(queries[1], "Star Trek");
+      });
+  EXPECT_CALL(mock_callbacks, OnDataReceived(_))
+      .InSequence(seq)
+      .WillOnce([&](mojom::ConversationEntryEventPtr event) {
+        EXPECT_TRUE(event->is_sources_event());
+        auto& sources = event->get_sources_event()->sources;
+        EXPECT_EQ(sources.size(), 2u);
+        EXPECT_EQ(sources[0]->title, "Star Wars");
+        EXPECT_EQ(sources[1]->title, "Star Trek");
+        EXPECT_EQ(sources[0]->url.spec(), "https://starwars.com/");
+        EXPECT_EQ(sources[1]->url.spec(), "https://startrek.com/");
+        EXPECT_EQ(sources[0]->favicon_url.spec(),
+                  "https://imgs.search.brave.com/starwars.com/favicon");
+        EXPECT_EQ(sources[1]->favicon_url.spec(),
+                  "https://imgs.search.brave.com/startrek.com/favicon");
       });
   EXPECT_CALL(mock_callbacks, OnDataReceived(_))
       .InSequence(seq)
