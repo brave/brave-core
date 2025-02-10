@@ -627,7 +627,7 @@
     It's possible your profile was flagged in error, and no immediate action is required on your part. The flag on your profile may be removed in the future.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TEXT_4" desc="">
-    <ph name="BEGIN_LINK">$2</ph>Learn more about Brave's process for flagging Rewards profiles.<ph name="END_LINK">$3</ph>
+    Learn more about Brave's process for flagging Rewards profiles.
   </message>
   <message name="IDS_REWARDS_AUTHORIZE_FLAGGED_WALLET_TITLE" desc="">
     Brave Rewards profile is flagged
@@ -793,9 +793,6 @@
   </message>
   <message name="IDS_REWARDS_PAYOUT_ACCOUNT_CONNECTED_LABEL" desc="">
     Connected
-  </message>
-  <message name="IDS_REWARDS_PAYOUT_ACCOUNT_DETAILS_TITLE" desc="">
-    <ph name="PROVIDER">$1</ph> wallet
   </message>
   <message name="IDS_REWARDS_PAYOUT_ACCOUNT_LABEL" desc="">
     Payout account

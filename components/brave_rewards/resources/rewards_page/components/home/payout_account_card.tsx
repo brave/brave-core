@@ -138,11 +138,7 @@ export function PayoutAccountCard() {
           <div className='provider'>
             <WalletProviderIcon provider={externalWallet.provider} />
             <span className='provider-name'>
-              {
-                formatMessage(getString('payoutAccountDetailsTitle'), [
-                  providerName
-                ])
-              }
+              {providerName}
             </span>
             <Label color='green'>
               <Icon name='check-circle-outline' slot='icon-before' />

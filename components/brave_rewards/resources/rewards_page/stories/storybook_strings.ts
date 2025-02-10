@@ -159,7 +159,6 @@ export const localeStrings: { [K in StringKey]: string }  = {
   onboardingTitle: 'Turn on Brave Rewards',
   payoutAccountBalanceLabel: 'Your balance',
   payoutAccountConnectedLabel: 'Connected',
-  payoutAccountDetailsTitle: '$1 wallet',
   payoutAccountLabel: 'Payout account',
   payoutAccountLink: 'Go to my account',
   payoutAccountLoggedOutTitle: 'Logged Out',
