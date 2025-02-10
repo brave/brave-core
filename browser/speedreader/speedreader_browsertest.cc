@@ -208,6 +208,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     content::WaitForLoadStop(ActiveWebContents());
   }
 
+  void WaitToolbarVisibility(ReaderModeToolbarView* toolbar, bool visible) {
+    while (toolbar->GetVisible() != visible) {
+      NonBlockingDelay(base::Milliseconds(10));
+    }
+  }
+
   void ClickInView(views::View* clickable_view) {
     clickable_view->OnMousePressed(
         ui::MouseEvent(ui::EventType::kMousePressed, gfx::Point(), gfx::Point(),
@@ -1040,33 +1046,32 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
                               WindowOpenDisposition::CURRENT_TAB);
 
   ASSERT_TRUE(toolbar && secondary_toolbar);
-  EXPECT_TRUE(toolbar->GetVisible());
-  EXPECT_FALSE(secondary_toolbar->GetVisible());
+  WaitToolbarVisibility(toolbar, true);
+  WaitToolbarVisibility(secondary_toolbar, false);
 
   // Change the active tab.
   browser()->tab_strip_model()->ActivateTabAt(1);
-  EXPECT_FALSE(toolbar->GetVisible());
-  EXPECT_TRUE(secondary_toolbar->GetVisible());
+  WaitToolbarVisibility(toolbar, false);
+  WaitToolbarVisibility(secondary_toolbar, true);
 
   // Load a distillabe page in second tab.
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
-  EXPECT_TRUE(toolbar->GetVisible());
-  EXPECT_TRUE(secondary_toolbar->GetVisible());
+  WaitToolbarVisibility(toolbar, true);
+  WaitToolbarVisibility(secondary_toolbar, true);
 
   // Second tab is active. Show original content.
   ClickReaderButton();
-
-  EXPECT_FALSE(toolbar->GetVisible());
-  EXPECT_TRUE(secondary_toolbar->GetVisible());
+  WaitToolbarVisibility(toolbar, false);
+  WaitToolbarVisibility(secondary_toolbar, true);
 
   browser()->tab_strip_model()->ActivateTabAt(0);
   // First tab is active. Show original content.
   ClickReaderButton();
 
   // There are no distilled pages.
-  EXPECT_FALSE(toolbar->GetVisible());
-  EXPECT_FALSE(secondary_toolbar->GetVisible());
+  WaitToolbarVisibility(toolbar, false);
+  WaitToolbarVisibility(secondary_toolbar, false);
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitViewClicking) {
@@ -1091,7 +1096,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitViewClicking) {
 
   browser()->tab_strip_model()->ActivateTabAt(1);
   ClickInView(secondary_toolbar);
-  EXPECT_TRUE(toolbar->GetVisible());
+  WaitToolbarVisibility(toolbar, true);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 
   browser()->tab_strip_model()->ActivateTabAt(1);
