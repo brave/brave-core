@@ -100,6 +100,13 @@ extension ReadabilityOperation: WKNavigationDelegate {
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )
   }
+
+  func webView(
+    _ webView: WKWebView,
+    shouldAllowDeprecatedTLSFor challenge: URLAuthenticationChallenge
+  ) async -> Bool {
+    return false
+  }
 }
 
 extension ReadabilityOperation: ReaderModeScriptHandlerDelegate {
