@@ -864,7 +864,6 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
         CC.unhiddenSelectors.add(selector)
 
         for (let index = 0; index < CC.runQueues.length; index += 1) {
-          CC.runQueues[index]
           CC.runQueues[index].delete(selector)
         }
         return false
@@ -1059,7 +1058,7 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     targetElm.appendChild(styleElm)
     CC.cosmeticStyleSheet = styleElm
     // The previous `nextElementSibling` we moved our stylesheet below
-    var prevNextElementSibling = null;
+    let prevNextElementSibling = null;
 
     // Start a timer that moves the stylesheet down
     window.setInterval(() => {
@@ -1207,10 +1206,8 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
         startOperator = 1;
       } else if (added === undefined) {
         matchingElements = document.querySelectorAll('*');
-        startOperator = 0;
       } else {
         matchingElements = added;
-        startOperator = 0;
       }
 
       if (startOperator === selector.length) {
