@@ -262,6 +262,8 @@ copy("copies") {
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
 }
 
+# Upstream takes pkg_postinstall.in from $packaging_dir. Our Python
+# implementation overrides this to $packaging_dir/brave.
 postinstall_script = "$packaging_dir/brave/pkg_postinstall.in"
 
 if (install_omaha4_with_pkg) {
