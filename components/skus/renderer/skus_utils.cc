@@ -34,7 +34,7 @@ const std::vector<blink::WebSecurityOrigin>& WebSecurityOriginList() {
 namespace skus {
 
 bool IsSafeOrigin(const blink::WebSecurityOrigin& origin) {
-  auto safe_origins = WebSecurityOriginList();
+  const auto& safe_origins = WebSecurityOriginList();
   for (const blink::WebSecurityOrigin& safe_origin : safe_origins) {
     if (safe_origin.IsSameOriginWith(origin)) {
       return true;

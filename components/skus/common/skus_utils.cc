@@ -31,7 +31,7 @@ const std::vector<url::Origin>& OriginList() {
 namespace skus {
 
 bool IsSafeOrigin(const GURL& origin) {
-  auto safe_origins = OriginList();
+  const auto& safe_origins = OriginList();
   for (const url::Origin& safe_origin : safe_origins) {
     if (safe_origin.IsSameOriginWith(origin)) {
       return true;
