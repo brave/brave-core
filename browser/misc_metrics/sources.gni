@@ -27,6 +27,9 @@ if (!is_android) {
     "//brave/browser/misc_metrics/profile_new_tab_metrics.cc",
     "//brave/browser/misc_metrics/profile_new_tab_metrics.h",
   ]
+
+  brave_browser_misc_metrics_deps +=
+      [ "//brave/browser/misc_metrics:usage_clock" ]
 }
 
 brave_browser_misc_metrics_android_sources = [
