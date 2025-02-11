@@ -37,7 +37,7 @@ final class ScriptExecutionTests: XCTestCase {
   }
 
   override class func setUp() {
-    Preferences.UserScript.translate.value = false
+    BraveCoreMain.initializeResourceBundleForTesting()
   }
 
   @MainActor func testSiteStateListenerScript() async throws {
@@ -247,7 +247,7 @@ final class ScriptExecutionTests: XCTestCase {
       "test-ad-primary-standard-1st-party", "test-ad-primary-standard-3rd-party",
       "test-ad-primary-aggressive-1st-party", "test-ad-primary-aggressive-3rd-party",
     ]
-    let setup = UserScriptType.SelectorsPollerSetup(
+    let setup = UserScriptType.ContentCosmeticSetup(
       hideFirstPartyContent: false,
       genericHide: false,
       firstSelectorsPollingDelayMs: nil,
@@ -364,12 +364,12 @@ final class ScriptExecutionTests: XCTestCase {
     let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
     try await viewController.loadHTMLStringAndWait(htmlString)
 
-    // Inject selectors poller script into each frame received from SiteStateListener script/handler
+    // Inject content cosmetic script into each frame received from SiteStateListener script/handler
     var frameInfos: Set<WKFrameInfo> = .init()
     for try await message in siteStateListenerMockMessageHandler {
       frameInfos.insert(message.frameInfo)
       let script = try ScriptFactory.shared.makeScript(
-        for: .selectorsPoller(setup, proceduralActions: Set(proceduralFilters ?? []))
+        for: .contentCosmetic(setup, proceduralActions: Set(proceduralFilters ?? []))
       )
       try await viewController.webView.evaluateSafeJavaScriptThrowing(
         functionName: script.source,

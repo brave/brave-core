@@ -44,6 +44,8 @@ OBJC_EXPORT
 
 - (instancetype)init NS_UNAVAILABLE;
 
++ (NSString*)cosmeticFiltersScript;
+
 @end
 
 NS_ASSUME_NONNULL_END

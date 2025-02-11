@@ -1,18 +1,9 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-window.__firefox__.execute(function($) {
-  const args = $<args>;
-  const proceduralFilters = $<procedural_filters>;
-  const messageHandler = '$<message_handler>';
-  const partinessMessageHandler = '$<partiness_message_handler>';
-  const {
-    applyCompiledSelector, compileProceduralSelector
-  } = (function() {
-    $<procedural_filters_script>
-  })();
+import { applyCompiledSelector, compileProceduralSelector } from './procedural_filters'
 
   /**
    * Send ids and classes to iOS and await new hide selectors
@@ -34,7 +25,8 @@ window.__firefox__.execute(function($) {
   /**
    * Send new urls found on the page and return their partiness
    * @param {Array} urls The urls found on this page
-   * @returns A Promise resolving to a dictionary base urls and their first party status
+   * @returns A Promise resolving to a dictionary base urls and their first
+   * party status
    */
   const getPartiness = $((urls) => {
     return $.postNativeMessage(partinessMessageHandler, {
@@ -65,9 +57,9 @@ window.__firefox__.execute(function($) {
   // the backend script is up and connected (eg backgroundReady = true),
   // or sooner if the thread is idle.
   const maxTimeMSBeforeStart = 1000
-  // The cutoff for text ads.  If something has only text in it, it needs to have
-  // this many, or more, characters.  Similarly, require it to have a non-trivial
-  // number of words in it, to look like an actual text ad.
+  // The cutoff for text ads.  If something has only text in it, it needs to
+  // have this many, or more, characters.  Similarly, require it to have a
+  // non-trivial number of words in it, to look like an actual text ad.
   const minAdTextChars = 30
   const minAdTextWords = 5
   const returnToMutationObserverIntervalMs = 10000
@@ -83,7 +75,8 @@ window.__firefox__.execute(function($) {
   // Elements that are not yet queried for selectors
   const notYetQueriedElements = []
   // The query to perform when extracting classes and ids
-  const classIdWithoutHtmlOrBody = '[id]:not(html):not(body),[class]:not(html):not(body)'
+  const classIdWithoutHtmlOrBody =
+      '[id]:not(html):not(body),[class]:not(html):not(body)'
 
   // Generate a random string between [a000000000, zzzzzzzzzz] (base 36)
   const generateRandomAttr = () => {
@@ -123,7 +116,8 @@ window.__firefox__.execute(function($) {
   }
 
   /**
-   * Send any new urls to the iOS subrutine so we can determine its partyness (1st or 3rd party)
+   * Send any new urls to the iOS subrutine so we can determine its partyness
+   * (1st or 3rd party)
    * @returns A Promise that returns if new party information was returned or no
    */
   const sendPendingOriginsIfNeeded = async () => {
@@ -148,7 +142,8 @@ window.__firefox__.execute(function($) {
   }
 
   /**
-   * Send any pending id and class selectors to iOS so we can determine hide selectors.
+   * Send any pending id and class selectors to iOS so we can determine
+   * which selectors to hide.
    */
   const sendPendingSelectorsIfNeeded = async () => {
     for (const elements of notYetQueriedElements) {
@@ -158,7 +153,8 @@ window.__firefox__.execute(function($) {
     }
     notYetQueriedElements.length = 0
 
-    if (CC.pendingSelectors.ids.size === 0 && CC.pendingSelectors.classes.size === 0) {
+    if (CC.pendingSelectors.ids.size === 0
+        && CC.pendingSelectors.classes.size === 0) {
       return
     }
 
@@ -170,7 +166,9 @@ window.__firefox__.execute(function($) {
     let hasChanges = false
     const results = await sendSelectors(ids, classes)
     if (results.standardSelectors && results.standardSelectors.length > 0) {
-      if (processHideSelectors(results.standardSelectors, !args.hideFirstPartyContent)) {
+      if (processHideSelectors(
+          results.standardSelectors,
+          !args.hideFirstPartyContent)) {
         hasChanges = true
       }
     }
@@ -195,8 +193,9 @@ window.__firefox__.execute(function($) {
   let sendPendingSelectorsTimerId
 
   /**
-   * Send any pending id and class selectors to iOS so we can determine hide selectors.
-   * Do this throttled so we don't send selectors too often.
+   * Send any pending id and class selectors to iOS so we can determine
+   * which selectors to hide. Do this throttled so we don't send
+   * selectors too often.
    */
   const sendPendingSelectorsThrottled = () => {
     if (!args.fetchNewClassIdRulesThrottlingMs) {
@@ -212,7 +211,7 @@ window.__firefox__.execute(function($) {
 
     sendPendingSelectorsTimerId = window.setTimeout(() => {
       sendPendingSelectorsIfNeeded()
-      delete sendPendingSelectorsTimerId
+      sendPendingSelectorsTimerId = undefined
     }, args.fetchNewClassIdRulesThrottlingMs)
   }
 
@@ -284,12 +283,15 @@ window.__firefox__.execute(function($) {
    * Extract new urls form the given element
    * and returns a boolean indicating if the elemenent had a url
    * @param {object} element The element to extract from
-   * @returns True or false indicating if the element had a url even if nothing was extracted.
+   * @returns True or false indicating if the element had a url even if
+   * nothing was extracted.
    */
   const extractOriginIfNeeded = (element) => {
     // If we hide first party content we don't care to check urls for partiness.
     // Otherwise we need to have a src attribute.
-    if (args.hideFirstPartyContent || element.hasAttribute === undefined || !element.hasAttribute('src')) {
+    if (args.hideFirstPartyContent
+      || element.hasAttribute === undefined
+      || !element.hasAttribute('src')) {
       return false
     }
 
@@ -302,7 +304,8 @@ window.__firefox__.execute(function($) {
    * Provides a new function which can only be scheduled once at a time.
    *
    * @param onIdle function to run when the thread is less busy
-   * @param timeout max time to wait. at or after this time the function will be run regardless of thread noise
+   * @param timeout max time to wait. at or after this time the function will
+   * be run regardless of thread noise
    */
   const idleize = (onIdle, timeout) => {
     let idleId
@@ -390,8 +393,10 @@ window.__firefox__.execute(function($) {
     }
 
     const futureTimeMs = window.Date.now() + returnToMutationObserverIntervalMs
-    const queryAttrsFromDocumentBound = querySelectorsFromDocument.bind(undefined, futureTimeMs)
-    selectorsPollingIntervalId = window.setInterval(queryAttrsFromDocumentBound, selectorsPollingIntervalMs)
+    const queryAttrsFromDocumentBound = querySelectorsFromDocument.bind(
+      undefined, futureTimeMs)
+    selectorsPollingIntervalId = window.setInterval(
+      queryAttrsFromDocumentBound, selectorsPollingIntervalMs)
   }
 
   const queueSelectorsFromMutations = (mutations) => {
@@ -401,8 +406,9 @@ window.__firefox__.execute(function($) {
 
       switch (mutation.type) {
         case 'attributes':
-          // Since we're filtering for attribute modifications, we can be certain
-          // that the targets are always HTMLElements, and never TextNode.
+          // Since we're filtering for attribute modifications, we can be
+          // certain that the targets are always HTMLElements, and never
+          // TextNode.
           switch (mutation.attributeName) {
             case 'class':
               mutationScore += changedElm.classList.length
@@ -500,8 +506,8 @@ window.__firefox__.execute(function($) {
     const htmlElm = elm
     const tagsTextToIgnore = ['script', 'style']
     let currentText = htmlElm.innerText
-    for (let _i = 0, tagsTextToIgnore1 = tagsTextToIgnore; _i < tagsTextToIgnore1.length; _i++) {
-      const aTagName = tagsTextToIgnore1[_i]
+    for (let _i = 0, toIgnore = tagsTextToIgnore; _i < toIgnore.length; _i++) {
+      const aTagName = toIgnore[_i]
       currentText = stripChildTagsFromText(htmlElm, aTagName, currentText)
     }
     const trimmedText = currentText.trim()
@@ -524,7 +530,7 @@ window.__firefox__.execute(function($) {
    *
    * Uses the following process in making this determination.
    *   - If the subtree contains any first party resources, the subtree is 1p.
-   *   - If the subtree contains no remote resources, the subtree is first party.
+   *   - If the subtree contains no remote resources, the subtree is 1p.
    *   - Otherwise, its 3rd party.
    *
    * Note that any instances of "url(" or escape characters in style attributes
@@ -615,10 +621,11 @@ window.__firefox__.execute(function($) {
     } else if (queryResults.foundFirstPartyResource) {
       return true
     } else if (showsSignificantText(element)) {
-      // If the subtree HAS a significant amount of text (e.g., it doesn't just says "Advertisement")
-      // it should be unhidden.
+      // If the subtree HAS a significant amount of text (e.g., it doesn't
+      // just says "Advertisement") it should be unhidden.
       return true
-    } else if (queryResults.foundThirdPartyResource || queryResults.pendingSrcAttributes.size > 0) {
+    } else if (queryResults.foundThirdPartyResource
+        || queryResults.pendingSrcAttributes.size > 0) {
       if (pendingSrcAttributes !== undefined) {
         queryResults.pendingSrcAttributes.forEach((src) => {
           pendingSrcAttributes.push(src)
@@ -654,9 +661,8 @@ window.__firefox__.execute(function($) {
   }
 
   /**
-   * Unhide the given selectors.
-   * (i.e. Remove them from CC.hiddenSelectors and move them to CC.unhiddenSelectors)
-   * This will not recreate the stylesheet
+   * Unhide the given selectors. (i.e. Remove them from CC.hiddenSelectors and
+   * move them to CC.unhiddenSelectors) This will not recreate the stylesheet.
    * @param {Set} selectors The selectors to unhide
    */
   const unhideSelectors = (selectors) => {
@@ -668,7 +674,7 @@ window.__firefox__.execute(function($) {
       CC.unhiddenSelectors.add(selector)
 
       // Remove these selectors from the run queues
-      for (let index = 0; index < CC.runQueues; index++) {
+      for (let index = 0; index < CC.runQueues.length; index++) {
         CC.runQueues[index].delete(selector)
       }
     })
@@ -683,8 +689,10 @@ window.__firefox__.execute(function($) {
    * Go through each of the 3 queues, only take 50 items from each one
    * 1. Take 50 selectors from the first queue with any items
    * 2. Determine partyness of matched element:
-   *   - If any are 3rd party, keep 'hide' rule and check again later in next queue.
-   *   - If any are 1st party, remove 'hide' rule and never check selector again.
+   *   - If any are 3rd party, keep 'hide' rule and check again later in
+   *     next queue.
+   *   - If any are 1st party, remove 'hide' rule and never check selector
+   *     again.
    * 3. If we're looking at the 3rd queue, don't requeue any selectors.
    */
   const pumpCosmeticFilterQueuesOnIdle = idleize(async () => {
@@ -693,12 +701,13 @@ window.__firefox__.execute(function($) {
     // For each "pump", walk through each queue until we find selectors
     // to evaluate. This means that nothing in queue N+1 will be evaluated
     // until queue N is completely empty.
-    for (let queueIndex = 0; queueIndex < CC.runQueues.length; queueIndex += 1) {
-      const currentQueue = CC.runQueues[queueIndex]
-      const nextQueue = CC.runQueues[queueIndex + 1]
+    for (let index = 0; index < CC.runQueues.length; index += 1) {
+      const currentQueue = CC.runQueues[index]
+      const nextQueue = CC.runQueues[index + 1]
       if (currentQueue.size === 0) { continue }
 
-      const currentWorkLoad = Array.from(currentQueue.values()).slice(0, maxWorkSize)
+      const currentWorkLoad = Array.from(currentQueue.values())
+        .slice(0, maxWorkSize)
       const comboSelector = currentWorkLoad.join(',')
       const matchingElms = document.querySelectorAll(comboSelector)
 
@@ -718,14 +727,16 @@ window.__firefox__.execute(function($) {
         }
 
         // Otherwise, we know that the given subtree should be unhidden.
-        // So we need to figure out which selector from the combo selector did the matching.
+        // So we need to figure out which selector from the combo selector
+        // did the matching.
         for (const selector of currentWorkLoad) {
           if (!aMatchingElm.matches(selector)) {
             continue
           }
 
           // Unhide this selector if we need to
-          if (CC.hiddenSelectors.has(selector) || !CC.unhiddenSelectors.has(selector)) {
+          if (CC.hiddenSelectors.has(selector)
+              || !CC.unhiddenSelectors.has(selector)) {
             CC.unhiddenSelectors.add(selector)
             CC.hiddenSelectors.delete(selector)
           }
@@ -756,8 +767,9 @@ window.__firefox__.execute(function($) {
 
     window.setTimeout(() => {
       // Set this to false now even though there's a gap in time between now and
-      // idle since all other calls to `pumpCosmeticFilterQueuesOnIdle` that occur during this time
-      // will be ignored (and nothing else should be calling `pumpCosmeticFilterQueues` straight).
+      // idle since all other calls to `pumpCosmeticFilterQueuesOnIdle` that
+      // occur during this time will be ignored (and nothing else should be
+      // calling `pumpCosmeticFilterQueues` straight).
       queueIsSleeping = false
       pumpCosmeticFilterQueuesOnIdle()
     }, pumpIntervalMinMs)
@@ -778,7 +790,8 @@ window.__firefox__.execute(function($) {
 
   /**
    * Extract any selectors from the document
-   * @param {number} switchToMutationObserverAtTime A timestamp indicating when we shoudl switch back to mutation observer
+   * @param {number} switchToMutationObserverAtTime A timestamp indicating when
+   * we should switch back to mutation observer
    */
   const querySelectorsFromDocument = (switchToMutationObserverAtTime) => {
     querySelectorsFromElement(document)
@@ -797,8 +810,8 @@ window.__firefox__.execute(function($) {
    * Then it will begin the selectors mutation observer
    */
   const startPollingSelectors = async () => {
-    // First queue up any classes and ids that exist before the mutation observer
-    // starts running.
+    // First queue up any classes and ids that exist before the mutation
+    // observer starts running.
     querySelectorsFromElement(document)
 
     // Send any found selectors to the browser and await the results
@@ -810,16 +823,20 @@ window.__firefox__.execute(function($) {
   }
 
   /**
-   * Will start the selector polling and pumping depending on the provided booleans
-   * @param {boolean} hide1pContent If this is false, it will start the pump mechanism
-   * @param {boolean} genericHide If this is false, it will start the polling mechanism
+   * Will start the selector polling and pumping depending on the provided
+   * booleans
+   * @param {boolean} hide1pContent If this is false, it will start the
+   * pump mechanism
+   * @param {boolean} genericHide If this is false, it will start the
+   * polling mechanism
    */
   const scheduleQueuePump = (hide1pContent, genericHide) => {
     if (!genericHide) {
       if (args.firstSelectorsPollingDelayMs === undefined) {
         startPollingSelectors()
       } else {
-        window.setTimeout(startPollingSelectors, args.firstSelectorsPollingDelayMs)
+        window.setTimeout(
+          startPollingSelectors, args.firstSelectorsPollingDelayMs)
       }
     }
 
@@ -846,9 +863,8 @@ window.__firefox__.execute(function($) {
         CC.hiddenSelectors.delete(selector)
         CC.unhiddenSelectors.add(selector)
 
-        for (let queueIndex = 0; queueIndex < CC.runQueues.length; queueIndex += 1) {
-          CC.runQueues[queueIndex]
-          CC.runQueues[queueIndex].delete(selector)
+        for (let index = 0; index < CC.runQueues.length; index += 1) {
+          CC.runQueues[index].delete(selector)
         }
         return false
       }
@@ -858,7 +874,8 @@ window.__firefox__.execute(function($) {
   /**
    * Unhide any selectors matching this  if it is a 1st party element
    * @param {object} element The node to attempt to unhide
-   * @returns An array of unhid selectors if element is 1st party otherwise undefined.
+   * @returns An array of unhid selectors if element is 1st party
+   * otherwise undefined.
    */
   const unhideSelectorsMatchingElementIf1P = (element) => {
     const selectors = hiddenSelectorsForElement(element)
@@ -871,16 +888,17 @@ window.__firefox__.execute(function($) {
   }
 
   /**
-   * This method will attempt to unhide the node or any of its parent nodes recursively
-   * and return any unhidden selectors.
-   * The recursion stops when it hits the document.body
+   * This method will attempt to unhide the node or any of its parent nodes
+   * recursively and return any unhidden selectors. The recursion stops when
+   * it hits the document.body
    * @param {object} node The node to attempt to undhide recursively
    */
   const unhideSelectorsMatchingElementAndItsParents = (node) => {
     const unhiddenSelectors = unhideSelectorsMatchingElementIf1P(node) || []
 
     if (node.parentElement && node.parentElement !== document.body) {
-      const newSelectors = unhideSelectorsMatchingElementAndItsParents(node.parentElement)
+      const newSelectors = unhideSelectorsMatchingElementAndItsParents(
+        node.parentElement)
 
       for (const selector of newSelectors) {
         unhiddenSelectors.push(selector)
@@ -892,7 +910,8 @@ window.__firefox__.execute(function($) {
 
   /**
    * This method will unhide the node an all parent nodes if they are needed.
-   * This will move up each parent for the each node until it reaches the document body
+   * This will move up each parent for the each node until it reaches the
+   * document body.
    * @param {Array} nodes Array of WeakRef nodes
    * @returns A list of unhidden selectors
    */
@@ -994,14 +1013,16 @@ window.__firefox__.execute(function($) {
   }
 
   /**
-   * Adds given selectors to hiddenSelectors unless they are in the unhiddenSelectors set
+   * Adds given selectors to hiddenSelectors unless they are in the
+   * unhiddenSelectors set.
    * @param {*} selectors The selectors to add
    */
   const processHideSelectors = (selectors, canUnhide1PElements) => {
     let hasChanges = false
 
     selectors.forEach(selector => {
-      if ((typeof selector === 'string') && !CC.unhiddenSelectors.has(selector)) {
+      if ((typeof selector === 'string')
+          && !CC.unhiddenSelectors.has(selector)) {
         if (canUnhide1PElements) {
           if (CC.hiddenSelectors.has(selector)) { return }
           CC.hiddenSelectors.add(selector)
@@ -1037,11 +1058,12 @@ window.__firefox__.execute(function($) {
     targetElm.appendChild(styleElm)
     CC.cosmeticStyleSheet = styleElm
     // The previous `nextElementSibling` we moved our stylesheet below
-    var prevNextElementSibling = null;
+    let prevNextElementSibling = null;
 
     // Start a timer that moves the stylesheet down
     window.setInterval(() => {
-      if (styleElm.nextElementSibling === null || styleElm.parentElement !== targetElm) {
+      if (styleElm.nextElementSibling === null
+          || styleElm.parentElement !== targetElm) {
         return
       }
       if (styleElm.nextElementSibling !==  null) {
@@ -1062,13 +1084,15 @@ window.__firefox__.execute(function($) {
    * Rewrite the stylesheet body with the hidden rules and style rules
    */
   const setRulesOnStylesheet = () => {
-    const hideRules = Array.from(CC.hiddenSelectors).map(selector => {
-      return selector + '{display:none !important;}'
-    })
+    const hideRules = Array.from(CC.hiddenSelectors)
+      .map(selector => {
+        return selector + '{display:none !important;}'
+      })
 
-    const alwaysHideRules = Array.from(CC.alwaysHiddenSelectors).map(selector => {
-      return selector + '{display:none !important;}'
-    })
+    const alwaysHideRules = Array.from(CC.alwaysHiddenSelectors)
+      .map(selector => {
+        return selector + '{display:none !important;}'
+      })
 
     const allRules = alwaysHideRules.concat(hideRules.concat(CC.allStyleRules))
     const ruleText = allRules.filter(rule => {
@@ -1104,7 +1128,8 @@ window.__firefox__.execute(function($) {
     createStylesheet()
 
     if (!args.hideFirstPartyContent) {
-      // 2. Collect any origins from the document body and fetch their 1p statuses
+      // 2. Collect any origins from the document body and fetch their
+      // 1p statuses
       const nodesWithExtractedURLs = queryURLOriginsInElement(document.body)
       await sendPendingOriginsIfNeeded()
       // 3. Unhide any elements (or their parents) we know have urls
@@ -1181,10 +1206,8 @@ window.__firefox__.execute(function($) {
         startOperator = 1;
       } else if (added === undefined) {
         matchingElements = document.querySelectorAll('*');
-        startOperator = 0;
       } else {
         matchingElements = added;
-        startOperator = 0;
       }
 
       if (startOperator === selector.length) {
@@ -1194,12 +1217,14 @@ window.__firefox__.execute(function($) {
         });
       } else {
         try {
-          const filter = compileProceduralSelector(selector.slice(startOperator));
+          const filter = compileProceduralSelector(
+            selector.slice(startOperator));
           applyCompiledSelector(filter, matchingElements).forEach(elem => {
             performAction(elem, action);
           });
         } catch (e) {
-          console.error('Failed to apply filter ' + JSON.stringify(selector) + ' ' + JSON.stringify(action) + ': ');
+          console.error('Failed to apply filter ' + JSON.stringify(selector)
+            + ' ' + JSON.stringify(action) + ': ');
           console.error(e.message);
           console.error(e.stack);
         }
@@ -1242,4 +1267,3 @@ window.__firefox__.execute(function($) {
   }
 
   window.setTimeout(waitForBody, maxTimeMSBeforeStart)
-});
