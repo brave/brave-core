@@ -21,16 +21,10 @@ inline constexpr char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time_v2";
 inline constexpr char kBraveWalletPingReportedUnlockTime[] =
     "brave.wallet.wallet_report_unlock_time_ping";
-inline constexpr char kBraveWalletP3ALastReportTimeDeprecated[] =
-    "brave.wallet.wallet_p3a_last_report_time";
-inline constexpr char kBraveWalletP3AFirstReportTimeDeprecated[] =
-    "brave.wallet.wallet_p3a_first_report_time";
 inline constexpr char kBraveWalletP3ANFTGalleryUsed[] =
     "brave.wallet.wallet_p3a_nft_gallery_used";
 inline constexpr char kBraveWalletP3ANewUserBalanceReported[] =
     "brave.wallet.p3a_new_user_balance_reported";
-inline constexpr char kBraveWalletP3AWeeklyStorageDeprecated[] =
-    "brave.wallet.wallet_p3a_weekly_storage";
 inline constexpr char kBraveWalletP3AActiveWalletDict[] =
     "brave.wallet.wallet_p3a_active_wallets";
 inline constexpr char kBraveWalletCustomNetworks[] =
