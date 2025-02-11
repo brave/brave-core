@@ -474,6 +474,13 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
     return .allow
   }
 
+  func webView(
+    _ webView: WKWebView,
+    shouldAllowDeprecatedTLSFor challenge: URLAuthenticationChallenge
+  ) async -> Bool {
+    return false
+  }
+
   nonisolated func webView(
     _ webView: WKWebView,
     respondTo challenge: URLAuthenticationChallenge
