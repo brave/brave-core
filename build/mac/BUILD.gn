@@ -86,16 +86,7 @@ if (is_universal_binary) {
 
 # //brave depends on this via "build/$target_os:brave".
 group("brave") {
-  if (skip_signing) {
-    app_path = unsigned_app_path
-  } else {
-    if (is_release_channel) {
-      app_path = "$signed_output_dir/stable/$brave_exe"
-    } else {
-      app_path = "$signed_output_dir/$brave_channel/$brave_exe"
-    }
-  }
-  exe_path = "$app_path/Contents/MacOS/$chrome_product_full_name"
+  exe_path = "$unsigned_app_path/Contents/MacOS/$chrome_product_full_name"
   # start.js uses this file to know which binary to run.
   write_file("$root_out_dir/brave_helper",
              [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
