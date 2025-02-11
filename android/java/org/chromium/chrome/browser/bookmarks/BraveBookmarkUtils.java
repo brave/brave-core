@@ -17,6 +17,8 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileIntentUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkItem;
@@ -56,12 +58,12 @@ public class BraveBookmarkUtils extends BookmarkUtils {
                 fromExplicitTrackUi);
     }
 
-    public static void showBookmarkManagerOnPhone(
-            Activity activity, String url, boolean isIncognito) {
+    public static void showBookmarkManagerOnPhone(Activity activity, String url, Profile profile) {
         Intent intent =
-                new Intent(activity == null ? ContextUtils.getApplicationContext() : activity,
+                new Intent(
+                        activity == null ? ContextUtils.getApplicationContext() : activity,
                         BraveBookmarkActivity.class);
-        intent.putExtra(IntentHandler.EXTRA_INCOGNITO_MODE, isIncognito);
+        ProfileIntentUtils.addProfileToIntent(profile, intent);
         intent.setData(Uri.parse(url));
         if (activity != null) {
             // Start from an existing activity.
