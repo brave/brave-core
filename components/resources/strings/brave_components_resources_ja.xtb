@@ -678,7 +678,7 @@
 <translation id="2446517297521536638">表示されるBrave広告の種類と頻度を管理しましょう。より多くの広告を見れば見るほど、より多くの収入を得ることができます。</translation>
 <translation id="5860033963881614850">オフ</translation>
 <translation id="5916664084637901428">オン</translation>
-<translation id="3977723631999461201"><ph name="NUM"/>今月表示された広告数</translation>
+<translation id="3977723631999461201">今月表示された広告数: <ph name="NUM"/></translation>
 <translation id="7924320838799747606">あなたの残高</translation>
 <translation id="8714473477079007268"><ph name="PROVIDER"/>ウォレット</translation>
 <translation id="3175337080016717494">支払いアカウント</translation>
@@ -687,7 +687,7 @@
 <translation id="8414447476773253869"><ph name="PROVIDER"/>にログインして残高を確認</translation>
 <translation id="615483366383024791">支払いアカウント</translation>
 <translation id="1060062421977823695">獲得したBATはこの支払いアカウントに入金されます。</translation>
-<translation id="2310070536993781610">プロモコード「BRAVEREWARDS」を使用すると、Braveマーチストアの全商品が10％割引になります。</translation>
+<translation id="2310070536993781610">プロモコード「BRAVEREWARDS」を使用すると、Brave公式グッズストアの全商品が10％割引になります。</translation>
 <translation id="1170674812179664523">Braveグッズストア</translation>
 <translation id="8673202990286883068">メリット</translation>
 <translation id="3699766258844277472">定期的な支援はまだ設定されていません。</translation>
@@ -1149,7 +1149,7 @@
 <translation id="9065572743819293042">直近のトランザクション</translation>
 <translation id="1702356231547761669">トランザクションハッシュ</translation>
 <translation id="6030778062363728902">メモ</translation>
-<translation id="1288859203671057247">メッセージが入力できます...</translation>
+<translation id="1288859203671057247">メッセージを入力できます…</translation>
 <translation id="5466702869935634816">メッセージ（オプション）</translation>
 <translation id="5715145706082194046">メモを追加</translation>
 <translation id="1922741261173258284">メモを削除</translation>
@@ -2143,7 +2143,7 @@
 <translation id="5719170755629028558">Brave検索で回答を推敲しています...</translation>
 <translation id="5794962229997281366">クエリ: <ph name="SEARCH_TERMS"/> への回答を推敲しました。</translation>
 <translation id="8103700533980268469">この通知を閉じる</translation>
-<translation id="2315654674554095762">Leoがあなたの会話を記憶しますので、会話に戻ることができます。会話は暗号化されてあなたのデバイスに保存され、いつでも削除できます。</translation>
+<translation id="2315654674554095762">Leoが会話履歴を保存するので、同じ会話に戻ることができます。会話は暗号化されてあなたのデバイスに保存され、いつでも削除できます。</translation>
 <translation id="7821251979960635244">会話を開始すると、会話履歴がここに表示されます。</translation>
 <translation id="887511360213807449">履歴が無効になりました</translation>
 <translation id="5380979378058584412">Leoとの以前の会話を表示するには、会話履歴を有効にする必要があります。</translation>
@@ -2190,7 +2190,7 @@
 <translation id="49269513399674318">マイクを使用</translation>
 <translation id="3895031624234442305">カスタムモデル</translation>
 <translation id="4572010449071015143">新しい会話を開始</translation>
-<translation id="345901077335355561">進行中の会話に戻る</translation>
+<translation id="345901077335355561">現在進行中の会話に戻る</translation>
 <translation id="6287023598025162715">新規の会話</translation>
 <translation id="6303294677342628402">シールド</translation>
 <translation id="8458987127502506209">Brave Shieldsを有効にする</translation>

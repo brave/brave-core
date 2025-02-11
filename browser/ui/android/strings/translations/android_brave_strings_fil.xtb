@@ -412,6 +412,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="944340256927461196">Huwag mag-iwan ng trace sa iyong device</translation>
 <translation id="2063044449012253966">Hindi makikita sa history ang mga site na binisita mo sa mga private window. Mawawala ang cookies, form data, at site data kapag naisara na ang lahat ng mga private window.</translation>
 <translation id="7395764193745523646">Visibility ng pag-browse</translation>
+<translation id="8670344404057978375">Tandaan na kahit sa mga private window posibleng nakikita pa rin ng iyong ISP, mga network observer, o ng iyong employer (kung gumagamit ka ng work device/network) ang iyong aktibidad sa pag-browse.</translation>
 <translation id="1413177583895309156">Ine-encrypt at pinoprotektahan ng Brave VPN ang anumang ginagawa mo online, kahit pa nasa labas ng browser ng Brave.</translation>
 <translation id="3974348661685061050">Subukan ng 7 araw nang libre</translation>
 <translation id="5789441016350810005">Ipinapadala ang Mga Ad ng Brave kapag nasa background ang browser</translation>
@@ -471,6 +472,8 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="7854108565842971747">Ito ang default na settings ng Shields para sa mga bagong site. Kapag pinalitan ang mga ito, hindi maaapektuhan ang iyong per-site settings.</translation>
 <translation id="218587021686734263">Pigilan ang fingerprinting sa pamamagitan ng mga setting ng wika</translation>
 <translation id="1706099589708266367">Binabawasan kung gaano karami ang natutunan ng mga website tungkol sa iyo batay sa mga setting ng wika ng iyong browser.</translation>
+<translation id="6486971767955110687">I-store ang contact information para sa mga susunod na report ng hindi gumaganang site</translation>
+<translation id="4085787265464238844">Kung magbibigay ka ng contact info, maii-store ito para sa mga susunod na report</translation>
 <translation id="4721088070859595932">Pinipigilan ang mga website na makilala ang device mo</translation>
 <translation id="7445306466605902444">Naka-block ang fingerprinting (istrikto, puwedeng makasira ng mga site)</translation>
 <translation id="5582686930349810484">Naka-block ang fingerprinting (standard)</translation>
@@ -503,6 +506,10 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5370478469168390143">Mag-save ng Data Online</translation>
 <translation id="1118508688433541158">Mag-browse nang mas mabilis at mag-block ng ads gamit ang Brave</translation>
 <translation id="7427391215172269363">Araw-araw, nakakatipid ako ng data sa pamamagitan ng pag-browse sa Web gamit ang Brave.</translation>
+<translation id="357198789571802914">Manood ng YouTube, hindi Mga Ad.</translation>
+<translation id="2154817758398495571">Buksan ang mga link ng YouTube sa Brave para i-block ang mga ad.</translation>
+<translation id="1580816390443799567">I-on ngayon</translation>
+<translation id="8589748782214271192">Hindi, salamat</translation>
 <translation id="8374242949413616101">Proteksyon sa privacy</translation>
 <translation id="4955406228638026265">Pinipigilan ng Brave ang mga ad at tracker mula sa pagkolekta ng impormasyon tungko sa iyo nang walang pahintulot mo.</translation>
 <translation id="752842701893882688">Makatipid ng data at baterya</translation>
@@ -1098,7 +1105,12 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="2471230424465522689">Hindi bago</translation>
 <translation id="4841860051609590575">Humiling ng ID</translation>
 <translation id="1179407411385015942">AI-powered smart assistant si Leo, kasama na mismo sa browser</translation>
+<translation id="5781842473834867765">I-store ang aking history ng pakikipag-usap</translation>
 <translation id="4109670531935487117">Ipakita ang mga suhestyon sa autocomplete sa address bar</translation>
+<translation id="6106701981952170121">I-delete ang lahat ng data ng pakikipag-usap ng Leo AI</translation>
+<translation id="423600389315522551">Kapag na-reset ang Leo AI, kailangan mong mag-opt in sa paggamit ng Brave Leo AI sa susunod at maki-clear din ang iyong history ng chat. Kapag na-clear ang iyong history ng, made-delete ang lahat ng iyong naunang mga pakikipag-usap sa Brave Leo AI. Hindi puwedeng ma-undo ang aksyong ito.</translation>
+<translation id="6742599753610126012">I-clear ang history ng chat</translation>
+<translation id="3443052382074796867">Kapag na-disable ang storage ng pakikipag-usap, tuluyan nang mabubura ang lahat ng dating naka-store na mga pakikipag-usap. Hindi puwedeng i-undo ang aksyong ito.</translation>
 <translation id="3692772534525889713">I-link ang binili mo sa Play Store sa iyong Brave account para magamit ang Brave Leo sa iba pang device.</translation>
 <translation id="73236265316873967">Leo Premium</translation>
 <translation id="1028627582482425924">Isang taon</translation>
@@ -1229,4 +1241,5 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="3098054327870766317">Ipakita ang button ng undo kapag isinara ang mga tab</translation>
 <translation id="1336494649091412226">Sigurado ka bang gusto mong mag-exit sa Brave?</translation>
 <translation id="2361906291514218784">Leo AI</translation>
+<translation id="7942415993090181327">History ng chat</translation>
 </translationbundle>

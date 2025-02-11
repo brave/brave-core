@@ -2811,7 +2811,6 @@ Inaatasan ka ng <ph name="DOMAIN"/> na panatilihing nakalagay ang iyong smart ca
 <translation id="2953210795988451570">Natapos na ang mga update sa seguridad. Mag-upgrade sa bagong Chromebook.</translation>
 <translation id="2953218713108551165">Hindi pinapayagan ang mga notification para sa <ph name="SITE"/>. Tatanungin ka ulit sa iyong susunod na pagbisita.</translation>
 <translation id="2956070239128776395">Seksyong naka-nest sa grupo: <ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">I-on ang developer mode para magamit ang extension na ito, na hindi masusuri ng Brave Web Store.</translation>
 <translation id="2958721676848865875">Babala sa extension ng pack</translation>
 <translation id="2959127025785722291">Nagkaproblema. Hindi makumpleto ang pag-scan. Pakisubukan ulit.</translation>
 <translation id="2959474507964749987">Posibleng virus o malware ang naka-encrypt na file na ito.<ph name="LINE_BREAK"/>Para tingnan kung hindi ito ligtas, puwede mong ipadala ang file at password sa Ligtas na Pag-browse sa Brave. Kadalasang tumatagal nang ilang segundo ang mga pag-scan.<ph name="LINE_BREAK"/>Para mag-scan, idagdag ang password ng file.</translation>
@@ -5887,6 +5886,7 @@ Gamitin ang Ctrl + Alt + Bawasan ang Liwanag para mag-zoom out.</translation>
 <translation id="5177479852722101802">Ipagpatuloy ang pag-block ng access sa camera at mikropono</translation>
 <translation id="5177549709747445269">Gumagamit ka ng mobile data</translation>
 <translation id="5178667623289523808">Find Previous</translation>
+<translation id="5180276433875360121">Ipakita ang <ph name="CERT_LIST"/></translation>
 <translation id="5181140330217080051">Nagda-download</translation>
 <translation id="3656271699136235245">Sa Brave Password Manager para sa <ph name="ACCOUNT"/></translation>
 <translation id="6029810565516522064">Mase-save lang ang password na ito sa device na ito. Para magamit ito sa iba mo pang device, i-save ito sa iyong Brave sync chain na <ph name="USER_EMAIL"/>.</translation>
@@ -6908,7 +6908,6 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5932224571077948991">Nagpapakita ang site ng mga nakakasagabal o nakakapanlinlang na ad</translation>
 <translation id="59324397759951282">USB device mula sa <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">Wala kang sapat na mga available na lisensya para ma-enroll ang hardware device ng Brave Meet na ito. Makipag-ugnayan sa sales para bumili pa. Kung sa tingin mo ay hindi mo dapat nakikita ang mensaheng ito, makipag-ugnayan sa suporta.</translation>
-<translation id="4206852577678288113">I-on ang developer mode para magamit ang extension na ito, pero kung pinagkakatiwalaan mo lang ang extension. Posibleng naglalaman ito ng mga pang-eksperimentong feature at posibleng hindi pa ito nasusuri ng Brave Web Store.</translation>
 <translation id="5932881020239635062">Serial</translation>
 <translation id="5933376509899483611">Timezone</translation>
 <translation id="5933522550144185133">Ginagamit ng <ph name="APP_NAME"/> ang iyong camera at mikropono</translation>
@@ -11696,6 +11695,8 @@ Posibleng malapat sa account na ito ang mga pahintulot na naibigay mo na sa mga 
 <translation id="5079334477644844710">Pinapanatili ng private mode <ph name="BEGIN_LINK"/>na pribidao ang iyong pagba-browse mula sa ibang<ph name="END_LINK"/> gumagamit ng device mo</translation>
 <translation id="2099871685186351093">Magbahagi ng mga file sa mga profile na nasa paligid mo. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Pribado)</translation>
+<translation id="7759126329265642843">I-on ang developer mode para gamitin ang extension na ito, na hindi mare-review ng Web Store.</translation>
+<translation id="4206852577678288113">I-on ang developer mode para gamitin ang extension na ito, pero kung pinagkakatiwalaan mo lang ang extension. Posibleng may mga experimental na feature ito at hindi pa na-review ng Web Store.</translation>
 <translation id="4949006391524401372">Na-disable ang extension na ito ng patakaran sa enterprise dahil hindi na ito available sa Web Store.</translation>
 <translation id="5899585985956756612">Pahintulutan sa Pribado</translation>
 <translation id="6436164536244065364">Tingnan sa Web Store</translation>

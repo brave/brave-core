@@ -2799,7 +2799,6 @@ Zpráva serveru: <ph name="SERVER_MSG"/></translation>
 <translation id="2953210795988451570">Aktualizace zabezpečení skončily. Upgradujte na nový Chromebook.</translation>
 <translation id="2953218713108551165">Oznámení webu <ph name="SITE"/> nejsou povolena. Při příští návštěvě se vám znovu zobrazí dotaz.</translation>
 <translation id="2956070239128776395">Sekce vnořená ve skupině: <ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">Pokud chcete používat toto rozšíření, které Internetový obchod Brave nemůže zkontrolovat, zapněte režim pro vývojáře.</translation>
 <translation id="2958721676848865875">Upozornění na zabalení rozšíření</translation>
 <translation id="2959127025785722291">Došlo k chybě. Kontrolu nelze dokončit. Zkuste to znovu.</translation>
 <translation id="2959474507964749987">Tento zašifrovaný soubor může být vir nebo malware.<ph name="LINE_BREAK"/>Pokud chcete zjistit, zda není bezpečný, můžete tento soubor a heslo odeslat do Bezpečného prohlížení Brave. Kontroly obvykle trvají několik sekund.<ph name="LINE_BREAK"/>Ke kontrole je potřeba heslo souboru.</translation>
@@ -5871,6 +5870,7 @@ Oddálení provedete stisknutím kláves Ctrl + Alt + Snížit jas.</translation
 <translation id="5177479852722101802">Blokovat přístup k webové kameře a mikrofonu i nadále</translation>
 <translation id="5177549709747445269">Používáte mobilní datové připojení</translation>
 <translation id="5178667623289523808">Najít předchozí</translation>
+<translation id="5180276433875360121">Zobrazit <ph name="CERT_LIST"/></translation>
 <translation id="5181140330217080051">Stahování</translation>
 <translation id="3656271699136235245">K přepnutí Správce hesel Brave pro účet <ph name="ACCOUNT"/></translation>
 <translation id="6029810565516522064">Toto heslo je uloženo pouze v tomto zařízení. Pokud ho chcete používat v jiných zařízeních, uložte ho do svého účtu Brave <ph name="USER_EMAIL"/>.</translation>
@@ -6889,7 +6889,6 @@ Na tento účet se mohou vztahovat oprávnění, která jste již udělili webů
 <translation id="5932224571077948991">Web zobrazuje rušivé nebo zavádějící reklamy</translation>
 <translation id="59324397759951282">Zařízení USB od výrobce <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932441198730183141">Nemáte dostatečný počet licencí k registraci tohoto hardwarového zařízení Brave Meet. Kontaktujte oddělení prodeje a zakupte další. Pokud se domníváte, že se jedná o chybu, kontaktujte podporu.</translation>
-<translation id="4206852577678288113">Pokud toto rozšíření chcete používat, zapněte režim pro vývojáře. Rozšíření ale použijte, jen pokud mu důvěřujete. Může obsahovat experimentální funkce a nebylo zkontrolováno Internetovým obchodem Brave.</translation>
 <translation id="5932881020239635062">Sériové číslo</translation>
 <translation id="5933376509899483611">Časové pásmo</translation>
 <translation id="5933522550144185133"><ph name="APP_NAME"/> používá vaši kameru a mikrofon.</translation>
@@ -11675,6 +11674,8 @@ Informace o tom, jaká data Brave shromažďuje a proč je shromažďuje, najd
 <translation id="5079334477644844710">Soukromý režim udržuje <ph name="BEGIN_LINK"/>vaše prohlížení v soukromí před ostatními<ph name="END_LINK"/>, kteří používají vaše zařízení.</translation>
 <translation id="2099871685186351093">Sdílejte soubory s profily ve vašem okolí. <ph name="LINK_BEGIN"/>Zjistit víc<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Soukromé)</translation>
+<translation id="7759126329265642843">Chcete-li používat toto rozšíření, které nelze zkontrolovat v internetovém obchodě, zapněte režim pro vývojáře.</translation>
+<translation id="4206852577678288113">Chcete-li používat toto rozšíření, zapněte režim pro vývojáře, ale pouze pokud tomuto rozšíření důvěřujete. Může obsahovat experimentální funkce a nebylo zkontrolováno v internetovém obchodě.</translation>
 <translation id="4949006391524401372">Tohle rozšíření bylo zablokováno podnikovými zásadami, protože již není v internetovém obchodě k dispozici.</translation>
 <translation id="5899585985956756612">Povolit v Soukromém režimu</translation>
 <translation id="6436164536244065364">Zobrazit v Internetovém obchodu</translation>

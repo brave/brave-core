@@ -712,6 +712,9 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5309155375926073606">ใช่ ฉันต้องการร่วมสนับสนุน Brave Search และเลือกใช้งาน <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/></translation>
 <translation id="4622826307953794521">ร่วมส่งข้อมูลการค้นหาและการท่องเว็บแบบไม่ระบุตัวตนเพื่อปรับปรุง Brave Search ด้วยโครงการ Web Discovery Project ซึ่งเป็นโครงการโอเพ่นซอร์สทั้งหมด</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="9034669711835382440">ชุมชน</translation>
+<translation id="814503310257431685">ดูทั้งหมด</translation>
+<translation id="845020633253356720">ดูร้านค้า</translation>
 <translation id="7090992647511817643">บัญชี</translation>
 <translation id="4822132585477111396">Chain ID</translation>
 <translation id="3269475789479462358">โดเมน</translation>
@@ -1143,6 +1146,12 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8214232307424031138">ลงชื่อแล้ว</translation>
 <translation id="9065572743819293042">ธุรกรรมล่าสุด</translation>
 <translation id="1702356231547761669">แฮชธุรกรรม</translation>
+<translation id="6030778062363728902">บันทึก</translation>
+<translation id="1288859203671057247">คุณสามารถพิมพ์ข้อความได้...</translation>
+<translation id="5466702869935634816">ข้อความ (ไม่บังคับ)</translation>
+<translation id="5715145706082194046">เพิ่มบันทึก</translation>
+<translation id="1922741261173258284">นำบันทึกออก</translation>
+<translation id="1762915190843068679">บันทึกต้องมีความยาวไม่เกิน 512 อักขระ</translation>
 <translation id="8941851657764077659">ค่าธรรมเนียมลัดคิวสูงสุด</translation>
 <translation id="8047527352810290817">แก้ไขค่าแก๊ส</translation>
 <translation id="9091334651803050473">นักขุดจะมีแนวโน้มที่จะลัดคิวให้ธุรกรรมของคุณหากคุณจ่ายค่าธรรมเนียมสูงกว่า ทั้งนี้ไม่มีการประกัน</translation>
@@ -1729,6 +1738,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="2298396008562701154">ขณะนี้บัญชีนี้รองรับการทำธุรกรรมที่โปร่งใส ซึ่งหมายความว่าธุรกรรมเหล่านี้สามารถมองเห็นได้โดยทุกคนบนบล็อกเชน</translation>
 <translation id="3987095760757102811">การอัปเกรดเป็นบัญชีที่ป้องกันหมายความว่าธุรกรรมเหล่านี้จะซ่อนรายละเอียดของผู้ส่ง ผู้รับ และจำนวนเงิน</translation>
 <translation id="3819528427777765709">ที่ป้องกัน</translation>
+<translation id="2142946302539262412">รวมเป็นหนึ่ง</translation>
+<translation id="4438043733494739848">โปร่งใส</translation>
 <translation id="7144878232160441200">ลองใหม่</translation>
 <translation id="9094621390791852268">การดูตัวอย่างธุรกรรมล้มเหลว</translation>
 <translation id="4982713341035600933">การเปลี่ยนแปลงของยอดคงเหลือโดยประมาณ</translation>
@@ -1982,6 +1993,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="5950760360751948276">แสดงแถบบุ๊กมาร์กทุกครั้ง</translation>
 <translation id="2960757369920422313">แสดงแถบบุ๊กมาร์กบนหน้าแท็บใหม่</translation>
 <translation id="522953399371747698">ซ่อนแถบบุ๊กมาร์ก</translation>
+<translation id="9079813619990532635">ส่งออกบุ๊คมาร์คทั้งหมด</translation>
 <translation id="134184943774258988">สลับการมองเห็นปุ่มบุ๊กมาร์กทั้งหมด</translation>
 <translation id="2158862020143233462">สลับการป้องกัน</translation>
 <translation id="3010280727642018218">สลับใช้ JavaScript</translation>
@@ -2060,8 +2072,10 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4567071417854988869">สรุปวิดีโอนี้</translation>
 <translation id="7921782882718083488">สรุปหน้านี้</translation>
 <translation id="7932221068776853847">ยกเลิกการเชื่อมต่อเพื่อหยุดส่งเนื้อหาของเพจนี้ให้ Leo และเริ่มการสนทนาใหม่</translation>
+<translation id="2712650703044366764">โมเดลนี้มีจุดสิ้นสุดที่ไม่ถูกต้อง กรุณาตรวจสอบการตั้งค่าและลองอีกครั้ง</translation>
 <translation id="1167803637855350748">เกิดปัญหาในการเชื่อมต่อเครือข่ายกับ Leo โปรดตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง</translation>
 <translation id="1996126325390835277">คุณได้ถึงขีดจำกัดอัตราแบบ Premium แล้วโปรดลองอีกครั้งใน 2-3 ชั่วโมง</translation>
+<translation id="8151638057146502721">ตั้งค่า</translation>
 <translation id="4177458398826096846">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Llama 3.1 8B ซึ่งเป็นโมเดลที่สร้างโดย Meta เพื่อให้มีประสิทธิภาพและใช้งานได้กับทุกกรณีที่ต้องการใช้ <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">สวัสดี ผมชื่อ Leo ผมเป็นผู้ช่วย AI ที่โฮสต์โดย Brave ผมได้รับการสนับสนุนจาก Mixtral 8x7B ซึ่งเป็นโมเดลที่สร้างโดย Mistral AI เพื่อจัดการงานขั้นสูง <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">สวัสดี ผมชื่อ Leo ผมเป็นตัวแทนของ Brave และได้รับการสนับสนุนจาก Claude Instant ซึ่งเป็นโมเดลที่สร้างโดย Anthropic เพื่อขับเคลื่อนงานด้านการสนทนาและการประมวลผลข้อความ <ph name="LINK_BEFORE"/>เรียนรู้เพิ่มเติม<ph name="LINK_AFTER"/></translation>
@@ -2098,6 +2112,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6393149565874086128">เพิ่มความคิดเห็น</translation>
 <translation id="3521125531016408657">ถูกใจคำตอบ</translation>
 <translation id="8202517001427388906">ไม่ถูกใจคำตอบ</translation>
+<translation id="3177073390279208955">ส่งคะแนน, การสนทนา, โมเดล, ภาษา, เวอร์ชัน, และสถานะพรีเมียม</translation>
 <translation id="1379399209929302811">ใส่ความคิดเห็น Brave AI</translation>
 <translation id="8442999546461118871">เลือกหัวข้อความคิดเห็นของคุณ</translation>
 <translation id="9018766373792005944">ความคิดเห็นเกี่ยวข้องกับเรื่องอะไร</translation>
@@ -2123,6 +2138,11 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="4370698775470316661">บทสนทนานี้มีความยาวเกินไปและไม่สามารถดำเนินการต่อได้ อาจมีโมเดลอื่นๆ ที่ Leo สามารถใช้เพื่อรักษาความถูกต้องในบทสนทนาได้ยาวนานขึ้น</translation>
 <translation id="5719170755629028558">ปรับปรุงคำตอบของคุณด้วย Brave Search…</translation>
 <translation id="5794962229997281366">ปรับปรุงการค้นหาคำตอบสำหรับ <ph name="SEARCH_TERMS"/></translation>
+<translation id="8103700533980268469">ปิดการแจ้งเตือนนี้</translation>
+<translation id="2315654674554095762">ตอนนี้ Leo จะจดจำการสนทนาของคุณเพื่อให้คุณสามารถกลับไปดูได้ พวกมันถูกจัดเก็บในรูปแบบเข้ารหัสบนอุปกรณ์ของคุณ และคุณสามารถลบได้ทุกเมื่อ</translation>
+<translation id="7821251979960635244">ประวัติการสนทนาของคุณจะแสดงที่นี่เมื่อคุณเริ่มการสนทนา</translation>
+<translation id="887511360213807449">ประวัติถูกปิดใช้งาน</translation>
+<translation id="5380979378058584412">ในการดูการสนทนาก่อนหน้าของคุณกับ Leo คุณต้องเปิดใช้งานประวัติการสนทนา</translation>
 <translation id="6291843235651817590">การแชทด้วยวัตถุประสงค์ทั่วไป</translation>
 <translation id="8193130769524604031">งานด้านการแชทขั้นสูง</translation>
 <translation id="3185367320601718531">การสนทนาและการสร้างข้อความ</translation>
@@ -2166,6 +2186,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="49269513399674318">ใช้ไมโครโฟน</translation>
 <translation id="3895031624234442305">โมเดลแบบกำหนดเอง</translation>
 <translation id="4572010449071015143">เริ่มการสนทนาใหม่</translation>
+<translation id="345901077335355561">กลับไปที่การสนทนาปัจจุบัน</translation>
 <translation id="6287023598025162715">การสนทนาใหม่</translation>
 <translation id="6303294677342628402">ปกป้อง</translation>
 <translation id="8458987127502506209">เปิดใช้งานการป้องกันของ Brave</translation>
@@ -2195,6 +2216,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6196640612572343990">บล็อกคุกกี้ของบุคคลที่สาม</translation>
 <translation id="693506469193748756">ไม่ต้องจำฉันเมื่อฉันปิดเว็บไซต์นี้</translation>
 <translation id="5471580724041424345">ล้างคุกกี้และข้อมูลเว็บไซต์อื่นๆ เมื่อคุณปิดเว็บไซต์</translation>
+<translation id="6486971767955110687">บันทึกข้อมูลการติดต่อสำหรับการรายงานเว็บไซต์เสียในอนาคต</translation>
+<translation id="4085787265464238844">หากคุณให้ข้อมูลการติดต่อ มันจะถูกบันทึกไว้สำหรับการรายงานในอนาคต</translation>
 <translation id="6883611015375728278">บล็อกคุกกี้ทั้งหมด</translation>
 <translation id="5657156137487675418">อนุญาตคุกกี้ทั้งหมด</translation>
 <translation id="8366221601425141146">บล็อกการเก็บร่องรอย</translation>
