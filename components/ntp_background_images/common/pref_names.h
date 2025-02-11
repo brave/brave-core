@@ -26,7 +26,7 @@ inline constexpr char kNewTabPageCachedSuperReferralComponentInfo[] =
     "brave.new_tab_page.cached_super_referral_component_info";
 inline constexpr char kNewTabPageCachedSuperReferralComponentData[] =
     "brave.new_tab_page.cached_super_referral_component_data";
-inline constexpr char kNewTabPageGetInitialSRComponentInProgress[] =
+inline constexpr char kNewTabPageGetInitialSuperReferralComponentInProgress[] =
     "brave.new_tab_page.get_initial_sr_component_in_progress";
 inline constexpr char kNewTabPageCachedSuperReferralCode[] =
     "brave.new_tab_page.cached_referral_code";

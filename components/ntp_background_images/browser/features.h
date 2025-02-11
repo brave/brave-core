@@ -10,8 +10,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 
-namespace ntp_background_images {
-namespace features {
+namespace ntp_background_images::features {
 
 BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaperDemo);
 
@@ -39,7 +38,6 @@ inline constexpr base::FeatureParam<base::TimeDelta>
                                      "sponsored_images_update_check_after",
                                      base::Minutes(15)};
 
-}  // namespace features
-}  // namespace ntp_background_images
+}  // namespace ntp_background_images::features
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_FEATURES_H_

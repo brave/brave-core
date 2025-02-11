@@ -32,8 +32,8 @@ static_library("browser") {
     sources += [
       "ntp_background_images_source.cc",
       "ntp_background_images_source.h",
-      "ntp_sponsored_images_source.cc",
-      "ntp_sponsored_images_source.h",
+      "ntp_sponsored_image_source.cc",
+      "ntp_sponsored_image_source.h",
       "ntp_sponsored_rich_media_ad_event_handler.cc",
       "ntp_sponsored_rich_media_ad_event_handler.h",
       "ntp_sponsored_rich_media_source.cc",

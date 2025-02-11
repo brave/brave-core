@@ -39,7 +39,7 @@ std::optional<base::FilePath> MaybeGetFilePathForRequestPath(
   const base::FilePath request_file = request_file_path.BaseName();
 
   for (const auto& campaign : campaigns) {
-    for (const auto& creative : campaign.backgrounds) {
+    for (const auto& creative : campaign.creatives) {
       CHECK(!creative.file_path.ReferencesParent());
 
       base::FilePath creative_dir = creative.file_path.DirName();

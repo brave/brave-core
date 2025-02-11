@@ -1,10 +1,10 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_SOURCE_H_
-#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_SOURCE_H_
+#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGE_SOURCE_H_
+#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGE_SOURCE_H_
 
 #include <optional>
 #include <string>
@@ -23,14 +23,14 @@ namespace ntp_background_images {
 class NTPBackgroundImagesService;
 
 // This serves background image data.
-class NTPSponsoredImagesSource : public content::URLDataSource {
+class NTPSponsoredImageSource : public content::URLDataSource {
  public:
-  explicit NTPSponsoredImagesSource(NTPBackgroundImagesService* service);
+  explicit NTPSponsoredImageSource(NTPBackgroundImagesService* service);
 
-  ~NTPSponsoredImagesSource() override;
+  ~NTPSponsoredImageSource() override;
 
-  NTPSponsoredImagesSource(const NTPSponsoredImagesSource&) = delete;
-  NTPSponsoredImagesSource& operator=(const NTPSponsoredImagesSource&) = delete;
+  NTPSponsoredImageSource(const NTPSponsoredImageSource&) = delete;
+  NTPSponsoredImageSource& operator=(const NTPSponsoredImageSource&) = delete;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, SponsoredImagesTest);
@@ -53,9 +53,10 @@ class NTPSponsoredImagesSource : public content::URLDataSource {
   bool IsValidPath(const std::string& path) const;
 
   raw_ptr<NTPBackgroundImagesService> service_ = nullptr;  // not owned
-  base::WeakPtrFactory<NTPSponsoredImagesSource> weak_factory_;
+
+  base::WeakPtrFactory<NTPSponsoredImageSource> weak_factory_;
 };
 
 }  // namespace ntp_background_images
 
-#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_SOURCE_H_
+#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_SPONSORED_IMAGE_SOURCE_H_

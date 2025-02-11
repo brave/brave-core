@@ -79,9 +79,7 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
                          const std::string& expected_hostname);
 
   // NTPBackgroundImagesService::Observer:
-  void OnUpdated(NTPBackgroundImagesData* data) override;
-  void OnUpdated(NTPSponsoredImagesData* data) override;
-  void OnSuperReferralEnded() override;
+  void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<p3a::P3AService> p3a_service_;

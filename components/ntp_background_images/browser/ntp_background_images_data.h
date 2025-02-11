@@ -11,8 +11,6 @@
 
 #include "base/files/file_path.h"
 #include "base/values.h"
-#include "ui/gfx/geometry/point.h"
-#include "ui/gfx/geometry/rect.h"
 
 namespace ntp_background_images {
 
@@ -42,7 +40,7 @@ struct NTPBackgroundImagesData {
 
   bool IsValid() const;
   // Generate Value with background image at |index|.
-  base::Value::Dict GetBackgroundAt(size_t index);
+  base::Value::Dict GetBackgroundAt(size_t index) const;
 
   std::vector<Background> backgrounds;
   std::string url_prefix;

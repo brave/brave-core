@@ -57,7 +57,7 @@ struct Logo {
 
 enum class WallpaperType { kImage, kRichMedia };
 
-struct SponsoredBackground {
+struct Creative {
   WallpaperType wallpaper_type;
   GURL url;
   base::FilePath file_path;
@@ -70,15 +70,15 @@ struct SponsoredBackground {
   Logo logo;
   std::optional<gfx::Rect> viewbox;
 
-  SponsoredBackground();
+  Creative();
   // For unit test.
-  SponsoredBackground(const base::FilePath& file_path,
-                      const gfx::Point& point,
-                      const Logo& test_logo,
-                      const std::string& creative_instance_id);
-  SponsoredBackground(const SponsoredBackground&);
+  Creative(const base::FilePath& file_path,
+           const gfx::Point& point,
+           const Logo& test_logo,
+           const std::string& creative_instance_id);
+  Creative(const Creative&);
 
-  ~SponsoredBackground();
+  ~Creative();
 };
 
 struct Campaign {
@@ -90,7 +90,7 @@ struct Campaign {
   bool IsValid() const;
 
   std::string campaign_id;
-  std::vector<SponsoredBackground> backgrounds;
+  std::vector<Creative> creatives;
 };
 
 // For SI, campaign list can have multiple items.
@@ -105,27 +105,24 @@ struct NTPSponsoredImagesData {
 
   bool IsValid() const;
 
-  void ParseCampaignsList(const base::Value::List& campaigns_value,
-                          const base::FilePath& installed_dir);
+  void ParseCampaigns(const base::Value::List& campaigns_value,
+                      const base::FilePath& installed_dir);
+  std::optional<Campaign> ParseCampaign(const base::Value::Dict& value,
+                                        const base::FilePath& installed_dir);
 
-  // Parse common properties for SI & SR.
-  std::optional<Campaign> GetCampaignFromValue(
-      const base::Value::Dict& value,
-      const base::FilePath& installed_dir);
-  void ParseSRProperties(const base::Value::Dict& value,
-                         const base::FilePath& installed_dir);
+  void ParseSponsoredReferrals(const base::Value::Dict& value,
+                               const base::FilePath& installed_dir);
 
   std::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
-                                                   size_t background_index);
-  std::optional<base::Value::Dict> GetBackgroundFromAdInfo(
+                                                   size_t creative_index) const;
+  std::optional<base::Value::Dict> GetBackground(
       const brave_ads::NewTabPageAdInfo& ad_info);
 
   bool IsSuperReferral() const;
-  void PrintCampaignsParsingResult() const;
 
   bool AdInfoMatchesSponsoredImage(const brave_ads::NewTabPageAdInfo& ad_info,
                                    size_t campaign_index,
-                                   size_t background_index) const;
+                                   size_t creative_index) const;
 
   std::string url_prefix;
 

@@ -20,7 +20,6 @@
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -495,13 +494,10 @@ void NTPP3AHelperImpl::OnLandingEndCheck(
   UpdateMetricCount(creative_instance_id, kCreativeLandEventKey);
 }
 
-void NTPP3AHelperImpl::OnUpdated(NTPSponsoredImagesData* data) {
+void NTPP3AHelperImpl::OnSponsoredImagesDataDidUpdate(
+    NTPSponsoredImagesData* data) {
   CheckLoadedCampaigns(*data);
 }
-
-void NTPP3AHelperImpl::OnUpdated(NTPBackgroundImagesData* data) {}
-
-void NTPP3AHelperImpl::OnSuperReferralEnded() {}
 
 void NTPP3AHelperImpl::CheckLoadedCampaigns(
     const NTPSponsoredImagesData& data) {

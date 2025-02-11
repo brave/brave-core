@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
@@ -42,11 +43,13 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
   }
 
   std::string StartDataRequest(const GURL& url) {
+    CHECK(url_data_source_);
+
     std::string data;
     content::WebContents::Getter wc_getter;
 
     base::RunLoop run_loop;
-    url_data_source()->StartDataRequest(
+    url_data_source_->StartDataRequest(
         url, std::move(wc_getter),
         base::BindOnce(
             [](std::string* data, base::OnceClosure quit_closure,
@@ -64,10 +67,11 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
 
  private:
   void SetUpUrlDataSource() {
-    NTPBackgroundImagesService::RegisterLocalStatePrefs(local_pref_.registry());
-    background_images_service_ =
-        std::make_unique<NTPBackgroundImagesService>(nullptr, &local_pref_);
+    NTPBackgroundImagesService::RegisterLocalStatePrefs(
+        pref_service_.registry());
 
+    background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
+        /*component_update_service=*/nullptr, &pref_service_);
     url_data_source_ = std::make_unique<NTPSponsoredRichMediaSource>(
         background_images_service_.get());
   }
@@ -84,20 +88,19 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
     NTPBackgroundImagesServiceWaiter waiter(*background_images_service_);
     background_images_service_->OnSponsoredComponentReady(
         /*is_super_referral=*/false, component_file_path);
-    waiter.WaitForOnSponsoredImagesUpdated();
+    waiter.WaitForOnSponsoredImagesDataDidUpdate();
   }
 
   content::BrowserTaskEnvironment task_environment_;
   base::test::ScopedFeatureList feature_list_;
-  TestingPrefServiceSimple local_pref_;
+  TestingPrefServiceSimple pref_service_;
   std::unique_ptr<NTPBackgroundImagesService> background_images_service_;
   std::unique_ptr<NTPSponsoredRichMediaSource> url_data_source_;
 };
 
 TEST_F(NTPSponsoredRichMediaSourceTest, StartDataRequest) {
-  const std::string data = StartDataRequest(
-      GURL("chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/"
-           "index.html"));
+  const std::string data = StartDataRequest(GURL(
+      R"(chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)"));
   EXPECT_THAT(data, ::testing::Not(::testing::IsEmpty()));
 }
 
@@ -108,8 +111,7 @@ TEST_F(NTPSponsoredRichMediaSourceTest,
   EXPECT_THAT(data, ::testing::IsEmpty());
 
   data = StartDataRequest(GURL(
-      "chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../"
-      "campaigns.json"));
+      R"(chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../campaigns.json)"));
   EXPECT_THAT(data, ::testing::IsEmpty());
 }
 
@@ -119,17 +121,16 @@ TEST_F(NTPSponsoredRichMediaSourceTest,
       GURL("chrome-untrusted://rich-media/non-existent-creative/index.html"));
   EXPECT_THAT(data, ::testing::IsEmpty());
 
-  data = StartDataRequest(
-      GURL("chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/"
-           "non-existent-file.html"));
+  data = StartDataRequest(GURL(
+      R"(chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/non-existent-file.html)"));
   EXPECT_THAT(data, ::testing::IsEmpty());
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest, GetMimeType) {
-  EXPECT_EQ(url_data_source()->GetMimeType(
-                GURL("chrome-untrusted://rich-media/"
-                     "aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html")),
-            "text/html");
+  EXPECT_EQ(
+      "text/html",
+      url_data_source()->GetMimeType(GURL(
+          R"(chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)")));
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest, AllowCaching) {
@@ -141,54 +142,77 @@ TEST_F(NTPSponsoredRichMediaSourceTest, GetContentSecurityPolicy) {
        i < static_cast<int>(network::mojom::CSPDirectiveName::kMaxValue); ++i) {
     const auto directive = static_cast<network::mojom::CSPDirectiveName>(i);
     switch (directive) {
-      case network::mojom::CSPDirectiveName::FrameAncestors:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "frame-ancestors chrome://newtab/;");
+      case network::mojom::CSPDirectiveName::FrameAncestors: {
+        EXPECT_EQ("frame-ancestors chrome://newtab/;",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::Sandbox:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "sandbox allow-scripts;");
+      }
+
+      case network::mojom::CSPDirectiveName::Sandbox: {
+        EXPECT_EQ("sandbox allow-scripts;",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::DefaultSrc:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "default-src 'none';");
+      }
+
+      case network::mojom::CSPDirectiveName::DefaultSrc: {
+        EXPECT_EQ("default-src 'none';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::BaseURI:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "base-uri 'none';");
+      }
+
+      case network::mojom::CSPDirectiveName::BaseURI: {
+        EXPECT_EQ("base-uri 'none';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::FormAction:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "form-action 'none';");
+      }
+
+      case network::mojom::CSPDirectiveName::FormAction: {
+        EXPECT_EQ("form-action 'none';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::ScriptSrc:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "script-src 'self';");
+      }
+
+      case network::mojom::CSPDirectiveName::ScriptSrc: {
+        EXPECT_EQ("script-src 'self';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::StyleSrc:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "style-src 'self';");
+      }
+
+      case network::mojom::CSPDirectiveName::StyleSrc: {
+        EXPECT_EQ("style-src 'self';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::ImgSrc:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "img-src 'self';");
+      }
+
+      case network::mojom::CSPDirectiveName::ImgSrc: {
+        EXPECT_EQ("img-src 'self';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::MediaSrc:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "media-src 'self';");
+      }
+
+      case network::mojom::CSPDirectiveName::MediaSrc: {
+        EXPECT_EQ("media-src 'self';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::RequireTrustedTypesFor:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "require-trusted-types-for 'script';");
+      }
+
+      case network::mojom::CSPDirectiveName::RequireTrustedTypesFor: {
+        EXPECT_EQ("require-trusted-types-for 'script';",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      case network::mojom::CSPDirectiveName::TrustedTypes:
-        EXPECT_EQ(url_data_source()->GetContentSecurityPolicy(directive),
-                  "trusted-types;");
+      }
+
+      case network::mojom::CSPDirectiveName::TrustedTypes: {
+        EXPECT_EQ("trusted-types;",
+                  url_data_source()->GetContentSecurityPolicy(directive));
         break;
-      default:
-        EXPECT_TRUE(
-            url_data_source()->GetContentSecurityPolicy(directive).empty());
+      }
+
+      default: {
+        EXPECT_THAT(url_data_source()->GetContentSecurityPolicy(directive),
+                    ::testing::IsEmpty());
         break;
+      }
     }
   }
 }

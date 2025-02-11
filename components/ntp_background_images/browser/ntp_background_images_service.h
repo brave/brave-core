@@ -35,22 +35,29 @@ class NTPBackgroundImagesService {
  public:
   class Observer {
    public:
-    // Called whenever ntp background images component is updated.
-    virtual void OnUpdated(NTPBackgroundImagesData* data) = 0;
-    virtual void OnUpdated(NTPSponsoredImagesData* data) = 0;
-    // Called when sponsored content is updated.
+    // Called when the background images component is updated.
+    virtual void OnBackgroundImagesDataDidUpdate(
+        NTPBackgroundImagesData* data) {}
+
+    // Called when the sponsored content component is updated. This is
+    // deprecated, use `OnSponsoredContentDidUpdate`.
+    virtual void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) {}
+
+    // Called when the sponsored content component is updated.
     virtual void OnSponsoredContentDidUpdate(const base::Value::Dict& data) {}
-    // Called when SR campaign ended.
-    virtual void OnSuperReferralEnded() = 0;
+
+    // Called when the super referral campaign ends.
+    virtual void OnSuperReferralCampaignDidEnd() {}
+
    protected:
-    virtual ~Observer() {}
+    virtual ~Observer() = default;
   };
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
   NTPBackgroundImagesService(
-      component_updater::ComponentUpdateService* cus,
-      PrefService* local_pref);
+      component_updater::ComponentUpdateService* component_update_service,
+      PrefService* pref_service);
   virtual ~NTPBackgroundImagesService();
 
   NTPBackgroundImagesService(const NTPBackgroundImagesService&) = delete;
@@ -72,13 +79,13 @@ class NTPBackgroundImagesService {
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  void CheckNTPSIComponentUpdateIfNeeded();
+  void MaybeCheckForSponsoredComponentUpdate();
 
  private:
   friend class NTPSponsoredRichMediaSourceTest;
   friend class NTPSponsoredRichMediaWithCSPViolationBrowserTest;
   friend class NTPSponsoredRichMediaBrowserTest;
-  friend class TestNTPBackgroundImagesService;
+  friend class NTPBackgroundImagesServiceForTesting;
   friend class NTPBackgroundImagesServiceTest;
   friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
@@ -170,34 +177,42 @@ class NTPBackgroundImagesService {
   virtual void UnRegisterSuperReferralComponent();
   virtual void MarkThisInstallIsNotSuperReferralForever();
 
-  base::Time last_update_check_time_;
-  base::WallClockTimer si_update_check_timer_;
-  base::RepeatingClosure si_update_check_callback_;
+  base::Time last_update_check_at_;
+
   bool test_data_used_ = false;
-  raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
-      nullptr;
-  std::optional<std::string> sponsored_images_component_id_;
-  raw_ptr<PrefService> local_pref_ = nullptr;
-  base::FilePath bi_installed_dir_;
-  std::unique_ptr<NTPBackgroundImagesData> bi_images_data_;
-  base::FilePath si_installed_dir_;
-  base::FilePath sr_installed_dir_;
-  base::ObserverList<Observer>::Unchecked observer_list_;
-  std::unique_ptr<NTPSponsoredImagesData> si_images_data_;
-  std::unique_ptr<NTPSponsoredImagesData> sr_images_data_;
+
+  const raw_ptr<component_updater::ComponentUpdateService>
+      component_update_service_ = nullptr;
+
+  const raw_ptr<PrefService> pref_service_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
+
+  base::FilePath background_images_installed_dir_;
+  std::unique_ptr<NTPBackgroundImagesData> background_images_data_;
+
+  base::WallClockTimer sponsored_images_update_check_timer_;
+  base::RepeatingClosure sponsored_images_update_check_callback_;
+  std::optional<std::string> sponsored_images_component_id_;
+  base::FilePath sponsored_images_installed_dir_;
+  std::unique_ptr<NTPSponsoredImagesData> sponsored_images_data_;
+
+  base::FilePath super_referrals_installed_dir_;
+  std::unique_ptr<NTPSponsoredImagesData> super_referrals_images_data_;
   // This is only used for registration during initial(first) SR component
   // download. After initial download is done, it's cached to
   // |kNewTabPageCachedSuperReferralComponentInfo|. At next launch, this cached
-  // info is used for registering SR component.
-  // Why component info is temporarily stored to |initial_sr_component_info_|
-  // when mapping table is fetched instead of directly store it into that prefs?
-  // The reason is |kNewTabPageCachedSuperReferralComponentInfo| is used to
-  // check whether initial download is finished or not. Knowing initial download
-  // is done is important for super referral. If this is SR install, we should
-  // not show SI images until user chooses Brave default images. So, we should
-  // know the exact timing whether SR assets is ready to use or not.
-  std::optional<base::Value::Dict> initial_sr_component_info_;
+  // info is used for registering SR component. Why component info is
+  // temporarily stored to |initial_super_referrals_component_info_| when
+  // mapping table is fetched instead of directly store it into that prefs? The
+  // reason is |kNewTabPageCachedSuperReferralComponentInfo| is used to check
+  // whether initial download is finished or not. Knowing initial download is
+  // done is important for super referral. If this is SR install, we should not
+  // show SI images until user chooses Brave default images. So, we should know
+  // the exact timing whether SR assets is ready to use or not.
+  std::optional<base::Value::Dict> initial_super_referrals_component_info_;
+
+  base::ObserverList<Observer>::Unchecked observers_;
+
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 

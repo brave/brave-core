@@ -1,9 +1,9 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_image_source.h"
 
 #include <utility>
 
@@ -24,8 +24,9 @@ namespace {
 
 std::optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
-  if (!base::ReadFileToString(path, &contents))
+  if (!base::ReadFileToString(path, &contents)) {
     return std::optional<std::string>();
+  }
   return contents;
 }
 
@@ -35,17 +36,17 @@ bool IsSuperReferralPath(const std::string& path) {
 
 }  // namespace
 
-NTPSponsoredImagesSource::NTPSponsoredImagesSource(
+NTPSponsoredImageSource::NTPSponsoredImageSource(
     NTPBackgroundImagesService* service)
     : service_(service), weak_factory_(this) {}
 
-NTPSponsoredImagesSource::~NTPSponsoredImagesSource() = default;
+NTPSponsoredImageSource::~NTPSponsoredImageSource() = default;
 
-std::string NTPSponsoredImagesSource::GetSource() {
+std::string NTPSponsoredImageSource::GetSource() {
   return kBrandedWallpaperHost;
 }
 
-void NTPSponsoredImagesSource::StartDataRequest(
+void NTPSponsoredImageSource::StartDataRequest(
     const GURL& url,
     const content::WebContents::Getter& wc_getter,
     GotDataCallback callback) {
@@ -65,29 +66,29 @@ void NTPSponsoredImagesSource::StartDataRequest(
   GetImageFile(image_file_path, std::move(callback));
 }
 
-void NTPSponsoredImagesSource::GetImageFile(
+void NTPSponsoredImageSource::GetImageFile(
     const base::FilePath& image_file_path,
     GotDataCallback callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFileToString, image_file_path),
-      base::BindOnce(&NTPSponsoredImagesSource::OnGotImageFile,
+      base::BindOnce(&NTPSponsoredImageSource::OnGotImageFile,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void NTPSponsoredImagesSource::OnGotImageFile(
-    GotDataCallback callback,
-    std::optional<std::string> input) {
-  if (!input)
+void NTPSponsoredImageSource::OnGotImageFile(GotDataCallback callback,
+                                             std::optional<std::string> input) {
+  if (!input) {
     return;
+  }
 
   std::move(callback).Run(
       new base::RefCountedBytes(base::as_byte_span(*input)));
 }
 
-std::string NTPSponsoredImagesSource::GetMimeType(const GURL& url) {
+std::string NTPSponsoredImageSource::GetMimeType(const GURL& url) {
   const std::string path = URLDataSource::URLToRequestPath(url);
-  const auto file_path = base::FilePath::FromUTF8Unsafe(path);
+  const base::FilePath file_path = base::FilePath::FromUTF8Unsafe(path);
   if (file_path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
       file_path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"))) {
     return "image/jpeg";
@@ -102,35 +103,40 @@ std::string NTPSponsoredImagesSource::GetMimeType(const GURL& url) {
   }
 }
 
-bool NTPSponsoredImagesSource::AllowCaching() {
+bool NTPSponsoredImageSource::AllowCaching() {
   return false;
 }
 
-base::FilePath NTPSponsoredImagesSource::GetLocalFilePathFor(
+base::FilePath NTPSponsoredImageSource::GetLocalFilePathFor(
     const std::string& path) {
   const bool is_super_referral_path = IsSuperReferralPath(path);
-  auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
+  const NTPSponsoredImagesData* const images_data =
+      service_->GetBrandedImagesData(is_super_referral_path);
   CHECK(images_data);
 
-  const auto basename_from_path =
+  const base::FilePath basename_from_path =
       base::FilePath::FromUTF8Unsafe(path).BaseName();
 
-  for (const auto& topsite : images_data->top_sites) {
-    if (topsite.image_file.BaseName() == basename_from_path)
-      return topsite.image_file;
+  for (const auto& top_site : images_data->top_sites) {
+    if (top_site.image_file.BaseName() == basename_from_path) {
+      return top_site.image_file;
+    }
   }
 
   for (const auto& campaign : images_data->campaigns) {
-    for (const auto& background : campaign.backgrounds) {
-      const auto logo_basename_from_data =
-          background.logo.image_file.BaseName();
-      const auto wallpaper_basename_from_data = background.file_path.BaseName();
+    for (const auto& creative : campaign.creatives) {
+      const base::FilePath logo_basename_from_data =
+          creative.logo.image_file.BaseName();
+      const base::FilePath wallpaper_basename_from_data =
+          creative.file_path.BaseName();
 
-      if (logo_basename_from_data == basename_from_path)
-        return background.logo.image_file;
+      if (logo_basename_from_data == basename_from_path) {
+        return creative.logo.image_file;
+      }
 
-      if (wallpaper_basename_from_data == basename_from_path)
-        return background.file_path;
+      if (wallpaper_basename_from_data == basename_from_path) {
+        return creative.file_path;
+      }
     }
   }
 
@@ -139,29 +145,34 @@ base::FilePath NTPSponsoredImagesSource::GetLocalFilePathFor(
   NOTREACHED();
 }
 
-bool NTPSponsoredImagesSource::IsValidPath(const std::string& path) const {
+bool NTPSponsoredImageSource::IsValidPath(const std::string& path) const {
   const bool is_super_referral_path = IsSuperReferralPath(path);
-  auto* images_data = service_->GetBrandedImagesData(is_super_referral_path);
-  if (!images_data)
+  const NTPSponsoredImagesData* const images_data =
+      service_->GetBrandedImagesData(is_super_referral_path);
+  if (!images_data) {
     return false;
+  }
 
-  const auto basename_from_path =
+  const base::FilePath basename_from_path =
       base::FilePath::FromUTF8Unsafe(path).BaseName();
 
-  for (const auto& topsite : images_data->top_sites) {
-    if (topsite.image_file.BaseName() == basename_from_path)
+  for (const auto& top_site : images_data->top_sites) {
+    if (top_site.image_file.BaseName() == basename_from_path) {
       return true;
+    }
   }
 
   for (const auto& campaign : images_data->campaigns) {
-    for (const auto& background : campaign.backgrounds) {
-      const auto logo_basename_from_data =
-          background.logo.image_file.BaseName();
-      const auto wallpaper_basename_from_data = background.file_path.BaseName();
+    for (const auto& creative : campaign.creatives) {
+      const base::FilePath logo_basename_from_data =
+          creative.logo.image_file.BaseName();
+      const base::FilePath wallpaper_basename_from_data =
+          creative.file_path.BaseName();
 
       if (logo_basename_from_data == basename_from_path ||
-          wallpaper_basename_from_data == basename_from_path)
+          wallpaper_basename_from_data == basename_from_path) {
         return true;
+      }
     }
   }
 

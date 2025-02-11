@@ -8,8 +8,11 @@
 
 #include <string>
 
-#include "base/files/file_path.h"
 #include "base/functional/callback.h"
+
+namespace base {
+class FilePath;
+}  // namespace base
 
 namespace component_updater {
 class ComponentUpdateService;

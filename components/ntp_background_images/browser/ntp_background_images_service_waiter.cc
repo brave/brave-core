@@ -19,12 +19,13 @@ NTPBackgroundImagesServiceWaiter::~NTPBackgroundImagesServiceWaiter() {
   service_->RemoveObserver(this);
 }
 
-void NTPBackgroundImagesServiceWaiter::WaitForOnSponsoredImagesUpdated() {
-  on_sponsored_images_updated_run_loop_.Run();
+void NTPBackgroundImagesServiceWaiter::
+    WaitForOnBackgroundImagesDataDidUpdate() {
+  on_background_images_did_update_run_loop_.Run();
 }
 
-void NTPBackgroundImagesServiceWaiter::WaitForOnBackgroundImagesUpdated() {
-  on_background_images_updated_run_loop_.Run();
+void NTPBackgroundImagesServiceWaiter::WaitForOnSponsoredImagesDataDidUpdate() {
+  on_sponsored_images_data_did_update_run_loop_.Run();
 }
 
 void NTPBackgroundImagesServiceWaiter::WaitForOnSponsoredContentDidUpdate() {
@@ -32,27 +33,28 @@ void NTPBackgroundImagesServiceWaiter::WaitForOnSponsoredContentDidUpdate() {
 }
 
 void NTPBackgroundImagesServiceWaiter::WaitForOnSuperReferralEnded() {
-  on_super_referral_ended_run_loop_.Run();
+  on_super_referral_campaign_did_end_run_loop_.Run();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NTPBackgroundImagesServiceWaiter::OnUpdated(NTPSponsoredImagesData* data) {
-  on_sponsored_images_updated_run_loop_.Quit();
+void NTPBackgroundImagesServiceWaiter::OnBackgroundImagesDataDidUpdate(
+    NTPBackgroundImagesData* data) {
+  on_background_images_did_update_run_loop_.Quit();
 }
 
-void NTPBackgroundImagesServiceWaiter::OnUpdated(
-    NTPBackgroundImagesData* data) {
-  on_background_images_updated_run_loop_.Quit();
+void NTPBackgroundImagesServiceWaiter::OnSponsoredImagesDataDidUpdate(
+    NTPSponsoredImagesData* data) {
+  on_sponsored_images_data_did_update_run_loop_.Quit();
 }
 
 void NTPBackgroundImagesServiceWaiter::OnSponsoredContentDidUpdate(
-    const base::Value::Dict& data) {
+    const base::Value::Dict& dict) {
   on_sponsored_content_did_update_run_loop_.Quit();
 }
 
-void NTPBackgroundImagesServiceWaiter::OnSuperReferralEnded() {
-  on_super_referral_ended_run_loop_.Quit();
+void NTPBackgroundImagesServiceWaiter::OnSuperReferralCampaignDidEnd() {
+  on_super_referral_campaign_did_end_run_loop_.Quit();
 }
 
 }  // namespace ntp_background_images
