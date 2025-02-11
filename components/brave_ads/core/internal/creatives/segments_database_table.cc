@@ -9,7 +9,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/location.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -23,18 +22,21 @@ namespace {
 constexpr char kTableName[] = "segments";
 
 size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const CreativeAdList& creative_ads) {
+                   const std::map</*creative_set_id*/ std::string,
+                                  base::flat_set<std::string>>& segments) {
   CHECK(mojom_db_action);
-  CHECK(!creative_ads.empty());
+  CHECK(!segments.empty());
 
   size_t row_count = 0;
 
   int index = 0;
-  for (const auto& creative_ad : creative_ads) {
-    BindColumnString(mojom_db_action, index++, creative_ad.creative_set_id);
-    BindColumnString(mojom_db_action, index++, creative_ad.segment);
+  for (const auto& [creative_set_id, segments_set] : segments) {
+    for (const auto& segment : segments_set) {
+      BindColumnString(mojom_db_action, index++, creative_set_id);
+      BindColumnString(mojom_db_action, index++, segment);
 
-    ++row_count;
+      ++row_count;
+    }
   }
 
   return row_count;
@@ -43,27 +45,18 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 }  // namespace
 
 void Segments::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-                      const CreativeAdList& creative_ads) {
+                      const std::map</*creative_set_id*/ std::string,
+                                     base::flat_set<std::string>>& segments) {
   CHECK(mojom_db_transaction);
 
-  if (creative_ads.empty()) {
+  if (segments.empty()) {
     return;
   }
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, segments);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
-}
-
-void Segments::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_db_transaction =
-      mojom::DBTransactionInfo::New();
-
-  DeleteTable(mojom_db_transaction, GetTableName());
-
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
 }
 
 std::string Segments::GetTableName() const {
@@ -117,11 +110,12 @@ void Segments::MigrateToV48(
 
 std::string Segments::BuildInsertSql(
     const mojom::DBActionInfoPtr& mojom_db_action,
-    const CreativeAdList& creative_ads) const {
+    const std::map</*creative_set_id*/ std::string,
+                   base::flat_set<std::string>>& segments) const {
   CHECK(mojom_db_action);
-  CHECK(!creative_ads.empty());
+  CHECK(!segments.empty());
 
-  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
+  const size_t row_count = BindColumns(mojom_db_action, segments);
 
   return base::ReplaceStringPlaceholders(
       R"(

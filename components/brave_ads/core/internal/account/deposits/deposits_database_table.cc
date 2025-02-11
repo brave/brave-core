@@ -12,12 +12,14 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_deposit_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -37,19 +39,18 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
 }
 
 size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const CreativeAdList& creative_ads) {
+                   const std::map</*creative_instance_id*/ std::string,
+                                  CreativeDepositInfo>& deposits) {
   CHECK(mojom_db_action);
-  CHECK(!creative_ads.empty());
+  CHECK(!deposits.empty());
 
   size_t row_count = 0;
 
   int index = 0;
-  for (const auto& creative_ad : creative_ads) {
-    BindColumnString(mojom_db_action, index++,
-                     creative_ad.creative_instance_id);
-    BindColumnDouble(mojom_db_action, index++, creative_ad.value);
-    BindColumnTime(mojom_db_action, index++,
-                   creative_ad.end_at + base::Days(7));
+  for (const auto& [creative_instance_id, deposit] : deposits) {
+    BindColumnString(mojom_db_action, index++, creative_instance_id);
+    BindColumnDouble(mojom_db_action, index++, deposit.value);
+    BindColumnTime(mojom_db_action, index++, deposit.expire_at);
 
     ++row_count;
   }
@@ -139,16 +140,17 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
 }
 
 void Deposits::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-                      const CreativeAdList& creative_ads) {
+                      const std::map</*creative_instance_id*/ std::string,
+                                     CreativeDepositInfo>& deposits) {
   CHECK(mojom_db_transaction);
 
-  if (creative_ads.empty()) {
+  if (deposits.empty()) {
     return;
   }
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, deposits);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
@@ -251,11 +253,12 @@ void Deposits::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
 std::string Deposits::BuildInsertSql(
     const mojom::DBActionInfoPtr& mojom_db_action,
-    const CreativeAdList& creative_ads) const {
+    const std::map</*creative_instance_id*/ std::string, CreativeDepositInfo>&
+        deposits) const {
   CHECK(mojom_db_action);
-  CHECK(!creative_ads.empty());
+  CHECK(!deposits.empty());
 
-  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
+  const size_t row_count = BindColumns(mojom_db_action, deposits);
 
   return base::ReplaceStringPlaceholders(
       R"(
