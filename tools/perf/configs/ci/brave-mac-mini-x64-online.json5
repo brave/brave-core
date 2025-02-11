@@ -29,14 +29,14 @@
       "name": "system_health.memory_desktop",
       "pageset-repeat": 20,
       "stories": [
-        "load:chrome:blank",
+        "load:site:example:2023",
       ]
     },
     {
       "name": "system_health.common_desktop",
       "pageset-repeat": 20,
       "stories": [
-        "load:chrome:blank",
+        "load:site:example:2023",
       ]
     }
   ]

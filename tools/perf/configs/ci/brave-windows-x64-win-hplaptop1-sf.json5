@@ -5,7 +5,7 @@
     "profile": "brave-typical-win",
     "extra-browser-args": [
       "--disable-component-update",
-      "--disable-features=CalculateNativeWinOcclusion",
+      "--disable-backgrounding-occluded-windows",
     ],
     "extra-benchmark-args": [],
   }],
@@ -30,7 +30,6 @@
       "name": "system_health.memory_desktop",
       "pageset-repeat": 10,
       "stories": [
-        "load:chrome:blank",
         "load:site:example:2023",
         "load:media:youtube:2018",
       ]
@@ -39,17 +38,12 @@
       "name": "system_health.common_desktop",
       "pageset-repeat": 10,
       "stories": [
-        "load:chrome:blank",
         "load:site:example:2023",
       ]
     },
     {
       "name": "speedometer3",
       "pageset-repeat": 10
-    },
-    {
-      "name": "speedometer2",
-      "pageset-repeat": 1
     },
   ]
 }

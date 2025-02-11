@@ -4,7 +4,7 @@
     "browser-type": "brave",
     "profile": "brave-typical-mac",
     "extra-browser-args": [
-      "--disable-features=CalculateNativeWinOcclusion",
+      "--disable-component-update",
       "--disable-backgrounding-occluded-windows",
     ],
     "extra-benchmark-args": [
@@ -36,7 +36,7 @@
       "name": "system_health.memory_desktop",
       "pageset-repeat": 1,
       "stories": [
-        "load:chrome:blank",
+        "load:site:example:2023",
         "load:media:youtube:2018",
         "multitab_load:site:example.com:2024",
       ]

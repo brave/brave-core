@@ -7,7 +7,10 @@
       "label": "good_1.37.5",
       "browser-type": "brave",
       "profile": "brave-typical-win",
-      "extra-browser-args": [],
+      "extra-browser-args": [
+        "--disable-component-update",
+        "--disable-backgrounding-occluded-windows",
+      ],
       "extra-benchmark-args": [],
     },
     {
@@ -15,7 +18,10 @@
       "label": "bad_1.37.6",
       "browser-type": "brave",
       "profile": "brave-typical-win",
-      "extra-browser-args": [],
+      "extra-browser-args": [
+        "--disable-component-update",
+        "--disable-backgrounding-occluded-windows",
+      ],
       "extra-benchmark-args": [],
     },
   ],
