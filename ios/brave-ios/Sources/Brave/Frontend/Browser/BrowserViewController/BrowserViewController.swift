@@ -1900,6 +1900,7 @@ public class BrowserViewController: UIViewController {
         if tab === tabManager.selectedTab && !tab.restoring {
           updateUIForReaderHomeStateForTab(tab)
         }
+
         // Catch history pushState navigation, but ONLY for same origin navigation,
         // for reasons above about URL spoofing risk.
         navigateInTab(tab: tab)

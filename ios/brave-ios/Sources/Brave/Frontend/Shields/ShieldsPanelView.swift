@@ -39,7 +39,7 @@ struct ShieldsPanelView: View {
     self.viewModel = ShieldsSettingsViewModel(tab: tab, domain: domain)
     self.actionCallback = callback
     self.displayHost =
-      "\u{200E}\(URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString))"
+      "\u{200E}\(URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url.strippingBlobURLAuth.absoluteString))"
   }
 
   private var shieldsEnabledAccessibiltyLabel: String {

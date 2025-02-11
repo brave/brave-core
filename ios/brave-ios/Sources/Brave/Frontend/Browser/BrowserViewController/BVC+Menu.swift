@@ -483,7 +483,7 @@ extension BrowserViewController {
 
         URLElidedText(
           text: URLFormatter.formatURLOrigin(
-            forDisplayOmitSchemePathAndTrivialSubdomains: url.absoluteString
+            forDisplayOmitSchemePathAndTrivialSubdomains: url.strippingBlobURLAuth.absoluteString
           )
         )
         .font(.footnote)

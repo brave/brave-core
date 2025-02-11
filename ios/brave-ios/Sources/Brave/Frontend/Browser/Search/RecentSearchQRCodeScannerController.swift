@@ -192,7 +192,7 @@ extension RecentSearchQRCodeScannerController {
     }
 
     private func processScannedText() -> (string: String?, truncationMode: NSLineBreakMode) {
-      if let text = scannedText, let url = URIFixup.getURL(text) {
+      if let text = scannedText, let url = URIFixup.getURL(text)?.strippingBlobURLAuth {
         let scannedText = URLFormatter.formatURL(
           URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
           formatTypes: [
@@ -201,8 +201,8 @@ extension RecentSearchQRCodeScannerController {
           unescapeOptions: .normal
         )
 
-        let truncationMode: NSLineBreakMode =
-          ["http", "https"].contains(url.scheme ?? "") ? .byTruncatingHead : .byTruncatingTail
+        let isWebPage = url.isWebPage(includeDataURIs: false) || url.scheme == "blob"
+        let truncationMode: NSLineBreakMode = isWebPage ? .byTruncatingHead : .byTruncatingTail
         return (scannedText, truncationMode)
       }
 

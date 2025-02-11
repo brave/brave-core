@@ -108,8 +108,9 @@ class CollapsedURLBarView: UIView {
           Strings.PageSecurityView.signIntoWebsiteURLBarTitle
         } else if URLOrigin(url: $0).url != nil || URIFixup.getURL($0.absoluteString) != nil {
           URLFormatter.formatURLOrigin(
-            forDisplayOmitSchemePathAndTrivialSubdomains: URLOrigin(url: $0).url?.absoluteString
-              ?? $0.absoluteString
+            forDisplayOmitSchemePathAndTrivialSubdomains: URLOrigin(url: $0.strippingBlobURLAuth)
+              .url?.absoluteString
+              ?? $0.strippingBlobURLAuth.absoluteString
           )
         } else {
           String()
