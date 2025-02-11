@@ -38,6 +38,7 @@ target_dmg_path = "$root_out_dir/$brave_dmg"
 _upstream_signed_basename = "$signed_output_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
 _upstream_signed_dmg_path = "$_upstream_signed_basename.dmg"
 _upstream_signed_pkg_path = "$_upstream_signed_basename.pkg"
+_upstream_signed_crx_path = "$_upstream_signed_basename.crx3"
 
 if (is_universal_binary) {
   action("universalize") {
@@ -437,13 +438,13 @@ copy("copy_pkg") {
 }
 
 crx3("crx") {
-  inputs = [ target_dmg_path ]
-  output = "$root_out_dir/$chrome_product_full_name.crx3"
-  base_dir = get_path_info(target_dmg_path, "dir")
+  inputs = [ _upstream_signed_dmg_path ]
+  output = _upstream_signed_crx_path
+  base_dir = get_path_info(_upstream_signed_dmg_path, "dir")
 
   # The private key file is not in Git for obvious reasons. It needs to be
   # copied into this directory manually. Changing the private key requires
   # also changing kBravePublisherKeyHash in crx_verifier.cc.
   key = "//brave/updater/crx-private-key.der"
-  deps = [ ":copy_dmg" ]
+  deps = [ ":_create_dmg_pkg" ]
 }
