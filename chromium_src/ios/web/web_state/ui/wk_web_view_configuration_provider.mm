@@ -3,36 +3,37 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#import <Foundation/Foundation.h>
-#import <WebKit/WebKit.h>
+#include "base/supports_user_data.h"
 
-#include "base/notreached.h"
+// Replace the `WKWebViewConfigurationProvider` constructor call with the Brave
+// subclass inside of `WKWebViewConfigurationProvider::FromBrowserState`
+#define SetUserData(key, ...)                                                \
+  SetUserData(key, base::WrapUnique(new BraveWKWebViewConfigurationProvider( \
+                       browser_state)));
+#include "src/ios/web/web_state/ui/wk_web_view_configuration_provider.mm"
+#undef SetUserData
 
-#define BRAVE_RESET_WITH_WEB_VIEW_CONFIGURATION \
-  brave::ResetWithWebViewConfiguration(configuration_);
+namespace web {
 
-namespace brave {
+void BraveWKWebViewConfigurationProvider::ResetWithWebViewConfiguration(
+    WKWebViewConfiguration* configuration) {
+  WKWebViewConfigurationProvider::ResetWithWebViewConfiguration(configuration);
 
-void ResetWithWebViewConfiguration(WKWebViewConfiguration* configuration) {
   // Adjusts the underlying WKWebViewConfiguration for settings we don't want
   // to inherit from Chromium
 
   // Restore WKWebView long press
   @try {
-    [configuration setValue:@YES forKey:@"longPressActionsEnabled"];
+    [configuration_ setValue:@YES forKey:@"longPressActionsEnabled"];
   } @catch (NSException* exception) {
     NOTREACHED() << "Error setting value for longPressActionsEnabled";
   }
 
   // Restore Apple's safe browsing implementation
-  [[configuration preferences] setFraudulentWebsiteWarningEnabled:YES];
+  [[configuration_ preferences] setFraudulentWebsiteWarningEnabled:YES];
 
   // Reset fullscreen to default as it wasn't set in Brave
-  [[configuration preferences] setElementFullscreenEnabled:NO];
+  [[configuration_ preferences] setElementFullscreenEnabled:NO];
 }
 
-}  // namespace brave
-
-#include "src/ios/web/web_state/ui/wk_web_view_configuration_provider.mm"
-
-#undef BRAVE_RESET_WITH_WEB_VIEW_CONFIGURATION
+}  // namespace web
