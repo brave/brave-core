@@ -98,7 +98,7 @@ export class SettingsBraveSyncPageElement extends SettingsBraveSyncPageElementBa
   /**
    * Handler for when the sync state is pushed from the browser.
    */
-  async handleSyncStatus_(syncStatus: BraveSyncStatus) {
+  handleSyncStatus_(syncStatus: BraveSyncStatus) {
     this.syncStatus_ = syncStatus;
   }
 
