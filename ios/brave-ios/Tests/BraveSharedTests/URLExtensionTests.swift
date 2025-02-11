@@ -206,6 +206,47 @@ class URLExtensionTests: XCTestCase {
     XCTAssertNil(ntpTestURL.urlToShred)
     XCTAssertFalse(ntpTestURL.isShredAvailable)
   }
+
+  func testBlobURLAuthStripping() {
+    var url = URL(string: "blob:https://brave.github.io/1945c9fb-9834-479b-bb3a-e67e3a9408cf")!
+    XCTAssertEqual(
+      url.strippingBlobURLAuth.absoluteString,
+      "blob:https://brave.github.io/1945c9fb-9834-479b-bb3a-e67e3a9408cf"
+    )
+
+    url = URL(
+      string:
+        "blob:https://some.malicious.domain.com@brave.github.io/1945c9fb-9834-479b-bb3a-e67e3a9408cf"
+    )!
+    XCTAssertEqual(
+      url.strippingBlobURLAuth.absoluteString,
+      "blob:https://brave.github.io/1945c9fb-9834-479b-bb3a-e67e3a9408cf"
+    )
+
+    url = URL(string: "blob:https://some.malicious.domain.com@brave.github.io/")!
+    XCTAssertEqual(url.strippingBlobURLAuth.absoluteString, "blob:https://brave.github.io/")
+
+    url = URL(string: "blob:https://some.malicious.domain.com@brave.github.io/?hello=world")!
+    XCTAssertEqual(
+      url.strippingBlobURLAuth.absoluteString,
+      "blob:https://brave.github.io/?hello=world"
+    )
+
+    url = URL(string: "blob:https://some.malicious.domain.com@brave.github.io/helloworld")!
+    XCTAssertEqual(
+      url.strippingBlobURLAuth.absoluteString,
+      "blob:https://brave.github.io/helloworld"
+    )
+
+    url = URL(string: "https://some.malicious.domain.com@brave.github.io/")!
+    XCTAssertEqual(
+      url.strippingBlobURLAuth.absoluteString,
+      "https://some.malicious.domain.com@brave.github.io/"
+    )
+
+    url = URL(string: "https://brave.github.io/")!
+    XCTAssertEqual(url.strippingBlobURLAuth.absoluteString, "https://brave.github.io/")
+  }
 }
 
 private class NavigationDelegate: NSObject, WKNavigationDelegate {
