@@ -30,15 +30,16 @@
 namespace youtube_script_injector {
 
 // static
-void YouTubeTabFeature::MaybeCreateForWebContents(content::WebContents* contents,
-                                                 const int32_t world_id) {
+void YouTubeTabFeature::MaybeCreateForWebContents(
+    content::WebContents* contents,
+    const int32_t world_id) {
   if (!base::FeatureList::IsEnabled(
           youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
     return;
   }
 
   youtube_script_injector::YouTubeTabFeature::CreateForWebContents(contents,
-                                                                  world_id);
+                                                                   world_id);
 }
 
 // static
@@ -48,7 +49,7 @@ void YouTubeTabFeature::EnterPipMode() {
 }
 
 YouTubeTabFeature::YouTubeTabFeature(content::WebContents* web_contents,
-                                   const int32_t world_id)
+                                     const int32_t world_id)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<YouTubeTabFeature>(*web_contents),
       world_id_(world_id),
