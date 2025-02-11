@@ -8,6 +8,7 @@ brave_browser_misc_metrics_sources = [
   "//brave/browser/misc_metrics/profile_misc_metrics_service.cc",
   "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.cc",
   "//brave/browser/misc_metrics/uptime_monitor.cc",
+  "//brave/browser/misc_metrics/usage_clock.cc",
 ]
 
 brave_browser_misc_metrics_deps = [
