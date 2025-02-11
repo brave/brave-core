@@ -117,7 +117,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
     this.checkEndpointValidity_()
   }
 
-  async handleClick_() {
+  handleClick_() {
     // If the user is attempting to use a private endpoint, we should show a
     // modal warning instructing them to enable the optional feature in order
     // to proceed
