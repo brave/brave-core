@@ -17,9 +17,7 @@ packaging_dir = "$brave_packaging_base_dir/" +
                 string_replace("$chrome_product_full_name Packaging", " ", "_")
 packaging_out_dir = "$root_out_dir/packaged"
 
-if (skip_signing || is_universal_binary) {
-  unsigned_app_path = "$root_out_dir/$brave_exe"
-}
+unsigned_app_path = "$root_out_dir/$brave_exe"
 
 if (is_universal_binary) {
   arm64_arch_app_path = unsigned_app_path
