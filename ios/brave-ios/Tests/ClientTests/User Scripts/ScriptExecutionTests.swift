@@ -234,6 +234,7 @@ final class ScriptExecutionTests: XCTestCase {
 
   @MainActor func testCosmeticFilteringScript() async throws {
     let viewController = MockScriptsViewController()
+    let siteURL = URL(string: "https://brave.com")!
     let invalidSelectors = Set([
       "div.invalid-selector:has(span.update-components-actor__description:-abp-contains(/Anzeige|Sponsored|Promoted|Dipromosikan|Propagováno|Promoveret|Gesponsert|Promocionado|促銷內容|Post sponsorisé|프로모션|Post sponsorizzato|广告|プロモーション|Treść promowana|Patrocinado|Promovat|Продвигается|Marknadsfört|Nai-promote|ได้รับการโปรโมท|Öne çıkarılan içerik|Gepromoot|الترويج/))"
     ])
@@ -262,9 +263,7 @@ final class ScriptExecutionTests: XCTestCase {
         "brave.com###test-has:has(a.banner-link)",
       ].joined(separator: "\n")
     )
-    let cosmeticFilterModel = try engine.cosmeticFilterModel(
-      forFrameURL: URL(string: "https://brave.com")!
-    )!
+    let cosmeticFilterModel = try engine.cosmeticFilterModel(forFrameURL: siteURL)!
     // We only care about our AdblockEngine for this test
     let models: [AdBlockGroupsManager.CosmeticFilterModelTuple] = [(false, cosmeticFilterModel)]
     let setup = UserScriptType.ContentCosmeticSetup.makeSetup(
@@ -366,7 +365,7 @@ final class ScriptExecutionTests: XCTestCase {
     // Load test html in the web view
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
-    try await viewController.loadHTMLStringAndWait(htmlString)
+    try await viewController.loadHTMLStringAndWait(htmlString, baseURL: siteURL)
 
     // Inject content cosmetic script into each frame received from SiteStateListener script/handler
     var frameInfos: Set<WKFrameInfo> = .init()
