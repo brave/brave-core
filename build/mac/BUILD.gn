@@ -28,11 +28,6 @@ if (is_universal_binary) {
 
 signed_output_dir = "$root_out_dir/$mac_signed_output_prefix"
 
-signed_app_path = "$signed_output_dir/$brave_channel/$brave_exe"
-if (is_release_channel) {
-  signed_app_path = "$signed_output_dir/stable/$brave_exe"
-}
-
 target_dmg_path = "$root_out_dir/$brave_dmg"
 
 _upstream_signed_basename = "$signed_output_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
@@ -90,9 +85,14 @@ if (is_universal_binary) {
 }
 
 group("brave") {
-  app_path = signed_app_path
   if (skip_signing) {
     app_path = unsigned_app_path
+  } else {
+    if (is_release_channel) {
+      app_path = "$signed_output_dir/stable/$brave_exe"
+    } else {
+      app_path = "$signed_output_dir/$brave_channel/$brave_exe"
+    }
   }
   exe_path = "$app_path/Contents/MacOS/$chrome_product_full_name"
   write_file("$root_out_dir/brave_helper",
