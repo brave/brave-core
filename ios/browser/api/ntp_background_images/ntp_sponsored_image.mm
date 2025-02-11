@@ -86,9 +86,9 @@
   auto campaignId = base::SysUTF8ToNSString(campaign.campaign_id);
   auto backgrounds =
       [[NSMutableArray<NTPSponsoredImageBackground*> alloc] init];
-  for (const auto& background : campaign.backgrounds) {
+  for (const auto& creative : campaign.creatives) {
     [backgrounds addObject:[[NTPSponsoredImageBackground alloc]
-                               initWithSponsoredBackground:background]];
+                               initWithSponsoredBackground:creative]];
   }
   return [self initWithCampaignId:campaignId backgrounds:backgrounds];
 }
@@ -124,7 +124,7 @@
 }
 
 - (instancetype)initWithSponsoredBackground:
-    (const ntp_background_images::SponsoredBackground&)sponsoredBackground {
+    (const ntp_background_images::Creative&)sponsoredBackground {
   auto imagePath =
       [NSURL fileURLWithPath:base::SysUTF8ToNSString(
                                  sponsoredBackground.file_path.value())];

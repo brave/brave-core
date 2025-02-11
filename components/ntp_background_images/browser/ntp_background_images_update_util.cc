@@ -7,7 +7,6 @@
 
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "components/component_updater/component_updater_service.h"
 

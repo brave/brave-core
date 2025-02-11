@@ -6,7 +6,6 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 
 #include <optional>
-#include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
@@ -33,9 +32,7 @@
 namespace ntp_background_images {
 
 namespace {
-
 constexpr int kExpectedSchemaVersion = 1;
-
 }  // namespace
 
 Background::Background() = default;
@@ -62,21 +59,15 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
   }
   base::Value::Dict& root = json_value->GetDict();
 
-  std::optional<int> incomingSchemaVersion = root.FindInt(kSchemaVersionKey);
-  const bool schemaVersionIsValid = incomingSchemaVersion &&
-      *incomingSchemaVersion == kExpectedSchemaVersion;
-  if (!schemaVersionIsValid) {
-    DVLOG(2) << __func__ << "Incoming NTP background images data was not valid."
-             << " Schema version was "
-             << (incomingSchemaVersion ? std::to_string(*incomingSchemaVersion)
-                                       : "missing")
-             << ", but we expected " << kExpectedSchemaVersion;
+  const std::optional<int> schema_version = root.FindInt(kSchemaVersionKey);
+  if (schema_version != kExpectedSchemaVersion) {
     return;
   }
 
-  if (auto* images = root.FindList(kImagesKey)) {
-    for (const auto& item : *images) {
-      const auto& image = item.GetDict();
+  if (const base::Value::List* const images = root.FindList(kImagesKey)) {
+    for (const auto& image_value : *images) {
+      const base::Value::Dict& image = image_value.GetDict();
+
       Background background;
       background.image_file =
           installed_dir.AppendASCII(*image.FindString(kImageSourceKey));
@@ -98,27 +89,21 @@ bool NTPBackgroundImagesData::IsValid() const {
   return !backgrounds.empty();
 }
 
-base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
-  DCHECK(index >= 0 && index < backgrounds.size());
+base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) const {
+  DCHECK(index < backgrounds.size());
 
-  // The |data| should be compliant with NewTab.BackgroundWallpaper type from JS
-  // side.
-  base::Value::Dict data;
-  if (!IsValid())
-    return data;
+  if (!IsValid()) {
+    return {};
+  }
 
-  const std::string wallpaper_image_url =
-      url_prefix + backgrounds[index].image_file.BaseName().AsUTF8Unsafe();
-  // URL is used by NTP WebUI.
-  data.Set(kWallpaperURLKey, wallpaper_image_url);
-  // Path is used by android NTP.
-  data.Set(kWallpaperFilePathKey, backgrounds[index].image_file.AsUTF8Unsafe());
-
-  data.Set(kIsBackgroundKey, true);
-  data.Set(kImageAuthorKey, backgrounds[index].author);
-  data.Set(kImageLinkKey, backgrounds[index].link);
-  data.Set(kWallpaperTypeKey, "brave");
-  return data;
+  return base::Value::Dict()
+      .Set(kWallpaperURLKey,
+           url_prefix + backgrounds[index].image_file.BaseName().AsUTF8Unsafe())
+      .Set(kWallpaperFilePathKey, backgrounds[index].image_file.AsUTF8Unsafe())
+      .Set(kIsBackgroundKey, true)
+      .Set(kImageAuthorKey, backgrounds[index].author)
+      .Set(kImageLinkKey, backgrounds[index].link)
+      .Set(kWallpaperTypeKey, "brave");
 }
 
 }  // namespace ntp_background_images

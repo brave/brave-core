@@ -22,9 +22,9 @@ std::vector<Campaign> Campaigns() {
 
   Campaign campaign;
 
-  SponsoredBackground creative;
+  Creative creative;
   creative.file_path = base::FilePath::FromASCII(kCreativeFilePath);
-  campaign.backgrounds.push_back(creative);
+  campaign.creatives.push_back(creative);
 
   campaigns.push_back(campaign);
   return campaigns;

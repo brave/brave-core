@@ -14,10 +14,8 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/public/ads_util.h"
-#include "brave/components/constants/pref_names.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_image_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
@@ -26,7 +24,6 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/url_data_source.h"
 
@@ -72,14 +69,15 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
           g_brave_browser_process->ntp_background_images_service()) {
     Profile* profile = Profile::FromBrowserContext(browser_context);
     bool is_supported_locale = false;
-    auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
+    brave_ads::AdsService* const ads_service =
+        brave_ads::AdsServiceFactory::GetForProfile(profile);
     if (ads_service) {
       is_supported_locale = brave_ads::IsSupportedRegion();
     }
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPBackgroundImagesSource>(service));
     content::URLDataSource::Add(
-        browser_context, std::make_unique<NTPSponsoredImagesSource>(service));
+        browser_context, std::make_unique<NTPSponsoredImageSource>(service));
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPSponsoredRichMediaSource>(service));

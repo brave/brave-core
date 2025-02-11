@@ -10,7 +10,6 @@
 #include <string>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/task_environment.h"
@@ -20,7 +19,6 @@
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_registry.h"
-#include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -74,7 +72,7 @@ std::unique_ptr<NTPSponsoredImagesData> GetDemoBrandedWallpaper(
 
   Campaign demo_campaign;
   demo_campaign.campaign_id = kCampaignId;
-  demo_campaign.backgrounds = {
+  demo_campaign.creatives = {
       {base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")),
        {3988, 2049},
        demo_logo,
@@ -117,69 +115,71 @@ std::unique_ptr<NTPBackgroundImagesData> GetDemoBackgroundWallpaper() {
 class TestDelegate : public BraveNTPCustomBackgroundService::Delegate {
  public:
   TestDelegate() = default;
+
   ~TestDelegate() override = default;
 
   // Delegate overrides:
-  bool IsCustomImageBackgroundEnabled() const override {
-    return image_enabled_;
-  }
+  bool IsCustomImageBackgroundEnabled() const override { return image_enabled; }
+
   base::FilePath GetCustomBackgroundImageLocalFilePath(
       const GURL& url) const override {
     return base::FilePath();
   }
+
   GURL GetCustomBackgroundImageURL() const override {
     return GURL(std::string(kCustomWallpaperURL) + "foo.jpg");
   }
 
-  bool IsColorBackgroundEnabled() const override { return color_enabled_; }
+  bool IsColorBackgroundEnabled() const override { return color_enabled; }
   std::string GetColor() const override { return "#ff0000"; }
   bool ShouldUseRandomValue() const override { return false; }
   bool HasPreferredBraveBackground() const override { return false; }
   base::Value::Dict GetPreferredBraveBackground() const override { return {}; }
 
-  bool image_enabled_ = false;
-  bool color_enabled_ = false;
+  bool image_enabled = false;
+  bool color_enabled = false;
 };
 #endif
 
 class NTPBackgroundImagesViewCounterTest : public testing::Test {
  public:
   NTPBackgroundImagesViewCounterTest() = default;
+
   ~NTPBackgroundImagesViewCounterTest() override = default;
 
   void SetUp() override {
     // Need ntp_sponsored_images prefs
-    auto* registry = prefs()->registry();
-    ViewCounterService::RegisterProfilePrefs(registry);
-    brave_rewards::RegisterProfilePrefs(registry);
-    auto* local_registry = local_pref_.registry();
+    auto* const pref_registry = prefs()->registry();
+    ViewCounterService::RegisterProfilePrefs(pref_registry);
+    brave_rewards::RegisterProfilePrefs(pref_registry);
+    auto* const local_registry = pref_service_.registry();
     brave::RegisterPrefsForBraveReferralsService(local_registry);
     NTPBackgroundImagesService::RegisterLocalStatePrefs(local_registry);
     ViewCounterService::RegisterLocalStatePrefs(local_registry);
 
-    service_ = std::make_unique<NTPBackgroundImagesService>(nullptr,
-                                                            &local_pref_);
+    service_ = std::make_unique<NTPBackgroundImagesService>(
+        /*component_updater_service=*/nullptr, &pref_service_);
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
     auto delegate = std::make_unique<TestDelegate>();
     delegate_ = delegate.get();
-    custom_bi_service_ =
+    custom_background_service_ =
         std::make_unique<BraveNTPCustomBackgroundService>(std::move(delegate));
     view_counter_ = std::make_unique<ViewCounterService>(
-        service_.get(), custom_bi_service_.get(), &ads_service_mock_, prefs(),
-        &local_pref_,
+        service_.get(), custom_background_service_.get(), &ads_service_mock_,
+        prefs(), &pref_service_,
         // don't need to test p3a, so passing nullptr
         std::unique_ptr<NTPP3AHelper>(),
         /* is_supported_locale */ true);
 #else
     view_counter_ = std::make_unique<ViewCounterService>(
-        service_.get(), nullptr, &ads_service_mock_, prefs(), &local_pref_,
+        service_.get(), nullptr, &ads_service_mock_, prefs(), &pref_service_,
         std::unique_ptr<NTPP3AHelper>(), true);
 #endif
 
     // Set referral service is properly initialized sr component is set.
-    local_pref_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
-    local_pref_.SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
-                        base::Value::Dict());
+    pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+    pref_service_.SetDict(prefs::kNewTabPageCachedSuperReferralComponentInfo,
+                          base::Value::Dict());
   }
 
   void EnableSIPref(bool enable) {
@@ -201,10 +201,10 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }
 
   void InitBackgroundAndSponsoredImageWallpapers() {
-    service_->si_images_data_ = GetDemoBrandedWallpaper(false);
+    service_->sponsored_images_data_ = GetDemoBrandedWallpaper(false);
     EnableSIPref(true);
     EnableNTPBGImagesPref(true);
-    service_->bi_images_data_ = GetDemoBackgroundWallpaper();
+    service_->background_images_data_ = GetDemoBackgroundWallpaper();
 
     EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
     EXPECT_TRUE(view_counter_->IsBackgroundWallpaperActive());
@@ -221,13 +221,13 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     return ad_info;
   }
 
-  int GetInitialCountToBrandedWallpaper() const {
+  size_t GetInitialCountToBrandedWallpaper() const {
     return features::kInitialCountToBrandedWallpaper.Get() - 1;
   }
 
   std::optional<base::Value::Dict> TryGetFirstSponsoredImageWallpaper() {
     // Loading initial count times.
-    for (int i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
+    for (size_t i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
       auto wallpaper = view_counter_->GetCurrentWallpaperForDisplay();
       EXPECT_TRUE(wallpaper->FindBool(ntp_background_images::kIsBackgroundKey)
                       .value_or(false));
@@ -239,19 +239,19 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
 
   bool AdInfoMatchesSponsoredImage(const brave_ads::NewTabPageAdInfo& ad_info,
                                    size_t campaign_index,
-                                   size_t background_index) {
-    return service_->si_images_data_->AdInfoMatchesSponsoredImage(
-        ad_info, campaign_index, background_index);
+                                   size_t creative_index) {
+    return service_->sponsored_images_data_->AdInfoMatchesSponsoredImage(
+        ad_info, campaign_index, creative_index);
   }
 
  protected:
-  base::test::SingleThreadTaskEnvironment task_environment;
-  TestingPrefServiceSimple local_pref_;
+  base::test::SingleThreadTaskEnvironment task_environment_;
+  TestingPrefServiceSimple pref_service_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<NTPBackgroundImagesService> service_;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  std::unique_ptr<BraveNTPCustomBackgroundService> custom_bi_service_;
+  std::unique_ptr<BraveNTPCustomBackgroundService> custom_background_service_;
   raw_ptr<TestDelegate> delegate_ = nullptr;
 #endif
 
@@ -271,24 +271,26 @@ TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveInitially) {
 
 TEST_F(NTPBackgroundImagesViewCounterTest, SINotActiveWithBadData) {
   // Set some bad data explicitly.
-  service_->si_images_data_ = std::make_unique<NTPSponsoredImagesData>();
-  service_->sr_images_data_ = std::make_unique<NTPSponsoredImagesData>();
+  service_->sponsored_images_data_ = std::make_unique<NTPSponsoredImagesData>();
+  service_->super_referrals_images_data_ =
+      std::make_unique<NTPSponsoredImagesData>();
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, BINotActiveWithBadData) {
   // Set some bad data explicitly.
-  service_->bi_images_data_ = std::make_unique<NTPBackgroundImagesData>();
+  service_->background_images_data_ =
+      std::make_unique<NTPBackgroundImagesData>();
   EXPECT_FALSE(view_counter_->IsBackgroundWallpaperActive());
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveOptedOut) {
   // Even with good data, wallpaper should not be active if user pref is off.
-  service_->si_images_data_ = GetDemoBrandedWallpaper(false);
+  service_->sponsored_images_data_ = GetDemoBrandedWallpaper(false);
   EnableSIPref(false);
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 
-  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
+  service_->super_referrals_images_data_ = GetDemoBrandedWallpaper(true);
   EnableSRPref(false);
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }
@@ -296,7 +298,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveOptedOut) {
 TEST_F(NTPBackgroundImagesViewCounterTest,
        ActiveOptedInWithNTPBackgoundOption) {
   EnableNTPBGImagesPref(false);
-  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
+  service_->super_referrals_images_data_ = GetDemoBrandedWallpaper(true);
 
   // Even with bg images turned off, SR wallpaper should be active.
   EnableSRPref(true);
@@ -313,7 +315,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
 TEST_F(NTPBackgroundImagesViewCounterTest,
        BINotActiveWithNTPBackgoundOptionOptedOut) {
   EnableNTPBGImagesPref(false);
-  service_->bi_images_data_ = GetDemoBackgroundWallpaper();
+  service_->background_images_data_ = GetDemoBackgroundWallpaper();
 #if BUILDFLAG(IS_ANDROID)
   // On android, |kNewTabPageShowBackgroundImage| prefs is not used for
   // controlling bg option. So view counter can give data.
@@ -325,11 +327,11 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
 
 // Branded wallpaper is active if one of them is available.
 TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
-  service_->si_images_data_ = GetDemoBrandedWallpaper(false);
+  service_->sponsored_images_data_ = GetDemoBrandedWallpaper(false);
   EnableSIPref(true);
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 
-  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
+  service_->super_referrals_images_data_ = GetDemoBrandedWallpaper(true);
   EnableSRPref(true);
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 
@@ -350,8 +352,8 @@ TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
 TEST_F(NTPBackgroundImagesViewCounterTest, PrefsWithModelTest) {
   auto& model = view_counter_->model_;
 
-  EXPECT_EQ(features::kInitialCountToBrandedWallpaper.Get() - 1,
-            model.show_branded_wallpaper_);
+  EXPECT_EQ(model.show_branded_wallpaper_,
+            features::kInitialCountToBrandedWallpaper.Get() - 1);
   EXPECT_TRUE(model.show_wallpaper_);
   EXPECT_TRUE(model.show_branded_wallpaper_);
   EXPECT_FALSE(model.always_show_branded_wallpaper_);
@@ -370,19 +372,20 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ActiveInitiallyOptedIn) {
   // Sanity check that the default is still to be opted-in.
   // If this gets manually changed, then this test should be manually changed
   // too.
-  service_->si_images_data_ = GetDemoBrandedWallpaper(false);
+  service_->sponsored_images_data_ = GetDemoBrandedWallpaper(false);
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 
-  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
+  service_->super_referrals_images_data_ = GetDemoBrandedWallpaper(true);
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 }
 
 #if !BUILDFLAG(IS_LINUX)
 // Super referral feature is disabled on linux.
 TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
-  service_->sr_images_data_ = GetDemoBrandedWallpaper(true);
-  service_->si_images_data_ = GetDemoBrandedWallpaper(false);
-  view_counter_->OnUpdated(service_->sr_images_data_.get());
+  service_->super_referrals_images_data_ = GetDemoBrandedWallpaper(true);
+  service_->sponsored_images_data_ = GetDemoBrandedWallpaper(false);
+  view_counter_->OnSponsoredImagesDataDidUpdate(
+      service_->super_referrals_images_data_.get());
   EXPECT_TRUE(view_counter_->model_.always_show_branded_wallpaper_);
 
   // Initial count is not changed because branded wallpaper is always
@@ -392,8 +395,9 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
   view_counter_->RegisterPageView();
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
 
-  service_->sr_images_data_ = std::make_unique<NTPSponsoredImagesData>();
-  view_counter_->OnSuperReferralEnded();
+  service_->super_referrals_images_data_ =
+      std::make_unique<NTPSponsoredImagesData>();
+  view_counter_->OnSuperReferralCampaignDidEnd();
   EXPECT_FALSE(view_counter_->model_.always_show_branded_wallpaper_);
   EXPECT_EQ(expected_count, view_counter_->model_.count_to_branded_wallpaper_);
 
@@ -404,31 +408,30 @@ TEST_F(NTPBackgroundImagesViewCounterTest, ModelTest) {
 #endif
 
 TEST_F(NTPBackgroundImagesViewCounterTest, GetCurrentWallpaperTest) {
-  service_->bi_images_data_ = GetDemoBackgroundWallpaper();
+  service_->background_images_data_ = GetDemoBackgroundWallpaper();
   EXPECT_TRUE(view_counter_->IsBackgroundWallpaperActive());
-  auto background = view_counter_->GetCurrentWallpaper();
-  std::string* bg_url = background->FindString(kWallpaperURLKey);
-  EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg", *bg_url);
+  auto wallpaper = view_counter_->GetCurrentWallpaper();
+  EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg",
+            *wallpaper->FindString(kWallpaperURLKey));
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   // Enable custom image background.
-  delegate_->image_enabled_ = true;
-  background = view_counter_->GetCurrentWallpaper();
-  bg_url = background->FindString(kWallpaperURLKey);
-  EXPECT_TRUE(bg_url->starts_with(kCustomWallpaperURL))
-      << "actual url " << *bg_url;
+  delegate_->image_enabled = true;
+  wallpaper = view_counter_->GetCurrentWallpaper();
+  EXPECT_TRUE(wallpaper->FindString(kWallpaperURLKey)
+                  ->starts_with(kCustomWallpaperURL));
 
   // Disable custom image background.
-  delegate_->image_enabled_ = false;
-  background = view_counter_->GetCurrentWallpaper();
-  bg_url = background->FindString(kWallpaperURLKey);
-  EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg", *bg_url);
+  delegate_->image_enabled = false;
+  wallpaper = view_counter_->GetCurrentWallpaper();
+  EXPECT_EQ("chrome://background-wallpaper/wallpaper1.jpg",
+            *wallpaper->FindString(kWallpaperURLKey));
 
   // Enable color background
-  delegate_->color_enabled_ = true;
-  background = view_counter_->GetCurrentWallpaper();
-  EXPECT_FALSE(background->FindString(kWallpaperURLKey));
-  EXPECT_EQ(delegate_->GetColor(), *background->FindString(kWallpaperColorKey));
+  delegate_->color_enabled = true;
+  wallpaper = view_counter_->GetCurrentWallpaper();
+  EXPECT_FALSE(wallpaper->FindString(kWallpaperURLKey));
+  EXPECT_EQ(delegate_->GetColor(), *wallpaper->FindString(kWallpaperColorKey));
 #endif
 }
 
@@ -494,13 +497,12 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
                    .value_or(true));
   ASSERT_TRUE(
       si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
-  EXPECT_EQ(kCreativeInstanceId,
-            *(si_wallpaper->FindString(
-                ntp_background_images::kCreativeInstanceIDKey)));
-  ASSERT_TRUE(si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
   EXPECT_EQ(
-      ad_info.placement_id,
-      *(si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey)));
+      kCreativeInstanceId,
+      *si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
+  ASSERT_TRUE(si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
+  EXPECT_EQ(ad_info.placement_id,
+            *si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, WrongSponsoredImageAdServed) {

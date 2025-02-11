@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 namespace ntp_background_images {
 struct NTPSponsoredImagesData;
 struct Campaign;
-struct SponsoredBackground;
+struct Creative;
 struct Logo;
 struct TopSite;
 }  // namespace ntp_background_images
@@ -30,7 +30,7 @@ struct TopSite;
 
 @interface NTPSponsoredImageBackground (Private)
 - (instancetype)initWithSponsoredBackground:
-    (const ntp_background_images::SponsoredBackground&)sponsoredBackground;
+    (const ntp_background_images::Creative&)sponsoredBackground;
 @end
 
 @interface NTPSponsoredImageLogo (Private)

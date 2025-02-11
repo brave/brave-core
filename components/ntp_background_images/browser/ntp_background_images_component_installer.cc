@@ -5,16 +5,15 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_component_installer.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_update_util.h"
-#include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"

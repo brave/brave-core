@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_CUSTOM_IMAGES_SOURCE_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_CUSTOM_IMAGES_SOURCE_H_
 
-#include <memory>
 #include <string>
 
 #include "base/memory/raw_ptr.h"

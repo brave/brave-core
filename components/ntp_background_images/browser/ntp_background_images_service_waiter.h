@@ -29,25 +29,25 @@ class NTPBackgroundImagesServiceWaiter
 
   ~NTPBackgroundImagesServiceWaiter() override;
 
-  void WaitForOnSponsoredImagesUpdated();
-  void WaitForOnBackgroundImagesUpdated();
+  void WaitForOnBackgroundImagesDataDidUpdate();
+  void WaitForOnSponsoredImagesDataDidUpdate();
   void WaitForOnSponsoredContentDidUpdate();
   void WaitForOnSuperReferralEnded();
 
  private:
   // NTPBackgroundImagesService::Observer:
-  void OnUpdated(NTPSponsoredImagesData* data) override;
-  void OnUpdated(NTPBackgroundImagesData* data) override;
-  void OnSponsoredContentDidUpdate(const base::Value::Dict& data) override;
-  void OnSuperReferralEnded() override;
+  void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
+  void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
+  void OnSponsoredContentDidUpdate(const base::Value::Dict& dict) override;
+  void OnSuperReferralCampaignDidEnd() override;
 
  private:
   const raw_ref<NTPBackgroundImagesService> service_;
 
-  base::RunLoop on_sponsored_images_updated_run_loop_;
-  base::RunLoop on_background_images_updated_run_loop_;
+  base::RunLoop on_background_images_did_update_run_loop_;
+  base::RunLoop on_sponsored_images_data_did_update_run_loop_;
   base::RunLoop on_sponsored_content_did_update_run_loop_;
-  base::RunLoop on_super_referral_ended_run_loop_;
+  base::RunLoop on_super_referral_campaign_did_end_run_loop_;
 };
 
 }  // namespace ntp_background_images

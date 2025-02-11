@@ -56,16 +56,16 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
     return DenyAccess(std::move(callback));
   }
 
-  const NTPSponsoredImagesData* const data =
+  const NTPSponsoredImagesData* const images_data =
       service_->GetBrandedImagesData(/*super_referral=*/false);
-  if (!data) {
+  if (!images_data) {
     return DenyAccess(std::move(callback));
   }
 
   const base::FilePath request_path =
       base::FilePath::FromUTF8Unsafe(URLToRequestPath(url));
   const std::optional<base::FilePath> file_path =
-      MaybeGetFilePathForRequestPath(request_path, data->campaigns);
+      MaybeGetFilePathForRequestPath(request_path, images_data->campaigns);
   if (!file_path) {
     return DenyAccess(std::move(callback));
   }

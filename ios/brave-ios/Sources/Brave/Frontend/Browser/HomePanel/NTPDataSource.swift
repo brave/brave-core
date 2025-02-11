@@ -155,12 +155,12 @@ public class NTPDataSource {
           if let campaign = campaigns.randomElement() {
             // Exclude sponsored video backgrounds if the user has selected
             // the `Sponsored Images` option in settings.
-            let filteredBackgrounds = campaign.backgrounds.filter {
+            let filteredCreatives = campaign.backgrounds.filter {
               $0.logo.imagePath != nil && (!$0.isVideoFile || isSponsoredVideoAllowed)
             }
-            if !filteredBackgrounds.isEmpty {
+            if !filteredCreatives.isEmpty {
               return (
-                filteredBackgrounds.map(NTPWallpaper.sponsoredMedia), .sponsoredRotation
+                filteredCreatives.map(NTPWallpaper.sponsoredMedia), .sponsoredRotation
               )
             }
           }

@@ -51,7 +51,7 @@ class NTPSponsoredRichMediaWithCSPViolationBrowserTest
     NTPBackgroundImagesServiceWaiter waiter(*ntp_background_images_service);
     ntp_background_images_service->OnSponsoredComponentReady(
         /*is_super_referral=*/false, component_file_path);
-    waiter.WaitForOnSponsoredImagesUpdated();
+    waiter.WaitForOnSponsoredContentDidUpdate();
   }
 
   content::WebContents* GetActiveWebContents() {
