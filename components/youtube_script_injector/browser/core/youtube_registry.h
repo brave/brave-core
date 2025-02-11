@@ -20,10 +20,10 @@
 class GURL;
 
 namespace youtube_script_injector {
-// Needed for testing private methods in YouTubeTabHelperBrowserTest.
-FORWARD_DECLARE_TEST(YouTubeTabHelperBrowserTest, NoMatch);
-FORWARD_DECLARE_TEST(YouTubeTabHelperBrowserTest, RuleMatchTestScriptFalse);
-FORWARD_DECLARE_TEST(YouTubeTabHelperBrowserTest, RuleMatchTestScriptTrue);
+// Needed for testing private methods in YouTubeTabFeatureBrowserTest.
+FORWARD_DECLARE_TEST(YouTubeTabFeatureBrowserTest, NoMatch);
+FORWARD_DECLARE_TEST(YouTubeTabFeatureBrowserTest, RuleMatchTestScriptFalse);
+FORWARD_DECLARE_TEST(YouTubeTabFeatureBrowserTest, RuleMatchTestScriptTrue);
 
 // This class loads and stores the rules from the youtube.json file.
 // It is also used for matching based on the URL.
@@ -48,7 +48,7 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
  private:
   YouTubeRegistry();
 
-  // These methods are also called by YouTubeTabHelperBrowserTest.
+  // These methods are also called by YouTubeTabFeatureBrowserTest.
   // Given contents of youtube.json, loads the Json scripts from files into
   // memory. Called by |LoadJson| after the file is read.
   void OnLoadJson(const std::string& data);
@@ -60,13 +60,13 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeRegistry {
 
   base::WeakPtrFactory<YouTubeRegistry> weak_factory_{this};
 
-  // Needed for testing private methods in YouTubeTabHelperBrowserTest.
-  FRIEND_TEST_ALL_PREFIXES(YouTubeTabHelperBrowserTest, NoMatch);
-  FRIEND_TEST_ALL_PREFIXES(YouTubeTabHelperBrowserTest,
+  // Needed for testing private methods in YouTubeTabFeatureBrowserTest.
+  FRIEND_TEST_ALL_PREFIXES(YouTubeTabFeatureBrowserTest, NoMatch);
+  FRIEND_TEST_ALL_PREFIXES(YouTubeTabFeatureBrowserTest,
                            RuleMatchTestScriptFalse);
-  FRIEND_TEST_ALL_PREFIXES(YouTubeTabHelperBrowserTest,
+  FRIEND_TEST_ALL_PREFIXES(YouTubeTabFeatureBrowserTest,
                            RuleMatchTestScriptTrue);
-  friend class YouTubeTabHelperBrowserTest;
+  friend class YouTubeTabFeatureBrowserTest;
 
   friend struct base::DefaultSingletonTraits<YouTubeRegistry>;
 };

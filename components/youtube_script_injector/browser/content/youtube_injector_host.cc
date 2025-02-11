@@ -5,7 +5,7 @@
 
 #include "brave/components/youtube_script_injector/browser/content/youtube_injector_host.h"
 
-#include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"
+#include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 
 namespace youtube_script_injector {
@@ -15,7 +15,7 @@ YouTubeInjectorHost::YouTubeInjectorHost(const GURL& url) : url_(url) {}
 
 void YouTubeInjectorHost::NativePipMode() {
   if (YouTubeRegistry::IsYouTubeDomain(url_)) {
-    YouTubeTabHelper::EnterPipMode();
+    YouTubeTabFeature::EnterPipMode();
   }
 }
 }  // namespace youtube_script_injector
