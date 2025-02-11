@@ -137,7 +137,7 @@ export class SettingsBraveSyncConfigureElement extends SettingsBraveSyncConfigur
     router.navigateTo((router.getRoutes() as {BRAVE_SYNC: Route}).BRAVE_SYNC);
   }
 
-  async onPermanentlyDeleteSyncAccount_() {
+  onPermanentlyDeleteSyncAccount_() {
     // Clear sync code because after permanently deleting the chain user might
     // use the same page to create a new sync chain without reload. In worse
     // case, we will reload the sync code
