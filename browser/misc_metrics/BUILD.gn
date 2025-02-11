@@ -22,7 +22,6 @@ static_library("misc_metrics_impl") {
     "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
     "//brave/browser/misc_metrics/uptime_monitor.h",
-    "//brave/browser/misc_metrics/usage_clock.h",
   ]
 
   deps = [
@@ -52,6 +51,7 @@ static_library("misc_metrics_impl") {
       "//brave/browser/misc_metrics/extension_metrics.h",
       "//brave/browser/misc_metrics/theme_metrics.cc",
       "//brave/browser/misc_metrics/theme_metrics.h",
+      "//brave/browser/misc_metrics/usage_clock.h",
       "//brave/browser/misc_metrics/vertical_tab_metrics.cc",
       "//brave/browser/misc_metrics/vertical_tab_metrics.h",
     ]
@@ -74,7 +74,6 @@ source_set("unit_tests") {
     "doh_metrics_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_unittest.cc",
-    "usage_clock_unittest.cc",
   ]
 
   deps = [
@@ -98,6 +97,7 @@ source_set("unit_tests") {
     sources += [
       "extension_metrics_unittest.cc",
       "theme_metrics_unittest.cc",
+      "usage_clock_unittest.cc",
     ]
 
     deps += [
