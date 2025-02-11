@@ -159,6 +159,9 @@ TEST(HDKeyEd25519Slip23UnitTest, SignAndVerify) {
   const auto sig_a = key->Sign(msg_a);
   const auto sig_b = key->Sign(msg_b);
 
+  EXPECT_EQ(sig_a->size(), 64u);
+  EXPECT_EQ(sig_b->size(), 64u);
+
   EXPECT_TRUE(VerifySignature(*key, msg_a, *sig_a));
   EXPECT_TRUE(VerifySignature(*key, msg_b, *sig_b));
 
