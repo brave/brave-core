@@ -288,6 +288,18 @@
   <message name="IDS_CHAT_UI_MENU_DELETE_CONVERSATION" desc="Menu entry for removing a conversation">
     Delete conversation
   </message>
+  <message name="IDS_CHAT_UI_REASONING_LABEL" desc="A label shown while AI Assistant is reasoning the conversation response">
+    Reasoning...
+  </message>
+  <message name="IDS_CHAT_UI_REASONING_COMPLETE_LABEL" desc="A label show after the AI Assistant is done reasoning the conversation response">
+    Reasoning complete
+  </message>
+  <message name="IDS_CHAT_UI_HIDE_DETAILS_BUTTON_LABEL" desc="A button label to hide details of the AI Assistant reasoning">
+    Hide details
+  </message>
+  <message name="IDS_CHAT_UI_SHOW_DETAILS_BUTTON_LABEL" desc="A button label to show details of the AI Assistant reasoning">
+    Show details
+  </message>
   <message name="IDS_CHAT_UI_SEND_CHAT_BUTTON_LABEL" desc="A button label for sending a chat message">
     Send message to Leo
   </message>
