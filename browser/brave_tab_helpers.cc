@@ -46,10 +46,6 @@
 #include "printing/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"  // nogncheck
-#endif
-
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
@@ -106,10 +102,7 @@ namespace brave {
 void AttachTabHelpers(content::WebContents* web_contents) {
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
-#if BUILDFLAG(IS_ANDROID)
-  youtube_script_injector::YouTubeTabHelper::MaybeCreateForWebContents(
-      web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-#else
+#if !BUILDFLAG(IS_ANDROID)
   // Add tab helpers here unless they are intended for android too
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
   brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
