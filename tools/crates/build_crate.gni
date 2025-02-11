@@ -4,10 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 template("build_crate") {
-  output = target_name
-  release_dir = get_path_info(output, "dir")
-  target_dir = get_path_info(release_dir, "dir")
-  crate = get_path_info(target_dir, "name")
+  crate = target_name
+  assert(
+      defined(invoker["${crate}_exe"]),
+      "Please add ${crate}_exe to //brave/tools/crates/config.gni (or to $crate itself)!")
+  crate_exe = invoker["${crate}_exe"]
 
   action("build_$crate") {
     assert(current_toolchain == host_toolchain)
@@ -26,7 +27,7 @@ template("build_crate") {
       "Cargo.lock",
     ]
 
-    outputs = [ output ]
+    outputs = [ crate_exe ]
 
     # To avoid irreproducible builds,
     # `build_crate`s MUST always build with `cargo vendor`ed deps,
@@ -43,7 +44,7 @@ template("build_crate") {
       "--config",
       rebase_path(".cargo/config.toml"),
       "--target-dir",
-      rebase_path(target_dir),
+      rebase_path(get_path_info(crate_exe, "dir") + "/.."),
       "--frozen",
       "-p",
       string_replace(crate, "_", "-"),

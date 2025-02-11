@@ -6,16 +6,16 @@
 import("//brave/tools/crates/build_crate.gni")
 import("//brave/tools/crates/config.gni")
 
-build_crate(cargo_audit_exe) {
+build_crate("cargo_audit") {
 }
 
-build_crate(wasm_bindgen_cli_exe) {
+build_crate("wasm_bindgen_cli") {
 }
 
-build_crate(wasm_opt_exe) {
+build_crate("wasm_opt") {
 }
 
-build_crate(wasm_pack_exe) {
+build_crate("wasm_pack") {
   deps = [
     ":build_wasm_bindgen_cli($host_toolchain)",
     ":build_wasm_opt($host_toolchain)",
