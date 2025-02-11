@@ -5,7 +5,7 @@
 
 #include "brave/components/youtube_script_injector/renderer/youtube_render_frame_observer.h"
 
-#include "brave/components/youtube_script_injector/browser/content/youtube_tab_helper.h"
+#include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
