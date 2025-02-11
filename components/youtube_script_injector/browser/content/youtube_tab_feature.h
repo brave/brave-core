@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_TAB_HELPER_H_
-#define BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_TAB_FEATURE_H_
+#define BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_TAB_FEATURE_H_
 
 #include <string>
 
@@ -26,16 +26,16 @@ class YouTubeRegistry;
 
 // Used to inject JS scripts into the page.
 class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
-    YouTubeTabHelper final
+    YouTubeTabFeature final
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<YouTubeTabHelper> {
+      public content::WebContentsUserData<YouTubeTabFeature> {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents,
                                         const int32_t world_id);
   static void EnterPipMode();
-  ~YouTubeTabHelper() override;
-  YouTubeTabHelper(const YouTubeTabHelper&) = delete;
-  YouTubeTabHelper& operator=(const YouTubeTabHelper&) = delete;
+  ~YouTubeTabFeature() override;
+  YouTubeTabFeature(const YouTubeTabFeature&) = delete;
+  YouTubeTabFeature& operator=(const YouTubeTabFeature&) = delete;
   bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents);
   bool AreYouTubeExtraControlsEnabled(content::WebContents* contents);
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>& GetRemote(
@@ -48,13 +48,13 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
       const content::GlobalRenderFrameHostId& render_frame_host_id,
       blink::mojom::UserActivationOption activation,
       std::string script);
-  base::WeakPtr<YouTubeTabHelper> GetWeakPtr() {
+  base::WeakPtr<YouTubeTabFeature> GetWeakPtr() {
     return weak_factory_.GetWeakPtr();
   }
 
  private:
-  YouTubeTabHelper(content::WebContents*, const int32_t world_id);
-  friend class content::WebContentsUserData<YouTubeTabHelper>;
+  YouTubeTabFeature(content::WebContents*, const int32_t world_id);
+  friend class content::WebContentsUserData<YouTubeTabFeature>;
 
   // content::WebContentsObserver overrides
 
@@ -84,11 +84,11 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
   // The remote used to send the script to the renderer.
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
-  base::WeakPtrFactory<YouTubeTabHelper> weak_factory_{this};
+  base::WeakPtrFactory<YouTubeTabFeature> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace youtube_script_injector
 
-#endif  // BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_TAB_FEATURE_H_
