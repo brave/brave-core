@@ -193,6 +193,7 @@ class AdBlockSubpage extends AdBlockSubpageBase {
 
   private handleSave_(e: CustomEvent) {
     const value = e.detail.value
+    console.log("[CF] handleSave_ val:" + value)
     this.browserProxy_.updateCustomFilters(value)
   }
 

@@ -287,13 +287,14 @@ void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
 void AdBlockEngine::OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
                                       const std::string& resources_json) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
+LOG(INFO) << "[CF] AdBlockEngine::OnFilterSetLoaded #100";
   base::ElapsedTimer timer;
   TRACE_EVENT_BEGIN1("brave.adblock", "MakeEngineWithRules",
                      "is_default_engine", is_default_engine_);
 
   auto result = adblock::engine_from_filter_set(std::move(filter_set));
 
+LOG(INFO) << "[CF] AdBlockEngine::OnFilterSetLoaded #200";
   TRACE_EVENT_END0("brave.adblock", "MakeEngineWithRules");
   if (is_default_engine_) {
     base::UmaHistogramTimes("Brave.Adblock.MakeEngineWithRules.Default",
@@ -303,12 +304,15 @@ void AdBlockEngine::OnFilterSetLoaded(rust::Box<adblock::FilterSet> filter_set,
                             timer.Elapsed());
   }
 
+LOG(INFO) << "[CF] AdBlockEngine::OnFilterSetLoaded #300";
   if (result.result_kind != adblock::ResultKind::Success) {
     VLOG(0) << "AdBlockEngine::OnFilterSetLoaded failed: "
             << result.error_message.c_str();
     return;
   }
+LOG(INFO) << "[CF] AdBlockEngine::OnFilterSetLoaded #400";
   UpdateAdBlockClient(std::move(result.value), resources_json);
+LOG(INFO) << "[CF] AdBlockEngine::OnFilterSetLoaded #500";
 }
 
 void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,

@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "base/logging.h"
 
 namespace brave_shields {
 
@@ -76,9 +77,11 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
   if (!local_state_) {
     return false;
   }
+LOG(INFO) << "[CF] UpdateCustomFilters #100";
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
 
   NotifyObservers(engine_is_default_);
+LOG(INFO) << "[CF] UpdateCustomFilters #200";
 
   return true;
 }
@@ -88,6 +91,7 @@ bool AdBlockCustomFiltersProvider::UpdateCustomFiltersFromSettings(
   if (!developer_mode_enabled_) {
     return false;
   }
+  LOG(INFO) << "[CF] UpdateCustomFiltersFromSettings #100";
   return UpdateCustomFilters(custom_filters);
 }
 

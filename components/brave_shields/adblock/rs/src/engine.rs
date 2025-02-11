@@ -5,6 +5,7 @@
 
 use std::collections::HashSet;
 use std::str::Utf8Error;
+use std::panic;
 
 use adblock::lists::FilterSet as InnerFilterSet;
 use adblock::resources::{MimeType, Resource, ResourceType};
@@ -49,8 +50,13 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
 /// Creates a new engine with rules from a given filter set.
 pub fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {
-        let engine = InnerEngine::from_filter_set(filter_set.0, true);
-        Ok(Box::new(Engine { engine }))
+//        panic::catch_unwind(|| {
+            println!("[CF] Rust engine_from_filter_set");
+            let engine = InnerEngine::from_filter_set(filter_set.0, true);
+            Ok(Box::new(Engine { engine }))
+//        })
+//        .map_err(|e| InternalError::GenericError(format!("{:?}", e)))
+//        .and_then(|result| result)
     }()
     .into()
 }

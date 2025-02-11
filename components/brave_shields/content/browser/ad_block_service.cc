@@ -62,6 +62,7 @@ void AdBlockService::SourceProviderObserver::OnChanged(bool is_default_engine) {
     // Skip updates of another engine.
     return;
   }
+  LOG(INFO) << "[CF] AdBlockService::SourceProviderObserver::OnChanged #100";
   auto on_loaded_cb = base::BindOnce(
       &AdBlockService::SourceProviderObserver::OnFilterSetCallbackLoaded,
       weak_factory_.GetWeakPtr());

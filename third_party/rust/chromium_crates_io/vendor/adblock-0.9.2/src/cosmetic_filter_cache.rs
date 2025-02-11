@@ -118,6 +118,7 @@ impl CosmeticFilterCache {
     }
 
     pub fn add_filter(&mut self, rule: CosmeticFilter) {
+        println!("[CF] CosmeticFilterCache::add_filter {:?}", rule);
         if rule.has_hostname_constraint() {
             if let Some(generic_rule) = rule.hidden_generic_rule() {
                 self.add_generic_filter(generic_rule);
@@ -130,7 +131,15 @@ impl CosmeticFilterCache {
 
     /// Add a filter, assuming it has already been determined to be a generic rule
     fn add_generic_filter(&mut self, rule: CosmeticFilter) {
-        let selector = rule.plain_css_selector().expect("Procedural cosmetic filters cannot be generic").to_string();
+        let selector_opt = rule.plain_css_selector();
+        if selector_opt.is_none() {
+            return; // TODO "Procedural cosmetic filters cannot be generic"
+        }
+        println!("[CF] CosmeticFilterCache::add_generic_filter {:?}", rule);
+        let selector = selector_opt.unwrap()
+            //.expect("Procedural cosmetic filters cannot be generic")
+            .to_string();
+        println!("[CF] CosmeticFilterCache::add_generic_filter #100");
         if selector.starts_with('.') {
             if let Some(key) = key_from_selector(&selector) {
                 assert!(key.starts_with('.'));

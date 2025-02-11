@@ -289,6 +289,7 @@ void BraveAdBlockHandler::UpdateCustomFilters(const base::Value::List& args) {
   if (!args[0].is_string()) {
     return;
   }
+LOG(INFO) << "[CF] UpdateCustomFilters #100";
 
   std::string custom_filters = args[0].GetString();
   g_brave_browser_process->ad_block_service()

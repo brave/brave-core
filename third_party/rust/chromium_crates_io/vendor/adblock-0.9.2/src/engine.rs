@@ -93,12 +93,13 @@ impl Engine {
     /// Loads rules from the given `FilterSet`. It is recommended to use a `FilterSet` when adding
     /// rules from multiple sources.
     pub fn from_filter_set(set: FilterSet, optimize: bool) -> Self {
+        println!("[CF] from_filter_set #100");
         let FilterSet { network_filters, cosmetic_filters, .. } = set;
 
         let blocker_options = BlockerOptions {
             enable_optimizations: optimize,
         };
-
+        println!("[CF] from_filter_set #200");
         Self {
             blocker: Blocker::new(network_filters, &blocker_options),
             cosmetic_cache: CosmeticFilterCache::from_rules(cosmetic_filters),
