@@ -11,11 +11,6 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "ui/menus/simple_menu_model.h"
 
-BraveSystemMenuModelBuilder::BraveSystemMenuModelBuilder(
-    ui::AcceleratorProvider* provider,
-    Browser* browser)
-    : SystemMenuModelBuilder(provider, browser) {}
-
 BraveSystemMenuModelBuilder::~BraveSystemMenuModelBuilder() = default;
 
 void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(

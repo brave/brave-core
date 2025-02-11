@@ -11,8 +11,7 @@
 // This class can be used to update toolbar/frame context menus.
 class BraveSystemMenuModelBuilder : public SystemMenuModelBuilder {
  public:
-  BraveSystemMenuModelBuilder(ui::AcceleratorProvider* provider,
-                              Browser* browser);
+  using SystemMenuModelBuilder::SystemMenuModelBuilder;
   virtual ~BraveSystemMenuModelBuilder();
 
  private:
