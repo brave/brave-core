@@ -98,14 +98,6 @@ group("brave") {
              [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
 }
 
-ds_store_file_name = "DS_Store"
-dmg_icon_file_name = "dmg"
-
-if (!is_release_channel) {
-  ds_store_file_name = "DS_Store.$brave_channel"
-  dmg_icon_file_name = "dmg-$brave_channel"
-}
-
 action("generate_dsa_sig_for_dmg") {
   script = "generate_sig.py"
 
@@ -381,11 +373,19 @@ copy("dmg_background_image") {
 }
 
 copy("dmg_icon") {
+  dmg_icon_file_name = "dmg"
+  if (!is_release_channel) {
+    dmg_icon_file_name = "dmg-$brave_channel"
+  }
   sources = [ "$dmg_icon_file_name.icns" ]
   outputs = [ "$packaging_dir/chrome_dmg_icon.icns" ]
 }
 
 copy("ds_store") {
+  ds_store_file_name = "DS_Store"
+  if (!is_release_channel) {
+    ds_store_file_name = "DS_Store.$brave_channel"
+  }
   sources = [ "DS_Store-files/$ds_store_file_name" ]
   outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
 }
