@@ -27,7 +27,9 @@ if (is_universal_binary) {
 
 target_dmg_path = "$root_out_dir/$brave_dmg"
 
-upstream_packaged_basename = "$packaging_out_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
+upstream_packaged_basename =
+    "$packaging_out_dir/" + string_replace(chrome_product_full_name, " ", "") +
+    "-$chrome_version_full"
 upstream_dmg_path = "$upstream_packaged_basename.dmg"
 upstream_pkg_path = "$upstream_packaged_basename.pkg"
 upstream_crx_path = "$upstream_packaged_basename.crx3"
@@ -84,6 +86,7 @@ if (is_universal_binary) {
 # //brave depends on this via "build/$target_os:brave".
 group("brave") {
   exe_path = "$unsigned_app_path/Contents/MacOS/$chrome_product_full_name"
+
   # start.js uses this file to know which binary to run.
   write_file("$root_out_dir/brave_helper",
              [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
@@ -243,15 +246,15 @@ copy("copies") {
       channel_nonempty = brave_channel
     }
     provisioning_profile_name =
-      "$channel_nonempty.9c57a508dc89402964eb013d30ef6df4da849aa9"
+        "$channel_nonempty.9c57a508dc89402964eb013d30ef6df4da849aa9"
   } else {
     # an empty dummy file just to simplify things
     provisioning_profile_name = "dummy"
   }
 
   sources = [
+    "//brave/app/helper-entitlements.plist",
     "//brave/build/mac/signing/${provisioning_profile_name}.provisionprofile",
-    "//brave/app/helper-entitlements.plist"
   ]
 
   public_deps = [ "//chrome/installer/mac" ]
@@ -317,6 +320,7 @@ action("_create_dmg_pkg") {
     rebase_path(root_build_dir, root_build_dir),
     "--output",
     rebase_path(packaging_out_dir, root_build_dir),
+
     # sign_chrome.py requires --identity even when signing is skipped.
     "--identity=$mac_signing_identifier",
     "--installer-identity=$installer_identity",
@@ -339,8 +343,8 @@ action("_create_dmg_pkg") {
       "--team-id",
       chrome_mac_team_id,
     ]
-    foreach (arg, notary_args) {
-      args += [ "--notary-arg=$arg", ]
+    foreach(arg, notary_args) {
+      args += [ "--notary-arg=$arg" ]
     }
   }
 }
