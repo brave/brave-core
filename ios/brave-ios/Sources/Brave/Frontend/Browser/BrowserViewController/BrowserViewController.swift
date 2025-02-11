@@ -1338,9 +1338,13 @@ public class BrowserViewController: UIViewController {
   var shouldShowTranslationOnboardingThisSession = true
 
   public func showQueuedAlertIfAvailable() {
-    if let queuedAlertInfo = tabManager.selectedTab?.dequeueJavascriptAlertPrompt() {
+    if let selectedTab = tabManager.selectedTab,
+      let queuedAlertInfo = selectedTab.dequeueJavascriptAlertPrompt()
+    {
       let alertController = queuedAlertInfo.alertController()
       alertController.delegate = self
+      selectedTab.shownPromptAlert = alertController
+
       present(alertController, animated: true, completion: nil)
     }
   }
