@@ -501,6 +501,11 @@
       =1 {Ви можете отримати плату за <ph name="COUNT_BEGIN"/># рекламне оголошення<ph name="COUNT_END"/>, яке переглянули цього місяця.}
       other {Ви можете отримати плату за <ph name="COUNT_BEGIN"/># рекламних оголошень<ph name="COUNT_END"/>, які переглянули цього місяця.}
     }</translation>
+<translation id="8611388433418909120">{ADS_VIEWED, plural,
+      =0 {Ви переглянули <ph name="COUNT_BEGIN"/>#  рекламних оголошень<ph name="COUNT_END"/> цього місяця}
+      =1 {Ви можете отримати плату за <ph name="COUNT_BEGIN"/># рекламне оголошення<ph name="COUNT_END"/>, яке переглянули цього місяця.}
+      other {Ви можете отримати плату за <ph name="COUNT_BEGIN"/># рекламних оголошень<ph name="COUNT_END"/>, які переглянули цього місяця.}
+    }</translation>
 <translation id="6067959437127691361">Brave Rewards дає змогу підтримувати авторів умісту та заробляти BAT.</translation>
 <translation id="944736176598169208">Винагороди</translation>
 <translation id="2359808026110333948">Продовжити</translation>
@@ -670,6 +675,7 @@
 <translation id="2446517297521536638">Налаштуйте, які типи реклами Brave мають для вас відображатися та як часто. Що більше оголошень ви бачите, то більше можете заробити.</translation>
 <translation id="5860033963881614850">Вимкнути</translation>
 <translation id="5916664084637901428">Увімкнути</translation>
+<translation id="3977723631999461201">Рекламних оголошень отримано цього місяця: <ph name="NUM"/></translation>
 <translation id="7924320838799747606">Ваш баланс</translation>
 <translation id="8714473477079007268">Гаманець <ph name="PROVIDER"/></translation>
 <translation id="3175337080016717494">Обліковий запис виплат</translation>
@@ -678,6 +684,7 @@
 <translation id="8414447476773253869">Увійти в систему <ph name="PROVIDER"/>, щоб побачити баланс</translation>
 <translation id="615483366383024791">Обліковий запис виплат</translation>
 <translation id="1060062421977823695">Ваші надходження BAT виплачуватимуться на цей обліковий запис виплат.</translation>
+<translation id="2310070536993781610">Використовуйте промокод BRAVEREWARDS, щоб отримати знижку 10% на всі товари магазину Brave merch.</translation>
 <translation id="1170674812179664523">Магазин продукції Brave</translation>
 <translation id="8673202990286883068">Ваші переваги</translation>
 <translation id="3699766258844277472">У вас немає жодних запланованих регулярних внесків.</translation>
@@ -704,6 +711,9 @@
 <translation id="5309155375926073606">Так, також я хочу зробити внесок у Пошук Brave і взяти участь у <ph name="LINK_BEGIN"/>Проєкті з дослідження мережі<ph name="LINK_END"/>.</translation>
 <translation id="4622826307953794521">Поділіться анонімними даними пошуку та перегляду, щоб покращити Браузер Brave за допомогою Web Discovery Project. Це абсолютно відкритий проєкт із відкритим кодом.</translation>
 <translation id="4174337572777167894">Проєкт з дослідження мережі</translation>
+<translation id="9034669711835382440">Спільнота</translation>
+<translation id="814503310257431685">Подивитись усе</translation>
+<translation id="845020633253356720">Переглянути магазин</translation>
 <translation id="7090992647511817643">рахунок</translation>
 <translation id="4822132585477111396">ID мережі</translation>
 <translation id="3269475789479462358">домен</translation>
@@ -1135,6 +1145,12 @@
 <translation id="8214232307424031138">Підписано</translation>
 <translation id="9065572743819293042">Останні транзакції</translation>
 <translation id="1702356231547761669">Хеш транзакції</translation>
+<translation id="6030778062363728902">Нотатка</translation>
+<translation id="1288859203671057247">Ви можете ввести повідомлення...</translation>
+<translation id="5466702869935634816">Повідомлення (необов'язково)</translation>
+<translation id="5715145706082194046">Додати нотатку</translation>
+<translation id="1922741261173258284">Видалити нотатку</translation>
+<translation id="1762915190843068679">Довжина не повинна перевищувати 512 символів.</translation>
 <translation id="8941851657764077659">Комісія за макс. пріоритет</translation>
 <translation id="8047527352810290817">Редагувати кількість gas</translation>
 <translation id="9091334651803050473">Хоча це й не гарантовано, але, імовірно, майнери нададуть пріоритет вашій транзакції, якщо ви сплатите більшу комісію.</translation>
@@ -1721,6 +1737,8 @@
 <translation id="2298396008562701154">Наразі цей обліковий запис підтримує прозорі транзакції, які доступні для перегляду кожному в блокчейні.</translation>
 <translation id="3987095760757102811">Захищений акаунт дозволяє приховати інформацію про відправника, отримувача і суму транзакцій.</translation>
 <translation id="3819528427777765709">Захищено</translation>
+<translation id="2142946302539262412">Об'єднаний</translation>
+<translation id="4438043733494739848">Прозорий</translation>
 <translation id="7144878232160441200">Спробувати знову</translation>
 <translation id="9094621390791852268">Збій попереднього перегляду транзакції.</translation>
 <translation id="4982713341035600933">Приблизна зміна балансу</translation>
@@ -1974,6 +1992,7 @@
 <translation id="5950760360751948276">Завжди показувати панель закладок</translation>
 <translation id="2960757369920422313">Показати панель закладок на новій вкладці</translation>
 <translation id="522953399371747698">Приховати панель закладок</translation>
+<translation id="9079813619990532635">Експортувати всі закладки</translation>
 <translation id="134184943774258988">Змінити видимість кнопки «Усі закладки»</translation>
 <translation id="2158862020143233462">Увімкнути / вимкнути щити</translation>
 <translation id="3010280727642018218">Перемкнути JavaScript</translation>
@@ -2052,8 +2071,10 @@
 <translation id="4567071417854988869">Отримати короткий опис відео</translation>
 <translation id="7921782882718083488">Отримати короткий опис сторінки</translation>
 <translation id="7932221068776853847">Від’єднайтеся, що зупинити надсилання вмісту цієї сторінки до Leo й почати нову розмову</translation>
+<translation id="2712650703044366764">Ця модель має невірну кінцеву точку. Будь ласка, перевірте налаштування та спробуйте ще раз.</translation>
 <translation id="1167803637855350748">Під час підключення до Leo сталася помилка мережі, перевірте підключення й повторіть спробу.</translation>
 <translation id="1996126325390835277">Досягнуто ліміту для рівня преміум. Повторіть спробу за кілька годин.</translation>
+<translation id="8151638057146502721">Налаштувати</translation>
 <translation id="4177458398826096846">Привіт, я Leo. Я повністю хостинговий ШІ-помічник від Brave. Я працюю на базі моделі Llama 3.1 8B, створеної компанією Meta для ефективної роботи й застосування в багатьох сценаріях використання.<ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="6500567629965936637">Привіт, я Leo. Я повністю хостинговий ШІ-помічник від Brave. Я працюю на базі моделі Mixtral 8x7B, створеної компанією Mistral AI для виконання складних завдань. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
 <translation id="4590776109659811206">Привіт, я Leo. Я працюю на проксі-сервері Brave на базі моделі Claude Instant, створеної компанією Anthropic для виконання голосових завдань та оброблення текстів. <ph name="LINK_BEFORE"/>Докладніше<ph name="LINK_AFTER"/></translation>
@@ -2090,6 +2111,7 @@
 <translation id="6393149565874086128">Додати відгук</translation>
 <translation id="3521125531016408657">Уподобати відповідь</translation>
 <translation id="8202517001427388906">Не вподобати відповідь</translation>
+<translation id="3177073390279208955">Надсилає рейтинг, історію діалогу, модель, вибрану мову, версію та інформацію про підписку</translation>
 <translation id="1379399209929302811">Надайте відгук про ШІ Brave</translation>
 <translation id="8442999546461118871">Виберіть тему відгуку</translation>
 <translation id="9018766373792005944">Про що ваш відгук?</translation>
@@ -2115,6 +2137,11 @@
 <translation id="4370698775470316661">Ця розмова задовга — її неможливо продовжити. Можуть бути доступні інші моделі, з якими Leo має змогу підтримувати точність для довших розмов.</translation>
 <translation id="5719170755629028558">Покращуйте свої відповіді за допомогою служби «Пошук Brave»...</translation>
 <translation id="5794962229997281366">Покращений пошук відповідей на запитання<ph name="SEARCH_TERMS"/>.</translation>
+<translation id="8103700533980268469">Закрити це повідомлення</translation>
+<translation id="2315654674554095762">Leo тепер зберігатиме історію ваших бесід, щоб ви могли їх переглядати. Всі дані зашифровані та залишаються тільки на вашому пристрої – ви можете їх видалити у будь-який час.</translation>
+<translation id="7821251979960635244">Історія ваших чатів з’явиться тут, коли ви почнете діалог.</translation>
+<translation id="887511360213807449">Історія вимкнена</translation>
+<translation id="5380979378058584412">Щоб переглянути ваші попередні розмови з Leo, вам потрібно увімкнути історію розмов.</translation>
 <translation id="6291843235651817590">Загальний чат</translation>
 <translation id="8193130769524604031">Розширені функції чата</translation>
 <translation id="3185367320601718531">Розмова й генерація тексту</translation>
@@ -2158,6 +2185,7 @@
 <translation id="49269513399674318">Використовувати мікрофон</translation>
 <translation id="3895031624234442305">Користувацькі моделі</translation>
 <translation id="4572010449071015143">Почати розмову</translation>
+<translation id="345901077335355561">Повернутися до активного діалогу</translation>
 <translation id="6287023598025162715">Нова розмова</translation>
 <translation id="6303294677342628402">Щити</translation>
 <translation id="8458987127502506209">Увімкнути щити Brave</translation>
@@ -2187,6 +2215,8 @@
 <translation id="6196640612572343990">Блокувати сторонні файли cookie</translation>
 <translation id="693506469193748756">Забути мене, коли я закрию цей сайт</translation>
 <translation id="5471580724041424345">Видаляє файли cookie й інші дані сайтів, коли ви закриваєте сайт.</translation>
+<translation id="6486971767955110687">Зберігати контактну інформацію для повідомлень про несправні сайти</translation>
+<translation id="4085787265464238844">Якщо ви надасте контактну інформацію, вона буде збережена для майбутніх звітів</translation>
 <translation id="6883611015375728278">Блокувати всі файли cookie</translation>
 <translation id="5657156137487675418">Дозволити всі файли cookie</translation>
 <translation id="8366221601425141146">Цифрові відбитки заблоковано</translation>

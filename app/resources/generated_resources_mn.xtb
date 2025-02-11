@@ -5833,7 +5833,6 @@
 <translation id="5109044022078737958">Миа</translation>
 <translation id="5109816792918100764"><ph name="LANGUAGE_NAME"/>-г хасах</translation>
 <translation id="5111326646107464148">Бүлгийг шинэ цонхонд нээх</translation>
-<translation id="2579188629646253712">Нууцлалын цонхыг хаах</translation>
 <translation id="5111692334209731439">&amp; Хадгалагдсан хуудсын менежер</translation>
 <translation id="5111794652433847656">Энэ төхөөрөмжид <ph name="APP_NAME"/>-д зориулсан passkey байхгүй байна</translation>
 <translation id="5112577000029535889">&amp; Хөгжүүлэгч хэрэгслүүд</translation>
@@ -11390,7 +11389,6 @@
 <translation id="9094742965093882613">Фонтын хэмжээг багасгах</translation>
 <translation id="9094781502270610394">ChromeOS платформын нэмэлт логууд</translation>
 <translation id="9094859731829297286">Та Linux-т тогтсон хэмжээтэй дискийг хадгалахдаа итгэлтэй байна уу?</translation>
-<translation id="1001131747196960052">Нууцлалтайг хаах</translation>
 <translation id="9095819602391364796">Таны MIDI төхөөрөмжүүдийг хянаж, дахин программчлахыг сайтуудад бүү зөвшөөр</translation>
 <translation id="9096053102600371572">Хяналттай хурдаар гүйлгэх <ph name="LINK_BEGIN"/>Нэмэлт мэдээлэл авах<ph name="LINK_END"/></translation>
 <translation id="9096776523567481218">дотоодод суулгаагүй</translation>
@@ -11671,4 +11669,6 @@
 <translation id="3285581355655524751">Wi-Fi синкийг ашиглахын тулд <ph name="LINK1_BEGIN"/>Brave Синк<ph name="LINK1_END"/>-ийг асаана уу. <ph name="LINK2_BEGIN"/>Нэмэлт мэдээлэл авах<ph name="LINK2_END"/></translation>
 <translation id="998347228911661591">Табын бүлгүүдээ синк хийнэ үү</translation>
 <translation id="998747458861718449">Шалгах</translation>
+<translation id="2579188629646253712">Нууцлалтай хэсгээс гарах</translation>
+<translation id="1001131747196960052">Нууцлалтай хэсгийг хаах</translation>
 </translationbundle>

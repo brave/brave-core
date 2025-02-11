@@ -4326,7 +4326,6 @@ Xehetasun gehiago:
 <translation id="8814547618907885931">Ikusi konparazio-taula guztiak</translation>
 <translation id="8814707942599948500">C8 gutun-azala</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>: sakatu tabuladorea eta, ondoren, sakatu Sartu Brave eguneratzeko Brave-ren ezarpenetan</translation>
-<translation id="8820817407110198400">Laster-markak</translation>
 <translation id="882338992931677877">Eskuzko erretilua</translation>
 <translation id="8830320733681313421">Hagaki postala (Japonia)</translation>
 <translation id="8830565333350631528">Ikusi fitxategiak <ph name="CLOUD_PROVIDER"/> zerbitzuan</translation>
@@ -4603,4 +4602,5 @@ Xehetasun gehiago:
 <translation id="995755448277384931">Gehitu IBANa</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="997986563973421916">Google Pay-tik dator</translation>
+<translation id="8820817407110198400">Laster-marken barra</translation>
 </translationbundle>

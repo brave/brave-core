@@ -2813,7 +2813,6 @@ Jei nenorite, dabar atsijunkite, kad šios paskyros pakeitimai būtų matomi ši
 <translation id="2953210795988451570">Saugos naujiniai baigėsi. Naujovinkite į naują „Chromebook“.</translation>
 <translation id="2953218713108551165">Svetainėje <ph name="SITE"/> pranešimai neleidžiami. Jūsų bus klausiama dar kartą, kai kitą kartą apsilankysite.</translation>
 <translation id="2956070239128776395">Skiltis įdėta į grupę: <ph name="ERROR_LINE"/></translation>
-<translation id="7759126329265642843">Įjunkite kūrėjo režimą, kad galėtumėte naudoti šį plėtinį, kurio negalima peržiūrėti „Brave“ internetinėje parduotuvėje.</translation>
 <translation id="2958721676848865875">Įspėjimas dėl paketo plėtinio</translation>
 <translation id="2959127025785722291">Įvyko klaida. Nepavyko užbaigti nuskaitymo. Bandykite dar kartą.</translation>
 <translation id="2959474507964749987">Šis šifruotas failas gali būti virusas arba kenkėjiška programa.<ph name="LINE_BREAK"/>Jei norite patikrinti, ar jis nesaugus, galite nusiųsti failą ir slaptažodį „Brave“ saugaus naršymo funkcijai. Nuskaitymas paprastai trunka kelias sekundes.<ph name="LINE_BREAK"/>Jei norite nuskaityti, pridėkite failo slaptažodį.</translation>
@@ -5889,6 +5888,7 @@ Jei norite nutolinti, naudokite „Ctrl“ + „Alt“ + šviesumo mažinimo kla
 <translation id="5177479852722101802">Toliau blokuoti prieigą prie fotoaparato ir mikrofono</translation>
 <translation id="5177549709747445269">Naudojate mobiliuosius duomenis</translation>
 <translation id="5178667623289523808">Rasti ankstesnius</translation>
+<translation id="5180276433875360121">Rodyti „<ph name="CERT_LIST"/>“</translation>
 <translation id="5181140330217080051">Atsisiunčiama</translation>
 <translation id="3656271699136235245">„Brave“ slaptažodžių tvarkytuvė, naudotojas <ph name="ACCOUNT"/></translation>
 <translation id="6029810565516522064">Šis slaptažodis saugomas tik šiame įrenginyje. Jei norite ją naudoti kituose įrenginiuose, išsaugokite „Brave“ paskyroje <ph name="USER_EMAIL"/>.</translation>
@@ -6911,7 +6911,6 @@ Leidimai, kuriuos jau esate suteikę svetainėms ir programoms, gali būti taiko
 <translation id="5932224571077948991">Svetainėje rodomi nepageidaujami arba klaidinantys skelbimai</translation>
 <translation id="59324397759951282">USB įrenginys iš „<ph name="MANUFACTURER_NAME"/>“</translation>
 <translation id="5932441198730183141">Neturite pakankamai pasiekiamų licencijų, kad galėtumėte užregistruoti šį „Brave Meet“ aparatinės įrangos įrenginį. Norėdami įsigyti jų daugiau, susisiekite su pardavimo skyriumi. Jei manote, kad šis pranešimas rodomas per klaidą, susisiekite su palaikymo komanda.</translation>
-<translation id="4206852577678288113">Įjunkite kūrėjo režimą, kad galėtumėte naudoti šį plėtinį, bet tik jei pasitikite plėtiniu. Jame gali būti eksperimentinių funkcijų ir gali būti, kad jis nebuvo peržiūrėtas „Brave“ internetinėje parduotuvėje.</translation>
 <translation id="5932881020239635062">Serijos</translation>
 <translation id="5933376509899483611">Laiko juosta</translation>
 <translation id="5933522550144185133">„<ph name="APP_NAME"/>“ naudoja fotoaparatą ir mikrofoną</translation>
@@ -11703,6 +11702,8 @@ Leidimai, kuriuos jau esate suteikę svetainėms ir programoms, gali būti taiko
 <translation id="5079334477644844710">Privatus naršymas užtikrina<ph name="BEGIN_LINK"/>, kad jūsų naršymas būtų privatus<ph name="END_LINK"/> nuo kitų žmonių, besinaudojančių jūsų įrenginiu</translation>
 <translation id="2099871685186351093">Bendrinkite failus su šalia esančiais žmonėmis. <ph name="LINK_BEGIN"/>Sužinoti daugiau<ph name="LINK_END"/></translation>
 <translation id="3860292630623580294">(Inkognito)</translation>
+<translation id="7759126329265642843">Įjunkite kūrėjo režimą, jei norite naudoti šį plėtinį, kurio negalima patikrinti internetinėje parduotuvėje.</translation>
+<translation id="4206852577678288113">Įjunkite kūrėjo režimą, jei norite naudoti šį plėtinį, bet tik jei juo pasitikite. Jame gali būti eksperimentinių funkcijų ir jis nepatikrintas internetinėje parduotuvėje.</translation>
 <translation id="4949006391524401372">Šis plėtinys atjungtas dėl įmonės politikos, nes jo nėra „Web Store“.</translation>
 <translation id="5899585985956756612">Leisti inkognito veiksena</translation>
 <translation id="6436164536244065364">Žiūrėti internetinėje parduotuvėje</translation>
