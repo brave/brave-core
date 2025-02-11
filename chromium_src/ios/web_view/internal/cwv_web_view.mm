@@ -28,4 +28,8 @@
   return (cachedProtobufStorage != nil || cachedSessionStorage != nil);
 }
 
++ (id)objectFromValue:(const base::Value*)value {
+  return NSObjectFromValue(value);
+}
+
 @end

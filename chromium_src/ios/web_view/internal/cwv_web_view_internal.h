@@ -10,9 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+namespace base {
+class Value;
+}
+
 @interface CWVWebView (Internal)
 @property(readonly) web::WebState* webState;
 + (BOOL)_isRestoreDataValid:(NSData*)data;
++ (id)objectFromValue:(const base::Value*)value;
 @end
 
 NS_ASSUME_NONNULL_END
