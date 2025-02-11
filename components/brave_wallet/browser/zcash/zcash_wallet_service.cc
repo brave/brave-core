@@ -406,26 +406,21 @@ ZCashWalletService::GetTransactionType(bool testnet,
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
     if (use_shielded_pool) {
-      auto validation_result =
-          ZCashCreateOrchardToOrchardTransactionTask::ValidateAddress(testnet,
-                                                                      addr);
+      auto validation_result = ValidateOrchardRecipientAddress(testnet, addr);
       if (validation_result.has_value()) {
-        return base::ok(mojom::ZCashTxType::OrchardToOrchard);
+        return base::ok(mojom::ZCashTxType::kOrchardToOrchard);
       }
       return base::unexpected(validation_result.error());
     }
 
-    if (ZCashCreateTransparentToOrchardTransactionTask::ValidateAddress(testnet,
-                                                                        addr)
-            .has_value()) {
-      return base::ok(mojom::ZCashTxType::TransparentToOrchard);
+    if (ValidateOrchardRecipientAddress(testnet, addr).has_value()) {
+      return base::ok(mojom::ZCashTxType::kTransparentToOrchard);
     }
   }
 #endif
-  auto validation_result =
-      ZCashCreateTransparentTransactionTask::ValidateAddress(testnet, addr);
+  auto validation_result = ValidateTransparentRecipientAddress(testnet, addr);
   if (validation_result.has_value()) {
-    return base::ok(mojom::ZCashTxType::TransparentToTransparent);
+    return base::ok(mojom::ZCashTxType::kTransparentToTransparent);
   }
 
   return base::unexpected(validation_result.error());
@@ -438,9 +433,9 @@ void ZCashWalletService::GetTransactionType(
     GetTransactionTypeCallback callback) {
   auto result = GetTransactionType(testnet, use_shielded_pool, addr);
   if (result.has_value()) {
-    std::move(callback).Run(result.value(), std::nullopt);
+    std::move(callback).Run(result.value(), mojom::ZCashAddressError::kNoError);
   } else {
-    std::move(callback).Run(std::nullopt, result.error());
+    std::move(callback).Run(mojom::ZCashTxType::kUnknown, result.error());
   }
 }
 

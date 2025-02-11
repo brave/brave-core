@@ -605,9 +605,9 @@ export const SendScreen = React.memo((props: Props) => {
                   getZCashTransactionTypeResult &&
                   toAddressOrUrl &&
                   (getZCashTransactionTypeResult.txType ===
-                    BraveWallet.ZCashTxType.TransparentToOrchard || 
+                    BraveWallet.ZCashTxType.kTransparentToOrchard ||
                     getZCashTransactionTypeResult.txType ===
-                    BraveWallet.ZCashTxType.OrchardToOrchard) && (
+                    BraveWallet.ZCashTxType.kOrchardToOrchard) && (
                     <AddMemo
                       memoText={memoText}
                       onUpdateMemoText={setMemoText}

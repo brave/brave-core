@@ -40,10 +40,6 @@ class ZCashCreateTransparentToOrchardTransactionTask {
 
   void Start();
 
-  static base::expected<void, mojom::ZCashAddressError> ValidateAddress(
-      bool testnet,
-      const std::string& addr);
-
  private:
   void ScheduleWorkOnTask();
   void WorkOnTask();

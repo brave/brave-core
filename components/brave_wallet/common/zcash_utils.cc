@@ -17,6 +17,7 @@
 #include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
+#include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/f4_jumble.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
@@ -118,6 +119,54 @@ base::Value::Dict OrchardNote::ToValue() const {
   dict.Set("seed", base::HexEncode(seed));
 
   return dict;
+}
+
+base::expected<void, mojom::ZCashAddressError>
+ValidateTransparentRecipientAddress(bool testnet, const std::string& addr) {
+  if (IsUnifiedAddress(addr)) {
+    if (IsUnifiedTestnetAddress(addr) != testnet) {
+      return base::unexpected(
+          mojom::ZCashAddressError::kInvalidAddressNetworkMismatch);
+    }
+    if (!ExtractTransparentPart(addr, testnet)) {
+      return base::unexpected(mojom::ZCashAddressError::
+                                  kInvalidUnifiedAddressMissingTransparentPart);
+    }
+    return base::ok();
+  }
+
+  auto decoded = DecodeZCashTransparentAddress(addr);
+  if (!decoded) {
+    return base::unexpected(
+        mojom::ZCashAddressError::kInvalidTransparentAddress);
+  }
+
+  if (decoded->testnet != testnet) {
+    return base::unexpected(
+        mojom::ZCashAddressError::kInvalidAddressNetworkMismatch);
+  }
+
+  return base::ok();
+}
+
+base::expected<void, mojom::ZCashAddressError> ValidateOrchardRecipientAddress(
+    bool testnet,
+    const std::string& addr) {
+  if (!IsUnifiedAddress(addr)) {
+    return base::unexpected(mojom::ZCashAddressError::kInvalidUnifiedAddress);
+  }
+
+  if (IsUnifiedTestnetAddress(addr) != testnet) {
+    return base::unexpected(
+        mojom::ZCashAddressError::kInvalidAddressNetworkMismatch);
+  }
+
+  if (!ExtractOrchardPart(addr, testnet)) {
+    return base::unexpected(
+        mojom::ZCashAddressError::kInvalidUnifiedAddressMissingOrchardPart);
+  }
+
+  return base::ok();
 }
 
 // static

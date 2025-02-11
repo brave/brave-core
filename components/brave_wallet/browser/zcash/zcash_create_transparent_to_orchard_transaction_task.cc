@@ -37,28 +37,6 @@ ZCashCreateTransparentToOrchardTransactionTask::
 ZCashCreateTransparentToOrchardTransactionTask::
     ~ZCashCreateTransparentToOrchardTransactionTask() = default;
 
-// static
-base::expected<void, mojom::ZCashAddressError>
-ZCashCreateTransparentToOrchardTransactionTask::ValidateAddress(
-    bool testnet,
-    const std::string& addr) {
-  if (!IsUnifiedAddress(addr)) {
-    return base::unexpected(mojom::ZCashAddressError::InvalidUnifiedAddress);
-  }
-
-  if (IsUnifiedTestnetAddress(addr) != testnet) {
-    return base::unexpected(
-        mojom::ZCashAddressError::InvalidAddressNetworkMismatch);
-  }
-
-  if (!ExtractOrchardPart(addr, testnet)) {
-    return base::unexpected(
-        mojom::ZCashAddressError::InvalidUnifiedAddressMissingOrchardPart);
-  }
-
-  return base::ok();
-}
-
 void ZCashCreateTransparentToOrchardTransactionTask::Start() {
   DCHECK(!started_);
   started_ = true;

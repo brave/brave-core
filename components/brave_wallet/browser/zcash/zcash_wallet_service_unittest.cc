@@ -813,8 +813,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
   // Normal transparent address - mainnet
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::TransparentToTransparent),
-                              Eq(std::nullopt)));
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
+                              Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
         false, false, "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ", callback.Get());
   }
@@ -822,8 +822,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
   // Normal transparent address - testnet
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::TransparentToTransparent),
-                              Eq(std::nullopt)));
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
+                              Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
         true, false, "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE", callback.Get());
   }
@@ -833,8 +833,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
     EXPECT_CALL(
         callback,
-        Run(Eq(std::nullopt),
-            Eq(mojom::ZCashAddressError::InvalidAddressNetworkMismatch)));
+        Run(Eq(mojom::ZCashTxType::kUnknown),
+            Eq(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch)));
     zcash_wallet_service_->GetTransactionType(
         false, false, "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE", callback.Get());
   }
@@ -843,8 +843,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
     EXPECT_CALL(callback,
-                Run(Eq(std::nullopt),
-                    Eq(mojom::ZCashAddressError::InvalidTransparentAddress)));
+                Run(Eq(mojom::ZCashTxType::kUnknown),
+                    Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
     zcash_wallet_service_->GetTransactionType(false, false, "t1xxx",
                                               callback.Get());
   }
@@ -852,8 +852,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
   // Unified address - mainnet
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::TransparentToTransparent),
-                              Eq(std::nullopt)));
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
+                              Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
         false, false,
         // Address contains transparent part
@@ -866,8 +866,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
   // Unified address - testnet
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::TransparentToTransparent),
-                              Eq(std::nullopt)));
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
+                              Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
         true, false,
         "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
@@ -881,8 +881,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
     EXPECT_CALL(
         callback,
-        Run(Eq(std::nullopt),
-            Eq(mojom::ZCashAddressError::InvalidAddressNetworkMismatch)));
+        Run(Eq(mojom::ZCashTxType::kUnknown),
+            Eq(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch)));
     zcash_wallet_service_->GetTransactionType(
         false, false,
         "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
@@ -895,9 +895,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
   {
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
     EXPECT_CALL(callback,
-                Run(Eq(std::nullopt),
+                Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::
-                           InvalidUnifiedAddressMissingTransparentPart)));
+                           kInvalidUnifiedAddressMissingTransparentPart)));
     zcash_wallet_service_->GetTransactionType(false, false, "u1xx",
                                               callback.Get());
   }
@@ -911,8 +911,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType) {
         {{"zcash_shielded_transactions_enabled", "false"}});
 
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::TransparentToTransparent),
-                              Eq(std::nullopt)));
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
+                              Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
         false, false,
         "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
@@ -971,9 +971,9 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
 
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
     EXPECT_CALL(callback,
-                Run(Eq(std::nullopt),
+                Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::
-                           InvalidUnifiedAddressMissingTransparentPart)));
+                           kInvalidUnifiedAddressMissingTransparentPart)));
     zcash_wallet_service_->GetTransactionType(
         false, false,
         "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
@@ -991,8 +991,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
         {{"zcash_shielded_transactions_enabled", "true"}});
 
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::TransparentToOrchard),
-                              Eq(std::nullopt)));
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToOrchard),
+                              Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
         false, false,
         "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
@@ -1010,8 +1010,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
         {{"zcash_shielded_transactions_enabled", "true"}});
 
     base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
-    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::OrchardToOrchard),
-                              Eq(std::nullopt)));
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kOrchardToOrchard),
+                              Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
         false, true,
         "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"

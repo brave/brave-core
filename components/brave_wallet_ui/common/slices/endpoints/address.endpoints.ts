@@ -26,8 +26,8 @@ interface GetFVMAddressArg {
 type GetFVMAddressResult = Map<string, { address: string; fvmAddress: string }>
 
 type GetZCashTransactionTypeResult = {
-  txType: BraveWallet.ZCashTxType | null,
-  error: BraveWallet.ZCashAddressError | null
+  txType: BraveWallet.ZCashTxType,
+  error: BraveWallet.ZCashAddressError
 }
 
 export const addressEndpoints = ({

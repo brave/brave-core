@@ -70,14 +70,14 @@ void ZCashTxManager::AddUnapprovedTransaction(
       std::move(callback).Run(false, "", "");
       return;
     }
-    if (tx_result.value() == mojom::ZCashTxType::OrchardToOrchard) {
+    if (tx_result.value() == mojom::ZCashTxType::kOrchardToOrchard) {
       zcash_wallet_service_->CreateOrchardToOrchardTransaction(
           chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
                          weak_factory_.GetWeakPtr(), chain_id, from.Clone(),
                          origin, std::move(callback)));
       return;
-    } else if (tx_result.value() == mojom::ZCashTxType::TransparentToOrchard) {
+    } else if (tx_result.value() == mojom::ZCashTxType::kTransparentToOrchard) {
       zcash_wallet_service_->CreateTransparentToOrchardTransaction(
           chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount, memo,
           base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
@@ -87,7 +87,7 @@ void ZCashTxManager::AddUnapprovedTransaction(
     }
   }
 #endif
-  if (tx_result.value() == mojom::ZCashTxType::TransparentToTransparent) {
+  if (tx_result.value() == mojom::ZCashTxType::kTransparentToTransparent) {
     zcash_wallet_service_->CreateFullyTransparentTransaction(
         chain_id, from->Clone(), zec_tx_data->to, zec_tx_data->amount,
         base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,

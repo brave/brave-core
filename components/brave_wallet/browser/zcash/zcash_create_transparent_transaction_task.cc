@@ -31,37 +31,6 @@ ZCashCreateTransparentTransactionTask::ZCashCreateTransparentTransactionTask(
   transaction_.set_amount(amount);
 }
 
-// static
-base::expected<void, mojom::ZCashAddressError>
-ZCashCreateTransparentTransactionTask::ValidateAddress(
-    bool testnet,
-    const std::string& addr) {
-  if (IsUnifiedAddress(addr)) {
-    if (IsUnifiedTestnetAddress(addr) != testnet) {
-      return base::unexpected(
-          mojom::ZCashAddressError::InvalidAddressNetworkMismatch);
-    }
-    if (!ExtractTransparentPart(addr, testnet)) {
-      return base::unexpected(mojom::ZCashAddressError::
-                                  InvalidUnifiedAddressMissingTransparentPart);
-    }
-    return base::ok();
-  }
-
-  auto decoded = DecodeZCashTransparentAddress(addr);
-  if (!decoded) {
-    return base::unexpected(
-        mojom::ZCashAddressError::InvalidTransparentAddress);
-  }
-
-  if (decoded->testnet != testnet) {
-    return base::unexpected(
-        mojom::ZCashAddressError::InvalidAddressNetworkMismatch);
-  }
-
-  return base::ok();
-}
-
 ZCashCreateTransparentTransactionTask::
     ~ZCashCreateTransparentTransactionTask() = default;
 
@@ -135,7 +104,7 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
     return;
   }
 
-  DCHECK_EQ(kDefaultTransparentOutputsCount,
+  DCHECK_GE(kDefaultTransparentOutputsCount,
             transaction_.transparent_part().outputs.size());
 
   std::move(callback_).Run(base::ok(std::move(transaction_)));

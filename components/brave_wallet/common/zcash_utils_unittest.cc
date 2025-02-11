@@ -10,6 +10,76 @@
 
 namespace brave_wallet {
 
+TEST(ZCashUtilsUnitTest, ValidateTransparentRecepientAddress) {
+  EXPECT_TRUE(ValidateTransparentRecipientAddress(
+                  false, "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs")
+                  .has_value());
+
+  EXPECT_EQ(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch,
+            ValidateTransparentRecipientAddress(
+                true, "t1Hsc1LR8yKnbbe3twRp88p6vFfC5t7DLbs")
+                .error());
+
+  EXPECT_EQ(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch,
+            ValidateTransparentRecipientAddress(
+                true,
+                "u1fl5mprj0t9p4jg92hjjy8q5myvwc60c9wv0xachauqpn3c3k4xwzlaueafq2"
+                "7dcg7tzzzaz5jl8tyj93wgs983y0jq0qfhzu6n4r8rakpv5f4gg2lrw4z6pyqq"
+                "crcqx04d38yunc6je")
+                .error());
+
+  EXPECT_TRUE(ValidateTransparentRecipientAddress(
+                  false,
+                  "u1fl5mprj0t9p4jg92hjjy8q5myvwc60c9wv0xachauqpn3c3k4xwzlaueaf"
+                  "q27dcg7tzzzaz5jl8tyj93wgs983y0jq0qfhzu6n4r8rakpv5f4gg2lrw4z6"
+                  "pyqqcrcqx04d38yunc6je")
+                  .has_value());
+
+  EXPECT_EQ(
+      mojom::ZCashAddressError::kInvalidUnifiedAddressMissingTransparentPart,
+      ValidateTransparentRecipientAddress(
+          false,
+          "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3ugytcmlf96rrmtgwl"
+          "dc75x94qn4n8pgen36y8tywlq6yjk7lkf3fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh42"
+          "5t7f3vy6p4pd3zmqayq49efl2c4xydc0gszg660q9p")
+          .error());
+}
+
+TEST(ZCashUtilsUnitTest, ValidateOrchardRecipientAddress) {
+  auto orchard_raw_bytes = OrchardAddrRawPart(
+      {0xce, 0xcb, 0xe5, 0xe6, 0x89, 0xa4, 0x53, 0xa3, 0xfe, 0x10, 0xcc,
+       0xf7, 0x61, 0x7e, 0x6c, 0x1f, 0xb3, 0x82, 0x81, 0x9d, 0x7f, 0xc9,
+       0x20, 0x0a, 0x1f, 0x42, 0x09, 0x2a, 0xc8, 0x4a, 0x30, 0x37, 0x8f,
+       0x8c, 0x1f, 0xb9, 0x0d, 0xff, 0x71, 0xa6, 0xd5, 0x04, 0x2d});
+
+  EXPECT_TRUE(
+      ValidateOrchardRecipientAddress(
+          false, GetOrchardUnifiedAddress(orchard_raw_bytes, false).value())
+          .has_value());
+  EXPECT_TRUE(
+      ValidateOrchardRecipientAddress(
+          true, GetOrchardUnifiedAddress(orchard_raw_bytes, true).value())
+          .has_value());
+
+  EXPECT_EQ(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch,
+            ValidateOrchardRecipientAddress(
+                false,
+                "utest10c5kutapazdnf8ztl3pu43nkfsjx89fy3uuff8tsmxm6s86j37pe7uz9"
+                "4z5jhkl49pqe8yz75rlsaygexk6jpaxwx0esjr8wm5ut7d5s")
+                .error());
+
+  EXPECT_EQ(mojom::ZCashAddressError::kInvalidUnifiedAddressMissingOrchardPart,
+            ValidateOrchardRecipientAddress(
+                false,
+                "u1qxqf8ctkxlsdh7xdcgkdtyw4mku7dxma8tsz45xd6ttgs322gdk7kazg3sdn"
+                "52z7na3tzcrzf7lt3xrdtfp9d4pccderalchvvxk8hghduxrky5guzqlw65fmg"
+                "p6x7aj4k8v5jkgwuw")
+                .error());
+
+  EXPECT_EQ(mojom::ZCashAddressError::kInvalidUnifiedAddress,
+            ValidateOrchardRecipientAddress(false, "vv").error());
+}
+
 TEST(ZCashUtilsUnitTest, PubkeyToTransparentAddress) {
   EXPECT_EQ("t1MmQ8PGfRygwhSK6qyianhMtb5tixuK8ZS",
             PubkeyToTransparentAddress(

@@ -254,7 +254,10 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
     )
 
     const {
-      data: getZCashTransactionTypeResult = { txType: null, error: null }
+      data: getZCashTransactionTypeResult = {
+        txType: BraveWallet.ZCashTxType.kUnknown,
+        error: BraveWallet.ZCashAddressError.kNoError
+      }
     } = useGetZCashTransactionTypeQuery(
       fromAccountId?.coin === BraveWallet.CoinType.ZEC && trimmedSearchValue
         ? {
@@ -274,7 +277,7 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
           isBase58,
           coinType: fromAccountId?.coin ?? BraveWallet.CoinType.ETH,
           token: selectedAsset,
-          zcashAddressError: getZCashTransactionTypeResult.error ?? undefined,
+          zcashAddressError: getZCashTransactionTypeResult.error,
           fullTokenList,
           hasNameServiceError,
           isValidExtension: searchValueHasValidExtension,
@@ -621,40 +624,40 @@ const processEthereumAddress = (
 }
 
 const processZCashAddress = (
-  zcashAddressError: BraveWallet.ZCashAddressError | undefined
+  zcashAddressError: BraveWallet.ZCashAddressError
 ) => {
-  if (zcashAddressError === undefined) {
+  if (zcashAddressError === BraveWallet.ZCashAddressError.kNoError) {
     return undefined
   }
   if (
     zcashAddressError ===
-    BraveWallet.ZCashAddressError.InvalidUnifiedAddress
+    BraveWallet.ZCashAddressError.kInvalidUnifiedAddress
   ) {
     return AddressMessageInfoIds.zcashInvalidUnifiedAddressError
   }
   if (
     zcashAddressError ===
-    BraveWallet.ZCashAddressError.InvalidTransparentAddress
+    BraveWallet.ZCashAddressError.kInvalidTransparentAddress
   ) {
     return AddressMessageInfoIds.zcashInvalidTransparentAddressError
   }
   if (
     zcashAddressError ===
-    BraveWallet.ZCashAddressError.InvalidUnifiedAddressMissingTransparentPart
+    BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingTransparentPart
   ) {
     return AddressMessageInfoIds.
       zcashInvalidUnifiedAddressMissingTransparentPartError
   }
   if (
     zcashAddressError ===
-    BraveWallet.ZCashAddressError.InvalidUnifiedAddressMissingOrchardPart
+    BraveWallet.ZCashAddressError.kInvalidUnifiedAddressMissingOrchardPart
   ) {
     return AddressMessageInfoIds.
       zcashInvalidUnifiedAddressMissingOrchardPartError
   }
   if (
     zcashAddressError ===
-    BraveWallet.ZCashAddressError.InvalidAddressNetworkMismatch
+    BraveWallet.ZCashAddressError.kInvalidAddressNetworkMismatch
   ) {
     return AddressMessageInfoIds.zcashInvalidAddressNetworkMismatchError
   }
@@ -748,7 +751,7 @@ function processAddressOrUrl({
   token: BraveWallet.BlockchainToken | undefined
   ethAddressChecksum: string
   isBase58: boolean
-  zcashAddressError: BraveWallet.ZCashAddressError | undefined
+  zcashAddressError: BraveWallet.ZCashAddressError
   fullTokenList: BraveWallet.BlockchainToken[]
   isValidExtension: boolean
   resolvedDomainAddress: string | undefined

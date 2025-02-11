@@ -170,43 +170,6 @@ class ZCashCreateTransparentToOrchardTransactionTaskTest
   base::test::TaskEnvironment task_environment_;
 };
 
-TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, ValidateAddress) {
-  auto orchard_raw_bytes = OrchardAddrRawPart(
-      {0xce, 0xcb, 0xe5, 0xe6, 0x89, 0xa4, 0x53, 0xa3, 0xfe, 0x10, 0xcc,
-       0xf7, 0x61, 0x7e, 0x6c, 0x1f, 0xb3, 0x82, 0x81, 0x9d, 0x7f, 0xc9,
-       0x20, 0x0a, 0x1f, 0x42, 0x09, 0x2a, 0xc8, 0x4a, 0x30, 0x37, 0x8f,
-       0x8c, 0x1f, 0xb9, 0x0d, 0xff, 0x71, 0xa6, 0xd5, 0x04, 0x2d});
-
-  EXPECT_TRUE(
-      ZCashCreateTransparentToOrchardTransactionTask::ValidateAddress(
-          false, GetOrchardUnifiedAddress(orchard_raw_bytes, false).value())
-          .has_value());
-  EXPECT_TRUE(
-      ZCashCreateTransparentToOrchardTransactionTask::ValidateAddress(
-          true, GetOrchardUnifiedAddress(orchard_raw_bytes, true).value())
-          .has_value());
-
-  EXPECT_EQ(mojom::ZCashAddressError::InvalidAddressNetworkMismatch,
-            ZCashCreateTransparentToOrchardTransactionTask::ValidateAddress(
-                false,
-                "utest10c5kutapazdnf8ztl3pu43nkfsjx89fy3uuff8tsmxm6s86j37pe7uz9"
-                "4z5jhkl49pqe8yz75rlsaygexk6jpaxwx0esjr8wm5ut7d5s")
-                .error());
-
-  EXPECT_EQ(mojom::ZCashAddressError::InvalidUnifiedAddressMissingOrchardPart,
-            ZCashCreateTransparentToOrchardTransactionTask::ValidateAddress(
-                false,
-                "u1qxqf8ctkxlsdh7xdcgkdtyw4mku7dxma8tsz45xd6ttgs322gdk7kazg3sdn"
-                "52z7na3tzcrzf7lt3xrdtfp9d4pccderalchvvxk8hghduxrky5guzqlw65fmg"
-                "p6x7aj4k8v5jkgwuw")
-                .error());
-
-  EXPECT_EQ(mojom::ZCashAddressError::InvalidUnifiedAddress,
-            ZCashCreateTransparentToOrchardTransactionTask::ValidateAddress(
-                false, "vv")
-                .error());
-}
-
 TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, TransactionCreated) {
   ON_CALL(zcash_wallet_service(), GetUtxos(_, _, _))
       .WillByDefault(

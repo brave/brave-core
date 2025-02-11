@@ -171,6 +171,13 @@ struct OrchardSpendsBundle {
   std::vector<OrchardInput> inputs;
 };
 
+base::expected<void, mojom::ZCashAddressError>
+ValidateTransparentRecipientAddress(bool testnet, const std::string& addr);
+
+base::expected<void, mojom::ZCashAddressError> ValidateOrchardRecipientAddress(
+    bool testnet,
+    const std::string& addr);
+
 bool OutputZCashTransparentAddressSupported(const std::string& address,
                                             bool is_testnet);
 // https://zips.z.cash/zip-0317
