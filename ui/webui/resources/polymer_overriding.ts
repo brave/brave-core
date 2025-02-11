@@ -167,12 +167,12 @@ export function RegisterPolymerComponentToIgnore(name) {
 
 const moduleNamesWithStyleOverrides: { [moduleName: string]: string[] } = {}
 
-export async function RegisterStyleOverrideName(componentName: string, polymerStyleModuleName: string) {
+export function RegisterStyleOverrideName(componentName: string, polymerStyleModuleName: string) {
   const overrideData = (moduleNamesWithStyleOverrides[componentName] = moduleNamesWithStyleOverrides[componentName] || [])
   overrideData.push(polymerStyleModuleName)
 }
 
-export async function RegisterStyleOverride(componentName: string, styleTemplate: HTMLTemplateElement) {
+export function RegisterStyleOverride(componentName: string, styleTemplate: HTMLTemplateElement) {
   // Inform polymer of styles by creating a dom-module.
   //   <dom-module id="${styleOverridePrefix + componentName}">
   //     <template>
