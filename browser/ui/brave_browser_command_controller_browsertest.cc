@@ -13,6 +13,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/skus/common/features.h"
@@ -482,3 +483,18 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelShowing());
 }
 #endif
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       BraveCommandsToggleVerticalTabs) {
+  auto* command_controller = browser()->command_controller();
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_VERTICAL_TABS));
+  ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+
+  // Enable Vertical tabs
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
+
+  // Toggle back
+  command_controller->ExecuteCommand(IDC_TOGGLE_VERTICAL_TABS);
+  ASSERT_FALSE(tabs::utils::ShouldShowVerticalTabs(browser()));
+}
