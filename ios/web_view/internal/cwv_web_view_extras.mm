@@ -36,48 +36,6 @@ const CWVUserAgentType CWVUserAgentTypeDesktop =
   return [self _isRestoreDataValid:data];
 }
 
-// Converts base::Value expected to be a dictionary or list to NSDictionary or
-// NSArray, respectively.
-id NSObjectFromCollectionValue(const base::Value* value) {
-  DCHECK(value->is_dict() || value->is_list())
-      << "Incorrect value type: " << value->type();
-
-  std::string json;
-  const bool success = base::JSONWriter::Write(*value, &json);
-  DCHECK(success) << "Failed to convert base::Value to JSON";
-
-  NSData* json_data = [NSData dataWithBytes:json.c_str() length:json.length()];
-  id ns_object = [NSJSONSerialization JSONObjectWithData:json_data
-                                                 options:kNilOptions
-                                                   error:nil];
-  DCHECK(ns_object) << "Failed to convert JSON to Collection";
-  return ns_object;
-}
-
-// Converts base::Value to an appropriate Obj-C object.
-// |value| must not be null.
-id NSObjectFromValue(const base::Value* value) {
-  switch (value->type()) {
-    case base::Value::Type::NONE:
-      return nil;
-    case base::Value::Type::BOOLEAN:
-      return @(value->GetBool());
-    case base::Value::Type::INTEGER:
-      return @(value->GetInt());
-    case base::Value::Type::DOUBLE:
-      return @(value->GetDouble());
-    case base::Value::Type::STRING:
-      return base::SysUTF8ToNSString(value->GetString());
-    case base::Value::Type::BINARY:
-      // Unsupported.
-      return nil;
-    case base::Value::Type::DICT:
-    case base::Value::Type::LIST:
-      return NSObjectFromCollectionValue(value);
-  }
-  return nil;
-}
-
 - (void)updateScripts {
   // This runs `UpdateScripts` on the configuration provider which we will need
   // to call in-place of `-[WKUserContentController removeAllUserScripts]` until
@@ -146,7 +104,7 @@ id NSObjectFromValue(const base::Value* value) {
         if (completion) {
           id jsResult = nil;
           if (!error && result) {
-            jsResult = NSObjectFromValue(result);
+            jsResult = [CWVWebView objectFromValue:result];
           }
           completion(jsResult, error);
         }
