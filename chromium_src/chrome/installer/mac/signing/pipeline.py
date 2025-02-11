@@ -10,9 +10,11 @@ import override_utils
 @override_utils.override_function(globals())
 def _create_pkgbuild_scripts(original_function, paths, dist_config):
     orig_packaging_dir = paths.packaging_dir
+
     def new_packaging_dir(*args, **kwargs):
         orig = orig_packaging_dir(*args, **kwargs)
         return os.path.join(orig, 'brave')
+
     paths.packaging_dir = new_packaging_dir
     try:
         return original_function(paths, dist_config)

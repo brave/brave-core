@@ -1,3 +1,8 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 from signing import standard_invoker, signing, commands
 
 
@@ -20,6 +25,7 @@ class Invoker(standard_invoker.Invoker):
 
 
 class StubSigner:
+
     def codesign(self, config, product, path):
         # Do nothing.
         pass
@@ -32,6 +38,7 @@ def stub_out_signing_in_upstream():
     signing.verify_part = lambda *args, **kwargs: None
 
     run_command_orig = commands.run_command
+
     def run_command(args, **kwargs):
         if args[0] == 'productbuild':
             try:
@@ -42,4 +49,5 @@ def stub_out_signing_in_upstream():
                 for _ in range(2):
                     args.pop(sign_index)
         return run_command_orig(args, **kwargs)
+
     commands.run_command = run_command
