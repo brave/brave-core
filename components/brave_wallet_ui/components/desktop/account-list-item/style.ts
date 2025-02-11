@@ -12,6 +12,7 @@ import { layoutPanelWidth } from '../wallet-page-wrapper/wallet-page-wrapper.sty
 
 export const StyledWrapper = styled.div<{
   isRewardsAccount: boolean
+  isOutOfSync: boolean
 }>`
   cursor: ${(p) => (p.isRewardsAccount ? 'default' : 'pointer')};
   display: flex;
@@ -21,6 +22,8 @@ export const StyledWrapper = styled.div<{
   width: 100%;
   padding-right: 14px;
   border-bottom: 1px solid ${leo.color.divider.subtle};
+  background-color: ${(p) =>
+    p.isOutOfSync ? leo.color.yellow[5] : 'transparent'};
   transition: background-color 300ms ease-out;
   &:first-child {
     border-radius: ${leo.radius.l} ${leo.radius.l} 0px 0px;
@@ -135,4 +138,11 @@ export const AccountNameWrapper = styled(Row)`
     flex-direction: column;
     align-items: flex-start;
   }
+`
+
+export const WarningIcon = styled(Icon).attrs({
+  name: 'warning-triangle-filled'
+})`
+  --leo-icon-size: 20px;
+  color: ${leo.color.systemfeedback.warningIcon};
 `

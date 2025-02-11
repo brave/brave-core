@@ -44,6 +44,7 @@ import {
   TokenBalancesRegistry //
 } from '../../../common/slices/entities/token-balance.entity'
 import {
+  useGetChainTipStatusQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
@@ -88,7 +89,8 @@ import {
   AccountBalanceText,
   AccountDescription,
   AccountNameWrapper,
-  AccountButton
+  AccountButton,
+  WarningIcon
 } from './style'
 
 import {
@@ -133,7 +135,7 @@ export const AccountListItem = ({
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
-  const { data: zCashAccountInfo } = useGetZCashAccountInfoQuery(
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
     isZCashShieldedTransactionsEnabled &&
       account.accountId.coin === BraveWallet.CoinType.ZEC
       ? account.accountId
@@ -213,6 +215,19 @@ export const AccountListItem = ({
     isRewardsAccount && rewardsStatus === WalletStatus.kLoggedOut
 
   const externalProvider = isRewardsAccount ? provider : undefined
+
+  const isShieldedAccount =
+    isZCashShieldedTransactionsEnabled &&
+    !!zcashAccountInfo &&
+    !!zcashAccountInfo.accountShieldBirthday
+
+  const { data: chainTipStatus } = useGetChainTipStatusQuery(
+    isShieldedAccount ? account.accountId : skipToken
+  )
+
+  const blocksBehind = chainTipStatus
+    ? chainTipStatus.chainTip - chainTipStatus.latestScannedBlock
+    : 0
 
   const accountsFungibleTokens = React.useMemo(() => {
     if (isRewardsAccount && rewardsToken) {
@@ -322,8 +337,8 @@ export const AccountListItem = ({
       isZCashShieldedTransactionsEnabled &&
       account.accountId.coin === BraveWallet.CoinType.ZEC &&
       isShieldingAvailable &&
-      zCashAccountInfo &&
-      !zCashAccountInfo.accountShieldBirthday
+      zcashAccountInfo &&
+      !zcashAccountInfo.accountShieldBirthday
 
     let options = [...AccountButtonOptions]
 
@@ -341,13 +356,19 @@ export const AccountListItem = ({
     account,
     isZCashShieldedTransactionsEnabled,
     isShieldingAvailable,
-    zCashAccountInfo
+    zcashAccountInfo
   ])
+
+  const showSyncWarning =
+    isShieldedAccount && (blocksBehind > 1000 || chainTipStatus === null)
 
   // render
   return (
     <>
-      <StyledWrapper isRewardsAccount={isRewardsAccount}>
+      <StyledWrapper
+        isRewardsAccount={isRewardsAccount}
+        isOutOfSync={showSyncWarning}
+      >
         <Row justifyContent='space-between'>
           <AccountButton
             onClick={onSelectAccount}
@@ -374,8 +395,7 @@ export const AccountListItem = ({
                     {account.name}
                   </Text>
                   <HorizontalSpace space='6px' />
-                  {zCashAccountInfo &&
-                    zCashAccountInfo.accountShieldBirthday && <ShieldedLabel />}
+                  {isShieldedAccount && <ShieldedLabel />}
                   {isRewardsAccount && (
                     <>
                       <VerticalSpacer space='4px' />
@@ -401,6 +421,21 @@ export const AccountListItem = ({
                     ? getRewardsTokenDescription(externalProvider ?? null)
                     : getAccountTypeDescription(account.accountId)}
                 </AccountDescription>
+                {showSyncWarning && (
+                  <Row
+                    justifyContent='flex-start'
+                    gap='4px'
+                  >
+                    <WarningIcon />
+                    <Text
+                      textColor='warning'
+                      textSize='14px'
+                      isBold={false}
+                    >
+                      {getLocale('braveWalletOutOfSyncTitle')}
+                    </Text>
+                  </Row>
+                )}
               </Column>
             </NameAndIcon>
 
