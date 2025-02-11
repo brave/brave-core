@@ -10,6 +10,8 @@ import toml
 
 import versions
 
+REMOVE_CRATES = ['winapi-*gnu*', 'windows_*gnu*']
+
 
 def setup_workspace():
     # Remove .cargo/config.toml if it exists
@@ -59,15 +61,13 @@ def add_dependencies():
 
 
 def create_dependency_placeholders():
-    patterns = ['winapi-*gnu*', 'windows_*gnu*']
-
     cargo_lock_path = Path('Cargo.lock')
     with open(cargo_lock_path) as f:
         lock_content = toml.load(f)
 
     # Convert patterns to regex patterns
     def matches_any_pattern(name):
-        return any(fnmatch.fnmatch(name, pattern) for pattern in patterns)
+        return any(fnmatch.fnmatch(name, pattern) for pattern in REMOVE_CRATES)
 
     # Process each package in the lock file
     if 'package' in lock_content:
@@ -83,7 +83,7 @@ def create_dependency_placeholders():
 
     vendor_path = Path('vendor')
 
-    for pattern in patterns:
+    for pattern in REMOVE_CRATES:
         # Using glob pattern matching for directories
         matching_dirs = list(vendor_path.glob(pattern))
 

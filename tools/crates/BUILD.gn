@@ -3,42 +3,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import("//brave/tools/crates/cargo.gni")
+import("//brave/tools/crates/build_crate.gni")
 import("//brave/tools/crates/config.gni")
 
-action("build_crates") {
-  script = "//build/gn_run_binary.py"
+build_crate(cargo_audit_exe) {
+}
 
-  inputs = [
-    cargo_exe,
-    "Cargo.lock",
-  ]
+build_crate(wasm_bindgen_cli_exe) {
+}
 
-  outputs = [
-    cargo_audit_exe,
-    wasm_bindgen_cli_exe,
-    wasm_opt_exe,
-    wasm_pack_exe,
-  ]
+build_crate(wasm_opt_exe) {
+}
 
-  args = [
-    rebase_path(cargo_exe),
-    "build",
-    "--release",
-    "--manifest-path",
-    rebase_path("Cargo.toml"),
-    "--config",
-    rebase_path(".cargo/config.toml"),
-    "--target-dir",
-    rebase_path(target_dir),
-    "--frozen",
-    "-p",
-    "cargo-audit",
-    "-p",
-    "wasm-bindgen-cli",
-    "-p",
-    "wasm-opt",
-    "-p",
-    "wasm-pack",
+build_crate(wasm_pack_exe) {
+  deps = [
+    ":build_wasm_bindgen_cli($host_toolchain)",
+    ":build_wasm_opt($host_toolchain)",
   ]
 }

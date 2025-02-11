@@ -623,7 +623,7 @@ action("audit_deps") {
     args += [ "--audit_dev_deps" ]
   }
 
-  deps = [ "//brave/tools/crates:build_crates" ]
+  deps = [ "//brave/tools/crates:build_cargo_audit($host_toolchain)" ]
 }
 
 if (is_redirect_cc_build) {
