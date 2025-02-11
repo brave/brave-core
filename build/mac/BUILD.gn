@@ -15,6 +15,7 @@ import("//third_party/widevine/cdm/widevine.gni")
 
 packaging_dir = "$brave_packaging_base_dir/" +
                 string_replace("$chrome_product_full_name Packaging", " ", "_")
+packaging_out_dir = "$root_out_dir/packaged"
 
 if (skip_signing || is_universal_binary) {
   unsigned_app_path = "$root_out_dir/$brave_exe"
@@ -26,14 +27,12 @@ if (is_universal_binary) {
   unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
 }
 
-signed_output_dir = "$root_out_dir/$mac_signed_output_prefix"
-
 target_dmg_path = "$root_out_dir/$brave_dmg"
 
-_upstream_signed_basename = "$signed_output_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
-_upstream_signed_dmg_path = "$_upstream_signed_basename.dmg"
-_upstream_signed_pkg_path = "$_upstream_signed_basename.pkg"
-_upstream_signed_crx_path = "$_upstream_signed_basename.crx3"
+upstream_packaged_basename = "$packaging_out_dir/" + string_replace(chrome_product_full_name, " ", "") + "-$chrome_version_full"
+upstream_dmg_path = "$upstream_packaged_basename.dmg"
+upstream_pkg_path = "$upstream_packaged_basename.pkg"
+upstream_crx_path = "$upstream_packaged_basename.crx3"
 
 if (is_universal_binary) {
   action("universalize") {
@@ -108,7 +107,7 @@ action("generate_dsa_sig_for_dmg") {
     "--sign-key-file",
     "$sparkle_dsa_private_key_file",
     "--target",
-    rebase_path(_upstream_signed_dmg_path),
+    rebase_path(upstream_dmg_path),
     "--output",
     rebase_path("$output_dmg_dsa_path"),
     "--dsa",
@@ -117,7 +116,7 @@ action("generate_dsa_sig_for_dmg") {
   inputs = [
     script,
     "$sign_update_path",
-    _upstream_signed_dmg_path,
+    upstream_dmg_path,
   ]
 
   outputs = [ "$output_dmg_dsa_path" ]
@@ -146,7 +145,7 @@ action("generate_eddsa_sig_for_dmg") {
     "--sign-key",
     "$sparkle_eddsa_private_key",
     "--target",
-    rebase_path(_upstream_signed_dmg_path),
+    rebase_path(upstream_dmg_path),
     "--output",
     rebase_path("$output_dmg_eddsa_path"),
     "--eddsa",
@@ -155,7 +154,7 @@ action("generate_eddsa_sig_for_dmg") {
   inputs = [
     script,
     "$sign_update_path",
-    _upstream_signed_dmg_path,
+    upstream_dmg_path,
   ]
 
   outputs = [ "$output_dmg_eddsa_path" ]
@@ -186,7 +185,7 @@ action("build_delta_installer") {
     "--old-dmg",
     rebase_path("$root_out_dir/$last_chrome_installer"),
     "--new-dmg",
-    rebase_path(_upstream_signed_dmg_path),
+    rebase_path(upstream_dmg_path),
     "--delta-output",
     rebase_path("$output_delta_path"),
   ]
@@ -194,7 +193,7 @@ action("build_delta_installer") {
   inputs = [
     script,
     "$binary_delta_path",
-    _upstream_signed_dmg_path,
+    upstream_dmg_path,
   ]
 
   outputs = [ "$output_delta_path" ]
@@ -306,8 +305,8 @@ action("_create_dmg_pkg") {
     "//chrome/installer/mac",
   ]
   outputs = [
-    _upstream_signed_dmg_path,
-    _upstream_signed_pkg_path,
+    upstream_dmg_path,
+    upstream_pkg_path,
   ]
   script = "$packaging_dir/sign_chrome.py"
   installer_identity = mac_installer_signing_identifier
@@ -319,7 +318,7 @@ action("_create_dmg_pkg") {
     "--input",
     rebase_path(root_build_dir, root_build_dir),
     "--output",
-    rebase_path(signed_output_dir, root_build_dir),
+    rebase_path(packaging_out_dir, root_build_dir),
     # sign_chrome.py requires --identity even when signing is skipped.
     "--identity=$mac_signing_identifier",
     "--installer-identity=$installer_identity",
@@ -389,7 +388,7 @@ copy("ds_store") {
 if (skip_signing) {
   copy("unsigned_dmg") {
     deps = [ ":_create_dmg_pkg" ]
-    sources = [ _upstream_signed_dmg_path ]
+    sources = [ upstream_dmg_path ]
     outputs = [ "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg" ]
   }
 }
@@ -421,21 +420,21 @@ group("finalize_dmg_pkg") {
 }
 
 copy("copy_dmg") {
-  sources = [ _upstream_signed_dmg_path ]
+  sources = [ upstream_dmg_path ]
   deps = [ ":_create_dmg_pkg" ]
   outputs = [ target_dmg_path ]
 }
 
 copy("copy_pkg") {
-  sources = [ _upstream_signed_pkg_path ]
+  sources = [ upstream_pkg_path ]
   deps = [ ":_create_dmg_pkg" ]
   outputs = [ "$root_out_dir/$brave_pkg" ]
 }
 
 crx3("crx") {
-  inputs = [ _upstream_signed_dmg_path ]
-  output = _upstream_signed_crx_path
-  base_dir = get_path_info(_upstream_signed_dmg_path, "dir")
+  inputs = [ upstream_dmg_path ]
+  output = upstream_crx_path
+  base_dir = get_path_info(upstream_dmg_path, "dir")
 
   # The private key file is not in Git for obvious reasons. It needs to be
   # copied into this directory manually. Changing the private key requires
