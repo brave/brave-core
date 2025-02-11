@@ -57,13 +57,11 @@ const _mockEvmAccountInfos: BraveWallet.AccountInfo[] = [
 const mockEvmTxInfos: BraveWallet.TransactionInfo[] = [
   deserializeTransaction({
     ...mockTransactionInfo,
-    fromAddress: mockTransactionInfo.fromAccountId.address,
     fromAccountId: mockTransactionInfo.fromAccountId,
     txStatus: BraveWallet.TransactionStatus.Unapproved
   }),
   deserializeTransaction({
     ...mockTransactionInfo,
-    fromAddress: mockTransactionInfo.fromAccountId.address,
     fromAccountId: mockTransactionInfo.fromAccountId,
     txStatus: BraveWallet.TransactionStatus.Unapproved
   })
