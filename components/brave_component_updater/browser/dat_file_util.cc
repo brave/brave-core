@@ -35,21 +35,24 @@ void GetDATFileData(const base::FilePath& file_path,
 namespace brave_component_updater {
 
 DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path) {
-  TRACE_EVENT_BEGIN1("brave.adblock", "ReadDATFileData", "path",
-                     dat_file_path.MaybeAsASCII());
+  TRACE_EVENT_BEGIN("brave.adblock", "ReadDATFileData", "path",
+                    dat_file_path.MaybeAsASCII());
   DATFileDataBuffer buffer;
   GetDATFileData(dat_file_path, &buffer);
-  TRACE_EVENT_END1("brave.adblock", "ReadDATFileData", "size", buffer.size());
+  TRACE_EVENT_END("brave.adblock", "size", buffer.size());
   return buffer;
 }
 
 std::string GetDATFileAsString(const base::FilePath& file_path) {
+  TRACE_EVENT_BEGIN("brave.adblock", "GetDATFileAsString", "path",
+                    file_path.MaybeAsASCII());
   std::string contents;
   bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
     LOG(ERROR) << "GetDATFileAsString: cannot "
                << "read dat file " << file_path;
   }
+  TRACE_EVENT_END("brave.adblock", "size", contents.size());
   return contents;
 }
 

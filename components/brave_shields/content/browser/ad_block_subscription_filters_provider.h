@@ -10,6 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
 
@@ -46,6 +47,7 @@ class AdBlockSubscriptionFiltersProvider : public AdBlockFiltersProvider {
   void OnDATFileDataReady(
       base::OnceCallback<
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+      const perfetto::Flow& flow,
       const DATFileDataBuffer& dat_buf);
 
   std::string GetNameForDebugging() override;

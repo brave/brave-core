@@ -67,6 +67,7 @@ class AdBlockFiltersProviderManager : public AdBlockFiltersProvider,
   void FinishCombinating(
       base::OnceCallback<
           void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+      uint64_t flow_id,
       std::vector<base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>>
           results);
 

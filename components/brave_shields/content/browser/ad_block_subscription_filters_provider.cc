@@ -24,7 +24,10 @@ namespace {
 void AddDATBufferToFilterSet(
     base::OnceCallback<void(const adblock::FilterListMetadata&)> on_metadata,
     DATFileDataBuffer buffer,
+    const perfetto::Flow& flow,
     rust::Box<adblock::FilterSet>* filter_set) {
+  TRACE_EVENT("brave.adblock",
+              "AddDATBufferToFilterSet_SubscriptionFiltersProvider", flow);
   auto result = (*filter_set)->add_filter_list(buffer);
   if (result.result_kind == adblock::ResultKind::Success) {
     std::move(on_metadata).Run(result.value);
@@ -51,11 +54,14 @@ AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() =
 void AdBlockSubscriptionFiltersProvider::LoadFilterSet(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
+  const auto flow = perfetto::Flow::FromPointer(this);
+  TRACE_EVENT("brave.adblock",
+              "AdBlockSubscriptionFiltersProvider::LoadFilterSet", flow);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
       base::BindOnce(&AdBlockSubscriptionFiltersProvider::OnDATFileDataReady,
-                     weak_factory_.GetWeakPtr(), std::move(cb)));
+                     weak_factory_.GetWeakPtr(), std::move(cb), flow));
 }
 
 std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
@@ -65,7 +71,10 @@ std::string AdBlockSubscriptionFiltersProvider::GetNameForDebugging() {
 void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb,
+    const perfetto::Flow& flow,
     const DATFileDataBuffer& dat_buf) {
+  TRACE_EVENT("brave.adblock",
+              "AdBlockSubscriptionFiltersProvider::OnDATFileDataReady", flow);
   std::move(cb).Run(base::BindOnce(
       &AddDATBufferToFilterSet,
       base::BindOnce(
@@ -78,7 +87,7 @@ void AdBlockSubscriptionFiltersProvider::OnDATFileDataReady(
           },
           base::SingleThreadTaskRunner::GetCurrentDefault(),
           on_metadata_retrieved_),
-      dat_buf));
+      dat_buf, flow));
 }
 
 void AdBlockSubscriptionFiltersProvider::OnListAvailable() {
