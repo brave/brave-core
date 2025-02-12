@@ -4,9 +4,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import glob
 import optparse
 import os
-import re
 import subprocess
 import sys
 
@@ -52,11 +52,11 @@ def Main(argv):
 
     old_dmg_mount_point = os.path.join(options.root_out_dir_path, 'old_dmg_mount_for_delta')
     mount_dmg(options.old_dmg_path, old_dmg_mount_point)
-    old_app_path = os.path.join(old_dmg_mount_point, os.path.splitext(os.path.basename(options.old_dmg_path))[0] + '.app')
+    old_app_path, = glob.glob(os.path.join(old_dmg_mount_point, '*.app'))
 
     new_dmg_mount_point = os.path.join(options.root_out_dir_path, 'new_dmg_mount_for_delta')
     mount_dmg(options.new_dmg_path, new_dmg_mount_point)
-    new_app_path = os.path.join(new_dmg_mount_point, os.path.splitext(os.path.basename(options.new_dmg_path))[0] + '.app')
+    new_app_path, = glob.glob(os.path.join(new_dmg_mount_point, '*.app'))
 
     # generate delta file
     print('-> generate delta file from ' + old_app_path + ' and ' + new_app_path)
