@@ -9,8 +9,13 @@ static_library("common") {
   sources = [
     "features.cc",
     "features.h",
+    "skus_utils.cc",
+    "skus_utils.h",
   ]
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//url",
+  ]
 }
 
 mojom("mojom") {

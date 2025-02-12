@@ -5,25 +5,37 @@
 
 #include "brave/components/skus/renderer/skus_utils.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "base/no_destructor.h"
+#include "brave/components/skus/common/skus_utils.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 #include "third_party/blink/public/platform/web_url.h"
-#include "url/gurl.h"
+
+namespace {
+
+const std::vector<blink::WebSecurityOrigin>& WebSecurityOriginList() {
+  static const base::NoDestructor<std::vector<blink::WebSecurityOrigin>> list(
+      [] {
+        std::vector<blink::WebSecurityOrigin> list;
+        std::ranges::transform(
+            skus::kSafeOrigins, std::back_inserter(list),
+            [](auto& origin_string) {
+              return blink::WebSecurityOrigin::Create(GURL(origin_string));
+            });
+        return list;
+      }());
+  return *list;
+}
+
+}  // namespace
 
 namespace skus {
 
 bool IsSafeOrigin(const blink::WebSecurityOrigin& origin) {
-  // NOTE: please open a security review when appending to this list.
-  static base::NoDestructor<std::vector<blink::WebSecurityOrigin>> safe_origins{
-      {{blink::WebSecurityOrigin::Create(GURL("https://account.brave.com"))},
-       {blink::WebSecurityOrigin::Create(
-           GURL("https://account.bravesoftware.com"))},
-       {blink::WebSecurityOrigin::Create(
-           GURL("https://account.brave.software"))}}};
-
-  for (const blink::WebSecurityOrigin& safe_origin : *safe_origins) {
+  const auto& safe_origins = WebSecurityOriginList();
+  for (const blink::WebSecurityOrigin& safe_origin : safe_origins) {
     if (safe_origin.IsSameOriginWith(origin)) {
       return true;
     }

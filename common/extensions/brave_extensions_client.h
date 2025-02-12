@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMMON_EXTENSIONS_BRAVE_EXTENSIONS_CLIENT_H_
 #define BRAVE_COMMON_EXTENSIONS_BRAVE_EXTENSIONS_CLIENT_H_
 
+#include <string>
+
 #include "chrome/common/extensions/chrome_extensions_client.h"
 
 namespace extensions {
@@ -17,6 +19,7 @@ class BraveExtensionsClient : public ChromeExtensionsClient {
   BraveExtensionsClient& operator=(const BraveExtensionsClient&) = delete;
 
   void InitializeWebStoreUrls(base::CommandLine* command_line) override;
+  bool IsScriptableURL(const GURL& url, std::string* error) const override;
   const GURL& GetWebstoreUpdateURL() const override;
 
  private:
