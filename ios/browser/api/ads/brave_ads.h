@@ -72,7 +72,7 @@ OBJC_EXPORT
 
 /// Returns `true` if the privacy notice infobar should be displayed when a user
 /// clicks on a search result ad. This should be called before calling
-/// `triggerSearchResultAdEvent` for the click.
+/// `triggerSearchResultAdClickedEvent`.
 - (BOOL)shouldShowSearchResultAdClickedInfoBar;
 
 /// Used to notify the ads service that the user has opted-in/opted-out to
@@ -135,10 +135,9 @@ OBJC_EXPORT
 - (void)triggerSearchResultAdClickedEvent:(NSString*)placementId
                                completion:(void (^)(BOOL success))completion;
 
-- (void)triggerSearchResultAdEvent:
+- (void)triggerSearchResultAdViewedEvent:
             (BraveAdsCreativeSearchResultAdInfo*)searchResultAd
-                         eventType:(BraveAdsSearchResultAdEventType)eventType
-                        completion:(void (^)(BOOL success))completion;
+                              completion:(void (^)(BOOL success))completion;
 
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
                           completion:(void (^)(BOOL success))completion;
