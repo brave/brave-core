@@ -19,6 +19,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
+#include "brave/ios/browser/user_agent/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
@@ -190,6 +191,13 @@
           "Enables page translation using Apple APIs",                         \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kBraveAppleTranslateEnabled),    \
+      },                                                                       \
+      {                                                                        \
+          "use-brave-user-agent",                                              \
+          "Use Brave user agent",                                              \
+          "Includes Brave version information in the user agent",              \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseBraveUserAgent),             \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
