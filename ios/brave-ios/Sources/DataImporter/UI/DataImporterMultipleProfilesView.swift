@@ -3,55 +3,51 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import DesignSystem
 import SwiftUI
 
-struct BraveDataImporterMultipleProfilesView: View {
+struct DataImporterMultipleProfilesView: View {
   var zipFileExtractedURL: URL
   var profiles: [String: [String: URL]]
   var onProfileSelected: (String) -> Void
 
-  @Environment(\.dismissHandler)
-  private var dismissHandler
+  @Environment(\.dismiss)
+  private var dismiss
 
   var body: some View {
     VStack {
-      HStack {
-        Spacer()
-
-        Button {
-          dismissHandler?()
-        } label: {
+      Button {
+        dismiss()
+      } label: {
+        Label {
+          Text(Strings.close)
+        } icon: {
           Image(braveSystemName: "leo.close")
             .foregroundColor(Color(braveSystemName: .iconDefault))
             .padding(8)
         }
-        .frame(alignment: .trailing)
-        .background(Color(braveSystemName: .materialSeparator))
-        .clipShape(Circle())
+        .labelStyle(.iconOnly)
       }
+      .background(Color(braveSystemName: .materialSeparator), in: Circle())
+      .frame(maxWidth: .infinity, alignment: .trailing)
 
-      Image(
-        "multi_profile_logo",
-        bundle: .module
-      )
-      .padding(.bottom, 24.0)
+      Image("multi_profile_logo", bundle: .module)
+        .padding(.bottom, 24.0)
 
-      Text(Strings.DataImporter.multipleProfilesTitle)
-        .font(.body.weight(.semibold))
-        .multilineTextAlignment(.center)
-        .foregroundColor(Color(braveSystemName: .textPrimary))
-        .frame(maxWidth: .infinity, alignment: .center)
-        .fixedSize(horizontal: false, vertical: true)
-        .padding(.horizontal, 24.0)
+      VStack {
+        Text(Strings.DataImporter.multipleProfilesTitle)
+          .font(.headline)
+          .foregroundColor(Color(braveSystemName: .textPrimary))
 
-      Text(Strings.DataImporter.multipleProfilesMessage)
-        .font(.footnote)
-        .multilineTextAlignment(.center)
-        .foregroundStyle(Color(braveSystemName: .textSecondary))
-        .frame(maxWidth: .infinity, alignment: .center)
-        .fixedSize(horizontal: false, vertical: true)
-        .padding(.horizontal, 24.0)
+        Text(Strings.DataImporter.multipleProfilesMessage)
+          .font(.footnote)
+          .foregroundStyle(Color(braveSystemName: .textSecondary))
+      }
+      .multilineTextAlignment(.center)
+      .frame(maxWidth: .infinity)
+      .fixedSize(horizontal: false, vertical: true)
+      .padding(.horizontal, 24.0)
 
       VStack {
         ForEach(Array(profiles.keys.sorted().enumerated()), id: \.element) { (offset, profile) in
@@ -79,26 +75,20 @@ struct BraveDataImporterMultipleProfilesView: View {
         }
       }
       .background(
-        Color(braveSystemName: .iosBrowserElevatedIos)
-          .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+        Color(braveSystemName: .iosBrowserElevatedIos),
+        in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
       )
       .padding()
 
       Button {
-        dismissHandler?()
+        dismiss()
       } label: {
         Text(Strings.CancelString)
           .font(.subheadline.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .textSecondary))
-          .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
       }
-      .buttonStyle(PlainButtonStyle())
+      .buttonStyle(.plain)
     }
-    .padding(16.0)
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(
-      .thickMaterial,
-      in: RoundedRectangle(cornerRadius: 15.0, style: .continuous)
-    )
   }
 }
