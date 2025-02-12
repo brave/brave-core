@@ -17,7 +17,6 @@
 #include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/common/bech32.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
-#include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "brave/components/brave_wallet/common/f4_jumble.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
