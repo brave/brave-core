@@ -297,7 +297,6 @@ void ConversationHandler::OnConversationMetadataUpdated() {
           metadata_->associated_content->content_type ==
               mojom::ContentType::VideoTranscript);
     } else {
-      // TODO: Confirm with @petemill if this is the correct behavior
       archive_content_->SetMetadata(GURL(), u"", false);
     }
   }
@@ -514,7 +513,7 @@ void ConversationHandler::GetState(GetStateCallback callback) {
                  [](auto& model) { return model.Clone(); });
   auto model_key = GetCurrentModel().key;
 
-  BuildAssociatedContentInfo();
+  UpdateAssociatedContentInfo();
 
   std::vector<std::string> suggestions;
   std::ranges::transform(suggestions_, std::back_inserter(suggestions),
@@ -972,7 +971,7 @@ void ConversationHandler::DisassociateContentDelegate() {
 
 void ConversationHandler::GetAssociatedContentInfo(
     GetAssociatedContentInfoCallback callback) {
-  BuildAssociatedContentInfo();
+  UpdateAssociatedContentInfo();
   std::move(callback).Run(metadata_->associated_content
                               ? metadata_->associated_content->Clone()
                               : nullptr,
@@ -1677,7 +1676,7 @@ bool ConversationHandler::IsContentAssociationPossible() {
   return (associated_content_delegate_ != nullptr);
 }
 
-void ConversationHandler::BuildAssociatedContentInfo() {
+void ConversationHandler::UpdateAssociatedContentInfo() {
   // Only modify associated content metadata here
   if (associated_content_delegate_) {
     // Note: We don't create a new AssociatedContent object here unless one
@@ -1729,7 +1728,7 @@ ConversationHandler::GetStateForConversationEntries() {
 }
 
 void ConversationHandler::OnAssociatedContentInfoChanged() {
-  BuildAssociatedContentInfo();
+  UpdateAssociatedContentInfo();
   for (auto& client : conversation_ui_handlers_) {
     client->OnAssociatedContentInfoChanged(
         metadata_->associated_content ? metadata_->associated_content->Clone()

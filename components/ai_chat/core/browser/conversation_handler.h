@@ -366,7 +366,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   };
 
   void InitEngine();
-  void BuildAssociatedContentInfo();
+  void UpdateAssociatedContentInfo();
   mojom::ConversationEntriesStatePtr GetStateForConversationEntries();
   bool IsContentAssociationPossible();
   int GetContentUsedPercentage();

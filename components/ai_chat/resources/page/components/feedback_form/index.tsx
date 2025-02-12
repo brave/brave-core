@@ -20,6 +20,14 @@ const CATEGORY_OPTIONS = new Map([
   ['other', getLocale('optionOther')]
 ])
 
+const getHostName = (url: string) => {
+  try {
+    return new URL(url).hostname
+  } catch (e) {
+    return ''
+  }
+}
+
 function FeedbackForm() {
   const ref = React.useRef<HTMLDivElement>(null)
   const [category, setCategory] = React.useState('')
@@ -90,7 +98,7 @@ function FeedbackForm() {
               <label>{
                 formatMessage(getLocale('sendSiteHostnameLabel'), {
                   placeholders: {
-                    $1: new URL(conversationContext.associatedContentInfo.url.url).hostname
+                    $1: getHostName(conversationContext.associatedContentInfo.url.url)
                   }
                 })
               }</label>
