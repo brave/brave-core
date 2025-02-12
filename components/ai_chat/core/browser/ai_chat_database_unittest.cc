@@ -127,11 +127,10 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
     const GURL page_url = GURL("https://example.com/page");
     const std::string expected_contents = "Page contents";
     mojom::AssociatedContentPtr associated_content =
-        has_content
-            ? mojom::AssociatedContent::New(
-                  content_uuid, mojom::ContentType::PageContent, "page title",
-                  page_url.host(), 1, page_url, 62, true, true)
-            : nullptr;
+        has_content ? mojom::AssociatedContent::New(
+                          content_uuid, mojom::ContentType::PageContent,
+                          "page title", 1, page_url, 62, true)
+                    : nullptr;
     const mojom::ConversationPtr metadata =
         mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
                                  std::nullopt, std::move(associated_content));
@@ -365,8 +364,7 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
         base::StrCat({"for_conversation_title_", initial_title});
     const std::string updated_title = "updated title";
     mojom::ConversationPtr metadata = mojom::Conversation::New(
-        uuid, initial_title, base::Time::Now(), true, std::nullopt,
-        nullptr);
+        uuid, initial_title, base::Time::Now(), true, std::nullopt, nullptr);
 
     // Persist the first entry (and get the response ready)
     const auto history = CreateSampleChatHistory(1u);
@@ -636,9 +634,8 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     // ConversationEntry table changed, check it persists correctly
     auto now = base::Time::Now();
     const std::string uuid = "migrationtest";
-    const mojom::ConversationPtr metadata =
-        mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
-                                 std::nullopt, nullptr);
+    const mojom::ConversationPtr metadata = mojom::Conversation::New(
+        uuid, "title", now - base::Hours(2), true, std::nullopt, nullptr);
 
     // Persist the first entry (and get the response ready)
     auto history = CreateSampleChatHistory(1u);
