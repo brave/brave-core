@@ -421,7 +421,6 @@ if (is_android) {
     "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
-    "//brave/components/search_engines/android:jni_headers",
     "//chrome/android:jni_headers",
     "//components/sync_device_info",
   ]
