@@ -60,7 +60,7 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
   fileprivate var interstitialErrorView: UILabel!
 
   // The web view that displays content.
-  var webView: BraveWebView!
+  var webView: TabWebView!
 
   fileprivate func startLoading(_ timeout: Double = defaultTimeoutTimeInterval) {
     if self.isLoaded {
@@ -117,12 +117,12 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
     startLoading()
   }
 
-  func makeWebView() -> BraveWebView {
+  func makeWebView() -> TabWebView {
     let frame = CGRect(width: 1, height: 1)
     let configuration = WKWebViewConfiguration().then {
       $0.setURLSchemeHandler(InternalSchemeHandler(tab: nil), forURLScheme: InternalURL.scheme)
     }
-    let webView = BraveWebView(frame: frame, configuration: configuration)
+    let webView = TabWebView(frame: frame, configuration: configuration)
     webView.allowsLinkPreview = false
     webView.navigationDelegate = self
     return webView
