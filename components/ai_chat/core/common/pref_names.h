@@ -55,8 +55,8 @@ inline constexpr char kBraveChatP3AEntryPointUsages[] =
     "brave.ai_chat.p3a_entry_point_usages";
 inline constexpr char kBraveChatP3ASidebarUsages[] =
     "brave.ai_chat.p3a_sidebar_usages";
-inline constexpr char kBraveChatP3AFullscreenSwitches[] =
-    "brave.ai_chat.p3a_fullscreen_switches";
+inline constexpr char kBraveChatP3AFullPageSwitches[] =
+    "brave.ai_chat.p3a_full_page_switches";
 inline constexpr char kBraveChatP3ALastContextMenuUsageTime[] =
     "brave.ai_chat.p3a_last_context_menu_time";
 inline constexpr char kBraveChatP3AFirstChatPromptsReported[] =

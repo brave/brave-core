@@ -38,7 +38,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.AIChat.Enabled.2", {}},
     {"Brave.AIChat.Enabled.SidebarEnabledA", {}},
     {"Brave.AIChat.FirstChatPrompts", MetricConfig{.ephemeral = true}},
-    {"Brave.AIChat.FullscreenSwitches", MetricConfig{.ephemeral = true}},
+    {"Brave.AIChat.FullPageSwitches", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.MaxChatDuration", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.MostUsedContextSource", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.MostUsedEntryPoint", MetricConfig{.ephemeral = true}},

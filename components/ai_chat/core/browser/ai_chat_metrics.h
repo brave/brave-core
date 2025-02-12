@@ -79,8 +79,8 @@ inline constexpr char kMostUsedContextSourceHistogramName[] =
     "Brave.AIChat.MostUsedContextSource";
 inline constexpr char kUsedConversationStarterHistogramName[] =
     "Brave.AIChat.UsedConversationStarter";
-inline constexpr char kFullscreenSwitchesHistogramName[] =
-    "Brave.AIChat.FullscreenSwitches";
+inline constexpr char kFullPageSwitchesHistogramName[] =
+    "Brave.AIChat.FullPageSwitches";
 inline constexpr char kRateLimitStopsHistogramName[] =
     "Brave.AIChat.RateLimitStops";
 inline constexpr char kContextLimitsHistogramName[] =
@@ -116,14 +116,13 @@ enum class ContextSource {
   kTextInputWithPage = 3,
   kTextInputWithoutPage = 4,
   kTextInputViaFullPage = 5,
-  kRightClick = 6,
-  kMaxValue = kRightClick
+  kQuickAction = 6,
+  kMaxValue = kQuickAction
 };
 
 class ConversationHandlerForMetrics {
  public:
   virtual ~ConversationHandlerForMetrics() = default;
-  virtual bool IsConversationStarter(std::string_view title) = 0;
   virtual size_t GetConversationHistorySize() = 0;
   virtual bool should_send_page_contents() const = 0;
   virtual mojom::APIError current_error() const = 0;
@@ -163,7 +162,7 @@ class AIChatMetrics : public mojom::Metrics {
   void RecordContextMenuUsage(ContextMenuAction action);
   void HandleOpenViaEntryPoint(EntryPoint entry_point);
   void RecordSidebarUsage();
-  void RecordFullscreenSwitch();
+  void RecordFullPageSwitch();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   void OnPremiumStatusUpdated(bool is_enabled,
@@ -174,6 +173,7 @@ class AIChatMetrics : public mojom::Metrics {
 
   // Metrics:
   void WillSendPromptWithFullPage() override;
+  void WillSendPromptWithQuickAction() override;
 
  private:
   void ReportAllMetrics();
@@ -186,7 +186,7 @@ class AIChatMetrics : public mojom::Metrics {
   void ReportOmniboxCounts();
   void ReportContextMenuMetrics();
   void ReportEntryPointUsageMetric();
-  void ReportFullscreenUsageMetric();
+  void ReportFullPageUsageMetric();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   void MaybeReportFirstChatPrompts(bool new_prompt_made);
@@ -198,6 +198,7 @@ class AIChatMetrics : public mojom::Metrics {
   bool premium_check_in_progress_ = false;
   bool prompted_via_omnibox_ = false;
   bool prompted_via_full_page_ = false;
+  bool prompted_via_quick_action_ = false;
   std::optional<EntryPoint> acquisition_source_ = std::nullopt;
 
   WeeklyStorage chat_count_storage_;
@@ -216,7 +217,7 @@ class AIChatMetrics : public mojom::Metrics {
   base::flat_map<EntryPoint, std::unique_ptr<WeeklyStorage>>
       entry_point_storages_;
   WeeklyStorage sidebar_usage_storage_;
-  WeeklyStorage fullscreen_switch_storage_;
+  WeeklyStorage full_page_switch_storage_;
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   base::flat_map<ContextSource, std::unique_ptr<WeeklyStorage>>
       context_source_storages_;

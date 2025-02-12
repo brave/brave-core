@@ -559,6 +559,8 @@ interface ConversationUI {
 
 interface Metrics {
   WillSendPromptWithFullPage();
+
+  WillSendPromptWithQuickAction();
 };
 
 [EnableIf=is_android]

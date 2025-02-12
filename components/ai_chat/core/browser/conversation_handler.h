@@ -290,7 +290,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnAssociatedContentTitleChanged();
   void OnFaviconImageDataChanged();
   void OnUserOptedIn();
-  bool IsConversationStarter(std::string_view title) override;
   size_t GetConversationHistorySize() override;
 
   // Some associated content may provide some conversation that the user wants
@@ -366,7 +365,7 @@ class ConversationHandler : public mojom::ConversationHandler,
     Suggestion(std::string title,
                std::string prompt,
                mojom::ActionType action_type);
-    Suggestion(const Suggestion&);
+    Suggestion(const Suggestion&) = delete;
     Suggestion& operator=(const Suggestion&) = delete;
     Suggestion(Suggestion&&);
     Suggestion& operator=(Suggestion&&);
@@ -384,7 +383,6 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   std::string invalidation_token = "");
   void SetAPIError(const mojom::APIError& error);
   void UpdateOrCreateLastAssistantEntry(mojom::ConversationEntryEventPtr text);
-  void MaybeInitConversationStarters();
   void MaybeSeedOrClearSuggestions();
   void PerformQuestionGeneration(std::string page_content,
                                  bool is_video,
@@ -442,7 +440,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::vector<mojom::ConversationTurnPtr> chat_history_;
   mojom::ConversationTurnPtr pending_conversation_entry_;
   // Any previously-generated suggested questions
-  std::vector<Suggestion> conversation_starters_;
   std::vector<Suggestion> suggestions_;
   std::string selected_language_;
   // Is a conversation engine request in progress (does not include

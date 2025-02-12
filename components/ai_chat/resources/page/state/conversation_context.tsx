@@ -419,6 +419,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setPartialContext({
       selectedActionType: actionType
     })
+    getAPI().metrics.willSendPromptWithQuickAction()
     // TODO(petemill): Explain why the settimeout?
     setTimeout(() => {
       if (context.inputText.startsWith('/')) {

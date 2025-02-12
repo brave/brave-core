@@ -176,8 +176,6 @@ ConversationHandler::Suggestion::Suggestion(std::string title,
     : title(std::move(title)),
       prompt(std::move(prompt)),
       action_type(action_type) {}
-ConversationHandler::Suggestion::Suggestion(
-    const ConversationHandler::Suggestion&) = default;
 ConversationHandler::Suggestion::Suggestion(Suggestion&&) = default;
 ConversationHandler::Suggestion& ConversationHandler::Suggestion::operator=(
     Suggestion&&) = default;
@@ -1126,13 +1124,6 @@ void ConversationHandler::OnUserOptedIn() {
   MaybeFetchOrClearContentStagedConversation();
 }
 
-bool ConversationHandler::IsConversationStarter(std::string_view title) {
-  MaybeInitConversationStarters();
-  return base::ranges::any_of(conversation_starters_, [&](const auto& starter) {
-    return starter.title == title;
-  });
-}
-
 void ConversationHandler::AddToConversationHistory(
     mojom::ConversationTurnPtr turn) {
   if (!turn) {
@@ -1277,21 +1268,6 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
   OnHistoryUpdate();
 }
 
-void ConversationHandler::MaybeInitConversationStarters() {
-  if (!conversation_starters_.empty()) {
-    return;
-  }
-  conversation_starters_.emplace_back(STARTER_PROMPT(MEMO));
-  conversation_starters_.emplace_back(STARTER_PROMPT(INTERVIEW));
-  conversation_starters_.emplace_back(STARTER_PROMPT(STUDY_PLAN));
-  conversation_starters_.emplace_back(STARTER_PROMPT(PROJECT_TIMELINE));
-  conversation_starters_.emplace_back(STARTER_PROMPT(MARKETING_STRATEGY));
-  conversation_starters_.emplace_back(STARTER_PROMPT(PRESENTATION_OUTLINE));
-  conversation_starters_.emplace_back(STARTER_PROMPT(BRAINSTORM));
-  conversation_starters_.emplace_back(STARTER_PROMPT(PROFESSIONAL_EMAIL));
-  conversation_starters_.emplace_back(STARTER_PROMPT(BUSINESS_PROPOSAL));
-}
-
 void ConversationHandler::MaybeSeedOrClearSuggestions() {
   const bool is_page_associated =
       IsContentAssociationPossible() && should_send_page_contents_;
@@ -1303,9 +1279,15 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
       return;
     }
 
-    MaybeInitConversationStarters();
-    base::ranges::copy(conversation_starters_,
-                       std::back_inserter(suggestions_));
+    suggestions_.emplace_back(STARTER_PROMPT(MEMO));
+    suggestions_.emplace_back(STARTER_PROMPT(INTERVIEW));
+    suggestions_.emplace_back(STARTER_PROMPT(STUDY_PLAN));
+    suggestions_.emplace_back(STARTER_PROMPT(PROJECT_TIMELINE));
+    suggestions_.emplace_back(STARTER_PROMPT(MARKETING_STRATEGY));
+    suggestions_.emplace_back(STARTER_PROMPT(PRESENTATION_OUTLINE));
+    suggestions_.emplace_back(STARTER_PROMPT(BRAINSTORM));
+    suggestions_.emplace_back(STARTER_PROMPT(PROFESSIONAL_EMAIL));
+    suggestions_.emplace_back(STARTER_PROMPT(BUSINESS_PROPOSAL));
 
     // We don't have an external list of all the available suggestions, so we
     // generate all of them  and remove random ones until we have the required
@@ -1664,7 +1646,6 @@ void ConversationHandler::OnConversationEntryAdded(
     OnHistoryUpdate();
     return;
   }
-
   for (auto& observer : observers_) {
     observer.OnConversationEntryAdded(this, entry, associated_content_value);
   }
