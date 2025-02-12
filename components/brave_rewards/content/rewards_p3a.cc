@@ -27,7 +27,7 @@ constexpr base::TimeDelta kReportInterval = base::Days(1);
 
 constexpr int kTipsSentBuckets[] = {0, 1, 3};
 
-constexpr int kPanelCountBuckets[] = {5, 10, 50};
+constexpr int kPanelCountBuckets[] = {1, 2, 5, 10, 50};
 
 constexpr int kRewardsPageViewCountBuckets[] = {2, 5, 10, 50};
 

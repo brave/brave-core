@@ -37,10 +37,10 @@ inline constexpr char kMobileConversionHistogramName[] =
     "Brave.Rewards.MobileConversion";
 #if BUILDFLAG(IS_ANDROID)
 inline constexpr char kPanelCountHistogramName[] =
-    "Brave.Rewards.MobilePanelCount";
+    "Brave.Rewards.MobilePanelCount.2";
 #else
 inline constexpr char kPanelCountHistogramName[] =
-    "Brave.Rewards.DesktopPanelCount";
+    "Brave.Rewards.DesktopPanelCount.2";
 #endif
 inline constexpr char kPageViewCountHistogramName[] =
     "Brave.Rewards.PageViewCount";
