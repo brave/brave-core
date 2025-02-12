@@ -138,15 +138,6 @@ extension Strings {
         "The title of the button on the import error screen that lets the user try to import the data again"
     )
 
-    public static let importStateSyncTitle = NSLocalizedString(
-      "importStateSyncTitle",
-      tableName: "DataImporter",
-      bundle: .module,
-      value: "Sync with Brave",
-      comment:
-        "The title of the button on the import success screen that lets the user sync their passwords with Brave sync."
-    )
-
     public static let importStatePasswordConflictKeepExistingPasswordsTitle = NSLocalizedString(
       "importStatePasswordConflictKeepExistingPasswordsTitle",
       tableName: "DataImporter",

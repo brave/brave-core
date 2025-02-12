@@ -120,7 +120,7 @@ struct RecentlyClosedTabsView: View {
       VStack(spacing: 0) {
         if recentlyClosedLoading {
           ProgressView()
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         } else {
           if recentlyClosedTabs.isEmpty {
             Text(Strings.RecentlyClosed.recentlyClosedEmptyListTitle)

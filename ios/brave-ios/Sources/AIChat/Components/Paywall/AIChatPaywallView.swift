@@ -128,7 +128,7 @@ struct AIChatPaywallView: View {
       }
       .background(
         Color(braveSystemName: .primitivePrimary10)
-          .edgesIgnoringSafeArea(.all)
+          .ignoresSafeArea()
           .overlay(
             Image("leo-product", bundle: .module),
             alignment: .topTrailing
@@ -221,7 +221,7 @@ struct AIChatPaywallView: View {
                   ? Strings.AIChat.paywallPurchaseActionIntroOfferTitle
                   : Strings.AIChat.paywallPurchaseActionTitle
               )
-              .font(.body.weight(.semibold))
+              .font(.headline)
               .foregroundColor(Color(.white))
               .padding()
             }

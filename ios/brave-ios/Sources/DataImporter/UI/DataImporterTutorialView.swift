@@ -5,13 +5,13 @@
 
 import SwiftUI
 
-private struct BraveDataImporterTutorialStepView: View {
+private struct DataImporterTutorialStepView: View {
   var icon: Image
   var stepNumber: Int
   var stepDescription: String
 
   var body: some View {
-    VStack(alignment: .center) {
+    VStack {
       HStack {
         icon
 
@@ -20,10 +20,7 @@ private struct BraveDataImporterTutorialStepView: View {
           .foregroundStyle(Color(braveSystemName: .textTertiary))
       }
       .padding(8.0)
-      .background(
-        Color(braveSystemName: .pageBackground),
-        in: Capsule()
-      )
+      .background(Color(braveSystemName: .pageBackground), in: .capsule)
 
       Text(LocalizedStringKey(stepDescription))
         .font(.subheadline)
@@ -34,12 +31,14 @@ private struct BraveDataImporterTutorialStepView: View {
     }
     .padding(16.0)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color(braveSystemName: .containerBackground))
-    .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+    .background(
+      Color(braveSystemName: .containerBackground),
+      in: RoundedRectangle(cornerRadius: 16.0, style: .continuous)
+    )
   }
 }
 
-struct BraveDataImporterTutorialView: View {
+struct DataImporterTutorialView: View {
 
   @Environment(\.openURL)
   private var openURL
@@ -47,32 +46,32 @@ struct BraveDataImporterTutorialView: View {
   var body: some View {
     ScrollView {
       VStack(spacing: 12.0) {
-        BraveDataImporterTutorialStepView(
+        DataImporterTutorialStepView(
           icon: Image(braveSystemName: "leo.grid05"),
           stepNumber: 1,
           stepDescription: Strings.DataImporter.importTutorialStepOneTitle
         )
 
-        BraveDataImporterTutorialStepView(
+        DataImporterTutorialStepView(
           icon: Image("safari_icon", bundle: .module),
           stepNumber: 2,
           stepDescription: Strings.DataImporter.importTutorialStepTwoTitle
         )
 
-        BraveDataImporterTutorialStepView(
+        DataImporterTutorialStepView(
           icon: Image(braveSystemName: "leo.arrow.diagonal-up-right"),
           stepNumber: 3,
           stepDescription: Strings.DataImporter.importTutorialStepThreeTitle
         )
 
-        BraveDataImporterTutorialStepView(
+        DataImporterTutorialStepView(
           icon: Image(braveSystemName: "leo.check.circle-outline"),
           stepNumber: 4,
           stepDescription:
             Strings.DataImporter.importTutorialStepFourTitle
         )
 
-        BraveDataImporterTutorialStepView(
+        DataImporterTutorialStepView(
           icon: Image(braveSystemName: "leo.folder"),
           stepNumber: 5,
           stepDescription:
@@ -89,8 +88,7 @@ struct BraveDataImporterTutorialView: View {
 
         Button(
           action: {
-            // TODO: GET URL FROM SOMEWHERE!
-            openURL(URL.Brave.braveDataImportSupport)
+            openURL(URL.Apple.dataImportSupport)
           },
           label: {
             Text(Strings.DataImporter.importTutorialDetailedProcessMessage)
@@ -109,6 +107,8 @@ struct BraveDataImporterTutorialView: View {
   }
 }
 
+#if DEBUG
 #Preview {
-  BraveDataImporterTutorialView()
+  DataImporterTutorialView()
 }
+#endif

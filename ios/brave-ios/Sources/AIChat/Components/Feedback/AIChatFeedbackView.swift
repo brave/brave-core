@@ -365,7 +365,7 @@ struct AIChatFeedbackView: View {
   var body: some View {
     VStack {
       Text(Strings.AIChat.feedbackViewMainTitle)
-        .font(.body.weight(.semibold))
+        .font(.headline)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
 

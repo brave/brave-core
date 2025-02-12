@@ -287,10 +287,15 @@ class SettingsViewController: TableViewController {
           text: Strings.importBrowsingDataSettingsMenuTitle,
           selection: { [unowned self] in
             let controller = UIHostingController(
-              rootView: BraveDataImportView(openURL: { [unowned self] url in
-                self.settingsDelegate?.settingsOpenURLInNewTab(url)
-                self.dismiss(animated: true)
-              })
+              rootView: DataImportView(
+                openURL: { [unowned self] url in
+                  self.settingsDelegate?.settingsOpenURLInNewTab(url)
+                  self.dismiss(animated: true)
+                },
+                onDismiss: { [weak self] in
+                  self?.navigationController?.setNavigationBarHidden(false, animated: false)
+                }
+              )
             )
             self.navigationController?.pushViewController(controller, animated: true)
           },

@@ -83,7 +83,7 @@ public struct StoreKitReceiptView: View {
         )
         .navigationTitle("App Store Receipt")
         .navigationBarTitleDisplayMode(.inline)
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .padding()
       }
       .navigationTitle("App Store Receipt")
@@ -126,7 +126,7 @@ public struct StoreKitReceiptView: View {
         )
         .navigationTitle("Purchases")
         .navigationBarTitleDisplayMode(.inline)
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .padding()
       }
     }
@@ -169,7 +169,7 @@ public struct StoreKitReceiptView: View {
     )
     .navigationTitle(formatBundleId(purchase.productId))
     .navigationBarTitleDisplayMode(.inline)
-    .buttonStyle(PlainButtonStyle())
+    .buttonStyle(.plain)
     .padding()
   }
 

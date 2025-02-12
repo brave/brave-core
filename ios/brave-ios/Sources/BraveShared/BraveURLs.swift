@@ -82,17 +82,15 @@ extension URL {
       string:
         "https://support.brave.com/hc/en-us/articles/32389914657549-What-is-the-Brave-VPN-Kill-Switch"
     )!
-
-    // TODO: Need to get this URL
-    public static let braveDataImportSupport = URL(
-      string:
-        "https://support.brave.com/"
-    )!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(
       string: "https://apps.apple.com/account/subscriptions"
     )
+
+    public static let dataImportSupport = URL(
+      string: "https://support.apple.com/en-ca/guide/iphone/iph1852764a6/18.0/ios/18.0"
+    )!
   }
   public static let brave = Brave.self
   public static let apple = Apple.self

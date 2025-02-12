@@ -27,14 +27,11 @@ struct AIChatNetworkErrorView: View {
           },
           label: {
             Text(Strings.AIChat.retryActionTitle)
-              .font(.body.weight(.semibold))
+              .font(.headline)
               .foregroundColor(Color(braveSystemName: .schemesOnPrimary))
               .padding()
               .foregroundStyle(.white)
-              .background(
-                Color(braveSystemName: .buttonBackground),
-                in: Capsule()
-              )
+              .background(Color(braveSystemName: .buttonBackground), in: .capsule)
           }
         )
         .buttonStyle(.plain)

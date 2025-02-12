@@ -199,7 +199,7 @@ public struct BraveVPNPaywallView: View {
                 ? Strings.VPN.activateSubscriptionAction.capitalized
                 : Strings.VPN.freeTrialPeriodAction.capitalized
             )
-            .font(.body.weight(.semibold))
+            .font(.headline)
             .foregroundColor(Color(.white))
             .padding()
           }

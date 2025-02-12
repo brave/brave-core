@@ -55,6 +55,7 @@ enum DataImportState {
   case failure
 }
 
+@MainActor
 class DataImportModel: ObservableObject {
   @Published
   private(set) var zipFileURL: URL?
@@ -68,11 +69,38 @@ class DataImportModel: ObservableObject {
   @Published
   var importState: DataImportState = .none
 
+  var isLoadingProfiles: Bool {
+    get {
+      importState == .loadingProfiles
+    }
+
+    set {
+      if !newValue {
+        importState = .none
+      }
+    }
+  }
+
+  var hasDataConflict: Bool {
+    get {
+      importState == .dataConflict
+    }
+
+    set {
+      if !newValue {
+        removeZipFile()
+        resetAllStates()
+      }
+    }
+  }
+
+  // MARK: - Importers
+
   private let bookmarksImporter = BookmarksImportExportUtility()
-
   private let historyImporter = HistoryImportExportUtility()
-
   private var passwordImporter = PasswordsImportExportUtility()
+
+  // MARK: - Importing Data
 
   @MainActor
   func importData(from profile: [String: URL]) async {
@@ -129,8 +157,7 @@ class DataImportModel: ObservableObject {
           removeZipFile()
         }
 
-        // TODO: Localize "Personal"
-        if let defaultProfile = profiles["Personal"] {
+        if let defaultProfile = profiles[Strings.DataImporter.personalImportTitle] {
           self.importState = .importing
           try await importProfile(defaultProfile)
           self.importError = nil

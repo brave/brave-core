@@ -21,14 +21,14 @@ struct AIChatMessageHeaderView: View {
           .background(Color(braveSystemName: .containerHighlight), in: Circle())
 
         Text(Strings.AIChat.youMessageTitle)
-          .font(.body.weight(.semibold))
+          .font(.headline)
           .foregroundStyle(Color(braveSystemName: .textTertiary))
       } else {
         AIChatProductIcon(containerShape: Circle(), padding: 6.0)
           .font(.callout)
 
         Text(Strings.AIChat.leoAssistantNameTitle)
-          .font(.body.weight(.semibold))
+          .font(.headline)
           .foregroundStyle(Color(braveSystemName: .textTertiary))
       }
 
