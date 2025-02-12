@@ -104,7 +104,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->engine_type =
           conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                            : mojom::ModelEngineType::LLAMA_REMOTE;
-      options->max_associated_content_length = 8000;
+      options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
@@ -169,7 +169,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->engine_type =
           conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                            : mojom::ModelEngineType::LLAMA_REMOTE;
-      options->max_associated_content_length = 8000;
+      options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
@@ -192,7 +192,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->engine_type =
           conversation_api ? mojom::ModelEngineType::BRAVE_CONVERSATION_API
                            : mojom::ModelEngineType::LLAMA_REMOTE;
-      options->max_associated_content_length = 8000;
+      options->max_associated_content_length = 64000;
       options->long_conversation_warning_character_limit = 9700;
 
       auto model = mojom::Model::New();
