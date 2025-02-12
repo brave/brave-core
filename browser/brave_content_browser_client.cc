@@ -56,6 +56,7 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_protocol_navigation_throttle.h"
 #include "brave/components/brave_search/browser/backup_results_service.h"
@@ -266,6 +267,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/browser/ui/webui/playlist_ui.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/browser/ui/webui/brave_education/brave_education_page_ui.h"
+#endif
 
 namespace {
 
@@ -899,6 +904,14 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
   content::RegisterWebUIControllerInterfaceBinder<
       speedreader::mojom::ToolbarFactory, SpeedreaderToolbarUI>(map);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_education::mojom::PageHandlerFactory, BraveEducationPageUI>(map);
+  content::RegisterWebUIControllerInterfaceBinder<
+      brave_browser_command::mojom::BraveBrowserCommandHandlerFactory,
+      BraveEducationPageUI>(map);
 #endif
 }
 

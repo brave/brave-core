@@ -1,0 +1,37 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// based on //ui/webui/resources/js/browser_command/browser_command.mojom
+
+module brave_browser_command.mojom;
+
+// The set of browser commands sent by brave.com content, and understood by the
+// browser. They may trigger actions in the browser such as navigating to a
+// chrome:// URL or initiating a helpful flow. Note that the implementations of
+// these commands must be side-effect-free.
+enum Command {
+  kOpenRewardsOnboarding = 1,
+  kOpenWalletOnboarding = 2,
+  kOpenVPNOnboarding = 3,
+  kOpenAIChat = 4
+};
+
+// Implemented by the Brave Education WebUIs that provide
+// BraveBrowserCommandHandlers to handle requests for browser commands from JS.
+interface BraveBrowserCommandHandlerFactory {
+  // Called when first initialized.
+  CreateBrowserCommandHandler(
+      pending_receiver<BraveBrowserCommandHandler> receiver);
+};
+
+// Browser-side handler for requests from the WebUI page.
+interface BraveBrowserCommandHandler {
+  // Returns the given command ID can be executed.
+  CanExecuteCommand(Command command_id) => (bool can_execute);
+
+  // Executes the command with the given ID and click information. Returns
+  // whether or not the command was executed.
+  ExecuteCommand(Command command) => (bool executed);
+};

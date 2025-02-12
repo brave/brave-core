@@ -1,0 +1,95 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# based on //chrome/browser/ui/webui/whats_new/BUILD.gn
+
+import("//brave/components/brave_education/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(enable_brave_education)
+
+mojom("mojo_bindings") {
+  sources = [ "brave_education.mojom" ]
+  webui_module_path = "/"
+
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+}
+
+source_set("brave_education") {
+  sources = [
+    "brave_education_handler.cc",
+    "brave_education_handler.h",
+    "brave_education_page_delegate_desktop.cc",
+    "brave_education_page_delegate_desktop.h",
+    "brave_education_page_ui.cc",
+    "brave_education_page_ui.h",
+    "brave_education_server_checker.cc",
+    "brave_education_server_checker.h",
+  ]
+
+  deps = [
+    "//brave/browser/resources/brave_education:resources",
+    "//brave/browser/ui/webui/brave_browser_command",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/side_panel",
+    "//chrome/browser/ui/webui:webui_util",
+    "//components/language/core/browser",
+    "//ui/webui",
+  ]
+
+  public_deps = [
+    "//brave/browser/ui/webui/brave_education:mojo_bindings",
+    "//brave/components/brave_education",
+    "//brave/ui/webui/resources/js/brave_browser_command:mojo_bindings",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "brave_education_page_ui_browsertest.cc" ]
+
+  deps = [
+    ":brave_education",
+    "//base/test:test_support",
+    "//brave/components/brave_education",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/constants",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_education_page_handler_unittest.cc",
+    "brave_education_server_checker_unittest.cc",
+  ]
+
+  deps = [
+    ":brave_education",
+    "//base/test:test_support",
+    "//brave/browser/ui/webui/brave_browser_command",
+    "//brave/components/brave_education",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//components/language/core/browser",
+    "//testing/gtest",
+  ]
+}
