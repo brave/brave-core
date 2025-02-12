@@ -217,8 +217,7 @@ class BraveWalletService : public KeyedService,
       GetBalanceScannerSupportedChainsCallback callback) override;
 
   void GetSimpleHashSpamNFTs(const std::string& wallet_address,
-                             const std::vector<std::string>& chain_ids,
-                             mojom::CoinType coin,
+                             std::vector<mojom::ChainIdPtr> chain_ids,
                              const std::optional<std::string>& cursor,
                              GetSimpleHashSpamNFTsCallback callback) override;
 

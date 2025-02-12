@@ -16,7 +16,6 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/containers/contains.h"
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "base/functional/bind.h"
@@ -1907,13 +1906,12 @@ class JsonRpcServiceUnitTest : public testing::Test {
   }
 
   void TestGetNftMetadatas(
-      mojom::CoinType coin,
       std::vector<mojom::NftIdentifierPtr> nft_identifiers,
       std::vector<mojom::NftMetadataPtr> expected_metadatas,
       const std::string& expected_error_message) {
     base::RunLoop run_loop;
     json_rpc_service_->GetNftMetadatas(
-        coin, std::move(nft_identifiers),
+        std::move(nft_identifiers),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::NftMetadataPtr> metadatas,
                 const std::string& error_message) {
@@ -1926,12 +1924,11 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void TestGetNftBalances(const std::string& wallet_address,
                           std::vector<mojom::NftIdentifierPtr> nft_identifiers,
-                          mojom::CoinType coin,
                           const std::vector<uint64_t>& expected_balances,
                           const std::string& expected_error_message) {
     base::RunLoop run_loop;
     json_rpc_service_->GetNftBalances(
-        wallet_address, std::move(nft_identifiers), coin,
+        wallet_address, std::move(nft_identifiers),
         base::BindLambdaForTesting([&](const std::vector<uint64_t>& balances,
                                        const std::string& error_message) {
           EXPECT_EQ(balances, expected_balances);
@@ -7674,7 +7671,8 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
   base::RunLoop run_loop_1;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
-      {mojom::kPolygonMainnetChainId},
+      test::MakeVectorFromArgs(mojom::ChainId::New(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId)),
       base::BindLambdaForTesting(
           [&](std::vector<mojom::AnkrAssetBalancePtr> response,
               mojom::ProviderError error, const std::string& error_string) {
@@ -7772,7 +7770,8 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
   base::RunLoop run_loop_2;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
-      {mojom::kPolygonMainnetChainId},
+      test::MakeVectorFromArgs(mojom::ChainId::New(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId)),
       base::BindLambdaForTesting(
           [&](std::vector<mojom::AnkrAssetBalancePtr> response,
               mojom::ProviderError error, const std::string& error_string) {
@@ -7841,7 +7840,8 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
   base::RunLoop run_loop_3;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
-      {mojom::kPolygonMainnetChainId},
+      test::MakeVectorFromArgs(mojom::ChainId::New(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId)),
       base::BindLambdaForTesting(
           [&](std::vector<mojom::AnkrAssetBalancePtr> response,
               mojom::ProviderError error, const std::string& error_string) {
@@ -7864,7 +7864,8 @@ TEST_F(JsonRpcServiceUnitTest, AnkrGetAccountBalances) {
   base::RunLoop run_loop_4;
   json_rpc_service_->AnkrGetAccountBalances(
       "0xa92d461a9a988a7f11ec285d39783a637fdd6ba4",
-      {mojom::kPolygonMainnetChainId},
+      test::MakeVectorFromArgs(mojom::ChainId::New(
+          mojom::CoinType::ETH, mojom::kPolygonMainnetChainId)),
       base::BindLambdaForTesting(
           [&](std::vector<mojom::AnkrAssetBalancePtr> response,
               mojom::ProviderError error, const std::string& error_string) {
@@ -8159,52 +8160,52 @@ TEST_F(JsonRpcServiceUnitTest, GetRecentSolanaPrioritizationFees) {
 TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   // If there are no NFTs it returns invalid params.
   std::vector<mojom::NftIdentifierPtr> nft_identifiers;
-  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers), {},
+  TestGetNftMetadatas(std::move(nft_identifiers), {},
                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
   // If there are duplicate NFTs it returns invalid params.
   auto duplicate_nft1 = mojom::NftIdentifier::New();
-  duplicate_nft1->chain_id = mojom::kMainnetChainId;
+  duplicate_nft1->chain_id = EthMainnetChainId();
   duplicate_nft1->contract_address =
       "0xed5af388653567af2f388e6224dc7c4b3241c544";
   duplicate_nft1->token_id = "0xacf";  // "2767"
   nft_identifiers.push_back(std::move(duplicate_nft1));
 
   auto duplicate_nft2 = mojom::NftIdentifier::New();
-  duplicate_nft2->chain_id = mojom::kMainnetChainId;
+  duplicate_nft2->chain_id = EthMainnetChainId();
   duplicate_nft2->contract_address =
       "0xed5af388653567af2f388e6224dc7c4b3241c544";
   duplicate_nft2->token_id = "0xacf";  // "2767"
   nft_identifiers.push_back(std::move(duplicate_nft2));
 
-  TestGetNftMetadatas(mojom::CoinType::ETH, std::move(nft_identifiers), {},
+  TestGetNftMetadatas(std::move(nft_identifiers), {},
                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
   // If there are over 50 NFTs it returns invalid params.
   for (int i = 0; i < 51; i++) {
     auto nft_identifier = mojom::NftIdentifier::New();
-    nft_identifier->chain_id = mojom::kSolanaMainnet;
+    nft_identifier->chain_id = SolMainnetChainId();
     nft_identifier->contract_address =
         "BoSDWCAWmZEM7TQLg2gawt5wnurGyQu7c77tAcbtzfDG";
     nft_identifier->token_id = "";
     nft_identifiers.push_back(std::move(nft_identifier));
   }
-  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(nft_identifiers), {},
+  TestGetNftMetadatas(std::move(nft_identifiers), {},
                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
 
   // Add Ethereum NFT identifiers with non-checksum addresses
   auto eth_nft_identifier1 = mojom::NftIdentifier::New();
-  eth_nft_identifier1->chain_id = mojom::kMainnetChainId;
+  eth_nft_identifier1->chain_id = EthMainnetChainId();
   eth_nft_identifier1->contract_address =
       "0xed5af388653567af2f388e6224dc7c4b3241c544";
   eth_nft_identifier1->token_id = "0xacf";  // "2767";
   nft_identifiers.push_back(std::move(eth_nft_identifier1));
 
   auto eth_nft_identifier2 = mojom::NftIdentifier::New();
-  eth_nft_identifier2->chain_id = mojom::kMainnetChainId;
+  eth_nft_identifier2->chain_id = EthMainnetChainId();
   eth_nft_identifier2->contract_address =
       "0xabc1230000000000000000000000000000000000";
   eth_nft_identifier2->token_id = "0x4d2";  // "1234";
@@ -8294,20 +8295,20 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
   })";
 
   SetInterceptors(responses_eth);
-  TestGetNftMetadatas(mojom::CoinType::ETH, std::move(nft_identifiers),
+  TestGetNftMetadatas(std::move(nft_identifiers),
                       std::move(expected_eth_metadata), "");
 
   // Add Solana NFT identifiers
   std::vector<mojom::NftIdentifierPtr> sol_nft_identifiers;
   auto sol_nft_identifier1 = mojom::NftIdentifier::New();
-  sol_nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  sol_nft_identifier1->chain_id = SolMainnetChainId();
   sol_nft_identifier1->contract_address =
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   sol_nft_identifier1->token_id = "";
   sol_nft_identifiers.push_back(std::move(sol_nft_identifier1));
 
   auto sol_nft_identifier2 = mojom::NftIdentifier::New();
-  sol_nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  sol_nft_identifier2->chain_id = SolMainnetChainId();
   sol_nft_identifier2->contract_address =
       "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   sol_nft_identifier2->token_id = "";
@@ -8441,38 +8442,37 @@ TEST_F(JsonRpcServiceUnitTest, GetNftMetadatas) {
 
   // First try with timeout response interceptor
   SetHTTPRequestTimeoutInterceptor();
-  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(sol_nft_identifiers), {},
+  TestGetNftMetadatas(std::move(sol_nft_identifiers), {},
                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 
   // Then try with the expected Solana metadata
   SetInterceptors(responses_sol);
   std::vector<mojom::NftIdentifierPtr> sol_nft_identifiers2;
   auto sol_nft_identifier3 = mojom::NftIdentifier::New();
-  sol_nft_identifier3->chain_id = mojom::kSolanaMainnet;
+  sol_nft_identifier3->chain_id = SolMainnetChainId();
   sol_nft_identifier3->contract_address =
       "2iZBbRGnLVEEZH6JDsaNsTo66s2uxx7DTchVWKU8oisR";
   sol_nft_identifier3->token_id = "";
   sol_nft_identifiers2.push_back(std::move(sol_nft_identifier3));
 
   auto sol_nft_identifier4 = mojom::NftIdentifier::New();
-  sol_nft_identifier4->chain_id = mojom::kSolanaMainnet;
+  sol_nft_identifier4->chain_id = SolMainnetChainId();
   sol_nft_identifier4->contract_address =
       "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   sol_nft_identifier4->token_id = "";
   sol_nft_identifiers2.push_back(std::move(sol_nft_identifier4));
 
-  TestGetNftMetadatas(mojom::CoinType::SOL, std::move(sol_nft_identifiers2),
+  TestGetNftMetadatas(std::move(sol_nft_identifiers2),
                       std::move(expected_sol_metadata), "");
 }
 
 TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
   std::string wallet_address = "0x123";
   std::vector<mojom::NftIdentifierPtr> nft_identifiers;
-  mojom::CoinType coin = mojom::CoinType::SOL;
   std::vector<uint64_t> expected_balances;
 
   // Empty parameters yields invalid params
-  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers),
                      expected_balances,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
@@ -8480,12 +8480,12 @@ TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
   // More than 50 NFTs yields invalid params
   for (size_t i = 0; i < kSimpleHashMaxBatchSize + 1; i++) {
     auto nft_id = mojom::NftIdentifier::New();
-    nft_id->chain_id = mojom::kMainnetChainId;
+    nft_id->chain_id = EthMainnetChainId();
     nft_id->contract_address = "0x" + base::NumberToString(i);
     nft_id->token_id = "0x" + base::NumberToString(i);
     nft_identifiers.push_back(std::move(nft_id));
   }
-  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers),
                      expected_balances,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
   nft_identifiers = std::vector<mojom::NftIdentifierPtr>();
@@ -8528,14 +8528,14 @@ TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
 
   // Add the chain_id, contract, and token_id from simple hash response
   auto nft_identifier1 = mojom::NftIdentifier::New();
-  nft_identifier1->chain_id = mojom::kSolanaMainnet;
+  nft_identifier1->chain_id = SolMainnetChainId();
   nft_identifier1->contract_address =
       "3knghmwnuaMxkiuqXrqzjL7gLDuRw6DkkZcW7F4mvkK8";
   nft_identifier1->token_id = "";
   nft_identifiers.push_back(std::move(nft_identifier1));
 
   auto nft_identifier2 = mojom::NftIdentifier::New();
-  nft_identifier2->chain_id = mojom::kSolanaMainnet;
+  nft_identifier2->chain_id = SolMainnetChainId();
   nft_identifier2->contract_address =
       "2izbbrgnlveezh6jdsansto66s2uxx7dtchvwku8oisr";
   nft_identifier2->token_id = "";
@@ -8551,7 +8551,7 @@ TEST_F(JsonRpcServiceUnitTest, GetNftBalances) {
   expected_balances.push_back(999);
   expected_balances.push_back(0);
   SetInterceptors(responses);
-  TestGetNftBalances(wallet_address, std::move(nft_identifiers), coin,
+  TestGetNftBalances(wallet_address, std::move(nft_identifiers),
                      expected_balances, "");
 }
 

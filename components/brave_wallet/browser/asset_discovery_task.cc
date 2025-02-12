@@ -12,8 +12,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
-#include "base/environment.h"
-#include "base/strings/strcat.h"
+#include "base/containers/to_vector.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -28,6 +27,26 @@
 #include "net/base/url_util.h"
 
 namespace brave_wallet {
+
+namespace {
+
+template <class T>
+std::pair<std::vector<T>, std::vector<T>> SplitByCoin(
+    const std::vector<T>& items) {
+  std::pair<std::vector<T>, std::vector<T>> result;
+  for (auto& item : items) {
+    if (item->coin == mojom::CoinType::ETH) {
+      result.first.push_back(item.Clone());
+    }
+    if (item->coin == mojom::CoinType::SOL) {
+      result.second.push_back(item.Clone());
+    }
+  }
+
+  return result;
+}
+
+}  // namespace
 
 AssetDiscoveryTask::AssetDiscoveryTask(APIRequestHelper& api_request_helper,
                                        SimpleHashClient& simple_hash_client,
@@ -44,53 +63,41 @@ AssetDiscoveryTask::AssetDiscoveryTask(APIRequestHelper& api_request_helper,
 AssetDiscoveryTask::~AssetDiscoveryTask() = default;
 
 void AssetDiscoveryTask::ScheduleTask(
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        fungible_chain_ids,
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        non_fungible_chain_ids,
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        account_addresses,
+    std::vector<mojom::AccountIdPtr> accounts,
+    std::vector<mojom::ChainIdPtr> fungible_chain_ids,
+    std::vector<mojom::ChainIdPtr> non_fungible_chain_ids,
     base::OnceClosure callback) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&AssetDiscoveryTask::DiscoverAssets,
-                                weak_ptr_factory_.GetWeakPtr(),
-                                fungible_chain_ids, non_fungible_chain_ids,
-                                account_addresses, std::move(callback)));
+      FROM_HERE,
+      base::BindOnce(&AssetDiscoveryTask::DiscoverAssets,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(accounts),
+                     std::move(fungible_chain_ids),
+                     std::move(non_fungible_chain_ids), std::move(callback)));
 }
 
 void AssetDiscoveryTask::DiscoverAssets(
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        fungible_chain_ids,
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        non_fungible_chain_ids,
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        account_addresses,
+    std::vector<mojom::AccountIdPtr> accounts,
+    std::vector<mojom::ChainIdPtr> fungible_chain_ids,
+    std::vector<mojom::ChainIdPtr> non_fungible_chain_ids,
     base::OnceClosure callback) {
   // Notify frontend asset discovery has started
   wallet_service_->OnDiscoverAssetsStarted();
 
-  // Create list of accounts and chain IDs to be used as arguments
-  auto sol_it = account_addresses.find(mojom::CoinType::SOL);
-  const auto& sol_account_addresses = sol_it != account_addresses.end()
-                                          ? sol_it->second
-                                          : std::vector<std::string>();
-  auto eth_it = account_addresses.find(mojom::CoinType::ETH);
-  const auto& eth_account_addresses = eth_it != account_addresses.end()
-                                          ? eth_it->second
-                                          : std::vector<std::string>();
-  eth_it = fungible_chain_ids.find(mojom::CoinType::ETH);
-  const auto& eth_chain_ids = eth_it != fungible_chain_ids.end()
-                                  ? eth_it->second
-                                  : std::vector<std::string>();
+  auto [eth_accounts, sol_accounts] = SplitByCoin(accounts);
 
-  const auto& ankr_blockchains = GetAnkrBlockchains();
-  std::vector<std::string> ankr_evm_chain_ids;
-  std::vector<std::string> non_ankr_evm_chain_ids;
-  for (const auto& chain_id : eth_chain_ids) {
-    if (ankr_blockchains.contains(chain_id)) {
-      ankr_evm_chain_ids.push_back(chain_id);
+  std::vector<mojom::ChainIdPtr> evm_chain_ids;
+  std::vector<mojom::ChainIdPtr> ankr_evm_chain_ids;
+  std::vector<mojom::ChainIdPtr> non_ankr_evm_chain_ids;
+  for (const auto& chain_id : fungible_chain_ids) {
+    if (chain_id->coin != mojom::CoinType::ETH) {
+      continue;
+    }
+    evm_chain_ids.push_back(chain_id.Clone());
+
+    if (GetAnkrBlockchains().contains(chain_id->chain_id)) {
+      ankr_evm_chain_ids.push_back(chain_id.Clone());
     } else {
-      non_ankr_evm_chain_ids.push_back(chain_id);
+      non_ankr_evm_chain_ids.push_back(chain_id.Clone());
     }
   }
 
@@ -105,19 +112,18 @@ void AssetDiscoveryTask::DiscoverAssets(
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAssets,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   // Currently SPL tokens are only discovered on Solana Mainnet.
-  DiscoverSPLTokensFromRegistry(sol_account_addresses, barrier_callback);
+  DiscoverSPLTokensFromRegistry(sol_accounts, barrier_callback);
 
   if (use_ankr_discovery) {
-    DiscoverAnkrTokens(ankr_evm_chain_ids, eth_account_addresses,
+    DiscoverAnkrTokens(eth_accounts, std::move(ankr_evm_chain_ids),
                        barrier_callback);
-    DiscoverERC20sFromRegistry(non_ankr_evm_chain_ids, eth_account_addresses,
+    DiscoverERC20sFromRegistry(eth_accounts, non_ankr_evm_chain_ids,
                                barrier_callback);
   } else {
-    DiscoverERC20sFromRegistry(eth_chain_ids, eth_account_addresses,
-                               barrier_callback);
+    DiscoverERC20sFromRegistry(eth_accounts, evm_chain_ids, barrier_callback);
   }
 
-  DiscoverNFTs(non_fungible_chain_ids, account_addresses, barrier_callback);
+  DiscoverNFTs(accounts, non_fungible_chain_ids, barrier_callback);
 }
 
 void AssetDiscoveryTask::MergeDiscoveredAssets(
@@ -136,10 +142,10 @@ void AssetDiscoveryTask::MergeDiscoveredAssets(
 }
 
 void AssetDiscoveryTask::DiscoverAnkrTokens(
-    const std::vector<std::string>& chain_ids,
-    const std::vector<std::string>& account_addresses,
+    const std::vector<mojom::AccountIdPtr>& accounts,
+    const std::vector<mojom::ChainIdPtr>& chain_ids,
     DiscoverAssetsCompletedCallback callback) {
-  if (account_addresses.empty() || chain_ids.empty()) {
+  if (accounts.empty() || chain_ids.empty()) {
     std::move(callback).Run({});
     return;
   }
@@ -148,16 +154,17 @@ void AssetDiscoveryTask::DiscoverAnkrTokens(
   // complete (one for each account address).
   const auto barrier_callback =
       base::BarrierCallback<std::vector<mojom::AnkrAssetBalancePtr>>(
-          account_addresses.size(),
+          accounts.size(),
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredAnkrTokens,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 
   // For each account address, call AnkrGetAccountBalances
-  for (const auto& account_address : account_addresses) {
+  for (const auto& account_id : accounts) {
     auto internal_callback =
         base::BindOnce(&AssetDiscoveryTask::OnAnkrGetAccountBalances,
                        weak_ptr_factory_.GetWeakPtr(), barrier_callback);
-    json_rpc_service_->AnkrGetAccountBalances(account_address, chain_ids,
+    json_rpc_service_->AnkrGetAccountBalances(account_id->address,
+                                              CloneVector(chain_ids),
                                               std::move(internal_callback));
   }
 }
@@ -198,17 +205,21 @@ void AssetDiscoveryTask::MergeDiscoveredAnkrTokens(
 }
 
 void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
-    const std::vector<std::string>& chain_ids,
-    const std::vector<std::string>& account_addresses,
+    const std::vector<mojom::AccountIdPtr>& accounts,
+    const std::vector<mojom::ChainIdPtr>& chain_ids,
     DiscoverAssetsCompletedCallback callback) {
-  if (account_addresses.empty()) {
+  if (accounts.empty()) {
     std::move(callback).Run({});
     return;
   }
 
   std::vector<mojom::BlockchainTokenPtr> user_assets = GetAllUserAssets(prefs_);
+  std::vector<std::string> chain_id_strings;
+  for (auto& chain_id : chain_ids) {
+    chain_id_strings.push_back(chain_id->chain_id);
+  }
   TokenListMap token_list_map =
-      BlockchainRegistry::GetInstance()->GetEthTokenListMap(chain_ids);
+      BlockchainRegistry::GetInstance()->GetEthTokenListMap(chain_id_strings);
 
   // Create set of all user assets per chain to use to ensure we don't
   // include assets the user has already added in the call to the BalanceScanner
@@ -249,14 +260,14 @@ void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
   // complete (one for each account address).
   const auto barrier_callback =
       base::BarrierCallback<std::map<std::string, std::vector<std::string>>>(
-          account_addresses.size() * chain_id_to_contract_addresses.size(),
+          accounts.size() * chain_id_to_contract_addresses.size(),
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredERC20s,
                          weak_ptr_factory_.GetWeakPtr(),
                          std::move(chain_id_to_contract_address_to_token),
                          std::move(callback)));
 
   // For each account address, call GetERC20TokenBalances for each chain ID
-  for (const auto& account_address : account_addresses) {
+  for (const auto& account_id : accounts) {
     for (const auto& [chain_id, contract_addresses] :
          chain_id_to_contract_addresses) {
       auto internal_callback =
@@ -264,7 +275,7 @@ void AssetDiscoveryTask::DiscoverERC20sFromRegistry(
                          weak_ptr_factory_.GetWeakPtr(), barrier_callback,
                          chain_id, contract_addresses);
       json_rpc_service_->GetERC20TokenBalances(contract_addresses,
-                                               account_address, chain_id,
+                                               account_id->address, chain_id,
                                                std::move(internal_callback));
     }
   }
@@ -348,13 +359,13 @@ void AssetDiscoveryTask::MergeDiscoveredERC20s(
 }
 
 void AssetDiscoveryTask::DiscoverSPLTokensFromRegistry(
-    const std::vector<std::string>& account_addresses,
+    const std::vector<mojom::AccountIdPtr>& accounts,
     DiscoverAssetsCompletedCallback callback) {
   // Convert each account address to SolanaAddress and check validity
   std::vector<SolanaAddress> solana_addresses;
-  for (const auto& address : account_addresses) {
+  for (const auto& account_id : accounts) {
     std::optional<SolanaAddress> solana_address =
-        SolanaAddress::FromBase58(address);
+        SolanaAddress::FromBase58(account_id->address);
     if (!solana_address.has_value()) {
       continue;
     }
@@ -464,9 +475,8 @@ void AssetDiscoveryTask::OnGetSolanaTokenRegistry(
 }
 
 void AssetDiscoveryTask::DiscoverNFTs(
-    const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
-    const std::map<mojom::CoinType, std::vector<std::string>>&
-        account_addresses,
+    const std::vector<mojom::AccountIdPtr>& accounts,
+    const std::vector<mojom::ChainIdPtr>& chain_ids,
     DiscoverAssetsCompletedCallback callback) {
   // Users must opt-in for NFT discovery
   if (!prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled)) {
@@ -474,29 +484,22 @@ void AssetDiscoveryTask::DiscoverNFTs(
     return;
   }
 
-  auto it_eth = account_addresses.find(mojom::CoinType::ETH);
-  const auto& eth_account_addresses = it_eth != account_addresses.end()
-                                          ? it_eth->second
-                                          : std::vector<std::string>();
-  auto it_sol = account_addresses.find(mojom::CoinType::SOL);
-  const auto& sol_account_addresses = it_sol != account_addresses.end()
-                                          ? it_sol->second
-                                          : std::vector<std::string>();
+  auto [eth_accounts, sol_accounts] = SplitByCoin(accounts);
+  auto [eth_chains, sol_chains] = SplitByCoin(chain_ids);
+
   const auto barrier_callback =
       base::BarrierCallback<std::vector<mojom::BlockchainTokenPtr>>(
-          eth_account_addresses.size() + sol_account_addresses.size(),
+          eth_accounts.size() + sol_accounts.size(),
           base::BindOnce(&AssetDiscoveryTask::MergeDiscoveredNFTs,
                          weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-  for (const auto& account_address : eth_account_addresses) {
+  for (const auto& account_id : eth_accounts) {
     simple_hash_client_->FetchAllNFTsFromSimpleHash(
-        account_address, chain_ids.at(mojom::CoinType::ETH),
-        mojom::CoinType::ETH, barrier_callback);
+        account_id->address, eth_chains, barrier_callback);
   }
 
-  for (const auto& account_address : sol_account_addresses) {
+  for (const auto& account_id : sol_accounts) {
     simple_hash_client_->FetchAllNFTsFromSimpleHash(
-        account_address, chain_ids.at(mojom::CoinType::SOL),
-        mojom::CoinType::SOL, barrier_callback);
+        account_id->address, sol_chains, barrier_callback);
   }
 }
 

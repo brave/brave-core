@@ -1004,7 +1004,7 @@ export class MockedWalletApiProxy {
         errorMessage: ''
       }
     },
-    getNftBalances: async (walletAddress, nftIdentifiers, coin) => {
+    getNftBalances: async (walletAddress, nftIdentifiers) => {
       const account = this.accountInfos.find((a) => a.address === walletAddress)
 
       if (!account) {
@@ -1019,6 +1019,7 @@ export class MockedWalletApiProxy {
               getAssetIdKey(t) ===
               getAssetIdKey({
                 ...id,
+                chainId: t.chainId,
                 coin: account.accountId.coin,
                 isShielded: false
               })
@@ -1028,6 +1029,7 @@ export class MockedWalletApiProxy {
               getAssetIdKey(t) ===
               getAssetIdKey({
                 ...id,
+                chainId: t.chainId,
                 coin: account.accountId.coin,
                 isShielded: false
               })
@@ -1039,11 +1041,11 @@ export class MockedWalletApiProxy {
 
         const amount = getBalanceFromRegistry({
           accountUniqueId,
-          chainId: id.chainId,
+          chainId: id.chainId.chainId,
           contractAddress: id.contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId: id.tokenId,
-          coin,
+          coin: id.chainId.coin,
           isShielded: false
         })
 
@@ -1127,7 +1129,7 @@ export class MockedWalletApiProxy {
         } as CommonNftMetadata)
       }
     },
-    getNftMetadatas: async (coin, nftIdentifiers) => {
+    getNftMetadatas: async (nftIdentifiers) => {
       const metadatas: BraveWallet.NftMetadata[] = nftIdentifiers.map((id) => {
         const mockedMetadata = mockNFTMetadata.find((d) => {
           return (
@@ -1264,7 +1266,9 @@ export class MockedWalletApiProxy {
       const accountUniqueId = account.accountId.uniqueKey
 
       const tokens = this.userAssets.filter(
-        (t) => t.coin === account.accountId.coin && chainIds.includes(t.chainId)
+        (t) =>
+          t.coin === account.accountId.coin &&
+          chainIds.some((c) => c.chainId === t.chainId)
       )
 
       const balances: BraveWallet.AnkrAssetBalance[] = tokens.map((token) => {

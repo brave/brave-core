@@ -56,6 +56,14 @@ mojom::NetworkInfo GetTestNetworkInfoWithHttpURL(const std::string& chain_id,
           GetSupportedKeyringsForNetwork(coin, chain_id)};
 }
 
+mojom::ChainIdPtr EthMainnetChainId() {
+  return mojom::ChainId::New(mojom::CoinType::ETH, mojom::kMainnetChainId);
+}
+
+mojom::ChainIdPtr SolMainnetChainId() {
+  return mojom::ChainId::New(mojom::CoinType::SOL, mojom::kSolanaMainnet);
+}
+
 namespace mojom {
 
 void PrintTo(const BitcoinAddressPtr& address, ::std::ostream* os) {

@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/base64.h"
+#include "base/containers/extend.h"
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
@@ -26,6 +27,8 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -86,6 +89,30 @@ constexpr char kEthErrorFetchingBalanceResult[] =
     "0000000000000000000000000000000000000000000000000000000000000000"
     "0000000000000000000000000000000000000000000000000000000000000040"
     "0000000000000000000000000000000000000000000000000000000000000000";
+
+std::vector<mojom::AccountIdPtr> MakeAccountIds(
+    const std::vector<std::string>& addresses,
+    mojom::CoinType coin = mojom::CoinType::ETH) {
+  std::vector<mojom::AccountIdPtr> result;
+  for (auto& addr : addresses) {
+    result.push_back(MakeAccountId(coin,
+                                   coin == mojom::CoinType::ETH
+                                       ? mojom::KeyringId::kDefault
+                                       : mojom::KeyringId::kSolana,
+                                   mojom::AccountKind::kDerived, addr));
+  }
+  return result;
+}
+
+std::vector<mojom::ChainIdPtr> MakeChainIds(
+    const std::vector<std::string>& chain_ids,
+    mojom::CoinType coin = mojom::CoinType::ETH) {
+  std::vector<mojom::ChainIdPtr> result;
+  for (auto& chain_id : chain_ids) {
+    result.push_back(mojom::ChainId::New(coin, chain_id));
+  }
+  return result;
+}
 
 }  // namespace
 
@@ -322,7 +349,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
       const std::vector<std::string>& expected_token_contract_addresses) {
     base::RunLoop run_loop;
     asset_discovery_task_->DiscoverAnkrTokens(
-        chain_ids, account_addresses,
+        MakeAccountIds(account_addresses), MakeChainIds(chain_ids),
         base::BindLambdaForTesting(
             [&](const std::vector<mojom::BlockchainTokenPtr>
                     discovered_assets) {
@@ -341,7 +368,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
       const std::vector<std::string>& expected_token_contract_addresses) {
     base::RunLoop run_loop;
     asset_discovery_task_->DiscoverERC20sFromRegistry(
-        chain_ids, account_addresses,
+        MakeAccountIds(account_addresses), MakeChainIds(chain_ids),
         base::BindLambdaForTesting(
             [&](const std::vector<mojom::BlockchainTokenPtr>
                     discovered_assets) {
@@ -359,7 +386,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
       const std::vector<std::string>& expected_token_contract_addresses) {
     base::RunLoop run_loop;
     asset_discovery_task_->DiscoverSPLTokensFromRegistry(
-        account_addresses,
+        MakeAccountIds(account_addresses),
         base::BindLambdaForTesting(
             [&](const std::vector<mojom::BlockchainTokenPtr>
                     discovered_assets) {
@@ -373,12 +400,22 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   }
 
   void TestDiscoverNFTsOnAllSupportedChains(
-      const std::map<mojom::CoinType, std::vector<std::string>>& chain_ids,
-      const std::map<mojom::CoinType, std::vector<std::string>>& addresses,
+      std::map<mojom::CoinType, std::vector<std::string>> chain_ids_map,
+      std::map<mojom::CoinType, std::vector<std::string>> addresses,
       const std::vector<std::string>& expected_token_contract_addresses) {
+    std::vector<mojom::AccountIdPtr> accounts;
+    base::Extend(accounts, MakeAccountIds(addresses[mojom::CoinType::ETH],
+                                          mojom::CoinType::ETH));
+    base::Extend(accounts, MakeAccountIds(addresses[mojom::CoinType::SOL],
+                                          mojom::CoinType::SOL));
+    std::vector<mojom::ChainIdPtr> chain_ids;
+    base::Extend(chain_ids, MakeChainIds(chain_ids_map[mojom::CoinType::ETH],
+                                         mojom::CoinType::ETH));
+    base::Extend(chain_ids, MakeChainIds(chain_ids_map[mojom::CoinType::SOL],
+                                         mojom::CoinType::SOL));
     base::RunLoop run_loop;
     asset_discovery_task_->DiscoverNFTs(
-        chain_ids, addresses,
+        accounts, chain_ids,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::BlockchainTokenPtr> discovered_assets) {
               for (size_t i = 0; i < discovered_assets.size(); i++) {
@@ -391,12 +428,11 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
   }
 
   void TestDiscoverAssets(
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses,
+      std::vector<mojom::AccountIdPtr> accounts,
       const std::vector<std::string>& expected_token_contract_addresses) {
     base::RunLoop run_loop;
     asset_discovery_task_->DiscoverAssets(
-        {}, {}, account_addresses, base::BindLambdaForTesting([&]() {
+        std::move(accounts), {}, {}, base::BindLambdaForTesting([&]() {
           wallet_service_observer_->WaitForOnDiscoverAssetsCompleted(
               expected_token_contract_addresses);
           EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsStartedFired());

@@ -137,6 +137,13 @@ extension BraveWallet.OriginInfo {
   }
 }
 
+extension BraveWallet.ChainId {
+  open override func isEqual(_ object: Any?) -> Bool {
+    guard let object = object as? BraveWallet.ChainId else { return false }
+    return self.coin == object.coin && self.chainId == object.chainId
+  }
+}
+
 extension BraveWallet.AccountId {
   /// Two `AccountIds` equal iff their `unique_key` fields equal. Use this to
   /// check AccountIds for equality or to store as string keys. Persist with

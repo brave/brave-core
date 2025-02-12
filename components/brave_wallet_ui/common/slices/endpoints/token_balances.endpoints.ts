@@ -387,9 +387,9 @@ export const tokenBalancesEndpoints = ({
             arg.accountIds,
             arg.accountIds.length,
             async (accountId: BraveWallet.AccountId) => {
-              const ankrSupportedAccountChainIds = ankrSupportedNetworks
-                .filter((network) => networkSupportsAccount(network, accountId))
-                .map(({ chainId }) => chainId)
+              const ankrSupportedAccountChainIds = ankrSupportedNetworks.filter(
+                (network) => networkSupportsAccount(network, accountId)
+              )
 
               const ankrAssetBalances: BraveWallet.AnkrAssetBalance[] =
                 ankrSupportedAccountChainIds.length
@@ -645,7 +645,7 @@ export const tokenBalancesEndpoints = ({
 async function fetchAnkrAccountBalances(
   jsonRpcService: BraveWallet.JsonRpcServiceRemote,
   accountId: BraveWallet.AccountId,
-  chainIds: string[]
+  chainIds: BraveWallet.ChainId[]
 ) {
   const { balances, error, errorMessage } =
     await jsonRpcService.ankrGetAccountBalances(accountId.address, chainIds)
@@ -826,12 +826,11 @@ async function fetchAccountTokenCurrentBalance({
           accountId.address,
           [
             {
-              chainId: token.chainId,
+              chainId: { coin: token.coin, chainId: token.chainId },
               contractAddress: token.contractAddress,
               tokenId: token.tokenId
             }
-          ],
-          token.coin
+          ]
         )
 
         if (errorMessage) {
@@ -1113,12 +1112,11 @@ async function fetchNftBalancesForAccount({
         accountId.address,
         nftsBatch.map((token) => {
           return {
-            chainId: token.chainId,
+            chainId: { coin: token.coin, chainId: token.chainId },
             contractAddress: token.contractAddress,
             tokenId: token.tokenId
           }
-        }),
-        accountId.coin
+        })
       )
 
       if (nftBatchBalancesErrorMessage) {

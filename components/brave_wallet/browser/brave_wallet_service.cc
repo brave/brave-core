@@ -333,13 +333,14 @@ void BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
     return;
   } else if (token->is_nft && token->coin == mojom::CoinType::SOL) {
     auto nft_id = mojom::NftIdentifier::New();
-    nft_id->chain_id = token->chain_id;
+    nft_id->chain_id =
+        mojom::ChainId::New(mojom::CoinType::SOL, token->chain_id);
     nft_id->contract_address = token->contract_address;
     nft_id->token_id = token->token_id;
     std::vector<mojom::NftIdentifierPtr> nft_ids;
     nft_ids.push_back(std::move(nft_id));
     simple_hash_client_->GetNfts(
-        mojom::CoinType::SOL, std::move(nft_ids),
+        std::move(nft_ids),
         base::BindOnce(&BraveWalletService::OnGetNfts,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
     return;
@@ -946,7 +947,8 @@ void BraveWalletService::MaybeMigrateCompressedNfts() {
   for (auto& item : ::brave_wallet::GetAllUserAssets(profile_prefs_)) {
     if (item->coin == mojom::CoinType::SOL && item->is_nft) {
       auto nft_id = mojom::NftIdentifier::New();
-      nft_id->chain_id = item->chain_id;
+      nft_id->chain_id =
+          mojom::ChainId::New(mojom::CoinType::SOL, item->chain_id);
       nft_id->contract_address = item->contract_address;
       nft_id->token_id = item->token_id;
       nft_ids.push_back(std::move(nft_id));
@@ -954,7 +956,7 @@ void BraveWalletService::MaybeMigrateCompressedNfts() {
   }
 
   simple_hash_client_->GetNfts(
-      mojom::CoinType::SOL, std::move(nft_ids),
+      std::move(nft_ids),
       base::BindOnce(&BraveWalletService::OnGetNftsForCompressedMigration,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -1506,25 +1508,21 @@ void BraveWalletService::Base58Encode(
 
 void BraveWalletService::DiscoverAssetsOnAllSupportedChains(
     bool bypass_rate_limit) {
-  std::map<mojom::CoinType, std::vector<std::string>> addresses;
   const auto& all_accounts = keyring_service_->GetAllAccountInfos();
 
-  std::vector<std::string> eth_account_addresses;
-  std::vector<std::string> sol_account_addresses;
+  std::vector<mojom::AccountIdPtr> accounts;
+
   for (auto& account_info : all_accounts) {
-    if (account_info->account_id->coin == mojom::CoinType::ETH) {
-      eth_account_addresses.push_back(account_info->address);
-    }
-    if (account_info->account_id->coin == mojom::CoinType::SOL) {
-      sol_account_addresses.push_back(account_info->address);
+    auto& account_id = account_info->account_id;
+    if (account_id->coin == mojom::CoinType::ETH ||
+        account_id->coin == mojom::CoinType::SOL) {
+      accounts.push_back(account_id.Clone());
     }
   }
-  addresses[mojom::CoinType::ETH] = std::move(eth_account_addresses);
-  addresses[mojom::CoinType::SOL] = std::move(sol_account_addresses);
 
   // Discover assets owned by the SOL and ETH addresses on all supported chains
   asset_discovery_manager_->DiscoverAssetsOnAllSupportedChains(
-      addresses, bypass_rate_limit);
+      std::move(accounts), bypass_rate_limit);
 }
 
 void BraveWalletService::GetNftDiscoveryEnabled(
@@ -1648,8 +1646,7 @@ void BraveWalletService::OnGenerateZecReceiveAddress(
 
 void BraveWalletService::GetSimpleHashSpamNFTs(
     const std::string& wallet_address,
-    const std::vector<std::string>& chain_ids,
-    mojom::CoinType coin,
+    std::vector<mojom::ChainIdPtr> chain_ids,
     const std::optional<std::string>& cursor,
     GetSimpleHashSpamNFTsCallback callback) {
   // Do not make requests to SimpleHash unless the user has
@@ -1659,7 +1656,7 @@ void BraveWalletService::GetSimpleHashSpamNFTs(
     return;
   }
   simple_hash_client_->FetchNFTsFromSimpleHash(
-      wallet_address, chain_ids, coin, cursor, false /* skip_spam */,
+      wallet_address, chain_ids, cursor, false /* skip_spam */,
       true /* only_spam */, std::move(callback));
 }
 

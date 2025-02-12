@@ -365,14 +365,12 @@ export class BaseQueryCache {
       const { jsonRpcService } = getAPIProxy()
 
       const lookupArg = {
-        chainId: tokenArg.chainId,
+        chainId: { coin: tokenArg.coin, chainId: tokenArg.chainId },
         contractAddress: tokenArg.contractAddress,
         tokenId: tokenArg.tokenId
       }
 
-      const result = await jsonRpcService.getNftMetadatas(tokenArg.coin, [
-        lookupArg
-      ])
+      const result = await jsonRpcService.getNftMetadatas([lookupArg])
       if (result.errorMessage) {
         throw new Error(result.errorMessage)
       }
@@ -429,9 +427,12 @@ export class BaseQueryCache {
       const { address, coin } = accountId
       const networksRegistry = await cache.getNetworksRegistry()
 
-      const chainIds = networksRegistry.ids.map(
-        (network) => networksRegistry.entities[network]!.chainId
-      )
+      const chainIds = networksRegistry.ids.map((network) => {
+        return {
+          coin: coin,
+          chainId: networksRegistry.entities[network]!.chainId
+        }
+      })
 
       let currentCursor: string | null = null
       const accountSpamNfts = []
@@ -446,7 +447,6 @@ export class BaseQueryCache {
         } = await braveWalletService.getSimpleHashSpamNFTs(
           address,
           chainIds,
-          coin,
           currentCursor
         )
 

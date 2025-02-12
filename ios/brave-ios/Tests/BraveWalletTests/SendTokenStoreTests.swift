@@ -78,7 +78,7 @@ class SendTokenStoreTests: XCTestCase {
     rpcService.hiddenNetworks.removeAll()
     rpcService._balance = { $3(balance, .success, "") }
     rpcService._erc20TokenBalance = { $3(erc20Balance, .success, "") }
-    rpcService._nftBalances = { $3([erc721Balance as NSNumber], "") }
+    rpcService._nftBalances = { $2([erc721Balance as NSNumber], "") }
     rpcService._solanaBalance = { $2(solanaBalance, .success, "") }
     rpcService._splTokenAccountBalance = { _, _, _, completion in
       completion(splTokenBalance, UInt8(6), "", .success, "")
@@ -96,10 +96,10 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._unstoppableDomainsGetWalletAddr = { _, _, completion in
       completion(unstoppableDomainsGetWalletAddr, .success, "")
     }
-    rpcService._nftMetadatas = { coin, _, completion in
-      if coin == .eth {
+    rpcService._nftMetadatas = { nftIdentifiers, completion in
+      if nftIdentifiers.first?.chainId.coin == .eth {
         completion([self.mockERC721Metadata], "")
-      } else if coin == .sol {
+      } else if nftIdentifiers.first?.chainId.coin == .sol {
         completion([self.mockSolMetadata], "")
       } else {
         completion([], "Error")
@@ -495,7 +495,7 @@ class SendTokenStoreTests: XCTestCase {
     rpcService._balance = { _, _, _, completion in
       completion(mockBalanceWei, .success, "")
     }
-    rpcService._nftMetadatas = { _, _, completion in
+    rpcService._nftMetadatas = { _, completion in
       completion([], "Error")
     }
 

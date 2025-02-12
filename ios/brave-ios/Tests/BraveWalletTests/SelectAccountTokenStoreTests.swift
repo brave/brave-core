@@ -177,11 +177,11 @@ class SelectAccountTokenStoreTests: XCTestCase {
       }
       completion("0", .success, "")  // usdc balance for `mockEthAccount`
     }
-    rpcService._nftBalances = { _, nftIdentifiers, _, completion in
+    rpcService._nftBalances = { nftIdentifiers, _, completion in
       completion([mockNFTBalance as NSNumber], "")
     }
-    rpcService._nftMetadatas = { coin, _, completion in
-      if coin == .sol {
+    rpcService._nftMetadatas = { nftIdentifiers, completion in
+      if nftIdentifiers.first?.chainId.coin == .sol {
         completion([mockNFTMetadata], "")
       } else {
         completion([], "Error")

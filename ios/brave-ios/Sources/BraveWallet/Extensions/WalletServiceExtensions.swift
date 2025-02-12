@@ -44,12 +44,11 @@ extension BraveWalletBraveWalletService {
           let networks =
             selectedNetworks
             .filter { $0.coin == account.coin }
-            .map(\.chainId)
+            .map { BraveWallet.ChainId(coin: $0.coin, chainId: $0.chainId) }
           group.addTask { @MainActor in
             let (spamNFTs, _) = await self.simpleHashSpamNfTs(
               walletAddress: account.address,
               chainIds: networks,
-              coin: account.coin,
               cursor: nil
             )
             return spamNFTs

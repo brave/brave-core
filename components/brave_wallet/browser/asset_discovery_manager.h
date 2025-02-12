@@ -55,8 +55,7 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
   // Called by frontend via BraveWalletService and when new accounts are added
   // via the KeyringServiceObserver implementation
   void DiscoverAssetsOnAllSupportedChains(
-      const std::map<mojom::CoinType, std::vector<std::string>>&
-          account_addresses,
+      std::vector<mojom::AccountIdPtr> accounts,
       bool bypass_rate_limit);
 
   void SetQueueForTesting(
@@ -73,13 +72,10 @@ class AssetDiscoveryManager : public KeyringServiceObserverBase {
   FRIEND_TEST_ALL_PREFIXES(AssetDiscoveryManagerUnitTest,
                            GetNonFungibleSupportedChains);
 
-  const std::map<mojom::CoinType, std::vector<std::string>>&
-  GetFungibleSupportedChains();
-  const std::map<mojom::CoinType, std::vector<std::string>>
-  GetNonFungibleSupportedChains();
+  std::vector<mojom::ChainIdPtr> GetFungibleSupportedChains();
+  std::vector<mojom::ChainIdPtr> GetNonFungibleSupportedChains();
 
-  void AddTask(const std::map<mojom::CoinType, std::vector<std::string>>&
-                   account_addresses);
+  void AddTask(std::vector<mojom::AccountIdPtr> accounts);
   void FinishTask();
 
   std::unique_ptr<APIRequestHelper> api_request_helper_;
