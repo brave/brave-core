@@ -23,7 +23,6 @@ from os.path import basename, exists, dirname, relpath, join
 from shlex import quote
 from subprocess import run
 from tempfile import gettempdir
-from time import sleep
 
 import os
 import sys
