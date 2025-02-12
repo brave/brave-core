@@ -237,14 +237,21 @@ extension URL {
   // Returns true if a string is a valid URL, with the specified optional scheme,
   // without percent encoding, idn encoding, or modifying the URL in any way.
   public static func isValidURLWithoutEncoding(text: String, scheme: String? = nil) -> Bool {
-    if let components = URLComponents(string: text),
-      !(scheme ?? "").isEmpty ? components.scheme == scheme : true,
-      !(components.host ?? components.path).isEmpty
-    {
-      return true
+    guard let components = URLComponents(string: text) else {
+      return false
     }
 
-    return false
+    // If a scheme was specified, check if it matches
+    if let scheme = scheme, !scheme.isEmpty, components.scheme != scheme {
+      return false
+    }
+
+    // A valid URL must have a non-empty host or path
+    if (components.host ?? components.path).isEmpty {
+      return false
+    }
+
+    return true
   }
 }
 
