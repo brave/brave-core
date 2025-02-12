@@ -28,7 +28,7 @@ pub enum CosmeticFilterError {
     GenericUnhide,
     #[error("generic script inject")]
     GenericScriptInject,
-    #[error("generic action")]
+    #[error("procedural and action filters cannot be generic")]
     GenericAction,
     #[error("double negation")]
     DoubleNegation,
@@ -443,7 +443,7 @@ impl CosmeticFilter {
                 return Err(CosmeticFilterError::DoubleNegation);
             }
 
-            Ok(CosmeticFilter {
+            let this = Self {
                 entities,
                 hostnames,
                 mask,
@@ -457,7 +457,13 @@ impl CosmeticFilter {
                 selector,
                 action,
                 permission,
-            })
+            };
+
+            if !this.has_hostname_constraint() && this.plain_css_selector().is_none() {
+                return Err(CosmeticFilterError::GenericAction);
+            }
+
+            Ok(this)
         } else {
             Err(CosmeticFilterError::MissingSharp)
         }
@@ -1845,6 +1851,9 @@ mod parse_tests {
 
         // `:has-text` and `:xpath` are now supported procedural filters
         assert!(parse_cf("twitter.com##article:has-text(/Promoted|Gesponsert|Реклама|Promocionado/):xpath(../..)").is_ok());
+
+        // generic procedural filters are not supported
+        assert!(parse_cf("##.t-rec > .t886:has-text(cookies)").is_err());
     }
 
     #[test]
