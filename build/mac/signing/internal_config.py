@@ -35,7 +35,8 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
 
     @property
     def provisioning_profile_basename(self):
-        return BRAVE_CHANNEL or 'release'
+        if not self.invoker.args.skip_signing:
+            return BRAVE_CHANNEL or 'release'
 
     @property
     def run_spctl_assess(self):
