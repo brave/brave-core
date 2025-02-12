@@ -18,6 +18,7 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
+#include "brave/ios/browser/user_agent/features.h"
 #include "build/build_config.h"
 #include "components/flags_ui/feature_entry_macros.h"
 #include "components/flags_ui/flags_state.h"
@@ -175,6 +176,13 @@
           "Replace the standard more button menu with a modern replacement",   \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kModernBrowserMenuEnabled),      \
+      },                                                                       \
+      {                                                                        \
+          "use-brave-user-agent",                                              \
+          "Use Brave user agent",                                              \
+          "Includes Brave version information in the user agent",              \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kUseBraveUserAgent),             \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \
