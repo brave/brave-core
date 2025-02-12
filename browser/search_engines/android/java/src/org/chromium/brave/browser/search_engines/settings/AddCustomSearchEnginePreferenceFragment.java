@@ -23,7 +23,6 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
-import org.chromium.components.search_engines.BraveTemplateUrlService;
 import org.chromium.components.search_engines.TemplateUrlService;
 
 public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment {
@@ -83,10 +82,11 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                         if (isSearchEngineValidated()) {
                             TemplateUrlService braveTemplateUrlService =
                                     TemplateUrlServiceFactory.getForProfile(getProfile());
-                            if (braveTemplateUrlService instanceof BraveTemplateUrlService) {
-                                ((BraveTemplateUrlService) braveTemplateUrlService)
-                                        .addSearchEngine();
-                            }
+                            // if (braveTemplateUrlService instanceof BraveTemplateUrlService) {
+                            //     ((BraveTemplateUrlService) braveTemplateUrlService)
+                            //             .addSearchEngine();
+                            // }
+                            braveTemplateUrlService.addSearchEngine();
                         }
                     }
                 });
