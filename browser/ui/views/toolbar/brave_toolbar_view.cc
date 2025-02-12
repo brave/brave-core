@@ -145,7 +145,7 @@ void BraveToolbarView::Init() {
 
   views::SetHitTestComponent(container_view, HTCAPTION);
 
-  // For non-normal mode, we don't have to more.
+  // For non-normal mode, we don't have to do any more work.
   if (display_mode_ != DisplayMode::NORMAL) {
     brave_initialized_ = true;
     return;
@@ -460,7 +460,7 @@ void BraveToolbarView::Layout(PassKey) {
 
   if (!location_bar_is_wide_.GetValue()) {
     ResetLocationBarBounds();
-    ResetButtonBounds();
+    ResetBookmarkButtonBounds();
   }
 }
 
@@ -477,7 +477,7 @@ void BraveToolbarView::ResetLocationBarBounds() {
       location_bar_->width() - margin.width(), location_bar_->height());
 }
 
-void BraveToolbarView::ResetButtonBounds() {
+void BraveToolbarView::ResetBookmarkButtonBounds() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
 
   int button_right_margin = GetLayoutConstant(TOOLBAR_STANDARD_SPACING);

@@ -60,7 +60,7 @@ class BraveToolbarView : public ToolbarView,
 
   void LoadImages() override;
   void ResetLocationBarBounds();
-  void ResetButtonBounds();
+  void ResetBookmarkButtonBounds();
   void UpdateBookmarkVisibility();
 
   // ProfileAttributesStorage::Observer:
