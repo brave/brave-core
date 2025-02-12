@@ -237,7 +237,7 @@ void SplitView::AddedToWidget() {
   widget_observation_.Observe(GetWidget());
 
   secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
-      browser_->profile()->GetPrefs(), this, secondary_contents_container_);
+      browser_->profile()->GetPrefs(), this);
   secondary_location_bar_widget_ = std::make_unique<views::Widget>();
 
   secondary_location_bar_widget_->Init(
@@ -400,6 +400,13 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
     return;
   }
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  // Update before |secondary_contents_container_| visibility is
+  // changed because SplitViewLocationBar updates its bounds by
+  // monitoring |secondary_contents_container_|.
+  UpdateSecondaryReaderModeToolbarVisibility();
+#endif
+
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   DCHECK(split_view_browser_data);
@@ -449,10 +456,6 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
 
   split_view_separator_->SetVisible(
       secondary_contents_container_->GetVisible());
-
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  UpdateSecondaryReaderModeToolbarVisibility();
-#endif
 
   InvalidateLayout();
 }
@@ -515,7 +518,7 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
 gfx::Point SplitView::GetSplitViewLocationBarOffset() const {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (secondary_reader_mode_toolbar_->GetVisible()) {
-    return {0, secondary_reader_mode_toolbar_->height()};
+    return {0, secondary_reader_mode_toolbar_->GetPreferredSize().height()};
   }
 #endif
   return {};

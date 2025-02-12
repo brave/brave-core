@@ -81,18 +81,12 @@ class SplitView : public views::View,
 
   gfx::Point GetSplitViewLocationBarOffset() const;
 
-  const ContentsWebView* secondary_contents_web_view() const {
-    return secondary_contents_web_view_;
-  }
-  ContentsWebView* secondary_contents_web_view() {
-    return secondary_contents_web_view_;
+  views::View* secondary_contents_container() {
+    return secondary_contents_container_;
   }
 
-  const views::WebView* secondary_devtools_web_view() const {
-    return secondary_devtools_web_view_;
-  }
-  views::WebView* secondary_devtools_web_view() {
-    return secondary_devtools_web_view_;
+  ContentsWebView* secondary_contents_web_view() {
+    return secondary_contents_web_view_;
   }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)

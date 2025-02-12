@@ -39,9 +39,7 @@ class SplitViewLocationBar : public views::WidgetDelegateView,
   METADATA_HEADER(SplitViewLocationBar, views::WidgetDelegateView)
 
  public:
-  SplitViewLocationBar(PrefService* prefs,
-                       SplitView* split_view,
-                       views::View* parent_web_view);
+  SplitViewLocationBar(PrefService* prefs, SplitView* split_view);
   ~SplitViewLocationBar() override;
 
   static views::Widget::InitParams GetWidgetInitParams(
