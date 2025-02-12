@@ -329,7 +329,7 @@ action("_create_dmg_pkg") {
     args += [ "--development" ]
   }
   if (skip_signing) {
-    args += [ "--skip-signing" ]
+    args += [ "--skip_signing" ]
   }
   if (notarize) {
     args += [ "--notarize" ]
