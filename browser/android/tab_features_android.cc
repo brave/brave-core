@@ -10,9 +10,10 @@
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "chrome/browser/android/tab_android.h"
+#include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
+#include "brave/components/youtube_script_injector/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
-#include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 
 TabFeaturesAndroid::TabFeaturesAndroid(content::WebContents* web_contents,
@@ -24,8 +25,12 @@ TabFeaturesAndroid::TabFeaturesAndroid(content::WebContents* web_contents,
         web_contents);
   }
 
-  youtube_script_injector::YouTubeTabFeature::MaybeCreateForWebContents(
-  web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  if (base::FeatureList::IsEnabled(
+          youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
+    youtube_script_injector_ =
+        std::make_unique<youtube_script_injector::YouTubeTabFeature>(
+            web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
 }
 
 TabFeaturesAndroid::~TabFeaturesAndroid() = default;
