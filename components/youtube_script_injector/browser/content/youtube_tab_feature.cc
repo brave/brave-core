@@ -7,16 +7,19 @@
 
 #include <string>
 #include <utility>
+#include <memory>
 
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
+#include "brave/browser/android/tab_features_android.h"
 #include "brave/build/android/jni_headers/BackgroundVideoPlaybackTabHelper_jni.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "brave/components/youtube_script_injector/common/features.h"
 #include "brave/components/youtube_script_injector/common/pref_names.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/user_prefs/user_prefs.h"
@@ -30,19 +33,6 @@
 namespace youtube_script_injector {
 
 // static
-void YouTubeTabFeature::MaybeCreateForWebContents(
-    content::WebContents* contents,
-    const int32_t world_id) {
-  if (!base::FeatureList::IsEnabled(
-          youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
-    return;
-  }
-
-  youtube_script_injector::YouTubeTabFeature::CreateForWebContents(contents,
-                                                                   world_id);
-}
-
-// static
 void YouTubeTabFeature::EnterPipMode() {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BackgroundVideoPlaybackTabHelper_enterPipMode(env);
@@ -51,7 +41,6 @@ void YouTubeTabFeature::EnterPipMode() {
 YouTubeTabFeature::YouTubeTabFeature(content::WebContents* web_contents,
                                      const int32_t world_id)
     : WebContentsObserver(web_contents),
-      content::WebContentsUserData<YouTubeTabFeature>(*web_contents),
       world_id_(world_id),
       youtube_registry_(YouTubeRegistry::GetInstance()) {
   DCHECK(youtube_registry_);
@@ -159,8 +148,19 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
 
+  if (!base::FeatureList::IsEnabled(
+          youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
+    return;
+  }
+
   // Get the YouTubeTabFeature instance
-  YouTubeTabFeature* helper = YouTubeTabFeature::FromWebContents(web_contents);
+  // YouTubeTabFeature* helper =
+  // YouTubeTabFeature::FromWebContents(web_contents);
+
+  std::unique_ptr<YouTubeTabFeature> helper =
+      std::make_unique<YouTubeTabFeature>(web_contents,
+                                          ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+
   if (!helper || !helper->GetJson()) {
     return;
   }
@@ -183,5 +183,4 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
                      blink::mojom::UserActivationOption::kActivate));
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(YouTubeTabFeature);
 }  // namespace youtube_script_injector
