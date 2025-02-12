@@ -73,11 +73,15 @@ class TabTrackerServiceTest : public testing::Test {
 };
 
 TEST_F(TabTrackerServiceTest, TabsCanBeAdded) {
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto tab1 = mojom::TabData::New();
   tab1->title = "One";
   tab1->url = GURL("https://one.com");
   tab1->id = 1;
   UpdateTab(std::move(tab1));
+
+  base::test::RunUntil([&]() { return last_tabs().size() == 1; });
 
   auto tab2 = mojom::TabData::New();
   tab2->title = "Two";
@@ -97,17 +101,23 @@ TEST_F(TabTrackerServiceTest, TabsCanBeAdded) {
 }
 
 TEST_F(TabTrackerServiceTest, TabsCanBeRemoved) {
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto tab1 = mojom::TabData::New();
   tab1->title = "One";
   tab1->url = GURL("https://one.com");
   tab1->id = 1;
   UpdateTab(std::move(tab1));
 
+  base::test::RunUntil([&]() { return last_tabs().size() == 1; });
+
   auto tab2 = mojom::TabData::New();
   tab2->title = "Two";
   tab2->url = GURL("https://two.com");
   tab2->id = 2;
   UpdateTab(std::move(tab2));
+
+  base::test::RunUntil([&]() { return last_tabs().size() == 2; });
 
   DeleteTab(1);
 
@@ -118,17 +128,23 @@ TEST_F(TabTrackerServiceTest, TabsCanBeRemoved) {
 }
 
 TEST_F(TabTrackerServiceTest, TabsCanBeUpdated) {
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto tab1 = mojom::TabData::New();
   tab1->title = "One";
   tab1->url = GURL("https://one.com");
   tab1->id = 1;
   UpdateTab(tab1->Clone());
 
+  base::test::RunUntil([&]() { return last_tabs().size() == 1; });
+
   auto tab2 = mojom::TabData::New();
   tab2->title = "Two";
   tab2->url = GURL("https://two.com");
   tab2->id = 2;
   UpdateTab(std::move(tab2));
+
+  base::test::RunUntil([&]() { return last_tabs().size() == 2; });
 
   tab1->title = "One Updated";
   tab1->url = GURL("https://one-updated.com");
@@ -146,11 +162,15 @@ TEST_F(TabTrackerServiceTest, TabsCanBeUpdated) {
 }
 
 TEST_F(TabTrackerServiceTest, DeletingNonExistentTabDoesNothing) {
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto tab1 = mojom::TabData::New();
   tab1->title = "One";
   tab1->url = GURL("https://one.com");
   tab1->id = 1;
   UpdateTab(tab1->Clone());
+
+  base::test::RunUntil([&]() { return last_tabs().size() == 1; });
 
   DeleteTab(2);
 
@@ -158,17 +178,23 @@ TEST_F(TabTrackerServiceTest, DeletingNonExistentTabDoesNothing) {
 }
 
 TEST_F(TabTrackerServiceTest, InvalidSchemesAreNotTracked) {
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto internal = mojom::TabData::New();
   internal->title = "Internal Page";
   internal->url = GURL("chrome://page");
   internal->id = 1;
   UpdateTab(std::move(internal));
 
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto internal_untrusted = mojom::TabData::New();
   internal_untrusted->title = "Internal Untrusted Page";
   internal_untrusted->url = GURL("chrome-untrusted://page");
   internal_untrusted->id = 2;
   UpdateTab(std::move(internal_untrusted));
+
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
 
   auto normal = mojom::TabData::New();
   normal->title = "Normal";
@@ -184,6 +210,8 @@ TEST_F(TabTrackerServiceTest, InvalidSchemesAreNotTracked) {
 }
 
 TEST_F(TabTrackerServiceTest, NavigationToInvalidSchemeUntracksTab) {
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto page = mojom::TabData::New();
   page->title = "Page";
   page->url = GURL("https://page.com");
@@ -199,6 +227,8 @@ TEST_F(TabTrackerServiceTest, NavigationToInvalidSchemeUntracksTab) {
 }
 
 TEST_F(TabTrackerServiceTest, NavigationToValidSchemeTracksTab) {
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto page = mojom::TabData::New();
   page->title = "Page";
   page->url = GURL("chrome://page");
@@ -216,6 +246,8 @@ TEST_F(TabTrackerServiceTest, NavigationToValidSchemeTracksTab) {
 }
 
 TEST_F(TabTrackerServiceTest, DeleteInvalidSchemeTabDoesNothing) {
+  base::test::RunUntil([&]() { return last_tabs().size() == 0; });
+
   auto page = mojom::TabData::New();
   page->title = "Page";
   page->url = GURL("chrome://page");

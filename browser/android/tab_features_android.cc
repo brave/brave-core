@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
@@ -14,9 +15,12 @@
 
 TabFeaturesAndroid::TabFeaturesAndroid(content::WebContents* web_contents,
                                        Profile* profile)
-    : TabFeaturesAndroid_Chromium(web_contents, profile),
-      tab_data_observer_(std::make_unique<ai_chat::TabDataWebContentsObserver>(
-          TabAndroid::FromWebContents(web_contents)->GetAndroidId(),
-          web_contents)) {}
+    : TabFeaturesAndroid_Chromium(web_contents, profile) {
+  if (ai_chat::IsAllowedForContext(profile)) {
+    tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
+        TabAndroid::FromWebContents(web_contents)->GetAndroidId(),
+        web_contents);
+  }
+}
 
 TabFeaturesAndroid::~TabFeaturesAndroid() = default;

@@ -40,11 +40,7 @@ TabDataWebContentsObserver::TabDataWebContentsObserver(
       service_(TabTrackerServiceFactory::GetForBrowserContext(
           web_contents->GetBrowserContext())) {}
 
-TabDataWebContentsObserver::~TabDataWebContentsObserver() {
-  if (service_) {
-    service_->UpdateTab(tab_handle_, nullptr);
-  }
-}
+TabDataWebContentsObserver::~TabDataWebContentsObserver() = default;
 
 void TabDataWebContentsObserver::TitleWasSet(content::NavigationEntry* entry) {
   UpdateTab();
@@ -54,11 +50,11 @@ void TabDataWebContentsObserver::PrimaryPageChanged(content::Page& page) {
   UpdateTab();
 }
 
-void TabDataWebContentsObserver::UpdateTab() {
-  if (!service_) {
-    return;
-  }
+void TabDataWebContentsObserver::WebContentsDestroyed() {
+  service_->UpdateTab(tab_handle_, nullptr);
+}
 
+void TabDataWebContentsObserver::UpdateTab() {
   auto tab = CreateTabDataFromWebContents(web_contents());
   tab->id = tab_handle_;
   service_->UpdateTab(tab_handle_, std::move(tab));

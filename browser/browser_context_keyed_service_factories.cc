@@ -37,6 +37,7 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_factory.h"
 #include "brave/components/ai_chat/content/browser/model_service_factory.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -187,9 +188,11 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   speedreader::SpeedreaderServiceFactory::GetInstance();
 #endif
 
-  ai_chat::AIChatServiceFactory::GetInstance();
-  ai_chat::ModelServiceFactory::GetInstance();
-  ai_chat::TabTrackerServiceFactory::GetInstance();
+  if (ai_chat::features::IsAIChatEnabled()) {
+    ai_chat::AIChatServiceFactory::GetInstance();
+    ai_chat::ModelServiceFactory::GetInstance();
+    ai_chat::TabTrackerServiceFactory::GetInstance();
+  }
 
   brave_search::BackupResultsServiceFactory::GetInstance();
 

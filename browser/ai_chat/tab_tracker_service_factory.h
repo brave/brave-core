@@ -27,6 +27,8 @@ class TabTrackerServiceFactory : public BrowserContextKeyedServiceFactory {
 
  protected:
   bool ServiceIsCreatedWithBrowserContext() const override;
+  content::BrowserContext* GetBrowserContextToUse(
+      content::BrowserContext* context) const override;
 
  private:
   friend base::NoDestructor<TabTrackerServiceFactory>;

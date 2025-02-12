@@ -25,12 +25,6 @@ TabTrackerService* TabTrackerServiceFactory::GetForBrowserContext(
     content::BrowserContext* context) {
   CHECK(context);
 
-  // If AIChat isn't allowed for this context, we don't need a
-  // TabTrackerService.
-  if (!IsAllowedForContext(context)) {
-    return nullptr;
-  }
-
   return static_cast<TabTrackerService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
@@ -44,6 +38,16 @@ TabTrackerServiceFactory::~TabTrackerServiceFactory() = default;
 
 bool TabTrackerServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
+}
+
+content::BrowserContext* TabTrackerServiceFactory::GetBrowserContextToUse(
+    content::BrowserContext* context) const {
+  // If AIChat isn't allowed for this context, we don't need a
+  // TabTrackerService.
+  if (!IsAllowedForContext(context)) {
+    return nullptr;
+  }
+  return context;
 }
 
 std::unique_ptr<KeyedService>

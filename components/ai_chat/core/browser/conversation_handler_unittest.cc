@@ -209,7 +209,7 @@ class ConversationHandlerUnitTest : public testing::Test {
 
     mojom::SiteInfoPtr non_content = mojom::SiteInfo::New(
         std::nullopt, mojom::ContentType::PageContent, std::nullopt,
-        std::nullopt, -1, std::nullopt, 0, false, false);
+        std::nullopt, mojom::kContentIdNone, std::nullopt, 0, false, false);
     conversation_ =
         mojom::Conversation::New("uuid", "title", base::Time::Now(), false,
                                  std::nullopt, std::move(non_content));

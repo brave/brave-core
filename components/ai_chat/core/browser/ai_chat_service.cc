@@ -162,7 +162,8 @@ ConversationHandler* AIChatService::CreateConversation() {
         conversation_uuid, "", base::Time::Now(), false, std::nullopt,
         mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
                              mojom::ContentType::PageContent, std::nullopt,
-                             std::nullopt, -1, std::nullopt, 0, false, false));
+                             std::nullopt, mojom::kContentIdNone, std::nullopt,
+                             0, false, false));
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =

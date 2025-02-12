@@ -171,9 +171,8 @@ void AIChatUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::TabTrackerService> pending_receiver) {
   auto* service =
       ai_chat::TabTrackerServiceFactory::GetForBrowserContext(profile_);
-  if (!service) {
-    return;
-  }
+  CHECK(service);
+
   service->Bind(std::move(pending_receiver));
 }
 

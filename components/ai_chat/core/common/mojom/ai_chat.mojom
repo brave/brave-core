@@ -86,8 +86,8 @@ struct SiteInfo {
   string? title;
   string? hostname;
 
-  // Note: iOS doesn't support optional int32s in mojom, so we use -1 to
-  // indicate that the content id is not set.
+  // Note: iOS doesn't support optional int32s in mojom, so we use
+  // |kContentIdNone| to indicate that the content id is not set.
   // This is the ID of the content currently loaded in the tab.
   int32 content_id;
 

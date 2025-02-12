@@ -11,7 +11,9 @@
 
 namespace content {
 class NavigationEntry;
-}
+class Page;
+class WebContents;
+}  // namespace content
 
 namespace ai_chat {
 
@@ -30,17 +32,17 @@ class TabDataWebContentsObserver : public content::WebContentsObserver {
   TabDataWebContentsObserver& operator=(const TabDataWebContentsObserver&) =
       delete;
 
+  // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
+  void WebContentsDestroyed() override;
 
  private:
+  void UpdateTab();
+
   int32_t tab_handle_ = 0;
 
-  // Note: This can be null if we're in a situation where we don't create a
-  // TabTrackerService (i.e. when AIChat is disabled).
   raw_ptr<TabTrackerService> service_;
-
-  void UpdateTab();
 };
 
 }  // namespace ai_chat
