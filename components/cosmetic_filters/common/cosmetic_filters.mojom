@@ -22,11 +22,10 @@ interface CosmeticFiltersHandler {
   // (currently from the content picker feature).
   AddSiteCosmeticFilter(string filter);
 
-  // Opens the custom filter section in Shields settings .
-  ManageCustomFilters();
-
   GetElementPickerThemeInfo() => (
       bool is_dark_mode_enabled, int32 background_color);
+
+  ResetCosmeticFilterForCurrentHost();
 };
 
 // An interface to render frame agent `CosmeticFiltersJSHandler` to control

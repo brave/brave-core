@@ -11,6 +11,7 @@
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
@@ -87,15 +88,12 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
   }
 }
 
-void CosmeticFiltersTabHelper::ManageCustomFilters() {
-#if !BUILDFLAG(IS_ANDROID)
-  Browser* browser = chrome::FindLastActive();
-  if (browser) {
-    brave::ShowBraveAdblock(browser);
-  }
-#else   // !BUILDFLAG(IS_ANDROID)
-  ShowCustomFilterSettings();
-#endif  // !BUILDFLAG(IS_ANDROID)
+void CosmeticFiltersTabHelper::ResetCosmeticFilterForCurrentHost() {
+  const auto* sender_rfh = receivers_.GetCurrentTargetFrame();
+  CHECK(sender_rfh);
+  g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
+      sender_rfh->GetLastCommittedOrigin().host());
+  GetWebContents().GetController().Reload(content::ReloadType::NORMAL, true);
 }
 
 void CosmeticFiltersTabHelper::GetElementPickerThemeInfo(

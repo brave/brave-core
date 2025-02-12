@@ -114,14 +114,29 @@ using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
 namespace {
+
+void WaitForSelector(const content::ToRenderFrameHost& target,
+                     const std::string& selector,
+                     const bool must_be_blocked) {
+  static constexpr char kTemplate[] = R"(waitCSSSelector($1, 'display', $2))";
+  ASSERT_TRUE(
+      EvalJs(target, content::JsReplace(kTemplate, selector,
+                                        must_be_blocked ? "none" : "block"))
+          .ExtractBool());
+}
+
 void WaitForSelectorBlocked(const content::ToRenderFrameHost& target,
                             const std::string& selector) {
-  static constexpr char kTemplate[] =
-      R"(waitCSSSelector($1, 'display', 'none'))";
-
-  ASSERT_TRUE(
-      EvalJs(target, content::JsReplace(kTemplate, selector)).ExtractBool());
+  WaitForSelector(target, selector, true);
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+void WaitForSelectorVisible(const content::ToRenderFrameHost& target,
+                            const std::string& selector) {
+  WaitForSelector(target, selector, false);
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 }  // namespace
 
 AdBlockServiceTest::AdBlockServiceTest()
@@ -3045,14 +3060,16 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ContentPicker) {
 
   click_menu();
   // Emulate clicking `Manage filters`.
-  ASSERT_TRUE(content::ExecJs(web_contents(), "cf_worker.manageCustomFilters()",
+  ASSERT_TRUE(content::ExecJs(web_contents(),
+                              "cf_worker.resetSiteCosmeticFilter()",
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 
-  ASSERT_EQ(2, browser()->tab_strip_model()->count());
-  ASSERT_TRUE(content::WaitForLoadStop(web_contents()));
-  EXPECT_EQ(web_contents()->GetLastCommittedURL(),
-            "chrome://settings/shields/filters");
+  // Reload the page and check the selector is not blocked.
+  NavigateToURL(tab_url);
+  WaitForSelectorVisible(web_contents(), "#ad-banner");
+  EXPECT_FALSE(
+      content::EvalJs(web_contents(), kPickerIsInjected).ExtractBool());
 
   ShieldsDown(tab_url);
   NavigateToURL(tab_url);

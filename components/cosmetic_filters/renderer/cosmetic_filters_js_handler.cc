@@ -13,8 +13,10 @@
 #include "base/json/json_writer.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/stringprintf.h"
 #include "base/trace_event/trace_event.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
@@ -292,8 +294,8 @@ void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
   GetElementPickerRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 
-void CosmeticFiltersJSHandler::OnManageCustomFilters() {
-  GetElementPickerRemoteHandler()->ManageCustomFilters();
+void CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter() {
+  GetElementPickerRemoteHandler()->ResetCosmeticFilterForCurrentHost();
 }
 
 mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
@@ -441,12 +443,10 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
       isolate, javascript_object, "addSiteCosmeticFilter",
       base::BindRepeating(&CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter,
                           base::Unretained(this)));
-
   BindFunctionToObject(
-      isolate, javascript_object, "manageCustomFilters",
-      base::BindRepeating(&CosmeticFiltersJSHandler::OnManageCustomFilters,
+      isolate, javascript_object, "resetSiteCosmeticFilter",
+      base::BindRepeating(&CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter,
                           base::Unretained(this)));
-
   BindFunctionToObject(
       isolate, javascript_object, "getElementPickerThemeInfo",
       base::BindRepeating(&CosmeticFiltersJSHandler::GetCosmeticFilterThemeInfo,
