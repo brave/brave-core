@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "content/public/browser/web_contents_delegate.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/controls/webview/webview.h"
 
@@ -17,7 +16,7 @@ class WebContents;
 }
 
 class Browser;
-class ReaderModeToolbarView : public views::View, content::WebContentsDelegate {
+class ReaderModeToolbarView : public views::View {
   METADATA_HEADER(ReaderModeToolbarView, views::View)
  public:
   struct Delegate {
@@ -42,14 +41,13 @@ class ReaderModeToolbarView : public views::View, content::WebContentsDelegate {
   void SetDelegate(Delegate* delegate);
   void SwapToolbarContents(ReaderModeToolbarView* toolbar);
 
+  void ActivateContents();
+
  private:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
   bool OnMousePressed(const ui::MouseEvent& event) override;
-
-  // WebContentsDelegate:
-  void ActivateContents(content::WebContents* contents) override;
 
   std::unique_ptr<views::WebView> toolbar_;
   std::unique_ptr<content::WebContents> toolbar_contents_;

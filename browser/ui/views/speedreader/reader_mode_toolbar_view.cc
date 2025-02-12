@@ -45,6 +45,12 @@ class Toolbar : public views::WebView {
     return true;
   }
 
+  void DidGetUserInteraction(const blink::WebInputEvent& event) override {
+    if (event.GetType() == blink::WebInputEvent::Type::kMouseDown) {
+      owner_->ActivateContents();
+    }
+  }
+
   raw_ptr<ReaderModeToolbarView> owner_ = nullptr;
 };
 
@@ -74,7 +80,6 @@ void ReaderModeToolbarView::SetVisible(bool visible) {
     content::WebContents::CreateParams create_params(
         toolbar_->GetBrowserContext(), FROM_HERE);
     toolbar_contents_ = content::WebContents::Create(create_params);
-    toolbar_contents_->SetDelegate(this);
 
     const GURL toolbar_url(kSpeedreaderPanelURL);
     content::NavigationController::LoadURLParams params(toolbar_url);
@@ -107,9 +112,7 @@ void ReaderModeToolbarView::SwapToolbarContents(
   another_toolbar->toolbar_->SetWebContents(nullptr);
 
   another_toolbar->toolbar_->SetWebContents(contents);
-  contents->SetDelegate(another_toolbar);
   toolbar_->SetWebContents(another_contents);
-  another_contents->SetDelegate(this);
 }
 
 gfx::Size ReaderModeToolbarView::CalculatePreferredSize(
@@ -136,7 +139,7 @@ bool ReaderModeToolbarView::OnMousePressed(const ui::MouseEvent& event) {
   return views::View::OnMousePressed(event);
 }
 
-void ReaderModeToolbarView::ActivateContents(content::WebContents* contents) {
+void ReaderModeToolbarView::ActivateContents() {
   if (delegate_) {
     delegate_->OnReaderModeToolbarActivate(this);
   }

@@ -166,6 +166,10 @@ void SplitView::DidChangeActiveWebContents(BrowserViewKey,
   UpdateSplitViewSizeDelta(old_contents, new_contents);
   UpdateContentsWebViewVisual();
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  UpdateSecondaryReaderModeToolbar();
+#endif
+
   // Revert back to default state.
   contents_web_view_->SetFastResize(false);
   secondary_contents_web_view_->SetFastResize(false);
@@ -460,13 +464,12 @@ void SplitView::UpdateCornerRadius(const gfx::RoundedCornersF& corners) {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 void SplitView::OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {
-  if (toolbar == secondary_reader_mode_toolbar_ &&
-      secondary_contents_web_view_) {
-    if (secondary_contents_web_view_->web_contents()->GetDelegate()) {
-      secondary_contents_web_view_->web_contents()
-          ->GetDelegate()
-          ->ActivateContents(secondary_contents_web_view_->web_contents());
-    }
+  CHECK_EQ(secondary_reader_mode_toolbar_, toolbar);
+  CHECK(secondary_contents_web_view_->web_contents());
+  if (secondary_contents_web_view_->web_contents()->GetDelegate()) {
+    secondary_contents_web_view_->web_contents()
+        ->GetDelegate()
+        ->ActivateContents(secondary_contents_web_view_->web_contents());
   }
 }
 

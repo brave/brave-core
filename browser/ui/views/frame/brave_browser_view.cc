@@ -492,10 +492,6 @@ void BraveBrowserView::UpdateReaderModeToolbar() {
   };
   reader_mode_toolbar_->SetVisible(
       is_distilled(browser()->tab_strip_model()->GetActiveWebContents()));
-
-  if (split_view_) {
-    split_view_->UpdateSecondaryReaderModeToolbar();
-  }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
