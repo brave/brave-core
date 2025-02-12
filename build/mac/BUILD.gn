@@ -324,8 +324,6 @@ action("_create_dmg_pkg") {
     # sign_chrome.py requires --identity even when signing is skipped.
     "--identity=$mac_signing_identifier",
     "--installer-identity=$installer_identity",
-    "--package-as-dmg",
-    "--package-as-pkg",
   ]
   if (!is_official_build) {
     args += [ "--development" ]

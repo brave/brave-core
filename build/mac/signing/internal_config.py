@@ -20,11 +20,9 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
 
     @property
     def distributions(self):
-        args = self.invoker.args
         return [
-            Distribution(channel=BRAVE_CHANNEL,
-                         package_as_dmg=args.package_as_dmg,
-                         package_as_pkg=args.package_as_pkg)
+            Distribution(channel=BRAVE_CHANNEL, package_as_dmg=True,
+                         package_as_pkg=True)
         ]
 
     @property
