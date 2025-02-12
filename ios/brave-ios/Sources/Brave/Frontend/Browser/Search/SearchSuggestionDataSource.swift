@@ -8,6 +8,7 @@ import BraveCore
 import BraveUI
 import Foundation
 import Preferences
+import Storage
 import Shared
 import Web
 import os.log
@@ -23,17 +24,30 @@ class SearchSuggestionDataSource {
   // MARK: SearchListSection
 
   enum SearchListSection: Int, CaseIterable {
-    case quickBar
+    case braveSearchPromotion
     case searchSuggestionsOptIn
     case searchSuggestions
     case findInPage
     case openTabsAndHistoryAndBookmarks
-    case aiChat
   }
 
   let isPrivate: Bool
   let maxSearchSuggestions = 5
   var suggestions = [String]()
+  var siteData: [Site] {
+    set {
+      _siteData = newValue
+    }
+    get {
+      if siteDataFetchLimit == 0 {
+        return _siteData
+      } else {
+        return Array(_siteData.prefix(siteDataFetchLimit))
+      }
+    }
+  }
+  var siteDataFetchLimit = 5
+  private var _siteData = [Site]()
   private let maxPeriodBraveSearchPromotion = 15
   private var suggestClient: SearchSuggestClient?
 
@@ -69,9 +83,14 @@ class SearchSuggestionDataSource {
     return quickSearchEngines.count > 1
   }
 
-  var availableSections: [SearchListSection] {
+  var isAIChatAvailable: Bool {
+    !tabType.isPrivate
+      && Preferences.AIChat.autocompleteSuggestionsEnabled.value
+      && FeatureList.kAIChat.enabled
+  }
+
+  var searchSuggestionSections: [SearchListSection] {
     var sections = [SearchListSection]()
-    sections.append(.quickBar)
 
     if !isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
       sections.append(.searchSuggestionsOptIn)
@@ -79,17 +98,6 @@ class SearchSuggestionDataSource {
 
     if !isPrivate && searchEngines?.shouldShowSearchSuggestions == true {
       sections.append(.searchSuggestions)
-    }
-    sections.append(.findInPage)
-
-    if searchEngines?.shouldShowBrowserSuggestions == true {
-      sections.append(.openTabsAndHistoryAndBookmarks)
-    }
-
-    if !isPrivate && Preferences.AIChat.autocompleteSuggestionsEnabled.value
-      && FeatureList.kAIChat.enabled
-    {
-      sections.append(.aiChat)
     }
 
     return sections
@@ -121,12 +129,18 @@ class SearchSuggestionDataSource {
 
     return true
   }
+  
+  var isSiteDataShowMoreAvailable: Bool {
+    guard siteDataFetchLimit != 0 else { return false }
+    return siteDataFetchLimit < _siteData.count
+  }
 
   // MARK: - Initialization
 
   init(isPrivate: Bool, searchEngines: SearchEngines?) {
     self.isPrivate = isPrivate
     self.searchEngines = searchEngines
+    self.siteData = []
   }
 
   func querySuggestClient() {

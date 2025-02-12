@@ -4,6 +4,7 @@
 
 import Shared
 import UIKit
+import DesignSystem
 
 public protocol Identifiable: Equatable {
   var id: Int? { get set }
@@ -22,11 +23,11 @@ open class Site: Identifiable, Hashable {
     public var icon: UIImage? {
       switch self {
       case .history:
-        return UIImage(systemName: "clock.fill")
+        return UIImage(braveSystemNamed: "leo.history")
       case .bookmark:
-        return UIImage(systemName: "book.fill")
+        return UIImage(braveSystemNamed: "leo.browser.bookmark-normal")
       case .tab:
-        return UIImage(systemName: "square.filled.on.square")
+        return UIImage(braveSystemNamed: "leo.browser.mobile-tabs")
       default:
         return nil
       }
