@@ -26,12 +26,9 @@ class YouTubeRegistry;
 
 // Used to inject JS scripts into the page.
 class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
-    YouTubeTabFeature final
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<YouTubeTabFeature> {
+    YouTubeTabFeature final : public content::WebContentsObserver {
  public:
-  static void MaybeCreateForWebContents(content::WebContents* contents,
-                                        const int32_t world_id);
+  YouTubeTabFeature(content::WebContents*, const int32_t world_id);
   static void EnterPipMode();
   ~YouTubeTabFeature() override;
   YouTubeTabFeature(const YouTubeTabFeature&) = delete;
@@ -53,9 +50,6 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
   }
 
  private:
-  YouTubeTabFeature(content::WebContents*, const int32_t world_id);
-  friend class content::WebContentsUserData<YouTubeTabFeature>;
-
   // content::WebContentsObserver overrides
 
   // This method is invoked once the window.document element of the primary main
@@ -85,8 +79,6 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
   mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
       script_injector_remote_;
   base::WeakPtrFactory<YouTubeTabFeature> weak_factory_{this};
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace youtube_script_injector

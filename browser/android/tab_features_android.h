@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
 #include "chrome/browser/android/tab_features_android.h"
 
 namespace ai_chat {
@@ -27,6 +28,8 @@ class TabFeaturesAndroid : public TabFeaturesAndroid_Chromium {
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
+  std::unique_ptr<youtube_script_injector::YouTubeTabFeature>
+      youtube_script_injector_;
 };
 
 #endif  // BRAVE_BROWSER_ANDROID_TAB_FEATURES_ANDROID_H_
