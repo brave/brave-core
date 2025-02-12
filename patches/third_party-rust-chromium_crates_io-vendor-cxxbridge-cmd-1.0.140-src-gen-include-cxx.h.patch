@@ -1,7 +1,7 @@
-diff --git a/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.137/src/gen/include/cxx.h b/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.137/src/gen/include/cxx.h
-index 3414e4c8a5434f6d43b8bf7a76e634ac0c7d06a5..ab588972ad1236c81c9195e77eda20f387da5be5 100644
---- a/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.137/src/gen/include/cxx.h
-+++ b/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.137/src/gen/include/cxx.h
+diff --git a/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.140/src/gen/include/cxx.h b/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.140/src/gen/include/cxx.h
+index 3bc0f6c060acf5f65cf61dfc647203511f6466de..31dd61e2da05e70820ba9e43fd60fadf84b47eab 100644
+--- a/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.140/src/gen/include/cxx.h
++++ b/third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.140/src/gen/include/cxx.h
 @@ -2,6 +2,7 @@
  #include <algorithm>
  #include <array>
@@ -10,7 +10,7 @@ index 3414e4c8a5434f6d43b8bf7a76e634ac0c7d06a5..ab588972ad1236c81c9195e77eda20f3
  #include <cstddef>
  #include <cstdint>
  #include <exception>
-@@ -243,6 +244,11 @@ public:
+@@ -254,6 +255,11 @@ public:
    bool operator<=(const iterator &) const noexcept;
    bool operator>(const iterator &) const noexcept;
    bool operator>=(const iterator &) const noexcept;
