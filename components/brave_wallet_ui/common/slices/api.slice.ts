@@ -354,7 +354,7 @@ export const {
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
   useUpdateUserTokenMutation,
-  useValidateUnifiedAddressQuery,
+  useGetZCashTransactionTypeQuery,
   useGetMeldFiatCurrenciesQuery,
   useGetMeldCryptoCurrenciesQuery,
   useGetMeldCountriesQuery,

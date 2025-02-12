@@ -104,7 +104,7 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
     return;
   }
 
-  DCHECK_EQ(kDefaultTransparentOutputsCount,
+  DCHECK_GE(kDefaultTransparentOutputsCount,
             transaction_.transparent_part().outputs.size());
 
   std::move(callback_).Run(base::ok(std::move(transaction_)));
@@ -150,7 +150,8 @@ void ZCashCreateTransparentTransactionTask::OnGetUtxos(
 bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
   auto& target_output = transaction_.transparent_part().outputs.emplace_back();
   target_output.address = transaction_.to();
-  if (!OutputZCashAddressSupported(target_output.address, IsTestnet())) {
+  if (!OutputZCashTransparentAddressSupported(target_output.address,
+                                              IsTestnet())) {
     return false;
   }
 
@@ -171,8 +172,8 @@ bool ZCashCreateTransparentTransactionTask::PrepareOutputs() {
     return false;
   }
 
-  CHECK(
-      OutputZCashAddressSupported(change_address->address_string, IsTestnet()));
+  CHECK(OutputZCashTransparentAddressSupported(change_address->address_string,
+                                               IsTestnet()));
   auto& change_output = transaction_.transparent_part().outputs.emplace_back();
   change_output.address = change_address_->address_string;
   change_output.amount = change_amount;

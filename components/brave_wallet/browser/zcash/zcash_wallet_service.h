@@ -132,9 +132,15 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       bool change,
       DiscoverNextUnusedAddressCallback callback);
 
-  void ValidateZCashAddress(const std::string& addr,
-                            bool testnet,
-                            ValidateZCashAddressCallback callback) override;
+  base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
+  GetTransactionType(bool testnet,
+                     bool use_shielded_pool,
+                     const std::string& addr);
+
+  void GetTransactionType(bool testnet,
+                          bool use_shielded_pool,
+                          const std::string& addr,
+                          GetTransactionTypeCallback callback) override;
 
   void AddObserver(
       mojo::PendingRemote<mojom::ZCashWalletServiceObserver> observer) override;

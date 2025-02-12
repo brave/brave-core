@@ -59,7 +59,7 @@ import {
   useSendFilTransactionMutation,
   useSendBtcTransactionMutation,
   useSendZecTransactionMutation,
-  useValidateUnifiedAddressQuery
+  useGetZCashTransactionTypeQuery
 } from '../../../../common/slices/api.slice'
 import {
   useAccountFromAddressQuery //
@@ -157,15 +157,14 @@ export const SendScreen = React.memo((props: Props) => {
   })
 
   const {
-    data: zecAddressValidationResult = BraveWallet.ZCashAddressValidationResult
-      .Unknown
-  } = useValidateUnifiedAddressQuery(
+    data : getZCashTransactionTypeResult = { txType : null, error : null }
+  } = useGetZCashTransactionTypeQuery(
     networkFromParams?.coin === BraveWallet.CoinType.ZEC &&
-      isZCashShieldedTransactionsEnabled &&
       toAddressOrUrl
       ? {
+          testnet: networkFromParams.chainId === BraveWallet.Z_CASH_TESTNET,
+          use_shielded_pool: query.get('isShielded') === 'true',
           address: toAddressOrUrl,
-          testnet: networkFromParams.chainId === BraveWallet.Z_CASH_TESTNET
         }
       : skipToken
   )
@@ -603,9 +602,12 @@ export const SendScreen = React.memo((props: Props) => {
                 )}
                 {isZCashShieldedTransactionsEnabled &&
                   tokenFromParams?.coin === BraveWallet.CoinType.ZEC &&
+                  getZCashTransactionTypeResult &&
                   toAddressOrUrl &&
-                  zecAddressValidationResult ===
-                    BraveWallet.ZCashAddressValidationResult.ValidShielded && (
+                  (getZCashTransactionTypeResult.txType ===
+                    BraveWallet.ZCashTxType.kTransparentToOrchard ||
+                    getZCashTransactionTypeResult.txType ===
+                    BraveWallet.ZCashTxType.kOrchardToOrchard) && (
                     <AddMemo
                       memoText={memoText}
                       onUpdateMemoText={setMemoText}

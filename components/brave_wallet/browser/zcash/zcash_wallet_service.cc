@@ -399,45 +399,44 @@ void ZCashWalletService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void ZCashWalletService::ValidateZCashAddress(
-    const std::string& addr,
-    bool testnet,
-    ValidateZCashAddressCallback callback) {
-  if (IsUnifiedAddress(addr)) {
-    if (testnet != IsUnifiedTestnetAddress(addr)) {
-      std::move(callback).Run(
-          mojom::ZCashAddressValidationResult::NetworkMismatch);
-      return;
-    }
+base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
+ZCashWalletService::GetTransactionType(bool testnet,
+                                       bool use_shielded_pool,
+                                       const std::string& addr) {
 #if BUILDFLAG(ENABLE_ORCHARD)
-    if (IsZCashShieldedTransactionsEnabled() &&
-        ExtractOrchardPart(addr, testnet)) {
-      std::move(callback).Run(
-          mojom::ZCashAddressValidationResult::ValidShielded);
-      return;
+  if (IsZCashShieldedTransactionsEnabled()) {
+    if (use_shielded_pool) {
+      auto validation_result = ValidateOrchardRecipientAddress(testnet, addr);
+      if (validation_result.has_value()) {
+        return base::ok(mojom::ZCashTxType::kOrchardToOrchard);
+      }
+      return base::unexpected(validation_result.error());
     }
-#endif
-    if (!ExtractTransparentPart(addr, testnet)) {
-      std::move(callback).Run(
-          mojom::ZCashAddressValidationResult::InvalidUnified);
-      return;
-    }
-  } else {
-    auto decoded = DecodeZCashAddress(addr);
-    if (!decoded) {
-      std::move(callback).Run(
-          mojom::ZCashAddressValidationResult::InvalidTransparent);
-      return;
-    }
-    if (decoded->testnet != testnet) {
-      std::move(callback).Run(
-          mojom::ZCashAddressValidationResult::NetworkMismatch);
-      return;
+
+    if (ValidateOrchardRecipientAddress(testnet, addr).has_value()) {
+      return base::ok(mojom::ZCashTxType::kTransparentToOrchard);
     }
   }
+#endif
+  auto validation_result = ValidateTransparentRecipientAddress(testnet, addr);
+  if (validation_result.has_value()) {
+    return base::ok(mojom::ZCashTxType::kTransparentToTransparent);
+  }
 
-  std::move(callback).Run(
-      mojom::ZCashAddressValidationResult::ValidTransparent);
+  return base::unexpected(validation_result.error());
+}
+
+void ZCashWalletService::GetTransactionType(
+    bool testnet,
+    bool use_shielded_pool,
+    const std::string& addr,
+    GetTransactionTypeCallback callback) {
+  auto result = GetTransactionType(testnet, use_shielded_pool, addr);
+  if (result.has_value()) {
+    std::move(callback).Run(result.value(), mojom::ZCashAddressError::kNoError);
+  } else {
+    std::move(callback).Run(mojom::ZCashTxType::kUnknown, result.error());
+  }
 }
 
 void ZCashWalletService::OnSendTransactionResult(
