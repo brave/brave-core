@@ -6,17 +6,18 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 from argparse import ArgumentParser
-from os import mkdir, makedirs, symlink
-from os.path import join, isdir, basename, dirname, exists
+from os import makedirs, symlink, listdir
+from os.path import join, isdir, basename, exists
 from pathlib import Path
 from shutil import copy, copytree
-from subprocess import run, PIPE, STDOUT, CalledProcessError
+from subprocess import run, PIPE, STDOUT
 from tempfile import TemporaryDirectory
 
 import re
 
-DMG_TOOL_PATH = join(dirname(dirname(dirname(dirname(__file__)))),
-                     'third_party', 'libdmg-hfsplus', 'build', 'dmg', 'dmg')
+CHROMIUM_SRC_DIR = __file__.split('/src/', 1)[0] + '/src'
+DMG_TOOL_PATH = join(CHROMIUM_SRC_DIR, 'brave', 'third_party', 'libdmg-hfsplus',
+                     'build', 'dmg', 'dmg')
 
 
 def main():
@@ -26,7 +27,7 @@ def main():
         ' your .gclient file, then `npm run sync` (without `--target_os=mac`)' \
         ' to download and build it.'
     args = parse_args()
-    assert args.source == '/var/empty', 'Only --source=/var/empty is supported.'
+    assert not listdir(args.source), 'The --source=... dir must be empty.'
     to_copy = list(map(parse_copy_arg, args.copy))
     required_size = sum(get_size(tpl[0]) for tpl in to_copy)
     safe_size_mb = required_size // 2**20 + 25
@@ -50,7 +51,7 @@ def main():
                 for d in args.mkdir or []:
                     makedirs(join(mount_path, d))
                 for src, dst_rel in to_copy:
-                    dst = join(mount_path, dst_rel)
+                    dst = join(mount_path, dst_rel or basename(src))
                     if isdir(src):
                         copytree(src, dst, symlinks=True)
                     else:
