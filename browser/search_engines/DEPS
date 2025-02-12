@@ -2,5 +2,4 @@ include_rules = [
   "+brave/components/time_period_storage",
   "+brave/components/web_discovery/buildflags",
   "+brave/android/java/org/chromium/chrome/browser/search_engines/jni_headers",
-  "+brave/components/search_engines/android/jni_headers",
 ]
