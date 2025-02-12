@@ -156,6 +156,7 @@
     *** mTabObscuringHandler;
     *** mReadAloudControllerSupplier;
     *** mTopUiThemeColorProvider;
+    *** mCurrentOrientation;
     *** onOrientationChange(...);
     *** updateBookmarkButtonStatus(...);
     *** updateReloadState(...);
