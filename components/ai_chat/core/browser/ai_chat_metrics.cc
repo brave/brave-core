@@ -40,18 +40,18 @@ constexpr base::TimeDelta kReportDebounceDelay = base::Seconds(3);
 constexpr base::TimeDelta kFirstChatPromptsReportDebounceDelay =
     base::Minutes(10);
 
+constexpr int kFirstChatPromptsBuckets[] = {1, 3, 6, 10};
 constexpr int kChatCountBuckets[] = {1, 5, 10, 20, 50};
 constexpr int kAvgPromptCountBuckets[] = {2, 5, 10, 20};
-constexpr int kFirstChatPromptsBuckets[] = {1, 3, 6, 10};
 constexpr int kChatHistoryUsageBuckets[] = {0, 1, 4, 10, 25, 50, 75};
 constexpr int kMaxChatDurationBuckets[] = {1, 2, 5, 15, 30, 60};
-constexpr int kFullPageSwitchesBuckets[] = {0, 5, 25, 50};
 constexpr int kRateLimitsBuckets[] = {0, 1, 3, 5};
 constexpr int kContextLimitsBuckets[] = {0, 2, 5, 10};
 
 constexpr base::TimeDelta kPremiumCheckInterval = base::Days(1);
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+constexpr int kFullPageSwitchesBuckets[] = {0, 5, 25, 50};
 // Value -1 is added to buckets to add padding for the "less than 1% option"
 constexpr int kOmniboxOpenBuckets[] = {-1, 0, 3, 5, 10, 25};
 constexpr int kContextMenuUsageBuckets[] = {0, 1, 2, 5, 10, 20, 50};
@@ -72,24 +72,6 @@ constexpr char kToolbarButtonEntryPointKey[] = "toolbar_button";
 constexpr char kMenuItemEntryPointKey[] = "menu_item";
 constexpr char kOmniboxCommandEntryPointKey[] = "omnibox_command";
 constexpr char kBraveSearchEntryPointKey[] = "brave_search";
-
-constexpr char kOmniboxInputKey[] = "omnibox_input";
-constexpr char kConversationStarterKey[] = "conversation_starter";
-constexpr char kPageSummaryKey[] = "page_summary";
-constexpr char kTextInputWithPageKey[] = "text_input_with_page";
-constexpr char kTextInputWithoutPageKey[] = "text_input_without_page";
-constexpr char kTextInputViaFullPageKey[] = "text_input_via_full_page";
-constexpr char kQuickActionKey[] = "quick_action";
-
-constexpr auto kContextSourceKeys =
-    base::MakeFixedFlatMap<ContextSource, const char*>(
-        {{ContextSource::kOmniboxInput, kOmniboxInputKey},
-         {ContextSource::kConversationStarter, kConversationStarterKey},
-         {ContextSource::kPageSummary, kPageSummaryKey},
-         {ContextSource::kTextInputWithPage, kTextInputWithPageKey},
-         {ContextSource::kTextInputWithoutPage, kTextInputWithoutPageKey},
-         {ContextSource::kTextInputViaFullPage, kTextInputViaFullPageKey},
-         {ContextSource::kQuickAction, kQuickActionKey}});
 
 constexpr auto kContextMenuActionKeys =
     base::MakeFixedFlatMap<ContextMenuAction, const char*>(
@@ -113,6 +95,24 @@ constexpr auto kEntryPointKeys =
          {EntryPoint::kBraveSearch, kBraveSearchEntryPointKey}});
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+
+constexpr char kOmniboxInputKey[] = "omnibox_input";
+constexpr char kConversationStarterKey[] = "conversation_starter";
+constexpr char kPageSummaryKey[] = "page_summary";
+constexpr char kTextInputWithPageKey[] = "text_input_with_page";
+constexpr char kTextInputWithoutPageKey[] = "text_input_without_page";
+constexpr char kTextInputViaFullPageKey[] = "text_input_via_full_page";
+constexpr char kQuickActionKey[] = "quick_action";
+
+constexpr auto kContextSourceKeys =
+    base::MakeFixedFlatMap<ContextSource, const char*>(
+        {{ContextSource::kOmniboxInput, kOmniboxInputKey},
+         {ContextSource::kConversationStarter, kConversationStarterKey},
+         {ContextSource::kPageSummary, kPageSummaryKey},
+         {ContextSource::kTextInputWithPage, kTextInputWithPageKey},
+         {ContextSource::kTextInputWithoutPage, kTextInputWithoutPageKey},
+         {ContextSource::kTextInputViaFullPage, kTextInputViaFullPageKey},
+         {ContextSource::kQuickAction, kQuickActionKey}});
 
 void ReportHistogramForSidebarExperiment(
     int value,
@@ -221,13 +221,13 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
         local_state_, prefs::kBraveChatP3AEntryPointUsages,
         kEntryPointKeys.at(entry_point));
   }
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   for (int i = 0; i <= static_cast<int>(ContextSource::kMaxValue); i++) {
     ContextSource context_source = static_cast<ContextSource>(i);
     context_source_storages_[context_source] = std::make_unique<WeeklyStorage>(
         local_state_, prefs::kBraveChatP3AContextSourceUsages,
         kContextSourceKeys.at(context_source));
   }
-#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
 AIChatMetrics::~AIChatMetrics() = default;
@@ -399,26 +399,12 @@ void AIChatMetrics::RecordConversationsCleared() {
   MaybeReportFirstChatPrompts(false);
 }
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-void AIChatMetrics::RecordOmniboxOpen() {
-  prompted_via_omnibox_ = true;
-  HandleOpenViaEntryPoint(EntryPoint::kOmniboxItem);
-  omnibox_open_storage_.AddDelta(1);
-  omnibox_autocomplete_storage_.AddDelta(1);
-  ReportOmniboxCounts();
+void AIChatMetrics::WillSendPromptWithFullPage() {
+  prompted_via_full_page_ = true;
 }
 
-void AIChatMetrics::RecordOmniboxSearchQuery() {
-  omnibox_autocomplete_storage_.AddDelta(1);
-  ReportOmniboxCounts();
-}
-
-void AIChatMetrics::RecordContextMenuUsage(ContextMenuAction action) {
-  HandleOpenViaEntryPoint(EntryPoint::kContextMenu);
-  context_menu_usage_storages_[action]->AddDelta(1);
-  local_state_->SetTime(prefs::kBraveChatP3ALastContextMenuUsageTime,
-                        base::Time::Now());
-  ReportContextMenuMetrics();
+void AIChatMetrics::WillSendPromptWithQuickAction() {
+  prompted_via_quick_action_ = true;
 }
 
 void AIChatMetrics::MaybeReportFirstChatPrompts(bool new_prompt_made) {
@@ -441,12 +427,26 @@ void AIChatMetrics::MaybeReportFirstChatPrompts(bool new_prompt_made) {
   local_state_->SetBoolean(prefs::kBraveChatP3AFirstChatPromptsReported, true);
 }
 
-void AIChatMetrics::WillSendPromptWithFullPage() {
-  prompted_via_full_page_ = true;
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+void AIChatMetrics::RecordOmniboxOpen() {
+  prompted_via_omnibox_ = true;
+  HandleOpenViaEntryPoint(EntryPoint::kOmniboxItem);
+  omnibox_open_storage_.AddDelta(1);
+  omnibox_autocomplete_storage_.AddDelta(1);
+  ReportOmniboxCounts();
 }
 
-void AIChatMetrics::WillSendPromptWithQuickAction() {
-  prompted_via_quick_action_ = true;
+void AIChatMetrics::RecordOmniboxSearchQuery() {
+  omnibox_autocomplete_storage_.AddDelta(1);
+  ReportOmniboxCounts();
+}
+
+void AIChatMetrics::RecordContextMenuUsage(ContextMenuAction action) {
+  HandleOpenViaEntryPoint(EntryPoint::kContextMenu);
+  context_menu_usage_storages_[action]->AddDelta(1);
+  local_state_->SetTime(prefs::kBraveChatP3ALastContextMenuUsageTime,
+                        base::Time::Now());
+  ReportContextMenuMetrics();
 }
 
 void AIChatMetrics::HandleOpenViaEntryPoint(EntryPoint entry_point) {
