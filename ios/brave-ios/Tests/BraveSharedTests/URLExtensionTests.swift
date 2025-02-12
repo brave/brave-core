@@ -247,6 +247,21 @@ class URLExtensionTests: XCTestCase {
     url = URL(string: "https://brave.github.io/")!
     XCTAssertEqual(url.strippingBlobURLAuth.absoluteString, "https://brave.github.io/")
   }
+
+  private func testURLComponentsEncoding() {
+    XCTAssertTrue(URL.isValidURLWithoutEncoding(text: "Дом.com"))
+    XCTAssertTrue(URL.isValidURLWithoutEncoding(text: "Дoм.com"))
+    XCTAssertTrue(URL.isValidURLWithoutEncoding(text: "https://Дом.com"))
+    XCTAssertTrue(URL.isValidURLWithoutEncoding(text: "https://Дoм.com"))
+    XCTAssertTrue(URL.isValidURLWithoutEncoding(text: "https://google.ca/"))
+    XCTAssertTrue(URL.isValidURLWithoutEncoding(text: "https://google.ca/search?q=hello"))
+    XCTAssertTrue(URL.isValidURLWithoutEncoding(text: "https://google.ca/search?q=hello%20world"))
+    XCTAssertTrue(URL.isValidURLWithoutEncoding(text: "https://google.ca/", scheme: "https"))
+    XCTAssertFalse(URL.isValidURLWithoutEncoding(text: "https://google.ca/", scheme: "blob"))
+    XCTAssertFalse(URL.isValidURLWithoutEncoding(text: "https://google.ca/search?q=hello + world"))
+    XCTAssertFalse(URL.isValidURLWithoutEncoding(text: "https://google.ca/search?q=hello world"))
+    XCTAssertFalse(URL.isValidURLWithoutEncoding(text: "hello world"))
+  }
 }
 
 private class NavigationDelegate: NSObject, WKNavigationDelegate {

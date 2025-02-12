@@ -233,6 +233,19 @@ extension URL {
     }
     return self
   }
+
+  // Returns true if a string is a valid URL, with the specified optional scheme,
+  // without percent encoding, idn encoding, or modifying the URL in any way.
+  public static func isValidURLWithoutEncoding(text: String, scheme: String? = nil) -> Bool {
+    if let components = URLComponents(string: text),
+      !(scheme ?? "").isEmpty ? components.scheme == scheme : true,
+      !(components.host ?? components.path).isEmpty
+    {
+      return true
+    }
+
+    return false
+  }
 }
 
 extension InternalURL {
