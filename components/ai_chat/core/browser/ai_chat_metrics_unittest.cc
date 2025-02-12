@@ -26,10 +26,6 @@
 
 namespace ai_chat {
 
-namespace {
-constexpr char kExampleStarter[] = "Write a memo";
-}
-
 class AIChatMetricsUnitTest : public testing::Test {
  public:
   AIChatMetricsUnitTest()
@@ -69,9 +65,6 @@ class AIChatMetricsUnitTest : public testing::Test {
     MockConversationHandler() = default;
     ~MockConversationHandler() override = default;
 
-    bool IsConversationStarter(std::string_view title) override {
-      return kExampleStarter == title;
-    }
     size_t GetConversationHistorySize() override {
       return current_history_size_;
     }
@@ -223,8 +216,8 @@ TEST_F(AIChatMetricsUnitTest, UsageDailyWeeklyAndMonthly) {
   histogram_tester_.ExpectUniqueSample(kUsageMonthlyHistogramName, 1, 1);
 
   is_premium_ = true;
-  ai_chat_metrics_->OnPremiumStatusUpdated(true, false, mojom::PremiumStatus::Active,
-                                           nullptr);
+  ai_chat_metrics_->OnPremiumStatusUpdated(
+      true, false, mojom::PremiumStatus::Active, nullptr);
   RecordPrompts("def", 1);
   task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kUsageDailyHistogramName, 2, 1);
@@ -533,26 +526,26 @@ TEST_F(AIChatMetricsUnitTest, FirstChatPrompts) {
 }
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-TEST_F(AIChatMetricsUnitTest, FullscreenSwitch) {
+TEST_F(AIChatMetricsUnitTest, FullPageSwitch) {
   ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
 
   ai_chat_metrics_->RecordSidebarUsage();
   ai_chat_metrics_->RecordSidebarUsage();
 
-  histogram_tester_.ExpectUniqueSample(kFullscreenSwitchesHistogramName, 0, 2);
+  histogram_tester_.ExpectUniqueSample(kFullPageSwitchesHistogramName, 0, 2);
 
-  ai_chat_metrics_->RecordFullscreenSwitch();
-  ai_chat_metrics_->RecordFullscreenSwitch();
+  ai_chat_metrics_->RecordFullPageSwitch();
+  ai_chat_metrics_->RecordFullPageSwitch();
 
-  histogram_tester_.ExpectBucketCount(kFullscreenSwitchesHistogramName, 3, 1);
-  histogram_tester_.ExpectBucketCount(kFullscreenSwitchesHistogramName, 4, 1);
-  histogram_tester_.ExpectTotalCount(kFullscreenSwitchesHistogramName, 4);
-
-  task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kFullscreenSwitchesHistogramName, 10);
+  histogram_tester_.ExpectBucketCount(kFullPageSwitchesHistogramName, 3, 1);
+  histogram_tester_.ExpectBucketCount(kFullPageSwitchesHistogramName, 4, 1);
+  histogram_tester_.ExpectTotalCount(kFullPageSwitchesHistogramName, 4);
 
   task_environment_.FastForwardBy(base::Days(7));
-  histogram_tester_.ExpectTotalCount(kFullscreenSwitchesHistogramName, 10);
+  histogram_tester_.ExpectTotalCount(kFullPageSwitchesHistogramName, 10);
+
+  task_environment_.FastForwardBy(base::Days(7));
+  histogram_tester_.ExpectTotalCount(kFullPageSwitchesHistogramName, 10);
 }
 #endif
 
@@ -563,7 +556,8 @@ TEST_F(AIChatMetricsUnitTest, ContextSource) {
 
   conversation_handler_.current_history_size_ = 1;
   // Test conversation starter context
-  auto chat = CreateConversationAndTurn("chat2", kExampleStarter);
+  auto chat = CreateConversationAndTurn("chat2", "hello");
+  chat.second->action_type = mojom::ActionType::CONVERSATION_STARTER;
   ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
                                     chat.second);
   ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
@@ -573,7 +567,7 @@ TEST_F(AIChatMetricsUnitTest, ContextSource) {
 
   // Test page summary context
   chat = CreateConversationAndTurn("chat1", "test");
-  chat.second->text = l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE);
+  chat.second->action_type = mojom::ActionType::SUMMARIZE_PAGE;
   for (int i = 0; i < 3; i++) {
     ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
                                       chat.second);
@@ -611,10 +605,10 @@ TEST_F(AIChatMetricsUnitTest, ContextSource) {
   histogram_tester_.ExpectBucketCount(kMostUsedContextSourceHistogramName, 5,
                                       1);
 
-  // Test right click context
+  // Test quick action context
   chat = CreateConversationAndTurn("chat3", "test");
-  chat.second->action_type = mojom::ActionType::CREATE_TAGLINE;
   for (size_t i = 0; i < 7; i++) {
+    ai_chat_metrics_->WillSendPromptWithQuickAction();
     ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,
                                       chat.second);
   }
@@ -622,7 +616,7 @@ TEST_F(AIChatMetricsUnitTest, ContextSource) {
                                       1);
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  chat = CreateConversationAndTurn("chat2", kExampleStarter);
+  chat = CreateConversationAndTurn("chat2", "test");
   for (size_t i = 0; i < 7; i++) {
     ai_chat_metrics_->RecordOmniboxOpen();
     ai_chat_metrics_->RecordNewPrompt(&conversation_handler_, chat.first,

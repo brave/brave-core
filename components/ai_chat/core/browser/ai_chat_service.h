@@ -252,6 +252,8 @@ class AIChatService : public KeyedService,
   // actively used. Any metadata that needs to stay in-memory
   // should be kept in |conversations_|. Any other data only for viewing
   // conversation detail should be persisted to database.
+  // TODO(djandries): If the above requirement for this map changes,
+  // adjust the metrics that depend on loaded conversation state accordingly.
   std::map<std::string, std::unique_ptr<ConversationHandler>>
       conversation_handlers_;
 

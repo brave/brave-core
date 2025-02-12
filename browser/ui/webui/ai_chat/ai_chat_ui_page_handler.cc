@@ -201,7 +201,7 @@ void AIChatUIPageHandler::OpenConversationFullPage(
   CHECK(active_chat_tab_helper_);
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   if (ai_chat_metrics_) {
-    ai_chat_metrics_->RecordFullscreenSwitch();
+    ai_chat_metrics_->RecordFullPageSwitch();
   }
 #endif
   active_chat_tab_helper_->web_contents()->OpenURL(

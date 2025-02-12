@@ -26,10 +26,8 @@
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "brave/components/sidebar/common/features.h"
-#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace ai_chat {
 
@@ -47,7 +45,7 @@ constexpr int kAvgPromptCountBuckets[] = {2, 5, 10, 20};
 constexpr int kFirstChatPromptsBuckets[] = {1, 3, 6, 10};
 constexpr int kChatHistoryUsageBuckets[] = {0, 1, 4, 10, 25, 50, 75};
 constexpr int kMaxChatDurationBuckets[] = {1, 2, 5, 15, 30, 60};
-constexpr int kFullscreenSwitchesBuckets[] = {0, 5, 25, 50};
+constexpr int kFullPageSwitchesBuckets[] = {0, 5, 25, 50};
 constexpr int kRateLimitsBuckets[] = {0, 1, 3, 5};
 constexpr int kContextLimitsBuckets[] = {0, 2, 5, 10};
 
@@ -81,7 +79,7 @@ constexpr char kPageSummaryKey[] = "page_summary";
 constexpr char kTextInputWithPageKey[] = "text_input_with_page";
 constexpr char kTextInputWithoutPageKey[] = "text_input_without_page";
 constexpr char kTextInputViaFullPageKey[] = "text_input_via_full_page";
-constexpr char kRightClickKey[] = "right_click";
+constexpr char kQuickActionKey[] = "quick_action";
 
 constexpr auto kContextSourceKeys =
     base::MakeFixedFlatMap<ContextSource, const char*>(
@@ -91,7 +89,7 @@ constexpr auto kContextSourceKeys =
          {ContextSource::kTextInputWithPage, kTextInputWithPageKey},
          {ContextSource::kTextInputWithoutPage, kTextInputWithoutPageKey},
          {ContextSource::kTextInputViaFullPage, kTextInputViaFullPageKey},
-         {ContextSource::kRightClick, kRightClickKey}});
+         {ContextSource::kQuickAction, kQuickActionKey}});
 
 constexpr auto kContextMenuActionKeys =
     base::MakeFixedFlatMap<ContextMenuAction, const char*>(
@@ -206,8 +204,8 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
           prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage,
           14),
       sidebar_usage_storage_(local_state, prefs::kBraveChatP3ASidebarUsages),
-      fullscreen_switch_storage_(local_state,
-                                 prefs::kBraveChatP3AFullscreenSwitches),
+      full_page_switch_storage_(local_state,
+                                prefs::kBraveChatP3AFullPageSwitches),
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
       local_state_(local_state) {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -257,7 +255,7 @@ void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveChatP3AContextSourceUsages);
   registry->RegisterDictionaryPref(prefs::kBraveChatP3AEntryPointUsages);
   registry->RegisterListPref(prefs::kBraveChatP3ASidebarUsages);
-  registry->RegisterListPref(prefs::kBraveChatP3AFullscreenSwitches);
+  registry->RegisterListPref(prefs::kBraveChatP3AFullPageSwitches);
   registry->RegisterListPref(prefs::kBraveChatP3ARateLimitStops);
   registry->RegisterListPref(prefs::kBraveChatP3AContextLimits);
 }
@@ -368,7 +366,7 @@ void AIChatMetrics::RecordNewPrompt(ConversationHandlerForMetrics* handler,
   RecordContextSource(handler, entry);
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-  ReportFullscreenUsageMetric();
+  ReportFullPageUsageMetric();
 #endif
 
   if (handler->should_send_page_contents() &&
@@ -447,6 +445,10 @@ void AIChatMetrics::WillSendPromptWithFullPage() {
   prompted_via_full_page_ = true;
 }
 
+void AIChatMetrics::WillSendPromptWithQuickAction() {
+  prompted_via_quick_action_ = true;
+}
+
 void AIChatMetrics::HandleOpenViaEntryPoint(EntryPoint entry_point) {
   acquisition_source_ = entry_point;
 
@@ -459,12 +461,12 @@ void AIChatMetrics::HandleOpenViaEntryPoint(EntryPoint entry_point) {
 
 void AIChatMetrics::RecordSidebarUsage() {
   sidebar_usage_storage_.AddDelta(1u);
-  ReportFullscreenUsageMetric();
+  ReportFullPageUsageMetric();
 }
 
-void AIChatMetrics::RecordFullscreenSwitch() {
-  fullscreen_switch_storage_.AddDelta(1u);
-  ReportFullscreenUsageMetric();
+void AIChatMetrics::RecordFullPageSwitch() {
+  full_page_switch_storage_.AddDelta(1u);
+  ReportFullPageUsageMetric();
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
@@ -481,7 +483,7 @@ void AIChatMetrics::ReportAllMetrics() {
   ReportOmniboxCounts();
   ReportContextMenuMetrics();
   ReportEntryPointUsageMetric();
-  ReportFullscreenUsageMetric();
+  ReportFullPageUsageMetric();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 }
 
@@ -541,19 +543,15 @@ void AIChatMetrics::RecordContextSource(ConversationHandlerForMetrics* handler,
   ContextSource context = ContextSource::kTextInputWithoutPage;
   if (prompted_via_omnibox_) {
     context = ContextSource::kOmniboxInput;
-  } else if (entry->text ==
-                 l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE) ||
-             entry->text ==
-                 l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
+  } else if (entry->action_type == mojom::ActionType::SUMMARIZE_PAGE ||
+             entry->action_type == mojom::ActionType::SUMMARIZE_VIDEO) {
     context = ContextSource::kPageSummary;
   } else if (handler->GetConversationHistorySize() == 1 &&
-             handler->IsConversationStarter(entry->text)) {
+             entry->action_type == mojom::ActionType::CONVERSATION_STARTER) {
     UMA_HISTOGRAM_BOOLEAN(kUsedConversationStarterHistogramName, true);
     context = ContextSource::kConversationStarter;
-  } else if (entry->action_type != mojom::ActionType::UNSPECIFIED &&
-             entry->action_type != mojom::ActionType::RESPONSE &&
-             entry->action_type != mojom::ActionType::QUERY) {
-    context = ContextSource::kRightClick;
+  } else if (prompted_via_quick_action_) {
+    context = ContextSource::kQuickAction;
   } else if (prompted_via_full_page_) {
     context = ContextSource::kTextInputViaFullPage;
   } else if (handler->should_send_page_contents()) {
@@ -561,6 +559,8 @@ void AIChatMetrics::RecordContextSource(ConversationHandlerForMetrics* handler,
   }
   prompted_via_omnibox_ = false;
   prompted_via_full_page_ = false;
+  prompted_via_quick_action_ = false;
+
   context_source_storages_.at(context)->AddDelta(1u);
   ReportContextSource();
 }
@@ -675,22 +675,22 @@ void AIChatMetrics::ReportEntryPointUsageMetric() {
                        EntryPoint::kMaxValue);
 }
 
-void AIChatMetrics::ReportFullscreenUsageMetric() {
+void AIChatMetrics::ReportFullPageUsageMetric() {
   if (!is_enabled_) {
     return;
   }
 
   uint64_t sidebar_opens = sidebar_usage_storage_.GetWeeklySum();
-  uint64_t fullscreen_switches = fullscreen_switch_storage_.GetWeeklySum();
+  uint64_t full_page_switches = full_page_switch_storage_.GetWeeklySum();
 
   if (sidebar_opens == 0) {
     return;
   }
 
-  int percentage = static_cast<int>(
-      std::ceil((fullscreen_switches * 100.0) / sidebar_opens));
-  p3a_utils::RecordToHistogramBucket(kFullscreenSwitchesHistogramName,
-                                     kFullscreenSwitchesBuckets, percentage);
+  int percentage =
+      static_cast<int>(std::ceil((full_page_switches * 100.0) / sidebar_opens));
+  p3a_utils::RecordToHistogramBucket(kFullPageSwitchesHistogramName,
+                                     kFullPageSwitchesBuckets, percentage);
 }
 
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
