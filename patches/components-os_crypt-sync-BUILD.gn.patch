@@ -1,8 +1,8 @@
 diff --git a/components/os_crypt/sync/BUILD.gn b/components/os_crypt/sync/BUILD.gn
-index bfb0d2f208170f77df96fb9f14c8525e9dec6e11..362cf1c0a0b66fd64c394ba9cd1e2ae88a2a6316 100644
+index ff1e356ff696d3830d02644969c36a71fdf32ff6..fa5f4f45644327db02c4b49a573ba6e7bf87849a 100644
 --- a/components/os_crypt/sync/BUILD.gn
 +++ b/components/os_crypt/sync/BUILD.gn
-@@ -82,6 +82,7 @@ component("os_crypt") {
+@@ -77,6 +77,7 @@ component("sync") {
    } else if (is_posix || is_fuchsia) {
      sources += [ "os_crypt_posix.cc" ]
    }

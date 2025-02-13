@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 7a06b95b30f4c3c2f4f16323afe4855a9e1bd1a4..7f22d574499c4f1cf83cc1ed393dc4b872a6849f 100644
+index ce926b9da23df5dc9b36a447755c9251dac0c95b..acbf74733270a0bfee920c00f8a367a2b4a3d801 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
-@@ -365,6 +365,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
+@@ -386,6 +386,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingsTypeSafe(
        return ContentSettingsType::WEB_APP_INSTALLATION;
      case PermissionType::NUM:
        break;

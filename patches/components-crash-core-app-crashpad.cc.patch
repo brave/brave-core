@@ -1,8 +1,8 @@
 diff --git a/components/crash/core/app/crashpad.cc b/components/crash/core/app/crashpad.cc
-index 3998960b825b1f056dd06823fb650fb3c1bc96ef..7cb5f0181869626ad38e5e116bea10bd7be40142 100644
+index b63e5c28a63a68a87758d4b8952f7376d2fa1088..1f729e3990d825e6b33b6f6c2e421e9341e31cba 100644
 --- a/components/crash/core/app/crashpad.cc
 +++ b/components/crash/core/app/crashpad.cc
-@@ -95,6 +95,7 @@ bool InitializeCrashpadImpl(bool initial_client,
+@@ -99,6 +99,7 @@ bool InitializeCrashpadImpl(bool initial_client,
             process_type == "os-update-handler" ||
             process_type == "platform-experience-helper" ||
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)

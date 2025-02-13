@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index b012e47f710481abfe2c4994bd44e97c1b58e199..5d47fdcc06532b239cf51bcb15b40d3344d087a1 100644
+index 18539a0731183f13ea4ef9e8cf7e008417f977e1..1093737af764831e4804df0097385b8d66413ef8 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -707,6 +707,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -688,6 +688,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterIntegerPref(prefs::kChromeDataRegionSetting, 0);
  
    registry->RegisterBooleanPref(prefs::kYoutubeIncognitoHasBeenShown, false);
@@ -10,7 +10,7 @@ index b012e47f710481abfe2c4994bd44e97c1b58e199..5d47fdcc06532b239cf51bcb15b40d33
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1060,6 +1061,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1044,6 +1045,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
    // Deprecated 12/2024.
    registry->RegisterBooleanPref(kPageContentCollectionEnabled, false);

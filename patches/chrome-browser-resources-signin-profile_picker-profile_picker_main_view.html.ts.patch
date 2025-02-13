@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
-index 93088f1062dee5b849a09074e60670ba9bab9478..3462e9084f840f1a11da06bff0921115909c5835 100644
+index 374234197329703c74f324719af39e4d1844b738..478ecd6bba594c104c871342ee22574a49de176f 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
-@@ -25,7 +25,7 @@ export function getHtml(this: ProfilePickerMainViewElement) {
+@@ -26,7 +26,7 @@ export function getHtml(this: ProfilePickerMainViewElement) {
              data-index="${index}">
          </profile-card>
        `)}
