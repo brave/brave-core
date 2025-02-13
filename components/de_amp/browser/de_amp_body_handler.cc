@@ -51,10 +51,21 @@ base::Value LoadNavigationChain(const network::ResourceRequest& request) {
   return std::move(*value);
 }
 
+bool CheckUrlsAreEquivalent(std::string_view left, std::string_view right) {
+  if (!left.empty() && left.back() == '/') {
+    left.remove_suffix(1);
+  }
+  if (!right.empty() && right.back() == '/') {
+    right.remove_suffix(1);
+  }
+  return left == right;
+}
+
 bool FindUrlInNavigationChain(const GURL& url, const base::Value& chain) {
   const auto& list = chain.GetList();
   for (const auto& entry : list) {
-    if (entry.GetString() == url.spec()) {
+    const std::string& entry_url = entry.GetString();
+    if (CheckUrlsAreEquivalent(entry_url, url.spec())) {
       return true;
     }
   }

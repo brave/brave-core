@@ -474,6 +474,13 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpPagesCycledChain) {
   NavigateToURLAndWaitForRedirects("/amp_1", "/amp_4");
 }
 
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpPagesCycledSelf) {
+  TogglePref(true);
+  SetRequestHandler("/amp_1", Amp("/amp_1/"));
+  StartServer();
+  NavigateToURLAndWaitForRedirects("/amp_1", "/amp_1");
+}
+
 class DeAmpBrowserTestBaseFeatureDisabled : public DeAmpBrowserTest {
  public:
   DeAmpBrowserTestBaseFeatureDisabled() {
