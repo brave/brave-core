@@ -48,12 +48,8 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
 
   // MARK: Create
 
-  public class func add(from list: [(url: URL, title: String)]) {
-    DataController.perform { context in
-      list.forEach {
-        addInternal(url: $0.url, title: $0.title, isFavorite: true, context: .existing(context))
-      }
-    }
+  public class func addDefaults(from list: [(url: URL, title: String)]) {
+    addDefaultBatchInternal(items: list)
   }
 
   public class func add(url: URL, title: String?) {
@@ -207,6 +203,39 @@ extension Favorite {
   }
 
   // MARK: Create
+
+  class func addDefaultBatchInternal(items: [(url: URL, title: String)]) {
+    DataController.performOnMainContext { context in
+      for (offset, (url, title)) in items.enumerated() {
+        let bk = Favorite(entity: entity(context: context), insertInto: context)
+
+        let location = url.absoluteString
+
+        bk.url = location
+        bk.title = title
+        bk.customTitle = nil
+        bk.isFavorite = true
+        bk.created = Date()
+        bk.lastVisited = bk.created
+        bk.order = Int16(offset)
+
+        if let url = URL(string: location) {
+          bk.domain = Domain.getOrCreateInternal(
+            url,
+            context: context,
+            saveStrategy: .persistentStore
+          )
+        }
+      }
+      do {
+        try context.save()
+      } catch {
+        Logger.module.error(
+          "Failed to save default favorites: \(error.localizedDescription, privacy: .public)"
+        )
+      }
+    }
+  }
 
   /// - parameter completion: Returns object id associated with this object.
   /// IMPORTANT: this id might change after the object has been saved to persistent store. Better to use it within one context.
