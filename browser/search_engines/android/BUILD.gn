@@ -11,28 +11,47 @@ import("//tools/grit/grit_rule.gni")
 android_library("java") {
   sources = [
     "java/src/org/chromium/brave/browser/search_engines/settings/AddCustomSearchEnginePreferenceFragment.java",
+    "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEngineAdapter.java",
+    "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEngineViewHolder.java",
+    "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEnginesCallback.java",
+    "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEnginesPreference.java",
     "java/src/org/chromium/brave/browser/search_engines/settings/CustomSearchEnginesUtil.java",
   ]
   deps = [
     ":java_resources",
+    "//base:log_java",
     "//base:supplier_java",
+    "//base:tasks_java",
     "//brave/components/search_engines/android:java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/profiles/android:java",
     "//chrome/browser/search_engines/android:java",
     "//chrome/browser/settings:java",
+    "//chrome/browser/ui/android/favicon:java",
+    "//components/favicon/android:java",
     "//components/search_engines/android:java",
+    "//content/public/android:content_full_java",
+    "//net/android:net_java",
     "//third_party/android_deps:material_design_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_fragment_fragment_java",
     "//third_party/androidx:androidx_preference_preference_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+    "//ui/android:ui_no_recycler_view_java",
+    "//url:url_java",
   ]
 
   resources_package = "org.chromium.chrome.browser.search_engines"
 }
 
 android_resources("java_resources") {
-  sources = [ "java/res/layout/add_custom_search_engine_preference_layout.xml" ]
+  sources = [
+    "java/res/drawable/ic_trash.xml",
+    "java/res/layout/add_custom_search_engine_preference_layout.xml",
+    "java/res/layout/custom_search_engine_item.xml",
+    "java/res/layout/custom_search_engines_preference_layout.xml",
+    "java/res/values/custom_search_engine_colors.xml",
+  ]
   deps = [ ":java_strings_grd" ]
 }
 

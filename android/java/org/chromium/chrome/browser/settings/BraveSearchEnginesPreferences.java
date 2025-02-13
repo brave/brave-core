@@ -5,10 +5,13 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 
 import androidx.preference.Preference;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -32,6 +35,8 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     private static final String PREF_AUTOCOMPLETE_TOP_SUGGESTIONS = "autocomplete_top_sites";
     private static final String PREF_ADD_OPEN_SEARCH_ENGINES = "brave.other_search_engines_enabled";
     private static final String PREF_SEND_WEB_DISCOVERY = "send_web_discovery";
+
+    private static final String PREF_CUSTOM_SEARCH_ENGINES = "pref_custom_search_engines";
 
     private ChromeManagedPreferenceDelegate mManagedPreferenceDelegate;
 
@@ -87,6 +92,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         };
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void updateSearchEnginePreference() {
         Preference searchEnginePreference = findPreference(PREF_STANDARD_SEARCH_ENGINE);
         searchEnginePreference.setEnabled(true);
@@ -143,6 +149,31 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             mSendWebDiscovery.setChecked(
                     UserPrefs.get(getProfile())
                             .getBoolean(WebDiscoveryPrefs.WEB_DISCOVERY_ENABLED));
+        }
+        // Preference customSearchEnginePreference =
+        // getPreferenceScreen().findPreference(PREF_CUSTOM_SEARCH_ENGINES);
+        // if (customSearchEnginePreference != null) {
+        //     getPreferenceScreen().removePreference(customSearchEnginePreference);
+        // }
+
+        // Preference customSearchEnginePreference2 =
+        // getPreferenceScreen().findPreference(PREF_CUSTOM_SEARCH_ENGINES);
+        // if (customSearchEnginePreference2 != null) {
+        //     getPreferenceScreen().addPreference(customSearchEnginePreference2);
+        // }
+
+        Preference customPreference = findPreference(PREF_CUSTOM_SEARCH_ENGINES);
+        if (customPreference
+                instanceof
+                org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesPreference) {
+            View view = getView();
+            if (view != null) {
+                RecyclerView recyclerView = view.findViewById(R.id.custom_search_engine_list);
+                RecyclerView.Adapter<?> adapter = recyclerView.getAdapter();
+                if (adapter != null) {
+                    adapter.notifyDataSetChanged(); // Refresh UI
+                }
+            }
         }
     }
 
