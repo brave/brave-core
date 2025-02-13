@@ -130,7 +130,7 @@ void Campaigns::Create(
         advertiser_id TEXT NOT NULL,
         priority INTEGER NOT NULL DEFAULT 0,
         ptr DOUBLE NOT NULL DEFAULT 1
-      );)");
+      ))");
 }
 
 void Campaigns::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
@@ -183,7 +183,7 @@ std::string Campaigns::BuildInsertSql(
             advertiser_id,
             priority,
             ptr
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/7, row_count)},
       nullptr);

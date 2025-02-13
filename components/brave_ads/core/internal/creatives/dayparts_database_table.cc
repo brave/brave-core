@@ -84,7 +84,7 @@ void Dayparts::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
           start_minute,
           end_minute
         ) ON CONFLICT REPLACE
-      );)");
+      ))");
 }
 
 void Dayparts::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
@@ -134,7 +134,7 @@ std::string Dayparts::BuildInsertSql(
             days_of_week,
             start_minute,
             end_minute
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/4, row_count)},
       nullptr);

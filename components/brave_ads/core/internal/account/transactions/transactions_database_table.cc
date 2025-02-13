@@ -147,7 +147,7 @@ void MigrateToV40(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
       WHERE
         COALESCE(creative_instance_id, '') = ''
         OR COALESCE(segment, '') = ''
-        OR ad_type = '';)");
+        OR ad_type = '')");
 
   // Create a temporary table:
   //   - with a new `creative_instance_id` column constraint.
@@ -163,7 +163,7 @@ void MigrateToV40(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
         ad_type TEXT NOT NULL,
         confirmation_type TEXT NOT NULL,
         reconciled_at TIMESTAMP DEFAULT 0
-      );)");
+      ))");
 
   // Copy legacy columns to the temporary table, drop the legacy table,
   // rename the temporary table and create an index.
@@ -231,7 +231,7 @@ void Transactions::GetForDateRange(base::Time from_time,
           FROM
             $1
           WHERE
-            created_at BETWEEN $2 AND $3;)",
+            created_at BETWEEN $2 AND $3)",
       {GetTableName(), TimeToSqlValueAsString(from_time),
        TimeToSqlValueAsString(to_time)},
       nullptr);
@@ -264,7 +264,7 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
             AND (
               id IN $3
               OR creative_instance_id IN $4
-            );)",
+            ))",
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now()),
        BuildBindColumnPlaceholder(
            /*column_count=*/transaction_ids.size()),
@@ -291,7 +291,7 @@ void Transactions::PurgeExpired(ResultCallback callback) const {
               $1
             WHERE
               reconciled_at != 0
-            AND created_at <= $2;)",
+            AND created_at <= $2)",
           {GetTableName(),
            TimeToSqlValueAsString(base::Time::Now() - base::Days(90))});
 
@@ -317,7 +317,7 @@ void Transactions::Create(
         ad_type TEXT NOT NULL,
         confirmation_type TEXT NOT NULL,
         reconciled_at TIMESTAMP DEFAULT 0
-      );)");
+      ))");
 
   // Optimize database query for `GetForDateRange` from schema 35 and 40.
   CreateTableIndex(mojom_db_transaction, GetTableName(),
@@ -395,7 +395,7 @@ std::string Transactions::BuildInsertSql(
             ad_type,
             confirmation_type,
             reconciled_at
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/8, row_count)},
       nullptr);

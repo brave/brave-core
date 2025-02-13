@@ -76,7 +76,7 @@ void GeoTargets::Create(
           campaign_id,
           geo_target
         ) ON CONFLICT REPLACE
-      );)");
+      ))");
 }
 
 void GeoTargets::Migrate(
@@ -125,7 +125,7 @@ std::string GeoTargets::BuildInsertSql(
           INSERT INTO $1 (
             campaign_id,
             geo_target
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/2, row_count)},
       nullptr);

@@ -175,7 +175,7 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict data) {
     creative_ad.geo_targets = geo_targets;
 
     // Dayparts.
-    CreativeDaypartList dayparts;
+    CreativeDaypartSet dayparts;
     if (const base::Value::List* const daypart_list =
             campaign_dict->FindList(kCampaignDayPartsKey)) {
       // Dayparts are optional.
@@ -200,17 +200,16 @@ bool ParseAndSaveCreativeNewTabPageAds(base::Value::Dict data) {
 
         const int end_minute =
             daypart_dict->FindInt(kCampaignDayPartEndMinuteKey)
-                .value_or(
-                    (base::Days(1) - base::Minutes(1)).InMinutes() /*23:59*/);
+                .value_or(1439 /*23:59*/);
 
-        dayparts.push_back(
+        dayparts.insert(
             CreativeDaypartInfo{*days_of_week, start_minute, end_minute});
       }
     }
     if (dayparts.empty()) {
       // Default to all day every day.
       CreativeDaypartInfo daypart;
-      dayparts.push_back(daypart);
+      dayparts.insert(daypart);
     }
     creative_ad.dayparts = dayparts;
 

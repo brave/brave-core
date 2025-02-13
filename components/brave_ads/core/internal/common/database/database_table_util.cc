@@ -21,7 +21,7 @@ void CreateTableIndex(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
   Execute(mojom_db_transaction, R"(
             CREATE INDEX IF NOT EXISTS
-              $1_$2_index ON $3 ($4);)",
+              $1_$2_index ON $3 ($4))",
           {table_name, base::JoinString(columns, "_"), table_name,
            base::JoinString(columns, ", ")});
 }
@@ -33,7 +33,7 @@ void DropTableIndex(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
   Execute(mojom_db_transaction, R"(
       DROP INDEX IF EXISTS
-        ad_events_created_at_index;)");
+        ad_events_created_at_index)");
 }
 
 void DropTable(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
@@ -43,7 +43,7 @@ void DropTable(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
   Execute(mojom_db_transaction, R"(
             DROP TABLE IF EXISTS
-              $1;)",
+              $1)",
           {table_name});
 }
 
@@ -54,7 +54,7 @@ void DeleteTable(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
   Execute(mojom_db_transaction, R"(
             DELETE FROM
-              $1;)",
+              $1)",
           {table_name});
 }
 
@@ -79,7 +79,7 @@ void CopyTableColumns(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
             SELECT
               $3
             FROM
-              $4;)",
+              $4)",
           {to, base::JoinString(to_columns, ", "),
            base::JoinString(from_columns, ", "), from});
 
@@ -107,7 +107,7 @@ void RenameTable(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
 
   Execute(mojom_db_transaction, R"(
             ALTER TABLE
-              $1 RENAME TO $2;)",
+              $1 RENAME TO $2)",
           {from, to});
 }
 

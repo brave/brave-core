@@ -185,7 +185,7 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
           FROM
             $1
           WHERE
-            creative_instance_id = '$2';)",
+            creative_instance_id = '$2')",
       {GetTableName(), creative_instance_id}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
@@ -202,7 +202,7 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
             DELETE FROM
               $1
             WHERE
-              $2 >= expire_at;)",
+              $2 >= expire_at)",
           {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
 
   RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
@@ -221,7 +221,7 @@ void Deposits::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
         creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
         value DOUBLE NOT NULL,
         expire_at TIMESTAMP NOT NULL
-      );)");
+      ))");
 
   // Optimize database query for `GetForCreativeInstanceId` from schema 43.
   CreateTableIndex(mojom_db_transaction, GetTableName(),
@@ -266,7 +266,7 @@ std::string Deposits::BuildInsertSql(
             creative_instance_id,
             value,
             expire_at
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/3, row_count)},
       nullptr);
@@ -286,7 +286,7 @@ std::string Deposits::BuildInsertSql(
             creative_instance_id,
             value,
             expire_at
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(), BuildBindColumnPlaceholder(/*column_count=*/3)},
       nullptr);
 }
