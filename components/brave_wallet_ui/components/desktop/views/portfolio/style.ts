@@ -79,7 +79,7 @@ export const ButtonRow = styled.div<{
   margin: ${(p) => (p.noMargin ? '0px' : '20px 0px')};
   padding: 0px
     ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
-  gap: 10px;
+  gap: 12px;
 `
 
 export const BalanceRow = styled.div<{ gap?: string }>`

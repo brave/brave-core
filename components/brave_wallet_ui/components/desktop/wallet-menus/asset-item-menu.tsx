@@ -31,7 +31,10 @@ import {
   makeSendRoute,
   makeSwapOrBridgeRoute
 } from '../../../utils/routes-utils'
-import { getAssetIdKey } from '../../../utils/asset-utils'
+import {
+  getAssetIdKey,
+  getDoesCoinSupportSwapOrBridge
+} from '../../../utils/asset-utils'
 
 // Components
 import {
@@ -45,10 +48,6 @@ import {
   PopupButtonText,
   ButtonIcon
 } from './wellet-menus.style'
-
-const coinSupportsSwapOrBridge = (coin: BraveWallet.CoinType) => {
-  return [BraveWallet.CoinType.ETH, BraveWallet.CoinType.SOL].includes(coin)
-}
 
 interface Props {
   asset: BraveWallet.BlockchainToken
@@ -86,7 +85,7 @@ export const AssetItemMenu = (props: Props) => {
     return new Amount(assetBalance).isZero()
   }, [assetBalance])
 
-  const isSwapOrBridgeSupported = coinSupportsSwapOrBridge(asset.coin)
+  const isSwapOrBridgeSupported = getDoesCoinSupportSwapOrBridge(asset.coin)
 
   const isSellSupported = React.useMemo(() => {
     return account !== undefined && checkIsAssetSellSupported(asset)
