@@ -100,18 +100,14 @@ void CheckCase(const std::string& host_pos0,
   EXPECT_NE(resetted_cf_list->find(base::StrCat(
                 {host_pos8, R"(##^script:has-text(/[\w\W]{35000}/))"})),
             std::string::npos);
-  EXPECT_NE(
-      resetted_cf_list->find(base::StrCat(
-          {host_pos9,
-           R"(##main [role="region"] > [role="row"])", 
-           R"(:has(span:not(:has-text(/^Promoted by/))))"})),
-      std::string::npos);
-  EXPECT_NE(
-      resetted_cf_list->find(base::StrCat(
-          {host_pos10,
-           R"(##:matches-path(/^/home/) )", 
-           R"([data-testid="primaryColumn"]:others())"})),
-      std::string::npos);
+  EXPECT_NE(resetted_cf_list->find(base::StrCat(
+                {host_pos9, R"(##main [role="region"] > [role="row"])",
+                 R"(:has(span:not(:has-text(/^Promoted by/))))"})),
+            std::string::npos);
+  EXPECT_NE(resetted_cf_list->find(
+                base::StrCat({host_pos10, R"(##:matches-path(/^/home/) )",
+                              R"([data-testid="primaryColumn"]:others())"})),
+            std::string::npos);
   EXPECT_NE(resetted_cf_list->find(
                 base::StrCat({host_pos11, R"(###pcf #a19 b:upward(2))"})),
             std::string::npos);
@@ -120,12 +116,10 @@ void CheckCase(const std::string& host_pos0,
           {host_pos12,
            R"(##.j-mini-player[class]:watch-attr(class):remove-attr(class))"})),
       std::string::npos);
-  EXPECT_NE(
-      resetted_cf_list->find(base::StrCat(
-          {host_pos13,
-           R"(##:xpath(//div[@id="pagelet"])", 
-           R"(//div[starts-with(@id,"hyperfeed_story_id_")])"})),
-      std::string::npos);
+  EXPECT_NE(resetted_cf_list->find(base::StrCat(
+                {host_pos13, R"(##:xpath(//div[@id="pagelet"])",
+                 R"(//div[starts-with(@id,"hyperfeed_story_id_")])"})),
+            std::string::npos);
   EXPECT_NE(
       resetted_cf_list->find(base::StrCat({host_pos14, "##+js(nobab)\n"})),
       std::string::npos);
