@@ -315,6 +315,12 @@ public class BrowserViewController: UIViewController {
       privateBrowsingManager: privateBrowsingManager
     )
 
+    // Add default favorites
+    if !Preferences.NewTabPage.preloadedFavoritiesInitialized.value {
+      FavoritesHelper.addDefaultFavorites()
+      Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true
+    }
+
     // Initialize TabManager
     self.tabManager = TabManager(
       windowId: windowId,
@@ -540,27 +546,8 @@ public class BrowserViewController: UIViewController {
 
     Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value = true
 
-    backgroundDataSource.initializeFavorites = { sites in
-      DispatchQueue.main.async {
-        defer { Preferences.NewTabPage.preloadedFavoritiesInitialized.value = true }
-
-        if Preferences.NewTabPage.preloadedFavoritiesInitialized.value
-          || Favorite.hasFavorites
-        {
-          return
-        }
-
-        guard let sites = sites, !sites.isEmpty else {
-          FavoritesHelper.addDefaultFavorites()
-          return
-        }
-
-        let customFavorites = sites.compactMap { $0.asFavoriteSite }
-        Favorite.add(from: customFavorites)
-      }
-    }
-
     setupAdsNotificationHandler()
+
     backgroundDataSource.replaceFavoritesIfNeeded = { sites in
       if Preferences.NewTabPage.initialFavoritesHaveBeenReplaced.value { return }
 

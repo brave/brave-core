@@ -65,8 +65,6 @@ public class NTPDataSource {
 
   private(set) var privateBrowsingManager: PrivateBrowsingManager
 
-  var initializeFavorites: ((_ sites: [NTPSponsoredImageTopSite]?) -> Void)?
-
   /// Custom homepage spec requirement:
   /// If we fail to fetch super referrer, and it succeeds at later time,
   /// default favorites are going to be replaced with the ones from the super referrer.
@@ -218,16 +216,10 @@ public class NTPDataSource {
 
   func sponsorComponentUpdated() {
     if let superReferralImageData = service.superReferralImageData,
-      superReferralImageData.isSuperReferral
+      superReferralImageData.isSuperReferral,
+      Preferences.NewTabPage.preloadedFavoritiesInitialized.value
     {
-      if Preferences.NewTabPage.preloadedFavoritiesInitialized.value {
-        replaceFavoritesIfNeeded?(superReferralImageData.topSites)
-      } else {
-        initializeFavorites?(superReferralImageData.topSites)
-      }
-    } else {
-      // Force to set up basic favorites if it hasn't been done already.
-      initializeFavorites?(nil)
+      replaceFavoritesIfNeeded?(superReferralImageData.topSites)
     }
   }
 }
