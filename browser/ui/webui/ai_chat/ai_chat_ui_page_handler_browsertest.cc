@@ -81,8 +81,6 @@ class AIChatUIPageHandlerBrowserTest : public PlatformBrowserTest,
 
   void TabDataChanged(std::vector<mojom::TabDataPtr> tabs) override {
     tabs_ = std::move(tabs);
-
-    LOG(ERROR) << "TabDataChanged: " << tabs_.size();
   }
 
   mojom::TabDataPtr GetTabDataForFirstMatchingURL(const GURL& url) {

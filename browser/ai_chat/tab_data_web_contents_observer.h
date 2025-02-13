@@ -42,7 +42,7 @@ class TabDataWebContentsObserver : public content::WebContentsObserver {
 
   int32_t tab_handle_ = 0;
 
-  raw_ptr<TabTrackerService> service_;
+  raw_ref<TabTrackerService> service_;
 };
 
 }  // namespace ai_chat

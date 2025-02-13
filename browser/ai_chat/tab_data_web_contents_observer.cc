@@ -37,7 +37,7 @@ TabDataWebContentsObserver::TabDataWebContentsObserver(
     content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
       tab_handle_(tab_handle),
-      service_(TabTrackerServiceFactory::GetForBrowserContext(
+      service_(*TabTrackerServiceFactory::GetForBrowserContext(
           web_contents->GetBrowserContext())) {}
 
 TabDataWebContentsObserver::~TabDataWebContentsObserver() = default;
