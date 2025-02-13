@@ -23,6 +23,7 @@
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/split_view/split_view.h"
+#include "brave/browser/ui/views/split_view/split_view_location_bar.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_toolbar_data_handler_impl.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -37,6 +38,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
@@ -211,6 +213,12 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   void WaitToolbarVisibility(ReaderModeToolbarView* toolbar, bool visible) {
     while (toolbar->GetVisible() != visible) {
       NonBlockingDelay(base::Milliseconds(10));
+    }
+
+    if (visible) {
+      while (toolbar->height() != toolbar->GetPreferredSize().height()) {
+        NonBlockingDelay(base::Milliseconds(10));
+      }
     }
   }
 
@@ -1035,6 +1043,13 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   auto* toolbar = browser_view->reader_mode_toolbar();
   auto* secondary_toolbar =
       browser_view->split_view()->secondary_reader_mode_toolbar();
+  ASSERT_TRUE(toolbar && secondary_toolbar);
+  auto* secondary_location_bar_widget =
+      browser_view->split_view()->secondary_location_bar_widget_.get();
+  // auto* secondary_contents_container =
+  // browser_view->split_view()->secondary_contents_container();
+  auto* secondary_contents_web_view =
+      browser_view->split_view()->secondary_contents_web_view();
 
   // No toolbars.
   EXPECT_FALSE(toolbar->GetVisible());
@@ -1045,7 +1060,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
 
-  ASSERT_TRUE(toolbar && secondary_toolbar);
   WaitToolbarVisibility(toolbar, true);
   WaitToolbarVisibility(secondary_toolbar, false);
 
@@ -1054,13 +1068,52 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   WaitToolbarVisibility(toolbar, false);
   WaitToolbarVisibility(secondary_toolbar, true);
 
+  gfx::Point secondary_web_view_origin;
+  secondary_web_view_origin = views::View::ConvertPointToScreen(
+      secondary_contents_web_view, secondary_web_view_origin);
+  EXPECT_EQ(secondary_web_view_origin,
+            secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+
   // Load a distillabe page in second tab.
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
   WaitToolbarVisibility(toolbar, true);
   WaitToolbarVisibility(secondary_toolbar, true);
 
+  // Check secondary location bar position when changing active tab
+  // between non split view tab and split view tab.
+  // Secondary location bar should have same origin with secondary
+  // web view. Otherwise, it could overlap with speedreader toolbar.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+  WaitToolbarVisibility(toolbar, false);
+  WaitToolbarVisibility(secondary_toolbar, false);
+
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  WaitToolbarVisibility(toolbar, true);
+  WaitToolbarVisibility(secondary_toolbar, true);
+  secondary_web_view_origin =
+      secondary_contents_web_view->GetLocalBounds().origin();
+  secondary_web_view_origin = views::View::ConvertPointToScreen(
+      secondary_contents_web_view, secondary_web_view_origin);
+  EXPECT_EQ(secondary_web_view_origin,
+            secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+
+  browser()->tab_strip_model()->ActivateTabAt(2);
+  WaitToolbarVisibility(toolbar, false);
+  WaitToolbarVisibility(secondary_toolbar, false);
+
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  WaitToolbarVisibility(toolbar, true);
+  WaitToolbarVisibility(secondary_toolbar, true);
+  secondary_web_view_origin =
+      secondary_contents_web_view->GetLocalBounds().origin();
+  secondary_web_view_origin = views::View::ConvertPointToScreen(
+      secondary_contents_web_view, secondary_web_view_origin);
+  EXPECT_EQ(secondary_web_view_origin,
+            secondary_location_bar_widget->GetWindowBoundsInScreen().origin());
+
   // Second tab is active. Show original content.
+  browser()->tab_strip_model()->ActivateTabAt(1);
   ClickReaderButton();
   WaitToolbarVisibility(toolbar, false);
   WaitToolbarVisibility(secondary_toolbar, true);

@@ -122,6 +122,7 @@ class SplitView : public views::View,
  private:
   friend class SplitViewBrowserTest;
   friend class SplitViewLocationBarBrowserTest;
+  FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, SplitView);
 
   tabs::TabHandle GetActiveTabHandle() const;
   bool IsActiveWebContentsTiled(const TabTile& tile) const;
