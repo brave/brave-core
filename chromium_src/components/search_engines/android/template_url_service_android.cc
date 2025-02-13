@@ -5,6 +5,9 @@
 
 #include "components/search_engines/android/template_url_service_android.h"
 
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
+
 #define DoesDefaultSearchEngineHaveLogo \
   DoesDefaultSearchEngineHaveLogo_ChromiumImpl
 
@@ -21,18 +24,25 @@ jboolean TemplateUrlServiceAndroid::DoesDefaultSearchEngineHaveLogo(
   return DoesDefaultSearchEngineHaveLogo_ChromiumImpl(env, obj);
 }
 
-jboolean TemplateUrlServiceAndroid::AddSearchEngine(JNIEnv* env) {
-  // const TemplateURL* existing =
-  //     template_url_service_->GetTemplateURLForKeyword(keyword_input);
-  // if (existing) {
-  //   return false;
-  // }
+jboolean TemplateUrlServiceAndroid::AddSearchEngine(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& search_engine_title,
+    const base::android::JavaParamRef<jstring>& search_engine_keyword,
+    const base::android::JavaParamRef<jstring>& search_engine_url) {
+  const TemplateURL* existing = template_url_service_->GetTemplateURLForKeyword(
+      base::android::ConvertJavaStringToUTF16(env, search_engine_title));
+  if (existing) {
+    return false;
+  }
 
   TemplateURLData template_url_data;
-  template_url_data.SetShortName(u"test1");
-  template_url_data.SetKeyword(u"test.com");
-  template_url_data.SetURL("http://test.com/search?t={searchTerms}");
+  template_url_data.SetShortName(
+      base::android::ConvertJavaStringToUTF16(env, search_engine_title));
+  template_url_data.SetKeyword(
+      base::android::ConvertJavaStringToUTF16(env, search_engine_keyword));
+  template_url_data.SetURL(
+      base::android::ConvertJavaStringToUTF8(env, search_engine_url));
   TemplateURL* template_url = template_url_service_->Add(
       std::make_unique<TemplateURL>(template_url_data));
-  return !template_url;
+  return (template_url != nullptr);
 }

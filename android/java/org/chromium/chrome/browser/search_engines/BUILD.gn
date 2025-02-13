@@ -20,6 +20,7 @@ android_library("java") {
     ":java_resources",
     "//base:base_java",
     "//base:base_shared_preferences_java",
+    "//brave/browser/search_engines/android:java",
     "//build/android:build_java",
     "//chrome/browser/preferences:java",
     "//chrome/browser/profiles/android:java",
