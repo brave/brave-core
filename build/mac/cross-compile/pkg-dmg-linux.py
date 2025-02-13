@@ -16,8 +16,8 @@ from tempfile import TemporaryDirectory
 import re
 
 CHROMIUM_SRC_DIR = __file__.split('/src/', 1)[0] + '/src'
-DMG_TOOL_PATH = join(CHROMIUM_SRC_DIR, 'brave', 'third_party', 'libdmg-hfsplus',
-                     'build', 'dmg', 'dmg')
+DMG_TOOL_PATH = join(CHROMIUM_SRC_DIR, 'brave', 'third_party',
+                     'libdmg-hfsplus', 'build', 'dmg', 'dmg')
 
 
 def main():

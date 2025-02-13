@@ -21,8 +21,10 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
     @property
     def distributions(self):
         return [
-            Distribution(channel=BRAVE_CHANNEL, package_as_dmg=True,
-                         package_as_pkg=True, package_as_zip=True)
+            Distribution(channel=BRAVE_CHANNEL,
+                         package_as_dmg=True,
+                         package_as_pkg=True,
+                         package_as_zip=True)
         ]
 
     @property
@@ -37,6 +39,7 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
     def provisioning_profile_basename(self):
         if not self.invoker.args.skip_signing:
             return BRAVE_CHANNEL or 'release'
+        return None
 
     @property
     def run_spctl_assess(self):
