@@ -7,7 +7,7 @@ import(
     "//brave/browser/brave_vpn/win/brave_vpn_wireguard_service/allowlist.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
-import("//brave/tools/crates/cargo_audit/config.gni")
+import("//brave/tools/crates/config.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
 import("//chrome/browser/buildflags.gni")
@@ -623,7 +623,7 @@ action("audit_deps") {
     args += [ "--audit_dev_deps" ]
   }
 
-  deps = [ "//brave/tools/crates/cargo_audit:build_cargo_audit" ]
+  deps = [ "//brave/tools/crates:build_cargo_audit($host_toolchain)" ]
 }
 
 if (is_redirect_cc_build) {
