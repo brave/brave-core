@@ -308,7 +308,7 @@ bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
   delegate_->InitNotificationHelper();
 
-  // Postpone recording p3a to avoid startup junk.
+  // Postpone recording P3A to make browser startup smoother.
   content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
       ->PostDelayedTask(
           FROM_HERE,
