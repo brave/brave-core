@@ -22,7 +22,7 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
     def distributions(self):
         return [
             Distribution(channel=BRAVE_CHANNEL, package_as_dmg=True,
-                         package_as_pkg=True)
+                         package_as_pkg=True, package_as_zip=True)
         ]
 
     @property
