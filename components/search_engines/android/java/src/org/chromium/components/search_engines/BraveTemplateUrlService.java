@@ -5,7 +5,6 @@
 
 package org.chromium.components.search_engines;
 
-
 public class BraveTemplateUrlService extends TemplateUrlService {
 
     // Overridden Chromium's TemplateUrlService.mNativeTemplateUrlServiceAndroid

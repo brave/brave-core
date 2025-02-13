@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,8 @@ import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.components.search_engines.TemplateUrlService;
+
+import java.util.Locale;
 
 public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment {
     private TextInputEditText mTitleEdittext;
@@ -86,7 +89,34 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                             //     ((BraveTemplateUrlService) braveTemplateUrlService)
                             //             .addSearchEngine();
                             // }
-                            braveTemplateUrlService.addSearchEngine();
+                            String keyword =
+                                    mTitleEdittext
+                                            .getText()
+                                            .toString()
+                                            .toLowerCase(Locale.getDefault());
+                            if (CustomSearchEnginesUtil.isCustomSearchEngineAdded(keyword)) {
+                                Toast.makeText(
+                                                getActivity(),
+                                                "Search engine is already added",
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                                return;
+                            }
+                            boolean isAdded =
+                                    braveTemplateUrlService.addSearchEngine(
+                                            mTitleEdittext.getText().toString(),
+                                            keyword,
+                                            mUrlEdittext.getText().toString());
+                            if (isAdded) {
+                                CustomSearchEnginesUtil.addCustomSearchEngine(keyword);
+                                getActivity().finish();
+                            } else {
+                                Toast.makeText(
+                                                getActivity(),
+                                                "Failed to add search engine",
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                            }
                         }
                     }
                 });
