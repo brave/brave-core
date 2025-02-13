@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/core/engine/rewards_database.h"
+#include "brave/components/brave_rewards/core/db/rewards_database.h"
 
 #include <memory>
 #include <utility>
@@ -14,7 +14,7 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
-namespace brave_rewards::internal {
+namespace brave_rewards {
 
 namespace {
 
@@ -347,4 +347,4 @@ void RewardsDatabase::OnMemoryPressure(
   db_.TrimMemory();
 }
 
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards

@@ -22,8 +22,8 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_rewards/core/db/rewards_database.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
-#include "brave/components/brave_rewards/core/engine/rewards_database.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
 #include "brave/components/brave_rewards/core/remote_worker.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
@@ -159,7 +159,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
         _rewardsClient->MakeRemote(),
         [self handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()]);
 
-    _rewardsDatabase.BindRemote<brave_rewards::internal::RewardsDatabase>(
+    _rewardsDatabase.BindRemote<brave_rewards::RewardsDatabase>(
         base::FilePath([self rewardsDatabasePath].UTF8String));
   }
   return self;
@@ -239,7 +239,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   [NSFileManager.defaultManager
       removeItemAtPath:[dbPath stringByAppendingString:@"-journal"]
                  error:nil];
-  _rewardsDatabase.BindRemote<brave_rewards::internal::RewardsDatabase>(
+  _rewardsDatabase.BindRemote<brave_rewards::RewardsDatabase>(
       base::FilePath(base::SysNSStringToUTF8(dbPath)));
 }
 

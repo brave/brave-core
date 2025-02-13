@@ -41,9 +41,9 @@
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/content/service_sandbox_type.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/db/rewards_database.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/parameters/rewards_parameters_provider.h"
-#include "brave/components/brave_rewards/core/engine/rewards_database.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/publisher_utils.h"
@@ -384,8 +384,7 @@ void RewardsServiceImpl::StartEngineProcessIfNecessary() {
     return;
   }
 
-  rewards_database_.BindRemote<internal::RewardsDatabase>(
-      publisher_info_db_path_);
+  rewards_database_.BindRemote<RewardsDatabase>(publisher_info_db_path_);
 
   BLOG(1, "Starting engine process");
 
