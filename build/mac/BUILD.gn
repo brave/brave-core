@@ -32,6 +32,7 @@ upstream_packaged_basename =
     "-$chrome_version_full"
 upstream_dmg_path = "$upstream_packaged_basename.dmg"
 upstream_pkg_path = "$upstream_packaged_basename.pkg"
+upstream_zip_path = "$upstream_packaged_basename.zip"
 upstream_crx_path = "$upstream_packaged_basename.crx3"
 
 if (is_universal_binary) {
@@ -297,6 +298,7 @@ action("package") {
   outputs = [
     upstream_dmg_path,
     upstream_pkg_path,
+    upstream_zip_path,
   ]
   deps = [
     ":browser_install_script",
