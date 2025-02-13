@@ -193,6 +193,42 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(
       ConvertUTF8ToJavaString(env, wallpaper_id ? *wallpaper_id : ""));
 }
 
+base::android::ScopedJavaLocalRef<jobject>
+NTPBackgroundImagesBridge::CreateSponsoredRichMedia(
+    const base::Value::Dict& data) {
+  JNIEnv* env = AttachCurrentThread();
+
+  const std::string* wallpaper_url =
+      data.FindString(ntp_background_images::kWallpaperURLKey);
+  if (!wallpaper_url) {
+    return base::android::ScopedJavaLocalRef<jobject>();
+  }
+
+  const std::string* creative_instance_id =
+      data.FindString(ntp_background_images::kCreativeInstanceIDKey);
+  if (!creative_instance_id) {
+    return base::android::ScopedJavaLocalRef<jobject>();
+  }
+
+  const std::string* placement_id =
+      data.FindString(ntp_background_images::kWallpaperIDKey);
+  if (!placement_id) {
+    return base::android::ScopedJavaLocalRef<jobject>();
+  }
+
+  const std::string* target_url = data.FindStringByDottedPath(
+      ntp_background_images::kLogoDestinationURLPath);
+  if (!target_url) {
+    return base::android::ScopedJavaLocalRef<jobject>();
+  }
+
+  return Java_NTPBackgroundImagesBridge_createSponsoredRichMedia(
+      env, ConvertUTF8ToJavaString(env, *wallpaper_url),
+      ConvertUTF8ToJavaString(env, *creative_instance_id),
+      ConvertUTF8ToJavaString(env, *placement_id),
+      ConvertUTF8ToJavaString(env, *target_url));
+}
+
 void NTPBackgroundImagesBridge::GetTopSites(JNIEnv* env,
                                             const JavaParamRef<jobject>& obj) {
   std::vector<ntp_background_images::TopSite> top_sites =
@@ -257,12 +293,18 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
   if (!data)
     return base::android::ScopedJavaLocalRef<jobject>();
 
-  bool is_background =
+  const bool is_background =
       data->FindBool(ntp_background_images::kIsBackgroundKey).value_or(false);
-  if (!is_background) {
-    return CreateBrandedWallpaper(*data);
-  } else {
+  const std::string* sponsored_rich_media_type =
+      data->FindString(ntp_background_images::kWallpaperTypeKey);
+  if (is_background) {
     return CreateWallpaper(*data);
+  } else if (sponsored_rich_media_type &&
+             *sponsored_rich_media_type ==
+                 ntp_background_images::kRichMediaWallpaperType) {
+    return CreateSponsoredRichMedia(*data);
+  } else {
+    return CreateBrandedWallpaper(*data);
   }
 }
 

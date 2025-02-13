@@ -36,7 +36,6 @@ constexpr char kCreativeConditionMatchersKey[] = "conditionMatchers";
 constexpr char kCreativeConditionMatcherConditionKey[] = "condition";
 constexpr char kCreativeConditionMatcherPrefPathKey[] = "prefPath";
 constexpr char kWallpaperKey[] = "wallpaper";
-constexpr char kImageWallpaperType[] = "image";
 constexpr char kImageWallpaperRelativeUrlKey[] = "relativeUrl";
 constexpr char kImageWallpaperFocalPointXKey[] = "focalPoint.x";
 constexpr char kImageWallpaperFocalPointYKey[] = "focalPoint.y";
@@ -47,17 +46,16 @@ constexpr char kImageWallpaperViewBoxHeightKey[] = "viewBox.height";
 constexpr char kImageWallpaperBackgroundColorKey[] = "backgroundColor";
 constexpr char kImageWallpaperButtonImageRelativeUrlKey[] =
     "button.image.relativeUrl";
-constexpr char kRichMediaWallpaperType[] = "richMedia";
 constexpr char kRichMediaWallpaperRelativeUrlKey[] = "relativeUrl";
 
 std::optional<std::string> ToString(WallpaperType wallpaper_type) {
   switch (wallpaper_type) {
     case WallpaperType::kImage: {
-      return "image";
+      return kImageWallpaperType;
     }
 
     case WallpaperType::kRichMedia: {
-      return "richMedia";
+      return kRichMediaWallpaperType;
     }
   }
 

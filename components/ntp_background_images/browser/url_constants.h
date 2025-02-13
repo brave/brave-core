@@ -61,6 +61,9 @@ inline constexpr char kImagePathKey[] = "imagePath";
 inline constexpr char kLogoDestinationURLPath[] = "logo.destinationUrl";
 inline constexpr char kLogoImagePath[] = "logo.imagePath";
 
+inline constexpr char kImageWallpaperType[] = "image";
+inline constexpr char kRichMediaWallpaperType[] = "richMedia";
+
 inline constexpr char kAltKey[] = "alt";
 
 inline constexpr char kSchemaVersionKey[] = "schemaVersion";

@@ -77,6 +77,8 @@ class NTPBackgroundImagesBridge : public NTPBackgroundImagesService::Observer,
       const base::Value::Dict& data);
   base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(
       const base::Value::Dict& data);
+  base::android::ScopedJavaLocalRef<jobject> CreateSponsoredRichMedia(
+      const base::Value::Dict& data);
 
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<ViewCounterService> view_counter_service_ = nullptr;

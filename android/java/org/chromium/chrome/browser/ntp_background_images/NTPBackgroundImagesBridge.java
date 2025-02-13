@@ -16,6 +16,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
 import org.chromium.chrome.browser.ntp_background_images.model.NTPImage;
+import org.chromium.chrome.browser.ntp_background_images.model.SponsoredRichMedia;
 import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
@@ -153,6 +154,12 @@ public class NTPBackgroundImagesBridge {
                              logoPath, logoDestinationUrl,
                              themeName, isSponsored, creativeInstanceId,
                              wallpaperId);
+    }
+
+    @CalledByNative
+    public static SponsoredRichMedia createSponsoredRichMedia(
+            String wallpaperUrl, String creativeInstanceId, String placementId, String targetUrl) {
+        return new SponsoredRichMedia(wallpaperUrl, creativeInstanceId, placementId, targetUrl);
     }
 
     @CalledByNative
