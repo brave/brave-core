@@ -1100,8 +1100,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitViewClicking) {
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 
   browser()->tab_strip_model()->ActivateTabAt(1);
-  secondary_toolbar->GetWebContentsForTesting()
-      ->GetDelegate()
-      ->ActivateContents(secondary_toolbar->GetWebContentsForTesting());
+  ClickInView(secondary_toolbar);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 }
