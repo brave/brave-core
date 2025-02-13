@@ -534,7 +534,8 @@ class TabLocationView: UIView {
         var urlString = url.absoluteString
 
         // For the web schemes, format the origin instead of the full url
-        if url.isWebPage(includeDataURIs: false), let origin = url.origin.url?.absoluteString {
+        let isWebPage = url.isWebPage(includeDataURIs: false) || url.scheme == "blob"
+        if isWebPage, let origin = url.origin.url?.absoluteString {
           urlString = origin
         }
 
@@ -566,7 +567,6 @@ class TabLocationView: UIView {
           isLTR = true
         }
 
-        let isWebPage = url.isWebPage(includeDataURIs: false) || url.scheme == "blob"
         urlDisplayLabel.isLeftToRight = !isWebPage || !isLTR
       }
     } else {

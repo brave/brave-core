@@ -63,12 +63,13 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     }
 
     set(newValue) {
-      if let text = newValue, let url = URL(string: text) {
+      if let text = newValue, URL.isValidURLWithoutEncoding(text: text, scheme: "blob"),
+        let url = URL(string: text)
+      {
         super.text = url.strippingBlobURLAuth.absoluteString
       } else {
         super.text = text
       }
-
       self.textDidChange(self)
     }
   }
@@ -370,7 +371,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   }
 
   func setTextWithoutSearching(_ text: String) {
-    if let url = URL(string: text) {
+    if URL.isValidURLWithoutEncoding(text: text, scheme: "blob"), let url = URL(string: text) {
       super.text = url.strippingBlobURLAuth.absoluteString
     } else {
       super.text = text
@@ -426,5 +427,4 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     applyCompletion()
     super.touchesBegan(touches, with: event)
   }
-
 }
