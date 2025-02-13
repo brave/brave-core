@@ -76,3 +76,21 @@ export const RewardsProviderContainer = styled(Row)`
     justify-content: center;
   }
 `
+
+export const InfoBar = styled(Row)`
+  background-color: ${leo.color.systemfeedback.warningBackground};
+  border-radius: 12px;
+  padding: 8px 16px;
+`
+
+export const InfoText = styled(Text)`
+  line-height: 22px;
+  color: ${leo.color.systemfeedback.warningText};
+`
+
+export const WarningIcon = styled(Icon).attrs({
+  name: 'warning-triangle-filled'
+})`
+  --leo-icon-size: 20px;
+  color: ${leo.color.systemfeedback.warningIcon};
+`

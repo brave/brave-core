@@ -4,6 +4,23 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+import Button from '@brave/leo/react/button'
+
+// Selectors
+import {
+  useSafeUISelector,
+  useSafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '../../../common/selectors'
+
+// Hooks
+import {
+  useGetChainTipStatusQuery,
+  useGetZCashAccountInfoQuery,
+  useStartShieldSyncMutation,
+  useStopShieldSyncMutation
+} from '../../../common/slices/api.slice'
 
 // Constants
 import {
@@ -22,9 +39,10 @@ import {
   useLocalStorage,
   useSyncedLocalStorage
 } from '../../../common/hooks/use_local_storage'
+import { makeAccountRoute, openTab } from '../../../utils/routes-utils'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { AccountPageTabs, BraveWallet } from '../../../constants/types'
 import {
   ExternalWalletProvider //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
@@ -35,6 +53,9 @@ import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 import {
   CreateAccountIcon //
 } from '../../shared/create-account-icon/create-account-icon'
+import {
+  ZCashSyncModal //
+} from '../popup-modals/zcash_sync_modal/zcash_sync_modal'
 
 // Styled Components
 import {
@@ -43,7 +64,10 @@ import {
   CollapseIcon,
   AccountDescriptionWrapper,
   RewardsProviderContainer,
-  RewardsText
+  RewardsText,
+  InfoBar,
+  InfoText,
+  WarningIcon
 } from './asset-group-container.style'
 import {
   Row,
@@ -87,6 +111,45 @@ export const AssetGroupContainer = (props: Props) => {
   const [collapsedNetworks, setCollapsedPortfolioNetworkKeys] = useLocalStorage<
     string[]
   >(LOCAL_STORAGE_KEYS.COLLAPSED_PORTFOLIO_NETWORK_KEYS, [])
+
+  // State
+  const [showSyncAccountModal, setShowSyncAccountModal] =
+    React.useState<boolean>(false)
+
+  // Selectors
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled
+  )
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+
+  // mutations
+  const [startShieldSync] = useStartShieldSyncMutation()
+  const [stopShieldSync] = useStopShieldSyncMutation()
+
+  // Queries & Computed
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    isZCashShieldedTransactionsEnabled &&
+      account &&
+      account.accountId.coin === BraveWallet.CoinType.ZEC
+      ? account.accountId
+      : skipToken
+  )
+
+  const isShieldedAccount =
+    isZCashShieldedTransactionsEnabled &&
+    !!zcashAccountInfo &&
+    !!zcashAccountInfo.accountShieldBirthday
+
+  const { data: chainTipStatus } = useGetChainTipStatusQuery(
+    account && isShieldedAccount ? account.accountId : skipToken
+  )
+
+  const blocksBehind = chainTipStatus
+    ? chainTipStatus.chainTip - chainTipStatus.latestScannedBlock
+    : 0
+
+  const showSyncWarning =
+    isShieldedAccount && (blocksBehind > 1000 || chainTipStatus === null)
 
   // Memos & Computed
   const externalRewardsDescription = network
@@ -138,6 +201,27 @@ export const AssetGroupContainer = (props: Props) => {
     collapsedNetworks,
     setCollapsedPortfolioNetworkKeys
   ])
+
+  const onStartShieldSync = React.useCallback(async () => {
+    if (isPanel && account) {
+      openTab(
+        'brave://wallet' +
+          makeAccountRoute(account, AccountPageTabs.AccountAssetsSub)
+      )
+      return
+    }
+    if (account) {
+      await startShieldSync(account.accountId)
+      setShowSyncAccountModal(true)
+    }
+  }, [startShieldSync, account, isPanel])
+
+  const onStopAndCloseShieldSync = React.useCallback(async () => {
+    if (account) {
+      await stopShieldSync(account.accountId)
+      setShowSyncAccountModal(false)
+    }
+  }, [stopShieldSync, account])
 
   return (
     <StyledWrapper
@@ -270,7 +354,47 @@ export const AssetGroupContainer = (props: Props) => {
       </CollapseButton>
 
       {!isCollapsed && !isDisabled && (
-        <Column fullWidth={true}>{children}</Column>
+        <Column fullWidth={true}>
+          {children}
+          {showSyncWarning && (
+            <Row padding='8px'>
+              <InfoBar justifyContent='space-between'>
+                <Row
+                  width='unset'
+                  gap='16px'
+                >
+                  <WarningIcon />
+                  <InfoText
+                    textSize='14px'
+                    isBold={false}
+                    textAlign='left'
+                  >
+                    {!chainTipStatus
+                      ? getLocale('braveWalletOutOfSyncTitle')
+                      : getLocale(
+                          'braveWalletOutOfSyncBlocksBehindTitle'
+                        ).replace('$1', blocksBehind.toLocaleString())}
+                  </InfoText>
+                </Row>
+                <div>
+                  <Button
+                    kind='plain'
+                    size='tiny'
+                    onClick={onStartShieldSync}
+                  >
+                    {getLocale('braveWalletSyncAccountButton')}
+                  </Button>
+                </div>
+              </InfoBar>
+            </Row>
+          )}
+        </Column>
+      )}
+      {showSyncAccountModal && account && (
+        <ZCashSyncModal
+          account={account}
+          onClose={onStopAndCloseShieldSync}
+        />
       )}
     </StyledWrapper>
   )
