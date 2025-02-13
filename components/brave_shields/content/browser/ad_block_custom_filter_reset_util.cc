@@ -21,11 +21,7 @@ constexpr std::array<std::string_view, 16> kCustomFilterPatternsToSkip = {
     ":matches-path(", ":matches-prop(", ":min-text-length(", ":not(",
     ":others(", ":upward(", ":watch-attr(", ":xpath("};
 
-bool IsInWhiteList(const std::string& custom_filter_line) {
-  if (custom_filter_line.empty()) {
-    return true;
-  }
-
+bool IsInAllowList(const std::string& custom_filter_line) {
   for (const auto& pattern : kCustomFilterPatternsToSkip) {
     if (custom_filter_line.find(pattern) != std::string::npos) {
       return true;
@@ -49,7 +45,7 @@ std::optional<std::string> ResetCustomFiltersForHost(
   while (tokenizer.GetNext()) {
     std::string token;
     base::TrimWhitespaceASCII(tokenizer.token(), base::TRIM_ALL, &token);
-    if (token.starts_with(starts_with_str) && !IsInWhiteList(token)) {
+    if (token.starts_with(starts_with_str) && !IsInAllowList(token)) {
       continue;  // Exclude line from the result
     }
     result.append(base::StrCat({token, "\n"}));
