@@ -115,6 +115,7 @@ public class BraveToolbarManager extends ToolbarManager {
     private LayoutStateProvider mLayoutStateProvider;
     private ObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
     private TopUiThemeColorProvider mTopUiThemeColorProvider;
+    private int mCurrentOrientation;
 
     // Own members.
     private TabGroupUi mTabGroupUi;
@@ -444,18 +445,18 @@ public class BraveToolbarManager extends ToolbarManager {
         }
     }
 
-    protected void onOrientationChange(int newOrientation) {
+    protected void onOrientationChange() {
         if (mActionModeController != null) mActionModeController.showControlsOnOrientationChange();
 
         if (mBottomControlsCoordinatorSupplier.get() != null
                 && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
             boolean isBraveBottomControlsVisible =
-                    newOrientation != Configuration.ORIENTATION_LANDSCAPE;
+                    mCurrentOrientation != Configuration.ORIENTATION_LANDSCAPE;
             setBraveBottomControlsVisible(isBraveBottomControlsVisible);
         }
 
         if (mActivity instanceof BraveActivity) {
-            ((BraveActivity) mActivity).updateBottomSheetPosition(newOrientation);
+            ((BraveActivity) mActivity).updateBottomSheetPosition(mCurrentOrientation);
         }
     }
 
