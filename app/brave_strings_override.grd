@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This file contains definitions of strings that are distribution specific.
 If you update this file, be sure also to update google_chrome_strings.grd. -->
-<grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<grit base_dir="." latest_public_release="0" current_release="1" source_lang_id="en" enc_check="möl">
   <translations>
     <file path="resources/brave_strings_override_af.xtb" lang="af" />
     <file path="resources/brave_strings_override_am.xtb" lang="am" />
@@ -101,15 +101,15 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_macosx or is_linux">
         </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
       <if expr="is_win">
         </if>
-      <if expr="is_macosx or chromeos_ash">
+      <if expr="is_macosx or is_chromeos">
         </if>
-      <if expr="not is_macosx and not chromeos_ash">
+      <if expr="not is_macosx and not is_chromeos">
         </if>
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         <if expr="_is_chrome_for_testing_branded">
           <then>
             </then>
@@ -117,7 +117,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
             </else>
         </if>
       </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
       <if expr="not is_chromeos and not is_macosx">
         </if>
@@ -137,7 +137,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <else>
           </else>
       </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
       <if expr="_is_chrome_for_testing_branded">
         <then>
@@ -165,11 +165,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
-      <if expr="chromeos_ash">
-        </if>
-
       <if expr="is_linux">
         </if>
 
@@ -208,7 +205,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </message>
       </if>
 
-      <if expr="use_titlecase and not chromeos_ash">
+      <if expr="use_titlecase and not is_chromeos">
         <if expr="_is_chrome_for_testing_branded">
           <then>
             </then>
@@ -216,7 +213,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
             </else>
         </if>
         </if>
-      <if expr="not use_titlecase and not chromeos_ash">
+      <if expr="not use_titlecase and not is_chromeos">
         <if expr="_is_chrome_for_testing_branded">
           <then>
             </then>
@@ -224,13 +221,13 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
             </else>
         </if>
         </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
 
       <if expr="is_macosx">
         </if>
 
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         </if>
 
       <if expr="toolkit_views">
@@ -239,7 +236,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="enable_extensions">
         </if>
 
-      <if expr="toolkit_views and not chromeos_lacros and not chromeos_ash">
+      <if expr="toolkit_views and not is_chromeos">
         </if>
 
       <if expr="_is_chrome_for_testing_branded">
@@ -249,7 +246,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           </else>
       </if>
 
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         </if>
 
       <if expr="not use_titlecase">
@@ -257,13 +254,13 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="use_titlecase">
         </if>
 
-      <if expr="not chromeos_ash and not is_android and not chromeos_lacros">
+      <if expr="not is_chromeos and not is_android">
         </if>
 
-      <if expr="not chromeos_ash and not is_android">
+      <if expr="not is_chromeos and not is_android">
         </if>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
 
       <if expr="not use_titlecase">
@@ -271,13 +268,13 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="use_titlecase">
         </if>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
 
       <if expr="is_win">
         </if>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
 
       <if expr="not is_android">
@@ -289,7 +286,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="is_macosx">
         </if>
 
-      <if expr="not is_android and not chromeos_ash">
+      <if expr="not is_android and not is_chromeos">
         </if>
 
       <if expr="not is_android">
@@ -314,7 +311,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       </if>
 
-      <if expr="not chromeos_ash">
+      <if expr="not is_chromeos">
         <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open Private windows.">
           {COUNT, plural,
           =0 {A new update for Brave is available and will be applied as soon as you relaunch.}
@@ -322,7 +319,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
         </message>
         </if>
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
 
       <if expr="is_win or is_macosx or is_linux">
@@ -349,16 +346,16 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           </if>
       </if>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
 
-      <if expr="not chromeos_ash and not is_android">
+      <if expr="not is_chromeos and not is_android">
         </if>
 
       <if expr="is_win">
         </if>
       <if expr="not is_android">
-        <if expr="not chromeos_ash">
+        <if expr="not is_chromeos">
           <message name="IDS_RELAUNCH_RECOMMENDED_BODY" desc="The body text of a dialog that tells users that a browser relaunch is recommended for an update with Private counter.">
              {COUNT, plural,
               =0 {Your administrator asks that you relaunch Brave to apply this update}
@@ -373,7 +370,7 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           </message>
         </if>
       </if>
-      <if expr="not is_android and not chromeos_ash">
+      <if expr="not is_android and not is_chromeos">
          </if>
       <if expr="toolkit_views">
         </if>
@@ -385,19 +382,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="enable_extensions">
         </if>
 
-      <if expr="not chromeos_ash and not is_android">
-        <if expr="chromeos_lacros">
-          </if>
-        <if expr="not chromeos_lacros">
-          </if>
-        <if expr="chromeos_lacros">
-          </if>
-        <if expr="not chromeos_lacros">
-          </if>
-
+      <if expr="not is_chromeos and not is_android">
         </if>
 
-      <if expr="chromeos_ash">
+      <if expr="is_chromeos">
         </if>
 
       <if expr="is_win">
@@ -426,7 +414,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
 
       <if expr="enable_extensions">
         </if>
-
-      </messages>
+    </messages>
   </release>
 </grit>
