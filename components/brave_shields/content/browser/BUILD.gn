@@ -7,6 +7,8 @@ static_library("browser") {
   sources = [
     "ad_block_custom_filters_provider.cc",
     "ad_block_custom_filters_provider.h",
+    "ad_block_custom_filter_reset_util.cc",
+    "ad_block_custom_filter_reset_util.h",
     "ad_block_engine.cc",
     "ad_block_engine.h",
     "ad_block_localhost_filters_provider.cc",

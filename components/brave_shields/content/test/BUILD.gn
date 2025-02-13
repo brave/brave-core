@@ -33,6 +33,7 @@ source_set("unit_tests") {
     "cosmetic_merge_unittest.cc",
     "csp_merge_unittest.cc",
     "strip_procedural_filters_unittest.cc",
+    "ad_block_custom_filter_reset_util_unittest.cc",
   ]
 
   deps = [
