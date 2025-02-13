@@ -57,7 +57,7 @@ const onEnterKey = (onSubmit: Function) =>
     }
   }
 
-const BraveIcon = ({style}: {style?: React.CSSProperties | undefined}) => (
+const BraveIcon = ({style}: {style?: React.CSSProperties}) => (
   <BraveIconCircle style={{...style, flexGrow: 0}}>
     <BraveIconWrapper>
       <Icon name='brave-icon-release-color' />
