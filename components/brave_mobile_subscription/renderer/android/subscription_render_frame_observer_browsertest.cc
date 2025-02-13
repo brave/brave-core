@@ -45,7 +45,13 @@ TEST_F(SubscriptionRenderFrameObserverBrowserTest, StatusCheck) {
       R"(<html><body></body></html>)",
       "https://account.brave.com/?intent=link-order&product=leo");
 
-  std::u16string command =
+  std::u16string command = u"Number(typeof linkResult === 'undefined')";
+  EXPECT_TRUE(ExecuteJavascript(command));
+
+  LoadHTMLWithUrlOverride(R"(<html><body></body></html>)",
+                          "https://account.brave.com/order-link/?product=leo");
+
+  command =
       u"Number(linkResult != undefined && linkResult.setStatus != undefined)";
   EXPECT_TRUE(ExecuteJavascript(command));
 }
