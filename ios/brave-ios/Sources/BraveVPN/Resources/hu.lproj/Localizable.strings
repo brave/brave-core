@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "A Brave sosem naplózza a tevékenységeit";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Védje meg alkalmazásait és eszközét";
+"vpn.checkboxProtectYourDevices" = "Védje meg az összes alkalmazást és az egész eszközét";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Biztonságosabb otthoni vagy nyilvános Wi-Fi-hálózaton";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Engedélyezés";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Mindegyik csomag tartalmaz %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Mindegyik csomag tartalmaz";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "egy 7 napos ingyenes próbaidőszakot";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "VPN telepítése";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Próbálja ki INGYENESEN";
+"vpn.learnMore" = "7 napos ingyenes próbaidőszak megkezdése";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Havonta megújul";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld szerver";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Az előfizetési díjak kiszabása a Google-fiókján keresztül történik. Az esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti. A Brave használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "hónap";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "év";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Lejárt";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "A VPN-régió módosult.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Évente megújul";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Havonta megújul";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Nem lehet visszaállítani a VPN-konfigurációt. Kérjük, próbálja újra. Ha a probléma továbbra is fennáll, kérjen segítséget az ügyfélszolgálattól.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Helyreállítás";
 
+/* Use in context: save 16%. */
+"vpn.save" = "mentés";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ szerver";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld szerver";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Váltson VPN-re, hogy megvédje a kapcsolatát és bárhonnan blokkolhassa az invazív nyomkövetőket.";
+"vpn.settingHeaderBody" = "Védjen minden alkalmazást a Brave VPN segítségével. Védjen akár 10 eszközt egy csomaggal.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Lépjen kapcsolatba az ügyfélszolgálattal";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Átviteli protokoll";
 
-/* Button to allow the user to view the app-store receipt. */
-"vpn.settingsViewReceipt" = "AppStore nyugta megtekintése";
+/* Button to allow the user to view the App Store receipt. */
+"vpn.settingsViewReceipt" = "App Store nyugta megtekintése";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Ha ezt a beállítást engedélyezi, a VPN-kapcsolat váratlanul megszakadása esetén a készülék automatikusan lekapcsolódik az internetről, hogy megakadályozza az IP-cím és az adatok kiszivárgását. [Tudjon meg többet](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Vészleállítás aktiválása";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Az intelligens proxy biztosítja, hogy a forgalmat dedikált proxy-kiszolgálókon keresztül irányítsák át, amely lehetővé teszi a hozzáférést az általánosan korlátozott harmadik féltől származó tartalmakhoz/oldalakhoz vagy szolgáltatásokhoz. [További információ](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Intelligens proxy engedélyezése";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Fizetési mód frissítése";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Az előfizetési díjak kiszabása az iTunes-fiókján keresztül történik.\n\nAz esetleges ingyenes próbaidőszak fel nem használt hányada elveszik az előfizetés megvásárlásakor.\n\nElőfizetése automatikusan megújul, hacsak nem mondja le legalább 24 órával az aktuális időszak vége előtt.\n\nElőfizetéseit a Beállításokban kezelheti.\n\nA Brave használatával Ön elfogadja a használati feltételeket és az adatvédelmi szabályzatot.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN kikapcsolva";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN bekapcsolva";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Kód beváltása";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Takarítson meg %@-ot éves megújítással";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Legjobb ár-érték";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "A LEGJOBB ÉRTÉK";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Egy év";

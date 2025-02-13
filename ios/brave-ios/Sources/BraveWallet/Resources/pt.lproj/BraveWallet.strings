@@ -65,7 +65,7 @@
 "wallet.addCustomNFTTitle" = "NFT";
 
 /* A title of an initally hidden section in Add custom asset screen for users to input icon url and coingecko id. */
-"wallet.addCustomTokenAdvanced" = "Advanced";
+"wallet.addCustomTokenAdvanced" = "Avançados";
 
 /* A title that will be displayed on top of the text field for users to input the custom token's coingecko ID. */
 "wallet.addCustomTokenCoingeckoId" = "ID do CoinGecko";
@@ -86,10 +86,10 @@
 "wallet.addCustomTokenTitle" = "Token";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
-"wallet.addNetworkDescription" = "Isto permitirá que esta rede seja utilizada na Carteira Brave.";
+"wallet.addNetworkDescription" = "Isso permitirá que esta rede seja usada na Carteira Brave.";
 
 /* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
-"wallet.addNetworkSubtitle" = "Permitir que esta página Web adicione uma rede?";
+"wallet.addNetworkSubtitle" = "Permitir que este site adicione uma rede?";
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "Adicionar rede";
@@ -98,7 +98,7 @@
 "wallet.addressLabel" = "Endereço";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
-"wallet.addSuggestedTokenSubtitle" = "Gostaria de importar este token?";
+"wallet.addSuggestedTokenSubtitle" = "Você deseja importar este token?";
 
 /* The title of the view shown over a dapps website that requests the user add / approve a new token. */
 "wallet.addSuggestedTokenTitle" = "Adicionar token sugerido";
@@ -233,7 +233,7 @@
 "wallet.bitcoinImportExtendedKeyWarning" = "Apenas %@ chaves estendidas são compatíveis.";
 
 /* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
-"wallet.braveFeeLabel" = "Comissão da Brave: %@";
+"wallet.braveFeeLabel" = "Comissão do Brave: %@";
 
 /* A disclaimer that appears at the bottom of an swap screen which discloses the fixed Brave fee included in the swap quotes. '%@' will be replaced by a percentage. For example: 'Quote includes a 0.875% Brave fee' */
 "wallet.braveSwapFeeDisclaimer" = "A cotação inclui uma taxa de %@ do Brave.";
@@ -245,13 +245,13 @@
 "wallet.btcAccountDescription" = "Bitcoin";
 
 /* Description displayed in row beside users available balance. */
-"wallet.btcAvailableBalanceDesc" = "Fundos disponíveis para utilizar.";
+"wallet.btcAvailableBalanceDesc" = "Fundos disponíveis para você usar.";
 
 /* Title displayed in row beside users available BTC balance. */
 "wallet.btcAvailableBalanceTitle" = "Disponível";
 
 /* A warning displayed in row before the Send button in Send Crypto view when a Bitcoin asset is selected. */
-"wallet.btcOrdinalsUnsupportedWarning" = "A Wallet Brave ainda não é compatível com NFT Bitcoin (ordinais). Enviar BTC de um endereço que inclua ordinais poderá resultar na transferência acidental dos respetivos ordinais.";
+"wallet.btcOrdinalsUnsupportedWarning" = "Atualmente, a Carteira Brave não oferece suporte a Bitcoin NFTs (ordinais). O envio de BTC de um endereço que possui ordinais pode resultar na transferência inadvertida de seus ordinais.";
 
 /* Description displayed in row beside users pending balance. */
 "wallet.btcPendingBalanceDesc" = "Uma alteração pendente no saldo da sua carteira.";
@@ -263,7 +263,7 @@
 "wallet.btcPendingBalanceTitle" = "Pendente";
 
 /* Description displayed in row beside users total balance. */
-"wallet.btcTotalBalanceDesc" = "Os seus fundos disponíveis mais todas as transações por confirmar.";
+"wallet.btcTotalBalanceDesc" = "Seus fundos disponíveis mais quaisquer transações ainda não confirmadas.";
 
 /* Title displayed in row beside users total BTC balance. */
 "wallet.btcTotalBalanceTitle" = "Total";
@@ -274,8 +274,26 @@
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Compre criptomoedas com o Apple Pay ou um cartão de crédito ou débito por meio do Wyre.";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "o subsídio não foi aprovado nos termos do";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "Pedido de cancelamento enviado";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "Cancelando a transação";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "Cancelar transação";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "Cancelar transação";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "Será criada uma nova transação para cancelar a transação existente";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "foi revertido a";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Data";
@@ -284,7 +302,7 @@
 "wallet.chartAxisPriceLabel" = "Preço";
 
 /* The description of one of the 'Coinbase Pay' provider. */
-"wallet.coinbaseNetworkProviderDescription" = "Compre com o nome mais respeitado em criptografia.";
+"wallet.coinbaseNetworkProviderDescription" = "Compre com o nome mais confiável em criptografia.";
 
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "Dados de preço disponibilizados pela CoinGecko";
@@ -299,7 +317,7 @@
 "wallet.coinMarketInformation" = "Informações";
 
 /* The title of the market cap of this coin from market. */
-"wallet.coinMarketMarketCap" = "Capitalização bolsista";
+"wallet.coinMarketMarketCap" = "Capitalização de mercado";
 
 /* The title of the rank of this coin from market. */
 "wallet.coinMarketRank" = "Classificação";
@@ -320,10 +338,10 @@
 "wallet.coinTypeFilecoin" = "Filecoin";
 
 /* A description for Filecoin coin type. */
-"wallet.coinTypeFilecoinDescription" = "Guardar ativo FIL";
+"wallet.coinTypeFilecoinDescription" = "Armazenar ativo FIL";
 
 /* A header displayed above coin types selection. */
-"wallet.coinTypeSelectionHeader" = "Selecionar um dos seguintes tipos de conta";
+"wallet.coinTypeSelectionHeader" = "Selecione um dos seguintes tipos de conta";
 
 /* One of the coin types for users to create an account with in Solana network */
 "wallet.coinTypeSolana" = "Solana";
@@ -338,10 +356,10 @@
 "wallet.confirm" = "Confirmar";
 
 /* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: "By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you." */
-"wallet.confirmationViewAllowSpendSubtitle" = "Ao conceder esta permissão autoriza a aplicação a transferir %@ e automatizar as transações.";
+"wallet.confirmationViewAllowSpendSubtitle" = "Ao conceder essa permissão, você autoriza que esse app saque seus %@ e automatize transações para você.";
 
 /* The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: "Allow this app to spend your DAI?" */
-"wallet.confirmationViewAllowSpendTitle" = "Permitir que esta aplicação gaste %@?";
+"wallet.confirmationViewAllowSpendTitle" = "Permitir que esse app gaste seus %@?";
 
 /* The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, "Current Allowance  100 DAI". */
 "wallet.confirmationViewCurrentAllowance" = "Limite atual";
@@ -356,28 +374,34 @@
 "wallet.confirmationViewModeTransaction" = "Transação";
 
 /* The warning shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
-"wallet.confirmationViewSolAccountOwnershipChangeWarning" = "Esta transação irá reatribuir a titularidade da conta a um novo programa. Esta ação é irreversível e pode resultar na perda de fundos.";
+"wallet.confirmationViewSolAccountOwnershipChangeWarning" = "Esta transação vai reatribuir a titularidade da conta a um novo programa. Esta ação é irreversível e pode resultar na perda de fundos.";
 
 /* The warning title shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
-"wallet.confirmationViewSolAccountOwnershipChangeWarningTitle" = " Alteração da titularidade da conta solicitada";
+"wallet.confirmationViewSolAccountOwnershipChangeWarningTitle" = "Alteração da titularidade da conta solicitada";
 
 /* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
-"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "A conta de tokens associada ainda não existe. Será gasta uma pequena quantia de SOL para a criar e financiar.";
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "A conta de tokens associada ainda não existe. Será gasta uma pequena quantia de SOL para criá-la e financiá-la.";
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
-"wallet.confirmationViewUnlimitedWarning" = "Aprovação solicitada para transação ilimitada";
+"wallet.confirmationViewUnlimitedWarning" = "Aprovação ilimitada solicitada";
+
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "conta";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "Transação cancelada!";
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Fechar";
 
 /* A description explains confirmed transaction has been included in a block. */
-"wallet.confirmedTransactionDescription" = "A transação foi incluída num bloco. Para evitar o risco de duplicação de despesas, recomendamos que aguarde pela confirmação do bloco.";
+"wallet.confirmedTransactionDescription" = "A transação foi incluída com sucesso em um bloco. Para evitar o risco de gastos duplos, recomendamos aguardar as confirmações de blocos.";
 
 /* A title of a button which can open a confirmed transaction details screen. */
 "wallet.confirmedTransactionReceiptButtonTitle" = "Recibo";
 
 /* A title of transaction confirmed status view indicating this transaction has been included in a block. */
-"wallet.confirmedTransactionTitle" = "Transação efetuada";
+"wallet.confirmedTransactionTitle" = "Transação concluída";
 
 /* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
 "wallet.confirmPasswordTitle" = "Confirmar senha";
@@ -392,7 +416,7 @@
 "wallet.continueButtonTitle" = "Continuar";
 
 /* The accessibility label for the contract address of a token / asset. */
-"wallet.contractAddressAccessibilityLabel" = "Endereço de contrato";
+"wallet.contractAddressAccessibilityLabel" = "Endereço de contato";
 
 /* A button title that user has clicked to copy some data to the users clipboard */
 "wallet.copiedToPasteboard" = "Copiado";
@@ -422,7 +446,7 @@
 "wallet.creatingWallet" = "Criando Carteira...";
 
 /* The title of the crypto tab */
-"wallet.cryptoTitle" = "Carteira Brave";
+"wallet.cryptoTitle" = "Brave Wallet";
 
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "URLs do Block Explorer";
@@ -497,7 +521,7 @@
 "wallet.dappsConnectionNotificationOriginTitle" = "%@ deseja interagir com a Carteira Brave";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
-"wallet.dappsConnectionNotificationTitle" = "Esta página pretende interagir com a Carteira Brave";
+"wallet.dappsConnectionNotificationTitle" = "Esta página deseja interagir com a Carteira Brave";
 
 /* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
 "wallet.dappsSettingsConnectedSitesSectionEmpty" = "Os DApps que você conectar à Carteira Brave serão exibidos aqui";
@@ -563,7 +587,7 @@
 "wallet.decimalsPrecision" = "Decimais de precisão";
 
 /* The message displayed when the user takes a screenshot of their dapp decrypt request. */
-"wallet.decryptMessageScreenshotDetectedMessage" = "Aviso: uma captura de ecrã da sua mensagem poderá ser guardada num serviço de ficheiros na nuvem e pode ser lida por qualquer aplicação com acesso às fotos. O Brave recomenda que não guarde esta captura de ecrã e a elimine assim que possível.";
+"wallet.decryptMessageScreenshotDetectedMessage" = "Aviso: uma captura de tela da sua mensagem pode ser armazenada em backup em um serviço de arquivos na nuvem e pode ser lida por qualquer aplicativo com acesso às fotos. O Brave recomenda que você não salve essa captura de tela e a exclua assim que possível.";
 
 /* The title of the button to approve a decrypt request from a dapps website. */
 "wallet.decryptRequestApprove" = "Permitir";
@@ -575,7 +599,7 @@
 "wallet.decryptRequestSubtitle" = "Este DApp deseja ler esta mensagem para concluir sua solicitação";
 
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestTitle" = "Pedido de desencriptação";
+"wallet.decryptRequestTitle" = "Solicitação de descriptografia";
 
 /* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example "Ethereum Account 2") */
 "wallet.defaultAccountName" = "%1$@ Conta %2$lld";
@@ -587,7 +611,7 @@
 "wallet.delete" = "Excluir";
 
 /* As in depsit some crypto coins to a specific wallet address. */
-"wallet.deposit" = "Depósito";
+"wallet.deposit" = "Depositar";
 
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "Copiar";
@@ -605,7 +629,7 @@
 "wallet.detailsButtonTitle" = "Detalhes";
 
 /* An error message that will get displayed when user is trying to add an existed custom token. */
-"wallet.duplicationTokenError" = "Este token já foi adicionado à sua carteira.";
+"wallet.duplicationTokenError" = "Este token já foi adicionado ao seu portfólio.";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "Editar";
@@ -629,7 +653,7 @@
 "wallet.editNoncePlaceholder" = "Insira um valor de nonce personalizado";
 
 /* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: "Spend limit permission allows Account 1 to withdraw and spend up to the following amount:" */
-"wallet.editPermissionsAllowanceHeader" = "A permissão de limite de gastos autoriza %@ a transferir e gastar até este valor:";
+"wallet.editPermissionsAllowanceHeader" = "A permissão de limite de gastos autoriza %@ a sacar e gastar até o seguinte valor:";
 
 /* The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount. */
 "wallet.editPermissionsApproveUnlimited" = "Ilimitado";
@@ -641,7 +665,7 @@
 "wallet.editPermissionsProposedAllowanceHeader" = "Limite proposto";
 
 /* The title of the button shown beside the custom allowance input field to make the custom allowance value "Unlimited". */
-"wallet.editPermissionsSetUnlimited" = "Definir como ilimitado";
+"wallet.editPermissionsSetUnlimited" = "Definir valor ilimitado";
 
 /* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
 "wallet.editPermissionsTitle" = "Editar permissões";
@@ -650,7 +674,7 @@
 "wallet.editSiteConnectionAccountActionConnect" = "Conectar";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
-"wallet.editSiteConnectionAccountActionDisconnect" = "Desligar";
+"wallet.editSiteConnectionAccountActionDisconnect" = "Desconectar";
 
 /* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
 "wallet.editSiteConnectionAccountActionRevoke" = "Revogar";
@@ -668,10 +692,10 @@
 "wallet.editSiteConnectionAccountSingular" = "conta";
 
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example "1 account connected" or "2 accounts connected") */
-"wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ ligado";
+"wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ conectada(s)";
 
 /* The navigation title of the screen for users to edit dapps site connection with users' Brave Wallet accounts. */
-"wallet.editSiteConnectionScreenTitle" = "Ligações";
+"wallet.editSiteConnectionScreenTitle" = "Conexões";
 
 /* The error alert body when something is wrong when users try to edit transaction gas fee, priority fee, nonce value or allowance value. */
 "wallet.editTransactionError" = "Verifique os dados informados e tente novamente.";
@@ -692,13 +716,13 @@
 "wallet.ensDomainInterstitialPageTitle" = "Habilitar suporte para o Serviço de Nome Ethereum (ENS) no Brave?";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
-"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Permitir a pesquisa offchain";
+"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Continuar com a pesquisa fora da blockchain";
 
 /* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
 "wallet.ensOffchainDomainInterstitialPageDescription" = "Este nome de domínio .eth é armazenado offchain e será resolvido por um gateway de terceiros. Se você ativar a pesquisa offchain do ENS, o gateway de terceiros verá que você está tentando visitar o domínio .eth. <a href=%1$@>%2$@</a>.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
-"wallet.ensOffchainDomainInterstitialPageTitle" = "Ativar o suporte à pesquisa de Ethereum Name Service (ENS) offchain no Brave?";
+"wallet.ensOffchainDomainInterstitialPageTitle" = "Ativar a compatibilidade com a pesquisa de Ethereum Name Service (ENS) fora da blockchain no Brave?";
 
 /* Button title when requesting to do an ENS off chain lookup. */
 "wallet.ensOffchainGatewayButton" = "Utilizar o domínio de ENS";
@@ -725,13 +749,13 @@
 "wallet.enterAmount" = "Inserir valor";
 
 /* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
-"wallet.enterPasswordForBiometricsNavTitle" = "Ativar dados biométricos";
+"wallet.enterPasswordForBiometricsNavTitle" = "Ativar biometria";
 
 /* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
-"wallet.enterPasswordForBiometricsTitle" = "Introduza a palavra-passe da carteira para ativar os dados biométricos (não terá de voltar a introduzir)";
+"wallet.enterPasswordForBiometricsTitle" = "Insira a senha da sua carteira para ativar a biometria na carteira (você só precisará fazer isso uma vez)";
 
 /* A placeholder for the text field that users will input the custom token Coingecko ID. */
-"wallet.enterTokenCoingeckoId" = "Inserir ID do CoikGecko do token";
+"wallet.enterTokenCoingeckoId" = "Insira o ID do CoikGecko do token";
 
 /* A placeholder for the text field that users will input the custom token icon URL */
 "wallet.enterTokenIconURL" = "Insira o URL do ícone do token";
@@ -749,7 +773,7 @@
 "wallet.errorAlertTitle" = "Erro";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
-"wallet.ethAccountDescription" = "Cadeias Ethereum + EVM";
+"wallet.ethAccountDescription" = "Ethereum + cadeias EVM";
 
 /* A button title displayed in a menu to export an account's private key. */
 "wallet.exportButtonTitle" = "Exportar";
@@ -767,16 +791,16 @@
 "wallet.failedToRemoveCustomNetworkErrorMessage" = "Houve uma falha ao remover a rede.\nTente novamente.";
 
 /* A description explains transaction is failed. */
-"wallet.failedTransactionDescription" = "Ocorreu um erro ao efetuar a transação devido a uma diferença maior no preço. Aumente a tolerância ao desvio para permitir uma diferença maior no preço.";
+"wallet.failedTransactionDescription" = "Houve uma falha na transação devido a uma movimentação significativa no preço. Aumente a tolerância de slippage para ter sucesso com uma movimentação de preço mais alta.";
 
 /* A description of the view that will display the error message. */
-"wallet.failedTransactionErrorViewDescription" = "Guarde a mensagem de erro como referência.";
+"wallet.failedTransactionErrorViewDescription" = "Salve a mensagem de erro para referência futura.";
 
 /* A title of the view that will display the error message. */
 "wallet.failedTransactionErrorViewTitle" = "Mensagem de erro";
 
 /* A title of transaction failed status view indicating this transaction has not been included in a block. */
-"wallet.failedTransactionTitle" = "Transação não efetuada";
+"wallet.failedTransactionTitle" = "Falha na transação";
 
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "Ver erro";
@@ -785,7 +809,7 @@
 "wallet.filAccountDescription" = "Filecoin";
 
 /* The title of the modal for filtering Portfolio and NFT views. */
-"wallet.filtersAndDisplaySettings" = "Definições de filtros e de apresentação";
+"wallet.filtersAndDisplaySettings" = "Filtros e configurações de exibição";
 
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "Limite de valor de gás";
@@ -815,13 +839,13 @@
 "wallet.getEncryptionPublicKeyRequestApprove" = "Providenciar";
 
 /* The text shown beside the URL origin of a get public encryption key request from a dapp site. Ex 'https://brave.com is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.' */
-"wallet.getEncryptionPublicKeyRequestMessage" = "está a solicitar a chave de encriptação pública da sua carteira. Se autorizar o fornecimento dessa chave, o site terá a capacidade de escrever mensagens encriptadas para si.";
+"wallet.getEncryptionPublicKeyRequestMessage" = "está solicitando a chave de criptografia pública da sua carteira. Se você consentir com o fornecimento dessa chave, o site poderá criar mensagens criptografadas para você.";
 
 /* A subtitle of the view shown over a dapps website that requests the users public encryption key. */
 "wallet.getEncryptionPublicKeyRequestSubtitle" = "Um DApp está solicitando sua chave de criptografia pública";
 
 /* A title of the view shown over a dapps website that requests the users public encryption key. */
-"wallet.getEncryptionPublicKeyRequestTitle" = "Pedido de chave de encriptação pública";
+"wallet.getEncryptionPublicKeyRequestTitle" = "Solicitação de chave de criptografia pública";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
 "wallet.graph" = "Gráfico";
@@ -830,7 +854,7 @@
 "wallet.groupByAccountsOptionTitle" = "Contas";
 
 /* The description label of the sort option that groups assets by the selected filter value, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.groupByDescription" = "Agrupar os ativos por";
+"wallet.groupByDescription" = "Agrupar ativos por";
 
 /* The title of the sort option that groups assets by each network. Used in Portfolio/NFT filters and display settings. */
 "wallet.groupByNetworksOptionTitle" = "Redes";
@@ -857,16 +881,16 @@
 "wallet.hideSmallBalancesTitle" = "Ocultar saldos pequenos";
 
 /* The description label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideUnownedNFTsDescription" = "Ocultar NFT sem saldo";
+"wallet.hideUnownedNFTsDescription" = "Ocultar NFTs sem saldo";
 
 /* The label of the filter option that hides NFTs if they are not owned by the user. Used in Portfolio/NFT filters and display settings. */
 "wallet.hideUnownedNFTsTitle" = "Ocultar sem proprietário";
 
 /* The title of a button that updates the filter to hide tokens with zero balances. */
-"wallet.hideZeroBalances" = "Ocultar saldos a zero";
+"wallet.hideZeroBalances" = "Ocultar saldo zero";
 
 /* The title of the sort option that sorts highest value to lowest value. Used in Portfolio/NFT filters and display settings. */
-"wallet.highToLowSortOption" = "Alto para baixo";
+"wallet.highToLowSortOption" = "Decrescente";
 
 /* A title above a text field that is used to enter a password */
 "wallet.importAccountOriginPasswordTitle" = "Senha de origem";
@@ -938,7 +962,7 @@
 "wallet.lockWallet" = "Bloquear carteira";
 
 /* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
-"wallet.lowToHighSortOption" = "Baixo para alto";
+"wallet.lowToHighSortOption" = "Ascendente";
 
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example "1 account" or "2 accounts") */
 "wallet.manageSiteConnectionsAccount" = "%1$lld %2$@";
@@ -950,7 +974,7 @@
 "wallet.manageSiteConnectionsAccountSingular" = "conta";
 
 /* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertMessage" = "Isto irá remover todas as permissões de ligação da Carteira para todas as páginas Web.";
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "Isso removerá todas as permissões de conexão com a Carteira de todos os sites.";
 
 /* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
 "wallet.manageSiteConnectionsConfirmAlertRemove" = "Remover";
@@ -959,7 +983,7 @@
 "wallet.manageSiteConnectionsConfirmAlertTitle" = "Remover todas as permissões?";
 
 /* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Isto irá remover todas as permissões de ligação da Carteira para esta página Web.";
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "Isso removerá todas as permissões de conexão com a Carteira deste site.";
 
 /* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
 "wallet.manageSiteConnectionsDetailHeader" = "Contas %@ conectadas";
@@ -980,7 +1004,7 @@
 "wallet.maxPriorityFeeTitle" = "Taxa máxima de prioridade";
 
 /* The title shown on the wallet settings page, and the value shown when selecting the default wallet as Brave Wallet in wallet settings. */
-"wallet.module" = "Carteira Brave";
+"wallet.module" = "Brave Wallet";
 
 /* A button title for user to open more option in asset details screen other than buy/send/swap. */
 "wallet.more" = "Mais";
@@ -998,10 +1022,10 @@
 "wallet.networkNameTitle" = "Nome da rede";
 
 /* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
-"wallet.networkNotSupportedForBuyToken" = "Compra sem suporte na rede selecionada";
+"wallet.networkNotSupportedForBuyToken" = "Compra indisponível para a rede selecionada";
 
 /* The title of the section for primary networks in the network selection view. */
-"wallet.networkSelectionPrimaryNetworks" = "Redes principais";
+"wallet.networkSelectionPrimaryNetworks" = "Redes primárias";
 
 /* The title of the section for secondary networks in the network selection view. */
 "wallet.networkSelectionSecondaryNetworks" = "Redes secundárias";
@@ -1019,16 +1043,16 @@
 "wallet.networkURLTitle" = "URL da rede";
 
 /* A placeholder string that will be used on password text fields to create a new wallet */
-"wallet.newPasswordPlaceholder" = "Introduzir nova palavra-passe";
+"wallet.newPasswordPlaceholder" = "Insira a nova senha";
 
 /* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
-"wallet.newSiteConnectConfirmationMessage" = "Ver os endereços das suas contas permitidas (obrigatório)";
+"wallet.newSiteConnectConfirmationMessage" = "Veja o endereço das suas contas autorizadas (obrigatório)";
 
 /* The footer message displayed above the Next button in new site connection screen. */
-"wallet.newSiteConnectFooter" = "Conecte apenas com páginas Web que confia.";
+"wallet.newSiteConnectFooter" = "Conecte-se apenas com sites em que você confia.";
 
 /* The message displayed below the dapp's origin url in new site connection screen. */
-"wallet.newSiteConnectMessage" = "Conectar com a Carteira Brave";
+"wallet.newSiteConnectMessage" = "Conectar à Carteira Brave";
 
 /* The transaction edit error alert button which will dismiss the alert. */
 "wallet.newSiteConnectScreenTitle" = "Conectar";
@@ -1067,7 +1091,7 @@
 "wallet.nftDetailSPL" = "SPL";
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
-"wallet.nftDetailSVGImageDisclaimer" = "A imagem apresentada acima poderá não corresponder exatamente ao NFT";
+"wallet.nftDetailSVGImageDisclaimer" = "É possível que a imagem renderizada acima não corresponda exatamente ao NFT";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
 "wallet.nftDetailTokenID" = "ID do token";
@@ -1076,7 +1100,7 @@
 "wallet.nftDetailTokenStandard" = "Padrão do token";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. `SimpleHash` is the third-party service name, so it does not need to be translated. */
-"wallet.nftDiscoveryCalloutDescription" = "A Brave Wallet pode utilizar um serviço externo para apresentar automaticamente os seus NFT. A Brave partilha os endereços da sua carteira com a SimpleHash para fornecer este serviço. Saiba mais.";
+"wallet.nftDiscoveryCalloutDescription" = "A Brave Wallet pode utilizar um serviço externo para apresentar automaticamente os seus NFT. A Brave compartilha os endereços da sua carteira com a SimpleHash para fornecer este serviço. Saiba mais.";
 
 /* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
 "wallet.nftDiscoveryCalloutDescriptionLearnMore" = "Saiba mais";
@@ -1088,7 +1112,7 @@
 "wallet.nftDiscoveryCalloutEnable" = "Sim, continuar";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. */
-"wallet.nftDiscoveryCalloutTitle" = "Pretende que os seus NFT sejam apresentados automaticamente?";
+"wallet.nftDiscoveryCalloutTitle" = "Quer que seus NFTs sejam exibidos automaticamente?";
 
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "Importar NFT";
@@ -1103,7 +1127,7 @@
 "wallet.nftPageEmptyDescription" = "Pronto para adicionar algumas? Basta clicar no botão abaixo para importar.";
 
 /* The title of the empty state inside NFT tab. */
-"wallet.nftPageEmptyTitle" = "Ainda não estão aqui NFTs.";
+"wallet.nftPageEmptyTitle" = "Ainda não há NFTs aqui.";
 
 /* The title of the tab that will display user's visible NFT assets. */
 "wallet.nftPageTitle" = "NFT";
@@ -1115,7 +1139,7 @@
 "wallet.nftRemoveFromWalletAlertDescription" = "O NFT será removido da Carteira Brave, mas permanecerá no blockchain. Se você removê-lo e mudar de ideia, precisará importá-lo novamente manualmente.";
 
 /* The title of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertTitle" = "Remover da Carteira Brave";
+"wallet.nftRemoveFromWalletAlertTitle" = "Remover da Carteira Brave?";
 
 /* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
 "wallet.nftsDescription" = "%d NFT";
@@ -1160,7 +1184,10 @@
 "wallet.onbordingCompletedSubTitle" = "Sua Carteira Brave está pronta para uso.";
 
 /* The title of the last step of creating a new wallet. */
-"wallet.onbordingCompletedTitle" = "Está tudo pronto!";
+"wallet.onbordingCompletedTitle" = "Tudo pronto!";
+
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "A transação original foi confirmada.";
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Outras ações de carteira";
@@ -1172,7 +1199,7 @@
 "wallet.passwordDoesNotMeetRequirementsError" = "As senhas devem ter pelo menos 8 caracteres.";
 
 /* A placeholder string that will be used on password text fields */
-"wallet.passwordPlaceholder" = "Introduza palavra-passe";
+"wallet.passwordPlaceholder" = "Insira a senha";
 
 /* The error displayed when entering two passwords that do not match that are expected to match */
 "wallet.passwordsDontMatchError" = "A senha verificada não corresponde";
@@ -1223,7 +1250,7 @@
 "wallet.providerSelectionSectionHeader" = "Selecione uma das seguintes opções";
 
 /* The title of the button for users to click to select a purchase method. */
-"wallet.purchaseMethodButtonTitle" = "Selecionar método de compra";
+"wallet.purchaseMethodButtonTitle" = "Selecione o método de compra";
 
 /* The description of one of the 'Ramp.Network' provider. */
 "wallet.rampNetworkProviderDescription" = "Compre criptomoedas com Visa ou Mastercard.";
@@ -1262,7 +1289,7 @@
 "wallet.renameButtonTitle" = "Renomear";
 
 /* A label will be displayed when the repeat password field input is matched with the password field. */
-"wallet.repeatedPasswordMatch" = "Correspondeu!";
+"wallet.repeatedPasswordMatch" = "Corresponde!";
 
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "Inserir senha novamente";
@@ -1301,7 +1328,7 @@
 "wallet.restoreWalletTitle" = "Importar uma carteira existente";
 
 /* The title for the button to retry a failed transaction. */
-"wallet.retryTransactionButtonTitle" = "Tentar transação novamente";
+"wallet.retryTransactionButtonTitle" = "Repetir transação";
 
 /* The description of one of the 'Sardine' provider. */
 "wallet.sardineProviderDescription" = "Compra instantânea com sua conta bancária. Taxas mais baixas.";
@@ -1316,7 +1343,7 @@
 "wallet.saveButtonTitle" = "Salvar";
 
 /* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
-"wallet.saveChangesButtonTitle" = "Guardar alterações";
+"wallet.saveChangesButtonTitle" = "Salvar alterações";
 
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "Ler código QR";
@@ -1334,7 +1361,7 @@
 "wallet.secondaryCryptoAccountsSubtitle" = "Importe sua conta de carteira externa com uma frase-semente separada.";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
-"wallet.securityRiskDetectedTitle" = "Risco de segurança detetado";
+"wallet.securityRiskDetectedTitle" = "Risco de segurança detectado";
 
 /* The title used in the row opening DApp settings in Account Details. */
 "wallet.securityTitle" = "Segurança";
@@ -1343,7 +1370,7 @@
 "wallet.seeDetailsButtonTitle" = "Ver detalhes";
 
 /* The description label of the filter option that allows users to select which accounts to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectAccountsDescription" = "Selecionar contas a filtrar por";
+"wallet.selectAccountsDescription" = "Selecione as contas para filtrar";
 
 /* The label of the filter option that allows users to select which accounts to filter assets by. Used in Portfolio/NFT filters and display settings. */
 "wallet.selectAccountsTitle" = "Selecionar contas";
@@ -1361,16 +1388,16 @@
 "wallet.selectedNetwork" = "Rede selecionada";
 
 /* The description label of the filter option that allows users to select which networks to filter assets by, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.selectNetworksDescription" = "Selecionar redes a filtrar por";
+"wallet.selectNetworksDescription" = "Selecione redes para filtrar por";
 
 /* The label of the filter option that allows users to select which networks to filter assets by. Used in Portfolio/NFT filters and display settings. */
 "wallet.selectNetworksTitle" = "Selecionar redes";
 
 /* The description of the view that lets the user select a token & account at the same time in the Send crypto view when there are no available tokens. */
-"wallet.selectTokenToSendNoTokens" = "Não existem tokens disponíveis";
+"wallet.selectTokenToSendNoTokens" = "Não há tokens disponíveis";
 
 /* The title of the view that lets the user select a token & account at the same time in the Send crypto view. */
-"wallet.selectTokenToSendTitle" = "Selecionar token a enviar";
+"wallet.selectTokenToSendTitle" = "Selecionar um token para enviar";
 
 /* As in sending cryptocurrency to another account */
 "wallet.send" = "Enviar";
@@ -1400,13 +1427,13 @@
 "wallet.sendErrorDomainNotRegistered" = "O domínio não tem um endereço %@ associado";
 
 /* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
-"wallet.sendErrorInvalidRecipientAddress" = "Endereço de destinatário inválido";
+"wallet.sendErrorInvalidRecipientAddress" = "Endereço do destinatário inválido";
 
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "Inserir endereço";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
-"wallet.sendWarningAddressInvalidChecksum" = "Não foi possível verificar o endereço (soma de verificação inválida). Substitua as letras minúsculas por maiúsculas e tente novamente.";
+"wallet.sendWarningAddressInvalidChecksum" = "Houve uma falha na verificação do endereço (soma de verificação inválida). Tente novamente substituindo as letras minúsculas por maiúsculas.";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
 "wallet.sendWarningAddressIsContract" = "O endereço de destino é o endereço de contrato de um token";
@@ -1415,7 +1442,7 @@
 "wallet.sendWarningAddressIsOwn" = "O endereço de destino é seu próprio endereço";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
-"wallet.sendWarningAddressMissingChecksumInfo" = "Não foi possível verificar este endereço (soma de verificação em falta). Continuar?";
+"wallet.sendWarningAddressMissingChecksumInfo" = "Não foi possível verificar esse endereço (soma de verificação não encontrada). Continuar?";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
 "wallet.sendWarningAddressNotValid" = "Não é um endereço de ETH válido";
@@ -1433,13 +1460,13 @@
 "wallet.settings" = "Configurações";
 
 /* The title that appears before the current default base currency code. Example: "Default base currency: USD" */
-"wallet.settingsDefaultBaseCurrencyTitle" = "Moeda base predefinida";
+"wallet.settingsDefaultBaseCurrencyTitle" = "Moeda de base padrão";
 
 /* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
-"wallet.settingsEnableBiometricsFooter" = "Ative se pretender usar dados biométricos (Face ID/Touch ID) para desbloquear a carteira";
+"wallet.settingsEnableBiometricsFooter" = "Ative se quiser usar biometria (Face ID/Touch ID) para desbloquear sua carteira";
 
 /* A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings. */
-"wallet.settingsEnableBiometricsTitle" = "Ativar desbloqueio com dados biométricos";
+"wallet.settingsEnableBiometricsTitle" = "Ativar desbloqueio por biometria";
 
 /* The title of a button that will go the list of networks. */
 "wallet.settingsNetworkButtonTitle" = "Redes";
@@ -1460,7 +1487,7 @@
 "wallet.settingsResetTransactionFooter" = "Limpar as transações pode ser útil para desenvolvedores ou ao limpar o estado em um servidor local";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionTitle" = "Limpar informação de transação e nonce";
+"wallet.settingsResetTransactionTitle" = "Limpar Transação & Informações de Nonce";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "Redefinir carteira";
@@ -1499,10 +1526,10 @@
 "wallet.setupCryptoTitle" = "Nativo do navegador.\nAutocustódia.\nE cadeia múltipla.";
 
 /* The description label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
-"wallet.showNFTNetworkLogoDescription" = "Apresentar o logótipo de rede nos NFT";
+"wallet.showNFTNetworkLogoDescription" = "Mostrar logotipo da rede em NFTs";
 
 /* The label of the filter option that hides the network logo on NFTs displayed in the grid. Used in NFT filters and display settings. */
-"wallet.showNFTNetworkLogoTitle" = "Logótipo de rede";
+"wallet.showNFTNetworkLogoTitle" = "Logotipo de rede";
 
 /* A button title that will make a private key visible on the screen */
 "wallet.showPrivateKeyButtonTitle" = "Mostrar chave privada";
@@ -1523,13 +1550,13 @@
 "wallet.signatureRequestMessageTitle" = "Mensagem:";
 
 /* A subtitle of the view shown over a dapps website that requests the user sign a message. */
-"wallet.signatureRequestSubtitle" = "Está a ser solicitada a sua assinatura";
+"wallet.signatureRequestSubtitle" = "Sua assinatura está sendo solicitada";
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
 "wallet.signatureRequestTitle" = "Assinatura solicitada";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
-"wallet.signedTransactionDescription" = "A transação foi assinada e será enviada para a rede pelas dapps, estando a aguardar confirmação.";
+"wallet.signedTransactionDescription" = "A transação foi assinada, será enviada para a rede por dapps e aguarda confirmação.";
 
 /* A title of transaction signed status view indicating this transaction has been signed. */
 "wallet.signedTransactionTitle" = "Transação assinada";
@@ -1538,7 +1565,7 @@
 "wallet.signInWithBraveWallet" = "Iniciar sessão com a Carteira Brave";
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
-"wallet.signInWithBraveWalletMessage" = "Está a iniciar sessão em %1$@. A Brave Wallet vai partilhar o endereço da sua carteira com %2$@.";
+"wallet.signInWithBraveWalletMessage" = "Você iniciou sessão em %1$@. A Brave Wallet vai compartilhar o endereço da sua carteira com %2$@.";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
 "wallet.signMessageConsecutiveNewlineWarning" = "Caracteres de nova linha consecutivos detectados.";
@@ -1562,13 +1589,13 @@
 "wallet.siweAddressLabel" = "Endereço";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
-"wallet.siweChainIDLabel" = "Chain ID";
+"wallet.siweChainIDLabel" = "ID da Cadeia";
 
 /* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
 "wallet.siweDetailsTitle" = "Detalhes";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
-"wallet.siweExpirationTimeLabel" = "Tempo de vencimento";
+"wallet.siweExpirationTimeLabel" = "Prazo de validade";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
 "wallet.siweIssuedAtLabel" = "Emitido em";
@@ -1580,13 +1607,13 @@
 "wallet.siweNonceLabel" = "Nonce";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
-"wallet.siweOriginLabel" = "Origin";
+"wallet.siweOriginLabel" = "Origem";
 
 /* The label displayed above the Sign In With Ethereum resources. */
 "wallet.siweResourcesLabel" = "Recursos";
 
 /* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
-"wallet.siweSignInButtonTitle" = "Fazer login";
+"wallet.siweSignInButtonTitle" = "Entrar";
 
 /* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
 "wallet.siweStatementLabel" = "Extrato";
@@ -1604,13 +1631,13 @@
 "wallet.snsDomainInterstitialPageButtonProceed" = "Continue usando um servidor SNS";
 
 /* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "A Brave usará terceiros para resolver nomes de domínio .sol. Brave esconde seu endereço IP. Se você ativar isso, o terceiro verá que alguém está tentando visitar esses domínios .sol, mas nada mais. Para obter mais informações sobre quais terceiros usamos e suas políticas de privacidade, consulte nossa <a href=%@>página de ajuda</a>.";
+"wallet.snsDomainInterstitialPageDescription" = "O Brave usará terceiros para resolver nomes de domínio .sol. Brave esconde seu endereço IP. Se você ativar isso, o terceiro verá que alguém está tentando acessar esses domínios .sol, mas nada mais. Para obter mais informações sobre quais terceiros usamos e suas políticas de privacidade, consulte nossa <a href=%@>página de ajuda</a>.";
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "Habilitar suporte para o Serviço de Nome Solana (SNS) no Brave?";
 
 /* A description of an Solana account, displayed in Accounts tab. */
-"wallet.solAccountDescription" = "Cadeias Solana + SVM";
+"wallet.solAccountDescription" = "Solana + cadeias SVM";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "Adiantar conta nonce";
@@ -1625,7 +1652,7 @@
 "wallet.solanaAmount" = "Valor";
 
 /* The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details. */
-"wallet.solanaApproveCheckedInstructionName" = "Aprovação verificada";
+"wallet.solanaApproveCheckedInstructionName" = "Aprovar verificado";
 
 /* The title displayed above the Token Program Approve instruction type for Solana Instruction details. */
 "wallet.solanaApproveInstructionName" = "Aprovar";
@@ -1700,7 +1727,7 @@
 "wallet.solanaInstructionProgramId" = "ID do programa";
 
 /* The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details. */
-"wallet.solanaMintToCheckedInstructionName" = "Cunhagem verificada";
+"wallet.solanaMintToCheckedInstructionName" = "Cunhar para conta verificada";
 
 /* The title displayed above the Token Program Mint To instruction type for Solana Instruction details. */
 "wallet.solanaMintToInstructionName" = "Cunhar para";
@@ -1756,8 +1783,14 @@
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Ordenar ativos";
 
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "Está demorando mais do que o esperado?";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Acelerar";
+
 /* The title for the button to speed up a submitted transaction. */
-"wallet.speedUpTransactionButtonTitle" = "Speed Up";
+"wallet.speedUpTransactionButtonTitle" = "Acelerar";
 
 /* The description of one of the 'Stripe' provider. */
 "wallet.stripeNetworkProviderDescription" = "Pague com cartão de crédito, débito ou conta bancária.";
@@ -1766,7 +1799,7 @@
 "wallet.stripeNetworkProviderName" = "%1$@ por %2$@";
 
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
-"wallet.submittedTransactionDescription" = "A transação foi enviada para a rede e aguarda confirmação.";
+"wallet.submittedTransactionDescription" = "A transação foi enviada para a rede e está aguardando confirmação.";
 
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "Transação enviada";
@@ -1778,7 +1811,7 @@
 "wallet.swapConfirmationNetworkDesc" = "no %@";
 
 /* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
-"wallet.swapConfirmationNetworkFee" = "Taxa da rede";
+"wallet.swapConfirmationNetworkFee" = "Taxa de rede";
 
 /* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
 "wallet.swapConfirmationTitle" = "Confirmar pedido";
@@ -1841,13 +1874,13 @@
 "wallet.switchNetworkButtonTitle" = "Alternar";
 
 /* The description of the view shown over a dapps website that describes what switching the network will do. */
-"wallet.switchNetworkDescription" = "Isto irá alterar a rede para uma rede adicionada anteriormente";
+"wallet.switchNetworkDescription" = "Isso mudará a rede para uma rede adicionada anteriormente";
 
 /* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
-"wallet.switchNetworkSubtitle" = "Permitir que esta página Web altere a rede?";
+"wallet.switchNetworkSubtitle" = "Permitir que este site mude a rede?";
 
 /* The title of the view shown over a dapps website that requests the user change the current network. */
-"wallet.switchNetworkTitle" = "Alterar rede";
+"wallet.switchNetworkTitle" = "Mudar rede";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Hoje";
@@ -1877,7 +1910,7 @@
 "wallet.transactionApproveSymbolTitle" = "Aprovou %1$@ %2$@";
 
 /* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
-"wallet.transactionBacklogAcknowledgement" = "Limpar e substituir a(s) transação(ões) não concluída(s)";
+"wallet.transactionBacklogAcknowledgement" = "Limpar & substituir a(s) transação(ões) não concluída(s)";
 
 /* Additional information, when users have previously clear and replace the incomplete transaction(s) */
 "wallet.transactionBacklogAfterReplacement" = "Por enquanto, nenhuma ação adicional é necessária. Basta aguardar a limpeza das transações não confirmadas.";
@@ -1913,13 +1946,13 @@
 "wallet.transactionDetailsTxFeeTitle" = "Taxa da transação";
 
 /* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
-"wallet.transactionFee" = "Transaction Fee";
+"wallet.transactionFee" = "Taxa de Transação";
 
 /* A VoiceOver label that will be read out when a user focuses a transactions "from address" and "to address" labels. "%@" will be replaced with either an account name or a truncated ethereum address such as "Account 1" or "0x1234***3003" */
 "wallet.transactionFromToAccessibilityLabel" = "De: %1$@. Para: %2$@";
 
 /* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
-"wallet.transactionsDescription" = "%d transações";
+"wallet.transactionsDescription" = "%d transação";
 
 /* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: "Sent 0.0054 ETH ($22.44)" */
 "wallet.transactionSendTitle" = "Enviou %1$@ %2$@ (%3$@)";
@@ -1934,7 +1967,7 @@
 "wallet.transactionStatusConfirmed" = "Confirmada";
 
 /* A status that explains that the transaction has been dropped due to some error */
-"wallet.transactionStatusDropped" = "Ignorado";
+"wallet.transactionStatusDropped" = "Descartada";
 
 /* A status that explains that the transaction failed due to some error */
 "wallet.transactionStatusError" = "Erro";
@@ -1943,7 +1976,7 @@
 "wallet.transactionStatusRejected" = "Rejeitada";
 
 /* A status that explains that the transaction has been signed. */
-"wallet.transactionStatusSigned" = "Signed";
+"wallet.transactionStatusSigned" = "Assinado";
 
 /* A status that explains that the transaction has been submitted to the blockchain */
 "wallet.transactionStatusSubmitted" = "Enviada";
@@ -1979,7 +2012,7 @@
 "wallet.transactionUnknownSendTitle" = "Enviou %@";
 
 /* The description of one of the 'Transak' provider. */
-"wallet.transakProviderDescription" = "Compre instantaneamente com a sua conta bancária. Comissões mais baixas.";
+"wallet.transakProviderDescription" = "Compra instantânea com sua conta bancária. Taxas mais baixas.";
 
 /* The name of one of the on ramp provider. */
 "wallet.transakProviderName" = "Transak";
@@ -2015,16 +2048,68 @@
 "wallet.txFunctionTypeSignDappTransaction" = "Assinar transação DApp";
 
 /* Blockchain function name for Solana SPL token transfer with associated token account creation. */
-"wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "Transferência de Token SPL com criação de conta de token associado";
+"wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "Transferência de Token SPL com Criação de conta de token associado";
 
 /* Blockchain function name for swap. */
 "wallet.txFunctionTypeSwap" = "Realizar swap";
 
 /* Blockchain function name for non-native token transfers. */
-"wallet.txFunctionTypeTokenTransfer" = "Transferência de fichas";
+"wallet.txFunctionTypeTokenTransfer" = "Transferência de token";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "Aprovando";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "Concluída";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "foi aprovado em seu";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "Ocorreu um erro ao tentar aprovar";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "Não foi possível aprovar";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "em";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "Enviando";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "Ocorreu um erro ao tentar enviar";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "Não foi possível enviar";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "foi enviado para a conta";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "A transação foi assinada e será enviada à rede pelo dapps e aguarda confirmação.";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Você pode ignorar esta janela com segurança.";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "foi adicionado ao seu";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "Troca";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "Não foi possível trocar";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "para";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "Visualizar em Atividade";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "O Brave utiliza o Infura para resolver nomes de domínio .crypto (e também %1$@) que estejam na Unstoppable Domains. O Brave oculta o seu endereço IP. Se ativar esta opção, Infura identifica que alguém está a tentar visitar estes domínios, mas nada mais. Consulte a <a href=%2$@>%3$@</a> e <a href=%4$@>%5$@</a> do Infura.";
+"wallet.udDomainInterstitialPageDescription" = "O Brave usará o Infura para resolver nomes de domínio .crypto (e também %1$@) que estão em Domínios Imparáveis. O Brave oculta o seu endereço IP. Se você ativar essa opção, o Infura verá que alguém está tentando visitar esses domínios, mas nada mais. Consulte a <a href=%2$@>%3$@</a> e <a href=%4$@>%5$@</a> do Infura.";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Habilitar suporte de Domínios Imparáveis no Brave?";
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Resolver nomes de domínio da Unstoppable Domains";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "Não foi possível cancelar";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "Não foi possível acelerar";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Erro desconhecido";
@@ -2078,7 +2169,7 @@
 "wallet.wallet" = "Carteira";
 
 /* The label read out when a user is using VoiceOver and highlights the two-arrow button on the wallet panel top left corner. */
-"wallet.walletFullScreenAccessibilityTitle" = "Abrir carteira em ecrã inteiro";
+"wallet.walletFullScreenAccessibilityTitle" = "Abrir carteira em tela cheia";
 
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
 "wallet.walletPanelBlocked" = "Bloqueado";
@@ -2093,10 +2184,10 @@
 "wallet.walletPanelDisconnected" = "Desconectada";
 
 /* The description for wallet panel when users haven't set up a wallet yet. */
-"wallet.walletPanelSetupWalletDescription" = "Utilize este painel para aceder de forma segura à web3 e a todos os seus recursos criptográficos.";
+"wallet.walletPanelSetupWalletDescription" = "Use este painel para acessar com segurança o web3 e todos os seus criptoativos.";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.walletSettings" = "Configurações da Carteira";
+"wallet.walletSettings" = "Configurações da carteira";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "Nenhum";
@@ -2120,7 +2211,7 @@
 "wallet.web3DomainOptionAsk" = "Perguntar";
 
 /* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
-"wallet.web3DomainOptionDisabled" = "Desativado";
+"wallet.web3DomainOptionDisabled" = "Desativada";
 
 /* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionEnabled" = "Ativada";
@@ -2129,13 +2220,13 @@
 "wallet.web3DomainOptionsHeader" = "Domínios Web3";
 
 /* The title for the options to resolve Solana Name service domain names. */
-"wallet.web3DomainOptionsTitle" = "Resolver nome do domínio Solana Name Service (SNS)";
+"wallet.web3DomainOptionsTitle" = "Resolver nomes de domínio Solana Name Service (SNS)";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
-"wallet.web3PreferencesAllowEthProviderAccess" = "Os sites podem pedir acesso à sua carteira Ethereum";
+"wallet.web3PreferencesAllowEthProviderAccess" = "Os sites podem solicitar acesso à sua carteira Ethereum";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
-"wallet.web3PreferencesAllowSolProviderAccess" = "Os sites podem pedir acesso à sua carteira Solana";
+"wallet.web3PreferencesAllowSolProviderAccess" = "Os sites podem solicitar acesso à sua carteira Solana";
 
 /* The title for the entry displaying the current preferred default Ethereum wallet is. */
 "wallet.web3PreferencesDefaultEthWallet" = "Carteira Ethereum padrão";
@@ -2144,19 +2235,19 @@
 "wallet.web3PreferencesDefaultSolWallet" = "Carteira Solana padrão";
 
 /* The title for the entry displaying the preferred option to display web3 site notifications. */
-"wallet.web3PreferencesDisplayWeb3Notifications" = "Apresentar notificações de Web3";
+"wallet.web3PreferencesDisplayWeb3Notifications" = "Exibir notificações de web3";
 
 /* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
-"wallet.web3PreferencesManageSiteConnections" = "Gerir as conexões da página Web";
+"wallet.web3PreferencesManageSiteConnections" = "Gerenciar conexões de site";
 
 /* The section title for users to set up preferences for interation with web3 sites. */
-"wallet.web3PreferencesSectionTitle" = "Preferências de Web3";
+"wallet.web3PreferencesSectionTitle" = "Preferências de web3";
 
 /* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
-"wallet.web3SettingsEnableNFTDiscovery" = "Ativar a Deteção de NFT";
+"wallet.web3SettingsEnableNFTDiscovery" = "Ativar a Detecção de NFT";
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
-"wallet.web3SettingsEnableNFTDiscoveryFooter" = "Adicione automaticamente os seus NFT à Wallet através de API externas. [Saiba mais](%@)";
+"wallet.web3SettingsEnableNFTDiscoveryFooter" = "Adicione automaticamente os seus NFT à Wallet usando API externas. [Saiba mais](%@)";
 
 /* The title of the sort option that sorts alphabetically from Z to A. Used in Portfolio/NFT filters and display settings. */
 "wallet.zToASortOption" = "Z a A";

@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "هل اشتريت بالفعل عبر الموقع الإلكتروني Brave.com؟";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "هل لديك رمز ترويجي؟";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "استرداد الرمز الترويجي";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "قم بتحديث بيانات الاعتماد الخاصة بك";
 
@@ -41,10 +47,10 @@
 "SelectLocationBarTitle" = "حدد شريط الموقع";
 
 /* An option in a list of shortcut actions that hides the button */
-"shortcutsButton.hideButtonTitle" = "إخفاء زر \"الاختصار\"";
+"shortcutsButton.hideButtonTitle" = "إخفاء زر الاختصار";
 
 /* A title shown when letting the user choose a button's purpose from a list of destinations */
-"shortcutsButton.shortcutButtonTitle" = "زر \"الاختصار\"";
+"shortcutsButton.shortcutButtonTitle" = "زر الاختصار";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "إظهار الإشارات المرجعية";
@@ -71,7 +77,7 @@
 "storekitReceiptViewer.leoYearlySubscriptionName" = "Brave Leo سنوي";
 
 /* The error message when the App Store Receipt was not found in the Application Bundle */
-"storekitReceiptViewer.noReceiptFoundTitle" = "عذرا، لم نجد أي إيصالات آب ستور";
+"storekitReceiptViewer.noReceiptFoundTitle" = "عذرًا، تعذر العثور على إيصالات App Store";
 
 /* The title of the label that shows the date when the product subscription was cancelled */
 "storekitReceiptViewer.receiptCancellationDate" = "تاريخ الإلغاء";
@@ -86,31 +92,31 @@
 "storekitReceiptViewer.receiptInvalidDate" = "غير متوفر";
 
 /* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
-"storekitReceiptViewer.receiptLoadingErrorTitle" = "عذرا، تعذر تحميل إيصال آب ستور";
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "عذرًا، تعذر تحميل إيصال App Store";
 
 /* The title of the label that shows the Order ID of the user's purchase */
-"storekitReceiptViewer.receiptOrderIDTitle" = "معرف الطلب";
+"storekitReceiptViewer.receiptOrderIDTitle" = "معرّف الطلب";
 
 /* The title of the label that shows the date when the product subscription was first purchased */
-"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "تاريخ الاشتراء الأصلي";
+"storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "تاريخ الشراء الأصلي";
 
 /* The title of the label that shows the date when the product subscription was recently purchased or renewed */
-"storekitReceiptViewer.receiptPurchaseDate" = "تاريخ الاشتراء";
+"storekitReceiptViewer.receiptPurchaseDate" = "تاريخ الشراء";
 
 /* The title of the label that shows the Transaction ID of the user's purchase */
-"storekitReceiptViewer.receiptTransactionIDTitle" = "معرف المعاملة";
+"storekitReceiptViewer.receiptTransactionIDTitle" = "معرّف المعاملة";
 
 /* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
-"storekitReceiptViewer.receiptViewerLoadingTitle" = "جارٍ التحميل، يُرجى الانتظار…";
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "جارٍ التحميل، الرجاء الانتظار...";
 
 /* The title of the screen that shows the App Store Receipt */
 "storekitReceiptViewer.receiptViewerTitle" = "إيصال آب ستور";
 
 /* The title of the button that shows a system action sheet, to share the receipt */
-"storekitReceiptViewer.shareReceiptTitle" = "ماشركة الإيصال";
+"storekitReceiptViewer.shareReceiptTitle" = "مشاركة الإيصال";
 
 /* The title of the product subscription the user purchased (Monthly subscription) */
-"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Brave VPN شهر";
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Brave VPN شهري";
 
 /* The title of the product subscription the user purchased (Yearly subscription) */
 "storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN سنوي";

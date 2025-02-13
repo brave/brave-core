@@ -274,8 +274,26 @@
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Kupuj kryptowalutę za pomocą Apple Pay, karty kredytowej lub debetowej poprzez Wyre.";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "nie zostało zatwierdzone na";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "Złożono wniosek o anulowanie";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "Anulowanie transakcji";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "Anuluj transakcję";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "Anuluj transakcję";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "Zostanie utworzona nowa transakcja w celu anulowania istniejącej transakcji";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "zostało zwrócone na";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Data";
@@ -366,6 +384,12 @@
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "Wymagane nieograniczone zezwolenie";
+
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "konto";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "Transakcja anulowana!";
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Zamknij ";
@@ -851,7 +875,7 @@
 "wallet.hidePrivateKeyButtonTitle" = "Ukryj klucz prywatny";
 
 /* The description label of the filter option that hides assets if their fiat value is below $0.05, shown below the title. Used in Portfolio/NFT filters and display settings. */
-"wallet.hideSmallBalancesDescription" = "Aktywa o wartości mniejszej niż 0,05 USD";
+"wallet.hideSmallBalancesDescription" = "Aktywa o wartości mniejszej niż 0.05 USD";
 
 /* The label of the filter option that hides assets if their fiat value is below $0.05. Used in Portfolio/NFT filters and display settings. */
 "wallet.hideSmallBalancesTitle" = "Ukryj małe salda";
@@ -1162,6 +1186,9 @@
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Wszystko gotowe!";
 
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "Początkowa transakcja została potwierdzona.";
+
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Inne działania portfela";
 
@@ -1379,7 +1406,7 @@
 "wallet.sendCryptoAmountTitle" = "Wpisz kwotę %@, aby wysłać";
 
 /* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.sendCryptoFromTitle" = "Z";
+"wallet.sendCryptoFromTitle" = "Od";
 
 /* The title of the button for users to click when they want to send the sending-transaction */
 "wallet.sendCryptoSendButtonTitle" = "Wyślij";
@@ -1388,7 +1415,7 @@
 "wallet.sendCryptoSendError" = "W tej chwili nie możemy przeprowadzić transakcji";
 
 /* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
-"wallet.sendCryptoToTitle" = "Na";
+"wallet.sendCryptoToTitle" = "Do";
 
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "Wyślij kryptowalutę lub przelej z jednego konta na inne.";
@@ -1448,7 +1475,7 @@
 "wallet.settingsResetButtonTitle" = "Resetuj i wyczyść dane portfela";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionAlertButtonTitle" = "Resetuj";
+"wallet.settingsResetTransactionAlertButtonTitle" = "Zresetuj";
 
 /* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertMessage" = "Ta opcja jest zwykle wykorzystywana przez deweloperów prowadzących lokalny serwer testowy.";
@@ -1460,7 +1487,7 @@
 "wallet.settingsResetTransactionFooter" = "Usuwanie transakcji może być przydatne dla deweloperów lub podczas czyszczenia lokalnego serwera.";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionTitle" = "Wyczyść transakcję i informację o wartości jednorazowej";
+"wallet.settingsResetTransactionTitle" = "Wyczyść informacje dotyczące transakcji jednorazowej";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "Resetuj portfel";
@@ -1756,6 +1783,12 @@
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Sortuj aktywa";
 
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "Operacja trwa dłużej, niż powinna?";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Przyśpiesz";
+
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Przyśpiesz";
 
@@ -1796,7 +1829,7 @@
 "wallet.swapCryptoAmountTitle" = "Wpisz kwotę %@, aby zamienić";
 
 /* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.swapCryptoFromTitle" = "Z";
+"wallet.swapCryptoFromTitle" = "Od";
 
 /* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
 "wallet.swapCryptoMarketPriceTitle" = "Cena rynkowa w %@";
@@ -1808,7 +1841,7 @@
 "wallet.swapCryptoSwapButtonTitle" = "Zamień";
 
 /* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.swapCryptoToTitle" = "Na";
+"wallet.swapCryptoToTitle" = "Do";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
 "wallet.swapCryptoUnsupportNetworkBody" = "Brave obecnie nie obsługuje zamian w %@. Przełącz się na obsługiwany łańcuch.";
@@ -1919,7 +1952,7 @@
 "wallet.transactionFromToAccessibilityLabel" = "Od: %1$@. Do: %2$@";
 
 /* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
-"wallet.transactionsDescription" = "%d transakcje";
+"wallet.transactionsDescription" = "%d transakcji";
 
 /* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: "Sent 0.0054 ETH ($22.44)" */
 "wallet.transactionSendTitle" = "Wysłano %1$@ %2$@ (%3$@)";
@@ -2023,6 +2056,58 @@
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Transfer tokena";
 
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "Zatwierdzanie";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "Uzupełniono";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "zatwierdzone na Twoim";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "Operacja zatwierdzania nie powiodła się";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "Nie można zatwierdzić";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "na";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "Wysyłanie";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "Wystąpił błąd podczas próby przesłania";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "Nie można wysłać";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "został wysłany na konto";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "Transakcja została zatwierdzona, zostanie przesłana do sieci przez dApps i oczekuje na zatwierdzenie.";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Możesz bezpiecznie zamknąć ten ekran.";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "został dodany do Twojego";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "Zamiana";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "Nie można zamienić";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "do";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "Wyświetl w historii aktywności";
+
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave będzie używać Infura do obsługi nazw domen .crypto (oraz %1$@) należących do Unstoppable Domains. Brave ukrywa Twój adres IP. Jeśli to włączysz, Infura zobaczy, że ktoś próbuje odwiedzić te domeny, ale nic poza tym. Zobacz <a href=%2$@>%3$@</a> i <a href=%4$@>%5$@</a> w Infura.";
 
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Obsługa nazw domeny Unstoppable Domains";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "Nie można anulować";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "Nie można przyspieszyć";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Nieznany błąd";
@@ -2120,7 +2211,7 @@
 "wallet.web3DomainOptionAsk" = "Zapytaj";
 
 /* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
-"wallet.web3DomainOptionDisabled" = "Wyłączono";
+"wallet.web3DomainOptionDisabled" = "Wyłączone";
 
 /* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionEnabled" = "Włączone";

@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Nastavte si Brave jako váš výchozí prohlížeč";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Prohlížejte si internet rychleji a využívejte méně dat.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Méně reklam a trackerů.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Teď ne";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Opravdu, zbavili jsme se jich.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Zablokujte otravná přerušení na vašich oblíbených streamovacích službách.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Už žádné videoreklamy.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Blokování přerušení při streamování";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Zjistit více o naší analýze produktuů se zachováním soukromí (P3A)";
@@ -35,16 +29,16 @@
 "focusOnboarding.p3aToggleDescription" = "Změňte to kdykoli v Nastavení Brave ve „Štíty Brave a soukromí“.";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Sdílejte soukromé a anonymní informace o produktu.";
+"focusOnboarding.p3aToggleTitle" = "Sdílet soukromé a anonymní informace o produktu.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Začít prohlížet";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Přejít do nastavení systému";
+"focusOnboarding.systemSettingsButtonTitle" = "Nastavit jako výchozí";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Zadejte adresu URL a užijte si Méně reklam a trackerů";
+"focusOnboarding.urlBarIndicatorDescription" = "Začněte streamovat s menším množstvím reklam a trackerů.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Brave je jiný";

@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Edytuj";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Zacznij wpisywać, aby wyszukać zapisane audio i wideo";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Wyszukaj media";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Dotknij, aby wybrać multimedia";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Dodaj multimedia z ulubionych witryn, a będą one odtwarzane tutaj.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Brak wyników";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Otwórz w nowej karcie w trybie prywatnym";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Zapisz dane trybu offline";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Szukaj";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Udostępnij";

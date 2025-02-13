@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Edita";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Comença a escriure per cercar els àudios i vídeos que hagis desat";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Cercar arxius";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Clica per seleccionar el mitjà";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Afegeix contingut multimèdia dels teus llocs preferits i es reproduirà aquí.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "No s'ha trobat cap resultat.";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Obre en una nova pestanya privada";
 
@@ -125,7 +134,7 @@
 "playlist.renamePlaylist" = "Reanomena la llista de reproducció";
 
 /* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
-"playlist.repeatModeOptionAll" = "Tots";
+"playlist.repeatModeOptionAll" = "Tot";
 
 /* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
 "playlist.repeatModeOptionNone" = "Cap";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Desa les dades fora de línia";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Cerca";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Comparteix";

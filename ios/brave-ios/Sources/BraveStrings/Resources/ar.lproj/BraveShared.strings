@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "إلغاء";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "يتم طلب اسم مستخدم وكلمة مرور بواسطة %1$@. يقول الموقع: %2$@";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "تسجيل الدخول";
 
@@ -199,6 +196,12 @@
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "الضوابط العالمية";
 
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "تخزين معلومات الاتصال لتقارير المواقع المعطلة في المستقبل";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "إذا قدمت معلومات الاتصال، فسيتم تخزينها للتقارير المستقبلية";
+
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "إذا ظهر هذا الموقع معطلًا ، فجرب إيقاف Shields";
 
@@ -269,7 +272,7 @@
 "callout.p3aCalloutToggleTitle" = "تمتع بمشاركة رؤى المنتج الخاصة ومجهولة المصدر.";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "احصل على خصوصية Brave على جهاز الكمبيوتر أو الجهاز اللوحي، وقم بمزامنة الإشارات المرجعية والإضافات بين الأجهزة.";
+"callout.privacyEverywhereCalloutDescription" = "احصل على خصوصية Brave على جهاز الكمبيوتر أو الجهاز اللوحي الخاص بك، وقم بمزامنة الإشارات المرجعية والإضافات بين الأجهزة.";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "مزامنة الآن";
@@ -569,7 +572,7 @@
 "defaultBrowserCallout.introPrimaryText" = "افتح جميع الروابط بواسطة متصفح Brave لحماية خصوصيتك";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "تقوم Brave Shields بحظر أدوات التتبع والإعلانات، وحفظ البيانات، وتوفير الوقت في كل موقع تزوره";
+"defaultBrowserCallout.introSecondaryText" = "تقوم Brave Shields بحظر أدوات التتبع والإعلانات، وتحفظ البيانات، وتوفّر الوقت في كل موقع تزوره";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "افتح الإعدادات، وانقر فوق تطبيق المتصفح الافتراضي، وحدد Brave.";
@@ -689,7 +692,7 @@
 "ErrorPageReloadButtonTitle" = "إعادة التحميل";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "يستخدم %1$@ التشفير عادةً لحماية معلوماتك. عندما حاول Brave الاتصال ب %2$@ هذه المرة، أرسل موقع الويب بيانات اعتماد غير عادية وغير صحيحة. قد يحدث هذا عندما يحاول أحد المهاجمين التظاهر بأنه %3$@، أو أن شاشة تسجيل الدخول إلى Wi-Fi قد قطعت الاتصال. لا تزال معلوماتك آمنة لأن Brave أوقف الاتصال قبل تبادل أي بيانات.<br />لا يمكنك زيارة %4$@ الآن لأن موقع الويب يستخدم تثبيت الشهادة. عادة ما تكون أخطاء الشبكة والهجمات مؤقتة، لذلك من المحتمل أن تعمل هذه الصفحة لاحقًا.";
+"ErrorPagesAdvancedErrorPinningDetails" = "يستخدم %1$@ التشفير عادةً لحماية معلوماتك. عندما حاول Brave الاتصال بـ %2$@ هذه المرة، أرسل موقع الويب بيانات اعتماد غير عادية وغير صحيحة. قد يحدث هذا عندما يحاول أحد المهاجمين التظاهر بأنه %3$@، أو عندما تقطع شاشة تسجيل الدخول إلى Wi-Fi الاتصال. تبقى معلوماتك آمنة لأن Brave أوقف الاتصال قبل تبادل أي بيانات.<br />لا يمكنك زيارة %4$@ الآن لأن موقع الويب يستخدم تثبيت الشهادة. عادة ما تكون أخطاء الشبكة والهجمات مؤقتة، لذلك من المحتمل أن تعمل هذه الصفحة لاحقًا.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "تعذر على هذا الخادم إثبات أنه %@؛ شهادة الأمان الخاصة به غير موثوق بها من قبل نظام تشغيل جهازك. قد يكون هذا بسبب خطأ في التكوين أو محاولة مهاجم اعتراض اتصالك.";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "انقر لعرض Brave Shields";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "تم حظر الإعلانات وأدوات التتبع";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "إعلانات &تم حظر أجهزة التعقب";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "ربط اشتراكك في VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "يمكن لاشتراكك في Brave VPN حماية ما يصل إلى 5 أجهزة من الأجهزة العاملة بنظام Android وiOS وسطح المكتب. ما عليك سوى ربط اشتراكك في آب ستور بحساب Brave الخاص بك.";
+"onboarding.linkReceiptDescription" = "يمكن لاشتراكك في Brave VPN حماية ما يصل إلى 10 أجهزة من الأجهزة العاملة بنظام Android وiOS وسطح المكتب. ما عليك سوى ربط اشتراكك في آب ستور بحساب Brave الخاص بك.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "قم بتوسيع نطاق حماية Brave Firewall + VPN";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "فتح في نافذة جديدة";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "متابعة تنزيل ملف تعريف للتهيئة من %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "ملف تعريف للتهيئة متاح";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "فتح في علامة تبويب خاصة جديدة";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "علامات التبويب المفتوحة";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "مواصلة تحميل حدث تقويمي من %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "حدث تقويمي متاح";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "فتح موقع الويب";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "يمكن أن تؤدي إضافة ملفات الفيديو والصوت للاستخدام في وضع عدم الاتصال إلى استخدام مساحة تخزين كبيرة على جهازك بالإضافة إلى استخدام بياناتك الخلوية";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "سيحتفظ هذا الخيار تلقائيًا بعناصر قائمة التشغيل الخاصة بك على جهازك حتى تتمكن من تشغيلها دون اتصال بالإنترنت.";
+"playlist.playlistAutoSaveSettingsFooterText" = "بمجرد فتح محتوى في قائمة التشغيل، سيحتفظ هذا الخيار بعناصر قائمة التشغيل المفتوحة على جهازك حتى تتمكن من تشغيلها دون اتصال بالإنترنت.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "الحفظ التلقائي في وضع عدم الاتصال";
+"playlist.playlistAutoSaveSettingsTitle" = "حفظ المحتوى للتشغيل دون اتصال بالإنترنت";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "يمكن أن تؤدي إضافة ملفات الفيديو والصوت للاستخدام في وضع عدم الاتصال إلى استخدام مساحة تخزين كبيرة على جهازك. الرجاء إزالة بعض الملفات لتحرير مساحة التخزين.";
@@ -1618,12 +1633,6 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "تذكر موضع إعادة التشغيل للملف";
 
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "لتعطيل واجهة برمجة تطبيقات WebKit MediaSource";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "توافق الويب";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "احذف";
 
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "معذرةً";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "تمت الإضافة إلى قائمة التشغيل لدى Brave";
+"playList.toastAddedToPlaylistTitle" = "عرض في قائمة التشغيل";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "السعر الافتتاحي";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "أضف إلى قائمة التشغيل لدى Brave";
+"playList.toastAddToPlaylistTitle" = "إضافة إلى قائمة التشغيل";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "عرض في قائمة التشغيل لدى Brave";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "تراجع";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "لإضافة زر قائمة تشغيل (يبدو وكأنه 4 أسطر مع رمز +) بجانب شريط العناوين في متصفح Brave. يمنحك هذا الزر وصولًا سريعًا لفتح قائمة التشغيل أو إضافة الوسائط أو إزالتها.";
+"playlist.urlBarButtonOptionFooter" = "لإضافة زر قائمة تشغيل بجانب شريط العناوين في متصفح Brave. يمنحك هذا الزر وصولًا سريعًا لفتح قائمة التشغيل أو إضافة الوسائط أو إزالتها.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "تمكين زر الوصول السريع";
@@ -1826,25 +1835,25 @@
 "privacyHub.allTimeListsHeader" = "جميع الأوقات";
 
 /* Title of a section to show total count of trackers blocked by Brave */
-"privacyHub.allTimeListsTrackersView" = "أدوات التتبع والإعلانات";
+"privacyHub.allTimeListsTrackersView" = "أدوات التتبع & الإعلانات";
 
 /* Title of a section to show websites containing highest amount of trackers */
 "privacyHub.allTimeListsWebsitesView" = "المواقع الإلكترونية";
 
 /* Header title for a list of most frequent ads and trackers detected. */
-"privacyHub.allTimeListTrackersHeaderTitle" = "الإعلانات وأدوات التتبع الأكثر شيوعًا على المواقع التي تزورها";
+"privacyHub.allTimeListTrackersHeaderTitle" = "أدوات التتبع والإعلانات الأكثر شيوعًا على المواقع التي تزورها";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "مواقع الويب التي تحتوي على معظم الإعلانات وأدوات التتبع";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "مواقع الويب التي تحتوي على معظم أدوات التتبع والإعلانات";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "%lld من المواقع";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld من أدوات التتبع والإعلانات";
+"privacyHub.allTimeTrackersCount" = "%lld أدوات التتبع والإعلانات";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "أداة التتبع والإعلان";
+"privacyHub.allTimeTrackerTitle" = "أداة التتبع وإعلان";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "موقع ويب";
@@ -1880,7 +1889,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "تم حظر **%1$@** بواسطة Brave Shields على مواقع **%2$ lld**";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "الإعلان وعلامة التبويب الأكثر شيوعًا";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "أداة التتبع والإعلان الأكثر شيوعًا";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "قم بزيارة بعض مواقع الويب للاطلاع على البيانات هنا.";
@@ -1889,7 +1898,7 @@
 "privacyHub.noDataToShow" = "لا توجد بيانات لإظهارها حتى الآن.";
 
 /* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "احصل على تحديثات الخصوصية الأسبوعية حول أداة التتبع وحظر الإعلانات.";
+"privacyHub.notificationCalloutBody" = "احصل على تحديثات الخصوصية الأسبوعية على حظر أدوات التعقب amp;amp، والإعلانات.";
 
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "تشغيل الإشعارات";
@@ -1913,7 +1922,7 @@
 "privacyHub.privacyReportsTitle" = "مركز الخصوصية";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
-"privacyHub.riskiestWebsiteBody" = "**%1$@** كان لديه متوسط **%2$ lld** من أدوات التتبع والإعلانات المحظورة لكل زيارة";
+"privacyHub.riskiestWebsiteBody" = "**%1$@** كان لديه متوسط **%2$lld** من أدوات التتبع والإعلانات المحظورة لكل زيارة";
 
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "الموقع المحتوي على أكثر أدوات التتبع";
@@ -2145,6 +2154,9 @@
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "تواصل معي على: (اختياري)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "إذا قدمت معلومات الاتصال سيتم تخزينها للإبلاغ عن المواقع المعطلة في المستقبل.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "البريد الإلكتروني، تويتر، إلخ.";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "للبحث عن الاقتراح";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "افتح علامات التبويب والإشارات المرجعية والسجل";
+"SearchHistorySectionHeader" = "علامات التبويب المفتوحة والإشارات المرجعية والسجل";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "مسح البحث";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "تهانينا. أنت مميز جدًا.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "تم حظر %ld من أدوات التتبع والإعلانات!";
+"shieldEducation.trackerCountShareTitle" = "%ld أدوات التتبع والإعلانات المحظورة!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "تستهلك مقاطع الفيديو بدون إعلانات بيانات أقل.";
@@ -3473,7 +3485,7 @@
 "today.similarToSourceSubtitle" = "مماثل لـ %@";
 
 /* No comment provided by engineer. */
-"today.sourcesAndSettings" = "المصادر والإعدادات";
+"today.sourcesAndSettings" = "الموارد والإعدادات";
 
 /* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
 "today.sourcesHeaderTitle" = "المصادر";
@@ -3546,129 +3558,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "لا يقوم Brave بتخزين أو مشاركة عمليات البحث الصوتي الخاصة بك.";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "هل تريد البقاء محميًا؟ ما عليك سوى التجديد قبل انتهاء اشتراكك. كشكر على التجديد، سنأخذ خصمًا بنسبة 20% لمدة 3 أشهر قادمة.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "تمكين التجديد التلقائي";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "جدد اشتراك Brave VPN تلقائيًا الآن واحصل على خصم 20% لمدة 3 أشهر!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "قم بالتجديد التلقائي لاشتراك Brave VPN الخاص بك الآن واحصل على شهر مجانًا!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "هذا يعني أنك ستفقد حماية Brave الإضافية لكل تطبيق على هاتفك.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "للأسف! اشتراك Brave VPN الخاص بك على وشك الانتهاء.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "تعذر الاتصال بآب ستور، يرجى المحاولة مرة أخرى في غضون بضع دقائق.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "خطأ في آب ستور";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "يمنع اتصالات الشبكة غير المرغوب فيها";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "حظر الإعلانات وأدوات التتبع عبر جميع التطبيقات ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "يدعم سرعات تصل إلى 100 ميجابت في الثانية";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "سريع وغير محدود حتى 100 ميجابت في الثانية";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "دعم على مدار الساعة طوال أيام الأسبوع";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "يؤمن جميع الاتصالات";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "مدعومة من";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "تلقائي";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "يرجى تسجيل الدخول إلى حساب Brave الخاص بك لتحديث جلسة VPN الخاصة بك.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "رفض";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "تسجيل الدخول";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "انتهت صلاحية الجلسة";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "تم الإيقاف";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "تم التمكين";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "انتهت الصلاحية";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "اشترك الآن";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "هذا صحيح. اشتراك Brave VPN الخاص بك جيد الآن على ما يصل إلى 5 أجهزة. حتى تتمكن من الاشتراك في iOS واستخدامه على أجهزة Mac وWindows وAndroid مجانًا.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "الآن، استخدم Brave VPN على جميع أجهزتك بنفس السعر!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "جرب Brave VPN مرة أخرى واحصل على خصم 20% لمدة 3 أشهر!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "هل أنت مستعد لحماية كل تطبيق على هاتفك؟ عد إلى Brave VPN واحصل على خصم 20% لمدة 3 أشهر قادمة.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "لطالما حظرت Brave VPN أدوات التتبع على كل تطبيق، حتى خارج متصفح Brave. يمكنك الآن معرفة من حاول تتبعك باستخدام مركز خصوصية Brave.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "هل تعلم أن Brave VPN تحميك خارج متصفح Brave؟";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "تحديث";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "لا تقلق. سنبقي VPN نشطةً لبضعة أيام أثناء تحديث معلومات الدفع الخاصة بك.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "قم بتحديث معلومات الدفع الخاصة بك لتظل محميًا باستخدام Brave VPN.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "هل تريد الاستمرار في حماية كل تطبيق على هاتفك؟ ما عليك سوى تحديث تفاصيل الدفع الخاصة بك.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "هناك مشكلة في الفوترة في حسابك، مما يعني أن اشتراك Brave VPN الخاص بك على وشك الانتهاء.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "تحديث الدفع";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "منطقة الخادم";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "الإعداد الحالي: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "منطقة VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "يرجى تحديث طريقة الدفع الخاصة بك";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "تاريخ إنشاء المحفظة";

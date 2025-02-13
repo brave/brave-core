@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Avbryt";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "Användarnamn och lösenord efterfrågas av %1$@. Sidan säger: %2$@";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "Logga in";
 
@@ -155,7 +152,7 @@
 "BraveRewardsOpen" = "Öppna";
 
 /* Brave Rewards title in settings */
-"BraveRewardsSettingsTitle" = "Belöningar";
+"BraveRewardsSettingsTitle" = "Rewards";
 
 /* Brave Rewards title */
 "BraveRewardsTitle" = "Brave-belöningar";
@@ -182,10 +179,10 @@
 "BraveShieldsAdvancedControls" = "Avancerade kontroller";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields och sekretess";
+"BraveShieldsAndPrivacy" = "Brave Shields & Integritet";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacyTitle" = "Shields och sekretess";
+"BraveShieldsAndPrivacyTitle" = "Shields & Integritet";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Annonser och andra läskiga saker blockerade";
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Globala kontroller";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Spara kontaktinformation för framtida rapporter om avbrutna webbsidor";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Om du uppger kontaktinformation kommer den att lagras för framtida rapporter";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Om webbplatsen visas bruten försök med sköldar nere";
@@ -527,10 +530,10 @@
 "customSearchEngine.suggestionTemplateTitle" = "Förslagsmall:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Den nya sökmotorn visas i snabbsökfältet.";
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Den nya sökmotorn visas i snabbsöksfältet.";
 
 /* The title that asks the user to Add the search provider */
-"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Lägg till sökleverantör?";
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Vill du lägga till en sökleverantör?";
 
 /* A descriotion explaining that there is error while adding a search engine */
 "customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "Den anpassade sökmotorn kunde inte läggas till. Vänligen försök igen senare.";
@@ -539,7 +542,7 @@
 "customSearchEngine.thirdPartySearchEngineAddErrorTitle" = "Anpassat sökmotorfel";
 
 /* A message explaining a replica search engine is already added */
-"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "En sökmotor med denna titel eller URL har redan lagts till.";
+"customSearchEngine.thirdPartySearchEngineDuplicateErrorDescription" = "En sökmotor med denna titel eller adress har redan lagts till.";
 
 /* A description explaining that there is a formatting error in URL field */
 "customSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription" = "Skriv sökadressen och ersätt frågan med %s. ";
@@ -557,7 +560,7 @@
 "CustomSearchEngines" = "Anpassade sökmotorer";
 
 /* The success message that appears after a user sucessfully adds a new search engine */
-"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Lagt till sökmotor!";
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Sökmotor tillagd!";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Inte nu";
@@ -587,7 +590,7 @@
 "defaultThemeName" = "Brave standardinställningar";
 
 /* No comment provided by engineer. */
-"Delete" = "Ta bort";
+"Delete" = "Radera";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
 "DeleteBookmarksFolderAlertMessage" = "Detta raderar alla mappar och bokmärken. Vill du fortsätta?";
@@ -608,7 +611,7 @@
 "DeleteLoginAlertTitle" = "Är du säker?";
 
 /* Label for the button used to delete the current login. */
-"DeleteLoginButtonTitle" = "Ta bort";
+"DeleteLoginButtonTitle" = "Radera";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhet %1$@ (%2$@)";
@@ -641,7 +644,7 @@
 "DownloadedFiles" = "Hämtade filer";
 
 /* Title for downloads menu item */
-"DownloadsMenuItem" = "Nedladdningar";
+"DownloadsMenuItem" = "Hämtade";
 
 /* Title for when a user has nothing downloaded onto their device, and the list is empty. */
 "DownloadsPanelEmptyStateTitle" = "Hämtade filer kommer att visas här.";
@@ -653,7 +656,7 @@
 "Earlier" = "Tidigare";
 
 /* No comment provided by engineer. */
-"Edit" = "Redigera";
+"Edit" = "Ändra";
 
 /* Button to edit a bookmark */
 "EditBookmark" = "Ändra bokmärke";
@@ -794,7 +797,7 @@
 "ForcePaste" = "Tvinga inklistring";
 
 /* No comment provided by engineer. */
-"genericErrorBody" = "Någonting gick fel. Vänligen försök igen.";
+"genericErrorBody" = "Hoppsan! Någonting gick fel. Försök igen.";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "Fel";
@@ -896,7 +899,7 @@
 "login.loginListEmptyScreenTitle" = "Inga inloggningar hittades";
 
 /* Title for navigation bar of the login list screen */
-"login.loginListNavigationTitle" = "Inloggningar och lösenord";
+"login.loginListNavigationTitle" = "Inloggningar & lösenord";
 
 /* The header title displayed over the never saved login list entry */
 "login.loginListNeverSavedHeaderTitle" = "Aldrig sparat";
@@ -941,7 +944,7 @@
 "MenuItemHidePasswordTitle" = "Dölj";
 
 /* Open and Fill website text selection menu item */
-"MenuItemOpenTitle" = "Öppna webbplats";
+"MenuItemOpenTitle" = "Öppne hemsida";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Avslöja";
@@ -980,7 +983,7 @@
 "NewPrivateWindowTitle" = "Nytt inkognitofönster";
 
 /* New Tab title */
-"NewTab" = "Ny flik";
+"NewTab" = "Ny tabb";
 
 /* Context menu item for opening a new window */
 "NewWindowTitle" = "Nytt fönster";
@@ -1043,13 +1046,13 @@
 "ntp.settingsDefaultImagesOnly" = "Standardbilder";
 
 /* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponsrade bilder och videor";
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponsrade bilder & videor";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Sponsrade bilder";
 
 /* Title on settings page to adjust the primary home screen functionality. */
-"ntp.settingsTitle" = "Ny fliksida";
+"ntp.settingsTitle" = "Ny flikssida";
 
 /* A button title to show more bookmarks, that opens a new menu. */
 "ntp.showMoreFavorites" = "Visa mer";
@@ -1112,7 +1115,7 @@
 "OBRewardsAgreementDetail" = "Genom att trycka på Ja samtycker du till";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetailLink" = "Användarvillkor";
+"OBRewardsAgreementDetailLink" = "Tjänstevillkor";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailsAnd" = "och";
@@ -1154,7 +1157,7 @@
 "OBTurnOnButton" = "Starta";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ och %2$lld andra annonser och spårare blockerade";
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ och %2$lld andra annonser & spårare blockerade";
 
 /* The footnote indicating what Brave shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "Se alla dåliga saker som Brave har blockerat på varje sida med Shields";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "Tryck för att visa Brave Shields";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Blockerade annonser och spårare";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Annonser och spårare har blockerats";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Länka din VPN-prenumeration";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Din Brave VPN-prenumeration kan skydda upp till 5 enheter, på Android, iOS och stationära datorer. Länka bara din App Store-prenumeration till ditt Brave-konto.";
+"onboarding.linkReceiptDescription" = "Din Brave VPN-prenumeration kan skydda upp till 10 enheter, på Android, iOS och stationära datorer. Länka bara din App Store-prenumeration till ditt Brave-konto.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Utöka ditt Brave Firewall + VPN-skydd";
@@ -1181,7 +1184,7 @@
 "onboarding.navigateSettingsOnboardingScreenTitle" = "Du tas till Inställningar ...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
-"onboarding.ntpOnboardingPopOverTrackerDescription" = "Webbplatser använder färre data och laddar mycket snabbare när spårare och annonser blockeras.";
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Genom att blockera spårare & annonser använder webbplatser mindre data och laddas därför mycket snabbare.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverDescription" = "Se den skillnaden med Brave:\nInga annonser. Inga spårare. Mycket snabbare sidladdning.";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Öppna i nytt fönster";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "Fortsätt ladda ner en konfigurationsprofil från %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "Konfigurationsprofil tillgänglig";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Öppna i ny privat flik";
@@ -1318,8 +1327,14 @@
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "Öppna flikar";
 
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "Fortsätt ladda ner en kalenderhändelse från %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "Kalenderhändelse tillgänglig";
+
 /* Button title to that opens a website. */
-"OpenWebsite" = "Öppna webbplats";
+"OpenWebsite" = "Öppne hemsida";
 
 /* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
 "optionsMenu.braveLeoItemDescription" = "Leo är en AI-driven smart assistent som är inbyggd direkt i webbläsaren";
@@ -1334,7 +1349,7 @@
 "optionsMenu.bravePlaylistItemDescription" = "Spara valfri video/stream i en offlinespellista";
 
 /* Brave News Item Menu title */
-"optionsMenu.bravePlaylistItemTitle" = "Spellista";
+"optionsMenu.bravePlaylistItemTitle" = "Playlist";
 
 /* The subtitle description of menu item Brave Talk */
 "optionsMenu.braveTalkItemDescription" = "Privata videosamtal direkt i webbläsaren";
@@ -1478,7 +1493,7 @@
 "playList.expiredAlertTitle" = "Utgången video";
 
 /* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "Utgången";
+"playList.expiredLabelTitle" = "Utgått";
 
 /* Number of items in the playlsit folder. Example: '10 items' */
 "playlist.folderItemCountPlural" = "%d objekt";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "Att lägga till video- och ljudfiler för offlineanvändning kan använda mycket lagringsutrymme på din enhet samt förbruka dina mobildata";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Det här alternativet behåller automatiskt dina Playlist-objekt på din enhet så att du kan spela dem utan internetanslutning.";
+"playlist.playlistAutoSaveSettingsFooterText" = "När du har öppnat innehåll i Spellistan kommer det här alternativet att hålla öppnade spellistobjekt på din enhet så att du kan spela upp dem utan internetanslutning.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Auto-spara för offline";
+"playlist.playlistAutoSaveSettingsTitle" = "Spara innehåll för offline-uppspelning";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "Om du lägger till video- och ljudfiler för offlineanvändning kan du använda mycket lagringsutrymme på enheten. Ta bort några filer för att frigöra lagringsutrymme.";
@@ -1562,7 +1577,7 @@
 "playlist.playlistLongPressSettingsOptionTitle" = "Aktivera långt tryck";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Spellistmedia och offline-data";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Spellista Media & Offline-data";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Offline-data för spellista";
@@ -1580,13 +1595,13 @@
 "playlist.playlistSaveForOfflineErrorMessage" = "Tyvärr gick det inte att spara det här objektet för offlineläget just nu.";
 
 /* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "Något gick fel";
+"playlist.playlistSaveForOfflineErrorTitle" = "Tyvärr, någonting gick fel";
 
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Spellistor";
 
 /* Title Playlist (used for back button, and playlist settings) */
-"playList.playListSettingTitle" = "Spellista";
+"playList.playListSettingTitle" = "Playlist";
 
 /* Body for the error message that shows when a playlist folder already exists */
 "playList.playlistSharedFolderAlreadyExistsBody" = "Den här mappen finns redan i din Brave Playlist";
@@ -1617,12 +1632,6 @@
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Kom ihåg filens uppspelningsposition";
-
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Inaktiverar WebKit MediaSource API";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Webbkompatibilitet";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Ta bort";
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "Tyvärr";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Tillagd i Brave Playlist";
+"playList.toastAddedToPlaylistTitle" = "Visa i spellista";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Öppna";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Lägg till i Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "Lägg till i spellista";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Visa i Brave Playlist";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "Ångra";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Lägger till en spellistknapp (den ser ut som 4 linjer med en + symbol) bredvid adressfältet i Brave-webbläsaren. Med den här knappen får du snabb åtkomst till att öppna Playlist eller lägga till eller ta bort media.";
+"playlist.urlBarButtonOptionFooter" = "Lägger till en spellistknapp bredvid adressfältet i Brave-webbläsaren. Med den här knappen får du snabb åtkomst till att öppna Playlist eller lägga till eller ta bort media.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Aktivera snabbåtkomstknapp";
@@ -1712,7 +1721,7 @@
 "playlistFolders.createNewFolderButtonTitle" = "Skapa";
 
 /* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "Redigera";
+"playlistFolders.editButtonTitle" = "Ändra";
 
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "Redigera mapp";
@@ -1784,7 +1793,7 @@
 "playlistFolderSharing.deletePlaylistMenuTitle" = "Ta bort spellista";
 
 /* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Redigera";
+"playlistFolderSharing.editMenuTitle" = "Ändra";
 
 /* Accessibility Title for the playlist menu. */
 "playlistFolderSharing.menuButtonAccessibilityTitle" = "Knappen Spellistemeny";
@@ -1802,7 +1811,7 @@
 "playlistFolderSharing.offlineManagementViewTitle" = "Hantering av data för spellistor";
 
 /* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "Byt namn";
+"playlistFolderSharing.renameMenuTitle" = "Ändra namn";
 
 /* Menu Title for saving offline data/cache */
 "playlistFolderSharing.saveOfflineDataMenuTitle" = "Spara offlinedata";
@@ -1832,19 +1841,19 @@
 "privacyHub.allTimeListsWebsitesView" = "Webbplatser";
 
 /* Header title for a list of most frequent ads and trackers detected. */
-"privacyHub.allTimeListTrackersHeaderTitle" = "Vanligaste spårare och annonser på webbplatser du besöker";
+"privacyHub.allTimeListTrackersHeaderTitle" = "Mest frekventa spårare & annonser på webbplatser du besöker";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "Webbplatser med flest spårare och annonser";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Webbplatser med flest spårare & annonser";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "%lld webbplatser";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld spårare och annonser";
+"privacyHub.allTimeTrackersCount" = "%lld spårare & annonser";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "Spårare och annons";
+"privacyHub.allTimeTrackerTitle" = "Spårare & annons";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Webbplats";
@@ -1880,7 +1889,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** blockerades av Brave Shields på **%2$lld** webbplatser";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "Mest frekventa spårare och annons";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Mest frekventa spårare & annons";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "Besök några webbplatser för att se data här.";
@@ -1955,7 +1964,7 @@
 "privacyHub.vpnAlertLocationTrackerTypeSingular" = "Ping-plats";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "Spårare och annonser";
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Spårare & annonser";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Spårare eller annons";
@@ -2096,7 +2105,7 @@
 "RecentSearchHide" = "Dölj";
 
 /* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Klistra in och öppna";
+"RecentSearchPasteAndGo" = "Klistra in & öppna";
 
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "på";
@@ -2111,7 +2120,7 @@
 "RecentSearchScannerDescriptionTitle" = "Instruktioner";
 
 /* Scanning a QR Code for searching */
-"RecentSearchScannerTitle" = "Skanna QR-kod";
+"RecentSearchScannerTitle" = "Skanna QR kod";
 
 /* Recent Search Section Description */
 "RecentSearchSectionDescription" = "Med de senaste sökningarna kan du privat komma åt tidigare sökningar. Vill du aktivera Senaste sökningar?";
@@ -2145,6 +2154,9 @@
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Kontakta mig på: (valfritt)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Om du tillhandahåller kontaktinformation kommer den att lagras för att rapportera avbrutna webbplatser i framtiden.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "E-post, Twitter, osv.";
@@ -2195,7 +2207,7 @@
 "rewards.braveTalkRewardsOptInBody" = "Med Brave Rewards kan du se sekretessbevarande annonser från Brave Ads-nätverket. Inga spårare. Inga kapacitetssänkningar. Och dina data förblir helt säkra.";
 
 /* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Aktivera Rewards";
+"rewards.braveTalkRewardsOptInButtonTitle" = "Slå på belöningar";
 
 /* Body for successful Brave Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessBody" = "Klicka var som helst på skärmen för att fortsätta till Brave Talk.";
@@ -2354,10 +2366,10 @@
 "RewardsInternalsRewardsTypeOneTimeTip" = "Engångsdricks";
 
 /* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Återkommande dricks";
+"RewardsInternalsRewardsTypeRecurringTip" = "Automatisk dricks";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Rewards-profil, enhets- och saldoinformation (delas alltid)";
+"RewardsInternalsSharableBasicDescription" = "Belöningsprofil, enhet & saldoinformation (alltid delad)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Grundläggande information";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Söker efter förslag";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Öppna flikar, bokmärken och historik";
+"SearchHistorySectionHeader" = "Öppna flikar & Bokmärken & Historik";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Rensa sökningar";
@@ -2609,10 +2621,10 @@
 "ShareLinkActionTitle" = "Dela länk";
 
 /* Title for sharing url menu item */
-"ShareWithMenuItem" = "Dela med ...";
+"ShareWithMenuItem" = "Dela med …";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"shareWithTitle" = "Dela med ...";
+"shareWithTitle" = "Dela med …";
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkAnyTierTitle" = "Du har nått den här integritetsmilstolpen. Grattis!";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "Grattis. Du är verkligen speciell.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld spårare och annonser har blockerats!";
+"shieldEducation.trackerCountShareTitle" = "%ld spårare & annonser har blockerats!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Videor utan annonser använder mindre data.";
@@ -2678,10 +2690,10 @@
 "ShortcutItemTitleNewPrivateTab" = "Ny privat flik";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleNewTab" = "Ny flik";
+"ShortcutItemTitleNewTab" = "Ny tabb";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleQRCode" = "Skanna QR-kod";
+"ShortcutItemTitleQRCode" = "Skanna QR kod";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeBraveNewsDescription" = "Öppna Brave News och se dagens toppnyheter";
@@ -2765,19 +2777,19 @@
 "shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Öppna webbplatsen Bokmärken";
 
 /* No comment provided by engineer. */
-"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Öppna webbplatsen Historik";
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Öppna webbplatshistorik";
 
 /* No comment provided by engineer. */
-"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Öppna webbplats";
+"shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Öppne hemsida";
 
 /* Description for opening Brave Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Det här alternativet öppnar Brave-inställningar. För att ändra olika Siri-alternativ, välj menyalternativet \"Siri & sök\" och anpassa dina val.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Det här alternativet öppnar Brave-inställningar. För att ändra olika Siri-alternativ, välj menyalternativet \"Siri & Sök\" och anpassa dina val.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Öppna inställningar";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Använd Genvägar för att öppna en ny flik och rensa webbläsarhistoriken via röstassistenten Siri";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Använd genvägar för att öppna en ny flik & rensa webbläsarhistorik via Siri - Röstassistent";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Rensa webbläsarhistorik";
@@ -2795,7 +2807,7 @@
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "Öppna bokmärken";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Använd Genvägar för att öppna en ny flik och visa Brave News Feed via röstassistenten Siri";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Använd genvägar för att öppna en ny flik & visa Brave nyhetsflöden via Siri - Röstassistent";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Öppna Brave News";
@@ -3017,7 +3029,7 @@
 "sync.expiredError" = "Den här synkroniseringskoden har upphört att gälla, generera en ny synkroniseringskod och försök igen.";
 
 /* Generic Sync Error Description */
-"sync.genericError" = "Något gick fel";
+"sync.genericError" = "Tyvärr, någonting gick fel";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Aktivera kamera";
@@ -3131,7 +3143,7 @@
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Denna borttagning är permanent och det finns inget sätt att återställa data. Om du bestämmer dig för att börja använda Sync igen måste du skapa ett nytt konto och lägga till varje enhet på nytt.";
 
 /* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Enheter och inställningar";
+"sync.Syncdevices" = "Enheter & inställningar";
 
 /* Sync remove device? */
 "sync.syncRemoveThisDeviceQuestion" = "Vill du ta bort den här enheten?";
@@ -3152,7 +3164,7 @@
 "sync.toDevice" = "Synkronisera med enhet";
 
 /* Sync to existing device description */
-"sync.toDeviceDescription" = "Använd en synkroniserad enhet för att gå till Inställningar -> Synkronisering. Lägg ”Add Device” och skanna koden som visas på skärmen.";
+"sync.toDeviceDescription" = "Använd befintlig synkroniserad enhet, öppna Brave-inställningar och navigera till Inställningar -> Synkronisering. Välj \"Lägg till enhet\" och skanna koden som visas på skärmen.";
 
 /* Description on popup when setting up a sync group fails */
 "sync.unableCreateGroup" = "Det går inte att synkronisera den här enheten";
@@ -3218,7 +3230,7 @@
 "tabToolbarAddToPlaylistButtonAccessibilityLabel" = "Lägg till i spellista";
 
 /* Accessibility label for the Back button in the tab toolbar. */
-"TabToolbarBackButtonAccessibilityLabel" = "Tillbaka";
+"TabToolbarBackButtonAccessibilityLabel" = "Bakåt";
 
 /* Accessibility Label for the tab toolbar Forward button */
 "TabToolbarForwardButtonAccessibilityLabel" = "Framåt";
@@ -3233,7 +3245,7 @@
 "tabToolbarNotSecureTitle" = "Inte säker";
 
 /* Accessibility Label for the tab toolbar Playlist button */
-"TabToolbarPlaylistButtonAccessibilityLabel" = "Spellista";
+"TabToolbarPlaylistButtonAccessibilityLabel" = "Playlist";
 
 /* Accessibility label for the Reader View button */
 "TabToolbarReaderViewButtonAccessibilityLabel" = "Läsläge";
@@ -3278,7 +3290,7 @@
 "TabTrayMultiTabPositionFormatVoiceOverText" = "Flikar %1$@ till %2$@ av %3$@";
 
 /* Accessibility label for the New Tab button in the tab toolbar. */
-"TabTrayNewTabButtonAccessibilityLabel" = "Ny flik";
+"TabTrayNewTabButtonAccessibilityLabel" = "Ny tabb";
 
 /* Title displayed for placeholder inside Search Bar in Tab Tray */
 "TabTraySearchBarTitle" = "Sök flikar";
@@ -3287,7 +3299,7 @@
 "TabTraySingleTabPositionFormatVoiceOverText" = "Flik %1$@ av %2$@";
 
 /* No comment provided by engineer. */
-"TermsOfService" = "Användarvillkor";
+"TermsOfService" = "Tjänstevillkor";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Villkor";
@@ -3320,7 +3332,7 @@
 "Title" = "Rubrik";
 
 /* History tableview section header */
-"Today" = "idag";
+"Today" = "Idag";
 
 /* To add a list of 1 or more rss feeds */
 "today.addSourceAddButtonTitle" = "Lägg till";
@@ -3473,7 +3485,7 @@
 "today.similarToSourceSubtitle" = "Liknar %@";
 
 /* No comment provided by engineer. */
-"today.sourcesAndSettings" = "Källor och inställningar";
+"today.sourcesAndSettings" = "Källor & Inställningar";
 
 /* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
 "today.sourcesHeaderTitle" = "Källor";
@@ -3530,7 +3542,7 @@
 "UserWalletGenericErrorMessage" = "Det gick inte att logga in på ditt Uphold konto. Vänligen försök igen";
 
 /* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Något gick fel";
+"UserWalletGenericErrorTitle" = "Tyvärr, någonting gick fel";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Version %1$@ (%2$@)";
@@ -3546,129 +3558,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave lagrar eller delar inte dina röstsökningar.";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Vill du fortsätta vara skyddad? Förnya innan prenumerationen går ut. Som tack för förnyelsen får du 20% rabatt under de kommande 3 månaderna.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "Aktivera automatisk förnyelse";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Förnya din Brave VPN-prenumeration automatiskt nu och få 20% rabatt i 3 månader!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Förnya din Brave VPN-prenumeration automatiskt nu och få 1 månad gratis!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Det betyder att du förlorar Braves extra skydd för alla appar på din mobil.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Åh nej! Din Brave VPN-prenumeration håller på att gå ut.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave brandvägg + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "Kunde inte ansluta till App Store, vänligen försök igen om några minuter.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "Fel i App Store";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Blockerar oönskade nätverksanaslutningar";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Blockera annonser och spårare i alla appar";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Stöder hastigheter på upp till 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Snabb och obegränsad upp till 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "Support dygnet runt";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "Säkra alla anslutningar";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "Drivs av";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "Automatisk";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Logga in på ditt Brave-konto för att uppdatera din VPN-session.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "Ta bort permanent";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "Inloggning";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "Sessionen har upphört";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "Inaktiverad";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "Aktiverad";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Utgången";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "Prenumerera nu";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Helt rätt. Din Brave VPN-prenumeration kan nu användas på upp till 5 enheter. Så du kan prenumerera på iOS och använda den på dina Mac-, Windows- och Android-enheter utan kostnad.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Nu kan du använda Brave VPN på alla dina enheter för samma pris!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Prova Brave VPN igen och få 20% rabatt i tre månader!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Är du redo att skydda alla appar på telefonen? Kom tillbaka till Brave VPN och få 20% rabatt under de kommande 3 månaderna.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN har alltid blockerat spårare i alla appar, även utanför Brave-webbläsaren. Nu kan du se vem som försökte spåra dig med Brave Privacy Hub.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Visste du att Brave VPN skyddar dig utanför Brave-webbläsaren?";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "Uppdatera";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "Var inte orolig. Vi håller VPN aktivt i några dagar medan du uppdaterar dina betalningsuppgifter.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Uppdatera dina betalningsuppgifter för att förbli skyddad med Brave VPN.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "Vill du fortsätta skydda alla appar på din telefon? Uppdatera bara dina betalningsuppgifter.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Det finns ett faktureringsproblem med ditt konto, vilket innebär att din Brave VPN-prenumeration håller på att gå ut.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "Uppdatera betalning";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "Serverregion";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "Aktuell inställning: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "VPN-region";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Uppdatera din betalningsmetod";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Plånboken skapades";

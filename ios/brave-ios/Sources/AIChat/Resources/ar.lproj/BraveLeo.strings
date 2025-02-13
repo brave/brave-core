@@ -31,7 +31,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "الحالة";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
+/* The title for the button that allows the user to view the App Store Receipt */
 "aichat.advancedSettingsViewReceiptTitle" = "عرض إيصال آب ستور";
 
 /* The subtitle for the error showing there is an error from App Store */
@@ -146,7 +146,7 @@
 "aichat.introMessageClaudeHaikuModelPurposeDescription" = "دردشة بسرعة البرق";
 
 /* The model intro message when you first enter the chat assistant */
-"aichat.introMessageClaudeSonnetMessageDescription" = "مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3 Sonnet، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.";
+"aichat.introMessageClaudeSonnetMessageDescription" = "مرحبًا بكم، معكم Leo، أتمتع بتوجيهي بواسطة متصفح Brave، كما أنني مدعوم بواسطة Claude 3.5 Sonnet، وهو نموذج أنشأته Anthropic لتشغيل المهام المتعلقة بالدردشة ومعالجة النصوص.";
 
 /* The model and creator for intro message - Claude Sonnet is the model -- Anthropic is the creator */
 "aichat.introMessageClaudeSonnetModelDescription" = "كلود سونيت من Anthropic";
@@ -185,10 +185,10 @@
 "aichat.leoCodeExampleDefaultTitle" = "مثال على الكود";
 
 /* The message that shows in an alert, to let the user know the 'Leo' feature is disabled, and explains how to re-enable the feature. */
-"aichat.leoDisabledMessageDescription" = "Leo غير مُفعّل حاليًا من خلال أعلام الميزات. لإعادة تفعيل Leo، يُرجى زيارة brave://flags.";
+"aichat.leoDisabledMessageDescription" = "Leo معطّل حاليًا عبر أعلام الميزة. لإعادة تمكين Leo، يُرجى زيارة brave:// flags وتمكينه.";
 
 /* The title that shows in an alert when the Leo/AI-Chat feature is disabled. */
-"aichat.leoDisabledMessageTitle" = "Leo غير مُفعّل";
+"aichat.leoDisabledMessageTitle" = "Leo معطّل";
 
 /* The text displayed on the loading screen when searching for a user query */
 "aichat.leoImprovedAnswerBraveSearch" = "تحسين البحث عن إجابة";
@@ -200,7 +200,7 @@
 "aichat.leoNavigationTitle" = "Leo الذكاء الاصطناعي";
 
 /* An indicator to show page content refined is in progress */
-"aichat.leoPageContentRefineInProgress" = "جارٍ البحث عن الأجزاء المهمة من صفحة الويب…";
+"aichat.leoPageContentRefineInProgress" = "جارِ العثور على الأجزاء المتصلة بصفحة الويب...";
 
 /* The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated. */
 "aichat.leoPageContextInfoDescriptionTitle" = "قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Brave إلى جانب رسائلك.";
@@ -302,7 +302,7 @@
 "aichat.paywallYearlyPriceDividend" = "سنة";
 
 /* The description indicating how valuable the yearly subscription is, compared to purchasing monthly */
-"aichat.paywallYearlySubscriptionDescription" = "القيمة الأفضل";
+"aichat.paywallYearlySubscriptionDescription" = "أفضل قيمة";
 
 /* Title indicating yearly subscription */
 "aichat.paywallYearlySubscriptionTitle" = "ٍسنة واحدة";
@@ -386,7 +386,7 @@
 "aichat.termsConditionsApproveActionTitle" = "أفهم";
 
 /* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
-"aichat.termsConditionsDescription" = "Brave Leo هو مساعد ذكي بالذكاء الاصطناعي يعزز استخدامك للويب. وLeo مجاني للاستخدام مع وصول محدود. يقدم Brave Leo Premium المزيد من النماذج وحدودًا أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى الميزات الجديدة. النموذج الافتراضي لجميع المستخدمين حاليا هو Mixtral 8x7B. انظر Brave **[مركز المساعدة](%1$@)** لمزيد من التفاصيل.\n\nبشكل افتراضي ، عندما تسأل Leo سؤالًا ، قد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تظلله على الصفحة إلى Brave Leo لتقديم رد. وفي بعض الحالات ، سيرسل Leo استعلامات مشتقة من إدخالك إلى Brave Search ويستخدم نتائج البحث للإجابة على سؤالك بشكل أفضل. دقة الردود غير مضمونة ، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. لا ترسل معلومات حساسة أو خاصة ، وتوخّ الحذر مع أي إجابات تتعلق بالصحة أو التمويل أو السلامة الشخصية أو ما شابه ذلك. ويمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات > Leo.\n\nلا يجمع Leo معرفات مثل عنوان بروتوكول الإنترنت الخاص بك والذي يمكن ربطه بك. ولا يتم استخدام أي بيانات لتدريب نماذج الذكاء الاصطناعي ولا يتم الاحتفاظ بأي بيانات شخصية بواسطة نماذج الذكاء الاصطناعي (باستثناء Anthropic التي تحتفظ بالبيانات لمدة 30 يومًا قبل حذفها). راجع **[سياسة الخصوصية](%2$@)** لمزيد من المعلومات.";
+"aichat.termsConditionsDescription" = "Brave Leo هو مساعد ذكي خاص بالذكاء الاصطناعي يعزز استخدامك للويب، وهو مجاني للاستخدام مع وصول محدود. يقدم Brave Leo Premium المزيد من النماذج وحدودًا أعلى ويمنح المشتركين إمكانية الوصول المبكر إلى ميزات جديدة. النموذج الافتراضي لجميع المستخدمين حاليا هو Mixtral 8x7B. انظر Brave **[مركز المساعدة](%1$@)** لمزيد من التفاصيل.\n\nبشكل افتراضي، عندما تسأل Leo سؤالًا، فقد يرسل ويستخدم محتوى صفحة الويب التي تشاهدها أو أي نص تُبرزه على صفحة ما إلى Brave Leo لتقديم رد. وفي بعض الحالات ، سيرسل Leo استعلامات مشتقة من مدخلاتك إلى Brave Search ويستخدم نتائج البحث للإجابة على سؤالك بشكل أفضل. دقة الردود غير مضمونة، وقد تتضمن معلومات غير دقيقة أو مضللة أو خاطئة. لا تُرسِل معلومات حساسة أو خاصة، وتوخّ الحذر مع أي إجابات تتعلق بالصحة أو الشؤون المالية أو السلامة الشخصية أو ما شابه ذلك. ويمكنك ضبط خيارات Leo في الإعدادات في أي وقت. انتقل إلى الإعدادات > Leo.\n\nلا يجمع Leo معرفات مثل عنوان بروتوكول الإنترنت الخاص بك الذي يمكن ربطه بك. ولا يتم استخدام أي بيانات لتدريب نماذج الذكاء الاصطناعي ولا يتم الاحتفاظ بأي بيانات شخصية بواسطة نماذج الذكاء الاصطناعي (باستثناء Anthropic التي تحتفظ بالبيانات لمدة 30 يومًا قبل حذفها). راجع **[سياسة الخصوصية](%2$@)** لمزيد من المعلومات.";
 
 /* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "الدردشة بخصوصية مع Brave Leo";

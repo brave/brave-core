@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "เคยทำการซื้อกับ brave.com แล้วเหรอ";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "มีโค้ดโปรโมชั่นใช่ไหม";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "ใช้โค้ดโปรโมชั่น";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "รีเฟรชข้อมูลประจำตัวของคุณ";
 
@@ -104,7 +110,7 @@
 "storekitReceiptViewer.receiptViewerLoadingTitle" = "กำลังโหลด กรุณารอ...";
 
 /* The title of the screen that shows the App Store Receipt */
-"storekitReceiptViewer.receiptViewerTitle" = "ใบเสร็จ App Store";
+"storekitReceiptViewer.receiptViewerTitle" = "ใบเสร็จจาก App Store";
 
 /* The title of the button that shows a system action sheet, to share the receipt */
 "storekitReceiptViewer.shareReceiptTitle" = "แชร์ใบเสร็จ";

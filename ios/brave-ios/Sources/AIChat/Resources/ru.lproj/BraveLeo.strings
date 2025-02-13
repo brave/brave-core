@@ -31,8 +31,8 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Статус";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
-"aichat.advancedSettingsViewReceiptTitle" = "Просмотр квитанции AppStore";
+/* The title for the button that allows the user to view the App Store Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "Посмотреть квитанцию App Store";
 
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "Не удалось установить соединение с App Store. Повторите попытку позже.";
@@ -338,7 +338,7 @@
 "aichat.resetLeoDataActionTitle" = "Сбросить чат с Leo и удалить данные";
 
 /* The title of a button that will reset data for leo */
-"aichat.resetLeoDataAlertButtonTitle" = "Сбросить";
+"aichat.resetLeoDataAlertButtonTitle" = "Сброс";
 
 /* The description for the error whre leo data reset */
 "aichat.resetLeoDataErrorDescription" = "Действительно сбросить чат с Leo и удалить данные?";

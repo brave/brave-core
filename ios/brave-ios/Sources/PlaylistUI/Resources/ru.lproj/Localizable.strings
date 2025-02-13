@@ -17,7 +17,7 @@
 "playlist.accessibilityItemDownloadStatusReady" = "Объект готов";
 
 /* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
-"playlist.accessibilityMoreMenuButtonTitle" = "Подробнее";
+"playlist.accessibilityMoreMenuButtonTitle" = "Подробнее...";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
 "playlist.accessibilityNextItem" = "Следующий объект";
@@ -71,10 +71,16 @@
 "playlist.doneButtonTitle" = "Готово";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylist" = "Переименовать";
+"playlist.editPlaylist" = "Переименовать плейлист";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylistShortTitle" = "Изменить";
+"playlist.editPlaylistShortTitle" = "Редактировать";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Начните набирать текст, чтобы найти сохраненные аудио- и видеозаписи";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Поиск медиафайлов";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Нажмите, чтобы выбрать контент";
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Добавьте контент с любимых сайтов и воспроизведите его здесь";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Ничего не найдено";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Открыть в новой вкладке инкогнито";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Сохранение данных офлайн";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Поиск";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Поделиться";

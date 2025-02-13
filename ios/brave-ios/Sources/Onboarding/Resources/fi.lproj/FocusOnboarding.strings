@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Aseta Brave oletusselaimeksi";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Selaa nettiä nopeammin ja käytä vähemmän dataa.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Vähemmän mainoksia ja seurantaohjelmia.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Ei nyt";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Ihan totta, pääsimme niistä eroon.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Estä ärsyttävät keskeytykset suosimillasi suoratoistosivustoilla.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Ei enää videomainoksia.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Estä keskeytykset suoratoiston aikana";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Lue lisää yksityisyyden säilyttävästä tuoteanalytiikasta (P3A)";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "Aloita selaaminen";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Siirry järjestelmän asetuksiin";
+"focusOnboarding.systemSettingsButtonTitle" = "Aseta oletukseksi";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Anna URL-osoite, niin näet vähemmän mainoksia ja seurantaohjelmia";
+"focusOnboarding.urlBarIndicatorDescription" = "Nauti suoratoistosta vähemmillä mainoksilla sekä seurantaohjelmilla.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Tutustu Braven mahdollistamaan eroon";

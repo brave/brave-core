@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Brave vašu aktivitu nikdy nezaznamenáva";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Chráňte aplikácie a celé zariadenie";
+"vpn.checkboxProtectYourDevices" = "Ochráňte každú aplikáciu & celé vaše zariadenie";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Bezpečnejšie pre vašu domácu alebo verejnú Wi-Fi";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Aktivovať";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Všetky plány obsahujú %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Všetky plány obsahujú";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "bezplatná 7-dňová skúšobná verzia";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Inštalovať VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Vyskúšajte ZADARMO";
+"vpn.learnMore" = "Spustiť 7-dňovú bezplatnú skúšobnú verziu";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Obnovuje sa mesačne";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld servery/serverov";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Predplatné sa bude účtovať prostredníctvom vášho účtu Apple.\n\nAkákoľvek nevyužitá časť bezplatnej skúšobnej verzie, ak je v ponuke, prepadne pri zakúpení predplatného.\n\nVaše predplatné sa automaticky obnoví, ak nebude zrušené aspoň 24 hodín pred koncom aktuálneho obdobia.\n\nSvoje odbery môžete spravovať v Nastaveniach.\n\nPoužívaním Brave súhlasíte s Podmienkami používania a Zásadami ochrany osobných údajov.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "mesiac";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "rok";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Platnosť vypršala";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "Oblasť VPN sa zmenila.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Obnovuje sa ročne";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Obnovuje sa mesačne";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Nedá sa resetovať konfigurácia VPN. Skúste to znova. Ak problém pretrváva, požiadajte o pomoc podporu.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Obnoviť";
 
+/* Use in context: save 16%. */
+"vpn.save" = "uložiť";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ server";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld server";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Prejdite na VPN a ochráňte tak svoje pripojenie a blokujte invazívne sledovacie programy odvšadiaľ.";
+"vpn.settingHeaderBody" = "Chráňte každú aplikáciu pomocou Brave VPN. S jedným predplatným ochránite až 10 zariadení.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontaktovať technickú podporu";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Transportný protokol";
 
-/* Button to allow the user to view the app-store receipt. */
-"vpn.settingsViewReceipt" = "Zobrazenie potvrdenia z App Store";
+/* Button to allow the user to view the App Store receipt. */
+"vpn.settingsViewReceipt" = "Zobraziť Potvrdenie z App Store";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Ak je táto funkcia zapnutá, v prípade neočakávaného prerušenia VPN pripojenia sa vaše zariadenie automaticky odpojí od internetu, aby sa zabránilo úniku IP adresy a údajov. [Ďalšie informácie](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Povoliť núdzové vypnutie";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Inteligentné smerovanie proxy zabezpečuje prenos údajov cez vyhradené proxy servery, aby sa tak umožnil prístup k bežne zakázanému obsahu alebo službám tretích strán. [Ďalšie informácie](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Povoliť Smart Proxy";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Aktualizovať spôsob platby";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Predplatné sa bude účtovať prostredníctvom vášho účtu iTunes.\n\nAkákoľvek nevyužitá časť bezplatnej skúšobnej verzie, ak je v ponuke, prepadne pri zakúpení predplatného.\n\nVaše predplatné sa automaticky obnoví, ak nebude zrušené aspoň 24 hodín pred koncom aktuálneho obdobia.\n\nSvoje odbery môžete spravovať v Nastaveniach.\n\nPoužívaním Brave súhlasíte s Podmienkami používania a Zásadami ochrany osobných údajov.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN vypnutá";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN zapnutá";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Použiť kód";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Obnovujte ročne, ušetrite %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Najlepšia hodnota";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "NAJLEPŠIA HODNOTA";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Jeden rok";

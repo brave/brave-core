@@ -5,7 +5,7 @@
 "CredentialProvider.authenticationUnlockButtonTitle" = "Deblochează";
 
 /* A button that cancels the autofill request and dismisses the screen */
-"CredentialProvider.cancelButtonTitle" = "Anulează";
+"CredentialProvider.cancelButtonTitle" = "Anulare";
 
 /* A title for a button that when tapped copies the content highlighted into the users clipboard */
 "CredentialProvider.copyMenuItemTitle" = "Copiază";

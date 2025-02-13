@@ -35,7 +35,7 @@
 "BlockAdsAndTrackingDescription" = "Reklamların, açılır pencerelerin ve izleyicilerin yüklenmesini engeller.";
 
 /* The option the user can select to disable ad and tracker blocking */
-"BlockAdsAndTrackingDisabled" = "Devre Dışı";
+"BlockAdsAndTrackingDisabled" = "sakat";
 
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Standart";
@@ -160,6 +160,30 @@
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Listeler Güncellendi";
 
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agresif";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Engelleyen:";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Engellenen İstekler";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "İçerik Engelleyici";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "İstek Engelleme";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "İstek URL'si";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Kaynak Türü";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Kaynak URL'si";
+
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Verileri Yok Et";
 
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "%@ ile bağlantı güvenli değil";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "İzleyiciler ve Reklamlar için Engelleme";
+"TrackersAndAdsBlocking" = "İzleyiciler & Reklam Engelleme";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Listeleri Güncelle";

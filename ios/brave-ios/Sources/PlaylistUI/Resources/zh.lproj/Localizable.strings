@@ -11,7 +11,7 @@
 "playlist.accessibilityEnterPictureInPicture" = "开启画中画";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
-"playlist.accessibilityExitFullscreen" = "結束全螢幕";
+"playlist.accessibilityExitFullscreen" = "退出全屏";
 
 /* A label shown on an item when the item is ready for offline play */
 "playlist.accessibilityItemDownloadStatusReady" = "项目已就绪";
@@ -23,7 +23,7 @@
 "playlist.accessibilityNextItem" = "下一个项目";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will pause some currently playing media */
-"playlist.accessibilityPause" = "暫停";
+"playlist.accessibilityPause" = "暂停";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will play some media */
 "playlist.accessibilityPlay" = "播放";
@@ -68,13 +68,19 @@
 "playlist.deletePlaylistConfirmationMessage" = "将移除所有此播放列表的视频";
 
 /* A button call to action that allows the user to dismiss the active modal */
-"playlist.doneButtonTitle" = "完成";
+"playlist.doneButtonTitle" = "已完成";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylist" = "编辑播放列表";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "编辑";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "请开始输入以搜索您保存的音频和视频";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "搜索媒体";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "轻击以选择媒体";
@@ -89,7 +95,7 @@
 "playlist.itemCountSingular" = "1 个项目";
 
 /* A label shown on an item when it is being prepared for offline play */
-"playlist.itemDownloadStatusPreparing" = "準備中";
+"playlist.itemDownloadStatusPreparing" = "正在准备";
 
 /* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
 "playlist.liveIndicator" = "直播";
@@ -112,11 +118,14 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "从您收藏的网站上添加媒体，这些媒体将在此处播放。";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "找不到结果";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "在新的隐私标签页中打开";
 
 /* A button title that will open the selected item in a new tab. */
-"playlist.openInNewTab" = "在新标签中打开";
+"playlist.openInNewTab" = "在新分頁中開啟";
 
 /* A button title that will delete the selected items data saved to the users device. */
 "playlist.removeOfflineData" = "删除离线数据";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "保存离线数据";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "搜尋";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "分享";

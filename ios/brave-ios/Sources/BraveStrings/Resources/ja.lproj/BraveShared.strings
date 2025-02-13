@@ -14,7 +14,7 @@
 "AccessPhotoDeniedAlertTitle" = "Brave が写真にアクセスしようとしています";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"addBookmarkTitle" = "ブックマークに追加";
+"addBookmarkTitle" = "ブックマーク追加";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "addFavouritesTitle" = "お気に入りに追加";
@@ -26,7 +26,7 @@
 "AddToFavorites" = "お気に入りに追加";
 
 /* Title for the button to add a new website bookmark. */
-"AddToMenuItem" = "ブックマークに追加";
+"AddToMenuItem" = "ブックマーク追加";
 
 /* Text for the toggle switch to clear 'Brave Ads' data in settings */
 "ads.braveAdsDataToggleOption" = "Brave広告のデータ";
@@ -48,9 +48,6 @@
 
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "キャンセル";
-
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "%1$@ がユーザー名とパスワードを要求しています。サイトのコメント: %2$@";
 
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "ログイン";
@@ -182,16 +179,16 @@
 "BraveShieldsAdvancedControls" = "詳細設定";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields & プライバシー";
+"BraveShieldsAndPrivacy" = "Brave Shieldsとプライバシー";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacyTitle" = "Shields & プライバシー";
+"BraveShieldsAndPrivacyTitle" = "Shieldsとプライバシー";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "ブロック済みの広告やトラッカー";
 
 /* What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel */
-"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "詳細はこちら";
+"BraveShieldsBlockedInfoButtonAccessibilityLabel" = "以下について詳しく";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalChangeButton" = "Shieldsの全体のデフォルトを変更する";
@@ -199,8 +196,14 @@
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "グローバル設定";
 
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "今後の破損サイト報告のため、連絡先情報を保存する";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "連絡先情報を入力すると、今後の報告のために保存されます。";
+
 /* No comment provided by engineer. */
-"BraveShieldsSiteBroken" = "サイトの表示が崩れている場合は、Shieldをオフにしてみてください";
+"BraveShieldsSiteBroken" = "もしサイトに正しく表示されていない場合は、Shieldをオフにしてみてください";
 
 /* Context: 'Brave Shields Up' or 'Brave Shields Down' */
 "BraveShieldsStatusTitle" = "Brave Shields";
@@ -269,7 +272,7 @@
 "callout.p3aCalloutToggleTitle" = "非公開、匿名で製品のインサイトを共有します。";
 
 /* Subtitle - Description for Privacy Everywhere Full Screen Callout */
-"callout.privacyEverywhereCalloutDescription" = "Braveによるプライバシー保護を、パソコンやタブレットでも活用しよう。ブックマークや拡張機能をデバイス間で同期することもできます。";
+"callout.privacyEverywhereCalloutDescription" = "Braveによるプライバシー保護を、パソコンやタブレットでも活用しましょう。ブックマークや拡張機能をデバイス間で同期することもできます。";
 
 /* Title for button in Default Browser Full Screen Callout */
 "callout.privacyEverywhereCalloutPrimaryButtonTitle" = "同期を開始する";
@@ -410,7 +413,7 @@
 "ClearPrivateDataAlertCancelButtonTitle" = "キャンセル";
 
 /* No comment provided by engineer. */
-"ClearPrivateDataAlertMessage" = "本当によろしいですか？";
+"ClearPrivateDataAlertMessage" = "よろしいですか？";
 
 /* The button that clears private data. */
 "ClearPrivateDataAlertOkButtonTitle" = "はい";
@@ -458,7 +461,7 @@
 "CommonShare" = "共有";
 
 /* No comment provided by engineer. */
-"Confirm" = "確認する";
+"Confirm" = "確認";
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie コントロール";
@@ -530,7 +533,7 @@
 "customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "新しい検索エンジンはクイック検索バーに表示されます。";
 
 /* The title that asks the user to Add the search provider */
-"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "検索エンジンを追加しますか？";
+"customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "検索プロバイダを追加しますか？";
 
 /* A descriotion explaining that there is error while adding a search engine */
 "customSearchEngine.thirdPartySearchEngineAddErrorDescription" = "カスタム検索エンジンが追加できませんでした。後で再試行してください。";
@@ -557,7 +560,7 @@
 "CustomSearchEngines" = "カスタム検索エンジン";
 
 /* The success message that appears after a user sucessfully adds a new search engine */
-"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "検索エンジンが追加されました！";
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "検索エンジンを追加しました！";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "後で";
@@ -569,7 +572,7 @@
 "defaultBrowserCallout.introPrimaryText" = "プライバシーを保護するためすべてのリンクをBraveで開く";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Brave Shieldはすべてのサイトでトラッカーと広告をブロックし、データ通信量と時間を節約します。";
+"defaultBrowserCallout.introSecondaryText" = "Brave Shieldsはすべてのサイトでトラッカーと広告をブロックし、データ通信量と時間を節約します。";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "アプリ設定画面で、「デフォルトのブラウザApp」をタップし、Braveを選択してください。";
@@ -587,7 +590,7 @@
 "defaultThemeName" = "Brave デフォルト";
 
 /* No comment provided by engineer. */
-"Delete" = "削除する";
+"Delete" = "削除";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
 "DeleteBookmarksFolderAlertMessage" = "すべてのフォルダーとブックマークが削除されます。続行してよろしいですか？";
@@ -605,10 +608,10 @@
 "DeleteLoginAlertSyncedDevicesMessage" = "すべての接続済みデバイスからログイン情報が削除されます。";
 
 /* Prompt title when deleting logins */
-"DeleteLoginAlertTitle" = "本当によろしいですか？";
+"DeleteLoginAlertTitle" = "よろしいですか？";
 
 /* Label for the button used to delete the current login. */
-"DeleteLoginButtonTitle" = "削除する";
+"DeleteLoginButtonTitle" = "削除";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "デバイス %1$@ (%2$@)";
@@ -653,13 +656,13 @@
 "Earlier" = "さらに前";
 
 /* No comment provided by engineer. */
-"Edit" = "編集";
+"Edit" = "編集する";
 
 /* Button to edit a bookmark */
 "EditBookmark" = "ブックマークを編集";
 
 /* Header title for bookmark save location */
-"EditBookmarkTableLocationHeader" = "ロケーション";
+"EditBookmarkTableLocationHeader" = "位置";
 
 /* Title for editing a bookmark */
 "EditBookmarkTitle" = "ブックマークを編集";
@@ -686,10 +689,10 @@
 "ErrorPageOpenInSafariButtonTitle" = "Safari で開く";
 
 /* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "リロード";
+"ErrorPageReloadButtonTitle" = "再読み込み";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "1$@は通常、情報を保護するために暗号化を使用しています。今回、Braveが%2$@に接続を試みた際、ウェブサイトから通常とは異なる不正な認証情報が返されました。これは、攻撃者が%3$@になりすまそうとしているときや、Wi-Fiサインイン画面により接続が中断したときに起こる可能性があります。Braveはデータが交換される前に接続を停止したため、お客様の情報はまだ安全です。<br />ウェブサイトは証明書のピン留めを使用しているため、現時点では%4$@にアクセスすることはできません。ネットワークエラーや攻撃は通常一時的なものなので、しばらくするとページの機能は回復します。";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@は通常、情報を保護するために暗号化を使用します。今回、Braveが%2$@に接続を試みた際、ウェブサイトから通常とは異なる不正な認証情報が返されました。これは、攻撃者が%3$@になりすまそうとしているときや、Wi-Fiサインイン画面により接続が中断したときに起こる可能性があります。Braveはデータが交換される前に接続を停止したため、お客様の情報はまだ安全です。<br />ウェブサイトは証明書のピン留めを使用しているため、現時点では%4$@にアクセスすることはできません。ネットワークエラーや攻撃は通常一時的なものなので、しばらくするとページの機能は回復します。";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "このサーバーは、%@ であることを証明できませんでした。セキュリティ証明書があなたのデバイスのオペレーションシステムによって信頼されていません。これは、設定の間違いか、あなたの接続に介入しようとする攻撃者によって生じている可能性があります。";
@@ -710,7 +713,7 @@
 "ErrorPagesHideDetailsButton" = "詳細を隠す";
 
 /* Label for learn more link on error page */
-"ErrorPagesLearnMoreButton" = "詳細はこちら";
+"ErrorPagesLearnMoreButton" = "以下について詳しく";
 
 /* Label for button to perform advanced actions on the error page */
 "ErrorPagesMoreDetailsButton" = "更に詳しく";
@@ -752,7 +755,7 @@
 "Features" = "機能";
 
 /* Share action title */
-"FindInPage" = "ページを検索";
+"FindInPage" = "ページ内で見つける";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "完了";
@@ -767,7 +770,7 @@
 "FindInPagePreviousResultButtonAccessibilityLabel" = "前のページ内検索結果";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findInPageTitle" = "ページを検索";
+"findInPageTitle" = "ページ内で見つける";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findNextTitle" = "次を検索";
@@ -782,7 +785,7 @@
 "FingerprintingMethods" = "フィンガープリント";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "フィンガープリンティングをブロックする";
+"FingerprintingProtection" = "フィンガープリントをブロック";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "サイトがあなたのデバイスの特徴を識別しにくくします";
@@ -794,7 +797,7 @@
 "ForcePaste" = "強制的に貼り付け";
 
 /* No comment provided by engineer. */
-"genericErrorBody" = "おやっ！うまく行かなかったようです。もう一度やり直してください。";
+"genericErrorBody" = "問題が発生しました。もう一度お試しください。";
 
 /* No comment provided by engineer. */
 "genericErrorTitle" = "エラー";
@@ -863,7 +866,7 @@
 "LastWeek" = "先週";
 
 /* No comment provided by engineer. */
-"learnMore" = "詳しく";
+"learnMore" = "詳しく知る";
 
 /* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
 "LeoMenuItem" = "Leo";
@@ -893,7 +896,7 @@
 "login.loginInfoSetPasscodeAlertTitle" = "パスコードを設定する";
 
 /* The message displayed on the password list screen when there is not password found */
-"login.loginListEmptyScreenTitle" = "ログイン情報が見つかりませんでした。";
+"login.loginListEmptyScreenTitle" = "ログイン情報が見つかりません";
 
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "ログイン情報とパスワード";
@@ -902,7 +905,7 @@
 "login.loginListNeverSavedHeaderTitle" = "常に保存しない";
 
 /* The header title displayed over the login list */
-"login.loginListSavedLoginsHeaderTitle" = "保存されたログイン情報";
+"login.loginListSavedLoginsHeaderTitle" = "保存したログイン情報";
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "フィルター";
@@ -923,7 +926,7 @@
 "LoginListDeselectAllButtonTitle" = "すべて選択解除";
 
 /* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "ログイン情報が見つかりませんでした。";
+"LoginListNoLoginTitle" = "ログイン情報が見つかりません";
 
 /* Title for Logins List View screen. */
 "LoginListScreenTitle" = "ログイン情報";
@@ -938,7 +941,7 @@
 "MenuItemCopyTitle" = "コピー";
 
 /* Hide password text selection menu item */
-"MenuItemHidePasswordTitle" = "隠す";
+"MenuItemHidePasswordTitle" = "非表示";
 
 /* Open and Fill website text selection menu item */
 "MenuItemOpenTitle" = "ウェブサイトを開く";
@@ -1043,7 +1046,7 @@
 "ntp.settingsDefaultImagesOnly" = "デフォルトの画像";
 
 /* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "スポンサー画像 & 動画";
+"ntp.settingsSponsoredImagesAndVideosSelection" = "スポンサー画像と動画";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "スポンサー背景画像";
@@ -1085,7 +1088,7 @@
 "OBErrorOkay" = "OK";
 
 /* A generic error title for onboarding */
-"OBErrorTitle" = "申し訳ありません";
+"OBErrorTitle" = "申し訳ございません";
 
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "ブラウジングを開始する";
@@ -1133,7 +1136,7 @@
 "OBRewardsTitle" = "Braveリワード";
 
 /* Save button to save current selection */
-"OBSaveButton" = "保存する";
+"OBSaveButton" = "保存";
 
 /* Detail text for search engine onboarding screen */
 "OBSearchEngineDetail" = "デフォルトの検索エンジンを設定する";
@@ -1151,10 +1154,10 @@
 "OBShowMeButton" = "表示する";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "開始する";
+"OBTurnOnButton" = "スタート";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ほか%2$lld個の広告およびトラッカーをブロック";
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@、その他%2$lldの広告とトラッカーをブロックしました";
 
 /* The footnote indicating what Brave shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "BraveのShieldによりあらゆるページでブロックされたすべての不要なアイテムを確認。";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "Brave Shieldを表示するにはタップ";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個の広告およびトラッカーをブロック";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個の広告 & トラッカーをブロックしました";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "VPNサブスクリプションにリンク";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Brave VPNサブスクリプションは、Android、iOS、デスクトップで最大5台のデバイスを保護できます。App StoreのサブスクリプションをBrave アカウントにリンクするだけで設定可能です。";
+"onboarding.linkReceiptDescription" = "Brave VPNサブスクリプションは、Android、iOS、デスクトップで最大10台のデバイスを保護できます。App StoreのサブスクリプションをBrave アカウントにリンクするだけで設定可能です。";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Brave Firewall + VPNの保護を拡張";
@@ -1181,7 +1184,7 @@
 "onboarding.navigateSettingsOnboardingScreenTitle" = "設定へ移動します…";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
-"onboarding.ntpOnboardingPopOverTrackerDescription" = "トラッカーと広告をブロックすることで、ウェブサイトの使用するデータ通信量が減少し、より速く読み込むことができます。";
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "トラッカーと広告をブロックすることで、ウェブサイトが使用するデータ通信量が減少し、より速く読み込むことができます。";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverDescription" = "Braveの違いを実感:\n広告もトラッカーもなし。高速でページを読み込み。";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "新しいウィンドウで開く";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "%@から設定プロファイルをダウンロードする";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "利用可能な設定プロファイルがあります";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "新しいプライベートタブで開く";
@@ -1318,6 +1327,12 @@
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "開いているタブ";
 
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "%@からカレンダーイベントをダウンロードする";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "利用可能なカレンダーイベントがあります";
+
 /* Button title to that opens a website. */
 "OpenWebsite" = "ウェブサイトを開く";
 
@@ -1331,7 +1346,7 @@
 "optionsMenu.braveNewsItemTitle" = "News";
 
 /* The subtitle description of menu item Brave Playlist */
-"optionsMenu.bravePlaylistItemDescription" = "どんな動画/ストリーミングでもオフライン再生可能なプレイリストに追加しよう。";
+"optionsMenu.bravePlaylistItemDescription" = "どんな動画/ストリーミングでもオフライン再生用のプレイリストに保存。";
 
 /* Brave News Item Menu title */
 "optionsMenu.bravePlaylistItemTitle" = "Playlist";
@@ -1520,7 +1535,7 @@
 "playlist.playlistAlreadyShowingBody" = "プレイリストがすでに別のウィンドウで有効になっています";
 
 /* Playlist alert title when playlist is already showing on a different window */
-"playlist.playlistAlreadyShowingTitle" = "申し訳ありません";
+"playlist.playlistAlreadyShowingTitle" = "申し訳ございません";
 
 /* Footer Text for the Playlist Settings Option for Enable/Disable Auto-Play */
 "playlist.playlistAutoPlaySettingsOptionFooterText" = "この設定は、Playlistが開かれたときに自動再生が行われる機能のオン/オフを行います。ただし、この設定を行っても再生リストの次の動画がロードされた際自動で再生する挙動の変更はされません。";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "動画や音声ファイルをオフライン利用可能にする際、デバイスのデータ容量や通信量を大きく消費する可能性があります。";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "この設定を行うと、Playlistに追加されたアイテムが、自動でオフライン再生可能になります。";
+"playlist.playlistAutoSaveSettingsFooterText" = "このオプションを有効にした場合、Playlistでコンテンツを開くと、開いたPlaylistのアイテムがデバイスに保存され、インターネットに接続していなくても再生できるようになります。";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "自動でオフライン再生可能にする";
+"playlist.playlistAutoSaveSettingsTitle" = "オフライン再生のためにコンテンツを保存";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "動画や音声をオフライン使用を可能にすることは、デバイスのデータ容量を大きく消費することがあります。容量を確保するため、いくつかのファイルを削除してください。";
@@ -1571,7 +1586,7 @@
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "変更";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
-"playList.playlistResetAlertTitle" = "リセット";
+"playList.playlistResetAlertTitle" = "リセットする";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
 "playlist.playlistResetPlaylistOptionFooterText" = "この設定を行うとPlaylistとオフライン再生用ストレージからすべての動画を削除します。";
@@ -1580,7 +1595,7 @@
 "playlist.playlistSaveForOfflineErrorMessage" = "このアイテムは現在オフライン再生ができません。";
 
 /* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "すみません。問題が発生しました";
+"playlist.playlistSaveForOfflineErrorTitle" = "申し訳ありません、エラーが発生しました";
 
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Playlist";
@@ -1592,7 +1607,7 @@
 "playList.playlistSharedFolderAlreadyExistsBody" = "このフォルダはBrave Playlistに既に存在します";
 
 /* Title for the error message that shows when a playlist folder already exists */
-"playList.playlistSharedFolderAlreadyExistsTitle" = "申し訳ありません";
+"playList.playlistSharedFolderAlreadyExistsTitle" = "申し訳ございません";
 
 /* Title for the Section that videos are listed */
 "playList.playlistSharedFolderSectionTitle" = "共有アイテム";
@@ -1618,14 +1633,8 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "ファイルの再生位置を記憶";
 
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "WebKit MediaSource APIを無効化します";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Web互換性";
-
 /* Title for removing offline mode storage */
-"playList.removeActionButtonTitle" = "削除";
+"playList.removeActionButtonTitle" = "削除する";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "%@から削除しました";
@@ -1652,7 +1661,7 @@
 "playlist.saveForOfflineButtonTitle" = "オフライン再生可能にする";
 
 /* Text indicator on the table cell while saving a video for offline */
-"playList.savingForOfflineLabelTitle" = "オフライン再生の準備中...";
+"playList.savingForOfflineLabelTitle" = "オフライン再生のために保存中...";
 
 /* Description of the settings option to sync folders with the server automatically, every 4 hours. */
 "playList.sharedFolderSyncAutomaticallyDescription" = "すべてのPlaylistフォルダを自動で同期する";
@@ -1673,19 +1682,19 @@
 "playlist.sharePlaylistOpenInNewTabTitle" = "新タブで開く";
 
 /* Button Title of the ActionSheet/Alert Button when sharing a playlist item from the Swipe-Action */
-"playlist.sharePlaylistShareActionMenuTitle" = "共有...";
+"playlist.sharePlaylistShareActionMenuTitle" = "共有";
 
 /* Title for load resources error alert */
-"playList.sorryAlertTitle" = "申し訳ありません";
+"playList.sorryAlertTitle" = "申し訳ございません";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Brave Playlistに追加されました";
+"playList.toastAddedToPlaylistTitle" = "Playlistで見る";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "開く";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Brave Playlistに追加する";
+"playList.toastAddToPlaylistTitle" = "プレイリストに追加";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Brave Playlistで見る";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "元に戻す";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Braveブラウザのアドレスバーの横に、Playlistボタンを追加します。（4本の線と+が組み合わさったような見た目です。）このボタンにより、Playlistを開いたり、メディアを追加したり削除したりすることが素早く行えるようになります。";
+"playlist.urlBarButtonOptionFooter" = "Braveブラウザのアドレスバーの横に、Playlistボタンを追加します。このボタンにより、Playlistを開いたり、メディアを追加したり削除したりすることが素早く行えるようになります。";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "クイックアクセスボタンを有効にする";
@@ -1712,7 +1721,7 @@
 "playlistFolders.createNewFolderButtonTitle" = "作成";
 
 /* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "動画の管理";
+"playlistFolders.editButtonTitle" = "編集する";
 
 /* The title of the screen where the user edits folder names */
 "playlistFolders.editFolderScreenTitle" = "フォルダを編集";
@@ -1775,7 +1784,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "ボタンをクリックするとBrave Playlistに追加します";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "保存する";
+"playlistFolderSharing.addButtonTitle" = "保存";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "オフライン再生用データを消去する";
@@ -1784,7 +1793,7 @@
 "playlistFolderSharing.deletePlaylistMenuTitle" = "Playlistを削除";
 
 /* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "動画の管理";
+"playlistFolderSharing.editMenuTitle" = "編集する";
 
 /* Accessibility Title for the playlist menu. */
 "playlistFolderSharing.menuButtonAccessibilityTitle" = "Playlistメニューを表示します";
@@ -1793,7 +1802,7 @@
 "playlistFolderSharing.offlineManagementViewAddButtonTitle" = "Playlistを今すぐ追加";
 
 /* Description of the playlist offline data management view */
-"playlistFolderSharing.offlineManagementViewDescription" = "自動でオフライン再生可能にする設定をオンにすると、Playlist (共有プレイリストを含む) に新しく追加されたデータがオフライン再生可能な状態になり、お使いのデバイスの通信量を大きく消費する可能性があります。\n\n自動でオフライン再生可能にする設定は、プレイリストの設定で管理することができます。";
+"playlistFolderSharing.offlineManagementViewDescription" = "オフライン用に自動保存をオンにすると、Playlist (共有プレイリストを含む) に新しく追加されたデータがオフライン再生用としてデバイスに保存され、お使いのデバイスの通信量を大きく消費する可能性があります。\n\nオフラインでの自動保存は、プレイリストの設定で管理することができます。";
 
 /* Button that takes the user to the settings menu */
 "playlistFolderSharing.offlineManagementViewSettingsButtonTitle" = "設定";
@@ -1802,10 +1811,10 @@
 "playlistFolderSharing.offlineManagementViewTitle" = "Playlistのデータを管理する";
 
 /* Menu Title for renaming a folder */
-"playlistFolderSharing.renameMenuTitle" = "名前を変える";
+"playlistFolderSharing.renameMenuTitle" = "名前を変更";
 
 /* Menu Title for saving offline data/cache */
-"playlistFolderSharing.saveOfflineDataMenuTitle" = "オフライン再生を可能にする";
+"playlistFolderSharing.saveOfflineDataMenuTitle" = "オフライン再生用データを保存する";
 
 /* Menu Title for syncing playlist */
 "playlistFolderSharing.syncNowMenuTitle" = "同期を開始する";
@@ -1826,25 +1835,25 @@
 "privacyHub.allTimeListsHeader" = "全期間";
 
 /* Title of a section to show total count of trackers blocked by Brave */
-"privacyHub.allTimeListsTrackersView" = "トラッカー&広告";
+"privacyHub.allTimeListsTrackersView" = "トラッカーと広告";
 
 /* Title of a section to show websites containing highest amount of trackers */
 "privacyHub.allTimeListsWebsitesView" = "ウェブサイト";
 
 /* Header title for a list of most frequent ads and trackers detected. */
-"privacyHub.allTimeListTrackersHeaderTitle" = "訪問先サイトで最もよく検出されたトラッカー&広告";
+"privacyHub.allTimeListTrackersHeaderTitle" = "訪問先サイトで最もよく検出されたトラッカーと広告";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "トラッカー&広告の頻度が高いウェブサイト";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "トラッカーと広告が最も多いウェブサイト";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "%lld件のサイト";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld個のトラッカーおよび広告";
+"privacyHub.allTimeTrackersCount" = "%lldのトラッカーと広告";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "トラッカー&広告";
+"privacyHub.allTimeTrackerTitle" = "トラッカーと広告";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "ウェブサイト";
@@ -1865,7 +1874,7 @@
 "privacyHub.clearAllDataPrompt" = "Shieldsのすべてのデータをクリアしますか？";
 
 /* Hide Privacy Hub Alert Hide Button */
-"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "隠す";
+"privacyHub.hidePrivacyHubWidgetActionButtonTitle" = "非表示";
 
 /* The title of the button action which hides the privacy hub */
 "privacyHub.hidePrivacyHubWidgetActionTitle" = "プライバシー統計を非表示";
@@ -1880,7 +1889,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "Brave Shieldsにより、**%1$@** が **%2$lld** 件のサイトでブロックされました";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "最もよく検出されたトラッカー&広告";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "最も検出頻度の高いトラッカーと広告";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "ウェブサイトを訪問すると、ここにデータが表示されます。";
@@ -1955,7 +1964,7 @@
 "privacyHub.vpnAlertLocationTrackerTypeSingular" = "ロケーションPing";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "トラッカー&広告";
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "トラッカーと広告";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "トラッカーまたは広告";
@@ -1964,7 +1973,7 @@
 "privacyHub.vpnAlertsHeader" = "Brave Firewall + VPNアラート";
 
 /* This label says about Brave VPN, as a source of by what the resource was blocked by. Think of it in context of 'Blocked by VPN' */
-"privacyHub.vpnLabel" = "Firewall + VPN";
+"privacyHub.vpnLabel" = "ファイアウォール + VPN";
 
 /* It shows a total count of items blocked by our VPN shields */
 "privacyHub.vpvnAlertsTotalCount" = "総数";
@@ -2087,16 +2096,16 @@
 "RecentSearchDisableSuggestions" = "無効にする";
 
 /* Recent Search button title to enable suggestions */
-"RecentSearchEnableSuggestions" = "有効にする";
+"RecentSearchEnableSuggestions" = "有効化";
 
 /* Recent Search Favorites Section Title */
 "RecentSearchFavorites" = "お気に入り";
 
 /* Recent Search Hide Button */
-"RecentSearchHide" = "隠す";
+"RecentSearchHide" = "非表示";
 
 /* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "貼り付けて移動";
+"RecentSearchPasteAndGo" = "貼り付けて開く";
 
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "on";
@@ -2111,7 +2120,7 @@
 "RecentSearchScannerDescriptionTitle" = "使い方";
 
 /* Scanning a QR Code for searching */
-"RecentSearchScannerTitle" = "QRコードをスキャン";
+"RecentSearchScannerTitle" = "QRコードをスキャンする";
 
 /* Recent Search Section Description */
 "RecentSearchSectionDescription" = "「最近の検索」機能により、あなたはプライバシーを守りながら過去の検索データを利用できます。最近の検索を有効にしますか？";
@@ -2145,6 +2154,9 @@
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "連絡先: (オプション)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "連絡先情報を入力すると、今後破損サイトを報告するために保存されます。";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "メールアドレス、Twitterなど";
@@ -2195,7 +2207,7 @@
 "rewards.braveTalkRewardsOptInBody" = "Brave Rewardsにより、あなたはBrave Adsネットワークから提供される、プライバシーを保護した形の広告を閲覧することができます。トラッキングも、読み込み遅延もありません。あなたのデータが外部に漏れることもありません。";
 
 /* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Rewardsをオンにする";
+"rewards.braveTalkRewardsOptInButtonTitle" = "Rewardsを有効にする";
 
 /* Body for successful Brave Talk rewards opt-in */
 "rewards.braveTalkRewardsOptInSuccessBody" = "続いてBrave Talkに移動するにはスクリーンのどこかをタップしてください";
@@ -2282,7 +2294,7 @@
 "RewardsInternalsContributionsStepExternalTransaction" = "外部トランザクション";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionsStepFailed" = "失敗";
+"RewardsInternalsContributionsStepFailed" = "失敗しました";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionsStepNotEnoughFunds" = "ポイントがたりません";
@@ -2297,7 +2309,7 @@
 "RewardsInternalsContributionsStepRewardsOff" = "Rewardsオフ";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "開始する";
+"RewardsInternalsContributionsStepStart" = "スタート";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionsTitle" = "支援";
@@ -2354,7 +2366,7 @@
 "RewardsInternalsRewardsTypeOneTimeTip" = "1回限りのチップ";
 
 /* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "定期支払いチップ";
+"RewardsInternalsRewardsTypeRecurringTip" = "定期チップ";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "リワードプロフィール、デバイスおよび残高情報 (常に共有)";
@@ -2384,7 +2396,7 @@
 "RewardsInternalsSharingWarningMessage" = "これらのページのデータは機密性が高い場合があります。共有する相手には十分注意してください。";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharingWarningTitle" = "警告";
+"RewardsInternalsSharingWarningTitle" = "待機中";
 
 /* No comment provided by engineer. */
 "RewardsInternalsStatus" = "稼働状況";
@@ -2426,13 +2438,13 @@
 "RewardsPanel" = "Rewardsパネル";
 
 /* Label for the button used to save data */
-"SaveButtonTitle" = "保存する";
+"SaveButtonTitle" = "保存";
 
 /* Label for the button used to save changes in some text input. */
 "SaveChangesButtonTitle" = "変更を保存";
 
 /* Settings item for clearing passwords and login data */
-"SavedLogins" = "保存されたログイン情報";
+"SavedLogins" = "保存したログイン情報";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "保存されたタブ";
@@ -2516,7 +2528,7 @@
 "Security" = "セキュリティ";
 
 /* No comment provided by engineer. */
-"sendButtonTitle" = "送信する";
+"sendButtonTitle" = "送信";
 
 /* Message displayed in the crash dialog above the buttons used to select when sending reports */
 "SendCrashReportAlertMessage" = "Braveが問題を解決できるようにクラッシュレポートを送信しますか？";
@@ -2609,10 +2621,10 @@
 "ShareLinkActionTitle" = "リンクを共有";
 
 /* Title for sharing url menu item */
-"ShareWithMenuItem" = "共有...";
+"ShareWithMenuItem" = "共有";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"shareWithTitle" = "共有...";
+"shareWithTitle" = "共有";
 
 /* Subtitle for tracker benchmark Share */
 "shieldEducation.benchmarkAnyTierTitle" = "おめでとうございます。たくさんプライバシーを保護しましたね。";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "おめでとうございます。あなたは特別な存在です。いつもBraveをご利用いただきありがとうございます。";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld トラッカーと広告をブロックしました！";
+"shieldEducation.trackerCountShareTitle" = "%ldのトラッカーと広告をブロックしました！";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "広告がなければ動画のデータ量はより少なくなります。";
@@ -2681,7 +2693,7 @@
 "ShortcutItemTitleNewTab" = "新しいタブ";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleQRCode" = "QRコードをスキャン";
+"ShortcutItemTitleQRCode" = "QRコードをスキャンする";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeBraveNewsDescription" = "Brave Newsを開いて今日のトップストーリーズをチェックする";
@@ -2690,7 +2702,7 @@
 "shortcuts.activityTypeClearHistoryDescription" = "新しいタブでブラウザを立ち上げ、プライベートブラウジングの履歴を全て消去する";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistorySuggestedPhrase" = "Braveの履歴を消去する";
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "ブラウザの履歴を消去する";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryTitle" = "Braveでのブラウジングの履歴を消去する";
@@ -2699,19 +2711,19 @@
 "shortcuts.activityTypeEnableVPNDescription" = "新タブでブラウザを立ち上げ、VPNを有効にする";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "VPNを有効化する";
+"shortcuts.activityTypeEnableVPNSuggestedPhrase" = "VPNを有効にする";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeEnableVPNTitle" = "Braveブラウザを開き、VPNを有効にする";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "新しくプライベートタブを開く";
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "新しくプライベートブラウジングタブを開く";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabTitle" = "新しくプライベートブラウジングのブラウザを立ち上げる";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeNewTabSuggestedPhrase" = "新しくタブを開く";
+"shortcuts.activityTypeNewTabSuggestedPhrase" = "新タブを開く";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewTabTitle" = "新しくブラウザタブを開く";
@@ -2780,13 +2792,13 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri 音声アシスタントで、新しいタブを開きブラウザ履歴を消去するショートカットを利用";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Braveの履歴を消去する";
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "ブラウザの履歴を消去する";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNDescription" = "Siri 音声アシスタントでBrave VPNを有効化するショートカットを利用する";
+"shortcuts.shortcutSettingsEnableVPNDescription" = "Siri 音声アシスタントでBrave VPNを開くショートカットを利用する";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsEnableVPNTitle" = "VPNを有効化する";
+"shortcuts.shortcutSettingsEnableVPNTitle" = "VPNを有効にする";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBookmarksDescription" = "Siri 音声アシスタントで、ブックマーク画面を開くショートカットを利用";
@@ -2810,13 +2822,13 @@
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Siri 音声アシスタントで新しくプライベートタブを開くショートカットを利用する";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "新しくプライベートタブを開く";
+"shortcuts.shortcutSettingsOpenNewPrivateTabTitle" = "新しくプライベートブラウジングタブを開く";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewTabDescription" = "Siri 音声アシスタントで新しくタブを開くショートカットを利用する";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewTabTitle" = "新しくタブを開く";
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "新タブを開く";
 
 /* Description of Open Playlist Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri 音声アシスタントで、Playlistを開くショートカットを利用";
@@ -2867,10 +2879,10 @@
 "SiteShieldSettings" = "Shield (保護機能)";
 
 /* Title used when in warning pop-over when domain specific data save appears */
-"socialSharing.domainSpecificDataSavedTitle" = "Braveでwebを閲覧してデータ通信量を節約しています";
+"socialSharing.domainSpecificDataSavedTitle" = "Braveでwebを閲覧してデータを節約しています";
 
 /* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "Braveでwebを閲覧してデータ通信量を節約しています";
+"socialSharing.shareDescriptionTitle" = "Braveでwebを閲覧してデータを節約しています";
 
 /* Open search section of settings */
 "StandardTabSearch" = "通常タブ";
@@ -3017,7 +3029,7 @@
 "sync.expiredError" = "同期コードが期限切れです。新しい同期コードを生成してもう一度お試しください。";
 
 /* Generic Sync Error Description */
-"sync.genericError" = "問題が発生しました";
+"sync.genericError" = "申し訳ありません、エラーが発生しました";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "カメラを有効にする";
@@ -3074,7 +3086,7 @@
 "sync.removeCurrentDeviceTitle" = "%@を同期チェーンから削除しますか？";
 
 /* Action button for removing sync device. */
-"sync.removeDevice" = "削除";
+"sync.removeDevice" = "削除する";
 
 /* Remove device button for action sheet. */
 "sync.removeDeviceAction" = "デバイスを削除";
@@ -3137,7 +3149,7 @@
 "sync.syncRemoveThisDeviceQuestion" = "このデバイスを削除しますか？";
 
 /* Sync settings section title */
-"sync.syncTitle" = "同期";
+"sync.syncTitle" = "Brave Sync";
 
 /* No comment provided by engineer. */
 "sync.syncUnsuccessful" = "失敗";
@@ -3152,7 +3164,7 @@
 "sync.toDevice" = "デバイスと同期";
 
 /* Sync to existing device description */
-"sync.toDeviceDescription" = "すでに同期されている別の端末上で、Braveの設定 > Syncと選択し、\"デバイスを追加\"を選択してください。そこで以下のコードをスキャンすることで同期設定が可能です。";
+"sync.toDeviceDescription" = "すでに同期されている別の端末上で、Braveの設定 > &同期から「デバイスを追加」を選択。画面に表示されるコードをスキャンすることで同期設定が可能です。";
 
 /* Description on popup when setting up a sync group fails */
 "sync.unableCreateGroup" = "このデバイスを同期できません";
@@ -3242,7 +3254,7 @@
 "TabToolbarReaderViewButtonTitle" = "リーディングリストに追加";
 
 /* Accessibility Label for the tab toolbar Reload button */
-"TabToolbarReloadButtonAccessibilityLabel" = "リロード";
+"TabToolbarReloadButtonAccessibilityLabel" = "再読み込み";
 
 /* The text shown in the URL bar on about:home */
 "TabToolbarSearchAddressPlaceholderText" = "検索またはアドレスを入力";
@@ -3293,7 +3305,7 @@
 "TermsOfUse" = "利用規約";
 
 /* Text for button to share referral's QR code. */
-"themeQRCodeShareButton" = "共有...";
+"themeQRCodeShareButton" = "共有";
 
 /* Title for QR popup encouraging users to share the code with their friends. */
 "themeQRCodeShareTitle" = "Braveを友だちに教えてあげよう！";
@@ -3320,10 +3332,10 @@
 "Title" = "タイトル";
 
 /* History tableview section header */
-"Today" = "（本日）";
+"Today" = "今日";
 
 /* To add a list of 1 or more rss feeds */
-"today.addSourceAddButtonTitle" = "追加する";
+"today.addSourceAddButtonTitle" = "追加";
 
 /* The title in the alert when a source fails to add */
 "today.addSourceFailureTitle" = "ソースの追加に失敗しました";
@@ -3332,7 +3344,7 @@
 "today.addSourceInvalidDataMessage" = "フィードアドレスが認識できませんでした。";
 
 /* No comment provided by engineer. */
-"today.addSourceNetworkFailureMessage" = "フィードアドレスを見つけられませんでした。";
+"today.addSourceNetworkFailureMessage" = "すみません、そのフィードアドレスを見つけられませんでした。";
 
 /* No comment provided by engineer. */
 "today.addSourceNoFeedsFoundMessage" = "該当のフィードアドレスにはコンテンツが存在しないようです";
@@ -3347,7 +3359,7 @@
 "today.braveToday" = "Braveニュース";
 
 /* The name of the feature in settings */
-"today.braveToday.title" = "ニュース";
+"today.braveToday.title" = "News";
 
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "興味のあるトピックをフォローする";
@@ -3452,7 +3464,7 @@
 "today.rateBraveCardActionSheetTitle" = "App StoreでBraveを評価";
 
 /* Title for long press action that will hide Brave Rate Card */
-"today.rateBraveCardHideActionTitle" = "隠す";
+"today.rateBraveCardHideActionTitle" = "非表示";
 
 /* Button title / Title for long press action that will perform an action which open AppStore Rate screen */
 "today.rateBraveCardRateActionTitle" = "Braveを評価する";
@@ -3530,7 +3542,7 @@
 "UserWalletGenericErrorMessage" = "Upholdのアカウントにログインする際に問題が発生しました。後ほど再度お試しください。";
 
 /* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "問題が発生しました";
+"UserWalletGenericErrorTitle" = "申し訳ありません、エラーが発生しました";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "バージョン %1$@ (%2$@)";
@@ -3546,129 +3558,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Braveが音声検索結果を保存または共有することはありません。";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "引き続き保護を利用する場合は、サブスクリプション終了前に情報を更新してください。更新の場合、次の3か月を20%でご利用いただけます。";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "自動更新を有効にする";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Brave VPNのサブスクリプションを今すぐ自動更新すると、次の3か月を20%オフでご利用いただけます。";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Brave VPNのサブスクリプションを自動更新して、1か月の無料特典を獲得しましょう！";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "モバイル端末上のすべてのアプリに対するBraveの特別な保護が失われます。";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Brave VPNサブスクリプションの終了日が近付いています。";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "App Storeに接続できませんでした。少し経ってから再度お試しください。";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "App Storeとの接続時にエラーが発生しました";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "不要な通信をブロック";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "すべてのアプリで広告とトラッカーをブロック";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "最大100Mbpsの速度をサポート";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "最大 100 Mbps の速度が無制限";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "24時間365日のサポート";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "すべての接続を保護";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "Powered by";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "自動";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Braveアカウントにログインして、VPNセッションを更新してください。";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "表示しない";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "ログイン";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "セッションの期限が切れました";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "無効";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "有効";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "期限切れ";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "今すぐ申し込む";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Brave VPNサブスクリプションは最大5台のデバイスでご利用いただけます。iOS、Mac、Windows、さらにはAndroidまで、お好きなデバイスでのご利用をお楽しみください。";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "追加料金なしで、複数のデバイスでBrave VPNをご利用いただけるようになりました。";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Brave VPNのサブスクリプションを更新いただくと、今なら3か月間20%オフ。";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "端末上のすべてのアプリを保護しませんか？Brave VPNは今後3か月間20%オフでご利用いただけます。";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPNは常に、Braveブラウザ以外でもすべてのアプリでトラッカーをブロックしてきました。Braveプライバシーハブでこれらのトラッカーの詳細を確認できます。";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPNはBraveブラウザ以外でも有効です";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "更新";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "心配はいりません。お支払い情報を更新いただくまでの間、数日間にわたりVPNを引き続きご利用いただけます。";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "お支払い情報を更新いただき、Brave VPNで引き続きデータを安全に保護しましょう。";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "モバイル端末上のすべてのアプリを保護しませんか？お支払い情報を更新するだけで引き続きご利用いただけます。";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "お客様のアカウントでお支払いの問題が発生しています。Brave VPNのサブスクリプションはまもなく期限切れとなります。";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "お支払い情報を更新";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "サーバーリージョン";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "現在の設定: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "VPNのリージョン";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "お支払い方法を更新してください";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "ウォレット作成日";
@@ -3701,7 +3590,7 @@
 "websiteData.removeAllDataRecords" = "すべてを削除";
 
 /* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
-"websiteData.removeDataRecord" = "削除";
+"websiteData.removeDataRecord" = "削除する";
 
 /* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "%ld件のアイテムを削除";

@@ -35,7 +35,7 @@
 "BlockAdsAndTrackingDescription" = "Menghalang iklan, halaman timbul dan penjejak daripada dimuatkan.";
 
 /* The option the user can select to disable ad and tracker blocking */
-"BlockAdsAndTrackingDisabled" = "Dinyahaktif";
+"BlockAdsAndTrackingDisabled" = "Dinyahdayakan";
 
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Standard";
@@ -92,7 +92,7 @@
 "DefaultFilterLists" = "Senarai Penapis Lalai";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
-"DomainBlockedGoBackAction" = "Kembali";
+"DomainBlockedGoBackAction" = "Pergi Ke Belakang";
 
 /* A description in the warning page that appears when a page was blocked */
 "DomainBlockedPageDescription" = "Disebabkan anda telah membuat permintaan untuk menyekat penjejak dan iklan secara tegas, Brave menyekat laman ini sebelum sambungan rangkaian yang pertama.";
@@ -160,6 +160,30 @@
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Senarai yang Dikemaskinikan";
 
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agresif";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Disekat Oleh";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Permintaan Disekat";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Penyekat Kandungan";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Penjejak dan Iklan Disekat";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL Permintaan";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Jenis Sumber";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL Sumber";
+
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Hapuskan Data";
 
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "Sambungan ke %@ tidak selamat";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "Penjejak & Penyekatan Iklan";
+"TrackersAndAdsBlocking" = "Penjejak & Iklan Disekat";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Kemas Kinikan Senarai";

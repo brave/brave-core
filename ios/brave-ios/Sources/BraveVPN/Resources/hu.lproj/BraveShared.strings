@@ -1,0 +1,138 @@
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Szeretné fenntartani a védelmet? Egyszerűen újítsa meg az előfizetés lejárta előtt. A megújításért való köszönetképpen még 20% ​​kedvezményt is nyújtunk a következő 3 hónapra.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Automatikus megújítás engedélyezése";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Újítsa meg automatikusan Brave VPN-előfizetését most, és 20% kedvezményt kap 3 hónapra!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Újítsa meg automatikusan Brave VPN-előfizetését most, és 1 hónapos ingyenes hozzáférést kap!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Ez azt jelenti, hogy elveszíti a Brave által nyújtott kiegészítő védelmi funkciókat a telefonján lévő összes alkalmazáshoz.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Ajaj, Brave VPN-előfizetése hamarosan lejár.";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Nem sikerült csatlakozni az App Store-hoz, próbálkozzon újra néhány perc múlva.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "App Store-hiba";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckConnectionSpeed" = "Villámgyors kapcsolati sebesség";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckLimitDevice" = "Több mint 10 eszköz védelme egyetlen csomagban";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckLocation" = "Az IP-cím elrejtése és a tartózkodási hely módosítása";
+
+/* Information text shown to users for using Brave VPN */
+"vpn.infoCheckPrivacy" = "Fejlettebb online adatvédelem és biztonság";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckServers" = "Világszerte több száz szerver";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Blokkolja a nemkívánatos hálózati kapcsolatokat";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Hirdetések& trackerek letiltása minden alkalmazásban ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Akár 100 Mbps sebesség támogatása";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Gyors és 100 Mbps-ig korlátlan";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "0-24 ügyfélszolgálat";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Minden kapcsolatot biztosít";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Szolgáltató:";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Automatikus";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Kérjük, jelentkezzen be Brave-fiókjába a VPN-munkamenet frissítéséhez.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Elvetés";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Bejelentkezés";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "A munkamenet lejárt";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Kikapcsolva";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Engedélyezve";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Lejárt";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Előfizetés most";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Bizony! Brave VPN-előfizetése mostantól akár 5 eszközön is elérhető. Előfizethet rá iOS rendszeren, és ingyenesen használhatja Mac-, Windows- és Android-eszközein.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Most ugyanazon az áron használhatja a Brave VPN-t minden eszközén!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Próbálja ki még egyszer a Brave VPN-t, és 20% kedvezményt kap 3 hónapra!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Készen áll megvédeni a telefonon lévő összes alkalmazást? Térjen vissza a Brave VPN-hez, és 20% kedvezményt kap a következő 3 hónapra.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "A Brave VPN mindig blokkolta a nyomkövetőket minden alkalmazásban, még a Brave böngészőn kívül is. A Brave adatvédelmi központ segítségével most láthatja, hogy ki próbálta nyomon követni Önt.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Tudta, hogy a Brave VPN megvédi Önt a Brave böngészőn kívül is?";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Frissítés";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Ne aggódjon, a VPN néhány napig aktív marad, amíg Ön frissíti fizetési adatait.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Frissítse fizetési adatait, hogy megtarthassa a Brave VPN általi védelmet.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Továbbra is szeretné védeni a telefonon lévő összes alkalmazást? Egyszerűen frissítse fizetési adatait.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Számlázási probléma merült fel a fiókjával kapcsolatban, ami azt jelenti, hogy Brave VPN-előfizetése hamarosan lejár.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Fizetési adatok frissítése";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Szerverrégió";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Aktuális beállítás: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPN-régió";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Kérjük, frissítse fizetési módját";
+

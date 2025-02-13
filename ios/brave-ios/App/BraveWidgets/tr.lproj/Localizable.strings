@@ -1,8 +1,8 @@
 /* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Yer İşaretleri";
+"widgets.BookmarksMenuItem" = "Yer işaretleri";
 
 /* The name of the feature */
-"widgets.braveLeo" = "Leo YZ";
+"widgets.braveLeo" = "Leo Yapay Zeka";
 
 /* The name of the feature */
 "widgets.braveNews" = "Brave News";
@@ -14,7 +14,7 @@
 "widgets.favoritesWidgetDescription" = "En sevdiğiniz web sitelerine hızlıca erişin.";
 
 /* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "Favoriler";
+"widgets.favoritesWidgetTitle" = "Sık Kullanılanlar";
 
 /* Title for history menu item */
 "widgets.HistoryMenuItem" = "Geçmiş";
@@ -56,7 +56,7 @@
 "widgets.shortcutsNewTabButton" = "Yeni Sekme";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Oynatma listesi";
+"widgets.shortcutsPlaylistButton" = "Oynatma Listesi";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "Gizli Sekme";

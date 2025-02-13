@@ -41,7 +41,7 @@
 "DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
 
 /* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
-"DownloadMultipleFilesToastDescriptionText" = "1 file su %d";
+"DownloadMultipleFilesToastDescriptionText" = "1 su %d file";
 
 /* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
@@ -96,6 +96,12 @@
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Scansiona codice QR";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Grazie per aver sostenuto Ricerca Brave cliccando su un annuncio privato. A differenza delle aziende Big Tech, misuriamo le prestazioni degli annunci in modo anonimo per tutelare la tua privacy.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Scopri di più / Scelte di opt-out";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Generali";

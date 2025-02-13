@@ -1,5 +1,5 @@
 /* (No Comment) */
-"0W40Cl" = "Ny flik";
+"0W40Cl" = "Ny tabb";
 
 /* (No Comment) */
 "5ixvGX-tYwiRd" = "Det finns ${count} alternativ som matchar ”Uppskattad tid sparad”.";
@@ -71,7 +71,7 @@
 "e13lS3-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
 
 /* (No Comment) */
-"e13lS3-Y7TWy8" = "Var det \"Sök\" du sökte efter?";
+"e13lS3-Y7TWy8" = "Ville du ha \"Sök\"?";
 
 /* (No Comment) */
 "EUS9FL" = "Widgetgenväg";
@@ -107,7 +107,7 @@
 "EvESs0-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
 
 /* (No Comment) */
-"EvESs0-Y7TWy8" = "Var det ”Sök” du sökte efter?";
+"EvESs0-Y7TWy8" = "Ville du ha \"Sök\"?";
 
 /* (No Comment) */
 "FGO5qW" = "Brave-spellista";
@@ -164,13 +164,13 @@
 "M2Y1rg" = "Nr. 4";
 
 /* (No Comment) */
-"nthxSL" = "Nedladdningar";
+"nthxSL" = "Hämtade";
 
 /* (No Comment) */
 "nXONef" = "Favorit";
 
 /* (No Comment) */
-"qKrzyX" = "Skanna QR-kod";
+"qKrzyX" = "Skanna QR kod";
 
 /* (No Comment) */
 "r2EI05-0W40Cl" = "Var det ”Ny flik” du sökte efter?";
@@ -203,7 +203,7 @@
 "r2EI05-XCyA8c" = "Var det \"Brave News\" du sökte efter?";
 
 /* (No Comment) */
-"r2EI05-Y7TWy8" = "Var det ”Sök” du sökte efter?";
+"r2EI05-Y7TWy8" = "Ville du ha \"Sök\"?";
 
 /* (No Comment) */
 "sdOBtj-tYwiRd" = "Var det ”Uppskattad tid sparad” du sökte efter?";
@@ -233,7 +233,7 @@
 "tNCrcE-qKrzyX" = "Det finns ${count} alternativ som matchar \"Skanna QR-kod\".";
 
 /* (No Comment) */
-"tNCrcE-U0eRbw" = "Det finns ${count} alternativ som matchar ”Leo AI”.";
+"tNCrcE-U0eRbw" = "Det finns ${count} alternativ som matchar \"Leo AI\".";
 
 /* (No Comment) */
 "tNCrcE-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";
@@ -317,7 +317,7 @@
 "YQiQuz-crhbMy" = "Var det ”Bokmärken” du sökte efter?";
 
 /* (No Comment) */
-"YQiQuz-FGO5qW" = "Ville du ha \"Brave-spellista\"?";
+"YQiQuz-FGO5qW" = "Var det \"Brave-spellista\" du sökte efter?";
 
 /* (No Comment) */
 "YQiQuz-jXiFQY" = "Var det \"Brave Wallet\" du sökte efter?";
@@ -362,7 +362,7 @@
 "z517nu-qKrzyX" = "Det finns ${count} alternativ som matchar \"Skanna QR-kod\".";
 
 /* (No Comment) */
-"z517nu-U0eRbw" = "Det finns ${count} alternativ som matchar ”Leo AI”.";
+"z517nu-U0eRbw" = "Det finns ${count} alternativ som matchar \"Leo AI\".";
 
 /* (No Comment) */
 "z517nu-VBH4G6" = "Det finns ${count} alternativ som matchar ”Historik”.";

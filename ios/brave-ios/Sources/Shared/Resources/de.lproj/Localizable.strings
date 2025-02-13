@@ -2,7 +2,7 @@
 "AppMenuCopyURLConfirmMessage" = "URL in Zwischenablage kopiert";
 
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
-"AppMenuViewDesktopSiteTitleString" = "Desktopversion anfordern";
+"AppMenuViewDesktopSiteTitleString" = "Desktop-Version anfordern";
 
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
 "AppMenuViewMobileSiteTitleString" = "Mobilversion anfordern";
@@ -14,7 +14,7 @@
 "CancelDownloadDialogCancel" = "Abbrechen";
 
 /* Alert dialog body when the user taps the cancel download icon. */
-"CancelDownloadDialogMessage" = "Möchten Sie diesen Download wirklich abbrechen?";
+"CancelDownloadDialogMessage" = "Möchtest du diesen Download wirklich abbrechen?";
 
 /* Button declining the cancellation of the download. */
 "CancelDownloadDialogResume" = "Fortsetzen";
@@ -86,16 +86,22 @@
 "ScanQRCodeErrorOKButton" = "OK";
 
 /* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "Richten Sie den QR-Code zum Scannen innerhalb des Rahmens aus.";
+"ScanQRCodeInstructionsLabel" = "Richte den QR-Code zum Scannen innerhalb des Rahmens aus.";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "Die Daten sind ungültig.";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Bitte erlauben Sie Brave, auf die Kamera Ihres Geräts zuzugreifen. Gehen Sie dazu zu „Einstellungen“ -> „Datenschutz“ -> „Kamera“.";
+"ScanQRCodePermissionErrorMessage" = "Bitte erlaubee Brave den Zugriff auf die Kamera deines Geräts unter „Einstellungen“ -> „Datenschutz“ -> „Kamera“.";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "QR-Code scannen";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Vielen Dank, dass du Brave Search mit einem Klick auf eine private Anzeige unterstützen. Im Gegensatz zu Big Tech messen wir die Anzeigenleistung anonym, um deine Privatsphäre zu schützen.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Mehr erfahren / Opt-out-Möglichkeiten";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Allgemein";
@@ -113,7 +119,7 @@
 "UnableToAddPassErrorDismiss" = "OK";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorMessage" = "Fehler während der Übertragung zur Wallet. Bitte versuchen Sie es später erneut.";
+"UnableToAddPassErrorMessage" = "Fehler während der Übertragung zur Wallet. Bitte versuche es später erneut.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorTitle" = "Pass konnte nicht hinzugefügt werden";
@@ -125,8 +131,8 @@
 "UnableToOpenURLErrorTitle" = "Seite kann nicht geöffnet werden";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "Die Anmeldung %1$@ für %2$@ aktualisieren?";
+"UpdateLoginPrompt" = "Anmeldedaten von %1$@ für %2$@ aktualisieren?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginUsernamePrompt" = "Die Anmeldung %1$@ für %2$@ aktualisieren?";
+"UpdateLoginUsernamePrompt" = "Anmeldedaten von %1$@ für %2$@ aktualisieren?";
 

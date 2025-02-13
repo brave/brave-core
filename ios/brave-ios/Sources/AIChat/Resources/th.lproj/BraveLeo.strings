@@ -31,14 +31,14 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "สถานะ";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
+/* The title for the button that allows the user to view the App Store Receipt */
 "aichat.advancedSettingsViewReceiptTitle" = "ดูใบเสร็จ AppStore";
 
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "ไม่สามารถเชื่อมต่อกับ App Store ได้ โปรดลองอีกครั้งในภายหลัง";
 
 /* The title for the error showing there is an error from App Store */
-"aichat.appStoreErrorTitle" = "ข้อผิดพลาดของ App Store";
+"aichat.appStoreErrorTitle" = "ข้อผิดพลาดใน App Store";
 
 /* The title of the search bar suggestion when prompting to Ask Leo */
 "aichat.askLeoSearchSuggestionTitle" = "ถาม Leo";
@@ -179,7 +179,7 @@
 "aichat.introMessageTitle" = "แชท";
 
 /* The name of the AI-Assistant that's responsing to the user */
-"aichat.leoAssistantNameTitle" = "ลีโอ";
+"aichat.leoAssistantNameTitle" = "Leo";
 
 /* The default title displayed above a code block when the language of the code is not known. */
 "aichat.leoCodeExampleDefaultTitle" = "ตัวอย่างโค้ด";
@@ -263,7 +263,7 @@
 "aichat.paywallPurchaseDeepNote" = "การสมัครสมาชิกทั้งหมดจะได้รับการต่ออายุโดยอัตโนมัติ แต่สามารถยกเลิกได้ทุกเมื่อก่อนต่ออายุ";
 
 /* The error description when in app purcahse is erroneous. */
-"aichat.paywallPurchaseErrorDescription" = "ไม่สามารถดำเนินการซื้อให้เสร็จสิ้นได้ โปรดลองอีกครั้งหรือตรวจสอบรายละเอียดการชำระเงินบน Apple และลองอีกครั้ง";
+"aichat.paywallPurchaseErrorDescription" = "ไม่สามารถดำเนินการสั่งซื้อให้เสร็จสมบูรณ์ได้ โปรดลองอีกครั้ง หรือตรวจสอบรายละเอียดการชำระเงินของคุณบน Apple แล้วลองอีกครั้ง";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "ปลดล็อกอัตราการตอบสนองที่สูงขึ้นโดยสมัครใช้งาน Premium หรือลองอีกครั้งในภายหลัง";

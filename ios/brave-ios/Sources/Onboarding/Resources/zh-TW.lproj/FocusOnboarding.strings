@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "將 Brave 設定為您的預設瀏覽器";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "瀏覽速度更快，而且使用的資料更少。";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "廣告與追蹤器更少。";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "現在不要";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "說真的，我們已經擺脫它們了。";
+"focusOnboarding.noVideoAdsScreenDescription" = "在您最愛的串流網站阻擋惱人干擾。";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "不會再有影片廣告了。";
+"focusOnboarding.noVideoAdsScreenTitle" = "觀看串流媒體時防止受到中斷";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "深入瞭解保護隱私的產品分析 (P3A)";
@@ -35,16 +29,16 @@
 "focusOnboarding.p3aToggleDescription" = "您隨時可以在「Brave Shields 與隱私權」下的「Brave 設定」中加以變更。";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "分享不公開和匿名的產品深入分析。";
+"focusOnboarding.p3aToggleTitle" = "分享不公開 & 匿名的產品深入分析。";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "開始瀏覽";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "移至系統設定";
+"focusOnboarding.systemSettingsButtonTitle" = "設為預設";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "輸入網址以享受更少的廣告與追蹤器";
+"focusOnboarding.urlBarIndicatorDescription" = "開始串流，享受更少的廣告 & 追蹤器。";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "瞭解 Brave 的差異";
