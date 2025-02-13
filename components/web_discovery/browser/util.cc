@@ -41,9 +41,16 @@ std::string GetQuorumHost() {
 }
 
 GURL GetPatternsEndpoint() {
-  return GURL(base::StrCat(
-      {url::kHttpsScheme, url::kStandardSchemeSeparator,
-       brave_domains::GetServicesDomain(kPatternsHostPrefix), kPatternsPath}));
+  std::string host;
+  auto* cmd_line = base::CommandLine::ForCurrentProcess();
+  if (cmd_line->HasSwitch(kPatternsHostSwitch)) {
+    host = cmd_line->GetSwitchValueASCII(kPatternsHostSwitch);
+  } else {
+    host =
+        base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
+                      brave_domains::GetServicesDomain(kPatternsHostPrefix)});
+  }
+  return GURL(host + kPatternsPath);
 }
 
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url) {
