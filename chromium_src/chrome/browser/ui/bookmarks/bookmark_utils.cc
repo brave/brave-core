@@ -71,7 +71,7 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
 
 #if defined(TOOLKIT_VIEWS)
 ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
-                                     absl::variant<int, SkColor> color) {
+                                     ui::ColorVariant color) {
   int default_id =
 #if BUILDFLAG(IS_WIN)
       IDR_BRAVE_BOOKMARK_FOLDER_CLOSED_WIN_LIGHT;
@@ -82,16 +82,10 @@ ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
 #endif
 
   const auto generator = [](int default_id, BookmarkFolderIconType icon_type,
-                            absl::variant<int, SkColor> color,
+                            ui::ColorVariant color,
                             const ui::ColorProvider* color_provider) {
     gfx::ImageSkia folder;
-    SkColor sk_color;
-    if (absl::holds_alternative<SkColor>(color)) {
-      sk_color = absl::get<SkColor>(color);
-    } else {
-      DCHECK(color_provider);
-      sk_color = color_provider->GetColor(absl::get<ui::ColorId>(color));
-    }
+    SkColor sk_color = color.ConvertToSkColor(color_provider);
 
     const int resource_id = color_utils::IsDark(sk_color)
 #if BUILDFLAG(IS_WIN)
