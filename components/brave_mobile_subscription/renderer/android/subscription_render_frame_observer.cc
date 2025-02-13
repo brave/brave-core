@@ -249,13 +249,6 @@ std::string SubscriptionRenderFrameObserver::ExtractParam(
   return std::string();
 }
 
-std::string SubscriptionRenderFrameObserver::ExtractPath(
-    const GURL& url) const {
-  std::string path = url.has_path() ? url.path() : "";
-
-  return path;
-}
-
 bool SubscriptionRenderFrameObserver::IsValueAllowed(
     const std::string& purchase_token) const {
   if (purchase_token.length() > 0) {
@@ -288,7 +281,8 @@ bool SubscriptionRenderFrameObserver::IsAllowed() {
     // gets redirected to https://account.brave.com/order-link/?product=leo for
     // an actual linking where we should receive the result of linking
     if (intent.empty()) {
-      std::string path = ExtractPath(current_url);
+      std::string_view path =
+          current_url.has_path() ? current_url.path_piece() : "";
       if (path == kResultLandingPagePathLeo) {
         page_ = Page::kResultLandingPage;
       }

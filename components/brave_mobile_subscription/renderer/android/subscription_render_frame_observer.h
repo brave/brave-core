@@ -61,7 +61,6 @@ class SubscriptionRenderFrameObserver : public content::RenderFrameObserver {
   void OnGetPurchaseTokenOrderId(const std::string& purchase_token,
                                  const std::string& order_id);
   std::string ExtractParam(const GURL& url, const std::string& name) const;
-  std::string ExtractPath(const GURL& url) const;
   bool IsValueAllowed(const std::string& purchase_token) const;
 
   // RenderFrameObserver implementation.
