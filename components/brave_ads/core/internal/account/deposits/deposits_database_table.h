@@ -6,17 +6,21 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_
 
+#include <map>
 #include <optional>
 #include <string>
 
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 
-namespace brave_ads::database::table {
+namespace brave_ads {
+
+struct CreativeDepositInfo;
+struct DepositInfo;
+
+namespace database::table {
 
 using GetDepositsCallback =
     base::OnceCallback<void(bool success, std::optional<DepositInfo> deposit)>;
@@ -26,7 +30,8 @@ class Deposits final : public TableInterface {
   void Save(const DepositInfo& deposit, ResultCallback callback);
 
   void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
-              const CreativeAdList& creative_ads);
+              const std::map</*creative_instance_id*/ std::string,
+                             CreativeDepositInfo>& deposits);
   void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
               const DepositInfo& deposit);
 
@@ -42,12 +47,16 @@ class Deposits final : public TableInterface {
                int to_version) override;
 
  private:
-  std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
-                             const CreativeAdList& creative_ads) const;
+  std::string BuildInsertSql(
+      const mojom::DBActionInfoPtr& mojom_db_action,
+      const std::map</*creative_instance_id*/ std::string, CreativeDepositInfo>&
+          deposits) const;
   std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
                              const DepositInfo& deposit) const;
 };
 
-}  // namespace brave_ads::database::table
+}  // namespace database::table
+
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_

@@ -9,18 +9,14 @@
 #include <string>
 #include <vector>
 
-#include "base/time/time.h"
-
 namespace brave_ads {
 
 struct CreativeDaypartInfo final {
-  bool operator==(const CreativeDaypartInfo&) const = default;
+  auto operator<=>(const CreativeDaypartInfo&) const = default;
 
-  std::string days_of_week =
-      "0123456";  // Sunday=0, Monday=1, Tuesday=2, Wednesday=3, Thursday=4,
-                  // Friday=5 and Saturday=6
-  int start_minute = 0;                                             // 00:00
-  int end_minute = (base::Days(1) - base::Minutes(1)).InMinutes();  // 23:59
+  std::string days_of_week = "0123456";  // Sunday = 0
+  int start_minute = 0;                  // 00:00
+  int end_minute = 1439;                 // 23:59
 };
 
 using CreativeDaypartList = std::vector<CreativeDaypartInfo>;

@@ -10,13 +10,9 @@
 
 #include "base/check_op.h"
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -92,10 +88,6 @@ class CreativeInlineContentAds final : public TableInterface {
 
   Campaigns campaigns_database_table_;
   CreativeAds creative_ads_database_table_;
-  Dayparts dayparts_database_table_;
-  Deposits deposits_database_table_;
-  GeoTargets geo_targets_database_table_;
-  Segments segments_database_table_;
 };
 
 }  // namespace brave_ads::database::table

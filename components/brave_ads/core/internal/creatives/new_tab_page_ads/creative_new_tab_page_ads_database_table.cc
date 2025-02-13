@@ -8,7 +8,9 @@
 #include <cstddef>
 #include <map>
 #include <utility>
+#include <vector>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
@@ -22,6 +24,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -300,22 +303,14 @@ void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
         creative_new_tab_page_ads;)");
 
   if (!creative_ads.empty()) {
-    const std::vector<CreativeNewTabPageAdList> batches =
-        SplitVector(creative_ads, batch_size_);
+    campaigns_database_table_.Insert(
+        mojom_db_transaction,
+        CreativeAdList(creative_ads.cbegin(), creative_ads.cend()));
 
+    const std::vector<CreativeNewTabPageAdList> batches =
+        SplitVector(DeduplicateCreativeAds(creative_ads), batch_size_);
     for (const auto& batch : batches) {
       Insert(mojom_db_transaction, batch);
-
-      const CreativeAdList creative_ads_batch(batch.cbegin(), batch.cend());
-      campaigns_database_table_.Insert(mojom_db_transaction,
-                                       creative_ads_batch);
-      creative_ads_database_table_.Insert(mojom_db_transaction,
-                                          creative_ads_batch);
-      dayparts_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
-      deposits_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
-      geo_targets_database_table_.Insert(mojom_db_transaction,
-                                         creative_ads_batch);
-      segments_database_table_.Insert(mojom_db_transaction, creative_ads_batch);
     }
   }
 
@@ -558,6 +553,10 @@ void CreativeNewTabPageAds::Insert(
   if (creative_ads.empty()) {
     return;
   }
+
+  creative_ads_database_table_.Insert(
+      mojom_db_transaction,
+      CreativeAdList(creative_ads.cbegin(), creative_ads.cend()));
 
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;

@@ -7,15 +7,17 @@
 
 #include <cstddef>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
-#include "base/location.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
-#include "brave/components/brave_ads/core/internal/common/database/database_statement_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
-#include "brave/components/brave_ads/core/internal/common/time/time_util.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_campaign_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
+#include "brave/components/brave_ads/core/internal/creatives/creative_deposit_info.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database::table {
@@ -25,21 +27,22 @@ namespace {
 constexpr char kTableName[] = "campaigns";
 
 size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
-                   const CreativeAdList& creative_ads) {
+                   const std::map</*campaign_id*/ std::string,
+                                  CreativeCampaignInfo>& campaigns) {
   CHECK(mojom_db_action);
-  CHECK(!creative_ads.empty());
+  CHECK(!campaigns.empty());
 
   size_t row_count = 0;
 
   int index = 0;
-  for (const auto& creative_ad : creative_ads) {
-    BindColumnString(mojom_db_action, index++, creative_ad.campaign_id);
-    BindColumnTime(mojom_db_action, index++, creative_ad.start_at);
-    BindColumnTime(mojom_db_action, index++, creative_ad.end_at);
-    BindColumnInt(mojom_db_action, index++, creative_ad.daily_cap);
-    BindColumnString(mojom_db_action, index++, creative_ad.advertiser_id);
-    BindColumnInt(mojom_db_action, index++, creative_ad.priority);
-    BindColumnDouble(mojom_db_action, index++, creative_ad.pass_through_rate);
+  for (const auto& [campaign_id, campaign] : campaigns) {
+    BindColumnString(mojom_db_action, index++, campaign_id);
+    BindColumnTime(mojom_db_action, index++, campaign.start_at);
+    BindColumnTime(mojom_db_action, index++, campaign.end_at);
+    BindColumnInt(mojom_db_action, index++, campaign.daily_cap);
+    BindColumnString(mojom_db_action, index++, campaign.advertiser_id);
+    BindColumnInt(mojom_db_action, index++, campaign.priority);
+    BindColumnDouble(mojom_db_action, index++, campaign.pass_through_rate);
 
     ++row_count;
   }
@@ -49,15 +52,9 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
 }  // namespace
 
-void Campaigns::Delete(ResultCallback callback) const {
-  mojom::DBTransactionInfoPtr mojom_db_transaction =
-      mojom::DBTransactionInfo::New();
+Campaigns::Campaigns() = default;
 
-  DeleteTable(mojom_db_transaction, GetTableName());
-
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
-}
+Campaigns::~Campaigns() = default;
 
 void Campaigns::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
                        const CreativeAdList& creative_ads) {
@@ -67,10 +64,53 @@ void Campaigns::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     return;
   }
 
+  std::map</*campaign_id*/ std::string, CreativeCampaignInfo> campaigns;
+  std::map</*campaign_id*/ std::string, base::flat_set<std::string>>
+      geo_targets;
+  std::map</*campaign_id*/ std::string, base::flat_set<CreativeDaypartInfo>>
+      dayparts;
+  std::map</*creative_set_id*/ std::string, base::flat_set<std::string>>
+      segments;
+  std::map</*creative_instance_id*/ std::string, CreativeDepositInfo> deposits;
+
+  for (const auto& creative_ad : creative_ads) {
+    campaigns[creative_ad.campaign_id] = {
+        creative_ad.start_at,  creative_ad.end_at,
+        creative_ad.daily_cap, creative_ad.advertiser_id,
+        creative_ad.priority,  creative_ad.pass_through_rate};
+
+    geo_targets[creative_ad.campaign_id] = creative_ad.geo_targets;
+
+    dayparts[creative_ad.campaign_id].insert(
+        std::ranges::cbegin(creative_ad.dayparts),
+        std::ranges::cend(creative_ad.dayparts));
+
+    segments[creative_ad.creative_set_id].insert(creative_ad.segment);
+    const std::vector<std::string> segment_hierarchy =
+        base::SplitString(creative_ad.segment, "-", base::TRIM_WHITESPACE,
+                          base::SPLIT_WANT_NONEMPTY);
+    if (segment_hierarchy.size() > 1) {
+      // Add top-level segment.
+      segments[creative_ad.creative_set_id].insert(segment_hierarchy.front());
+    }
+
+    deposits[creative_ad.creative_instance_id] = {
+        creative_ad.value,
+        /*expire_at*/ creative_ad.end_at + base::Days(7)};
+  }
+
   mojom::DBActionInfoPtr mojom_db_action = mojom::DBActionInfo::New();
   mojom_db_action->type = mojom::DBActionInfo::Type::kExecuteWithBindings;
-  mojom_db_action->sql = BuildInsertSql(mojom_db_action, creative_ads);
+  mojom_db_action->sql = BuildInsertSql(mojom_db_action, campaigns);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
+
+  geo_targets_database_table_.Insert(mojom_db_transaction, geo_targets);
+
+  dayparts_database_table_.Insert(mojom_db_transaction, dayparts);
+
+  segments_database_table_.Insert(mojom_db_transaction, segments);
+
+  deposits_database_table_.Insert(mojom_db_transaction, deposits);
 }
 
 std::string Campaigns::GetTableName() const {
@@ -126,11 +166,12 @@ void Campaigns::MigrateToV48(
 
 std::string Campaigns::BuildInsertSql(
     const mojom::DBActionInfoPtr& mojom_db_action,
-    const CreativeAdList& creative_ads) const {
+    const std::map</*campaign_id*/ std::string, CreativeCampaignInfo>&
+        campaigns) const {
   CHECK(mojom_db_action);
-  CHECK(!creative_ads.empty());
+  CHECK(!campaigns.empty());
 
-  const size_t row_count = BindColumns(mojom_db_action, creative_ads);
+  const size_t row_count = BindColumns(mojom_db_action, campaigns);
 
   return base::ReplaceStringPlaceholders(
       R"(

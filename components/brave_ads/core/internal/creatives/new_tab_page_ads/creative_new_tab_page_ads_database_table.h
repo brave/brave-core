@@ -7,17 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_ADS_DATABASE_TABLE_H_
 
 #include <string>
-#include <vector>
 
 #include "base/check_op.h"
 #include "base/functional/callback.h"
-#include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
-#include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -32,7 +27,7 @@ using GetCreativeNewTabPageAdCallback =
 
 using GetCreativeNewTabPageAdsCallback =
     base::OnceCallback<void(bool success,
-                            const std::vector<std::string>& segments,
+                            const SegmentList& segments,
                             const CreativeNewTabPageAdList& creative_ads)>;
 
 class CreativeNewTabPageAds final : public TableInterface {
@@ -81,10 +76,6 @@ class CreativeNewTabPageAds final : public TableInterface {
 
   Campaigns campaigns_database_table_;
   CreativeAds creative_ads_database_table_;
-  Dayparts dayparts_database_table_;
-  Deposits deposits_database_table_;
-  GeoTargets geo_targets_database_table_;
-  Segments segments_database_table_;
 };
 
 }  // namespace brave_ads::database::table

@@ -6,11 +6,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/creatives_builder.h"
 
 #include <string>
-#include <vector>
 
 #include "base/check.h"
 #include "base/containers/flat_set.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
@@ -32,6 +30,17 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
   // Campaigns
   for (const auto& campaign : catalog.campaigns) {
+    base::Time campaign_start_at;
+    if (!base::Time::FromUTCString(campaign.start_at.c_str(),
+                                   &campaign_start_at)) {
+      BLOG(1, "Campaign id " << campaign.id << " has an invalid start at time");
+    }
+
+    base::Time campaign_end_at;
+    if (!base::Time::FromUTCString(campaign.end_at.c_str(), &campaign_end_at)) {
+      BLOG(1, "Campaign id " << campaign.id << " has an invalid end at time");
+    }
+
     // Geo Targets
     base::flat_set<std::string> geo_targets;
     for (const auto& geo_target : campaign.geo_targets) {
@@ -54,12 +63,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
       // Operating system
       if (!creative_set.DoesSupportOS()) {
-        const std::string platform_name =
-            PlatformHelper::GetInstance().GetName();
-
         BLOG(1, "Creative set id " << creative_set.id << " does not support "
-                                   << platform_name);
-
+                                   << PlatformHelper::GetInstance().GetName());
         continue;
       }
 
@@ -70,16 +75,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
-        if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                       &creative_ad.start_at)) {
-          BLOG(1, "Campaign id " << campaign.id
-                                 << " has an invalid start at time");
-        }
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(),
-                                       &creative_ad.end_at)) {
-          BLOG(1,
-               "Campaign id " << campaign.id << " has an invalid end at time");
-        }
+        creative_ad.start_at = campaign_start_at;
+        creative_ad.end_at = campaign_end_at;
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
         creative_ad.pass_through_rate = campaign.pass_through_rate;
@@ -98,33 +95,11 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         // Segments
         for (const auto& segment : creative_set.segments) {
-          const std::string segment_name = base::ToLowerASCII(segment.name);
-          CHECK(!segment_name.empty());
+          CHECK(!segment.name.empty());
 
-          std::vector<std::string> segment_name_hierarchy =
-              base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-                                base::SPLIT_WANT_NONEMPTY);
-
-          if (segment_name_hierarchy.empty()) {
-            BLOG(1, "creative set id " << creative_set.id
-                                       << " segment name should not be empty");
-
-            continue;
-          }
-
-          creative_ad.segment = segment_name;
+          creative_ad.segment = base::ToLowerASCII(segment.name);
           creatives.notification_ads.push_back(creative_ad);
           ++entries;
-
-          const std::string& top_level_segment_name =
-              segment_name_hierarchy.front();
-          CHECK(!top_level_segment_name.empty());
-
-          if (top_level_segment_name != segment_name) {
-            creative_ad.segment = top_level_segment_name;
-            creatives.notification_ads.push_back(creative_ad);
-            ++entries;
-          }
         }
       }
 
@@ -135,16 +110,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
-        if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                       &creative_ad.start_at)) {
-          BLOG(1, "Campaign id " << campaign.id
-                                 << " has an invalid start at time");
-        }
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(),
-                                       &creative_ad.end_at)) {
-          BLOG(1,
-               "Campaign id " << campaign.id << " has an invalid end at time");
-        }
+        creative_ad.start_at = campaign_start_at;
+        creative_ad.end_at = campaign_end_at;
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
         creative_ad.pass_through_rate = campaign.pass_through_rate;
@@ -166,33 +133,11 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         // Segments
         for (const auto& segment : creative_set.segments) {
-          const std::string segment_name = base::ToLowerASCII(segment.name);
-          CHECK(!segment_name.empty());
+          CHECK(!segment.name.empty());
 
-          std::vector<std::string> segment_name_hierarchy =
-              base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-                                base::SPLIT_WANT_NONEMPTY);
-
-          if (segment_name_hierarchy.empty()) {
-            BLOG(1, "creative set id " << creative_set.id
-                                       << " segment name should not be empty");
-
-            continue;
-          }
-
-          creative_ad.segment = segment_name;
+          creative_ad.segment = base::ToLowerASCII(segment.name);
           creatives.inline_content_ads.push_back(creative_ad);
           ++entries;
-
-          const std::string& top_level_segment_name =
-              segment_name_hierarchy.front();
-          CHECK(!top_level_segment_name.empty());
-
-          if (top_level_segment_name != segment_name) {
-            creative_ad.segment = top_level_segment_name;
-            creatives.inline_content_ads.push_back(creative_ad);
-            ++entries;
-          }
         }
       }
 
@@ -203,16 +148,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         creative_ad.creative_set_id = creative_set.id;
         creative_ad.campaign_id = campaign.id;
         creative_ad.advertiser_id = campaign.advertiser_id;
-        if (!base::Time::FromUTCString(campaign.start_at.c_str(),
-                                       &creative_ad.start_at)) {
-          BLOG(1, "Campaign id " << campaign.id
-                                 << " has an invalid start at time");
-        }
-        if (!base::Time::FromUTCString(campaign.end_at.c_str(),
-                                       &creative_ad.end_at)) {
-          BLOG(1,
-               "Campaign id " << campaign.id << " has an invalid end at time");
-        }
+        creative_ad.start_at = campaign_start_at;
+        creative_ad.end_at = campaign_end_at;
         creative_ad.daily_cap = campaign.daily_cap;
         creative_ad.priority = campaign.priority;
         creative_ad.pass_through_rate = campaign.pass_through_rate;
@@ -231,33 +168,11 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         // Segments
         for (const auto& segment : creative_set.segments) {
-          const std::string segment_name = base::ToLowerASCII(segment.name);
-          CHECK(!segment_name.empty());
+          CHECK(!segment.name.empty());
 
-          std::vector<std::string> segment_name_hierarchy =
-              base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-                                base::SPLIT_WANT_NONEMPTY);
-
-          if (segment_name_hierarchy.empty()) {
-            BLOG(1, "creative set id " << creative_set.id
-                                       << " segment name should not be empty");
-
-            continue;
-          }
-
-          creative_ad.segment = segment_name;
+          creative_ad.segment = base::ToLowerASCII(segment.name);
           creatives.promoted_content_ads.push_back(creative_ad);
           ++entries;
-
-          const std::string& top_level_segment_name =
-              segment_name_hierarchy.front();
-          CHECK(!top_level_segment_name.empty());
-
-          if (top_level_segment_name != segment_name) {
-            creative_ad.segment = top_level_segment_name;
-            creatives.promoted_content_ads.push_back(creative_ad);
-            ++entries;
-          }
         }
       }
 

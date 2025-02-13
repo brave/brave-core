@@ -30,6 +30,25 @@ size_t TargetedCreativeAdCount(const T& creative_ads) {
       });
 }
 
+template <typename T>
+T DeduplicateCreativeAds(const T& creative_ads) {
+  T unique_creative_ads = creative_ads;
+
+  std::sort(unique_creative_ads.begin(), unique_creative_ads.end(),
+            [](const CreativeAdInfo& lhs, const CreativeAdInfo& rhs) {
+              return lhs.creative_instance_id < rhs.creative_instance_id;
+            });
+
+  auto to_remove =
+      std::unique(unique_creative_ads.begin(), unique_creative_ads.end(),
+                  [](const CreativeAdInfo& lhs, const CreativeAdInfo& rhs) {
+                    return lhs.creative_instance_id == rhs.creative_instance_id;
+                  });
+  unique_creative_ads.erase(to_remove, unique_creative_ads.cend());
+
+  return unique_creative_ads;
+}
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_AD_UTIL_H_
