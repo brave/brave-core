@@ -73,7 +73,8 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/build/commands/lib/test.js',
     '<rootDir>/build/rustup',
-    '<rootDir>/third_party'
+    '<rootDir>/third_party',
+    '<rootDir>/tools/crates/vendor'
   ],
   testTimeout: 30000,
   transformIgnorePatterns: [
