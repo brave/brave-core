@@ -43,8 +43,8 @@ std::optional<std::string> ResetCustomFiltersForHost(
   const auto starts_with_str = base::StrCat({host, "##"});
   base::StringTokenizer tokenizer(custom_filters, "\n");
   while (tokenizer.GetNext()) {
-    std::string token;
-    base::TrimWhitespaceASCII(tokenizer.token(), base::TRIM_ALL, &token);
+    const std::string token{
+        base::TrimWhitespaceASCII(tokenizer.token(), base::TRIM_ALL)};
     if (token.starts_with(starts_with_str) && !IsInAllowList(token)) {
       continue;  // Exclude line from the result
     }
