@@ -61,7 +61,8 @@ void AdBlockCustomFiltersProvider::ResetCosmeticFilter(
     return;
   }
 
-  const auto modified_filters = ResetCustomFiltersForHost(host, GetCustomFilters());
+  const auto modified_filters =
+      ResetCustomFiltersForHost(host, GetCustomFilters());
   if (!modified_filters) {
     return;
   }

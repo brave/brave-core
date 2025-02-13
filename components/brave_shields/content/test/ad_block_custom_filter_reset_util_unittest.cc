@@ -9,7 +9,6 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
-#include "gtest/gtest.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_shields {
@@ -20,20 +19,20 @@ constexpr std::array<std::string, 2> kCurrentHost = {"current-host.com",
                                                      "host1.com"};
 
 constexpr char kTestCustomFiltersList[] =
-    R"(%s##main [role="region"] > [role="row"]:has(div:last-of-type span:has-text(/^Promoted by/))
+    R"(%s##main [role="region"] > [role="row"]:has(span:has-text(/^Promoted/))
 %s##button:matches-attr(class="/[\w]{7}/")
-    %s##body > div[class]:matches-css(position: absolute)   
+    %s##body > div[class]:matches-css(position: absolute)
 %s##body > div[class]:matches-css-before(position: absolute)
 %s##body > div[class]:matches-css-after(position: absolute)
 %s###target-1 > .target-2:matches-media((min-width: 800px))
  %s##:matches-path(/shop) p
-%s##div:matches-prop(imanad) 
+%s##div:matches-prop(imanad)
 %s##^script:has-text(/[\w\W]{35000}/)
-%s##main [role="region"] > [role="row"]:has(div:last-of-type span:not(:has-text(/^Promoted by/)))
+%s##main [role="region"] > [role="row"]:has(span:not(:has-text(/^Promoted by/)))
 %s##:matches-path(/^/home/) [data-testid="primaryColumn"]:others()
 %s###pcf #a19 b:upward(2)
 %s##.j-mini-player[class]:watch-attr(class):remove-attr(class)
-%s##:xpath(//div[@id="stream_pagelet"]//div[starts-with(@id,"hyperfeed_story_id_")]
+%s##:xpath(//div[@id="pagelet"]//div[starts-with(@id,"hyperfeed_story_id_")]
 %s##+js(nobab)
 %s##body > div.logged-in.env-production.page-responsive
 %s###post-864297 > div.text > img:nth-child(9)
@@ -66,11 +65,10 @@ void CheckCase(const std::string& host_pos0,
       ResetCustomFiltersForHost(reset_for_host, custom_filters_current_host);
 
   ASSERT_TRUE(resetted_cf_list);
-  EXPECT_NE(
-      resetted_cf_list->find(base::StrCat(
-          {host_pos0,
-           R"(##main [role="region"] > [role="row"]:has(div:last-of-type span:has-text(/^Promoted by/)))"})),
-      std::string::npos);
+  EXPECT_NE(resetted_cf_list->find(base::StrCat(
+                {host_pos0, R"(##main [role="region"] > )",
+                 R"([role="row"]:has(span:has-text(/^Promoted/)))"})),
+            std::string::npos);
   EXPECT_NE(resetted_cf_list->find(base::StrCat(
                 {host_pos1, R"(##button:matches-attr(class="/[\w]{7}/"))"})),
             std::string::npos);
@@ -105,12 +103,14 @@ void CheckCase(const std::string& host_pos0,
   EXPECT_NE(
       resetted_cf_list->find(base::StrCat(
           {host_pos9,
-           R"(##main [role="region"] > [role="row"]:has(div:last-of-type span:not(:has-text(/^Promoted by/))))"})),
+           R"(##main [role="region"] > [role="row"])", 
+           R"(:has(span:not(:has-text(/^Promoted by/))))"})),
       std::string::npos);
   EXPECT_NE(
       resetted_cf_list->find(base::StrCat(
           {host_pos10,
-           R"(##:matches-path(/^/home/) [data-testid="primaryColumn"]:others())"})),
+           R"(##:matches-path(/^/home/) )", 
+           R"([data-testid="primaryColumn"]:others())"})),
       std::string::npos);
   EXPECT_NE(resetted_cf_list->find(
                 base::StrCat({host_pos11, R"(###pcf #a19 b:upward(2))"})),
@@ -123,7 +123,8 @@ void CheckCase(const std::string& host_pos0,
   EXPECT_NE(
       resetted_cf_list->find(base::StrCat(
           {host_pos13,
-           R"(##:xpath(//div[@id="stream_pagelet"]//div[starts-with(@id,"hyperfeed_story_id_")])"})),
+           R"(##:xpath(//div[@id="pagelet"])", 
+           R"(//div[starts-with(@id,"hyperfeed_story_id_")])"})),
       std::string::npos);
   EXPECT_NE(
       resetted_cf_list->find(base::StrCat({host_pos14, "##+js(nobab)\n"})),
