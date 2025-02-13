@@ -40,6 +40,7 @@ inline constexpr char kProductParamName[] = "product";
 inline constexpr char kProductVPNParamValue[] = "vpn";
 inline constexpr char kProductLeoParamValue[] = "leo";
 inline constexpr char kIntentParamValueLeo[] = "link-order";
+inline constexpr char kResultLandingPagePathLeo[] = "/order-link/";
 
 }  // namespace
 
@@ -103,10 +104,17 @@ void SubscriptionRenderFrameObserver::DidCreateScriptContext(
 #endif
   } else if (product_ == Product::kLeo) {
     if (ai_chat_subscription_.is_bound()) {
-      AddJavaScriptObjectToFrame(context);
-      ai_chat_subscription_->GetPurchaseTokenOrderId(base::BindOnce(
-          &SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId,
-          weak_factory_.GetWeakPtr()));
+      // Inject only linkResult object on the
+      // https://account.brave.com/order-link/?product=leo page
+      // and get purchase token id only on
+      // https://account.brave.com?intent=link-order&product=leo page
+      if (page_ == Page::kResultLandingPage) {
+        AddJavaScriptObjectToFrame(context);
+      } else if (page_ == Page::kInitialLandingPage) {
+        ai_chat_subscription_->GetPurchaseTokenOrderId(base::BindOnce(
+            &SubscriptionRenderFrameObserver::OnGetPurchaseTokenOrderId,
+            weak_factory_.GetWeakPtr()));
+      }
     }
   }
 }
@@ -241,6 +249,13 @@ std::string SubscriptionRenderFrameObserver::ExtractParam(
   return std::string();
 }
 
+std::string SubscriptionRenderFrameObserver::ExtractPath(
+    const GURL& url) const {
+  std::string path = url.has_path() ? url.path() : "";
+
+  return path;
+}
+
 bool SubscriptionRenderFrameObserver::IsValueAllowed(
     const std::string& purchase_token) const {
   if (purchase_token.length() > 0) {
@@ -268,11 +283,25 @@ bool SubscriptionRenderFrameObserver::IsAllowed() {
     product_ = Product::kVPN;
   } else if (product == kProductLeoParamValue) {
     product_ = Product::kLeo;
+    // We allow to inject linkResult object if intent value is empty and path is
+    // /order-link/ as https://account.brave.com?intent=link-order&product=leo
+    // gets redirected to https://account.brave.com/order-link/?product=leo for
+    // an actual linking where we should receive the result of linking
+    if (intent.empty()) {
+      std::string path = ExtractPath(current_url);
+      if (path == kResultLandingPagePathLeo) {
+        page_ = Page::kResultLandingPage;
+      }
+    } else {
+      page_ = Page::kInitialLandingPage;
+    }
   } else {
     product_ = std::nullopt;
   }
   return (intent == kIntentParamValue || intent == kIntentParamTestValue ||
-          intent == kIntentParamValueLeo) &&
+          intent == kIntentParamValueLeo ||
+          (intent.empty() && page_.has_value() &&
+           page_ == Page::kResultLandingPage)) &&
          product_.has_value();
 }
 

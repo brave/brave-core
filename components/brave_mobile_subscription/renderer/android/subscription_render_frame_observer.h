@@ -54,12 +54,14 @@ class SubscriptionRenderFrameObserver : public content::RenderFrameObserver {
   FRIEND_TEST_ALL_PREFIXES(SubscriptionRenderFrameObserverTest, ExtractParam);
   FRIEND_TEST_ALL_PREFIXES(SubscriptionRenderFrameObserverTest, IsValueAllowed);
   enum class Product { kVPN = 0, kLeo = 1 };
+  enum class Page { kInitialLandingPage = 0, kResultLandingPage = 1 };
 
   bool EnsureConnected();
   void OnGetPurchaseToken(const std::string& purchase_token);
   void OnGetPurchaseTokenOrderId(const std::string& purchase_token,
                                  const std::string& order_id);
   std::string ExtractParam(const GURL& url, const std::string& name) const;
+  std::string ExtractPath(const GURL& url) const;
   bool IsValueAllowed(const std::string& purchase_token) const;
 
   // RenderFrameObserver implementation.
@@ -81,6 +83,7 @@ class SubscriptionRenderFrameObserver : public content::RenderFrameObserver {
 
   const int32_t world_id_;
   std::optional<Product> product_ = std::nullopt;
+  std::optional<Page> page_ = std::nullopt;
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   mojo::Remote<brave_vpn::mojom::ServiceHandler> vpn_service_;
 #endif
