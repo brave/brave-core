@@ -15,18 +15,22 @@ namespace views {
 class WebView;
 }
 
-class Browser;
+namespace content {
+class WebContents;
+}
 
 class EmailAliasesBubbleView : public views::BubbleDialogDelegateView {
   METADATA_HEADER(EmailAliasesBubbleView, views::BubbleDialogDelegateView)
 
  public:
-  static void Show(Browser* browser, uint64_t field_renderer_id);
+  static void Show(content::WebContents* web_contents,
+                   views::View* anchor_view,
+                   uint64_t field_renderer_id);
   static void Close();
   static void FillFieldWithNewAlias(const std::string& value);
 
   EmailAliasesBubbleView(views::View* anchor_view,
-                         Browser* browser,
+                         content::WebContents* web_contents,
                          uint64_t field_renderer_id);
   ~EmailAliasesBubbleView() override;
 
@@ -36,7 +40,7 @@ class EmailAliasesBubbleView : public views::BubbleDialogDelegateView {
       const views::SizeBounds& available_size) const override;
 
  private:
-  raw_ptr<Browser> browser_;
+  raw_ptr<content::WebContents> web_contents_;
   uint64_t field_renderer_id_;
   raw_ptr<views::WebView> web_view_;
 };

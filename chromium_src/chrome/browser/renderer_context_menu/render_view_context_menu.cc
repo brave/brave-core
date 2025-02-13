@@ -27,6 +27,8 @@
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/common/channel_info.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
@@ -519,7 +521,11 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
                 .empty()) {
           brave::ShowEmailAliases(GetBrowser());
         } else {
-          EmailAliasesBubbleView::Show(GetBrowser(), params_.field_renderer_id);
+          auto* browser_view =
+              BrowserView::GetBrowserViewForBrowser(GetBrowser());
+          views::View* anchor_view = browser_view->GetLocationBarView();
+          EmailAliasesBubbleView::Show(source_web_contents_, anchor_view,
+                                       params_.field_renderer_id);
         }
       }
       break;

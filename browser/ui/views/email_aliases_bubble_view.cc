@@ -30,13 +30,12 @@
 
 std::unique_ptr<views::Widget> widget_ptr_;
 
-void EmailAliasesBubbleView::Show(Browser* browser,
+void EmailAliasesBubbleView::Show(content::WebContents* web_contents,
+                                  views::View* anchor_view,
                                   uint64_t field_renderer_id) {
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-  views::View* anchor_view = browser_view->GetLocationBarView();
   std::unique_ptr<views::Widget> widget(
       views::BubbleDialogDelegateView::CreateBubble(
-          std::make_unique<EmailAliasesBubbleView>(anchor_view, browser,
+          std::make_unique<EmailAliasesBubbleView>(anchor_view, web_contents,
                                                    field_renderer_id),
           views::Widget::InitParams::CLIENT_OWNS_WIDGET));
   widget->Show();
@@ -49,17 +48,17 @@ void EmailAliasesBubbleView::Close() {
   }
 }
 
-EmailAliasesBubbleView::EmailAliasesBubbleView(views::View* anchor_view,
-                                               Browser* browser,
-                                               uint64_t field_renderer_id)
+EmailAliasesBubbleView::EmailAliasesBubbleView(
+    views::View* anchor_view,
+    content::WebContents* web_contents,
+    uint64_t field_renderer_id)
     : BubbleDialogDelegateView(anchor_view, views::BubbleBorder::TOP_CENTER),
-      browser_(browser),
+      web_contents_(web_contents),
       field_renderer_id_(field_renderer_id) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
-  auto web_view = std::make_unique<views::WebView>(browser->profile());
-  std::cout << "EmailAliasesBubbleView::EmailAliasesBubbleView: web_view"
-            << web_view << std::endl;
+  auto web_view =
+      std::make_unique<views::WebView>(web_contents->GetBrowserContext());
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   web_view->SetPreferredSize(gfx::Size(500, 350));
   web_view_ = AddChildView(std::move(web_view));
@@ -71,16 +70,11 @@ EmailAliasesBubbleView::EmailAliasesBubbleView(views::View* anchor_view,
 EmailAliasesBubbleView::~EmailAliasesBubbleView() {}
 
 void EmailAliasesBubbleView::FillField(const std::string& alias_address) {
-  if (!browser_) {
-    return;
-  }
-  content::WebContents* web_contents =
-      browser_->tab_strip_model()->GetActiveWebContents();
-  if (!web_contents) {
+  if (!web_contents_) {
     return;
   }
   content::RenderFrameHost* render_frame_host =
-      web_contents->GetPrimaryMainFrame();
+      web_contents_->GetPrimaryMainFrame();
   if (!render_frame_host) {
     return;
   }
