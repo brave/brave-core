@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginHorizontal="24dp"
+        android:layout_margin="24dp"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatButton
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:gravity="center"
-            android:background="@drawable/crypto_wallet_blue_button"
+            android:background="@drawable/brave_sync_btn"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:layout_marginStart="12dp"
