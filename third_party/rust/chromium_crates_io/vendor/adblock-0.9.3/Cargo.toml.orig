@@ -1,6 +1,6 @@
 [package]
 name = "adblock"
-version = "0.9.2"
+version = "0.9.3"
 authors = ["Anton Lazarev <alazarev@brave.com>", "Andrius Aucinas"]
 edition = "2021"
 
