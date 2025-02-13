@@ -1,0 +1,65 @@
+SEQUENCE {
+  SEQUENCE {
+    INTEGER { 1 }
+    SEQUENCE {
+      # ecdsa-with-SHA256
+      OBJECT_IDENTIFIER { 1.2.840.10045.4.3.2 }
+    }
+    SEQUENCE {
+      SET {
+        SEQUENCE {
+          # commonName
+          OBJECT_IDENTIFIER { 2.5.4.3 }
+          UTF8String { "crl-distrib-point-test.example.com" }
+        }
+      }
+      SET {
+        SEQUENCE {
+          # organizationName
+          OBJECT_IDENTIFIER { 2.5.4.10 }
+          UTF8String { "only_ca_certs" }
+        }
+      }
+    }
+    UTCTime { "861223015911Z" }
+    UTCTime { "861223020011Z" }
+    [0] {
+      SEQUENCE {
+        SEQUENCE {
+          # cRLNumber
+          OBJECT_IDENTIFIER { 2.5.29.20 }
+          OCTET_STRING {
+            INTEGER { `1a7d5c57c1aa399208f8e24197de6ef9361aaf07` }
+          }
+        }
+        SEQUENCE {
+          # issuingDistributionPoint
+          OBJECT_IDENTIFIER { 2.5.29.28 }
+          BOOLEAN { TRUE }
+          OCTET_STRING {
+            SEQUENCE {
+              [0] {
+                [0] {
+                  [6 PRIMITIVE] { "http://example.com/crl.1.der" }
+                }
+              }
+              # Mis-encoded bool value.
+              [2 PRIMITIVE] { `AB` }
+            }
+          }
+        }
+      }
+    }
+  }
+  SEQUENCE {
+    # ecdsa-with-SHA256
+    OBJECT_IDENTIFIER { 1.2.840.10045.4.3.2 }
+  }
+  BIT_STRING {
+    `00`
+    SEQUENCE {
+      INTEGER { `6aa680a8805f3902540464b93e4be1f4daa81820ef92ca860061443a6cb37e91` }
+      INTEGER { `329f8fcf98fee441707abf7aa3f68699ff5cd48ab7c130ab8d3cdd2e5af0e6a3` }
+    }
+  }
+}

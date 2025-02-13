@@ -1,0 +1,33 @@
+
+[advisories]
+yanked = "deny"
+ignore = []
+
+[licenses]
+allow = [
+    "Apache-2.0",
+    "MIT",
+]
+confidence-threshold = 1.0
+
+[bans]
+allow = []
+deny = []
+multiple-versions = "deny"
+skip = [
+    # Dependency of this crate and and rustix (rustix has older). We only use one at a time.
+    { name = "windows-sys" },
+]
+skip-tree = []
+wildcards = "deny"
+
+[sources]
+allow-git = []
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+unknown-git = "deny"
+unknown-registry = "deny"
+
+[sources.allow-org]
+github = []
+gitlab = []
+bitbucket = []

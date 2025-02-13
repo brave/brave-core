@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 43
+  |
+1 | invalid-escape = "This string has a bad \  escape character."
+  |                                           ^
+invalid escape sequence
+expected `b`, `f`, `n`, `r`, `t`, `u`, `U`, `\`, `"`

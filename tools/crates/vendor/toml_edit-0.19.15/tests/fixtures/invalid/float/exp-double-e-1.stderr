@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 20
+  |
+1 | exp-double-e-1 = 1ee2
+  |                    ^
+invalid floating-point number

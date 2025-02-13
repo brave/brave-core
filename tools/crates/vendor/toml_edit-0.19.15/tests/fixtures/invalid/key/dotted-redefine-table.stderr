@@ -1,0 +1,5 @@
+TOML parse error at line 4, column 1
+  |
+4 | a.b.c = 2
+  | ^
+dotted key `a.b` attempted to extend non-table type (integer)

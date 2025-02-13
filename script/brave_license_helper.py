@@ -155,6 +155,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'vendor', 'gn-project-generators'),
         os.path.join('brave', 'vendor', 'omaha', 'omaha', 'scons-out'),
         os.path.join('brave', 'third_party', 'libdmg-hfsplus'),
+        os.path.join('brave', 'tools', 'crates', 'vendor'),
     ])
 
     # Add the licensing info that would normally be in a README.chromium file.
