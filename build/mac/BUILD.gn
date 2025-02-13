@@ -122,7 +122,7 @@ action("generate_dsa_sig_for_dmg") {
 
   outputs = [ "$output_dmg_dsa_path" ]
 
-  deps = [ ":_create_dmg_pkg" ]
+  deps = [ ":package" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
@@ -160,7 +160,7 @@ action("generate_eddsa_sig_for_dmg") {
 
   outputs = [ "$output_dmg_eddsa_path" ]
 
-  deps = [ ":_create_dmg_pkg" ]
+  deps = [ ":package" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
@@ -199,7 +199,7 @@ action("build_delta_installer") {
 
   outputs = [ "$output_delta_path" ]
 
-  deps = [ ":_create_dmg_pkg" ]
+  deps = [ ":package" ]
 
   if (build_sparkle) {
     deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
@@ -237,7 +237,7 @@ action("generate_eddsa_sig_for_delta") {
 }
 
 copy("copies") {
-  visibility = [ ":_create_dmg_pkg" ]
+  visibility = [ ":package" ]
 
   if (is_official_build) {
     if (is_release_channel) {
@@ -293,7 +293,11 @@ if (install_omaha4_with_pkg) {
   }
 }
 
-action("_create_dmg_pkg") {
+action("package") {
+  outputs = [
+    upstream_dmg_path,
+    upstream_pkg_path,
+  ]
   deps = [
     ":browser_install_script",
     ":copies",
@@ -304,10 +308,6 @@ action("_create_dmg_pkg") {
     ":signing_config",
     "//chrome:chrome_app",
     "//chrome/installer/mac",
-  ]
-  outputs = [
-    upstream_dmg_path,
-    upstream_pkg_path,
   ]
   script = "$packaging_dir/sign_chrome.py"
   installer_identity = mac_installer_signing_identifier
@@ -348,7 +348,7 @@ action("_create_dmg_pkg") {
 }
 
 copy("signing_config") {
-  visibility = [ ":_create_dmg_pkg" ]
+  visibility = [ ":package" ]
   sources = [
     "signing/internal_config.py",
     "signing/internal_invoker.py",
@@ -387,7 +387,7 @@ copy("ds_store") {
 
 if (skip_signing) {
   copy("unsigned_dmg") {
-    deps = [ ":_create_dmg_pkg" ]
+    deps = [ ":package" ]
     sources = [ upstream_dmg_path ]
     outputs = [ "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg" ]
   }
@@ -421,13 +421,13 @@ group("finalize_dmg_pkg") {
 
 copy("copy_dmg") {
   sources = [ upstream_dmg_path ]
-  deps = [ ":_create_dmg_pkg" ]
+  deps = [ ":package" ]
   outputs = [ target_dmg_path ]
 }
 
 copy("copy_pkg") {
   sources = [ upstream_pkg_path ]
-  deps = [ ":_create_dmg_pkg" ]
+  deps = [ ":package" ]
   outputs = [ "$root_out_dir/$brave_pkg" ]
 }
 
@@ -440,5 +440,5 @@ crx3("crx") {
   # copied into this directory manually. Changing the private key requires
   # also changing kBravePublisherKeyHash in crx_verifier.cc.
   key = "//brave/updater/crx-private-key.der"
-  deps = [ ":_create_dmg_pkg" ]
+  deps = [ ":package" ]
 }
