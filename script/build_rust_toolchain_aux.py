@@ -1,4 +1,3 @@
-from contextlib import contextmanager
 import os
 import re
 import shutil
@@ -10,18 +9,12 @@ import brave_chromium_utils
 
 # npm run build_rust_toolchain_aux
 
-@contextmanager
-def cwd(cwd):
-    oldcwd = os.getcwd()
-    os.chdir(cwd)
-    try:
-        yield
-    finally:
-        os.chdir(oldcwd)
+TOOLS_RUST = '//tools/rust'
 
 with brave_chromium_utils.sys_path('//tools/rust'):
     import build_rust
     target_triple = build_rust.RustTargetTriple()
+    rust_build_dir = build_rust.RUST_BUILD_DIR
     print(build_rust.MakeVersionStamp(build_rust.RUST_REVISION))
 
 def back_up_config_toml_template():
@@ -65,39 +58,33 @@ def run_xpy():
 def restore_config_toml_template():
     shutil.copy('config.toml.template.orig', 'config.toml.template')
 
-# def install_artifacts(rust_lld_output_path, rust_lld_install_path, wasm32_unknown_unknown_output_path, wasm32_unknown_unknown_install_path):
-#     shutil.copy2(rust_lld_output_path, rust_lld_install_path)
-#     shutil.copytree(wasm32_unknown_unknown_output_path, wasm32_unknown_unknown_install_path)
+def create_tar():
+    with brave_chromium_utils.sys_path(TOOLS_RUST):
+        import build_rust
+        import update_rust
+        target_triple = build_rust.RustTargetTriple()
+        output_path = os.path.join(build_rust.RUST_BUILD_DIR, target_triple, 'stage1', 'lib', 'rustlib')
+        rust_toolchain = os.path.relpath(update_rust.RUST_TOOLCHAIN_OUT_DIR, brave_chromium_utils.get_src_dir())
 
-def create_tar(rust_lld, wasm32_unknown_unknown, rust_lld_install_path, wasm32_unknown_unknown_install_path):
     with tarfile.open(f'rust_toolchain_aux_{target_triple.replace("-", "_")}.gz', 'w:gz') as tar:
-        tar.add(rust_lld, arcname=rust_lld_install_path)
-        tar.add(wasm32_unknown_unknown, arcname=wasm32_unknown_unknown_install_path)
+        tar.add(
+            os.path.join(output_path, target_triple, 'bin', 'rust-lld'),
+            arcname=os.path.join(rust_toolchain, 'bin', 'rust-lld')
+        )
+        tar.add(
+            os.path.join(output_path, 'wasm32-unknown-unknown'),
+            arcname=os.path.join(rust_toolchain, 'lib', 'rustlib', 'wasm32-unknown-unknown')
+        )
 
 def main():
-    with cwd(os.path.join('tools', 'rust')):
-        # back_up_config_toml_template()
-        # edit_config_toml_template()
-        # prepare_run_xpy()
-        # run_xpy()
-        # restore_config_toml_template()
-        print(os.getcwd())
-
-    output_path = os.path.join('third_party', 'rust-src', 'build', target_triple, 'stage1', 'lib', 'rustlib')
-    rust_lld_output_path = os.path.join(output_path, target_triple, 'bin', 'rust-lld')
-    wasm32_unknown_unknown_output_path = os.path.join(output_path, 'wasm32-unknown-unknown')
-
-    install_path = os.path.join('third_party', 'rust-toolchain')
-    rust_lld_install_path = os.path.join(install_path, 'bin', 'rust-lld')
-    wasm32_unknown_unknown_install_path = os.path.join(install_path, 'lib', 'rustlib', 'wasm32-unknown-unknown')
-
-    # install_artifacts(rust_lld_output_path, rust_lld_install_path, wasm32_unknown_unknown_output_path, wasm32_unknown_unknown_install_path) 
-    # create_tar(
-    #     rust_lld_output_path,
-    #     wasm32_unknown_unknown_output_path,
-    #     rust_lld_install_path,
-    #     wasm32_unknown_unknown_install_path
-    # )
+    os.chdir(brave_chromium_utils.wspath(TOOLS_RUST))
+    # back_up_config_toml_template()
+    # edit_config_toml_template()
+    # prepare_run_xpy()
+    # run_xpy()
+    # restore_config_toml_template()
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    create_tar()
 
 
 
