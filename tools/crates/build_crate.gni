@@ -1,0 +1,53 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+template("build_crate") {
+  crate = target_name
+  assert(
+      defined(invoker["${crate}_exe"]),
+      "Please add ${crate}_exe to //brave/tools/crates/config.gni (or to $crate itself)!")
+  crate_exe = invoker["${crate}_exe"]
+
+  action("build_$crate") {
+    assert(current_toolchain == host_toolchain)
+
+    forward_variables_from(invoker, [ "deps" ])
+
+    script = "//build/gn_run_binary.py"
+
+    cargo_exe = "//third_party/rust-toolchain/bin/cargo"
+    if (host_os == "win") {
+      cargo_exe += ".exe"
+    }
+
+    inputs = [
+      cargo_exe,
+      "Cargo.lock",
+    ]
+
+    outputs = [ crate_exe ]
+
+    # To avoid irreproducible builds,
+    # `build_crate`s MUST always build with `cargo vendor`ed deps,
+    # hence they always have to pass:
+    #   --config .cargo/config.toml
+    #   --frozen (--locked + --offline)
+    # when running `cargo build`.
+    args = [
+      rebase_path(cargo_exe),
+      "build",
+      "--release",
+      "--manifest-path",
+      rebase_path("Cargo.toml"),
+      "--config",
+      rebase_path(".cargo/config.toml"),
+      "--target-dir",
+      rebase_path(get_path_info(crate_exe, "dir") + "/.."),
+      "--frozen",
+      "-p",
+      string_replace(crate, "_", "-"),
+    ]
+  }
+}
