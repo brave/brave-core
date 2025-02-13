@@ -29,9 +29,8 @@ class BraveSearchResultAdManager: NSObject {
     placementId: String,
     searchResultAd: BraveAds.CreativeSearchResultAdInfo
   ) {
-    rewards.ads.triggerSearchResultAdEvent(
+    rewards.ads.triggerSearchResultAdViewedEvent(
       searchResultAd,
-      eventType: .viewedImpression,
       completion: { _ in }
     )
   }
