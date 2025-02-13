@@ -63,7 +63,7 @@ export const ActionIcon = styled(Icon)`
 export const IconsWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 12px;
 `
