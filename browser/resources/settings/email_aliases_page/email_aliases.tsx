@@ -342,6 +342,30 @@ const MainEmailEntryForm = ({viewState, mainEmail, onEmailSubmitted, restart} : 
   </Card>
 )
 
+const MainView = ({
+  viewState, mainEmail, onLogout, aliasesState, setViewState,
+  mappingService, onListChange
+}: {
+  viewState: ViewState,
+  mainEmail: string,
+  onLogout: Function,
+  aliasesState: Alias[],
+  setViewState: Function,
+  mappingService: MappingService,
+  onListChange: Function
+}) => (
+  (viewState.mode === ViewMode.Startup ?
+    (<Row style={{margin: '1em', flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}><Icon name='loading-spinner' />
+      <h3 style={{margin: '0.25em'}}>{getLocale('emailAliasesConnectingToBraveAccount')}</h3>
+     </Row>) :
+    (<span>
+      <MainEmailDisplay onLogout={onLogout} email={mainEmail} />
+      <AliasList aliases={aliasesState} onViewChange={setViewState}
+        mappingService={mappingService}
+        onListChange={onListChange}></AliasList>
+    </span>))
+)
+
 export const ManagePage = ({ mappingService }:
   {
     mappingService: MappingService
@@ -396,16 +420,7 @@ export const ManagePage = ({ mappingService }:
       <Introduction />
       {viewState.mode === ViewMode.SignUp || viewState.mode === ViewMode.AwaitingAuthorization ?
         (<MainEmailEntryForm viewState={viewState} mainEmail={mainEmail} onEmailSubmitted={onMainEmailSubmitted} restart={restart}/>) :
-        (viewState.mode === ViewMode.Startup ?
-          (<Row style={{margin: '1em', flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}><Icon name='loading-spinner' />
-            <h3 style={{margin: '0.25em'}}>{getLocale('emailAliasesConnectingToBraveAccount')}</h3>
-           </Row>) :
-          (<span>
-            <MainEmailDisplay onLogout={onLogout} email={mainEmail} />
-            <AliasList aliases={aliasesState} onViewChange={setViewState}
-              mappingService={mappingService}
-              onListChange={onListChange}></AliasList>
-          </span>))}
+        <MainView viewState={viewState} mainEmail={mainEmail} onLogout={onLogout} aliasesState={aliasesState} setViewState={setViewState} mappingService={mappingService} onListChange={onListChange}/>}
       {(mode == ViewMode.Create || mode == ViewMode.Edit) &&
         (<span><GrayOverlay onClick={returnToMain}>&nbsp;</GrayOverlay>
           <ModalWithCloseButton returnToMain={returnToMain}>
