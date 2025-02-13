@@ -145,21 +145,15 @@ void YouTubeTabFeature::PrimaryMainDocumentElementAvailable() {
 void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jweb_contents) {
-  content::WebContents* web_contents =
-      content::WebContents::FromJavaWebContents(jweb_contents);
-
   if (!base::FeatureList::IsEnabled(
           youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
     return;
   }
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
 
-  // Get the YouTubeTabFeature instance
-  // YouTubeTabFeature* helper =
-  // YouTubeTabFeature::FromWebContents(web_contents);
-
-  std::unique_ptr<YouTubeTabFeature> helper =
-      std::make_unique<YouTubeTabFeature>(web_contents,
-                                          ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  YouTubeTabFeature* helper =
+      new YouTubeTabFeature(web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 
   if (!helper || !helper->GetJson()) {
     return;
@@ -178,7 +172,7 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
   registry->LoadScriptFromPath(
       url, helper->GetJson()->GetFullscreenScript(),
       base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
-                     helper->GetWeakPtr(),
+                     base::Owned(helper),
                      web_contents->GetPrimaryMainFrame()->GetGlobalId(),
                      blink::mojom::UserActivationOption::kActivate));
 }
