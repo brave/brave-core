@@ -12,6 +12,10 @@
 
 class Profile;
 
+namespace brave_screenshots {
+class BraveScreenshotsTabFeature;
+}  // namespace brave_screenshots
+
 namespace tabs {
 
 class TabInterface;
@@ -27,6 +31,17 @@ class TabFeatures : public TabFeatures_Chromium {
   ~TabFeatures() override;
 
   void Init(TabInterface& tab, Profile* profile) override;
+
+  // Brave Screenshots (via Context Menu and Commander)
+  brave_screenshots::BraveScreenshotsTabFeature*
+  brave_screenshots_tab_feature() {
+    return brave_screenshots_tab_feature_.get();
+  }
+
+ private:
+  // Brave Screenshots (via Context Menu and Commander)
+  std::unique_ptr<brave_screenshots::BraveScreenshotsTabFeature>
+      brave_screenshots_tab_feature_;
 };
 
 }  // namespace tabs

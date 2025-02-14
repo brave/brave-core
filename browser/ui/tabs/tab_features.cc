@@ -10,6 +10,8 @@
 
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/brave_screenshots/brave_screenshots_tab_feature.h"
+#include "brave/browser/brave_screenshots/features.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
@@ -43,6 +45,12 @@ TabFeatures::~TabFeatures() = default;
 
 void TabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures_Chromium::Init(tab, profile);
+
+  // Brave Screenshots (via Context Menu and Commander)
+  if (brave_screenshots::features::IsBraveScreenshotsEnabled()) {
+    brave_screenshots_tab_feature_ =
+        std::make_unique<brave_screenshots::BraveScreenshotsTabFeature>();
+  }
 
   // Expect upstream's Init to create the registry.
   CHECK(side_panel_registry());
