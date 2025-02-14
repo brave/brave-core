@@ -42,23 +42,23 @@ TEST(CommonUtils, IsEthereumAccount) {
 TEST(CommonUtils, IsSolanaKeyring) {
   for (const auto& keyring_id : kAllKeyrings) {
     if (keyring_id == mojom::KeyringId::kSolana) {
-      EXPECT_TRUE(IsEthereumKeyring(keyring_id));
+      EXPECT_TRUE(IsSolanaKeyring(keyring_id));
     } else {
-      EXPECT_FALSE(IsEthereumKeyring(keyring_id));
+      EXPECT_FALSE(IsSolanaKeyring(keyring_id));
     }
   }
 }
 TEST(CommonUtils, IsSolanaAccount) {
   EXPECT_FALSE(IsSolanaAccount(nullptr));
 
-  EXPECT_FALSE(IsEthereumAccount(MakeIndexBasedAccountId(
+  EXPECT_FALSE(IsSolanaAccount(MakeIndexBasedAccountId(
       mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
       mojom::AccountKind::kDerived, 4)));
   EXPECT_TRUE(IsSolanaAccount(
-      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kSolana,
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
                     mojom::AccountKind::kDerived, "addr")));
   EXPECT_TRUE(IsSolanaAccount(
-      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kSolana,
+      MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
                     mojom::AccountKind::kImported, "addr")));
 }
 
@@ -79,17 +79,21 @@ TEST(CommonUtils, IsFilecoinAccount) {
   EXPECT_FALSE(IsFilecoinAccount(MakeIndexBasedAccountId(
       mojom::CoinType::BTC, mojom::KeyringId::kBitcoin84,
       mojom::AccountKind::kDerived, 4)));
+
   EXPECT_TRUE(IsFilecoinAccount(
-      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kFilecoin,
+      MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
                     mojom::AccountKind::kDerived, "addr")));
   EXPECT_TRUE(IsFilecoinAccount(
-      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kFilecoin,
+      MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoinTestnet,
+                    mojom::AccountKind::kDerived, "addr")));
+  EXPECT_TRUE(IsFilecoinAccount(
+      MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoin,
                     mojom::AccountKind::kImported, "addr")));
   EXPECT_TRUE(IsFilecoinAccount(
-      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kFilecoinTestnet,
+      MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoinTestnet,
                     mojom::AccountKind::kDerived, "addr")));
   EXPECT_TRUE(IsFilecoinAccount(
-      MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kFilecoinTestnet,
+      MakeAccountId(mojom::CoinType::FIL, mojom::KeyringId::kFilecoinTestnet,
                     mojom::AccountKind::kImported, "addr")));
 }
 
