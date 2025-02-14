@@ -130,5 +130,9 @@ provideStrings({
   stopGenerationButtonLabel: 'Stop answering',
   deleteButtonLabel: 'Delete',
   deleteConversationWarning: 'Are you sure you want to delete this conversation? This action cannot be undone.',
-  menuDeleteConversation: 'Delete conversation'
+  menuDeleteConversation: 'Delete conversation',
+  reasoningLabel: 'Reasoning...',
+  reasoningCompleteLabel: 'Reasoning complete',
+  hideDetailsButtonLabel: 'Hide details',
+  showDetailsButtonLabel: 'Show details'
 })

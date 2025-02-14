@@ -10,6 +10,7 @@ import useLongPress from '$web-common/useLongPress'
 import * as Mojom from '../../../common/mojom'
 import ActionTypeLabel from '../../../common/components/action_type_label'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
+import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
 import ContextMenuHuman from '../context_menu_human'
 import Quote from '../quote'
@@ -18,6 +19,14 @@ import AssistantResponse from '../assistant_response'
 import EditInput from '../edit_input'
 import EditIndicator from '../edit_indicator'
 import styles from './style.module.scss'
+
+const getReasoningText = (text: string) => {
+  const startTag = `<think>`
+  const endTag = `</think>`
+  const startTagIndex = text.indexOf(startTag) + startTag.length
+  const endTagIndex = text.indexOf(endTag, startTagIndex)
+  return text.slice(startTagIndex, endTagIndex).trim()
+}
 
 function ConversationEntries() {
   const conversationContext = useUntrustedConversationContext()
@@ -77,6 +86,7 @@ function ConversationEntries() {
             ? getCompletion(latestTurn)
             : latestTurn.text
           const lastEditedTime = latestTurn.createdTime
+          const hasReasoning = latestTurnText.includes('<think>')
 
           const turnContainer = classnames({
             [styles.turnContainerMobile]: conversationContext.isMobile
@@ -122,6 +132,15 @@ function ConversationEntries() {
                     isAIAssistant ? styles.message : styles.humanMessage
                   }
                 >
+                  {isAIAssistant && hasReasoning && (
+                    <AssistantReasoning
+                      text={getReasoningText(latestTurnText)}
+                      isReasoning={
+                        isEntryInProgress &&
+                        !latestTurnText.includes('</think>')
+                      }
+                    />
+                  )}
                   {isAIAssistant && !showEditInput && (
                     <AssistantResponse
                       entry={latestTurn}

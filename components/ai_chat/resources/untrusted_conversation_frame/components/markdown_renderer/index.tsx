@@ -12,6 +12,10 @@ import { visit } from 'unist-util-visit'
 import styles from './style.module.scss'
 import CaretSVG from '../svg/caret'
 
+const removeReasoning = (text: string) => {
+  return text.includes('<think>') ? text.split('</think>')[1] : text
+}
+
 const CodeBlock = React.lazy(async () => ({
   default: (await import('../code_block')).default.Block
 }))
@@ -106,7 +110,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         // if the component is allowed to show the text cursor.
         rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
         unwrapDisallowed={true}
-        children={mainProps.text}
+        children={removeReasoning(mainProps.text)}
         components={{
           p: (props) => (
             <CursorDecorator
