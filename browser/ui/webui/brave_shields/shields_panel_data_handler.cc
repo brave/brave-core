@@ -8,8 +8,10 @@
 #include <utility>
 
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
+#include "brave/browser/brave_browser_process.h"
 
 using brave_shields::BraveShieldsTabHelper;
 using brave_shields::mojom::SiteSettings;
@@ -180,6 +182,14 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
   webcompat_reporter::OpenReporterDialog(
       active_shields_data_controller_->web_contents(),
       webcompat_reporter::UISource::kShieldsPanel);
+}
+
+void ShieldsPanelDataHandler::ResetBlockedElements() {
+  LOG(INFO) << "[PSST] ShieldsPanelDataHandler::ResetBlockedElements url:" << active_shields_data_controller_->web_contents()->GetURL();
+  g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
+      active_shields_data_controller_->web_contents()->GetURL().host());
+
+  active_shields_data_controller_->web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
 }
 
 void ShieldsPanelDataHandler::UpdateFavicon() {

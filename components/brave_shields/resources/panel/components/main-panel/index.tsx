@@ -35,6 +35,10 @@ function MainPanel () {
     await getPanelBrowserAPI().dataHandler.openWebCompatWindow()
   }
 
+  const handleResetBlockedElements = async () => {
+    await getPanelBrowserAPI().dataHandler.resetBlockedElements()
+  }
+
   const handleLearnMoreClick = () => {
     chrome.tabs.create({ url: 'https://brave.com/privacy-features/', active: true })
   }
@@ -172,15 +176,15 @@ function MainPanel () {
           <AdvancedControlsContent />
         </AdvancedControlsContentScroller>
       }
-{
-  anyElementsBlocked &&
-  <S.GlobalDefaultsButton
-        type="button"
-        onClick={onSettingsClick}
-      >
-    <span>{getLocale('braveShieldsChangeDefaults')}</span>
-  </S.GlobalDefaultsButton>
-}
+      {
+        anyElementsBlocked &&
+        <S.GlobalDefaultsButton
+          type="button"
+          onClick={handleResetBlockedElements}
+        >
+          <span>{getLocale('braveShieldsShowAllBlockedElems')}</span>
+        </S.GlobalDefaultsButton>
+      }
     </S.Box>
   )
 }
