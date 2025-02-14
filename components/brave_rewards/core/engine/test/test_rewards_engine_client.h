@@ -173,6 +173,14 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
+  void UpdateCreatorPrefixStore(
+      mojom::HashPrefixDataPtr prefix_data,
+      UpdateCreatorPrefixStoreCallback callback) override;
+
+  void CreatorPrefixStoreContains(
+      const std::string& value,
+      CreatorPrefixStoreContainsCallback callback) override;
+
   void Log(const std::string& file,
            int32_t line,
            int32_t verbose_level,

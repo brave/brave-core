@@ -139,6 +139,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)runDbTransaction:(brave_rewards::mojom::DBTransactionPtr)transaction
                 callback:(brave_rewards::mojom::RewardsEngineClient::
                               RunDBTransactionCallback)callback;
+- (void)updateCreatorPrefixStore:
+            (brave_rewards::mojom::HashPrefixDataPtr)prefix_data
+                        callback:(brave_rewards::mojom::RewardsEngineClient::
+                                      UpdateCreatorPrefixStoreCallback)callback;
+- (void)creatorPrefixStoreContains:(const std::string&)value
+                          callback:
+                              (brave_rewards::mojom::RewardsEngineClient::
+                                   CreatorPrefixStoreContainsCallback)callback;
 - (void)log:(const std::string&)file
             line:(int32_t)line
     verboseLevel:(int32_t)verboseLevel

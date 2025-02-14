@@ -180,6 +180,17 @@ void RewardsClientIOS::RunDBTransaction(
   [bridge_ runDbTransaction:std::move(transaction)
                    callback:std::move(callback)];
 }
+void RewardsClientIOS::UpdateCreatorPrefixStore(
+    brave_rewards::mojom::HashPrefixDataPtr prefix_data,
+    UpdateCreatorPrefixStoreCallback callback) {
+  [bridge_ updateCreatorPrefixStore:std::move(prefix_data)
+                           callback:std::move(callback)];
+}
+void RewardsClientIOS::CreatorPrefixStoreContains(
+    const std::string& value,
+    CreatorPrefixStoreContainsCallback callback) {
+  [bridge_ creatorPrefixStoreContains:value callback:std::move(callback)];
+}
 void RewardsClientIOS::ClearAllNotifications() {
   [bridge_ clearAllNotifications];
 }

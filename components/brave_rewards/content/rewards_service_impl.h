@@ -425,6 +425,14 @@ class RewardsServiceImpl final : public RewardsService,
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
+  void UpdateCreatorPrefixStore(
+      mojom::HashPrefixDataPtr prefix_data,
+      UpdateCreatorPrefixStoreCallback callback) override;
+
+  void CreatorPrefixStoreContains(
+      const std::string& value,
+      CreatorPrefixStoreContainsCallback callback) override;
+
   void ClearAllNotifications() override;
 
   void ExternalWalletConnected() override;
@@ -495,9 +503,11 @@ class RewardsServiceImpl final : public RewardsService,
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
   const base::FilePath publisher_list_path_;
+  const base::FilePath creator_prefix_store_path_;
 
   std::unique_ptr<DiagnosticLog> diagnostic_log_;
   RemoteWorker<mojom::RewardsDatabase> rewards_database_;
+  RemoteWorker<mojom::HashPrefixStore> creator_prefix_store_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;
 

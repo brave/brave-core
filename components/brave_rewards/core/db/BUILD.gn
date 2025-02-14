@@ -5,6 +5,9 @@
 
 source_set("db") {
   sources = [
+    "hash_prefix_iterator.h",
+    "hash_prefix_store.cc",
+    "hash_prefix_store.h",
     "rewards_database.cc",
     "rewards_database.h",
   ]
@@ -12,6 +15,7 @@ source_set("db") {
   deps = [
     "//base",
     "//brave/components/brave_rewards/core/mojom",
+    "//crypto",
     "//sql",
   ]
 }

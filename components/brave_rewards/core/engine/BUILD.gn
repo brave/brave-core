@@ -338,7 +338,6 @@ static_library("engine") {
     "publisher/media/media.h",
     "publisher/media/youtube.cc",
     "publisher/media/youtube.h",
-    "publisher/prefix_iterator.h",
     "publisher/prefix_list_reader.cc",
     "publisher/prefix_list_reader.h",
     "publisher/prefix_util.cc",

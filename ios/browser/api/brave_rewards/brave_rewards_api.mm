@@ -22,6 +22,7 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
+#include "brave/components/brave_rewards/core/db/hash_prefix_store.h"
 #include "brave/components/brave_rewards/core/db/rewards_database.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/rewards_engine.h"
@@ -51,6 +52,20 @@ class RewardsDatabaseWorker
  public:
   RewardsDatabaseWorker() : RemoteWorker(CreateTaskRunner()) {}
   ~RewardsDatabaseWorker() = default;
+
+ private:
+  static scoped_refptr<base::SequencedTaskRunner> CreateTaskRunner() {
+    return base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  }
+};
+
+class HashPrefixStoreWorker
+    : public RemoteWorker<brave_rewards::mojom::HashPrefixStore> {
+ public:
+  HashPrefixStoreWorker() : RemoteWorker(CreateTaskRunner()) {}
+  ~HashPrefixStoreWorker() = default;
 
  private:
   static scoped_refptr<base::SequencedTaskRunner> CreateTaskRunner() {
@@ -105,6 +120,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   std::unique_ptr<RewardsClientIOS> _rewardsClient;
   RewardsEngineWorker _rewardsEngine;
   RewardsDatabaseWorker _rewardsDatabase;
+  HashPrefixStoreWorker _creatorPrefixStore;
 }
 
 @property(nonatomic, copy) NSString* storagePath;
@@ -161,6 +177,9 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
     _rewardsDatabase.BindRemote<brave_rewards::RewardsDatabase>(
         base::FilePath([self rewardsDatabasePath].UTF8String));
+
+    _creatorPrefixStore.BindRemote<brave_rewards::HashPrefixStore>(
+        base::FilePath([self creatorPrefixStorePath].UTF8String));
   }
   return self;
 }
@@ -233,6 +252,10 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   return [self.storagePath stringByAppendingPathComponent:@"Rewards.db"];
 }
 
+- (NSString*)creatorPrefixStorePath {
+  return [self.storagePath stringByAppendingPathComponent:@"Creators.db"];
+}
+
 - (void)resetRewardsDatabase {
   const auto dbPath = [self rewardsDatabasePath];
   [NSFileManager.defaultManager removeItemAtPath:dbPath error:nil];
@@ -241,6 +264,11 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                  error:nil];
   _rewardsDatabase.BindRemote<brave_rewards::RewardsDatabase>(
       base::FilePath(base::SysNSStringToUTF8(dbPath)));
+
+  const auto prefixPath = [self creatorPrefixStorePath];
+  [NSFileManager.defaultManager removeItemAtPath:prefixPath error:nil];
+  _creatorPrefixStore.BindRemote<brave_rewards::HashPrefixStore>(
+      base::FilePath(base::SysNSStringToUTF8(prefixPath)));
 }
 
 - (NSString*)randomStatePath {
@@ -915,6 +943,22 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                 callback:(brave_rewards::mojom::RewardsEngineClient::
                               RunDBTransactionCallback)callback {
   _rewardsDatabase->RunTransaction(std::move(transaction), std::move(callback));
+}
+
+- (void)updateCreatorPrefixStore:
+            (brave_rewards::mojom::HashPrefixDataPtr)prefix_data
+                        callback:
+                            (brave_rewards::mojom::RewardsEngineClient::
+                                 UpdateCreatorPrefixStoreCallback)callback {
+  _creatorPrefixStore->UpdatePrefixes(std::move(prefix_data),
+                                      std::move(callback));
+}
+
+- (void)creatorPrefixStoreContains:(const std::string&)value
+                          callback:
+                              (brave_rewards::mojom::RewardsEngineClient::
+                                   CreatorPrefixStoreContainsCallback)callback {
+  _creatorPrefixStore->ContainsPrefix(value, std::move(callback));
 }
 
 - (void)walletDisconnected:(const std::string&)wallet_type {

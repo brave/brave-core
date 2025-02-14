@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "brave/components/brave_rewards/core/db/hash_prefix_iterator.h"
 #include "brave/components/brave_rewards/core/engine/database/database_table.h"
 #include "brave/components/brave_rewards/core/engine/publisher/prefix_list_reader.h"
 
@@ -28,13 +29,13 @@ class DatabasePublisherPrefixList : public DatabaseTable {
               SearchPublisherPrefixListCallback callback);
 
  private:
-  void InsertNext(publisher::PrefixIterator begin, ResultCallback callback);
+  void InsertNext(HashPrefixIterator begin, ResultCallback callback);
 
   void OnSearch(SearchPublisherPrefixListCallback callback,
                 mojom::DBCommandResponsePtr response);
 
   void OnInsertNext(ResultCallback callback,
-                    publisher::PrefixIterator iter,
+                    HashPrefixIterator iter,
                     mojom::DBCommandResponsePtr response);
 
   std::optional<publisher::PrefixListReader> reader_;

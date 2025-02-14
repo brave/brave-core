@@ -73,7 +73,7 @@ PrefixListReader::ParseError PrefixListReader::Parse(
   prefix_size_ = prefix_size;
 
   // Perform a quick sanity check that the first few prefixes are in order.
-  PrefixIterator iter = this->begin();
+  HashPrefixIterator iter = this->begin();
   if (iter != this->end()) {
     for (size_t i = 0; i < 5; ++i) {
       auto next = iter + 1;

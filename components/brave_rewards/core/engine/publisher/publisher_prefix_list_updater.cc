@@ -90,14 +90,18 @@ void PublisherPrefixListUpdater::OnFetchCompleted(mojom::Result result,
 
   retry_count_ = 0;
 
-  engine_->Log(FROM_HERE) << "Resetting publisher prefix list table";
-  engine_->database()->ResetPublisherPrefixList(
-      std::move(reader),
+  auto prefix_data = mojom::HashPrefixData::New();
+  prefix_data->prefixes = reader.prefixes();
+  prefix_data->prefix_size = reader.prefix_size();
+
+  engine_->Log(FROM_HERE) << "Resetting publisher prefix list store";
+  engine_->client()->UpdateCreatorPrefixStore(
+      std::move(prefix_data),
       base::BindOnce(&PublisherPrefixListUpdater::OnPrefixListInserted,
                      weak_factory_.GetWeakPtr()));
 }
 
-void PublisherPrefixListUpdater::OnPrefixListInserted(mojom::Result result) {
+void PublisherPrefixListUpdater::OnPrefixListInserted(bool success) {
   // At this point we have received a valid response from the server
   // and we've attempted to insert it into the database. Store the last
   // successful fetch time for calculation of next refresh interval.
@@ -109,9 +113,8 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(mojom::Result result) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
   }
 
-  if (result != mojom::Result::OK) {
-    engine_->LogError(FROM_HERE)
-        << "Error updating publisher prefix list table: " << result;
+  if (!success) {
+    engine_->LogError(FROM_HERE) << "Error updating publisher prefix list";
     return;
   }
 

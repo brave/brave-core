@@ -41,6 +41,7 @@
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
 #include "brave/components/brave_rewards/content/service_sandbox_type.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/db/hash_prefix_store.h"
 #include "brave/components/brave_rewards/core/db/rewards_database.h"
 #include "brave/components/brave_rewards/core/engine/global_constants.h"
 #include "brave/components/brave_rewards/core/engine/parameters/rewards_parameters_provider.h"
@@ -236,12 +237,14 @@ void DeferCallback(base::Location location, Callback callback, Args&&... args) {
 // read comment about file pathes at src\base\files\file_path.h
 #if BUILDFLAG(IS_WIN)
 const base::FilePath::StringType kDiagnosticLogPath(L"Rewards.log");
+const base::FilePath::StringType kCreatorPrefixStore(L"RewardsCreators.db");
 const base::FilePath::StringType kLegacy_state(L"ledger_state");
 const base::FilePath::StringType kPublisher_state(L"publisher_state");
 const base::FilePath::StringType kPublisher_info_db(L"publisher_info_db");
 const base::FilePath::StringType kPublishers_list(L"publishers_list");
 #else
 const base::FilePath::StringType kDiagnosticLogPath("Rewards.log");
+const base::FilePath::StringType kCreatorPrefixStore("RewardsCreators.db");
 const base::FilePath::StringType kLegacy_state("ledger_state");
 const base::FilePath::StringType kPublisher_state("publisher_state");
 const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
@@ -272,10 +275,12 @@ RewardsServiceImpl::RewardsServiceImpl(
       publisher_state_path_(profile_path.Append(kPublisher_state)),
       publisher_info_db_path_(profile_path.Append(kPublisher_info_db)),
       publisher_list_path_(profile_path.Append(kPublishers_list)),
+      creator_prefix_store_path_(profile_path.Append(kCreatorPrefixStore)),
       diagnostic_log_(new DiagnosticLog(profile_path.Append(kDiagnosticLogPath),
                                         kDiagnosticLogMaxFileSize,
                                         kDiagnosticLogKeepNumLines)),
       rewards_database_(file_task_runner_),
+      creator_prefix_store_(file_task_runner_),
       notification_service_(new RewardsNotificationServiceImpl(prefs)),
       conversion_monitor_(prefs) {
   ready_ = std::make_unique<base::OneShotEvent>();
@@ -385,6 +390,7 @@ void RewardsServiceImpl::StartEngineProcessIfNecessary() {
   }
 
   rewards_database_.BindRemote<RewardsDatabase>(publisher_info_db_path_);
+  creator_prefix_store_.BindRemote<HashPrefixStore>(creator_prefix_store_path_);
 
   BLOG(1, "Starting engine process");
 
@@ -1066,10 +1072,8 @@ void RewardsServiceImpl::OnDiagnosticLogDeletedForCompleteReset(
     bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   const std::vector<base::FilePath> paths = {
-      legacy_state_path_,
-      publisher_state_path_,
-      publisher_info_db_path_,
-      publisher_list_path_,
+      legacy_state_path_,   publisher_state_path_,      publisher_info_db_path_,
+      publisher_list_path_, creator_prefix_store_path_,
   };
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE, base::BindOnce(&DeleteFilesOnFileTaskRunner, paths),
@@ -1092,6 +1096,7 @@ void RewardsServiceImpl::Reset() {
   engine_factory_.reset();
   ready_ = std::make_unique<base::OneShotEvent>();
   rewards_database_.reset();
+  creator_prefix_store_.reset();
   BLOG(1, "Successfully reset rewards service");
 }
 
@@ -2091,6 +2096,19 @@ void RewardsServiceImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
                                           RunDBTransactionCallback callback) {
   rewards_database_->RunTransaction(std::move(transaction),
                                     std::move(callback));
+}
+
+void RewardsServiceImpl::UpdateCreatorPrefixStore(
+    mojom::HashPrefixDataPtr prefix_data,
+    UpdateCreatorPrefixStoreCallback callback) {
+  creator_prefix_store_->UpdatePrefixes(std::move(prefix_data),
+                                        std::move(callback));
+}
+
+void RewardsServiceImpl::CreatorPrefixStoreContains(
+    const std::string& value,
+    CreatorPrefixStoreContainsCallback callback) {
+  creator_prefix_store_->ContainsPrefix(value, std::move(callback));
 }
 
 void RewardsServiceImpl::ForTestingSetTestResponseCallback(
