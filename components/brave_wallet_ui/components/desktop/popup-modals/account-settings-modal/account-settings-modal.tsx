@@ -255,7 +255,7 @@ export const AccountSettingsModal = () => {
           password
         )
       if (isMounted) {
-        return setPrivateKey(privateKey)
+        return setPrivateKey(privateKey || '')
       }
     },
     [password, isMounted]

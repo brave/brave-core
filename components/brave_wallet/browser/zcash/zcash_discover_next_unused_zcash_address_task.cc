@@ -47,7 +47,7 @@ mojom::ZCashAddressPtr ZCashDiscoverNextUnusedZCashAddressTask::GetNextAddress(
     const mojom::ZCashAddressPtr& address) {
   auto next_key_id = current_address_->key_id.Clone();
   next_key_id->index++;
-  return zcash_wallet_service_->keyring_service().GetZCashAddress(*account_id_,
+  return zcash_wallet_service_->keyring_service().GetZCashAddress(account_id_,
                                                                   *next_key_id);
 }
 

@@ -188,7 +188,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, TransactionCreated) {
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
-            auto addr = keyring_service().GetZCashAddress(*account_id, *id);
+            auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
           }));
 
@@ -223,7 +223,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, TransactionCreated) {
   EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value, 100000u);
 
   auto id = mojom::ZCashKeyId::New(account_id()->account_index, 1, 0);
-  auto addr = keyring_service().GetZCashAddress(*account_id(), *id);
+  auto addr = keyring_service().GetZCashAddress(account_id(), *id);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
             addr->address_string);
@@ -249,7 +249,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, NotEnoughFunds) {
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
-            auto addr = keyring_service().GetZCashAddress(*account_id, *id);
+            auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
           }));
 
@@ -289,7 +289,7 @@ TEST_F(ZCashCreateTransparentToOrchardTransactionTaskTest, UtxosError) {
           [&](const mojom::AccountIdPtr& account_id, bool change,
               ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
             auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
-            auto addr = keyring_service().GetZCashAddress(*account_id, *id);
+            auto addr = keyring_service().GetZCashAddress(account_id, *id);
             std::move(callback).Run(std::move(addr));
           }));
 

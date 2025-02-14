@@ -22,26 +22,34 @@ class FilTransaction;
 
 class FilecoinKeyring : public Secp256k1HDKeyring {
  public:
-  FilecoinKeyring(base::span<const uint8_t> seed, const std::string& chain_id);
+  FilecoinKeyring(base::span<const uint8_t> seed, mojom::KeyringId keyring_id);
   ~FilecoinKeyring() override;
   FilecoinKeyring(const FilecoinKeyring&) = delete;
   FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
   static bool DecodeImportPayload(const std::string& payload_hex,
                                   std::vector<uint8_t>* private_key_out,
                                   mojom::FilecoinAddressProtocol* protocol_out);
-  std::string ImportFilecoinAccount(const std::vector<uint8_t>& private_key,
-                                    mojom::FilecoinAddressProtocol protocol);
-  bool RemoveImportedAccount(const std::string& address) override;
+  std::optional<std::string> ImportFilecoinAccount(
+      base::span<const uint8_t> private_key,
+      mojom::FilecoinAddressProtocol protocol);
+  bool RemoveImportedAccount(const std::string& address);
 
   std::optional<std::string> SignTransaction(const std::string& address,
-                                             const FilTransaction* tx);
-  std::string EncodePrivateKeyForExport(const std::string& address) override;
-  std::vector<std::string> GetImportedAccountsForTesting() const override;
+                                             const FilTransaction& tx);
+
+  std::optional<std::string> GetDiscoveryAddress(size_t index) const;
+  std::optional<std::string> EncodePrivateKeyForExport(
+      const std::string& address);
+  std::vector<std::string> GetImportedAccountsForTesting() const;
+
+  mojom::KeyringId keyring_id() const { return keyring_id_; }
 
  private:
-  std::string ImportBlsAccount(const std::vector<uint8_t>& private_key);
+  std::optional<std::string> ImportBlsAccount(
+      base::span<const uint8_t> private_key);
   std::string GetAddressInternal(const HDKey& hd_key) const override;
   std::unique_ptr<HDKey> DeriveAccount(uint32_t index) const override;
+  mojom::KeyringId keyring_id_;
   std::string network_;
 
   // TODO(apaymyshev): BLS keys are neither Secp256k1 keys nor HD keys. Should

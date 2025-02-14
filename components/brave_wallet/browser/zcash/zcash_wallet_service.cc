@@ -43,8 +43,8 @@ namespace {
 #if BUILDFLAG(ENABLE_ORCHARD)
 // Creates address key id for receiving funds on internal orchard address
 mojom::ZCashKeyIdPtr CreateOrchardInternalKeyId(
-    const mojom::AccountIdPtr& accoint_id) {
-  return mojom::ZCashKeyId::New(accoint_id->account_index, 1 /* internal */, 0);
+    const mojom::AccountIdPtr& account_id) {
+  return mojom::ZCashKeyId::New(account_id->account_index, 1 /* internal */, 0);
 }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
@@ -117,7 +117,7 @@ void ZCashWalletService::GetReceiverAddress(
     mojom::AccountIdPtr account_id,
     GetReceiverAddressCallback callback) {
   auto id = mojom::ZCashKeyId::New(account_id->account_index, 0, 0);
-  auto addr = keyring_service_->GetZCashAddress(*account_id, *id);
+  auto addr = keyring_service_->GetZCashAddress(account_id, *id);
   if (!addr) {
     std::move(callback).Run(
         nullptr, l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -143,7 +143,7 @@ void ZCashWalletService::MakeAccountShielded(
     // Only 1 account can be shieldable at the moment
     const auto& accounts = keyring_service_->GetAllAccountInfos();
     for (const auto& account : accounts) {
-      if (IsZCashAccount(*(account->account_id)) &&
+      if (IsZCashAccount(account->account_id) &&
           !GetAccountShieldBirthday(account->account_id).is_null()) {
         std::move(callback).Run("Already has shieldable account");
         return;
@@ -299,7 +299,7 @@ void ZCashWalletService::DiscoverNextUnusedAddress(
     const mojom::AccountIdPtr& account_id,
     bool change,
     DiscoverNextUnusedAddressCallback callback) {
-  CHECK(IsZCashAccount(*account_id));
+  CHECK(IsZCashAccount(account_id));
 
   auto account_info = keyring_service_->GetZCashAccountInfo(account_id);
   if (!account_info) {

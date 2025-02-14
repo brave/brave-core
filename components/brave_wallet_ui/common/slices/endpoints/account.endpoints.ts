@@ -194,22 +194,62 @@ export const accountEndpoints = ({
       invalidatesTags: ['AccountInfos']
     }),
 
-    importAccount: mutation<
+    importEthAccount: mutation<
       true,
       {
         accountName: string
         privateKey: string
-        coin: BraveWallet.CoinType
       }
     >({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
           const { cache, data: api } = baseQuery(undefined)
           const { keyringService } = api
-          const result = await keyringService.importAccount(
+          const result = await keyringService.importEthereumAccount(
             arg.accountName,
-            arg.privateKey,
-            arg.coin
+            arg.privateKey
+          )
+
+          if (!result.account) {
+            throw new Error('No result')
+          }
+
+          cache.clearAccountsRegistry()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to import account',
+            error
+          )
+        }
+      },
+      invalidatesTags: [
+        'AccountInfos',
+        'Network',
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance'
+      ]
+    }),
+
+    importSolAccount: mutation<
+      true,
+      {
+        accountName: string
+        privateKey: string
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { cache, data: api } = baseQuery(undefined)
+          const { keyringService } = api
+          const result = await keyringService.importSolanaAccount(
+            arg.accountName,
+            arg.privateKey
           )
 
           if (!result.account) {
@@ -326,7 +366,7 @@ export const accountEndpoints = ({
       ]
     }),
 
-    importAccountFromJson: mutation<
+    importEthAccountFromJson: mutation<
       true,
       {
         accountName: string
@@ -338,7 +378,7 @@ export const accountEndpoints = ({
         try {
           const { cache, data: api } = baseQuery(undefined)
           const { keyringService } = api
-          const result = await keyringService.importAccountFromJson(
+          const result = await keyringService.importEthereumAccountFromJson(
             arg.accountName,
             arg.password,
             arg.json

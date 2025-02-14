@@ -54,8 +54,6 @@ class ZCashKeyring : public Secp256k1HDKeyring {
       const mojom::ZCashKeyId& key_id,
       base::span<const uint8_t, 32> message);
 
-  std::string EncodePrivateKeyForExport(const std::string& address) override;
-
   mojom::KeyringId keyring_id() const { return keyring_id_; }
   bool IsTestnet() const;
 

@@ -29,7 +29,6 @@
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
@@ -222,7 +221,7 @@ class EthTxManagerUnitTest : public testing::Test {
                 // calculated in a way so that it would be 48gwei for max fee.
                 // i.e. step back from 48gwei by subtracting 2gwei and then
                 // dividing by 1.125.
-                // Reards are 1gwei, 2gwei, and 3gwei to match
+                // Rewards are 1gwei, 2gwei, and 3gwei to match
                 // GetMojomGasEstimation
                 R"(
                 {
@@ -1121,7 +1120,7 @@ TEST_F(EthTxManagerUnitTest, ProcessEthHardwareSignature) {
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
-  // Set an interceptor and just fake a common repsonse for
+  // Set an interceptor and just fake a common response for
   // eth_getTransactionCount and eth_sendRawTransaction
   SetInterceptor("{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x0\"}");
 

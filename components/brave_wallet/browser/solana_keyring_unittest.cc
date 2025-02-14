@@ -34,7 +34,8 @@ TEST(SolanaKeyringUnitTest, ConstructRootHDKey) {
 TEST(SolanaKeyringUnitTest, Accounts) {
   SolanaKeyring keyring(*MnemonicToSeed(kMnemonicScarePiece));
 
-  keyring.AddNewHDAccount();
+  EXPECT_TRUE(keyring.AddNewHDAccount(0));
+  EXPECT_FALSE(keyring.AddNewHDAccount(0));
   EXPECT_THAT(keyring.GetHDAccountsForTesting(),
               ElementsAre("8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu"));
   EXPECT_EQ(keyring.EncodePrivateKeyForExport(
@@ -42,8 +43,10 @@ TEST(SolanaKeyringUnitTest, Accounts) {
             "3WoEqkmeTX4BRTS3KNJCsqy7LktvEwbFSoqwMhC7xNgCG3zhwUptkT6KkJcbTpVJGX"
             "Rw9pd8CYVxZ8wLt8cUoVZb");
 
-  keyring.AddNewHDAccount();
-  keyring.AddNewHDAccount();
+  EXPECT_TRUE(keyring.AddNewHDAccount(1));
+  EXPECT_FALSE(keyring.AddNewHDAccount(1));
+  EXPECT_TRUE(keyring.AddNewHDAccount(2));
+  EXPECT_FALSE(keyring.AddNewHDAccount(2));
   EXPECT_THAT(keyring.GetHDAccountsForTesting(),
               ElementsAre("8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu",
                           "D37CnANGLynWiWmkdAETRNe3nLS7f59SbmK9kK8xSjcu",
@@ -55,12 +58,14 @@ TEST(SolanaKeyringUnitTest, Accounts) {
             "jCxJc5JsjL1TrGr1X3nPFP");
 
   // remove the last account
-  keyring.RemoveLastHDAccount();
+  EXPECT_TRUE(keyring.RemoveHDAccount(2));
+  EXPECT_FALSE(keyring.RemoveHDAccount(2));
   EXPECT_THAT(keyring.GetHDAccountsForTesting(),
               ElementsAre("8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu",
                           "D37CnANGLynWiWmkdAETRNe3nLS7f59SbmK9kK8xSjcu"));
 
-  keyring.AddNewHDAccount();
+  EXPECT_TRUE(keyring.AddNewHDAccount(2));
+  EXPECT_FALSE(keyring.AddNewHDAccount(2));
   EXPECT_THAT(keyring.GetHDAccountsForTesting(),
               ElementsAre("8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu",
                           "D37CnANGLynWiWmkdAETRNe3nLS7f59SbmK9kK8xSjcu",
@@ -70,13 +75,15 @@ TEST(SolanaKeyringUnitTest, Accounts) {
             "47rewUeufUCmtmes3uAGAo7AyM3bBYTvJdD1jQs9MGwB4eYn8SAyQUMNc9b5wFRhQy"
             "CP9WwmP7JMPAA9U9Q5E8xr");
 
-  EXPECT_TRUE(keyring.EncodePrivateKeyForExport("brave").empty());
+  EXPECT_FALSE(keyring.RemoveHDAccount(20));
+
+  EXPECT_FALSE(keyring.EncodePrivateKeyForExport("brave"));
 }
 
 TEST(SolanaKeyringUnitTest, SignMessage) {
   SolanaKeyring keyring(*MnemonicToSeed(kMnemonicScarePiece));
 
-  auto address = keyring.AddNewHDAccount()->address;
+  auto address = *keyring.AddNewHDAccount(0);
   EXPECT_EQ(address, "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
 
   // Message: Hello Brave
