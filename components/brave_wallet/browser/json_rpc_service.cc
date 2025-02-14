@@ -1307,7 +1307,7 @@ void JsonRpcService::GetERC20TokenBalances(
 }
 
 void JsonRpcService::ProcessNextERC20Batch(
-    const std::vector<std::string>& all_tokens,
+    const std::vector<std::string>& token_addresses,
     const std::string& user_address,
     const std::string& scanner_address,
     const GURL& network_url,
@@ -1315,7 +1315,7 @@ void JsonRpcService::ProcessNextERC20Batch(
     size_t start_idx,
     GetERC20TokenBalancesCallback callback) {
   // All batches processed
-  if (start_idx >= all_tokens.size()) {
+  if (start_idx >= token_addresses.size()) {
     std::move(callback).Run(std::move(accumulated_results),
                             mojom::ProviderError::kSuccess, "");
     return;
@@ -1323,9 +1323,9 @@ void JsonRpcService::ProcessNextERC20Batch(
 
   // Get current batch
   size_t end_idx =
-      std::min(start_idx + kBalanceScannerBatchSize, all_tokens.size());
-  std::vector<std::string> current_batch(all_tokens.begin() + start_idx,
-                                         all_tokens.begin() + end_idx);
+      std::min(start_idx + kBalanceScannerBatchSize, token_addresses.size());
+  std::vector<std::string> current_batch(token_addresses.begin() + start_idx,
+                                         token_addresses.begin() + end_idx);
 
   // Process current batch
   std::optional<std::string> calldata =
@@ -1339,8 +1339,8 @@ void JsonRpcService::ProcessNextERC20Batch(
 
   auto batch_callback = base::BindOnce(
       &JsonRpcService::OnBatchERC20TokenBalances,
-      weak_ptr_factory_.GetWeakPtr(), all_tokens, user_address, scanner_address,
-      network_url, std::move(accumulated_results), end_idx,
+      weak_ptr_factory_.GetWeakPtr(), token_addresses, user_address,
+      scanner_address, network_url, std::move(accumulated_results), end_idx,
       std::move(callback));
 
   auto internal_callback = base::BindOnce(
@@ -1352,7 +1352,7 @@ void JsonRpcService::ProcessNextERC20Batch(
 }
 
 void JsonRpcService::OnBatchERC20TokenBalances(
-    const std::vector<std::string>& all_tokens,
+    const std::vector<std::string>& token_addresses,
     const std::string& user_address,
     const std::string& scanner_address,
     const GURL& network_url,
@@ -1373,9 +1373,9 @@ void JsonRpcService::OnBatchERC20TokenBalances(
   }
 
   // Process next batch
-  ProcessNextERC20Batch(all_tokens, user_address, scanner_address, network_url,
-                        std::move(accumulated_results), next_start_idx,
-                        std::move(callback));
+  ProcessNextERC20Batch(token_addresses, user_address, scanner_address,
+                        network_url, std::move(accumulated_results),
+                        next_start_idx, std::move(callback));
 }
 
 void JsonRpcService::OnGetERC20TokenBalances(
