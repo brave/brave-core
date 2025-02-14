@@ -71,9 +71,6 @@ void NotificationAdHeaderView::SetTitleElideBehavior(
 
 void NotificationAdHeaderView::UpdateContent() {
   UpdateTitleLabel();
-
-  DeprecatedLayoutImmediately();
-  SchedulePaint();
 }
 
 void NotificationAdHeaderView::OnThemeChanged() {

@@ -87,9 +87,6 @@ void TextNotificationAdView::UpdateContents(
   NotificationAdView::UpdateContents(notification_ad);
 
   UpdateBodyLabel();
-
-  DeprecatedLayoutImmediately();
-  SchedulePaint();
 }
 
 void TextNotificationAdView::OnThemeChanged() {
