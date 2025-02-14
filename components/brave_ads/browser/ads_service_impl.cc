@@ -62,6 +62,7 @@
 #include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -306,7 +307,13 @@ bool AdsServiceImpl::UserHasOptedInToSearchResultAds() const {
 void AdsServiceImpl::InitializeNotificationsForCurrentProfile() {
   delegate_->InitNotificationHelper();
 
-  RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(), prefs_);
+  // Postpone recording P3A to make browser startup smoother.
+  content::GetUIThreadTaskRunner({base::TaskPriority::BEST_EFFORT})
+      ->PostDelayedTask(
+          FROM_HERE,
+          base::BindOnce(&AdsServiceImpl::DoRecordNotificationAdPositionMetric,
+                         weak_ptr_factory_.GetWeakPtr()),
+          base::Seconds(15));
 }
 
 void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsService() {
@@ -714,8 +721,9 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
       base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
                           base::Unretained(this),
                           prefs::kMaximumNotificationAdsPerHour));
-  auto notification_ad_position_callback = base::BindRepeating(
-      &AdsServiceImpl::OnNotificationAdPositionChanged, base::Unretained(this));
+  auto notification_ad_position_callback =
+      base::BindRepeating(&AdsServiceImpl::DoRecordNotificationAdPositionMetric,
+                          base::Unretained(this));
   pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateY,
                              notification_ad_position_callback);
 }
@@ -1060,7 +1068,11 @@ void AdsServiceImpl::SnoozeScheduledCaptchaCallback() {
   delegate_->SnoozeScheduledCaptcha();
 }
 
-void AdsServiceImpl::OnNotificationAdPositionChanged() {
+void AdsServiceImpl::DoRecordNotificationAdPositionMetric() {
+  if (!base::FeatureList::IsEnabled(kCustomNotificationAdFeature)) {
+    return;
+  }
+
   RecordNotificationAdPositionMetric(ShouldShowCustomNotificationAds(), prefs_);
 }
 
