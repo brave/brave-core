@@ -79,6 +79,8 @@ function MainPanel () {
     </S.BlockCount>
   )
 
+  let anyElementsBlocked = true
+
   if (!siteBlockInfo?.isBraveShieldsEnabled) {
     totalCountElement = (<S.BlockCount>{'\u2014'}</S.BlockCount>)
 
@@ -170,6 +172,15 @@ function MainPanel () {
           <AdvancedControlsContent />
         </AdvancedControlsContentScroller>
       }
+{
+  anyElementsBlocked &&
+  <S.GlobalDefaultsButton
+        type="button"
+        onClick={onSettingsClick}
+      >
+    <span>{getLocale('braveShieldsChangeDefaults')}</span>
+  </S.GlobalDefaultsButton>
+}
     </S.Box>
   )
 }
