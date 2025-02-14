@@ -224,7 +224,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
         parsedTransaction.token = token;
         parsedTransaction.createdTime = txInfo.createdTime;
         parsedTransaction.status = txInfo.txStatus;
-        parsedTransaction.sender = txInfo.fromAddress != null ? txInfo.fromAddress : "";
+        parsedTransaction.sender = account.address;
         parsedTransaction.senderLabel = account != null ? account.name : "";
         parsedTransaction.isSolanaDappTransaction =
                 WalletConstants.SOLANA_DAPPS_TRANSACTION_TYPES.contains(txInfo.txType);
@@ -244,8 +244,6 @@ public class ParsedTransaction extends ParsedTransactionFees {
                 parsedTransaction.symbol = "";
                 return parsedTransaction;
             }
-            assert txInfo.fromAddress != null;
-            assert txInfo.fromAddress.equals(account.address);
             BigDecimal lamportTransferredAmount = new BigDecimal(value);
             for (SolanaInstruction solanaInstruction : solTxData.instructions) {
                 SolanaInstructionPresenter presenter =
@@ -276,11 +274,10 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     String noncePubKey =
                             presenter.getAccountPerParamKey(WalletConstants.SOL_DAPP_NONCE_ACCOUNT);
                     String toPubKey = presenter.toPubKey();
-                    if (noncePubKey != null && noncePubKey.equals(txInfo.fromAddress)) {
+                    if (noncePubKey != null && noncePubKey.equals(account.address)) {
                         lamportTransferredAmount =
                                 lamportTransferredAmount.add(new BigDecimal(lamport));
-                    } else if (!TextUtils.isEmpty(toPubKey)
-                            && toPubKey.equals(txInfo.fromAddress)) {
+                    } else if (!TextUtils.isEmpty(toPubKey) && toPubKey.equals(account.address)) {
                         lamportTransferredAmount =
                                 lamportTransferredAmount.subtract(new BigDecimal(lamport));
                     }
@@ -294,7 +291,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                     if (TextUtils.isEmpty(to)) {
                         to = newAccountPubKey;
                     }
-                    if (!TextUtils.isEmpty(fromPubKey) && fromPubKey.equals(txInfo.fromAddress)) {
+                    if (!TextUtils.isEmpty(fromPubKey) && fromPubKey.equals(account.address)) {
                         lamportTransferredAmount =
                                 lamportTransferredAmount.add(new BigDecimal(lamport));
                     }
@@ -364,8 +361,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
             parsedTransaction.contractAddressError =
                     checkForContractAddressError(fullTokenList, address);
-            parsedTransaction.sameAddressError =
-                    checkForSameAddressError(address, txInfo.fromAddress);
+            parsedTransaction.sameAddressError = checkForSameAddressError(address, account.address);
         } else if ((txInfo.txType == TransactionType.ERC721_TRANSFER_FROM
                         || txInfo.txType == TransactionType.ERC721_SAFE_TRANSFER_FROM)
                 && txInfo.txArgs.length > 2) {
@@ -417,8 +413,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
             parsedTransaction.isApprovalUnlimited = amountWrapped.compareTo(Utils.MAX_UINT256) == 0;
             parsedTransaction.insufficientFundsForGasError = insufficientNativeFunds;
             parsedTransaction.insufficientFundsError = false;
-            parsedTransaction.sameAddressError =
-                    checkForSameAddressError(address, txInfo.fromAddress);
+            parsedTransaction.sameAddressError = checkForSameAddressError(address, account.address);
         } else if (txInfo.txType == TransactionType.SOLANA_SPL_TOKEN_TRANSFER
                 || txInfo.txType
                         == TransactionType
@@ -449,7 +444,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
                             fullTokenList, solTxData != null ? solTxData.toWalletAddress : "");
             parsedTransaction.sameAddressError =
                     checkForSameAddressError(
-                            solTxData != null ? solTxData.toWalletAddress : "", txInfo.fromAddress);
+                            solTxData != null ? solTxData.toWalletAddress : "", account.address);
         } else if (txInfo.txType == TransactionType.ETH_SWAP && txInfo.txArgs.length > 2) {
             final String fillPath = txInfo.txArgs[0];
             final String sellAmountArg = txInfo.txArgs[1];
