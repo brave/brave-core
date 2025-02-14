@@ -64,6 +64,7 @@ class AIChatThrottleUnitTest : public testing::Test,
   content::BrowserTaskEnvironment task_environment_;
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   std::unique_ptr<content::WebContents> web_contents_;
+  content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
   base::test::ScopedFeatureList features_;
 };
