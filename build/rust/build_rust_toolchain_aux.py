@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 # Copyright (c) 2025 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -8,32 +7,54 @@
 import argparse
 import os
 from pathlib import Path
+import platform
 import re
-import shutil
 import subprocess
 import sys
 import tarfile
 
 import brave_chromium_utils
 
-# npm run build_rust_toolchain_aux (-- --out_dir=<out_dir>)
-
 CONFIG_TOML_TEMPLATE = 'config.toml.template'
-CONFIG_TOML_TEMPLATE_BACKUP = f'{CONFIG_TOML_TEMPLATE}.orig'
 RUST_BUILD_TOOLS = '//tools/rust'
 
 
-def back_up_config_toml_template():
-    shutil.copyfile(CONFIG_TOML_TEMPLATE, CONFIG_TOML_TEMPLATE_BACKUP)
+def restore_config_toml_template():
+    args = [
+        'git', '-C',
+        brave_chromium_utils.get_src_dir(), 'checkout', '--',
+        os.path.join(brave_chromium_utils.wspath(RUST_BUILD_TOOLS),
+                     CONFIG_TOML_TEMPLATE)
+    ]
+    subprocess.check_call(args)
 
 
+# In config.toml.template, replace
+# ...
+# [rust]
+# ...
+# with
+# ...
+# [target.wasm32-unknown-unknown]
+# profiler = false
+# [rust]
+# lld = true
+# ...
+# that is:
+# - disable the profiler for the wasm32-unknown-unknown target
+# - enable building rust-lld
 def edit_config_toml_template():
     with open(CONFIG_TOML_TEMPLATE, 'r+') as file:
-        updated = re.sub(
-            r'^(\[rust\])$',
-            r'[target.wasm32-unknown-unknown]\nprofiler = false\n\n\1\nlld = true',
+        rust_header = '[rust]'
+        updated, count = re.subn(
+            fr'^({re.escape(rust_header)})$',
+            r'[target.wasm32-unknown-unknown]\nprofiler = false\n\1\nlld = true',
             file.read(),
             flags=re.MULTILINE)
+        if count != 1:
+            raise RuntimeError(
+                f"Couldn't find the {rust_header} header in {CONFIG_TOML_TEMPLATE}!"
+            )
         file.seek(0)
         file.write(updated)
 
@@ -56,8 +77,14 @@ def run_xpy():
     subprocess.check_call(args)
 
 
-def restore_config_toml_template():
-    shutil.move(CONFIG_TOML_TEMPLATE_BACKUP, CONFIG_TOML_TEMPLATE)
+def platform_prefix():
+    if sys.platform == 'darwin':
+        if platform.machine() == 'arm64':
+            return 'mac-arm64'
+        return 'mac'
+    if sys.platform == 'win32':
+        return 'win'
+    return 'linux-x64'
 
 
 def create_archive():
@@ -72,7 +99,7 @@ def create_archive():
                                          brave_chromium_utils.get_src_dir())
 
         with tarfile.open(
-                f'rust-toolchain-{update_rust.GetRustClangRevision()}.tar.xz',
+                f'{platform_prefix()}-rust-toolchain-{update_rust.GetRustClangRevision()}.tar.xz',
                 'w:xz') as tar:
             tar.add(os.path.join(stage1_output_path, target_triple, 'bin',
                                  'rust-lld'),
@@ -85,20 +112,19 @@ def create_archive():
 def main():
     parser = argparse.ArgumentParser(
         description='Build and package rust-lld and wasm32-unknown-unknown')
-    parser.add_argument('--out-dir')
+    parser.add_argument('--out-dir',
+                        default=os.path.dirname(os.path.realpath(__file__)))
     args = parser.parse_args()
-    out_dir = args.out_dir if args.out_dir else os.path.dirname(
-        os.path.realpath(__file__))
-    Path(out_dir).mkdir(parents=True, exist_ok=True)
+    Path(args.out_dir).mkdir(parents=True, exist_ok=True)
 
     os.chdir(brave_chromium_utils.wspath(RUST_BUILD_TOOLS))
-    back_up_config_toml_template()
+    restore_config_toml_template()
     edit_config_toml_template()
     prepare_run_xpy()
     run_xpy()
     restore_config_toml_template()
 
-    os.chdir(out_dir)
+    os.chdir(args.out_dir)
     create_archive()
 
 

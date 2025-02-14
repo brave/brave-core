@@ -301,13 +301,4 @@ program
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program
-  .command('update_brave_tools_crates')
-  .action(util.updateBraveToolsCrates)
-
-program
-  .command('build_rust_toolchain_aux')
-  .option('--out_dir <out_dir>', 'Path to put the build artifacts.')
-  .action(util.buildRustToolchainAux)
-
-program
   .parse(process.argv)
