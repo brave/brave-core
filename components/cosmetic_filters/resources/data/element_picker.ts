@@ -593,6 +593,7 @@ const launchElementPicker = (root: ShadowRoot) => {
   if (!isAndroid) {
     section.classList.add('desktop')
   }
+
   const togglePopup = (show: boolean) => {
       enableButtons(!show)
       if (show) {

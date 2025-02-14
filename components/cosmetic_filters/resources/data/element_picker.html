@@ -32,14 +32,16 @@
       overflow: auto;
       overflow-wrap: break-word;
     }
-  
-    section {
+
+    #main-section {
       background-color: #FFFFFF;
+      border-radius: .6em;
+      border: 1px solid #aaa;
       color-scheme: light only;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
+      bottom: 4px;
+      left: unset;
+      right: 4px;
+      width: calc(30% - 4px);
       box-sizing: border-box;
       min-width: 24em;
       padding-top: 16px;
@@ -50,16 +52,18 @@
       height: auto;
     }
 
-    section.desktop {
-      bottom: 4px;
-      right: 4px;
-      left: unset;
-      border-radius: .6em;
-      border: 1px solid #aaa;
-      width: calc(30% - 4px);
+    @media (orientation: portrait) {
+      #main-section:not(.desktop) {
+        bottom: 0;
+        right: 0;
+        left: 0;
+        border-radius: unset;
+        border: none;
+        width: 100%;
+      }
     }
   
-    section input {
+    #main-section input {
       width: calc(100% - 4px);
     }
   
