@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-window.__firefox__ = {};
+window.__firefox__ = window.__firefox__ || {};
 
 Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
   enumerable: false,
@@ -20,6 +20,20 @@ Object.defineProperty(window.__firefox__, "$<brave_translate_script>", {
     "getRawPageSource": (function() {
       return document.documentElement.outerText;
     }),
+    "checkTranslate": (function() {
+      setTimeout(function() {
+        try {
+          var oldWebkit = window.webkit;
+          delete window['webkit'];
+          window.webkit.messageHandlers["$<message_handler>"].postMessage({
+            "command": "ready"
+          })
+          window.webkit = oldWebkit;
+        } catch (error) {
+          console.error(error);
+        }
+      }, 100);
+    })
   }
 });
 

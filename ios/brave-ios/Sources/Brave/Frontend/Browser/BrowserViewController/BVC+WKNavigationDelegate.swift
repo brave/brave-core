@@ -99,8 +99,9 @@ extension BrowserViewController: WKNavigationDelegate {
 
     hideToastsOnNavigationStartIfNeeded(tabManager)
 
-    // If we are going to navigate to a new page, hide the translate button.
-    topToolbar.updateTranslateButtonState(.unavailable)
+    // If we are going to navigate to a new page, refresh the translate status.
+    topToolbar.updateTranslateButtonState(tabManager.selectedTab?.translationState ?? .unavailable)
+
     resetRedirectChain(webView)
 
     // Append source URL to redirect chain

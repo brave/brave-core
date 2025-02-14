@@ -2369,6 +2369,13 @@ public class BrowserViewController: UIViewController {
           // Saving Tab.
           tabManager.saveTab(tab)
         }
+
+        // Fire the Brave Translate check.
+        webView.evaluateSafeJavaScript(
+          functionName:
+            "window.__firefox__.\(BraveTranslateScriptHandler.namespace).checkTranslate",
+          contentWorld: BraveTranslateScriptHandler.scriptSandbox
+        )
       }
 
       TabEvent.post(.didChangeURL(url), for: tab)
@@ -3377,7 +3384,7 @@ extension BrowserViewController: PreferencesObserver {
       }
     case Preferences.Translate.translateEnabled.key:
       tabManager.selectedTab?.setScripts(scripts: [
-        .braveTranslate: Preferences.Translate.translateEnabled.value
+        .braveTranslate: Preferences.Translate.translateEnabled.value != false
       ])
       tabManager.reloadSelectedTab()
     default:

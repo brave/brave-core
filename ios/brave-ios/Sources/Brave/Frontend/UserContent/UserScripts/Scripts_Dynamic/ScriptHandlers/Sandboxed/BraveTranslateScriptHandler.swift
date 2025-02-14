@@ -5,7 +5,6 @@
 
 import BraveCore
 import Foundation
-import NaturalLanguage
 import Preferences
 import Shared
 import WebKit
@@ -56,7 +55,14 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   ) {
     // Setup
 
-    if !Preferences.Translate.translateEnabled.value {
+    let isReaderMode = tab.url?.isInternalURL(for: .readermode) == true
+    if tab.lastKnownSecureContentState != .secure && !isReaderMode {
+      Logger.module.debug("Translation Disabled - Insecure Page")
+      replyHandler(nil, BraveTranslateError.translateDisabled.rawValue)
+      return
+    }
+
+    if Preferences.Translate.translateEnabled.value == false {
       Logger.module.debug("Translation Disabled")
       replyHandler(nil, BraveTranslateError.translateDisabled.rawValue)
       return
