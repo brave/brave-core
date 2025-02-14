@@ -22,7 +22,7 @@ constexpr auto kDohFallbackEndpointAddresses{
         {DohFallbackEndpointType::kWikimedia,
          "https://wikimedia-dns.org/dns-query"},
         {DohFallbackEndpointType::kCloudflare,
-         "https://cloudflare-dns.com/dns-query"},
+         "https://brave.cloudflare-dns.com/dns-query"},
     })};
 
 std::vector<DnsOverHttpsServerConfig> MaybeAddFallbackDohServer(
