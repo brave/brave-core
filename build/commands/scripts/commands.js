@@ -306,6 +306,7 @@ program
 
 program
   .command('build_rust_toolchain_aux')
+  .option('--out_dir <out_dir>', 'Path to put the build artifacts.')
   .action(util.buildRustToolchainAux)
 
 program
