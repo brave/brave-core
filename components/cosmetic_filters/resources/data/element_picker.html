@@ -32,7 +32,18 @@
       overflow: auto;
       overflow-wrap: break-word;
     }
-  
+    
+    @media (orientation: landscape) {
+      #main-section {
+        bottom: 4px;
+        right: 4px;
+        left: unset;
+        border-radius: .6em;
+        border: 1px solid #aaa;
+        width: calc(30% - 4px);
+      }
+    }
+
     section {
       background-color: #FFFFFF;
       color-scheme: light only;
