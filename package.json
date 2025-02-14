@@ -225,6 +225,9 @@
   },
   "overrides": {
     "axios": "1.7.9",
-    "elliptic": "6.6.1"
+    "elliptic": "6.6.1",
+    "jest": {
+      "write-file-atomic": "6.0.0"
+    }
   }
 }
