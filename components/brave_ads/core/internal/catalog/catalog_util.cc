@@ -44,7 +44,7 @@ void Delete(ResultCallback callback) {
             DISTINCT campaign_id
           FROM
             creative_new_tab_page_ads
-        );)");
+        ))");
 
   database::Execute(mojom_db_transaction, R"(
       DELETE FROM
@@ -55,7 +55,7 @@ void Delete(ResultCallback callback) {
             DISTINCT campaign_id
           FROM
             creative_new_tab_page_ads
-        );)");
+        ))");
 
   database::Execute(mojom_db_transaction, R"(
       DELETE FROM
@@ -66,7 +66,7 @@ void Delete(ResultCallback callback) {
             DISTINCT campaign_id
           FROM
             creative_new_tab_page_ads
-        );)");
+        ))");
 
   database::Execute(mojom_db_transaction, R"(
       DELETE FROM
@@ -77,7 +77,7 @@ void Delete(ResultCallback callback) {
             DISTINCT creative_set_id
           FROM
             creative_new_tab_page_ads
-        );)");
+        ))");
 
   database::Execute(mojom_db_transaction, R"(
       DELETE FROM
@@ -88,7 +88,7 @@ void Delete(ResultCallback callback) {
             DISTINCT creative_instance_id
           FROM
             creative_new_tab_page_ads
-        );)");
+        ))");
 
   database::Execute(mojom_db_transaction, R"(
       DELETE FROM
@@ -99,7 +99,7 @@ void Delete(ResultCallback callback) {
             DISTINCT creative_instance_id
           FROM
             creative_new_tab_page_ads
-        );)");
+        ))");
 
   database::Execute(mojom_db_transaction, R"(
       DELETE FROM
@@ -110,7 +110,7 @@ void Delete(ResultCallback callback) {
             DISTINCT creative_instance_id
           FROM
             creative_new_tab_page_ads
-        );)");
+        ))");
 
   database::Execute(mojom_db_transaction, R"(
       DELETE FROM
@@ -121,7 +121,7 @@ void Delete(ResultCallback callback) {
             DISTINCT creative_instance_id
           FROM
             creative_new_tab_page_ads
-        );)");
+        ))");
 
   database::RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
                              std::move(callback));

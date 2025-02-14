@@ -74,7 +74,7 @@ void Segments::Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
           creative_set_id,
           segment
         ) ON CONFLICT REPLACE
-      );)");
+      ))");
 }
 
 void Segments::Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
@@ -122,7 +122,7 @@ std::string Segments::BuildInsertSql(
           INSERT INTO $1 (
             creative_set_id,
             segment
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/2, row_count)},
       nullptr);

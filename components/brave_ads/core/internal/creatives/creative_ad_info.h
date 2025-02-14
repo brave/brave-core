@@ -48,7 +48,7 @@ struct CreativeAdInfo {
   std::string segment;
   std::string split_test_group;
   ConditionMatcherMap condition_matchers;
-  CreativeDaypartList dayparts;
+  CreativeDaypartSet dayparts;
   base::flat_set<std::string> geo_targets;
   GURL target_url;
 };

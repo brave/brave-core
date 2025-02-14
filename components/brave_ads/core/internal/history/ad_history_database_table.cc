@@ -186,7 +186,7 @@ void MigrateToV42(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
         title TEXT NOT NULL,
         description TEXT NOT NULL,
         target_url TEXT NOT NULL
-      );)");
+      ))");
 
   // Optimize database query for `GetForDateRange`,
   // `GetHighestRankedPlacementsForDateRange`, and `PurgeExpired`.
@@ -255,7 +255,7 @@ void AdHistory::GetForDateRange(base::Time from_time,
           WHERE
             created_at BETWEEN $2 AND $3
           ORDER BY
-            created_at DESC;)",
+            created_at DESC)",
       {GetTableName(), TimeToSqlValueAsString(from_time),
        TimeToSqlValueAsString(to_time)},
       nullptr);
@@ -358,7 +358,7 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
           FROM
             FilteredAdHistory
           ORDER BY
-            created_at DESC;)",
+            created_at DESC)",
       {GetTableName(), TimeToSqlValueAsString(from_time),
        TimeToSqlValueAsString(to_time)},
       nullptr);
@@ -394,7 +394,7 @@ void AdHistory::GetForCreativeInstanceId(
           FROM
             $1
           WHERE
-            creative_instance_id = '$2';)",
+            creative_instance_id = '$2')",
       {GetTableName(), creative_instance_id}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
@@ -410,7 +410,7 @@ void AdHistory::PurgeExpired(ResultCallback callback) const {
             DELETE FROM
               $1
             WHERE
-              created_at <= $2;)",
+              created_at <= $2)",
           {GetTableName(),
            TimeToSqlValueAsString(base::Time::Now() -
                                   kAdHistoryRetentionPeriod.Get())});
@@ -442,7 +442,7 @@ void AdHistory::Create(
         title TEXT NOT NULL,
         description TEXT NOT NULL,
         target_url TEXT NOT NULL
-      );)");
+      ))");
 
   // Optimize database query for `GetForDateRange`,
   // `GetHighestRankedPlacementsForDateRange`, and `PurgeExpired` from
@@ -518,7 +518,7 @@ std::string AdHistory::BuildInsertSql(
             title,
             description,
             target_url
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/12, row_count)},
       nullptr);

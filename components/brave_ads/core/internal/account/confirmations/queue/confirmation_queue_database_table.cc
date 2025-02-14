@@ -258,7 +258,7 @@ void MigrateToV36(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
         user_data TEXT NOT NULL,
         process_at TIMESTAMP NOT NULL,
         retry_count INTEGER DEFAULT 0
-      );)");
+      ))");
 
   // Optimize database query for `GetAll, and `GetNext`.
   CreateTableIndex(mojom_db_transaction, /*table_name=*/"confirmation_queue",
@@ -358,7 +358,7 @@ void ConfirmationQueue::Retry(const std::string& transaction_id,
                 END
               )
             WHERE
-              transaction_id = '$7';)",
+              transaction_id = '$7')",
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now()), retry_after,
        max_retry_delay, retry_after, max_retry_delay, transaction_id});
 
@@ -391,7 +391,7 @@ void ConfirmationQueue::GetAll(GetConfirmationQueueCallback callback) const {
           FROM
             $1
           ORDER BY
-            process_at ASC;)",
+            process_at ASC)",
       {GetTableName()}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
@@ -427,7 +427,7 @@ void ConfirmationQueue::GetNext(GetConfirmationQueueCallback callback) const {
           ORDER BY
             process_at ASC
           LIMIT
-            1;)",
+            1)",
       {GetTableName()}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
@@ -461,7 +461,7 @@ void ConfirmationQueue::Create(
         user_data TEXT NOT NULL,
         process_at TIMESTAMP NOT NULL,
         retry_count INTEGER DEFAULT 0
-      );)");
+      ))");
 
   // Optimize database query for `GetAll, and `GetNext` from schema 36.
   CreateTableIndex(mojom_db_transaction, /*table_name=*/"confirmation_queue",
@@ -544,7 +544,7 @@ std::string ConfirmationQueue::BuildInsertSql(
             user_data,
             process_at,
             retry_count
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/14, row_count)},
       nullptr);

@@ -7,7 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_DAYPART_INFO_H_
 
 #include <string>
-#include <vector>
+
+#include "base/containers/flat_set.h"
 
 namespace brave_ads {
 
@@ -19,7 +20,7 @@ struct CreativeDaypartInfo final {
   int end_minute = 1439;                 // 23:59
 };
 
-using CreativeDaypartList = std::vector<CreativeDaypartInfo>;
+using CreativeDaypartSet = base::flat_set<CreativeDaypartInfo>;
 
 }  // namespace brave_ads
 

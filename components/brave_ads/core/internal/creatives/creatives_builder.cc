@@ -48,13 +48,12 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
     }
 
     // Dayparts
-    CreativeDaypartList dayparts;
+    CreativeDaypartSet dayparts;
     dayparts.reserve(campaign.dayparts.size());
     for (const auto& daypart : campaign.dayparts) {
-      dayparts.push_back(
-          CreativeDaypartInfo{.days_of_week = daypart.days_of_week,
-                              .start_minute = daypart.start_minute,
-                              .end_minute = daypart.end_minute});
+      dayparts.insert({.days_of_week = daypart.days_of_week,
+                       .start_minute = daypart.start_minute,
+                       .end_minute = daypart.end_minute});
     }
 
     // Creative Sets

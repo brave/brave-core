@@ -49,7 +49,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/35);
   daypart.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/35);
-  creative_ad.dayparts.push_back(daypart);
+  creative_ad.dayparts.insert(daypart);
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -67,7 +67,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/35);
   daypart.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/35);
-  creative_ad.dayparts.push_back(daypart);
+  creative_ad.dayparts.insert(daypart);
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -85,7 +85,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/0, /*minutes=*/0);
   daypart_1.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/4, /*minutes=*/35);
-  creative_ad.dayparts.push_back(daypart_1);
+  creative_ad.dayparts.insert(daypart_1);
 
   CreativeDaypartInfo daypart_2;
   daypart_2.days_of_week = "23";  // Tuesday and Wednesday
@@ -93,7 +93,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/4, /*minutes=*/36);
   daypart_2.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/23, /*minutes=*/59);
-  creative_ad.dayparts.push_back(daypart_2);
+  creative_ad.dayparts.insert(daypart_2);
 
   CreativeDaypartInfo daypart_3;
   daypart_3.days_of_week = "0";  // Sunday
@@ -101,7 +101,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/0, /*minutes=*/0);
   daypart_3.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/35);
-  creative_ad.dayparts.push_back(daypart_3);
+  creative_ad.dayparts.insert(daypart_3);
 
   // Act & Assert
   EXPECT_TRUE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -119,7 +119,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/0, /*minutes=*/0);
   daypart_1.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/4, /*minutes=*/35);
-  creative_ad.dayparts.push_back(daypart_1);
+  creative_ad.dayparts.insert(daypart_1);
 
   CreativeDaypartInfo daypart_2;
   daypart_2.days_of_week = "0";  // Sunday
@@ -127,7 +127,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/0, /*minutes=*/0);
   daypart_2.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/34);
-  creative_ad.dayparts.push_back(daypart_2);
+  creative_ad.dayparts.insert(daypart_2);
 
   CreativeDaypartInfo daypart_3;
   daypart_3.days_of_week = "0";  // Sunday
@@ -135,7 +135,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/36);
   daypart_3.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/23, /*minutes=*/59);
-  creative_ad.dayparts.push_back(daypart_3);
+  creative_ad.dayparts.insert(daypart_3);
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -152,7 +152,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest, DisallowForWrongDayOfWeek) {
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/0, /*minutes=*/0);
   daypart.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/23, /*minutes=*/59);
-  creative_ad.dayparts.push_back(daypart);
+  creative_ad.dayparts.insert(daypart);
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());
@@ -170,7 +170,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/0, /*minutes=*/0);
   daypart_1.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/34);
-  creative_ad.dayparts.push_back(daypart_1);
+  creative_ad.dayparts.insert(daypart_1);
 
   CreativeDaypartInfo daypart_2;
   daypart_2.days_of_week = "0";  // Sunday
@@ -178,7 +178,7 @@ TEST_F(BraveAdsDaypartExclusionRuleTest,
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/5, /*minutes=*/36);
   daypart_2.end_minute =
       test::ConvertHoursAndMinutesToTotalMinutes(/*hours=*/23, /*minutes=*/59);
-  creative_ad.dayparts.push_back(daypart_2);
+  creative_ad.dayparts.insert(daypart_2);
 
   // Act & Assert
   EXPECT_FALSE(exclusion_rule_.ShouldInclude(creative_ad).has_value());

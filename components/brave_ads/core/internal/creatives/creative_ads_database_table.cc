@@ -10,10 +10,8 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
-#include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -23,9 +21,6 @@
 #include "url/gurl.h"
 
 namespace brave_ads::database::table {
-
-using CreativeAdMap =
-    std::map</*creative_ad_uuid*/ std::string, CreativeAdInfo>;
 
 namespace {
 
@@ -101,36 +96,27 @@ CreativeAdList GetCreativeAdsFromResponse(
   CHECK(mojom_db_transaction_result);
   CHECK(mojom_db_transaction_result->rows_union);
 
-  CreativeAdMap creative_ads;
+  std::map<std::string, CreativeAdInfo> creative_ads;
 
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {
-    const CreativeAdInfo creative_ad = FromMojomRow(mojom_db_row);
+    CreativeAdInfo creative_ad = FromMojomRow(mojom_db_row);
 
-    const std::string uuid =
-        base::StrCat({creative_ad.creative_instance_id, creative_ad.segment});
-    const auto iter = creative_ads.find(uuid);
-    if (iter == creative_ads.cend()) {
-      creative_ads.insert({uuid, creative_ad});
-      continue;
-    }
-
-    for (const auto& geo_target : creative_ad.geo_targets) {
-      if (!iter->second.geo_targets.contains(geo_target)) {
-        iter->second.geo_targets.insert(geo_target);
-      }
-    }
-
-    for (const auto& daypart : creative_ad.dayparts) {
-      if (!base::Contains(iter->second.dayparts, daypart)) {
-        iter->second.dayparts.push_back(daypart);
-      }
+    std::string uuid = creative_ad.creative_instance_id + creative_ad.segment;
+    const auto [iter, inserted] =
+        creative_ads.emplace(std::move(uuid), creative_ad);
+    if (!inserted) {
+      iter->second.geo_targets.insert(creative_ad.geo_targets.cbegin(),
+                                      creative_ad.geo_targets.cend());
+      iter->second.dayparts.insert(creative_ad.dayparts.cbegin(),
+                                   creative_ad.dayparts.cend());
     }
   }
 
   CreativeAdList normalized_creative_ads;
-  for (const auto& [_, creative_ad] : creative_ads) {
-    normalized_creative_ads.push_back(creative_ad);
+  normalized_creative_ads.reserve(creative_ads.size());
+  for (auto& [_, creative_ad] : creative_ads) {
+    normalized_creative_ads.push_back(std::move(creative_ad));
   }
 
   return normalized_creative_ads;
@@ -206,7 +192,7 @@ void CreativeAds::GetForCreativeInstanceId(
           FROM
             $1
           WHERE
-            creative_instance_id = '$2';)",
+            creative_instance_id = '$2')",
       {GetTableName(), creative_instance_id}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
@@ -236,7 +222,7 @@ void CreativeAds::Create(
         split_test_group TEXT,
         condition_matchers TEXT NOT NULL,
         target_url TEXT NOT NULL
-      );)");
+      ))");
 }
 
 void CreativeAds::Migrate(
@@ -292,7 +278,7 @@ std::string CreativeAds::BuildInsertSql(
             split_test_group,
             condition_matchers,
             target_url
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/10, row_count)},
       nullptr);

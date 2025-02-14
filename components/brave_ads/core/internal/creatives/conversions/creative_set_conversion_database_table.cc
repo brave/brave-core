@@ -212,7 +212,7 @@ void CreativeSetConversions::GetUnexpired(
           FROM
             $1
           WHERE
-            $2 < expire_at;)",
+            $2 < expire_at)",
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now())}, nullptr);
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
@@ -240,7 +240,7 @@ void CreativeSetConversions::GetActive(
             INNER JOIN ad_events ON ad_events.creative_set_id = creative_set_conversion.creative_set_id
           WHERE
             $2 < expire_at
-            AND ad_events.confirmation_type IN ('$3', '$4');)",
+            AND ad_events.confirmation_type IN ('$3', '$4'))",
       {GetTableName(), TimeToSqlValueAsString(base::Time::Now()),
        ToString(mojom::ConfirmationType::kViewedImpression),
        ToString(mojom::ConfirmationType::kClicked)},
@@ -259,7 +259,7 @@ void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
             DELETE FROM
               $1
             WHERE
-              $2 >= expire_at;)",
+              $2 >= expire_at)",
           {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
 
   RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
@@ -281,7 +281,7 @@ void CreativeSetConversions::Create(
         verifiable_advertiser_public_key TEXT,
         observation_window INTEGER NOT NULL,
         expire_at TIMESTAMP NOT NULL
-      );)");
+      ))");
 
   // Optimize database query for `GetUnexpired` from schema 35.
   CreateTableIndex(mojom_db_transaction, GetTableName(),
@@ -350,7 +350,7 @@ std::string CreativeSetConversions::BuildInsertSql(
             verifiable_advertiser_public_key,
             observation_window,
             expire_at
-          ) VALUES $2;)",
+          ) VALUES $2)",
       {GetTableName(),
        BuildBindColumnPlaceholders(/*column_count=*/5, row_count)},
       nullptr);
