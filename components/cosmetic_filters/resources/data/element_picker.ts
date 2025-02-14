@@ -593,6 +593,21 @@ const launchElementPicker = (root: ShadowRoot) => {
   if (!isAndroid) {
     section.classList.add('desktop')
   }
+
+  if (isAndroid) {
+    const mediaQuery = window.matchMedia("(orientation: landscape)");
+    mediaQuery.addEventListener("change", (e) => {
+        if (e.matches) {
+            section.classList.add('desktop')
+        } else {
+            section.classList.remove('desktop')
+        }
+    });
+    if (mediaQuery.matches) {
+      section.classList.add('desktop')
+    }
+  }
+
   const togglePopup = (show: boolean) => {
       enableButtons(!show)
       if (show) {
