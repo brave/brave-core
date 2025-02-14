@@ -361,7 +361,7 @@ extension Preferences {
   final public class Translate {
     /// Determines whether Brave Translate is enabled
     public static let translateEnabled =
-      Option<Bool>(key: "brave-translate.enabled", default: true)
+      Option<Bool?>(key: "brave-translate.enabled", default: nil)
 
     /// Determines whether to show Brave Translate onboarding.
     public static let translateURLBarOnboardingCount =

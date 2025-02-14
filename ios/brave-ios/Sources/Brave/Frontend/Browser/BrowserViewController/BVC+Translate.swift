@@ -31,10 +31,11 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   func showTranslateOnboarding(tab: Tab?, completion: @escaping (_ translateEnabled: Bool) -> Void)
   {
     // Do NOT show the translate onboarding popup if the tab isn't visible
-    guard Preferences.Translate.translateEnabled.value,
+    guard Preferences.Translate.translateEnabled.value != false,
       let selectedTab = tabManager.selectedTab,
       selectedTab === tab,
-      selectedTab.translationState == .available
+      selectedTab.translationState == .available,
+      topToolbar.secureContentState == .secure
     else {
       return
     }
@@ -61,6 +62,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
               Preferences.Translate.translateEnabled.value = true
 
               tab.translateHelper?.presentUI(on: self)
+              completion(true)
             },
             onDisableFeature: { [weak self, weak tab] in
               guard let tab = tab, let self = self else { return }
@@ -70,6 +72,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
               Preferences.Translate.translateEnabled.value = false
               tab.translationState = .unavailable
               self.topToolbar.updateTranslateButtonState(.unavailable)
+              completion(false)
             }
           ),
           autoLayoutConfiguration: .init(preferredWidth: self.view.bounds.width - (32.0 * 2.0))
@@ -84,21 +87,12 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
           action: { popover in
             popover.previewForOrigin = nil
             popover.dismissPopover()
-            completion(Preferences.Translate.translateEnabled.value)
+            completion(false)
           }
         )
 
-        popover.popoverDidDismiss = { [weak self, weak tab] _ in
-          guard let tab = tab, let self = self else { return }
-
-          self.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
-
-          if Preferences.Translate.translateEnabled.value {
-            tab.translateHelper?.presentUI(on: self)
-            completion(true)
-            return
-          }
-
+        popover.popoverDidDismiss = { [weak self] _ in
+          self?.topToolbar.locationView.translateButton.setOnboardingState(enabled: false)
           completion(false)
         }
         popover.present(from: self.topToolbar.locationView.translateButton, on: self)
