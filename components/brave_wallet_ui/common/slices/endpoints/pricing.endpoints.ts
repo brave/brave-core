@@ -102,8 +102,8 @@ export const pricingEndpoints = ({
 
           // dedupe ids to prevent duplicate price requests
           const uniqueIds = [...new Set(ids)]
-            // skip flagged coins such as testnet coins
-            .filter((id) => id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
+            // skip flagged coins such as testnet coins and null/undefined ids
+            .filter((id) => id && id !== SKIP_PRICE_LOOKUP_COINGECKO_ID)
 
           const chunkedParams = []
           for (let i = 0; i < uniqueIds.length; i += maxBatchSizePrice) {

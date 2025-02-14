@@ -16,15 +16,16 @@ extension BraveWalletAssetRatioService {
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
   ) async -> PricesResult {
-    // make sure there is no duplicate priceId
-    let uniquePriceIds = Array(Set(fromAssets))
+    // Filter out empty strings and nil values, then make unique
+    let uniquePriceIds = Set(fromAssets.filter { !$0.isEmpty })
+
     let (success, prices) = await self.price(
       fromAssets: uniquePriceIds,
       toAssets: toAssets,
       timeframe: timeframe
     )
     guard success else {
-      return await self.priceIndividually(fromAssets, toAssets: toAssets, timeframe: timeframe)
+      return await self.priceIndividually(fromAssets: uniquePriceIds, toAssets: toAssets, timeframe: timeframe)
     }
     return PricesResult(prices, 0)
   }
@@ -35,8 +36,9 @@ extension BraveWalletAssetRatioService {
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
   ) async -> PricesResult {
-    // make sure there is no duplicate priceId
-    let uniquePriceIds = Set(fromAssets)
+    // Filter out empty strings and nil values, then make unique
+    let uniquePriceIds = Set(fromAssets.filter { !$0.isEmpty })
+
     return await withTaskGroup(of: PricesResult.self) { @MainActor group -> PricesResult in
       uniquePriceIds.forEach { asset in
         group.addTask { @MainActor in
@@ -70,13 +72,14 @@ extension BraveWalletAssetRatioService {
     timeframe: BraveWallet.AssetPriceTimeframe,
     completion: @escaping (PricesResult) -> Void
   ) {
-    // make sure there is no duplicate priceId
-    let uniquePriceIds = Array(Set(fromAssets))
+    // Filter out empty strings and nil values, then make unique
+    let uniquePriceIds = Set(fromAssets.filter { !$0.isEmpty })
+
     price(fromAssets: uniquePriceIds, toAssets: toAssets, timeframe: timeframe) {
       [self] success, prices in
       guard success else {
         self.priceIndividually(
-          fromAssets,
+          fromAssets: uniquePriceIds,
           toAssets: toAssets,
           timeframe: timeframe,
           completion: completion
@@ -94,8 +97,8 @@ extension BraveWalletAssetRatioService {
     timeframe: BraveWallet.AssetPriceTimeframe,
     completion: @escaping (PricesResult) -> Void
   ) {
-    // make sure there is no duplicate priceId
-    let uniquePriceIds = Set(fromAssets)
+    // Filter out empty strings and nil values, then make unique
+    let uniquePriceIds = Set(fromAssets.filter { !$0.isEmpty })
     var pricesResults: [PricesResult] = []
     let dispatchGroup = DispatchGroup()
     uniquePriceIds.forEach { asset in
