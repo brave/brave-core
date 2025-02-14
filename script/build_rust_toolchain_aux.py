@@ -57,7 +57,7 @@ def run_xpy():
 
 
 def restore_config_toml_template():
-    shutil.copy('config.toml.template.orig', 'config.toml.template')
+    shutil.move('config.toml.template.orig', 'config.toml.template')
 
 
 def create_archive():
