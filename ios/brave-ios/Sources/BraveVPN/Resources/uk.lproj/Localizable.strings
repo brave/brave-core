@@ -8,7 +8,7 @@
 "vpn.availableServerTitle" = "ДОСТУПНІ СЕРВЕРИ";
 
 /* Button text to buy Brave VPN */
-"vpn.buyButton" = "Придбати";
+"vpn.buyButton" = "Купити";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxDevicesProtect" = "З 1 передплатою можна захистити 5 пристроїв";
@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Brave ніколи не записує ваші дії";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Захищає кожну програму та пристрій загалом";
+"vpn.checkboxProtectYourDevices" = "Захищає кожен застосунок і пристрій загалом";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Більш надійний захист як для домашніх, так і для загальнодоступних мереж Wi-Fi";
@@ -32,7 +32,7 @@
 "vpn.cityCountTitle" = "%ld місто";
 
 /* Text showing the vpn region is connected */
-"vpn.connectedRegionDescription" = "З’єднано";
+"vpn.connectedRegionDescription" = "Підключено";
 
 /* App Store Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "Квитанція від App Store";
@@ -104,10 +104,10 @@
 "vpn.contactFormTitle" = "Проблема, пов’язана з файрволом та VPN-розширенням браузера Brave";
 
 /* Button text to enable Brave VPN */
-"vpn.enableButton" = "Увімкнути";
+"vpn.enableButton" = "Увімкнено";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Усі плани передбачають %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Усі плани передбачають";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "безкоштовний 7-денний пробний період";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Встановити VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Спробувати БЕЗКОШТОВНО";
+"vpn.learnMore" = "Розпочати безкоштовний 7-денний пробний період";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Оновлюється щомісяця";
@@ -148,8 +148,17 @@
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "Сервери: %ld";
 
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Передплата стягується з вашого рахунку в Apple. Будь-яка невикористана частина безкоштовного пробного періоду, якщо він пропонується, втрачається під час здійснення передплати.\n\nВаша передплата поновлюватиметься автоматично, доки її не скасувати принаймні за 24 години до завершення поточного періоду.\n\nВи можете керувати своїми передплатами в налаштуваннях.\n\nВикористовуючи Brave, ви погоджуєтеся з Умовами використання та Політикою приватності.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "місяць";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "рік";
+
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Термін дії завершився";
+"vpn.planExpired" = "Термін дії закінчився";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Виберіть бажаний протокол транспортування. Після перемикання наявні облікові дані VPN буде вилучено. Також буде здійснено повторне підключення за наявності активного VPN-з’єднання.";
@@ -181,11 +190,17 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "Регіон VPN змінено.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Поновлюється щорічно";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Оновлюється щомісяця";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Не вдалося скинути конфігурацію VPN. Спробуйте ще раз. Якщо проблема не зникне, зверніться до служби підтримки.";
 
 /* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "Повторити спробу";
+"vpn.resetVPNErrorButtonActionTitle" = "Спробуйте ще раз";
 
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "Помилка скидання";
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Відновити";
 
+/* Use in context: save 16%. */
+"vpn.save" = "зберегти";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "Сервер: %@";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld сервер";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Використовуйте VPN, щоб захистити своє з’єднання і блокувати стеження всюди.";
+"vpn.settingHeaderBody" = "Захистіть кожен додаток із Brave VPN. Одна підписка покриває до 10 пристроїв.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Звернутися до служби технічної підтримки";
@@ -245,19 +263,31 @@
 "vpn.settingsServerSection" = "Сервер";
 
 /* Table cell title for cell that shows when the VPN subscription expires. */
-"vpn.settingsSubscriptionExpiration" = "Термін дії";
+"vpn.settingsSubscriptionExpiration" = "Термін дії збігає";
 
 /* Header title for vpn settings subscription section. */
 "vpn.settingsSubscriptionSection" = "Підписка";
 
 /* Table cell title for status of current VPN subscription. */
-"vpn.settingsSubscriptionStatus" = "Стан";
+"vpn.settingsSubscriptionStatus" = "Статус";
 
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Протокол транспортування";
 
-/* Button to allow the user to view the app-store receipt. */
-"vpn.settingsViewReceipt" = "Перегляд квитанції App Store";
+/* Button to allow the user to view the App Store receipt. */
+"vpn.settingsViewReceipt" = "Переглянути квитанцію App Store";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Якщо цю функцію увімкнено, якщо ваше VPN-з'єднання несподівано розірветься, ваш пристрій буде автоматично відключено від Інтернету, щоб уникнути витоку IP-адреси та даних. [Дізнатися більше] (%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Увімкнути Kill Switch";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Функція Smart Proxy спрямовує трафік через спеціальні проксі-сервери для доступу до заблокованого контенту/сайтів або сторонніх сервісів. [Дізнатися більше] (%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Увімкнути Smart Proxy";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Оновіть спосіб оплати";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Плата за підписку стягується з вашого рахунку в iTunes.\n\nБудь-яка невикористана частина безкоштовної пробної версії, якщо вона пропонується, втрачається під час покупки підписки.\n\nПідписка продовжується автоматично, якщо її не скасовано не менше ніж за 24 години до закінчення поточного періоду.\n\nВи можете керувати своїми підписками у налаштуваннях.\n\nВикористовуючи Brave, ви погоджуєтеся з Умовами користування та Політикою конфіденційності.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN вимкнено";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN увімкнено";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Активувати код";
 
@@ -322,9 +358,9 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Поновлюйте раз на рік та заощаджуйте %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Оптимальна вартість";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "НАЙКРАЩЕ ЗНАЧЕННЯ";
 
 /* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Річна";
+"vpn.yearlySubTitle" = "Один рік";
 

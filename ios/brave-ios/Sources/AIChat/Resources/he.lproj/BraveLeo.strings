@@ -31,8 +31,8 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "סטטוס";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
-"aichat.advancedSettingsViewReceiptTitle" = "הצגת קבלה מ-AppStore";
+/* The title for the button that allows the user to view the App Store Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "הצגת קבלה מ-App Store";
 
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "לא ניתן לקשר ל-App Store, נא לנסות שוב מאוחר יותר.";
@@ -86,7 +86,7 @@
 "aichat.defaultModelLanguageSectionTitle" = "מודלי שפה";
 
 /* The title of the menu where user can change the default model */
-"aichat.defaultModelViewTitle" = "מודל ברירת מחדל";
+"aichat.defaultModelViewTitle" = "מודל ברירת מחדל ";
 
 /* The text displayed under an edited user prompt/message beside a timestamp. */
 "aichat.editedMessageCaption" = "נערך";
@@ -263,7 +263,7 @@
 "aichat.paywallPurchaseDeepNote" = "כל המינויים מתחדשים באופן אוטומטי אך ניתן לבטלם בכל עת לפני החידוש.";
 
 /* The error description when in app purcahse is erroneous. */
-"aichat.paywallPurchaseErrorDescription" = "לא ניתן להשלים את הרכישה. יש לנסות שוב, או לבדוק את פרטי התשלום שלך ב-Apple ואז לנסות שוב.";
+"aichat.paywallPurchaseErrorDescription" = "לא ניתן להשלים את הרכישה. יש לנסות שוב או לבדוק את פרטי התשלום שלך ב-Apple ואז לנסות שוב.";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "אפשר לקבל שיעור תגובה גבוה יותר באמצעות הרשמה לפרימיום, או לנסות שוב מאוחר יותר.";
@@ -326,7 +326,7 @@
 "aichat.quickMenuGoPremiumActionTitle" = "לעבור לפרימיום";
 
 /* The title of action for quick menu which display subscription management view */
-"aichat.quickMenuManageSubscriptionActionTitle" = "ניהול מינויים";
+"aichat.quickMenuManageSubscriptionActionTitle" = "ניהול מנויים";
 
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "שגיאה בדירוג תגובה";

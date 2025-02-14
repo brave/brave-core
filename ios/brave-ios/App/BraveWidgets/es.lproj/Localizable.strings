@@ -56,7 +56,7 @@
 "widgets.shortcutsNewTabButton" = "Nueva pestaña";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Playlist";
+"widgets.shortcutsPlaylistButton" = "Lista de reproducción";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "Pestaña privada";

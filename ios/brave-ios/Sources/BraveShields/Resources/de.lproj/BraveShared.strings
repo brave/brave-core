@@ -1,14 +1,14 @@
 /* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Fügen Sie zusätzliche Listen hinzu, die von Ihrer vertrauenswürdigen Community erstellt und gepflegt werden.";
+"AddCustomFilterListDescription" = "Füge zusätzliche Listen hinzu, die von deiner vertrauenswürdigen Community erstellt und gepflegt werden.";
 
 /* Warning text found in the footer of the add custom filter list url screen. */
-"AddCustomFilterListWarning" = "**Abonnieren Sie nur Listen von Einheiten, denen Sie vertrauen.** Ihr Browser überprüft regelmäßig über die angegebene URL, ob die Liste aktualisiert wurde.";
+"AddCustomFilterListWarning" = "**Abonniere nur Listen von Einheiten, denen du vertraust.** Dein Browser überprüft regelmäßig über die angegebene URL, ob die Liste aktualisiert wurde.";
 
 /* A title within a cell where a user can navigate to an add screen. */
 "AddFilterByURL" = "Filter nach URL hinzufügen";
 
 /* A discription of the Brave Player. */
-"AntiAdBlockWarningBravePlayerDescription" = "Der **Brave-Player** ist Ihr Ticket zu einem werbe- und unterbrechungsfreien Videoerlebnis.";
+"AntiAdBlockWarningBravePlayerDescription" = "Der **Brave Player** ist dein Ticket zu einem werbe- und unterbrechungsfreien Videoerlebnis.";
 
 /* A button that disables ad-blocking and uses brave player. */
 "AntiAdBlockWarningConfirmationButton" = "Schutz für mich anpassen";
@@ -17,13 +17,13 @@
 "AntiAdBlockWarningDescription" = "Diese Website hat damit begonnen, einige Werbeblocker zu blockieren. Das bedeutet, dass die Website möglicherweise nicht wie erwartet funktioniert.";
 
 /* A descriptive message explaining to disable shields on this site. */
-"AntiAdBlockWarningDescription2" = "Um dieses Problem zu beheben, kann Brave Ihre Schutzeinstellungen für Sie anpassen. Nach der Anpassung können Sie versuchen, diese Inhalte stattdessen im Brave-Player anzuschauen.";
+"AntiAdBlockWarningDescription2" = "Um dieses Problem zu beheben, kann Brave deine Schutzeinstellungen für dich anpassen. Nach der Anpassung kannst du versuchen, diese Inhalte stattdessen im Brave Player anzuschauen.";
 
 /* A button that dismisses the warning and does nothing. */
 "AntiAdBlockWarningDismissButton" = "Aktuelle Einstellungen beibehalten";
 
 /* A title for a popup that tells the user we recommend turning shields off for this site. */
-"AntiAdBlockWarningTitle" = "Passen Sie die Werbeblocker-Einstellungen für diese Website an";
+"AntiAdBlockWarningTitle" = "Passe die Werbeblocker-Einstellungen für diese Website an";
 
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Automatisch schreddern";
@@ -44,28 +44,28 @@
 "blockMobileAnnoyances" = "Hinweise zum Wechseln zur App blockieren";
 
 /* Title for the brave player feature */
-"BravePlayer" = "Brave-Player";
+"BravePlayer" = "Brave Player";
 
 /* A label for a toggle that enables automatic launching of brave player for certain sites */
-"BravePlayerAlwaysOpenYouTubeLinks" = "Videos dieser Website immer mit dem Brave-Player öffnen";
+"BravePlayerAlwaysOpenYouTubeLinks" = "Videos dieser Website immer mit dem Brave Player öffnen";
 
 /* A button that confirms to use the brave player. */
 "BravePlayerConfirmButton" = "Ausprobieren";
 
 /* A button that ignores the brave player */
-"BravePlayerDismissButton" = "Jetzt nicht";
+"BravePlayerDismissButton" = "Nicht jetzt";
 
 /* A description of the brave player that is presented on the info panel when clicing on the brave player icon for the first time. */
-"BravePlayerInfoMessage" = "Mit dem Brave-Player können Sie Videos unterbrechungsfrei anschauen.";
+"BravePlayerInfoMessage" = "Mit dem Brave Player kannst du Videos unterbrechungsfrei anschauen.";
 
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
-"BravePlayerInfoTitle" = "Stattdessen im Brave-Player anschauen";
+"BravePlayerInfoTitle" = "Stattdessen im Brave Player anschauen";
 
 /* A title to the content filtering page under global shield settings and the title on the Content filtering page */
 "ContentFiltering" = "Inhaltsfilterung";
 
 /* A description of the content filtering page. */
-"ContentFilteringDescription" = "Aktivieren Sie benutzerdefinierte Filter, die regionale und sprachspezifische Tracker und Belästigungen blockieren.";
+"ContentFilteringDescription" = "Aktiviere benutzerdefinierte Filter, die regionale und sprachspezifische Tracker und Belästigungen blockieren.";
 
 /* Title for the custom filter list add screen found in the navigation bar. */
 "CustomFilterList" = "Benutzerdefinierte Filterliste";
@@ -77,13 +77,13 @@
 "CustomFilters" = "Benutzerdefinierte Filter";
 
 /* A description of the custom filters section */
-"CustomFiltersDescription" = "Fügen Sie hier benutzerdefinierte Filter hinzu. Achten Sie darauf, die Syntax des Adblock-Filters zu verwenden.";
+"CustomFiltersDescription" = "Füge hier benutzerdefinierte Filter hinzu. Achte darauf, die Syntax des Adblock-Filters zu verwenden.";
 
 /* An error message telling the user that a rule is invalid */
 "CustomFiltersInvalidRuleError" = "Ungültige Regel „%1$@“ in Zeile %2$i";
 
 /* A placeholder when custom filter lists are empty */
-"CustomFiltersPlaceholder" = "Fügen Sie hier Ihre benutzerdefinierten Filter ein, einen pro Zeile.";
+"CustomFiltersPlaceholder" = "Füge hier deine benutzerdefinierten Filter ein, einen pro Zeile.";
 
 /* An error message telling the user that they crossed the line limit */
 "CustomFiltersTooManyLinesError" = "Benutzerdefinierte Filter unterstützen nicht mehr als %i Zeilen";
@@ -95,13 +95,13 @@
 "DomainBlockedGoBackAction" = "Zurück";
 
 /* A description in the warning page that appears when a page was blocked */
-"DomainBlockedPageDescription" = "Weil Sie darum gebeten haben, Tracker und Anzeigen aggressiv zu blockieren, blockt Brave diese Site, bevor die erste Netzwerkverbindung hergestellt wird.";
+"DomainBlockedPageDescription" = "Weil du darum gebeten hast, Tracker und Anzeigen aggressiv zu blockieren, blockt Brave diese Site, bevor die erste Netzwerkverbindung hergestellt wird.";
 
 /* A message in the warning page that appears when a page was blocked */
 "DomainBlockedPageMessage" = "Brave hat das Laden der folgenden Site verhindert:";
 
 /* A title in the warning page that appears when a page was blocked */
-"DomainBlockedPageTitle" = "Diese Website versucht möglicherweise, Sie über andere Websites hinweg zu verfolgen";
+"DomainBlockedPageTitle" = "Diese Website versucht möglicherweise, dich über andere Websites hinweg zu verfolgen";
 
 /* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
 "DomainBlockedProceedAction" = "Fortfahren";
@@ -128,7 +128,7 @@
 "FilterListsAdd" = "Hinzufügen";
 
 /* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Weitere beliebte Community-Listen. Bitte beachten Sie, dass die Aktivierung von zu vielen Filtern die Surfgeschwindigkeit verringert.";
+"FilterListsDescription" = "Weitere beliebte Community-Listen. Bitte beachte, dass die Aktivierung von zu vielen Filtern die Surfgeschwindigkeit verringert.";
 
 /* This is a generic error message when downloading a filter list fails. */
 "FilterListsDownloadFailed" = "Downloadfehler";
@@ -137,7 +137,7 @@
 "FilterListsDownloadPending" = "Download ausstehend";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Bearbeiten";
+"FilterListsEdit" = "Editieren";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "URL der Filterliste eingeben";
@@ -149,7 +149,7 @@
 "FilterListURLTextFieldPlaceholder" = "URL der Filterliste eingeben";
 
 /* A description of what the forget me toggle does */
-"ForgetMeDescription" = "Löscht Cookies und andere Seitendaten, wenn Sie eine Seite schließen";
+"ForgetMeDescription" = "Löscht Cookies und andere Seitendaten, wenn du eine Seite schließen";
 
 /* A toggle option that deletes website content when the site is closed */
 "ForgetMeLabel" = "Vergessen, wenn die Seite geschlossen wird";
@@ -159,6 +159,30 @@
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Listen aktualisiert";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Aggressiv";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Blockiert von";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Blockierte Anfragen";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Content-Blocker";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Blockierung von Anfragen";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL anfordern";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Ressourcentyp";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "Quell-URL";
 
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Daten schreddern";
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "Die Verbindung mit %@ ist nicht sicher";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "Blockierung von Trackern und Anzeigen";
+"TrackersAndAdsBlocking" = "Blockiert Tracking und Anzeigen";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Listen aktualisieren";
@@ -203,5 +227,5 @@
 "UpgradeConnectionsToHTTPS" = "Verbindungen auf HTTPS erweitern";
 
 /* A description shown an a page where the http page was blocked */
-"YourConnectionIsNotPrivate" = "Sie sehen diese Warnmeldung, weil diese Website HTTPS nicht unterstützt.";
+"YourConnectionIsNotPrivate" = "Du siehst diese Warnmeldung, weil diese Website HTTPS nicht unterstützt.";
 

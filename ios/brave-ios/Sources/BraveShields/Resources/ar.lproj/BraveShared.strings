@@ -149,7 +149,7 @@
 "FilterListURLTextFieldPlaceholder" = "أدخل عنوان URL لقائمة الفلتر هنا ";
 
 /* A description of what the forget me toggle does */
-"ForgetMeDescription" = "يتم مسح البيانات الخاصة بالكوكيز ومعلومات الموقع الأخرى عند إغلاق الموقع ";
+"ForgetMeDescription" = "يتم مسح البيانات الخاصة بالكوكيز ومعلومات الموقع الأخرى عند إغلاق الموقع";
 
 /* A toggle option that deletes website content when the site is closed */
 "ForgetMeLabel" = "لا تتذكرني فور أن أغلق هذا الموقع";
@@ -159,6 +159,30 @@
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "تم تحديث القوائم";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "عدواني";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "تم الحظر بواسطة";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "الطلبات المحظورة";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "أداة حظر المحتوى";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "طلب الحظر";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "طلب عنوان URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "نوع المورد";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "عنوان URL المصدر";
 
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "حذف البيانات بشكل نهائي";
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "الاتصال بـ %@ غير آمن";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "أدوات التتبع وحظر الإعلانات";
+"TrackersAndAdsBlocking" = "حظر برامج التتبع & الإعلانات";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "تحديث القوائم";

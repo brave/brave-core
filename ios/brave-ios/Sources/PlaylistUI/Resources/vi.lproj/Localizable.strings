@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Chỉnh sửa";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Bắt đầu nhập để tìm tệp âm thanh và video đã lưu của bạn";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Tìm tệp đa phương tiện";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Nhấn để chọn đa phương tiện";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Thêm đa phương tiện từ các trang web yêu thích của bạn để phát ở đây.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Không tìm thấy kết quả nào";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Mở trong thẻ riêng tư mới";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Lưu dữ liệu ngoại tuyến";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Tìm kiếm";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Chia sẻ";

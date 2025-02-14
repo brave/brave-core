@@ -14,7 +14,7 @@
 "CancelDownloadDialogCancel" = "Cancelar";
 
 /* Alert dialog body when the user taps the cancel download icon. */
-"CancelDownloadDialogMessage" = "¿Estás seguro de que quieres cancelar esta descarga?";
+"CancelDownloadDialogMessage" = "¿Seguro que desea cancelar esta descarga?";
 
 /* Button declining the cancellation of the download. */
 "CancelDownloadDialogResume" = "Reanudar";
@@ -86,22 +86,28 @@
 "ScanQRCodeErrorOKButton" = "Aceptar";
 
 /* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "Centra el código QR en el recuadro para escanearlo";
+"ScanQRCodeInstructionsLabel" = "Centre el código QR en el recuadro para escanearlo";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "Los datos no son válidos";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Permite a Brave acceder a la cámara de tu dispositivo en \"Ajustes\" -> \"Privacidad\" -> \"Cámara\".";
+"ScanQRCodePermissionErrorMessage" = "Permita a Brave acceder a la cámara de su dispositivo en \"Ajustes\" -> \"Privacidad\" -> \"Cámara\".";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Escanear código QR";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Gracias por apoyar a Buscador de Brave haciendo clic en un anuncio privado. A diferencia de las grandes tecnológicas, medimos el rendimiento de los anuncios de forma anónima para preservar tu privacidad.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Más información / Opciones de exclusión";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "General";
 
 /* Button displayed at the top of the search settings. */
-"SettingsSearchDoneButton" = "Hecho";
+"SettingsSearchDoneButton" = "Listo";
 
 /* The button to undo the delete all tabs */
 "TabsDeleteAllUndoAction" = "Deshacer";

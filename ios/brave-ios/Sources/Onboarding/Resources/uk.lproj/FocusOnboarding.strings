@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Зробіть Brave вашим основним браузером";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Переглядайте сторінки швидше, витрачаючи менше даних.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Без реклами та вистежувачів.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Не зараз";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Серйозно, ми їх позбулися.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Блокуйте докучливу рекламу на улюблених веб-сайтах.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Тепер жодної реклами у відео.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Блокуйте рекламу під час онлайн-трансляції";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Дізнайтеся більше про аналітику продуктів зі збереженням приватності (P3A)";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "Почати перегляд";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Перейти до налаштувань системи";
+"focusOnboarding.systemSettingsButtonTitle" = "Встановити за замовчуванням";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Уведіть URL-адресу, щоб користуватись браузером без реклами та вистежувачів";
+"focusOnboarding.urlBarIndicatorDescription" = "Починайте трансляції та насолоджуйтеся меншою кількістю реклами та трекерів.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Переконайтеся в перевагах Brave";

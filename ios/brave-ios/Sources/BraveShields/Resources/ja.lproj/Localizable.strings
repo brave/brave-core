@@ -1,8 +1,8 @@
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "ブロック済みのトラッカー&広告数";
+"AdsAndTrackersrBlocked" = "ブロック済の\n広告・トラッカー数";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "ブロック済の\n広告";
+"AdsrBlocked" = "ブロック済みの\n広告";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "節約できた\nデータ量(推定)";
@@ -23,5 +23,5 @@
 "ShieldsTimeStatsSeconds" = "秒";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "ブロック済の\nトラッカー";
+"TrackersrBlocked" = "ブロック済みの\nトラッカー";
 

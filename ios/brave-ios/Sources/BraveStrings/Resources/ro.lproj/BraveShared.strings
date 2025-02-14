@@ -47,10 +47,7 @@
 "AuthenticationLoginsTouchReason" = "Asta îți autentifică accesul la Brave";
 
 /* Label for Cancel button */
-"AuthPromptAlertCancelButtonTitle" = "Anulează";
-
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "Un nume de utilizator și o parolă sunt solicitate de către %1$@. Pagina web spune: %2$@";
+"AuthPromptAlertCancelButtonTitle" = "Anulare";
 
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "Autentificare";
@@ -185,7 +182,7 @@
 "BraveShieldsAndPrivacy" = "Brave Shields și Confidențialitate";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacyTitle" = "Scuturi și Confidențialitate";
+"BraveShieldsAndPrivacyTitle" = "Shields și Confidențialitate";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Reclame și alte lucruri dubioase blocate";
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Controale Globale";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Stochează informațiile de contact pentru viitoarele rapoarte privind site-urile defecte";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Dacă furnizezi informații de contact, acestea vor fi stocate pentru rapoarte viitoare";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Dacă site-ul pare nefuncțional, încearcă să dezactivezi Shields";
@@ -488,7 +491,7 @@
 "CopyWalletSupportInfo" = "Copiază info pentru asistență";
 
 /* Create PDF share action. */
-"CreatePDF" = "Creează PDF";
+"CreatePDF" = "Crează PDF";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Motoare de căutare folosite în prezent";
@@ -689,7 +692,7 @@
 "ErrorPageReloadButtonTitle" = "Reîncarcă";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ utilizează în mod normal criptare pentru a vă proteja informațiile. Atunci când Brave a încercat să se conecteze la %2$@ de data aceasta, a fost detectată o problemă de securitate. Site-ul web a trimis înapoi credențiale neobișnuite și incorecte. Acest lucru se poate întâmpla atunci când un atacator încearcă să pretindă că este %3$@ sau când un ecran de autentificare Wi-Fi a întrerupt conexiunea. Informațiile tale sunt în continuare securizate deoarece Brave a oprit conexiunea înainte de a se face schimb de date.<br />Nu poți vizita %4$@ în acest moment deoarece site-ul web utilizează certificat pinning. Erorile de rețea și atacurile sunt de obicei temporare, așa că această pagină va funcționa probabil mai târziu.";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ utilizează în mod normal criptarea pentru a-ți proteja informațiile. Când Brave a încercat să se conecteze la %2$@ de data aceasta, site-ul a trimis înapoi acreditări neobișnuite și incorecte. Acest lucru se poate întâmpla atunci când un atacator încearcă să pretindă că este %3$@ sau un ecran de conectare Wi-Fi a întrerupt conexiunea. Informațiile tale sunt în continuare securizate, deoarece Brave a întrerupt conexiunea înainte ca orice date să fie schimbate.<br />Nu poți vizita %4$@ în acest moment, deoarece site-ul web utilizează certificate pinning. Erorile de rețea și atacurile sunt de obicei temporare, astfel încât această pagină va funcționa probabil mai târziu.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Acest server nu a putut dovedi că este %@; certificatul său de securitate nu este recunoscut de către sistemul de operare. Acest lucru poate fi cauzat de o configurație greșită sau de un atacator care încearcă să îți intercepteze conexiunea.";
@@ -1043,7 +1046,7 @@
 "ntp.settingsDefaultImagesOnly" = "Imagini implicite";
 
 /* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Imagini si video-uri sponsorizate";
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Imagini si clipuri video sponsorizate";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Imagini sponsorizate";
@@ -1154,7 +1157,7 @@
 "OBTurnOnButton" = "Începe";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "Alte reclame și urmăritori blocați de la %1$@ și %2$lld";
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ și încă %2$lld alte reclame și urmăritori blocați";
 
 /* The footnote indicating what Brave shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "Vizualizează toate lucrurile dăunătoare pe care Brave le-a blocat cu ajutorul Shields pe fiecare pagină.";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "Apasă pentru a deschide Brave Shields.  ";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Reclame și urmăritori blocați";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Reclame & monitoare de activitate blocate";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Conectează-ți abonamentul VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Abonamentul tău la Brave VPN poate proteja până la 5 dispozitive, pe Android, iOS și desktop. Trebuie doar să îți asociezi abonamentul din App Store cu contul tău Brave.";
+"onboarding.linkReceiptDescription" = "Abonamentul tău la Brave VPN poate proteja până la 10 dispozitive, pe Android, iOS și desktop. Trebuie doar să îți asociezi abonamentul din App Store cu contul tău Brave.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Extinde protecția Brave Firewall + VPN";
@@ -1181,7 +1184,7 @@
 "onboarding.navigateSettingsOnboardingScreenTitle" = "Te duc la Setări...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
-"onboarding.ntpOnboardingPopOverTrackerDescription" = "Prin blocarea de reclame și urmăritori site-urile web utilizează mai puține date și se încarcă mult mai repede.";
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Prin blocarea urmăritorilor și a reclamelor, site-urile web utilizează mai puține date și se încarcă mult mai repede.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverDescription" = "Vezi diferența Brave:\nFără reclame. Fără urmăritori. Încărcarea paginii este mult mai rapidă.";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Deschide în fereastră nouă";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "Continuă să descarci un profil de configurare de la %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "Profil de configurare disponibil";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Deschide în filă privată nouă";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "File deschise";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "Continuă să descarci un eveniment de calendar de la %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "Eveniment Calendar disponibil";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Deschide site web";
@@ -1532,7 +1547,7 @@
 "playlist.playlistAutoSaveOptionOff" = "Oprit";
 
 /* Auto Save turn On Option */
-"playlist.playlistAutoSaveOptionOn" = "Pornit";
+"playlist.playlistAutoSaveOptionOn" = "Activat";
 
 /* Option Text for Auto Save Only Wi-Fi Option */
 "playlist.playlistAutoSaveOptionOnlyWifi" = "Doar pe Wi-Fi";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "Adăugarea fișierelor video și audio pentru utilizare offline poate consuma mult spațiu de stocare pe dispozitivul tău, precum și date mobile.";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Această opțiune va păstra automat elementele din playlist pe dispozitiv, astfel încât să le poți reda fără a avea o conexiune la internet.";
+"playlist.playlistAutoSaveSettingsFooterText" = "După ce ai deschis conținut în lista de redare, această opțiune va păstra elementele din lista de redare deschisă pe dispozitivul tău, astfel încât să le poți reda fără o conexiune la internet.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Salvare automată pentru offline";
+"playlist.playlistAutoSaveSettingsTitle" = "Salvează conținut pentru redarea offline";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "Adăugarea de fișiere video și audio pentru utilizare offline poate ocupa mult spațiu de stocare pe dispozitivul tău. Te rog să ștergi unele dintre fișiere pentru a face loc în stocare.";
@@ -1562,7 +1577,7 @@
 "playlist.playlistLongPressSettingsOptionTitle" = "Activează apăsarea îndelungată";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Media Playlist și date offline";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Listă de redare și date offline";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Date offline Playlist";
@@ -1618,14 +1633,8 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Ține minte poziția de redare";
 
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Dezactivează API-ul Webkit MediaSource";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Compatibilitate web";
-
 /* Title for removing offline mode storage */
-"playList.removeActionButtonTitle" = "Șterge";
+"playList.removeActionButtonTitle" = "Elimină";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "Eliminat din %@";
@@ -1679,22 +1688,22 @@
 "playList.sorryAlertTitle" = "Îmi pare rău";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Adăugat la Brave Playlist";
+"playList.toastAddedToPlaylistTitle" = "Vizualizare în lista de redare";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Deschide";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Adaugă la Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "Adaugă la Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Vezi în Brave Playlist";
 
 /* A button title that when tapped will re-add the media item (undo the removal) that the user recently removed. */
-"playList.undoRemoveButtonTitle" = "Anulare acțiune";
+"playList.undoRemoveButtonTitle" = "Anulează";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Adaugă un buton de playlist (care arată ca 4 linii cu un simbol +) lângă bara de adrese în browser-ul Brave. Acest buton îți oferă acces rapid pentru a deschide Playlist-ul sau pentru a adăuga sau elimina conținut media.";
+"playlist.urlBarButtonOptionFooter" = "Adaugă un buton de playlist lângă bara de adrese în browser-ul Brave. Acest buton îți oferă acces rapid pentru a deschide Playlist-ul sau pentru a adăuga sau elimina conținut media.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Activează butonul de acces rapid";
@@ -1826,7 +1835,7 @@
 "privacyHub.allTimeListsHeader" = "Din toate timpurile";
 
 /* Title of a section to show total count of trackers blocked by Brave */
-"privacyHub.allTimeListsTrackersView" = "Urmăritori și reclame";
+"privacyHub.allTimeListsTrackersView" = "Urmăritori & reclame";
 
 /* Title of a section to show websites containing highest amount of trackers */
 "privacyHub.allTimeListsWebsitesView" = "Site-uri web";
@@ -1835,19 +1844,19 @@
 "privacyHub.allTimeListTrackersHeaderTitle" = "Cei mai frecvenți urmăritori și reclame pe site-urile pe care le vizitezi";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "Site-uri cu cei mai mulți urmăritori și reclame";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Site-uri cu cei mai mulți urmăritori / reclame";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "%lld site-uri";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld urmăritori și reclame";
+"privacyHub.allTimeTrackersCount" = "%lld urmăritori & reclame";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
 "privacyHub.allTimeTrackerTitle" = "Urmăritor și reclamă";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
-"privacyHub.allTimeWebsiteTitle" = "Site";
+"privacyHub.allTimeWebsiteTitle" = "Site web";
 
 /* Text for a button to display a list of all alerts caught by the Brave VPN. VPN alert is a notificaion of what item has been blocked by the vpn, similar to a regular adblocker */
 "privacyHub.allVPNAlertsButtonText" = "Toate alertele";
@@ -1889,7 +1898,7 @@
 "privacyHub.noDataToShow" = "Nu există încă date de afișat.";
 
 /* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "Primește informații săptămânale despre blocarea urmăritorilor și a reclamelor.";
+"privacyHub.notificationCalloutBody" = "Primiți săptămânal noutăți despre confidențialitate referitoare la monitoare și blocări de anunțuri.";
 
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Activează notificările";
@@ -2111,7 +2120,7 @@
 "RecentSearchScannerDescriptionTitle" = "Instrucțiuni";
 
 /* Scanning a QR Code for searching */
-"RecentSearchScannerTitle" = "Scanare cod QR";
+"RecentSearchScannerTitle" = "Scanează codul QR";
 
 /* Recent Search Section Description */
 "RecentSearchSectionDescription" = "Funcționalitatea Căutări Recente îți permite să accesezi în mod privat căutările anterioare. Vrei să activezi Căutări Recente?";
@@ -2145,6 +2154,9 @@
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Contactează-mă la: (opțional)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Dacă furnizezi informații de contact, acestea vor fi stocate pentru raportarea site-urilor defecte în viitor.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Email, Twitter etc.";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Caută sugestia oferită";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "File deschise, marcaje și istoric";
+"SearchHistorySectionHeader" = "File deschise, Marcaje și Istoric";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Șterge căutarea";
@@ -2471,7 +2483,7 @@
 "SearchInputViewTextFieldAccessibilityLabel" = "Câmp de introducere căutare";
 
 /* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Caută";
+"SearchInputViewTitle" = "Căutare";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Adaugă motor de căutare personalizat";
@@ -2507,7 +2519,7 @@
 "SearchSuggestionSectionTitleNoSearchFormat" = "Căutare";
 
 /* Section header for search suggestions option */
-"SearchSuggestionsSectionHeader" = "Sugestii de căutare ";
+"SearchSuggestionsSectionHeader" = "Sugestii de căutare";
 
 /* Title of an action that allows user to perform a one-click web search for selected text */
 "SearchWithBrave" = "Caută cu Brave";
@@ -2681,7 +2693,7 @@
 "ShortcutItemTitleNewTab" = "Filă nouă";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleQRCode" = "Scanează cod QR";
+"ShortcutItemTitleQRCode" = "Scanează codul QR";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeBraveNewsDescription" = "Deschide Brave News și verifică cele mai importante știri ale zilei";
@@ -2762,16 +2774,16 @@
 "shortcuts.activityTypeTabDescription" = "Începe să cauți în siguranță pe web cu Brave";
 
 /* No comment provided by engineer. */
-"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Deschide site din marcaje";
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "Deschide site web din marcaje";
 
 /* No comment provided by engineer. */
-"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Deschide site din istoric";
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "Deschide site web din istoric";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Deschide site web";
 
 /* Description for opening Brave Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Această opțiune va deschide setările Brave. Pentru a modifica diverse opțiuni Siri, selectează elementul de meniu \"Siri și căutare\" și personalizează-ți opțiunile.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Această opțiune va deschide setările Brave. Pentru a modifica diverse opțiuni Siri, selectează elementul de meniu „Siri și căutare” și personalizează-ți opțiunile.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Deschide Setările";
@@ -2834,7 +2846,7 @@
 "shortcuts.shortcutSettingsTitle" = "Comenzi rapide Siri";
 
 /* Button to show the bookmarks list */
-"ShowBookmarks" = "Afișează marcajele";
+"ShowBookmarks" = "Afișează marcaje";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showDownloadsTitle" = "Afișează descărcări";
@@ -3074,7 +3086,7 @@
 "sync.removeCurrentDeviceTitle" = "Elimină %@ din lanțul de sincronizare?";
 
 /* Action button for removing sync device. */
-"sync.removeDevice" = "Șterge";
+"sync.removeDevice" = "Elimină";
 
 /* Remove device button for action sheet. */
 "sync.removeDeviceAction" = "Elimină dispozitiv";
@@ -3188,7 +3200,7 @@
 "TabPrivateModeToggleAccessibilityValueOff" = "Oprit";
 
 /* Toggled ON accessibility value */
-"TabPrivateModeToggleAccessibilityValueOn" = "Pornit";
+"TabPrivateModeToggleAccessibilityValueOn" = "Activat";
 
 /* No comment provided by engineer. */
 "tabs.settings.persistentPrivateBrowsingDescription" = "Păstrează filele de navigare privată deschise atunci când închizi aplicația, asigurând faptul că sesiunile de navigare privată continuă fără întreruperi.";
@@ -3547,129 +3559,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave nu stochează și nu distribuie căutările tale vocale.";
 
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Vrei sa rămâi protejat? Reînnoiește înainte de expirarea abonamentului. Ca mulțumire pentru reînnoire, îți vom face o reducere de 20% pentru următoarele 3 luni.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "Activează reînnoirea automată";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Reînnoiește abonamentul VPN Brave acum și beneficiază de o reducere de 20% pentru 3 luni!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Reînnoiește abonamentul VPN Brave acum și primești 1 lună gratis!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Asta înseamnă că vei pierde protecția suplimentară oferită de Brave pentru fiecare aplicație de pe telefon.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Oh, nu! Abonamentul tău VPN Brave este pe cale să expire.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Firewall Brave + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "Nu s-a putut conecta la AppStore, te rog să încerci din nou în câteva minute.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "Eroare App Store";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Blochează conexiunile nedorite la rețea";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Blochează reclamele și urmăritorii în toate aplicațiile ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Suportă viteze de până la 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Rapid și nelimitat, până la 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "Asistență non-stop";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "Securizează toate conexiunile";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "Oferit de";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "Automat";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Te rog să te autentifici la contul Brave pentru a îți reînnoi sesiunea VPN.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "Închide";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "Autentificare";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "Sesiune expirată";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "Dezactivat";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "Activat";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Expirat";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "Abonează-te acum";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Așa este. Abonamentul Brave VPN este acum valabil pentru până la 5 dispozitive. Astfel, te poți abona pe iOS și îl poți utiliza gratuit pe Mac, pe dispozitivele Windows și Android.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Utilizează Brave VPN pe toate dispozitivele tale într-un singur preț!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Încearcă din nou VPN-ul Brave și beneficiezi de 20% reducere pentru 3 luni!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Ești gata să protejezi fiecare aplicație de pe telefonul tău? Revino la Brave VPN și beneficiezi de 20% reducere pentru următoarele 3 luni.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN a blocat întotdeauna trackerele pe fiecare aplicație, chiar și în afara browserului Brave. Acum poți vedea cine a încercat să te urmărească cu ajutorul centrului de confidențialitate Brave.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Știai că Brave VPN te protejează și în afara browserului Brave?";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "Actualizează";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "Nu îți face griji. Vom menține VPN-ul activ pentru câteva zile în timp ce actualizezi informațiile de plată.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Actualizează-ți informațiile de plată pentru a rămâne protejat cu Brave VPN.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "Vrei să continui să protejezi fiecare aplicație de pe telefonul tău? Actualizează-ți detaliile de plată.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Există o problemă de facturare cu contul tău, ceea ce înseamnă că abonamentul tău la Brave VPN este pe cale să expire.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "Actualizarea plății";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "Regiune server";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "Setare actuală: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "Regiune VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Te rog să îți actualizezi metoda de plată";
-
 /* The date your wallet was created */
 "WalletCreationDate" = "Data creării portofelului";
 
@@ -3698,10 +3587,10 @@
 "websiteData.noSavedWebsiteData" = "Nu există date site salvate";
 
 /* Shown on a button to delete all displayed webpage records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
-"websiteData.removeAllDataRecords" = "Șterge tot";
+"websiteData.removeAllDataRecords" = "Elimină tot";
 
 /* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
-"websiteData.removeDataRecord" = "Șterge";
+"websiteData.removeDataRecord" = "Elimină";
 
 /* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Șterge %ld elemente";
@@ -3734,7 +3623,7 @@
 "YoutubeMediaQualityOff" = "Oprit";
 
 /* Setting that enables high quality playback always */
-"YoutubeMediaQualityOn" = "Pornit";
+"YoutubeMediaQualityOn" = "Activat";
 
 /* Title for youtube playback quality settings */
 "YoutubeMediaQualitySettingsTitle" = "Calitatea redării pe Youtube";

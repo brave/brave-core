@@ -8,7 +8,7 @@
 "widgets.braveNews" = "Brave News";
 
 /* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Файлы для скачивания";
+"widgets.DownloadsMenuItem" = "Загрузки";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Быстрый доступ к любимым сайтам.";
@@ -56,7 +56,7 @@
 "widgets.shortcutsNewTabButton" = "Новая вкладка";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Плейлист";
+"widgets.shortcutsPlaylistButton" = "Brave Плейлист";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "Приватная вкладка";

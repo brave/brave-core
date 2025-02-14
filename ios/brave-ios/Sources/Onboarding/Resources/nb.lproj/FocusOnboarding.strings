@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Angi Brave som standardnettleser";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Surf raskere og bruk mindre data.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Færre annonser og sporere.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Ikke nå";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Seriøst, vi kvittet oss med dem.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Blokker irriterende avbrudd på alle strømmesider.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Ingen flere videoannonser.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Blokker forstyrrelser når du strømmer";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Finn ut mer om vår personvernbevarende produktanalyse (P3A)";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "Begynn å surfe";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Gå til systeminnstillinger";
+"focusOnboarding.systemSettingsButtonTitle" = "Bruk som standard";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Skriv inn en nettadresse for å se færre annonser og sporere";
+"focusOnboarding.urlBarIndicatorDescription" = "Se favorittene dine med færre annonser.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Se Brave-forskjellen";

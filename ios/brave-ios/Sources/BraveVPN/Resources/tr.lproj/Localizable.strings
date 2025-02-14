@@ -8,7 +8,7 @@
 "vpn.availableServerTitle" = "KULLANILABİLİR SUNUCULAR";
 
 /* Button text to buy Brave VPN */
-"vpn.buyButton" = "Satın Al";
+"vpn.buyButton" = "Satın al";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxDevicesProtect" = "1 abonelikle 5 cihazı koruyun";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Etkinleştir";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Tüm planlar %@ içerir!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Tüm planlar şunları içerir:";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "ücretsiz 7 günlük deneme";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "VPN yükle";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "ÜCRETSİz deneyin";
+"vpn.learnMore" = "7 Günlük Ücretsiz Denemeyi Başlat";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Aylık olarak yeniler";
@@ -148,8 +148,17 @@
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld Sunucu";
 
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Abonelikler Apple hesabınız üzerinden ücretlendirilir. Ücretsiz deneme sürümünün kullanılmayan herhangi bir kısmı, teklif edilirse, bir abonelik satın ettiğinizde kaybedilir. \n\nGeçerli dönemin bitiminden en az 24 saat önce iptal edilmediği sürece aboneliğiniz otomatik olarak yenilenir.\n\nAboneliklerinizi Ayarlar'dan yönetebilirsiniz.\n\nBrave'i kullanarak Kullanım Koşullarını ve Gizlilik Politikasını kabul etmiş olursunuz.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "ay";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "yıl";
+
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Süresi Dolmuş";
+"vpn.planExpired" = "Süresi dolmuş";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Lütfen tercih ettiğiniz aktarım protokolünü seçin. Değiştirdikten sonra mevcut VPN kimlik bilgileriniz temizlenir ve kurulu bir VPN bağlantısı varsa tekrar bağlanırsınız.";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "VPN bölgesi değişti.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Yıllık yenilenir";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Aylık olarak yeniler";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "VPN yapılandırması sıfırlanamıyor. Lütfen tekrar deneyin. Sorun devam ederse, yardım için destekle iletişime geçin.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Geri yükle";
 
+/* Use in context: save 16%. */
+"vpn.save" = "kaydet";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ Sunucu";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld Sunucu";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Bağlantınızı korumak ve her yerde istilacı izleyicileri engellemek için bir VPN'e yükseltin.";
+"vpn.settingHeaderBody" = "Brave VPN ile tüm uygulamaları koruyun. Tek bir planla 10 cihaza kadar koruma.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Teknik Desteğe Başvurun";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Aktarım Protokolü";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "App Store Makbuzunu Görüntüle";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Etkinleştirildiğinde, VPN bağlantınız beklenmedik bir şekilde kesilirse, IP Adresi ve Veri sızıntılarını önlemek için cihazınızın internet bağlantısı otomatik olarak kesilir. [Daha Fazla Bilgi](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Kesme Anahtarını Etkinleştir";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Akıllı Proxy Yönlendirme, trafiğin özel proxy sunucuları üzerinden yönlendirilmesini sağlayarak yaygın olarak kısıtlanan içeriklere/sitelere veya üçüncü taraf hizmetlerine erişime izin verir. [Daha Fazla Bilgi](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Akıllı Proxy'yi Etkinleştir";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ödeme Yöntemini Güncelle";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Abonelikler iTunes hesabınız üzerinden ücretlendirilir.\n\nÜcretsiz deneme sürümünün kullanılmayan herhangi bir kısmı, teklif edilirse, bir abonelik satın ettiğinizde kaybedilir.\n\nGeçerli dönemin bitiminden en az 24 saat önce iptal edilmediği sürece aboneliğiniz otomatik olarak yenilenir.\n\nAboneliklerinizi Ayarlar'dan yönetebilirsiniz.\n\nBrave'i kullanarak Kullanım Koşullarını ve Gizlilik Politikasını kabul etmiş olursunuz.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN Kapalı";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN Açık";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Kodu Kullan";
 
@@ -322,9 +358,9 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Yıllık yenileme tasarrufu % @";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "En iyi fiyat";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "EN İYİ FİYAT";
 
 /* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Bir yıl";
+"vpn.yearlySubTitle" = "Bir Yıl";
 

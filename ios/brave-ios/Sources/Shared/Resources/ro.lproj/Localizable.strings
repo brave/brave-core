@@ -11,7 +11,7 @@
 "BookmarksLastVisitedFolderTitle" = "Afișează marcajele vizitate recent";
 
 /* Button confirming the cancellation of the download. */
-"CancelDownloadDialogCancel" = "Anulează";
+"CancelDownloadDialogCancel" = "Anulare";
 
 /* Alert dialog body when the user taps the cancel download icon. */
 "CancelDownloadDialogMessage" = "Ești sigur(ă) că vrei să anulezi această descărcare?";
@@ -23,7 +23,7 @@
 "CancelDownloadDialogTitle" = "Anulează descărcarea";
 
 /* Cancel button */
-"CancelString" = "Anulează";
+"CancelString" = "Anulare";
 
 /* The button text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedButtonText" = "Comută";
@@ -97,11 +97,17 @@
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Scanează codul QR";
 
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Îți mulțumim pentru că sprijini Brave Search făcând clic pe o reclamă privată. Spre deosebire de Big Tech, noi măsurăm performanța anunțurilor în mod anonim pentru a-ți păstra confidențialitatea.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Află mai multe / opțiuni de renunțare";
+
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "General";
 
 /* Button displayed at the top of the search settings. */
-"SettingsSearchDoneButton" = "Terminat";
+"SettingsSearchDoneButton" = "Finalizat";
 
 /* The button to undo the delete all tabs */
 "TabsDeleteAllUndoAction" = "Anulează";
