@@ -10,21 +10,25 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/ai_chat_urls.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/browser/ui/tabs/public/tab_interface.h"
 #include "components/favicon/core/favicon_service.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -33,6 +37,9 @@
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #endif
 
 namespace {
@@ -51,6 +58,67 @@ constexpr char kURLManagePremium[] = "https://account.brave.com/";
 }  // namespace
 
 namespace ai_chat {
+
+namespace {
+
+// Invokes a callback when the WebContents has finished loading. Note: If the
+// WebContents is destroyed before loading is completed, the callback will not
+// be invoked.
+// The lifetime of this class is tied to the WebContents it is observing - it
+// will be destroyed when |WebContentsDestroyed| is called, or when the
+// Navigation finishes, whichever happens first.
+class WaitForCommit : public content::WebContentsObserver {
+ public:
+  WaitForCommit(
+      content::WebContents* contents,
+      base::OnceCallback<void(content::WebContents* contents)> on_loaded)
+      : WebContentsObserver(contents), on_loaded_(std::move(on_loaded)) {}
+  ~WaitForCommit() override = default;
+
+  void DidFinishNavigation(content::NavigationHandle* handle) override {
+    if (handle->IsInMainFrame() && handle->HasCommitted()) {
+      std::move(on_loaded_).Run(web_contents());
+      delete this;
+    }
+  }
+
+  void WebContentsDestroyed() override { delete this; }
+
+ private:
+  base::OnceCallback<void(content::WebContents* contents)> on_loaded_;
+};
+
+// Note: we need to ensure the WebContents is loaded before associating content
+// with a conversation.
+void EnsureWebContentsLoaded(
+    content::WebContents* contents,
+    base::OnceCallback<void(content::WebContents* contents)> on_loaded) {
+  if (!contents->GetController().NeedsReload()) {
+    std::move(on_loaded).Run(contents);
+    return;
+  }
+
+  // Deletes when the load completes or the WebContents is destroyed
+  new WaitForCommit(contents, std::move(on_loaded));
+  contents->GetController().LoadIfNecessary();
+}
+
+#if BUILDFLAG(IS_ANDROID)
+TabAndroid* GetAndroidTabFromId(int32_t tab_id) {
+  for (TabModel* model : TabModelList::models()) {
+    const size_t tab_count = model->GetTabCount();
+    for (size_t index = 0; index < tab_count; index++) {
+      auto* tab = model->GetTabAt(index);
+      if (tab_id == tab->GetAndroidId()) {
+        return tab;
+      }
+    }
+  }
+  return nullptr;
+}
+#endif
+
+}  // namespace
 
 using mojom::CharacterType;
 using mojom::ConversationTurn;
@@ -237,6 +305,44 @@ void AIChatUIPageHandler::BindRelatedConversation(
               active_chat_tab_helper_->GetWeakPtr());
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
+}
+
+void AIChatUIPageHandler::AssociateTab(mojom::TabDataPtr mojom_tab,
+                                       const std::string& conversation_uuid) {
+#if BUILDFLAG(IS_ANDROID)
+  auto* tab = GetAndroidTabFromId(mojom_tab->id);
+  if (!tab) {
+    return;
+  }
+
+  auto* contents = tab->web_contents();
+#else
+  const auto* tab = tabs::TabInterface::Handle(mojom_tab->id).Get();
+  if (!tab) {
+    return;
+  }
+  auto* contents = tab->GetContents();
+#endif
+
+  if (!contents) {
+    return;
+  }
+
+  EnsureWebContentsLoaded(
+      contents, base::BindOnce(
+                    [](const std::string& conversation_uuid,
+                       content::WebContents* contents) {
+                      auto* tab_helper =
+                          ai_chat::AIChatTabHelper::FromWebContents(contents);
+                      if (!tab_helper) {
+                        return;
+                      }
+
+                      AIChatServiceFactory::GetForBrowserContext(
+                          contents->GetBrowserContext())
+                          ->AssociateContent(tab_helper, conversation_uuid);
+                    },
+                    conversation_uuid));
 }
 
 void AIChatUIPageHandler::NewConversation(

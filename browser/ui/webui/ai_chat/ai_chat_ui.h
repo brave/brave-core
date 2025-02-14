@@ -11,6 +11,7 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "ui/webui/mojo_web_ui_controller.h"
@@ -21,6 +22,10 @@
 #else
 #include "content/public/browser/webui_config.h"
 #endif  // #if !BUILDFLAG(IS_ANDROID)
+
+namespace ai_chat {
+class AIChatUIPageHandlerBrowserTest;
+}
 
 namespace content {
 class BrowserContext;
@@ -40,6 +45,8 @@ class AIChatUI : public ui::MojoWebUIController {
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::Service> receiver);
   void BindInterface(mojo::PendingReceiver<ai_chat::mojom::ParentUIFrame>
                          parent_ui_frame_receiver);
+  void BindInterface(mojo::PendingReceiver<ai_chat::mojom::TabTrackerService>
+                         pending_receiver);
 
   // Set by WebUIContentsWrapperT. TopChromeWebUIController provides default
   // implementation for this but we don't use it.
@@ -51,6 +58,7 @@ class AIChatUI : public ui::MojoWebUIController {
   static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
 
  private:
+  friend class ai_chat::AIChatUIPageHandlerBrowserTest;
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
 
   base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;

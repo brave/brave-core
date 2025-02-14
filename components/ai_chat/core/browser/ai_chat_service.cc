@@ -10,6 +10,7 @@
 #include <compare>
 #include <functional>
 #include <ios>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -37,6 +38,7 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -56,9 +58,6 @@ namespace {
 
 constexpr base::FilePath::StringPieceType kDBFileName =
     FILE_PATH_LITERAL("AIChat");
-
-constexpr auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
-    {url::kHttpsScheme, url::kHttpScheme, url::kFileScheme, url::kDataScheme});
 
 std::vector<mojom::Conversation*> FilterVisibleConversations(
     std::map<std::string, mojom::ConversationPtr, std::less<>>&
@@ -163,7 +162,8 @@ ConversationHandler* AIChatService::CreateConversation() {
         conversation_uuid, "", base::Time::Now(), false, std::nullopt,
         mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
                              mojom::ContentType::PageContent, std::nullopt,
-                             std::nullopt, std::nullopt, 0, false, false));
+                             std::nullopt, mojom::kContentIdNone, std::nullopt,
+                             0, false, false));
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
   }
   mojom::Conversation* conversation =
@@ -546,7 +546,7 @@ void AIChatService::MaybeAssociateContentWithConversation(
     base::WeakPtr<ConversationHandler::AssociatedContentDelegate>
         associated_content) {
   if (associated_content &&
-      kAllowedSchemes.contains(associated_content->GetURL().scheme())) {
+      kAllowedContentSchemes.contains(associated_content->GetURL().scheme())) {
     conversation->SetAssociatedContentDelegate(associated_content);
   }
   // Record that this is the latest conversation for this content. Even
@@ -953,4 +953,21 @@ void AIChatService::OpenConversationWithStagedEntries(
   conversation->MaybeFetchOrClearContentStagedConversation();
 }
 
+void AIChatService::AssociateContent(
+    ConversationHandler::AssociatedContentDelegate* content,
+    const std::string& conversation_uuid) {
+  CHECK(content);
+
+  // Note: As we're using the non-async version of GetConversation, this will
+  // only work when the conversation is already loaded.
+  // If we ever need to associate content with a conversation that is not
+  // loaded, we'll need to use the async version of GetConversation.
+  auto* conversation = GetConversation(conversation_uuid);
+  if (!conversation) {
+    return;
+  }
+
+  MaybeAssociateContentWithConversation(conversation, content->GetContentId(),
+                                        content->GetWeakPtr());
+}
 }  // namespace ai_chat

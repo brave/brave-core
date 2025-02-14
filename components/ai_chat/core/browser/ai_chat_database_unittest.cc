@@ -130,10 +130,11 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
         has_content
             ? mojom::SiteInfo::New(
                   content_uuid, mojom::ContentType::PageContent, "page title",
-                  page_url.host(), page_url, 62, true, true)
+                  page_url.host(), 1, page_url, 62, true, true)
             : mojom::SiteInfo::New(
                   std::nullopt, mojom::ContentType::PageContent, std::nullopt,
-                  std::nullopt, std::nullopt, 0, false, false);
+                  std::nullopt, mojom::kContentIdNone, std::nullopt, 0, false,
+                  false);
     const mojom::ConversationPtr metadata =
         mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
                                  std::nullopt, std::move(associated_content));
@@ -373,8 +374,8 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTitle) {
     mojom::ConversationPtr metadata = mojom::Conversation::New(
         uuid, initial_title, base::Time::Now(), true, std::nullopt,
         mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
-                             std::nullopt, std::nullopt, std::nullopt, 0, false,
-                             false));
+                             std::nullopt, std::nullopt, mojom::kContentIdNone,
+                             std::nullopt, 0, false, false));
 
     // Persist the first entry (and get the response ready)
     const auto history = CreateSampleChatHistory(1u);
@@ -405,7 +406,7 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(content_uuid, mojom::ContentType::PageContent,
-                           "page title", page_url.host(), page_url, 62, true,
+                           "page title", page_url.host(), 1, page_url, 62, true,
                            true));
 
   auto history = CreateSampleChatHistory(1u);
@@ -448,8 +449,8 @@ TEST_P(AIChatDatabaseTest, DeleteAllData) {
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
-                           std::nullopt, std::nullopt, std::nullopt, 0, false,
-                           false));
+                           std::nullopt, std::nullopt, mojom::kContentIdNone,
+                           std::nullopt, 0, false, false));
 
   auto history = CreateSampleChatHistory(1u);
 
@@ -487,12 +488,12 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   mojom::ConversationPtr metadata_first = mojom::Conversation::New(
       "first", "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New("first-content", mojom::ContentType::PageContent,
-                           "page title", page_url.host(), page_url, 62, true,
+                           "page title", page_url.host(), 1, page_url, 62, true,
                            true));
   mojom::ConversationPtr metadata_second = mojom::Conversation::New(
       "second", "title", base::Time::Now() - base::Hours(1), true, "model-2",
       mojom::SiteInfo::New("second-content", mojom::ContentType::PageContent,
-                           "page title", page_url.host(), page_url, 62, true,
+                           "page title", page_url.host(), 2, page_url, 62, true,
                            true));
 
   auto history_first = CreateSampleChatHistory(1u, -2);
@@ -648,7 +649,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     const std::string uuid = "migrationtest";
     mojom::SiteInfoPtr associated_content = mojom::SiteInfo::New(
         std::nullopt, mojom::ContentType::PageContent, std::nullopt,
-        std::nullopt, std::nullopt, 0, false, false);
+        std::nullopt, mojom::kContentIdNone, std::nullopt, 0, false, false);
     const mojom::ConversationPtr metadata =
         mojom::Conversation::New(uuid, "title", now - base::Hours(2), true,
                                  std::nullopt, std::move(associated_content));

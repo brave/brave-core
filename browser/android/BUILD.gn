@@ -58,6 +58,7 @@ source_set("tab_features") {
 
   deps = [
     "//base",
+    "//brave/browser/ai_chat",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
   ]

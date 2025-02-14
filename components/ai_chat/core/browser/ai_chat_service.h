@@ -137,6 +137,9 @@ class AIChatService : public KeyedService,
           associated_content,
       base::OnceClosure open_ai_chat);
 
+  void AssociateContent(ConversationHandler::AssociatedContentDelegate* content,
+                        const std::string& conversation_uuid);
+
   // mojom::Service
   void MarkAgreementAccepted() override;
   void EnableStoragePref() override;
