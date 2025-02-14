@@ -325,7 +325,7 @@ GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
   return GURL();
 }
 
-std::vector<mojom::CoinType> GetSupportedCoins() {
+std::vector<mojom::CoinType> GetEnabledCoins() {
   std::vector<mojom::CoinType> coins = {
       mojom::CoinType::ETH, mojom::CoinType::SOL, mojom::CoinType::FIL};
 
@@ -442,6 +442,10 @@ mojom::AccountIdPtr MakeIndexBasedAccountId(mojom::CoinType coin,
   }
   if (coin == mojom::CoinType::ZEC) {
     DCHECK(IsZCashKeyring(keyring_id));
+    DCHECK_EQ(kind, mojom::AccountKind::kDerived);
+  }
+  if (coin == mojom::CoinType::ADA) {
+    DCHECK(IsCardanoKeyring(keyring_id));
     DCHECK_EQ(kind, mojom::AccountKind::kDerived);
   }
 #endif

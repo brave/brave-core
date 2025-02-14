@@ -261,7 +261,9 @@
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_BITCOIN_DESCRIPTION" desc="Add account modal create account Bitcoin description">Store BTC assets</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_BITCOIN_TESTNET_DESCRIPTION" desc="Add account modal create account Bitcoin Testnet description">Store BTC Testnet assets</message>
   <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ZCASH_DESCRIPTION" desc="Add account modal create account ZCash description">Store ZEC assets</message>
-  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ZCASH_TESTNET_DESCRIPTION" desc="Add account modal create accounr ZCash Testnet description">Store ZEC Testnet assets</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_ZCASH_TESTNET_DESCRIPTION" desc="Add account modal create account ZCash Testnet description">Store ZEC Testnet assets</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_DESCRIPTION" desc="Add account modal create account Cardano description">Store Cardano assets</message>
+  <message name="IDS_BRAVE_WALLET_CREATE_ACCOUNT_CARDANO_TESTNET_DESCRIPTION" desc="Add account modal create account Cardano Testnet description">Store Cardano Testnet assets</message>
   <message name="IDS_BRAVE_WALLET_FILECOIN_PRIVATE_KEY_PROTOCOL" desc="Add account modal filecoin private key protocol">Private key <ph name="PROTOCOL"><ex>BLS12-381</ex>$1</ph></message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT" desc="Add account modal import button">Import</message>
   <message name="IDS_BRAVE_WALLET_ADD_ACCOUNT_IMPORT_HARDWARE" desc="Add account modal import hardware wallet button">Import from hardware wallet</message>
@@ -694,6 +696,8 @@
   <message name="IDS_BRAVE_WALLET_INSUFFICIENT_BALANCE" desc="Generic insufficient balance error">Insufficient balance</message>
   <message name="IDS_BRAVE_WALLET_ZEC_ACCOUNT_DESCRIPTION" desc="ZCash account description" translateable="false">Zcash Mainnet</message>
   <message name="IDS_BRAVE_WALLET_ZEC_TESTNET_ACCOUNT_DESCRIPTION" desc="ZCash testnet account description" translateable="false">Zcash Testnet</message>
+  <message name="IDS_BRAVE_WALLET_CARDANO_ACCOUNT_DESCRIPTION" desc="Cardano account description" translateable="false">Cardano Mainnet</message>
+  <message name="IDS_BRAVE_WALLET_CARDANO_TESTNET_ACCOUNT_DESCRIPTION" desc="Cardano testnet account description" translateable="false">Cardano Testnet</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_TITLE" desc="Show network logo filter title">Network Logo</message>
   <message name="IDS_BRAVE_WALLET_SHOW_NETWORK_LOGO_ON_NFTS_DESCRIPTION" desc="Show network logo filter description">Show network logo on NFTs</message>
   <message name="IDS_BRAVE_WALLET_SHOW_SPAM_NFTS_TITLE" desc="Show spam NFTs filter title">Spam NFTs</message>
@@ -1116,7 +1120,7 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_DETECT_PHISHING" desc="Bullet point for transaction-simulation feature (detect phishing attempts)">Help detect phishing attempts</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_NO_THANKS" desc="Button text for declining an action">No thanks</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_ENABLE" desc="Button text for enabling a feature">Enable</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explaination of terms of service for transaction simulations">This service is provided by <ph name="BOLD_BEFORE">$1</ph>Blowfish.xyz<ph name="BOLD_AFTER">$2</ph> and is subject to their <ph name="TERMS_LINK_BEFORE">$3</ph>Terms of Service<ph name="TERMS_LINK_AFTER">$4</ph> and <ph name="PRIVACY_POLICY_LINK_BEFORE">$5</ph>Privacy Policy<ph name="PRIVACY_POLICY_LINK_AFTER">$6</ph></message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_TERMS" desc="Explanation of terms of service for transaction simulations">This service is provided by <ph name="BOLD_BEFORE">$1</ph>Blowfish.xyz<ph name="BOLD_AFTER">$2</ph> and is subject to their <ph name="TERMS_LINK_BEFORE">$3</ph>Terms of Service<ph name="TERMS_LINK_AFTER">$4</ph> and <ph name="PRIVACY_POLICY_LINK_BEFORE">$5</ph>Privacy Policy<ph name="PRIVACY_POLICY_LINK_AFTER">$6</ph></message>
   <message name="IDS_BRAVE_WALLET_AVAILABLE" desc="Available balance label">Available</message>
   <message name="IDS_BRAVE_WALLET_AVAILABLE_BALANCE_DESCRIPTION" desc="Available balance tooltip description">Funds available for you to use.</message>
   <message name="IDS_BRAVE_WALLET_PENDING" desc="Pending balance label">Pending</message>
@@ -1137,14 +1141,14 @@
   <message name="IDS_BRAVE_WALLET_GROUP_BY_COLLECTION" desc="Toggle label for grouping NFTs by collection">Group by collection</message>
   <message name="IDS_BRAVE_WALLET_ADD_CHAIN_INVALID_URL" desc="Error message for when the user enters an invalid URL for a custom chain">Invalid URL</message>
   <message name="IDS_BRAVE_WALLET_ADD_NFT_MODAL_DESCRIPTION" desc="Description of the of the add-nft modal purpose">If you can't see an NFT automatically detected by Brave, or want to track one owned by others, you can import it manually.</message>
-  <message name="IDS_BRAVE_WALLET_WHAT_IS_AN_NFT_CONTRACT_ADDRESS" desc="Explaination of what a contract address is for an NFT">The contract address when adding an NFT to a wallet is the unique address on the blockchain where the smart contract for the NFT collection resides. You can find the contract address from marketplace, or blockchain explorers, etc.</message>
-  <message name="IDS_BRAVE_WALLET_WHAT_IS_AN_NFT_TOKEN_ID" desc="Explaination of what an NFT token ID is">The unique identifier for the specific NFT within the collection.</message>
+  <message name="IDS_BRAVE_WALLET_WHAT_IS_AN_NFT_CONTRACT_ADDRESS" desc="Explanation of what a contract address is for an NFT">The contract address when adding an NFT to a wallet is the unique address on the blockchain where the smart contract for the NFT collection resides. You can find the contract address from marketplace, or blockchain explorers, etc.</message>
+  <message name="IDS_BRAVE_WALLET_WHAT_IS_AN_NFT_TOKEN_ID" desc="Explanation of what an NFT token ID is">The unique identifier for the specific NFT within the collection.</message>
   <message name="IDS_BRAVE_WALLET_FETCH_NFT_METADATA_ERROR" desc="Error message explaining that the NFT Metadata lookup failed">Unable to fetch NFT metadata</message>
   <message name="IDS_BRAVE_WALLET_WATCH_THIS_NFT" desc="Button text for adding an NFT to the user's watch list">Watch this NFT</message>
   <message name="IDS_BRAVE_WALLET_UNOWNED_NFT_ALERT" desc="Alert text explaining that the user does not own the NFT">You do not own this NFT. While you can still add it to your wallet, you will not be able to make any transactions with it.</message>
   <message name="IDS_BRAVE_WALLET_EXEMPLI_GRATIA" desc="Placeholder text for an example value">e.g <ph name="VALUE">$1<ex>0xDEADBEEF</ex></ph></message>
-  <message name="IDS_BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT name field">The token name for an NFT refers to the specific name given to a non-fungible token within a particular collection or project. This name distinguishes one NFT from another within the same collection.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION" desc="An explaination for the purpose of the NFT symbol field">The NFT symbol refers to the unique identifier used to distinguish the NFT collection or project.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_NAME_FIELD_EXPLANATION" desc="An explanation for the purpose of the NFT name field">The token name for an NFT refers to the specific name given to a non-fungible token within a particular collection or project. This name distinguishes one NFT from another within the same collection.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_SYMBOL_FIELD_EXPLANATION" desc="An explanation for the purpose of the NFT symbol field">The NFT symbol refers to the unique identifier used to distinguish the NFT collection or project.</message>
   <message name="IDS_BRAVE_WALLET_WATCH_ONLY" desc="Label to indicate that an asset is watch-only. This means that the asset is not owned by the user or it cannot be transferred">Watch-only</message>
   <message name="IDS_BRAVE_WALLET_WEB_3" desc="Web3 page title">Web3</message>
   <message name="IDS_BRAVE_WALLET_TOP_NAV_EXPLORE" desc="Navigation title for the 'Explore' tab/page">Explore</message>
@@ -1183,7 +1187,7 @@
   <message name="IDS_BRAVE_WALLET_ACCOUNT_IS_SYNCING" desc="Account is syncing label">Account is syncing</message>
   <message name="IDS_BRAVE_WALLET_SYNCING" desc="Syncing label">Syncing</message>
   <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action">Retry</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_PREVIEW_FAILED" desc="Explaination that simulation of a transaction has failed">Transaction preview failed.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_PREVIEW_FAILED" desc="Explanation that simulation of a transaction has failed">Transaction preview failed.</message>
   <message name="IDS_BRAVE_WALLET_ESTIMATED_BALANCE_CHANGE" desc="Grouping header for estimated balance changes">Estimated balance change</message>
   <message name="IDS_BRAVE_WALLET_APPROVAL_DETAILS" desc="Grouping header for estimated token approval details">Approval details</message>
   <message name="IDS_BRAVE_WALLET_AUTHORITY_CHANGE" desc="Grouping header for estimated authority changes">Authority change</message>
@@ -1212,10 +1216,10 @@
   <message name="IDS_BRAVE_WALLET_OWNERSHIP_CHANGE" desc="Grouping header for estimated account ownership changes">Account ownership change</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_FEATURE_DESCRIPTION" desc="Description of the purpose of the transaction simulation feature ">Simulate how a transaction will behave before authorizing it</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_NOT_AVAILABLE_FOR_NETWORK" desc="Title text for explaining that simulation of the transaction is not available for the current network">Transaction preview is not supported on this network.</message>
-  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_OPTED_IN_NOTICE" desc="An explaination that the displayed message is shown only because the user is opted in to the transaction simulation service">You're seeing this message because you opted into the transaction preview service.</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATION_OPTED_IN_NOTICE" desc="An explanation that the displayed message is shown only because the user is opted in to the transaction simulation service">You're seeing this message because you opted into the transaction preview service.</message>
   <message name="IDS_BRAVE_WALLET_SEE_AVAILABLE_NETWORKS" desc="Text for a link to view the available networks for a given feature">See available networks</message>
   <message name="IDS_BRAVE_WALLET_EVM_MESSAGE_SCANNING_NOT_SUPPORTED" desc="Explanation to the user that we currently cannot simulate the expected outcome from signing a message">EVM message scanning is not currently supported</message>
-  <message name="IDS_BRAVE_WALLET_WHAT_IS_MESSAGE_SCANNING" desc="Title for a collapsable section containing the message scanning feature explaination">What's EVM message scanning?</message>
+  <message name="IDS_BRAVE_WALLET_WHAT_IS_MESSAGE_SCANNING" desc="Title for a collapsable section containing the message scanning feature explanation">What's EVM message scanning?</message>
   <message name="IDS_BRAVE_WALLET_EVM_MESSAGE_SCANNING_FEATURE_SAFETY_EXPLANATION" desc="Explains the purpose of the EVM message scanning feature">It ensures safety and accuracy by examining the messages sent from the Ethereum Virtual Machine that interact with your smart contract or any actions.</message>
   <message name="IDS_BRAVE_WALLET_EVM_MESSAGE_SCANNING_FEATURE_ACCURACY_EXPLANATION" desc="Exaplins that the message scanning feature ensures accuracy of expected results">It's like double-checking a letter to make sure it's just right before signing it.</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_MAY_INCLUDE_ACCOUNT_CREATION_FEE" desc="A warning that the transaction might include an associated token account creation fee">This transaction may include an account creation fee</message>

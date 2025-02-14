@@ -41,8 +41,8 @@ bool IsNativeWalletEnabled();
 bool IsBitcoinEnabled();
 bool IsBitcoinImportEnabled();
 bool IsBitcoinLedgerEnabled();
-bool IsCardanoEnabled();
 bool IsZCashEnabled();
+bool IsCardanoEnabled();
 bool IsZCashShieldedTransactionsEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
@@ -93,7 +93,7 @@ mojom::CoinType GetCoinTypeFromTxDataUnion(
 
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
-std::vector<mojom::CoinType> GetSupportedCoins();
+std::vector<mojom::CoinType> GetEnabledCoins();
 std::vector<mojom::KeyringId> GetSupportedKeyringsForTesting();
 const std::vector<mojom::KeyringId>& GetSupportedKeyrings();
 bool IsKeyringSupported(mojom::KeyringId keyring_id);

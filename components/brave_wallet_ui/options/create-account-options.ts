@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
 import { BraveWallet, CreateAccountOptionsType } from '../constants/types'
 import { getLocale } from '../../common/locale'
 import { getNetworkLogo } from './asset-options'
@@ -10,6 +11,7 @@ export const CreateAccountOptions = (options: {
   visibleNetworks: BraveWallet.NetworkInfo[]
   isBitcoinEnabled: boolean
   isZCashEnabled: boolean
+  isCardanoEnabled: boolean
 }): CreateAccountOptionsType[] => {
   const isNetworkVisible = (coin: BraveWallet.CoinType, chaiId: string) => {
     return !!options.visibleNetworks.find(
@@ -106,6 +108,31 @@ export const CreateAccountOptions = (options: {
         icon: getNetworkLogo(BraveWallet.Z_CASH_TESTNET, 'ZEC'),
         chainIcons: []
       })
+    }
+
+    if (options.isCardanoEnabled) {
+      accounts.push({
+        description: getLocale('braveWalletCreateAccountCardanoDescription'),
+        name: 'Cardano',
+        fixedNetwork: BraveWallet.CARDANO_MAINNET,
+        coin: BraveWallet.CoinType.ADA,
+        icon: getNetworkLogo(BraveWallet.CARDANO_MAINNET, 'ADA'),
+        chainIcons: ['ada-color']
+      })
+      if (
+        isNetworkVisible(BraveWallet.CoinType.ADA, BraveWallet.CARDANO_TESTNET)
+      ) {
+        testnetAccounts.push({
+          description: getLocale(
+            'braveWalletCreateAccountCardanoTestnetDescription'
+          ),
+          name: 'Cardano Testnet',
+          fixedNetwork: BraveWallet.CARDANO_TESTNET,
+          coin: BraveWallet.CoinType.ADA,
+          icon: getNetworkLogo(BraveWallet.CARDANO_TESTNET, 'ADA'),
+          chainIcons: ['ada-color']
+        })
+      }
     }
   }
 

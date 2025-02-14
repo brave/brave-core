@@ -83,6 +83,8 @@ static_library("browser") {
     "brave_wallet_service_delegate.cc",
     "brave_wallet_service_delegate.h",
     "brave_wallet_service_observer_base.h",
+    "cardano/cardano_wallet_service.cc",
+    "cardano/cardano_wallet_service.h",
     "ens_resolver_task.cc",
     "ens_resolver_task.h",
     "eth_abi_decoder.cc",

@@ -59,6 +59,9 @@ export const CreateAccountModal = () => {
     WalletSelectors.isBitcoinEnabled
   )
   const isZCashEnabled = useSafeWalletSelector(WalletSelectors.isZCashEnabled)
+  const isCardanoEnabled = useSafeWalletSelector(
+    WalletSelectors.isCardanoEnabled
+  )
 
   // queries
   const { accounts } = useAccountsQuery()
@@ -77,9 +80,10 @@ export const CreateAccountModal = () => {
     return CreateAccountOptions({
       visibleNetworks,
       isBitcoinEnabled,
-      isZCashEnabled
+      isZCashEnabled,
+      isCardanoEnabled
     })
-  }, [visibleNetworks, isBitcoinEnabled, isZCashEnabled])
+  }, [visibleNetworks, isBitcoinEnabled, isZCashEnabled, isCardanoEnabled])
 
   const selectedAccountType = React.useMemo(() => {
     return createAccountOptions.find((option) => {
@@ -109,7 +113,8 @@ export const CreateAccountModal = () => {
       [
         BraveWallet.CoinType.FIL,
         BraveWallet.CoinType.BTC,
-        BraveWallet.CoinType.ZEC
+        BraveWallet.CoinType.ZEC,
+        BraveWallet.CoinType.ADA
       ].includes(selectedAccountType.coin)
     ) {
       network = selectedAccountType.fixedNetwork

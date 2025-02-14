@@ -61,13 +61,14 @@ bool AccountMatchesCoinAndChain(const mojom::AccountId& account_id,
                         account_id.keyring_id);
 }
 
-// Ensure token list contains native tokens when appears empty. Only for BTC
-// and ZEC by now.
+// Ensure token list contains native tokens when appears empty. Only for BTC,
+// ZEC and ADA by now.
 std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     const std::string& chain_id,
     mojom::CoinType coin,
     std::vector<mojom::BlockchainTokenPtr> tokens) {
-  if (coin != mojom::CoinType::BTC && coin != mojom::CoinType::ZEC) {
+  if (coin != mojom::CoinType::BTC && coin != mojom::CoinType::ZEC &&
+      coin != mojom::CoinType::ADA) {
     return tokens;
   }
 
@@ -81,6 +82,10 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
 
   if (coin == mojom::CoinType::ZEC && IsZCashNetwork(chain_id)) {
     tokens.push_back(GetZcashNativeToken(chain_id));
+  }
+
+  if (coin == mojom::CoinType::ADA && IsCardanoNetwork(chain_id)) {
+    tokens.push_back(GetCardanoNativeToken(chain_id));
   }
 
   return tokens;
@@ -133,6 +138,11 @@ BraveWalletService::BraveWalletService(
     zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
         delegate_->GetWalletBaseDirectory().AppendASCII(kZCashDataFolderName),
         *keyring_service(), network_manager(), url_loader_factory);
+  }
+
+  if (IsCardanoEnabled()) {
+    cardano_wallet_service_ = std::make_unique<CardanoWalletService>(
+        *keyring_service(), *network_manager(), url_loader_factory);
   }
 
   tx_service_ = std::make_unique<TxService>(
@@ -236,6 +246,14 @@ void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::ZCashWalletService> receiver) {
   if (GetZcashWalletService()) {
     GetZcashWalletService()->Bind(std::move(receiver));
+  }
+}
+
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::CardanoWalletService> receiver) {
+  if (GetCardanoWalletService()) {
+    GetCardanoWalletService()->Bind(std::move(receiver));
   }
 }
 
@@ -967,6 +985,10 @@ BitcoinWalletService* BraveWalletService::GetBitcoinWalletService() {
 
 ZCashWalletService* BraveWalletService::GetZcashWalletService() {
   return zcash_wallet_service_.get();
+}
+
+CardanoWalletService* BraveWalletService::GetCardanoWalletService() {
+  return cardano_wallet_service_.get();
 }
 
 void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
@@ -1702,6 +1724,9 @@ void BraveWalletService::Reset() {
   }
   if (zcash_wallet_service_) {
     zcash_wallet_service_->Reset();
+  }
+  if (cardano_wallet_service_) {
+    cardano_wallet_service_->Reset();
   }
 
   // Clear BraveWalletService

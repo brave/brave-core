@@ -6,8 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SWITCHES_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SWITCHES_H_
 
-namespace brave_wallet {
-namespace switches {
+namespace brave_wallet::switches {
 
 // Allows auto unlocking wallet password with command line.
 inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
@@ -22,7 +21,12 @@ inline constexpr char kZCashMainnetRpcUrl[] = "zcash-mainnet-rpc-url";
 // ZCash rpc testnet endpoint.
 inline constexpr char kZCashTestnetRpcUrl[] = "zcash-testnet-rpc-url";
 
-}  // namespace switches
-}  // namespace brave_wallet
+// Cardano rpc mainnet endpoint.
+inline constexpr char kCardanoMainnetRpcUrl[] = "cardano-mainnet-rpc-url";
+
+// Cardano rpc testnet endpoint.
+inline constexpr char kCardanoTestnetRpcUrl[] = "cardano-testnet-rpc-url";
+
+}  // namespace brave_wallet::switches
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_SWITCHES_H_

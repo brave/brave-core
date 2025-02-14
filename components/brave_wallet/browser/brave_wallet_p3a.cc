@@ -247,8 +247,9 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     case mojom::CoinType::ZEC:
       histogram_name = kZecTransactionSentHistogramName;
       break;
-    default:
-      NOTREACHED() << coin;
+    case mojom::CoinType::ADA:
+      // TODO(apaymyshev): Cardano P3A
+      return;
   }
 
   CHECK(histogram_name);
@@ -299,8 +300,9 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
     case mojom::CoinType::ZEC:
       histogram_name = kZecActiveAccountHistogramName;
       break;
-    default:
-      NOTREACHED() << coin_type;
+    case mojom::CoinType::ADA:
+      // TODO(apaymyshev): Cardano P3A
+      return;
   }
 
   CHECK(histogram_name);
@@ -354,7 +356,7 @@ void BraveWalletP3A::ReportNftDiscoverySetting() {
 
 void BraveWalletP3A::OnUpdateTimerFired() {
   ReportUsage(false);
-  for (const auto& coin : GetSupportedCoins()) {
+  for (const auto& coin : GetEnabledCoins()) {
     ReportTransactionSent(coin, false);
   }
 }

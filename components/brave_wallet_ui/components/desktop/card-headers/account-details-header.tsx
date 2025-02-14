@@ -185,10 +185,11 @@ export const AccountDetailsHeader = (props: Props) => {
     }
     // We are not able to fetch Private Keys for
     // a Hardware account so we filter out this option.
-    // BTC and ZEC are not yet supported.
+    // BTC, ZEC and ADA are not yet supported.
     if (
       account.accountId.coin === BraveWallet.CoinType.BTC ||
       account.accountId.coin === BraveWallet.CoinType.ZEC ||
+      account.accountId.coin === BraveWallet.CoinType.ADA ||
       account.accountId.kind === BraveWallet.AccountKind.kHardware
     ) {
       options = options.filter(
@@ -196,11 +197,12 @@ export const AccountDetailsHeader = (props: Props) => {
       )
     }
     // We are currently not able to support viewing a
-    // BTC or ZEC account on a block explorer.
+    // BTC, ZEC or ADA account on a block explorer.
     // Link to issue https://github.com/brave/brave-browser/issues/39699
     if (
       account.accountId.coin === BraveWallet.CoinType.BTC ||
-      account.accountId.coin === BraveWallet.CoinType.ZEC
+      account.accountId.coin === BraveWallet.CoinType.ZEC ||
+      account.accountId.coin === BraveWallet.CoinType.ADA
     ) {
       options = options.filter(
         (option: AccountButtonOptionsObjectType) => option.id !== 'explorer'

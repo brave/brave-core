@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "base/logging.h"
 #include "brave/components/brave_wallet/browser/block_tracker.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -41,8 +42,6 @@ mojom::TransactionInfoPtr TxManager::GetTransactionInfo(
     const std::string& tx_meta_id) {
   std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
   if (!meta) {
-    LOG(ERROR) << "No transaction found";
-
     return nullptr;
   }
 
@@ -55,14 +54,7 @@ std::vector<mojom::TransactionInfoPtr> TxManager::GetAllTransactionInfo(
   auto metas =
       tx_state_manager_->GetTransactionsByStatus(chain_id, std::nullopt, from);
 
-  // Convert vector of TxMeta to vector of TransactionInfo
-  std::vector<mojom::TransactionInfoPtr> tis(metas.size());
-  std::transform(
-      metas.begin(), metas.end(), tis.begin(),
-      [](const std::unique_ptr<TxMeta>& m) -> mojom::TransactionInfoPtr {
-        return m->ToTransactionInfo();
-      });
-  return tis;
+  return base::ToVector(metas, [](auto& m) { return m->ToTransactionInfo(); });
 }
 
 void TxManager::RejectTransaction(const std::string& tx_meta_id,
