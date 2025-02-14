@@ -899,9 +899,9 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     if (supportedChainIds.includes(arg.chainId)) {
       // Filter for ERC20 tokens, including MATIC token on Polygon
       //
-      // POL balance is fetched using the native asset contract address, and
-      // not the proxy ERC20 contract address (0x0000000000000000000000000000000000001010)
-      // to avoid double counting the balance.
+      // POL balance is fetched using the native asset contract, and not the
+      // proxy ERC20 contract (0x0000000000000000000000000000000000001010) to
+      // avoid double counting the balance.
       const erc20Tokens = arg.tokens
         .filter((token) =>
           !token.isNft &&
@@ -952,9 +952,10 @@ async function fetchAccountTokenBalanceRegistryForChainId({
           onBalance({
             accountId: arg.accountId,
             chainId: arg.chainId,
-            contractAddress: contractAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
-              ? ''
-              : contractAddress,
+            contractAddress:
+              contractAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+                ? ''
+                : contractAddress,
             balance: new Amount(balance).format(),
             coinType: arg.coin,
             tokenId: '', // these are ERC20 tokens,
