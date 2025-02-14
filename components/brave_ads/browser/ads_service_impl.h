@@ -206,7 +206,7 @@ class AdsServiceImpl final : public AdsService,
                                     const std::string& captcha_id);
   void SnoozeScheduledCaptchaCallback();
 
-  void OnNotificationAdPositionChanged();
+  void DoRecordNotificationAdPositionMetric();
 
   void ShutdownAdsService();
 
