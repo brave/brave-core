@@ -123,7 +123,7 @@ void DoParseCoingeckoIdsMap(const base::FilePath& dir, ParseListsResult& out) {
 }
 
 void DoParseTokenList(const base::FilePath& dir, ParseListsResult& out) {
-  auto result = ParseJsonFile(dir, "coingecko-top5000.json");
+  auto result = ParseJsonFile(dir, "coingecko.json");
   if (!result) {
     return;
   }

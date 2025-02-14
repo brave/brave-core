@@ -1093,8 +1093,8 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
 
   ASSERT_TRUE(base::WriteFile(path.Append(FPL("coingecko-ids.json")),
                               coingecko_ids_map_json));
-  ASSERT_TRUE(base::WriteFile(path.Append(FPL("coingecko-top5000.json")),
-                              token_list_json));
+  ASSERT_TRUE(
+      base::WriteFile(path.Append(FPL("coingecko.json")), token_list_json));
   ASSERT_TRUE(
       base::WriteFile(path.Append(FPL("chainlist.json")), chain_list_json));
   ASSERT_TRUE(
@@ -1119,7 +1119,7 @@ TEST(BlockchainRegistryUnitTest, ParseLists) {
                                "0x7f5c764cbc14f9669b88837ca1490cca17c31607"),
       "usd-coin");
 
-  // coingecko-top5000.json
+  // coingecko.json
   EXPECT_EQ(
       registry
           ->GetTokenByAddress(mojom::kMainnetChainId, mojom::CoinType::ETH,
