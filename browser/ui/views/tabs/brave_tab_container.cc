@@ -392,10 +392,6 @@ void BraveTabContainer::CompleteAnimationAndLayout() {
     return;
   }
 
-  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
-    last_layout_size_ = size();
-  }
-
   TabContainerImpl::CompleteAnimationAndLayout();
 
   // Should force tabs to layout as they might not change bounds, which makes
@@ -442,23 +438,6 @@ void BraveTabContainer::SetTabSlotVisibility() {
   }
 
   TabContainerImpl::SetTabSlotVisibility();
-}
-
-void BraveTabContainer::InvalidateIdealBounds() {
-  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser())) {
-    last_layout_size_ = gfx::Size();
-  }
-
-  TabContainerImpl::InvalidateIdealBounds();
-}
-
-void BraveTabContainer::Layout(PassKey) {
-  if (tabs::utils::ShouldShowVerticalTabs(tab_slot_controller_->GetBrowser()) &&
-      last_layout_size_ == size()) {
-    return;
-  }
-
-  LayoutSuperclass<TabContainerImpl>(this);
 }
 
 std::optional<BrowserRootView::DropIndex> BraveTabContainer::GetDropIndex(
