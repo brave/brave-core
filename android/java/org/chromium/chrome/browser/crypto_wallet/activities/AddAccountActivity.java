@@ -249,26 +249,27 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         if (Utils.isJSONValid(privateKey)) {
             // Import account from JSON.
             String accountPassword = mImportAccountPasswordText.getText().toString();
-            mKeyringService.importAccountFromJson(
+            mKeyringService.importEthereumAccountFromJson(
                     accountName,
                     accountPassword,
                     privateKey,
                     (account) -> handleImportAccount(account != null, true));
-        } else {
-            // Import account from string.
-            if (coinType == CoinType.FIL) {
-                mKeyringService.importFilecoinAccount(
-                        accountName,
-                        privateKey.trim(),
-                        mSelectedFilecoinNetwork,
-                        (account) -> handleImportAccount(account != null, false));
-            } else {
-                mKeyringService.importAccount(
-                        accountName,
-                        privateKey.trim(),
-                        coinType,
-                        (account) -> handleImportAccount(account != null, false));
-            }
+        } else if (coinType == CoinType.ETH) {
+            mKeyringService.importEthereumAccount(
+                    accountName,
+                    privateKey.trim(),
+                    (account) -> handleImportAccount(account != null, false));
+        } else if (coinType == CoinType.SOL) {
+            mKeyringService.importSolanaAccount(
+                    accountName,
+                    privateKey.trim(),
+                    (account) -> handleImportAccount(account != null, false));
+        } else if (coinType == CoinType.FIL) {
+            mKeyringService.importFilecoinAccount(
+                    accountName,
+                    privateKey.trim(),
+                    mSelectedFilecoinNetwork,
+                    (account) -> handleImportAccount(account != null, false));
         }
     }
 
