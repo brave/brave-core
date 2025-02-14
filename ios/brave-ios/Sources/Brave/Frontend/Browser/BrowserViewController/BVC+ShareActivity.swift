@@ -141,8 +141,7 @@ extension BrowserViewController {
         activityType: .pageZoom,
         callback: { [weak self] in
           guard let self = self else { return }
-
-          self.displayPageZoom(visible: true)
+          self.displayPageZoomDialog()
         }
       )
     )

@@ -37,8 +37,8 @@ class LinkPreviewViewController: UIViewController {
       tabGeneratorAPI: nil
     ).then {
       $0.tabDelegate = browserController
-      $0.navigationDelegate = browserController
       $0.createWebview()
+      $0.webView?.navigationDelegate = browserController
       $0.webView?.scrollView.layer.masksToBounds = true
     }
 
@@ -65,7 +65,7 @@ class LinkPreviewViewController: UIViewController {
   }
 
   deinit {
-    self.currentTab?.navigationDelegate = nil
+    self.currentTab?.webView?.navigationDelegate = nil
     self.currentTab = nil
   }
 }

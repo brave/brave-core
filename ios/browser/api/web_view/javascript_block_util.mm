@@ -18,6 +18,9 @@ bool ShouldBlockJavaScript(web::WebState* webState, NSURLRequest* request) {
   }
   BraveWebView* webView =
       static_cast<BraveWebView*>([BraveWebView webViewForWebState:webState]);
+  if (!webView) {
+    return false;
+  }
   id<BraveWebViewNavigationDelegate> navigationDelegate =
       webView.navigationDelegate;
 
