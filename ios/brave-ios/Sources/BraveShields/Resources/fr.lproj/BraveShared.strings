@@ -92,7 +92,7 @@
 "DefaultFilterLists" = "Listes de filtres par défaut";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
-"DomainBlockedGoBackAction" = "Revenir en arrière ";
+"DomainBlockedGoBackAction" = "Retour";
 
 /* A description in the warning page that appears when a page was blocked */
 "DomainBlockedPageDescription" = "Parce que vous avez demandé un blocage agressif des traqueurs et des publicités, Brave bloque ce site avant la première connexion au réseau.";
@@ -137,7 +137,7 @@
 "FilterListsDownloadPending" = "Téléchargement en attente";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Modifier";
+"FilterListsEdit" = "Édition";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Saisissez l'URL de la liste de filtres";
@@ -159,6 +159,30 @@
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Listes mises à jour";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agressif";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Bloquée par";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Requêtes bloquées";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Bloqueur de contenu";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Blocage de requêtes";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL de la requête";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Type de ressource";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL d'origine";
 
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Effacer les données";
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "La connexion à %@ n'est pas sécurisée";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "Blocage des traqueurs et des publicités";
+"TrackersAndAdsBlocking" = "Blocage des traqueurs et annonces";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Mettre à jour les listes";

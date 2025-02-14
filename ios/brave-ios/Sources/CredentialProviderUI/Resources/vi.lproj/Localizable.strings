@@ -65,5 +65,5 @@
 "CredentialProvider.useButtonTitle" = "Sử dụng";
 
 /* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */
-"CredentialProvider.viewCredentialDetails" = "Xem chi tiết";
+"CredentialProvider.viewCredentialDetails" = "Xem Chi tiết";
 

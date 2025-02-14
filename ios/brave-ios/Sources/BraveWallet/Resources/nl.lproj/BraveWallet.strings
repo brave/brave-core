@@ -274,8 +274,26 @@
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Koop crypto met Apple Pay, creditcard of pinpas.";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "vergoeding is niet goedgekeurd onder";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "Annuleringsverzoek ingediend";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "Transactie annuleren";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "Transactie annuleren";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "Transactie annuleren";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "Er wordt een nieuwe transactie gemaakt om je bestaande transactie te annuleren";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "is teruggezet naar";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Datum";
@@ -367,6 +385,12 @@
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "Onbeperkte goedkeuring aangevraagd";
 
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "account";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "Transactie geannuleerd!";
+
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Sluit";
 
@@ -422,7 +446,7 @@
 "wallet.creatingWallet" = "Wallet maken…";
 
 /* The title of the crypto tab */
-"wallet.cryptoTitle" = "Brave Wallet";
+"wallet.cryptoTitle" = "Brave-wallet";
 
 /* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
 "wallet.customNetworkBlockExplorerUrlsTitle" = "URL's van block explorers";
@@ -656,7 +680,7 @@
 "wallet.editSiteConnectionAccountActionRevoke" = "Trek in";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
-"wallet.editSiteConnectionAccountActionSwitch" = "Schakel over";
+"wallet.editSiteConnectionAccountActionSwitch" = "Wissel";
 
 /* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionTrust" = "Vertrouw";
@@ -686,7 +710,7 @@
 "wallet.ensDomainInterstitialPageButtonProceed" = "Ga verder met Infura-server";
 
 /* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave gebruikt Infura voor het herleiden van domeinnamen eindigend op .eth die behoren tot de Ethereum Name Service (ENS). Brave verbergt je IP-adres. Als je deze optie inschakelt, ziet Infura alleen dat iemand deze .eth-domeinen wil bezoeken. Lees de <a href=%1$@>%2$@</a> en het <a href=%3$@>%4$@</a> van Infura.";
+"wallet.ensDomainInterstitialPageDescription" = "Brave gebruikt Infura voor het herleiden van domeinnamen eindigend op .eth die behoren tot de Ethereum Name Service (ENS). Brave verbergt je IP-adres. Als je deze optie inschakelt, ziet Infura alleen dat iemand deze .eth-domeinen wil bezoeken. Lees de <a href=%1$@>%2$@</a> en het <a href=%3$@>%4$@</a>. van Infura.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "Ondersteuning voor Ethereum Name Service (ENS) in Brave inschakelen?";
@@ -1162,6 +1186,9 @@
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Alles is klaar!";
 
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "De oorspronkelijke transactie is bevestigd.";
+
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Overige acties voor wallet";
 
@@ -1325,7 +1352,7 @@
 "wallet.screenshotDetectedTitle" = "Schermafbeelding gedetecteerd";
 
 /* The label as a placeholder in search fields. */
-"wallet.search" = "Zoek";
+"wallet.search" = "Zoeken";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "Zoek assets";
@@ -1756,6 +1783,12 @@
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Sorteer assets";
 
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "Duurt het langer dan verwacht?";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Versnel";
+
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Versnel";
 
@@ -2023,8 +2056,60 @@
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Token-overdracht";
 
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "Goedkeuren";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "Voltooid";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "is goedgekeurd in je";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "Er deed zich een fout voor bij het goedkeuren";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "Goedkeuren niet mogelijk";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "op";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "Sturen";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "Er deed zich een fout voor bij het versturen";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "Versturen niet mogelijk";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "is verstuurd naar account";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "Transactie is getekend en wordt door dApps naar netwerk gestuurd. Er wordt gewacht op bevestiging.";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Je kunt dit scherm veilig sluiten.";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "is toegevoegd aan je";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "Omwisselen";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "Omwisselen niet mogelijk";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "naar";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "Bekijk in Activiteit";
+
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave gebruikt Infura voor het herleiden van domeinnamen eindigend op .crypto (en ook %1$@) die behoren tot Unstoppable Domains. Brave verbergt je IP-adres. Als je deze optie inschakelt, ziet Infura alleen dat iemand deze domeinen wil bezoeken. Lees de <a href=%2$@>%3$@</a> en het <a href=%4$@>%5$@</a> van Infura.";
+"wallet.udDomainInterstitialPageDescription" = "Brave gebruikt Infura voor het herleiden van domeinnamen eindigend op .crypto (en ook %1$@) die behoren tot Unstoppable Domains. Brave verbergt je IP-adres. Als je deze optie inschakelt, ziet Infura alleen dat iemand deze domeinen wil bezoeken. Lees de <a href=%2$@>%3$@</a> en het <a href=%4$@>%5$@</a>. van Infura.";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Ondersteuning voor Unstoppable Domains in Brave inschakelen?";
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Herleid Unstoppable Domains-domeinnamen";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "Annuleren niet mogelijk";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "Versnellen niet mogelijk";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Onbekende fout";

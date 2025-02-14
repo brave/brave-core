@@ -1,0 +1,138 @@
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "계속 보호받으셔야죠? 구독 종료 전에 갱신하시면 됩니다. 갱신하시면 감사의 의미로 3개월간 20% 할인해드리겠습니다.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "자동 갱신 활성화";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "지금 Brave VPN 구독을 자동 갱신하고 3개월간 20% 할인받으세요!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "지금 Brave VPN 구독을 자동 갱신하고 1개월을 무료로 받으세요!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Brave가 스마트폰의 모든 앱을 추가로 보호해드렸는데, 앞으로 그러지 못하게 됩니다.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "앗! Brave VPN 구독이 곧 만료됩니다.";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave 방화벽 + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "App Store에 연결할 수 없습니다. 몇 분 후에 다시 시도해주세요.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "App Store 오류";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckConnectionSpeed" = "빛처럼 빠른 연결 속도";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckLimitDevice" = "플랜 하나로 최대 10대의 기기 보호";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckLocation" = "IP 숨기기 및 위치 변경";
+
+/* Information text shown to users for using Brave VPN */
+"vpn.infoCheckPrivacy" = "더욱 든든한 온라인 프라이버시 및 보안";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckServers" = "전 세계 수백 개의 서버";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "원치 않는 네트워크 연결 차단";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "모든 앱에서 광고 및 트래커 차단 ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "최대 100Mbps의 속도 지원";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "최대 100Mbps의 빠른 속도 무제한";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "연중무휴 지원";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "모든 연결 안전하게 보호";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "제공 -";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "자동";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "VPN 세션을 새로 고치려면 Brave 계정에 로그인하세요.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "숨기기";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "로그인";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "세션 만료됨";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "사용 중지";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "사용함";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "만료됨";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "지금 구독";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "맞습니다. 최대 5대의 기기에서 Brave VPN 구독을 이용하실 수 있습니다. 예를 들어 iOS에서 구독하시면 Mac, Windows, Android 기기에서도 무료로 사용 가능합니다.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "이제 모든 기기에서 Brave VPN을 동일한 가격에 이용하실 수 있습니다!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Brave VPN을 더 이용하시고 3개월간 20% 할인받으세요!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "스마트폰의 모든 앱을 안전하게 보호하고 싶지 않으신가요? Brave VPN을 다시 이용하시면 3개월간 20% 할인해드리겠습니다.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN는 Brave 브라우저가 아닌 다른 모든 앱에서도 항상 트래커를 차단합니다. Brave 프라이버시 허브에서는 어떤 것이 고객님을 추적하려다가 차단되었는지 확인하실 수 있습니다.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPN은 Brave 브라우저 외부에서도 보호해드린다는 것을 알고 계셨나요?";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "업데이트";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "괜찮습니다. 결제 정보를 업데이트하실 때까지 며칠간 VPN을 활성 상태로 유지해드리겠습니다.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "결제 정보를 업데이트하고 계속 Brave VPN의 보호를 받으세요.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "스마트폰의 모든 앱에서 계속 보호받고 싶으신가요? 결제 세부정보를 업데이트하시면 됩니다.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "계정에 결제 문제가 있어 Brave VPN 구독이 곧 만료됩니다.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "결제 업데이트";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "서버 지역";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "현재 설정: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPN 지역";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "결제 수단을 업데이트하세요.";
+

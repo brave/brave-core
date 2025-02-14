@@ -50,7 +50,7 @@
 "e13lS3-FGO5qW" = "'Braveプレイリスト' をお探しですか？";
 
 /* (No Comment) */
-"e13lS3-jXiFQY" = "'Braveウォレット' をお探しですか？";
+"e13lS3-jXiFQY" = "'Braveプレイリスト' をお探しですか？";
 
 /* (No Comment) */
 "e13lS3-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
@@ -86,7 +86,7 @@
 "EvESs0-FGO5qW" = "'Braveプレイリスト' をお探しですか？";
 
 /* (No Comment) */
-"EvESs0-jXiFQY" = "'Braveウォレット' をお探しですか？";
+"EvESs0-jXiFQY" = "'Braveプレイリスト' をお探しですか？";
 
 /* (No Comment) */
 "EvESs0-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
@@ -170,7 +170,7 @@
 "nXONef" = "お気に入り";
 
 /* (No Comment) */
-"qKrzyX" = "QRコードをスキャン";
+"qKrzyX" = "QRコードをスキャンする";
 
 /* (No Comment) */
 "r2EI05-0W40Cl" = "確認ですが、'新しいタブ' を探していましたか？";
@@ -182,7 +182,7 @@
 "r2EI05-FGO5qW" = "'Braveプレイリスト' をお探しですか？";
 
 /* (No Comment) */
-"r2EI05-jXiFQY" = "'Braveウォレット' をお探しですか？";
+"r2EI05-jXiFQY" = "'Braveプレイリスト' をお探しですか？";
 
 /* (No Comment) */
 "r2EI05-nthxSL" = "確認ですが、'ダウンロード' を探していましたか？";
@@ -215,7 +215,7 @@
 "sdOBtj-xcI3h9" = "確認ですが、‘ブロック済の広告’ を探していましたか？";
 
 /* (No Comment) */
-"tNCrcE-0W40Cl" = "‘新しいタブ’ に一致する ${count} 件の選択肢があります";
+"tNCrcE-0W40Cl" = "'新しいタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "tNCrcE-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
@@ -251,7 +251,7 @@
 "tVvJ9c" = "統計の設定ウィジェット";
 
 /* (No Comment) */
-"TxuMja-0W40Cl" = "‘新しいタブ’ に一致する ${count} 件の選択肢があります";
+"TxuMja-0W40Cl" = "'新しいタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "TxuMja-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";
@@ -344,7 +344,7 @@
 "YQiQuz-Y7TWy8" = "'検索' をお探しですか？";
 
 /* (No Comment) */
-"z517nu-0W40Cl" = "‘新しいタブ’ に一致する ${count} 件の選択肢があります";
+"z517nu-0W40Cl" = "'新しいタブ’ に一致する ${count} 件の選択肢があります";
 
 /* (No Comment) */
 "z517nu-crhbMy" = "‘ブックマーク’ に一致する ${count} 件の選択肢があります";

@@ -1,0 +1,138 @@
+/* Toast displayed to user after copy url pressed. */
+"AppMenuCopyURLConfirmMessage" = "URL이 클립보드에 복사됨";
+
+/* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
+"AppMenuViewDesktopSiteTitleString" = "데스크톱 사이트 요청";
+
+/* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
+"AppMenuViewMobileSiteTitleString" = "모바일 사이트 요청";
+
+/* General settings bookmarks last visited folder toggle title */
+"BookmarksLastVisitedFolderTitle" = "마지막으로 방문한 북마크 표시";
+
+/* Button confirming the cancellation of the download. */
+"CancelDownloadDialogCancel" = "취소하기";
+
+/* Alert dialog body when the user taps the cancel download icon. */
+"CancelDownloadDialogMessage" = "이 다운로드를 취소하시겠습니까?";
+
+/* Button declining the cancellation of the download. */
+"CancelDownloadDialogResume" = "재시작";
+
+/* Alert dialog title when the user taps the cancel download icon. */
+"CancelDownloadDialogTitle" = "다운로드 취소";
+
+/* Cancel button */
+"CancelString" = "취소하기";
+
+/* The button text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedButtonText" = "전환";
+
+/* The label text in the Button Toast for switching to a fresh New Tab. */
+"ContextMenuButtonToastNewTabOpenedLabelText" = "열린 새 탭";
+
+/* The label text in the Download Cancelled toast for showing confirmation that the download was cancelled. */
+"DownloadCancelledToastLabelText" = "다운로드 취소됨";
+
+/* The label text in the Download Failed toast for showing confirmation that the download has failed. */
+"DownloadFailedToastLabelText" = "다운로드 실패함";
+
+/* The description text in the Download progress toast for showing the number of files (1$) and download progress (2$). This string only consists of two placeholders for purposes of displaying two other strings side-by-side where 1$ is Downloads.Toast.MultipleFiles.DescriptionText and 2$ is Downloads.Toast.Progress.DescriptionText. This string should only consist of the two placeholders side-by-side separated by a single space and 1$ should come before 2$ everywhere except for right-to-left locales. */
+"DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
+
+/* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
+"DownloadMultipleFilesToastDescriptionText" = "1 / %d 파일";
+
+/* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
+"DownloadProgressToastDescriptionText" = "%1$@/%2$@";
+
+/* The button to open a new tab with the Downloads home panel */
+"DownloadsButtonTitle" = "다운로드";
+
+/* Question shown to user when tapping a link that opens the App Store app */
+"ExternalLinkAppStoreConfirmationTitle" = "이 링크를 App Store 앱에서 여시겠습니까?";
+
+/* The button to open a new tab with the copied link */
+"GoButtonTittle" = "이동";
+
+/* Button to not save the user's password */
+"LoginsHelperDontSaveButtonTitle" = "저장하지 않음";
+
+/* Button to not update the user's password */
+"LoginsHelperDontUpdateButtonTitle" = "업데이트하지 않음";
+
+/* Button to save the user's password */
+"LoginsHelperSaveLoginButtonTitle" = "로그인 정보 저장";
+
+/* Button to update the user's password */
+"LoginsHelperUpdateButtonTitle" = "업데이트";
+
+/* OK button */
+"OKString" = "확인";
+
+/* Accessibility message e.g. spoken by VoiceOver when Reader Mode becomes available. */
+"ReaderModeAvailableVoiceOverAnnouncement" = "읽기 전용 모드 사용 가능";
+
+/* Accessibility label for button resetting font size in display settings of reader mode */
+"ReaderModeResetFontSizeAccessibilityLabel" = "텍스트 크기 재설정";
+
+/* Prompt for saving a password with no username. The parameter is the hostname of the site. */
+"SaveLoginPrompt" = "%@에 대한 비밀번호를 저장하시겠습니까?";
+
+/* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
+"SaveLoginUsernamePrompt" = "%2$@에 대한 %1$@ 로그인 정보를 저장하시겠습니까?";
+
+/* OK button to dismiss the error prompt. */
+"ScanQRCodeErrorOKButton" = "확인";
+
+/* Text for the instructions label, displayed in the QR scanner view */
+"ScanQRCodeInstructionsLabel" = "스캔할 QR 코드를 프레임에 맞추십시오.";
+
+/* Text of the prompt that is shown to the user when the data is invalid */
+"ScanQRCodeInvalidDataErrorMessage" = "데이터가 올바르지 않습니다.";
+
+/* Text of the prompt user to setup the camera authorization. */
+"ScanQRCodePermissionErrorMessage" = "기존에 동기화된 기기를 사용하여 Brave 설정을 열고 설정 → 동기화로 이동하여 \"기기 추가\"를 선택한 다음, 화면에 표시되는 코드를 스캔하십시오.";
+
+/* Title for the QR code scanner view. */
+"ScanQRCodeViewTitle" = "QR 코드 스캔";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "프라이빗 광고를 클릭하여 Brave 검색을 지원해 주셔서 감사합니다. 빅테크 기업들과 달리 당사는 사용자의 개인정보를 보호하기 위해 광고 실적을 익명으로 평가합니다.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "자세히 알아보기 / 옵트아웃 옵션";
+
+/* General settings section title */
+"SettingsGeneralSectionTitle" = "일반";
+
+/* Button displayed at the top of the search settings. */
+"SettingsSearchDoneButton" = "완료";
+
+/* The button to undo the delete all tabs */
+"TabsDeleteAllUndoAction" = "원상태로 돌리기";
+
+/* The label indicating that all the tabs were closed */
+"TabsDeleteAllUndoTitle" = "%d개의 탭 닫힘";
+
+/* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorDismiss" = "확인";
+
+/* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorMessage" = "지갑에 패스를 추가하는 중 오류가 발생했습니다. 나중에 다시 시도하십시오.";
+
+/* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
+"UnableToAddPassErrorTitle" = "패스 추가 실패";
+
+/* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
+"UnableToOpenURLError" = "주소가 유효하지 않으므로 Brave에서 페이지를 열 수 없습니다.";
+
+/* Title of the message shown when the user attempts to navigate to an invalid link. */
+"UnableToOpenURLErrorTitle" = "페이지를 열 수 없음";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginPrompt" = "%2$@에 대한 %1$@ 로그인 정보를 업데이트하시겠습니까?";
+
+/* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
+"UpdateLoginUsernamePrompt" = "%2$@에 대한 %1$@ 로그인 정보를 업데이트하시겠습니까?";
+

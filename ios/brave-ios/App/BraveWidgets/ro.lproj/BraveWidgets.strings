@@ -14,7 +14,7 @@
 "7Ds8rk" = "Configurarea favoritelor pe ecranul de blocare";
 
 /* (No Comment) */
-"7JYzOv" = "Tipul";
+"7JYzOv" = "Tip";
 
 /* (No Comment) */
 "7MuqiB" = "Comandă rapidă";
@@ -68,7 +68,7 @@
 "e13lS3-vs094F" = "Pentru confirmare, ai vrut \"Filă privată nouă\"?";
 
 /* (No Comment) */
-"e13lS3-XCyA8c" = "Pentru confirmare, ai vrut \"Brave News\"?";
+"e13lS3-XCyA8c" = "Pentru confirmare, ai vrut \"Brave News\"'?";
 
 /* (No Comment) */
 "e13lS3-Y7TWy8" = "Pentru confirmare, ai vrut \"Căutare\"?";
@@ -104,7 +104,7 @@
 "EvESs0-vs094F" = "Pentru confirmare, ai vrut \"Filă privată nouă\"?";
 
 /* (No Comment) */
-"EvESs0-XCyA8c" = "Pentru confirmare, ai vrut \"Brave News\"?";
+"EvESs0-XCyA8c" = "Pentru confirmare, ai vrut \"Brave News\"'?";
 
 /* (No Comment) */
 "EvESs0-Y7TWy8" = "Pentru confirmare, ai vrut \"Căutare\"?";
@@ -170,7 +170,7 @@
 "nXONef" = "Favorit";
 
 /* (No Comment) */
-"qKrzyX" = "Scanează cod QR";
+"qKrzyX" = "Scanează codul QR";
 
 /* (No Comment) */
 "r2EI05-0W40Cl" = "Pentru confirmare, ai vrut \"Filă nouă\"?";
@@ -200,7 +200,7 @@
 "r2EI05-vs094F" = "Pentru confirmare, ai vrut \"Filă privată nouă\"?";
 
 /* (No Comment) */
-"r2EI05-XCyA8c" = "Pentru confirmare, ai vrut \"Brave News\"?";
+"r2EI05-XCyA8c" = "Pentru confirmare, ai vrut \"Brave News\"'?";
 
 /* (No Comment) */
 "r2EI05-Y7TWy8" = "Pentru confirmare, ai vrut \"Căutare\"?";
@@ -245,7 +245,7 @@
 "tNCrcE-XCyA8c" = "Există ${count} opțiuni care se potrivesc cu \"Brave News\".";
 
 /* (No Comment) */
-"tNCrcE-Y7TWy8" = "Există ${count} opțiuni care se potrivesc cu \"Căutare\".";
+"tNCrcE-Y7TWy8" = "Există ${count} opțiuni care se potrivesc cu \"Search\".";
 
 /* (No Comment) */
 "tVvJ9c" = "Widget de configurare a statisticilor";
@@ -263,7 +263,7 @@
 "TxuMja-jXiFQY" = "Există ${count} opțiuni care se potrivesc cu \"Brave Wallet\".";
 
 /* (No Comment) */
-"TxuMja-nthxSL" = "Există ${count} opțiuni care se potrivesc cu \"Downloads\".";
+"TxuMja-nthxSL" = "Există ${count} opțiuni care se potrivesc cu \"Descărcări\".";
 
 /* (No Comment) */
 "TxuMja-qKrzyX" = "Există ${count} opțiuni care se potrivesc cu \"Scanare cod QR\".";
@@ -308,7 +308,7 @@
 "XkwBGY" = "Configurarea comenzilor rapide pentru ecranul de blocare";
 
 /* (No Comment) */
-"Y7TWy8" = "Caută";
+"Y7TWy8" = "Căutare";
 
 /* (No Comment) */
 "YQiQuz-0W40Cl" = "Pentru confirmare, ai vrut \"Filă nouă\"?";
@@ -332,7 +332,7 @@
 "YQiQuz-U0eRbw" = "Pentru confirmare, ai vrut \"Leo IA\"?";
 
 /* (No Comment) */
-"YQiQuz-VBH4G6" = "Pentru confirmare, ai vrut \"'Istoric\"?";
+"YQiQuz-VBH4G6" = "Pentru confirmare, ai vrut \"Istoric\"?";
 
 /* (No Comment) */
 "YQiQuz-vs094F" = "Pentru confirmare, ai vrut \"Filă privată nouă\"?";
@@ -374,7 +374,7 @@
 "z517nu-XCyA8c" = "Există ${count} opțiuni care se potrivesc cu \"Brave News\".";
 
 /* (No Comment) */
-"z517nu-Y7TWy8" = "Există ${count} opțiuni care se potrivesc cu \"Căutare\".";
+"z517nu-Y7TWy8" = "Există ${count} opțiuni care se potrivesc cu \"Search\".";
 
 /* (No Comment) */
 "ziTvSZ" = "Configurare widget de comenzi rapide";

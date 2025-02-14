@@ -17,7 +17,7 @@
 "playlist.accessibilityItemDownloadStatusReady" = "Az elem készen áll";
 
 /* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
-"playlist.accessibilityMoreMenuButtonTitle" = "További";
+"playlist.accessibilityMoreMenuButtonTitle" = "Továbbiak";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
 "playlist.accessibilityNextItem" = "Következő elem";
@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Szerkesztés";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Kezdjen el gépelni a mentett hanganyagok és videók kereséséhez";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Keresés a médiában";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Koppintson a média kiválasztásához";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Adjon hozzá médiafájlokat a kedvenc oldalairól, és itt lesznek lejátszva.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Nincs találat";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Megnyitás új privát lapon";
 
@@ -125,7 +134,7 @@
 "playlist.renamePlaylist" = "Lejátszási lista átnevezése";
 
 /* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
-"playlist.repeatModeOptionAll" = "Minden";
+"playlist.repeatModeOptionAll" = "Mind";
 
 /* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
 "playlist.repeatModeOptionNone" = "Nincs";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Offline adatok mentése";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Keresés ";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Megosztás";

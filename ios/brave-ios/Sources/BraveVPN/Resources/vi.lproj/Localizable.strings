@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Bật";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Tất cả gói đăng ký đều có %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Tất cả gói đăng ký đều có";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "dùng thử miễn phí 7 ngày!";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Cài đặt VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Dùng thử MIỄN PHÍ";
+"vpn.learnMore" = "Bắt đầu dùng thử 7 ngày";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Gia hạn mỗi tháng";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld máy chủ";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Đăng ký sẽ được tính phí thông qua tài khoản Apple của bạn. Mọi phần chưa sử dụng của bản dùng thử miễn phí, nếu được cung cấp, sẽ bị mất khi bạn mua đăng ký.\n\nĐăng ký của bạn sẽ tự động gia hạn trừ khi bị hủy ít nhất 24 giờ trước khi kết thúc giai đoạn hiện tại.\n\nBạn có thể quản lý đăng ký của mình trong Cài đặt.\n\nBằng cách sử dụng Brave, bạn đồng ý với Điều khoản sử dụng và Chính sách quyền riêng tư.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "tháng";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "năm";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Đã hết hạn";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "Đã đổi vùng VPN.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Gia hạn hằng năm";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Gia hạn mỗi tháng";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Không thể đặt lại cấu hình VPN. Vui lòng thử lại. Nếu sự cố vẫn còn, hãy liên hệ với bộ phận hỗ trợ để được trợ giúp.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Phục hồi";
 
+/* Use in context: save 16%. */
+"vpn.save" = "lưu";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "Máy chủ %@";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld máy chủ";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Nâng cấp lên VPN để bảo vệ kết nối của bạn và chặn các trình theo dõi xâm phạm ở mọi nơi.";
+"vpn.settingHeaderBody" = "Bảo vệ mọi ứng dụng với Brave VPN. Bảo vệ tối đa 10 thiết bị với một gói đăng ký.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Liên hệ hỗ trợ kỹ thuật";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Giao thức vận chuyển";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "Xem biên lai App Store";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Khi bật, nếu kết nối VPN ngừng đột ngột, thiết bị của bạn sẽ tự động được ngắt kết nối internet để ngăn việc rò rỉ dữ liệu địa chỉ IP. [Tìm hiểu thêm](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Bật Kill Switch";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Smart Proxy Routing đảm bảo lưu lượng được định tuyến qua các máy chủ proxy chuyên dụng để cho phép truy cập vào nội dung/trang web thường bị hạn chế hoặc các dịch vụ của bên thứ ba. [Tìm hiểu thêm](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Bật Smart Proxy";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Cập nhật phương thức thanh toán";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Gói đăng ký sẽ được tính phí qua tài khoản iTunes của bạn.\n\nBất kỳ phần nào chưa sử dụng của bản dùng thử miễn phí, nếu được cung cấp, sẽ bị hủy bỏ khi bạn mua gói đăng ký.\n\nGói đăng ký của bạn sẽ tự động gia hạn trừ khi được hủy ít nhất 24 giờ trước khi kết thúc kỳ hiện tại.\n\nBạn có thể quản lý gói đăng ký của mình trong Cài đặt.\n\nBằng cách sử dụng Brave, bạn đồng ý với Điều khoản Sử dụng và Chính sách Bảo mật.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN tắt";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN bật";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Quy đổi mã";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Gia hạn hằng năm tiết kiệm %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Giá trị tốt nhất";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "GIÁ TỐT NHẤT";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Một năm";

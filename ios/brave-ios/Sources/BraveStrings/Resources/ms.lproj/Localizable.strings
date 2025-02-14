@@ -14,19 +14,25 @@
 "ForwardTitle" = "Ke Hadapan";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Tab Peribadi Baru";
+"NewPrivateTabTitle" = "Tab Peribadi Baharu";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Tab Baharu";
+"NewTabTitle" = "Tab Bahar";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Buka Tab Baharu";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Buka Tab Baru";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Buka Tab Terpilih";
 
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Sudah membeli melalui brave.com?";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Ada kod promosi?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Tebus Kod Promo";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Muatkan semula bukti kelayakan anda";

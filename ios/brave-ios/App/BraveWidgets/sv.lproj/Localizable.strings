@@ -8,7 +8,7 @@
 "widgets.braveNews" = "Brave News";
 
 /* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Nedladdningar";
+"widgets.DownloadsMenuItem" = "Hämtade";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Kom åt dina favoritwebblatser snabbt.";
@@ -53,10 +53,10 @@
 "widgets.shortcutsEnterURLButton" = "Sök efter eller skriv in en webbadress";
 
 /* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Ny flik";
+"widgets.shortcutsNewTabButton" = "Ny tabb";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Spellista";
+"widgets.shortcutsPlaylistButton" = "Playlist";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "Privat flik";

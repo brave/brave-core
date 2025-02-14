@@ -59,7 +59,7 @@
 "playlist.createNewPlaylistButtonTitle" = "Skapa";
 
 /* A button title that when tapped will allow the user to delete the selected item. */
-"playlist.deleteItem" = "Ta bort";
+"playlist.deleteItem" = "Radera";
 
 /* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
 "playlist.deletePlaylist" = "Ta bort spellista ...";
@@ -74,7 +74,13 @@
 "playlist.editPlaylist" = "Redigera spellista";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylistShortTitle" = "Redigera";
+"playlist.editPlaylistShortTitle" = "Ändra";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Börja skriva för att söka i dina sparade ljud och videor";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Sök media";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Tryck för att välja media";
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Lägg till media från dina favoritplatser så spelas de upp här.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Inga resultat hittades";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Öppna i ny privat flik";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Spara offlinedata";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Sök";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Dela";

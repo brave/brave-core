@@ -5,7 +5,7 @@
 "widgets.braveLeo" = "Leo AI";
 
 /* The name of the feature */
-"widgets.braveNews" = "Brave News";
+"widgets.braveNews" = "Brave-nieuws";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Downloads";
@@ -38,7 +38,7 @@
 "widgets.QRCode" = "QR-code";
 
 /* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Zoek";
+"widgets.searchShortcutTitle" = "Zoeken";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Een overzicht van hoe Brave je tijd bespaart en je online beschermt.";
@@ -74,5 +74,5 @@
 "widgets.singleStatTitle" = "Privacystatistiek";
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave Wallet";
+"widgets.walletShortcutTitle" = "Brave-wallet";
 

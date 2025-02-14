@@ -20,13 +20,19 @@
 "NewTabTitle" = "新しいタブ";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "新しくタブを開く";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "新タブを開く";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "選択したタブを開く";
 
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "brave.comで購入済みですか？";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "プロモコードをお持ちですか？";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "プロモコードを使う";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "認証情報を更新";
@@ -38,7 +44,7 @@
 "ReloadPageTitle" = "ページを再読み込み";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "ロケーションバーの選択";
+"SelectLocationBarTitle" = "ロケーションバーを選択";
 
 /* An option in a list of shortcut actions that hides the button */
 "shortcutsButton.hideButtonTitle" = "ショートカットボタンを隠す";
@@ -116,7 +122,7 @@
 "storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN年鑑";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToNonPBMKeyCodeTitle" = "標準ブラウジングモード";
+"SwitchToNonPBMKeyCodeTitle" = "通常ブラウジングモード";
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "プライベートブラウジングモード";

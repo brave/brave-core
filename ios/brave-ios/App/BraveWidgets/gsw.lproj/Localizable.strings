@@ -5,13 +5,13 @@
 "widgets.braveLeo" = "Leo-KI";
 
 /* The name of the feature */
-"widgets.braveNews" = "Brave-Nachrichten";
+"widgets.braveNews" = "Brave News";
 
 /* Title for downloads menu item */
 "widgets.DownloadsMenuItem" = "Downloads";
 
 /* Description for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetDescription" = "Rufen Sie Ihre Lieblings-Websites im Handumdrehen auf.";
+"widgets.favoritesWidgetDescription" = "Rufe deine Lieblings-Websites im Handumdrehen auf.";
 
 /* Title for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetTitle" = "Favoriten";
@@ -26,13 +26,13 @@
 "widgets.newsClusteringReadMoreButtonTitle" = "Mehr erfahren";
 
 /* Description for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetDescription" = "Erhalten Sie die neuesten Nachrichten.";
+"widgets.newsClusteringWidgetDescription" = "Erhalte die neuesten Nachrichten.";
 
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "Top-Nachrichten";
 
 /* This shows when you add a widget but have no favorites added in your app */
-"widgets.noFavoritesFound" = "Bitte öffnen Sie Brave, um hier Ihre Favoriten anzuzeigen.";
+"widgets.noFavoritesFound" = "Bitte öffne Brave, um hier deine Favoriten anzuzeigen.";
 
 /* QR Code section title */
 "widgets.QRCode" = "QR-Code";
@@ -41,7 +41,7 @@
 "widgets.searchShortcutTitle" = "Suchen";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
-"widgets.shieldStatsDescription" = "Eine Zusammenfassung davon, wie Sie mit Brave Zeit sparen können und online geschützt werden.";
+"widgets.shieldStatsDescription" = "Eine Zusammenfassung davon, wie du mit Brave Zeit sparen kannst und online geschützt bist.";
 
 /* Title for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsTitle" = "Datenschutzstatistik";
@@ -62,17 +62,17 @@
 "widgets.shortcutsPrivateTabButton" = "Privater Tab";
 
 /* Description for shortcuts widget on 'add widget' screen. */
-"widgets.shortcutsWidgetDescription" = "Sie erhalten Schnellzugriff, um etwas im Web zu suchen oder Webseiten in Brave zu öffnen.";
+"widgets.shortcutsWidgetDescription" = "Du erhältst Schnellzugriff, um etwas im Web zu suchen oder Websites in Brave zu öffnen.";
 
 /* Title for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetTitle" = "Verknüpfungen";
 
 /* Description for Brave Shields single stat widget on 'add widget' screen. */
-"widgets.singleStatDescription" = "Eine Zusammenfassung davon, wie Brave Sie online geschützt hat.";
+"widgets.singleStatDescription" = "Eine Zusammenfassung davon, wie Brave dich online geschützt hat.";
 
 /* Title for Brave Shields single stat widget on 'add widget' screen. */
 "widgets.singleStatTitle" = "Datenschutzstatistik";
 
 /* Description for the Brave Wallet option on the 'shortcuts' widget. */
-"widgets.walletShortcutTitle" = "Brave-Wallet";
+"widgets.walletShortcutTitle" = "Brave Wallet";
 

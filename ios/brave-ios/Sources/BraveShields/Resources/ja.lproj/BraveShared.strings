@@ -125,7 +125,7 @@
 "FilterListAddOnlyHTTPSAllowedError" = "カスタムフィルターリストでは安全な (https) URLのみが許可されます";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsAdd" = "追加する";
+"FilterListsAdd" = "追加";
 
 /* A description on the content filtering screen for the filter lists section. */
 "FilterListsDescription" = "その他の人気コミュニティリスト。フィルターが多すぎると、ブラウジング速度が遅くなる場合があります。";
@@ -137,7 +137,7 @@
 "FilterListsDownloadPending" = "ダウンロード待ち";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "編集";
+"FilterListsEdit" = "編集する";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "フィルターリストのURLを入力";
@@ -159,6 +159,30 @@
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "リストを更新しました";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "積極的";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "ブロック中";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "ブロックしたリクエスト";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "コンテンツブロッカー";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "ブロックをリクエスト";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL をリクエスト";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "リソースタイプ";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "ソースURL";
 
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "データを削除";
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "%@への接続は保護されていません";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "トラッカー & 広告ブロック";
+"TrackersAndAdsBlocking" = "トラッカー&広告をブロック";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "リストを更新";

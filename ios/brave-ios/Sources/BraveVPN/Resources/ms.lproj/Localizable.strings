@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Brave tidak pernah mengelogkan aktiviti anda";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Lindungi setiap aplikasi & seluruh peranti anda";
+"vpn.checkboxProtectYourDevices" = "Lindungi setiap apl & seluruh peranti anda";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Lebih selamat untuk WI-Fi rumah atau awam";
@@ -104,10 +104,10 @@
 "vpn.contactFormTitle" = "Brave Firewall + Isu VPN";
 
 /* Button text to enable Brave VPN */
-"vpn.enableButton" = "Dayakan";
+"vpn.enableButton" = "Mendayakan";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Semua pelan termasuk %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Semua pelan termasuk";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "percuma 7 hari percubaan";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Pasang VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Cuba secara PERCUMA";
+"vpn.learnMore" = "Mulakan percubaan percuma selama 7 hari";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Diperbaharui setiap bulan";
@@ -148,8 +148,17 @@
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld Pelayan";
 
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Langganan akan dikenakan bayaran melalui akaun Apple anda. Mana-mana bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan dibatalkan semasa anda membeli langganan.\n\nLangganan anda akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa.\n\nAnda boleh mengurus langganan anda dalam Tetapan.\n\nDengan menggunakan Brave, anda bersetuju dengan Terma Penggunaan dan Dasar Privasi.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "bulan";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "tahun";
+
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Tamat Tempoh";
+"vpn.planExpired" = "Tamat tempoh";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Sila pilih protokol pemindahan pilihan anda. Sebaik sahaja ditukar, kelayakan VPN sedia ada anda akan dikosongkan dan anda akan disambungkan semula jika sambungan VPN disediakan pada masa ini. ";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "Wilayah VPN berubah.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Diperbaharui setiap tahun";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Diperbaharui setiap bulan";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Tidak dapat menetapkan semula konfigurasi VPN. Sila cuba lagi. Jika isu ini berterusan, hubungi sokongan untuk mendapatkan bantuan.";
 
@@ -197,7 +212,10 @@
 "vpn.resetVPNSuccessTitle" = "Penetapan Semula Berjaya";
 
 /* No comment provided by engineer. */
-"vpn.restorePurchases" = "Pulihkan";
+"vpn.restorePurchases" = "Menyimpan semula";
+
+/* Use in context: save 16%. */
+"vpn.save" = "simpan";
 
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ Pelayan";
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld Pelayan";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Naik taraf kepada VPN untuk melindungi sambungan anda dan menyekat penjejak invasif yang berada di mana-mana. ";
+"vpn.settingHeaderBody" = "Lindungi setiap aplikasi dengan Brave VPN. Lindungi sehingga 10 peranti dengan satu pelan.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Hubungi Sokongan Teknikal";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Protokol Pemindahan";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "View App Store Receipt";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Apabila diaktifkan, jika sambungan VPN anda terputus secara tiba-tiba, peranti anda akan secara automatik memutuskan sambungan dari internet untuk mengelakkan kebocoran Alamat IP dan Data. [Ketahui Lebih Lanjut](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Dayakan Suis Bunuh";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Penghalaan Proksi Pintar memastikan trafik dialihkan melalui pelayan proksi khusus untuk membolehkan akses kepada kandungan/laman yang sering disekat atau perkhidmatan pihak ketiga. [Ketahui Lebih Lanjut](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Dayakan Proksi Pintar";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Kemas Kinikan Kaedah Pembayaran";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Langganan akan dikenakan bayaran melalui akaun iTunes anda.\n\nSebarang bahagian percubaan percuma yang tidak digunakan, jika ditawarkan, akan dibatalkan semasa anda membeli langganan.\n\nLangganan anda akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa.\n\nAnda boleh menguruskan langganan anda dalam Tetapan.\n\nDengan menggunakan Brave, anda bersetuju dengan Terma Penggunaan dan Dasar Privasi.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN Dimatikan";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN Dihidupkan";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Tebus Kod";
 
@@ -311,7 +347,7 @@
 "vpn.vpnResetAlertTitle" = "Set semula konfigurasi";
 
 /* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "Tetapkan semula";
+"vpn.vpnResetButton" = "Tetap semula";
 
 /* Name of monthly subscription in VPN Settings */
 "vpn.vpnSettingsMonthlySubName" = "Langganan setiap bulan";
@@ -322,9 +358,9 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Memperbaharui setiap tahun jimat %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Nilai terbaik";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "NILAI TERBAIK";
 
 /* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "Satu tahun";
+"vpn.yearlySubTitle" = "Satu Tahun";
 

@@ -1,0 +1,138 @@
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "هل تريد البقاء محميًا؟ ما عليك سوى التجديد قبل انتهاء اشتراكك. كشكر على التجديد، سنأخذ خصمًا بنسبة 20% لمدة 3 أشهر قادمة.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "تمكين التجديد التلقائي";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "جدد اشتراك Brave VPN تلقائيًا الآن واحصل على خصم 20% لمدة 3 أشهر!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "قم بالتجديد التلقائي لاشتراك Brave VPN الخاص بك الآن واحصل على شهر مجانًا!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "هذا يعني أنك ستفقد حماية Brave الإضافية لكل تطبيق على هاتفك.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "للأسف! اشتراك Brave VPN الخاص بك على وشك الانتهاء.";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "تعذر الاتصال بآب ستور، يرجى المحاولة مرة أخرى في غضون بضع دقائق.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "خطأ في آب ستور";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckConnectionSpeed" = "سرعات اتصال فائقة";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckLimitDevice" = "حماية ما يصل إلى 10 أجهزة بخطة واحدة";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckLocation" = "إخفاء عنوان IP الخاص بك وتغيير موقعك";
+
+/* Information text shown to users for using Brave VPN */
+"vpn.infoCheckPrivacy" = "الخصوصية والأمان الإضافيان عبر الإنترنت";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckServers" = "مئات من الخوادم حول العالم";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "يمنع اتصالات الشبكة غير المرغوب فيها";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "حظر الإعلانات وأدوات التتبع عبر جميع التطبيقات ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "يدعم سرعات تصل إلى 100 ميجابت في الثانية";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "سريع وغير محدود حتى 100 ميجابت في الثانية";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "دعم على مدار الساعة طوال أيام الأسبوع";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "يؤمن جميع الاتصالات";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "مدعومة من";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "تلقائي";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "يرجى تسجيل الدخول إلى حساب Brave الخاص بك لتحديث جلسة VPN الخاصة بك.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "رفض";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "تسجيل الدخول";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "انتهت صلاحية الجلسة";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "تم الإيقاف";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "تم التمكين";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "انتهت الصلاحية";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "اشترك الآن";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "هذا صحيح. اشتراك Brave VPN الخاص بك جيد الآن على ما يصل إلى 5 أجهزة. حتى تتمكن من الاشتراك في iOS واستخدامه على أجهزة Mac وWindows وAndroid مجانًا.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "الآن، استخدم Brave VPN على جميع أجهزتك بنفس السعر!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "جرب Brave VPN مرة أخرى واحصل على خصم 20% لمدة 3 أشهر!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "هل أنت مستعد لحماية كل تطبيق على هاتفك؟ عد إلى Brave VPN واحصل على خصم 20% لمدة 3 أشهر قادمة.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "لطالما حظرت Brave VPN أدوات التتبع على كل تطبيق، حتى خارج متصفح Brave. يمكنك الآن معرفة من حاول تتبعك باستخدام مركز خصوصية Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "هل تعلم أن Brave VPN تحميك خارج متصفح Brave؟";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "تحديث";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "لا تقلق. سنبقي VPN نشطةً لبضعة أيام أثناء تحديث معلومات الدفع الخاصة بك.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "قم بتحديث معلومات الدفع الخاصة بك لتظل محميًا باستخدام Brave VPN.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "هل تريد الاستمرار في حماية كل تطبيق على هاتفك؟ ما عليك سوى تحديث تفاصيل الدفع الخاصة بك.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "هناك مشكلة في الفوترة في حسابك، مما يعني أن اشتراك Brave VPN الخاص بك على وشك الانتهاء.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "تحديث الدفع";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "منطقة الخادم";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "الإعداد الحالي: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "منطقة VPN";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "يرجى تحديث طريقة الدفع الخاصة بك";
+

@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Defineix Brave com el navegador per defecte";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Navegueu més ràpidament i feu servir menys dates.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Menys anuncis i menys rastrejadors.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Ara no";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "De debò, ens n'hem alliberat.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Bloqueja les interrupcions als teus llocs preferits on veure vídeos.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "No més anuncis de vídeo.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Bloqueja les interrupcions mentre veus vídeos";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Més informació sobre la nostra Anàlisi de productes per preservar la privadesa (P3A)";
@@ -35,16 +29,16 @@
 "focusOnboarding.p3aToggleDescription" = "Canvieu això en qualsevol moment a la configuració de Brave, a \"Privacitat i Escuts de Brave\".";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Comparteix informació privada i anònima del producte.";
+"focusOnboarding.p3aToggleTitle" = "Compartir opinions de producte privades & anònimes.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Inicia la navegació";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Ves a Configuració del sistema";
+"focusOnboarding.systemSettingsButtonTitle" = "Configuració per defecte";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Introduïu un URL i gaudiu de menys anuncis i menys rastrejadors";
+"focusOnboarding.urlBarIndicatorDescription" = "Comença a veure vídeos i gaudeix de menys anuncis & rastrejadors.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Consulta la diferència de Brave";

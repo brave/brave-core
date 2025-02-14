@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "ערוך";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "אפשר להתחיל להקליד כדי לחפש את השמע והסרטונים השמורים שלך";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "חיפוש מדיה";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "יש ללחוץ כדי לבחור מדיה";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "יש להוסיף מדיה מהאתרים האהובים עליך והיא תנוגן כאן.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "לא נמצאו תוצאות";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "פתיחה בכרטיסיה פרטית חדשה";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "שמירת נתונים לא מקוונים";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "חיפוש";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "שיתוף";

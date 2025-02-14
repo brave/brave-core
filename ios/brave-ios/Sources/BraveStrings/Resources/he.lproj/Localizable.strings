@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "כבר רכשת ב-brave.com?";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "יש לך קוד מבצע?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "מימוש קוד מבצע";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "רענון האישורים שלך";
 

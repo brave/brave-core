@@ -1,5 +1,5 @@
 /* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Favoris";
+"widgets.BookmarksMenuItem" = "Marque-pages";
 
 /* The name of the feature */
 "widgets.braveLeo" = "IA Leo";
@@ -26,7 +26,7 @@
 "widgets.newsClusteringReadMoreButtonTitle" = "En savoir plus";
 
 /* Description for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetDescription" = "Restez au courant des dernières actualités";
+"widgets.newsClusteringWidgetDescription" = "Obtenez les dernières actualités";
 
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "L'essentiel de l'actu";
@@ -38,7 +38,7 @@
 "widgets.QRCode" = "Code QR";
 
 /* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Rechercher";
+"widgets.searchShortcutTitle" = "Recherche";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Un résumé de la manière dont Brave vous fait gagner du temps et vous protège en ligne.";
@@ -56,7 +56,7 @@
 "widgets.shortcutsNewTabButton" = "Nouvel onglet";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Playlist";
+"widgets.shortcutsPlaylistButton" = "Liste de lecture";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "Onglet privé";

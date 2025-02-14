@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Cancel·la";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "%1$@ està sol·licitant un nom d'usuari i una contrasenya. El lloc diu: %2$@";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "Inicia sessió";
 
@@ -185,7 +182,7 @@
 "BraveShieldsAndPrivacy" = "Privacitat i Escuts de Brave";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacyTitle" = "Escuts i privacitat";
+"BraveShieldsAndPrivacyTitle" = "Escuts & Privacitat";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Anuncis i altres coses estranyes bloquejats";
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Controls globals";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Emmagatzemar la informació de contacte per futurs informes d'error del lloc";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Si ens proporciones la teva informació de contacte, la guardarem de cara a futurs informes";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Si aquest enllaç apareix trencat, prova de desactivar Escuts";
@@ -686,7 +689,7 @@
 "ErrorPageOpenInSafariButtonTitle" = "Obre a Safari";
 
 /* Shown in error pages on a button that will try to load the page again */
-"ErrorPageReloadButtonTitle" = "Torna a carregar";
+"ErrorPageReloadButtonTitle" = "Recarrega";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
 "ErrorPagesAdvancedErrorPinningDetails" = "%1$@ normalment utilitza el xifratge per protegir la teva informació. Quan Brave va intentar connectar-se a %2$@ aquesta vegada, el lloc web va enviar credencials inusuals i incorrectes. Això pot passar quan un atacant intenta fingir ser %3$@ o una pantalla d'inici de sessió per Wi-Fi ha interromput la connexió. La teva informació encara està segura perquè Brave va aturar la connexió abans que s'intercanviés cap dada.<br /> No pots visitar %4$@ ara mateix perquè el lloc web utilitza la fixació de certificats. Els errors i els atacs de xarxa solen ser temporals, de manera que probablement aquesta pàgina funcionarà més tard.";
@@ -896,13 +899,13 @@
 "login.loginListEmptyScreenTitle" = "No s'han trobat inicis de sessió";
 
 /* Title for navigation bar of the login list screen */
-"login.loginListNavigationTitle" = "Inicis de sessió i contrasenyes";
+"login.loginListNavigationTitle" = "Inicis de sessió & Contrasenyes";
 
 /* The header title displayed over the never saved login list entry */
 "login.loginListNeverSavedHeaderTitle" = "Mai desades";
 
 /* The header title displayed over the login list */
-"login.loginListSavedLoginsHeaderTitle" = "Inicis de sessió desats";
+"login.loginListSavedLoginsHeaderTitle" = "Registres desats";
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Filtre";
@@ -1043,7 +1046,7 @@
 "ntp.settingsDefaultImagesOnly" = "Imatges predeterminades";
 
 /* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Imatges i vídeos esponsoritzats";
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Imatges patrocinades & Vídeos";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Imatges esponsoritzades";
@@ -1169,7 +1172,7 @@
 "onboarding.linkReceiptButton" = "Enllaça la teva subscripció VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "La teva subscripció VPN de Brave pot protegir fins a 5 dispositius a Android, iOS i escriptori. Només has d'enllaçar la teva subscripció a l'App Store al teu compte de Brave.";
+"onboarding.linkReceiptDescription" = "La teva subscripció VPN de Brave pot protegir fins a 10 dispositius a Android, iOS i escriptori. Només has d'enllaçar la teva subscripció a l'App Store al teu compte de Brave.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Amplia la protecció del Tallafocs + VPN de Brave";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Obre en una finestra nova";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "Continuar amb la descàrrega d'un perfil de configuració de %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "Perfil de configuració disponible";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Obre en una pestanya d'incògnit nova";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "Obre pestanyes";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "Continuar amb la descàrrega d'un esdeveniment de calendari de %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "Esdeveniment de calendari disponible";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Obre lloc web";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "Si afegeixes fitxers de vídeo i àudio per utilitzar-los fora de línia, pots utilitzar molt d'emmagatzematge al teu dispositiu i també utilitzar les teves dades mòbils";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Aquesta opció mantindrà automàticament els elements de la teva llista de reproducció al dispositiu perquè els puguis reproduir sense connexió a Internet.";
+"playlist.playlistAutoSaveSettingsFooterText" = "Un cop hagis obert contingut des de la Llista de reproducció, aquesta opció mantindrà els arxius oberts a la llista de reproducció al teu dispositiu perquè puguis reproduir-los sense connexió a internet.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Desa automàticament per a fora de línia";
+"playlist.playlistAutoSaveSettingsTitle" = "Desar contingut per a reproducció fora de línia";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "Afegir fitxers de vídeo i àudio per utilitzar-los fora de línia pot utilitzar molt d'emmagatzematge al dispositiu. Si us plau, treu alguns fitxers per alliberar espai d'emmagatzematge.";
@@ -1562,7 +1577,7 @@
 "playlist.playlistLongPressSettingsOptionTitle" = "Activa premsa llarga";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Llista de reproducció multimèdia i dades fora de línia";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Llista de reproducció d'arxius & Dades fora de línia";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Dades fora de línia de la llista de reproducció";
@@ -1580,7 +1595,7 @@
 "playlist.playlistSaveForOfflineErrorMessage" = "Disculpa, en aquest moment, aquest element no s'ha pogut desar per al mode fora de línia.";
 
 /* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "Disculpa, s'ha produït un error";
+"playlist.playlistSaveForOfflineErrorTitle" = "Ho sento, s'ha produït un error";
 
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Llistes de reproducció";
@@ -1618,14 +1633,8 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Recorda la posició de reproducció del fitxer";
 
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Desactiva l'API WebKit MediaSource";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Compatibilitat web";
-
 /* Title for removing offline mode storage */
-"playList.removeActionButtonTitle" = "Elimina";
+"playList.removeActionButtonTitle" = "Suprimeix";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "Eliminat de %@";
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "Disculpa";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Afegit a la Llista de reproducció de Brave";
+"playList.toastAddedToPlaylistTitle" = "Veure a Llista de reproducció";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Obre";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Afegeix a la Llista de reproducció de Brave";
+"playList.toastAddToPlaylistTitle" = "Afegeix a la llista de reproducció";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Mostra a la Llista de reproducció de Brave";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "Desfés";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Afegeix un botó de llista de reproducció (semblen 4 línies amb un símbol +) al costat de la barra d'adreces del navegador de Brave. Aquest botó et permet accedir ràpidament per obrir la llista de reproducció o afegir o eliminar contingut multimèdia. ";
+"playlist.urlBarButtonOptionFooter" = "Afegeix un botó de llista de reproducció (semblen 4 línies amb un símbol +) al costat de la barra d'adreces del navegador de Brave. Aquest botó et permet accedir ràpidament per obrir la llista de reproducció o afegir o eliminar contingut multimèdia.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Activa el botó d'accés ràpid";
@@ -1826,7 +1835,7 @@
 "privacyHub.allTimeListsHeader" = "Tot el període";
 
 /* Title of a section to show total count of trackers blocked by Brave */
-"privacyHub.allTimeListsTrackersView" = "Rastrejadors i anuncis";
+"privacyHub.allTimeListsTrackersView" = "Ratrejadors & anuncis";
 
 /* Title of a section to show websites containing highest amount of trackers */
 "privacyHub.allTimeListsWebsitesView" = "Llocs web";
@@ -1835,16 +1844,16 @@
 "privacyHub.allTimeListTrackersHeaderTitle" = "Els rastrejadors i anuncis més freqüents als llocs que visites";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "Llocs web amb més rastrejadors i anuncis";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Llocs web amb més rastrejadors & anuncis";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "%lld llocs";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld rastrejadors i anuncis";
+"privacyHub.allTimeTrackersCount" = "%lld rastrejadors & anuncis";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "Rastrejador i anunci";
+"privacyHub.allTimeTrackerTitle" = "Rastrejador & Anunci";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Lloc web";
@@ -1880,7 +1889,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "Escuts de Brave ha bloquejat **%1$@** a **%2$lld** llocs";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "Rastrejador i anuncis més freqüents";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Rastrejador & anunci més freqüent";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "Visita alguns llocs web per veure les dades aquí.";
@@ -1889,7 +1898,7 @@
 "privacyHub.noDataToShow" = "Encara no hi ha dades per mostrar.";
 
 /* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "Obté actualitzacions setmanals de privacitat sobre el seguiment i el bloqueig d'anuncis.";
+"privacyHub.notificationCalloutBody" = "Obté actualitzacions de privacitat setmanals en el seguiment i el bloqueig d'anuncis.";
 
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Activa les notificacions";
@@ -1955,7 +1964,7 @@
 "privacyHub.vpnAlertLocationTrackerTypeSingular" = "Ping d'ubicació";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "Rastrejadors i anuncis";
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Rastrejadors & Anuncis";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Rastrejador i anunci";
@@ -2111,7 +2120,7 @@
 "RecentSearchScannerDescriptionTitle" = "Instruccions";
 
 /* Scanning a QR Code for searching */
-"RecentSearchScannerTitle" = "Escaneja Codi QR";
+"RecentSearchScannerTitle" = "Escaneja el codi QR";
 
 /* Recent Search Section Description */
 "RecentSearchSectionDescription" = "Les cerques recents permeten accedir d'incògnit a les cerques anteriors. Vols activar les cerques recents?";
@@ -2146,6 +2155,9 @@
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Contacta amb mi a través de: (opcional)";
 
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Si ens proporciones la teva informació de contacte, la guardarem de cara a futurs informes d'error dels llocs.";
+
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Correu electrònic, Twitter, etc.";
 
@@ -2165,7 +2177,7 @@
 "requestCameraPermissionPrompt" = "\"%@\" vol accedir a la càmera";
 
 /* A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone */
-"requestCaptureDevicePermissionAllowButtonTitle" = "Permet";
+"requestCaptureDevicePermissionAllowButtonTitle" = "Permetre";
 
 /* A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: "talk.brave.com") */
 "requestCaptureDevicePermissionPrompt" = "\"%@\" voldria accedir a un dispositiu de captura multimèdia";
@@ -2357,7 +2369,7 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Propina recurrent";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Informació sobre el perfil, el dispositiu i el saldo de les recompenses (compartit sempre)";
+"RewardsInternalsSharableBasicDescription" = "Perfil de recompenses, aparell & informació de saldo (es comparteix sempre)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Informació bàsica";
@@ -2387,7 +2399,7 @@
 "RewardsInternalsSharingWarningTitle" = "Alerta";
 
 /* No comment provided by engineer. */
-"RewardsInternalsStatus" = "Estat";
+"RewardsInternalsStatus" = "Estatus";
 
 /* i.e. 'Step: Started' */
 "RewardsInternalsStep" = "Pas";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Cerques del suggeriment";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Obre pestanyes, adreces d'interès i l'historial";
+"SearchHistorySectionHeader" = "Pestanyes obertes & Adreces d'interès & Historial";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Esborra la cerca";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "Enhorabona. Ets força especial.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld rastrejadors i anuncis bloquejats!";
+"shieldEducation.trackerCountShareTitle" = "%ld rastrejadors & anuncis bloquejats!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Els vídeos sense anuncis utilitzen menys dades.";
@@ -2681,7 +2693,7 @@
 "ShortcutItemTitleNewTab" = "Pestanya nova";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleQRCode" = "Escaneja codi QR";
+"ShortcutItemTitleQRCode" = "Escaneja el codi QR";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeBraveNewsDescription" = "Obre Notícies de Brave i consulta les notícies més destacades d'avui";
@@ -2777,7 +2789,7 @@
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Obre Configuració";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Utilitza dreceres per obrir una pestanya nova i esborrar l'historial del navegador mitjançant l'assistent de veu Siri";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Utilitza Dreceres per obrir una nova pestanya & esborrar l'historial del navegador a través de l'assistent de veu Siri";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Esborra l'historial del navegador";
@@ -2816,7 +2828,7 @@
 "shortcuts.shortcutSettingsOpenNewTabDescription" = "Utilitza dreceres per obrir una nova pestanya mitjançant l'assistent de veu Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenNewTabTitle" = "Obre una pestanya nova";
+"shortcuts.shortcutSettingsOpenNewTabTitle" = "Obre nova pestanya";
 
 /* Description of Open Playlist Siri Shortcut in Settings Screen */
 "shortcuts.shortcutSettingsOpenPlaylistDescription" = "Utilitza dreceres per obrir una llista de reproducció mitjançant l'assistent de veu Siri";
@@ -2975,7 +2987,7 @@
 "sync.configurationInformationText" = "Gestiona la informació que vols sincronitzar entre els dispositius. Aquesta configuració només tindrà efecte en aquest dispositiu.";
 
 /* Copied action complete title */
-"sync.copied" = "S'ha copiat!";
+"sync.copied" = "Copiat!";
 
 /* Copied codewords title */
 "sync.copiedToClipboard" = "Copiat al porta-retalls!";
@@ -3017,7 +3029,7 @@
 "sync.expiredError" = "Aquest codi de sincronització ha caducat; genera un codi de sincronització nou i torna-ho a provar.";
 
 /* Generic Sync Error Description */
-"sync.genericError" = "Disculpa, s'ha produït un error";
+"sync.genericError" = "Ho sento, s'ha produït un error";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Activa la càmera";
@@ -3032,7 +3044,7 @@
 "sync.internalsTitle" = "Sincronització d'interns";
 
 /* Generic error message for when the sync code is invalid */
-"sync.invalidSyncCodeDescription" = "Codi de sincronització invàlid, si us plau comprova-ho i torna-ho a intentar.";
+"sync.invalidSyncCodeDescription" = "Codi de sincronització invàlid, si us plau comprova-ho i torna-ho a intentar. ";
 
 /* A warning when user adds more than 5 device to sync chain */
 "sync.joinChainCodewordsWarning" = "Nota: Hauries de verificar que reconeixes tots els dispositius de la llista anterior. Els dispositius d'una cadena de sincronització poden rebre dades personals com ara contrasenyes i l'historial de navegació.";
@@ -3071,10 +3083,10 @@
 "sync.removeCurrentDeviceMessage" = "Les dades del dispositiu local es mantindran intactes en tots els dispositius. Altres dispositius d'aquesta cadena de sincronització es mantindran sincronitzats.";
 
 /* Title for removing the current device from Sync */
-"sync.removeCurrentDeviceTitle" = "Vols eliminar %@ de la cadena de sincronització?";
+"sync.removeCurrentDeviceTitle" = "Vols suprimir %@ de la cadena de sincronització?";
 
 /* Action button for removing sync device. */
-"sync.removeDevice" = "Elimina";
+"sync.removeDevice" = "Suprimeix";
 
 /* Remove device button for action sheet. */
 "sync.removeDeviceAction" = "Esborra dispositiu";
@@ -3095,7 +3107,7 @@
 "sync.removeOtherDeviceMessage" = "Si elimines el dispositiu de la cadena de sincronització, no s'esborraran les anteriors dades sincronitzades del dispositiu.";
 
 /* Title for removing other device from Sync */
-"sync.removeOtherDeviceTitle" = "Vols eliminar %@ de la cadena de sincronització?";
+"sync.removeOtherDeviceTitle" = "Vols suprimir %@ de la cadena de sincronització?";
 
 /* Sync remove device. */
 "sync.removeThisDevice" = "Elimina aquest dispositiu";
@@ -3131,7 +3143,7 @@
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Aquesta supressió és permanent i no hi ha manera de recuperar les dades. Si decideixes començar a utilitzar de nou la sincronització, hauràs de crear un compte nou i tornar a afegir cada dispositiu un per un.";
 
 /* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Dispositius i configuració";
+"sync.Syncdevices" = "Aparells & Configuracions";
 
 /* Sync remove device? */
 "sync.syncRemoveThisDeviceQuestion" = "Vols eliminar aquest dispositiu?";
@@ -3473,7 +3485,7 @@
 "today.similarToSourceSubtitle" = "Similar a %@";
 
 /* No comment provided by engineer. */
-"today.sourcesAndSettings" = "Fonts i configuració";
+"today.sourcesAndSettings" = "Fonts & Configuracions";
 
 /* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
 "today.sourcesHeaderTitle" = "Fonts";
@@ -3546,129 +3558,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave no emmagatzema ni comparteix les teves cerques per veu.";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Vols mantenir-te protegit? Només has de renovar abans que finalitzi la teva subscripció. Com a agraïment per la renovació, fins i tot tindràs un 20% de descompte durant els pròxims 3 mesos.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "Activa la renovació automàtica";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Renova ara automàticament la subscripció VPN de Brave i aconsegueix un 20% de descompte durant 3 mesos!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Renova ara automàticament la subscripció VPN de Brave i aconsegueix un 1 mes gratuït!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Això vol dir que perdràs les proteccions addicionals de Brave per a cada aplicació del teu telèfon.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Oh no! La teva subscripció VPN de Brave està a punt de caducar.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Tallafoc + VPN de Brave";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "No s'ha pogut connectar a l'App Store, torna-ho a provar d'aquí a uns minuts.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "Error de l'App Store";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Bloqueja les connexions de xarxa no desitjades";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Bloqueja els anuncis i els rastrejadors a totes les aplicacions";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Admet velocitats de fins a 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Ràpid i il·limitat fins a 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "Suport 24/7";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "Protegeix totes les connexions";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "Impulsat per";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "Automàtic";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Si us plau, inicia la sessió al teu compte de Brave per actualitzar la sessió de VPN.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "Omet";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "Inicia la sessió";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "Sessió caducada";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "Desactivat";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "Activat";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Caducat";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "Subscriu-te ara";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Això està bé. Ara, la teva subscripció a la VPN de Brave és bona fins a 5 dispositius. Així que et pots subscriure a iOS i utilitzar-lo als teus dispositius Mac, Windows i Android de manera gratuïta.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Ara, utilitza la VPN de Brave a tots els teus dispositius pel mateix preu!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Torna a provar la VPN de Brave i aconsegueix un 20% de descompte durant 3 mesos!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Estàs preparat per protegir totes les aplicacions del teu telèfon? Torna a la VPN de Brave i aconsegueix un 20% de descompte durant els pròxims 3 mesos.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "La VPN de Brave sempre ha bloquejat els rastrejadors a totes les aplicacions, fins i tot fora del navegador de Brave. Ara pots veure qui t'ha intentat rastrejar amb el Centre de Privacitat de Brave.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Sabies que la VPN de Brave et protegeix fora del navegador de Brave?";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "Actualitza";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "No et preocupis. Mantindrem la VPN activa durant uns dies mentre actualitzes la informació de pagament.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Actualitza la teva informació de pagament per mantenir-te protegit amb la VPN de Brave.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "Vols continuar protegint totes les aplicacions del teu telèfon? Només has d'actualitzar les teves dades de pagament.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Hi ha un problema de facturació amb el teu compte, la qual cosa significa que la teva subscripció a la VPN de Brave està a punt de caducar.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "Actualitza el pagament";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "Regió del servidor";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "Configuració actual: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "Regió VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Actualitza la teva forma de pagament";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Data de creació de la cartera";

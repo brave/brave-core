@@ -1,1 +1,51 @@
+/* A button title shown on the menu that presents the Brave News feature. */
+"ActionTitles.braveNews" = "Brave-uutiset";
+
+/* A button title shown on the menu that opens a link to the Brave Talk feature. */
+"ActionTitles.braveTalk" = "Brave Talk";
+
+/* A button title shown on the menu that presents the Brave Leo AI feature. */
+"ActionTitles.leoAIChat" = "Tekoälykeskustelu";
+
+/* A button title shown on the menu that presents the Brave Playlist feature */
+"ActionTitles.playlist" = "Soittolista";
+
+/* A button title shown on the menu that when tapped lets the user print the page they're viewing */
+"ActionTitles.print" = "Tulosta";
+
+/* A button title shown on the menu that presents the Brave Rewards feature. */
+"ActionTitles.rewards" = "Palkinnot";
+
+/* A button title shown on the menu that when tapped lets the user share the current URL or document they're viewing */
+"ActionTitles.share" = "Jaa…";
+
+/* A button title shown on the menu that when tapped presents a Brave VPN paywall */
+"ActionTitles.vpn" = "VPN";
+
+/* The title of a button that presents the settings screen */
+"BrowserMenu.allSettingsButtonTitle" = "Kaikki asetukset";
+
+/* A title shown at the top of the edit/cutsomize actions screen. */
+"BrowserMenu.customizeTitle" = "Mukauta";
+
+/* A button title that when tapped dismisses the customize screen. */
+"BrowserMenu.doneButtonTitle" = "Valmis";
+
+/* The title of a button that shows a screen that lets the user customize which actions are visible on the menu */
+"BrowserMenu.editButtonTitle" = "Muokkaa";
+
+/* A title shown above the list of actions that are hidden on the menu but available for the user to make visible. */
+"BrowserMenu.hiddenActionsTitle" = "Käytettävissä olevat toimet";
+
+/* The title above a list of the users selected browser actions such as bookmarks, history, etc. */
+"BrowserMenu.myActions" = "Toimintani";
+
+/* A button title that when taps shows all actions that are hidden by default */
+"BrowserMenu.showAllButtonTitle" = "Näytä kaikki…";
+
+/* A title shown above the list of actions that are visible on the menu. */
+"BrowserMenu.visibleActionsTitle" = "Kaikki toiminta";
+
+/* A title on a button that lets the user switch the active VPN's selected region. */
+"BrowserMenu.vpnButtonTitle" = "VPN";
 
