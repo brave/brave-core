@@ -16,17 +16,19 @@ import tarfile
 
 import brave_chromium_utils
 
-# npm run build_rust_toolchain_aux
+# npm run build_rust_toolchain_aux (-- --out_dir=<out_dir>)
 
+CONFIG_TOML_TEMPLATE = 'config.toml.template'
+CONFIG_TOML_TEMPLATE_BACKUP = f'{CONFIG_TOML_TEMPLATE}.orig'
 RUST_BUILD_TOOLS = '//tools/rust'
 
 
 def back_up_config_toml_template():
-    shutil.copyfile('config.toml.template', 'config.toml.template.orig')
+    shutil.copyfile(CONFIG_TOML_TEMPLATE, CONFIG_TOML_TEMPLATE_BACKUP)
 
 
 def edit_config_toml_template():
-    with open('config.toml.template', 'r+') as file:
+    with open(CONFIG_TOML_TEMPLATE, 'r+') as file:
         updated = re.sub(
             r'^(\[rust\])$',
             r'[target.wasm32-unknown-unknown]\nprofiler = false\n\n\1\nlld = true',
@@ -38,7 +40,6 @@ def edit_config_toml_template():
 
 def prepare_run_xpy():
     args = ['python3', 'build_rust.py', '--prepare-run-xpy']
-    print(f'Running {" ".join(args)}...')
     subprocess.check_call(args)
 
 
@@ -52,12 +53,11 @@ def run_xpy():
         target_triple, '--target', f'{target_triple},wasm32-unknown-unknown',
         '--stage', '1'
     ]
-    print(f'Running {" ".join(args)}...')
     subprocess.check_call(args)
 
 
 def restore_config_toml_template():
-    shutil.move('config.toml.template.orig', 'config.toml.template')
+    shutil.move(CONFIG_TOML_TEMPLATE_BACKUP, CONFIG_TOML_TEMPLATE)
 
 
 def create_archive():
