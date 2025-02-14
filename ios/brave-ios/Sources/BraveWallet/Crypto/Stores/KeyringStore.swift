@@ -542,6 +542,16 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     }
     let accountInfo: BraveWallet.AccountInfo?
     switch coin {
+    case .eth:
+      accountInfo = await keyringService.importEthereumAccount(
+        accountName: accountName,
+        privateKey: privateKey
+      )
+    case .sol:
+      accountInfo = await keyringService.importSolanaAccount(
+        accountName: accountName,
+        privateKey: privateKey
+      )
     case .fil:
       accountInfo = await keyringService.importFilecoinAccount(
         accountName: accountName,
@@ -558,11 +568,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       // ZCash not supported on iOS yet, including account import
       return nil
     default:
-      accountInfo = await keyringService.importAccount(
-        accountName: accountName,
-        privateKey: privateKey,
-        coin: coin
-      )
+      return nil
     }
     await updateInfo()
     return accountInfo
@@ -580,7 +586,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       // assign default name
       accountName = defaultAccountName(for: coin, chainId: chainId)
     }
-    let accountInfo = await keyringService.importAccountFromJson(
+    let accountInfo = await keyringService.importEthereumAccountFromJson(
       accountName: accountName,
       password: password,
       json: json
@@ -648,7 +654,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       accountId: account.accountId,
       password: password,
       completion: { key in
-        completion(key.isEmpty ? nil : key)
+        completion(key)
       }
     )
   }
