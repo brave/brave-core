@@ -133,9 +133,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &feature_engagement::kIPHGMCCastStartStopFeature,
       &feature_engagement::kIPHPasswordsManagementBubbleAfterSaveFeature,
 #endif
-#if !BUILDFLAG(IS_ANDROID)
-      &features::kToolbarPinning,
-#endif
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeStructuredMetrics,
       &features::kCookieDeprecationFacilitatedTesting,

@@ -48,6 +48,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/chrome_switches.h"
@@ -888,7 +889,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   tab_model()->ActivateTabAt(1);
   EXPECT_FALSE(panel_ui->IsSidePanelShowing());
 
-  // Open global panel when active tab indext is 1.
+  // Open global panel when active tab index is 1.
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   WaitUntil(base::BindLambdaForTesting([&]() {
     return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
@@ -907,7 +908,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   }));
 
   // Check per-url contextual panel close.
-  // If current tab load another url, customize panel should be hidden.
+  // If current tab loads another url, customize panel should be hidden (if
+  // toolbar pinning is disabled)
   tab_model()->ActivateTabAt(0);
   WaitUntil(base::BindLambdaForTesting([&]() {
     return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
@@ -915,8 +917,16 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
 
-  // After loading another url, customize panel is deregistered and closed.
-  EXPECT_FALSE(panel_ui->GetCurrentEntryId());
+  // After loading another url, customize panel is deregistered and closed only
+  // if toolbar pinning is disabled.
+  if (::features::IsToolbarPinningEnabled()) {
+    WaitUntil(base::BindLambdaForTesting([&]() {
+      return panel_ui->GetCurrentEntryId() ==
+             SidePanelEntryId::kCustomizeChrome;
+    }));
+  } else {
+    EXPECT_FALSE(panel_ui->GetCurrentEntryId());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
