@@ -353,6 +353,11 @@ struct DerivedAccountInfo {
                                      mojom::AccountKind::kDerived,
                                      account_index);
     }
+    if (IsCardanoKeyring(keyring_id)) {
+      return MakeIndexBasedAccountId(GetCoinForKeyring(keyring_id), keyring_id,
+                                     mojom::AccountKind::kDerived,
+                                     account_index);
+    }
     return MakeAccountId(GetCoinForKeyring(keyring_id), keyring_id,
                          mojom::AccountKind::kDerived, account_address);
   }
@@ -943,7 +948,7 @@ template <>
 CardanoHDKeyring* KeyringService::GetKeyring(
     mojom::KeyringId keyring_id) const {
   for (auto* keyring :
-       {cardano_hd_mainnet_keyring_.get(), cardano_hd_mainnet_keyring_.get()}) {
+       {cardano_hd_mainnet_keyring_.get(), cardano_hd_testnet_keyring_.get()}) {
     if (keyring && keyring->keyring_id() == keyring_id) {
       return keyring;
     }
@@ -1474,6 +1479,10 @@ std::optional<std::string> KeyringService::AddHDAccountForKeyringInternal(
   }
 
   if (auto* keyring = GetKeyring<ZCashKeyring>(keyring_id)) {
+    return keyring->AddNewHDAccount(index);
+  }
+
+  if (auto* keyring = GetKeyring<CardanoHDKeyring>(keyring_id)) {
     return keyring->AddNewHDAccount(index);
   }
 

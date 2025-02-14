@@ -11,7 +11,7 @@ import { PanelActions } from '../panel/actions'
 
 // types
 import type WalletApiProxy from '../common/wallet_api_proxy'
-import { BraveWallet, SupportedCoinTypes } from '../constants/types'
+import { BraveWallet } from '../constants/types'
 
 // utils
 import getAPIProxy from '../common/async/bridge'
@@ -29,31 +29,15 @@ export function handleEndpointError(
   }
 }
 
-export async function getEnabledCoinTypes(api: WalletApiProxy) {
-  const { isBitcoinEnabled, isZCashEnabled } = (
-    await api.walletHandler.getWalletInfo()
-  ).walletInfo
-
-  // Get All Networks
-  return SupportedCoinTypes.filter((coin) => {
-    return (
-      coin === BraveWallet.CoinType.FIL ||
-      coin === BraveWallet.CoinType.SOL ||
-      (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
-      (coin === BraveWallet.CoinType.ZEC && isZCashEnabled) ||
-      coin === BraveWallet.CoinType.ETH
-    )
-  })
-}
-
 export async function getVisibleNetworksList(api: WalletApiProxy) {
   const { jsonRpcService } = api
 
-  const enabledCoinTypes = await getEnabledCoinTypes(api)
+  const { enabledCoins } = (await api.walletHandler.getWalletInfo()).walletInfo
+
   const { networks: allNetworks } = await jsonRpcService.getAllNetworks()
 
   const networks = (
-    await mapLimit(enabledCoinTypes, 10, async (coin: number) => {
+    await mapLimit(enabledCoins, 10, async (coin: number) => {
       const { chainIds: hiddenChainIds } =
         await jsonRpcService.getHiddenNetworks(coin)
       return allNetworks.filter((n) => !hiddenChainIds.includes(n.chainId))

@@ -286,10 +286,10 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
   EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::FIL), "filecoin");
   EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::SOL), "solana");
   EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::BTC), "bitcoin");
-  EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::ADA), "cardano");
   EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::ZEC), "zcash");
+  EXPECT_EQ(GetPrefKeyForCoinType(mojom::CoinType::ADA), "cardano");
 
-  static_assert(AllCoinsTested<5>());
+  static_assert(AllCoinsTested<6>());
 
   EXPECT_NOTREACHED_DEATH(
       GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));

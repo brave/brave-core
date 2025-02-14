@@ -9,7 +9,6 @@ import { EntityId } from '@reduxjs/toolkit'
 // constants
 import {
   BraveWallet,
-  SupportedCoinTypes,
   SupportedTestNetworks,
   SupportedOnRampNetworks,
   SupportedOffRampNetworks,
@@ -51,7 +50,6 @@ import {
   makeNetworkAsset
 } from '../../options/asset-options'
 import { isIpfs } from '../../utils/string-utils'
-import { getEnabledCoinTypes } from '../../utils/api-utils'
 import { getBraveRewardsProxy } from './brave_rewards_api_proxy'
 import {
   getRewardsBATToken,
@@ -71,7 +69,6 @@ export class BaseQueryCache {
   private _knownTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _userTokensRegistry?: BlockchainTokenEntityAdaptorState
   private _nftImageIpfsGateWayUrlRegistry: Record<string, string | null> = {}
-  private _enabledCoinTypes: number[]
   private _nftMetadataRegistry: Record<string, NFTMetadataReturnType> = {}
   public rewardsInfo: BraveRewardsInfo | undefined = undefined
   public balanceScannerSupportedChains: string[] | undefined = undefined
@@ -128,19 +125,7 @@ export class BaseQueryCache {
       const { jsonRpcService } = getAPIProxy()
 
       // network type flags
-      const { isBitcoinEnabled, isZCashEnabled } = await this.getWalletInfo()
-
-      // Get all networks
-      const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
-        // FIL and SOL networks, unless enabled by brave://flags
-        return (
-          coin === BraveWallet.CoinType.FIL ||
-          coin === BraveWallet.CoinType.SOL ||
-          (coin === BraveWallet.CoinType.BTC && isBitcoinEnabled) ||
-          (coin === BraveWallet.CoinType.ZEC && isZCashEnabled) ||
-          coin === BraveWallet.CoinType.ETH
-        )
-      })
+      const { enabledCoins } = await this.getWalletInfo()
 
       const visibleIds: string[] = []
       const hiddenIds: string[] = []
@@ -155,7 +140,7 @@ export class BaseQueryCache {
 
       // Get all networks for supported coin types
       const networkLists: BraveWallet.NetworkInfo[][] = await mapLimit(
-        filteredSupportedCoinTypes,
+        enabledCoins,
         10,
         async (coin: BraveWallet.CoinType) => {
           // hidden networks for coin
@@ -334,15 +319,6 @@ export class BaseQueryCache {
     return token.logo.startsWith('ipfs://')
       ? (await this.getIpfsGatewayTranslatedNftUrl(token.logo)) || ''
       : `chrome://erc-token-images/${token.logo}`
-  }
-
-  getEnabledCoinTypes = async () => {
-    if (!this._enabledCoinTypes || !this._enabledCoinTypes.length) {
-      // network type flags
-      this._enabledCoinTypes = await getEnabledCoinTypes(getAPIProxy())
-    }
-
-    return this._enabledCoinTypes
   }
 
   getNftMetadata = async (tokenArg: GetBlockchainTokenIdArg) => {

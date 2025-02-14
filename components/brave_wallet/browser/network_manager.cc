@@ -504,6 +504,26 @@ GURL ZCashTestnetRpcUrl() {
   return GURL("https://testnet.lightwalletd.com:9067/");
 }
 
+GURL CardanoMainnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kCardanoMainnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GURL();
+}
+
+GURL CardanoTestnetRpcUrl() {
+  auto switch_url =
+      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+          switches::kCardanoTestnetRpcUrl));
+  if (switch_url.is_valid()) {
+    return switch_url;
+  }
+  return GURL();
+}
+
 const mojom::NetworkInfo* GetBitcoinMainnet() {
   const auto coin = mojom::CoinType::BTC;
   const auto* chain_id = mojom::kBitcoinMainnet;
@@ -580,6 +600,55 @@ const mojom::NetworkInfo* GetZCashTestnet() {
   return network_info.get();
 }
 
+// TODO(apaymyshev): Cardano. Fill the gaps.
+const mojom::NetworkInfo* GetCardanoMainnet() {
+  const auto coin = mojom::CoinType::ADA;
+  const auto* chain_id = mojom::kCardanoMainnet;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Cardano Mainnet",
+       {""},
+       {},
+       0,
+       {CardanoMainnetRpcUrl()},
+       "ADA",
+       "Cardano",
+       6,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetCardanoTestnet() {
+  const auto coin = mojom::CoinType::ADA;
+  const auto* chain_id = mojom::kCardanoTestnet;
+
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {chain_id,
+       "Cardano Testnet",
+       {""},
+       {},
+       0,
+       {CardanoTestnetRpcUrl()},
+       "ADA",
+       "Cardano",
+       6,
+       coin,
+       GetSupportedKeyringsForNetwork(coin, chain_id)});
+  return network_info.get();
+}
+
+const std::vector<const mojom::NetworkInfo*>& GetKnownBitcoinNetworks() {
+  static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
+      // clang-format off
+      GetBitcoinMainnet(),
+      GetBitcoinTestnet(),
+      // clang-format on
+  });
+  return *networks.get();
+}
+
 const std::vector<const mojom::NetworkInfo*>& GetKnownZCashNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
@@ -590,11 +659,11 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownZCashNetworks() {
   return *networks.get();
 }
 
-const std::vector<const mojom::NetworkInfo*>& GetKnownBitcoinNetworks() {
+const std::vector<const mojom::NetworkInfo*>& GetKnownCardanoNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
       // clang-format off
-      GetBitcoinMainnet(),
-      GetBitcoinTestnet(),
+      GetCardanoMainnet(),
+      GetCardanoTestnet(),
       // clang-format on
   });
   return *networks.get();
@@ -743,6 +812,15 @@ mojom::NetworkInfoPtr NetworkManager::GetKnownChain(std::string_view chain_id,
     return nullptr;
   }
 
+  if (coin == mojom::CoinType::ADA) {
+    for (const auto* network : GetKnownCardanoNetworks()) {
+      if (base::EqualsCaseInsensitiveASCII(network->chain_id, chain_id)) {
+        return network->Clone();
+      }
+    }
+    return nullptr;
+  }
+
   NOTREACHED() << coin;
 }
 
@@ -827,6 +905,12 @@ bool NetworkManager::KnownChainExists(std::string_view chain_id,
     }
   } else if (coin == mojom::CoinType::ZEC) {
     for (const auto* network : GetKnownZCashNetworks()) {
+      if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
+        return true;
+      }
+    }
+  } else if (coin == mojom::CoinType::ADA) {
+    for (const auto* network : GetKnownCardanoNetworks()) {
       if (base::CompareCaseInsensitiveASCII(network->chain_id, chain_id) == 0) {
         return true;
       }
@@ -940,6 +1024,13 @@ std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllKnownChains(
     return result;
   }
 
+  if (coin == mojom::CoinType::ADA) {
+    for (const auto* network : GetKnownCardanoNetworks()) {
+      result.push_back(network->Clone());
+    }
+    return result;
+  }
+
   NOTREACHED() << coin;
 }
 
@@ -960,7 +1051,7 @@ GURL NetworkManager::GetNetworkURL(mojom::CoinType coin,
 
 std::vector<mojom::NetworkInfoPtr> NetworkManager::GetAllChains() {
   std::vector<mojom::NetworkInfoPtr> result;
-  for (auto coin : GetSupportedCoins()) {
+  for (auto coin : GetEnabledCoins()) {
     base::Extend(result, MergeKnownAndCustomChains(GetAllKnownChains(coin),
                                                    GetAllCustomChains(coin)));
   }

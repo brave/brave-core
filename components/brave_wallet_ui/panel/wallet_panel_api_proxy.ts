@@ -19,6 +19,7 @@ export class WalletPanelApiProxy extends WalletApiProxy {
       this.jsonRpcService.$.bindNewPipeAndPassReceiver(),
       this.bitcoinWalletService.$.bindNewPipeAndPassReceiver(),
       this.zcashWalletService.$.bindNewPipeAndPassReceiver(),
+      this.cardanoWalletService.$.bindNewPipeAndPassReceiver(),
       this.swapService.$.bindNewPipeAndPassReceiver(),
       this.simulationService.$.bindNewPipeAndPassReceiver(),
       this.assetRatioService.$.bindNewPipeAndPassReceiver(),

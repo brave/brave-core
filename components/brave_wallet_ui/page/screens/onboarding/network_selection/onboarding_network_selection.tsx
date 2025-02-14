@@ -76,7 +76,8 @@ const featuredChainIds = [
   BraveWallet.MAINNET_CHAIN_ID,
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.BITCOIN_MAINNET,
-  BraveWallet.Z_CASH_MAINNET
+  BraveWallet.Z_CASH_MAINNET,
+  BraveWallet.CARDANO_MAINNET
 ]
 
 /** Forcing ETH, SOL account creation until their networks can be hidden */

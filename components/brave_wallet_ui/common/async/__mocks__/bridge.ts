@@ -1334,12 +1334,21 @@ export class MockedWalletApiProxy {
           isBitcoinImportEnabled: true,
           isBitcoinLedgerEnabled: true,
           isZCashEnabled: true,
+          isCardanoEnabled: true,
           isWalletBackedUp: true,
           isWalletCreated: true,
           isWalletLocked: false,
           isAnkrBalancesFeatureEnabled: false,
           isTransactionSimulationsFeatureEnabled: true,
-          isZCashShieldedTransactionsEnabled: false
+          isZCashShieldedTransactionsEnabled: false,
+          enabledCoins: [
+            BraveWallet.CoinType.BTC,
+            BraveWallet.CoinType.ZEC,
+            BraveWallet.CoinType.ETH,
+            BraveWallet.CoinType.FIL,
+            BraveWallet.CoinType.SOL,
+            BraveWallet.CoinType.ADA
+          ]
         }
       }
     }

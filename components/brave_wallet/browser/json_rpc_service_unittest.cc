@@ -3962,7 +3962,11 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidCoin) {
   base::MockCallback<JsonRpcService::UnstoppableDomainsGetWalletAddrCallback>
       callback;
 
-  for (auto coin : {mojom::CoinType::BTC, mojom::CoinType::ZEC}) {
+  for (auto coin : {
+           mojom::CoinType::BTC,
+           mojom::CoinType::ZEC,
+           mojom::CoinType::ADA,
+       }) {
     auto token = mojom::BlockchainToken::New();
     token->coin = coin;
     EXPECT_CALL(callback, Run("", mojom::ProviderError::kSuccess, ""));
@@ -3971,7 +3975,7 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidCoin) {
     task_environment_.RunUntilIdle();
   }
 
-  static_assert(AllCoinsTested<5>());
+  static_assert(AllCoinsTested<6>());
 }
 
 TEST_F(JsonRpcServiceUnitTest, IsValidEnsDomain) {

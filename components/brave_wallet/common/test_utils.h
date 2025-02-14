@@ -9,7 +9,6 @@
 #include <string>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 
 namespace brave_wallet {
@@ -39,6 +38,28 @@ auto MakeVectorFromArgs(Args&&... args) {
 }
 
 }  // namespace test
+
+inline constexpr mojom::CoinType kAllCoins[] = {
+    mojom::CoinType::ETH, mojom::CoinType::FIL, mojom::CoinType::SOL,
+    mojom::CoinType::BTC, mojom::CoinType::ZEC, mojom::CoinType::ADA,
+};
+
+inline constexpr mojom::KeyringId kAllKeyrings[] = {
+    mojom::KeyringId::kDefault,
+    mojom::KeyringId::kBitcoin84,
+    mojom::KeyringId::kBitcoin84Testnet,
+    mojom::KeyringId::kFilecoin,
+    mojom::KeyringId::kFilecoinTestnet,
+    mojom::KeyringId::kSolana,
+    mojom::KeyringId::kZCashMainnet,
+    mojom::KeyringId::kZCashTestnet,
+    mojom::KeyringId::kBitcoinImport,
+    mojom::KeyringId::kBitcoinImportTestnet,
+    mojom::KeyringId::kZCashMainnet,
+    mojom::KeyringId::kZCashTestnet,
+    mojom::KeyringId::kCardanoMainnet,
+    mojom::KeyringId::kCardanoTestnet,
+};
 
 // Change calling test's hardcoded value only after it has adequate testing for
 // newly added coin.

@@ -48,7 +48,8 @@ export const OnboardingSelectWalletDevice = () => {
   const accountOptions = CreateAccountOptions({
     visibleNetworks,
     isBitcoinEnabled: isBitcoinLedgerEnabled,
-    isZCashEnabled: false // No zcash hardware accounts by now.
+    isZCashEnabled: false, // No zcash hardware accounts by now.
+    isCardanoEnabled: false // No cardano hardware accounts by now.
   })
 
   // state
