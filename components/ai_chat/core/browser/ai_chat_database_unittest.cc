@@ -265,8 +265,8 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
-                           std::nullopt, std::nullopt, std::nullopt, 0, false,
-                           false));
+                           std::nullopt, std::nullopt, mojom::kContentIdNone,
+                           std::nullopt, 0, false, false));
 
   // Test 2 entries to verify they are recorded against different entries
   auto history = CreateSampleChatHistory(2u);
@@ -312,8 +312,8 @@ TEST_P(AIChatDatabaseTest, WebSourcesEvent_Invalid) {
   mojom::ConversationPtr metadata = mojom::Conversation::New(
       uuid, "title", base::Time::Now() - base::Hours(2), true, std::nullopt,
       mojom::SiteInfo::New(std::nullopt, mojom::ContentType::PageContent,
-                           std::nullopt, std::nullopt, std::nullopt, 0, false,
-                           false));
+                           std::nullopt, std::nullopt, mojom::kContentIdNone,
+                           std::nullopt, 0, false, false));
 
   // Test 2 entries to verify they are recorded against different entries. Make
   // some entries invalid to verify they are not persisted.
