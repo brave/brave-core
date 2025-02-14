@@ -14,7 +14,7 @@
 "aichat.advancedSettingsDefaultModelTitle" = "Standaardmodel";
 
 /* The title for the header for adjusting leo ai settings */
-"aichat.advancedSettingsHeaderTitle" = "Leo is een slimme assistent op AI, ingebouwd in de browser.";
+"aichat.advancedSettingsHeaderTitle" = "Leo is een slimme AI-gestuurde assistent, ingebouwd in de browser.";
 
 /* The subtitle for the button which links purchase to Brave Account */
 "aichat.advancedSettingsLinkPurchaseActionSubTitle" = "Koppel uw App Store-aankoop aan uw Brave-account om Leo op andere apparaten te gebruiken.";
@@ -23,7 +23,7 @@
 "aichat.advancedSettingsLinkPurchaseActionTitle" = "Koppel aankoop aan Brave-account";
 
 /* The title for the label showing the date which subscription expires */
-"aichat.advancedSettingsSubscriptionExpiresTitle" = "Verloopt:";
+"aichat.advancedSettingsSubscriptionExpiresTitle" = "Verloopt op";
 
 /* The title for the header for subscription details */
 "aichat.advancedSettingsSubscriptionHeaderTitle" = "Abonnement";
@@ -31,7 +31,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
+/* The title for the button that allows the user to view the App Store Receipt */
 "aichat.advancedSettingsViewReceiptTitle" = "Toon App Store-betalingsbewijs";
 
 /* The subtitle for the error showing there is an error from App Store */
@@ -263,7 +263,7 @@
 "aichat.paywallPurchaseDeepNote" = "Alle abonnementen worden automatisch verlengd, maar kunnen altijd vóór de verlengdatum worden opgezegd.";
 
 /* The error description when in app purcahse is erroneous. */
-"aichat.paywallPurchaseErrorDescription" = "Aankoop kan niet worden voltooid. Probeer het opnieuw, of controleer eerst je betalingsgegevens bij Apple en probeer het dan opnieuw.";
+"aichat.paywallPurchaseErrorDescription" = "Aankoop kan niet worden afgerond. Probeer het opnieuw of controleer je betalingsgegevens bij Apple en probeer het dan opnieuw.";
 
 /* The subtitle for premium upseel when rate limit is shown after sending a message */
 "aichat.paywallRateLimitSubTitle" = "Krijg snellere en betere antwoorden met een Premium-abonnement, of probeer het later opnieuw.";
@@ -290,7 +290,7 @@
 "aichat.paywallUpsellCreativityTopicTitle" = "Laat je creativiteit de vrije loop";
 
 /* The subtitle model type entry in paywall upsell screen */
-"aichat.paywallUpsellModelTypeTopicSubTitle" = "Als eerste toegang tot krachtige modellen met verschillende vaardigheden.";
+"aichat.paywallUpsellModelTypeTopicSubTitle" = "Krijg als eerste toegang tot krachtige modellen met andere vaardigheden.";
 
 /* The title model type entry in paywall upsell screen */
 "aichat.paywallUpsellModelTypeTopicTitle" = "Ontdek andere AI-modellen";

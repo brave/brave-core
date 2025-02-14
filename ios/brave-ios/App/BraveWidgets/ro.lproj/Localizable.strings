@@ -38,7 +38,7 @@
 "widgets.QRCode" = "Cod QR";
 
 /* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Caută";
+"widgets.searchShortcutTitle" = "Căutare";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Un rezumat al modului în care Brave îți economisește timp și te protejează online.";

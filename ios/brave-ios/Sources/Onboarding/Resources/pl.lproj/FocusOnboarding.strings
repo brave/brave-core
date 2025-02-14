@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Ustaw Brave jako domyślną przeglądarkę";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Przeglądaj szybciej i zużywaj mniej danych.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Mniej reklam i modułów śledzących.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Nie teraz";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Serio, pozbyliśmy się ich.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Blokowanie irytujących przerywników w Twoich ulubionych serwisach streamingowych.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Koniec z reklamami wideo.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Blokowanie przerywników wideo";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Dowiedz się więcej o naszej analizie produktów z zachowaniem prywatności (P3A)";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "Rozpocznij przeglądanie";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Otwórz ustawienia systemowe";
+"focusOnboarding.systemSettingsButtonTitle" = "Ustaw jako domyślną";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Wprowadź adres URL, aby cieszyć się mniejszą liczbą reklam i elementów śledzących";
+"focusOnboarding.urlBarIndicatorDescription" = "Oglądaj wideo i ciesz się mniejszą liczbą reklam i elementów śledzących.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Zobacz, czym wyróżnia się Brave";

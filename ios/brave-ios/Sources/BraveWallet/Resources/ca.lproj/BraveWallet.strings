@@ -274,8 +274,26 @@
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Compra criptomonedes amb Apple Pay, targeta de crèdit o dèbit.";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "no s'ha aprovat la bonificació de";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "Sol·licitud de cancel·lació enviada";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "Cancelant transacció";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "Cancel·la la transacció";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "Cancel·la la transacció";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "Es crearà una transacció nova per a cancel·lar la transacció existent";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "s'ha revertit a";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Data";
@@ -366,6 +384,12 @@
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "S'ha sol·licitat l'aprovació il·limitada";
+
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "compte";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "Transacció cancel·lada!";
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Tanca";
@@ -566,7 +590,7 @@
 "wallet.decryptMessageScreenshotDetectedMessage" = "Alerta: Una captura de pantalla del teu missatge pot tenir una còpia de seguretat en un servei de fitxers al núvol i qualsevol aplicació amb accés a fotos la pot llegir. Brave recomana que no desis aquesta captura de pantalla i que l'eliminis tan aviat com sigui possible.";
 
 /* The title of the button to approve a decrypt request from a dapps website. */
-"wallet.decryptRequestApprove" = "Permet";
+"wallet.decryptRequestApprove" = "Permetre";
 
 /* The title of the button to show the message of a decrypt request from a dapps website. */
 "wallet.decryptRequestReveal" = "Revela";
@@ -953,7 +977,7 @@
 "wallet.manageSiteConnectionsConfirmAlertMessage" = "Això eliminarà tots els permisos de connexió de Wallet per a tots els llocs web.";
 
 /* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertRemove" = "Elimina";
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Suprimeix";
 
 /* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
 "wallet.manageSiteConnectionsConfirmAlertTitle" = "Vols eliminar tots els permisos?";
@@ -1161,6 +1185,9 @@
 
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Ja estàs llest!";
+
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "S'ha confirmat la transacció original.";
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Altres accions de la cartera";
@@ -1460,7 +1487,7 @@
 "wallet.settingsResetTransactionFooter" = "Esborrar les transaccions pot ser útil per als desenvolupadors o quan s'esborra l'estat en un servidor local";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionTitle" = "Esborra la informació de les transaccions i de nonce";
+"wallet.settingsResetTransactionTitle" = "Esborrar transacció & informació de Nonce";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "Restableix la cartera";
@@ -1756,6 +1783,12 @@
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Ordena els actius";
 
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "Està trigant més del que pensaves?";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Accelera";
+
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Accelera";
 
@@ -1772,7 +1805,7 @@
 "wallet.submittedTransactionTitle" = "Transacció enviada";
 
 /* As in swapping cryptocurrency from one asset to another */
-"wallet.swap" = "Intercanvia";
+"wallet.swap" = "Intercanvi";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
 "wallet.swapConfirmationNetworkDesc" = "a %@";
@@ -1805,7 +1838,7 @@
 "wallet.swapCryptoSlippageTitle" = "Tolerància al lliscament";
 
 /* The title of the button for users to click when they want to swap between two cryptos */
-"wallet.swapCryptoSwapButtonTitle" = "Intercanvia";
+"wallet.swapCryptoSwapButtonTitle" = "Intercanvi";
 
 /* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
 "wallet.swapCryptoToTitle" = "A";
@@ -1877,7 +1910,7 @@
 "wallet.transactionApproveSymbolTitle" = "Aprovat %1$@ %2$@";
 
 /* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
-"wallet.transactionBacklogAcknowledgement" = "Esborra i substitueix les transaccions incompletes";
+"wallet.transactionBacklogAcknowledgement" = "Esborra & reemplaça les transaccions incomplertes";
 
 /* Additional information, when users have previously clear and replace the incomplete transaction(s) */
 "wallet.transactionBacklogAfterReplacement" = "De moment, no cal cap acció addicional. Només cal esperar que les transaccions no confirmades s'esborrin.";
@@ -1919,7 +1952,7 @@
 "wallet.transactionFromToAccessibilityLabel" = "Des de: %1$@. A: %2$@";
 
 /* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
-"wallet.transactionsDescription" = "%d transaccions";
+"wallet.transactionsDescription" = "%d transacció";
 
 /* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: "Sent 0.0054 ETH ($22.44)" */
 "wallet.transactionSendTitle" = "Enviat %1$@ %2$@ (%3$@)";
@@ -2023,6 +2056,58 @@
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Transferència de token";
 
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "Aprovant";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "Completat";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "s'ha aprovat al teu";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "S'ha produït un error intentant aprovar";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "No s'ha pogut aprovar";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "Activat";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "Enviant";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "S'ha produït un error intentant enviar";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "No s'ha pogut enviar";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "s'ha enviat al compte";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "La transacció s'ha signat i s'enviarà a la xarxa per dapps i espera confirmació.";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Pots tancar aquesta pantalla.";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "s'ha afegit al teu";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "Intercanvi";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "No s'ha pogut realitzar l'intercanvi";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "a";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "Veure a Activitat";
+
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave utilitzarà Infura per resoldre els noms de domini .crypto (i també %1$@) d'Unstoppable Domains. Brave amaga la teva adreça IP. Si actives això, Infura veurà que algú està intentant visitar aquests dominis però res més. Mostra <a href=%2$@>%3$@</a> i <a href=%4$@>%5$@</a> d'Infura.";
 
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Resol els noms dels dominis d'Unstoppable Domains";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "No s'ha pogut cancel·lar";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "No s'ha pogut accelerar";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Error desconegut";

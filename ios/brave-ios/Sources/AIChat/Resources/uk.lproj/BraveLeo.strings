@@ -29,10 +29,10 @@
 "aichat.advancedSettingsSubscriptionHeaderTitle" = "Підписка";
 
 /* The title for the label showing status if the subscription */
-"aichat.advancedSettingsSubscriptionStatusTitle" = "Стан";
+"aichat.advancedSettingsSubscriptionStatusTitle" = "Статус";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
-"aichat.advancedSettingsViewReceiptTitle" = "Перегляд квитанції App Store";
+/* The title for the button that allows the user to view the App Store Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "Переглянути квитанцію App Store";
 
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "Не вдалося встановити з’єднання з App Store. Повторіть спробу пізніше.";
@@ -311,7 +311,7 @@
 "aichat.premiumModelStatusTitle" = "Преміум";
 
 /* Title shown next to Leo in navigation bar when user has premium subcription */
-"aichat.premiumNavigationBarBadgeTitle" = "Premium";
+"aichat.premiumNavigationBarBadgeTitle" = "Преміум";
 
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Передплата Premium";
@@ -326,7 +326,7 @@
 "aichat.quickMenuGoPremiumActionTitle" = "Перейти на версію Premium";
 
 /* The title of action for quick menu which display subscription management view */
-"aichat.quickMenuManageSubscriptionActionTitle" = "Керувати передплатами";
+"aichat.quickMenuManageSubscriptionActionTitle" = "Керувати підписками";
 
 /* The title for error when rating a response is not success */
 "aichat.rateAnswerActionErrorText" = "Помилка оцінки відповіді";
@@ -347,7 +347,7 @@
 "aichat.resetLeoDataErrorTitle" = "Скинути дані Leo";
 
 /* The title for copying response to clipboard action */
-"aichat.responseContextMenuCopyTitle" = "Копіювати";
+"aichat.responseContextMenuCopyTitle" = "Скопіювати";
 
 /* The title for disliking response to clipboard action */
 "aichat.responseContextMenuDislikeAnswerTitle" = "Відповідь не подобається";

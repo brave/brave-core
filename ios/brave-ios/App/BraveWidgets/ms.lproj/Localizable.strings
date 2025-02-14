@@ -1,5 +1,5 @@
 /* Title for bookmarks menu item */
-"widgets.BookmarksMenuItem" = "Penanda Halaman";
+"widgets.BookmarksMenuItem" = "Penanda Buku";
 
 /* The name of the feature */
 "widgets.braveLeo" = "AI Leo";
@@ -8,7 +8,7 @@
 "widgets.braveNews" = "Brave News";
 
 /* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Muat Turun";
+"widgets.DownloadsMenuItem" = "Muat Turu";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Capai laman web kegemaran anda dengan cepat.";
@@ -38,7 +38,7 @@
 "widgets.QRCode" = "Kod QR";
 
 /* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "Carian";
+"widgets.searchShortcutTitle" = "Cari";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "Ringkasan tentang cara Brave menjimatkan masa anda dan melindungi anda dalam talian.";
@@ -53,10 +53,10 @@
 "widgets.shortcutsEnterURLButton" = "Cari atau taip URL";
 
 /* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "Tab Baharu";
+"widgets.shortcutsNewTabButton" = "Tab Bahar";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Senarai Main";
+"widgets.shortcutsPlaylistButton" = "Senarai main";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "Tab Peribadi";

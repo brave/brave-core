@@ -160,6 +160,30 @@
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Danh sách đã được cập nhật";
 
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Nghiêm ngặt";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Đã chặn bởi";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Yêu cầu đã chặn";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Trình chặn nội dung";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Chặn yêu cầu";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL yêu cầu";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Loại tài nguyên";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL nguồn";
+
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Hủy dữ liệu";
 
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "Kết nối đến %@ không bảo mật";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "Chặn Trình theo dõi & Quảng cáo";
+"TrackersAndAdsBlocking" = "Chặn trình theo dõi & Quảng cáo";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Cập nhật danh sách";

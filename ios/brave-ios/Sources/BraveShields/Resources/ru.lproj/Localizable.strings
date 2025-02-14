@@ -1,8 +1,8 @@
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Трекеров и объявлений заблокировано";
+"AdsAndTrackersrBlocked" = "Трекеры и реклама блокируются";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Реклам\nзаблокировано";
+"AdsrBlocked" = "Заблоки-\nрованная\nреклама";
 
 /* Data Saved Shield Stat */
 "DataSavedStat" = "Прим. данных\nСохранено";
@@ -23,5 +23,5 @@
 "ShieldsTimeStatsSeconds" = "сек.";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Трекеров\nзаблокировано";
+"TrackersrBlocked" = "Заблоки-\nрованные\nтрекеры";
 

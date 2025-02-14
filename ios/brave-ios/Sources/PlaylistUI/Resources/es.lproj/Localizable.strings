@@ -68,13 +68,19 @@
 "playlist.deletePlaylistConfirmationMessage" = "Se eliminarán todos los vídeos de esta playlist";
 
 /* A button call to action that allows the user to dismiss the active modal */
-"playlist.doneButtonTitle" = "Hecho";
+"playlist.doneButtonTitle" = "Listo";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylist" = "Editar playlist";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Editar";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Empieza a escribir para buscar tus audios y vídeos guardados";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Buscar en los medios";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Toque para seleccionar los elementos multimedia";
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Añada elementos multimedia de sus sitios favoritos para reproducirlos aquí.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "No se han encontrado resultados";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Abrir en nueva pestaña privada";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Guardar datos sin conexión";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Búsqueda";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Compartir";

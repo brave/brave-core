@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Nu îți înregistrăm activitatea";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Protejează întregul tău dispozitiv";
+"vpn.checkboxProtectYourDevices" = "Protejați-vă toate aplicațiile și dispozitivul";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Siguranță sporită pentru rețele Wi-Fi de domiciliu și publice";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Activează";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Toate planurile includ o %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Toate planurile includ o";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "perioadă de încercare gratuită de 7 zile";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Instalează VPN-ul";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Încearcă GRATUIT";
+"vpn.learnMore" = "Începe o perioadă de încercare gratuită de 7 zile";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Se reînnoiește lunar";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld Servere";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Abonamentele vor fi debitate prin intermediul contului Apple. Orice porțiune neutilizată din perioada de încercare gratuită, dacă este oferită, este pierdută atunci când achiziționați un abonament.\n\nAbonamentul dvs. se va reînnoi automat, cu excepția cazului în care este anulat cu cel puțin 24 de ore înainte de sfârșitul perioadei curente.\n\nVă puteți gestiona abonamentele în Setări.\n\nPrin utilizarea Brave, sunteți de acord cu Termenii de utilizare și cu Politica de confidențialitate.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "lună";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "an";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Expirat";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "Regiune VPN schimbată.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Se reînnoiește anual";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Se reînnoiește lunar";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Nu se poate reseta configurația VPN. Te rog să încerci din nou. Dacă problema persistă, contactează serviciul de asistență.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Restabilește";
 
+/* Use in context: save 16%. */
+"vpn.save" = "salvează";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ Server";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld Server";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Fă upgrade către un VPN pentru a proteja conexiunea și a bloca sistemele invazive de urmărire oriunde te-ai afla.";
+"vpn.settingHeaderBody" = "Protejează fiecare aplicație cu Brave VPN. Protejează până la 10 dispozitive cu un singur plan.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Contactează asistența tehnică";
@@ -221,7 +239,7 @@
 "vpn.settingsFAQ" = "Asistență VPN";
 
 /* Button to link your VPN receipt to other devices. */
-"vpn.settingsLinkReceipt" = "Asociază achiziția la contul tău Brave";
+"vpn.settingsLinkReceipt" = "Conectează achiziția la contul tău Brave";
 
 /* Footer text to link your VPN receipt to other devices. */
 "vpn.settingsLinkReceiptFooter" = "Conectează achiziția AppStore la contul tău Brave pentru a putea utiliza Brave VPN și pe alte dispozitive.";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Protocol de transport";
 
-/* Button to allow the user to view the app-store receipt. */
-"vpn.settingsViewReceipt" = "Vezi chitanța de App Store";
+/* Button to allow the user to view the App Store receipt. */
+"vpn.settingsViewReceipt" = "Vezi chitanța App Store";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Atunci când este activat, dacă conexiunea VPN se întrerupe în mod neașteptat, dispozitivul dvs. va fi deconectat automat de la internet, pentru a preveni scurgerile de date și adrese IP. [Află mai multe](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Activează Comutator de oprire";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Smart Proxy Routing asigură direcționarea traficului prin servere proxy dedicate pentru a permite accesul la conținut/site-uri restricționate în mod obișnuit sau servicii terțe. [Aflați mai multe](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Activează Smart Proxy";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Actualizare metodă de plată";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Abonamentele vor fi plătite prin intermediul contului tău iTunes.\n\nOrice porțiune neutilizată din perioada de încercare gratuită, dacă este oferită, este pierdută atunci când cumperi un abonament.\n\nAbonamentul tău se va reînnoi automat în caz că nu este anulat cu cel puțin 24 de ore înainte de sfârșitul perioadei curente.\n\nPoți gestiona abonamentele în Setări.\n\nFolosind Brave, ești de acord cu Termenii de Utilizare și Politica de Confidențialitate.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN dezactivat";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN activat";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Folosește un cod de ofertă";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Reînnoind anual economisești %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Cea mai bună valoare";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "CEL MAI AVANTAJOS";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Un an";

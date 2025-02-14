@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Hủy";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "Tên người dùng và mật khẩu đang được yêu cầu bởi %1$@. Trang web thông báo: %2$@";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "Đăng nhập";
 
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Kiểm soát toàn cục";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Lưu thông tin liên hệ cho mục đích báo cáo trang web hỏng trong tương lai";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Nếu bạn cung cấp thông tin liên hệ, thông tin đó sẽ được lưu trữ cho các báo cáo trong tương lai";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Nếu trang web hiển thị lỗi, hãy thử tắt Lá chắn";
@@ -563,7 +566,7 @@
 "defaultBrowserCallout.introCancelButtonText" = "Không phải Bây giờ";
 
 /* Button text to open app settings */
-"defaultBrowserCallout.introOpenSettingsButtonText" = "Mở phần Cài đặt";
+"defaultBrowserCallout.introOpenSettingsButtonText" = "Mở Cài đặt";
 
 /* Primary text on default browser popup screen */
 "defaultBrowserCallout.introPrimaryText" = "Mở tất cả các đường liên kết bằng Brave để bảo vệ quyền riêng tư của bạn";
@@ -896,7 +899,7 @@
 "login.loginListEmptyScreenTitle" = "Không tìm thấy thông tin đăng nhập";
 
 /* Title for navigation bar of the login list screen */
-"login.loginListNavigationTitle" = "Thông tin đăng nhập & Mật khẩu";
+"login.loginListNavigationTitle" = "Đăng nhập & Mật khẩu";
 
 /* The header title displayed over the never saved login list entry */
 "login.loginListNeverSavedHeaderTitle" = "Không bao giờ lưu";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "Chạm để xem Lá chắn Brave";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Quảng cáo & trình theo dõi đã bị chặn";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Quảng cáo & trình theo dõi bị chặn";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Liên kết gói đăng ký VPN của bạn";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Gói đăng ký Brave VPN của bạn có thể bảo vệ tối đa 5 thiết bị, trên Android, iOS và máy tính. Chỉ cần liên kết gói đăng ký App Store với tài khoản Brave của bạn.";
+"onboarding.linkReceiptDescription" = "Gói đăng ký Brave VPN của bạn có thể bảo vệ tối đa 10 thiết bị, trên Android, iOS và máy tính. Chỉ cần liên kết gói đăng ký App Store với tài khoản Brave của bạn.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Mở rộng bảo vệ Tường lửa Brave + VPN của bạn";
@@ -1225,6 +1228,12 @@
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Mở trong cửa sổ mới";
 
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "Tiếp tục tải xuống hồ sơ cấu hình từ %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "Hồ sơ cấu hình có sẵn";
+
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Mở trong thẻ riêng tư mới";
 
@@ -1232,7 +1241,7 @@
 "OpenNewTabButtonTitle" = "Mở trong thẻ mới";
 
 /* See http://mzl.la/1G7uHo7 */
-"OpenPhoneSettingsActionTitle" = "Mở phần Cài đặt";
+"OpenPhoneSettingsActionTitle" = "Mở Cài đặt";
 
 /* The description indicating the device is active # of days ago. The parameter substituted for "%ld" is the number of days. E.g.: Active 123 Days Ago */
 "opentabs.activePeriodDeviceDaysAgoTitle" = "Hoạt động %ld ngày trước";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "Thẻ đang mở";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "Tiếp tục tải xuống sự kiện lịch từ %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "Sự kiện lịch có sẵn";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Mở trang web";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "Việc thêm các tệp video và âm thanh để sử dụng ngoại tuyến có thể sử dụng nhiều dung lượng lưu trữ trên thiết bị của bạn cũng như sử dụng dữ liệu di động của bạn";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Tùy chọn này sẽ tự động lưu các mục của danh sách phát trên thiết bị của bạn để bạn có thể phát mà không cần kết nối internet.";
+"playlist.playlistAutoSaveSettingsFooterText" = "Sau khi mở nội dung trong Danh sách phát, tùy chọn này sẽ giữ các mục của danh sách phát đã mở trên thiết bị của bạn để bạn có thể phát chúng mà không cần kết nối Internet.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Tự động lưu cho dùng Ngoại tuyến";
+"playlist.playlistAutoSaveSettingsTitle" = "Lưu nội dung để phát ngoại tuyến";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "Việc thêm tệp video và âm thanh để sử dụng ngoại tuyến có thể chiếm nhiều dung lượng lưu trữ trên thiết bị của bạn. Vui lòng xóa một số tệp để giải phóng dung lượng lưu trữ.";
@@ -1618,12 +1633,6 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Nhớ vị trí phát tệp";
 
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Tắt WebKit MediaSource API";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Tương thích với web";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Xóa";
 
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "Xin lỗi";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Đã thêm vào Danh sách phát Brave";
+"playList.toastAddedToPlaylistTitle" = "Xem trong Danh sách phát";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Mở";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Thêm vào Danh sách phát Brave";
+"playList.toastAddToPlaylistTitle" = "Thêm vào Danh sách phát";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Xem trong Danh sách phát Brave";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "Hoàn tác";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Thêm nút danh sách phát (đặc điểm nhận dạng là 4 dòng với biểu tượng +) bên cạnh thanh địa chỉ trong trình duyệt Brave. Nút này cho phép bạn nhanh chóng mở Danh sách phát hay thêm hoặc xóa tệp đa phương tiện.";
+"playlist.urlBarButtonOptionFooter" = "Thêm nút danh sách phát bên cạnh thanh địa chỉ trong trình duyệt Brave. Nút này cho phép bạn nhanh chóng mở Danh sách phát hay thêm hoặc xóa tệp đa phương tiện.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Bật nút truy cập nhanh";
@@ -1841,7 +1850,7 @@
 "privacyHub.allTimeSitesCount" = "%lld trang web";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld trình theo dõi & quảng cáo";
+"privacyHub.allTimeTrackersCount" = "%lld trình theo dõi & & quảng cáo";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
 "privacyHub.allTimeTrackerTitle" = "Trình theo dõi & Quảng cáo";
@@ -1889,7 +1898,7 @@
 "privacyHub.noDataToShow" = "Chưa có dữ liệu để hiển thị.";
 
 /* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "Nhận cập nhật mỗi tuần về việc chặn trình theo dõi & quảng cáo.";
+"privacyHub.notificationCalloutBody" = "Nhận thông tin cập nhật về quyền riêng tư hàng tuần trên trình theo dõi & chặn quảng cáo.";
 
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Bật thông báo";
@@ -1955,7 +1964,7 @@
 "privacyHub.vpnAlertLocationTrackerTypeSingular" = "Thông tin vị trí";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "Trình theo dõi & quảng cáo";
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Trình theo dõi & Quảng cáo";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Trình theo dõi hoặc quảng cáo";
@@ -1994,13 +2003,13 @@
 "PrivateTabLink" = "Tìm hiểu về Thẻ riêng tư.";
 
 /* Default engine for private search. */
-"PrivateTabSearch" = "Thẻ riêng tư";
+"PrivateTabSearch" = "Thẻ Riêng tư";
 
 /* Title for quick-search engines settings section. */
 "QuickSearchEngines" = "Tìm nhanh công cụ tìm kiếm";
 
 /* Open the App Store to rate Brave. */
-"RateBrave" = "Xếp hạng Brave";
+"RateBrave" = "Đánh giá Brave";
 
 /* Accessibility label for button increasing font size in display settings of reader mode */
 "ReaderModeBiggerFontButtonAccessibilityLabel" = "Tăng kích thước chữ";
@@ -2060,7 +2069,7 @@
 "recently.closed.empty.list.title" = "Không có thẻ nào vừa đóng gần đây.";
 
 /* Open Tab action title */
-"recently.closed.open" = "Mở ";
+"recently.closed.open" = "Mở";
 
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Mở lại thẻ vừa đóng";
@@ -2146,6 +2155,9 @@
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Liên hệ với tôi tại: (tùy chọn)";
 
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Nếu bạn cung cấp thông tin liên hệ, thông tin đó sẽ được lưu trữ cho mục đích báo cáo trang web hỏng trong tương lai.";
+
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Email, Twitter, v.v.";
 
@@ -2183,7 +2195,7 @@
 "RestoreTabAffirmativeButtonTitle" = "Có";
 
 /* Restore Tabs Negative Action */
-"RestoreTabNegativeButtonTitle" = "Không";
+"RestoreTabNegativeButtonTitle" = "No";
 
 /* Restore Tabs Prompt Description */
 "RestoreTabOnCrashAlertMessage" = "Thật không may, Brave bị lỗi đóng đột ngột hoặc không được đóng đúng cách.\nKhôi phục các thẻ?";
@@ -2357,7 +2369,7 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Tiền thưởng thường chọn";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Hồ sơ, thiết bị & thông tin số dư của Phần thưởng (luôn chia sẻ)";
+"RewardsInternalsSharableBasicDescription" = "Hồ sơ, thiết bị & thông tin số dư Quà tặng (luôn chia sẻ)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Thông tin cơ bản";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Tìm gợi ý";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Mở thẻ & dấu trang & lịch sử";
+"SearchHistorySectionHeader" = "Mở Thẻ & Dấu trang & Lịch sử";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Xóa tìm kiếm";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "Xin chúc mừng. Người đặc biệt.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld trình theo dõi & quảng cáo bị chặn!";
+"shieldEducation.trackerCountShareTitle" = "%ld trình theo dõi & quảng cáo đã bị chặn!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Video không có quảng cáo sử dụng ít dữ liệu hơn.";
@@ -2705,7 +2717,7 @@
 "shortcuts.activityTypeEnableVPNTitle" = "Mở trình duyệt Brave và bật VPN";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Mở trong thẻ riêng tư mới";
+"shortcuts.activityTypeNewPrivateTabSuggestedPhrase" = "Mở thẻ riêng tư mới";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeNewPrivateTabTitle" = "Mở thẻ mới trong trình duyệt riêng tư";
@@ -2777,7 +2789,7 @@
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Mở Cài đặt";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Sử dụng Phím tắt để mở tab mới & xóa lịch sử của trình duyệt qua Siri - Trợ lý giọng nói";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Sử dụng Phím tắt để mở thẻ mới & xóa lịch sử của trình duyệt qua Siri - Trợ lý giọng nói";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Xóa lịch sử trình duyệt";
@@ -2795,7 +2807,7 @@
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "Mở dấu trang";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Sử dụng Phím tắt để mở tab mới & hiển thị Tin tức Brave qua Siri - Trợ lý giọng nói";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Sử dụng Phím tắt để mở thẻ mới & hiển thị bảng tin Tin tức Brave qua Siri - Trợ lý giọng nói";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Mở Tin tức Brave";
@@ -3152,7 +3164,7 @@
 "sync.toDevice" = "Đồng bộ hóa thiết bị";
 
 /* Sync to existing device description */
-"sync.toDeviceDescription" = "Trên thiết bị đã đồng bộ hóa hiện có, mở Cài đặt Brave và điều hướng đến Cài đặt -> Đồng bộ hóa. Chọn \"Thêm thiết bị\" và quét mã hiển thị trên màn hình.";
+"sync.toDeviceDescription" = "Sử dụng thiết bị đã đồng bộ hóa hiện có, mở Cài đặt Brave và đi đến mục Cài đặt -> Đồng bộ hóa. Chọn \"Thêm thiết bị\" rồi quét mã hiển thị trên màn hình.";
 
 /* Description on popup when setting up a sync group fails */
 "sync.unableCreateGroup" = "Không thể đồng bộ hóa thiết bị này";
@@ -3503,7 +3515,7 @@
 "Turn on search suggestions?" = "Bật gợi ý tìm kiếm?";
 
 /* No comment provided by engineer. */
-"UnlockButtonTitle" = "Mở khóa";
+"UnlockButtonTitle" = "Unlock";
 
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Công cụ thanh toán không được hỗ trợ";
@@ -3546,129 +3558,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave không lưu trữ hoặc chia sẻ tìm kiếm bằng giọng nói của bạn.";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Bạn muốn tiếp tục được bảo vệ? Chỉ cần gia hạn trước khi gói đăng ký của bạn kết thúc. Để cảm ơn bạn vì lựa chọn gia hạn, chúng tôi sẽ giảm giá 20% cho 3 tháng tiếp theo.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "Bật tự động gia hạn";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Tự động gia hạn gói đăng ký Brave VPN của bạn ngay bây giờ và được giảm giá 20% cho 3 tháng!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Tự động gia hạn gói đăng ký Brave VPN của bạn ngay bây giờ và nhận 1 tháng miễn phí!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Điều đó có nghĩa là bạn sẽ mất các lớp bảo vệ bổ sung của Brave cho mọi ứng dụng trên điện thoại.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Ôi không! Gói đăng ký Brave VPN của bạn sắp hết hạn.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Tường lửa Brave + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "Không thể kết nối với App Store, vui lòng thử lại sau vài phút.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "Lỗi App Store";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Chặn các kết nối mạng không mong muốn";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Chặn quảng cáo & trình theo dõi trên tất cả ứng dụng";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Hỗ trợ tốc độ lên đến 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Nhanh và không giới hạn lên đến 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "Hỗ trợ 24/7";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "Bảo vệ an toàn mọi kết nối";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "Được cung cấp bởi";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "Tự động";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Vui lòng đăng nhập vào Tài khoản Brave của bạn để làm mới phiên VPN.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "Bỏ qua";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "Đăng nhập";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "Phiên hết hạn";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "Đã tắt";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "Đã bật";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Đã hết hạn";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "Đăng ký gói ngay";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Đúng vậy. Gói đăng ký Brave VPN của bạn có thể hoạt động tốt trên tối đa 5 thiết bị. Vì vậy, bạn có thể đăng ký gói trên iOS và sử dụng miễn phí trên các thiết bị Mac, Windows và Android của mình.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Giờ đây bạn có thể sử dụng Brave VPN trên mọi thiết bị của mình với cùng một mức giá!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Thử dùng Brave VPN một lần nữa và được giảm giá 20% cho 3 tháng!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Bạn muốn bảo vệ mọi ứng dụng trên điện thoại của mình? Quay lại Brave VPN và được giảm giá 20% cho 3 tháng tiếp theo.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN luôn chặn trình theo dõi trên mọi ứng dụng, ngay cả ngoài trình duyệt Brave. Giờ đây bạn có thể xem ai đã cố gắng theo dõi bạn, với Trung tâm Quyền riêng tư của Brave.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Bạn có biết Brave VPN cũng bảo vệ bạn bên ngoài Trình duyệt Brave?";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "Cập nhật";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "Đừng lo lắng. Chúng tôi sẽ giữ VPN hoạt động trong vài ngày trong lúc bạn cập nhật thông tin thanh toán.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Cập nhật thông tin thanh toán của bạn để tiếp tục được bảo vệ với Brave VPN.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "Bạn muốn tiếp tục bảo vệ mọi ứng dụng trên điện thoại của mình? Chỉ cần cập nhật thông tin thanh toán.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Tài khoản của bạn có vấn đề về thanh toán, đồng nghĩa với việc gói đăng ký Brave VPN của bạn sắp hết hạn.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "Cập nhật thanh toán";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "Vùng máy chủ";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "Cài đặt hiện tại: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "Vùng VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Vui lòng cập nhật phương thức thanh toán của bạn";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Ngày tạo Ví";

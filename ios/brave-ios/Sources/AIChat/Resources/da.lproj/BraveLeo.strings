@@ -31,7 +31,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
+/* The title for the button that allows the user to view the App Store Receipt */
 "aichat.advancedSettingsViewReceiptTitle" = "Se App Store-kvittering";
 
 /* The subtitle for the error showing there is an error from App Store */

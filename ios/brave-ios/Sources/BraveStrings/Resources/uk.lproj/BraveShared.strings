@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Скасувати";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "Запит на ім’я користувача і пароль від %1$@. Відповідь сайту: %2$@ ";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "Вхід";
 
@@ -152,7 +149,7 @@
 "BraveRewardsAdNotificationTitle" = "Нагороди Brave";
 
 /* No comment provided by engineer. */
-"BraveRewardsOpen" = "Відкрити";
+"BraveRewardsOpen" = "Відкриті";
 
 /* Brave Rewards title in settings */
 "BraveRewardsSettingsTitle" = "Винагороди";
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Глобальні налаштування";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Зберігати контактну інформацію для повідомлень про несправні сайти";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Якщо ви надасте контактну інформацію, вона буде збережена для майбутніх звітів";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Якщо вебсайт не працює, спробуйте вимкнути щити";
@@ -392,7 +395,7 @@
 "certificateViewer.validityDatesTitle" = "Дати дії";
 
 /* Title indicating whether or not a private key can be used to verify data is legitimate */
-"certificateViewer.verifyTitle" = "Перевірити";
+"certificateViewer.verifyTitle" = "Підтвердити";
 
 /* Certificates have a version number */
 "certificateViewer.versionNumberTitle" = "Версія";
@@ -455,7 +458,7 @@
 "CommonDownload" = "Завантажити";
 
 /* Text to select sharing something (example: image, video, URL) */
-"CommonShare" = "Надіслати";
+"CommonShare" = "Поділитися";
 
 /* No comment provided by engineer. */
 "Confirm" = "Підтвердити";
@@ -527,7 +530,7 @@
 "customSearchEngine.suggestionTemplateTitle" = "Шаблон рекомендації:";
 
 /* The message that asks the user to Add the search provider explaining where the search engine will appear */
-"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Нова пошукова система буде відображатися на панелі швидкого пошуку.";
+"customSearchEngine.thirdPartySearchEngineAddAlertDescription" = "Нова пошукова система відображатиметься на панелі швидкого пошуку.";
 
 /* The title that asks the user to Add the search provider */
 "customSearchEngine.thirdPartySearchEngineAddAlertTitle" = "Додати пошукову службу?";
@@ -557,7 +560,7 @@
 "CustomSearchEngines" = "Користувацькі пошукові системи";
 
 /* The success message that appears after a user sucessfully adds a new search engine */
-"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Пошукову систему додано.";
+"custonmSearchEngine.thirdPartySearchEngineAddedToastTitle" = "Пошукову систему додано!";
 
 /* Button text to close the default browser popup. */
 "defaultBrowserCallout.introCancelButtonText" = "Не зараз";
@@ -653,7 +656,7 @@
 "Earlier" = "Раніше";
 
 /* No comment provided by engineer. */
-"Edit" = "Редагувати";
+"Edit" = "Редагування";
 
 /* Button to edit a bookmark */
 "EditBookmark" = "Редагування закладки";
@@ -746,13 +749,13 @@
 "FavoritesLocationFooterText" = "Розділ обраного розташовано на головному екрані. Ці закладки не синхронізуються з іншими пристроями.";
 
 /* Title for favorites cell */
-"FavoritesRootLevelCellTitle" = "Вибране";
+"FavoritesRootLevelCellTitle" = "Обране";
 
 /* No comment provided by engineer. */
 "Features" = "Функції";
 
 /* Share action title */
-"FindInPage" = "Знайти на сторінці";
+"FindInPage" = "Пошук на сторінці";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Завершено";
@@ -767,7 +770,7 @@
 "FindInPagePreviousResultButtonAccessibilityLabel" = "Попередній результат на сторінці";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"findInPageTitle" = "Знайти на сторінці";
+"findInPageTitle" = "Пошук на сторінці";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "findNextTitle" = "Знайти далі";
@@ -782,7 +785,7 @@
 "FingerprintingMethods" = "Способи додавання відбитків пальців";
 
 /* No comment provided by engineer. */
-"FingerprintingProtection" = "Заблокувати відстеження вебсайтами";
+"FingerprintingProtection" = "Заблокувати використання відбитків пальців";
 
 /* No comment provided by engineer. */
 "FingerprintingProtectionDescription" = "Вебсайтам буде складніше розпізнавати відмінні риси вашого пристрою.";
@@ -893,7 +896,7 @@
 "login.loginInfoSetPasscodeAlertTitle" = "Установити код доступу";
 
 /* The message displayed on the password list screen when there is not password found */
-"login.loginListEmptyScreenTitle" = "Імена для входу не знайдено";
+"login.loginListEmptyScreenTitle" = "Немає облікових даних";
 
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "Імена для входу й паролі";
@@ -902,7 +905,7 @@
 "login.loginListNeverSavedHeaderTitle" = "Ніколи не зберігалося";
 
 /* The header title displayed over the login list */
-"login.loginListSavedLoginsHeaderTitle" = "Збережені імена для входу";
+"login.loginListSavedLoginsHeaderTitle" = "Збережені облікові дані";
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "Фільтрувати";
@@ -923,7 +926,7 @@
 "LoginListDeselectAllButtonTitle" = "Зняти все виділення";
 
 /* Label displayed when no logins are found after searching. */
-"LoginListNoLoginTitle" = "Імена для входу не знайдено";
+"LoginListNoLoginTitle" = "Немає облікових даних";
 
 /* Title for Logins List View screen. */
 "LoginListScreenTitle" = "Облікові дані";
@@ -935,7 +938,7 @@
 "MediaAutoBackgrounding" = "Дозволити програвання аудіо у фоновому режимі";
 
 /* Copy password text selection menu item */
-"MenuItemCopyTitle" = "Копіювати";
+"MenuItemCopyTitle" = "Скопіювати";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Приховати";
@@ -1082,7 +1085,7 @@
 "OBErrorDetails" = "Під час створення гаманця сталася помилка. Спробуйте ще раз";
 
 /* No comment provided by engineer. */
-"OBErrorOkay" = "Добре";
+"OBErrorOkay" = "OK";
 
 /* A generic error title for onboarding */
 "OBErrorTitle" = "Помилка";
@@ -1151,7 +1154,7 @@
 "OBShowMeButton" = "Показати";
 
 /* Button to show Brave Rewards. */
-"OBTurnOnButton" = "Почати";
+"OBTurnOnButton" = "Початок";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
 "onboarding.blockedAdsOnboardingBigTechInformationText" = "Заблоковано оголошень і трекерів: %1$@ та ще %2$lld";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "Торкніться, щоб переглянути Brave Shields";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Рекламу та трекери заблоковано";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Заблоковано стеження і рекламу";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Зв’язати підписку на VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "За допомогою підписки на VPN від Brave можна захистити до 5 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку App Store до облікового запису Brave.";
+"onboarding.linkReceiptDescription" = "За допомогою підписки на VPN від Brave можна захистити до 10 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку App Store до облікового запису Brave.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Розширений захист брандмауера Firewall + VPN";
@@ -1199,7 +1202,7 @@
 "OnboardingSkipButton" = "Пропустити";
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
-"OnProviderText" = "у %@";
+"OnProviderText" = "в %@";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Відкрити всі (%i)";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Відкрити в новому вікні";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "Продовжити завантаження профілю конфігурації з %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "Доступний профіль конфігурації";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Відкрити у новій приватній вкладці";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "Відкриті вкладки";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "Продовжити завантаження подій календаря з %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "Доступна подія календаря";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Відкрити вебсайт";
@@ -1478,7 +1493,7 @@
 "playList.expiredAlertTitle" = "Термін дії відео закінчився";
 
 /* Text indicator on the table cell If a video is expired */
-"playList.expiredLabelTitle" = "Термін дії завершився";
+"playList.expiredLabelTitle" = "Термін дії закінчився";
 
 /* Number of items in the playlsit folder. Example: '10 items' */
 "playlist.folderItemCountPlural" = "Елементів: %d ";
@@ -1508,7 +1523,7 @@
 "playList.noticeAlertTitle" = "Примітка";
 
 /* Okay Alert button title */
-"playList.okayButtonTitle" = "Добре";
+"playList.okayButtonTitle" = "OK";
 
 /* Title for opening the playlist */
 "playList.openInPlaylistButtonTitle" = "Відкрити в списку відтворення";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "Додавання відео- й аудіофайлів для використання офлайн може потребувати багато місця на вашому пристрої, а також використовувати мобільні дані";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Ця опція автоматично збереже елементи вашого списку відтворення на пристрої, щоб ви могли відтворювати їх за відсутності підключення до Інтернету.";
+"playlist.playlistAutoSaveSettingsFooterText" = "Після додавання контенту до «Плейлиста», ця опція збереже його на вашому пристрої, щоб ви могли відтворювати його без підключення до Інтернету.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Автозбереження для доступу офлайн";
+"playlist.playlistAutoSaveSettingsTitle" = "Зберегти контент для відтворення в автономному режимі";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "Додавання відео- й аудіофайлів для використання офлайн може потребувати багато місця на вашому пристрої. Видаліть деякі файли, щоб звільнити місце в пам’яті.";
@@ -1562,7 +1577,7 @@
 "playlist.playlistLongPressSettingsOptionTitle" = "Увімкнути жест «Довге натиснення»";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Медіафайли й офлайн-дані списків відтворення";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Медіафайли та офлайн-дані в «Плейлисті»";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Дані списків відтворення офлайн";
@@ -1580,7 +1595,7 @@
 "playlist.playlistSaveForOfflineErrorMessage" = "На жаль, наразі цей елемент не можна зберегти для режиму офлайн.";
 
 /* Title of alert when saving a playlist item for offline mode */
-"playlist.playlistSaveForOfflineErrorTitle" = "Сталася помилка";
+"playlist.playlistSaveForOfflineErrorTitle" = "На жаль, сталася помилка.";
 
 /* Title For the Section that videos are listed */
 "playList.playListSectionTitle" = "Списки відтворення";
@@ -1617,12 +1632,6 @@
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Запам’ятати положення під час відтворення файлів";
-
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Відключення API WebKit MediaSource";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Вебсумісність";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Видалити";
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "Помилка";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Додано у Brave Playlist";
+"playList.toastAddedToPlaylistTitle" = "Переглянути в Плейлисті";
 
 /* The title for the toast button when an item was added to playlist */
-"playList.toastAddToPlaylistOpenButton" = "Відкрити";
+"playList.toastAddToPlaylistOpenButton" = "Відкриті";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Додати у Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "Додати до списку відтворення";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Подивитися у Brave Playlist";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "Скасувати";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Поруч із панеллю адреси в браузері Brave з’явиться кнопка списку відтворення. Кнопка має вигляд 4 ліній із символом +. За допомогою неї ви зможете отримати швидкий доступ до списку відтворення, а також видалити/додати медіафайли.";
+"playlist.urlBarButtonOptionFooter" = "Поруч із панеллю адреси в браузері Brave з’явиться кнопка списку відтворення. За допомогою неї ви зможете отримати швидкий доступ до списку відтворення, а також видалити/додати медіафайли.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Додати кнопку швидкого доступу";
@@ -1712,10 +1721,10 @@
 "playlistFolders.createNewFolderButtonTitle" = "Створити";
 
 /* The title of the button that allows the user to edit the name of a folder */
-"playlistFolders.editButtonTitle" = "Редагувати";
+"playlistFolders.editButtonTitle" = "Редагування";
 
 /* The title of the screen where the user edits folder names */
-"playlistFolders.editFolderScreenTitle" = "Редагування папки";
+"playlistFolders.editFolderScreenTitle" = "Редагувати папку";
 
 /* The title of the menu option that allows the user to edit the name of a folder */
 "playlistFolders.editMenuTitle" = "Редагувати список відтворення";
@@ -1724,13 +1733,13 @@
 "playlistFolders.errorSavingMessage" = "На жаль, не вдалося зберегти зміни, зроблені в цій папці";
 
 /* The title of the button where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderButtonTitle" = "Перемістити";
+"playlistFolders.moveFolderButtonTitle" = "Переміщення";
 
 /* The title of the section indicating the currently selected folder */
 "playlistFolders.moveFolderCurrentSectionTitle" = "Поточний список відтворення";
 
 /* The title of the screen where the user will move an item from one folder to another folder. */
-"playlistFolders.moveFolderScreenTitle" = "Перемістити";
+"playlistFolders.moveFolderScreenTitle" = "Переміщення";
 
 /* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
 "playlistFolders.moveItemDescription" = "%@ та ще 1 об’єкт";
@@ -1784,7 +1793,7 @@
 "playlistFolderSharing.deletePlaylistMenuTitle" = "Видалити список відтворення";
 
 /* Menu Title for editing a folder */
-"playlistFolderSharing.editMenuTitle" = "Редагувати";
+"playlistFolderSharing.editMenuTitle" = "Редагування";
 
 /* Accessibility Title for the playlist menu. */
 "playlistFolderSharing.menuButtonAccessibilityTitle" = "Кнопка меню списку відтворення";
@@ -1826,7 +1835,7 @@
 "privacyHub.allTimeListsHeader" = "Увесь час";
 
 /* Title of a section to show total count of trackers blocked by Brave */
-"privacyHub.allTimeListsTrackersView" = "Трекери й реклама";
+"privacyHub.allTimeListsTrackersView" = "Стеження і реклама";
 
 /* Title of a section to show websites containing highest amount of trackers */
 "privacyHub.allTimeListsWebsitesView" = "Вебсайти";
@@ -1835,7 +1844,7 @@
 "privacyHub.allTimeListTrackersHeaderTitle" = "Найчастіші трекери й реклама на сайтах, що ви відвідуєте";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "Сайти з найбільшою кількість трекерів і реклами";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Сайти з найбільшою кількістю трекерів і реклами";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "Сайти: %lld";
@@ -1844,7 +1853,7 @@
 "privacyHub.allTimeTrackersCount" = "Трекери й реклама: %lld";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "Трекер і реклама";
+"privacyHub.allTimeTrackerTitle" = "Стеження і реклама";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Вебсайт";
@@ -1880,7 +1889,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "Сервіс Brave Shields заблокував **%1$@** на сайтах (**%2$lld**)";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "Найчастіший трекер і реклама";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Трекери й реклама, які зустрічаються найчастіше";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "Відвідайте деякі вебсайти, щоб побачити тут дані.";
@@ -1889,7 +1898,7 @@
 "privacyHub.noDataToShow" = "Немає даних для показу.";
 
 /* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "Отримуйте щотижневі оновлення щодо конфіденційності про блокування трекерів і реклами.";
+"privacyHub.notificationCalloutBody" = "Отримуйте щотижневі оновлення щодо приватності про блокування стеження і реклами.";
 
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Увімкнути сповіщення";
@@ -1937,7 +1946,7 @@
 "privacyHub.settingsSlearDataTitle" = "Очистити дані Shields";
 
 /* This label says shields, as a source of by what a resource was blocked. Think of it in context of 'Blocked by Shields' */
-"privacyHub.shieldsLabel" = "Shields";
+"privacyHub.shieldsLabel" = "Екрани";
 
 /* Text of a callout that tells the user they shields tracking data is disabled. The %@ placeholder will name the setting that needs to be enabled */
 "privacyHub.trackingDisabledCalloutBody" = "Увімкніть параметр «%@», щоб переглянути дані тут";
@@ -2060,7 +2069,7 @@
 "recently.closed.empty.list.title" = "Немає нещодавно закритих вкладок.";
 
 /* Open Tab action title */
-"recently.closed.open" = "Відкрити";
+"recently.closed.open" = "Відкриті";
 
 /* Re-open Last Tab action title */
 "recently.closed.reopen.latest" = "Відкриття останньої закритої вкладки";
@@ -2087,16 +2096,16 @@
 "RecentSearchDisableSuggestions" = "Вимкнути";
 
 /* Recent Search button title to enable suggestions */
-"RecentSearchEnableSuggestions" = "Увімкнути";
+"RecentSearchEnableSuggestions" = "Увімкнено";
 
 /* Recent Search Favorites Section Title */
-"RecentSearchFavorites" = "Вибране";
+"RecentSearchFavorites" = "Обране";
 
 /* Recent Search Hide Button */
 "RecentSearchHide" = "Приховати";
 
 /* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Вставити та перейти";
+"RecentSearchPasteAndGo" = "Вставити й перейти";
 
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "у";
@@ -2111,7 +2120,7 @@
 "RecentSearchScannerDescriptionTitle" = "Інструкції";
 
 /* Scanning a QR Code for searching */
-"RecentSearchScannerTitle" = "Сканування QR-коду";
+"RecentSearchScannerTitle" = "Сканувати QR-код";
 
 /* Recent Search Section Description */
 "RecentSearchSectionDescription" = "Функція «Недавні пошукові запити» дозволяє отримати захищений доступ до історії пошуків. Увімкнути функцію?";
@@ -2145,6 +2154,9 @@
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Мої контактні дані: (необов’язково)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Якщо ви надасте контактну інформацію, вона буде збережена для майбутніх звітів про несправні сайти.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Ел. адреса, Twitter тощо.";
@@ -2261,7 +2273,7 @@
 "RewardsInternalsContributionProcessorNone" = "Немає";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionProcessorUphold" = "Підтвердити";
+"RewardsInternalsContributionProcessorUphold" = "Uphold";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionProcessorUserFunds" = "Кошти користувача";
@@ -2297,7 +2309,7 @@
 "RewardsInternalsContributionsStepRewardsOff" = "Винагороди вимкнено";
 
 /* No comment provided by engineer. */
-"RewardsInternalsContributionsStepStart" = "Почати";
+"RewardsInternalsContributionsStepStart" = "Початок";
 
 /* No comment provided by engineer. */
 "RewardsInternalsContributionsTitle" = "Внески";
@@ -2318,7 +2330,7 @@
 "RewardsInternalsExpiresAt" = "Термін дії:";
 
 /* No comment provided by engineer. */
-"RewardsInternalsInvalid" = "Неможливе";
+"RewardsInternalsInvalid" = "Недійсний";
 
 /* No comment provided by engineer. */
 "RewardsInternalsKeyInfoSeed" = "Інформація про ключ";
@@ -2354,7 +2366,7 @@
 "RewardsInternalsRewardsTypeOneTimeTip" = "Одноразовий платіж";
 
 /* No comment provided by engineer. */
-"RewardsInternalsRewardsTypeRecurringTip" = "Повторюваний платіж";
+"RewardsInternalsRewardsTypeRecurringTip" = "Повторний платіж";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicDescription" = "Профіль винагород, пристрій і баланс (надсилається завжди)";
@@ -2375,7 +2387,7 @@
 "RewardsInternalsSharableLogsDescription" = "Зазначені журнали винагород";
 
 /* No comment provided by engineer. */
-"RewardsInternalsShare" = "Надіслати";
+"RewardsInternalsShare" = "Поділитися";
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "Надіслати внутрішні дані Rewards";
@@ -2387,7 +2399,7 @@
 "RewardsInternalsSharingWarningTitle" = "Попередження";
 
 /* No comment provided by engineer. */
-"RewardsInternalsStatus" = "Стан";
+"RewardsInternalsStatus" = "Статус";
 
 /* i.e. 'Step: Started' */
 "RewardsInternalsStep" = "Етап";
@@ -2432,7 +2444,7 @@
 "SaveChangesButtonTitle" = "Зберегти зміни";
 
 /* Settings item for clearing passwords and login data */
-"SavedLogins" = "Збережені імена для входу";
+"SavedLogins" = "Збережені облікові дані";
 
 /* The title for the folder created when all bookmarks are being */
 "SavedTabsFolderTitle" = "Збережені вкладки";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Пошук за підказками";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Відкрити вкладки, закладки й журнал";
+"SearchHistorySectionHeader" = "Відкриті вкладки, закладки та історія";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Видалити дані пошуку";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "Вітаємо! Неперевершеність — ваше друге ім’я.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "Заблоковано трекерів і рекламних оголошень: %ld.";
+"shieldEducation.trackerCountShareTitle" = "Заблоковано трекерів і рекламних оголошень: %ld!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Відео без реклами дозволяють заощадити дані.";
@@ -2681,7 +2693,7 @@
 "ShortcutItemTitleNewTab" = "Нова вкладка";
 
 /* Quick Action for 3D-Touch on the Application Icon */
-"ShortcutItemTitleQRCode" = "Сканування QR-коду";
+"ShortcutItemTitleQRCode" = "Сканувати QR-код";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeBraveNewsDescription" = "Відкрити Brave News і переглянути сьогоднішні популярні новини";
@@ -2864,7 +2876,7 @@
 "SiteReportedTitle" = "Дякуємо";
 
 /* Brave panel topmost title */
-"SiteShieldSettings" = "Shields";
+"SiteShieldSettings" = "Екрани";
 
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
@@ -2891,7 +2903,7 @@
 "sync.addComputerTitle" = "Додавання комп’ютера";
 
 /* Add mobile device to sync with scan */
-"sync.addDeviceScan" = "QR-код ланцюжка синхронізації";
+"sync.addDeviceScan" = "QR-код ланцюга синхронізації";
 
 /* Sync add device description */
 "sync.addDeviceScanDescription" = "На іншому мобільному пристрої перейдіть до меню «Синхронізація» на панелі налаштувань і торкніться кнопки «Сканувати код синхронізації». Відскануйте наведений нижче QR-код за допомогою камери.\n\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
@@ -2972,7 +2984,7 @@
 "sync.computerDevice" = "Комп’ютер";
 
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
-"sync.configurationInformationText" = "Керуйте інформацією, яку ви бажаєте синхронізувати між пристроями. Ці налаштування вплинуть лише на цей пристрій.";
+"sync.configurationInformationText" = "Виберіть інформацію, що синхронізуватиметься між пристроями. Ці налаштування стосуватимуться лише цього пристрою.";
 
 /* Copied action complete title */
 "sync.copied" = "Скопійовано!";
@@ -2987,10 +2999,10 @@
 "sync.deleteAccount" = "Видалити обліковий запис для синхронізації";
 
 /* Part 1 Description for Alert used action Delete Sync Account. */
-"sync.deleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення ваших зашифрованих даних із серверів Brave і вимкнення синхронізації на всіх під’єднаних пристроях.";
+"sync.deleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення зашифрованих даних із серверів Brave і вимкнення синхронізації на всіх ваших підключених пристроях. ";
 
 /* Part 2 Description for Alert used action Delete Sync Account. */
-"sync.deleteAccountAlertDescriptionPart2" = "Однак дані, що зберігаються на цих пристроях, не будуть видалені.";
+"sync.deleteAccountAlertDescriptionPart2" = "Однак дані, що зберігаються на цих пристроях, видалено не буде.";
 
 /* Title for Alert used action Delete Sync Account. */
 "sync.deleteAccountAlertTitle" = "Видалити обліковий запис для синхронізації";
@@ -3017,7 +3029,7 @@
 "sync.expiredError" = "Термін дії цього коду синхронізації минув. Згенеруйте новий код і повторіть спробу.";
 
 /* Generic Sync Error Description */
-"sync.genericError" = "Сталася помилка";
+"sync.genericError" = "На жаль, сталася помилка.";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "Увімкнути камеру";
@@ -3032,7 +3044,7 @@
 "sync.internalsTitle" = "Синхронізувати внутрішні дані";
 
 /* Generic error message for when the sync code is invalid */
-"sync.invalidSyncCodeDescription" = "Недійсний код синхронізації. Будь ласка, перевірте його і спробуйте знову.";
+"sync.invalidSyncCodeDescription" = "Невірний код синхронізації. Будь ласка, перевірте його і спробуйте знову.";
 
 /* A warning when user adds more than 5 device to sync chain */
 "sync.joinChainCodewordsWarning" = "Примітка. Ви повинні підтвердити кожен пристрій у списку зверху. Пристрої в ланцюжку синхронізації можуть отримувати персональні дані, як-от паролі й історія перегляду.";
@@ -3074,7 +3086,7 @@
 "sync.removeCurrentDeviceTitle" = "Видалити %@ з ланцюжка синхронізації?";
 
 /* Action button for removing sync device. */
-"sync.removeDevice" = "Вилучити";
+"sync.removeDevice" = "Видалити";
 
 /* Remove device button for action sheet. */
 "sync.removeDeviceAction" = "Видалити пристрій";
@@ -3116,7 +3128,7 @@
 "sync.setPasscodeAlertTitle" = "Установити код доступу";
 
 /* Header title for Sync settings */
-"sync.settingsHeader" = "У наведеному нижче списку зазначено всі пристрої у вашому ланцюжку синхронізації. Кожним пристроєм можна керувати з будь-якого іншого пристрою.";
+"sync.settingsHeader" = "У наведенному нижче списку пристроїв вказано всі пристрої ланцюжка синхронізації. Кожним пристроєм у списку можна керувати з будь-якого іншого пристрою у списку.";
 
 /* Title for Sync Settings Toggle Header */
 "sync.settingsTitle" = "Налаштування синхронізації";
@@ -3164,10 +3176,10 @@
 "sync.unableToConnectTitle" = "Неможливо з'єднатися";
 
 /* Sync Error Description */
-"sync.validForTooLongError" = "Цей код недійсний. Перевірте правильність налаштування часу на вашому пристрої.";
+"sync.validForTooLongError" = "Цей код недійсний. Перевірте, чи правильно налаштовано час і часовий пояс на вашому пристрої.";
 
 /* Sync settings welcome */
-"sync.welcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати всі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
+"sync.welcome" = "Щоб розпочати, потрібно встановити Brave на кожен пристрій, який ви хочете синхронізувати. Щоб об’єднати усі пристрої в одну захищену мережу, створіть ланцюжок синхронізації.";
 
 /* Word count title */
 "sync.wordCount" = "Кількість слів: %i";
@@ -3221,7 +3233,7 @@
 "TabToolbarBackButtonAccessibilityLabel" = "Назад";
 
 /* Accessibility Label for the tab toolbar Forward button */
-"TabToolbarForwardButtonAccessibilityLabel" = "Далі";
+"TabToolbarForwardButtonAccessibilityLabel" = "Вперед";
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Захищене з’єднання";
@@ -3248,7 +3260,7 @@
 "TabToolbarSearchAddressPlaceholderText" = "Пошук або введення адреси";
 
 /* Accessibility Label for the browser toolbar Share button */
-"TabToolbarShareButtonAccessibilityLabel" = "Надіслати";
+"TabToolbarShareButtonAccessibilityLabel" = "Поділитися";
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "Зупинити";
@@ -3530,7 +3542,7 @@
 "UserWalletGenericErrorMessage" = "Під час входу до акаунту Uphold сталася помилка. Спробуйте пізніше";
 
 /* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "Сталася помилка";
+"UserWalletGenericErrorTitle" = "На жаль, сталася помилка.";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Версія %1$@ (%2$@)";
@@ -3546,129 +3558,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave не зберігає та не передає іншим сторонам дані ваших голосових пошуків.";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Хочете залишитися під захистом? Просто подовжте підписку до терміну її завершення. У такому разі ви отримаєте знижку 20 %  на наступні 3 місяці.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "Автоматичне подовження";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Увімкніть автоматичне подовження підписки Brave VPN і отримайте знижку 20 % на 3 місяці!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Увімкніть автоматичне подовження підписки Brave VPN і отримайте 1 місяць у подарунок!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Це значить, що у вас не буде доступу до додаткових засобів захисту Brave для кожного додатка на телефоні.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Термін дії підписки Brave VPN скоро мине.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Файрвол та VPN-розширення браузера Brave";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "Не вдалося встановити з’єднання з App Store. Повторіть спробу через декілька хвилин.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "Помилка з’єднання з App Store";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Блокує небежані з’єднання з Інтернетом";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Блокування трекерів і реклами в усіх програмах";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Підтримує швидкість з’єднання до 100 Мб/с";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Швидко й без обмежень зі швидкістю до 100 МБ/с";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "Цілодобова підтримка без вихідних";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "Захистить усі ваші з’єднання";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "За підтримки";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "Автоматично";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Увійдіть в обліковий запис Brave, щоб оновити сеанс VPN.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "Відхилити";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "Вхід";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "Термін дії сеансу сплив";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "Вимкнено";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "Увімкнено";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Термін дії завершився";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "Підписатися";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Правильно. Підписка Brave VPN наразі дійсна для 5 пристроїв. Ви можете оформити підписку на iOS і безкоштовно використовувати засоби захисту на пристроях Mac, Windows або Android.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Користуйтеся Brave VPN на всіх пристроях за однією ціною!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Дайте Brave VPN ще один шанс і отримайте знижку 20 % на 3 місяці!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Готові захистити кожен додаток на телефоні? Поверніться у Brave VPN і отримайте знижку 20 % на 3 місяці.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN блокує трекери в кожному додатку, навіть поза браузером Brave. Тепер за допомогою Центра конфіденційності Brave ви можете переглянути, хто намагається відстежити вас.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Ви знали, що Brave VPN захищає вас не лише в браузері Brave?";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "Змінити";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "Не хвилюйтеся. Функція VPN буде доступна ще кілька днів, щоб ви могли оновити платіжну інформацію.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Оновіть платіжну інформацію, щоб залишатися захищеним з Brave VPN.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "Хочете, щоб і надалі всі програми на телефоні були захищеними? Оновіть платіжну інформацію.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "У вашому обліковому записі сталася помилка оплати. Це значить, що термін дії підписки Brave VPN скоро мине.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "Оновити платіжну інформацію";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "Регіон сервера";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "Поточне налаштування: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "Регіон VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Оновіть свій спосіб оплати";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Дата створення гаманця";
@@ -3707,7 +3596,7 @@
 "websiteData.removeSelectedDataRecord" = "Видалити елементи (%ld)";
 
 /* Title for favorites widget on 'add widget' screen. */
-"widgets.favoritesWidgetTitle" = "Вибране";
+"widgets.favoritesWidgetTitle" = "Обране";
 
 /* Title of the settings for widgets part */
 "widgets.widgetTitle" = "Віджети";

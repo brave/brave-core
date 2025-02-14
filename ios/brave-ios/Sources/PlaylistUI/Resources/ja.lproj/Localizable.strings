@@ -59,7 +59,7 @@
 "playlist.createNewPlaylistButtonTitle" = "作成";
 
 /* A button title that when tapped will allow the user to delete the selected item. */
-"playlist.deleteItem" = "削除する";
+"playlist.deleteItem" = "削除";
 
 /* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
 "playlist.deletePlaylist" = "プレイリストを削除しています...";
@@ -74,7 +74,13 @@
 "playlist.editPlaylist" = "プレイリストを編集";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylistShortTitle" = "編集";
+"playlist.editPlaylistShortTitle" = "編集する";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "保存した音声や動画を検索するには、入力を開始してください。";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "メディアを検索";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "タップしてメディアを選択";
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "お気に入りのサイトからメディアを追加して、ここで再生します。";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "結果が見つかりませんでした";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "新しいプライベートタブで開く";
 
@@ -134,10 +143,13 @@
 "playlist.repeatModeOptionOne" = "1回";
 
 /* A button call to action that allows the user to save their selection */
-"playlist.saveButtonTitle" = "保存する";
+"playlist.saveButtonTitle" = "保存";
 
 /* A button title that will attempt to save the selected item for offline playback. */
-"playlist.saveOfflineData" = "オフライン再生を可能にする";
+"playlist.saveOfflineData" = "オフライン再生用データを保存する";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "検索";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "共有";

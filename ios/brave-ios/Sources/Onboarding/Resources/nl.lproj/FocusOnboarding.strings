@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Brave instellen als uw standaardbrowser";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Surf sneller en verbruik minder data.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Minder advertenties en trackers.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Niet nu";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Nou, daar zijn we vanaf.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Voorkom vervelende onderbrekingen op jouw favoriete streamingsites.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Geen videoadvertenties meer.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Voorkom onderbrekingen wanneer je streamt";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Lees meer over onze privacybeschermende-productanalyse (P3A)";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "Browsen maar";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Naar systeeminstellingen";
+"focusOnboarding.systemSettingsButtonTitle" = "Stel in als standaard";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Geef een URL op om te profiteren van minder advertenties en trackers";
+"focusOnboarding.urlBarIndicatorDescription" = "Stream nu met minder advertenties en trackers.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Bekijk wat Brave zo bijzonder maakt";

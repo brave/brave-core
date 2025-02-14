@@ -1,0 +1,138 @@
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Θέλετε να διατηρήσετε την προστασία σας; Απλώς ανανεώστε τη συνδρομή σας πριν λήξει. Ως ευχαριστώ για την ανανέωση, θα εφαρμόσουμε και έκπτωση 20% για τους επόμενους 3 μήνες.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Ενεργοποίηση αυτόματης ανανέωσης";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Ανανεώστε αυτόματα τη συνδρομή Brave VPN τώρα και κερδίστε έκπτωση 20% για 3 μήνες!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Ανανεώστε αυτόματα τη συνδρομή Brave VPN τώρα και κερδίστε 1 μήνα δωρεάν!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Αυτό σημαίνει ότι θα χάσετε τα επιπλέον μέτρα προστασίας του Brave για κάθε εφαρμογή στο τηλέφωνό σας.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Ωχ, όχι! Η συνδρομή σας Brave VPN πρόκειται να λήξει.";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Τείχος προστασίας Brave + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Δεν ήταν δυνατή η σύνδεση στο App Store. Δοκιμάστε ξανά σε λίγα λεπτά.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Σφάλμα App Store";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckConnectionSpeed" = "Αστραπιαίες ταχύτητες σύνδεσης";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckLimitDevice" = "Προστατέψτε έως και 10 συσκευές με ένα πρόγραμμα";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckLocation" = "Αποκρύψτε το IP σας και αλλάξτε την τοποθεσία σας";
+
+/* Information text shown to users for using Brave VPN */
+"vpn.infoCheckPrivacy" = "Επιπλέον απόρρητο και ασφάλεια στο διαδίκτυο";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckServers" = "Εκατοντάδες διακομιστές σε όλο τον κόσμο";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Αποκλείει ανεπιθύμητες συνδέσεις δικτύου";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Αποκλεισμός διαφημίσεων & προγραμμάτων παρακολούθησης σε όλες τις εφαρμογές ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Υποστηρίζει ταχύτητες έως 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Γρήγορο και απεριόριστο έως τα 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Υποστήριξη 24/7";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Ασφαλίζει όλες τις συνδέσεις";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Με την υποστήριξη";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Αυτόματη";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Συνδεθείτε στον λογαριασμό σας Brave για να ανανεώσετε την περίοδο σύνδεσης VPN.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Παράβλεψη";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Σύνδεση";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Η περίοδος σύνδεσης έληξε";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Απενεργοποιημένο";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Ενεργοποιημένο";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Έχει λήξει";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Εγγραφή τώρα";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Σωστά. Η συνδρομή Brave VPN ισχύει πλέον για έως και 5 συσκευές. Έτσι, μπορείτε να εγγραφείτε στο iOS και να τη χρησιμοποιήσετε στις συσκευές σας Mac, Windows και Android δωρεάν.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Τώρα, χρησιμοποιήστε το Brave VPN σε όλες τις συσκευές σας στην ίδια τιμή!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Δοκιμάστε άλλη μια φορά το Brave VPN και κερδίστε έκπτωση 20% για 3 μήνες!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Είστε έτοιμοι να προστατέψετε κάθε εφαρμογή στο τηλέφωνό σας; Επιστρέψτε στο Brave VPN και κερδίστε έκπτωση 20% για τους επόμενους 3 μήνες.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Το Brave VPN αποκλείει πάντα τα προγράμματα παρακολούθησης σε κάθε εφαρμογή, ακόμη και εκτός του προγράμματος περιήγησης Brave. Τώρα μπορείτε να δείτε ποιος προσπάθησε να σας παρακολουθήσει, με το Κέντρο απορρήτου Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Γνωρίζατε ότι το Brave VPN σάς προστατεύει εκτός του προγράμματος περιήγησης Brave;";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Ενημέρωση";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Μην ανησυχείτε. Θα διατηρήσουμε ενεργό το VPN για μερικές ημέρες, ενώ ενημερώνετε τα στοιχεία πληρωμής σας.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Ενημερώστε τα στοιχεία πληρωμής σας για να παραμείνετε προστατευμένοι με το Brave VPN.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Θέλετε να συνεχίσετε να προστατεύετε κάθε εφαρμογή στο τηλέφωνό σας; Απλώς ενημερώστε τα στοιχεία πληρωμής σας.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Υπάρχει ένα πρόβλημα χρέωσης με τον λογαριασμό σας, πράγμα που σημαίνει ότι η συνδρομή σας Brave VPN πρόκειται να λήξει.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Ενημέρωση πληρωμής";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Περιοχή διακομιστή";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Τρέχουσα ρύθμιση: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "Περιοχή VPN";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Ενημερώστε τον τρόπο πληρωμής σας";
+

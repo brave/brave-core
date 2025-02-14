@@ -8,25 +8,31 @@
 "CloseTabFromTabTrayKeyCodeTitle" = "Fermer l'onglet sélectionné";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"CloseTabTitle" = "Fermer l'onglet";
+"CloseTabTitle" = "Testing Close Tab 2 for French";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ForwardTitle" = "Avancer";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "Nouvel onglet privé";
+"NewPrivateTabTitle" = "Testing New Private Tab 4 for French";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewTabTitle" = "Nouvel onglet";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Ouvrir un nouvel onglet";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Ouvrir dans un nouvel onglet";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Ouvrir l'onglet sélectionné";
 
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Vous avez déjà acheté sur brave.com ?";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Vous possédez un code promo ?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Utiliser le code promo";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Actualisez vos identifiants";
@@ -44,7 +50,7 @@
 "shortcutsButton.hideButtonTitle" = "Masquer les raccourcis";
 
 /* A title shown when letting the user choose a button's purpose from a list of destinations */
-"shortcutsButton.shortcutButtonTitle" = "Raccourcis";
+"shortcutsButton.shortcutButtonTitle" = "Raccourci";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "showBookmarksTitle" = "Afficher les favoris";
@@ -56,7 +62,7 @@
 "ShowPreviousTabTitle" = "Afficher l'onglet précédent";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "Ouvrir les boucliers Brave";
+"showShieldsTitle" = "Ouvrir Brave Shields";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Afficher tous les onglets";

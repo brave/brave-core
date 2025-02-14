@@ -1,5 +1,5 @@
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Tracker e annunci bloccati";
+"AdsAndTrackersrBlocked" = "Indicatori & annunci bloccati";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Annunci \nbloccati";
@@ -8,7 +8,7 @@
 "DataSavedStat" = "Dati (stima)\nsalvati";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Tempo \nrisparmiato";
+"EstTimerSaved" = "Tempo previsto \nper il salvataggio";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "g";

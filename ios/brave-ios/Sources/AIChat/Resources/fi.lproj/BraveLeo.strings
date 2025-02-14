@@ -31,8 +31,8 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Tila";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
-"aichat.advancedSettingsViewReceiptTitle" = "Näytä App Store-kuitti";
+/* The title for the button that allows the user to view the App Store Receipt */
+"aichat.advancedSettingsViewReceiptTitle" = "Näytä App Store -kuitti";
 
 /* The subtitle for the error showing there is an error from App Store */
 "aichat.appStoreErrorSubTitle" = "Yhteyttä App Storeen ei voitu muodostaa, yritä myöhemmin uudelleen.";

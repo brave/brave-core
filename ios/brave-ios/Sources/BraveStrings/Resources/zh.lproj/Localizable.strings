@@ -1,44 +1,50 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "返回";
+"BackTitle" = "後退";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseAllTabsFromTabTrayKeyCodeTitle" = "关闭所有标签";
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "關閉所有分頁";
 
 /* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"CloseTabFromTabTrayKeyCodeTitle" = "关闭选择的标签";
+"CloseTabFromTabTrayKeyCodeTitle" = "關閉所選分頁";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"CloseTabTitle" = "关闭标签";
+"CloseTabTitle" = "关闭标签页";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "向前";
+"ForwardTitle" = "转发";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "新隐私标签页";
+"NewPrivateTabTitle" = "新私人标签页";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "新标签页";
+"NewTabTitle" = "新标签";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "打开新标签页";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "打开新标签";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenSelectedTabFromTabTrayKeyCodeTitle" = "打开选定的标签";
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "開啟所選分頁";
 
 /* Title label text for refreshing credentials from brave site. */
-"paywall.alreadyPurchasedTitle" = "已在 brave.com 上购买吗？";
+"paywall.alreadyPurchasedTitle" = "已在 brave.com 购买？";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "有促销代码吗？";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "兑换促销代码";
 
 /* Button action text for refreshing credentials from brave site. */
-"paywall.refreshCredentialsButtonTitle" = "重新整理您的凭证";
+"paywall.refreshCredentialsButtonTitle" = "刷新您的凭证";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
 "RecentlyClosedTabTitle" = "重新开启已关闭的标签";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "重新加载页面";
+"ReloadPageTitle" = "重新載入頁面";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "选择地点栏";
+"SelectLocationBarTitle" = "选择地址栏";
 
 /* An option in a list of shortcut actions that hides the button */
 "shortcutsButton.hideButtonTitle" = "隐藏快捷按钮";
@@ -47,19 +53,19 @@
 "shortcutsButton.shortcutButtonTitle" = "快捷按钮";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"showBookmarksTitle" = "显示书签";
+"showBookmarksTitle" = "顯示書籤";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowNextTabTitle" = "显示下个标签页";
+"ShowNextTabTitle" = "顯示下一個分頁";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowPreviousTabTitle" = "显示之前标签页";
+"ShowPreviousTabTitle" = "顯示上一個分頁";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
 "showShieldsTitle" = "打开 Brave Shields";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"ShowTabTrayFromTabKeyCodeTitle" = "显示所有标签";
+"ShowTabTrayFromTabKeyCodeTitle" = "顯示所有分頁";
 
 /* The title of the label that shows the Application Version */
 "storekitReceiptViewer.applicationVersionTitle" = "应用版本";
@@ -116,10 +122,10 @@
 "storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN 包年订阅";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToNonPBMKeyCodeTitle" = "正常浏览模式";
+"SwitchToNonPBMKeyCodeTitle" = "正常瀏覽模式";
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToPBMKeyCodeTitle" = "隐私浏览模式";
+"SwitchToPBMKeyCodeTitle" = "隱私瀏覽模式";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "ZoomInTitle" = "放大";

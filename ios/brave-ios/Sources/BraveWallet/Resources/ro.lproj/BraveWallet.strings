@@ -274,8 +274,26 @@
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Cumpără criptomonede folosind Apple Pay, un card de credit ori un card de debit.";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "alocarea nu a fost aprobată în cadrul";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "Solicitare de anulare trimisă";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "Se anulează tranzacția";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "Anulează tranzacția";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "Anulează tranzacția";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "Va fi creată o nouă tranzacție pentru a anula tranzacția existentă";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "a fost restabilit la";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Data";
@@ -366,6 +384,12 @@
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "Aprobare nelimitată solicitată";
+
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "cont";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "Tranzacție anulată!";
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Închide";
@@ -647,13 +671,13 @@
 "wallet.editPermissionsTitle" = "Editează permisiuni";
 
 /* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
-"wallet.editSiteConnectionAccountActionConnect" = "Conectează";
+"wallet.editSiteConnectionAccountActionConnect" = "Conectare";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionDisconnect" = "Deconectează";
 
 /* The title of the button for users to click so that they remove wallet account permission from the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen */
-"wallet.editSiteConnectionAccountActionRevoke" = "Revocă";
+"wallet.editSiteConnectionAccountActionRevoke" = "Revocare";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionSwitch" = "Comută";
@@ -986,7 +1010,7 @@
 "wallet.more" = "Mai multe";
 
 /* The title displayed on the view to filter by a network / all networks. */
-"wallet.networkFilterTitle" = "Selectează rețelele";
+"wallet.networkFilterTitle" = "Selectează rețele";
 
 /* The footer beneath the networks title in settings screen. */
 "wallet.networkFooter" = "Personalizarea rețelelor de portofele";
@@ -1031,7 +1055,7 @@
 "wallet.newSiteConnectMessage" = "Conectează-te la Brave Wallet";
 
 /* The transaction edit error alert button which will dismiss the alert. */
-"wallet.newSiteConnectScreenTitle" = "Conectează";
+"wallet.newSiteConnectScreenTitle" = "Conectare";
 
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as "1 of 4" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "Înainte";
@@ -1161,6 +1185,9 @@
 
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Totul este gata!";
+
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "Tranzacția inițială a fost confirmată.";
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Alte acțiuni de portofel";
@@ -1325,7 +1352,7 @@
 "wallet.screenshotDetectedTitle" = "Captură de ecran detectată";
 
 /* The label as a placeholder in search fields. */
-"wallet.search" = "Caută";
+"wallet.search" = "Căutare";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "Caută active";
@@ -1448,7 +1475,7 @@
 "wallet.settingsResetButtonTitle" = "Resetează și șterge datele de portofel";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionAlertButtonTitle" = "Resetare";
+"wallet.settingsResetTransactionAlertButtonTitle" = "Resetează";
 
 /* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertMessage" = "Această opțiune este folosită în principal de dezvoltatori care rulează un server local de test";
@@ -1460,7 +1487,7 @@
 "wallet.settingsResetTransactionFooter" = "Ștergerea tranzacțiilor poate fi utilă pentru dezvoltatori sau în cazul golirii informațiilor pe un server local";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionTitle" = "Șterge informațiile despre tranzacții & nonce";
+"wallet.settingsResetTransactionTitle" = "Șterge informațiile referitoare la tranzacții și Nonce";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "Resetează portofelul";
@@ -1628,7 +1655,7 @@
 "wallet.solanaApproveCheckedInstructionName" = "Aprobă verificate";
 
 /* The title displayed above the Token Program Approve instruction type for Solana Instruction details. */
-"wallet.solanaApproveInstructionName" = "Aprobare";
+"wallet.solanaApproveInstructionName" = "Aprobă";
 
 /* The title displayed above the System Program Assign instruction type for Solana Instruction details. */
 "wallet.solanaAssignInstructionName" = "Asignare";
@@ -1755,6 +1782,12 @@
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Sortează activele";
+
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "Durează mai mult decât te aștepți?";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Accelerează";
 
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Accelerează";
@@ -1919,7 +1952,7 @@
 "wallet.transactionFromToAccessibilityLabel" = "De la: %1$@. Către: %2$@";
 
 /* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
-"wallet.transactionsDescription" = "%d tranzacții";
+"wallet.transactionsDescription" = "%d tranzacție";
 
 /* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: "Sent 0.0054 ETH ($22.44)" */
 "wallet.transactionSendTitle" = "Trimis %1$@ %2$@ (%3$@)";
@@ -1973,7 +2006,7 @@
 "wallet.transactionSwappedTitle" = "Am schimbat %1$@ %2$@ cu %3$@ %4$@";
 
 /* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
-"wallet.transactionTypeApprove" = "Aprobare";
+"wallet.transactionTypeApprove" = "Aprobă";
 
 /* A title shown for a erc 20 transfer. The first '%@' becomes the symbol for the cryptocurrency For example: "Sent ETH" */
 "wallet.transactionUnknownSendTitle" = "Trimis %@";
@@ -1991,7 +2024,7 @@
 "wallet.txFunctionTypeCompressedNFTTransfer" = "Transfer NFT comprimat";
 
 /* Blockchain function name for ERC-20 token approvals. */
-"wallet.txFunctionTypeERC20Approve" = "Aprobare";
+"wallet.txFunctionTypeERC20Approve" = "Aprobă";
 
 /* Blockchain function name for moving FIL from an  Ethereum-based f4 address to a Filecoin address of a different type. Don't need to translate the symbol `FIL`. */
 "wallet.txFunctionTypeForwardFil" = "Forwardează FIL";
@@ -2023,6 +2056,58 @@
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Transfer token";
 
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "Se aprobă";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "Finalizat";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "a fost aprobat pe";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "A existat o eroare la încercarea de aprobare";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "Nu se poate aproba";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "pornit";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "Se trimite";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "A existat o eroare la încercarea de trimitere";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "Nu s-a putut trimite";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "a fost trimis la contul";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "Tranzacția a fost semnată, va fi trimisă în rețea de dapps și așteaptă confirmare.";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Poți ignora în siguranță acest ecran.";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "a fost adăugat la";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "Se convertește";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "Nu se poate schimba";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "către";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "Vizualizare în activitate";
+
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave va folosi Infura pentru a rezolva extensiile de domenii .crypto (și de asemenea %1$@) ce sunt găzduite pe Unstoppable Domains. Brave îți ascunde adresă IP. Dacă activezi această funcție, Infura va vedea că cineva încearcă să viziteze aceste domenii însă nimic altceva. Consultați <a href=%2$@>%3$@</a> și <a href=%4$@>%5$@</a> de la Infura.";
 
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Rezolvă numele de domenii Unstoppable Domains";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "Nu se poate anula";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "Nu se poate accelera";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Eroare necunoscută";

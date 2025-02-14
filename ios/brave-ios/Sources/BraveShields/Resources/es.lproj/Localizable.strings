@@ -8,7 +8,7 @@
 "DataSavedStat" = "Datos estimados \nahorrados";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Tiempo estimado \nahorrado";
+"EstTimerSaved" = "Tiempo estimado\nahorrado";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "d";

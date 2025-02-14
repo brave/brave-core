@@ -11,7 +11,7 @@
 "playlist.accessibilityEnterPictureInPicture" = "دخول وضع صورة داخل صورة";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
-"playlist.accessibilityExitFullscreen" = "الخروج من عرض ملء الشاشة";
+"playlist.accessibilityExitFullscreen" = "مغادرة وضع ملء الشاشة";
 
 /* A label shown on an item when the item is ready for offline play */
 "playlist.accessibilityItemDownloadStatusReady" = "العنصر جاهز للتشغيل";
@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "تعديل";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "ابدأ الكتابة للبحث في التسجيلات الصوتية ومقاطع الفيديو المحفوظة";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "البحث عن الوسائط";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "اضغط لاختيار الوسائط";
 
@@ -89,7 +95,7 @@
 "playlist.itemCountSingular" = "1 عنصر";
 
 /* A label shown on an item when it is being prepared for offline play */
-"playlist.itemDownloadStatusPreparing" = "جارٍ التحضير";
+"playlist.itemDownloadStatusPreparing" = "جارٍ التجهيز";
 
 /* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
 "playlist.liveIndicator" = "مباشر";
@@ -111,6 +117,9 @@
 
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "أضف الوسائط من مواقعك المفضلة وستظهر هنا لتشغيلها.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "لم يتم العثور على نتائج";
 
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "فتح في علامة تبويب خاصة جديدة";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "حفظ البيانات دون اتصال بالإنترنت";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "بحث";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "مشاركة";

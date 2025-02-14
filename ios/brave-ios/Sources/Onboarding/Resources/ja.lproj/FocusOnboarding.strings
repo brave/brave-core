@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Braveをデフォルトブラウザに設定しましょう";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "不要なデータ通信を抑えた高速ブラウジングを提供します";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "広告やトラッカーを削除";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "後で";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "興味のない広告はすべてブロック";
+"focusOnboarding.noVideoAdsScreenDescription" = "お気に入りの動画サイトで、ストリーミングを中断する迷惑な広告をブロックします。";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "動画広告にさようなら";
+"focusOnboarding.noVideoAdsScreenTitle" = "ストリーミングを中断する広告をブロック";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "プライバシーを保護したプロダクト分析 (P3A) について詳細はこちら";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "ブラウジングを開始する";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "システム設定に移動";
+"focusOnboarding.systemSettingsButtonTitle" = "デフォルトとして設定";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "URLを入力してストレスフリーなブラウジングを体験";
+"focusOnboarding.urlBarIndicatorDescription" = "広告&トラッカーを減らして、動画を楽しみましょう。";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Braveと他社ブラウザの比較を見る";

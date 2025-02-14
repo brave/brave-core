@@ -17,7 +17,7 @@
 "playlist.accessibilityItemDownloadStatusReady" = "รายการพร้อม";
 
 /* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
-"playlist.accessibilityMoreMenuButtonTitle" = "ข้อมูลเพิ่มเติม";
+"playlist.accessibilityMoreMenuButtonTitle" = "เพิ่มเติม";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
 "playlist.accessibilityNextItem" = "รายการถัดไป";
@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "แก้ไข";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "เริ่มพิมพ์เพื่อค้นหาบันทึกเสียงและวิดีโอที่บันทึกไว้";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "ค้นหาสื่อ";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "แตะเพื่อเลือกสื่อ";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "เพิ่มสื่อจากเว็บไซต์ที่คุณชอบและสื่อนั้นจะเล่นที่นี่";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "ไม่พบผลลัพธ์";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "เปิดในแท็บส่วนตัวใหม่";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "บันทึกข้อมูลออฟไลน์";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "ค้นหา";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "แบ่งปัน";

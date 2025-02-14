@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Setează Brave ca browser implicit";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Navighează mai rapid și folosește mai puține date.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Mai puține reclame și urmăritori.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Nu acum";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Serios, am scăpat de ele.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Blochează întreruperile enervante pe site-urile tale de streaming preferate.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Nu mai există reclame video.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Blochează întreruperile când faci streaming";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Află mai multe despre statisticile noastre de produs cu protecția confidențialității (P3A)";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "Începe navigarea";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Accesează setările de sistem";
+"focusOnboarding.systemSettingsButtonTitle" = "Setează ca implicit";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Introdu un URL pentru a te bucura de mai puține reclame și urmăritori";
+"focusOnboarding.urlBarIndicatorDescription" = "Bucură-te de conținut cu mai puține reclame și date de navigare.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Vezi diferența Brave";

@@ -11,7 +11,7 @@
 "3oC6Qm" = "เปิดเว็บไซต์ในแท็บใหม่";
 
 /* (No Comment) */
-"4HScaO" = "URL เว็บไซต์";
+"4HScaO" = "URL ของเว็บไซต์";
 
 /* (No Comment) */
 "9iPSKS" = "เปิดเว็บไซต์จากบุ๊กมาร์ก";
@@ -23,16 +23,16 @@
 "c9NKFJ" = "ไม่สามารถเปิด ${websiteURL} ในแท็บใหม่ได้";
 
 /* (No Comment) */
-"cSYAYC" = "การกระทำนี้จะเปิด ${websiteURL} จากประวัติการเข้าชม";
+"cSYAYC" = "การกระทำนี้จะเปิด ${websiteURL} จากบประวัติการเข้าชม";
 
 /* (No Comment) */
 "cvU2lS" = "เปิดเว็บไซต์จากประวัติการเข้าชม";
 
 /* (No Comment) */
-"dk8p9b" = "URL เว็บไซต์";
+"dk8p9b" = "URL ของเว็บไซต์";
 
 /* (No Comment) */
-"Gn4uX0" = "URL เว็บไซต์";
+"Gn4uX0" = "URL ของเว็บไซต์";
 
 /* (No Comment) */
 "HN8elO" = "เปิดจากประวัติการเข้าชมเว็บไซต์";
@@ -41,7 +41,7 @@
 "iLL70C" = "${websiteURL}";
 
 /* (No Comment) */
-"LHHK1N" = "การกระทำนี้จะเปิด ${websiteURL} ในแท็บใหม่ได้";
+"LHHK1N" = "การกระทำนี้จะเปิด ${websiteURL} ในแท็บใหม่";
 
 /* (No Comment) */
 "Lr38ve" = "${websiteURL}";
@@ -74,13 +74,13 @@
 "Wh3wb1" = "เปิดเว็บไซต์";
 
 /* (No Comment) */
-"WiB0aJ" = "URL เว็บไซต์";
+"WiB0aJ" = "URL ของเว็บไซต์";
 
 /* (No Comment) */
 "wZqW4o" = "การกระทำนี้จะเปิด ${websiteURL} จากบประวัติการเข้าชม";
 
 /* (No Comment) */
-"Xx8bbW" = "URL เว็บไซต์";
+"Xx8bbW" = "URL ของเว็บไซต์";
 
 /* (No Comment) */
 "ycaNZf" = "เปิดจากบุ๊กมาร์ก";

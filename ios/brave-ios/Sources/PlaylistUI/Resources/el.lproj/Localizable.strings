@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Επεξεργασία";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Πληκτρολογήστε για να αναζητήσετε τα αποθηκευμένα σας ηχητικά αρχεία και βίντεο";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Αναζήτηση πολυμέσων";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Πατήστε για να επιλέξετε μέσο";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Προσθέστε μέσα από τους αγαπημένους σας ιστότοπους και θα αναπαράγονται εδώ.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Δεν βρέθηκαν αποτελέσματα";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Άνοιγμα σε νέα Ιδιωτική καρτέλα";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Αποθήκευση δεδομένων εκτός σύνδεσης";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Αναζήτηση";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Κοινοποίηση";

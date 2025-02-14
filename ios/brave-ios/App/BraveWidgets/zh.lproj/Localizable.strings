@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "书签";
 
 /* The name of the feature */
-"widgets.braveLeo" = "Leo AI";
+"widgets.braveLeo" = "Leo 人工智能";
 
 /* The name of the feature */
 "widgets.braveNews" = "Brave 新闻";
@@ -20,13 +20,13 @@
 "widgets.HistoryMenuItem" = "历史记录";
 
 /* Displayed on a news widget that has failed to load */
-"widgets.newsClusteringErrorLabel" = "稍后重试";
+"widgets.newsClusteringErrorLabel" = "請稍後再試";
 
 /* Displayed on a news widget that links into the app to read more Brave News content */
 "widgets.newsClusteringReadMoreButtonTitle" = "了解更多";
 
 /* Description for Brave News widgets that display the top news */
-"widgets.newsClusteringWidgetDescription" = "获取最新消息";
+"widgets.newsClusteringWidgetDescription" = "取得最新消息";
 
 /* Title for Brave News widgets that display the top news */
 "widgets.newsClusteringWidgetTitle" = "头条新闻";
@@ -35,10 +35,10 @@
 "widgets.noFavoritesFound" = "请打开 Brave，在此查看您的收藏夹";
 
 /* QR Code section title */
-"widgets.QRCode" = "二维码";
+"widgets.QRCode" = "QR 碼";
 
 /* Description for the search option on the 'shortcuts' widget. */
-"widgets.searchShortcutTitle" = "搜索";
+"widgets.searchShortcutTitle" = "搜尋";
 
 /* Description for Brave Shields widget on 'add widget' screen. */
 "widgets.shieldStatsDescription" = "一览 Brave 是如何节省时间以及提供在线保护的。";
@@ -53,13 +53,13 @@
 "widgets.shortcutsEnterURLButton" = "搜索或输入 URL";
 
 /* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "新标签页";
+"widgets.shortcutsNewTabButton" = "新标签";
 
 /* Button to open video playlist window. */
 "widgets.shortcutsPlaylistButton" = "播放列表";
 
 /* Button to open new private browser tab. */
-"widgets.shortcutsPrivateTabButton" = "隐私标签页";
+"widgets.shortcutsPrivateTabButton" = "私人标签";
 
 /* Description for shortcuts widget on 'add widget' screen. */
 "widgets.shortcutsWidgetDescription" = "快速访问，在 Brave 中搜索 Web 或打开网页。";
