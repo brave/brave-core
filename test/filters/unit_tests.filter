@@ -186,24 +186,6 @@
 # features::kEarlyHintsPreloadForNavigation
 -PreconnectManagerTest.*
 
-# These tests fail because we disable DIPS via features::kBtm
--All/DIPSDatabaseAllColumnTest.*/*
--All/DIPSDatabaseErrorHistogramsTest.*/*
--All/DIPSDatabaseGarbageCollectionTest.*/*
--All/DIPSDatabaseInteractionTest.*/*
--All/DIPSDatabasePopupsTest.*/*
--BrowserSigninDetectorServiceTest.LateObservation
--DIPSDatabaseBounceTableGarbageCollectionTest.*
--DIPSDatabaseConfigTest.*
--DIPSDatabaseHistogramTest.*
--DIPSDatabaseMigrationTest.*
--DIPSGetSitesToClearTest.*
--DIPSServiceHistogramTest.*
--DIPSServiceStateRemovalTest.*
--DIPSServiceTest.*
--DIPSServiceUkmTest.*
--DIPSUtilsTest.*
-
 # This test is disabled because the Brave NTP doesn't support this feature
 -NewTabPageModulesTest.HasModulesEnabled_SignedInAccount
 
@@ -223,6 +205,7 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeSignedIn
 -AccountExtensionTrackerUnitTest.AccountExtensionTypeTransportMode
 -AppMenuModelTest.ProfileSyncOnTest
+-BrowserSigninDetectorServiceTest.LateObservation
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfNotSignedInUser
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUser
 -ChromeAutofillPredictionImprovementsClientTest.EligibilityOfSignedInUserWithMlDisabled
