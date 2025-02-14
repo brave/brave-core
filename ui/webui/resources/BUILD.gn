@@ -44,6 +44,7 @@ if (include_polymer) {
     # and not //ui/webui/resources which is the default for build_cr_component.
     non_web_component_files = [
       "lit_overriding.ts",
+      "lit_mangler.ts",
       "polymer_overriding.ts",
       "js/brave_browser_command/brave_browser_command_proxy.ts",
     ]

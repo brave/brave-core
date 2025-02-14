@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { CrLitElement, CSSResultGroup } from "//resources/lit/v3_0/lit.rollup.js";
+import { mangle } from "./lit_mangler.js";
 
 export function injectStyle<T extends typeof CrLitElement>(
   element: T,
@@ -21,3 +22,5 @@ export function injectStyle<T extends typeof CrLitElement>(
 
   element.elementStyles = (element as any).finalizeStyles(element.styles)
 }
+
+export const mangleHtml = mangle
