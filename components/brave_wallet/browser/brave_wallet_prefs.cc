@@ -245,11 +245,6 @@ void RegisterProfilePrefsForMigration(
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
   RegisterDeprecatedIpfsPrefs(registry);
 
-  // Added 06/2023
-  registry->RegisterIntegerPref(
-      kBraveWalletSelectedCoinDeprecated,
-      static_cast<int>(brave_wallet::mojom::CoinType::ETH));
-
   // Added 01/2024
   registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
   // Added 01/2024
