@@ -50,6 +50,7 @@
 #include "components/language/core/browser/language_prefs.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/reload_type.h"
+#include "content/public/browser/render_view_host.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -229,6 +230,22 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     clickable_view->OnMouseReleased(ui::MouseEvent(
         ui::EventType::kMouseReleased, gfx::Point(), gfx::Point(),
         ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0));
+  }
+
+  void ClickInWebContents(content::WebContents* web_contents) {
+    blink::WebMouseEvent mouse_event(
+        blink::WebInputEvent::Type::kMouseDown,
+        blink::WebInputEvent::kNoModifiers,
+        blink::WebInputEvent::GetStaticTimeStampForTests());
+    mouse_event.button = blink::WebMouseEvent::Button::kLeft;
+    mouse_event.SetPositionInWidget(0, 0);
+    mouse_event.click_count = 1;
+    web_contents->GetRenderViewHost()->GetWidget()->ForwardMouseEvent(
+        mouse_event);
+
+    mouse_event.SetType(blink::WebInputEvent::Type::kMouseUp);
+    web_contents->GetRenderViewHost()->GetWidget()->ForwardMouseEvent(
+        mouse_event);
   }
 
   void ToggleSpeedreader() {
@@ -1046,8 +1063,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitView) {
   ASSERT_TRUE(toolbar && secondary_toolbar);
   auto* secondary_location_bar_widget =
       browser_view->split_view()->secondary_location_bar_widget_.get();
-  // auto* secondary_contents_container =
-  // browser_view->split_view()->secondary_contents_container();
   auto* secondary_contents_web_view =
       browser_view->split_view()->secondary_contents_web_view();
 
@@ -1144,15 +1159,29 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SplitViewClicking) {
 
   // Load a distillabe page in first tab.
   browser()->tab_strip_model()->ActivateTabAt(0);
+  EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
 
+  // Check clicking view makes its tab activate.
   browser()->tab_strip_model()->ActivateTabAt(1);
+  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
+  WaitToolbarVisibility(toolbar, false);
+  WaitToolbarVisibility(secondary_toolbar, true);
+
   ClickInView(secondary_toolbar);
   WaitToolbarVisibility(toolbar, true);
+  WaitToolbarVisibility(secondary_toolbar, false);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 
   browser()->tab_strip_model()->ActivateTabAt(1);
-  ClickInView(secondary_toolbar);
+  EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
+  WaitToolbarVisibility(toolbar, false);
+  WaitToolbarVisibility(secondary_toolbar, true);
+
+  // Check click event from webview makes its tab activate.
+  ClickInWebContents(secondary_toolbar->GetWebContentsForTesting());
+  WaitToolbarVisibility(toolbar, true);
+  WaitToolbarVisibility(secondary_toolbar, false);
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
 }
