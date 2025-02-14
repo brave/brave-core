@@ -68,7 +68,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
       {
         super.text = url.strippingBlobURLAuth.absoluteString
       } else {
-        super.text = text
+        super.text = newValue
       }
       self.textDidChange(self)
     }
