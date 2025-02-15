@@ -134,7 +134,8 @@ SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
 
   if (const ui::ColorProvider* color_provider =
           BrowserView::GetBrowserViewForBrowser(browser_)->GetColorProvider()) {
-    set_color(color_provider->GetColor(kColorSidebarAddBubbleBackground));
+    set_background_color(
+        color_provider->GetColor(kColorSidebarAddBubbleBackground));
   }
   AddChildViews();
 }
