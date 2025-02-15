@@ -7,7 +7,6 @@
 
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "ui/accessibility/ax_node_data.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
@@ -21,7 +20,7 @@ NotificationAdView::NotificationAdView(const NotificationAd& notification_ad)
     : notification_ad_(notification_ad) {
   CreateView();
 
-  GetViewAccessibility().SetRole(ax::mojom::Role::kGenericContainer);
+  GetViewAccessibility().SetRole(ax::mojom::Role::kAlertDialog);
   GetViewAccessibility().SetRoleDescription(
       l10n_util::GetStringUTF8(IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME));
 }
@@ -51,12 +50,6 @@ void NotificationAdView::OnDeviceScaleFactorChanged(
     float new_device_scale_factor) {
   GetWidget()->DeviceScaleFactorChanged(old_device_scale_factor,
                                         new_device_scale_factor);
-}
-
-void NotificationAdView::OnThemeChanged() {
-  views::View::OnThemeChanged();
-
-  SchedulePaint();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

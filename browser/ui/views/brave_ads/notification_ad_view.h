@@ -36,7 +36,6 @@ class NotificationAdView : public views::View {
   // views::View:
   void OnDeviceScaleFactorChanged(float old_device_scale_factor,
                                   float new_device_scale_factor) override;
-  void OnThemeChanged() override;
 
  private:
   NotificationAd notification_ad_;

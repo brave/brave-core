@@ -56,9 +56,6 @@ void NotificationAdControlButtonsView::OnThemeChanged() {
 void NotificationAdControlButtonsView::UpdateContent() {
   UpdateInfoButton();
   UpdateCloseButton();
-
-  DeprecatedLayoutImmediately();
-  SchedulePaint();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
