@@ -79,9 +79,6 @@ inline constexpr char kBraveWalletLegacyEthSeedFormat[] =
 inline constexpr char kBraveWalletMnemonicBackedUp[] =
     "brave.wallet.mnemonic_backed_up";
 
-// Added 01/2024 to migrate transactions DB to one-level dict.
-inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
-    "brave.wallet.transactions_db_format_migrated";
 // Added 06/2024 to migrate Eip1559 flag to a separate pref.
 inline constexpr char kBraveWalletEip1559ForCustomNetworksMigrated[] =
     "brave.wallet.eip1559_chains_migrated";

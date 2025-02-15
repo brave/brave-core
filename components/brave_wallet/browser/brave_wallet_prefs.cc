@@ -66,6 +66,9 @@ inline constexpr char kBraveWalletCustomNetworksFantomMainnetMigrated[] =
     "brave.wallet.custom_networks.fantom_mainnet_migrated";
 // Deprecated 02/2025
 inline constexpr char kBraveWalletTransactions[] = "brave.wallet.transactions";
+// Deprecated 02/2025
+inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
+    "brave.wallet.transactions_db_format_migrated";
 
 base::Value::Dict GetDefaultSelectedNetworks() {
   base::Value::Dict selected_networks;
@@ -146,6 +149,9 @@ void RegisterProfilePrefsDeprecatedMigrationFlags(
   // Deprecated 02/2025.
   registry->RegisterBooleanPref(kBraveWalletCustomNetworksFantomMainnetMigrated,
                                 false);
+  // Deprecated 02/2025
+  registry->RegisterBooleanPref(kBraveWalletTransactionsDBFormatMigrated,
+                                false);
 }
 
 void RegisterDeprecatedIpfsPrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -174,6 +180,8 @@ void ClearDeprecatedProfilePrefsMigrationFlags(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletDefaultHiddenNetworksVersion);
   // Deprecated 02/2025.
   prefs->ClearPref(kBraveWalletCustomNetworksFantomMainnetMigrated);
+  // Deprecated 02/2025.
+  prefs->ClearPref(kBraveWalletTransactionsDBFormatMigrated);
 }
 
 }  // namespace
@@ -247,9 +255,6 @@ void RegisterProfilePrefsForMigration(
 
   // Added 01/2024
   registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
-  // Added 01/2024
-  registry->RegisterBooleanPref(kBraveWalletTransactionsDBFormatMigrated,
-                                false);
   // Added 06/2024
   registry->RegisterBooleanPref(kBraveWalletEip1559ForCustomNetworksMigrated,
                                 false);
