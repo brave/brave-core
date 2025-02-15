@@ -152,7 +152,7 @@ void SidebarEditItemBubbleDelegateView::ContentsChanged(
 }
 
 void SidebarEditItemBubbleDelegateView::UpdateItem() {
-  std::u16string new_title = title_tf_->GetText();
+  auto new_title = title_tf_->GetText();
   if (new_title.empty())
     new_title = url_tf_->GetText();
 
