@@ -223,7 +223,6 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedSend: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "fce43e63-1f68-4685-9d40-035f13250a4c",
-      fromAddress: BraveWallet.AccountInfo.previewAccount.accountId.address,
       from: BraveWallet.AccountInfo.previewAccount.accountId,
       txHash: "0x46fbd9d5ed775b9e5836aacaf0ed7a78bf5f5a4da451f23238c6123ed0fd51bf",
       txDataUnion: .init(
@@ -261,7 +260,6 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedSwap: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "2531db97-6d1d-4906-a1b2-f829c41f489e",
-      fromAddress: BraveWallet.AccountInfo.previewAccount.accountId.address,
       from: BraveWallet.AccountInfo.previewAccount.accountId,
       txHash: "0xe21f7110753a8a42793c0b6c0c649aac1545488e57a3f57541b9f199d6b2be11",
       txDataUnion: .init(
@@ -314,7 +312,6 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedERC20Approve: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "19819c05-612a-47c5-84b0-e95045d15b37",
-      fromAddress: BraveWallet.AccountInfo.previewAccount.accountId.address,
       from: BraveWallet.AccountInfo.previewAccount.accountId,
       txHash: "0x46d0ecf2ec9829d451154767c98ae372413bac809c25b16d1946aba100663e4b",
       txDataUnion: .init(
@@ -358,7 +355,6 @@ extension BraveWallet.TransactionInfo {
   static var previewERC721Send: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "81111c05-612a-47c5-84b0-e95045d15b37",
-      fromAddress: BraveWallet.AccountInfo.previewAccount.accountId.address,
       from: BraveWallet.AccountInfo.previewAccount.accountId,
       txHash: "0x46d0ecf2ec9829d451154767c98ae372413bac809c25b16d1946aba100663e4b",
       txDataUnion: .init(
@@ -403,7 +399,6 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedSolSystemTransfer: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "3d3c7715-f5f2-4f70-ab97-7fb8d3b2a3cd",
-      fromAddress: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
       from: BraveWallet.AccountInfo.mockSolAccount.accountId,
       txHash:
         "2rbyfcSQ9xCem4wtpjMYD4u6PdKE9YcBurCHDgkMcAaBMh8CirQvuLYtj8AyaYu62ekwWKM1UDZ2VLRB4uN96Fcu",
@@ -445,7 +440,6 @@ extension BraveWallet.TransactionInfo {
   static var previewConfirmedSolTokenTransfer: BraveWallet.TransactionInfo {
     BraveWallet.TransactionInfo(
       id: "12345675-f5f2-4f70-ab97-7fb8d3b2a3cd",
-      fromAddress: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
       from: BraveWallet.AccountInfo.mockSolAccount.accountId,
       txHash: "",
       txDataUnion: .init(
@@ -485,7 +479,6 @@ extension BraveWallet.TransactionInfo {
   /// Filecoin Unapproved Send
   static let mockFilUnapprovedSend = BraveWallet.TransactionInfo(
     id: UUID().uuidString,
-    fromAddress: "t165quq7gkjh6ebshr7qi2ud7vycel4m7x6dvfvgb",
     from: BraveWallet.AccountInfo.mockFilAccount.accountId,
     txHash: "",
     txDataUnion:
@@ -517,7 +510,6 @@ extension BraveWallet.TransactionInfo {
   /// Bitcoin Unapproved Send
   static let mockBTCUnapprovedSend = BraveWallet.TransactionInfo(
     id: "9",
-    fromAddress: BraveWallet.AccountInfo.mockBtcAccount.address,
     from: BraveWallet.AccountInfo.mockBtcAccount.accountId,
     txHash: "",
     txDataUnion:

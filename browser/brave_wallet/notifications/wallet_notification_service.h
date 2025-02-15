@@ -44,6 +44,7 @@ class WalletNotificationService : public KeyedService,
                                const std::string& address,
                                const std::string& tx_id);
 
+  raw_ptr<BraveWalletService> brave_wallet_service_;
   raw_ptr<content::BrowserContext> context_;
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
 };

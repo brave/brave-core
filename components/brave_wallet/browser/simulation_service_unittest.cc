@@ -25,7 +25,6 @@
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
-#include "brave/components/brave_wallet/browser/simulation_response_parser.h"
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -62,6 +61,8 @@ class SimulationServiceUnitTest : public testing::Test {
     network_manager_ = brave_wallet_service_->network_manager();
     json_rpc_service_ = brave_wallet_service_->json_rpc_service();
 
+    GetAccountUtils().CreateWallet(kMnemonicDivideCruise, kTestWalletPassword);
+
     simulation_service_ = std::make_unique<SimulationService>(
         shared_url_loader_factory_, brave_wallet_service_.get());
 
@@ -73,6 +74,26 @@ class SimulationServiceUnitTest : public testing::Test {
 
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
     return shared_url_loader_factory_;
+  }
+
+  AccountUtils GetAccountUtils() {
+    return AccountUtils(brave_wallet_service_->keyring_service());
+  }
+
+  mojom::AccountIdPtr EthAccountId(size_t index) {
+    return GetAccountUtils().EnsureEthAccount(index)->account_id->Clone();
+  }
+
+  mojom::AccountIdPtr SolAccountId(size_t index) {
+    return GetAccountUtils().EnsureSolAccount(index)->account_id->Clone();
+  }
+
+  mojom::AccountInfoPtr EthAccount(size_t index) {
+    return GetAccountUtils().EnsureEthAccount(index)->Clone();
+  }
+
+  mojom::AccountInfoPtr SolAccount(size_t index) {
+    return GetAccountUtils().EnsureSolAccount(index)->Clone();
   }
 
   PrefService* GetPrefs() { return &prefs_; }
@@ -115,11 +136,6 @@ class SimulationServiceUnitTest : public testing::Test {
   mojom::TransactionInfoPtr GetCannedScanEVMTransactionParams(
       bool eip1559,
       const std::string& chain_id) {
-    auto eth_account =
-        MakeAccountId(mojom::CoinType::ETH, mojom::KeyringId::kDefault,
-                      mojom::AccountKind::kDerived,
-                      "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4");
-
     auto base_tx_data = mojom::TxData::New(
         "0x09", "0x4a817c800", "0x5208",
         "0x3535353535353535353535353535353535353535", "0x0de0b6b3a7640000",
@@ -130,13 +146,13 @@ class SimulationServiceUnitTest : public testing::Test {
           std::make_unique<Eip1559Transaction>(
               *Eip1559Transaction::FromTxData(mojom::TxData1559::New(
                   std::move(base_tx_data), "0x3", "0x1E", "0x32", nullptr)));
-      EthTxMeta meta(eth_account, std::move(tx));
+      EthTxMeta meta(EthAccountId(0), std::move(tx));
       meta.set_chain_id(chain_id);
       return meta.ToTransactionInfo();
     } else {
       std::unique_ptr<EthTransaction> tx = std::make_unique<EthTransaction>(
           *EthTransaction::FromTxData(std::move(base_tx_data)));
-      EthTxMeta meta(eth_account, std::move(tx));
+      EthTxMeta meta(EthAccountId(0), std::move(tx));
       meta.set_chain_id(chain_id);
       return meta.ToTransactionInfo();
     }
@@ -145,11 +161,6 @@ class SimulationServiceUnitTest : public testing::Test {
   mojom::TransactionInfoPtr GetCannedScanSolanaTransactionParams(
       std::optional<std::string> origin,
       const std::string& chain_id) {
-    std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
-    auto sol_account =
-        MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
-                      mojom::AccountKind::kDerived, from_account);
-
     std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
     std::string recent_blockhash =
         "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
@@ -161,19 +172,19 @@ class SimulationServiceUnitTest : public testing::Test {
         // Program ID
         mojom::kSolanaSystemProgramId,
         // Accounts
-        {SolanaAccountMeta(from_account, std::nullopt, true, true),
+        {SolanaAccountMeta(SolAccount(0)->address, std::nullopt, true, true),
          SolanaAccountMeta(to_account, std::nullopt, false, true)},
         data);
 
     auto msg = SolanaMessage::CreateLegacyMessage(
-        recent_blockhash, last_valid_block_height, from_account,
+        recent_blockhash, last_valid_block_height, SolAccount(0)->address,
         std::vector<SolanaInstruction>({instruction}));
     auto tx = std::make_unique<SolanaTransaction>(std::move(*msg));
     tx->set_to_wallet_address(to_account);
     tx->set_lamports(10000000u);
     tx->set_tx_type(mojom::TransactionType::SolanaSystemTransfer);
 
-    SolanaTxMeta meta(sol_account, std::move(tx));
+    SolanaTxMeta meta(SolAccountId(0), std::move(tx));
     SolanaSignatureStatus status(82, 10, "", "confirmed");
     meta.set_signature_status(status);
 
@@ -336,9 +347,9 @@ TEST_F(SimulationServiceUnitTest, ScanEvmTransactionValidResponse) {
       "simulationResults":{
         "aggregated":{
           "error":null,
-          "userAccount":"0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4",
+          "userAccount":"0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
           "expectedStateChanges":{
-            "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4":[
+            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db":[
               {
                 "humanReadableDiff":"Send 0.033 ETH",
                 "rawInfo":{
@@ -375,6 +386,9 @@ TEST_F(SimulationServiceUnitTest, ScanEvmTransactionValidResponse) {
       "warnings":[]
     }
   )");
+
+  EXPECT_EQ(EthAccount(0)->address,
+            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
 
   base::RunLoop run_loop;
   ScanEVMTransaction(
@@ -547,6 +561,9 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValid) {
       }
     }
   )");
+
+  EXPECT_EQ(SolAccount(0)->address,
+            "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 
   base::RunLoop run_loop;
   auto tx_info =

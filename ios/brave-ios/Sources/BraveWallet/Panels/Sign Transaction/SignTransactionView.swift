@@ -62,7 +62,7 @@ struct SignTransactionView: View {
   }
 
   private var account: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: { $0.address == currentRequest.fromAddress })
+    keyringStore.allAccounts.first(where: { $0.accountId == currentRequest.fromAccountId })
       ?? keyringStore.selectedAccount
   }
 
@@ -267,7 +267,6 @@ struct SignTransaction_Previews: PreviewProvider {
           originInfo: .init(),
           id: 0,
           from: BraveWallet.AccountInfo.previewAccount.accountId,
-          fromAddress: BraveWallet.AccountInfo.previewAccount.address,
           txDatas: [.init()],
           rawMessages: [.init()],
           chainId: BraveWallet.SolanaMainnet

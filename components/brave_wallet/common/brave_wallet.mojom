@@ -2061,7 +2061,6 @@ struct SwapInfo {
 
 struct TransactionInfo {
   string id;
-  string? from_address; // Filled with account address for ETH, SOL and FIL.
   AccountId from_account_id;
   string tx_hash;
   TxDataUnion tx_data_union;
@@ -2412,7 +2411,6 @@ struct SignSolTransactionsRequest {
   OriginInfo origin_info;
   int32 id;
   AccountId from_account_id;
-  string from_address;
   array<SolanaTxData> tx_datas;
   array<array<uint8>> raw_messages;
   string chain_id;

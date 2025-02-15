@@ -144,7 +144,7 @@ export const SignTransactionPanel = ({
         />
       </URLText>
       <Tooltip
-        text={selectedRequest.fromAddress || ''}
+        text={signingAccount.address || ''}
         isAddress
       >
         <AccountNameText>{signingAccount?.name ?? ''}</AccountNameText>

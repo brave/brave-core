@@ -151,7 +151,7 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
   }
 
   return mojom::TransactionInfo::New(
-      id_, from_->address, from_.Clone(), tx_hash_,
+      id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewEthTxData1559(mojom::TxData1559::New(
           mojom::TxData::New(
               tx_->nonce() ? Uint256ValueToHex(tx_->nonce().value()) : "",

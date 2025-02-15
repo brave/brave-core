@@ -280,23 +280,28 @@ void SimulationService::ContinueScanSolanaTransaction(
     return;
   }
 
+  auto account = FindAccount(tx_info->from_account_id);
+  if (!account) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   if (!latest_blockhash.empty()) {
     solana::PopulateRecentBlockhash(*tx_info, latest_blockhash);
   }
 
-  const auto& encoded_params = solana::EncodeScanTransactionParams(*tx_info);
+  const auto& encoded_params =
+      solana::EncodeScanTransactionParams(*tx_info, account->address);
   if (!encoded_params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  CHECK(tx_info->from_address);  // Ensured by EncodeScanTransactionParams.
-
-  auto internal_callback =
-      base::BindOnce(&SimulationService::OnScanSolanaTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     *tx_info->from_address);
+  auto internal_callback = base::BindOnce(
+      &SimulationService::OnScanSolanaTransaction,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), account->address);
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
@@ -369,21 +374,28 @@ void SimulationService::ContinueScanSignSolTransactionsRequest(
     return;
   }
 
+  auto account = FindAccount(request->from_account_id);
+  if (!account) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   if (!latest_blockhash.empty()) {
     solana::PopulateRecentBlockhash(*request, latest_blockhash);
   }
 
-  const auto& encoded_params = solana::EncodeScanTransactionParams(*request);
+  const auto& encoded_params =
+      solana::EncodeScanTransactionParams(*request, account->address);
   if (!encoded_params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  auto internal_callback =
-      base::BindOnce(&SimulationService::OnScanSolanaTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-                     request->from_address);
+  auto internal_callback = base::BindOnce(
+      &SimulationService::OnScanSolanaTransaction,
+      weak_ptr_factory_.GetWeakPtr(), std::move(callback), account->address);
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
@@ -445,19 +457,24 @@ void SimulationService::ScanEVMTransactionInternal(
     std::move(callback).Run(nullptr, "", *error);
     return;
   }
+  auto account = FindAccount(tx_info->from_account_id);
+  if (!account) {
+    std::move(callback).Run(
+        nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
 
-  const auto& encoded_params = evm::EncodeScanTransactionParams(*tx_info);
+  const auto& encoded_params =
+      evm::EncodeScanTransactionParams(*tx_info, account->address);
   if (!encoded_params) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;
   }
 
-  CHECK(tx_info->from_address);  // Ensured by EncodeScanTransactionParams.
-
   auto internal_callback = base::BindOnce(
       &SimulationService::OnScanEVMTransaction, weak_ptr_factory_.GetWeakPtr(),
-      std::move(callback), *tx_info->from_address);
+      std::move(callback), account->address);
 
   auto conversion_callback = base::BindOnce(&ConvertAllNumbersToString, "");
 
@@ -492,6 +509,11 @@ void SimulationService::OnScanEVMTransaction(
     std::move(callback).Run(nullptr, "",
                             l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
   }
+}
+
+mojom::AccountInfoPtr SimulationService::FindAccount(
+    const mojom::AccountIdPtr& account_id) {
+  return brave_wallet_service_->keyring_service()->FindAccount(account_id);
 }
 
 }  // namespace brave_wallet

@@ -367,7 +367,8 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
         }).formatAsFiat(defaultFiatCurrency)
       : ''
 
-  const { txStatus, fromAddress, isRetriable } = transaction
+  const { txStatus, isRetriable } = transaction
+  const fromAddress = account?.address
 
   const showCancelSpeedupButtons =
     isEthereumTx && cancelSpeedupTxTypes.includes(transaction.txStatus)
@@ -408,9 +409,7 @@ export const TransactionDetailsModal = ({ onClose, transaction }: Props) => {
 
   const memoFromTransaction = transaction.txDataUnion.zecTxData?.memo
 
-  const memoText = String.fromCharCode(
-    ...memoFromTransaction ?? []
-  )
+  const memoText = String.fromCharCode(...(memoFromTransaction ?? []))
 
   // render
   return (

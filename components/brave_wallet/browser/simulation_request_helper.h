@@ -16,14 +16,16 @@ namespace brave_wallet {
 namespace evm {
 
 std::optional<std::string> EncodeScanTransactionParams(
-    const mojom::TransactionInfo& tx_info);
+    const mojom::TransactionInfo& tx_info,
+    const std::string& from_address);
 
 }  // namespace evm
 
 namespace solana {
 
 std::optional<std::string> EncodeScanTransactionParams(
-    const mojom::SignSolTransactionsRequest& sign_sol_transactions_request);
+    const mojom::SignSolTransactionsRequest& sign_sol_transactions_request,
+    const std::string& from_address);
 void PopulateRecentBlockhash(
     mojom::SignSolTransactionsRequest& sign_sol_transactions_request,
     const std::string& recent_blockhash);
@@ -31,7 +33,8 @@ bool HasEmptyRecentBlockhash(
     const mojom::SignSolTransactionsRequest& sign_sol_transactions_request);
 
 std::optional<std::string> EncodeScanTransactionParams(
-    const mojom::TransactionInfo& tx_info);
+    const mojom::TransactionInfo& tx_info,
+    const std::string& from_address);
 void PopulateRecentBlockhash(mojom::TransactionInfo& tx_info,
                              const std::string& recent_blockhash);
 bool HasEmptyRecentBlockhash(const mojom::TransactionInfo& tx_info);

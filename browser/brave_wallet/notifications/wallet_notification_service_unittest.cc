@@ -90,8 +90,8 @@ class WalletNotificationServiceUnitTest : public testing::Test {
   TestingPrefServiceSimple local_state_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  std::unique_ptr<WalletNotificationService> notification_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
+  std::unique_ptr<WalletNotificationService> notification_service_;
 };
 
 TEST_F(WalletNotificationServiceUnitTest, ShouldShowNotifications) {

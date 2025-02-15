@@ -68,7 +68,7 @@ base::Value::Dict ZCashTxMeta::ToValue() const {
 
 mojom::TransactionInfoPtr ZCashTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
-      id_, std::nullopt, from_.Clone(), tx_hash_,
+      id_, from_.Clone(), tx_hash_,
       mojom::TxDataUnion::NewZecTxData(ToZecTxData(chain_id_, *tx_)), status_,
       mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ACCOUNT_RESOLVER_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ACCOUNT_RESOLVER_DELEGATE_H_
 
+#include <optional>
 #include <string>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -24,6 +25,9 @@ class AccountResolverDelegate {
 
   // Returns true if there is an existing account equal to account_id.
   virtual bool ValidateAccountId(const mojom::AccountIdPtr& account_id) = 0;
+
+  virtual std::optional<std::string> ResolveAddress(
+      const mojom::AccountIdPtr& account_id) = 0;
 };
 
 }  // namespace brave_wallet

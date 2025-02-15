@@ -29,7 +29,6 @@ import { LiFiExchangeProxy } from '../../common/constants/registry'
 
 export const mockTransactionInfo: SerializableTransactionInfo = {
   fromAccountId: mockAccount.accountId,
-  fromAddress: mockAccount.address,
   chainId: BraveWallet.MAINNET_CHAIN_ID,
   id: '465a4d6646-kjlwf665',
   txArgs: ['0x0d8775f648430679a709e98d2b0cb6250d2887ef', '0x15ddf09c97b0000'],
@@ -72,7 +71,6 @@ export const mockTransactionInfo: SerializableTransactionInfo = {
 
 export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
   chainId: BraveWallet.SOLANA_MAINNET,
-  fromAddress: mockSolanaAccount.address,
   fromAccountId: mockSolanaAccount.accountId,
   id: 'sol-tx',
   txArgs: [],
@@ -128,20 +126,17 @@ export const mockSolanaTransactionInfo: SerializableTransactionInfo = {
 
 export const mockSolanaTransactionInfoAccount: BraveWallet.AccountInfo = {
   ...mockSolanaAccount,
-  address: mockSolanaTransactionInfo.fromAddress || '',
   accountId: mockSolanaTransactionInfo.fromAccountId
 }
 
 export const mockSvmTxInfos: BraveWallet.TransactionInfo[] = [
   deserializeTransaction({
     ...mockSolanaTransactionInfo,
-    fromAddress: mockSolanaTransactionInfoAccount.address,
     txStatus: BraveWallet.TransactionStatus.Unapproved,
     txType: BraveWallet.TransactionType.SolanaSystemTransfer
   }),
   deserializeTransaction({
     ...mockSolanaTransactionInfo,
-    fromAddress: mockSolanaTransactionInfoAccount.address,
     txStatus: BraveWallet.TransactionStatus.Unapproved,
     txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer
   })
@@ -151,7 +146,6 @@ export const mockFilSendTransaction: FileCoinTransactionInfo = {
   chainId: BraveWallet.FILECOIN_MAINNET,
   confirmedTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
   createdTime: { microseconds: BigInt(new Date().getUTCMilliseconds()) },
-  fromAddress: mockFilecoinAccount.address,
   fromAccountId: mockFilecoinAccount.accountId,
   id: 'fil-send-tx',
   originInfo: undefined,

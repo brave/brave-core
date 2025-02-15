@@ -51,7 +51,10 @@ describe('Transaction Parsing utils', () => {
           txArgs: [mockEthAccountInfo.address, 'foo']
         }
 
-        const sameAddressError = transactionHasSameAddressError(mockTransaction)
+        const sameAddressError = transactionHasSameAddressError(
+          mockTransaction,
+          mockEthAccountInfo
+        )
 
         expect(sameAddressError).toBeTruthy()
       })
@@ -63,7 +66,10 @@ describe('Transaction Parsing utils', () => {
           txArgs: ['0xbadcafe', 'foo']
         }
 
-        const sameAddressError = transactionHasSameAddressError(mockTransaction)
+        const sameAddressError = transactionHasSameAddressError(
+          mockTransaction,
+          mockEthAccountInfo
+        )
 
         expect(sameAddressError).toBeFalsy()
       })
@@ -83,7 +89,10 @@ describe('Transaction Parsing utils', () => {
           txArgs: ['mockOwner', mockEthAccountInfo.address, 'mockTokenID']
         }
 
-        const sameAddressError = transactionHasSameAddressError(mockTransaction)
+        const sameAddressError = transactionHasSameAddressError(
+          mockTransaction,
+          mockEthAccountInfo
+        )
 
         expect(sameAddressError).toBeFalsy()
       })
@@ -95,7 +104,10 @@ describe('Transaction Parsing utils', () => {
           txArgs: ['0xdeadbeef', '0xdeadbeef', 'mockTokenID']
         }
 
-        const sameAddressError = transactionHasSameAddressError(mockTransaction)
+        const sameAddressError = transactionHasSameAddressError(
+          mockTransaction,
+          mockEthAccountInfo
+        )
 
         expect(sameAddressError).toBeTruthy()
       })
@@ -107,7 +119,10 @@ describe('Transaction Parsing utils', () => {
           txArgs: ['mockOwner', 'mockToAddress', 'mockTokenID']
         }
 
-        const sameAddressError = transactionHasSameAddressError(mockTransaction)
+        const sameAddressError = transactionHasSameAddressError(
+          mockTransaction,
+          mockEthAccountInfo
+        )
 
         expect(sameAddressError).toBeFalsy()
       })
@@ -144,7 +159,10 @@ describe('Transaction Parsing utils', () => {
           }
         }
 
-        const sameAddressError = transactionHasSameAddressError(mockTransaction)
+        const sameAddressError = transactionHasSameAddressError(
+          mockTransaction,
+          mockEthAccountInfo
+        )
 
         expect(sameAddressError).toBeFalsy()
       })

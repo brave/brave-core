@@ -426,14 +426,13 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
       let fromValue = BDouble(detail.fromAmount),
       fromValue == 0, activeTransaction.ethTxData.isEmpty
     {
-      // loop through allTx to find if there is a tx that has the same chain id, coin type, nonce and from address
+      // loop through allTx to find if there is a tx that has the same account id, chain id and nonce
       // gasFee of this active tx should be bigger than the original one
       if let txInfo = allTxs.first(where: {
         $0.id != activeTransaction.id
-          && $0.coin == activeTransaction.coin
+          && $0.fromAccountId == activeTransaction.fromAccountId
           && $0.chainId == activeTransaction.chainId
           && $0.ethTxNonce == activeTransaction.ethTxNonce
-          && $0.fromAddress == activeTransaction.fromAddress
           && activeTransaction.ethTxData.isEmpty
       }), let parsedTx = await parseTransaction(txInfo) {
         if let activeTxGasFee = BDouble(activeParsedTransaction.gasFee?.fee ?? "0"),
@@ -444,15 +443,14 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         }
       }
     } else if activeTransaction.coin == .eth {
-      // loop through allTx to find if there is a tx that has the same chain id, coin type, nonce, from address,
+      // loop through allTx to find if there is a tx that has the same chain id, account id, nonce,
       // to address, data and value
       // gasFee of this active tx should be bigger than the original one
       if let txInfo = allTxs.first(where: {
         $0.id != activeTransaction.id
-          && $0.coin == activeTransaction.coin
+          && $0.fromAccountId == activeTransaction.fromAccountId
           && $0.chainId == activeTransaction.chainId
           && $0.ethTxNonce == activeTransaction.ethTxNonce
-          && $0.fromAddress == activeTransaction.fromAddress
           && $0.ethTxToAddress == activeTransaction.ethTxToAddress
           && $0.ethTxData == activeTransaction.ethTxData
           && $0.ethTxValue == activeTransaction.ethTxValue

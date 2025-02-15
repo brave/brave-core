@@ -2573,6 +2573,17 @@ const std::vector<mojom::AccountInfoPtr>& KeyringService::GetAllAccountInfos() {
   return *account_info_cache_;
 }
 
+mojom::AccountInfoPtr KeyringService::FindAccount(
+    const mojom::AccountIdPtr& account_id) {
+  const auto& accounts = GetAllAccountInfos();
+  for (auto& account : accounts) {
+    if (account->account_id == account_id) {
+      return account.Clone();
+    }
+  }
+  return nullptr;
+}
+
 mojom::AccountInfoPtr KeyringService::GetSelectedWalletAccount() {
   const auto& account_infos = GetAllAccountInfos();
   auto unique_key =

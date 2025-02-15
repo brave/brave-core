@@ -748,7 +748,6 @@ enum TransactionParser {
       )
     case .solanaDappSignAndSendTransaction, .solanaDappSignTransaction, .solanaSwap:
       let transactionLamports = transaction.txDataUnion.solanaTxData?.lamports
-      let fromAddress = transaction.fromAddress
       var toAddress = transaction.txDataUnion.solanaTxData?.toWalletAddress
       var fromValue = ""
       var fromAmount = ""
@@ -787,11 +786,11 @@ enum TransactionParser {
               let instructionLamportsValue = BDouble(instructionLamports)
             {
               if let nonceAccount = instruction.accountMetas[safe: 0]?.pubkey,
-                nonceAccount == fromAddress
+                nonceAccount == fromAccountInfo.address
               {
                 valueFromInstructions += instructionLamportsValue
               } else if let toPubkey = instruction.accountMetas[safe: 1]?.pubkey,
-                toPubkey == fromAddress
+                toPubkey == fromAccountInfo.address
               {
                 valueFromInstructions -= instructionLamportsValue
               }
@@ -802,7 +801,7 @@ enum TransactionParser {
               let instructionLamportsValue = BDouble(instructionLamports)
             {
               if let fromPubkey = instruction.accountMetas[safe: 0]?.pubkey,
-                fromPubkey == fromAddress
+                fromPubkey == fromAccountInfo.address
               {
                 valueFromInstructions += instructionLamportsValue
               }

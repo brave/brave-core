@@ -138,7 +138,7 @@ export const TransactionIntent = (props: Props) => {
   const swapOrBridgeRecipient =
     transaction.swapInfo?.provider === 'lifi'
       ? transaction.swapInfo?.receiver ?? ''
-      : transaction.fromAddress ?? ''
+      : txAccount?.address ?? ''
 
   const recipientLabel = getAddressLabel(
     isERC20Approval

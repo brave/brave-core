@@ -12,6 +12,7 @@ import { BraveWallet } from '../../../constants/types'
 import {
   mockTransactionInfo //
 } from '../../../stories/mock-data/mock-transaction-info'
+import { mockAccount } from '../../../common/constants/mocks'
 
 // Components
 import {
@@ -57,21 +58,7 @@ export const _ConfirmSwapTransaction = {
               txStatus: BraveWallet.TransactionStatus.Unapproved
             })
           ],
-          accountInfos: [
-            {
-              accountId: {
-                address: mockTransactionInfo.fromAddress || '',
-                coin: BraveWallet.CoinType.ETH,
-                keyringId: BraveWallet.KeyringId.kDefault,
-                kind: BraveWallet.AccountKind.kDerived,
-                uniqueKey: '',
-                accountIndex: 0
-              },
-              address: mockTransactionInfo.fromAddress || '',
-              hardware: undefined,
-              name: '1'
-            }
-          ]
+          accountInfos: [mockAccount]
         }}
       >
         <PanelWrapper isLonger={true}>
