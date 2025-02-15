@@ -47,7 +47,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Core.DomainsLoaded", {}},
     {"Brave.Core.FailedHTTPSUpgrades.2", MetricConfig{.ephemeral = true}},
     {"Brave.Core.FirstPageLoadTime", MetricConfig{.ephemeral = true}},
-    {"Brave.Core.IsDefault", {}},
+    {"Brave.Core.IsDefault", MetricConfig{.attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kSubregion, MetricAttribute::kVersion}}},
     {"Brave.Core.NumberOfExtensions", {}},
     {"Brave.Core.PagesReloaded", {}},
     {"Brave.Core.TabCount", {}},
@@ -60,7 +60,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.DNS.AutoSecureRequests.Wikimedia.2", MetricConfig{.ephemeral = true}},
     {"Brave.DNS.SecureSetting", {}},
     {"Brave.Extensions.AdBlock", {}},
-    {"Brave.IOS.IsLikelyDefault", {}},
+    {"Brave.IOS.IsLikelyDefault", MetricConfig{.attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kSubregion, MetricAttribute::kVersion}}},
 
     {"Brave.Importer.ImporterSource.2", {}},
     {"Brave.NTP.CustomizeUsageStatus.2", {}},
@@ -205,7 +205,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.Wallet.SolTransactionSent", {}},
     {"Brave.Wallet.ZecTransactionSent", {}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
-    {"Brave.Welcome.InteractionStatus.2", {}},
+    {"Brave.Welcome.InteractionStatus.2", MetricConfig{.attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kDateOfInstall, MetricAttribute::kSubregion, MetricAttribute::kVersion}}},
 });
 
 inline constexpr auto kCollectedSlowHistograms =
