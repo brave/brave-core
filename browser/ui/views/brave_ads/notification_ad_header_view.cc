@@ -136,7 +136,7 @@ void NotificationAdHeaderView::UpdateTitleLabel() {
 }
 
 void NotificationAdHeaderView::UpdateAccessibleName() {
-  GetViewAccessibility().SetName(title_label_->GetText());
+  GetViewAccessibility().SetName(std::u16string(title_label_->GetText()));
 }
 
 BEGIN_METADATA(NotificationAdHeaderView)
