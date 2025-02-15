@@ -342,6 +342,10 @@ inline constexpr char16_t kPayOverTimeLearnMoreUrl[] =
 inline constexpr char16_t kAutofillAiLearnMoreURL[] =
     u"https://support.brave.com";
 
+// "Learn more" URL for the autofill show card benefits setting.
+inline constexpr char16_t kCardBenefitsLearnMoreURL[] =
+    u"https://support.brave.com";
+
 // "Learn more" URL for the performance intervention notification setting.
 inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
     u"https://support.brave.com";
