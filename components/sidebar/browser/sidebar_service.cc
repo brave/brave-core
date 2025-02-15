@@ -331,8 +331,8 @@ void SidebarService::MoveItem(size_t from, size_t to) {
 
 void SidebarService::UpdateItem(const GURL& old_url,
                                 const GURL& new_url,
-                                const std::u16string& old_title,
-                                const std::u16string& new_title) {
+                                std::u16string_view old_title,
+                                std::u16string_view new_title) {
   DCHECK(old_url.is_valid() && new_url.is_valid());
   DCHECK(!old_title.empty() && !new_title.empty());
 
