@@ -337,12 +337,12 @@ void BraveVideoOverlayWindowViews::UpdateControlIcons() {
         ui::ImageModel::FromVectorIcon(kLeoPictureInPictureReturnIcon,
                                        kColorPipWindowForeground,
                                        kTopControlIconSize));
-    auto text = back_to_tab_label_button_->GetText();
     // Calling this will clear accessible name as well. We should reset it and
     // tooltip text.
     back_to_tab_label_button_->SetText({});
 
-    back_to_tab_label_button_->SetAccessibleName(text);
+    back_to_tab_label_button_->SetAccessibleName(
+        std::u16string(back_to_tab_label_button_->GetText()));
     back_to_tab_label_button_->SetTooltipText(
         back_to_tab_label_button_->GetAccessibleName());
   }
