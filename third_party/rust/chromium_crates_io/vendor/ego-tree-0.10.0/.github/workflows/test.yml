@@ -1,0 +1,47 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  format:
+    name: Format code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+            components: rustfmt
+      - run: cargo fmt -- --check
+
+  clippy:
+    name: Clippy check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+            components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clippy --all-targets --all-features -- --deny warnings
+
+  test:
+    name: Test code
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust_version: [stable, beta, nightly]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@master
+        with:
+            toolchain: ${{matrix.rust_version}}
+      - uses: Swatinem/rust-cache@v2
+        with:
+            key: ${{matrix.rust_version}}
+      - run: cargo update
+      - run: cargo test --all-features

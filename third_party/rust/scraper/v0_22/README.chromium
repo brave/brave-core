@@ -1,0 +1,10 @@
+Name: scraper
+URL: https://crates.io/crates/scraper
+Version: 0.22.0
+Revision: dcf5e0c781f6b1d9a67b48ae0bdf551b04e9bc94
+License: ISC
+License File: //brave/third_party/rust/chromium_crates_io/vendor/scraper-0.22.0/LICENSE
+Shipped: yes
+Security Critical: yes
+
+Description: HTML parsing and querying with CSS selectors
