@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_provider_interface.h"
 
