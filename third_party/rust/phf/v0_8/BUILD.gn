@@ -34,17 +34,8 @@ cargo_crate("lib") {
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [
-    "//brave/third_party/rust/phf_macros/v0_8:lib",
-    "//brave/third_party/rust/phf_shared/v0_8:lib",
-    "//brave/third_party/rust/proc_macro_hack/v0_5:lib",
-  ]
-  features = [
-    "macros",
-    "phf_macros",
-    "proc-macro-hack",
-    "std",
-  ]
+  deps = [ "//brave/third_party/rust/phf_shared/v0_8:lib" ]
+  features = [ "std" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
