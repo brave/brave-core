@@ -1969,55 +1969,6 @@ TEST_F(BraveWalletServiceUnitTest, MigrateGoerliNetwork) {
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletGoerliNetworkMigrated));
 }
 
-TEST_F(BraveWalletServiceUnitTest, MigrateAssetsPrefToList) {
-  ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
-
-  network_manager_->AddCustomNetwork(GetTestNetworkInfo1("0x123"));
-
-  auto strip_coin_and_chain = [&](base::Value::Dict dict) -> base::Value::Dict {
-    dict.Remove("chain_id");
-    dict.Remove("coin");
-    return dict;
-  };
-
-  auto eth_token = GetEthToken();
-  auto bat_token = GetBatToken();
-  auto custom_eth_token = GetEthToken();
-  custom_eth_token->chain_id = "0x123";
-  auto sol_token = GetSolToken();
-
-  base::Value::Dict legacy_dict;
-  base::Value::List legacy_eth_array;
-  legacy_eth_array.Append(
-      strip_coin_and_chain(BlockchainTokenToValue(eth_token)));
-  legacy_eth_array.Append(
-      strip_coin_and_chain(BlockchainTokenToValue(bat_token)));
-  legacy_dict.SetByDottedPath("ethereum.mainnet", std::move(legacy_eth_array));
-
-  base::Value::List legacy_custom_eth_array;
-  legacy_custom_eth_array.Append(
-      strip_coin_and_chain(BlockchainTokenToValue(custom_eth_token)));
-  legacy_dict.SetByDottedPath("ethereum.0x123",
-                              std::move(legacy_custom_eth_array));
-
-  base::Value::List legacy_sol_array;
-  legacy_sol_array.Append(
-      strip_coin_and_chain(BlockchainTokenToValue(sol_token)));
-  legacy_dict.SetByDottedPath("solana.mainnet", std::move(legacy_sol_array));
-
-  GetPrefs()->SetDict(kBraveWalletUserAssetsDeprecated, std::move(legacy_dict));
-
-  BraveWalletService::MigrateAssetsPrefToList(GetPrefs());
-
-  ASSERT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsDeprecated));
-  ASSERT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletUserAssetsList));
-
-  EXPECT_THAT(
-      GetAllUserAssets(GetPrefs()),
-      ElementsAre(Eq(std::ref(custom_eth_token)), Eq(std::ref(eth_token)),
-                  Eq(std::ref(bat_token)), Eq(std::ref(sol_token))));
-}
-
 TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* new_password = "brave1234!";
   bool success;

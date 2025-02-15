@@ -90,7 +90,6 @@ class BraveWalletService : public KeyedService,
                                      std::string_view pref_key);
   static void MigrateGoerliNetwork(PrefService* prefs);
   static void MigrateAuroraMainnetAsCustomNetwork(PrefService* prefs);
-  static void MigrateAssetsPrefToList(PrefService* prefs);
   static void MigrateEip1559ForCustomNetworks(PrefService* prefs);
   void MaybeMigrateCompressedNfts();
   void MaybeMigrateSPLTokenProgram();

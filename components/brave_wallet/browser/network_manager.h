@@ -75,14 +75,6 @@ class NetworkManager {
                          const std::optional<url::Origin>& origin,
                          std::string_view chain_id);
 
-  // DEPRECATED 01/2024. For migration only.
-  static std::string GetNetworkId_DEPRECATED(mojom::CoinType coin,
-                                             std::string_view chain_id);
-  // DEPRECATED 01/2024. For migration only.
-  static std::optional<std::string> GetChainIdByNetworkId_DEPRECATED(
-      const mojom::CoinType& coin,
-      std::string_view network_id);
-
  private:
   raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
 };

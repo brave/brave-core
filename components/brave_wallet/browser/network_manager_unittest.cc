@@ -572,66 +572,6 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
   static_assert(AllCoinsTested<5>());
 }
 
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetKnownEthNetworkId) {
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kLocalhostChainId),
-            "http://localhost:7545/");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kMainnetChainId), "mainnet");
-  EXPECT_EQ(GetKnownEthNetworkId(mojom::kSepoliaChainId), "sepolia");
-}
-
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetKnownSolNetworkId) {
-  EXPECT_EQ(GetKnownSolNetworkId(mojom::kLocalhostChainId),
-            "http://localhost:8899/");
-  EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaMainnet), "mainnet");
-  EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaTestnet), "testnet");
-  EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaDevnet), "devnet");
-}
-
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetKnownFilNetworkId) {
-  EXPECT_EQ(GetKnownFilNetworkId(mojom::kLocalhostChainId),
-            "http://localhost:1234/rpc/v0");
-  EXPECT_EQ(GetKnownFilNetworkId(mojom::kFilecoinMainnet), "mainnet");
-  EXPECT_EQ(GetKnownFilNetworkId(mojom::kFilecoinTestnet), "testnet");
-}
-
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetNetworkId) {
-  ASSERT_TRUE(
-      network_manager()->GetAllCustomChains(mojom::CoinType::ETH).empty());
-
-  EXPECT_EQ(NetworkManager::GetNetworkId_DEPRECATED(mojom::CoinType::ETH,
-                                                    mojom::kMainnetChainId),
-            "mainnet");
-  EXPECT_EQ(NetworkManager::GetNetworkId_DEPRECATED(mojom::CoinType::ETH,
-                                                    mojom::kLocalhostChainId),
-            "http://localhost:7545/");
-  EXPECT_EQ(
-      NetworkManager::GetNetworkId_DEPRECATED(mojom::CoinType::ETH, "chain_id"),
-      "chain_id");
-  EXPECT_EQ(NetworkManager::GetNetworkId_DEPRECATED(mojom::CoinType::ETH,
-                                                    "chain_id2"),
-            "chain_id2");
-  EXPECT_EQ(NetworkManager::GetNetworkId_DEPRECATED(
-                mojom::CoinType::ETH, mojom::kPolygonMainnetChainId),
-            mojom::kPolygonMainnetChainId);
-  EXPECT_EQ(NetworkManager::GetNetworkId_DEPRECATED(
-                mojom::CoinType::ETH, mojom::kBnbSmartChainMainnetChainId),
-            mojom::kBnbSmartChainMainnetChainId);
-
-  EXPECT_EQ(NetworkManager::GetNetworkId_DEPRECATED(mojom::CoinType::SOL,
-                                                    mojom::kSolanaMainnet),
-            "mainnet");
-  EXPECT_EQ(NetworkManager::GetNetworkId_DEPRECATED(mojom::CoinType::SOL,
-                                                    mojom::kSolanaTestnet),
-            "testnet");
-  EXPECT_EQ(NetworkManager::GetNetworkId_DEPRECATED(mojom::CoinType::SOL,
-                                                    mojom::kSolanaDevnet),
-            "devnet");
-}
-
 TEST_F(NetworkManagerUnitTest, Eip1559Chain) {
   auto dict = [&] {
     return prefs()->GetDict(kBraveWalletEip1559CustomChains).Clone();
@@ -1010,40 +950,6 @@ TEST_F(NetworkManagerUnitTest, GetEnsRpcUrl) {
 TEST_F(NetworkManagerUnitTest, GetSnsRpcUrl) {
   EXPECT_EQ(GURL("https://solana-mainnet.wallet.brave.com"),
             NetworkManager::GetSnsRpcUrl());
-}
-
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetChainIdByNetworkId) {
-  network_manager()->AddCustomNetwork(
-      GetTestNetworkInfo1("chain_id1", mojom::CoinType::ETH));
-
-  for (const auto& chain : network_manager()->GetAllChains()) {
-    const auto coin_type = chain->coin;
-    std::string nid;
-    if (chain->coin == mojom::CoinType::ETH) {
-      nid = GetKnownEthNetworkId(chain->chain_id);
-    }
-    if (chain->coin == mojom::CoinType::SOL) {
-      nid = GetKnownSolNetworkId(chain->chain_id);
-    }
-    if (chain->coin == mojom::CoinType::FIL) {
-      nid = GetKnownFilNetworkId(chain->chain_id);
-    }
-    if (chain->coin == mojom::CoinType::BTC) {
-      nid = GetKnownBtcNetworkId(chain->chain_id);
-    }
-    if (chain->coin == mojom::CoinType::ZEC) {
-      nid = GetKnownZecNetworkId(chain->chain_id);
-    }
-    if (nid.empty()) {
-      ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
-      nid = chain->chain_id;
-    }
-    auto chain_id =
-        NetworkManager::GetChainIdByNetworkId_DEPRECATED(coin_type, nid);
-    ASSERT_TRUE(chain_id.has_value());
-    EXPECT_EQ(chain->chain_id, chain_id.value());
-  }
 }
 
 }  // namespace brave_wallet

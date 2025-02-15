@@ -253,8 +253,6 @@ void RegisterProfilePrefsForMigration(
   RegisterProfilePrefsDeprecatedMigrationFlags(registry);
   RegisterDeprecatedIpfsPrefs(registry);
 
-  // Added 01/2024
-  registry->RegisterDictionaryPref(kBraveWalletUserAssetsDeprecated);
   // Added 06/2024
   registry->RegisterBooleanPref(kBraveWalletEip1559ForCustomNetworksMigrated,
                                 false);
@@ -312,9 +310,6 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 07/2023
   MigrateDerivedAccountIndex(prefs);
-
-  // Added 01/2024 migrate assets pref to plain list.
-  BraveWalletService::MigrateAssetsPrefToList(prefs);
 
   // Added 06/2024 to migrate Eip1559 flag to a separate pref.
   BraveWalletService::MigrateEip1559ForCustomNetworks(prefs);
