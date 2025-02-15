@@ -38,11 +38,8 @@ std::unique_ptr<views::Label> CustomStyledLabel::CreateLabel(
     result->SetTooltipText(style_info.tooltip);
   if (!style_info.accessible_name.empty())
     result->SetAccessibleName(style_info.accessible_name);
-  if (auto* colour = absl::get_if<SkColor>(&displayed_on_background_color_)) {
-    result->SetBackgroundColor(*colour);
-  } else if (auto* colour_id =
-                 absl::get_if<ui::ColorId>(&displayed_on_background_color_)) {
-    result->SetBackgroundColor(*colour_id);
+  if (displayed_on_background_color_.has_value()) {
+    result->SetBackgroundColorId(displayed_on_background_color_->GetColorId());
   }
 
   result->SetAutoColorReadabilityEnabled(auto_color_readability_enabled_);
