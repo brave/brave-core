@@ -7896,29 +7896,28 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
   // Setup registry with two assets.
   const char token_list_json[] = R"(
     {
-      "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
-        "name": "Tesla Inc.",
-        "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
-        "erc20": false,
-        "symbol": "TSLA",
-        "decimals": 8,
-        "chainId": "0x65"
-      },
-      "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
-        "name": "SolarMoon",
-        "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
-        "erc20": false,
-        "symbol": "MOON",
-        "decimals": 5,
-        "chainId": "0x65",
-        "token2022": true
+      "0x65": {
+        "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ": {
+          "name": "Tesla Inc.",
+          "logo": "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png",
+          "erc20": false,
+          "symbol": "TSLA",
+          "decimals": 8
+        },
+        "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
+          "name": "SolarMoon",
+          "logo": "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi.png",
+          "erc20": false,
+          "symbol": "MOON",
+          "decimals": 5,
+          "token2022": true
+        }
       }
     })";
 
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
-  ASSERT_TRUE(
-      ParseTokenList(token_list_json, &token_list_map, mojom::CoinType::SOL));
+  ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
   registry->UpdateTokenList(std::move(token_list_map));
 
   // Setup two user assets.

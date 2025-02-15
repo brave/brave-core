@@ -14,6 +14,10 @@ import {
   WalletStatus
 } from '../../../constants/types'
 import { coinTypesMapping } from '../constants'
+import {
+  NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+  POLYGON_NATIVE_ASSET_CONTRACT_ADDRESS
+} from '../../../common/constants/magics'
 
 // types
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
@@ -885,10 +889,84 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   onBalance: (arg: BalanceResult) => void | Promise<void>
   cache: BaseQueryCache
 }): Promise<void> {
-  // Construct arg to query native token for use in case the
-  // optimized balance fetcher kicks in.
   const nativeTokenArgs = arg.tokens.filter((token) => isNativeAsset(token))
-  const nonNativeTokens = arg.tokens.filter((token) => !isNativeAsset(token))
+
+  if (arg.coin === CoinTypes.ETH) {
+    const supportedChainIds =
+      cache.balanceScannerSupportedChains ||
+      (await cache.getBalanceScannerSupportedChains())
+
+    if (supportedChainIds.includes(arg.chainId)) {
+      // Filter for ERC20 tokens, including MATIC token on Polygon
+      //
+      // POL balance is fetched using the native asset contract, and not the
+      // proxy ERC20 contract (0x0000000000000000000000000000000000001010) to
+      // avoid double counting the balance.
+      const erc20Tokens = arg.tokens
+        .filter((token) =>
+          !token.isNft &&
+          !isNativeAsset(token) &&
+          !(token.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID &&
+            token.contractAddress === POLYGON_NATIVE_ASSET_CONTRACT_ADDRESS)
+        )
+
+      const tokens = [
+        ...nativeTokenArgs
+          .map(token => ({
+            ...token,
+            contractAddress: NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+          })),
+        ...erc20Tokens
+      ]
+
+      // nothing to fetch
+      if (!tokens.length) {
+        return
+      }
+
+      const result = await jsonRpcService.getERC20TokenBalances(
+        tokens.map((token) => token.contractAddress),
+        arg.accountId.address,
+        arg.chainId
+      )
+
+      if (result.error !== BraveWallet.ProviderError.kSuccess) {
+        throw new Error(
+          'Error calling ' +
+            'jsonRpcService.getERC20TokenBalances: ' +
+            `error=${result.errorMessage} arg=` +
+            JSON.stringify(
+              {
+                tokens: erc20Tokens,
+                address: arg.accountId.address,
+                chainId: arg.chainId
+              },
+              undefined,
+              2
+            )
+        )
+      }
+
+      for (const { balance, contractAddress } of result.balances) {
+        if (balance) {
+          onBalance({
+            accountId: arg.accountId,
+            chainId: arg.chainId,
+            contractAddress:
+              contractAddress === NATIVE_EVM_ASSET_CONTRACT_ADDRESS
+                ? ''
+                : contractAddress,
+            balance: new Amount(balance).format(),
+            coinType: arg.coin,
+            tokenId: '', // these are ERC20 tokens,
+            isShielded: false
+          })
+        }
+      }
+
+      return
+    }
+  }
 
   await eachLimit(
     nativeTokenArgs,
@@ -918,68 +996,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     }
   )
 
-  if (arg.coin === CoinTypes.ETH) {
-    // jsonRpcService.getERC20TokenBalances cannot handle
-    // native assets
-    if (nonNativeTokens.length === 0) {
-      return
-    }
-
-    const supportedChainIds =
-      cache.balanceScannerSupportedChains ||
-      (await cache.getBalanceScannerSupportedChains())
-
-    // ERC20 Tokens
-    if (supportedChainIds.includes(arg.chainId)) {
-      const erc20Tokens = nonNativeTokens.filter((token) => !token.isNft)
-
-      // nothing to fetch
-      if (!erc20Tokens.length) {
-        return
-      }
-
-      const result = await jsonRpcService.getERC20TokenBalances(
-        erc20Tokens.map((token) => token.contractAddress),
-        arg.accountId.address,
-        arg.chainId
-      )
-
-      if (result.error !== BraveWallet.ProviderError.kSuccess) {
-        throw new Error(
-          'Error calling ' +
-            'jsonRpcService.getERC20TokenBalances: ' +
-            `error=${result.errorMessage} arg=` +
-            JSON.stringify(
-              {
-                tokens: erc20Tokens,
-                address: arg.accountId.address,
-                chainId: arg.chainId
-              },
-              undefined,
-              2
-            )
-        )
-      }
-
-      for (const { balance, contractAddress } of result.balances) {
-        if (balance) {
-          onBalance({
-            accountId: arg.accountId,
-            chainId: arg.chainId,
-            contractAddress,
-            balance: new Amount(balance).format(),
-            coinType: arg.coin,
-            tokenId: '', // these are ERC20 tokens,
-            isShielded: false
-          })
-        }
-      }
-
-      return
-    }
-  }
-
-  if (arg.coin === CoinTypes.SOL && !arg.tokens) {
+  if (arg.coin === CoinTypes.SOL) {
     const result = await jsonRpcService.getSPLTokenBalances(
       arg.accountId.address,
       arg.chainId
@@ -994,7 +1011,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
     }
 
     for (const { mint, amount } of result.balances) {
-      if (amount) {
+      if (amount && new Amount(amount).gt(0)) {
         onBalance({
           accountId: arg.accountId,
           chainId: arg.chainId,
@@ -1011,6 +1028,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   }
 
   // Fallback to fetching individual balances
+  const nonNativeTokens = arg.tokens.filter((token) => !isNativeAsset(token))
   await eachLimit(
     nonNativeTokens,
     10,

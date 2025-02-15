@@ -81,13 +81,14 @@ constexpr std::string_view kEthAllowanceErrorResponse = R"({
                 })";
 
 constexpr char kTokenListJson[] = R"({
-      "0x3333333333333333333333333333333333333333": {
-        "name": "3333",
-        "logo": "333.svg",
-        "erc20": true,
-        "symbol": "333",
-        "decimals": 18,
-        "chainId": "0x1"
+      "0x1": {
+        "0x3333333333333333333333333333333333333333": {
+          "name": "3333",
+          "logo": "333.svg",
+          "erc20": true,
+          "symbol": "333",
+          "decimals": 18
+        }
       }
     })";
 
@@ -266,8 +267,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
     auto* blockchain_registry = BlockchainRegistry::GetInstance();
 
     TokenListMap token_list_map;
-    ASSERT_TRUE(ParseTokenList(current_token_list_json, &token_list_map,
-                               mojom::CoinType::ETH));
+    ASSERT_TRUE(ParseTokenList(current_token_list_json, &token_list_map));
 
     std::vector<std::string> contract_addresses;
     for (auto const& [contract_addr, token_info] : token_list_map) {

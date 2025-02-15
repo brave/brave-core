@@ -94,15 +94,19 @@ class ConsoleObserver : public WebContentsObserver {
 namespace brave_wallet {
 namespace {
 
-constexpr char kTokenList[] = R"({
-      "": {
-        "name": "Ethereum",
-        "symbol": "ETH",
-        "logo": "333.svg",
-        "erc20": true,
-        "decimals": 18,
-        "chainId": "0x1"
-      },
+constexpr char kTokenList[] = R"(
+  {
+    "0x1": {
+      "0xdac17f958d2ee523a2206206994597c13d831ec7": {
+        "name": "Tether",
+        "symbol": "usdt",
+        "coingeckoId": "tether",
+        "decimals": 6,
+        "logo":
+        "https://coin-images.coingecko.com/coins/images/325/large/Tether.png"
+      }
+    },
+    "0x89": {
       "0x4444444444444444444444444444444444444444": {
         "name": "44444444444",
         "logo": "4444.svg",
@@ -111,7 +115,9 @@ constexpr char kTokenList[] = R"({
         "decimals": 18,
         "chainId": "0x89"
       }
-     })";
+    }
+  }
+)";
 
 constexpr char kGetBalanceResp[] = R"({
   "jsonrpc": "2.0",
@@ -240,8 +246,7 @@ class AndroidPageAppearingBrowserTest : public PlatformBrowserTest {
                                                     kPasswordBrave, false));
 
     TokenListMap token_list_map;
-    ASSERT_TRUE(
-        ParseTokenList(kTokenList, &token_list_map, mojom::CoinType::ETH));
+    ASSERT_TRUE(ParseTokenList(kTokenList, &token_list_map));
     BlockchainRegistry::GetInstance()->UpdateTokenList(
         std::move(token_list_map));
 

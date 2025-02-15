@@ -19,6 +19,9 @@ export const NATIVE_EVM_ASSET_CONTRACT_ADDRESS =
 export const WRAPPED_SOL_CONTRACT_ADDRESS =
   'So11111111111111111111111111111111111111112'
 
+export const POLYGON_NATIVE_ASSET_CONTRACT_ADDRESS =
+  '0x0000000000000000000000000000000000001010'
+
 /**
  * Set this as a token's coingecko id to flag the token as "unknown"
  * This will allow for fallback UI when we do have all the required token info
