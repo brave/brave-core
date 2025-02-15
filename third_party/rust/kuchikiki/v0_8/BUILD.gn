@@ -40,11 +40,11 @@ cargo_crate("lib") {
   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
-    "//brave/third_party/rust/cssparser/v0_27:lib",
-    "//brave/third_party/rust/html5ever/v0_25:lib",
+    "//brave/third_party/rust/cssparser/v0_34:lib",
+    "//brave/third_party/rust/html5ever/v0_29:lib",
     "//brave/third_party/rust/indexmap/v1:lib",
     "//brave/third_party/rust/matches/v0_1:lib",
-    "//brave/third_party/rust/selectors/v0_22:lib",
+    "//brave/third_party/rust/selectors/v0_26:lib",
   ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates

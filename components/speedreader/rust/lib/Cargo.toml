@@ -18,7 +18,7 @@ include = [
 ]
 
 [dependencies]
-html5ever = "0.25.1"
+html5ever = "0.29.1"
 kuchikiki = "0.8.4-speedreader"
 lol_html = "0.3.0"
 regex = "1"

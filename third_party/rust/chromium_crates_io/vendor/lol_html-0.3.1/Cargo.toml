@@ -59,7 +59,7 @@ version = "1.0.4"
 version = "1.0.0"
 
 [dependencies.cssparser]
-version = "0.27.2"
+version = "0.34"
 
 [dependencies.encoding_rs]
 version = "0.8.13"
@@ -80,7 +80,7 @@ version = "2.1.2"
 version = "0.3.3"
 
 [dependencies.selectors]
-version = "0.22.0"
+version = "0.26"
 
 [dependencies.thiserror]
 version = "1.0.2"
@@ -96,7 +96,7 @@ version = "0.12"
 features = ["serde"]
 
 [dev-dependencies.html5ever]
-version = "0.25.1"
+version = "0.29.1"
 
 [dev-dependencies.itertools]
 version = "0.10.1"
