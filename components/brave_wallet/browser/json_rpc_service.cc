@@ -15,6 +15,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/containers/extend.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
@@ -303,6 +304,34 @@ bool HasDuplicateNftIds(
     const std::vector<mojom::NftIdentifierPtr>& nft_identifiers) {
   return base::flat_set<mojom::NftIdentifierPtr>(CloneVector(nft_identifiers))
              .size() != nft_identifiers.size();
+}
+
+std::optional<std::string> GetEthBalanceScannerContractAddressForChain(
+    const std::string& chain_id) {
+  if (auto it = GetEthBalanceScannerContractAddresses().find(chain_id);
+      it != GetEthBalanceScannerContractAddresses().end()) {
+    return it->second;
+  }
+  return std::nullopt;
+}
+
+std::vector<std::string> ShrinkToBalanceScannerBatchSize(
+    std::vector<std::string>& addresses) {
+  // `addresses` fit batch size, don't need `remaining_batch`.
+  if (addresses.size() <= kBalanceScannerBatchSize) {
+    return {};
+  }
+
+  // Move excess to `remaining_batch` and return it.
+  auto remaining_span = base::span(addresses).subspan(kBalanceScannerBatchSize);
+
+  std::vector<std::string> remaining_batch;
+  remaining_batch.reserve(remaining_span.size());
+  for (auto& address : remaining_span) {
+    remaining_batch.push_back(std::move(address));
+  }
+  addresses.resize(kBalanceScannerBatchSize);
+  return remaining_batch;
 }
 
 }  // namespace
@@ -1269,23 +1298,21 @@ void JsonRpcService::OnGetERC20TokenAllowance(
 }
 
 void JsonRpcService::GetERC20TokenBalances(
-    const std::vector<std::string>& token_contract_addresses,
+    const std::vector<std::string>& token_addresses,
     const std::string& user_address,
     const std::string& chain_id,
     GetERC20TokenBalancesCallback callback) {
   // Validate inputs
-  const auto& balance_scanner_contract_addresses =
-      GetEthBalanceScannerContractAddresses();
-  if (!base::Contains(balance_scanner_contract_addresses, chain_id)) {
+  auto balance_scanner_contract_address =
+      GetEthBalanceScannerContractAddressForChain(chain_id);
+  if (!balance_scanner_contract_address) {
     std::move(callback).Run(
         {}, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
-  const auto& balance_scanner_contract_address =
-      balance_scanner_contract_addresses.at(chain_id);
 
-  if (token_contract_addresses.empty() || user_address.empty()) {
+  if (token_addresses.empty() || user_address.empty()) {
     std::move(callback).Run(
         {}, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -1300,29 +1327,26 @@ void JsonRpcService::GetERC20TokenBalances(
     return;
   }
 
-  base::span<const std::string> addresses(token_contract_addresses);
-  size_t batch_size = std::min(kBalanceScannerBatchSize, addresses.size());
-  auto first_batch = addresses.first(batch_size);
-  auto remaining = addresses.subspan(batch_size);
-
-  ProcessNextERC20Batch(first_batch, user_address,
-                        balance_scanner_contract_address, network_url,
-                        std::vector<mojom::ERC20BalanceResultPtr>(), remaining,
+  ProcessNextERC20Batch(token_addresses, user_address,
+                        *balance_scanner_contract_address, network_url,
+                        std::vector<mojom::ERC20BalanceResultPtr>(),
                         std::move(callback));
 }
 
 void JsonRpcService::ProcessNextERC20Batch(
-    base::span<const std::string> batch_addresses,
+    std::vector<std::string> token_addresses,
     const std::string& user_address,
     const std::string& scanner_address,
     const GURL& network_url,
     std::vector<mojom::ERC20BalanceResultPtr> accumulated_results,
-    base::span<const std::string> remaining_addresses,
     GetERC20TokenBalancesCallback callback) {
+  DCHECK(!token_addresses.empty());
+
+  auto remaining = ShrinkToBalanceScannerBatchSize(token_addresses);
+
   // Process current batch
-  std::optional<std::string> calldata = balance_scanner::TokensBalance(
-      user_address,
-      std::vector<std::string>(batch_addresses.begin(), batch_addresses.end()));
+  std::optional<std::string> calldata =
+      balance_scanner::TokensBalance(user_address, token_addresses);
   if (!calldata) {
     std::move(callback).Run(
         {}, mojom::ProviderError::kInvalidParams,
@@ -1330,21 +1354,15 @@ void JsonRpcService::ProcessNextERC20Batch(
     return;
   }
 
-  // Create owned copies for the callback chain
-  std::vector<std::string> batch_copy(batch_addresses.begin(),
-                                      batch_addresses.end());
-  std::vector<std::string> remaining_copy(remaining_addresses.begin(),
-                                          remaining_addresses.end());
-
   auto batch_callback = base::BindOnce(
       &JsonRpcService::OnBatchERC20TokenBalances,
       weak_ptr_factory_.GetWeakPtr(), user_address, scanner_address,
-      network_url, std::move(accumulated_results), std::move(remaining_copy),
+      network_url, std::move(accumulated_results), std::move(remaining),
       std::move(callback));
 
   auto internal_callback = base::BindOnce(
       &JsonRpcService::OnGetERC20TokenBalances, weak_ptr_factory_.GetWeakPtr(),
-      std::move(batch_copy), std::move(batch_callback));
+      std::move(token_addresses), std::move(batch_callback));
 
   RequestInternal(eth::eth_call(scanner_address, calldata.value()), true,
                   network_url, std::move(internal_callback));
@@ -1355,7 +1373,7 @@ void JsonRpcService::OnBatchERC20TokenBalances(
     const std::string& scanner_address,
     const GURL& network_url,
     std::vector<mojom::ERC20BalanceResultPtr> accumulated_results,
-    base::span<const std::string> remaining_addresses,
+    std::vector<std::string> token_addresses,
     GetERC20TokenBalancesCallback callback,
     std::vector<mojom::ERC20BalanceResultPtr> batch_results,
     mojom::ProviderError error,
@@ -1366,31 +1384,23 @@ void JsonRpcService::OnBatchERC20TokenBalances(
   }
 
   // Add batch results to accumulated results
-  for (auto& result : batch_results) {
-    accumulated_results.push_back(std::move(result));
-  }
+  base::Extend(accumulated_results, std::move(batch_results));
 
-  // All batches processed
-  if (remaining_addresses.empty()) {
+  // All batches processed. Nothing to do.
+  if (token_addresses.empty()) {
     std::move(callback).Run(std::move(accumulated_results),
                             mojom::ProviderError::kSuccess, "");
     return;
   }
 
-  // Get next batch
-  size_t batch_size =
-      std::min(kBalanceScannerBatchSize, remaining_addresses.size());
-  auto next_batch = remaining_addresses.first(batch_size);
-  auto next_remaining = remaining_addresses.subspan(batch_size);
-
   // Process next batch
-  ProcessNextERC20Batch(next_batch, user_address, scanner_address, network_url,
-                        std::move(accumulated_results), next_remaining,
-                        std::move(callback));
+  ProcessNextERC20Batch(std::move(token_addresses), user_address,
+                        scanner_address, network_url,
+                        std::move(accumulated_results), std::move(callback));
 }
 
 void JsonRpcService::OnGetERC20TokenBalances(
-    base::span<const std::string> token_addresses,
+    const std::vector<std::string>& token_addresses,
     GetERC20TokenBalancesCallback callback,
     APIRequestResult api_request_result) {
   if (!api_request_result.Is2XXResponseCode()) {
