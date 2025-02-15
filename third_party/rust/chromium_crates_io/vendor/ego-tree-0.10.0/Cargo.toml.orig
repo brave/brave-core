@@ -1,0 +1,23 @@
+[package]
+name = "ego-tree"
+edition = "2021"
+version = "0.10.0"
+description = "Vec-backed ID-tree"
+keywords = ["tree", "vec", "id", "index"]
+authors = [
+    "June McEnroe <june@causal.agency>",
+    "Carlo Federico Vescovo <vescovocarlofederico@gmail.com>",
+]
+license = "ISC"
+repository = "https://github.com/rust-scraper/ego-tree"
+readme = "README.md"
+
+[features]
+serde = ["dep:serde"]
+
+[dependencies]
+serde = { version = "1.0.209", optional = true }
+
+[dev-dependencies]
+serde = "1.0.209"
+serde_test = "1.0.177"

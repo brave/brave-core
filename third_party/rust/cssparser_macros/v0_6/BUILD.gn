@@ -12,16 +12,16 @@ cargo_crate("lib") {
   crate_name = "cssparser_macros"
   epoch = "0.6"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.1/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.1/lib.rs" ]
   inputs = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/.cargo-checksum.json",
-    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/.cargo_vcs_info.json",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.1/.cargo-checksum.json",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.1/.cargo_vcs_info.json",
   ]
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.6.0"
+  cargo_pkg_version = "0.6.1"
   cargo_pkg_authors = "Simon Sapin <simon.sapin@exyr.org>"
   cargo_pkg_name = "cssparser-macros"
   cargo_pkg_description = "Procedural macros for cssparser"
@@ -33,7 +33,7 @@ cargo_crate("lib") {
   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/quote/v1:lib",
-    "//brave/third_party/rust/syn/v1:lib",
+    "//brave/third_party/rust/syn/v2:lib",
   ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates

@@ -1,6 +1,6 @@
 [package]
 name = "cssparser-macros"
-version = "0.6.0"
+version = "0.6.1"
 authors = ["Simon Sapin <simon.sapin@exyr.org>"]
 description = "Procedural macros for cssparser"
 documentation = "https://docs.rs/cssparser-macros/"
@@ -14,4 +14,4 @@ proc-macro = true
 
 [dependencies]
 quote = "1"
-syn = {version = "1", features = ["full", "extra-traits"]}
+syn = {version = "2", features = ["full", "extra-traits"]}
