@@ -1,0 +1,10 @@
+Name: html5ever
+URL: https://crates.io/crates/html5ever
+Version: 0.29.1
+Revision: 0e4e125b8672abad4ff14d1e0043d3be9305af6a
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/html5ever-0.29.1/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: High-performance browser-grade HTML5 parser
