@@ -29,6 +29,8 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -397,8 +399,26 @@ void ToggleVerticalTabStripFloatingMode(Browser* browser) {
 
 void ToggleVerticalTabStripExpanded(Browser* browser) {
   auto* prefs = browser->profile()->GetPrefs();
-  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed,
-                    !prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
+  bool expanded_state_per_window =
+      prefs->GetBoolean(brave_tabs::kVerticalTabsExpandedStatePerWindow);
+  // Toggle preference if all tabs share the same state (derived from prefs)
+  if (!expanded_state_per_window) {
+    prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed,
+                      !prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
+    return;
+  }
+  // Otherwise, retrieve current vertical tab strip region view
+  auto* browser_view = static_cast<BraveBrowserView*>(browser->window());
+  if (!browser_view) {
+    return;
+  }
+  auto* vtsr_view = browser_view->vertical_tab_strip_widget_delegate_view()
+                        ->vertical_tab_strip_region_view();
+  if (!vtsr_view) {
+    return;
+  }
+  // toggle state for only this vtsr view
+  vtsr_view->ToggleState();
 }
 
 void ToggleActiveTabAudioMute(Browser* browser) {
