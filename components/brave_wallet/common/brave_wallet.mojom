@@ -1948,6 +1948,7 @@ interface ZCashWalletService {
   MakeAccountShielded(AccountId account_id, uint32 account_birthday_block /* 0 if use last available block */) => (string? error_message);
   StartShieldSync(AccountId account_id, uint32 to /* 0 if latest available block is used */) => (string? error_message);
   StopShieldSync(AccountId account_id) => (string? error_message);
+  IsSyncInProgress(AccountId account_id) => (bool result, string? error_message);
   ResetSyncState(AccountId account_id) => (string? error_message);
   GetChainTipStatus(AccountId account_id, string chain_id) => (ZCashChainTipStatus? status, string? error_message);
 };

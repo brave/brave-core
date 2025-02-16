@@ -238,6 +238,7 @@ void ZCashBlocksBatchScanTask::OnBlocksScanned(
 }
 
 OrchardBlockScanner::Result ZCashBlocksBatchScanTask::TakeResult() {
+  CHECK(scan_result_.has_value());
   return std::move(scan_result_.value());
 }
 
