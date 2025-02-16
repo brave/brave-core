@@ -198,7 +198,6 @@ test("brave_unit_tests") {
     "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/core/test:brave_ads_unit_tests",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_federated:brave_federated_tests",
     "//brave/components/brave_news/browser/test:brave_news_unit_tests",
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_private_cdn",
