@@ -1,0 +1,13 @@
+diff --git a/content/public/common/content_features.cc b/content/public/common/content_features.cc
+index 734e2b941d6fded91ffb265890bb831a9ee7aead..7d2d665b7bf101c1edfe3f836adbbe7096282351 100644
+--- a/content/public/common/content_features.cc
++++ b/content/public/common/content_features.cc
+@@ -368,7 +368,7 @@ BASE_FEATURE(kWebContentsDiscard,
+ // Enables the Origin Trial of Document-Isolation-Policy.
+ BASE_FEATURE(kDocumentIsolationPolicyOriginTrial,
+              "DocumentIsolationPolicyOriginTrial",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);  // Revert in cr134
+ 
+ // Enable drawing under System Bars within DisplayCutout.
+ BASE_FEATURE(kDrawCutoutEdgeToEdge,
