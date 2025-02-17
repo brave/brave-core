@@ -39,7 +39,7 @@ std::unique_ptr<views::Label> CustomStyledLabel::CreateLabel(
   if (!style_info.accessible_name.empty())
     result->SetAccessibleName(style_info.accessible_name);
   if (displayed_on_background_color_.has_value()) {
-    result->SetBackgroundColorId(displayed_on_background_color_->GetColorId());
+    result->SetBackgroundColor(*displayed_on_background_color_);
   }
 
   result->SetAutoColorReadabilityEnabled(auto_color_readability_enabled_);
