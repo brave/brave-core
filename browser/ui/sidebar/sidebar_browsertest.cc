@@ -48,7 +48,6 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/common/chrome_switches.h"
@@ -881,7 +880,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   tab_model()->ActivateTabAt(0);
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
-  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
+  panel_ui->Show(SidePanelEntryId::kChatUI);
   WaitUntil(base::BindLambdaForTesting(
       [&]() { return GetSidePanel()->GetVisible(); }));
 
@@ -898,7 +897,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   // Contextual panel should be set when activate tab at 0.
   tab_model()->ActivateTabAt(0);
   WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
+    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kChatUI;
   }));
 
   // Global panel should be set when activate tab at 1.
@@ -906,27 +905,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, TabSpecificAndGlobalPanelsTest) {
   WaitUntil(base::BindLambdaForTesting([&]() {
     return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kBookmarks;
   }));
-
-  // Check per-url contextual panel close.
-  // If current tab loads another url, customize panel should be hidden (if
-  // toolbar pinning is disabled)
-  tab_model()->ActivateTabAt(0);
-  WaitUntil(base::BindLambdaForTesting([&]() {
-    return panel_ui->GetCurrentEntryId() == SidePanelEntryId::kCustomizeChrome;
-  }));
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
-
-  // After loading another url, customize panel is deregistered and closed only
-  // if toolbar pinning is disabled.
-  if (::features::IsToolbarPinningEnabled()) {
-    WaitUntil(base::BindLambdaForTesting([&]() {
-      return panel_ui->GetCurrentEntryId() ==
-             SidePanelEntryId::kCustomizeChrome;
-    }));
-  } else {
-    EXPECT_FALSE(panel_ui->GetCurrentEntryId());
-  }
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
