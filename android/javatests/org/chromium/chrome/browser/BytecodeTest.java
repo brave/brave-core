@@ -1578,6 +1578,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbarCoordinator",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator",
                         Context.class,
+                        Profile.class,
                         SelectableListLayout.class,
                         SelectionDelegate.class,
                         SearchDelegate.class,
