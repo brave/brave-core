@@ -41,10 +41,9 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
   int32_t GetWorldId() const { return world_id_; }
   const std::optional<YouTubeJson>& GetJson() const;
   // Called to insert a YouTube script into the page.
-  void InsertScriptInPage(
-      const content::GlobalRenderFrameHostId& render_frame_host_id,
-      blink::mojom::UserActivationOption activation,
-      std::string script);
+  void InsertScriptInPage(content::RenderFrameHost* render_frame_host,
+                          blink::mojom::UserActivationOption activation,
+                          std::string script);
   base::WeakPtr<YouTubeTabFeature> GetWeakPtr() {
     return weak_factory_.GetWeakPtr();
   }
