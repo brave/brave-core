@@ -25,8 +25,6 @@ AutocompleteMatch::Type MatchTypeFromBraveType(
       return AutocompleteMatch::Type::URL_WHAT_YOU_TYPED;
     case BraveIOSAutocompleteMatchTypeHistoryUrl:
       return AutocompleteMatch::Type::HISTORY_URL;
-    case BraveIOSAutocompleteMatchTypeHistoryKeyword:
-      return AutocompleteMatch::Type::HISTORY_KEYWORD;
     case BraveIOSAutocompleteMatchTypeNavSuggest:
       return AutocompleteMatch::Type::NAVSUGGEST;
     case BraveIOSAutocompleteMatchTypeSearchWhatYouTyped:
@@ -44,7 +42,7 @@ AutocompleteMatch::Type MatchTypeFromBraveType(
     case BraveIOSAutocompleteMatchTypeOpenTab:
       return AutocompleteMatch::Type::OPEN_TAB;
   }
-  NOTREACHED();
+  NOTREACHED() << "Unknown BraveIOSAutocompleteMatchType: " << type;
 }
 
 BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
@@ -54,8 +52,6 @@ BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
       return BraveIOSAutocompleteMatchTypeUrlWhatYouTyped;
     case AutocompleteMatch::Type::HISTORY_URL:
       return BraveIOSAutocompleteMatchTypeHistoryUrl;
-    case AutocompleteMatch::Type::HISTORY_KEYWORD:
-      return BraveIOSAutocompleteMatchTypeHistoryKeyword;
     case AutocompleteMatch::Type::NAVSUGGEST:
       return BraveIOSAutocompleteMatchTypeNavSuggest;
     case AutocompleteMatch::Type::SEARCH_WHAT_YOU_TYPED:
@@ -73,7 +69,7 @@ BraveIOSAutocompleteMatchType BraveTypeFromMatchType(
     case AutocompleteMatch::Type::OPEN_TAB:
       return BraveIOSAutocompleteMatchTypeOpenTab;
     default:
-      NOTREACHED();
+      NOTREACHED() << "Unknown AutocompleteMatch::Type: " << type;
   }
 }
 }  // namespace brave
