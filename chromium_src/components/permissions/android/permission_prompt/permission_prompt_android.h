@@ -21,6 +21,11 @@
   Delegate* delegate_public() const {                                         \
     return delegate_;                                                         \
   }                                                                           \
+  /* Public setter for upstream's private permission_dialog_delegate_      */ \
+  void set_permission_dialog_delegate(                                        \
+      std::unique_ptr<PermissionDialogDelegate> permission_dialog_delegate) { \
+    permission_dialog_delegate_ = std::move(permission_dialog_delegate);      \
+  }                                                                           \
   size_t PermissionCount
 
 #include "src/components/permissions/android/permission_prompt/permission_prompt_android.h"  // IWYU pragma: export
@@ -44,7 +49,13 @@ class PermissionPromptAndroid : public PermissionPromptAndroid_ChromiumImpl {
   bool ShouldUseRequestingOriginFavicon() const override;
 
   void CreatePermissionDialogDelegate() {
-    PermissionDialogDelegate::Create(web_contents(), this);
+    // This method does the same as upstream's
+    // PermissionPromptAndroid::CreatePermissionDialogDelegate:
+    // permission_dialog_delegate_ =
+    //     PermissionDialogDelegate::Create(web_contents_, this);
+    std::unique_ptr<PermissionDialogDelegate> permission_dialog_delegate =
+        PermissionDialogDelegate::Create(web_contents(), this);
+    set_permission_dialog_delegate(std::move(permission_dialog_delegate));
   }
 };
 
