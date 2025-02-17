@@ -50,13 +50,9 @@
         android:summary="@string/send_web_discovery_summary"
         android:defaultValue="false" />
     <PreferenceCategory
-        android:key="custom_search_engines"
+        android:key="custom_search_engines_category"
         android:order="9"
         android:title="@string/custom_search_engines">
-        <org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesPreference
-        android:key="pref_custom_search_engines"
-        android:layout="@layout/custom_search_engines_preference_layout"
-        android:order="1" />
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:fragment="org.chromium.brave.browser.search_engines.settings.AddCustomSearchEnginePreferenceFragment"
             android:key="add_custom_search_engine"

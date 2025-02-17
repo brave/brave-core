@@ -10,14 +10,17 @@
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 
-#define DoesDefaultSearchEngineHaveLogo                                  \
-  DoesDefaultSearchEngineHaveLogo_ChromiumImpl(                          \
-      JNIEnv* env, const base::android::JavaParamRef<jobject>& obj);     \
-  jboolean AddSearchEngine(                                              \
-      JNIEnv* env,                                                       \
-      const base::android::JavaParamRef<jstring>& search_engine_title,   \
-      const base::android::JavaParamRef<jstring>& search_engine_keyword, \
-      const base::android::JavaParamRef<jstring>& search_engine_url);    \
+#define DoesDefaultSearchEngineHaveLogo                                   \
+  DoesDefaultSearchEngineHaveLogo_ChromiumImpl(                           \
+      JNIEnv* env, const base::android::JavaParamRef<jobject>& obj);      \
+  jboolean AddSearchEngine(                                               \
+      JNIEnv* env,                                                        \
+      const base::android::JavaParamRef<jstring>& search_engine_title,    \
+      const base::android::JavaParamRef<jstring>& search_engine_keyword,  \
+      const base::android::JavaParamRef<jstring>& search_engine_url);     \
+  void RemoveSearchEngine(                                                \
+      JNIEnv* env,                                                        \
+      const base::android::JavaParamRef<jstring>& search_engine_keyword); \
   jboolean DoesDefaultSearchEngineHaveLogo
 
 #include "src/components/search_engines/android/template_url_service_android.h"  // IWYU pragma: export

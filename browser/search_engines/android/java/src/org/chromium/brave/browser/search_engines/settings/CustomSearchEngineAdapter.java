@@ -10,27 +10,41 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.search_engines.R;
 
-import java.util.List;
-
-public class CustomSearchEngineAdapter extends RecyclerView.Adapter<CustomSearchEngineViewHolder> {
-    private List<String> mSearchEngines;
+public class CustomSearchEngineAdapter extends ListAdapter<String, CustomSearchEngineViewHolder> {
     private CustomSearchEnginesCallback mCustomSearchEnginesCallback;
 
-    public CustomSearchEngineAdapter(
-            List<String> searchEngines, CustomSearchEnginesCallback customSearchEnginesCallback) {
-        mSearchEngines = searchEngines;
+    protected CustomSearchEngineAdapter() {
+        super(
+                new DiffUtil.ItemCallback<String>() {
+                    @Override
+                    public boolean areItemsTheSame(
+                            @NonNull String oldItem, @NonNull String newItem) {
+                        return oldItem.equals(newItem);
+                    }
+
+                    @Override
+                    public boolean areContentsTheSame(
+                            @NonNull String oldItem, @NonNull String newItem) {
+                        return oldItem.equals(newItem);
+                    }
+                });
+    }
+
+    public void setCustomSearchEnginesCallback(
+            CustomSearchEnginesCallback customSearchEnginesCallback) {
         mCustomSearchEnginesCallback = customSearchEnginesCallback;
     }
 
     @Override
     public void onBindViewHolder(
             @NonNull CustomSearchEngineViewHolder customSearchEngineViewHolder, int position) {
-        final String searchEngineKeyword = mSearchEngines.get(position);
+        final String searchEngineKeyword = getItem(position);
         Log.e("brave_search", "CustomSearchEngineViewHolder : " + searchEngineKeyword);
         customSearchEngineViewHolder.mSearchEngineText.setText(searchEngineKeyword);
         customSearchEngineViewHolder.mView.setOnClickListener(
@@ -58,10 +72,5 @@ public class CustomSearchEngineAdapter extends RecyclerView.Adapter<CustomSearch
                 LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.custom_search_engine_item, parent, false);
         return new CustomSearchEngineViewHolder(view);
-    }
-
-    @Override
-    public int getItemCount() {
-        return mSearchEngines.size();
     }
 }
