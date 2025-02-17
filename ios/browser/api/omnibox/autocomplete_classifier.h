@@ -17,8 +17,6 @@ typedef NS_ENUM(NSUInteger, BraveIOSAutocompleteMatchType) {
   BraveIOSAutocompleteMatchTypeUrlWhatYouTyped = 0,  // The input as a URL.
   BraveIOSAutocompleteMatchTypeHistoryUrl =
       1,  // A past page whose URL contains the input.
-  BraveIOSAutocompleteMatchTypeHistoryKeyword =
-      4,  // A past page whose keyword contains the input.
   BraveIOSAutocompleteMatchTypeNavSuggest = 5,  // A suggested URL.
   BraveIOSAutocompleteMatchTypeSearchWhatYouTyped =
       6,  // The input as a search query (with the default engine).
