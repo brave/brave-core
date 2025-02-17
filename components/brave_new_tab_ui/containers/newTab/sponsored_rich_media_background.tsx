@@ -80,11 +80,11 @@ export function SponsoredRichMediaBackground(props: Props) {
 
   React.useEffect(() => {
     try {
-      const ntpSponsoredRichMediaUrlOrigin =
-        new URL(loadTimeData.getString('ntpSponsoredRichMediaUrl')).origin
+      const ntpNewTabTakeoverRichMediaUrlOrigin =
+        new URL(loadTimeData.getString('ntpNewTabTakeoverRichMediaUrl')).origin
 
       const listener = (event: MessageEvent) => {
-        if (event.origin !== ntpSponsoredRichMediaUrlOrigin) {
+        if (event.origin !== ntpNewTabTakeoverRichMediaUrlOrigin) {
           return
         }
 

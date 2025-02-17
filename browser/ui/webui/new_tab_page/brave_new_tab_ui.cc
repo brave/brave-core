@@ -145,8 +145,9 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui,
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::StringPrintf("frame-src %s;", kNTPSponsoredRichMediaUrl));
-  source->AddString("ntpSponsoredRichMediaUrl", kNTPSponsoredRichMediaUrl);
+      base::StringPrintf("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
+  source->AddString("ntpNewTabTakeoverRichMediaUrl",
+                    kNTPNewTabTakeoverRichMediaUrl);
 
   std::unique_ptr<ntp_background_images::NTPP3AHelperImpl> ntp_p3a_helper;
   if (g_brave_browser_process->p3a_service() != nullptr) {
