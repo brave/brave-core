@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -26,7 +26,7 @@ class BraveAdsTransactionsDatabaseTableTest : public test::TestBase {};
 
 TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveEmptyTransactions) {
   // Act
-  database::SaveTransactions({});
+  SaveTransactions({});
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
@@ -61,7 +61,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   transactions.push_back(transaction_2);
 
   // Act
-  database::SaveTransactions(transactions);
+  SaveTransactions(transactions);
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
@@ -86,10 +86,10 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction);
 
-  database::SaveTransactions(transactions);
+  SaveTransactions(transactions);
 
   // Act
-  database::SaveTransactions(transactions);
+  SaveTransactions(transactions);
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
@@ -122,7 +122,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  database::SaveTransactions(transactions);
+  SaveTransactions(transactions);
 
   const Transactions database_table;
 
@@ -154,7 +154,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  database::SaveTransactions(transactions);
+  SaveTransactions(transactions);
 
   PaymentTokenList payment_tokens;
   PaymentTokenInfo payment_token;
@@ -212,7 +212,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, PurgeExpired) {
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
-  database::SaveTransactions(transactions);
+  SaveTransactions(transactions);
 
   const Transactions database_table;
 
@@ -256,7 +256,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest,
       /*should_generate_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  database::SaveTransactions(transactions);
+  SaveTransactions(transactions);
 
   const Transactions database_table;
 

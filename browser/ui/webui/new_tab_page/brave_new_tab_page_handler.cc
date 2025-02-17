@@ -481,9 +481,10 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
   auto image_url = GURL(selected_value);
 
   auto iter = std::ranges::find_if(
-      image_data->backgrounds, [image_data, &image_url](const auto& data) {
+      image_data->backgrounds,
+      [image_data, &image_url](const auto& background) {
         return image_data->url_prefix +
-                   data.image_file.BaseName().AsUTF8Unsafe() ==
+                   background.file_path.BaseName().AsUTF8Unsafe() ==
                image_url.spec();
       });
   if (iter == image_data->backgrounds.end()) {
@@ -569,12 +570,12 @@ void BraveNewTabPageHandler::GetBraveBackgrounds(
   std::vector<brave_new_tab_page::mojom::BraveBackgroundPtr> backgrounds;
   std::ranges::transform(
       image_data->backgrounds, std::back_inserter(backgrounds),
-      [image_data](const auto& data) {
+      [image_data](const auto& background) {
         auto value = brave_new_tab_page::mojom::BraveBackground::New();
         value->image_url = GURL(image_data->url_prefix +
-                                data.image_file.BaseName().AsUTF8Unsafe());
-        value->author = data.author;
-        value->link = GURL(data.link);
+                                background.file_path.BaseName().AsUTF8Unsafe());
+        value->author = background.author;
+        value->link = GURL(background.link);
         return value;
       });
 

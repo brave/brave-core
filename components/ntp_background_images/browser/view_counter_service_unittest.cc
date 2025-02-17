@@ -229,8 +229,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     // Loading initial count times.
     for (size_t i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
       auto wallpaper = view_counter_->GetCurrentWallpaperForDisplay();
-      EXPECT_TRUE(wallpaper->FindBool(ntp_background_images::kIsBackgroundKey)
-                      .value_or(false));
+      EXPECT_TRUE(wallpaper->FindBool(kIsBackgroundKey).value_or(false));
       view_counter_->RegisterPageView();
     }
 
@@ -446,15 +445,11 @@ TEST_F(NTPBackgroundImagesViewCounterTest,
   EXPECT_CALL(ads_service_mock_, PrefetchNewTabPageAd()).Times(0);
 
   auto si_wallpaper = TryGetFirstSponsoredImageWallpaper();
-  EXPECT_FALSE(si_wallpaper->FindBool(ntp_background_images::kIsBackgroundKey)
-                   .value_or(true));
-  ASSERT_TRUE(
-      si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
-  EXPECT_TRUE(
-      si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
-  ASSERT_TRUE(si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
-  EXPECT_FALSE(si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey)
-                   ->empty());
+  EXPECT_FALSE(si_wallpaper->FindBool(kIsBackgroundKey).value_or(true));
+  ASSERT_TRUE(si_wallpaper->FindString(kCreativeInstanceIDKey));
+  EXPECT_TRUE(si_wallpaper->FindString(kCreativeInstanceIDKey));
+  ASSERT_TRUE(si_wallpaper->FindString(kWallpaperIDKey));
+  EXPECT_FALSE(si_wallpaper->FindString(kWallpaperIDKey)->empty());
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdFrequencyCapped) {
@@ -470,12 +465,9 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdFrequencyCapped) {
 
   auto si_wallpaper = TryGetFirstSponsoredImageWallpaper();
   EXPECT_TRUE(si_wallpaper);
-  EXPECT_TRUE(si_wallpaper->FindBool(ntp_background_images::kIsBackgroundKey)
-                  .value_or(false));
-  EXPECT_FALSE(
-      si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
-  EXPECT_FALSE(
-      si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
+  EXPECT_TRUE(si_wallpaper->FindBool(kIsBackgroundKey).value_or(false));
+  EXPECT_FALSE(si_wallpaper->FindString(kCreativeInstanceIDKey));
+  EXPECT_FALSE(si_wallpaper->FindString(kWallpaperIDKey));
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
@@ -493,16 +485,12 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
   EXPECT_CALL(ads_service_mock_, OnFailedToPrefetchNewTabPageAd(_, _)).Times(0);
 
   auto si_wallpaper = TryGetFirstSponsoredImageWallpaper();
-  EXPECT_FALSE(si_wallpaper->FindBool(ntp_background_images::kIsBackgroundKey)
-                   .value_or(true));
-  ASSERT_TRUE(
-      si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
-  EXPECT_EQ(
-      kCreativeInstanceId,
-      *si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
-  ASSERT_TRUE(si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
-  EXPECT_EQ(ad_info.placement_id,
-            *si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
+  EXPECT_FALSE(si_wallpaper->FindBool(kIsBackgroundKey).value_or(true));
+  ASSERT_TRUE(si_wallpaper->FindString(kCreativeInstanceIDKey));
+  EXPECT_EQ(kCreativeInstanceId,
+            *si_wallpaper->FindString(kCreativeInstanceIDKey));
+  ASSERT_TRUE(si_wallpaper->FindString(kWallpaperIDKey));
+  EXPECT_EQ(ad_info.placement_id, *si_wallpaper->FindString(kWallpaperIDKey));
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, WrongSponsoredImageAdServed) {
@@ -522,12 +510,9 @@ TEST_F(NTPBackgroundImagesViewCounterTest, WrongSponsoredImageAdServed) {
 
   auto si_wallpaper = TryGetFirstSponsoredImageWallpaper();
   EXPECT_TRUE(si_wallpaper);
-  EXPECT_TRUE(si_wallpaper->FindBool(ntp_background_images::kIsBackgroundKey)
-                  .value_or(false));
-  EXPECT_FALSE(
-      si_wallpaper->FindString(ntp_background_images::kCreativeInstanceIDKey));
-  EXPECT_FALSE(
-      si_wallpaper->FindString(ntp_background_images::kWallpaperIDKey));
+  EXPECT_TRUE(si_wallpaper->FindBool(kIsBackgroundKey).value_or(false));
+  EXPECT_FALSE(si_wallpaper->FindString(kCreativeInstanceIDKey));
+  EXPECT_FALSE(si_wallpaper->FindString(kWallpaperIDKey));
 }
 
 }  // namespace ntp_background_images

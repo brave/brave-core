@@ -28,12 +28,12 @@ class Database final {
 
   ~Database();
 
-  mojom::DBTransactionResultInfoPtr RunDBTransaction(
+  mojom::DBTransactionResultInfoPtr RunTransaction(
       mojom::DBTransactionInfoPtr mojom_db_transaction,
       uint64_t trace_id);
 
  private:
-  mojom::DBTransactionResultInfo::StatusCode RunDBActions(
+  mojom::DBTransactionResultInfo::StatusCode RunActions(
       const mojom::DBTransactionInfoPtr& mojom_db_transaction,
       const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result,
       uint64_t trace_id);

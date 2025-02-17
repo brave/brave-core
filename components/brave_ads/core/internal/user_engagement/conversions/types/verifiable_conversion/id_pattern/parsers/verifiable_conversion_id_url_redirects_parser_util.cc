@@ -29,11 +29,11 @@ std::optional<std::string> MaybeParseVerifableConversionIdFromUrlRedirects(
     return std::nullopt;
   }
 
-  std::string_view url_string_piece(iter->spec());
+  std::string_view input(iter->spec());
   const RE2 r(resource_id_pattern.id_pattern);
   std::string verifiable_conversion_id;
 
-  if (!RE2::FindAndConsume(&url_string_piece, r, &verifiable_conversion_id)) {
+  if (!RE2::FindAndConsume(&input, r, &verifiable_conversion_id)) {
     BLOG(1, "Failed to parse verifiable conversion id for "
                 << resource_id_pattern.id_pattern << " resource id pattern");
     return std::nullopt;

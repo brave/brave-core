@@ -103,7 +103,7 @@ AdEventInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
 void GetCallback(
     GetAdEventsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get ad events");
     return std::move(callback).Run(/*success=*/false, /*ad_events=*/{});
   }
@@ -176,8 +176,8 @@ void AdEvents::RecordEvent(const AdEventInfo& ad_event,
 
   Insert(mojom_db_transaction, {ad_event});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void AdEvents::GetAll(GetAdEventsCallback callback) const {
@@ -203,8 +203,8 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::Get(mojom::AdType mojom_ad_type,
@@ -242,8 +242,8 @@ void AdEvents::Get(mojom::AdType mojom_ad_type,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
@@ -281,8 +281,8 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
@@ -324,8 +324,8 @@ void AdEvents::GetUnexpired(mojom::AdType mojom_ad_type,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdEvents::PurgeExpired(ResultCallback callback) const {
@@ -347,8 +347,8 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
           {GetTableName(),
            TimeToSqlValueAsString(base::Time::Now() - base::Days(days))});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
@@ -373,8 +373,8 @@ void AdEvents::PurgeOrphaned(mojom::AdType mojom_ad_type,
           AND type = '$3')",
           {GetTableName(), GetTableName(), ToString(mojom_ad_type)});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void AdEvents::PurgeOrphaned(const std::vector<std::string>& placement_ids,
@@ -411,8 +411,8 @@ void AdEvents::PurgeOrphaned(const std::vector<std::string>& placement_ids,
           {GetTableName(), GetTableName(),
            base::JoinString(quoted_placement_ids, ", ")});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void AdEvents::PurgeAllOrphaned(ResultCallback callback) const {
@@ -435,8 +435,8 @@ void AdEvents::PurgeAllOrphaned(ResultCallback callback) const {
               AND confirmation_type = 'served')",
           {GetTableName(), GetTableName()});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 std::string AdEvents::GetTableName() const {

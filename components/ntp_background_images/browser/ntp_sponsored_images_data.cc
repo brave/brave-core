@@ -75,8 +75,15 @@ TopSite::TopSite(const std::string& i_name,
       destination_url(i_destination_url),
       image_path(i_image_path),
       image_file(i_image_file) {}
-TopSite& TopSite::operator=(const TopSite& data) = default;
-TopSite::TopSite(const TopSite& data) = default;
+
+TopSite::TopSite(const TopSite& other) = default;
+
+TopSite& TopSite::operator=(const TopSite& other) = default;
+
+TopSite::TopSite(TopSite&& other) noexcept = default;
+
+TopSite& TopSite::operator=(TopSite&& other) noexcept = default;
+
 TopSite::~TopSite() = default;
 
 bool TopSite::IsValid() const {
@@ -84,7 +91,15 @@ bool TopSite::IsValid() const {
 }
 
 Logo::Logo() = default;
-Logo::Logo(const Logo&) = default;
+
+Logo::Logo(const Logo& other) = default;
+
+Logo& Logo::operator=(const Logo& other) = default;
+
+Logo::Logo(Logo&& other) noexcept = default;
+
+Logo& Logo::operator=(Logo&& other) noexcept = default;
+
 Logo::~Logo() = default;
 
 Creative::Creative() = default;
@@ -96,13 +111,28 @@ Creative::Creative(const base::FilePath& file_path,
       focal_point(point),
       creative_instance_id(creative_instance_id),
       logo(test_logo) {}
-Creative::Creative(const Creative&) = default;
+
+Creative::Creative(const Creative& other) = default;
+
+Creative& Creative::operator=(const Creative& other) = default;
+
+Creative::Creative(Creative&& other) noexcept = default;
+
+Creative& Creative::operator=(Creative&& other) noexcept = default;
+
 Creative::~Creative() = default;
 
 Campaign::Campaign() = default;
-Campaign::~Campaign() = default;
+
 Campaign::Campaign(const Campaign&) = default;
+
 Campaign& Campaign::operator=(const Campaign&) = default;
+
+Campaign::Campaign(Campaign&& other) noexcept = default;
+
+Campaign& Campaign::operator=(Campaign&& other) noexcept = default;
+
+Campaign::~Campaign() = default;
 
 bool Campaign::IsValid() const {
   return !creatives.empty();
@@ -110,10 +140,10 @@ bool Campaign::IsValid() const {
 
 NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
 NTPSponsoredImagesData::NTPSponsoredImagesData(
-    const base::Value::Dict& data,
+    const base::Value::Dict& dict,
     const base::FilePath& installed_dir)
     : NTPSponsoredImagesData() {
-  const std::optional<int> schema_version = data.FindInt(kSchemaVersionKey);
+  const std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
     // Currently, only version 2 is supported. Update this code to maintain.
     return;
@@ -121,39 +151,48 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 
   url_prefix = base::StringPrintf("%s://%s/", content::kChromeUIScheme,
                                   kBrandedWallpaperHost);
-  if (const std::string* const name = data.FindString(kThemeNameKey)) {
+  if (const std::string* const name = dict.FindString(kThemeNameKey)) {
     theme_name = *name;
     url_prefix += kSuperReferralPath;
   } else {
     url_prefix += kSponsoredImagesPath;
   }
 
-  if (const base::Value::List* campaigns_value = data.FindList(kCampaignsKey)) {
+  if (const base::Value::List* campaigns_value = dict.FindList(kCampaignsKey)) {
     ParseCampaigns(*campaigns_value, installed_dir);
   }
 
-  ParseSponsoredReferrals(data, installed_dir);
+  ParseSuperReferrals(dict, installed_dir);
 }
+
+NTPSponsoredImagesData::NTPSponsoredImagesData(
+    const NTPSponsoredImagesData& data) = default;
 
 NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
     const NTPSponsoredImagesData& data) = default;
+
 NTPSponsoredImagesData::NTPSponsoredImagesData(
-    const NTPSponsoredImagesData& data) = default;
+    NTPSponsoredImagesData&& other) noexcept = default;
+
+NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
+    NTPSponsoredImagesData&& other) noexcept = default;
+
 NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
 
 void NTPSponsoredImagesData::ParseCampaigns(
-    const base::Value::List& campaigns_value,
+    const base::Value::List& list,
     const base::FilePath& installed_dir) {
-  for (const auto& campaign_value : campaigns_value) {
-    DCHECK(campaign_value.is_dict());
-    const std::optional<Campaign> campaign =
-        ParseCampaign(campaign_value.GetDict(), installed_dir);
-    if (!campaign || !campaign->IsValid()) {
+  for (const auto& value : list) {
+    const base::Value::Dict* const dict = value.GetIfDict();
+    if (!dict) {
       // Invalid campaign.
       continue;
     }
 
-    campaigns.push_back(*campaign);
+    if (const std::optional<Campaign> campaign =
+            ParseCampaign(*dict, installed_dir)) {
+      campaigns.push_back(*campaign);
+    }
   }
 }
 
@@ -162,19 +201,18 @@ void NTPSponsoredImagesData::ParseCampaigns(
 // parsing logic will be removed once new tab page ads are served from the ads
 // component for both non-Rewards and Rewards.
 std::optional<Campaign> NTPSponsoredImagesData::ParseCampaign(
-    const base::Value::Dict& value,
+    const base::Value::Dict& dict,
     const base::FilePath& installed_dir) {
   Campaign campaign;
 
-  const std::optional<int> campaign_version =
-      value.FindInt(kCampaignVersionKey);
+  const std::optional<int> campaign_version = dict.FindInt(kCampaignVersionKey);
   if (campaign_version != kExpectedCampaignVersion) {
     // Currently, only version 1 is supported. Update this code to maintain
     // backwards compatibility when adding new schema versions.
     return std::nullopt;
   }
 
-  const std::string* const campaign_id = value.FindString(kCampaignIdKey);
+  const std::string* const campaign_id = dict.FindString(kCampaignIdKey);
   if (!campaign_id) {
     // Campaign ID is required.
     return std::nullopt;
@@ -182,7 +220,7 @@ std::optional<Campaign> NTPSponsoredImagesData::ParseCampaign(
   campaign.campaign_id = *campaign_id;
 
   const base::Value::List* const creative_sets =
-      value.FindList(kCreativeSetsKey);
+      dict.FindList(kCreativeSetsKey);
   if (!creative_sets) {
     // Creative sets are required.
     return std::nullopt;
@@ -392,11 +430,16 @@ std::optional<Campaign> NTPSponsoredImagesData::ParseCampaign(
     }
   }
 
+  if (campaign.creatives.empty()) {
+    // At least one creative is required.
+    return std::nullopt;
+  }
+
   return campaign;
 }
 
-void NTPSponsoredImagesData::ParseSponsoredReferrals(
-    const base::Value::Dict& value,
+void NTPSponsoredImagesData::ParseSuperReferrals(
+    const base::Value::Dict& dict,
     const base::FilePath& installed_dir) {
   if (theme_name.empty()) {
     DVLOG(2) << __func__ << ": Don't have NTP SR properties";
@@ -405,35 +448,48 @@ void NTPSponsoredImagesData::ParseSponsoredReferrals(
 
   DVLOG(2) << __func__ << ": Theme name: " << theme_name;
 
-  if (const base::Value::List* const sites = value.FindList(kTopSitesKey)) {
-    for (const auto& top_site_value : *sites) {
-      const base::Value::Dict& top_site_dict = top_site_value.GetDict();
+  const base::Value::List* const list = dict.FindList(kTopSitesKey);
+  if (!list) {
+    return;
+  }
 
-      TopSite top_site;
+  for (const auto& value : *list) {
+    const base::Value::Dict* const top_site_dict = value.GetIfDict();
+    if (!top_site_dict) {
+      continue;
+    }
 
-      if (const std::string* const top_site_name =
-              top_site_dict.FindString(kTopSiteNameKey)) {
-        top_site.name = *top_site_name;
-      }
+    const std::string* const name = top_site_dict->FindString(kTopSiteNameKey);
+    if (!name) {
+      continue;
+    }
 
-      if (const std::string* const destination_url =
-              top_site_dict.FindString(kDestinationURLKey)) {
-        top_site.destination_url = *destination_url;
-      }
+    const std::string* const destination_url =
+        top_site_dict->FindString(kDestinationURLKey);
+    if (!destination_url) {
+      continue;
+    }
 
-      if (const std::string* const background_color =
-              top_site_dict.FindString(kBackgroundColorKey)) {
-        top_site.background_color = *background_color;
-      }
+    const std::string* const background_color =
+        top_site_dict->FindString(kBackgroundColorKey);
+    if (!background_color) {
+      continue;
+    }
 
-      if (const std::string* const icon_url =
-              top_site_dict.FindString(kTopSiteIconURLKey)) {
-        top_site.image_path = url_prefix + *icon_url;
-        top_site.image_file = installed_dir.AppendASCII(*icon_url);
-      }
+    const std::string* const icon_url =
+        top_site_dict->FindString(kTopSiteIconURLKey);
+    if (!icon_url) {
+      continue;
+    }
 
-      DCHECK(top_site.IsValid());
+    TopSite top_site;
+    top_site.name = *name;
+    top_site.destination_url = *destination_url;
+    top_site.background_color = *background_color;
+    top_site.image_path = url_prefix + *icon_url;
+    top_site.image_file = installed_dir.AppendASCII(*icon_url);
 
+    if (top_site.IsValid()) {
       top_sites.push_back(top_site);
     }
   }
@@ -453,10 +509,7 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   DCHECK(campaign_index < campaigns.size() &&
          creative_index < campaigns[campaign_index].creatives.size());
 
-  const Campaign campaign = campaigns[campaign_index];
-  if (!campaign.IsValid()) {
-    return std::nullopt;
-  }
+  const Campaign& campaign = campaigns[campaign_index];
 
   base::Value::List condition_matchers;
   for (const auto& [pref_path, condition] :
@@ -556,9 +609,6 @@ bool NTPSponsoredImagesData::AdInfoMatchesSponsoredImage(
          creative_index < campaigns[campaign_index].creatives.size());
 
   const Campaign& campaign = campaigns[campaign_index];
-  if (!campaign.IsValid()) {
-    return false;
-  }
 
   if (ad_info.campaign_id != campaign.campaign_id) {
     return false;

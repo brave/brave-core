@@ -31,8 +31,7 @@ class NTPP3AHelperImpl : public NTPP3AHelper,
  public:
   NTPP3AHelperImpl(PrefService* local_state,
                    p3a::P3AService* p3a_service,
-                   ntp_background_images::NTPBackgroundImagesService*
-                       ntp_background_images_service,
+                   NTPBackgroundImagesService* ntp_background_images_service,
                    PrefService* prefs,
                    bool use_uma_for_testing = false);
   ~NTPP3AHelperImpl() override;

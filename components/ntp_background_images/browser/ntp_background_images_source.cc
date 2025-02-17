@@ -63,7 +63,7 @@ void NTPBackgroundImagesSource::StartDataRequest(
   }
 
   base::FilePath image_file_path =
-      images_data->backgrounds[GetWallpaperIndexFromPath(path)].image_file;
+      images_data->backgrounds[GetWallpaperIndexFromPath(path)].file_path;
 
   GetImageFile(image_file_path, std::move(callback));
 }
@@ -115,7 +115,7 @@ int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
 
   for (size_t i = 0; i < images_data->backgrounds.size(); ++i) {
     const std::string image_name =
-        images_data->backgrounds[i].image_file.BaseName().AsUTF8Unsafe();
+        images_data->backgrounds[i].file_path.BaseName().AsUTF8Unsafe();
     if (path.compare(image_name) == 0) {
       return i;
     }

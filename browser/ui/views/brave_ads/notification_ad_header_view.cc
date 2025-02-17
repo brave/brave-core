@@ -7,7 +7,6 @@
 
 #include "brave/browser/ui/views/brave_ads/insets_util.h"
 #include "brave/browser/ui/views/brave_ads/spacer_view.h"
-#include "ui/accessibility/ax_node_data.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"

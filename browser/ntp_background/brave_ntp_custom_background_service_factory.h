@@ -17,7 +17,7 @@ class NoDestructor;
 
 namespace ntp_background_images {
 class BraveNTPCustomBackgroundService;
-}
+}  // namespace ntp_background_images
 
 class BraveNTPCustomBackgroundServiceFactory
     : public BrowserContextKeyedServiceFactory {

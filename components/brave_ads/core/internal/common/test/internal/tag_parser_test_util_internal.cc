@@ -85,13 +85,13 @@ std::optional<std::string> ParseTimeTagValue(const std::string& value) {
 }
 
 std::vector<std::string> ParseTagsForText(const std::string& text) {
-  std::string_view text_string_piece(text);
+  std::string_view input(text);
   const RE2 r("<(.*)>");
 
   std::vector<std::string> tags;
 
   std::string tag;
-  while (RE2::FindAndConsume(&text_string_piece, r, &tag)) {
+  while (RE2::FindAndConsume(&input, r, &tag)) {
     tags.push_back(base::ToLowerASCII(tag));
   }
 

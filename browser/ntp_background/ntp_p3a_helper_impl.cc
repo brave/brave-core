@@ -116,8 +116,7 @@ bool CheckExpiry(const base::Time& now, const base::Value::Dict* dict) {
 NTPP3AHelperImpl::NTPP3AHelperImpl(
     PrefService* local_state,
     p3a::P3AService* p3a_service,
-    ntp_background_images::NTPBackgroundImagesService*
-        ntp_background_images_service,
+    NTPBackgroundImagesService* ntp_background_images_service,
     PrefService* prefs,
     bool use_uma_for_testing)
     : local_state_(local_state),

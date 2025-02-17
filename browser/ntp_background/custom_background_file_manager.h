@@ -26,7 +26,7 @@
 
 namespace base {
 class FilePath;
-}
+}  // namespace base
 
 namespace gfx {
 class Image;

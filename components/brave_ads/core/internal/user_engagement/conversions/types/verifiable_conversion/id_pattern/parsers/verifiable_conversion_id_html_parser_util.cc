@@ -16,11 +16,11 @@ namespace brave_ads {
 std::optional<std::string> MaybeParseVerifableConversionIdFromHtml(
     const std::string& html,
     const ConversionResourceIdPatternInfo& resource_id_pattern) {
-  std::string_view html_string_piece(html);
+  std::string_view input(html);
   const RE2 r(resource_id_pattern.id_pattern);
   std::string verifiable_conversion_id;
 
-  if (!RE2::FindAndConsume(&html_string_piece, r, &verifiable_conversion_id)) {
+  if (!RE2::FindAndConsume(&input, r, &verifiable_conversion_id)) {
     BLOG(1, "Failed to parse verifiable conversion id for "
                 << resource_id_pattern.id_pattern << " resource id pattern");
     return std::nullopt;

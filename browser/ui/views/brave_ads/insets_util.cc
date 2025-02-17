@@ -22,7 +22,7 @@ void AdjustInsetsForFontList(gfx::Insets* insets,
   // difference of 1px in height between Chrome on Windows and everything else
   // (where everything else includes unit tests on Windows). This 1px causes the
   // text and everything else to stop aligning correctly, so we account for it
-  // by shrinking the top padding by 1
+  // by shrinking the top padding by 1.
   if (font_list.GetHeight() != 15) {
     *insets -= gfx::Insets::TLBR(1, 0, 0, 0);
   }

@@ -340,7 +340,7 @@ TEST_F(
     SuspendPageLandWhenTabBecomesOccludedThenResumePageLandWhenTabBecomesVisible) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      brave_ads::kSiteVisitFeature, {{"page_land_after", "10s"}});
+      kSiteVisitFeature, {{"page_land_after", "10s"}});
 
   // Tab 1 (Visible/Start page landing)
   const AdInfo ad_1 = test::BuildAd(mojom::AdType::kNotificationAd,
@@ -485,8 +485,7 @@ TEST_F(
 TEST_F(BraveAdsSiteVisitTest, DoNotSuspendOrResumePageLand) {
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitAndEnableFeatureWithParameters(
-      brave_ads::kSiteVisitFeature,
-      {{"should_suspend_and_resume_page_land", "false"}});
+      kSiteVisitFeature, {{"should_suspend_and_resume_page_land", "false"}});
 
   // Tab (Start page landing)
   const AdInfo ad = test::BuildAd(mojom::AdType::kNotificationAd,

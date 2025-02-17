@@ -24,10 +24,8 @@
 namespace ntp_background_images {
 
 namespace {
-
 constexpr char kRichMediaUrl[] =
     R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)";
-
 }  // namespace
 
 class NTPSponsoredRichMediaWithCSPViolationBrowserTest

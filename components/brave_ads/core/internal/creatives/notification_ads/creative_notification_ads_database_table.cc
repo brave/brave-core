@@ -160,7 +160,7 @@ void GetForSegmentsCallback(
     const SegmentList& segments,
     GetCreativeNotificationAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative notification ads");
     return std::move(callback).Run(/*success=*/false, segments,
                                    /*creative_ads=*/{});
@@ -175,7 +175,7 @@ void GetForSegmentsCallback(
 void GetAllCallback(
     GetCreativeNotificationAdsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get all creative notification ads");
     return std::move(callback).Run(/*success=*/false, /*segments=*/{},
                                    /*creative_ads=*/{});
@@ -216,8 +216,8 @@ void CreativeNotificationAds::Save(
     Insert(mojom_db_transaction, batch);
   }
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void CreativeNotificationAds::GetForSegments(
@@ -282,7 +282,7 @@ void CreativeNotificationAds::GetForSegments(
 
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(
+  RunTransaction(
       FROM_HERE, std::move(mojom_db_transaction),
       base::BindOnce(&GetForSegmentsCallback, segments, std::move(callback)));
 }
@@ -332,8 +332,8 @@ void CreativeNotificationAds::GetForActiveCampaigns(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetAllCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetAllCallback, std::move(callback)));
 }
 
 std::string CreativeNotificationAds::GetTableName() const {
