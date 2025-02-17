@@ -915,3 +915,5 @@
 -keep class org.chromium.chrome.browser.media.ui.MediaSessionTabHelper {
    *** mTab;
 }
+
+-keep class org.chromium.chrome.browser.multiwindow.InstanceInfo
