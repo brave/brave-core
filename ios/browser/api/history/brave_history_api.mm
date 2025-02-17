@@ -244,9 +244,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
   for (IOSHistoryNode* history in nodes) {
     history::BrowsingHistoryService::HistoryEntry entry;
     entry.url = net::GURLWithNSURL(history.url);
-    entry.all_timestamps.insert(base::Time::FromNSDate(history.dateAdded)
-                                    .ToDeltaSinceWindowsEpoch()
-                                    .InMicroseconds());
+    entry.all_timestamps.insert(base::Time::FromNSDate(history.dateAdded));
     entries.push_back(entry);
   }
   _browsingHistoryService->RemoveVisits(entries);
