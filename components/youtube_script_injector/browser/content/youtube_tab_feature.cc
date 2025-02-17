@@ -49,7 +49,7 @@ YouTubeTabFeature::YouTubeTabFeature(content::WebContents* web_contents,
 YouTubeTabFeature::~YouTubeTabFeature() = default;
 
 void YouTubeTabFeature::InsertScriptInPage(
-    const content::GlobalRenderFrameHostId& render_frame_host_id,
+    content::RenderFrameHost* render_frame_host,
     blink::mojom::UserActivationOption activation,
     std::string script) {
   // Early return if script is empty.
@@ -57,13 +57,8 @@ void YouTubeTabFeature::InsertScriptInPage(
     VLOG(2) << "Script is empty, skipping injection.";
     return;
   }
-  content::RenderFrameHost* render_frame_host =
-      content::RenderFrameHost::FromID(render_frame_host_id);
 
-  // Check if render_frame_host is still valid and if starting rfh is the same.
-  if (render_frame_host &&
-      render_frame_host_id ==
-          web_contents()->GetPrimaryMainFrame()->GetGlobalId()) {
+  if (render_frame_host) {
     GetRemote(render_frame_host)
         ->RequestAsyncExecuteScript(
             world_id_, base::UTF8ToUTF16(script), activation,
@@ -122,14 +117,12 @@ void YouTubeTabFeature::PrimaryMainDocumentElementAvailable() {
     return;
   }
 
-  content::GlobalRenderFrameHostId render_frame_host_id =
-      web_contents()->GetPrimaryMainFrame()->GetGlobalId();
-
   if (AreYouTubeExtraControlsEnabled(web_contents())) {
     youtube_registry_->LoadScriptFromPath(
         url, json->GetPipScript(),
         base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
-                       weak_factory_.GetWeakPtr(), render_frame_host_id,
+                       weak_factory_.GetWeakPtr(),
+                       web_contents()->GetPrimaryMainFrame(),
                        blink::mojom::UserActivationOption::kDoNotActivate));
   }
 
@@ -137,7 +130,8 @@ void YouTubeTabFeature::PrimaryMainDocumentElementAvailable() {
     youtube_registry_->LoadScriptFromPath(
         url, json->GetPlaybackVideoScript(),
         base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
-                       weak_factory_.GetWeakPtr(), render_frame_host_id,
+                       weak_factory_.GetWeakPtr(),
+                       web_contents()->GetPrimaryMainFrame(),
                        blink::mojom::UserActivationOption::kDoNotActivate));
   }
 }
@@ -173,9 +167,8 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
   registry->LoadScriptFromPath(
       url, helper->GetJson()->GetFullscreenScript(),
       base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
-                     // TODO: replace with `helper->GetWeakPtr(),`
-                     base::Owned(helper),
-                     web_contents->GetPrimaryMainFrame()->GetGlobalId(),
+                     // TODO: replace with `helper->GetWeakPtr()`
+                     base::Owned(helper), web_contents->GetPrimaryMainFrame(),
                      blink::mojom::UserActivationOption::kActivate));
 }
 
