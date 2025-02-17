@@ -39,17 +39,6 @@ using testing::Not;
 
 namespace brave_wallet {
 
-// DEPRECATED 01/2024. For migration only.
-std::string GetSolanaSubdomainForKnownChainId(std::string_view chain_id);
-std::string GetFilecoinSubdomainForKnownChainId(std::string_view chain_id);
-std::string GetBitcoinSubdomainForKnownChainId(std::string_view chain_id);
-std::string GetZCashSubdomainForKnownChainId(std::string_view chain_id);
-std::string GetKnownEthNetworkId(std::string_view chain_id);
-std::string GetKnownSolNetworkId(std::string_view chain_id);
-std::string GetKnownFilNetworkId(std::string_view chain_id);
-std::string GetKnownBtcNetworkId(std::string_view chain_id);
-std::string GetKnownZecNetworkId(std::string_view chain_id);
-
 class NetworkManagerUnitTest : public testing::Test {
  public:
   NetworkManagerUnitTest() = default;
@@ -431,44 +420,6 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLForKnownChains) {
         network_manager()->GetNetworkURL(chain->chain_id, mojom::CoinType::ETH);
     EXPECT_EQ(network_url.host().ends_with(".brave.com"),
               known_chains.contains(chain->chain_id));
-  }
-}
-
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetSolanaSubdomainForKnownChainId) {
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::SOL)) {
-    auto subdomain = GetSolanaSubdomainForKnownChainId(chain->chain_id);
-    bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
-    ASSERT_EQ(subdomain.empty(), expected);
-  }
-}
-
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetFilecoinSubdomainForKnownChainId) {
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::FIL)) {
-    auto subdomain = GetFilecoinSubdomainForKnownChainId(chain->chain_id);
-    bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
-    ASSERT_EQ(subdomain.empty(), expected);
-  }
-}
-
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetBitcoinSubdomainForKnownChainId) {
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::BTC)) {
-    auto subdomain = GetBitcoinSubdomainForKnownChainId(chain->chain_id);
-    ASSERT_FALSE(subdomain.empty());
-  }
-}
-
-// DEPRECATED 01/2024. For migration only.
-TEST_F(NetworkManagerUnitTest, GetZCashSubdomainForKnownChainId) {
-  for (const auto& chain :
-       NetworkManager::GetAllKnownChains(mojom::CoinType::ZEC)) {
-    auto subdomain = GetZCashSubdomainForKnownChainId(chain->chain_id);
-    ASSERT_FALSE(subdomain.empty());
   }
 }
 
