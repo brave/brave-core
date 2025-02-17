@@ -7,10 +7,14 @@
 // old Polymer overrides used to. It generates a new .html.ts file with our
 // modifications to upstream's template.
 
+// Note: This file is stateful, and is meant to be executed once per mangled
+// file. It should be run via the command line.
+
 import ts from 'typescript'
 import { readFileSync, writeFileSync } from 'fs'
 import path from 'path'
-import {JSDOM} from 'jsdom'
+import { JSDOM } from 'jsdom'
+import commander from 'commander'
 
 interface HTMLTemplateTags {
     id: number,
@@ -52,6 +56,11 @@ const getLiteralsFromFile = (filepath: string) => {
     const file = loadRaw(filepath)
     const root: HTMLTemplateTags = { text: file.getText(), children: [], id: nextId++ }
     getTemplateLiterals(file, file, root)
+
+    if (root.children.length === 0) {
+        throw new Error(`No templates found in ${filepath}`)
+    }
+
     return root
 }
 
@@ -74,18 +83,54 @@ const replacePlaceholders = (template: HTMLTemplateTags) => {
     return template.text
 }
 
-export const load = (file: string) => {
-    const input = getLiteralsFromFile(file)
-    injectPlaceholders(input)
-    return input
+let result: HTMLTemplateTags | undefined = undefined
+
+const load = (file: string) => {
+    if (result !== undefined) {
+        throw new Error('This should only be called once per file')
+    }
+
+    result = getLiteralsFromFile(file)
+    injectPlaceholders(result)
 }
 
-export const write = (file: string, result: HTMLTemplateTags) => {
+const write = (file: string) => {
+    if (!result) {
+        throw new Error('This should only be called after load')
+    }
+
     const text = replacePlaceholders(result)
     writeFileSync(file, text)
 }
 
-export const mangle = (template: HTMLTemplateTags, mangler: (element: DocumentFragment) => void) => {
+/**
+ * Mangles a given html template using the given mangler function.
+ * 
+ * Example usage:
+ * mangle((element) => element.textContent = "foo", t => t.text.includes('allow-incognito'))
+ * 
+ * @param mangler The function to use to mangle the template.
+ * @param getTemplate The template to mangle, or a predicate to find a matching template. If undefined, the first html template will be used.
+ */
+export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate?: HTMLTemplateTags | ((template: HTMLTemplateTags) => boolean)) => {
+    if (!result) {
+        throw new Error('This should only be called after load!')
+    }
+
+    let template: HTMLTemplateTags | undefined = undefined
+    if (!getTemplate) {
+        template = findTemplate(() => true)
+    } else if (typeof getTemplate === 'function') {
+        template = findTemplate(getTemplate)
+    } else {
+        template = getTemplate
+    }
+
+    // If we don't have a template throw an error - mangling isn't going to work.
+    if (!template) {
+        throw new Error(`Failed to find template matching ${getTemplate}. If this was working before upstream may have changed.`)
+    }
+
     const world = new JSDOM()
     const document = world.window.document
     const element = document.createElement('template')
@@ -108,15 +153,33 @@ export const mangle = (template: HTMLTemplateTags, mangler: (element: DocumentFr
         .replaceAll('&quot;', '"')
 }
 
-export const findTemplate = (upstream: HTMLTemplateTags, predicate: (template: HTMLTemplateTags) => boolean) => {
-    if (predicate(upstream)) {
-        return upstream
+// Note: This doesn't check the template param against the predicate, only its children.
+export const findTemplate = (predicate: (template: HTMLTemplateTags) => boolean, template?: HTMLTemplateTags): HTMLTemplateTags | undefined => {
+    if (!result) {
+        throw new Error("This should only be called after load!")
     }
 
-    for (const child of upstream.children) {
-        const result = findTemplate(child, predicate)
+    for (const child of (template ?? result).children) {
+        if (predicate(child)) {
+            return child
+        }
+
+        const result = findTemplate(predicate, child)
         if (result) {
             return result
         }
     }
 }
+
+commander
+    .command('mangle')
+    .option('-m, --mangler <file>', 'The file with containing the mangler instructions')
+    .option('-i, --input <file>', 'The file to mangle')
+    .option('-o, --output <file>', 'Where to output the mangled file')
+    .action(async ({ mangler, input, output }: { mangler: string, input: string, output: string }) => {
+        load(input)
+        await import(mangler)
+        write(output)
+    })
+
+commander.parse(process.argv)
