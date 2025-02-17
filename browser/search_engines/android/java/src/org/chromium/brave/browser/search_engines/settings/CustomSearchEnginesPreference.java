@@ -16,18 +16,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.R;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 
 import java.util.List;
 
 public class CustomSearchEnginesPreference extends Preference
         implements CustomSearchEnginesCallback {
     private RecyclerView mRecyclerView;
+    private Profile mProfile;
+    private CustomSearchEngineAdapter mCustomSearchEngineAdapter;
+
+    public CustomSearchEnginesPreference(Context context) {
+        super(context);
+        setLayoutResource(R.layout.custom_search_engines_preference_layout);
+    }
 
     public CustomSearchEnginesPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         Log.e("brave_search", "CustomSearchEnginesPreference");
+    }
+
+    public void initialize(Profile profile) {
+        Log.e("brave_search", "initialize(Profile profile)");
+        mProfile = profile;
     }
 
     @Override
@@ -39,19 +52,23 @@ public class CustomSearchEnginesPreference extends Preference
         if (mRecyclerView != null) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
+        mCustomSearchEngineAdapter = new CustomSearchEngineAdapter();
+        mCustomSearchEngineAdapter.setCustomSearchEnginesCallback(this);
+        mRecyclerView.setAdapter(mCustomSearchEngineAdapter);
+
         updateCustomSearchEngines();
     }
 
     public void updateCustomSearchEngines() {
-        if (mRecyclerView == null) {
+        if (mRecyclerView == null || mCustomSearchEngineAdapter == null) {
             Log.e("brave_search", "updateCustomSearchEngines 1");
             return;
         }
         List<String> customSearchEngines = CustomSearchEnginesUtil.getCustomSearchEngines();
-        Log.e("brave_search", "updateCustomSearchEngines");
-        final CustomSearchEngineAdapter adapter =
-                new CustomSearchEngineAdapter(customSearchEngines, this);
-        mRecyclerView.setAdapter(adapter);
+        for (String keyword : customSearchEngines) {
+            Log.e("brave_search", "updateCustomSearchEngines : keyword : " + keyword);
+        }
+        mCustomSearchEngineAdapter.submitList(customSearchEngines);
     }
 
     @Override
@@ -59,10 +76,21 @@ public class CustomSearchEnginesPreference extends Preference
 
     @Override
     public void loadSearchEngineLogo(ImageView logoView, String searchEngineKeyword) {
-        CustomSearchEnginesUtil.loadSearchEngineLogo(
-                ProfileManager.getLastUsedRegularProfile(), logoView, searchEngineKeyword);
+        if (mProfile != null) {
+            CustomSearchEnginesUtil.loadSearchEngineLogo(mProfile, logoView, searchEngineKeyword);
+        }
     }
 
     @Override
-    public void removeSearchEngine(String searchEngineKeyword) {}
+    public void removeSearchEngine(String searchEngineKeyword) {
+        Runnable templateUrlServiceReady =
+                () -> {
+                    Log.e("brave_search", "removeSearchEngine");
+                    TemplateUrlServiceFactory.getForProfile(mProfile)
+                            .removeSearchEngine(searchEngineKeyword);
+                    CustomSearchEnginesUtil.removeCustomSearchEngine(searchEngineKeyword);
+                    updateCustomSearchEngines();
+                };
+        TemplateUrlServiceFactory.getForProfile(mProfile).runWhenLoaded(templateUrlServiceReady);
+    }
 }
