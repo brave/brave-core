@@ -47,7 +47,8 @@
     "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle",
     "ios_pack_js": "webpack --config ios/brave-ios/webpack.config.js",
     "ios_bootstrap": "node ./build/commands/scripts/iosCommands.js ios_bootstrap",
-    "update_brave_tools_crates": "node ./build/commands/scripts/commands.js update_brave_tools_crates"
+    "update_brave_tools_crates": "node ./build/commands/scripts/updateBraveToolsCrates.js",
+    "build_rust_toolchain_aux": "node ./build/commands/scripts/buildRustToolchainAux.js"
   },
   "repository": {
     "type": "git",
