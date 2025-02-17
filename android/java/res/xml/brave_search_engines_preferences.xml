@@ -44,13 +44,13 @@
         android:title="@string/index_other_search_engines_title"
         android:summary="@string/index_other_search_engines_text" />
     <PreferenceCategory
-        android:key="custom_search_engines"
+        android:key="custom_search_engines_category"
         android:order="8"
         android:title="@string/custom_search_engines">
-        <org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesPreference
+        <!-- <org.chromium.brave.browser.search_engines.settings.CustomSearchEnginesPreference
         android:key="pref_custom_search_engines"
         android:layout="@layout/custom_search_engines_preference_layout"
-        android:order="1" />
+        android:order="1" /> -->
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
             android:fragment="org.chromium.brave.browser.search_engines.settings.AddCustomSearchEnginePreferenceFragment"
             android:key="add_custom_search_engine"
