@@ -5,9 +5,9 @@
 
 #include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
 
+#include <memory>
 #include <string>
 #include <utility>
-#include <memory>
 
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
