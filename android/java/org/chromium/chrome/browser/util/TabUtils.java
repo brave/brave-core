@@ -136,7 +136,8 @@ public class TabUtils {
                         } else if (id == R.id.edit_bookmark && bridge != null) {
                             BookmarkId bookmarkId = bridge.getUserBookmarkIdForTab(currentTab);
                             if (bookmarkId != null) {
-                                BookmarkUtils.startEditActivity(activity, bookmarkId);
+                                BookmarkUtils.startEditActivity(
+                                        activity, currentTab.getProfile(), bookmarkId);
                                 return true;
                             }
                         } else if (id == R.id.view_bookmarks) {
