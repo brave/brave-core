@@ -100,29 +100,29 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
 
 TEST_F(NTPSponsoredRichMediaSourceTest, StartDataRequest) {
   const std::string data = StartDataRequest(GURL(
-      R"(chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)"));
+      R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)"));
   EXPECT_THAT(data, ::testing::Not(::testing::IsEmpty()));
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest,
        DoNotStartDataRequestIfReferencingParentDirectory) {
-  std::string data =
-      StartDataRequest(GURL("chrome-untrusted://rich-media/campaigns.json"));
+  std::string data = StartDataRequest(
+      GURL("chrome-untrusted://new-tab-takeover/campaigns.json"));
   EXPECT_THAT(data, ::testing::IsEmpty());
 
   data = StartDataRequest(GURL(
-      R"(chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../campaigns.json)"));
+      R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/../campaigns.json)"));
   EXPECT_THAT(data, ::testing::IsEmpty());
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest,
        DoNotStartDataRequestIfContentDoesNotExist) {
-  std::string data = StartDataRequest(
-      GURL("chrome-untrusted://rich-media/non-existent-creative/index.html"));
+  std::string data = StartDataRequest(GURL(
+      "chrome-untrusted://new-tab-takeover/non-existent-creative/index.html"));
   EXPECT_THAT(data, ::testing::IsEmpty());
 
   data = StartDataRequest(GURL(
-      R"(chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/non-existent-file.html)"));
+      R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/non-existent-file.html)"));
   EXPECT_THAT(data, ::testing::IsEmpty());
 }
 
@@ -130,7 +130,7 @@ TEST_F(NTPSponsoredRichMediaSourceTest, GetMimeType) {
   EXPECT_EQ(
       "text/html",
       url_data_source()->GetMimeType(GURL(
-          R"(chrome-untrusted://rich-media/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)")));
+          R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)")));
 }
 
 TEST_F(NTPSponsoredRichMediaSourceTest, AllowCaching) {

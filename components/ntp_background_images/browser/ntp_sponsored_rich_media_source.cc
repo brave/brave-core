@@ -43,7 +43,7 @@ NTPSponsoredRichMediaSource::NTPSponsoredRichMediaSource(
 NTPSponsoredRichMediaSource::~NTPSponsoredRichMediaSource() = default;
 
 std::string NTPSponsoredRichMediaSource::GetSource() {
-  return kNTPSponsoredRichMediaUrl;
+  return kNTPNewTabTakeoverRichMediaUrl;
 }
 
 void NTPSponsoredRichMediaSource::StartDataRequest(

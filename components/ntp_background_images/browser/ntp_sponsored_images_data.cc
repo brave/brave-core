@@ -382,7 +382,7 @@ std::optional<Campaign> NTPSponsoredImagesData::ParseCampaign(
           return std::nullopt;
         }
         creative.file_path = installed_dir.AppendASCII(*relative_url);
-        creative.url = GURL(kNTPSponsoredRichMediaUrl + *relative_url);
+        creative.url = GURL(kNTPNewTabTakeoverRichMediaUrl + *relative_url);
       } else {
         // Invalid wallpaper type.
         return std::nullopt;
