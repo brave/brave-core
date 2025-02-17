@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -30,13 +31,7 @@ public class CustomSearchEnginesUtil {
 
     private static final String CUSTOM_SEARCH_ENGINES = "custom_search_engines";
 
-    public static void addCustomSearchEngine(String searchEngineKeyword) {
-        List<String> customSearchEnginesList = getCustomSearchEngines();
-        if (customSearchEnginesList.size() == 0) {
-            customSearchEnginesList = new ArrayList();
-        }
-        customSearchEnginesList.add(searchEngineKeyword);
-
+    private static void saveCustomSearchEngines(List<String> customSearchEnginesList) {
         try {
             JSONArray customSearchEnginesJsonArray = new JSONArray();
             for (String customSearchEngineKeyword : customSearchEnginesList) {
@@ -47,6 +42,15 @@ public class CustomSearchEnginesUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void addCustomSearchEngine(String searchEngineKeyword) {
+        List<String> customSearchEnginesList = getCustomSearchEngines();
+        if (customSearchEnginesList.size() == 0) {
+            customSearchEnginesList = new ArrayList();
+        }
+        customSearchEnginesList.add(searchEngineKeyword);
+        saveCustomSearchEngines(customSearchEnginesList);
     }
 
     public static List<String> getCustomSearchEngines() {
@@ -83,8 +87,13 @@ public class CustomSearchEnginesUtil {
         List<String> customSearchEnginesList = getCustomSearchEngines();
         if (customSearchEnginesList.size() > 0
                 && customSearchEnginesList.contains(searchEngineKeyword)) {
+            Log.e(
+                    "brave_search",
+                    "CustomSearchEnginesUtil.removeCustomSearchEngine : searchEngineKeyword : "
+                            + searchEngineKeyword);
             customSearchEnginesList.remove(searchEngineKeyword);
         }
+        saveCustomSearchEngines(customSearchEnginesList);
     }
 
     public static void loadSearchEngineLogo(

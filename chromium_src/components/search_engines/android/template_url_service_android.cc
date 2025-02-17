@@ -46,3 +46,17 @@ jboolean TemplateUrlServiceAndroid::AddSearchEngine(
       std::make_unique<TemplateURL>(template_url_data));
   return (template_url != nullptr);
 }
+
+void TemplateUrlServiceAndroid::RemoveSearchEngine(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& search_engine_keyword) {
+  const TemplateURL* existing = template_url_service_->GetTemplateURLForKeyword(
+      base::android::ConvertJavaStringToUTF16(env, search_engine_keyword));
+  LOG(ERROR) << "brave_search : "
+             << "TemplateUrlServiceAndroid::RemoveSearchEngine 1";
+  if (existing) {
+    LOG(ERROR) << "brave_search : "
+               << "TemplateUrlServiceAndroid::RemoveSearchEngine 2";
+    template_url_service_->Remove(existing);
+  }
+}
