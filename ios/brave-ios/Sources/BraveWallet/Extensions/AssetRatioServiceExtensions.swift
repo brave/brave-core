@@ -25,7 +25,11 @@ extension BraveWalletAssetRatioService {
       timeframe: timeframe
     )
     guard success else {
-      return await self.priceIndividually(fromAssets: uniquePriceIds, toAssets: toAssets, timeframe: timeframe)
+      return await self.priceIndividually(
+        fromAssets: uniquePriceIds,
+        toAssets: toAssets,
+        timeframe: timeframe
+      )
     }
     return PricesResult(prices, 0)
   }
