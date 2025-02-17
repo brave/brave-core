@@ -152,6 +152,7 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
   content::WebContents* web_contents =
       content::WebContents::FromJavaWebContents(jweb_contents);
 
+  // TODO: replace with appropriate method to fetch TabFeature once ready.
   YouTubeTabFeature* helper =
       new YouTubeTabFeature(web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 
@@ -172,6 +173,7 @@ void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
   registry->LoadScriptFromPath(
       url, helper->GetJson()->GetFullscreenScript(),
       base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
+                     // TODO: replace with `helper->GetWeakPtr(),`
                      base::Owned(helper),
                      web_contents->GetPrimaryMainFrame()->GetGlobalId(),
                      blink::mojom::UserActivationOption::kActivate));
