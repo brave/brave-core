@@ -36,13 +36,13 @@ mojom::Result PostAccount::ParseBody(const std::string& body,
   DCHECK(user_name);
   DCHECK(country_id);
 
-  std::optional<base::Value> value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   const base::Value::Dict* account = dict.FindDict("account");
   if (!account) {
     engine_->LogError(FROM_HERE) << "Missing account info";

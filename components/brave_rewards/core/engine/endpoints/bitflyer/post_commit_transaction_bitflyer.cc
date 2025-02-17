@@ -21,13 +21,13 @@ using Result = PostCommitTransactionBitFlyer::Result;
 namespace {
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
-  const auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  const auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const auto* transfer_status = value->GetDict().FindString("transfer_status");
+  const auto* transfer_status = value->FindString("transfer_status");
   if (!transfer_status || transfer_status->empty()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);

@@ -19,6 +19,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_network_util.h"
 #include "brave/browser/brave_rewards/test/util/rewards_browsertest_response.h"
@@ -333,12 +334,11 @@ class V10 : public RewardsStateBrowserTest,
   static std::string from_json(const std::string& json) {
     std::string suffix = "";
 
-    std::optional<base::Value> value = base::JSONReader::Read(json);
-    if (value && value->is_dict()) {
-      const auto& dict = value->GetDict();
-      suffix += to_string(dict.FindInt("status").value_or(-1));
-      suffix += to_string("token", dict.FindString("token"));
-      suffix += to_string("address", dict.FindString("address"));
+    std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(json);
+    if (value) {
+      suffix += to_string(value->FindInt("status").value_or(-1));
+      suffix += to_string("token", value->FindString("token"));
+      suffix += to_string("address", value->FindString("address"));
     }
 
     return suffix;
@@ -913,11 +913,7 @@ IN_PROC_BROWSER_TEST_P_(V12, Paths) {
       test_util::DecryptPrefString(encrypted_to_wallet);
   ASSERT_TRUE(decrypted_to_wallet);
 
-  const auto value = base::JSONReader::Read(*decrypted_to_wallet);
-  ASSERT_TRUE(value && value->is_dict());
-
-  const auto& wallet_dict = value->GetDict();
-
+  const auto wallet_dict = base::test::ParseJsonDict(*decrypted_to_wallet);
   const auto status = wallet_dict.FindInt("status");
   const auto* token = wallet_dict.FindString("token");
   const auto* address = wallet_dict.FindString("address");

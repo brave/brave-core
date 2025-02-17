@@ -62,13 +62,13 @@ mojom::Result GetCredentials::CheckStatusCode(const int status_code) {
 mojom::Result GetCredentials::ParseBody(const std::string& body,
                                         mojom::CredsBatch* batch) {
   DCHECK(batch);
-  std::optional<base::Value> value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::RETRY;
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   auto* batch_proof = dict.FindString("batchProof");
   if (!batch_proof) {
     engine_->LogError(FROM_HERE) << "Missing batch proof";

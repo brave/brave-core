@@ -8,7 +8,7 @@
 #include <optional>
 #include <string>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "base/values.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -32,11 +32,9 @@ TEST(YTCaptionTrackTest, ChoosesENCaptionTrackUrl) {
             "baseUrl": "http://example.com/caption_es.vtt"
         }
     ])";
-  auto result_value = base::JSONReader::Read(body, base::JSON_PARSE_RFC);
-  ASSERT_TRUE(result_value.has_value());
-  ASSERT_TRUE(result_value->is_list());
+  auto result_value = base::test::ParseJsonList(body, base::JSON_PARSE_RFC);
 
-  auto result = ChooseCaptionTrackUrl(result_value->GetIfList());
+  auto result = ChooseCaptionTrackUrl(result_value);
   ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value(), "http://example.com/caption_en.vtt");
 }
@@ -64,11 +62,9 @@ TEST(YTCaptionTrackTest, PrefersNonASR) {
             "baseUrl": "http://example.com/caption_es.vtt"
         }
     ])";
-  auto result_value = base::JSONReader::Read(body, base::JSON_PARSE_RFC);
-  ASSERT_TRUE(result_value.has_value());
-  ASSERT_TRUE(result_value->is_list());
+  auto result_value = base::test::ParseJsonList(body, base::JSON_PARSE_RFC);
 
-  auto result = ChooseCaptionTrackUrl(result_value->GetIfList());
+  auto result = ChooseCaptionTrackUrl(result_value);
   ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value(), "http://example.com/caption_en.vtt");
 }
@@ -91,11 +87,9 @@ TEST(YTCaptionTrackTest, PrefersEnIfASR) {
             "baseUrl": "http://example.com/caption_es.vtt"
         }
     ])";
-  auto result_value = base::JSONReader::Read(body, base::JSON_PARSE_RFC);
-  ASSERT_TRUE(result_value.has_value());
-  ASSERT_TRUE(result_value->is_list());
+  auto result_value = base::test::ParseJsonList(body, base::JSON_PARSE_RFC);
 
-  auto result = ChooseCaptionTrackUrl(result_value->GetIfList());
+  auto result = ChooseCaptionTrackUrl(result_value);
   ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value(), "http://example.com/caption_en_asr.vtt");
 }
@@ -118,13 +112,9 @@ TEST(YTCaptionTrackTest, FallbackToFirst) {
             "baseUrl": "http://example.com/caption_es.vtt"
         }
     ])";
-  auto result_value = base::JSONReader::Read(body, base::JSON_PARSE_RFC);
+  auto result_value = base::test::ParseJsonList(body, base::JSON_PARSE_RFC);
 
-  ASSERT_TRUE(result_value.has_value());
-  ASSERT_TRUE(result_value->is_list());
-
-  auto result = ChooseCaptionTrackUrl(result_value->GetIfList());
-
+  auto result = ChooseCaptionTrackUrl(result_value);
   ASSERT_TRUE(result.has_value());
   EXPECT_EQ(result.value(), "http://example.com/caption_de.vtt");
 }

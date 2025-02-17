@@ -9,9 +9,9 @@
 #include <string>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/web_discovery/browser/server_config_loader.h"
 #include "brave/components/web_discovery/browser/web_discovery_service.h"
 #include "components/prefs/testing_pref_service.h"
@@ -174,7 +174,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameLimitExpiry) {
 }
 
 TEST_F(WebDiscoverySignatureBasenameTest, BasenameForFlattenedObj) {
-  auto field_obj = base::JSONReader::Read(R"({
+  auto field_obj = base::test::ParseJsonDict(R"({
     "this": {
       "is": {
         "test": "object"
@@ -183,8 +183,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameForFlattenedObj) {
     "example1": [ 1, 2 ],
     "example2": { "abc": "def" }
   })");
-  ASSERT_TRUE(field_obj);
-  auto expected_flattened_obj = base::JSONReader::Read(R"([
+  auto expected_flattened_obj = base::test::ParseJsonList(R"([
     [
       [["example1", "0"], 1],
       [["example1", "1"], 2],
@@ -192,10 +191,9 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameForFlattenedObj) {
       [["this", "is", "test"], "object"]
     ]
   ])");
-  ASSERT_TRUE(expected_flattened_obj);
 
   base::Value::Dict inner_payload;
-  inner_payload.Set("field", std::move(*field_obj));
+  inner_payload.Set("field", std::move(field_obj));
   auto payload = GeneratePayload("img", std::move(inner_payload));
 
   auto actual_basename =
@@ -205,8 +203,7 @@ TEST_F(WebDiscoverySignatureBasenameTest, BasenameForFlattenedObj) {
 
   auto epoch_period_hours = GetPeriodHoursSinceEpoch(12);
   auto expected_basename = GenerateExpectedBasename(
-      "img", 12, 1, expected_flattened_obj->GetList().Clone(), 0u,
-      epoch_period_hours);
+      "img", 12, 1, std::move(expected_flattened_obj), 0u, epoch_period_hours);
 
   EXPECT_EQ(actual_basename->basename, expected_basename);
 

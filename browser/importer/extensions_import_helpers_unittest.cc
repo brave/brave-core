@@ -8,8 +8,8 @@
 #include <memory>
 
 #include "base/files/scoped_temp_dir.h"
-#include "base/json/json_reader.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/importer/test_storage_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/test/base/testing_profile.h"
@@ -74,14 +74,14 @@ TEST_F(ExtensionsImportHelperstUnitTest, ImportStorages) {
   EXPECT_FALSE(ReadStore(GetExtensionLocalSettingsPath("Brave", "id1"), "id1"));
 
   EXPECT_EQ(ReadStore(GetExtensionLocalSettingsPath("Brave", "id0"), "id0"),
-            base::JSONReader::Read(R"({
+            base::test::ParseJsonDict(R"({
     "a": "a",
     "c": "c",
     "id": "id0"
   })"));
 
   EXPECT_EQ(ReadStore(GetExtensionLocalSettingsPath("Brave", "id2"), "id2"),
-            base::JSONReader::Read(R"({
+            base::test::ParseJsonDict(R"({
     "a": "b",
     "c": "d",
     "id": "id2"

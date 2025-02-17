@@ -73,13 +73,14 @@ mojom::Result PostOrder::ParseBody(
     mojom::SKUOrder* order) {
   DCHECK(order);
 
-  std::optional<base::Value> dictionary = base::JSONReader::Read(body);
-  if (!dictionary || !dictionary->is_dict()) {
+  std::optional<base::Value::Dict> dictionary =
+      base::JSONReader::ReadDict(body);
+  if (!dictionary) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = dictionary->GetDict();
+  const base::Value::Dict& dict = *dictionary;
 
   const auto* id = dict.FindString("id");
   if (id) {

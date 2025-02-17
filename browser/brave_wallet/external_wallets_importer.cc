@@ -403,7 +403,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   auto keyrings = base::JSONReader::Read(
       decrypted_keyrings_str,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
-  if (!keyrings) {
+  if (!keyrings || !keyrings->is_list()) {
     VLOG(1) << "not a valid JSON: " << decrypted_keyrings_str;
     std::move(callback).Run(base::unexpected(ImportError::kJsonError));
     return;

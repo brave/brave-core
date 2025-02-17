@@ -49,13 +49,13 @@ mojom::Result GetBalance::ParseBody(const std::string& body,
                                     double* available) {
   DCHECK(available);
 
-  std::optional<base::Value> value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   const auto* inventory = dict.FindList("inventory");
   if (!inventory) {
     engine_->LogError(FROM_HERE) << "Missing inventory";

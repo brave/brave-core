@@ -13,10 +13,10 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/callback.h"
-#include "base/json/json_reader.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/importer/test_storage_utils.h"
 #include "brave/common/importer/importer_constants.h"
 #include "brave/components/constants/brave_paths.h"
@@ -166,21 +166,21 @@ TEST_F(BraveExternalProcessImporterHostUnitTest, ImportExtensionsSettings) {
 
   EXPECT_EQ(
       brave::ReadStore(GetExtensionLocalSettingsPath("Brave", "id1"), "id1"),
-      base::JSONReader::Read(R"({
+      base::test::ParseJsonDict(R"({
     "a": "b",
     "c": "d",
     "id": "id1"
   })"));
   EXPECT_EQ(
       brave::ReadStore(GetExtensionLocalSettingsPath("Brave", "id2"), "id2"),
-      base::JSONReader::Read(R"({
+      base::test::ParseJsonDict(R"({
     "a": "b",
     "c": "d",
     "id": "id2"
   })"));
   EXPECT_EQ(
       brave::ReadStore(GetExtensionLocalSettingsPath("Brave", "id3"), "id3"),
-      base::JSONReader::Read(R"({
+      base::test::ParseJsonDict(R"({
     "a": "b",
     "c": "d",
     "id": "id3"

@@ -285,7 +285,7 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
            << "\nResult: " << (value ? value->DebugString() : "[undefined]");
 
   // Handle no result from script
-  if (!value.has_value()) {
+  if (!value.has_value() || !value->is_list()) {
     std::move(callback).Run({});
     return;
   }
@@ -293,7 +293,7 @@ void PageContentExtractor::OnJSTranscriptUrlResult(
   // Optional parsing
   std::string url;
   if (type == mojom::PageContentType::VideoTranscriptYouTube) {
-    auto maybe_url = ChooseCaptionTrackUrl(value->GetIfList());
+    auto maybe_url = ChooseCaptionTrackUrl(value->GetList());
     if (maybe_url.has_value()) {
       url = maybe_url.value();
     }

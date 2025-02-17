@@ -57,13 +57,13 @@ mojom::Result PostCards::ParseBody(const std::string& body,
                                    std::string* id) const {
   DCHECK(id);
 
-  std::optional<base::Value> value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   const auto* id_str = dict.FindString("id");
   if (!id_str) {
     engine_->LogError(FROM_HERE) << "Missing id";
