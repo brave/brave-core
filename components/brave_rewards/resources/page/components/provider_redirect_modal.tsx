@@ -109,7 +109,7 @@ export function ProviderRedirectModal () {
             getString('redirectModalProviderUnavailableText1').replaceAll('$1', providerName),
             getString('redirectModalProviderUnavailableText2')]}
           titleText={getString('redirectModalProviderUnavailableTitle')}
-          errorTextLink={'https://status.brave.com/'}
+          errorTextLink={'https://status.brave.app/'}
           buttonText={getString('redirectModalClose')}
           walletType={walletType}
           onClick={actions.hideRedirectModal}
