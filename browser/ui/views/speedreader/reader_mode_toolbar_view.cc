@@ -115,6 +115,21 @@ void ReaderModeToolbarView::SwapToolbarContents(
   toolbar_->SetWebContents(another_contents);
 }
 
+void ReaderModeToolbarView::RestoreToolbarContents(
+    ReaderModeToolbarView* another_toolbar) {
+  if (!another_toolbar) {
+    return;
+  }
+
+  CHECK_NE(this, another_toolbar);
+  toolbar_->SetWebContents(nullptr);
+  another_toolbar->toolbar_->SetWebContents(nullptr);
+
+  toolbar_->SetWebContents(toolbar_contents_.get());
+  another_toolbar->toolbar_->SetWebContents(
+      another_toolbar->toolbar_contents_.get());
+}
+
 gfx::Size ReaderModeToolbarView::CalculatePreferredSize(
     const views::SizeBounds& available_size) const {
   return kToolbarSize;

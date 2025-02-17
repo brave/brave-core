@@ -40,6 +40,7 @@ class ReaderModeToolbarView : public views::View {
 
   void SetDelegate(Delegate* delegate);
   void SwapToolbarContents(ReaderModeToolbarView* toolbar);
+  void RestoreToolbarContents(ReaderModeToolbarView* toolbar);
 
   void ActivateContents();
 

@@ -499,6 +499,8 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
 
   UpdateSecondaryReaderModeToolbarVisibility();
 
+  ReaderModeToolbarView* primary_toolbar = browser_view->reader_mode_toolbar();
+
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   if (split_view_browser_data &&
@@ -508,9 +510,13 @@ void SplitView::UpdateSecondaryReaderModeToolbar() {
     // the pages and the WebContents within those views. The toolbar does the
     // same thing to ensure that the toolbar state follows the correct tab.
     // DevTools views do the same.
-    ReaderModeToolbarView* primary_toolbar =
-        browser_view->reader_mode_toolbar();
     primary_toolbar->SwapToolbarContents(secondary_reader_mode_toolbar_.get());
+  } else {
+    // In case we activate the non-tiled tab then restore straight toolbars'
+    // contents. It means in the non-tiled tab we always see the primary
+    // toolbar.
+    primary_toolbar->RestoreToolbarContents(
+        secondary_reader_mode_toolbar_.get());
   }
 }
 #endif
