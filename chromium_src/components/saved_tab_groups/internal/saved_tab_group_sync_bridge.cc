@@ -14,8 +14,7 @@ static bool get_true() {
 
 #define created_before_syncing_tab_groups \
   created_before_syncing_tab_groups() || get_true
-#define BRAVE_APPLY_DISABLE_SYNC_CHANGES_CLEAR_GROUPS \
-  DCHECK(groups_to_close_locally.empty());
+
 #include "src/components/saved_tab_groups/internal/saved_tab_group_sync_bridge.cc"
-#undef BRAVE_APPLY_DISABLE_SYNC_CHANGES_CLEAR_GROUPS
+
 #undef created_before_syncing_tab_groups
