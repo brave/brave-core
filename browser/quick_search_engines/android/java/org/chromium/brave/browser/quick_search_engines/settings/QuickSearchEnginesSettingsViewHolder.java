@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.quick_search_engines.settings;
+package org.chromium.brave.browser.quick_search_engines.settings;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
 
-import org.chromium.chrome.R;
+import org.chromium.brave.browser.quick_search_engines.R;
 
 public class QuickSearchEnginesSettingsViewHolder extends RecyclerView.ViewHolder {
     ImageView mSearchEngineLogo;

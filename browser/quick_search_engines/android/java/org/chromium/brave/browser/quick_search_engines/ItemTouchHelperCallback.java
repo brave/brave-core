@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.quick_search_engines;
+package org.chromium.brave.browser.quick_search_engines;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.chrome.browser.quick_search_engines.settings.QuickSearchEnginesAdapter;
+import org.chromium.brave.browser.quick_search_engines.settings.QuickSearchEnginesAdapter;
 
 public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
 

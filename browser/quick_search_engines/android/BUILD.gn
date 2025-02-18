@@ -1,0 +1,38 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Import required GN build configuration files
+import("//build/config/android/rules.gni")  # Android build rules
+
+# Define an Android library target for the customize menu feature
+android_library("java") {
+  # Java source files to compile
+  sources = [ 
+      "java/org/chromium/brave/browser/quick_search_engines/ItemTouchHelperCallback.java",
+      "java/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesAdapter.java",
+      "java/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesCallback.java",
+      "java/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesFragment.java",
+      "java/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesModel.java",
+      "java/org/chromium/brave/browser/quick_search_engines/settings/QuickSearchEnginesSettingsViewHolder.java",
+      "java/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesUtil.java",
+      "java/org/chromium/brave/browser/quick_search_engines/views/QuickSearchEnginesViewAdapter.java",
+      "java/org/chromium/brave/browser/quick_search_engines/views/QuickSearchEnginesViewHolder.java",
+            ]
+
+  # Dependencies required by this library
+  deps = [
+    "//base:supplier_java",
+    "//chrome/browser/settings:java",
+    "//chrome/browser/search_engines/android:java",
+    "//chrome/browser/profiles/android:java",
+    "//components/search_engines/android:java",
+    "//third_party/android_deps:material_design_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+  ]
+
+  # Package name for generated R.java resource class
+  resources_package = "org.chromium.brave.browser.quick_search_engines"
+}
