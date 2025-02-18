@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasMediaPermission();
+[[nodiscard]] bool HasMediaPermission();
 
 }  // namespace brave_ads
 

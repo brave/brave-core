@@ -34,7 +34,7 @@ class PublicKey {
   bool operator==(const PublicKey&) const;
   bool operator!=(const PublicKey&) const;
 
-  bool has_value() const { return public_key_.has_value(); }
+  [[nodiscard]] bool has_value() const { return public_key_.has_value(); }
 
   challenge_bypass_ristretto::PublicKey& get() {
     CHECK(public_key_);

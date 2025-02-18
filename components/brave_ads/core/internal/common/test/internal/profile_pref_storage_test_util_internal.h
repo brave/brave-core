@@ -12,11 +12,11 @@ namespace brave_ads::test {
 
 struct PrefValueInfo;
 
-bool FindProfilePref(const std::string& path);
+[[nodiscard]] bool FindProfilePref(const std::string& path);
 
 PrefValueInfo& ProfilePref(const std::string& path);
 
-bool HasProfilePref(const std::string& path);
+[[nodiscard]] bool HasProfilePref(const std::string& path);
 
 }  // namespace brave_ads::test
 

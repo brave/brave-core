@@ -79,11 +79,11 @@ bool ExclusionRulesBase::ShouldExcludeCreativeAd(
       exclusion_rules_,
       [&](const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
               exclusion_rule) {
-        return AddToCacheIfNeeded(creative_ad, exclusion_rule);
+        return MaybeAddToCache(creative_ad, exclusion_rule);
       });
 }
 
-bool ExclusionRulesBase::AddToCacheIfNeeded(
+bool ExclusionRulesBase::MaybeAddToCache(
     const CreativeAdInfo& creative_ad,
     const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
         exclusion_rule) {

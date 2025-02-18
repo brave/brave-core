@@ -19,7 +19,7 @@ class ScopedBrowserVersionNumberForTesting final {
   ~ScopedBrowserVersionNumberForTesting();
 };
 
-bool WasBrowserUpgraded();
+[[nodiscard]] bool WasBrowserUpgraded();
 
 }  // namespace brave_ads
 

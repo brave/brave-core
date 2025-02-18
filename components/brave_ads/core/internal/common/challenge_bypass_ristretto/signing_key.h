@@ -39,7 +39,7 @@ class SigningKey {
   bool operator==(const SigningKey&) const;
   bool operator!=(const SigningKey&) const;
 
-  bool has_value() const { return signing_key_.has_value(); }
+  [[nodiscard]] bool has_value() const { return signing_key_.has_value(); }
 
   challenge_bypass_ristretto::SigningKey& get() {
     CHECK(signing_key_);

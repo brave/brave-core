@@ -19,14 +19,15 @@ namespace cbr {
 class PublicKey;
 }  // namespace cbr
 
-bool TokenIssuerExistsForType(TokenIssuerType token_issuer_type);
+[[nodiscard]] bool TokenIssuerExistsForType(TokenIssuerType token_issuer_type);
 
 std::optional<TokenIssuerInfo> GetTokenIssuerForType(
     const IssuersInfo& issuers,
     TokenIssuerType token_issuer_type);
 
-bool TokenIssuerPublicKeyExistsForType(TokenIssuerType token_issuer_type,
-                                       const cbr::PublicKey& public_key);
+[[nodiscard]] bool TokenIssuerPublicKeyExistsForType(
+    TokenIssuerType token_issuer_type,
+    const cbr::PublicKey& public_key);
 
 }  // namespace brave_ads
 

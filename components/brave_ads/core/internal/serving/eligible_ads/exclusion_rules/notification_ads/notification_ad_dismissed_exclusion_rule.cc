@@ -19,7 +19,7 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRespectCap(const AdEventList& ad_events) {
+[[nodiscard]] bool DoesRespectCap(const AdEventList& ad_events) {
   size_t count = 0;
 
   for (const auto& ad_event : ad_events) {

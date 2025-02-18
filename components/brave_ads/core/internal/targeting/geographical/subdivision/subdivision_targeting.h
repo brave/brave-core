@@ -24,9 +24,9 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver,
 
   ~SubdivisionTargeting() override;
 
-  bool IsDisabled() const;
+  [[nodiscard]] bool IsDisabled() const;
 
-  bool ShouldAutoDetect() const;
+  [[nodiscard]] bool ShouldAutoDetect() const;
 
   static bool ShouldAllow();
 
@@ -43,7 +43,7 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver,
 
   void MaybeAllowForCountry(const std::string& country_code);
 
-  bool ShouldFetchSubdivision();
+  [[nodiscard]] bool ShouldFetchSubdivision();
   void MaybeFetchSubdivision();
 
   void MaybeAllowAndFetchSubdivisionForLocale(const std::string& locale);

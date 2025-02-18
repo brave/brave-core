@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool ParseDebugCommandLineSwitch();
+[[nodiscard]] bool ParseDebugCommandLineSwitch();
 
 }  // namespace brave_ads
 

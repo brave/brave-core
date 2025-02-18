@@ -17,7 +17,7 @@ namespace brave_ads {
 // ad's pass-through rate. If the random number is less than the pass-through
 // rate, the ad is not paced. Otherwise, it is paced.
 template <typename T>
-bool ShouldPaceAd(const T& ad) {
+[[nodiscard]] bool ShouldPaceAd(const T& ad) {
   const double rand = GeneratePacingRandomNumber();
   if (rand < ad.pass_through_rate) {
     return false;

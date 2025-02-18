@@ -11,7 +11,8 @@
 namespace brave_ads {
 
 // Matches a value against a regular expression condition.
-bool MatchRegex(std::string_view value, std::string_view condition);
+[[nodiscard]] bool MatchRegex(std::string_view value,
+                              std::string_view condition);
 
 }  // namespace brave_ads
 

@@ -28,7 +28,7 @@ class Reminders : public AdHistoryManagerObserver {
  private:
   void MaybeShowReminders(const AdHistoryItemInfo& ad_history_item);
 
-  bool CanShowUserClickTheSameAdMultipleTimesReminder(
+  [[nodiscard]] bool CanShowUserClickTheSameAdMultipleTimesReminder(
       const AdHistoryItemInfo& ad_history_item);
   void MaybeShowUserClickTheSameAdMultipleTimesReminderAfterDelay(
       const AdHistoryItemInfo& ad_history_item);

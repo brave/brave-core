@@ -38,7 +38,7 @@ class Token {
   bool operator==(const Token&) const;
   bool operator!=(const Token&) const;
 
-  bool has_value() const { return token_.has_value(); }
+  [[nodiscard]] bool has_value() const { return token_.has_value(); }
 
   challenge_bypass_ristretto::Token& get() {
     CHECK(token_);

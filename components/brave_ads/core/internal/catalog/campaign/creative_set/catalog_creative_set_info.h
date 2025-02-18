@@ -33,7 +33,7 @@ struct CatalogCreativeSetInfo final {
   bool operator==(const CatalogCreativeSetInfo&) const;
   bool operator!=(const CatalogCreativeSetInfo&) const;
 
-  bool DoesSupportOS() const;
+  [[nodiscard]] bool DoesSupportOS() const;
 
   std::string id;
   int per_day = 0;

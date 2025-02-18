@@ -16,8 +16,9 @@ class TimeDelta;
 
 namespace brave_ads {
 
-bool HasMinimumWaitTimePermission(const std::vector<base::Time>& history,
-                                  base::TimeDelta time_constraint);
+[[nodiscard]] bool HasMinimumWaitTimePermission(
+    const std::vector<base::Time>& history,
+    base::TimeDelta time_constraint);
 
 }  // namespace brave_ads
 

@@ -31,7 +31,7 @@ class ConfirmationStateManager final {
 
   void LoadState(std::optional<WalletInfo> wallet, InitializeCallback callback);
 
-  bool IsInitialized() const { return is_initialized_; }
+  [[nodiscard]] bool IsInitialized() const { return is_initialized_; }
 
   void SaveState();
 

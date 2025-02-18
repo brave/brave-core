@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasCanShowNotificationsPermission();
+[[nodiscard]] bool HasCanShowNotificationsPermission();
 
 }  // namespace brave_ads
 

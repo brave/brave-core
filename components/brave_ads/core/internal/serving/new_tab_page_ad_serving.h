@@ -43,9 +43,9 @@ class NewTabPageAdServing final {
   void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
 
  private:
-  bool IsSupported() const { return !!eligible_ads_; }
+  [[nodiscard]] bool IsSupported() const { return !!eligible_ads_; }
 
-  bool CanServeAd(const AdEventList& ad_events) const;
+  [[nodiscard]] bool CanServeAd(const AdEventList& ad_events) const;
 
   void GetAdEvents(MaybeServeNewTabPageAdCallback callback);
   void GetAdEventsCallback(MaybeServeNewTabPageAdCallback callback,

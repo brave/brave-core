@@ -22,7 +22,7 @@ inline constexpr char kEpochOperatorConditionMatcherPrefixPattern[] = "[T?]:*";
 std::optional<int> ParseDays(std::string_view condition);
 
 // Returns `true` if a Unix epoch timestamp.
-bool IsUnixEpochTimestamp(int64_t timestamp);
+[[nodiscard]] bool IsUnixEpochTimestamp(int64_t timestamp);
 
 // Converts a Windows timestamp to a Unix timestamp.
 int64_t WindowsToUnixEpoch(int64_t timestamp);

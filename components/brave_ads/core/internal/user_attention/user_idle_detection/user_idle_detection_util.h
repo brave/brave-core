@@ -12,9 +12,9 @@ class TimeDelta;
 
 namespace brave_ads {
 
-bool MaybeScreenWasLocked(bool screen_was_locked);
+[[nodiscard]] bool MaybeScreenWasLocked(bool screen_was_locked);
 
-bool HasExceededMaximumIdleTime(base::TimeDelta idle_time);
+[[nodiscard]] bool HasExceededMaximumIdleTime(base::TimeDelta idle_time);
 
 }  // namespace brave_ads
 

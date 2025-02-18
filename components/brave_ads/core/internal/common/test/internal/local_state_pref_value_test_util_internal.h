@@ -18,7 +18,7 @@ base::Value GetDefaultLocalStatePrefValue(const std::string& path);
 
 void ClearLocalStatePrefValue(const std::string& path);
 
-bool HasLocalStatePrefPathValue(const std::string& path);
+[[nodiscard]] bool HasLocalStatePrefPathValue(const std::string& path);
 
 }  // namespace brave_ads::test
 

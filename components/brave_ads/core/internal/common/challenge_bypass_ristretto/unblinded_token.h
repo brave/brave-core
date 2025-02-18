@@ -41,7 +41,7 @@ class UnblindedToken {
   bool operator==(const UnblindedToken&) const;
   bool operator!=(const UnblindedToken&) const;
 
-  bool has_value() const {
+  [[nodiscard]] bool has_value() const {
     return unblinded_token_ && unblinded_token_.has_value();
   }
 

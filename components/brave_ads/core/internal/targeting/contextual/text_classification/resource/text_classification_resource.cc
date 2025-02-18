@@ -23,7 +23,7 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRequireResource() {
+[[nodiscard]] bool DoesRequireResource() {
   // Require resource only if:
   // - The user has joined Brave Rewards and opted into notification ads.
   return UserHasOptedInToNotificationAds();

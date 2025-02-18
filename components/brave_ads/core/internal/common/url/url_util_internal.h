@@ -12,12 +12,12 @@ class GURL;
 
 namespace brave_ads {
 
-bool HasSearchQuery(const GURL& url);
-bool ShouldSupportInternalUrl(const GURL& url);
+[[nodiscard]] bool HasSearchQuery(const GURL& url);
+[[nodiscard]] bool ShouldSupportInternalUrl(const GURL& url);
 
-bool HostHasRegistryControlledDomain(std::string_view host);
+[[nodiscard]] bool HostHasRegistryControlledDomain(std::string_view host);
 
-bool DoesETLDPlusOneContainWildcards(const GURL& url);
+[[nodiscard]] bool DoesETLDPlusOneContainWildcards(const GURL& url);
 
 }  // namespace brave_ads
 

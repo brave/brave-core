@@ -28,9 +28,11 @@ class BrowserManager final : public AdsClientNotifierObserver {
   void AddObserver(BrowserManagerObserver* observer);
   void RemoveObserver(BrowserManagerObserver* observer);
 
-  bool IsActive() const { return is_active_.value_or(false); }
+  [[nodiscard]] bool IsActive() const { return is_active_.value_or(false); }
 
-  bool IsInForeground() const { return is_in_foreground_.value_or(false); }
+  [[nodiscard]] bool IsInForeground() const {
+    return is_in_foreground_.value_or(false);
+  }
 
  private:
   void NotifyBrowserDidBecomeActive() const;

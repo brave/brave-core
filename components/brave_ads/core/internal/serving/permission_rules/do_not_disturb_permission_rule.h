@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasDoNotDisturbPermission();
+[[nodiscard]] bool HasDoNotDisturbPermission();
 
 }  // namespace brave_ads
 

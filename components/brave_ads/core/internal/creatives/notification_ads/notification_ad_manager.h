@@ -34,7 +34,7 @@ class NotificationAdManager final {
   void Remove(const std::string& placement_id, bool should_close);
   void RemoveAll(bool should_close);
 
-  bool Exists(const std::string& placement_id) const;
+  [[nodiscard]] bool Exists(const std::string& placement_id) const;
 
  private:
   void Initialize();

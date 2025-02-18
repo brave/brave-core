@@ -37,7 +37,7 @@ class PurchaseIntentProcessor final : public TabManagerObserver {
   void Process(const GURL& url);
 
  private:
-  bool ShouldProcess(int32_t tab_id, const GURL& url) const;
+  [[nodiscard]] bool ShouldProcess(int32_t tab_id, const GURL& url) const;
   void MaybeProcess(int32_t tab_id, const GURL& url);
 
   std::optional<PurchaseIntentSignalInfo> MaybeExtractSignal(

@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasConfirmationTokensPermission();
+[[nodiscard]] bool HasConfirmationTokensPermission();
 
 }  // namespace brave_ads
 

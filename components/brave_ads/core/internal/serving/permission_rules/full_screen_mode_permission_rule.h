@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasFullScreenModePermission();
+[[nodiscard]] bool HasFullScreenModePermission();
 
 }  // namespace brave_ads
 

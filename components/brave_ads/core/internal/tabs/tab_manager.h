@@ -35,15 +35,17 @@ class TabManager final : public AdsClientNotifierObserver {
   void AddObserver(TabManagerObserver* observer);
   void RemoveObserver(TabManagerObserver* observer);
 
-  bool IsVisible(int32_t tab_id) const { return visible_tab_id_ == tab_id; }
+  [[nodiscard]] bool IsVisible(int32_t tab_id) const {
+    return visible_tab_id_ == tab_id;
+  }
   std::optional<TabInfo> MaybeGetVisible() const;
 
   std::optional<TabInfo> MaybeGetForId(int32_t tab_id) const;
 
-  bool IsPlayingMedia(int32_t tab_id) const;
+  [[nodiscard]] bool IsPlayingMedia(int32_t tab_id) const;
 
  private:
-  bool DoesExistForId(int32_t tab_id) const;
+  [[nodiscard]] bool DoesExistForId(int32_t tab_id) const;
   TabInfo& GetOrCreateForId(int32_t tab_id);
   void RemoveForId(int32_t tab_id);
 

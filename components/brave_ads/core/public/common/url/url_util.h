@@ -19,18 +19,18 @@ GURL GetUrlExcludingQuery(const GURL& url);
 // password, is not an IP address, the eTLD+1 does not contain an asterisk
 // wildcard, and the host is either on the public suffix list or is a supported
 // internal URL.
-bool ShouldSupportUrl(const GURL& url);
+[[nodiscard]] bool ShouldSupportUrl(const GURL& url);
 
 // Returns `true` if the `url` matches the `pattern`. The pattern string can
 // contain asterix wildcards. The backslash character (\) is an escape character
 // for *. * matches 0 or more characters.
-bool MatchUrlPattern(const GURL& url, const std::string& pattern);
-bool MatchUrlPattern(const std::vector<GURL>& redirect_chain,
-                     const std::string& pattern);
+[[nodiscard]] bool MatchUrlPattern(const GURL& url, const std::string& pattern);
+[[nodiscard]] bool MatchUrlPattern(const std::vector<GURL>& redirect_chain,
+                                   const std::string& pattern);
 
-bool SameDomainOrHost(const GURL&, const GURL&);
-bool DomainOrHostExists(const std::vector<GURL>& redirect_chain,
-                        const GURL& url);
+[[nodiscard]] bool SameDomainOrHost(const GURL&, const GURL&);
+[[nodiscard]] bool DomainOrHostExists(const std::vector<GURL>& redirect_chain,
+                                      const GURL& url);
 
 }  // namespace brave_ads
 

@@ -36,7 +36,7 @@ class SignedToken {
   bool operator==(const SignedToken&) const;
   bool operator!=(const SignedToken&) const;
 
-  bool has_value() const { return signed_token_.has_value(); }
+  [[nodiscard]] bool has_value() const { return signed_token_.has_value(); }
 
   challenge_bypass_ristretto::SignedToken& get() {
     CHECK(signed_token_);

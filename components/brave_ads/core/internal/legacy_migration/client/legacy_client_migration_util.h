@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasMigratedClientState();
+[[nodiscard]] bool HasMigratedClientState();
 
 }  // namespace brave_ads
 

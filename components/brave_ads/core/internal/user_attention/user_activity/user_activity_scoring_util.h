@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool WasUserActive();
+[[nodiscard]] bool WasUserActive();
 
 }  // namespace brave_ads
 

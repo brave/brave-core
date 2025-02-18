@@ -79,7 +79,8 @@ std::optional<URLResponsePair> GetNextUrlResponseForUrl(
   return url_responses_for_request_path.at(index);
 }
 
-bool ShouldReadResponseBodyFromFile(const std::string& response_body) {
+[[nodiscard]] bool ShouldReadResponseBodyFromFile(
+    const std::string& response_body) {
   return response_body.starts_with("/");
 }
 

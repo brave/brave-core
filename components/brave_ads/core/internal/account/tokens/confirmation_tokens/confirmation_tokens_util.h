@@ -25,9 +25,10 @@ bool RemoveConfirmationToken(const ConfirmationTokenInfo& confirmation_token);
 void RemoveConfirmationTokens(const ConfirmationTokenList& confirmation_tokens);
 void RemoveAllConfirmationTokens();
 
-bool ConfirmationTokenExists(const ConfirmationTokenInfo& confirmation_token);
+[[nodiscard]] bool ConfirmationTokenExists(
+    const ConfirmationTokenInfo& confirmation_token);
 
-bool ConfirmationTokensIsEmpty();
+[[nodiscard]] bool ConfirmationTokensIsEmpty();
 
 size_t ConfirmationTokenCount();
 

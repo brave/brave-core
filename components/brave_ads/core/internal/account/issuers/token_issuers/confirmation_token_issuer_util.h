@@ -10,7 +10,7 @@ namespace brave_ads {
 
 struct IssuersInfo;
 
-bool IsConfirmationTokenIssuerValid(const IssuersInfo& issuers);
+[[nodiscard]] bool IsConfirmationTokenIssuerValid(const IssuersInfo& issuers);
 
 }  // namespace brave_ads
 

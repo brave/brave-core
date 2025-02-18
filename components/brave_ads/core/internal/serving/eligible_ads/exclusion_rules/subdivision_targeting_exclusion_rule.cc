@@ -16,7 +16,8 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
+[[nodiscard]] bool DoesCreativeAdTargetSubdivision(
+    const CreativeAdInfo& creative_ad) {
   const auto iter = std::ranges::find_if(
       creative_ad.geo_targets, [](const std::string& geo_target) {
         return std::count(geo_target.cbegin(), geo_target.cend(), '-') == 1;
@@ -25,8 +26,9 @@ bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
   return iter != creative_ad.geo_targets.cend();
 }
 
-bool DoesCreativeAdTargetSubdivision(const CreativeAdInfo& creative_ad,
-                                     const std::string& subdivision) {
+[[nodiscard]] bool DoesCreativeAdTargetSubdivision(
+    const CreativeAdInfo& creative_ad,
+    const std::string& subdivision) {
   return creative_ad.geo_targets.contains(subdivision) ||
          creative_ad.geo_targets.contains(
              GetSubdivisionCountryCode(subdivision));

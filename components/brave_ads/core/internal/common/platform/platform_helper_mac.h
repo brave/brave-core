@@ -26,7 +26,7 @@ class PlatformHelperMac final : public PlatformHelper {
 
  private:
   // PlatformHelper:
-  bool IsMobile() const override;
+  [[nodiscard]] bool IsMobile() const override;
   std::string GetName() const override;
   PlatformType GetType() const override;
 };

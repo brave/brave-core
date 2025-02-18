@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-bool IsSuccessfulHttpStatusCode(int http_status_code);
+[[nodiscard]] bool IsSuccessfulHttpStatusCode(int http_status_code);
 
 std::optional<std::string> HttpStatusCodeToString(int http_status_code);
 

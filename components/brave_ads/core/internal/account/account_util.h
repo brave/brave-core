@@ -10,8 +10,9 @@
 
 namespace brave_ads {
 
-bool IsAllowedToDeposit(mojom::AdType mojom_ad_type,
-                        mojom::ConfirmationType mojom_confirmation_type);
+[[nodiscard]] bool IsAllowedToDeposit(
+    mojom::AdType mojom_ad_type,
+    mojom::ConfirmationType mojom_confirmation_type);
 
 }  // namespace brave_ads
 

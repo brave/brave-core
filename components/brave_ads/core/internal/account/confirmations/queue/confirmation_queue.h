@@ -41,9 +41,9 @@ class ConfirmationQueue final : public AdsClientNotifierObserver,
   void AddCallback(const ConfirmationQueueItemInfo& confirmation_queue_item,
                    bool success);
 
-  bool ShouldProcessQueueItem(
+  [[nodiscard]] bool ShouldProcessQueueItem(
       const ConfirmationQueueItemInfo& confirmation_queue_item);
-  bool ShouldProcessBeforeScheduledQueueItem(
+  [[nodiscard]] bool ShouldProcessBeforeScheduledQueueItem(
       const ConfirmationQueueItemInfo& confirmation_queue_item);
   void ProcessQueueItemAfterDelay(
       const ConfirmationQueueItemInfo& confirmation_queue_item);

@@ -17,13 +17,14 @@ void MaybeBuildAndSaveCreativeSetConversion(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type);
 
-bool IsAllowedToFireAdEvent(
+[[nodiscard]] bool IsAllowedToFireAdEvent(
     const mojom::CreativeSearchResultAdInfoPtr& mojom_creative_ad,
     mojom::SearchResultAdEventType mojom_ad_event_type);
 
-bool ShouldFireAdEvent(const SearchResultAdInfo& ad,
-                       const AdEventList& ad_events,
-                       mojom::SearchResultAdEventType mojom_ad_event_type);
+[[nodiscard]] bool ShouldFireAdEvent(
+    const SearchResultAdInfo& ad,
+    const AdEventList& ad_events,
+    mojom::SearchResultAdEventType mojom_ad_event_type);
 
 }  // namespace brave_ads
 

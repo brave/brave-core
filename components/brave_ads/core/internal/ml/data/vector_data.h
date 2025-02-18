@@ -51,7 +51,7 @@ class VectorData final : public Data {
   void Normalize();
   void Tanh();
 
-  bool IsEmpty() const;
+  [[nodiscard]] bool IsEmpty() const;
   size_t GetDimensionCount() const;
   size_t GetNonZeroElementCount() const;
   float GetSum() const;
