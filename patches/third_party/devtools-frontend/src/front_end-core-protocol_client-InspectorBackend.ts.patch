@@ -1,0 +1,12 @@
+diff --git a/front_end/core/protocol_client/InspectorBackend.ts b/front_end/core/protocol_client/InspectorBackend.ts
+index ad2d1fe3572be9b69e14544ac0722bcb85172f13..a6baad23c3b26ada56245b719b91f77645b3b634 100644
+--- a/front_end/core/protocol_client/InspectorBackend.ts
++++ b/front_end/core/protocol_client/InspectorBackend.ts
+@@ -924,6 +924,7 @@ export class TargetBase {
+     return this.needsNodeJSPatching;
+   }
+ }
++import { PatchTargetBase } from './InspectorBackend.patch.js'; (TargetBase as any) = PatchTargetBase(TargetBase);
+ 
+ /**
+  * This is a class that serves as the prototype for a domains #agents (every target

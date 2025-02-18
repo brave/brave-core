@@ -1,0 +1,28 @@
+diff --git a/front_end/panels/network/network-meta.ts b/front_end/panels/network/network-meta.ts
+index a605ae0ae5fd55df1a5d52b8a87e2dc5f2611e7b..fd16c1a184dbb93426488bfb1e345b608b41a322 100644
+--- a/front_end/panels/network/network-meta.ts
++++ b/front_end/panels/network/network-meta.ts
+@@ -494,3 +494,23 @@ Common.Revealer.registerRevealer({
+     return new Network.NetworkPanel.NetworkLogWithFilterRevealer();
+   },
+ });
++
++const BraveUIStrings = {
++  shields: 'Brave Shields',
++  showShields: 'Show Brave Shields'
++}
++const braveStr_ = i18n.i18n.registerUIStrings('panels/network/brave-meta.ts', BraveUIStrings);
++const braveI18nLazyString = i18n.i18n.getLazilyComputedLocalizedString.bind(undefined, braveStr_);
++
++UI.ViewManager.registerViewExtension({
++  location: UI.ViewManager.ViewLocationValues.ELEMENTS_SIDEBAR,
++  id: 'brave-shields-view',
++  title: braveI18nLazyString(BraveUIStrings.shields),
++  commandPrompt: braveI18nLazyString(BraveUIStrings.showShields),
++  order: 100,
++  persistence: UI.ViewManager.ViewPersistence.PERMANENT,
++  async loadView() {
++    const Network = await loadNetworkModule();
++    return new Network.BraveShieldsView.BraveShieldsView();
++  }
++})

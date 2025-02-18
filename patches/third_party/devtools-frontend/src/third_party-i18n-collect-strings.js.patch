@@ -6,7 +6,7 @@ index 57141bcb3c024a94f61c9a61824f31e8cc308700..f0a380a5d4d154a4ae9edd982b652834
    '**/third_party/**',
    '**/*.test.ts',
  ];
-+IGNORED_PATH_COMPONENTS.push('**/*.patch.ts', '**/RequestAdblockView.ts')
++IGNORED_PATH_COMPONENTS.push('**/*.patch.ts', '**/RequestAdblockView.ts', '**/brave**')
  
  /**
   * Extract the description and examples (if any) from a jsDoc annotation.

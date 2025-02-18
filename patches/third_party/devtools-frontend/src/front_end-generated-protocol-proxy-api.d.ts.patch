@@ -1,0 +1,20 @@
+diff --git a/front_end/generated/protocol-proxy-api.d.ts b/front_end/generated/protocol-proxy-api.d.ts
+index e60388808516e7823e6eb74cd1087da19580548f..4e67c4ebff5228cdda124a2a9bc60daae7a2710a 100644
+--- a/front_end/generated/protocol-proxy-api.d.ts
++++ b/front_end/generated/protocol-proxy-api.d.ts
+@@ -18,6 +18,7 @@ declare namespace ProtocolProxyApi {
+   export type ProtocolDomainName = keyof ProtocolApi;
+ 
+   export interface ProtocolApi {
++    Brave: any;    
+     Accessibility: AccessibilityApi;
+ 
+     Animation: AnimationApi;
+@@ -127,6 +128,7 @@ declare namespace ProtocolProxyApi {
+   }
+ 
+   export interface ProtocolDispatchers {
++    Brave: any;
+     Accessibility: AccessibilityDispatcher;
+ 
+     Animation: AnimationDispatcher;

@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/BUILD.gn b/third_party/blink/public/BUILD.gn
+index 16450690633e9e68e171f0045d02a7c04dc774fe..8432fd9de24986fbd9b4c54cf02c81eefe2be57f 100644
+--- a/third_party/blink/public/BUILD.gn
++++ b/third_party/blink/public/BUILD.gn
+@@ -465,6 +465,7 @@ source_set("blink_headers") {
+     "//ui/base:base",
+     "//v8:v8_headers",
+   ]
++  import("//brave/third_party/blink/public/sources.gni") sources += brave_third_party_blink_public_blink_headers_sources
+ }
+ 
+ blink_python_runner("runtime_features_for_public") {

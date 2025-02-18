@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/inspector/BUILD.gn b/third_party/blink/renderer/core/inspector/BUILD.gn
+index 8620977062a873410f9071d1ef19037ed584b7e1..bf72318e89a3a31f1e2fbac49baeff8d49ede12d 100644
+--- a/third_party/blink/renderer/core/inspector/BUILD.gn
++++ b/third_party/blink/renderer/core/inspector/BUILD.gn
+@@ -93,6 +93,7 @@ inspector_protocol_generate("protocol_sources") {
+     "inspector/protocol/web_audio.cc",
+     "inspector/protocol/web_audio.h",
+   ]
++  import("//brave/third_party/blink/renderer/core/inspector/sources.gni") outputs += brave_protocol_sources_sources
+ 
+   deps = [ "//third_party/blink/public/devtools_protocol:protocol_version" ]
+ }

@@ -44,3 +44,18 @@ domain Network
     parameters
       Network.RequestId requestId
       AdblockInfo info
+
+experimental domain Brave
+  experimental event braveEventReceived
+    parameters
+      string event
+      object params
+
+  experimental command sendBraveCommand
+    parameters
+      string command
+      string params
+
+  command disable
+
+  command enable

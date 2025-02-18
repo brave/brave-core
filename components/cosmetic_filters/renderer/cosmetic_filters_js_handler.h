@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
+#include "brave/third_party/blink/public/web/web_brave_devtools.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "content/public/renderer/v8_value_converter.h"
@@ -29,7 +30,8 @@ namespace cosmetic_filters {
 // a given render_frame. It also does interactions with CosmeticFiltersResources
 // class that lives in the main process.
 
-class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
+class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent,
+                                 public blink::WebBraveDevtoolsClient {
  public:
   CosmeticFiltersJSHandler(content::RenderFrame* render_frame,
                            const int32_t isolated_world_id);
@@ -92,6 +94,10 @@ class CosmeticFiltersJSHandler : public mojom::CosmeticFiltersAgent {
   void OnEventEnd(const std::string& event_name, int);
 
   void InjectStylesheet(const std::string& stylesheet);
+
+  // blink::WebBraveDevtoolsClient:
+  void HandleBraveDevtoolsMessage(const blink::WebString& event,
+                                  const base::Value::Dict& params) override;
 
   bool generichide_ = false;
 

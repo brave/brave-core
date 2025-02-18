@@ -248,7 +248,8 @@ class CosmeticFilterPerfTracker {
 CosmeticFiltersJSHandler::CosmeticFiltersJSHandler(
     content::RenderFrame* render_frame,
     const int32_t isolated_world_id)
-    : render_frame_(render_frame),
+    : blink::WebBraveDevtoolsClient(render_frame->GetWebFrame()),
+      render_frame_(render_frame),
       isolated_world_id_(isolated_world_id),
       enabled_1st_party_cf_(false),
       v8_value_converter_(content::V8ValueConverter::Create()) {
@@ -733,6 +734,8 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
     }
   }
 
+  SendBraveDevtoolsCommand("Brave.Shields.CosmeticFilters", resources_dict);
+
   if (!stylesheet.empty()) {
     InjectStylesheet(stylesheet);
   }
@@ -834,5 +837,9 @@ void CosmeticFiltersJSHandler::ExecuteObservingBundleEntryPoint() {
           blink::WebString::FromUTF8(kObservingScriptletEntryPoint)),
       blink::BackForwardCacheAware::kAllow);
 }
+
+void CosmeticFiltersJSHandler::HandleBraveDevtoolsMessage(
+    const blink::WebString& event,
+    const base::Value::Dict& params) {}
 
 }  // namespace cosmetic_filters
