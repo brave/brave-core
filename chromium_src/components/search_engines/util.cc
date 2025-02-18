@@ -5,6 +5,7 @@
 
 #include <algorithm>
 
+#include "base/check_deref.h"
 #include "base/containers/adapters.h"
 
 #define GetSearchProvidersUsingKeywordResult \
@@ -32,7 +33,7 @@ void GetSearchProvidersUsingKeywordResult(
   if (template_urls && !template_urls->empty()) {
     std::vector<std::unique_ptr<TemplateURLData>> prepopulated_urls =
         TemplateURLPrepopulateData::GetPrepopulatedEngines(
-            prefs, search_engine_choice_service);
+            CHECK_DEREF(prefs), search_engine_choice_service->GetCountryId());
     for (const auto& template_url_data : base::Reversed(prepopulated_urls)) {
       auto it = std::ranges::find_if(
           *template_urls,
