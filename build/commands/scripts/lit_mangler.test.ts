@@ -74,7 +74,6 @@ describe('Attribute handling', () => {
             expect(div?.getAttribute('?hidden')).toBe('${this.foo || this.bar || "<p>haha</p>"}')
         }, template)
     })
-    
 });
 
 describe('End to end', () => {
@@ -94,7 +93,7 @@ export function getList(this: string[]) {
         Hi All!
 
         Greetings could be: \${["Hi", 'Kiora', 'Gidday'].map(g => html\`<b>\${g}</b>\`).join('\n')}
-        
+
         <div class="greetings count-\${this.length}">
             \${this.map(t => getHtml.call({ name: t, data: {} }))}
         </div>
@@ -120,7 +119,7 @@ export function getList(this: string[]) {
         Hi All!
 
         Greetings could be: \${["Hi", 'Kiora', 'Gidday'].map(g => html\`<b>\${g}</b>\`).join('\n')}
-        
+
         <div class="greetings count-\${this.length}">
             \${this.map(t => getHtml.call({ name: t, data: {} }))}
         </div>
@@ -159,7 +158,7 @@ export function getList(this: string[]) {
         Hi All!
 
         Greetings could be: \${["Hi", 'Kiora', 'Gidday'].map(g => html\`$$lit_mangler_3$$\`).join('\n')}
-        
+
         <div class="greetings count-\${this.length}">
             \${this.map(t => getHtml.call({ name: t, data: {} }))}
         </div>
@@ -218,14 +217,14 @@ export function getList(this: string[]) {
         utilsForTest.mangle(e => {
             const root = e.querySelector('div')
             root?.removeAttribute('?hidden')
-            root!.childNodes[0].textContent = root!.childNodes[0].textContent!.replace("Hi All!", '')
+            root!.childNodes[0].textContent = root!.childNodes[0].textContent!.replace("        Hi All!\n", '')
             root?.prepend(`<div>Greetings from the Mangler</div>`)
         }, t => t.text.includes('Hi All!'))
 
         utilsForTest.mangle(e => {
             e.querySelector('b')?.setAttribute('hidden', '${g === "hi"}')
         }, t => t.text.startsWith('<b'))
-        
+
         utilsForTest.mangle(e => {
             const root = e.querySelector('div')
             root?.setAttribute('class', '${this.name === "jay" && "best"}')
@@ -245,10 +244,9 @@ export function getHtml(this: FakeElement & { name: string }) {
 export function getList(this: string[]) {
     const haxor = 'whatevs" onload="javascript:alert(\`pwnd\`)'
     return html\`<div .count="\${this.length}" @click="\${console.log}" data-haxor="\${haxor}"><div>Greetings from the Mangler</div>
-        
 
         Greetings could be: \${["Hi", 'Kiora', 'Gidday'].map(g => html\`<b hidden="\${g === "hi"}">\${g}</b>\`).join('\n')}
-        
+
         <div class="greetings count-\${this.length}">
             \${this.map(t => getHtml.call({ name: t, data: {} }))}
         </div>

@@ -13,4 +13,4 @@ mangle((element) => {
     section.textContent = '$i18n{privateInfoWarning}'
     section.append('<span ?hidden=${!this.data.incognitoAccess.isActive}> $i18n{spanningInfoWarning}</span>')
     section.append('<span> $i18n{privateAndTorInfoWarning}</span>')
-}, t => t.text.includes('id="allow-incognito"')) 
+}, t => t.text.includes('id="allow-incognito"'))

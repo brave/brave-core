@@ -105,10 +105,10 @@ const write = (file: string) => {
 
 /**
  * Mangles a given html template using the given mangler function.
- * 
+ *
  * Example usage:
  * mangle((element) => element.textContent = "foo", t => t.text.includes('allow-incognito'))
- * 
+ *
  * @param mangler The function to use to mangle the template.
  * @param getTemplate The template to mangle, or a predicate to find a matching template. If undefined, the first html template will be used.
  */

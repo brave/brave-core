@@ -58,7 +58,8 @@ def run_mangler(mangler_file, preprocess_file):
         'npx', '--no', '--', 'tsx', '--tsconfig', ts_config, lit_mangler,
         'mangle', '-m', mangler_file, '-i', preprocess_file, '-o',
         preprocess_file
-    ])
+    ],
+                   check=True)
 
 
 def get_chromium_src_files(in_folder, in_files):
