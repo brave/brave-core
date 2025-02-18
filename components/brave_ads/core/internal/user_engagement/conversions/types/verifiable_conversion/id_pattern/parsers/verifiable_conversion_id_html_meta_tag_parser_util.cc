@@ -17,11 +17,11 @@ std::optional<std::string> MaybeParseVerifableConversionIdFromHtmlMetaTag(
     const std::string& html) {
   const std::string id_pattern = kHtmlMetaTagConversionIdPattern.Get();
 
-  std::string_view html_string_piece(html);
+  std::string_view input(html);
   const RE2 r(id_pattern);
   std::string verifiable_conversion_id;
 
-  if (!RE2::FindAndConsume(&html_string_piece, r, &verifiable_conversion_id)) {
+  if (!RE2::FindAndConsume(&input, r, &verifiable_conversion_id)) {
     BLOG(1, "Failed to parse verifiable conversion id for " << id_pattern
                                                             << " id pattern");
     return std::nullopt;

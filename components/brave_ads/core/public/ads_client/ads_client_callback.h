@@ -16,8 +16,6 @@
 
 namespace brave_ads {
 
-using ResultCallback = base::OnceCallback<void(bool success)>;
-
 using SaveCallback = base::OnceCallback<void(bool success)>;
 
 using LoadCallback =
@@ -27,9 +25,6 @@ using LoadFileCallback = base::OnceCallback<void(base::File file)>;
 
 using UrlRequestCallback =
     base::OnceCallback<void(const mojom::UrlResponseInfo& mojom_url_response)>;
-
-using RunDBTransactionCallback = base::OnceCallback<void(
-    mojom::DBTransactionResultInfoPtr mojom_db_transaction_result)>;
 
 using GetSiteHistoryCallback =
     base::OnceCallback<void(const SiteHistoryList& site_history)>;

@@ -10,29 +10,26 @@
 #include <vector>
 
 #include "base/location.h"
+#include "brave/components/brave_ads/core/internal/common/database/database_transaction_callback.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 
 namespace brave_ads::database {
 
 // Returns true if the transaction result is a success.
-bool IsSuccess(
-    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
-
-// Returns true if the transaction result is an error.
-bool IsError(
+bool IsTransactionSuccessful(
     const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
 
 // Run a database transaction. The callback takes one argument -
 // `mojom::DBTransactionResultInfoPtr` containing the info of the transaction.
-void RunDBTransaction(const base::Location& location,
-                      mojom::DBTransactionInfoPtr mojom_db_transaction,
-                      RunDBTransactionCallback callback);
+void RunTransaction(const base::Location& location,
+                    mojom::DBTransactionInfoPtr mojom_db_transaction,
+                    RunDBTransactionCallback callback);
 
 // Run a database transaction.
-void RunDBTransaction(const base::Location& location,
-                      mojom::DBTransactionInfoPtr mojom_db_transaction,
-                      ResultCallback callback);
+void RunTransaction(const base::Location& location,
+                    mojom::DBTransactionInfoPtr mojom_db_transaction,
+                    ResultCallback callback);
 
 // Raze the database. This must be done before any other actions are run. All
 // tables must be recreated after the raze operation is completed.

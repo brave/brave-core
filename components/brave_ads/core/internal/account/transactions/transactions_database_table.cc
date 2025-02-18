@@ -105,7 +105,7 @@ TransactionInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
 void GetCallback(
     GetTransactionsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get transactions");
     return std::move(callback).Run(/*success=*/false, /*transactions=*/{});
   }
@@ -206,8 +206,8 @@ void Transactions::Save(const TransactionList& transactions,
 
   Insert(mojom_db_transaction, transactions);
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void Transactions::GetForDateRange(base::Time from_time,
@@ -238,8 +238,8 @@ void Transactions::GetForDateRange(base::Time from_time,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
@@ -279,8 +279,8 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
 
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void Transactions::PurgeExpired(ResultCallback callback) const {
@@ -295,8 +295,8 @@ void Transactions::PurgeExpired(ResultCallback callback) const {
           {GetTableName(),
            TimeToSqlValueAsString(base::Time::Now() - base::Days(90))});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 std::string Transactions::GetTableName() const {

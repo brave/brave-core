@@ -37,6 +37,8 @@
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #endif
 
+namespace ntp_background_images {
+
 namespace {
 
 constexpr char kNewTabsCreated[] = "brave.new_tab_page.p3a_new_tabs_created";
@@ -56,8 +58,6 @@ constexpr char kObsoleteCountToBrandedWallpaperPref[] =
 constexpr base::TimeDelta kP3AReportInterval = base::Days(1);
 
 }  // namespace
-
-namespace ntp_background_images {
 
 // static
 void ViewCounterService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -250,16 +250,19 @@ ViewCounterService::GetConditionMatchers(const base::Value::Dict& dict) {
   brave_ads::ConditionMatcherMap condition_matchers;
 
   for (const auto& value : *list) {
-    const auto& condition_matcher = value.GetDict();
+    const base::Value::Dict* condition_matcher_dict = value.GetIfDict();
+    if (!condition_matcher_dict) {
+      continue;
+    }
 
-    const std::string* const pref_path =
-        condition_matcher.FindString(kWallpaperConditionMatcherPrefPathKey);
+    const std::string* const pref_path = condition_matcher_dict->FindString(
+        kWallpaperConditionMatcherPrefPathKey);
     if (!pref_path) {
       continue;
     }
 
     const std::string* const condition =
-        condition_matcher.FindString(kWallpaperConditionMatcherKey);
+        condition_matcher_dict->FindString(kWallpaperConditionMatcherKey);
     if (!condition) {
       continue;
     }

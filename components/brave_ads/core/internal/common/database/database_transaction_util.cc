@@ -15,33 +15,33 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 
 namespace brave_ads::database {
 
 namespace {
 
-void RunDBTransactionCallback(
-    ::brave_ads::RunDBTransactionCallback callback,
+void RunTransactionCallback(
+    RunDBTransactionCallback callback,
     uint64_t trace_id,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (mojom_db_transaction_result) {
     if (mojom_db_transaction_result->rows_union) {
       TRACE_EVENT_NESTABLE_ASYNC_END2(
-          kTraceEventCategory, "DatabaseTransactionUtil::RunDBTransaction",
+          kTraceEventCategory, "DatabaseTransactionUtil::RunTransaction",
           TRACE_ID_WITH_SCOPE("DatabaseTransactionUtil", trace_id),
           "statusCode", mojom_db_transaction_result->status_code, "rowCount",
           mojom_db_transaction_result->rows_union->get_rows().size());
     } else {
       TRACE_EVENT_NESTABLE_ASYNC_END1(
-          kTraceEventCategory, "DatabaseTransactionUtil::RunDBTransaction",
+          kTraceEventCategory, "DatabaseTransactionUtil::RunTransaction",
           TRACE_ID_WITH_SCOPE("DatabaseTransactionUtil", trace_id),
           "statusCode", mojom_db_transaction_result->status_code);
     }
   } else {
     TRACE_EVENT_NESTABLE_ASYNC_END1(
-        kTraceEventCategory, "DatabaseTransactionUtil::RunDBTransaction",
+        kTraceEventCategory, "DatabaseTransactionUtil::RunTransaction",
         TRACE_ID_WITH_SCOPE("DatabaseTransactionUtil", trace_id),
         "mojom_db_transaction_result", "nullptr");
   }
@@ -49,31 +49,31 @@ void RunDBTransactionCallback(
   std::move(callback).Run(std::move(mojom_db_transaction_result));
 }
 
-void RunDBTransactionForSuccessOrFailureCallback(
+void RunTransactionForSuccessOrFailureCallback(
     ResultCallback callback,
     uint64_t trace_id,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
   if (mojom_db_transaction_result) {
     if (mojom_db_transaction_result->rows_union) {
       TRACE_EVENT_NESTABLE_ASYNC_END2(
-          kTraceEventCategory, "DatabaseTransactionUtil::RunDBTransaction",
+          kTraceEventCategory, "DatabaseTransactionUtil::RunTransaction",
           TRACE_ID_WITH_SCOPE("DatabaseTransactionUtil", trace_id),
           "statusCode", mojom_db_transaction_result->status_code, "rowCount",
           mojom_db_transaction_result->rows_union->get_rows().size());
     } else {
       TRACE_EVENT_NESTABLE_ASYNC_END1(
-          kTraceEventCategory, "DatabaseTransactionUtil::RunDBTransaction",
+          kTraceEventCategory, "DatabaseTransactionUtil::RunTransaction",
           TRACE_ID_WITH_SCOPE("DatabaseTransactionUtil", trace_id),
           "statusCode", mojom_db_transaction_result->status_code);
     }
   } else {
     TRACE_EVENT_NESTABLE_ASYNC_END1(
-        kTraceEventCategory, "DatabaseTransactionUtil::RunDBTransaction",
+        kTraceEventCategory, "DatabaseTransactionUtil::RunTransaction",
         TRACE_ID_WITH_SCOPE("DatabaseTransactionUtil", trace_id),
         "mojom_db_transaction_result", "nullptr");
   }
 
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -82,47 +82,40 @@ void RunDBTransactionForSuccessOrFailureCallback(
 
 }  // namespace
 
-bool IsSuccess(
+bool IsTransactionSuccessful(
     const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
   return mojom_db_transaction_result &&
          mojom_db_transaction_result->status_code ==
              mojom::DBTransactionResultInfo::StatusCode::kSuccess;
 }
 
-bool IsError(
-    const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result) {
-  return !mojom_db_transaction_result ||
-         mojom_db_transaction_result->status_code !=
-             mojom::DBTransactionResultInfo::StatusCode::kSuccess;
-}
-
-void RunDBTransaction(const base::Location& location,
-                      mojom::DBTransactionInfoPtr mojom_db_transaction,
-                      ::brave_ads::RunDBTransactionCallback callback) {
+void RunTransaction(const base::Location& location,
+                    mojom::DBTransactionInfoPtr mojom_db_transaction,
+                    RunDBTransactionCallback callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN1(
-      kTraceEventCategory, "DatabaseTransactionUtil::RunDBTransaction",
+      kTraceEventCategory, "DatabaseTransactionUtil::RunTransaction",
       TRACE_ID_WITH_SCOPE("DatabaseTransactionUtil", trace_id), "location",
       location.ToString());
 
-  GlobalState::GetInstance()->GetDatabaseManager().RunDBTransaction(
+  GlobalState::GetInstance()->GetDatabaseManager().RunTransaction(
       std::move(mojom_db_transaction),
-      base::BindOnce(&RunDBTransactionCallback, std::move(callback), trace_id),
+      base::BindOnce(&RunTransactionCallback, std::move(callback), trace_id),
       trace_id);
 }
 
-void RunDBTransaction(const base::Location& location,
-                      mojom::DBTransactionInfoPtr mojom_db_transaction,
-                      ResultCallback callback) {
+void RunTransaction(const base::Location& location,
+                    mojom::DBTransactionInfoPtr mojom_db_transaction,
+                    ResultCallback callback) {
   const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
   TRACE_EVENT_NESTABLE_ASYNC_BEGIN1(
-      kTraceEventCategory, "DatabaseTransactionUtil::RunDBTransaction",
+      kTraceEventCategory, "DatabaseTransactionUtil::RunTransaction",
       TRACE_ID_WITH_SCOPE("DatabaseTransactionUtil", trace_id), "location",
       location.ToString());
 
-  GlobalState::GetInstance()->GetDatabaseManager().RunDBTransaction(
+  GlobalState::GetInstance()->GetDatabaseManager().RunTransaction(
       std::move(mojom_db_transaction),
-      base::BindOnce(&RunDBTransactionForSuccessOrFailureCallback,
+      base::BindOnce(&RunTransactionForSuccessOrFailureCallback,
                      std::move(callback), trace_id),
       trace_id);
 }

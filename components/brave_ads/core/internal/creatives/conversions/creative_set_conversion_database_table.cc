@@ -117,7 +117,7 @@ CreativeSetConversionInfo FromMojomRow(
 void GetCallback(
     GetCreativeSetConversionsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative set conversions");
     return std::move(callback).Run(/*success=*/false,
                                    /*conversion_set_conversions=*/{});
@@ -191,8 +191,8 @@ void CreativeSetConversions::Save(
 
   Insert(mojom_db_transaction, creative_set_conversions);
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void CreativeSetConversions::GetUnexpired(
@@ -217,8 +217,8 @@ void CreativeSetConversions::GetUnexpired(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void CreativeSetConversions::GetActive(
@@ -248,8 +248,8 @@ void CreativeSetConversions::GetActive(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
@@ -262,8 +262,8 @@ void CreativeSetConversions::PurgeExpired(ResultCallback callback) const {
               $2 >= expire_at)",
           {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 std::string CreativeSetConversions::GetTableName() const {

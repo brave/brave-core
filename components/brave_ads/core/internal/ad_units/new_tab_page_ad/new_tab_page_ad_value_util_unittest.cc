@@ -19,20 +19,18 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kNewTabPageAdAsJson[] =
-    R"(
-        {
-          "advertiser_id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
-          "alt": "Test Ad Alt",
-          "campaign_id": "84197fc8-830a-4a8e-8339-7a70c2bfa104",
-          "company_name": "Test Ad Company Name",
-          "creative_instance_id": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
-          "creative_set_id": "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123",
-          "placement_id": "9bac9ae4-693c-4569-9b3e-300e357780cf",
-          "segment": "untargeted",
-          "target_url": "https://brave.com/",
-          "type": "new_tab_page_ad"
-        })";
+constexpr char kNewTabPageAdAsJson[] = R"({
+    "type": "new_tab_page_ad",
+    "placement_id": "9bac9ae4-693c-4569-9b3e-300e357780cf",
+    "campaign_id": "84197fc8-830a-4a8e-8339-7a70c2bfa104",
+    "advertiser_id": "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2",
+    "creative_set_id": "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123",
+    "creative_instance_id": "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
+    "company_name": "Test Ad Company Name",
+    "alt": "Test Ad Alt",
+    "target_url": "https://brave.com/",
+    "segment": "untargeted"
+  })";
 
 }  // namespace
 

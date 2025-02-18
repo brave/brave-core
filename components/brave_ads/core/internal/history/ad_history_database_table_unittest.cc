@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/history/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_feature.h"
 #include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 

@@ -493,11 +493,9 @@ void AdsServiceImplIOS::ClearAdsData(ClearDataCallback callback, bool success) {
           [](const base::FilePath& storage_path) {
             sql::Database::Delete(storage_path.Append(kAdsDatabaseFilename));
 
-            base::DeleteFile(
-                storage_path.Append(brave_ads::kClientJsonFilename));
+            base::DeleteFile(storage_path.Append(kClientJsonFilename));
 
-            base::DeleteFile(
-                storage_path.Append(brave_ads::kConfirmationsJsonFilename));
+            base::DeleteFile(storage_path.Append(kConfirmationsJsonFilename));
           },
           storage_path_),
       base::BindOnce(&AdsServiceImplIOS::ClearAdsDataCallback,

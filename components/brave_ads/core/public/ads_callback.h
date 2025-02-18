@@ -20,6 +20,8 @@
 
 namespace brave_ads {
 
+using ResultCallback = base::OnceCallback<void(bool success)>;
+
 using InitializeCallback = base::OnceCallback<void(bool success)>;
 using ShutdownCallback = base::OnceCallback<void(bool success)>;
 

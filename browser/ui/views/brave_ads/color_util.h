@@ -12,6 +12,7 @@
 
 namespace brave_ads {
 
+// Converts a string of the form "RRGGBB" to a `SkColor`.
 bool RgbStringToSkColor(std::string_view rgb, SkColor* color);
 
 }  // namespace brave_ads

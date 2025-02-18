@@ -33,6 +33,7 @@
 namespace ntp_background_images {
 
 namespace {
+
 constexpr char kTestCreativeMetricId[] = "2ba3659a-4737-4c4e-892a-a6a2e0e2a871";
 constexpr char kTestCampaign1[] = "40a357fd-a6e3-485c-92a0-7ff057dd7686";
 constexpr char kTestCampaign2[] = "a5d13b23-a59d-4a3f-a92b-499edd5dfce4";
@@ -49,6 +50,7 @@ constexpr char kViewedEventType[] = "viewed";
 constexpr char kTestP3AJsonHost[] = "https://p3a-json.brave.com";
 constexpr char kTestP2AJsonHost[] = "https://p2a-json.brave.com";
 constexpr char kTestP3ACreativeHost[] = "https://p3a-creative.brave.com";
+
 }  // namespace
 
 class NTPP3AHelperImplTest : public testing::Test {

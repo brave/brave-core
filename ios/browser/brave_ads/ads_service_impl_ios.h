@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "brave/components/brave_ads/core/public/ads_client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/service/ads_service_callback.h"
 
 class PrefService;
@@ -47,8 +46,6 @@ class AdsServiceImplIOS : public AdsService {
                      InitializeCallback callback);
   void ShutdownAds(ShutdownCallback callback);
 
-  void RunDBTransaction(mojom::DBTransactionInfoPtr mojom_db_transaction,
-                        RunDBTransactionCallback callback);
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback);
   void TriggerNotificationAdEvent(

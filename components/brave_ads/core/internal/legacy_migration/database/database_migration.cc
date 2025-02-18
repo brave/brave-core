@@ -136,8 +136,8 @@ void MigrateFromVersion(int from_version, ResultCallback callback) {
   mojom_db_action->type = mojom::DBActionInfo::Type::kMigrate;
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 }  // namespace brave_ads::database

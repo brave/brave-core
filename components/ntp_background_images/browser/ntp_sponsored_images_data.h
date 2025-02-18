@@ -24,40 +24,68 @@ struct NewTabPageAdInfo;
 namespace ntp_background_images {
 
 struct TopSite {
-  std::string name;
-  std::string destination_url;
-  std::string background_color;
-  std::string image_path;
-  base::FilePath image_file;
-
   TopSite();
+
   // For unit test.
   TopSite(const std::string& name,
           const std::string& destination_url,
           const std::string& image_path,
           const base::FilePath& image_file);
-  TopSite(const TopSite& data);
-  TopSite& operator=(const TopSite& data);
+
+  TopSite(const TopSite&);
+  TopSite& operator=(const TopSite&);
+
+  TopSite(TopSite&&) noexcept;
+  TopSite& operator=(TopSite&&) noexcept;
+
   ~TopSite();
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
+
+  std::string name;
+  std::string destination_url;
+  std::string background_color;
+  std::string image_path;
+  base::FilePath image_file;
 };
 
 struct Logo {
+  Logo();
+
+  Logo(const Logo&);
+  Logo& operator=(const Logo&);
+
+  Logo(Logo&&) noexcept;
+  Logo& operator=(Logo&&) noexcept;
+
+  ~Logo();
+
   base::FilePath image_file;
   std::string image_url;
   std::string alt_text;
   std::string destination_url;
   std::string company_name;
-
-  Logo();
-  Logo(const Logo&);
-  ~Logo();
 };
 
 enum class WallpaperType { kImage, kRichMedia };
 
 struct Creative {
+  Creative();
+
+  // For unit test.
+  Creative(const base::FilePath& file_path,
+           const gfx::Point& point,
+           const Logo& test_logo,
+           const std::string& creative_instance_id);
+
+  Creative(const Creative&);
+  Creative& operator=(const Creative&);
+
+  Creative(Creative&&) noexcept;
+  Creative& operator=(Creative&&) noexcept;
+
+  ~Creative();
+
   WallpaperType wallpaper_type;
   GURL url;
   base::FilePath file_path;
@@ -69,25 +97,20 @@ struct Creative {
 
   Logo logo;
   std::optional<gfx::Rect> viewbox;
-
-  Creative();
-  // For unit test.
-  Creative(const base::FilePath& file_path,
-           const gfx::Point& point,
-           const Logo& test_logo,
-           const std::string& creative_instance_id);
-  Creative(const Creative&);
-
-  ~Creative();
 };
 
 struct Campaign {
   Campaign();
-  ~Campaign();
+
   Campaign(const Campaign&);
   Campaign& operator=(const Campaign&);
 
-  bool IsValid() const;
+  Campaign(Campaign&&) noexcept;
+  Campaign& operator=(Campaign&&) noexcept;
+
+  ~Campaign();
+
+  [[nodiscard]] bool IsValid() const;
 
   std::string campaign_id;
   std::vector<Creative> creatives;
@@ -97,21 +120,26 @@ struct Campaign {
 // For SR, campaign list has only one item.
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
-  NTPSponsoredImagesData(const base::Value::Dict& data,
+  NTPSponsoredImagesData(const base::Value::Dict& dict,
                          const base::FilePath& installed_dir);
-  NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
-  NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData& data);
+
+  NTPSponsoredImagesData(const NTPSponsoredImagesData&);
+  NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData&);
+
+  NTPSponsoredImagesData(NTPSponsoredImagesData&&) noexcept;
+  NTPSponsoredImagesData& operator=(NTPSponsoredImagesData&&) noexcept;
+
   ~NTPSponsoredImagesData();
 
-  bool IsValid() const;
+  [[nodiscard]] bool IsValid() const;
 
-  void ParseCampaigns(const base::Value::List& campaigns_value,
+  void ParseCampaigns(const base::Value::List& list,
                       const base::FilePath& installed_dir);
-  std::optional<Campaign> ParseCampaign(const base::Value::Dict& value,
+  std::optional<Campaign> ParseCampaign(const base::Value::Dict& dict,
                                         const base::FilePath& installed_dir);
 
-  void ParseSponsoredReferrals(const base::Value::Dict& value,
-                               const base::FilePath& installed_dir);
+  void ParseSuperReferrals(const base::Value::Dict& dict,
+                           const base::FilePath& installed_dir);
 
   std::optional<base::Value::Dict> GetBackgroundAt(size_t campaign_index,
                                                    size_t creative_index) const;

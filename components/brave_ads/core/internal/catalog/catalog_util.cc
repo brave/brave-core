@@ -123,8 +123,8 @@ void Delete(ResultCallback callback) {
             creative_new_tab_page_ads
         ))");
 
-  database::RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                             std::move(callback));
+  database::RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                           std::move(callback));
 }
 
 void SaveCatalogCallback(const CatalogInfo& catalog,

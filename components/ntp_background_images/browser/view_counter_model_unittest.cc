@@ -12,14 +12,14 @@
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+namespace ntp_background_images {
+
 namespace {
 
 const size_t kTestImageCount = 3;
 const std::vector<size_t> kTestCampaignsTotalImageCount = {3, 2, 3};
 
 }  // namespace
-
-namespace ntp_background_images {
 
 class ViewCounterModelTest : public testing::Test {
  public:

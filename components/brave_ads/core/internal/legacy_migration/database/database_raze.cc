@@ -16,10 +16,10 @@ namespace brave_ads::database {
 void Raze(ResultCallback callback) {
   mojom::DBTransactionInfoPtr mojom_db_transaction =
       mojom::DBTransactionInfo::New();
-  database::Raze(mojom_db_transaction);
+  Raze(mojom_db_transaction);
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 }  // namespace brave_ads::database

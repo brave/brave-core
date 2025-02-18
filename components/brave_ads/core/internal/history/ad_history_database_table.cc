@@ -129,7 +129,7 @@ AdHistoryItemInfo FromMojomRow(const mojom::DBRowInfoPtr& mojom_db_row) {
 void GetCallback(
     GetAdHistoryCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get ad history");
     return std::move(callback).Run(/*ad_history=*/std::nullopt);
   }
@@ -224,8 +224,8 @@ void AdHistory::Save(const AdHistoryList& ad_history,
     Insert(mojom_db_transaction, batch);
   }
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void AdHistory::GetForDateRange(base::Time from_time,
@@ -262,8 +262,8 @@ void AdHistory::GetForDateRange(base::Time from_time,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdHistory::GetHighestRankedPlacementsForDateRange(
@@ -365,8 +365,8 @@ void AdHistory::GetHighestRankedPlacementsForDateRange(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdHistory::GetForCreativeInstanceId(
@@ -399,8 +399,8 @@ void AdHistory::GetForCreativeInstanceId(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetCallback, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetCallback, std::move(callback)));
 }
 
 void AdHistory::PurgeExpired(ResultCallback callback) const {
@@ -415,8 +415,8 @@ void AdHistory::PurgeExpired(ResultCallback callback) const {
            TimeToSqlValueAsString(base::Time::Now() -
                                   kAdHistoryRetentionPeriod.Get())});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 std::string AdHistory::GetTableName() const {

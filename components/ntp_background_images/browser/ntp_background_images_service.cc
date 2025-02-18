@@ -46,18 +46,18 @@ namespace {
 constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSponsoredManifestFile[] = "campaigns.json";
 
-constexpr char kNTPSponsoredReferralMappingTableFile[] = "mapping-table.json";
-constexpr char kNTPSponsoredReferralMappingTableComponentPublicKey[] =
+constexpr char kNTPSuperReferralMappingTableFile[] = "mapping-table.json";
+constexpr char kNTPSuperReferralMappingTableComponentPublicKey[] =
     R"(MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp7IWv7wzH/KLrxx7BKWOIIUMDylQNzxwM5Fig2WHc16BoMW9Kaya/g17Bpfp0YIvxdcmDBcB9kFALqQLxi1WQfa9d7YxqcmAGUKo407RMwEa6dQVkIPMFz2ZPGSfFgr526gYOqWh3Q4h8oN94qxBLgFyT25SMK5zQDGyq96ntME4MQRNwpDBUv7DDK7Npwe9iE8cBgzYTvf0taAFn2ZZi1RhS0RzpdynucpKosnc0sVBLTXy+HDvnMr+77T48zM0YmpjIh8Qmrp9CNbKzZUsZzNfnHpL9IZnjwQ51EOYdPGX2r1obChVZN19HzpK5scZEMRKoCMfCepWpEkMSIoPzQIDAQAB)";
-constexpr char kNTPSponsoredReferralMappingTableComponentID[] =
+constexpr char kNTPSuperReferralMappingTableComponentID[] =
     "heplpbhjcbmiibdlchlanmdenffpiibo";
-constexpr char kNTPSponsoredReferralMappingTableComponentName[] =
+constexpr char kNTPSuperReferralMappingTableComponentName[] =
     "NTP Super Referral mapping table";
 
 std::string GetMappingTableData(const base::FilePath& installed_dir) {
   std::string contents;
   const base::FilePath json_path =
-      installed_dir.AppendASCII(kNTPSponsoredReferralMappingTableFile);
+      installed_dir.AppendASCII(kNTPSuperReferralMappingTableFile);
   base::ReadFileToString(json_path, &contents);
   return contents;
 }
@@ -387,9 +387,9 @@ void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
 
   RegisterNTPSponsoredImagesComponent(
       component_update_service_,
-      kNTPSponsoredReferralMappingTableComponentPublicKey,
-      kNTPSponsoredReferralMappingTableComponentID,
-      kNTPSponsoredReferralMappingTableComponentName,
+      kNTPSuperReferralMappingTableComponentPublicKey,
+      kNTPSuperReferralMappingTableComponentID,
+      kNTPSuperReferralMappingTableComponentName,
       base::BindRepeating(
           &NTPBackgroundImagesService::OnMappingTableComponentReady,
           weak_factory_.GetWeakPtr()));
@@ -470,9 +470,9 @@ NTPBackgroundImagesData* NTPBackgroundImagesService::GetBackgroundImagesData()
 
 NTPSponsoredImagesData* NTPBackgroundImagesService::GetBrandedImagesData(
     bool super_referral) const {
-  const bool is_sponsored_referrals_enabled =
+  const bool is_super_referrals_enabled =
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
-  if (is_sponsored_referrals_enabled) {
+  if (is_super_referrals_enabled) {
     if (super_referral) {
       if (super_referrals_images_data_ &&
           super_referrals_images_data_->IsValid()) {

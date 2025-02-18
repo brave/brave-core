@@ -126,7 +126,7 @@ void GetForCreativeInstanceIdCallback(
     const std::string& creative_instance_id,
     GetCreativeAdCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get creative ad");
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    /*creative_ad=*/{});
@@ -197,9 +197,9 @@ void CreativeAds::GetForCreativeInstanceId(
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetForCreativeInstanceIdCallback,
-                                  creative_instance_id, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetForCreativeInstanceIdCallback,
+                                creative_instance_id, std::move(callback)));
 }
 
 std::string CreativeAds::GetTableName() const {

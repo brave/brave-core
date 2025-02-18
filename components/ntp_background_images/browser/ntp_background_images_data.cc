@@ -36,11 +36,20 @@ constexpr int kExpectedSchemaVersion = 1;
 }  // namespace
 
 Background::Background() = default;
-Background::Background(const base::FilePath& image_file_path,
+
+Background::Background(const base::FilePath& file_path,
                        const std::string& author_name,
                        const std::string& author_link)
-    : image_file(image_file_path), author(author_name), link(author_link) {}
-Background::Background(const Background&) = default;
+    : file_path(file_path), author(author_name), link(author_link) {}
+
+Background::Background(const Background& other) = default;
+
+Background& Background::operator=(const Background& other) = default;
+
+Background::Background(Background&& other) = default;
+
+Background& Background::operator=(Background&& other) = default;
+
 Background::~Background() = default;
 
 NTPBackgroundImagesData::NTPBackgroundImagesData()
@@ -52,37 +61,65 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,
     const base::FilePath& installed_dir)
     : NTPBackgroundImagesData() {
-  std::optional<base::Value> json_value = base::JSONReader::Read(json_string);
-  if (!json_value || !json_value->is_dict()) {
+  std::optional<base::Value::Dict> dict =
+      base::JSONReader::ReadDict(json_string);
+  if (!dict) {
     DVLOG(2) << "Read json data failed. Invalid JSON data";
     return;
   }
-  base::Value::Dict& root = json_value->GetDict();
 
-  const std::optional<int> schema_version = root.FindInt(kSchemaVersionKey);
+  const std::optional<int> schema_version = dict->FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
     return;
   }
 
-  if (const base::Value::List* const images = root.FindList(kImagesKey)) {
-    for (const auto& image_value : *images) {
-      const base::Value::Dict& image = image_value.GetDict();
+  if (const base::Value::List* const list = dict->FindList(kImagesKey)) {
+    for (const auto& value : *list) {
+      const base::Value::Dict* const image_dict = value.GetIfDict();
+      if (!dict) {
+        continue;
+      }
+
+      const std::string* const image_source =
+          image_dict->FindString(kImageSourceKey);
+      if (!image_source) {
+        continue;
+      }
+
+      const std::string* const image_author =
+          image_dict->FindString(kImageAuthorKey);
+      if (!image_author) {
+        continue;
+      }
+
+      const std::string* const image_link =
+          image_dict->FindString(kImageLinkKey);
+      if (!image_link) {
+        continue;
+      }
 
       Background background;
-      background.image_file =
-          installed_dir.AppendASCII(*image.FindString(kImageSourceKey));
-      background.author = *image.FindString(kImageAuthorKey);
-      background.link = *image.FindString(kImageLinkKey);
+      background.file_path = installed_dir.AppendASCII(*image_source);
+      background.author = *image_author;
+      background.link = *image_link;
 
       backgrounds.push_back(background);
     }
   }
 }
 
-NTPBackgroundImagesData& NTPBackgroundImagesData::operator=(
-    const NTPBackgroundImagesData& data) = default;
 NTPBackgroundImagesData::NTPBackgroundImagesData(
-    const NTPBackgroundImagesData& data) = default;
+    const NTPBackgroundImagesData& other) = default;
+
+NTPBackgroundImagesData& NTPBackgroundImagesData::operator=(
+    const NTPBackgroundImagesData& other) = default;
+
+NTPBackgroundImagesData::NTPBackgroundImagesData(
+    NTPBackgroundImagesData&& other) = default;
+
+NTPBackgroundImagesData& NTPBackgroundImagesData::operator=(
+    NTPBackgroundImagesData&& other) = default;
+
 NTPBackgroundImagesData::~NTPBackgroundImagesData() = default;
 
 bool NTPBackgroundImagesData::IsValid() const {
@@ -98,8 +135,8 @@ base::Value::Dict NTPBackgroundImagesData::GetBackgroundAt(size_t index) const {
 
   return base::Value::Dict()
       .Set(kWallpaperURLKey,
-           url_prefix + backgrounds[index].image_file.BaseName().AsUTF8Unsafe())
-      .Set(kWallpaperFilePathKey, backgrounds[index].image_file.AsUTF8Unsafe())
+           url_prefix + backgrounds[index].file_path.BaseName().AsUTF8Unsafe())
+      .Set(kWallpaperFilePathKey, backgrounds[index].file_path.AsUTF8Unsafe())
       .Set(kIsBackgroundKey, true)
       .Set(kImageAuthorKey, backgrounds[index].author)
       .Set(kImageLinkKey, backgrounds[index].link)

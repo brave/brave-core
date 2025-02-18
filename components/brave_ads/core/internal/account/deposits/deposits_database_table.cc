@@ -87,7 +87,7 @@ void GetForCreativeInstanceIdCallback(
     const std::string& /*creative_instance_id*/,
     GetDepositsCallback callback,
     mojom::DBTransactionResultInfoPtr mojom_db_transaction_result) {
-  if (IsError(mojom_db_transaction_result)) {
+  if (!IsTransactionSuccessful(mojom_db_transaction_result)) {
     BLOG(0, "Failed to get deposit value");
     return std::move(callback).Run(/*success=*/false,
                                    /*deposit=*/std::nullopt);
@@ -135,8 +135,8 @@ void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
 
   Insert(mojom_db_transaction, deposit);
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 void Deposits::Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
@@ -190,9 +190,9 @@ void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
   BindColumnTypes(mojom_db_action);
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   base::BindOnce(&GetForCreativeInstanceIdCallback,
-                                  creative_instance_id, std::move(callback)));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 base::BindOnce(&GetForCreativeInstanceIdCallback,
+                                creative_instance_id, std::move(callback)));
 }
 
 void Deposits::PurgeExpired(ResultCallback callback) const {
@@ -205,8 +205,8 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
               $2 >= expire_at)",
           {GetTableName(), TimeToSqlValueAsString(base::Time::Now())});
 
-  RunDBTransaction(FROM_HERE, std::move(mojom_db_transaction),
-                   std::move(callback));
+  RunTransaction(FROM_HERE, std::move(mojom_db_transaction),
+                 std::move(callback));
 }
 
 std::string Deposits::GetTableName() const {

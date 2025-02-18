@@ -5,8 +5,8 @@
 
 #include "brave/browser/ui/views/brave_ads/padded_image_view.h"
 
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/gfx/color_palette.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"

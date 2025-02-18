@@ -40,14 +40,14 @@ Database::Database(base::FilePath path)
 
 Database::~Database() = default;
 
-mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
+mojom::DBTransactionResultInfoPtr Database::RunTransaction(
     mojom::DBTransactionInfoPtr mojom_db_transaction,
     uint64_t trace_id) {
   CHECK(mojom_db_transaction);
 
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  TRACE_EVENT(kTraceEventCategory, "Database::RunDBTransaction", "trace_id",
+  TRACE_EVENT(kTraceEventCategory, "Database::RunTransaction", "trace_id",
               trace_id);
 
   mojom::DBTransactionResultInfoPtr mojom_db_transaction_result =
@@ -65,7 +65,7 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // completed.
   mojom_db_transaction_result->status_code =
       MaybeRaze(mojom_db_transaction, trace_id);
-  if (database::IsError(mojom_db_transaction_result)) {
+  if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
     VLOG(0) << "Failed to raze database";
     return mojom_db_transaction_result;
   }
@@ -73,8 +73,8 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // Run any actions within the transaction, such as creating or opening the
   // database, executing a statement, or migrating the database.
   mojom_db_transaction_result->status_code =
-      RunDBActions(mojom_db_transaction, mojom_db_transaction_result, trace_id);
-  if (database::IsError(mojom_db_transaction_result)) {
+      RunActions(mojom_db_transaction, mojom_db_transaction_result, trace_id);
+  if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
     VLOG(0) << "Failed run database actions";
     return mojom_db_transaction_result;
   }
@@ -84,7 +84,7 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
   // it is good practice to run this action manually.
   mojom_db_transaction_result->status_code =
       MaybeVacuum(mojom_db_transaction, trace_id);
-  if (database::IsError(mojom_db_transaction_result)) {
+  if (!database::IsTransactionSuccessful(mojom_db_transaction_result)) {
     VLOG(0) << "Failed to vacuum database";
     return mojom_db_transaction_result;
   }
@@ -94,7 +94,7 @@ mojom::DBTransactionResultInfoPtr Database::RunDBTransaction(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
+mojom::DBTransactionResultInfo::StatusCode Database::RunActions(
     const mojom::DBTransactionInfoPtr& mojom_db_transaction,
     const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result,
     uint64_t trace_id) {
@@ -103,7 +103,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
 
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  TRACE_EVENT(kTraceEventCategory, "Database::RunDBActions", "trace_id",
+  TRACE_EVENT(kTraceEventCategory, "Database::RunActions", "trace_id",
               trace_id);
 
   sql::Transaction transaction(&db_);
@@ -115,7 +115,7 @@ mojom::DBTransactionResultInfo::StatusCode Database::RunDBActions(
     mojom::DBTransactionResultInfo::StatusCode result_code =
         mojom::DBTransactionResultInfo::StatusCode::kSuccess;
 
-    TRACE_EVENT(kTraceEventCategory, "Database::RunDBAction", "type",
+    TRACE_EVENT(kTraceEventCategory, "Database::RunAction", "type",
                 mojom_db_action->type, "trace_id", trace_id);
 
     switch (mojom_db_action->type) {

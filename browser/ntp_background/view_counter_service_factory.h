@@ -19,11 +19,11 @@ class NoDestructor;
 
 namespace content {
 class BrowserContext;
-}
+}  // namespace content
 
 namespace user_prefs {
 class PrefRegistrySyncable;
-}
+}  // namespace user_prefs
 
 namespace ntp_background_images {
 
