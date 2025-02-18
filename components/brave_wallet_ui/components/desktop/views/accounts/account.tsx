@@ -227,10 +227,7 @@ export const Account = () => {
     ? chainTipStatus.chainTip - chainTipStatus.latestScannedBlock
     : 0
 
-  const showSyncWarning =
-    isShieldedAccount &&
-    (blocksBehind > 1000 || chainTipStatus === null) &&
-    !syncWarningDismissed
+  const showSyncWarning = isShieldedAccount && !syncWarningDismissed
 
   // custom hooks & memos
   const scrollIntoView = useScrollIntoView()
@@ -578,16 +575,19 @@ export const Account = () => {
                 ? 'error'
                 : blocksBehind > 3000
                 ? 'warning'
-                : 'info'
+                : blocksBehind > 1000
+                ? 'info'
+                : 'notice'
             }
           >
             <div slot='title'>
               {!chainTipStatus
                 ? getLocale('braveWalletOutOfSyncTitle')
-                : getLocale('braveWalletOutOfSyncBlocksBehindTitle').replace(
-                    '$1',
-                    blocksBehind.toLocaleString()
-                  )}
+                : getLocale(
+                    blocksBehind < 1000
+                      ? 'braveWalletBlocksBehind'
+                      : 'braveWalletOutOfSyncBlocksBehindTitle'
+                  ).replace('$1', blocksBehind.toLocaleString())}
             </div>
             {getLocale('braveWalletOutOfSyncDescription')}
             <Row
