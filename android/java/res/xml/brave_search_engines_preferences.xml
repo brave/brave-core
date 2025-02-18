@@ -57,6 +57,7 @@
             android:fragment="org.chromium.brave.browser.search_engines.settings.AddCustomSearchEnginePreferenceFragment"
             android:key="add_custom_search_engine"
             android:order="2"
+            app:allowDividerAbove="false"
             android:title="@string/add_custom_search_engine"/>
     </PreferenceCategory>
 </PreferenceScreen>
