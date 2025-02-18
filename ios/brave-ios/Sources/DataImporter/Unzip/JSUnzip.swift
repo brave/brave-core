@@ -56,7 +56,7 @@ class JSUnzip {
         for (relativePath, base64Data) in result {
           group.addTask {
             let destinationURL = URL(fileURLWithPath: destinationDirectory)
-              .appendingPathComponent(BraveUnzip.escapePath(relativePath: relativePath))
+              .appendingPathComponent(JSUnzip.escapePath(relativePath: relativePath))
 
             if base64Data.isEmpty {
               // Usually, if there's no base64Data, it's a DIRECTORY, so we'd create it
