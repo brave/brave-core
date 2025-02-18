@@ -408,6 +408,7 @@ public class QuickSearchEnginesUtil {
                 .getKeyword();
     }
 
+<<<<<<< HEAD:browser/quick_search_engines/android/java/src/org/chromium/brave/browser/quick_search_engines/utils/QuickSearchEnginesUtil.java
     public static void loadSearchEngineLogo(
             Profile profile, ImageView logoView, String searchKeyword) {
         Context context = ContextUtils.getApplicationContext();

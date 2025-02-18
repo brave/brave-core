@@ -83,12 +83,6 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                     @Override
                     public void onClick(View v) {
                         if (isSearchEngineValidated()) {
-                            TemplateUrlService braveTemplateUrlService =
-                                    TemplateUrlServiceFactory.getForProfile(getProfile());
-                            // if (braveTemplateUrlService instanceof BraveTemplateUrlService) {
-                            //     ((BraveTemplateUrlService) braveTemplateUrlService)
-                            //             .addSearchEngine();
-                            // }
                             String keyword =
                                     mTitleEdittext
                                             .getText()
@@ -102,6 +96,17 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                                         .show();
                                 return;
                             }
+
+                            TemplateUrlService braveTemplateUrlService =
+                                    TemplateUrlServiceFactory.getForProfile(getProfile());
+                            // if (braveTemplateUrlService instanceof BraveTemplateUrlService) {
+                            // ((BraveTemplateUrlService) braveTemplateUrlService)
+                            //         .addSearchEngine();
+                            // boolean isAdded =
+                            // ((BraveTemplateUrlService) braveTemplateUrlService).addSearchEngine(
+                            //                 mTitleEdittext.getText().toString(),
+                            //                 keyword,
+                            //                 mUrlEdittext.getText().toString());
                             boolean isAdded =
                                     braveTemplateUrlService.addSearchEngine(
                                             mTitleEdittext.getText().toString(),
@@ -117,6 +122,7 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
                                                 Toast.LENGTH_SHORT)
                                         .show();
                             }
+                            // }
                         }
                     }
                 });

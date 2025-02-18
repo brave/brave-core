@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -26,6 +25,8 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.components.web_discovery.WebDiscoveryPrefs;
+
+import java.util.List;
 
 public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener {
@@ -85,17 +86,44 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        updateCustomSearchEnginesPreference();
+    }
+
+    private void updateCustomSearchEnginesPreference() {
+        List<String> searchEngines = CustomSearchEnginesUtil.getCustomSearchEngines();
+
+        if (searchEngines == null || searchEngines.isEmpty()) {
+            removeCustomSearchEnginesPreference();
+            return;
+        }
 
         PreferenceCategory preferenceCategory =
                 (PreferenceCategory) findPreference(PREF_CUSTOM_SEARCH_ENGINES_CATEGORY);
-        if (preferenceCategory != null
-                && CustomSearchEnginesUtil.getCustomSearchEngines().size() > 0) {
-            CustomSearchEnginesPreference customSearchEnginesPreference =
+        Preference customSearchEnginesListPreference =
+                findPreference(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+
+        if (customSearchEnginesListPreference != null
+                && customSearchEnginesListPreference instanceof CustomSearchEnginesPreference) {
+            Log.e("brave_search", "updateCustomSearchEngines");
+            ((CustomSearchEnginesPreference) customSearchEnginesListPreference)
+                    .updateCustomSearchEngines();
+        } else if (preferenceCategory != null) {
+            CustomSearchEnginesPreference newPreference =
                     new CustomSearchEnginesPreference(requireContext());
-            customSearchEnginesPreference.initialize(getProfile());
-            customSearchEnginesPreference.setKey(PREF_CUSTOM_SEARCH_ENGINE_LIST);
-            customSearchEnginesPreference.setOrder(1);
-            preferenceCategory.addPreference(customSearchEnginesPreference);
+            newPreference.initialize(getProfile());
+            newPreference.setKey(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+            newPreference.setOrder(1);
+            preferenceCategory.addPreference(newPreference);
+        }
+    }
+
+    private void removeCustomSearchEnginesPreference() {
+        PreferenceCategory preferenceCategory =
+                (PreferenceCategory) findPreference(PREF_CUSTOM_SEARCH_ENGINES_CATEGORY);
+        Preference customSearchEnginesListPreference =
+                findPreference(PREF_CUSTOM_SEARCH_ENGINE_LIST);
+        if (preferenceCategory != null && customSearchEnginesListPreference != null) {
+            preferenceCategory.removePreference(customSearchEnginesListPreference);
         }
     }
 
@@ -113,7 +141,6 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
         };
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private void updateSearchEnginePreference() {
         Preference searchEnginePreference = findPreference(PREF_STANDARD_SEARCH_ENGINE);
         searchEnginePreference.setEnabled(true);
@@ -210,6 +237,7 @@ public class BraveSearchEnginesPreferences extends BravePreferenceFragment
             ((CustomSearchEnginesPreference) customSearchEnginesListPreference)
                     .updateCustomSearchEngines();
         }
+        updateCustomSearchEnginesPreference();
     }
 
     @Override

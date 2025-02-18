@@ -14,14 +14,22 @@ public class BraveTemplateUrlService extends TemplateUrlService {
         super(nativeTemplateUrlServiceAndroid);
     }
 
-    // public boolean addSearchEngine() {
+    // public boolean addSearchEngine(String title, String keyword, String url) {
     //     Log.e("brave_search", "addSearchEngine");
-    //     return
-    // BraveTemplateUrlServiceJni.get().addSearchEngine(mNativeTemplateUrlServiceAndroid);
+    //     return BraveTemplateUrlServiceJni.get().addSearchEngine(mNativeTemplateUrlServiceAndroid,
+    // title, keyword, url);
+    // }
+
+    // public void removeSearchEngine(String keyword) {
+    //     Log.e("brave_search", "removeSearchEngine");
+    //     BraveTemplateUrlServiceJni.get().removeSearchEngine(mNativeTemplateUrlServiceAndroid,
+    // keyword);
     // }
 
     // @NativeMethods
     // public interface Natives {
-    //     boolean addSearchEngine(long nativeTemplateUrlServiceAndroid);
+    //     boolean addSearchEngine(long nativeTemplateUrlServiceAndroid, String title, String
+    // keyword, String url);
+    //     void removeSearchEngine(long nativeTemplateUrlServiceAndroid, String keyword);
     // }
 }
