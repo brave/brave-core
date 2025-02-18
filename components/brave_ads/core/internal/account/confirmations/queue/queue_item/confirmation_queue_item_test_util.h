@@ -24,7 +24,7 @@ void SaveConfirmationQueueItems(
     const ConfirmationQueueItemList& confirmation_queue_items);
 
 void BuildAndSaveConfirmationQueueItems(const ConfirmationInfo& confirmation,
-                                        int count);
+                                        size_t count);
 
 }  // namespace test
 

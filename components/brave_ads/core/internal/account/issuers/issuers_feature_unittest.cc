@@ -33,12 +33,12 @@ TEST(BraveAdsIssuersFeatureTest, MaximumTokenIssuerPublicKeys) {
       kIssuersFeature, {{"maximum_token_issuer_public_keys", "1"}});
 
   // Act & Assert
-  EXPECT_EQ(1, kMaximumTokenIssuerPublicKeys.Get());
+  EXPECT_EQ(1U, kMaximumTokenIssuerPublicKeys.Get());
 }
 
 TEST(BraveAdsIssuersFeatureTest, DefaultMaximumTokenIssuerPublicKeys) {
   // Act & Assert
-  EXPECT_EQ(6, kMaximumTokenIssuerPublicKeys.Get());
+  EXPECT_EQ(6U, kMaximumTokenIssuerPublicKeys.Get());
 }
 
 TEST(BraveAdsIssuersFeatureTest,
@@ -48,7 +48,7 @@ TEST(BraveAdsIssuersFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kIssuersFeature);
 
   // Act & Assert
-  EXPECT_EQ(6, kMaximumTokenIssuerPublicKeys.Get());
+  EXPECT_EQ(6U, kMaximumTokenIssuerPublicKeys.Get());
 }
 
 }  // namespace brave_ads

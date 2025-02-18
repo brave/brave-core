@@ -23,7 +23,7 @@ namespace brave_ads::crypto {
 
 namespace {
 
-constexpr int kHKDFSeedLength = 32;
+constexpr size_t kHKDFSeedLength = 32;
 
 constexpr uint8_t kHKDFSalt[] = {
     126, 244, 99,  158, 51,  68,  253, 80,  133, 183, 51,  180, 77,

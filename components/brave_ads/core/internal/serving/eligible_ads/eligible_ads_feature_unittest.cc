@@ -33,12 +33,12 @@ TEST(BraveAdsEligibleAdFeatureTest, SiteHistoryMaxCount) {
       kEligibleAdFeature, {{"site_history_max_count", "666"}});
 
   // Act & Assert
-  EXPECT_EQ(666, kSiteHistoryMaxCount.Get());
+  EXPECT_EQ(666U, kSiteHistoryMaxCount.Get());
 }
 
 TEST(BraveAdsEligibleAdFeatureTest, DefaultSiteHistoryMaxCount) {
   // Act & Assert
-  EXPECT_EQ(5'000, kSiteHistoryMaxCount.Get());
+  EXPECT_EQ(5'000U, kSiteHistoryMaxCount.Get());
 }
 
 TEST(BraveAdsEligibleAdFeatureTest, DefaultSiteHistoryMaxCountWhenDisabled) {
@@ -47,7 +47,7 @@ TEST(BraveAdsEligibleAdFeatureTest, DefaultSiteHistoryMaxCountWhenDisabled) {
   scoped_feature_list.InitAndDisableFeature(kEligibleAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(5'000, kSiteHistoryMaxCount.Get());
+  EXPECT_EQ(5'000U, kSiteHistoryMaxCount.Get());
 }
 
 TEST(BraveAdsEligibleAdFeatureTest, SiteHistoryRecentDayRange) {
@@ -57,12 +57,12 @@ TEST(BraveAdsEligibleAdFeatureTest, SiteHistoryRecentDayRange) {
       kEligibleAdFeature, {{"site_history_recent_day_range", "7"}});
 
   // Act & Assert
-  EXPECT_EQ(7, kSiteHistoryRecentDayRange.Get());
+  EXPECT_EQ(7U, kSiteHistoryRecentDayRange.Get());
 }
 
 TEST(BraveAdsEligibleAdFeatureTest, DefaultSiteHistoryRecentDayRange) {
   // Act & Assert
-  EXPECT_EQ(180, kSiteHistoryRecentDayRange.Get());
+  EXPECT_EQ(180U, kSiteHistoryRecentDayRange.Get());
 }
 
 TEST(BraveAdsEligibleAdFeatureTest,
@@ -72,7 +72,7 @@ TEST(BraveAdsEligibleAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kEligibleAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(180, kSiteHistoryRecentDayRange.Get());
+  EXPECT_EQ(180U, kSiteHistoryRecentDayRange.Get());
 }
 
 }  // namespace brave_ads

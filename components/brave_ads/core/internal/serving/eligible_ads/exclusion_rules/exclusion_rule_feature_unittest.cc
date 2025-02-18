@@ -94,13 +94,13 @@ TEST(BraveAdsExclusionRuleFeatureTest,
       {{"should_exclude_ad_if_creative_instance_exceeds_per_hour_cap", "7"}});
 
   // Act & Assert
-  EXPECT_EQ(7, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
+  EXPECT_EQ(7U, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultShouldExcludeAdIfCreativeInstanceExceedsPerHourCap) {
   // Act & Assert
-  EXPECT_EQ(1, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
+  EXPECT_EQ(1U, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
@@ -110,7 +110,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
   // Act & Assert
-  EXPECT_EQ(1, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
+  EXPECT_EQ(1U, kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
@@ -122,13 +122,13 @@ TEST(BraveAdsExclusionRuleFeatureTest,
       {{"should_exclude_ad_if_creative_set_exceeds_conversion_cap", "7"}});
 
   // Act & Assert
-  EXPECT_EQ(7, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
+  EXPECT_EQ(7U, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
      DefaultShouldExcludeAdIfCreativeSetExceedsConversionCap) {
   // Act & Assert
-  EXPECT_EQ(1, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
+  EXPECT_EQ(1U, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
 }
 
 TEST(BraveAdsExclusionRuleFeatureTest,
@@ -138,7 +138,7 @@ TEST(BraveAdsExclusionRuleFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kExclusionRulesFeature);
 
   // Act & Assert
-  EXPECT_EQ(1, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
+  EXPECT_EQ(1U, kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get());
 }
 
 }  // namespace brave_ads

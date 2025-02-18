@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 #include <vector>
 
@@ -52,7 +53,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& transaction : transactions) {
     if (!transaction.IsValid()) {
       BLOG(0, "Invalid transaction");
@@ -271,7 +272,7 @@ void Transactions::Reconcile(const PaymentTokenList& payment_tokens,
        BuildBindColumnPlaceholder(/*column_count=*/1)},
       nullptr);
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& transaction_id : transaction_ids) {
     BindColumnString(mojom_db_action, index, transaction_id);
     ++index;

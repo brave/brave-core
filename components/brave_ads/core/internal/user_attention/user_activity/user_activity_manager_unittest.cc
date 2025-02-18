@@ -431,7 +431,7 @@ TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
   // Arrange
   const UserActivityEventType user_activity_event_type =
       UserActivityEventType::kClosedTab;
-  for (int i = 0; i < kMaximumUserActivityEvents.Get(); ++i) {
+  for (size_t i = 0; i < kMaximumUserActivityEvents.Get(); ++i) {
     UserActivityManager::GetInstance().RecordEvent(user_activity_event_type);
   }
 
@@ -443,7 +443,7 @@ TEST_F(BraveAdsUserActivityManagerTest, MaximumHistoryItems) {
 
   UserActivityEventInfo expected_user_activity_event;
 
-  for (int i = 0; i < kMaximumUserActivityEvents.Get() - 1; ++i) {
+  for (size_t i = 0; i < kMaximumUserActivityEvents.Get() - 1; ++i) {
     expected_user_activity_event.type = user_activity_event_type;
     expected_user_activity_event.created_at = test::Now();
     expected_user_activity_events.push_back(expected_user_activity_event);

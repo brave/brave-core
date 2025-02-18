@@ -37,7 +37,7 @@ void SaveConfirmationQueueItems(
 }
 
 void BuildAndSaveConfirmationQueueItems(const ConfirmationInfo& confirmation,
-                                        int count) {
+                                        size_t count) {
   const ConfirmationQueueItemList confirmation_queue_items =
       BuildConfirmationQueueItems(confirmation, count);
 

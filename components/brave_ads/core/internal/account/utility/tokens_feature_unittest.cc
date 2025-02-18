@@ -33,12 +33,12 @@ TEST(BraveAdsTokensFeatureTest, MinConfirmationTokens) {
       kAccountTokensFeature, {{"minimum_confirmation_tokens", "7"}});
 
   // Act & Assert
-  EXPECT_EQ(7, kMinConfirmationTokens.Get());
+  EXPECT_EQ(7U, kMinConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMinConfirmationTokens) {
   // Act & Assert
-  EXPECT_EQ(20, kMinConfirmationTokens.Get());
+  EXPECT_EQ(20U, kMinConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMinConfirmationTokensWhenDisabled) {
@@ -47,7 +47,7 @@ TEST(BraveAdsTokensFeatureTest, DefaultMinConfirmationTokensWhenDisabled) {
   scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
 
   // Act & Assert
-  EXPECT_EQ(20, kMinConfirmationTokens.Get());
+  EXPECT_EQ(20U, kMinConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, MaxConfirmationTokens) {
@@ -57,12 +57,12 @@ TEST(BraveAdsTokensFeatureTest, MaxConfirmationTokens) {
       kAccountTokensFeature, {{"maximum_confirmation_tokens", "21"}});
 
   // Act & Assert
-  EXPECT_EQ(21, kMaxConfirmationTokens.Get());
+  EXPECT_EQ(21U, kMaxConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMaxConfirmationTokens) {
   // Act & Assert
-  EXPECT_EQ(50, kMaxConfirmationTokens.Get());
+  EXPECT_EQ(50U, kMaxConfirmationTokens.Get());
 }
 
 TEST(BraveAdsTokensFeatureTest, DefaultMaxConfirmationTokensWhenDisabled) {
@@ -71,7 +71,7 @@ TEST(BraveAdsTokensFeatureTest, DefaultMaxConfirmationTokensWhenDisabled) {
   scoped_feature_list.InitAndDisableFeature(kAccountTokensFeature);
 
   // Act & Assert
-  EXPECT_EQ(50, kMaxConfirmationTokens.Get());
+  EXPECT_EQ(50U, kMaxConfirmationTokens.Get());
 }
 
 }  // namespace brave_ads

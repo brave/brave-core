@@ -27,7 +27,7 @@ namespace brave_ads {
 namespace {
 
 #if BUILDFLAG(IS_ANDROID)
-constexpr int kMaximumNotificationAds = 3;
+constexpr size_t kMaximumNotificationAds = 3;
 #endif  // BUILDFLAG(IS_ANDROID)
 
 }  // namespace

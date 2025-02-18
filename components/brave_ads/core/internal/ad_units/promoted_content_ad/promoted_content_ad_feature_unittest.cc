@@ -33,13 +33,13 @@ TEST(BraveAdsPromotedContentAdFeatureTest, MaximumPromotedContentAdsPerHour) {
       kPromotedContentAdFeature, {{"maximum_ads_per_hour", "42"}});
 
   // Act & Assert
-  EXPECT_EQ(42, kMaximumPromotedContentAdsPerHour.Get());
+  EXPECT_EQ(42U, kMaximumPromotedContentAdsPerHour.Get());
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest,
      DefaultMaximumPromotedContentAdsPerHour) {
   // Act & Assert
-  EXPECT_EQ(4, kMaximumPromotedContentAdsPerHour.Get());
+  EXPECT_EQ(4U, kMaximumPromotedContentAdsPerHour.Get());
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest,
@@ -49,7 +49,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kPromotedContentAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(4, kMaximumPromotedContentAdsPerHour.Get());
+  EXPECT_EQ(4U, kMaximumPromotedContentAdsPerHour.Get());
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest, MaximumPromotedContentAdsPerDay) {
@@ -59,13 +59,13 @@ TEST(BraveAdsPromotedContentAdFeatureTest, MaximumPromotedContentAdsPerDay) {
       kPromotedContentAdFeature, {{"maximum_ads_per_day", "24"}});
 
   // Act & Assert
-  EXPECT_EQ(24, kMaximumPromotedContentAdsPerDay.Get());
+  EXPECT_EQ(24U, kMaximumPromotedContentAdsPerDay.Get());
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest,
      DefaultMaximumPromotedContentAdsPerDay) {
   // Act & Assert
-  EXPECT_EQ(20, kMaximumPromotedContentAdsPerDay.Get());
+  EXPECT_EQ(20U, kMaximumPromotedContentAdsPerDay.Get());
 }
 
 TEST(BraveAdsPromotedContentAdFeatureTest,
@@ -75,7 +75,7 @@ TEST(BraveAdsPromotedContentAdFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kPromotedContentAdFeature);
 
   // Act & Assert
-  EXPECT_EQ(20, kMaximumPromotedContentAdsPerDay.Get());
+  EXPECT_EQ(20U, kMaximumPromotedContentAdsPerDay.Get());
 }
 
 }  // namespace brave_ads

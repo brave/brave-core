@@ -14,12 +14,12 @@
 
 namespace brave_ads::test {
 
-CreativeInlineContentAdList BuildCreativeInlineContentAds(int count) {
-  CHECK_GT(count, 0);
+CreativeInlineContentAdList BuildCreativeInlineContentAds(size_t count) {
+  CHECK_GT(count, 0U);
 
   CreativeInlineContentAdList creative_ads;
 
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd(
         /*should_generate_random_uuids=*/true);
     creative_ad.segment = kSegments[i % std::size(kSegments)];

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/ad_history_database_table.h"
 
+#include <cstdint>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -59,7 +60,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& ad_history_item : ad_history) {
     if (!ad_history_item.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/43328): Invalid ad

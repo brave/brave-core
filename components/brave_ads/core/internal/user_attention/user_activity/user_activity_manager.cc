@@ -72,8 +72,7 @@ void UserActivityManager::RecordEvent(UserActivityEventType event_type) {
   user_activity_events_.push_back(UserActivityEventInfo{
       .type = event_type, .created_at = base::Time::Now()});
 
-  if (user_activity_events_.size() >
-      static_cast<size_t>(kMaximumUserActivityEvents.Get())) {
+  if (user_activity_events_.size() > kMaximumUserActivityEvents.Get()) {
     user_activity_events_.pop_front();
   }
 

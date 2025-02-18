@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 #include <vector>
 
@@ -49,7 +50,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& creative_set_conversion : creative_set_conversions) {
     if (!creative_set_conversion.IsValid()) {
       // TODO(https://github.com/brave/brave-browser/issues/43314): Invalid
