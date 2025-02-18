@@ -43,6 +43,14 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
             return overridden_name
     return None
 
+def run_mangler(mangler_file, preprocess_file):
+    """Runs the mangler on the given file"""
+    import subprocess
+
+    # Note: We read from and write to the preprocess file - this way any
+    # preprocessing that upstream does will be mangled.
+    subprocess.run(['npx', 'tsx', '--tsconfig', '../../brave/tsconfig.json', '../../brave/build/commands/scripts/lit_mangler.ts', 'mangle', '-m', mangler_file, '-i', preprocess_file, '-o', preprocess_file])
+
 
 def get_chromium_src_files(in_folder, in_files):
     """Gets all the overrides we have in brave-core for this target"""
@@ -51,8 +59,14 @@ def get_chromium_src_files(in_folder, in_files):
         in_file = get_chromium_src_override(os.path.join(in_folder, file))
         if os.path.exists(in_file):
             override_files.append(file)
+        elif os.path.exists(in_file.replace('.html.ts', '.mangle.html.ts')):
+            override_files.append(file.replace('.html.ts', '.mangle.html.ts'))
 
     return override_files
+
+def should_run_mangler(in_file):
+    """Determines if we should run the mangler on the given file"""
+    return in_file.endswith('.mangle.html.ts')
 
 
 # Used to indicate that there are no overrides, so we don't need to reprocess
@@ -92,6 +106,11 @@ def main(original_function, argv):
             manifest_data = json.load(open(manifest_path))
 
         for override_file in overrides:
+            if should_run_mangler(override_file):
+                upstream_file = override_file.replace('.mangle.html.ts', '.html.ts')
+                run_mangler(os.path.join(override_root_folder, override_file), os.path.join(out_folder, upstream_file))
+                continue
+
             overridden_name = maybe_keep_upstream_version(
                 override_root_folder, out_folder, override_file)
             if overridden_name and args.out_manifest:
