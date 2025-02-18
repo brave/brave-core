@@ -60,7 +60,7 @@ class ZipImporter {
     }
 
     // Extract the zip file to the temporary directory
-    if await Unzip.unzip(path.path, toDirectory: tempDirectoryImportPath.path) {
+    if await JSUnzip.unzip(path.path, toDirectory: tempDirectoryImportPath.path) {
       // If the file was extracted to a folder of the same name, we return that folder
       let filePath = tempDirectoryImportPath.appending(path: fileName)
       if await AsyncFileManager.default.fileExists(atPath: filePath.path) {

@@ -179,6 +179,9 @@ var package = Package(
         .product(name: "Collections", package: "swift-collections"),
         .product(name: "Introspect", package: "SwiftUI-Introspect"),
       ],
+      resources: [
+        .copy("Unzip/jszip.min.js")
+      ],
       plugins: ["LoggerPlugin"]
     ),
     .target(
