@@ -113,11 +113,11 @@ TEST_F(BraveNewsPrefManagerTest, PublishersDiffIsSane) {
 
   base::flat_set<std::string> distinct_changes(diff.changed);
   EXPECT_EQ(5u, distinct_changes.size());
-  EXPECT_TRUE(base::Contains(distinct_changes, "One"));
-  EXPECT_TRUE(base::Contains(distinct_changes, "Two"));
-  EXPECT_TRUE(base::Contains(distinct_changes, "Four"));
-  EXPECT_TRUE(base::Contains(distinct_changes, "Five"));
-  EXPECT_TRUE(base::Contains(distinct_changes, direct_three));
+  EXPECT_TRUE(distinct_changes.contains("One"));
+  EXPECT_TRUE(distinct_changes.contains("Two"));
+  EXPECT_TRUE(distinct_changes.contains("Four"));
+  EXPECT_TRUE(distinct_changes.contains("Five"));
+  EXPECT_TRUE(distinct_changes.contains(direct_three));
 
   EXPECT_EQ(1u, diff.removed.size());
   EXPECT_TRUE(base::Contains(diff.removed, direct_one));

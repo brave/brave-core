@@ -12,7 +12,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/callback.h"
 #include "base/macros/if.h"
@@ -51,8 +50,7 @@ std::unique_ptr<AIChatResourceSniffer> AIChatResourceSniffer::MaybeCreate(
   // TODO(petemill): Allow some kind of config to be passed in to determine
   // which hosts and paths to sniff, and how to parse it to a
   // |mojom::PageContent|.
-  if (url.SchemeIsHTTPOrHTTPS() &&
-      base::Contains(kYouTubeHosts, url.host_piece()) &&
+  if (url.SchemeIsHTTPOrHTTPS() && kYouTubeHosts.contains(url.host_piece()) &&
       base::EqualsCaseInsensitiveASCII(url.path_piece(),
                                        kYouTubePlayerAPIPath)) {
     return base::WrapUnique(new AIChatResourceSniffer(std::move(delegate)));
