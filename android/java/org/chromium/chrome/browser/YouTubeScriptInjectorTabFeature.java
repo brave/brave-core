@@ -18,7 +18,7 @@ import org.chromium.content_public.browser.WebContents;
  */
 @JNINamespace("youtube_script_injector")
 public class YouTubeScriptInjectorTabFeature {
-    private static final String TAG = "YouTubeScriptInjector";
+    private static final String TAG = "YouTubeTabFeature";
 
     public static void setFullscreen(WebContents webContents) {
         YouTubeScriptInjectorTabFeatureJni.get().setFullscreen(webContents);
