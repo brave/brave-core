@@ -49,7 +49,7 @@ def run_mangler(mangler_file, preprocess_file):
 
     # Note: We read from and write to the preprocess file - this way any
     # preprocessing that upstream does will be mangled.
-    subprocess.run(['npx', 'tsx', '--tsconfig', '../../brave/tsconfig.json', '../../brave/build/commands/scripts/lit_mangler.ts', 'mangle', '-m', mangler_file, '-i', preprocess_file, '-o', preprocess_file])
+    subprocess.run(['npx', '--no', 'tsx', '--tsconfig', '../../brave/tsconfig.json', '../../brave/build/commands/scripts/lit_mangler.ts', 'mangle', '-m', mangler_file, '-i', preprocess_file, '-o', preprocess_file])
 
 
 def get_chromium_src_files(in_folder, in_files):
