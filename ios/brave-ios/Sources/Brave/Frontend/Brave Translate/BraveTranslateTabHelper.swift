@@ -24,6 +24,7 @@ class BraveTranslateTabHelper: NSObject {
   private weak var tab: Tab?
   private weak var delegate: BraveTranslateScriptHandlerDelegate?
   private let recognizer = NLLanguageRecognizer()
+  private static var requestCache = [URL: (data: Data, response: HTTPURLResponse)]()
 
   private var url: URL?
   private var isTranslationReady = false
@@ -190,11 +191,24 @@ class BraveTranslateTabHelper: NSObject {
       throw BraveTranslateError.otherError
     }
 
+    // Check request cache for CSS and JS requests
+    if request.method == "GET",
+      request.url.lastPathComponent == "translateelement.css"
+        || request.url.lastPathComponent == "main.js"
+    {
+      if let (data, response) = Self.requestCache[request.url], response.statusCode == 200 {
+        return (data, response)
+      }
+    }
+
     let (data, response) = try await translationSession.translate(request)
 
     guard let response = response as? HTTPURLResponse else {
       throw BraveTranslateError.invalidTranslationResponse
     }
+
+    // Cache CSS and JS requests
+    Self.requestCache[request.url] = (data, response)
 
     if isTranslationRequest && canShowToast {
       canShowToast = false
