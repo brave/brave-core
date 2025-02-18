@@ -10,6 +10,7 @@ source_set("unit_tests") {
   deps = [
     "//brave/components/search_engines",
     "//components/search_engines",
+    "//components/search_engines:test_support",
     "//testing/gtest",
   ]
 }

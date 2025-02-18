@@ -74,11 +74,13 @@ class PageMetricsUnitTest : public testing::Test {
 
     auto google_prepopulate_data =
         TemplateURLPrepopulateData::GetPrepopulatedEngine(
-            profile_->GetPrefs(), search_engine_choice_service_,
+            *profile_->GetPrefs(),
+            search_engine_choice_service_->GetCountryId(),
             TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_GOOGLE);
     auto brave_prepopulate_data =
         TemplateURLPrepopulateData::GetPrepopulatedEngine(
-            profile_->GetPrefs(), search_engine_choice_service_,
+            *profile_->GetPrefs(),
+            search_engine_choice_service_->GetCountryId(),
             TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE);
     google_template_url_ =
         std::make_unique<TemplateURL>(*google_prepopulate_data);

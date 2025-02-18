@@ -48,7 +48,7 @@ void BraveSearchEnginesHandler::RegisterMessages() {
 void BraveSearchEnginesHandler::OnModelChanged() {
   SearchEnginesHandler::OnModelChanged();
 
-  brave::UpdateDefaultPrivateSearchProviderData(profile_);
+  brave::UpdateDefaultPrivateSearchProviderData(*profile_);
 
   // Sync normal profile's search provider list with private profile
   // for using same list on both.
