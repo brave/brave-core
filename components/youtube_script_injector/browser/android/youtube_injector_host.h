@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_INJECTOR_HOST_H_
-#define BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_INJECTOR_HOST_H_
+#ifndef BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_ANDROID_YOUTUBE_INJECTOR_HOST_H_
+#define BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_ANDROID_YOUTUBE_INJECTOR_HOST_H_
 
 #include "brave/components/youtube_script_injector/common/youtube_injector.mojom.h"
 #include "url/gurl.h"
 
 namespace youtube_script_injector {
 
-class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
+class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_ANDROID)
     YouTubeInjectorHost final
     : public youtube_script_injector::mojom::YouTubeInjector {
  public:
@@ -30,4 +30,4 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
 
 }  // namespace youtube_script_injector
 
-#endif  // BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_YOUTUBE_INJECTOR_HOST_H_
+#endif  // BRAVE_COMPONENTS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_ANDROID_YOUTUBE_INJECTOR_HOST_H_
