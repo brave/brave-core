@@ -25,11 +25,8 @@ std::string AppendBraveServiceKeyHeaderString() {
 
 BraveSyncAuthManager::BraveSyncAuthManager(
     signin::IdentityManager* identity_manager,
-    const AccountStateChangedCallback& account_state_changed,
-    const CredentialsChangedCallback& credentials_changed)
-    : SyncAuthManager(identity_manager,
-                      account_state_changed,
-                      credentials_changed) {}
+    SyncAuthManager::Delegate* delegate)
+    : SyncAuthManager(identity_manager, delegate) {}
 
 BraveSyncAuthManager::~BraveSyncAuthManager() = default;
 
@@ -129,7 +126,7 @@ void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
   }
   access_token_ = GenerateAccessToken(timestamp);
   if (registered_for_auth_notifications_) {
-    credentials_changed_callback_.Run();
+    delegate_->SyncAuthCredentialsChanged();
   }
 }
 
