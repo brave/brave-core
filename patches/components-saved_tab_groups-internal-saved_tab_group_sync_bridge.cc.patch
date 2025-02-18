@@ -1,0 +1,12 @@
+diff --git a/components/saved_tab_groups/internal/saved_tab_group_sync_bridge.cc b/components/saved_tab_groups/internal/saved_tab_group_sync_bridge.cc
+index f51147989dc17b8602cd0d6cbd300914503c31a0..05a6dc962c0f6f7f6e2cbb4eb1df98176f6d2632 100644
+--- a/components/saved_tab_groups/internal/saved_tab_group_sync_bridge.cc
++++ b/components/saved_tab_groups/internal/saved_tab_group_sync_bridge.cc
+@@ -320,6 +320,7 @@ void SavedTabGroupSyncBridge::ApplyDisableSyncChanges(
+     groups_to_close_locally.emplace_back(group->saved_guid());
+   }
+ 
++  BRAVE_APPLY_DISABLE_SYNC_CHANGES_CLEAR_GROUPS
+   for (const base::Uuid& group_id : groups_to_close_locally) {
+     // This group should be closed locally. Remove it from model and storage and
+     // close all the tabs.
