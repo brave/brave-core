@@ -1510,6 +1510,7 @@
 -CommerceInternalsBrowserTest.InternalsPageOpen
 
 # Flaky upstream.
+-All/MediaEngagementAutoplayBrowserTest.*
 -All/PDFExtensionScrollTest.WithArrowLeftRightScrollToPage/*
 -All/PDFExtensionScrollTest.WithPageDownUp/*
 -All/PDFExtensionScrollTest.WithSpace/*
