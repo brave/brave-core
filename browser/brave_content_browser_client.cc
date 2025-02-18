@@ -179,7 +179,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
-#include "brave/components/youtube_script_injector/browser/content/youtube_injector_host.h"  // nogncheck
+#include "brave/components/youtube_script_injector/browser/android/youtube_injector_host.h"  // nogncheck
 #include "brave/components/youtube_script_injector/common/features.h"  // nogncheck
 #include "brave/components/youtube_script_injector/common/youtube_injector.mojom.h"  // nogncheck
 #endif

@@ -420,7 +420,7 @@ if (is_android) {
     "//brave/browser/ui/webui/new_tab_takeover/android:new_tab_takeover",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
-    "//brave/components/youtube_script_injector/browser/content",
+    "//brave/components/youtube_script_injector/browser/android",
     "//brave/components/youtube_script_injector/browser/core",
     "//brave/components/youtube_script_injector/common",
     "//brave/components/youtube_script_injector/common:mojom",

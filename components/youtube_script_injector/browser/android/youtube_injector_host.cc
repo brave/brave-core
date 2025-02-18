@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/youtube_script_injector/browser/content/youtube_injector_host.h"
+#include "brave/components/youtube_script_injector/browser/android/youtube_injector_host.h"
 
 #include "brave/browser/youtube_script_injector/youtube_script_injector_tab_feature.h"
 #include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
