@@ -42,23 +42,24 @@ constexpr char kAccountEmail[] =
     "502042270C8145247ED70A18F87022A3 "
     "9886900AB36F2FFF655635DBE516765E @brave.com";
 
+class MockDelegate : public SyncAuthManager::Delegate {
+ public:
+  MockDelegate() = default;
+  ~MockDelegate() override = default;
+
+  MOCK_METHOD(void, SyncAuthAccountStateChanged, (), (override));
+  MOCK_METHOD(void, SyncAuthCredentialsChanged, (), (override));
+};
+
 class BraveSyncAuthManagerTest : public testing::Test {
  protected:
-  using AccountStateChangedCallback =
-      SyncAuthManager::AccountStateChangedCallback;
-  using CredentialsChangedCallback =
-      SyncAuthManager::CredentialsChangedCallback;
-
   BraveSyncAuthManagerTest() : identity_env_(&test_url_loader_factory_) {}
 
   ~BraveSyncAuthManagerTest() override = default;
 
-  std::unique_ptr<BraveSyncAuthManager> CreateAuthManager(
-      const AccountStateChangedCallback& account_state_changed,
-      const CredentialsChangedCallback& credentials_changed) {
+  std::unique_ptr<BraveSyncAuthManager> CreateAuthManager() {
     return std::make_unique<BraveSyncAuthManager>(
-        identity_env_.identity_manager(), account_state_changed,
-        credentials_changed);
+        identity_env_.identity_manager(), &delegate_);
   }
 
   void SetNetworkTime() {
@@ -66,19 +67,19 @@ class BraveSyncAuthManagerTest : public testing::Test {
         base::Time::FromMillisecondsSinceUnixEpoch(1234567));
   }
 
+  MockDelegate& delegate() { return delegate_; }
+
  private:
   base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   signin::IdentityTestEnvironment identity_env_;
+  testing::NiceMock<MockDelegate> delegate_;
 };
 
 TEST_F(BraveSyncAuthManagerTest, IgnoresEventsIfNotRegistered) {
-  base::MockCallback<AccountStateChangedCallback> account_state_changed;
-  base::MockCallback<CredentialsChangedCallback> credentials_changed;
-  EXPECT_CALL(account_state_changed, Run()).Times(0);
-  EXPECT_CALL(credentials_changed, Run()).Times(0);
-  auto auth_manager =
-      CreateAuthManager(account_state_changed.Get(), credentials_changed.Get());
+  EXPECT_CALL(delegate(), SyncAuthAccountStateChanged).Times(0);
+  EXPECT_CALL(delegate(), SyncAuthCredentialsChanged).Times(0);
+  auto auth_manager = CreateAuthManager();
 
   // Fire some auth events. We haven't called RegisterForAuthNotifications, so
   // none of this should result in any callback calls.
@@ -90,12 +91,9 @@ TEST_F(BraveSyncAuthManagerTest, IgnoresEventsIfNotRegistered) {
 }
 
 TEST_F(BraveSyncAuthManagerTest, GetAccessToken) {
-  base::MockCallback<AccountStateChangedCallback> account_state_changed;
-  base::MockCallback<CredentialsChangedCallback> credentials_changed;
-  EXPECT_CALL(account_state_changed, Run()).Times(1);
-  EXPECT_CALL(credentials_changed, Run()).Times(1);
-  auto auth_manager =
-      CreateAuthManager(account_state_changed.Get(), credentials_changed.Get());
+  EXPECT_CALL(delegate(), SyncAuthAccountStateChanged).Times(1);
+  EXPECT_CALL(delegate(), SyncAuthCredentialsChanged).Times(1);
+  auto auth_manager = CreateAuthManager();
 
   SetNetworkTime();
   auth_manager->RegisterForAuthNotifications();
@@ -116,12 +114,9 @@ TEST_F(BraveSyncAuthManagerTest, GetAccessToken) {
 }
 
 TEST_F(BraveSyncAuthManagerTest, Reset) {
-  base::MockCallback<AccountStateChangedCallback> account_state_changed;
-  base::MockCallback<CredentialsChangedCallback> credentials_changed;
-  EXPECT_CALL(account_state_changed, Run()).Times(2);
-  EXPECT_CALL(credentials_changed, Run()).Times(1);
-  auto auth_manager =
-      CreateAuthManager(account_state_changed.Get(), credentials_changed.Get());
+  EXPECT_CALL(delegate(), SyncAuthAccountStateChanged).Times(2);
+  EXPECT_CALL(delegate(), SyncAuthCredentialsChanged).Times(1);
+  auto auth_manager = CreateAuthManager();
 
   SetNetworkTime();
   auth_manager->RegisterForAuthNotifications();
@@ -136,12 +131,9 @@ TEST_F(BraveSyncAuthManagerTest, Reset) {
 }
 
 TEST_F(BraveSyncAuthManagerTest, MalformedSyncCode) {
-  base::MockCallback<AccountStateChangedCallback> account_state_changed;
-  base::MockCallback<CredentialsChangedCallback> credentials_changed;
-  EXPECT_CALL(account_state_changed, Run()).Times(0);
-  EXPECT_CALL(credentials_changed, Run()).Times(0);
-  auto auth_manager =
-      CreateAuthManager(account_state_changed.Get(), credentials_changed.Get());
+  EXPECT_CALL(delegate(), SyncAuthAccountStateChanged).Times(0);
+  EXPECT_CALL(delegate(), SyncAuthCredentialsChanged).Times(0);
+  auto auth_manager = CreateAuthManager();
 
   SetNetworkTime();
   auth_manager->RegisterForAuthNotifications();
