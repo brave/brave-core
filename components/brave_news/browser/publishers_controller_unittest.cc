@@ -170,9 +170,9 @@ TEST_F(BraveNewsPublishersControllerTest, CanReceiveFeeds) {
                                        net::HTTP_OK);
   auto result = GetPublishers();
   ASSERT_EQ(3u, result.size());
-  EXPECT_TRUE(base::Contains(result, "111"));
-  EXPECT_TRUE(base::Contains(result, "333"));
-  EXPECT_TRUE(base::Contains(result, "555"));
+  EXPECT_TRUE(result.contains("111"));
+  EXPECT_TRUE(result.contains("333"));
+  EXPECT_TRUE(result.contains("555"));
 }
 
 TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherBySiteUrl) {

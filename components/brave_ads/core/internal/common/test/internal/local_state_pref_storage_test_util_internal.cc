@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_storage_test_util_internal.h"
 
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/current_test_util_internal.h"
@@ -24,7 +23,7 @@ base::flat_map</*uuid=*/std::string, PrefValueInfo>& LocalStatePrefStorage() {
 
 bool FindLocalStatePref(const std::string& path) {
   const std::string uuid = GetUuidForCurrentTestAndValue(path);
-  return base::Contains(LocalStatePrefStorage(), uuid);
+  return LocalStatePrefStorage().contains(uuid);
 }
 
 PrefValueInfo& LocalStatePref(const std::string& path) {
@@ -33,8 +32,7 @@ PrefValueInfo& LocalStatePref(const std::string& path) {
 }
 
 bool HasLocalStatePref(const std::string& path) {
-  return base::Contains(LocalStatePrefStorage(),
-                        GetUuidForCurrentTestAndValue(path));
+  return LocalStatePrefStorage().contains(GetUuidForCurrentTestAndValue(path));
 }
 
 }  // namespace brave_ads::test
