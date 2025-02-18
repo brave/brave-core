@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 87dc2b6740a44cbd3ac936a1e0d14c1ce73208ec..21f253bda4e339c7b61e64f0e1f997383623ebf9 100644
+index 60e844376f968681fe5ef23c339361b0f95d1f3e..397d8259f1a33987a22dd5c78af0c2a47d4c0919 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -12,7 +12,7 @@ index 87dc2b6740a44cbd3ac936a1e0d14c1ce73208ec..21f253bda4e339c7b61e64f0e1f99738
    "chrome/app/google_chrome_strings.grd": {
      "messages": [800],
    },
-@@ -385,7 +388,7 @@
+@@ -403,7 +406,7 @@
      "includes": [3900],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/extensions/resources.grd": {
@@ -21,7 +21,7 @@ index 87dc2b6740a44cbd3ac936a1e0d14c1ce73208ec..21f253bda4e339c7b61e64f0e1f99738
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/family_link_user_internals/resources.grd": {
-@@ -553,7 +556,7 @@
+@@ -571,7 +574,7 @@
      "includes": [4720],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings/resources.grd": {
@@ -30,7 +30,7 @@ index 87dc2b6740a44cbd3ac936a1e0d14c1ce73208ec..21f253bda4e339c7b61e64f0e1f99738
      "includes": [4740],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -926,6 +929,9 @@
+@@ -945,6 +948,9 @@
      # Big alignment at start of section.
      "messages": [7020],
    },
@@ -40,3 +40,12 @@ index 87dc2b6740a44cbd3ac936a1e0d14c1ce73208ec..21f253bda4e339c7b61e64f0e1f99738
    "components/components_google_chrome_strings.grd": {
      "messages": [7020],
    },
+@@ -1436,7 +1442,7 @@
+     "includes": [9980],
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
+-    "META": {"sizes": {"includes": [1100]}},
++    "META": {"sizes": {"includes": [1104]}},
+     "includes": [10000],
+   },
+   "weblayer/weblayer_resources.grd": {

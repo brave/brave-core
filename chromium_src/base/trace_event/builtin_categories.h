@@ -15,11 +15,12 @@
 //
 // Note: There is no #undef for this macros because it is used in exported
 // macros of the chromium builtin_categories.h.
-#define BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES(X) \
-  X("brave")                                            \
-  X("brave.adblock")                                    \
-  X("brave.ads")
+#define BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES                \
+  perfetto::Category("brave"), perfetto::Category("brave.adblock"), \
+      perfetto::Category("brave.ads"),
 
 #include "src/base/trace_event/builtin_categories.h"  // IWYU pragma: export
+
+#undef BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES
 
 #endif  // BRAVE_CHROMIUM_SRC_BASE_TRACE_EVENT_BUILTIN_CATEGORIES_H_

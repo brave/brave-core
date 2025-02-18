@@ -15,6 +15,7 @@
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

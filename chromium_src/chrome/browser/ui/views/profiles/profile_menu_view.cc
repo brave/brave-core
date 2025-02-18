@@ -6,10 +6,6 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "ui/gfx/vector_icon_types.h"
 
-namespace {
-constexpr gfx::VectorIcon kGuestMenuEmptyArtIcon;
-}  // namespace
-
-#define kGuestMenuArtIcon kGuestMenuEmptyArtIcon
+#define kGuestMenuArtIcon gfx::VectorIcon::EmptyIcon()
 #include "src/chrome/browser/ui/views/profiles/profile_menu_view.cc"
 #undef kGuestMenuArtIcon

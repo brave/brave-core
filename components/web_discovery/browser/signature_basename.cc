@@ -5,6 +5,7 @@
 
 #include "brave/components/web_discovery/browser/signature_basename.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
@@ -127,8 +128,8 @@ std::optional<int> GetBasenameCount(PrefService* profile_prefs,
 
   while (true) {
     auto count = base::RandInt(0, action_config.limit - 1);
-    if (base::ranges::find(used_counts_list->begin(), used_counts_list->end(),
-                           count) != used_counts_list->end()) {
+    if (std::ranges::find(*used_counts_list, count, &base::Value::GetInt) !=
+        used_counts_list->end()) {
       continue;
     }
     return count;

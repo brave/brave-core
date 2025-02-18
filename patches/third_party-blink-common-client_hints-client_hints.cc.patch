@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index 835cf4c6aa282026fa9f94beb906094177843792..a96e7aaf56904e1dc670a4cb4fd8b8de54d15199 100644
+index dbe267eed12d5c91b2eee3d0e129363963f05f5f..10b61a806aea339702f301d5ceae5c088b2e43a6 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
-@@ -105,6 +105,7 @@ const PolicyFeatureToClientHintMap& GetPolicyFeatureToClientHintMap() {
+@@ -107,6 +107,7 @@ const PolicyFeatureToClientHintMap& GetPolicyFeatureToClientHintMap() {
  }
  
  bool IsClientHintSentByDefault(network::mojom::WebClientHintsType type) {

@@ -311,7 +311,8 @@ const gfx::VectorIcon& BraveVPNButton::GetBadgeIcon() {
   return is_connected_ ? kVpnIndicatorOnIcon : kVpnIndicatorOffIcon;
 }
 
-std::u16string BraveVPNButton::GetTooltipText(const gfx::Point& p) const {
+std::u16string BraveVPNButton::GetRenderedTooltipText(
+    const gfx::Point& p) const {
   if (!IsPurchased()) {
     return l10n_util::GetStringUTF16(IDS_BRAVE_VPN);
   }

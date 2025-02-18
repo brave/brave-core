@@ -45,7 +45,7 @@ class BraveBrowsingDataRemoverBrowserTest : public InProcessBrowserTest {
   void KeepSyncGuidAfterClear(uint64_t remove_mask) {
     // Setup sync prefs including cache_id
     signin::GaiaIdHash gaia_id_hash =
-        signin::GaiaIdHash::FromGaiaId("user_gaia_id");
+        signin::GaiaIdHash::FromGaiaId(GaiaId("user_gaia_id"));
     syncer::SyncTransportDataPrefs sync_transport_data_prefs(
         browser()->profile()->GetPrefs(), gaia_id_hash);
     sync_transport_data_prefs.SetCacheGuid(GenerateCacheGUID());

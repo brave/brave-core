@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #define GetSearchProvidersUsingKeywordResult \
   GetSearchProvidersUsingKeywordResult_ChromiumImpl
 #include "src/components/search_engines/util.cc"
 #undef GetSearchProvidersUsingKeywordResult
 
 #include "base/containers/adapters.h"
-#include "base/ranges/algorithm.h"
 
 void GetSearchProvidersUsingKeywordResult(
     const WDKeywordsResult& result,

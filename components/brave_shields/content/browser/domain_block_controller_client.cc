@@ -55,7 +55,7 @@ void DomainBlockControllerClient::GoBack() {
 
 void DomainBlockControllerClient::Proceed() {
   DomainBlockTabStorage* tab_storage =
-      DomainBlockTabStorage::GetOrCreate(web_contents_);
+      DomainBlockTabStorage::GetOrCreate(web_contents());
   tab_storage->SetIsProceeding(true);
   if (dont_warn_again_) {
     ad_block_custom_filters_provider_->CreateSiteExemption(request_url_.host());
@@ -72,7 +72,7 @@ void DomainBlockControllerClient::Proceed() {
 }
 
 void DomainBlockControllerClient::ReloadPage() {
-  web_contents_->GetController().Reload(content::ReloadType::NORMAL, false);
+  web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
 }
 
 void DomainBlockControllerClient::On1PESState(bool is_1pes_enabled) {

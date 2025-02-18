@@ -156,54 +156,57 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
 
                 Map<AutofillId, String> autofillDataMap = new HashMap<>();
                 addAutofillDataMap(
-                        fields, View.AUTOFILL_HINT_NAME, profile.getFullName(), autofillDataMap);
+                        fields,
+                        View.AUTOFILL_HINT_NAME,
+                        profile.getInfo(FieldType.NAME_FULL),
+                        autofillDataMap);
                 addAutofillDataMap(
                         fields,
                         View.AUTOFILL_HINT_EMAIL_ADDRESS,
-                        profile.getEmailAddress(),
+                        profile.getInfo(FieldType.EMAIL_ADDRESS),
                         autofillDataMap);
                 addAutofillDataMap(
                         fields,
                         View.AUTOFILL_HINT_PHONE,
-                        profile.getPhoneNumber().replaceAll("\\s", ""),
+                        profile.getInfo(FieldType.PHONE_HOME_WHOLE_NUMBER).replaceAll("\\s", ""),
                         autofillDataMap);
                 addAutofillDataMap(
                         fields,
                         View.AUTOFILL_HINT_POSTAL_ADDRESS,
-                        profile.getStreetAddress(),
+                        profile.getInfo(FieldType.ADDRESS_HOME_STREET_ADDRESS),
                         autofillDataMap);
                 addAutofillDataMap(
                         fields,
                         View.AUTOFILL_HINT_POSTAL_CODE,
-                        profile.getPostalCode(),
+                        profile.getInfo(FieldType.ADDRESS_HOME_ZIP),
                         autofillDataMap);
                 addAutofillDataMap(
                         fields,
                         context.getResources().getString(R.string.city),
-                        profile.getLocality(),
+                        profile.getInfo(FieldType.ADDRESS_HOME_CITY),
                         autofillDataMap);
                 addAutofillDataMap(
                         fields,
                         context.getResources().getString(R.string.state),
-                        profile.getRegion(),
+                        profile.getInfo(FieldType.ADDRESS_HOME_STATE),
                         autofillDataMap);
                 addAutofillDataMap(
                         fields,
                         context.getResources().getString(R.string.company),
-                        profile.getCompanyName(),
+                        profile.getInfo(FieldType.COMPANY_NAME),
                         autofillDataMap);
                 addAutofillDataMap(
                         fields,
                         context.getResources().getString(R.string.country),
-                        profile.getCountryCode(),
+                        profile.getInfo(FieldType.ADDRESS_HOME_COUNTRY),
                         autofillDataMap);
                 if (autofillDataMap != null && !autofillDataMap.isEmpty()) {
                     Dataset.Builder dataset = new Dataset.Builder();
                     for (Map.Entry<AutofillId, String> autofillData : autofillDataMap.entrySet()) {
                         String title = autofillData.getValue();
-                        String subtitle = profile.getStreetAddress();
+                        String subtitle = profile.getInfo(FieldType.ADDRESS_HOME_STREET_ADDRESS);
                         if (title.equals(subtitle)) {
-                            subtitle = profile.getFullName();
+                            subtitle = profile.getInfo(FieldType.NAME_FULL);
                         }
                         RemoteViews presentation =
                                 new RemoteViews(mPackageName, R.layout.brave_autofill_service_item);

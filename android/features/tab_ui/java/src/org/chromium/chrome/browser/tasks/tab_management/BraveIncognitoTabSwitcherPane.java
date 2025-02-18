@@ -15,6 +15,7 @@ import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.hub.ResourceButtonData;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.tabmodel.TabGroupModelFilter;
@@ -34,7 +35,8 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
             @Nullable OneshotSupplier<IncognitoReauthController> incognitoReauthControllerSupplier,
             @NonNull DoubleConsumer onToolbarAlphaChange,
             @NonNull UserEducationHelper userEducationHelper,
-            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier) {
+            @NonNull ObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            @NonNull ObservableSupplier<CompositorViewHolder> compositorViewHolderSupplier) {
         super(
                 context,
                 factory,
@@ -43,7 +45,8 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
                 incognitoReauthControllerSupplier,
                 onToolbarAlphaChange,
                 userEducationHelper,
-                edgeToEdgeSupplier);
+                edgeToEdgeSupplier,
+                compositorViewHolderSupplier);
 
         ResourceButtonData newReferenceButtonData =
                 new ResourceButtonData(

@@ -245,7 +245,7 @@ void P3AService::OnP3AEnabledChanged() {
 
 void P3AService::OnHistogramChanged(const char* histogram_name,
                                     uint64_t name_hash,
-                                    base::HistogramBase::Sample sample) {
+                                    base::HistogramBase::Sample32 sample) {
   DCHECK(histogram_name != nullptr);
 
   std::unique_ptr<base::HistogramSamples> samples =
@@ -295,7 +295,7 @@ void P3AService::OnHistogramChanged(const char* histogram_name,
 }
 
 void P3AService::OnHistogramChangedOnUI(const char* histogram_name,
-                                        base::HistogramBase::Sample sample,
+                                        base::HistogramBase::Sample32 sample,
                                         size_t bucket) {
   VLOG(2) << "P3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << sample << " bucket = " << bucket;
