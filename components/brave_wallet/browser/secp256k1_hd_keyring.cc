@@ -16,13 +16,6 @@ Secp256k1HDKeyring::Secp256k1HDKeyring() = default;
 
 Secp256k1HDKeyring::~Secp256k1HDKeyring() = default;
 
-std::string Secp256k1HDKeyring::GetDiscoveryAddress(size_t index) const {
-  if (auto key = DeriveAccount(index)) {
-    return GetAddressInternal(*key);
-  }
-  return std::string();
-}
-
 std::vector<std::string> Secp256k1HDKeyring::GetHDAccountsForTesting() const {
   std::vector<std::string> addresses;
   for (auto& acc : accounts_) {
@@ -31,61 +24,61 @@ std::vector<std::string> Secp256k1HDKeyring::GetHDAccountsForTesting() const {
   return addresses;
 }
 
-std::vector<std::string> Secp256k1HDKeyring::GetImportedAccountsForTesting()
-    const {
-  std::vector<std::string> addresses;
-  for (auto& acc : imported_accounts_) {
-    addresses.push_back(GetAddressInternal(*acc.second));
-  }
-  return addresses;
-}
-
 bool Secp256k1HDKeyring::RemoveImportedAccount(const std::string& address) {
   return imported_accounts_.erase(address) != 0;
 }
 
-std::optional<AddedAccountInfo> Secp256k1HDKeyring::AddNewHDAccount() {
+std::optional<std::string> Secp256k1HDKeyring::AddNewHDAccount(uint32_t index) {
   if (!accounts_root_) {
     return std::nullopt;
   }
 
-  auto new_acc_index = static_cast<uint32_t>(accounts_.size());
-  auto new_account = DeriveAccount(new_acc_index);
+  if (accounts_.size() != index) {
+    return std::nullopt;
+  }
+
+  auto new_account = DeriveAccount(index);
   if (!new_account) {
     return std::nullopt;
   }
-  auto& added_account = accounts_.emplace_back(std::move(new_account));
-  return AddedAccountInfo{new_acc_index, GetAddressInternal(*added_account)};
+
+  auto address = GetAddressInternal(*new_account);
+  accounts_.push_back(std::move(new_account));
+
+  return address;
 }
 
-void Secp256k1HDKeyring::RemoveLastHDAccount() {
-  CHECK(!accounts_.empty());
+bool Secp256k1HDKeyring::RemoveHDAccount(uint32_t index) {
+  if (accounts_.size() - 1 != index) {
+    return false;
+  }
   accounts_.pop_back();
+  return true;
 }
 
-std::string Secp256k1HDKeyring::ImportAccount(
+std::optional<std::string> Secp256k1HDKeyring::ImportAccount(
     base::span<const uint8_t> private_key) {
   auto private_key_fixed_size =
       private_key.to_fixed_extent<kSecp256k1PrivateKeySize>();
   if (!private_key_fixed_size) {
-    return std::string();
+    return std::nullopt;
   }
   std::unique_ptr<HDKey> hd_key =
       HDKey::GenerateFromPrivateKey(*private_key_fixed_size);
   if (!hd_key) {
-    return std::string();
+    return std::nullopt;
   }
 
   const std::string address = GetAddressInternal(*hd_key);
 
   if (base::Contains(imported_accounts_, address)) {
-    return std::string();
+    return std::nullopt;
   }
 
   if (std::ranges::any_of(accounts_, [&](auto& acc) {
         return GetAddressInternal(*acc) == address;
       })) {
-    return std::string();
+    return std::nullopt;
   }
 
   imported_accounts_[address] = std::move(hd_key);

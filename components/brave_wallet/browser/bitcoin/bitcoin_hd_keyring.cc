@@ -83,34 +83,6 @@ std::optional<std::vector<uint8_t>> BitcoinHDKeyring::SignMessage(
   return hd_key->SignDer(message);
 }
 
-std::string BitcoinHDKeyring::ImportAccount(
-    base::span<const uint8_t> private_key) {
-  NOTIMPLEMENTED();
-  return "";
-}
-
-bool BitcoinHDKeyring::RemoveImportedAccount(const std::string& address) {
-  NOTIMPLEMENTED();
-  return false;
-}
-
-std::string BitcoinHDKeyring::GetDiscoveryAddress(size_t index) const {
-  NOTIMPLEMENTED();
-  return "";
-}
-
-std::vector<std::string> BitcoinHDKeyring::GetImportedAccountsForTesting()
-    const {
-  NOTIMPLEMENTED();
-  return {};
-}
-
-std::string BitcoinHDKeyring::EncodePrivateKeyForExport(
-    const std::string& address) {
-  NOTIMPLEMENTED();
-  return "";
-}
-
 std::string BitcoinHDKeyring::GetAddressInternal(const HDKey& hd_key) const {
   return PubkeyToSegwitAddress(hd_key.GetPublicKeyBytes(), IsTestnet());
 }

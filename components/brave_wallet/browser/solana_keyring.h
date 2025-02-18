@@ -13,28 +13,29 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
-class SolanaKeyring : public HDKeyring {
+class SolanaKeyring {
  public:
   explicit SolanaKeyring(base::span<const uint8_t> seed);
-  ~SolanaKeyring() override;
+  ~SolanaKeyring();
   SolanaKeyring(const SolanaKeyring&) = delete;
   SolanaKeyring& operator=(const SolanaKeyring&) = delete;
 
   static std::unique_ptr<HDKeyEd25519> ConstructRootHDKey(
       base::span<const uint8_t> seed);
 
-  std::optional<AddedAccountInfo> AddNewHDAccount() override;
-  void RemoveLastHDAccount() override;
-  std::string ImportAccount(base::span<const uint8_t> keypair) override;
-  bool RemoveImportedAccount(const std::string& address) override;
+  std::optional<std::string> AddNewHDAccount(uint32_t index);
+  bool RemoveHDAccount(uint32_t index);
 
-  std::string EncodePrivateKeyForExport(const std::string& address) override;
+  std::optional<std::string> ImportAccount(base::span<const uint8_t> keypair);
+  bool RemoveImportedAccount(const std::string& address);
+
+  std::optional<std::string> EncodePrivateKeyForExport(
+      const std::string& address);
 
   std::vector<uint8_t> SignMessage(const std::string& address,
                                    base::span<const uint8_t> message);
@@ -56,10 +57,10 @@ class SolanaKeyring : public HDKeyring {
   static std::optional<std::string> GetAssociatedMetadataAccount(
       const std::string& token_mint_address);
 
-  std::string GetDiscoveryAddress(size_t index) const override;
+  std::optional<std::string> GetDiscoveryAddress(size_t index) const;
 
-  std::vector<std::string> GetHDAccountsForTesting() const override;
-  std::vector<std::string> GetImportedAccountsForTesting() const override;
+  std::vector<std::string> GetHDAccountsForTesting() const;
+  std::vector<std::string> GetImportedAccountsForTesting() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaKeyringUnitTest, ConstructRootHDKey);

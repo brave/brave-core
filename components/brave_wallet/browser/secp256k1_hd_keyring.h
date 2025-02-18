@@ -13,28 +13,26 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/span.h"
 #include "base/gtest_prod_util.h"
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
 
 // Base class for ECDSA over the Secp256k1 types of HD keyrings.
-class Secp256k1HDKeyring : public HDKeyring {
+class Secp256k1HDKeyring {
  public:
   Secp256k1HDKeyring();
-  ~Secp256k1HDKeyring() override;
+  virtual ~Secp256k1HDKeyring();
 
-  std::optional<AddedAccountInfo> AddNewHDAccount() override;
-  void RemoveLastHDAccount() override;
+  std::optional<std::string> AddNewHDAccount(uint32_t index);
+  bool RemoveHDAccount(uint32_t index);
 
-  std::string ImportAccount(base::span<const uint8_t> private_key) override;
-  bool RemoveImportedAccount(const std::string& address) override;
+  std::optional<std::string> ImportAccount(
+      base::span<const uint8_t> private_key);
+  bool RemoveImportedAccount(const std::string& address);
 
-  std::string GetDiscoveryAddress(size_t index) const override;
-
-  std::vector<std::string> GetHDAccountsForTesting() const override;
-  std::vector<std::string> GetImportedAccountsForTesting() const override;
+  std::vector<std::string> GetHDAccountsForTesting() const;
+  std::vector<std::string> GetImportedAccountsForTesting() const;
 
  protected:
   FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, SignMessage);

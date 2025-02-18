@@ -56,45 +56,55 @@ std::unique_ptr<HDKeyEd25519> SolanaKeyring::ConstructRootHDKey(
   return result;
 }
 
-std::optional<AddedAccountInfo> SolanaKeyring::AddNewHDAccount() {
+std::optional<std::string> SolanaKeyring::AddNewHDAccount(uint32_t index) {
   if (!root_) {
     return std::nullopt;
   }
 
-  auto new_acc_index = static_cast<uint32_t>(accounts_.size());
-  auto new_account = DeriveAccount(new_acc_index);
+  if (accounts_.size() != index) {
+    return std::nullopt;
+  }
+
+  auto new_account = DeriveAccount(index);
   if (!new_account) {
     return std::nullopt;
   }
-  auto& added_account = accounts_.emplace_back(std::move(new_account));
-  return AddedAccountInfo{new_acc_index, GetAddressInternal(*added_account)};
+
+  auto address = GetAddressInternal(*new_account);
+  accounts_.push_back(std::move(new_account));
+
+  return address;
 }
 
-void SolanaKeyring::RemoveLastHDAccount() {
-  CHECK(!accounts_.empty());
+bool SolanaKeyring::RemoveHDAccount(uint32_t index) {
+  if (accounts_.size() - 1 != index) {
+    return false;
+  }
   accounts_.pop_back();
+  return true;
 }
 
-std::string SolanaKeyring::ImportAccount(base::span<const uint8_t> keypair) {
+std::optional<std::string> SolanaKeyring::ImportAccount(
+    base::span<const uint8_t> keypair) {
   // extract private key from keypair
   std::vector<uint8_t> private_key = std::vector<uint8_t>(
       keypair.begin(), keypair.begin() + kSolanaPrikeySize);
   std::unique_ptr<HDKeyEd25519> hd_key =
       HDKeyEd25519::GenerateFromPrivateKey(private_key);
   if (!hd_key) {
-    return std::string();
+    return std::nullopt;
   }
 
   const std::string address = GetAddressInternal(*hd_key);
 
   if (base::Contains(imported_accounts_, address)) {
-    return std::string();
+    return std::nullopt;
   }
 
   if (std::ranges::any_of(accounts_, [&](auto& acc) {
         return GetAddressInternal(*acc) == address;
       })) {
-    return std::string();
+    return std::nullopt;
   }
 
   imported_accounts_[address] = std::move(hd_key);
@@ -105,11 +115,11 @@ bool SolanaKeyring::RemoveImportedAccount(const std::string& address) {
   return imported_accounts_.erase(address) != 0;
 }
 
-std::string SolanaKeyring::EncodePrivateKeyForExport(
+std::optional<std::string> SolanaKeyring::EncodePrivateKeyForExport(
     const std::string& address) {
   HDKeyEd25519* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
-    return std::string();
+    return std::nullopt;
   }
 
   return hd_key->GetBase58EncodedKeypair();
@@ -143,11 +153,12 @@ std::vector<std::string> SolanaKeyring::GetImportedAccountsForTesting() const {
   return addresses;
 }
 
-std::string SolanaKeyring::GetDiscoveryAddress(size_t index) const {
+std::optional<std::string> SolanaKeyring::GetDiscoveryAddress(
+    size_t index) const {
   if (auto key = DeriveAccount(index)) {
     return GetAddressInternal(*key);
   }
-  return std::string();
+  return std::nullopt;
 }
 
 std::string SolanaKeyring::GetAddressInternal(

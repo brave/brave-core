@@ -240,12 +240,6 @@ std::optional<std::vector<uint8_t>> ZCashKeyring::SignMessage(
   return hd_key->SignDer(message);
 }
 
-std::string ZCashKeyring::EncodePrivateKeyForExport(
-    const std::string& address) {
-  NOTIMPLEMENTED();
-  return "";
-}
-
 bool ZCashKeyring::IsTestnet() const {
   return IsZCashTestnetKeyring(keyring_id_);
 }

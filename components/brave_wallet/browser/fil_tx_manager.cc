@@ -204,7 +204,7 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
   }
 
   auto signed_tx = keyring_service().SignTransactionByFilecoinKeyring(
-      *meta->from(), meta->tx());
+      meta->from(), *meta->tx());
   if (!signed_tx) {
     std::move(callback).Run(
         false,

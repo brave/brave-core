@@ -189,11 +189,19 @@ EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
       version, nonce, ephemeral_public_key, ciphertext);
 }
 
-std::string EthereumKeyring::EncodePrivateKeyForExport(
+std::optional<std::string> EthereumKeyring::GetDiscoveryAddress(
+    size_t index) const {
+  if (auto key = DeriveAccount(index)) {
+    return GetAddressInternal(*key);
+  }
+  return std::nullopt;
+}
+
+std::optional<std::string> EthereumKeyring::EncodePrivateKeyForExport(
     const std::string& address) {
   HDKey* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key) {
-    return std::string();
+    return std::nullopt;
   }
 
   return base::ToLowerASCII(base::HexEncode(hd_key->GetPrivateKeyBytes()));
@@ -202,6 +210,15 @@ std::string EthereumKeyring::EncodePrivateKeyForExport(
 std::unique_ptr<HDKey> EthereumKeyring::DeriveAccount(uint32_t index) const {
   // m/44'/60'/0'/0/{index}
   return accounts_root_->DeriveChild(DerivationIndex::Normal(index));
+}
+
+std::vector<std::string> EthereumKeyring::GetImportedAccountsForTesting()
+    const {
+  std::vector<std::string> addresses;
+  for (auto& acc : imported_accounts_) {
+    addresses.push_back(GetAddressInternal(*acc.second));
+  }
+  return addresses;
 }
 
 }  // namespace brave_wallet

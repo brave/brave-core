@@ -765,7 +765,7 @@ void BitcoinWalletService::Reset() {
 
 void BitcoinWalletService::GetBalance(mojom::AccountIdPtr account_id,
                                       GetBalanceCallback callback) {
-  CHECK(IsBitcoinAccount(*account_id));
+  CHECK(IsBitcoinAccount(account_id));
 
   auto addresses = keyring_service().GetBitcoinAddresses(account_id);
   if (!addresses) {
@@ -893,7 +893,7 @@ void BitcoinWalletService::UpdateNextUnusedAddressForAccount(
 
 void BitcoinWalletService::GetUtxos(mojom::AccountIdPtr account_id,
                                     GetUtxosCallback callback) {
-  CHECK(IsBitcoinAccount(*account_id));
+  CHECK(IsBitcoinAccount(account_id));
 
   auto addresses = keyring_service().GetBitcoinAddresses(account_id);
   if (!addresses) {
@@ -913,7 +913,7 @@ void BitcoinWalletService::CreateTransaction(
     uint64_t amount,
     bool sending_max_amount,
     CreateTransactionCallback callback) {
-  CHECK(IsBitcoinAccount(*account_id));
+  CHECK(IsBitcoinAccount(account_id));
 
   auto& task = create_transaction_tasks_.emplace_back(
       std::make_unique<CreateTransactionTask>(this, account_id, address_to,
@@ -935,7 +935,7 @@ void BitcoinWalletService::SignAndPostTransaction(
     const mojom::AccountIdPtr& account_id,
     BitcoinTransaction bitcoin_transaction,
     SignAndPostTransactionCallback callback) {
-  CHECK(IsBitcoinAccount(*account_id));
+  CHECK(IsBitcoinAccount(account_id));
 
   if (!SignTransactionInternal(bitcoin_transaction, account_id)) {
     std::move(callback).Run("", std::move(bitcoin_transaction),
@@ -958,7 +958,7 @@ void BitcoinWalletService::PostHwSignedTransaction(
     BitcoinTransaction bitcoin_transaction,
     const mojom::BitcoinSignature& hw_signature,
     PostHwSignedTransactionCallback callback) {
-  CHECK(IsBitcoinAccount(*account_id));
+  CHECK(IsBitcoinAccount(account_id));
 
   if (!ApplyHwSignatureInternal(bitcoin_transaction, hw_signature)) {
     std::move(callback).Run("", std::move(bitcoin_transaction),
@@ -1045,7 +1045,7 @@ void BitcoinWalletService::DiscoverNextUnusedAddress(
     const mojom::AccountIdPtr& account_id,
     bool change,
     DiscoverNextUnusedAddressCallback callback) {
-  CHECK(IsBitcoinAccount(*account_id));
+  CHECK(IsBitcoinAccount(account_id));
 
   auto account_info = keyring_service().GetBitcoinAccountInfo(account_id);
   if (!account_info) {

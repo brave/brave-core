@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { assert } from 'chrome://resources/js/assert.js'
+import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router'
@@ -59,10 +59,11 @@ import {
 } from '../../../../common/hooks/use-safe-selector'
 import {
   useGetVisibleNetworksQuery,
-  useImportAccountFromJsonMutation,
-  useImportAccountMutation,
+  useImportEthAccountFromJsonMutation,
+  useImportEthAccountMutation,
   useImportBtcAccountMutation,
-  useImportFilAccountMutation
+  useImportFilAccountMutation,
+  useImportSolAccountMutation
 } from '../../../../common/slices/api.slice'
 
 interface Params {
@@ -94,10 +95,11 @@ export const ImportAccountModal = () => {
   const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
 
   // mutations
-  const [importAccount] = useImportAccountMutation()
+  const [importEthAccount] = useImportEthAccountMutation()
+  const [importSolAccount] = useImportSolAccountMutation()
   const [importFilAccount] = useImportFilAccountMutation()
   const [importBtcAccount] = useImportBtcAccountMutation()
-  const [importAccountFromJson] = useImportAccountFromJsonMutation()
+  const [importEthAccountFromJson] = useImportEthAccountFromJsonMutation()
 
   // memos
   const createAccountOptions = React.useMemo(() => {
@@ -216,48 +218,46 @@ export const ImportAccountModal = () => {
       return
     }
     if (importOption === 'key') {
-      if (selectedAccountType.coin === BraveWallet.CoinType.FIL) {
-        assert(
-          selectedAccountType.fixedNetwork === BraveWallet.FILECOIN_MAINNET ||
-            selectedAccountType.fixedNetwork === BraveWallet.FILECOIN_TESTNET
-        )
-        try {
+      const fixedNetwork = selectedAccountType.fixedNetwork
+      try {
+        if (selectedAccountType.coin === BraveWallet.CoinType.FIL) {
+          assert(
+            fixedNetwork === BraveWallet.FILECOIN_MAINNET ||
+              fixedNetwork === BraveWallet.FILECOIN_TESTNET
+          )
           await importFilAccount({
             accountName,
             privateKey,
-            network: selectedAccountType.fixedNetwork
+            network: fixedNetwork
           })
-          history.push(WalletRoutes.Accounts)
-        } catch (error) {
-          setHasImportError(true)
-        }
-      } else if (selectedAccountType.coin === BraveWallet.CoinType.BTC) {
-        assert(
-          selectedAccountType.fixedNetwork === BraveWallet.BITCOIN_MAINNET ||
-            selectedAccountType.fixedNetwork === BraveWallet.BITCOIN_TESTNET
-        )
-        try {
+        } else if (selectedAccountType.coin === BraveWallet.CoinType.BTC) {
+          assert(
+            fixedNetwork === BraveWallet.BITCOIN_MAINNET ||
+              fixedNetwork === BraveWallet.BITCOIN_TESTNET
+          )
           await importBtcAccount({
             accountName,
             payload: privateKey,
-            network: selectedAccountType.fixedNetwork
+            network: fixedNetwork
           })
-          history.push(WalletRoutes.Accounts)
-        } catch (error) {
-          setHasImportError(true)
-        }
-      } else {
-        try {
-          await importAccount({
+        } else if (selectedAccountType.coin === BraveWallet.CoinType.ETH) {
+          await importEthAccount({
             accountName,
-            privateKey,
-            coin: selectedAccountType.coin
+            privateKey
           }).unwrap()
-          history.push(WalletRoutes.Accounts)
-        } catch (error) {
-          setHasImportError(true)
+        } else if (selectedAccountType.coin === BraveWallet.CoinType.SOL) {
+          await importSolAccount({
+            accountName,
+            privateKey
+          }).unwrap()
+        } else {
+          assertNotReached(`Unknown coin ${selectedAccountType.coin}`)
         }
+      } catch (error) {
+        setHasImportError(true)
+        return
       }
+      history.push(WalletRoutes.Accounts)
       return
     }
 
@@ -267,7 +267,7 @@ export const ImportAccountModal = () => {
       reader.onload = async function () {
         if (reader.result) {
           try {
-            await importAccountFromJson({
+            await importEthAccountFromJson({
               accountName,
               password,
               json: reader.result.toString().trim()
@@ -290,8 +290,9 @@ export const ImportAccountModal = () => {
     privateKey,
     history,
     importBtcAccount,
-    importAccount,
-    importAccountFromJson,
+    importEthAccount,
+    importEthAccountFromJson,
+    importSolAccount,
     password
   ])
 

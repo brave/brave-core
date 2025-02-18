@@ -223,7 +223,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(info)
   }
 
-  func importAccountFromJson(
+  func importEthereumAccountFromJson(
     accountName: String,
     password: String,
     json: String,
@@ -231,7 +231,6 @@ class MockKeyringService: BraveWalletKeyringService {
   ) {
     completion(nil)
   }
-
   func importFilecoinAccount(
     accountName: String,
     privateKey: String,
@@ -250,37 +249,26 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(nil)
   }
 
-  func importAccount(
+  func importEthereumAccount(
     accountName: String,
     privateKey: String,
-    coin: BraveWallet.CoinType,
     completion: @escaping (BraveWallet.AccountInfo?) -> Void
   ) {
     completion(nil)
   }
 
-  func importAccount(
+  func importSolanaAccount(
     accountName: String,
     privateKey: String,
-    coin: BraveWallet.CoinType,
-    completion: @escaping (Bool, String) -> Void
+    completion: @escaping (BraveWallet.AccountInfo?) -> Void
   ) {
-    completion(false, "")
-  }
-
-  func importFilecoinBlsAccount(
-    _ accountName: String,
-    privateKey: String,
-    network: String,
-    completion: @escaping (Bool, String) -> Void
-  ) {
-    completion(false, "")
+    completion(nil)
   }
 
   func encodePrivateKeyForExport(
     accountId: BraveWallet.AccountId,
     password: String,
-    completion: @escaping (String) -> Void
+    completion: @escaping (String?) -> Void
   ) {
     completion("807df4db569fab37cdf475a4bda779897f0f3dd9c5d90a2cb953c88ef762fd96")
   }

@@ -580,7 +580,7 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
     return;
   }
 
-  keyring_service().SignTransactionByDefaultKeyring(*meta->from(), meta->tx(),
+  keyring_service().SignTransactionByDefaultKeyring(meta->from(), meta->tx(),
                                                     chain_id);
   meta->set_status(mojom::TransactionStatus::Approved);
   if (!tx_state_manager().AddOrUpdateTx(*meta)) {

@@ -53,7 +53,10 @@ class EthereumKeyring : public Secp256k1HDKeyring {
       base::span<const uint8_t> ciphertext,
       const std::string& address);
 
-  std::string EncodePrivateKeyForExport(const std::string& address) override;
+  std::optional<std::string> GetDiscoveryAddress(size_t index) const;
+  std::optional<std::string> EncodePrivateKeyForExport(
+      const std::string& address);
+  std::vector<std::string> GetImportedAccountsForTesting() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, ConstructRootHDKey);
