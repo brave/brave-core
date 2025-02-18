@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool DidOverrideFeaturesFromCommandLine();
+[[nodiscard]] bool DidOverrideFeaturesFromCommandLine();
 
 }  // namespace brave_ads
 

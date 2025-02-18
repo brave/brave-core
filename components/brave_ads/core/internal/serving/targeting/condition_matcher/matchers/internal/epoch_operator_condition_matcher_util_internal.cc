@@ -79,7 +79,7 @@ std::optional<base::TimeDelta> ParseTimeDelta(std::string_view value) {
   }
 
   base::Time time;
-  if (base::Time::FromUTCString(value.data(), &time)) {
+  if (base::Time::FromUTCString(std::string(value).c_str(), &time)) {
     return TimeDeltaSinceEpoch(time.ToTimeT());
   }
 

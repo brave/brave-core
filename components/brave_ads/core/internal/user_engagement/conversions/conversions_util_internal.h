@@ -10,7 +10,7 @@ namespace brave_ads {
 
 struct AdEventInfo;
 
-bool CanConvertAdEvent(const AdEventInfo& ad_event);
+[[nodiscard]] bool CanConvertAdEvent(const AdEventInfo& ad_event);
 
 }  // namespace brave_ads
 

@@ -40,13 +40,13 @@ class ExclusionRulesBase {
       exclusion_rules_;
 
   std::set<std::string> uuids_;
-  bool AddToCacheIfNeeded(
+  bool MaybeAddToCache(
       const CreativeAdInfo& creative_ad,
       const std::unique_ptr<ExclusionRuleInterface<CreativeAdInfo>>&
           exclusion_rule);
 
  private:
-  bool IsCached(const CreativeAdInfo& creative_ad) const;
+  [[nodiscard]] bool IsCached(const CreativeAdInfo& creative_ad) const;
   void AddToCache(const std::string& uuid);
 };
 

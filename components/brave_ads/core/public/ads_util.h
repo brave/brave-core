@@ -10,7 +10,7 @@ namespace brave_ads {
 
 // Determines whether ads are supported in the user's region, returning `true`
 // if so, otherwise `false`.
-bool IsSupportedRegion();
+[[nodiscard]] bool IsSupportedRegion();
 
 }  // namespace brave_ads
 

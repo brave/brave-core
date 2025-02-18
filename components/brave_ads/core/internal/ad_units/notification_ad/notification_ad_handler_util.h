@@ -8,12 +8,12 @@
 
 namespace brave_ads {
 
-bool ShouldServe();
+[[nodiscard]] bool ShouldServe();
 
-bool CanServeIfUserIsActive();
+[[nodiscard]] bool CanServeIfUserIsActive();
 
-bool CanServeAtRegularIntervals();
-bool ShouldServeAtRegularIntervals();
+[[nodiscard]] bool CanServeAtRegularIntervals();
+[[nodiscard]] bool ShouldServeAtRegularIntervals();
 
 }  // namespace brave_ads
 

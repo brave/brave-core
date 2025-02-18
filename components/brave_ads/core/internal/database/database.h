@@ -42,9 +42,9 @@ class Database final {
       const mojom::DBTransactionInfoPtr& mojom_db_transaction,
       uint64_t trace_id);
 
-  bool InitializeMetaTable();
+  [[nodiscard]] bool InitializeMetaTable();
 
-  bool ShouldCreateTables();
+  [[nodiscard]] bool ShouldCreateTables();
   mojom::DBTransactionResultInfo::StatusCode Initialize(
       const mojom::DBTransactionResultInfoPtr& mojom_db_transaction_result);
 

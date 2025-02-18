@@ -25,7 +25,7 @@ class PurchaseIntentResource final : public AdsClientNotifierObserver {
 
   ~PurchaseIntentResource() override;
 
-  bool IsLoaded() const { return !!resource_; }
+  [[nodiscard]] bool IsLoaded() const { return !!resource_; }
 
   std::optional<std::string> GetManifestVersion() const {
     return manifest_version_;

@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool HasIssuersPermission();
+[[nodiscard]] bool HasIssuersPermission();
 
 }  // namespace brave_ads
 

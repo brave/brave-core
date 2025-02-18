@@ -14,7 +14,7 @@ namespace brave_ads {
 
 namespace {
 
-bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
+[[nodiscard]] bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   return !GetReactions().IsAdMarkedAsInappropriate(creative_ad.creative_set_id);
 }
 
