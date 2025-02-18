@@ -9,6 +9,11 @@ import Foundation
 extension BraveWalletAssetRatioService {
   typealias PricesResult = (assetPrices: [BraveWallet.AssetPrice], failureCount: Int)
 
+  /// Filter out empty strings, make unique, and ensure lowercase
+  private func uniqueNonEmptyPriceIds(_ priceIds: [String]) -> [String] {
+    Array(Set(priceIds.filter { !$0.isEmpty }.map { $0.lowercased() }))
+  }
+
   /// Fetch the price for a list of assets to a list of assets over a given timeframe.
   /// If the main call for all asset prices fails, will fetch the price for each asset individually, so one failure will not result in a failure to fetch all assets.
   @MainActor func priceWithIndividualRetry(
@@ -16,8 +21,7 @@ extension BraveWalletAssetRatioService {
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
   ) async -> PricesResult {
-    // Filter out empty strings and nil values, then make unique
-    let uniquePriceIds = Set(fromAssets.filter { !$0.isEmpty })
+    let uniquePriceIds = uniqueNonEmptyPriceIds(fromAssets)
 
     let (success, prices) = await self.price(
       fromAssets: uniquePriceIds,
@@ -26,7 +30,7 @@ extension BraveWalletAssetRatioService {
     )
     guard success else {
       return await self.priceIndividually(
-        fromAssets: uniquePriceIds,
+        uniquePriceIds,
         toAssets: toAssets,
         timeframe: timeframe
       )
@@ -40,11 +44,8 @@ extension BraveWalletAssetRatioService {
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
   ) async -> PricesResult {
-    // Filter out empty strings and nil values, then make unique
-    let uniquePriceIds = Set(fromAssets.filter { !$0.isEmpty })
-
     return await withTaskGroup(of: PricesResult.self) { @MainActor group -> PricesResult in
-      uniquePriceIds.forEach { asset in
+      fromAssets.forEach { asset in
         group.addTask { @MainActor in
           let (success, prices) = await self.price(
             fromAssets: [asset],
@@ -76,14 +77,13 @@ extension BraveWalletAssetRatioService {
     timeframe: BraveWallet.AssetPriceTimeframe,
     completion: @escaping (PricesResult) -> Void
   ) {
-    // Filter out empty strings and nil values, then make unique
-    let uniquePriceIds = Set(fromAssets.filter { !$0.isEmpty })
+    let uniquePriceIds = uniqueNonEmptyPriceIds(fromAssets)
 
     price(fromAssets: uniquePriceIds, toAssets: toAssets, timeframe: timeframe) {
       [self] success, prices in
       guard success else {
         self.priceIndividually(
-          fromAssets: uniquePriceIds,
+          uniquePriceIds,
           toAssets: toAssets,
           timeframe: timeframe,
           completion: completion
@@ -101,11 +101,9 @@ extension BraveWalletAssetRatioService {
     timeframe: BraveWallet.AssetPriceTimeframe,
     completion: @escaping (PricesResult) -> Void
   ) {
-    // Filter out empty strings and nil values, then make unique
-    let uniquePriceIds = Set(fromAssets.filter { !$0.isEmpty })
     var pricesResults: [PricesResult] = []
     let dispatchGroup = DispatchGroup()
-    uniquePriceIds.forEach { asset in
+    fromAssets.forEach { asset in
       dispatchGroup.enter()
       self.price(fromAssets: [asset], toAssets: toAssets, timeframe: timeframe) { success, prices in
         defer { dispatchGroup.leave() }
@@ -133,8 +131,10 @@ extension BraveWalletAssetRatioService {
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe
   ) async -> [String: String] {
+    let uniquePriceIds = uniqueNonEmptyPriceIds(priceIds)
+
     let priceResult = await priceWithIndividualRetry(
-      priceIds.map { $0.lowercased() },
+      uniquePriceIds,
       toAssets: toAssets,
       timeframe: timeframe
     )
