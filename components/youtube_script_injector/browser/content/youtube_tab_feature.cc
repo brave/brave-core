@@ -14,7 +14,6 @@
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/browser/android/tab_features_android.h"
-#include "brave/build/android/jni_headers/BackgroundVideoPlaybackTabHelper_jni.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_json.h"
 #include "brave/components/youtube_script_injector/browser/core/youtube_registry.h"
 #include "brave/components/youtube_script_injector/common/features.h"
@@ -31,12 +30,6 @@
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 
 namespace youtube_script_injector {
-
-// static
-void YouTubeTabFeature::EnterPipMode() {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BackgroundVideoPlaybackTabHelper_enterPipMode(env);
-}
 
 YouTubeTabFeature::YouTubeTabFeature(content::WebContents* web_contents,
                                      const int32_t world_id)
@@ -134,42 +127,6 @@ void YouTubeTabFeature::PrimaryMainDocumentElementAvailable() {
                        web_contents()->GetPrimaryMainFrame(),
                        blink::mojom::UserActivationOption::kDoNotActivate));
   }
-}
-
-void JNI_BackgroundVideoPlaybackTabHelper_SetFullscreen(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& jweb_contents) {
-  if (!base::FeatureList::IsEnabled(
-          youtube_script_injector::features::kBraveYouTubeScriptInjector)) {
-    return;
-  }
-  content::WebContents* web_contents =
-      content::WebContents::FromJavaWebContents(jweb_contents);
-
-  // TODO: replace with appropriate method to fetch TabFeature once ready.
-  YouTubeTabFeature* helper =
-      new YouTubeTabFeature(web_contents, ISOLATED_WORLD_ID_BRAVE_INTERNAL);
-
-  if (!helper || !helper->GetJson()) {
-    return;
-  }
-
-  if (!helper->AreYouTubeExtraControlsEnabled(web_contents)) {
-    return;
-  }
-
-  auto* registry = YouTubeRegistry::GetInstance();
-  if (!registry) {
-    return;
-  }
-
-  auto url = web_contents->GetLastCommittedURL();
-  registry->LoadScriptFromPath(
-      url, helper->GetJson()->GetFullscreenScript(),
-      base::BindOnce(&YouTubeTabFeature::InsertScriptInPage,
-                     // TODO: replace with `helper->GetWeakPtr()`
-                     base::Owned(helper), web_contents->GetPrimaryMainFrame(),
-                     blink::mojom::UserActivationOption::kActivate));
 }
 
 }  // namespace youtube_script_injector
