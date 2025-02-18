@@ -852,49 +852,6 @@ void BraveWalletService::MigrateAuroraMainnetAsCustomNetwork(
                          kBraveWalletAuroraMainnetMigrated);
 }
 
-void BraveWalletService::MigrateAssetsPrefToList(PrefService* prefs) {
-  if (!prefs->HasPrefPath(kBraveWalletUserAssetsDeprecated)) {
-    return;
-  }
-
-  base::Value::List assets_list;
-
-  const auto& user_assets_dict =
-      prefs->GetDict(kBraveWalletUserAssetsDeprecated);
-  for (auto coin_it : user_assets_dict) {
-    auto coin = GetCoinTypeFromPrefKey_DEPRECATED(coin_it.first);
-    if (!coin) {
-      continue;
-    }
-
-    for (auto network_it : coin_it.second.GetDict()) {
-      auto chain_id = NetworkManager::GetChainIdByNetworkId_DEPRECATED(
-          coin.value(), network_it.first);
-
-      if (!chain_id) {
-        continue;
-      }
-
-      for (const auto& item : network_it.second.GetList()) {
-        const auto* token_legacy = item.GetIfDict();
-        if (!token_legacy) {
-          continue;
-        }
-
-        auto token = token_legacy->Clone();
-        token.Set("chain_id", *chain_id);
-        token.Set("coin", static_cast<int>(*coin));
-
-        assets_list.Append(std::move(token));
-      }
-    }
-  }
-
-  prefs->SetList(kBraveWalletUserAssetsList, std::move(assets_list));
-
-  prefs->ClearPref(kBraveWalletUserAssetsDeprecated);
-}
-
 // static
 void BraveWalletService::MigrateEip1559ForCustomNetworks(PrefService* prefs) {
   if (prefs->GetBoolean(kBraveWalletEip1559ForCustomNetworksMigrated)) {

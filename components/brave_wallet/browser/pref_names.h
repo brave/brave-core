@@ -93,9 +93,6 @@ inline constexpr char kBraveWalletAuroraMainnetMigrated[] =
 inline constexpr char kBraveWalletIsSPLTokenProgramMigrated[] =
     "brave.wallet.is_spl_token_program_migrated";
 
-// 01/2024
-inline constexpr char kBraveWalletUserAssetsDeprecated[] =
-    "brave.wallet.wallet_user_assets";
 // 06/2024 migrated to kBraveWalletEip1559CustomChains.
 inline constexpr char kSupportEip1559OnLocalhostChainDeprecated[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
