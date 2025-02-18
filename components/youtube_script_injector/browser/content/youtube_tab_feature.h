@@ -29,7 +29,6 @@ class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT)
     YouTubeTabFeature final : public content::WebContentsObserver {
  public:
   YouTubeTabFeature(content::WebContents*, const int32_t world_id);
-  static void EnterPipMode();
   ~YouTubeTabFeature() override;
   YouTubeTabFeature(const YouTubeTabFeature&) = delete;
   YouTubeTabFeature& operator=(const YouTubeTabFeature&) = delete;

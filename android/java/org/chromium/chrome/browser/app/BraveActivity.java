@@ -94,7 +94,6 @@ import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BackgroundVideoPlaybackTabHelper;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
@@ -108,6 +107,7 @@ import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.OpenYtInBraveDialogFragment;
+import org.chromium.chrome.browser.YouTubeScriptInjectorTabFeature;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.billing.PurchaseModel;
@@ -525,7 +525,7 @@ public abstract class BraveActivity extends ChromeActivity
         if (TabUtils.isYouTubeVideo(currentTab)
                 && !isInPictureInPictureMode()
                 && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
+            YouTubeScriptInjectorTabFeature.setFullscreen(currentTab.getWebContents());
         }
     }
 
@@ -2742,7 +2742,7 @@ public abstract class BraveActivity extends ChromeActivity
             if (getLifecycleDispatcher().getCurrentActivityState() != RESUMED_WITH_NATIVE) {
                 return;
             }
-            BackgroundVideoPlaybackTabHelper.setFullscreen(currentTab.getWebContents());
+            YouTubeScriptInjectorTabFeature.setFullscreen(currentTab.getWebContents());
             enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
         }
     }

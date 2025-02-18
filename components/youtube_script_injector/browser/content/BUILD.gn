@@ -17,6 +17,7 @@ component("content") {
 
   deps = [
     "//base",
+    "//brave/browser/youtube_script_injector",
     "//brave/components/script_injector/common/mojom",
     "//brave/components/youtube_script_injector/browser/core",
     "//brave/components/youtube_script_injector/common",

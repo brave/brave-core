@@ -23,7 +23,6 @@ import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/signin/public/android/java_sources.gni")
 
 brave_java_sources = [
-  "../../brave/android/java/org/chromium/chrome/browser/BackgroundVideoPlaybackTabHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
@@ -47,6 +46,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/InternetConnection.java",
   "../../brave/android/java/org/chromium/chrome/browser/OpenYtInBraveDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/QRCodeShareDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/YouTubeScriptInjectorTabFeature.java",
   "../../brave/android/java/org/chromium/chrome/browser/accessibility/settings/BraveAccessibilitySettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/appmenu/AppMenuIconRowFooter.java",

@@ -313,6 +313,7 @@ if (enable_brave_education) {
 if (is_android) {
   brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
   brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
+  brave_chrome_browser_deps += [ "//brave/browser/youtube_script_injector" ]
 }
 
 if (enable_commander) {
