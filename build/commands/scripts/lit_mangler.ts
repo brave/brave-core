@@ -16,7 +16,7 @@ import path from 'path'
 import { JSDOM } from 'jsdom'
 import commander from 'commander'
 
-interface HTMLTemplateTags {
+export interface HTMLTemplateTags {
     id: number,
     text: string,
     children: HTMLTemplateTags[]
@@ -171,15 +171,30 @@ export const findTemplate = (predicate: (template: HTMLTemplateTags) => boolean,
     }
 }
 
-commander
-    .command('mangle')
-    .option('-m, --mangler <file>', 'The file with containing the mangler instructions')
-    .option('-i, --input <file>', 'The file to mangle')
-    .option('-o, --output <file>', 'Where to output the mangled file')
-    .action(async ({ mangler, input, output }: { mangler: string, input: string, output: string }) => {
-        load(input)
-        await import(mangler)
-        write(output)
-    })
+// Utils to make testing easier
+export const utilsForTest = {
+    findTemplate,
+    mangle,
+    injectPlaceholders,
+    replacePlaceholders,
+    getTemplateLiterals,
+    setResult: (r: HTMLTemplateTags) => {
+        result = r
+    },
+    resetTemplateId: () => nextId = 1
+}
 
-commander.parse(process.argv)
+if (process.argv.some(a => a.includes('lit_mangler'))) {
+    commander
+        .command('mangle')
+        .option('-m, --mangler <file>', 'The file with containing the mangler instructions')
+        .option('-i, --input <file>', 'The file to mangle')
+        .option('-o, --output <file>', 'Where to output the mangled file')
+        .action(async ({ mangler, input, output }: { mangler: string, input: string, output: string }) => {
+            load(input)
+            await import(mangler)
+            write(output)
+        })
+
+    commander.parse(process.argv)
+}
