@@ -46,13 +46,13 @@ mojom::Result GetMe::ParseBody(const std::string& body,
                                internal::uphold::User* user) {
   DCHECK(user);
 
-  std::optional<base::Value> value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Invalid JSON";
     return mojom::Result::FAILED;
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   const auto* name = dict.FindString("firstName");
   if (name) {
     user->name = *name;

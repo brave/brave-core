@@ -9,10 +9,10 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_test_constants.h"
 #include "brave/components/brave_ads/core/internal/analytics/p2a/opportunities/p2a_opportunity_util.h"
-#include "brave/components/brave_ads/core/internal/common/test/json_reader_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rules_test_util.h"
@@ -116,11 +116,8 @@ class BraveAdsNewTabPageAdIntegrationTest : public test::TestBase {
     EXPECT_CALL(callback, Run(/*success=*/true))
         .WillOnce(base::test::RunOnceClosure(run_loop.QuitClosure()));
 
-    std::optional<base::Value::Dict> data =
-        test::ReadDictionaryFromJsonString(json);
-    ASSERT_TRUE(data);
-    GetAds().ParseAndSaveCreativeNewTabPageAds(std::move(*data),
-                                               callback.Get());
+    base::Value::Dict data = base::test::ParseJsonDict(json);
+    GetAds().ParseAndSaveCreativeNewTabPageAds(std::move(data), callback.Get());
     run_loop.Run();
   }
 

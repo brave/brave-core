@@ -142,12 +142,7 @@ base::Value::Dict SkusInternalsUI::GetOrderInfo(
     }
 
     // Convert to Value as it's stored as string in local state.
-    auto json_value = base::JSONReader::Read(kv.second.GetString());
-    if (!json_value) {
-      continue;
-    }
-
-    const auto* skus = json_value->GetIfDict();
+    auto skus = base::JSONReader::ReadDict(kv.second.GetString());
     if (!skus) {
       continue;
     }

@@ -82,7 +82,7 @@ std::optional<base::Value::List> ParseStringToBaseList(
     return std::nullopt;
   }
 
-  return value->GetList().Clone();
+  return std::move(value).value().TakeList();
 }
 
 base::expected<std::vector<std::string>, std::string> UnBlindCreds(

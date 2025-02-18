@@ -21,13 +21,13 @@ using Result = GetParameters::Result;
 namespace {
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
-  const auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  const auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const auto& dict = value->GetDict();
+  const auto& dict = *value;
 
   const auto rate = dict.FindDouble("batRate");
   if (!rate) {

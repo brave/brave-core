@@ -316,8 +316,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/test/internal/tag_parser_test_util_internal.h",
     "//brave/components/brave_ads/core/internal/common/test/internal/url_response_test_util_internal.cc",
     "//brave/components/brave_ads/core/internal/common/test/internal/url_response_test_util_internal.h",
-    "//brave/components/brave_ads/core/internal/common/test/json_reader_test_util.cc",
-    "//brave/components/brave_ads/core/internal/common/test/json_reader_test_util.h",
     "//brave/components/brave_ads/core/internal/common/test/local_state_pref_registry_test_util.cc",
     "//brave/components/brave_ads/core/internal/common/test/local_state_pref_registry_test_util.h",
     "//brave/components/brave_ads/core/internal/common/test/local_state_pref_value_test_util.cc",
