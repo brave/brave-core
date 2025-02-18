@@ -16,10 +16,10 @@ namespace permissions {
 
 BraveGoogleSignInPermissionContext::BraveGoogleSignInPermissionContext(
     content::BrowserContext* browser_context)
-    : PermissionContextBase(browser_context,
-                            ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
-                            blink::mojom::PermissionsPolicyFeature::kNotFound) {
-}
+    : PermissionContextBase(
+          browser_context,
+          ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
+          network::mojom::PermissionsPolicyFeature::kNotFound) {}
 
 BraveGoogleSignInPermissionContext::~BraveGoogleSignInPermissionContext() =
     default;

@@ -143,6 +143,7 @@ import org.chromium.components.bookmarks.BookmarkItem;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeManager;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.components.browser_ui.media.MediaNotificationInfo;
 import org.chromium.components.browser_ui.site_settings.ContentSettingException;
 import org.chromium.components.browser_ui.site_settings.PermissionInfo;
@@ -153,7 +154,7 @@ import org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetche
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.dragreorder.DragReorderableRecyclerViewAdapter;
-import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
+import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListLayout;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectableListToolbar.SearchDelegate;
 import org.chromium.components.browser_ui.widget.selectable_list.SelectionDelegate;
@@ -362,7 +363,7 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/password_manager/settings/ExportFlow"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/notifications/NotificationPlatformBridge"));
@@ -1126,7 +1127,7 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         List.class,
                         ActivityTabProvider.class,
-                        ScrimCoordinator.class,
+                        ScrimManager.class,
                         ToolbarActionModeCallback.class,
                         FindToolbarManager.class,
                         ObservableSupplier.class,
@@ -1196,7 +1197,7 @@ public class BytecodeTest {
                         Activity.class,
                         ViewGroup.class,
                         BrowserControlsStateProvider.class,
-                        ScrimCoordinator.class,
+                        ScrimManager.class,
                         ObservableSupplier.class,
                         BottomSheetController.class,
                         DataSharingTabManager.class,
@@ -1313,7 +1314,8 @@ public class BytecodeTest {
                         Supplier.class,
                         Supplier.class,
                         ShareDelegateImpl.ShareSheetDelegate.class,
-                        boolean.class));
+                        boolean.class,
+                        DataSharingTabManager.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
@@ -1464,7 +1466,8 @@ public class BytecodeTest {
                         BraveLocationBarMediator.getOmniboxUmaClass(),
                         BooleanSupplier.class,
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        BrowserControlsStateProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1710,7 +1713,7 @@ public class BytecodeTest {
                         BrowserControlsStateProvider.class,
                         LayoutManager.class,
                         TopUiThemeColorProvider.class,
-                        Supplier.class,
+                        ObservableSupplier.class,
                         ViewGroup.class));
         Assert.assertTrue(
                 constructorsMatch(
@@ -1754,11 +1757,12 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ActivityLifecycleDispatcher.class,
                         ActivityTabProvider.class,
-                        TopUiThemeColorProvider.class));
+                        TopUiThemeColorProvider.class,
+                        EdgeToEdgeSystemBarColorHelper.class));
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced", // presubmit: ignore-long-line
-                        "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragmentAdvanced")); // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragment")); // presubmit: ignore-long-line
 
         Assert.assertTrue(
                 constructorsMatch(
@@ -1771,6 +1775,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         DoubleConsumer.class,
                         UserEducationHelper.class,
+                        ObservableSupplier.class,
                         ObservableSupplier.class));
 
         Assert.assertTrue(
@@ -1870,8 +1875,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",
                         "mAppThemeColorProvider"));
         Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimCoordinator"));
+                fieldExists("org/chromium/chrome/browser/toolbar/ToolbarManager", "mScrimManager"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/toolbar/ToolbarManager",

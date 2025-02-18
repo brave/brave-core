@@ -95,7 +95,7 @@ PageMetrics::~PageMetrics() = default;
 
 void PageMetrics::OnHttpsNavigationEvent(const char* histogram_name,
                                          uint64_t name_hash,
-                                         base::HistogramBase::Sample sample) {
+                                         base::HistogramBase::Sample32 sample) {
   HttpsEvent event = static_cast<HttpsEvent>(sample);
   if (event != HttpsEvent::kUpgradeFailed &&
       event != HttpsEvent::kUpgradeNetError) {
@@ -119,7 +119,7 @@ void PageMetrics::OnHttpsNavigationEvent(const char* histogram_name,
 void PageMetrics::OnInterstitialDecisionEvent(
     const char* histogram_name,
     uint64_t name_hash,
-    base::HistogramBase::Sample sample) {
+    base::HistogramBase::Sample32 sample) {
   if (sample != security_interstitials::MetricsHelper::Decision::PROCEED) {
     return;
   }

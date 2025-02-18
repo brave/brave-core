@@ -59,30 +59,40 @@ void ApplyLifetimeToPermissionRequests(
   }
   const int selected_lifetime_option =
       Java_BravePermissionDialogDelegate_getSelectedLifetimeOption(env, obj);
-  DCHECK(!ShouldShowLifetimeOptions(permission_prompt->delegate()) ||
+  DCHECK(!ShouldShowLifetimeOptions(permission_prompt->delegate_public()) ||
          selected_lifetime_option != -1);
   if (selected_lifetime_option != -1) {
     std::vector<PermissionLifetimeOption> lifetime_options =
         CreatePermissionLifetimeOptions();
     SetRequestsLifetime(lifetime_options, selected_lifetime_option,
-                        permission_prompt->delegate());
+                        permission_prompt->delegate_public());
   }
 }
 
 void ApplyDontAskAgainOption(JNIEnv* env,
                              const JavaParamRef<jobject>& obj,
                              PermissionPromptAndroid* permission_prompt) {
-  if (permission_prompt->delegate()->Requests().size() < 1) {
+  if (permission_prompt->delegate_public()->Requests().size() < 1) {
     return;
   }
 
   const bool dont_ask_again =
       Java_BravePermissionDialogDelegate_getDontAskAgain(env, obj);
-  PermissionRequest* request = permission_prompt->delegate()->Requests()[0];
+  PermissionRequest* request =
+      permission_prompt->delegate_public()->Requests()[0];
   request->set_dont_ask_again(dont_ask_again);
 }
 
 }  // namespace
+
+// static
+std::unique_ptr<PermissionDialogDelegate> PermissionDialogDelegate::Create(
+    content::WebContents* web_contents,
+    PermissionPromptAndroid_ChromiumImpl* permission_prompt) {
+  // This should never be invoked, created only as a stub.
+  // a method with PermissionPromptAndroid* should be invoked instead.
+  NOTREACHED();
+}
 
 void PermissionDialogJavaDelegate::
     Java_PermissionDialogController_createDialog_BraveImpl(
@@ -90,12 +100,12 @@ void PermissionDialogJavaDelegate::
         const base::android::JavaRef<jobject>& j_delegate) {
 #if BUILDFLAG(ENABLE_WIDEVINE)
   if (HasWidevinePermissionRequest(
-          permission_prompt_->delegate()->Requests())) {
+          permission_prompt_->delegate_public()->Requests())) {
     Java_BravePermissionDialogDelegate_setIsWidevinePermissionRequest(
         env, j_delegate, true);
   }
 #endif
-  if (ShouldShowLifetimeOptions(permission_prompt_->delegate())) {
+  if (ShouldShowLifetimeOptions(permission_prompt_->delegate_public())) {
     SetLifetimeOptions(j_delegate);
   }
 

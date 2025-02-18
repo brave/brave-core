@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/serde_json/v1/BUILD.gn b/third_party/rust/serde_json/v1/BUILD.gn
-index 9bb54c237b93c49bb35d0eca259bde9126bb6e7f..d9cac709a790436eec4e93b6e60396cc05e0eb72 100644
+index 26fcbbbd177521b9a60e2af2f81fe6673a1f1cd9..5897e9e6cf9cc12bcd8f91b0e66a6d16310ca9cd 100644
 --- a/third_party/rust/serde_json/v1/BUILD.gn
 +++ b/third_party/rust/serde_json/v1/BUILD.gn
 @@ -82,5 +82,4 @@ cargo_crate("lib") {

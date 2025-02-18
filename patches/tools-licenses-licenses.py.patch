@@ -1,5 +1,5 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index 7500f633b4672cecbe3f5015724b5f9c9b35f953..88baa57e86f842c9193b297fb602d936e05669e9 100755
+index e2eafa2d533b9264e6452b38ef51b9363cccda31..2b2765ff98f1106c6b9266e19a25030a2c2fd28a 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
 @@ -42,6 +42,7 @@ _REPOSITORY_ROOT = os.path.abspath(

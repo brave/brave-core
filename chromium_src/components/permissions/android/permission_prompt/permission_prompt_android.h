@@ -6,23 +6,26 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_ANDROID_PERMISSION_PROMPT_PERMISSION_PROMPT_ANDROID_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_ANDROID_PERMISSION_PROMPT_PERMISSION_PROMPT_ANDROID_H_
 
+#include "components/permissions/android/permission_prompt/permission_dialog_delegate.h"
 #include "components/permissions/request_type.h"
 
 #define PermissionPromptAndroid PermissionPromptAndroid_ChromiumImpl
-#define GetIconId virtual GetIconId
-#define ShouldUseRequestingOriginFavicon \
-  virtual ShouldUseRequestingOriginFavicon
 
-#define PermissionCount                            \
-  NotUsed() { return 0; }                          \
-  Delegate* delegate() const { return delegate_; } \
+#define PermissionCount                                                       \
+  NotUsed() {                                                                 \
+    return 0;                                                                 \
+  }                                                                           \
+  /* We can't override delegate to make it public, because at              */ \
+  /* permission_prompt_android.h delegate is used both                     */ \
+  /* as the argument name and the method name */                              \
+  Delegate* delegate_public() const {                                         \
+    return delegate_;                                                         \
+  }                                                                           \
   size_t PermissionCount
 
 #include "src/components/permissions/android/permission_prompt/permission_prompt_android.h"  // IWYU pragma: export
 
 #undef PermissionCount
-#undef ShouldUseRequestingOriginFavicon
-#undef GetIconId
 #undef PermissionPromptAndroid
 
 namespace permissions {
@@ -39,6 +42,10 @@ class PermissionPromptAndroid : public PermissionPromptAndroid_ChromiumImpl {
 
   int GetIconId() const override;
   bool ShouldUseRequestingOriginFavicon() const override;
+
+  void CreatePermissionDialogDelegate() {
+    PermissionDialogDelegate::Create(web_contents(), this);
+  }
 };
 
 }  // namespace permissions

@@ -11,7 +11,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_request_data.h"
-#include "third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom-shared.h"
+#include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom-shared.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
@@ -19,10 +19,10 @@ namespace permissions {
 
 BraveOpenAIChatPermissionContext::BraveOpenAIChatPermissionContext(
     content::BrowserContext* browser_context)
-    : PermissionContextBase(browser_context,
-                            ContentSettingsType::BRAVE_OPEN_AI_CHAT,
-                            blink::mojom::PermissionsPolicyFeature::kNotFound) {
-}
+    : PermissionContextBase(
+          browser_context,
+          ContentSettingsType::BRAVE_OPEN_AI_CHAT,
+          network::mojom::PermissionsPolicyFeature::kNotFound) {}
 
 BraveOpenAIChatPermissionContext::~BraveOpenAIChatPermissionContext() = default;
 

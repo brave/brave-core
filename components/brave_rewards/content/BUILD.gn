@@ -49,7 +49,7 @@ static_library("content") {
     "//brave/components/time_period_storage",
     "//components/country_codes",
     "//components/favicon/core",
-    "//components/os_crypt/sync:os_crypt",
+    "//components/os_crypt/sync",
     "//components/prefs",
     "//components/sessions",
     "//components/user_prefs",

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-index 906e9b5a33b36465b1336885403d3a0a37af4ad6..e72c5ea1008022bd3807bf9875f5f547e1a3514f 100644
+index fd91dc6690da03a40fb0fb188f3759df9982d954..e0f1177bf131126b5124d654996834199aa346d8 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.ts
-@@ -106,6 +106,7 @@ export class ProfilePickerMainViewElement extends
-     if (!isProfileCreationAllowed()) {
-       this.$.addProfile.style.display = 'none';
-     }
-+    this.$.addProfile.style.borderRadius = '8px';
+@@ -109,6 +109,7 @@ export class ProfilePickerMainViewElement extends
+   private eventTracker_: EventTracker = new EventTracker();
  
+   override firstUpdated() {
++    this.$.addProfile.style.borderRadius = '8px';
      this.addEventListener('view-enter-finish', this.onViewEnterFinish_);
  
+     this.addEventListener('toggle-drag', this.toggleDrag_);

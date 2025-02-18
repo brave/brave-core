@@ -37,7 +37,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // This feature uses shared memory to reduce IPCs to access cookies, but
     // Ephemeral Storage can switch cookie storage backend at runtime, so we
     // can't use it.
-    {kReduceCookieIPCs, base::FEATURE_DISABLED_BY_DEFAULT},
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},

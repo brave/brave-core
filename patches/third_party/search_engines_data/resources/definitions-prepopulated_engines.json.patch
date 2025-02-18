@@ -1,8 +1,8 @@
-diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index f14653e783edc142c89bafa9b8221459fc907b26..37926265e16a6f903adefaa5e26b93872e125bb9 100644
---- a/components/search_engines/prepopulated_engines.json
-+++ b/components/search_engines/prepopulated_engines.json
-@@ -113,22 +113,6 @@
+diff --git a/definitions/prepopulated_engines.json b/definitions/prepopulated_engines.json
+index 1a331e729032ac4693da53a0bcad0ce260b578ca..fdcf5ae25ac7effcea54ac3395fdcda0d75eab04 100644
+--- a/definitions/prepopulated_engines.json
++++ b/definitions/prepopulated_engines.json
+@@ -111,23 +111,6 @@
        "id": 68
      },
  
@@ -22,10 +22,11 @@ index f14653e783edc142c89bafa9b8221459fc907b26..37926265e16a6f903adefaa5e26b9387
 -        }
 -      ]
 -    },
- 
+-
      "ecosia": {
        "name": "Ecosia",
-@@ -287,27 +271,6 @@
+       "keyword": "ecosia.org",
+@@ -283,28 +266,6 @@
        "id": 108
      },
  
@@ -50,6 +51,7 @@ index f14653e783edc142c89bafa9b8221459fc907b26..37926265e16a6f903adefaa5e26b9387
 -        }
 -      ]
 -    },
- 
+-
      "seznam": {
        "name": "Seznam.cz",
+       "keyword": "seznam",

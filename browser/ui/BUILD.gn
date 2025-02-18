@@ -610,11 +610,11 @@ source_set("ui") {
       "views/tabs/brave_tab_strip.h",
       "views/tabs/brave_tab_strip_layout_helper.cc",
       "views/tabs/brave_tab_strip_layout_helper.h",
+      "views/tabs/dragging/tab_drag_controller.cc",
+      "views/tabs/dragging/tab_drag_controller.h",
       "views/tabs/shared_pinned_tab_dummy_view_views.cc",
       "views/tabs/shared_pinned_tab_dummy_view_views.h",
       "views/tabs/switches.h",
-      "views/tabs/tab_drag_controller.cc",
-      "views/tabs/tab_drag_controller.h",
       "views/tabs/vertical_tab_utils.cc",
       "views/tabs/vertical_tab_utils.h",
       "views/toolbar/ai_chat_button.cc",
@@ -635,6 +635,7 @@ source_set("ui") {
 
     deps += [
       "//brave/browser/ui/side_panel",
+      "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",

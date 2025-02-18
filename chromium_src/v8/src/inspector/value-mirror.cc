@@ -113,12 +113,12 @@ Local<Value> ConvertProtocolValueToV8Value(
       for (size_t i = 0; i < dict->size(); ++i) {
         const auto& entry = dict->at(i);
         Local<String> key = v8_inspector::toV8String(isolate, entry.first);
-        Local<Value> value =
+        Local<Value> value_to =
             ConvertProtocolValueToV8Value(isolate, entry.second);
-        if (IsEmptyObject(isolate, value)) {
+        if (IsEmptyObject(isolate, value_to)) {
           continue;
         }
-        obj->Set(isolate->GetCurrentContext(), key, value).Check();
+        obj->Set(isolate->GetCurrentContext(), key, value_to).Check();
       }
       return obj;
     }
@@ -127,9 +127,10 @@ Local<Value> ConvertProtocolValueToV8Value(
       Local<Array> arr =
           Array::New(isolate, static_cast<uint32_t>(list->size()));
       for (size_t i = 0; i < list->size(); ++i) {
-        Local<Value> value =
+        Local<Value> value_to =
             ConvertProtocolValueToV8Value(isolate, list->at(i));
-        arr->Set(isolate->GetCurrentContext(), static_cast<uint32_t>(i), value)
+        arr->Set(isolate->GetCurrentContext(), static_cast<uint32_t>(i),
+                 value_to)
             .Check();
       }
       return arr;
