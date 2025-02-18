@@ -3,18 +3,22 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("youtube_script_injector") {
+component("android") {
+  output_name = "youtube_script_injector_browser_android"
+
+  defines = [ "IS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_ANDROID_IMPL" ]
+
   sources = [
-    "youtube_script_injector_tab_feature.cc",
-    "youtube_script_injector_tab_feature.h",
+    "youtube_injector_host.cc",
+    "youtube_injector_host.h",
   ]
 
   deps = [
-    "//brave/build/android:jni_headers",
+    "//brave/browser/youtube_script_injector",
     "//brave/components/script_injector/common/mojom",
-    "//brave/components/youtube_script_injector/browser/content",
     "//brave/components/youtube_script_injector/browser/core",
-    "//brave/components/youtube_script_injector/common",
-    "//chrome/common",
+    "//brave/components/youtube_script_injector/browser/content",
+    "//brave/components/youtube_script_injector/common:mojom",
+    "//url",
   ]
 }

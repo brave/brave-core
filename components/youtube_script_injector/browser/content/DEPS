@@ -1,4 +1,6 @@
 include_rules = [
   "+content/public/browser",
-  "+third_party/blink/public"
+  "+third_party/blink/public",
+  "+brave/browser/youtube_script_injector",
+  "+chrome/common",
 ]
