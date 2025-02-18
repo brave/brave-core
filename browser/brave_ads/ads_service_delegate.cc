@@ -118,12 +118,17 @@ AdsServiceDelegate::AdsServiceDelegate(
         notification_ad_platform_bridge)
     : profile_(profile),
       local_state_(local_state),
+      prepopulate_data_resolver_(
+          *profile_->GetPrefs(),
+          CHECK_DEREF(
+              regional_capabilities::RegionalCapabilitiesServiceFactory::
+                  GetForProfile(&profile))),
       search_engine_choice_service_(
           *profile_->GetPrefs(),
           local_state_,
-          CHECK_DEREF(
-              regional_capabilities::RegionalCapabilitiesServiceFactory::
-                  GetForProfile(&profile)),
+          *regional_capabilities::RegionalCapabilitiesServiceFactory::
+              GetForProfile(&profile),
+          prepopulate_data_resolver_,
           /*is_profile_eligible_for_dse_guest_propagation=*/false),
       adaptive_captcha_service_(adaptive_captcha_service),
       notification_ad_platform_bridge_(
@@ -134,7 +139,7 @@ AdsServiceDelegate::~AdsServiceDelegate() {}
 std::string AdsServiceDelegate::GetDefaultSearchEngineName() {
   const auto template_url_data =
       TemplateURLPrepopulateData::GetPrepopulatedFallbackSearch(
-          profile_->GetPrefs(), &search_engine_choice_service_);
+          *profile_->GetPrefs(), search_engine_choice_service_.GetCountryId());
 
   const std::u16string& default_search_engine_name =
       template_url_data ? template_url_data->short_name() : u"";

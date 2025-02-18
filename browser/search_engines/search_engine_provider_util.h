@@ -11,18 +11,18 @@ class PrefService;
 
 namespace brave {
 
-void SetBraveAsDefaultPrivateSearchProvider(Profile* profile);
+void SetBraveAsDefaultPrivateSearchProvider(Profile& profile);
 
 // Initialize default provider for private profile.
-void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile);
+void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile& profile);
 
 // Update TemplareURLData with provider guid.
-void UpdateDefaultPrivateSearchProviderData(Profile* profile);
-void ResetDefaultPrivateSearchProvider(Profile* profile);
+void UpdateDefaultPrivateSearchProviderData(Profile& profile);
+void ResetDefaultPrivateSearchProvider(Profile& profile);
 
-void PrepareSearchSuggestionsConfig(PrefService* local_state, bool first_run);
-void UpdateDefaultSearchSuggestionsPrefs(PrefService* local_state,
-                                         PrefService* profile_prefs);
+void PrepareSearchSuggestionsConfig(PrefService& local_state, bool first_run);
+void UpdateDefaultSearchSuggestionsPrefs(PrefService& local_state,
+                                         PrefService& profile_prefs);
 
 }  // namespace brave
 
