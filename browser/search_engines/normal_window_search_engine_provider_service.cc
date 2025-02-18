@@ -16,8 +16,8 @@
 NormalWindowSearchEngineProviderService::
     NormalWindowSearchEngineProviderService(Profile* profile)
     : profile_(profile) {
-  brave::UpdateDefaultSearchSuggestionsPrefs(g_browser_process->local_state(),
-                                             profile_->GetPrefs());
+  brave::UpdateDefaultSearchSuggestionsPrefs(*g_browser_process->local_state(),
+                                             *profile_->GetPrefs());
   private_search_provider_guid_.Init(
       prefs::kSyncedDefaultPrivateSearchProviderGUID, profile_->GetPrefs(),
       base::BindRepeating(
@@ -52,9 +52,9 @@ void NormalWindowSearchEngineProviderService::OnTemplateURLServiceLoaded() {
 
 void NormalWindowSearchEngineProviderService::
     PrepareInitialPrivateSearchProvider() {
-  brave::PrepareDefaultPrivateSearchProviderDataIfNeeded(profile_);
+  brave::PrepareDefaultPrivateSearchProviderDataIfNeeded(*profile_);
 }
 
 void NormalWindowSearchEngineProviderService::OnPreferenceChanged() {
-  brave::UpdateDefaultPrivateSearchProviderData(profile_);
+  brave::UpdateDefaultPrivateSearchProviderData(*profile_);
 }
