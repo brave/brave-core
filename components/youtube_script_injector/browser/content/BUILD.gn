@@ -9,19 +9,17 @@ component("content") {
   defines = [ "IS_YOUTUBE_SCRIPT_INJECTOR_BROWSER_CONTENT_IMPL" ]
 
   sources = [
-    "youtube_injector_host.cc",
-    "youtube_injector_host.h",
     "youtube_tab_feature.cc",
     "youtube_tab_feature.h",
   ]
 
   deps = [
     "//base",
-    "//brave/browser/youtube_script_injector",
     "//brave/components/script_injector/common/mojom",
     "//brave/components/youtube_script_injector/browser/core",
     "//brave/components/youtube_script_injector/common",
     "//brave/components/youtube_script_injector/common:mojom",
+    "//chrome/common",
     "//components/prefs",
     "//components/sessions",
     "//components/user_prefs",
