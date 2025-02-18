@@ -206,12 +206,12 @@ brave_xml_preprocessor("brave_java_xml_preprocess_resources") {
 
 generate_jni("jni_headers") {
   sources = [
-    "//brave/android/java/org/chromium/chrome/browser/BackgroundVideoPlaybackTabHelper.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveFeatureUtil.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveLocalState.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
+    "//brave/android/java/org/chromium/chrome/browser/YouTubeScriptInjectorTabFeature.java",
     "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
     "//brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoMojomHelper.java",
