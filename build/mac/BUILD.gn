@@ -13,17 +13,11 @@ import("//chrome/version.gni")
 import("//components/crx_file/crx3.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-packaging_dir = "$brave_packaging_base_dir/" +
+packaging_dir = "$root_out_dir/" +
                 string_replace("$chrome_product_full_name Packaging", " ", "_")
 packaging_out_dir = "$root_out_dir/packaged"
 
 unsigned_app_path = "$root_out_dir/$brave_exe"
-
-if (is_universal_binary) {
-  arm64_arch_app_path = unsigned_app_path
-  x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
-  unsigned_app_path = "$brave_packaging_base_dir/$brave_exe"
-}
 
 target_dmg_path = "$root_out_dir/$brave_dmg"
 
@@ -36,22 +30,26 @@ upstream_zip_path = "$upstream_packaged_basename.zip"
 upstream_crx_path = "$upstream_packaged_basename.crx3"
 
 if (is_universal_binary) {
+  x64_arch_app_path = "$root_out_dir/x64/$brave_exe"
+  universal_dir = "$root_out_dir/universal"
+  universal_app_path = "$universal_dir/$brave_exe"
+
   action("universalize") {
     script = "//chrome/installer/mac/universalizer.py"
 
     args = [
-      rebase_path(arm64_arch_app_path),
       rebase_path(x64_arch_app_path),
       rebase_path(unsigned_app_path),
+      rebase_path(universal_app_path),
     ]
 
     inputs = [
       script,
-      arm64_arch_app_path,
+      unsigned_app_path,
       x64_arch_app_path,
     ]
 
-    outputs = [ unsigned_app_path ]
+    outputs = [ universal_app_path ]
 
     public_deps = [
       ":copy_x64",
@@ -77,10 +75,6 @@ if (is_universal_binary) {
     ]
 
     outputs = [ x64_arch_app_path ]
-  }
-} else {
-  group("universalize") {
-    public_deps = [ "//chrome:chrome_app" ]
   }
 }
 
@@ -346,6 +340,10 @@ action("package") {
     foreach(arg, notary_args) {
       args += [ "--notary-arg=$arg" ]
     }
+  }
+  if (is_universal_binary) {
+    args += [ "--universal" ]
+    deps += [ ":universalize" ]
   }
 }
 

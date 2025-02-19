@@ -12,6 +12,7 @@ class Invoker(standard_invoker.Invoker):
     def register_arguments(parser):
         standard_invoker.Invoker.register_arguments(parser)
         parser.add_argument("--skip_signing", action="store_true")
+        parser.add_argument("--universal", action="store_true")
 
     def __init__(self, args, config):
         super().__init__(args, config)
