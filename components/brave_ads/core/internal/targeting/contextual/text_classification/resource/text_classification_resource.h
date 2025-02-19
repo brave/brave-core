@@ -33,7 +33,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   ~TextClassificationResource() override;
 
-  bool IsLoaded() const { return !!text_processing_pipeline_; }
+  [[nodiscard]] bool IsLoaded() const { return !!text_processing_pipeline_; }
 
   std::optional<std::string> GetManifestVersion() const {
     return manifest_version_;

@@ -10,9 +10,11 @@ namespace brave_ads {
 
 struct CreativeDaypartInfo;
 
-bool MatchDayOfWeek(const CreativeDaypartInfo& daypart, int day_of_week);
+[[nodiscard]] bool MatchDayOfWeek(const CreativeDaypartInfo& daypart,
+                                  int day_of_week);
 
-bool MatchTimeSlot(const CreativeDaypartInfo& daypart, int minutes);
+[[nodiscard]] bool MatchTimeSlot(const CreativeDaypartInfo& daypart,
+                                 int minutes);
 
 }  // namespace brave_ads
 

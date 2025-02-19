@@ -118,7 +118,7 @@ class TestBase : public AdsClientNotifierForTesting, public ::testing::Test {
   // Returns `true` if there are pending tasks on the main thread's TaskRunner.
   // When debugging, use `task_environment_.DescribeCurrentTasks` to see what
   // those are. See `TaskEnvironment` for more detail.
-  bool HasPendingTasks() const;
+  [[nodiscard]] bool HasPendingTasks() const;
 
   // Unlike `FastForwardClockToNextPendingTask`, `FastForwardClockTo`,
   // `FastForwardClockBy` and `SuspendedFastForwardClockBy`, `AdvanceClock*`

@@ -11,8 +11,9 @@
 
 namespace brave_ads {
 
-bool HasVisitedAntiTargetedSites(const SiteHistoryList& site_history,
-                                 const AntiTargetingSiteList& sites);
+[[nodiscard]] bool HasVisitedAntiTargetedSites(
+    const SiteHistoryList& site_history,
+    const AntiTargetingSiteList& sites);
 
 }  // namespace brave_ads
 

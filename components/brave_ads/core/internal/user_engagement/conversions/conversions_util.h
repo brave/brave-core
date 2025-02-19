@@ -14,10 +14,11 @@ namespace brave_ads {
 
 struct AdEventInfo;
 
-bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event);
+[[nodiscard]] bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event);
 
-bool DidAdEventOccurWithinObservationWindow(const AdEventInfo& ad_event,
-                                            base::TimeDelta observation_window);
+[[nodiscard]] bool DidAdEventOccurWithinObservationWindow(
+    const AdEventInfo& ad_event,
+    base::TimeDelta observation_window);
 
 }  // namespace brave_ads
 

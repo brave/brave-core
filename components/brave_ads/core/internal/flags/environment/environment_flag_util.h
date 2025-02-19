@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool IsProductionEnvironment();
+[[nodiscard]] bool IsProductionEnvironment();
 
 }  // namespace brave_ads
 

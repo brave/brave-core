@@ -22,39 +22,46 @@ namespace brave_ads {
 
 struct CreativeAdInfo;
 
-bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
-                            const AdEventList& ad_events,
-                            mojom::ConfirmationType mojom_confirmation_type,
-                            base::TimeDelta time_constraint,
-                            size_t cap);
-bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
-                            const AdEventList& ad_events,
-                            mojom::ConfirmationType mojom_confirmation_type,
-                            size_t cap);
+[[nodiscard]] bool DoesRespectCampaignCap(
+    const CreativeAdInfo& creative_ad,
+    const AdEventList& ad_events,
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::TimeDelta time_constraint,
+    size_t cap);
+[[nodiscard]] bool DoesRespectCampaignCap(
+    const CreativeAdInfo& creative_ad,
+    const AdEventList& ad_events,
+    mojom::ConfirmationType mojom_confirmation_type,
+    size_t cap);
 
-bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
-                               const AdEventList& ad_events,
-                               mojom::ConfirmationType mojom_confirmation_type,
-                               base::TimeDelta time_constraint,
-                               size_t cap);
-bool DoesRespectCreativeSetCap(const CreativeAdInfo& creative_ad,
-                               const AdEventList& ad_events,
-                               mojom::ConfirmationType mojom_confirmation_type,
-                               size_t cap);
+[[nodiscard]] bool DoesRespectCreativeSetCap(
+    const CreativeAdInfo& creative_ad,
+    const AdEventList& ad_events,
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::TimeDelta time_constraint,
+    size_t cap);
+[[nodiscard]] bool DoesRespectCreativeSetCap(
+    const CreativeAdInfo& creative_ad,
+    const AdEventList& ad_events,
+    mojom::ConfirmationType mojom_confirmation_type,
+    size_t cap);
 
-bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
-                            const AdEventList& ad_events,
-                            mojom::ConfirmationType mojom_confirmation_type,
-                            base::TimeDelta time_constraint,
-                            size_t cap);
-bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
-                            const AdEventList& ad_events,
-                            mojom::ConfirmationType mojom_confirmation_type,
-                            size_t cap);
+[[nodiscard]] bool DoesRespectCreativeCap(
+    const CreativeAdInfo& creative_ad,
+    const AdEventList& ad_events,
+    mojom::ConfirmationType mojom_confirmation_type,
+    base::TimeDelta time_constraint,
+    size_t cap);
+[[nodiscard]] bool DoesRespectCreativeCap(
+    const CreativeAdInfo& creative_ad,
+    const AdEventList& ad_events,
+    mojom::ConfirmationType mojom_confirmation_type,
+    size_t cap);
 
 template <typename T>
-bool ShouldInclude(const T& ad,
-                   const ExclusionRuleInterface<T>* const exclusion_rule) {
+[[nodiscard]] bool ShouldInclude(
+    const T& ad,
+    const ExclusionRuleInterface<T>* const exclusion_rule) {
   CHECK(exclusion_rule);
 
   const auto result = exclusion_rule->ShouldInclude(ad);

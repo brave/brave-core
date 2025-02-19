@@ -14,7 +14,7 @@ namespace brave_ads {
 
 struct CreativeSetConversionInfo;
 
-bool DoesCreativeSetConversionUrlPatternMatchRedirectChain(
+[[nodiscard]] bool DoesCreativeSetConversionUrlPatternMatchRedirectChain(
     const CreativeSetConversionInfo& creative_set_conversion,
     const std::vector<GURL>& redirect_chain);
 

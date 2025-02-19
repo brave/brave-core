@@ -32,11 +32,12 @@ class ConfirmationTokens final {
   void Remove(const ConfirmationTokenList& confirmation_tokens);
   void RemoveAll();
 
-  bool Exists(const ConfirmationTokenInfo& confirmation_token) const;
+  [[nodiscard]] bool Exists(
+      const ConfirmationTokenInfo& confirmation_token) const;
 
   size_t Count() const;
 
-  bool IsEmpty() const;
+  [[nodiscard]] bool IsEmpty() const;
 
  private:
   ConfirmationTokenList confirmation_tokens_;

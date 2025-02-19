@@ -35,7 +35,7 @@ class SubdivisionTargetingExclusionRule final
       const CreativeAdInfo& creative_ad) const override;
 
  private:
-  bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
+  [[nodiscard]] bool DoesRespectCap(const CreativeAdInfo& creative_ad) const;
 
   const raw_ref<const SubdivisionTargeting> subdivision_targeting_;
 };

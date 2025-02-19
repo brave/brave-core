@@ -14,7 +14,7 @@ class GURL;
 
 namespace brave_ads {
 
-bool IsSearchEngineResultsPage(const GURL& url);
+[[nodiscard]] bool IsSearchEngineResultsPage(const GURL& url);
 
 std::optional<std::string> ExtractSearchTermQueryValue(const GURL& url);
 

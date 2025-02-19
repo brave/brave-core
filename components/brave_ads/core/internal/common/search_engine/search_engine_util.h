@@ -10,7 +10,7 @@ class GURL;
 
 namespace brave_ads {
 
-bool IsSearchEngine(const GURL& url);
+[[nodiscard]] bool IsSearchEngine(const GURL& url);
 
 }  // namespace brave_ads
 

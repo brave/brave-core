@@ -8,7 +8,7 @@
 
 namespace brave_ads {
 
-bool ShouldDebug();
+[[nodiscard]] bool ShouldDebug();
 
 }  // namespace brave_ads
 
