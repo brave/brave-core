@@ -33,11 +33,11 @@ export const tokenSuggestionsEndpoints = ({
             if (logo !== '' && !isRemoteImageURL(logo)) {
               try {
                 // attempt property reassignment
-                request.token.logo = `chrome://erc-token-images/${logo}`
+                request.token.logo = `chrome://erc-token-images/${encodeURIComponent(logo)}`
               } catch {
                 request.token = {
                   ...request.token,
-                  logo: `chrome://erc-token-images/${logo}`
+                  logo: `chrome://erc-token-images/${encodeURIComponent(logo)}`
                 }
               }
             }

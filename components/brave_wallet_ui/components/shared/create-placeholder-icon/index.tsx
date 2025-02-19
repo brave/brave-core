@@ -118,7 +118,7 @@ export function withPlaceholderIcon<
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return isStorybook ? tokenImageURL || '' : `chrome://image?${tokenImageURL}`
+        return isStorybook ? tokenImageURL || '' : `chrome://image?${encodeURIComponent(tokenImageURL)}`
       }
       return ''
     }, [isRemoteURL, tokenImageURL])
