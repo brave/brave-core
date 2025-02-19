@@ -115,6 +115,7 @@ private class WebViewNavigationAdapter: NSObject, WKNavigationDelegate {
         rewards: nil,
         tabGeneratorAPI: nil,
         historyAPI: nil,
+        braveUserAgentService: nil,
         privateBrowsingManager: privateBrowsingManager
       )
     }()

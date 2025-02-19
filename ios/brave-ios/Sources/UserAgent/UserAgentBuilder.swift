@@ -34,12 +34,12 @@ public struct UserAgentBuilder {
   /// The desktop UA is taken from iOS Safari `Request desktop website` feature.
   ///
   /// - returns: A proper user agent to use in WKWebView and url requests.
-  public func build(desktopMode: Bool) -> String {
+  public func build(desktopMode: Bool, maskBrave: Bool = false) -> String {
 
     if desktopMode { return desktopUA }
 
     let version =
-      FeatureList.kUseBraveUserAgent.enabled
+      (FeatureList.kUseBraveUserAgent.enabled && !maskBrave)
       ? "Brave/\(braveMajorVersion)" : "Version/\(safariVersion)"
 
     return """

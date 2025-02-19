@@ -27,6 +27,7 @@
 @class DeAmpPrefs;
 @class AIChat;
 @class HTTPSUpgradeExceptionsService;
+@class BraveUserAgentService;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
 
@@ -69,6 +70,8 @@ OBJC_EXPORT
 @property(nonatomic, readonly)
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 
+@property(nonatomic, readonly) BraveUserAgentService* braveUserAgentService;
+
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///
 /// When a custom log handler is set, it is the responsibility of the client
@@ -76,15 +79,14 @@ OBJC_EXPORT
 /// the `serverity` passed in.
 + (void)setLogHandler:(nullable BraveCoreLogHandler)logHandler;
 
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)init;
 
-- (instancetype)initWithUserAgent:(NSString*)userAgent;
-
-- (instancetype)initWithUserAgent:(NSString*)userAgent
-               additionalSwitches:
-                   (NSArray<BraveCoreSwitch*>*)additionalSwitches;
+- (instancetype)initWithAdditionalSwitches:
+    (NSArray<BraveCoreSwitch*>*)additionalSwitches;
 
 - (void)scheduleLowPriorityStartupTasks;
+
+- (void)setUserAgent:(NSString*)userAgent;
 
 @property(readonly) BraveWalletAPI* braveWalletAPI;
 
