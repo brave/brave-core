@@ -46,7 +46,7 @@ public class OnboardingController: UIHostingController<OnboardingRootView> {
     environment: OnboardingEnvironment,
     steps: [any OnboardingStep] = .allSteps,
     showSplashScreen: Bool = true,
-    showDismissButton: Bool = true,
+    showDismissButton: Bool = false,
     onCompletion: @escaping () -> Void = {}
   ) {
     super.init(
