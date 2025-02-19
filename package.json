@@ -227,6 +227,7 @@
   "overrides": {
     "axios": "1.7.9",
     "elliptic": "6.6.1",
+    "esbuild": "0.25.0",
     "jest": {
       "write-file-atomic": "6.0.0"
     }
