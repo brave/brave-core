@@ -52,6 +52,11 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr char kGateJuniorMnemonic[] =
+    "gate junior chunk maple cage select orange circle price air tortoise "
+    "jelly art frequent fence middle ice moral wage toddler attitude sign "
+    "lesson grain";
+
 std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   std::vector<uint8_t> vec;
   std::array<uint8_t, 32> sized_vec;
@@ -932,11 +937,8 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                               mojom::KeyringId::kZCashMainnet,
@@ -1029,11 +1031,8 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
 
@@ -1118,11 +1117,8 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(70972);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
@@ -1202,11 +1198,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(10987);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
@@ -1611,11 +1604,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(70972);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
@@ -2535,11 +2525,8 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldSync) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
 
   keyring_service()->SetZCashAccountBirthday(

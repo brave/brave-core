@@ -223,8 +223,8 @@ void ZCashWalletService::IsSyncInProgress(mojom::AccountIdPtr account_id,
                                           IsSyncInProgressCallback callback) {
 #if BUILDFLAG(ENABLE_ORCHARD)
   if (IsZCashShieldedTransactionsEnabled()) {
-    auto it = shield_sync_services_.find(account_id);
-    std::move(callback).Run(it != shield_sync_services_.end(), std::nullopt);
+    std::move(callback).Run(shield_sync_services_.contains(account_id),
+                            std::nullopt);
     return;
   }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
@@ -846,10 +846,7 @@ void ZCashWalletService::GetZCashChainTipStatusTaskDone(
 }
 
 void ZCashWalletService::OnSyncFinished(const mojom::AccountIdPtr& account_id) {
-  auto it = shield_sync_services_.find(account_id);
-  if (it != shield_sync_services_.end()) {
-    shield_sync_services_.erase(it);
-  }
+  shield_sync_services_.erase(account_id);
 }
 
 base::SequenceBound<OrchardSyncState>& ZCashWalletService::sync_state() {
