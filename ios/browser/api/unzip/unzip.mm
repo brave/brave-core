@@ -20,6 +20,10 @@
 #include "net/base/apple/url_conversions.h"
 
 @implementation BraveUnzip
++ (NSString*)jszipScriptPath {
+  NSBundle* bundle = [NSBundle bundleForClass:self];
+  return [bundle pathForResource:@"jszip" ofType:@"js"];
+}
 
 + (void)unzip:(NSString*)zipFile
     toDirectory:(NSString*)directory

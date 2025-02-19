@@ -3,13 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Foundation
 import WebKit
 
 class JSUnzip {
   static func unzip(_ zipPath: String, toDirectory destinationDirectory: String) async -> Bool {
-    guard let jsPath = Bundle.module.path(forResource: "jszip.min", ofType: "js") else {
+    guard let jsPath = Unzip.jszipScriptPath else {
       return false
     }
 
