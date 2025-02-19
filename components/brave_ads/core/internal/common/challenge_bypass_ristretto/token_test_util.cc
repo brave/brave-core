@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_test_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 
 namespace brave_ads::cbr::test {
 
@@ -18,11 +17,11 @@ Token GetInvalidToken() {
   return Token(kInvalidBase64);
 }
 
-std::vector<Token> GetTokens() {
+TokenList GetTokens() {
   return {GetToken()};
 }
 
-std::vector<Token> GetInvalidTokens() {
+TokenList GetInvalidTokens() {
   return {GetInvalidToken()};
 }
 

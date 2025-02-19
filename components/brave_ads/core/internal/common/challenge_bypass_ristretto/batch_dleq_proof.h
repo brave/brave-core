@@ -9,19 +9,18 @@
 #include <optional>
 #include <ostream>
 #include <string>
-#include <vector>
 
 #include "base/check.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/challenge_bypass_ristretto/batch_dleq_proof.h"
 
 namespace brave_ads::cbr {
 
-class BlindedToken;
 class PublicKey;
-class SignedToken;
 class SigningKey;
-class Token;
-class UnblindedToken;
 
 // A `BatchDLEQProof` is a proof of the equivalence of the discrete logarithm
 // between a common pair of points and one or more other pairs of points.
@@ -30,8 +29,8 @@ class BatchDLEQProof {
  public:
   BatchDLEQProof();
   explicit BatchDLEQProof(const std::string& batch_dleq_proof_base64);
-  BatchDLEQProof(const std::vector<BlindedToken>& blinded_tokens,
-                 const std::vector<SignedToken>& signed_tokens,
+  BatchDLEQProof(const BlindedTokenList& blinded_tokens,
+                 const SignedTokenList& signed_tokens,
                  const SigningKey& signing_key);
 
   BatchDLEQProof(const BatchDLEQProof&) = delete;
@@ -60,14 +59,14 @@ class BatchDLEQProof {
       const std::string& batch_dleq_proof_base64);
   std::optional<std::string> EncodeBase64() const;
 
-  [[nodiscard]] bool Verify(const std::vector<BlindedToken>& blinded_tokens,
-                            const std::vector<SignedToken>& signed_tokens,
+  [[nodiscard]] bool Verify(const BlindedTokenList& blinded_tokens,
+                            const SignedTokenList& signed_tokens,
                             const PublicKey& public_key);
 
-  [[nodiscard]] std::optional<std::vector<UnblindedToken>> VerifyAndUnblind(
-      const std::vector<Token>& tokens,
-      const std::vector<BlindedToken>& blinded_tokens,
-      const std::vector<SignedToken>& signed_tokens,
+  [[nodiscard]] std::optional<UnblindedTokenList> VerifyAndUnblind(
+      const TokenList& tokens,
+      const BlindedTokenList& blinded_tokens,
+      const SignedTokenList& signed_tokens,
       const PublicKey& public_key);
 
  private:

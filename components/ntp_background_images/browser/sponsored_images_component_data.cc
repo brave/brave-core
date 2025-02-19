@@ -7126,8 +7126,9 @@ std::optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
   }
 
   for (const auto& data : kRegionalData) {
-    if (data.region == region)
+    if (data.region == region) {
       return data;
+    }
   }
   return std::nullopt;
 }

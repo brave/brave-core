@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"

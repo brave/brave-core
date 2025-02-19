@@ -42,13 +42,13 @@ std::string NTPCustomImagesSource::GetSource() {
 
 void NTPCustomImagesSource::StartDataRequest(
     const GURL& url,
-    const content::WebContents::Getter& wc_getter,
+    const content::WebContents::Getter& /*wc_getter*/,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   GetImageFile(service_->GetImageFilePath(url), std::move(callback));
 }
 
-std::string NTPCustomImagesSource::GetMimeType(const GURL& url) {
+std::string NTPCustomImagesSource::GetMimeType(const GURL& /*url*/) {
   return "image/jpeg";
 }
 
@@ -68,7 +68,6 @@ void NTPCustomImagesSource::GetImageFile(const base::FilePath& image_file_path,
 void NTPCustomImagesSource::OnGotImageFile(GotDataCallback callback,
                                            const std::string& input) {
   std::move(callback).Run(new base::RefCountedBytes(base::as_byte_span(input)));
-  return;
 }
 
 }  // namespace ntp_background_images

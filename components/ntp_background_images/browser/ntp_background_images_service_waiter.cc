@@ -39,17 +39,17 @@ void NTPBackgroundImagesServiceWaiter::WaitForOnSuperReferralEnded() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void NTPBackgroundImagesServiceWaiter::OnBackgroundImagesDataDidUpdate(
-    NTPBackgroundImagesData* data) {
+    NTPBackgroundImagesData* /*data*/) {
   on_background_images_did_update_run_loop_.Quit();
 }
 
 void NTPBackgroundImagesServiceWaiter::OnSponsoredImagesDataDidUpdate(
-    NTPSponsoredImagesData* data) {
+    NTPSponsoredImagesData* /*data*/) {
   on_sponsored_images_data_did_update_run_loop_.Quit();
 }
 
 void NTPBackgroundImagesServiceWaiter::OnSponsoredContentDidUpdate(
-    const base::Value::Dict& dict) {
+    const base::Value::Dict& /*dict*/) {
   on_sponsored_content_did_update_run_loop_.Quit();
 }
 

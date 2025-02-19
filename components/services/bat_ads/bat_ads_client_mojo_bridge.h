@@ -43,7 +43,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
   ~BatAdsClientMojoBridge() override;
 
-  // AdsClient:
+  // brave_ads::AdsClient:
   void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
   void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
   void NotifyPendingObservers() override;

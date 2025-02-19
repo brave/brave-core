@@ -25,9 +25,6 @@ inline constexpr char kBlindedTokenBase64[] =
 inline constexpr char kSignedTokenBase64[] =
     R"(jGZR7JREp+zoqxgsMOa32F+zhhBw/0d/HeVhl9iPVWU=)";
 
-inline constexpr char kDLEQProofBase64[] =
-    R"(8vp0QItdO24oqOZB8m8rCB85VUftBhnpZ8kDovYP9AvvlaEpwDFbTi72B1ZEJmumS5TazlWlLBlI4HrWDCMvDg==)";
-
 inline constexpr char kBatchDLEQProofBase64[] =
     R"(y0a409PTX6g97xC0Xq8cCuY7ElLPaP+QJ6DaHNfqlQWizBYCSWdaleakKatkyNswfPmkQuhL7awmzQ0ygEUGDw==)";
 
