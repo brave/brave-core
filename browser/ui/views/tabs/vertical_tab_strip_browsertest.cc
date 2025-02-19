@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
@@ -527,11 +528,13 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   AppendTab(browser());
   browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
 
-  // When first tab is added, height should have tab's height plush top & bottom
+  // When first tab is added, height should have tab's height plus top & bottom
   // margin.
   contents_view_height +=
       (tabs::kVerticalTabHeight + tabs::kMarginForVerticalTabContainers * 2);
-  EXPECT_EQ(region_view->contents_view_->height(), contents_view_height);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return region_view->contents_view_->height() == contents_view_height;
+  }));
 
   AppendTab(browser());
   browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
@@ -540,7 +543,9 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   // tab spacing.
   contents_view_height +=
       (tabs::kVerticalTabHeight + tabs::kVerticalTabsSpacing);
-  EXPECT_EQ(region_view->contents_view_->height(), contents_view_height);
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return region_view->contents_view_->height() == contents_view_height;
+  }));
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollBarVisibility) {
