@@ -5,7 +5,6 @@ script/audit_deps.py @brave/sec-team
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
 /README.md @bsclifton
-Jenkinsfile @brave/devops-team
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 
