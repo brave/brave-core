@@ -323,17 +323,11 @@ export class BaseQueryCache {
       return makeNativeAssetLogo(token.symbol, token.chainId)
     }
 
-    if (
-      !token.logo ||
-      token.logo.startsWith('data:image/') ||
-      token.logo.startsWith('chrome://erc-token-images/')
-    ) {
-      // nothing to change
-      return token.logo
+    if (token.logo.startsWith('ipfs://')) {
+      return (await this.getIpfsGatewayTranslatedNftUrl(token.logo)) || ''
     }
-    return token.logo.startsWith('ipfs://')
-      ? (await this.getIpfsGatewayTranslatedNftUrl(token.logo)) || ''
-      : `chrome://erc-token-images/${token.logo}`
+    // nothing to change
+    return token.logo
   }
 
   getEnabledCoinTypes = async () => {
