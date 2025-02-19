@@ -440,7 +440,7 @@ class VerticalTabStripScrollContentsView : public views::View {
     // Prevent reentrance caused by container_->Layout()
     base::AutoReset<bool> in_preferred_size_change(&in_preferred_size_changed_,
                                                    true);
-    container_->InvalidateLayout();
+    container_->DeprecatedLayoutImmediately();
   }
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
