@@ -393,6 +393,14 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderDino"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/quickactionsearchwidget/BraveQuickActionSearchWidgetProvider"));
     }
 
     @Test
