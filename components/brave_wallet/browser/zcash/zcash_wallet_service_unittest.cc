@@ -954,6 +954,10 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
               EXPECT_EQ(account_info->orchard_address.value(),
                         "u1qtnwpp2gg5r745auv2r5cvc4v0q8sr8nd3xcg48ck92xul8t6tmv"
                         "urkzksfln94mh2amfxjemwwtmvys4l40xlkxck5fpgqxzuqxs2jq");
+              EXPECT_EQ(
+                  account_info->orchard_internal_address.value(),
+                  "u1dl9dtss80tsutx3xfje4vlndwhc2f2pernhhpxfsz9vw6nr0zz"
+                  "lkw9p2m22xjcn5588fp3tnta9uqhpk4nh06xumwvt8ff7w653g5pvk");
             }));
     zcash_wallet_service_->GetZCashAccountInfo(
         account_id_1.Clone(), get_zcash_account_info_callback.Get());
