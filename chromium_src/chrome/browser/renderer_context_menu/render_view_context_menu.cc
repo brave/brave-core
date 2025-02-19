@@ -769,15 +769,16 @@ void BraveRenderViewContextMenu::AppendDeveloperItems() {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
   if (params_.form_control_type) {
-    std::cout << "params_.form_control_type=" << params_.form_control_type.value() << std::endl;
+    std::cout << "params_.form_control_type="
+              << params_.form_control_type.value() << std::endl;
   }
 
   if (base::FeatureList::IsEnabled(features::kBraveEmailAliases) &&
       params_.form_control_type &&
       (params_.form_control_type.value() ==
-          blink::mojom::FormControlType::kInputEmail ||
+           blink::mojom::FormControlType::kInputEmail ||
        params_.form_control_type.value() ==
-          blink::mojom::FormControlType::kInputText)) {
+           blink::mojom::FormControlType::kInputText)) {
     menu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
     menu_model_.AddItemWithStringId(IDC_NEW_EMAIL_ALIAS, IDS_NEW_EMAIL_ALIAS);
   }
