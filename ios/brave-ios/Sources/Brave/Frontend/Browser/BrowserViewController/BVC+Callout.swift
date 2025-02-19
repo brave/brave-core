@@ -73,7 +73,7 @@ extension BrowserViewController {
           toggleAction: { [weak self] isOn in
             self?.braveCore.p3aUtils.isP3AEnabled = isOn
           },
-          linkAction: { url in
+          linkAction: { [unowned onboardingP3ACalloutController] url in
             let p3aLearnMoreController = SFSafariViewController(
               url: .brave.p3aHelpArticle,
               configuration: .init()
