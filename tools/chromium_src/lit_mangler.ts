@@ -30,6 +30,13 @@ const loadRaw = (filepath: string) => {
     return tsFile
 }
 
+/**
+ * Recursively loads the HTML template literals from a file.
+ *
+ * @param source The source file to load the template literals from.
+ * @param node The node to load the template literals from.
+ * @param templateTags The template tags to load the template literals into.
+ */
 const getTemplateLiterals = (source: ts.SourceFile, node: ts.Node, templateTags: HTMLTemplateTags) => {
     if (ts.isTaggedTemplateExpression(node) && node.tag.getText(source) === 'html') {
         let text = node.template.getText(source)
@@ -51,6 +58,11 @@ const getTemplateLiterals = (source: ts.SourceFile, node: ts.Node, templateTags:
     })
 }
 
+/**
+ * Loads the HTML template literals from a file.
+ *
+ * @param filepath The file to load the template literals from.
+ */
 const getLiteralsFromFile = (filepath: string) => {
     const file = loadRaw(filepath)
     const root: HTMLTemplateTags = { text: file.getText(), children: [], id: nextId++ }
@@ -63,6 +75,51 @@ const getLiteralsFromFile = (filepath: string) => {
     return root
 }
 
+/**
+ * Injects placeholders into the template so we can later replace them with
+ * the mangled templates.
+ * 
+ * (i.e.)
+ * 
+ * export function getHtml(this: Foo) {
+ *   return html`<div>Hello</div>`
+ * }
+ * 
+ * goes to
+ * 
+ * export function getHtml(this: Foo) {
+ *   return html`$$lit_mangler_1$$`
+ * }
+ * 
+ * This means we parse the template as HTML and later reinject the template back
+ * into the source code (with replacePlaceholders).
+ * 
+ * Note: If a template contains another template, that template will also be
+ * replaced with a placeholder. This means we can mangle each template without
+ * worrying about where it exists in the source code.
+ * 
+ * (i.e.)
+ * 
+ * export function getHtml(this: Foo) {
+ *   return html`<div>${this.isBold ? html`<b>Hi</b>` : 'Hi'}</div>`
+ * }
+ * 
+ * goes to
+ * 
+ * export function getHtml(this: Foo) {
+ *   return html`$$lit_mangler_1$$`
+ * }
+ * 
+ * and then $$lit_mangler_1$$ is:
+ * 
+ * `<div>${this.isBold ? html`$$lit_mangler_2$$` : 'Hi'}</div>`
+ * 
+ * and $$lit_mangler_2$$ is:
+ * 
+ * `<b>Hi</b>`
+ * 
+ * @param template The template to inject placeholders into.
+ */
 const injectPlaceholders = (template: HTMLTemplateTags) => {
     for (const child of template.children) {
         const original = child.text
@@ -73,6 +130,24 @@ const injectPlaceholders = (template: HTMLTemplateTags) => {
     return template.text
 }
 
+/**
+ * Reassembles the source code by replacing template placeholders with the
+ * possibly mangled templates.
+ * 
+ * (i.e.)
+ * 
+ * export function getHtml(this: Foo) {
+ *   return html`$$lit_mangler_1$$`
+ * }
+ * 
+ * goes to
+ * 
+ * export function getHtml(this: Foo) {
+ *   return html`<div>Hello</div>`
+ * }
+ * 
+ * @param template The template to replace the placeholders in.
+ */
 const replacePlaceholders = (template: HTMLTemplateTags) => {
     for (const child of template.children) {
         child.text = replacePlaceholders(child)
@@ -84,6 +159,11 @@ const replacePlaceholders = (template: HTMLTemplateTags) => {
 
 let result: HTMLTemplateTags | undefined
 
+/**
+ * Loads the template literals from a file.
+ *
+ * @param file The file to load the template literals from.
+ */
 export const load = (file: string) => {
     if (result !== undefined) {
         throw new Error('This should only be called once per file')
@@ -93,6 +173,11 @@ export const load = (file: string) => {
     injectPlaceholders(result)
 }
 
+/**
+ * Writes the mangled template to a file.
+ *
+ * @param file The file to write the mangled template to.
+ */
 export const write = (file: string) => {
     if (!result) {
         throw new Error('This should only be called after load')
@@ -137,10 +222,20 @@ export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate
         // Note: we ensure that all attributes are quoted so the template can be
         // parsed as HTML.
         // This won't work for attributes with braces in them, but it'll
-        // drastically break the HTML output from upstrean, so it should be
+        // drastically break the HTML output from upstream, so it should be
         // pretty obvious that something went wrong.
-        .replaceAll(/(\w+)(\s+)?=(\s+)?(\$\{.*?\})(\s|>)/gi, (...args) => {
-            return `${args[1]}="${args[4].replaceAll('"', '&quot;')}"${args[5]}`
+        // This turns `foo=${bar}` into `foo="bar"`
+        .replaceAll(/(\w+)(\s+)?=(\s+)?(\$\{.*?\})(\s|>)/gi, '$1="$4"$5')
+        // Replace all quotes in interpolated strings with &quot; so we don't
+        // break the HTML output.
+        // This turns `foo="${bar ? "one" : "two"}"` into
+        // `foo="${bar ? &quot;one&quot; : &quot;two&quot;}"`
+        .replaceAll(/\$\{.*?\}/gi, (...args) => {
+            return args[0]
+                .replaceAll('&', '&amp;') // Note: &amp; needs to be first
+                .replaceAll('"', '&quot;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
         })
 
     mangler(element.content)
@@ -148,8 +243,8 @@ export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate
     template.text = element.innerHTML
         .replaceAll('&gt;', '>')
         .replaceAll('&lt;', '<')
-        .replaceAll('&amp;', '&')
         .replaceAll('&quot;', '"')
+        .replaceAll('&amp;', '&') // Note: &amp; needs to be last
 }
 
 // Note: This doesn't check the template param against the predicate, only its children.
@@ -168,6 +263,8 @@ export const findTemplate = (predicate: (template: HTMLTemplateTags) => boolean,
             return result
         }
     }
+
+    return undefined
 }
 
 // Utils to make testing easier

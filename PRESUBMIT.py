@@ -49,6 +49,21 @@ def CheckLeoVariables(input_api, output_api):
     except RuntimeError as err:
         return [output_api.PresubmitError(err.args[1])]
 
+
+# Ensure Typescript files which we use as part of the build process are typechecked.
+def CheckTypescriptBuildFilesCompile(_, output_api):
+    try:
+        brave_node.RunNode([
+            brave_node.PathInNodeModules('tsx', 'dist', 'cli.mjs'),
+            '--tsconfig',
+            './tsconfig-mangle.json',
+            './tools/chromium_src/lit_mangler_cli.ts',
+            'typecheck',
+        ])
+    except RuntimeError as err:
+        return [output_api.PresubmitError(err.args[1])]
+    return []
+
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
     # Use git cl format to format supported files with Chromium formatters.
@@ -147,7 +162,11 @@ def CheckESLint(input_api, output_api):
         r'.+\.ts$',
         r'.+\.tsx$',
     )
-    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
+
+    # ESLint struggles with the dynamic import for the mangler here, and it
+    # isn't possible to disable that specific check.
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
+        r".+lit_mangler.*\.ts", )
 
     file_filter = lambda f: input_api.FilterSourceFile(
         f, files_to_check=files_to_check, files_to_skip=files_to_skip)
