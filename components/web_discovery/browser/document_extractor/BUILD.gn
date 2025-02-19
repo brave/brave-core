@@ -18,7 +18,7 @@ rust_static_library("document_extractor") {
   cxx_bindings = [ "lib.rs" ]
 
   deps = [
-    "//brave/third_party/rust/html5ever/v0_25:lib",
+    "//brave/third_party/rust/html5ever/v0_29:lib",
     "//brave/third_party/rust/kuchikiki/v0_8:lib",
   ]
 }
