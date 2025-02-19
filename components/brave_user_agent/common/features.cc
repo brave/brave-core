@@ -3,12 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/ios/browser/user_agent/features.h"
+#include "brave/components/brave_user_agent/common/features.h"
 
-namespace brave::features {
+#include "base/feature_list.h"
+
+namespace brave_user_agent::features {
 
 BASE_FEATURE(kUseBraveUserAgent,
              "UseBraveUserAgent",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+bool IsUseBraveUserAgentEnabled() {
+  return base::FeatureList::IsEnabled(kUseBraveUserAgent);
 }
+
+}  // namespace brave_user_agent::features

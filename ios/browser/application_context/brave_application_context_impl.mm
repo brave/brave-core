@@ -14,6 +14,8 @@
 #include "brave/components/brave_component_updater/browser/brave_component_updater_delegate.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_sync/network_time_helper.h"
+#include "brave/components/brave_user_agent/browser/brave_user_agent_service.h"
+#include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/components/debounce/core/browser/debounce_component_installer.h"
 #include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
@@ -97,6 +99,15 @@ BraveApplicationContextImpl::https_upgrade_exceptions_service() {
   return https_upgrade_exceptions_service_.get();
 }
 
+brave_user_agent::BraveUserAgentService*
+BraveApplicationContextImpl::brave_user_agent_service() {
+  if (!brave_user_agent_service_) {
+    brave_user_agent_service_ = brave_user_agent::BraveUserAgentServiceFactory(
+        local_data_files_service());
+  }
+  return brave_user_agent_service_.get();
+}
+
 void BraveApplicationContextImpl::StartBraveServices() {
   // We need to Initialize the component installers
   // before calling Start on the local_data_files_service
@@ -105,6 +116,11 @@ void BraveApplicationContextImpl::StartBraveServices() {
 
   if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     https_upgrade_exceptions_service();
+  }
+
+  if (base::FeatureList::IsEnabled(
+          brave_user_agent::features::kUseBraveUserAgent)) {
+    brave_user_agent_service();
   }
 
   // Start the local data file service

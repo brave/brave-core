@@ -3,10 +3,5 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("features") {
-  sources = [
-    "features.cc",
-    "features.h",
-  ]
-  deps = [ "//base" ]
-}
+browser_api_brave_user_agent_service_public_headers =
+    [ "//brave/ios/browser/api/brave_user_agent/brave_user_agent_service.h" ]

@@ -19,6 +19,7 @@ source_set("features") {
     "//brave/components/brave_search_conversion:brave_search_conversion",
     "//brave/components/brave_shields/core/common:common",
     "//brave/components/brave_sync:features",
+    "//brave/components/brave_user_agent/common:common",
     "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common",
     "//brave/components/de_amp/common",
@@ -29,7 +30,6 @@ source_set("features") {
     "//brave/ios/browser/api/translate:features",
     "//brave/ios/browser/playlist",
     "//brave/ios/browser/ui/browser_menu:features",
-    "//brave/ios/browser/user_agent:features",
     "//build:blink_buildflags",
     "//net",
   ]
