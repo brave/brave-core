@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 7e65d2fab5ce5549873cdf759872c52621bcaf00..5b843ffdf2785eec0ad4b7f1bcb85c495aa01758 100644
+index bd552f69662c0cdb4225d0527d76f996bf0740af..076a627297cce11bcce4d9fb660fa01f40de2a96 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -657,6 +657,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -668,6 +668,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    // Deprecated 02/2025.
    registry->RegisterIntegerPref(kNumberOfProfiles, 0);
    registry->RegisterListPref(kLastActiveProfiles);
@@ -10,10 +10,10 @@ index 7e65d2fab5ce5549873cdf759872c52621bcaf00..5b843ffdf2785eec0ad4b7f1bcb85c49
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -1013,6 +1014,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -1027,6 +1028,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
  
-   // Deprecated 12/2024.
-   registry->RegisterBooleanPref(kPageContentCollectionEnabled, false);
+   // Added 02/2025
+   safety_check_prefs::RegisterPrefs(registry);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
