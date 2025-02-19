@@ -46,26 +46,25 @@ WireguardProfileCredentials::FromServerResponse(
   if (server_response.empty() || client_private_key.empty()) {
     return std::nullopt;
   }
-  std::optional<base::Value> value = base::JSONReader::Read(server_response);
+  std::optional<base::Value::Dict> value =
+      base::JSONReader::ReadDict(server_response);
   if (!value.has_value()) {
     return std::nullopt;
   }
-  auto* server_public_key =
-      value->GetDict().FindStringByDottedPath("server-public-key");
+  auto* server_public_key = value->FindStringByDottedPath("server-public-key");
   if (!server_public_key) {
     return std::nullopt;
   }
   auto* mapped_ip4_address =
-      value->GetDict().FindStringByDottedPath("mapped-ipv4-address");
+      value->FindStringByDottedPath("mapped-ipv4-address");
   if (!mapped_ip4_address) {
     return std::nullopt;
   }
-  auto* client_id = value->GetDict().FindStringByDottedPath("client-id");
+  auto* client_id = value->FindStringByDottedPath("client-id");
   if (!client_id) {
     return std::nullopt;
   }
-  auto* api_auth_token =
-      value->GetDict().FindStringByDottedPath("api-auth-token");
+  auto* api_auth_token = value->FindStringByDottedPath("api-auth-token");
   if (!api_auth_token) {
     return std::nullopt;
   }
@@ -79,31 +78,30 @@ WireguardProfileCredentials::FromString(const std::string& credentials) {
   if (credentials.empty()) {
     return std::nullopt;
   }
-  std::optional<base::Value> value = base::JSONReader::Read(credentials);
+  std::optional<base::Value::Dict> value =
+      base::JSONReader::ReadDict(credentials);
   if (!value.has_value()) {
     return std::nullopt;
   }
-  auto* server_public_key =
-      value->GetDict().FindStringByDottedPath("server-public-key");
+  auto* server_public_key = value->FindStringByDottedPath("server-public-key");
   if (!server_public_key) {
     return std::nullopt;
   }
   auto* client_private_key =
-      value->GetDict().FindStringByDottedPath("client-private-key");
+      value->FindStringByDottedPath("client-private-key");
   if (!client_private_key) {
     return std::nullopt;
   }
   auto* mapped_ip4_address =
-      value->GetDict().FindStringByDottedPath("mapped-ipv4-address");
+      value->FindStringByDottedPath("mapped-ipv4-address");
   if (!mapped_ip4_address) {
     return std::nullopt;
   }
-  auto* client_id = value->GetDict().FindStringByDottedPath("client-id");
+  auto* client_id = value->FindStringByDottedPath("client-id");
   if (!client_id) {
     return std::nullopt;
   }
-  auto* api_auth_token =
-      value->GetDict().FindStringByDottedPath("api-auth-token");
+  auto* api_auth_token = value->FindStringByDottedPath("api-auth-token");
   if (!api_auth_token) {
     return std::nullopt;
   }

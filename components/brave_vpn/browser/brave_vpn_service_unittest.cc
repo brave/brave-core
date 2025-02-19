@@ -12,12 +12,12 @@
 #include "base/base64.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_forward.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service_helper.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
@@ -118,10 +118,10 @@ constexpr char kTestVpnOrders[] = R"(
 
 std::string GenerateTestingCreds(const std::string& domain,
                                  bool active_subscription = true) {
-  auto value = base::JSONReader::Read(kTestVpnOrders);
+  auto value = base::test::ParseJsonDict(kTestVpnOrders);
   std::string json;
   base::JSONWriter::WriteWithOptions(
-      value.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
+      value, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
 
   auto now = base::Time::Now();
   base::Time::Exploded exploded;

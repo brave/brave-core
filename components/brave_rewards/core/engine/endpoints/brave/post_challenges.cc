@@ -77,13 +77,13 @@ PostChallenges::Result PostChallenges::MapResponse(
     return base::unexpected(Error::kUnexpectedStatusCode);
   }
 
-  auto value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_dict()) {
+  auto value = base::JSONReader::ReadDict(response.body);
+  if (!value) {
     LogError(FROM_HERE) << "Failed to parse body: invalid JSON";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto* challenge_id = value->GetDict().FindString("challengeId");
+  auto* challenge_id = value->FindString("challengeId");
   if (!challenge_id || challenge_id->empty()) {
     LogError(FROM_HERE) << "Failed to parse body: missing challengeId";
     return base::unexpected(Error::kFailedToParseBody);
