@@ -50,15 +50,15 @@ def run_mangler(mangler_file, preprocess_file):
     import brave_node
 
     tsx = brave_node.PathInNodeModules('tsx', 'dist', 'cli.mjs')
-    ts_config = os.path.join(get_src_dir(), 'brave', 'tsconfig.json')
+    ts_config = os.path.join(get_src_dir(), 'brave', 'tsconfig-mangle.json')
     lit_mangler = os.path.join(get_src_dir(), 'brave', 'tools', 'chromium_src',
                                'lit_mangler_cli.ts')
 
     # Note: We read from and write to the preprocess file - this way any
     # preprocessing that upstream does will be mangled.
     brave_node.RunNode([
-        tsx, '--tsconfig', ts_config, lit_mangler, 'mangle', '-m',
-        mangler_file, '-i', preprocess_file, '-o', preprocess_file
+        tsx, '--tsconfig', ts_config, lit_mangler, 'mangle', '--typecheck',
+        '-m', mangler_file, '-i', preprocess_file, '-o', preprocess_file
     ])
 
 
