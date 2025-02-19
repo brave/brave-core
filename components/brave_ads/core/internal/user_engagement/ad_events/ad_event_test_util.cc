@@ -44,10 +44,10 @@ void RecordAdEvents(
 
 void RecordAdEvents(const AdInfo& ad,
                     mojom::ConfirmationType mojom_confirmation_type,
-                    int count) {
-  CHECK_GT(count, 0);
+                    size_t count) {
+  CHECK_GT(count, 0U);
 
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     RecordAdEvent(ad, mojom_confirmation_type);
   }
 }

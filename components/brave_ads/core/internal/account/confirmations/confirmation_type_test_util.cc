@@ -14,8 +14,8 @@ namespace brave_ads::test {
 std::vector<mojom::ConfirmationType>
 BuildConfirmationTypeForCountAndIntersperseOtherTypes(
     mojom::ConfirmationType mojom_confirmation_type,
-    int count) {
-  CHECK_GT(count, 0);
+    size_t count) {
+  CHECK_GT(count, 0U);
 
   const int confirmation_type_max_value =
       static_cast<int>(mojom::ConfirmationType::kMaxValue);
@@ -23,12 +23,12 @@ BuildConfirmationTypeForCountAndIntersperseOtherTypes(
   std::vector<mojom::ConfirmationType> mojom_confirmation_types;
   mojom_confirmation_types.reserve(count + confirmation_type_max_value - 1);
 
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     mojom_confirmation_types.push_back(mojom_confirmation_type);
   }
 
   // Sprinkle in one of each confirmation type, other than `confirmation_type`.
-  for (int i = 0; i < confirmation_type_max_value; ++i) {
+  for (size_t i = 0; i < confirmation_type_max_value; ++i) {
     const auto other_mojom_confirmation_type =
         static_cast<mojom::ConfirmationType>(i);
     if (other_mojom_confirmation_type == mojom_confirmation_type) {

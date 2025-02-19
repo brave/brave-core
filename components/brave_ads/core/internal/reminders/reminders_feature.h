@@ -13,7 +13,7 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kRemindersFeature);
 
-inline constexpr base::FeatureParam<int> kRemindUserIfClickingTheSameAdAfter{
+inline constexpr base::FeatureParam<size_t> kRemindUserIfClickingTheSameAdAfter{
     &kRemindersFeature, "remind_user_if_clicking_the_same_ad_after", 3};
 
 }  // namespace brave_ads

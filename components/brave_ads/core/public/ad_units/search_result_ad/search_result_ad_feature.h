@@ -14,11 +14,11 @@ namespace brave_ads {
 BASE_DECLARE_FEATURE(kSearchResultAdFeature);
 
 // Set to 0 to never cap.
-inline constexpr base::FeatureParam<int> kMaximumSearchResultAdsPerHour{
+inline constexpr base::FeatureParam<size_t> kMaximumSearchResultAdsPerHour{
     &kSearchResultAdFeature, "maximum_ads_per_hour", 0};
 
 // Set to 0 to never cap.
-inline constexpr base::FeatureParam<int> kMaximumSearchResultAdsPerDay{
+inline constexpr base::FeatureParam<size_t> kMaximumSearchResultAdsPerDay{
     &kSearchResultAdFeature, "maximum_ads_per_day", 0};
 
 }  // namespace brave_ads

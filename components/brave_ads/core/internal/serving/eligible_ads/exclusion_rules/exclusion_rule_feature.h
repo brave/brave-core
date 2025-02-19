@@ -40,14 +40,14 @@ inline constexpr base::FeatureParam<base::TimeDelta>
 
 // Set to 0 to never exclude an ad if the creative instance exceeds the per hour
 // cap.
-inline constexpr base::FeatureParam<int>
+inline constexpr base::FeatureParam<size_t>
     kShouldExcludeAdIfCreativeInstanceExceedsPerHourCap{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_creative_instance_exceeds_per_hour_cap", 1};
 
 // Set to 0 to never exclude an ad if the creative set exceeds the conversion
 // cap.
-inline constexpr base::FeatureParam<int>
+inline constexpr base::FeatureParam<size_t>
     kShouldExcludeAdIfCreativeSetExceedsConversionCap{
         &kExclusionRulesFeature,
         "should_exclude_ad_if_creative_set_exceeds_conversion_cap", 1};

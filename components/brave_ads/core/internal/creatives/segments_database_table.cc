@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -29,7 +30,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& [creative_set_id, segments_set] : segments) {
     for (const auto& segment : segments_set) {
       BindColumnString(mojom_db_action, index++, creative_set_id);

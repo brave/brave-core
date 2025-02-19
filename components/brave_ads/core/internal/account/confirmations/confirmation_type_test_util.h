@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_TYPE_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_TYPE_TEST_UTIL_H_
 
+#include <cstddef>
 #include <vector>
 
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
@@ -15,7 +16,7 @@ namespace brave_ads::test {
 std::vector<mojom::ConfirmationType>
 BuildConfirmationTypeForCountAndIntersperseOtherTypes(
     mojom::ConfirmationType mojom_confirmation_type,
-    int count);
+    size_t count);
 
 }  // namespace brave_ads::test
 

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <map>
 #include <utility>
 
@@ -50,7 +51,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& creative_ad : creative_ads) {
     BindColumnString(mojom_db_action, index++,
                      creative_ad.creative_instance_id);

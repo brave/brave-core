@@ -19,7 +19,7 @@ namespace {
 
 std::string HeadersToString(
     const base::flat_map<std::string, std::string>& headers,
-    const int indent = 4) {
+    const size_t indent = 4) {
   std::vector<std::string> formatted_headers;
   formatted_headers.reserve(headers.size());
 

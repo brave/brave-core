@@ -26,7 +26,7 @@ int DayOfWeek(base::Time time, bool is_local);
 constexpr int DaysInMonth(int year, int month) noexcept {
   CHECK((month >= 1 && month <= 12));
 
-  constexpr int kDaysInMonth[] = {
+  constexpr size_t kDaysInMonth[] = {
       31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31  // non leap year.
   };
 

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_DELEGATE_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_DELEGATE_MOCK_H_
 
+#include <cstddef>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens_delegate.h"
@@ -25,6 +26,7 @@ class RefillConfirmationTokensDelegateMock
 
   ~RefillConfirmationTokensDelegateMock() override;
 
+  MOCK_METHOD(void, OnWillRefillConfirmationTokens, (size_t count));
   MOCK_METHOD(void, OnDidRefillConfirmationTokens, ());
 
   MOCK_METHOD(void, OnFailedToRefillConfirmationTokens, ());

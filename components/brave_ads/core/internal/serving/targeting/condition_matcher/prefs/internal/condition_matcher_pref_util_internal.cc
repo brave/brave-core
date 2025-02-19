@@ -93,7 +93,7 @@ std::optional<base::Value> MaybeGetListPrefValue(const base::Value& pref_value,
 
   const base::Value::List& list = pref_value.GetList();
 
-  if (index < 0 || index >= static_cast<int>(list.size())) {
+  if (index < 0 || index > static_cast<int>(list.size()) - 1) {
     // Invalid pref path key, because the list index is out of bounds.
     return std::nullopt;
   }

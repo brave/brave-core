@@ -21,8 +21,8 @@ inline constexpr base::FeatureParam<base::TimeDelta> kPageLandAfter{
     &kSiteVisitFeature, "page_land_after", base::Seconds(5)};
 
 // Set to 0 to never cap.
-inline constexpr base::FeatureParam<int> kPageLandCap{&kSiteVisitFeature,
-                                                      "page_land_cap", 0};
+inline constexpr base::FeatureParam<size_t> kPageLandCap{&kSiteVisitFeature,
+                                                         "page_land_cap", 0};
 
 inline constexpr base::FeatureParam<bool> kShouldSuspendAndResumePageLand{
     &kSiteVisitFeature, "should_suspend_and_resume_page_land", true};

@@ -20,7 +20,7 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap(const AdEventList& ad_events) {
-  int count = 0;
+  size_t count = 0;
 
   for (const auto& ad_event : ad_events) {
     if (ad_event.confirmation_type == mojom::ConfirmationType::kClicked) {

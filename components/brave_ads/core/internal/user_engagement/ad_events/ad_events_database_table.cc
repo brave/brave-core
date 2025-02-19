@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -53,7 +54,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& ad_event : ad_events) {
     if (!ad_event.IsValid()) {
       BLOG(0, "Invalid ad event");

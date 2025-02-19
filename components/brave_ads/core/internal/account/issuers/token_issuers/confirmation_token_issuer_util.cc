@@ -25,7 +25,7 @@ bool IsConfirmationTokenIssuerValid(const IssuersInfo& issuers) {
   }
 
   return token_issuer->public_keys.size() <=
-         static_cast<size_t>(kMaximumTokenIssuerPublicKeys.Get());
+         kMaximumTokenIssuerPublicKeys.Get();
 }
 
 }  // namespace brave_ads
