@@ -310,11 +310,12 @@ void SystemVPNConnectionAPIImplBase::OnGetProfileCredentials(
 
   VLOG(2) << __func__ << " : received profile credential";
 
-  std::optional<base::Value> value = base::JSONReader::Read(profile_credential);
-  if (value && value->is_dict()) {
+  std::optional<base::Value::Dict> value =
+      base::JSONReader::ReadDict(profile_credential);
+  if (value) {
     constexpr char kUsernameKey[] = "eap-username";
     constexpr char kPasswordKey[] = "eap-password";
-    const auto& dict = value->GetDict();
+    const auto& dict = *value;
     const std::string* username = dict.FindString(kUsernameKey);
     const std::string* password = dict.FindString(kPasswordKey);
     if (!username || !password) {

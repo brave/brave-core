@@ -23,19 +23,18 @@
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_vpn {
-bool IsValidCredentialSummary(const base::Value& summary) {
-  DCHECK(summary.is_dict());
-  const bool active = summary.GetDict().FindBool("active").value_or(false);
+bool IsValidCredentialSummary(const base::Value::Dict& summary) {
+  const bool active = summary.FindBool("active").value_or(false);
   const int remaining_credential_count =
-      summary.GetDict().FindInt("remaining_credential_count").value_or(0);
+      summary.FindInt("remaining_credential_count").value_or(0);
   return active && remaining_credential_count > 0;
 }
 
-bool IsValidCredentialSummaryButNeedActivation(const base::Value& summary) {
-  DCHECK(summary.is_dict());
-  const bool active = summary.GetDict().FindBool("active").value_or(false);
+bool IsValidCredentialSummaryButNeedActivation(
+    const base::Value::Dict& summary) {
+  const bool active = summary.FindBool("active").value_or(false);
   const int remaining_credential_count =
-      summary.GetDict().FindInt("remaining_credential_count").value_or(0);
+      summary.FindInt("remaining_credential_count").value_or(0);
   return !active && remaining_credential_count > 0;
 }
 
