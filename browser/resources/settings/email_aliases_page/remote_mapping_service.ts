@@ -39,7 +39,7 @@ export class RemoteMappingService implements MappingService {
     return sendWithPromise('email_aliases.generateAlias')
   }*/
   async generateAlias (): Promise<string> {
-    return "mock-" + Math.random().toString().slice(2,6) + "@bravealias.com"
+    return "mock-" + Math.random().toString().slice(2,6) + "@sandbox.bravealias.com"
   }
   async onAccountReady(): Promise<boolean> {
     this.pending_cancellation_ = false
