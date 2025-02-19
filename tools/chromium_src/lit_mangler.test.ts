@@ -74,7 +74,109 @@ describe('Attribute handling', () => {
             expect(div?.getAttribute('?hidden')).toBe('${this.foo || this.bar || "<p>haha</p>"}')
         }, template)
     })
+
+    it('should not break sandbox attribute', () => {
+        const template: HTMLTemplateTags = { text: `<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(e => {
+            const iframe = e.querySelector('iframe')
+            expect(iframe).toBeDefined()
+            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups')
+        }, template)
+
+        expect(template.text).toBe(`<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`)
+    })
+
+    it('should not break sandbox attribute when interpolated', () => {
+        const template: HTMLTemplateTags = { text: `<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(e => {
+            const iframe = e.querySelector('iframe')
+            expect(iframe).toBeDefined()
+            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions}')
+        }, template)
+
+        expect(template.text).toBe(`<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`)
+    })
+
+    it('should not break sandbox attribute using ternary', () => {
+        const template: HTMLTemplateTags = { text: `<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : ""}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(e => {
+            const iframe = e.querySelector('iframe')
+            expect(iframe).toBeDefined()
+            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : ""}')
+        }, template)
+
+        expect(template.text).toBe(`<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : ""}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`)
+    })
+
+    it('should not break sandbox attribute using ternary and mixed quotes', () => {
+        const template: HTMLTemplateTags = { text: `<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : ''}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(e => {
+            const iframe = e.querySelector('iframe')
+            expect(iframe).toBeDefined()
+            expect(iframe?.getAttribute('sandbox')).toBe('allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : \'\'}')
+        }, template)
+
+        expect(template.text).toBe(`<iframe class="wp-embedded-content" sandbox="allow-scripts allow-same-origin allow-forms allow-popups \${this.additionalRestrictions ? "allow-foo" : ''}" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" width="500" height="282" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>`)
+    })
+
+    it("doesn't mangle meta tags by default", () => {
+        const template: HTMLTemplateTags = { text: `<meta name="viewport" content="width=device-width, initial-scale=\${this.scale}">`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(() => {}, template)
+        expect(template.text).toBe(`<meta name="viewport" content="width=device-width, initial-scale=\${this.scale}">`)
+    })
+
+    it("can mangle meta tags when specified", () => {
+        const template: HTMLTemplateTags = { text: `<meta name="viewport" content="width=device-width, initial-scale=\${this.scale}">`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(e => {
+            const meta = e.querySelector('meta')
+            expect(meta).toBeDefined()
+            meta?.setAttribute('content', 'width=device-width, initial-scale=${this.scale * 2}')
+        }, template)
+        expect(template.text).toBe(`<meta name="viewport" content="width=device-width, initial-scale=\${this.scale * 2}">`)
+    })
 });
+
+describe('Escaping', () => {
+    it('should escape quotes', () => {
+        const template: HTMLTemplateTags = { text: `<div attr=\${"foo"}>"\${this.foo}"</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(() => { }, template)
+        expect(template.text).toBe(`<div attr="\${"foo"}">"\${this.foo}"</div>`)
+    })
+
+    it('should escape script tags in literals', () => {
+        const template: HTMLTemplateTags = { text: `<div>\${"<script>alert('pwnd')</script>"}</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(t => {
+            expect(t.querySelector('script')).toBeNull()
+         }, template)
+        expect(template.text).toBe(`<div>\${"<script>alert('pwnd')</script>"}</div>`)
+    })
+
+    it('should escape tags in literals', () => {
+        const template: HTMLTemplateTags = { text: `<div>\${"<h1>Jay</h1>"}</div>`, children: [], id: 0 }
+        utilsForTest.setResult(template)
+
+        utilsForTest.mangle(t => {
+            expect(t.querySelector('h1')).toBeNull()
+         }, template)
+        expect(template.text).toBe(`<div>\${"<h1>Jay</h1>"}</div>`)
+    })
+})
 
 describe('End to end', () => {
     const exampleHtml = `import { html } from "lit-html";
