@@ -14,6 +14,7 @@ import("//brave/ios/browser/api/brave_rewards/headers.gni")
 import("//brave/ios/browser/api/brave_services_key/headers.gni")
 import("//brave/ios/browser/api/brave_shields/headers.gni")
 import("//brave/ios/browser/api/brave_stats/headers.gni")
+import("//brave/ios/browser/api/brave_user_agent/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
 import("//brave/ios/browser/api/content_settings/headers.gni")
@@ -109,6 +110,7 @@ brave_core_public_headers += browser_api_de_amp_public_headers
 brave_core_public_headers += browser_api_debounce_public_headers
 brave_core_public_headers +=
     browser_api_https_upgrade_exceptions_service_public_headers
+brave_core_public_headers += browser_api_brave_user_agent_service_public_headers
 brave_core_public_headers += browser_api_https_upgrades_public_headers
 brave_core_public_headers += browser_debounce_public_headers
 brave_core_public_headers += brave_stats_public_headers

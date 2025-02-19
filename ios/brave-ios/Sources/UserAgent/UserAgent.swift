@@ -7,8 +7,14 @@ import Preferences
 import UIKit
 
 public struct UserAgent {
+  /// Mobile user agent for Brave
   public static let mobile = UserAgentBuilder().build(desktopMode: false)
+  /// Mobile user agent for masking we are Brave
+  public static let mobileMasked = UserAgentBuilder().build(desktopMode: false, maskBrave: true)
+  /// Desktop user agent for Brave
   public static let desktop = UserAgentBuilder().build(desktopMode: true)
+  /// Desktop user agent for masking we are Brave
+  public static let desktopMasked = UserAgentBuilder().build(desktopMode: true, maskBrave: true)
 
   public static func userAgentForIdiom(
     _ idiom: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom

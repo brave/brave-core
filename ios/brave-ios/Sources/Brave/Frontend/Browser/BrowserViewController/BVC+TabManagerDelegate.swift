@@ -23,6 +23,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.pullToRefresh = .init(tab: tab)
     tab.playlist = .init(tab: tab)
     SnackBarTabHelper.create(for: tab)
+    tab.braveUserAgentService = braveCore.braveUserAgentService
   }
 
   func tabManager(

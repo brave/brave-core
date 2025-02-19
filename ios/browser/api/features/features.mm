@@ -15,6 +15,7 @@
 #include "brave/components/brave_search_conversion/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
+#include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
@@ -26,7 +27,6 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
-#include "brave/ios/browser/user_agent/features.h"
 #import "build/blink_buildflags.h"
 #include "build/build_config.h"
 #include "net/base/features.h"
@@ -342,7 +342,7 @@
 
 + (Feature*)kUseBraveUserAgent {
   return [[Feature alloc]
-      initWithFeature:&brave::features::kModernBrowserMenuEnabled];
+      initWithFeature:&brave_user_agent::features::kUseBraveUserAgent];
 }
 
 @end

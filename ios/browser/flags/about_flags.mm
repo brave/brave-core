@@ -11,6 +11,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_rewards/core/features.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_user_agent/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -19,7 +20,6 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/browser_menu/features.h"
-#include "brave/ios/browser/user_agent/features.h"
 #include "build/build_config.h"
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
@@ -197,7 +197,7 @@
           "Use Brave user agent",                                              \
           "Includes Brave version information in the user agent",              \
           flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(brave::features::kUseBraveUserAgent),             \
+          FEATURE_VALUE_TYPE(brave_user_agent::features::kUseBraveUserAgent),  \
       },                                                                       \
       {                                                                        \
           "brave-ntp-branded-wallpaper-demo",                                  \

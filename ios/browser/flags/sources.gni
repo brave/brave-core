@@ -10,6 +10,7 @@ brave_flags_deps = [
   "//brave/components/brave_rewards/core",
   "//brave/components/brave_rewards/core/buildflags",
   "//brave/components/brave_shields/core/common",
+  "//brave/components/brave_user_agent/common:common",
   "//brave/components/brave_wallet/common",
   "//brave/components/de_amp/common",
   "//brave/components/debounce/core/common",
@@ -17,7 +18,6 @@ brave_flags_deps = [
   "//brave/components/skus/common",
   "//brave/ios/browser/playlist",
   "//brave/ios/browser/ui/browser_menu:features",
-  "//brave/ios/browser/user_agent:features",
   "//components/webui/flags",
   "//net",
 ]
