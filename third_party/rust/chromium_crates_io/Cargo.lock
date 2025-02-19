@@ -241,12 +241,12 @@ dependencies = [
 
 [[package]]
 name = "bls-signatures"
-version = "0.12.0"
+version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bls12_381 0.7.0",
- "ff 0.12.1",
- "group 0.12.1",
+ "bls12_381",
+ "ff",
+ "group",
  "hkdf",
  "pairing",
  "rand_core 0.6.4",
@@ -257,23 +257,13 @@ dependencies = [
 
 [[package]]
 name = "bls12_381"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "digest 0.9.0",
- "ff 0.12.1",
- "group 0.12.1",
- "pairing",
- "rand_core 0.6.4",
- "subtle",
-]
-
-[[package]]
-name = "bls12_381"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "ff 0.13.0",
+ "digest 0.9.0",
+ "ff",
+ "group",
+ "pairing",
  "rand_core 0.6.4",
  "subtle",
 ]
@@ -775,16 +765,6 @@ dependencies = [
 
 [[package]]
 name = "ff"
-version = "0.12.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "bitvec",
- "rand_core 0.6.4",
- "subtle",
-]
-
-[[package]]
-name = "ff"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
@@ -1070,20 +1050,10 @@ dependencies = [
 
 [[package]]
 name = "group"
-version = "0.12.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "ff 0.12.1",
- "rand_core 0.6.4",
- "subtle",
-]
-
-[[package]]
-name = "group"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "ff 0.13.0",
+ "ff",
  "memuse",
  "rand_core 0.6.4",
  "subtle",
@@ -1096,8 +1066,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "arrayvec",
  "bitvec",
- "ff 0.13.0",
- "group 0.13.0",
+ "ff",
+ "group",
  "halo2_proofs",
  "lazy_static",
  "pasta_curves",
@@ -1117,8 +1087,8 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "blake2b_simd",
- "ff 0.13.0",
- "group 0.13.0",
+ "ff",
+ "group",
  "halo2_legacy_pdqsort",
  "maybe-rayon",
  "pasta_curves",
@@ -1336,9 +1306,9 @@ version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitvec",
- "bls12_381 0.8.0",
- "ff 0.13.0",
- "group 0.13.0",
+ "bls12_381",
+ "ff",
+ "group",
  "rand_core 0.6.4",
  "subtle",
 ]
@@ -1667,9 +1637,9 @@ dependencies = [
  "aes",
  "bitvec",
  "blake2b_simd",
- "ff 0.13.0",
+ "ff",
  "fpe",
- "group 0.13.0",
+ "group",
  "halo2_gadgets",
  "halo2_proofs",
  "hex",
@@ -1690,10 +1660,10 @@ dependencies = [
 
 [[package]]
 name = "pairing"
-version = "0.22.0"
+version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "group 0.12.1",
+ "group",
 ]
 
 [[package]]
@@ -1723,8 +1693,8 @@ version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "blake2b_simd",
- "ff 0.13.0",
- "group 0.13.0",
+ "ff",
+ "group",
  "lazy_static",
  "rand 0.8.5",
  "static_assertions",
@@ -2012,7 +1982,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "blake2b_simd",
  "byteorder",
- "group 0.13.0",
+ "group",
  "hex",
  "jubjub",
  "pasta_curves",
@@ -2390,7 +2360,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitvec",
  "byteorder",
- "ff 0.13.0",
+ "ff",
  "rand 0.8.5",
  "zeroize",
 ]
