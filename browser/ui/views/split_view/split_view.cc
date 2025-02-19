@@ -110,7 +110,8 @@ SplitView::SplitView(Browser& browser,
 
   secondary_contents_container_->SetLayoutManager(
       std::make_unique<BraveContentsLayoutManager>(
-          secondary_devtools_web_view_, secondary_contents_web_view_, nullptr,
+          secondary_devtools_web_view_, secondary_contents_web_view_,
+          secondary_contents_scrim_view_, nullptr, nullptr,
           secondary_reader_mode_toolbar_));
 #endif
 

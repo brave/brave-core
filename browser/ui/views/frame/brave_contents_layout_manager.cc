@@ -10,9 +10,15 @@
 BraveContentsLayoutManager::BraveContentsLayoutManager(
     views::View* devtools_view,
     views::View* contents_view,
+    views::View* scrim_view,
+    views::View* border_view,
     views::View* watermark_view,
     views::View* reader_mode_toolbar)
-    : ContentsLayoutManager(devtools_view, contents_view, watermark_view),
+    : ContentsLayoutManager(devtools_view,
+                            contents_view,
+                            scrim_view,
+                            border_view,
+                            watermark_view),
       contents_view_(contents_view),
       reader_mode_toolbar_(reader_mode_toolbar) {
   CHECK(reader_mode_toolbar_);

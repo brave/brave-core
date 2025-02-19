@@ -649,6 +649,10 @@ source_set("ui") {
       "//components/bookmarks/browser",
     ]
 
+    if (enable_glic) {
+      deps += [ "//chrome/browser/glic" ]
+    }
+
     if (enable_brave_vpn) {
       if (is_win) {
         sources += [
