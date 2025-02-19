@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
@@ -261,8 +260,7 @@ mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
       return {};
     }
 
-    if (base::Contains(kRequiredCreativeAdPropertyNames,
-                       mojom_property->name)) {
+    if (kRequiredCreativeAdPropertyNames.contains(mojom_property->name)) {
       if (!ExtractCreativeAdMojomProperty(mojom_property,
                                           mojom_creative_ad.get())) {
         VLOG(6) << "Failed to extract creative search result ad property "
@@ -271,8 +269,8 @@ mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
       }
 
       creative_ad_property_names.insert(mojom_property->name);
-    } else if (base::Contains(kCreativeSetConversionPropertyNames,
-                              mojom_property->name)) {
+    } else if (kCreativeSetConversionPropertyNames.contains(
+                   mojom_property->name)) {
       if (!ExtractCreativeSetConversionMojomProperty(
               mojom_property, mojom_creative_set_conversion.get())) {
         VLOG(6) << "Failed to extract creative set conversion property "

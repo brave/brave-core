@@ -114,7 +114,7 @@ std::optional<size_t> PickPeekingCardWithMax(
       // Boost enabled channels.
     } else if (std::ranges::any_of(article->channels, [&subscribed_channels](
                                                           const auto& channel) {
-                 return base::Contains(subscribed_channels, channel);
+                 return subscribed_channels.contains(channel);
                })) {
       score += kChannelBoost;
     }
@@ -124,7 +124,7 @@ std::optional<size_t> PickPeekingCardWithMax(
       continue;
     }
 
-    if (base::Contains(top_story_urls, article->url.spec())) {
+    if (top_story_urls.contains(article->url.spec())) {
       score *= kTopStoryMultiplier;
     }
 
@@ -211,7 +211,7 @@ std::optional<size_t> PickPeekingCardWithMax(
     return std::nullopt;
   }
 
-  auto [index, score] = PickRandom(final_candidates);
+  auto [index, score] = PickRandom(base::span(final_candidates));
   return index;
 }
 

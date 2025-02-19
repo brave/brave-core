@@ -130,7 +130,7 @@ void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
     return;
   }
 
-  if (!base::Contains(all_data_, current_info->guid())) {
+  if (!all_data_.contains(current_info->guid())) {
     // After initiating leave the sync chain `DeleteSpecifics` cleans
     // `all_data_` map.
     // It is possible that user close sync settings page or change the data type
