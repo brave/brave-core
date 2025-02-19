@@ -14,7 +14,6 @@ import ts from 'typescript'
 import { readFileSync, writeFileSync } from 'fs'
 import path from 'path'
 import { JSDOM } from 'jsdom'
-import commander from 'commander'
 
 export interface HTMLTemplateTags {
     id: number,
@@ -83,9 +82,9 @@ const replacePlaceholders = (template: HTMLTemplateTags) => {
     return template.text
 }
 
-let result: HTMLTemplateTags | undefined = undefined
+let result: HTMLTemplateTags | undefined
 
-const load = (file: string) => {
+export const load = (file: string) => {
     if (result !== undefined) {
         throw new Error('This should only be called once per file')
     }
@@ -94,7 +93,7 @@ const load = (file: string) => {
     injectPlaceholders(result)
 }
 
-const write = (file: string) => {
+export const write = (file: string) => {
     if (!result) {
         throw new Error('This should only be called after load')
     }
@@ -117,7 +116,7 @@ export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate
         throw new Error('This should only be called after load!')
     }
 
-    let template: HTMLTemplateTags | undefined = undefined
+    let template: HTMLTemplateTags | undefined
     if (!getTemplate) {
         template = findTemplate(() => true)
     } else if (typeof getTemplate === 'function') {
@@ -182,19 +181,4 @@ export const utilsForTest = {
         result = r
     },
     resetTemplateId: () => nextId = 1
-}
-
-if (process.argv.some(a => a.includes('lit_mangler'))) {
-    commander
-        .command('mangle')
-        .option('-m, --mangler <file>', 'The file with containing the mangler instructions')
-        .option('-i, --input <file>', 'The file to mangle')
-        .option('-o, --output <file>', 'Where to output the mangled file')
-        .action(async ({ mangler, input, output }: { mangler: string, input: string, output: string }) => {
-            load(input)
-            await import(mangler)
-            write(output)
-        })
-
-    commander.parse(process.argv)
 }
