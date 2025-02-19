@@ -11,6 +11,7 @@
 
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
+#include "ui/views/controls/progress_bar.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class PsstConsentDialog : public views::DialogDelegateView {
@@ -26,8 +27,12 @@ class PsstConsentDialog : public views::DialogDelegateView {
       const views::SizeBounds& available_size) const override;
   void WindowClosing() override;
 
+  void SetProgressValue(const double value);
+
  private:
   void DisableAdBlockForSite();
+  raw_ptr<views::ProgressBar> progress_bar_{nullptr};
+  base::WeakPtrFactory<PsstConsentDialog> weak_factory_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PSST_PSST_CONSENT_DIALOG_H_

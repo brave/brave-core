@@ -52,6 +52,7 @@ std::optional<PsstSettings> GetPsstSettings(const std::string& user_id,
   const std::string path = ConstructPath(user_id, name);
   const base::Value* settings_for_site_val =
       psst_settings.FindByDottedPath(path);
+LOG(INFO) << "[PSST] GetPsstSettings path:" << path << " settings_for_site_val:" << (settings_for_site_val ? settings_for_site_val->DebugString() : "n/a");
   if (!settings_for_site_val || !settings_for_site_val->is_dict()) {
     return std::nullopt;
   }
@@ -76,6 +77,7 @@ base::Value* SetPsstSettings(const std::string& user_id,
   ScopedDictPrefUpdate update(prefs, prefs::kPsstSettingsPref);
   const std::string path = ConstructPath(user_id, name);
   auto value = PsstSettingsToDict(settings);
+  LOG(INFO) << "[PSST] SetPsstSettings path:" << path << " value:" << value;
   return update->SetByDottedPath(path, std::move(value));
 }
 

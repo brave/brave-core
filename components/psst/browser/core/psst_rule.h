@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/json/json_value_converter.h"
@@ -41,7 +42,7 @@ namespace psst {
 // relative to the component under scripts/<name>/, NOT script contents.
 
 // This class describes a single rule in the psst.json file.
-class PsstRule {
+class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRule {
  public:
   PsstRule();
   ~PsstRule();

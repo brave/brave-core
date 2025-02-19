@@ -17,6 +17,8 @@ component("core") {
     "psst_rule.h",
     "psst_rule_registry.cc",
     "psst_rule_registry.h",
+    "rule_data_reader.cc",
+    "rule_data_reader.h"
   ]
 
   deps = [
@@ -28,5 +30,19 @@ component("core") {
     "//crypto",
     "//net",
     "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  
+  sources = [ 
+    "rule_data_reader_unittest.cc",
+    "psst_rule_registry_unittest.cc"
+  ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/psst/browser/core",
   ]
 }

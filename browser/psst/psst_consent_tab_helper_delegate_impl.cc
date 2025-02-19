@@ -19,4 +19,12 @@ void PsstConsentTabHelperDelegateImpl::ShowPsstConsentDialog(
     base::OnceClosure no_cb) {
   NOTIMPLEMENTED();
 }
+
+void PsstConsentTabHelperDelegateImpl::SetProgressValue(content::WebContents* contents, const double value) override {
+  NOTIMPLEMENTED();
+}
+
+void PsstConsentTabHelperDelegateImpl::Close(content::WebContents* contents) {
+  NOTIMPLEMENTED();
+}
 #endif
