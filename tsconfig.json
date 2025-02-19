@@ -24,7 +24,7 @@
     "paths": {
       "brave-ui": ["node_modules/@brave/brave-ui"],
       "brave-ui/*": ["node_modules/@brave/brave-ui/*"],
-      "lit_mangler": ["build/commands/scripts/lit_mangler.ts"],
+      "lit_mangler": ["tools/chromium_src/lit_mangler.ts"],
       "gen/*": [
         // This list of paths in the format [configuration]/gen is not used at compile-time
         // since we don't want results from 1 compilation to affect another.
