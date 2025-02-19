@@ -344,4 +344,3 @@ package = "zerocopy-derive"
 [patch.crates-io.zcash_client_backend_v0_12]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend"
 package = "zcash_client_backend"
-

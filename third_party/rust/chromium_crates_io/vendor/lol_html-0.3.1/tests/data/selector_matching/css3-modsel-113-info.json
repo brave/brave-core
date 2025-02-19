@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - Attribute space-separated value selector without declared namespace (css3-modsel-113)",
-  "selectors": {
-    "*|p, *|address, *|q, *|r": "css3-modsel-113.expected0.html",
-    "*|p, *|q": "css3-modsel-113.expected1.html",
-    "*|*[|class~=\"foo\"]": "css3-modsel-113.expected2.html"
-  },
-  "src": "css3-modsel-113.src.html"
-}

@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED Attribute existence selector with universal namespace (css3-modsel-130b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-130b.expected0.html",
-    "*|q": "css3-modsel-130b.expected1.html",
-    "div.stub *|*:not([*|title])": "css3-modsel-130b.expected2.html"
-  },
-  "src": "css3-modsel-130b.src.html"
-}

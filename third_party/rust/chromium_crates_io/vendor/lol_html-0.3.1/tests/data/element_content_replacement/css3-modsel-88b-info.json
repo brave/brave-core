@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Nondeterministic matching of descendant and direct adjacent combinators (css3-modsel-88b)",
-  "selectors": {
-    "p": "css3-modsel-88b.expected0.html",
-    "blockquote + div p": "css3-modsel-88b.expected1.html"
-  },
-  "src": "css3-modsel-88b.src.html"
-}

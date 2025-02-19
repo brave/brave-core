@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Simple combination of direct and indirect adjacent combinators (css3-modsel-90b)",
-  "selectors": {
-    "p": "css3-modsel-90b.expected0.html",
-    "blockquote ~ div + p": "css3-modsel-90b.expected1.html"
-  },
-  "src": "css3-modsel-90b.src.html"
-}

@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED Attribute existence selector without declared namespace (css3-modsel-137b)",
-  "selectors": {
-    "*|q, *|r": "css3-modsel-137b.expected0.html",
-    "*|q": "css3-modsel-137b.expected1.html",
-    "div.stub *|*:not([|title])": "css3-modsel-137b.expected2.html"
-  },
-  "src": "css3-modsel-137b.src.html"
-}

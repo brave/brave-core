@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED Attribute value selector without declared namespace (css3-modsel-138b)",
-  "selectors": {
-    "*|q, *|r, *|s, *|t": "css3-modsel-138b.expected0.html",
-    "*|q, *|s, *|t": "css3-modsel-138b.expected1.html",
-    "div.stub *|*:not([|title=\"si on chantait\"])": "css3-modsel-138b.expected2.html"
-  },
-  "src": "css3-modsel-138b.src.html"
-}

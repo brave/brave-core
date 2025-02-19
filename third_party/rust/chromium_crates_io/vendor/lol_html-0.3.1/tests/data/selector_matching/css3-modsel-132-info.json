@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED Attribute space-separated value selector with universal namespace (css3-modsel-132)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-132.expected0.html",
-    "*|p.deu, *|q": "css3-modsel-132.expected1.html"
-  },
-  "src": "css3-modsel-132.src.html"
-}

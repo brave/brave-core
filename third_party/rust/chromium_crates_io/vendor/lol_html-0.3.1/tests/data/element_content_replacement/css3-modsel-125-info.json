@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED Attribute space-separated value selector with declared namespace (css3-modsel-125)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s": "css3-modsel-125.expected0.html",
-    "*|q, *|s": "css3-modsel-125.expected1.html"
-  },
-  "src": "css3-modsel-125.src.html"
-}

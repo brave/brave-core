@@ -1,7 +1,0 @@
-{
-  "description": "Selectors - NEGATED universal selector with declared namespace (css3-modsel-123b)",
-  "selectors": {
-    "div.stub > *|*:not(|*)": "css3-modsel-123b.expected0.html"
-  },
-  "src": "css3-modsel-123b.src.html"
-}

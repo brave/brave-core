@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED :only-child pseudo-class (css3-modsel-81b)",
-  "selectors": {
-    ".green": "css3-modsel-81b.expected0.html",
-    "p:not(:only-child)": "css3-modsel-81b.expected1.html",
-    "div.testText > div > p": "css3-modsel-81b.expected2.html"
-  },
-  "src": "css3-modsel-81b.src.html"
-}

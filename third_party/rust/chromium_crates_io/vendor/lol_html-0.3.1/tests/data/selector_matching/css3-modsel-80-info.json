@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - NEGATED :last-of-type pseudo-class (css3-modsel-80)",
-  "selectors": {
-    ".red": "css3-modsel-80.expected0.html",
-    "address": "css3-modsel-80.expected1.html",
-    "address:not(:last-of-type)": "css3-modsel-80.expected2.html"
-  },
-  "src": "css3-modsel-80.src.html"
-}

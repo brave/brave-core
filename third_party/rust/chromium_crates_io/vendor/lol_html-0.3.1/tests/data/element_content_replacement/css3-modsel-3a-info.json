@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Universal selector (no namespaces) (css3-modsel-3a)",
-  "selectors": {
-    "*": "css3-modsel-3a.expected0.html",
-    "ul, p": "css3-modsel-3a.expected1.html",
-    "*.t1": "css3-modsel-3a.expected2.html"
-  },
-  "src": "css3-modsel-3a.src.html"
-}

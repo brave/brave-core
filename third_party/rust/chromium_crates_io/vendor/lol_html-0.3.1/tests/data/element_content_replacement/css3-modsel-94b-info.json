@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Universal selector with declared namespace (css3-modsel-94b)",
-  "selectors": {
-    "p, q": "css3-modsel-94b.expected0.html",
-    "[test]": "css3-modsel-94b.expected1.html"
-  },
-  "src": "css3-modsel-94b.src.html"
-}

@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Contains attribute selector with empty value (css3-modsel-184c)",
-  "selectors": {
-    "p": "css3-modsel-184c.expected0.html",
-    "p[class*=\"\"]": "css3-modsel-184c.expected1.html"
-  },
-  "src": "css3-modsel-184c.src.html"
-}

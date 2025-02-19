@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - :hover pseudo-class on links (css3-modsel-18c)",
-  "selectors": {
-    ":link, :visited": "css3-modsel-18c.expected0.html",
-    ":link:hover span": "css3-modsel-18c.expected1.html"
-  },
-  "src": "css3-modsel-18c.src.html"
-}
