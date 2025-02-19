@@ -79,7 +79,20 @@ root = "chromium"
 # spin is added by pasta-curves lazy_static/spin_no_std, but we don't want to
 # use it and lazy_static is an upstream crate with a patch.crates-io so the
 # feature (and dependency) do not get added to the build anyway
-remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical', 'spin']
+remove_crates = [
+  'cc',
+  'link-cplusplus',
+  'wasi',
+  'winapi-i686-pc-windows-gnu',
+  'winapi-x86_64-pc-windows-gnu',
+  'minimal-lexical',
+  'spin',
+  'windows_aarch64_gnullvm',
+  'windows_i686_gnu',
+  'windows_i686_gnullvm',
+  'windows_x86_64_gnu',
+  'windows_x86_64_gnullvm',
+]
 
 [crate.adblock]
 extra_kv = { raw_gn = '''
@@ -379,19 +392,19 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 license_files = ['license-apache-2.0']
 
 [crate.windows_aarch64_msvc]
-license_files = ['license-apache-2.0']
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.windows_i686_msvc]
-license_files = ['license-apache-2.0']
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.windows_x86_64_msvc]
-license_files = ['license-apache-2.0']
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.windows-sys]
 license_files = ['license-apache-2.0']
 
 [crate.windows-targets]
-license_files = ['license-apache-2.0']
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.winnow]
 extra_src_roots = ['../examples']
