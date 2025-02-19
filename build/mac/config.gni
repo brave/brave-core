@@ -32,8 +32,3 @@ if (host_os == "mac") {
   keychain_db = "/Users/" + getenv("USER") +
                 "/Library/Keychains/${mac_signing_keychain}.keychain-db"
 }
-
-brave_packaging_base_dir = root_out_dir
-if (is_universal_binary) {
-  brave_packaging_base_dir = "$root_out_dir/universal"
-}

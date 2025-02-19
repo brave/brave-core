@@ -13,6 +13,10 @@ BRAVE_CHANNEL = os.environ.get('BRAVE_CHANNEL')
 
 class InternalCodeSignConfig(ChromiumCodeSignConfig):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.enable_universal_app_dir = False
+
     @staticmethod
     def is_chrome_branded():
         # We want to inherit most of upstream's behavior.
@@ -52,3 +56,10 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
         # from the base config from which it was created. We therefore refer to
         # invoker.args.notarize, which does contain the correct value.
         return self.invoker.args.notarize == NotarizeAndStapleLevel.STAPLE
+
+    @property
+    def app_dir(self):
+        app_dir_basename = super().app_dir
+        if self.invoker.args.universal and self.enable_universal_app_dir:
+            return 'universal/' + app_dir_basename
+        return app_dir_basename
