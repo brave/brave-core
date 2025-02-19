@@ -400,9 +400,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.windows_x86_64_msvc]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
-[crate.windows-sys]
-license_files = ['license-apache-2.0']
-
 [crate.windows-targets]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
