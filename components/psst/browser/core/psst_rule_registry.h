@@ -12,6 +12,7 @@
 
 #include "base/component_export.h"
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/singleton.h"
@@ -23,38 +24,90 @@
 class GURL;
 
 namespace psst {
-// This class loads and stores the rules from the psst.json file.
-// It is also used for matching based on the URL.
+
 class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistry {
- public:
+public:
   PsstRuleRegistry(const PsstRuleRegistry&) = delete;
   PsstRuleRegistry& operator=(const PsstRuleRegistry&) = delete;
-  ~PsstRuleRegistry();
-  static PsstRuleRegistry* GetInstance();  // singleton
+
+virtual ~PsstRuleRegistry() = default;
+
   // Returns the matched PSST rule, if any.
-  void CheckIfMatch(const GURL& url,
-                    base::OnceCallback<void(const MatchedRule&)> cb) const;
+virtual void CheckIfMatch(
+      const GURL& url,
+      base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const = 0;
+
   // Given a path to psst.json, loads the rules from the file into memory.
-  void LoadRules(const base::FilePath& path);
+virtual void LoadRules(const base::FilePath& path) = 0;
 
- private:
-  PsstRuleRegistry();
+protected:
+  PsstRuleRegistry() = default;
 
-  // These methods are also called by PsstTabHelperBrowserTest.
-  // Given contents of psst.json, loads the rules from the file into memory.
-  // Called by |LoadRules| after the file is read.
-  void OnLoadRules(const std::string& data);
-  // Sets the component path used to resolve the paths to the scripts.
-  void SetComponentPath(const base::FilePath& path);
-
-  base::FilePath component_path_;
-  std::vector<PsstRule> rules_;
-
-  base::WeakPtrFactory<PsstRuleRegistry> weak_factory_{this};
+private:
+virtual void OnLoadRules(const std::string& data) = 0;
 
   // Needed for testing private methods.
   friend class PsstTabHelperBrowserTest;
+  friend class PsstTabHelperUnitTest;
+  friend class PsstRuleRegistryUnitTest;
+
+};
+
+class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryAccessor {
+public:
+  PsstRuleRegistryAccessor();
+  PsstRuleRegistryAccessor(const PsstRuleRegistryAccessor&) = delete;
+  PsstRuleRegistryAccessor& operator=(const PsstRuleRegistryAccessor&) = delete;
+  ~PsstRuleRegistryAccessor();
+
+  static PsstRuleRegistryAccessor* GetInstance();  // singleton
+
+  PsstRuleRegistry* Registry();
+
+private:
+  friend class PsstTabHelperBrowserTest;
+  friend class PsstRuleRegistryUnitTest;
+
+  void SetRegistryForTesting(std::unique_ptr<PsstRuleRegistry> new_inst);
+
+  std::unique_ptr<PsstRuleRegistry> impl_;
+};
+
+// This class loads and stores the rules from the psst.json file.
+// It is also used for matching based on the URL.
+class COMPONENT_EXPORT(PSST_BROWSER_CORE) PsstRuleRegistryImpl : public PsstRuleRegistry {
+ public:
+  PsstRuleRegistryImpl();
+  PsstRuleRegistryImpl(const PsstRuleRegistryImpl&) = delete;
+  PsstRuleRegistryImpl& operator=(const PsstRuleRegistryImpl&) = delete;
+  ~PsstRuleRegistryImpl() override;
+  void CheckIfMatch(
+      const GURL& url,
+      base::OnceCallback<void(const std::optional<MatchedRule>&)> cb) const override;
+  // Given a path to psst.json, loads the rules from the file into memory.
+  void LoadRules(const base::FilePath& path) override;
+
+protected:
+  // These methods are also called by PsstTabHelperBrowserTest.
+  // Given contents of psst.json, loads the rules from the file into memory.
+  // Called by |LoadRules| after the file is read.
+  void OnLoadRules(const std::string& data) override;
+
+ private:
+
+  void SetRuleDataReaderForTest(std::unique_ptr<RuleDataReader> rule_data_reader);
+
+  std::unique_ptr<RuleDataReader> rule_data_reader_;
+  std::vector<PsstRule> rules_;
+
+  base::WeakPtrFactory<PsstRuleRegistryImpl> weak_factory_{this};
+
+  // Needed for testing private methods.
+  friend class PsstTabHelperBrowserTest;
+  friend class PsstTabHelperUnitTest;
   friend struct base::DefaultSingletonTraits<PsstRuleRegistry>;
+  friend class PsstRuleRegistryUnitTest;
+  friend class MockPsstRuleRegistryImpl;
 };
 
 }  // namespace psst

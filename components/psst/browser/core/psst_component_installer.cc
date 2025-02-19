@@ -141,7 +141,11 @@ void PsstComponentInstallerPolicy::ComponentReady(const base::Version& version,
                                                   const base::FilePath& path,
                                                   base::Value::Dict manifest) {
   LOG(INFO) << "[PSST] PsstComponentInstallerPolicy::ComponentReady version:" << version.GetString() << " path:" << path << " manifest:" << manifest.DebugString();
-  PsstRuleRegistry::GetInstance()->LoadRules(path);
+  auto* registry = PsstRuleRegistryAccessor::GetInstance()->Registry();
+  if(registry) {
+    registry->LoadRules(path);
+    LOG(INFO) << "[PSST] PsstComponentInstallerPolicy::ComponentReady #100";
+  }
 }
 
 bool PsstComponentInstallerPolicy::VerifyInstallation(
@@ -175,7 +179,6 @@ void OnRegistered(const std::string& component_id) {
   // BraveOnDemandUpdater::GetInstance()->EnsureInstalled(kPsstComponentId);
 }
 
-
 void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
   if (!base::FeatureList::IsEnabled(psst::features::kBravePsst) || !cus) {
     PsstComponentInstallerPolicy::DeleteComponent();
@@ -184,15 +187,13 @@ void RegisterPsstComponent(component_updater::ComponentUpdateService* cus) {
 
 auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<PsstComponentInstallerPolicy>());
-//   installer->Register(
-//       // After Register, run the callback with component id.
-//       cus, base::BindOnce([]() {
-// base::debug::TaskTrace().Print();
-//         brave_component_updater::BraveOnDemandUpdater::GetInstance()
-//             ->EnsureInstalled(kPsstComponentId);
-//       }));
-
-  installer->Register(cus, base::BindOnce(&OnRegistered, kPsstComponentId));
+  installer->Register(
+      // After Register, run the callback with component id.
+      cus, base::BindOnce([]() {
+base::debug::TaskTrace().Print();
+        brave_component_updater::BraveOnDemandUpdater::GetInstance()
+            ->EnsureInstalled(kPsstComponentId);
+      }));
 }
 
 

@@ -566,6 +566,8 @@ source_set("ui") {
       "views/page_action/brave_page_action_icon_container_view.h",
       "views/psst/psst_consent_dialog.cc",
       "views/psst/psst_consent_dialog.h",
+      "views/psst/psst_consent_dialog_tracker.cc",
+      "views/psst/psst_consent_dialog_tracker.h",
       "views/psst/psst_consent_tab_helper_delegate_impl_views.cc",
       "views/rounded_separator.cc",
       "views/rounded_separator.h",

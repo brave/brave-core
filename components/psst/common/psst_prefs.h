@@ -19,10 +19,9 @@ constexpr char kPsstSettingsPref[] = "brave.psst.settings";
 }  // namespace prefs
 
 enum PsstConsentStatus {
-  kAsk,
-  kAllow,   // check script version and insert if needed.
-  kBlock,   // do not insert test script.
-  kDismiss  // in the future, prompt user again on dismissal.
+  kAsk,     // show the popup dialog to ask user to apply privacy
+  kAllow,   // continue to apply privacy with no prompts
+  kBlock    // do not ask user any more
 };
 
 struct PsstSettings {

@@ -29,3 +29,13 @@ component("content") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "psst_tab_helper_unittest.cc" ]
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/psst/common",
+    "//components/sync_preferences:test_support",
+  ]
+}

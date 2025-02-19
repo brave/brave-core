@@ -6,9 +6,11 @@
 #ifndef BRAVE_BROWSER_PSST_PSST_CONSENT_TAB_HELPER_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_PSST_PSST_CONSENT_TAB_HELPER_DELEGATE_IMPL_H_
 
+#include <memory>
 #include <string>
 #include "base/values.h"
 
+#include "brave/browser/ui/views/psst/psst_consent_dialog.h"
 #include "brave/components/psst/browser/content/psst_tab_helper.h"
 
 class PsstConsentTabHelperDelegateImpl : public psst::PsstTabHelper::Delegate {
@@ -22,6 +24,10 @@ class PsstConsentTabHelperDelegateImpl : public psst::PsstTabHelper::Delegate {
                              const std::string& list_of_changes,
                              base::OnceClosure yes_cb,
                              base::OnceClosure no_cb) override;
+  void SetProgressValue(content::WebContents* contents, const double value) override;
+  void Close(content::WebContents* contents) override;
+// private:
+//     raw_ptr<PsstConsentDialog> psst_content_dialog_{nullptr};
 };
 
 #endif  // BRAVE_BROWSER_PSST_PSST_CONSENT_TAB_HELPER_DELEGATE_IMPL_H_
