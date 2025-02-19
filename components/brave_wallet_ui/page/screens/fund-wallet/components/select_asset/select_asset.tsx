@@ -148,7 +148,7 @@ export const AssetListItem = ({
           gap='16px'
         >
           <IconsWrapper>
-            <AssetImage src={`chrome://image?${symbolImageUrl}`} />
+            <AssetImage src={`chrome://image?${encodeURIComponent(symbolImageUrl ?? '')}`} />
             <NetworkIconWrapper>
               <CreateNetworkIcon
                 network={network}

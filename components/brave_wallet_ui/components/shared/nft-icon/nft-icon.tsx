@@ -54,7 +54,7 @@ export const NftIcon = (props: NftIconProps) => {
   const nftIframeUrl = React.useMemo(() => {
     const urlParams = new URLSearchParams({
       displayMode: 'icon',
-      icon: encodeURI(remoteImage || '')
+      icon: encodeURIComponent(remoteImage || '')
     })
     return `chrome-untrusted://nft-display?${urlParams.toString()}`
   }, [remoteImage])

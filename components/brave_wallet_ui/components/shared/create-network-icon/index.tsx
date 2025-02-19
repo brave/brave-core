@@ -124,7 +124,7 @@ export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
     >
       <NetworkIcon
         size={size}
-        icon={isRemoteURL ? `chrome://image?${networkImageURL}` : networkIcon}
+        icon={isRemoteURL ? `chrome://image?${encodeURIComponent(networkImageURL)}` : networkIcon}
       />
     </IconWrapper>
   )
