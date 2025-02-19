@@ -104,6 +104,9 @@ class ZCashWalletService : public mojom::ZCashWalletService,
                        StartShieldSyncCallback callback) override;
   void StopShieldSync(mojom::AccountIdPtr account_id,
                       StopShieldSyncCallback callback) override;
+  void IsSyncInProgress(mojom::AccountIdPtr account_id,
+                        IsSyncInProgressCallback callback) override;
+
   void GetChainTipStatus(mojom::AccountIdPtr account_id,
                          const std::string& chain_id,
                          GetChainTipStatusCallback callback) override;
@@ -198,6 +201,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   friend class ZCashGetZCashChainTipStatusTask;
   friend class ZCashResolveBalanceTask;
   friend class ZCashResolveTransactionStatusTask;
+  friend class ZCashShieldSyncService;
   friend class ZCashTxManager;
 
   friend class ZCashWalletServiceUnitTest;
@@ -258,6 +262,7 @@ class ZCashWalletService : public mojom::ZCashWalletService,
       ZCashCreateOrchardToOrchardTransactionTask* task);
   virtual void GetZCashChainTipStatusTaskDone(
       ZCashGetZCashChainTipStatusTask* task);
+  virtual void OnSyncFinished(const mojom::AccountIdPtr& account_id);
   void OnGetChainTipStatusResult(
       GetChainTipStatusCallback callback,
       base::expected<mojom::ZCashChainTipStatusPtr, std::string> result);

@@ -60,11 +60,13 @@ void ZCashShieldSyncService::OrchardBlockScannerProxy::ScanBlocks(
 }
 
 ZCashShieldSyncService::ZCashShieldSyncService(
+    ZCashWalletService& zcash_wallet_service,
     ZCashActionContext context,
     const mojom::ZCashAccountShieldBirthdayPtr& account_birthday,
     const OrchardFullViewKey& fvk,
     base::WeakPtr<Observer> observer)
-    : context_(std::move(context)),
+    : zcash_wallet_service_(zcash_wallet_service),
+      context_(std::move(context)),
       account_birthday_(account_birthday.Clone()),
       observer_(std::move(observer)) {
   block_scanner_ = std::make_unique<OrchardBlockScannerProxy>(fvk);
@@ -105,6 +107,7 @@ void ZCashShieldSyncService::WorkOnTask() {
           context_.account_id,
           base::NumberToString(GetCode(error_->code)) + ": " + error_->message);
     }
+    zcash_wallet_service_->OnSyncFinished(context_.account_id);
     return;
   }
 
@@ -131,6 +134,7 @@ void ZCashShieldSyncService::WorkOnTask() {
     if (observer_) {
       observer_->OnSyncStop(context_.account_id);
     }
+    zcash_wallet_service_->OnSyncFinished(context_.account_id);
   }
 }
 
