@@ -12,13 +12,13 @@ cargo_crate("lib") {
   crate_name = "futures"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-0.3.27/src/lib.rs"
-  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-0.3.27/src/lib.rs" ]
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-0.3.31/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-0.3.31/src/lib.rs" ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.27"
+  cargo_pkg_version = "0.3.31"
   cargo_pkg_name = "futures"
   cargo_pkg_description = "An implementation of futures and streams featuring zero allocations, composability, and iterator-like interfaces."
   library_configs -= [ "//build/config/compiler:chromium_code" ]

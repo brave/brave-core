@@ -190,22 +190,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.funty]
 license_files = ['LICENSE.txt']
 
-[crate.futures-channel]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-core]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-task]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-util]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
 [crate.fvm_ipld_blockstore]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 

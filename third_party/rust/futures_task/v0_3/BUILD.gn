@@ -12,21 +12,21 @@ cargo_crate("lib") {
   crate_name = "futures_task"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/arc_wake.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/future_obj.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/noop_waker.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/spawn.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/waker.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/waker_ref.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/arc_wake.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/future_obj.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/noop_waker.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/spawn.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/waker.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.31/src/waker_ref.rs",
   ]
-  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/../no_atomic_cas.rs" ]
+  inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.27"
+  cargo_pkg_version = "0.3.31"
   cargo_pkg_name = "futures-task"
   cargo_pkg_description = "Tools for working with tasks."
   library_configs -= [ "//build/config/compiler:chromium_code" ]
@@ -39,9 +39,6 @@ cargo_crate("lib") {
     "alloc",
     "std",
   ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/build.rs" ]
-  build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-task-0.3.27/src/../no_atomic_cas.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]
