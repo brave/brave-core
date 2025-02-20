@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
-#include "base/containers/span.h"
 #include "base/functional/callback_forward.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -71,7 +70,7 @@ using PickArticles =
 using ContentGroup = std::pair<std::string, bool>;
 
 template <typename T>
-T PickRandom(const base::span<T>& items) {
+T PickRandom(const std::vector<T>& items) {
   CHECK(!items.empty());
   // Note: RandInt is inclusive, hence the minus 1
   return items[base::RandInt(0, items.size() - 1)];
@@ -79,7 +78,7 @@ T PickRandom(const base::span<T>& items) {
 
 // Sample across subscribed channels (direct and native) and publishers.
 ContentGroup SampleContentGroup(
-    base::span<const ContentGroup> eligible_content_groups);
+    const std::vector<ContentGroup>& eligible_content_groups);
 
 std::vector<std::string> GetChannelsForPublisher(
     const std::string& locale,

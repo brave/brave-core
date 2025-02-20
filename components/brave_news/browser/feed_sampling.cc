@@ -10,6 +10,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/rand_util.h"
@@ -23,13 +24,13 @@ ArticleMetadata::ArticleMetadata(ArticleMetadata&&) = default;
 ArticleMetadata& ArticleMetadata::operator=(ArticleMetadata&&) = default;
 
 ContentGroup SampleContentGroup(
-    base::span<const ContentGroup> eligible_content_groups) {
+    const std::vector<ContentGroup>& eligible_content_groups) {
   ContentGroup sampled_content_group;
   if (eligible_content_groups.empty()) {
     return sampled_content_group;
   }
 
-  return PickRandom(eligible_content_groups);
+  return PickRandom<ContentGroup>(eligible_content_groups);
 }
 
 bool TossCoin() {
@@ -106,14 +107,15 @@ std::optional<size_t> PickRoulette(const ArticleInfos& articles) {
 std::optional<size_t> PickChannelRoulette(const std::string& channel,
                                           const ArticleInfos& articles) {
   return PickRouletteWithWeighting(
-      articles,
-      base::BindRepeating(
-          [](const std::string& channel,
-             const mojom::FeedItemMetadataPtr& metadata,
-             const ArticleMetadata& weight) {
-            return weight.channels.contains(channel) ? weight.weighting : 0.0;
-          },
-          channel));
+      articles, base::BindRepeating(
+                    [](const std::string& channel,
+                       const mojom::FeedItemMetadataPtr& metadata,
+                       const ArticleMetadata& weight) {
+                      return base::Contains(weight.channels, channel)
+                                 ? weight.weighting
+                                 : 0.0;
+                    },
+                    channel));
 }
 
 }  // namespace brave_news

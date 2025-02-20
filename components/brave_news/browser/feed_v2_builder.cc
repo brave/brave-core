@@ -395,10 +395,9 @@ std::vector<mojom::FeedItemV2Ptr> GenerateClusterBlock(
       feed_generation_info.topics().empty();
 
   if (generate_channel) {
-    auto channel = PickRandom(base::span(channels));
+    auto channel = PickRandom(channels);
     DVLOG(1) << "Cluster Block (channel: " << channel << ")";
-    return GenerateChannelBlock(feed_generation_info,
-                                PickRandom(base::span(channels)));
+    return GenerateChannelBlock(feed_generation_info, PickRandom(channels));
   } else {
     DVLOG(1) << "Cluster Block (topic)";
     return GenerateTopicBlock(feed_generation_info);

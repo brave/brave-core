@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
@@ -121,10 +122,10 @@ TEST_F(BraveNewsChannelsControllerTest, CanGetAllChannels) {
 
   auto channels = GetAllChannels();
   EXPECT_EQ(4u, channels.size());
-  EXPECT_TRUE(channels.contains("One"));
-  EXPECT_TRUE(channels.contains("Two"));
-  EXPECT_TRUE(channels.contains("Four"));
-  EXPECT_TRUE(channels.contains("Five"));
+  EXPECT_TRUE(base::Contains(channels, "One"));
+  EXPECT_TRUE(base::Contains(channels, "Two"));
+  EXPECT_TRUE(base::Contains(channels, "Four"));
+  EXPECT_TRUE(base::Contains(channels, "Five"));
 
   // By default, none of these channels should be subscribed.
   for (const auto& it : channels) {

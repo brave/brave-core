@@ -9,6 +9,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/i18n/icu_string_conversions.h"
 #include "base/logging.h"
@@ -63,7 +64,7 @@ std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& charset,
       continue;
     }
     // Validate rel
-    if (!base::IsStringASCII(rel) || !kSupportedRels.contains(rel)) {
+    if (!base::IsStringASCII(rel) || !base::Contains(kSupportedRels, rel)) {
       VLOG(1) << "not valid rel: " << rel;
       continue;
     }
@@ -76,7 +77,7 @@ std::vector<GURL> GetFeedURLsFromHTMLDocument(const std::string& charset,
     }
     // Validate type
     if (!base::IsStringASCII(content_type) ||
-        !kSupportedFeedTypes.contains(content_type)) {
+        !base::Contains(kSupportedFeedTypes, content_type)) {
       VLOG(1) << "not valid type: " << content_type;
       continue;
     }
