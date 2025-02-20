@@ -10,13 +10,13 @@ import override_utils
 @override_utils.override_function(globals())
 def _customize_and_sign_chrome(original_function, paths, dist_config, *args):
     base_config = dist_config.base_config
-    # This also serves as a safeguard that .enable_universal_app_dir exists:
-    value_before = base_config.enable_universal_app_dir
-    base_config.enable_universal_app_dir = True
+    # This also serves as a safeguard that .is_in_sign_chrome exists:
+    value_before = base_config.is_in_sign_chrome
+    base_config.is_in_sign_chrome = True
     try:
         return original_function(paths, dist_config, *args)
     finally:
-        base_config.enable_universal_app_dir = value_before
+        base_config.is_in_sign_chrome = value_before
 
 
 @override_utils.override_function(globals())
