@@ -380,23 +380,15 @@ if (is_official_build) {
   }
 }
 
-if (skip_signing) {
-  copy("unsigned_dmg") {
-    deps = [ ":package" ]
-    sources = [ upstream_dmg_path ]
-    outputs = [ "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg" ]
-  }
-}
-
 group("create_dist_mac") {
-  deps = [ ":copy_zip" ]
+  deps = [
+    ":copy_dmg",
+    ":copy_zip",
+  ]
   if (skip_signing) {
     deps += [ ":unsigned_dmg" ]
   } else {
-    deps += [
-      ":copy_dmg",
-      ":copy_pkg",
-    ]
+    deps += [ ":copy_pkg" ]
     if (sparkle_dsa_private_key_file != "") {
       deps += [ ":generate_dsa_sig_for_dmg" ]
     }
@@ -430,6 +422,14 @@ copy("copy_zip") {
   sources = [ upstream_zip_path ]
   deps = [ ":package" ]
   outputs = [ "$root_out_dir/$brave_zip" ]
+}
+
+if (skip_signing) {
+  copy("unsigned_dmg") {
+    deps = [ ":package" ]
+    sources = [ upstream_dmg_path ]
+    outputs = [ "$root_out_dir/$mac_unsigned_output_prefix/$brave_dmg" ]
+  }
 }
 
 crx3("crx") {
