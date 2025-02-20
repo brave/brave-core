@@ -71,25 +71,11 @@ cargo_crate("lib") {
     "//brave/third_party/rust/num_traits/v0_2:lib",
     "//brave/third_party/rust/serde/v1:lib",
   ]
-  if (!is_win) {
-    deps += [ "//brave/third_party/rust/iana_time_zone/v0_1:lib" ]
-  }
-  if (is_android) {
-    deps += [ "//brave/third_party/rust/android_tzdata/v0_1:lib" ]
-  }
-  if (is_win) {
-    deps += [ "//brave/third_party/rust/windows_targets/v0_52:lib" ]
-  }
   features = [
     "alloc",
-    "android-tzdata",
-    "clock",
-    "iana-time-zone",
     "now",
     "serde",
     "std",
-    "winapi",
-    "windows-targets",
   ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates

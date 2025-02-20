@@ -22,7 +22,7 @@ data-encoding = "2.1.2"
 tracing = { version = "0.1", default-features = false, features = ["release_max_level_debug"] }
 bigdecimal = { version = "0.1", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
-chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
+chrono = { version = "0.4", default-features = false, features = ["now", "serde"] }
 uuid = { version = "1", features = ["v4"] }
 challenge-bypass-ristretto = { version = "2.0.0", features = ["serde_base64"] }
 futures-retry = "0.5.0"
