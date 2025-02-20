@@ -88,6 +88,7 @@ def RewriteFileListWithOverrides(file_list):
 
 @override_utils.override_function(globals())
 def AggregateVectorIcons(orig_func, working_directory, file_list, output_cc,
-                         output_h):
+                         output_h, output_test_h):
     RewriteFileListWithOverrides(file_list)
-    return orig_func(working_directory, file_list, output_cc, output_h)
+    return orig_func(working_directory, file_list, output_cc, output_h,
+                     output_test_h)

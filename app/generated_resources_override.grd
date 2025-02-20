@@ -1309,15 +1309,6 @@ are declared in tools/grit/grit_args.gni.
     <if expr="is_android">
         </if>
 
-    <if expr="enable_glic">
-      <if expr="is_macosx">
-        </if>
-      <if expr="is_win or is_linux">
-        </if>
-      <if expr="is_win or is_linux">
-        </if>
-      </if>
-
     <if expr="is_chromeos">
       </if>
 
