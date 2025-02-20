@@ -45,7 +45,7 @@ export default function Attachments() {
             <Flex direction='row' justify='space-between' align='center'>
                 <h5>{getLocale('attachmentsBrowserTabsTitle')}</h5>
             </Flex>
-            <Input placeholder='Search tabs' value={search} onInput={e => setSearch(e.value)}>
+            <Input placeholder={getLocale('searchTabsPlaceholder')} value={search} onInput={e => setSearch(e.value)}>
                 <Icon name='search' slot='icon-after' />
             </Input>
             <div className={styles.tabList}>

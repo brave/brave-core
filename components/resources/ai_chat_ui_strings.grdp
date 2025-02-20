@@ -339,6 +339,9 @@
   <message name="IDS_CHAT_UI_CLOSE_NOTICE" desc="Label for button which closes a notice">
     Close this notice
   </message>
+  <message name="IDS_CHAT_UI_ATTACHMENTS_SEARCH_PLACEHOLDER" desc="Placeholder for the attachments search input">
+    Search tabs
+  </message>
   <message name="IDS_CHAT_UI_ATTACHMENTS_TITLE" desc="Title for the attachments section">
     Attachments
   </message>

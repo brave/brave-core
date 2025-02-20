@@ -153,6 +153,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        {"expandSources", IDS_CHAT_UI_EXPAND_SOURCES},
        {"learnMore", IDS_CHAT_UI_LEARN_MORE},
        {"closeNotice", IDS_CHAT_UI_CLOSE_NOTICE},
+       {"searchTabsPlaceholder", IDS_CHAT_UI_ATTACHMENTS_SEARCH_PLACEHOLDER},
        {"attachmentsTitle", IDS_CHAT_UI_ATTACHMENTS_TITLE},
        {"attachmentsDescription", IDS_CHAT_UI_ATTACHMENTS_DESCRIPTION},
        {"attachmentsBrowserTabsTitle",

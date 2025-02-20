@@ -268,7 +268,11 @@ let locale: Record<string, string> = {
     'By turning on {{title}}, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   editCardsTitle: 'Edit Cards',
   placeholderLabel: 'Ask follow up',
-  initialPlaceholderLabel: 'How can I help you today?'
+  initialPlaceholderLabel: 'How can I help you today?',
+  searchTabsPlaceholder: 'Search tabs',
+  attachmentsTitle: 'Attachments',
+  attachmentsDescription: 'Add your browser tabs to give Leo more context for the conversation',
+  attachmentsBrowserTabsTitle: 'Browser tabs',
 }
 
 export function provideStrings(strings: Record<string, string>) {

@@ -86,7 +86,9 @@ function Main() {
       isLastTurnBraveSearchSERPSummary) &&
     conversationContext.associatedContentInfo?.isContentAssociationPossible
 
-  const showAttachments = useSupportsAttachments() && conversationContext.showAttachments
+  const showAttachments = useSupportsAttachments()
+    && conversationContext.showAttachments
+    && aiChatContext.tabs.length > 0
 
   let currentErrorElement = null
 

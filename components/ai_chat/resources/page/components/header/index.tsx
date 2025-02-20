@@ -99,7 +99,7 @@ export const ConversationHeader = React.forwardRef(function (props: FeatureButto
               >
                 <Icon name='expand' />
               </Button>}
-            {supportsAttachments && <Button
+            {supportsAttachments && aiChatContext.tabs.length > 0 && <Button
               fab
               kind={conversationContext.showAttachments ? 'plain' : 'plain-faint'}
               aria-label={getLocale('attachmentsTitle')}
