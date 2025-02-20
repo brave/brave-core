@@ -15,7 +15,7 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.enable_universal_app_dir = False
+        self.is_in_sign_chrome = False
 
     @staticmethod
     def is_chrome_branded():
@@ -60,6 +60,6 @@ class InternalCodeSignConfig(ChromiumCodeSignConfig):
     @property
     def app_dir(self):
         app_dir_basename = super().app_dir
-        if self.invoker.args.universal and self.enable_universal_app_dir:
+        if self.invoker.args.universal and self.is_in_sign_chrome:
             return 'universal/' + app_dir_basename
         return app_dir_basename
