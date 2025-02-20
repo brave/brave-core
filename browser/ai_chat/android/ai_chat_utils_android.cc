@@ -52,7 +52,8 @@ static void JNI_BraveLeoUtils_OpenLeoQuery(
       std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       base::android::ConvertJavaStringToUTF8(query), std::nullopt /* prompt */,
       std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt, false);
+      base::Time::Now(), std::nullopt, std::nullopt /* uploaded images */,
+      false);
   conversation->SubmitHumanConversationEntry(std::move(turn));
 
   content::OpenURLParams params(

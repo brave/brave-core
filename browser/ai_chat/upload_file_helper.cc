@@ -20,6 +20,9 @@
 #include "third_party/skia/include/core/SkImage.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/shell_dialogs/selected_file_info.h"
+#if BUILDFLAG(IS_ANDROID)
+#include "base/files/file.h"
+#endif
 
 namespace {
 data_decoder::DataDecoder* GetDataDecoder() {
@@ -69,6 +72,29 @@ SkBitmap ScaleBitmap(const SkBitmap& bitmap) {
 
   return scaled_bitmap;
 }
+
+std::optional<std::vector<uint8_t>> ReadFileToBytesHelper(
+    const base::FilePath& path) {
+#if BUILDFLAG(IS_ANDROID)
+  std::optional<int64_t> bytes_to_read = base::GetFileSize(path);
+  if (!bytes_to_read) {
+    return std::nullopt;
+  }
+  std::vector<uint8_t> bytes(*bytes_to_read);
+  base::File file(path,
+                  base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+  if (file.IsValid()) {
+    std::optional<size_t> bytes_read = file.Read(0, bytes);
+    if (bytes_read) {
+      return bytes;
+    }
+  }
+  return std::nullopt;
+#else
+  return base::ReadFileToBytes(path);
+#endif
+}
+
 }  // namespace
 
 UploadFileHelper::UploadFileHelper(content::WebContents* web_contents,
@@ -83,6 +109,12 @@ void UploadFileHelper::UploadImage(std::unique_ptr<ui::SelectFilePolicy> policy,
   ui::SelectFileDialog::FileTypeInfo info;
   info.allowed_paths = ui::SelectFileDialog::FileTypeInfo::NATIVE_PATH;
   info.extensions = {{"png", "jpeg", "jpg", "webp"}};
+#if BUILDFLAG(IS_ANDROID)
+  // Set the list of acceptable MIME types for the file picker; this will apply
+  // to any subsequent SelectFile() calls.
+  select_file_dialog_->SetAcceptTypes(
+      {u"image/png", u"image/jpeg", u"image/jpg", u"image/webp"});
+#endif
   select_file_dialog_->SelectFile(
       ui::SelectFileDialog::SELECT_OPEN_FILE, std::u16string(),
       profile_->last_selected_directory(), &info, 0,
@@ -99,7 +131,7 @@ void UploadFileHelper::FileSelected(const ui::SelectedFileInfo& file,
       [](const ui::SelectedFileInfo& info)
           -> std::tuple<std::optional<std::vector<uint8_t>>, std::string,
                         std::optional<int64_t>> {
-        return std::make_tuple(base::ReadFileToBytes(info.path()),
+        return std::make_tuple(ReadFileToBytesHelper(info.path()),
                                info.display_name,
                                base::GetFileSize(info.path()));
       },
