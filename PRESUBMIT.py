@@ -51,7 +51,22 @@ def CheckLeoVariables(input_api, output_api):
 
 
 # Ensure Typescript files which we use as part of the build process are typechecked.
-def CheckTypescriptBuildFilesCompile(_, output_api):
+def CheckTypescriptBuildFilesCompile(input_api, output_api):
+
+    def build_files_filter(affected_file):
+        return input_api.FilterSourceFile(affected_file,
+                                          files_to_check=[
+                                              r'.+\.mangle\.html\.ts$',
+                                              r'.+lit_mangler_cli\.ts$',
+                                              r'.+lit_mangler\.ts$',
+                                          ])
+
+    affected_files = input_api.AffectedFiles(file_filter=build_files_filter)
+    if not any(affected_files):
+        return []
+
+    files_to_check = [f.AbsoluteLocalPath() for f in affected_files]
+
     try:
         brave_node.RunNode([
             brave_node.PathInNodeModules('tsx', 'dist', 'cli.mjs'),
@@ -59,7 +74,7 @@ def CheckTypescriptBuildFilesCompile(_, output_api):
             './tsconfig-mangle.json',
             './tools/chromium_src/lit_mangler_cli.ts',
             'typecheck',
-        ])
+        ] + files_to_check)
     except RuntimeError as err:
         return [output_api.PresubmitError(err.args[1])]
     return []
