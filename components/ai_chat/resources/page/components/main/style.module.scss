@@ -30,6 +30,27 @@
   margin-top: var(--conversation-content-margin);
 }
 
+.mainContent {
+  &:has(.attachmentsContainer) {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    grid-template-rows: auto min-content;
+    gap: var(--leo-spacing-m);
+
+    height: 100%;
+    width: 100%;
+  }
+
+  display: contents;
+}
+
+.attachmentsContainer {
+  margin: var(--leo-spacing-m);
+  align-self: start;
+  position: sticky;
+  top: 0;
+}
+
 .scroller {
   position: relative;
   --scrollbar-width: 6px;

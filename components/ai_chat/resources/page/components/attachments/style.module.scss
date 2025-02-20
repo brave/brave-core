@@ -1,0 +1,76 @@
+.root {
+    background: var(--leo-color-container-highlight);
+    padding: var(--leo-spacing-m);
+    margin-top: var(--leo-spacing-m);
+    border-radius: var(--leo-radius-l);
+    box-shadow: var(--leo-effect-elevation-01);
+
+    & leo-button[fab] {
+        flex: 0;
+    }
+
+    & h4 {
+        margin: 0;
+        color: var(--leo-color-text-secondary);
+        font: var(--leo-font-heading-h4);
+    }
+
+    & h5 {
+        margin: 0;
+        color: var(--leo-color-text-secondary);
+        font: var(--leo-font-default-semibold);
+    }
+}
+
+.header {
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+}
+
+.tabSearchContainer {
+    background: var(--leo-color-container-background);
+    padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+    border-radius: var(--leo-radius-l);
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-m);
+}
+
+.tabList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-s);
+
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-m);
+
+    padding: var(--leo-spacing-m);
+}
+
+.description {
+    font: var(--leo-font-small-regular);
+    color: var(--leo-color-text-tertiary);
+}
+
+.tabItem {
+    --leo-radiobutton-flex-direction: row-reverse;
+
+    padding: var(--leo-spacing-m);
+    display: flex;
+    gap: var(--leo-spacing-m);
+    align-items: center;
+    justify-content: space-between;
+
+    & .icon {
+        flex-shrink: 0;
+    }
+
+    & .title {
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        flex: 1;
+
+        color: var(--leo-color-text-primary);
+        font: var(--leo-font-default-regular);
+    }
+}
