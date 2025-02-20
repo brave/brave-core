@@ -73,10 +73,10 @@ class DataImportModel: ObservableObject {
     get {
       importState == .loadingProfiles
     }
-
     set {
-      if !newValue {
-        importState = .none
+      if !newValue, importState == .loadingProfiles {
+        removeZipFile()
+        resetAllStates()
       }
     }
   }
@@ -85,9 +85,8 @@ class DataImportModel: ObservableObject {
     get {
       importState == .dataConflict
     }
-
     set {
-      if !newValue {
+      if !newValue, importState == .dataConflict {
         removeZipFile()
         resetAllStates()
       }
@@ -194,7 +193,10 @@ class DataImportModel: ObservableObject {
     // Reset password importer
     passwordImporter = PasswordsImportExportUtility()
     importError = nil
-    importState = .none
+
+    if [.loadingProfiles, .dataConflict, .failure].contains(importState) {
+      importState = .none
+    }
   }
 
   @MainActor

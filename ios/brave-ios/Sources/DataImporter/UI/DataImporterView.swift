@@ -21,21 +21,9 @@ public struct DataImportView: View {
   private var dismiss
 
   @State
-  private var showSuccessView = false
-
-  @State
-  private var showFailureView = false
-
-  @State
-  private var showLoadingView = false
-
-  @State
-  private var showMainView = true
-
-  @State
   private var importerInfo = ImporterInfo(shouldShowFileImporter: false)
 
-  @ObservedObject
+  @StateObject
   private var model = DataImportModel()
 
   private var openURL: (URL) -> Void
@@ -49,7 +37,7 @@ public struct DataImportView: View {
   public var body: some View {
     ZStack {
       if model.importState == .success {
-        DataImporterStateView(kind: .success, model: model) {
+        DataImporterSuccessView {
           model.removeZipFile()
 
           onDismiss()
@@ -59,19 +47,9 @@ public struct DataImportView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(braveSystemName: .pageBackground))
         .toolbar(.hidden, for: .navigationBar)
-        .opacity(showSuccessView ? 1.0 : 0.0)
-        .onAppear {
-          withAnimation(.easeInOut(duration: 0.5)) {
-            showSuccessView = true
-          }
-        }
-        .onDisappear {
-          withAnimation(.easeInOut(duration: 0.5)) {
-            showSuccessView = false
-          }
-        }
+        .transition(.opacity)
       } else if model.importState == .failure {
-        DataImporterStateView(kind: .failure, model: model) {
+        DataImporterFailedView {
           model.removeZipFile()
           model.resetAllStates()
         }
@@ -79,105 +57,78 @@ public struct DataImportView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(braveSystemName: .pageBackground))
         .toolbar(.hidden, for: .navigationBar)
-        .opacity(showFailureView ? 1.0 : 0.0)
-        .onAppear {
-          withAnimation(.easeInOut(duration: 0.5)) {
-            showFailureView = true
-          }
-        }
-        .onDisappear {
-          withAnimation(.easeInOut(duration: 0.5)) {
-            showFailureView = false
-          }
-        }
+        .transition(.opacity)
       } else if model.importState == .importing {
         DataImporterLoadingView()
           .padding(16.0)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(Color(braveSystemName: .pageBackground))
           .toolbar(.hidden, for: .navigationBar)
-          .opacity(showLoadingView ? 1.0 : 0.0)
-          .onAppear {
-            withAnimation(.easeInOut(duration: 0.5)) {
-              showLoadingView = true
-            }
-          }
-          .onDisappear {
-            withAnimation(.easeInOut(duration: 0.5)) {
-              showLoadingView = false
-            }
-          }
+          .transition(.opacity)
       } else {
         GeometryReader { proxy in
           ScrollView {
-            mainView()
+            mainView
               .frame(minHeight: proxy.size.height)
           }
           .background(Color(braveSystemName: .pageBackground))
         }
-        .sheet(
-          isPresented: $model.isLoadingProfiles,
-          onDismiss: {
-            model.removeZipFile()
-          },
-          content: {
-            if let zipFileURL = model.zipFileURL {
-              GeometryReader { proxy in
-                ScrollView {
-                  multiProfileView(zipFileURL: zipFileURL)
-                    .frame(minHeight: proxy.size.height)
-                }
-                .osAvailabilityModifiers({
-                  if #available(iOS 16.4, *) {
-                  } else {
-                    $0.background(.thickMaterial)
-                  }
-                })
+      }
+    }
+    .sheet(
+      isPresented: $model.isLoadingProfiles,
+      content: {
+        if let zipFileURL = model.zipFileURL {
+          GeometryReader { proxy in
+            ScrollView {
+              multiProfileView(zipFileURL: zipFileURL)
+                .frame(minHeight: proxy.size.height)
+            }
+            .osAvailabilityModifiers({ content in
+              if #available(iOS 16.4, *) {
+                content
+              } else {
+                content.background(.thickMaterial)
               }
-            }
-          }
-        )
-        .sheet(
-          isPresented: $model.hasDataConflict,
-          onDismiss: {
-            Task {
-              await model.keepPasswords(option: .abortImport)
-              model.removeZipFile()
-              model.resetAllStates()
-            }
-          },
-          content: {
-            GeometryReader { proxy in
-              ScrollView {
-                passwordsConflictView()
-                  .frame(minHeight: proxy.size.height)
-              }
-              .osAvailabilityModifiers({
-                if #available(iOS 16.4, *) {
-                } else {
-                  $0.background(.thickMaterial)
-                }
-              })
-            }
-          }
-        )
-        .fileImporter(
-          isPresented: $importerInfo.shouldShowFileImporter,
-          allowedContentTypes: importerInfo.fileTypes,
-          allowsMultipleSelection: false
-        ) { result in
-          switch result {
-          case .success(let files):
-            Task {
-              await onFileSelected(files: files)
-            }
-          case .failure(let error):
-            Logger.module.error("[DataImporter] - File Selector Error: \(error)")
-            model.importError = .unknown
+            })
           }
         }
       }
+    )
+    .sheet(
+      isPresented: $model.hasDataConflict,
+      content: {
+        GeometryReader { proxy in
+          ScrollView {
+            passwordsConflictView
+              .frame(minHeight: proxy.size.height)
+          }
+          .osAvailabilityModifiers({ content in
+            if #available(iOS 16.4, *) {
+              content
+            } else {
+              content.background(.thickMaterial)
+            }
+          })
+        }
+      }
+    )
+    .fileImporter(
+      isPresented: $importerInfo.shouldShowFileImporter,
+      allowedContentTypes: importerInfo.fileTypes,
+      allowsMultipleSelection: false
+    ) { result in
+      switch result {
+      case .success(let files):
+        Task {
+          await onFileSelected(files: files)
+        }
+      case .failure(let error):
+        Logger.module.error("[DataImporter] - File Selector Error: \(error)")
+        model.importError = .unknown
+      }
     }
+    .animation(.default, value: model.importState)
     .onDisappear {
       model.removeZipFile()
       onDismiss()
@@ -185,7 +136,7 @@ public struct DataImportView: View {
   }
 
   @ViewBuilder
-  private func mainView() -> some View {
+  private var mainView: some View {
     VStack {
       VStack(alignment: .center, spacing: 16.0) {
         Image("main_import_logo", bundle: .module)
@@ -266,47 +217,24 @@ public struct DataImportView: View {
     .padding(16.0)
     .navigationTitle(Strings.DataImporter.importDataFileSelectorNavigationTitle)
     .toolbar(.visible, for: .navigationBar)
-    .opacity(showMainView ? 1.0 : 0.0)
-    .animation(.easeInOut(duration: 0.5), value: model.importState)
-    .onAppear {
-      withAnimation(.easeInOut(duration: 0.5)) {
-        showMainView = true
-      }
-    }
-    .onDisappear {
-      withAnimation(.easeInOut(duration: 0.5)) {
-        showMainView = false
-      }
-    }
   }
 
   @ViewBuilder
-  private func passwordsConflictView() -> some View {
-    DataImporterStateView(
-      kind: .passwordConflict,
-      model: model
-    ) {
-      Task {
-        await model.keepPasswords(option: .keepBravePasswords)
-      }
-    } secondaryAction: {
-      Task {
-        await model.keepPasswords(option: .keepSafariPasswords)
-      }
-    }
-    .padding(16.0)
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .presentationDetents([.fraction(0.60)])
-    .presentationDragIndicator(.visible)
-    .osAvailabilityModifiers({
-      if #available(iOS 16.4, *) {
-        $0.presentationBackground(.thickMaterial)
-          .presentationCornerRadius(15.0)
-          .presentationCompactAdaptation(.sheet)
-      } else {
-        $0.background(.thickMaterial)
-      }
-    })
+  private var passwordsConflictView: some View {
+    DataImporterPasswordConflictView(model: model)
+      .padding(16.0)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .presentationDetents([.fraction(0.60)])
+      .presentationDragIndicator(.visible)
+      .osAvailabilityModifiers({
+        if #available(iOS 16.4, *) {
+          $0.presentationBackground(.thickMaterial)
+            .presentationCornerRadius(15.0)
+            .presentationCompactAdaptation(.sheet)
+        } else {
+          $0.background(.thickMaterial)
+        }
+      })
   }
 
   @ViewBuilder
