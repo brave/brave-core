@@ -393,7 +393,7 @@ if (skip_signing) {
 }
 
 group("create_dist") {
-  deps = []
+  deps = [ ":copy_zip" ]
   if (skip_signing) {
     deps += [ ":unsigned_dmg" ]
   } else {
@@ -428,6 +428,12 @@ copy("copy_pkg") {
   sources = [ upstream_pkg_path ]
   deps = [ ":package" ]
   outputs = [ "$root_out_dir/$brave_pkg" ]
+}
+
+copy("copy_zip") {
+  sources = [ upstream_zip_path ]
+  deps = [ ":package" ]
+  outputs = [ "$root_out_dir/$brave_zip" ]
 }
 
 crx3("crx") {
