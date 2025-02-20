@@ -68,7 +68,6 @@
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #else
-#include "chrome/browser/apps/link_capturing/link_capturing_features.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
 #include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "components/device_signals/core/common/signals_features.h"
