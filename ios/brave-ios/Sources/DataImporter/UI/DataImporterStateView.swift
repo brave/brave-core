@@ -16,6 +16,7 @@ struct DataImporterStateView: View {
   private var dismiss
 
   var kind: Kind
+  var model: DataImportModel
 
   var primaryAction: Action
   var secondaryAction: Action?
@@ -48,9 +49,15 @@ struct DataImporterStateView: View {
             .font(.headline)
             .foregroundColor(Color(braveSystemName: .textPrimary))
 
-          Text(kind.subtitle)
-            .font(.footnote)
-            .foregroundStyle(Color(braveSystemName: .textSecondary))
+          if case .failedToImportPasswordsDueToConflict(let results) = model.importError {
+            Text(String(format: kind.subtitle, results.displayedEntries.count))
+              .font(.footnote)
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+          } else {
+            Text(String(format: kind.subtitle, 0))
+              .font(.footnote)
+              .foregroundStyle(Color(braveSystemName: .textSecondary))
+          }
         }
         .multilineTextAlignment(.center)
         .frame(maxWidth: .infinity)
@@ -153,6 +160,11 @@ struct DataImporterStateView: View {
 
 #if DEBUG
 #Preview {
-  DataImporterStateView(kind: .passwordConflict, primaryAction: {}, secondaryAction: {})
+  DataImporterStateView(
+    kind: .passwordConflict,
+    model: .init(),
+    primaryAction: {},
+    secondaryAction: {}
+  )
 }
 #endif

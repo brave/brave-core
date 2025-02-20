@@ -49,7 +49,7 @@ public struct DataImportView: View {
   public var body: some View {
     ZStack {
       if model.importState == .success {
-        DataImporterStateView(kind: .success) {
+        DataImporterStateView(kind: .success, model: model) {
           model.removeZipFile()
 
           onDismiss()
@@ -71,7 +71,7 @@ public struct DataImportView: View {
           }
         }
       } else if model.importState == .failure {
-        DataImporterStateView(kind: .failure) {
+        DataImporterStateView(kind: .failure, model: model) {
           model.removeZipFile()
           model.resetAllStates()
         }
@@ -127,7 +127,12 @@ public struct DataImportView: View {
                   multiProfileView(zipFileURL: zipFileURL)
                     .frame(minHeight: proxy.size.height)
                 }
-                .background(.thickMaterial)
+                .osAvailabilityModifiers({
+                  if #available(iOS 16.4, *) {
+                  } else {
+                    $0.background(.thickMaterial)
+                  }
+                })
               }
             }
           }
@@ -144,10 +149,15 @@ public struct DataImportView: View {
           content: {
             GeometryReader { proxy in
               ScrollView {
-                stateView()
+                passwordsConflictView()
                   .frame(minHeight: proxy.size.height)
               }
-              .background(.thickMaterial)
+              .osAvailabilityModifiers({
+                if #available(iOS 16.4, *) {
+                } else {
+                  $0.background(.thickMaterial)
+                }
+              })
             }
           }
         )
@@ -271,9 +281,10 @@ public struct DataImportView: View {
   }
 
   @ViewBuilder
-  private func stateView() -> some View {
+  private func passwordsConflictView() -> some View {
     DataImporterStateView(
-      kind: .passwordConflict
+      kind: .passwordConflict,
+      model: model
     ) {
       Task {
         await model.keepPasswords(option: .keepBravePasswords)
