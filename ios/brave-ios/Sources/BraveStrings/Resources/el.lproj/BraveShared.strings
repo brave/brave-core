@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Ακύρωση";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "Ζητούνται όνομα χρήστη και κωδικός πρόσβασης από το %1$@. Ο ιστότοπος λέει: %2$@";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "Σύνδεση";
 
@@ -125,10 +122,10 @@
 "BookmarkInfo" = "Πληροφορίες σελιδοδείκτη";
 
 /* Title for root level bookmarks cell */
-"BookmarkRootLevelCellTitle" = "Σελιδοδείκτες";
+"BookmarkRootLevelCellTitle" = "Γραμμή σελιδοδεικτών";
 
 /* title for bookmarks panel */
-"Bookmarks" = "Σελιδοδείκτες";
+"Bookmarks" = "Γραμμή σελιδοδεικτών";
 
 /* Action to export bookmarks to another device. */
 "bookmarksExportAction" = "Εξαγωγή σελιδοδεικτών";
@@ -137,7 +134,7 @@
 "bookmarksImportAction" = "Εισαγωγή σελιδοδεικτών";
 
 /* Title for bookmarks menu item */
-"BookmarksMenuItem" = "Σελιδοδείκτες";
+"BookmarksMenuItem" = "Γραμμή σελιδοδεικτών";
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkTitlePlaceholderText" = "Όνομα";
@@ -149,7 +146,7 @@
 "BravePanel" = "Πίνακας Brave";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdNotificationTitle" = "Επιβραβεύσεις Brave";
+"BraveRewardsAdNotificationTitle" = "Ανταμοιβές Brave";
 
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Άνοιγμα";
@@ -158,7 +155,7 @@
 "BraveRewardsSettingsTitle" = "Ανταμοιβές";
 
 /* Brave Rewards title */
-"BraveRewardsTitle" = "Επιβραβεύσεις Brave";
+"BraveRewardsTitle" = "Ανταμοιβές Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
 "braveSearchPromotion.bannerDescription" = "Η Αναζήτηση Brave δεν σκιαγραφεί το προφίλ σας.";
@@ -182,10 +179,10 @@
 "BraveShieldsAdvancedControls" = "Ρυθμίσεις για προχωρημένους";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Ασπίδες Brave και απόρρητο";
+"BraveShieldsAndPrivacy" = "Ασπίδες Brave & απόρρητο";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacyTitle" = "Ασπίδες και απόρρητο";
+"BraveShieldsAndPrivacyTitle" = "Ασπίδες & απόρρητο";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Οι διαφημίσεις και άλλα ανατριχιαστικά πράγματα αποκλείστηκαν";
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Καθολικοί έλεγχοι";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Αποθήκευση πληροφοριών επικοινωνίας για μελλοντικές αναφορές ιστοτόπων που δεν λειτουργούν";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Εάν παρέχετε στοιχεία επικοινωνίας, θα αποθηκευτούν για μελλοντικές αναφορές";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Εάν αυτός ο ιστότοπος φαίνεται να μην λειτουργεί σωστά, δοκιμάστε να απενεργοποιήσετε τις Ασπίδες";
@@ -569,7 +572,7 @@
 "defaultBrowserCallout.introPrimaryText" = "Ανοίγετε όλους τους συνδέσμους με το Brave για να προστατεύετε το απόρρητό σας";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Οι Ασπίδες Brave αποκλείουν προγράμματα παρακολούθησης και διαφημίσεις, αποθηκεύουν δεδομένα και σας βοηθούν να εξοικονομείτε χρόνο σε κάθε ιστότοπο που επισκέπτεστε";
+"defaultBrowserCallout.introSecondaryText" = "Οι Ασπίδες Brave αποκλείουν προγράμματα παρακολούθησης & διαφημίσεις, αποθηκεύουν δεδομένα και σας βοηθούν να εξοικονομείτε χρόνο σε κάθε ιστότοπο που επισκέπτεστε";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "Ανοίξτε τις Ρυθμίσεις, πατήστε «Προεπιλεγμένη εφαρμογή προγράμματος περιήγησης» και επιλέξτε «Brave».";
@@ -896,7 +899,7 @@
 "login.loginListEmptyScreenTitle" = "Δεν βρέθηκαν συνδέσεις";
 
 /* Title for navigation bar of the login list screen */
-"login.loginListNavigationTitle" = "Συνδέσεις και κωδικοί πρόσβασης";
+"login.loginListNavigationTitle" = "Συνδέσεις & κωδικοί πρόσβασης";
 
 /* The header title displayed over the never saved login list entry */
 "login.loginListNeverSavedHeaderTitle" = "Δεν έγινε ποτέ αποθήκευση";
@@ -959,7 +962,7 @@
 "Name" = "Όνομα";
 
 /* Setting preference to always hide the browser tabs bar. */
-"NeverShow" = "Κλειστό";
+"NeverShow" = "Απενεργοποιημένο";
 
 /* Default name for creating a new bookmark. */
 "NewBookmarkDefaultName" = "Νέος σελιδοδείκτης";
@@ -1043,7 +1046,7 @@
 "ntp.settingsDefaultImagesOnly" = "Προεπιλεγμένες εικόνες";
 
 /* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Χορηγούμενες εικόνες και βίντεο";
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Χορηγούμενες εικόνες & βίντεο";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Χορηγούμενες εικόνες";
@@ -1118,7 +1121,7 @@
 "OBRewardsAgreementDetailsAnd" = "και";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Επιβραβεύσεις Brave";
+"OBRewardsAgreementTitle" = "Ανταμοιβές Brave";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetail" = "Η συμμετοχή στις Ιδιωτικές διαφημίσεις Brave υποστηρίζει τους εκδότες και τους δημιουργούς περιεχομένου με κάθε διαφήμιση που προβάλλεται.";
@@ -1130,7 +1133,7 @@
 "OBRewardsPrivacyPolicyDetailLink" = "Πολιτική απορρήτου";
 
 /* Title for rewards onboarding screen */
-"OBRewardsTitle" = "Επιβραβεύσεις Brave";
+"OBRewardsTitle" = "Ανταμοιβές Brave";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Αποθήκευση";
@@ -1154,7 +1157,7 @@
 "OBTurnOnButton" = "Έναρξη";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ και %2$ άλλες διαφημίσεις και προγράμματα παρακολούθησης αποκλείστηκαν";
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ και %2$lld άλλες διαφημίσεις & προγράμματα παρακολούθησης αποκλείστηκαν";
 
 /* The footnote indicating what Brave shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "Δείτε όλα τα βλαβερά στοιχεία που έχει αποκλείσει το Brave, σε κάθε σελίδα, με τις Ασπίδες.";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "Πατήστε για να προβάλλετε τις Ασπίδες Brave ";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "διαφημίσεις και προγράμματα παρακολούθησης αποκλείστηκαν";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Διαφημίσεις & ιχνηλάτες που αποκλείστηκαν";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Συνδέστε τη συνδρομή σας VPN";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Η συνδρομή σας Brave VPN μπορεί να προστατεύσει έως και 5 συσκευές, σε Android, iOS και υπολογιστές. Απλώς συνδέστε τη συνδρομή σας στο App Store με τον λογαριασμό σας Brave.";
+"onboarding.linkReceiptDescription" = "Η συνδρομή σας Brave VPN μπορεί να προστατεύσει έως και 10 συσκευές, σε Android, iOS και υπολογιστές. Απλώς συνδέστε τη συνδρομή σας στο App Store με τον λογαριασμό σας Brave.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Επεκτείνετε την προστασία σας με Τείχος προστασίας Brave + VPN";
@@ -1181,7 +1184,7 @@
 "onboarding.navigateSettingsOnboardingScreenTitle" = "Μετάβαση στις Ρυθμίσεις...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
-"onboarding.ntpOnboardingPopOverTrackerDescription" = "Αποκλείοντας προγράμματα παρακολούθησης και διαφημίσεις, οι ιστότοποι χρησιμοποιούν λιγότερα δεδομένα και φορτώνονται πολύ πιο γρήγορα.";
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "Αποκλείοντας προγράμματα παρακολούθησης & διαφημίσεις, οι ιστότοποι χρησιμοποιούν λιγότερα δεδομένα και φορτώνονται πολύ πιο γρήγορα.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverDescription" = "Δείτε τη διαφορά του Brave:\nΧωρίς διαφημίσεις. Χωρίς προγράμματα παρακολούθησης. Πολύ πιο γρήγορη φόρτωση σελίδων.";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Άνοιγμα σε νέο παράθυρο";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "Συνέχεια λήψης ενός προφίλ ρύθμισης παραμέτρων από %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "Διαθέσιμο προφίλ διαμόρφωσης";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Άνοιγμα σε νέα Iδιωτική καρτέλα";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "Ανοικτές καρτέλες";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "Συνέχεια λήψης μιας εκδήλωσης ημερολογίου από %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "Εκδήλωση ημερολογίου διαθέσιμη";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Άνοιγμα ιστότοπου";
@@ -1529,7 +1544,7 @@
 "playlist.playlistAutoPlaySettingsOptionTitle" = "Αυτόματη αναπαραγωγή";
 
 /* Auto Download turn Off Option */
-"playlist.playlistAutoSaveOptionOff" = "Κλειστό";
+"playlist.playlistAutoSaveOptionOff" = "Απενεργοποιημένο";
 
 /* Auto Save turn On Option */
 "playlist.playlistAutoSaveOptionOn" = "Ενεργό";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "Η προσθήκη αρχείων βίντεο και ήχου για χρήση εκτός σύνδεσης μπορεί να χρησιμοποιήσει πολύ χώρο αποθήκευσης στη συσκευή σας, καθώς και να χρησιμοποιήσει τα δεδομένα κινητής τηλεφωνίας σας";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Αυτή η επιλογή θα διατηρεί αυτόματα τα στοιχεία της λίστας αναπαραγωγής στη συσκευή σας, ώστε να μπορείτε να τα αναπαράγετε χωρίς σύνδεση στο Internet.";
+"playlist.playlistAutoSaveSettingsFooterText" = "Μόλις ανοίξετε περιεχόμενο στη λίστα αναπαραγωγής, αυτή η επιλογή θα διατηρήσει τα στοιχεία της λίστας αναπαραγωγής που ανοίξατε στη συσκευή σας, ώστε να μπορείτε να τα αναπαράγετε χωρίς σύνδεση στο διαδίκτυο.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Αυτόματη αποθήκευση όταν βρίσκεστε εκτός σύνδεσης";
+"playlist.playlistAutoSaveSettingsTitle" = "Αποθήκευση περιεχομένου για αναπαραγωγή χωρίς σύνδεση";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "Η προσθήκη αρχείων βίντεο και ήχου για χρήση εκτός σύνδεσης μπορεί να χρησιμοποιήσει πολύ χώρο αποθήκευσης στη συσκευή σας. Καταργήστε ορισμένα αρχεία για να ελευθερώσετε χώρο αποθήκευσης.";
@@ -1562,7 +1577,7 @@
 "playlist.playlistLongPressSettingsOptionTitle" = "Ενεργοποίηση παρατεταμένου πατήματος";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Μέσα λίστας αναπαραγωγής και δεδομένα εκτός σύνδεσης";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Πολυμέσα λίστας αναπαραγωγής & δεδομένα εκτός σύνδεσης";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Δεδομένα εκτός σύνδεσης της λίστας αναπαραγωγής";
@@ -1618,14 +1633,8 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Απομνημόνευση θέσης αναπαραγωγής αρχείων";
 
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Απενεργοποιεί το WebKit MediaSource API";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Συμβατότητα ιστού";
-
 /* Title for removing offline mode storage */
-"playList.removeActionButtonTitle" = "Αφαίρεση";
+"playList.removeActionButtonTitle" = "Κατάργηση";
 
 /* A message shown when the user removes media from the playlist. '%@' will be replaced by the folder it was added to. Example: 'Removed from Play Later' */
 "playList.removedFromPlaylistMessage" = "Καταργήθηκε από τον φάκελο %@";
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "Λυπούμαστε";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Προστέθηκε στη Λίστα αναπαραγωγής Brave";
+"playList.toastAddedToPlaylistTitle" = "Προβολή στη λίστα αναπαραγωγής";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Άνοιγμα";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Προσθήκη στη Λίστα αναπαραγωγής Brave";
+"playList.toastAddToPlaylistTitle" = "Προσθήκη στη Λίστα αναπαραγωγής";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Προβολή στη Λίστα αναπαραγωγής Brave";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "Αναίρεση";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Προσθέτει ένα κουμπί λίστας αναπαραγωγής (μοιάζει με 4 γραμμές με ένα σύμβολο +) δίπλα στη γραμμή διευθύνσεων στο πρόγραμμα περιήγησης Brave. Αυτό το κουμπί σάς δίνει γρήγορη πρόσβαση στο άνοιγμα της Λίστας αναπαραγωγής ή στην προσθήκη ή κατάργηση πολυμέσων.";
+"playlist.urlBarButtonOptionFooter" = "Προσθέτει ένα κουμπί λίστας αναπαραγωγής δίπλα στη γραμμή διευθύνσεων στο πρόγραμμα περιήγησης Brave. Αυτό το κουμπί σάς δίνει γρήγορη πρόσβαση στο άνοιγμα της Λίστας αναπαραγωγής ή στην προσθήκη ή κατάργηση πολυμέσων.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Ενεργοποίηση κουμπιού γρήγορης πρόσβασης";
@@ -1826,7 +1835,7 @@
 "privacyHub.allTimeListsHeader" = "Από την αρχή";
 
 /* Title of a section to show total count of trackers blocked by Brave */
-"privacyHub.allTimeListsTrackersView" = "Προγράμματα παρακολούθησης και διαφημίσεις";
+"privacyHub.allTimeListsTrackersView" = "Ιχνηλάτες & διαφημίσεις";
 
 /* Title of a section to show websites containing highest amount of trackers */
 "privacyHub.allTimeListsWebsitesView" = "Ιστοσελίδες";
@@ -1835,16 +1844,16 @@
 "privacyHub.allTimeListTrackersHeaderTitle" = "Τα πιο συχνά προγράμματα παρακολούθησης και διαφημίσεις σε ιστότοπους που επισκέπτεστε";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "Ιστότοποι με τα περισσότερα προγράμματα παρακολούθησης και διαφημίσεις";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Ιστότοποι με τα περισσότερα προγράμματα παρακολούθησης & διαφημίσεις";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "%lld ιστότοποι";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld προγράμματα παρακολούθησης και διαφημίσεις";
+"privacyHub.allTimeTrackersCount" = "%lld ιχνηλάτες & διαφημίσεις";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "Πρόγραμμα παρακολούθησης και διαφήμιση";
+"privacyHub.allTimeTrackerTitle" = "Ιχνηλάτης & διαφήμιση";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Ιστότοπος";
@@ -1880,7 +1889,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "Το **%1$@** αποκλείστηκε από τις Ασπίδες Brave σε **%2$lld** ιστότοπους";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "Πιο συχνό πρόγραμμα παρακολούθησης και διαφήμιση";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Πιο συχνό πρόγραμμα παρακολούθησης & διαφήμιση";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "Επισκεφτείτε ορισμένους ιστότοπους για να δείτε δεδομένα εδώ.";
@@ -1889,7 +1898,7 @@
 "privacyHub.noDataToShow" = "Δεν υπάρχουν ακόμη δεδομένα προς εμφάνιση.";
 
 /* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "Λάβετε εβδομαδιαίες ενημερώσεις απορρήτου σχετικά με τον αποκλεισμό προγραμμάτων παρακολούθησης και διαφημίσεων.";
+"privacyHub.notificationCalloutBody" = "Λάβετε εβδομαδιαίες ενημερώσεις απορρήτου στο πρόγραμμα παρακολούθησης & αποκλεισμού διαφημίσεων.";
 
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Ενεργοποίηση ειδοποιήσεων";
@@ -1955,7 +1964,7 @@
 "privacyHub.vpnAlertLocationTrackerTypeSingular" = "Ping τοποθεσίας";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "Προγράμματα παρακολούθησης και διαφημίσεις";
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Ιχνηλάτες & διαφημίσεις";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Πρόγραμμα παρακολούθησης ή διαφήμιση";
@@ -2096,7 +2105,7 @@
 "RecentSearchHide" = "Απόκρυψη";
 
 /* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Επικόλληση και μετάβαση";
+"RecentSearchPasteAndGo" = "Επικόλληση & μετάβαση";
 
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "ενεργοποιημένο";
@@ -2145,6 +2154,9 @@
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Επικοινωνήστε μαζί μου στο: (προαιρετικό)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Εάν παρέχετε στοιχεία επικοινωνίας, αυτά θα αποθηκευτούν στο μέλλον για την αναφορά ιστοτόπων που δεν λειτουργούν.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "Email, Twitter κ.λπ.";
@@ -2357,7 +2369,7 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Επαναλαμβανόμενο φιλοδώρημα";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Πληροφορίες προφίλ Ανταμοιβών, συσκευής και υπολοίπου (κοινοποιούνται πάντα)";
+"RewardsInternalsSharableBasicDescription" = "Πληροφορίες προφίλ Ανταμοιβών, συσκευής & υπολοίπου (κοινοποιούνται πάντα)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Βασικές πληροφορίες";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Πραγματοποιεί αναζήτηση για την πρόταση";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Ανοιχτές καρτέλες και σελιδοδείκτες και ιστορικό";
+"SearchHistorySectionHeader" = "Ανοιχτές καρτέλες & σελιδοδείκτες & ιστορικό";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Εκκαθάριση αναζήτησης";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "Συγχαρητήρια. Ξεχωρίζετε.";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "Αποκλείστηκαν %ld προγράμματα παρακολούθησης και διαφημίσεις!";
+"shieldEducation.trackerCountShareTitle" = "Αποκλείστηκαν %ld προγράμματα παρακολούθησης & διαφημίσεις!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "Τα βίντεο χωρίς διαφημίσεις χρησιμοποιούν λιγότερα δεδομένα.";
@@ -2771,13 +2783,13 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Άνοιγμα ιστότοπου";
 
 /* Description for opening Brave Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Αυτή η επιλογή θα ανοίξει τις Ρυθμίσεις Brave. Για να αλλάξετε διάφορες επιλογές Siri, επιλέξτε το στοιχείο μενού «Siri και αναζήτηση» και προσαρμόστε τις επιλογές σας.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Αυτή η επιλογή θα ανοίξει τις Ρυθμίσεις Brave. Για να αλλάξετε διάφορες επιλογές Siri, επιλέξτε το στοιχείο μενού «Siri & αναζήτηση» και προσαρμόστε τις επιλογές σας.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Άνοιγμα ρυθμίσεων";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Χρήση συντομεύσεων για άνοιγμα νέας καρτέλας και εκκαθάριση του ιστορικού περιήγησης μέσω του Siri - Φωνητικού βοηθού";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Χρήση συντομεύσεων για άνοιγμα νέας καρτέλας & εκκαθάριση του ιστορικού περιήγησης μέσω του Siri - Φωνητικού βοηθού";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Εκκαθάριση ιστορικού προγράμματος περιήγησης";
@@ -2795,7 +2807,7 @@
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "Άνοιγμα σελιδοδεικτών";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Χρήση συντομεύσεων για άνοιγμα νέας καρτέλας και εμφάνιση της ροής του Brave News μέσω του Siri - Φωνητικού βοηθού";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Χρήση συντομεύσεων για άνοιγμα νέας καρτέλας & εμφάνιση της ροής του Brave News μέσω του Siri - Φωνητικού βοηθού";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Άνοιγμα Brave News";
@@ -2915,7 +2927,7 @@
 "sync.bookmarksIExportPopupFailureMessage" = "Η εξαγωγή σελιδοδεικτών απέτυχε";
 
 /* Title of the bookmark import popup. */
-"sync.bookmarksImportPopupErrorTitle" = "Σελιδοδείκτες";
+"sync.bookmarksImportPopupErrorTitle" = "Γραμμή σελιδοδεικτών";
 
 /* Message of the popup if bookmark import fails. */
 "sync.bookmarksImportPopupFailureMessage" = "Η εισαγωγή σελιδοδεικτών απέτυχε";
@@ -3131,7 +3143,7 @@
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Αυτή η διαγραφή είναι οριστική και δεν υπάρχει τρόπος ανάκτησης των δεδομένων. Εάν αποφασίσετε να αρχίσετε να χρησιμοποιείτε ξανά τον Συγχρονισμό, θα πρέπει να δημιουργήσετε έναν νέο λογαριασμό και να προσθέσετε ξανά κάθε συσκευή μία-μία.";
 
 /* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Συσκευές και ρυθμίσεις";
+"sync.Syncdevices" = "Συσκευές & ρυθμίσεις";
 
 /* Sync remove device? */
 "sync.syncRemoveThisDeviceQuestion" = "Κατάργηση αυτής της συσκευής;";
@@ -3185,7 +3197,7 @@
 "TabPrivateModeToggleAccessibilityLabel" = "Ιδιωτική λειτουργία";
 
 /* Toggled OFF accessibility value */
-"TabPrivateModeToggleAccessibilityValueOff" = "Κλειστό";
+"TabPrivateModeToggleAccessibilityValueOff" = "Απενεργοποιημένο";
 
 /* Toggled ON accessibility value */
 "TabPrivateModeToggleAccessibilityValueOn" = "Ενεργό";
@@ -3473,7 +3485,7 @@
 "today.similarToSourceSubtitle" = "Παρόμοιο με το %@";
 
 /* No comment provided by engineer. */
-"today.sourcesAndSettings" = "Πηγές και ρυθμίσεις";
+"today.sourcesAndSettings" = "Πηγές & ρυθμίσεις";
 
 /* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
 "today.sourcesHeaderTitle" = "Πηγές";
@@ -3547,129 +3559,6 @@
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Το Brave δεν αποθηκεύει ούτε κοινοποιεί τις φωνητικές αναζητήσεις σας.";
 
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Θέλετε να διατηρήσετε την προστασία σας; Απλώς ανανεώστε τη συνδρομή σας πριν λήξει. Ως ευχαριστώ για την ανανέωση, θα εφαρμόσουμε και έκπτωση 20% για τους επόμενους 3 μήνες.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "Ενεργοποίηση αυτόματης ανανέωσης";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Ανανεώστε αυτόματα τη συνδρομή Brave VPN τώρα και κερδίστε έκπτωση 20% για 3 μήνες!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Ανανεώστε αυτόματα τη συνδρομή Brave VPN τώρα και κερδίστε 1 μήνα δωρεάν!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Αυτό σημαίνει ότι θα χάσετε τα επιπλέον μέτρα προστασίας του Brave για κάθε εφαρμογή στο τηλέφωνό σας.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Ωχ, όχι! Η συνδρομή σας Brave VPN πρόκειται να λήξει.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Τείχος προστασίας Brave + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "Δεν ήταν δυνατή η σύνδεση στο App Store. Δοκιμάστε ξανά σε λίγα λεπτά.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "Σφάλμα App Store";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Αποκλείει ανεπιθύμητες συνδέσεις δικτύου";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Αποκλεισμός διαφημίσεων και προγραμμάτων παρακολούθησης σε όλες τις εφαρμογές ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Υποστηρίζει ταχύτητες έως 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Γρήγορο και απεριόριστο έως τα 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "Υποστήριξη 24/7";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "Ασφαλίζει όλες τις συνδέσεις";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "Με την υποστήριξη";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "Αυτόματη";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Συνδεθείτε στον λογαριασμό σας Brave για να ανανεώσετε την περίοδο σύνδεσης VPN.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "Παράβλεψη";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "Σύνδεση";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "Η περίοδος σύνδεσης έληξε";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "Απενεργοποιημένο";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "Ενεργοποιημένο";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Έχει λήξει";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "Εγγραφή τώρα";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Σωστά. Η συνδρομή Brave VPN ισχύει πλέον για έως και 5 συσκευές. Έτσι, μπορείτε να εγγραφείτε στο iOS και να τη χρησιμοποιήσετε στις συσκευές σας Mac, Windows και Android δωρεάν.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Τώρα, χρησιμοποιήστε το Brave VPN σε όλες τις συσκευές σας στην ίδια τιμή!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Δοκιμάστε άλλη μια φορά το Brave VPN και κερδίστε έκπτωση 20% για 3 μήνες!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Είστε έτοιμοι να προστατέψετε κάθε εφαρμογή στο τηλέφωνό σας; Επιστρέψτε στο Brave VPN και κερδίστε έκπτωση 20% για τους επόμενους 3 μήνες.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Το Brave VPN αποκλείει πάντα τα προγράμματα παρακολούθησης σε κάθε εφαρμογή, ακόμη και εκτός του προγράμματος περιήγησης Brave. Τώρα μπορείτε να δείτε ποιος προσπάθησε να σας παρακολουθήσει, με το Κέντρο απορρήτου Brave.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Γνωρίζατε ότι το Brave VPN σάς προστατεύει εκτός του προγράμματος περιήγησης Brave;";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "Ενημέρωση";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "Μην ανησυχείτε. Θα διατηρήσουμε ενεργό το VPN για μερικές ημέρες, ενώ ενημερώνετε τα στοιχεία πληρωμής σας.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Ενημερώστε τα στοιχεία πληρωμής σας για να παραμείνετε προστατευμένοι με το Brave VPN.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "Θέλετε να συνεχίσετε να προστατεύετε κάθε εφαρμογή στο τηλέφωνό σας; Απλώς ενημερώστε τα στοιχεία πληρωμής σας.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Υπάρχει ένα πρόβλημα χρέωσης με τον λογαριασμό σας, πράγμα που σημαίνει ότι η συνδρομή σας Brave VPN πρόκειται να λήξει.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "Ενημέρωση πληρωμής";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "Περιοχή διακομιστή";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "Τρέχουσα ρύθμιση: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "Περιοχή VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Ενημερώστε τον τρόπο πληρωμής σας";
-
 /* The date your wallet was created */
 "WalletCreationDate" = "Ημερομηνία δημιουργίας πορτοφολιού";
 
@@ -3701,7 +3590,7 @@
 "websiteData.removeAllDataRecords" = "Κατάργηση όλων";
 
 /* Shown when a user has attempted to delete a single webpage data record such as cookies, caches, or local storage that has been persisted on their device. Tapping it will delete that records and remove it from the list */
-"websiteData.removeDataRecord" = "Αφαίρεση";
+"websiteData.removeDataRecord" = "Κατάργηση";
 
 /* Shown on a button when a user has selected multiple webpage data records (such as cookies, caches, or local storage) that has been persisted on their device. Tapping it will delete those records and remove them from the list */
 "websiteData.removeSelectedDataRecord" = "Κατάργηση %ld στοιχείων";

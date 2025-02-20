@@ -8,7 +8,7 @@
 "widgets.braveNews" = "Aktualności Brave";
 
 /* Title for downloads menu item */
-"widgets.DownloadsMenuItem" = "Pobrania";
+"widgets.DownloadsMenuItem" = "Pobierane";
 
 /* Description for favorites widget on 'add widget' screen. */
 "widgets.favoritesWidgetDescription" = "Szybki dostęp do ulubionych stron.";
@@ -56,7 +56,7 @@
 "widgets.shortcutsNewTabButton" = "Nowa karta";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "Lista odtwarzania";
+"widgets.shortcutsPlaylistButton" = " Lista odtwarzania";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "Karta w trybie prywatnym";

@@ -65,7 +65,7 @@
 "ContentFiltering" = "內容過濾";
 
 /* A description of the content filtering page. */
-"ContentFilteringDescription" = "啟用自訂篩選器，藉此封鎖特定區域和語言的追蹤程式，以及惱人的內容";
+"ContentFilteringDescription" = "啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容";
 
 /* Title for the custom filter list add screen found in the navigation bar. */
 "CustomFilterList" = "自訂篩選清單";
@@ -160,6 +160,30 @@
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "已更新清單";
 
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "積極";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "封鎖者：";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "已封鎖的請求";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "內容封鎖程式";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "請求封鎖";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "請求 URL";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "資源類型";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "來源 URL";
+
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "銷毀資料";
 
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "您與 %@ 之間的連線不安全";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "追蹤器和廣告封鎖";
+"TrackersAndAdsBlocking" = "追蹤器 & 廣告封鎖";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "更新清單";

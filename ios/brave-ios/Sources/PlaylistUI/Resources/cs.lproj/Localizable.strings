@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Edit";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Začněte psát a vyhledejte tak svá uložená audia a videa";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Prohledat média";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Klepnutím vyberte média";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Přidejte média ze svých oblíbených stránek a přehrajte je zde.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Nebyly nalezeny žádné výsledky";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Otevřít v nové anonymní záložce";
 
@@ -125,7 +134,7 @@
 "playlist.renamePlaylist" = "Přejmenovat seznam skladeb";
 
 /* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
-"playlist.repeatModeOptionAll" = "Všechno";
+"playlist.repeatModeOptionAll" = "Vše";
 
 /* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
 "playlist.repeatModeOptionNone" = "Žádné";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Uložit offline data";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Search";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Sdílet";

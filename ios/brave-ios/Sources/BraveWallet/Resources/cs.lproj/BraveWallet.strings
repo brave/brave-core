@@ -266,7 +266,7 @@
 "wallet.btcTotalBalanceDesc" = "Vaše dostupné prostředky plus všechny dosud nepotvrzené transakce.";
 
 /* Title displayed in row beside users total BTC balance. */
-"wallet.btcTotalBalanceTitle" = "Celkem";
+"wallet.btcTotalBalanceTitle" = "Celkem ";
 
 /* As in buying cryptocurrency */
 "wallet.buy" = "Koupit";
@@ -274,8 +274,26 @@
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Nakupujte kryptoměny pomocí Apple Pay, kreditní nebo debetní karty.";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "povolené maximum nebylo schváleno na základě";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "Byla odeslána žádost o zrušení";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "Rušení transakce";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "Zrušit transakci";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "Zrušit transakci";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "Bude vytvořena nová transakce, která zruší vaši stávající transakci";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "bylo vráceno na";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Datum ";
@@ -367,6 +385,12 @@
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "Zažádáno o neomezené schválení";
 
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "účet";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "Transakce zrušena!";
+
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Zavřít";
 
@@ -389,7 +413,7 @@
 "wallet.confirmTransactionTitle" = "Confirm Transaction";
 
 /* A button title when a user will continue to the next step of something */
-"wallet.continueButtonTitle" = "Continue";
+"wallet.continueButtonTitle" = "Pokračovat";
 
 /* The accessibility label for the contract address of a token / asset. */
 "wallet.contractAddressAccessibilityLabel" = "Adresa kontraktu";
@@ -686,7 +710,7 @@
 "wallet.ensDomainInterstitialPageButtonProceed" = "Pokračovat prostřednictvím serveru Infura";
 
 /* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave bude používat Infura k vyřešení názvů domén .eth, které jsou ve službě Ethereum Name Service (ENS). Brave skryje vaši IP adresu. Pokud to povolíte, Infura uvidí, že se někdo pokouší navštívit tyto domény .eth, ale nic jiného. Viz <a href=%1$@>%2$ @</a> a <a href=%3$@>%4$ @</a> od Infura.";
+"wallet.ensDomainInterstitialPageDescription" = "Brave bude používat Infura k vyřešení názvů domén .eth, které jsou ve službě Ethereum Name Service (ENS). Brave skryje vaši IP adresu. Pokud to povolíte, Infura uvidí, že se někdo pokouší navštívit tyto domény .eth, ale nic jiného. Viz <a href=%1$@>%2$@</a> a <a href=%3$@>%4$@</a> od Infura.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "Povolit podporu služby Ethereum Name Service (ENS) v Brave?";
@@ -695,7 +719,7 @@
 "wallet.ensOffchainDomainInterstitialPageButtonProceed" = "Pokračujte ve vyhledávání mimo řetězec";
 
 /* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
-"wallet.ensOffchainDomainInterstitialPageDescription" = "Tento název domény .eth je uložen mimo řetězec a bude vyřešen bránou třetí strany. Pokud povolíte vyhledání mimo řetězec ENS, brána třetí strany uvidí, že se pokoušíte navštívit doménu .eth. <a href=%1$@>%2$ @</a>.";
+"wallet.ensOffchainDomainInterstitialPageDescription" = "Tento název domény .eth je uložen mimo řetězec a bude vyřešen bránou třetí strany. Pokud povolíte vyhledání mimo řetězec ENS, brána třetí strany uvidí, že se pokoušíte navštívit doménu .eth. <a href=%1$@>%2$@</a>.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
 "wallet.ensOffchainDomainInterstitialPageTitle" = "Povolit vyhledávání podpory služby Ethereum Name Service (ENS) mimo řetězec v Brave?";
@@ -953,7 +977,7 @@
 "wallet.manageSiteConnectionsConfirmAlertMessage" = "Tímto se odstraní veškerá oprávnění k připojení k peněžence pro všechny webové stránky.";
 
 /* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertRemove" = "Remove";
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Odstranit";
 
 /* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
 "wallet.manageSiteConnectionsConfirmAlertTitle" = "Odstranit veškerá oprávnění?";
@@ -1161,6 +1185,9 @@
 
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Vše je připraveno!";
+
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "Původní transakcce byla potvrzena.";
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Další akce peněženky";
@@ -1448,7 +1475,7 @@
 "wallet.settingsResetButtonTitle" = "Resetujte a vymažte data peněženky";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionAlertButtonTitle" = "Reset";
+"wallet.settingsResetTransactionAlertButtonTitle" = "Resetovat";
 
 /* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertMessage" = "Tuto možnost většinou používají vývojáři provozující místní testovací server";
@@ -1460,7 +1487,7 @@
 "wallet.settingsResetTransactionFooter" = "Vymazání transakcí může být užitečné pro vývojáře nebo když mažete stav na místním serveru";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionTitle" = "Vymazat transakci a informace nonce";
+"wallet.settingsResetTransactionTitle" = "Vymazat údaje o transakcích a nonce";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "Obnovit peněženku";
@@ -1756,6 +1783,12 @@
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Seřadit aktiva";
 
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "Trvá to déle, než jste očekávali?";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Speed Up";
+
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Speed Up";
 
@@ -1919,7 +1952,7 @@
 "wallet.transactionFromToAccessibilityLabel" = "Odesílatel: %1$@. Příjemce: %2$@";
 
 /* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
-"wallet.transactionsDescription" = "%d transakce/transakcí";
+"wallet.transactionsDescription" = "%d transakce";
 
 /* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: "Sent 0.0054 ETH ($22.44)" */
 "wallet.transactionSendTitle" = "Odesláno %1$@ %2$@ (%3$@)";
@@ -1955,7 +1988,7 @@
 "wallet.transactionStatusUnknown" = "Unknown";
 
 /* The title which is displayed above a list of transactions */
-"wallet.transactionsTitle" = "Transakce ";
+"wallet.transactionsTitle" = "Transakce";
 
 /* A transactions gas fee. The first '%@' becomes the fee amount, the second '%@' becomes the symbol for the fee's currency and the last '%@' becomes the fiat amount. For example: "Fee: 0.0054 ETH ($22.44)" */
 "wallet.transactionSummaryFee" = "Poplatek: %1$@ %2$@ (%3$@)";
@@ -2023,6 +2056,58 @@
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Přenos žetonů";
 
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "Schvalování";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "Hotovo";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "byl(o) schválen(o) na vašem";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "Při pokusu o schválení došlo k chybě";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "Nelze schválit";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "zapnuto ";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "Odesílání";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "Vyskytla se chyba při odesílání";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "Nelze odeslat";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "bylo odesláno na účet";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "Transakce byla podepsána a bude odeslána do sítě pomocí dapps. Čeká na potvrzení.";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Tuto obrazovku můžete bezpečně zavřít.";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "bylo přidáno do vaší";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "Swapping";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "Nelze provést swap";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "to";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "Zobrazit v aktivitě";
+
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave bude používat Infura k vyřešení názvů domén .crypto (a také %1$@), které jsou na Unstoppable Domains. Brave skryje vaši IP adresu. Pokud to povolíte, Infura uvidí, že se někdo pokouší navštívit tyto domény, ale nic jiného. Viz <a href=%2$@>%3$@</a> a <a href=%4$@>%5$@</a> platformy Infura.";
 
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Vyřešit názvy domén Unstoppable Domains";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "Nelze zrušit";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "Nelze zrychlit";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Neznámá chyba";

@@ -2,10 +2,10 @@
 "AppMenuCopyURLConfirmMessage" = "URL kopierad till urklipp";
 
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
-"AppMenuViewDesktopSiteTitleString" = "Begär skrivbordsversion";
+"AppMenuViewDesktopSiteTitleString" = "Begär datorversion av webbplats";
 
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
-"AppMenuViewMobileSiteTitleString" = "Begär mobilversion";
+"AppMenuViewMobileSiteTitleString" = "Begär mobil version av webbplats";
 
 /* General settings bookmarks last visited folder toggle title */
 "BookmarksLastVisitedFolderTitle" = "Visa senaste besökta bokmärken";
@@ -14,10 +14,10 @@
 "CancelDownloadDialogCancel" = "Avbryt";
 
 /* Alert dialog body when the user taps the cancel download icon. */
-"CancelDownloadDialogMessage" = "Vill du verkligen avbryta nedladdningen?";
+"CancelDownloadDialogMessage" = "Är du säker på att du vill avbryta nedladdningen?";
 
 /* Button declining the cancellation of the download. */
-"CancelDownloadDialogResume" = "Fortsätt";
+"CancelDownloadDialogResume" = "Återuppta nedladdning";
 
 /* Alert dialog title when the user taps the cancel download icon. */
 "CancelDownloadDialogTitle" = "Avbryt nedladdning";
@@ -47,10 +47,10 @@
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
 
 /* The button to open a new tab with the Downloads home panel */
-"DownloadsButtonTitle" = "Nedladdningar";
+"DownloadsButtonTitle" = "Hämtade";
 
 /* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "Vill du öppna den här länken i App Store-appen?";
+"ExternalLinkAppStoreConfirmationTitle" = "Öppna den här länken i App Store-appen?";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Öppna";
@@ -77,7 +77,7 @@
 "ReaderModeResetFontSizeAccessibilityLabel" = "Återställ textstorlek";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "Vill du spara lösenordet till %@?";
+"SaveLoginPrompt" = "Spara lösenord för %@?";
 
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "Vill du spara inloggningen för %1$@ på %2$@?";
@@ -86,16 +86,22 @@
 "ScanQRCodeErrorOKButton" = "OK";
 
 /* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "Placera QR-koden i ramen för att skanna";
+"ScanQRCodeInstructionsLabel" = "Skanna QR-koden genom att sätta den inom ramen";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "Ogiltiga data";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Ge Brave tillgång till din enhets kamera i ”Inställningar” -> ”Integritet” -> ”Kamera”.";
+"ScanQRCodePermissionErrorMessage" = "Låt Brave komma åt din enhets kamera genom att gå in på Inställningar-> Sekretess & säkerhet-> Kamera.";
 
 /* Title for the QR code scanner view. */
-"ScanQRCodeViewTitle" = "Skanna QR-kod";
+"ScanQRCodeViewTitle" = "Skanna QR kod";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Tack för att du stöder Brave Sökning genom att klicka på en privat annons. Till skillnad från Big Tech mäter vi annonsprestanda anonymt för att bevara din integritet.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Läs mer / välj bort alternativ";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Allmänt";
@@ -107,7 +113,7 @@
 "TabsDeleteAllUndoAction" = "Ångra";
 
 /* The label indicating that all the tabs were closed */
-"TabsDeleteAllUndoTitle" = "%d flik(ar) har stängts";
+"TabsDeleteAllUndoTitle" = "%d flik(ar) stängd(a)";
 
 /* Button to dismiss the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
 "UnableToAddPassErrorDismiss" = "OK";
@@ -116,17 +122,17 @@
 "UnableToAddPassErrorMessage" = "Ett fel inträffade när passet skulle läggas till i Wallet. Försök igen senare.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorTitle" = "Det gick inte att lägga till pass";
+"UnableToAddPassErrorTitle" = "Kunde inte lägga till pass";
 
 /* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
-"UnableToOpenURLError" = "Brave kan inte öppna sidan eftersom den har en ogiltig adress.";
+"UnableToOpenURLError" = "Brave kan inte öppna sidan för att den har en ogiltig adress.";
 
 /* Title of the message shown when the user attempts to navigate to an invalid link. */
-"UnableToOpenURLErrorTitle" = "Kan inte öppna sida";
+"UnableToOpenURLErrorTitle" = "Kan ej öppna sidan";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "Vill du uppdatera inloggningen %1$@ på %2$@?";
+"UpdateLoginPrompt" = "Uppdatera inloggning %1$@ för %2$@?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginUsernamePrompt" = "Vill du uppdatera inloggningen %1$@ på %2$@?";
+"UpdateLoginUsernamePrompt" = "Uppdatera inloggning %1$@ för %2$@?";
 

@@ -35,7 +35,7 @@
 "bUXzTx" = "Type de statistique";
 
 /* (No Comment) */
-"crhbMy" = "Favoris";
+"crhbMy" = "Marque-pages";
 
 /* (No Comment) */
 "D5r3nt" = "URL";
@@ -83,10 +83,10 @@
 "EvESs0-crhbMy" = "Vouliez-vous dire « Favoris » ?";
 
 /* (No Comment) */
-"EvESs0-FGO5qW" = "Vouliez-vous dire « Playlist Brave » ?";
+"EvESs0-FGO5qW" = "Vouliez-vous dire « Playlist Brave​ » ?";
 
 /* (No Comment) */
-"EvESs0-jXiFQY" = "Vouliez-vous dire « Portefeuille Brave » ?";
+"EvESs0-jXiFQY" = "Vouliez-vous dire « Portefeuille Brave​ » ?";
 
 /* (No Comment) */
 "EvESs0-nthxSL" = "Vouliez-vous dire « Téléchargements » ?";
@@ -170,7 +170,7 @@
 "nXONef" = "Favori";
 
 /* (No Comment) */
-"qKrzyX" = "Scanner un code QR";
+"qKrzyX" = "Analyser le code QR";
 
 /* (No Comment) */
 "r2EI05-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";
@@ -284,7 +284,7 @@
 "TxuMja-Y7TWy8" = "Il y a ${count} éléments correspondant à « Recherche ».";
 
 /* (No Comment) */
-"tYwiRd" = "Temps économisé est.";
+"tYwiRd" = "Temps gagné est.";
 
 /* (No Comment) */
 "U0eRbw" = "IA Leo";
@@ -296,7 +296,7 @@
 "vjA5pZ" = "Données économisées est.";
 
 /* (No Comment) */
-"vs094F" = "Nouvel onglet privé";
+"vs094F" = "Testing New Private Tab 4 for French";
 
 /* (No Comment) */
 "xcI3h9" = "Publicités bloquées";
@@ -308,7 +308,7 @@
 "XkwBGY" = "Configuration des raccourcis sur l'écran de verrouillage";
 
 /* (No Comment) */
-"Y7TWy8" = "Rechercher";
+"Y7TWy8" = "Recherche";
 
 /* (No Comment) */
 "YQiQuz-0W40Cl" = "Vouliez-vous dire « Nouvel onglet » ?";

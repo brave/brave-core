@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Vælg Brave som din standardbrowser";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Få hurtigere browsing, og brug mindre data.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Færre reklamer og trackere.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Ikke nu";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Vi mener det. Vi har droppet dem.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Bloker irriterende afbrydelser på dine foretrukne streamingsider.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Ikke flere videoreklamer.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Bloker afbrydelser, når du streamer";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Få mere at vide om vores anonymitetsbeskyttede produktanalyser (P3A)";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "Begynd at browse";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Gå til systemindstillinger";
+"focusOnboarding.systemSettingsButtonTitle" = "Indstil som standard";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Indtast en url, der skal have færre reklamer og trackere.";
+"focusOnboarding.urlBarIndicatorDescription" = "Begynd at streame, og nyd færre annoncer og trackers.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Se Brave-forskellen";

@@ -1,5 +1,5 @@
 /* The title of the button that changes the screen to next */
-"focusOnboarding.continueButtonTitle" = "Продолжить";
+"focusOnboarding.continueButtonTitle" = "Далее";
 
 /* The subtitle of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenDescription" = "Это позволит нам защищать вашу конфиденциальность на всех вкладках, которые вы открываете.";
@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Сделайте Brave браузером по умолчанию";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Быстрая загрузка страниц и экономия трафика.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Меньше рекламы и трекеров";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Не сейчас";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Попробуйте и убедитесь сами!";
+"focusOnboarding.noVideoAdsScreenDescription" = "Блокируйте раздражающие прерывания на Ваших любимых сайтах потокового вещания.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Больше никакой рекламы в видео";
+"focusOnboarding.noVideoAdsScreenTitle" = "Блокировать прерывания при вашем потоке";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Узнать больше об аналитике продукта без нарушения конфиденциальности (P3A)";
@@ -35,16 +29,16 @@
 "focusOnboarding.p3aToggleDescription" = "Отключить эту опцию можно в любой момент в разделе настроек «Brave Щит и конфиденциальность».";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Делиться конфиденциальными и анонимными сведениями о продукте";
+"focusOnboarding.p3aToggleTitle" = ".";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Начать поиск";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Открыть системные настройки";
+"focusOnboarding.systemSettingsButtonTitle" = "Установить по умолчанию";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Чтобы уменьшить количество трекеров и рекламы, введите URL.";
+"focusOnboarding.urlBarIndicatorDescription" = "Начните потоковое вещание и наслаждайтесь меньшим количеством рекламы & трекеров.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Ощутите разницу с Brave";

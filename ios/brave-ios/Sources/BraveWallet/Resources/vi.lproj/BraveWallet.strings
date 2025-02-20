@@ -274,8 +274,26 @@
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Mua tiền điện tử bằng Apple Pay, thẻ tín dụng hoặc thẻ ghi nợ.";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "hạn mức chưa được phê duyệt bởi";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "Đã gửi yêu cầu hủy";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "Đang hủy giao dịch";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "Hủy giao dịch";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "Hủy giao dịch";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "Một giao dịch mới sẽ được tạo để hủy giao dịch hiện tại của bạn";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "đã được hoàn nguyên về";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Ngày";
@@ -366,6 +384,12 @@
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "Đã yêu cầu phê duyệt không giới hạn";
+
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "tài khoản";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "Đã hủy giao dịch!";
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Đóng";
@@ -1162,6 +1186,9 @@
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Tất cả đã sẵn sàng!";
 
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "Giao dịch ban đầu đã được xác nhận.";
+
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Các hành động với Ví khác";
 
@@ -1274,7 +1301,7 @@
 "wallet.restoreWalletBackButtonTitle" = "Khôi phục ví";
 
 /* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
-"wallet.restoreWalletButtonTitle" = "Restore";
+"wallet.restoreWalletButtonTitle" = "Phục hồi";
 
 /* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
 "wallet.restoreWalletImportFromLegacyBraveWallet" = "Tôi có một cụm từ phục hồi gồm 24 từ";
@@ -1460,7 +1487,7 @@
 "wallet.settingsResetTransactionFooter" = "Việc xóa các giao dịch có thể hữu ích cho các nhà phát triển hoặc khi xóa trạng thái trên máy chủ cục bộ";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionTitle" = "Xóa thông tin giao dịch & nonce";
+"wallet.settingsResetTransactionTitle" = "Xóa thông tin Giao dịch & Nonce";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "Đặt lại ví";
@@ -1574,10 +1601,10 @@
 "wallet.siweIssuedAtLabel" = "Đã phát hành lúc";
 
 /* The label displayed above the Sign In With Ethereum message. */
-"wallet.siweMessageLabel" = "Tin nhắn";
+"wallet.siweMessageLabel" = "Thông điệp";
 
 /* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
-"wallet.siweNonceLabel" = "Số giao dịch";
+"wallet.siweNonceLabel" = "Nonce";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
 "wallet.siweOriginLabel" = "Origin";
@@ -1622,7 +1649,7 @@
 "wallet.solanaAllocateWithSeedInstructionName" = "Allocate With Seed";
 
 /* The label displayed beside the formatted amount of an instruction type. Ex. "Amount: 0.1 SOL" */
-"wallet.solanaAmount" = "Số lượng";
+"wallet.solanaAmount" = "Lượng";
 
 /* The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details. */
 "wallet.solanaApproveCheckedInstructionName" = "Approve Checked";
@@ -1755,6 +1782,12 @@
 
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Sắp xếp tài sản";
+
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "Mất nhiều thời gian hơn dự kiến?";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Speed Up";
 
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Speed Up";
@@ -2023,6 +2056,58 @@
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Chuyển mã thông báo";
 
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "Đang phê duyệt";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "Đã hoàn thành";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "đã được phê duyệt trên";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "Xảy ra lỗi khi tiến hành phê duyệt";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "Không thể phê duyệt";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "trên";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "Đang gửi";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "Xảy ra lỗi khi tiến hành gửi";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "Không thể gửi";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "đã được gửi đến tài khoản";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "Giao dịch đã được ký và sẽ được gửi đến mạng bởi dapps và đang chờ xác nhận.";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Bạn có thể yên tâm bỏ qua giao diện này.";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "đã được thêm vào";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "Đang hoán đổi";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "Không thể hoán đổi";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "đến";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "Xem trong Hoạt động";
+
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave sẽ sử dụng Infura để phân giải các tên miền .crypto (và cả %1$@) có trên Unstoppable Domains. Brave ẩn địa chỉ IP của bạn. Nếu bạn bật tính năng này, Infura sẽ thấy rằng có người đang cố truy cập các miền này và không thấy gì khác. Tham khảo <a href=%2$@>%3$@</a> và <a href=%4$@>%5$@</a> của Infura.";
 
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Phân giải tên miền không thể ngăn cản";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "Không thể hủy";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "Không thể tăng tốc";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Lỗi không xác định";

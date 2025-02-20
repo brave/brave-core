@@ -1,5 +1,5 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Wstecz";
+"BackTitle" = "Powrót";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Zamknij wszystkie karty";
@@ -11,7 +11,7 @@
 "CloseTabTitle" = "Zamknij kartę";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Do przodu";
+"ForwardTitle" = "Dalej";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Nowa karta w trybie prywatnym";
@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Dokonałeś(-aś) już zakupu na brave.com?";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Masz kod promocyjny?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Zrealizuj kod promocyjny";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Odśwież swoje poświadczenia";
 
@@ -35,10 +41,10 @@
 "RecentlyClosedTabTitle" = "Otwórz ponownie zamkniętą kartę";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "Odśwież stronę";
+"ReloadPageTitle" = "Wczytaj stronę ponownie";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Zaznacz pasek lokalizacji";
+"SelectLocationBarTitle" = "Wybierz pasek lokalizacji";
 
 /* An option in a list of shortcut actions that hides the button */
 "shortcutsButton.hideButtonTitle" = "Ukryj przycisk skrótu";

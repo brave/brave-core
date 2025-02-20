@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Editează";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Începeți să tastezi pentru a căuta înregistrările audio și video salvate";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Căutare Media";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Apasă pentru a selecta media";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Adaugă media din site-urile preferate și le vei putea putea reda aici.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Nu au fost găsite rezultate";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Deschide în filă privată nouă";
 
@@ -125,7 +134,7 @@
 "playlist.renamePlaylist" = "Redenumește playlist";
 
 /* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
-"playlist.repeatModeOptionAll" = "Toate";
+"playlist.repeatModeOptionAll" = "Tot";
 
 /* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
 "playlist.repeatModeOptionNone" = "Niciuna";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Salvarea datelor offline";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Căutare";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Trimite";

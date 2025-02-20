@@ -8,7 +8,7 @@
 "vpn.availableServerTitle" = "利用可能なサービス";
 
 /* Button text to buy Brave VPN */
-"vpn.buyButton" = "購入する";
+"vpn.buyButton" = "購入";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxDevicesProtect" = "1つのサブスクリプションで5台のデバイスを保護";
@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Braveはブラウザ上のアクティビティを記録しません";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "各アプリとデバイス全体を保護";
+"vpn.checkboxProtectYourDevices" = "すべてのアプリとデバイス全体を保護";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "ご自宅や公共Wi-Fiでの安全確保に";
@@ -104,10 +104,10 @@
 "vpn.contactFormTitle" = "Brave Firewall + VPNに関わる問題";
 
 /* Button text to enable Brave VPN */
-"vpn.enableButton" = "有効にする";
+"vpn.enableButton" = "有効化";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "すべてのプランに%@が含まれています。";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "すべてのプランに共通: ";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "7日間の無料トライアル";
@@ -125,7 +125,7 @@
 "vpn.installProfileButtonText" = "VPNプロファイルをインストール";
 
 /* No comment provided by engineer. */
-"vpn.installProfileTitle" = "Brave は VPN プロファイルをインストールしています。";
+"vpn.installProfileTitle" = "BraveはVPNプロファイルをインストールします";
 
 /* Popup that shows after user installs the vpn for the first time. */
 "vpn.installSuccessPopup" = "VPNが有効化されました";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "VPNをインストール";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "無料で試してみる";
+"vpn.learnMore" = "7日間の無料トライアルを開始する";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "毎月更新";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "サーバー %ld 台";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "サブスクリプションはAppleアカウントを通じて課金されます。無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\n\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\n\nサブスクリプションは「設定」で管理できます。\n\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "月";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "年";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "期限切れ";
@@ -181,11 +190,17 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "VPNのリージョンが変更されました。";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "年間更新";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "毎月更新";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "VPN設定をリセットできません。もう一度お試しください。問題が解決しない場合は、サポートにお問い合わせください。";
 
 /* Title of button to try again when vpn configuration reset fails. */
-"vpn.resetVPNErrorButtonActionTitle" = "再試行";
+"vpn.resetVPNErrorButtonActionTitle" = "やり直す";
 
 /* Title for error message when vpn configuration reset fails. */
 "vpn.resetVPNErrorTitle" = "リセット失敗";
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "復元";
 
+/* Use in context: save 16%. */
+"vpn.save" = "保存";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "サーバー所在国: %@";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "サーバー %ld 台";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "VPN にアップグレードして通信を保護し、攻撃的なトラッカーをいつでもどこでもブロックしましょう。";
+"vpn.settingHeaderBody" = "ブレイブVPNであらゆるアプリを保護。1つのプランで最大10台のデバイスで使用可能です。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";
@@ -239,7 +257,7 @@
 "vpn.settingsServerHost" = "ホスト";
 
 /* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "ロケーション";
+"vpn.settingsServerLocation" = "位置";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "サーバー";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "転送プロトコル";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "App Storeのレシートを見る";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "この機能を有効にすると、VPN接続が予期せず切断された場合、IPアドレスとデータの漏洩を防ぐためにデバイスは自動的にインターネットから切断されます。[詳細はこちら](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "キルスイッチを有効にする";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "スマートプロキシルーティングは、トラフィックを専用のプロキシサーバーを中継して送信することで、一般に制限のかかっているコンテンツやサイト、サードパーティサービスへのアクセスを可能にします。[詳細はこちら](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "スマートプロキシを有効にする";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "お支払い方法を更新";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "サブスクリプションはiTunesアカウントを通じて課金されます。\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\nサブスクリプションは「設定」で管理できます。\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPNオフ";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPNオン";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "コードを使用";
 
@@ -311,7 +347,7 @@
 "vpn.vpnResetAlertTitle" = "設定リセット";
 
 /* Button name to reset vpn configuration */
-"vpn.vpnResetButton" = "リセット";
+"vpn.vpnResetButton" = "リセットする";
 
 /* Name of monthly subscription in VPN Settings */
 "vpn.vpnSettingsMonthlySubName" = "定期購読(月払い)";
@@ -322,9 +358,9 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "年払いを選択すると%@お得です";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "一番お得";
 
 /* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "1年間";
+"vpn.yearlySubTitle" = "1 年";
 

@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Nastaviť prehliadač Brave ako predvolený prehliadač";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Prehliadajte rýchlejšie a míňajte menej dát.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Menej reklám a sledovačov";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Teraz nie";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Naozaj sme sa ich zbavili.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Zablokujte nepríjemné prerušenia na svojich obľúbených streamovacích stránkach.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Už žiadne reklamy vo videu.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Blokujte prerušenia pri streamovaní";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Ďalšie informácie o našej analýze produktov na ochranu súkromia (P3A)";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "Začať prehľadávanie";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Prejsť na Nastavenia systému";
+"focusOnboarding.systemSettingsButtonTitle" = "Nastaviť ako predvolené";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Zadajte adresu URL a užívajte si menej reklám a sledovačov";
+"focusOnboarding.urlBarIndicatorDescription" = "Začnite streamovať a užívajte si menej reklám a trackerov.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Objavte rozdiely prehliadača Brave";

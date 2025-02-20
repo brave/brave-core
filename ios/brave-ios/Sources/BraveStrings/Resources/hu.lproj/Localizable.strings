@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Már vásárolt a brave.com-on?";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Van promóciós kódja?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Promóciós kód beváltása";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Frissítse hitelesítő adatait";
 

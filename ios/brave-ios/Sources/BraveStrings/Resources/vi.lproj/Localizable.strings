@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Đã mua trên brave.com?";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Bạn có mã khuyến mãi?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Quy đổi mã khuyến mãi";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Làm mới thông tin đăng nhập của bạn";
 

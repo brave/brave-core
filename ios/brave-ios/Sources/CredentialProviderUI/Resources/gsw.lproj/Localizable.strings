@@ -1,5 +1,5 @@
 /* A message shown when a user tries to access their passwords and are presented with a Touch ID or passcode prompt. */
-"CredentialProvider.authenticationReason" = "Authentifizieren Sie sich, um auf Ihre Passwörter zuzugreifen";
+"CredentialProvider.authenticationReason" = "Authentifiziere dich, um auf deine Passwörter zuzugreifen";
 
 /* A title for a button shown to a user to authenticate themselves to display their passwords */
 "CredentialProvider.authenticationUnlockButtonTitle" = "Entsperren";
@@ -11,7 +11,7 @@
 "CredentialProvider.copyMenuItemTitle" = "Kopieren";
 
 /* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
-"CredentialProvider.credentialListTitle" = "Brave-Passwörter";
+"CredentialProvider.credentialListTitle" = "Brave Passwörter";
 
 /* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
 "CredentialProvider.detailsFormPasswordField" = "Passwort";
@@ -35,10 +35,10 @@
 "CredentialProvider.onboardingViewContinueCTA" = "Weiter";
 
 /* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
-"CredentialProvider.onboardingViewFootnote" = "Um schneller an Ihre Passwörter zu kommen, können Sie den iCloud-Schlüsselbund deaktivieren";
+"CredentialProvider.onboardingViewFootnote" = "Um schneller an deine Passwörter zu kommen, kannst du den iCloud-Schlüsselbund deaktivieren";
 
 /* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
-"CredentialProvider.onboardingViewSubtitle" = "Sie können gespeicherte Passwörter in anderen Apps auf Ihrem Gerät verwenden";
+"CredentialProvider.onboardingViewSubtitle" = "Du kannst gespeicherte Passwörter in anderen Apps auf deinem Gerät verwenden";
 
 /* The title on a screen shown when the user turns on Brave as a password autofill provider */
 "CredentialProvider.onboardingViewTitle" = "AutoFill ist an";
@@ -56,7 +56,7 @@
 "CredentialProvider.searchEmptyResults" = "Keine Ergebnisse für „%@“";
 
 /* The message displayed in alert when a user needs to set a passcode */
-"CredentialProvider.setPasscodeAlertMessage" = "Um auf Ihre Passwörter zuzugreifen, müssen Sie zunächst einen Passcode auf Ihrem Gerät festlegen.";
+"CredentialProvider.setPasscodeAlertMessage" = "Um auf deine Passwörter zuzugreifen, musst du zunächst einen Passcode auf deinem Gerät festlegen.";
 
 /* The title displayed in alert when a user needs to set passcode */
 "CredentialProvider.setPasscodeAlertTitle" = "Passcode festlegen";

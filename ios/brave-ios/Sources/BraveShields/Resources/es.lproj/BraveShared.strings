@@ -35,7 +35,7 @@
 "BlockAdsAndTrackingDescription" = "Impide que salten anuncios, ventanas emergentes y rastreadores.";
 
 /* The option the user can select to disable ad and tracker blocking */
-"BlockAdsAndTrackingDisabled" = "Deshabilitado";
+"BlockAdsAndTrackingDisabled" = "Deshabilitada";
 
 /* The option the user can select to do standard (non-aggressive) ad and tracker blocking */
 "BlockAdsAndTrackingStandard" = "Estándar";
@@ -159,6 +159,30 @@
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Listas actualizadas";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Agresivo";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Bloqueado por";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Solicitudes bloqueadas";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Bloqueador de contenidos";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Bloqueo de solicitudes";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL de solicitud";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Tipo de recurso";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL de fuente";
 
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Triturar datos";

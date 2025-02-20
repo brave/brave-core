@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "ฟังก์ชันนี้จะทำให้คุณถ่ายและอัพโหลดรูปภาพได้";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "ฟังก์ชันนี้จะเป็นการยืนยันการเข้าถึง Brave ของคุณ";
+"NSFaceIDUsageDescription" = "การดำเนินการนี้จะเป็นการตรวจสอบสิทธิ์การเข้าถึง Brave ของคุณ";
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "เว็บไซต์ที่คุณเยี่ยมชมอาจขอตำแหน่งของคุณ";

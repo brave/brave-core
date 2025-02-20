@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "ยกเลิก";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "ชื่อผู้ใช้และรหัสผ่านถูกร้องขอโดย %1$@ เว็บไซต์ตอบว่า: %2$@";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "ลงชื่อเขาใช้";
 
@@ -182,10 +179,10 @@
 "BraveShieldsAdvancedControls" = "การควบคุมขั้นสูง";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave Shields และความเป็นส่วนตัว";
+"BraveShieldsAndPrivacy" = "Brave Shield & ความเป็นส่วนตัว";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacyTitle" = "Shields และความเป็นส่วนตัว";
+"BraveShieldsAndPrivacyTitle" = "Shields & ความเป็นส่วนตัว";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "บล็อกโฆษณาและสิ่งที่น่ากลัวต่างๆ แล้ว";
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "การควบคุมทั่วไป";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "บันทึกข้อมูลการติดต่อสำหรับการรายงานเว็บไซต์ที่เสียในอนาคต";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "หากคุณให้ข้อมูลการติดต่อ ข้อมูลจะถูกบันทึกเพื่อใช้ในรายงานในอนาคต";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "หากเว็บไซต์นี้ดูเหมือนมีปัญหา ให้ลองปิด Shields";
@@ -455,7 +458,7 @@
 "CommonDownload" = "ดาวน์โหลด";
 
 /* Text to select sharing something (example: image, video, URL) */
-"CommonShare" = "แชร์";
+"CommonShare" = "แบ่งปัน";
 
 /* No comment provided by engineer. */
 "Confirm" = "ยืนยัน";
@@ -569,7 +572,7 @@
 "defaultBrowserCallout.introPrimaryText" = "เปิดลิงก์ทั้งหมดด้วย Brave เพื่อปกป้องความเป็นส่วนตัวของคุณ";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "Brave Shields ได้บล็อกเครื่องมือติดตามและโฆษณา บันทึกข้อมูล และช่วยให้คุณประหยัดเวลาในทุกเว็บไซต์ที่คุณเยี่ยมชม";
+"defaultBrowserCallout.introSecondaryText" = "Brave Shields ได้บล็อกเครื่องมือติดตาม & โฆษณา บันทึกข้อมูล และช่วยให้คุณประหยัดเวลาในทุกเว็บไซต์ที่คุณเยี่ยมชม";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "เปิดการตั้งค่า แตะที่แอปเบราว์เซอร์เริ่มต้น แล้วเลือก Brave";
@@ -629,7 +632,7 @@
 "DisplaySettingsSection" = "การแสดงผล";
 
 /* No comment provided by engineer. */
-"Done" = "เสร็จ";
+"Done" = "เสร็จแล้ว";
 
 /* cookie settings option */
 "DontBlockCookies" = "อย่าบล็อกคุกกี้";
@@ -755,7 +758,7 @@
 "FindInPage" = "ค้นหาในหน้าเว็บ";
 
 /* Done button in Find in Page Toolbar. */
-"FindInPageDoneButtonAccessibilityLabel" = "เสร็จ";
+"FindInPageDoneButtonAccessibilityLabel" = "เสร็จแล้ว";
 
 /* Find %@ text in page. */
 "FindInPageFormat" = "ค้นหา \"%@\"";
@@ -890,19 +893,19 @@
 "login.loginInfoSetPasscodeAlertDescription" = "หากต้องการมองเห็นรหัสผ่าน คุณจะต้องตั้งรหัสปลดล็อกบนอุปกรณ์ของคุณก่อน";
 
 /* The title displayed in alert when a user needs to set passcode */
-"login.loginInfoSetPasscodeAlertTitle" = "ตั้งรหัสปลดล็อก";
+"login.loginInfoSetPasscodeAlertTitle" = "ตั้งพาสเวิร์ด";
 
 /* The message displayed on the password list screen when there is not password found */
-"login.loginListEmptyScreenTitle" = "ไม่พบการลงชื่อเข้าใข้";
+"login.loginListEmptyScreenTitle" = "ไม่พบการลงชื่อเข้าใช้";
 
 /* Title for navigation bar of the login list screen */
-"login.loginListNavigationTitle" = "การลงชื่อเข้าใช้และรหัสผ่าน";
+"login.loginListNavigationTitle" = "การลงชื่อเข้าใช้ & รหัสผ่าน";
 
 /* The header title displayed over the never saved login list entry */
 "login.loginListNeverSavedHeaderTitle" = "ไม่เคยบันทึก";
 
 /* The header title displayed over the login list */
-"login.loginListSavedLoginsHeaderTitle" = "การลงชื่อเข้าใช้ที่บันทึกเอาไว้";
+"login.loginListSavedLoginsHeaderTitle" = "การลงชื่อเข้าใช้ที่บันทึก";
 
 /* The text for placeholder inside search bar in login list */
 "login.loginListSearchBarPlaceHolderTitle" = "ตัวกรอง";
@@ -1043,7 +1046,7 @@
 "ntp.settingsDefaultImagesOnly" = "ภาพเริ่มต้น";
 
 /* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "ภาพและวิดีโอที่ได้รับการสนับสนุน";
+"ntp.settingsSponsoredImagesAndVideosSelection" = "ภาพ & วิดีโอที่ได้รับการสนับสนุน";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "ภาพที่ได้รับการสนับสนุน";
@@ -1127,7 +1130,7 @@
 "OBRewardsDetailInAdRegion" = "รับโทเค็นและให้รางวัลกับผู้สร้างเนื้อหาที่ยอดเยี่ยมขณะที่คุณท่องเว็บ";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsPrivacyPolicyDetailLink" = "นโยบายความเป็นส่วนตัว";
+"OBRewardsPrivacyPolicyDetailLink" = "นโยบายสความเป็นส่วนตัว";
 
 /* Title for rewards onboarding screen */
 "OBRewardsTitle" = "Brave Rewards";
@@ -1154,7 +1157,7 @@
 "OBTurnOnButton" = "เริ่ม";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "บล็อกโฆษณาและเครื่องมือติดตาม %1$@ และ %2$lld อื่นๆ แล้ว";
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "บล็อกโฆษณา & เครื่องมือติดตาม %1$@ และ %2$lld อื่นๆ แล้ว";
 
 /* The footnote indicating what Brave shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "ดูสิ่งรบกวนทั้งหมดที่ Brave บล็อกในทุกหน้าด้วย Brave Shields";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "แตะเพื่อดู Brave Shields";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "บล็อกโฆษณาและเครื่องมือติดตามแล้ว";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "บล็อกโฆษณา & ตัวติดตามแล้ว";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "ลิงก์การสมัครสมาชิก VPN ของคุณ";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "การสมัครสมาชิก Brave VPN สามารถปกป้องอุปกรณ์ได้สูงสุด 5 รายการทั้ง Android, iOS และเดสก์ท็อป เพียงลิงก์การสมัครสมาชิก App Store กับบัญชี Brave ของคุณ";
+"onboarding.linkReceiptDescription" = "การสมัครสมาชิก Brave VPN สามารถปกป้องอุปกรณ์ได้สูงสุด 10 รายการทั้ง Android, iOS และเดสก์ท็อป เพียงลิงก์การสมัครสมาชิก App Store กับบัญชี Brave ของคุณ";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "ขยายการปกป้อง Brave Firewall + VPN ของคุณ";
@@ -1181,7 +1184,7 @@
 "onboarding.navigateSettingsOnboardingScreenTitle" = "กำลังนำคุณไปยังการตั้งค่า...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
-"onboarding.ntpOnboardingPopOverTrackerDescription" = "เมื่อทำการบล็อกโฆษณาและเครื่องมือติดตามแล้ว เว็บไศต์จะใช้ข้อมูลน้อยลง และโหลดได้รวดเร็วยิ่งขึ้น";
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "เมื่อทำการบล็อกโฆษณา & เครื่องมือติดตามแล้ว เว็บไซต์จะใช้ข้อมูลน้อยลง และโหลดได้รวดเร็วยิ่งขึ้น";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverDescription" = "ดูความแตกต่างที่ Brave มอบให้:\nไม่มีโฆษณา ไม่มีตัวติดตาม โหลดหน้าเร็วกว่า";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "เปิดในหน้าต่างใหม่";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "ดำเนินการดาวน์โหลดโปรไฟล์การตั้งค่าจาก %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "โปรไฟล์การตั้งค่าพร้อมใช้งาน";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "เปิดในแท็บส่วนตัวใหม่";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "เปิดแท็บ";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "ดำเนินการดาวน์โหลดกิจกรรมปฏิทินจาก %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "กิจกรรมในปฏิทินพร้อมใช้งาน";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "เปิดเว็บไซต์";
@@ -1463,7 +1478,7 @@
 "playlist.carplaySettingsSectionTitle" = "การตั้งค่า";
 
 /* The title of the playlist when in Carplay mode */
-"playlist.carplayTitle" = "Brave เพลย์ลิสต์";
+"playlist.carplayTitle" = "Brave Playlist";
 
 /* Title for changing the folder of the current media playlist item */
 "playList.changeFoldersButtonTitle" = "เปลี่ยนเพลย์ลิสต์";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "การเพิ่มไฟล์วิดีโอและเสียงสำหรับการใช้งานแบบออฟไลน์อาจใช้พื้นที่เก็บข้อมูลจำนวนมากบนอุปกรณ์ของคุณ รวมถึงใช้ข้อมูลมือถือของคุณด้วย";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "ตัวเลือกนี้จะเก็บรายการในเพลย์ลิสต์ของคุณไว้ในอุปกรณ์ของคุณโดยอัตโนมัติ เพื่อให้คุณสามารถเล่นได้โดยไม่ต้องเชื่อมต่ออินเทอร์เน็ต";
+"playlist.playlistAutoSaveSettingsFooterText" = "เมื่อคุณเปิดเนื้อหาในเพลย์ลิสต์ ตัวเลือกนี้จะทำให้รายการในเพลย์ลิสต์ที่เปิดอยู่ยังคงอยู่ในอุปกรณ์ของคุณเพื่อให้คุณสามารถเล่นได้โดยไม่ต้องเชื่อมต่ออินเทอร์เน็ต";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "บันทึกอัตโนมัติสำหรับเล่นออฟไลน์";
+"playlist.playlistAutoSaveSettingsTitle" = "บันทึกเนื้อหาสำหรับการเล่นแบบออฟไลน์";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "การเพิ่มไฟล์วิดีโอและไฟล์เสียงสำหรับการใช้งานแบบออฟไลน์อาจใช้พื้นที่เก็บข้อมูลบนอุปกรณ์ของคุณมาก โปรดลบไฟล์บางไฟล์ออกเพื่อเพิ่มพื้นที่เก็บข้อมูล";
@@ -1562,7 +1577,7 @@
 "playlist.playlistLongPressSettingsOptionTitle" = "เปิดใช้งานการกดค้าง";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "เพลย์ลิสต์สื่อและข้อมูลออฟไลน์";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "เพลย์ลิสต์สื่อ & ข้อมูลออฟไลน์";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "เพลย์ลิสต์ข้อมูลออฟไลน์";
@@ -1617,12 +1632,6 @@
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "จำตำแหน่งการเล่นไฟล์";
-
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "ปิดใช้งาน API ของ WebKit MediaSource";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "ความเข้ากันได้ของเว็บไซต์";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "นำออก";
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "ขออภัย";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "เพิ่มไปยัง Brave Playlist แล้ว";
+"playList.toastAddedToPlaylistTitle" = "ดูในเพลย์ลิสต์";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "เปิด";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "เพิ่มไปยัง Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "เพิ่มไปยังเพลย์ลิสต์";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "ดูใน Brave Playlist";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "เลิกทำ";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "เพิ่มปุ่มเพลย์ลิสต์ (มีลักษณะเป็น 4 เส้นพร้อมเครื่องหมาย +) ข้างแถบแอดเดรสในเบราว์เซอร์ของ Brave ปุ่มนี้ช่วยให้คุณเข้าถึงเพลย์ลิสต์ที่เปิดอยู่ได้อย่างรวดเร็ว หรือเพิ่มหรือลบสื่อ";
+"playlist.urlBarButtonOptionFooter" = "เพิ่มปุ่มเพลย์ลิสต์ ข้างแถบแอดเดรสในเบราว์เซอร์ของ Brave ปุ่มนี้ช่วยให้คุณเข้าถึงเพลย์ลิสต์ที่เปิดอยู่ได้อย่างรวดเร็ว หรือเพิ่มหรือลบสื่อ";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "เปิดใช้งานปุ่มการเข้าถึงด่วน";
@@ -1718,7 +1727,7 @@
 "playlistFolders.editFolderScreenTitle" = "แก้ไขโฟลเดอร์";
 
 /* The title of the menu option that allows the user to edit the name of a folder */
-"playlistFolders.editMenuTitle" = "แก้ไขเพลย์ลิสต์";
+"playlistFolders.editMenuTitle" = "แกไขเพลย์ลิสต์";
 
 /* The error shown to the user when we cannot save their changes made on a folder */
 "playlistFolders.errorSavingMessage" = "ขออภัย เราไม่สามารถบันทึกการเปลี่ยนแปลงที่คุณทำกับโฟลเดอร์นี้ได้";
@@ -1826,25 +1835,25 @@
 "privacyHub.allTimeListsHeader" = "ตั้งแต่ต้น";
 
 /* Title of a section to show total count of trackers blocked by Brave */
-"privacyHub.allTimeListsTrackersView" = "เครื่องมือติดตามและโฆษณา";
+"privacyHub.allTimeListsTrackersView" = "ตัวติดตามและโฆษณา";
 
 /* Title of a section to show websites containing highest amount of trackers */
 "privacyHub.allTimeListsWebsitesView" = "เว็บไซต์";
 
 /* Header title for a list of most frequent ads and trackers detected. */
-"privacyHub.allTimeListTrackersHeaderTitle" = "เครื่องมือติดตามและโฆษณาที่คุณดูบ่อยที่สุดบนเว็บไซต์ที่คุณเยี่ยมชม";
+"privacyHub.allTimeListTrackersHeaderTitle" = "เครื่องมือติดตาม & โฆษณาที่คุณดูบ่อยที่สุดบนเว็บไซต์ที่คุณเยี่ยมชม";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "เว็บไซต์ที่มีเครื่องมือติดตามและโฆษณามากที่สุด";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "เว็บไซต์ที่มีเครื่องมือติดตาม & โฆษณามากที่สุด";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "%lld เว็บไซต์";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "เครื่องมือติดตามและโฆษณา %lld ตัว";
+"privacyHub.allTimeTrackersCount" = "%lld ตัวติดตาม & โฆษณา";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "เครื่องมือติดตามและโฆษณา";
+"privacyHub.allTimeTrackerTitle" = "ตัวติดตาม & โฆษณา";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "เว็บไซต์";
@@ -1880,7 +1889,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "**%1$@** ถูกบล็อคโดย Brave Shields บน **%2$lld** เว็บไซต์";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "เครื่องมือติดตามและโฆษณาที่พบบ่อยที่สุด";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "เครื่องมือติดตาม & โฆษณาที่พบบ่อยที่สุด";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "เยี่ยมชมเว็บไซต์บางแห่งเพื่อดูข้อมูลที่นี่";
@@ -1955,7 +1964,7 @@
 "privacyHub.vpnAlertLocationTrackerTypeSingular" = "การปิงตำแหน่ง";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "เครื่องมือติดตามและโฆษณา";
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "ตัวติดตาม & โฆษณา";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "เครื่องมือติดตามและโฆษณา";
@@ -2146,6 +2155,9 @@
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "ติดต่อฉันที่: (ไม่บังคับ)";
 
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "หากคุณให้ข้อมูลติดต่อไว้ ข้อมูลนั้นจะถูกเก็บเพื่อรายงานปัญหาเว็บไซต์ที่เสียในอนาคต";
+
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "อีเมล, Twitter, ฯลฯ";
 
@@ -2183,7 +2195,7 @@
 "RestoreTabAffirmativeButtonTitle" = "ใช่";
 
 /* Restore Tabs Negative Action */
-"RestoreTabNegativeButtonTitle" = "ไม่";
+"RestoreTabNegativeButtonTitle" = "ไม่มี";
 
 /* Restore Tabs Prompt Description */
 "RestoreTabOnCrashAlertMessage" = "ขออภัย Brave ขัดข้องหรือไม่สามารถปิดได้อย่างถูกต้อง\nต้องการกู้คืนแท็บของคุณหรือไม่";
@@ -2357,7 +2369,7 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "ทิปที่ให้ประจำ";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "โปรไฟล์ Rewards อุปกรณ์และข้อมูลยอดเงิน (แชร์เสมอ)";
+"RewardsInternalsSharableBasicDescription" = "ข้อมูลโปรไฟล์รางวัล อุปกรณ์ &ยอดคงเหลือ (แชร์เสมอ)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "ข้อมูลเบื้องต้น";
@@ -2375,7 +2387,7 @@
 "RewardsInternalsSharableLogsDescription" = "การบันทึก Rewards แบบเฉพาะ";
 
 /* No comment provided by engineer. */
-"RewardsInternalsShare" = "แชร์";
+"RewardsInternalsShare" = "แบ่งปัน";
 
 /* 'Rewards' as in 'Brave Rewards' */
 "RewardsInternalsShareInternalsTitle" = "แชร์ Rewards ภายใน";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "ค้นหาคำแนะนำ";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "เปิดแท็บ บุ๊กมาร์ก และประวัติการเข้าชม";
+"SearchHistorySectionHeader" = "เปิดแท็บ & บุ๊กมาร์ค & ประวัติ";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "ล้างการค้นหา";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "ยินดีด้วย คุณเป็นคนพิเศษเลยทีเดียว";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "บล็อกแอปติดตามและโฆษณาแล้ว %ld ตัว";
+"shieldEducation.trackerCountShareTitle" = "บล็อกแอปติดตาม & โฆษณาแล้ว %ld ตัว";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "วิดีโอที่ไม่มีโฆษณาใช้ข้อมูลน้อยกว่า ";
@@ -2690,7 +2702,7 @@
 "shortcuts.activityTypeClearHistoryDescription" = "เปิดเบราว์เซอร์ในแท็บใหม่และลบข้อมูลประวัติการเข้าชมเบราว์เซอร์ส่วนตัวทั้งหมด";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeClearHistorySuggestedPhrase" = "ล้างประวัติการเข้าชมเบราว์เซอร์ส่วนตัว";
+"shortcuts.activityTypeClearHistorySuggestedPhrase" = "ล่้างประวัติการเข้าชมเบราว์เซอร์";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeClearHistoryTitle" = "ล้างประวัติการเข้าชมเบราว์เซอร์ของ Brave";
@@ -2762,10 +2774,10 @@
 "shortcuts.activityTypeTabDescription" = "เริ่มค้นหาเว็บไซต์อย่างปลอดภัยด้วย Brave";
 
 /* No comment provided by engineer. */
-"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "เปิดบุ๊กมาร์กเว็บไซต์";
+"shortcuts.customIntentOpenBookmarkSuggestedPhrase" = "เปิดเว็บไซต์ที่บุ๊กมาร์ก";
 
 /* No comment provided by engineer. */
-"shortcuts.customIntentOpenHistorySuggestedPhrase" = "เปิดประวัติการเข้าชมเว็บไซต์";
+"shortcuts.customIntentOpenHistorySuggestedPhrase" = "เปิดจากประวัติการเข้าชมเว็บไซต์";
 
 /* No comment provided by engineer. */
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "เปิดเว็บไซต์";
@@ -2777,7 +2789,7 @@
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "เปิดการตั้งค่า";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "ใช้ทางลัดเพื่อเปิดแท็บใหม่และล้างประวัติเบราว์เซอร์ผ่าน Siri - Voice Assistant";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "ใช้ทางลัดเพื่อเปิดแท็บใหม่ & ล้างประวัติเบราว์เซอร์ผ่าน Siri - Voice Assistant";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "ล่้างประวัติการเข้าชมเบราว์เซอร์";
@@ -2795,7 +2807,7 @@
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "เปิดบุ๊กมาร์ก";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "ใช้ทางลัดเพื่อเปิดแท็บใหม่และแสดง Brave News Feed ผ่าน Siri - Voice Assistant";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "ใช้ทางลัดเพื่อเปิดแท็บใหม่ & แสดง Brave News Feed ผ่าน Siri - Voice Assistant";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "เปิด Brave News";
@@ -3017,7 +3029,7 @@
 "sync.expiredError" = "โค้ดสำหรับซิงค์หมดอายุแล้ว ให้สร้างโค้ดใหม่แล้วลองอีกครั้ง";
 
 /* Generic Sync Error Description */
-"sync.genericError" = "ขออภัย มีบางอย่างผิดพลาด";
+"sync.genericError" = "ขออภัย มีบางอย่างผิดพลาดขึ้น";
 
 /* Grand camera access */
 "sync.grantCameraAccess" = "เปิดใช้งานกล้อง";
@@ -3071,7 +3083,7 @@
 "sync.removeCurrentDeviceMessage" = "ข้อมูลในเครื่องจะคงอยู่ไม่เปลี่ยนแปลงในทุกอุปกรณ์ อุปกรณ์อื่นๆ ในซิงค์เชนจะยังคงซิงค์กันอยู่";
 
 /* Title for removing the current device from Sync */
-"sync.removeCurrentDeviceTitle" = "ลบ %@ ออกจากซิงค์เชนหรือไม่";
+"sync.removeCurrentDeviceTitle" = "ลบ %@ จากซิงค์เชนหรือไม่";
 
 /* Action button for removing sync device. */
 "sync.removeDevice" = "นำออก";
@@ -3131,7 +3143,7 @@
 "sync.syncDeleteAccountAlertDescriptionPart3" = "การลบนั้นเป็นถาวรและจะไม่สามารถกู้คืนข้อมูลได้ ถ้าคุณตัดสินใจที่จะเริ่มใช้การซิงค์อีกครั้ง คุณจะต้องสร้างบัญชีใหม่และเพิ่มอุปกรณ์ใหม่ทีละเครื่อง";
 
 /* Sync you browser settings across devices. */
-"sync.Syncdevices" = "อุปกรณ์และการตั้งค่า";
+"sync.Syncdevices" = "อุปกรณ์ & การตั้งค่า";
 
 /* Sync remove device? */
 "sync.syncRemoveThisDeviceQuestion" = "ลบอุปกรณ์นี้หรือไม่";
@@ -3248,7 +3260,7 @@
 "TabToolbarSearchAddressPlaceholderText" = "ค้นหาหรือใส่แอดเดรสของคุณ";
 
 /* Accessibility Label for the browser toolbar Share button */
-"TabToolbarShareButtonAccessibilityLabel" = "แชร์";
+"TabToolbarShareButtonAccessibilityLabel" = "แบ่งปัน";
 
 /* Accessibility Label for the tab toolbar Stop button */
 "TabToolbarStopButtonAccessibilityLabel" = "หยุด";
@@ -3473,7 +3485,7 @@
 "today.similarToSourceSubtitle" = "คล้ายคลึงกับ %@";
 
 /* No comment provided by engineer. */
-"today.sourcesAndSettings" = "แหล่งที่มาและการตัั้งค่า";
+"today.sourcesAndSettings" = "แหล่งที่มา & การตัั้งค่า";
 
 /* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
 "today.sourcesHeaderTitle" = "แหล่งที่มา";
@@ -3530,7 +3542,7 @@
 "UserWalletGenericErrorMessage" = "มีปัญหาเกิดขึ้นขณะเข้าสู่ระบบของบัญชี Uphold ของคุณ โปรดลองใหม่อีกครั้ง";
 
 /* No comment provided by engineer. */
-"UserWalletGenericErrorTitle" = "ขออภัย เกิดข้อผิดพลาดบางอย่างขึ้น";
+"UserWalletGenericErrorTitle" = "ขออภัย มีบางอย่างผิดพลาดขึ้น";
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "เวอร์ชัน %1$@ (%2$@)";
@@ -3542,133 +3554,10 @@
 "voice.search.microphone.description.required" = "โปรดอนุญาตให้เข้าถึงไมโครโฟนในการตั้งค่าระบบ iOS เพื่อให้ Brave ใช้การค้นหาด้วยเสียงโดยไม่เปิดเผยตัวตน";
 
 /* Title for warning alert microphone access is required. */
-"voice.search.microphone.title.required" = "จำเป็นต้องเข้าถึงไมโครโฟน";
+"voice.search.microphone.title.required" = "ต้องใช้การเข้าถึงไมโครโฟน";
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave จะไม่จัดเก็บหรือแบ่งปันการค้นหาด้วยเสียงของคุณ";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "ต้องการรับความคุ้มครองหรือไม่ เพียงต่ออายุก่อนที่การสมัครของคุณจะหมดอายุใช้งาน เพื่อเป็นการขอบคุณสำหรับการต่ออายุ เราจะลดราคา 20% เป็นเวลาถัดจากนี้อีก 3 เดือน";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "เปิดใช้งานการต่ออายุอัตโนมัติ";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "ต่ออายุการสมัครสมาชิก Brave VPN ของคุณโดยอัตโนมัติทันทีและรับส่วนลด 20% เป็นเวลา 3 เดือน!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "ต่ออายุการสมัครสมาชิก Brave VPN ของคุณโดยอัตโนมัติทันทีและรับฟรี 1 เดือน!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "นั่นหมายความว่าคุณจะสูญเสียการป้องกันพิเศษของ Brave สำหรับทุกแอปบนโทรศัพท์ของคุณ";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "โอ้ ไม่นะ! การเป็นสมาชิก Brave VPN ของคุณกำลังจะหมดอายุ";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "ไม่สามารถเชื่อมต่อกับ App Store ได้ โปรดลองอีกครั้งในอีกไม่กี่นาที";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "ข้อผิดพลาดใน App Store";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "บล็อกการเชื่อมต่อเครือข่ายที่ไม่ต้องการ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "บล็อกโฆษณาและตัวติดตามจากทุกแอป";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "รองรับความเร็วที่ 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "เร็วและไม่จำกัด สูงสุด 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "การสนับสนุนทุกวันตลอด 24 ชม.";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "รักษาความปลอดภัยให้กับทุกการเชื่อมต่อ";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "สนับสนุนโดย";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "อัตโนมัติ";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "โปรดลงชื่อเข้าใช้บัญชี Brave ของคุณเพื่อรีเฟรชเซสชัน VPN ของคุณ";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "ปิด";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "ลงชื่อเข้าใช้";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "เซสชันหมดอายุ";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "ปิดการใช้งานแล้ว";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "เปิดใช้งานแล้ว";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "หมดอายุแล้ว";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "สมัครสมาชิกเดี๋ยวนี้";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "ใช่แล้ว ตอนนี้การสมัครใช้งาน Brave VPN ของคุณสามารถใช้ได้กับอุปกรณ์สูงสุด 5 เครื่อง ดังนั้นคุณสามารถสมัครใช้งานบน iOS และใช้งานได้บนอุปกรณ์ Mac, Windows และ Android ของคุณได้ฟรี";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "ตอนนี้ใช้ Brave VPN บนอุปกรณ์ทั้งหมดของคุณในราคาเดียว!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "ลองใช้ Brave VPN อีกครั้งแล้วรับส่วนลด 20% นาน 3 เดือน!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "พร้อมที่จะปกป้องทุกแอปบนโทรศัพท์ของคุณแล้วหรือยัง กลับมาใช้ Brave VPN และรับส่วนลด 20% ในอีก 3 เดือนต่อจากนี้";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN บล็อกตัวติดตามบนทุกแอปเสมอ แม้กระทั่งนอกเบราว์เซอร์ Brave ตอนนี้คุณสามารถดูว่าใครพยายามติดตามคุณด้วย Brave Privacy Hub";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "คุณรู้หรือไม่ว่า Brave VPN สามารถปกป้องคุณนอก Brave Browser ได้";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "อัปเดต";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "ไม่ต้องกังวล เราจะเปิดใช้งาน VPN ต่อไปอีกสองสามวันระหว่างที่คุณกำลังอัปเดตข้อมูลการชำระเงิน";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "อัปเดตข้อมูลการชำระเงินของคุณเพื่อให้ได้รับการปกป้องด้วย Brave VPN";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "ต้องการปกป้องทุกแอปบนโทรศัพท์ของคุณต่อไปหรือไม่ เพียงทำการอัปเดตรายละเอียดการชำระเงินของคุณเท่านั้น";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "มีปัญหาด้านการเรียกเก็บเงินกับบัญชีของคุณ ซึ่งหมายถึงการสมัครใช้งาน Brave VPN ของคุณกำลังจะหมดอายุลง";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "อัปเดตการชำระเงิน";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "ภูมิภาคของเซิร์ฟเวอร์";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "การตั้งค่าปัจจุบัน: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "ภูมิภาคของ VPN";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "โปรดอัปเดตวิธีการชำระเงินของคุณ";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "วันที่สร้างวอลเล็ท";

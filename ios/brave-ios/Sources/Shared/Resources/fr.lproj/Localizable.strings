@@ -1,11 +1,11 @@
 /* Toast displayed to user after copy url pressed. */
-"AppMenuCopyURLConfirmMessage" = "URL copiée dans le presse-papiers";
+"AppMenuCopyURLConfirmMessage" = "URL copiée dans le presse-papier";
 
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
 "AppMenuViewDesktopSiteTitleString" = "Demander la version pour ordinateur";
 
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
-"AppMenuViewMobileSiteTitleString" = "Demander la version pour mobile";
+"AppMenuViewMobileSiteTitleString" = "Demander la version pour mobiles";
 
 /* General settings bookmarks last visited folder toggle title */
 "BookmarksLastVisitedFolderTitle" = "Afficher les derniers favoris consultés";
@@ -14,7 +14,7 @@
 "CancelDownloadDialogCancel" = "Annuler";
 
 /* Alert dialog body when the user taps the cancel download icon. */
-"CancelDownloadDialogMessage" = "Voulez-vous vraiment annuler ce téléchargement ?";
+"CancelDownloadDialogMessage" = "Souhaitez-vous vraiment annuler ce téléchargement ?";
 
 /* Button declining the cancellation of the download. */
 "CancelDownloadDialogResume" = "Reprendre";
@@ -50,10 +50,10 @@
 "DownloadsButtonTitle" = "Téléchargements";
 
 /* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "Ouvrir ce lien dans l'App Store ?";
+"ExternalLinkAppStoreConfirmationTitle" = "Ouvrir ce lien dans l'App Store";
 
 /* The button to open a new tab with the copied link */
-"GoButtonTittle" = "Aller";
+"GoButtonTittle" = "OK";
 
 /* Button to not save the user's password */
 "LoginsHelperDontSaveButtonTitle" = "Ne pas enregistrer";
@@ -62,7 +62,7 @@
 "LoginsHelperDontUpdateButtonTitle" = "Ne pas mettre à jour";
 
 /* Button to save the user's password */
-"LoginsHelperSaveLoginButtonTitle" = "Enregistrer l'identifiant de connexion";
+"LoginsHelperSaveLoginButtonTitle" = "Enregistrer l'identifiant";
 
 /* Button to update the user's password */
 "LoginsHelperUpdateButtonTitle" = "Mettre à jour";
@@ -86,19 +86,25 @@
 "ScanQRCodeErrorOKButton" = "OK";
 
 /* Text for the instructions label, displayed in the QR scanner view */
-"ScanQRCodeInstructionsLabel" = "Placez le code QR dans le cadre pour le scanner";
+"ScanQRCodeInstructionsLabel" = "Placer le code QR dans le cadre pour qu'il soit analysé";
 
 /* Text of the prompt that is shown to the user when the data is invalid */
 "ScanQRCodeInvalidDataErrorMessage" = "Les données ne sont pas valides";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l'appareil photo de votre appareil dans Paramètres -> Confidentialité -> Appareil photo.";
+"ScanQRCodePermissionErrorMessage" = "Autorisez Brave à accéder à l'appareil photo de votre appareil dans Paramètres -> Confidentialité -> Appareil photo.";
 
 /* Title for the QR code scanner view. */
-"ScanQRCodeViewTitle" = "Scanner un code QR";
+"ScanQRCodeViewTitle" = "Analyser le code QR";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Merci de soutenir le moteur de recherche Brave en cliquant sur une annonce privée. Contrairement aux grandes entreprises de la tech, nous mesurons les performances des annonces de manière anonyme pour préserver votre vie privée.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "En savoir plus / Désinscription";
 
 /* General settings section title */
-"SettingsGeneralSectionTitle" = "Général";
+"SettingsGeneralSectionTitle" = "Généraux";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Terminé";
@@ -113,10 +119,10 @@
 "UnableToAddPassErrorDismiss" = "OK";
 
 /* Text of the 'Add Pass Failed' alert.  See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout du pass à l'application Cartes. Réessayez ultérieurement.";
+"UnableToAddPassErrorMessage" = "Une erreur s'est produite lors de l'ajout du pass à l'application Wallet. Réessayez ultérieurement.";
 
 /* Title of the 'Add Pass Failed' alert. See https://support.apple.com/HT204003 for context on Wallet. */
-"UnableToAddPassErrorTitle" = "Échec de l'ajout du pass";
+"UnableToAddPassErrorTitle" = "Échec lors de l'ajout du passe";
 
 /* The message displayed to a user when they try to open a URL that cannot be handled by Brave, or any external app. */
 "UnableToOpenURLError" = "Brave ne peut pas ouvrir la page, car l'adresse n'est pas valide.";

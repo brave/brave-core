@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Brave ei koskaan kirjaa toimintaasi";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Suojaa sovellukset ja koko laite";
+"vpn.checkboxProtectYourDevices" = "Suojaa jokaista sovellusta & koko laitettasi";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Turvallinen kotona tai julkisessa Wi-Fi:ssä";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Ota käyttöön";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Kaikki tilaukset sisältävät %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Kaikki tilaukset sisältävät";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "ilmaisen 7 päivän kokeilujakson";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Asenna VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Kokeile ILMAISEKSI";
+"vpn.learnMore" = "Aloita 7 päivän kokeilujakso";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Uusiutuu kuukausittain";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld Palvelinta";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Tilaukset veloitetaan Apple-tilisi kautta. Kaikki käyttämättömät ilmaisen kokeilujakson osat, jos sellainen on tarjottu, menetetään, kun ostat tilauksen.\n\nTilauksesi uusitaan automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä.\n\nVoit hallita tilauksiasi asetuksissa.\n\nKäyttämällä Bravea hyväksyt käyttöehdot ja tietosuojakäytännön.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "kuukausi";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "vuosi";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Vanhentunut";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "VPN-alue muuttunut.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Uusiutuu vuosittain";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Uusiutuu kuukausittain";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "VPN-määritysten nollaus ei onnistu. Yritä uudelleen. Jos ongelma jatkuu, saat apua ottamalla yhteyttä tukeen.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Palauta";
 
+/* Use in context: save 16%. */
+"vpn.save" = "tallenna";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ Palvelin";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld Palvelin";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Päivitä VPN:ksi, jotta voit suojata yhteytesi ja estää invasiivisen seurannan kaikkialla.";
+"vpn.settingHeaderBody" = "Suojaa jokainen sovellus Brave VPN:llä. Suojaa jopa 10 laitetta yhdellä paketilla.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Ota yhteyttä tekniseen tukeen";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Välitysprotokolla";
 
-/* Button to allow the user to view the app-store receipt. */
-"vpn.settingsViewReceipt" = "Näytä App Store-kuitti";
+/* Button to allow the user to view the App Store receipt. */
+"vpn.settingsViewReceipt" = "Näytä App Store -kuitti";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Kun VPN-yhteys on käytössä ja se katkeaa odottamatta, laitteesi katkaisee automaattisesti yhteyden internetiin IP-osoite- ja tietovuodon estämiseksi. [Lue lisää](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Ota hätäkatkaisin käyttöön";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Älykäs välityspalvelinreititys varmistaa, että liikenne ohjataan erityisten välityspalvelimien kautta, jotta pääsy yleisesti rajoitettuun sisältöön/sivustoihin tai kolmannen osapuolen palveluihin on mahdollista. [Lue lisää](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Ota älykäs välityspalvelin käyttöön";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Päivitä maksutapa";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Tilaukset veloitetaan iTunes-tilisi kautta.\n\nKaikki käyttämättömät ilmaisen kokeilujakson osat, jos sellainen on tarjottu, menetetään, kun ostat tilauksen.\n\nTilauksesi uusitaan automaattisesti, ellei sitä peruuteta vähintään 24 tuntia ennen nykyisen jakson päättymistä.\n\nVoit hallita tilauksiasi asetuksissa.\n\nKäyttämällä Bravea hyväksyt käyttöehdot ja tietosuojakäytännön.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN pois päältä";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN päällä";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Lunasta koodi";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Uusi vuosittain ja säästä %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Paras arvo";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "PARAS ARVO";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Yksi vuosi";

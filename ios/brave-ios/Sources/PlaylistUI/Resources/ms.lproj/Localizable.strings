@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Edit";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Mula menaip untuk mencari audio dan video yang disimpan";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Cari Media";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Ketik untuk memilih media";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Tambah media daripada laman kegemaran anda dan media akan dimainkan di sini.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Tiada Hasil Ditemui";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Buka Dalam Tab Peribadi Baharu";
 
@@ -139,8 +148,11 @@
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Simpan Data Luar Talian";
 
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Cari";
+
 /* A button title that will present a share sheet for the selected item */
-"playlist.share" = "Kongsikan";
+"playlist.share" = "Kongsi";
 
 /* Describes an icon which allows the user to set a timer that when reaches 0 will stop playback of any media. */
 "playlist.sleepTimer" = "Pemasa Tidur";

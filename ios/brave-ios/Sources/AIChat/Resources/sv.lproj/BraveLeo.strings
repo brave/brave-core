@@ -31,7 +31,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
+/* The title for the button that allows the user to view the App Store Receipt */
 "aichat.advancedSettingsViewReceiptTitle" = "Visa App Store kvitto";
 
 /* The subtitle for the error showing there is an error from App Store */
@@ -242,7 +242,7 @@
 "aichat.paywallMonthlyPriceDividend" = "månad";
 
 /* Title indicating monthly subscription */
-"aichat.paywallMontlySubscriptionTitle" = "Månatligen";
+"aichat.paywallMontlySubscriptionTitle" = "Månatlig";
 
 /* The title for dismiss button when premium upsell when paywall is triggered */
 "aichat.paywallPremiumUpsellDismissAction" = "Kanske senare";

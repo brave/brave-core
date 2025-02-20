@@ -1,5 +1,5 @@
 /* A description of a section in a list that allows you to add custom filter lists found in the footer of the add custom url screen */
-"AddCustomFilterListDescription" = "Додайте інші списки, створені довіреною спільнотою та які підтримуються нею.";
+"AddCustomFilterListDescription" = "Додавайте окремі списки, що створені довіреною спільнотою та які підтримуються нею.";
 
 /* Warning text found in the footer of the add custom filter list url screen. */
 "AddCustomFilterListWarning" = "**Підписуйтеся лише на списки від тих компаній, яким довіряєте**. Ваш браузер час від часу перевірятиме наявність оновлень списків з указаної вами URL-адреси.";
@@ -65,7 +65,7 @@
 "ContentFiltering" = "Фільтрація вмісту";
 
 /* A description of the content filtering page. */
-"ContentFilteringDescription" = "Увімкніть користувацькі фільтри, які блокують стеження й надокучливі елементи для певного регіону чи мови";
+"ContentFilteringDescription" = "Увімкніть користувацькі фільтри, які блокують трекери й дратівні елементи, специфічні для регіону чи мови";
 
 /* Title for the custom filter list add screen found in the navigation bar. */
 "CustomFilterList" = "Список користувацьких фільтрів";
@@ -92,7 +92,7 @@
 "DefaultFilterLists" = "Списки фільтрів за замовчуванням";
 
 /* Text for a button in a blocked page info screen that takes you back where you came from */
-"DomainBlockedGoBackAction" = "Повернутися";
+"DomainBlockedGoBackAction" = "Перейти назад";
 
 /* A description in the warning page that appears when a page was blocked */
 "DomainBlockedPageDescription" = "Оскільки ви попросили агресивно блокувати стеження і рекламу, Brave блокує цей сайт перед його першим з’єднанням з мережею.";
@@ -128,16 +128,16 @@
 "FilterListsAdd" = "Додати";
 
 /* A description on the content filtering screen for the filter lists section. */
-"FilterListsDescription" = "Додаткові популярні списки від спільнот. Зауважте, що увімкнення великої кількості фільтрів може вплинути на швидкість завантаження вебсторінок.";
+"FilterListsDescription" = "Додаткові популярні списки спільноти. Зауважте, що через увімкнення надто багатьох фільтрів може зменшитися швидкість завантаження даних.";
 
 /* This is a generic error message when downloading a filter list fails. */
-"FilterListsDownloadFailed" = "Збій завантаження";
+"FilterListsDownloadFailed" = "Не вдалося завантажити";
 
 /* If a filter list is not yet downloaded this label shows up instead of a last download date, signifying that the download is still pending. */
 "FilterListsDownloadPending" = "Очікує на завантаження";
 
 /* This is a button on the top navigation that takes the user to an add custom filter list url to the list */
-"FilterListsEdit" = "Редагувати";
+"FilterListsEdit" = "Редагування";
 
 /* This is a placeholder for an input field that takes a custom filter list URL. */
 "FilterListsEnterFilterListURL" = "Уведіть URL-адресу списку фільтрів";
@@ -159,6 +159,30 @@
 
 /* This is a label on a button that updates filter lists which signifies that lists have been updated */
 "ListsUpdated" = "Списки оновлено";
+
+/* A label displayed above a value indicating if the site is in aggressive mode in Blocked Requests view. */
+"shields.aggressiveLabel" = "Агресивно";
+
+/* A label displayed above the location a request was blocked in Blocked Requests view. */
+"shields.blockedByLabel" = "Заблоковано:";
+
+/* The title displayed in the navigation bar of Blocked Requests view. */
+"shields.blockedRequestsTitle" = "Заблоковані запити";
+
+/* Used to describe when a request was blocked by the Content Blocker in Blocked Requests view. */
+"shields.contentBlocker" = "Блокувальник контенту";
+
+/* Used to describe when a request was blocked by our request blocking scripts in Blocked Requests view. */
+"shields.requestBlocking" = "Блокування запиту";
+
+/* A label displayed above the request url that was blocked in Blocked Requests view. */
+"shields.requestURLLabel" = "URL запиту";
+
+/* A label displayed above the resource type of a request that was blocked in Blocked Requests view. */
+"shields.resourceTypeLabel" = "Тип ресурсу";
+
+/* A label displayed above the source url of a request that was blocked in Blocked Requests view. */
+"shields.sourceURLLabel" = "URL джерела";
 
 /* A button title when confirming to shred website data */
 "ShredDataButtonTitle" = "Очистити дані";
@@ -191,7 +215,7 @@
 "TheConnectionIsNotSecure" = "З’єднання з %@ незахищене.";
 
 /* A label for a shield option that allows you to switch between different blocking levels for tracker and ads blocking. Options include disabled, standard and aggressive. */
-"TrackersAndAdsBlocking" = "Трекери й блокування реклами";
+"TrackersAndAdsBlocking" = "Блокування трекерів і реклами";
 
 /* This is a label for a button which when pressed updates all the filter lists */
 "UpdateLists" = "Оновити списки";

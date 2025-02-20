@@ -74,7 +74,13 @@
 "playlist.editPlaylist" = "Редагувати список відтворення";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylistShortTitle" = "Редагувати";
+"playlist.editPlaylistShortTitle" = "Редагування";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Почніть вводити текст, щоб знайти збережені аудіо та відео";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Пошук медіафайлів";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Торкніться, щоб вибрати медіафайл";
@@ -95,7 +101,7 @@
 "playlist.liveIndicator" = "У прямому ефірі";
 
 /* A button title that when tapped will allow the user to move the selected item to another playlist. */
-"playlist.moveItem" = "Перемістити";
+"playlist.moveItem" = "Переміщення";
 
 /* A button title that will display a list of menu options to move an item to a different playlist */
 "playlist.moveMenuItemTitle" = "Перемістити…";
@@ -111,6 +117,9 @@
 
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Додайте медіафайли з улюблених вебсайтів, щоб відтворити їх тут.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Немає результатів";
 
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Відкрити в новій приватній вкладці";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Зберегти офлайн-дані";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Пошук";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Поділитися";

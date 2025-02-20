@@ -1,0 +1,78 @@
+/* Title for bookmarks menu item */
+"widgets.BookmarksMenuItem" = "북마크";
+
+/* The name of the feature */
+"widgets.braveLeo" = "레오 AI";
+
+/* The name of the feature */
+"widgets.braveNews" = "Brave News";
+
+/* Title for downloads menu item */
+"widgets.DownloadsMenuItem" = "다운로드";
+
+/* Description for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetDescription" = "즐겨찾는 웹사이트에 빠르게 액세스할 수 있습니다.";
+
+/* Title for favorites widget on 'add widget' screen. */
+"widgets.favoritesWidgetTitle" = "즐겨찾기";
+
+/* Title for history menu item */
+"widgets.HistoryMenuItem" = "방문 기록";
+
+/* Displayed on a news widget that has failed to load */
+"widgets.newsClusteringErrorLabel" = "나중에 다시 시도";
+
+/* Displayed on a news widget that links into the app to read more Brave News content */
+"widgets.newsClusteringReadMoreButtonTitle" = "자세히 읽어보기";
+
+/* Description for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetDescription" = "최신 뉴스 받기";
+
+/* Title for Brave News widgets that display the top news */
+"widgets.newsClusteringWidgetTitle" = "인기 뉴스";
+
+/* This shows when you add a widget but have no favorites added in your app */
+"widgets.noFavoritesFound" = "여기서 즐겨찾기를 보려면 Brave를 여세요.";
+
+/* QR Code section title */
+"widgets.QRCode" = "QR 코드";
+
+/* Description for the search option on the 'shortcuts' widget. */
+"widgets.searchShortcutTitle" = "검색";
+
+/* Description for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsDescription" = "Brave가 어떻게 시간을 절약하고 온라인 프라이버시를 보호하는지에 대한 개요가 제공됩니다.";
+
+/* Title for Brave Shields widget on 'add widget' screen. */
+"widgets.shieldStatsTitle" = "개인정보 통계";
+
+/* Title of Brave Shields widget shown above stat numbers. */
+"widgets.shieldStatsWidgetTitle" = "개인정보 통계";
+
+/* Button to the browser and enter URL or make a search query there. */
+"widgets.shortcutsEnterURLButton" = "URL 검색 또는 직접 입력";
+
+/* Button to open new browser tab. */
+"widgets.shortcutsNewTabButton" = "새 탭";
+
+/* Button to open video playlist window. */
+"widgets.shortcutsPlaylistButton" = "재생목록";
+
+/* Button to open new private browser tab. */
+"widgets.shortcutsPrivateTabButton" = "비공개 탭";
+
+/* Description for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetDescription" = "빠르게 액세스하여 웹을 검색하거나 Brave에서 웹페이지를 열 수 있습니다.";
+
+/* Title for shortcuts widget on 'add widget' screen. */
+"widgets.shortcutsWidgetTitle" = "바로가기";
+
+/* Description for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatDescription" = "Brave가 어떻게 온라인 프라이버시를 보호하는지에 대한 개요가 제공됩니다.";
+
+/* Title for Brave Shields single stat widget on 'add widget' screen. */
+"widgets.singleStatTitle" = "프라이버시 통계";
+
+/* Description for the Brave Wallet option on the 'shortcuts' widget. */
+"widgets.walletShortcutTitle" = "Brave 월렛";
+
