@@ -297,7 +297,8 @@ void ConversationHandler::OnConversationMetadataUpdated() {
           metadata_->associated_content->content_type ==
               mojom::ContentType::VideoTranscript);
     } else {
-      archive_content_->SetMetadata(GURL(), u"", false);
+      archive_content_ = nullptr;
+      associated_content_delegate_ = nullptr;
     }
   }
 
@@ -1686,8 +1687,6 @@ void ConversationHandler::UpdateAssociatedContentInfo() {
       metadata_->associated_content = mojom::AssociatedContent::New();
       metadata_->associated_content->uuid =
           base::Uuid::GenerateRandomV4().AsLowercaseString();
-      LOG(ERROR) << "Created new AssociatedContent "
-                 << metadata_->associated_content->uuid;
     }
     metadata_->associated_content->title =
         base::UTF16ToUTF8(associated_content_delegate_->GetTitle());

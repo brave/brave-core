@@ -479,8 +479,7 @@ interface ConversationHandler {
   SubmitSuggestion(string suggestion);
 
   // Get associated page information. If there is none then |associated_content|
-  // will be |null|. If the reason for that is it's still being fetched, then
-  // |is_fetching| will be |true|.
+  // will be |null|.
   GetAssociatedContentInfo() => (
       AssociatedContent? associated_content, bool should_send_content);
 
@@ -549,8 +548,7 @@ interface ConversationUI {
   OnSuggestedQuestionsChanged(
       array<string> questions, SuggestionGenerationStatus status);
   // Associated page information has changed. If there is none then |associated_content|
-  // will be |null|. If the reason for that is it's still being fetched, then
-  // |is_fetching| will be |true|.
+  // will be |null|.
   OnAssociatedContentInfoChanged(AssociatedContent? associated_content, bool should_send_page_contents);
   OnFaviconImageDataChanged();
   OnConversationDeleted();
