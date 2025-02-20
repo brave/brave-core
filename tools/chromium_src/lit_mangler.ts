@@ -78,46 +78,46 @@ const getLiteralsFromFile = (filepath: string) => {
 /**
  * Injects placeholders into the template so we can later replace them with
  * the mangled templates.
- * 
+ *
  * (i.e.)
- * 
+ *
  * export function getHtml(this: Foo) {
  *   return html`<div>Hello</div>`
  * }
- * 
+ *
  * goes to
- * 
+ *
  * export function getHtml(this: Foo) {
  *   return html`$$lit_mangler_1$$`
  * }
- * 
+ *
  * This means we parse the template as HTML and later reinject the template back
  * into the source code (with replacePlaceholders).
- * 
+ *
  * Note: If a template contains another template, that template will also be
  * replaced with a placeholder. This means we can mangle each template without
  * worrying about where it exists in the source code.
- * 
+ *
  * (i.e.)
- * 
+ *
  * export function getHtml(this: Foo) {
  *   return html`<div>${this.isBold ? html`<b>Hi</b>` : 'Hi'}</div>`
  * }
- * 
+ *
  * goes to
- * 
+ *
  * export function getHtml(this: Foo) {
  *   return html`$$lit_mangler_1$$`
  * }
- * 
+ *
  * and then $$lit_mangler_1$$ is:
- * 
+ *
  * `<div>${this.isBold ? html`$$lit_mangler_2$$` : 'Hi'}</div>`
- * 
+ *
  * and $$lit_mangler_2$$ is:
- * 
+ *
  * `<b>Hi</b>`
- * 
+ *
  * @param template The template to inject placeholders into.
  */
 const injectPlaceholders = (template: HTMLTemplateTags) => {
@@ -133,19 +133,19 @@ const injectPlaceholders = (template: HTMLTemplateTags) => {
 /**
  * Reassembles the source code by replacing template placeholders with the
  * possibly mangled templates.
- * 
+ *
  * (i.e.)
- * 
+ *
  * export function getHtml(this: Foo) {
  *   return html`$$lit_mangler_1$$`
  * }
- * 
+ *
  * goes to
- * 
+ *
  * export function getHtml(this: Foo) {
  *   return html`<div>Hello</div>`
  * }
- * 
+ *
  * @param template The template to replace the placeholders in.
  */
 const replacePlaceholders = (template: HTMLTemplateTags) => {
