@@ -41,7 +41,9 @@ TabDataWebContentsObserver::TabDataWebContentsObserver(
       service_(*TabTrackerServiceFactory::GetForBrowserContext(
           web_contents->GetBrowserContext())) {}
 
-TabDataWebContentsObserver::~TabDataWebContentsObserver() = default;
+TabDataWebContentsObserver::~TabDataWebContentsObserver() {
+  service_->UpdateTab(tab_handle_, nullptr);
+}
 
 void TabDataWebContentsObserver::TitleWasSet(content::NavigationEntry* entry) {
   UpdateTab();
@@ -49,10 +51,6 @@ void TabDataWebContentsObserver::TitleWasSet(content::NavigationEntry* entry) {
 
 void TabDataWebContentsObserver::PrimaryPageChanged(content::Page& page) {
   UpdateTab();
-}
-
-void TabDataWebContentsObserver::WebContentsDestroyed() {
-  service_->UpdateTab(tab_handle_, nullptr);
 }
 
 void TabDataWebContentsObserver::UpdateTab() {

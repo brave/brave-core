@@ -35,7 +35,6 @@ class TabDataWebContentsObserver : public content::WebContentsObserver {
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;
   void TitleWasSet(content::NavigationEntry* entry) override;
-  void WebContentsDestroyed() override;
 
  private:
   void UpdateTab();
