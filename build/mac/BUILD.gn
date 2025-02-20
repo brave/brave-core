@@ -388,7 +388,7 @@ if (skip_signing) {
   }
 }
 
-group("create_dist") {
+group("create_dist_mac") {
   deps = [ ":copy_zip" ]
   if (skip_signing) {
     deps += [ ":unsigned_dmg" ]
