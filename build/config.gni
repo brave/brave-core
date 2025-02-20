@@ -125,6 +125,7 @@ if (is_win) {
   brave_exe = "$chrome_product_full_name.app"
   brave_dmg = "$chrome_product_full_name.dmg"
   brave_pkg = "$chrome_product_full_name.pkg"
+  brave_zip = "$chrome_product_full_name.app.zip"
   brave_delta = "$chrome_product_full_name.delta"
 
   brave_product_dir_name_suffix = ""
