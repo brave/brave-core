@@ -39,12 +39,11 @@ std::string GetHostFromTemplateURLData(const TemplateURLData& data) {
 
 using namespace TemplateURLPrepopulateData;  // NOLINT
 
-const PrepopulatedEngine* const kBraveAddedEngines[] = {
-    &startpage,
-};
+const PrepopulatedEngine* const kBraveAddedEngines[] = {};
 
 const std::unordered_set<std::u16string_view> kOverriddenEnginesNames = {
     u"DuckDuckGo", u"Qwant"};
+
 }  // namespace
 
 class BraveTemplateURLPrepopulateDataTest : public testing::Test {
@@ -62,9 +61,9 @@ class BraveTemplateURLPrepopulateDataTest : public testing::Test {
         TemplateURLPrepopulateData::GetAllPrepopulatedEngines();
     brave_prepopulated_engines_.insert(brave_prepopulated_engines_.end(),
                                        engines.begin(), engines.end());
-    brave_prepopulated_engines_.insert(brave_prepopulated_engines_.end(),
-                                       std::begin(kBraveAddedEngines),
-                                       std::end(kBraveAddedEngines));
+    for (auto* engine : kBraveAddedEngines) {
+      brave_prepopulated_engines_.push_back(engine);
+    }
   }
 
   void CheckForCountry(char digit1, char digit2, int prepopulate_id) {
