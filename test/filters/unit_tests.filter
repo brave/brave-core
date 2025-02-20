@@ -1106,7 +1106,6 @@
 -TabMetricsLoggerTest.*
 -TabMetricsTest.*
 -TabsApiUnitTest.*
--TabSearchPageHandlerTest.*
 -TabStatsTrackerTest.*
 -TabStripModelTest.*
 -TabStripModelTestWithReadLaterEnabled.*

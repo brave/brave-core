@@ -12,6 +12,7 @@ import {CrLitElement} from 'chrome://resources/lit/v3_0/lit.rollup.js';
 import type {BraveTabSearchApiProxy} from '../tab_search_api_proxy.js';
 import {TabSearchApiProxyImpl} from '../tab_search_api_proxy.js';
 import {TabSearchSection} from '../tab_search.mojom-webui.js';
+import type {TabOrganizationSession} from '../tab_search.mojom-webui.js';
 
 import {getHtml} from './auto_tab_groups_page.html.js';
 import {getCss} from './auto_tab_groups_page.css.js';
@@ -190,6 +191,10 @@ export class AutoTabGroupsPageElement extends CrLitElement {
       console.error('element visibility changed to invisible');
       this.wasInactive_ = true;
     }
+  }
+
+  // Shim for Chromium auto_tab_groups_page test.
+  setSessionForTesting(_session: TabOrganizationSession) {
   }
 }
 

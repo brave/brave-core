@@ -24,6 +24,10 @@ using TabSearchPageHandler_BraveImpl = TabSearchPageHandler;
 #undef TabSearchPageHandler
 #undef MaybeShowUI
 
+namespace ai_chat {
+struct Tab;
+}  // namespace ai_chat
+
 class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
  public:
   TabSearchPageHandler(
@@ -42,11 +46,23 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
                     GetFocusTabsCallback callback) override;
   void UndoFocusTabs(UndoFocusTabsCallback callback) override;
 
+  void SetAIChatEngineForTesting(
+      std::unique_ptr<ai_chat::EngineConsumer> ai_chat_engine) {
+    ai_chat_engine_ = std::move(ai_chat_engine);
+  }
+
+  ai_chat::EngineConsumer* GetAIChatEngineForTesting() {
+    return ai_chat_engine_.get();
+  }
+
  private:
   void OnGetFocusTabs(GetFocusTabsCallback callback,
                       const std::vector<std::string>& tab_ids);
   void OnGetSuggestedTopics(GetSuggestedTopicsCallback callback,
                             const std::vector<std::string>& topics);
+
+  ai_chat::EngineConsumer* MaybeGetAIEngineForTabFocus();
+  std::vector<ai_chat::Tab> GetTabsForAIEngine();
 
   struct TabInfo {
     int tab_id;

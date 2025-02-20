@@ -23,26 +23,44 @@ TabSearchPageHandler::TabSearchPageHandler(
     TopChromeWebUIController* webui_controller,
     MetricsReporter* metrics_reporter)
     : TabSearchPageHandler_ChromiumImpl(std::move(receiver), std::move(page), web_ui, webui_controller, metrics_reporter) {}
+
 TabSearchPageHandler::~TabSearchPageHandler() = default;
 
-void TabSearchPageHandler::GetSuggestedTopics(GetSuggestedTopicsCallback callback) {
-  // Get all tabs from all windows for this profile, send a request to AI chat
-  // backend to get suggested topics to focus on.
-  auto profile_data = CreateProfileData();
+ai_chat::EngineConsumer* TabSearchPageHandler::MaybeGetAIEngineForTabFocus() {
+  if (!ai_chat_engine_) {
+    Profile* profile = Profile::FromWebUI(web_ui_);
+    ai_chat::AIChatService* ai_chat_service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
+    if (!ai_chat_service) {
+      return nullptr;  // Unsupported context.
+    }
+    ai_chat_engine_ = ai_chat_service->GetEngineForModel(ai_chat::kClaudeHaikuModelKey);
+    CHECK(ai_chat_engine_);
+  }
+
+  return ai_chat_engine_.get();
+}
+
+std::vector<ai_chat::Tab> TabSearchPageHandler::GetTabsForAIEngine() {
   std::vector<ai_chat::Tab> tabs;
+  auto profile_data = CreateProfileData();
   for (const auto& window : profile_data->windows) {
     for (const auto& tab : window->tabs) {
       tabs.push_back(ai_chat::Tab(base::NumberToString(tab->tab_id), tab->title, url::Origin::Create(tab->url).Serialize()));
     }
   }
 
-  Profile* profile = Profile::FromWebUI(web_ui_);
-  ai_chat::AIChatService* ai_chat_service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
-  if (!ai_chat_engine_) {
-    ai_chat_engine_ = ai_chat_service->GetEngineForModel(ai_chat::kClaudeHaikuModelKey);
+  return tabs;
+}
+
+void TabSearchPageHandler::GetSuggestedTopics(GetSuggestedTopicsCallback callback) {
+  auto* engine = MaybeGetAIEngineForTabFocus();
+  if (!engine) {
+    std::move(callback).Run({});
+    return;
   }
-  CHECK(ai_chat_engine_);
-  ai_chat_engine_->GetSuggestedTopics(tabs, base::BindOnce(&TabSearchPageHandler::OnGetSuggestedTopics, weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+
+  std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();
+  engine->GetSuggestedTopics(tabs, base::BindOnce(&TabSearchPageHandler::OnGetSuggestedTopics, weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void TabSearchPageHandler::OnGetSuggestedTopics(
@@ -52,27 +70,15 @@ void TabSearchPageHandler::OnGetSuggestedTopics(
 }
 
 void TabSearchPageHandler::GetFocusTabs(const std::string& topic, GetFocusTabsCallback callback) {
+  auto* engine = MaybeGetAIEngineForTabFocus();
+  if (!engine) {
+    std::move(callback).Run(false);
+    return;
+  }
+
   focus_tabs_info_.clear();
-  // Get all tabs from all windows for this profile, send a request to AI chat
-  // backend for getting focus tabs under topic.
-  auto profile_data = CreateProfileData();
-  std::vector<ai_chat::Tab> tabs;
-  for (const auto& window : profile_data->windows) {
-    for (const auto& tab : window->tabs) {
-      tabs.push_back(ai_chat::Tab(base::NumberToString(tab->tab_id), tab->title, url::Origin::Create(tab->url).Serialize()));
-    }
-  }
 
-  Profile* profile = Profile::FromWebUI(web_ui_);
-  ai_chat::AIChatService* ai_chat_service = ai_chat::AIChatServiceFactory::GetForBrowserContext(profile);
-
-  // TODO(jocelyn): Hardcoded to use haiku3. Premium might use sonnet, need to
-  // test it's quality first.
-  if (!ai_chat_engine_) {
-    ai_chat_engine_ = ai_chat_service->GetEngineForModel(ai_chat::kClaudeHaikuModelKey);
-  }
-  CHECK(ai_chat_engine_);
-
+  std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();
   ai_chat_engine_->GetFocusTabs(tabs, topic,
       base::BindOnce(&TabSearchPageHandler::OnGetFocusTabs, weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }

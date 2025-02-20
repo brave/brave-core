@@ -24,6 +24,8 @@ struct Tab {
 
   Tab(const std::string& id, const std::string& title, const std::string& url)
       : id(id), title(title), url(url) {}
+
+  bool operator==(const Tab& other) const = default;
 };
 
 }  // namespace ai_chat
