@@ -207,7 +207,8 @@ public struct DataImportView: View {
           label: {
             Text(Strings.DataImporter.importDataFileSelectorButtonTitle)
               .font(.headline)
-              .padding()
+              .padding(.horizontal)
+              .padding(.vertical, 12.0)
               .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
               .frame(maxWidth: .infinity)
               .background(

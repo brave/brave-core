@@ -68,7 +68,8 @@ struct DataImporterStateView: View {
         label: {
           Text(kind.primaryButtonTitle)
             .font(.headline)
-            .padding()
+            .padding(.horizontal)
+            .padding(.vertical, 12.0)
             .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
             .frame(maxWidth: .infinity)
             .background(
@@ -87,7 +88,8 @@ struct DataImporterStateView: View {
           label: {
             Text(kind.secondaryButtonTitle)
               .font(.headline)
-              .padding()
+              .padding(.horizontal)
+              .padding(.vertical, 12.0)
               .foregroundStyle(Color(braveSystemName: .textInteractive))
               .frame(maxWidth: .infinity)
           }
@@ -101,7 +103,8 @@ struct DataImporterStateView: View {
           label: {
             Text(Strings.CancelString)
               .font(.headline)
-              .padding()
+              .padding(.horizontal)
+              .padding(.vertical, 12.0)
               .foregroundStyle(Color(braveSystemName: .textSecondary))
               .frame(maxWidth: .infinity)
           }
