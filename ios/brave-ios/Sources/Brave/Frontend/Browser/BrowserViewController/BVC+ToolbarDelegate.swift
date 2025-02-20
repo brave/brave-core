@@ -31,7 +31,7 @@ extension BrowserViewController: TopToolbarDelegate {
     if tabManager.tabsForCurrentMode.isEmpty {
       return
     }
-    displayPageZoom(visible: false)
+    clearPageZoomDialog()
 
     if tabManager.selectedTab == nil {
       tabManager.selectTab(tabManager.tabsForCurrentMode.first)
@@ -940,7 +940,7 @@ extension BrowserViewController: TopToolbarDelegate {
     /// The selected tab's url
     let selectedTabOriginalURL = tabManager.selectedTab?.url
 
-    displayPageZoom(visible: false)
+    clearPageZoomDialog()
 
     var activities: [UIActivity] = []
     if let url = selectedTabURL, let tab = tabManager.selectedTab {
