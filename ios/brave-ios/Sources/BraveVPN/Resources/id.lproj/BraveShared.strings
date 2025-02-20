@@ -1,0 +1,138 @@
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Ingin tetap terlindungi? Perbarui saja sebelum langganan Anda berakhir. Sebagai tanda terima kasih telah memperbarui, kami bahkan memberi potongan 20% untuk 3 bulan ke depan.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Aktifkan Pembaruan Otomatis";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Perbarui otomatis Langganan VPN Brave Anda sekarang dan dapatkan potongan  20% selama 3 bulan!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Perbarui otomatis Langganan VPN Brave Anda sekarang dan dapatkan 1 bulan gratis!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "ini berarti Anda akan kehilangan perlindungan ekstra dari Brave untuk semua app di ponsel Anda.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Oh tidak! Langganan VPN Brave Anda sebentar lagi berakhir.";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Tidak dapat terhubung ke App Store, silakan coba lagi dalam beberapa menit.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Kesalahan Apple Store";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckConnectionSpeed" = "Koneksi secepat kilat";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckLimitDevice" = "Melindungi hingga 10 perangkat dengan satu paket";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckLocation" = "Menyembunyikan IP Anda & mengubah lokasi";
+
+/* Information text shown to users for using Brave VPN */
+"vpn.infoCheckPrivacy" = "Privasi & Keamanan Ekstra saat daring";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckServers" = "Ratusan peladen di seluruh dunia";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Memblokir koneksi jaringan yang tak diinginkan";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Blokir iklan dan pelacak di semua app ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Mendukung kecepatan hingga 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Cepat dan tak terbatas hinggan 100Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Dukungan 24/7";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Mengamankan semua koneksi";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Didukung oleh";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Otomatis";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Harap login ke Akun Brave untuk me-refresh sesi VPN Anda.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Tutup";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Masuk";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Sesi telah berakhir";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Dinonaktifkan";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Diaktifkan";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Kedaluwarsa";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Berlangganan Sekarang";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Tepat sekali. Langganan Brave VPN Anda kini bisa digunakan hingga 5 perangkat. Jadi, Anda bisa berlangganan di iOS dan menggunakannya di perangkat Mac, Windows, dan Android secara gratis.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Kini, gunakan VPN Brave di semua perangkat milik Anda dengan harga yang sama!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Coba lagi VPN Brave dan dapatkan potongan 20% selama 3 bulan!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Siap untuk melindungi setiap app dalam ponsel Anda? Kembalilah ke VPN Brave dan dapatkan potongan 20% selama 3 bulan ke depan.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "VPN Brave selalu memblokir pelacak di setiap app, yang bahkan di luar peramban Brave. Kini Anda dapat melihat siapa yang ingin melacak Anda, dengan Hub Kerahasiaan Brave.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Apakah Anda tahu bahwa VPN Brave melindungi Anda di luar Peramban Brave?";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Perbarui";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Jangan khawatir. Kami terus mengaktifkan VPN selama beberapa hari sambil menunggu Anda memperbarui info pembayaran.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Perbarui info pembayaran  Anda agar tetap terlindungi dengan VPN Brave.";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Ingin tetap melindungi semua app dalam ponsel Anda? Perbaruilah detail pembayaran Anda.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Ada masalah penagihan dengan akun Anda, yang artinya langganan VPN Brave Anda sebentar lagi berakhir.";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Perbarui Pembayaran";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Server Kawasan";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Pengaturan Saat Ini: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "Wilayah VPN";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Silakan perbarui metode pembayaran Anda";
+

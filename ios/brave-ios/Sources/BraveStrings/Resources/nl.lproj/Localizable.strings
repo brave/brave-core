@@ -1,5 +1,5 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Ga terug";
+"BackTitle" = "Vorige";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Sluit alle tabbladen";
@@ -27,6 +27,12 @@
 
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Al gekocht op brave.com?";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Heb je een promotiecode?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Wissel promotiecode in";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Vernieuw inloggegevens";

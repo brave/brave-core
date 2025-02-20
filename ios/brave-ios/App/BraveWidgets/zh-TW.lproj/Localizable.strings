@@ -2,7 +2,7 @@
 "widgets.BookmarksMenuItem" = "書籤";
 
 /* The name of the feature */
-"widgets.braveLeo" = "Leo AI";
+"widgets.braveLeo" = "Leo 人工智能";
 
 /* The name of the feature */
 "widgets.braveNews" = "Brave News";
@@ -53,10 +53,10 @@
 "widgets.shortcutsEnterURLButton" = "搜尋或輸入 URL";
 
 /* Button to open new browser tab. */
-"widgets.shortcutsNewTabButton" = "新分頁";
+"widgets.shortcutsNewTabButton" = "新建標籤頁";
 
 /* Button to open video playlist window. */
-"widgets.shortcutsPlaylistButton" = "播放清單";
+"widgets.shortcutsPlaylistButton" = "Playlist";
 
 /* Button to open new private browser tab. */
 "widgets.shortcutsPrivateTabButton" = "隱私分頁";

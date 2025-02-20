@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "‏הגדרה של Brave כדפדפן ברירת המחדל שלך";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "לגלוש מהר יותר, להשתמש בפחות נתונים.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "פחות מודעות וכלי מעקב.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "לא עכשיו";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "ברצינות, נפטרנו מהם.";
+"focusOnboarding.noVideoAdsScreenDescription" = "לחסום הפרעות מרגיזות באתרי הסטרימינג החביבים עליך.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "הסוף למודעות וידאו.";
+"focusOnboarding.noVideoAdsScreenTitle" = "לחסום הפרעות במהלך הסטרימינג";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "למידע נוסף על ניתוח המוצרים משמר הפרטיות (P3A) שלנו.";
@@ -41,10 +35,10 @@
 "focusOnboarding.startBrowseActionButtonTitle" = "להתחיל לגלוש";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "מעבר להגדרות המערכת";
+"focusOnboarding.systemSettingsButtonTitle" = "הגדרה כברירת מחדל";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "יש להזין כתובת URL כדי ליהנות מפחות מודעות וכלי מעקב";
+"focusOnboarding.urlBarIndicatorDescription" = "להתחיל בסטרימינג וליהנות מפחות מודעות וכלי מעקב.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "לראות את ההבדל עם Brave";

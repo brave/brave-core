@@ -1,5 +1,5 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "後退";
+"BackTitle" = "返回";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "關閉所有分頁";
@@ -11,22 +11,28 @@
 "CloseTabTitle" = "關閉分頁";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "前進";
+"ForwardTitle" = "向前";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewPrivateTabTitle" = "新隱私分頁";
+"NewPrivateTabTitle" = "新增隱私分頁";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "新分頁";
+"NewTabTitle" = "新建標籤頁";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "開啟新標籤";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "開啟新分頁";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "開啟所選分頁";
 
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "已在 brave.com 上購買？";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "有優惠代碼嗎？";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "兌換優惠代碼";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "重新整理您的憑證";

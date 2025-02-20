@@ -1,5 +1,5 @@
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"BackTitle" = "Tillbaka";
+"BackTitle" = "Bakåt";
 
 /* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "CloseAllTabsFromTabTrayKeyCodeTitle" = "Stäng alla flikar";
@@ -17,7 +17,7 @@
 "NewPrivateTabTitle" = "Ny privat flik";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Ny flik";
+"NewTabTitle" = "Ny tabb";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenNewTabFromTabTrayKeyCodeTitle" = "Öppna ny flik";
@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Har du redan köpt på brave.com?";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Har du en kampanjkod?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Lös in kampanjkod";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Uppdatera dina inloggningsuppgifter";
 
@@ -35,10 +41,10 @@
 "RecentlyClosedTabTitle" = "Öppna stängd flik på nytt";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "Uppdatera sida";
+"ReloadPageTitle" = "Ladda om sida";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Välj adressfältet";
+"SelectLocationBarTitle" = "Välj plats";
 
 /* An option in a list of shortcut actions that hides the button */
 "shortcutsButton.hideButtonTitle" = "Dölj genvägsknapp";
@@ -53,7 +59,7 @@
 "ShowNextTabTitle" = "Visa nästa flik";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ShowPreviousTabTitle" = "Visa föregående flik";
+"ShowPreviousTabTitle" = "Visa tidigare flik";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
 "showShieldsTitle" = "Öppna Brave Shields";
@@ -116,7 +122,7 @@
 "storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN (Årlig)";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"SwitchToNonPBMKeyCodeTitle" = "Vanligt surfläge";
+"SwitchToNonPBMKeyCodeTitle" = "Normal surfning";
 
 /* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToPBMKeyCodeTitle" = "Privat surfläge";

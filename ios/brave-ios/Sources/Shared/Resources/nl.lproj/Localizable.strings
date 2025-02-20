@@ -26,7 +26,7 @@
 "CancelString" = "Annuleer";
 
 /* The button text in the Button Toast for switching to a fresh New Tab. */
-"ContextMenuButtonToastNewTabOpenedButtonText" = "Schakel over";
+"ContextMenuButtonToastNewTabOpenedButtonText" = "Wissel";
 
 /* The label text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenuButtonToastNewTabOpenedLabelText" = "Nieuw tabblad geopend";
@@ -92,10 +92,16 @@
 "ScanQRCodeInvalidDataErrorMessage" = "De gegevens zijn ongeldig";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Geef Brave toegang tot de camera van je apparaat via ‘Instellingen’ > ‘Privacy’ -> ‘Camera’.";
+"ScanQRCodePermissionErrorMessage" = "Geef Brave toegang tot de camera van je apparaat via ‘Instellingen’ -> ‘Privacy’ -> ‘Camera’.";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Scan QR-code";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Bedankt dat je Brave Search steunt door op een privé-advertentie te klikken. In tegenstelling tot Big Tech meten wij de prestaties van advertenties anoniem om jouw privacy te verzekeren.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Meer informatie / afmeldingsopties";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Algemeen";

@@ -74,7 +74,13 @@
 "playlist.editPlaylist" = "Rediger spilleliste";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylistShortTitle" = "Endre";
+"playlist.editPlaylistShortTitle" = "Rediger";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Skriv noe for å søke i lagrede lydopptak og videoer";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Søk etter mediefiler";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Trykk for å velge media";
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Legg til media fra favorittnettstedene dine, så spilles de av her.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Ingen treff";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Åpne i ny privat fane";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Lagre data i frakoblet modus";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Søk";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Del";

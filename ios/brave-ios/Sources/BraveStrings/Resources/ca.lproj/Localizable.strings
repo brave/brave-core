@@ -20,13 +20,19 @@
 "NewTabTitle" = "Pestanya nova";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Obre una pestanya nova";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Obre nova pestanya";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Obre la pestanya seleccionada";
 
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Ja has comprat a brave.com?";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Tens un codi promocional?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Bescanviar codi promocional";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Actualitza les teves credencials";

@@ -1,0 +1,138 @@
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "引き続き保護を利用する場合は、サブスクリプション終了前に情報を更新してください。更新の場合、次の3か月を20%でご利用いただけます。";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "自動更新を有効にする";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Brave VPNのサブスクリプションを今すぐ自動更新すると、次の3か月を20%オフでご利用いただけます。";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Brave VPNのサブスクリプションを自動更新して、1か月の無料特典を獲得しましょう！";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "モバイル端末上のすべてのアプリに対するBraveの特別な保護が失われます。";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Brave VPNサブスクリプションの終了日が近付いています。";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "App Storeに接続できませんでした。少し経ってから再度お試しください。";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "App Storeとの接続時にエラーが発生しました";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckConnectionSpeed" = "超高速の接続スピード";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckLimitDevice" = "1つのプランで最大10台のデバイスを保護";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckLocation" = "IPの非表示・位置情報の変更";
+
+/* Information text shown to users for using Brave VPN */
+"vpn.infoCheckPrivacy" = "高度なプライバシーとオンラインセキュリティ";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckServers" = "世界中に数百台のサーバーを配置";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "不要な通信をブロック";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "すべてのアプリで広告とトラッカーをブロック ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "最大100Mbpsの速度をサポート";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "最大 100 Mbps の速度が無制限";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "24時間365日のサポート";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "すべての接続を保護";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Powered by";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "自動";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Braveアカウントにログインして、VPNセッションを更新してください。";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "表示しない";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "ログイン";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "セッションの期限が切れました";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "無効";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "有効";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "期限切れ";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "今すぐ申し込む";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Brave VPNサブスクリプションは最大5台のデバイスでご利用いただけます。iOS、Mac、Windows、さらにはAndroidまで、お好きなデバイスでのご利用をお楽しみください。";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "追加料金なしで、複数のデバイスでBrave VPNをご利用いただけるようになりました。";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Brave VPNのサブスクリプションを更新いただくと、今なら3か月間20%オフ。";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "端末上のすべてのアプリを保護しませんか？Brave VPNは今後3か月間20%オフでご利用いただけます。";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPNは常に、Braveブラウザ以外でもすべてのアプリでトラッカーをブロックしてきました。Braveプライバシーハブでこれらのトラッカーの詳細を確認できます。";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPNはBraveブラウザ以外でも有効です";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "更新";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "心配はいりません。お支払い情報を更新いただくまでの間、数日間にわたりVPNを引き続きご利用いただけます。";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "お支払い情報を更新いただき、Brave VPNで引き続きデータを安全に保護しましょう。";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "モバイル端末上のすべてのアプリを保護しませんか？お支払い情報を更新するだけで引き続きご利用いただけます。";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "お客様のアカウントでお支払いの問題が発生しています。Brave VPNのサブスクリプションはまもなく期限切れとなります。";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "お支払い情報を更新";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "サーバーリージョン";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "現在の設定: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPNのリージョン";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "お支払い方法を更新してください";
+

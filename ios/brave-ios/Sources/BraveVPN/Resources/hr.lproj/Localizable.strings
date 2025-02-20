@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Brave nikada ne bilježi Vašu aktivnost";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Zaštitite aplikacije i cijeli uređaj";
+"vpn.checkboxProtectYourDevices" = "Zaštitite svaku aplikaciju & cijeli Vaš uređaj";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Sigurnije za kućni ili javni Wi-Fi";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Omogući";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Svi planovi uključuju %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Svi planovi uključuju";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "besplatno 7-dnevno probno razdoblje";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Instaliraj mrežu VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Isprobaj BESPLATNO";
+"vpn.learnMore" = "Započnite 7-dnevno besplatno probno razdoblje";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Mjesečno obnavljanje";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld poslužitelja";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Pretplate će se naplaćivati ​​putem vašeg računa Apple. Svaki neiskorišteni dio besplatnog probnog razdoblja, ako je ponuđeno, gubi se kada kupite pretplatu.\n\nVaša će se pretplata automatski obnoviti osim ako se ne otkaže najmanje 24 sata prije kraja trenutačnog razdoblja.\n\nMožete upravljati svojim pretplatama u Postavkama.\n\nUpotrebom Bravea prihvaćate Uvjete upoabe i Pravilnik o zaštiti privatnosti.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "mjesec";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "godina";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Istekao";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "Promijenjena je regija mreže VPN.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Obnavlja se svake godine";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Mjesečno obnavljanje";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Nije moguće ponovno postaviti konfiguraciju mreže VPN. Pokušajte ponovno. Ako se problem nastavi pojavljivati, obratite se korisničkoj službi za pomoć.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Vrati";
 
+/* Use in context: save 16%. */
+"vpn.save" = "spremi";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ poslužitelj";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld poslužitelj";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Nadogradite na mrežu VPN radi zaštite svoje veze i blokiranja invazivnih elemenata za praćenje svugdje.";
+"vpn.settingHeaderBody" = "Zaštitite svaku aplikaciju uz Brave VPN. Zaštitite do 10 uređaja jednom pretplatom.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Obrati se tehničkoj podršci";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Transportni protokol";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "Pregledajte račun App Storea";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Kada je uključeno, ako vaša VPN veza neočekivano padne, vaš uređaj će se automatski isključiti s interneta kako bi se spriječilo curenje IP adrese i podataka. [Saznajte više](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Uključite Kill Switch";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Smart Proxy Routing osigurava da se promet usmjerava kroz namjenske proxy poslužitelje kako bi se omogućio pristup često ograničenom sadržaju/sjedištima ili uslugama trećih strana. [Saznajte više](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Uključite Smart Proxy";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ažurirajte način plaćanja";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Pretplate se naplaćuju ​​putem vašeg računa usluge iTunes.\n\nSvaki neupotrijebljeni dio besplatnog probnog razdoblja, ako je ponuđen, gubi se kada kupite pretplatu.\n\nVaša se pretplata automatski obnavlja osim ako se ne otkaže najmanje 24 sata prije kraja tekućeg razdoblja.\n\nSvojim pretplatama možete upravljati u Postavkama.\n\nUpotrebom preglednika Brave slažete se s Odredbama upotrebe i Pravilnikom o zaštiti privatnosti.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN isključen";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN uključen";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Iskoristi kôd";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Godišnjim obnavljanjem ušteda od %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Najbolja vrijednost";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "NAJBOLJA VRIJEDNOST";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Jedna godina";

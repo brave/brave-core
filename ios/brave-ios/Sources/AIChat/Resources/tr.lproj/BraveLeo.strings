@@ -31,7 +31,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Durum";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
+/* The title for the button that allows the user to view the App Store Receipt */
 "aichat.advancedSettingsViewReceiptTitle" = "App Store Makbuzunu Görüntüle";
 
 /* The subtitle for the error showing there is an error from App Store */
@@ -131,7 +131,7 @@
 "aichat.feedbackViewMainTitle" = "Brave Yapay Zeka Geri Bildirimi Verin";
 
 /* The button title for opening paywall screen */
-"aichat.goPremiumButtonTitle" = "Premium'a Geçin";
+"aichat.goPremiumButtonTitle" = "Premium olun";
 
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "Yanıtları, sayfanın içeriklerine bağlı olarak şekillendirin";

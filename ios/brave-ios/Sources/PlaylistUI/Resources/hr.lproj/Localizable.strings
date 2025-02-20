@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Uredi";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Počnite tipkati u polje za pretragu kako biste pretražili spremljene audio i video zapise";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Pretraži medije";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Dodirivanje za odabiranje medija";
 
@@ -95,7 +101,7 @@
 "playlist.liveIndicator" = "Uživo";
 
 /* A button title that when tapped will allow the user to move the selected item to another playlist. */
-"playlist.moveItem" = "Pomakni";
+"playlist.moveItem" = "Pomaknite";
 
 /* A button title that will display a list of menu options to move an item to a different playlist */
 "playlist.moveMenuItemTitle" = "Pomaknite…";
@@ -111,6 +117,9 @@
 
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Dodajte medije s omiljenih mrežnih mjesta i reproducirajte ih ovdje.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Nema rezultata";
 
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Otvori u novoj privatnoj kartici";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Spremanje izvanmrežnih podataka";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Pretraži";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Podijeli";

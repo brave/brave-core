@@ -11,7 +11,7 @@
 "CloseTabTitle" = "Tab schließen";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Weiter";
+"ForwardTitle" = "Vor";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Neuer privater Tab";
@@ -26,7 +26,13 @@
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Ausgewählten Tab öffnen";
 
 /* Title label text for refreshing credentials from brave site. */
-"paywall.alreadyPurchasedTitle" = "Haben Sie bereits einen Kauf auf brave.com getätigt?";
+"paywall.alreadyPurchasedTitle" = "Hast du bereits einen Kauf auf brave.com getätigt?";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Du hast einen Promo-Code?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Promo-Code einlösen";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Anmeldedaten erneut eingeben";
@@ -38,7 +44,7 @@
 "ReloadPageTitle" = "Seite neu laden";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Aufenthaltsorts Auswahlleiste";
+"SelectLocationBarTitle" = "Standortleiste auswählen";
 
 /* An option in a list of shortcut actions that hides the button */
 "shortcutsButton.hideButtonTitle" = "Shortcut-Schaltfläche ausblenden";
@@ -56,7 +62,7 @@
 "ShowPreviousTabTitle" = "Vorherigen Tab anzeigen";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
-"showShieldsTitle" = "Brave-Schutz öffnen";
+"showShieldsTitle" = "Brave Shields öffnen";
 
 /* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "ShowTabTrayFromTabKeyCodeTitle" = "Alle Tabs anzeigen";
@@ -86,7 +92,7 @@
 "storekitReceiptViewer.receiptInvalidDate" = "K. A.";
 
 /* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
-"storekitReceiptViewer.receiptLoadingErrorTitle" = "Entschuldigung, der App Store-Beleg konnte nicht geladen werden";
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "Sorry, der App Store-Beleg konnte nicht geladen werden";
 
 /* The title of the label that shows the Order ID of the user's purchase */
 "storekitReceiptViewer.receiptOrderIDTitle" = "Bestellnummer";

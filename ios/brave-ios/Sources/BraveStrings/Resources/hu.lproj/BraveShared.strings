@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Mégse";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "A(z) %1$@ felhasználónevet és jelszót kér. Az oldal ezt írja:%2$@.";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "Bejelentkezés";
 
@@ -182,10 +179,10 @@
 "BraveShieldsAdvancedControls" = "Speciális vezérlők";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacy" = "Brave pajzsok és adatvédelem";
+"BraveShieldsAndPrivacy" = "Brave Shields és adatvédelem";
 
 /* No comment provided by engineer. */
-"BraveShieldsAndPrivacyTitle" = "Pajzsok és adatvédelem";
+"BraveShieldsAndPrivacyTitle" = "Shields és adatvédelem";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Blokkoltuk a hirdetéseket és más bizarr dolgokat";
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Globális vezérlők";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Tárolja a kapcsolattartási adatokat a jövőbeli hibás weboldal-jelentésekhez";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Ha megadja az elérhetőségi adatokat, azokat a jövőbeli jelentésekhez tároljuk.";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Ha ez a webhely hibásnak tűnik, próbálja ki a Pajzsok funkciót";
@@ -569,7 +572,7 @@
 "defaultBrowserCallout.introPrimaryText" = "Nyiss meg minden hivatkozást Brave-ben, hogy vigyázz az adataidra.";
 
 /* Secondary text on default browser popup. */
-"defaultBrowserCallout.introSecondaryText" = "A Brave-védelem blokkolja a követőket és reklámokat, menti az adatokat, és időt takarít meg Önnek minden felkeresett oldalon.";
+"defaultBrowserCallout.introSecondaryText" = "A Brave-védelem blokkolja a követőket és reklámokat, menti az adatokat, és időt takarít meg Önnek minden felkeresett oldalon";
 
 /* Tertiary text on default browser popup screen */
 "defaultBrowserCallout.introTertiaryText" = "Nyissa meg a Beállításokat, koppintson az Alapértelmezett böngészőalkalmazásra, majd válassza ki a Brave-et.";
@@ -689,7 +692,7 @@
 "ErrorPageReloadButtonTitle" = "Újratöltés";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "A(z) %1$@ általában titkosítást használ adatai védelme érdekében. Amikor a Brave megpróbált csatlakozni a(z) %2$@ oldalhoz, az szokatlan és hibás hitelesítő adatokat küldött vissza. Ez olyankor fordulhat elő, ha egy hacker a(z) %3$@-nak adja ki magát, vagy egy Wi-Fi bejelentkezési képernyő megszakítja a kapcsolatot. Adatai továbbra is biztonságban vannak, mert a Brave leállította a kapcsolatot, mielőtt adatcsere történt volna.<br />Jelenleg nem keresheti fel a(z) %4$@ weboldalt, mert az tanúsítványrögzítést alkalmaz. A hálózati hibák és támadások általában átmenetiek, így az oldal később valószínűleg működni fog.";
+"ErrorPagesAdvancedErrorPinningDetails" = "A(z) %1$@ általában titkosítást használ adatai védelme érdekében. Amikor a Brave megpróbált csatlakozni a(z) %2$@ oldalhoz, az szokatlan és hibás hitelesítő adatokat küldött vissza. Ez olyankor fordulhat elő, ha egy hacker a(z) %3$@-nak adja ki magát, vagy egy wifi bejelentkezési képernyő megszakítja a kapcsolatot. Adatai továbbra is biztonságban vannak, mert a Brave leállította a kapcsolatot, mielőtt adatcsere történt volna.<br />Jelenleg nem keresheti fel a(z) %4$@ weboldalt, mert az tanúsítványrögzítést alkalmaz. A hálózati hibák és támadások általában átmenetiek, így az oldal később valószínűleg működni fog.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "A szerver nem tudta igazolni, hogy az valóban a(z) %@; biztonsági tanúsítványa nem megbízható az eszköze operációs rendszere számára. Ezt okozhatja helytelen konfiguráció, vagy az, hogy egy hacker megpróbálja lehallgatni a kapcsolatát.";
@@ -896,7 +899,7 @@
 "login.loginListEmptyScreenTitle" = "Nem találhatók bejelentkezési adatok";
 
 /* Title for navigation bar of the login list screen */
-"login.loginListNavigationTitle" = "Bejelentkezések és jelszavak";
+"login.loginListNavigationTitle" = "Bejelentkezések& jelszavak";
 
 /* The header title displayed over the never saved login list entry */
 "login.loginListNeverSavedHeaderTitle" = "Soha nem került mentésre";
@@ -977,7 +980,7 @@
 "NewFolderTitle" = "Új mappa";
 
 /* Context menu item for opening a new private browsing window */
-"NewPrivateWindowTitle" = "Új &amp;inkognitóablak";
+"NewPrivateWindowTitle" = "Új &inkognitóablak";
 
 /* New Tab title */
 "NewTab" = "Új lap";
@@ -1043,7 +1046,7 @@
 "ntp.settingsDefaultImagesOnly" = "Alapértelmezett képek";
 
 /* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Szponzorált képek és videók";
+"ntp.settingsSponsoredImagesAndVideosSelection" = "Szponzorált képek& videók";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Szponzorált képek";
@@ -1154,7 +1157,7 @@
 "OBTurnOnButton" = "Indítás";
 
 /* The description text shown when there is big tech tracker among trackers. Example usage: Google, Amazon and 32 other trackers blocked */
-"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ és %2$lld egyéb hirdetés és nyomkövető blokkolva";
+"onboarding.blockedAdsOnboardingBigTechInformationText" = "%1$@ és %2$lld egyéb hirdetés& nyomkövető blokkolva";
 
 /* The footnote indicating what Brave shields is blocking */
 "onboarding.blockedAdsOnboardingFootnoteText" = "Nézze meg, oldalanként mi mindent blokkolt a Brave a pajzsok segítségével.";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "Koppintson a Brave pajzsok megtekintéséhez";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "hirdetés és nyomkövető blokkolva";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Reklám és nyomkövető blokkolva";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Kapcsolja össze a VPN-előfizetését";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Brave VPN-előfizetésével akár 5 eszközre is kiterjeszthető a védelem, Androidon, iOS-en és asztali számítógépeken. Ehhez egyszerűen kapcsolja össze App Store-előfizetését Brave-fiókjával.";
+"onboarding.linkReceiptDescription" = "Brave VPN-előfizetésével akár 10 eszközre is kiterjeszthető a védelem, Androidon, iOS-en és asztali számítógépeken. Ehhez egyszerűen kapcsolja össze App Store-előfizetését Brave-fiókjával.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Bővítse ki a Brave tűzfal + VPN-védelmét";
@@ -1181,7 +1184,7 @@
 "onboarding.navigateSettingsOnboardingScreenTitle" = "Átirányítás a Beállításokhoz...";
 
 /* Description for the NTP pop-over that describes the tracking information on NTP */
-"onboarding.ntpOnboardingPopOverTrackerDescription" = "A nyomkövetők és hirdetések blokkolásával a webhelyek kevesebb adatot használnak fel, és sokkal gyorsabban töltődnek be.";
+"onboarding.ntpOnboardingPopOverTrackerDescription" = "A trackerek és hirdetések letiltásával& a webhelyek kevesebb adatot használnak fel, és sokkal gyorsabban töltődnek be.";
 
 /* Description for the Omnibox (URL Bar) pop-over that describes faster load times. */
 "onboarding.omniboxOnboardingPopOverDescription" = "A Brave-vel más:\nNincsenek hirdetések. Nincsenek nyomkövetők. Sokkal gyorsabban töltenek be az oldalak.";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Megnyitás új ablakban";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "Konfigurációs profil letöltésének folytatása a %@weboldalról";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "Rendelkezésre álló konfigurációs profil";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Megnyitás új privát lapon";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "Megnyitott lapok";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "Esemény letöltésének folytatása a naptárból a %@weboldalról";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "Esemény elérhető";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Webhely megnyitása";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "A video- és audiofájlok offline használatra való hozzáadása sok tárhelyet vehet igénybe az eszközön, és mobil adatforgalmat is felhasználhat";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Ez az opció automatikusan menti a lejátszási lista elemeit az eszközre, így internetkapcsolat nélkül is lejátszhatja őket.";
+"playlist.playlistAutoSaveSettingsFooterText" = "Miután megnyitotta a lejátszási listát, ez a beállítás a megnyitott lejátszási lista elemeit megőrzi a készülékben, így internetkapcsolat nélkül is lejátszhatja azokat.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Automatikus mentés offline lejátszáshoz";
+"playlist.playlistAutoSaveSettingsTitle" = "Tartalom mentése offline lejátszáshoz";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "A video- és hangfájlok offline használatra való hozzáadása sok tárhelyet foglalhat el az eszközön. Kérjük, távolítson el néhány fájlt, hogy tárhelyet szabadítson fel.";
@@ -1562,7 +1577,7 @@
 "playlist.playlistLongPressSettingsOptionTitle" = "Hosszú megnyomás engedélyezése";
 
 /* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Lejátszási listán szereplő média és offline adatok";
+"playlist.playlistMediaAndOfflineDataToggleOption" = "Lejátszási listán szereplő média& offline adatok";
 
 /* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
 "playlist.playlistOfflineDataToggleOption" = "Lejátszási lista offline adatai";
@@ -1571,7 +1586,7 @@
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Módosítás";
 
 /* The title for the alert that shows up when removing all videos and their offline mode storage. */
-"playList.playlistResetAlertTitle" = "Visszaállítás";
+"playList.playlistResetAlertTitle" = "Alapállapot";
 
 /* Footer Text for the Playlist Settings Option for resetting Playlist. */
 "playlist.playlistResetPlaylistOptionFooterText" = "Ezzel az opcióval eltávolítja az összes videót a lejátszási listáról, valamint az offline mód tárhelyéről.";
@@ -1617,12 +1632,6 @@
 
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Jegyezze meg a fájl lejátszási pozícióját";
-
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Letiltja a WebKit MediaSource API-t";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Webes kompatibilitás";
 
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Eltávolítás";
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "Elnézést";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Hozzáadva a Brave lejátszási listához";
+"playList.toastAddedToPlaylistTitle" = "Megtekintés a Lejátszási listában";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Megnyitás";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Hozzáadás a Brave lejátszási listához";
+"playList.toastAddToPlaylistTitle" = "Hozzáadás lejátszási listához";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Megtekintés a Brave lejátszási listában";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "Visszavonás";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Hozzáad egy lejátszási lista gombot (megjelenés: 4 vonal + jellel) a Brave böngésző címsora mellé. Ez a gomb gyors hozzáférést biztosít a lejátszási lista megnyitásához, illetve a média hozzáadásához vagy eltávolításához.";
+"playlist.urlBarButtonOptionFooter" = "Hozzáad egy lejátszási lista gombot a Brave böngésző címsora mellé. Ez a gomb gyors hozzáférést biztosít a lejátszási lista megnyitásához, illetve a média hozzáadásához vagy eltávolításához.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Gyorselérési gomb engedélyezése";
@@ -1832,19 +1841,19 @@
 "privacyHub.allTimeListsWebsitesView" = "Weboldalak";
 
 /* Header title for a list of most frequent ads and trackers detected. */
-"privacyHub.allTimeListTrackersHeaderTitle" = "A leggyakoribb nyomkövetők és hirdetések a felkeresett webhelyeken";
+"privacyHub.allTimeListTrackersHeaderTitle" = "A leggyakoribb trackerek& hirdetések a felkeresett webhelyeken";
 
 /* Header title for a list of websites with ads and trackers. */
-"privacyHub.allTimeListWebsitesHeaderTitle" = "Webhelyek a legtöbb nyomkövetővel és hirdetéssel";
+"privacyHub.allTimeListWebsitesHeaderTitle" = "Webhelyek a legtöbb trackerrel& hirdetéssel";
 
 /* Displays a number of websites on which we blocked trackers, example usage: '23 sites' */
 "privacyHub.allTimeSitesCount" = "%lld webhely";
 
 /* Displays a number of trackers we blocked on a particular website, example usage: '23 trackers & ads' */
-"privacyHub.allTimeTrackersCount" = "%lld nyomkövető és hirdetés";
+"privacyHub.allTimeTrackersCount" = "%lldTrackerek& reklámok letiltása";
 
 /* Title under which we display most name of the most blocked tracker or ad. */
-"privacyHub.allTimeTrackerTitle" = "Nyomkövető és hirdetés";
+"privacyHub.allTimeTrackerTitle" = "Tracker & hirdetés";
 
 /* Title under which we display a website on which there's the highest number of trackers or ads. */
 "privacyHub.allTimeWebsiteTitle" = "Webhely";
@@ -1880,7 +1889,7 @@
 "privacyHub.mostFrequentTrackerAndAdBody" = "A Brave-védelem **%2$lld** oldalon blokkolta a következőt: **%1$@**";
 
 /* Title under which we display a tracker which was most frequently detected by our ad blocking mechanism. */
-"privacyHub.mostFrequentTrackerAndAdTitle" = "Leggyakoribb nyomkövető és hirdetés";
+"privacyHub.mostFrequentTrackerAndAdTitle" = "Leggyakoribb tracker& hirdetés";
 
 /* Text of a callout that tell user they need to browser some websites first in order to see privacy stats data */
 "privacyHub.noDataCalloutBody" = "Akkor fognak itt megjelenni adatok, ha ellátogat néhány webhelyre.";
@@ -1913,7 +1922,7 @@
 "privacyHub.privacyReportsTitle" = "Adatvédelmi központ";
 
 /* Do NOT localize asterisk('*') characters, they are used to make the text bold in the app. It says which website had the most tracker per visit, example usage: 'example.com had an average of 10 trackers & ads blocked per visit ' */
-"privacyHub.riskiestWebsiteBody" = "A(z) **%1$@** webhelyen átlagban **%2$lld** nyomkövetőt és hirdetést blokkoltunk látogatásonként";
+"privacyHub.riskiestWebsiteBody" = "A(z) **%1$@** webhelyen átlagosan **%2$lld** trackert & hirdetést blokkoltunk látogatásonként";
 
 /* Title of a website that contained the most trackers per visit. */
 "privacyHub.riskiestWebsiteTitle" = "Webhely a legtöbb nyomkövetővel";
@@ -1955,7 +1964,7 @@
 "privacyHub.vpnAlertLocationTrackerTypeSingular" = "Helylekérdezés";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
-"privacyHub.vpnAlertRegularTrackerTypePlural" = "Nyomkövetők és hirdetések";
+"privacyHub.vpnAlertRegularTrackerTypePlural" = "Trackerek& hirdetések";
 
 /* Type of tracker blocked by the VPN, it's a regular tracker or an ad. */
 "privacyHub.vpnAlertRegularTrackerTypeSingular" = "Nyomkövető vagy hirdetés";
@@ -2096,7 +2105,7 @@
 "RecentSearchHide" = "Elrejtés";
 
 /* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Beillesztés és indítás";
+"RecentSearchPasteAndGo" = "Beillesztés& indítás";
 
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "bekapcsolva";
@@ -2145,6 +2154,9 @@
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Kapcsolatba léphetnek velem itt: (opcionális)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Ha megadja az elérhetőségi adatokat, azokat tárolni fogjuk, hogy a jövőben jelenthessük a hibás oldalakat.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "E-mailben, Twitteren stb.";
@@ -2357,7 +2369,7 @@
 "RewardsInternalsRewardsTypeRecurringTip" = "Ismétlődő jattküldés";
 
 /* No comment provided by engineer. */
-"RewardsInternalsSharableBasicDescription" = "Jutalmak-profil, eszköz- és egyenlegadatok (mindig megosztva)";
+"RewardsInternalsSharableBasicDescription" = "Profil, eszköz & jutalomegyenleg információk (mindig megosztva)";
 
 /* No comment provided by engineer. */
 "RewardsInternalsSharableBasicTitle" = "Alapinformáció";
@@ -2459,7 +2471,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Javaslatot keres";
 
 /* Section header for history and bookmarks and open tabs option */
-"SearchHistorySectionHeader" = "Nyitott lapok, könyvjelzők és előzmények";
+"SearchHistorySectionHeader" = "Lapok megnyitása& Könyvjelző, Előzmények";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Keresett kifejezés törlése";
@@ -2651,7 +2663,7 @@
 "shieldEducation.trackerCountShareSubtitle" = "Gratulálunk, Ön igazán különleges!";
 
 /* Title for Shield Education Tracker Count Share. The parameter substituted for "%ld" is the count of the trackers and ads blocked in total until present. E.g.: 5000 trackers & ads blocked */
-"shieldEducation.trackerCountShareTitle" = "%ld nyomkövető és hirdetés blokkolva!";
+"shieldEducation.trackerCountShareTitle" = "%ld trackerek& hirdetések letiltva!";
 
 /* Subtitle for Shield Education Tracker Video Ad Block */
 "shieldEducation.videoAdBlockSubtitle" = "A reklámok nélküli videók kevesebb adatot használnak.";
@@ -2771,13 +2783,13 @@
 "shortcuts.customIntentOpenWebsiteSuggestedPhrase" = "Webhely megnyitása";
 
 /* Description for opening Brave Settings for altering Siri shortcut. */
-"shortcuts.shortcutOpenApplicationSettingsDescription" = "Ez a lehetőség megnyitja a Brave beállításait. A Siri különféle beállításainak módosításához válassza a „Siri és keresés” menüpontot, és állítsa be a preferenciáit.";
+"shortcuts.shortcutOpenApplicationSettingsDescription" = "Ez a lehetőség megnyitja a Brave beállításait. A Siri beállításainak módosításához válassza a „Siri& keresés” menüpontot, és szabja személyre a beállításokat.";
 
 /* Button title that open application settings */
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Beállítások megnyitása";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Parancsikonok használata egy új lap megnyitásához és a böngészési előzmények törléséhez a Siri – Voice Assistant segítségével";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Parancsikonok használata egy új lap megnyitásához& a böngészési előzmények törléséhez a Siri – Voice Assistant segítségével";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Böngészési előzmények törlése";
@@ -2795,7 +2807,7 @@
 "shortcuts.shortcutSettingsOpenBookmarksTitle" = "A Könyvjelzők megnyitása";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Parancsikonok használata egy új lap megnyitásához és a Brave-hírfolyam megjelenítéséhez a Siri – Voice Assistant segítségével";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Parancsikonok használata egy új lap megnyitásához& a Brave-hírfolyam megjelenítéséhez a Siri – Voice Assistant segítségével";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "A Brave-hírek megnyitása";
@@ -3098,7 +3110,7 @@
 "sync.removeOtherDeviceTitle" = "Eltávolítja a következőt a szinkronizálási láncból: %@?";
 
 /* Sync remove device. */
-"sync.removeThisDevice" = "A készülék eltávolítása";
+"sync.removeThisDevice" = "Eltávolítja ezt az eszközt";
 
 /* Sync remove device? */
 "sync.removeThisDeviceQuestionDesc" = "Ez az eszköz le lesz választva a szinkronizálási csoportról, és többé nem fogad vagy küld szinkronizálási adatokat. Minden meglévő adat az eszközön marad.";
@@ -3131,7 +3143,7 @@
 "sync.syncDeleteAccountAlertDescriptionPart3" = "Ez a törlés végleges, és nincs mód az adatok helyreállítására. Ha úgy dönt, hogy újra elkezdi használni a Szinkronizálást, létre kell hoznia egy új fiókot, és egyenként újra hozzá kell adnia az egyes eszközöket.";
 
 /* Sync you browser settings across devices. */
-"sync.Syncdevices" = "Eszközök és beállítások";
+"sync.Syncdevices" = "Eszközök& beállítások";
 
 /* Sync remove device? */
 "sync.syncRemoveThisDeviceQuestion" = "Eltávolítja ezt az eszközt?";
@@ -3152,7 +3164,7 @@
 "sync.toDevice" = "Szinkronizálás eszközzel";
 
 /* Sync to existing device description */
-"sync.toDeviceDescription" = "A meglévő szinkronizált eszköz használatával nyissa meg a Brave beállításait, és lépjen a Beállítások -> Szinkronizálás elemre. Válassza az „Eszköz hozzáadása” lehetőséget, és olvassa be a képernyőn megjelenő kódot.";
+"sync.toDeviceDescription" = "A meglévő szinkronizált eszköz használatával nyissa meg a Brave beállításait, és kattintson a Beállítások -> Szinkronizálásra. Válassza az „Eszköz hozzáadása” lehetőséget, és olvassa be a képernyőn megjelenő kódot.";
 
 /* Description on popup when setting up a sync group fails */
 "sync.unableCreateGroup" = "Nem lehet szinkronizálni ezt az eszközt";
@@ -3473,7 +3485,7 @@
 "today.similarToSourceSubtitle" = "Hasonló ehhez: %@";
 
 /* No comment provided by engineer. */
-"today.sourcesAndSettings" = "Források és beállítások";
+"today.sourcesAndSettings" = "Források& beállítások";
 
 /* A header title shown over a list of online news sources (i.e. CNN, NYT, etc.) */
 "today.sourcesHeaderTitle" = "Források";
@@ -3546,129 +3558,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "A Brave nem tárolja és nem osztja meg hangalapú kereséseit.";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Szeretné fenntartani a védelmet? Egyszerűen újítsa meg az előfizetés lejárta előtt. A megújításért való köszönetképpen még 20% ​​kedvezményt is nyújtunk a következő 3 hónapra.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "Automatikus megújítás engedélyezése";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Újítsa meg automatikusan Brave VPN-előfizetését most, és 20% kedvezményt kap 3 hónapra!";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Újítsa meg automatikusan Brave VPN-előfizetését most, és 1 hónapos ingyenes hozzáférést kap!";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Ez azt jelenti, hogy elveszíti a Brave által nyújtott kiegészítő védelmi funkciókat a telefonján lévő összes alkalmazáshoz.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "Ajaj, Brave VPN-előfizetése hamarosan lejár.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "Nem sikerült csatlakozni az App Store-hoz, próbálkozzon újra néhány perc múlva.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "App Store-hiba";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Blokkolja a nemkívánatos hálózati kapcsolatokat";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Blokkolja a hirdetéseket és a nyomkövetőket az összes alkalmazásban ";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Akár 100 Mbps sebesség támogatása";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Gyors és 100 Mbps-ig korlátlan";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "0-24 ügyfélszolgálat";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "Minden kapcsolatot biztosít";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "Szolgáltató:";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "Automatikus";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Kérjük, jelentkezzen be Brave-fiókjába a VPN-munkamenet frissítéséhez.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "Elvetés";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "Bejelentkezés";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "A munkamenet lejárt";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "Kikapcsolva";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "Engedélyezve";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Lejárt";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "Előfizetés most";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Bizony! Brave VPN-előfizetése mostantól akár 5 eszközön is elérhető. Előfizethet rá iOS rendszeren, és ingyenesen használhatja Mac-, Windows- és Android-eszközein.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Most ugyanazon az áron használhatja a Brave VPN-t minden eszközén!";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Próbálja ki még egyszer a Brave VPN-t, és 20% kedvezményt kap 3 hónapra!";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Készen áll megvédeni a telefonon lévő összes alkalmazást? Térjen vissza a Brave VPN-hez, és 20% kedvezményt kap a következő 3 hónapra.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "A Brave VPN mindig blokkolta a nyomkövetőket minden alkalmazásban, még a Brave böngészőn kívül is. A Brave adatvédelmi központ segítségével most láthatja, hogy ki próbálta nyomon követni Önt.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Tudta, hogy a Brave VPN megvédi Önt a Brave böngészőn kívül is?";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "Frissítés";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "Ne aggódjon, a VPN néhány napig aktív marad, amíg Ön frissíti fizetési adatait.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Frissítse fizetési adatait, hogy megtarthassa a Brave VPN általi védelmet.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "Továbbra is szeretné védeni a telefonon lévő összes alkalmazást? Egyszerűen frissítse fizetési adatait.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Számlázási probléma merült fel a fiókjával kapcsolatban, ami azt jelenti, hogy Brave VPN-előfizetése hamarosan lejár.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "Fizetési adatok frissítése";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "Szerverrégió";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "Aktuális beállítás: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "VPN-régió";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Kérjük, frissítse fizetési módját";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Pénztárca létrehozási dátuma";

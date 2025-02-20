@@ -53,7 +53,7 @@
 "playlist.accessibilityStepForwards" = "Vor";
 
 /* A label read by VoiceOver accessibility technology that indicates that tapping the screen will display playback controls */
-"playlist.accessibilityTapToToggleControls" = "Tippen, um die Steuerung umzuschalten";
+"playlist.accessibilityTapToToggleControls" = "Tippe, um die Steuerung umzuschalten";
 
 /* A button title that when tapped will create a new playlist */
 "playlist.createNewPlaylistButtonTitle" = "Erstellen";
@@ -74,10 +74,16 @@
 "playlist.editPlaylist" = "Playlist bearbeiten";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylistShortTitle" = "Bearbeiten";
+"playlist.editPlaylistShortTitle" = "Editieren";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Tippe, um deine gespeicherten Audios und Videos zu durchsuchen.";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Medien durchsuchen";
 
 /* A title shown above a list of videos in your default playlist. */
-"playlist.fillNewPlaylistSubtitle" = "Tippen, um Medien auszuwählen";
+"playlist.fillNewPlaylistSubtitle" = "Tippe, um Medien auszuwählen";
 
 /* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
 "playlist.fillNewPlaylistTitle" = "Hinzufügen aus %@-Playlist";
@@ -107,10 +113,13 @@
 "playlist.newPlaylistPlaceholder" = "Meine neue Playlist";
 
 /* Shown when the user has not selected any media to play. */
-"playlist.noMediaSelectedEmptyState" = "Tippen auf Videos aus der Wiedergabeliste, um sie abzuspielen";
+"playlist.noMediaSelectedEmptyState" = "Tippe auf Videos aus der Wiedergabeliste, um sie abzuspielen";
 
 /* Shown when there is no content available to play for a given folder */
-"playlist.noMediaToPickFromEmptyState" = "Fügen Sie Medien von Ihren Lieblingsseiten hinzu, und sie werden hier abgespielt.";
+"playlist.noMediaToPickFromEmptyState" = "Füge Medien von deinen Lieblingsseiten hinzu, und sie werden hier abgespielt.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Keine Ergebnisse gefunden.";
 
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "In neuem privaten Tab öffnen";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Offline-Daten speichern";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Suchen";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Teilen";

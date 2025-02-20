@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Το Brave δεν καταγράφει ποτέ τη δραστηριότητά σας";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Συνολική προστασία εφαρμογών/συσκευής";
+"vpn.checkboxProtectYourDevices" = "Προστατέψτε κάθε εφαρμογή και όλη τη συσκευή σας";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Ασφαλέστερο για οικιακό ή δημόσιο Wi-Fi";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Ενεργοποίηση";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Όλα τα προγράμματα περιλαμβάνουν %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Όλα τα προγράμματα περιλαμβάνουν";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "δωρεάν δοκιμή 7 ημερών";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Εγκατάσταση VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Δοκιμάστε ΔΩΡΕΑΝ";
+"vpn.learnMore" = "Έναρξη δωρεάν δοκιμής 7 ημερών";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Μηνιαία ανανέωση";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld Διακομιστές";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Οι συνδρομές θα χρεώνονται μέσω του λογαριασμού σας Apple. Οποιοδήποτε αχρησιμοποίητο τμήμα της δωρεάν δοκιμής, εάν προσφέρεται, χάνεται όταν αγοράζετε μια συνδρομή.\n\nΗ συνδρομή σας θα ανανεώνεται αυτόματα, εκτός εάν ακυρωθεί τουλάχιστον 24 ώρες πριν από το τέλος της τρέχουσας περιόδου.\n\nΜπορείτε να διαχειρίζεστε τις συνδρομές σας στις Ρυθμίσεις.\n\nΧρησιμοποιώντας το Brave, συμφωνείτε με τους Όρους χρήσης και την Πολιτική απορρήτου.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "μήνα";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "έτος";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Έχει λήξει";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "Η περιοχή VPN άλλαξε.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Ανανεώνεται κάθε χρόνο";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Μηνιαία ανανέωση";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Δεν ήταν δυνατή η επαναφορά της διαμόρφωσης VPN. Δοκιμάστε ξανά. Εάν το πρόβλημα παραμένει, επικοινωνήστε με την υποστήριξη για βοήθεια.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Ανάκτηση";
 
+/* Use in context: save 16%. */
+"vpn.save" = "αποθήκευση";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ Διακομιστής";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld Διακομιστής";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Αναβαθμίστε σε ένα VPN για να προστατέψετε τη σύνδεσή σας και να αποκλείσετε παντού τους παρεμβατικούς ιχνηλάτες.";
+"vpn.settingHeaderBody" = "Προστατέψτε όλες τις εφαρμογές σας με το Brave VPN. Προστατέψτε έως και 10 συσκευές με ένα πρόγραμμα.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Επικοινωνία με την τεχνική υποστήριξη";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Πρωτόκολλο μεταφοράς";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "Προβολή απόδειξης AppStore";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Όταν είναι ενεργοποιημένο, εάν η σύνδεση VPN διακοπεί απροσδόκητα, η συσκευή σας θα αποσυνδεθεί αυτόματα από το διαδίκτυο, για να αποφευχθεί η διαρροή διεύθυνσης IP και δεδομένων. [Μάθετε περισσότερα](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Ενεργοποίηση διακόπτη άμεσου τερματισμού";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Η Έξυπνη δρομολόγηση Proxy διασφαλίζει ότι η κυκλοφορία δρομολογείται μέσω ειδικών διακομιστών μεσολάβησης για να επιτρέπει την πρόσβαση σε περιεχόμενο/ιστοτόπους ή υπηρεσίες τρίτων μερών που υπόκεινται σε κοινούς περιορισμούς. [Μάθετε περισσότερα](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Ενεργοποίηση Έξυπνης δρομολόγησης Proxy";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Ενημέρωση τρόπου πληρωμής";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Οι συνδρομές θα χρεώνονται μέσω του λογαριασμού σας iTunes.\n\nΟποιοδήποτε αχρησιμοποίητο τμήμα της δωρεάν δοκιμής, εάν προσφέρεται, χάνεται όταν αγοράζετε μια συνδρομή.\n\nΗ συνδρομή σας θα ανανεώνεται αυτόματα, εκτός εάν ακυρωθεί τουλάχιστον 24 ώρες πριν από το τέλος της τρέχουσας περιόδου.\n\nΜπορείτε να διαχειρίζεστε τις συνδρομές σας στις Ρυθμίσεις.\n\nΧρησιμοποιώντας το Brave, συμφωνείτε με τους Όρους χρήσης και την Πολιτική απορρήτου.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN Ανενεργό";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN Ενεργό";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Εξαργύρωση κωδικού";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Ανανεώστε ετησίως και εξοικονομήστε %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Η καλύτερη αξία";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "ΚΑΛΥΤΕΡΗ ΑΞΙΑ";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Ένα έτος";

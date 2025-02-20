@@ -17,10 +17,10 @@
 "confirmationTitle" = "干得好";
 
 /* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
-"dismissOnboardingButtonTitle" = "關閉";
+"dismissOnboardingButtonTitle" = "关闭";
 
 /* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
-"dismissStep2OnboardingButtonTitle" = "晚點再說";
+"dismissStep2OnboardingButtonTitle" = "可能在稍后";
 
 /* A button title that allows the user to dismiss the popup explaining the Brave Playlist feature */
 "dismissStep4OnboardingButtonTitle" = "关闭";

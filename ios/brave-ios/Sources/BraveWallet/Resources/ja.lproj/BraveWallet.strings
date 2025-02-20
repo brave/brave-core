@@ -44,7 +44,7 @@
 "wallet.activityPageTitle" = "アクティビティ";
 
 /* The title of the button which when tapped will add a new account to the users list of crypto accounts. It will be used as the title of the navigation bar item button on the top right of the add custom token scree. */
-"wallet.addAccountAddButton" = "追加する";
+"wallet.addAccountAddButton" = "追加";
 
 /* The title of the add account screen. */
 "wallet.addAccountTitle" = "アカウントを追加する";
@@ -269,13 +269,31 @@
 "wallet.btcTotalBalanceTitle" = "合計";
 
 /* As in buying cryptocurrency */
-"wallet.buy" = "購入する";
+"wallet.buy" = "購入";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Wyreを通じて暗号資産をApple Pay、クレジットカード、デビットカードで購入します。";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "許容量が承認されていません";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "キャンセルリクエストが送信されました";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "トランザクションをキャンセル中";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "トランザクションをキャンセル";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "トランザクションをキャンセル";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "新しいトランザクションが作成され、既存のトランザクションはキャンセルされます。";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "が次のアカウントに返却されました：";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "日";
@@ -335,7 +353,7 @@
 "wallet.coinTypeUnknown" = "不明";
 
 /* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
-"wallet.confirm" = "確認する";
+"wallet.confirm" = "確認";
 
 /* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: "By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you." */
 "wallet.confirmationViewAllowSpendSubtitle" = "この許可を付与することにより、このアプリがお客様の%@を引き出しトランザクションを自動化することを許可するものとします。";
@@ -366,6 +384,12 @@
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "無制限承認がリクエストされました";
+
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "アカウント";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "トランザクションがキャンセルされました！";
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "閉じる";
@@ -584,7 +608,7 @@
 "wallet.defaultTestnetAccountName" = "%1$@ Testnet アカウント %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
-"wallet.delete" = "削除する";
+"wallet.delete" = "削除";
 
 /* As in depsit some crypto coins to a specific wallet address. */
 "wallet.deposit" = "振込";
@@ -608,7 +632,7 @@
 "wallet.duplicationTokenError" = "このトークンはすでにポートフォリオに追加されています。";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
-"wallet.editButtonTitle" = "編集";
+"wallet.editButtonTitle" = "編集する";
 
 /* A pop up message that will prompt to user before user confirms to edit the existing network. */
 "wallet.editExistingNetworkAlertMsg" = "既存のネットワークを更新しますか？";
@@ -686,7 +710,7 @@
 "wallet.ensDomainInterstitialPageButtonProceed" = "Infuraサーバーを使用して続行する";
 
 /* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Braveは、Ethereum Name Service (ENS) 上にある.ethドメイン名の解決にInfuraを使用する予定です。BraveではIPアドレスが非表示になるため、これを有効にすると、Infura側で分かるのはあるユーザーがこれらの.ethドメインを訪問しようとしていることのみです。Infuraの<a href=%1$@>%2$@</a>と<a href=%3$@>%4$@</a>もご覧ください。";
+"wallet.ensDomainInterstitialPageDescription" = "Braveは、Ethereum Name Service (ENS) 上にある.ethドメイン名の解決にInfuraを使用する予定です。BraveではIPアドレスが非表示になるため、これを有効にすると、Infura側で分かるのはあるユーザーがこれらの.ethドメインを訪問しようとしていることのみです。Infuraの<a href=%1$@>%2$@</a>と <a href=%3$@>%4$@</a>もご覧ください。";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "Braveでイーサリアムネームサービス（ENS）のサポートを有効にしますか？";
@@ -917,7 +941,7 @@
 "wallet.internalErrorMessage" = "内部エラーが発生しました";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
-"wallet.learnMoreButton" = "詳しく";
+"wallet.learnMoreButton" = "詳しく知る";
 
 /* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
 "wallet.legalDescription" = "以下の事項をご確認ください";
@@ -953,7 +977,7 @@
 "wallet.manageSiteConnectionsConfirmAlertMessage" = "この操作により、すべてのウェブサイトですべてのWalletの接続許可が削除されます。";
 
 /* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertRemove" = "削除";
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "削除する";
 
 /* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
 "wallet.manageSiteConnectionsConfirmAlertTitle" = "すべての許可を削除しますか？";
@@ -1061,7 +1085,7 @@
 "wallet.nftDetailProperties" = "プロパティ";
 
 /* The title of the button inside NFT detail screen, which user can click to start sending this NFT. */
-"wallet.nftDetailSendNFTButtonTitle" = "送信する";
+"wallet.nftDetailSendNFTButtonTitle" = "送信";
 
 /* This is one type of NFT standard. And most likey this does not need to be translated */
 "wallet.nftDetailSPL" = "SPL";
@@ -1079,7 +1103,7 @@
 "wallet.nftDiscoveryCalloutDescription" = "Braveウォレットは、サードパーティーのサービスを利用してお客様のNFTを自動的に表示します。Braveはこのサービスを提供するために、お客様のウォレットアドレスをSimpleHashと共有します。詳細はこちらをご覧ください。";
 
 /* This is the same `Learn more` at the end of `nftDiscoveryCalloutDescription`, but we need a separat translation to detect the range of it in order to build some attributed strings. */
-"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "詳細はこちら";
+"wallet.nftDiscoveryCalloutDescriptionLearnMore" = "以下について詳しく";
 
 /* The title of the button that user clicks to disable NFT discovery. */
 "wallet.nftDiscoveryCalloutDisable" = "いいえ、手動で設定します";
@@ -1161,6 +1185,9 @@
 
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "準備完了です！";
+
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "元のトランザクションを確認しました。";
 
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "その他のウォレット操作";
@@ -1259,7 +1286,7 @@
 "wallet.removeCustomTokenErrorTitle" = "カスタムトークンを削除できません。";
 
 /* A button on an account screen which when pressed presents a new screen to  rename the account */
-"wallet.renameButtonTitle" = "名前を変える";
+"wallet.renameButtonTitle" = "名前を変更";
 
 /* A label will be displayed when the repeat password field input is matched with the password field. */
 "wallet.repeatedPasswordMatch" = "一致！";
@@ -1313,7 +1340,7 @@
 "wallet.sardineProviderShortName" = "Sardine";
 
 /* A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network */
-"wallet.saveButtonTitle" = "保存する";
+"wallet.saveButtonTitle" = "保存";
 
 /* The title of the label of the button to save all changes. Used in Portfolio/NFT filters and display settings. */
 "wallet.saveChangesButtonTitle" = "変更を保存";
@@ -1373,22 +1400,22 @@
 "wallet.selectTokenToSendTitle" = "送信するトークンを選択";
 
 /* As in sending cryptocurrency to another account */
-"wallet.send" = "送信する";
+"wallet.send" = "送信";
 
 /* A title above the amount of asset you want to send. '%@' will be replaced with a token symbol such as 'ETH' or 'BAT' */
 "wallet.sendCryptoAmountTitle" = "送信する %@ の量を入力";
 
 /* A title above the cryptocurrency token/asset you are sending from. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.sendCryptoFromTitle" = "スワップ元";
+"wallet.sendCryptoFromTitle" = "送信元";
 
 /* The title of the button for users to click when they want to send the sending-transaction */
-"wallet.sendCryptoSendButtonTitle" = "送信する";
+"wallet.sendCryptoSendButtonTitle" = "送信";
 
 /* The error message will appear when there is any error occurs during unpproved transaction */
 "wallet.sendCryptoSendError" = "現在あなたのトランザクションを実行することができません。";
 
 /* A title above the address you want to send to. For example this would appear over a cell that has the 'OxFCdf***DDee' with a clipboard icon and a qr-code icon on the right hand side */
-"wallet.sendCryptoToTitle" = "スワップ先";
+"wallet.sendCryptoToTitle" = "送信先";
 
 /* The description of a send button on the buy/send/swap/deposit modal */
 "wallet.sendDescription" = "暗号資産をあるアカウントから別のアカウントに送信もしくは移動します。";
@@ -1448,7 +1475,7 @@
 "wallet.settingsResetButtonTitle" = "ウォレットのデータをリセット＆クリア";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionAlertButtonTitle" = "リセット";
+"wallet.settingsResetTransactionAlertButtonTitle" = "リセットする";
 
 /* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertMessage" = "このオプションは、主にローカルでテストサーバーを運用している開発者に向けたものです。";
@@ -1756,6 +1783,12 @@
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "アセットを並べ替え";
 
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "想定より時間を要しているようです。";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Speed Up";
+
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Speed Up";
 
@@ -1772,7 +1805,7 @@
 "wallet.submittedTransactionTitle" = "トランザクション送信済み";
 
 /* As in swapping cryptocurrency from one asset to another */
-"wallet.swap" = "スワップ";
+"wallet.swap" = "スワップする";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
 "wallet.swapConfirmationNetworkDesc" = "on %@";
@@ -1796,7 +1829,7 @@
 "wallet.swapCryptoAmountTitle" = "スワップする %@ の量を入力してください";
 
 /* A title above the cryptocurrency token/asset you are swapping from. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.swapCryptoFromTitle" = "スワップ元";
+"wallet.swapCryptoFromTitle" = "送信元";
 
 /* The title of the field for display the market price of the crypto that user chooses to swap from. The title lives above the price label. '%@' will be replaced with the symbol of the crypto that users choose to swap from as 'ETH' or 'BAT' */
 "wallet.swapCryptoMarketPriceTitle" = "%@ の市場価格";
@@ -1805,10 +1838,10 @@
 "wallet.swapCryptoSlippageTitle" = "価格変動許容値";
 
 /* The title of the button for users to click when they want to swap between two cryptos */
-"wallet.swapCryptoSwapButtonTitle" = "スワップ";
+"wallet.swapCryptoSwapButtonTitle" = "スワップする";
 
 /* A title above the cryptocurrency token/asset you are swapping to. For example this would appear over a cell that has the 'BAT' token selected */
-"wallet.swapCryptoToTitle" = "スワップ先";
+"wallet.swapCryptoToTitle" = "送信先";
 
 /* The description of where user will see once a test network has been picked in swap screen. '%@' will be replaced with a network such as 'Rinkeby Test Network' or 'Ropsten Test Network' */
 "wallet.swapCryptoUnsupportNetworkBody" = "Braveは現在、 %@ でのスワップをサポートしておりません。サポートされているチェーンに切り替えてください。";
@@ -1850,7 +1883,7 @@
 "wallet.switchNetworkTitle" = "ネットワークを変更";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
-"wallet.today" = "（本日）";
+"wallet.today" = "今日";
 
 /* A title that will be displayed on top of the text field for users to input the custom token address */
 "wallet.tokenAddress" = "トークンアドレス";
@@ -1901,7 +1934,7 @@
 "wallet.transactionDetailsNetworkTitle" = "ネットワーク";
 
 /* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
-"wallet.transactionDetailsStatusTitle" = "ステータス";
+"wallet.transactionDetailsStatusTitle" = "稼働状況";
 
 /* The title for the view displaying the details of a cryptocurrency transaction. */
 "wallet.transactionDetailsTitle" = "トランザクション詳細";
@@ -2018,10 +2051,62 @@
 "wallet.txFunctionTypeSplWithAssociatedTokenAccountCreation" = "トークンアカウントの作成に伴うSPLトークンの移転";
 
 /* Blockchain function name for swap. */
-"wallet.txFunctionTypeSwap" = "スワップ";
+"wallet.txFunctionTypeSwap" = "スワップする";
 
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "トークン譲渡";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "承認中";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "完了";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "が承認されました：";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "承認中にエラーが発生しました";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "承認できません";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "on";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "送信中";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "送信中にエラーが発生しました";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "送信できません";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "がアカウントに送信されました";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "トランザクションが署名されました。DAppによってネットワークに送信予定で、確認待ちの状態です。";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "この画面を閉じてもシステムには影響しません";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "が追加されました：";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "スワッピング";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "スワップできません";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "送信先";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "アクティビティを表示";
 
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Braveは、Unstoppable Domainsに登録されている.crypto (および%1$@) ドメイン名の解決にInfuraを使用する予定です。BraveではIPアドレスが非表示になるため、これを有効にすると、Infura側で分かるのはあるユーザーがこれらのドメインを訪問しようとしていることのみです。Infuraの<a href=%2$@>%3$@</a>と<a href=%4$@>%5$@</a>もご覧ください。";
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Unstoppable Domainsのドメイン名を解決";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "キャンセルできません";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "スピードアップできません";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "不明なエラー";
@@ -2048,7 +2139,7 @@
 "wallet.unlockWalletDescription" = "パスワードを入力してウォレットのロックを解除";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
-"wallet.userAssetSymbolNetwork" = "%2$@の%1$@";
+"wallet.userAssetSymbolNetwork" = "%2$@ の %1$@";
 
 /* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
 "wallet.valueLabel" = "値";
@@ -2102,7 +2193,7 @@
 "wallet.walletTypeNone" = "なし";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
-"wallet.warningAlertConfirmation" = "本当によろしいですか？";
+"wallet.warningAlertConfirmation" = "よろしいですか？";
 
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";

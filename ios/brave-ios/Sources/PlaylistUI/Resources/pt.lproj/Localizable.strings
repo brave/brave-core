@@ -11,7 +11,7 @@
 "playlist.accessibilityEnterPictureInPicture" = "Insira imagem em imagem";
 
 /* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
-"playlist.accessibilityExitFullscreen" = "Sair da Tela inteira";
+"playlist.accessibilityExitFullscreen" = "Sair da Tela Cheia";
 
 /* A label shown on an item when the item is ready for offline play */
 "playlist.accessibilityItemDownloadStatusReady" = "Item pronto";
@@ -71,10 +71,16 @@
 "playlist.doneButtonTitle" = "Concluído";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylist" = "Editar lista de reprodução";
+"playlist.editPlaylist" = "Editar playlist";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Editar";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Comece a digitar para pesquisar seus vídeos e áudios salvos";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Pesquisar Mídia";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Toque para selecionar mídia";
@@ -92,7 +98,7 @@
 "playlist.itemDownloadStatusPreparing" = "Preparando";
 
 /* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
-"playlist.liveIndicator" = "Em tempo real";
+"playlist.liveIndicator" = "Ao vivo";
 
 /* A button title that when tapped will allow the user to move the selected item to another playlist. */
 "playlist.moveItem" = "Mover";
@@ -111,6 +117,9 @@
 
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Adicione mídia dos seus sites favoritos e ela será reproduzida aqui.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Nenhum resultado foi encontrado";
 
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Abrir em nova aba privada";
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Salvar dados off-line";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Pesquisa";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Compartilhar";

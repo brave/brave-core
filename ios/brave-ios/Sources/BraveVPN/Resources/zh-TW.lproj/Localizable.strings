@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Brave 絕不會記錄您的活動";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "保護所有應用程式和整個裝置";
+"vpn.checkboxProtectYourDevices" = "保護所有應用程式和整部裝置";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "家用和公共 Wi-Fi 更安全";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "啟用";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "所有方案都包含 %@！";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "所有方案均包含";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "免費的 7 天試用期";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "安裝 VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "免費試用";
+"vpn.learnMore" = "開始 7 天免費試用";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "每月自動續約";
@@ -148,8 +148,17 @@
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld 部伺服器";
 
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "我們會透過您的 Google 帳戶收取訂閱費用。如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n若未在當前約期結束前至少 24 小時內取消訂閱，系統會自動為您續訂。\n\n您可以前往「設定」管理訂閱方案。\n\n使用 Brave 即表示您同意《使用條款》及《隱私權政策》。";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "月";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "年";
+
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "過期";
+"vpn.planExpired" = "已到期";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "請選擇您喜歡的傳輸通訊協定。切換後，您現有的 VPN 憑證將被清除，如果目前已建立 VPN 連線，您將會重新連線。";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "VPN 區域已完成變更。";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "每年續訂";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "每月自動續約";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "無法重設 VPN 設定，請再試一次。如果問題仍未解決，請聯絡支援團隊尋求協助。";
 
@@ -197,7 +212,10 @@
 "vpn.resetVPNSuccessTitle" = "重設成功";
 
 /* No comment provided by engineer. */
-"vpn.restorePurchases" = "還原";
+"vpn.restorePurchases" = "恢復";
+
+/* Use in context: save 16%. */
+"vpn.save" = "儲存";
 
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ 伺服器";
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld 部伺服器";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "升級為 VPN 以保護您的連線，並封鎖無所不在的追蹤程式，捍衛個人隱私。";
+"vpn.settingHeaderBody" = "使用 Brave VPN 保護每個應用程式。單一計畫可保護多達 10 部裝置。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "與技術支援人員聯絡";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "傳輸通訊協定";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "查看 App Store 收据";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "啟用後，如果您的 VPN 連線意外中斷，您的裝置會自動斷線，以防止 IP 位址和資料洩漏。[瞭解更多](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "啟用 Kill Switch";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Smart Proxy Routing 可確保流量經由專用代理伺服器路由，以允許存取一般受限制的內容/網站或第三方服務。[瞭解更多](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "啟用智慧型代理伺服器";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "更新付款方式";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "我們會透過你的 iTunes 帳戶收取訂閱費用。\n\n如果您在免費試用期結束前便選擇訂閱，剩餘的試用效期即告失效。\n\n只要未在目前約期結束前 24 小時取消訂閱，系統就會自動為您續約。\n\n您可以前往「設定」管理訂閱事宜。\n\n使用 Brave 即表示您同意使用條款及隱私權政策。";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "關閉 VPN";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "開啟 VPN";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "兌換代碼";
 
@@ -322,9 +358,9 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "每年自動續約，立即省下 %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "最超值";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "最佳價值";
 
 /* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "1 年";
+"vpn.yearlySubTitle" = "一年";
 

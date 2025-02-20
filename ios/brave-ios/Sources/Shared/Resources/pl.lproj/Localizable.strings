@@ -47,7 +47,7 @@
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
 
 /* The button to open a new tab with the Downloads home panel */
-"DownloadsButtonTitle" = "Pobrania";
+"DownloadsButtonTitle" = "Pobierane";
 
 /* Question shown to user when tapping a link that opens the App Store app */
 "ExternalLinkAppStoreConfirmationTitle" = "Czy otworzyć to łącze w aplikacji App Store?";
@@ -77,7 +77,7 @@
 "ReaderModeResetFontSizeAccessibilityLabel" = "Zresetuj rozmiar tekstu";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "Zapisać hasło do %@?";
+"SaveLoginPrompt" = "Czy zapisać hasło na %@?";
 
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "Zapisać login %1$@ do %2$@?";
@@ -96,6 +96,12 @@
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Skanuj kod QR";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Dziękujemy za wsparcie Brave Search poprzez kliknięcie prywatnej reklamy. W przeciwieństwie do Big Techu mierzymy skuteczność reklam anonimowo, aby zachować twoją prywatność.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Dowiedz się więcej / zrezygnuj z opcji";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Ogólne";
@@ -125,8 +131,8 @@
 "UnableToOpenURLErrorTitle" = "Nie można otworzyć strony";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginPrompt" = "Zaktualizować login %1$@ do %2$@?";
+"UpdateLoginPrompt" = "Czy zaktualizować login %1$@ na %2$@?";
 
 /* Prompt for updating a login. The first parameter is the username for which the password will be updated for. The second parameter is the hostname of the site. */
-"UpdateLoginUsernamePrompt" = "Zaktualizować login %1$@ do %2$@?";
+"UpdateLoginUsernamePrompt" = "Czy zaktualizować login %1$@ na %2$@?";
 

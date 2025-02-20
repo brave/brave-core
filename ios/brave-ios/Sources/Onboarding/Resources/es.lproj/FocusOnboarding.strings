@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Establecer Brave como navegador predeterminado";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Navegue más rápido y use menos datos.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Menos anuncios y rastreadores.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Ahora No";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "No hemos dejado ni uno. De verdad.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Bloquea interrupciones molestas en tus sitios favoritos de trasmisión.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Se acabaron los videoanuncios.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Bloquea las interrupciones mientras transmitas";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Obtenga más información sobre nuestras estadísticas de productos que preservan la privacidad (P3A)";
@@ -35,16 +29,16 @@
 "focusOnboarding.p3aToggleDescription" = "Puede cambiar este ajuste en cualquier momento en el menú de ajustes de Brave, concretamente en el apartado \"Escudos y privacidad de Brave\".";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Comparta totalmente anónimas y privadas sobre los productos.";
+"focusOnboarding.p3aToggleTitle" = "Comparta totalmente anónimas & privadas sobre los productos.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Empezar a navegar";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Ir al menú de ajustes del sistema";
+"focusOnboarding.systemSettingsButtonTitle" = "Establecer como predeterminado";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Introduzca una URL para disfrutar de menos anuncios y rastreadores";
+"focusOnboarding.urlBarIndicatorDescription" = "Empieza a transmitir y disfruta de menos anuncios y rastreadores.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Descubra cómo Brave marca la diferencia";

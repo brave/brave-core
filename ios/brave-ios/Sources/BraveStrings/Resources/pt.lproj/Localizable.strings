@@ -17,7 +17,7 @@
 "NewPrivateTabTitle" = "Nova guia privada";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"NewTabTitle" = "Nova guia";
+"NewTabTitle" = "Nova aba";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenNewTabFromTabTrayKeyCodeTitle" = "Abrir nova aba";
@@ -26,7 +26,13 @@
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Abrir aba selecionada";
 
 /* Title label text for refreshing credentials from brave site. */
-"paywall.alreadyPurchasedTitle" = "Já comprou em Brave.com?";
+"paywall.alreadyPurchasedTitle" = "Já comprou em brave.com?";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Você tem um código promocional?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Resgatar código promocional";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Atualize suas credenciais";
@@ -62,7 +68,7 @@
 "ShowTabTrayFromTabKeyCodeTitle" = "Mostrar todas as abas";
 
 /* The title of the label that shows the Application Version */
-"storekitReceiptViewer.applicationVersionTitle" = "Versão de aplicação";
+"storekitReceiptViewer.applicationVersionTitle" = "Versão do aplicativo";
 
 /* The title of the product subscription the user purchased (Monthly subscription) */
 "storekitReceiptViewer.leoMonthlySubscriptionName" = "Brave Leo Mensal";
@@ -71,25 +77,25 @@
 "storekitReceiptViewer.leoYearlySubscriptionName" = "Brave Leo Anual";
 
 /* The error message when the App Store Receipt was not found in the Application Bundle */
-"storekitReceiptViewer.noReceiptFoundTitle" = "Lamentamos, mas não foram encontrados recibos da App Store";
+"storekitReceiptViewer.noReceiptFoundTitle" = "Desculpe, não foram encontrados recibos da App Store";
 
 /* The title of the label that shows the date when the product subscription was cancelled */
 "storekitReceiptViewer.receiptCancellationDate" = "Data de cancelamento";
 
 /* The title of the label that shows the date the receipt was created */
-"storekitReceiptViewer.receiptDateTitle" = "Data de receção";
+"storekitReceiptViewer.receiptDateTitle" = "Data do recibo";
 
 /* The title of the label that shows the date when the product subscription expired */
-"storekitReceiptViewer.receiptExpirationDate" = "Data de expiração";
+"storekitReceiptViewer.receiptExpirationDate" = "Data de validade";
 
 /* The title of the label that shows any invalid date - Not Available or N/A for short is displayed */
 "storekitReceiptViewer.receiptInvalidDate" = "N/D";
 
 /* The error message when the App Store Receipt was found in the Application Bundle, but could not be loaded */
-"storekitReceiptViewer.receiptLoadingErrorTitle" = "Lamentamos, mas não foi possível carregar o recibo da App Store";
+"storekitReceiptViewer.receiptLoadingErrorTitle" = "Desculpe, o recibo da App Store não pôde ser carregado";
 
 /* The title of the label that shows the Order ID of the user's purchase */
-"storekitReceiptViewer.receiptOrderIDTitle" = "ID da encomenda";
+"storekitReceiptViewer.receiptOrderIDTitle" = "ID do pedido";
 
 /* The title of the label that shows the date when the product subscription was first purchased */
 "storekitReceiptViewer.receiptOriginalPurchaseDateTitle" = "Data de compra original";
@@ -101,19 +107,19 @@
 "storekitReceiptViewer.receiptTransactionIDTitle" = "ID da transação";
 
 /* The title of the label that shows when the Receipt Viewer is still loading resources and subscription information */
-"storekitReceiptViewer.receiptViewerLoadingTitle" = "Carregando Aguarde por favor...";
+"storekitReceiptViewer.receiptViewerLoadingTitle" = "Carregando, por favor aguarde...";
 
 /* The title of the screen that shows the App Store Receipt */
 "storekitReceiptViewer.receiptViewerTitle" = "Recibo da App Store";
 
 /* The title of the button that shows a system action sheet, to share the receipt */
-"storekitReceiptViewer.shareReceiptTitle" = "Recibo de acções";
+"storekitReceiptViewer.shareReceiptTitle" = "Compartilhar recibo";
 
 /* The title of the product subscription the user purchased (Monthly subscription) */
-"storekitReceiptViewer.vpnMonthlySubscriptionName" = "Brave VPN Mensal";
+"storekitReceiptViewer.vpnMonthlySubscriptionName" = "VPN Brave Mensal";
 
 /* The title of the product subscription the user purchased (Yearly subscription) */
-"storekitReceiptViewer.vpnYearlySubscriptionName" = "Brave VPN Anual";
+"storekitReceiptViewer.vpnYearlySubscriptionName" = "VPN Brave Anual";
 
 /* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "SwitchToNonPBMKeyCodeTitle" = "Modo de navegação normal";
