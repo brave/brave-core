@@ -12,28 +12,28 @@ cargo_crate("lib") {
   crate_name = "tracing_core"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/callsite.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/dispatcher.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/event.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/field.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/lazy.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/metadata.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/parent.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/span.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/spin/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/spin/mutex.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/spin/once.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/stdlib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.32/src/subscriber.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/callsite.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/dispatcher.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/event.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/lazy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/metadata.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/parent.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/span.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/spin/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/spin/mutex.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/spin/once.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/stdlib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-core-0.1.33/src/subscriber.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.32"
+  cargo_pkg_version = "0.1.33"
   cargo_pkg_authors = "Tokio Contributors <team@tokio.rs>"
   cargo_pkg_name = "tracing-core"
   cargo_pkg_description = "Core primitives for application-level tracing."
@@ -47,7 +47,6 @@ cargo_crate("lib") {
   features = [
     "once_cell",
     "std",
-    "valuable",
   ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates

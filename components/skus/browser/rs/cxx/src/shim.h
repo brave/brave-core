@@ -6,12 +6,9 @@
 #ifndef BRAVE_COMPONENTS_SKUS_BROWSER_RS_CXX_SRC_SHIM_H_
 #define BRAVE_COMPONENTS_SKUS_BROWSER_RS_CXX_SRC_SHIM_H_
 
-#include <functional>
 #include <memory>
 #include <string>
 
-#include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
@@ -78,11 +75,6 @@ class SkusContext {
                                 bool success)> done,
       rust::cxxbridge1::Box<skus::StorageSetContext> st_ctx) const = 0;
 };
-
-void shim_logMessage(rust::cxxbridge1::Str file,
-                     uint32_t line,
-                     TracingLevel level,
-                     rust::cxxbridge1::Str message);
 
 void shim_purge(
     skus::SkusContext& ctx,  // NOLINT

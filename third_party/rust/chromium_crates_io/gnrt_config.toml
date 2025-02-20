@@ -112,9 +112,6 @@ license_files = ['LICENSE']
 [crate.adss]
 license_files = ['LICENSE']
 
-[crate.ansi_term]
-license_files = ['LICENCE']
-
 [crate.arrayref]
 license_files = ['LICENSE']
 

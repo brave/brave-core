@@ -34,8 +34,6 @@ git-version = { version = "0.3.5", optional = true }
 [dev-dependencies]
 isahc = "1.7"
 async-std = "1.5.0"
-# RUSTSEC-2021-0139 - ansi_term is Unmaintained
-tracing-subscriber = { version = "0.2.0", default-features = false, features = ["env-filter", "fmt", "json"] }
 
 [features]
 default = []
