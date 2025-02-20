@@ -316,6 +316,7 @@ action("package") {
     rebase_path(root_build_dir, root_build_dir),
     "--output",
     rebase_path(packaging_out_dir, root_build_dir),
+
     # sign_chrome.py requires --identity even when signing is skipped.
     "--identity=$mac_signing_identifier",
     "--installer-identity=$installer_identity",
