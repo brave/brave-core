@@ -1,11 +1,11 @@
 diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
-index 625b5d0d6d6793c59c3d553a2d16d18f8cf31cf9..261220771deb08b78a0ee018b555d838c98bf45f 100644
+index bda35189adfe6bc437c5ebf0a47ea36388312a32..e43e5db43bb5b08409523b6cf9664b0e7e50d41d 100644
 --- a/components/history/core/browser/BUILD.gn
 +++ b/components/history/core/browser/BUILD.gn
-@@ -143,6 +143,7 @@ static_library("browser") {
-       "android/android_urls_database.h",
-     ]
-   }
+@@ -134,6 +134,7 @@ static_library("browser") {
+     "//ui/gfx",
+     "//url",
+   ]
 +  import("//brave/components/history/core/browser/sources.gni") sources += brave_components_history_core_browser_sources deps += brave_components_history_core_browser_deps
  }
  
