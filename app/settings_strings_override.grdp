@@ -174,8 +174,4 @@
     </if>
   <if expr="is_chromeos">
     </if>
-  <if expr="is_macosx">
-    </if>
-  <if expr="not is_macosx">
-    </if>
   </grit-part>
