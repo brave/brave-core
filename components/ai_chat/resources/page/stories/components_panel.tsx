@@ -31,6 +31,7 @@ import ErrorRateLimit from '../components/alerts/error_rate_limit'
 import ErrorServiceOverloaded from '../components/alerts/error_service_overloaded'
 import LongConversationInfo from '../components/alerts/long_conversation_info'
 import WarningPremiumDisconnected from '../components/alerts/warning_premium_disconnected'
+import Attachments from '../components/attachments'
 
 const eventTemplate: Mojom.ConversationEntryEvent = {
   completionEvent: undefined,
@@ -425,6 +426,8 @@ type CustomArgs = {
   shouldShowLongPageWarning: boolean
   shouldShowRefinedWarning: boolean
   isGenerating: boolean
+  showAttachments: boolean
+  isNewConversation: boolean
 }
 
 const args: CustomArgs = {
@@ -455,6 +458,8 @@ const args: CustomArgs = {
   shouldShowLongPageWarning: false,
   shouldShowRefinedWarning: false,
   isGenerating: false,
+  showAttachments: true,
+  isNewConversation: false,
 }
 
 const meta: Meta<CustomArgs> = {
@@ -490,7 +495,7 @@ const meta: Meta<CustomArgs> = {
       const [, setArgs] = useArgs()
       return (
         <StoryContext args={options.args} setArgs={setArgs}>
-          <Story/>
+          <Story />
         </StoryContext>
       )
     }
@@ -549,14 +554,34 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isHistoryFeatureEnabled: options.args.isHistoryEnabled,
     isStandalone: options.args.isStandalone,
     allActions: ACTIONS_LIST,
-    tabs: [],
-    goPremium: () => {},
-    managePremium: () => {},
-    handleAgreeClick: () => {},
-    enableStoragePref: () => {},
-    dismissStorageNotice: () => {},
-    dismissPremiumPrompt: () => {},
-    userRefreshPremiumSession: () => {},
+    tabs: [{
+      id: 1,
+      contentId: 1,
+      url: { url: 'https://www.example.com' },
+      title: 'Example',
+    }, {
+      id: 2,
+      contentId: 2,
+      url: { url: 'https://topos.nz' },
+      title: 'NZ Topo',
+    }, {
+      id: 3,
+      contentId: 3,
+      url: { url: 'https://brave.com' },
+      title: 'Brave',
+    }, {
+      id: 4,
+      contentId: 4,
+      url: { url: 'https://search.brave.com' },
+      title: 'Brave Search',
+    }],
+    goPremium: () => { },
+    managePremium: () => { },
+    handleAgreeClick: () => { },
+    enableStoragePref: () => { },
+    dismissStorageNotice: () => { },
+    dismissPremiumPrompt: () => { },
+    userRefreshPremiumSession: () => { },
     setEditingConversationId: (id: string | null) => setArgs({ editingConversationId: id }),
     setDeletingConversationId: (id: string | null) => setArgs({ deletingConversationId: id }),
     showSidebar: showSidebar,
@@ -565,10 +590,10 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
 
   const activeChatContext: SelectedChatDetails = {
     selectedConversationId: CONVERSATIONS[0].uuid,
-    updateSelectedConversationId: () => {},
+    updateSelectedConversationId: () => { },
     callbackRouter: undefined!,
     conversationHandler: undefined!,
-    createNewConversation: () => {},
+    createNewConversation: () => { },
     isTabAssociated: options.args.isDefaultConversation
   }
 
@@ -576,7 +601,9 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
 
   const conversationContext: ConversationContext = {
     historyInitialized: true,
-    conversationUuid: CONVERSATIONS[1].uuid,
+    conversationUuid: options.args.isNewConversation
+      ? 'new-conversation'
+      : CONVERSATIONS[1].uuid,
     conversationHistory: options.args.hasConversation ? HISTORY : [],
     associatedContentInfo: associatedContent,
     allModels: MODELS,
@@ -600,22 +627,22 @@ function StoryContext(props: React.PropsWithChildren<{ args: CustomArgs, setArgs
     isCharLimitExceeded: inputText.length > 70,
     inputTextCharCountDisplay: `${inputText.length} / 70`,
     setInputText,
-    setCurrentModel: () => {},
+    setCurrentModel: () => { },
     switchToBasicModel,
-    generateSuggestedQuestions: () => {},
-    dismissLongConversationInfo: () => {},
-    updateShouldSendPageContents: () => {},
-    retryAPIRequest: () => {},
-    handleResetError: () => {},
-    handleStopGenerating: async () => {},
-    submitInputTextToAPI: () => {},
-    resetSelectedActionType: () => {},
-    handleActionTypeClick: () => {},
-    setIsToolsMenuOpen: () => {},
-    handleFeedbackFormCancel: () => {},
-    handleFeedbackFormSubmit: () => {},
-    setShowAttachments: () => {},
-    showAttachments: false,
+    generateSuggestedQuestions: () => { },
+    dismissLongConversationInfo: () => { },
+    updateShouldSendPageContents: () => { },
+    retryAPIRequest: () => { },
+    handleResetError: () => { },
+    handleStopGenerating: async () => { },
+    submitInputTextToAPI: () => { },
+    resetSelectedActionType: () => { },
+    handleActionTypeClick: () => { },
+    setIsToolsMenuOpen: () => { },
+    handleFeedbackFormCancel: () => { },
+    handleFeedbackFormSubmit: () => { },
+    setShowAttachments: (show: boolean) => setArgs({ showAttachments: show }),
+    showAttachments: options.args.showAttachments,
   }
 
   const conversationEntriesContext: UntrustedConversationContext = {
@@ -693,6 +720,34 @@ export const _FullPage = {
     return (
       <div className={styles.containerFull}>
         <FullPage />
+      </div>
+    )
+  }
+}
+
+export const _NewFullpageConversation = {
+  args: {
+    isNewConversation: true,
+    isStandalone: true,
+    conversationUuid: undefined,
+    hasConversation: false,
+    hasSiteInfo: false,
+  },
+  render: () => {
+    return <div className={styles.container}>
+      <FullPage />
+    </div>
+  }
+}
+export const _AttachmentsPanel = {
+  args: {
+    isStandalone: true,
+    isDefaultConversation: false
+  },
+  render: () => {
+    return (
+      <div className={styles.container}>
+        <Attachments />
       </div>
     )
   }
