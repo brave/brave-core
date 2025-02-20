@@ -53,10 +53,6 @@ struct DataImporterStateView: View {
             Text(String(format: kind.subtitle, results.displayedEntries.count))
               .font(.footnote)
               .foregroundStyle(Color(braveSystemName: .textSecondary))
-          } else {
-            Text(String(format: kind.subtitle, 0))
-              .font(.footnote)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
           }
         }
         .multilineTextAlignment(.center)
