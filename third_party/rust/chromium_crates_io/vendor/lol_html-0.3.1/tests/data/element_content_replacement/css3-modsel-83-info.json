@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - Negation pseudo-class can be an argument of itself (css3-modsel-83)",
-  "selectors": {
-    "p": "css3-modsel-83.expected0.html"
-  },
-  "src": "css3-modsel-83.src.html"
-}

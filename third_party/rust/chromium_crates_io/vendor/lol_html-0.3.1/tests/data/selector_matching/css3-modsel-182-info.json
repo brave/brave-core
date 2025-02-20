@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Namespaces and \\: in selectors (css3-modsel-182)",
-  "selectors": {
-    "p": "css3-modsel-182.expected0.html",
-    "foo\\:bar": "css3-modsel-182.expected1.html"
-  },
-  "src": "css3-modsel-182.src.html"
-}

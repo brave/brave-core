@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Attribute existence selector without declared namespace (css3-modsel-111b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-111b.expected0.html",
-    "*|p, *|r": "css3-modsel-111b.expected1.html",
-    "*|*[|title]": "css3-modsel-111b.expected2.html"
-  },
-  "src": "css3-modsel-111b.src.html"
-}

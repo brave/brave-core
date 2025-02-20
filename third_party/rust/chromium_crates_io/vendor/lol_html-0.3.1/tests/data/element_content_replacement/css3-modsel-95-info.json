@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Universal selector with universal namespace (css3-modsel-95)",
-  "selectors": {
-    "div.test *": "css3-modsel-95.expected0.html",
-    "div.test *|*": "css3-modsel-95.expected1.html"
-  },
-  "src": "css3-modsel-95.src.html"
-}

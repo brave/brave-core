@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Simple combination of direct and indirect adjacent combinators (css3-modsel-90)",
-  "selectors": {
-    "p": "css3-modsel-90.expected0.html",
-    "blockquote ~ div + p": "css3-modsel-90.expected1.html"
-  },
-  "src": "css3-modsel-90.src.html"
-}

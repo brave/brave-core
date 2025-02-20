@@ -77,21 +77,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "ahash"
-version = "0.7.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "getrandom 0.2.15",
- "once_cell",
- "version_check",
-]
-
-[[package]]
 name = "aho-corasick"
 version = "1.1.3"
 dependencies = [
  "memchr",
 ]
+
+[[package]]
+name = "allocator-api2"
+version = "0.2.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "android-tzdata"
@@ -1100,14 +1095,16 @@ dependencies = [
 name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "ahash",
-]
 
 [[package]]
 name = "hashbrown"
 version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "allocator-api2",
+ "equivalent",
+ "foldhash",
+]
 
 [[package]]
 name = "hex"
@@ -1426,18 +1423,18 @@ version = "0.4.25"
 
 [[package]]
 name = "lol_html"
-version = "0.3.1"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags 2.8.0",
  "cfg-if",
  "cssparser 0.27.2",
  "encoding_rs",
- "hashbrown 0.12.3",
+ "hashbrown 0.15.1",
  "lazy_static",
  "lazycell",
  "memchr",
- "safemem",
+ "mime",
  "selectors 0.22.0",
  "thiserror",
 ]
@@ -1964,7 +1961,7 @@ dependencies = [
 name = "readability"
 version = "0.1.4"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags 2.8.0",
  "html5ever",
  "kuchikiki",
  "lazy_static",
@@ -2057,11 +2054,6 @@ version = "1.0.19"
 [[package]]
 name = "ryu"
 version = "1.0.18"
-
-[[package]]
-name = "safemem"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "scopeguard"

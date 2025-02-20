@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - Attribute selectors with multiple attributes (css3-modsel-174a)",
-  "selectors": {
-    "tests, tests *": "css3-modsel-174a.expected0.html",
-    "testA[*|attribute=\"pass\"]": "css3-modsel-174a.expected1.html",
-    "testB[*|attribute=\"pass\"]": "css3-modsel-174a.expected2.html"
-  },
-  "src": "css3-modsel-174a.src.html"
-}

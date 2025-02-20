@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Indirect adjacent combinator (css3-modsel-46)",
-  "selectors": {
-    ".red": "css3-modsel-46.expected0.html",
-    "div.stub > p ~ p": "css3-modsel-46.expected1.html"
-  },
-  "src": "css3-modsel-46.src.html"
-}

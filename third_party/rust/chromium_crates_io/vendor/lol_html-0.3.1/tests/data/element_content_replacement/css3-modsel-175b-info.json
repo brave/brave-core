@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Parsing: Numbers in classes (css3-modsel-175b)",
-  "selectors": {
-    "p": "css3-modsel-175b.expected0.html",
-    ".\\13": "css3-modsel-175b.expected1.html"
-  },
-  "src": "css3-modsel-175b.src.html"
-}

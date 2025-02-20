@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED :root pseudo-class (css3-modsel-72)",
-  "selectors": {
-    "p:not(:root)": "css3-modsel-72.expected0.html",
-    "div *": "css3-modsel-72.expected1.html"
-  },
-  "src": "css3-modsel-72.src.html"
-}

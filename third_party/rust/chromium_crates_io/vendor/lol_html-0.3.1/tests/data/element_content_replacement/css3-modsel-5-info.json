@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Attribute existence selector (css3-modsel-5)",
-  "selectors": {
-    "p": "css3-modsel-5.expected0.html",
-    "p[title]": "css3-modsel-5.expected1.html"
-  },
-  "src": "css3-modsel-5.src.html"
-}
