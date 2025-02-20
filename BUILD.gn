@@ -313,7 +313,7 @@ group("create_dist") {
     }
   }
   if (is_mac) {
-    deps += [ "build/mac:finalize_dmg_pkg" ]
+    deps += [ "build/mac:create_dist" ]
   }
   if (is_linux) {
     deps += [
