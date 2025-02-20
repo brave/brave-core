@@ -45,6 +45,7 @@ const COUNTRIES = [
     'HU',
     'ID',
     'IE',
+    'IL',
     'IS',
     'IT',
     'JP',
