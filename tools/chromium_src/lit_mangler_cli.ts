@@ -20,14 +20,14 @@ const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
  * @param file The file to generate the tsconfig for
  * @returns The path to the generated tsconfig
  */
-export const getTsConfigForSingleFileCheck = (file: string) => {
+const getTsConfigForFiles = (files: string[]) => {
     const tsConfig = JSON.parse(fs.readFileSync(tsConfigPath, 'utf8'))
 
     // Override the include path to only include the lit_mangler and the file
     // we want to check
     tsConfig.include = [
         path.join(__dirname, 'lit_mangler.ts'),
-        file
+        ...files
     ]
 
     // As the file is generated in the temp directory we need to set the baseUrl
@@ -36,9 +36,17 @@ export const getTsConfigForSingleFileCheck = (file: string) => {
 
     // Write the tsconfig to a temporary file.
     const tempDir = os.tmpdir()
-    const tempTsConfigPath = path.join(tempDir, `${path.basename(file)}-tsconfig.json`)
+    const tempTsConfigPath = path.join(tempDir, `lit-mangler-check-tsconfig.json`)
     fs.writeFileSync(tempTsConfigPath, JSON.stringify(tsConfig, null, 2))
     return tempTsConfigPath
+}
+
+const runTypecheck = (files: string[]) => {
+    const result = childProcess.spawnSync('tsc', ['-p', getTsConfigForFiles(files)])
+    if (result.status !== 0) {
+        console.error('Typechecking failed:\n', result.stdout.toString())
+        process.exit(1)
+    }
 }
 
 commander
@@ -51,11 +59,7 @@ commander
         load(input)
 
         if (typecheck) {
-            const result = childProcess.spawnSync('tsc', ['-p', getTsConfigForSingleFileCheck(mangler)])
-            if (result.status !== 0) {
-                console.error('Typechecking failed:\n', result.stdout.toString())
-                process.exit(1)
-            }
+            runTypecheck([mangler])
         }
 
         await import(mangler)
@@ -64,12 +68,9 @@ commander
 
 commander
     .command('typecheck')
-    .action(async () => {
-        const result = childProcess.spawnSync('tsc', ['--project', tsConfigPath])
-        if (result.status !== 0) {
-            console.error('Typechecking failed:\n', result.stdout.toString())
-            process.exit(1)
-        }
+    .arguments('<files...>')
+    .action((files: string[]) => {
+        runTypecheck(files)
     })
 
 commander.parse(process.argv)
