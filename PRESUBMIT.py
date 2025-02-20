@@ -72,7 +72,7 @@ def CheckTypescriptBuildFilesCompile(input_api, output_api):
             brave_node.PathInNodeModules('tsx', 'dist', 'cli.mjs'),
             '--tsconfig',
             './tsconfig-mangle.json',
-            './tools/chromium_src/lit_mangler_cli.ts',
+            './tools/chromium_src/lit_mangler/lit_mangler_cli.ts',
             'typecheck',
         ] + files_to_check)
     except RuntimeError as err:
