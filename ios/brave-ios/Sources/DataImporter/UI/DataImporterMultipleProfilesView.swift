@@ -66,7 +66,7 @@ struct DataImporterMultipleProfilesView: View {
               Image(braveSystemName: "leo.carat.right")
             }
             .padding(.horizontal, 16.0)
-            .padding(.vertical, 11.0)
+            .padding(.vertical, 12.0)
           }
 
           if offset != profiles.count - 1 {
