@@ -3,13 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveShared
 import BraveUI
 import BraveWallet
 import Foundation
 import OSLog
 import Preferences
-import Shared
 
 /// A protocol that tells an object about web navigation related events happening
 ///
@@ -22,12 +20,6 @@ protocol TabWebNavigationDelegate: AnyObject {
   /// Called when a web navigation fails for some reason, return true if the error
   /// has been handled and no further action is needed
   func tab(_ tab: Tab, didFailWebViewNavigationWithError error: Error) -> Bool
-  func tab(
-    _ tab: Tab,
-    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
-  ) async -> URLCredential?
 }
 
 extension TabWebNavigationDelegate {
@@ -39,15 +31,6 @@ extension TabWebNavigationDelegate {
 
   func tab(_ tab: Tab, didFailWebViewNavigationWithError error: Error) -> Bool {
     return false
-  }
-
-  func tab(
-    _ tab: Tab,
-    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
-  ) async -> URLCredential? {
-    return nil
   }
 }
 
@@ -240,56 +223,5 @@ extension BrowserViewController: TabWebNavigationDelegate {
     }
 
     return false
-  }
-
-  func tab(
-    _ tab: Tab,
-    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
-    proposedCredential credential: URLCredential?,
-    previousFailureCount: Int
-  ) async -> URLCredential? {
-    let host = protectionSpace.host
-    let origin = "\(host):\(protectionSpace.port)"
-
-    // The challenge may come from a background tab, so ensure it's the one visible.
-    tabManager.selectTab(tab)
-    tab.isDisplayingBasicAuthPrompt = true
-    defer { tab.isDisplayingBasicAuthPrompt = false }
-
-    if let webView = tab.webView {
-      let isHidden = webView.isHidden
-      defer { webView.isHidden = isHidden }
-
-      // Manually trigger a `url` change notification
-      if host != tab.url?.host {
-        webView.isHidden = true
-
-        if tabManager.selectedTab === tab {
-          updateToolbarCurrentURL(
-            URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-          )
-        }
-      }
-    }
-
-    do {
-      let credentials = try await Authenticator.handleAuthRequest(
-        self,
-        credential: credential,
-        protectionSpace: protectionSpace,
-        previousFailureCount: previousFailureCount
-      ).credentials
-
-      if BasicAuthCredentialsManager.validDomains.contains(host) {
-        BasicAuthCredentialsManager.setCredential(
-          origin: origin,
-          credential: credentials
-        )
-      }
-
-      return credential
-    } catch {
-      return nil
-    }
   }
 }

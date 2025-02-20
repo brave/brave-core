@@ -4,8 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Foundation
 import Preferences
+import Shared
 import Strings
 import UIKit
 
@@ -35,6 +37,13 @@ protocol TabWebDelegate: AnyObject {
     defaultText: String?,
     pageURL: URL
   ) async -> String?
+
+  func tab(
+    _ tab: Tab,
+    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
+    proposedCredential credential: URLCredential?,
+    previousFailureCount: Int
+  ) async -> URLCredential?
 }
 
 /// Media device capture types that a web page may request
@@ -86,6 +95,15 @@ extension TabWebDelegate {
   ) async -> String? {
     return
       nil
+  }
+
+  func tab(
+    _ tab: Tab,
+    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
+    proposedCredential credential: URLCredential?,
+    previousFailureCount: Int
+  ) async -> URLCredential? {
+    return nil
   }
 }
 
@@ -503,6 +521,57 @@ extension BrowserViewController {
       present(controller, animated: true)
     } else {
       tab.queueJavascriptAlertPrompt(alert)
+    }
+  }
+
+  func tab(
+    _ tab: Tab,
+    didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
+    proposedCredential credential: URLCredential?,
+    previousFailureCount: Int
+  ) async -> URLCredential? {
+    let host = protectionSpace.host
+    let origin = "\(host):\(protectionSpace.port)"
+
+    // The challenge may come from a background tab, so ensure it's the one visible.
+    tabManager.selectTab(tab)
+    tab.isDisplayingBasicAuthPrompt = true
+    defer { tab.isDisplayingBasicAuthPrompt = false }
+
+    if let webView = tab.webView {
+      let isHidden = webView.isHidden
+      defer { webView.isHidden = isHidden }
+
+      // Manually trigger a `url` change notification
+      if host != tab.url?.host {
+        webView.isHidden = true
+
+        if tabManager.selectedTab === tab {
+          updateToolbarCurrentURL(
+            URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
+          )
+        }
+      }
+    }
+
+    do {
+      let credentials = try await Authenticator.handleAuthRequest(
+        self,
+        credential: credential,
+        protectionSpace: protectionSpace,
+        previousFailureCount: previousFailureCount
+      ).credentials
+
+      if BasicAuthCredentialsManager.validDomains.contains(host) {
+        BasicAuthCredentialsManager.setCredential(
+          origin: origin,
+          credential: credentials
+        )
+      }
+
+      return credential
+    } catch {
+      return nil
     }
   }
 }
