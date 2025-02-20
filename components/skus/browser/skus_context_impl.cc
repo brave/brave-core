@@ -8,7 +8,6 @@
 #include <string>
 #include <utility>
 
-#include "base/logging.h"
 #include "base/task/bind_post_task.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "brave/components/skus/browser/skus_url_loader_impl.h"
@@ -20,26 +19,6 @@ void OnScheduleWakeup(
     rust::cxxbridge1::Fn<void(rust::cxxbridge1::Box<skus::WakeupContext>)> done,
     rust::cxxbridge1::Box<skus::WakeupContext> ctx) {
   done(std::move(ctx));
-}
-
-logging::LogSeverity GetLogSeverity(skus::TracingLevel level) {
-  switch (level) {
-    case skus::TracingLevel::Trace:
-      // NOTE: since we have release_max_level_debug set this is equivalent to
-      // DVLOG(4)
-      return -4;
-    case skus::TracingLevel::Debug:
-      return -3;
-    case skus::TracingLevel::Info:
-      return -2;
-    case skus::TracingLevel::Warn:
-      return logging::LOGGING_VERBOSE;
-    case skus::TracingLevel::Error:
-      return logging::LOGGING_ERROR;
-  }
-  // this should never happen, set to WARNING level in this case so we notice
-  // since it is otherwise unused
-  return logging::LOGGING_WARNING;
 }
 
 }  // namespace
@@ -70,27 +49,6 @@ void RustBoundPostTask::RunWithResponse(SkusResult result,
     } else {
       std::move(callback_).Run(skus::mojom::SkusResult::New(
           result.code, static_cast<std::string>(result.msg)));
-    }
-  }
-}
-
-void shim_logMessage(rust::cxxbridge1::Str file,
-                     uint32_t line,
-                     skus::TracingLevel level,
-                     rust::cxxbridge1::Str message) {
-  const logging::LogSeverity severity = GetLogSeverity(level);
-  if (severity >= 0) {
-    if (logging::ShouldCreateLogMessage(severity)) {
-      const std::string file_str(file.data(), file.length());
-      logging::LogMessage(file_str.c_str(), line, severity).stream()
-          << std::string_view(message.data(), message.size());
-    }
-  } else {
-    const std::string file_str(file.data(), file.length());
-    if (-severity <= ::logging::GetVlogLevelHelper(file_str.c_str(),
-                                                   file_str.length() + 1)) {
-      logging::LogMessage(file_str.c_str(), line, severity).stream()
-          << std::string_view(message.data(), message.size());
     }
   }
 }

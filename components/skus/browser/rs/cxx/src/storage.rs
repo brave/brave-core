@@ -6,7 +6,7 @@
 use async_trait::async_trait;
 use futures::channel::oneshot;
 use futures::lock::MutexGuard;
-use tracing::debug;
+use log::debug;
 
 use crate::{ffi, NativeClient, NativeClientInner};
 use skus::{errors::InternalError, Environment, KVClient, KVStore};

@@ -13,7 +13,7 @@ use skus::{
     HTTPClient,
 };
 
-use tracing::debug;
+use log::debug;
 
 use crate::{ffi, NativeClient};
 

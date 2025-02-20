@@ -1,0 +1,48 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "tracing_log"
+  epoch = "0.2"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tracing-log-0.2.0/src/lib.rs"
+  sources = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-log-0.2.0/src/interest_cache.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-log-0.2.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-log-0.2.0/src/log_tracer.rs",
+  ]
+  inputs = []
+
+  build_native_rust_unit_tests = false
+  edition = "2018"
+  cargo_pkg_version = "0.2.0"
+  cargo_pkg_authors = "Tokio Contributors <team@tokio.rs>"
+  cargo_pkg_name = "tracing-log"
+  cargo_pkg_description =
+      "Provides compatibility between `tracing` and the `log` crate."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/log/v0_4:lib",
+    "//brave/third_party/rust/once_cell/v1:lib",
+    "//brave/third_party/rust/tracing_core/v0_1:lib",
+  ]
+  features = [
+    "log-tracer",
+    "std",
+  ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
+}

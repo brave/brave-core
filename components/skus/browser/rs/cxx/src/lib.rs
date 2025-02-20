@@ -5,7 +5,6 @@
 
 mod errors;
 mod httpclient;
-mod log;
 mod storage;
 
 use std::cell::RefCell;
@@ -18,7 +17,8 @@ use futures::executor::{LocalPool, LocalSpawner};
 use futures::task::LocalSpawnExt;
 use futures::lock::Mutex;
 
-use tracing::debug;
+use tracing_log::LogTracer;
+use log::debug;
 
 pub use skus;
 
@@ -233,8 +233,6 @@ mod ffi {
         type SkusContext;
         type SkusUrlLoader;
 
-        fn shim_logMessage(file: &str, line: u32, level: TracingLevel, message: &str);
-
         fn shim_executeRequest(
             ctx: &SkusContext,
             req: &HttpRequest,
@@ -281,14 +279,7 @@ pub struct CppSDK {
 }
 
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> {
-    match tracing_subscriber::fmt()
-        .event_format(log::CppFormatter::new())
-        .with_max_level(tracing::Level::TRACE)
-        .try_init()
-    {
-        Ok(_) => println!("tracing_subscriber - init success"),
-        Err(_) => println!("tracing_subscriber - maybe already initialized"),
-    };
+    LogTracer::init().unwrap();
 
     let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
 
