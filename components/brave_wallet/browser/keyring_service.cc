@@ -2615,6 +2615,12 @@ mojom::ZCashAccountInfoPtr KeyringService::GetZCashAccountInfo(
     if (orchard_address) {
       result->orchard_address = orchard_address->address_string;
     }
+    auto orchard_internal_address = zcash_keyring->GetShieldedAddress(
+        *mojom::ZCashKeyId::New(account_id->account_index, 1, 0));
+    if (orchard_internal_address) {
+      result->orchard_internal_address =
+          orchard_internal_address->address_string;
+    }
 #endif  // BUILDFLAG(ENABLE_ORCHARD)
 
     return result;

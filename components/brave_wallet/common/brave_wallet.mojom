@@ -1872,6 +1872,8 @@ struct ZCashAccountInfo {
   // Address that contains orchard part only
   // Could be null if orchard is not enabled.
   string? orchard_address;
+  // Address can be used to shield funds internally.
+  string? orchard_internal_address;
 };
 
 enum ZCashTxType {
