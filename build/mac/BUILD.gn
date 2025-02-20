@@ -231,32 +231,6 @@ action("generate_eddsa_sig_for_delta") {
   deps = [ ":build_delta_installer" ]
 }
 
-copy("copies") {
-  visibility = [ ":package" ]
-
-  if (is_official_build) {
-    if (is_release_channel) {
-      channel_nonempty = "release"
-    } else {
-      channel_nonempty = brave_channel
-    }
-    provisioning_profile_name =
-        "$channel_nonempty.9c57a508dc89402964eb013d30ef6df4da849aa9"
-  } else {
-    # an empty dummy file just to simplify things
-    provisioning_profile_name = "dummy"
-  }
-
-  sources = [
-    "//brave/app/helper-entitlements.plist",
-    "//brave/build/mac/signing/${provisioning_profile_name}.provisionprofile",
-  ]
-
-  public_deps = [ "//chrome/installer/mac" ]
-
-  outputs = [ "$packaging_dir/{{source_file_part}}" ]
-}
-
 # Upstream takes pkg_postinstall.in from $packaging_dir. Our Python
 # implementation overrides this to $packaging_dir/brave.
 postinstall_script = "$packaging_dir/brave/pkg_postinstall.in"
@@ -296,10 +270,10 @@ action("package") {
   ]
   deps = [
     ":browser_install_script",
-    ":copies",
     ":dmg_background_image",
     ":dmg_icon",
     ":ds_store",
+    ":helper_entitlements",
     ":postinstall",
     ":signing_config",
     "//chrome:chrome_app",
@@ -321,7 +295,9 @@ action("package") {
     "--identity=$mac_signing_identifier",
     "--installer-identity=$installer_identity",
   ]
-  if (!is_official_build) {
+  if (is_official_build) {
+    deps += [ ":provisionprofile" ]
+  } else {
     args += [ "--development" ]
   }
   if (skip_signing) {
@@ -383,6 +359,25 @@ copy("ds_store") {
   }
   sources = [ "DS_Store-files/$ds_store_file_name" ]
   outputs = [ "$packaging_dir/chrome_dmg_dsstore" ]
+}
+
+copy("helper_entitlements") {
+  visibility = [ ":package" ]
+  sources = [ "//brave/app/helper-entitlements.plist" ]
+  public_deps = [ "//chrome/installer/mac" ]
+  outputs = [ "$packaging_dir/{{source_file_part}}" ]
+}
+
+if (is_official_build) {
+  copy("provisionprofile") {
+    if (is_release_channel) {
+      channel_nonempty = "release"
+    } else {
+      channel_nonempty = brave_channel
+    }
+    sources = [ "${channel_nonempty}.provisionprofile" ]
+    outputs = [ "${packaging_dir}/${channel_nonempty}.9c57a508dc89402964eb013d30ef6df4da849aa9.provisionprofile" ]
+  }
 }
 
 if (skip_signing) {
