@@ -211,8 +211,8 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 
   VLOG(6) << "Registering NTP Sponsored Images component";
   RegisterNTPSponsoredImagesComponent(
-      component_update_service_, data->component_base64_public_key.data(),
-      data->component_id.data(),
+      component_update_service_, std::string(data->component_base64_public_key),
+      std::string(data->component_id),
       base::StringPrintf("NTP Sponsored Images (%s)", data->region.data()),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
@@ -382,8 +382,9 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
 void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
   DVLOG(6) << "Try to download super referral mapping table.";
 
-  if (!component_update_service_)
+  if (!component_update_service_) {
     return;
+  }
 
   RegisterNTPSponsoredImagesComponent(
       component_update_service_,
@@ -490,8 +491,9 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetBrandedImagesData(
       return nullptr;
     }
   } else {
-    if (super_referral)
+    if (super_referral) {
       return nullptr;
+    }
   }
 
   if (sponsored_images_data_ && sponsored_images_data_->IsValid()) {
@@ -612,8 +614,9 @@ bool NTPBackgroundImagesService::IsValidSuperReferralComponentInfo(
 }
 
 void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
-  if (!component_update_service_)
+  if (!component_update_service_) {
     return;
+  }
 
   const base::Value::Dict& value = pref_service_->GetDict(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);

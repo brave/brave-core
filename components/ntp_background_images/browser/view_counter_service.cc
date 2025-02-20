@@ -200,8 +200,9 @@ ViewCounterService::GetCurrentWallpaperForDisplay() {
 
 std::optional<base::Value::Dict> ViewCounterService::GetCurrentWallpaper()
     const {
-  if (!IsBackgroundWallpaperActive())
+  if (!IsBackgroundWallpaperActive()) {
     return std::nullopt;
+  }
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
   if (ShouldShowCustomBackground()) {
@@ -403,6 +404,7 @@ void ViewCounterService::ResetModel() {
   if (const NTPSponsoredImagesData* const images_data =
           GetCurrentBrandedWallpaperData()) {
     std::vector<size_t> campaigns_total_branded_images_count;
+    campaigns_total_branded_images_count.reserve(images_data->campaigns.size());
     for (const auto& campaign : images_data->campaigns) {
       campaigns_total_branded_images_count.push_back(campaign.creatives.size());
     }
@@ -413,7 +415,8 @@ void ViewCounterService::ResetModel() {
 
   if (const NTPBackgroundImagesData* const images_data =
           GetCurrentWallpaperData()) {
-    model_.set_total_image_count(images_data->backgrounds.size());
+    model_.set_total_image_count(
+        static_cast<int>(images_data->backgrounds.size()));
   }
 }
 
@@ -450,7 +453,7 @@ void ViewCounterService::RegisterPageView() {
 
 void ViewCounterService::BrandedWallpaperLogoClicked(
     const std::string& creative_instance_id,
-    const std::string& destination_url,
+    const std::string& /*destination_url*/,
     const std::string& wallpaper_id) {
   if (ntp_p3a_helper_) {
     // Report P3A clicked ad event to if Brave Rewards are disabled.
@@ -507,20 +510,23 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
   // We show SR regardless of ntp background images option because SR works
   // like theme.
   if (GetCurrentBrandedWallpaperData()->IsSuperReferral() &&
-      IsSuperReferralWallpaperOptedIn())
+      IsSuperReferralWallpaperOptedIn()) {
     return true;
+  }
 
   // We don't show SI if user disables bg image.
-  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
+  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage)) {
     return false;
+  }
 
   return IsSponsoredImagesWallpaperOptedIn();
 }
 
 bool ViewCounterService::IsBackgroundWallpaperActive() const {
 #if !BUILDFLAG(IS_ANDROID)
-  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
+  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage)) {
     return false;
+  }
 #endif
 
   return !!GetCurrentWallpaperData() || ShouldShowCustomBackground();
@@ -564,7 +570,7 @@ void ViewCounterService::UpdateP3AValues() {
   uint64_t new_tab_count = new_tab_count_state_->GetHighestValueInWeek();
   p3a_utils::RecordToHistogramBucket(kNewTabsCreatedHistogramName,
                                      kNewTabsCreatedMetricBuckets,
-                                     new_tab_count);
+                                     static_cast<int>(new_tab_count));
 
   uint64_t branded_new_tab_count =
       branded_new_tab_count_state_->GetHighestValueInWeek();
@@ -572,8 +578,9 @@ void ViewCounterService::UpdateP3AValues() {
     UMA_HISTOGRAM_EXACT_LINEAR(kSponsoredNewTabsHistogramName, 0,
                                std::size(kSponsoredNewTabsBuckets) + 1);
   } else {
-    double ratio = (branded_new_tab_count /
-                    static_cast<double>(new_tab_count)) * 100;
+    double ratio = (static_cast<double>(branded_new_tab_count) /
+                    static_cast<double>(new_tab_count)) *
+                   100;
     p3a_utils::RecordToHistogramBucket(kSponsoredNewTabsHistogramName,
                                        kSponsoredNewTabsBuckets,
                                        static_cast<int>(ratio));

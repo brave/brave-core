@@ -50,7 +50,7 @@ class NTPSponsoredRichMediaSourceTest : public testing::Test {
 
     base::RunLoop run_loop;
     url_data_source_->StartDataRequest(
-        url, std::move(wc_getter),
+        url, wc_getter,
         base::BindOnce(
             [](std::string* data, base::OnceClosure quit_closure,
                scoped_refptr<base::RefCountedMemory> bytes) {

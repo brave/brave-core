@@ -34,7 +34,7 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
 
   ~BatAdsServiceImpl() override;
 
-  // BatAdsService:
+  // mojom::BatAdsService:
   void Create(const base::FilePath& service_path,
               mojo::PendingAssociatedRemote<mojom::BatAdsClient>
                   bat_ads_client_pending_associated_remote,

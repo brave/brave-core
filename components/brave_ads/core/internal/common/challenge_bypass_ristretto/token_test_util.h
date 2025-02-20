@@ -6,21 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_TOKEN_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_TOKEN_TEST_UTIL_H_
 
-#include <vector>
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
 
-namespace brave_ads::cbr {
-
-class Token;
-
-namespace test {
+namespace brave_ads::cbr::test {
 
 Token GetToken();
 Token GetInvalidToken();
-std::vector<Token> GetTokens();
-std::vector<Token> GetInvalidTokens();
+TokenList GetTokens();
+TokenList GetInvalidTokens();
 
-}  // namespace test
-
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads::cbr::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_TOKEN_TEST_UTIL_H_

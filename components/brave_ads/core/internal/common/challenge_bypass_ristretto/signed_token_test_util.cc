@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token_test_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 
 namespace brave_ads::cbr::test {
 
@@ -18,11 +17,11 @@ SignedToken GetInvalidSignedToken() {
   return SignedToken(kInvalidBase64);
 }
 
-std::vector<SignedToken> GetSignedTokens() {
+SignedTokenList GetSignedTokens() {
   return {GetSignedToken()};
 }
 
-std::vector<SignedToken> GetInvalidSignedTokens() {
+SignedTokenList GetInvalidSignedTokens() {
   return {GetInvalidSignedToken()};
 }
 

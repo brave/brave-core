@@ -67,7 +67,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillConfirmationTokens) {
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
-       RefillConfirmationTokensCaptchaRequired) {
+       DoNotRefillConfirmationTokensIfCaptchaIsRequired) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -100,7 +100,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
-TEST_F(BraveAdsRefillConfirmationTokensTest, IssuersPublicKeyMismatch) {
+TEST_F(BraveAdsRefillConfirmationTokensTest,
+       DoNotRefillConfirmationTokensIfMismatchedIssuersPublicKey) {
   // Arrange
   test::MockTokenGenerator(/*count=*/50);
 
@@ -165,7 +166,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
-TEST_F(BraveAdsRefillConfirmationTokensTest, RequestSignedTokensMissingNonce) {
+TEST_F(BraveAdsRefillConfirmationTokensTest,
+       DoNotRefillConfirmationTokensIfRequestSignedTokensIsMissingNonce) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -221,7 +223,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
-TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensInvalidResponse) {
+TEST_F(BraveAdsRefillConfirmationTokensTest,
+       DoNotRefillConfirmationTokensIfGetSignedTokensReturnsAnInvalidResponse) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -247,7 +250,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensInvalidResponse) {
   EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
-TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensMissingPublicKey) {
+TEST_F(BraveAdsRefillConfirmationTokensTest,
+       DoNotRefillConfirmationTokensIfGetSignedTokensIsMissingPublicKey) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -329,7 +333,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetSignedTokensMissingPublicKey) {
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
-       GetSignedTokensMissingBatchProofDleq) {
+       DoNotRefillConfirmationTokensIfGetSignedTokensIsMissingBatchProofDleq) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -410,7 +414,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
-       GetSignedTokensMissingSignedTokens) {
+       DoNotRefillConfirmationTokensIfGetSignedTokensIsMissingSignedTokens) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -440,7 +444,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_EQ(0U, ConfirmationTokenCount());
 }
 
-TEST_F(BraveAdsRefillConfirmationTokensTest, GetInvalidSignedTokens) {
+TEST_F(BraveAdsRefillConfirmationTokensTest,
+       DoNotRefillConfirmationTokensIfGetSignedTokensAreInvalid) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -524,7 +529,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, GetInvalidSignedTokens) {
 }
 
 TEST_F(BraveAdsRefillConfirmationTokensTest,
-       DoNotRefillIfAboveTheMinimumThreshold) {
+       DoNotRefillConfirmationTokensIfAboveTheMinimumThreshold) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -542,7 +547,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   EXPECT_EQ(50U, ConfirmationTokenCount());
 }
 
-TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
+TEST_F(BraveAdsRefillConfirmationTokensTest,
+       RefillConfirmationTokensIfBelowTheMinimumThreshold) {
   // Arrange
   test::BuildAndSetIssuers();
 

@@ -28,15 +28,15 @@ std::optional<base::FilePath> MaybeGetChildCreativeSubdirectories(
 }  // namespace
 
 std::optional<base::FilePath> MaybeGetFilePathForRequestPath(
-    const base::FilePath& request_file_path,
+    const base::FilePath& request_path,
     const std::vector<Campaign>& campaigns) {
-  if (request_file_path.ReferencesParent()) {
+  if (request_path.ReferencesParent()) {
     // Path traversal, deny access.
     return std::nullopt;
   }
 
-  const base::FilePath request_dir = request_file_path.DirName();
-  const base::FilePath request_file = request_file_path.BaseName();
+  const base::FilePath request_dir = request_path.DirName();
+  const base::FilePath request_file = request_path.BaseName();
 
   for (const auto& campaign : campaigns) {
     for (const auto& creative : campaign.creatives) {

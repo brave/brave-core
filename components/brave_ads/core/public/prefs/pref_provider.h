@@ -30,6 +30,7 @@ class PrefProvider : public PrefProviderInterface {
 
   ~PrefProvider() override;
 
+  // PrefProviderInterface:
   std::optional<base::Value> GetProfilePref(
       const std::string& pref_path) const override;
   bool HasProfilePrefPath(const std::string& pref_path) const override;

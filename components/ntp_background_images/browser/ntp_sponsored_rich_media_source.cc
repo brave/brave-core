@@ -48,7 +48,7 @@ std::string NTPSponsoredRichMediaSource::GetSource() {
 
 void NTPSponsoredRichMediaSource::StartDataRequest(
     const GURL& url,
-    const content::WebContents::Getter& wc_getter,
+    const content::WebContents::Getter& /*wc_getter*/,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 

@@ -48,7 +48,7 @@ std::string NTPSponsoredImageSource::GetSource() {
 
 void NTPSponsoredImageSource::StartDataRequest(
     const GURL& url,
-    const content::WebContents::Getter& wc_getter,
+    const content::WebContents::Getter& /*wc_getter*/,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -92,15 +92,17 @@ std::string NTPSponsoredImageSource::GetMimeType(const GURL& url) {
   if (file_path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
       file_path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"))) {
     return "image/jpeg";
-  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".png"))) {
-    return "image/png";
-  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".webp"))) {
-    return "image/webp";
-  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".avif"))) {
-    return "image/avif";
-  } else {
-    return "";
   }
+  if (file_path.MatchesExtension(FILE_PATH_LITERAL(".png"))) {
+    return "image/png";
+  }
+  if (file_path.MatchesExtension(FILE_PATH_LITERAL(".webp"))) {
+    return "image/webp";
+  }
+  if (file_path.MatchesExtension(FILE_PATH_LITERAL(".avif"))) {
+    return "image/avif";
+  }
+  return "";
 }
 
 bool NTPSponsoredImageSource::AllowCaching() {

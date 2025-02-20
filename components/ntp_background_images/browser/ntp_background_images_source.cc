@@ -46,13 +46,13 @@ std::string NTPBackgroundImagesSource::GetSource() {
 
 void NTPBackgroundImagesSource::StartDataRequest(
     const GURL& url,
-    const content::WebContents::Getter& wc_getter,
+    const content::WebContents::Getter& /*wc_getter*/,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  const std::string path = URLDataSource::URLToRequestPath(url);
   const NTPBackgroundImagesData* const images_data =
       service_->GetBackgroundImagesData();
+  const std::string path = URLDataSource::URLToRequestPath(url);
   const int index = GetWallpaperIndexFromPath(path);
 
   if (!images_data || index == -1) {
@@ -94,15 +94,17 @@ std::string NTPBackgroundImagesSource::GetMimeType(const GURL& url) {
   const base::FilePath file_path = base::FilePath::FromUTF8Unsafe(path);
   if (file_path.MatchesExtension(FILE_PATH_LITERAL(".jpg"))) {
     return "image/jpeg";
-  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".png"))) {
-    return "image/png";
-  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".webp"))) {
-    return "image/webp";
-  } else if (file_path.MatchesExtension(FILE_PATH_LITERAL(".avif"))) {
-    return "image/avif";
-  } else {
-    return "";
   }
+  if (file_path.MatchesExtension(FILE_PATH_LITERAL(".png"))) {
+    return "image/png";
+  }
+  if (file_path.MatchesExtension(FILE_PATH_LITERAL(".webp"))) {
+    return "image/webp";
+  }
+  if (file_path.MatchesExtension(FILE_PATH_LITERAL(".avif"))) {
+    return "image/avif";
+  }
+  return "";
 }
 
 int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
@@ -116,8 +118,8 @@ int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
   for (size_t i = 0; i < images_data->backgrounds.size(); ++i) {
     const std::string image_name =
         images_data->backgrounds[i].file_path.BaseName().AsUTF8Unsafe();
-    if (path.compare(image_name) == 0) {
-      return i;
+    if (path == image_name) {
+      return static_cast<int>(i);
     }
   }
 

@@ -24,9 +24,9 @@
 
 namespace brave_ads {
 
-class BraveAdsConfirmationQueueItemDelayTest : public test::TestBase {};
+class BraveAdsConfirmationQueueItemUtilTest : public test::TestBase {};
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        CalculateDelayBeforeProcessingConfirmationQueueItem) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -48,7 +48,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
   EXPECT_EQ(base::Hours(1), delay_before_processing_confirmation_queue_item);
 }
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        CalculateDelayBeforeProcessingPastDueConfirmationQueueItem) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -71,7 +71,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
             delay_before_processing_confirmation_queue_item);
 }
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        CalculateMinimumDelayBeforeProcessingConfirmationQueueItem) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -95,7 +95,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
             delay_before_processing_confirmation_queue_item);
 }
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        RebuildConfirmationWithoutDynamicUserData) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);
@@ -131,7 +131,7 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
                            expected_reward, expected_user_data));
 }
 
-TEST_F(BraveAdsConfirmationQueueItemDelayTest,
+TEST_F(BraveAdsConfirmationQueueItemUtilTest,
        RebuildConfirmationDynamicUserData) {
   // Arrange
   test::MockTokenGenerator(/*count=*/1);

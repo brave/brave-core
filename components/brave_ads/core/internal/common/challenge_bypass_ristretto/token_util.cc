@@ -5,12 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
-
 namespace brave_ads::cbr {
 
 std::vector<challenge_bypass_ristretto::Token> ToRawTokens(
-    const std::vector<Token>& tokens) {
+    const TokenList& tokens) {
   std::vector<challenge_bypass_ristretto::Token> raw_tokens;
   raw_tokens.reserve(tokens.size());
 
