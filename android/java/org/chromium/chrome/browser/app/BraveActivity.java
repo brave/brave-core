@@ -310,7 +310,7 @@ public abstract class BraveActivity extends ChromeActivity
 
     private boolean mIsVerification;
     private boolean mIsDefaultCheckOnResume;
-    private boolean mIsSetDefaultBrowserNotification;
+    // private boolean mIsSetDefaultBrowserNotification;
     public boolean mIsDeepLink;
     private BraveWalletService mBraveWalletService;
     private KeyringService mKeyringService;
@@ -1176,9 +1176,9 @@ public abstract class BraveActivity extends ChromeActivity
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
         }
 
-        if (!mIsSetDefaultBrowserNotification) {
-            BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
-        }
+        // if (!mIsSetDefaultBrowserNotification) {
+        //     BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
+        // }
 
         checkFingerPrintingOnUpgrade(isFirstInstall);
         checkForVpnCallout();
@@ -1729,9 +1729,9 @@ public abstract class BraveActivity extends ChromeActivity
                 case RetentionNotificationUtil.DEFAULT_BROWSER_3:
                     if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)
                             && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
-                        mIsSetDefaultBrowserNotification = true;
-                        BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
-                                BraveActivity.this, false);
+                        // mIsSetDefaultBrowserNotification = true;
+                        // BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
+                        //         BraveActivity.this, false);
                     }
                     break;
             }

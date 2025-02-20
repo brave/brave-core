@@ -67,7 +67,6 @@
     <color name="brave_text_button_color">#A0A5EB</color>
 
     <!-- Set Default Browser colors -->
-    <color name="set_default_bottom_sheet_bg_color">#1E2029</color>
     <color name="set_default_text_color">#F0F2FF</color>
 
     <color name="ad_free_card_cancel_color">#F0F2FF</color>

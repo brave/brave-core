@@ -83,7 +83,6 @@
     <color name="scan_qr_code_bg_color">@android:color/white</color>
 
     <!-- Set Default Browser colors -->
-    <color name="set_default_bottom_sheet_bg_color">@android:color/white</color>
     <color name="set_default_text_color">#212529</color>
     <color name="set_default_bottom_sheet_button_disable_color">#DADCE8</color>
 

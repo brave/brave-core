@@ -21,10 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
@@ -82,67 +79,69 @@ public class BraveSetDefaultBrowserUtils {
         return resolveInfo.activityInfo.packageName.equals(context.getPackageName());
     }
 
-    public static void checkSetDefaultBrowserModal(AppCompatActivity activity) {
-        if (!isBraveSetAsDefaultBrowser(activity) && !isBraveDefaultDontAsk()) {
-            if (ChromeSharedPreferences.getInstance()
-                            .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                    == 5) {
-                showBraveSetDefaultBrowserDialog(activity, false);
+    // public static void checkSetDefaultBrowserModal(AppCompatActivity activity) {
+    //     if (!isBraveSetAsDefaultBrowser(activity) && !isBraveDefaultDontAsk()) {
+    //         if (ChromeSharedPreferences.getInstance()
+    //                         .readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+    //                 == 5) {
+    //             showBraveSetDefaultBrowserDialog(activity, false);
 
-            } else if (shouldShowBraveWasDefaultDialog()) {
-                int braveWasDefaultCount =
-                        ChromeSharedPreferences.getInstance()
-                                .readInt(BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
-                ChromeSharedPreferences.getInstance()
-                        .writeInt(
-                                BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT,
-                                braveWasDefaultCount + 1);
-                showBraveSetDefaultBrowserDialog(activity, false);
-            }
+    //         } else if (shouldShowBraveWasDefaultDialog()) {
+    //             int braveWasDefaultCount =
+    //                     ChromeSharedPreferences.getInstance()
+    //                             .readInt(BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
+    //             ChromeSharedPreferences.getInstance()
+    //                     .writeInt(
+    //                             BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT,
+    //                             braveWasDefaultCount + 1);
+    //             showBraveSetDefaultBrowserDialog(activity, false);
+    //         }
 
-        } else if (isBraveSetAsDefaultBrowser(activity) && !wasBraveDefaultBefore()) {
-            setBraveDefaultSuccess();
-        }
-    }
+    //     } else if (isBraveSetAsDefaultBrowser(activity) && !wasBraveDefaultBefore()) {
+    //         setBraveDefaultSuccess();
+    //     }
+    // }
 
-    public static void showBraveSetDefaultBrowserDialog(
-            AppCompatActivity activity, boolean isFromMenu) {
-        /* (Albert Wang): Default app settings didn't get added until API 24
-         * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
-         */
-        if (isBraveSetAsDefaultBrowser(activity)) {
-            Toast toast = Toast.makeText(
-                    activity, R.string.brave_already_set_as_default_browser, Toast.LENGTH_LONG);
-            toast.show();
-            return;
-        }
+    // public static void showBraveSetDefaultBrowserDialog(
+    //         AppCompatActivity activity, boolean isFromMenu) {
+    //     /* (Albert Wang): Default app settings didn't get added until API 24
+    //      *
+    // https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
+    //      */
+    //     if (isBraveSetAsDefaultBrowser(activity)) {
+    //         Toast toast = Toast.makeText(
+    //                 activity, R.string.brave_already_set_as_default_browser, Toast.LENGTH_LONG);
+    //         toast.show();
+    //         return;
+    //     }
 
-        if (!isBottomSheetVisible) {
-            isBottomSheetVisible = true;
+    //     if (!isBottomSheetVisible) {
+    //         isBottomSheetVisible = true;
 
-            try {
-                SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
-                        SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
+    //         try {
+    //             SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
+    //                     SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
 
-                bottomSheetDialog.show(activity.getSupportFragmentManager(),
-                        "SetDefaultBrowserBottomSheetFragment");
-            } catch (IllegalStateException e) {
-                // That exception could be thrown when Activity is not in the foreground.
-                Log.e(TAG, "showBraveSetDefaultBrowserDialog error: " + e.getMessage());
-                return;
-            }
+    //             bottomSheetDialog.show(activity.getSupportFragmentManager(),
+    //                     "SetDefaultBrowserBottomSheetFragment");
+    //         } catch (IllegalStateException e) {
+    //             // That exception could be thrown when Activity is not in the foreground.
+    //             Log.e(TAG, "showBraveSetDefaultBrowserDialog error: " + e.getMessage());
+    //             return;
+    //         }
 
-            if (!isFromMenu) {
-                int braveDefaultModalCount =
-                        ChromeSharedPreferences.getInstance()
-                                .readInt(BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
-                ChromeSharedPreferences.getInstance()
-                        .writeInt(
-                                BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
-                                braveDefaultModalCount + 1);
-            }
-        }
-    }
+    //         if (!isFromMenu) {
+    //             int braveDefaultModalCount =
+    //                     ChromeSharedPreferences.getInstance()
+    //
+    // .readInt(BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
+    //             ChromeSharedPreferences.getInstance()
+    //                     .writeInt(
+    //                             BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
+    //                             braveDefaultModalCount + 1);
+    //         }
+    //     }
+    // }
 
     public static void setDefaultBrowser(Activity activity) {
         if (supportsDefaultRoleManager()) {
@@ -217,17 +216,17 @@ public class BraveSetDefaultBrowserUtils {
         activity.startActivity(intent);
     }
 
-    private static boolean wasBraveDefaultBefore() {
-        return ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.BRAVE_IS_DEFAULT, false);
-    }
+    // private static boolean wasBraveDefaultBefore() {
+    //     return ChromeSharedPreferences.getInstance()
+    //             .readBoolean(BravePreferenceKeys.BRAVE_IS_DEFAULT, false);
+    // }
 
-    private static boolean shouldShowBraveWasDefaultDialog() {
-        int braveWasDefaultCount =
-                ChromeSharedPreferences.getInstance()
-                        .readInt(BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
-        return braveWasDefaultCount < 2 && wasBraveDefaultBefore();
-    }
+    // private static boolean shouldShowBraveWasDefaultDialog() {
+    //     int braveWasDefaultCount =
+    //             ChromeSharedPreferences.getInstance()
+    //                     .readInt(BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
+    //     return braveWasDefaultCount < 2 && wasBraveDefaultBefore();
+    // }
 
     public static void setBraveDefaultSuccess() {
         ChromeSharedPreferences.getInstance()
