@@ -428,7 +428,7 @@ public abstract class BraveActivity extends ChromeActivity
         } else if (id == R.id.exit_id) {
             exitBrave();
         } else if (id == R.id.set_default_browser) {
-            BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
+            BraveSetDefaultBrowserUtils.setDefaultBrowser(BraveActivity.this);
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
