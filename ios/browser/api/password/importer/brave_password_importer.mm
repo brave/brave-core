@@ -202,14 +202,14 @@ webauthn::PasskeyModel* MaybeGetPasskeyModel(ProfileIOS* profile) {
     base::FilePath path = base::apple::NSStringToFilePath(filePath);
     auto password_store = password_manager::PasswordForm::Store::kProfileStore;
 
+    importer->_presenter->Init();
+
     importer->_safari_importer->Import(
         path, password_store,
         base::BindOnce(^(const password_manager::SafariImportResults& results) {
           completion(
               [[BravePasswordImporterResults alloc] initWithResults:results]);
         }));
-
-    importer->_presenter->Init();
   };
 
   web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE,

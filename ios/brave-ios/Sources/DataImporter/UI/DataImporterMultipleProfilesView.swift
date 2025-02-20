@@ -60,13 +60,14 @@ struct DataImporterMultipleProfilesView: View {
 
               Text(profile.localizedCapitalized)
                 .foregroundStyle(Color(braveSystemName: .textInteractive))
+                .padding(.vertical, 12.0)
 
               Spacer()
 
               Image(braveSystemName: "leo.carat.right")
+                .foregroundStyle(Color(braveSystemName: .iconDefault))
             }
             .padding(.horizontal, 16.0)
-            .padding(.vertical, 12.0)
           }
 
           if offset != profiles.count - 1 {
