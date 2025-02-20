@@ -9,7 +9,7 @@
 #include <tuple>
 #include <vector>
 
-#include "base/containers/fixed_flat_set.h"
+#include "base/containers/contains.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
@@ -22,19 +22,17 @@ namespace brave_news {
 
 TEST(BraveNewsFeedSampling, CanPickRandomItem) {
   constexpr int iterations = 100;
-  static constexpr auto kInts =
-      base::MakeFixedFlatSet<int>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+  std::vector<int> ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
   for (auto i = 0; i < iterations; ++i) {
-    auto result = PickRandom(base::span(kInts));
-    EXPECT_TRUE(kInts.contains(result));
+    auto result = PickRandom(ints);
+    EXPECT_TRUE(base::Contains(ints, result));
   }
 
-  static constexpr auto kStrings =
-      base::MakeFixedFlatSet<std::string_view>({"foo", "bar", "hello"});
+  std::vector<std::string> strings = {"foo", "bar", "hello"};
   for (auto i = 0; i < iterations; ++i) {
-    const auto& result = PickRandom(base::span(kStrings));
-    EXPECT_TRUE(kStrings.contains(result));
+    const auto& result = PickRandom(strings);
+    EXPECT_TRUE(base::Contains(strings, result));
   }
 }
 
@@ -47,16 +45,15 @@ TEST(BraveNewsFeedSampling, CanSampleContentGroupEmpty) {
 
 TEST(BraveNewsFeedSampling, CanSampleContentGroup) {
   constexpr int iterations = 100;
-  static constexpr auto kGroups =
-      base::MakeFixedFlatSet<ContentGroup>({{"publisher_1", false},
-                                            {"publisher_2", false},
-                                            {"channel_1", true},
-                                            {"channel_2", true},
-                                            {"publisher_3", false}});
+  std::vector<ContentGroup> groups = {{"publisher_1", false},
+                                      {"publisher_2", false},
+                                      {"channel_1", true},
+                                      {"channel_2", true},
+                                      {"publisher_3", false}};
 
   for (auto i = 0; i < iterations; ++i) {
-    auto sample = SampleContentGroup(kGroups);
-    EXPECT_TRUE(kGroups.contains(sample));
+    auto sample = SampleContentGroup(groups);
+    EXPECT_TRUE(base::Contains(groups, sample));
   }
 }
 

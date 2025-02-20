@@ -18,6 +18,7 @@
 
 #include "base/check.h"
 #include "base/containers/checked_iterators.h"
+#include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -202,7 +203,7 @@ class PageContentFetcherInternal {
       return;
     }
     DVLOG(1) << "OnTabContentResult: " << data.get();
-    const bool is_video = kVideoPageContentTypes.contains(data->type);
+    const bool is_video = base::Contains(kVideoPageContentTypes, data->type);
     DVLOG(1) << "Is video? " << is_video;
     // Handle text mode response
     if (!is_video) {
@@ -455,7 +456,7 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
 
   auto url = web_contents_->GetLastCommittedURL();
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-  if (kScreenshotRetrievalHosts.contains(url.host_piece())) {
+  if (base::Contains(kScreenshotRetrievalHosts, url.host_piece())) {
     content::RenderWidgetHostView* view =
         web_contents_->GetRenderWidgetHostView();
     if (view) {

@@ -6,8 +6,9 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
 #include <optional>
+#include <vector>
 
-#include "base/containers/fixed_flat_set.h"
+#include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/types/to_address.h"
 #include "brave/app/brave_command_ids.h"
@@ -75,11 +76,11 @@ bool IsBraveCommands(int id) {
 }
 
 bool IsBraveOverrideCommands(int id) {
-  static constexpr auto kOverrideCommands = base::MakeFixedFlatSet<int>({
+  static std::vector<int> override_commands({
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
   });
-  return kOverrideCommands.contains(id);
+  return base::Contains(override_commands, id);
 }
 
 }  // namespace

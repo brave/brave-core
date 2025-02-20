@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_notifier_for_testing.h"
 
 #include "base/check_op.h"
+#include "base/containers/contains.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -176,7 +177,7 @@ void AdsClientNotifierForTesting::SimulateOpeningNewTab(
     int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     int http_status_code) {
-  CHECK(!redirect_chains_.contains(tab_id)) << "Tab already open";
+  CHECK(!base::Contains(redirect_chains_, tab_id)) << "Tab already open";
 
   redirect_chains_[tab_id] = redirect_chain;
 
@@ -189,7 +190,7 @@ void AdsClientNotifierForTesting::SimulateNavigateToURL(
     int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     int http_status_code) {
-  CHECK(redirect_chains_.contains(tab_id)) << "Tab does not exist";
+  CHECK(base::Contains(redirect_chains_, tab_id)) << "Tab does not exist";
 
   redirect_chains_[tab_id] = redirect_chain;
 
@@ -201,12 +202,12 @@ void AdsClientNotifierForTesting::SimulateNavigateToURL(
 }
 
 void AdsClientNotifierForTesting::SimulateSelectTab(int32_t tab_id) {
-  CHECK(redirect_chains_.contains(tab_id)) << "Tab does not exist";
+  CHECK(base::Contains(redirect_chains_, tab_id)) << "Tab does not exist";
 
   if (visible_tab_id_) {
     // Occlude the previously visible tab.
     CHECK_NE(*visible_tab_id_, tab_id) << "Tab already selected";
-    CHECK(redirect_chains_.contains(*visible_tab_id_));
+    CHECK(base::Contains(redirect_chains_, *visible_tab_id_));
 
     NotifyTabDidChange(*visible_tab_id_, redirect_chains_[*visible_tab_id_],
                        /*is_new_navigation=*/false, /*is_restoring=*/false,
@@ -220,7 +221,7 @@ void AdsClientNotifierForTesting::SimulateSelectTab(int32_t tab_id) {
 }
 
 void AdsClientNotifierForTesting::SimulateClosingTab(int32_t tab_id) {
-  CHECK(redirect_chains_.contains(tab_id)) << "Tab does not exist";
+  CHECK(base::Contains(redirect_chains_, tab_id)) << "Tab does not exist";
 
   NotifyDidCloseTab(tab_id);
 
