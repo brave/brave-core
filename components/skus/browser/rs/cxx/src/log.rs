@@ -1,6 +1,6 @@
 use std::fmt::{self};
 use tracing::{Event, Subscriber};
-use tracing_subscriber::fmt::format::{Format, Full};
+use tracing_subscriber::fmt::format::{Format, Full, Writer};
 use tracing_subscriber::fmt::{FmtContext, FormatEvent, FormatFields};
 use tracing_subscriber::registry::LookupSpan;
 
@@ -27,11 +27,11 @@ where
     fn format_event(
         &self,
         ctx: &FmtContext<'_, S, N>,
-        _writer: &mut dyn fmt::Write,
+        _writer: Writer<'_>,
         event: &Event<'_>,
     ) -> fmt::Result {
         let mut buf = String::new();
-        let writer = &mut buf;
+        let writer = Writer::new(&mut buf);
 
         let res = self.0.format_event(ctx, writer, event);
 
