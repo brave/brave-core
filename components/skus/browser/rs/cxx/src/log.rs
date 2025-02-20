@@ -1,12 +1,12 @@
 use std::fmt::{self};
 use tracing::{Event, Subscriber};
-use tracing_subscriber::fmt::format::{Format, Pretty};
+use tracing_subscriber::fmt::format::{Format, Full};
 use tracing_subscriber::fmt::{FmtContext, FormatEvent, FormatFields};
 use tracing_subscriber::registry::LookupSpan;
 
 use crate::ffi;
 
-pub struct CppFormatter(Format<Pretty, ()>);
+pub struct CppFormatter(Format<Full, ()>);
 
 impl CppFormatter {
     pub fn new() -> Self {
@@ -15,8 +15,6 @@ impl CppFormatter {
                 .without_time()
                 .with_ansi(false)
                 .with_level(false)
-                .pretty()
-                .with_source_location(false),
         )
     }
 }
