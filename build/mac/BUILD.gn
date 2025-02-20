@@ -392,7 +392,7 @@ if (skip_signing) {
   }
 }
 
-group("finalize_dmg_pkg") {
+group("create_dist") {
   deps = []
   if (skip_signing) {
     deps += [ ":unsigned_dmg" ]
