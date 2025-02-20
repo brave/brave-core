@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+# Android component that implements mojom interface and that is used by 
+# brave_content_browser_client.cc. youtube_injector_host.cc needs a separate
+# component to avoid a circular dependency issue.
 component("android") {
   output_name = "youtube_script_injector_browser_android"
 
