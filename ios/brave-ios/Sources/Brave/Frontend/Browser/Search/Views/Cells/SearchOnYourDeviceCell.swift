@@ -5,8 +5,8 @@
 
 import BraveUI
 import Shared
-import UIKit
 import Storage
+import UIKit
 
 class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
 
@@ -17,12 +17,12 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     let subtitle: String
     let badge: UIImage
   }
-  
+
   private let stackView = UIStackView().then {
     $0.spacing = 16.0
     $0.alignment = .center
   }
-  
+
   private let imageContainerView = UIView().then {
     $0.layer.cornerRadius = 8.0
     $0.backgroundColor = UIColor(braveSystemName: .containerHighlight)
@@ -30,7 +30,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
   private let imageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
   }
-  
+
   private let textStackView = UIStackView().then {
     $0.axis = .vertical
     $0.alignment = .leading
@@ -102,7 +102,7 @@ class SearchOnYourDeviceCell: UICollectionViewCell, CollectionViewReusable {
     )
     if site.siteType == .tab {
       titleLabel.text = site.title
-      
+
       let detailTextForTabSuggestions = NSMutableAttributedString()
       detailTextForTabSuggestions.append(
         NSAttributedString(
