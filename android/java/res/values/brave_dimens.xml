@@ -33,7 +33,7 @@
     <dimen name="shields_tooltip_arrow_width">30dp</dimen>
     <dimen name="shields_tooltip_arrow_height">15dp</dimen>
 
-    <dimen name="custom_tabs_control_container_rewards_height">0dp</dimen>
+    <dimen name="full_screen_custom_tabs_control_container_height">0dp</dimen>
 
     <dimen name="vpn_plan_margin">32dp</dimen>
 

@@ -10,28 +10,28 @@ import org.objectweb.asm.ClassVisitor;
 public class BraveBaseCustomTabActivityClassAdapter extends BraveClassVisitor {
     static String sBaseCustomTabActivityClassName =
             "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity";
-    static String sRewardsPageActivityClassName =
-            "org/chromium/chrome/browser/rewards/RewardsPageActivity";
+    static String sFullScreenCustomTabActivityClassName =
+            "org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity";
 
     public BraveBaseCustomTabActivityClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        deleteField(sRewardsPageActivityClassName, "mBaseCustomTabRootUiCoordinator");
+        deleteField(sFullScreenCustomTabActivityClassName, "mBaseCustomTabRootUiCoordinator");
         makeProtectedField(sBaseCustomTabActivityClassName, "mBaseCustomTabRootUiCoordinator");
 
-        deleteField(sRewardsPageActivityClassName, "mIntentDataProvider");
+        deleteField(sFullScreenCustomTabActivityClassName, "mIntentDataProvider");
         makeProtectedField(sBaseCustomTabActivityClassName, "mIntentDataProvider");
 
-        deleteField(sRewardsPageActivityClassName, "mToolbarCoordinator");
+        deleteField(sFullScreenCustomTabActivityClassName, "mToolbarCoordinator");
         makeProtectedField(sBaseCustomTabActivityClassName, "mToolbarCoordinator");
 
-        deleteField(sRewardsPageActivityClassName, "mTabController");
+        deleteField(sFullScreenCustomTabActivityClassName, "mTabController");
         makeProtectedField(sBaseCustomTabActivityClassName, "mTabController");
 
-        deleteField(sRewardsPageActivityClassName, "mMinimizationManagerHolder");
+        deleteField(sFullScreenCustomTabActivityClassName, "mMinimizationManagerHolder");
         makeProtectedField(sBaseCustomTabActivityClassName, "mMinimizationManagerHolder");
 
-        deleteField(sRewardsPageActivityClassName, "mCustomTabFeatureOverridesManager");
+        deleteField(sFullScreenCustomTabActivityClassName, "mCustomTabFeatureOverridesManager");
         makeProtectedField(sBaseCustomTabActivityClassName, "mCustomTabFeatureOverridesManager");
     }
 }

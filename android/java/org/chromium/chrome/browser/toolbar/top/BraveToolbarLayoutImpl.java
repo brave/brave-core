@@ -58,6 +58,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
+import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -79,7 +80,6 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
-import org.chromium.chrome.browser.rewards.RewardsPageActivity;
 import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.shields.BraveShieldsHandler;
 import org.chromium.chrome.browser.shields.BraveShieldsMenuObserver;
@@ -1105,7 +1105,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mPublisherId != null && !mPublisherId.isEmpty()) {
             rewardsUrl += "&creator=" + URLEncoder.encode(mPublisherId);
         }
-        RewardsPageActivity.showPage(getContext(), rewardsUrl);
+        FullScreenCustomTabActivity.showPage(getContext(), rewardsUrl);
     }
 
     private void maybeShowWalletPanel() {

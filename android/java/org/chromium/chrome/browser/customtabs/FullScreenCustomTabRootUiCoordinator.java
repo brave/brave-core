@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.rewards;
+package org.chromium.chrome.browser.customtabs;
 
 import android.view.View;
 
@@ -22,8 +22,6 @@ import org.chromium.chrome.browser.bookmarks.TabBookmarker;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
-import org.chromium.chrome.browser.customtabs.BaseCustomTabRootUiCoordinator;
-import org.chromium.chrome.browser.customtabs.CustomTabFeatureOverridesManager;
 import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabController;
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizeDelegate;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
@@ -49,9 +47,9 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.function.BooleanSupplier;
 
-public class RewardsCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoordinator {
+public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoordinator {
 
-    public RewardsCustomTabRootUiCoordinator(
+    public FullScreenCustomTabRootUiCoordinator(
             @NonNull AppCompatActivity activity,
             @NonNull ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             @NonNull ActivityTabProvider tabProvider,
@@ -129,6 +127,6 @@ public class RewardsCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoordi
 
     @Override
     public int getControlContainerHeightResource() {
-        return R.dimen.custom_tabs_control_container_rewards_height;
+        return R.dimen.full_screen_custom_tabs_control_container_height;
     }
 }
