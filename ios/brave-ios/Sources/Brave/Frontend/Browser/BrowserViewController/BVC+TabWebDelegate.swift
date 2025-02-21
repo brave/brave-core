@@ -227,37 +227,33 @@ extension BrowserViewController: TabWebDelegate {
         copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
         actions.append(copyCleanLinkAction)
 
-        if let braveWebView = tab.webView {
-          let shareAction = UIAction(
-            title: Strings.shareLinkActionTitle,
-            image: UIImage(systemName: "square.and.arrow.up")
-          ) { _ in
-            let touchPoint = braveWebView.lastHitPoint
-            let touchRect = CGRect(origin: touchPoint, size: .zero)
-
-            // TODO: Find a way to add fixes brave-ios#3323 and brave-ios#2961 here:
-            // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
-            // `temporaryDocument` returns the downloaded file to disk on the current tab.
-            // Using a downloaded file url results in having functions like "Save to files" available.
-            // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
-            // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
-            // This results in the fixes for #3323 and #2961 not being included in this share scenario.
-            // This is not a regression, we simply never handled this scenario in both fixes.
-            // Some possibile fixes include:
-            // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
-            // - Add custom "Save to file" functionality (needs investigation).
-            self.presentActivityViewController(
-              url,
-              sourceView: braveWebView,
-              sourceRect: touchRect,
-              arrowDirection: .any
-            )
-          }
-
-          shareAction.accessibilityLabel = "linkContextMenu.share"
-
-          actions.append(shareAction)
+        let shareAction = UIAction(
+          title: Strings.shareLinkActionTitle,
+          image: UIImage(systemName: "square.and.arrow.up")
+        ) { _ in
+          // TODO: Find a way to add fixes brave-ios#3323 and brave-ios#2961 here:
+          // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
+          // `temporaryDocument` returns the downloaded file to disk on the current tab.
+          // Using a downloaded file url results in having functions like "Save to files" available.
+          // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
+          // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
+          // This results in the fixes for #3323 and #2961 not being included in this share scenario.
+          // This is not a regression, we simply never handled this scenario in both fixes.
+          // Some possibile fixes include:
+          // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
+          // - Add custom "Save to file" functionality (needs investigation).
+          self.presentActivityViewController(
+            url,
+            sourceView: self.view,
+            sourceRect: self.view.convert(
+              self.topToolbar.shareButton.frame,
+              from: self.topToolbar.shareButton.superview
+            ),
+            arrowDirection: .any
+          )
         }
+        shareAction.accessibilityLabel = "linkContextMenu.share"
+        actions.append(shareAction)
 
         let linkPreview = Preferences.General.enableLinkPreview.value
 
@@ -483,7 +479,7 @@ extension BrowserViewController {
       window.alert=window.confirm=window.prompt=function(n){},
       [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
       """
-    tab.webView?.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: script,
       contentWorld: .defaultClient,
       asFunction: false
@@ -585,7 +581,7 @@ extension BrowserViewController {
     tab.isDisplayingBasicAuthPrompt = true
     defer { tab.isDisplayingBasicAuthPrompt = false }
 
-    if let webView = tab.webView {
+    if let webView = tab.webContentView {
       let isHidden = webView.isHidden
       defer { webView.isHidden = isHidden }
 
@@ -648,22 +644,38 @@ extension BrowserViewController {
 
     toolbarVisibilityViewModel.toolbarState = .expanded
 
+    class TabOneShotURLObservation: TabObserver {
+      init(tab: Tab, updated: @escaping (URL?) -> Void) {
+        tab.addObserver(self)
+        self.updated = updated
+      }
+
+      var updated: ((URL?) -> Void)?
+
+      func tabDidUpdateURL(_ tab: Tab) {
+        updated?(tab.url)
+        updated = nil
+        tab.removeObserver(self)
+      }
+
+      func tabWillBeDestroyed(_ tab: Tab) {
+        tab.removeObserver(self)
+      }
+    }
+
     // Wait until WebKit starts the request before selecting the new tab, otherwise the tab manager may
     // restore it as if it was a dead tab.
-    var observation: NSKeyValueObservation?
-    observation = newTab.webView?.observe(
-      \.url,
-      changeHandler: { [weak self, weak newTab] webView, _ in
-        _ = observation  // Silence write but not read warning
-        observation = nil
-        guard let self = self, let tab = newTab else { return }
+    var observation: TabOneShotURLObservation?
+    observation = TabOneShotURLObservation(tab: newTab) { [weak self, weak newTab] _ in
+      _ = observation
+      observation = nil
 
-        // When a child tab is being selected, dismiss any popups on the parent tab
-        tab.parent?.shownPromptAlert?.dismiss(animated: false)
-        self.tabManager.selectTab(tab)
-      }
-    )
+      guard let self = self, let tab = newTab else { return }
 
+      // When a child tab is being selected, dismiss any popups on the parent tab
+      tab.parent?.shownPromptAlert?.dismiss(animated: false)
+      self.tabManager.selectTab(tab)
+    }
     return newTab
   }
 }

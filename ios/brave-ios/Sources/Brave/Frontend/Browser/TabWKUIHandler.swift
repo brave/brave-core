@@ -27,7 +27,7 @@ class TabWKUIHandler: NSObject, WKUIDelegate {
         configuration: configuration
       )
     else { return nil }
-    return childTab.webView
+    return childTab.internalTabWebViewDoNotUse
   }
 
   func webViewDidClose(_ webView: WKWebView) {

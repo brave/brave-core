@@ -50,7 +50,9 @@ class PrintScriptHandler: TabContentScript {
       return
     }
 
-    if let webView = tab.webView, let url = webView.url {
+    if let url = tab.url, let webContentView = tab.webContentView,
+      let viewPrintFormatter = tab.viewPrintFormatter
+    {
       // If the main-frame's URL has changed
       if let domain = url.baseDomain, domain != currentDomain, message.frameInfo.isMainFrame {
         isBlocking = false
@@ -67,7 +69,7 @@ class PrintScriptHandler: TabContentScript {
         self?.isPresentingController = true
 
         let printController = UIPrintInteractionController.shared
-        printController.printFormatter = webView.viewPrintFormatter()
+        printController.printFormatter = viewPrintFormatter
         printController.present(
           animated: true,
           completionHandler: { _, _, _ in
@@ -112,10 +114,10 @@ class PrintScriptHandler: TabContentScript {
         if UIDevice.current.userInterfaceIdiom == .pad,
           let popoverController = suppressSheet.popoverPresentationController
         {
-          popoverController.sourceView = webView
+          popoverController.sourceView = webContentView
           popoverController.sourceRect = CGRect(
-            x: webView.bounds.midX,
-            y: webView.bounds.midY,
+            x: webContentView.bounds.midX,
+            y: webContentView.bounds.midY,
             width: 0,
             height: 0
           )

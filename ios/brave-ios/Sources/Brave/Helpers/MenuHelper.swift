@@ -17,8 +17,6 @@ import UIKit
   @objc optional func menuHelperReveal()
   /// Triggered when "Hide" menu item is selected
   @objc optional func menuHelperSecure()
-  /// Triggered when "Find in Page" menu item is selected
-  @objc optional func menuHelperFindInPage()
   /// Triggered when "Search with Brave" menu item is selected
   @objc optional func menuHelperSearchWithBrave()
 }

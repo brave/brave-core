@@ -19,8 +19,10 @@ extension BrowserViewController: TabManagerDelegate {
   func tabManager(_ tabManager: TabManager, didSelectedTabChange selected: Tab?, previous: Tab?) {
     // Remove the old accessibilityLabel. Since this webview shouldn't be visible, it doesn't need it
     // and having multiple views with the same label confuses tests.
-    if let wv = previous?.webView {
-      toolbarVisibilityViewModel.endScrollViewObservation(wv.scrollView)
+    if let wv = previous?.webContentView {
+      if let scrollView = previous?.webScrollView {
+        toolbarVisibilityViewModel.endScrollViewObservation(scrollView)
+      }
 
       wv.endEditing(true)
       wv.accessibilityLabel = nil
@@ -30,8 +32,8 @@ extension BrowserViewController: TabManagerDelegate {
     }
 
     toolbar?.setSearchButtonState(url: selected?.url)
-    if let tab = selected, let webView = tab.webView {
-      toolbarVisibilityViewModel.beginObservingScrollView(webView.scrollView)
+    if let tab = selected, let webView = tab.webContentView, let scrollView = tab.webScrollView {
+      toolbarVisibilityViewModel.beginObservingScrollView(scrollView)
       toolbarVisibilityCancellable = toolbarVisibilityViewModel.objectWillChange
         .receive(on: DispatchQueue.main)
         .sink(receiveValue: { [weak self] in
@@ -47,8 +49,8 @@ extension BrowserViewController: TabManagerDelegate {
       recordScreenTimeUsage(for: tab)
 
       if let url = tab.url, !InternalURL.isValid(url: url) {
-        let previousEstimatedProgress = previous?.webView?.estimatedProgress ?? 1.0
-        let selectedEstimatedProgress = webView.estimatedProgress
+        let previousEstimatedProgress = previous?.estimatedProgress ?? 1.0
+        let selectedEstimatedProgress = tab.estimatedProgress
 
         // Progress should be updated only if there's a difference between tabs.
         // Otherwise we do nothing, so switching between fully loaded tabs won't show the animation.
@@ -82,39 +84,9 @@ extension BrowserViewController: TabManagerDelegate {
         }
       }
 
-      // This is a terrible workaround for a bad iOS 12 bug where PDF
-      // content disappears any time the view controller changes (i.e.
-      // the user taps on the tabs tray). It seems the only way to get
-      // the PDF to redraw is to either reload it or revisit it from
-      // back/forward list. To try and avoid hitting the network again
-      // for the same PDF, we revisit the current back/forward item and
-      // restore the previous scrollview zoom scale and content offset
-      // after a short 100ms delay. *facepalm*
-      //
-      // https://bugzilla.mozilla.org/show_bug.cgi?id=1516524
-      if tab.mimeType == MIMEType.pdf {
-        let previousZoomScale = webView.scrollView.zoomScale
-        let previousContentOffset = webView.scrollView.contentOffset
-
-        if let currentItem = webView.backForwardList.currentItem {
-          webView.go(to: currentItem)
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-          webView.scrollView.setZoomScale(previousZoomScale, animated: false)
-          webView.scrollView.setContentOffset(previousContentOffset, animated: false)
-        }
-      }
-
       webView.accessibilityLabel = Strings.webContentAccessibilityLabel
       webView.accessibilityIdentifier = "contentView"
       webView.accessibilityElementsHidden = false
-
-      if webView.url == nil {
-        // The web view can go gray if it was zombified due to memory pressure.
-        // When this happens, the URL is nil, so try restoring the page upon selection.
-        tab.reload()
-      }
     }
 
     updateToolbarUsingTabManager(tabManager)
@@ -201,7 +173,7 @@ extension BrowserViewController: TabManagerDelegate {
   }
 
   func tabManager(_ tabManager: TabManager, willRemoveTab tab: Tab) {
-    tab.webView?.removeFromSuperview()
+    tab.webContentView?.removeFromSuperview()
   }
 
   func tabManager(_ tabManager: TabManager, didRemoveTab tab: Tab) {

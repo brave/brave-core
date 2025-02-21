@@ -37,7 +37,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     super.init()
 
     tab.addObserver(self)
-    tab.webView?.addGestureRecognizer(
+    tab.webContentView?.addGestureRecognizer(
       UILongPressGestureRecognizer(target: self, action: #selector(onLongPressedWebView(_:))).then {
         $0.delegate = self
       }
@@ -134,8 +134,8 @@ class PlaylistScriptHandler: NSObject, TabContentScript, TabObserver {
     item = PlaylistInfo(
       name: item.name,
       src: item.src,
-      pageSrc: tab.webView?.url?.absoluteString ?? item.pageSrc,
-      pageTitle: tab.webView?.title ?? item.pageTitle,
+      pageSrc: tab.url?.absoluteString ?? item.pageSrc,
+      pageTitle: tab.title ?? item.pageTitle,
       mimeType: item.mimeType,
       duration: item.duration,
       lastPlayedOffset: 0.0,
@@ -278,7 +278,7 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
 
 extension PlaylistScriptHandler {
   static func getCurrentTime(
-    webView: TabWebView,
+    tab: Tab,
     nodeTag: String,
     completion: @escaping (Double) -> Void
   ) {
@@ -287,7 +287,7 @@ extension PlaylistScriptHandler {
       return
     }
 
-    webView.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(mediaCurrentTimeFromTag)",
       args: [nodeTag, Self.scriptId],
       contentWorld: Self.scriptSandbox,
@@ -313,7 +313,7 @@ extension PlaylistScriptHandler {
   static func stopPlayback(tab: Tab?) {
     guard let tab = tab else { return }
 
-    tab.webView?.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(stopMediaPlayback)",
       args: [Self.scriptId],
       contentWorld: Self.scriptSandbox,

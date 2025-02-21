@@ -426,8 +426,7 @@ extension Tab: BraveWalletProviderDelegate {
 extension Tab: BraveWalletEventsListener {
   func emitEthereumEvent(_ event: Web3ProviderEvent) {
     guard !isPrivate,
-      Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
-      let webView = self.webView
+      Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue
     else {
       return
     }
@@ -435,7 +434,7 @@ extension Tab: BraveWalletEventsListener {
     if let eventArgs = event.arguments {
       arguments.append(eventArgs)
     }
-    webView.evaluateSafeJavaScript(
+    evaluateSafeJavaScript(
       functionName: "window.ethereum.emit",
       args: arguments,
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
@@ -494,19 +493,19 @@ extension Tab: BraveWalletEventsListener {
         return "undefined"
       }
     }
-    guard let webView = webView, let provider = walletEthProvider else {
+    guard let provider = walletEthProvider else {
       return
     }
 
     let chainId = await provider.chainId()
-    await webView.evaluateSafeJavaScript(
+    await evaluateSafeJavaScript(
       functionName: "window.ethereum.chainId = \"\(chainId)\"",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
     )
 
     let networkVersion = valueOrUndefined(Int(chainId.removingHexPrefix, radix: 16))
-    await webView.evaluateSafeJavaScript(
+    await evaluateSafeJavaScript(
       functionName: "window.ethereum.networkVersion = \"\(networkVersion)\"",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
@@ -532,7 +531,7 @@ extension Tab: BraveWalletEventsListener {
         selectedAccount = valueOrUndefined(Optional<String>.none)
       }
     }
-    await webView.evaluateSafeJavaScript(
+    await evaluateSafeJavaScript(
       functionName: "window.ethereum.selectedAddress = \(selectedAccount)",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
@@ -554,20 +553,18 @@ extension Tab: BraveWalletEventsListener {
 extension Tab: BraveWalletSolanaEventsListener {
   func accountChangedEvent(account: String?) {
     Task {
-      if let webView = webView {
-        let script: String
-        if let account = account {
-          script =
-            "if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) { window.solana.emit('accountChanged', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(account.htmlEntityEncodedString)')) }"
-        } else {
-          script = "window.solana.emit('accountChanged')"
-        }
-        await webView.evaluateSafeJavaScript(
-          functionName: script,
-          contentWorld: .page,
-          asFunction: false
-        )
+      let script: String
+      if let account = account {
+        script =
+          "if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) { window.solana.emit('accountChanged', new \(UserScriptManager.walletSolanaNameSpace).solanaWeb3.PublicKey('\(account.htmlEntityEncodedString)')) }"
+      } else {
+        script = "window.solana.emit('accountChanged')"
       }
+      await evaluateSafeJavaScript(
+        functionName: script,
+        contentWorld: .page,
+        asFunction: false
+      )
       await updateSolanaProperties()
     }
   }
@@ -577,8 +574,7 @@ extension Tab: BraveWalletSolanaEventsListener {
   }
 
   func emitSolanaEvent(_ event: Web3ProviderEvent) {
-    guard Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
-      let webView = webView
+    guard Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue
     else {
       return
     }
@@ -587,7 +583,7 @@ extension Tab: BraveWalletSolanaEventsListener {
       if let eventArgs = event.arguments {
         arguments.append(eventArgs)
       }
-      await webView.evaluateSafeJavaScript(
+      await evaluateSafeJavaScript(
         functionName: "window.solana.emit",
         args: arguments,
         contentWorld: .page
@@ -597,13 +593,12 @@ extension Tab: BraveWalletSolanaEventsListener {
 
   @MainActor func updateSolanaProperties() async {
     guard Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
-      let webView = webView,
       let provider = walletSolProvider
     else {
       return
     }
     let isConnected = await provider.isConnected()
-    await webView.evaluateSafeJavaScript(
+    await evaluateSafeJavaScript(
       functionName: "window.solana.isConnected = \(isConnected)",
       contentWorld: .page,
       asFunction: false
@@ -613,7 +608,7 @@ extension Tab: BraveWalletSolanaEventsListener {
       let publicKey = await keyringService.allAccounts().solDappSelectedAccount?.address,
       self.isSolanaAccountConnected(publicKey)
     {
-      await webView.evaluateSafeJavaScript(
+      await evaluateSafeJavaScript(
         functionName: """
           if (\(UserScriptManager.walletSolanaNameSpace).solanaWeb3) {
             window.__firefox__.execute(function($) {

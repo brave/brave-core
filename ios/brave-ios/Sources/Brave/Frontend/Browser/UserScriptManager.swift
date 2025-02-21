@@ -276,14 +276,17 @@ class UserScriptManager {
     }
   }
 
-  public func loadScripts(into webView: WKWebView, scripts: Set<ScriptType>) {
+  public func loadScripts(
+    into userContentController: WKUserContentController,
+    scripts: Set<ScriptType>
+  ) {
     if Preferences.UserScript.blockAllScripts.value {
       return
     }
 
     var scripts = scripts
 
-    webView.configuration.userContentController.do { scriptController in
+    userContentController.do { scriptController in
       scriptController.removeAllUserScripts()
 
       // Inject all base scripts
@@ -334,10 +337,7 @@ class UserScriptManager {
       return
     }
 
-    guard let webView = tab.webView else {
-      Logger.module.info("Injecting Scripts into a Tab that has no WebView")
-      return
-    }
+    let userContentController = tab.configuration.userContentController
 
     let logComponents = [
       userScripts.sorted(by: { $0.rawValue < $1.rawValue }).map { scriptType in
@@ -350,9 +350,9 @@ class UserScriptManager {
     ContentBlockerManager.log.debug(
       "Loaded \(userScripts.count + customScripts.count) script(s): \n\(logComponents.joined(separator: "\n"))"
     )
-    loadScripts(into: webView, scripts: userScripts)
+    loadScripts(into: userContentController, scripts: userScripts)
 
-    webView.configuration.userContentController.do { scriptController in
+    userContentController.do { scriptController in
       // TODO: Somehow refactor wallet and get rid of this
       // Inject WALLET specific scripts
 

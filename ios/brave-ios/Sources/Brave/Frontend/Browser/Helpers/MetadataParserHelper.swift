@@ -25,15 +25,14 @@ class MetadataParserHelper: TabEventHandler {
   func tab(_ tab: Tab, didChangeURL url: URL) {
     // Get the metadata out of the page-metadata-parser, and into a type safe struct as soon
     // as possible.
-    guard let webView = tab.webView,
-      let url = webView.url, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    guard let url = tab.url, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
     else {
       // TabEvent.post(.pageMetadataNotAvailable, for: tab)
       tab.pageMetadata = nil
       return
     }
 
-    webView.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()",
       contentWorld: .defaultClient,
       asFunction: false

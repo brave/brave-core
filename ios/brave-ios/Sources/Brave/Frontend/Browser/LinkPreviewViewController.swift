@@ -26,14 +26,13 @@ class LinkPreviewViewController: UIViewController {
 
   override func viewDidLoad() {
     guard let parentTab = parentTab,
-      let tabWebView = parentTab.webView,
       let browserController
     else {
       return
     }
 
     currentTab = Tab(
-      configuration: tabWebView.configuration,
+      configuration: parentTab.configuration,
       type: parentTab.isPrivate ? .private : .regular,
       tabGeneratorAPI: nil
     ).then {
@@ -42,11 +41,11 @@ class LinkPreviewViewController: UIViewController {
       $0.addPolicyDecider(browserController)
       $0.webDelegate = browserController
       $0.downloadDelegate = browserController
-      $0.webView?.scrollView.layer.masksToBounds = true
+      $0.webScrollView?.layer.masksToBounds = true
     }
 
     guard let currentTab = currentTab,
-      let webView = currentTab.webView
+      let webView = currentTab.webContentView
     else {
       return
     }
@@ -57,18 +56,17 @@ class LinkPreviewViewController: UIViewController {
     Task(priority: .userInitiated) {
       let ruleLists = await AdBlockGroupsManager.shared.ruleLists(for: domain)
       for ruleList in ruleLists {
-        webView.configuration.userContentController.add(ruleList)
+        currentTab.configuration.userContentController.add(ruleList)
       }
     }
 
     webView.frame = view.bounds
     view.addSubview(webView)
 
-    webView.load(URLRequest(url: url))
+    currentTab.loadRequest(URLRequest(url: url))
   }
 
   deinit {
-    self.currentTab?.webView?.navigationDelegate = nil
     if let browserController {
       currentTab?.removePolicyDecider(browserController)
     }
