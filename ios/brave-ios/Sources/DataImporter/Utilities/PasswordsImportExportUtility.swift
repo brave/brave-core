@@ -29,7 +29,14 @@ class PasswordsImportExportUtility {
 
           self.state = .none
 
-          Logger.module.debug("Passwords Import - Import Completed")
+          if results.status == .success || results.status == .none {
+            Logger.module.debug("Passwords Import - Import Completed")
+          } else {
+            Logger.module.debug(
+              "Passwords Import - Import Completed With Status: \(String(describing: results.status))"
+            )
+          }
+
           continuation.resume(returning: results)
         }
       }

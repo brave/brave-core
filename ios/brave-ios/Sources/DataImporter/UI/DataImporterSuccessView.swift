@@ -20,11 +20,11 @@ struct DataImporterSuccessView: View {
 
         VStack {
           Text(Strings.DataImporter.importStateSuccessTitle)
-            .font(.headline)
+            .font(.title)
             .foregroundColor(Color(braveSystemName: .textPrimary))
 
           Text(Strings.DataImporter.importStateSuccessMessage)
-            .font(.footnote)
+            .font(.subheadline)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
         }
         .multilineTextAlignment(.center)
