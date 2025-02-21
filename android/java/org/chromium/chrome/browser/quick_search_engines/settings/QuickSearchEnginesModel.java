@@ -5,18 +5,35 @@
 
 package org.chromium.chrome.browser.quick_search_engines.settings;
 
+import androidx.annotation.IntDef;
+
 public class QuickSearchEnginesModel {
+    @IntDef({
+        QuickSearchEnginesModelType.SEARCH_ENGINE,
+        QuickSearchEnginesModelType.AI_ASSISTANT,
+    })
+    public @interface QuickSearchEnginesModelType {
+        int SEARCH_ENGINE = 0;
+        int AI_ASSISTANT = 1;
+    }
+
     private String mShortName;
     private String mKeyword;
     private String mUrl;
     private boolean mIsEnabled;
+    private @QuickSearchEnginesModelType int mType;
 
     public QuickSearchEnginesModel(
-            String shortName, String keyword, String url, boolean isEnabled) {
+            String shortName,
+            String keyword,
+            String url,
+            boolean isEnabled,
+            @QuickSearchEnginesModelType int type) {
         mShortName = shortName;
         mKeyword = keyword;
         mUrl = url;
         mIsEnabled = isEnabled;
+        mType = type;
     }
 
     public String getShortName() {
@@ -37,5 +54,9 @@ public class QuickSearchEnginesModel {
 
     public void setEnabled(boolean isEnabled) {
         mIsEnabled = isEnabled;
+    }
+
+    public @QuickSearchEnginesModelType int getType() {
+        return mType;
     }
 }
