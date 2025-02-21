@@ -112,9 +112,8 @@ class DataImportModel: ObservableObject {
       self.importError = error
 
       if case .failedToImportPasswordsDueToConflict = error {
-        Task.delayed(bySeconds: 1.0) { @MainActor in
-          self.importState = .dataConflict
-        }
+        try? await Task.sleep(seconds: 1.0)
+        self.importState = .dataConflict
       } else {
         self.importState = .failure
       }
@@ -171,9 +170,8 @@ class DataImportModel: ObservableObject {
       self.importError = error
 
       if case .failedToImportPasswordsDueToConflict = error {
-        Task.delayed(bySeconds: 1.0) { @MainActor in
-          self.importState = .dataConflict
-        }
+        try? await Task.sleep(seconds: 1.0)
+        self.importState = .dataConflict
       } else {
         self.importState = .failure
       }
