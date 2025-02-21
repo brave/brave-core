@@ -58,6 +58,7 @@ public struct AIChatAdvancedSettingsView: View {
       .navigationViewStyle(.stack)
       .onAppear {
         Task { @MainActor in
+          await model.getInitialState()
           await model.refreshPremiumStatus()
           await viewModel.fetchCredentialSummary()
         }
@@ -68,6 +69,7 @@ public struct AIChatAdvancedSettingsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
           Task { @MainActor in
+            await model.getInitialState()
             await model.refreshPremiumStatus()
             await viewModel.fetchCredentialSummary()
           }
