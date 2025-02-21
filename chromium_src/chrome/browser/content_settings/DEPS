@@ -1,3 +1,5 @@
 include_rules = [
+  "+brave/components/brave_shields/content/browser",
+  "+brave/components/brave_shields/core/common",
   "+brave/components/content_settings/core/browser",
 ]
