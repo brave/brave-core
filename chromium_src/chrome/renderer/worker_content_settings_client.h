@@ -40,6 +40,8 @@ class WorkerContentSettingsClient_BraveImpl
   WorkerContentSettingsClient_BraveImpl(
       const WorkerContentSettingsClient_BraveImpl& other);
 
+  void EnsureShieldsSettings();
+
   brave_shields::mojom::ShieldsSettingsPtr shields_settings_;
 };
 
