@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/component_export.h"
 #include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/json/json_value_converter.h"
@@ -31,12 +32,18 @@ namespace youtube_script_injector {
 // "extra_controls_fullscreen_script_path_", and
 // "extra_controls_pip_script_path_" give a path relative to the component under
 // scripts directory.
-class YouTubeJson {
+class COMPONENT_EXPORT(YOUTUBE_SCRIPT_INJECTOR_BROWSER_CORE) YouTubeJson {
  public:
   YouTubeJson();
   ~YouTubeJson();
   YouTubeJson(
       const YouTubeJson& other);  // needed for std::optional<YouTubeJson>
+
+  enum class ScriptType {
+    PLAYBACK_VIDEO,
+    FULLSCREEN,
+    PIP,
+  };
 
   // Registers the mapping between JSON field names and the members in this
   // class.
@@ -47,15 +54,8 @@ class YouTubeJson {
   static std::optional<YouTubeJson> ParseJson(const std::string& contents);
 
   // Getters.
-  const base::FilePath& GetPlaybackVideoScript() const {
-    return playback_video_script_path_;
-  }
-  const base::FilePath& GetFullscreenScript() const {
-    return extra_controls_fullscreen_script_path_;
-  }
-  const base::FilePath& GetPipScript() const {
-    return extra_controls_pip_script_path_;
-  }
+  const base::FilePath& GetScript(ScriptType type) const;
+
   int GetVersion() const { return version_; }
 
  private:
