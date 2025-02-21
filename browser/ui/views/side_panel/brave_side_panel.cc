@@ -19,8 +19,10 @@
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
@@ -88,6 +90,10 @@ BraveSidePanel::~BraveSidePanel() {
 
 void BraveSidePanel::UpdateWidthOnEntryChanged() {
   // Do nothing.
+}
+
+bool BraveSidePanel::ShouldRestrictMaxWidth() const {
+  return false;
 }
 
 void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {
