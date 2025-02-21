@@ -281,8 +281,8 @@ pub struct CppSDK {
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> {
     match LogTracer::init()
     {
-        Ok(_) => println!("LogTracer - init success"),
-        Err(_) => println!("LogTracer - maybe already initialized"),
+        Ok(_) => debug!("LogTracer - init success"),
+        Err(_) => debug!("LogTracer - maybe already initialized"),
     };
 
     let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
