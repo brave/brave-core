@@ -727,6 +727,10 @@ TEST_F(P3AMessageManagerTest, ActivationDate) {
 
   auto ref_time = base::Time::Now();
 
+  message_manager_->UpdateMetricValue(activation_metric, 0);
+  activation_date = meta.GetActivationDate(activation_metric);
+  ASSERT_FALSE(activation_date);
+
   message_manager_->UpdateMetricValue(activation_metric, 1);
 
   activation_date = meta.GetActivationDate(activation_metric);
