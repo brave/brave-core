@@ -26,8 +26,6 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import org.jni_zero.CalledByNative;
-
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browserservices.intents.BrowserServicesIntentDataProvider;
@@ -38,7 +36,6 @@ import org.chromium.chrome.browser.customtabs.content.CustomTabActivityTabContro
 import org.chromium.chrome.browser.customtabs.features.minimizedcustomtab.CustomTabMinimizationManagerHolder;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbarCoordinator;
 import org.chromium.chrome.browser.ui.RootUiCoordinator;
-import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.util.ColorUtils;
 
 /** New Rewards 3.0 custom tab activity */
@@ -116,11 +113,6 @@ public class RewardsPageActivity extends CustomTabActivity {
         IntentUtils.addTrustedIntentExtras(intent);
 
         context.startActivity(intent);
-    }
-
-    @CalledByNative
-    private static void openURLForRewardsPageActivity(String url) {
-        TabUtils.openURLWithBraveActivity(url);
     }
 
     @Override

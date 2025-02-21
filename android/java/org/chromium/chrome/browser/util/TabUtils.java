@@ -27,6 +27,8 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 
+import org.jni_zero.CalledByNative;
+
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
@@ -279,6 +281,12 @@ public class TabUtils {
         }
     }
 
+    /**
+     * Brings the ChromeTabbedActivity to the foreground of the screen. Creates an intent that
+     * clears the activity stack and brings ChromeTabbedActivity to the top with ACTION_VIEW.
+     *
+     * @param activity The activity context used to create and start the intent
+     */
     public static void bringChromeTabbedActivityToTheTop(Activity activity) {
         Intent braveActivityIntent = new Intent(activity, ChromeTabbedActivity.class);
         braveActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -296,6 +304,14 @@ public class TabUtils {
         TabUtils.bringChromeTabbedActivityToTheTop(activity);
     }
 
+    /**
+     * Opens a URL in a new or existing tab using BraveActivity. This method attempts to open the
+     * URL in BraveActivity and bring it to the foreground. If BraveActivity cannot be found, logs
+     * an error.
+     *
+     * @param url The URL to open in BraveActivity
+     */
+    @CalledByNative
     public static void openURLWithBraveActivity(String url) {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
