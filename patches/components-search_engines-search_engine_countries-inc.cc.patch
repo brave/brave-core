@@ -1,0 +1,12 @@
+diff --git a/components/search_engines/search_engine_countries-inc.cc b/components/search_engines/search_engine_countries-inc.cc
+index 02ae0fe7ff54f56af586a240386b32459b9ec1d0..fa722fb497072e41cd3fc5dd03331b3a44c23f54 100644
+--- a/components/search_engines/search_engine_countries-inc.cc
++++ b/components/search_engines/search_engine_countries-inc.cc
+@@ -277,7 +277,6 @@ constexpr EngineAndTier engines_DE[] = {
+   {SearchEngineTier::kTopEngines, &bing},
+   {SearchEngineTier::kRemainingEngines, &yahoo_de},
+   {SearchEngineTier::kRemainingEngines, &qwant},
+-  {SearchEngineTier::kRemainingEngines, &startpage},
+ };
+ 
+ // Denmark
