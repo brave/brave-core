@@ -533,6 +533,8 @@ source_set("ui") {
       "views/frame/brave_browser_view.h",
       "views/frame/brave_browser_view_layout.cc",
       "views/frame/brave_browser_view_layout.h",
+      "views/frame/brave_contents_layout_manager.cc",
+      "views/frame/brave_contents_layout_manager.h",
       "views/frame/brave_contents_view_util.cc",
       "views/frame/brave_contents_view_util.h",
       "views/frame/brave_non_client_hit_test_helper.cc",
@@ -637,6 +639,7 @@ source_set("ui") {
       "//brave/browser/ui/side_panel",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
+      "//chrome/browser/enterprise/watermark:watermark_view_lib",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",
@@ -645,6 +648,10 @@ source_set("ui") {
       "//chrome/browser/ui/views/toolbar",
       "//components/bookmarks/browser",
     ]
+
+    if (enable_glic) {
+      deps += [ "//chrome/browser/glic" ]
+    }
 
     if (enable_brave_vpn) {
       if (is_win) {
