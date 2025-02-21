@@ -17,9 +17,9 @@ import os.log
 
 class CustomEngineViewController: UIViewController {
 
-  // MARK: AddButtonType
+  // MARK: DoneButtonStatus
 
-  enum AddButtonType {
+  enum DoneButtonStatus {
     case enabled
     case disabled
     case loading
@@ -28,8 +28,9 @@ class CustomEngineViewController: UIViewController {
   // MARK: Section
 
   private enum Section: Int, CaseIterable {
-    case url
     case title
+    case url
+    case button
   }
 
   // MARK: Constants
@@ -48,7 +49,8 @@ class CustomEngineViewController: UIViewController {
   // MARK: Properties
 
   var profile: Profile
-  var privateBrowsingManager: PrivateBrowsingManager
+  var isPrivateBrowsing: Bool
+  var onAddSucceed: (() -> Void)?
 
   private var urlText: String?
   private var titleText: String?
@@ -71,6 +73,19 @@ class CustomEngineViewController: UIViewController {
 
   private var engineToBeEdited: OpenSearchEngine?
   var customEngineActionType: CustomEngineActionType = .add
+  var doneButtonStatus: DoneButtonStatus = .disabled {
+    didSet {
+      if doneButtonStatus == .disabled {
+        isAutoAddEnabled = false
+      }
+      ensureMainThread {
+        self.tableView.reloadRows(
+          at: [IndexPath(row: 0, section: Section.button.rawValue)],
+          with: .none
+        )
+      }
+    }
+  }
 
   var isAutoAddEnabled = false
 
@@ -82,12 +97,22 @@ class CustomEngineViewController: UIViewController {
 
   var faviconTask: Task<Void, Error>?
   var faviconImage: UIImage?
-
   private lazy var spinnerView = UIActivityIndicatorView(style: .medium).then {
     $0.hidesWhenStopped = true
   }
 
-  private var tableView = UITableView(frame: .zero, style: .grouped)
+  private var titleLabel = UILabel().then {
+    let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .title3)
+    let font = UIFont.systemFont(ofSize: desc.pointSize, weight: .semibold)
+    $0.font = font
+    $0.textColor = UIColor(braveSystemName: .textPrimary)
+    $0.textAlignment = .center
+    $0.numberOfLines = 0
+    $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+    $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
+    $0.text = Strings.searchSettingAddCustomEngineCellTitle
+  }
+  private var tableView = UITableView(frame: .zero, style: .insetGrouped)
 
   private var searchEngineTimer: Timer?
 
@@ -95,11 +120,11 @@ class CustomEngineViewController: UIViewController {
 
   init(
     profile: Profile,
-    privateBrowsingManager: PrivateBrowsingManager,
+    isPrivateBrowsing: Bool,
     engineToBeEdited: OpenSearchEngine? = nil
   ) {
     self.profile = profile
-    self.privateBrowsingManager = privateBrowsingManager
+    self.isPrivateBrowsing = isPrivateBrowsing
 
     self.engineToBeEdited = engineToBeEdited
     if engineToBeEdited != nil {
@@ -116,12 +141,25 @@ class CustomEngineViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    title = Strings.searchSettingAddCustomEngineCellTitle
+    navigationController?.do {
+      let appearance = UINavigationBarAppearance()
+      appearance.configureWithTransparentBackground()
+      appearance.backgroundColor = .clear
+      $0.navigationBar.scrollEdgeAppearance = appearance
+    }
+
+    navigationItem.do {
+      $0.rightBarButtonItem = UIBarButtonItem(
+        barButtonSystemItem: .close,
+        target: self,
+        action: #selector(cancel)
+      )
+    }
 
     setup()
     doLayout()
 
-    changeAddEditButton(for: customEngineActionType == .add ? .enabled : .disabled)
+    doneButtonStatus = customEngineActionType == .add ? .enabled : .disabled
   }
 
   // MARK: Internal
@@ -130,6 +168,7 @@ class CustomEngineViewController: UIViewController {
     tableView.do {
       $0.register(CustomEngineURLInputTableViewCell.self)
       $0.register(CustomEngineTitleInputTableViewCell.self)
+      $0.register(CustomEngineAddButtonCell.self)
       $0.registerHeaderFooter(SearchEngineTableViewHeader.self)
       $0.dataSource = self
       $0.delegate = self
@@ -137,36 +176,19 @@ class CustomEngineViewController: UIViewController {
   }
 
   private func doLayout() {
+    view.backgroundColor =
+      traitCollection.userInterfaceStyle == .dark
+      ? .secondarySystemGroupedBackground : .systemGroupedBackground
+    view.addSubview(titleLabel)
     view.addSubview(tableView)
 
-    tableView.snp.makeConstraints { make in
-      make.edges.equalTo(self.view)
+    titleLabel.snp.makeConstraints {
+      $0.top.equalToSuperview().inset(48.0)
+      $0.leading.trailing.equalToSuperview()
     }
-  }
-
-  func changeAddEditButton(for type: AddButtonType) {
-    ensureMainThread {
-      switch type {
-      case .enabled:
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          barButtonSystemItem: .done,
-          target: self,
-          action: #selector(self.checkAddEngineType)
-        )
-        self.spinnerView.stopAnimating()
-      case .disabled:
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          barButtonSystemItem: .done,
-          target: self,
-          action: #selector(self.checkAddEngineType)
-        )
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
-        self.spinnerView.stopAnimating()
-        self.isAutoAddEnabled = false
-      case .loading:
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.spinnerView)
-        self.spinnerView.startAnimating()
-      }
+    tableView.snp.makeConstraints {
+      $0.top.equalTo(titleLabel.snp.bottom).offset(20)
+      $0.leading.bottom.trailing.equalToSuperview()
     }
   }
 
@@ -196,7 +218,8 @@ class CustomEngineViewController: UIViewController {
 
   // MARK: Actions
 
-  @objc func checkAddEngineType() {
+  @objc func onDone() {
+    guard doneButtonStatus != .loading else { return }
     if isAutoAddEnabled {
       addOpenSearchEngine()
     } else {
@@ -220,12 +243,12 @@ class CustomEngineViewController: UIViewController {
       return
     }
 
-    changeAddEditButton(for: .disabled)
+    doneButtonStatus = .disabled
     addSearchEngine(with: urlQuery, title: title)
   }
 
   @objc func cancel() {
-    navigationController?.popViewController(animated: true)
+    dismiss(animated: true)
   }
 }
 
@@ -237,12 +260,37 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
     return Section.allCases.count
   }
 
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    switch indexPath.section {
+    case Section.url.rawValue:
+      return 88
+    case Section.button.rawValue:
+      return 44
+    default:
+      return UITableView.automaticDimension
+    }
+  }
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 1
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     switch indexPath.section {
+    case Section.title.rawValue:
+      let cell =
+        tableView.dequeueReusableCell(for: indexPath) as CustomEngineTitleInputTableViewCell
+      cell.do {
+        $0.delegate = self
+        $0.selectionStyle = .none
+      }
+
+      if let engineToBeEdited = engineToBeEdited {
+        let engineName = engineToBeEdited.shortName
+        cell.textfield.text = engineName
+        titleText = engineName
+      }
+      return cell
     case Section.url.rawValue:
       let cell = tableView.dequeueReusableCell(for: indexPath) as CustomEngineURLInputTableViewCell
       cell.do {
@@ -257,38 +305,36 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
       }
       return cell
     default:
-      let cell =
-        tableView.dequeueReusableCell(for: indexPath) as CustomEngineTitleInputTableViewCell
-      cell.do {
-        $0.delegate = self
-        $0.selectionStyle = .none
-      }
-
-      if let engineToBeEdited = engineToBeEdited {
-        let engineName = engineToBeEdited.shortName
-        cell.textfield.text = engineName
-        titleText = engineName
-      }
+      let cell = tableView.dequeueReusableCell(for: indexPath) as CustomEngineAddButtonCell
+      cell.doneButton.addTarget(
+        self,
+        action: #selector(onDone),
+        for: .touchUpInside
+      )
+      cell.updateButtonStatus(doneButtonStatus)
+      cell.selectionStyle = .none
+      cell.backgroundColor = .clear
       return cell
     }
   }
 
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-    guard section == Section.url.rawValue else { return nil }
-
-    return Strings.CustomSearchEngine.customEngineAddDesription
+    if section == Section.url.rawValue {
+      return Strings.CustomSearchEngine.customEngineAddDesription
+    }
+    return nil
   }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard section != Section.button.rawValue else { return nil }
+
     let headerView = tableView.dequeueReusableHeaderFooter() as SearchEngineTableViewHeader
-
     switch section {
-    case Section.url.rawValue:
-      headerView.titleLabel.text = Strings.URL.uppercased()
-    default:
+    case Section.title.rawValue:
       headerView.titleLabel.text = Strings.title.uppercased()
+    default:
+      headerView.titleLabel.text = Strings.URL.uppercased()
     }
-
     return headerView
   }
 }
@@ -298,7 +344,7 @@ extension CustomEngineViewController: UITableViewDelegate, UITableViewDataSource
 extension CustomEngineViewController {
 
   fileprivate func addSearchEngine(with urlQuery: String, title: String) {
-    changeAddEditButton(for: .loading)
+    doneButtonStatus = .loading
 
     let safeURLQuery = urlQuery.trimmingCharacters(in: .whitespacesAndNewlines)
     let safeTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -309,7 +355,7 @@ extension CustomEngineViewController {
       if let error = error {
         self.handleError(error: error)
 
-        self.changeAddEditButton(for: .disabled)
+        doneButtonStatus = .disabled
       } else if let engine = engine {
         Task { @MainActor in
           do {
@@ -324,10 +370,11 @@ extension CustomEngineViewController {
                 )
               }
             }
+            self.onAddSucceed?()
             self.cancel()
           } catch {
             self.handleError(error: SearchEngineError.failedToSave)
-            self.changeAddEditButton(for: .enabled)
+            self.doneButtonStatus = .enabled
           }
         }
       }
@@ -383,7 +430,7 @@ extension CustomEngineViewController {
     faviconTask = Task { @MainActor in
       let favicon = try? await FaviconFetcher.loadIcon(
         url: hostUrl,
-        persistent: !privateBrowsingManager.isPrivateBrowsing
+        persistent: !isPrivateBrowsing
       )
       if let image = favicon?.image {
         engineImage = image
@@ -430,9 +477,9 @@ extension CustomEngineViewController {
     }
 
     if !url.isEmpty, !title.isEmpty {
-      changeAddEditButton(for: .enabled)
+      doneButtonStatus = .enabled
     } else {
-      changeAddEditButton(for: .disabled)
+      doneButtonStatus = .disabled
     }
   }
 }
@@ -458,7 +505,7 @@ extension CustomEngineViewController: UITextViewDelegate {
   }
 
   func textViewDidChange(_ textView: UITextView) {
-    changeAddEditButton(for: .disabled)
+    doneButtonStatus = .disabled
 
     // The withSecureUrlScheme is used in order to force user to use secure url scheme
     // Instead of checking paste-board with every character entry, the textView text is analyzed

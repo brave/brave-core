@@ -32,7 +32,7 @@ protocol SearchViewControllerDelegate: AnyObject {
     _ searchViewController: SearchViewController,
     didLongPressSuggestion suggestion: String
   )
-  func presentSearchSettingsController()
+  func presentQuickSearchEnginesViewController()
   func searchViewController(
     _ searchViewController: SearchViewController,
     didHighlightText text: String,
@@ -611,7 +611,7 @@ public class SearchViewController: UIViewController, LoaderListener {
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
     section.contentInsets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
-    
+
     let backgroundItem = NSCollectionLayoutDecorationItem.background(
       elementKind: "background_plain"
     )
@@ -645,7 +645,7 @@ public class SearchViewController: UIViewController, LoaderListener {
   }
 
   @objc func didClickSettingsButton() {
-    self.searchDelegate?.presentSearchSettingsController()
+    self.searchDelegate?.presentQuickSearchEnginesViewController()
   }
 
   @objc func didClickLeoButton() {
@@ -987,6 +987,14 @@ extension SearchViewController {
         searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
       }
     }
+  }
+}
+
+// MARK: - SearchQuickEnginesViewControllerDelegate
+
+extension SearchViewController: SearchQuickEnginesViewControllerDelegate {
+  func searchQuickEnginesUpdates() {
+    reloadSearchEngines()
   }
 }
 
