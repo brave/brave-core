@@ -249,7 +249,7 @@ export const NftScreen = ({ selectedAsset, tokenNetwork }: Props) => {
             <NftMultimedia
               as='img'
               visible={!isFetchingNFTMetadata}
-              src={nftMetadata?.imageURL}
+              src={`chrome://image?url=${encodeURIComponent(nftMetadata?.imageURL || '')}&staticEncode=true9`}
             />
           ) : (
             <NftMultimedia

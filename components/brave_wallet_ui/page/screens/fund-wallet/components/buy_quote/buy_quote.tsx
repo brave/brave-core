@@ -120,7 +120,7 @@ export const BuyQuote = ({
           alignItems='center'
         >
           {providerImageUrl ? (
-            <ProviderImage src={`chrome://image?${encodeURIComponent(providerImageUrl)}`} />
+            <ProviderImage src={`chrome://image?url=${encodeURIComponent(providerImageUrl)}&staticEncode=true`} />
           ) : null}
 
           <Column alignItems='flex-start'>

@@ -63,9 +63,9 @@ export const CurrencyListItem = ({
         gap='16px'
       >
         <CurrencyImage
-          src={`chrome://image?${encodeURIComponent(
+          src={`chrome://image?url=${encodeURIComponent(
             currency.symbolImageUrl ?? ''
-          )}`}
+          )}&staticEncode=true`}
         />
         <CurrencyName>{currency.name}</CurrencyName>
       </Row>

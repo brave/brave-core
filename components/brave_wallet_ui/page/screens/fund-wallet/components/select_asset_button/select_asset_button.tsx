@@ -75,9 +75,9 @@ export const SelectAssetButton = (props: SelectAssetButtonProps) => {
                 <IconsWrapper>
                   <AssetIcon
                     size='40px'
-                    src={`chrome://image?${encodeURIComponent(
-                      selectedAsset?.symbolImageUrl ?? ''
-                    )}`}
+                    src={`chrome://image?url=${
+                      selectedAsset?.symbolImageUrl
+                    }&staticEncode=true`}
                   />
                   {tokensNetwork && (
                     <NetworkIconWrapper>

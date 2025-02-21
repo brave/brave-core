@@ -410,7 +410,7 @@ export const getLPIcon = (source: Pick<LiquiditySource, 'name' | 'logo'>) => {
     return iconFromMetadata
   }
   if (source.logo) {
-    return `chrome://image?${encodeURIComponent(source.logo)}`
+    return `chrome://image?url=${encodeURIComponent(source.logo)}&staticEncode=true`
   }
   return ''
 }

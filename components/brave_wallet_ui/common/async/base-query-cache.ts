@@ -333,7 +333,7 @@ export class BaseQueryCache {
     }
     return token.logo.startsWith('ipfs://')
       ? (await this.getIpfsGatewayTranslatedNftUrl(token.logo)) || ''
-      : `chrome://erc-token-images/${encodeURIComponent(token.logo)}`
+      : token.logo
   }
 
   getEnabledCoinTypes = async () => {
