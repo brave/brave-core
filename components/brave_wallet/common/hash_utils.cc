@@ -10,7 +10,6 @@
 
 #include "base/containers/adapters.h"
 #include "base/containers/span.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -27,8 +26,8 @@ namespace {
 std::array<uint8_t, 64> ConcatArrays(const std::array<uint8_t, 32>& arr1,
                                      const std::array<uint8_t, 32>& arr2) {
   std::array<uint8_t, 64> result;
-  base::ranges::copy(arr1, result.begin());
-  base::ranges::copy(arr2, result.begin() + 32);
+  std::ranges::copy(arr1, result.begin());
+  std::ranges::copy(arr2, result.begin() + 32);
   return result;
 }
 }  // namespace
@@ -37,7 +36,7 @@ KeccakHashArray KeccakHash(base::span<const uint8_t> input) {
   auto hash = ethash_keccak256(input.data(), input.size());
   KeccakHashArray result;
   static_assert(sizeof(result) == sizeof(hash.bytes));
-  base::ranges::copy(hash.bytes, result.begin());
+  std::ranges::copy(hash.bytes, result.begin());
   return result;
 }
 

@@ -5,7 +5,8 @@
 
 #include "chrome/browser/ui/views/download/bubble/download_toolbar_button_view.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -104,7 +105,7 @@ bool DownloadToolbarButtonView::HasInsecureDownloads() {
   update_service->GetAllModelsToDisplay(all_models, /*web_app_id=*/nullptr,
                                         /*force_backfill_download_items=*/true);
 
-  return base::ranges::any_of(all_models, [](const auto& model) {
+  return std::ranges::any_of(all_models, [](const auto& model) {
     return (model->GetInsecureDownloadStatus() ==
                 download::DownloadItem::InsecureDownloadStatus::BLOCK ||
             model->GetInsecureDownloadStatus() ==

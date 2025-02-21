@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "base/strings/stringprintf.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
@@ -162,7 +164,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, WalletInSidebar) {
   const auto items = model->GetAllSidebarItems();
   EXPECT_LT(0UL, items.size());
 
-  const auto iter = base::ranges::find_if(items, [](const auto& i) {
+  const auto iter = std::ranges::find_if(items, [](const auto& i) {
     return (i.built_in_item_type ==
             sidebar::SidebarItem::BuiltInItemType::kWallet);
   });

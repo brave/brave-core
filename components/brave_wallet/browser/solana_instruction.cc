@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 
+#include <algorithm>
 #include <limits>
 #include <optional>
 #include <tuple>
@@ -13,7 +14,6 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/containers/span.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"

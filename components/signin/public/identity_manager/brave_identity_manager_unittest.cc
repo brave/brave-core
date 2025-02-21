@@ -68,8 +68,8 @@ class BraveIdentityManagerTest : public testing::Test {
   BraveIdentityManagerTest& operator=(const BraveIdentityManagerTest&) = delete;
 
   void SetUp() override {
-    primary_account_id_ =
-        identity_manager_->PickAccountIdForAccount(kTestGaiaId, kTestEmail);
+    primary_account_id_ = identity_manager_->PickAccountIdForAccount(
+        GaiaId(kTestGaiaId), kTestEmail);
   }
 
   IdentityManager* identity_manager() { return identity_manager_.get(); }
@@ -215,7 +215,7 @@ TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithOneAccount) {
   identity_manager_observer()->SetOnAccountsInCookieUpdatedCallback(
       run_loop.QuitClosure());
 
-  SetListAccountsResponseOneAccount(kTestEmail, kTestGaiaId,
+  SetListAccountsResponseOneAccount(kTestEmail, GaiaId(kTestGaiaId),
                                     test_url_loader_factory());
 
   gaia_cookie_manager_service()->TriggerListAccounts();
@@ -241,8 +241,9 @@ TEST_F(BraveIdentityManagerTest, GetAccountsInCookieJarWithTwoAccounts) {
   identity_manager_observer()->SetOnAccountsInCookieUpdatedCallback(
       run_loop.QuitClosure());
 
-  SetListAccountsResponseTwoAccounts(kTestEmail, kTestGaiaId, kTestEmail2,
-                                     kTestGaiaId2, test_url_loader_factory());
+  SetListAccountsResponseTwoAccounts(kTestEmail, GaiaId(kTestGaiaId),
+                                     kTestEmail2, GaiaId(kTestGaiaId2),
+                                     test_url_loader_factory());
 
   gaia_cookie_manager_service()->TriggerListAccounts();
   const AccountsInCookieJarInfo& accounts_in_cookie_jar =

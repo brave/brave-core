@@ -7,7 +7,6 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "brave/test/base/testing_brave_browser_process.h"
@@ -115,7 +114,7 @@ TEST_F(BraveSyncClientTest, CreateDataTypeControllersSearchEngines) {
   const syncer::DataTypeController::TypeVector controllers =
       sync_client->CreateDataTypeControllers(&service);
 
-  EXPECT_TRUE(base::ranges::any_of(
+  EXPECT_TRUE(std::ranges::any_of(
       controllers,
       [](const std::unique_ptr<syncer::DataTypeController>& controller) {
         return controller->type() == syncer::SEARCH_ENGINES;

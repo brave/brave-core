@@ -5,11 +5,11 @@
 
 #include "brave/components/playlist/browser/mime_util.h"
 
+#include <algorithm>
 #include <optional>
 
 #include "base/containers/fixed_flat_map.h"
 #include "base/files/file_path.h"
-#include "base/ranges/algorithm.h"
 
 namespace playlist {
 namespace {
@@ -111,7 +111,7 @@ std::optional<std::string> GetMimeTypeForFileExtension(
 
 std::vector<std::string> GetSupportedMimetypes() {
   std::vector<std::string> supported_mimetypes;
-  base::ranges::transform(
+  std::ranges::transform(
       kMimeToExtensionMap,
       std::inserter(supported_mimetypes, supported_mimetypes.end()),
       [](const auto& pair) { return std::string(pair.first); });

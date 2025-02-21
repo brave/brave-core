@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/rand_util.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 
@@ -437,8 +436,8 @@ bool BitcoinTransaction::IsSigned() const {
     return false;
   }
 
-  return base::ranges::all_of(inputs_,
-                              [](auto& input) { return input.IsSigned(); });
+  return std::ranges::all_of(inputs_,
+                             [](auto& input) { return input.IsSigned(); });
 }
 
 uint64_t BitcoinTransaction::TotalInputsAmount() const {

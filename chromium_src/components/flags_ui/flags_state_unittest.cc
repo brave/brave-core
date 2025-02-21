@@ -5,9 +5,8 @@
 
 #include "src/components/flags_ui/flags_state_unittest.cc"
 
+#include <algorithm>
 #include <string_view>
-
-#include "base/ranges/algorithm.h"
 
 namespace flags_ui {
 
@@ -32,7 +31,7 @@ TEST_F(FlagsStateTest, ShowDefaultState) {
   auto check_default_option_description =
       [&](std::string_view name, std::string_view expected_description) {
         SCOPED_TRACE(name);
-        auto entry_it = base::ranges::find_if(
+        auto entry_it = std::ranges::find_if(
             supported_entries, [&](const base::Value& entry) {
               return *entry.GetDict().FindString("internal_name") == name;
             });

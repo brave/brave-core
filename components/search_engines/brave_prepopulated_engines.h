@@ -10,7 +10,7 @@
 #include <map>
 
 #include "build/build_config.h"
-#include "components/search_engines/prepopulated_engines.h"
+#include "third_party/search_engines_data/resources/definitions/prepopulated_engines.h"
 
 namespace TemplateURLPrepopulateData {
 
@@ -31,10 +31,11 @@ inline constexpr int kBraveFirstTrackedDataVersion = 6;
 // See comments on prepopulated engines ids in
 // components/search_engines/prepopulated_engines_schema.json above the
 // definition of the id field and in
-// components/search_engines/prepopulated_engines.json at the top of the file.
-// Currently taken ids range under 90, but we'd want to leave room for
-// additions by Chromium, so starting our ids from 500. Potential problem:
-// Chromium adds one of these engines to their list with a different id.
+// third_party/search_engines_data/resources/definitions/prepopulated_engines.json
+// at the top of the file. Currently taken ids range under 90, but we'd want to
+// leave room for additions by Chromium, so starting our ids from 500. Potential
+// problem: Chromium adds one of these engines to their list with a different
+// id.
 enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_INVALID = 0,
 

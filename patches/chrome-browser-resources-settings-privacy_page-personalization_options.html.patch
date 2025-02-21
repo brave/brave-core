@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 30de88b59848d1886e26b3a83f14118dfd15f2fa..ff54d3fc1880a85374c7a7c53fbfc9dbdd58cd54 100644
+index 45ccf21616220ef1a31f864e0cdad63e4c99f65f..de9bddedf8709d71e1c335f8aec20297791d8728 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -24,6 +24,7 @@
@@ -51,8 +51,8 @@ index 30de88b59848d1886e26b3a83f14118dfd15f2fa..ff54d3fc1880a85374c7a7c53fbfc9db
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -165,3 +170,4 @@
-           on-close="onRelaunchDialogClose"></relaunch-confirmation-dialog>
-     </template>
+@@ -168,3 +173,4 @@
+       <div>$i18n{chromeSigninChoiceToast}</div>
+     </cr-toast>
  </if>
 +</if>

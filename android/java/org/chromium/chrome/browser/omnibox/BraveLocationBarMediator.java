@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lens.LensController;
 import org.chromium.chrome.browser.locale.LocaleManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -57,7 +58,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             @NonNull OmniboxUma omniboxUma,
             @NonNull BooleanSupplier isToolbarMicEnabledSupplier,
             @NonNull OmniboxSuggestionsDropdownEmbedderImpl dropdownEmbedder,
-            @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
+            @Nullable ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            @Nullable BrowserControlsStateProvider browserControlsStateProvider) {
         super(
                 context,
                 locationBarLayout,
@@ -75,7 +77,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 omniboxUma,
                 isToolbarMicEnabledSupplier,
                 dropdownEmbedder,
-                tabModelSelectorSupplier);
+                tabModelSelectorSupplier,
+                browserControlsStateProvider);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {

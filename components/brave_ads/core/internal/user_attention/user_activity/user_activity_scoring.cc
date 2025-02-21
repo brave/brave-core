@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 
@@ -21,8 +20,8 @@ namespace {
 UserActivityTriggerList SortTriggers(const UserActivityTriggerList& triggers) {
   UserActivityTriggerList sorted_triggers = triggers;
 
-  base::ranges::sort(sorted_triggers, [](const UserActivityTriggerInfo& lhs,
-                                         const UserActivityTriggerInfo& rhs) {
+  std::ranges::sort(sorted_triggers, [](const UserActivityTriggerInfo& lhs,
+                                        const UserActivityTriggerInfo& rhs) {
     return lhs.event_sequence.length() > rhs.event_sequence.length() &&
            lhs.score > rhs.score;
   });

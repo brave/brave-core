@@ -24,7 +24,6 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -569,11 +568,11 @@ void RewardsServiceImpl::GetAvailableCountries(
     // then remove |kBitflyerCountries| from the list of ISO countries.
     static const std::vector<std::string> kNonBitflyerCountries = []() {
       auto countries = kISOCountries;
-      auto removed =
-          base::ranges::remove_if(countries, [](const std::string& country) {
+      auto to_remove =
+          std::ranges::remove_if(countries, [](const std::string& country) {
             return base::Contains(kBitflyerCountries, country);
           });
-      countries.erase(removed, countries.end());
+      countries.erase(to_remove.begin(), to_remove.end());
       return countries;
     }();
 

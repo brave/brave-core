@@ -209,7 +209,7 @@ TEST(ValueConversionUtilsUnitTest, NetworkInfoToValueTest) {
             chain.decimals);
   auto* rpc_urls = value.FindList("rpcUrls");
   for (const auto& entry : *rpc_urls) {
-    ASSERT_TRUE(base::Contains(chain.rpc_endpoints, entry.GetString()));
+    ASSERT_TRUE(base::Contains(chain.rpc_endpoints, GURL(entry.GetString())));
   }
 
   for (const auto& entry : *value.FindList("iconUrls")) {

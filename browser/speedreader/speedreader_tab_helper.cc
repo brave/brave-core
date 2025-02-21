@@ -628,7 +628,7 @@ bool SpeedreaderTabHelper::SendGestureEvent(ui::ViewAndroid* view,
                                             int64_t time_ms,
                                             float scale) {
   float dip_scale = view->GetDipScale();
-  auto size = view->GetSize();
+  auto size = view->GetSizeDIPs();
   float x = size.width() / 2;
   float y = size.height() / 2;
   gfx::PointF root_location =

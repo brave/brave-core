@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
 
+#include <algorithm>
 #include <string>
 #include <string_view>
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
@@ -77,7 +77,7 @@ const std::string& GetResourceName(const base::Value& resource) {
 
 base::Value::List::iterator FindResource(base::Value::List& resources,
                                          const std::string& name) {
-  return base::ranges::find_if(resources, [name](const base::Value& v) {
+  return std::ranges::find_if(resources, [name](const base::Value& v) {
     return GetResourceName(v) == name;
   });
 }

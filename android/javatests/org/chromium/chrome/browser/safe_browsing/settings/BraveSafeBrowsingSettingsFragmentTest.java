@@ -17,9 +17,11 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.BaseJUnit4ClassRunner;
+import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.chrome.browser.settings.SettingsActivityTestRule;
 
 @RunWith(BaseJUnit4ClassRunner.class)
+@DoNotBatch(reason = "This test launches a Settings activity")
 public class BraveSafeBrowsingSettingsFragmentTest {
     @Rule
     public SettingsActivityTestRule<SafeBrowsingSettingsFragment> mTestRule =
@@ -42,10 +44,10 @@ public class BraveSafeBrowsingSettingsFragmentTest {
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
                     Assert.assertEquals(
+                            View.GONE,
                             mSafeBrowsingPreference
                                     .getEnhancedProtectionButtonForTesting()
-                                    .getVisibility(),
-                            View.GONE);
+                                    .getVisibility());
                 });
     }
 }

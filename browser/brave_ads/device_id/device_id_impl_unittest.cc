@@ -5,9 +5,9 @@
 
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 
+#include <algorithm>
 #include <array>
 
-#include "base/ranges/algorithm.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_ads {
@@ -31,13 +31,13 @@ void TestDisallowedRange(DisallowedMask mask) {
   std::array<uint8_t, 6u> address;
 
   // test the lower bound of the match
-  base::ranges::fill(address, 0u);
+  std::ranges::fill(address, 0u);
   base::as_writable_byte_span(address).first(mask.size).copy_from(
       mask.as_span());
   EXPECT_FALSE(DeviceIdImpl::IsValidMacAddress(address));
 
   // test the upper bound of the match
-  base::ranges::fill(
+  std::ranges::fill(
       base::as_writable_byte_span(address).split_at(mask.size).second, 0xffu);
   EXPECT_FALSE(DeviceIdImpl::IsValidMacAddress(address));
 
@@ -45,7 +45,7 @@ void TestDisallowedRange(DisallowedMask mask) {
   base::as_writable_byte_span(address).first(mask.size).copy_from(
       mask.as_span());
   base::as_writable_byte_span(address).first(mask.size).last<1>()[0] += 0x01;
-  base::ranges::fill(
+  std::ranges::fill(
       base::as_writable_byte_span(address).split_at(mask.size).second, 0x00u);
   EXPECT_TRUE(DeviceIdImpl::IsValidMacAddress(address));
 
@@ -53,7 +53,7 @@ void TestDisallowedRange(DisallowedMask mask) {
   base::as_writable_byte_span(address).first(mask.size).copy_from(
       mask.as_span());
   base::as_writable_byte_span(address).first(mask.size).last<1>()[0] -= 0x01;
-  base::ranges::fill(
+  std::ranges::fill(
       base::as_writable_byte_span(address).split_at(mask.size).second, 0xffu);
   EXPECT_TRUE(DeviceIdImpl::IsValidMacAddress(address));
 }

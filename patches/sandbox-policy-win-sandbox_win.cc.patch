@@ -1,11 +1,11 @@
 diff --git a/sandbox/policy/win/sandbox_win.cc b/sandbox/policy/win/sandbox_win.cc
-index 1c3ead160e2aa84b41eb9474f103c7c0dd54ac87..6aa52be359fc0596fb95de26c1f9b2ee63a9188e 100644
+index 4fb8e2a9d7a6e24aeb7148592659981754d027b3..8207991d424d195fd84da21e309a802bca5b89c3 100644
 --- a/sandbox/policy/win/sandbox_win.cc
 +++ b/sandbox/policy/win/sandbox_win.cc
-@@ -594,6 +594,7 @@ ResultCode LaunchWithoutSandbox(
-     base::Process* process) {
+@@ -595,6 +595,7 @@ ResultCode LaunchWithoutSandbox(
    base::LaunchOptions options;
    options.handles_to_inherit = handles_to_inherit;
+   options.feedback_cursor_off = true;
 +  BRAVE_START_SANDBOXED_PROCESS
    // Network process runs in a job even when unsandboxed. This is to ensure it
    // does not outlive the browser, which could happen if there is a lot of I/O

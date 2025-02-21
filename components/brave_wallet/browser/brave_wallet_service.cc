@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 
+#include <algorithm>
 #include <map>
 #include <memory>
 #include <optional>
@@ -12,7 +13,6 @@
 
 #include "base/containers/contains.h"
 #include "base/notreached.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
@@ -620,14 +620,14 @@ void BraveWalletService::SetNetworkForSelectedAccountOnActiveOrigin(
 
 bool BraveWalletService::HasPendingDecryptRequestForOrigin(
     const url::Origin& origin) const {
-  return base::ranges::any_of(pending_decrypt_requests_, [origin](auto& req) {
+  return std::ranges::any_of(pending_decrypt_requests_, [origin](auto& req) {
     return req.second.origin == origin;
   });
 }
 
 bool BraveWalletService::HasPendingGetEncryptionPublicKeyRequestForOrigin(
     const url::Origin& origin) const {
-  return base::ranges::any_of(
+  return std::ranges::any_of(
       pending_get_encryption_public_key_requests_,
       [origin](auto& req) { return req.second.origin == origin; });
 }

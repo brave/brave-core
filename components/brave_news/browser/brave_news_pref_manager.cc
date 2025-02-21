@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 #include <vector>
@@ -13,7 +14,6 @@
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
-#include "base/ranges/algorithm.h"
 #include "base/uuid.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channel_migrator.h"
@@ -127,7 +127,7 @@ void BraveNewsPrefManager::SetPublisherSubscribed(
 std::string BraveNewsPrefManager::AddDirectPublisher(const GURL& url,
                                                      const std::string& title) {
   const auto& direct_feeds = GetDirectFeeds();
-  auto match = base::ranges::find_if(
+  auto match = std::ranges::find_if(
       direct_feeds, [url](const auto& feed) { return feed.url == url; });
   if (match != direct_feeds.end()) {
     return match->id;

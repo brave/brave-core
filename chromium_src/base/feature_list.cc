@@ -5,6 +5,7 @@
 
 #include "base/feature_list.h"
 
+#include <algorithm>
 #include <optional>
 
 #include "base/check_op.h"
@@ -13,7 +14,6 @@
 #include "base/feature_override.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
-#include "base/ranges/algorithm.h"
 
 namespace base {
 namespace internal {
@@ -64,10 +64,11 @@ FeatureDefaultStateOverrider::FeatureDefaultStateOverrider(
       DCHECK(new_overrides.insert(override.first).second)
           << "Feature " << override.first.get().name
           << " is duplicated in the current override macros";
-      DCHECK(!ranges::any_of(default_state_overrides,
-                             [&override](const auto& v) {
-                               return &v.first.get() == &override.first.get();
-                             }))
+      DCHECK(!std::ranges::any_of(default_state_overrides,
+                                  [&override](const auto& v) {
+                                    return &v.first.get() ==
+                                           &override.first.get();
+                                  }))
           << "Feature " << override.first.get().name
           << " has already been overridden";
     }

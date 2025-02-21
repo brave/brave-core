@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/web_applications/app_browser_controller.h"
 
 #define InfoBarContainerView BraveInfoBarContainerView
 #define BrowserViewLayout BraveBrowserViewLayout

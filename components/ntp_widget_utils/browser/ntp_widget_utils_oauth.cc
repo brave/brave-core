@@ -5,12 +5,12 @@
 
 #include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 
+#include <algorithm>
 #include <string>
 #include <string_view>
 
 #include "base/base64.h"
 #include "base/containers/adapters.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "crypto/random.h"
 #include "crypto/sha2.h"
@@ -42,8 +42,8 @@ std::string GetCodeChallenge(
     std::replace(code_challenge.begin(), code_challenge.end(), '+', '-');
     std::replace(code_challenge.begin(), code_challenge.end(), '/', '_');
 
-    code_challenge.erase(base::ranges::find_if(base::Reversed(code_challenge),
-                                               [](int ch) { return ch != '='; })
+    code_challenge.erase(std::ranges::find_if(base::Reversed(code_challenge),
+                                              [](int ch) { return ch != '='; })
                              .base(),
                          code_challenge.end());
   }

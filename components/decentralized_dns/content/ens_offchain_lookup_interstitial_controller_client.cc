@@ -55,8 +55,8 @@ void EnsOffchainLookupInterstitialControllerClient::SetResolveMethodAndReload(
     EnsOffchainResolveMethod type) {
   DCHECK(local_state_);
   SetEnsOffchainResolveMethod(local_state_, type);
-  web_contents_->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
-                                        true);
+  web_contents()->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
+                                         true);
 }
 
 }  // namespace decentralized_dns

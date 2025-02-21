@@ -13,6 +13,7 @@
 #include "brave/components/permissions/brave_permission_manager.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/permissions/permission_manager_factory.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/permissions/permission_util.h"
@@ -28,6 +29,7 @@ class BraveWalletPermissionContextUnitTest : public testing::Test {
   ~BraveWalletPermissionContextUnitTest() override = default;
 
   void SetUp() override {
+    TestingBrowserProcess::GetGlobal()->CreateGlobalFeaturesForTesting();
     map_ = HostContentSettingsMapFactory::GetForProfile(&profile_);
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<BravePermissionManager*>(

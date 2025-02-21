@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
-<grit latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<grit latest_public_release="0" current_release="1" source_lang_id="en" enc_check="möl">
   <outputs>
     <output filename="values-af/android_webapps_strings.xml" lang="af" type="android" />
     <output filename="values-am/android_webapps_strings.xml" lang="am" type="android" />

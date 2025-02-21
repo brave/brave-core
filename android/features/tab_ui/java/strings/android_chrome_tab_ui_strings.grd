@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- android_chrome_strings.grd contains strings for tab ui DFM of Brave for Android. -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
-<grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
+<grit current_release="1" latest_public_release="0">
   <outputs>
     <output filename="values-af/android_chrome_tab_ui_strings.xml" lang="af" type="android" />
     <output filename="values-am/android_chrome_tab_ui_strings.xml" lang="am" type="android" />
@@ -201,6 +201,9 @@
       <message name="IDS_TAB_GRID_MANAGE_BUTTON_TEXT" desc="Text for managing the sharing of the current tab group from the tab group dialog toolbar.">
         Manage
       </message>
+      <message name="IDS_MANAGE_SHARING_CONTENT_DESCRIPTION" desc="Content description for the account avatar button that manages sharing for a shared tab group.">
+        Manage sharing
+      </message>
 
       <!-- Bottom Tab Strip strings -->
       <message name="IDS_ACCESSIBILITY_BOTTOM_TAB_STRIP_EXPAND_TAB_SHEET" desc="Accessibility string for BottomTabStripToolbar button indicated visually by the '^' sign.">
@@ -210,6 +213,29 @@
       <!-- Tab Group Tab Switcher strings -->
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER" desc="Accessibility string for Tab Switcher view. This string is announced when the Tab Switcher is shown to screen.">
         Tab Switcher
+      </message>
+
+      <!-- Tab Group Share Notice Bottom Sheet -->
+      <message name="IDS_TAB_GROUP_SHARE_NOTICE_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="The description of the Tab Group Share Notice bottom sheet.">
+         Notice: Changes to this shared Tab Group are visible to everyone. Everyone can make changes to your shared tab groups
+      </message>
+      <message name="IDS_TAB_GROUP_SHARE_NOTICE_BOTTOM_SHEET_HALF_HEIGHT" desc="The announcement when the Tab Group Share Notice bottom sheet is opened to half height.">
+         Notice about Shared Tab Group changes at half height
+      </message>
+      <message name="IDS_TAB_GROUP_SHARE_NOTICE_BOTTOM_SHEET_FULL_HEIGHT" desc="The announcement when the Tab Group Share Notice bottom sheet is opened to full height.">
+         Notice about Shared Tab Group changes opened at full height
+      </message>
+      <message name="IDS_TAB_GROUP_SHARE_NOTICE_BOTTOM_SHEET_CLOSED" desc="The announcement when the Tab Group Share Notice bottom sheet is closed.">
+         Notice about Shared Tab Group changes closed
+      </message>
+      <message name="IDS_TAB_GROUP_SHARE_NOTICE_BOTTOM_SHEET_TITLE" desc="Title text for the Tab Group Share Notice bottom sheet.">
+         Everyone can make changes to your shared tab groups
+      </message>
+      <message name="IDS_TAB_GROUP_SHARE_NOTICE_BOTTOM_SHEET_SUBTITLE" desc="Subtitle text for the Tab Group Share Notice bottom sheet.">
+         Changes made are seen by everyone in the group
+      </message>
+      <message name="IDS_TAB_GROUP_SHARE_NOTICE_BOTTOM_SHEET_BUTTON_TEXT" desc="Text for the confirm button on the Tab Group Share Notice bottom sheet.">
+         Got it
       </message>
 
       <!-- Tab Selection Editor strings -->
@@ -718,17 +744,20 @@
       <message name="IDS_DELETE_TAB_GROUP_MENU_ITEM" desc="Menu item text which will prompt a confirmation dialog to delete a tab group.">
         Delete
       </message>
+      <message name="IDS_DELETE_SHARED_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to delete a tab group that is shared with other users.">
+        Delete group?
+      </message>
       <message name="IDS_DELETE_SHARED_TAB_GROUP_DESCRIPTION" desc="Menu item text which will prompt a confirmation dialog to delete a tab group that is shared with other users.">
-        Everyone will immediately lose access to the <ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph> tab group, and it will be deleted from all devices
+        Everyone will immediately lose access to the "<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>" tab group, and it will be deleted from all devices
       </message>
       <message name="IDS_LEAVE_TAB_GROUP_MENU_ITEM" desc="Menu item text for an item which will leave a group the user does not own.">
         Leave
       </message>
       <message name="IDS_LEAVE_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to leave a shared tab group.">
-        Leave tab group?
+        Leave group?
       </message>
       <message name="IDS_LEAVE_TAB_GROUP_DESCRIPTION" desc="Description of the action of leaving a shared tab group, shown in a confirmation dialog.">
-        You’ll immediately lose access to the <ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph> tab group
+        You’ll immediately lose access to the "<ph name="GROUP_NAME">%1$s<ex>Vacation</ex></ph>" tab group, and it will be deleted from all your devices
       </message>
       <message name="IDS_UNGROUP_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to ungroup all tabs in a group.">
         Ungroup tab group?
@@ -784,17 +813,15 @@
         Close tab and delete group?
       </message>
       <message name="IDS_KEEP_TAB_GROUP_DIALOG_TITLE" desc="Title of a dialog asking the user if they want to keep the tab group.">
-        Keep tab group?
+        Keep group?
       </message>
       <message name="IDS_KEEP_TAB_GROUP_DIALOG_DESCRIPTION_OWNER" desc="Main text content of a dialog asking the owner of a shared group if they want to keep it. The &#10; is a newline character to force formatting.">
         Keep this group to add tabs later, or delete it if you no longer need it.
 
 If you delete it, everyone will immediately lose access to the "<ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>" tab group, and it will be deleted from all devices.
       </message>
-      <message name="IDS_KEEP_TAB_GROUP_DIALOG_DESCRIPTION_MEMBER" desc="Main text content of a dialog asking a member of a shared group if they want to keep it or leave. The &#10; is a newline character to force formatting.">
-        Keep this group to add tabs later, or leave.
-
-If you leave, you will immediately lose access to the "<ph name="TITLE_OF_GROUP">%1$s<ex>Shopping cart</ex></ph>" tab group.
+      <message name="IDS_KEEP_TAB_GROUP_DIALOG_DESCRIPTION_MEMBER" desc="Main text content of a dialog asking a member of a shared group if they want to keep it or leave.">
+        Keep this group to add tabs later, or leave it if you no longer want access to it
       </message>
       <message name="IDS_KEEP_TAB_GROUP_DIALOG_KEEP_ACTION" desc="Action button to keep the tab group in the keep group dialog.">
         Keep group
@@ -864,6 +891,9 @@ If you leave, you will immediately lose access to the "<ph name="TITLE_OF_GROUP"
       </message>
       <message name="IDS_TAB_GROUP_MENU_ACCESSIBILITY_TEXT" desc="Content description for accessibility to describe the action of tapping on the more menu button.">
         <ph name="TITLE_OF_GROUP">%s<ex>shopping</ex></ph> tab group options
+      </message>
+      <message name="IDS_TAB_GROUP_SHARE_NOTIFICATION_BUBBLE_IPH" desc="IPH text highlighting notification bubble displayed on the tablet tab strip when a shared tab group receives updates from other members.">
+        Changes made are seen by everyone in the group
       </message>
 
       <!-- Tabs Settings Strings -->
@@ -952,6 +982,18 @@ If you leave, you will immediately lose access to the "<ph name="TITLE_OF_GROUP"
       </message>
       <message name="IDS_ACCESSIBILITY_ARCHIVED_TABS_DIALOG" desc="Accessibility string for archived tabs dialog. This string is announced when the Tab Selection Editor is shown to screen.">
         Inactive tabs dialog
+      </message>
+
+      <message name="IDS_SEND_FEEDBACK_TAB_GRID_DIALOG" desc="Button to send feedback on shared tab groups.">
+        Send feedback
+      </message>
+
+      <!-- Tab Group Removed Message Strings -->
+      <message name="IDS_TAB_GROUP_REMOVED_MESSAGE_CARD_DESCRIPTION" desc="Description text on the message card which is shown when user is no longer a part of the tab group. [CHAR_LIMIT=40]">
+        <ph name="TAB_GROUP_NAME">%1$s<ex>Vacation</ex></ph> tab group no longer available
+      </message>
+      <message name="IDS_ACCESSIBILITY_TAB_GROUP_REMOVED_DISMISS_BUTTON" desc="The accessibility text to read when the 'X' button on the tab removed message card is focused">
+        Dismiss the card.
       </message>
     </messages>
   </release>

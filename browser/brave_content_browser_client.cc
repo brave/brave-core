@@ -1328,6 +1328,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 }
 
 bool PreventDarkModeFingerprinting(WebContents* web_contents,
+                                   content::SiteInstance& main_frame_site,
                                    WebPreferences* prefs) {
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
@@ -1338,7 +1339,7 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
   if (!host_content_settings_map) {
     return false;
   }
-  const GURL url = web_contents->GetLastCommittedURL();
+  const GURL url = main_frame_site.GetSiteURL();
   const bool shields_up =
       brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
@@ -1358,17 +1359,22 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
 
 bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
     WebContents* web_contents,
+    content::SiteInstance& main_frame_site,
     WebPreferences* prefs) {
   bool changed =
       ChromeContentBrowserClient::OverrideWebPreferencesAfterNavigation(
-          web_contents, prefs);
-  return PreventDarkModeFingerprinting(web_contents, prefs) || changed;
+          web_contents, main_frame_site, prefs);
+  return PreventDarkModeFingerprinting(web_contents, main_frame_site, prefs) ||
+         changed;
 }
 
-void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
-                                                    WebPreferences* web_prefs) {
-  ChromeContentBrowserClient::OverrideWebkitPrefs(web_contents, web_prefs);
-  PreventDarkModeFingerprinting(web_contents, web_prefs);
+void BraveContentBrowserClient::OverrideWebPreferences(
+    WebContents* web_contents,
+    content::SiteInstance& main_frame_site,
+    WebPreferences* web_prefs) {
+  ChromeContentBrowserClient::OverrideWebPreferences(
+      web_contents, main_frame_site, web_prefs);
+  PreventDarkModeFingerprinting(web_contents, main_frame_site, web_prefs);
   // This will stop NavigatorPlugins from returning fixed plugins data and will
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;

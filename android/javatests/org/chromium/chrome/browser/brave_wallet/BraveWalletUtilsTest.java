@@ -57,19 +57,19 @@ public class BraveWalletUtilsTest {
     @Test
     @SmallTest
     public void toHexGWeiFromGWEITest() {
-        assertEquals(Utils.toHexGWeiFromGWEI("703711"), "0xabcdf");
+        assertEquals("0xabcdf", Utils.toHexGWeiFromGWEI("703711"));
     }
 
     @Test
     @SmallTest
     public void toWeiHexTest() {
-        assertEquals(Utils.toWeiHex("703711"), "0xabcdf");
+        assertEquals("0xabcdf", Utils.toWeiHex("703711"));
     }
 
     @Test
     @SmallTest
     public void multiplyHexBNTest() {
-        assertEquals(Utils.multiplyHexBN("0x123afff", "0xabcdf"), "0xc3c134b9321");
+        assertEquals("0xc3c134b9321", Utils.multiplyHexBN("0x123afff", "0xabcdf"));
     }
 
     @Test
@@ -88,12 +88,12 @@ public class BraveWalletUtilsTest {
     public void toHexWeiEnTest() {
         Locale defaultLocal = Locale.getDefault();
         Locale.setDefault(Locale.US);
-        assertEquals(Utils.toHexWei("5.2", 18), "0x482a1c7300080000");
-        assertEquals(Utils.toHexWei("5", 18), "0x4563918244f40000");
-        assertEquals(Utils.toHexWei("0.5", 18), "0x6f05b59d3b20000");
-        assertEquals(Utils.toHexWei("0.05", 18), "0xb1a2bc2ec50000");
-        assertEquals(Utils.toHexWei("0.01234567890123456789012", 18), "0x2bdc545d6b4b87");
-        assertEquals(Utils.toHexWei("", 18), "0x0");
+        assertEquals("0x482a1c7300080000", Utils.toHexWei("5.2", 18));
+        assertEquals("0x4563918244f40000", Utils.toHexWei("5", 18));
+        assertEquals("0x6f05b59d3b20000", Utils.toHexWei("0.5", 18));
+        assertEquals("0xb1a2bc2ec50000", Utils.toHexWei("0.05", 18));
+        assertEquals("0x2bdc545d6b4b87", Utils.toHexWei("0.01234567890123456789012", 18));
+        assertEquals("0x0", Utils.toHexWei("", 18));
         Locale.setDefault(defaultLocal);
     }
 
@@ -102,12 +102,12 @@ public class BraveWalletUtilsTest {
     public void toHexWeiFrTest() {
         Locale defaultLocal = Locale.getDefault();
         Locale.setDefault(Locale.FRANCE);
-        assertEquals(Utils.toHexWei("5,2", 18), "0x482a1c7300080000");
-        assertEquals(Utils.toHexWei("5", 18), "0x4563918244f40000");
-        assertEquals(Utils.toHexWei("0,5", 18), "0x6f05b59d3b20000");
-        assertEquals(Utils.toHexWei("0,05", 18), "0xb1a2bc2ec50000");
-        assertEquals(Utils.toHexWei("0,01234567890123456789012", 18), "0x2bdc545d6b4b87");
-        assertEquals(Utils.toHexWei("", 18), "0x0");
+        assertEquals("0x482a1c7300080000", Utils.toHexWei("5,2", 18));
+        assertEquals("0x4563918244f40000", Utils.toHexWei("5", 18));
+        assertEquals("0x6f05b59d3b20000", Utils.toHexWei("0,5", 18));
+        assertEquals("0xb1a2bc2ec50000", Utils.toHexWei("0,05", 18));
+        assertEquals("0x2bdc545d6b4b87", Utils.toHexWei("0,01234567890123456789012", 18));
+        assertEquals("0x0", Utils.toHexWei("", 18));
         Locale.setDefault(defaultLocal);
     }
 
@@ -116,13 +116,13 @@ public class BraveWalletUtilsTest {
     public void getRecoveryPhraseAsListTest() {
         List<String> recoveryPhrase =
                 Utils.getRecoveryPhraseAsList("this is a fake recovery phrase");
-        assertEquals(recoveryPhrase.size(), 6);
-        assertEquals(recoveryPhrase.get(0), "this");
-        assertEquals(recoveryPhrase.get(1), "is");
-        assertEquals(recoveryPhrase.get(2), "a");
-        assertEquals(recoveryPhrase.get(3), "fake");
-        assertEquals(recoveryPhrase.get(4), "recovery");
-        assertEquals(recoveryPhrase.get(5), "phrase");
+        assertEquals(6, recoveryPhrase.size());
+        assertEquals("this", recoveryPhrase.get(0));
+        assertEquals("is", recoveryPhrase.get(1));
+        assertEquals("a", recoveryPhrase.get(2));
+        assertEquals("fake", recoveryPhrase.get(3));
+        assertEquals("recovery", recoveryPhrase.get(4));
+        assertEquals("phrase", recoveryPhrase.get(5));
     }
 
     @Test
@@ -131,46 +131,47 @@ public class BraveWalletUtilsTest {
         List<String> list =
                 Arrays.asList(new String[] {"this", "is", "a", "fake", "recovery", "phrase"});
         String recoveryPhrase = Utils.getRecoveryPhraseFromList(list);
-        assertEquals(recoveryPhrase, "this is a fake recovery phrase");
+        assertEquals("this is a fake recovery phrase", recoveryPhrase);
     }
 
     @Test
     @SmallTest
     public void getDecimalsDepNumberTest() {
-        assertEquals(Utils.getDecimalsDepNumber(9), "1000000000");
-        assertEquals(Utils.getDecimalsDepNumber(18), "1000000000000000000");
+        assertEquals("1000000000", Utils.getDecimalsDepNumber(9));
+        assertEquals("1000000000000000000", Utils.getDecimalsDepNumber(18));
     }
 
     @Test
     @SmallTest
     public void hexStrToNumberArrayTest() {
         byte[] numberArray = Utils.hexStrToNumberArray("0x4f00abcd");
-        assertEquals(numberArray.length, 4);
-        assertEquals(numberArray[0], 79);
-        assertEquals(numberArray[1], 0);
-        assertEquals(numberArray[2], -85);
-        assertEquals(numberArray[3], -51);
+        assertEquals(4, numberArray.length);
+        assertEquals(79, numberArray[0]);
+        assertEquals(0, numberArray[1]);
+        assertEquals(-85, numberArray[2]);
+        assertEquals(-51, numberArray[3]);
     }
 
     @Test
     @SmallTest
     public void numberArrayToHexStrTest() {
         byte[] numberArray = new byte[] {79, 0, -85, -51};
-        assertEquals(Utils.numberArrayToHexStr(numberArray), "0x4f00abcd");
+        assertEquals("0x4f00abcd", Utils.numberArrayToHexStr(numberArray));
     }
 
     @Test
     @SmallTest
     public void stripAccountAddressTest() {
-        assertEquals(Utils.stripAccountAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"),
-                "0xdef1c0ded9bec7f1a1670819833240f027b25eff");
+        assertEquals(
+                "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+                Utils.stripAccountAddress("0xdef1c0ded9bec7f1a1670819833240f027b25eff"));
     }
 
     @Test
     @SmallTest
     public void isJSONValidTest() {
-        assertEquals(Utils.isJSONValid("{'name': 'brave'}"), true);
-        assertEquals(Utils.isJSONValid("'name': 'brave'"), false);
+        assertTrue(Utils.isJSONValid("{'name': 'brave'}"));
+        assertFalse(Utils.isJSONValid("'name': 'brave'"));
     }
 
     private static String getStackTrace(Exception ex) {
@@ -555,8 +556,8 @@ public class BraveWalletUtilsTest {
     @Test
     @SmallTest
     public void validateUnicodeEscape() {
-        assertEquals(Validations.unicodeEscape("Sign into \u202e EVIL"), "Sign into \\u202e EVIL");
-        assertEquals(Validations.unicodeEscape("Sign into \u00ff EVIL"), "Sign into \\u00ff EVIL");
-        assertEquals(Validations.unicodeEscape("Sign into \u012e EVIL"), "Sign into \\u012e EVIL");
+        assertEquals("Sign into \\u202e EVIL", Validations.unicodeEscape("Sign into \u202e EVIL"));
+        assertEquals("Sign into \\u00ff EVIL", Validations.unicodeEscape("Sign into \u00ff EVIL"));
+        assertEquals("Sign into \\u012e EVIL", Validations.unicodeEscape("Sign into \u012e EVIL"));
     }
 }

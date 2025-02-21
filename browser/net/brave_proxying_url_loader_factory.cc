@@ -208,18 +208,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::SetPriority(
     target_loader_->SetPriority(priority, intra_priority_value);
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::
-    PauseReadingBodyFromNet() {
-  if (target_loader_.is_bound())
-    target_loader_->PauseReadingBodyFromNet();
-}
-
-void BraveProxyingURLLoaderFactory::InProgressRequest::
-    ResumeReadingBodyFromNet() {
-  if (target_loader_.is_bound())
-    target_loader_->ResumeReadingBodyFromNet();
-}
-
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveEarlyHints(
     network::mojom::EarlyHintsPtr early_hints) {}
 

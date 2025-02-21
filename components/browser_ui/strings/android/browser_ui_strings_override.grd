@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<grit latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+<grit latest_public_release="0" current_release="1" source_lang_id="en" enc_check="möl">
   <translations>
     <file path="translations/browser_ui_strings_override_af.xtb" lang="af" />
     <file path="translations/browser_ui_strings_override_am.xtb" lang="am" />

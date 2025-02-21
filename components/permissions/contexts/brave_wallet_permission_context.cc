@@ -23,7 +23,7 @@
 #include "content/public/browser/permission_controller_delegate.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "third_party/blink/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
+#include "services/network/public/mojom/permissions_policy/permissions_policy_feature.mojom.h"
 #include "url/origin.h"
 
 namespace permissions {
@@ -47,10 +47,10 @@ bool IsAccepted(PermissionRequest* request,
 BraveWalletPermissionContext::BraveWalletPermissionContext(
     content::BrowserContext* browser_context,
     ContentSettingsType content_settings_type)
-    : PermissionContextBase(browser_context,
-                            content_settings_type,
-                            blink::mojom::PermissionsPolicyFeature::kNotFound) {
-}
+    : PermissionContextBase(
+          browser_context,
+          content_settings_type,
+          network::mojom::PermissionsPolicyFeature::kNotFound) {}
 
 BraveWalletPermissionContext::~BraveWalletPermissionContext() = default;
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index f699f9ae0b80fc421c6bb247c60e135a314f3296..93d2accabf6ecf450bc9a506a866ac695b51701e 100644
+index 75c843a6611ad0d4c0103611c883dccc02607edf..259beaf977da3ea871109baad5a25d2795c9a836 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
-@@ -117,6 +117,7 @@ class DownloadItemView : public views::View,
+@@ -118,6 +118,7 @@ class DownloadItemView : public views::View,
    void OnPaintBackground(gfx::Canvas* canvas) override;
    void OnPaint(gfx::Canvas* canvas) override;
    void OnThemeChanged() override;

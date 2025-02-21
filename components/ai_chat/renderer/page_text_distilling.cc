@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/renderer/page_text_distilling.h"
 
+#include <algorithm>
 #include <iterator>
 #include <map>
 #include <memory>
@@ -24,7 +25,6 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/numerics/safe_math.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -183,8 +183,8 @@ void DistillPageText(
     if (content_nodes_this_root.empty()) {
       content_nodes.emplace_back(content_root_node);
     } else {
-      base::ranges::move(content_nodes_this_root,
-                         std::back_inserter(content_nodes));
+      std::ranges::move(content_nodes_this_root,
+                        std::back_inserter(content_nodes));
     }
   }
 

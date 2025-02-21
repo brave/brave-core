@@ -11,7 +11,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
@@ -229,8 +228,8 @@ void SolanaMessage::GetUniqueAccountMetas(
   // Remove duplicate accounts. is_writable is updated if later account meta
   // with the same pubkey is writable.
   for (const auto& account_meta : account_metas) {
-    auto it = base::ranges::find(*unique_account_metas, account_meta.pubkey,
-                                 &SolanaAccountMeta::pubkey);
+    auto it = std::ranges::find(*unique_account_metas, account_meta.pubkey,
+                                &SolanaAccountMeta::pubkey);
 
     if (it == unique_account_metas->end()) {
       unique_account_metas->push_back(account_meta);

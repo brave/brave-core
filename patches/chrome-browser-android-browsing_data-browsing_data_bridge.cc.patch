@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/android/browsing_data/browsing_data_bridge.cc b/chrome/browser/android/browsing_data/browsing_data_bridge.cc
-index eac1e0abe5dfbdaba2c0f3e1ce3e25a63b8d5fa1..4ca015f30de1043cfb8695188783da74bb63ee15 100644
+index 079fd63b6a18552e2857d2a711a2ad2917a2f3c9..6a6cb7dd0e419651a8b749088d849ae30df94b3c 100644
 --- a/chrome/browser/android/browsing_data/browsing_data_bridge.cc
 +++ b/chrome/browser/android/browsing_data/browsing_data_bridge.cc
-@@ -126,6 +126,7 @@ static void JNI_BrowsingDataBridge_ClearBrowsingData(
+@@ -123,6 +123,7 @@ static void JNI_BrowsingDataBridge_ClearBrowsingData(
          remove_mask |= chrome_browsing_data_remover::DATA_TYPE_CONTENT_SETTINGS;
          break;
        case browsing_data::BrowsingDataType::DOWNLOADS:

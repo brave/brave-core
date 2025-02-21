@@ -1,5 +1,5 @@
 diff --git a/ui/views/interaction/element_tracker_views.cc b/ui/views/interaction/element_tracker_views.cc
-index 87bda0a8618a316ad0a2720010dee987aedc6768..14173ed2e0e6adb1200bf094cfeb6224b790fc11 100644
+index 7c58dbaf1649b4d4b682e6345e5a0954ba8995ec..60a3288c48ed067228d5022b2a97ba84b3a6a6be 100644
 --- a/ui/views/interaction/element_tracker_views.cc
 +++ b/ui/views/interaction/element_tracker_views.cc
 @@ -296,7 +296,7 @@ class ElementTrackerViews::WidgetTracker : public WidgetObserver {

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 
+#include <algorithm>
 #include <string>
 #include <utility>
 
@@ -12,7 +13,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/values_test_util.h"

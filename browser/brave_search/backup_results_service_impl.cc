@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_search/backup_results_service_impl.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -194,7 +195,7 @@ BackupResultsServiceImpl::PendingRequest::~PendingRequest() = default;
 BackupResultsServiceImpl::PendingRequestList::iterator
 BackupResultsServiceImpl::FindPendingRequest(
     const content::WebContents* web_contents) {
-  return base::ranges::find_if(pending_requests_, [&](const auto& request) {
+  return std::ranges::find_if(pending_requests_, [&](const auto& request) {
     return request.web_contents.get() == web_contents;
   });
 }

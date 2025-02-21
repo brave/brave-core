@@ -5,8 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 
+#include <algorithm>
+
 #include "base/check.h"
-#include "base/ranges/algorithm.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
@@ -47,7 +48,7 @@ std::optional<NotificationAdInfo> NotificationAdManager::MaybeGetForPlacementId(
   CHECK(!placement_id.empty());
 
   const auto iter =
-      base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
+      std::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
   if (iter == ads_.cend()) {
     return std::nullopt;
   }
@@ -81,7 +82,7 @@ void NotificationAdManager::Remove(const std::string& placement_id,
   }
 
   const auto iter =
-      base::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
+      std::ranges::find(ads_, placement_id, &NotificationAdInfo::placement_id);
   if (iter == ads_.cend()) {
     return;
   }
@@ -107,8 +108,8 @@ void NotificationAdManager::RemoveAll(bool should_close) {
 bool NotificationAdManager::Exists(const std::string& placement_id) const {
   CHECK(!placement_id.empty());
 
-  return base::ranges::find(ads_, placement_id,
-                            &NotificationAdInfo::placement_id) != ads_.cend();
+  return std::ranges::find(ads_, placement_id,
+                           &NotificationAdInfo::placement_id) != ads_.cend();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

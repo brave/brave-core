@@ -5,7 +5,8 @@
 
 #include "brave/browser/ui/content_settings/brave_content_setting_image_models.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "brave/browser/ui/content_settings/brave_autoplay_blocked_image_model.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -16,13 +17,11 @@ void BraveGenerateContentSettingImageModels(
   // Remove the cookies and javascript content setting image model
   // https://github.com/brave/brave-browser/issues/1197
   // https://github.com/brave/brave-browser/issues/199
-  result->erase(
-      base::ranges::remove_if(*result,
-                              [](const auto& m) {
-                                return m->image_type() == ImageType::COOKIES ||
-                                       m->image_type() == ImageType::JAVASCRIPT;
-                              }),
-      result->end());
+  auto to_remove = std::ranges::remove_if(*result, [](const auto& m) {
+    return m->image_type() == ImageType::COOKIES ||
+           m->image_type() == ImageType::JAVASCRIPT;
+  });
+  result->erase(to_remove.begin(), to_remove.end());
 
   result->push_back(std::make_unique<BraveAutoplayBlockedImageModel>());
 }

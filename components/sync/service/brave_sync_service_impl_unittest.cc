@@ -769,7 +769,7 @@ class BraveSyncServiceImplGACookiesTest
             [](BraveSyncServiceImplGACookiesTest* p_this) {
               CoreAccountInfo prev_account_info;
               prev_account_info.email = "usertest@gmail.com";
-              prev_account_info.gaia = "gaia";
+              prev_account_info.gaia = GaiaId("gaia");
               prev_account_info.account_id =
                   CoreAccountId::FromGaiaId(prev_account_info.gaia);
 
@@ -792,7 +792,7 @@ TEST_P(BraveSyncServiceImplGACookiesTest, CacheGuidIsNotWiped) {
   SyncTransportDataPrefs::RegisterProfilePrefs(pref_service()->registry());
 
   SyncTransportDataPrefs sync_transport_data_prefs(
-      pref_service(), signin::GaiaIdHash::FromGaiaId("user_gaia_id"));
+      pref_service(), signin::GaiaIdHash::FromGaiaId(GaiaId("user_gaia_id")));
 
   sync_transport_data_prefs.SetCacheGuid(kCacheGuid);
 

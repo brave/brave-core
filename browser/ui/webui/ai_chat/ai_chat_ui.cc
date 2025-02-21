@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -45,7 +46,7 @@
 namespace {
 content::WebContents* GetActiveWebContents(content::BrowserContext* context) {
   auto tab_models = TabModelList::models();
-  auto iter = base::ranges::find_if(
+  auto iter = std::ranges::find_if(
       tab_models, [](const auto& model) { return model->IsActiveModel(); });
   if (iter == tab_models.end()) {
     return nullptr;

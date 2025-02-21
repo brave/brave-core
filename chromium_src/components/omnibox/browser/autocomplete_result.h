@@ -6,14 +6,14 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_RESULT_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_RESULT_H_
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
 
 #define SortAndCull                                           \
   Unused();                                                   \
   void RemoveAllMatchesNotOfType(AutocompleteProvider::Type); \
   template <typename UnaryPredicate>                          \
   void MoveMatchToBeLast(UnaryPredicate predicate) {          \
-    if (auto it = base::ranges::find_if(matches_, predicate); \
+    if (auto it = std::ranges::find_if(matches_, predicate);  \
         it != matches_.end()) {                               \
       std::rotate(it, std::next(it), matches_.end());         \
     }                                                         \

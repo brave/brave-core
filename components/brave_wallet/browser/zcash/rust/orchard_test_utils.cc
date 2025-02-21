@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_test_utils.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 
@@ -40,8 +41,8 @@ class TestingDecodedBundleBuilderImpl : public TestingDecodedBundleBuilder {
 
   std::unique_ptr<OrchardDecodedBlocksBundle> Complete() override {
     ::rust::Vec<uint8_t> frontier;
-    base::ranges::copy(prior_tree_state_->frontier,
-                       std::back_inserter(frontier));
+    std::ranges::copy(prior_tree_state_->frontier,
+                      std::back_inserter(frontier));
     auto prior_tree_state =
         CxxOrchardShardTreeState{frontier, prior_tree_state_->block_height,
                                  prior_tree_state_->tree_size};

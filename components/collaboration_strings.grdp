@@ -1,14 +1,56 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
+  <!-- Collaboration -->
+  <message name="IDS_COLLABORATION_SIGNIN_TITLE" desc="The title of the collaboration signin screen." formatter_data="android_java">
+    Collaborate in tab groups
+  </message>
+  <message name="IDS_COLLABORATION_SIGNIN_DESCRIPTION" desc="The description of the collaboration signin screen." formatter_data="android_java">
+    Sign in to Brave to share and join tab groups, and work together on ideas
+  </message>
+  <message name="IDS_COLLABORATION_SIGNIN_BOTTOM_SHEET_TITLE" desc="The title of the collaboration signin bottom sheet screen." formatter_data="android_java">
+    Sign in to Brave
+  </message>
+  <message name="IDS_COLLABORATION_SIGNIN_BOTTOM_SHEET_DESCRIPTION" desc="The description of the collaboration signin bottom sheet screen." formatter_data="android_java">
+    You’ll get to share, join, and collaborate in tab groups
+  </message>
+  <message name="IDS_COLLABORATION_SIGNIN_SYNC_DISMISS" desc="The dismiss text of the collaboration signin and sync screen." formatter_data="android_java">
+    Cancel
+  </message>
+  <message name="IDS_COLLABORATION_SYNC_TITLE" desc="The title of the collaboration sync screen." formatter_data="android_java">
+    Sync tabs and history to continue
+  </message>
+  <message name="IDS_COLLABORATION_SYNC_DESCRIPTION" desc="The description of the collaboration sync screen." formatter_data="android_java">
+    To share, join, and collaborate in tab groups, sync your history and tabs
+  </message>
+  <message name="IDS_COLLABORATION_ONE_GROUP_REMOVED_NOTIFICATION" desc="Format for the notification text appearing when one tab group is no longer shared with the user.">
+    "<ph name="GROUP_TITLE">$1<ex>Travel</ex></ph>" tab group no longer available
+  </message>
+  <message name="IDS_COLLABORATION_TWO_GROUPS_REMOVED_NOTIFICATION" desc="Format for the notification text appearing when two tab groups are no longer shared with the user.">
+    "<ph name="GROUP_TITLE_1">$1<ex>Travel</ex></ph>" and "<ph name="GROUP_TITLE_2">$2<ex>Vacation</ex></ph>" "tab groups no longer available
+  </message>
+  <message name="IDS_COLLABORATION_SEVERAL_GROUPS_REMOVED_NOTIFICATION" desc="Format for the notification text appearing when more than 2 tab groups are no longer shared with the user.">
+    <ph name="GROUP_COUNT">$1<ex>5</ex></ph> tab groups no longer available
+  </message>
+  <message name="IDS_COLLABORATION_SOMETHING_WENT_WRONG_HEADER" desc="The header of the error dialog something went wrong.">
+    Something went wrong.
+  </message>
+  <message name="IDS_COLLABORATION_SOMETHING_WENT_WRONG_BODY" desc="The body of of the error dialog something went wrong.">
+    There was an error. Try again.
+  </message>
+  <!-- /Collaboration -->
+
   <!-- Data Sharing -->
   <!-- Error Messages -->
   <if expr="is_android">
-    <message name="IDS_COLLABORATION_SOMETHING_WENT_WRONG_HEADER" desc="The header of the error dialog something went wrong." formatter_data="android_java">
-      Something went wrong.
+    <message name="IDS_COLLABORATION_SHARE_SHEET_TITLE" desc="The title of the share sheet when sharing a tab group." formatter_data="android_java">
+      Collaborate on tab group
     </message>
-    <message name="IDS_COLLABORATION_SOMETHING_WENT_WRONG_BODY" desc="The body of of the error dialog something went wrong." formatter_data="android_java">
-      There was an error. Try again.
+    <message name="IDS_COLLABORATION_SHARE_SHEET_MESSAGE" desc="The contents of the message when sharing a tab group." formatter_data="android_java">
+      <ph name="TAB_GROUP_DISPLAY_NAME">%1$s<ex>Vacation plan</ex></ph> link expires in 48 hours
+    </message>
+    <message name="IDS_COLLABORATION_SHARE_SHEET_TAB_GROUP_FALLBACK_NAME" desc="Fallback name if the tab group was not named by the user." formatter_data="android_java">
+      Shared tab group
     </message>
   </if>
   <!-- Error Messages -->
@@ -45,6 +87,15 @@
       =1 {<ph name="TIME_COUNT">$1<ex>2</ex></ph>h ago}
       other {<ph name="TIME_COUNT">$1<ex>2</ex></ph>d ago}
     }
+  </message>
+  <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_SEPARATOR" desc="The separator string on a recent activity bottom sheet row that connects two halfs: an URL or email or group name on first half, and a relative time duration on the second half." formatter_data="android_java">
+    \u0020\u2022\u0020
+  </message>
+  <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_DESCRIPTION_FULL" desc="The description text on a recent activity bottom sheet row that has three parts: an URL or email or group name on first half, a separator, and a relative time duration on the second half." formatter_data="android_java">
+    <ph name="DESCRIPTION">%1$s<ex>google.com</ex></ph><ph name="SEPARATOR">%2$s<ex> . </ex></ph><ph name="TIMESTMAP">%3$s<ex>8h ago</ex></ph>
+  </message>
+  <message name="IDS_DATA_SHARING_RECENT_ACTIVITY_EMPTY" desc="The text on the recent activity bottom sheet screen shown to indicate that there is no recent ativity to show and the list is empty." formatter_data="android_java">
+    No recent activity
   </message>
   <!-- Recent Activity -->
 

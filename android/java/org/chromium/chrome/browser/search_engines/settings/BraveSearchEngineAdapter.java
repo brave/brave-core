@@ -166,7 +166,7 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     public void onTemplateUrlServiceLoaded() {
         // It is necessary to ensure user's selection is updated on first entering private setting
         // but it causes updateActiveDSE() to be called twice (once here and
-        // once from SearchEngineTabModelSelectorObserver)
+        // once from lambda at BraveSearchEngineUtils.initializeBraveSearchEngineStates)
         if (mNeedUpdateActiveDSE) {
             mNeedUpdateActiveDSE = false;
             updateActiveDSE(mProfile, null);

@@ -1,5 +1,5 @@
 diff --git a/tools/search_engine_choice/search_engine_icons_utils.py b/tools/search_engine_choice/search_engine_icons_utils.py
-index 4261cffa350c22a7d2536f3d3832abbfcb03cecc..10183d88ca3380aa657de0a86458bd60fe0d105d 100644
+index 9d0a2fdaef3443118722e7dd9d934e329fc14a77..949044596b15c31fce887ccaf0c4a03fc196a8e0 100644
 --- a/tools/search_engine_choice/search_engine_icons_utils.py
 +++ b/tools/search_engine_choice/search_engine_icons_utils.py
 @@ -89,3 +89,4 @@ try:

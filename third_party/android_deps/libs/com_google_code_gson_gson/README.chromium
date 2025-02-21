@@ -1,0 +1,15 @@
+Name: Gson
+Short Name: gson
+URL: https://mvnrepository.com/artifact/com.google.code.gson/gson/2.9.0
+Version: 2.9.0
+License: Apache Version 2.0
+License File: LICENSE
+CPEPrefix: unknown
+Security Critical: yes
+Shipped: yes
+
+Description:
+Android Gson
+
+Local Modifications:
+No modifications.

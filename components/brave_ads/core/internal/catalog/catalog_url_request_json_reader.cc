@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_json_reader.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "base/time/time.h"
 #include "base/trace_event/trace_event.h"
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
@@ -241,8 +242,8 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
             continue;
           }
 
-          creative_set.conversions.erase(
-              base::ranges::remove_if(
+          auto to_remove =
+              std::ranges::remove_if(
                   creative_set.conversions,
                   [&creative_set,
                    &creative](const CatalogConversionInfo& conversion) {
@@ -252,8 +253,8 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
                            (!ShouldSupportUrl(conversion_url_pattern) ||
                             !SameDomainOrHost(creative.payload.target_url,
                                               conversion_url_pattern));
-                  }),
-              creative_set.conversions.cend());
+                  });
+          creative_set.conversions.erase(to_remove.begin(), to_remove.end());
 
           creative_set.creative_notification_ads.push_back(creative);
         } else if (code == "inline_content_all_v1") {
@@ -286,8 +287,8 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
             continue;
           }
 
-          creative_set.conversions.erase(
-              base::ranges::remove_if(
+          auto to_remove =
+              std::ranges::remove_if(
                   creative_set.conversions,
                   [&creative_set,
                    &creative](const CatalogConversionInfo& conversion) {
@@ -297,8 +298,8 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
                            (!ShouldSupportUrl(conversion_url_pattern) ||
                             !SameDomainOrHost(creative.payload.target_url,
                                               conversion_url_pattern));
-                  }),
-              creative_set.conversions.cend());
+                  });
+          creative_set.conversions.erase(to_remove.begin(), to_remove.end());
 
           creative_set.creative_inline_content_ads.push_back(creative);
         } else if (code == "new_tab_page_all_v1") {
@@ -331,8 +332,8 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
             continue;
           }
 
-          creative_set.conversions.erase(
-              base::ranges::remove_if(
+          auto to_remove =
+              std::ranges::remove_if(
                   creative_set.conversions,
                   [&creative_set,
                    &creative](const CatalogConversionInfo& conversion) {
@@ -342,8 +343,8 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
                            (!ShouldSupportUrl(conversion_url_pattern) ||
                             !SameDomainOrHost(creative.payload.target_url,
                                               conversion_url_pattern));
-                  }),
-              creative_set.conversions.cend());
+                  });
+          creative_set.conversions.erase(to_remove.begin(), to_remove.end());
 
           for (const auto& wallpaper_node : payload["wallpapers"].GetArray()) {
             CatalogNewTabPageAdWallpaperInfo wallpaper;
@@ -421,8 +422,8 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
             continue;
           }
 
-          creative_set.conversions.erase(
-              base::ranges::remove_if(
+          auto to_remove =
+              std::ranges::remove_if(
                   creative_set.conversions,
                   [&creative_set,
                    &creative](const CatalogConversionInfo& conversion) {
@@ -432,8 +433,8 @@ std::optional<CatalogInfo> ReadCatalogImpl(const std::string& json) {
                            (!ShouldSupportUrl(conversion_url_pattern) ||
                             !SameDomainOrHost(creative.payload.target_url,
                                               conversion_url_pattern));
-                  }),
-              creative_set.conversions.cend());
+                  });
+          creative_set.conversions.erase(to_remove.begin(), to_remove.end());
 
           creative_set.creative_promoted_content_ads.push_back(creative);
         } else {

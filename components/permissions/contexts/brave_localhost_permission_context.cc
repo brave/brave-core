@@ -16,10 +16,10 @@ namespace permissions {
 
 BraveLocalhostPermissionContext::BraveLocalhostPermissionContext(
     content::BrowserContext* browser_context)
-    : PermissionContextBase(browser_context,
-                            ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
-                            blink::mojom::PermissionsPolicyFeature::kNotFound) {
-}
+    : PermissionContextBase(
+          browser_context,
+          ContentSettingsType::BRAVE_LOCALHOST_ACCESS,
+          network::mojom::PermissionsPolicyFeature::kNotFound) {}
 
 BraveLocalhostPermissionContext::~BraveLocalhostPermissionContext() = default;
 

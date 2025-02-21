@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 5d14b91245e6fc418de910dcaf2ed5b208925e4a..762738da937c5b654a1f07330a566f8e47275fdc 100644
+index 71b8c74866b4fd842a440dccca36c3f087e1c322..9c48c0b452ee1b89d64d33e5c03b5aaab5782149 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4337,6 +4337,7 @@ const FeatureEntry::FeatureVariation kMerchantTrustVariations[] = {
+@@ -4405,6 +4405,7 @@ const FeatureEntry::FeatureVariation kTabSwitcherColorBlendAnimateVariations[] =
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

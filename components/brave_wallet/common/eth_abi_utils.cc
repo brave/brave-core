@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 
+#include <algorithm>
 #include <limits>
 #include <optional>
 
@@ -13,7 +14,6 @@
 #include "base/containers/extend.h"
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 
@@ -23,7 +23,7 @@ namespace {
 void Uint256ToSpan(uint256_t value,
                    base::span<uint8_t, kRowLength> destination) {
   destination.copy_from(base::byte_span_from_ref(value));
-  base::ranges::reverse(destination);
+  std::ranges::reverse(destination);
 }
 
 size_t Padding(size_t bytes_size) {
@@ -86,8 +86,8 @@ bool CheckPadding(Span data, size_t padded_data_size) {
   if (data.size() < padded_data_size) {
     return false;
   }
-  return base::ranges::all_of(data.subspan(padded_data_size),
-                              [](uint8_t b) { return b == 0; });
+  return std::ranges::all_of(data.subspan(padded_data_size),
+                             [](uint8_t b) { return b == 0; });
 }
 
 std::optional<Span32> ExtractHeadFromTuple(Span data, size_t tuple_pos) {

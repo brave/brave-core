@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 
+#include <algorithm>
 #include <string>
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/confirmation_token_issuer_util.h"
@@ -29,8 +29,8 @@ bool TokenIssuerExistsForType(TokenIssuerType token_issuer_type) {
 std::optional<TokenIssuerInfo> GetTokenIssuerForType(
     const IssuersInfo& issuers,
     TokenIssuerType token_issuer_type) {
-  const auto iter = base::ranges::find(issuers.token_issuers, token_issuer_type,
-                                       &TokenIssuerInfo::type);
+  const auto iter = std::ranges::find(issuers.token_issuers, token_issuer_type,
+                                      &TokenIssuerInfo::type);
   if (iter == issuers.token_issuers.cend()) {
     return std::nullopt;
   }

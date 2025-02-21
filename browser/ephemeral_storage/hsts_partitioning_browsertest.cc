@@ -145,19 +145,34 @@ class HSTSPartitioningBrowserTestBase : public InProcessBrowserTest {
     run_loop.Run();
   }
 
-  bool NetworkContextIsHSTSActiveForHost(const std::string& host) {
+  bool NetworkContextIsHSTSActiveForHostWithTopLevelNav(const std::string& host,
+                                                        bool is_top_level_nav) {
     content::StoragePartition* partition =
         browser()->profile()->GetDefaultStoragePartition();
     base::RunLoop run_loop;
     bool result = false;
     partition->GetNetworkContext()->IsHSTSActiveForHost(
-        host,
+        host, is_top_level_nav,
         base::BindLambdaForTesting([&run_loop, &result](bool is_hsts_active) {
           result = is_hsts_active;
           run_loop.Quit();
         }));
     run_loop.Run();
     return result;
+  }
+
+  bool NetworkContextIsHSTSActiveForHost(const std::string& host) {
+    if (!NetworkContextIsHSTSActiveForHostWithTopLevelNav(
+            host,
+            /*is_top_level_nav=*/true)) {
+      return false;
+    }
+    if (!NetworkContextIsHSTSActiveForHostWithTopLevelNav(
+            host,
+            /*is_top_level_nav=*/false)) {
+      return false;
+    }
+    return true;
   }
 
   base::Value::Dict NetworkContextGetHSTSState(const std::string& host) {

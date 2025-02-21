@@ -59,9 +59,11 @@ namespace brave_federated {
 
 DataStore::DataStore(const DataStoreTask data_store_task,
                      const base::FilePath& db_file_path)
-    : database_(
-          {.exclusive_locking = true, .page_size = 4096, .cache_size = 500},
-          sql::Database::Tag(data_store_task.name)),
+    : database_(sql::DatabaseOptions()
+                    .set_exclusive_locking(true)
+                    .set_page_size(4096)
+                    .set_cache_size(500),
+                sql::Database::Tag(data_store_task.name)),
       db_file_path_(db_file_path),
       data_store_task_(data_store_task) {}
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_card.html.ts b/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
-index 531d1fc9b1adf3bdd73d2cfbc9c73da32117df5c..1c5d0af1b02d0bb4892d556fa34ce93adad3ac72 100644
+index 8fcf1023fc7ce94f39314cddbecbdbd92505ca5d..b43a8a6e0dde60ac49222f15b6d6e236d1378788 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_card.html.ts
-@@ -9,7 +9,7 @@ import type {ProfileCardElement} from './profile_card.js';
+@@ -10,7 +10,7 @@ import {isGlicVersion} from './profile_picker_flags.js';
  export function getHtml(this: ProfileCardElement) {
    return html`<!--_html_template_start_-->
  <div id="profileCardContainer">

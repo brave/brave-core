@@ -12,7 +12,7 @@
 #include "src/components/search_engines/search_engine_utils.cc"
 #undef GetEngineType
 
-namespace SearchEngineUtils {
+namespace search_engine_utils {
 
 SearchEngineType GetEngineType(const GURL& url) {
   SearchEngineType type = GetEngineType_ChromiumImpl(url);
@@ -34,4 +34,4 @@ SearchEngineType GetEngineType(const GURL& url) {
   return type;
 }
 
-}  // namespace SearchEngineUtils
+}  // namespace search_engine_utils

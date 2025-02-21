@@ -5,6 +5,7 @@
 
 #include "chrome/test/base/chrome_test_suite.h"
 
+#include <algorithm>
 #include <string_view>
 
 #define ChromeTestSuite ChromeTestSuite_ChromiumImpl
@@ -12,7 +13,6 @@
 #undef ChromeTestSuite
 
 #include "base/no_destructor.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/pattern.h"
 #include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
@@ -66,24 +66,24 @@ class BraveChromeTestSetupHelper : public testing::EmptyTestEventListener {
     std::vector<std::string> disable_features;
 
     for (const auto& test_adjustments : *kTestAdjustments) {
-      if (!base::ranges::any_of(test_adjustments.test_patterns,
-                                [&](const auto& pattern) {
-                                  return base::MatchPattern(test_name, pattern);
-                                })) {
+      if (!std::ranges::any_of(test_adjustments.test_patterns,
+                               [&](const auto& pattern) {
+                                 return base::MatchPattern(test_name, pattern);
+                               })) {
         continue;
       }
-      base::ranges::copy(test_adjustments.enable_features,
-                         std::back_inserter(enable_features));
-      base::ranges::copy(test_adjustments.disable_features,
-                         std::back_inserter(disable_features));
+      std::ranges::copy(test_adjustments.enable_features,
+                        std::back_inserter(enable_features));
+      std::ranges::copy(test_adjustments.disable_features,
+                        std::back_inserter(disable_features));
     }
 #if DCHECK_IS_ON()
     {
       std::vector<std::string> duplicate_features;
-      base::ranges::sort(enable_features);
-      base::ranges::sort(disable_features);
-      base::ranges::set_intersection(enable_features, disable_features,
-                                     std::back_inserter(duplicate_features));
+      std::ranges::sort(enable_features);
+      std::ranges::sort(disable_features);
+      std::ranges::set_intersection(enable_features, disable_features,
+                                    std::back_inserter(duplicate_features));
       for (const auto& duplicate_feature : duplicate_features) {
         DLOG(ERROR) << "Found enabled and disabled feature at the same time: "
                     << duplicate_feature;

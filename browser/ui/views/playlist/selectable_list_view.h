@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PLAYLIST_SELECTABLE_LIST_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_PLAYLIST_SELECTABLE_LIST_VIEW_H_
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
@@ -126,10 +127,9 @@ class SelectableListView : public views::BoxLayoutView {
 
   void SetSelected(const std::vector<DataType>& data) {
     std::vector<std::string> ids;
-    base::ranges::transform(
-        data, std::back_inserter(ids), [](const auto& data) {
-          return SelectableDataTraits<DataType>::GetId(data);
-        });
+    std::ranges::transform(data, std::back_inserter(ids), [](const auto& data) {
+      return SelectableDataTraits<DataType>::GetId(data);
+    });
     SetSelected(ids);
   }
 
@@ -154,11 +154,10 @@ class SelectableListView : public views::BoxLayoutView {
 
   std::vector<DataType> GetSelected() {
     std::vector<DataType> items;
-    base::ranges::transform(
-        selected_views_, std::back_inserter(items),
-        [this](const auto& id_and_view) {
-          return data_.at(id_and_view.second->id())->Clone();
-        });
+    std::ranges::transform(selected_views_, std::back_inserter(items),
+                           [this](const auto& id_and_view) {
+                             return data_.at(id_and_view.second->id())->Clone();
+                           });
     return items;
   }
 

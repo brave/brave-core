@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpapers_database_table.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <iterator>
 #include <utility>
@@ -13,7 +14,6 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/location.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
@@ -76,10 +76,10 @@ void CreativeNewTabPageAdWallpapers::Insert(
   CHECK(mojom_db_transaction);
 
   CreativeNewTabPageAdList filtered_creative_ads;
-  base::ranges::copy_if(creative_ads, std::back_inserter(filtered_creative_ads),
-                        [](const CreativeNewTabPageAdInfo& creative_ad) {
-                          return !creative_ad.wallpapers.empty();
-                        });
+  std::ranges::copy_if(creative_ads, std::back_inserter(filtered_creative_ads),
+                       [](const CreativeNewTabPageAdInfo& creative_ad) {
+                         return !creative_ad.wallpapers.empty();
+                       });
 
   if (filtered_creative_ads.empty()) {
     return;

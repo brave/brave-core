@@ -29,7 +29,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/rand_util.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
@@ -293,7 +292,7 @@ mojom::FeedItemMetadataPtr FromTopicArticle(
     const Publishers& publishers,
     const api::topics::TopicArticle& article) {
   auto item = mojom::FeedItemMetadata::New();
-  auto id_it = base::ranges::find_if(publishers, [&article](const auto& p) {
+  auto id_it = std::ranges::find_if(publishers, [&article](const auto& p) {
     return p.second->publisher_name == article.publisher_name;
   });
   if (id_it != publishers.end()) {
@@ -516,7 +515,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateAllFeed(FeedGenerationInfo info) {
   auto feed = mojom::FeedV2::New();
 
   auto add_items = [&feed](std::vector<mojom::FeedItemV2Ptr>& items) {
-    base::ranges::move(items, std::back_inserter(feed->items));
+    std::ranges::move(items, std::back_inserter(feed->items));
   };
 
   // If we aren't subscribed to anything, or we failed to fetch any articles
@@ -642,8 +641,8 @@ void FeedV2Builder::BuildFollowingFeed(
     const SubscriptionsSnapshot& subscriptions,
     BuildFeedCallback callback) {
   FeedItems raw_feed_items;
-  base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
-                          [](const auto& item) { return item->Clone(); });
+  std::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
+                         [](const auto& item) { return item->Clone(); });
   GenerateFeed(
       subscriptions, {.signals = true},
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
@@ -663,8 +662,8 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
                                      const std::string& channel,
                                      BuildFeedCallback callback) {
   FeedItems raw_feed_items;
-  base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
-                          [](const auto& item) { return item->Clone(); });
+  std::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
+                         [](const auto& item) { return item->Clone(); });
   GenerateFeed(
       subscriptions, {.signals = true},
       mojom::FeedV2Type::NewChannel(mojom::FeedV2ChannelType::New(channel)),
@@ -685,10 +684,10 @@ void FeedV2Builder::BuildChannelFeed(const SubscriptionsSnapshot& subscriptions,
               const auto& locale = info.locale();
 
               auto locale_info_it =
-                  base::ranges::find_if(publisher_it->second->locales,
-                                        [&locale](const auto& locale_info) {
-                                          return locale == locale_info->locale;
-                                        });
+                  std::ranges::find_if(publisher_it->second->locales,
+                                       [&locale](const auto& locale_info) {
+                                         return locale == locale_info->locale;
+                                       });
               if (locale_info_it == publisher_it->second->locales.end()) {
                 continue;
               }
@@ -737,7 +736,7 @@ void FeedV2Builder::BuildPublisherFeed(
             }
 
             // Sort by publish time.
-            base::ranges::sort(items, [](const auto& a, const auto& b) {
+            std::ranges::sort(items, [](const auto& a, const auto& b) {
               return a->get_article()->data->publish_time >
                      b->get_article()->data->publish_time;
             });

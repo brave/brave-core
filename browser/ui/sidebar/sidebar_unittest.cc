@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 
@@ -180,8 +181,8 @@ TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {
   // instead of adding |talk| url.
   const auto items = service()->items();
   const auto talk_iter =
-      base::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
-                         &SidebarItem::built_in_item_type);
+      std::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
+                        &SidebarItem::built_in_item_type);
   ASSERT_NE(talk_iter, items.cend());
   service()->RemoveItemAt(std::distance(items.cbegin(), talk_iter));
   EXPECT_TRUE(HiddenDefaultSidebarItemsContains(service(), talk));

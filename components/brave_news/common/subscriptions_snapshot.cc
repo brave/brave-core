@@ -85,7 +85,7 @@ std::vector<std::string> SubscriptionsSnapshot::GetChannelsFromAllLocales()
     const {
   std::vector<std::string> result;
   for (auto& [locale, channel] : channels_) {
-    base::ranges::copy(channel, std::back_inserter(result));
+    std::ranges::copy(channel, std::back_inserter(result));
   }
   return result;
 }
@@ -93,32 +93,32 @@ std::vector<std::string> SubscriptionsSnapshot::GetChannelsFromAllLocales()
 SubscriptionsDiff SubscriptionsSnapshot::DiffPublishers(
     const SubscriptionsSnapshot& old) const {
   SubscriptionsDiff result;
-  base::ranges::set_symmetric_difference(enabled_publishers_,
-                                         old.enabled_publishers_,
-                                         std::back_inserter(result.changed));
-  base::ranges::set_symmetric_difference(disabled_publishers_,
-                                         old.disabled_publishers_,
-                                         std::back_inserter(result.changed));
+  std::ranges::set_symmetric_difference(enabled_publishers_,
+                                        old.enabled_publishers_,
+                                        std::back_inserter(result.changed));
+  std::ranges::set_symmetric_difference(disabled_publishers_,
+                                        old.disabled_publishers_,
+                                        std::back_inserter(result.changed));
 
   std::vector<std::string> direct_feeds_ids;
-  base::ranges::transform(direct_feeds_, std::back_inserter(direct_feeds_ids),
-                          &DirectFeed::id);
+  std::ranges::transform(direct_feeds_, std::back_inserter(direct_feeds_ids),
+                         &DirectFeed::id);
   std::vector<std::string> old_direct_feed_ids;
-  base::ranges::transform(old.direct_feeds_,
-                          std::back_inserter(old_direct_feed_ids),
-                          &DirectFeed::id);
+  std::ranges::transform(old.direct_feeds_,
+                         std::back_inserter(old_direct_feed_ids),
+                         &DirectFeed::id);
 
   base::flat_set<std::string> direct_feed_set(std::move(direct_feeds_ids));
   base::flat_set<std::string> old_direct_feed_set(
       std::move(old_direct_feed_ids));
 
   // New direct feeds should be added to the changed set.
-  base::ranges::set_difference(direct_feed_set, old_direct_feed_set,
-                               std::back_inserter(result.changed));
+  std::ranges::set_difference(direct_feed_set, old_direct_feed_set,
+                              std::back_inserter(result.changed));
 
   // Removed direct feeds should be marked as removed.
-  base::ranges::set_difference(old_direct_feed_set, direct_feed_set,
-                               std::back_inserter(result.removed));
+  std::ranges::set_difference(old_direct_feed_set, direct_feed_set,
+                              std::back_inserter(result.removed));
   return result;
 }
 
@@ -141,8 +141,8 @@ SubscriptionsDiff SubscriptionsSnapshot::DiffChannels(
   base::flat_set<std::string> channels_set(std::move(channel_ids));
   base::flat_set<std::string> other_channels_set(std::move(other_channel_ids));
 
-  base::ranges::set_symmetric_difference(channels_set, other_channels_set,
-                                         std::back_inserter(result.changed));
+  std::ranges::set_symmetric_difference(channels_set, other_channels_set,
+                                        std::back_inserter(result.changed));
   return result;
 }
 

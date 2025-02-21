@@ -78,7 +78,7 @@ void EnsOffchainLookupOptInPage::PopulateInterstitialStrings(
                      base::ReplaceStringPlaceholders(
                          brave_l10n::GetLocalizedResourceUTF16String(
                              IDS_ENS_OFFCHAIN_LOOKUP_OPT_IN_PRIMARY_PARAGRAPH),
-                         {learn_more_link}, nullptr));
+                         learn_more_link, nullptr));
 
   load_time_data.Set("primaryButtonText",
                      brave_l10n::GetLocalizedResourceUTF16String(

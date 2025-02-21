@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_news/browser/signal_calculator.h"
 
+#include <algorithm>
 #include <iterator>
 #include <string>
 #include <utility>
@@ -112,8 +113,8 @@ void SignalCalculator::OnGotHistory(
       continue;
     }
 
-    base::ranges::copy(history_it->second,
-                       std::back_inserter(publisher_visits[publisher_id]));
+    std::ranges::copy(history_it->second,
+                      std::back_inserter(publisher_visits[publisher_id]));
     total_publisher_visits += history_it->second.size();
 
     for (const auto& locale_info : publisher->locales) {
@@ -123,8 +124,8 @@ void SignalCalculator::OnGotHistory(
 
       for (const auto& channel : locale_info->channels) {
         total_channel_visits += history_it->second.size();
-        base::ranges::copy(history_it->second,
-                           std::back_inserter(channel_visits[channel]));
+        std::ranges::copy(history_it->second,
+                          std::back_inserter(channel_visits[channel]));
       }
       break;
     }

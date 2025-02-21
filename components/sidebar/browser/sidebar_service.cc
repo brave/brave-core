@@ -17,7 +17,6 @@
 #include "base/feature_list.h"
 #include "base/logging.h"
 #include "base/notreached.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -232,9 +231,9 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
     }
     // Remember not to hide this item
     auto iter =
-        base::ranges::find(built_in_items_to_hide,
-                           static_cast<SidebarItem::BuiltInItemType>(*item_id),
-                           &SidebarItem::built_in_item_type);
+        std::ranges::find(built_in_items_to_hide,
+                          static_cast<SidebarItem::BuiltInItemType>(*item_id),
+                          &SidebarItem::built_in_item_type);
     // It might be an item which is no longer is offered
     if (iter != built_in_items_to_hide.end()) {
       built_in_items_to_hide.erase(iter);
@@ -349,7 +348,7 @@ void SidebarService::UpdateItem(const GURL& old_url,
     return;
   }
 
-  auto item_iter = base::ranges::find(items_, old_url, &SidebarItem::url);
+  auto item_iter = std::ranges::find(items_, old_url, &SidebarItem::url);
   if (item_iter != items_.end()) {
     const size_t index = std::distance(items_.begin(), item_iter);
     DCHECK(IsEditableItemAt(index));
@@ -417,20 +416,18 @@ std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {
   const auto added_default_items = GetCurrentlyPresentBuiltInTypes();
   auto default_items = GetDefaultSidebarItems();
 
-  default_items.erase(
-      base::ranges::remove_if(default_items,
-                              [&added_default_items](auto& item) {
-                                return base::Contains(added_default_items,
-                                                      item.built_in_item_type);
-                              }),
-      default_items.end());
+  auto to_remove =
+      std::ranges::remove_if(default_items, [&added_default_items](auto& item) {
+        return base::Contains(added_default_items, item.built_in_item_type);
+      });
+  default_items.erase(to_remove.begin(), to_remove.end());
   return default_items;
 }
 
 std::vector<SidebarItem::BuiltInItemType>
 SidebarService::GetCurrentlyPresentBuiltInTypes() const {
   std::vector<SidebarItem::BuiltInItemType> items;
-  base::ranges::for_each(items_, [&items](const auto& item) {
+  std::ranges::for_each(items_, [&items](const auto& item) {
     if (IsBuiltInType(item)) {
       items.push_back(item.built_in_item_type);
     }
@@ -455,7 +452,7 @@ std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
   std::optional<SidebarItem> default_item;
   for (const auto& type : kPreferredPanelOrder) {
     auto found_item_iter =
-        base::ranges::find(items_, type, &SidebarItem::built_in_item_type);
+        std::ranges::find(items_, type, &SidebarItem::built_in_item_type);
     if (found_item_iter != items_.end()) {
       default_item = *found_item_iter;
       DCHECK_EQ(default_item->open_in_panel, true);
@@ -502,8 +499,8 @@ void SidebarService::LoadSidebarItems() {
         }
         auto id =
             static_cast<SidebarItem::BuiltInItemType>(*built_in_type_value);
-        auto iter = base::ranges::find(default_items_to_add, id,
-                                       &SidebarItem::built_in_item_type);
+        auto iter = std::ranges::find(default_items_to_add, id,
+                                      &SidebarItem::built_in_item_type);
         // It might be an item which is no longer is offered as built-in
         if (iter == default_items_to_add.end()) {
           VLOG(1) << "item not found: " << item.DebugString();
@@ -544,7 +541,7 @@ void SidebarService::LoadSidebarItems() {
       // Don't show this built-in item
       const auto id = static_cast<SidebarItem::BuiltInItemType>(item.GetInt());
       DVLOG(2) << "hide built-in item with id: " << item.GetInt();
-      auto iter = base::ranges::find(
+      auto iter = std::ranges::find(
           default_items_to_add, static_cast<SidebarItem::BuiltInItemType>(id),
           &SidebarItem::built_in_item_type);
       if (iter != default_items_to_add.end()) {
@@ -563,7 +560,7 @@ void SidebarService::LoadSidebarItems() {
   // insert at the intended order.
   for (const auto& item : default_items_to_add) {
     const auto default_item_iter =
-        base::ranges::find(default_builtin_items_, item.built_in_item_type);
+        std::ranges::find(default_builtin_items_, item.built_in_item_type);
     auto default_index = default_item_iter - std::begin(default_builtin_items_);
     // Add at the default index for the first time. For users which haven't
     // changed any order, or removed items, this will be at the intentional

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 
+#include <algorithm>
+
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -22,7 +24,7 @@ bool BraveTabStripModelDelegate::CanMoveTabsToWindow(
   }
 
   // Shared pinned tabs shouldn't be moved.
-  return base::ranges::none_of(indices, [this](const auto& index) {
+  return std::ranges::none_of(indices, [this](const auto& index) {
     return browser_->tab_strip_model()->IsTabPinned(index);
   });
 }

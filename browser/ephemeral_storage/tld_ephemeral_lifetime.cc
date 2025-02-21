@@ -5,10 +5,10 @@
 
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
 
+#include <algorithm>
 #include <map>
 
 #include "base/no_destructor.h"
-#include "base/ranges/algorithm.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 
 namespace ephemeral_storage {
@@ -44,7 +44,7 @@ TLDEphemeralLifetime::TLDEphemeralLifetime(
 
 TLDEphemeralLifetime::~TLDEphemeralLifetime() {
   if (ephemeral_storage_service_) {
-    const bool shields_disabled_on_one_of_hosts = base::ranges::any_of(
+    const bool shields_disabled_on_one_of_hosts = std::ranges::any_of(
         shields_state_on_hosts_, [](const auto& v) { return !v.second; });
     ephemeral_storage_service_->TLDEphemeralLifetimeDestroyed(
         key_.second, storage_partition_config_,

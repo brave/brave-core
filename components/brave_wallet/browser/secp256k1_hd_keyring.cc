@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/secp256k1_hd_keyring.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/containers/contains.h"
@@ -81,7 +82,7 @@ std::string Secp256k1HDKeyring::ImportAccount(
     return std::string();
   }
 
-  if (base::ranges::any_of(accounts_, [&](auto& acc) {
+  if (std::ranges::any_of(accounts_, [&](auto& acc) {
         return GetAddressInternal(*acc) == address;
       })) {
     return std::string();

@@ -15,7 +15,6 @@
 #include "base/containers/span.h"
 #include "base/i18n/case_conversion.h"
 #include "base/i18n/char_iterator.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "third_party/icu/source/common/unicode/uchar.h"
 #include "third_party/icu/source/common/unicode/ustring.h"
@@ -224,7 +223,7 @@ int ScoreForMatrix(base::span<int> score_matrix,
     positions.push_back(codepoint_to_offset[cur_i]);
   }
 
-  base::ranges::reverse(positions);
+  std::ranges::reverse(positions);
   ConvertPositionsToRanges(positions, matched_ranges);
   return max_score;
 }

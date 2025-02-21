@@ -1,0 +1,13 @@
+diff --git a/front_end/design_system_tokens.css b/front_end/design_system_tokens.css
+index 799424b8cc1585ce010b50630cf6d53bf152c0eb..07b7fb1415595d8880df29dd477a25d7081edb69 100644
+--- a/front_end/design_system_tokens.css
++++ b/front_end/design_system_tokens.css
+@@ -282,7 +282,7 @@
+     /* Outlines */
+ 
+     --sys-color-outline: var(--ref-palette-neutral-variant60);
+-    --sys-color-tonal-outline: var(--ref-palette-secondary50);
++    --sys-color-tonal-outline: var(--sys-color-primary);
+     --sys-color-neutral-outline: var(--ref-palette-neutral50);
+     --sys-color-yellow-outline: var(--ref-palette-yellow40);
+     --sys-color-error-outline: var(--ref-palette-error80);

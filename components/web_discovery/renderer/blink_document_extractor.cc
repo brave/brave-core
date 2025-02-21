@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/metrics/histogram_macros.h"
 #include "third_party/blink/public/web/web_element.h"
@@ -21,7 +22,7 @@ constexpr char kTextContentAttributeName[] = "textContent";
 void ProcessAttributeRequests(
     std::string_view root_selector,
     const std::vector<mojom::SelectAttributeRequestPtr>& requests,
-    const blink::WebVector<blink::WebElement>& elements,
+    const std::vector<blink::WebElement>& elements,
     std::vector<mojom::AttributeResultPtr>& results) {
   for (const auto& element : elements) {
     auto attributes_result = mojom::AttributeResult::New();

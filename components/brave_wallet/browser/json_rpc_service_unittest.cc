@@ -26,7 +26,6 @@
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
@@ -333,7 +332,7 @@ class EthCallHandler {
         *eth_abi::ExtractFunctionSelectorAndArgsFromCall(call_data);
 
     for (const auto& s : selectors_) {
-      if (base::ranges::equal(s, selector)) {
+      if (std::ranges::equal(s, selector)) {
         return true;
       }
     }
@@ -3166,7 +3165,7 @@ class UDGetManyCallHandler : public EthCallHandler {
     for (auto& key : *keys_array) {
       std::string result_value;
       for (auto& item : items_) {
-        if (base::ranges::equal(Namehash(item.domain), *namehash_bytes) &&
+        if (std::ranges::equal(Namehash(item.domain), *namehash_bytes) &&
             key == item.key) {
           result_value = item.value;
           break;
@@ -5598,7 +5597,7 @@ class EnsGetResolverHandler : public EthCallHandler {
     auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
     EXPECT_TRUE(namehash_bytes);
 
-    if (!base::ranges::equal(*namehash_bytes, Namehash(host_name_))) {
+    if (!std::ranges::equal(*namehash_bytes, Namehash(host_name_))) {
       return MakeJsonRpcTupleResponse(
           eth_abi::TupleEncoder().AddAddress(EthAddress::ZeroAddress()));
     }
@@ -5625,7 +5624,7 @@ class Ensip10SupportHandler : public EthCallHandler {
 
     auto arg_selector = eth_abi::ExtractFixedBytesFromTuple<4>(args, 0);
     EXPECT_TRUE(arg_selector);
-    EXPECT_TRUE(base::ranges::equal(*arg_selector, kResolveBytesBytesSelector));
+    EXPECT_TRUE(std::ranges::equal(*arg_selector, kResolveBytesBytesSelector));
 
     return MakeJsonRpcTupleResponse(
         eth_abi::TupleEncoder().AddUint256(uint256_t(result_value_)));
@@ -5678,7 +5677,7 @@ class EnsGetRecordHandler : public EthCallHandler {
     auto namehash_bytes = eth_abi::ExtractFixedBytesFromTuple<32>(args, 0);
     EXPECT_TRUE(namehash_bytes);
     bool host_matches =
-        base::ranges::equal(*namehash_bytes, Namehash(host_name_));
+        std::ranges::equal(*namehash_bytes, Namehash(host_name_));
 
     if (selector == GetFunctionHashBytes4("addr(bytes32)")) {
       auto eth_address = EthAddress::ZeroAddress();
@@ -5838,25 +5837,25 @@ class OffchainGatewayHandler {
     EXPECT_TRUE(domain_namehash);
 
     std::vector<uint8_t> data_value;
-    if (base::ranges::equal(encoded_call_selector, kAddrBytes32Selector)) {
+    if (std::ranges::equal(encoded_call_selector, kAddrBytes32Selector)) {
       data_value = eth_abi::TupleEncoder()
                        .AddAddress(EthAddress::ZeroAddress())
                        .Encode();
       if (!respond_with_no_record_) {
         for (auto& [domain, address] : map_offchain_eth_address_) {
-          if (base::ranges::equal(*domain_namehash, Namehash(domain))) {
+          if (std::ranges::equal(*domain_namehash, Namehash(domain))) {
             data_value = eth_abi::TupleEncoder().AddAddress(address).Encode();
             break;
           }
         }
       }
-    } else if (base::ranges::equal(encoded_call_selector,
-                                   kContentHashBytes32Selector)) {
+    } else if (std::ranges::equal(encoded_call_selector,
+                                  kContentHashBytes32Selector)) {
       data_value =
           eth_abi::TupleEncoder().AddBytes(std::vector<uint8_t>()).Encode();
       if (!respond_with_no_record_) {
         for (auto& [domain, contenthash] : map_offchain_contenthash_) {
-          if (base::ranges::equal(*domain_namehash, Namehash(domain))) {
+          if (std::ranges::equal(*domain_namehash, Namehash(domain))) {
             data_value = eth_abi::TupleEncoder().AddBytes(contenthash).Encode();
             break;
           }

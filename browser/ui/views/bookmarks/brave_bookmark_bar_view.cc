@@ -27,7 +27,8 @@ BraveBookmarkBarView::BraveBookmarkBarView(Browser* browser,
 BraveBookmarkBarView::~BraveBookmarkBarView() = default;
 
 void BraveBookmarkBarView::MaybeUpdateOtherAndManagedButtonsVisibility() {
-  if (bookmark_model_ && bookmark_model_->loaded()) {
+  if (bookmark_service_ && bookmark_service_->bookmark_model() &&
+      bookmark_service_->bookmark_model()->loaded()) {
     UpdateOtherAndManagedButtonsVisibility();
   }
 }

@@ -105,7 +105,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kParakeet,
       &blink::features::kPrerender2,
       &blink::features::kPrivateAggregationApi,
-      &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
@@ -135,13 +134,14 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &features::kDevToolsConsoleInsights,
 #endif  // !BUILDFLAG(IS_ANDROID)
+      &features::kDevToolsPrivacyUI,
       &features::kDigitalGoodsApi,
-      &features::kDIPS,
       &features::kFedCm,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kFewerUpdateConfirmations,
       &features::kShortcutsNotApps,
 #endif
+      &features::kGlic,
       &features::kHttpsFirstBalancedMode,
       &features::kIdentifiabilityStudyMetaExperiment,
       &features::kIdleDetection,

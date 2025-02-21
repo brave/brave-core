@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/linear_pipeline_util.h"
 
+#include <algorithm>
 #include <iterator>
 #include <memory>
 #include <string>

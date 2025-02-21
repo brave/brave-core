@@ -31,14 +31,11 @@ struct TabTile {
   // |second| would be 0.5.
   int split_view_size_delta = 0;
 
-  bool operator<(const TabTile& other) const {
-    return std::tie(first, second) < std::tie(other.first, other.second);
+  auto operator<=>(const TabTile& other) const noexcept {
+    return std::tie(first, second) <=> std::tie(other.first, other.second);
   }
-  bool operator==(const TabTile& other) const {
+  bool operator==(const TabTile& other) const noexcept {
     return std::tie(first, second) == std::tie(other.first, other.second);
-  }
-  bool operator!=(const TabTile& other) const {
-    return std::tie(first, second) != std::tie(other.first, other.second);
   }
 };
 

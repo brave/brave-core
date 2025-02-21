@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_rewards/android/brave_rewards_native_worker.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/android/jni_android.h"
@@ -469,7 +470,7 @@ bool BraveRewardsNativeWorker::CanConnectAccount(JNIEnv* env) {
     return true;
   }
   std::string country_code = brave_rewards_service_->GetCountryCode();
-  return base::ranges::any_of(
+  return std::ranges::any_of(
       brave_rewards_service_->GetExternalWalletProviders(),
       [this, &country_code](const std::string& provider) {
         if (!parameters_->wallet_provider_regions.count(provider)) {

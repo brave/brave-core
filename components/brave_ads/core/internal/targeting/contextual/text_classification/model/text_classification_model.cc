@@ -9,7 +9,6 @@
 #include <iterator>
 
 #include "base/check.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -45,7 +44,7 @@ SegmentProbabilityList ToSortedSegmentProbabilityList(
   SegmentProbabilityList list(segment_probabilities.size());
   list.reserve(segment_probabilities.size());
 
-  base::ranges::partial_sort_copy(
+  std::ranges::partial_sort_copy(
       segment_probabilities, list,
       [](const auto& lhs, const auto& rhs) { return lhs.second > rhs.second; });
 

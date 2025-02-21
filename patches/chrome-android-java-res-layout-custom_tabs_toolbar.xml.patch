@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/res/layout/custom_tabs_toolbar.xml b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-index a6cb6e2d3d6c4dd0b585addc411c59e8abba1ba0..f35517c4115d3e0d6609af3db4b109a67be2c174 100644
+index 517017eb89801f7c17e4fc53fdb7b9b97654c6e3..b59b984d7a677233a45dca3c7db5f8d65ff74f7b 100644
 --- a/chrome/android/java/res/layout/custom_tabs_toolbar.xml
 +++ b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-@@ -136,7 +136,7 @@ found in the LICENSE file.
+@@ -139,7 +139,7 @@ found in the LICENSE file.
          android:gravity="center_vertical"
          android:orientation="horizontal" />
  

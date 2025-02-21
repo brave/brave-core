@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_AD_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_AD_UTIL_H_
 
+#include <algorithm>
 #include <cstddef>
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 
@@ -16,7 +16,7 @@ namespace brave_ads {
 
 template <typename T>
 size_t UntargetedCreativeAdCount(const T& creative_ads) {
-  return base::ranges::count_if(
+  return std::ranges::count_if(
       creative_ads, [](const CreativeAdInfo& creative_ad) {
         return creative_ad.segment == kUntargetedSegment;
       });
@@ -24,7 +24,7 @@ size_t UntargetedCreativeAdCount(const T& creative_ads) {
 
 template <typename T>
 size_t TargetedCreativeAdCount(const T& creative_ads) {
-  return base::ranges::count_if(
+  return std::ranges::count_if(
       creative_ads, [](const CreativeAdInfo& creative_ad) {
         return creative_ad.segment != kUntargetedSegment;
       });

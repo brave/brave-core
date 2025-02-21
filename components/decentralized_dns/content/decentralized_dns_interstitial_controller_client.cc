@@ -67,8 +67,8 @@ void DecentralizedDnsInterstitialControllerClient::SetResolveMethodAndReload(
   }
 
   local_state_->SetInteger(pref_name, static_cast<int>(type));
-  web_contents_->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
-                                        true);
+  web_contents()->GetController().Reload(content::ReloadType::BYPASSING_CACHE,
+                                         true);
 }
 
 }  // namespace decentralized_dns

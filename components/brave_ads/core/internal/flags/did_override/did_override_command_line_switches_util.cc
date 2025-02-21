@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_command_line_switches_util.h"
 
+#include <algorithm>
 #include <array>
 #include <string_view>
 
 #include "base/check.h"
 #include "base/command_line.h"
-#include "base/ranges/algorithm.h"
 
 namespace brave_ads {
 
@@ -24,7 +24,7 @@ bool DidOverrideCommandLineSwitches() {
   const base::CommandLine* const command_line =
       base::CommandLine::ForCurrentProcess();
 
-  return base::ranges::any_of(kSwitches, [command_line](auto switch_string) {
+  return std::ranges::any_of(kSwitches, [command_line](auto switch_string) {
     return command_line->HasSwitch(switch_string);
   });
 }

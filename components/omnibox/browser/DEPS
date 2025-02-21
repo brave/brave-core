@@ -10,6 +10,7 @@ include_rules = [
   "+services/network/test",
   "+third_party/metrics_proto",
   "+third_party/omnibox_proto",
+  "+third_party/search_engines_data",
   "+ui/gfx",
   "+ui/base",
 ]

@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/default_conversion/creative_set_conversion_url_pattern/creative_set_conversion_url_pattern_util.h"
@@ -22,7 +23,7 @@ CreativeSetConversionList GetMatchingCreativeSetConversions(
 
   CreativeSetConversionList matching_creative_set_conversions;
 
-  base::ranges::copy_if(
+  std::ranges::copy_if(
       creative_set_conversions,
       std::back_inserter(matching_creative_set_conversions),
       [&redirect_chain](
@@ -80,7 +81,7 @@ CreativeSetConversionList GetCreativeSetConversionsWithinObservationWindow(
     const AdEventInfo& ad_event) {
   CreativeSetConversionList unexpired_creative_set_conversions;
 
-  base::ranges::copy_if(
+  std::ranges::copy_if(
       creative_set_conversions,
       std::back_inserter(unexpired_creative_set_conversions),
       [&ad_event](const CreativeSetConversionInfo& creative_set_conversion) {

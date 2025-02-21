@@ -98,7 +98,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   // can fire on any thread, this method reposts everything to UI thread.
   void OnHistogramChanged(const char* histogram_name,
                           uint64_t name_hash,
-                          base::HistogramBase::Sample sample);
+                          base::HistogramBase::Sample32 sample);
 
   // P3AMessageManager::Delegate
   void OnRotation(MetricLogType log_type, bool is_constellation) override;
@@ -120,7 +120,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   void OnP3AEnabledChanged();
 
   void OnHistogramChangedOnUI(const char* histogram_name,
-                              base::HistogramBase::Sample sample,
+                              base::HistogramBase::Sample32 sample,
                               size_t bucket);
 
   // Updates or removes a metric from the log.

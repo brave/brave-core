@@ -809,10 +809,9 @@ OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  auto existing_shard = GetShard(account_id, shard.address);
-  RETURN_IF_ERROR(existing_shard);
+  ASSIGN_OR_RETURN(auto existing_shard, GetShard(account_id, shard.address));
 
-  if (existing_shard.value()) {
+  if (existing_shard.has_value()) {
     sql::Statement statement_update_shard(database_.GetCachedStatement(
         SQL_FROM_HERE,
         "UPDATE " kShardTree
@@ -1038,22 +1037,19 @@ OrchardStorage::UpdateCheckpoint(const mojom::AccountIdPtr& account_id,
                                  const OrchardCheckpoint& checkpoint) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
-  auto get_checkpoint_result = GetCheckpoint(account_id, checkpoint_id);
-  RETURN_IF_ERROR(get_checkpoint_result);
-  if (!get_checkpoint_result.value()) {
+  ASSIGN_OR_RETURN(auto get_checkpoint_result,
+                   GetCheckpoint(account_id, checkpoint_id));
+  if (!get_checkpoint_result.has_value()) {
     return base::ok(Result::kNone);
   }
 
-  auto remove_result = RemoveCheckpoint(account_id, checkpoint_id);
-  RETURN_IF_ERROR(remove_result);
-  if (remove_result.value() != Result::kSuccess) {
+  ASSIGN_OR_RETURN(auto remove_result,
+                   RemoveCheckpoint(account_id, checkpoint_id));
+  if (remove_result != Result::kSuccess) {
     return base::ok(Result::kNone);
   }
 
-  auto add_result = AddCheckpoint(account_id, checkpoint_id, checkpoint);
-  RETURN_IF_ERROR(add_result);
-
-  return *add_result;
+  return AddCheckpoint(account_id, checkpoint_id, checkpoint);
 }
 
 base::expected<size_t, OrchardStorage::Error> OrchardStorage::CheckpointCount(
@@ -1409,10 +1405,10 @@ OrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  auto existing_checkpoint = GetCheckpoint(account_id, checkpoint_id);
-  RETURN_IF_ERROR(existing_checkpoint);
+  ASSIGN_OR_RETURN(auto existing_checkpoint,
+                   GetCheckpoint(account_id, checkpoint_id));
 
-  if (!existing_checkpoint.value()) {
+  if (!existing_checkpoint.has_value()) {
     return base::ok(Result::kNone);
   }
 

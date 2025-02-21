@@ -58,7 +58,7 @@ void HistogramsBraveizer::InitCallbacks() {
 void HistogramsBraveizer::DoHistogramBravetization(
     const char* histogram_name,
     uint64_t name_hash,
-    base::HistogramBase::Sample sample) {
+    base::HistogramBase::Sample32 sample) {
   DCHECK(histogram_name);
   if (strcmp("DefaultBrowser.State", histogram_name) == 0) {
     int answer = 0;

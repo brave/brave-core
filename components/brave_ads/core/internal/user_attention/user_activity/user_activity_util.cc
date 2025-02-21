@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "base/containers/adapters.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -18,7 +18,7 @@ namespace brave_ads {
 
 size_t GetNumberOfUserActivityEvents(const UserActivityEventList& events,
                                      UserActivityEventType event_type) {
-  return base::ranges::count_if(
+  return std::ranges::count_if(
       events, [event_type](const UserActivityEventInfo& event) {
         return event.type == event_type;
       });
@@ -27,8 +27,8 @@ size_t GetNumberOfUserActivityEvents(const UserActivityEventList& events,
 base::TimeDelta GetTimeSinceLastUserActivityEvent(
     const UserActivityEventList& events,
     UserActivityEventType event_type) {
-  const auto iter = base::ranges::find(base::Reversed(events), event_type,
-                                       &UserActivityEventInfo::type);
+  const auto iter = std::ranges::find(base::Reversed(events), event_type,
+                                      &UserActivityEventInfo::type);
 
   if (iter == events.crend()) {
     return {};

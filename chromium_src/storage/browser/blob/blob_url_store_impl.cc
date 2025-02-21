@@ -31,14 +31,15 @@ void BlobURLStoreImpl::ResolveAsURLLoaderFactory(
 void BlobURLStoreImpl::ResolveForNavigation(
     const GURL& url,
     mojo::PendingReceiver<blink::mojom::BlobURLToken> token,
+    bool is_top_level_navigation,
     ResolveForNavigationCallback callback) {
   if (!IsBlobResolvable(url)) {
     std::move(callback).Run(std::nullopt);
     return;
   }
 
-  BlobURLStoreImpl_ChromiumImpl::ResolveForNavigation(url, std::move(token),
-                                                      std::move(callback));
+  BlobURLStoreImpl_ChromiumImpl::ResolveForNavigation(
+      url, std::move(token), is_top_level_navigation, std::move(callback));
 }
 
 bool BlobURLStoreImpl::IsBlobResolvable(const GURL& url) const {

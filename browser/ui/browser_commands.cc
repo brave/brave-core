@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
+#include <algorithm>
 #include <memory>
 #include <numeric>
 #include <stack>
@@ -17,7 +18,6 @@
 #include "base/i18n/file_util_icu.h"
 #include "base/i18n/time_formatting.h"
 #include "base/path_service.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_shields/brave_shields_tab_helper.h"
@@ -186,7 +186,8 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
       : profile_(profile),
         file_selector_(ui::SelectFileDialog::Create(this, nullptr)) {}
   void FileSelected(const ui::SelectedFileInfo& file, int index) override {
-    bookmark_html_writer::WriteBookmarks(profile_, file.file_path, nullptr);
+    bookmark_html_writer::WriteBookmarks(profile_, file.file_path,
+                                         base::DoNothing());
     delete this;
   }
   void ShowFileDialog(Browser* browser) {
@@ -742,7 +743,7 @@ bool CanBringAllTabs(Browser* browser) {
     return false;
   }
 
-  return base::ranges::any_of(
+  return std::ranges::any_of(
       *BrowserList::GetInstance(),
       [&](const Browser* from) { return CanTakeTabs(from, browser); });
 }
@@ -755,7 +756,7 @@ void BringAllTabs(Browser* browser) {
   // Find all browsers with the same profile
   std::vector<Browser*> browsers;
   base::flat_set<Browser*> browsers_to_close;
-  base::ranges::copy_if(
+  std::ranges::copy_if(
       *BrowserList::GetInstance(), std::back_inserter(browsers),
       [&](const Browser* from) { return CanTakeTabs(from, browser); });
 
@@ -767,9 +768,9 @@ void BringAllTabs(Browser* browser) {
       base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs) &&
       browser->profile()->GetPrefs()->GetBoolean(brave_tabs::kSharedPinnedTab);
 
-  base::ranges::for_each(browsers, [&detached_pinned_tabs,
-                                    &detached_unpinned_tabs, &browsers_to_close,
-                                    shared_pinned_tab_enabled](auto* other) {
+  std::ranges::for_each(browsers, [&detached_pinned_tabs,
+                                   &detached_unpinned_tabs, &browsers_to_close,
+                                   shared_pinned_tab_enabled](auto* other) {
     static_cast<BraveBrowser*>(other)
         ->set_ignore_enable_closing_last_tab_pref();
 
@@ -813,8 +814,8 @@ void BringAllTabs(Browser* browser) {
   }
 
   if (shared_pinned_tab_enabled) {
-    base::ranges::for_each(browsers_to_close,
-                           [](auto* other) { other->window()->Close(); });
+    std::ranges::for_each(browsers_to_close,
+                          [](auto* other) { other->window()->Close(); });
   }
 }
 
@@ -1106,7 +1107,7 @@ bool IsTabsTiled(Browser* browser, const std::vector<int>& indices) {
 
   auto* model = browser->tab_strip_model();
 
-  return base::ranges::any_of(indices, [&](auto index) {
+  return std::ranges::any_of(indices, [&](auto index) {
     return split_view_data->IsTabTiled(
         model->GetTabAtIndex(index)->GetHandle());
   });
@@ -1131,7 +1132,7 @@ bool CanTileTabs(Browser* browser, const std::vector<int>& indices) {
   }
 
   auto* model = browser->tab_strip_model();
-  return base::ranges::none_of(indices, [&](auto index) {
+  return std::ranges::none_of(indices, [&](auto index) {
     return split_view_data->IsTabTiled(
         model->GetTabAtIndex(index)->GetHandle());
   });

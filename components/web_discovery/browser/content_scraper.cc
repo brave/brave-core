@@ -5,11 +5,11 @@
 
 #include "brave/components/web_discovery/browser/content_scraper.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"

@@ -1,5 +1,5 @@
 diff --git a/services/network/resolve_host_request.cc b/services/network/resolve_host_request.cc
-index f2faff9d5b7581e18a8a47ac5968496e09d59d77..0ba80aa5a92d00af4b0db62c8fc83b817aa3fe22 100644
+index 3095fe0124d77e8e1a434f1af6a91d3ddde091a6..5f67a8154179e4bb9a2c6828c8d13ebf53304838 100644
 --- a/services/network/resolve_host_request.cc
 +++ b/services/network/resolve_host_request.cc
 @@ -94,6 +94,7 @@ int ResolveHostRequest::Start(

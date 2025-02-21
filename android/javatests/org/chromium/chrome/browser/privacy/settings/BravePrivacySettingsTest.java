@@ -45,7 +45,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
     private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
 
-    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 31;
+    private static final int BRAVE_PRIVACY_SETTINGS_NUMBER_OF_ITEMS = 30;
 
     private int mItemsLeft;
 

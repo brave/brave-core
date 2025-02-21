@@ -17,6 +17,7 @@ import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
+import org.chromium.components.browser_ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.ui.util.ColorUtils;
 
 public class BraveStatusBarColorController extends StatusBarColorController {
@@ -31,7 +32,8 @@ public class BraveStatusBarColorController extends StatusBarColorController {
             ObservableSupplier<LayoutManager> layoutManagerSupplier,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             ActivityTabProvider tabProvider,
-            TopUiThemeColorProvider topUiThemeColorProvider) {
+            TopUiThemeColorProvider topUiThemeColorProvider,
+            EdgeToEdgeSystemBarColorHelper edgeToEdgeSystemBarColorHelper) {
         super(
                 window,
                 isTablet,
@@ -40,7 +42,8 @@ public class BraveStatusBarColorController extends StatusBarColorController {
                 layoutManagerSupplier,
                 activityLifecycleDispatcher,
                 tabProvider,
-                topUiThemeColorProvider);
+                topUiThemeColorProvider,
+                edgeToEdgeSystemBarColorHelper);
 
         // Dark theme doesn't have the regression, apply adjustment to light one only
         if (!ColorUtils.inNightMode(context)) {

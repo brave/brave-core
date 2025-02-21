@@ -193,20 +193,6 @@ void BodySnifferURLLoader::SetPriority(net::RequestPriority priority,
   source_url_loader_->SetPriority(priority, intra_priority_value);
 }
 
-void BodySnifferURLLoader::PauseReadingBodyFromNet() {
-  if (state_ == State::kAborted) {
-    return;
-  }
-  source_url_loader_->PauseReadingBodyFromNet();
-}
-
-void BodySnifferURLLoader::ResumeReadingBodyFromNet() {
-  if (state_ == State::kAborted) {
-    return;
-  }
-  source_url_loader_->ResumeReadingBodyFromNet();
-}
-
 void BodySnifferURLLoader::OnBodyReadable(MojoResult) {
   if (state_ == State::kSending) {
     // The pipe becoming readable when kSending means all buffered body has

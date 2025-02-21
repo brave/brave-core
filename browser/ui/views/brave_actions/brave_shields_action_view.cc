@@ -275,7 +275,7 @@ BraveShieldsActionView::CreateDefaultBorder() const {
   return border;
 }
 
-std::u16string BraveShieldsActionView::GetTooltipText(
+std::u16string BraveShieldsActionView::GetRenderedTooltipText(
     const gfx::Point& p) const {
   auto* web_contents = tab_strip_model_->GetActiveWebContents();
 

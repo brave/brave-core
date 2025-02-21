@@ -9,7 +9,6 @@
 
 #include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/omnibox/browser/open_here_action.h"
 #include "components/omnibox/common/omnibox_features.h"
 

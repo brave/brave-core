@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <optional>
 
 #include "base/functional/bind.h"
@@ -272,14 +273,14 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   int GetFirstPanelItemIndex() {
     auto const items = model()->GetAllSidebarItems();
     auto const iter =
-        base::ranges::find(items, true, &SidebarItem::open_in_panel);
+        std::ranges::find(items, true, &SidebarItem::open_in_panel);
     return std::distance(items.cbegin(), iter);
   }
 
   int GetFirstWebItemIndex() {
     const auto items = model()->GetAllSidebarItems();
     auto const iter =
-        base::ranges::find(items, false, &SidebarItem::open_in_panel);
+        std::ranges::find(items, false, &SidebarItem::open_in_panel);
     return std::distance(items.cbegin(), iter);
   }
 
@@ -396,15 +397,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   // activated.
   auto items = model()->GetAllSidebarItems();
   auto iter =
-      base::ranges::find(items, GURL("chrome://settings/"), &SidebarItem::url);
+      std::ranges::find(items, GURL("chrome://settings/"), &SidebarItem::url);
   EXPECT_NE(items.end(), iter);
   controller()->ActivateItemAt(std::distance(items.begin(), iter));
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
 
   // Activate second sidebar item(wallet) and check it's loaded at current tab.
-  iter = base::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
-                            &SidebarItem::built_in_item_type);
+  iter = std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                           &SidebarItem::built_in_item_type);
   EXPECT_NE(items.end(), iter);
   controller()->ActivateItemAt(std::distance(items.begin(), iter));
   EXPECT_EQ(0, tab_model()->active_index());
@@ -417,8 +418,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click builtin wallet item and it's loaded at current active tab.
   const auto items = model()->GetAllSidebarItems();
   const auto wallet_item_iter =
-      base::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
-                         &SidebarItem::built_in_item_type);
+      std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                        &SidebarItem::built_in_item_type);
   ASSERT_NE(wallet_item_iter, items.cend());
   const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
   auto wallet_item = model()->GetAllSidebarItems()[wallet_item_index];
@@ -850,8 +851,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
   const auto items = model()->GetAllSidebarItems();
   const auto wallet_item_iter =
-      base::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
-                         &SidebarItem::built_in_item_type);
+      std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                        &SidebarItem::built_in_item_type);
   ASSERT_NE(wallet_item_iter, items.cend());
   const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
   SidebarServiceFactory::GetForProfile(browser()->profile())
@@ -1093,7 +1094,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithPlaylist, Incognito) {
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(private_browser->profile());
   const auto& items = sidebar_service->items();
-  auto iter = base::ranges::find_if(items, [](const auto& item) {
+  auto iter = std::ranges::find_if(items, [](const auto& item) {
     return item.type == SidebarItem::Type::kTypeBuiltIn &&
            item.built_in_item_type == SidebarItem::BuiltInItemType::kPlaylist;
   });

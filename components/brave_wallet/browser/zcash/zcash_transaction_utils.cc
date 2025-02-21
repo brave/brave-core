@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 
+#include <algorithm>
 #include <utility>
 
 namespace brave_wallet {
@@ -71,7 +72,7 @@ std::optional<PickInputsResult> PickZCashTransparentInputs(
     return PickInputsResult{std::move(all_inputs), fee, 0};
   }
 
-  base::ranges::sort(all_inputs, [](auto& input1, auto& input2) {
+  std::ranges::sort(all_inputs, [](auto& input1, auto& input2) {
     return input1.utxo_value < input2.utxo_value;
   });
 
@@ -117,7 +118,7 @@ std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
 
   std::vector<OrchardNote> mutable_notes = notes;
 
-  base::ranges::sort(mutable_notes, [](auto& input1, auto& input2) {
+  std::ranges::sort(mutable_notes, [](auto& input1, auto& input2) {
     return input1.amount < input2.amount;
   });
 

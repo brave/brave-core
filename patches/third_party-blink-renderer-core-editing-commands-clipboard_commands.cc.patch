@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc b/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc
-index 271ca7ba88fc92b8f6bad5ee4cffedf7f1b05aee..bf177c95e4120751ae933937f429ad3b7ff4ee89 100644
+index c269698764bb8ae7f85c5d476436f5ae5209576d..7166a99a298357c0a5749f2f39d88486deb88ab2 100644
 --- a/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc
 +++ b/third_party/blink/renderer/core/editing/commands/clipboard_commands.cc
-@@ -351,6 +351,7 @@ bool ClipboardCommands::ExecuteCopy(LocalFrame& frame,
+@@ -352,6 +352,7 @@ bool ClipboardCommands::ExecuteCopy(LocalFrame& frame,
        frame.Selection().IsHidden())
      return true;
  

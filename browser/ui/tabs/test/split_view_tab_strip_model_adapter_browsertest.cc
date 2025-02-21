@@ -74,7 +74,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                        TilingTabsMakesGroupSynchronized_OnlyFirstTabIsGrouped) {
   // Given that a tab is in a group,
   const auto group_id = tab_groups::TabGroupId::GenerateNew();
-  tab_strip_model()->group_model()->AddTabGroup(group_id, std::nullopt);
+  tab_strip_model()->AddTabGroup(group_id, {});
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
                                     /*add_types=*/0, group_id);
@@ -100,13 +100,13 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
                        TilingTabsMakesGroupSynchronized_InDifferentGroups) {
   // Given that tabs are in different groups
   const auto group_id = tab_groups::TabGroupId::GenerateNew();
-  tab_strip_model()->group_model()->AddTabGroup(group_id, std::nullopt);
+  tab_strip_model()->AddTabGroup(group_id, {});
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
                                     /*add_types=*/0, group_id);
 
   const auto second_group_id = tab_groups::TabGroupId::GenerateNew();
-  tab_strip_model()->group_model()->AddTabGroup(second_group_id, std::nullopt);
+  tab_strip_model()->AddTabGroup(second_group_id, {});
   tab_strip_model()->AddWebContents(CreateWebContents(), -1,
                                     ui::PageTransition::PAGE_TRANSITION_TYPED,
                                     /*add_types=*/0, second_group_id);
@@ -368,7 +368,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewTabStripModelAdapterBrowserTest,
   // Given that tabs are tiled in a group,
   const auto group_id = tab_groups::TabGroupId::GenerateNew();
   ASSERT_TRUE(tab_strip_model()->group_model());
-  tab_strip_model()->group_model()->AddTabGroup(group_id, std::nullopt);
+  tab_strip_model()->AddTabGroup(group_id, {});
 
   tab_strip_model()->InsertWebContentsAt(-1, CreateWebContents(),
                                          /*add_types*/ 0, group_id);

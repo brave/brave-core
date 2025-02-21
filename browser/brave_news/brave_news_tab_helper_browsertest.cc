@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_news/brave_news_tab_helper.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <vector>
@@ -90,7 +91,7 @@ class WaitForFeedTitle {
     do {
       WaitForFeedsChanged waiter(tab_helper_.get(), std::nullopt);
       auto urls = waiter.WaitForFeeds();
-      found_title = base::ranges::any_of(urls, [&title, this](const auto& url) {
+      found_title = std::ranges::any_of(urls, [&title, this](const auto& url) {
         return title == tab_helper_->GetTitleForFeedUrl(url);
       });
     } while (!found_title);

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_VALUE_CONVERSION_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_VALUE_CONVERSION_UTILS_H_
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <utility>
@@ -76,7 +77,7 @@ bool ReadHexByteArrayTo(const base::Value::Dict& dict,
     return false;
   }
 
-  base::ranges::copy_n(output.begin(), to.size(), to.begin());
+  std::ranges::copy_n(output.begin(), to.size(), to.begin());
   return true;
 }
 

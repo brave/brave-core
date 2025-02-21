@@ -136,7 +136,7 @@
     *** mFullscreenManager;
     *** mActivityTabProvider;
     *** mAppThemeColorProvider;
-    *** mScrimCoordinator;
+    *** mScrimManager;
     *** mMenuButtonCoordinator;
     *** mToolbarTabController;
     *** mLocationBar;

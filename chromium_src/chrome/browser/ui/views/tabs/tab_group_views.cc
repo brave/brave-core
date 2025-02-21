@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_highlight.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
@@ -20,7 +22,7 @@
           tab_slot_controller_->GetBrowser())) {                               \
     std::vector<raw_ptr<views::View, VectorExperimental>>                      \
         children_in_same_group;                                                \
-    base::ranges::copy_if(                                                     \
+    std::ranges::copy_if(                                                      \
         children, std::back_inserter(children_in_same_group),                  \
         [this](views::View* child) {                                           \
           TabSlotView* tab_slot_view = views::AsViewClass<TabSlotView>(child); \
@@ -30,12 +32,13 @@
     if (children_in_same_group.empty()) {                                      \
       return {nullptr, nullptr};                                               \
     }                                                                          \
-    return base::ranges::minmax(                                               \
-        children_in_same_group,                                                \
-        [](const views::View* a, const views::View* b) {                       \
-          return a->GetBoundsInScreen().bottom() <                             \
-                 b->GetBoundsInScreen().bottom();                              \
-        });                                                                    \
+    auto [min, max] =                                                          \
+        std::ranges::minmax(children_in_same_group,                            \
+                            [](const views::View* a, const views::View* b) {   \
+                              return a->GetBoundsInScreen().bottom() <         \
+                                     b->GetBoundsInScreen().bottom();          \
+                            });                                                \
+    return {min, max};                                                         \
   }
 
 #include "src/chrome/browser/ui/views/tabs/tab_group_views.cc"

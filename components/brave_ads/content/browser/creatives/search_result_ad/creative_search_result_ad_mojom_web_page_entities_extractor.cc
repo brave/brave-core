@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 
+#include <algorithm>
 #include <iterator>
 #include <string>
 #include <utility>
@@ -14,7 +15,6 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -285,7 +285,7 @@ mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
   }
 
   std::vector<std::string_view> missing_creative_ad_property_names;
-  base::ranges::set_difference(
+  std::ranges::set_difference(
       kRequiredCreativeAdPropertyNames.cbegin(),
       kRequiredCreativeAdPropertyNames.cend(),
       creative_ad_property_names.cbegin(), creative_ad_property_names.cend(),
@@ -300,7 +300,7 @@ mojom::CreativeSearchResultAdInfoPtr ExtractMojomEntity(
   if (!creative_set_conversion_property_names.empty()) {
     std::vector<std::string_view>
         missing_creative_set_conversion_property_names;
-    base::ranges::set_difference(
+    std::ranges::set_difference(
         kRequiredCreativeSetConversionPropertyNames.cbegin(),
         kRequiredCreativeSetConversionPropertyNames.cend(),
         creative_set_conversion_property_names.cbegin(),
@@ -409,8 +409,8 @@ ExtractCreativeSearchResultAdsFromMojomWebPageEntities(
     }
 
     for (const auto& mojom_property : mojom_entity->properties) {
-      base::ranges::move(ExtractMojomProperty(mojom_property),
-                         std::back_inserter(creative_search_result_ads));
+      std::ranges::move(ExtractMojomProperty(mojom_property),
+                        std::back_inserter(creative_search_result_ads));
     }
   }
 

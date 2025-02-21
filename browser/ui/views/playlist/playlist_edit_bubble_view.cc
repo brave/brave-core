@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/playlist/playlist_edit_bubble_view.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -12,7 +13,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
-#include "base/ranges/algorithm.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/playlist/playlist_action_dialogs.h"
 #include "brave/browser/ui/views/playlist/playlist_action_icon_view.h"
@@ -150,7 +150,7 @@ void PlaylistEditBubbleView::ResetChildViews() {
                             base::Unretained(this))));
   }
 
-  if (base::ranges::none_of(saved_items, [](const auto& item) {
+  if (std::ranges::none_of(saved_items, [](const auto& item) {
         return item->parents.empty();
       })) {
     add_separator_if_needed();
@@ -211,8 +211,8 @@ void PlaylistEditBubbleView::RemoveFromPlaylist() {
   CHECK(saved_items.size());
 
   std::vector<mojom::PlaylistItemPtr> items;
-  base::ranges::transform(saved_items, std::back_inserter(items),
-                          [](const auto& item) { return item->Clone(); });
+  std::ranges::transform(saved_items, std::back_inserter(items),
+                         [](const auto& item) { return item->Clone(); });
 
   // Before closing widget, try resetting observer to avoid crash on Win11
   tab_helper_observation_.Reset();

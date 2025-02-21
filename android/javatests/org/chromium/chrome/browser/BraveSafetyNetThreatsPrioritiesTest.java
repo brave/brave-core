@@ -28,17 +28,18 @@ public class BraveSafetyNetThreatsPrioritiesTest {
     public void testPriorities() throws Exception {
         // Fail safe option for empty input, consider it is safe
         Assert.assertEquals(
-                BraveSafeBrowsingUtils.getHighestPriorityThreat(new ArrayList<>()),
-                SafetyNetJavaThreatType.MAX_VALUE);
+                SafetyNetJavaThreatType.MAX_VALUE,
+                BraveSafeBrowsingUtils.getHighestPriorityThreat(new ArrayList<>()));
 
         // Single input must return the same value
         Assert.assertEquals(
+                SafetyNetJavaThreatType.SOCIAL_ENGINEERING,
                 BraveSafeBrowsingUtils.getHighestPriorityThreat(
-                        Arrays.asList(new Integer[] {SafetyNetJavaThreatType.SOCIAL_ENGINEERING})),
-                SafetyNetJavaThreatType.SOCIAL_ENGINEERING);
+                        Arrays.asList(new Integer[] {SafetyNetJavaThreatType.SOCIAL_ENGINEERING})));
 
         // Several threats as input - return the most priority one
         Assert.assertEquals(
+                SafetyNetJavaThreatType.SOCIAL_ENGINEERING,
                 BraveSafeBrowsingUtils.getHighestPriorityThreat(
                         Arrays.asList(
                                 new Integer[] {
@@ -47,10 +48,10 @@ public class BraveSafetyNetThreatsPrioritiesTest {
                                     SafetyNetJavaThreatType.SOCIAL_ENGINEERING,
                                     SafetyNetJavaThreatType.BILLING,
                                     SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION,
-                                })),
-                SafetyNetJavaThreatType.SOCIAL_ENGINEERING);
+                                })));
 
         Assert.assertEquals(
+                SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION,
                 BraveSafeBrowsingUtils.getHighestPriorityThreat(
                         Arrays.asList(
                                 new Integer[] {
@@ -58,7 +59,6 @@ public class BraveSafetyNetThreatsPrioritiesTest {
                                     SafetyNetJavaThreatType.CSD_ALLOWLIST,
                                     SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION,
                                     SafetyNetJavaThreatType.UNWANTED_SOFTWARE,
-                                })),
-                SafetyNetJavaThreatType.POTENTIALLY_HARMFUL_APPLICATION);
+                                })));
     }
 }

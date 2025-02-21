@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_wallet/common/eth_address.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/containers/span.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -146,7 +146,7 @@ bool EthAddress::IsValid() const {
 
 bool EthAddress::IsZeroAddress() const {
   return IsValid() &&
-         base::ranges::all_of(bytes_, [](auto b) { return b == 0; });
+         std::ranges::all_of(bytes_, [](auto b) { return b == 0; });
 }
 
 }  // namespace brave_wallet

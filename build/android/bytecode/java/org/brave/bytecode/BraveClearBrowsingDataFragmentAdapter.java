@@ -7,13 +7,12 @@ package org.brave.bytecode;
 
 import org.objectweb.asm.ClassVisitor;
 
-public class BraveClearBrowsingDataFragmentAdvancedAdapter extends BraveClassVisitor {
-    static String sFragment =
-            "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragmentAdvanced";
+public class BraveClearBrowsingDataFragmentAdapter extends BraveClassVisitor {
+    static String sFragment = "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment";
     static String sBraveFragment =
-            "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragmentAdvanced";
+            "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragment";
 
-    public BraveClearBrowsingDataFragmentAdvancedAdapter(ClassVisitor visitor) {
+    public BraveClearBrowsingDataFragmentAdapter(ClassVisitor visitor) {
         super(visitor);
         redirectConstructor(sFragment, sBraveFragment);
     }

@@ -29,7 +29,7 @@ CHAR_LIMIT guidelines:
   * Action bar items - 32 characters
 -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
-<grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
+<grit current_release="1" latest_public_release="0">
   <outputs>
     <output filename="values-af/android_chrome_strings.xml" lang="af" type="android" />
     <output filename="values-am/android_chrome_strings.xml" lang="am" type="android" />
@@ -288,12 +288,6 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PREFS_MANAGE_SYNC_SETTINGS_CONTENT_DESCRIPTION" is_accessibility_with_no_ui="true" desc="The accessibility text to read when the 'Manage Sync Settings' page is opened from the sign-in page. This text is attached to the 'Navigate Up' button shown at the top of the screen. The first two sentences describe the screen that is currently shown to the user, while 'Navigate up' is a description for the button this text is attached to. 'Navigate up' should match TC ID 6794660482873516081.">
         You are currently customizing your Sync settings. To finish turning on sync, tap the Confirm button near the bottom of the screen. Navigate up
       </message>
-      <message name="IDS_SIGNIN_PREF_SUMMARY" desc="Summary for the entry in Settings to sign in to Brave, explaining benefits of signing in.">
-        Sync and personalize across devices
-      </message>
-      <message name="IDS_SIGN_IN_TO_CHROME_DISABLED_SUMMARY" desc="A descriptive line of text that appears under the 'Sign in to Brave' option, in Brave Settings on Android. The text explains why 'Sign in to Brave' is disabled. 'Administrator' refers to the IT administrator of the company/organization that owns the user’s device.">
-        Disabled by the administrator of this device
-      </message>
       <message name="IDS_SIGN_IN_TO_CHROME_DISABLED_BY_USER_SUMMARY" desc="A descriptive line of text that appears when a user tries to signin when signin is disabled by the Brave Services option in settings. The text explains why 'Sign in to Brave' is not available.">
         Not available on your device
       </message>
@@ -464,11 +458,19 @@ For more settings that use data to improve your Brave experience, go to <ph name
         Address bar
       </message>
 
-      <message name="IDS_ADDRESS_BAR_SETTINGS_DESCRIPTION" desc="TODO">
+      <message name="IDS_ADDRESS_BAR_SETTINGS_CURRENTLY_ON_TOP" desc="Description for Address Bar Settings image when the address bar is top-anchored.">
+        Address bar currently on top
+      </message>
+
+      <message name="IDS_ADDRESS_BAR_SETTINGS_CURRENTLY_ON_BOTTOM" desc="Description for Address Bar Settings image when the address bar is bottom-anchored.">
+        Address bar currently on bottom
+      </message>
+
+      <message name="IDS_ADDRESS_BAR_SETTINGS_DESCRIPTION" desc="Label explaining an alternative way to change the address bar position.">
         You can also touch and hold the address bar to change the position.
       </message>
 
-      <message name="IDS_ADDRESS_BAR_SETTINGS_DESCRIPTION_FOLDABLE" desc="TODO">
+      <message name="IDS_ADDRESS_BAR_SETTINGS_DESCRIPTION_FOLDABLE" desc="Label explaining how to change the address bar position on foldable devices.">
         When your device is folded, you can choose an option or touch and hold the address bar to change the position.
       </message>
 
@@ -554,9 +556,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_BILLING_ADDRESS" desc="Label for a spinner input field containing a list of billing addresses for a credit card. [CHAR_LIMIT=32]">
         Billing address
-      </message>
-      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_FOOTER" desc="Footer for the dialog where the user selects an authenticator from a list of options.">
-        Not seeing your current info? Please contact your bank to update it.
       </message>
       <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_PROGRESS_BAR_MESSAGE" desc="Message shown on the progress bar after the user selects an authenticator from a list of options and proceeds.">
         Contacting your bank\u2026
@@ -801,9 +800,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_PASSWORD_EXPORT_SET_LOCK_SCREEN" desc="Text prompting user to set device lock in order to be able to export passwords">
         Turn on screen lock in Settings to export your passwords from this device
-      </message>
-      <message name="IDS_PASSWORD_GENERATION_POPUP_CONTENT_DESCRIPTION" desc="The text announced by the screen reader when the password generation popup is shown.">
-        Showing password generation popup
       </message>
       <message name="IDS_PASSWORD_SETTINGS_EXPORT_ACTION_TITLE" desc="The title of a menu item to trigger exporting passwords from the password settings.">
         Export passwords…
@@ -1171,10 +1167,10 @@ For example, some websites may respond to this request by showing you ads that a
         Your Android device may include a similar setting. If this setting is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across websites you visit and apps you use.
       </message>
       <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_EEA_LEARN_MORE_DESCRIPTION_ANDROID" desc="As part of Privacy Sandbox (see details below), both Brave and Android devices will have a new setting called 'Ad measurement'. Some details are different, but these settings essentially do the same thing. The Brave setting allows sites you visit to ask Brave for information that helps them measure the performance of their ads, linking 1) an ad for site B the user sees on site A, with 2) a purchase or other action the user might take on site B. On Android, it's essentially the same story only it's between apps and not sites. The challenge is that on Android, Brave is a browser but it's also an App. This paragraph helps the user understand that, if both settings are on, information about the user's actions on a site might be connected with actions the user takes in an app. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com.">
-        Your Android device may include a similar setting. If Ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
+        Your Android device may include a similar setting. If ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
       </message>
       <message name="IDS_PRIVACY_SANDBOX_M1_NOTICE_ROW_LEARN_MORE_DESCRIPTION_ANDROID" desc="As part of Privacy Sandbox (see details below), both Brave and Android devices will have a new setting called 'Ad measurement'. Some details are different, but these settings essentially do the same thing. The Brave setting allows sites you visit to ask Brave for information that helps them measure the performance of their ads, linking 1) an ad for site B the user sees on site A, with 2) a purchase or other action the user might take on site B. On Android, it's essentially the same story only it's between apps and not sites. The challenge is that on Android, Brave is a browser but it's also an App. This paragraph helps the user understand that, if both settings are on, information about the user's actions on a site might be connected with actions the user takes in an app. **** CONTEXT PRIVACY SANDBOX **** Brave’s Privacy Sandbox initiative 1) deprecates third-party cookies in Brave, 2) supports free and open content on the web (by finding better ways to support ads online), 3) while providing stronger privacy protections for users. You can see a high-level description of this public project at www.privacysanbox.com.">
-        Your Android device may include a similar setting. If Ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
+        Your Android device may include a similar setting. If ad measurement is turned on in Brave and on your Android device, a company may be able to measure the effectiveness of an ad across web sites you visit and apps you use.
       </message>
 
       <!-- Privacy Sandbox v4 - Ad Privacy Page -->
@@ -1382,32 +1378,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites.">
         Signs you out of most sites
       </message>
-      <message name="IDS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_SIGNED_IN" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but you Brave sign in will stay.">
-        Signs you out of most sites. You won't be signed out of your Brave sync chain.
-      </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A text for the basic tab explaining browsing history.">
         Deletes history, including in the search box
       </message>
-      <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED_NO_LINK" desc="A text for the basic tab explaining browsing history for users with history sync. This version is shown when the link to MyActivity is displayed separately.">
-        Deletes history from all synced devices
-      </message>
-      <message name="IDS_CLEAR_SEARCH_HISTORY_LINK" desc="Text informing the user that they can clear search history and other data using MyActivity.">
-        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Search history<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>other forms of activity<ph name="END_LINK2">&lt;/link2&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them anytime.
-      </message>
-      <message name="IDS_CLEAR_SEARCH_HISTORY_LINK_OTHER_FORMS" desc="Text informing the user that they can clear their Brave data using MyActivity when their Default Search Engine is not Brave.">
-        <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Other forms of activity<ph name="END_LINK1">&lt;/link1&gt;</ph> may be saved in your Brave sync chain when you’re signed in. You can delete them anytime.
-      </message>
-      <message name="IDS_SIGN_OUT_OF_CHROME_LINK" desc="The text is displayed in a footer in a dialog to clear browsing data. The link ‘sign out of Brave’ opens a dialog where the user can confirm if they want to sign out of Brave.">
-          To sign out of your Brave sync chain on all websites, <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>sign out of Brave<ph name="END_LINK1">&lt;/link1&gt;</ph>.
-      </message>
       <message name="IDS_SIGN_OUT_OF_CHROME_LINK_ADVANCED" desc="The text is displayed in a footer in the advanced option of delete browsing data dialog. The link ‘sign out of Brave’ opens a dialog where the user can confirm if they want to sign out of Brave.">
           Deleting your browsing data doesn't sign you out of your Brave sync chain. To do so, <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>sign out of Brave<ph name="END_LINK1">&lt;/link1&gt;</ph>.
-      </message>
-      <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave.">
-        Your search engine is <ph name="dse">%1$s<ex>Bing</ex></ph>. See their instructions for deleting your search history, if applicable.
-      </message>
-      <message name="IDS_CLEAR_SEARCH_HISTORY_NON_GOOGLE_DSE_UNKNOWN" desc="Text informing the user about the way to clear their search history when their Default Search Engine is not Brave and is also not prepopulated.">
-        See your search engine’s instructions for deleting your search history, if applicable
       </message>
       <message name="IDS_CLEAR_PASSWORDS_TITLE" desc="Title for Clear Passwords in Clear Browsing Data preference">
         Saved passwords
@@ -1471,9 +1446,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_OPEN_FULL_CHROME_HISTORY" desc="Title of the button that will open the full history in Brave browser from CCT history page.">
               Open full Brave history
-      </message>
-      <message name="IDS_CLEAR_BROWSING_DATA_BASIC_TAB_TITLE" desc="The title of the tab showing the basic clear browsing data options.">
-        Basic
       </message>
       <message name="IDS_ANDROID_APP_HISTORY_OPEN_FULL" desc="The informational message at the top of the history page letting users know that app-specific history may be missing some entries.">
         Some of your history might not show up here. To see all your Brave history, open full Brave history.
@@ -2276,6 +2248,9 @@ Your Brave account may have other forms of browsing history like searches and ac
         <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_SHARE_TEXT" desc="Share button text for the dialog showing a list of tabs for capture and sharing.">
           Share
         </message>
+        <message name="IDS_MEDIA_CAPTURE_PICKER_DIALOG_AUDIO_SHARE_TEXT" desc="Text for the dialog showing a list of tabs for capture to ask user if tab audio should be shared.">
+          Also share tab audio
+        </message>
       </if>
 
       <!-- Download open dialog -->
@@ -2565,6 +2540,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ACCOUNT_SECTION_HISTORY_TOGGLE" desc="History and tabs, one of the data types that we allow syncing. Shown on next to the toggle that controls whether history should be saved in the Brave sync chain and synced across devices.">
         History and tabs
       </message>
+      <!-- TODO(crbug.com/388201776): Replace with final version and make translateable. -->
+      <message name="IDS_ACCOUNT_SECTION_HISTORY_TOGGLE_HELP" translateable="false">
+        To quickly get back to sites you’ve visited, sync your history and tabs
+      </message>
       <message name="IDS_ACCOUNT_SECTION_BOOKMARKS_TOGGLE" desc="Bookmarks, one of the data types that we allow syncing. Shown on next to the toggle that controls whether bookmarks should be saved in the Brave sync chain and synced across devices.">
         Bookmarks
       </message>
@@ -2780,6 +2759,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PASSWORD_SYNC_ERROR_SUMMARY" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords can't be synced (due to missing trusted vault keys). [CHAR_LIMIT=32]">
         Password sync isn't working
       </message>
+      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_TITLE_1" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords stored in the user's Brave sync chain can't be synced to the device (due to missing trusted vault keys). The message prompts the user to fix this issue.">
+        Get access to all your passwords
+      </message>
+      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_TITLE_2" desc="Short message shown in various UIs (e.g. Sync Error Card body) to inform that passwords stored in the user's Brave sync chain can't be synced to the device (due to missing trusted vault keys).">
+        Some of your passwords aren’t available on this device
+      </message>
       <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED_TITLE" desc="Title of the error message shown when sync setup was not complete. [CHAR_LIMIT=60]">
         Initial sync setup not finished
       </message>
@@ -2800,6 +2785,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_HINT_SYNC_RETRIEVE_KEYS_FOR_PASSWORDS" desc="Hint message to resolve sync encryption error, required to resume syncing passwords.">
         To sync your passwords, verify it's you
+      </message>
+      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_HINT_1" desc="Hint message that explains a sync error: Passwords stored in the user's Brave sync chain can't be synced to the device (due to missing trusted vault keys).">
+         Verify it’s you to make sure you can access all your passwords on this device
+      </message>
+      <message name="IDS_PASSWORD_SYNC_TRUSTED_VAULT_ERROR_HINT_2" desc="Hint message to resolve sync encryption error, required to resume syncing passwords.">
+        Verify it’s you to access passwords in your Brave sync chain
       </message>
       <message name="IDS_HINT_PASSPHRASE_REQUIRED" desc="Hint message to resolve passphrase required error.">
         To start sync, enter your passphrase
@@ -3308,6 +3299,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_NOTIFICATION_SHOW_ORIGINAL_BUTTON" desc="Text of a button shown on suspicious notifications, allowing the user to see the contents of the original notification instead of the warning.">
         Show notification
       </message>
+      <message name="IDS_NOTIFICATION_ALWAYS_ALLOW_BUTTON" desc="Text of a button shown on original notifications that were displayed after the warning notifications. Clicking the button allows the user to always receive notifications from their origin without warning notifications.">
+        Always allow
+      </message>
 
       <!-- Download UI -->
       <message name="IDS_DOWNLOAD_NOTIFICATION_PENDING" desc="Download notification to be displayed when a download has been scheduled but has not started being fetched from the network.">
@@ -3586,7 +3580,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Open in Private Brave tab
       </message>
 
-     <!-- Private reauthentication page -->
+      <!-- Private reauthentication page -->
      <message name="IDS_INCOGNITO_REAUTH_PAGE_UNLOCK_INCOGNITO_BUTTON_LABEL" desc="The label of button which upon click allows user to start the re-authentication process to view their existing Private tabs.">
        Unlock Private
      </message>
@@ -3594,7 +3588,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
        See other tabs
      </message>
 
-     <!-- Private reauthentication promo card -->
+      <!-- Private reauthentication promo card -->
      <message name="IDS_INCOGNITO_REAUTH_PROMO_TITLE" desc="The title of the private re-auth promo card.">
        Lock Private tabs when you leave Brave
      </message>
@@ -3828,22 +3822,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_BACK_OF_CARD_MENU_SIGNIN" desc="The subtitle for the account picker bottom sheet that tells the user what happens if the Continue button is clicked, when signin from BoC triggered the UI.">
         Manage your interests and preferences
       </message>
-      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_BACK_OF_CARD_MENU_SIGNIN_OLD" desc="The subtitle for the account picker bottom sheet that tells the user what happens if the Continue button is clicked, when signin from BoC triggered the UI.">
-        Sign in to manage your preferences
-      </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_BENEFITS_SUBTITLE" desc="This string is on a sign-in page, after the user taps on a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to bookmarks, passwords, history, settings, etc.). We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
         Get your bookmarks, passwords, and more on all your devices
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_WEB_SIGNIN" desc="This string is on a sign-in page, after the user taps to sign in to a website with their Brave sync chain. It offers to sign the user in to both the website and to Brave with the account. It highlights the overarching user benefit of signing in to Brave (access to data from other devices like bookmarks, passwords, history, settings, etc.). We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
         Sign in to this site and Brave to get your bookmarks and more on all your devices
-      </message>
-
-      <!-- Cormorant Signin Strings -->
-      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_TITLE_FOR_CORMORANT_SIGNIN" desc="The title for the bottom sheet that shows the list of accounts on the device and asks the user to select one of these accounts, when signin from Cormorant triggered the UI. [CHAR_LIMIT=27]">
-        Get better suggestions
-      </message>
-      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE_FOR_CORMORANT_SIGNIN" desc="The subtitle for the account picker bottom sheet that tells the user what happens if the Continue button is clicked, when signin from Cormorant triggered the UI.">
-        Sync to get the most relevant content from Brave
       </message>
 
       <!-- Personalized Signin Promos Strings -->
@@ -3869,35 +3852,17 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS" desc="This string is the title of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Get all your bookmarks'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and sign-in. The tone should be inviting.">
         Sign in to get your bookmarks and more on all your devices
       </message>
-      <message name="IDS_SYNC_PROMO_TITLE_NTP_CONTENT_SUGGESTIONS" desc="This string is the headline of a card that appears when the user visits Brave's new tab page; the user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get the most relevant content from Brave'. [CHAR_LIMIT=70]" meaning="This headline means that the user is missing out on more interesting and relevant news articles. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Get better suggestions
-      </message>
-      <message name="IDS_SYNC_PROMO_DESCRIPTION_NTP_CONTENT_SUGGESTIONS" desc="This string is the body of a card that appears when the user visits Brave's new tab page; the user may be signed in to Brave, but isn't syncing their Brave data. The headline above this string is 'See stories for you'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user is missing out on more interesting and relevant news articles. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Sync to get the most relevant content from Brave
-      </message>
       <message name="IDS_SIGNIN_PROMO_TITLE_NTP_FEED_TOP_PROMO" desc="This string is the headline of a card that appears when the user visits Brave's new tab page; the user isn't signed in to Brave. The line below this string is 'Sign in to get content based on your interests'. [CHAR_LIMIT=70]">
         Get better content
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_FEED_TOP_PROMO" desc="This string is the body of a card that appears when the user visits Brave's new tab page; the user isn't signed in to Brave. The headline above this string is 'Get better content'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user is missing out on more interesting and relevant news articles. We want users to read this card and tap the 'Continue' button and sign-in. The tone should be inviting.">
         Sign in to get content based on your interests
       </message>
-      <message name="IDS_SYNC_PROMO_TITLE_RECENT_TABS" desc="This string is the headline of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get your tabs from your other devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Get all your tabs
-      </message>
       <message name="IDS_SIGNIN_PROMO_TITLE_RECENT_TABS" desc="This string is the headline of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but has not opted in for syncing History and Tabs. The line below this string is 'To see tabs from your other devices, sync your tabs and history'. This headline means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Turn on' button and turn on history and tabs syncing. The tone should be inviting. [CHAR_LIMIT=70]">
         You’ll find your tabs from other devices here
       </message>
-      <message name="IDS_SYNC_PROMO_DESCRIPTION_RECENT_TABS" desc="This string is the body of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but isn't syncing their Brave data. There's no character limit but try to keep the translation under 120 characters." meaning="The headline above this string is 'Continue from another device'. This message means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Sync to get your tabs from your other devices
-      </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS" desc="This string is the body of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but has not opted in for syncing History and Tabs. This message means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer once opted in history and tabs syncing. We want users to read this card and tap the 'Turn on' button and turn on History and Tabs syncing. The tone should be inviting. There's no character limit but try to keep the translation under 120 characters.">
         To see tabs from your other devices, sync your tabs and history
-      </message>
-      <message name="IDS_SYNC_PROMO_TITLE_SETTINGS" desc="This string is the headline of a card that appears when the user opens Brave's settings; the user may be signed in to Brave, but isn't syncing their Brave data. The line below this string is 'Sync to get your passwords, bookmarks and more on all your devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can use Chrome more easily by syncing their passwords, bookmarks, settings, and more.. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Use Brave your way
-      </message>
-      <message name="IDS_SYNC_PROMO_DESCRIPTION_SETTINGS_WITHOUT_PASSWORDS" desc="Same as IDS_SYNC_PROMO_DESCRIPTION_SETTINGS but without mentioning passwords. This string is the body of a card that appears when the user opens Brave's settings; the user may be signed in to Brave, but isn't syncing their Brave data. The headline above this string is 'Browse more easily'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user can use Chrome more easily by syncing their passwords, bookmarks, settings, and more.. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Sync to get your bookmarks, history and more on your other devices
       </message>
       <message name="IDS_SIGNIN_PROMO_CHOOSE_ANOTHER_ACCOUNT" desc="Button that the user can press if they want to select a different account before signing in. This button is shown below 'Continue as Joe Doe' button that signs user in with default account.">
         Choose another account
@@ -4082,18 +4047,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_NTP_DISCOVER_OFF_BRANDED" desc="Title in the feed header when the feed is turned off and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover by Brave - off
       </message>
-      <message name="IDS_SUPERVISED_USER_NTP_DISCOVER_ON" desc="Title in the feed header when the feed is turned on for a supervised user. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
-        Content for young minds
-      </message>
-      <message name="IDS_SUPERVISED_USER_NTP_DISCOVER_ON_BRANDED" desc="Title in the feed header when the feed is turned on for a supervised user and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
-        Content by Brave for young minds
-      </message>
-      <message name="IDS_SUPERVISED_USER_NTP_DISCOVER_OFF" desc="Title in the feed header when the feed is turned off for a supervised user. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
-        Content for young minds - off
-      </message>
-      <message name="IDS_SUPERVISED_USER_NTP_DISCOVER_OFF_BRANDED" desc="Title in the feed header when the feed is turned off for a supervised user and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
-        Content by Brave for young minds - off
-      </message>
 
       <message name="IDS_NTP_FOLLOWING" meaning="Title for content - e.g. Followed sites" desc="Title in the feed header for user-customized following feed. This feed is composed of articles and content from sites that the user has followed">Following</message>
       <message name="IDS_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
@@ -4235,7 +4188,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Toolbar shortcut
       </message>
       <message name="IDS_TOOLBAR_LONG_PRESS_OPTIONS_IPH" desc="The in-product-help message shown to inform the user they can change placement of the address bar from a long-press menu.">
-        Touch and hold the address bar to change its position.
+        You can touch and hold to move the address bar to the bottom
       </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_NEW_TAB_IPH" desc="An in-product-help message for the new tab button.">
         Quickly open a new tab. To edit this shortcut, touch and hold.
@@ -4310,6 +4263,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_DOWNLOAD" desc="Tooltip for the button to download the current web page. [CHAR_LIMIT=27]">
         Download
+      </message>
+      <message name="IDS_MENU_DOWNLOAD_PAGE" desc="Menu item for downloading the current web page. [CHAR_LIMIT=27]">
+        Download page
       </message>
       <message name="IDS_MENU_PAGE_INFO" desc="Tooltip on Android for the button to view information about the current web page. Info is short for information.  [CHAR_LIMIT=27]">
         Page info
@@ -4523,7 +4479,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         to <ph name="PRODUCT_NAME">%1$s<ex>Reading List</ex></ph>
       </message>
 
-      <!-- Power bookmarks strings-->
+      <!-- Bookmark bar strings -->
+      <message name="IDS_BOOKMARK_BAR_BUTTON_ICON_CONTENT_DESCRIPTION" desc="The content description for a bookmark bar button icon.">
+        Bookmark bar button icon
+      </message>
+      <message name="IDS_BOOKMARK_BAR_ALL_BOOKMARKS_BUTTON_TITLE" desc="The title for the 'All Bookmarks' button in the bookmark bar.">
+        All Bookmarks
+      </message>
+
+      <!-- Power bookmarks strings -->
       <message name="IDS_BOOKMARK_SAVE_FLOW_TITLE" desc="The title when a user chooses save a bookmarks.">
         Bookmark saved
       </message>
@@ -5936,6 +5900,10 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Including link: <ph name="ORIGIN">%1$s<ex>https://www.example.com</ex></ph>
       </message>
 
+      <message name="IDS_SHARING_TAB_GROUP" desc="Label for the button in share bottom sheet for sharing a link to collaborate in a shared tab group.">
+        Tab group
+      </message>
+
       <message name="IDS_QR_CODE_FILENAME_PREFIX" desc="File name prefix for downloaded qrcode that is followed by timestamp.">
         chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
       </message>
@@ -6198,6 +6166,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_CUSTOM_TABS_SIGNED_OUT_MESSAGE_TITLE" desc="This string is the title of a message promotion about signing in to Brave with the user's Brave sync chain.">
         Sign in to Brave
       </message>
+      <message name="IDS_CUSTOM_TAB_CANT_PERFORM_ACTION_TOAST" desc="Toast displayed when the URL currently being displayed in the Custom Tab cannot be opened in the regular browser.">
+        Something went wrong. Try again.
+      </message>
 
       <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials.">
         Continue as <ph name="NAME">%1$s<ex>Albus (or Albus Dumbledore)</ex></ph>
@@ -6217,7 +6188,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IDP_SIGNIN_STATUS_MISMATCH_DIALOG_BODY" desc="Body for mismatch dialog which is shown to prompt the user to sign in to a website using an account from an identity provider.">
         You can use your <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> account on this site. To continue, sign in to <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph>.
       </message>
-      <message name="IDS_IDP_SIGNIN_STATUS_MISMATCH_DIALOG_CONTINUE" desc="Title of the button that allows the user to continue with signing in to an account from an identity provider.">
+      <message name="IDS_SIGNIN_CONTINUE" desc="Title of the button that allows the user to continue with signing in to an account from an identity provider.">
         Continue
       </message>
       <message name="IDS_SIGNIN_ERROR_DIALOG_GOT_IT_BUTTON" desc="The button text on the error dialog for the user to acknowledge that an error has occurred in their attempt to sign in with an account from an identity provider.">
@@ -6288,6 +6259,18 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_VERIFY_SHEET_TITLE" desc="Header for verify sheet for explicit sign-in.">
         Verifying…
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_MULTI_IDP_SHEET_TITLE_EXPLICIT_SIGNIN" desc="Header for sign in sheet. Sheet is shown to prompt user to sign in to a website using an account from one of several identity providers." translateable="false">
+        Sign in to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph>
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_MULTI_IDP_SHEET_TITLE_EXPLICIT_SIGNUP" desc="Header for sign up sheet. Sheet is shown to prompt user to sign up to a website using an account from one of several identity providers." translateable="false">
+        Sign up to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph>
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_MULTI_IDP_SHEET_TITLE_EXPLICIT_USE" desc="Header for use sheet. Sheet is shown to prompt user to use a website using an account from one of several identity providers." translateable="false">
+        Use an account on <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.com</ex></ph>
+      </message>
+      <message name="IDS_ACCOUNT_SELECTION_MULTI_IDP_SHEET_TITLE_EXPLICIT_CONTINUE" desc="Header for continue sheet. Sheet is shown to prompt user to continue to a website using an account from one of several identity providers." translateable="false">
+        Continue on <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.com</ex></ph>
       </message>
 
       <!-- HTTPS-First Mode settings strings -->
@@ -6397,7 +6380,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Full-size sheet
       </message>
 
-       <!-- Quick Delete strings -->
+      <!-- Quick Delete strings -->
       <message name="IDS_QUICK_DELETE_DIALOG_TITLE" desc="Title of the dialog when asking users to confirm deleting browsing data.">
         Delete browsing data
       </message>
@@ -6981,7 +6964,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
           Open Settings
       </message>
 
-       <!-- Mandatory biometric auth errors -->
+      <!-- Mandatory biometric auth errors -->
       <message name="IDS_IDENTITY_CHECK_LOCKOUT_ERROR_TITLE" desc="Title for the error dialog shown to the user when Identity Check cannot authenticate them because the maximum number of attempts to authenticate with biometrics has been exceeded and biometrics have been locked out.">
         Identity Check is on and can’t verify it’s you
       </message>

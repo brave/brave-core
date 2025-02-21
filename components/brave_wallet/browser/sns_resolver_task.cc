@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/sns_resolver_task.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -16,7 +17,6 @@
 #include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/numerics/byte_conversions.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -531,7 +531,7 @@ std::optional<SolanaAddress> GetDomainKey(const std::string& domain) {
         "58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx");
   }
 
-  const auto dot_count = base::ranges::count(domain, '.');
+  const auto dot_count = std::ranges::count(domain, '.');
   if (dot_count > 2) {
     return std::nullopt;
   }

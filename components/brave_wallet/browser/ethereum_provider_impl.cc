@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <tuple>
@@ -1484,11 +1485,11 @@ void EthereumProviderImpl::OnGetBlockByNumber(
     mojom::ProviderError error,
     const std::string& error_message) {
   if (events_listener_.is_bound() && error == mojom::ProviderError::kSuccess) {
-    base::ranges::for_each(eth_subscriptions_,
-                           [this, &result](const std::string& subscription_id) {
-                             events_listener_->MessageEvent(subscription_id,
-                                                            result.Clone());
-                           });
+    std::ranges::for_each(eth_subscriptions_,
+                          [this, &result](const std::string& subscription_id) {
+                            events_listener_->MessageEvent(subscription_id,
+                                                           result.Clone());
+                          });
   }
 }
 

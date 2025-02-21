@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -727,7 +729,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
     // Check if there's no "Below" in context menu labels when it's horizontal
     // tab strip
     auto context_menu_contents = create_tab_context_menu_contents();
-    EXPECT_TRUE(base::ranges::none_of(get_all_labels(), [](const auto& label) {
+    EXPECT_TRUE(std::ranges::none_of(get_all_labels(), [](const auto& label) {
 #if BUILDFLAG(IS_MAC)
       return base::Contains(label, u"Below");
 #else
@@ -742,7 +744,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
     // vertical tab strip. When this fails, we should revisit
     // BraveTabMenuModel::GetLabelAt().
     auto context_menu_contents = create_tab_context_menu_contents();
-    EXPECT_TRUE(base::ranges::none_of(get_all_labels(), [](const auto& label) {
+    EXPECT_TRUE(std::ranges::none_of(get_all_labels(), [](const auto& label) {
 #if BUILDFLAG(IS_MAC)
       return base::Contains(label, u"Right") || base::Contains(label, u"Left");
 #else
@@ -761,13 +763,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, OriginalTabSearchButton) {
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
 
-  auto* tab_search_container =
-      region_view->original_region_view_->GetTabSearchContainer();
-  if (!tab_search_container) {
-    return;
-  }
-
-  auto* original_tab_search_button = tab_search_container->tab_search_button();
+  auto* original_tab_search_button =
+      region_view->original_region_view_->GetTabSearchButton();
   if (!original_tab_search_button) {
     // On Windows 10, the button is on the window frame and vertical tab strip
     // does nothing to it.
@@ -978,10 +975,10 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                 // Creating new browser during drag-and-drop will create
                 // a nested run loop. So we should do things within callback.
                 auto* browser_list = BrowserList::GetInstance();
-                EXPECT_EQ(
-                    2, base::ranges::count_if(*browser_list, [&](Browser* b) {
-                      return b->profile() == browser()->profile();
-                    }));
+                EXPECT_EQ(2,
+                          std::ranges::count_if(*browser_list, [&](Browser* b) {
+                            return b->profile() == browser()->profile();
+                          }));
                 ReleaseMouse();
                 auto* new_browser = browser_list->GetLastActive();
                 new_browser->window()->Close();

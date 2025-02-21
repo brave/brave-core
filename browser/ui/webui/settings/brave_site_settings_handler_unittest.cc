@@ -11,6 +11,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
+#include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/grit/brave_components_strings.h"
@@ -39,6 +40,7 @@ base::Value::Dict GetResponsePayload(bool valid, const std::string& message) {
 class TestBraveSiteSettingsHandlerUnittest : public testing::Test {
  public:
   TestBraveSiteSettingsHandlerUnittest() {
+    TestingBrowserProcess::GetGlobal()->CreateGlobalFeaturesForTesting();
     TestingProfile::Builder builder;
 
     profile_ = builder.Build();

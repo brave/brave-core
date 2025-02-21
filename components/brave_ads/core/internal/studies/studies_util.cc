@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 
+#include <algorithm>
 #include <iterator>
 
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
 namespace brave_ads {
@@ -22,7 +22,7 @@ base::FieldTrial::ActiveGroups GetActiveFieldTrialStudyGroups() {
 
   base::FieldTrial::ActiveGroups filtered_active_field_trial_groups;
 
-  base::ranges::copy_if(
+  std::ranges::copy_if(
       active_field_trial_groups,
       std::back_inserter(filtered_active_field_trial_groups),
       [](const base::FieldTrial::ActiveGroup& active_field_trial_group) {

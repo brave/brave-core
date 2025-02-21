@@ -5,10 +5,10 @@
 
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/functional/bind.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
@@ -167,7 +167,7 @@ void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
     return;
   }
 
-  if (base::ranges::find_if(saved_items_, [&item](const auto& i) {
+  if (std::ranges::find_if(saved_items_, [&item](const auto& i) {
         return i->id == item->id;
       }) != saved_items_.end()) {
     // We might have already added the item from OnAddedItem().
@@ -182,7 +182,7 @@ void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
 
 void PlaylistTabHelper::OnItemAddedToList(const std::string& playlist_id,
                                           const std::string& item_id) {
-  auto iter = base::ranges::find_if(saved_items_, [&item_id](const auto& item) {
+  auto iter = std::ranges::find_if(saved_items_, [&item_id](const auto& item) {
     return item->id == item_id;
   });
 
@@ -199,7 +199,7 @@ void PlaylistTabHelper::OnItemAddedToList(const std::string& playlist_id,
 
 void PlaylistTabHelper::OnItemRemovedFromList(const std::string& playlist_id,
                                               const std::string& item_id) {
-  auto iter = base::ranges::find_if(saved_items_, [&item_id](const auto& item) {
+  auto iter = std::ranges::find_if(saved_items_, [&item_id](const auto& item) {
     return item->id == item_id;
   });
 
@@ -208,7 +208,8 @@ void PlaylistTabHelper::OnItemRemovedFromList(const std::string& playlist_id,
   }
 
   auto& parents = (*iter)->parents;
-  parents.erase(base::ranges::remove(parents, playlist_id), parents.end());
+  auto to_remove = std::ranges::remove(parents, playlist_id);
+  parents.erase(to_remove.begin(), to_remove.end());
 
   for (auto& observer : observers_) {
     observer.OnSavedItemsChanged(saved_items_);
@@ -217,7 +218,7 @@ void PlaylistTabHelper::OnItemRemovedFromList(const std::string& playlist_id,
 
 void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
   DVLOG(2) << __FUNCTION__ << " " << id;
-  auto iter = base::ranges::find_if(
+  auto iter = std::ranges::find_if(
       saved_items_, [&id](const auto& item) { return id == item->id; });
   if (iter == saved_items_.end()) {
     return;
@@ -242,7 +243,7 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
   }
 
   for (auto& new_item : items) {
-    const auto it = base::ranges::find_if(
+    const auto it = std::ranges::find_if(
         found_items_,
         [&](const auto& media_source) {
           return media_source == new_item->media_source;
@@ -285,7 +286,7 @@ void PlaylistTabHelper::UpdateSavedItemFromCurrentContents() {
   // perf improvement? We'll see this really matters.
 
   bool should_notify = false;
-  base::ranges::for_each(
+  std::ranges::for_each(
       service_->GetAllPlaylistItems(),
       [this, &should_notify](const auto& item) {
         const auto& current_url =
@@ -317,9 +318,9 @@ std::vector<mojom::PlaylistItemPtr> PlaylistTabHelper::GetUnsavedItems() const {
   }
 
   base::flat_set<std::string> saved_items;
-  base::ranges::transform(saved_items_,
-                          std::inserter(saved_items, saved_items.begin()),
-                          [](const auto& item) { return item->id; });
+  std::ranges::transform(saved_items_,
+                         std::inserter(saved_items, saved_items.begin()),
+                         [](const auto& item) { return item->id; });
 
   std::vector<mojom::PlaylistItemPtr> unsaved_items;
   for (const auto& found_item : found_items_) {

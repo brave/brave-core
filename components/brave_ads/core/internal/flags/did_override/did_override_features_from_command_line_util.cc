@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_features_from_command_line_util.h"
 
+#include <algorithm>
 #include <string>
 
 #include "base/base_switches.h"
 #include "base/check.h"
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
@@ -95,8 +95,8 @@ base::flat_set<std::string> ParseCommandLineSwitches() {
       base::SplitString(disabled_features_switch, kFeaturesSeparators,
                         base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
   base::flat_set<std::string> features;
-  base::ranges::set_union(enabled_features, disabled_features,
-                          std::inserter(features, features.begin()));
+  std::ranges::set_union(enabled_features, disabled_features,
+                         std::inserter(features, features.begin()));
   return features;
 }
 
@@ -104,8 +104,7 @@ base::flat_set<std::string> ParseCommandLineSwitches() {
 
 bool DidOverrideFeaturesFromCommandLine() {
   const auto features = ParseCommandLineSwitches();
-  return base::ranges::any_of(kFeatures, [&features](
-                                             const auto* const feature) {
+  return std::ranges::any_of(kFeatures, [&features](const auto* const feature) {
     CHECK(feature);
 
     return base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(

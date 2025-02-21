@@ -5,6 +5,7 @@
 
 #include "brave/ios/browser/api/bookmarks/importer/bookmarks_importer.h"
 
+#include <algorithm>
 #include <set>
 
 #include "base/base_paths.h"
@@ -12,7 +13,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/ios/browser/api/bookmarks/importer/imported_bookmark_entry.h"
@@ -150,7 +150,7 @@ void BookmarksImporter::AddBookmarks(
         continue;
       }
 
-      const auto it = base::ranges::find_if(
+      const auto it = std::ranges::find_if(
           parent->children(), [folder_name](const auto& node) {
             return node->is_folder() && node->GetTitle() == *folder_name;
           });

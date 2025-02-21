@@ -3,7 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
@@ -121,7 +122,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, IsAIChatEnabled) {
 
 // Testing if AIChat item exists in sidebar.
 IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, SidebarCheck) {
-  bool is_in_sidebar = base::ranges::any_of(
+  bool is_in_sidebar = std::ranges::any_of(
       sidebar_model()->GetAllSidebarItems(), [](const auto& item) {
         return item.built_in_item_type ==
                sidebar::SidebarItem::BuiltInItemType::kChatUI;
@@ -138,7 +139,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, Autocomplete) {
   auto* autocomplete_controller = GetAutocompleteController();
   const auto& providers = autocomplete_controller->providers();
   bool is_in_providers =
-      base::ranges::any_of(providers, [](const auto& provider) {
+      std::ranges::any_of(providers, [](const auto& provider) {
         return provider->type() == AutocompleteProvider::TYPE_BRAVE_LEO;
       });
   if (IsAIChatEnabledTest()) {

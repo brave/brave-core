@@ -15,7 +15,6 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/types/zip.h"
@@ -32,14 +31,14 @@ class MacAddressInfoMatcher {
   template <typename... Args>
   constexpr MacAddressInfoMatcher(Args... args)  // NOLINT(runtime/explicit)
       : address_{static_cast<uint8_t>(args)...}, size_(sizeof...(args)) {
-    base::ranges::fill(base::span(address_).split_at(size_).second, 0u);
+    std::ranges::fill(base::span(address_).split_at(size_).second, 0u);
     static_assert(sizeof...(args) <= 6u, "Invalid MAC address size");
   }
 
   constexpr MacAddressInfoMatcher(const MacAddressInfoMatcher&) = default;
   constexpr MacAddressInfoMatcher& operator=(
       const MacAddressInfoMatcher& other) {
-    base::ranges::copy(other.address_, address_.begin());
+    std::ranges::copy(other.address_, address_.begin());
     size_ = other.size_;
     return *this;
   }
@@ -61,17 +60,17 @@ struct MacAddressInfoComparator {
   using is_transparent = void;
   constexpr bool operator()(const MacAddressInfoMatcher& a,
                             const MacAddressInfoMatcher& b) const {
-    return base::ranges::lexicographical_compare(a.mask(), b.mask());
+    return std::ranges::lexicographical_compare(a.mask(), b.mask());
   }
   constexpr bool operator()(const MacAddressInfoMatcher& matcher,
                             base::span<const uint8_t> address) const {
-    return base::ranges::lexicographical_compare(
+    return std::ranges::lexicographical_compare(
         matcher.mask(),
         address.first(std::min(matcher.mask().size(), address.size())));
   }
   constexpr bool operator()(base::span<const uint8_t> address,
                             const MacAddressInfoMatcher& matcher) const {
-    return base::ranges::lexicographical_compare(
+    return std::ranges::lexicographical_compare(
         address.first(std::min(matcher.mask().size(), address.size())),
         matcher.mask());
   }

@@ -1,8 +1,8 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index e0c6828f0cd7f31cd12429fc54ef219be508d898..af7515254c3718f01dd74002983db8eff6e4bc4f 100644
+index 854457658bbdc09f21f61eb76928dfd423e1eedd..4d886fcd3339c23112565535f66bd56a61b04e98 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4474,6 +4474,7 @@ if (is_android) {
+@@ -4482,6 +4482,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/ValueChangedCallback.java",
        "android/java/src/org/chromium/base/WrappedClassLoader.java",
      ]
@@ -10,11 +10,11 @@ index e0c6828f0cd7f31cd12429fc54ef219be508d898..af7515254c3718f01dd74002983db8ef
  
      if (use_clang_profiling) {
        sources += [
-@@ -4937,6 +4938,7 @@ if (is_android) {
+@@ -4953,6 +4954,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
        "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
      ]
 +    sources += brave_base_shared_preferences_java_sources
    }
  
-   # Most cached_flags code is in components/cached_flags. These classes are
+   android_library("flagged_apis_java") {

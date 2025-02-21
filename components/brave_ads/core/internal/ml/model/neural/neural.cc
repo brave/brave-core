@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/ml/model/neural/neural.h"
 
+#include <algorithm>
 #include <iterator>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/adapters.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/common/resources/flat/text_classification_neural_model_generated.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
@@ -67,7 +67,7 @@ std::optional<PredictionMap> NeuralModel::Predict(
 
       std::vector<float> row;
       row.reserve(matrix_row->row()->size());
-      base::ranges::copy(*matrix_row->row(), std::back_inserter(row));
+      std::ranges::copy(*matrix_row->row(), std::back_inserter(row));
       VectorData row_data(std::move(row));
       const float dot_product = row_data * layer_input;
       next_layer_input.push_back(dot_product);
@@ -130,7 +130,7 @@ std::optional<PredictionMap> NeuralModel::GetTopCountPredictionsImpl(
   for (const auto& [segment, probability] : *predictions) {
     prediction_order.emplace_back(probability, segment);
   }
-  base::ranges::sort(base::Reversed(prediction_order));
+  std::ranges::sort(base::Reversed(prediction_order));
 
   PredictionMap top_predictions;
   if (top_count < prediction_order.size()) {

@@ -31,7 +31,7 @@ namespace {
 
 const std::vector<sidebar::SidebarItem>::const_iterator FindAiChatSidebarItem(
     const std::vector<sidebar::SidebarItem>& items) {
-  return base::ranges::find_if(items, [](const auto& item) {
+  return std::ranges::find_if(items, [](const auto& item) {
     return item.built_in_item_type ==
            sidebar::SidebarItem::BuiltInItemType::kChatUI;
   });

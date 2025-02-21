@@ -5,12 +5,12 @@
 
 #include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -172,7 +172,7 @@ void BraveExtensionsManifestV2Handler::NotifyExtensionManifestV2Changed(
       browser_context != web_ui()->GetWebContents()->GetBrowserContext()) {
     return;
   }
-  auto fnd = base::ranges::find(extensions_, id, &ExtensionManifestV2::id);
+  auto fnd = std::ranges::find(extensions_, id, &ExtensionManifestV2::id);
   if (fnd == extensions_.end()) {
     return;
   }

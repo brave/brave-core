@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 
+#include <algorithm>
 #include <optional>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/notreached.h"
-#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
@@ -404,8 +404,7 @@ void SolanaProviderImpl::ContinueSignAllTransactions(
     const std::string& chain_id,
     SignAllTransactionsCallback callback,
     const std::vector<bool>& is_valids) {
-  if (base::ranges::any_of(is_valids,
-                           [](auto is_valid) { return !is_valid; })) {
+  if (std::ranges::any_of(is_valids, [](auto is_valid) { return !is_valid; })) {
     std::move(callback).Run(
         mojom::SolanaProviderError::kInternalError,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_BLOCKHASH_ERROR),
@@ -453,7 +452,7 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
       account->account_id->kind == mojom::AccountKind::kHardware;
   if (is_hardware_account &&
       (hw_signatures.size() != txs.size() ||
-       base::ranges::any_of(hw_signatures, [](auto& sig) { return !sig; }))) {
+       std::ranges::any_of(hw_signatures, [](auto& sig) { return !sig; }))) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
                             std::vector<std::vector<uint8_t>>(),
@@ -796,7 +795,7 @@ void SolanaProviderImpl::OnConnect(
       // account are different.
       const std::string& allowed_account_address = allowed_accounts->at(0);
       if (account && account->address != allowed_account_address) {
-        auto account_it = base::ranges::find_if(
+        auto account_it = std::ranges::find_if(
             requested_accounts, [&allowed_account_address](
                                     const mojom::AccountInfoPtr& account_info) {
               return account_info->address == allowed_account_address;

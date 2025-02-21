@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_value_util.h"
 
+#include <algorithm>
 #include <cstddef>
 #include <string>
 #include <utility>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/keyphrase/purchase_intent_keyphrase_parser.h"
 #include "url/gurl.h"
@@ -103,7 +103,7 @@ std::optional<PurchaseIntentSegmentKeyphraseList> ParseSegmentKeyphrases(
     PurchaseIntentSegmentKeyphraseInfo segment_keyphrase;
     segment_keyphrase.segments.reserve(indexes_value.GetList().size());
     segment_keyphrase.keywords = ParseKeyphrase(keyphrase);
-    base::ranges::sort(segment_keyphrase.keywords);
+    std::ranges::sort(segment_keyphrase.keywords);
 
     const size_t segments_size = segments.size();
 
@@ -141,7 +141,7 @@ std::optional<PurchaseIntentFunnelKeyphraseList> ParseFunnelKeyphrases(
     PurchaseIntentFunnelKeyphraseInfo funnel_keyphrase;
 
     funnel_keyphrase.keywords = ParseKeyphrase(keyphrase);
-    base::ranges::sort(funnel_keyphrase.keywords);
+    std::ranges::sort(funnel_keyphrase.keywords);
     funnel_keyphrase.weight = weight.GetInt();
 
     funnel_keyphrases.push_back(std::move(funnel_keyphrase));

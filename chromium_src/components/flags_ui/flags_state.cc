@@ -5,6 +5,7 @@
 
 #include "components/flags_ui/flags_state.h"
 
+#include <algorithm>
 #include <string_view>
 
 #include "base/strings/strcat.h"
@@ -18,7 +19,7 @@ void AppendCurrentFeatureStateIfDefault(
     const FeatureEntry& entry,
     const std::set<std::string>& enabled_entries,
     base::Value::List& result) {
-  if (base::ranges::any_of(result, [](const base::Value& v) {
+  if (std::ranges::any_of(result, [](const base::Value& v) {
         return *v.GetDict().FindBool("selected");
       })) {
     // A non-Default state is selected on Flags UI. In this case we don't know

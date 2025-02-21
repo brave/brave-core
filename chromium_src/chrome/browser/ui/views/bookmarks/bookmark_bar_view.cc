@@ -61,9 +61,9 @@ void LayoutBookmarkBarInstructionsView(views::View* bookmark_bar_view,
 
 }  // namespace
 
-#define BRAVE_LAYOUT                                                  \
-  LayoutBookmarkBarInstructionsView(this, bookmark_model_, browser(), \
-                                    button_height, x, max_x, y);
+#define BRAVE_LAYOUT                                                           \
+  LayoutBookmarkBarInstructionsView(this, bookmark_service_->bookmark_model(), \
+                                    browser(), button_height, x, max_x, y);
 #define BookmarkContextMenu BraveBookmarkContextMenu
 #include "src/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc"
 #undef BookmarkContextMenu

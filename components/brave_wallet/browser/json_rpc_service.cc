@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -437,14 +438,14 @@ void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
 
 bool JsonRpcService::HasAddChainRequestFromOrigin(
     const url::Origin& origin) const {
-  return base::ranges::any_of(add_chain_pending_requests_, [origin](auto& req) {
+  return std::ranges::any_of(add_chain_pending_requests_, [origin](auto& req) {
     return req.second.origin == origin;
   });
 }
 
 bool JsonRpcService::HasSwitchChainRequestFromOrigin(
     const url::Origin& origin) const {
-  return base::ranges::any_of(
+  return std::ranges::any_of(
       pending_switch_chain_requests_,
       [origin](auto& req) { return req.second.origin == origin; });
 }
@@ -460,11 +461,10 @@ void JsonRpcService::GetPendingAddChainRequests(
 
 void JsonRpcService::AddChain(mojom::NetworkInfoPtr chain,
                               AddChainCallback callback) {
-  if (!base::ranges::all_of(chain->rpc_endpoints,
-                            &net::IsHTTPSOrLocalhostURL) ||
-      !base::ranges::all_of(chain->block_explorer_urls,
-                            &IsHTTPSOrLocalhostURL) ||
-      !base::ranges::all_of(chain->icon_urls, &IsHTTPSOrLocalhostURL)) {
+  if (!std::ranges::all_of(chain->rpc_endpoints, &net::IsHTTPSOrLocalhostURL) ||
+      !std::ranges::all_of(chain->block_explorer_urls,
+                           &IsHTTPSOrLocalhostURL) ||
+      !std::ranges::all_of(chain->icon_urls, &IsHTTPSOrLocalhostURL)) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_ADD_CHAIN_INVALID_URL));

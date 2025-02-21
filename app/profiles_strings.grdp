@@ -106,6 +106,9 @@
   <message name="IDS_PROFILES_DICE_SYNC_DISABLED_TITLE" desc="Title of the profile user menu when sync is disabled.">
     Sync disabled
   </message>
+  <message name="IDS_PROFILES_DASHER_FEATURE_DISABLED_TITLE" desc="Description of the profile user menu when certain features are disabled for Dasherless profile.">
+    This isn't a Brave sync chain. Items you save to Brave won't be available on other devices.
+  </message>
    <message name="IDS_PROFILES_DICE_SYNC_PAUSED_TITLE" desc="Title of the profile user menu when sync is paused.">
     Sync is paused
   </message>
@@ -230,9 +233,6 @@
   </message>
   <message name="IDS_LEGACY_DEFAULT_PROFILE_NAME" desc="The legacy default name given to a new profile.">
     Default Profile
-  </message>
-  <message name="IDS_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI.">
-    User <ph name="VALUE">$1<ex>1</ex></ph>
   </message>
   <message name="IDS_NEW_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI using the --new-profile-management flag.">
     Person <ph name="VALUE">$1<ex>1</ex></ph>
@@ -531,7 +531,7 @@
         Sign out
       </message>
     </if>
-    <if expr="chromeos_ash">
+    <if expr="is_chromeos">
       <message name="IDS_LAUNCH_APP_BUTTON" desc="Text shown on the button that launches kiosk app from ChromeOS login UI">
         Launch app
       </message>
@@ -550,7 +550,7 @@
     </if>
   </if>
 
-  <if expr="not chromeos_ash and not is_android">
+  <if expr="not is_chromeos and not is_android">
     <!-- Profile Customization Web UI -->
     <message name="IDS_PROFILE_CUSTOMIZATION_DONE_BUTTON_LABEL" desc="Text for the Done button on the profile customization bubble">
       Done
@@ -679,6 +679,12 @@
     </message>
     <message name="IDS_ENTERPRISE_OIDC_WELCOME_ERROR_SUBTITLE" desc="Subtitle of a section telling the user that there was an error while creating their work profile.">
       You can try again or contact your administrator for help
+    </message>
+    <message name="IDS_ENTERPRISE_OIDC_WELCOME_ERROR_NO_SIGNIN_TITLE" desc="Title of a section telling the user that there was an error while creating their work profile.">
+      Work profile setup is disabled by your organization
+    </message>
+    <message name="IDS_ENTERPRISE_OIDC_WELCOME_ERROR_NO_SIGNIN_SUBTITLE" desc="Subtitle of a section telling the user that there was an error while creating their work profile.">
+      Contact your administrator for more information
     </message>
     <message name="IDS_ENTERPRISE_VALUE_PROPOSITION_SUBTITLE" desc="Subtitle the value proposition dialog for creating an enterprise profile.">
       Sign in to get your passwords and more on all your devices

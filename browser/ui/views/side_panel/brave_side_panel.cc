@@ -5,12 +5,12 @@
 
 #include "brave/browser/ui/views/side_panel/brave_side_panel.h"
 
+#include <algorithm>
 #include <optional>
 #include <utility>
 
 #include "base/check_is_test.h"
 #include "base/functional/bind.h"
-#include "base/ranges/algorithm.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"

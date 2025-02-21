@@ -5,10 +5,10 @@
 
 #include "brave/renderer/brave_content_renderer_client.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/feature_list.h"
-#include "base/ranges/algorithm.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/renderer/page_content_extractor.h"
 #include "brave/components/ai_rewriter/common/buildflags/buildflags.h"
@@ -80,13 +80,12 @@ void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
 #if BUILDFLAG(ENABLE_WIDEVINE)
   auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
   if (!dynamic_params.widevine_enabled) {
-    key_systems.erase(
-        base::ranges::remove(
-            key_systems, kWidevineKeySystem,
-            [](const std::unique_ptr<media::KeySystemInfo>& key_system) {
-              return key_system->GetBaseKeySystemName();
-            }),
-        key_systems.cend());
+    auto to_remove = std::ranges::remove(
+        key_systems, kWidevineKeySystem,
+        [](const std::unique_ptr<media::KeySystemInfo>& key_system) {
+          return key_system->GetBaseKeySystemName();
+        });
+    key_systems.erase(to_remove.begin(), to_remove.end());
   }
 #endif
   cb.Run(std::move(key_systems));

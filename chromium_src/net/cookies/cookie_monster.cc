@@ -16,15 +16,20 @@
 namespace net {
 
 CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
-                             NetLog* net_log)
-    : ChromiumCookieMonster(store, net_log),
+                             NetLog* net_log,
+                             std::unique_ptr<PrefDelegate> pref_delegate)
+    : ChromiumCookieMonster(store, net_log, std::move(pref_delegate)),
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
 CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
                              base::TimeDelta last_access_threshold,
-                             NetLog* net_log)
-    : ChromiumCookieMonster(store, last_access_threshold, net_log),
+                             NetLog* net_log,
+                             std::unique_ptr<PrefDelegate> pref_delegate)
+    : ChromiumCookieMonster(store,
+                            last_access_threshold,
+                            net_log,
+                            std::move(pref_delegate)),
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
@@ -106,7 +111,7 @@ void CookieMonster::SetCanonicalCookieAsync(
       // Shouldn't happen, but don't do anything in this case.
       net::CookieInclusionStatus cookie_inclusion_status;
       cookie_inclusion_status.AddExclusionReason(
-          net::CookieInclusionStatus::EXCLUDE_UNKNOWN_ERROR);
+          net::CookieInclusionStatus::ExclusionReason::EXCLUDE_UNKNOWN_ERROR);
 
       MaybeRunCookieCallback(std::move(callback),
                              CookieAccessResult(cookie_inclusion_status));

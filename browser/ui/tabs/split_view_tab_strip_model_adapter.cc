@@ -5,10 +5,11 @@
 
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 
+#include <algorithm>
+
 #include "base/auto_reset.h"
 #include "base/compiler_specific.h"
 #include "base/memory/weak_ptr.h"
-#include "base/ranges/algorithm.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
@@ -322,7 +323,7 @@ void SplitViewTabStripModelAdapter::OnTabRemoved(
 
     if (removed_tabs.remove_reason ==
         TabStripModelChange::RemoveReason::kDeleted) {
-      auto iter = base::ranges::find_if(
+      auto iter = std::ranges::find_if(
           tiled_tabs_scheduled_to_be_removed_, [](const auto& contentses) {
             return !contentses.first || !contentses.second;
           });

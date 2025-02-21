@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
 
+#include <algorithm>
 #include <optional>
 
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -22,7 +23,7 @@ std::optional<uint8_t> FindIndexInStaticAccounts(
   if (keys.size() > UINT8_MAX) {
     return std::nullopt;
   }
-  auto it = base::ranges::find_if(keys, [&](const SolanaAddress& key) {
+  auto it = std::ranges::find_if(keys, [&](const SolanaAddress& key) {
     return key.ToBase58() == target_key;
   });
   if (it == keys.end()) {

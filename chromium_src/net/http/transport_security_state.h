@@ -45,6 +45,7 @@ class NET_EXPORT TransportSecurityState
   bool ShouldUpgradeToSSL(
       const NetworkAnonymizationKey& network_anonymization_key,
       const std::string& host,
+      bool is_top_level_nav,
       const NetLogWithSource& net_log = NetLogWithSource());
   bool AddHSTSHeader(const IsolationInfo& isolation_info,
                      std::string_view host,
@@ -57,6 +58,7 @@ class NET_EXPORT TransportSecurityState
   // These are used in some places where no NIK is available.
   bool ShouldSSLErrorsBeFatal(const std::string& host);
   bool ShouldUpgradeToSSL(const std::string& host,
+                          bool is_top_level_nav,
                           const NetLogWithSource& net_log = NetLogWithSource());
   bool GetDynamicSTSState(const std::string& host, STSState* result);
   bool DeleteDynamicDataForHost(const std::string& host);

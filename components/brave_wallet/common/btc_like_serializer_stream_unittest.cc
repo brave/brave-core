@@ -5,9 +5,9 @@
 
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 
+#include <algorithm>
 #include <vector>
 
-#include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -80,8 +80,8 @@ TEST(BtcLikeSerializerStreamTest, PushSizeAndBytes) {
     stream.PushSizeAndBytes(bytes);
     EXPECT_EQ(data.size(), 1u + 10u);
     EXPECT_EQ(base::HexEncode(base::span(data).first<1>()), "0A");
-    EXPECT_TRUE(base::ranges::all_of(base::span(data).last<10>(),
-                                     [](auto c) { return c == 0xab; }));
+    EXPECT_TRUE(std::ranges::all_of(base::span(data).last<10>(),
+                                    [](auto c) { return c == 0xab; }));
     EXPECT_EQ(stream.serialized_bytes(), 11u);
   }
 
@@ -92,8 +92,8 @@ TEST(BtcLikeSerializerStreamTest, PushSizeAndBytes) {
     stream.PushSizeAndBytes(bytes);
     EXPECT_EQ(data.size(), 3u + 300u);
     EXPECT_EQ(base::HexEncode(base::span(data).first<3>()), "FD2C01");
-    EXPECT_TRUE(base::ranges::all_of(base::span(data).last<300>(),
-                                     [](auto c) { return c == 0xcd; }));
+    EXPECT_TRUE(std::ranges::all_of(base::span(data).last<300>(),
+                                    [](auto c) { return c == 0xcd; }));
     EXPECT_EQ(stream.serialized_bytes(), 303u);
   }
 
@@ -104,8 +104,8 @@ TEST(BtcLikeSerializerStreamTest, PushSizeAndBytes) {
     stream.PushSizeAndBytes(bytes);
     EXPECT_EQ(data.size(), 5u + 0x10000);
     EXPECT_EQ(base::HexEncode(base::span(data).first<5>()), "FE00000100");
-    EXPECT_TRUE(base::ranges::all_of(base::span(data).last<0x10000>(),
-                                     [](auto c) { return c == 0xef; }));
+    EXPECT_TRUE(std::ranges::all_of(base::span(data).last<0x10000>(),
+                                    [](auto c) { return c == 0xef; }));
     EXPECT_EQ(stream.serialized_bytes(), 65541u);
   }
 }

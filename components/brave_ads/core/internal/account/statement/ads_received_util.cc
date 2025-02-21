@@ -5,7 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/statement/ads_received_util.h"
 
-#include "base/ranges/algorithm.h"
+#include <algorithm>
+
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 
@@ -14,7 +15,7 @@ namespace brave_ads {
 size_t GetAdsReceivedForDateRange(const TransactionList& transactions,
                                   base::Time from_time,
                                   base::Time to_time) {
-  return base::ranges::count_if(
+  return std::ranges::count_if(
       transactions, [from_time, to_time](const TransactionInfo& transaction) {
         return transaction.confirmation_type ==
                    mojom::ConfirmationType::kViewedImpression &&

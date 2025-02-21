@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
+#include <algorithm>
 #include <cmath>
 #include <memory>
 #include <optional>
@@ -92,7 +93,7 @@ void MergeGetTxFeeEstimationResponses(
     std::unique_ptr<SolanaTxMeta> meta,
     std::vector<FeeEstimationResponse> responses) {
   // Process base fee RPC response which should always present.
-  const auto base_fee_it = base::ranges::find_if(
+  const auto base_fee_it = std::ranges::find_if(
       responses, [](const FeeEstimationResponse& response) {
         return response.type == FeeEstimationResponseType::kBaseFee;
       });
@@ -118,11 +119,11 @@ void MergeGetTxFeeEstimationResponses(
 
   // Process simulate and recent priority fees RPC responses which should
   // present when transaction is not partial signed.
-  const auto simulate_it = base::ranges::find_if(
+  const auto simulate_it = std::ranges::find_if(
       responses, [](const FeeEstimationResponse& response) {
         return response.type == FeeEstimationResponseType::kSimulate;
       });
-  auto recent_priority_fees_it = base::ranges::find_if(
+  auto recent_priority_fees_it = std::ranges::find_if(
       responses, [](const FeeEstimationResponse& response) {
         return response.type == FeeEstimationResponseType::kRecentPriorityFees;
       });
@@ -158,7 +159,7 @@ void MergeGetTxFeeEstimationResponses(
   uint64_t median = 0;
   auto& recent_fees = recent_priority_fees_it->recent_fees;
   if (!recent_fees.empty()) {
-    base::ranges::sort(recent_fees, [](const auto& a, const auto& b) {
+    std::ranges::sort(recent_fees, [](const auto& a, const auto& b) {
       return a.second < b.second;
     });
 
