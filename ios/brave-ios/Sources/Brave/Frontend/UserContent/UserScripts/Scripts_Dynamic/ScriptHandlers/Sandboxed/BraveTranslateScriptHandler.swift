@@ -26,7 +26,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   static let scriptName = "BraveTranslateScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "TranslateMessage"
-  static let scriptSandbox = WKContentWorld.world(name: "BraveTranslateContentWorld")
+  static let scriptSandbox = WKContentWorld.defaultClient
   static let userScript: WKUserScript? = {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
@@ -56,7 +56,7 @@ class BraveTranslateScriptHandler: NSObject, TabContentScript {
   }
 
   static func checkTranslate(tab: Tab) {
-    tab.webView?.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName:
         """
         try {

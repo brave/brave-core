@@ -144,12 +144,13 @@ extension BrowserViewController {
   /// of the current page is there. And if so, we go there.
 
   func enableReaderMode() {
-    guard let tab = tabManager.selectedTab, let webView = tab.webView else { return }
+    guard let tab = tabManager.selectedTab else { return }
+    let backForwardList = tab.backForwardList
 
-    let backList = webView.backForwardList.backList
-    let forwardList = webView.backForwardList.forwardList
+    let backList = backForwardList.backList
+    let forwardList = backForwardList.forwardList
 
-    guard let currentURL = webView.backForwardList.currentItem?.url,
+    guard let currentURL = backForwardList.currentItem?.url,
       let headers = (tab.responses[currentURL] as? HTTPURLResponse)?.allHeaderFields
         as? [String: String],
       let readerModeURL = currentURL.encodeEmbeddedInternalURL(for: .readermode, headers: headers)
@@ -160,18 +161,18 @@ extension BrowserViewController {
     if backList.count > 1 && backList.last?.url == readerModeURL {
       let playlistItem = tab.playlistItem
       let translationState = tab.translationState
-      webView.go(to: backList.last!)
+      tab.goToBackForwardListItem(backList.last!)
       PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
       self.updateTranslateURLBar(tab: tab, state: translationState)
     } else if !forwardList.isEmpty && forwardList.first?.url == readerModeURL {
       let playlistItem = tab.playlistItem
       let translationState = tab.translationState
-      webView.go(to: forwardList.first!)
+      tab.goToBackForwardListItem(forwardList.first!)
       PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
       self.updateTranslateURLBar(tab: tab, state: translationState)
     } else {
       // Store the readability result in the cache and load it. This will later move to the ReadabilityHelper.
-      webView.evaluateSafeJavaScript(
+      tab.evaluateSafeJavaScript(
         functionName: "\(readerModeNamespace).readerize",
         contentWorld: ReaderModeScriptHandler.scriptSandbox
       ) { (object, error) -> Void in
@@ -180,7 +181,7 @@ extension BrowserViewController {
           let translationState = tab.translationState
           Task { @MainActor in
             try? await self.readerModeCache.put(currentURL, readabilityResult)
-            if webView.load(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
+            if tab.loadRequest(PrivilegedRequest(url: readerModeURL) as URLRequest) != nil {
               PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
               self.updateTranslateURLBar(tab: tab, state: translationState)
             }
@@ -196,30 +197,29 @@ extension BrowserViewController {
   /// of the page is either to the left or right in the BackForwardList. If that is the case, we navigate there.
 
   func disableReaderMode() {
-    if let tab = tabManager.selectedTab,
-      let webView = tab.webView
-    {
-      let backList = webView.backForwardList.backList
-      let forwardList = webView.backForwardList.forwardList
+    if let tab = tabManager.selectedTab {
+      let backForwardList = tab.backForwardList
+      let backList = backForwardList.backList
+      let forwardList = backForwardList.forwardList
 
-      if let currentURL = webView.backForwardList.currentItem?.url {
+      if let currentURL = backForwardList.currentItem?.url {
         if let originalURL = currentURL.decodeEmbeddedInternalURL(for: .readermode) {
           if backList.count > 1 && backList.last?.url == originalURL {
             let playlistItem = tab.playlistItem
             let translationState = tab.translationState
-            webView.go(to: backList.last!)
+            tab.goToBackForwardListItem(backList.last!)
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
             self.updateTranslateURLBar(tab: tab, state: translationState)
           } else if !forwardList.isEmpty && forwardList.first?.url == originalURL {
             let playlistItem = tab.playlistItem
             let translationState = tab.translationState
-            webView.go(to: forwardList.first!)
+            tab.goToBackForwardListItem(forwardList.first!)
             PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
             self.updateTranslateURLBar(tab: tab, state: translationState)
           } else {
             let playlistItem = tab.playlistItem
             let translationState = tab.translationState
-            if webView.load(URLRequest(url: originalURL)) != nil {
+            if tab.loadRequest(URLRequest(url: originalURL)) != nil {
               PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: playlistItem)
               self.updateTranslateURLBar(tab: tab, state: translationState)
             }

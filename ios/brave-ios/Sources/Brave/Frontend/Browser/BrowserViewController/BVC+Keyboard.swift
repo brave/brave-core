@@ -37,9 +37,9 @@ extension BrowserViewController: KeyboardHelperDelegate {
     }
     .startAnimation()
 
-    guard let webView = tabManager.selectedTab?.webView else { return }
+    guard let tab = tabManager.selectedTab else { return }
 
-    self.evaluateWebsiteSupportOpenSearchEngine(webView)
+    self.evaluateWebsiteSupportOpenSearchEngine(in: tab)
   }
 
   public func keyboardHelper(

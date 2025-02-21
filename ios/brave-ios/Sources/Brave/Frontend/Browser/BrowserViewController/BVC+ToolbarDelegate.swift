@@ -211,7 +211,7 @@ extension BrowserViewController: TopToolbarDelegate {
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView) {
     if let selectedTab = tabManager.selectedTab, favoritesController == nil {
       // Only scroll to top if we are not showing the home view controller
-      selectedTab.webView?.scrollView.setContentOffset(CGPoint.zero, animated: true)
+      selectedTab.webScrollView?.setContentOffset(CGPoint.zero, animated: true)
     }
   }
 
@@ -680,7 +680,7 @@ extension BrowserViewController: TopToolbarDelegate {
       return
     }
     // System components sit on top so we want to dismiss it
-    selectedTab.webView?.findInteraction?.dismissFindNavigator()
+    selectedTab.dismissFindInteraction()
     presentWalletPanel(from: selectedTab.getOrigin(), with: selectedTab.tabDappStore)
   }
 
@@ -954,8 +954,7 @@ extension BrowserViewController: TopToolbarDelegate {
         from: tabToolbar.menuButton,
         activities: activities,
         tab: tabManager.selectedTab,
-        pageURL: selectedTabURL,
-        webView: tabManager.selectedTab?.webView
+        pageURL: selectedTabURL
       )
       return
     }
@@ -1049,7 +1048,7 @@ extension BrowserViewController: ToolbarDelegate {
     guard let tab = tabManager.selectedTab, let url = tab.url
     else { return }
     let hasCertificate =
-      (tab.webView?.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
+      (tab.serverTrust ?? (try? ErrorPageHelper.serverTrust(from: url))) != nil
     let pageSecurityView = PageSecurityView(
       displayURL: urlBar.locationView.urlDisplayLabel.text ?? url.absoluteDisplayString,
       secureState: tab.lastKnownSecureContentState,
@@ -1064,7 +1063,7 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func showBackForwardList() {
-    if let backForwardList = tabManager.selectedTab?.webView?.backForwardList {
+    if let backForwardList = tabManager.selectedTab?.backForwardList {
       let backForwardViewController = BackForwardListViewController(
         profile: profile,
         backForwardList: backForwardList

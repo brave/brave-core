@@ -71,8 +71,8 @@ class BraveLeoScriptTabHelper: AIChatWebDelegate {
   }
 
   func getPageContentType() async -> String? {
-    guard let webView = tab?.webView else { return nil }
-    return try? await webView.evaluateSafeJavaScriptThrowing(
+    guard let tab else { return nil }
+    return try? await tab.evaluateSafeJavaScriptThrowing(
       functionName: "document.contentType",
       contentWorld: BraveLeoScriptHandler.scriptSandbox,
       escapeArgs: false,
@@ -82,10 +82,10 @@ class BraveLeoScriptTabHelper: AIChatWebDelegate {
 
   @MainActor
   func getMainArticle() async -> String? {
-    guard let webView = tab?.webView else { return nil }
+    guard let tab else { return nil }
     do {
       let articleText =
-        try await webView.evaluateSafeJavaScriptThrowing(
+        try await tab.evaluateSafeJavaScriptThrowing(
           functionName: "window.__firefox__.\(BraveLeoScriptHandler.getMainArticle)",
           args: [BraveLeoScriptHandler.scriptId],
           contentWorld: BraveLeoScriptHandler.scriptSandbox,
@@ -100,12 +100,8 @@ class BraveLeoScriptTabHelper: AIChatWebDelegate {
 
   @MainActor
   func getPDFDocument() async -> String? {
-    guard let webView = tab?.webView else { return nil }
-    // po webView.perform(Selector("_methodDescription"))
-    if webView.responds(to: Selector(("_dataForDisplayedPDF"))),
-      let pdfData = webView.perform(Selector(("_dataForDisplayedPDF"))).takeUnretainedValue()
-        as? Data
-    {
+    guard let tab else { return nil }
+    if let pdfData = tab.dataForDisplayedPDF() {
       return pdfData.base64EncodedString()
     }
 
@@ -122,7 +118,7 @@ class BraveLeoScriptTabHelper: AIChatWebDelegate {
 
     // Pages containing PDF cannot contain injected Javascript
     // So we must execute an inline script
-    return try? await webView.callAsyncJavaScript(
+    return try? await tab.callAsyncJavaScript(
       """
       const buffer = await window.fetch(window.location.href, {
         method: 'GET',
@@ -144,7 +140,7 @@ class BraveLeoScriptTabHelper: AIChatWebDelegate {
 
   @MainActor
   func getPrintViewPDF() async -> Data? {
-    guard let viewPrintFormatter = tab?.webView?.viewPrintFormatter() else { return nil }
+    guard let viewPrintFormatter = tab?.viewPrintFormatter else { return nil }
     // No article text. Attempt to parse the page as a PDF/Image
     let render = UIPrintPageRenderer()
     render.addPrintFormatter(viewPrintFormatter, startingAtPageAt: 0)

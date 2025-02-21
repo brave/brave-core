@@ -52,11 +52,6 @@ class SiteStateListenerScriptHandler: TabContentScript {
       return
     }
 
-    guard let webView = tab.webView else {
-      assertionFailure("Should have a tab set")
-      return
-    }
-
     do {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(MessageDTO.self, from: data)
@@ -103,7 +98,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
             for: .contentCosmetic(setup, proceduralActions: proceduralActions)
           )
 
-          try await webView.evaluateSafeJavaScriptThrowing(
+          try await tab.evaluateSafeJavaScriptThrowing(
             functionName: script.source,
             frame: message.frameInfo,
             contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,

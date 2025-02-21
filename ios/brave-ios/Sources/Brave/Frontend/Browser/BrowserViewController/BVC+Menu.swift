@@ -502,13 +502,12 @@ extension BrowserViewController {
     from sourceView: UIView,
     activities: [UIActivity],
     tab: Tab?,
-    pageURL: URL?,
-    webView: WKWebView?
+    pageURL: URL?
   ) {
     var actions: [Action] = []
     actions.append(vpnMenuAction)
     actions.append(contentsOf: destinationMenuActions(for: pageURL))
-    actions.append(contentsOf: pageActions(for: pageURL, webView: webView))
+    actions.append(contentsOf: pageActions(for: pageURL, tab: tab))
     var pageActivities: Set<Action> = Set(
       activities
         .compactMap { activity in
@@ -590,7 +589,7 @@ extension BrowserViewController {
     return
   }
 
-  private func pageActions(for pageURL: URL?, webView: WKWebView?) -> [Action] {
+  private func pageActions(for pageURL: URL?, tab: Tab?) -> [Action] {
     let playlistActivity = addToPlayListActivityItem ?? openInPlaylistActivityItem
     let isPlaylistItemAdded = openInPlaylistActivityItem != nil
     var actions: [Action] = [
@@ -665,12 +664,13 @@ extension BrowserViewController {
         }
       )
     }
+    let printFormatter = tab?.viewPrintFormatter
     actions.append(
-      .init(id: .print) { @MainActor [unowned self, weak webView] _ in
-        guard let webView else { return .none }
+      .init(id: .print, attributes: printFormatter == nil ? .disabled : []) {
+        @MainActor [unowned self] _ in
         self.dismiss(animated: true) {
           let printController = UIPrintInteractionController.shared
-          printController.printFormatter = webView.viewPrintFormatter()
+          printController.printFormatter = printFormatter
           printController.present(animated: true)
         }
         return .none
