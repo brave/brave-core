@@ -19,8 +19,10 @@
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider.h"
@@ -88,6 +90,21 @@ BraveSidePanel::~BraveSidePanel() {
 
 void BraveSidePanel::UpdateWidthOnEntryChanged() {
   // Do nothing.
+}
+
+bool SidePanel::ShouldRestrictMaxWidth() const {
+  // TODO(crbug.com/394339052): Only restricting width for only non-read
+  // anything content is a temporary solution and UX will investigate a better
+  // long term solution.
+  SidePanelUI* coordinator =
+      browser_view_->browser()->GetFeatures().side_panel_ui();
+  if (!coordinator) {
+    return true;
+  }
+  std::optional<SidePanelEntry::Id> side_panel_entry_id =
+      coordinator->GetCurrentEntryId();
+  return !side_panel_entry_id.has_value() ||
+         side_panel_entry_id.value() != SidePanelEntryId::kReadAnything;
 }
 
 void BraveSidePanel::SetHorizontalAlignment(HorizontalAlignment alignment) {
