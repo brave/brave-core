@@ -24,6 +24,7 @@ protocol TabWebPolicyDecider: AnyObject {
     shouldAllowRequest request: URLRequest,
     requestInfo: WebRequestInfo
   ) async -> WebPolicyDecision
+
   /// Decide whether or not a response should be allowed
   func tab(
     _ tab: Tab,

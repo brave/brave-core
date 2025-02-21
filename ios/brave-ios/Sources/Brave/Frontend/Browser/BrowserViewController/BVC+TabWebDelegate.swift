@@ -37,7 +37,6 @@ protocol TabWebDelegate: AnyObject {
     defaultText: String?,
     pageURL: URL
   ) async -> String?
-
   func tab(
     _ tab: Tab,
     didRequestHTTPAuthFor protectionSpace: URLProtectionSpace,
@@ -93,8 +92,7 @@ extension TabWebDelegate {
     defaultText: String?,
     pageURL: URL
   ) async -> String? {
-    return
-      nil
+    return nil
   }
 
   func tab(
