@@ -1807,6 +1807,13 @@ extension Strings {
       value: "A search engine with the same name already exists.",
       comment: "The warning description shown to user when custom search engine already exists."
     )
+    public static let engineTitlePlaceholder = NSLocalizedString(
+      "customSearchEngine.engineTitlePlaceholder",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Enter search engine name",
+      comment: "A placeholder in the text filed for user to input the custom search engine name."
+    )
   }
 }
 

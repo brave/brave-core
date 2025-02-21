@@ -2686,16 +2686,21 @@ extension BrowserViewController: SearchViewControllerDelegate {
     self.topToolbar.setLocation(suggestion, search: true)
   }
 
-  func presentSearchSettingsController() {
-    let settingsNavigationController = SearchSettingsViewController(
+  func presentQuickSearchEnginesViewController() {
+    let quickSearchEnginesViewController = SearchQuickEnginesViewController(
       profile: profile,
-      privateBrowsingManager: privateBrowsingManager
+      isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
     )
-    let navController = ModalSettingsNavigationController(
-      rootViewController: settingsNavigationController
-    )
-
-    self.present(navController, animated: true, completion: nil)
+    quickSearchEnginesViewController.navigationItem.leftBarButtonItem =
+      UIBarButtonItem(
+        title: Strings.close,
+        style: .done,
+        target: self,
+        action: #selector(dismissQuickSearchEngines)
+      )
+    quickSearchEnginesViewController.delegate = searchController
+    let navVC = UINavigationController(rootViewController: quickSearchEnginesViewController)
+    self.present(navVC, animated: true, completion: nil)
   }
 
   func searchViewController(
@@ -2722,6 +2727,10 @@ extension BrowserViewController: SearchViewControllerDelegate {
       return false
     }
     return true
+  }
+
+  @objc private func dismissQuickSearchEngines() {
+    dismiss(animated: true)
   }
 }
 

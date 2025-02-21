@@ -8,8 +8,8 @@ import BraveCore
 import BraveUI
 import Foundation
 import Preferences
-import Storage
 import Shared
+import Storage
 import os.log
 
 // MARK: - SearchSuggestionDataSourceDelegate
@@ -128,7 +128,7 @@ class SearchSuggestionDataSource {
 
     return true
   }
-  
+
   var isSiteDataShowMoreAvailable: Bool {
     guard siteDataFetchLimit != 0 else { return false }
     return siteDataFetchLimit < _siteData.count
