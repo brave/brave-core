@@ -51,6 +51,7 @@ class BraveSidePanel : public views::View,
 
   void SetPanelWidth(int width);
   void UpdateWidthOnEntryChanged();
+  bool ShouldRestrictMaxWidth() const;
   double GetAnimationValue() const;
   void SetHorizontalAlignment(HorizontalAlignment alignment);
   HorizontalAlignment GetHorizontalAlignment();
