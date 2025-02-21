@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser;
 
+import androidx.annotation.NonNull;
+
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.OverscrollAction;
@@ -18,8 +20,10 @@ public class BraveSwipeRefreshHandler extends SwipeRefreshHandler {
     public Tab mTab;
 
     // There is a direct patch for SwipeRefreshHandler to make it's ctor public
-    public BraveSwipeRefreshHandler(Tab tab) {
-        super(tab);
+    public BraveSwipeRefreshHandler(
+            Tab tab,
+            @NonNull SwipeRefreshHandler.SwipeRefreshLayoutCreator swipeRefreshLayoutCreator) {
+        super(tab, swipeRefreshLayoutCreator);
     }
 
     @Override
