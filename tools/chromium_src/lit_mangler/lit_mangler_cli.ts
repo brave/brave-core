@@ -10,7 +10,7 @@ import path from 'path'
 import fs from 'fs'
 import os from 'os'
 
-const baseDir = path.join(__dirname, '../../')
+const baseDir = path.join(__dirname, '../../../')
 const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
 
 /**
