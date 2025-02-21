@@ -247,8 +247,6 @@ void P3AService::OnP3AEnabledChanged() {
 void P3AService::OnHistogramChanged(std::string_view histogram_name,
                                     uint64_t name_hash,
                                     base::HistogramBase::Sample32 sample) {
-  DCHECK(histogram_name != nullptr);
-
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
 
@@ -276,7 +274,7 @@ void P3AService::OnHistogramChanged(std::string_view histogram_name,
   }
 
   // Special handling of P2A histograms.
-  if (std::string_view(histogram_name).starts_with("Brave.P2A")) {
+  if (histogram_name.starts_with("Brave.P2A")) {
     // We need the bucket count to make proper perturbation.
     // All P2A metrics should be implemented as linear histograms.
     base::SampleVector* vector =
@@ -313,7 +311,7 @@ void P3AService::HandleHistogramChange(
     size_t bucket,
     std::optional<bool> only_update_for_constellation) {
   if (IsSuspendedMetric(histogram_name, bucket)) {
-    message_manager_->RemoveMetricValue(std::string(histogram_name),
+    message_manager_->RemoveMetricValue(histogram_name,
                                         only_update_for_constellation);
     return;
   }
@@ -321,7 +319,7 @@ void P3AService::HandleHistogramChange(
   if (metric_config && *metric_config && (*metric_config)->constellation_only) {
     only_update_for_constellation = true;
   }
-  message_manager_->UpdateMetricValue(std::string(histogram_name), bucket,
+  message_manager_->UpdateMetricValue(histogram_name, bucket,
                                       only_update_for_constellation);
 }
 
