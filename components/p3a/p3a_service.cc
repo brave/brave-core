@@ -107,9 +107,8 @@ void P3AService::RegisterPrefs(PrefRegistrySimple* registry, bool first_run) {
 void P3AService::InitCallback(std::string_view histogram_name) {
   histogram_sample_callbacks_.push_back(
       std::make_unique<base::StatisticsRecorder::ScopedHistogramSampleObserver>(
-          std::string(histogram_name),
-          base::BindRepeating(&P3AService::OnHistogramChanged,
-                              base::Unretained(this))));
+          histogram_name, base::BindRepeating(&P3AService::OnHistogramChanged,
+                                              base::Unretained(this))));
 }
 
 void P3AService::InitCallbacks() {
@@ -144,7 +143,7 @@ void P3AService::RegisterDynamicMetric(const std::string& histogram_name,
   dynamic_metric_log_types_[histogram_name] = log_type;
   dynamic_metric_sample_callbacks_[histogram_name] =
       std::make_unique<base::StatisticsRecorder::ScopedHistogramSampleObserver>(
-          std::string(histogram_name),
+          histogram_name,
           base::BindRepeating(&P3AService::OnHistogramChanged, this));
 
   ScopedDictPrefUpdate update(&*local_state_, kDynamicMetricsDictPref);
@@ -245,7 +244,7 @@ void P3AService::OnP3AEnabledChanged() {
   }
 }
 
-void P3AService::OnHistogramChanged(const char* histogram_name,
+void P3AService::OnHistogramChanged(std::string_view histogram_name,
                                     uint64_t name_hash,
                                     base::HistogramBase::Sample32 sample) {
   DCHECK(histogram_name != nullptr);
@@ -296,7 +295,7 @@ void P3AService::OnHistogramChanged(const char* histogram_name,
                                 histogram_name, sample, bucket));
 }
 
-void P3AService::OnHistogramChangedOnUI(const char* histogram_name,
+void P3AService::OnHistogramChangedOnUI(std::string_view histogram_name,
                                         base::HistogramBase::Sample32 sample,
                                         size_t bucket) {
   VLOG(2) << "P3AService::OnHistogramChanged: histogram_name = "

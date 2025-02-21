@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_H_
 
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/functional/callback_forward.h"
@@ -86,10 +87,10 @@ class PageMetrics {
 
   void ReportFirstPageLoadTime();
 
-  void OnHttpsNavigationEvent(const char* histogram_name,
+  void OnHttpsNavigationEvent(std::string_view histogram_name,
                               uint64_t name_hash,
                               base::HistogramBase::Sample32 sample);
-  void OnInterstitialDecisionEvent(const char* histogram_name,
+  void OnInterstitialDecisionEvent(std::string_view histogram_name,
                                    uint64_t name_hash,
                                    base::HistogramBase::Sample32 sample);
 
