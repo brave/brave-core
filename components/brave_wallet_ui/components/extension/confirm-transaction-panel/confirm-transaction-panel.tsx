@@ -142,7 +142,8 @@ export const ConfirmTransactionPanel = ({
     isLoadingGasFee,
     rejectAllTransactions,
     isConfirmButtonDisabled,
-    isSolanaDappTransaction
+    isSolanaDappTransaction,
+    isAccountSyncing
   } = usePendingTransactions()
 
   // queries
@@ -505,6 +506,7 @@ export const ConfirmTransactionPanel = ({
           insufficientFundsError={insufficientFundsError}
           isWarningCollapsed={isWarningCollapsed}
           setIsWarningCollapsed={setIsWarningCollapsed}
+          isAccountSyncing={isAccountSyncing}
         />
       </Column>
       {showSimulationNotSupportedMessage && (

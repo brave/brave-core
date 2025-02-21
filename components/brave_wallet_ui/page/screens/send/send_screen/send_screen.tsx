@@ -64,6 +64,9 @@ import {
 import {
   useAccountFromAddressQuery //
 } from '../../../../common/slices/api.slice.extra'
+import {
+  useIsAccountSyncing //
+} from '../../../../common/hooks/use_is_account_syncing'
 
 // Styled Components
 import { InputRow, ToText, ToRow } from './send.style'
@@ -215,6 +218,8 @@ export const SendScreen = React.memo((props: Props) => {
           }
         : skipToken
     )
+
+  const isAccountSyncing = useIsAccountSyncing(accountFromParams?.accountId)
 
   // memos & computed
   const sendAmountValidationError: AmountValidationErrorType | undefined =
@@ -626,13 +631,15 @@ export const SendScreen = React.memo((props: Props) => {
                     parseFloat(sendAmount) === 0 ||
                     Boolean(sendAmountValidationError) ||
                     (tokenFromParams?.coin === BraveWallet.CoinType.BTC &&
-                      !isWarningAcknowledged)
+                      !isWarningAcknowledged) ||
+                    isAccountSyncing
                   }
                 >
                   {getLocale(
                     getReviewButtonText(
                       sendAmountValidationError,
-                      insufficientFundsError
+                      insufficientFundsError,
+                      isAccountSyncing
                     )
                   ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
                 </LeoSquaredButton>
@@ -684,13 +691,17 @@ function ethToWeiAmount(
 
 function getReviewButtonText(
   sendAmountValidationError: string | undefined,
-  insufficientFundsError: boolean
+  insufficientFundsError: boolean,
+  isAccountSyncing?: boolean
 ) {
   if (sendAmountValidationError) {
     return 'braveWalletDecimalPlacesError'
   }
   if (insufficientFundsError) {
     return 'braveWalletNotEnoughFunds'
+  }
+  if (isAccountSyncing) {
+    return 'braveWalletAccountIsSyncing'
   }
 
   return 'braveWalletReviewSend'
