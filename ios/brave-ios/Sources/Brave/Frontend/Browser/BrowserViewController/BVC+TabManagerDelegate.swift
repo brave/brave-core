@@ -59,6 +59,7 @@ extension BrowserViewController: TabManagerDelegate {
         topToolbar.hideProgressBar()
       }
 
+      previous?.shownPromptAlert?.dismiss(animated: false)
       readerModeCache = ReaderModeScriptHandler.cache(for: tab)
       ReaderModeHandler.readerModeCache = readerModeCache
 

@@ -1420,6 +1420,9 @@ extension BrowserViewController: WKUIDelegate {
         _ = observation  // Silence write but not read warning
         observation = nil
         guard let self = self, let tab = self.tabManager[webView] else { return }
+
+        // When a child tab is being selected, dismiss any popups on the parent tab
+        tab.parent?.shownPromptAlert?.dismiss(animated: false)
         self.tabManager.selectTab(tab)
       }
     )
