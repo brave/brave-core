@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 71b8c74866b4fd842a440dccca36c3f087e1c322..9c48c0b452ee1b89d64d33e5c03b5aaab5782149 100644
+index 467fc79ecaf42fbaf1afa437d80410f570bfa65a..068580828598bf61513801fa2f44d47c27ab0b37 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4405,6 +4405,7 @@ const FeatureEntry::FeatureVariation kTabSwitcherColorBlendAnimateVariations[] =
+@@ -4351,6 +4351,7 @@ const FeatureEntry::FeatureVariation kMaliciousApkDownloadCheckChoices[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
