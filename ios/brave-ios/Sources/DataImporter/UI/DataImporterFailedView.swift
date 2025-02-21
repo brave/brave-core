@@ -20,11 +20,11 @@ struct DataImporterFailedView: View {
 
         VStack {
           Text(Strings.DataImporter.importStateFailureTitle)
-            .font(.headline)
+            .font(.title)
             .foregroundColor(Color(braveSystemName: .textPrimary))
 
           Text(Strings.DataImporter.importStateFailureMessage)
-            .font(.footnote)
+            .font(.subheadline)
             .foregroundStyle(Color(braveSystemName: .textSecondary))
         }
         .multilineTextAlignment(.center)
