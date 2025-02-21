@@ -1,9 +1,9 @@
 Name: cssparser-macros
 URL: https://crates.io/crates/cssparser-macros
-Version: 0.6.0
-Revision: 65d6c3e0a5dc222f745dbc7bc16c92a49e3d2aff
+Version: 0.6.1
+Revision: 0ebd17bcd13808f087b083f34d2f816e380b5155
 License: Mozilla-Public-License-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.0/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/cssparser-macros-0.6.1/LICENSE
 Shipped: yes
 Security Critical: yes
 
