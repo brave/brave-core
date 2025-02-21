@@ -396,4 +396,12 @@ public class QuickSearchEnginesUtil {
                 .getDefaultSearchEngineTemplateUrl()
                 .getKeyword();
     }
+
+    public static void removeSearchEngine(Profile profile, String keyword) {
+        Map<String, QuickSearchEnginesModel> searchEnginesMap = getQuickSearchEngines(profile);
+        searchEnginesMap.remove(keyword);
+        Map<String, QuickSearchEnginesModel> orderedMap = new LinkedHashMap<>();
+        orderedMap.putAll(searchEnginesMap);
+        saveSearchEnginesIntoPref(orderedMap);
+    }
 }
