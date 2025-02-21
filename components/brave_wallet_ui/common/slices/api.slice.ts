@@ -221,6 +221,7 @@ export const {
   useGetIsMetaMaskInstalledQuery,
   useGetIsPrivateWindowQuery,
   useGetIsShieldingAvailableQuery,
+  useGetIsSyncInProgressQuery,
   useGetIsTokenOwnedByUserQuery,
   useGetIsTxSimulationOptInStatusQuery,
   useGetIsWalletBackedUpQuery,

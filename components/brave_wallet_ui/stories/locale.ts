@@ -1549,5 +1549,7 @@ provideStrings({
   braveWalletShieldedAccountBirthdayBlock: 'Shielded account birthday block',
   braveWalletAccountBirthdayTooLow: 'Account birthday must be greater than $1',
   braveWalletAccountBirthdayTooHigh: 'Account birthday must be less than $1',
-  braveWalletBlocksBehind: '$1 blocks behind'
+  braveWalletBlocksBehind: '$1 blocks behind',
+  braveWalletAccountIsSyncing: 'Account is syncing',
+  braveWalletSyncing: 'Syncing'
 })
