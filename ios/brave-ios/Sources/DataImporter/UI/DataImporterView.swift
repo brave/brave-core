@@ -46,7 +46,6 @@ public struct DataImportView: View {
         .padding(16.0)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(braveSystemName: .pageBackground))
-        .toolbar(.hidden, for: .navigationBar)
         .transition(.opacity)
       } else if model.importState == .failure {
         DataImporterFailedView {
@@ -56,14 +55,12 @@ public struct DataImportView: View {
         .padding(16.0)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(braveSystemName: .pageBackground))
-        .toolbar(.hidden, for: .navigationBar)
         .transition(.opacity)
       } else if model.importState == .importing {
         DataImporterLoadingView()
           .padding(16.0)
           .frame(maxWidth: .infinity, maxHeight: .infinity)
           .background(Color(braveSystemName: .pageBackground))
-          .toolbar(.hidden, for: .navigationBar)
           .transition(.opacity)
       } else {
         GeometryReader { proxy in
@@ -129,6 +126,10 @@ public struct DataImportView: View {
       }
     }
     .animation(.default, value: model.importState)
+    .toolbar(
+      [.success, .failure, .importing].contains(model.importState) ? .hidden : .visible,
+      for: .navigationBar
+    )
     .onDisappear {
       model.removeZipFile()
       onDismiss()
