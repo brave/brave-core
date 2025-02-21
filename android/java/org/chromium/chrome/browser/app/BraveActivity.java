@@ -2602,13 +2602,21 @@ public abstract class BraveActivity extends ChromeActivity
     private void quickSearchEnginesReady(RecyclerView recyclerView, int keypadHeight) {
         List<QuickSearchEnginesModel> searchEngines =
                 QuickSearchEnginesUtil.getQuickSearchEnginesForView(getCurrentProfile());
-        QuickSearchEnginesModel leoQuickSearchEnginesModel =
-                new QuickSearchEnginesModel("", "", "", true);
-        searchEngines.add(0, leoQuickSearchEnginesModel);
 
         QuickSearchEnginesModel defaultQuickSearchEnginesModel =
                 QuickSearchEnginesUtil.getDefaultSearchEngine(getCurrentProfile());
-        searchEngines.add(1, defaultQuickSearchEnginesModel);
+        searchEngines.add(0, defaultQuickSearchEnginesModel);
+
+        if (!getCurrentProfile().isOffTheRecord()) {
+            QuickSearchEnginesModel leoQuickSearchEnginesModel =
+                    new QuickSearchEnginesModel(
+                            "",
+                            "",
+                            "",
+                            true,
+                            QuickSearchEnginesModel.QuickSearchEnginesModelType.AI_ASSISTANT);
+            searchEngines.add(0, leoQuickSearchEnginesModel);
+        }
 
         QuickSearchEnginesViewAdapter adapter =
                 new QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
@@ -2644,7 +2652,9 @@ public abstract class BraveActivity extends ChromeActivity
             return;
         }
         String query = getBraveToolbarLayout().getLocationBarQuery();
-        if (position == 0) {
+        if (position == 0
+                && quickSearchEnginesModel.getType()
+                        == QuickSearchEnginesModel.QuickSearchEnginesModelType.AI_ASSISTANT) {
             BraveLeoUtils.openLeoQuery(getActivityTab().getWebContents(), "", query, true);
         } else {
             String quickSearchEngineUrl =
