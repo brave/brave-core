@@ -1293,6 +1293,7 @@ if (is_android) {
       "//chrome/browser/android/browserservices/intents:java",
       "//chrome/browser/android/lifecycle:java",
       "//chrome/browser/back_press/android:java",
+      "//chrome/browser/bookmarks/android:java",
       "//chrome/browser/browser_controls/android:java",
       "//chrome/browser/contextmenu:java",
       "//chrome/browser/data_sharing:data_sharing_public_java",
