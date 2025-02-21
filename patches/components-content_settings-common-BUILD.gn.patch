@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/common/BUILD.gn b/components/content_settings/common/BUILD.gn
+index 04c77e73d6817ad6f1d77cc3f89630d273535574..0c8e0fc602c4d1837b27ae16d7d856c76a69f1c8 100644
+--- a/components/content_settings/common/BUILD.gn
++++ b/components/content_settings/common/BUILD.gn
+@@ -13,6 +13,7 @@ mojom("mojom") {
+   ]
+ 
+   deps = [
++    "//brave/components/brave_shields/core/common:mojom",
+     "//components/content_settings/core/common:mojo_bindings",
+     "//services/network/public/mojom:cookies_mojom",
+     "//third_party/blink/public/mojom/tokens",

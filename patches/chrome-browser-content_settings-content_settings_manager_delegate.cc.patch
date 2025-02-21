@@ -1,0 +1,72 @@
+diff --git a/chrome/browser/content_settings/content_settings_manager_delegate.cc b/chrome/browser/content_settings/content_settings_manager_delegate.cc
+index 11e1a59d2643d36b90029006cb07f7b5cc127f01..dea5d5fa63182343ede4b7914e56b5d33aac530c 100644
+--- a/chrome/browser/content_settings/content_settings_manager_delegate.cc
++++ b/chrome/browser/content_settings/content_settings_manager_delegate.cc
+@@ -6,10 +6,14 @@
+ 
+ #include "base/feature_list.h"
+ #include "base/task/sequenced_task_runner.h"
++#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
++#include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
+ #include "chrome/browser/content_settings/cookie_settings_factory.h"
++#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+ #include "chrome/browser/profiles/profile.h"
+ #include "components/content_settings/browser/page_specific_content_settings.h"
+ #include "components/content_settings/core/browser/cookie_settings.h"
++#include "components/user_prefs/user_prefs.h"
+ #include "content/public/browser/browser_task_traits.h"
+ #include "content/public/browser/browser_thread.h"
+ #include "content/public/common/content_features.h"
+@@ -65,6 +69,32 @@ void PostTaskOnSequence(scoped_refptr<base::SequencedTaskRunner> task_runner,
+ }
+ #endif
+ 
++
++brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
++    const content::GlobalRenderFrameHostToken& frame_token,
++    const url::Origin& origin,
++    const url::Origin& top_frame_origin) {
++  content::BrowserContext* browser_context =
++      content::RenderFrameHost::FromFrameToken(frame_token)
++          ->GetBrowserContext();
++  const brave_shields::mojom::FarblingLevel farbling_level =
++      brave_shields::GetFarblingLevel(
++          HostContentSettingsMapFactory::GetForProfile(browser_context),
++          top_frame_origin.GetURL());
++  const base::Token farbling_token =
++      farbling_level != brave_shields::mojom::FarblingLevel::OFF
++          ? brave_shields::GetFarblingToken(
++                HostContentSettingsMapFactory::GetForProfile(browser_context),
++                top_frame_origin.GetURL())
++          : base::Token();
++
++  PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);
++
++  return brave_shields::mojom::ShieldsSettings::New(
++      farbling_level, farbling_token, std::vector<std::string>(),
++      brave_shields::IsReduceLanguageEnabledForProfile(pref_service));
++}
++
+ }  // namespace
+ 
+ ContentSettingsManagerDelegate::ContentSettingsManagerDelegate() = default;
+@@ -103,6 +133,19 @@ bool ContentSettingsManagerDelegate::AllowStorageAccess(
+   return false;
+ }
+ 
++void ContentSettingsManagerDelegate::GetBraveShieldsSettings(
++    const content::GlobalRenderFrameHostToken& frame_token,
++    const url::Origin& origin,
++    const url::Origin& top_frame_origin,
++    content_settings::mojom::ContentSettingsManager::
++        GetBraveShieldsSettingsCallback callback) {
++  content::GetUIThreadTaskRunner({})->PostTaskAndReplyWithResult(
++      FROM_HERE,
++      base::BindOnce(&GetBraveShieldsSettingsOnUI, frame_token, origin,
++                     top_frame_origin),
++      std::move(callback));
++}
++
+ std::unique_ptr<content_settings::ContentSettingsManagerImpl::Delegate>
+ ContentSettingsManagerDelegate::Clone() {
+   return std::make_unique<ContentSettingsManagerDelegate>();

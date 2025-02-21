@@ -1,0 +1,28 @@
+diff --git a/components/content_settings/browser/content_settings_manager_impl.h b/components/content_settings/browser/content_settings_manager_impl.h
+index 3efe652453c1f85e8bde73589ec091c990cce941..cc6d3b39f54114604275bcd94b68488fda557a14 100644
+--- a/components/content_settings/browser/content_settings_manager_impl.h
++++ b/components/content_settings/browser/content_settings_manager_impl.h
+@@ -6,6 +6,7 @@
+ #define COMPONENTS_CONTENT_SETTINGS_BROWSER_CONTENT_SETTINGS_MANAGER_IMPL_H_
+ 
+ #include "base/memory/ref_counted.h"
++#include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+ #include "components/content_settings/common/content_settings_manager.mojom.h"
+ #include "components/content_settings/core/common/content_settings_types.h"
+ #include "content/public/browser/global_routing_id.h"
+@@ -46,6 +47,15 @@ class ContentSettingsManagerImpl
+         bool allowed,
+         base::OnceCallback<void(bool)>* callback) = 0;
+ 
++    // Allows delegate to override GetBraveShieldsSettings(). If the delegate
++    // returns a non-null value here, the default logic will be bypassed. Can be
++    // called on any thread.
++    virtual void GetBraveShieldsSettings(
++        const content::GlobalRenderFrameHostToken& frame_token,
++        const url::Origin& origin,
++        const url::Origin& top_frame_origin,
++        GetBraveShieldsSettingsCallback callback) = 0;
++
+     // Returns a new instance of this delegate.
+     virtual std::unique_ptr<Delegate> Clone() = 0;
+   };
