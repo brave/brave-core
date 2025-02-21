@@ -245,9 +245,9 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
                             src={
                               isStorybook
                                 ? logoUrl ?? ''
-                                : `chrome://image?${encodeURIComponent(
+                                : `chrome://image?url=${encodeURIComponent(
                                     logoUrl ?? ''
-                                  )}`
+                                  )}&staticEncode=true`
                             }
                           />
                           {paymentMethod.name}

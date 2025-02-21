@@ -18,7 +18,6 @@ import {
   isValidIconExtension,
   isDataURL,
   isComponentInStorybook,
-  stripChromeImageURL
 } from '../../../utils/string-utils'
 import { isNativeAsset } from '../../../utils/asset-utils'
 
@@ -118,7 +117,7 @@ export function withPlaceholderIcon<
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return isStorybook ? tokenImageURL || '' : `chrome://image?${encodeURIComponent(tokenImageURL)}`
+        return isStorybook ? tokenImageURL || '' : `chrome://image?url=${encodeURIComponent(tokenImageURL)}&staticEncode=true`
       }
       return ''
     }, [isRemoteURL, tokenImageURL])
@@ -157,7 +156,7 @@ export function withPlaceholderIcon<
           {...(wrappedComponentProps as PROPS_FOR_FUNCTION & {
             icon?: undefined
           })}
-          icon={isStorybook ? stripChromeImageURL(tokenImageURL) : icon}
+          icon={isStorybook ? tokenImageURL : icon}
         />
       </IconWrapper>
     )

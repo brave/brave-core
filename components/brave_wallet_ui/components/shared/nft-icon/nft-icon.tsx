@@ -11,7 +11,8 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import {
   isComponentInStorybook,
   isIpfs,
-  stripERC20TokenImageURL
+  stripERC20TokenImageURL,
+  stripChromeImageURL
 } from '../../../utils/string-utils'
 
 // hooks
@@ -54,7 +55,9 @@ export const NftIcon = (props: NftIconProps) => {
   const nftIframeUrl = React.useMemo(() => {
     const urlParams = new URLSearchParams({
       displayMode: 'icon',
-      icon: encodeURIComponent(remoteImage || '')
+      // appears to still be broken. Seems this is being used in brave://wallet/crypto/accounts/<account-id>/nfts to display nft images
+      // seems to be not working because we're trying to load from chrome-untrusted://nft-display frame which might not be allowed even with the CSP set correctly
+      icon: `chrome://image?url=${encodeURIComponent(remoteImage)}&staticEncode=true&test=8`
     })
     return `chrome-untrusted://nft-display?${urlParams.toString()}`
   }, [remoteImage])
@@ -97,7 +100,7 @@ export const NftIcon = (props: NftIconProps) => {
 
 export const StorybookNftIcon = (props: NftIconProps) => {
   const { icon, responsive, iconStyles } = props
-  const tokenImageURL = icon ? stripERC20TokenImageURL(icon) : ''
+  const tokenImageURL = icon ? stripChromeImageURL(icon) : ''
 
   return responsive ? (
     <NftImageResponsiveIframe
