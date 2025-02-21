@@ -1228,7 +1228,7 @@ extension BrowserViewController {
   }
 
   private func tab(for webView: WKWebView) -> Tab? {
-    tabManager[webView] ?? (webView as? TabWebView)?.tab
+    tabManager[webView]
   }
 
   private func handleExternalURL(
@@ -1773,7 +1773,7 @@ extension BrowserViewController: WKUIDelegate {
         copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
         actions.append(copyCleanLinkAction)
 
-        if let braveWebView = webView as? BraveWebView {
+        if let braveWebView = webView as? TabWebView {
           let shareAction = UIAction(
             title: Strings.shareLinkActionTitle,
             image: UIImage(systemName: "square.and.arrow.up")

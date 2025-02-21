@@ -48,7 +48,8 @@ class UserAgentTests: XCTestCase {
 
     let expectation = self.expectation(description: "Found Firefox user agent")
 
-    let webView = BraveWebView(frame: .zero, isPrivate: false)
+    let webView = WKWebView(frame: .zero)
+    webView.customUserAgent = UserAgent.userAgentForIdiom()
 
     webView.evaluateSafeJavaScript(
       functionName: "navigator.userAgent",
@@ -70,7 +71,7 @@ class UserAgentTests: XCTestCase {
   func testFirstUAPart() {
     let expectation = self.expectation(description: "First part of UA comparison")
 
-    let webView = BraveWebView(frame: .zero, isPrivate: false)
+    let webView = WKWebView(frame: .zero)
     let wkWebView = WKWebView()
 
     webView.evaluateSafeJavaScript(

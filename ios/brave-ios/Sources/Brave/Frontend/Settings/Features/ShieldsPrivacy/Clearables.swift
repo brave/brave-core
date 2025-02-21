@@ -57,7 +57,7 @@ class CookiesAndCacheClearable: Clearable {
       modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
     )
     UserDefaults.standard.synchronize()
-    await BraveWebView.sharedNonPersistentStore().removeData(
+    await TabWebView.sharedNonPersistentStore().removeData(
       ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
       modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
     )
@@ -96,7 +96,7 @@ class CacheClearable: Clearable {
     WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
     await FaviconFetcher.clearCache()
 
-    await BraveWebView.sharedNonPersistentStore().removeData(
+    await TabWebView.sharedNonPersistentStore().removeData(
       ofTypes: localStorageClearables,
       modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
     )
