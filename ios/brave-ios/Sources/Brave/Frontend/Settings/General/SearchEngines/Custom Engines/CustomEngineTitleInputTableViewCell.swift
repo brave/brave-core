@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
+import Strings
 import UIKit
 
 class CustomEngineTitleInputTableViewCell: UITableViewCell, TableViewReusable {
@@ -42,6 +43,7 @@ class CustomEngineTitleInputTableViewCell: UITableViewCell, TableViewReusable {
     textfield = UITextField(
       frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
     )
+    textfield.placeholder = Strings.CustomSearchEngine.engineTitlePlaceholder
 
     contentView.addSubview(textfield)
 

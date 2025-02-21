@@ -8,7 +8,6 @@ import BraveCore
 import BraveUI
 import Foundation
 import Preferences
-import Storage
 import Shared
 import Web
 import os.log
@@ -129,7 +128,7 @@ class SearchSuggestionDataSource {
 
     return true
   }
-  
+
   var isSiteDataShowMoreAvailable: Bool {
     guard siteDataFetchLimit != 0 else { return false }
     return siteDataFetchLimit < _siteData.count

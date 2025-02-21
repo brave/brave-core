@@ -6,6 +6,13 @@
 import Shared
 import UIKit
 import Web
+import os.log
+
+// MARK: - SearchQuickEnginesViewControllerDelegate
+
+protocol SearchQuickEnginesViewControllerDelegate: AnyObject {
+  func searchQuickEnginesUpdates()
+}
 
 // MARK: - SearchQuickEnginesViewController
 
@@ -31,6 +38,21 @@ class SearchQuickEnginesViewController: UITableViewController {
   private var searchEngines: SearchEngines
   private let profile: Profile
   private let isPrivateBrowsing: Bool
+  weak var delegate: SearchQuickEnginesViewControllerDelegate?
+
+  lazy var addButton = UIBarButtonItem(
+    image: UIImage(systemName: "plus"),
+    style: .plain,
+    target: self,
+    action: #selector(onAddButton)
+  )
+
+  lazy var editButton = UIBarButtonItem(
+    image: UIImage(systemName: "slider.horizontal.3"),
+    style: .plain,
+    target: self,
+    action: #selector(onEditButton)
+  )
 
   // MARK: Lifecycle
 
@@ -51,15 +73,18 @@ class SearchQuickEnginesViewController: UITableViewController {
     navigationItem.title = Strings.quickSearchEngines
 
     tableView.do {
-      $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.register(
         UITableViewCell.self,
         forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier
       )
-      $0.sectionHeaderTopPadding = 5
     }
 
-    navigationItem.rightBarButtonItem = editButtonItem
+    navigationItem.trailingItemGroups = [
+      .init(
+        barButtonItems: [editButton, addButton],
+        representativeItem: nil
+      )
+    ]
 
     let footer = SettingsTableSectionHeaderFooterView(
       frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
@@ -77,14 +102,6 @@ class SearchQuickEnginesViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return searchEngines.orderedEngines.count - 1
-  }
-
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
-  {
-    let headerView = tableView.dequeueReusableHeaderFooter() as SettingsTableSectionHeaderFooterView
-    headerView.titleLabel.text = Strings.quickSearchEngines
-
-    return headerView
   }
 
   override func tableView(
@@ -105,17 +122,20 @@ class SearchQuickEnginesViewController: UITableViewController {
       }
     }
 
-    let searchEngineCell = tableView.dequeueReusableCell(
-      withIdentifier: Constants.quickSearchEngineRowIdentifier,
-      for: indexPath
-    ).then {
+    let searchEngineCell = UITableViewCell(
+      style: .subtitle,
+      reuseIdentifier: Constants.quickSearchEngineRowIdentifier
+    )
+    searchEngineCell.do {
       $0.showsReorderControl = true
       $0.accessoryView = toggle
       $0.selectionStyle = .none
-      $0.separatorInset = .zero
       $0.textLabel?.text = engine?.displayName
       $0.textLabel?.adjustsFontSizeToFitWidth = true
       $0.textLabel?.minimumScaleFactor = 0.5
+      $0.textLabel?.textColor = UIColor(braveSystemName: .textPrimary)
+      $0.detailTextLabel?.text = searchTemplateHost(for: engine?.searchTemplate ?? "")
+      $0.detailTextLabel?.textColor = UIColor(braveSystemName: .textSecondary)
       $0.imageView?.image = engine?.image.createScaled(UX.iconSize)
       $0.imageView?.layer.cornerRadius = 4
       $0.imageView?.layer.cornerCurve = .continuous
@@ -123,13 +143,6 @@ class SearchQuickEnginesViewController: UITableViewController {
     }
 
     return searchEngineCell
-  }
-
-  override func tableView(
-    _ tableView: UITableView,
-    heightForHeaderInSection section: Int
-  ) -> CGFloat {
-    return UX.headerHeight
   }
 
   override func tableView(
@@ -150,7 +163,34 @@ class SearchQuickEnginesViewController: UITableViewController {
     _ tableView: UITableView,
     editingStyleForRowAt indexPath: IndexPath
   ) -> UITableViewCell.EditingStyle {
+    let index = indexPath.item + 1
+    guard let engine = searchEngines.orderedEngines[safe: index]
+    else { return .none }
+    if engine.isCustomEngine {
+      return .delete
+    }
     return .none
+  }
+
+  override func tableView(
+    _ tableView: UITableView,
+    commit commitEditingStyle: UITableViewCell.EditingStyle,
+    forRowAt forRowAtIndexPath: IndexPath
+  ) {
+    if commitEditingStyle == .delete,
+      let engine = searchEngines.orderedEngines[safe: forRowAtIndexPath.item + 1]
+    {
+      Task {
+        do {
+          try await searchEngines.deleteCustomEngine(engine)
+          tableView.deleteRows(at: [forRowAtIndexPath], with: .right)
+          tableView.reloadData()
+          delegate?.searchQuickEnginesUpdates()
+        } catch {
+          Logger.module.error("Search Engine Error while deleting")
+        }
+      }
+    }
   }
 
   override func tableView(
@@ -158,6 +198,13 @@ class SearchQuickEnginesViewController: UITableViewController {
     shouldIndentWhileEditingRowAt indexPath: IndexPath
   ) -> Bool {
     return false
+  }
+
+  func searchTemplateHost(for template: String) -> String {
+    if let queryEndIndex = template.range(of: "?")?.lowerBound {
+      return String(template[..<queryEndIndex])
+    }
+    return template
   }
 }
 
@@ -171,7 +218,32 @@ extension SearchQuickEnginesViewController {
     if toggle.isOn {
       searchEngines.enableEngine(engine)
     } else {
-      searchEngines.disableEngine(engine, type: isPrivateBrowsing ? .privateMode : .standard)
+      searchEngines.disableEngine(
+        engine,
+        type: isPrivateBrowsing ? .privateMode : .standard
+      )
     }
+    delegate?.searchQuickEnginesUpdates()
+  }
+
+  @objc func onEditButton() {
+    setEditing(!isEditing, animated: true)
+    editButton.image = isEditing ? nil : UIImage(systemName: "slider.horizontal.3")
+    editButton.title = isEditing ? Strings.done : nil
+  }
+
+  @objc func onAddButton() {
+    let addCustomSearchEngineVC = CustomEngineViewController(
+      profile: self.profile,
+      isPrivateBrowsing: self.isPrivateBrowsing
+    )
+    addCustomSearchEngineVC.onAddSucceed = { [weak self] in
+      self?.tableView.reloadData()
+      self?.delegate?.searchQuickEnginesUpdates()
+    }
+    let navVC = UINavigationController(rootViewController: addCustomSearchEngineVC)
+    navVC.sheetPresentationController?.detents = [.large()]
+    navVC.sheetPresentationController?.prefersGrabberVisible = true
+    self.present(navVC, animated: true)
   }
 }

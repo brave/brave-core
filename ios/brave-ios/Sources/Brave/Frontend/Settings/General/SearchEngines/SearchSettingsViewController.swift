@@ -220,6 +220,25 @@ class SearchSettingsViewController: UITableViewController {
     )
   }
 
+  private func presentAddEditSearchEngine(_ engine: OpenSearchEngine? = nil) {
+    let customEngineViewController = CustomEngineViewController(
+      profile: self.profile,
+      isPrivateBrowsing: self.privateBrowsingManager.isPrivateBrowsing,
+      engineToBeEdited: engine
+    )
+    customEngineViewController.onAddSucceed = { [weak self] in
+      self?.tableView.reloadData()
+    }
+    let navVC = UINavigationController(
+      rootViewController: customEngineViewController
+    ).then {
+      $0.sheetPresentationController?.detents = [.large()]
+      $0.sheetPresentationController?.prefersGrabberVisible = true
+    }
+
+    present(navVC, animated: true)
+  }
+
   // MARK: TableViewDataSource - TableViewDelegate
 
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -396,11 +415,7 @@ extension SearchSettingsViewController {
     } else if indexPath.section == Section.customSearch.rawValue
       && indexPath.item == customSearchEngines.count
     {
-      let customEngineViewController = CustomEngineViewController(
-        profile: profile,
-        privateBrowsingManager: privateBrowsingManager
-      )
-      navigationController?.pushViewController(customEngineViewController, animated: true)
+      presentAddEditSearchEngine()
     }
 
     return nil
@@ -458,13 +473,7 @@ extension SearchSettingsViewController {
 
       completion(true)
 
-      let customEngineViewController = CustomEngineViewController(
-        profile: self.profile,
-        privateBrowsingManager: self.privateBrowsingManager,
-        engineToBeEdited: engine
-      )
-
-      navigationController?.pushViewController(customEngineViewController, animated: true)
+      presentAddEditSearchEngine(engine)
     }
 
     return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
@@ -527,15 +536,6 @@ extension SearchSettingsViewController {
         await deleteCustomEngine()
       }
     }
-  }
-
-  private func editCustomSearchEngine(_ engine: OpenSearchEngine) {
-
-    let customEngineViewController = CustomEngineViewController(
-      profile: self.profile,
-      privateBrowsingManager: self.privateBrowsingManager
-    )
-    navigationController?.pushViewController(customEngineViewController, animated: true)
   }
 
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
