@@ -38,9 +38,6 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
     private CustomTabMinimizationManagerHolder mMinimizationManagerHolder;
     private CustomTabFeatureOverridesManager mCustomTabFeatureOverridesManager;
 
-    private static final int CLOSE_BUTTON_MARGIN = 16;
-    private static final int CLOSE_BUTTON_PADDING = 8;
-
     @Override
     public boolean supportsAppMenu() {
         return false;
