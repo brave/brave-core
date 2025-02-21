@@ -40,7 +40,9 @@ public class QuickSearchEnginesViewAdapter
         int adapterPosition = quickSearchViewHolder.getAdapterPosition();
         String keyword = quickSearchEnginesModel.getKeyword();
 
-        if (adapterPosition == 0) {
+        if (adapterPosition == 0
+                && quickSearchEnginesModel.getType()
+                        == QuickSearchEnginesModel.QuickSearchEnginesModelType.AI_ASSISTANT) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_leo_icon);
         } else if (BraveActivity.YOUTUBE_SEARCH_ENGINE_KEYWORD.equals(keyword)) {
             quickSearchViewHolder.mSearchEngineLogo.setImageResource(R.drawable.ic_social_youtube);
