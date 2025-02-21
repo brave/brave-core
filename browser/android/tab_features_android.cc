@@ -9,12 +9,12 @@
 
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
-#include "chrome/browser/android/tab_android.h"
 #include "brave/components/youtube_script_injector/browser/content/youtube_tab_feature.h"
 #include "brave/components/youtube_script_injector/common/features.h"
+#include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/web_contents.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
+#include "content/public/browser/web_contents.h"
 
 TabFeaturesAndroid::TabFeaturesAndroid(content::WebContents* web_contents,
                                        Profile* profile)
