@@ -13,18 +13,11 @@ import static org.chromium.chrome.browser.customtabs.CustomTabIntentDataProvider
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.Browser;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
@@ -64,34 +57,6 @@ public class RewardsPageActivity extends CustomTabActivity {
         if (toolbarContainer != null) {
             toolbarContainer.setVisibility(View.GONE);
         }
-
-        FrameLayout.LayoutParams layoutParams =
-                new FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.WRAP_CONTENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity = Gravity.TOP | Gravity.START;
-        layoutParams.setMargins(CLOSE_BUTTON_MARGIN, CLOSE_BUTTON_MARGIN, 0, 0);
-
-        ViewGroup parentView = findViewById(android.R.id.content);
-        ImageView closeImg = new ImageView(RewardsPageActivity.this);
-        closeImg.setPadding(
-                CLOSE_BUTTON_PADDING,
-                CLOSE_BUTTON_PADDING,
-                CLOSE_BUTTON_PADDING,
-                CLOSE_BUTTON_PADDING);
-
-        Drawable drawable =
-                ResourcesCompat.getDrawable(getResources(), R.drawable.rewards_page_close_bg, null);
-        closeImg.setBackground(drawable);
-        closeImg.setImageResource(R.drawable.ic_baseline_close_24);
-        closeImg.setColorFilter(
-                ContextCompat.getColor(RewardsPageActivity.this, android.R.color.black),
-                android.graphics.PorterDuff.Mode.SRC_IN);
-        closeImg.setOnClickListener(
-                button -> {
-                    finish();
-                });
-        parentView.addView(closeImg, layoutParams);
     }
 
     public static void showPage(Context context, String url) {
