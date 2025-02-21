@@ -11,7 +11,7 @@
 "CloseTabTitle" = "Закрити вкладку";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ForwardTitle" = "Далі";
+"ForwardTitle" = "Вперед";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "NewPrivateTabTitle" = "Нова приватна вкладка";
@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Уже придбали на brave.com?";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Маєте промокод?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Активувати промокод";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Оновити облікові дані";
 
@@ -38,7 +44,7 @@
 "ReloadPageTitle" = "Перезавантажити сторінку";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"SelectLocationBarTitle" = "Виберіть панель розташування";
+"SelectLocationBarTitle" = "Віберіть панель розташування";
 
 /* An option in a list of shortcut actions that hides the button */
 "shortcutsButton.hideButtonTitle" = "Приховати кнопку швидкого доступу";

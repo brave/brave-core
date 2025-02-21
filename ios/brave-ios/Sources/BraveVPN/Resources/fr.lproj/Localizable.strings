@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Activer";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Tous les forfaits comprennent un %@ !";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Tous les forfaits incluent un";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "essai gratuit pendant 7 jours";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Installer le VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Essai GRATUIT";
+"vpn.learnMore" = "Commencer l'essai gratuit de 7 jours";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Renouvelé chaque mois";
@@ -148,8 +148,17 @@
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld serveurs";
 
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Les abonnements seront facturés via votre compte Apple. Toute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les paramètres.\n\nEn utilisant Brave, vous acceptez les conditions générales d’utilisation et la politique de confidentialité.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "mois";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "année";
+
 /* Text to show user when their vpn plan has expired */
-"vpn.planExpired" = "Expiré";
+"vpn.planExpired" = "Expirée";
 
 /* Description of vpn tunnel protocol */
 "vpn.protocolPickerDescription" = "Veuillez sélectionner votre protocole de transport préféré. Une fois le protocole sélectionné, vos identifiants VPN seront effacés et nous vous reconnecterons dès qu'une connexion VPN est établie.";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "Région VPN modifiée.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Renouvellement annuel";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Renouvelé chaque mois";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Impossible de réinitialiser la configuration du VPN. Veuillez réessayer ou contacter l'équipe d'assistance pour obtenir de l'aide si le problème persiste.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Restaurer";
 
+/* Use in context: save 16%. */
+"vpn.save" = "enregistrer";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ serveur";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld serveur";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Passez à un VPN pour protéger votre connexion et bloquer les traceurs invasifs partout où vous allez.";
+"vpn.settingHeaderBody" = "Protégez toutes vos applications avec le VPN Brave et jusqu'à 10 appareils avec un seul abonnement.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Contacter l'assistance technique";
@@ -239,7 +257,7 @@
 "vpn.settingsServerHost" = "Hôte";
 
 /* Table cell title for vpn's server location and which open opens location select */
-"vpn.settingsServerLocation" = "Région";
+"vpn.settingsServerLocation" = "Emplacement";
 
 /* Header title for vpn settings server section. */
 "vpn.settingsServerSection" = "Serveur";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Protocole de transport";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "Voir la facture App Store";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Lorsque cette option est activée, si votre connexion VPN s'interrompt de façon inattendue, votre appareil sera automatiquement déconnecté d'Internet afin d'éviter les fuites d'adresse IP et de données. [En savoir plus](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Activer l'arrêt d'urgence";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Le routage intelligent par proxy garantit que le trafic est acheminé via des serveurs proxy dédiés pour permettre l'accès à des contenus/sites ou services tiers généralement restreints. [En savoir plus](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Activer le routage intelligent";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Mettre à jour le mode de paiement";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Les abonnements seront facturés via votre compte iTunes.\n\nToute période d’essai gratuite non utilisée sera annulée en cas d’achat d’un abonnement.\n\nVotre abonnement sera automatiquement renouvelé, sauf en cas d’annulation au moins 24 heures avant la fin de la période en cours.\n\nVous pouvez gérer vos abonnements dans les paramètres.\n\nEn utilisant Brave, vous acceptez les conditions d’utilisation et la politique de confidentialité.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN désactivé";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN activé";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Utiliser le code";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Choisissez le renouvellement annuel pour économiser %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Meilleure offre";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "MEILLEURE VALEUR";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Un an";

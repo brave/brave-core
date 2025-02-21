@@ -61,7 +61,7 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,
   creative_ad_predictors.push_back(creative_ad_predictor_3);
 
   // Act & Assert
-  for (int i = 0; i < 10; ++i) {
+  for (size_t i = 0; i < 10; ++i) {
     EXPECT_EQ(creative_ad_predictor_2.creative_ad,
               MaybeSampleCreativeAd(creative_ad_predictors));
   }
@@ -88,10 +88,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,
   creative_ad_predictors.push_back(creative_ad_predictor_2);
 
   // Act & Assert
-  int creative_ad_1_count = 0;
-  int creative_ad_2_count = 0;
+  size_t creative_ad_1_count = 0;
+  size_t creative_ad_2_count = 0;
 
-  for (int i = 0; i < 25; ++i) {
+  for (size_t i = 0; i < 25; ++i) {
     // P(X>1) > 0.99999999 with X~Bin(n=25, p=0.5), i.e. less than 1 in 100M
     // tests are expected to fail.
     const std::optional<CreativeNotificationAdInfo> creative_ad =
@@ -107,8 +107,8 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,
     }
   }
 
-  EXPECT_NE(0, creative_ad_1_count);
-  EXPECT_NE(0, creative_ad_2_count);
+  EXPECT_NE(0U, creative_ad_1_count);
+  EXPECT_NE(0U, creative_ad_2_count);
 }
 
 TEST_F(BraveAdsCreativeAdModelBasedPredictorSamplingTest,

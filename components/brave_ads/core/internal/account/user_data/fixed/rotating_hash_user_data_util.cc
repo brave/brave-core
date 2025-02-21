@@ -29,10 +29,13 @@ std::optional<std::string> BuildRotatingHash(
   const std::string hours = base::NumberToString(
       base::Time::Now().ToDeltaSinceWindowsEpoch().InHours());
 
-  const std::vector<uint8_t> rotating_hash = crypto::Sha256(
-      base::StrCat({device_id, transaction.creative_instance_id, hours}));
+  const std::string rotating_hash =
+      base::StrCat({device_id, transaction.creative_instance_id, hours});
 
-  return base::Base64Encode(rotating_hash);
+  const std::vector<uint8_t> rotating_hash_sha256 =
+      crypto::Sha256(rotating_hash);
+
+  return base::Base64Encode(rotating_hash_sha256);
 }
 
 }  // namespace brave_ads

@@ -1,8 +1,8 @@
 {
   "ABIRoot": {
     "kind": "Root",
-    "name": "TopLevel",
-    "printedName": "TopLevel",
+    "name": "JitsiMeetSDK",
+    "printedName": "JitsiMeetSDK",
     "children": [
       {
         "kind": "Import",
@@ -49,6 +49,22 @@
         "sugared_genericSig": "<Self : AnyObject>",
         "declAttributes": [
           "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          }
         ]
       },
       {
@@ -314,6 +330,20 @@
               "AccessControl"
             ],
             "conformances": [
+              {
+                "kind": "Conformance",
+                "name": "Copyable",
+                "printedName": "Copyable",
+                "usr": "s:s8CopyableP",
+                "mangledName": "$ss8CopyableP"
+              },
+              {
+                "kind": "Conformance",
+                "name": "Escapable",
+                "printedName": "Escapable",
+                "usr": "s:s9EscapableP",
+                "mangledName": "$ss9EscapableP"
+              },
               {
                 "kind": "Conformance",
                 "name": "Equatable",
@@ -604,7 +634,7 @@
               {
                 "kind": "TypeNominal",
                 "name": "WeakStorage",
-                "printedName": "JitsiMeetSDK.PiPViewCoordinatorDelegate?"
+                "printedName": "(any JitsiMeetSDK.PiPViewCoordinatorDelegate)?"
               }
             ],
             "declKind": "Var",
@@ -628,12 +658,12 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Optional",
-                    "printedName": "JitsiMeetSDK.PiPViewCoordinatorDelegate?",
+                    "printedName": "(any JitsiMeetSDK.PiPViewCoordinatorDelegate)?",
                     "children": [
                       {
                         "kind": "TypeNominal",
                         "name": "PiPViewCoordinatorDelegate",
-                        "printedName": "JitsiMeetSDK.PiPViewCoordinatorDelegate",
+                        "printedName": "any JitsiMeetSDK.PiPViewCoordinatorDelegate",
                         "usr": "s:12JitsiMeetSDK26PiPViewCoordinatorDelegateP"
                       }
                     ],
@@ -660,12 +690,12 @@
                   {
                     "kind": "TypeNominal",
                     "name": "Optional",
-                    "printedName": "JitsiMeetSDK.PiPViewCoordinatorDelegate?",
+                    "printedName": "(any JitsiMeetSDK.PiPViewCoordinatorDelegate)?",
                     "children": [
                       {
                         "kind": "TypeNominal",
                         "name": "PiPViewCoordinatorDelegate",
-                        "printedName": "JitsiMeetSDK.PiPViewCoordinatorDelegate",
+                        "printedName": "any JitsiMeetSDK.PiPViewCoordinatorDelegate",
                         "usr": "s:12JitsiMeetSDK26PiPViewCoordinatorDelegateP"
                       }
                     ],
@@ -990,6 +1020,22 @@
         "declAttributes": [
           "AccessControl",
           "RawDocComment"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Copyable",
+            "printedName": "Copyable",
+            "usr": "s:s8CopyableP",
+            "mangledName": "$ss8CopyableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Escapable",
+            "printedName": "Escapable",
+            "usr": "s:s9EscapableP",
+            "mangledName": "$ss9EscapableP"
+          }
         ]
       },
       {
@@ -1047,202 +1093,6 @@
       "offset": 1992,
       "length": 5,
       "value": "false"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "BooleanLiteral",
-      "offset": 2762,
-      "length": 4,
-      "value": "true"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3503,
-      "length": 1,
-      "value": "1"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "BooleanLiteral",
-      "offset": 3535,
-      "length": 5,
-      "value": "false"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3566,
-      "length": 1,
-      "value": "0"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3663,
-      "length": 1,
-      "value": "1"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3867,
-      "length": 1,
-      "value": "0"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 3965,
-      "length": 1,
-      "value": "0"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "BooleanLiteral",
-      "offset": 4005,
-      "length": 4,
-      "value": "true"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "BooleanLiteral",
-      "offset": 4357,
-      "length": 4,
-      "value": "true"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "Array",
-      "offset": 4443,
-      "length": 2,
-      "value": "[]"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "BooleanLiteral",
-      "offset": 5163,
-      "length": 5,
-      "value": "false"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "StringLiteral",
-      "offset": 6466,
-      "length": 14,
-      "value": "\"image-resize\""
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 6700,
-      "length": 2,
-      "value": "44"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 6712,
-      "length": 2,
-      "value": "44"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 6855,
-      "length": 1,
-      "value": "2"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "FloatLiteral",
-      "offset": 7699,
-      "length": 4,
-      "value": "0.25"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 8083,
-      "length": 3,
-      "value": "150"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 8096,
-      "length": 3,
-      "value": "150"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "FloatLiteral",
-      "offset": 8539,
-      "length": 3,
-      "value": "0.1"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/PiPViewCoordinator.swift",
-      "kind": "IntegerLiteral",
-      "offset": 8574,
-      "length": 1,
-      "value": "0"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/DragGestureController.swift",
-      "kind": "BooleanLiteral",
-      "offset": 1202,
-      "length": 4,
-      "value": "true"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/DragGestureController.swift",
-      "kind": "BooleanLiteral",
-      "offset": 1275,
-      "length": 5,
-      "value": "false"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/DragGestureController.swift",
-      "kind": "FloatLiteral",
-      "offset": 2341,
-      "length": 3,
-      "value": "0.5"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/DragGestureController.swift",
-      "kind": "IntegerLiteral",
-      "offset": 2633,
-      "length": 1,
-      "value": "0"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/DragGestureController.swift",
-      "kind": "FloatLiteral",
-      "offset": 2687,
-      "length": 3,
-      "value": "0.9"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/DragGestureController.swift",
-      "kind": "FloatLiteral",
-      "offset": 3279,
-      "length": 4,
-      "value": "20.0"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/DragGestureController.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4319,
-      "length": 1,
-      "value": "2"
-    },
-    {
-      "filePath": "\/usr\/local\/var\/jenkins\/workspace\/jitsi-meet-ios-sdk\/jitsi-meet\/ios\/sdk\/src\/picture-in-picture\/DragGestureController.swift",
-      "kind": "IntegerLiteral",
-      "offset": 4338,
-      "length": 1,
-      "value": "2"
     }
   ]
 }

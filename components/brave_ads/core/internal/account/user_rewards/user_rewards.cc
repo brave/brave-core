@@ -82,8 +82,8 @@ void UserRewards::OnDidRedeemPaymentTokens(
       }));
 }
 
-void UserRewards::OnWillRefillConfirmationTokens() {
-  BLOG(1, "Refill confirmation tokens");
+void UserRewards::OnWillRefillConfirmationTokens(size_t count) {
+  BLOG(1, "Refill " << count << " confirmation tokens");
 }
 
 void UserRewards::OnDidRefillConfirmationTokens() {

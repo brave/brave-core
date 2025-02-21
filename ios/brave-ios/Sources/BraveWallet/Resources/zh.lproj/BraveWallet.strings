@@ -11,7 +11,7 @@
 "wallet.accountDetailsTitle" = "账户详细信息";
 
 /* The error shown below the account name field when adding or renaming a wallet account if the length is longer than max characters. '%lld' refers to a number (for example "Account name must be at 30 characters or less") */
-"wallet.accountNameLengthError" = "账户名称的长度不得超过 %lld 個字元";
+"wallet.accountNameLengthError" = "帐户名称不得超过 %lld 字符";
 
 /* A button title for displaying their accounts private key */
 "wallet.accountPrivateKey" = "隐私密钥";
@@ -50,7 +50,7 @@
 "wallet.addAccountTitle" = "添加账户";
 
 /* The title of the add account screen. '%@' will be placed with a coin type title. For example, 'Add Ethereum Account'. */
-"wallet.addAccountWithCoinTypeTitle" = "添加 %@ 帐户";
+"wallet.addAccountWithCoinTypeTitle" = "新增 %@ 帳戶";
 
 /* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
 "wallet.addCustomAsset" = "添加自定义资产";
@@ -77,19 +77,19 @@
 "wallet.addCustomTokenErrorTitle" = "无法添加自定义令牌";
 
 /* A title that will be displayed on top of the text field for users to input the custom token's icon URL. */
-"wallet.addCustomTokenIconURL" = "输入代币图标网址";
+"wallet.addCustomTokenIconURL" = "图标 URL";
 
 /* A title that will be displayed on top of the text field for users to input the custom token's ID. */
-"wallet.addCustomTokenId" = "代币 ID (仅限用于 ERC721)";
+"wallet.addCustomTokenId" = "令牌 ID（仅对于 ERC721）";
 
 /* A title of one segment on top of Add Custom Assets screen, which is default selected. Users would need to select this segment if they are willing to add a custom fungible token. */
 "wallet.addCustomTokenTitle" = "代币";
 
 /* The description of the view shown over a dapps website that describes what adding a new network will do. */
-"wallet.addNetworkDescription" = "这将允许在 Brave Wallet 中使用该网络。";
+"wallet.addNetworkDescription" = "這會允許 Brave 錢包使用這個網路。";
 
 /* The subtitle of the view shown over a dapps website that requests permission from the user to add a new network. */
-"wallet.addNetworkSubtitle" = "允许此站点添加网络？";
+"wallet.addNetworkSubtitle" = "允許這個網站新增網路？";
 
 /* The title of the view shown over a dapps website that requests the user add a new network. */
 "wallet.addNetworkTitle" = "新增网络";
@@ -98,22 +98,22 @@
 "wallet.addressLabel" = "地址";
 
 /* The subtitle of the view shown over a dapps website that requests the user add / approve a new token, explaining to the user what this request does. */
-"wallet.addSuggestedTokenSubtitle" = "您想导入此令牌？";
+"wallet.addSuggestedTokenSubtitle" = "想匯入這個代幣嗎？";
 
 /* The title of the view shown over a dapps website that requests the user add / approve a new token. */
-"wallet.addSuggestedTokenTitle" = "添加建议的令牌";
+"wallet.addSuggestedTokenTitle" = "新增建議的代幣";
 
 /* The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen. */
 "wallet.advancedSettingsTransaction" = "进阶设置";
 
 /* The label of badge beside the filter option that allows users to select which accounts to filter assets by, when all accounts are selected. Used in Portfolio/NFT filters and display settings. */
-"wallet.allAccountsLabel" = "所有帳戶";
+"wallet.allAccountsLabel" = "所有账户";
 
 /* The label of badge beside the filter option that allows users to select which networks to filter assets by, when all networks are selected. Used in Portfolio/NFT filters and display settings. */
-"wallet.allNetworksLabel" = "所有網路";
+"wallet.allNetworksLabel" = "所有网络";
 
 /* A title displayed above two numbers (the amount and transaction fee) showing the user the breakdown of the amount transferred and transaction fee for any Solana transaction. The "+" is a literal plus as the label below will show such as "0.004 SOL + 0.00064 SOL" */
-"wallet.amountAndFee" = "金额 + 费用";
+"wallet.amountAndFee" = "金額 + 手續費";
 
 /* A title displayed above two numbers (the amount and gas) showing the user the breakdown of the amount transferred and gas fee. The "+" is a literal plus as the label below will show such as "0.004 ETH + 0.00064 ETH" */
 "wallet.amountAndGas" = "金额 + Gas";
@@ -194,7 +194,7 @@
 "wallet.backupWalletDisclaimer" = "我了解如果我丢失了恢复密语，将无法访问我的加密货币钱包。";
 
 /* The placeholder for the password entry field when a user tries to backup their wallet. */
-"wallet.backupWalletPasswordPlaceholder" = "输入密码以备份钱包";
+"wallet.backupWalletPasswordPlaceholder" = "輸入密碼以備份錢包";
 
 /* The subtitle of the backup wallet screen */
 "wallet.backupWalletSubtitle" = "下一步中，您将看到包含 12 个词的恢复密语，可用于恢复您的主要加密货币账户。请将它保存在安全位置。忘记密码、设备遗失或被盗，或是要更换钱包时，只能使用复原密语重新取得账户访问权限。";
@@ -230,7 +230,7 @@
 "wallet.biometricsSetupTouchId" = "Touch ID";
 
 /* The label displayed in Add Account above the private key box when adding or importing a Bitcoin account. The '%@' is the standard supported for the selected network (for example "Only zprv extended keys are supported.") */
-"wallet.bitcoinImportExtendedKeyWarning" = "仅支援 %@ 延伸金钥。";
+"wallet.bitcoinImportExtendedKeyWarning" = "仅支持 %@ 扩展密钥。";
 
 /* The title for Brave Fee label in Swap. The fee percentage is displayed beside the label. */
 "wallet.braveFeeLabel" = "Brave 费用： %@";
@@ -272,10 +272,28 @@
 "wallet.buy" = "购买";
 
 /* The description of a buy button on the buy/send/swap/deposit modal */
-"wallet.buyDescription" = "通过 Wyre 使用 Apple Pay、信用卡或借记卡购买加密货币。";
+"wallet.buyDescription" = "透過 Wyre 使用 Apple Pay、信用卡或金融卡購買加密資產。";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "额度尚未获得批准，账号为";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "取消请求已提交";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "正在取消交易";
 
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "取消交易";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "取消交易";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "将创建一个新交易来取消您的现有交易";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "已退回到";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "日期";
@@ -284,19 +302,19 @@
 "wallet.chartAxisPriceLabel" = "价格";
 
 /* The description of one of the 'Coinbase Pay' provider. */
-"wallet.coinbaseNetworkProviderDescription" = "使用加密货币领域最值得信赖的品牌进行购买。";
+"wallet.coinbaseNetworkProviderDescription" = "使用加密货币领域最值得信赖的品牌购买。";
 
 /* A disclaimer that appears at the bottom of an asset detail screen which shows prices and price history. CoinGecko is a third-party product. */
 "wallet.coinGeckoDisclaimer" = "价格数据由 CoinGecko 提供";
 
 /* The title of the 24h volume of this coin from market. */
-"wallet.coinMarket24HVolume" = "24 小時成交量";
+"wallet.coinMarket24HVolume" = "24 小时容量";
 
 /* The message will be displayed when there is no coin market loaded or having an error. */
 "wallet.coinMarketEmptyMsg" = "尚无市场信息";
 
 /* The header title of the section that display coin market information. */
-"wallet.coinMarketInformation" = "資訊";
+"wallet.coinMarketInformation" = "信息";
 
 /* The title of the market cap of this coin from market. */
 "wallet.coinMarketMarketCap" = "市值";
@@ -311,76 +329,82 @@
 "wallet.coinTypeBitcoinDescription" = "存储 BTC 资产";
 
 /* One of the coin types for users to create an account in Ethereum mainnet or any EVM networks. */
-"wallet.coinTypeEthereum" = "以太坊";
+"wallet.coinTypeEthereum" = "以太坊 ";
 
 /* A description for Ethereum coin type. */
-"wallet.coinTypeEthereumDescription" = "支援 Ethereum 區塊鏈上相容 EVM 的資產 (ERC-20、ERC-721、ERC-1551、ERC-1155)";
+"wallet.coinTypeEthereumDescription" = "支持 Ethereum 区块链上兼容 EVM 的资产（ERC-20、ERC-721、ERC-1551、ERC-1155）";
 
 /* One of the coin types for users to create an account to store FIL assets */
 "wallet.coinTypeFilecoin" = "文件币";
 
 /* A description for Filecoin coin type. */
-"wallet.coinTypeFilecoinDescription" = "存放 FIL 資產";
+"wallet.coinTypeFilecoinDescription" = "存储 FIL 资产";
 
 /* A header displayed above coin types selection. */
-"wallet.coinTypeSelectionHeader" = "選取下列任一帳戶類型";
+"wallet.coinTypeSelectionHeader" = "选择以下其中一种账户类型";
 
 /* One of the coin types for users to create an account with in Solana network */
 "wallet.coinTypeSolana" = "Solana";
 
 /* A description for Solana coin type. */
-"wallet.coinTypeSolanaDescription" = "支援 Solana 區塊鏈上的 SLP 相容資產";
+"wallet.coinTypeSolanaDescription" = "支持 Solana 区块链上兼容 SPL 的资产";
 
 /* A placeholder for unknown coin type. */
 "wallet.coinTypeUnknown" = "未知";
 
 /* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
-"wallet.confirm" = "确认";
+"wallet.confirm" = "确定";
 
 /* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: "By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you." */
-"wallet.confirmationViewAllowSpendSubtitle" = "通过授予此权限，您允许此应用程序撤回您的 %@ 并自动为您执行交易。";
+"wallet.confirmationViewAllowSpendSubtitle" = "授予此權限，表示您同意此應用程式提領您的 %@，並為您將交易自動化。";
 
 /* The title shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: "Allow this app to spend your DAI?" */
-"wallet.confirmationViewAllowSpendTitle" = "允许此应用花费您的 %@？ ";
+"wallet.confirmationViewAllowSpendTitle" = "要允許此應用程式支付您的 %@？ ";
 
 /* The label shown beside the current allowance for a ERC20 approve transaction where the current allowance is a number followed by the symbol name. For example, "Current Allowance  100 DAI". */
 "wallet.confirmationViewCurrentAllowance" = "目前額度";
 
 /* The title shown on the button to edit permissions / the allowance for an ERC 20 Approve transaction while confirming a transaction. */
-"wallet.confirmationViewEditPermissions" = "编辑授权";
+"wallet.confirmationViewEditPermissions" = "編輯權限";
 
 /* One of the picker options while confirming a transaction. When selected it displays a transactions function details such as underlying data */
-"wallet.confirmationViewModeDetails" = "详细信息";
+"wallet.confirmationViewModeDetails" = "详情";
 
 /* One of the picker options while confirming a transaction. When selected it displays a summary of the transaction such as value, gas fee, and totals */
 "wallet.confirmationViewModeTransaction" = "交易";
 
 /* The warning shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
-"wallet.confirmationViewSolAccountOwnershipChangeWarning" = "这项交易将把帐户所有权重新分配给一个新程序。此操作不可逆，并可能导致资金损失。";
+"wallet.confirmationViewSolAccountOwnershipChangeWarning" = "此交易将把账户所有权重新分配给一个新的程序。此操作不可逆转，并可能导致资金损失。";
 
 /* The warning title shown on transaction confirmation for an Solana Dapp request that will reassign ownership of the account to a new program. */
-"wallet.confirmationViewSolAccountOwnershipChangeWarningTitle" = "请求更改帐户所有权";
+"wallet.confirmationViewSolAccountOwnershipChangeWarningTitle" = "请求更改账户所有权";
 
 /* The warning shown on transaction confirmation for an Solana SPL token transaction that has not yet created an associated token account. */
-"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "尚未與任何代幣帳戶建立關聯。您需使用小額 SOL 建立帳戶及存入資金。";
+"wallet.confirmationViewSolSplTokenAccountCreationWarning" = "尚未与代币账户建立任何关联。您需使用小额 SOL 建立账户并存入资金。";
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
-"wallet.confirmationViewUnlimitedWarning" = "请求无限额批准";
+"wallet.confirmationViewUnlimitedWarning" = "要求核准無上限額度";
+
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "帳戶";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "交易已取消！";
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "关闭";
 
 /* A description explains confirmed transaction has been included in a block. */
-"wallet.confirmedTransactionDescription" = "交易已成功纳入区块。 为防止双重开支风险，建议等待区块确认。";
+"wallet.confirmedTransactionDescription" = "交易已成功納入區塊。 為防止雙重開支風險，建議等待區塊確認。";
 
 /* A title of a button which can open a confirmed transaction details screen. */
-"wallet.confirmedTransactionReceiptButtonTitle" = "收據";
+"wallet.confirmedTransactionReceiptButtonTitle" = "收据";
 
 /* A title of transaction confirmed status view indicating this transaction has been included in a block. */
 "wallet.confirmedTransactionTitle" = "交易完成";
 
 /* The title displayed in the navigation of the confirmation view where a user tries to remove a secondary account. */
-"wallet.confirmPasswordTitle" = "确认密码";
+"wallet.confirmPasswordTitle" = "確認密碼";
 
 /* The title of the transaction confirmation panel UI when there are multiple transactions to confirm */
 "wallet.confirmTransactionsTitle" = "确认交易";
@@ -392,7 +416,7 @@
 "wallet.continueButtonTitle" = "继续";
 
 /* The accessibility label for the contract address of a token / asset. */
-"wallet.contractAddressAccessibilityLabel" = "合约地址";
+"wallet.contractAddressAccessibilityLabel" = "合約網址";
 
 /* A button title that user has clicked to copy some data to the users clipboard */
 "wallet.copiedToPasteboard" = "已复制";
@@ -497,25 +521,25 @@
 "wallet.dappsConnectionNotificationOriginTitle" = "%@ 想与 Brave Wallet 互动";
 
 /* The title of the notification which will prompt at the top of the browser when users are visiting web3 site that is not yet connected with Brave Wallet. */
-"wallet.dappsConnectionNotificationTitle" = "此页面想要与 Brave Wallet 互动";
+"wallet.dappsConnectionNotificationTitle" = "此頁面想使用 Brave 錢包";
 
 /* A message that will be displayed under the section header when there is no dapps have been granted wallet connection. */
-"wallet.dappsSettingsConnectedSitesSectionEmpty" = "您关联到 Brave Wallet 的 DApp 将显示在此处";
+"wallet.dappsSettingsConnectedSitesSectionEmpty" = "您連結到 Brave 錢包的 DApp 會顯示在這裡";
 
 /* The title of the section that will list all the permitted dapp connections */
-"wallet.dappsSettingsConnectedSitesSectionTitle" = "关联的 DApps";
+"wallet.dappsSettingsConnectedSitesSectionTitle" = "連結的 DApp";
 
 /* The title of the section that will display settings for default wallet and dapp provider api access permission */
-"wallet.dappsSettingsGeneralSectionTitle" = "通用";
+"wallet.dappsSettingsGeneralSectionTitle" = "一般";
 
 /* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
-"wallet.dappsSettingsNavTitle" = "%@ 设置";
+"wallet.dappsSettingsNavTitle" = "%@ 設定";
 
 /* The warning message in a confirmation dialog when attempting to remove all wallet connection to a dapp. */
-"wallet.dappsSettingsRemoveAllWarning" = "这将删除 %1$d个 %2$@ 的所有电子钱包关联权限";
+"wallet.dappsSettingsRemoveAllWarning" = "這會移除 %1$d個 %2$@ 的所有錢包連結權限";
 
 /* The plural word that will be used in `manageSiteConnectionsAccount`. */
-"wallet.dappsSettingsWebsitePlural" = "网站";
+"wallet.dappsSettingsWebsitePlural" = "網站";
 
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
 "wallet.dappsSettingsWebsiteSingular" = "网站";
@@ -572,22 +596,22 @@
 "wallet.decryptRequestReveal" = "显示";
 
 /* A subtitle of the view shown over a dapps website that requests the user decrypt a message. */
-"wallet.decryptRequestSubtitle" = "此 DApp 想讀取此訊息，以完成您的要求";
+"wallet.decryptRequestSubtitle" = "此 DApp 想读取此消息以完成您的请求";
 
 /* A title of the view shown over a dapps website that requests the user decrypt a message. */
 "wallet.decryptRequestTitle" = "解密请求";
 
 /* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example "Ethereum Account 2") */
-"wallet.defaultAccountName" = "%1$@ 账户 %2$lld";
+"wallet.defaultAccountName" = "%1$@ 帐户 %2$lld";
 
 /* The default account name when adding an account and not entering a custom name. '%@' refers to a coin type and '%lld' refers to a number (for example "Filecoin Testnet Account 2") */
-"wallet.defaultTestnetAccountName" = "%1$@ 测试网账户 %2$lld";
+"wallet.defaultTestnetAccountName" = "%1$@ Testnet 帐户 %2$lld";
 
 /* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
 "wallet.delete" = "删除";
 
 /* As in depsit some crypto coins to a specific wallet address. */
-"wallet.deposit" = "存款";
+"wallet.deposit" = "存入";
 
 /* The button title for user to click to copy the account address for deposit. */
 "wallet.depositAddressCopy" = "复制";
@@ -602,16 +626,16 @@
 "wallet.deselectAllButtonTitle" = "取消选择所有";
 
 /* A button title which when pressed displays a new screen with additional details/information */
-"wallet.detailsButtonTitle" = "详细信息";
+"wallet.detailsButtonTitle" = "详情";
 
 /* An error message that will get displayed when user is trying to add an existed custom token. */
-"wallet.duplicationTokenError" = "此代幣被加入您的資產。";
+"wallet.duplicationTokenError" = "此代币已添加到您的投资组合中。";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
 "wallet.editButtonTitle" = "编辑";
 
 /* A pop up message that will prompt to user before user confirms to edit the existing network. */
-"wallet.editExistingNetworkAlertMsg" = "要更新現有網路嗎？";
+"wallet.editExistingNetworkAlertMsg" = "要更新现有网络吗？";
 
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "编辑网络";
@@ -629,25 +653,25 @@
 "wallet.editNoncePlaceholder" = "输入自定义 nonce 值";
 
 /* The header text shown above the rows to selected the allowance for an ERC 20 Approve transaction. The '%@' becomes the name of the account approving the transaction. For example: "Spend limit permission allows Account 1 to withdraw and spend up to the following amount:" */
-"wallet.editPermissionsAllowanceHeader" = "支出限制权限允许 %@ 最多提取和花费以下金额：";
+"wallet.editPermissionsAllowanceHeader" = "支出限制授權允許 %@ 提領和支出最多以下金額：";
 
 /* The value to show when the permissions / allowance of an ERC 20 Approve transaction are the maximum allowance or unlimited spending ammount. */
-"wallet.editPermissionsApproveUnlimited" = "无限制";
+"wallet.editPermissionsApproveUnlimited" = "無上限";
 
 /* The header text above the field to input a custom allowance value. */
-"wallet.editPermissionsCustomAllowanceHeader" = "设置自定义津贴";
+"wallet.editPermissionsCustomAllowanceHeader" = "設定自訂額度";
 
 /* The header text shown in the row that displays the proposed allowance value. */
-"wallet.editPermissionsProposedAllowanceHeader" = "建议的津贴";
+"wallet.editPermissionsProposedAllowanceHeader" = "建議額度";
 
 /* The title of the button shown beside the custom allowance input field to make the custom allowance value "Unlimited". */
-"wallet.editPermissionsSetUnlimited" = "设置无限额";
+"wallet.editPermissionsSetUnlimited" = "設定無上限";
 
 /* The title of the detail view to edit the permissions / allowance of an ERC 20 Approve transaction. */
-"wallet.editPermissionsTitle" = "编辑权限";
+"wallet.editPermissionsTitle" = "編輯權限";
 
 /* The title of the button for users to click so that they connect wallet account to the dapp site(also permission given). It will be displayed at the right hand side of each account option in edit site connection screen. */
-"wallet.editSiteConnectionAccountActionConnect" = "连接";
+"wallet.editSiteConnectionAccountActionConnect" = "連線";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionDisconnect" = "断开连接";
@@ -656,16 +680,16 @@
 "wallet.editSiteConnectionAccountActionRevoke" = "撤銷";
 
 /* The title of the button for users to click so that they disconnect wallet account to the dapp site(also permission removed). It will be displayed at the right hand side of each account option in edit site connection screen. */
-"wallet.editSiteConnectionAccountActionSwitch" = "切换";
+"wallet.editSiteConnectionAccountActionSwitch" = "切換";
 
 /* The title of the button for users to click so that they grant wallet account permission for the Solana Dapp. It will be displayed at the right hand side of each account option in edit site connection screen. */
 "wallet.editSiteConnectionAccountActionTrust" = "信任";
 
 /* The plural word that will beused in `editSiteConnectionConnectedAccount`. */
-"wallet.editSiteConnectionAccountPlural" = "帐户";
+"wallet.editSiteConnectionAccountPlural" = "帳戶";
 
 /* The singular word that will be used in `editSiteConnectionConnectedAccount`. */
-"wallet.editSiteConnectionAccountSingular" = "帐户";
+"wallet.editSiteConnectionAccountSingular" = "帳戶";
 
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in edit site connection screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example "1 account connected" or "2 accounts connected") */
 "wallet.editSiteConnectionConnectedAccount" = "%1$lld %2$@ 已连接";
@@ -686,58 +710,58 @@
 "wallet.ensDomainInterstitialPageButtonProceed" = "使用 Infura 服务器继续操作";
 
 /* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave 将使用 Infura 来解决以太坊名称服务（ENS）的 .eth 域名。Brave 将隐藏你的 IP 地址。如果你启用这个功能，Infura 将看到有人试图访问这些 .eth 域名，但没有其他内容。查看 Infura 的 <a href=%1$@>%2$@</a> 和 <a href=%3$@>%4$@</a>。";
+"wallet.ensDomainInterstitialPageDescription" = "Brave 将使用 Infura 来解析以太坊名称服务（ENS）的 .eth 域名。Brave 将会隐藏您的 IP 地址。如果您启用此功能，Infura 将会看到有人试图访问这些 .eth 域名，但不会看到其他信息。查看 Infura 的 <a href=%1$@>%2$@</a> 和 <a href=%3$@>%4$@</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "在 Brave 中启用支援以太坊域名服务 (ENS)？";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered. */
-"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "继续链外查找";
+"wallet.ensOffchainDomainInterstitialPageButtonProceed" = "继续进行链下查找";
 
 /* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'. */
-"wallet.ensOffchainDomainInterstitialPageDescription" = "这个 .eth 域名被存储在链外，将由第三方网关解析。如果你启用 ENS 链外查询，第三方网关将看到你正试图访问 .eth 域名。<a href=%1$@>%2$@</a>。";
+"wallet.ensOffchainDomainInterstitialPageDescription" = "这个 .eth 域名被存储在链外，将由第三方网关解析。如果您启用 ENS 链外查询，第三方网关将会看到你正试图访问 .eth 域名。<a href=%1$@>%2$@</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one. */
-"wallet.ensOffchainDomainInterstitialPageTitle" = "在 Brave 中启用以太坊域名服务 (ENS) 链外查找支援？";
+"wallet.ensOffchainDomainInterstitialPageTitle" = "是否在 Brave 中启用对以太坊名称服务（ENS）链下查找的支持？";
 
 /* Button title when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayButton" = "使用 ENS 域";
+"wallet.ensOffchainGatewayButton" = "使用 ENS 網域";
 
 /* Description shown send address / ENS domain when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayDesc" = "您输入的似乎是 ENS 地址。我们需要使用第三方解析程式来解析此要求，如此有助于确保您的 .eth 网域不会外泄，交易安全无虞。";
+"wallet.ensOffchainGatewayDesc" = "您輸入的似乎是 ENS 位址。我們需要使用第三方解析程式來解析此要求，如此有助於確保您的 .eth 網域不會外洩，交易安全無虞。";
 
 /* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
-"wallet.ensOffchainGatewayTitle" = "Brave 支援使用链下闸道来解析 .eth 网域。";
+"wallet.ensOffchainGatewayTitle" = "Brave 支援使用鏈下閘道來解析 .eth 網域。";
 
 /* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
-"wallet.ensOffchainResolveMethodDescription" = "[了解更多](%@) ENS 链下查询的隐私注意事项。";
+"wallet.ensOffchainResolveMethodDescription" = "[深入瞭解](%@) ENS 鏈下查詢的隱私注意事項。";
 
 /* The title for the options to allow Ethereum Name service domain names offchain. */
-"wallet.ensOffchainResolveMethodTitle" = "允许 ENS 链下查询";
+"wallet.ensOffchainResolveMethodTitle" = "允許 ENS 鏈下查詢";
 
 /* The title for the options to resolve Ethereum Name service domain names. */
-"wallet.ensResolveMethodTitle" = "解析以太坊域名服务 (ENS) 网域名称";
+"wallet.ensResolveMethodTitle" = "解析 Ethereum Name Service (ENS) 網域名稱";
 
 /* A placeholder for the text field that users will input the custom token address */
-"wallet.enterAddress" = "输入地址";
+"wallet.enterAddress" = "輸入位址";
 
 /* The header title for the textField users will input the dollar value of the crypto they want to buy */
 "wallet.enterAmount" = "输入金额";
 
 /* The navigation bar title displayed on the screen to enter wallet password to enable biometrics unlock from wallet settings. */
-"wallet.enterPasswordForBiometricsNavTitle" = "启用生物识别";
+"wallet.enterPasswordForBiometricsNavTitle" = "啟用生物辨識功能";
 
 /* The title displayed on the screen to enter password to enable biometrics unlock from wallet settings. */
-"wallet.enterPasswordForBiometricsTitle" = "输入您的钱包的密码以启用钱包的生物识别功能（只会要求您输入一次）";
+"wallet.enterPasswordForBiometricsTitle" = "輸入錢包密碼，為錢包啟用生物辨識功能 (系統只會要求您輸入一次)";
 
 /* A placeholder for the text field that users will input the custom token Coingecko ID. */
-"wallet.enterTokenCoingeckoId" = "输入代币 Coingecko ID";
+"wallet.enterTokenCoingeckoId" = "輸入代幣 CoinGecko ID";
 
 /* A placeholder for the text field that users will input the custom token icon URL */
-"wallet.enterTokenIconURL" = "输入代币图标网址";
+"wallet.enterTokenIconURL" = "輸入代幣圖示 URL";
 
 /* A placeholder for the text field that users will input the custom token's ID. */
-"wallet.enterTokenId" = "输入代币 ID";
+"wallet.enterTokenId" = "輸入代幣 ID";
 
 /* A placeholder for the text field that users will input the custom token name */
 "wallet.enterTokenName" = "输入代币名称";
@@ -749,10 +773,10 @@
 "wallet.errorAlertTitle" = "错误";
 
 /* A description of an Ethereum account, displayed in Accounts tab. */
-"wallet.ethAccountDescription" = "Ethereum + EVM 鏈";
+"wallet.ethAccountDescription" = "以太坊+ EVM 链";
 
 /* A button title displayed in a menu to export an account's private key. */
-"wallet.exportButtonTitle" = "匯出";
+"wallet.exportButtonTitle" = "导出";
 
 /* The title of an alert when the custom network the user attempted to add fails for some reason */
 "wallet.failedToAddCustomNetworkErrorTitle" = "无法添加此网络。";
@@ -767,19 +791,19 @@
 "wallet.failedToRemoveCustomNetworkErrorMessage" = "无法移除网络。\n请重试。";
 
 /* A description explains transaction is failed. */
-"wallet.failedTransactionDescription" = "交易因價格波動大而失敗。增加滑點忍耐度，以在更大價格波動下取得成功。";
+"wallet.failedTransactionDescription" = "由于价格大幅波动，交易失败。增加滑点容忍度以在更大的价格变动中取得成功。";
 
 /* A description of the view that will display the error message. */
-"wallet.failedTransactionErrorViewDescription" = "請儲存錯誤訊息以供未來參考。";
+"wallet.failedTransactionErrorViewDescription" = "请保存错误消息供日后参考。";
 
 /* A title of the view that will display the error message. */
-"wallet.failedTransactionErrorViewTitle" = "错误信息";
+"wallet.failedTransactionErrorViewTitle" = "錯誤訊息";
 
 /* A title of transaction failed status view indicating this transaction has not been included in a block. */
-"wallet.failedTransactionTitle" = "交易失败";
+"wallet.failedTransactionTitle" = "交易失敗";
 
 /* A title of a button which will a new view to display the error. */
-"wallet.failedTransactionViewErrorButtonTitle" = "檢視錯誤";
+"wallet.failedTransactionViewErrorButtonTitle" = "查看错误";
 
 /* A description of an Filecoin account, displayed in Accounts tab. */
 "wallet.filAccountDescription" = "文件币";
@@ -845,7 +869,7 @@
 "wallet.helpCenter" = "帮助中心";
 
 /* A button title which when pressed hides the details screen. */
-"wallet.hideDetailsButtonTitle" = "隐藏详细资料";
+"wallet.hideDetailsButtonTitle" = "隐藏详细信息";
 
 /* A button title that will redact a private key on the screen */
 "wallet.hidePrivateKeyButtonTitle" = "隐藏隐私密钥";
@@ -884,7 +908,7 @@
 "wallet.importedCryptoAccountsTitle" = "已导入账户";
 
 /* A placeholder on a text box for entering the users private key to import accounts */
-"wallet.importNonEthAccountPlaceholder" = "输入或粘贴您的私钥。";
+"wallet.importNonEthAccountPlaceholder" = "輸入或貼上您的私密金鑰。";
 
 /* The error message displayed when the user enters the wrong password while unlocking the wallet */
 "wallet.incorrectPasswordErrorMessage" = "密码错误";
@@ -914,10 +938,10 @@
 "wallet.insufficientLiquidity" = "流动资产不足";
 
 /* The title of a button that Deselects all visible options. */
-"wallet.internalErrorMessage" = "发生内部错误";
+"wallet.internalErrorMessage" = "发生了一个内部的错误";
 
 /* Button to learn more about incomplete/pending wallet transactions. Or learn more about adding/switching networks in a dapp request view */
-"wallet.learnMoreButton" = "了解更多";
+"wallet.learnMoreButton" = "学到更多";
 
 /* The description of the screen for user to understand the responsibility and the terms of use before setting up a wallet. */
 "wallet.legalDescription" = "我们需要您确认以下事项";
@@ -935,37 +959,37 @@
 "wallet.lock" = "锁定";
 
 /* The title of the lock option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.lockWallet" = "鎖定錢包";
+"wallet.lockWallet" = "锁定钱包";
 
 /* The title of the sort option that sorts lowest value to highest value. Used in Portfolio/NFT filters and display settings. */
 "wallet.lowToHighSortOption" = "从低至高";
 
 /* The amount of current permitted wallet accounts to the dapp site. It is displayed below the origin url of the dapp site in manage site connections screen. '%lld' refers to a number, %@ is `account` for singular and `accounts` for plural (for example "1 account" or "2 accounts") */
-"wallet.manageSiteConnectionsAccount" = "%1$lld 个 %2$@";
+"wallet.manageSiteConnectionsAccount" = "%1$lld 個%2$@";
 
 /* The plural word that will beused in `manageSiteConnectionsAccount`. */
-"wallet.manageSiteConnectionsAccountPlural" = "帐户";
+"wallet.manageSiteConnectionsAccountPlural" = "帳戶";
 
 /* The singular word that will be used in `manageSiteConnectionsAccount`. */
-"wallet.manageSiteConnectionsAccountSingular" = "帐户";
+"wallet.manageSiteConnectionsAccountSingular" = "帳戶";
 
 /* The message of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertMessage" = "这将删除所有网站的所有电子钱包连接权限。";
+"wallet.manageSiteConnectionsConfirmAlertMessage" = "這會移除所有網站的所有錢包連線權限。";
 
 /* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertRemove" = "移除";
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "去掉";
 
 /* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertTitle" = "删除所有权限？";
+"wallet.manageSiteConnectionsConfirmAlertTitle" = "想要移除所有權限？";
 
 /* The message of the alert to confirm the users wants to remove all site connections from this specific website, shown after selecting/opening a website on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "这将删除该网站上的所有电子钱包的连接权限。";
+"wallet.manageSiteConnectionsDetailConfirmAlertMessage" = "這會移除這個網站的所有錢包連線權限。";
 
 /* The header shown above the list of connected accounts for a single website, shown after selecting/opening a website on the screen to manage web3 sites account connections. '%@' will be replaced by a coin type title. For example, it could be 'Connected Ethereum Accounts' or 'Connected Solana Accounts' etc. */
-"wallet.manageSiteConnectionsDetailHeader" = "关联的 %@ 帐户";
+"wallet.manageSiteConnectionsDetailHeader" = "連結的 %@ 帳戶";
 
 /* The filter in the search bar for the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsFilterPlaceholder" = "已关联过滤器的 DApps";
+"wallet.manageSiteConnectionsFilterPlaceholder" = "篩選連結的 DApp";
 
 /* The title of the button on the screen to manage web3 sites account connections that will show an alert to remove all connected website permissions. */
 "wallet.manageSiteConnectionsRemoveAll" = "全部移除";
@@ -995,7 +1019,7 @@
 "wallet.networkIdDuplicationErrMsg" = "区块链 ID 已存在";
 
 /* The title for the label that is shown above the name of the network on a request to switch networks or add a new network from a dapps website. */
-"wallet.networkNameTitle" = "网络名称";
+"wallet.networkNameTitle" = "網路名稱";
 
 /* A placeholder in Buy Screen, when user switched to a network that Brave currently doesn't support token purchasing. */
 "wallet.networkNotSupportedForBuyToken" = "所选网络不支持购买";
@@ -1004,34 +1028,34 @@
 "wallet.networkSelectionPrimaryNetworks" = "主要网络";
 
 /* The title of the section for secondary networks in the network selection view. */
-"wallet.networkSelectionSecondaryNetworks" = "次要網路";
+"wallet.networkSelectionSecondaryNetworks" = "次要网络";
 
 /* A VoiceOver label that will be read out when a user focuses on the show test networks button in the network selection view. "%@" will be replaced with the network name such as "Solana" or "Ethereum" */
-"wallet.networkSelectionTestnetAccessibilityLabel" = "查看 %@ 测试网络";
+"wallet.networkSelectionTestnetAccessibilityLabel" = "查看 %@ 測試網路";
 
 /* The title of the section for test networks in the network selection view. */
 "wallet.networkSelectionTestNetworks" = "测试网络";
 
 /* The title of the to select a network from the available networks */
-"wallet.networkSelectionTitle" = "選取網路";
+"wallet.networkSelectionTitle" = "选择网络";
 
 /* The label that is shown above the URL for the network on a request to switch networks or add a new network from a dapps website. */
-"wallet.networkURLTitle" = "网络 URL";
+"wallet.networkURLTitle" = "網路 URL";
 
 /* A placeholder string that will be used on password text fields to create a new wallet */
 "wallet.newPasswordPlaceholder" = "输入新密码";
 
 /* A text displayed below the account address in new site connection confirmation step, in order to make sure users double check the account address they are going to allow the dapp to connect with. */
-"wallet.newSiteConnectConfirmationMessage" = "查看您允许的帐户的地址（必填）";
+"wallet.newSiteConnectConfirmationMessage" = "查看所允許帳戶的位址 (必填)";
 
 /* The footer message displayed above the Next button in new site connection screen. */
-"wallet.newSiteConnectFooter" = "只连接您信任的网站。";
+"wallet.newSiteConnectFooter" = "僅連線您信任的網站。";
 
 /* The message displayed below the dapp's origin url in new site connection screen. */
-"wallet.newSiteConnectMessage" = "连接到 Brave Wallet";
+"wallet.newSiteConnectMessage" = "連線至 Brave 錢包";
 
 /* The transaction edit error alert button which will dismiss the alert. */
-"wallet.newSiteConnectScreenTitle" = "连接";
+"wallet.newSiteConnectScreenTitle" = "連線";
 
 /* 1. A button title next indicating the user to go to the next transaction. Will sit next to a label such as "1 of 4" where tapping next would move them to the second transaction. 2. Title of the button for users to click to the next step during the process of dapp permission requests. */
 "wallet.next" = "下一笔";
@@ -1040,16 +1064,16 @@
 "wallet.nftCollected" = "已收集";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's blockchain */
-"wallet.nftDetailBlockchain" = "區塊鏈";
+"wallet.nftDetailBlockchain" = "区块链";
 
 /* The title of a section in NFT detail screen that will display NFT's description if there is any. */
-"wallet.nftDetailDescription" = "描述";
+"wallet.nftDetailDescription" = "说明";
 
 /* This is one type of token standard. And most likey this does not need to be translated */
 "wallet.nftDetailERC721" = "ERC 721";
 
 /* A placeholder text, indicates this NFT image was not able to be loaded. */
-"wallet.nftDetailImageNotAvailable" = "图片不可用";
+"wallet.nftDetailImageNotAvailable" = "圖片不可用";
 
 /* The section header that displays the overview information of this NFT. */
 "wallet.nftDetailOverview" = "概要";
@@ -1067,10 +1091,10 @@
 "wallet.nftDetailSPL" = "SPL";
 
 /* A disclaimer that appears at the bottom of a NFT detail screen which shows NFT image and other information. */
-"wallet.nftDetailSVGImageDisclaimer" = "上方呈现的图片可能与 NFT 不完全一致";
+"wallet.nftDetailSVGImageDisclaimer" = "上方呈現的圖片可能與 NFT 不完全一致";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token Id value. */
-"wallet.nftDetailTokenID" = "代幣 ID";
+"wallet.nftDetailTokenID" = "代币 ID";
 
 /* The title an entry that will be displayed in NFT detail. This entry to display this NFT's token standard */
 "wallet.nftDetailTokenStandard" = "代币标准";
@@ -1085,16 +1109,16 @@
 "wallet.nftDiscoveryCalloutDisable" = "不用了，谢谢，我会手动执行";
 
 /* The title of the button that user clicks to enable NFT discovery. */
-"wallet.nftDiscoveryCalloutEnable" = "是，請繼續";
+"wallet.nftDiscoveryCalloutEnable" = "确认，请继续";
 
 /* The title of the alert that asks users either to enable NFT discovery or import manually. */
-"wallet.nftDiscoveryCalloutTitle" = "想自動顯示您的 NFT 嗎？";
+"wallet.nftDiscoveryCalloutTitle" = "想要自动显示 NFT吗？";
 
 /* The title of the button that user clicks to add his/her first NFT */
 "wallet.nftEmptyImportNFT" = "导入 NFT";
 
 /* The title of one of the dropdown options to group NFTs. This group will display all user's hidden NFTs. */
-"wallet.nftHidden" = "已隱藏";
+"wallet.nftHidden" = "隐藏";
 
 /* The title of the empty state inside NFT tab under Hidden group. */
 "wallet.nftInvisiblePageEmptyTitle" = "这里还没有隐藏的 NFT。";
@@ -1112,16 +1136,16 @@
 "wallet.nftRemoveFromWallet" = "不要在钱包中显示";
 
 /* The description of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertDescription" = "NFT 將從 Brave 錢包中移除，但仍保留在區塊鏈上。如果您在移除後改變主意，則需要再次手動匯入。";
+"wallet.nftRemoveFromWalletAlertDescription" = "NFT 将从 Brave 钱包中移除，但仍保留在区块链上。移除之后如果改变主意，则需要再次手动导入。";
 
 /* The title of the alert when user attempts to remove an NFT from wallet. */
-"wallet.nftRemoveFromWalletAlertTitle" = "從 Brave 錢包中移除？";
+"wallet.nftRemoveFromWalletAlertTitle" = "从 Brave 钱包中移除吗？";
 
 /* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
 "wallet.nftsDescription" = "%d 个 NFT";
 
 /* The title of an overlay on top left of the junk NFT grid. */
-"wallet.nftSpam" = "垃圾項目";
+"wallet.nftSpam" = "垃圾";
 
 /* The description of the NFTs row in Account Details when user has 1 NFT. */
 "wallet.nftsSingularDescription" = "%d 个 NFT";
@@ -1139,7 +1163,7 @@
 "wallet.nftUnspam" = "标记为非垃圾邮件";
 
 /* The empty state description displayed when the user has no accounts associated with a transaction or asset */
-"wallet.noAccountDescription" = "有余额的账户将显示于此。";
+"wallet.noAccountDescription" = "有余额的账户将出现在此处。";
 
 /* The empty state displayed when the user has no accounts associated with a transaction or asset */
 "wallet.noAccounts" = "无账户";
@@ -1162,6 +1186,9 @@
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "搞定了！";
 
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "原始交易已确认。";
+
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "其他钱包操作";
 
@@ -1181,7 +1208,7 @@
 "wallet.passwordStatusMedium" = "中等";
 
 /* A label will be displayed beside input password when it is considered as a strong password */
-"wallet.passwordStatusStrong" = "強";
+"wallet.passwordStatusStrong" = "强";
 
 /* A label will be displayed beside input password when it is considered as a weak password */
 "wallet.passwordStatusWeak" = "弱";
@@ -1214,19 +1241,19 @@
 "wallet.protocolFeeLabel" = "协议费用：%@";
 
 /* The button title for users to click. It will redirect user to that specific provider website. '%@' will be replaced provider's short name. For example, Buy with Ramp'. */
-"wallet.providerSelectionButtonTitle" = "用 %@ 购买";
+"wallet.providerSelectionButtonTitle" = "使用 %@ 購買";
 
 /* The title of the screen for users to select a purchase method. For example, 'Ramp.Network'. */
-"wallet.providerSelectionScreenTitle" = "选择购买方式";
+"wallet.providerSelectionScreenTitle" = "選取購買方式";
 
 /* The section header for the list of available purchse methods. */
-"wallet.providerSelectionSectionHeader" = "选择以下其中一种方式";
+"wallet.providerSelectionSectionHeader" = "選取下列其中一個選項";
 
 /* The title of the button for users to click to select a purchase method. */
-"wallet.purchaseMethodButtonTitle" = "选择购买方式";
+"wallet.purchaseMethodButtonTitle" = "選取購買方式";
 
 /* The description of one of the 'Ramp.Network' provider. */
-"wallet.rampNetworkProviderDescription" = "用 Visa 或 Mastercard 购买加密货币。";
+"wallet.rampNetworkProviderDescription" = "使用 Visa 或 Mastercard 購買加密貨幣。";
 
 /* The name of one of the on ramp provider. */
 "wallet.rampNetworkProviderName" = "Ramp.Network";
@@ -1247,10 +1274,10 @@
 "wallet.rejectTransactionButtonTitle" = "拒绝";
 
 /* A message that will be displayed above the password entry field when the user tries to remove a secondary account. '%@' will be replaced with the account's name */
-"wallet.removeAccountConfirmationMessage" = "是否确定要移除 “%@” ？";
+"wallet.removeAccountConfirmationMessage" = "您確定要移除「%@」嗎？";
 
 /* A message that will be displayed under the password entry field when the user enters an incorrect password and their secondary account is not removed. */
-"wallet.removeAccountErrorMessage" = "密码无效";
+"wallet.removeAccountErrorMessage" = "密碼無效";
 
 /* The message in the error pop up when there is an error occurs during the process of removing a custom token. */
 "wallet.removeCustomTokenErrorMessage" = "请验证这是新的自定义资产，检查您的网络连接，然后重试。";
@@ -1262,7 +1289,7 @@
 "wallet.renameButtonTitle" = "重命名";
 
 /* A label will be displayed when the repeat password field input is matched with the password field. */
-"wallet.repeatedPasswordMatch" = "符合！";
+"wallet.repeatedPasswordMatch" = "匹配上了！";
 
 /* A placeholder string that will be used on repeat password text fields */
 "wallet.repeatedPasswordPlaceholder" = "重新输入密码";
@@ -1274,7 +1301,7 @@
 "wallet.restoreWalletBackButtonTitle" = "还原钱包";
 
 /* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
-"wallet.restoreWalletButtonTitle" = "还原";
+"wallet.restoreWalletButtonTitle" = "恢复";
 
 /* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
 "wallet.restoreWalletImportFromLegacyBraveWallet" = "我有一个 24 字的恢复密语";
@@ -1304,7 +1331,7 @@
 "wallet.retryTransactionButtonTitle" = "重试交易";
 
 /* The description of one of the 'Sardine' provider. */
-"wallet.sardineProviderDescription" = "通过您的银行账户进行即时购买。费用较低。";
+"wallet.sardineProviderDescription" = "使用您的銀行帳戶即時購買。手續費較低。";
 
 /* The name of one of the on ramp provider. */
 "wallet.sardineProviderName" = "Sardine";
@@ -1325,7 +1352,7 @@
 "wallet.screenshotDetectedTitle" = "检测到截图";
 
 /* The label as a placeholder in search fields. */
-"wallet.search" = "搜索";
+"wallet.search" = "搜尋";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "搜索资产";
@@ -1394,52 +1421,52 @@
 "wallet.sendDescription" = "发送代币，或将代币从一个账户转入另一账户。";
 
 /* An error that appears below the send crypto address text field, when the input `To` address is not a valid Bitcoin address. */
-"wallet.sendErrorBtcAddressNotValid" = "不是有效的 BTC 位址";
+"wallet.sendErrorBtcAddressNotValid" = "不是有效的 BTC 地址";
 
 /* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn't have a linked ETH address` */
-"wallet.sendErrorDomainNotRegistered" = "网域没有已连结的 %@ 地址";
+"wallet.sendErrorDomainNotRegistered" = "網域沒有已連結的 %@ 位址";
 
 /* An error that appears below the send crypto address text field, when the input `To` Filecoin address that is invalid */
 "wallet.sendErrorInvalidRecipientAddress" = "无效的收件人地址";
 
 /* A placeholder of the address text field. */
-"wallet.sendToCryptoAddressPlaceholder" = "输入地址";
+"wallet.sendToCryptoAddressPlaceholder" = "輸入位址";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address has invalid checksum. */
-"wallet.sendWarningAddressInvalidChecksum" = "地址未通过验证（校验和无效）。请重试，将小写字母替换为大写字母。";
+"wallet.sendWarningAddressInvalidChecksum" = "地址未通過驗證 (總和檢查碼無效)。請以大寫字母替換小寫字母，再試一次。";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is a token contract address. */
-"wallet.sendWarningAddressIsContract" = "接收地址是代币的合约地址";
+"wallet.sendWarningAddressIsContract" = "接收位址是代幣的合約網址";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is the same as the current selected account's address. */
-"wallet.sendWarningAddressIsOwn" = "接收地址是您的地址";
+"wallet.sendWarningAddressIsOwn" = "接收位址是您自己的位址";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is missing checksum information. */
-"wallet.sendWarningAddressMissingChecksumInfo" = "无法验证此地址（校验和缺失）。要继续吗？";
+"wallet.sendWarningAddressMissingChecksumInfo" = "無法驗證此地址 (無總和檢查碼)。要繼續嗎？";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is not a valid ETH address. */
-"wallet.sendWarningAddressNotValid" = "不是有效的 ETH 地址";
+"wallet.sendWarningAddressNotValid" = "並非有效的 ETH 位址";
 
 /* A warning that appears below the send crypto address text field, when the input `To` address is not a valid SOL address. */
-"wallet.sendWarningSolAddressNotValid" = "並非有效的 SOL 位址";
+"wallet.sendWarningSolAddressNotValid" = "SOL 地址无效";
 
 /* As in sent cryptocurrency from one asset to another */
-"wallet.sent" = "已发送";
+"wallet.sent" = "已傳送";
 
 /* One of the context menu option for user to tap to set a default network in wallet settings. */
-"wallet.setDefaultNetwork" = "设为预设";
+"wallet.setDefaultNetwork" = "设为默认";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.settings" = "设置";
+"wallet.settings" = "设定值";
 
 /* The title that appears before the current default base currency code. Example: "Default base currency: USD" */
-"wallet.settingsDefaultBaseCurrencyTitle" = "默认基础货币";
+"wallet.settingsDefaultBaseCurrencyTitle" = "預設基礎貨幣";
 
 /* The footer beneath the toggle for allowing biometrics to unlock the wallet in wallet settings. */
-"wallet.settingsEnableBiometricsFooter" = "如果您想使用生物识别（面容 ID/触控 ID）来解锁您的钱包，请开启";
+"wallet.settingsEnableBiometricsFooter" = "如果要使用生物辨識功能 (Face ID / Touch ID) 解鎖錢包，請開啟";
 
 /* A label beside the toggle for allowing biometrics to unlock the wallet in wallet settings. */
-"wallet.settingsEnableBiometricsTitle" = "允许生物识别解锁";
+"wallet.settingsEnableBiometricsTitle" = "允許生物辨識解鎖";
 
 /* The title of a button that will go the list of networks. */
 "wallet.settingsNetworkButtonTitle" = "网络";
@@ -1460,7 +1487,7 @@
 "wallet.settingsResetTransactionFooter" = "在开发人员执行开发工作或在本地服务器上清除状态时，清除交易可能很有用";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionTitle" = "清除交易和 Nonce 信息";
+"wallet.settingsResetTransactionTitle" = "清除交易 & Nonce 信息";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetWalletAlertButtonTitle" = "重置钱包";
@@ -1511,10 +1538,10 @@
 "wallet.showZeroBalances" = "显示零余额";
 
 /* The title of the button used to sign a message request on the signature request view. */
-"wallet.sign" = "签名";
+"wallet.sign" = "簽名";
 
 /* The title of the view shown over a dapps website that requests the user sign all displayed transactions. */
-"wallet.signAllTransactionsTitle" = "签署所有交易";
+"wallet.signAllTransactionsTitle" = "簽署所有交易";
 
 /* A title displayed inside the text view in Signature Request View above the request's domain information. */
 "wallet.signatureRequestDomainTitle" = "域名：";
@@ -1523,16 +1550,16 @@
 "wallet.signatureRequestMessageTitle" = "消息：";
 
 /* A subtitle of the view shown over a dapps website that requests the user sign a message. */
-"wallet.signatureRequestSubtitle" = "需要您的签名";
+"wallet.signatureRequestSubtitle" = "網站要求取得您的簽名";
 
 /* A title of the view shown over a dapps website that requests the user sign a message. */
-"wallet.signatureRequestTitle" = "需要签名";
+"wallet.signatureRequestTitle" = "請簽名";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
-"wallet.signedTransactionDescription" = "交易已签署，将通过 dapps 发送至网络，并等待确认。";
+"wallet.signedTransactionDescription" = "交易已完成簽署，將由 DApp 傳送到網路，正等待確認。";
 
 /* A title of transaction signed status view indicating this transaction has been signed. */
-"wallet.signedTransactionTitle" = "交易已签署";
+"wallet.signedTransactionTitle" = "交易已完成簽署";
 
 /* The title of the view shown above a Sign In With Ethereum request. */
 "wallet.signInWithBraveWallet" = "用 Brave 钱包登录";
@@ -1541,55 +1568,55 @@
 "wallet.signInWithBraveWalletMessage" = "您正在登录 %1$@。Brave 钱包将与 %2$@ 共享您的钱包地址。";
 
 /* A warning message to tell users that the sign request message contains consecutive new-line characters. */
-"wallet.signMessageConsecutiveNewlineWarning" = "检测到连续换行符！";
+"wallet.signMessageConsecutiveNewlineWarning" = "偵測到連續的換行字元！";
 
 /* A warning message to tell users that the sign request message contains non-ascii characters. */
-"wallet.signMessageRequestUnknownUnicodeWarning" = "检测到非 ASCII 字符！";
+"wallet.signMessageRequestUnknownUnicodeWarning" = "偵測到非 ASCII 字元！";
 
 /* The title of the button that users can click to display the sign request message as its original content. */
-"wallet.signMessageShowOriginalMessage" = "查看原始消息";
+"wallet.signMessageShowOriginalMessage" = "檢視原始訊息";
 
 /* The title of the button that users can click to display the sign request message in ASCII encoding. */
-"wallet.signMessageShowUnknownUnicode" = "显示编码信息";
+"wallet.signMessageShowUnknownUnicode" = "顯示加密訊息";
 
 /* A title of a warning message that warns users the risk of signing a transaction. */
-"wallet.signTransactionSignRisk" = "簽名風險自擔";
+"wallet.signTransactionSignRisk" = "签名风险自担";
 
 /* The title of the view shown over a dapps website that requests the user sign a transaction. */
-"wallet.signTransactionTitle" = "签署交易";
+"wallet.signTransactionTitle" = "簽署交易";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the address. */
 "wallet.siweAddressLabel" = "地址";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the chain ID. */
-"wallet.siweChainIDLabel" = "鏈 ID";
+"wallet.siweChainIDLabel" = "链 ID";
 
 /* The title of the details view for Sign In With Ethereum/Brave Wallet requests. */
-"wallet.siweDetailsTitle" = "详细信息";
+"wallet.siweDetailsTitle" = "详情";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the expiration time. */
-"wallet.siweExpirationTimeLabel" = "到期時間";
+"wallet.siweExpirationTimeLabel" = "失效时间";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the issued at date. */
 "wallet.siweIssuedAtLabel" = "发布日期";
 
 /* The label displayed above the Sign In With Ethereum message. */
-"wallet.siweMessageLabel" = "訊息";
+"wallet.siweMessageLabel" = "消息";
 
 /* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the nonce. */
 "wallet.siweNonceLabel" = "Nonce";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the origin. */
-"wallet.siweOriginLabel" = "來源";
+"wallet.siweOriginLabel" = "来源";
 
 /* The label displayed above the Sign In With Ethereum resources. */
-"wallet.siweResourcesLabel" = "資源";
+"wallet.siweResourcesLabel" = "资源";
 
 /* The label displayed on the button to sign in for Sign In With Ethereum/Brave Wallet requests. */
 "wallet.siweSignInButtonTitle" = "登录";
 
 /* The label displayed in details view for Sign In With Ethereum/Brave Wallet requests beside the statement. */
-"wallet.siweStatementLabel" = "聲明";
+"wallet.siweStatementLabel" = "Statement";
 
 /* The label displayed in details for Sign In With Ethereum/Brave Wallet requests beside the URI. */
 "wallet.siweURILabel" = "URI";
@@ -1604,85 +1631,85 @@
 "wallet.snsDomainInterstitialPageButtonProceed" = "继续使用 SNS 服务器";
 
 /* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave's wiki page which will link to the providersterms of use page and privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
-"wallet.snsDomainInterstitialPageDescription" = "Brave 将使用第三方解析 .sol 域名。Brave 会隐藏您的 IP 地址。如果启用此功能，第三方将看到有人试图访问这些 .sol 域名，但不会看到任何其他信息。有关我们使用的第三方及其隐私政策的更多信息，请参阅我们的<a href=%@>帮助页面</a>。";
+"wallet.snsDomainInterstitialPageDescription" = "Brave 将使用第三方解析 .sol 域名。Brave 会隐藏您的 IP 地址。如果启用此功能，第三方将会看到有人试图访问这些 .sol 域名，但不会看到其他信息。有关我们使用的第三方及其隐私政策的更多信息，请参阅我们的<a href=%@>帮助页面</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "是否在 Brave 中启用 Solana Name Service（SNS）的支持？";
 
 /* A description of an Solana account, displayed in Accounts tab. */
-"wallet.solAccountDescription" = "Solana + SVM 鏈";
+"wallet.solAccountDescription" = "Solana + SVM 链";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
-"wallet.solanaAdvanceNonceAccountInstructionName" = "预付随机账户";
+"wallet.solanaAdvanceNonceAccountInstructionName" = "進階隨機帳戶";
 
 /* The title displayed above the System Program Allocate instruction type for Solana Instruction details. */
 "wallet.solanaAllocateInstructionName" = "分配";
 
 /* The title displayed above the System Program AllocateWithSeed instruction type for Solana Instruction details. */
-"wallet.solanaAllocateWithSeedInstructionName" = "带种子分配";
+"wallet.solanaAllocateWithSeedInstructionName" = "以種子分配";
 
 /* The label displayed beside the formatted amount of an instruction type. Ex. "Amount: 0.1 SOL" */
 "wallet.solanaAmount" = "金额";
 
 /* The title displayed above the Token Program Approved Checked instruction type for Solana Instruction details. */
-"wallet.solanaApproveCheckedInstructionName" = "批准已检查";
+"wallet.solanaApproveCheckedInstructionName" = "核准已檢查";
 
 /* The title displayed above the Token Program Approve instruction type for Solana Instruction details. */
 "wallet.solanaApproveInstructionName" = "审批";
 
 /* The title displayed above the System Program Assign instruction type for Solana Instruction details. */
-"wallet.solanaAssignInstructionName" = "分配";
+"wallet.solanaAssignInstructionName" = "指派";
 
 /* The title displayed above the System Program AssignWithSeed instruction type for Solana Instruction details. */
-"wallet.solanaAssignWithSeedInstructionName" = "带种子分配";
+"wallet.solanaAssignWithSeedInstructionName" = "以種子指派";
 
 /* The title displayed above the System Program AuthorizeNonceAccount instruction type for Solana Instruction details. */
-"wallet.solanaAuthorizeNonceAccountInstructionName" = "授权随机帐户";
+"wallet.solanaAuthorizeNonceAccountInstructionName" = "授權隨機帳戶";
 
 /* The title displayed above the Token Program Burn Checked instruction type for Solana Instruction details. */
-"wallet.solanaBurnCheckedInstructionName" = "销毁已检查";
+"wallet.solanaBurnCheckedInstructionName" = "銷毀已檢查";
 
 /* The title displayed above the Token Program Burn instruction type for Solana Instruction details. */
-"wallet.solanaBurnInstructionName" = "销毁";
+"wallet.solanaBurnInstructionName" = "銷毀";
 
 /* The title displayed above the Token Program Close Account instruction type for Solana Instruction details. */
-"wallet.solanaCloseAccountInstructionName" = "关闭帐户";
+"wallet.solanaCloseAccountInstructionName" = "關閉帳戶";
 
 /* The title displayed above the System Program CreateAccount instruction type for Solana Instruction details. */
-"wallet.solanaCreateAccountInstructionName" = "创建帐户";
+"wallet.solanaCreateAccountInstructionName" = "建立帳戶";
 
 /* The title displayed above the System Program CreateAccountWithSeed instruction type for Solana Instruction details. */
-"wallet.solanaCreateAccountWithSeedInstructionName" = "创建种子帐户";
+"wallet.solanaCreateAccountWithSeedInstructionName" = "以種子建立帳戶";
 
 /* The title displayed above the value of a Solana dapp transaction in transaction confirmation view, transaction details view and transaction summary rows. */
-"wallet.solanaDappTransactionTitle" = "批准交易";
+"wallet.solanaDappTransactionTitle" = "核准交易";
 
 /* The title displayed above the Token Program Freeze Account instruction type for Solana Instruction details. */
-"wallet.solanaFreezeAccountInstructionName" = "冻结帐户";
+"wallet.solanaFreezeAccountInstructionName" = "凍結帳戶";
 
 /* The title displayed above the Token Program InitializeAccount2 instruction type for Solana Instruction details. */
-"wallet.solanaInitializeAccount2InstructionName" = "初始化帐户 2";
+"wallet.solanaInitializeAccount2InstructionName" = "初始化帳戶 2";
 
 /* The title displayed above the Token Program InitializeAccount3 instruction type for Solana Instruction details. */
-"wallet.solanaInitializeAccount3InstructionName" = "初始化帐户 3";
+"wallet.solanaInitializeAccount3InstructionName" = "初始化帳戶 3";
 
 /* The title displayed above the Token Program InitializeAccount instruction type for Solana Instruction details. */
-"wallet.solanaInitializeAccountInstructionName" = "初始化帐户";
+"wallet.solanaInitializeAccountInstructionName" = "初始化帳戶";
 
 /* The title displayed above the Token Program InitializeMint2 instruction type for Solana Instruction details. */
-"wallet.solanaInitializeMint2InstructionName" = "初始化铸币 2";
+"wallet.solanaInitializeMint2InstructionName" = "初始化鑄幣 2";
 
 /* The title displayed above the Token Program InitializeMint instruction type for Solana Instruction details. */
-"wallet.solanaInitializeMintInstructionName" = "初始化铸币";
+"wallet.solanaInitializeMintInstructionName" = "初始化鑄幣";
 
 /* The title displayed above the Token Program InitializeMultisig2 instruction type for Solana Instruction details. */
-"wallet.solanaInitializeMultisig2InstructionName" = "初始化多重签名 2";
+"wallet.solanaInitializeMultisig2InstructionName" = "初始化多重簽名 2";
 
 /* The title displayed above the Token Program InitializeMultisig instruction type for Solana Instruction details. */
-"wallet.solanaInitializeMultisigInstructionName" = "初始化多重签名";
+"wallet.solanaInitializeMultisigInstructionName" = "初始化多重簽名";
 
 /* The title displayed above the System Program InitializeNonceAccount instruction type for Solana Instruction details. */
-"wallet.solanaInitializeNonceAccountInstructionName" = "初始化随机帐户";
+"wallet.solanaInitializeNonceAccountInstructionName" = "初始化隨機帳戶";
 
 /* The label displayed beside the Accounts for an instruction type we don't support decoding. Ex. "Accounts: <solana_public_key>" */
 "wallet.solanaInstructionAccounts" = "账户";
@@ -1694,58 +1721,58 @@
 "wallet.solanaInstructionAddressLookupIndex" = "地址查询表索引";
 
 /* The label displayed beside the Data for an instruction type we don't support decoding. Ex. "Data: [1, 20, 3, 5, 50]]" */
-"wallet.solanaInstructionData" = "数据";
+"wallet.solanaInstructionData" = "資料";
 
 /* The label displayed beside the Program Id for an instruction type we don't support decoding. Ex. "Program Id: 1111223344aabbccd" */
 "wallet.solanaInstructionProgramId" = "程式 ID";
 
 /* The title displayed above the Token Program Mint To Checked instruction type for Solana Instruction details. */
-"wallet.solanaMintToCheckedInstructionName" = "铸造已检查";
+"wallet.solanaMintToCheckedInstructionName" = "鑄造已檢查";
 
 /* The title displayed above the Token Program Mint To instruction type for Solana Instruction details. */
-"wallet.solanaMintToInstructionName" = "铸造为";
+"wallet.solanaMintToInstructionName" = "鑄造為";
 
 /* The title displayed above the Token Program Revoke instruction type for Solana Instruction details. */
 "wallet.solanaRevokeInstructionName" = "撤銷";
 
 /* The title displayed above the Token Program Set Authority instruction type for Solana Instruction details. */
-"wallet.solanaSetAuthorityInstructionName" = "设置授权方";
+"wallet.solanaSetAuthorityInstructionName" = "設定授權方";
 
 /* The title on top of a separater, and the transaction details will be displayed below the separater. */
-"wallet.solanaSignTransactionDetails" = "详细信息";
+"wallet.solanaSignTransactionDetails" = "详情";
 
 /* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
-"wallet.solanaSignTransactionWarning" = "请注意，Brave 无法验证您签名后会发生什么。签名可以授权他人进行帐户的几乎任何操作，包括（但不限于）将您的帐户和加密资产的完全控制权交给提出请求的网站。因此只有在您确定要采取此操作并信任请求的网站时才签名。";
+"wallet.solanaSignTransactionWarning" = "請注意，Brave 無法驗證您簽名後會發生什麼。簽名可以授權別人對您的帳戶進行幾乎任何操作或代表您，包括（但不限於）將您的帳戶和加密貨幣資產的完全控制權交給提出請求的網站。因此只有在您確定要採取此操作並信任請求的網站時才簽名。";
 
 /* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
-"wallet.solanaSwapTransactionTitle" = "兑换交易";
+"wallet.solanaSwapTransactionTitle" = "兌換交易";
 
 /* The title displayed above the Token Program Sync Native instruction type for Solana Instruction details. */
 "wallet.solanaSyncNativeInstructionName" = "同步原生";
 
 /* The title displayed beside the name of any Solana System Program instruction type. '%@' will be replaced with the instruction's name, ex. "System Program - Transfer" */
-"wallet.solanaSystemProgramName" = "系统程序 - %@";
+"wallet.solanaSystemProgramName" = "系統程式 - %@";
 
 /* The title displayed above the Token Program Thaw Account instruction type for Solana Instruction details. */
-"wallet.solanaThawAccountInstructionName" = "解冻帐户";
+"wallet.solanaThawAccountInstructionName" = "解凍帳戶";
 
 /* The title displayed beside the name of any Solana Token Program instruction type. '%@' will be replaced with the instruction's name, ex. "Token Program - Initialize Mint" */
-"wallet.solanaTokenProgramName" = "代币方案 - %@";
+"wallet.solanaTokenProgramName" = "代幣方案 - %@";
 
 /* The title displayed above the Token Program Transfer Checked instruction type for Solana Instruction details. */
-"wallet.solanaTransferCheckedInstructionName" = "转账已检查";
+"wallet.solanaTransferCheckedInstructionName" = "轉帳已檢查";
 
 /* The title displayed above the System Program & Token Program Transfer instruction type for Solana Instruction details. */
-"wallet.solanaTransferInstructionName" = "转账";
+"wallet.solanaTransferInstructionName" = "轉帳";
 
 /* The title displayed above the System Program TransferWithSeed instruction type for Solana Instruction details. */
-"wallet.solanaTransferWithSeedInstructionName" = "带种子转账";
+"wallet.solanaTransferWithSeedInstructionName" = "以種子轉帳";
 
 /* The title displayed above an unknown instruction type for Solana Instruction details. */
-"wallet.solanaUnknownInstructionName" = "未知说明类型";
+"wallet.solanaUnknownInstructionName" = "不明說明類型";
 
 /* The title displayed above the System Program UpgradeNonceAccount instruction type for Solana Instruction details. */
-"wallet.solanaUpgradeNonceAccountInstructionName" = "升级随机账户";
+"wallet.solanaUpgradeNonceAccountInstructionName" = "升級隨機帳戶";
 
 /* The title displayed above the System Program WithdrawNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaWithdrawNonceAccountInstructionName" = "从 Nonce 账户提款";
@@ -1756,17 +1783,23 @@
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "资产分类";
 
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "耗时比预期长？";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "加速";
+
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "加速";
 
 /* The description of one of the 'Stripe' provider. */
-"wallet.stripeNetworkProviderDescription" = "使用信用卡、签帐金融卡或银行账户支付。";
+"wallet.stripeNetworkProviderDescription" = "使用信用卡、簽帳金融卡或銀行帳戶支付。";
 
 /* The name of one of the on ramp providers where the first '%@' is `Link` and second '%@' is `Stripe` product names. */
 "wallet.stripeNetworkProviderName" = "%2$@ 的 %1$@";
 
 /* A description explains submitted transaction has been sent to the netwokr and awaits confirmation. */
-"wallet.submittedTransactionDescription" = "交易已成功發送至網路，等待確認。";
+"wallet.submittedTransactionDescription" = "交易已被成功地发送到网络等待确认。";
 
 /* A title of transaction signed status view indicating this transaction has been submitted to the network. */
 "wallet.submittedTransactionTitle" = "交易已提交";
@@ -1775,13 +1808,13 @@
 "wallet.swap" = "兑换";
 
 /* The description displayed below the name of the token being swapped from and to. Tthe '%@' will be the token's network name. */
-"wallet.swapConfirmationNetworkDesc" = "在 %@ 上";
+"wallet.swapConfirmationNetworkDesc" = "日期：%@";
 
 /* A title displayed in transaction confirmation above the network / gas fee for a Swap transaction. */
-"wallet.swapConfirmationNetworkFee" = "网络费用";
+"wallet.swapConfirmationNetworkFee" = "網路費";
 
 /* A title displayed in transaction confirmation navigation bar for a Swap transaction. */
-"wallet.swapConfirmationTitle" = "确认订单";
+"wallet.swapConfirmationTitle" = "確認訂單";
 
 /* A title displayed in transaction confirmation above the token being swapped for in a Swap transaction. */
 "wallet.swapConfirmationYoullReceive" = "您将收到";
@@ -1820,10 +1853,10 @@
 "wallet.swapDescription" = "兑换代币和资产";
 
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
-"wallet.swapDexAggrigatorDisclaimer" = "%1$@ 会处理 %2$@ 地址和 IP 地址，以执行交易（包括取得报价）。%3$@ 只会将此资料用于交易处理。";
+"wallet.swapDexAggrigatorDisclaimer" = "%1$@ 會處理 %2$@ 位址和 IP 位址，以執行交易 (包括取得報價)。%3$@ 只會將此資料用於交易處理。";
 
 /* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
-"wallet.swapDexAggrigatorNote" = "Brave 使用 %@ 作为 DEX 聚合器。";
+"wallet.swapDexAggrigatorNote" = "Brave 使用 %@ 作為 DEX 聚合器。";
 
 /* The 'Limit' order type. Limit orders only execute when the price requirements are met */
 "wallet.swapLimitOrderType" = "限制";
@@ -1838,22 +1871,22 @@
 "wallet.swapSelectedTokens" = "兑换选中的代币";
 
 /* The title of the button to approve switching the network on a switch network request from a dapps website. */
-"wallet.switchNetworkButtonTitle" = "切换";
+"wallet.switchNetworkButtonTitle" = "切換";
 
 /* The description of the view shown over a dapps website that describes what switching the network will do. */
-"wallet.switchNetworkDescription" = "这会将网络切换到之前添加的网络";
+"wallet.switchNetworkDescription" = "這會將網路切換至先前新增的網路";
 
 /* The subtitle of the view shown over a dapps website that requests permission from the user to change the current network. */
-"wallet.switchNetworkSubtitle" = "允许此站点切换网络？";
+"wallet.switchNetworkSubtitle" = "允許這個網站切換網路？";
 
 /* The title of the view shown over a dapps website that requests the user change the current network. */
-"wallet.switchNetworkTitle" = "切换网络";
+"wallet.switchNetworkTitle" = "切換網路";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "今天";
 
 /* A title that will be displayed on top of the text field for users to input the custom token address */
-"wallet.tokenAddress" = "代币地址";
+"wallet.tokenAddress" = "代幣位址";
 
 /* A title that will be displayed on top of the text field for users to input the custom token mint address */
 "wallet.tokenMintAddress" = "Mint 地址";
@@ -1877,7 +1910,7 @@
 "wallet.transactionApproveSymbolTitle" = "已批准 %1$@ %2$@";
 
 /* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
-"wallet.transactionBacklogAcknowledgement" = "清除并替换未完成的交易";
+"wallet.transactionBacklogAcknowledgement" = "清除&替换未完成的交易";
 
 /* Additional information, when users have previously clear and replace the incomplete transaction(s) */
 "wallet.transactionBacklogAfterReplacement" = "目前无需额外的操作。请等待未确认的交易清除。";
@@ -1895,25 +1928,25 @@
 "wallet.transactionDetailsDateTitle" = "日期";
 
 /* The label for the market price of the asset used in a cryptocurrency transaction. Appears next to the formatted currency such as $1523.50 */
-"wallet.transactionDetailsMarketPriceTitle" = "市场价";
+"wallet.transactionDetailsMarketPriceTitle" = "市價";
 
 /* The label for the network a transaction occurred on. Appears next to 'Ethereum Mainnet', 'Rinkeby Test Network', 'Ropsten Test Network', etc. */
-"wallet.transactionDetailsNetworkTitle" = "网络";
+"wallet.transactionDetailsNetworkTitle" = "網路";
 
 /* The label for the transaction status, which describes the how far along a transaction is to completing. Appears next to the words such as 'Approved', 'Submitted', 'Pending', etc. */
 "wallet.transactionDetailsStatusTitle" = "状态";
 
 /* The title for the view displaying the details of a cryptocurrency transaction. */
-"wallet.transactionDetailsTitle" = "交易明细";
+"wallet.transactionDetailsTitle" = "交易明細";
 
 /* The label for the transaction hash (the identifier) of a cryptocurrency transaction. Appears next to a button that opens a URL for the transaction. */
 "wallet.transactionDetailsTransactionHashTitle" = "交易哈希";
 
 /* The label for the fees involved in a cryptocurrency transaction. Appears next to the value transferred and the currency amount. */
-"wallet.transactionDetailsTxFeeTitle" = "交易费";
+"wallet.transactionDetailsTxFeeTitle" = "交易手續費";
 
 /* A title displayed beside a number describing the cost of the transaction in SOL for any Solana transaction */
-"wallet.transactionFee" = "交易費";
+"wallet.transactionFee" = "交易费";
 
 /* A VoiceOver label that will be read out when a user focuses a transactions "from address" and "to address" labels. "%@" will be replaced with either an account name or a truncated ethereum address such as "Account 1" or "0x1234***3003" */
 "wallet.transactionFromToAccessibilityLabel" = "自：%1$@。至：%2$@";
@@ -1943,7 +1976,7 @@
 "wallet.transactionStatusRejected" = "已拒绝";
 
 /* A status that explains that the transaction has been signed. */
-"wallet.transactionStatusSigned" = "已簽署";
+"wallet.transactionStatusSigned" = "已签名";
 
 /* A status that explains that the transaction has been submitted to the blockchain */
 "wallet.transactionStatusSubmitted" = "已提交";
@@ -1970,7 +2003,7 @@
 "wallet.transactionSummarySwapOn" = "调换";
 
 /* A title shown for a swap transaction. The first '%@' becomes the from amount, the second '%@' becomes the symbol for the from currency, the third '%@' becomes the to amount, and the last '%@' becomes the to symbol. For example: "Swapped 0.0054 ETH to 1.5 DAI" */
-"wallet.transactionSwappedTitle" = "将 %1$@ %2$@ 换成 %3$@ %4$@";
+"wallet.transactionSwappedTitle" = "%1$@ %2$@ 已兌換成 %3$@ %4$@";
 
 /* Explains that this transaction is an ERC20 approval transaction and is displayed among other transaction info */
 "wallet.transactionTypeApprove" = "审批";
@@ -1979,7 +2012,7 @@
 "wallet.transactionUnknownSendTitle" = "已发送 %@";
 
 /* The description of one of the 'Transak' provider. */
-"wallet.transakProviderDescription" = "通过您的银行账户进行即时购买。费用较低。";
+"wallet.transakProviderDescription" = "使用您的銀行帳戶即時購買。手續費較低。";
 
 /* The name of one of the on ramp provider. */
 "wallet.transakProviderName" = "Transak";
@@ -2023,11 +2056,63 @@
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Token 转账";
 
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "正在批准";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "已完成";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "已批准，详见您的";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "尝试批准时出现错误";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "无法批准";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "在";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "正在傳送";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "尝试发送时出现错误";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "无法发送";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "已发送至账户";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "交易已签署，将由 dapps 发送至网络并等待确认。";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "您可以安全退出此屏幕。";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "已添加到您的";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "正在交换";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "无法交换";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "至";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "在活动中查看";
+
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave 将使用 Infura 来解析 Unstoppable Domains 上的.crypto（还有 %1$@）域名。Brave 将隐藏你的 IP 地址。如果你启用这个功能，Infura 将看到有人试图访问这些域名，但没有其他内容。查看 Infura 的 <a href=%2$@>%3$@</a> 和 <a href=%4$@>%5$@</a>。";
+"wallet.udDomainInterstitialPageDescription" = "Brave 将使用 Infura 来解析 Unstoppable Domains 上的 .crypto (以及 %1$@) 域名。如果您启用这项功能，Infura 将看到有人试图访问这些域名，但不会看到其他信息。查看 Infura 的 <a href=%2$@>%3$@</a> 和<a href=%4$@>%5$@</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
-"wallet.udDomainInterstitialPageTitle" = "在 Brave 中启用支援 Unstoppable Domains？";
+"wallet.udDomainInterstitialPageTitle" = "是否在 Brave 中启用对不可阻挡域的支持？";
 
 /* The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains. */
 "wallet.udResolveMethodDescription" = "[了解更多](%@) Unstoppable Domains 的隐私考虑。";
@@ -2035,11 +2120,17 @@
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "解析 Unstoppable Domains 这个域名";
 
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "无法取消";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "无法加速";
+
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "未知错误";
 
 /* The title of the button in wallet panel when wallet is locked. Users can click it to open full screen unlock wallet screen. */
-"wallet.unlockWallet" = "解鎖錢包";
+"wallet.unlockWallet" = "解锁钱包";
 
 /* The button title of the unlock wallet button. As in to enter a password and gain access to your wallet's assets. */
 "wallet.unlockWalletButtonTitle" = "解锁";
@@ -2048,7 +2139,7 @@
 "wallet.unlockWalletDescription" = "输入密码以解锁钱包";
 
 /* The description displayed below the token name on each row for the user assets. The first '%@' will be the token symbol, and the second '%@' will be the token's network name. */
-"wallet.userAssetSymbolNetwork" = "%2$@上的 %1$@";
+"wallet.userAssetSymbolNetwork" = "%2$@上的%1$@";
 
 /* The label displayed in details for Bitcoin Transaction Confirmation details panel beside/above the value. */
 "wallet.valueLabel" = "价值";
@@ -2066,7 +2157,7 @@
 "wallet.viewDetails" = "查看详情";
 
 /* The title for View Network Details Screen shown when a user views the details of a network they are requested to add or switch to by a dapps website. */
-"wallet.viewNetworkDetailsTitle" = "网络详细信息";
+"wallet.viewNetworkDetailsTitle" = "網路詳細資訊";
 
 /* A button title to view a given transaction on the block explorer for the current network/chain. */
 "wallet.viewOnBlockExplorer" = "查看拦截浏览器";
@@ -2081,10 +2172,10 @@
 "wallet.walletFullScreenAccessibilityTitle" = "全屏打开钱包";
 
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently blocking all the accesses to the solana provider APIs. */
-"wallet.walletPanelBlocked" = "被阻止";
+"wallet.walletPanelBlocked" = "遭封鎖";
 
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently not connected any his/her wallet account to the dapp. */
-"wallet.walletPanelConnect" = "连接";
+"wallet.walletPanelConnect" = "連線";
 
 /* The title of the button for users to click to go to edit site connection screen. This title indicates the user is currently connected his/her wallet account to the dapp. The title will be displayed to the right of a checkmark. */
 "wallet.walletPanelConnected" = "已連線";
@@ -2096,13 +2187,13 @@
 "wallet.walletPanelSetupWalletDescription" = "使用此面板安全地访问 web3 及您的所有加密资产。";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
-"wallet.walletSettings" = "電子錢包設定";
+"wallet.walletSettings" = "钱包设置";
 
 /* The value shown when selecting the default wallet as none / no wallet in wallet settings, or when grouping Portfolio assets. */
 "wallet.walletTypeNone" = "无";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
-"wallet.warningAlertConfirmation" = "您确定吗？";
+"wallet.warningAlertConfirmation" = "确定吗？";
 
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";
@@ -2120,19 +2211,19 @@
 "wallet.web3DomainOptionAsk" = "询问";
 
 /* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
-"wallet.web3DomainOptionDisabled" = "已阻止";
+"wallet.web3DomainOptionDisabled" = "禁用";
 
 /* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
-"wallet.web3DomainOptionEnabled" = "启用";
+"wallet.web3DomainOptionEnabled" = "已啟用";
 
 /* The header for the options to resolve Solana Name service domain names. */
 "wallet.web3DomainOptionsHeader" = "Web3 域";
 
 /* The title for the options to resolve Solana Name service domain names. */
-"wallet.web3DomainOptionsTitle" = "解析 Solana 名称服务 (SNS) 域名";
+"wallet.web3DomainOptionsTitle" = "解析 Solana Name Service (SNS) 網域名稱";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Ethereum provider API. */
-"wallet.web3PreferencesAllowEthProviderAccess" = "网站可以请求访问您的 Ethereum 钱包";
+"wallet.web3PreferencesAllowEthProviderAccess" = "網站可以請求造訪您的 Ethereum 錢包";
 
 /* The title for the entry displaying the preferred option to allow web3 sites to access the Solana provider API. */
 "wallet.web3PreferencesAllowSolProviderAccess" = "網站可以請求造訪您的 Solana 錢包";
@@ -2144,13 +2235,13 @@
 "wallet.web3PreferencesDefaultSolWallet" = "默认索拉纳钱包";
 
 /* The title for the entry displaying the preferred option to display web3 site notifications. */
-"wallet.web3PreferencesDisplayWeb3Notifications" = "显示 Web3 通知";
+"wallet.web3PreferencesDisplayWeb3Notifications" = "顯示 Web3 通知";
 
 /* The title for the entry that by clicking will direct users to the screen to manage web3 sites account connections, and the title for the Manage Site Connections screen. */
-"wallet.web3PreferencesManageSiteConnections" = "管理站点连接";
+"wallet.web3PreferencesManageSiteConnections" = "管理網站連線";
 
 /* The section title for users to set up preferences for interation with web3 sites. */
-"wallet.web3PreferencesSectionTitle" = "Web3 首选项";
+"wallet.web3PreferencesSectionTitle" = "Web3 偏好設定";
 
 /* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscovery" = "启用 NFT 发现";

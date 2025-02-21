@@ -13,7 +13,7 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kIssuersFeature);
 
-inline constexpr base::FeatureParam<int> kMaximumTokenIssuerPublicKeys{
+inline constexpr base::FeatureParam<size_t> kMaximumTokenIssuerPublicKeys{
     &kIssuersFeature, "maximum_token_issuer_public_keys", 6};
 
 }  // namespace brave_ads

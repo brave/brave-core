@@ -92,10 +92,16 @@
 "ScanQRCodeInvalidDataErrorMessage" = "Os dados são inválidos";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Permita que o Brave acesse a câmera do seu dispositivo em Configurações > Privacidade > Câmera.";
+"ScanQRCodePermissionErrorMessage" = "Permita que o Brave acesse a câmera do seu dispositivo em Configurações -> Privacidade -> Câmera.";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Ler código QR";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Obrigado por apoiar a Pesquisa Brave clicando em um anúncio privado. Ao contrário da Big Tech, medimos o desempenho de anúncios anonimamente para preservar sua privacidade.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Saiba mais/opções de desativação";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Geral";

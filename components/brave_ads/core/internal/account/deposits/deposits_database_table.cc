@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -46,7 +47,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& [creative_instance_id, deposit] : deposits) {
     BindColumnString(mojom_db_action, index++, creative_instance_id);
     BindColumnDouble(mojom_db_action, index++, deposit.value);

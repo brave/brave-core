@@ -274,8 +274,26 @@
 /* The description of a buy button on the buy/send/swap/deposit modal */
 "wallet.buyDescription" = "Beli kripto menggunakan Apple Pay, kad kredit atau debit melalui Wyre.";
 
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to approve but cancelled after. For exapmple: 10 ETH allowance has not been approve under account 0x345...436 */
+"wallet.cancelERC20ApprovalTxRevertMsg" = "elaun belum diluluskan";
+
+/* A description of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionDescription" = "Permintaan pembatalan telah dihantar";
+
+/* A title of transaction status view indicating this transaction is submitted to chain which is cancelling another transaction. */
+"wallet.cancellingTransactionTitle" = "Membatalkan transaksi";
+
 /* The title for the button to cancel a submitted transaction. */
 "wallet.cancelTransactionButtonTitle" = "Batalkan Transaksi";
+
+/* The button title that for user to cancel a submitted transaction inside transaction status view. */
+"wallet.cancelTransactionStatusButtonTitle" = "Batalkan Transaksi";
+
+/* The description inside the view when asking user to confirm they want to cancel a transaction. */
+"wallet.cancelTransactionStatusConfirmationDescription" = "Transaksi baharu akan dibuat untuk membatalkan transaksi anda yang sedia ada";
+
+/* A part of the message in a transaction status screen. It will follow the amount of tokens that users were attempt to send but cancelled after. For exapmple: 10 ETH has been reverted to account 0x345...436 */
+"wallet.cancelTxRevertMsg" = "telah dikembalikan kepada";
 
 /* The x-axis label on an asset or portfolio chart describing that x-axis values are defined by the date of the price */
 "wallet.chartAxisDateLabel" = "Tarikh";
@@ -335,7 +353,7 @@
 "wallet.coinTypeUnknown" = "Tidak diketahui";
 
 /* 1. A button title to confirm a transaction. It is shown below details about a given transaction. 2. A button title to confirm to grant permission of a dapp connect request. It is displayed at the bottom of last step to grant permission in new site connection screen. */
-"wallet.confirm" = "Sahkan";
+"wallet.confirm" = "Sah";
 
 /* The subtitle shown on transaction confirmation for an ERC 20 Approve transaction where the '%@' will be the name of the symbol being approved. For example: "By granting this permission, you are allowing this app to withdraw your DAI and automate transactions for you." */
 "wallet.confirmationViewAllowSpendSubtitle" = "Dengan memberikan keizinan ini, anda membenarkan apl ini mengeluarkan %@ anda dan mengautomatikkan transaksi untuk anda.";
@@ -366,6 +384,12 @@
 
 /* The warning shown on transaction confirmation for an ERC 20 Approve transaction when the proposed allowance is unlimited. */
 "wallet.confirmationViewUnlimitedWarning" = "Kelulusan tanpa had diminta";
+
+/* When a cancellation transaction has been confirmed, we will display which account the amount of value has been reverted to. For example: 10 ETH has been reverted to account 0x123...456 */
+"wallet.confirmedTransactionCancellationAccount" = "akaun";
+
+/* A title of transaction status view indicating this transaction is confirmed on the chain which has cancelled another transaction. */
+"wallet.confirmedTransactionCancellationTitle" = "Transaksi dibatalkan!";
 
 /* A title of a button which will close this transaction status view. */
 "wallet.confirmedTransactionCloseButtonTitle" = "Tutup";
@@ -506,7 +530,7 @@
 "wallet.dappsSettingsConnectedSitesSectionTitle" = "DApps yang tersambung";
 
 /* The title of the section that will display settings for default wallet and dapp provider api access permission */
-"wallet.dappsSettingsGeneralSectionTitle" = "Umum";
+"wallet.dappsSettingsGeneralSectionTitle" = "Umu";
 
 /* The navigation title of the settings screen for each Dapp. '%@' will be relpaced by the name of the coin type. For example, the title could 'Ethereum Settings', 'Solana Settings' etc. */
 "wallet.dappsSettingsNavTitle" = "Tetapan %@";
@@ -953,7 +977,7 @@
 "wallet.manageSiteConnectionsConfirmAlertMessage" = "Ini akan mengalih keluar semua kebenaran sambungan Wallet untuk semua laman web.";
 
 /* The title of the confirmation button in the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
-"wallet.manageSiteConnectionsConfirmAlertRemove" = "Alih Keluar";
+"wallet.manageSiteConnectionsConfirmAlertRemove" = "Alih keluar";
 
 /* The title of the alert to confirm the users wants to remove all site connections, shown on the screen to manage web3 sites account connections. */
 "wallet.manageSiteConnectionsConfirmAlertTitle" = "Alih keluar semua kebenaran?";
@@ -1162,6 +1186,9 @@
 /* The title of the last step of creating a new wallet. */
 "wallet.onbordingCompletedTitle" = "Anda sudah bersedia!";
 
+/* The message will be displayed when a cancel/speed-up tx has been dropped or replaced on chain. */
+"wallet.originalTransactionIsConfirmed" = "Transaksi asal telah disahkan.";
+
 /* The label read out when a user is using VoiceOver and highlights the ellipsis button on the portfolio page */
 "wallet.otherWalletActionsAccessibilityTitle" = "Tindakan dompet yang lain";
 
@@ -1274,7 +1301,7 @@
 "wallet.restoreWalletBackButtonTitle" = "Pulihkan Dompet";
 
 /* The button title for showing the restore wallet screen. As in to use your recovery phrase to bring a wallet into Brave */
-"wallet.restoreWalletButtonTitle" = "Pulihkan";
+"wallet.restoreWalletButtonTitle" = "Menyimpan semula";
 
 /* A button title when 12 recovery-word grids are displayed for users to restore regular wallet. Users can click this button to display the 24 recovery-word grids to restore legacy wallet. */
 "wallet.restoreWalletImportFromLegacyBraveWallet" = "Saya mempunyai frasa pemulihan 24 perkataan";
@@ -1325,7 +1352,7 @@
 "wallet.screenshotDetectedTitle" = "Tangkapan skrin dikesan";
 
 /* The label as a placeholder in search fields. */
-"wallet.search" = "Carian";
+"wallet.search" = "Cari";
 
 /* The title of the asset search page */
 "wallet.searchTitle" = "Cari aset";
@@ -1448,7 +1475,7 @@
 "wallet.settingsResetButtonTitle" = "Tetapkan Semula dan Kosongkan Data Dompet";
 
 /* The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
-"wallet.settingsResetTransactionAlertButtonTitle" = "Tetapkan semula";
+"wallet.settingsResetTransactionAlertButtonTitle" = "Tetap semula";
 
 /* The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0 */
 "wallet.settingsResetTransactionAlertMessage" = "Pilihan ini kebanyakannya digunakan oleh pembangun yang menjalankan pelayan ujian setempat";
@@ -1756,6 +1783,12 @@
 /* The label of the sort option that sorts assets by their fiat value. Used in Portfolio/NFT filters and display settings. */
 "wallet.sortAssetsTitle" = "Isih Aset";
 
+/* The title of the banner which will be displayed at the top of the transaction status screen when transaction is in submitted status and user wants to speed it up. */
+"wallet.speedUpBannerTitle" = "Mengambil masa lebih lama daripada yang dijangka?";
+
+/* The button title for the button inside speed up banner. */
+"wallet.speedUpButtonTitle" = "Percepatkan";
+
 /* The title for the button to speed up a submitted transaction. */
 "wallet.speedUpTransactionButtonTitle" = "Percepatkan";
 
@@ -1850,7 +1883,7 @@
 "wallet.switchNetworkTitle" = "Tukar Rangkaian";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
-"wallet.today" = "Hari ini";
+"wallet.today" = "Hari Ini";
 
 /* A title that will be displayed on top of the text field for users to input the custom token address */
 "wallet.tokenAddress" = "Alamat token";
@@ -2023,6 +2056,58 @@
 /* Blockchain function name for non-native token transfers. */
 "wallet.txFunctionTypeTokenTransfer" = "Token Transfer";
 
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a ERC20 Approval transaction waitings for getting completed. */
+"wallet.txStatusApproving" = "Meluluskan";
+
+/* The status inside transaction status screen, indicates this transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusCompleted" = "Selesai";
+
+/* A message explains an ERC20 Approval transaction is confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalMsg" = "telah diluluskan pada";
+
+/* The message after the title when an ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorMsg" = "Terdapat ralat semasa cuba meluluskan";
+
+/* The title of the message when a ERC20 Approval transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusERC20ApprovalTxErrorTitle" = "Tidak dapat meluluskan";
+
+/* The word of preposition. Indicates some ERC20 token is approved on the following account. For example: Approving 0.1 ETH `on` Account 1. */
+"wallet.txStatusOn" = "pada";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a send transaction waitings for getting completed. */
+"wallet.txStatusSending" = "Menghantar";
+
+/* The message after the title when a send transaction failed to be confirmed on the blockchain.
+The message after the title when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorMsg" = "Terdapat ralat semasa cuba menghantar";
+
+/* The title of the message when a send transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSendTxErrorTitle" = "Tidak dapat menghantar";
+
+/* A message explains a send transaction is confirmed on the blockchain. */
+"wallet.txStatusSentMsg" = "telah dihantar ke akaun";
+
+/* The message when a sign transaction is completed/confirmed on the blockchain. */
+"wallet.txStatusSignedConfirmedMsg" = "Transaksi telah ditandatangani dan akan dihantar ke rangkaian oleh dapp dan menunggu pengesahan.";
+
+/* The text in the disclosure view in transaction status screen. */
+"wallet.txStatusSubmittedDisclosure" = "Anda boleh menutup skrin dengan selamat.";
+
+/* A message explains an ETH Swap transaction is confirmed on the blockchain. */
+"wallet.txStatusSwappedMsg" = "telah ditambahkan ke";
+
+/* The transaction type (verb) in the submitted transaction status screen. This copy indicates this is a swap transaction waitings for getting completed. */
+"wallet.txStatusSwapping" = "Membuat Pertukaran";
+
+/* The title of the message when a swap transaction failed to be confirmed on the blockchain. */
+"wallet.txStatusSwapTxErrorTitle" = "Tidak dapay menukar";
+
+/* The word of preposition. Indicates the following account is the account receiving a certain amount of tokens. For example: Sending 0.1 ETH `to` Account 1. */
+"wallet.txStatusTo" = "kepada";
+
+/* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
+"wallet.txStatusViewInActivity" = "Lihat dalam Aktiviti";
+
 /* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
 "wallet.udDomainInterstitialPageDescription" = "Brave akan menggunakan Infura untuk menyelesaikan nama domain .crypto (dan juga %1$@) yang terdapat pada Domain yang Tidak Dapat Dihentikan. Brave menyembunyikan alamat IP anda. Jika anda mendayakan ciri ini, Infura dapat lihat bahawa ada orang cuba melawat domain ini tetapi setakat itu sahaja. Lihat <a href=%2$@>%3$@</a> dan <a href=%4$@>%5$@</a> Infura.";
 
@@ -2034,6 +2119,12 @@
 
 /* The title for the options to resolve Unstoppable Domains domain names. */
 "wallet.udResolveMethodTitle" = "Selesaikan Nama Domain bagi Domain yang Tidak Dapat Dihentikan";
+
+/* The title will be displayed when a cancel tx has been dropped or replaced on chain. */
+"wallet.unableToCancel" = "Tidak dapat membatalkan";
+
+/* The title will be displayed when a speed-up tx has been dropped or replaced on chain. */
+"wallet.unableToSpeedUp" = "Tidak dapat mempercepatkan";
 
 /* An error message displayed when an unspecified problem occurs. */
 "wallet.unknownError" = "Ralat tidak diketahui";
@@ -2102,7 +2193,7 @@
 "wallet.walletTypeNone" = "Tiada";
 
 /* The message of a confirmation dialog when attempting to remove an account. Or the title of a confirmation dialog when attempting to remove all wallet connection for one or more websites */
-"wallet.warningAlertConfirmation" = "Anda pasti?";
+"wallet.warningAlertConfirmation" = "Adakah anda pasti?";
 
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";
@@ -2120,7 +2211,7 @@
 "wallet.web3DomainOptionAsk" = "Tanya";
 
 /* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Disabled' means Brave will disable resolving ENS/SNS domain name and IPFS scheme url. */
-"wallet.web3DomainOptionDisabled" = "Dinyahaktif";
+"wallet.web3DomainOptionDisabled" = "Dinyahdayakan";
 
 /* One of the options for Brave to handle Ethereum/Solana Name Service domain name and IPFS scheme url. 'Enabled' means Brave will enable resolving ENS/SNS domain name and IPFS scheme url. */
 "wallet.web3DomainOptionEnabled" = "Mendayakan";

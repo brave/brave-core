@@ -1,9 +1,9 @@
 Name: tracing
 URL: https://crates.io/crates/tracing
-Version: 0.1.40
-Revision: 15600a3a67c418f53cb80ff21da57d89a5de0486
+Version: 0.1.41
+Revision: 0ca78870815a34a345a908f48db057057e8803d2
 License: MIT
-License File: //brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/LICENSE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.41/LICENSE
 Shipped: yes
 Security Critical: yes
 

@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - Direct adjacent combinator and classes (css3-modsel-45c)",
-  "selectors": {
-    ".fail + div": "css3-modsel-45c.expected0.html",
-    ".control": "css3-modsel-45c.expected1.html"
-  },
-  "src": "css3-modsel-45c.src.html"
-}

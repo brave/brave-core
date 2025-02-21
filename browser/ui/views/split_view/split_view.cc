@@ -12,6 +12,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/split_view/split_view_layout_manager.h"
 #include "brave/browser/ui/views/split_view/split_view_location_bar.h"
@@ -27,7 +28,10 @@
 #include "ui/views/background.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/webview/webview.h"
-#include "ui/views/layout/fill_layout.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#endif
 
 namespace {
 
@@ -55,6 +59,21 @@ class ActivatableContentsWebView : public ContentsWebView {
 BEGIN_METADATA(ActivatableContentsWebView)
 END_METADATA
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+
+bool IsTabDistilled(tabs::TabHandle tab_handle) {
+  if (!tab_handle.Get() || !tab_handle.Get()->GetContents()) {
+    return false;
+  }
+  if (auto* th = speedreader::SpeedreaderTabHelper::FromWebContents(
+          tab_handle.Get()->GetContents())) {
+    return speedreader::DistillStates::IsDistilled(th->PageDistillState());
+  }
+  return false;
+}
+
+#endif
+
 }  // namespace
 
 SplitView::SplitView(Browser& browser,
@@ -64,7 +83,7 @@ SplitView::SplitView(Browser& browser,
       contents_container_(contents_container),
       contents_web_view_(contents_web_view) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
-  SplitViewBrowserData::CreateForBrowser(&browser_.get());
+  SplitViewBrowserData::CreateForBrowser(base::to_address(browser_));
 
   // Re-parent the |contents_container| to this view.
   AddChildView(
@@ -84,10 +103,17 @@ SplitView::SplitView(Browser& browser,
   split_view_separator_ = AddChildView(
       std::make_unique<SplitViewSeparator>(base::to_address(browser_)));
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  secondary_reader_mode_toolbar_ = secondary_contents_container_->AddChildView(
+      std::make_unique<ReaderModeToolbarView>(base::to_address(browser_)));
+  secondary_reader_mode_toolbar_->SetDelegate(this);
+
   secondary_contents_container_->SetLayoutManager(
-      std::make_unique<ContentsLayoutManager>(secondary_devtools_web_view_,
-                                              secondary_contents_web_view_,
-                                              secondary_contents_scrim_view_));
+      std::make_unique<BraveContentsLayoutManager>(
+          secondary_devtools_web_view_, secondary_contents_web_view_,
+          secondary_contents_scrim_view_, nullptr, nullptr,
+          secondary_reader_mode_toolbar_));
+#endif
 
   SetLayoutManager(std::make_unique<SplitViewLayoutManager>(
       contents_container_, secondary_contents_container_,
@@ -140,6 +166,10 @@ void SplitView::DidChangeActiveWebContents(BrowserViewKey,
   // Update secondary webview & UI after changing active WebContents.
   UpdateSplitViewSizeDelta(old_contents, new_contents);
   UpdateContentsWebViewVisual();
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  UpdateSecondaryReaderModeToolbar();
+#endif
 
   // Revert back to default state.
   contents_web_view_->SetFastResize(false);
@@ -208,7 +238,7 @@ void SplitView::AddedToWidget() {
   widget_observation_.Observe(GetWidget());
 
   secondary_location_bar_ = std::make_unique<SplitViewLocationBar>(
-      browser_->profile()->GetPrefs(), secondary_contents_container_);
+      browser_->profile()->GetPrefs(), this);
   secondary_location_bar_widget_ = std::make_unique<views::Widget>();
 
   secondary_location_bar_widget_->Init(
@@ -371,6 +401,13 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
     return;
   }
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  // Update before |secondary_contents_container_| visibility is
+  // changed because SplitViewLocationBar updates its bounds by
+  // monitoring |secondary_contents_container_|.
+  UpdateSecondaryReaderModeToolbarVisibility();
+#endif
+
   auto* split_view_browser_data =
       SplitViewBrowserData::FromBrowser(base::to_address(browser_));
   DCHECK(split_view_browser_data);
@@ -427,6 +464,71 @@ void SplitView::UpdateSecondaryContentsWebViewVisibility() {
 void SplitView::UpdateCornerRadius(const gfx::RoundedCornersF& corners) {
   secondary_contents_web_view_->holder()->SetCornerRadii(corners);
   secondary_devtools_web_view_->holder()->SetCornerRadii(corners);
+}
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+void SplitView::OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) {
+  CHECK_EQ(secondary_reader_mode_toolbar_, toolbar);
+  CHECK(secondary_contents_web_view_->web_contents());
+  if (secondary_contents_web_view_->web_contents()->GetDelegate()) {
+    secondary_contents_web_view_->web_contents()
+        ->GetDelegate()
+        ->ActivateContents(secondary_contents_web_view_->web_contents());
+  }
+}
+
+void SplitView::UpdateSecondaryReaderModeToolbarVisibility() {
+  auto active_tab_handle = GetActiveTabHandle();
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
+  if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
+    if (tile->first == active_tab_handle) {
+      secondary_reader_mode_toolbar_->SetVisible(IsTabDistilled(tile->second));
+    } else {
+      secondary_reader_mode_toolbar_->SetVisible(IsTabDistilled(tile->first));
+    }
+  } else if (secondary_reader_mode_toolbar_) {
+    secondary_reader_mode_toolbar_->SetVisible(false);
+  }
+}
+
+void SplitView::UpdateSecondaryReaderModeToolbar() {
+  auto* browser_view = static_cast<BraveBrowserView*>(browser_->window());
+  if (!browser_view) {
+    return;
+  }
+
+  UpdateSecondaryReaderModeToolbarVisibility();
+
+  ReaderModeToolbarView* primary_toolbar = browser_view->reader_mode_toolbar();
+
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(base::to_address(browser_));
+  if (split_view_browser_data &&
+      split_view_browser_data->IsTabTiled(GetActiveTabHandle())) {
+    // We need to swap the WebContents of the toolbars because, when the active
+    // browser tab is switched, the split view swaps both the views displaying
+    // the pages and the WebContents within those views. The toolbar does the
+    // same thing to ensure that the toolbar state follows the correct tab.
+    // DevTools views do the same.
+    primary_toolbar->SwapToolbarContents(secondary_reader_mode_toolbar_.get());
+  } else {
+    // In case we activate the non-tiled tab then restore straight toolbars'
+    // contents. It means in the non-tiled tab we always see the primary
+    // toolbar.
+    primary_toolbar->RestoreToolbarContents(
+        secondary_reader_mode_toolbar_.get());
+  }
+}
+#endif
+
+gfx::Point SplitView::GetSplitViewLocationBarOffset() const {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  if (secondary_reader_mode_toolbar_->GetVisible()) {
+    return {0, secondary_reader_mode_toolbar_->GetPreferredSize().height()};
+  }
+#endif
+  return {};
 }
 
 void SplitView::UpdateSecondaryDevtoolsLayoutAndVisibility() {

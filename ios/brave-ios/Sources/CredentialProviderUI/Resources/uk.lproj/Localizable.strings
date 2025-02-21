@@ -8,7 +8,7 @@
 "CredentialProvider.cancelButtonTitle" = "Скасувати";
 
 /* A title for a button that when tapped copies the content highlighted into the users clipboard */
-"CredentialProvider.copyMenuItemTitle" = "Копіювати";
+"CredentialProvider.copyMenuItemTitle" = "Скопіювати";
 
 /* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
 "CredentialProvider.credentialListTitle" = "Паролі Brave";
@@ -17,7 +17,7 @@
 "CredentialProvider.detailsFormPasswordField" = "Пароль";
 
 /* The URL field in the details form. Shows a website URL next to it */
-"CredentialProvider.detailsFormURLField" = "URL-адреса";
+"CredentialProvider.detailsFormURLField" = "URL";
 
 /* The username field in the details form. Shows the username for the website next to it */
 "CredentialProvider.detailsFormUsernameField" = "Ім’я користувача";

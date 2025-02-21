@@ -1,9 +1,0 @@
-{
-  "description": "Selectors - Child combinator (css3-modsel-44)",
-  "selectors": {
-    ".white": "css3-modsel-44.expected0.html",
-    ".red": "css3-modsel-44.expected1.html",
-    "div > p.test": "css3-modsel-44.expected2.html"
-  },
-  "src": "css3-modsel-44.src.html"
-}

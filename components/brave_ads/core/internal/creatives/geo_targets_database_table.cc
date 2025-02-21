@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -29,7 +30,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& [campaign_id, geo_targets_set] : geo_targets) {
     for (const auto& geo_target : geo_targets_set) {
       BindColumnString(mojom_db_action, index++, campaign_id);

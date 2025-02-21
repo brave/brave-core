@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -36,6 +37,18 @@ using testing::WithArg;
 namespace brave_wallet {
 
 namespace {
+
+class MockZCashWalletService : public ZCashWalletService {
+ public:
+  MockZCashWalletService(base::FilePath zcash_data_path,
+                         KeyringService& keyring_service,
+                         std::unique_ptr<ZCashRpc> zcash_rpc)
+      : ZCashWalletService(zcash_data_path,
+                           keyring_service,
+                           std::move(zcash_rpc)) {}
+
+  MOCK_METHOD1(OnSyncFinished, void(const mojom::AccountIdPtr& account_id));
+};
 
 constexpr uint32_t kAccountBirthday = kNu5BlockUpdate + 100u;
 
@@ -121,20 +134,26 @@ class ZCashShieldSyncServiceTest : public testing::Test {
         db_path.AppendASCII("orchard.db"));
 
     observer_ = std::make_unique<MockZCashShieldSyncServiceObserver>();
+    zcash_wallet_service_ = std::make_unique<MockZCashWalletService>(
+        db_path, *keyring_service_,
+        std::make_unique<testing::NiceMock<ZCashRpc>>(nullptr, nullptr));
 
     ResetSyncService();
   }
 
+  void TearDown() override { sync_service_.reset(); }
+
   void ResetSyncService() {
-    auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
-                                              mojom::KeyringId::kZCashMainnet,
-                                              mojom::AccountKind::kDerived, 0);
+    zcash_account_ = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                             mojom::KeyringId::kZCashMainnet,
+                                             mojom::AccountKind::kDerived, 0);
     auto account_birthday =
         mojom::ZCashAccountShieldBirthday::New(kAccountBirthday, "hash");
     OrchardFullViewKey fvk;
 
     sync_service_ = std::make_unique<ZCashShieldSyncService>(
-        ZCashActionContext(zcash_rpc_, sync_state_, account_id,
+        zcash_wallet_service(),
+        ZCashActionContext(zcash_rpc_, sync_state_, zcash_account_,
                            mojom::kZCashMainnet),
         account_birthday, fvk, observer_->GetWeakPtr());
 
@@ -149,6 +168,10 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   MockZCashShieldSyncServiceObserver* observer() { return observer_.get(); }
 
   mojom::AccountIdPtr account() { return zcash_account_.Clone(); }
+
+  MockZCashWalletService& zcash_wallet_service() {
+    return *zcash_wallet_service_;
+  }
 
   void ApplyScanResults(OrchardBlockScanner::Result&& result) {
     sync_state_.AsyncCall(&OrchardSyncState::ApplyScanResults)
@@ -214,6 +237,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_;
   std::unique_ptr<KeyringService> keyring_service_;
+  std::unique_ptr<MockZCashWalletService> zcash_wallet_service_;
   base::SequenceBound<OrchardSyncState> sync_state_;
   testing::NiceMock<MockZCashRPC> zcash_rpc_;
   std::unique_ptr<MockZCashShieldSyncServiceObserver> observer_;
@@ -264,12 +288,15 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           }));
 
   {
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
     sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
     EXPECT_EQ(sync_status->spendable_balance, 30u);
   }
+
+  testing::Mock::VerifyAndClearExpectations(&zcash_wallet_service());
 
   // Resume scanning
   ResetSyncService();
@@ -332,12 +359,15 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
 
   // Continue scanning
   {
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
     sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
     EXPECT_EQ(sync_status->spendable_balance, 180u);
   }
+
+  testing::Mock::VerifyAndClearExpectations(&zcash_wallet_service());
 
   ResetSyncService();
 
@@ -395,12 +425,15 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
     sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
     EXPECT_EQ(sync_status->spendable_balance, 200u);
   }
+
+  testing::Mock::VerifyAndClearExpectations(&zcash_wallet_service());
 
   // Reorg case, chain tip before the latest scanned block.
   ResetSyncService();
@@ -454,12 +487,14 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
           })));
 
   {
+    EXPECT_CALL(zcash_wallet_service(), OnSyncFinished(EqualsMojo(account())));
     sync_service()->StartSyncing(std::nullopt);
     task_environment_.RunUntilIdle();
 
     auto sync_status = sync_service()->GetSyncStatus();
     EXPECT_EQ(sync_status->spendable_balance, 160u);
   }
+  testing::Mock::VerifyAndClearExpectations(&zcash_wallet_service());
 }
 
 }  // namespace brave_wallet

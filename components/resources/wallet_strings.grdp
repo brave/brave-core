@@ -1179,6 +1179,7 @@
   <message name="IDS_BRAVE_WALLET_SHIELDED_ACCOUNT_BIRTHDAY_BLOCK" desc="Shielded account birthday block input label">Shielded account birthday block</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_LOW" desc="Account birthday to low error">Account birthday must be greater than <ph name="BLOCK_NUMBER">$1<ex>1687104</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_HIGH" desc="Account birthday to high error">Account birthday must be less than <ph name="BLOCK_NUMBER">$1<ex>7687104</ex></ph></message>
+  <message name="IDS_BRAVE_WALLET_BLOCKS_BEHIND" desc="Blocks behind label for Zcash account sync"><ph name="BLOCKS">$1<ex>12,568</ex></ph> blocks behind</message>  
   <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action">Retry</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_PREVIEW_FAILED" desc="Explaination that simulation of a transaction has failed">Transaction preview failed.</message>
   <message name="IDS_BRAVE_WALLET_ESTIMATED_BALANCE_CHANGE" desc="Grouping header for estimated balance changes">Estimated balance change</message>

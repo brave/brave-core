@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED substring matching attribute selector on end (css3-modsel-55)",
-  "selectors": {
-    "div.stub > *": "css3-modsel-55.expected0.html",
-    "div.stub *:not([title$=\"tait\"])": "css3-modsel-55.expected1.html"
-  },
-  "src": "css3-modsel-55.src.html"
-}

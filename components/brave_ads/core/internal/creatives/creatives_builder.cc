@@ -58,7 +58,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
     // Creative Sets
     for (const auto& creative_set : campaign.creative_sets) {
-      int entries = 0;
+      size_t entries = 0;
 
       // Operating system
       if (!creative_set.DoesSupportOS()) {

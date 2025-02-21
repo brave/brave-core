@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_CONFIRMATION_TOKENS_REFILL_CONFIRMATION_TOKENS_H_
 
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <tuple>
@@ -70,7 +71,7 @@ class RefillConfirmationTokens final {
 
   void Reset();
 
-  void NotifyWillRefillConfirmationTokens() const;
+  void NotifyWillRefillConfirmationTokens(size_t count) const;
   void NotifyCaptchaRequiredToRefillConfirmationTokens(
       const std::string& captcha_id) const;
   void NotifyDidRefillConfirmationTokens() const;

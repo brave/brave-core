@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Brave loggfører aldri aktiviteten din";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "Beskytt hver eneste app og hele enheten din";
+"vpn.checkboxProtectYourDevices" = "Beskytt alle apper og hele enheten";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "Tryggere for hjemmet eller offentlig wifi";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "Aktiver";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "Alle abonnementene inkluderer en %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "Alle abonnementene inkluderer en";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "gratis 7-dagers prøveperiode";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "Installer VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "Prøv GRATIS";
+"vpn.learnMore" = "Start 7-dagers gratis prøveperiode";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "Fornyes månedlig";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld servere";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "Abonnementer belastes via Apple-kontoen din. Det som eventuelt forblir ubrukt av den gratis prøveperioden, bortfaller hvis du kjøper et abonnement.\n\nAbonnementet fornyes automatisk, med mindre det kanselleres minst 24 timer før den inneværende perioden er omme.\n\nDu kan administrere abonnementene dine i Innstillingene.\n\nVed å bruke Brave samtykker du i bruksvilkårene og personvernerklæringen.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "mnd";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "år";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "Utløpt";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "VPN-område endret.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "Fornyes årlig";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "Fornyes månedlig";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "Kunne ikke tilbakestille VPN-konfigurasjonen. Prøv på nytt. Hvis problemet vedvarer, kan du kontakte kundestøtten for å få hjelp.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "Gjenopprett";
 
+/* Use in context: save 16%. */
+"vpn.save" = "lagre";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ server";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld server";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Oppgrader til en VPN for å beskytte forbindelsen din og blokkere invasive sporere overalt.";
+"vpn.settingHeaderBody" = "Beskytt alle apper med Brave VPN. Beskytt 10 enheter med ett abonnement.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakt teknisk kundestøtte";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "Transporter protokoll";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "Se App Store-kvittering";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "Dersom VPN-forbindelsen plutselig blir brutt, vil enheten automatisk kobles fra internett når dette er aktivert. Dette forhindrer at IP-adressen og dataene dine lekkes. [Les mer](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "Aktiver nødstopp";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "Smart Proxy Routing sørger for at trafikken rutes gjennom dedikerte proxy-servere for å gi deg tilgang til innhold og nettsteder eller tjenester fra tredjeparter som har tilgangsbegrensninger. [Les mer](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "Aktiver Smart Proxy";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "Oppdater betalingsmåte";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "Abonnementer belastes via iTunes-kontoen din.\n\nEnhver ubrukt del av den gratis prøveperioden, hvis den tilbys, går tapt når du kjøper et abonnement.\n\nAbonnementet ditt fornyes automatisk med mindre det blir kansellert minst 24 timer før inneværende periode utløper.\n\nDu kan administrere abonnementene dine i innstillingene.\n\nVed å bruke Brave godtar du bruksvilkårene og retningslinjene for personvern.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN av";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN på";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "Løs inn koden";
 
@@ -322,8 +358,8 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "Forny årlig, spar %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
-"vpn.yearlySubDisclaimer" = "Beste verdi";
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
+"vpn.yearlySubDisclaimer" = "BESTE VERDI";
 
 /* One year lenght vpn subcription */
 "vpn.yearlySubTitle" = "Ett år";

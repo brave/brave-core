@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <cstddef>
 #include <optional>
 #include <string>
 #include <vector>
@@ -45,8 +44,8 @@ ConfirmationTokenInfo BuildConfirmationToken(
 
 }  // namespace
 
-ConfirmationTokenList RefillConfirmationTokens(int count) {
-  CHECK_GT(count, 0);
+ConfirmationTokenList RefillConfirmationTokens(size_t count) {
+  CHECK_GT(count, 0U);
 
   ConfirmationTokenList confirmation_tokens = BuildConfirmationTokens(count);
   GetConfirmationTokens().Set(confirmation_tokens);
@@ -60,8 +59,8 @@ ConfirmationTokenInfo BuildConfirmationToken() {
   return confirmation_tokens.front();
 }
 
-ConfirmationTokenList BuildConfirmationTokens(int count) {
-  CHECK_GT(count, 0);
+ConfirmationTokenList BuildConfirmationTokens(size_t count) {
+  CHECK_GT(count, 0U);
 
   const WalletInfo wallet = Wallet();
 
@@ -81,7 +80,7 @@ ConfirmationTokenList BuildConfirmationTokens(int count) {
 
   ConfirmationTokenList confirmation_tokens;
 
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     const std::string& unblinded_token_base64 =
         unblinded_tokens_base64.at(i % modulo);
     const ConfirmationTokenInfo confirmation_token =

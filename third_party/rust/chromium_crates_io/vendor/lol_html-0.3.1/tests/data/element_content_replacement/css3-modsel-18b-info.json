@@ -1,7 +1,0 @@
-{
-  "description": "Element content replacement - :hover pseudo-class (css3-modsel-18b)",
-  "selectors": {
-    "div:hover > p:first-child": "css3-modsel-18b.expected0.html"
-  },
-  "src": "css3-modsel-18b.src.html"
-}

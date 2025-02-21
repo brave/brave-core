@@ -7,20 +7,14 @@
 /* The title of the screen that requests user to set Brave as default */
 "focusOnboarding.defaultBrowserScreenTitle" = "Đặt Brave làm trình duyệt mặc định của bạn";
 
-/* The subtitle of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenDescription" = "Duyệt web nhanh hơn và sử dụng ít dữ liệu hơn.";
-
-/* The title of the screen that shows ads are blocked */
-"focusOnboarding.movingAdsScreenTitle" = "Ít quảng cáo & trình theo dõi hơn.";
-
 /* The title of the button that closes the default browser full screen callout */
 "focusOnboarding.notNowActionButtonTitle" = "Không phải Bây giờ";
 
 /* The subtitle of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenDescription" = "Không còn quảng cáo.";
+"focusOnboarding.noVideoAdsScreenDescription" = "Chặn các yếu tố ngắt quãng phiền nhiễu trên các trang nội dung trực tuyến bạn yêu thích.";
 
 /* The title of the screen that shows ads embeded in video are blocked */
-"focusOnboarding.noVideoAdsScreenTitle" = "Không còn quảng cáo trong video.";
+"focusOnboarding.noVideoAdsScreenTitle" = "Chặn Các Yếu Tố Ngắt Quãng Nội Dung Phát Trực Tuyến";
 
 /* The title of the button that opens the website abouyt privacy preserving analytics. */
 "focusOnboarding.p3aInformationButtonTitle" = "Tìm hiểu thêm về Phân tích Sản phẩm bảo vệ quyền riêng tư (P3A) của chúng tôi";
@@ -35,16 +29,16 @@
 "focusOnboarding.p3aToggleDescription" = "Thay đổi bất kỳ lúc nào trong Cài đặt Brave, ở phần \"Lá chắn Brave và Quyền riêng tư\".";
 
 /* The title of the toggle for enable / disable the privacy preserving analytics. */
-"focusOnboarding.p3aToggleTitle" = "Chia sẻ thông tin chi tiết về sản phẩm riêng tư và ẩn danh.";
+"focusOnboarding.p3aToggleTitle" = "Chia sẻ thông tin chi tiết về sản phẩm riêng tư & ẩn danh.";
 
 /* The title of the button that finishes the onboarding without setting default */
 "focusOnboarding.startBrowseActionButtonTitle" = "Bắt đầu duyệt";
 
 /* The title of the button that triggers navigation link to settings */
-"focusOnboarding.systemSettingsButtonTitle" = "Đến cài đặt hệ thống";
+"focusOnboarding.systemSettingsButtonTitle" = "Đặt làm mặc định";
 
 /* The description of the popup which points to URL Bar after onboarding */
-"focusOnboarding.urlBarIndicatorDescription" = "Nhập URL, tận hưởng trải nghiệm ít quảng cáo & trình theo dõi hơn";
+"focusOnboarding.urlBarIndicatorDescription" = "Tận hưởng nội dung trực tuyến với ít quảng cáo & trình theo dõi hơn.";
 
 /* The title of the popup which points to URL Bar after onboarding */
 "focusOnboarding.urlBarIndicatorTitle" = "Sự khác biệt mang tên Brave";

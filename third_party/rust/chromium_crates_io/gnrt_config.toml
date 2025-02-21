@@ -79,7 +79,20 @@ root = "chromium"
 # spin is added by pasta-curves lazy_static/spin_no_std, but we don't want to
 # use it and lazy_static is an upstream crate with a patch.crates-io so the
 # feature (and dependency) do not get added to the build anyway
-remove_crates = ['cc', 'link-cplusplus', 'wasi', 'winapi-i686-pc-windows-gnu', 'winapi-x86_64-pc-windows-gnu', 'minimal-lexical', 'spin']
+remove_crates = [
+  'cc',
+  'link-cplusplus',
+  'wasi',
+  'winapi-i686-pc-windows-gnu',
+  'winapi-x86_64-pc-windows-gnu',
+  'minimal-lexical',
+  'spin',
+  'windows_aarch64_gnullvm',
+  'windows_i686_gnu',
+  'windows_i686_gnullvm',
+  'windows_x86_64_gnu',
+  'windows_x86_64_gnullvm',
+]
 
 [crate.adblock]
 extra_kv = { raw_gn = '''
@@ -98,17 +111,6 @@ license_files = ['LICENSE']
 
 [crate.adss]
 license_files = ['LICENSE']
-
-[crate.ahash]
-extra_kv = { raw_gn = '''
-  library_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
-  executable_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
-  proc_macro_configs -= [ "//build/config/compiler:disallow_unstable_features" ]
-  rustflags += [ "-Zallow-features=min_specialization" ]
-'''}
-
-[crate.ansi_term]
-license_files = ['LICENCE']
 
 [crate.arrayref]
 license_files = ['LICENSE']
@@ -189,22 +191,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.funty]
 license_files = ['LICENSE.txt']
-
-[crate.futures-channel]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-core]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-task]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
-
-[crate.futures-util]
-extra_src_roots = [ "../no_atomic_cas.rs" ]
-extra_build_script_src_roots = [ "../no_atomic_cas.rs" ]
 
 [crate.fvm_ipld_blockstore]
 license_files = ['../../../../../common/licenses/Apache-2.0']
@@ -391,23 +377,17 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.wasi]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
-[crate.windows]
-license_files = ['license-apache-2.0']
-
 [crate.windows_aarch64_msvc]
-license_files = ['license-apache-2.0']
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.windows_i686_msvc]
-license_files = ['license-apache-2.0']
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.windows_x86_64_msvc]
-license_files = ['license-apache-2.0']
-
-[crate.windows-sys]
-license_files = ['license-apache-2.0']
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.windows-targets]
-license_files = ['license-apache-2.0']
+license_files = ['../../../../../common/licenses/Apache-2.0']
 
 [crate.winnow]
 extra_src_roots = ['../examples']

@@ -24,10 +24,10 @@ bool IsPaymentTokenIssuerValid(const IssuersInfo& issuers) {
     return false;
   }
 
-  const int maximum_token_issuer_public_keys =
+  const size_t maximum_token_issuer_public_keys =
       kMaximumTokenIssuerPublicKeys.Get();
 
-  base::flat_map<double, int> buckets;
+  base::flat_map<double, size_t> buckets;
   for (const auto& [_, associated_value] : payment_token_issuer->public_keys) {
     ++buckets[associated_value];
     if (buckets[associated_value] > maximum_token_issuer_public_keys) {

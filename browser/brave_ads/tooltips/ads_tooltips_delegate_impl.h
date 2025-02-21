@@ -22,6 +22,7 @@ class AdsTooltipsDelegateImpl : public AdsTooltipsDelegate {
 
   ~AdsTooltipsDelegateImpl() override = default;
 
+  // AdsTooltipsDelegate:
   void ShowCaptchaTooltip(
       const std::string& payment_id,
       const std::string& captcha_id,

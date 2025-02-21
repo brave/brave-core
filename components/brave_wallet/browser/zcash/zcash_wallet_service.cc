@@ -185,6 +185,7 @@ void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
 
     shield_sync_services_[account_id.Clone()] =
         std::make_unique<ZCashShieldSyncService>(
+            *this,
             CreateActionContext(
                 account_id, GetNetworkForZCashKeyring(account_id->keyring_id)),
             account_birthday, fvk.value(), weak_ptr_factory_.GetWeakPtr());
@@ -216,6 +217,18 @@ void ZCashWalletService::StopShieldSync(mojom::AccountIdPtr account_id,
   }
 #endif
   std::move(callback).Run("Not supported");
+}
+
+void ZCashWalletService::IsSyncInProgress(mojom::AccountIdPtr account_id,
+                                          IsSyncInProgressCallback callback) {
+#if BUILDFLAG(ENABLE_ORCHARD)
+  if (IsZCashShieldedTransactionsEnabled()) {
+    std::move(callback).Run(shield_sync_services_.contains(account_id),
+                            std::nullopt);
+    return;
+  }
+#endif  // BUILDFLAG(ENABLE_ORCHARD)
+  std::move(callback).Run(false, "Not supported");
 }
 
 void ZCashWalletService::GetChainTipStatus(mojom::AccountIdPtr account_id,
@@ -830,6 +843,10 @@ void ZCashWalletService::GetZCashChainTipStatusTaskDone(
     ZCashGetZCashChainTipStatusTask* task) {
   CHECK(get_zcash_chain_tip_status_tasks_.remove_if(
       [task](auto& item) { return item.get() == task; }));
+}
+
+void ZCashWalletService::OnSyncFinished(const mojom::AccountIdPtr& account_id) {
+  shield_sync_services_.erase(account_id);
 }
 
 base::SequenceBound<OrchardSyncState>& ZCashWalletService::sync_state() {

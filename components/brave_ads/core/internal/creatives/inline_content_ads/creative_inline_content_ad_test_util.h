@@ -6,11 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_INLINE_CONTENT_ADS_CREATIVE_INLINE_CONTENT_AD_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_INLINE_CONTENT_ADS_CREATIVE_INLINE_CONTENT_AD_TEST_UTIL_H_
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 
 namespace brave_ads::test {
 
-CreativeInlineContentAdList BuildCreativeInlineContentAds(int count);
+CreativeInlineContentAdList BuildCreativeInlineContentAds(size_t count);
 CreativeInlineContentAdInfo BuildCreativeInlineContentAd(
     bool should_generate_random_uuids);
 

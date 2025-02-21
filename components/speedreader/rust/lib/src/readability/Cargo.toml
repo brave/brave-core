@@ -11,7 +11,7 @@ categories = []
 edition = "2018"
 
 [dependencies]
-bitflags         = "1.2"
+bitflags         = "2.8.0"
 html5ever        = "0.25.1"
 kuchikiki        = "0.8.4-speedreader"
 lazy_static      = "1.4"

@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 #include <vector>
 
@@ -34,7 +35,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& [campaign_id, campaign] : campaigns) {
     BindColumnString(mojom_db_action, index++, campaign_id);
     BindColumnTime(mojom_db_action, index++, campaign.start_at);

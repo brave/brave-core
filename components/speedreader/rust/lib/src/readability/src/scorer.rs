@@ -121,6 +121,7 @@ impl PartialEq for TopCandidate {
 impl Eq for TopCandidate {}
 
 bitflags::bitflags! {
+    #[derive(PartialEq)]
     pub struct ImageLoadedMask: u8 {
         const SRC = 1 << 0;
         const SRCSET = 1 << 1;

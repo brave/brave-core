@@ -59,7 +59,7 @@
 "CredentialProvider.setPasscodeAlertMessage" = "หากต้องการเข้าถึงรหัสผ่านของคุณ คุณต้องตั้งรหัสปลดล็อคบนอุปกรณ์ของคุณก่อน";
 
 /* The title displayed in alert when a user needs to set passcode */
-"CredentialProvider.setPasscodeAlertTitle" = "ตั้งรหัสปลดล็อค";
+"CredentialProvider.setPasscodeAlertTitle" = "ตั้งพาสเวิร์ด";
 
 /* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
 "CredentialProvider.useButtonTitle" = "ใช้";

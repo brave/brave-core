@@ -1,9 +1,0 @@
-{
-  "description": "Element content replacement - NEGATED Substring matching attribute selector on middle without declared namespace (css3-modsel-143b)",
-  "selectors": {
-    "*|p, *|q, *|r, *|s, *|t": "css3-modsel-143b.expected0.html",
-    "*|q, *|s, *|t": "css3-modsel-143b.expected1.html",
-    "div.stub *|*:not([|title*=\"on ch\"])": "css3-modsel-143b.expected2.html"
-  },
-  "src": "css3-modsel-143b.src.html"
-}

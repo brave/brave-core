@@ -31,7 +31,7 @@
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
 
-/* The title for the button that allows the user to view the AppStore Receipt */
+/* The title for the button that allows the user to view the App Store Receipt */
 "aichat.advancedSettingsViewReceiptTitle" = "Pregledajte račun App Storea";
 
 /* The subtitle for the error showing there is an error from App Store */
@@ -131,7 +131,7 @@
 "aichat.feedbackViewMainTitle" = "Davanje povratnih informacija o umjetnoj inteligenciji (AI) preglednika Brave";
 
 /* The button title for opening paywall screen */
-"aichat.goPremiumButtonTitle" = "Pretplati se na Premium";
+"aichat.goPremiumButtonTitle" = "Pretplatite se na Premium";
 
 /* Description about answers are changing with page context */
 "aichat.infoAboutPageContext" = "Oblikujte odgovore na osnovi sadržaja stranice";
@@ -236,7 +236,7 @@
 "aichat.networkErrorViewTitle" = "Pojavio se mrežni problem pri povezivanju s pomoćnikom Leo. Provjerite svoju vezu i pokušajte ponovno.";
 
 /* The title for button that starts a new chat */
-"aichat.newChatActionTitle" = "Novo čavrljanje";
+"aichat.newChatActionTitle" = "Novi razgovor";
 
 /* The text which will be used to indicate period of payments like 10 / month */
 "aichat.paywallMonthlyPriceDividend" = "mjesec";

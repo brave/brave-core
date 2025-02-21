@@ -138,6 +138,7 @@ leo_icons_base_path = "../../../node_modules/@brave/leo/icons"
 # your needs here: https://leo.bravesoftware.com/?path=/story/icon--all-icons
 leo_icons = [
   "activity.svg",
+  "attachment.svg",
   "appearance.svg",
   "arrow-diagonal-down-right.svg",
   "arrow-diagonal-up-right.svg",
@@ -455,6 +456,7 @@ if (enable_brave_vpn_panel) {
     "country-hu.svg",
     "country-id.svg",
     "country-ie.svg",
+    "country-il.svg",
     "country-is.svg",
     "country-it.svg",
     "country-jp.svg",

@@ -8,7 +8,7 @@
 "DataSavedStat" = "Uppskattade data\nsparade";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Uppskattad tid \nsparad";
+"EstTimerSaved" = "Sparad tid";
 
 /* Time Saved Days */
 "ShieldsTimeStatsDays" = "d";
@@ -23,5 +23,5 @@
 "ShieldsTimeStatsSeconds" = "s";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Blockerade \nspårare";
+"TrackersrBlocked" = "Blockerade\nspårare";
 

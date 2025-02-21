@@ -25,7 +25,7 @@ base::Value::List AdHistoryToValue(const AdHistoryList& ad_history) {
   base::Value::List list;
   list.reserve(ad_history.size());
 
-  int row = 0;
+  size_t row = 0;
 
   for (const auto& ad_history_item : ad_history) {
     list.Append(base::Value::Dict()

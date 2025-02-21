@@ -15,6 +15,10 @@
 namespace media_router {
 
 bool MediaRouterEnabled(content::BrowserContext* context) {
+  if (context->IsTor()) {
+    // Disable Media Router in Tor windows.
+    return false;
+  }
 #if BUILDFLAG(IS_ANDROID)
   return MediaRouterEnabled_ChromiumImpl(context);
 #else

@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TOKENS_CONFIRMATION_TOKENS_CONFIRMATION_TOKENS_TEST_UTIL_H_
 
+#include <cstddef>
+
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_token_info.h"
 
 namespace brave_ads {
@@ -18,10 +20,10 @@ namespace test {
 // code paths call `Confirmations::Confirm`, `MaybeGetConfirmationToken`, or
 // `BuildReward`. If code paths call `RefillConfirmationTokens::MaybeRefill`,
 // call `MockTokenGenerator` instead and do not call this function.
-ConfirmationTokenList RefillConfirmationTokens(int count);
+ConfirmationTokenList RefillConfirmationTokens(size_t count);
 
 ConfirmationTokenInfo BuildConfirmationToken();
-ConfirmationTokenList BuildConfirmationTokens(int count);
+ConfirmationTokenList BuildConfirmationTokens(size_t count);
 
 }  // namespace test
 

@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "لا يسجل Brave نشاطك أبدًا";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "حماية كل تطبيق وجهازك بالكامل";
+"vpn.checkboxProtectYourDevices" = "حماية كل التطبيقات & وجهازك بالكامل";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "أكثر أمانًا للمنزل أو شبكة Wi-Fi العامة";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "تمكين";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "تتضمن جميع الخطط %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "تتضمن جميع الخطط";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "نسخة تجريبية مجانية لمدة 7 أيام";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "تثبيت VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "المحاولة مجانًا";
+"vpn.learnMore" = "بدء نسخة تجريبية مجانية لمدة 7 أيام";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "يتجدد شهريًا";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld من الخوادم";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "سيتم تحصيل الاشتراكات عبر حسابك على Apple. وسيتم مصادرة أي جزء غير مستخدم من النسخة التجريبية المجانية، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\n\nباستخدام Brave، توافق على شروط الاستخدام وسياسة الخصوصية.";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "شهر";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "سنة";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "انتهت الصلاحية";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "تم تغيير منطقة VPN.";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "يتجدد سنويًا";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "يتجدد شهريًا";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "تتعذر إعادة تعيين تكوين VPN. يرجى المحاولة مرة أخرى. إذا استمرت المشكلة، فاتصل بالدعم للحصول على المساعدة.";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "استعادة";
 
+/* Use in context: save 16%. */
+"vpn.save" = "حفظ";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ خادم";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld خادم";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "قم بالترقية إلى VPN لحماية اتصالك وحظر أجهزة التتبع الغازية في كل مكان.";
+"vpn.settingHeaderBody" = "حماية كل تطبيق مع Brave VPN. حماية ما يصل إلى 10 أجهزة بخطة واحدة.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "الاتصال بالدعم الفني";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "بروتوكول النقل";
 
-/* Button to allow the user to view the app-store receipt. */
-"vpn.settingsViewReceipt" = "عرض إيصال آب ستور";
+/* Button to allow the user to view the App Store receipt. */
+"vpn.settingsViewReceipt" = "عرض إيصال App Store";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "عند التمكين، إذا انقطع اتصال VPN الخاص بك بشكل غير متوقع، فسيتم فصل جهازك تلقائيًا عن الإنترنت لمنع تسرب عنوان IP وتسريب البيانات. [اعرف المزيد](%@)";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "تمكين مفتاح إيقاف التشغيل";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "يضمن التوجيه الذكي للبروكسي توجيه حركة المرور من خلال خوادم بروكسي مخصصة للسماح بالوصول إلى المحتوى/المواقع المحظورة عادةً أو خدمات الجهات الخارجية. [اعرف المزيد](%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "تمكين البروكسي الذكي";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "تحديث طريقة الدفع";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "سيتم فرض رسوم على الاشتراكات عبر حساب iTunes الخاص بك.\n\nتتم مصادرة أي جزء غير مستخدم من الإصدار التجريبي المجاني، إذا تم عرضه، عند شراء اشتراك.\n\nسيتم تجديد اشتراكك تلقائيًا ما لم يتم إلغاؤه قبل 24 ساعة على الأقل من نهاية الفترة الحالية.\n\nيمكنك إدارة اشتراكاتك في الإعدادات.\n\nباستخدام Brave، فإنك توافق على شروط الاستخدام وسياسة الخصوصية.";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "VPN معطل";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "VPN مشغل";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "استرداد الرمز";
 
@@ -322,9 +358,9 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "قم بالتجديد السنوي ووفر %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "أفضل قيمة";
 
 /* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "سنة واحدة";
+"vpn.yearlySubTitle" = "ٍسنة واحدة";
 

@@ -22,7 +22,7 @@ TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsConfirmationTokenIssuerValid) {
   TokenIssuerInfo token_issuer;
   token_issuer.type = TokenIssuerType::kConfirmations;
 
-  for (int i = 0; i < kMaximumTokenIssuerPublicKeys.Get(); ++i) {
+  for (size_t i = 0; i < kMaximumTokenIssuerPublicKeys.Get(); ++i) {
     token_issuer.public_keys.insert(
         {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
          /*associated_value=*/0.1});
@@ -40,7 +40,7 @@ TEST_F(BraveAdsConfirmationsIssuerUtilTest, IsConfirmationTokenIssuerInvalid) {
   TokenIssuerInfo token_issuer;
   token_issuer.type = TokenIssuerType::kConfirmations;
 
-  for (int i = 0; i < kMaximumTokenIssuerPublicKeys.Get() + 1; ++i) {
+  for (size_t i = 0; i < kMaximumTokenIssuerPublicKeys.Get() + 1; ++i) {
     token_issuer.public_keys.insert(
         {/*public_key=*/base::Uuid::GenerateRandomV4().AsLowercaseString(),
          /*associated_value=*/0.1});

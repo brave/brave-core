@@ -97,7 +97,7 @@ export function AIChatContextProvider(props: React.PropsWithChildren<AIChatConte
     setDeletingConversationId,
     showSidebar,
     toggleSidebar: () => setShowSidebar(s => !s),
-    conversationEntriesComponent: props.conversationEntriesComponent
+    conversationEntriesComponent: props.conversationEntriesComponent,
   }
 
   return (

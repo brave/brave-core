@@ -975,7 +975,7 @@ class TabManager: NSObject {
         // This is the only way to guarantee that the last reference to the shared persistent store
         // reaches zero and destroys all its data.
 
-        BraveWebView.removeNonPersistentStore()
+        TabWebView.removeNonPersistentStore()
       }
     }
 
@@ -1069,7 +1069,7 @@ class TabManager: NSObject {
       }
     }
 
-    BraveWebView.removeNonPersistentStore()
+    TabWebView.removeNonPersistentStore()
 
     allTabs = tabs(withType: .regular)
   }

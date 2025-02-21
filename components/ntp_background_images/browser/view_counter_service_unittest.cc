@@ -37,10 +37,10 @@
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #endif
 
+namespace ntp_background_images {
+
 using testing::_;
 using testing::Return;
-
-namespace ntp_background_images {
 
 namespace {
 
@@ -122,8 +122,8 @@ class TestDelegate : public BraveNTPCustomBackgroundService::Delegate {
   bool IsCustomImageBackgroundEnabled() const override { return image_enabled; }
 
   base::FilePath GetCustomBackgroundImageLocalFilePath(
-      const GURL& url) const override {
-    return base::FilePath();
+      const GURL& /*url*/) const override {
+    return {};
   }
 
   GURL GetCustomBackgroundImageURL() const override {
@@ -221,13 +221,13 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     return ad_info;
   }
 
-  size_t GetInitialCountToBrandedWallpaper() const {
+  int GetInitialCountToBrandedWallpaper() const {
     return features::kInitialCountToBrandedWallpaper.Get() - 1;
   }
 
   std::optional<base::Value::Dict> TryGetFirstSponsoredImageWallpaper() {
     // Loading initial count times.
-    for (size_t i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
+    for (int i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
       auto wallpaper = view_counter_->GetCurrentWallpaperForDisplay();
       EXPECT_TRUE(wallpaper->FindBool(kIsBackgroundKey).value_or(false));
       view_counter_->RegisterPageView();

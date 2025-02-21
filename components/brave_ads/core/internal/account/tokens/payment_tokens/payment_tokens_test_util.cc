@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_tokens_test_util.h"
 
-#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -45,8 +44,8 @@ PaymentTokens& GetPaymentTokens() {
   return ConfirmationStateManager::GetInstance().GetPaymentTokens();
 }
 
-PaymentTokenList SetPaymentTokens(int count) {
-  CHECK_GT(count, 0);
+PaymentTokenList SetPaymentTokens(size_t count) {
+  CHECK_GT(count, 0U);
 
   PaymentTokenList payment_tokens = BuildPaymentTokens(count);
   GetPaymentTokens().SetTokens(payment_tokens);
@@ -72,8 +71,9 @@ PaymentTokenInfo BuildPaymentToken() {
   return payment_tokens.front();
 }
 
-PaymentTokenList BuildPaymentTokens(int count) {
-  CHECK_GT(count, 0);
+PaymentTokenList BuildPaymentTokens(size_t count) {
+  CHECK_GT(count, 0U);
+  CHECK_LE(count, 50U);
 
   const std::vector<std::string> payment_tokens_base64 = {
       R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)",
@@ -91,7 +91,7 @@ PaymentTokenList BuildPaymentTokens(int count) {
 
   PaymentTokenList payment_tokens;
 
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     const std::string& payment_token_base64 =
         payment_tokens_base64.at(i % modulo);
     const PaymentTokenInfo payment_token =

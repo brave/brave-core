@@ -1,0 +1,138 @@
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "想要保持受保護嗎？只需在訂閱結束前續訂。為了感謝您的續訂，我們還會在接下來的 3 個月提供 20% 的折扣。";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "啟用自動續訂";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "立即自動續訂您的 Brave VPN，享受接下來 3 個月的 20% 折扣！";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "立即自動續訂您的 Brave VPN 並獲得 1 個月免費！";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "這意味著您將失去 Brave 在您的手機上每個應用程式的額外保護。";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "糟了！ 您的 Brave VPN 訂閱即將到期。";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "無法連線至 App Store，請稍候再試。";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "App Store 錯誤";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckConnectionSpeed" = "連線快速流暢";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckLimitDevice" = "單一方案最多可保護 10 部裝置";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckLocation" = "隱藏 IP 並變更位置";
+
+/* Information text shown to users for using Brave VPN */
+"vpn.infoCheckPrivacy" = "提升網路隱私和安全";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckServers" = "數百部伺服器遍及全球";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "封鎖不需要的網路連線";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "攔截所有應用程式中的廣告 & 追蹤器 ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "最高可支援 100 Mbps 的速度";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "快速且不限流量，最高 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "全天候支援";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "確保所有連線安全無虞";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "技術提供：";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "自動";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "請登入 Brave 帳戶，重新整理您的 VPN 工作階段。";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "關閉";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "登入";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "工作階段已過期";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "已停用";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "已啟用";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "已到期";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "立即訂閱";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "沒錯。您的 Brave VPN 訂閱現在最多可在 5 台裝置上使用。因此您可以在 iOS 上訂閱並在 Mac、Windows 和 Android 裝置上免費使用。";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "現在，以相同的價格在您的所有裝置上使用 Brave VPN！";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "再次使用 Brave VPN，即可享受 3 個月的 20% 折扣！";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "準備為您手機上的每個應用程式提供防護了嗎？ 重回 Brave VPN 並獲得接下來 3 個月的 20% 折扣。";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN 總是阻擋每個應用程式的追蹤器，甚至在 Brave 瀏覽器之外也是如此。您現在可以透過 Brave Privacy Hub 查看誰試圖跟蹤您。";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "您知道 Brave VPN 在 Brave 瀏覽器外也可以保護您嗎？";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "更新";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "別擔心。我們會在您更新付款資訊時的幾天，讓 VPN 保持啟用。";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "更新您的付款資訊以維持 Brave VPN 的保護。";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "想要繼續保護您手機上的每個應用程式嗎？ 只需更新您的付款詳細資料即可。";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "您的帳戶有付款問題，這表示您的 Brave VPN 訂閱即將到期。";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "更新付款資訊";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "伺服器區域";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "目前的設定：%@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "VPN 區域";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "請更新您的付款方式";
+

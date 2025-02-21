@@ -1,8 +1,0 @@
-{
-  "description": "Selectors - NEGATED :only-of-type pseudo-class (css3-modsel-82b)",
-  "selectors": {
-    ".green": "css3-modsel-82b.expected0.html",
-    ".t1 *:not(:only-of-type)": "css3-modsel-82b.expected1.html"
-  },
-  "src": "css3-modsel-82b.src.html"
-}

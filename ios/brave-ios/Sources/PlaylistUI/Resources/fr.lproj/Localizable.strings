@@ -59,7 +59,7 @@
 "playlist.createNewPlaylistButtonTitle" = "Créer";
 
 /* A button title that when tapped will allow the user to delete the selected item. */
-"playlist.deleteItem" = "Supprimer";
+"playlist.deleteItem" = "Testing Delete 1 for French";
 
 /* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
 "playlist.deletePlaylist" = "Supprimer la playlist";
@@ -74,7 +74,13 @@
 "playlist.editPlaylist" = "Modifier la playlist";
 
 /* A button title that when tapped will allow the user to edit the selected playlist. */
-"playlist.editPlaylistShortTitle" = "Modifier";
+"playlist.editPlaylistShortTitle" = "Édition";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Saisissez du texte pour rechercher vos fichiers audio et vidéos enregistrés";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Rechercher un contenu";
 
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Appuyer pour sélectionner le média";
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Ajoutez des contenus depuis vos sites préférés pour les voir apparaître ici";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Aucun résultat trouvé";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Testing Open In New Private Tab 1 for French";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Enregistrer les données hors ligne";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Recherche";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Partager";

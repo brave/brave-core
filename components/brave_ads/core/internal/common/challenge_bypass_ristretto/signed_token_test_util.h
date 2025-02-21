@@ -6,21 +6,15 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_SIGNED_TOKEN_TEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_SIGNED_TOKEN_TEST_UTIL_H_
 
-#include <vector>
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/signed_token.h"
 
-namespace brave_ads::cbr {
-
-class SignedToken;
-
-namespace test {
+namespace brave_ads::cbr::test {
 
 SignedToken GetSignedToken();
 SignedToken GetInvalidSignedToken();
-std::vector<SignedToken> GetSignedTokens();
-std::vector<SignedToken> GetInvalidSignedTokens();
+SignedTokenList GetSignedTokens();
+SignedTokenList GetInvalidSignedTokens();
 
-}  // namespace test
-
-}  // namespace brave_ads::cbr
+}  // namespace brave_ads::cbr::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CHALLENGE_BYPASS_RISTRETTO_SIGNED_TOKEN_TEST_UTIL_H_

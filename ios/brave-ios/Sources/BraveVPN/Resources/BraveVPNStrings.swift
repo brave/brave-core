@@ -1262,7 +1262,7 @@ extension Strings {
         "vpn.settingsVPNKillSwitchDescription",
         bundle: .module,
         value:
-          "When enabled, if your VPN connection drops unexpectedly, your device will automatically be disconnected from the internet, to prevent IP-Address and Data leaks. [Learn More](%@)",
+          "When enabled, if your VPN connection drops unexpectedly, your device will automatically be disconnected from the internet, to prevent IP address and data leaks. [Learn More](%@)",
         comment:
           "The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc."
       )

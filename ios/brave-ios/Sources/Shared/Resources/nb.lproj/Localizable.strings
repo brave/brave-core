@@ -2,7 +2,7 @@
 "AppMenuCopyURLConfirmMessage" = "URL kopiert til utklippstavle";
 
 /* Label for the button, displayed in the menu, used to request the desktop version of the current website. */
-"AppMenuViewDesktopSiteTitleString" = "Be om skrivebordsside";
+"AppMenuViewDesktopSiteTitleString" = "Be om skrivebordside";
 
 /* Label for the button, displayed in the menu, used to request the mobile version of the current website. */
 "AppMenuViewMobileSiteTitleString" = "Be om mobilside";
@@ -92,10 +92,16 @@
 "ScanQRCodeInvalidDataErrorMessage" = "Ugyldige data";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Du må gi Brave tilgang til enhetens kamera i «Innstillinger» -> «Personvern» -> «Kamera».";
+"ScanQRCodePermissionErrorMessage" = "Vennligst la Brave få tilgang til enhetens kamera i «Innstillinger» -> «Personvern» -> «Kamera».";
 
 /* Title for the QR code scanner view. */
 "ScanQRCodeViewTitle" = "Skann QR-kode";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Takk for at du støtter Brave Search ved å klikke på en privat annonse. I motsetning til Big Tech, måler vi annonseresultatene anonymt for å ta vare på personvernet ditt.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Finn ut mer/valg for deaktivering";
 
 /* General settings section title */
 "SettingsGeneralSectionTitle" = "Generelt";

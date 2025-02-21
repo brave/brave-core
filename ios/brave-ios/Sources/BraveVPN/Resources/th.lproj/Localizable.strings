@@ -20,7 +20,7 @@
 "vpn.checkboxNoIPLog" = "Brave จะไม่บันทึกกิจกรรมของคุณ";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectYourDevices" = "คุ้มครองทุกแอป และอุปกรณ์ทุกชิ้นของคุณ";
+"vpn.checkboxProtectYourDevices" = "คุ้มครองทุกแอป & และทุกอุปกรณ์ของคุณ";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxSaferWifi" = "ปลอดภัยกว่าสำหรับทั้ง Wi-Fi ในบ้านหรือสาธารณะ";
@@ -106,8 +106,8 @@
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "เปิดการใช้งาน";
 
-/* Used in context: All plans include a 'free 7-day trial'! where variable part will be indicating what kind of trial it will include */
-"vpn.freeTrialDetail" = "ทุกแผนการสมัครสมาชิกรวม %@!";
+/* Used in context: All plans include a 'free 7-day trial'! */
+"vpn.freeTrialDetail" = "ทุกแผนการสมัครสมาชิกรวม";
 
 /* Used in context: All plans include a 'free 7-day trial'! - this will be the disclamier for the trial showing it is free and 7 days long */
 "vpn.freeTrialPeriod" = "ทดลองใช้ฟรี 7 วัน";
@@ -134,7 +134,7 @@
 "vpn.installTitle" = "ติดตั้ง VPN";
 
 /* Button text to try free Brave VPN */
-"vpn.learnMore" = "ทดลองใช้ฟรี";
+"vpn.learnMore" = "เริ่มต้นทดลองใช้งานฟรี 7 วัน";
 
 /* Used in context: 'Monthly subscription, (it) renews monthly' */
 "vpn.monthlySubDetail" = "ต่ออายุรายเดือน";
@@ -147,6 +147,15 @@
 
 /* Text indicating how many server is used for that region used as Ex: '2 Servers' */
 "vpn.multipleServerCountTitle" = "%ld เซิร์ฟเวอร์";
+
+/* The text that briefly explains how Brave VPN subscription is going to be charged and managed. */
+"vpn.paywallDisclaimer" = "ค่าสมัครสมาชิกจะถูกเรียกเก็บผ่านทางบัญชีของ Apple หากมีส่วนที่ไม่ได้ใช้งานในช่วงทดลองใช้ฟรี ส่วนนี้จะถูกริบคืนเมื่อคุณซื้อการสมัครสมาชิก\n\nการสมัครของคุณจะต่ออายุโดยอัตโนมัติเว้นแต่จะว่าถูกยกเลิกอย่างน้อย 24 ชั่วโมงก่อนสิ้นสุดระยะเวลาใช้งานในปัจจุบัน\n\nคุณสามารถจัดการการสมัครสมาชิกของคุณได้ในการตั้งค่า\n\nการใช้งาน Brave นั้นแสดงว่าคุณได้ยอมรับข้อกำหนดการใช้งานและนโยบายความเป็นส่วนตัวแล้ว";
+
+/* The text which will be used to indicate period of payments like 10 / month */
+"vpn.paywallMonthlyPriceDividend" = "เดือน";
+
+/* The text which will be used to indicate period of payments like 150 / year */
+"vpn.paywallYearlyPriceDividend" = "ปี";
 
 /* Text to show user when their vpn plan has expired */
 "vpn.planExpired" = "หมดอายุแล้ว";
@@ -181,6 +190,12 @@
 /* Message that we show after successfully changing vpn region. */
 "vpn.regionSwitchSuccessPopupText" = "เปลี่ยนภูมิภาคของ VPN แล้ว";
 
+/* Yearly tier explaination. Subscription will be renewed annually. */
+"vpn.renewAnnually" = "ต่ออายุทุกปี";
+
+/* Monthly tier explaination. Subscription will be renewed monthly. */
+"vpn.renewMonthly" = "ต่ออายุรายเดือน";
+
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "ไม่สามารถรีเซ็ตการกำหนดค่า VPN ได้ โปรดลองอีกครั้ง หากปัญหายังคงมีอยู่ โปรดติดต่อฝ่ายสนับสนุนเพื่อขอความช่วยเหลือ";
 
@@ -199,6 +214,9 @@
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "กู้คืน";
 
+/* Use in context: save 16%. */
+"vpn.save" = "บันทึก";
+
 /* Title showing which country serves list showing. Ex: 'Brazil Server */
 "vpn.serverNameTitle" = "%@ เซิร์ฟเวอร์";
 
@@ -209,7 +227,7 @@
 "vpn.serverTitle" = "%ld เซิร์ฟเวอร์";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "อัปเกรดเป็น VPN เพื่อปกป้องการเชื่อมต่อของคุณและบล็อกตัวติดตามที่เข้าแทรกแซงได้ทุกที่";
+"vpn.settingHeaderBody" = "ปกป้องทุกแอปด้วย Brave VPN ปกป้องได้สูงสุด 10 อุปกรณ์ด้วยแพ็กเกจเดียว";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "ติดต่อฝ่ายสนับสนุนทางเทคนิค";
@@ -256,8 +274,20 @@
 /* Table cell title for vpn's transport protocol and which open opens protocol select */
 "vpn.settingsTransportProtocol" = "โปรโตคอลการขนส่ง";
 
-/* Button to allow the user to view the app-store receipt. */
+/* Button to allow the user to view the App Store receipt. */
 "vpn.settingsViewReceipt" = "ดูใบเสร็จ AppStore";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchDescription" = "เมื่อเปิดใช้งาน หากการเชื่อมต่อ VPN ของคุณหลุดโดยไม่คาดคิด อุปกรณ์ของคุณจะถูกตัดการเชื่อมต่อจากอินเทอร์เน็ตโดยอัตโนมัติเพื่อป้องกันการรั่วไหลของที่อยู่ IP และข้อมูล [เรียนรู้เพิ่มเติม]%@";
+
+/* The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc. */
+"vpn.settingsVPNKillSwitchTitle" = "เปิดใช้งานสวิตช์ตัดการเชื่อมต่อ";
+
+/* The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings. */
+"vpn.settingsVPNSmartProxyDescription" = "การกำหนดเส้นทางพร็อกซี่อัจฉริยะช่วยให้การรับส่งข้อมูลถูกกำหนดเส้นทางผ่านเซิร์ฟเวอร์พร็อกซี่ที่กำหนดเพื่อให้สามารถเข้าถึงเนื้อหาหรือเว็บไซต์ที่ถูกจำกัดบ่อยๆ หรือบริการจากบุคคลที่สาม [เรียนรู้เพิ่มเติม] (%@)";
+
+/* Whether the VPN's Smart-Proxy feature is enabled or not */
+"vpn.settingsVPNSmartProxyEnabled" = "เปิดใช้งาน Smart Proxy";
 
 /* Text for necesseray required action of VPN subscription needs a method of payment update */
 "vpn.vpnActionUpdatePaymentMethodSettingsText" = "อัปเดตวิธีการชำระเงิน";
@@ -298,6 +328,12 @@
 /* Disclaimer for user purchasing the VPN plan. */
 "vpn.vpnIAPBoilerPlate" = "ค่าสมัครสมาชิกจะถูกเรียกเก็บผ่านทางบัญชีของ iTunes\nหากมีส่วนที่ไม่ได้ใช้งานในช่วงทดลองใช้ฟรี ส่วนนี้จะถูกริบคืนเมื่อคุณซื้อการสมัครสมาชิก\n\nการสมัครของคุณจะต่ออายุโดยอัตโนมัติเว้นแต่จะว่าถูกยกเลิกอย่างน้อย 24 ชั่วโมงก่อนสิ้นสุดระยะเวลาใช้งานในปัจจุบัน\n\nคุณสามารถจัดการการสมัครสมาชิกของคุณได้ในการตั้งค่า\n\nการใช้งาน Brave นั้นแสดงว่าคุณได้ยอมรับข้อกำหนดการใช้งานและนโยบายความเป็นส่วนตัวแล้ว";
 
+/* The title shown on the menu when the VPN connection is disconnected */
+"vpn.vpnOffMenuButtonTitle" = "ปิด VPN";
+
+/* The title shown on the menu when the VPN connection is connected */
+"vpn.vpnOnMenuButtonTitle" = "เปิด VPN";
+
 /* Title for a button for enabling the Redeem Code flow */
 "vpn.vpnRedeemCodeButtonActionTitle" = "รหัสแลก";
 
@@ -322,9 +358,9 @@
 /* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
 "vpn.yearlySubDetail" = "ต่ออายุรายปี จะประหยัด %@";
 
-/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - BEST VALUE' */
 "vpn.yearlySubDisclaimer" = "คุ้มค่าที่สุด";
 
 /* One year lenght vpn subcription */
-"vpn.yearlySubTitle" = "หนึ่งปี";
+"vpn.yearlySubTitle" = "1 ปี";
 

@@ -7,6 +7,8 @@
 
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 
+#include <cstddef>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_test_util.h"

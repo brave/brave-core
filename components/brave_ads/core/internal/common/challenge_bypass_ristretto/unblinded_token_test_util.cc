@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token_test_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 
 namespace brave_ads::cbr::test {
 
@@ -14,8 +13,8 @@ UnblindedToken GetUnblindedToken() {
   return UnblindedToken(kUnblindedTokenBase64);
 }
 
-std::vector<UnblindedToken> GetUnblindedTokens() {
-  std::vector<UnblindedToken> unblinded_tokens;
+UnblindedTokenList GetUnblindedTokens() {
+  UnblindedTokenList unblinded_tokens;
   const UnblindedToken unblinded_token = GetUnblindedToken();
   unblinded_tokens.push_back(unblinded_token);
   return unblinded_tokens;

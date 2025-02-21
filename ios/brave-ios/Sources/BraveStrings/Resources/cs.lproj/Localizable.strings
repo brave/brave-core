@@ -28,6 +28,12 @@
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Už jste na brave.com provedli nákup?";
 
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Máte promo kód?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Uplatnit promo kód";
+
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Obnovte si své identifikační údaje";
 

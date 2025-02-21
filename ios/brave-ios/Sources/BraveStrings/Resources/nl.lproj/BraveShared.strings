@@ -49,9 +49,6 @@
 /* Label for Cancel button */
 "AuthPromptAlertCancelButtonTitle" = "Annuleer";
 
-/* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "%1$@ vraagt een gebruikersnaam en wachtwoord. De site meldt: %2$@";
-
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "Log in";
 
@@ -198,6 +195,12 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Algemene instellingen";
+
+/* Shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfo" = "Bewaar contactgegevens voor toekomstige foutrapporten over niet-werkende sites";
+
+/* Description for shields panel toggle label that would save webcompat report contact info data when enabled. */
+"BraveShieldsSaveContactInfoDescription" = "Als je contactgegevens opgeeft, worden deze bewaard voor toekomstige rapporten";
 
 /* No comment provided by engineer. */
 "BraveShieldsSiteBroken" = "Als deze site niet correct werkt, zet je Shields uit";
@@ -419,7 +422,7 @@
 "ClearPrivateDataAlertTitle" = "Wis gegevens";
 
 /* No comment provided by engineer. */
-"ClearPrivateDataAlertYesAction" = "Ja, wis";
+"ClearPrivateDataAlertYesAction" = "Ja, verwijder";
 
 /* Button in settings that clears private data for the selected items. */
 "ClearPrivateDataNow" = "Wis gegevens nu";
@@ -689,7 +692,7 @@
 "ErrorPageReloadButtonTitle" = "Laad opnieuw";
 
 /* Additional warning text when clicking the Advanced button on error pages. %@ is a placeholder, do not localize it. Do not localize <br />. */
-"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ gebruikt normaal encryptie om je informatie te beschermen. Wanneer Brave deze keer probeerde verbinding te maken met %2$@, stuurde de website ongebruikelijke en onjuiste inloggegevens terug. Dit kan gebeuren als een aanvaller zich voordoet als %3$@ of als de verbinding is onderbroken door een inlogscherm voor wifi. Je informatie is nog steeds veilig omdat Brave de verbinding heeft gestopt voordat er gegevens werden uitgewisseld.<br />Je kunt  %4$@ nu niet bezoeken omdat de website certificaatkoppeling gebruikt. Netwerkfouten en aanvallen zijn doorgaans tijdelijk, waardoor deze pagina wellicht later weer zal werken.";
+"ErrorPagesAdvancedErrorPinningDetails" = "%1$@ gebruikt normaal encryptie om je informatie te beschermen. Wanneer Brave deze keer probeerde verbinding te maken met %2$@, stuurde de website ongebruikelijke en onjuiste inloggegevens terug. Dit kan gebeuren als een aanvaller zich voordoet als %3$@ of als de verbinding is onderbroken door een inlogscherm voor wifi. Je informatie is nog steeds veilig omdat Brave de verbinding heeft gestopt voordat er gegevens werden uitgewisseld.<br />Je kunt %4$@ nu niet bezoeken omdat de website certificaatkoppeling gebruikt. Netwerkfouten en aanvallen zijn doorgaans tijdelijk, waardoor deze pagina wellicht later weer zal werken.";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarningDetails" = "Deze server kon niet bewijzen dat het %@ is omdat het beveiligingscertificaat van de server niet wordt vertrouwd door het besturingssysteem van je apparaat. Mogelijk wordt dit veroorzaakt door een verkeerde configuratie of een aanvaller die je verbinding wil onderscheppen.";
@@ -860,7 +863,7 @@
 "LastMonth" = "Afgelopen maand";
 
 /* History tableview section header */
-"LastWeek" = "Afgelopen week";
+"LastWeek" = "Vorige week";
 
 /* No comment provided by engineer. */
 "learnMore" = "Meer informatie";
@@ -1163,13 +1166,13 @@
 "onboarding.blockedAdsOnboardingInstructionsText" = "Tik om Brave Shields te bekijken";
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
-"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "advertenties en trackers geblokkeerd";
+"onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Advertenties en trackers geblokkeerd";
 
 /* Button text to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptButton" = "Koppel VPN-abonnement";
 
 /* Popup description to let users know they can use the vpn on all their devices */
-"onboarding.linkReceiptDescription" = "Met je Brave VPN-abonnement kun je tot wel 5 Android-apparaten, iOS-apparaten of desktops beschermen. Koppel gewoon je App Store-abonnement aan je Brave-account.";
+"onboarding.linkReceiptDescription" = "Met je Brave VPN-abonnement kun je tot wel 10 Android-apparaten, iOS-apparaten of desktops beschermen. Koppel gewoon je App Store-abonnement aan je Brave-account.";
 
 /* Popup title to let users know they can use the vpn on all their devices */
 "onboarding.linkReceiptTitle" = "Breid je Brave Firewall + VPN-bescherming uit";
@@ -1224,6 +1227,12 @@
 
 /* Context menu item for opening a link in a new window */
 "OpenInNewWindowTitle" = "Open in nieuw venster";
+
+/* Title of the alert when a mobile configuration profile is available for download. %@ is the URL placeholder of the website where the profile will be downloaded from */
+"OpenMobileConfigurationAlertDescription" = "Ga door met de download van een configuratieprofiel vanaf %@";
+
+/* Title of the alert when a mobile configuration profile is available for download */
+"OpenMobileConfigurationAlertTitle" = "Configuratieprofiel beschikbaar";
 
 /* Context menu option for opening a link in a new private tab */
 "OpenNewPrivateTabButtonTitle" = "Open in nieuw privétabblad";
@@ -1317,6 +1326,12 @@
 
 /* Title for open tabs menu item */
 "OpenTabsMenuItem" = "Geopende tabbladen";
+
+/* Title of the alert when a calendar event is available for download. %@ is the URL placeholder of the website where the calendar will be downloaded from */
+"OpenTextCalendarAlertDescription" = "Ga door met de download van een agenda-activiteit vanaf %@";
+
+/* Title of the alert when a calendar event is available for download */
+"OpenTextCalendarAlertTitle" = "Agenda-activiteit beschikbaar";
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Open website";
@@ -1541,10 +1556,10 @@
 "playlist.playlistAutoSaveSettingsDescription" = "Video- en audiobestanden voor offline gebruik nemen mogelijk veel opslagruimte op je apparaat in beslag en verbruiken ook mobiele data";
 
 /* Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)) */
-"playlist.playlistAutoSaveSettingsFooterText" = "Met deze optie bewaar je de items van je playlist automatisch op je apparaat, zodat je ze kunt afspelen zonder internetverbinding.";
+"playlist.playlistAutoSaveSettingsFooterText" = "Zodra je content hebt geopend in Playlist, kun je met deze optie geopende items van de afspeellijst op je apparaat bewaren zodat je ze kunt afspelen zonder internetverbinding.";
 
 /* Title for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi) */
-"playlist.playlistAutoSaveSettingsTitle" = "Bewaar autom. voor offline gebruik";
+"playlist.playlistAutoSaveSettingsTitle" = "Bewaar content om deze offline af te spelen";
 
 /* When the user's disk space is almost full */
 "playlist.playlistDiskSpaceWarningMessage" = "Video- en audiobestanden voor offline gebruik nemen mogelijk veel opslagruimte op je apparaat in beslag. Verwijder enkele bestanden om opslagruimte vrij te maken.";
@@ -1618,12 +1633,6 @@
 /* Title for the Playlist Settings Option for Enable/Disable ability to start playing from the point where user last left-off */
 "playlist.playlistStartPlaybackSettingsOptionTitle" = "Onthoud afspeelpositie";
 
-/* Description for Playlist setting */
-"playlist.playlistWebCompatibilityDescription" = "Schakelt de WebKit MediaSource API uit";
-
-/* Title for Playlist setting */
-"playlist.playlistWebCompatibilityTitle" = "Webcompatibiliteit";
-
 /* Title for removing offline mode storage */
 "playList.removeActionButtonTitle" = "Verwijder";
 
@@ -1679,13 +1688,13 @@
 "playList.sorryAlertTitle" = "Sorry";
 
 /* The title for the toast that shows up on a page containing a playlist item that was added to playlist */
-"playList.toastAddedToPlaylistTitle" = "Toegevoegd aan Brave Playlist";
+"playList.toastAddedToPlaylistTitle" = "Bekijk in Playlist";
 
 /* The title for the toast button when an item was added to playlist */
 "playList.toastAddToPlaylistOpenButton" = "Open";
 
 /* The title for the toast that shows up on a page containing a playlist item */
-"playList.toastAddToPlaylistTitle" = "Voeg toe aan Brave Playlist";
+"playList.toastAddToPlaylistTitle" = "Voeg toe aan Playlist";
 
 /* The title for the toast that shows up on a page when an item that has already been added, was updated. */
 "playList.toastExitingItemPlaylistTitle" = "Bekijk in Brave Playlist";
@@ -1694,7 +1703,7 @@
 "playList.undoRemoveButtonTitle" = "Herstel";
 
 /* Footer for option to disable URL-Bar button */
-"playlist.urlBarButtonOptionFooter" = "Voegt een playlistknop toe (ziet eruit als 4 lijnen met een plusteken) naast de adresbalk in Brave Browser. Met deze knop heb je snel toegang tot je playlist en kun je media toevoegen of verwijderen.";
+"playlist.urlBarButtonOptionFooter" = "Voegt een playlistknop toe naast de adresbalk in Brave Browser. Met deze knop heb je snel toegang tot je playlist en kun je media toevoegen of verwijderen.";
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Knop voor snelle toegang";
@@ -1889,7 +1898,7 @@
 "privacyHub.noDataToShow" = "Nog geen gegevens.";
 
 /* Text of a callout to encourage user to enable Apple notification system. */
-"privacyHub.notificationCalloutBody" = "Krijg wekelijkse privacy-updates over de blokkering van trackers en advertenties.";
+"privacyHub.notificationCalloutBody" = "Ontvang wekelijks privacy-updates voor tracker- en advertentieblokkering.";
 
 /* Text of a button to encourage user to enable Apple notification system. */
 "privacyHub.notificationCalloutButtonText" = "Zet meldingen aan";
@@ -2096,7 +2105,7 @@
 "RecentSearchHide" = "Verberg";
 
 /* Recent Search Paste & Go Button Title */
-"RecentSearchPasteAndGo" = "Plak en bezoek";
+"RecentSearchPasteAndGo" = "Plak en ga";
 
 /* Recent Search 'on' text when a user searches 'on' a website */
 "RecentSearchQuickSearchOnWebsite" = "op";
@@ -2145,6 +2154,9 @@
 
 /* A label for a text entry field where the user can provide contact details within a web-compatibilty report */
 "ReportBrokenContactMe" = "Neem contact met me op via: (optioneel)";
+
+/* Contact info storing description */
+"ReportBrokenContactMeDescription" = "Als je contactgegevens opgeeft, worden deze bewaard om in de toekomst niet-werkende sites te melden.";
 
 /* A placeholder for a text entry field within a web-compatibilty report which shows a few suggestions of what the user should enter for their contact contact details (in a 'Contact me at: (optional)' field). */
 "ReportBrokenContactMeSuggestions" = "E-mail, Twitter, etc.";
@@ -2471,7 +2483,7 @@
 "SearchInputViewTextFieldAccessibilityLabel" = "Invoerveld voor zoekopdracht";
 
 /* Title for the search field at the top of the Logins list screen */
-"SearchInputViewTitle" = "Zoek";
+"SearchInputViewTitle" = "Zoeken";
 
 /* Add Custom Search Engine Table Cell Row Title */
 "searchSettingAddCustomEngineCellTitle" = "Voeg aangepaste zoekmachine toe";
@@ -3221,7 +3233,7 @@
 "TabToolbarBackButtonAccessibilityLabel" = "Vorige";
 
 /* Accessibility Label for the tab toolbar Forward button */
-"TabToolbarForwardButtonAccessibilityLabel" = "Volgende";
+"TabToolbarForwardButtonAccessibilityLabel" = "Ga verder";
 
 /* Accessibility label for the lock icon, which is only present if the connection is secure */
 "TabToolbarLockImageAccessibilityLabel" = "Beveiligde verbinding";
@@ -3344,7 +3356,7 @@
 "today.availableRSSFeedsHeaderTitle" = "Beschikbare RSS-feeds";
 
 /* The name of the feature */
-"today.braveToday" = "Brave News";
+"today.braveToday" = "Brave-nieuws";
 
 /* The name of the feature in settings */
 "today.braveToday.title" = "News";
@@ -3542,133 +3554,10 @@
 "voice.search.microphone.description.required" = "Geef in de iOS-systeeminstellingen toegang tot de microfoon zodat Brave anonieme gesproken zoekopdrachten kan uitvoeren.";
 
 /* Title for warning alert microphone access is required. */
-"voice.search.microphone.title.required" = "Toegang to microfoon vereist";
+"voice.search.microphone.title.required" = "Toegang tot microfoon vereist";
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave bewaart en deelt geen gesproken zoekopdrachten.";
-
-/* Pop up extra description for billing issue of subcription VPN about to expire */
-"vpn.autoReneSoonExpirePopOverSubDescription" = "Wil je beschermd blijven? Verleng dan nu voordat je abonnement afloopt. En als dank geven we je zelfs 20% korting op de komende 3 maanden.";
-
-/* Action button title that enables auto renew for subcription */
-"vpn.autoRenewActionButtonTitle" = "Verleng automatisch";
-
-/* Pop up title for renewing VPN subscription with discount */
-"vpn.autoRenewDiscountPopOverTitle" = "Verleng nu automatisch je Brave VPN-abonnement en krijg 3 maanden lang 20% korting.";
-
-/* Pop up title for renewing VPN subscription with month free */
-"vpn.autoRenewFreeMonthPopOverTitle" = "Verleng nu automatisch je Brave VPN-abonnement en krijg 1 maand gratis.";
-
-/* Pop up description for VPN subscription is about expire */
-"vpn.autoRenewSoonExpirePopOverDescription" = "Dan kun je de extra bescherming van Brave niet meer gebruiken voor elke app op je telefoon.";
-
-/* Pop up title for VPN subscription is about expire */
-"vpn.autoRenewSoonExpireTitle" = "O nee… Je Brave VPN-abonnement verloopt binnenkort.";
-
-/* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
-
-/* Message for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesBody" = "Geen verbinding met App Store mogelijk. Probeer het over enkele minuten opnieuw.";
-
-/* Title for an alert when the VPN can't get prices from the App Store */
-"vpn.errorCantGetPricesTitle" = "App Store-fout";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAds" = "Blokkeert ongewenste netwerkverbindingen";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxBlockAdsAlternate" = "Blokkeer advertenties en trackers in alle apps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFast" = "Ondersteunt snelheden tot 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckboxFastAlternate" = "Snel en onbeperkt tot 100 Mbps";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmark247Support" = "24/7 ondersteuning";
-
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.popupCheckmarkSecureConnections" = "Beveiligt alle verbindingen";
-
-/* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "Mogelijk gemaakt door";
-
-/* Name of automatic vpn region selector */
-"vpn.regionPickerAutomaticModeCellText" = "Automatisch";
-
-/* Alert description to show when the VPN session has expired */
-"vpn.sessionExpiredDescription" = "Log in op je Brave-account om je VPN-sessie te vernieuwen.";
-
-/* Dismiss button to close the alert showing that the vpn session has expired */
-"vpn.sessionExpiredDismissButton" = "Sluit";
-
-/* Login button to fix the vpn session expiration issue */
-"vpn.sessionExpiredLoginButton" = "Log in";
-
-/* Alert title to show when the VPN session has expired */
-"vpn.sessionExpiredTitle" = "Sessie verlopen";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNDisabled" = "Uitgeschakeld";
-
-/* Whether the VPN is enabled or not */
-"vpn.settingsVPNEnabled" = "Ingeschakeld";
-
-/* Whether the VPN plan has expired */
-"vpn.settingsVPNExpired" = "Verlopen";
-
-/* Action button title that subscribe action for VPN purchase */
-"vpn.subscribeVPNActionButtonTitle" = "Abonneer nu";
-
-/* Pop up description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverDescription" = "Precies: je kunt je Brave VPN-abonnement op wel 5 apparaten gebruiken. Als je een abonnement koopt op je iOS-apparaat, kun je dat abonnement ook gratis gebruiken op je Mac, Windows-computer of Android-apparaat.";
-
-/* Pop up title the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNAllDevicesPopOverTitle" = "Gebruik nu Brave VPN op al je apparaten voor dezelfde prijs.";
-
-/* Pop up title for subscribing VPN with discount */
-"vpn.subscribeVPNDiscountPopOverTitle" = "Geef Brave VPN nog een kans en krijg 3 maanden lang 20% korting.";
-
-/* Pop up sub description the subscription for VPN can be used for all platforms */
-"vpn.subscribeVPNPopOverSubDescription" = "Klaar om de apps op je telefoon te beveiligen? Ga weer aan de slag met Brave VPN en krijg de komende 3 maanden 20% korting.";
-
-/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverDescription" = "Brave VPN heeft altijd trackers in elke app geblokkeerd, zelfs buiten Brave Browser. Dankzij het Privacycentrum van Brave kun je nu zien wie je probeerde te volgen.";
-
-/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
-"vpn.subscribeVPNProtectionPopOverTitle" = "Wist je dat Brave VPN je ook buiten Brave Browser beschermt?";
-
-/* Cell title indicates update payment method */
-"vpn.updateActionCellTitle" = "Werk bij";
-
-/* Pop up description for billing issue of subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverDescription" = "Maak je geen zorgen. We houden VPN nog enkele dagen actief zodat je de betalingsgegevens rustig kunt bijwerken.";
-
-/* Pop up title for billing issue for subcription VPN already expired */
-"vpn.updateBillingExpiredPopOverTitle" = "Werk de betalingsgegevens bij om beschermd te blijven met Brave VPN.";
-
-/* Pop up description for billing issue of subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverDescription" = "Wil je graag dat de apps op je telefoon beschermd blijven? Werk dan gewoon de betalingsgegevens even bij.";
-
-/* Pop up title for billing issue for subcription VPN about to expire */
-"vpn.updateBillingSoonExpirePopOverTitle" = "Er is een factureringsprobleem met je account, waardoor je Brave VPN-abonnement binnenkort verloopt.";
-
-/* Action button title that updates method payment */
-"vpn.updatePaymentActionButtonTitle" = "Werk betaalmethode bij";
-
-/* The title for screen for showing list of server region */
-"vpn.vpnRegionListServerScreenTitle" = "Serverregio";
-
-/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
-"vpn.vpnRegionSelectorButtonSubTitle" = "Huidige instelling: %@";
-
-/* Button title for VPN region selection in menu */
-"vpn.vpnRegionSelectorButtonTitle" = "VPN-regio";
-
-/* Text description of VPN subscription needs a method of payment update */
-"vpn.vpnUpdatePaymentMethodDescriptionText" = "Werk je betaalmethode bij";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Aanmaakdatum van wallet";

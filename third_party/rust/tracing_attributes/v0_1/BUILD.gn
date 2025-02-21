@@ -12,17 +12,17 @@ cargo_crate("lib") {
   crate_name = "tracing_attributes"
   epoch = "0.1"
   crate_type = "proc-macro"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.27/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.28/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.27/src/attr.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.27/src/expand.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.27/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.28/src/attr.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.28/src/expand.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-attributes-0.1.28/src/lib.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.27"
+  cargo_pkg_version = "0.1.28"
   cargo_pkg_authors = "Tokio Contributors <team@tokio.rs>, Eliza Weisman <eliza@buoyant.io>, David Barsky <dbarsky@amazon.com>"
   cargo_pkg_name = "tracing-attributes"
   cargo_pkg_description =

@@ -234,7 +234,7 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
   @objc
   func onLongPressedWebView(_ gestureRecognizer: UILongPressGestureRecognizer) {
     if gestureRecognizer.state == .began,
-      let webView = gestureRecognizer.view as? BraveWebView,
+      let webView = gestureRecognizer.view as? TabWebView,
       Preferences.Playlist.enableLongPressAddToPlaylist.value
     {
 
@@ -279,7 +279,7 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
 
 extension PlaylistScriptHandler {
   static func getCurrentTime(
-    webView: BraveWebView,
+    webView: TabWebView,
     nodeTag: String,
     completion: @escaping (Double) -> Void
   ) {

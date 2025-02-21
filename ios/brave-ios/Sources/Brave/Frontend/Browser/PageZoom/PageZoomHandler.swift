@@ -14,7 +14,7 @@ class PageZoomHandler: ObservableObject {
     case increment, decrement
   }
 
-  private weak var webView: BraveWebView?
+  private weak var webView: TabWebView?
   let isPrivateBrowsing: Bool
 
   static let steps = [

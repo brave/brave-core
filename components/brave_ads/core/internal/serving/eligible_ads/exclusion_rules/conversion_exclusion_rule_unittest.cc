@@ -93,7 +93,7 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kConversion,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/false);
-  for (int i = 0;
+  for (size_t i = 0;
        i < kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get() - 1; ++i) {
     ad_events.push_back(ad_event);
   }
@@ -120,8 +120,8 @@ TEST_F(BraveAdsConversionExclusionRuleTest,
       creative_ad, mojom::AdType::kNotificationAd,
       mojom::ConfirmationType::kConversion,
       /*created_at=*/test::Now(), /*should_generate_random_uuids=*/false);
-  for (int i = 0; i < kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get();
-       ++i) {
+  for (size_t i = 0;
+       i < kShouldExcludeAdIfCreativeSetExceedsConversionCap.Get(); ++i) {
     ad_events.push_back(ad_event);
   }
 

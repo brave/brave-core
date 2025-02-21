@@ -48,7 +48,7 @@ class AdsServiceDelegate : public AdsService::Delegate {
 
   base::Value::Dict GetSkus() const;
 
-  // AdsService::Delegate implementation
+  // AdsService::Delegate:
   void InitNotificationHelper() override;
   bool CanShowSystemNotificationsWhileBrowserIsBackgrounded() override;
   bool DoesSupportSystemNotifications() override;

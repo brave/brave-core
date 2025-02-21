@@ -52,6 +52,11 @@ namespace brave_wallet {
 
 namespace {
 
+constexpr char kGateJuniorMnemonic[] =
+    "gate junior chunk maple cage select orange circle price air tortoise "
+    "jelly art frequent fence middle ice moral wage toddler attitude sign "
+    "lesson grain";
+
 std::array<uint8_t, 32> GetTxId(const std::string& hex_string) {
   std::vector<uint8_t> vec;
   std::array<uint8_t, 32> sized_vec;
@@ -932,11 +937,8 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
                                               mojom::KeyringId::kZCashMainnet,
@@ -954,6 +956,10 @@ TEST_F(ZCashWalletServiceUnitTest, ZCashAccountInfo) {
               EXPECT_EQ(account_info->orchard_address.value(),
                         "u1qtnwpp2gg5r745auv2r5cvc4v0q8sr8nd3xcg48ck92xul8t6tmv"
                         "urkzksfln94mh2amfxjemwwtmvys4l40xlkxck5fpgqxzuqxs2jq");
+              EXPECT_EQ(
+                  account_info->orchard_internal_address.value(),
+                  "u1dl9dtss80tsutx3xfje4vlndwhc2f2pernhhpxfsz9vw6nr0zz"
+                  "lkw9p2m22xjcn5588fp3tnta9uqhpk4nh06xumwvt8ff7w653g5pvk");
             }));
     zcash_wallet_service_->GetZCashAccountInfo(
         account_id_1.Clone(), get_zcash_account_info_callback.Get());
@@ -1029,11 +1035,8 @@ TEST_F(ZCashWalletServiceUnitTest, MakeAccountShielded) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
 
@@ -1118,11 +1121,8 @@ TEST_F(ZCashWalletServiceUnitTest, ShieldFunds_FailsOnNetworkError) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(70972);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
@@ -1202,11 +1202,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(10987);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
@@ -1611,11 +1608,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
       {{"zcash_shielded_transactions_enabled", "true"}});
 
   keyring_service()->Reset();
-  keyring_service()->RestoreWallet(
-      "gate junior chunk maple cage select orange circle price air tortoise "
-      "jelly art frequent fence middle ice moral wage toddler attitude sign "
-      "lesson grain",
-      kTestWalletPassword, false, base::DoNothing());
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
   OrchardBundleManager::OverrideRandomSeedForTesting(70972);
   GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
@@ -2525,6 +2519,91 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
         db_path, nullptr);
     OverrideSyncStateForTesting(std::move(empty_sync_state));
     task_environment_.RunUntilIdle();
+  }
+}
+
+TEST_F(ZCashWalletServiceUnitTest, ShieldSync) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(kGateJuniorMnemonic, kTestWalletPassword,
+                                   false, base::DoNothing());
+  GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+
+  keyring_service()->SetZCashAccountBirthday(
+      account_id(), mojom::ZCashAccountShieldBirthday::New(100u, "hash"));
+
+  auto account_id_1 = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                              mojom::KeyringId::kZCashMainnet,
+                                              mojom::AccountKind::kDerived, 0);
+
+  {
+    base::MockCallback<ZCashWalletService::IsSyncInProgressCallback>
+        is_sync_in_progress_callback;
+    EXPECT_CALL(is_sync_in_progress_callback,
+                Run(testing::Eq(false), testing::Eq(std::nullopt)));
+    zcash_wallet_service_->IsSyncInProgress(account_id(),
+                                            is_sync_in_progress_callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+  {
+    base::MockCallback<ZCashWalletService::StartShieldSyncCallback> callback;
+    zcash_wallet_service_->StartShieldSync(account_id(), 0, callback.Get());
+  }
+
+  {
+    base::MockCallback<ZCashWalletService::IsSyncInProgressCallback>
+        is_sync_in_progress_callback;
+    EXPECT_CALL(is_sync_in_progress_callback,
+                Run(testing::Eq(true), testing::Eq(std::nullopt)));
+    zcash_wallet_service_->IsSyncInProgress(account_id(),
+                                            is_sync_in_progress_callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+  {
+    base::MockCallback<ZCashWalletService::StopShieldSyncCallback> callback;
+    zcash_wallet_service_->StopShieldSync(account_id(), callback.Get());
+  }
+
+  {
+    base::MockCallback<ZCashWalletService::IsSyncInProgressCallback>
+        is_sync_in_progress_callback;
+    EXPECT_CALL(is_sync_in_progress_callback,
+                Run(testing::Eq(false), testing::Eq(std::nullopt)));
+    zcash_wallet_service_->IsSyncInProgress(account_id(),
+                                            is_sync_in_progress_callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+}
+
+TEST_F(ZCashWalletServiceUnitTest, ShieldSync_FeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"}});
+
+  {
+    base::MockCallback<ZCashWalletService::IsSyncInProgressCallback> callback;
+    EXPECT_CALL(callback, Run(testing::Eq(false), testing::Ne(std::nullopt)));
+    zcash_wallet_service_->IsSyncInProgress(account_id(), callback.Get());
+    task_environment_.RunUntilIdle();
+  }
+
+  {
+    base::MockCallback<ZCashWalletService::StopShieldSyncCallback> callback;
+    EXPECT_CALL(callback, Run(testing::Ne(std::nullopt)));
+    zcash_wallet_service_->StopShieldSync(account_id(), callback.Get());
+  }
+
+  {
+    base::MockCallback<ZCashWalletService::StopShieldSyncCallback> callback;
+    EXPECT_CALL(callback, Run(testing::Ne(std::nullopt)));
+    zcash_wallet_service_->StartShieldSync(account_id(), 0, callback.Get());
   }
 }
 

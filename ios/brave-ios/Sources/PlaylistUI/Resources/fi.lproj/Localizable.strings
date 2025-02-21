@@ -76,6 +76,12 @@
 /* A button title that when tapped will allow the user to edit the selected playlist. */
 "playlist.editPlaylistShortTitle" = "Muokkaa";
 
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Hae tallennettuja äänitteitä ja videoita kirjoittamalla";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Hae mediasta";
+
 /* A title shown above a list of videos in your default playlist. */
 "playlist.fillNewPlaylistSubtitle" = "Valitse mediatiedosto napauttamalla";
 
@@ -112,6 +118,9 @@
 /* Shown when there is no content available to play for a given folder */
 "playlist.noMediaToPickFromEmptyState" = "Lisää mediatiedostoja suosikkisivustoiltasi, niin niitä toistetaan täällä.";
 
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Ei tuloksia";
+
 /* A button title that will open the selected item in a new private tab. */
 "playlist.openInNewPrivateTab" = "Avaa uudessa yksityisessä välilehdessä";
 
@@ -138,6 +147,9 @@
 
 /* A button title that will attempt to save the selected item for offline playback. */
 "playlist.saveOfflineData" = "Tallenna offline-tiedot";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Haku";
 
 /* A button title that will present a share sheet for the selected item */
 "playlist.share" = "Jaa";

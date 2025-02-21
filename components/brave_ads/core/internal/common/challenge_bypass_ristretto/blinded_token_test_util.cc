@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_test_util.h"
 
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/challenge_bypass_ristretto_test_constants.h"
 
 namespace brave_ads::cbr::test {
@@ -18,11 +17,11 @@ BlindedToken GetInvalidBlindedToken() {
   return BlindedToken(kInvalidBase64);
 }
 
-std::vector<BlindedToken> GetBlindedTokens() {
+BlindedTokenList GetBlindedTokens() {
   return {GetBlindedToken()};
 }
 
-std::vector<BlindedToken> GetInvalidBlindedTokens() {
+BlindedTokenList GetInvalidBlindedTokens() {
   return {GetInvalidBlindedToken()};
 }
 

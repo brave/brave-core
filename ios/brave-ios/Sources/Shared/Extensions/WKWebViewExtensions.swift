@@ -12,6 +12,15 @@ enum JavascriptError: Error {
 }
 
 extension WKWebView {
+  public var sessionData: Data? {
+    get {
+      interactionState as? Data
+    }
+    set {
+      interactionState = newValue
+    }
+  }
+
   public func generateJSFunctionString(
     functionName: String,
     args: [Any?],

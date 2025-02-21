@@ -241,7 +241,7 @@ class Tab: NSObject {
 
   var userActivity: NSUserActivity?
 
-  var webView: BraveWebView?
+  var webView: TabWebView?
   var tabDelegate: TabDelegate?
   weak var urlDidChangeDelegate: URLChangeDelegate?  // TODO: generalize this.
   var bars = [SnackBar]()
@@ -515,7 +515,6 @@ class Tab: NSObject {
       }
       let webView = TabWebView(
         frame: .zero,
-        tab: self,
         configuration: configuration!,
         isPrivate: isPrivate
       )
@@ -1000,7 +999,7 @@ class Tab: NSObject {
     change: [NSKeyValueChangeKey: Any]?,
     context: UnsafeMutableRawPointer?
   ) {
-    guard let webView = object as? BraveWebView, webView == self.webView,
+    guard let webView = object as? TabWebView, webView == self.webView,
       let path = keyPath, path == KVOConstants.url.keyPath
     else {
       return assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
@@ -1138,18 +1137,74 @@ private protocol TabWebViewDelegate: AnyObject {
   func tabWebView(_ tabWebView: TabWebView, didSelectSearchWithBraveFor selectedText: String)
 }
 
-class TabWebView: BraveWebView, MenuHelperInterface {
+class TabWebView: WKWebView, MenuHelperInterface {
+  /// Stores last position when the webview was touched on.
+  private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
+
+  private static var nonPersistentDataStore: WKWebsiteDataStore?
+  static func sharedNonPersistentStore() -> WKWebsiteDataStore {
+    if let dataStore = nonPersistentDataStore {
+      return dataStore
+    }
+
+    let dataStore = WKWebsiteDataStore.nonPersistent()
+    nonPersistentDataStore = dataStore
+    return dataStore
+  }
+
   fileprivate weak var delegate: TabWebViewDelegate?
-  private(set) weak var tab: Tab?
 
   init(
     frame: CGRect,
-    tab: Tab,
     configuration: WKWebViewConfiguration = WKWebViewConfiguration(),
     isPrivate: Bool = true
   ) {
-    self.tab = tab
-    super.init(frame: frame, configuration: configuration, isPrivate: isPrivate)
+    if isPrivate {
+      configuration.websiteDataStore = TabWebView.sharedNonPersistentStore()
+    } else {
+      configuration.websiteDataStore = WKWebsiteDataStore.default()
+    }
+
+    super.init(frame: frame, configuration: configuration)
+
+    isFindInteractionEnabled = true
+
+    customUserAgent = UserAgent.userAgentForIdiom()
+    if #available(iOS 16.4, *) {
+      isInspectable = true
+    }
+
+    updateBackgroundColor()
+    Preferences.General.nightModeEnabled.observe(from: self)
+  }
+
+  private func updateBackgroundColor() {
+    if Preferences.General.nightModeEnabled.value {
+      let color = UIColor(braveSystemName: .containerBackground)
+      backgroundColor = color
+      scrollView.backgroundColor = color
+      // WKWebView flashes white screen on load regardless of background colour assignments without
+      // setting `isOpaque` to false
+      isOpaque = false
+    } else {
+      backgroundColor = nil
+      scrollView.backgroundColor = nil
+      isOpaque = true
+    }
+  }
+
+  static func removeNonPersistentStore() {
+    TabWebView.nonPersistentDataStore = nil
+  }
+
+  @available(*, unavailable)
+  required init?(coder aDecoder: NSCoder) {
+    fatalError()
+  }
+
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    lastHitPoint = point
+    return super.hitTest(point, with: event)
   }
 
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
@@ -1211,6 +1266,12 @@ class TabWebView: BraveWebView, MenuHelperInterface {
       let selectedText = result as? String
       callback(selectedText)
     }
+  }
+}
+
+extension TabWebView: PreferencesObserver {
+  func preferencesDidChange(for key: String) {
+    updateBackgroundColor()
   }
 }
 

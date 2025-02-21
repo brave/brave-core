@@ -44,7 +44,7 @@ TEST(BraveAdsCalendarUtilTest, DaysInMonth) {
                                        31, 31, 30, 31, 30, 31};
 
   // Act & Assert
-  for (int i = 0; i < 12; ++i) {
+  for (size_t i = 0; i < 12; ++i) {
     EXPECT_EQ(kLastDayInMonth[i], DaysInMonth(/*year=*/2021, /*month=*/i + 1));
   }
 }
@@ -55,7 +55,7 @@ TEST(BraveAdsCalendarUtilTest, DaysInMonthForLeapYear) {
                                     31, 31, 30, 31, 30, 31};
 
   // Act & Assert
-  for (int i = 0; i < 12; ++i) {
+  for (size_t i = 0; i < 12; ++i) {
     EXPECT_EQ(kDaysInMonth[i], DaysInMonth(/*year=*/2020, /*month=*/i + 1));
   }
 }

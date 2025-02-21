@@ -33,12 +33,12 @@ TEST(BraveAdsRemindersFeatureTest, RemindUserIfClickingTheSameAdAfter) {
       kRemindersFeature, {{"remind_user_if_clicking_the_same_ad_after", "1"}});
 
   // Act & Assert
-  EXPECT_EQ(1, kRemindUserIfClickingTheSameAdAfter.Get());
+  EXPECT_EQ(1U, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
 TEST(BraveAdsRemindersFeatureTest, DefaultRemindUserIfClickingTheSameAdAfter) {
   // Act & Assert
-  EXPECT_EQ(3, kRemindUserIfClickingTheSameAdAfter.Get());
+  EXPECT_EQ(3U, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
 TEST(BraveAdsRemindersFeatureTest,
@@ -48,7 +48,7 @@ TEST(BraveAdsRemindersFeatureTest,
   scoped_feature_list.InitAndDisableFeature(kRemindersFeature);
 
   // Act & Assert
-  EXPECT_EQ(3, kRemindUserIfClickingTheSameAdAfter.Get());
+  EXPECT_EQ(3U, kRemindUserIfClickingTheSameAdAfter.Get());
 }
 
 }  // namespace brave_ads

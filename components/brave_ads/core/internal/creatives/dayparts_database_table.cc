@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/dayparts_database_table.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 
 #include "base/check.h"
@@ -32,7 +33,7 @@ size_t BindColumns(
 
   size_t row_count = 0;
 
-  int index = 0;
+  int32_t index = 0;
   for (const auto& [campaign_id, dayparts_set] : dayparts) {
     for (const auto& daypart : dayparts_set) {
       BindColumnString(mojom_db_action, index++, campaign_id);

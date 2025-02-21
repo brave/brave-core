@@ -41,16 +41,16 @@
 "DownloadMultipleFilesAndProgressToastDescriptionText" = "%1$@ %2$@";
 
 /* The description text in the Download progress toast for showing the number of files when multiple files are downloading. */
-"DownloadMultipleFilesToastDescriptionText" = "Файлы: 1 из %d";
+"DownloadMultipleFilesToastDescriptionText" = "Файлы: 1 из %d";
 
 /* The description text in the Download progress toast for showing the downloaded file size (1$) out of the total expected file size (2$). */
 "DownloadProgressToastDescriptionText" = "%1$@/%2$@";
 
 /* The button to open a new tab with the Downloads home panel */
-"DownloadsButtonTitle" = "Скачанные файлы";
+"DownloadsButtonTitle" = "Загрузки";
 
 /* Question shown to user when tapping a link that opens the App Store app */
-"ExternalLinkAppStoreConfirmationTitle" = "Открыть эту ссылку в App Store?";
+"ExternalLinkAppStoreConfirmationTitle" = "Открыть эту ссылку в App Store?";
 
 /* The button to open a new tab with the copied link */
 "GoButtonTittle" = "Перейти";
@@ -77,7 +77,7 @@
 "ReaderModeResetFontSizeAccessibilityLabel" = "Вернуться к исходному размеру шрифта";
 
 /* Prompt for saving a password with no username. The parameter is the hostname of the site. */
-"SaveLoginPrompt" = "Сохранить пароль на сайте %@?";
+"SaveLoginPrompt" = "Сохранить пароль для %@?";
 
 /* Prompt for saving a login. The first parameter is the username being saved. The second parameter is the hostname of the site. */
 "SaveLoginUsernamePrompt" = "Сохранить имя пользователя «%1$@» на сайте %2$@?";
@@ -92,13 +92,19 @@
 "ScanQRCodeInvalidDataErrorMessage" = "Неверные данные";
 
 /* Text of the prompt user to setup the camera authorization. */
-"ScanQRCodePermissionErrorMessage" = "Предоставьте Brave доступ к камере: «Настройки > Конфиденциальность > Камера».";
+"ScanQRCodePermissionErrorMessage" = "Предоставьте Brave доступ к камере: «Настройки -> Конфиденциальность -> Камера».";
 
 /* Title for the QR code scanner view. */
-"ScanQRCodeViewTitle" = "Сканируйте QR-код";
+"ScanQRCodeViewTitle" = "Сканирование QR-кода";
+
+/* The text label of creative search result ad infobar message. */
+"SearchResultAdClickedInfoBarTitle" = "Спасибо, что вы поддержали Поиск Brave, нажав на частную рекламу. В отличие от больших технологических корпораций, мы измеряем эффективность рекламы анонимно для сохранения вашей конфиденциальности.";
+
+/* The text label of creative search result ad learn more / opt out choices link. */
+"SearchResultAdClickedLearnMoreOptOutChoicesLabel" = "Узнайте больше / отключите выбор";
 
 /* General settings section title */
-"SettingsGeneralSectionTitle" = "Основные";
+"SettingsGeneralSectionTitle" = "Основные настройки";
 
 /* Button displayed at the top of the search settings. */
 "SettingsSearchDoneButton" = "Готово";

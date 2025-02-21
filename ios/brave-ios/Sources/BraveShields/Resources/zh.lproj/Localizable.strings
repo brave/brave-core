@@ -1,11 +1,11 @@
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "跟踪器和被屏蔽的广告";
+"AdsAndTrackersrBlocked" = "已拦截跟踪器和广告";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "广告被拦截";
+"AdsrBlocked" = "已封鎖\n廣告";
 
 /* Data Saved Shield Stat */
-"DataSavedStat" = "估算数据 \n已保存";
+"DataSavedStat" = "預計節省\n數據量";
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "预计时间 \n已保存";
@@ -14,14 +14,14 @@
 "ShieldsTimeStatsDays" = "天";
 
 /* Time Saved Hours */
-"ShieldsTimeStatsHour" = "小时";
+"ShieldsTimeStatsHour" = "時";
 
 /* Time Saved Minutes */
-"ShieldsTimeStatsMinutes" = "分钟";
+"ShieldsTimeStatsMinutes" = "分";
 
 /* Time Saved Seconds */
 "ShieldsTimeStatsSeconds" = "秒";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "拦截器 \n被拦截";
+"TrackersrBlocked" = "已封鎖\n追蹤器";
 

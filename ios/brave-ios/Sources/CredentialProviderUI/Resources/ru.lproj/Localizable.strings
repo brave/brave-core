@@ -32,7 +32,7 @@
 "CredentialProvider.loginsForWebsite" = "Учетные данные для сайта %@";
 
 /* The title on a button that dismisses the onboarding view */
-"CredentialProvider.onboardingViewContinueCTA" = "Продолжить";
+"CredentialProvider.onboardingViewContinueCTA" = "Далее";
 
 /* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
 "CredentialProvider.onboardingViewFootnote" = "Чтобы получать доступ к паролям быстрее, отмените выбор службы «Связка ключей iCloud».";

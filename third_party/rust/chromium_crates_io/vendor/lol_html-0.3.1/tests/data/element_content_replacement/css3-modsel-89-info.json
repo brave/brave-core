@@ -1,8 +1,0 @@
-{
-  "description": "Element content replacement - Simple combination of descendant and child combinators (css3-modsel-89)",
-  "selectors": {
-    "p": "css3-modsel-89.expected0.html",
-    "blockquote div > p": "css3-modsel-89.expected1.html"
-  },
-  "src": "css3-modsel-89.src.html"
-}

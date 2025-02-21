@@ -1623,7 +1623,7 @@ Leo AI. This action can't be undone.
     Connect your self-hosted or third-party hosted LLM to Leo and use them within the browser.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_YOUR_MODELS_DESC_2" desc="A description explaning what protocols are accepted">
-    Use any OpenAI Chat Protocol compatible framework such as Ollama.
+    Use any OpenAI Chat Protocol compatible framework such as Ollama. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_ADD_MODEL_BUTTON_LABEL" desc="A button label for user to click when they want to add a new model">
     Add model

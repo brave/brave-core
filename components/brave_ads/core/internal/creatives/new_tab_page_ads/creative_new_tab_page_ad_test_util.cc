@@ -13,12 +13,12 @@
 
 namespace brave_ads::test {
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAds(int count) {
-  CHECK_GT(count, 0);
+CreativeNewTabPageAdList BuildCreativeNewTabPageAds(size_t count) {
+  CHECK_GT(count, 0U);
 
   CreativeNewTabPageAdList creative_ads;
 
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     CreativeNewTabPageAdInfo creative_ad =
         BuildCreativeNewTabPageAd(/*should_generate_random_uuids=*/true);
     creative_ad.segment = kSegments[i % kSegments.size()];

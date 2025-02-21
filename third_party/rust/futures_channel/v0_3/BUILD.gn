@@ -12,20 +12,20 @@ cargo_crate("lib") {
   crate_name = "futures_channel"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.31/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/lock.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/mpsc/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/mpsc/queue.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/mpsc/sink_impl.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/oneshot.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.31/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.31/src/lock.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.31/src/mpsc/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.31/src/mpsc/queue.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.31/src/mpsc/sink_impl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.31/src/oneshot.rs",
   ]
-  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/../no_atomic_cas.rs" ]
+  inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.27"
+  cargo_pkg_version = "0.3.31"
   cargo_pkg_name = "futures-channel"
   cargo_pkg_description =
       "Channels for asynchronous communication using futures-rs."
@@ -45,9 +45,6 @@ cargo_crate("lib") {
     "sink",
     "std",
   ]
-  build_root = "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/build.rs"
-  build_sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/build.rs" ]
-  build_script_inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/futures-channel-0.3.27/src/../no_atomic_cas.rs" ]
   rustflags = [
     "--cap-lints=allow",  # Suppress all warnings in crates.io crates
   ]

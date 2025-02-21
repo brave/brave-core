@@ -1,0 +1,138 @@
+/* Pop up extra description for billing issue of subcription VPN about to expire */
+"vpn.autoReneSoonExpirePopOverSubDescription" = "Чтобы ваше соединение оставалось защищенным, продлите подписку до ее истечения. В качестве благодарности мы даем скидку 20 % на следующие 3 месяца.";
+
+/* Action button title that enables auto renew for subcription */
+"vpn.autoRenewActionButtonTitle" = "Подключить автоматическое продление";
+
+/* Pop up title for renewing VPN subscription with discount */
+"vpn.autoRenewDiscountPopOverTitle" = "Подключите автоматическое продление подписки на Brave VPN сейчас и получите скидку 20 % на 3 месяца!";
+
+/* Pop up title for renewing VPN subscription with month free */
+"vpn.autoRenewFreeMonthPopOverTitle" = "Подключите автоматическое продление подписки на Brave VPN сейчас и получите 1 месяц в подарок!";
+
+/* Pop up description for VPN subscription is about expire */
+"vpn.autoRenewSoonExpirePopOverDescription" = "Когда он закончится, дополнительная защита Brave для каждого приложения отключится.";
+
+/* Pop up title for VPN subscription is about expire */
+"vpn.autoRenewSoonExpireTitle" = "Срок действия подписки на Brave VPN истекает";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Файрвол и VPN-расширение для браузера Brave";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Не удалось установить соединение с App Store. Повторите попытку через несколько минут.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Ошибка соединения с App Store";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckConnectionSpeed" = "Фантастическая скорость соединения";
+
+/* Information shown to users for using Brave VPN */
+"vpn.infoCheckLimitDevice" = "До 10 устройств в одном тарифе";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckLocation" = "Скрытый IP-адрес и измененное местоположение";
+
+/* Information text shown to users for using Brave VPN */
+"vpn.infoCheckPrivacy" = "Дополнительная приватность и безопасность";
+
+/* Information Text shown to users for using Brave VPN */
+"vpn.infoCheckServers" = "Сотни серверов по всему миру";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAds" = "Блокирует нежелательные сетевые подключения";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxBlockAdsAlternate" = "Блокируй рекламу & трекеров во всех приложениях ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFast" = "Поддерживает скорость соединения до 100 Мб/с";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckboxFastAlternate" = "Безлимитный интернет со скоростью до 100 Мбит/сек.";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Круглосуточная поддержка без выходных";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Защищает все соединения устройства";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "При поддержке";
+
+/* Name of automatic vpn region selector */
+"vpn.regionPickerAutomaticModeCellText" = "Автоматически";
+
+/* Alert description to show when the VPN session has expired */
+"vpn.sessionExpiredDescription" = "Чтобы обновить сеанс VPN, войдите в аккаунт Brave.";
+
+/* Dismiss button to close the alert showing that the vpn session has expired */
+"vpn.sessionExpiredDismissButton" = "Отклонить";
+
+/* Login button to fix the vpn session expiration issue */
+"vpn.sessionExpiredLoginButton" = "Вход";
+
+/* Alert title to show when the VPN session has expired */
+"vpn.sessionExpiredTitle" = "Срок действия сеанса истек";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Выключено";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Включено";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Время ожидания истекло";
+
+/* Action button title that subscribe action for VPN purchase */
+"vpn.subscribeVPNActionButtonTitle" = "Подписаться";
+
+/* Pop up description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverDescription" = "Теперь подписка на Brave VPN включает в себя одновременную поддержку до 5 устройств. Вы можете использовать ее на многих платформах, таких как iOS, Mac, Windows или Android.";
+
+/* Pop up title the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNAllDevicesPopOverTitle" = "Все ваши устройства под защитой Brave VPN — за ту же цену!";
+
+/* Pop up title for subscribing VPN with discount */
+"vpn.subscribeVPNDiscountPopOverTitle" = "Попробуйте Brave VPN снова и получите скидку 20 % на 3 месяца!";
+
+/* Pop up sub description the subscription for VPN can be used for all platforms */
+"vpn.subscribeVPNPopOverSubDescription" = "Оформите подписку на Brave VPN для защиты всех мобильных приложений и получите скидку 20 % на 3 месяца.";
+
+/* Pop up description for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverDescription" = "Он блокирует трекеры во всех приложениях. Теперь вы можете узнать, какие сайты следят за вами, в центре конфиденциальности.";
+
+/* Pop up title for subscribing VPN explaning VPN protects user outside the Brave */
+"vpn.subscribeVPNProtectionPopOverTitle" = "Brave VPN работает не только в браузере Brave!";
+
+/* Cell title indicates update payment method */
+"vpn.updateActionCellTitle" = "Обновить";
+
+/* Pop up description for billing issue of subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverDescription" = "Сервис будет активен еще в течение нескольких дней, чтобы вы успели внести необходимые изменения.";
+
+/* Pop up title for billing issue for subcription VPN already expired */
+"vpn.updateBillingExpiredPopOverTitle" = "Обновите платежную информацию, чтобы продолжать пользоваться Brave VPN!";
+
+/* Pop up description for billing issue of subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverDescription" = "Хотите сохранить защиту для всех приложений на мобильном устройстве? Просто обновите платежную информацию.";
+
+/* Pop up title for billing issue for subcription VPN about to expire */
+"vpn.updateBillingSoonExpirePopOverTitle" = "Из-за проблемы с оплатой подписка на Brave VPN больше не может продлеваться!";
+
+/* Action button title that updates method payment */
+"vpn.updatePaymentActionButtonTitle" = "Обновить метод оплаты";
+
+/* The title for screen for showing list of server region */
+"vpn.vpnRegionListServerScreenTitle" = "Местонахождение серверов";
+
+/* Button subtitle for VPN region selection in menu. %@ will be replaced with country name or automatic ex: Current Setting: Automatic */
+"vpn.vpnRegionSelectorButtonSubTitle" = "Текущий регион: %@";
+
+/* Button title for VPN region selection in menu */
+"vpn.vpnRegionSelectorButtonTitle" = "Выбрать регион";
+
+/* Text description of VPN subscription needs a method of payment update */
+"vpn.vpnUpdatePaymentMethodDescriptionText" = "Измените способ оплаты";
+

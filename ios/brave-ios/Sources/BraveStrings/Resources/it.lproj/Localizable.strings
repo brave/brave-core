@@ -20,13 +20,19 @@
 "NewTabTitle" = "Nuova scheda";
 
 /* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
-"OpenNewTabFromTabTrayKeyCodeTitle" = "Apri nuova scheda";
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Apri una nuova scheda";
 
 /* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
 "OpenSelectedTabFromTabTrayKeyCodeTitle" = "Apri la scheda selezionata";
 
 /* Title label text for refreshing credentials from brave site. */
 "paywall.alreadyPurchasedTitle" = "Hai già fatto acquisti su brave.com?";
+
+/* Title label text for entering a promo code. */
+"paywall.havePromoCodeTitle" = "Hai un codice promo?";
+
+/* Button action text for redeem promo code */
+"paywall.redeemPromoCodeButtonTitle" = "Riscatta il codice promo";
 
 /* Button action text for refreshing credentials from brave site. */
 "paywall.refreshCredentialsButtonTitle" = "Aggiorna le tue credenziali";
@@ -35,7 +41,7 @@
 "RecentlyClosedTabTitle" = "Riapri la scheda chiusa";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"ReloadPageTitle" = "Ricarica pagina";
+"ReloadPageTitle" = "Ricarica la pagina";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
 "SelectLocationBarTitle" = "Seleziona la barra di posizione";

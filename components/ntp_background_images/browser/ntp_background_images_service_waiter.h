@@ -41,7 +41,6 @@ class NTPBackgroundImagesServiceWaiter
   void OnSponsoredContentDidUpdate(const base::Value::Dict& dict) override;
   void OnSuperReferralCampaignDidEnd() override;
 
- private:
   const raw_ref<NTPBackgroundImagesService> service_;
 
   base::RunLoop on_background_images_did_update_run_loop_;

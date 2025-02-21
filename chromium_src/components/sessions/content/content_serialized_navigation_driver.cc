@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "components/sessions/content/content_serialized_navigation_driver.h"
+
 #include <string>
 
 #include "base/containers/contains.h"
-#include "components/sessions/content/content_serialized_navigation_driver.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "content/public/common/url_constants.h"
 
