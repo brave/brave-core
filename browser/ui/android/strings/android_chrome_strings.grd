@@ -454,8 +454,8 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
 
       <!-- Address bar settings -->
-      <message name="IDS_ADDRESS_BAR_SETTINGS" desc="Title for Address Bar settings. [CHAR_LIMIT=32]">
-        Address bar
+      <message name="IDS_ADDRESS_BAR_SETTINGS" desc="Title for Address Bar settings. The NEW label is displayed until the user clicks on this menu item at least twice. [CHAR_LIMIT=32]">
+        Address bar  <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
 
       <message name="IDS_ADDRESS_BAR_SETTINGS_CURRENTLY_ON_TOP" desc="Description for Address Bar Settings image when the address bar is top-anchored.">
@@ -471,7 +471,7 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
 
       <message name="IDS_ADDRESS_BAR_SETTINGS_DESCRIPTION_FOLDABLE" desc="Label explaining how to change the address bar position on foldable devices.">
-        When your device is folded, you can choose an option or touch and hold the address bar to change the position.
+        When your device is folded, you can choose an option or touch and hold the address bar to change the position
       </message>
 
       <message name="IDS_ADDRESS_BAR_SETTINGS_TOP" desc="Title for the toggle that will show the address bar on the top. [CHAR_LIMIT=32]">
@@ -556,9 +556,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_BILLING_ADDRESS" desc="Label for a spinner input field containing a list of billing addresses for a credit card. [CHAR_LIMIT=32]">
         Billing address
-      </message>
-      <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_PROGRESS_BAR_MESSAGE" desc="Message shown on the progress bar after the user selects an authenticator from a list of options and proceeds.">
-        Contacting your bank\u2026
       </message>
       <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_NEGATIVE_BUTTON_LABEL" desc="Negative button label for the dialog where the user selects an authenticator from a list of options.">
         Cancel
@@ -870,17 +867,8 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_PWD_ACCESS_LOSS_NOTIFICATION_UPDATE_GMS_CORE_TEXT" desc="The text of the password access loss notification when the GMS Core version doesn't support local passwords." formatter_data="android_java">
         Passwords may stop working soon on this device. To keep using your passwords, update Google Play services.
       </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_TITLE" desc="The title of the password migration warning sheet.">
-        We’re changing how passwords are saved on this device
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_SUBTITLE" desc="The subtitle of the password migration warning sheet." formatter_data="android_java">
-        Right now, passwords saved on this device cannot be used across Brave channels. After Brave 125, passwords saved on your device for Brave and <ph name="CHROME_CHANNEL">%1$s<ex>Brave Dev</ex></ph> will be merged and can be used in both apps.
-      </message>
       <message name="IDS_PASSWORD_MIGRATION_WARNING_ACKNOWLEDGE" desc="The text on the button that acknowledges the password migration warning.">
         Got it
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_OTHER_OPTIONS" desc="The text on the button that leads to other options in the password migration warning sheet.">
-        Other options
       </message>
       <message name="IDS_PASSWORD_MIGRATION_WARNING_CONTENT_DESCRIPTION" desc="Accessibility string read when the password migration warning sheet opens." formatter_data="android_java">
         Brave Password Manager update
@@ -893,24 +881,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_PWD_ACCESS_LOSS_WARNING_CLOSED" desc="Accessibility string read when the password access loss warning sheet closes.">
         Brave Password Manager update closed
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_TURN_ON_SYNC" desc="The text that describes the option to start syncing that is offered in the password migration warning sheet.">
-        Save the passwords on this device in your Brave sync chain by turning on sync
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_TURN_ON_SYNC_SUBTITLE" desc="The subtitle that appears under the option to turn on sync in the password migration warning sheet if the user is not signed in.">
-        You’ll be asked to sign in to your Brave sync chain
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_PASSWORD_EXPORT" desc="The text that describes the option to export the passwords that is offered in the password migration warning sheet.">
-        Export &amp; delete passwords saved to this device
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_PASSWORD_EXPORT_SUBTITLE" desc="The subtitle that explaint the password export option in the password migration warning sheet.">
-        All passwords will be downloaded on your device and removed from <ph name="CHROME_CHANNEL">%1$s<ex>Brave Dev</ex></ph>
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_NEXT" desc="The text for the next button in the password migration warning sheet. It starts one of the flows offered on the sheet.">
-        Next
-      </message>
-      <message name="IDS_PASSWORD_MIGRATION_WARNING_CANCEL" desc="The text for the cancel button in the password migration warning sheet. It closes the sheet">
-        Cancel
       </message>
       <message name="IDS_POST_PASSWORD_MIGRATION_SHEET_TITLE" desc="The title of the post password migration sheet that informs the user that the migration happened." formatter_data="android_java">
         We changed how passwords are saved on this device
@@ -1065,6 +1035,11 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <!-- Notifications preferences -->
       <message name="IDS_PREFS_NOTIFICATIONS" desc="Title for Notification preferences.">
         Notifications
+      </message>
+
+      <!-- Appearance settings -->
+      <message name="IDS_APPEARANCE_SETTINGS" desc="Title for Appearance settings.">
+        Appearance
       </message>
 
       <!-- Themes settings -->
@@ -1882,6 +1857,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SAFETY_HUB_PASSWORD_CHECK_UNAVAILABLE_TITLE" desc="Title for the password check row in the Safety Check page indicating that the password checkup could not be completed.">
         Can't check passwords
+      </message>
+      <message name="IDS_SAFETY_HUB_LOCAL_PASSWORD_CHECK_UNAVAILABLE_TITLE" desc="Title for the local password check row in the Safety Check page indicating that the local password checkup could not be completed.">
+        Can’t check passwords on this device
       </message>
       <message name="IDS_SAFETY_HUB_UNAVAILABLE_SUMMARY" desc="Summary for the rows in the Safety Check page indicating that the checkup for the specific module could not be run at this time and to check again later.">
         Try again later
@@ -4339,6 +4317,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_MENU_SETTINGS" desc="Menu item for opening browser settings. [CHAR_LIMIT=27]">
         Settings
       </message>
+      <message name="IDS_MENU_NTP_CUSTOMIZATION" desc="Option in item menu. User can click the 'Customize new tab page' option to open the 'Customize your new tab page' bottom sheet. [CHAR_LIMIT=27]">
+        Customize new tab page
+      </message>
       <message name="IDS_MENU_SETTINGS_ACCOUNT_ERROR" desc="Accessibility string for settings menu item with a badge on the icon in case of sync/identity error.">
         Settings, Brave sync chain error
       </message>
@@ -4485,6 +4466,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_BOOKMARK_BAR_ALL_BOOKMARKS_BUTTON_TITLE" desc="The title for the 'All Bookmarks' button in the bookmark bar.">
         All Bookmarks
+      </message>
+      <message name="IDS_BOOKMARK_BAR_OVERFLOW_BUTTON_CONTENT_DESCRIPTION" desc="The content description for the bookmark bar overflow button.">
+        Bookmark bar overflow button
       </message>
 
       <!-- Power bookmarks strings -->
@@ -6141,6 +6125,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
     <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PICTURE" desc="A user's profile picture, to be used in a list of items shared with a website">
       profile picture
     </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_PHONE" desc="A user's phone number, to be used in a list of items shared with a website" translateable="false">
+      phone number
+    </message>
+    <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_USERNAME" desc="A user's username, to be used in a list of items shared with a website" translateable="false">
+      username
+    </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_PP_OR_TOS" desc="The consent text shown to the user before sign up when there is no privacy policy or terms of service.">
       To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your <ph name="FIELDS_STRING">%2$s<ex>name and email address</ex></ph> with this site.
       </message>
@@ -6671,9 +6661,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_COLLABORATION_PREVIEW_DIALOG_DETAILS_TITLE" desc="The title for the details page of the dialog that shows a preview of a tab group.">
         Tab group details
       </message>
-      <message name="IDS_COLLABORATION_LINK_FAILED_TITLE" desc="The title for the link failed dialog.">
-        This link doesn’t work
-      </message>
       <!-- Data Sharing Preview Dialog -->
 
       <!-- Data Sharing Leave Dialog -->
@@ -6762,9 +6749,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_COLLABORATION_PREVIEW_DIALOG_DETAILS_TABS_IN_GROUP" desc="The title for the tabs in group section in the preview details for a group.">
         Tabs in group
-      </message>
-      <message name="IDS_COLLABORATION_LINK_FAILED_BODY" desc="The body for the link failed dialog.">
-        Contact the sender to ask for a new link
       </message>
       <message name="IDS_COLLABORATION_JOIN_GROUP_AS" desc="A sublabel showing which profile the shared group is being joined as.">
         Join as <ph name="MEMBER_FULL_NAME">%1$s<ex>John Doe</ex></ph>
