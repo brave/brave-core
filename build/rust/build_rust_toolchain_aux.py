@@ -103,11 +103,12 @@ def create_archive():
         rust_toolchain = os.path.relpath(build_rust.RUST_TOOLCHAIN_OUT_DIR,
                                          brave_chromium_utils.get_src_dir())
 
+        exe_postfix = '.exe' if sys.platform == 'win32' else ''
         with tarfile.open(package_name(), 'w:xz') as tar:
-            tar.add(os.path.join(
-                stage1_output_path, target_triple, 'bin',
-                'rust-lld' + ('.exe' if sys.platform == 'win32' else '')),
-                    arcname=os.path.join(rust_toolchain, 'bin', 'rust-lld'))
+            tar.add(os.path.join(stage1_output_path, target_triple, 'bin',
+                                 f'rust-lld{exe_postfix}'),
+                    arcname=os.path.join(rust_toolchain, 'bin',
+                                         f'rust-lld{exe_postfix}'))
             tar.add(os.path.join(stage1_output_path, 'wasm32-unknown-unknown'),
                     arcname=os.path.join(rust_toolchain, 'lib', 'rustlib',
                                          'wasm32-unknown-unknown'))
