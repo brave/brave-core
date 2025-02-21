@@ -5,10 +5,7 @@
 
 package org.chromium.chrome.browser.customtabs;
 
-import android.view.View;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.ObservableSupplier;
@@ -84,7 +81,6 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
             @NonNull Supplier<CustomTabActivityTabController> tabController,
             @NonNull Supplier<CustomTabMinimizeDelegate> minimizeDelegateSupplier,
             @NonNull Supplier<CustomTabFeatureOverridesManager> featureOverridesManagerSupplier,
-            @Nullable View baseChromeLayout,
             @NonNull EdgeToEdgeManager edgeToEdgeManager) {
         super(
                 activity,
@@ -121,7 +117,6 @@ public class FullScreenCustomTabRootUiCoordinator extends BaseCustomTabRootUiCoo
                 tabController,
                 minimizeDelegateSupplier,
                 featureOverridesManagerSupplier,
-                baseChromeLayout,
                 edgeToEdgeManager);
     }
 

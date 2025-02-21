@@ -112,7 +112,6 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         () -> mTabController,
                         () -> mMinimizationManagerHolder.getMinimizationManager(),
                         () -> mCustomTabFeatureOverridesManager,
-                        getBaseChromeLayout(),
                         getEdgeToEdgeManager());
         return mBaseCustomTabRootUiCoordinator;
     }
