@@ -525,7 +525,10 @@ extension BrowserViewController: WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping () -> Void
   ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else { return }
+    guard let tab = tabManager[webView], let url = frame.origin?.url else {
+      completionHandler()
+      return
+    }
     Task {
       await self.tab(tab, runJavaScriptAlertPanelWithMessage: message, pageURL: url)
       completionHandler()
@@ -538,7 +541,10 @@ extension BrowserViewController: WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping (Bool) -> Void
   ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else { return }
+    guard let tab = tabManager[webView], let url = frame.origin?.url else {
+      completionHandler(false)
+      return
+    }
     Task {
       let result = await self.tab(tab, runJavaScriptConfirmPanelWithMessage: message, pageURL: url)
       completionHandler(result)
@@ -552,7 +558,10 @@ extension BrowserViewController: WKUIDelegate {
     initiatedByFrame frame: WKFrameInfo,
     completionHandler: @escaping (String?) -> Void
   ) {
-    guard let tab = tabManager[webView], let url = frame.origin?.url else { return }
+    guard let tab = tabManager[webView], let url = frame.origin?.url else {
+      completionHandler(nil)
+      return
+    }
     Task {
       let result = await self.tab(
         tab,
@@ -682,7 +691,12 @@ extension WKFrameInfo {
     if securityOrigin.protocol.isEmpty || securityOrigin.host.isEmpty {
       return nil
     }
-    let defaultPort: UInt16 = securityOrigin.protocol == "https" ? 443 : 80
+    let defaultPort: UInt16 =
+      switch securityOrigin.protocol {
+      case "https": 443
+      case "http": 80
+      default: 0
+      }
     return URLOrigin(
       scheme: securityOrigin.protocol,
       host: securityOrigin.host,
