@@ -297,13 +297,13 @@ class TabManager: NSObject {
 
   func reset() {
     resetConfiguration()
-    allTabs.filter({ $0.webView != nil }).forEach({
+    allTabs.filter({ $0.isWebViewCreated }).forEach({
       $0.resetWebView(config: configuration)
     })
   }
 
   func clearTabHistory(_ completion: (() -> Void)? = nil) {
-    allTabs.filter({ $0.webView != nil }).forEach({
+    allTabs.filter({ $0.isWebViewCreated }).forEach({
       $0.clearHistory(config: configuration)
     })
 
@@ -347,7 +347,7 @@ class TabManager: NSObject {
       preserveScreenshot(for: previousTab)
     }
 
-    if let t = selectedTab, t.webView == nil {
+    if let t = selectedTab, !t.isWebViewCreated {
       selectedTab?.createWebview()
       restoreTab(t)
     }
@@ -368,10 +368,8 @@ class TabManager: NSObject {
     selectedTab?.lastExecutedTime = Date.now()
 
     if let selectedTab = selectedTab,
-      let webView = selectedTab.webView,
-      webView.url == nil
+      selectedTab.url == nil
     {
-
       selectedTab.url = selectedTab.url ?? TabManager.ntpInteralURL
       restoreTab(selectedTab)
       Logger.module.error("Force Restored a Zombie Tab?!")
@@ -693,21 +691,6 @@ class TabManager: NSObject {
     }
   }
 
-  func indexOfWebView(_ webView: WKWebView) -> UInt? {
-    objc_sync_enter(self)
-    defer { objc_sync_exit(self) }
-
-    var count = UInt(0)
-    for tab in allTabs {
-      if tab.webView === webView {
-        return count
-      }
-      count = count + 1
-    }
-
-    return nil
-  }
-
   func removePrivateWindows() {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
@@ -729,7 +712,7 @@ class TabManager: NSObject {
       Preferences.Privacy.persistentPrivateBrowsing.value ? allTabs : tabs(withType: .regular)
     SessionTab.updateAll(
       tabs: tabs.compactMap({
-        if let sessionData = $0.webView?.sessionData {
+        if let sessionData = $0.sessionData {
           return ($0.id, sessionData, $0.title, $0.url ?? TabManager.ntpInteralURL)
         }
         return nil
@@ -745,7 +728,7 @@ class TabManager: NSObject {
     }
     SessionTab.update(
       tabId: tab.id,
-      interactionState: tab.webView?.sessionData ?? Data(),
+      interactionState: tab.sessionData ?? Data(),
       title: tab.title,
       url: tab.url ?? TabManager.ntpInteralURL
     )
@@ -1053,7 +1036,7 @@ class TabManager: NSObject {
 
     allTabs.forEach { tab in
       if tab.isPrivate {
-        tab.webView?.removeFromSuperview()
+        tab.webContentView?.removeFromSuperview()
         removeAllBrowsingDataForTab(tab)
       }
     }
@@ -1188,11 +1171,11 @@ class TabManager: NSObject {
     assert(Thread.isMainThread)
 
     let tab = allTabs.filter {
-      guard let webViewURL = $0.webView?.url, $0.isPrivate else {
+      guard let url = $0.url, $0.isPrivate else {
         return false
       }
 
-      return webViewURL.schemelessAbsoluteDisplayString == url.schemelessAbsoluteDisplayString
+      return url.schemelessAbsoluteDisplayString == url.schemelessAbsoluteDisplayString
     }.first
 
     return tab
@@ -1330,7 +1313,6 @@ class TabManager: NSObject {
   }
 
   func restoreTab(_ tab: Tab) {
-    guard let webView = tab.webView else { return }
     guard let sessionTab = SessionTab.from(tabId: tab.id) else {
       var sessionData: (String, URLRequest)?
 
@@ -1342,10 +1324,7 @@ class TabManager: NSObject {
         sessionData = (tab.lastTitle ?? tabURL.absoluteDisplayString, request)
       }
 
-      tab.restore(
-        webView,
-        requestRestorationData: sessionData
-      )
+      tab.restore(requestRestorationData: sessionData)
       return
     }
 
@@ -1358,12 +1337,10 @@ class TabManager: NSObject {
           ? PrivilegedRequest(url: tabURL) as URLRequest : URLRequest(url: tabURL)
 
         tab.restore(
-          webView,
           requestRestorationData: (tabURL.absoluteDisplayString, request)
         )
       } else {
         tab.restore(
-          webView,
           requestRestorationData: (
             TabManager.aboutBlankBlockedURL.absoluteDisplayString,
             URLRequest(url: TabManager.aboutBlankBlockedURL)
@@ -1373,10 +1350,7 @@ class TabManager: NSObject {
       return
     }
 
-    tab.restore(
-      webView,
-      restorationData: (sessionTab.title, sessionTab.interactionState)
-    )
+    tab.restore(restorationData: (sessionTab.title, sessionTab.interactionState))
   }
 
   /// Restores all tabs.
@@ -1471,10 +1445,9 @@ class TabManager: NSObject {
     }
 
     let tab = addTab(URLRequest(url: url), isPrivate: false)
-    guard let webView = tab.webView else { return }
 
     if let interactionState = recentlyClosed.interactionState, !interactionState.isEmpty {
-      tab.restore(webView, restorationData: (recentlyClosed.title ?? "", interactionState))
+      tab.restore(restorationData: (recentlyClosed.title ?? "", interactionState))
     }
 
     selectTab(tab)

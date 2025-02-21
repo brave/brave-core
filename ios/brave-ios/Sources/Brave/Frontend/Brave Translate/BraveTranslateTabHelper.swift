@@ -157,9 +157,9 @@ class BraveTranslateTabHelper: NSObject {
 
     if translationController?.parent != controller {
       controller.addChild(translationController)
-      tab?.webView?.addSubview(translationController.view)
+      tab?.webScrollView?.addSubview(translationController.view)
       translationController.didMove(toParent: controller)
-      tab?.webView?.sendSubviewToBack(translationController.view)
+      tab?.webScrollView?.sendSubviewToBack(translationController.view)
     }
   }
 
@@ -226,11 +226,7 @@ class BraveTranslateTabHelper: NSObject {
 
   @MainActor
   private func executePageFunction(tab: Tab, name functionName: String) async -> String? {
-    guard let webView = tab.webView else {
-      return nil
-    }
-
-    let (result, error) = await webView.evaluateSafeJavaScript(
+    let (result, error) = await tab.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(BraveTranslateScriptHandler.namespace).\(functionName)",
       contentWorld: BraveTranslateScriptHandler.scriptSandbox,
       asFunction: true
@@ -256,11 +252,7 @@ class BraveTranslateTabHelper: NSObject {
     name functionName: String,
     args: [Any] = []
   ) async throws -> Any {
-    guard let webView = tab.webView else {
-      throw BraveTranslateError.otherError
-    }
-
-    let (result, error) = await webView.evaluateSafeJavaScript(
+    let (result, error) = await tab.evaluateSafeJavaScript(
       functionName: "window.__gCrWeb.\(functionName)",
       args: args,
       contentWorld: BraveTranslateScriptHandler.scriptSandbox,

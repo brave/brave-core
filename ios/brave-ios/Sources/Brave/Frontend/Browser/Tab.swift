@@ -48,8 +48,6 @@ protocol TabContentScript: TabContentScriptLoader {
 protocol TabDelegate {
   func tab(_ tab: Tab, didAddSnackbar bar: SnackBar)
   func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar)
-  /// Triggered when "Find in Page" is selected on selected web text
-  func tab(_ tab: Tab, didSelectFindInPageFor selectedText: String)
   /// Triggered when "Search with Brave" is selected on selected web text
   func tab(_ tab: Tab, didSelectSearchWithBraveFor selectedText: String)
   func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
@@ -60,11 +58,6 @@ protocol TabDelegate {
   func updateURLBarWalletButton()
   func isTabVisible(_ tab: Tab) -> Bool
   func didReloadTab(_ tab: Tab)
-}
-
-@objc
-protocol URLChangeDelegate {
-  func tab(_ tab: Tab, urlDidChangeTo url: URL)
 }
 
 struct RewardsTabChangeReportingState {
@@ -242,12 +235,28 @@ class Tab: NSObject {
   var userActivity: NSUserActivity?
 
   var webView: TabWebView?
+  var viewPrintFormatter: UIPrintFormatter? { webView?.viewPrintFormatter() }
+  var webContentView: UIView? { webView }
+  var webScrollView: UIScrollView? { webView?.scrollView }
+  var serverTrust: SecTrust? { webView?.serverTrust }
+  var sessionData: Data? {
+    webView?.interactionState as? Data
+  }
+  var pageZoomLevel: CGFloat {
+    get {
+      webView?.value(forKey: PageZoomHandler.propertyName) as? CGFloat ?? 1
+    }
+    set {
+      webView?.setValue(newValue, forKey: PageZoomHandler.propertyName)
+    }
+  }
+  var sampledPageTopColor: UIColor? {
+    webView?.sampledPageTopColor
+  }
   var tabDelegate: TabDelegate?
-  weak var urlDidChangeDelegate: URLChangeDelegate?  // TODO: generalize this.
   var bars = [SnackBar]()
   var favicon: Favicon
   var lastExecutedTime: Timestamp?
-  var sessionData: (title: String, interactionState: Data)?
   fileprivate var lastRequest: URLRequest?
   var restoring: Bool = false
   var pendingScreenshot = false
@@ -418,12 +427,10 @@ class Tab: NSObject {
         isNightModeEnabled = true
       }
 
-      if let webView = webView {
-        if isNightModeEnabled {
-          DarkReaderScriptHandler.enable(for: webView)
-        } else {
-          DarkReaderScriptHandler.disable(for: webView)
-        }
+      if isNightModeEnabled {
+        DarkReaderScriptHandler.enable(for: self)
+      } else {
+        DarkReaderScriptHandler.disable(for: self)
       }
 
       self.setScript(script: .nightMode, enabled: isNightModeEnabled)
@@ -485,6 +492,10 @@ class Tab: NSObject {
     $0.addTarget(self, action: #selector(reload), for: .valueChanged)
   }
 
+  var isWebViewCreated: Bool {
+    webView != nil
+  }
+
   func createWebview() {
     if webView == nil {
       assert(configuration != nil, "Create webview can only be called once")
@@ -510,7 +521,10 @@ class Tab: NSObject {
         configuration: configuration!,
         isPrivate: isPrivate
       )
-      webView.delegate = self
+      webView.didSelectSearchWithBrave = { [weak self] selectedText in
+        guard let self else { return }
+        self.tabDelegate?.tab(self, didSelectSearchWithBraveFor: selectedText)
+      }
 
       webView.accessibilityLabel = Strings.webContentAccessibilityLabel
       webView.allowsBackForwardNavigationGestures = true
@@ -520,7 +534,9 @@ class Tab: NSObject {
       // which allows the content appear beneath the toolbars in the BrowserViewController
       webView.scrollView.layer.masksToBounds = false
 
-      restore(webView, restorationData: self.sessionData)
+      if let request = lastRequest {
+        webView.load(request)
+      }
 
       self.webView = webView
       self.webView?.addObserver(
@@ -584,7 +600,20 @@ class Tab: NSObject {
     )
   }
 
-  func restore(_ webView: WKWebView, restorationData: (title: String, interactionState: Data)?) {
+  func restore(restorationData: (title: String, interactionState: Data)?) {
+    guard let webView else { return }
+    restore(webView, restorationData: restorationData)
+  }
+
+  func restore(requestRestorationData: (title: String, request: URLRequest)?) {
+    guard let webView else { return }
+    restore(webView, requestRestorationData: requestRestorationData)
+  }
+
+  private func restore(
+    _ webView: WKWebView,
+    restorationData: (title: String, interactionState: Data)?
+  ) {
     // Pulls restored session data from a previous SavedTab to load into the Tab. If it's nil, a session restore
     // has already been triggered via custom URL, so we use the last request to trigger it again; otherwise,
     // we extract the information needed to restore the tabs and create a NSURLRequest with the custom session restore URL
@@ -595,7 +624,6 @@ class Tab: NSObject {
       webView.interactionState = sessionInfo.interactionState
       restoring = false
       rewardsReportingState.wasRestored = true
-      self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)
     } else {
@@ -605,14 +633,15 @@ class Tab: NSObject {
     }
   }
 
-  func restore(_ webView: WKWebView, requestRestorationData: (title: String, request: URLRequest)?)
-  {
+  private func restore(
+    _ webView: WKWebView,
+    requestRestorationData: (title: String, request: URLRequest)?
+  ) {
     if let sessionInfo = requestRestorationData {
       restoring = true
       lastTitle = sessionInfo.title
       webView.load(sessionInfo.request)
       restoring = false
-      self.sessionData = nil
     } else if let request = lastRequest {
       webView.load(request)
     } else {
@@ -663,19 +692,12 @@ class Tab: NSObject {
     return webView?.estimatedProgress ?? 0
   }
 
-  var backList: [WKBackForwardListItem]? {
-    return webView?.backForwardList.backList
+  var backList: [BackForwardList.Item]? {
+    return backForwardList.backList
   }
 
-  var forwardList: [WKBackForwardListItem]? {
-    return webView?.backForwardList.forwardList
-  }
-
-  var historyList: [URL] {
-    func listToUrl(_ item: WKBackForwardListItem) -> URL { return item.url }
-    var tabs = self.backList?.map(listToUrl) ?? [URL]()
-    tabs.append(self.url!)
-    return tabs
+  var forwardList: [BackForwardList.Item]? {
+    return backForwardList.forwardList
   }
 
   var title: String {
@@ -690,8 +712,7 @@ class Tab: NSObject {
 
     // When picking a display title. Tabs with sessionData are pending a restore so show their old title.
     // To prevent flickering of the display title. If a tab is restoring make sure to use its lastTitle.
-    if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false, sessionData == nil, !restoring
-    {
+    if let url = self.url, InternalURL(url)?.isAboutHomeURL ?? false, !restoring {
       syncTab?.setTitle(Strings.Hotkey.newTabTitle)
       return Strings.Hotkey.newTabTitle
     }
@@ -795,8 +816,9 @@ class Tab: NSObject {
     _ = webView?.goForward()
   }
 
-  func goToBackForwardListItem(_ item: WKBackForwardListItem) {
-    _ = webView?.go(to: item)
+  func goToBackForwardListItem(_ item: BackForwardList.Item) {
+    guard let wkItem = item.item else { return }
+    _ = webView?.go(to: wkItem)
   }
 
   @discardableResult func loadRequest(_ request: URLRequest) -> WKNavigation? {
@@ -854,9 +876,9 @@ class Tab: NSObject {
       return
     }
 
-    if let webView = self.webView {
+    if let request = lastRequest {
       Logger.module.debug("restoring webView from scratch")
-      restore(webView, restorationData: sessionData)
+      loadRequest(request)
     }
   }
 
@@ -1000,8 +1022,6 @@ class Tab: NSObject {
     }
 
     updatePullToRefreshVisibility()
-
-    self.urlDidChangeDelegate?.tab(self, urlDidChangeTo: url)
   }
 
   func updatePullToRefreshVisibility() {
@@ -1014,16 +1034,6 @@ class Tab: NSObject {
     return sequence(first: parent) { $0?.parent }.contains { $0 == ancestor }
   }
 
-  func observeURLChanges(delegate: URLChangeDelegate) {
-    self.urlDidChangeDelegate = delegate
-  }
-
-  func removeURLChangeObserver(delegate: URLChangeDelegate) {
-    if let existing = self.urlDidChangeDelegate, existing === delegate {
-      self.urlDidChangeDelegate = nil
-    }
-  }
-
   func stopMediaPlayback() {
     tabDelegate?.stopMediaPlayback(self)
   }
@@ -1031,22 +1041,6 @@ class Tab: NSObject {
   func addTabInfoToSyncedSessions(url: URL, displayTitle: String) {
     syncTab?.setURL(url)
     syncTab?.setTitle(displayTitle)
-  }
-}
-
-extension Tab: TabWebViewDelegate {
-  /// Triggered when "Find in Page" is selected on selected text
-  fileprivate func tabWebView(_ tabWebView: TabWebView, didSelectFindInPageFor selectedText: String)
-  {
-    tabDelegate?.tab(self, didSelectFindInPageFor: selectedText)
-  }
-
-  /// Triggered when "Search with Brave" is selected on selected text
-  fileprivate func tabWebView(
-    _ tabWebView: TabWebView,
-    didSelectSearchWithBraveFor selectedText: String
-  ) {
-    tabDelegate?.tab(self, didSelectSearchWithBraveFor: selectedText)
   }
 }
 
@@ -1121,13 +1115,6 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
   }
 }
 
-private protocol TabWebViewDelegate: AnyObject {
-  /// Triggered when "Find in Page" is selected on selected text
-  func tabWebView(_ tabWebView: TabWebView, didSelectFindInPageFor selectedText: String)
-  /// Triggered when "Search with Brave" is selected on selected text
-  func tabWebView(_ tabWebView: TabWebView, didSelectSearchWithBraveFor selectedText: String)
-}
-
 class TabWebView: WKWebView, MenuHelperInterface {
   /// Stores last position when the webview was touched on.
   private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
@@ -1143,7 +1130,7 @@ class TabWebView: WKWebView, MenuHelperInterface {
     return dataStore
   }
 
-  fileprivate weak var delegate: TabWebViewDelegate?
+  fileprivate var didSelectSearchWithBrave: ((String) -> Void)?
 
   init(
     frame: CGRect,
@@ -1204,7 +1191,6 @@ class TabWebView: WKWebView, MenuHelperInterface {
       return super.canPerformAction(#selector(paste(_:)), withSender: sender)
     }
     return super.canPerformAction(action, withSender: sender)
-      || action == MenuHelper.selectorFindInPage
   }
 
   @objc func menuHelperForcePaste() {
@@ -1217,18 +1203,6 @@ class TabWebView: WKWebView, MenuHelperInterface {
     }
   }
 
-  @objc func menuHelperFindInPage() {
-    getCurrentSelectedText { [weak self] selectedText in
-      guard let self = self else { return }
-      guard let selectedText = selectedText else {
-        assertionFailure("Impossible to trigger this without selected text")
-        return
-      }
-
-      self.delegate?.tabWebView(self, didSelectFindInPageFor: selectedText)
-    }
-  }
-
   @objc func menuHelperSearchWithBrave() {
     getCurrentSelectedText { [weak self] selectedText in
       guard let self = self else { return }
@@ -1237,7 +1211,7 @@ class TabWebView: WKWebView, MenuHelperInterface {
         return
       }
 
-      self.delegate?.tabWebView(self, didSelectSearchWithBraveFor: selectedText)
+      self.didSelectSearchWithBrave?(selectedText)
     }
   }
 
@@ -1263,29 +1237,6 @@ class TabWebView: WKWebView, MenuHelperInterface {
 extension TabWebView: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     updateBackgroundColor()
-  }
-}
-
-//
-// Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
-//
-// This class only exists to contain the swizzledMenuHelperFindInPage. This class is actually never
-// instantiated. It only serves as a placeholder for the method. When the method is called, self is
-// actually pointing to a WKContentView. Which is not public, but that is fine, we only need to know
-// that it is a UIView subclass to access its superview.
-//
-
-public class TabWebViewMenuHelper: UIView {
-  @objc public func swizzledMenuHelperFindInPage() {
-    if let tabWebView = superview?.superview as? TabWebView {
-      tabWebView.evaluateSafeJavaScript(
-        functionName: "getSelection().toString",
-        contentWorld: .defaultClient
-      ) { result, _ in
-        let selectedText = result as? String ?? ""
-        tabWebView.delegate?.tabWebView(tabWebView, didSelectFindInPageFor: selectedText)
-      }
-    }
   }
 }
 
@@ -1407,5 +1358,195 @@ extension Tab {
       userScripts: userScripts,
       customScripts: customUserScripts
     )
+  }
+}
+
+// Find In Page interaction
+extension Tab {
+  func presentFindInteraction(with text: String? = nil) {
+    if let findInteraction = webView?.findInteraction {
+      findInteraction.searchText = text
+      findInteraction.presentFindNavigator(showingReplace: false)
+    }
+  }
+  func dismissFindInteraction() {
+    webView?.findInteraction?.dismissFindNavigator()
+  }
+}
+
+// Back Forward
+struct BackForwardList {
+  struct Item: Equatable {
+    var url: URL
+    var title: String?
+    fileprivate var item: WKBackForwardListItem?
+    static func == (lhs: Self, rhs: Self) -> Bool {
+      lhs.item === rhs.item
+    }
+  }
+  var backList: [Item] = []
+  var forwardList: [Item] = []
+  var currentItem: Item?
+  var backItem: Item?
+  var forwardItem: Item?
+}
+
+extension Tab {
+  var backForwardList: BackForwardList {
+    guard let webView else { return .init() }
+    let list = webView.backForwardList
+    return .init(
+      backList: list.backList.map { .init(url: $0.url, title: $0.title, item: $0) },
+      forwardList: list.forwardList.map { .init(url: $0.url, title: $0.title, item: $0) },
+      currentItem: list.currentItem.flatMap { .init(url: $0.url, title: $0.title, item: $0) },
+      backItem: list.backItem.flatMap { .init(url: $0.url, title: $0.title, item: $0) },
+      forwardItem: list.forwardItem.flatMap { .init(url: $0.url, title: $0.title, item: $0) }
+    )
+  }
+}
+
+// PDF creation
+extension Tab {
+  enum PDFCreationError: Error {
+    case webViewNotRealized
+  }
+  func createPDF(completionHandler: @escaping (Result<Data, any Error>) -> Void) {
+    guard let webView else {
+      completionHandler(.failure(PDFCreationError.webViewNotRealized))
+      return
+    }
+    webView.createPDF(completionHandler: completionHandler)
+  }
+}
+
+// JavaScript injection
+extension Tab {
+  enum JavaScriptError: Error {
+    case invalid
+    case webViewNotRealized
+  }
+  private func generateJSFunctionString(
+    functionName: String,
+    args: [Any?],
+    escapeArgs: Bool = true
+  ) -> (javascript: String, error: Error?) {
+    var sanitizedArgs = [String]()
+    for arg in args {
+      if let arg = arg {
+        do {
+          if let arg = arg as? String {
+            sanitizedArgs.append(escapeArgs ? "'\(arg.htmlEntityEncodedString)'" : "\(arg)")
+          } else {
+            let data = try JSONSerialization.data(withJSONObject: arg, options: [.fragmentsAllowed])
+
+            if let str = String(data: data, encoding: .utf8) {
+              sanitizedArgs.append(str)
+            } else {
+              throw JavaScriptError.invalid
+            }
+          }
+        } catch {
+          return ("", error)
+        }
+      } else {
+        sanitizedArgs.append("null")
+      }
+    }
+
+    if args.count != sanitizedArgs.count {
+      assertionFailure("Javascript parsing failed.")
+      return ("", JavaScriptError.invalid)
+    }
+
+    return ("\(functionName)(\(sanitizedArgs.joined(separator: ", ")))", nil)
+  }
+
+  public func evaluateSafeJavaScript(
+    functionName: String,
+    args: [Any] = [],
+    frame: WKFrameInfo? = nil,
+    contentWorld: WKContentWorld,
+    escapeArgs: Bool = true,
+    asFunction: Bool = true,
+    completion: ((Any?, Error?) -> Void)? = nil
+  ) {
+    guard let webView else {
+      completion?(nil, JavaScriptError.webViewNotRealized)
+      return
+    }
+    var javascript = functionName
+
+    if asFunction {
+      let js = generateJSFunctionString(
+        functionName: functionName,
+        args: args,
+        escapeArgs: escapeArgs
+      )
+      if js.error != nil {
+        if let completionHandler = completion {
+          completionHandler(nil, js.error)
+        }
+        return
+      }
+      javascript = js.javascript
+    }
+
+    DispatchQueue.main.async {
+      webView.evaluateJavaScript(javascript, in: frame, in: contentWorld) { result in
+        switch result {
+        case .success(let value):
+          completion?(value, nil)
+        case .failure(let error):
+          completion?(nil, error)
+        }
+      }
+    }
+  }
+
+  @discardableResult @MainActor public func evaluateSafeJavaScript(
+    functionName: String,
+    args: [Any] = [],
+    frame: WKFrameInfo? = nil,
+    contentWorld: WKContentWorld,
+    escapeArgs: Bool = true,
+    asFunction: Bool = true
+  ) async -> (Any?, Error?) {
+    await withCheckedContinuation { continuation in
+      evaluateSafeJavaScript(
+        functionName: functionName,
+        args: args,
+        frame: frame,
+        contentWorld: contentWorld,
+        escapeArgs: escapeArgs,
+        asFunction: asFunction
+      ) { value, error in
+        continuation.resume(returning: (value, error))
+      }
+    }
+  }
+
+  @discardableResult
+  @MainActor public func evaluateSafeJavaScriptThrowing(
+    functionName: String,
+    args: [Any] = [],
+    frame: WKFrameInfo? = nil,
+    contentWorld: WKContentWorld,
+    escapeArgs: Bool = true,
+    asFunction: Bool = true
+  ) async throws -> Any? {
+    let result = await evaluateSafeJavaScript(
+      functionName: functionName,
+      args: args,
+      frame: frame,
+      contentWorld: contentWorld,
+      escapeArgs: escapeArgs,
+      asFunction: asFunction
+    )
+
+    if let error = result.1 {
+      throw error
+    } else {
+      return result.0
+    }
   }
 }

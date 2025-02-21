@@ -59,7 +59,7 @@ extension BrowserViewController {
     guard let tab = tabManager.selectedTab else { return }
 
     // System components sit on top so we want to dismiss it
-    tab.webView?.findInteraction?.dismissFindNavigator()
+    tab.dismissFindInteraction()
 
     let braveRewardsPanel = BraveRewardsViewController(
       tab: tab,
@@ -141,7 +141,7 @@ extension BrowserViewController {
 
 extension Tab {
   func reportPageLoad(to rewards: BraveRewards, redirectChain: [URL]) {
-    guard let url = redirectChain.last, let webView = webView, !url.isLocal, !isPrivate
+    guard let url = redirectChain.last, !url.isLocal, !isPrivate
     else {
       return
     }
@@ -163,7 +163,7 @@ extension Tab {
       // Only utilized for verifiable conversions, which requires the user to have
       // joined Brave Rewards.
       group.enter()
-      webView.evaluateSafeJavaScript(
+      evaluateSafeJavaScript(
         functionName: "new XMLSerializer().serializeToString",
         args: ["document"],
         contentWorld: WKContentWorld.defaultClient,
@@ -177,7 +177,7 @@ extension Tab {
       // joined Brave Rewards. Desktop requires the user to have opted into
       // notification ads, however we do not have access to that pref at this time.
       group.enter()
-      webView.evaluateSafeJavaScript(
+      evaluateSafeJavaScript(
         functionName: "document?.body?.innerText",
         contentWorld: .defaultClient,
         asFunction: false

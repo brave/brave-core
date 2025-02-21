@@ -434,7 +434,7 @@ extension BrowserViewController {
       window.alert=window.confirm=window.prompt=function(n){},
       [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
       """
-    tab.webView?.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: script,
       contentWorld: .defaultClient,
       asFunction: false

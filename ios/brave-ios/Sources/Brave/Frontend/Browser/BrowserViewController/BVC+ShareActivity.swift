@@ -124,13 +124,9 @@ extension BrowserViewController {
     activities.append(
       BasicMenuActivity(
         activityType: .findInPage,
-        callback: { [weak self] in
-          guard let self = self else { return }
-
-          if let findInteraction = self.tabManager.selectedTab?.webView?.findInteraction {
-            findInteraction.searchText = ""
-            findInteraction.presentFindNavigator(showingReplace: false)
-          }
+        callback: { [weak tab] in
+          guard let tab else { return }
+          tab.presentFindInteraction(with: "")
         }
       )
     )
@@ -214,12 +210,12 @@ extension BrowserViewController {
       }
 
       // Create PDF Activity
-      if let webView = tab?.webView, tab?.temporaryDocument == nil {
+      if let tab, tab.temporaryDocument == nil {
         activities.append(
           BasicMenuActivity(
             activityType: .createPDF,
             callback: {
-              webView.createPDF { [weak self] result in
+              tab.createPDF { [weak self] result in
                 dispatchPrecondition(condition: .onQueue(.main))
                 guard let self = self else {
                   return
@@ -232,9 +228,9 @@ extension BrowserViewController {
                       .union(.newlines)
                       .union(.controlCharacters)
                       .union(.illegalCharacters)
-                    let filename = webView.title?.components(separatedBy: validFilenameSet).joined()
+                    let filename = tab.title.components(separatedBy: validFilenameSet).joined()
                     let url = URL(fileURLWithPath: NSTemporaryDirectory())
-                      .appendingPathComponent("\(filename ?? "Untitled").pdf")
+                      .appendingPathComponent("\(filename.isEmpty ? "Untitled" : filename).pdf")
                     do {
                       try await Task.detached {
                         try pdfData.write(to: url)
@@ -303,8 +299,8 @@ extension BrowserViewController {
     }
 
     // Add Search Engine Activity
-    if let webView = tabManager.selectedTab?.webView,
-      evaluateWebsiteSupportOpenSearchEngine(webView)
+    if let tab = tabManager.selectedTab,
+      evaluateWebsiteSupportOpenSearchEngine(in: tab)
     {
       activities.append(
         BasicMenuActivity(
@@ -317,8 +313,8 @@ extension BrowserViewController {
     }
 
     // Display Certificate Activity
-    if let tabURL = tabManager.selectedTab?.webView?.url,
-      tabManager.selectedTab?.webView?.serverTrust != nil
+    if let tabURL = tabManager.selectedTab?.url,
+      tabManager.selectedTab?.serverTrust != nil
         || ErrorPageHelper.hasCertificates(for: tabURL)
     {
       activities.append(

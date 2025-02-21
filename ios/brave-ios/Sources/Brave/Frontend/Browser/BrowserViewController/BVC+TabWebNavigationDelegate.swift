@@ -38,7 +38,7 @@ extension BrowserViewController: TabWebNavigationDelegate {
   func tabDidStartWebViewNavigation(_ tab: Tab) {
     tab.contentBlocker.clearPageStats()
 
-    let visibleURL = tab.webView?.url
+    let visibleURL = tab.url
 
     if tab === tabManager.selectedTab {
       toolbarVisibilityViewModel.toolbarState = .expanded

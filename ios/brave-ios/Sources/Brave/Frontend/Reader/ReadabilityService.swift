@@ -95,7 +95,7 @@ extension ReadabilityOperation: WKNavigationDelegate {
   }
 
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    webView.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )

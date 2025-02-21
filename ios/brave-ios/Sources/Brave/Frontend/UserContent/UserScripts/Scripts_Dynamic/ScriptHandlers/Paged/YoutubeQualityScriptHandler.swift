@@ -67,7 +67,7 @@ class YoutubeQualityScriptHandler: NSObject, TabContentScript {
   static func setEnabled(option: Preferences.Option<String>, for tab: Tab) {
     let enabled = canEnableHighQuality(option: option)
 
-    tab.webView?.evaluateSafeJavaScript(
+    tab.evaluateSafeJavaScript(
       functionName: "window.__firefox__.\(Self.setQuality)",
       args: [enabled ? Self.highestQuality : "''"],
       contentWorld: Self.scriptSandbox,
