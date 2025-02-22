@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
+index c236e757f0bca1edc6b51c0a7441e175ee61b840..b4b69489c9876499153a9005a15355bd4a28c759 100644
+--- a/chrome/browser/content_settings/BUILD.gn
++++ b/chrome/browser/content_settings/BUILD.gn
+@@ -66,6 +66,7 @@ source_set("impl") {
+     ":content_settings",
+     ":content_settings_factory",
+     ":content_settings_util",
++    "//brave/components/brave_shields/content/browser",
+     "//chrome/browser:browser_process",
+     "//chrome/browser/media/webrtc",
+     "//chrome/browser/permissions",
+@@ -79,6 +80,7 @@ source_set("impl") {
+     "//components/content_settings/core/browser:cookie_settings",
+     "//components/pref_registry",
+     "//components/supervised_user/core/browser",
++    "//components/user_prefs",
+     "//pdf:features",
+     "//services/metrics/public/cpp:ukm_builders",
+     "//ui/webui",

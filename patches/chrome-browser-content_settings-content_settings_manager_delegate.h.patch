@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/content_settings/content_settings_manager_delegate.h b/chrome/browser/content_settings/content_settings_manager_delegate.h
+index a10cde8c3ecc5535b6b31156c48344f9eb221f01..f635e0c58c771ba6341b647b0b70962fe3ad4ca2 100644
+--- a/chrome/browser/content_settings/content_settings_manager_delegate.h
++++ b/chrome/browser/content_settings/content_settings_manager_delegate.h
+@@ -23,6 +23,12 @@ class ContentSettingsManagerDelegate
+       const GURL& url,
+       bool allowed,
+       base::OnceCallback<void(bool)>* callback) override;
++  void GetBraveShieldsSettings(
++      const content::GlobalRenderFrameHostToken& frame_token,
++      const url::Origin& origin,
++      const url::Origin& top_frame_origin,
++      content_settings::mojom::ContentSettingsManager::
++          GetBraveShieldsSettingsCallback callback) override;
+   std::unique_ptr<Delegate> Clone() override;
+ };
+ 

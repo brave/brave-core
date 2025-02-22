@@ -47,6 +47,12 @@ class MockContentSettingsManagerImpl : public mojom::ContentSettingsManager {
       const ::url::Origin& top_frame_origin,
       AllowEphemeralStorageAccessCallback callback) override {}
 
+  void GetBraveShieldsSettings(
+      const blink::LocalFrameToken& frame_token,
+      const ::url::Origin& origin,
+      const ::url::Origin& top_frame_origin,
+      GetBraveShieldsSettingsCallback callback) override {}
+
   void OnContentBlocked(const blink::LocalFrameToken& frame_token,
                         ContentSettingsType type) override {
     ++log_->on_content_blocked_count;
