@@ -25,7 +25,7 @@ struct LeoAssetsPlugin: BuildToolPlugin {
     }
 
     // Check to make sure the plugin is being used correctly in SPM
-    guard let target = target as? SourceModuleTarget else {
+    guard target is SourceModuleTarget else {
       Diagnostics.error("Attempted to use `LeoAssetsPlugin` on an unsupported module target")
       return []
     }

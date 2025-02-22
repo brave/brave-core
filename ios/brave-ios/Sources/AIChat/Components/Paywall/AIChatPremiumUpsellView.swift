@@ -133,7 +133,7 @@ struct PremiumUpsellTitleView: View {
         .font(.body.weight(.medium))
         .lineLimit(2)
         .truncationMode(.tail)
-        .frame(maxWidth: .infinity, alignment: .center)
+        .frame(maxWidth: .infinity)
         .fixedSize(horizontal: false, vertical: true)
         .foregroundStyle(foregroundTextColor)
     case .rateLimit:

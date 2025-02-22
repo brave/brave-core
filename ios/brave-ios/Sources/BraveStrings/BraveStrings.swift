@@ -2169,6 +2169,14 @@ extension Strings {
       value: "Close default browser callout",
       comment: ""
     )
+  public static let importBrowsingDataSettingsMenuTitle =
+    NSLocalizedString(
+      "importBrowsingDataSettingsMenuTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Import Browsing Data",
+      comment: "Title of the button in settings where the user can import browsing data from other browsers."
+    )
   public static let enablePullToRefresh =
     NSLocalizedString(
       "enablePullToRefresh",

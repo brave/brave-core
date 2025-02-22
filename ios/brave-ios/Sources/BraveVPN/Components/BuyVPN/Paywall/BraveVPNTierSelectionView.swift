@@ -31,7 +31,7 @@ struct BraveVPNPremiumTierSelectionView: View {
         VStack(alignment: .leading, spacing: 8.0) {
           HStack {
             Text(type == .yearly ? Strings.VPN.yearlySubTitle : Strings.VPN.monthlySubTitle)
-              .font(.body.weight(.semibold))
+              .font(.headline)
               .foregroundStyle(.white)
 
             if type == .yearly {
