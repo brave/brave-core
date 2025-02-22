@@ -2171,6 +2171,30 @@ public class BytecodeTest {
                         "mMediaSessionActions"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/media/ui/MediaSessionTabHelper", "mTab"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "mBaseCustomTabRootUiCoordinator"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "mIntentDataProvider"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "mToolbarCoordinator"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "mTabController"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "mMinimizationManagerHolder"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/customtabs/BaseCustomTabActivity",
+                        "mCustomTabFeatureOverridesManager"));
     }
 
     @Test

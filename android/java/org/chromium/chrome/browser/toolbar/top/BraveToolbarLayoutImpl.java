@@ -58,6 +58,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
+import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.customtabs.features.toolbar.CustomTabToolbar;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
@@ -122,6 +123,7 @@ import org.chromium.url.GURL;
 import org.chromium.url.mojom.Url;
 
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -183,6 +185,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private int mCurrentToolbarColor;
 
     private boolean mIsPublisherVerified;
+    private String mPublisherId;
     private boolean mIsNotificationPosted;
     private boolean mIsInitialNotificationPosted; // initial red circle notification
 
@@ -459,7 +462,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveRewardsNativeWorker != null) {
             mBraveRewardsNativeWorker.addObserver(this);
             mBraveRewardsNativeWorker.addPublisherObserver(this);
-            mBraveRewardsNativeWorker.triggerOnNotifyFrontTabUrlChanged();
             mBraveRewardsNativeWorker.getAllNotifications();
         }
     }
@@ -505,6 +507,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
                         dismissShieldsTooltip();
                         hidePlaylistButton();
+                        mPublisherId = "";
                     }
 
                     @Override
@@ -536,13 +539,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     @Override
                     public void onDidFinishNavigationInPrimaryMainFrame(
                             Tab tab, NavigationHandle navigation) {
+                        if (mBraveRewardsNativeWorker != null) {
+                            mBraveRewardsNativeWorker.triggerOnNotifyFrontTabUrlChanged();
+                        }
                         if (getToolbarDataProvider().getTab() == tab
                                 && mBraveRewardsNativeWorker != null
                                 && !tab.isIncognito()) {
                             mBraveRewardsNativeWorker.onNotifyFrontTabUrlChanged(
                                     tab.getId(), tab.getUrl().getSpec());
                         }
-                        if (PackageUtils.isFirstInstall(getContext())
+                        if (!BraveRewardsHelper.shouldShowNewRewardsUI()
+                                && PackageUtils.isFirstInstall(getContext())
                                 && tab.getUrl().getSpec() != null
                                 && tab.getUrl()
                                         .getSpec()
@@ -1067,8 +1074,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
             hideRewardsOnboardingIcon();
             OnboardingPrefManager.getInstance().setOnboardingShown(true);
-            mRewardsPopup = new BraveRewardsPanel(v);
-            mRewardsPopup.showLikePopDownMenu();
+            if (BraveRewardsHelper.shouldShowNewRewardsUI()) {
+                showRewardsPage();
+            } else {
+                mRewardsPopup = new BraveRewardsPanel(v);
+                mRewardsPopup.showLikePopDownMenu();
+            }
+
             if (mBraveRewardsNotificationsCount.isShown()) {
                 ChromeSharedPreferences.getInstance()
                         .writeBoolean(
@@ -1086,6 +1098,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
             maybeShowWalletPanel();
         }
+    }
+
+    public void showRewardsPage() {
+        String rewardsUrl = BraveActivity.BRAVE_REWARDS_SETTINGS_URL + "?bubble";
+        if (mPublisherId != null && !mPublisherId.isEmpty()) {
+            rewardsUrl += "&creator=" + URLEncoder.encode(mPublisherId);
+        }
+        FullScreenCustomTabActivity.showPage(getContext(), rewardsUrl);
     }
 
     private void maybeShowWalletPanel() {
@@ -1347,7 +1367,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     public void onCompleteReset(boolean success) {
         if (success) {
             BraveRewardsHelper.resetRewards();
-            showOrHideRewardsBadge(false);
+            if (!BraveRewardsHelper.shouldShowNewRewardsUI()) {
+                showOrHideRewardsBadge(false);
+            }
         }
     }
 
@@ -1447,13 +1469,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     /**
-     * BraveRewardsNativeWorker.PublisherObserver:
-     *   Update a 'verified publisher' checkmark on url bar BAT icon only if
-     *   no notifications are posted.
+     * BraveRewardsNativeWorker.PublisherObserver: Update a 'verified publisher' checkmark on url
+     * bar BAT icon only if no notifications are posted.
      */
     @Override
-    public void onFrontTabPublisherChanged(boolean verified) {
+    public void onFrontTabPublisherChanged(boolean verified, String publisherId) {
         mIsPublisherVerified = verified;
+        mPublisherId = publisherId;
         updateVerifiedPublisherMark();
     }
 

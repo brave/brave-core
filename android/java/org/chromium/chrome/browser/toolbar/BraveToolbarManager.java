@@ -33,6 +33,7 @@ import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsV
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
+import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
 import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
 import org.chromium.chrome.browser.ephemeraltab.EphemeralTabCoordinator;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
@@ -453,6 +454,12 @@ public class BraveToolbarManager extends ToolbarManager {
             boolean isBraveBottomControlsVisible =
                     mCurrentOrientation != Configuration.ORIENTATION_LANDSCAPE;
             setBraveBottomControlsVisible(isBraveBottomControlsVisible);
+        }
+
+        if (mActivity instanceof FullScreenCustomTabActivity) {
+            // When rewards page is shown on rotated screen we don't care about
+            // the toolbar.
+            return;
         }
 
         if (mActivity instanceof BraveActivity) {

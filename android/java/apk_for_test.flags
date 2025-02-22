@@ -917,3 +917,13 @@
 }
 
 -keep class org.chromium.chrome.browser.multiwindow.InstanceInfo
+
+-keep class org.chromium.chrome.browser.customtabs.BaseCustomTabActivity {
+    *** mBaseCustomTabRootUiCoordinator;
+    *** mIntentDataProvider;
+    *** mToolbarCoordinator;
+    *** mTabController;
+    *** mMinimizationManagerHolder;
+    *** mCustomTabFeatureOverridesManager;
+    public <init>(...);
+}

@@ -25,10 +25,10 @@ import java.util.List;
 
 @JNINamespace("chrome::android")
 public class BraveRewardsNativeWorker {
-    /**
-     * Allows to monitor a front tab publisher changes.
-     */
-    public interface PublisherObserver { void onFrontTabPublisherChanged(boolean verified); }
+    /** Allows to monitor a front tab publisher changes. */
+    public interface PublisherObserver {
+        void onFrontTabPublisherChanged(boolean verified, String publisherId);
+    }
 
     // Rewards notifications
     // Taken from components/brave_rewards/content/rewards_notification_service.h
@@ -128,7 +128,7 @@ public class BraveRewardsNativeWorker {
                     new Runnable() {
                         @Override
                         public void run() {
-                            notifyPublisherObservers(false);
+                            notifyPublisherObservers(false, "");
                         }
                     });
         } else if (newUrl) {
@@ -138,9 +138,9 @@ public class BraveRewardsNativeWorker {
         mFrontTabUrl = url;
     }
 
-    private void notifyPublisherObservers(boolean verified) {
+    private void notifyPublisherObservers(boolean verified, String publisherId) {
         for (PublisherObserver observer : mFrontTabPublisherObservers) {
-            observer.onFrontTabPublisherChanged(verified);
+            observer.onFrontTabPublisherChanged(verified, publisherId);
         }
     }
 
@@ -567,10 +567,10 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void onPublisherInfo(int tabId) {
+    public void onPublisherInfo(int tabId, String publisherId) {
         int pubStatus = getPublisherStatus(tabId);
         boolean verified = pubStatus != PublisherStatus.NOT_VERIFIED;
-        notifyPublisherObservers(verified);
+        notifyPublisherObservers(verified, publisherId);
 
         // Notify BraveRewardsObserver (panel).
         for (BraveRewardsObserver observer : mObservers) {

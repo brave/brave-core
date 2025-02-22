@@ -240,6 +240,7 @@ generate_jni("jni_headers") {
     "//brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
     "//brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
+    "//brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnNativeWorker.java",
     "//brave/android/java/org/chromium/chrome/browser/vpn/BraveVpnServiceFactoryAndroid.java",
     "//brave/android/java/org/chromium/chrome/browser/webcompat_reporter/WebcompatReporterServiceFactory.java",

@@ -147,6 +147,8 @@ source_set("ui") {
     sources += [
       "android/ai_chat/brave_leo_settings_launcher_helper.cc",
       "android/ai_chat/brave_leo_settings_launcher_helper.h",
+      "android/brave_rewards/rewards_page_helper.cc",
+      "android/brave_rewards/rewards_page_helper.h",
     ]
 
     deps += [ "//brave/build/android:jni_headers" ]
