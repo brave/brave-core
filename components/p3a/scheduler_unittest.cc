@@ -38,24 +38,24 @@ class P3ASchedulerTest : public testing::Test {
 
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<Scheduler> scheduler_;
-  size_t upload_count_ = 0;
+  int upload_count_ = 0;
 };
 
 TEST_F(P3ASchedulerTest, NonRandom) {
   SetUpScheduler(false);
 
   task_environment_.FastForwardBy(base::Minutes(6));
-  EXPECT_EQ(upload_count_, 6u);
+  EXPECT_EQ(upload_count_, 6);
 
   task_environment_.FastForwardBy(base::Minutes(10));
-  EXPECT_EQ(upload_count_, 16u);
+  EXPECT_EQ(upload_count_, 16);
 }
 
 TEST_F(P3ASchedulerTest, Random) {
   SetUpScheduler(true);
 
   task_environment_.FastForwardBy(base::Hours(8));
-  size_t first_upload_count = upload_count_;
+  int first_upload_count = upload_count_;
   upload_count_ = 0;
 
   task_environment_.FastForwardBy(base::Hours(8));
