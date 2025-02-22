@@ -293,8 +293,8 @@ void CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter(
   GetElementPickerRemoteHandler()->AddSiteCosmeticFilter(selector);
 }
 
-void CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter() {
-  GetElementPickerRemoteHandler()->ResetCosmeticFilterForCurrentHost();
+void CosmeticFiltersJSHandler::OnManageCustomFilters() {
+  GetElementPickerRemoteHandler()->ManageCustomFilters();
 }
 
 mojo::AssociatedRemote<cosmetic_filters::mojom::CosmeticFiltersHandler>&
@@ -443,8 +443,8 @@ void CosmeticFiltersJSHandler::BindFunctionsToObject(
       base::BindRepeating(&CosmeticFiltersJSHandler::OnAddSiteCosmeticFilter,
                           base::Unretained(this)));
   BindFunctionToObject(
-      isolate, javascript_object, "resetSiteCosmeticFilter",
-      base::BindRepeating(&CosmeticFiltersJSHandler::OnResetSiteCosmeticFilter,
+      isolate, javascript_object, "manageCustomFilters",
+      base::BindRepeating(&CosmeticFiltersJSHandler::OnManageCustomFilters,
                           base::Unretained(this)));
   BindFunctionToObject(
       isolate, javascript_object, "getElementPickerThemeInfo",
