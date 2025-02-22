@@ -30,19 +30,10 @@
 namespace {
 class ContentsView : public views::View {
  public:
-  explicit ContentsView(BraveCompoundTabContainer* container)
-      : container_(container) {
+  explicit ContentsView() {
     SetLayoutManager(std::make_unique<views::FillLayout>());
   }
   ~ContentsView() override = default;
-
-  // views::View:
-  void ChildPreferredSizeChanged(views::View* child) override {
-    // Bypass ScrollView and notify the BraveCompoundTabContainer directly.
-    container_->ChildPreferredSizeChanged(child);
-  }
-
-  base::raw_ptr<BraveCompoundTabContainer> container_;
 };
 
 // A custom scroll view to avoid bugs from upstream
@@ -173,7 +164,7 @@ void BraveCompoundTabContainer::SetScrollEnabled(bool enabled) {
         tab_slot_controller_->GetBrowser()->profile()->GetPrefs()));
     scroll_view_->SetBackgroundThemeColorId(kColorToolbar);
     auto* contents_view =
-        scroll_view_->SetContents(std::make_unique<ContentsView>(this));
+        scroll_view_->SetContents(std::make_unique<ContentsView>());
     contents_view->AddChildView(base::to_address(unpinned_tab_container_));
     DeprecatedLayoutImmediately();
   } else {
@@ -248,7 +239,12 @@ void BraveCompoundTabContainer::Layout(PassKey) {
     auto bounds = gfx::Rect(
         contents_bounds.x(), pinned_tab_container_->bounds().bottom(), width(),
         contents_bounds.height() - pinned_tab_container_->height());
-    scroll_view_->SetBoundsRect(bounds);
+    if (scroll_view_->bounds() != bounds ||
+        unpinned_tab_container_->height() !=
+            unpinned_tab_container_->GetPreferredSize().height()) {
+      scroll_view_->SetBoundsRect(bounds);
+    }
+
     if (scroll_view_->GetMaxHeight() != bounds.height()) {
       scroll_view_->ClipHeightTo(0, scroll_view_->height());
     }
