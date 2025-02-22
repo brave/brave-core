@@ -16,6 +16,7 @@
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "base/logging.h"
 
 namespace brave_shields {
 
@@ -53,6 +54,18 @@ void AdBlockCustomFiltersProvider::AddUserCosmeticFilter(
     const std::string& filter) {
   std::string custom_filters = GetCustomFilters();
   UpdateCustomFilters(custom_filters + '\n' + filter);
+}
+
+bool AdBlockCustomFiltersProvider::IsBlockedElementsAvailable(
+    const std::string& host) {
+  if (host.empty()) {
+    return false;
+  }
+
+  const auto result =
+      IsCustomFiltersAvailable(host, GetCustomFilters());
+  LOG(INFO) << "[PSST] AdBlockCustomFiltersProvider::IsBlockedElementsAvailable result:" << result;
+  return result;
 }
 
 void AdBlockCustomFiltersProvider::ResetCosmeticFilter(

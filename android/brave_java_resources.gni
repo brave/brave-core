@@ -791,6 +791,7 @@ brave_java_resources = [
   "java/res/layout/brave_shields_main_layout.xml",
   "java/res/layout/brave_shields_option_layout.xml",
   "java/res/layout/brave_shields_secondary_layout.xml",
+  "java/res/layout/brave_shields_third_layout.xml",
   "java/res/layout/brave_shields_stats_row.xml",
   "java/res/layout/brave_shields_switcher.xml",
   "java/res/layout/brave_shields_thank_you_layout.xml",

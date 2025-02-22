@@ -53,6 +53,7 @@ interface DataHandler {
     content_settings.mojom.ContentSettingsType webcompat_settings_type,
     bool enable);
   ResetBlockedElements();
+  IsBlockedElementsAvailable() => (bool is_available);
 };
 
 struct SiteBlockInfo {

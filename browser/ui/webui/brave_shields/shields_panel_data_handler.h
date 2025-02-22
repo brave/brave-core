@@ -55,6 +55,7 @@ class ShieldsPanelDataHandler
   void SetWebcompatEnabled(ContentSettingsType webcompat_settings_type,
                            bool enabled) override;
   void ResetBlockedElements() override;
+  void IsBlockedElementsAvailable(IsBlockedElementsAvailableCallback callback) override;
 
  private:
   void UpdateSiteBlockInfo();

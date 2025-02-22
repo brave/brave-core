@@ -184,12 +184,21 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
       webcompat_reporter::UISource::kShieldsPanel);
 }
 
+void ShieldsPanelDataHandler::IsBlockedElementsAvailable(
+    IsBlockedElementsAvailableCallback callback) {
+  std::move(callback).Run(
+      g_brave_browser_process->ad_block_service()->IsBlockedElementsAvailable(
+          active_shields_data_controller_->web_contents()->GetURL().host()));
+}
+
 void ShieldsPanelDataHandler::ResetBlockedElements() {
-  LOG(INFO) << "[PSST] ShieldsPanelDataHandler::ResetBlockedElements url:" << active_shields_data_controller_->web_contents()->GetURL();
   g_brave_browser_process->ad_block_service()->ResetCosmeticFilter(
       active_shields_data_controller_->web_contents()->GetURL().host());
 
-  active_shields_data_controller_->web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  webui_controller_->embedder()->CloseUI();
+
+  active_shields_data_controller_->web_contents()->GetController().Reload(
+      content::ReloadType::NORMAL, true);
 }
 
 void ShieldsPanelDataHandler::UpdateFavicon() {

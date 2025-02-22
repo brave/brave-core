@@ -15,6 +15,9 @@ std::optional<std::string> ResetCustomFiltersForHost(
     const std::string& host,
     const std::string& custom_filters);
 
+bool IsCustomFiltersAvailable(const std::string& host,
+                              const std::string& custom_filters);
+
 }  // namespace brave_shields
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_AD_BLOCK_CUSTOM_FILTER_RESET_UTIL_H_
