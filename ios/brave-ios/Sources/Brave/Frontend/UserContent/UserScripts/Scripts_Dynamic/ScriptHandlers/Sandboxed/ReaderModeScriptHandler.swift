@@ -169,6 +169,7 @@ struct ReadabilityResult {
   var domain = ""
   var url = ""
   var content = ""
+  var documentLanguage = ""
   var title = ""
   var credits = ""
   var direction = "auto"
@@ -190,6 +191,9 @@ struct ReadabilityResult {
       }
       if let content = dict["content"] as? String {
         self.content = content
+      }
+      if let documentLanguage = dict["documentLanguage"] as? String {
+        self.documentLanguage = documentLanguage
       }
       if let title = dict["title"] as? String {
         self.title = title
@@ -214,6 +218,7 @@ struct ReadabilityResult {
     let domain = object["domain"].string
     let url = object["url"].string
     let content = object["content"].string
+    let documentLanguage = object["documentLanguage"].string
     let title = object["title"].string
     let credits = object["credits"].string
     let direction = object["dir"].string
@@ -226,6 +231,7 @@ struct ReadabilityResult {
     self.domain = domain!
     self.url = url!
     self.content = content!
+    self.documentLanguage = documentLanguage ?? ""
     self.title = title!
     self.credits = credits!
     self.direction = direction ?? "auto"
@@ -235,7 +241,8 @@ struct ReadabilityResult {
   /// Encode to a dictionary, which can then for example be json encoded
   func encode() -> [String: Any] {
     return [
-      "domain": domain, "url": url, "content": content, "title": title, "credits": credits,
+      "domain": domain, "url": url, "content": content, "documentLanguage": documentLanguage,
+      "title": title, "credits": credits,
       "dir": direction, "cspMetaTags": cspMetaTags,
     ]
   }

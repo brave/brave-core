@@ -34,6 +34,11 @@ struct ReaderModeUtils {
       .replacingOccurrences(of: "%READER-DOMAIN%", with: simplifyDomain(readabilityResult.domain))
       .replacingOccurrences(of: "%READER-URL%", with: readabilityResult.url)
       .replacingOccurrences(
+        of: "%READER-PAGE-LANGUAGE%",
+        with: readabilityResult.documentLanguage.javaScriptEscapedString?.unquotedIfNecessary
+          ?? ""
+      )
+      .replacingOccurrences(
         of: "%READER-TITLE%",
         with: readabilityResult.title.javaScriptEscapedString?.unquotedIfNecessary
           ?? readabilityResult.title.htmlEntityEncodedString
