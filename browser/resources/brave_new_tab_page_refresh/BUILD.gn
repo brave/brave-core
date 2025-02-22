@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(!is_android)
+
+transpile_web_ui("resources") {
+  entry_points = [ [
+        "brave_new_tab_page",
+        rebase_path("brave_new_tab_page.tsx"),
+      ] ]
+  resource_name = "brave_new_tab_page"
+  output_module = true
+  deps = [
+    "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js",
+    "//brave/components/brave_ads/core/mojom:mojom_js",
+    "//brave/components/brave_rewards/core/mojom:webui_js",
+    "//brave/components/brave_vpn/common/mojom:mojom_js",
+    "//brave/components/ntp_background_images/browser/mojom:mojom_js",
+  ]
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_new_tab_page"
+  output_dir =
+      "$root_gen_dir/brave/browser/resources/brave_new_tab_page_refresh"
+  deps = [ ":resources" ]
+}
