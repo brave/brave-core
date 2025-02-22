@@ -108,7 +108,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrivateAggregationApi,
       &blink::features::kSharedStorageAPI,
       &blink::features::kSpeculationRulesPrefetchFuture,
-      &blink::features::kTextFragmentAnchor,
 #if BUILDFLAG(IS_ANDROID)
       &chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2,
 #endif

@@ -2036,7 +2036,6 @@
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_ProfileSwitch
 -All/ProfileMenuViewExtensionsIphDismissTest.CloseIPH/_SupervisedUser
 -All/ReportingBrowserTest.*
--All/ScrollToTextFragmentPolicyTest.*
 -All/SearchEnginePreconnectorForegroundBrowserTest.*
 -All/StartupBrowserCreatorInfobarsWithoutStartupWindowTest.*
 -All/StartupBrowserCreatorPickerInfobarTest.*
