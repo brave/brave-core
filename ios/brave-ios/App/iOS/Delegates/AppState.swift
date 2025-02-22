@@ -198,7 +198,10 @@ public class AppState {
     switches.append(.init(key: .rewardsFlags, value: BraveRewards.Configuration.current().flags))
 
     // Initialize BraveCore
-    return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)
+    let braveCoreMain = BraveCoreMain(additionalSwitches: switches)
+    // `UserAgent.mobile` requires a feature flag, so it must be initialized after BraveCore
+    braveCoreMain.setUserAgent(UserAgent.mobile)
+    return braveCoreMain
   }
 
   private func setupCustomSchemeHandlers(profile: Profile) {

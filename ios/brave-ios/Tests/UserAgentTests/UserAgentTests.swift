@@ -20,7 +20,7 @@ class UserAgentTests: XCTestCase {
   let desktopUARegex: (String) -> Bool = { ua in
     let range = ua.range(
       of:
-        "^Mozilla/5\\.0 \\(Macintosh; Intel Mac OS X [0-9_]+\\) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Version/[0-9\\.]+ Safari/[0-9\\.]+$",
+        "^Mozilla/5\\.0 \\(Macintosh; Intel Mac OS X [0-9_]+\\) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Brave/[0-9\\.]+ Version/[0-9\\.]+ Safari/[0-9\\.]+$",
       options: .regularExpression
     )
     return range != nil
@@ -34,7 +34,7 @@ class UserAgentTests: XCTestCase {
 
     let range = ua.range(
       of:
-        "^Mozilla/5\\.0 \(cpuPart) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Version/[0-9\\.]+ Mobile/[A-Za-z0-9]+ Safari/[0-9\\.]+$",
+        "^Mozilla/5\\.0 \(cpuPart) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Brave/[0-9\\.]+ Mobile/[A-Za-z0-9]+ Safari/[0-9\\.]+$",
       options: .regularExpression
     )
     return range != nil

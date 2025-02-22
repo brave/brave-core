@@ -34,6 +34,7 @@
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_stats/brave_stats+private.h"
+#include "brave/ios/browser/api/brave_user_agent/brave_user_agent_service+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_api+private.h"
 #include "brave/ios/browser/api/de_amp/de_amp_prefs+private.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
@@ -152,17 +153,17 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) NTPBackgroundImagesService* backgroundImagesService;
 @property(nonatomic)
     HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
+@property(nonatomic) BraveUserAgentService* braveUserAgentService;
 @end
 
 @implementation BraveCoreMain
 
-- (instancetype)initWithUserAgent:(NSString*)userAgent {
-  return [self initWithUserAgent:userAgent additionalSwitches:@[]];
+- (instancetype)init {
+  return [self initWithAdditionalSwitches:@[]];
 }
 
-- (instancetype)initWithUserAgent:(NSString*)userAgent
-               additionalSwitches:
-                   (NSArray<BraveCoreSwitch*>*)additionalSwitches {
+- (instancetype)initWithAdditionalSwitches:
+    (NSArray<BraveCoreSwitch*>*)additionalSwitches {
   if ((self = [super init])) {
     [[NSNotificationCenter defaultCenter]
         addObserver:self
@@ -203,7 +204,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 
     // Setup WebClient ([ClientRegistration registerClients])
     _webClient.reset(new BraveWebClient());
-    _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
     web::SetWebClient(_webClient.get());
 
     _delegate.reset(new BraveMainDelegate());
@@ -346,6 +346,10 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   // cannot dealloc this class yet without crashing.
   GetApplicationContext()->GetLocalState()->CommitPendingWrite();
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setUserAgent:(NSString*)userAgent {
+  _webClient->SetUserAgent(base::SysNSStringToUTF8(userAgent));
 }
 
 - (void)scheduleLowPriorityStartupTasks {
@@ -492,6 +496,13 @@ static bool CustomLogHandler(int severity,
         [[HTTPSUpgradeExceptionsService alloc] init];
   }
   return _httpsUpgradeExceptionsService;
+}
+
+- (BraveUserAgentService*)braveUserAgentService {
+  if (!_braveUserAgentService) {
+    _braveUserAgentService = [[BraveUserAgentService alloc] init];
+  }
+  return _braveUserAgentService;
 }
 
 - (BraveStats*)braveStats {
