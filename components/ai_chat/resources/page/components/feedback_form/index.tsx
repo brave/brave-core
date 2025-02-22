@@ -20,6 +20,14 @@ const CATEGORY_OPTIONS = new Map([
   ['other', getLocale('optionOther')]
 ])
 
+const getHostName = (url: string) => {
+  try {
+    return new URL(url).hostname
+  } catch (e) {
+    return ''
+  }
+}
+
 function FeedbackForm() {
   const ref = React.useRef<HTMLDivElement>(null)
   const [category, setCategory] = React.useState('')
@@ -84,13 +92,13 @@ function FeedbackForm() {
             />
           </label>
         </fieldset>
-        {conversationContext.associatedContentInfo?.hostname && (
+        {conversationContext.associatedContentInfo && (
           <fieldset>
             <Checkbox checked={shouldSendUrl} onChange={handleCheckboxChange}>
               <label>{
                 formatMessage(getLocale('sendSiteHostnameLabel'), {
                   placeholders: {
-                    $1: conversationContext.associatedContentInfo.hostname
+                    $1: getHostName(conversationContext.associatedContentInfo.url.url)
                   }
                 })
               }</label>
