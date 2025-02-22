@@ -15,7 +15,7 @@ BASE_FEATURE(kConstellation,
              base::FEATURE_ENABLED_BY_DEFAULT);
 // Verify Constellation randomness server secure enclave certificate.
 BASE_FEATURE(kConstellationEnclaveAttestation,
-             "BraveP3AConstellationEnclaveAttestation",
+             "BraveP3AConstellationEnclaveAttestationV2",
              base::FEATURE_DISABLED_BY_DEFAULT);
 // Disable reporting answers over direct https+json
 // for typical (weekly) cadence P3A questions.
