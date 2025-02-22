@@ -22,18 +22,21 @@ class BraveVPNConnectionInfo {
   void SetConnectionInfo(const std::string& connection_name,
                          const std::string& hostname,
                          const std::string& username,
-                         const std::string& password);
+                         const std::string& password,
+                         const std::string& proxy);
 
   std::string connection_name() const { return connection_name_; }
   std::string hostname() const { return hostname_; }
   std::string username() const { return username_; }
   std::string password() const { return password_; }
+  std::string proxy() const { return proxy_; }
 
  private:
   std::string connection_name_;
   std::string hostname_;
   std::string username_;
   std::string password_;
+  std::string proxy_;
 };
 
 }  // namespace brave_vpn

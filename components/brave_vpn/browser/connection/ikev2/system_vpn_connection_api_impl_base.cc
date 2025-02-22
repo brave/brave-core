@@ -14,6 +14,7 @@
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 
@@ -324,7 +325,8 @@ void SystemVPNConnectionAPIImplBase::OnGetProfileCredentials(
     }
 
     connection_info_.SetConnectionInfo(manager_->target_vpn_entry_name(),
-                                       GetHostname(), *username, *password);
+                                       GetHostname(), *username, *password,
+                                       kProxyUrl);
     // Let's create os vpn entry with |connection_info_|.
     CreateVPNConnection();
     return;

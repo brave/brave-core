@@ -20,6 +20,7 @@ void BraveVPNConnectionInfo::Reset() {
   hostname_.clear();
   username_.clear();
   password_.clear();
+  proxy_.clear();
 }
 
 bool BraveVPNConnectionInfo::IsValid() const {
@@ -31,11 +32,13 @@ void BraveVPNConnectionInfo::SetConnectionInfo(
     const std::string& connection_name,
     const std::string& hostname,
     const std::string& username,
-    const std::string& password) {
+    const std::string& password,
+    const std::string& proxy) {
   connection_name_ = connection_name;
   hostname_ = hostname;
   username_ = username;
   password_ = password;
+  proxy_ = proxy;
 }
 
 }  // namespace brave_vpn
