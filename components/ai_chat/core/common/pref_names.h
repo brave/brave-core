@@ -21,6 +21,10 @@ inline constexpr char kBraveChatAutocompleteProviderEnabled[] =
     "brave.ai_chat.autocomplete_provider_enabled";
 inline constexpr char kBraveChatP3AChatCountWeeklyStorage[] =
     "brave.ai_chat.p3a_chat_count";
+inline constexpr char kBraveChatP3AChatWithHistoryCountWeeklyStorage[] =
+    "brave.ai_chat.p3a_chat_with_history_count";
+inline constexpr char kBraveChatP3AChatDurationsWeeklyStorage[] =
+    "brave.ai_chat.p3a_chat_durations";
 inline constexpr char kBraveChatP3APromptCountWeeklyStorage[] =
     "brave.ai_chat.p3a_prompt_count";
 // Stores Leo Premium credentials that have already been fetched from the
@@ -47,8 +51,22 @@ inline constexpr char kBraveChatP3AUsedSecondDay[] =
     "brave.ai_chat.p3a_used_second_day";
 inline constexpr char kBraveChatP3AContextMenuUsages[] =
     "brave.ai_chat.p3a_context_menu_usages";
+inline constexpr char kBraveChatP3AEntryPointUsages[] =
+    "brave.ai_chat.p3a_entry_point_usages";
+inline constexpr char kBraveChatP3ASidebarUsages[] =
+    "brave.ai_chat.p3a_sidebar_usages";
+inline constexpr char kBraveChatP3AFullPageSwitches[] =
+    "brave.ai_chat.p3a_full_page_switches";
 inline constexpr char kBraveChatP3ALastContextMenuUsageTime[] =
     "brave.ai_chat.p3a_last_context_menu_time";
+inline constexpr char kBraveChatP3AFirstChatPromptsReported[] =
+    "brave.ai_chat.p3a_first_chat_prompts_reported";
+inline constexpr char kBraveChatP3AContextSourceUsages[] =
+    "brave.ai_chat.p3a_context_source_usages";
+inline constexpr char kBraveChatP3ARateLimitStops[] =
+    "brave.ai_chat.p3a_rate_limit_stops";
+inline constexpr char kBraveChatP3AContextLimits[] =
+    "brave.ai_chat.p3a_context_limits";
 #if BUILDFLAG(IS_ANDROID)
 inline constexpr char kBraveChatSubscriptionActiveAndroid[] =
     "brave.ai_chat.subscription_active_android";

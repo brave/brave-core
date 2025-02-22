@@ -419,6 +419,7 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
     setPartialContext({
       selectedActionType: actionType
     })
+    getAPI().metrics.willSendPromptWithQuickAction()
     // TODO(petemill): Explain why the settimeout?
     setTimeout(() => {
       if (context.inputText.startsWith('/')) {
@@ -459,6 +460,10 @@ export function ConversationContextProvider(props: React.PropsWithChildren) {
       // Submitting a conversation entry manually, after opt-in,
       // means the storage notice can be dismissed.
       aiChatContext.dismissStorageNotice()
+    }
+
+    if (aiChatContext.isStandalone) {
+      getAPI().metrics.willSendPromptWithFullPage()
     }
 
     if (context.selectedActionType) {
