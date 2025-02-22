@@ -1,0 +1,9 @@
+diff --git a/chrome/installer/linux/rpm/additional_deps b/chrome/installer/linux/rpm/additional_deps
+index ea05c3b2ef4e8..519971be08adb 100644
+--- a/chrome/installer/linux/rpm/additional_deps
++++ b/chrome/installer/linux/rpm/additional_deps
+@@ -44,3 +44,4 @@ libcurl.so.4()(64bit)
+ 
+ # For OS integration.
+ xdg-utils
++geoclue2
