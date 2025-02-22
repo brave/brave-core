@@ -307,6 +307,7 @@ if (enable_brave_education) {
 if (is_android) {
   brave_chrome_browser_sources += brave_browser_ai_chat_android_sources
   brave_chrome_browser_deps += brave_browser_ai_chat_android_deps
+  brave_chrome_browser_deps += [ "//brave/browser/youtube_script_injector" ]
 }
 
 if (enable_commander) {
@@ -405,8 +406,6 @@ if (is_android) {
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
     "//brave/browser/android:tab_features",
-    "//brave/browser/android/background_video",
-    "//brave/browser/android/background_video:features",
     "//brave/browser/android/preferences",
     "//brave/browser/android/safe_browsing:buildflags",
     "//brave/browser/brave_ads/android",
@@ -414,6 +413,10 @@ if (is_android) {
     "//brave/browser/ntp_background/android",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
+    "//brave/components/youtube_script_injector/browser/android",
+    "//brave/components/youtube_script_injector/browser/core",
+    "//brave/components/youtube_script_injector/common",
+    "//brave/components/youtube_script_injector/common:mojom",
     "//chrome/android:jni_headers",
     "//components/sync_device_info",
   ]

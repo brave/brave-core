@@ -1,0 +1,41 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser;
+
+import org.jni_zero.CalledByNative;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.NativeMethods;
+
+import org.chromium.base.Log;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.content_public.browser.WebContents;
+
+/**
+ * @noinspection unused
+ */
+@JNINamespace("youtube_script_injector")
+public class YouTubeScriptInjectorTabFeature {
+    private static final String TAG = "YouTubeTabFeature";
+
+    public static void setFullscreen(WebContents webContents) {
+        YouTubeScriptInjectorTabFeatureJni.get().setFullscreen(webContents);
+    }
+
+    @NativeMethods
+    interface Natives {
+        void setFullscreen(WebContents webContents);
+    }
+
+    @CalledByNative
+    public static void enterPipMode() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.enterPipMode();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "enterPipMode", e);
+        }
+    }
+}
