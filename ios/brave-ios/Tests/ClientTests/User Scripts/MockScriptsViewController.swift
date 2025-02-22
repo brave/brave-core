@@ -56,13 +56,19 @@ class MockScriptsViewController: UIViewController {
     webView.configuration.userContentController.addUserScript(userScript)
   }
 
-  func loadHTMLString(_ htmlString: String) -> ScriptsNavigationDelegateStream {
-    self.webView.loadHTMLString(htmlString, baseURL: URL(string: "https://example.com"))
+  func loadHTMLString(
+    _ htmlString: String,
+    baseURL: URL? = URL(string: "https://example.com")
+  ) -> ScriptsNavigationDelegateStream {
+    self.webView.loadHTMLString(htmlString, baseURL: baseURL)
     return delegateStream
   }
 
-  func loadHTMLStringAndWait(_ htmlString: String) async throws {
-    for try await result in loadHTMLString(htmlString) {
+  func loadHTMLStringAndWait(
+    _ htmlString: String,
+    baseURL: URL? = URL(string: "https://example.com")
+  ) async throws {
+    for try await result in loadHTMLString(htmlString, baseURL: baseURL) {
       if let error = result.error {
         throw error
       } else {

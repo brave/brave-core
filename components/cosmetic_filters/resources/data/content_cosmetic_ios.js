@@ -53,10 +53,8 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     };
   })
 
-  // Start looking for things to unhide before at most this long after
-  // the backend script is up and connected (eg backgroundReady = true),
-  // or sooner if the thread is idle.
-  const maxTimeMSBeforeStart = 1000
+  // Delaybefore we start looking for things to unhide
+  const timeInMSBeforeStart = 0
   // The cutoff for text ads.  If something has only text in it, it needs to
   // have this many, or more, characters.  Similarly, require it to have a
   // non-trivial number of words in it, to look like an actual text ad.
@@ -1266,4 +1264,4 @@ import { applyCompiledSelector, compileProceduralSelector } from './procedural_f
     CC.hasProceduralActions = true
   }
 
-  window.setTimeout(waitForBody, maxTimeMSBeforeStart)
+  window.setTimeout(waitForBody, timeInMSBeforeStart)
