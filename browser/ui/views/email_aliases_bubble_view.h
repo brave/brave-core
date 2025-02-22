@@ -14,7 +14,7 @@
 namespace views {
 class WebView;
 class Widget;
-}
+}  // namespace views
 
 namespace content {
 class WebContents;

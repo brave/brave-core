@@ -32,7 +32,8 @@ std::unique_ptr<views::Widget> widget_ptr_;
 void EmailAliasesBubbleView::Show(content::WebContents* web_contents,
                                   views::View* anchor_view,
                                   uint64_t field_renderer_id) {
-  auto bubble_view = std::make_unique<EmailAliasesBubbleView>(anchor_view, web_contents, field_renderer_id);
+  auto bubble_view = std::make_unique<EmailAliasesBubbleView>(
+      anchor_view, web_contents, field_renderer_id);
   std::unique_ptr<views::Widget> widget(
       views::BubbleDialogDelegateView::CreateBubble(
           std::move(bubble_view),
@@ -120,4 +121,3 @@ void EmailAliasesBubbleView::OnAnchorBoundsChanged() {
 
 BEGIN_METADATA(EmailAliasesBubbleView)
 END_METADATA
-
