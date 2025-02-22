@@ -12,6 +12,7 @@
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
@@ -45,6 +46,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/ui/webui/brave_news_internals/brave_news_internals_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_bubble_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 #include "brave/components/brave_news/common/features.h"
@@ -173,6 +175,11 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
       return new ai_rewriter::AIRewriterUI(web_ui);
     }
 #endif
+#if !BUILDFLAG(IS_ANDROID)
+  } else if (host == kEmailAliasesHost &&
+             base::FeatureList::IsEnabled(features::kBraveEmailAliases)) {
+    return new email_aliases::EmailAliasesBubbleUI(web_ui);
+#endif  // !BUILDFLAG(IS_ANDROID)
   }
   return nullptr;
 }

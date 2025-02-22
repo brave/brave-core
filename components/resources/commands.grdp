@@ -443,6 +443,9 @@
   <message name="IDS_IDC_SHOW_WAYBACK_MACHINE_BUBBLE">
     Show Wayback Machine bubble
   </message>
+  <message name="IDS_IDC_NEW_EMAIL_ALIAS">
+    New Email Alias
+  </message>
 
   <!-- Commander composite commands -->
   <message name="IDS_COMMANDER_OPEN_BOOKMARK" desc="Text for the command to begin opening a bookmark">

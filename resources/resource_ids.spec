@@ -241,6 +241,14 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [34770],
   },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-email_aliases/email_aliases.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [34780],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-email_aliases_bubble/email_aliases_bubble.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [34880],
+  },
   # WARNING: The upstream ChromeOS/Ash strings currently run through 36930. We
   # must be careful not to exceed that maximum when adding new strings here.
 }

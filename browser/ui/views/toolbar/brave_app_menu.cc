@@ -248,6 +248,7 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
     case IDC_OPEN_FULL_PAGE_CHAT:
     case IDC_SHOW_BRAVE_SYNC:
     case IDC_SHOW_BRAVE_REWARDS:
+    case IDC_SHOW_EMAIL_ALIASES:
       group = misc_metrics::MenuGroup::kBraveFeatures;
       break;
     case IDC_SHOW_HISTORY:
