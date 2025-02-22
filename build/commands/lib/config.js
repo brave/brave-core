@@ -143,6 +143,7 @@ const Config = function () {
   this.defaultGClientFile = path.join(this.rootDir, '.gclient')
   this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
   this.gClientVerbose = getEnvConfig(['gclient_verbose']) || false
+  this.syncConfigFile = getEnvConfig(['sync_config_file'], path.join(this.rootDir, '.brave_sync_config.jsonc'))
   this.hostOS = getHostOS()
   this.targetArch = getEnvConfig(['target_arch']) || process.arch
   this.targetOS = getEnvConfig(['target_os'])
