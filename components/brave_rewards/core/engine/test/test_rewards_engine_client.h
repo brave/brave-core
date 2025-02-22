@@ -17,7 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_rewards/core/engine/rewards_database.h"
+#include "brave/components/brave_rewards/core/db/rewards_database.h"
 #include "brave/components/brave_rewards/core/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/mojom/rewards_engine.mojom.h"
 
@@ -172,6 +172,14 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
 
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
+
+  void UpdateCreatorPrefixStore(
+      mojom::HashPrefixDataPtr prefix_data,
+      UpdateCreatorPrefixStoreCallback callback) override;
+
+  void CreatorPrefixStoreContains(
+      const std::string& value,
+      CreatorPrefixStoreContainsCallback callback) override;
 
   void Log(const std::string& file,
            int32_t line,

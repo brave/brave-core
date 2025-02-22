@@ -324,8 +324,19 @@ void TestRewardsEngineClient::ReconcileStampReset() {}
 void TestRewardsEngineClient::RunDBTransaction(
     mojom::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
-  auto response = engine_database_.RunTransaction(std::move(transaction));
-  std::move(callback).Run(std::move(response));
+  engine_database_.RunTransaction(std::move(transaction), std::move(callback));
+}
+
+void TestRewardsEngineClient::UpdateCreatorPrefixStore(
+    mojom::HashPrefixDataPtr prefix_data,
+    UpdateCreatorPrefixStoreCallback callback) {
+  std::move(callback).Run(false);
+}
+
+void TestRewardsEngineClient::CreatorPrefixStoreContains(
+    const std::string& value,
+    CreatorPrefixStoreContainsCallback callback) {
+  std::move(callback).Run(false);
 }
 
 void TestRewardsEngineClient::Log(const std::string& file,

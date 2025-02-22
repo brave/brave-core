@@ -65,18 +65,13 @@ source_set("headers") {
     "//brave/browser/ui:ui",
     "//brave/components/brave_rewards/content",
     "//brave/components/brave_rewards/content:testutil",
-    "//brave/vendor/brave-ios:rewards_db",
     "//chrome/browser:browser",
   ]
 
   sources = [
     "global_constants.h",
     "rewards_callbacks.h",
-    "rewards_database.cc",
-    "rewards_database.h",
   ]
-
-  deps = [ "//sql:sql" ]
 
   public_deps = [
     ":buildflags",
@@ -343,7 +338,6 @@ static_library("engine") {
     "publisher/media/media.h",
     "publisher/media/youtube.cc",
     "publisher/media/youtube.h",
-    "publisher/prefix_iterator.h",
     "publisher/prefix_list_reader.cc",
     "publisher/prefix_list_reader.h",
     "publisher/prefix_util.cc",
@@ -459,6 +453,7 @@ static_library("engine") {
     "//base",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_rewards/core:features",
+    "//brave/components/brave_rewards/core/db",
     "//brave/components/brave_rewards/core/mojom:engine",
     "//brave/components/challenge_bypass_ristretto",
     "//brave/third_party/bip39wally-core-native:bip39wally-core",

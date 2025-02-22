@@ -24,13 +24,13 @@ constexpr char kTableName[] = "publisher_prefix_list";
 constexpr size_t kHashPrefixSize = 4;
 constexpr size_t kMaxInsertRecords = 100'000;
 
-std::tuple<publisher::PrefixIterator, std::string, size_t> GetPrefixInsertList(
-    publisher::PrefixIterator begin,
-    publisher::PrefixIterator end) {
+std::tuple<HashPrefixIterator, std::string, size_t> GetPrefixInsertList(
+    HashPrefixIterator begin,
+    HashPrefixIterator end) {
   DCHECK(begin != end);
   size_t count = 0;
   std::string values;
-  publisher::PrefixIterator iter = begin;
+  HashPrefixIterator iter = begin;
   for (iter = begin; iter != end && count < kMaxInsertRecords;
        ++count, ++iter) {
     auto prefix = *iter;
@@ -110,7 +110,7 @@ void DatabasePublisherPrefixList::Reset(publisher::PrefixListReader reader,
   InsertNext(reader_->begin(), std::move(callback));
 }
 
-void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
+void DatabasePublisherPrefixList::InsertNext(HashPrefixIterator begin,
                                              ResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
@@ -141,12 +141,12 @@ void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
       std::move(transaction),
       base::BindOnce(&DatabasePublisherPrefixList::OnInsertNext,
                      base::Unretained(this), std::move(callback),
-                     std::get<publisher::PrefixIterator>(insert_tuple)));
+                     std::get<HashPrefixIterator>(insert_tuple)));
 }
 
 void DatabasePublisherPrefixList::OnInsertNext(
     ResultCallback callback,
-    publisher::PrefixIterator iter,
+    HashPrefixIterator iter,
     mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {

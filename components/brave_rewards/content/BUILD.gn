@@ -37,6 +37,7 @@ static_library("content") {
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:features",
     "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/brave_rewards/core/db",
     "//brave/components/brave_rewards/core/engine",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/common",

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_REWARDS_DATABASE_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_REWARDS_DATABASE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DB_REWARDS_DATABASE_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DB_REWARDS_DATABASE_H_
 
 #include <memory>
 
@@ -16,23 +16,26 @@
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 
-namespace brave_rewards::internal {
+namespace brave_rewards {
 
-class RewardsDatabase {
+class RewardsDatabase : public mojom::RewardsDatabase {
  public:
   explicit RewardsDatabase(const base::FilePath& path);
 
   RewardsDatabase(const RewardsDatabase&) = delete;
   RewardsDatabase& operator=(const RewardsDatabase&) = delete;
 
-  ~RewardsDatabase();
+  ~RewardsDatabase() override;
 
-  mojom::DBCommandResponsePtr RunTransaction(
-      mojom::DBTransactionPtr transaction);
+  void RunTransaction(mojom::DBTransactionPtr transaction,
+                      RunTransactionCallback callback) override;
 
   sql::Database* GetInternalDatabaseForTesting() { return &db_; }
 
  private:
+  mojom::DBCommandResponsePtr RunTransactionInternal(
+      mojom::DBTransactionPtr transaction);
+
   mojom::DBCommandResponse::Status Initialize(
       int32_t version,
       int32_t compatible_version,
@@ -66,6 +69,6 @@ class RewardsDatabase {
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
-}  // namespace brave_rewards::internal
+}  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENGINE_REWARDS_DATABASE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DB_REWARDS_DATABASE_H_
