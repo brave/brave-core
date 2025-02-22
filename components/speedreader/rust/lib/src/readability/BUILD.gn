@@ -23,7 +23,7 @@ rust_static_library("lib") {
 
   deps = [
     "//brave/third_party/rust/bitflags/v2:lib",
-    "//brave/third_party/rust/html5ever/v0_25:lib",
+    "//brave/third_party/rust/html5ever/v0_29:lib",
     "//brave/third_party/rust/kuchikiki/v0_8:lib",
     "//brave/third_party/rust/thiserror/v1:lib",
     "//brave/third_party/rust/time/v0_3:lib",
