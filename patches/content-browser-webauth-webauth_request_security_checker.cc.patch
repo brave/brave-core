@@ -1,0 +1,20 @@
+diff --git a/content/browser/webauth/webauth_request_security_checker.cc b/content/browser/webauth/webauth_request_security_checker.cc
+index 6922a3df8de2f76a03616450e9ad0c8205bf228a..cd29753a36b8ab379b23a0c48e6d0f808553a64f 100644
+--- a/content/browser/webauth/webauth_request_security_checker.cc
++++ b/content/browser/webauth/webauth_request_security_checker.cc
+@@ -83,6 +83,7 @@ std::unique_ptr<WebAuthRequestSecurityChecker::RemoteValidation>
+ WebAuthRequestSecurityChecker::RemoteValidation::Create(
+     const url::Origin& caller_origin,
+     const std::string& relying_party_id,
++    RenderFrameHost* render_frame_host,
+     base::OnceCallback<void(blink::mojom::AuthenticatorStatus)> callback) {
+   // The relying party may allow other origins to use its RP ID based on the
+   // contents of a .well-known file.
+@@ -376,6 +377,7 @@ WebAuthRequestSecurityChecker::ValidateDomainAndRelyingPartyID(
+   }
+ 
+   return RemoteValidation::Create(caller_origin, relying_party_id,
++                                  render_frame_host_,
+                                   std::move(callback));
+ }
+ 
