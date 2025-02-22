@@ -69,7 +69,7 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
   content::URLDataSource::Add(
       profile_, std::make_unique<FaviconSource>(
                     profile_, chrome::FaviconUrlFormat::kFavicon2));
-
+  LOG(INFO) << "[PSST] ShieldsPanelUI::ShieldsPanelUI";
   webui::SetupWebUIDataSource(source, kBraveShieldsPanelGenerated,
                               IDR_SHIELDS_PANEL_HTML);
 }

@@ -35,8 +35,25 @@ function MainPanel () {
     await getPanelBrowserAPI().dataHandler.openWebCompatWindow()
   }
 
+  const [isBlockedElementsAvailable, setIsBlockedElementsAvailable] = React.useState(false);
+  React.useEffect(() => {
+    const getBlockedElementsAvailability = () => {
+       getPanelBrowserAPI().dataHandler.isBlockedElementsAvailable().then((data) => {
+      console.log('isBlockedElementsAvailable:', data.isAvailable)
+      setIsBlockedElementsAvailable(data.isAvailable)
+    })};
+
+    document.addEventListener('visibilitychange', getBlockedElementsAvailability)
+    getBlockedElementsAvailability()
+
+    return () => {
+      document.removeEventListener('visibilitychange', getBlockedElementsAvailability)
+    }
+  }, []);
+
   const handleResetBlockedElements = async () => {
     await getPanelBrowserAPI().dataHandler.resetBlockedElements()
+    setIsBlockedElementsAvailable(false)
   }
 
   const handleLearnMoreClick = () => {
@@ -82,8 +99,6 @@ function MainPanel () {
       {(siteBlockInfo?.totalBlockedResources ?? 0) > 99 ? '99+' : siteBlockInfo?.totalBlockedResources}
     </S.BlockCount>
   )
-
-  let anyElementsBlocked = true
 
   if (!siteBlockInfo?.isBraveShieldsEnabled) {
     totalCountElement = (<S.BlockCount>{'\u2014'}</S.BlockCount>)
@@ -177,7 +192,7 @@ function MainPanel () {
         </AdvancedControlsContentScroller>
       }
       {
-        anyElementsBlocked &&
+        isBlockedElementsAvailable &&
         <S.GlobalDefaultsButton
           type="button"
           onClick={handleResetBlockedElements}
