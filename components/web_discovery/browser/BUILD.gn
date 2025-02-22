@@ -73,6 +73,7 @@ source_set("internal") {
     "//brave/brave_domains",
     "//brave/components/brave_search/browser",
     "//brave/components/constants",
+    "//brave/components/web_discovery/common",
     "//brave/components/web_discovery/common:mojom",
     "//components/prefs",
     "//crypto",

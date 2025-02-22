@@ -10,5 +10,7 @@ namespace web_discovery::features {
 BASE_FEATURE(kBraveWebDiscoveryNative,
              "BraveWebDiscoveryNative",
              base::FEATURE_DISABLED_BY_DEFAULT);
+const base::FeatureParam<std::string> kPatternsPath{&kBraveWebDiscoveryNative,
+                                                    "patterns_path", ""};
 
 }  // namespace web_discovery::features

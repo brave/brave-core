@@ -19,7 +19,7 @@ namespace web_discovery {
 
 inline constexpr size_t kMaxResponseSize = 16 * 1024;
 inline constexpr char kCollectorHostSwitch[] = "wdp-collector-host";
-inline constexpr char kPatternsHostSwitch[] = "wdp-patterns-host";
+inline constexpr char kPatternsURLSwitch[] = "wdp-patterns-url";
 inline constexpr char kVersionHeader[] = "Version";
 inline constexpr int kCurrentVersion = 1;
 

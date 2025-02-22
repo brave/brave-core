@@ -10,6 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/brave_domains/service_domains.h"
+#include "brave/components/web_discovery/common/features.h"
 #include "url/url_util.h"
 
 namespace web_discovery {
@@ -18,7 +19,7 @@ namespace {
 constexpr char kCollectorHostPrefix[] = "collector.wdp";
 constexpr char kQuorumHostPrefix[] = "quorum.wdp";
 constexpr char kPatternsHostPrefix[] = "patterns.wdp";
-constexpr char kPatternsPath[] = "/patterns.gz";
+constexpr char kPatternsPath[] = "patterns.gz";
 }  // namespace
 
 std::string GetDirectHPNHost() {
@@ -41,16 +42,22 @@ std::string GetQuorumHost() {
 }
 
 GURL GetPatternsEndpoint() {
-  std::string host;
   auto* cmd_line = base::CommandLine::ForCurrentProcess();
-  if (cmd_line->HasSwitch(kPatternsHostSwitch)) {
-    host = cmd_line->GetSwitchValueASCII(kPatternsHostSwitch);
+  std::string patterns_url_str;
+  if (cmd_line->HasSwitch(kPatternsURLSwitch)) {
+    patterns_url_str = cmd_line->GetSwitchValueASCII(kPatternsURLSwitch);
   } else {
-    host =
+    auto patterns_path = features::kPatternsPath.Get();
+    if (patterns_path.empty()) {
+      patterns_path = kPatternsPath;
+    }
+    patterns_url_str =
         base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator,
-                      brave_domains::GetServicesDomain(kPatternsHostPrefix)});
+                      brave_domains::GetServicesDomain(kPatternsHostPrefix),
+                      "/", patterns_path});
   }
-  return GURL(host + kPatternsPath);
+
+  return GURL(patterns_url_str);
 }
 
 std::unique_ptr<network::ResourceRequest> CreateResourceRequest(GURL url) {
