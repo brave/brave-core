@@ -1,0 +1,12 @@
+diff --git a/components/download/internal/background_service/in_memory_download.cc b/components/download/internal/background_service/in_memory_download.cc
+index 4267b39009467edd579ace516b6441999441ff62..188fb15241e7455081e1b0220cd0cf0a32d6fdee 100644
+--- a/components/download/internal/background_service/in_memory_download.cc
++++ b/components/download/internal/background_service/in_memory_download.cc
+@@ -57,6 +57,7 @@ InMemoryDownloadImpl::~InMemoryDownloadImpl() {
+ void InMemoryDownloadImpl::Start() {
+   DCHECK(state_ == State::INITIAL) << "Only call Start() for new download.";
+   state_ = State::RETRIEVE_BLOB_CONTEXT;
++  BRAVE_IN_MEMORY_DOWNLOAD_IMPL_START
+   delegate_->RetrieveBlobContextGetter(
+       base::BindOnce(&InMemoryDownloadImpl::OnRetrievedBlobContextGetter,
+                      weak_ptr_factory_.GetWeakPtr()));

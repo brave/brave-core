@@ -1,0 +1,12 @@
+diff --git a/components/download/internal/background_service/in_memory_download_driver.cc b/components/download/internal/background_service/in_memory_download_driver.cc
+index 7bb6673c47247b7f53615620320248e4879f52d4..d185d9a9c2292d3a22beebb5b2c1953cbb193340 100644
+--- a/components/download/internal/background_service/in_memory_download_driver.cc
++++ b/components/download/internal/background_service/in_memory_download_driver.cc
+@@ -67,6 +67,7 @@ std::unique_ptr<InMemoryDownload> InMemoryDownloadFactory::Create(
+     scoped_refptr<network::ResourceRequestBody> request_body,
+     const net::NetworkTrafficAnnotationTag& traffic_annotation,
+     InMemoryDownload::Delegate* delegate) {
++  BRAVE_IN_MEMORY_DOWNLOAD_FACTORY_CREATE
+   DCHECK(url_loader_factory_);
+   return std::make_unique<InMemoryDownloadImpl>(
+       guid, request_params, std::move(request_body), traffic_annotation,

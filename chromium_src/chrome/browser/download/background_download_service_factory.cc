@@ -10,7 +10,10 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_client.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager.h"
 #include "chrome/browser/download/deferred_client_wrapper.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/transition_manager/full_browser_transition_manager.h"
 #include "components/download/content/factory/download_service_factory_helper.h"
+#include "components/download/public/background_service/blob_context_getter_factory.h"
 
 namespace {
 
@@ -20,6 +23,33 @@ std::unique_ptr<download::Client> CreateAdBlockSubscriptionDownloadClient(
       g_brave_browser_process->ad_block_service()
           ->subscription_service_manager());
 }
+
+void OnProfileCreated(download::URLLoaderFactoryGetterCallback callback,
+                      Profile* profile) {
+  DCHECK(callback);
+  std::move(callback).Run(profile->GetURLLoaderFactory());
+}
+
+class URLLoaderFactoryGetter : public download::URLLoaderFactoryGetter {
+ public:
+  explicit URLLoaderFactoryGetter(SimpleFactoryKey* key) : key_(key) {
+    DCHECK(key_);
+  }
+
+  URLLoaderFactoryGetter(const URLLoaderFactoryGetter&) = delete;
+  URLLoaderFactoryGetter& operator=(const URLLoaderFactoryGetter&) = delete;
+
+  ~URLLoaderFactoryGetter() override = default;
+
+ private:
+  void RetrieveURLLoader(
+      download::URLLoaderFactoryGetterCallback callback) override {
+    FullBrowserTransitionManager::Get()->RegisterCallbackOnProfileCreation(
+        key_, base::BindOnce(&OnProfileCreated, std::move(callback)));
+  }
+
+  raw_ptr<SimpleFactoryKey> key_;
+};
 
 }  // namespace
 
@@ -61,10 +91,10 @@ std::unique_ptr<BackgroundDownloadService> BuildInMemoryDownloadServiceOverride(
           base::BindOnce(&CreateAdBlockSubscriptionDownloadClient),
           simple_factory_key)));
 
-  return BuildInMemoryDownloadService(simple_factory_key, std::move(clients),
-                                      network_connection_tracker, storage_dir,
-                                      std::move(blob_context_getter_factory),
-                                      io_task_runner, url_loader_factory);
+  return BuildInMemoryDownloadServiceIsolated(
+      simple_factory_key, std::move(clients), network_connection_tracker,
+      storage_dir, std::move(blob_context_getter_factory), io_task_runner,
+      std::make_unique<::URLLoaderFactoryGetter>(simple_factory_key));
 }
 
 }  // namespace download
