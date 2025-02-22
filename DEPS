@@ -176,6 +176,11 @@ hooks = [
     "condition": 'checkout_mac and host_os != "mac" and checkout_dmg_tool',
     'action': ['build/mac/cross-compile/build-libdmg-hfsplus.py', 'third_party/libdmg-hfsplus']
   },
+  {
+    'name': 'download_rust_toolchain_aux',
+    'pattern': '.',
+    'action': ['python3', 'build/rust/download_rust_toolchain_aux.py']
+  },
 ]
 
 include_rules = [
