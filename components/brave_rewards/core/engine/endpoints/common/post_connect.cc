@@ -24,13 +24,13 @@ using mojom::ConnectExternalWalletResult;
 namespace {
 
 Result ParseGeoCountry(RewardsEngine& engine, const std::string& body) {
-  const auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  const auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   const auto* geo_country = dict.FindString("geoCountry");
   if (!geo_country || geo_country->empty()) {
     engine.LogError(FROM_HERE) << "Missing geoCountry response field";
@@ -41,13 +41,13 @@ Result ParseGeoCountry(RewardsEngine& engine, const std::string& body) {
 }
 
 Result ParseErrorMessage(RewardsEngine& engine, const std::string& body) {
-  const auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  const auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   const auto* message = dict.FindString("message");
   if (!message) {
     engine.LogError(FROM_HERE) << "Failed to parse body";

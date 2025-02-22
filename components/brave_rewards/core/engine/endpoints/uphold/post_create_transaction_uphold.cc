@@ -23,13 +23,13 @@ using Result = PostCreateTransactionUphold::Result;
 namespace {
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
-  auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto* id = value->GetDict().FindString("id");
+  auto* id = value->FindString("id");
   if (!id || id->empty()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);

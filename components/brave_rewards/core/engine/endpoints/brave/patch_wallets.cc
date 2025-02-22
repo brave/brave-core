@@ -26,13 +26,13 @@ namespace {
 constexpr char kPatchWalletsPathPrefix[] = "/v4/wallets/";
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
-  const auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  const auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   const auto* message = dict.FindString("message");
   if (!message) {
     engine.LogError(FROM_HERE) << "Failed to parse body";

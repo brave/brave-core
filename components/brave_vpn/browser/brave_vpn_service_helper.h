@@ -23,8 +23,9 @@ class Value;
 
 namespace brave_vpn {
 // False if subscription is expired.
-bool IsValidCredentialSummary(const base::Value& summary);
-bool IsValidCredentialSummaryButNeedActivation(const base::Value& summary);
+bool IsValidCredentialSummary(const base::Value::Dict& summary);
+bool IsValidCredentialSummaryButNeedActivation(
+    const base::Value::Dict& summary);
 bool HasSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
 std::optional<base::Time> GetExpirationTime(PrefService* local_prefs);

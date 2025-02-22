@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_rewards/core/engine/state/state_keys.h"
 #include "brave/components/brave_rewards/core/engine/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/engine/util/environment_config.h"
@@ -106,11 +106,11 @@ class RewardsParametersProviderTest : public RewardsEngineTest {
 };
 
 TEST_F(RewardsParametersProviderTest, DictToParameters) {
-  auto value = base::JSONReader::Read("{}");
-  EXPECT_FALSE(RewardsParametersProvider::DictToParameters(value->GetDict()));
+  auto value = base::test::ParseJsonDict("{}");
+  EXPECT_FALSE(RewardsParametersProvider::DictToParameters(value));
 
-  value = base::JSONReader::Read(kCachedParametersJSON);
-  auto params = RewardsParametersProvider::DictToParameters(value->GetDict());
+  value = base::test::ParseJsonDict(kCachedParametersJSON);
+  auto params = RewardsParametersProvider::DictToParameters(value);
   ASSERT_TRUE(params);
 
   EXPECT_EQ(params->payout_status.at("uphold"), "processing");
@@ -128,7 +128,7 @@ TEST_F(RewardsParametersProviderTest, DictToParameters) {
 
 TEST_F(RewardsParametersProviderTest, GetParametersCached) {
   engine().SetState(state::kParameters,
-                    *base::JSONReader::Read(kCachedParametersJSON));
+                    base::test::ParseJson(kCachedParametersJSON));
 
   auto params = WaitFor<mojom::RewardsParametersPtr>([&](auto callback) {
     engine().Get<RewardsParametersProvider>().GetParameters(
@@ -164,7 +164,7 @@ TEST_F(RewardsParametersProviderTest, EndpointError) {
   AddParametersResponse(std::move(response));
 
   engine().SetState(state::kParameters,
-                    *base::JSONReader::Read(kCachedParametersJSON));
+                    base::test::ParseJson(kCachedParametersJSON));
 
   auto& provider = engine().Get<RewardsParametersProvider>();
 
@@ -180,7 +180,7 @@ TEST_F(RewardsParametersProviderTest, GetCachedParameters) {
   EXPECT_FALSE(provider.GetCachedParameters());
 
   engine().SetState(state::kParameters,
-                    *base::JSONReader::Read(kCachedParametersJSON));
+                    base::test::ParseJson(kCachedParametersJSON));
 
   auto params = provider.GetCachedParameters();
   ASSERT_TRUE(params);

@@ -75,13 +75,12 @@ std::optional<uint32_t> ParseNullableStringAsUint32(const base::Value& value) {
   return std::nullopt;
 }
 
-std::optional<base::Value> ParseJsonToDict(const std::string& json) {
-  std::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
+std::optional<base::Value::Dict> ParseJsonToDict(const std::string& json) {
+  std::optional<base::Value::Dict> records_v = base::JSONReader::ReadDict(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
-    return std::nullopt;
   }
   return records_v;
 }
@@ -243,15 +242,15 @@ bool ParseTokenList(const std::string& json, TokenListMap* token_list_map) {
   //   }
   // }
 
-  std::optional<base::Value> records_v =
-      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                       base::JSONParserOptions::JSON_PARSE_RFC);
-  if (!records_v || !records_v->is_dict()) {
+  std::optional<base::Value::Dict> records_v = base::JSONReader::ReadDict(
+      json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                base::JSONParserOptions::JSON_PARSE_RFC);
+  if (!records_v) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
     return false;
   }
 
-  const auto& chain_dict = records_v->GetDict();
+  const auto& chain_dict = *records_v;
   // Iterate through chain IDs
   for (const auto chain_pair : chain_dict) {
     const std::string& chain_id = chain_pair.first;
@@ -398,7 +397,7 @@ std::optional<RampTokenListMaps> ParseRampTokenListMaps(
   //   ]
   // }
 
-  std::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
@@ -407,7 +406,7 @@ std::optional<RampTokenListMaps> ParseRampTokenListMaps(
   OffRampTokensListMap off_ramp_supported_tokens_lists;
 
   const auto tokens_list =
-      blockchain_lists::OnRampTokenLists::FromValue(records_v->GetDict());
+      blockchain_lists::OnRampTokenLists::FromValue(*records_v);
   if (!tokens_list) {
     return std::nullopt;
   }
@@ -423,13 +422,13 @@ std::optional<RampTokenListMaps> ParseRampTokenListMaps(
 
 std::optional<std::vector<mojom::OnRampCurrency>> ParseOnRampCurrencyLists(
     const std::string& json) {
-  std::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
 
   const auto on_ramp_supported_currencies_from_component =
-      blockchain_lists::OnRampCurrencyLists::FromValue(records_v->GetDict());
+      blockchain_lists::OnRampCurrencyLists::FromValue(*records_v);
 
   if (!on_ramp_supported_currencies_from_component) {
     return std::nullopt;
@@ -655,13 +654,13 @@ std::optional<DappListMap> ParseDappLists(const std::string& json) {
   //   ...
   // }
 
-  std::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
 
   auto dapp_lists_from_component =
-      blockchain_lists::DappLists::FromValue(records_v->GetDict());
+      blockchain_lists::DappLists::FromValue(*records_v);
   if (!dapp_lists_from_component) {
     return std::nullopt;
   }
@@ -705,18 +704,13 @@ std::optional<CoingeckoIdsMap> ParseCoingeckoIdsMap(const std::string& json) {
   //   }
   // }
 
-  std::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
 
-  const base::Value::Dict* chain_ids = records_v->GetIfDict();
-  if (!chain_ids) {
-    return std::nullopt;
-  }
-
   std::map<std::pair<std::string, std::string>, std::string> coingecko_ids_map;
-  for (const auto chain_id_record : *chain_ids) {
+  for (const auto chain_id_record : *records_v) {
     const auto& chain_id = base::ToLowerASCII(chain_id_record.first);
 
     const auto* contract_addresses = chain_id_record.second.GetIfDict();
@@ -748,13 +742,13 @@ std::optional<std::vector<std::string>> ParseOfacAddressesList(
   //     ...
   //   ]
   // }
-  std::optional<base::Value> records_v = ParseJsonToDict(json);
+  std::optional<base::Value::Dict> records_v = ParseJsonToDict(json);
   if (!records_v) {
     return std::nullopt;
   }
 
   auto ofac_list_from_component =
-      blockchain_lists::OfacAddressesList::FromValue(records_v->GetDict());
+      blockchain_lists::OfacAddressesList::FromValue(*records_v);
   if (!ofac_list_from_component) {
     return std::nullopt;
   }

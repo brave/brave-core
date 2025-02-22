@@ -22,13 +22,13 @@ using Result = PostOAuthUphold::Result;
 namespace {
 
 Result ParseBody(RewardsEngine& engine, const std::string& body) {
-  auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto* access_token = value->GetDict().FindString("access_token");
+  auto* access_token = value->FindString("access_token");
   if (!access_token || access_token->empty()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);

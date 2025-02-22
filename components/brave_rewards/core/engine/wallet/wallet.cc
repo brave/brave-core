@@ -47,8 +47,8 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
     return nullptr;
   }
 
-  std::optional<base::Value> value = base::JSONReader::Read(json);
-  if (!value || !value->is_dict()) {
+  std::optional<base::Value::Dict> value = base::JSONReader::ReadDict(json);
+  if (!value) {
     engine_->LogError(FROM_HERE) << "Parsing of brave wallet failed";
     *corrupted = true;
     return nullptr;
@@ -56,7 +56,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
 
   auto wallet = mojom::RewardsWallet::New();
 
-  const base::Value::Dict& dict = value->GetDict();
+  const base::Value::Dict& dict = *value;
   const auto* payment_id = dict.FindString("payment_id");
   if (!payment_id) {
     *corrupted = true;

@@ -24,19 +24,19 @@ namespace {
 
 base::expected<std::pair<std::string, std::string>, Error>
 GetAccessTokenAndLinkingInfo(RewardsEngine& engine, const std::string& body) {
-  auto value = base::JSONReader::Read(body);
-  if (!value || !value->is_dict()) {
+  auto value = base::JSONReader::ReadDict(body);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto* access_token = value->GetDict().FindString("access_token");
+  auto* access_token = value->FindString("access_token");
   if (!access_token || access_token->empty()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto* linking_info = value->GetDict().FindString("linking_info");
+  auto* linking_info = value->FindString("linking_info");
   if (!linking_info || linking_info->empty()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
@@ -73,13 +73,13 @@ Result ParseBody(RewardsEngine& engine, const std::string& body) {
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto value = base::JSONReader::Read(payload);
-  if (!value || !value->is_dict()) {
+  auto value = base::JSONReader::ReadDict(payload);
+  if (!value) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  auto* deposit_id = value->GetDict().FindString("depositId");
+  auto* deposit_id = value->FindString("depositId");
   if (!deposit_id || deposit_id->empty()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
     return base::unexpected(Error::kFailedToParseBody);

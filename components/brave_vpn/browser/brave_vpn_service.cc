@@ -613,23 +613,23 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     return;
   }
 
-  std::optional<base::Value> records_v = base::JSONReader::Read(
+  std::optional<base::Value::Dict> records = base::JSONReader::ReadDict(
       summary->message, base::JSONParserOptions::JSON_PARSE_RFC);
 
   // Early return when summary is invalid or it's empty dict.
-  if (!records_v || !records_v->is_dict()) {
+  if (!records) {
     VLOG(1) << __func__ << " : Got invalid credential summary!";
     SetPurchasedState(env, PurchasedState::FAILED);
     return;
   }
 
   // Empty dict - clean user.
-  if (records_v->GetDict().empty()) {
+  if (records->empty()) {
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
   }
 
-  if (IsValidCredentialSummary(*records_v)) {
+  if (IsValidCredentialSummary(*records)) {
     VLOG(1) << __func__ << " : Active credential found!";
     // if a credential is ready, we can present it
     EnsureMojoConnected();
@@ -641,7 +641,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
     // Clear expired state data as we have active credentials.
     local_prefs_->SetTime(prefs::kBraveVPNSessionExpiredDate, {});
 #endif
-  } else if (IsValidCredentialSummaryButNeedActivation(*records_v)) {
+  } else if (IsValidCredentialSummaryButNeedActivation(*records)) {
     // Need to activate from account. Treat as not purchased till activated.
     VLOG(1) << __func__ << " : Need to activate vpn from account.";
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);

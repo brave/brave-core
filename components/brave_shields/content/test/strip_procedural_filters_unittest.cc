@@ -5,7 +5,7 @@
 
 #include <optional>
 
-#include "base/json/json_reader.h"
+#include "base/test/values_test_util.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -32,14 +32,7 @@ class StripProceduralFiltersTest : public testing::Test {
     auto e = adblock::engine_from_filter_set(std::move(f)).value;
 
     auto result = e->url_cosmetic_resources("https://example.com");
-    std::optional<base::Value> parsed_result =
-        base::JSONReader::Read(result.c_str());
-
-    EXPECT_TRUE(parsed_result->is_dict());
-
-    auto resources = std::move(parsed_result->GetDict());
-
-    return resources;
+    return base::test::ParseJsonDict(result.c_str());
   }
 
   void StripProceduralFilters(base::Value::Dict& resources) {
