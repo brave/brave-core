@@ -13,6 +13,7 @@
 
 namespace views {
 class WebView;
+class Widget;
 }
 
 namespace content {
@@ -39,10 +40,14 @@ class EmailAliasesBubbleView : public views::BubbleDialogDelegateView {
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
 
+  void OnWidgetDestroying(views::Widget* widget) override;
+  void OnAnchorBoundsChanged() override;
+
  private:
   raw_ptr<content::WebContents> web_contents_;
   uint64_t field_renderer_id_;
   raw_ptr<views::WebView> web_view_;
+  bool widget_is_being_destroyed_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_EMAIL_ALIASES_BUBBLE_VIEW_H_
