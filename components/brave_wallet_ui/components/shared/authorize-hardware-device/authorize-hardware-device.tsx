@@ -32,7 +32,7 @@ export const AuthorizeHardwareDeviceIFrame = (props: Props) => {
   const src =
     LEDGER_BRIDGE_URL +
     `?targetUrl=${encodeURIComponent(window.origin)}` +
-    `&bridgeType=${bridgeTypeFromCoin(props.coinType)}`
+    `&bridgeType=${encodeURIComponent(bridgeTypeFromCoin(props.coinType))}`
   return (
     <StyledIFrame
       src={src}

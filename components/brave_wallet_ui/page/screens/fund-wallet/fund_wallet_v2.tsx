@@ -222,9 +222,7 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
                 </Dropdown>
                 <Dropdown
                   value={selectedPaymentMethod.paymentMethod}
-                  onChange={(detail) =>
-                    onSelectPaymentMethod(detail.value!)
-                  }
+                  onChange={(detail) => onSelectPaymentMethod(detail.value!)}
                   disabled={
                     isFetchingFirstTimeQuotes || isLoadingPaymentMethods
                   }
@@ -246,8 +244,10 @@ export const FundWalletScreen = ({ isAndroid }: Props) => {
                           <PaymentMethodIcon
                             src={
                               isStorybook
-                                ? logoUrl
-                                : `chrome://image?${logoUrl}`
+                                ? logoUrl ?? ''
+                                : `chrome://image?url=${encodeURIComponent(
+                                    logoUrl ?? ''
+                                  )}&staticEncode=true`
                             }
                           />
                           {paymentMethod.name}
