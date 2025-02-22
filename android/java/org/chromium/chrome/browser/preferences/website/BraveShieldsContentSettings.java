@@ -17,23 +17,23 @@ import java.util.List;
 
 @JNINamespace("chrome::android")
 public class BraveShieldsContentSettings {
-    static public final String RESOURCE_IDENTIFIER_ADS = "shieldsAds";
-    static public final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
-    static public final String RESOURCE_IDENTIFIER_DATA_SAVED = "data_saved";
-    static public final String RESOURCE_IDENTIFIER_BRAVE_SHIELDS = "braveShields";
-    static public final String RESOURCE_IDENTIFIER_FINGERPRINTING = "fingerprinting";
-    static public final String RESOURCE_IDENTIFIER_COOKIES = "shieldsCookies";
-    static public final String RESOURCE_IDENTIFIER_REFERRERS = "referrers";
-    static public final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
-    static public final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "httpsUpgrade";
-    static public final String RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE =
+    public static final String RESOURCE_IDENTIFIER_ADS = "shieldsAds";
+    public static final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
+    public static final String RESOURCE_IDENTIFIER_DATA_SAVED = "data_saved";
+    public static final String RESOURCE_IDENTIFIER_BRAVE_SHIELDS = "braveShields";
+    public static final String RESOURCE_IDENTIFIER_FINGERPRINTING = "fingerprinting";
+    public static final String RESOURCE_IDENTIFIER_COOKIES = "shieldsCookies";
+    public static final String RESOURCE_IDENTIFIER_REFERRERS = "referrers";
+    public static final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
+    public static final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "httpsUpgrade";
+    public static final String RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE =
             "forgetFirstPartyStorage";
 
-    static public final String BLOCK_RESOURCE = "block";
-    static public final String BLOCK_THIRDPARTY_RESOURCE = "block_third_party";
-    static public final String DEFAULT = "default";
-    static public final String ALLOW_RESOURCE = "allow";
-    static public final String AGGRESSIVE = "aggressive";
+    public static final String BLOCK_RESOURCE = "block";
+    public static final String BLOCK_THIRDPARTY_RESOURCE = "block_third_party";
+    public static final String DEFAULT = "default";
+    public static final String ALLOW_RESOURCE = "allow";
+    public static final String AGGRESSIVE = "aggressive";
 
     public static final int ALWAYS = 0;
     public static final int ASK = 1;

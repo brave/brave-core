@@ -28,15 +28,22 @@ import java.util.List;
 public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
     private static final String TAG = "DormantEngagement";
 
-    private static final List<String> mTexts =
-            Arrays.asList(ContextUtils.getApplicationContext().getResources().getString(
-                                  R.string.dormant_users_engagement_text_1),
-                    ContextUtils.getApplicationContext().getResources().getString(
-                            R.string.dormant_users_engagement_text_2),
-                    ContextUtils.getApplicationContext().getResources().getString(
-                            R.string.dormant_users_engagement_text_3));
-    private static final List<Integer> mImages = Arrays.asList(
-            R.drawable.ic_rocket, R.drawable.ic_brave_battery, R.drawable.ic_brave_mobiledata);
+    private static final List<String> sTexts =
+            Arrays.asList(
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_1),
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_2),
+                    ContextUtils.getApplicationContext()
+                            .getResources()
+                            .getString(R.string.dormant_users_engagement_text_3));
+    private static final List<Integer> sImages =
+            Arrays.asList(
+                    R.drawable.ic_rocket,
+                    R.drawable.ic_brave_battery,
+                    R.drawable.ic_brave_mobiledata);
     private String notificationType;
 
     @Override
@@ -52,14 +59,14 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
         ImageView imageView = view.findViewById(R.id.image_view);
 
         if (notificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_14)) {
-            engagementText.setText(mTexts.get(0));
-            imageView.setImageResource(mImages.get(0));
+            engagementText.setText(sTexts.get(0));
+            imageView.setImageResource(sImages.get(0));
         } else if (notificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_25)) {
-            engagementText.setText(mTexts.get(1));
-            imageView.setImageResource(mImages.get(1));
+            engagementText.setText(sTexts.get(1));
+            imageView.setImageResource(sImages.get(1));
         } else if (notificationType.equals(RetentionNotificationUtil.DORMANT_USERS_DAY_40)) {
-            engagementText.setText(mTexts.get(2));
-            imageView.setImageResource(mImages.get(2));
+            engagementText.setText(sTexts.get(2));
+            imageView.setImageResource(sImages.get(2));
         }
 
         Button doneButton = view.findViewById(R.id.btn_done);

@@ -26,7 +26,7 @@ import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.R;
 
 public class BraveRateThanksFeedbackDialog extends BottomSheetDialogFragment {
-    final public static String TAG_FRAGMENT = "brave_rate_thanks_feedback_dialog_tag";
+    public static final String TAG_FRAGMENT = "brave_rate_thanks_feedback_dialog_tag";
     private static final String TAG = "RateThanksFeedback";
     private static final String SAD = "sad";
 

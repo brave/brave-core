@@ -19,11 +19,11 @@ import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
 public class AssetRatioServiceFactory {
-    private static final Object lock = new Object();
+    private static final Object sLock = new Object();
     private static AssetRatioServiceFactory instance;
 
     public static AssetRatioServiceFactory getInstance() {
-        synchronized (lock) {
+        synchronized (sLock) {
             if (instance == null) {
                 instance = new AssetRatioServiceFactory();
             }

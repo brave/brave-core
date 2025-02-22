@@ -41,12 +41,12 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     private static final String TAG = PopupWindowTooltip.class.getSimpleName();
 
     // Default Resources
-    private static final int mDefaultPopupWindowStyleRes = android.R.attr.popupWindowStyle;
-    private static final int mDefaultArrowColorRes = R.color.shields_tooltip_arrow_color_1;
-    private static final int mDefaultMarginRes = R.dimen.shields_tooltip_margin;
-    private static final int mDefaultPaddingRes = R.dimen.shields_tooltip_padding;
-    private static final int mDefaultArrowWidthRes = R.dimen.shields_tooltip_arrow_width;
-    private static final int mDefaultArrowHeightRes = R.dimen.shields_tooltip_arrow_height;
+    private static final int DEFAULT_POPUP_WINDOW_STYLE_RES = android.R.attr.popupWindowStyle;
+    private static final int DEFAULT_ARROW_COLOR_RES = R.color.shields_tooltip_arrow_color_1;
+    private static final int DEFAULT_MARGIN_RES = R.dimen.shields_tooltip_margin;
+    private static final int DEFAULT_PADDING_RES = R.dimen.shields_tooltip_padding;
+    private static final int DEFAULT_ARROW_WIDTH_RES = R.dimen.shields_tooltip_arrow_width;
+    private static final int DEFAULT_ARROW_HEIGHT_RES = R.dimen.shields_tooltip_arrow_height;
 
     private final Context mContext;
     private OnDismissListener mOnDismissListener;
@@ -109,7 +109,7 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
     }
 
     private void configPopupWindow() {
-        mPopupWindow = new PopupWindow(mContext, null, mDefaultPopupWindowStyleRes);
+        mPopupWindow = new PopupWindow(mContext, null, DEFAULT_POPUP_WINDOW_STYLE_RES);
         mPopupWindow.setOnDismissListener(this);
         mPopupWindow.setWidth(width);
         mPopupWindow.setHeight(height);
@@ -428,24 +428,25 @@ public class PopupWindowTooltip implements PopupWindow.OnDismissListener {
         public PopupWindowTooltip build() throws IllegalArgumentException {
             validateArguments();
             if (arrowColor == 0) {
-                arrowColor = PopupWindowTooltipUtils.getColor(context, mDefaultArrowColorRes);
+                arrowColor = PopupWindowTooltipUtils.getColor(context, DEFAULT_ARROW_COLOR_RES);
             }
             if (margin < 0) {
-                margin = context.getResources().getDimension(mDefaultMarginRes);
+                margin = context.getResources().getDimension(DEFAULT_MARGIN_RES);
             }
             if (padding < 0) {
-                padding = context.getResources().getDimension(mDefaultPaddingRes);
+                padding = context.getResources().getDimension(DEFAULT_PADDING_RES);
             }
             if (arrowDirection == ArrowColorDrawable.AUTO)
                 arrowDirection = PopupWindowTooltipUtils.tooltipGravityToArrowDirection(gravity);
             if (arrowColorDrawable == null)
                 arrowColorDrawable = new ArrowColorDrawable(arrowColor, arrowDirection);
             if (arrowWidth == 0)
-                arrowWidth = context.getResources().getDimension(mDefaultArrowWidthRes);
+                arrowWidth = context.getResources().getDimension(DEFAULT_ARROW_WIDTH_RES);
             if (arrowHeight == 0)
-                arrowHeight = context.getResources().getDimension(mDefaultArrowHeightRes);
+                arrowHeight = context.getResources().getDimension(DEFAULT_ARROW_HEIGHT_RES);
             return new PopupWindowTooltip(this);
         }
+
         private void validateArguments() throws IllegalArgumentException {
             if (context == null) {
                 throw new IllegalArgumentException("Context not specified.");

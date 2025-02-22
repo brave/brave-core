@@ -44,10 +44,8 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference
         if (mNTPBackgroundImagesBridge != null && mNTPBackgroundImagesBridge.isSuperReferral()) {
             refView.setPrimaryText(mNTPBackgroundImagesBridge.getSuperReferralThemeName());
             if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                    .getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION)
-                            == 1
-                    ? true
-                    : false) {
+                            .getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION)
+                    == 1) {
                 refView.setChecked(true);
                 braveDefaultView.setChecked(false);
             } else {
