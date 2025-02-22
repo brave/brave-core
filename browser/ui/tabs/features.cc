@@ -31,7 +31,7 @@ BASE_FEATURE(kBraveVerticalTabScrollBar,
 
 BASE_FEATURE(kBraveSplitView,
              "BraveSplitView",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool HorizontalTabsUpdateEnabled() {
   return base::FeatureList::IsEnabled(kBraveHorizontalTabsUpdate);

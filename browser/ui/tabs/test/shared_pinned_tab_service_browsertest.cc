@@ -210,6 +210,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, ActivatePinnedTab) {
   browser_2->window()->Show();
   ui::ListSelectionModel selection;
   selection.set_active(0);
+  selection.SetSelectedIndex(0);
   tab_strip_model_2->SetSelectionFromModel(selection);
 
   WaitUntil(base::BindLambdaForTesting([&]() {

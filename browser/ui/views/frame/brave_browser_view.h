@@ -72,8 +72,11 @@ class BraveBrowserView : public BrowserView,
   BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
 
+  static BraveBrowserView* From(BrowserView* view);
+
   SplitView* split_view() { return split_view_; }
   const SplitView* split_view() const { return split_view_; }
+  views::View* GetContentsBoundingView() const;
 
   void SetStarredState(bool is_starred) override;
   void ShowUpdateChromeDialog() override;
