@@ -6,10 +6,12 @@
 #ifndef BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_
 #define BRAVE_IOS_BROWSER_BRAVE_WEB_CLIENT_H_
 
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "ios/chrome/browser/web/model/chrome_web_client.h"
 
 class BraveWebClient : public ChromeWebClient {
@@ -34,6 +36,9 @@ class BraveWebClient : public ChromeWebClient {
 
   void PostBrowserURLRewriterCreation(
       web::BrowserURLRewriter* rewriter) override;
+
+  void GetAdditionalWebUISchemes(
+      std::vector<std::string>* additional_schemes) override;
 
  private:
   std::string user_agent_;
