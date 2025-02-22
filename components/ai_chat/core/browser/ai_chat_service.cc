@@ -56,7 +56,7 @@
 namespace ai_chat {
 namespace {
 
-constexpr base::FilePath::StringPieceType kDBFileName =
+constexpr base::FilePath::StringViewType kDBFileName =
     FILE_PATH_LITERAL("AIChat");
 
 std::vector<mojom::Conversation*> FilterVisibleConversations(

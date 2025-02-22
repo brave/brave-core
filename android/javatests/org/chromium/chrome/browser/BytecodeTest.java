@@ -83,6 +83,7 @@ import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.CachedTintedBitmap;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
+import org.chromium.chrome.browser.metrics.StartupMetricsTracker;
 import org.chromium.chrome.browser.multiwindow.MultiInstanceManager;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
@@ -562,7 +563,7 @@ public class BytecodeTest {
                         void.class,
                         Activity.class,
                         String.class,
-                        boolean.class));
+                        Profile.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/components/permissions/PermissionDialogModelFactory",
@@ -1257,7 +1258,8 @@ public class BytecodeTest {
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         OneshotSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        StartupMetricsTracker.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
@@ -1577,6 +1579,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbarCoordinator",
                         "org/chromium/chrome/browser/bookmarks/BraveBookmarkToolbarCoordinator",
                         Context.class,
+                        Profile.class,
                         SelectableListLayout.class,
                         SelectionDelegate.class,
                         SearchDelegate.class,

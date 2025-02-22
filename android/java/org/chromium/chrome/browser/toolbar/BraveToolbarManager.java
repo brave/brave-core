@@ -181,7 +181,6 @@ public class BraveToolbarManager extends ToolbarManager {
             boolean initializeWithIncognitoColors,
             @Nullable BackPressManager backPressManager,
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
-            @Nullable View baseChromeLayout,
             ObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             @Nullable DesktopWindowStateManager desktopWindowStateManager) {
         super(
@@ -225,7 +224,6 @@ public class BraveToolbarManager extends ToolbarManager {
                 initializeWithIncognitoColors,
                 backPressManager,
                 overviewColorSupplier,
-                baseChromeLayout,
                 readAloudControllerSupplier,
                 desktopWindowStateManager);
 

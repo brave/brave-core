@@ -110,7 +110,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_GLIC)
-#include "chrome/browser/glic/border_view.h"
+#include "chrome/browser/glic/glic_border_view.h"
 #endif
 namespace {
 

@@ -1,8 +1,8 @@
 diff --git a/tools/crates/gnrt/lib/platforms.rs b/tools/crates/gnrt/lib/platforms.rs
-index 71f2a41a337b4ec1628c74c33549ac6794f692e8..c3ea6c76ef6372aea80ba807c32114242d220cd7 100644
+index aada57ae83a82a4090d3ae87aa3ddad6588b8e69..d2bdbb025059c1fd7e5e31b225b07d2f33da20fb 100644
 --- a/tools/crates/gnrt/lib/platforms.rs
 +++ b/tools/crates/gnrt/lib/platforms.rs
-@@ -257,7 +257,7 @@ fn supported_os_cfgs() -> &'static [Cfg] {
+@@ -256,7 +256,7 @@ fn supported_os_cfgs() -> &'static [Cfg] {
      CFG_SET.get_or_init(|| {
          [
              // Set of supported OSes for `cfg(target_os = ...)`.

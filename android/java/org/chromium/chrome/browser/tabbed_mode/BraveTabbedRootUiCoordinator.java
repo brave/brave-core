@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.tabbed_mode;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,8 +106,7 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             @NonNull BackPressManager backPressManager,
             @Nullable Bundle savedInstanceState,
             @Nullable MultiInstanceManager multiInstanceManager,
-            @Nullable ObservableSupplier<Integer> overviewColorSupplier,
-            @Nullable View baseChromeLayout,
+            @NonNull ObservableSupplier<Integer> overviewColorSupplier,
             @NonNull ManualFillingComponentSupplier manualFillingComponentSupplier,
             @NonNull EdgeToEdgeManager edgeToEdgeManager) {
         super(
@@ -156,7 +154,6 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 savedInstanceState,
                 multiInstanceManager,
                 overviewColorSupplier,
-                baseChromeLayout,
                 manualFillingComponentSupplier,
                 edgeToEdgeManager);
 

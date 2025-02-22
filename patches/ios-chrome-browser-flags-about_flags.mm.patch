@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
-index 603f55e72885aa25eecf6d5e3278cb268d4fb561..1228bdfd4fe267704a1fae6981133feb2e2214b1 100644
+index e24895534f13f47af809e5b77077a4bccbd37817..0729100c1e9992fd0d37a6f1dd55cfbf222e59a5 100644
 --- a/ios/chrome/browser/flags/about_flags.mm
 +++ b/ios/chrome/browser/flags/about_flags.mm
-@@ -1290,6 +1290,7 @@ const FeatureEntry::FeatureVariation kDeprecateFeedHeaderVariations[] = {
+@@ -1376,6 +1376,7 @@ const FeatureEntry::FeatureVariation kBestFeaturesScreenInFirstRunVariations[] =
  //
  // When adding a new choice, add it to the end of the list.
  const flags_ui::FeatureEntry kFeatureEntries[] = {

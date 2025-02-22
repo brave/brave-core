@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
-index 2d486fd43e1fcdceef22612d93eb68e3532b7e2b..e68f0e335a06e6860f0421950b1bcc2006316d1c 100644
+index b69d2eb42dc59723399d8618f465ce5e1911f0b9..4ffc74e884866bac021044c26a38552723bcd812 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.idl
-@@ -20,8 +20,8 @@ interface mixin BaseRenderingContext2D {
+@@ -23,8 +23,8 @@ interface mixin BaseRenderingContext2D {
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh);
      [RaisesException] ImageData createImageData([EnforceRange] long sw, [EnforceRange] long sh, ImageDataSettings imageDataSettings);

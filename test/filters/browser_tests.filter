@@ -182,6 +182,7 @@
 -All/FileSystemAccessPickerRequiresUserGestureTest.*
 -All/HostedAppJitTestBaseDefaultDisabled.JITDisabledTest
 -All/HostedAppJitTestBaseDefaultEnabled.JITDisabledTest
+-All/WebAccessibleResourcesBrowserRedirectTest.Manifests/*
 # Looks like CosmeticFiltersJSHandler::OnRemoteDisconnect is preventing this
 # test from exiting cleanly when it exits via GTEST_SKIP.
 -AutofillSubmissionTest/FormAutocompleteSubmissionTest.DomMutationAfterAutofill/0
@@ -219,6 +220,7 @@
 -PersistentBackground/NTPInterceptionTest.ContentScript/0
 -PersistentBackgroundOnBeforeRequest/RedirectInfoWebRequestApiTest.VerifyInvalidUrlRedirection/0
 -PersistentBackgroundOnHeadersReceived/RedirectInfoWebRequestApiTest.VerifyInvalidUrlRedirection/0
+-ServerRedirect/WebAccessibleResourcesBrowserProcessRedirectTest.Manifests/*
 -ServiceWorker/DeclarativeContentApiTestWithContextType.RulesPersistence/0
 -ServiceWorker/DeclarativeContentApiTestWithContextType.RulesPersistence/0
 -ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdated/0
@@ -355,6 +357,8 @@
 -RightClickFocusAndNavigateExisting/NavigationCapturingTestWithAppBLaunched.CheckLinkCaptureCombinations/*
 -RightClickNavigateNew/WebAppLinkCapturingParameterizedBrowserTest.*
 -ServiceWorker/WebAppLinkCapturingParameterizedBrowserTest.*
+-TabbedMode/NavigationCapturingTestWithAppBLaunched.*
+-TabbedMode/WebAppLinkCapturingParameterizedBrowserTest.*
 -WebAppScopeExtensionsBrowserTest.ExtendedLinkCapturingFocusExisting
 
 # These tests fail because we disable features::kPwaNavigationCapturing
@@ -650,6 +654,9 @@
 -EnclaveAuthenticatorWithPinBrowserTest.*
 -EnclaveAuthenticatorWithTimeout.*
 -FedCmAccountSelectionViewBrowserTest.*
+-GlicBrowserTest.PausedProfileIsNotReady
+-GlicPolicyDisabledTest.*
+-GlicPolicyTest.*
 -GPMPasskeysAuthenticatorDialogTest.InvokeUi*
 -HybridLinkingEnabled/HybridParamEnclaveAuthenticatorWithoutPinBrowserTest.MultipleDeclinedBootstrappings/*
 -Incognito/EnclaveAuthenticatorIncognitoBrowserTest.MultipleDeclinedBootstrappings/*
@@ -682,8 +689,12 @@
 -SupervisedProfilePickerHideGuestModeTest.DeleteLastSupervisedProfile
 -SupervisedProfilePickerHideGuestModeTest.DeleteSupervisedProfile
 -SupervisedProfilePickerHideGuestModeTest.RegularProfile_GuestModeAvailable
+-SupervisedUserWebContentHandlerImplTest.*
 -TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAborted/*
+-TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForNewAccount
+-TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForSecondaryAccount
 -TurnSyncOnHelperBrowserTest.UndoSyncRemoveAccount
+-TurnSyncOnHelperBrowserTest.WebOnlyAccountResetAfterSyncOptInFlowAborted
 -TurnSyncOnHelperBrowserTestWithParam.PrimaryAccountResetAfterSyncOptInFlowAborted/*
 -TurnSyncOnHelperBrowserTestWithUnoDesktop.*
 -SigninInterceptFirstRunExperienceDialogWithUnoEnabledBrowserTest.DeclineSync
@@ -887,6 +898,7 @@
 -All/PredictionManagerBrowserTest.*/*
 -All/PredictionManagerModelDownloadingBrowserTest.*
 -All/PredictionManagerModelDownloadingBrowserTest.*/*
+-All/SearchPrefetchServiceEnabledWithNVSBrowserTest.*
 -LCPPPrefetchSubresourceTest.Base
 -LoadingPredictorBrowserTest.*
 -LoadingPredictorBrowserTestWithNoLocalPredictions.*
@@ -913,6 +925,7 @@
 -PredictionServiceBrowserTest.*
 -PredictionSettingsPageBrowserTest.*
 -SearchNavigationPrefetchDefaultMatchBrowserTest.NotDefaultMatch
+-SearchNavigationPrefetchIncognitoBrowserTest.NavigationPrefetchIsServedMouseDown
 -SearchNavigationPrefetchNoCancelBrowserTest.PrefetchIsNotCancelled
 -SearchPrefetchServiceEnabledBrowserTest.*
 -SearchPreloadUnifiedFallbackBrowserTest.PrerenderDiscardedBeforeServingData
@@ -1348,6 +1361,7 @@
 -PageContentAnnotationsServiceBrowserTest.*
 -PageContentAnnotationsServiceContentExtractionPdfTest.*
 -PageContentAnnotationsServiceContentExtractionTest.*
+-PageContentAnnotationsServiceContentExtractionPdfTest.PdfPageCount
 -PageContentAnnotationsServiceNoHistoryTest.*
 -PageContentAnnotationsServiceRemoteMetadataBrowserTest.*
 -PageContentAnnotationsServiceSalientImageMetadataBrowserTest.*
@@ -1484,6 +1498,7 @@
 -StorageAccessHeadersBrowserTest.RequestHeaderRetryToActive
 -StorageAccessHeadersBrowserTest.RequestHeadersInactive
 -StorageAccessHeadersBrowserTest.RequestHeaderSameOriginRedirect
+-StorageAccessHeadersBrowserTest.TopFrameRedirectToFirstPartyPage 
 
 # SignedExchange is disabled.
 -SignedExchangePageLoadMetricsBrowserTest.*
@@ -1714,6 +1729,9 @@
 -TrackingProtectionOnboardingNoticeBrowserTest.*
 
 # This test fails because we set prefs::kSigninAllowed to false.
+-TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForNewAccount
+-TurnSyncOnHelperBrowserTest.PrimaryAccountResetAfterSyncOptInFlowAbortedForSecondaryAccount
+-TurnSyncOnHelperBrowserTest.WebOnlyAccountResetAfterSyncOptInFlowAborted 
 -TurnSyncOnHelperBrowserTestWithUnoDesktop.WebOnlyAccountResetAfterSyncOptInFlowAborted
 
 # These tests fail because we don't build using Chrome branding
@@ -1783,10 +1801,18 @@
 -BrowserNavigatorIwaTest.*
 -BrowsingDataModelBrowserTest.IsolatedWebAppUsageInDefaultStoragePartitionModel
 -ChromeDirectSocketsApiAvailabilityIsolatedWebAppsTest.*/*
+-ChromeDirectSocketsTcpIsolatedWebAppServiceWorkerTest.TcpReadWrite
+-ChromeDirectSocketsTcpIsolatedWebAppSharedWorkerTest.TcpReadWrite
 -ChromeDirectSocketsTcpIsolatedWebAppTest.TcpConnectionToPrivateFailsWithoutPNAContentSetting
 -ChromeDirectSocketsTcpIsolatedWebAppTest.TcpConnectionToPrivateFailsWithoutPNAPermission
 -ChromeDirectSocketsTcpIsolatedWebAppTest.TcpReadWrite
+-ChromeDirectSocketsTcpServerIsolatedWebAppServiceWorkerTest.TcpServerExchangePacketWithTcpSocket
+-ChromeDirectSocketsTcpServerIsolatedWebAppSharedWorkerTest.TcpServerExchangePacketWithTcpSocket
 -ChromeDirectSocketsTcpServerIsolatedWebAppTest.*
+-ChromeDirectSocketsUdpIsolatedWebAppServiceWorkerTest.UdpReadWrite
+-ChromeDirectSocketsUdpIsolatedWebAppServiceWorkerTest.UdpServerReadWrite
+-ChromeDirectSocketsUdpIsolatedWebAppSharedWorkerTest.UdpReadWrite
+-ChromeDirectSocketsUdpIsolatedWebAppSharedWorkerTest.UdpServerReadWrite
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpConnectionToPrivateFailsWithoutPNAContentSetting
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpConnectionToPrivateFailsWithoutPNAPermission
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpReadWrite
@@ -1818,6 +1844,7 @@
 -IsolatedWebAppErrorPageTest.UsesWebAppErrorPage
 -IsolatedWebAppExtensionBrowserTest.*
 -IsolatedWebAppFileHandlingBrowserTest.*
+-IsolatedWebAppFrameToolbarBrowserTest.NoExtensionsInToolbarOrMenu
 -IsolatedWebAppInstallerBrowserTest.*
 -IsolatedWebAppInstallerViewUiPixelTest.*
 -IsolatedWebAppInstallPrepareApplyUpdateCommandBrowserTest.*
@@ -1846,6 +1873,7 @@
 -StorageAccessAPIBrowserTest.*
 -StorageAccessHeadersBrowserTest.LoadHeader*
 -StorageAccessHeadersBrowserTest.RetryHeader*
+-StorageAccessHeadersBrowserTest.TopFrameRedirectToFirstPartyPage
 -StorageAccessHeadersDisabledBrowserTest.RetryHeader
 -StorageAccessHeadersWithFedCMBrowserTest.RetryHeader
 -StorageAccessHeaderServiceBrowserTest.TrialHeader*
@@ -1943,6 +1971,10 @@
 -CastBrowserControllerTest.UpdateIssues
 -ChromeLabsMultipleFeaturesUiTest.InvokeUi_default
 -ChromeLabsUiTest.InvokeUi_default
+-DownloadExtensionBubbleEnabledTest.SetUiOptions
+-DownloadExtensionBubbleEnabledTest.SetUiOptionsBeforeDownloadStart
+-DownloadExtensionBubbleEnabledTest.SetUiOptionsMultipleExtensions
+-DownloadExtensionBubbleEnabledTest.SetUiOptionsOffTheRecord
 -DownloadToolbarUIControllerBrowserTest.ButtonPressWithNoRecentDownloads
 -DownloadToolbarUIControllerBrowserTest.ButtonPressWithRecentDownloads
 -DownloadToolbarUIControllerBrowserTest.ButtonShowsForDownloadingItems
@@ -2006,6 +2038,11 @@
 # prevent installation of the screen ai library
 -All/OpticalCharacterRecognizerTest.PerformOCR_Simple/OCR_Enabled_Library_Available
 -MainContentExtractionTest.RequestWithContent
+
+# These tests fail because we disable Glic feature.
+-GlicBackgroundModeManagerBrowserTest.*
+-GuestUtilBrowserTest.OnGuestAdded_Glic
+-GuestUtilBrowserTest.OnGuestAdded_NonGlic
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestPolicyEnabled.*

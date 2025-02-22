@@ -1,8 +1,8 @@
 diff --git a/third_party/rust/serde_json/v1/BUILD.gn b/third_party/rust/serde_json/v1/BUILD.gn
-index 26fcbbbd177521b9a60e2af2f81fe6673a1f1cd9..5897e9e6cf9cc12bcd8f91b0e66a6d16310ca9cd 100644
+index ef3bd27bb936c3338d2570406932e1f57def9034..934f726d75941ac2505563bff8718dd97de9e3d5 100644
 --- a/third_party/rust/serde_json/v1/BUILD.gn
 +++ b/third_party/rust/serde_json/v1/BUILD.gn
-@@ -82,5 +82,4 @@ cargo_crate("lib") {
+@@ -83,5 +83,4 @@ cargo_crate("lib") {
      "--cap-lints=allow",  # Suppress all warnings in crates.io crates
    ]
  
