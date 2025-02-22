@@ -127,13 +127,15 @@ extension BrowserViewController: TabManagerDelegate {
       }
     }
 
-    displayPageZoom(visible: false)
+    clearPageZoomDialog()
     updateTabsBarVisibility()
     selected?.updatePullToRefreshVisibility()
 
-    topToolbar.locationView.loading = selected?.loading ?? false
-    updateBackForwardActionStatus(for: selected?.webView)
-    navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
+    if let tab = selected {
+      topToolbar.locationView.loading = tab.loading
+      updateBackForwardActionStatus(for: tab)
+      navigationToolbar.updateForwardStatus(tab.canGoForward)
+    }
 
     let shouldShowPlaylistURLBarButton = selected?.url?.isPlaylistSupportedSiteURL == true
 

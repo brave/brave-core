@@ -333,7 +333,9 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
       return (.cancel, preferences)
     }
 
-    if navigationAction.isInternalUnprivileged && navigationAction.navigationType != .backForward {
+    if navigationAction.request.isInternalUnprivileged
+      && navigationAction.navigationType != .backForward
+    {
       return (.cancel, preferences)
     }
 

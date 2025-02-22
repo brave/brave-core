@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Shared
 import WebKit
@@ -92,13 +93,13 @@ protocol JSAlertInfo {
 
 struct MessageAlert: JSAlertInfo {
   let message: String
-  let frame: WKFrameInfo
+  let origin: URLOrigin
   let completionHandler: () -> Void
   var suppressHandler: SuppressHandler?
 
   func alertController() -> JSPromptAlertController {
     let alertController = JSPromptAlertController(
-      title: titleForJavaScriptPanelInitiatedByFrame(frame),
+      title: origin.serialized,
       message: message,
       info: self,
       showCancel: false
@@ -119,14 +120,14 @@ struct MessageAlert: JSAlertInfo {
 
 struct ConfirmPanelAlert: JSAlertInfo {
   let message: String
-  let frame: WKFrameInfo
+  let origin: URLOrigin
   let completionHandler: (Bool) -> Void
   var suppressHandler: SuppressHandler?
 
   func alertController() -> JSPromptAlertController {
     // Show JavaScript confirm dialogs.
     let alertController = JSPromptAlertController(
-      title: titleForJavaScriptPanelInitiatedByFrame(frame),
+      title: origin.serialized,
       message: message,
       info: self
     )
@@ -146,14 +147,14 @@ struct ConfirmPanelAlert: JSAlertInfo {
 
 struct TextInputAlert: JSAlertInfo {
   let message: String
-  let frame: WKFrameInfo
+  let origin: URLOrigin
   let completionHandler: (String?) -> Void
   let defaultText: String?
   var suppressHandler: SuppressHandler?
 
   func alertController() -> JSPromptAlertController {
     let alertController = JSPromptAlertController(
-      title: titleForJavaScriptPanelInitiatedByFrame(frame),
+      title: origin.serialized,
       message: message,
       info: self
     )
@@ -174,17 +175,6 @@ struct TextInputAlert: JSAlertInfo {
   func cancel() {
     completionHandler(nil)
   }
-}
-
-/// Show a title for a JavaScript Panel (alert) based on the WKFrameInfo. On iOS9 we will use the new securityOrigin
-/// and on iOS 8 we will fall back to the request URL. If the request URL is nil, which happens for JavaScript pages,
-/// we fall back to "JavaScript" as a title.
-private func titleForJavaScriptPanelInitiatedByFrame(_ frame: WKFrameInfo) -> String {
-  var title = "\(frame.securityOrigin.`protocol`)://\(frame.securityOrigin.host)"
-  if frame.securityOrigin.port != 0 {
-    title += ":\(frame.securityOrigin.port)"
-  }
-  return title
 }
 
 /// A generic browser alert that will execute a closure if its dismissed and no actions were picked
