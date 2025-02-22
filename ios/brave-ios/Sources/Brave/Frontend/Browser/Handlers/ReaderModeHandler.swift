@@ -135,7 +135,10 @@ public class ReaderModeHandler: InternalSchemeResponse {
       let readabilityResult = try await ReaderModeHandler.readerModeCache.get(readerModeUrl)
       // We have this page in our cache, so we can display it. Just grab the correct style from the
       // profile and then generate HTML from the Readability results.
-      var readerModeStyle = defaultReaderModeStyle
+      var readerModeStyle = await MainActor.run {
+        return defaultReaderModeStyle
+      }
+
       if let dict = profile.prefs.dictionaryForKey(readerModeProfileKeyStyle) {
         if let style = ReaderModeStyle(dict: dict) {
           readerModeStyle = style

@@ -16,7 +16,9 @@ struct BraveTranslateSettingsView: View {
   var body: some View {
     Form {
       Section {
-        Toggle(isOn: $translateEnabled.value) {
+        Toggle(
+          isOn: .init(get: { translateEnabled.value == true }, set: { translateEnabled.value = $0 })
+        ) {
           Text(Strings.BraveTranslate.settingsTranslateEnabledOptionTitle)
         }
         .tint(Color.accentColor)
@@ -26,7 +28,7 @@ struct BraveTranslateSettingsView: View {
       }
     }
     .listStyle(.insetGrouped)
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .background(Color(UIColor.braveGroupedBackground))
     .navigationTitle(Strings.BraveTranslate.settingsScreenTitle)
   }
 }
