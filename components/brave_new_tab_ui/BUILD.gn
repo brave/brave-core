@@ -43,3 +43,24 @@ mojom("mojom") {
     enabled_features = [ "enable_brave_vpn" ]
   }
 }
+
+transpile_web_ui("new_tab_takeover_ui") {
+  resource_name = "new_tab_takeover"
+  entry_points = [ [
+        "new_tab_takeover",
+        rebase_path("new_tab_takeover/new_tab_takeover.tsx"),
+      ] ]
+  public_deps = [
+    "//brave/components/brave_ads/core/mojom:mojom_js",
+    "//brave/components/brave_new_tab_ui/new_tab_takeover/mojom:mojom_js",
+    "//brave/components/ntp_background_images/browser/mojom:mojom_js",
+    "//mojo/public/mojom/base",
+  ]
+}
+
+pack_web_resources("new_tab_takeover_generated_resources") {
+  resource_name = "new_tab_takeover"
+  output_dir =
+      "$root_gen_dir/brave/components/brave_new_tab_ui/new_tab_takeover"
+  deps = [ ":new_tab_takeover_ui" ]
+}

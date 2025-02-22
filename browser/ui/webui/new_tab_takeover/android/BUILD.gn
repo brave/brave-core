@@ -1,0 +1,35 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+assert(is_android)
+
+source_set("new_tab_takeover") {
+  sources = [
+    "new_tab_takeover_ui.cc",
+    "new_tab_takeover_ui.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ntp_background",
+    "//brave/build/android:jni_headers",
+    "//brave/components/brave_new_tab_ui:new_tab_takeover_generated_resources",
+    "//brave/components/constants",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/p3a",
+    "//chrome/browser:browser_public_dependencies",
+    "//content/public/browser",
+    "//content/public/common",
+    "//ui/webui",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_new_tab_ui/new_tab_takeover/mojom",
+    "//brave/components/ntp_background_images/browser/mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+}

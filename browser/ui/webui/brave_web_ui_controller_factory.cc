@@ -56,6 +56,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/android/android_wallet_page_ui.h"
+#include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #endif
@@ -166,6 +167,14 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   } else if (url.is_valid() && url.host() == kWalletPageHost) {
     return new AndroidWalletPageUI(web_ui, url);
+  } else if (host == kNewTabTakeoverHost) {
+    return new NewTabTakeoverUI(
+        web_ui, url.host(),
+        brave_ads::AdsServiceFactory::GetForProfile(profile),
+        g_browser_process->local_state(),
+        g_brave_browser_process->p3a_service(),
+        g_brave_browser_process->ntp_background_images_service(),
+        profile->GetPrefs());
 #endif
 #if BUILDFLAG(ENABLE_AI_REWRITER)
   } else if (host == kRewriterUIHost) {
@@ -197,6 +206,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
        base::FeatureList::IsEnabled(skus::features::kSkusFeature)) ||
 #if BUILDFLAG(IS_ANDROID)
       (url.is_valid() && url.host_piece() == kWalletPageHost) ||
+      url.host_piece() == kNewTabTakeoverHost ||
 #else
       (base::FeatureList::IsEnabled(
            brave_news::features::kBraveNewsFeedUpdate) &&

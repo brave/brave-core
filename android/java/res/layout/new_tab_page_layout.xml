@@ -26,6 +26,13 @@
         android:contentDescription="@null"/>
 
     <FrameLayout
+        android:id="@+id/bg_sponsored_rich_media_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/logo_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
