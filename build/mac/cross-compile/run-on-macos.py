@@ -23,7 +23,6 @@ from os.path import basename, exists, dirname, relpath, join
 from shlex import quote
 from subprocess import run
 from tempfile import gettempdir
-from time import sleep
 
 import os
 import sys
@@ -77,7 +76,7 @@ def get_remote_commands(tool, args, cwd, src_dir_on_host, keychain_pw,
         # We get errors without this delay:
         result.append(['sleep', '1'])
         result.extend(get_commands_via_tmpfile(tool, args_on_host))
-    elif tool == 'productsign':
+    elif tool in ('productsign', 'productbuild'):
         result.extend(get_commands_via_tmpfile(tool, args_on_host))
     else:
         result.append([tool] + args_on_host)
@@ -124,7 +123,7 @@ def make_relative(args, cwd):
 
 
 def requires_keychain(tool):
-    return tool in ('codesign', 'productsign', 'pkgbuild')
+    return tool in ('codesign', 'productsign', 'pkgbuild', 'productbuild')
 
 
 def run_via_ssh(host, commands):

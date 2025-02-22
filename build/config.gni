@@ -14,7 +14,6 @@ declare_args() {
   # "nightly" for nightly channel release.
   # "" for stable channel release.
   brave_channel = ""
-  is_release_channel = false
   base_sparkle_update_url = ""
   enable_sparkle = !is_component_build && is_mac
   build_sparkle = false
@@ -126,6 +125,7 @@ if (is_win) {
   brave_exe = "$chrome_product_full_name.app"
   brave_dmg = "$chrome_product_full_name.dmg"
   brave_pkg = "$chrome_product_full_name.pkg"
+  brave_zip = "$chrome_product_full_name.app.zip"
   brave_delta = "$chrome_product_full_name.delta"
 
   brave_product_dir_name_suffix = ""
