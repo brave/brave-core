@@ -57,43 +57,61 @@ extension BrowserViewController {
   // MARK: Conditional Callout Methods
 
   private func presentP3AScreenCallout() {
-    let onboardingP3ACalloutController = Welcome3PAViewController().then {
+    if !Locale.current.isNewOnboardingRegion {
+      let onboardingP3ACalloutController = Welcome3PAViewController().then {
+        $0.isModalInPresentation = true
+        $0.modalPresentationStyle = .overFullScreen
+      }
+
+      let state = WelcomeViewCalloutState.p3a(
+        info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
+          title: Strings.Callout.p3aCalloutTitle,
+          toggleTitle: Strings.Callout.p3aCalloutToggleTitle,
+          details: Strings.Callout.p3aCalloutDescription,
+          linkDescription: Strings.Callout.p3aCalloutLinkTitle,
+          primaryButtonTitle: Strings.P3A.continueButton,
+          toggleAction: { [weak self] isOn in
+            self?.braveCore.p3aUtils.isP3AEnabled = isOn
+          },
+          linkAction: { [unowned onboardingP3ACalloutController] url in
+            let p3aLearnMoreController = SFSafariViewController(
+              url: .brave.p3aHelpArticle,
+              configuration: .init()
+            )
+            p3aLearnMoreController.modalPresentationStyle = .currentContext
+
+            onboardingP3ACalloutController.present(p3aLearnMoreController, animated: true)
+          },
+          primaryButtonAction: { [weak self] in
+            Preferences.Onboarding.p3aOnboardingShown.value = true
+
+            self?.isOnboardingOrFullScreenCalloutPresented = true
+            self?.dismiss(animated: false)
+          }
+        )
+      )
+
+      onboardingP3ACalloutController.setLayoutState(state: state)
+
+      braveCore.p3aUtils.isNoticeAcknowledged = true
+      present(onboardingP3ACalloutController, animated: false)
+      return
+    }
+
+    let controller = OnboardingController(
+      environment: .init(
+        p3aUtils: braveCore.p3aUtils,
+        attributionManager: attributionManager
+      ),
+      steps: [.p3aOptIn],
+      showSplashScreen: false,
+      showDismissButton: false
+    ).then {
       $0.isModalInPresentation = true
       $0.modalPresentationStyle = .overFullScreen
     }
 
-    let state = WelcomeViewCalloutState.p3a(
-      info: WelcomeViewCalloutState.WelcomeViewDefaultBrowserDetails(
-        title: Strings.Callout.p3aCalloutTitle,
-        toggleTitle: Strings.Callout.p3aCalloutToggleTitle,
-        details: Strings.Callout.p3aCalloutDescription,
-        linkDescription: Strings.Callout.p3aCalloutLinkTitle,
-        primaryButtonTitle: Strings.P3A.continueButton,
-        toggleAction: { [weak self] isOn in
-          self?.braveCore.p3aUtils.isP3AEnabled = isOn
-        },
-        linkAction: { url in
-          let p3aLearnMoreController = SFSafariViewController(
-            url: .brave.p3aHelpArticle,
-            configuration: .init()
-          )
-          p3aLearnMoreController.modalPresentationStyle = .currentContext
-
-          onboardingP3ACalloutController.present(p3aLearnMoreController, animated: true)
-        },
-        primaryButtonAction: { [weak self] in
-          Preferences.Onboarding.p3aOnboardingShown.value = true
-
-          self?.isOnboardingOrFullScreenCalloutPresented = true
-          self?.dismiss(animated: false)
-        }
-      )
-    )
-
-    onboardingP3ACalloutController.setLayoutState(state: state)
-
-    braveCore.p3aUtils.isNoticeAcknowledged = true
-    present(onboardingP3ACalloutController, animated: false)
+    present(controller, animated: true)
   }
 
   private func presentBottomBarCallout(skipSafeGuards: Bool = false) {
@@ -170,13 +188,14 @@ extension BrowserViewController {
       }
     }
 
-    let defaultBrowserCallout = UIHostingController(
-      rootView: FocusSystemSettingsView(
-        namespace: Namespace().wrappedValue,
-        screenType: .callout,
-        isCompleted: .constant(false),
-        shouldDismiss: .constant(false)
-      )
+    let defaultBrowserCallout = OnboardingController(
+      environment: .init(
+        p3aUtils: braveCore.p3aUtils,
+        attributionManager: attributionManager
+      ),
+      steps: [.defaultBrowsing],
+      showSplashScreen: false,
+      showDismissButton: false
     ).then {
       $0.isModalInPresentation = true
       $0.modalPresentationStyle = .overFullScreen
