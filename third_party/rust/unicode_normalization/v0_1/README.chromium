@@ -1,9 +1,9 @@
 Name: unicode-normalization
 URL: https://crates.io/crates/unicode-normalization
-Version: 0.1.22
-Revision: d4318ad5a57f21b3f24ccdc55032b600b075e66d
+Version: 0.1.24
+Revision: c9921309f09ebd05108920fda92efbf5f8124a7d
 License: Apache-2.0
-License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/LICENSE-APACHE
+License File: //brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/LICENSE-APACHE
 Shipped: yes
 Security Critical: yes
 

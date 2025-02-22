@@ -12,27 +12,26 @@ cargo_crate("lib") {
   crate_name = "unicode_normalization"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/__test_api.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/decompose.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/lookups.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/no_std_prelude.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/normalize.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/perfect_hash.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/quick_check.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/recompose.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/replace.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/stream_safe.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/tables.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.22/src/test.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/__test_api.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/decompose.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/lookups.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/normalize.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/perfect_hash.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/quick_check.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/recompose.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/replace.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/stream_safe.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/tables.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-normalization-0.1.24/src/test.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.1.22"
+  cargo_pkg_version = "0.1.24"
   cargo_pkg_authors =
       "kwantam <kwantam@gmail.com>, Manish Goregaokar <manishsmail@gmail.com>"
   cargo_pkg_name = "unicode-normalization"

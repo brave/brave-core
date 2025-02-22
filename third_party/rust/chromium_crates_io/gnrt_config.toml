@@ -217,6 +217,15 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 [crate.halo2_proofs]
 license_files = ['../../../../../common/licenses/Apache-2.0']
 
+[crate.icu_locid_transform_data]
+extra_src_roots = ['../data']
+
+[crate.icu_normalizer_data]
+extra_src_roots = ['../data']
+
+[crate.icu_properties_data]
+extra_src_roots = ['../data']
+
 [crate.ipld-core]
 extra_input_roots = [ "../README.md" ]
 

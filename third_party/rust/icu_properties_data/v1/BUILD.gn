@@ -1,0 +1,158 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "icu_properties_data"
+  epoch = "1"
+  crate_type = "rlib"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/lib.rs"
+  sources = [ "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/lib.rs" ]
+  inputs = [
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_bc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_ccc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_ea_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_gc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_gcb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_gcm_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_hst_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_insc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_jt_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_lb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_sb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_sc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_from_wb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_bc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_ea_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_gc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_gcb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_hst_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_insc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_jt_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_lb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_sb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_sc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_linear_wb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_long_sparse_ccc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear4_sc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_bc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_ea_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_gc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_gcb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_hst_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_insc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_jt_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_lb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_sb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_linear_wb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/propnames_to_short_sparse_ccc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ahex_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_alnum_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_alpha_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_basic_emoji_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_bc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_bidi_c_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_bidi_m_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_bidiauxiliaryprops_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_blank_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_cased_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ccc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ci_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_comp_ex_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_cwcf_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_cwcm_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_cwkcf_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_cwl_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_cwt_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_cwu_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_dash_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_dep_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_di_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_dia_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ea_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ebase_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ecomp_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_emod_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_emoji_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_epres_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_exemplarchars_auxiliary_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_exemplarchars_index_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_exemplarchars_main_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_exemplarchars_numbers_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_exemplarchars_punctuation_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ext_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_extpict_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_gc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_gcb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_gr_base_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_gr_ext_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_gr_link_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_graph_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_hex_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_hst_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_hyphen_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_idc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ideo_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ids_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_idsb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_idst_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_insc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_join_c_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_jt_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_lb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_loe_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_lower_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_math_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_nchar_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_nfcinert_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_nfdinert_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_nfkcinert_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_nfkdinert_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_pat_syn_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_pat_ws_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_pcm_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_print_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_qmark_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_radical_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_ri_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_sb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_sc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_scx_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_sd_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_segstart_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_sensitive_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_sterm_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_term_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_uideo_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_upper_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_vs_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_wb_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_wspace_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_xdigit_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_xidc_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros/props_xids_v1.rs.data",
+    "//brave/third_party/rust/chromium_crates_io/vendor/icu_properties_data-1.5.0/src/../data/macros.rs",
+  ]
+
+  build_native_rust_unit_tests = false
+  edition = "2021"
+  cargo_pkg_version = "1.5.0"
+  cargo_pkg_authors = "The ICU4X Project Developers"
+  cargo_pkg_name = "icu_properties_data"
+  cargo_pkg_description = "Data for the icu_properties crate"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  rustflags = [
+    "--cap-lints=allow",  # Suppress all warnings in crates.io crates
+  ]
+}

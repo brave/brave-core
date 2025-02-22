@@ -12,24 +12,25 @@ cargo_crate("lib") {
   crate_name = "unicode_bidi"
   epoch = "0.3"
   crate_type = "rlib"
-  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/char_data/mod.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/char_data/tables.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/data_source.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/deprecated.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/explicit.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/format_chars.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/implicit.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/level.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.13/src/prepare.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/char_data/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/char_data/tables.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/data_source.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/deprecated.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/explicit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/format_chars.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/implicit.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/level.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/prepare.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/unicode-bidi-0.3.18/src/utf16.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_version = "0.3.13"
+  cargo_pkg_version = "0.3.18"
   cargo_pkg_authors = "The Servo Project Developers"
   cargo_pkg_name = "unicode-bidi"
   cargo_pkg_description =
