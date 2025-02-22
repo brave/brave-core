@@ -66,7 +66,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return 16;
     }
     case TOOLBAR_BUTTON_HEIGHT: {
-      return touch ? 48 : 28;
+      return touch ? 48 : 30;
     }
     case TOOLBAR_CORNER_RADIUS: {
       return 0;
