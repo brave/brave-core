@@ -339,9 +339,6 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
             container->GetIndexOf(app_menu).value() - 1ul);
 
   // Check avatar button's size.
-  // Sidebar button dimensions are defined in
-  // SidebarButtonView::kSidebarButtonSize and expected to be kept in sync with
-  // the value of TOOLBAR_BUTTON_HEIGHT.
   const int avatar_size = GetLayoutConstant(TOOLBAR_BUTTON_HEIGHT);
   EXPECT_EQ(gfx::Size(avatar_size, avatar_size), avatar->size());
 }
