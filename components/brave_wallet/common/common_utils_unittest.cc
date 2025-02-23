@@ -367,10 +367,11 @@ TEST(CommonUtils, GetActiveEndpointUrl) {
   EXPECT_EQ(GURL(), GetActiveEndpointUrl(chain));
 }
 
-TEST(CommonUtils, GetSupportedCoins) {
+TEST(CommonUtils, GetEnabledCoins) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {
-      features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature};
+      features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
+      features::kBraveWalletCardanoFeature};
   disabled_feature_list.InitWithFeatures({}, coin_features);
 
   uint32_t test_cases_count = (1 << coin_features.size());
@@ -385,7 +386,7 @@ TEST(CommonUtils, GetSupportedCoins) {
     base::test::ScopedFeatureList feature_list;
     feature_list.InitWithFeatures(enabled_features, {});
 
-    auto coins = GetSupportedCoins();
+    auto coins = GetEnabledCoins();
     size_t last_pos = 0;
 
     EXPECT_EQ(coins[last_pos++], mojom::CoinType::ETH);
@@ -400,16 +401,25 @@ TEST(CommonUtils, GetSupportedCoins) {
       EXPECT_EQ(coins[last_pos++], mojom::CoinType::ZEC);
     }
 
+    if (IsCardanoEnabled()) {
+      EXPECT_EQ(coins[last_pos++], mojom::CoinType::ADA);
+    }
+
     EXPECT_EQ(last_pos, coins.size());
   }
+
+  static_assert(AllCoinsTested<5>());
 }
 
 TEST(CommonUtils, GetSupportedKeyrings) {
   base::test::ScopedFeatureList disabled_feature_list;
   const std::vector<base::test::FeatureRef> coin_features = {
-      features::kBraveWalletBitcoinFeature, features::kBraveWalletZCashFeature,
+      features::kBraveWalletBitcoinFeature,
+      features::kBraveWalletZCashFeature,
       features::kBraveWalletBitcoinImportFeature,
-      features::kBraveWalletBitcoinLedgerFeature};
+      features::kBraveWalletBitcoinLedgerFeature,
+      features::kBraveWalletCardanoFeature,
+  };
   disabled_feature_list.InitWithFeatures({}, coin_features);
 
   uint32_t test_cases_count = (1 << coin_features.size());
@@ -454,8 +464,15 @@ TEST(CommonUtils, GetSupportedKeyrings) {
       EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kZCashTestnet);
     }
 
+    if (IsCardanoEnabled()) {
+      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kCardanoMainnet);
+      EXPECT_EQ(keyrings[last_pos++], mojom::KeyringId::kCardanoTestnet);
+    }
+
     EXPECT_EQ(last_pos, keyrings.size());
   }
+
+  static_assert(AllKeyringsTested<12>());
 }
 
 TEST(CommonUtils, GetSupportedKeyringsForNetwork) {

@@ -106,7 +106,8 @@ export const ImportAccountModal = () => {
     return CreateAccountOptions({
       visibleNetworks,
       isBitcoinEnabled: isBitcoinImportEnabled,
-      isZCashEnabled: false // No zcash imported accounts by now.
+      isZCashEnabled: false, // No zcash imported accounts by now.
+      isCardanoEnabled: false // No cardano imported accounts by now.
     })
   }, [visibleNetworks, isBitcoinImportEnabled])
 

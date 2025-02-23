@@ -118,6 +118,10 @@ TxService::TxService(JsonRpcService* json_rpc_service,
           *account_resolver_delegate_);
     }
   }
+
+  if (IsCardanoEnabled()) {
+    // TODO(apaymyshev): Cardano transactions
+  }
 }
 
 TxService::~TxService() = default;
@@ -273,6 +277,15 @@ void TxService::GetAllTransactionInfo(
     GetAllTransactionInfoCallback callback) {
   std::optional<mojom::AccountIdPtr> from_opt =
       from ? std::move(from) : std::optional<mojom::AccountIdPtr>();
+
+  // TODO(apaymyshev): Cardano transactions
+  if (IsCardanoEnabled()) {
+    if (coin_type == mojom::CoinType::ADA) {
+      std::move(callback).Run({});
+      return;
+    }
+  }
+
   std::move(callback).Run(GetTxManager(coin_type)->GetAllTransactionInfo(
       chain_id, std::move(from_opt)));
 }

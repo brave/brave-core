@@ -79,6 +79,10 @@ void AccountDiscoveryManager::StartDiscovery() {
       }
     }
   }
+
+  if (IsCardanoEnabled()) {
+    // TODO(apaymyshev): Cardano account discovery
+  }
 }
 
 AccountDiscoveryManager::~AccountDiscoveryManager() = default;

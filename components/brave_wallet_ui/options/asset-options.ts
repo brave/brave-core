@@ -28,7 +28,8 @@ import {
   FILECOINIconUrl,
   MATICIconUrl,
   SOLIconUrl,
-  ZECIconUrl
+  ZECIconUrl,
+  CardanoIconUrl
 } from '../assets/network_token_icons/network_token_icons'
 
 export const getNetworkLogo = (chainId: string, symbol: string): string => {
@@ -57,6 +58,8 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
       return BTCIconUrl
     case 'ZEC':
       return ZECIconUrl
+    case 'ADA':
+      return CardanoIconUrl
   }
 
   return ''

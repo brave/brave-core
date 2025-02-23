@@ -90,6 +90,7 @@ type GetTokenBalancesForAddressAndChainIdArg = {
     | typeof CoinTypes.FIL
     | typeof CoinTypes.BTC
     | typeof CoinTypes.ZEC
+    | typeof CoinTypes.ADA
 }
 
 type GetTokenBalancesForChainIdArg =
@@ -143,14 +144,20 @@ export const tokenBalancesEndpoints = ({
     >({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         const { data: api } = baseQuery(undefined)
-        const { jsonRpcService, bitcoinWalletService, zcashWalletService } = api
+        const {
+          jsonRpcService,
+          bitcoinWalletService,
+          zcashWalletService,
+          cardanoWalletService
+        } = api
         try {
           return {
             data: await fetchAccountTokenCurrentBalance({
               arg,
               bitcoinWalletService,
               jsonRpcService,
-              zcashWalletService
+              zcashWalletService,
+              cardanoWalletService
             })
           }
         } catch (error) {
@@ -172,7 +179,12 @@ export const tokenBalancesEndpoints = ({
     getIsTokenOwnedByUser: query<boolean, GetBlockchainTokenIdArg>({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         const { data: api, cache } = baseQuery(undefined)
-        const { jsonRpcService, bitcoinWalletService, zcashWalletService } = api
+        const {
+          jsonRpcService,
+          bitcoinWalletService,
+          zcashWalletService,
+          cardanoWalletService
+        } = api
         try {
           const { accounts } = await cache.getAllAccounts()
           const accountForCoinType = accounts.filter((account) => {
@@ -187,7 +199,8 @@ export const tokenBalancesEndpoints = ({
               },
               bitcoinWalletService,
               jsonRpcService,
-              zcashWalletService
+              zcashWalletService,
+              cardanoWalletService
             })
             if (new Amount(balance).gt(0)) {
               isOwned = true
@@ -220,7 +233,12 @@ export const tokenBalancesEndpoints = ({
     >({
       queryFn: async (args, { endpoint }, extraOptions, baseQuery) => {
         const { data: api, cache } = baseQuery(undefined)
-        const { bitcoinWalletService, zcashWalletService, jsonRpcService } = api
+        const {
+          jsonRpcService,
+          bitcoinWalletService,
+          zcashWalletService,
+          cardanoWalletService
+        } = api
 
         try {
           const registry: TokenBalancesRegistry =
@@ -229,7 +247,8 @@ export const tokenBalancesEndpoints = ({
               cache,
               bitcoinWalletService,
               jsonRpcService,
-              zcashWalletService
+              zcashWalletService,
+              cardanoWalletService
             })
 
           // NFTs
@@ -301,7 +320,8 @@ export const tokenBalancesEndpoints = ({
             braveWalletService,
             jsonRpcService,
             bitcoinWalletService,
-            zcashWalletService
+            zcashWalletService,
+            cardanoWalletService
           } = api
 
           const tokenBalancesRegistry = createEmptyTokenBalancesRegistry()
@@ -455,6 +475,7 @@ export const tokenBalancesEndpoints = ({
                         bitcoinWalletService,
                         jsonRpcService,
                         zcashWalletService,
+                        cardanoWalletService,
                         onBalance
                       })
                     } catch (error) {
@@ -668,12 +689,14 @@ async function fetchAccountCurrentNativeBalance({
   arg: { accountId, token },
   jsonRpcService,
   bitcoinWalletService,
-  zcashWalletService
+  zcashWalletService,
+  cardanoWalletService
 }: {
   arg: GetAccountTokenCurrentBalanceArg
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
+  cardanoWalletService: BraveWallet.CardanoWalletServiceRemote
 }): Promise<string> {
   // LOCALHOST
   if (
@@ -763,6 +786,20 @@ async function fetchAccountCurrentNativeBalance({
         : Amount.normalize(balance.transparentBalance.toString())
     }
 
+    case BraveWallet.CoinType.ADA: {
+      const { balance, errorMessage } = await cardanoWalletService.getBalance(
+        accountId
+      )
+
+      if (errorMessage || balance === null) {
+        throw new Error(
+          `getBalance (ADA) error: ${errorMessage || 'Unknown error'}`
+        )
+      }
+
+      return Amount.normalize(balance.totalBalance.toString())
+    }
+
     default: {
       assertNotReached(`Unknown coin ${accountId.coin}`)
     }
@@ -773,12 +810,14 @@ async function fetchAccountTokenCurrentBalance({
   arg: { accountId, token },
   jsonRpcService,
   bitcoinWalletService,
-  zcashWalletService
+  zcashWalletService,
+  cardanoWalletService
 }: {
   arg: GetAccountTokenCurrentBalanceArg
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
+  cardanoWalletService: BraveWallet.CardanoWalletServiceRemote
 }): Promise<string> {
   // Native asset balances
   if (isNativeAsset(token)) {
@@ -786,7 +825,8 @@ async function fetchAccountTokenCurrentBalance({
       arg: { accountId, token },
       jsonRpcService,
       bitcoinWalletService,
-      zcashWalletService
+      zcashWalletService,
+      cardanoWalletService
     })
   }
 
@@ -879,6 +919,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   bitcoinWalletService,
   jsonRpcService,
   zcashWalletService,
+  cardanoWalletService,
   onBalance,
   cache
 }: {
@@ -886,6 +927,7 @@ async function fetchAccountTokenBalanceRegistryForChainId({
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
+  cardanoWalletService: BraveWallet.CardanoWalletServiceRemote
   onBalance: (arg: BalanceResult) => void | Promise<void>
   cache: BaseQueryCache
 }): Promise<void> {
@@ -979,7 +1021,8 @@ async function fetchAccountTokenBalanceRegistryForChainId({
         },
         bitcoinWalletService,
         jsonRpcService,
-        zcashWalletService
+        zcashWalletService,
+        cardanoWalletService
       })
 
       if (balance) {
@@ -1040,7 +1083,8 @@ async function fetchAccountTokenBalanceRegistryForChainId({
         },
         bitcoinWalletService,
         jsonRpcService,
-        zcashWalletService
+        zcashWalletService,
+        cardanoWalletService
       })
 
       if (result && new Amount(result).gt(0)) {
@@ -1063,6 +1107,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   jsonRpcService,
   bitcoinWalletService,
   zcashWalletService,
+  cardanoWalletService,
   onBalance,
   cache
 }: {
@@ -1070,6 +1115,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
   jsonRpcService: BraveWallet.JsonRpcServiceRemote
   bitcoinWalletService: BraveWallet.BitcoinWalletServiceRemote
   zcashWalletService: BraveWallet.ZCashWalletServiceRemote
+  cardanoWalletService: BraveWallet.CardanoWalletServiceRemote
   onBalance?: (arg: BalanceResult) => void | Promise<void>
   cache: BaseQueryCache
 }): Promise<TokenBalancesRegistry> {
@@ -1081,6 +1127,7 @@ async function fetchTokenBalanceRegistryForAccountsAndChainIds({
       bitcoinWalletService,
       jsonRpcService,
       zcashWalletService,
+      cardanoWalletService,
       cache,
       onBalance:
         onBalance ||

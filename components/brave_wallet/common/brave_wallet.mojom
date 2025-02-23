@@ -274,6 +274,7 @@ interface PanelHandlerFactory {
                      pending_receiver<JsonRpcService> json_rpc_service,
                      pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
                      pending_receiver<ZCashWalletService> zcash_wallet_service,
+                     pending_receiver<CardanoWalletService> cardano_wallet_service,
                      pending_receiver<SwapService> swap_service,
                      pending_receiver<SimulationService> simulation_service,
                      pending_receiver<AssetRatioService> asset_ratio_service,
@@ -299,6 +300,7 @@ interface PageHandlerFactory {
                     pending_receiver<JsonRpcService> json_rpc_service,
                     pending_receiver<BitcoinWalletService> bitcoin_wallet_service,
                     pending_receiver<ZCashWalletService> zcash_wallet_service,
+                    pending_receiver<CardanoWalletService> cardano_wallet_service,
                     pending_receiver<SwapService> swap_service,
                     pending_receiver<AssetRatioService> asset_ratio_service,
                     pending_receiver<KeyringService> keyring_service,
@@ -984,6 +986,8 @@ struct WalletInfo {
   bool is_ankr_balances_feature_enabled;
   bool is_transaction_simulations_feature_enabled;
   bool is_z_cash_shielded_transactions_enabled;
+  bool is_cardano_enabled;
+  array<CoinType> enabled_coins;
 };
 
 // Browser-side handler for common panel / page things
@@ -1834,6 +1838,17 @@ struct CardanoAddress {
   string address_string;
   CardanoKeyId payment_key_id;
   CardanoKeyId delegation_key_id;
+};
+
+struct CardanoBalance {
+  // Total balance. Either all available now or will be available soon.
+  uint64 total_balance;
+};
+
+interface CardanoWalletService {
+  // Fetches CardanoBalance struct for all addresses associated with account_id.
+  // Now includes both confirmed and mempool utxos.
+  GetBalance(AccountId account_id) => (CardanoBalance? balance, string? error_message);
 };
 
 struct ZCashKeyId {

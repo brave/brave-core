@@ -42,6 +42,8 @@ class WalletPageUI : public ui::MojoWebUIController,
           bitcoin_rpc_service,
       mojo::PendingReceiver<brave_wallet::mojom::ZCashWalletService>
           zcash_service,
+      mojo::PendingReceiver<brave_wallet::mojom::CardanoWalletService>
+          cardano_wallet_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::SwapService> swap_service,
       mojo::PendingReceiver<brave_wallet::mojom::AssetRatioService>
           asset_ratio_service,
