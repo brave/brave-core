@@ -181,7 +181,7 @@ def CheckESLint(input_api, output_api):
     # ESLint struggles with the dynamic import for the mangler here, and it
     # isn't possible to disable that specific check.
     files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
-        r".+lit_mangler.*\.ts", )
+        r".+lit_mangler/.*mangle.*\.ts", )
 
     file_filter = lambda f: input_api.FilterSourceFile(
         f, files_to_check=files_to_check, files_to_skip=files_to_skip)
