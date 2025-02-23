@@ -230,7 +230,7 @@ export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate
         // break the HTML output.
         // This turns `foo="${bar ? "one" : "two"}"` into
         // `foo="${bar ? &quot;one&quot; : &quot;two&quot;}"`
-        .replaceAll(/\$\{.*?\}/gi, (...args) => {
+        .replaceAll(/\$\{.*?\}/gis, (...args) => {
             return args[0]
                 .replaceAll('&', '&amp;') // Note: &amp; needs to be first
                 .replaceAll('"', '&quot;')
@@ -241,10 +241,13 @@ export const mangle = (mangler: (element: DocumentFragment) => void, getTemplate
     mangler(element.content)
 
     template.text = element.innerHTML
-        .replaceAll('&gt;', '>')
-        .replaceAll('&lt;', '<')
-        .replaceAll('&quot;', '"')
-        .replaceAll('&amp;', '&') // Note: &amp; needs to be last
+        .replaceAll(/\$\{.*?\}/gis, (...args) => {
+            return args[0]
+                .replaceAll('&gt;', '>')
+                .replaceAll('&lt;', '<')
+                .replaceAll('&quot;', '"')
+                .replaceAll('&amp;', '&') // Note: &amp; needs to be last
+        })
 }
 
 // Note: This doesn't check the template param against the predicate, only its children.

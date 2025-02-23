@@ -11,6 +11,6 @@ mangle((element) => {
         throw new Error('[Brave Extensions Overrides] Could not find .section-content. Has the ID changed?')
     }
     section.textContent = '$i18n{privateInfoWarning}'
-    section.append('<span ?hidden=${!this.data.incognitoAccess.isActive}> $i18n{spanningInfoWarning}</span>')
-    section.append('<span> $i18n{privateAndTorInfoWarning}</span>')
+    section.insertAdjacentHTML('beforeend', '<span ?hidden=${!this.data.incognitoAccess.isActive}> $i18n{spanningInfoWarning}</span>')
+    section.insertAdjacentHTML('beforeend', '<span> $i18n{privateAndTorInfoWarning}</span>')
 }, t => t.text.includes('id="allow-incognito"'))
